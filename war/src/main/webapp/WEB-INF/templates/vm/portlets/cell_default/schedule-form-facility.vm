@@ -1,0 +1,133 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http:// www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#if($mode=="new_form")
+#set ($title = "ｽｹｼﾞｭｰﾙ(1日)登録")
+#else
+#set ($title = "ｽｹｼﾞｭｰﾙ(1日)編集")
+#end
+#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_facility','1')")
+#set($linklist = [["ｽｹｼﾞｭｰﾙへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
+#if ($!{result.isRepeat()})
+#set ($event_submit = "eventSubmit_doSchedule_form_repeat_edit")
+#elseif($!{result.isSpan()})
+#set ($event_submit = "eventSubmit_doSchedule_menu") ## 期間スケジュール指定でこのページには遷移しない
+#else
+#set ($event_submit = "eventSubmit_doSchedule_form_oneday_edit")
+#end
+#ALcell_pagetitle($career $title)
+#ALcell_errmsg($career $errmsgs)
+#if($errmsgs && !($errmsgs.size() == 0))
+#ALcell_hr($career '1')
+#end
+#ALcell_formheader($career $jslink $portlet)
+#if($!{result.EntityId} && $!{result.EntityId} != 'new')
+<input type="hidden" name="entityid" value="$!{result.EntityId}">
+<input type="hidden" name="edit_repeat_flag" value="$!{result.EditRepeatFlag.toString()}">
+<input type="hidden" name="view_date" value="$!{result.ViewDate.toString()}">
+#end
+<input type="hidden" #if (! $!{result.isRepeat()}) value="FALSE" #else value="TRUE" #end name="is_repeat">
+<input type="hidden" #if (! $!{result.isSpan()}) value="FALSE" #else value="TRUE" #end name="is_span">
+#if ($!{result.isRepeat()})
+<input type="hidden" name="repeat_type" value="$!{result.RepeatType}">
+#if ($!{result.RepeatType.toString()} == "W") 
+#if ($!{result.Week0.toString()} == "TRUE") <input type="hidden" name="week_0" value="TRUE"> #end
+#if ($!{result.Week1.toString()} == "TRUE") <input type="hidden" name="week_1" value="TRUE"> #end
+#if ($!{result.Week2.toString()} == "TRUE") <input type="hidden" name="week_2" value="TRUE"> #end
+#if ($!{result.Week3.toString()} == "TRUE") <input type="hidden" name="week_3" value="TRUE"> #end
+#if ($!{result.Week4.toString()} == "TRUE") <input type="hidden" name="week_4" value="TRUE"> #end
+#if ($!{result.Week5.toString()} == "TRUE") <input type="hidden" name="week_5" value="TRUE"> #end
+#if ($!{result.Week6.toString()} == "TRUE") <input type="hidden" name="week_6" value="TRUE"> #end
+#elseif ($!{result.RepeatType.toString()} == "M")
+<input type="hidden" name="month_day" value="$!{result.MonthDay}">
+#end
+<input type="hidden" name="limit_flag" value="$!{result.LimitFlag.toString()}">
+#if($!{result.LimitFlag.toString()} == "ON")
+<input type="hidden" name="limit_start_date" value="$!{result.LimitStartDateDate}">
+<input type="hidden" name="limit_end_date" value="$!{result.LimitEndDateDate}">
+#end
+#end
+<input type="hidden" name="start_date_date" value="$!{result.StartDateDate}">
+<input type="hidden" name="start_date_time" value="$!{result.StartDateTime}">
+<input type="hidden" name="end_date_date" value="$!{result.EndDateDate}">
+<input type="hidden" name="end_date_time" value="$!{result.EndDateTime}">
+
+#set($memberlist = $!result.getUsers($!result.SelectedGroup.Value))
+<input type="hidden" name="selectedgroup" value="$!{result.SelectedGroup}">
+#set($usercount = 1)
+#set($membersize = $!{result.MemberList.size()})
+##<input type="hidden" name="shareusers" value="#foreach($record in $!{result.MemberList})$!{record.Name}#if($usercount<$membersize),#set($usercount = $usercount + 1)#end#end">
+<input type="hidden" name="shareusers" value="#foreach($record in $!{result.MemberList})#if(! $!result.isContains($memberlist, $record))$!{record.Name}#if($usercount<$membersize),#set($usercount = $usercount + 1)#end#end#end">
+<input type="hidden" name="edit_flag" value="$!{result.EditFlag.toString()}">
+<input type="hidden" name="change_tmpreserve_flag" value="$!{result.ChangeTmpreserveFlag.toString()}"> 
+
+#ALcell_center_header($career)共有施設選択#ALcell_center_footer($career)
+#ALcell_hr($career '1')
+#if($memberlist.size() == 0)
+施設が未登録です。
+#else
+
+#if($result.PagesNum > 1)
+#set($pages = $result.PagesNum)
+#set($currentPage = $result.CurrentPage)
+#set($rowsNum = $result.RowsNum)
+#if ($pages > 1)
+#ALcell_center_header($career)
+#if($currentPage > 1) #set($pre = $currentPage - 1) #ALcell_submit($career "eventSubmit_doSchedule_form_facility" "&lt;前")
+<input type="hidden" name="start" value="$pre">
+#end
+$currentPage/$pages
+#if($pages > $currentPage) #set($next = $currentPage + 1) #ALcell_submit($career "eventSubmit_doSchedule_form_facility" "次&gt;")
+<input type="hidden" name="start" value="$next">
+#end
+#ALcell_center_footer($career)
+#end
+#ALcell_hr($career '1')
+#end
+
+#foreach($record in $!{result.FacilityAllList})
+<input name="sharefac" type="checkbox" value="$!record.FacilityId" #if($!result.isContains($!{result.FacilityMemberList}, $record))checked#end>$!record.FacilityName#ALcell_br($career)
+#end
+#end
+	
+
+#if($result.PagesNum > 1)
+#set($pages = $result.PagesNum)
+#set($currentPage = $result.CurrentPage)
+#set($rowsNum = $result.RowsNum)
+#if ($pages > 1)
+#ALcell_hr($career '1')
+#ALcell_center_header($career)
+#if($currentPage > 1) #set($pre = $currentPage - 1) #ALcell_submit($career "eventSubmit_doSchedule_form_facility" "&lt;前")
+<input type="hidden" name="start" value="$pre">
+#end
+$currentPage/$pages
+#if($pages > $currentPage) #set($next = $currentPage + 1) #ALcell_submit($career "eventSubmit_doSchedule_form_facility" "次&gt;")
+<input type="hidden" name="start" value="$next">
+#end
+#ALcell_center_footer($career)
+#end
+#end
+
+#ALcell_hr($career '1')
+#ALcell_submit($career "$event_submit" "追加する")
+#ALcell_formfooter()
+#ALcell_hr($career '1')
+#ALcell_linklist($career $linklist)
+#ALtdcellFooterLink($career)

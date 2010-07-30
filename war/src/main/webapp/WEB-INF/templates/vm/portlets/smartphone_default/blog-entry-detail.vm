@@ -1,0 +1,76 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+<script type="text/javascript">
+
+function onEntryDelete(form) {
+  if(confirm('この記事を削除してもよろしいですか？なお、このブログに含まれるコメントもすべて削除されます。')) {
+    form.action = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_delete','1')";
+    form.submit();
+  }
+}
+
+function onCommentDelete(form) {
+  if(confirm('このコメントを削除してもよろしいですか？')) {
+    form.action = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_comment_delete','1')";
+    form.submit();
+  }
+}
+</script>
+#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_latest','1')")
+#set($methodlist = [["記事一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_latest','1')"], ["記事追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_form','1').addQueryData('entityid','new')"],["みんなのブログ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1')"],["記事検索", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_search_list','1')"]])
+#set($linklist = [["コメントする", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_reply_form','1').addQueryData('entityid',${result.Detail.EntryId}).addQueryData('mode','reply')"]])
+#ALcell_pagetitle_iphone($career "ブログ詳細")
+#ALcell_linklist_iphone($career $methodlist)
+#ALcell_contents_header($career)
+#ALcell_blog_detail($career $!{result.Detail})
+#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
+<img src="images/blog/blog_item.gif">&nbsp;<a href="$jslink.getTemplate("BlogFileRawScreen").addQueryData("ownerid", $!{result.Detail.OwnerId}).addQueryData("entityid", $!result.Detail.EntryId).addQueryData("attachmentIndex", $attachmentFile.FileId)"> $result.getStringCR($attachmentFile.FileNameField) </a><br>
+#if($attachmentFile.isImage())
+<img border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("BlogFileThumbnailScreen").addQueryData("ownerid", $!{result.Detail.OwnerId}).addQueryData("entityid", $!result.Detail.EntryId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+#end
+#end
+#if($!result.isMatch($!{result.UserId} , $!{result.Detail.OwnerId.Value}))
+#ALcell_formheader($career $jslink $portlet)
+<input type="hidden" name="mode" value="delete">
+<p class="right ma0">
+<input class="submit" type="submit" name="eventSubmit_doBlog_entry_form" value="編集する">
+<input class="submit" type="button" onClick="onEntryDelete(this.form);return false" name="eventSubmit_doBlog_entry_detail" value="削除する">
+</p>
+#ALcell_formfooter()
+#end
+<h3>コメント一覧</h3>
+#if(!$!result.CommentList || $!result.CommentList.size() <= 0)
+<p class="center">コメントはありません。</p>
+#else
+#foreach ($record in $result.CommentList)
+#ALcell_blog_comment($career $!{record})
+#if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}))
+#ALcell_formheader($career $jslink $portlet)
+<input type="hidden" name="entityid" value=${result.Detail.EntryId}>
+<input type="hidden" name="comment_id" value=${record.CommentId}>
+<input type="hidden" name="mode" value="view">
+<p class="right ma0"><input class="submit" type="button" onClick="onCommentDelete(this.form);return false" name="eventSubmit_doBlog_entry_comment_delete" value="削除する"></p>
+#ALcell_formfooter()
+#end
+#end
+#end
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_reply_form','1').addQueryData('entityid',${result.Detail.EntryId}).addQueryData('mode','reply')" class="btn">コメントする</a>
+#ALcell_contents_footer($career)
+#ALcell_linklist_iphone($career $methodlist)

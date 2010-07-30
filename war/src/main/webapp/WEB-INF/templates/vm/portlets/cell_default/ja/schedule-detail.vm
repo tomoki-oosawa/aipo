@@ -1,0 +1,136 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http:// www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#if ($!{result.Detail.isRepeat()})
+#set ($event_submit = "eventSubmit_doSchedule_form_repeat")
+#elseif($!{result.Detail.isSpan()})
+#set ($event_submit = "eventSubmit_doSchedule_form_span")
+#else
+#set ($event_submit = "eventSubmit_doSchedule_form_oneday")
+#end
+#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')")
+#set($methodlist = [["登録(1日)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_oneday','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()})"], ["登録(繰り返し)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_repeat','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()})"], ["登録(期間)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_span','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()})"]])
+#set($linklist = [["ｽｹｼﾞｭｰﾙ(1日)一覧へ", "$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')"], ["ｽｹｼﾞｭｰﾙへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
+#set ($hasMember = false)
+#ALcell_pagetitle_iphone($career "スケジュール詳細")
+#ALcell_linklist_iphone($career $linklist)
+#ALcell_contents_header($career)
+
+#ALcell_dl_header($career)
+#ALcell_dt($career '名前')#ALcell_dd($career "$!{result.Detail.User.AliasName}")
+#ALcell_dt($career '日時')#ALcell_dd_header($career)
+#if($!{result.Detail.isSpan()})
+$!{result.Detail.StartDate.Year}/$!{result.Detail.StartDate.Month}/$!{result.Detail.StartDate.Day}$!{result.Detail.StartDate.DayOfWeek}から
+$!{result.Detail.EndDate.Year}/$!{result.Detail.EndDate.Month}/$!{result.Detail.EndDate.Day}$!{result.Detail.EndDate.DayOfWeek}
+#if(! ${result.Detail.isPublic()})
+(非公開)
+#end
+#elseif($!{result.Detail.isRepeat()})
+$!{result.Detail.Text}
+$!{result.Detail.DateForCell}
+#if(! ${result.Detail.isPublic()})
+(非公開)
+#end
+(繰り返し)
+#else
+$!{result.Detail.StartDate.Year}/$!{result.Detail.StartDate.Month}/$!{result.Detail.StartDate.Day}$!{result.Detail.StartDate.DayOfWeek}
+$!{result.Detail.DateForCell}
+#if(! ${result.Detail.isPublic()})
+(非公開)
+#end
+#end
+#if($!{result.Detail.isTmpreserve()})
+(仮)
+#end
+#ALcell_dd_footer($career)
+#ALcell_dt($career '予定')#ALcell_dd($career "$!{result.Detail.Name}")
+#ALcell_dt($career '場所')#ALcell_dd($career "$!{result.Detail.Place}")
+#ALcell_dt($career '内容')#ALcell_dd($career "$!{result.Detail.Note}")
+#ALcell_dt($career '公開区分')#ALcell_dd_header($career)
+#if($!result.Detail.isPublic())
+公開
+#elseif($!result.Detail.isPrivate())
+非公開
+#elseif($!result.Detail.isHidden())
+完全に隠す
+#end
+#ALcell_dd_footer($career)
+#ALcell_dt($career '参加ﾒﾝﾊﾞｰ')
+#if($!result.MemberList.size() > 1)
+#set($counter = 0)
+#foreach($record in $!result.MemberList)
+#if(!($!{record.Name.toString()} == $!{result.Detail.User.Name.toString()}))
+#ALcell_dd_header($career)
+$!record.AliasName
+#if($result.getStatus($record.UserId.Value) == "T")
+(仮)
+#elseif($result.getStatus($record.UserId.Value) == "R")
+#set($counter = $counter + 1)
+(削除)
+#end
+#ALcell_dd_footer($career)
+#end
+#end
+#if($counter < ($!result.MemberList.size() - 1))
+#set ($hasMember = true)
+#end
+#if($hasMember)
+#ALcell_dd_header($career)
+#if($!{result.Detail.isEditable()})[編集/削除：可]#else[編集/削除：不可]#end
+#ALcell_dd_footer($career)
+#end
+#end
+
+#ALcell_dt($career '共有施設')
+#foreach($record in $!result.FacilityList)
+#ALcell_dd_header($career)
+${record.FacilityName}
+#ALcell_dd_footer($career)
+#end
+
+#ALcell_dt($career '登録者名')#ALcell_dd($career "$!{result.Detail.CreateUser.AliasName}")#ALcell_dd($career "($!{result.Detail.CreateDate})")
+#ALcell_dt($career '更新者名')#ALcell_dd($career "$!{result.Detail.UpdateUser.AliasName}")#ALcell_dd($career "($!{result.Detail.UpdateDate})")
+#ALcell_dl_footer($career)
+#ALcell_hr($career '1')
+#ALcell_formheader($career $jslink $portlet)
+<input type="hidden" name="entityid" value="$!{result.EntityId}">
+<input type="hidden" name="view_date" value="$!{result.ViewDate.toString()}">
+#if($!{result.Detail.isOwner()})
+#ALcell_submit($career "$event_submit" '編集する')
+#ALcell_submit($career 'eventSubmit_doSchedule_form_delete' '削除する')
+#elseif($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()})
+<input type="hidden" name="status" value="C">
+#ALcell_submit($career 'eventSubmit_doSchedule_change_status' '確定する')
+#if($!{result.Detail.isEditable()})
+#ALcell_submit($career "$event_submit" '編集する')
+#end
+#ALcell_submit($career 'eventSubmit_doSchedule_form_delete' '削除する')
+#elseif($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()})
+<input type="hidden" name="status" value="T">
+#ALcell_submit($career 'eventSubmit_doSchedule_change_status' '仮の予定にする')
+#if($!{result.Detail.isEditable()})
+#ALcell_submit($career "$event_submit" '編集する')
+#end
+#ALcell_submit($career 'eventSubmit_doSchedule_form_delete' '削除する')
+#end
+#ALcell_formfooter()
+#ALcell_linklist($career $methodlist)
+
+#ALcell_contents_footer($career)
+#ALcell_linklist_iphone($career $linklist)
