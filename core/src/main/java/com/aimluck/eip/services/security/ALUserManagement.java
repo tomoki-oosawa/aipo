@@ -1,0 +1,720 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.aimluck.eip.services.security;
+
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.security.MessageDigest;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+
+import javax.mail.internet.MimeUtility;
+import javax.servlet.ServletConfig;
+
+import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
+import org.apache.jetspeed.om.profile.Profile;
+import org.apache.jetspeed.om.security.BaseJetspeedUser;
+import org.apache.jetspeed.om.security.Group;
+import org.apache.jetspeed.om.security.JetspeedUser;
+import org.apache.jetspeed.om.security.JetspeedUserFactory;
+import org.apache.jetspeed.om.security.Role;
+import org.apache.jetspeed.om.security.UserIdPrincipal;
+import org.apache.jetspeed.om.security.UserNamePrincipal;
+import org.apache.jetspeed.services.JetspeedSecurity;
+import org.apache.jetspeed.services.Profiler;
+import org.apache.jetspeed.services.PsmlManager;
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.resources.JetspeedResources;
+import org.apache.jetspeed.services.rundata.JetspeedRunData;
+import org.apache.jetspeed.services.rundata.JetspeedRunDataService;
+import org.apache.jetspeed.services.security.CredentialsManagement;
+import org.apache.jetspeed.services.security.JetspeedSecurityException;
+import org.apache.jetspeed.services.security.JetspeedSecurityService;
+import org.apache.jetspeed.services.security.NotUniqueUserException;
+import org.apache.jetspeed.services.security.UnknownUserException;
+import org.apache.jetspeed.services.security.UserException;
+import org.apache.jetspeed.services.security.UserManagement;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.localization.Localization;
+import org.apache.turbine.services.resources.ResourceService;
+import org.apache.turbine.services.rundata.RunDataService;
+import org.apache.turbine.util.RunData;
+
+import com.aimluck.eip.cayenne.om.account.EipMUserPosition;
+import com.aimluck.eip.cayenne.om.security.TurbineGroup;
+import com.aimluck.eip.cayenne.om.security.TurbineRole;
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
+import com.aimluck.eip.common.ALBaseUser;
+import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.orm.DatabaseOrmService;
+
+/**
+ * ユーザーを管理するクラスです。 <br />
+ *
+ */
+public class ALUserManagement extends TurbineBaseService implements
+    UserManagement, CredentialsManagement {
+
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+      .getLogger(ALUserManagement.class.getName());
+
+  private final static String CONFIG_SECURE_PASSWORDS_KEY = "secure.passwords";
+
+  private final static String CONFIG_SECURE_PASSWORDS_ALGORITHM = "secure.passwords.algorithm";
+
+  private final static String CONFIG_SYSTEM_USERS = "system.users";
+
+  boolean securePasswords = false;
+
+  String passwordsAlgorithm = "SHA";
+
+  Vector<?> systemUsers = null;
+
+  private final static String CONFIG_NEWUSER_ROLES = "newuser.roles";
+
+  private final static String[] DEFAULT_CONFIG_NEWUSER_ROLES = { "user" };
+
+  String roles[] = null;
+
+  private JetspeedRunDataService runDataService = null;
+
+  protected JetspeedUser row2UserObject(TurbineUser tuser) throws UserException {
+    try {
+      JetspeedUser user = JetspeedUserFactory.getInstance(false);
+      ALBaseUser baseuser = (ALBaseUser) user;
+      baseuser.setUserId(tuser.getUserId().toString());
+      baseuser.setUserName(tuser.getLoginName());
+      baseuser.setPassword(tuser.getPasswordValue());
+      baseuser.setFirstName(tuser.getFirstName());
+      baseuser.setLastName(tuser.getLastName());
+      baseuser.setEmail(tuser.getEmail());
+      baseuser.setConfirmed(tuser.getConfirmValue());
+      baseuser.setModified(tuser.getModified());
+      baseuser.setCreated(tuser.getCreated());
+      baseuser.setLastLogin(tuser.getLastLogin());
+      // baseuser.setDisabled("T".equals(tuser.getDisabled()));
+      baseuser.setDisabled(tuser.getDisabled());
+      // baseuser.setObjectdata(null);
+      baseuser.setPasswordChanged(tuser.getPasswordChanged());
+      baseuser.setCompanyId((tuser.getCompanyId() != null) ? tuser
+          .getCompanyId().intValue() : 0);
+      baseuser.setPositionId((tuser.getPositionId() != null) ? tuser
+          .getPositionId().intValue() : 0);
+      baseuser.setInTelephone(tuser.getInTelephone());
+      baseuser.setOutTelephone(tuser.getOutTelephone());
+      baseuser.setCellularPhone(tuser.getCellularPhone());
+      baseuser.setCellularMail(tuser.getCellularMail());
+      baseuser.setCelluarUId(tuser.getCellularUid());
+      baseuser.setLastNameKana(tuser.getLastNameKana());
+      baseuser.setFirstNameKana(tuser.getFirstNameKana());
+      baseuser.setPhoto(tuser.getPhoto());
+      baseuser.setCreatedUserId((tuser.getCreatedUserId() != null) ? tuser
+          .getCreatedUserId().intValue() : 0);
+      baseuser.setUpdatedUserId((tuser.getUpdatedUserId() != null) ? tuser
+          .getUpdatedUserId().intValue() : 0);
+      return baseuser;
+    } catch (Exception e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  /**
+   *
+   */
+  public JetspeedUser getUser(Principal principal)
+      throws JetspeedSecurityException {
+
+    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
+
+    if (dataContext == null) {
+      String message = "Failed to retrieve user '" + principal.getName() + "'";
+      throw new UserException(message);
+    }
+
+    SelectQuery query = new SelectQuery(TurbineUser.class);
+    if (principal instanceof UserNamePrincipal) {
+      Expression exp = ExpressionFactory.matchExp(
+          TurbineUser.LOGIN_NAME_PROPERTY, principal.getName());
+      query.setQualifier(exp);
+    } else if (principal instanceof UserIdPrincipal) {
+      Expression exp = ExpressionFactory.matchDbExp(
+          TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(principal.getName()));
+      query.setQualifier(exp);
+    } else {
+      throw new UserException("Invalid Principal Type in getUser: "
+          + principal.getClass().getName());
+    }
+    List<?> users;
+    try {
+      users = dataContext.performQuery(query);
+    } catch (Exception e) {
+      String message = "Failed to retrieve user '" + principal.getName() + "'";
+      logger.error(message, e);
+      throw new UserException(message, e);
+    }
+    if (users.size() > 1) {
+      throw new UserException("Multiple Users with same username '"
+          + principal.getName() + "'");
+    }
+    if (users.size() == 1) {
+      try {
+        JetspeedUser juser = row2UserObject((TurbineUser) users.get(0));
+        return juser;
+      } catch (UserException e) {
+        String message = "Failed to retrieve user '" + principal.getName()
+            + "'";
+        logger.error(message, e);
+        throw new UserException(message, e);
+      }
+    }
+    throw new UnknownUserException("Unknown user '" + principal.getName() + "'");
+  }
+
+  /**
+   *
+   */
+  public JetspeedUser getUser(RunData rundata, Principal principal)
+      throws JetspeedSecurityException {
+
+    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
+    if (dataContext == null) {
+      String message = "Failed to retrieve user '" + principal.getName() + "'";
+      throw new UserException(message);
+    }
+
+    SelectQuery query = new SelectQuery(TurbineUser.class);
+    if (principal instanceof UserNamePrincipal) {
+      Expression exp = ExpressionFactory.matchExp(
+          TurbineUser.LOGIN_NAME_PROPERTY, principal.getName());
+      query.setQualifier(exp);
+    } else if (principal instanceof UserIdPrincipal) {
+      Expression exp = ExpressionFactory.matchDbExp(
+          TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(principal.getName()));
+      query.setQualifier(exp);
+    } else {
+      throw new UserException("Invalid Principal Type in getUser: "
+          + principal.getClass().getName());
+    }
+    List<?> users;
+    try {
+      users = dataContext.performQuery(query);
+    } catch (Exception e) {
+      String message = "Failed to retrieve user '" + principal.getName() + "'";
+      logger.error(message, e);
+      throw new UserException(message, e);
+    }
+    if (users.size() > 1) {
+      throw new UserException("Multiple Users with same username '"
+          + principal.getName() + "'");
+    }
+    if (users.size() == 1) {
+      try {
+        JetspeedUser juser = row2UserObject((TurbineUser) users.get(0));
+        return juser;
+      } catch (UserException e) {
+        String message = "Failed to retrieve user '" + principal.getName()
+            + "'";
+        logger.error(message, e);
+        throw new UserException(message, e);
+      }
+    }
+    throw new UnknownUserException("Unknown user '" + principal.getName() + "'");
+  }
+
+  /**
+   *
+   */
+  public Iterator<JetspeedUser> getUsers() throws JetspeedSecurityException {
+    List<JetspeedUser> users = new ArrayList<JetspeedUser>();
+    try {
+      DataContext dataContext = DatabaseOrmService.getInstance()
+          .getDataContext();
+
+      if (dataContext == null) {
+        String message = "Failed to retrieve users";
+        throw new UserException(message);
+      }
+
+      SelectQuery query = new SelectQuery(TurbineUser.class);
+      List<?> list = dataContext.performQuery(query);
+      int size = list.size();
+      for (int i = 0; i < size; i++) {
+        users.add(row2UserObject((TurbineUser) users.get(i)));
+      }
+    } catch (Exception e) {
+      logger.error("Failed to retrieve users ", e);
+      throw new UserException("Failed to retrieve users ", e);
+    }
+    return users.iterator();
+  }
+
+  /**
+   *
+   */
+  public Iterator<JetspeedUser> getUsers(String filter)
+      throws JetspeedSecurityException {
+
+    List<JetspeedUser> users = new ArrayList<JetspeedUser>();
+    try {
+      DataContext dataContext = DatabaseOrmService.getInstance()
+          .getDataContext();
+      if (dataContext == null) {
+        String message = "Failed to retrieve users : " + filter;
+        throw new UserException(message);
+      }
+
+      SelectQuery query = new SelectQuery(TurbineUser.class);
+      List<?> list = dataContext.performQuery(query);
+      int size = list.size();
+      for (int i = 0; i < size; i++) {
+        users.add(row2UserObject((TurbineUser) users.get(i)));
+      }
+    } catch (Exception e) {
+      logger.error("Failed to retrieve users ", e);
+      throw new UserException("Failed to retrieve users ", e);
+    }
+    return users.iterator();
+  }
+
+  /**
+   *
+   */
+  public void saveUser(JetspeedUser user) throws JetspeedSecurityException {
+    if (!accountExists(user, true)) {
+      throw new UnknownUserException("Cannot save user '" + user.getUserName()
+          + "', User doesn't exist");
+    }
+
+    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
+
+    try {
+      if (dataContext == null) {
+        String message = "Failed to save users : " + user.getUserName();
+        throw new UserException(message);
+      }
+
+      Expression exp = ExpressionFactory.matchDbExp(
+          TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(user.getUserId()));
+      SelectQuery query = new SelectQuery(TurbineUser.class, exp);
+      List<?> users = dataContext.performQuery(query);
+
+      if (users == null || users.size() == 0) {
+        throw new UnknownUserException("Cannot save user '"
+            + user.getUserName() + "', User doesn't exist");
+      }
+
+      ALBaseUser baseuser = (ALBaseUser) user;
+      // 新規オブジェクトモデル
+      TurbineUser tuser = (TurbineUser) users.get(0);
+      tuser.setLoginName(baseuser.getUserName());
+      tuser.setPasswordValue(baseuser.getPassword());
+      tuser.setFirstName(baseuser.getFirstName());
+      tuser.setLastName(baseuser.getLastName());
+      tuser.setEmail(baseuser.getEmail());
+      tuser.setConfirmValue(baseuser.getConfirmed());
+      tuser.setModified(baseuser.getCreateDate());
+      tuser.setCreated(baseuser.getCreateDate());
+      tuser.setLastLogin(baseuser.getCreateDate());
+      // tuser.setDisabled((baseuser.getDisabled() ? "T" : "F"));
+      tuser.setDisabled(baseuser.getDisabled());
+      tuser.setObjectdata(null);
+      tuser.setPasswordChanged(baseuser.getPasswordChanged());
+      tuser.setCompanyId(Integer.valueOf(baseuser.getCompanyId()));
+      tuser.setPositionId(Integer.valueOf(baseuser.getPositionId()));
+      tuser.setInTelephone(baseuser.getInTelephone());
+      tuser.setOutTelephone(baseuser.getOutTelephone());
+      tuser.setCellularPhone(baseuser.getCellularPhone());
+      tuser.setCellularMail(baseuser.getCellularMail());
+      tuser.setCellularUid(baseuser.getCelluarUId());
+      tuser.setLastNameKana(baseuser.getLastNameKana());
+      tuser.setFirstNameKana(baseuser.getFirstNameKana());
+      tuser.setPhoto(baseuser.getPhoto());
+      tuser.setCreatedUserId(Integer.valueOf(baseuser.getCreatedUserId()));
+      tuser.setUpdatedUserId(Integer.valueOf(baseuser.getUpdatedUserId()));
+
+      // ユーザを更新する．
+      dataContext.commitChanges();
+    } catch (Exception e) {
+      logger.error("Failed to save user object ", e);
+      throw new UserException("Failed to save user object ", e);
+    }
+
+  }
+
+  /**
+   *
+   */
+  public void addUser(JetspeedUser user) throws JetspeedSecurityException {
+    if (accountExists(user)) {
+      throw new NotUniqueUserException("The account '" + user.getUserName()
+          + "' already exists");
+    }
+    String initialPassword = user.getPassword();
+    String encrypted = JetspeedSecurity.encryptPassword(initialPassword);
+    user.setPassword(encrypted);
+
+    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
+    if (dataContext == null) {
+      String message = "Failed to add user : " + user.getUserName();
+      throw new UserException(message);
+    }
+
+    ALBaseUser baseuser = (ALBaseUser) user;
+    // 新規オブジェクトモデル
+    TurbineUser tuser = (TurbineUser) dataContext
+        .createAndRegisterNewObject(TurbineUser.class);
+    tuser.setLoginName(baseuser.getUserName());
+    tuser.setPasswordValue(baseuser.getPassword());
+    tuser.setFirstName(baseuser.getFirstName());
+    tuser.setLastName(baseuser.getLastName());
+    tuser.setEmail(baseuser.getEmail());
+    tuser.setConfirmValue(baseuser.getConfirmed());
+    tuser.setModified(baseuser.getCreateDate());
+    tuser.setCreated(baseuser.getCreateDate());
+    tuser.setLastLogin(baseuser.getCreateDate());
+    // tuser.setDisabled((baseuser.getDisabled() ? "T" : "F"));
+    tuser.setDisabled(baseuser.getDisabled());
+    tuser.setObjectdata(null);
+    tuser.setPasswordChanged(baseuser.getPasswordChanged());
+    tuser.setCompanyId(Integer.valueOf(baseuser.getCompanyId()));
+    tuser.setPositionId(Integer.valueOf(baseuser.getPositionId()));
+    tuser.setInTelephone(baseuser.getInTelephone());
+    tuser.setOutTelephone(baseuser.getOutTelephone());
+    tuser.setCellularPhone(baseuser.getCellularPhone());
+    tuser.setCellularMail(baseuser.getCellularMail());
+    // tuser.setCellularUid();
+    tuser.setLastNameKana(baseuser.getLastNameKana());
+    tuser.setFirstNameKana(baseuser.getFirstNameKana());
+    tuser.setPhoto(baseuser.getPhoto());
+    tuser.setCreatedUserId(Integer.valueOf(baseuser.getCreatedUserId()));
+    tuser.setUpdatedUserId(Integer.valueOf(baseuser.getUpdatedUserId()));
+
+    dataContext.commitChanges();
+
+    // 部署Mapを取得
+    // Map map = ALEipManager.getInstance().getPostMap();
+
+    /*
+     * if (map != null && map.size() != 0 && postid >= 1) { int size =
+     * map.size(); // グループへユーザを登録 Group group =
+     * JetspeedSecurity.getGroup(((ALEipPost) ALEipManager
+     * .getInstance().getPostMap().get(Integer.valueOf(postid)))
+     * .getGroupName().getValue()); Role role =
+     * JetspeedSecurity.getRole("user"); // 新規オブジェクトモデル TurbineUserGroupRole
+     * user_group_role = (TurbineUserGroupRole) dataContext
+     * .createAndRegisterNewObject(TurbineUserGroupRole.class);
+     * user_group_role.setTurbineUser(tuser);
+     * user_group_role.setTurbineGroup((TurbineGroup) group);
+     * user_group_role.setTurbineRole((TurbineRole) role); }
+     */
+
+    // ログインユーザーにはグループ LoginUser に所属させる
+    // JetspeedSecurity.joinGroup(user.getUserName(), "LoginUser");
+    Group group = JetspeedSecurity.getGroup("LoginUser");
+    Role role = JetspeedSecurity.getRole("user");
+    // 新規オブジェクトモデル
+    TurbineUserGroupRole user_group_role = (TurbineUserGroupRole) dataContext
+        .createAndRegisterNewObject(TurbineUserGroupRole.class);
+    user_group_role.setTurbineUser(tuser);
+    user_group_role.setTurbineGroup((TurbineGroup) group);
+    user_group_role.setTurbineRole((TurbineRole) role);
+
+    // 役職に登録
+    SelectQuery query = new SelectQuery(EipMUserPosition.class);
+    List<?> userposlist = dataContext.performQuery(query);
+    int new_pos = (userposlist != null && userposlist.size() > 0) ? userposlist
+        .size() + 1 : 1;
+    EipMUserPosition userposition = (EipMUserPosition) dataContext
+        .createAndRegisterNewObject(EipMUserPosition.class);
+    userposition.setTurbineUser(tuser);
+    userposition.setPosition(Integer.valueOf(new_pos));
+
+    try {
+      // ユーザを登録
+      dataContext.commitChanges();
+
+      ((BaseJetspeedUser) user).setUserId(tuser.getUserId().toString());
+
+    } catch (Exception e) {
+      String message = "Failed to create account '" + user.getUserName() + "'";
+      logger.error(message, e);
+      throw new UserException(message, e);
+    }
+
+    addDefaultPSML(user);
+  }
+
+  /**
+   *
+   * @param user
+   * @throws JetspeedSecurityException
+   */
+  public void addDefaultPSML(JetspeedUser user)
+      throws JetspeedSecurityException {
+    String org_id = DatabaseOrmService.getInstance().getOrgId(getRunData());
+    for (int ix = 0; ix < roles.length; ix++) {
+      try {
+        JetspeedSecurity.grantRole(user.getUserName(), JetspeedSecurity
+            .getRole(roles[ix]).getName());
+      } catch (Exception e) {
+        logger.error(
+            "Could not grant role: " + roles[ix] + " to user "
+                + user.getUserName(), e);
+      }
+    }
+    try {
+      JetspeedRunData rundata = getRunData();
+      if (rundata != null && Profiler.useRoleProfileMerging() == false) {
+        Profile profile = Profiler.createProfile();
+        profile.setUser(user);
+        profile.setMediaType("html");
+        profile.setOrgName(org_id);
+        Profiler.createProfile(getRunData(), profile);
+      }
+    } catch (Exception e) {
+      logger.error("Failed to create profile for new user ", e);
+      removeUser(new UserNamePrincipal(user.getUserName()));
+      throw new UserException("Failed to create profile for new user ", e);
+    }
+  }
+
+  /**
+   *
+   */
+  public void removeUser(Principal principal) throws JetspeedSecurityException {
+    if (systemUsers.contains(principal.getName())) {
+      throw new UserException("[" + principal.getName()
+          + "] is a system user and cannot be removed");
+    }
+
+    JetspeedUser user = getUser(principal);
+
+    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
+
+    try {
+      if (dataContext == null) {
+        String message = "Failed to remove user : " + principal.getName();
+        throw new UserException(message);
+      }
+
+      Expression exp = ExpressionFactory.matchDbExp(
+          TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(user.getUserId()));
+      SelectQuery query = new SelectQuery(TurbineUser.class, exp);
+
+      List<?> users = dataContext.performQuery(query);
+
+      if (users == null || users.size() == 0) {
+        throw new UserException("[" + principal.getName()
+            + "] is a system user and cannot be removed");
+      }
+
+      dataContext.deleteObject((TurbineUser) users.get(0));
+      PsmlManager.removeUserDocuments(user);
+    } catch (Exception e) {
+      String message = "Failed to remove account '" + user.getUserName() + "'";
+      logger.error(message, e);
+      throw new UserException(message, e);
+    }
+  }
+
+  /**
+   *
+   */
+  public void changePassword(JetspeedUser user, String oldPassword,
+      String newPassword) throws JetspeedSecurityException {
+    oldPassword = JetspeedSecurity.convertPassword(oldPassword);
+    newPassword = JetspeedSecurity.convertPassword(newPassword);
+
+    String encrypted = JetspeedSecurity.encryptPassword(oldPassword);
+    if (!accountExists(user)) {
+      throw new UnknownUserException(
+          Localization.getString("UPDATEACCOUNT_NOUSER"));
+    }
+    if (!user.getPassword().equals(encrypted)) {
+      throw new UserException(
+          Localization.getString("UPDATEACCOUNT_BADOLDPASSWORD"));
+    }
+    user.setPassword(JetspeedSecurity.encryptPassword(newPassword));
+
+    user.setPasswordChanged(new Date());
+
+    saveUser(user);
+  }
+
+  /**
+   *
+   */
+  public void forcePassword(JetspeedUser user, String password)
+      throws JetspeedSecurityException {
+    if (!accountExists(user)) {
+      throw new UnknownUserException("The account '" + user.getUserName()
+          + "' does not exist");
+    }
+    user.setPassword(JetspeedSecurity.encryptPassword(password));
+    saveUser(user);
+  }
+
+  /**
+   *
+   */
+  public String encryptPassword(String password)
+      throws JetspeedSecurityException {
+    if (securePasswords == false) {
+      return password;
+    }
+    if (password == null) {
+      return null;
+    }
+
+    try {
+      if ("SHA-512".equals(passwordsAlgorithm)) {
+        // パスワード末尾にencrypt_keyを付加
+        password = password + JetspeedResources.getString("aipo.encrypt_key");
+
+        MessageDigest md = MessageDigest.getInstance(passwordsAlgorithm);
+        md.reset();
+        md.update(password.getBytes());
+        byte[] hash = md.digest();
+        // ハッシュを16進数文字列に変換
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < hash.length; i++) {
+          sb.append(Integer.toHexString((hash[i] >> 4) & 0x0F));
+          sb.append(Integer.toHexString(hash[i] & 0x0F));
+        }
+        return sb.toString();
+      } else {
+        // SHA-512以外のアルゴリズムの場合は、以下の処理でパスワードを暗号化する。
+
+        MessageDigest md = MessageDigest.getInstance(passwordsAlgorithm);
+        // We need to use unicode here, to be independent of platform's
+        // default encoding. Thanks to SGawin for spotting this.
+        byte[] digest = md.digest(password
+            .getBytes(ALEipConstants.DEF_CONTENT_ENCODING));
+        ByteArrayOutputStream bas = new ByteArrayOutputStream(digest.length
+            + digest.length / 3 + 1);
+        OutputStream encodedStream = MimeUtility.encode(bas, "base64");
+        encodedStream.write(digest);
+        encodedStream.flush();
+        encodedStream.close();
+        return bas.toString();
+      }
+    } catch (Exception e) {
+      logger.error("Unable to encrypt password." + e.getMessage(), e);
+      return null;
+    }
+  }
+
+  /**
+   *
+   */
+  public synchronized void init(ServletConfig conf)
+      throws InitializationException {
+    if (getInit())
+      return;
+
+    super.init(conf);
+
+    ResourceService serviceConf = ((TurbineServices) TurbineServices
+        .getInstance()).getResources(JetspeedSecurityService.SERVICE_NAME);
+
+    securePasswords = serviceConf.getBoolean(CONFIG_SECURE_PASSWORDS_KEY,
+        securePasswords);
+    passwordsAlgorithm = serviceConf.getString(
+        CONFIG_SECURE_PASSWORDS_ALGORITHM, passwordsAlgorithm);
+    systemUsers = serviceConf.getVector(CONFIG_SYSTEM_USERS,
+        new Vector<Object>());
+
+    try {
+      roles = serviceConf.getStringArray(CONFIG_NEWUSER_ROLES);
+    } catch (Exception e) {
+    }
+
+    if (null == roles || roles.length == 0) {
+      roles = DEFAULT_CONFIG_NEWUSER_ROLES;
+    }
+
+    this.runDataService = (JetspeedRunDataService) TurbineServices
+        .getInstance().getService(RunDataService.SERVICE_NAME);
+
+    setInit(true);
+  }
+
+  /**
+   *
+   * @param user
+   * @return
+   * @throws UserException
+   */
+  protected boolean accountExists(JetspeedUser user) throws UserException {
+    return accountExists(user, false);
+  }
+
+  protected boolean accountExists(JetspeedUser user, boolean checkUniqueId)
+      throws UserException {
+    String id = user.getUserId();
+
+    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
+    if (dataContext == null) {
+      String message = "Failed to check user : " + user.getUserName();
+      throw new UserException(message);
+    }
+
+    Expression exp = ExpressionFactory.matchExp(
+        TurbineUser.LOGIN_NAME_PROPERTY, user.getUserName());
+    SelectQuery query = new SelectQuery(TurbineUser.class, exp);
+
+    List<?> users;
+    try {
+      users = dataContext.performQuery(query);
+    } catch (Exception e) {
+      logger.error("Failed to check account's presence", e);
+      throw new UserException("Failed to check account's presence", e);
+    }
+    if (users.size() < 1) {
+      return false;
+    }
+    TurbineUser retrieved = (TurbineUser) users.get(0);
+    String keyId = retrieved.getUserId().toString();
+    if (checkUniqueId && !keyId.equals(id)) {
+      throw new UserException("User exists but under a different unique ID");
+    }
+    return true;
+  }
+
+  protected JetspeedRunData getRunData() {
+    JetspeedRunData rundata = null;
+    if (this.runDataService != null) {
+      rundata = this.runDataService.getCurrentRunData();
+    }
+    return rundata;
+  }
+
+}

@@ -1,0 +1,19 @@
+<body>
+<p>
+This package is for portal implementation wrappers that do security
+checked access to public methods in portlet classes.</p>
+<p>
+Due to the current implementation of additional interfaces for portlets, we
+must have different wrappers depending on:</p>
+<ul>
+<li><em>plain</em> Portlet</li>
+<li>Portlet implements PortletState interface</li>
+<li>Portlet implements Cacheable interface</li>
+<li>Portlet implements both interfaces</li>
+</ul>
+<p>The "consumer" of these classes (currently the PortletFactoryService) MUST
+ensure that the proper wrapper is used. A way to achive this while centralizing
+this (dirty) code is to use
+<code>return PortletWrapper.wrap( portlet )</code> when returning a portlet.
+</p>
+</body>

@@ -1,0 +1,65 @@
+<!--
+	ObJectRelationalBridge - Bridging Java objects and relational dabatases
+
+	This DTD describes the grammar of the Descriptor repository
+
+	Author: Thomas Mahler, (c) 2000, 2001, 2002
+
+-->
+<!ELEMENT MappingRepository (JdbcConnectionDescriptor, ClassDescriptor+)>
+<!ELEMENT JdbcConnectionDescriptor (dbms.name, jdbc.level?, ((driver.name, url.protocol, url.subprotocol, url.dbalias) | datasource.name), user.name?, user.passwd?)>
+<!ELEMENT ClassDescriptor (ExtentDescriptor|(JdbcConnectionDescriptor?,  class.name, class.proxy?, class.extent*, schema.name?, table.name, orderby?, conversionStrategy?, rowReader?, FieldDescriptor+, ReferenceDescriptor*, CollectionDescriptor*))>
+<!ELEMENT FieldDescriptor (field.name, column.name, jdbc_type, PrimaryKey?, autoincrement?, locking?)>
+<!ELEMENT ReferenceDescriptor (rdfield.name, referenced.class, fk_descriptor_ids, auto.retrieve?, auto.update?, auto.delete?, refreshReference? )>
+<!ELEMENT CollectionDescriptor (cdfield.name, items.class, inverse_fk_descriptor_ids, collection.class?, proxy?, auto.retrieve?, auto.update?, auto.delete?, indirection_table?, fks_pointing_to_this_class?, fks_pointing_to_items_class?, orderby?, refreshCollection?)>
+<!ELEMENT ExtentDescriptor (class.name, class.extent+)>
+<!ELEMENT dbms.name (#PCDATA)>
+<!ELEMENT jdbc.level (#PCDATA)>
+<!ELEMENT driver.name (#PCDATA)>
+<!ELEMENT url.protocol (#PCDATA)>
+<!ELEMENT url.subprotocol (#PCDATA)>
+<!ELEMENT url.dbalias (#PCDATA)>
+<!ELEMENT datasource.name (#PCDATA)>
+<!ELEMENT schema.name (#PCDATA)>
+<!ELEMENT user.name (#PCDATA)>
+<!ELEMENT user.passwd (#PCDATA)>
+<!ELEMENT class.name (#PCDATA)>
+<!ELEMENT class.proxy (#PCDATA)>
+<!ELEMENT table.name (#PCDATA)>
+<!ELEMENT field.name (#PCDATA)>
+<!ELEMENT column.name (#PCDATA)>
+<!ELEMENT jdbc_type (#PCDATA)>
+<!ELEMENT PrimaryKey (#PCDATA)>
+<!ELEMENT autoincrement (#PCDATA)>
+<!ELEMENT locking (#PCDATA)>
+<!ELEMENT rdfield.name (#PCDATA)>
+<!ELEMENT referenced.class (#PCDATA)>
+<!ELEMENT fk_descriptor_ids (#PCDATA)>
+<!ELEMENT inverse_fk_descriptor_ids (#PCDATA)>
+<!ELEMENT proxy (#PCDATA)>
+<!ELEMENT auto.retrieve (#PCDATA)>
+<!ELEMENT auto.update (#PCDATA)>
+<!ELEMENT auto.delete (#PCDATA)>
+<!ELEMENT cdfield.name (#PCDATA)>
+<!ELEMENT items.class (#PCDATA)>
+<!ELEMENT collection.class (#PCDATA)>
+<!ELEMENT indirection_table (#PCDATA)>
+<!ELEMENT fks_pointing_to_this_class (#PCDATA)>
+<!ELEMENT fks_pointing_to_items_class (#PCDATA)>
+<!ELEMENT class.extent (#PCDATA)>
+<!ELEMENT orderby (#PCDATA)>
+<!ELEMENT conversionStrategy (#PCDATA)>
+<!ELEMENT rowReader (#PCDATA)>
+<!ELEMENT refreshCollection (#PCDATA)>
+<!ELEMENT refreshReference (#PCDATA)>
+
+<!ATTLIST JdbcConnectionDescriptor id CDATA #IMPLIED>
+<!ATTLIST ClassDescriptor
+	id CDATA #IMPLIED
+	isolation CDATA #IMPLIED
+>
+<!ATTLIST FieldDescriptor id CDATA #IMPLIED>
+<!ATTLIST ReferenceDescriptor id CDATA #IMPLIED>
+<!ATTLIST CollectionDescriptor id CDATA #IMPLIED>
+
+<!ATTLIST orderby sort CDATA #IMPLIED>
