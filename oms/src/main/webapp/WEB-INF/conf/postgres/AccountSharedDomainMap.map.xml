@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-map project-version="2.0">
+	<property name="defaultPackage" value="com.aimluck.eip.cayenne.om.account"/>
+	<db-entity name="AIPO_LICENSE">
+		<db-attribute name="LICENSE" type="VARCHAR" isMandatory="true" length="99"/>
+		<db-attribute name="LICENSE_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="LIMIT_USERS" type="INTEGER"/>
+		<db-key-generator>
+			<db-generator-type>ORACLE</db-generator-type>
+			<db-generator-name>aipo_license_license_id_seq</db-generator-name>
+			<db-key-cache-size>1</db-key-cache-size>
+		</db-key-generator>
+	</db-entity>
+	<db-entity name="EIP_M_COMPANY">
+		<db-attribute name="ADDRESS" type="VARCHAR" length="64"/>
+		<db-attribute name="COMPANY_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="COMPANY_NAME" type="VARCHAR" length="64"/>
+		<db-attribute name="COMPANY_NAME_KANA" type="VARCHAR" length="64"/>
+		<db-attribute name="CREATE_DATE" type="DATE"/>
+		<db-attribute name="FAX_NUMBER" type="VARCHAR" length="15"/>
+		<db-attribute name="IPADDRESS" type="VARCHAR" length="99"/>
+		<db-attribute name="IPADDRESS_INTERNAL" type="VARCHAR" length="99"/>
+		<db-attribute name="PORT" type="INTEGER"/>
+		<db-attribute name="PORT_INTERNAL" type="INTEGER"/>
+		<db-attribute name="TELEPHONE" type="VARCHAR" length="15"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
+		<db-attribute name="URL" type="VARCHAR" length="99"/>
+		<db-attribute name="ZIPCODE" type="VARCHAR" length="8"/>
+		<db-key-generator>
+			<db-generator-type>ORACLE</db-generator-type>
+			<db-generator-name>eip_m_company_company_id_seq</db-generator-name>
+			<db-key-cache-size>1</db-key-cache-size>
+		</db-key-generator>
+	</db-entity>
+	<db-entity name="EIP_M_POSITION">
+		<db-attribute name="CREATE_DATE" type="DATE"/>
+		<db-attribute name="POSITION_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="POSITION_NAME" type="VARCHAR" isMandatory="true" length="64"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
+		<db-key-generator>
+			<db-generator-type>ORACLE</db-generator-type>
+			<db-generator-name>eip_m_position_position_id_seq</db-generator-name>
+			<db-key-cache-size>1</db-key-cache-size>
+		</db-key-generator>
+	</db-entity>
+	<db-entity name="EIP_M_POST">
+		<db-attribute name="ADDRESS" type="VARCHAR" length="64"/>
+		<db-attribute name="COMPANY_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="CREATE_DATE" type="DATE"/>
+		<db-attribute name="FAX_NUMBER" type="VARCHAR" length="15"/>
+		<db-attribute name="GROUP_NAME" type="VARCHAR" length="99"/>
+		<db-attribute name="IN_TELEPHONE" type="VARCHAR" length="15"/>
+		<db-attribute name="OUT_TELEPHONE" type="VARCHAR" length="15"/>
+		<db-attribute name="POST_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="POST_NAME" type="VARCHAR" isMandatory="true" length="64"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
+		<db-attribute name="ZIPCODE" type="VARCHAR" length="8"/>
+		<db-key-generator>
+			<db-generator-type>ORACLE</db-generator-type>
+			<db-generator-name>eip_m_post_post_id_seq</db-generator-name>
+			<db-key-cache-size>1</db-key-cache-size>
+		</db-key-generator>
+	</db-entity>
+	<db-entity name="EIP_M_USER_POSITION">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="POSITION" type="INTEGER"/>
+		<db-attribute name="USER_ID" type="INTEGER"/>
+		<db-key-generator>
+			<db-generator-type>ORACLE</db-generator-type>
+			<db-generator-name>eip_m_user_position_id_seq</db-generator-name>
+			<db-key-cache-size>1</db-key-cache-size>
+		</db-key-generator>
+	</db-entity>
+	<db-entity name="EIP_T_ACL_PORTLET_FEATURE">
+		<db-attribute name="ACL_TYPE" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="FEATURE_ALIAS_NAME" type="VARCHAR" isMandatory="true"/>
+		<db-attribute name="FEATURE_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="FEATURE_NAME" type="VARCHAR" isMandatory="true"/>
+		<db-key-generator>
+			<db-generator-type>ORACLE</db-generator-type>
+			<db-generator-name>eip_t_acl_portlet_feature_feature_id_seq</db-generator-name>
+			<db-key-cache-size>1</db-key-cache-size>
+		</db-key-generator>
+	</db-entity>
+	<db-entity name="EIP_T_ACL_ROLE">
+		<db-attribute name="ACL_TYPE" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="CREATE_DATE" type="DATE"/>
+		<db-attribute name="FEATURE_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="NOTE" type="VARCHAR"/>
+		<db-attribute name="ROLE_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="ROLE_NAME" type="VARCHAR"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
+		<db-key-generator>
+			<db-generator-type>ORACLE</db-generator-type>
+			<db-generator-name>eip_t_acl_role_role_id_seq</db-generator-name>
+			<db-key-cache-size>1</db-key-cache-size>
+		</db-key-generator>
+	</db-entity>
+	<db-entity name="EIP_T_ACL_USER_ROLE_MAP">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="ROLE_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true"/>
+		<db-key-generator>
+			<db-generator-type>ORACLE</db-generator-type>
+			<db-generator-name>eip_t_acl_user_role_map_id_seq</db-generator-name>
+			<db-key-cache-size>1</db-key-cache-size>
+		</db-key-generator>
+	</db-entity>
+	<obj-entity name="AipoLicense" className="com.aimluck.eip.cayenne.om.account.AipoLicense" dbEntityName="AIPO_LICENSE">
+		<obj-attribute name="license" type="java.lang.String" db-attribute-path="LICENSE"/>
+		<obj-attribute name="limitUsers" type="java.lang.Integer" db-attribute-path="LIMIT_USERS"/>
+	</obj-entity>
+	<obj-entity name="EipMCompany" className="com.aimluck.eip.cayenne.om.account.EipMCompany" dbEntityName="EIP_M_COMPANY">
+		<obj-attribute name="address" type="java.lang.String" db-attribute-path="ADDRESS"/>
+		<obj-attribute name="companyName" type="java.lang.String" db-attribute-path="COMPANY_NAME"/>
+		<obj-attribute name="companyNameKana" type="java.lang.String" db-attribute-path="COMPANY_NAME_KANA"/>
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="faxNumber" type="java.lang.String" db-attribute-path="FAX_NUMBER"/>
+		<obj-attribute name="ipaddress" type="java.lang.String" db-attribute-path="IPADDRESS"/>
+		<obj-attribute name="ipaddressInternal" type="java.lang.String" db-attribute-path="IPADDRESS_INTERNAL"/>
+		<obj-attribute name="port" type="java.lang.Integer" db-attribute-path="PORT"/>
+		<obj-attribute name="portInternal" type="java.lang.Integer" db-attribute-path="PORT_INTERNAL"/>
+		<obj-attribute name="telephone" type="java.lang.String" db-attribute-path="TELEPHONE"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+		<obj-attribute name="url" type="java.lang.String" db-attribute-path="URL"/>
+		<obj-attribute name="zipcode" type="java.lang.String" db-attribute-path="ZIPCODE"/>
+	</obj-entity>
+	<obj-entity name="EipMPosition" className="com.aimluck.eip.cayenne.om.account.EipMPosition" dbEntityName="EIP_M_POSITION">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="positionName" type="java.lang.String" db-attribute-path="POSITION_NAME"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+	</obj-entity>
+	<obj-entity name="EipMPost" className="com.aimluck.eip.cayenne.om.account.EipMPost" dbEntityName="EIP_M_POST">
+		<obj-attribute name="address" type="java.lang.String" db-attribute-path="ADDRESS"/>
+		<obj-attribute name="companyId" type="java.lang.Integer" db-attribute-path="COMPANY_ID"/>
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="faxNumber" type="java.lang.String" db-attribute-path="FAX_NUMBER"/>
+		<obj-attribute name="groupName" type="java.lang.String" db-attribute-path="GROUP_NAME"/>
+		<obj-attribute name="inTelephone" type="java.lang.String" db-attribute-path="IN_TELEPHONE"/>
+		<obj-attribute name="outTelephone" type="java.lang.String" db-attribute-path="OUT_TELEPHONE"/>
+		<obj-attribute name="postName" type="java.lang.String" db-attribute-path="POST_NAME"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+		<obj-attribute name="zipcode" type="java.lang.String" db-attribute-path="ZIPCODE"/>
+	</obj-entity>
+	<obj-entity name="EipMUserPosition" className="com.aimluck.eip.cayenne.om.account.EipMUserPosition" dbEntityName="EIP_M_USER_POSITION">
+		<obj-attribute name="position" type="java.lang.Integer" db-attribute-path="POSITION"/>
+	</obj-entity>
+	<obj-entity name="EipTAclPortletFeature" className="com.aimluck.eip.cayenne.om.account.EipTAclPortletFeature" dbEntityName="EIP_T_ACL_PORTLET_FEATURE">
+		<obj-attribute name="aclType" type="java.lang.Integer" db-attribute-path="ACL_TYPE"/>
+		<obj-attribute name="featureAliasName" type="java.lang.String" db-attribute-path="FEATURE_ALIAS_NAME"/>
+		<obj-attribute name="featureName" type="java.lang.String" db-attribute-path="FEATURE_NAME"/>
+	</obj-entity>
+	<obj-entity name="EipTAclRole" className="com.aimluck.eip.cayenne.om.account.EipTAclRole" dbEntityName="EIP_T_ACL_ROLE">
+		<obj-attribute name="aclType" type="java.lang.Integer" db-attribute-path="ACL_TYPE"/>
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="note" type="java.lang.String" db-attribute-path="NOTE"/>
+		<obj-attribute name="roleName" type="java.lang.String" db-attribute-path="ROLE_NAME"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+	</obj-entity>
+	<obj-entity name="EipTAclUserRoleMap" className="com.aimluck.eip.cayenne.om.account.EipTAclUserRoleMap" dbEntityName="EIP_T_ACL_USER_ROLE_MAP">
+	</obj-entity>
+	<db-relationship name="eipMMybox" source="EIP_M_COMPANY" target="eip_m_mybox" toMany="true">
+		<db-attribute-pair source="COMPANY_ID" target="COMPANY_ID"/>
+	</db-relationship>
+	<db-relationship name="turbineGroup" source="EIP_M_POST" target="TURBINE_GROUP" toMany="true">
+		<db-attribute-pair source="GROUP_NAME" target="GROUP_NAME"/>
+	</db-relationship>
+	<db-relationship name="turbineUser" source="EIP_M_USER_POSITION" target="TURBINE_USER" toMany="false">
+		<db-attribute-pair source="USER_ID" target="USER_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTAclRole" source="EIP_T_ACL_PORTLET_FEATURE" target="EIP_T_ACL_ROLE" toMany="true">
+		<db-attribute-pair source="FEATURE_ID" target="FEATURE_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTAclPortletFeature" source="EIP_T_ACL_ROLE" target="EIP_T_ACL_PORTLET_FEATURE" toMany="false">
+		<db-attribute-pair source="FEATURE_ID" target="FEATURE_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTAclUserRoleMaps" source="EIP_T_ACL_ROLE" target="EIP_T_ACL_USER_ROLE_MAP" toMany="true">
+		<db-attribute-pair source="ROLE_ID" target="ROLE_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTAclRole" source="EIP_T_ACL_USER_ROLE_MAP" target="EIP_T_ACL_ROLE" toMany="false">
+		<db-attribute-pair source="ROLE_ID" target="ROLE_ID"/>
+	</db-relationship>
+	<db-relationship name="turbineUser" source="EIP_T_ACL_USER_ROLE_MAP" target="TURBINE_USER" toMany="false">
+		<db-attribute-pair source="USER_ID" target="USER_ID"/>
+	</db-relationship>
+	<obj-relationship name="eipMMybox" source="EipMCompany" target="EipMMybox" db-relationship-path="eipMMybox"/>
+	<obj-relationship name="turbineGroup" source="EipMPost" target="TurbineGroup" db-relationship-path="turbineGroup"/>
+	<obj-relationship name="turbineUser" source="EipMUserPosition" target="TurbineUser" db-relationship-path="turbineUser"/>
+	<obj-relationship name="eipTAclRole" source="EipTAclPortletFeature" target="EipTAclRole" db-relationship-path="eipTAclRole"/>
+	<obj-relationship name="eipTAclPortletFeature" source="EipTAclRole" target="EipTAclPortletFeature" db-relationship-path="eipTAclPortletFeature"/>
+	<obj-relationship name="eipTAclUserRoleMaps" source="EipTAclRole" target="EipTAclUserRoleMap" deleteRule="Cascade" db-relationship-path="eipTAclUserRoleMaps"/>
+	<obj-relationship name="eipTAclRole" source="EipTAclUserRoleMap" target="EipTAclRole" db-relationship-path="eipTAclRole"/>
+	<obj-relationship name="turbineUser" source="EipTAclUserRoleMap" target="TurbineUser" db-relationship-path="turbineUser"/>
+</data-map>
