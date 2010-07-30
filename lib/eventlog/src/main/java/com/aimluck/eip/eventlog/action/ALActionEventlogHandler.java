@@ -1,0 +1,214 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.aimluck.eip.eventlog.action;
+
+import java.util.Calendar;
+
+import org.apache.cayenne.DataObjectUtils;
+import org.apache.cayenne.access.DataContext;
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.util.RunData;
+
+import com.aimluck.eip.cayenne.om.portlet.EipTEventlog;
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.eventlog.util.ALEventlogUtils;
+import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.services.eventlog.ALEventlogHandler;
+import com.aimluck.eip.util.ALEipUtils;
+
+/**
+ * ログ保存ハンドラ．
+ * 
+ */
+public class ALActionEventlogHandler extends ALEventlogHandler {
+
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+      .getLogger(ALActionEventlogHandler.class.getName());
+
+  public ALActionEventlogHandler() {
+  }
+
+  public static ALEventlogHandler getInstance() {
+    return new ALActionEventlogHandler();
+  }
+
+  /**
+   * ログ
+   */
+  public void log(int entity_id, int portlet_type, String note) {
+    logActionEvent(entity_id, portlet_type, note);
+  }
+
+  private void logActionEvent(int entity_id, int portlet_type, String note) {
+
+    // rundataの取得
+    RunData rundata = ALEventlogFactoryService.getInstance().getRunData();
+
+    // MODEの取得
+    String mode = rundata.getParameters().getString(ALEipConstants.MODE);
+    if (mode == null || "".equals(mode)) {
+
+      // actionのパラメータを使う
+      String action = rundata.getAction();
+      if (action == null || "".equals(action)) {
+        return;
+      }
+    } else {
+
+      // EVENTTYPEの取得
+      int event_type = ALEventlogUtils.getEventTypeValue(mode);
+
+      // ユーザーIDの取得
+      int uid = ALEipUtils.getUserId(rundata);
+
+      // ポートレットIDの取得
+      // String js_peid = rundata.getParameters().getString("js_peid");
+      // if (js_peid == null || "".equals(js_peid)) {
+      // return;
+      // }
+      // ポートレット名の取得(PSMLファイルのparent名)
+      // String p_name = ALEventlogUtils.getPortletName(rundata, js_peid);
+      // if (p_name == null || "".equals(p_name)) {
+      // return;
+      // }
+
+      // ポートレットTYPEの取得
+      // int p_type =
+      // ALEventlogUtils.getPortletTypeValue(p_name);//文字列を経由する必要ないかも
+
+      // 接続IPアドレスの取得
+      String ip_addr = rundata.getRemoteAddr();
+
+      // ログを保存
+      saveEvent(event_type, uid, portlet_type, entity_id, ip_addr, note);
+    }
+  }
+
+  /**
+   * Login処理
+   * 
+   * @param mode
+   * @return
+   */
+  public void logLogin(int userid) {
+    // rundataの取得
+    RunData rundata = ALEventlogFactoryService.getInstance().getRunData();
+
+    int event_type = ALEventlogUtils.getEventTypeValue("Login");
+    int p_type = ALEventlogConstants.PORTLET_TYPE_LOGIN;
+
+    // 接続IPアドレスの取得
+    String ip_addr = rundata.getRemoteAddr();
+
+    saveEvent(event_type, userid, p_type, 0, ip_addr, null);
+  }
+
+  /**
+   * Logout処理
+   * 
+   * @param mode
+   * @return
+   */
+  public void logLogout(int userid) {
+    // rundataの取得
+    RunData rundata = ALEventlogFactoryService.getInstance().getRunData();
+
+    int event_type = ALEventlogUtils.getEventTypeValue("Logout");
+    int p_type = ALEventlogConstants.PORTLET_TYPE_LOGOUT;
+
+    // 接続IPアドレスの取得
+    String ip_addr = rundata.getRemoteAddr();
+
+    saveEvent(event_type, userid, p_type, 0, ip_addr, null);
+  }
+
+  /**
+   * XLS出力処理
+   * 
+   * @param mode
+   * @return
+   */
+  public void logXlsScreen(int userid, String Note, int _p_type) {
+    // rundataの取得
+    RunData rundata = ALEventlogFactoryService.getInstance().getRunData();
+
+    int event_type = ALEventlogUtils.getEventTypeValue("xls_screen");
+
+    // 接続IPアドレスの取得
+    String ip_addr = rundata.getRemoteAddr();
+
+    saveEvent(event_type, userid, _p_type, 0, ip_addr, null);
+  }
+
+  /**
+   * 
+   * @param event_type
+   *            イベント種別
+   * @param uid
+   *            ユーザーID
+   * @param p_type
+   *            ポートレットTYPE
+   * @param note
+   * @return
+   */
+  private boolean saveEvent(int event_type, int uid, int p_type, int entity_id,
+      String ip_addr, String note) {
+    try {
+      DataContext dataContext = DatabaseOrmService.getInstance()
+          .getDataContext();
+
+      // 新規オブジェクトモデル
+      EipTEventlog log = (EipTEventlog) dataContext
+          .createAndRegisterNewObject(EipTEventlog.class);
+
+      TurbineUser tuser = (TurbineUser) DataObjectUtils.objectForPK(
+          dataContext, TurbineUser.class, Integer.valueOf(uid));
+      // ユーザーID
+      log.setTurbineUser(tuser);
+      // イベント発生日
+      log.setEventDate(Calendar.getInstance().getTime());
+      // イベントTYPE
+      log.setEventType(Integer.valueOf(event_type));
+      // ポートレットTYPE
+      log.setPortletType(Integer.valueOf(p_type));
+      // エンティティID
+      log.setEntityId(Integer.valueOf(entity_id));
+      // 接続IPアドレス
+      log.setIpAddr(ip_addr);
+      // 作成日
+      log.setCreateDate(Calendar.getInstance().getTime());
+      // 更新日
+      log.setUpdateDate(Calendar.getInstance().getTime());
+      // note
+      log.setNote(note);
+
+      dataContext.commitChanges();
+
+      return true;
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return false;
+    }
+  }
+
+}

@@ -1,0 +1,92 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.aimluck.eip.mail;
+
+import javax.servlet.ServletConfig;
+
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.rundata.JetspeedRunData;
+import org.apache.jetspeed.services.rundata.JetspeedRunDataService;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.rundata.RunDataService;
+
+/**
+ * メールを操作するクラスを生成するファクトリクラスです。 <br />
+ *
+ */
+abstract public class ALMailFactoryService extends TurbineBaseService {
+
+  /** logger */
+  @SuppressWarnings("unused")
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+      .getLogger(ALMailFactoryService.class.getName());
+
+  /**
+   * The key under which this service is stored in TurbineServices.
+   */
+  public static final String SERVICE_NAME = "ALMailFactoryService";
+
+  /** The JetspeedRunData Service. */
+  protected JetspeedRunDataService runDataService = null;
+
+  public static ALMailFactoryService getInstance() {
+    return (ALMailFactoryService) TurbineServices.getInstance().getService(
+        ALMailFactoryService.SERVICE_NAME);
+  }
+
+  abstract public ALMailHandler getMailHandler();
+
+  protected JetspeedRunData getRunData() {
+    JetspeedRunData rundata = null;
+    if (this.runDataService != null) {
+      rundata = this.runDataService.getCurrentRunData();
+    }
+    return rundata;
+  }
+
+  // /////////////////////////////////////////////////////////////////////////
+  // Service Init
+  // /////////////////////////////////////////////////////////////////////////
+
+  /**
+   * This is the early initialization method called by the Turbine
+   * <code>Service</code> framework
+   *
+   * @param conf
+   *            The <code>ServletConfig</code>
+   * @exception throws
+   *                a <code>InitializationException</code> if the service
+   *                fails to initialize
+   */
+  public synchronized void init(ServletConfig conf)
+      throws InitializationException {
+    if (getInit())
+      return;
+
+    super.init(conf);
+
+    this.runDataService = (JetspeedRunDataService) TurbineServices
+        .getInstance().getService(RunDataService.SERVICE_NAME);
+
+    setInit(true);
+  }
+}

@@ -1,0 +1,40 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.aimluck.eip.mail.db;
+
+import com.aimluck.eip.mail.ALFolder;
+import com.aimluck.eip.mail.ALMailReceiverContext;
+import com.aimluck.eip.mail.ALPop3MailReceiver;
+
+/**
+ * データベースを利用し、メール受信（POP3）を操作するクラスです。 <br />
+ * 
+ */
+public class ALDbPop3MailReceiver extends ALPop3MailReceiver {
+
+  public ALDbPop3MailReceiver(ALMailReceiverContext rcontext) {
+    super(rcontext);
+  }
+
+  protected ALFolder getALFolder() {
+    return new ALDbLocalFolder(ALFolder.TYPE_RECEIVE, rcontext.getOrgId(),
+        rcontext.getUserId(), rcontext.getAccountId());
+  }
+
+}
