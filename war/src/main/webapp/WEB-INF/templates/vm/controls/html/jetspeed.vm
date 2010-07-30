@@ -1,0 +1,109 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#if( ! $portlet.isClosed($data) )
+#if($!isMaximized && ($!showTab == "true"))
+                            <!-- MAIN TAB -->
+                            <div id="mainTab" class="clearfix">
+                              <ul class="tabContainer">
+#foreach ( $tab in $tabs )
+                               <li#if ($tab.Link && ($tab.isSelected() == true)) class="selectedMenu" #end>
+                                  <div class="menuTitle"><a class="menuList" title="$tab.Title" href="$tab.Link">$tab.Title</a></div>
+                                  <div class="menuIcon">#if ($!tab.Authority)#foreach ($action in $tab.Actions)<a href="${action.Link}"><img class="img_icon" title="${action.Alt}" alt="${action.Alt}" src="${skin.getImage($action.Name,"images/${action.Name}.gif")}"/></a>#end#end</div>
+                                </li>
+#end							
+                              </ul>
+                            </div>
+                            <!-- /MAIN TAB -->
+                            <!-- MAIN OUTER -->
+                            <table class="tableWrapper">
+                              <tbody>
+                                <tr>
+                                  <td class="wide top">
+                                    <div class="roundTopMain clearfix">
+                                      <div class="roundRightMain">
+                                        <div class="roundBottomMain">
+                                          <div class="roundLeftMain">
+                                            <div class="roundTopLeftMain">
+                                              <div class="roundTopRightMain">
+                                                <div class="roundBottomRightMain">
+                                                  <div class="roundBottomLeftMain">
+                                                    <div class="roundMainWrapper">
+$portlet.getContent($data)
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <!-- /MAIN OUTER  -->
+#else
+                                                              <!-- PORTLET OUTER -->
+                                                              <div class="roundTopBlock clearfix">
+                                                                <div class="roundRightBlock">
+                                                                  <div class="roundBottomBlock">
+                                                                    <div class="roundLeftBlock">
+                                                                      <div class="roundTopLeftBlock">
+                                                                        <div class="roundTopRightBlock">
+                                                                          <div class="roundBottomRightBlock" >
+                                                                            <div class="roundBottomLeftBlock">
+                                                                              <table class="roundBlockWrapperTop">
+                                                                                <tbody>
+                                                                                  <tr>
+#if( !$!isMaximized  && $portlet.isShowTitleBar($data))
+                                                                                    <td class="roundBlockTitle wide"><a href="$!utils.escapeXML($!jslink.getAction("controls.Maximize",$!portlet.ID))">$!utils.escapeXML($portlet_instance.Title)</a></td>
+#foreach ( $function in $functions )
+                                                                                    <td class="roundBlockIcon"><a #if($function.Screen) href="javascript:void(0);" #if($!{function.AfterFunction}) onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template",$function.Mode).addQueryData("entityid","new"))','$!portlet.ID',${function.AfterFunction});" #else onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template",$function.Mode).addQueryData("entityid","new"))','$!portlet.ID');" #end #else href="$!utils.escapeXML($!jslink.getAction("controls.Maximize",$!portlet.ID).addQueryData("mode",$function.Mode))"#end><img class="img_icon" title="$function.Caption" alt="$function.Caption" src="images/$!function.Image"/>$function.Caption</a></td>
+#end
+#foreach ( $action in $actions )
+                                                                                    <td class="roundBlockIcon last"><a href="$!utils.escapeXML(${action.Link})"><img class="img_icon" title="${action.Alt}" alt="${action.Alt}" src="${skin.getImage($action.Name,"images/common/${action.Name}.gif")}"/></a></td>
+#end
+#else
+                                                                                    <td class="roundBlockTitle">$!utils.escapeXML($portlet_instance.Title)</td>
+                                                                                    <td class="roundBlockMenu"><span id="portletMenu"></span></td>
+                                                                                    <td class="endcap"></td>
+#end
+                                                                                </tr>
+                                                                                </tbody>
+                                                                              </table>
+                                                                              <div class="roundBlockWrapperBottom clearfix">
+                                                                                <div class="roundBlockContent">
+                                                                                  <div dojoType="aimluck.widget.Contentpane" widgetId="portlet_$!portlet.ID" id="portlet_$!portlet.ID">
+$!portlet.getContent($data)
+                                                                                  </div>
+                                                                                </div>
+                                                                              </div>
+                                                                            </div>
+                                                                          </div>
+                                                                        </div>
+                                                                      </div>
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                              <!-- /PORTLET OUTER -->
+#end
+#end

@@ -1,0 +1,12 @@
+## Set Email headers 
+#set ($ignored = $email.addTo($user.Email) )
+#set ($ignored = $email.setFrom($config.getString("newuser.confirm.email.from") ))
+#set ($ignored = $email.setSubject("Jetspeed日本語版 新規ユーザー登録"))
+##
+$lastname $firstname 様
+
+今回のJetspeed日本語版アカウント作成の依頼は却下されました。
+
+以上をよろしくお願いいたします。
+
+Jetspeed日本語版 管理者

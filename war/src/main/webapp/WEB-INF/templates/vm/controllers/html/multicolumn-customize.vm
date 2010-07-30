@@ -1,0 +1,142 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+<tr>
+  <td>
+    <table class="tableWrapper">
+      <tbody>
+        <tr>
+#set ($ndx = 0)
+#set ($col = 0)
+#foreach ( $column in $portlets )
+#set ($row = 0)
+#if  ($sizes.size() >= $velocityCount)
+#set ($idx = $velocityCount - 1 )
+#set ($width = $!sizes.elementAt($idx))
+#end
+          <td class="top" width="$width">
+            <table class="tableWrapper">
+              <tbody>
+#foreach ( $portlet in $column )
+                <tr>
+                  <td class="wide">
+                    <form action="#ALpsmlLink($jslink.Template)" method="post">
+#if ($action)
+                      <input type="hidden" name="$jslink.ActionKey" value="$action" />
+#end
+                      <input type="hidden" name="id" value="$portlet.id"/>
+                      <input type="hidden" name="col" value="$col"/>
+                      <input type="hidden" name="row" value="$row"/>
+					  <input type="hidden" name="secid" value="$secid" />
+                      <div class="roundTopBlock clearfix">
+                        <div class="roundRightBlock">
+                          <div class="roundBottomBlock">
+                            <div class="roundLeftBlock">
+                              <div class="roundTopLeftBlock">
+                                <div class="roundTopRightBlock">
+                                  <div class="roundBottomRightBlock" >
+                                    <div class="roundBottomLeftBlock">
+                                      <table class="roundBlockWrapperTop">
+                                        <tbody>
+                                          <tr>
+                                            <td class="roundBlockTitle">$!utils.escapeXML($titles.get($portlet.id))</td>
+                                            <td class="roundBlockMenu"></td>
+                                            <td class="endcap"></td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                      <div class="roundBlockWrapperBottom clearfix">
+                                        <div class="roundBlockContent">
+                                            <table width="100%" cellspacing="0" cellpadding="0">
+                                              <tbody>
+                                                <tr>
+                                                  <td nowrap="nowrap" class="top right">
+                                                    <input type="image" src="images/close.gif" alt="$l10n.CUSTOMIZER_REMOVE" title="$l10n.CUSTOMIZER_REMOVE" name="eventSubmit_doDelete" />
+#if ($col == 0)
+                                                    <img src="images/common/dot.gif" width="19" alt=""/>
+#else
+                                                    <input type="image" src="images/left.gif" alt="$l10n.CUSTOMIZER_MOVELEFT" title="$l10n.CUSTOMIZER_MOVELEFT" name="eventSubmit_doLeft"/>
+#end
+#if ($row == 0)
+                                                    <img src="images/common/dot.gif" width="19" alt="" />
+#else
+                                                    <input type="image" src="images/up.gif" alt="$l10n.CUSTOMIZER_MOVEUP" title="$l10n.CUSTOMIZER_MOVEUP" name="eventSubmit_doUp"/>
+#end
+#if ($row == ($column.size() - 1))
+                                                    <img src="images/common/dot.gif" width="19" alt=""/>
+#else
+                                                    <input type="image" src="images/down.gif" alt="$l10n.CUSTOMIZER_MOVEDOWN" title="$l10n.CUSTOMIZER_MOVEDOWN" name="eventSubmit_doDown"/>
+#end
+#if ($col == ($sizes.size() - 1))
+                                                    <img src="images/common/dot.gif" width="19" alt=""/>
+#else
+                                                    <input type="image" src="images/right.gif" alt="$l10n.CUSTOMIZER_MOVERIGHT" title="$l10n.CUSTOMIZER_MOVERIGHT" name="eventSubmit_doRight"/>
+#end
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td align="center" valign="middle">
+                                                    <strong>$!utils.escapeXML($titles.get($portlet.id))</strong>
+                                                  </td>
+                                                </tr>
+                                              </tbody>
+                                            </table>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      <!-- /PORTLET OUTER -->
+                    </form>
+                  </td>
+                </tr>
+#set ($row = $row + 1)
+#end
+              </tbody>
+            </table>
+          </td>
+#set ($col = $col + 1)
+#if ("$col" != $colNum)
+          <td class="top" width="2"></td>
+#end
+#end
+        </tr>
+      </tbody>
+    </table>
+  </td>
+</tr>
+<tr>
+  <td>
+    <form action="#ALpsmlLink($jslink.Template)" method="post" onsubmit="return(aimluck.io.disableForm(this, true));">
+#if ($action)
+      <input type="hidden" name="$jslink.ActionKey" value="$action"/>
+#end
+#ALbuttonheader()
+#if ($controller.Portlets.allowCustomize($data))
+#ALsubmit('eventSubmit_doSave' '更新する')#ALsubmit('eventSubmit_doCancel' 'キャンセルする')
+#end
+#ALbuttonfooter()
+     </form>
+  </td>
+</tr>

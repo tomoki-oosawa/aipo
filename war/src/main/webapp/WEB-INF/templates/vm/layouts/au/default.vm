@@ -1,0 +1,44 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE html PUBLIC "-//OPENWAVE//DTD XHTML 1.0//EN" "http://www.openwave.com/DTD/xhtml-basic.dtd">
+<html>
+<head>
+<base href="$clink.External" />
+<meta http-equiv="Content-Type" content="text/html; charset=Shift-JIS" />
+<meta http-equiv="cache-control" content="must-revalidate" />
+<meta http-equiv="cache-control" content="max-age=0" />
+##if($config.getString("portal.title"))
+##set ($titlePrefix = $config.getString("portal.title"))
+##else
+##set ($titlePrefix = "")
+##end
+##set ($titlePrefix = $config.getString("portal.title"))
+##<title>#if($titlePrefix != "")$titlePrefix #else $!data.profile.document.portlets.getMetaInfo().title#end</title>
+<title>${alias}</title>
+</head>
+<body style="background:#ffffff; color:#000000;">
+<div style="font-size:xx-small;">
+$navigation.setTemplate("au/top.vm")
+$screen_placeholder
+$navigation.setTemplate("au/bottom.vm")
+</div>
+</body>
+</html>

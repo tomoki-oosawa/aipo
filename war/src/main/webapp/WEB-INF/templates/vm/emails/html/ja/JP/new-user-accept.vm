@@ -1,0 +1,21 @@
+## Set Email headers 
+#set ($ignored = $email.addTo($user.Email) )
+#set ($ignored = $email.setFrom($config.getString("newuser.confirm.email.from") ))
+#set ($ignored = $email.setSubject("Jetspeed日本語版新規アカウントの承認"))
+##
+$lastname $firstname 様
+
+SourceForge.jpのJetspeed日本語版へようこそ! 
+新規アカウントが作成されました。
+
+#if (${urltojetspeed})
+以下のJetspeed日本語版サイトからログインしてください。
+  ${urltojetspeed}
+#end
+
+以上をよろしくお願いいたします。
+
+Jetspeed日本語版 管理者
+
+追伸: ユーザー名は $username です。忘れないようにしてください。
+

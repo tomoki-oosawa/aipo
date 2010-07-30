@@ -1,0 +1,21 @@
+## Set Email headers 
+#set ($ignored = $email.addTo($config.getString("newuser.notification.email.to") ) )
+#set ($ignored = $email.setFrom($config.getString("newuser.confirm.email.from") ) )
+#set ($ignored = $email.setSubject("Jetspeed日本語版 新規ユーザーの承認待ち"))
+##
+Jetspeed日本語版 管理者 様
+
+Jetspeed日本語版アプリケーション上に以下のユーザーを要求されました。
+   名前:       $lastname #if ($firstname)$firstname#end
+   ユーザー名: $username
+   Eメール:    $user.Email
+
+この要求に対して、アカウントを許可または拒否して処理してください。
+
+   $userurl
+   
+注意: 上記のリンクをクリックする前に、管理者としてログインする必要があります。
+
+以上をよろしくお願いいたします。
+
+Jetspeed日本語版 管理者

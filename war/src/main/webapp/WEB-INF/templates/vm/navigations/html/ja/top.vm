@@ -1,0 +1,54 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+							<!-- HEADER -->
+#if ($data.User.hasLoggedIn())
+                            <div id="header" class="clearfix">
+							  <input type="image" style="position: absolute; top: -9999px; "/>
+                              <div id="logo"></div>
+#if($!{data.getSession().getAttribute("limitedDate")})
+#set ($limitday = $!data.getSession().getAttribute("limitedDate").toString())
+                              <div id="topNavi" class="alignleft caution">『${alias}}』をご試用いただき誠にありがとうございます。<br />$!{limitday}24時までご利用可能となっております。</div>
+#end
+                              <div class="alignright">
+                                <div id="topField">$!data.User.LastAccessTime</div>
+                                <div id="nameField">
+                                  <div class="fieldMiddle">
+                                    <div class="fieldRight">
+                                      <div class="fieldLeft clearfix">#if($!data.User.CompanyId >= 1) $!data.User.getCompanyName($!data.User.CompanyId) #end$!data.User.LastName $!data.User.FirstName さま</div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="alignleft" id="btnLogout">
+                                  <input type="image" alt="ログアウト" name="logout" src="images/common/dot.gif" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'" />
+                                </div>
+                              </div>
+                            </div>
+#else
+                            <div id="header" class="clearfix">
+                              <div id="logo"></div>
+                              <div class="alignright">
+#set($aip_news_url = $!data.getUser().getTemp("aipo_news_url"))
+#if($aip_news_url && $aip_news_url != "")
+                                <script language="JavaScript" src="$!data.getUser().getTemp("aipo_news_url")"></script>
+#end
+                              </div>
+                            </div>
+#end
+                            <!-- /HEADER -->

@@ -1,0 +1,1502 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+
+## ---------------------------------------------------------------------------
+##
+## Aipo Common Styles ( Aipo4 )
+##
+## ---------------------------------------------------------------------------
+
+#macro(ALheadScripts)
+<script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/alutil.js"></script>
+<script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/aimluck/aimluck.js"></script>
+<script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/aipo/aipo.js"></script>
+#end
+
+#* G L O B A L *#
+#macro(ALjavascript $file)
+<script language="JavaScript" type="text/javascript" src="$file"></script>
+#end
+
+#macro(ALbuttonLink $title $url $image)
+<a class="button" href="$!utils.escapeXML($url)" title="$title"><img src="$image" style="vertical-align:middle;margin-right:2px;padding:0px 0px 1px;" />$title</a>
+#end
+
+#macro(ALajaxbuttonLink $title $url $image)
+<a class="button" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($url)');" title="$title"><img src="$image" style="vertical-align:middle;margin-right:2px;padding:0px 0px 1px;" />$title</a>
+#end
+
+#macro(ALajaxbuttonLinkCallback $title $url $image $portlet_id $callback)
+<a class="button" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($url)', '$portlet_id', $callback);" title="$title"><img src="$image" style="vertical-align:middle;margin-right:2px;padding:0px 0px 1px;" />$title</a>
+#end
+
+#macro(ALpsmlLink $baseLink)
+#set ($theLink = $baseLink)
+#set ($mtype = $!data.Parameters.getString("mtype"))
+#if  ($!mtype)
+#set ($theLink = $theLink.addQueryData("mtype", $mtype))
+#end$theLink#end
+
+#macro(ALajaxIndicator $indicator_id $portlet_id $msg)
+#if($msg == '') #set ($tmpmsg = "データを送信しています...") #else #set ($tmpmsg = $msg) #end
+<div class="indicator" id="${indicator_id}${portlet_id}" style="display:none;">$tmpmsg</div>
+#end
+
+
+
+
+#* T A B L E *#
+#macro(ALtableheader $width)
+<table class="listTable" width="$width">
+  <tbody>
+#end
+
+#macro(ALtableheaderWide)
+<table class="listTable wide">
+  <tbody>
+#end
+
+#macro(ALtableheaderSub $width)
+<table class="subTable" width="$width">
+  <tbody>
+#end
+
+#macro(ALtableheaderSubWide)
+<table class="subTable wide">
+  <tbody>
+#end
+
+#macro(ALtableheaderSimple $width)
+<table class="simpleTable" width="$width">
+  <tbody>
+#end
+
+#macro(ALtableheaderSimpleWide)
+<table class="simpleTable wide">
+  <tbody>
+#end
+
+#macro(ALtableheaderCalendar $width)
+<table class="calendar" width="$width">
+  <tbody>
+#end
+
+#macro(ALtablefooter)
+  </tbody>
+</table>
+#end
+
+#macro(ALtableheaderBorder $border)
+<table border=$border>
+#end
+
+#macro(ALtablefooterBorder)
+</table>
+#end
+
+
+
+#macro(ALthtd $text1 $text2)
+<tr><th>$text1</th><td>$text2</td></tr>
+#end
+
+#macro(ALthtd_iphone $text1 $text2)
+#if($career == "iphone")
+<tr><th>$text1</th><td><div class="detailperson">$text2</div></td></tr>
+#else
+<tr><th>$text1</th><td>$text2</td></tr>
+#end
+#end
+
+
+#macro(ALtdhead $text)
+<th>$text</th>
+#end
+
+#macro(ALtdheadThin $text)
+<th class="thin">$text</th>
+#end
+
+#macro(ALtdheadWide $text)
+<th class="wide">$text</th>
+#end
+
+#macro(ALtdheadW25 $text)
+<th class="w25">$text</th>
+#end
+
+#macro(ALtdheadW33 $text)
+<th class="w33">$text</th>
+#end
+
+#macro(ALtdheadW50 $text)
+<th class="w50">$text</th>
+#end
+
+#macro(ALtdheadW75 $text)
+<th class="w75">$text</th>
+#end
+
+#macro(ALtdheadAtt $text $option)
+<th $option>$text</th>
+#end
+
+#macro(ALtdcaption $text)
+    <tr>
+      <td class="caption">$text</td>
+#end
+
+#macro(ALtdcaptionheader)
+    <tr>
+      <td class="caption">
+#end
+
+#macro(ALtdcaptionfooter)
+    </td>
+#end
+
+#macro(ALtdcaptionAtt $text $option)
+    <tr>
+      <td class="caption" $option>$text</td>
+#end
+
+#macro(ALtditem $text)
+      <td>$text</td>
+    </tr>
+#end
+
+#macro(ALtdcell $text)
+      <td>$text</td>
+#end
+
+#macro(ALtdcellAtt $text $option)
+      <td $option>$text</td>
+#end
+
+#macro(ALtdheadheader)
+    <th>
+#end
+
+#macro(ALtdheadheaderAtt $option)
+    <th $option>
+#end
+
+#macro(ALtdheadfooter)
+    </th>
+#end
+
+#macro(ALtditemheader)
+    <td>
+#end
+
+#macro(ALtditemheaderAtt $option)
+    <td $option>
+#end
+
+#macro(ALtditemfooter)
+    </td>
+  </tr>
+#end
+
+#macro(ALtdcellheader)
+    <td>
+#end
+
+#macro(ALtdcellheaderAtt $option)
+    <td $option>
+#end
+
+#macro(ALtdcellfooter)
+    </td>
+#end
+
+#macro(ALspacebothheader)
+<div class="spaceBoth">
+#end
+
+#macro(ALspacebothfooter)
+</div>
+#end
+
+#* F O R M *#
+#macro(ALformheader $name $jslink $portlet)
+<form name="form$!portlet.ID" id="form$!portlet.ID" action="$!jslink.getPortletById($!portlet.ID)" method="post" onsubmit="return(aimluck.io.disableForm(this, true));">
+<input type="hidden" name="_name" value="$name" />
+<input type="hidden" name="secid" value="$secid" />
+#end
+
+#macro(ALajaxscreenformheader $name $jslink $portlet $template $js)
+<form name="form$!portlet.ID" id="form$!portlet.ID" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template',$template)" method="post" onsubmit="$js;return false;">
+<input type="hidden" name="_name" value="$name" />
+<input type="hidden" name="secid" value="$secid" />
+#end
+
+#macro(ALajaxdetailformheader $name)
+<form name="form$!portlet.ID" id="form$!portlet.ID" action="#" method="post" onsubmit="return false;">
+<input type="hidden" name="_name" value="$name" />
+<input type="hidden" name="secid" value="$secid" />
+#end
+
+#macro(ALajaxlistformheader $name)
+<form name="form$!portlet.ID" id="form$!portlet.ID" action="#" method="post" onsubmit="return false;">
+<input type="hidden" name="_name" value="$name" />
+<input type="hidden" name="secid" value="$secid" />
+#end
+
+
+#macro(ALformfooter)
+</form>
+#end
+
+#macro(ALselectpdheader $name $width $onchange)
+<select name="$name" id="$name" style="width:$width;" onchange="$onchange">
+#end
+
+#macro(ALselectfooter)
+</select>
+#end
+
+#macro(ALtextfield $name $value $width $max $mode)
+<input class="text" type="text" name="$name" id="$name" value="$value" maxlength="$max" style="width:$width;ime-mode:$mode" />
+#end
+
+#macro(ALpasswdfield $name $value $width $max $mode)
+<input class="text" type="password" name="$name" id="$name" value="$value" maxlength="$max" style="width:$width;ime-mode:$mode" />
+#end
+
+#macro(ALtextarea $name $text $rows $cols)
+<textarea class="text wide" name="$name" rows="$rows" cols="$cols">$text</textarea>
+#end
+
+#macro(ALsubmit $name $value)
+<input name="$name" class="button" type="submit" value="$value" onclick="aimluck.io.setHiddenValue(this);" />
+#end
+
+#macro(ALsubmitJS $name $value $js)
+<input name="$name" class="button" type="submit" value="$value" onclick="aimluck.io.setHiddenValue(this);$js" />
+#end
+
+#macro(ALbutton $name $value $onclick)
+<input name="$name" class="button" type="button" value="$value" onclick="$onclick" />
+#end
+
+#macro(ALbuttonAction $name $value)
+<input name="$name" class="button" type="button" value="$value" onclick="aimluck.io.actionSubmit(this);" />
+#end
+
+#macro(ALbuttonActionReturn $name $value $rtn)
+<input name="$name" class="button" type="button" value="$value" onclick="aimluck.io.actionSubmitReturn(this, '$rtn');" />
+#end
+
+#macro(ALbuttonDelete $name $value)
+<input name="$name" class="button" type="button" value="$value" onclick="aimluck.io.deleteSubmit(this);" />
+#end
+
+#macro(ALbuttonDeleteReturn $name $value $rtn)
+<input name="$name" class="button" type="button" value="$value" onclick="aimluck.io.deleteSubmitReturn(this, '$rtn');" />
+#end
+
+#macro(ALajaxbuttonCheckboxAction $name $url $indicator_id $portlet_id $rt)
+<input name="ajaxbuttonCheckboxAction" class="button" type="button" value="$name" onclick="aimluck.io.ajaxCheckboxActionSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $rt);" />
+#end
+
+#macro(ALajaxbuttonCheckboxDelete $name $url $indicator_id $portlet_id $rt)
+<input name="ajaxbuttonCheckboxDelete" class="button" type="button" value="$name" onclick="aimluck.io.ajaxCheckboxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $rt);" />
+#end
+
+#macro(ALajaxbuttonEdit $url)
+<input name="ajaxbuttonEdit" class="button" type="button" value="編集する" onclick="aimluck.io.openDialog(this, '$!utils.escapeXML($url)');" />
+#end
+
+#macro(ALajaxbuttonEditCallback $url $portlet_id $callback)
+<input name="ajaxbuttonEdit" class="button" type="button" value="編集する" onclick="aimluck.io.openDialog(this, '$!utils.escapeXML($url)', '$portlet_id', $callback);" />
+#end
+
+#macro(ALajaxbuttonNameEditCallback $url $portlet_id $callback $name)
+<input name="ajaxbuttonEdit" class="button" type="button" value='$name' onclick="aimluck.io.openDialog(this, '$!utils.escapeXML($url)', '$portlet_id', $callback);" />
+#end
+
+#macro(ALajaxbuttonDelete $url $indicator_id $portlet_id $receive)
+<input name="ajaxbuttonDelete" class="button" type="button" value="削除する" onclick="aimluck.io.ajaxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
+#end
+
+#macro(ALajaxbuttonClose)
+<input name="ajaxbuttonClose" class="button" type="button" value="　閉じる　" onclick="aipo.common.hideDialog();" />
+#end
+
+#macro(ALajaxbuttonCancel)
+<input name="ajaxbuttonCancel" class="button" type="button" value="キャンセルする" onclick="aipo.common.hideDialog();" />
+#end
+
+#macro(ALrequired $title)
+<span class="required">$title</span>
+#end
+
+#macro(ALswitchCheckbox)
+<input name="switchCheckbox" type="checkbox" onclick="aimluck.io.switchCheckbox(this);" />
+#end
+
+#macro(ALbuttonheader)
+<div align="center">
+#end
+
+#macro(ALbuttonfooter)
+</div>
+#end
+
+#macro(ALbuttonheaderRight)
+<div align="right">
+#end
+
+#macro(ALbuttonfooterRight)
+</div>
+#end
+
+#macro(ALerrmsg $msgs)
+#if($msgs && !($msgs.size() == 0))
+<ul>
+#foreach($msg in $msgs)
+  <li><span class="caution">$!msg</span></li>
+#end
+</ul>
+#end
+#end
+
+#macro(ALcaution $text)
+<span class="caution">$text</span>
+#end
+
+#* P A G E V I E W *#
+#macro(ALpageview $link $result)
+#set($pages = $result.PagesNum)
+#set($currentPage = $result.CurrentPage)
+#set($rowsNum = $result.RowsNum)
+#set($count = $result.Count)
+#set($from = ($currentPage - 1 ) * $rowsNum + 1)
+#if ($currentPage * $rowsNum > $result.Count)
+#set($to = $result.Count )
+#else
+#set($to = $currentPage * $rowsNum )
+#end
+<div class="clearfix">
+  <div class="alignleft small">
+#if ($pages > 1)
+    <div class="pagination">
+      <ul>
+#if($currentPage > 1) #set($pre = $currentPage - 1)
+	    <li class="prev"><a href="$!utils.escapeXML("$!{link}&start=$pre")" class="small">前へ</a></li>
+#else
+	    <li class="prev disabled"><a href="javascript:void(0);" class="small">前へ</a></li>
+#end
+#if($pages > $currentPage) #set($next = $currentPage + 1)
+        <li class="next"><a href="$!utils.escapeXML("$!{link}&start=$next")" class="small">次へ</a></li>
+#else
+        <li class="next disabled"><a href="javascript:void(0);" class="small">次へ</a></li>
+#end
+#foreach($page in [1..$pages])
+        <li#if ($currentPage == $page) class="selected"#end><a href="$!utils.escapeXML("$!{link}&start=$page")" class="small">$page</a></li>
+#end
+      </ul>
+    </div>
+#end
+  </div>
+  <div class="alignright small" style="margin-top:5px;">$from 件 ～ $to 件表示 [ 計 $count 件 ]</div>
+</div>
+#end
+
+#macro(ALpageviewFooter $link $result)
+#set($pages = $result.PagesNum)
+#set($currentPage = $result.CurrentPage)
+#set($rowsNum = $result.RowsNum)
+#set($count = $result.Count)
+<div class="clearfix">
+  <div class="alignleft small">
+#if ($pages > 1)
+    <div class="pagination">
+      <ul>
+#if($currentPage > 1) #set($pre = $currentPage - 1)
+	    <li class="prev"><a href="$!utils.escapeXML("$!{link}&start=$pre")" class="small">前へ</a></li>
+#else
+	    <li class="prev disabled"><a href="javascript:void(0);" class="small">前へ</a></li>
+#end
+#if($pages > $currentPage) #set($next = $currentPage + 1)
+        <li class="next"><a href="$!utils.escapeXML("$!{link}&start=$next")" class="small">次へ</a></li>
+#else
+        <li class="next disabled"><a href="javascript:void(0);" class="small">次へ</a></li>
+#end
+#foreach($page in [1..$pages])
+        <li#if ($currentPage == $page) class="selected"#end><a href="$!utils.escapeXML("$!{link}&start=$page")" class="small">$page</a></li>
+#end
+      </ul>
+    </div>
+#end
+  </div>
+</div>
+#end
+
+#macro(ALajaxpageview $screen $result)
+#set($pageRange = 5)
+#set($pageTrimRange = 2)
+#set($pages = $result.PagesNum)
+#set($currentPage = $result.CurrentPage)
+#set($rowsNum = $result.RowsNum)
+#set($count = $result.Count)
+#set($from = ($currentPage - 1 ) * $rowsNum + 1)
+#if ( $currentPage * $rowsNum > $result.Count)
+#set($to = $result.Count )
+#else
+#set($to = $currentPage * $rowsNum )
+#end
+
+#set($nextLeftPage = 1 )
+#set($nextRightPage = $pages)
+#if($pages < ${pageRange} + ${pageTrimRange} + ${pageTrimRange} + 1)
+#set($showLeftRest = false)
+#set($showRightRest = false)
+#else
+## show left and right
+#set($showLeftRest = true)
+#set($showRightRest = true)
+#if($currentPage > ${pageRange})
+#set($nextLeftPage = $currentPage - $pageTrimRange )
+#if((${currentPage} + ${pageRange}) > ${pages})
+#if(${currentPage} - ${pageTrimRange} > ${pages} - ${pageRange}) #set($nextLeftPage = ${pages} - ${pageRange} + 1) #else #set($nextLeftPage = ${currentPage} - ${pageTrimRange}) #end
+#set($nextRightPage = ${pages})
+#else
+#set($nextRightPage = $currentPage + ($pageTrimRange / 2) + 1)
+#end
+#else
+#if(($currentPage + ${pageTrimRange}) < ${pageRange})
+#set($nextRightPage = $pageRange )
+#else
+#if(${currentPage} + ${pageRange} > ${pages}) #set($nextRightPage = ${pages}) #else #set($nextRightPage = $currentPage + ${pageTrimRange}) #end
+#end
+#end
+#end
+<div class="clearfix">
+  <div class="alignleft small">
+#if ($pages > 1)
+    <div class="pagination">
+      <ul>
+#if($currentPage > 1) #set($pre = $currentPage - 1)
+	    <li class="prev"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre))', '$!portlet.ID');" class="small">前へ</a></li>
+#else
+	    <li class="prev disabled"><a href="javascript:void(0);" class="small">前へ</a></li>
+#end
+#if($pages > $currentPage) #set($next = $currentPage + 1)
+        <li class="next"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next))', '$!portlet.ID');" class="small">次へ</a></li>
+#else
+        <li class="next disabled"><a href="javascript:void(0);" class="small">次へ</a></li>
+#end
+#if($showLeftRest && $currentPage > ${pageRange})
+#foreach($page in [1..${pageTrimRange}])
+        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page))', '$!portlet.ID');" class="small">$page</a></li>
+#end
+		<li class="abbr">....</li>
+#end
+#foreach($page in [${nextLeftPage}..$nextRightPage])
+        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page))', '$!portlet.ID');" class="small">$page</a></li>
+#end
+#if($showRightRest &&  (${currentPage} + ${pageRange} - 1) < ${pages})
+#set($restRightPages = $pages - $pageTrimRange + 1)
+		<li class="abbr">....</li>
+#foreach($page in [${restRightPages}..${pages}])
+        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page))', '$!portlet.ID');" class="small">$page</a></li>
+#end
+#end
+      </ul>
+    </div>
+#end
+  </div>
+  <div class="alignright small" style="margin-top:5px;">$from 件 ～ $to 件表示 [ 計 $count 件 ]</div>
+</div>
+#end
+
+#macro(ALajaxpageviewFooter $screen $result)
+#set($pageRange = 5)
+#set($pageTrimRange = 2)
+#set($pages = $result.PagesNum)
+#set($currentPage = $result.CurrentPage)
+#set($rowsNum = $result.RowsNum)
+#set($count = $result.Count)
+#set($from = ($currentPage - 1 ) * $rowsNum + 1)
+#if ( $currentPage * $rowsNum > $result.Count)
+#set($to = $result.Count )
+#else
+#set($to = $currentPage * $rowsNum )
+#end
+
+#set($nextLeftPage = 1 )
+#set($nextRightPage = $pages)
+#if($pages < ${pageRange} + ${pageTrimRange} + ${pageTrimRange} + 1)
+#set($showLeftRest = false)
+#set($showRightRest = false)
+#else
+## show left and right
+#set($showLeftRest = true)
+#set($showRightRest = true)
+#if($currentPage > ${pageRange})
+#set($nextLeftPage = $currentPage - $pageTrimRange )
+#if((${currentPage} + ${pageRange}) > ${pages})
+#if(${currentPage} - ${pageTrimRange} > ${pages} - ${pageRange}) #set($nextLeftPage = ${pages} - ${pageRange} + 1) #else #set($nextLeftPage = ${currentPage} - ${pageTrimRange}) #end
+#set($nextRightPage = ${pages})
+#else
+#set($nextRightPage = $currentPage + ($pageTrimRange / 2) + 1)
+#end
+#else
+#if(($currentPage + ${pageTrimRange}) < ${pageRange})
+#set($nextRightPage = $pageRange )
+#else
+#if(${currentPage} + ${pageRange} > ${pages}) #set($nextRightPage = ${pages}) #else #set($nextRightPage = $currentPage + ${pageTrimRange}) #end
+#end
+#end
+#end
+#if ($pages > 1)
+<div class="clearfix">
+  <div class="alignleft small">
+
+    <div class="pagination">
+      <ul>
+#if($currentPage > 1) #set($pre = $currentPage - 1)
+	    <li class="prev"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre))', '$!portlet.ID');" class="small">前へ</a></li>
+#else
+	    <li class="prev disabled"><a href="javascript:void(0);" class="small">前へ</a></li>
+#end
+#if($pages > $currentPage) #set($next = $currentPage + 1)
+        <li class="next"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next))', '$!portlet.ID');" class="small">次へ</a></li>
+#else
+        <li class="next disabled"><a href="javascript:void(0);" class="small">次へ</a></li>
+#end
+#if($showLeftRest && $currentPage > ${pageRange})
+#foreach($page in [1..${pageTrimRange}])
+        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page))', '$!portlet.ID');" class="small">$page</a></li>
+#end
+        <li class="abbr">....</li>
+#end
+#foreach($page in [${nextLeftPage}..$nextRightPage])
+        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page))', '$!portlet.ID');" class="small">$page</a></li>
+#end
+#if($showRightRest &&  (${currentPage} + ${pageRange} - 1) < ${pages})
+#set($restRightPages = $pages - $pageTrimRange + 1)
+        <li class="abbr">....</li>
+#foreach($page in [${restRightPages}..${pages}])
+        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page))', '$!portlet.ID');" class="small">$page</a></li>
+#end
+#end
+      </ul>
+    </div>
+  </div>
+</div>
+#end
+#end
+
+#* S O R T *#
+#macro(ALsort $key $name $result $link)
+#if($!result.CurrentSort && $!result.CurrentSort == "$key" && $!result.CurrentSortType && $!result.CurrentSortType == "asc")#set($sorttype ="desc")#set($sortHead ="headDown") #else #set($sorttype ="asc")#set($sortHead ="headUp")#end
+#if($link)
+<a#if($!result.CurrentSort && $!result.CurrentSort == "$key") class="$sortHead"#end href="$!utils.escapeXML("$!{link}&sort=$key&sorttype=$sorttype&start=$result.CurrentPage")">$name</a>
+#else
+<a#if($!result.CurrentSort && $!result.CurrentSort == "$key") class="$sortHead"#end href="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("start","$result.CurrentPage").addQueryData("sort","$key").addQueryData("sorttype","$sorttype"))">$name</a>
+#end
+#end
+
+#macro(ALajaxsort $key $name $result $screen)
+#if($!result.CurrentSort && $!result.CurrentSort == "$key" && $!result.CurrentSortType && $!result.CurrentSortType == "asc")#set($sorttype ="desc")#set($sortHead ="headDown") #else #set($sorttype ="asc")#set($sortHead ="headUp")#end
+<a#if($!result.CurrentSort && $!result.CurrentSort == "$key") class="$sortHead"#end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template",$screen).addQueryData("start","$result.CurrentPage").addQueryData("sort","$key").addQueryData("sorttype","$sorttype"))', '$!portlet.ID');">$name</a>
+#end
+
+#* subMenuBar *#
+#macro(ALsubmenubar $items $currentItem)
+<div style="padding-bottom: 8px; white-space: nowrap;">
+#foreach ( $item in $submenulist )
+<div class="menuItemIcon menuBarIconSeparator" style="float: left"></div>
+<div class="#if ($item.get(0) == $currentItem) 'selectedSubMenuItem' #end" style="float: left;">
+<a title="$item.get(0)" href="$item.get(1)" class="subMenuBarItem">
+<img src="$item.get(2)" width="16" height="16" style="vertical-align: middle;"/>
+$item.get(0)
+</a>
+</div>
+#end
+<div class="menuItemIcon menuBarIconSeparator" style="float: left"></div>
+</div><br/>
+#end
+
+
+#* T A B *#
+#macro(ALtabheader $tabs $currentTab)
+<div class="subTab clearfix">
+  <ul class="tabContainer">
+#foreach ( $tab in $tabs )
+    <li#if ($tab.get(1) == $currentTab) class="selectedMenu"#end>
+      <div class="menuTitle">#if (!($tab.get(1) == $currentTab))<a href="$!utils.escapeXML($tab.get(2))">$tab.get(0)</a>#else$tab.get(0)#end</div>
+      <div class="menuIcon"></div>
+    </li>
+#end
+  </ul>
+</div>
+<div class="clearfix">
+  <div class="roundTopMain">
+    <div class="roundRightMain">
+      <div class="roundBottomMain">
+        <div class="roundLeftMain">
+          <div class="roundTopLeftMain">
+            <div class="roundTopRightMain">
+              <div class="roundBottomRightMain">
+                <div class="roundBottomLeftMain">
+                  <div class="roundMainWrapper">
+#end
+
+#macro(ALtabfooter)
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+#end
+
+#macro(ALajaxtabheader $tabs $currentTab)
+<div class="subTab clearfix">
+  <ul class="tabContainer">
+#foreach ( $tab in $tabs )
+    <li#if ($tab.get(1) == $currentTab) class="selectedMenu"#end>
+      <div class="menuTitle">#if (!($tab.get(1) == $currentTab))<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');">$tab.get(0)</a>#else$tab.get(0)#end</div>
+      <div class="menuIcon"></div>
+    </li>
+#end
+  </ul>
+</div>
+<div class="clearfix">
+  <div class="roundTopMain">
+    <div class="roundRightMain">
+      <div class="roundBottomMain">
+        <div class="roundLeftMain">
+          <div class="roundTopLeftMain">
+            <div class="roundTopRightMain">
+              <div class="roundBottomRightMain">
+                <div class="roundBottomLeftMain">
+                  <div class="roundMainWrapper">
+#end
+
+#macro(ALajaxtabfooter)
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+#end
+
+#* C O N T E N T *#
+#macro(ALcontentheader $title $navigations)
+#if($!{navilist.size()}) #set($len = $navilist.size()) #else #set($len = 0)  #end
+#if($len > 0)
+                                                              <div class="navigation small">
+#set($index = 0)
+#foreach($nav in $navigations)
+#if($index <= 0)
+#if($nav.get(1) == "") $nav.get(0) #else <a class="small" href="$!utils.escapeXML($nav.get(1))">$nav.get(0)</a> #end
+#else #if($!navigations.size() == 2 || $nav.get(1) == "") ＞ $nav.get(0) #else  ＞ <a class="small" href="$!utils.escapeXML($nav.get(1))">$nav.get(0)</a> #end#end
+#set($index = $index + 1)
+#end
+                                                              </div>
+#end
+                                                              <!-- PORTLET OUTER -->
+                                                              <div class="roundTopBlock clearfix">
+                                                                <div class="roundRightBlock">
+                                                                  <div class="roundBottomBlock">
+                                                                    <div class="roundLeftBlock">
+                                                                      <div class="roundTopLeftBlock">
+                                                                        <div class="roundTopRightBlock">
+                                                                          <div class="roundBottomRightBlock" >
+                                                                            <div class="roundBottomLeftBlock">
+                                                                              <table class="roundBlockWrapperTop">
+                                                                                <tbody>
+                                                                                  <tr>
+                                                                                    <td class="roundBlockTitle">$title</td>
+                                                                                    <td class="roundBlockMenu"><span id="portletMenu"></span></td>
+                                                                                    <td class="endcap"></td>
+                                                                                  </tr>
+                                                                                </tbody>
+                                                                              </table>
+                                                                              <div class="roundBlockWrapperBottom clearfix">
+                                                                                <div class="roundBlockContent">
+                                                                                  <div dojoType="aimluck:Contentpane" widgetId="widget_$!portlet.ID" id="portlet_$!portlet.ID">
+#end
+
+#macro(ALcontentfooter)
+																				  </div>
+																				</div>
+                                                                              </div>
+                                                                            </div>
+                                                                          </div>
+                                                                        </div>
+                                                                      </div>
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                              <!-- /PORTLET OUTER -->
+#end
+
+#* D I A L O G *#
+#macro(ALdialogheader $title)
+<div class="roundTopBlock clearfix">
+  <div class="roundRightBlock">
+    <div class="roundBottomBlock">
+      <div class="roundLeftBlock">
+        <div class="roundTopLeftBlock">
+          <div class="roundTopRightBlock">
+            <div class="roundBottomRightBlock" >
+              <div class="roundBottomLeftBlock">
+                <table class="roundBlockWrapperTop">
+                  <tbody>
+                    <tr>
+                      <td class="roundBlockTitle wide">$title</td>
+                      <td class="roundBlockIcon last"><div style="float:right"><img style="cursor:pointer" onclick="dijit.byId('modalDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる"/></div></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="roundBlockWrapperBottom clearfix">
+                  <div class="roundBlockContent">
+#end
+
+#macro(ALdialogheaderCloseJS $title $js)
+<div class="roundTopBlock clearfix">
+  <div class="roundRightBlock">
+    <div class="roundBottomBlock">
+      <div class="roundLeftBlock">
+        <div class="roundTopLeftBlock">
+          <div class="roundTopRightBlock">
+            <div class="roundBottomRightBlock" >
+              <div class="roundBottomLeftBlock">
+                <table class="roundBlockWrapperTop">
+                  <tbody>
+                    <tr>
+                      <td class="roundBlockTitle wide">$title</td>
+                      <td class="roundBlockIcon last"><div style="float:right"><img style="cursor:pointer" onclick="$js" id="dialogCloseButton" src="images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる"/></div></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="roundBlockWrapperBottom clearfix">
+                  <div class="roundBlockContent">
+#end
+
+#macro(ALdialogfooter)
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+#end
+
+#macro(ALfileuploadDialogheader $title)
+<div class="spaceAll">
+  <div class="clearfix">
+    <ul class="tabContainer">
+      <li class="selectedMenu">
+        <div class="menuTitle">$title</div>
+        <div class="menuIcon"></div>
+      </li>
+    </ul>
+    <div style="float:right"><img style="cursor:pointer" onclick="dijit.byId('fileuploadDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる"/></div>
+  </div>
+  <div class="clearfix">
+    <div class="roundTopMain">
+      <div class="roundRightMain">
+        <div class="roundBottomMain">
+          <div class="roundLeftMain">
+            <div class="roundTopLeftMain">
+              <div class="roundTopRightMain">
+                <div class="roundBottomRightMain">
+                  <div class="roundBottomLeftMain">
+                    <div class="roundMainWrapper">
+                      <div class="spaceBoth">
+                        <div class="clearfix">
+#end
+
+#macro(ALfileuploadDialogfooter)
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+#end
+
+#macro(ALaddressbookDialogheader $title)
+<div class="spaceAll">
+  <div class="clearfix">
+    <ul class="tabContainer">
+      <li class="selectedMenu">
+        <div class="menuTitle">$title</div>
+        <div class="menuIcon"></div>
+      </li>
+    </ul>
+    <div style="float:right"><img style="cursor:pointer" onclick="dijit.byId('addressbookDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる"/></div>
+  </div>
+  <div class="clearfix">
+    <div class="roundTopMain">
+      <div class="roundRightMain">
+        <div class="roundBottomMain">
+          <div class="roundLeftMain">
+            <div class="roundTopLeftMain">
+              <div class="roundTopRightMain">
+                <div class="roundBottomRightMain">
+                  <div class="roundBottomLeftMain">
+                    <div class="roundMainWrapper">
+                      <div class="spaceBoth">
+                        <div class="clearfix">
+#end
+
+#macro(ALaddressbookDialogfooter)
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+#end
+
+#* S U B M E N U *#
+#macro(ALsubmenuheader $tabs)
+<!-- LAYOUT -->
+<table class="tableWrapper">
+  <tbody>
+    <tr>
+      <td class="top" width="200">
+        <!-- SUBMENU -->
+        <div class="submenu">
+          <ul>
+#set($index = 0)
+#foreach($tab in $tabs)
+            <li#if ($tab.isSelected() == true) class="selected"#end><a href="$!utils.escapeXML($tab.Link)">$tab.Title</a></li>
+#set($index = $index + 1)
+#end
+          </ul>
+          <div class="endcap"></div>
+        </div>
+		<img src="images/common/dot.gif" width="200" height="1" alt="" />
+        <!-- /SUBMENU -->
+      </td>
+      <td class="wide top">
+#end
+
+#macro(ALsubmenufooter)
+      </td>
+    </tr>
+  </tbody>
+</table>
+<!-- /LAYOUT -->
+#end
+
+
+
+#* FOR CELL PHONE *#
+#macro(ALcell_center_header $career)
+#if($career == "docomo_foma")
+<div style="text-align:center">
+#elseif($career == "iphone")
+<div class="navi">
+#else
+<center>
+#end
+#end
+
+#macro(ALcell_center_footer $career)
+#if($career == "docomo_foma")
+</div>
+#elseif($career == "iphone")
+</div>
+#else
+</center>
+#end
+#end
+
+## For Windows Mobile environment, this macro is written in one line.
+#macro(ALcell_li_header $career) #if($career == "wm")<p>#else<li>#end#end
+
+#macro(ALcell_li_footer $career)
+#if($career == "docomo_imode")
+
+#elseif($career == "wm")
+</p>
+#else
+</li>
+#end
+#end
+
+#macro(ALcell_font_header $career $color $size)
+#if($career == "docomo_imode" || $career == "vodafone")
+<font color="$color" size="$size">
+#else
+<span style="#if($color != '')color:$color;#end#if($size != '')font-size:$size;#end">
+#end
+#end
+
+#macro(ALcell_font_footer $career)
+#if($career == "docomo_imode" || $career == "vodafone")
+</font>
+#else
+</span>
+#end
+#end
+
+#macro(ALcell_br $career)
+#if($career == "docomo_imode" || $career == "vodafone")
+<br>
+#else
+<br />
+#end
+#end
+
+#macro(ALcell_hr $career $size)
+#if($career == "docomo_imode")
+<hr#if($size != '') size="$size"#end>
+#elseif($career == "vodafone")
+<hr>
+#else
+<hr />
+#end
+#end
+
+
+#macro(ALcell_dt $career $text)
+#if($text != '')
+<dt>$text</dt>
+#end
+#end
+
+#macro(ALcell_dd $career $text)
+#if($text != '')
+<dd>$text</dd>
+#end
+#end
+
+#macro(ALcell_dl_header $career)
+<dl>
+#end
+
+#macro(ALcell_dl_footer $career)
+</dl>
+#end
+
+#macro(ALcell_dt_header $career)
+<dt>
+#end
+
+#macro(ALcell_dt_footer $career)
+</dt>
+#end
+
+#macro(ALcell_dd_header $career)
+<dd>
+#end
+
+#macro(ALcell_dd_footer $career)
+</dd>
+#end
+
+#macro(ALcell_ul_header $career)
+<ul>
+#end
+
+#macro(ALcell_ul_footer $career)
+</ul>
+#end
+
+#macro(ALcell_textarea $career $name $text $rows $cols $option $style)
+#set($style_option = '')
+#if($career == "docomo_imode" || $career == "docomo_foma")
+	#if($style == "h")
+		#set($style_option = 'style="-wap-input-format:&quot;*&lt;ja:h&gt;&quot;"')
+	#elseif($style == "en")
+		#set($style_option = 'style="-wap-input-format:&quot;*&lt;ja:en&gt;&quot;"')
+	#elseif($style == "n")
+		#set($style_option = 'style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;"')
+	#end
+#else
+	#if($style == "h")
+		#set($style_option = 'istyle="1" format="*M" mode="hiragana"')
+	#elseif($style == "en")
+		#set($style_option = 'istyle="3" format="*m" mode="alphabet"')
+	#elseif($style == "n")
+		#set($style_option = 'istyle="4" format="*N" mode="numeric"')
+	#end
+#end
+#if($cols == '')
+#if($option == '')
+<textarea name="$name" rows="$rows" $!style_option>$text</textarea>
+#else
+<textarea name="$name" rows="$rows" $option $!style_option>$text</textarea>
+#end
+#else
+#if($option == '')
+<textarea name="$name" rows="$rows" cols="$cols" $!style_option>$text</textarea>
+#else
+<textarea name="$name" rows="$rows" cols="$cols" $option $!style_option>$text</textarea>
+#end
+#end
+#end
+
+#macro(ALcell_textfield $career $name $value $size $max $option $style)
+#set($style_option = '')
+#if($career == "docomo_imode" || $career == "docomo_foma")
+	#if($style == "h")
+		#set($style_option = 'style="-wap-input-format:&quot;*&lt;ja:h&gt;&quot;"')
+	#elseif($style == "en")
+		#set($style_option = 'style="-wap-input-format:&quot;*&lt;ja:en&gt;&quot;"')
+	#elseif($style == "n")
+		#set($style_option = 'style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;"')
+	#end
+#else
+	#if($style == "h")
+		#set($style_option = 'istyle="1" format="*M" mode="hiragana"')
+	#elseif($style == "en")
+		#set($style_option = 'istyle="3" format="*m" mode="alphabet"')
+	#elseif($style == "n")
+		#set($style_option = 'istyle="4" format="*N" mode="numeric"')
+	#end
+#end
+#if($size == '')
+<input type="text" name="$name" value="$value" maxlength="$max" $option $!style_option>
+#else
+<input type="text" name="$name" value="$value" size="$size" maxlength="$max" $option $!style_option>
+#end
+#end
+
+#macro(ALcell_passwordfield $career $name $value $size $max $option)
+<input type="password" name="$name" value="$value" size="$size" maxlength="$max" $option>
+#end
+
+#macro(ALcell_mustmessage)
+（※）印は必須項目です
+#end
+
+#macro(ALcell_must)
+（※）
+#end
+
+#macro(ALcell_pageview $career $link $result)
+#set($pages = $result.PagesNum)
+#set($currentPage = $result.CurrentPage)
+#set($rowsNum = $result.RowsNum)
+#if ($pages > 1)
+#ALcell_center_header($career)
+#if($currentPage > 1) #set($pre = $currentPage - 1) <a href="$!{link}&start=$pre" class="btn_left"> &lt;前 </a> #end
+$currentPage/$pages
+#if($pages > $currentPage) #set($next = $currentPage + 1) <a class="btn_right" href="$!{link}&start=$next"> 次&gt; </a> #end
+#ALcell_center_footer($career)
+#end
+#end
+
+#macro(ALcell_menulist $career $title $list)
+#set($index = 0)
+#ALcell_pagetitle($career $title)
+#if($career == "vodafone")
+<dl>
+#foreach($menulist in $list)
+#set($menulistlen = $menulist.size() - 1)
+#set($index = 0)
+#foreach($menu in $menulist)
+#if($index == 0)
+<dt>
+#if ($menu.get(1) == "")
+$menu.get(0)
+#else
+<a href="$menu.get(1)">$menu.get(0)</a>
+#end
+</dt>
+#else
+<dd><a href="$menu.get(1)">$menu.get(0)</a></dd>
+#end
+#set($index = $index + 1)
+#end
+#end
+</dl>
+#else
+<ul>
+#foreach($menulist in $list)
+#set($menulistlen = $menulist.size() - 1)
+#set($index = 0)
+#ALcell_li_header($career)
+#foreach($menu in $menulist)
+#if($index == 0)
+#if ($menu.get(1) == "")
+$menu.get(0)
+#else
+<a href="$menu.get(1)">$menu.get(0)</a>
+#end
+#ALcell_br($career)
+#else
+<a href="$menu.get(1)">$menu.get(0)</a>#if($index < $menulistlen)#ALcell_br($career)#end
+#end
+#set($index = $index + 1)
+#end
+#ALcell_li_footer($career)
+#end
+</ul>
+#end
+#end
+
+
+#macro(ALcell_menulist_i $career $title $list)
+#set($index = 0)
+#ALcell_pagetitle($career $title)
+#ALcell_contents_header($career)
+#ALcell_radius_header($career)
+#foreach($menulist in $list)
+#set($menulistlen = $menulist.size() - 1)
+#set($index = 0)
+#foreach($menu in $menulist)
+#if($index == 0)
+#if ($menu.get(1) == "")
+##$menu.get(0)
+#else
+##ALcell_radius_header($career)
+<a href="$menu.get(1)">$menu.get(0)</a><br>
+##ALcell_radius_footer($career)
+#end
+##ALcell_ul_header($career)
+#else
+#ALcell_li_header($career)
+<a href="$menu.get(1)"><img src="$menu.get(2)" width="32" height="32" align="absmiddle" />$menu.get(0)</a>
+#ALcell_li_footer($career)
+#end
+#set($index = $index + 1)
+#end
+##ALcell_ul_footer($career)
+#end
+#ALcell_radius_footer($career)
+#ALcell_contents_footer($career)
+#end
+##ALcell_radius_footer($career)
+
+#macro(ALcell_pagetitle $career $title)
+<div style="background:$config.getString("aipo.color.cell.vm.logo"); color:#ffffff; text-align:center;">${alias}</div>
+<div style="background:$config.getString("aipo.color.cell.vm.title"); text-align:center;">$title</div>
+<div style="background:$config.getString("aipo.color.cell.vm.logo");"><img src="/${data.getServletConfig().getServletName()}/images/dot.gif" width="1" height="1" /></div>
+<hr style="border:solid 1px #ffffff; color:#ffffff" />
+#end
+
+#macro(ALcell_linklist $career $list)
+#foreach($link in $list)
+#if ($link.get(1) == "")
+$link.get(0)
+#else
+<a href="$link.get(1)">$link.get(0)</a>
+#end
+#ALcell_br($career)
+#end
+#end
+
+#macro(ALcell_pagetitle_iphone $career $title)
+<h2>$title</h2>
+#end
+
+
+#macro(ALcell_linklist_i $career $list)
+#foreach($link in $list)
+#if ($link.get(1) == "")
+$link.get(0)
+<br>
+#else
+<a href="$link.get(1)"><img src="$link.get(2)" width="32" height="32" align="absmiddle" />$link.get(0)</a><br>
+#end
+#ALcell_br($career)
+#end
+#end
+
+#macro(ALcell_linklist2 $career $list)
+#set($count=0)
+#foreach($link in $list)
+#set($count=$count+1)
+#if ($link.get(1) == "")
+$link.get(0)
+#else
+<a href="$link.get(1)">$link.get(0)</a>
+#end
+#if($count%2==0)
+#ALcell_br($career)
+#else
+ |
+#end
+#end
+#end
+
+#macro(ALcell_formheader $career $jslink $portlet)
+<form action="$!jslink.getPortletById($!portlet.ID)" method="post">
+<input type="hidden" name="secid" value="$secid" />
+#end
+
+#macro(ALcell_formfooter)
+</form>
+#end
+
+##macro(ALcell_formheader_iphone)
+
+
+
+
+
+#macro(ALcell_errmsg $career $msgs)
+#if($msgs && !($msgs.size() == 0))
+<ul>
+#foreach($msg in $msgs)
+#ALcell_li_header($career)#ALcell_font_header($career 'Red' '')$!msg#ALcell_font_footer($career)#ALcell_li_footer($career)
+#end
+</ul>
+#end
+#end
+
+#macro(ALcell_submit $career $name $value)
+#if($career == "iphone")
+<p class="center"><input class="submit" name="$name" type="submit" value="$value" /></p>
+#else
+<input name="$name" type="submit" value="$value">
+#end
+#end
+
+#macro(ALcell_submit_JS $career $name $value $js)
+#if($career == "iphone")
+<p class="center"><input name="$name" class="button" type="submit" value="$value" onclick="$js" /></p>
+#else
+<input name="$name" class="button" type="submit" value="$value" onclick="$js" />
+#end
+#end
+
+#macro(ALcell_hidden $career $name $value)
+<input name="$name" type="hidden" value="$value">
+#end
+
+#macro(ALtdcellEmoji $emoji $career)
+      #if($career == "docomo_imode" || $career == "docomo_foma")
+		#if($emoji == "1")
+			&#xE6E2;
+		#elseif($emoji == "2")
+			&#xE6E3;
+        #elseif($emoji == "3")
+            &#xE6E4;
+		#elseif($emoji == "4")
+            &#xE6E5;
+		#elseif($emoji == "5")
+            &#xE6E6;
+        #elseif($emoji == "6")
+            &#xE6E7;
+        #elseif($emoji == "7")
+            &#xE6E8;
+        #elseif($emoji == "8")
+            &#xE6E9;
+        #elseif($emoji == "9")
+            &#xE6EA;
+	    #elseif($emoji == "0")
+            &#xE6EB;
+		#elseif($emoji == "keitai")
+            &#xE688;
+		#end
+      #elseif($career == "vodafone")
+        #if($emoji == "1")
+            $F<
+        #elseif($emoji == "2")
+            $F=
+        #elseif($emoji == "3")
+            $F>
+        #elseif($emoji == "4")
+            $F?
+        #elseif($emoji == "5")
+            $F@
+        #elseif($emoji == "6")
+            $FA
+        #elseif($emoji == "7")
+            $FB
+        #elseif($emoji == "8")
+            $FC
+        #elseif($emoji == "9")
+            $FD
+        #elseif($emoji == "0")
+            $FE
+        #elseif($emoji == "keitai")
+##            $G*
+        #end
+	  #else
+		#if($emoji == "1")
+            <img localsrc="180">
+        #elseif($emoji == "2")
+            <img localsrc="181">
+        #elseif($emoji == "3")
+            <img localsrc="182">
+        #elseif($emoji == "4")
+            <img localsrc="183">
+        #elseif($emoji == "5")
+            <img localsrc="184">
+        #elseif($emoji == "6")
+            <img localsrc="185">
+        #elseif($emoji == "7")
+            <img localsrc="186">
+        #elseif($emoji == "8")
+            <img localsrc="187">
+        #elseif($emoji == "9")
+            <img localsrc="188">
+        #elseif($emoji == "0")
+            <img localsrc="325">
+        #elseif($emoji == "keitai")
+            <img localsrc="161">
+		#end
+	  #end
+#end
+
+#macro(ALtdcellFooterLink $career)
+<hr style="border:solid 1px #ffffff; color:#ffffff" />
+<div style="background:#005699;"><img src="themes/orange/images/common/dot.gif" width="1" height="1" /></div>
+<div style="background:$config.getString("aipo.color.cell.vm.menu.bottom"); text-align:center;"><a href="$!jslink.getAction('controls.Restore',$!portlet.ID)" accesskey="0">[0] TOPへ</a> | <a href="$jslink.setAction($config.getString('action.logout'))">ﾛｸﾞｱｳﾄ</a></div>
+#end
+
+
+#* FOR IPHONE *#
+
+#macro(ALcell_navi_header $career)
+<div class="navi">
+#end
+
+#macro(ALcell_navi_footer $career)
+</div>
+#end
+
+#macro(ALcell_contents_header $career)
+<div id="contents">
+#end
+
+#macro(ALcell_contents_footer $career)
+</div><!-- contents END -->
+#end
+
+#macro(ALcell_radius_header $career)
+#if($career == "wm")
+<div class="radius_list">
+#else
+<ul class="radius_list">
+#end
+#end
+
+#macro(ALcell_radius_footer $career)
+#if($career == "wm")
+</div><!-- radius_list END -->
+#else
+</ul><!-- radius_list END -->
+#end
+#end
+
+#macro(ALcell_schedule_header $career)
+<ul id="schedule">
+#end
+
+#macro(ALcell_schedule_footer $career)
+</ul>
+#end
+
+#macro(ALcell_msgboard_detail $career $detail)
+<h3 class="mt5 mb5">$!{detail.TopicName}</h3>
+<p class="mt0 fssmaller right">投稿日：$!{detail.CreateDate.Year}/$!{detail.CreateDate.Month}/$!{detail.CreateDate.Day}&nbsp;$!{detail.CreateDate.Hour}:$!{detail.CreateDate.Minute}<br />
+投稿者：$!{detail.OwnerName}　カテゴリ：$!{detail.CategoryName}</p>
+$!{detail.Note}
+#end
+
+#macro(ALcell_blog_detail $career $detail)
+<h3 class="mt5 mb5">$!{detail.Title}</h3>
+##$!{detail.CreateDate}
+<p class="mt0 fssmaller right">投稿日：$!{detail.CreateDateAlternative.Year}/$!{detail.CreateDateAlternative.Month}/$!{detail.CreateDateAlternative.Day}$!{detail.CreateDateAlternative.toStringDayOfWeek()}$!{detail.CreateDateAlternative.Hour}:$!{detail.CreateDateAlternative.Minute}<br />投稿者：$!detail.OwnerName　ﾃｰﾏ：$!{detail.ThemaName}</p>
+$!{detail.Note}
+#end
+
+#macro(ALcell_msgboard_comment $career $comment )
+<p class="mt0 fssmaller right">投稿日：$!comment.UpdateDate<br />投稿者：$!comment.OwnerName　##ｶﾃｺﾞﾘ：$!{comment.ParentTopic.CategoryName}
+</p>
+$!{comment.Note}
+#end
+
+#macro(ALcell_blog_comment $career $comment )
+<p class="mt0 fssmaller right">投稿日：$!{comment.UpdateDateAlternative.Year}/$!{comment.UpdateDateAlternative.Month}/$!{comment.UpdateDateAlternative.Day}$!{comment.UpdateDateAlternative.toStringDayOfWeek()}$!{comment.UpdateDateAlternative.Hour}:$!{comment.UpdateDateAlternative.Minute}<br />投稿者：$!comment.OwnerName　</p>
+$!{comment.Comment}
+#end
+
+#macro(ALcell_linklist_iphone $career $list)
+#if($career == "wm")
+<div class="submenu">
+#foreach($link in $list)
+#if ($link.get(1) == "")
+$link.get(0)
+#else
+<a href="$link.get(1)" class="btn">$link.get(0)</a>
+#end
+#end
+</div>
+#else
+<ul class="submenu">
+#foreach($link in $list)
+#if ($link.get(1) == "")
+$link.get(0)
+#else
+<li><a href="$link.get(1)" class="btn">$link.get(0)</a></li>
+#end
+#end
+</ul>
+#end
+#end
+
+#macro(ALcell_navilist $career $list)
+<div class="navi">
+#foreach($link in $list)
+#if ($link.get(1) == "")
+$link.get(0)
+#else
+<a href="$link.get(1)" class="btn">$link.get(0)</a>
+#end
+#end
+</div>
+#end
+
+

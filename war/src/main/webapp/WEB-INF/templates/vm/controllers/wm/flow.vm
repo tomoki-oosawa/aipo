@@ -1,0 +1,35 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set($career = 'iphone')
+#if($data.User.hasLoggedIn())
+<h2>Aipoホーム</h2>
+<div id="contents">
+#set($tmp="")
+<div id="mainMenu">
+#foreach ( $portlet in $portlets )
+#if($!portlet.Title == "ｽｹｼﾞｭｰﾙ")
+<p><a href="$!jslink.getAction("controls.Maximize",$!portlet.ID)"><img src="themes/wm/img/icon/32/calendar.gif" width="32" height="32"  /><br />スケジュール</a></p>#elseif($!portlet.Title == "ﾌﾞﾛｸﾞ")<p><a href="$!jslink.getAction("controls.Maximize",$!portlet.ID)"><img src="themes/wm/img/icon/32/notepad-write.gif" width="32" height="32"  /><br />ブログ</a></p>#elseif($!portlet.Title == "ﾜｰｸﾌﾛｰ")<p><a href="$!jslink.getAction("controls.Maximize",$!portlet.ID)"><img src="themes/wm/img/icon/32/paste.gif" width="32" height="32"  /><br />ワークフロー</a></p>#elseif($!portlet.Title == "掲示板")<p><a href="$!jslink.getAction("controls.Maximize",$!portlet.ID)"><img src="themes/wm/img/icon/32/comment-silver.gif" width="32" height="32"  /><br />$!portlet.Title</a></p>#elseif($!portlet.Title == "Webﾒｰﾙ")<p><a href="$!jslink.getAction("controls.Maximize",$!portlet.ID)"><img src="themes/wm/img/icon/32/email.gif" width="32" height="32"  /><br />Webメール</a></p>#elseif($!portlet.Title == "ToDo")<p><a href="$!jslink.getAction("controls.Maximize",$!portlet.ID)"><img src="themes/wm/img/icon/32/check.gif" width="32" height="32"  /><br />$!portlet.Title</a></p>#elseif($!portlet.Title == "ｱﾄﾞﾚｽ帳")<p><a href="$!jslink.getAction("controls.Maximize",$!portlet.ID)"><img src="themes/wm/img/icon/32/address.gif" width="32" height="32"  /><br />アドレス帳</a></p>#elseif($!portlet.Title == "個人設定")<p><a href="$!jslink.getAction("controls.Maximize",$!portlet.ID)"><img src="themes/wm/img/icon/32/user.gif" width="32" height = "32" /><br />個人設定</a></p>#end#if($tmp == "")#set($tmp='class="even"')#else#set($tmp="")#end#end
+</div>
+#else
+#foreach($portlet in $portlets)
+$!portlet.getContent($data)
+#end
+#end
+</div>

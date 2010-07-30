@@ -1,0 +1,46 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set($career = 'iphone')
+#ALcell_pagetitle_iphone($career "ページが見つかりません")
+#ALcell_contents_header($career)
+
+指定されたページは現在、利用できません。以下の原因が考えられます。<br />
+<br />
+<ul>
+  <li>URLの指定が間違えている</li>
+  <li>${alias}のインストールに失敗している</li>
+</ul>
+ログアウトをしていただき、再度ログインしてください。<br />
+<br />
+
+#if($config.getString("support.mail"))
+
+<br />
+恐れ入りますが、URLの指定に誤りがございません際には、弊社サポートまでお問い合わせください。
+<br />
+[e-mail : <a href="mailto:$config.getString("support.mail")">$config.getString("support.mail")</a> ]
+<br />
+<br />
+
+#end
+
+<a class="btn" href="/${data.getServletConfig().getServletName()}/portal">戻る</a>
+
+#ALcell_contents_footer($career)

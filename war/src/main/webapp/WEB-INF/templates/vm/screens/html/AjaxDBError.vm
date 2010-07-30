@@ -1,0 +1,58 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+<div class="roundTopBlock clearfix">
+  <div class="roundRightBlock">
+    <div class="roundBottomBlock">
+      <div class="roundLeftBlock">
+        <div class="roundTopLeftBlock">
+          <div class="roundTopRightBlock">
+            <div class="roundBottomRightBlock" >
+              <div class="roundBottomLeftBlock">
+                <table class="roundBlockWrapperTop">
+                  <tbody>
+                    <tr>
+                      <td class="roundBlockTitle wide">データベースエラー</td>
+                      <td class="roundBlockIcon last"><div style="float:right"><img style="cursor:pointer" onclick="dijit.byId('modalDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる"/></div></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="roundBlockWrapperBottom clearfix">
+                  <div class="roundBlockContent">
+<div style="padding:5px;" >
+ご迷惑をお掛けいたしまして誠に申し訳ございません。<br />
+お探しのページが見つかりません。以下の原因が考えられます。<br />
+<div style="padding:5px;">
+<ul>
+<li>データが削除されている</li>
+<li>URLの指定が間違えている</li>
+<li>データベースが停止している</li>
+</ul>
+</div>
+</div>
+#if($config.getString("support.mail"))
+恐れ入りますが、URLの指定に誤りがございません際には、システム管理者様までお問い合わせください。
+<br />
+[e-mail : <A Href="mailto:$config.getString("support.mail")">$config.getString("support.mail")</A> ]
+#end
+#ALbuttonheader()
+#ALajaxbuttonClose()
+#ALbuttonfooter()
+#ALdialogfooter()
+

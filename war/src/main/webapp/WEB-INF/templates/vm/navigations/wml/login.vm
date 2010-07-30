@@ -1,0 +1,31 @@
+#if ($data.User.hasLoggedIn())
+$screen_placeholder
+#else
+<card id="Login">
+<p align="center">
+#if (!$!data.getMessage())
+<b>${l10n.LOGIN_WELCOME_AT_JETSPEED_VM}</b><br/>
+#else
+<b>${l10n.LOGIN_JETSPEED_WAP_VM}</b>
+#end
+</p>
+  <do type="accept" label="login">
+    <go href="$link" method="post">
+      <postfield name="password" value="$(password)" /> 
+      <postfield name="username" value="$(username)" />
+      <postfield name="$jslink.ActionKey" value="$config.getString("action.login")" />
+      <setvar name="$jslink.ActionKey" value="" />
+      <setvar name="username" value="" />
+      <setvar name="password" value="" />
+    </go>
+  </do>
+
+#if ($data.getMessage())
+<p>$!data.getMessage()</p>
+<p align="center">-------</p>
+#end
+<p>${l10n.LOGIN_LOGIN_VM}<input name="username" type="text" size="5" value="" emptyok="false" maxlength="25"/></p>
+<p>${l10n.LOGIN_PASSWD_VM}<input name="password" type="password" size="5" value="" emptyok="true" maxlength="25"/></p>
+</card>
+#end
+

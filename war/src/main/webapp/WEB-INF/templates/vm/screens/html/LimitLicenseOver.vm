@@ -1,0 +1,45 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+<center>
+<div align="center" style="width:500px;">
+  <br/>
+  <div style="text-align:left">
+  <h3>試用期間終了のお知らせ</h3>
+  <br/>
+グループウェア 『アイポ5』 の試用期間が完了しました。 <br />
+ご利用いただき誠にありがとうございました。 <br />
+引き続きご利用いただくためには「アイポ5 オレンジライセンス」のご購入が必要となります。
+「アイポ5 オレンジライセンス」のご購入は以下のサイトからお求めいただけます。<br />
+納期は7営業日以内のお届けとなります。<br />
+<br />
+<h4>グループウェア 『アイポ5』  価格・購入</h4>
+<a href="http://aipostyle.com/price/" target="_blank">http://aipostyle.com/price/ </a><br />
+<br />
+<br />
+なお、試用期間中に入力したデータも引き続きご利用いただけますので、 ご安心ください。 <br />
+ご不明な点などございましたら、以下のサイトからお問い合わせください。<br />
+<br />
+<h4>グループウェア 『アイポ5』 のお問い合わせ先 </h4>
+<a href="http://aipostyle.com/inquiry/" target="_blank">http://aipostyle.com/inquiry/ </a><br/>
+  </div>
+  <br/>
+#parse("/screens/html/TimeoutLoginForm.vm")
+</div>
+</center>
