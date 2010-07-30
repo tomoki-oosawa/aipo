@@ -1,0 +1,83 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+##-------------------------------------------------------------------
+#set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFilterFormScreen").addQueryData("entityid","new")))
+#set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFilterOrderFormScreen")))
+#set ($submenulist = [["フィルタを追加する","javascript:aipo.common.showDialog('$newUrl1');","themes/$!theme/images/icon/icon_add.gif"], ["フィルタの順番を変更する","javascript:aipo.common.showDialog('$newUrl2');","images/webmail/webmail_change_turn.gif"]])
+#set($tabs = [["フィルタ一覧", "",""]])
+
+##            {   caption: "", iconClass: "menuBarIconAccountChangeTurn", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserChangeTurnFormScreen")');"    }
+
+##------------------------------------------------------------------------------
+#ALsubmenubar($submenulist "")
+<div class="p">
+#ALtableheaderSimpleWide()
+#ALtdcaption('メールアカウント')
+#ALtditemheader()
+<select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFilterListScreen").addQueryData("accountid",""))">（メールアカウントの選択）</option>
+#foreach( $record in $result.MailAccountList )
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFilterListScreen").addQueryData("accountid",$!record.AccountId))" #if ($!result.isMatch($!result.AccountId,$!record.AccountId.Value)) selected="selected" #end>$!record.AccountName</option>
+#end
+</select>
+#ALtditemfooter()
+#ALtablefooter()
+</div>
+#ALajaxtabheader($tabs "")
+#ALspacebothheader()
+#if($result.List.size() <= 0)
+<div class="message">フィルタが登録されていません。</div>
+#else
+#ALajaxlistformheader('フィルタ')
+#ALajaxpageview('WebMailFilterListScreen' $result)
+#ALtableheaderWide()
+<tr>
+#ALtdheadThin("#ALswitchCheckbox()")
+#ALtdheadThin("#ALajaxsort('sort_order' '処理順' $result 'WebMailFilterListScreen')")
+#ALtdhead("#ALajaxsort('filter_name' 'フィルタ名' $result 'WebMailFilterListScreen')")
+#ALtdhead("#ALajaxsort('filter_string' '振り分け条件' $result 'WebMailFilterListScreen')")
+#ALtdhead("#ALajaxsort('dst_folder_name' '振り分け先' $result 'WebMailFilterListScreen')")
+#ALtdheadAtt(' ' 'width="1%"')
+</tr>
+#foreach ($record in $result.List)
+<tr>
+#ALtdcellAtt("<input name='check$!record.FilterId' type='checkbox' value='$!record.FilterId' />" 'align="center"')
+#ALtdcell("$!record.SortOrder")
+#ALtdcellheader()
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFilterDetailScreen").addQueryData("filterid",$record.FilterId))');">$!record.FilterName</a>
+#ALtdcellfooter()
+#ALtdcellheaderAtt('align="center" nowrap')
+$!{record.FilterType}が$!{record.FilterString}を含む
+#ALtdcellfooter()
+#ALtdcell("$!record.DstFolderName")
+#ALtdcellAtt("#ALajaxbuttonLink('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormScreen').addQueryData('mode','form').addQueryData('entityid',$record.FilterId) 'themes/$!theme/images/icon/icon_edit.gif')" 'nowrap')
+</tr>
+#end
+#ALtablefooter()
+#ALajaxpageviewFooter('WebMailFilterListScreen' $result)
+
+#ALbuttonheaderRight()
+チェックしたフィルタを
+#ALajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")<br/>
+#ALbuttonfooterRight()
+
+#end
+#ALformfooter()
+#ALspacebothfooter()
+#ALajaxtabfooter()

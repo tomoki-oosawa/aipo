@@ -1,0 +1,48 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set($tabs = [["サンプルデータの削除", "",""]])
+#ALtabheader($tabs "")
+<h3>サンプルデータの削除</h3>
+<div class="caution">（注意）</div>
+<div class="message small">『削除する』ボタンをクリックしていただくことで下記のサンプルデータが削除されます。<br />一度データを削除なさいますと復旧はできませんので、万が一のため必ず${alias}のバックアップを取っていただいた上で実行してください。
+${alias}のバックアップにつきましては<a target="_blank" href="http://aipostyle.com/">こちらのホームページ</a>をご参照いただけますと幸いでございます。</div>
+#ALtableheaderWide()
+#ALtdcaption("この機能で削除されるデータ")
+#ALtditemheader()
+<ul class="small">
+<li>サンプルユーザーアカウント（木村 一郎/sample1、田村 涼子/sample2、山田 太郎/sample3）</li>
+<li>サンプルユーザーのブログ記事及びそれに対するすべてのコメントと添付ファイル</li>
+<li>サンプルユーザーのブログコメント</li>
+<li>サンプルユーザーの掲示板トピック及びそれに対するすべての返信と添付ファイル</li>
+<li>サンプルのアドレス帳データ</li>
+<li>サンプルユーザーのWebメールアカウント</li>
+<li>サンプルユーザーのWebメールでの送受信メール及びそれらの添付ファイル</li>
+<li>サンプルユーザーのメモ帳データ</li>
+<li>サンプルユーザーのタイムカード打刻データ</li>
+<li>サンプルユーザーのToDo</li>
+<li>サンプルユーザーのスケジュール</li>
+<li>サンプルユーザーによって申請されたワークフロー</li>
+</ul>
+#ALtditemfooter()
+#ALtablefooter()
+<form action="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doDeletesample_form','1')" method="post">
+<input type="hidden" name="secid" value="$secid" />
+<div align="center"><input type="submit" class="submit" value="削除する" /></div>
+</form>

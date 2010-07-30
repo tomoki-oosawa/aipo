@@ -1,0 +1,87 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-dlg-")
+
+#macro(ALajaxbuttonDisable $url $indicator_id $portlet_id $receive)
+<input name="ajaxbuttonDisable" class="button" type="button" value="無効にする" onclick="aimluck.io.ajaxDisableSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
+#end
+#macro(ALajaxbuttonEnable $url $indicator_id $portlet_id $receive)
+<input name="ajaxbuttonEnable" class="button" type="button" value="有効にする" onclick="aimluck.io.ajaxEnableSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
+#end
+
+## ---------------------------------------------------------------------------
+#ALdialogheader("ユーザー詳細")
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+#ALajaxdetailformheader("ユーザー")
+#ALtableheaderWide()
+#ALtdcaption('ログイン名')
+#ALtditem($!result.Detail.UserName)
+#ALtdcaption('名前')
+#ALtditem($!result.Detail.Name)
+#ALtdcaption('名前（フリガナ）')
+#ALtditem($!result.Detail.NameKana)
+#ALtdcaption('メールアドレス')
+#ALtditem($!result.Detail.Email)
+#ALtdcaption('電話番号（外線）')
+#ALtditem($!result.Detail.OutTelephone)
+#ALtdcaption('電話番号（内線）')
+#ALtditem($!result.Detail.InTelephone)
+#ALtdcaption('電話番号（携帯）')
+#ALtditem($!result.Detail.CellularPhone)
+#ALtdcaption('携帯メールアドレス')
+#ALtditem($!result.Detail.CellularMail)
+#ALtdcaption('顔写真')
+#ALtditemheader()
+#if($!{result.Detail.hasPhoto()})
+<img src="$jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{result.Detail.UserId}).addQueryData("r",$!{result.RandomNum})" alt="顔写真" align="absmiddle" />
+#else
+未登録です。
+#end
+#ALtditemfooter()
+#ALtdcaption('部署')
+#ALtditemheader()
+#foreach($record in $!result.Detail.getPostNameList())
+$!record <br />
+#end
+#ALtditemfooter()
+#ALtdcaption('役職')
+#ALtditem($!result.Detail.PositionName)
+#ALtdcaption('有効/無効')
+#set($disabled_flg = $!result.Detail.Disabled)
+#if("$disabled_flg" == "N")
+#ALtdcell("無効")
+#elseif("$disabled_flg" == "F")
+#ALtdcell("有効")
+#end
+#ALtablefooter()
+#ALbuttonheader()
+#if(!$!{noedit})
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.account_user.onLoadUserDialog")
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.account_user.onReceiveMessage")
+#if("$disabled_flg" == "F")
+#ALajaxbuttonDisable("$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'disable')" "$indicator_id" "$!portlet.ID" "aipo.account_user.onReceiveMessage")
+#elseif("$disabled_flg" == "N")
+#ALajaxbuttonEnable("$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'enable')" "$indicator_id" "$!portlet.ID" "aipo.account_user.onReceiveMessage")
+#end
+#end
+#ALajaxbuttonClose()
+#ALbuttonfooter()
+#ALformfooter()
+#ALdialogfooter()

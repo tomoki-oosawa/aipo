@@ -1,0 +1,81 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-dlg-")
+## ---------------------------------------------------------------------------
+#macro(MsgboardajaxbuttonDelete $url $indicator_id $portlet_id $receive)
+<input name="ajaxbuttonDelete" class="button" type="button" value="削除する" onclick="aipo.msgboard.ajaxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
+#end
+## ---------------------------------------------------------------------------
+#ALdialogheader("掲示板カテゴリ詳細")
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+<div id="messageDiv"></div>
+#ALajaxdetailformheader("掲示板カテゴリ")
+#ALtableheaderWide()
+#ALtdcaption('カテゴリ名')
+#ALtditem($!result.Detail.CategoryName)
+#ALtdcaption('メモ')
+#ALtditem($!result.Detail.Note)
+#ALtdcaption('閲覧／変更')
+#ALtditemheader()
+#set($accessFlag = $!result.Detail.AccessFlag.toString())
+#if($accessFlag == "0") 
+全てのユーザーが閲覧／返信可。
+#elseif($accessFlag == "1") 
+全てのユーザーが閲覧可。所属メンバーのみ返信可。
+#elseif($accessFlag == "2") 
+所属メンバーのみ閲覧／返信可。
+#elseif($accessFlag == "3") 
+自分のみ閲覧／返信可。
+#end
+#if($accessFlag == "1" || $accessFlag == "2")
+<div style="padding-top:2px;">
+#ALtableheaderSimple("100%")
+#ALtdcaptionAtt('所属メンバー' 'width="100" nowrap')
+#ALtditemheader()
+#set($counter = 0)
+#foreach($record in $!result.MemberList)
+$!record.AliasName <br />
+#end
+#if($counter < ($!result.MemberList.size() - 1))
+#set ($hasMember = true)
+#end
+#ALtditemfooter()
+#ALtablefooter()
+</div>
+#end
+#ALtditemfooter()
+#ALtdcaption('作成者')
+#ALtditem($!result.Detail.OwnerName)
+#ALtdcaption('登録日')
+#ALtditem($!result.Detail.CreateDate)
+#ALtdcaption('更新日')
+#ALtditem($!result.Detail.UpdateDate)
+#ALtablefooter()
+#ALbuttonheader()
+#if($!result.isMatch($!{result.UserId} , $!{result.Detail.OwnerId.Value}) || $!result.AuthorityEdit)
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardCategoryFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.msgboard.onLoadCategoryDialog")
+#end
+#if($!result.isMatch($!{result.UserId} , $!{result.Detail.OwnerId.Value}) || $!result.AuthorityDelete)
+#MsgboardajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardCategoryFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id"  "$!portlet.ID" "aipo.msgboard.onReceiveMessage")
+#end
+#ALajaxbuttonClose()
+#ALbuttonfooter()
+#ALformfooter()
+#ALdialogfooter()
