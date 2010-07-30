@@ -1,0 +1,70 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($config = $portlet.PortletConfig)
+#set ($mtype = $!data.Parameters.getString("mtype"))
+#set ($psmlEntry = $jetspeed.EntryFromRequest)
+#set ($securitySource = $jetspeed.getSecuritySource($psmlEntry))
+#set ($navilist = [["トップ", "$!jslink.Template.addQueryData($jslink.ActionKey, $action).addQueryData('js_peid', $data.getJs_peid()).addQueryData('eventSubmit_doCancel', '1')"], ["表示カスタマイズ", ""]])
+#set ($tabs = [["表示カスタマイズ", "",""]])
+## ---------------------------------------------------------------------------
+#ALjavascript("/${data.getServletConfig().getServletName()}/javascript/aimluck/io/form.js")
+#ALcontentheader($!{portlet.Title} $navilist)
+#ALtabheader($tabs "")
+#ALspacebothheader()
+#if ($!mtype)
+<form name="DefaultCustomizer" action="$jslink.Template.addQueryData('mtype', $mtype)" method="post" onsubmit="return(aimluck.io.disableForm(this, true));">
+#else
+<form name="DefaultCustomizer" action="$jslink.Template" method="post" onsubmit="return(aimluck.io.disableForm(this, true));">
+#end
+#if ($action)
+<input name="$jslink.ActionKey" type="hidden" value="$action" />
+#end
+<input name="js_peid" type="hidden" value="$data.getJs_peid()" />
+<input type="hidden" name="secid" value="$secid" />
+#ALtableheaderWide()
+#ALtdcaption("ポートレット名")
+#ALtditem("#ALtextfield('current_title' $!current_title '90%' 50 'active')")
+#foreach ( $param in $parameters )
+#if ($param.Type && $param.Type == "invisible")
+<input type="hidden" name="$param.Name" value="$param.Value" />
+#else
+#ALtdcaption("#if ($param.Title) $param.Title #else $param.Name #end")
+#ALtditemheader()
+#if ($param.Type && $param.Type == "style")
+$jetspeed.getPortletParameter($data, $portlet, $param.Name, $param.Value)
+#elseif ($param.Type && $param.Type == "boolean")
+<select name="$param.Name">
+<option #if ($param.Type && $param.Value == "false") selected="selected" #end>${l10n.CUSTOMIZER_PORTLET_FALSE_VM}</option>
+<option #if ($param.Type && $param.Value == "true") selected="selected" #end>${l10n.CUSTOMIZER_PORTLET_TRUE_VM}</option>
+</select>
+#else
+<input type="text" name="$param.Name" value="$param.Value" size="50" />
+#end
+#ALtditemfooter()
+#end
+#end
+#ALtablefooter()
+#ALbuttonheader()
+#ALsubmit('eventSubmit_doUpdate' '更新する')#ALsubmit('eventSubmit_doDefault' 'デフォルトにする')#ALsubmit('eventSubmit_doCancel' 'キャンセルする')
+#ALbuttonfooter()
+#ALformfooter()
+#ALspacebothfooter()
+#ALtabfooter()
+#ALcontentfooter()

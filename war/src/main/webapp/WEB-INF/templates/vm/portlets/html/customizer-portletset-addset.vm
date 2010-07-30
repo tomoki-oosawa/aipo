@@ -1,0 +1,55 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+<br />
+#set ($mtype = $!data.Parameters.getString("mtype"))
+#if ($!mtype)
+<form action="$jslink.Template.addQueryData('mtype', $mtype)" method="post">
+#else
+<form action="$jslink.Template" method="post">
+#end
+<input type="hidden" name="secid" value="$secid" />
+#if ($action) <input name="$jslink.ActionKey" type="hidden" value="$action" /> #end
+<table width="100%" cellspacing="2" cellpadding="0">
+<tbody><tr>
+<td align="left" nowrap width="20%">
+$l10n.CUSTOMIZER_NEWPANENAME :
+</td>
+<td align="left" nowrap width="20%">
+<input type="text" name="title" value="" />
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+</tr>
+<tr width="100%">
+<td align="center" colspan="3">
+<input type="submit" name="eventSubmit_doAddset" value="$l10n.CUSTOMIZER_APPLY" /> &nbsp;
+<input type="submit" name="eventSubmit_doCancel" value="$l10n.CUSTOMIZER_CANCEL" />
+</td>
+</tr>
+</table>
+</form>
+
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
+    aipo.portletset.menuSelected = 1;
+//]]>
+</script>

@@ -1,0 +1,11 @@
+#if (!$symbols)
+#set ( $symbols = "IONA,IBM" )
+#end
+<form action="$jslink" method="post">
+<font color="$!{skin.Color}">
+<br/>
+<p>${l10n.STOCK_QUOTE_CUSTOMIZE_ENTER_YOUR_SYMBOLS_S_VM}<br /><input name="symbols" value="$symbols" size="40" />
+<input type="submit" name="eventSubmit_doUpdate" value="${l10n.STOCK_QUOTE_CUSTOMIZE_UPDATE_VM}" />
+</p>
+</font>
+</form>

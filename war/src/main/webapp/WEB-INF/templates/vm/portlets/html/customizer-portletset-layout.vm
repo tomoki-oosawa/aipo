@@ -1,0 +1,62 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#if($!set) #set($portletsum = $!set.size()) #else #set($portletsum = 0) #end
+#set($tabs = [["レイアウト設定", "",""]])
+## ---------------------------------------------------------------------------
+#ALtabheader($tabs "")
+#ALspacebothheader()
+#if($portletsum <= 0)
+<div class="message">「ポートレット追加」ボタンでポートレットを追加してください。</div>
+#else
+<h3>レイアウトの選択</h3>
+<div class="message">以下のボタンでレイアウトを選んでください。</div>
+<table class="tableWrapper">
+<tbody>
+<tr>
+<td width="72" align="left" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=OneColumn"><img src="images/layout/layout_100.gif" alt="レイアウト [ 100% ]" title="レイアウト [ 100% ]" width="72" height="72" border="0"  /></a></td>
+<td width="72" align="left" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumns"><img src="images/layout/layout_50-50.gif" alt="レイアウト [ 50% | 50% ]" title="レイアウト [ 50% | 50% ]" width="72" height="72" border="0" /></a></td>
+<td width="72" align="left" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumnsRight"><img src="images/layout/layout_25-75.gif" alt="レイアウト [ 25% | 75% ]" title="レイアウト [ 25% | 75% ]" width="72" height="72" border="0" /></a></td>
+<td width="72" align="left" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumnsLeft"><img src="images/layout/layout_75-25.gif" alt="レイアウト [ 75% | 25% ]" title="レイアウト [ 75% | 25% ]" width="72" height="72" border="0"  /></a></td>
+<td width="72" align="left" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=ThreeColumnsSymetric"><img src="images/layout/layout_33-33-33.gif" alt="レイアウト [ 33% | 33% | 33% ]" title="レイアウト [ 33% | 33% | 33% ]" width="72" height="72" border="0" /></a></td>
+<td width="72" align="left" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=ThreeColumns"><img src="images/layout/layout_25-50-25.gif" alt="レイアウト [ 25% | 50% | 25% ]" title="レイアウト [ 25% | 50% | 25% ]" width="72" height="72" border="0" /></a></td>
+<td width="99%"></td>
+</tr>
+</tbody>
+</table>
+<br />
+<h3>ポートレットの配置</h3>
+<div class="message">ポートレットの位置を <img src="images/up.gif" alt="上へ移動" />&nbsp;<img src="images/down.gif" alt="下へ移動" />&nbsp;<img src="images/left.gif" alt="左へ移動" />&nbsp;<img src="images/right.gif" alt="右へ移動" />&nbsp;ボタンで自由に変更できます。</div>
+<div class="message">また、不要なポートレットを <img src="images/close.gif" alt="削除" /> ボタンで削除することができます。</div>
+<table class="tableWrapper">
+<tbody>
+$data.User.setTemp("customizer",$customizer)
+$!set.Controller.getContent($data)
+</tbody>
+</table>
+#end
+#ALspacebothfooter()
+#ALtabfooter()
+
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
+    aipo.portletset.menuSelected = 0;
+//]]>
+</script>
+
