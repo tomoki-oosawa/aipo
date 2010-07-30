@@ -1,0 +1,60 @@
+@charset "Shift_JIS";
+/***************************************************
+各コンテンツごとのスタイルを定義：適宜編集
+***************************************************/
+
+
+/***************************************************
+	#schedule
+--------------------------------------------------*/
+#contents #schedule {
+	margin:10px 0px;
+	padding:0px;
+	-webkit-border-radius:5px;
+	border:solid 1px #cccccc;
+}
+#contents #schedule li {
+	list-style:none;
+	background:#ff9900;
+}
+#contents #schedule li a {
+	display:block;
+	padding:5px;
+	color:#000000;
+	text-decoration:none;
+}
+#contents #schedule li ul {
+	margin:0px;
+	padding:0px;
+}
+#contents #schedule li ul li a {
+	background-image: -webkit-gradient(
+		linear, left top, left bottom, from(#ffffff), to(#dddddd) 
+	);
+}
+
+/***************************************************
+	週間チェックボックス
+--------------------------------------------------*/
+.weaklycheck {
+	border-top:solid 1px #eeeeee;
+	border-right:solid 1px #eeeeee;
+	border-bottom:solid 1px #eeeeee;
+}
+.weaklycheck p {
+	float:left;
+	width:14%;
+	margin:0px;
+	text-align:center;
+	border-left:solid 1px #eeeeee;
+}
+.weaklycheck .sun {
+	color:#ff3300;
+}
+.weaklycheck .sat {
+	color:#3333ff;
+}
+
+/***************************************************
+	ClearFix
+--------------------------------------------------*/
