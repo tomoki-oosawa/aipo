@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="commons/src/main/java"/>
+	<classpathentry kind="src" path="core/src/main/java"/>
+	<classpathentry excluding="org/apache/jetspeed/om/security/" kind="src" path="oms/src/main/java"/>
+	<classpathentry kind="src" path="lib/accessctl/src/main/java"/>
+	<classpathentry kind="src" path="lib/addressbookuser/src/main/java"/>
+	<classpathentry kind="src" path="lib/category/src/main/java"/>
+	<classpathentry kind="src" path="lib/eventlog/src/main/java"/>
+	<classpathentry kind="src" path="lib/user/src/main/java"/>
+	<classpathentry kind="src" path="lib/facility/src/main/java"/>
+	<classpathentry kind="src" path="lib/mail/src/main/java"/>
+	<classpathentry kind="src" path="lib/userfacility/src/main/java"/>
+	<classpathentry kind="src" path="portlets/accessctl/src/main/java"/>
+	<classpathentry kind="src" path="portlets/account/src/main/java"/>
+	<classpathentry kind="src" path="portlets/cellular/src/main/java"/>
+	<classpathentry kind="src" path="portlets/eventlog/src/main/java"/>
+	<classpathentry kind="src" path="portlets/fileupload/src/main/java"/>
+	<classpathentry kind="src" path="portlets/whatsnew/src/main/java"/>
+	<classpathentry kind="src" path="portlets/blog/src/main/java"/>
+	<classpathentry kind="src" path="portlets/todo/src/main/java"/>
+	<classpathentry kind="src" path="portlets/fileio/src/main/java"/>
+	<classpathentry kind="src" path="portlets/exttimecard/src/main/java"/>
+	<classpathentry kind="src" path="portlets/webpage/src/main/java"/>
+	<classpathentry kind="src" path="portlets/facilities/src/main/java"/>
+	<classpathentry kind="src" path="portlets/webmail/src/main/java"/>
+	<classpathentry kind="src" path="portlets/cabinet/src/main/java"/>
+	<classpathentry kind="src" path="portlets/manhour/src/main/java"/>
+	<classpathentry kind="src" path="portlets/mylink/src/main/java"/>
+	<classpathentry kind="src" path="portlets/workflow/src/main/java"/>
+	<classpathentry kind="src" path="portlets/memo/src/main/java"/>
+	<classpathentry kind="src" path="portlets/mygroup/src/main/java"/>
+	<classpathentry kind="src" path="portlets/schedule/src/main/java"/>
+	<classpathentry kind="src" path="portlets/msgboard/src/main/java"/>
+	<classpathentry kind="src" path="portlets/news/src/main/java"/>
+	<classpathentry kind="src" path="portlets/license/src/main/java"/>
+	<classpathentry kind="src" path="portlets/addressbook/src/main/java"/>
+	<classpathentry kind="src" path="portlets/externalsearch/src/main/java"/>
+	<classpathentry kind="src" path="portlets/timecard/src/main/java"/>
+	<classpathentry kind="src" path="portlets/page/src/main/java"/>
+	<classpathentry kind="src" path="portlets/deletesample/src/main/java"/>
+	<classpathentry kind="src" path="portlets/note/src/main/java"/>
+	<classpathentry kind="src" path="portlets/system/src/main/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<accessrules>
+			<accessrule kind="accessible" pattern="sun/**"/>
+		</accessrules>
+	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/javax/activation/activation/1.1.1/activation-1.1.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/javax/mail/mail/1.4/mail-1.4.jar" sourcepath="M2_REPO/javax/mail/mail/1.4/mail-1.4-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/javax/servlet/servlet-api/2.3/servlet-api-2.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/ant/ant/1.5/ant-1.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/castor/castor/0.9.3/castor-0.9.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/cayenne/cayenne/2.0.4/cayenne-2.0.4.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0.jar" sourcepath="M2_REPO/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/3.2/commons-collections-3.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-configuration/commons-configuration/1.0-dev-3.20030607.194155/commons-configuration-1.0-dev-3.20030607.194155.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-dbcp/commons-dbcp/1.2.2/commons-dbcp-1.2.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/commons/commons-email/1.1/commons-email-1.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-fileupload/commons-fileupload/1.0/commons-fileupload-1.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-httpclient/commons-httpclient/1.0/commons-httpclient-1.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.3/commons-lang-2.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.0.3/commons-logging-1.0.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-pool/commons-pool/1.3/commons-pool-1.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/ecs/ecs/1.4.2/ecs-1.4.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/net/sf/ezmorph/ezmorph/1.0.6/ezmorph-1.0.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/net/sf/json-lib/json-lib/2.3/json-lib-2.3-jdk15.jar"/>
+	<classpathentry kind="var" path="M2_REPO/junit/junit/4.7/junit-4.7.jar"/>
+	<classpathentry kind="var" path="M2_REPO/lucene/lucene/1.3/lucene-1.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/ojb/ojb/0.7.343/ojb-0.7.343.jar"/>
+	<classpathentry kind="var" path="M2_REPO/oro/oro/2.0.8/oro-2.0.8.jar"/>
+	<classpathentry kind="var" path="M2_REPO/poi/poi/2.5.1-final-20040804/poi-2.5.1-final-20040804.jar"/>
+	<classpathentry kind="var" path="M2_REPO/regexp/regexp/1.3/regexp-1.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/soap/soap/2.1/soap-2.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/torque/torque/3.1/torque-3.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/turbine/turbine/2.2-al1/turbine-2.2-al1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/uddi4j/uddi4j/1.0/uddi4j-1.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/velocity/velocity/1.6.4/velocity-1.6.4.jar"/>
+	<classpathentry kind="var" path="M2_REPO/village/village/2.0-dev-20030825/village-2.0-dev-20030825.jar"/>
+	<classpathentry kind="var" path="M2_REPO/xalan/xalan/2.3.1/xalan-2.3.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/xerces/xercesImpl/2.0.2/xercesImpl-2.0.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/xml-apis/xmlParserAPIs/2.0.2/xmlParserAPIs-2.0.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/skmail/skmail/0.5/skmail-0.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/skutility/skutility/0.5/skutility-0.5.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>
