@@ -1,0 +1,802 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.aimluck.eip.account;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+
+import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
+import org.apache.jetspeed.services.JetspeedSecurity;
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
+
+import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.account.util.AccountUtils;
+import com.aimluck.eip.cayenne.om.account.EipMPost;
+import com.aimluck.eip.cayenne.om.security.TurbineGroup;
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.common.ALAbstractFormData;
+import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
+import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.util.ALEipUtils;
+
+/**
+ * 部署のフォームデータを管理するクラスです。 <BR>
+ *
+ */
+public class AccountPostFormData extends ALAbstractFormData {
+
+  /** logger */
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+      .getLogger(AccountPostFormData.class.getName());
+
+  /** 部署名 */
+  private ALStringField post_name;
+
+  /** 郵便番号 */
+  private ALStringField zipcode1;
+
+  /** 郵便番号 */
+  private ALStringField zipcode2;
+
+  /** 住所 */
+  private ALStringField address;
+
+  /** 電話番号(外線)1 */
+  private ALStringField post_out_telephone1;
+
+  /** 電話番号(外線)2 */
+  private ALStringField post_out_telephone2;
+
+  /** 電話番号(外線)3 */
+  private ALStringField post_out_telephone3;
+
+  /** 電話番号(内線) */
+  private ALStringField post_in_telephone;
+
+  /** FAX番号 */
+  private ALStringField fax_number1;
+
+  /** FAX番号 */
+  private ALStringField fax_number2;
+
+  /** FAX番号 */
+  private ALStringField fax_number3;
+
+  /** 所属メンバー */
+  private List<ALEipUser> memberList;
+
+  /** */
+  private boolean is_join_member = true;
+
+  /** 部署ID */
+  private int post_id;
+
+  private ALStringField group_name;
+
+  private DataContext dataContext;
+
+  /**
+   * 初期化します。
+   *
+   * @param action
+   * @param rundata
+   * @param context
+   * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
+   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   */
+  public void init(ALAction action, RunData rundata, Context context)
+      throws ALPageNotFoundException, ALDBErrorException {
+    super.init(action, rundata, context);
+  }
+
+  /**
+   * 各フィールドを初期化します。 <BR>
+   *
+   * @see com.aimluck.eip.common.ALData#initField()
+   */
+  public void initField() {
+    dataContext = DatabaseOrmService.getInstance().getDataContext();
+
+    // 部署名
+    post_name = new ALStringField();
+    post_name.setFieldName("部署名");
+    post_name.setTrim(true);
+
+    // 郵便番号
+    zipcode1 = new ALStringField();
+    zipcode1.setFieldName("郵便番号");
+    zipcode1.setTrim(true);
+    zipcode2 = new ALStringField();
+    zipcode2.setFieldName("郵便番号");
+    zipcode2.setTrim(true);
+
+    // 住所
+    address = new ALStringField();
+    address.setFieldName("住所");
+    address.setTrim(true);
+
+    // 電話番号（外線）
+    post_out_telephone1 = new ALStringField();
+    post_out_telephone1.setFieldName("電話番号（外線）");
+    post_out_telephone1.setTrim(true);
+    post_out_telephone2 = new ALStringField();
+    post_out_telephone2.setFieldName("電話番号（外線）");
+    post_out_telephone2.setTrim(true);
+    post_out_telephone3 = new ALStringField();
+    post_out_telephone3.setFieldName("電話番号（外線）");
+    post_out_telephone3.setTrim(true);
+
+    // 電話番号（内線）
+    post_in_telephone = new ALStringField();
+    post_in_telephone.setFieldName("電話番号（内線）");
+    post_in_telephone.setTrim(true);
+
+    // FAX番号
+    fax_number1 = new ALStringField();
+    fax_number1.setFieldName("FAX番号");
+    fax_number1.setTrim(true);
+    fax_number2 = new ALStringField();
+    fax_number2.setFieldName("FAX番号");
+    fax_number2.setTrim(true);
+    fax_number3 = new ALStringField();
+    fax_number3.setFieldName("FAX番号");
+    fax_number3.setTrim(true);
+
+    if (is_join_member)
+      memberList = new ArrayList<ALEipUser>();
+
+    group_name = new ALStringField();
+  }
+
+  /**
+   *
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   */
+  protected boolean setFormData(RunData rundata, Context context,
+      List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
+    boolean res = super.setFormData(rundata, context, msgList);
+    if (res) {
+      try {
+        if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
+          post_id = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
+              ALEipConstants.ENTITY_ID));
+        }
+
+        if (is_join_member) {
+          String str[] = rundata.getParameters().getStrings("member_to");
+          if (str == null)
+            return res;
+
+          Expression exp = ExpressionFactory.inExp(
+              TurbineUser.LOGIN_NAME_PROPERTY, str);
+          SelectQuery query = new SelectQuery(TurbineUser.class);
+          query.setQualifier(exp);
+          List<?> list = dataContext.performQuery(query);
+
+          int size = list.size();
+          for (int i = 0; i < size; i++) {
+            TurbineUser record = (TurbineUser) list.get(i);
+            ALEipUser user = new ALEipUser();
+            user.initField();
+            user.setName(record.getLoginName());
+            user.setAliasName(record.getFirstName(), record.getLastName());
+            memberList.add(user);
+          }
+        }
+      } catch (Exception ex) {
+        logger.error("Exception", ex);
+      }
+    }
+    return res;
+  }
+
+  /**
+   * 各フィールドに対する制約条件を設定します。 <BR>
+   *
+   * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
+   */
+  protected void setValidator() {
+    post_name.setNotNull(true);
+    post_name.limitMaxLength(50);
+    zipcode1.setCharacterType(ALStringField.TYPE_NUMBER);
+    zipcode1.limitLength(3, 3);
+    zipcode2.setCharacterType(ALStringField.TYPE_NUMBER);
+    zipcode2.limitLength(4, 4);
+    address.limitMaxLength(64);
+    post_out_telephone1.setCharacterType(ALStringField.TYPE_NUMBER);
+    post_out_telephone1.limitMaxLength(5);
+    post_out_telephone2.setCharacterType(ALStringField.TYPE_NUMBER);
+    post_out_telephone2.limitMaxLength(4);
+    post_out_telephone3.setCharacterType(ALStringField.TYPE_NUMBER);
+    post_out_telephone3.limitMaxLength(4);
+    post_in_telephone.setCharacterType(ALStringField.TYPE_ALPHABET_NUMBER);
+    post_in_telephone.limitMaxLength(13);
+    fax_number1.setCharacterType(ALStringField.TYPE_NUMBER);
+    fax_number1.limitMaxLength(5);
+    fax_number2.setCharacterType(ALStringField.TYPE_NUMBER);
+    fax_number2.limitMaxLength(4);
+    fax_number3.setCharacterType(ALStringField.TYPE_NUMBER);
+    fax_number3.limitMaxLength(4);
+  }
+
+  /**
+   * フォームに入力されたデータの妥当性検証を行います。 <BR>
+   *
+   * @param msgList
+   * @return
+   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+   */
+  protected boolean validate(List<String> msgList) {
+    List<String> dummy = new ArrayList<String>();
+    post_name.validate(msgList);
+    address.validate(msgList);
+
+    if (post_name.toString().lastIndexOf("/") != -1) {
+      msgList.add("部署名に『 <span class='em'>/</span> 』を用いることはできません。");
+    }
+
+    try {
+      SelectQuery query = new SelectQuery(EipMPost.class);
+      if (ALEipConstants.MODE_INSERT.equals(getMode())) {
+        Expression exp = ExpressionFactory.matchExp(
+            EipMPost.POST_NAME_PROPERTY, post_name.getValue());
+        query.setQualifier(exp);
+      } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
+        Expression exp1 = ExpressionFactory.matchExp(
+            EipMPost.POST_NAME_PROPERTY, post_name.getValue());
+        query.setQualifier(exp1);
+        Expression exp2 = ExpressionFactory.noMatchDbExp(
+            EipMPost.POST_ID_PK_COLUMN, Integer.valueOf(post_id));
+        query.andQualifier(exp2);
+      }
+
+      if (dataContext.performQuery(query).size() != 0) {
+        msgList.add("部署名『 <span class='em'>" + post_name
+            + "</span> 』は既に登録されています。");
+      }
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return false;
+    }
+
+    if (!zipcode1.getValue().equals("") || !zipcode2.getValue().equals("")) {
+      if (!zipcode1.validate(dummy) || !zipcode2.validate(dummy)) {
+        msgList.add("『 <span class='em'>郵便番号</span> 』は7桁の半角数字で入力してください。");
+      }
+    }
+    if (!post_out_telephone1.getValue().equals("")
+        || !post_out_telephone2.getValue().equals("")
+        || !post_out_telephone3.getValue().equals("")) {
+      if (!post_out_telephone1.validate(dummy)
+          || !post_out_telephone2.validate(dummy)
+          || !post_out_telephone3.validate(dummy)) {
+        msgList.add("『 <span class='em'>電話番号（外線）</span> 』を正しく入力してください。");
+      }
+    }
+
+    post_in_telephone.validate(msgList);
+
+    if (!fax_number1.getValue().equals("")
+        || !fax_number2.getValue().equals("")
+        || !fax_number3.getValue().equals("")) {
+      if (!fax_number1.validate(dummy) || !fax_number2.validate(dummy)
+          || !fax_number3.validate(dummy)) {
+        msgList.add("『 <span class='em'>FAX番号</span> 』を正しく入力してください。");
+      }
+    }
+    return (msgList.size() == 0);
+  }
+
+  /**
+   * 『部署』を読み込みます。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   */
+  protected boolean loadFormData(RunData rundata, Context context,
+      List<String> msgList) {
+    try {
+      // オブジェクトモデルを取得
+      EipMPost record = AccountUtils.getEipMPost(rundata, context);
+      if (record == null)
+        return false;
+
+      // 部署名
+      post_name.setValue(record.getPostName());
+      // 郵便番号
+      StringTokenizer token;
+      if (record.getZipcode() != null) {
+        token = new StringTokenizer(record.getZipcode(), "-");
+        if (token.countTokens() == 2) {
+          zipcode1.setValue(token.nextToken());
+          zipcode2.setValue(token.nextToken());
+        }
+      }
+      // 住所
+      address.setValue(record.getAddress());
+      // 電話番号（外線）
+      if (record.getOutTelephone() != null) {
+        token = new StringTokenizer(record.getOutTelephone(), "-");
+        if (token.countTokens() == 3) {
+          post_out_telephone1.setValue(token.nextToken());
+          post_out_telephone2.setValue(token.nextToken());
+          post_out_telephone3.setValue(token.nextToken());
+        }
+      }
+
+      post_in_telephone.setValue(record.getInTelephone());
+
+      // FAX番号
+      if (record.getFaxNumber() != null) {
+        token = new StringTokenizer(record.getFaxNumber(), "-");
+        if (token.countTokens() == 3) {
+          fax_number1.setValue(token.nextToken());
+          fax_number2.setValue(token.nextToken());
+          fax_number3.setValue(token.nextToken());
+        }
+      }
+
+      post_id = record.getPostId().intValue();
+
+      if (is_join_member) {
+        SelectQuery query = new SelectQuery(TurbineGroup.class);
+        Expression exp = ExpressionFactory.matchExp(
+            TurbineGroup.GROUP_ALIAS_NAME_PROPERTY, post_name);
+        query.setQualifier(exp);
+        DataContext dataContext = DatabaseOrmService.getInstance()
+            .getDataContext();
+        List<?> list = dataContext.performQuery(query);
+        TurbineGroup tg = (TurbineGroup) list.get(0);
+        memberList.addAll(ALEipUtils.getUsers(tg.getGroupName()));
+      }
+
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * 『部署』を追加します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   */
+  protected boolean insertFormData(RunData rundata, Context context,
+      List<String> msgList) {
+    try {
+      if (dataContext == null) {
+        dataContext = DatabaseOrmService.getInstance().getDataContext();
+      }
+
+      // グループオブジェクトモデルを生成
+      TurbineGroup group = (TurbineGroup) dataContext
+          .createAndRegisterNewObject(TurbineGroup.class);
+      String name = post_name.getValue();
+      // グループ名(時間+ユーザIDで一意となるグループ名を作成)
+      String groupName = new StringBuffer().append(new Date().getTime())
+          .append("_").append(ALEipUtils.getUserId(rundata)).toString();
+      group.setGroupName(groupName);
+      // オーナIDの設定、作成者がオーナとなるので、自分自身のUID
+      group.setOwnerId(Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      // グループ名(アプリケーションレベルで付ける名前)
+      group.setGroupAliasName(name);
+      // 公開フラグ
+      group.setPublicFlag("1");
+      // グループを追加
+      JetspeedSecurity.addGroup(group);
+
+      // 部署オブジェクトモデルを生成
+      EipMPost record = (EipMPost) dataContext
+          .createAndRegisterNewObject(EipMPost.class);
+      // 部署名
+      record.setPostName(post_name.getValue());
+      // 会社ID
+      record.setCompanyId(Integer.valueOf(1));
+      // 郵便番号
+      if (!zipcode1.getValue().equals("") && !zipcode2.getValue().equals("")) {
+        record.setZipcode(new StringBuffer().append(zipcode1.getValue())
+            .append("-").append(zipcode2.getValue()).toString());
+      } else {
+        record.setZipcode("");
+      }
+      // 住所
+      record.setAddress(address.getValue());
+      // 電話番号（外線）
+      if (!post_out_telephone1.getValue().equals("")
+          && !post_out_telephone2.getValue().equals("")
+          && !post_out_telephone3.getValue().equals("")) {
+        record.setOutTelephone(new StringBuffer()
+            .append(post_out_telephone1.getValue()).append("-")
+            .append(post_out_telephone2.getValue()).append("-")
+            .append(post_out_telephone3.getValue()).toString());
+      } else {
+        record.setOutTelephone("");
+      }
+
+      // 電話番号（内線）
+      record.setInTelephone(post_in_telephone.getValue());
+
+      // FAX番号
+      if (!fax_number1.getValue().equals("")
+          && !fax_number2.getValue().equals("")
+          && !fax_number3.getValue().equals("")) {
+        record.setFaxNumber(new StringBuffer().append(fax_number1.getValue())
+            .append("-").append(fax_number2.getValue()).append("-")
+            .append(fax_number3.getValue()).toString());
+      } else {
+        record.setFaxNumber("");
+      }
+      // グループ名
+      record.setGroupName(groupName);
+      Date now = new Date();
+      // 登録日
+      record.setCreateDate(now);
+      // 更新日
+      record.setUpdateDate(now);
+      // 部署を追加
+      dataContext.commitChanges();
+      // singletonオブジェクトのリフレッシュ
+      ALEipManager.getInstance().reloadPost();
+      if (is_join_member) {
+        int size = memberList.size();
+        for (int i = 0; i < size; i++) {
+          ALEipUtils.changePost(rundata, ((ALEipUser) memberList.get(i))
+              .getName().getValue(), record.getPostId().intValue());
+        }
+      }
+      post_id = record.getPostId().intValue();
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * 『部署』を更新します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   */
+  protected boolean updateFormData(RunData rundata, Context context,
+      List<String> msgList) {
+    try {
+      // オブジェクトモデルを取得
+      EipMPost record = AccountUtils.getEipMPost(rundata, context);
+      if (record == null)
+        return false;
+      // 部署名
+      record.setPostName(post_name.getValue());
+      // 郵便番号
+      if (!zipcode1.getValue().equals("") && !zipcode2.getValue().equals("")) {
+        record.setZipcode(new StringBuffer().append(zipcode1.getValue())
+            .append("-").append(zipcode2.getValue()).toString());
+      } else {
+        record.setZipcode("");
+      }
+      // 住所
+      record.setAddress(address.getValue());
+      // 電話番号（外線）
+      if (!post_out_telephone1.getValue().equals("")
+          && !post_out_telephone2.getValue().equals("")
+          && !post_out_telephone3.getValue().equals("")) {
+        record.setOutTelephone(new StringBuffer()
+            .append(post_out_telephone1.getValue()).append("-")
+            .append(post_out_telephone2.getValue()).append("-")
+            .append(post_out_telephone3.getValue()).toString());
+      } else {
+        record.setOutTelephone("");
+      }
+
+      // 電話番号（内線）
+      record.setInTelephone(post_in_telephone.getValue());
+
+      // FAX番号
+      if (!fax_number1.getValue().equals("")
+          && !fax_number2.getValue().equals("")
+          && !fax_number3.getValue().equals("")) {
+        record.setFaxNumber(new StringBuffer().append(fax_number1.getValue())
+            .append("-").append(fax_number2.getValue()).append("-")
+            .append(fax_number3.getValue()).toString());
+      } else {
+        record.setFaxNumber("");
+      }
+      // 更新日
+      record.setUpdateDate(new Date());
+
+      dataContext.commitChanges();
+      post_id = record.getPostId().intValue();
+
+      TurbineGroup group = (TurbineGroup) JetspeedSecurity.getGroup(record
+          .getGroupName());
+      if (group == null)
+        return false;
+
+      // グループ名
+      group.setGroupAliasName(post_name.getValue());
+
+      // グループを更新
+      JetspeedSecurity.saveGroup(group);
+
+      // singletonオブジェクトのリフレッシュ
+      ALEipManager.getInstance().reloadPost();
+
+      if (is_join_member) {
+        // グループからユーザーを削除
+        List<ALEipUser> users = ALEipUtils.getUsers(record.getGroupName());
+        int size = users.size();
+        for (int i = 0; i < size; i++) {
+          JetspeedSecurity.unjoinGroup(users.get(i).getName()
+              .getValue(), record.getGroupName());
+        }
+
+        size = memberList.size();
+        for (int i = 0; i < size; i++) {
+          ALEipUtils.changePost(rundata, ((ALEipUser) memberList.get(i))
+              .getName().getValue(), record.getPostId().intValue());
+        }
+      }
+
+      dataContext.commitChanges();
+
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * 『部署』を削除します。 <BR>
+   * このとき部署に関連づけられているグループも削除します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   */
+  protected boolean deleteFormData(RunData rundata, Context context,
+      List<String> msgList) {
+    try {
+      // オブジェクトモデルを取得
+      EipMPost record = AccountUtils.getEipMPost(rundata, context);
+      if (record == null)
+        return false;
+
+      // グループからユーザーを削除
+      List<ALEipUser> users = ALEipUtils.getUsers(record.getGroupName());
+      int size = users.size();
+      for (int i = 0; i < size; i++) {
+        JetspeedSecurity.unjoinGroup(users.get(i).getName()
+            .getValue(), record.getGroupName());
+      }
+
+      // グループを削除
+      JetspeedSecurity.removeGroup(record.getGroupName());
+
+      // 部署を削除
+      dataContext.deleteObject(record);
+
+      dataContext.commitChanges();
+
+      // singletonオブジェクトのリフレッシュ
+      ALEipManager.getInstance().reloadPost();
+
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * 部署名を取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getPostName() {
+    return post_name;
+  }
+
+  /**
+   * 住所を取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getAddress() {
+    return address;
+  }
+
+  /**
+   * FAX番号を取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getFaxNumber1() {
+    return fax_number1;
+  }
+
+  /**
+   * FAX番号を取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getFaxNumber2() {
+    return fax_number2;
+  }
+
+  /**
+   * FAX番号を取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getFaxNumber3() {
+    return fax_number3;
+  }
+
+  /**
+   * 電話番号（外線）を取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getOutTelephone1() {
+    return post_out_telephone1;
+  }
+
+  /**
+   * 電話番号（外線）を取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getOutTelephone2() {
+    return post_out_telephone2;
+  }
+
+  /**
+   * 電話番号（外線）を取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getOutTelephone3() {
+    return post_out_telephone3;
+  }
+
+  /**
+   * 電話番号（内線）を取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getInTelephone() {
+    return post_in_telephone;
+  }
+
+  /**
+   * 郵便番号を取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getZipcode1() {
+    return zipcode1;
+  }
+
+  /**
+   * 郵便番号を取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getZipcode2() {
+    return zipcode2;
+  }
+
+  /**
+   * 所属メンバーを取得します。 <BR>
+   *
+   * @return
+   */
+  public List<ALEipUser> getMemberList() {
+    return memberList;
+  }
+
+  public ALStringField getGroupName() {
+    return group_name;
+  }
+
+  /**
+   *
+   * @param groupname
+   * @return
+   */
+  public List<ALEipUser> getUsers(String groupname) {
+    try {
+      return ALEipUtils.getUsers(groupname);
+      // return getUsers2(groupname);
+    } catch (Exception e) {
+      logger.error("[ERROR}", e);
+      return new ArrayList<ALEipUser>();
+    }
+  }
+
+  /**
+   *
+   * @return
+   */
+  public Map<Integer, ALEipPost> getPostMap() {
+    return ALEipManager.getInstance().getPostMap();
+  }
+
+  /**
+   *
+   * @param bool
+   */
+  public void setJoinMember(boolean bool) {
+    is_join_member = bool;
+  }
+
+  /**
+   *
+   * @return
+   */
+  public boolean isJoinMember() {
+    return is_join_member;
+  }
+
+  /**
+   *
+   * @return
+   */
+  public int getPostId() {
+    return post_id;
+  }
+}

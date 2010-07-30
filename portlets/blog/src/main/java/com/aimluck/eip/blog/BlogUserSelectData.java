@@ -1,0 +1,253 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.aimluck.eip.blog;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
+import java.util.jar.Attributes;
+
+import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
+
+import com.aimluck.commons.field.ALDateTimeField;
+import com.aimluck.eip.blog.util.BlogUtils;
+import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
+import com.aimluck.eip.common.ALAbstractSelectData;
+import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.util.ALEipUtils;
+
+/**
+ * ブログ画面のユーザー情報の検索データを管理するクラスです。 <BR>
+ * 
+ */
+public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
+
+  /** logger */
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+      .getLogger(BlogUserSelectData.class.getName());
+
+  /** 表示対象の部署名 */
+  private String target_group_name;
+
+  private List myGroupList = null;
+
+  private int login_uid = -1;
+
+  private List latestBlogerIds = null;
+
+  private DataContext dataContext;
+
+  /**
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
+   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   */
+  public void init(ALAction action, RunData rundata, Context context)
+      throws ALPageNotFoundException, ALDBErrorException {
+
+    target_group_name = BlogUtils.getTargetGroupName(rundata, context);
+
+    login_uid = ALEipUtils.getUserId(rundata);
+
+    List myGroups = ALEipUtils.getMyGroups(rundata);
+    myGroupList = new ArrayList();
+    int length = myGroups.size();
+    for (int i = 0; i < length; i++) {
+      myGroupList.add(myGroups.get(i));
+    }
+
+    dataContext = DatabaseOrmService.getInstance().getDataContext();
+
+    super.init(action, rundata, context);
+  }
+
+  /**
+   * 一覧データを取得します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context)
+   */
+  public List selectList(RunData rundata, Context context) {
+    try {
+      latestBlogerIds = getLatestBlogerIds();
+
+      String groupname = null;
+      if ((target_group_name != null) && (!target_group_name.equals(""))
+          && (!target_group_name.equals("all"))) {
+        groupname = target_group_name;
+      } else {
+        groupname = "LoginUser";
+      }
+
+      return BlogUtils.getBlogUserResultDataList(groupname);
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  /**
+   * ResultData に値を格納して返します。（一覧データ） <BR>
+   * 
+   * @param obj
+   * @return
+   * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
+   */
+  protected Object getResultData(Object obj) {
+    BlogUserResultData rd = (BlogUserResultData) obj;
+
+    if (latestBlogerIds != null
+        && latestBlogerIds.contains(Integer.valueOf((int) rd.getUserId()
+            .getValue()))) {
+      rd.setNewlyCreateEntry(true);
+    } else {
+      rd.setNewlyCreateEntry(false);
+    }
+    return rd;
+  }
+
+  private List getLatestBlogerIds() {
+    try {
+      // 表示開始日時
+      ALDateTimeField field = new ALDateTimeField("yyyy-MM-dd");
+      Calendar cal = Calendar.getInstance();
+      cal.add(Calendar.DAY_OF_MONTH, -1);
+      field.setValue(cal.getTime());
+
+      SelectQuery query = new SelectQuery(EipTBlogEntry.class);
+      Expression exp = ExpressionFactory.greaterOrEqualExp(
+          EipTBlogEntry.CREATE_DATE_PROPERTY, field.getValue());
+      query.setQualifier(exp);
+      List list = dataContext.performQuery(query);
+      if (list == null || list.size() <= 0)
+        return null;
+
+      List blogerids = new ArrayList();
+      Integer id = null;
+      EipTBlogEntry entry = null;
+      int size = list.size();
+      for (int i = 0; i < size; i++) {
+        entry = (EipTBlogEntry) list.get(i);
+        id = entry.getOwnerId();
+        if (!blogerids.contains(id))
+          blogerids.add(id);
+      }
+
+      return blogerids;
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+  /**
+   * 詳細データを取得します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context)
+   */
+  public Object selectDetail(RunData rundata, Context context) {
+    return null;
+  }
+
+  /**
+   * ResultData に値を格納して返します。（詳細データ） <BR>
+   * 
+   * @param obj
+   * @return
+   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   */
+  protected Object getResultDataDetail(Object obj) {
+    return null;
+  }
+
+  /**
+   * @return
+   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   */
+  protected Attributes getColumnMap() {
+    Attributes map = new Attributes();
+    return map;
+  }
+
+  public String getTargetGroupName() {
+    return target_group_name;
+  }
+
+  /**
+   * 
+   * @return
+   */
+  public Map getPostMap() {
+    return ALEipManager.getInstance().getPostMap();
+  }
+
+  /**
+   * 
+   * @return
+   */
+  public List getMyGroupList() {
+    return myGroupList;
+  }
+
+  /**
+   * 
+   * @param id
+   * @return
+   */
+  public boolean isMatch(int id1, long id2) {
+    return id1 == (int) id2;
+  }
+
+  public int getLoginUid() {
+    return login_uid;
+  }
+
+  /**
+   * アクセス権限チェック用メソッド。<br />
+   * アクセス権限の機能名を返します。
+   * 
+   * @return
+   */
+  public String getAclPortletFeature() {
+    return ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER;
+  }
+}

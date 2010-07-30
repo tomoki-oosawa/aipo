@@ -1,0 +1,162 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.aimluck.eip.blog;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
+
+import com.aimluck.eip.blog.util.BlogUtils;
+import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
+import com.aimluck.eip.cayenne.om.portlet.EipTBlogThema;
+import com.aimluck.eip.common.ALAbstractCheckList;
+import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.util.ALEipUtils;
+
+/**
+ * ブログテーマの複数削除を行うためのクラスです。 <BR>
+ * 
+ */
+public class BlogThemaMultiDelete extends ALAbstractCheckList {
+
+  /** logger */
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+      .getLogger(BlogThemaMultiDelete.class.getName());
+
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param values
+   * @param msgList
+   * @return
+   * @see com.aimluck.eip.common.ALAbstractCheckList#action(org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context, java.util.ArrayList,
+   *      java.util.ArrayList)
+   */
+  protected boolean action(RunData rundata, Context context, List<String> values,
+      List<String> msgList) {
+    try {
+      DataContext dataContext = DatabaseOrmService.getInstance()
+          .getDataContext();
+
+      List intValues = new ArrayList();
+      int valuesize = values.size();
+      for (int i = 0; i < valuesize; i++) {
+        intValues.add(Integer.valueOf((String) values.get(i)));
+      }
+
+      SelectQuery query = new SelectQuery(EipTBlogThema.class);
+      Expression exp2 = ExpressionFactory.inDbExp(
+          EipTBlogThema.THEMA_ID_PK_COLUMN, values);
+      query.setQualifier(exp2);
+
+      List themalist = dataContext.performQuery(query);
+      if (themalist == null || themalist.size() == 0)
+        return false;
+
+      // これらテーマに含まれる記事を「未分類」に移す
+      List themaIds = new ArrayList();
+      EipTBlogThema thema = null;
+      int themasize = themalist.size();
+      for (int i = 0; i < themasize; i++) {
+        thema = (EipTBlogThema) themalist.get(i);
+        themaIds.add(thema.getThemaId());
+      }
+
+      SelectQuery reqquery = new SelectQuery(EipTBlogEntry.class);
+      Expression reqexp1 = ExpressionFactory.inDbExp(
+          EipTBlogEntry.EIP_TBLOG_THEMA_PROPERTY + "."
+              + EipTBlogThema.THEMA_ID_PK_COLUMN, values);
+      reqquery.setQualifier(reqexp1);
+      List requests = dataContext.performQuery(reqquery);
+      if (requests != null && requests.size() > 0) {
+        EipTBlogEntry request = null;
+        EipTBlogThema defaultThema = BlogUtils.getEipTBlogThema(dataContext,
+            Long.valueOf(1));
+        int size = requests.size();
+        for (int i = 0; i < size; i++) {
+          request = (EipTBlogEntry) requests.get(i);
+          request.setEipTBlogThema(defaultThema);
+        }
+      }
+
+      dataContext.commitChanges();
+
+      int themalistsize = themalist.size();
+
+      // カテゴリを削除
+      for (int i = 0; i < themalistsize; i++) {
+        EipTBlogThema delete_thema = (EipTBlogThema) themalist.get(i);
+
+        // entityIdを取得
+        Integer entityId = delete_thema.getThemaId();
+        // カテゴリ名を取得
+        String themaName = delete_thema.getThemaName();
+        // カテゴリを削除
+        dataContext.deleteObject(delete_thema);
+        dataContext.commitChanges();
+
+        // ログに保存
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+            entityId, ALEventlogConstants.PORTLET_TYPE_BLOG_THEMA, themaName);
+      }
+      // 一覧表示画面のフィルタに設定されているカテゴリのセッション情報を削除
+      String filtername = BlogEntrySelectData.class.getName()
+          + ALEipConstants.LIST_FILTER;
+      ALEipUtils.removeTemp(rundata, context, filtername);
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * アクセス権限チェック用メソッド。<br />
+   * アクセス権限を返します。
+   * 
+   * @return
+   */
+  protected int getDefineAclType() {
+    return ALAccessControlConstants.VALUE_ACL_DELETE;
+  }
+
+  /**
+   * アクセス権限チェック用メソッド。<br />
+   * アクセス権限の機能名を返します。
+   * 
+   * @return
+   */
+  public String getAclPortletFeature() {
+    return ALAccessControlConstants.POERTLET_FEATURE_BLOG_THEME;
+  }
+}

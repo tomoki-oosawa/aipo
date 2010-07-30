@@ -1,0 +1,82 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#if($result.PhotoList.size() == 0)
+##<div class="message" style="padding-left:12px;">写真は登録されていません</div>
+#else
+<div class="p clearfix">
+<ul class="imageView">
+#foreach ($record in $result.PhotoList)
+<li>
+<div class="image outer">
+<table class="tableWrapper"> <tbody> <tr>
+<td width="96" valign="middle" height="96" align="center"><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData("entityid",$record.EntryId))');"><img src="$!utils.escapeXML($jslink.getTemplate('BlogFileThumbnailScreen').addQueryData('ownerid', ${record.OwnerId}).addQueryData('entityid', ${record.EntryId}).addQueryData('attachmentIndex', ${record.FileId}))" alt=""  /></a></td>
+</tr></tbody></table>
+</div>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData("entityid",$record.EntryId))','$!portlet.ID',aipo.blog.onLoadBlogCommentDialog);">${record.EntryTitle}</a>
+</li>
+#end
+</ul>
+</div>
+#end
+
+#set($flag = true)
+<h3>最近の記事</h3>
+#if($result.List.size() == 0)
+<div class="message" style="padding-left:12px;">記事は登録されていません</div>
+#else
+<div class="p">
+#ALajaxpageview('BlogScreen' $result)
+</div>
+<div class="p clearfix">
+<table class="rowTable wide">
+#foreach ($record in $result.List)
+<tr #if($flag) class="even" #end>
+<td width="20%" nowrap="nowrap">${record.TitleDate}</td>
+<td width="1%" style="padding:1px 3px 1px 0px;"><img src="images/icon/icon_add.gif" width="16" height="16" /></td>
+<td width="40%">
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData("entityid",$record.EntryId))', '$!portlet.ID', aipo.blog.onLoadBlogDetailDialog );">${record.Title}</a>
+</td>
+<td style="padding:1px 0px 1px 5px;"><a href="$!utils.escapeXML($!jslink.getAction('controls.Maximize',$!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1').addQueryData('view_uid',${record.OwnerId}).addQueryData('view_month', 'none'))">${record.OwnerName}</a></td>
+</tr>
+#if($flag) #set($flag = false) #else #set($flag = true) #end
+#end
+</table>
+</div>
+#end
+
+#set($flag2 = true)
+<h3>記事コメント記入履歴</h3>
+#if($result.CommentHistoryList.size() == 0)
+<div class="message" style="padding-top:2px;padding-left:12px;">コメントした記事はありません</div>
+#else
+<div class="p">
+<table class="rowTable wide">
+#foreach ($record2 in $result.CommentHistoryList)
+<tr #if($flag2) class="even" #end>
+<td width="20%" nowrap="nowrap">${record2.TitleDate}</td>
+<td width="1%" style="padding:1px 3px 1px 0px;"><img src="images/icon/icon_add.gif" width="16" height="16" /></td>
+<td width="40%"><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData("entityid",$record2.EntryId).addQueryData('view_uid',${record2.OwnerId}))','$!portlet.ID',aipo.blog.onLoadBlogCommentDialog);">${record2.Title} （${record2.CommentsNum}）</a></td>
+<td style="padding:1px 0px 1px 5px;"><a href="$!utils.escapeXML($!jslink.getAction('controls.Maximize',$!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1').addQueryData('view_uid',${record2.OwnerId}).addQueryData('view_month', 'none'))">${record2.OwnerName}</a></td>
+</tr>
+#if($flag2) #set($flag2 = false) #else #set($flag2 = true) #end
+#end
+</table>
+</div>
+#end

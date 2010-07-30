@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Aipo is a groupware program developed by Aimluck,Inc.
+Copyright (C) 2004-2008 Aimluck,Inc.
+http://aipostyle.com/
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<registry>
+    <portlet-entry name="Cell_AccountLogin" hidden="true" type="ref" parent="Velocity" application="false">
+
+        <meta-info>
+            <title>ログイン</title>
+            <description>ログインします。</description>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
+        <parameter name="template" value="accountlogin-form" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="action" value="account.CellAccountLoginAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="_showtitlebar" value="false" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <media-type ref="docomo_foma"/>
+        <media-type ref="docomo_imode"/>
+        <media-type ref="iphone"/>
+        <media-type ref="au"/>
+        <media-type ref="vodafone"/>
+        <media-type ref="wm"/>
+        <url cachedOnURL="true"/>
+    </portlet-entry>
+    <portlet-entry name="Cell_AccountEdit" hidden="true" type="ref" parent="Velocity" application="false">
+        <meta-info>
+            <title>簡易ﾛｸﾞｲﾝ設定</title>
+            <description>ﾕｰｻﾞｰ情報を管理します。</description>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
+        <parameter name="template" value="accountlogin-form" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="action" value="account.CellAccountEditAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="_showtitlebar" value="false" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <media-type ref="docomo_foma"/>
+        <media-type ref="docomo_imode"/>
+        <media-type ref="au"/>
+        <media-type ref="vodafone"/>
+        <url cachedOnURL="true"/>
+    </portlet-entry>
+    <portlet-entry name="Cell_AccountPerson" hidden = "true" type="ref" parent="Velocity" application="false">
+        <meta-info>
+            <title>個人設定</title>
+            <description>ユーザー情報を管理します。</description>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
+        <parameter name="template" value="account" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="action" value="account.AccountPersonAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="_showtitlebar" value="false" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <media-type ref="iphone"/>
+        <media-type ref="wm"/>
+        <url cachedOnURL="true"/>
+    </portlet-entry>
+</registry>

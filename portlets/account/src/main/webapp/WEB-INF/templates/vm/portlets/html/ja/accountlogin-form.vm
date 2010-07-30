@@ -1,0 +1,279 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set($enable_userlist = true)
+#if($config.getString("action.login.enable.select.userlist") != "true")
+#set($enable_userlist = false)
+#end
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+var tmpUsername = "";
+
+function set_username(form){
+#if($enable_userlist)
+  if(form.login_type.checked){
+  	form.username.value = form.member_username_list.options[form.member_username_list.selectedIndex].value;
+  }else{
+  	form.username.value = form.member_username.value;
+  }
+#else
+  form.username.value = form.member_username.value;
+#end
+}
+
+
+function submit2(form) {
+  set_username(form);
+  
+  set_cookie("username", form.username.value);
+#if($enable_userlist)
+  set_cookie("login_type", form.login_type.checked);
+#end
+  if (form.save_password.checked) {
+    set_cookie("password", form.password.value);  
+  } else {
+    remove_cookie("password");
+  }
+  set_cookie("save_password", form.save_password.checked);
+}
+
+function init() {
+#if($enable_userlist)
+  var form = document.forms[0];
+  var logintypeStr = get_cookie("login_type");
+  var logintypeObj = form.login_type;
+  var savePassStr = get_cookie("save_password");
+  var savePassObj = form.save_password;
+  if (logintypeStr == "false") {
+    logintypeObj.checked = false;
+  } else {
+    logintypeObj.checked = true;
+  }
+  if (savePassStr == "true") {
+    savePassObj.checked = true;
+  } else {
+    savePassObj.checked = false;
+  }
+  change_login_type(form, logintypeObj);
+#else
+  var form = document.forms[0];
+  var savePassStr = get_cookie("save_password");
+  var savePassObj = form.save_password;
+  if (savePassStr == "true") {
+    savePassObj.checked = true;
+  } else {
+    savePassObj.checked = false;
+  }
+  change_login_type(form);
+#end
+}
+
+function set_input_value(form) {
+  var usernameStr = "";
+  if (tmpUsername == "") {
+    usernameStr = get_cookie("username");
+  } else {
+    usernameStr = tmpUsername;
+  }
+  var usernameObj = form.username;
+  usernameObj.value = usernameStr;
+#if($enable_userlist)
+  if(form.login_type.checked){
+  	form.member_username_list.options[form.member_username_list.selectedIndex].value = usernameStr;
+  }else{
+  	form.member_username.value = usernameStr;
+  }
+#else
+  form.member_username.value = usernameStr;
+#end
+  
+  if (form.save_password.checked) {
+    form.password.value = get_cookie("password");
+  }
+}
+
+function set_select_value(form) {
+  var usernameStr = "";
+  if (tmpUsername == "") {
+    usernameStr = get_cookie("username");
+  } else {
+    usernameStr = tmpUsername;
+  }
+#if($enable_userlist)
+  var usernameObj = form.member_username_list;
+  for(var i = 0; i < usernameObj.length; i++) {
+    if(usernameObj.options[i].value == usernameStr) {
+      usernameObj.selectedIndex = i;
+      break;
+    }
+  }
+#end
+  if (form.save_password.checked) {
+    form.password.value = get_cookie("password");
+  }
+}
+
+function get_cookie(strName) {
+  var strReturn = "";
+  var nLoop = 0;
+  var nLength = 0;
+  var strNameEx = strName + "=";
+  var strTemp = "";
+  while (nLoop < document.cookie.length) {
+    nLength = nLoop + strNameEx.length;
+    if (document.cookie.substring(nLoop, nLength) == strNameEx) {
+      strTemp = document.cookie.indexOf(";", nLength);
+      if (strTemp == -1) {
+        strReturn = document.cookie.substring(nLength, document.cookie.length);
+      } else {
+        strReturn = document.cookie.substring(nLength, strTemp);
+      }
+      break;
+   }
+   nLoop = document.cookie.indexOf(" ", nLoop) + 1;
+   if (nLoop == 0) {
+     break;
+    }
+  }
+  return strReturn;
+}
+
+function set_cookie(strName, strValue) {
+  var dtExpire = new Date();
+  dtExpire.setTime(dtExpire.getTime() + 10*24*60*60*1000);
+  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString();
+}
+
+function remove_cookie(strName) {
+  var strValue;
+  var dtExpire = new Date();
+  dtExpire.setTime(dtExpire.getTime() - 1);
+  strValue = get_cookie(strName);
+  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString();
+}
+
+#if($enable_userlist)
+function change_login_type(form, check) {
+  if (check.checked) {
+  getObjectById('login_username_list_field').style.display = "";
+  getObjectById('login_username_field').style.display = "none";
+  if (form.username.value != "") {
+    tmpUsername = form.username.value; 
+  }
+  set_select_value(form);
+  } else {
+  getObjectById('login_username_list_field').style.display = "none";
+  getObjectById('login_username_field').style.display = "";
+  if (form.username.value != "") {
+    tmpUsername = form.username.value;
+  }
+  set_input_value(form);
+  }
+}
+#else
+function change_login_type(form) {
+  getObjectById('login_username_field').style.display = "";
+  if (form.username.value != "") {
+    tmpUsername = form.username.value;
+  }
+  set_input_value(form);
+}
+#end
+
+
+#if($enable_userlist)
+function change_group(form, value) {
+  var f = form.member_username_list;
+  var f_o = f.options;
+  f_o.length = 0;
+  if (value == 'all') {
+  add_option(f, '', '（選択してください）', false);
+  #foreach($record2 in $!result.getUsers('LoginUser') )
+    add_option(f, '$!{record2.Name}', '$!{record2.AliasName}', false);
+  #end	  
+  }
+  #foreach($record in $!result.PostMap)
+  if (value == $!record.PostId) {
+    add_option(f, '', '（選択してください）', false);
+    #foreach($record2 in $!result.getUsers($!{record.GroupName.Value}) )
+      add_option(f, '$!{record2.Name}', '$!{record2.AliasName}', false);
+    #end
+  }
+  #end
+}
+#end
+
+//-->
+</script>
+<div align="center" style="padding:5px 0px 0px 0px;">
+$!data.Message
+<form name="frm" action="" onSubmit="disableSubmit(this);submit2(this)" method="post" enctype="application/x-www-form-urlencoded">
+<input name="$jslink.ActionKey" type="hidden" value="$config.getString("action.login")" />
+<input name="org" type="hidden" value="$!result.OrgId" />
+<input name="username" type="hidden" value="" />
+#ALtableheader('500')
+#ALtdcaptionAtt("ユーザー名" 'align="left" width="150" nowrap')
+<td class="item" align="left">
+<span id="login_username_field">
+<input class='text' name='member_username' value='' type='text' size='30' maxlength='50' style='ime-mode:disabled' /> 
+</span>
+#if($enable_userlist)
+<span id="login_username_list_field" style="display:none">
+<select name='login_member' onChange='change_group(this.form, this.options[this.selectedIndex].value)'>
+<option value='all'>（部署全体）</option>
+#foreach( $record in $!result.PostMap )
+<option value='$!{record.PostId}'>$!record.PostName</option>
+#end
+</select><select name='member_username_list'>
+<option value=''>（選択してください）</option>
+#foreach($record in $!result.getUsers('LoginUser'))
+<option value='$!record.Name'>$!record.AliasName</option>
+#end
+</select>
+</span>
+#end
+</td>
+#ALtdcaptionAtt("パスワード" 'align="left"')
+<td class="item" align="left">
+<input class="text" name="password" value="" type="password" size="30" maxlength="50" style="ime-mode:disabled" />
+</td>
+#if($enable_userlist)
+#ALtdcaption("")
+<td class="item" align="left">
+<input name="login_type" type="checkbox" value="select" id="usr_list" onClick="change_login_type(this.form, this)" />
+<label for="usr_list">ユーザー一覧から選択する</label>
+</td>
+#end
+#ALtdcaption("")
+<td class="item" align="left">
+<input name="save_password" type="checkbox" value="save" id="pass" />
+<label for="pass">パスワードを保存する</label>
+</td>
+<tr>
+#ALtdcellAtt("#ALsubmitJS('login_submit' 'ログイン' 'setHiddenValue(this)')" 'colspan="2" align="center"') 
+</tr>
+#ALtablefooter()
+</form>
+</div>
+<script language="JavaScript" type="text/JavaScript">
+<!-- 
+init();
+//-->
+</script>

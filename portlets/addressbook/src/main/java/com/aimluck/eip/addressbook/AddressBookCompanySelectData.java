@@ -1,0 +1,343 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.aimluck.eip.addressbook;
+
+import java.util.List;
+import java.util.jar.Attributes;
+
+import org.apache.cayenne.DataObjectUtils;
+import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
+
+import com.aimluck.eip.addressbook.util.AddressBookUtils;
+import com.aimluck.eip.cayenne.om.portlet.EipMAddressbookCompany;
+import com.aimluck.eip.common.ALAbstractSelectData;
+import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.util.ALCommonUtils;
+import com.aimluck.eip.util.ALEipUtils;
+
+/**
+ * アドレス帳会社情報の検索用データクラスです。
+ *
+ */
+public class AddressBookCompanySelectData extends ALAbstractSelectData {
+  /** logger */
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+      .getLogger(AddressBookCompanySelectData.class.getName());
+
+  /** 現在選択されているインデックス */
+  private String index;
+
+  /**
+   * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
+   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   */
+  public void init(ALAction action, RunData rundata, Context context)
+      throws ALPageNotFoundException, ALDBErrorException {
+
+    String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
+    if (sort == null || sort.equals("")) {
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, "company_name_kana");
+    }
+
+    super.init(action, rundata, context);
+  }
+
+  /**
+   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context)
+   */
+  protected List<?> selectList(RunData rundata, Context context) {
+    try {
+      DataContext dataContext = DatabaseOrmService.getInstance()
+          .getDataContext();
+
+      SelectQuery query = getSelectQuery(rundata, context);
+      buildSelectQueryForListView(query);
+      buildSelectQueryForListViewSort(query, rundata, context);
+
+      @SuppressWarnings("unchecked")
+      List<EipMAddressbookCompany> list = dataContext.performQuery(query);
+      return buildPaginatedList(list);
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  /**
+   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context)
+   */
+  protected Object selectDetail(RunData rundata, Context context) {
+    try {
+      EipMAddressbookCompany record;
+
+      String companyId = ALEipUtils.getTemp(rundata, context,
+          ALEipConstants.ENTITY_ID);
+      if (companyId == null || Integer.valueOf(companyId) == null)
+        return null;
+
+      AddressBookCompanyResultData rd = new AddressBookCompanyResultData();
+      rd.initField();
+
+      DataContext dataContext = DatabaseOrmService.getInstance()
+          .getDataContext();
+      record = (EipMAddressbookCompany) DataObjectUtils
+          .objectForPK(dataContext, EipMAddressbookCompany.class,
+              Integer.valueOf(companyId));
+      return record;
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  /**
+   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   */
+  protected Object getResultData(Object obj) {
+    try {
+      EipMAddressbookCompany record = (EipMAddressbookCompany) obj;
+      AddressBookCompanyResultData rd = new AddressBookCompanyResultData();
+      rd.initField();
+      rd.setCompanyId(record.getCompanyId().intValue());
+      rd.setCompanyName(ALCommonUtils.compressString(record.getCompanyName(),
+          getStrLength()));
+      rd.setCompanyNameKana(record.getCompanyNameKana());
+      rd.setPostName(ALCommonUtils.compressString(record.getPostName(),
+          getStrLength()));
+      rd.setZipcode(record.getZipcode());
+      rd.setAddress(ALCommonUtils.compressString(record.getAddress(),
+          getStrLength()));
+      rd.setTelephone(record.getTelephone());
+      rd.setFaxNumber(record.getFaxNumber());
+      rd.setUrl(record.getUrl());
+      return rd;
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  /**
+   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   */
+  protected Object getResultDataDetail(Object obj) {
+    try {
+      EipMAddressbookCompany record = (EipMAddressbookCompany) obj;
+      AddressBookCompanyResultData rd = new AddressBookCompanyResultData();
+      rd.initField();
+
+      rd.setCompanyId(record.getCompanyId().intValue());
+      rd.setCompanyName(record.getCompanyName());
+      rd.setCompanyNameKana(record.getCompanyNameKana());
+      rd.setPostName(record.getPostName());
+      rd.setZipcode(record.getZipcode());
+      rd.setAddress(record.getAddress());
+      rd.setTelephone(record.getTelephone());
+      rd.setFaxNumber(record.getFaxNumber());
+      rd.setUrl(record.getUrl());
+
+      return rd;
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+
+  }
+
+  /**
+   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   */
+  protected Attributes getColumnMap() {
+    Attributes map = new Attributes();
+    map.putValue("company_name_kana",
+        EipMAddressbookCompany.COMPANY_NAME_KANA_PROPERTY);
+    return map;
+  }
+
+  /**
+   * 検索条件を設定した SelectQuery を返します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @return
+   */
+  private SelectQuery getSelectQuery(RunData rundata, Context context) {
+    SelectQuery query = new SelectQuery(EipMAddressbookCompany.class);
+
+    // インポートした会社情報も表示させる
+    // Expression exp11 = ExpressionFactory.noMatchExp(
+    // EipMAddressbookCompany.CREATE_USER_ID_PROPERTY, Integer.valueOf(1));
+    Expression exp12 = ExpressionFactory.noMatchExp(
+        EipMAddressbookCompany.COMPANY_NAME_PROPERTY,
+        AddressBookUtils.EMPTY_COMPANY_NAME);
+    query.setQualifier(exp12);
+
+    // インデックス指定時の条件文作成
+    String index_session = ALEipUtils.getTemp(rundata, context, LIST_INDEX_STR);
+    String index_rundata = rundata.getParameters().getString("idx");
+    if (index_rundata != null) {
+      if ("-1".equals(index_rundata) || "".equals(index_rundata)) {
+        ALEipUtils.setTemp(rundata, context, LIST_INDEX_STR, "-1");
+        context.put("idx", "-1");
+      } else {
+        index = index_rundata;
+        ALEipUtils.setTemp(rundata, context, LIST_INDEX_STR, index);
+        buildSelectQueryForAddressbookIndex(query,
+            EipMAddressbookCompany.COMPANY_NAME_KANA_PROPERTY,
+            Integer.parseInt(index));
+        context.put("idx", index);
+      }
+    } else if (index_session != null) {
+      buildSelectQueryForAddressbookIndex(query,
+          EipMAddressbookCompany.COMPANY_NAME_KANA_PROPERTY,
+          Integer.parseInt(index_session));
+      context.put("idx", index);
+    } else {
+      context.put("idx", "-1");
+    }
+    return buildSelectQueryForFilter(query, rundata, context);
+  }
+
+  /**
+   * 現在選択されているインデックスを取得します。
+   *
+   * @return
+   */
+  public String getIndex() {
+    return index;
+  }
+
+  // ***************************************************************************
+  // privateメソッド
+  // ***************************************************************************
+
+  /**
+   * インデックス検索のためのユニコードマッピングによる条件文の追加。
+   *
+   * @param crt
+   * @param idx
+   */
+  private void buildSelectQueryForAddressbookIndex(SelectQuery query,
+      String companyNameKana, int idx) {
+    // インデックスによる検索
+    switch (idx) {
+    // ア行
+    case 1:
+      Expression exp01 = ExpressionFactory.greaterOrEqualExp(companyNameKana,
+          "ア");
+      Expression exp02 = ExpressionFactory.lessExp(companyNameKana, "カ");
+      query.andQualifier(exp01.andExp(exp02));
+      break;
+    // カ行
+    case 6:
+      Expression exp11 = ExpressionFactory.greaterOrEqualExp(companyNameKana,
+          "カ");
+      Expression exp12 = ExpressionFactory.lessExp(companyNameKana, "サ");
+      query.andQualifier(exp11.andExp(exp12));
+      break;
+    // サ行
+    case 11:
+      Expression exp21 = ExpressionFactory.greaterOrEqualExp(companyNameKana,
+          "サ");
+      Expression exp22 = ExpressionFactory.lessExp(companyNameKana, "タ");
+      query.andQualifier(exp21.andExp(exp22));
+      break;
+    // タ行
+    case 16:
+      Expression exp31 = ExpressionFactory.greaterOrEqualExp(companyNameKana,
+          "タ");
+      Expression exp32 = ExpressionFactory.lessExp(companyNameKana, "ナ");
+      query.andQualifier(exp31.andExp(exp32));
+      break;
+    // ナ行
+    case 21:
+      Expression exp41 = ExpressionFactory.greaterOrEqualExp(companyNameKana,
+          "ナ");
+      Expression exp42 = ExpressionFactory.lessExp(companyNameKana, "ハ");
+      query.andQualifier(exp41.andExp(exp42));
+      break;
+    // ハ行
+    case 26:
+      Expression exp51 = ExpressionFactory.greaterOrEqualExp(companyNameKana,
+          "ハ");
+      Expression exp52 = ExpressionFactory.lessExp(companyNameKana, "マ");
+      query.andQualifier(exp51.andExp(exp52));
+      break;
+    // マ行
+    case 31:
+      Expression exp61 = ExpressionFactory.greaterOrEqualExp(companyNameKana,
+          "マ");
+      Expression exp62 = ExpressionFactory.lessExp(companyNameKana, "ヤ");
+      query.andQualifier(exp61.andExp(exp62));
+      break;
+    // ヤ行
+    case 36:
+      Expression exp71 = ExpressionFactory.greaterOrEqualExp(companyNameKana,
+          "ヤ");
+      Expression exp72 = ExpressionFactory.lessExp(companyNameKana, "ラ");
+      query.andQualifier(exp71.andExp(exp72));
+      break;
+    // ラ行
+    case 41:
+      Expression exp81 = ExpressionFactory.greaterOrEqualExp(companyNameKana,
+          "ラ");
+      Expression exp82 = ExpressionFactory.lessExp(companyNameKana, "ワ");
+      query.andQualifier(exp81.andExp(exp82));
+      break;
+    // ワ行
+    case 46:
+      Expression exp91 = ExpressionFactory.greaterOrEqualExp(companyNameKana,
+          "ワ");
+      Expression exp92 = ExpressionFactory.lessOrEqualExp(companyNameKana, "ヴ");
+      query.andQualifier(exp91.andExp(exp92));
+      break;
+    // 英数(上記以外)
+    case 52:
+      Expression exp100 = ExpressionFactory.lessExp(companyNameKana, "ア");
+      Expression exp101 = ExpressionFactory.greaterOrEqualExp(companyNameKana,
+          "ヴ");
+      query.andQualifier(exp100.orExp(exp101));
+      break;
+    }
+  }
+
+  /**
+   * アクセス権限チェック用メソッド。<br />
+   * アクセス権限の機能名を返します。
+   *
+   * @return
+   */
+  public String getAclPortletFeature() {
+    return ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_COMPANY;
+  }
+}

@@ -1,0 +1,82 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookFormScreen").addQueryData("entityid","new")))
+#set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookGroupFormScreen").addQueryData("entityid","new")))
+#set ($newUrl3 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookCompanyFormScreen").addQueryData("entityid","new")))
+#set ($submenulist = [["アドレスを追加する","javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.addressbook.onLoadAddressbookDialog);","images/icon/icon_add.gif"],["会社情報を追加する","javascript:aipo.common.showDialog('$newUrl3','$!portlet.ID',aipo.addressbook.onLoadAddressbookCompanyDialog);","images/icon/icon_add.gif"],["グループを追加する","javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);","images/icon/icon_add.gif"]])
+#set ($indicator_str = "データを送信")
+#set ($indicator_id = "indicator-list-")
+## ---------------------------------------------------------------------------
+#ALsubmenubar($submenulist "")
+
+#macro(ALajaxsortaddressbook $key $name $result $screen)
+	
+#if($!result.CurrentSort && $!result.CurrentSort == "$key" && $!result.CurrentSortType && $!result.CurrentSortType == "asc")#set($sorttype ="desc")#set($sortHead ="headDown") #else #set($sorttype ="asc")#set($sortHead ="headUp")#end
+#if($!result.Index && $result.Index.toString() != "")
+<a#if($!result.CurrentSort && $!result.CurrentSort == "$key") class="$sortHead"#end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template",$screen).addQueryData("start","$result.CurrentPage").addQueryData("sort","$key").addQueryData("sorttype","$sorttype").addQueryData("idx","$result.Index"))', '$!portlet.ID');">$name</a>
+#else
+<a#if($!result.CurrentSort && $!result.CurrentSort == "$key") class="$sortHead"#end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template",$screen).addQueryData("start","$result.CurrentPage").addQueryData("sort","$key").addQueryData("sorttype","$sorttype"))', '$!portlet.ID');">$name</a> 
+#end
+
+###if($!result.CurrentSort && $!result.CurrentSort == "$key" && $!result.CurrentSortType && $!result.CurrentSortType == "asc")#set($sorttype ="desc")#set($sortHead ="headDown") #else #set($sorttype ="asc")#set($sortHead ="headUp")#end
+##<a#if($!result.CurrentSort && $!result.CurrentSort == "$key") class="$sortHead"#end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template",$screen).addQueryData("start","$result.CurrentPage").addQueryData("sort","$key").addQueryData("sorttype","$sorttype").addQueryData("idx","$result.Index"))', '$!portlet.ID');">$name</a>
+#end
+ 
+#if($result.SearchWord && $result.SearchWord.toString() != "")
+#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_company_search_list','1')")
+#else
+#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_company_list','1')")
+#end
+#set($tabs = [["社外グループ一覧", "", ""]])
+#ALajaxtabheader($tabs "")
+#ALspacebothheader()
+<div id="listmessageDiv"></div>
+#ALajaxlistformheader('社外グループ')
+#if($result.List.size() ==0)
+<div class="message">社外グループ機能はアドレス帳に登録されているアドレスを、グループ単位でまとめる機能です。</div>
+<div class="message">『社外グループ追加』 ボタンを押して、追加してください。 </div>
+#else
+#ALajaxIndicator("$!portlet.ID" "${indicator_str}しています...")
+#ALajaxpageview('AddressBookGroupListScreen' $result)
+#ALtableheaderWide()
+<tr>
+#ALtdheadThin("#ALswitchCheckbox()")
+#ALtdhead("#ALajaxsortaddressbook('group_name' 'グループ名' $result 'AddressBookGroupListScreen')") ##検索結果からきたときはmode=ajaxsearchをいれるように書き換え
+###ALtdhead('グループ名') ##検索結果からきたときはmode=ajaxsearchをいれるように書き換え
+#ALtdheadThin(' ')
+</tr>
+#foreach ($record in $result.List)
+<tr>
+#ALtdcellAtt("<input name='check$!record.GroupId' type='checkbox' value='$!record.GroupId' />" 'align="center"')
+#ALtdcellheader()
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookGroupDetailScreen").addQueryData("entityid",$record.GroupId))');">$result.getStringCR($!record.GroupName)</a>
+</td>
+#ALtdcellAtt("#ALajaxbuttonLinkCallback('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormScreen').addQueryData('entityid', $!record.GroupId) 'images/icon/icon_edit.gif' $!portlet.ID 'aipo.addressbook.onLoadAddressbookGroupDialog')" 'nowrap="nowrap"')
+#end
+</tr>
+#ALtablefooter()
+#ALbuttonheaderRight()
+選択した社外グループ を #ALajaxbuttonCheckboxDelete("削除する" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.addressbook.onListReceiveMessage")
+#ALbuttonfooterRight()
+#ALajaxpageviewFooter('AddressBookGroupListScreen' $result)
+#end
+#ALformfooter()
+#ALspacebothfooter()
+#ALajaxtabfooter()

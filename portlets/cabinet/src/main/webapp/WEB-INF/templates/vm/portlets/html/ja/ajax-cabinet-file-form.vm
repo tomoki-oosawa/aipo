@@ -1,0 +1,81 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#if($mode=="new_form")
+#set ($action_str = "追加する")
+#set ($event_submit = "eventSubmit_doCabinet_file_insert")
+#set ($subtitle = 'ファイル追加')
+#else
+#set ($action_str = "更新する")
+#set ($subtitle = 'ファイル編集')
+#set ($event_submit = "eventSubmit_doCabinet_file_update")
+#end
+#set ($indicator_id = "indicator-dlg-")
+## ---------------------------------------------------------------------------
+#ALdialogheader($subtitle)
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+#ALerrmsg($errmsgs)
+<div id="messageDiv"></div>
+#ALajaxscreenformheader("cabinetfileForm" $jslink $portlet "CabinetFileFormJSONScreen" "aimluck.io.selectAllOptions(this.attachments);aimluck.io.submit(this,'$indicator_id','$!portlet.ID', aipo.cabinet.onReceiveMessage)")
+#if($mode=="new_form")
+<input type="hidden" name="mode" value="insert" />
+#else
+<input type="hidden" name="mode" value="update" />
+#end
+#ALtableheaderWide()
+#ALtdcaption("#ALrequired($!result.getFieldName('file_title'))")
+#ALtditem("#ALtextfield('file_title' $!result.FileTitle '90%' 50 'active')")
+#ALtdcaption("#ALrequired($!result.getFieldName('file_name'))")
+#ALtditemheader()
+<select id="attachments" name="attachments" type="select" size="1" multiple="multiple" style="width: 325px">
+#if($mode=="edit_form")
+<option value="1">$!result.FileName</option>
+#end
+</select>
+#set($att_url = $!jslink.getPortletById($!portlet.ID).addQueryData("template","FileuploadFormScreen").addQueryData("mode","form").addQueryData("msize","1"))
+<input type="button" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)');" value="ファイルの選択" class="button" name="add_attachment"/>
+選択したファイルを<input type="button" onclick="aimluck.io.selectAllOptions(this.form.attachments);aimluck.io.removeOptions(this.form.attachments);" value="削除する" class="button" name="add_attachment"/>
+<input type="hidden" id="folderName" name="folderName" value="">
+#ALtditemfooter()
+#ALtdcaption("追加場所")
+#ALtditemheader()
+<select name="folder_id" style="WIDTH: 70%">
+#foreach($record in $!result.FolderHierarchyList)
+#if($record.isAuthorizedVisible())
+#set($space = '')
+#if(${record.HierarchyIndex} > 0)
+#foreach($index in [1..${record.HierarchyIndex}])
+#set($space = "${space}&nbsp;&nbsp;&nbsp;")
+#end
+#end
+<option value="$record.FolderId" #if($!result.isMatch(${record.FolderId}, $!result.FolderId.Value)) selected #end>${space}${record.FolderName}</option>
+#end
+#end
+</select>&nbsp;&nbsp;の下
+#ALtditemfooter()
+#ALtdcaption($!result.getFieldName("note"))
+#ALtditemheader()
+#ALtextarea('note' $!result.Note 10 40)
+#ALtditemfooter()
+#ALtablefooter()
+#ALbuttonheader()
+#ALsubmit($event_submit $action_str)#ALajaxbuttonClose()
+#ALbuttonfooter()
+#ALformfooter()
+#ALdialogfooter()

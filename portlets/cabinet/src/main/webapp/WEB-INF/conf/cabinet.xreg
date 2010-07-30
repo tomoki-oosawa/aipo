@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Aipo is a groupware program developed by Aimluck,Inc.
+Copyright (C) 2004-2008 Aimluck,Inc.
+http://aipostyle.com/
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<registry>
+    <portlet-entry name="Cabinet" hidden="false" type="ref" parent="Velocity" application="false">
+        <security-ref parent="user-view"/>
+        <meta-info>
+            <title>共有フォルダ</title>
+            <description>共有ファイルを管理します。</description>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
+        <parameter name="template" value="cabinet" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1a-rows" value="5" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>ファイル表示件数（通常時）</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p1a-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1a-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1a-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1b-rows" value="20" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>ファイル表示件数（最大化時）</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p1b-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1b-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1b-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1c-sort" value="file_title" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>ファイルソート方法</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p1c-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1c-sort.style.items" value="file_title,file_name,update_user,update_date" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1c-sort.style.values" value="タイトル,ファイル名,更新者,更新日時" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3a-folder" value="0" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>初期表示フォルダ</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p3a-folder.style" value="CabinetFolderListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3a-folder.style.initialvalue" value="ルートフォルダ" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        
+        <parameter name="p4c-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p4c-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p4c-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        
+        <parameter name="action" value="cabinet.CabinetAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <media-type ref="html"/>
+        <url cachedOnURL="true"/>
+    </portlet-entry>
+</registry>

@@ -1,0 +1,212 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.aimluck.eip.account;
+
+import java.util.List;
+
+import org.apache.jetspeed.services.JetspeedSecurity;
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
+
+import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.account.util.AccountUtils;
+import com.aimluck.eip.common.ALAbstractFormData;
+import com.aimluck.eip.common.ALBaseUser;
+import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
+import com.aimluck.eip.util.ALEipUtils;
+
+/**
+ * ユーザーアカウントのパスワードのフォームデータを管理するためのクラスです。 <br />
+ */
+public class AccountPasswdFormData extends ALAbstractFormData {
+
+  /** logger */
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+      .getLogger(AccountPasswdFormData.class.getName());
+
+  /** 新しいパスワード */
+  private ALStringField new_passwd;
+
+  /** 新しいパスワード（確認用） */
+  private ALStringField new_passwd_confirm;
+
+  /**
+   * 初期化する <BR>
+   *
+   * @param action
+   * @param rundata
+   * @param context
+   */
+  public void init(ALAction action, RunData rundata, Context context)
+      throws ALPageNotFoundException, ALDBErrorException {
+    if (ALEipUtils.isMatch(rundata, context)) {
+      ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, rundata
+          .getUser().getUserName());
+    }
+  }
+
+  /**
+   * @see com.aimluck.eip.common.ALData#initField()
+   */
+  public void initField() {
+    // 新しいパスワード
+    new_passwd = new ALStringField();
+    new_passwd.setFieldName("新しいパスワード");
+    new_passwd.setTrim(true);
+
+    // 新しいパスワード（確認用）
+    new_passwd_confirm = new ALStringField();
+    new_passwd_confirm.setFieldName("新しいパスワード（確認用）");
+    new_passwd_confirm.setTrim(true);
+
+  }
+
+  /**
+   * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
+   */
+  protected void setValidator() {
+    // 新しいパスワード
+    new_passwd.setNotNull(true);
+    new_passwd.setCharacterType(ALStringField.TYPE_ALPHABET_NUMBER);
+    new_passwd.limitMaxLength(16);
+
+    // 新しいパスワード（確認用）
+    new_passwd_confirm.setNotNull(true);
+    new_passwd_confirm.setCharacterType(ALStringField.TYPE_ALPHABET_NUMBER);
+    new_passwd_confirm.limitMaxLength(16);
+  }
+
+  /**
+   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+   */
+  protected boolean validate(List<String> msgList) {
+    new_passwd.validate(msgList);
+    new_passwd_confirm.validate(msgList);
+
+    if (!new_passwd.toString().equals(new_passwd_confirm.toString())) {
+      msgList.add("確認用のパスワードと一致しません。");
+    }
+    return (msgList.size() == 0);
+  }
+
+  /**
+   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   */
+  protected boolean loadFormData(RunData rundata, Context context,
+      List<String> msgList) {
+    return false;
+  }
+
+  /**
+   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   */
+  protected boolean insertFormData(RunData rundata, Context context,
+      List<String> msgList) {
+    return false;
+  }
+
+  /**
+   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   */
+  protected boolean updateFormData(RunData rundata, Context context,
+      List<String> msgList) {
+    boolean res = true;
+    try {
+
+      ALBaseUser user = AccountUtils.getBaseUser(rundata, context);
+      if (user == null)
+        return false;
+
+      // WebAPIのDBへ接続できるか確認
+      if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler()
+          .checkConnect()) {
+        msgList.add("コントロールパネルWebAPIのデータベースの接続に失敗したため、処理は実行されませんでした。");
+        return false;
+      }
+
+      // 新しいパスワードをセットする
+      JetspeedSecurity.forcePassword(user, new_passwd.toString());
+
+      // ユーザを更新する
+      JetspeedSecurity.saveUser(user);
+
+      // WebAPIとのDB同期
+      if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler()
+          .updateUser(user)) {
+        return false;
+      }
+
+      ALBaseUser currentUser = (ALBaseUser) rundata.getUser();
+      if (currentUser.getUserName().equals(user.getUserName())) {
+        currentUser.setPassword(user.getPassword());
+      }
+    } catch (Exception e) {
+      logger.error("Exception", e);
+      res = false;
+    }
+    return res;
+  }
+
+  /**
+   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   */
+  protected boolean deleteFormData(RunData rundata, Context context,
+      List<String> msgList) {
+    return false;
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getNewPasswd() {
+    return new_passwd;
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getNewPasswdConfirm() {
+    return new_passwd_confirm;
+  }
+
+  /**
+   * @param field
+   */
+  public void setNewPasswd(String field) {
+    new_passwd.setValue(field);
+  }
+
+  /**
+   * @param field
+   */
+  public void setNewPasswdConfirm(String field) {
+    new_passwd_confirm.setValue(field);
+  }
+
+}
