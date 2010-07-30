@@ -1,0 +1,213 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+<table border="0" cellspacing="0" cellpadding="2"><tbody>
+<tr valign="middle"><td>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.PrevWeek.toString()}))', '$!portlet.ID');" title="前の週へ">
+<img src="images/schedule/arrow_left_w.gif" border="0" alt="前の週へ" /></a>&nbsp;
+</td><td>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.PrevDate.toString()}))', '$!portlet.ID');" title="前の日へ">
+<img src="images/schedule/arrow_left.gif" border="0" alt="前の日へ" /></a>&nbsp;
+</td><td nowrap="nowrap"><span style="font-weight:bold">
+$!{result.ViewStart.Year} 年 $!{result.ViewStart.Month} 月 $!{result.ViewStart.Day} 日 $!{result.ViewStart.DayOfWeek} ～ $!{result.ViewEnd.Month} 月 $!{result.ViewEnd.Day} 日 $!{result.ViewEnd.DayOfWeek}
+</span></td><td>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextDate.toString()}))', '$!portlet.ID');" title="次の日へ">
+<img src="images/schedule/arrow_right.gif" border="0" alt="次の日へ" /></a>&nbsp;
+</td><td>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextWeek.toString()}))', '$!portlet.ID');" title="次の週へ">
+<img src="images/schedule/arrow_right_w.gif" border="0" alt="次の週へ" /></a>&nbsp;
+</td><td>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.Today.toString()}))', '$!portlet.ID');" title="今日へ">
+<img src="images/schedule/schedule_today.gif" border="0" alt="今日へ" /></a>&nbsp;
+</td><td>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="前月へ">
+<img src="images/schedule/schedule_prevmonth.gif" border="0" alt="前月へ" /></a>&nbsp;
+</td><td>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="翌月へ">
+<img src="images/schedule/schedule_nextmonth.gif" border="0" alt="翌月へ" /></a>&nbsp;
+</td></tr></tbody></table>
+
+#ALformheader('スケジュール' $jslink $portlet)
+#ALtableheaderCalendar("100%")
+<tr>
+#foreach ( $num in [1..7] )
+<td class="calendarHeader"><img src="images/common/dot.gif" height="1" alt="" /></td> 
+#end
+</tr>
+<tr>
+#foreach($record in $result.Container.DayList)
+#if($!{record.isHoliday()})
+#set ($stday = $velocityCount )
+#ALtdheadheaderAtt("class='holiday' nowrap='nowrap'")
+$!{record.Date.Day} $!{record.Date.DayOfWeek}
+<div class="holiday small">${record.Holiday.Name}</div>
+#elseif($!{record.Date.Value.Day} == 0)
+#set ($stday = $velocityCount )
+#ALtdheadheaderAtt("class='sunday' nowrap='nowrap'")
+$!{record.Date.Day} $!{record.Date.DayOfWeek}
+#elseif($!{record.Date.Value.Day} == 6)
+#set ($sunday = $velocityCount )
+#ALtdheadheaderAtt("class='saturday' nowrap='nowrap'")
+$!{record.Date.Day} $!{record.Date.DayOfWeek}
+#else
+#ALtdheadheaderAtt("nowrap='nowrap'")
+$!{record.Date.Day} $!{record.Date.DayOfWeek}
+#end
+#ALtdheadfooter()
+#end
+</tr>
+<tr><td></td></tr>
+#foreach($termcontainer in $result.TermContainer)
+<tr>
+#set($nottermcount = 0)
+#foreach($record in $termcontainer.DayList)
+#if( ! $record.isTermNull() )
+#if($record.TermResultData.isShowDetail())
+#if($nottermcount > 0)
+#ALtdcellAtt("" "colspan='$nottermcount'")
+#end
+#set($addScheduleLink = "")
+#ALtdcellheaderAtt("colspan='$!{record.TermResultData.Rowspan}'")
+<div class="calerndarTermScheduleDiv small">
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid",$!{record.TermResultData.ScheduleId}).addQueryData('view_date', $!{record.Date.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);" class="small">$!{record.TermResultData.Name}
+#if(! ${record.TermResultData.isPublic()})
+&nbsp;<img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開" />
+#else
+<img src="images/common/dot.gif" border="0" width="1" height="16" align="absmiddle" alt="" />
+#end
+#if(${record.TermResultData.isTmpreserve()})
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />
+#end
+</a>
+</div>
+#ALtdcellfooter()
+#set($nottermcount = 0)
+#end
+#elseif (! $record.isHasTerm() )
+#set($nottermcount = $nottermcount + 1)
+#end
+#end
+#if($nottermcount > 0)
+#ALtdcellAtt("" "colspan='$nottermcount'")
+#end
+</tr>
+#end
+<tr>
+#foreach($record in $result.Container.DayList)
+#set ($color_style = "")
+#set ($color_style_holiday = "")
+#set ($color_style_othermonth = "")
+#set ($holiday_name = "")
+#if($!{record.Date.Value.Day} == 0)
+#set ($color_style = " sunday")
+#elseif($!{record.Date.Value.Day} == 6)
+#set ($color_style = " saturday")
+#end
+#if($!{record.isHoliday()})
+#set ($color_style_holiday = " holiday")
+#set ($holiday_name = "${record.Holiday.Name}")
+#end
+<td class="topNone${color_style}${color_style_holiday}"> 
+#if($record.ScheduleList.size() <= 0)
+	#if ($!{result.hasAuthoritySelfInsert()})
+<div class="calendarBody">
+<div class="calendarScheduleDiv">
+#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()})")
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加"><img src="images/icon/icon_edit.gif" alt="予定追加" width="16" height="16" border="0" align="absmiddle" galleryimg="no" /></a>
+</div>
+</div>
+	#end
+#else
+#foreach($record2 in $record.ScheduleList)
+#if(! ${record2.isDummy()})
+<div> 
+#if($record2.isShowDetail())
+#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record2.ScheduleId}).addQueryData('view_date', $!{record.Date.toString()})")
+<div class="calendarScheduleDiv"> 
+<div class="small time">$!{record2.Date}</div> 
+<div class="small"><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)" class="small">$!{record2.Name}</a></div> 
+</div> 
+#else
+<div class="calendarScheduleDiv"> 
+<div class="small time">$!{record2.Date}</div> 
+<div class="small">$!{record2.Name}</div> 
+</div> 
+#end
+#if(! ${record2.isPublic()})
+<img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開" />
+#end
+#if($record2.isDuplicate())
+<img src="images/schedule/schedule_duplicate.gif" border="0" width="16" height="16" align="absmiddle" alt="重複スケジュール" title="重複スケジュール" />
+#end
+#if(${record2.isRepeat()})
+<img src="images/schedule/schedule_repeat.gif" border="0" width="16" height="16" align="absmiddle" alt="繰り返し" title="繰り返し" />
+#end
+#if($record2.isTmpreserve())
+<img src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="仮スケジュール" title="仮スケジュール" />
+#end
+</div> 
+#end
+#end
+#if ($!{result.hasAuthoritySelfInsert()})
+<div class="calendarScheduleDiv">
+#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()})")
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加"><img src="images/icon/icon_edit.gif" alt="予定追加" width="16" height="16" border="0" align="absmiddle" galleryimg="no" /></a>
+</div>
+#end
+#end
+<div class="calendarFooter"></div> 
+</td> 
+#end
+</tr>
+
+#foreach($todocontainer in $result.WeekToDoContainerList)
+<tr>
+#set($nottodocount = 0)
+#foreach($record in $todocontainer.DayList)
+#if( ! $record.isTodoNull() )
+#if($nottodocount > 0)
+#ALtdcellAtt("" "colspan='$nottodocount' style='vertical-align:top;background-color:#FFFFFF;line-height: 8pt;'")
+#end
+#if($!{record.ToDoResultData.UserId.toString()} == $!{data.User.UserId})
+#set($todobgcolor = "#E8EDEE")
+#else
+#set($todobgcolor = "#D9D9FF")
+#end
+#ALtdcellheaderAtt("colspan='$!{record.ToDoResultData.Rowspan}' align='center' style='vertical-align:top;background-color:#FFE5E5;line-height: 8pt;'")
+<div class="calerndarTodoDiv small">
+<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.ToDoResultData.TodoId}))');">
+$!{record.ToDoResultData.TodoName}
+#if(! ${record.ToDoResultData.isPublic()})
+<img src="images/todo/todo_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開" />
+#end
+</a>
+</div>
+#ALtdcellfooter()
+#set($nottodocount = 0)
+#elseif (! $record.isHasTodo() )
+#set($nottodocount = $nottodocount + 1)
+#end
+#end
+#if($nottodocount > 0)
+#ALtdcellAtt("" "colspan='$nottodocount' style='vertical-align:top;background-color:#FFFFFF;line-height:8pt;'")
+#end
+</tr>
+#end
+#ALtablefooter()
+#ALformfooter()

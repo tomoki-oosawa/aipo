@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Aipo is a groupware program developed by Aimluck,Inc.
+Copyright (C) 2004-2008 Aimluck,Inc.
+http://aipostyle.com/
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<registry>
+    <portlet-entry name="ToDo" hidden="false" type="ref" parent="Velocity" application="false">
+        <security-ref parent="user-view"/>
+        <meta-info>
+            <title>ToDo</title>
+            <description>ToDoを管理します。</description>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
+        <parameter name="template" value="todo" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1a-rows" value="5" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>ToDo表示件数（通常時）</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p1a-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1a-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1a-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1b-rows" value="20" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>ToDo表示件数（最大化時）</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p1b-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1b-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1b-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1c-rows" value="20" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>カテゴリ表示件数</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p1c-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1c-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1c-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-sort" value="priority" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>ToDoソート方法</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p2a-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-sort.style.items" value="priority,end_date" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-sort.style.values" value="優先度,締め切り日" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
+        <parameter name="p3b-sort" value="priority" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>進捗状況ソート方法</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p3b-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3b-sort.style.items" value="user_name,priority,end_date" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3b-sort.style.values" value="ユーザー名,優先度,締め切り日" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
+	    <parameter name="p4a-strlen" value="15" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>Todo名表示文字数</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p4a-strlen.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p4a-strlen.style.items" value="10,15,30,0" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p4a-strlen.style.values" value="10文字,15文字,30文字,制限なし" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        
+        
+        <parameter name="action" value="todo.ToDoAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="function_mode1" value="public_list" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="function_image1" value="icon/icon_list.gif" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="function_caption1" value="進捗状況" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="function_mode2" value="ToDoFormScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="function_screen2" value="true" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="function_image2" value="icon/icon_add.gif" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="function_caption2" value="ToDo追加" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="function_after_function2" value="aipo.todo.onLoadTodoDialog" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <media-type ref="html"/>
+        <url cachedOnURL="true"/>
+    </portlet-entry>
+</registry>

@@ -1,0 +1,108 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#if($!result.CurrentSubMenu == "requested")
+#set ($$subnavi = "ワークフロー（確認依頼一覧）")
+#set ($tabs = [["未確認", "unconfirmed","$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowListScreen').addQueryData('tab','unconfirmed')"], ["確認済", "confirmed", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowListScreen').addQueryData('tab','confirmed')"], ["完了", "completed", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowListScreen').addQueryData('tab','completed')"]])
+#if($!result.currentTab == "unconfirmed")
+#set($sumname = "未確認総数")
+#set ($colName1 = "最終閲覧者")
+#elseif($!result.currentTab == "confirmed")
+#set($sumname = "確認総数")
+#set ($colName1 = "最終閲覧者")
+#else
+#set($sumname = "完了総数")
+#set ($colName1 = "最終承認者")
+#end
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
+
+	aipo.workflow.menuSelected = 0;
+    
+//]]>
+</script>
+#else
+#set ($$subnavi = "ワークフロー（作成分一覧）")
+#set ($tabs = [["未完了", "unfinished","$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowListScreen').addQueryData('tab','unfinished')"], ["完了", "finished", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowListScreen').addQueryData('tab','finished')"]])
+#if($!result.currentTab == "unfinished")
+#set ($sumname = "未完了総数")
+#set ($colName1 = "最終閲覧者")
+#else
+#set ($sumname = "完了総数")
+#set ($colName1 = "最終承認者")
+#end
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
+
+    aipo.workflow.menuSelected = 1;
+    
+//]]>
+</script>
+#end
+
+#ALajaxtabheader($tabs $!result.currentTab)
+#ALspacebothheader()
+#ALajaxlistformheader('ワークフロー')
+#ALtableheaderSimpleWide()
+#ALtdcaption('分類')
+#ALtditemheader()
+<select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowListScreen').addQueryData("filter","").addQueryData("filtertype","category"))">（全体）</option>
+#foreach( $record in $result.CategoryList )
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowListScreen').addQueryData("filter",$!record.CategoryId).addQueryData("filtertype","category"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected #end>$!record.CategoryName</option>
+#end
+</select>
+#ALtditemfooter()
+#ALtablefooter()
+
+#if($result.List.size() == 0)
+<div class="message">指定された条件に該当する依頼はありません。</div>
+#else
+#ALajaxpageview('WorkflowListScreen' $result)
+#ALtableheaderWide()
+<tr>
+#ALtdheadThin("#ALajaxsort('priority' '重要度' $result 'WorkflowListScreen')")
+#ALtdheadThin("状態")
+#ALtdheadW33("#ALajaxsort('request_name' '表題' $result 'WorkflowListScreen')")
+#ALtdheadThin("#ALajaxsort('price' '金額' $result 'WorkflowListScreen')")
+#ALtdheadW33("#ALajaxsort('create_date' '作成日時' $result 'WorkflowListScreen')")
+#ALtdheadThin("$colName1")
+#ALtdheadThin("進捗")
+</tr>
+#foreach ($record in $result.List)
+<tr>
+#ALtdcellAtt("<img src='images/workflow/$!record.PriorityImage' alt='$!record.PriorityString'  title='$!record.PriorityString'/>" 'align="center"')
+#ALtdcellheaderAtt('nowrap="nowrap"')
+<span class="caution">#if($record.Progress.Value == "D") 差戻要確認 #elseif($record.Progress.Value == "A") 承認済み #else 決裁待ち #end</span>
+#ALtdcellfooter()
+#ALtdcellheader()
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowDetailScreen").addQueryData("mode","detail").addQueryData("entityid",$record.RequestId).addQueryData("prvid",$record.RequestId))','$!portlet.ID',aipo.workflow.onFocusComment);">【$!record.CategoryName】#if($!record.RequestName != '') $!record.RequestName #end</a>
+#ALtdcellfooter()
+#ALtdcellAtt("$!{record.PriceStr}&nbsp;円" 'nowrap')
+#ALtdcellAtt("$!record.CreateDate" 'nowrap')
+#ALtdcellAtt("$!record.LastUpdateUser" 'nowrap')
+#ALtdcellAtt("$!record.StateString" 'nowrap align="center"')
+</tr>
+#end
+#ALtablefooter()
+#ALajaxpageviewFooter('WorkflowListScreen' $result)
+#end
+#ALformfooter()
+#ALspacebothfooter()
+#ALajaxtabfooter()

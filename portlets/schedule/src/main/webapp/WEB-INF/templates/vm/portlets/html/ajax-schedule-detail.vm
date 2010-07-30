@@ -1,0 +1,234 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($hasMember = false)
+#set($tabs = [["スケジュール詳細", "",""]])
+#set ($indicator_id = "indicator-dlg-")
+## ---------------------------------------------------------------------------
+#ALdialogheader("スケジュール詳細")
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+#ALerrmsg($errmsgs)
+<div id="messageDiv"></div>
+#ALajaxdetailformheader("スケジュール")
+<input type="hidden" name="edit_url" value="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('mode','form').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()})"/>
+<input type="hidden" name="delete_url" value="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen').addQueryData('mode','delete').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()})"/>
+<input type="hidden" name="change_status_url" value="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen').addQueryData('mode','change_status').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()})"/>
+<input type="hidden" name="view_date" value="$!{result.ViewDate.toString()}"/>
+<input type="hidden" name="userid" value="$!{result.Detail.User.UserId.toString()}"/>
+#if($afterbehavior)
+<input type="hidden" name="afterbehavior" value="1" />
+#end
+#if($!{result.ViewDate.Year} && $!{result.ViewDate.Month} && $!{result.ViewDate.Day} && ($!{result.ViewDate.Year} != "") && ($!{result.ViewDate.Month} != "") && ($!{result.ViewDate.Day} != "") )
+#set($viewDateEnable = "true")
+#else
+#set($viewDateEnable = "false")
+#end
+#ALtableheaderWide()
+#ALtdcaption("名前")
+#ALtditem($!{result.Detail.User.AliasName})
+#ALtdcaption("日時")
+#ALtditemheader()
+#if($!{result.Detail.isSpan()})
+$!{result.Detail.StartDate.Year} 年 $!{result.Detail.StartDate.Month} 月 $!{result.Detail.StartDate.Day} 日 $!{result.Detail.StartDate.DayOfWeek} ～
+$!{result.Detail.EndDate.Year} 年 $!{result.Detail.EndDate.Month} 月 $!{result.Detail.EndDate.Day} 日 $!{result.Detail.EndDate.DayOfWeek}
+#if(! ${result.Detail.isPublic()})
+<img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開"/>
+#end
+#elseif($!{result.Detail.isRepeat()})
+$!{result.Detail.Text}<br/>
+$!{result.Detail.Date2}
+#if(! ${result.Detail.isPublic()})
+<img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開"/>
+#end
+<img src="images/schedule/schedule_repeat.gif" border="0" width="16" height="16" align="absmiddle" alt="繰り返し" title="繰り返し"/>
+#else
+$!{result.Detail.StartDate.Year} 年 $!{result.Detail.StartDate.Month} 月 $!{result.Detail.StartDate.Day} 日 $!{result.Detail.StartDate.DayOfWeek}<br/>
+$!{result.Detail.Date2}
+#if(! ${result.Detail.isPublic()})
+<img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開"/>
+#end
+#end
+#if($!{result.Detail.isTmpreserve()})
+<img src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="仮スケジュール" title="仮スケジュール"/>
+#end
+#ALtditemfooter()
+#ALtdcaption('予定')
+#ALtditem($!{result.Detail.Name})
+
+#* 共有カテゴリ連携（ここから）  *#
+
+#ALtdcaption('共有カテゴリ')
+#ALtditem($!{result.Detail.CommonCategoryName})
+
+#* 共有カテゴリ連携（ここまで）  *#
+
+#ALtdcaption('場所')
+#ALtditem($!{result.Detail.Place})
+#ALtdcaption('内容')
+#ALtditem($!{result.Detail.Note})
+#ALtdcaption('公開区分')
+#ALtditemheader()
+#if($!result.Detail.isPublic())
+公開 （スケジュールを全員に公開します）
+#elseif($!result.Detail.isPrivate())
+非公開 （スケジュールの日時のみを全員に公開します）
+#elseif($!result.Detail.isHidden())
+完全に隠す （スケジュールをすべて非公開とします）
+#end
+#ALtditemfooter()
+#ALtdcaption('参加メンバー')
+#ALtditemheader()
+#set($counter = 0)
+#foreach($record in $!result.MemberList)
+#if(!($!{record.Name.toString()} == $!{result.Detail.User.Name.toString()}))
+$!record.AliasName
+#if($result.getStatus($record.UserId.Value) == "T")
+<img src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="仮スケジュール" title="仮スケジュール"/>
+#elseif($result.getStatus($record.UserId.Value) == "R")
+#set($counter = $counter + 1)
+<img src="images/schedule/schedule_remove.gif" border="0" width="16" height="16" align="absmiddle" alt="削除されました" title="削除されました"/>
+#end
+<br/>
+#end
+#end
+#if($counter < ($!result.MemberList.size() - 1))
+#set ($hasMember = true)
+#end
+#if($hasMember)
+<div style="padding:4px 0px 0px 0px">
+#if($!{result.Detail.isEditable()}) 参加メンバーは、このスケジュールを編集／削除できます。#else #if($!{result.Detail.User.UserId.toString()}==$!{result.Detail.UpdateUser.UserId.toString()}) 参加メンバー#else ユーザー $!{result.Detail.UpdateUser.AliasName} 以外#endは、このスケジュールを編集／削除できません。#end
+</div>
+#end
+#ALtdcellfooter()
+
+#ALtdcaption('施設')
+#ALtditemheader()
+#foreach($record in $!result.FacilityList)
+${record.FacilityName}<br/>
+#end
+#ALtditemfooter()
+
+#ALtdcaption('登録者名')
+#ALtditem("$!{result.Detail.CreateUser.AliasName} （$!{result.Detail.CreateDate}）")
+#ALtdcaption('更新者名')
+#ALtditem("$!{result.Detail.UpdateUser.AliasName} （$!{result.Detail.UpdateDate}）")
+<tr>
+#ALtdcellheaderAtt("colspan='2' align='center'")
+#if($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} || ($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()})|| ($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()}) || (!$!{result.Detail.isOwner()} && $!{result.hasAuthorityOtherDelete()}) || (!$!{result.Detail.isLoginuser()} && $!{result.hasAuthorityOtherEdit()}))
+<div align="left" style="padding:0px 0px 2px 0px">
+#if($viewDateEnable == "true")
+#if($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} || $!{result.Detail.isEditable()} || (!$!{result.Detail.isLoginuser()} && $!{result.hasAuthorityOtherDelete()}))
+<h3>削除する場合の条件</h3>
+#set($prestr = "$!{result.Detail.User.AliasName} の")
+
+#if($hasMember && $!{result.Detail.isRepeat()})
+<input name="del_flag" type="radio" value="3"  id="$!{portlet.ID}del_flag_3_id" checked="checked" onclick="aipo.schedule.delFlag3(this.form)"/>
+<label for="$!{portlet.ID}del_flag_3_id" onclick="aipo.schedule.delFlag3(this.form)">${prestr} $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみを削除します</label><br/>
+<input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"/>
+<label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">${prestr}この予定を完全に削除します</label><br/>
+<input name="del_flag" type="radio" value="1"  id="$!{portlet.ID}del_flag_1_id" onclick="aipo.schedule.delFlag1(this.form)"/>
+<label for="$!{portlet.ID}del_flag_1_id" onclick="aipo.schedule.delFlag1(this.form)">参加メンバー全員の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみを削除します</label><br/>
+<input name="del_flag" type="radio" value="0"  id="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)"/>
+<label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)">参加メンバー全員のこの予定を完全に削除します</label>
+<input type="hidden" name="del_member_flag" value="1"/>
+<input type="hidden" name="del_range_flag" value="1"/>
+#elseif($hasMember && ! $!{result.Detail.isRepeat()})
+<input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>
+<label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">${prestr}この予定を完全に削除します</label><br/>
+<input name="del_flag" type="radio" value="0"  id="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)"/>
+<label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)">参加メンバー全員のこの予定を完全に削除します</label>
+<input type="hidden" name="del_member_flag" value="1"/>
+<input type="hidden" name="del_range_flag" value="0"/>
+#elseif(! $hasMember && $!{result.Detail.isRepeat()})
+<input name="del_flag" type="radio" value="3"  id="$!{portlet.ID}del_flag_3_id" checked="checked" onclick="aipo.schedule.delFlag3(this.form)"/>
+<label for="$!{portlet.ID}del_flag_3_id" onclick="aipo.schedule.delFlag3(this.form)">${prestr} $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみを削除します</label><br/>
+<input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"/>
+<label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">${prestr}この予定を完全に削除します</label>
+<input type="hidden" name="del_member_flag" value="1"/>
+<input type="hidden" name="del_range_flag" value="1"/>
+#else
+<input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>
+<label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"> ${prestr}この予定を完全に削除します</label>
+<input type="hidden" name="del_member_flag" value="1"/>
+<input type="hidden" name="del_range_flag" value="0"/>
+#end
+#else
+#if($!{result.Detail.isLoginuser()} && $!{result.Detail.isEditable()})
+#if($!{result.Detail.isRepeat()})
+<input name="del_flag" type="radio" value="3" id="$!{portlet.ID}del_flag_3_id" onclick="aipo.schedule.delFlag3(this.form)"/>
+<label for="$!{portlet.ID}del_flag_3_id" onclick="aipo.schedule.delFlag3(this.form)"> 自分の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみを削除します</label><br/>
+<input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>
+<label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"> 自分のこの予定を完全に削除します</label>
+<input type="hidden" name="del_member_flag" value="1"/>
+<input type="hidden" name="del_range_flag" value="0"/>
+#else
+<input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>
+<label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"> 自分のこの予定を完全に削除します</label>
+<input type="hidden" name="del_member_flag" value="1"/>
+<input type="hidden" name="del_range_flag" value="0"/>
+#end
+#end
+#end
+#end
+</div>
+#if($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()})
+    #if($!{result.hasAuthoritySelfEdit()} && ($viewDateEnable == "true"))
+        #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()})" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog")    
+    #end
+    #if($!{result.hasAuthoritySelfDelete()} && ($viewDateEnable == "true"))
+        #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.schedule.onReceiveMessage")
+    #end	
+#elseif(!$!{result.Detail.isLoginuser()})
+    #if($!{result.hasAuthorityOtherEdit()} && ($viewDateEnable == "true"))
+       #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()})" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog")    
+    #end
+    #if($!{result.hasAuthorityOtherDelete()} && ($viewDateEnable == "true"))
+        #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.schedule.onReceiveMessage")
+    #end
+#elseif($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()})
+    #ALbutton('eventSubmit_doSchedule_change_status' '確定する' "aipo.schedule.buttonChangeStatus(this.form, this.form.change_status_url.value, 'C', '$indicator_id', '$!portlet.ID')")
+    #if($!{result.Detail.isEditable()})
+        #if($!{result.hasAuthoritySelfEdit()} && ($viewDateEnable == "true"))
+        #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()})" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog")    
+    #end
+    #if($!{result.hasAuthoritySelfDelete()} && ($viewDateEnable == "true"))
+        #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.schedule.onReceiveMessage")
+    #end 
+    #end
+#elseif($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()})
+    #ALbutton('eventSubmit_doSchedule_change_status' '仮スケジュールに戻す' "aipo.schedule.buttonChangeStatus(this.form, this.form.change_status_url.value, 'T', '$indicator_id', '$!portlet.ID')")
+    #if($!{result.Detail.isEditable()})
+        #if($!{result.hasAuthoritySelfEdit()} && ($viewDateEnable == "true"))
+        #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()})" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog")    
+    #end
+    #if($!{result.hasAuthoritySelfDelete()} && ($viewDateEnable == "true"))
+        #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.schedule.onReceiveMessage")
+    #end
+    #end
+#end
+#ALajaxbuttonClose()
+</tr>
+#else	
+#ALajaxbuttonClose()
+#end
+#ALtdcellfooter()
+</tr>
+#ALtablefooter()
+#ALformfooter()
+#ALdialogfooter()

@@ -1,0 +1,81 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+##-------------------------------------------------------------
+#set ($action_str = "送信する")
+#set ($event_submit = "eventSubmit_doWebmail_send_mail")
+#set ($accountname = $!result.AccountName)
+#set($to = $!result.To)
+#set($cc = $!result.Cc)
+#set($bcc =$!result.Bcc)
+#set($subject = $!result.Subject)
+#set($body = $!result.Body)
+#set ($indicator_id = "indicator-dlg-")
+##-------------------------------------------------------------
+#ALdialogheader("メール作成")
+#if($!result.AccountId == 0)
+#ALbuttonheader()
+<div class="message">メールアカウントを選択してください。</div>
+#ALajaxbuttonClose()
+#ALbuttonfooter()
+#else
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+#ALerrmsg($errmsgs)
+<div id="messageDiv"></div>
+<div class="message"><span>送信できるメールの大きさは、本文と添付ファイルをあわせて 7MB までです。</span><br />
+<span>機種依存文字は、送信先で正しく表示されない可能性があります。<br /><a href="javascript:aipo.webmail.open_help('/${servlet_name}/help/unusualchar.html')">詳しくはこちらを参照ください。</a></span></div><br />
+#ALajaxscreenformheader("workflowForm" $jslink $portlet "WebMailFormJSONScreen" "aimluck.io.selectAllOptions(this.attachments);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.webmail.onReceiveMessage)")
+<input type="hidden" name="mode" value="insert" />
+<input type="hidden" name="mailtype" value="$!result.MailType">
+<div id="addressbookDialog" class="addressbookDialog" style="width:600px;display:none"></div>
+#ALtableheaderWide()
+#ALtdcaption("#ALrequired($!result.getFieldName('to'))")
+#ALtditemheader()
+#ALtextfield('to' $!result.To '60%' 512 'disable')
+##ALbutton('addressbook' 'アドレス帳' 'open_addressbook()')
+<input type="button" onclick="aipo.webmail.showAddressbookDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAddressbookFormScreen"))', '$!portlet.ID', aipo.webmail.onLoadAddressbookDialog);" value="アドレス帳" class="button" name="open_addressbook"/>
+#ALtditemfooter()
+#ALtdcaption("$!result.getFieldName('cc')")
+#ALtditem("#ALtextfield('cc' $!result.Cc '60%' 512 'disable')")
+#ALtdcaption("$!result.getFieldName('bcc')")
+#ALtditem("#ALtextfield('bcc' $!result.Bcc '60%' 512 'disable')")
+#ALtdcaption("$!result.getFieldName('subject')")
+#ALtditem("#ALtextfield('subject' $!result.Subject '60%' $!result.Subject.MaxLength 'active')")
+#ALtdcaption("$!result.getFieldName('body')")
+#ALtditemheader()
+#ALtextarea('body' $!result.Body 10 40)
+#ALtditemfooter()
+#ALtdcaption("添付ファイル")
+#ALtditemheader()
+<select id="attachments" name="attachments" type="select" size="3" multiple="multiple" style="width: 325px">
+#foreach( $record in $!result.AttachmentFileNameList )
+<option value="$record.FileId">$record.FileName</option>
+#end
+</select>
+<input type="button" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","FileuploadFormScreen").addQueryData("mode","form"))');" value="ファイルの選択" class="button" name="add_attachment"/>
+選択したファイルを<input type="button" onclick="aimluck.io.removeOptions(this.form.attachments);" value="削除する" class="button" name="add_attachment"/>
+<div id="fileuploadDialog" class="fileuploadDialog" style="width:300px;display:none"></div>
+<input type="hidden" id="folderName" name="folderName" value="$!result.FolderName">
+#ALtditemfooter()
+#ALtablefooter()
+#ALbuttonheader()
+#ALsubmit($event_submit $action_str)#ALajaxbuttonClose()
+#ALbuttonfooter()
+#ALformfooter()
+#end
+#ALdialogfooter()

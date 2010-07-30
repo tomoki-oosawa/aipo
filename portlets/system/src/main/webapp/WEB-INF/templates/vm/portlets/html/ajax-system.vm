@@ -1,0 +1,51 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http:// www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set($tabs = [["ネットワーク情報", "",""]])
+## ---------------------------------------------------------------------------
+#ALtabheader($tabs "")
+#ALspacebothheader()
+#if((!$config.getString("aipo.asp")) || ($config.getString("aipo.asp") != "true"))
+<div style="p">
+<h3>社内からのアクセス</h3>
+『${alias}』 にアクセスするためのアドレスです。社内のユーザーには、このアドレスをご連絡ください。
+#ALtableheaderWide()
+#ALtdcaption('Aipoサイト（社内）')
+#ALtditem("$!result.Detail.LocalUrl")
+#ALtablefooter()
+</div>
+#end
+<br />
+<h3>社外からのアクセス</h3>
+社外から『${alias}』 にアクセスするためのアドレスです。社外のユーザーには、このアドレスをご連絡ください。
+#ALformheader('network' $jslink $portlet)
+#ALtableheaderWide()
+#ALtdcaptionheader()
+${alias}サイト（社外）
+#ALtdcaptionfooter()
+#ALtditem("$!result.Detail.GlobalUrl")
+<tr>
+#ALtdcellheaderAtt("align='center' colspan='2'")
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','SystemNetworkFormScreen')" "$!portlet.ID" 'aipo.system.onLoadNetworkInfoDialog')
+#ALtdcellfooter()
+</tr>
+#ALtablefooter()
+#ALformfooter()
+#ALspacebothfooter()
+#ALajaxtabfooter()

@@ -1,0 +1,76 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-dlg-")
+#set ($action_str = "変更する")
+#set ($subtitle = '順番変更')
+## ---------------------------------------------------------------------------
+#ALdialogheader($subtitle)
+#ALerrmsg($errmsgs)
+#if((! $!result.FilterList) || $result.FilterList.size() == 0)
+<div class="message">フィルタが登録されていません。</div>
+#else
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+<div style="padding:0px 0px 5px 5px"><img src="images/account/account_up_10.gif" align="absmiddle">&nbsp;<img src="images/account/account_up_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_10.gif" align="absmiddle">&nbsp;の各ボタンで、マウスで選択したフィルタの順番を自由に変更できます。<br>
+Windows では 『Ctrl キー + マウスクリック』、Macintosh では 『コマンドキー+マウスクリック』 で複数選択ができます。</div>
+#ALajaxscreenformheader("filterOrderForm" $jslink $portlet "WebMailFilterOrderFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.webmail.onReceiveMessage)")
+<input type="hidden" name="mode" value="update">
+<input type="hidden" name="positions" value="">
+#ALtableheaderWide()
+#ALtdcaptionAtt('フィルタ一覧' 'width="200" nowrap')
+<td class="item" width="100%" >
+<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr>
+<td width="23" style="border-width:0; padding: 0px;"><table border="0" style="padding: 0px;">
+<tr><td valign="top" style="border-width:0;">
+<a href="javascript:doUpOptions10(dojo.byId('filter_so_$!portlet.ID'))" title="10 ずつ順番を上げる"><img src="images/account/account_up_10.gif" alt="10 ずつ順番を上げる" border="0"></a></td>
+</tr>
+<tr><td valign="top" style="border-width:0;">
+<a href="javascript:doUpOptions(dojo.byId('filter_so_$!portlet.ID'))" title="1 ずつ順番を上げる"><img src="images/account/account_up_1.gif" alt="1 ずつ順番を上げる" border="0"></a></td>
+</tr>
+<tr><td style="border:0;">&nbsp;</td></tr>
+<tr>
+<td valign="bottom" style="border-width:0;"><a href="javascript:doDownOptions(dojo.byId('filter_so_$!portlet.ID'))" title="1 ずつ順番を下げる"><img src="images/account/account_down_1.gif" alt="1 ずつ順番を下げる" border="0"></a></td>
+</tr>
+<tr>
+<td valign="bottom" style="border-width:0;"><a href="javascript:doDownOptions10(dojo.byId('filter_so_$!portlet.ID'))" title="10 ずつ順番を下げる"><img src="images/account/account_down_10.gif" alt="10 ずつ順番を下げる" border="0"></a></td>
+</tr>
+</table></td>
+<td width="99%" style="border-width:0;"><select id="filter_so_$!portlet.ID" name="filter_so" size="20" multiple="multiple" style="WIDTH: 100%">
+#if($!result.FilterList.size() <= 0)
+<option value=""></option>
+#else
+#foreach($record in $!result.FilterList)
+<option value="$!record.FilterId">$!record.FilterName</option>
+#end
+#end
+</select>
+</td>
+</tr>
+</table>
+</td>
+#ALtablefooter()
+#ALbuttonheader()
+##ALsubmit('eventSubmit_doWebmail_update_filter' $action_str)#ALajaxbuttonClose()
+#ALsubmitJS('eventSubmit_doWebmail_update_filter' $action_str 'setHiddenValue(this);aipo.webmail.filter_order_submit(this.form)')
+#ALajaxbuttonClose()
+##ALsubmit('eventSubmit_doWebmail_filter_list' 'キャンセルする' 'setHiddenValue(this)')
+#ALbuttonfooter()
+#ALformfooter()
+#end
+#ALdialogfooter()

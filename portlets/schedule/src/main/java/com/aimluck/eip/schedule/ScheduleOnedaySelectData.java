@@ -1,0 +1,831 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.aimluck.eip.schedule;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.jar.Attributes;
+
+import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.query.SelectQuery;
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
+
+import com.aimluck.commons.field.ALDateTimeField;
+import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
+import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
+import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.common.ALAbstractSelectData;
+import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.schedule.util.ScheduleUtils;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.todo.util.ToDoUtils;
+import com.aimluck.eip.util.ALEipUtils;
+
+/**
+ * スケジュール1日表示の検索結果を管理するクラスです。
+ * 
+ */
+public class ScheduleOnedaySelectData extends ALAbstractSelectData {
+
+  /** <code>logger</code> logger */
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+      .getLogger(ScheduleOnedaySelectData.class.getName());
+
+  /** <code>viewDate</code> 表示する日付 */
+  private ALDateTimeField viewDate;
+
+  /** <code>prevDate</code> 表示する日付 */
+  private ALDateTimeField prevDate;
+
+  /** <code>nextDate</code> 次の日付 */
+  private ALDateTimeField nextDate;
+
+  /** <code>today</code> 今日 */
+  private ALDateTimeField today;
+
+  /** <code>resultData</code> 検索結果 */
+  private ScheduleResultData[] resultData;
+
+  // /** <code>spanResultData</code> 検索結果 */
+  // private ScheduleResultData spanResultData;
+
+  /** <code>termList</code> 期間スケジュールリスト */
+  private ArrayList termList;
+
+  /** <code>startHour</code> 表示開始時間 */
+  protected int startHour;
+
+  /** <code>endHour</code> 表示終了時間 */
+  protected int endHour;
+
+  /** <code>count</code> カウンター */
+  private int count;
+
+  /** <code>viewtype</code> 表示タイプ */
+  protected String viewtype;
+
+  /** <code>is_duplicate</code> 重複スケジュールがあるかどうか */
+  protected boolean is_duplicate;
+
+  /** <code>dlist</code> 重複スケジュール */
+  private List dlist;
+
+  /** <code>tmpIndex</code> テンポラリ */
+  int tmpIndex;
+
+  /** <code>tmpViewDate2</code> テンポラリ */
+  protected String tmpViewDate2;
+
+  /** <code>rowspanMap</code> rowpspan */
+  private Map rowspanMap;
+
+  /** <code>rowIndex</code> rowIndex */
+  private int rowIndex;
+
+  /** <code>viewJob</code> ToDo 表示設定 */
+  protected int viewToDo;
+
+  /** <code>todoList</code> ToDo リスト */
+  private List todoList;
+
+  /** ポートレット ID */
+  private String portletId;
+
+  protected DataContext dataContext;
+
+  /** <code>hasAuthoritySelfInsert</code> アクセス権限 */
+  private boolean hasAuthoritySelfInsert = false;
+
+  /*
+   * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
+   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   */
+  public void init(ALAction action, RunData rundata, Context context)
+      throws ALPageNotFoundException, ALDBErrorException {
+    // 展開されるパラメータは以下の通りです。
+    // ・viewDate 形式：yyyy-MM-dd
+
+    // POST/GET から yyyy-MM-dd の形式で受け渡される。
+    viewDate = new ALDateTimeField("yyyy-MM-dd");
+    viewDate.setNotNull(true);
+    nextDate = new ALDateTimeField("yyyy-MM-dd");
+    prevDate = new ALDateTimeField("yyyy-MM-dd");
+    today = new ALDateTimeField("yyyy-MM-dd");
+    Calendar to = Calendar.getInstance();
+    to.set(Calendar.HOUR_OF_DAY, 0);
+    to.set(Calendar.MINUTE, 0);
+    today.setValue(to.getTime());
+    // 表示開始時間の設定
+    startHour = Integer.parseInt(ALEipUtils.getPortlet(rundata, context)
+        .getPortletConfig().getInitParameter("p1a-rows"));
+    // 表示終了時間の設定
+    endHour = Integer.parseInt(ALEipUtils.getPortlet(rundata, context)
+        .getPortletConfig().getInitParameter("p1b-rows"));
+    // ToDo 表示設定
+    viewToDo = Integer.parseInt(ALEipUtils.getPortlet(rundata, context)
+        .getPortletConfig().getInitParameter("p5a-view"));
+    tmpIndex = 0;
+    count = 0;
+    // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
+    if (ALEipUtils.isMatch(rundata, context)) {
+      // 表示する日付
+      // e.g. 2004-3-14
+      if (rundata.getParameters().containsKey("view_date")) {
+        ALEipUtils.setTemp(rundata, context, "view_date", rundata
+            .getParameters().getString("view_date"));
+      }
+    }
+    // viewDate に値を設定する。
+    String tmpViewDate = ALEipUtils.getTemp(rundata, context, "view_date");
+    if (tmpViewDate2 != null) {
+      tmpViewDate = tmpViewDate2;
+    }
+    if (tmpViewDate == null || tmpViewDate.equals("")) {
+      // セッションに情報がない場合は今日の日付を設定する。
+      Calendar cal = Calendar.getInstance();
+      cal.set(Calendar.HOUR_OF_DAY, 0);
+      cal.set(Calendar.MINUTE, 0);
+      viewDate.setValue(cal.getTime());
+    } else {
+      viewDate.setValue(tmpViewDate);
+      if (!viewDate.validate(new ArrayList())) {
+        ALEipUtils.removeTemp(rundata, context, "view_date");
+
+        throw new ALPageNotFoundException();
+
+      }
+    }
+    resultData = new ScheduleResultData[(endHour - startHour) * 4 * 2];
+    dlist = new ArrayList();
+    Calendar cal2 = Calendar.getInstance();
+    cal2.setTime(viewDate.getValue());
+    cal2.add(Calendar.DATE, 1);
+    nextDate.setValue(cal2.getTime());
+    cal2.add(Calendar.DATE, -2);
+    prevDate.setValue(cal2.getTime());
+
+    rowspanMap = new HashMap();
+    for (int i = startHour; i <= endHour; i++) {
+      rowspanMap.put(Integer.valueOf(i), Integer.valueOf(4));
+    }
+
+    ALEipUtils.setTemp(rundata, context, "tmpStart", viewDate.toString()
+        + "-00-00");
+    ALEipUtils.setTemp(rundata, context, "tmpEnd", viewDate.toString()
+        + "-00-00");
+
+    dataContext = DatabaseOrmService.getInstance().getDataContext();
+    termList = new ArrayList();
+
+    // スーパークラスのメソッドを呼び出す。
+    super.init(action, rundata, context);
+    viewtype = "oneday";
+
+    int userId = ALEipUtils.getUserId(rundata);
+
+    // アクセス権限
+    ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+    hasAuthoritySelfInsert = aclhandler.hasAuthority(userId,
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
+        ALAccessControlConstants.VALUE_ACL_INSERT);
+  }
+
+  /*
+   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context)
+   */
+  protected List selectList(RunData rundata, Context context)
+      throws ALPageNotFoundException, ALDBErrorException {
+    try {
+      List resultBaseList = dataContext.performQuery(getSelectQuery(rundata,
+          context));
+      List resultList = ScheduleUtils.sortByDummySchedule(resultBaseList);
+
+      List list = new ArrayList();
+      List delList = new ArrayList();
+      int delSize = 0;
+      int resultSize = resultList.size();
+      int size = 0;
+      boolean canAdd = true;
+      for (int i = 0; i < resultSize; i++) {
+        EipTScheduleMap record = (EipTScheduleMap) resultList.get(i);
+        EipTSchedule schedule = (EipTSchedule) (record.getEipTSchedule());
+        delList.clear();
+        canAdd = true;
+        size = list.size();
+        for (int j = 0; j < size; j++) {
+          EipTScheduleMap record2 = (EipTScheduleMap) list.get(j);
+          EipTSchedule schedule2 = (EipTSchedule) (record2.getEipTSchedule());
+          if (!schedule.getRepeatPattern().equals("N")
+              && "D".equals(record2.getStatus())
+              && schedule.getScheduleId().intValue() == schedule2.getParentId()
+                  .intValue()) {
+            canAdd = false;
+            break;
+          }
+          if (!schedule2.getRepeatPattern().equals("N")
+              && "D".equals(record.getStatus())
+              && schedule2.getScheduleId().intValue() == schedule.getParentId()
+                  .intValue()) {
+            // [繰り返しスケジュール] 親の ID を検索
+            if (!delList.contains(record2)) {
+              delList.add(record2);
+            }
+            canAdd = true;
+          }
+        }
+        delSize = delList.size();
+        for (int k = 0; k < delSize; k++) {
+          list.remove(delList.get(k));
+        }
+
+        if (canAdd) {
+          list.add(record);
+        }
+      }
+
+      // ダミーを削除する．
+      delList.clear();
+      size = list.size();
+      for (int i = 0; i < size; i++) {
+        EipTScheduleMap record = (EipTScheduleMap) list.get(i);
+        if ("D".equals(record.getStatus())) {
+          delList.add(record);
+        }
+      }
+      delSize = delList.size();
+      for (int i = 0; i < delSize; i++) {
+        list.remove(delList.get(i));
+      }
+
+      // ソート
+      Collections.sort(list, new Comparator() {
+
+        public int compare(Object a, Object b) {
+          Calendar cal = Calendar.getInstance();
+          Calendar cal2 = Calendar.getInstance();
+          EipTSchedule p1 = null;
+          EipTSchedule p2 = null;
+          try {
+            p1 = ((EipTScheduleMap) a).getEipTSchedule();
+            p2 = ((EipTScheduleMap) b).getEipTSchedule();
+
+          } catch (Exception e) {
+            logger.error("Exception", e);
+          }
+          cal.setTime(p1.getStartDate());
+          cal.set(0, 0, 0);
+          cal2.setTime(p2.getStartDate());
+          cal2.set(0, 0, 0);
+          if ((cal.getTime()).compareTo(cal2.getTime()) != 0) {
+            return (cal.getTime()).compareTo(cal2.getTime());
+          } else {
+            cal.setTime(p1.getEndDate());
+            cal.set(0, 0, 0);
+            cal2.setTime(p2.getEndDate());
+            cal2.set(0, 0, 0);
+
+            return (cal.getTime()).compareTo(cal2.getTime());
+          }
+        }
+      });
+
+      if (viewToDo == 1) {
+        // ToDo の読み込み
+        loadToDo(rundata, context);
+      }
+
+      return list;
+    } catch (Exception e) {
+
+      // TODO: エラー処理
+      logger.error("[ScheduleOnedaySelectData]", e);
+      throw new ALDBErrorException();
+    }
+  }
+
+  /**
+   * 検索条件を設定した SelectQuery を返します。
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  protected SelectQuery getSelectQuery(RunData rundata, Context context) {
+    SelectQuery query = new SelectQuery(EipTScheduleMap.class);
+
+    Expression exp1 = ExpressionFactory.matchExp(
+        EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
+            .getUserId(rundata)));
+    query.setQualifier(exp1);
+    Expression exp2 = ExpressionFactory.matchExp(EipTScheduleMap.TYPE_PROPERTY,
+        ScheduleUtils.SCHEDULEMAP_TYPE_USER);
+    query.andQualifier(exp2);
+
+    // 終了日時
+    Expression exp11 = ExpressionFactory.greaterOrEqualExp(
+        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+            + EipTSchedule.END_DATE_PROPERTY, viewDate.getValue());
+
+    // 日付を1日ずつずらす
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(viewDate.getValue());
+    cal.add(Calendar.DATE, 1);
+    ALDateTimeField field = new ALDateTimeField();
+    field.setValue(cal.getTime());
+    // 開始日時
+    // LESS_EQUALからLESS_THANへ修正、期間スケジュールFIXのため(Haruo Kaneko)
+    Expression exp12 = ExpressionFactory.lessExp(
+        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+            + EipTSchedule.START_DATE_PROPERTY, field.getValue());
+    // 通常スケジュール
+    Expression exp13 = ExpressionFactory.noMatchExp(
+        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+            + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
+    // 期間スケジュール
+    Expression exp14 = ExpressionFactory.noMatchExp(
+        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+            + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
+    query.andQualifier((exp11.andExp(exp12)).orExp(exp13.andExp(exp14)));
+    // 開始日時でソート
+    List orders = new ArrayList();
+    orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+        + EipTSchedule.START_DATE_PROPERTY, true));
+    orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+        + EipTSchedule.END_DATE_PROPERTY, true));
+    query.addOrderings(orders);
+
+    return query;
+  }
+
+  /*
+   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context)
+   */
+  protected Object selectDetail(RunData rundata, Context context) {
+    // このメソッドは利用されません。
+    return null;
+  }
+
+  /*
+   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   */
+  protected Object getResultData(Object obj) throws ALPageNotFoundException,
+      ALDBErrorException {
+    ScheduleResultData rd = new ScheduleResultData();
+    ScheduleResultData rd2 = new ScheduleResultData();
+    rd.initField();
+    rd2.setFormat("yyyy-MM-dd-HH-mm");
+    rd2.initField();
+    try {
+      EipTScheduleMap record = (EipTScheduleMap) obj;
+      EipTSchedule schedule = record.getEipTSchedule();
+      if ("R".equals(record.getStatus()))
+        return rd;
+      if (!ScheduleUtils.isView(viewDate, schedule.getRepeatPattern(), schedule
+          .getStartDate(), schedule.getEndDate())) {
+        return rd;
+      }
+      // ID
+      rd.setScheduleId(schedule.getScheduleId().intValue());
+      // 親スケジュール ID
+      rd.setParentId(schedule.getParentId().intValue());
+      // 予定
+      rd.setName(schedule.getName());
+      // 開始時間
+      rd.setStartDate(schedule.getStartDate());
+      // 終了時間
+      rd.setEndDate(schedule.getEndDate());
+      // 仮スケジュールかどうか
+      rd.setTmpreserve("T".equals(record.getStatus()));
+      // 公開するかどうか
+      rd.setPublic("O".equals(schedule.getPublicFlag()));
+      // 表示するかどうか
+      rd.setHidden("P".equals(schedule.getPublicFlag()));
+      // ダミーか
+      // rd.setDummy("D".equals(record.getStatus()));
+      // 繰り返しパターン
+      rd.setPattern(schedule.getRepeatPattern());
+
+      // 期間スケジュールの場合
+      if (rd.getPattern().equals("S")) {
+        termList.add(rd);
+        return rd;
+      }
+
+      // 繰り返しスケジュールの場合
+      if (!rd.getPattern().equals("N")) {
+
+        if (!ScheduleUtils.isView(viewDate, rd.getPattern(), rd.getStartDate()
+            .getValue(), rd.getEndDate().getValue())) {
+          return rd;
+        }
+        rd.setRepeat(true);
+      }
+
+      // Oneday
+      boolean dup = false;
+      int sta = startHour * 4;
+      int eta = endHour * 4;
+      int st = Integer.parseInt(rd.getStartDate().getHour()) * 4
+          + Integer.parseInt(rd.getStartDate().getMinute()) / 15;
+      int ed = Integer.parseInt(rd.getEndDate().getHour()) * 4
+          + Integer.parseInt(rd.getEndDate().getMinute()) / 15;
+      if (!(rd.getStartDate().getDay().equals(rd.getEndDate().getDay()))
+          && rd.getEndDate().getHour().equals("0")) {
+        ed = 4 * 24;
+      }
+      if ((ed - sta > 0 && eta - st > 0) || (ed - sta == 0 && st == ed)) {
+        if (sta > st) {
+          st = sta;
+        }
+        if (eta < ed) {
+          ed = eta;
+        }
+        sta -= rowIndex;
+        // eta -= rowIndex;
+        int tmpRowIndex = rowIndex;
+        if (ed - st == 0) {
+          rd.setRowspan(1);
+          Integer rowspan = (Integer) rowspanMap.get(Integer.valueOf(rd
+              .getStartDate().getHour()));
+          if (rowspan.intValue() > 4) {
+            ((ScheduleResultData) resultData[tmpIndex]).setDuplicate(true);
+            rd.setDuplicate(true);
+          }
+          rowspanMap.put(Integer.valueOf(rd.getStartDate().getHour()), Integer
+              .valueOf(rowspan.intValue() + 1));
+          rowIndex++;
+          ed++;
+        } else {
+          rd.setRowspan(ed - st);
+        }
+
+        if (st - sta - count > 0) {
+          rd2.setRowspan(st - sta - count);
+          Calendar cal = Calendar.getInstance();
+          cal.setTime(viewDate.getValue());
+          cal.add(Calendar.HOUR, startHour);
+          int hour = (count - tmpRowIndex) / 4;
+          int min = ((count - tmpRowIndex) % 4) * 15;
+          cal.add(Calendar.HOUR, hour);
+          cal.add(Calendar.MINUTE, min);
+          rd2.setStartDate(cal.getTime());
+          hour = (st - sta - count) / 4;
+          min = ((st - sta - count) % 4) * 15;
+          cal.add(Calendar.HOUR, hour);
+          cal.add(Calendar.MINUTE, min);
+          rd2.setEndDate(cal.getTime());
+          resultData[count] = rd2;
+        } else if (st - sta - count != 0) {
+          dlist.add(rd);
+          rd.setDuplicate(true);
+          dup = true;
+          is_duplicate = true;
+          ((ScheduleResultData) resultData[tmpIndex]).setDuplicate(true);
+        }
+        if (!dup) {
+          resultData[st - sta] = rd;
+          tmpIndex = st - sta;
+          count = ed - sta;
+        }
+      }
+    } catch (Exception e) {
+
+      // TODO: エラー処理
+
+      logger.error("Exception", e);
+
+      return null;
+    }
+    return rd;
+  }
+
+  /*
+   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   */
+  protected Object getResultDataDetail(Object obj) {
+    // このメソッドは利用されません。
+    return null;
+  }
+
+  /*
+   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   */
+  protected Attributes getColumnMap() {
+    // このメソッドは利用されません。
+    return null;
+  }
+
+  /*
+   * @see com.aimluck.eip.common.ALAbstractSelectData#doViewList(com.aimluck.eip.modules.actions.common.ALAction,
+   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   */
+  public boolean doViewList(ALAction action, RunData rundata, Context context) {
+    boolean res = super.doViewList(action, rundata, context);
+    // 後処理
+    if (res)
+      postDoList();
+    return res;
+  }
+
+  /*
+   * @see com.aimluck.eip.common.ALAbstractSelectData#doSelectList(com.aimluck.eip.modules.actions.common.ALAction,
+   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   */
+  public boolean doSelectList(ALAction action, RunData rundata, Context context) {
+    boolean res = super.doSelectList(action, rundata, context);
+    // 後処理
+    if (res)
+      postDoList();
+    return res;
+  }
+
+  /**
+   * 検索後の処理を行います。
+   * 
+   */
+  private void postDoList() {
+    int index = (endHour - startHour) * 4 + rowIndex;
+    if (index > count) {
+      ScheduleResultData rd = new ScheduleResultData();
+      rd.setFormat("yyyy-MM-dd-HH-mm");
+      rd.initField();
+      rd.setRowspan(index - count);
+      Calendar cal = Calendar.getInstance();
+      cal.setTime(viewDate.getValue());
+      cal.add(Calendar.HOUR, startHour);
+      int hour = (count - rowIndex) / 4;
+      int min = ((count - rowIndex) % 4) * 15;
+      cal.add(Calendar.HOUR, hour);
+      cal.add(Calendar.MINUTE, min);
+      rd.setStartDate(cal.getTime());
+      hour = (index - count) / 4;
+      min = ((index - count) % 4) * 15;
+      cal.add(Calendar.HOUR, hour);
+      cal.add(Calendar.MINUTE, min);
+      rd.setEndDate(cal.getTime());
+      resultData[count] = rd;
+    }
+  }
+
+  public void loadToDo(RunData rundata, Context context) {
+    todoList = new ArrayList();
+    try {
+      SelectQuery query = getSelectQueryForTodo(rundata, context);
+      List todos = dataContext.performQuery(query);
+
+      int todosize = todos.size();
+      for (int i = 0; i < todosize; i++) {
+        EipTTodo record = (EipTTodo) todos.get(i);
+        ScheduleToDoResultData rd = new ScheduleToDoResultData();
+        rd.initField();
+
+        // ポートレット ToDo のへのリンクを取得する．
+        String todo_url = getPortletURItoTodo(rundata, record.getTodoId()
+            .longValue(), portletId);
+
+        rd.setTodoId(record.getTodoId().intValue());
+        rd.setTodoName(record.getTodoName());
+        rd.setUserId(record.getTurbineUser().getUserId().intValue());
+        rd.setStartDate(record.getStartDate());
+        rd.setEndDate(record.getEndDate());
+        rd.setTodoUrl(todo_url);
+        // 公開/非公開を設定する．
+        rd.setPublicFlag("T".equals(record.getPublicFlag()));
+        todoList.add(rd);
+      }
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return;
+    }
+  }
+
+  protected String getPortletURItoTodo(RunData rundata, long entityid,
+      String schedulePortletId) {
+    return ScheduleUtils.getPortletURItoTodoDetailPane(rundata, "ToDo",
+        entityid, schedulePortletId);
+  }
+
+  private SelectQuery getSelectQueryForTodo(RunData rundata, Context context) {
+    Integer uid = Integer.valueOf(ALEipUtils.getUserId(rundata));
+    SelectQuery query = new SelectQuery(EipTTodo.class);
+
+    Expression exp1 = ExpressionFactory.noMatchExp(EipTTodo.STATE_PROPERTY,
+        Short.valueOf((short) 100));
+    query.setQualifier(exp1);
+    Expression exp2 = ExpressionFactory.matchExp(
+        EipTTodo.ADDON_SCHEDULE_FLG_PROPERTY, "T");
+    query.andQualifier(exp2);
+    Expression exp3 = ExpressionFactory.matchDbExp(
+        TurbineUser.USER_ID_PK_COLUMN, uid);
+    query.andQualifier(exp3);
+
+    // 終了日時
+    Expression exp11 = ExpressionFactory.greaterOrEqualExp(
+        EipTTodo.END_DATE_PROPERTY, viewDate.getValue());
+    // 開始日時
+    Expression exp12 = ExpressionFactory.lessOrEqualExp(
+        EipTTodo.START_DATE_PROPERTY, viewDate.getValue());
+
+    // 開始日時のみ指定されている ToDo を検索
+    Expression exp21 = ExpressionFactory.lessOrEqualExp(
+        EipTTodo.START_DATE_PROPERTY, viewDate.getValue());
+    Expression exp22 = ExpressionFactory.matchExp(EipTTodo.END_DATE_PROPERTY,
+        ToDoUtils.getEmptyDate());
+
+    // 終了日時のみ指定されている ToDo を検索
+    Expression exp31 = ExpressionFactory.greaterOrEqualExp(
+        EipTTodo.END_DATE_PROPERTY, viewDate.getValue());
+    Expression exp32 = ExpressionFactory.matchExp(EipTTodo.START_DATE_PROPERTY,
+        ToDoUtils.getEmptyDate());
+
+    query.andQualifier((exp11.andExp(exp12)).orExp(exp21.andExp(exp22)).orExp(
+        exp31.andExp(exp32)));
+    return query;
+  }
+
+  /**
+   * 表示する日付を取得します。
+   * 
+   * @return
+   */
+  public ALDateTimeField getViewDate() {
+    return viewDate;
+  }
+
+  /**
+   * 次の日を取得します。
+   * 
+   * @return
+   */
+  public ALDateTimeField getNextDate() {
+    return nextDate;
+  }
+
+  /**
+   * 前の日を取得します。
+   * 
+   * @return
+   */
+  public ALDateTimeField getPrevDate() {
+    return prevDate;
+  }
+
+  /**
+   * 今日を取得します。
+   * 
+   * @return
+   */
+  public ALDateTimeField getToday() {
+    return today;
+  }
+
+  /**
+   * スケジュールを取得します。
+   * 
+   * @param index
+   * @return
+   */
+  public ScheduleResultData getResult(int index) {
+    return resultData[index];
+  }
+
+  /**
+   * 表示開始時間を取得します。
+   * 
+   * @return
+   */
+  public int getStartHour() {
+    return startHour;
+  }
+
+  /**
+   * 表示終了時間を取得します。
+   * 
+   * @return
+   */
+  public int getEndHour() {
+    return endHour;
+  }
+
+  /**
+   * 表示タイプを取得します。
+   * 
+   * @return
+   */
+  public String getViewtype() {
+    return viewtype;
+  }
+
+  /**
+   * 重複スケジュールがあるかどうか
+   * 
+   * @return
+   */
+  public boolean isDuplicate() {
+    return is_duplicate;
+  }
+
+  /**
+   * 重複スケジュールリストを取得します。
+   * 
+   * @param id
+   * @return
+   */
+  public List getDuplicateScheduleList() {
+    return dlist;
+  }
+
+  // /**
+  // * 期間スケジュールを取得します。
+  // *
+  // * @return
+  // */
+  // public ScheduleResultData getSpanSchedule() {
+  // return spanResultData;
+  // }
+
+  /**
+   * 表示日付（テンポラリ）を設定します。
+   * 
+   * @param date
+   */
+  public void setTmpViewDate(String date) {
+    tmpViewDate2 = date;
+  }
+
+  /**
+   * Rowspanを取得します。
+   * 
+   * @param hour
+   * @return
+   */
+  public int getRowspan(int hour) {
+    return ((Integer) rowspanMap.get(Integer.valueOf(hour))).intValue();
+  }
+
+  public List getTermResultDataList() {
+    return termList;
+  }
+
+  public List getToDoResultDataList() {
+    return todoList;
+  }
+
+  public void setPortletId(String id) {
+    portletId = id;
+  }
+
+  /**
+   * アクセス権限チェック用メソッド。<br />
+   * アクセス権限の機能名を返します。
+   * 
+   * @return
+   */
+  public String getAclPortletFeature() {
+    return ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
+  }
+
+  public boolean hasAuthoritySelfInsert() {
+    return hasAuthoritySelfInsert;
+  }
+
+}

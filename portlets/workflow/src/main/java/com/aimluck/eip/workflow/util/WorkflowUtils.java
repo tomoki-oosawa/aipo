@@ -1,0 +1,1466 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.aimluck.eip.workflow.util;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
+
+import javax.imageio.ImageIO;
+
+import org.apache.cayenne.DataObjectUtils;
+import org.apache.cayenne.DataRow;
+import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.query.SelectQuery;
+import org.apache.jetspeed.om.security.UserIdPrincipal;
+import org.apache.jetspeed.services.JetspeedSecurity;
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.resources.JetspeedResources;
+import org.apache.jetspeed.services.security.JetspeedSecurityException;
+import org.apache.turbine.services.InstantiationException;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
+
+import com.aimluck.commons.field.ALNumberField;
+import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowCategory;
+import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowFile;
+import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequest;
+import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequestMap;
+import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRoute;
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.common.ALBaseUser;
+import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.fileupload.beans.FileuploadBean;
+import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
+import com.aimluck.eip.fileupload.util.FileuploadUtils;
+import com.aimluck.eip.mail.util.ALEipUserAddr;
+import com.aimluck.eip.mail.util.ALMailUtils;
+import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.user.beans.UserLiteBean;
+import com.aimluck.eip.util.ALCellularUtils;
+import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.orgutils.ALOrgUtilsFactoryService;
+import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
+import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
+import com.aimluck.eip.workflow.WorkflowCategoryResultData;
+import com.aimluck.eip.workflow.WorkflowDecisionRecordData;
+import com.aimluck.eip.workflow.WorkflowDetailResultData;
+import com.aimluck.eip.workflow.WorkflowOldRequestResultData;
+import com.aimluck.eip.workflow.WorkflowRouteResultData;
+
+/**
+ * ワークフローのユーティリティクラスです。 <BR>
+ *
+ */
+public class WorkflowUtils {
+
+  /** logger */
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+      .getLogger(WorkflowUtils.class.getName());
+
+  /** 申請 */
+  public static final String DB_STATUS_REQUEST = "R";
+
+  /** 確認中 */
+  public static final String DB_STATUS_CONFIRM = "C";
+
+  /** 確認前 */
+  public static final String DB_STATUS_WAIT = "W";
+
+  /** 承認 */
+  public static final String DB_STATUS_ACCEPT = "A";
+
+  /** 否認 */
+  public static final String DB_STATUS_DENIAL = "D";
+
+  /** 削除・無効化のため自動承認 */
+  public static final String DB_STATUS_THROUGH = "T";
+
+  /** すべて承認 */
+  public static final String DB_PROGRESS_ACCEPT = "A";
+
+  /** 確認中 */
+  public static final String DB_PROGRESS_WAIT = "W";
+
+  /** 申請者に差し戻し */
+  public static final String DB_PROGRESS_DENAIL = "D";
+
+  /** 再申請済み */
+  public static final String DB_PROGRESS_REAPPLY = "R";
+
+  /** データベースに登録されたファイルを表す識別子 */
+  public static final String PREFIX_DBFILE = "DBF";
+
+  /** デフォルトエンコーディングを表わすシステムプロパティのキー */
+  public static final String FILE_ENCODING = JetspeedResources.getString(
+      "content.defaultencoding", "UTF-8");
+
+  /** ワークフローの添付ファイルを保管するディレクトリの指定 */
+  private static final String FOLDER_FILEDIR_WORKFLOW = JetspeedResources
+      .getString("aipo.filedir", "");
+
+  /** ワークフローの添付ファイルを保管するディレクトリのカテゴリキーの指定 */
+  protected static final String CATEGORY_KEY = JetspeedResources.getString(
+      "aipo.workflow.categorykey", "");
+
+  /**
+   * Request オブジェクトモデルを取得します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @param mode_update
+   * @return
+   */
+  public static EipTWorkflowRequest getEipTWorkflowRequest(RunData rundata,
+      Context context, boolean mode_update) throws ALPageNotFoundException {
+    int uid = ALEipUtils.getUserId(rundata);
+    String requestid = ALEipUtils.getTemp(rundata, context,
+        ALEipConstants.ENTITY_ID);
+    try {
+      if (requestid == null || Integer.valueOf(requestid) == null) {
+        // Request IDが空の場合
+        logger.debug("[WorkflowUtils] Empty ID...");
+        return null;
+      }
+
+      // アクセス権の判定
+      DataContext dataContext = DatabaseOrmService.getInstance()
+          .getDataContext();
+      SelectQuery query10 = new SelectQuery(EipTWorkflowRequestMap.class);
+      Expression exp10 = ExpressionFactory.matchDbExp(
+          EipTWorkflowRequestMap.EIP_TWORKFLOW_REQUEST_PROPERTY + "."
+              + EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
+          Integer.valueOf(requestid));
+      Expression exp11 = ExpressionFactory.matchExp(
+          EipTWorkflowRequestMap.USER_ID_PROPERTY, uid);
+      query10.setQualifier(exp10.andExp(exp11));
+      List<?> maps = dataContext.performQuery(query10);
+      if (maps == null || maps.size() == 0) {
+        // 指定したアカウントIDのレコードが見つからない場合
+        logger.debug("[WorkFlow] Invalid user access...");
+        throw new ALPageNotFoundException();
+      }
+
+      SelectQuery query = new SelectQuery(EipTWorkflowRequest.class);
+      Expression exp1 = ExpressionFactory.matchDbExp(
+          EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, requestid);
+      query.setQualifier(exp1);
+
+      Expression exp2 = ExpressionFactory.matchExp(
+          EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY + "."
+              + EipTWorkflowRequestMap.USER_ID_PROPERTY,
+          Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      query.andQualifier(exp2);
+
+      if (mode_update) {
+        Expression exp3 = ExpressionFactory.matchExp(
+            EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY + "."
+                + EipTWorkflowRequestMap.STATUS_PROPERTY, DB_STATUS_CONFIRM);
+        query.andQualifier(exp3);
+
+        Expression exp4 = ExpressionFactory.matchExp(
+            EipTWorkflowRequest.PROGRESS_PROPERTY, DB_PROGRESS_WAIT);
+        query.andQualifier(exp4);
+      }
+
+      List<?> requests = dataContext.performQuery(query);
+
+      if (requests == null || requests.size() == 0) {
+        // 指定した Request IDのレコードが見つからない場合
+        logger.debug("[WorkflowUtils] Not found ID...");
+        return null;
+      }
+
+      EipTWorkflowRequest request = (EipTWorkflowRequest) requests.get(0);
+
+      return (request);
+    } catch (ALPageNotFoundException pageNotFound) {
+      logger.error(pageNotFound);
+      throw pageNotFound;
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  /**
+   * Request オブジェクトモデルを取得します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @param mode_update
+   * @return
+   */
+  public static EipTWorkflowRequest getEipTWorkflowRequestAll(RunData rundata,
+      Context context) {
+    String requestid = ALEipUtils.getTemp(rundata, context,
+        ALEipConstants.ENTITY_ID);
+
+    try {
+      /**
+       * 新着ポートレット既読処理
+       */
+      WhatsNewUtils.shiftWhatsNewReadFlag(
+          WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST,
+          Integer.parseInt(requestid), ALEipUtils.getUserId(rundata));
+    } catch (Exception e) {
+      logger.error("Exception", e);
+    }
+    try {
+      if (requestid == null || Integer.valueOf(requestid) == null) {
+        // Request IDが空の場合
+        logger.debug("[WorkflowUtils] Empty ID...");
+        return null;
+      }
+
+      DataContext dataContext = DatabaseOrmService.getInstance()
+          .getDataContext();
+      SelectQuery query = new SelectQuery(EipTWorkflowRequest.class);
+      Expression exp1 = ExpressionFactory.matchDbExp(
+          EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, requestid);
+      query.setQualifier(exp1);
+
+      List<?> requests = dataContext.performQuery(query);
+
+      if (requests == null || requests.size() == 0) {
+        // 指定した Request IDのレコードが見つからない場合
+        logger.debug("[WorkflowUtils] Not found ID...");
+        return null;
+      }
+      return ((EipTWorkflowRequest) requests.get(0));
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  /**
+   * Request オブジェクトモデルを取得します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @param mode_update
+   * @return
+   */
+  public static EipTWorkflowRequest getEipTWorkflowRequestForOwner(
+      RunData rundata, Context context) {
+    String requestid = ALEipUtils.getTemp(rundata, context,
+        ALEipConstants.ENTITY_ID);
+    try {
+      if (requestid == null || Integer.valueOf(requestid) == null) {
+        // Request IDが空の場合
+        logger.debug("[WorkflowUtils] Empty ID...");
+        return null;
+      }
+
+      DataContext dataContext = DatabaseOrmService.getInstance()
+          .getDataContext();
+      SelectQuery query = new SelectQuery(EipTWorkflowRequest.class);
+      Expression exp1 = ExpressionFactory.matchDbExp(
+          EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, requestid);
+      query.setQualifier(exp1);
+
+      Expression exp2 = ExpressionFactory.matchExp(
+          EipTWorkflowRequest.USER_ID_PROPERTY,
+          Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      query.andQualifier(exp2);
+
+      List<?> requests = dataContext.performQuery(query);
+
+      if (requests == null || requests.size() == 0) {
+        // 指定した Request IDのレコードが見つからない場合
+        logger.debug("[WorkflowUtils] Not found ID...");
+        return null;
+      }
+      return ((EipTWorkflowRequest) requests.get(0));
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  /**
+   * ファイルオブジェクトモデルを取得します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static EipTWorkflowFile getEipTWorkflowFile(RunData rundata)
+      throws ALPageNotFoundException, ALDBErrorException {
+    try {
+      int attachmentIndex = rundata.getParameters().getInt("attachmentIndex",
+          -1);
+      if (attachmentIndex < 0) {
+        // ID が空の場合
+        logger.debug("[WorkflowUtils] Empty ID...");
+        throw new ALPageNotFoundException();
+
+      }
+
+      DataContext dataContext = DatabaseOrmService.getInstance()
+          .getDataContext();
+      SelectQuery query = new SelectQuery(EipTWorkflowFile.class);
+      Expression exp = ExpressionFactory.matchDbExp(
+          EipTWorkflowFile.FILE_ID_PK_COLUMN, Integer.valueOf(attachmentIndex));
+      query.andQualifier(exp);
+      List<?> files = dataContext.performQuery(query);
+      if (files == null || files.size() == 0) {
+        // 指定した ID のレコードが見つからない場合
+        logger.debug("[WorkflowUtils] Not found ID...");
+        throw new ALPageNotFoundException();
+      }
+      return (EipTWorkflowFile) files.get(0);
+    } catch (Exception ex) {
+      // TODO: エラー処理
+      logger.error("[WorkflowUtils]", ex);
+      throw new ALDBErrorException();
+    }
+  }
+
+  public static List<?> getEipTWorkflowRequestMap(EipTWorkflowRequest request) {
+    try {
+      DataContext dataContext = DatabaseOrmService.getInstance()
+          .getDataContext();
+      SelectQuery query = new SelectQuery(EipTWorkflowRequestMap.class);
+      Expression exp = ExpressionFactory.matchDbExp(
+          EipTWorkflowRequestMap.EIP_TWORKFLOW_REQUEST_PROPERTY + "."
+              + EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
+          request.getRequestId());
+      query.setQualifier(exp);
+      query.addOrdering(EipTWorkflowRequestMap.ORDER_INDEX_PROPERTY, true);
+
+      List<?> maps = dataContext.performQuery(query);
+
+      if (maps == null || maps.size() == 0) {
+        // 指定した Request IDのレコードが見つからない場合
+        logger.debug("[WorkflowSelectData] Not found ID...");
+        return null;
+      }
+      return maps;
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  /**
+   * ワークフローカテゴリ オブジェクトモデルを取得します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @param mode_update
+   * @return
+   */
+  public static EipTWorkflowCategory getEipTWorkflowCategory(RunData rundata,
+      Context context) {
+    String categoryid = ALEipUtils.getTemp(rundata, context,
+        ALEipConstants.ENTITY_ID);
+    try {
+      if (categoryid == null || Integer.valueOf(categoryid) == null) {
+        // Request IDが空の場合
+        logger.debug("[WorkflowUtils] Empty ID...");
+        return null;
+      }
+
+      DataContext dataContext = DatabaseOrmService.getInstance()
+          .getDataContext();
+      SelectQuery query = new SelectQuery(EipTWorkflowCategory.class);
+      Expression exp1 = ExpressionFactory.matchDbExp(
+          EipTWorkflowCategory.CATEGORY_ID_PK_COLUMN, categoryid);
+      query.setQualifier(exp1);
+
+      List<?> categories = dataContext.performQuery(query);
+
+      if (categories == null || categories.size() == 0) {
+        // 指定したカテゴリIDのレコードが見つからない場合
+        logger.debug("[WorkflowUtils] Not found ID...");
+        return null;
+      }
+      return ((EipTWorkflowCategory) categories.get(0));
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  /**
+   * ワークフローカテゴリ オブジェクトモデルを取得します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static EipTWorkflowCategory getEipTWorkflowCategory(
+      DataContext dataContext, Long category_id) {
+    try {
+      EipTWorkflowCategory category = (EipTWorkflowCategory) DataObjectUtils
+          .objectForPK(dataContext, EipTWorkflowCategory.class, category_id);
+
+      return category;
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  /**
+   * カテゴリの一覧を取得する。
+   *
+   * @param rundata
+   * @param context
+   */
+  public static List<WorkflowCategoryResultData> loadCategoryList(
+      RunData rundata, Context context) {
+    try {
+      // カテゴリ一覧
+      List<WorkflowCategoryResultData> categoryList = new ArrayList<WorkflowCategoryResultData>();
+
+      DataContext dataContext = DatabaseOrmService.getInstance()
+          .getDataContext();
+      SelectQuery query = new SelectQuery(EipTWorkflowCategory.class);
+      List<?> aList = dataContext.performQuery(query);
+
+      int size = aList.size();
+      for (int i = 0; i < size; i++) {
+        EipTWorkflowCategory record = (EipTWorkflowCategory) aList.get(i);
+        WorkflowCategoryResultData rd = new WorkflowCategoryResultData();
+        rd.initField();
+        rd.setCategoryId(record.getCategoryId().longValue());
+        rd.setCategoryName(record.getCategoryName());
+        rd.setOrderTemplate(record.getTemplate());
+        categoryList.add(rd);
+      }
+
+      return categoryList;
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  /**
+   * ワークフロー申請経路 オブジェクトモデルを取得します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @param mode_update
+   * @return
+   */
+  public static EipTWorkflowRoute getEipTWorkflowRoute(RunData rundata,
+      Context context) {
+    String routeid = ALEipUtils.getTemp(rundata, context,
+        ALEipConstants.ENTITY_ID);
+    try {
+      if (routeid == null || Integer.valueOf(routeid) == null) {
+        // Request IDが空の場合
+        logger.debug("[WorkflowUtils] Empty ID...");
+        return null;
+      }
+
+      DataContext dataContext = DatabaseOrmService.getInstance()
+          .getDataContext();
+      SelectQuery query = new SelectQuery(EipTWorkflowRoute.class);
+      Expression exp1 = ExpressionFactory.matchDbExp(
+          EipTWorkflowRoute.ROUTE_ID_PK_COLUMN, routeid);
+      query.setQualifier(exp1);
+
+      List<?> routes = dataContext.performQuery(query);
+
+      if (routes == null || routes.size() == 0) {
+        // 指定したカテゴリIDのレコードが見つからない場合
+        logger.debug("[WorkflowUtils] Not found ID...");
+        return null;
+      }
+      return ((EipTWorkflowRoute) routes.get(0));
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  /**
+   * ワークフロー申請経路 オブジェクトモデルを取得します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static EipTWorkflowRoute getEipTWorkflowRoute(DataContext dataContext,
+      Long route_id) {
+    try {
+      EipTWorkflowRoute route = (EipTWorkflowRoute) DataObjectUtils
+          .objectForPK(dataContext, EipTWorkflowRoute.class, route_id);
+
+      return route;
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  /**
+   * 申請経路の一覧を取得する。
+   *
+   * @param rundata
+   * @param context
+   */
+  public static List<WorkflowRouteResultData> loadRouteList(RunData rundata,
+      Context context) {
+    try {
+      // 申請経路一覧
+      List<WorkflowRouteResultData> routeList = new ArrayList<WorkflowRouteResultData>();
+
+      DataContext dataContext = DatabaseOrmService.getInstance()
+          .getDataContext();
+      SelectQuery query = new SelectQuery(EipTWorkflowRoute.class);
+      query.addOrdering(EipTWorkflowRoute.ROUTE_NAME_PROPERTY, Ordering.ASC);
+      List<?> aList = dataContext.performQuery(query);
+
+      int size = aList.size();
+      for (int i = 0; i < size; i++) {
+        EipTWorkflowRoute record = (EipTWorkflowRoute) aList.get(i);
+        WorkflowRouteResultData rd = new WorkflowRouteResultData();
+        rd.initField();
+        rd.setRouteId(record.getRouteId().longValue());
+        rd.setRouteName(record.getRouteName());
+        rd.setRoute(record.getRoute());
+        routeList.add(rd);
+      }
+
+      return routeList;
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  /**
+   * 依頼の詳細情報を取得する。
+   *
+   * @param rundata
+   * @param context
+   */
+  public static Object getResultDataDetail(Object obj, ALEipUser login_user) {
+    try {
+      EipTWorkflowRequest record = (EipTWorkflowRequest) obj;
+      WorkflowDetailResultData rd = new WorkflowDetailResultData();
+      rd.initField();
+      rd.setUserId(record.getUserId().longValue());
+      rd.setRequestName(record.getRequestName());
+      rd.setRequestId(record.getRequestId().longValue());
+      rd.setCategoryId(record.getEipTWorkflowCategory().getCategoryId()
+          .longValue());
+      rd.setCategoryName(record.getEipTWorkflowCategory().getCategoryName());
+      rd.setPriorityString(WorkflowUtils.getPriorityString(record.getPriority()
+          .intValue()));
+      rd.setNote(record.getNote());
+      rd.setPrice(record.getPrice().longValue());
+      rd.setProgress(record.getProgress());
+      rd.setCanRemandApplicant(true);
+      if (record.getEipTWorkflowRoute() != null) {
+        rd.setRouteName(record.getEipTWorkflowRoute().getRouteName());
+      }
+
+      List<WorkflowDecisionRecordData> drList = new ArrayList<WorkflowDecisionRecordData>();
+      List<WorkflowDecisionRecordData> remandList = new ArrayList<WorkflowDecisionRecordData>();
+      ALEipUser user = null;
+      EipTWorkflowRequestMap map = null;
+      WorkflowDecisionRecordData drd = null;
+      List<?> maps = WorkflowUtils.getEipTWorkflowRequestMap(record);
+      int size = maps.size();
+      boolean is_past = true;
+      for (int i = 0; i < size; i++) {
+        map = (EipTWorkflowRequestMap) maps.get(i);
+        drd = new WorkflowDecisionRecordData();
+        drd.initField();
+
+        // ログインユーザより後なら差し戻し先として選ばない
+        if (login_user.getUserId().getValue() == map.getUserId().longValue()) {
+          is_past = false;
+        }
+
+        user = ALEipUtils.getALEipUser(map.getUserId().intValue());
+        drd.setUserId(map.getUserId().intValue());
+        drd.setUserAliasName(user.getAliasName().getValue());
+        drd.setStatus(map.getStatus());
+        drd.setStatusString(WorkflowUtils.getStatusString(map.getStatus()));
+        drd.setOrder(map.getOrderIndex().intValue());
+        drd.setNote(map.getNote());
+        drd.setUpdateDate(WorkflowUtils.translateDate(map.getUpdateDate(),
+            "yyyy年M月d日H時m分"));
+        drList.add(drd);
+
+        // 無効化、もしくは削除されているユーザーは差し戻し先として選べないようにする
+        if (is_past && !getUserIsDisabledOrDeleted(map.getUserId().toString())) {
+          remandList.add(drd);
+        } else {
+          // 申請者に差し戻し不可能
+          if (i == 0) {
+            rd.setCanRemandApplicant(false);
+          }
+        }
+      }
+      rd.setDecisionRecords(drList);
+      rd.setRemandingRecords(remandList);
+
+      // 過去の申請内容
+      if (record.getParentId().intValue() != 0) {
+        List<?> oldReuqests = getOldRequests(record);
+        if (oldReuqests != null && oldReuqests.size() > 0) {
+          List<WorkflowOldRequestResultData> oldList = new ArrayList<WorkflowOldRequestResultData>();
+          int osize = oldReuqests.size();
+          for (int i = 0; i < osize; i++) {
+            EipTWorkflowRequest request = (EipTWorkflowRequest) oldReuqests
+                .get(i);
+            WorkflowOldRequestResultData orrd = new WorkflowOldRequestResultData();
+            orrd.initField();
+            orrd.setRequestId(request.getRequestId().intValue());
+            orrd.setRequestName(request.getRequestName());
+            orrd.setCategoryName(request.getEipTWorkflowCategory()
+                .getCategoryName());
+            orrd.setUpdateDate(WorkflowUtils.translateDate(
+                request.getUpdateDate(), "yyyy年M月d日H時m分"));
+            oldList.add(orrd);
+          }
+          rd.setOldRequestLinks(oldList);
+        }
+      }
+
+      // ファイルリスト
+      DataContext dataContext = DatabaseOrmService.getInstance()
+          .getDataContext();
+      List<?> list = dataContext.performQuery(getSelectQueryForFiles(record
+          .getRequestId().intValue()));
+      if (list != null && list.size() > 0) {
+        List<FileuploadBean> attachmentFileList = new ArrayList<FileuploadBean>();
+        FileuploadBean filebean = null;
+        EipTWorkflowFile file = null;
+        int lsize = list.size();
+        for (int i = 0; i < lsize; i++) {
+          file = (EipTWorkflowFile) list.get(i);
+          String realname = file.getFileName();
+          javax.activation.DataHandler hData = new javax.activation.DataHandler(
+              new javax.activation.FileDataSource(realname));
+
+          filebean = new FileuploadBean();
+          filebean.setFileId(file.getFileId().intValue());
+          filebean.setFileName(realname);
+          if (hData != null) {
+            filebean.setContentType(hData.getContentType());
+          }
+          filebean.setIsImage(FileuploadUtils.isImage(realname));
+          attachmentFileList.add(filebean);
+        }
+        rd.setAttachmentFiles(attachmentFileList);
+      }
+
+      rd.setCreateDate(WorkflowUtils.translateDate(record.getCreateDate(),
+          "yyyy年M月d日H時m分"));
+      rd.setUpdateDate(WorkflowUtils.translateDate(record.getUpdateDate(),
+          "yyyy年M月d日H時m分"));
+      return rd;
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  private static List<?> getOldRequests(EipTWorkflowRequest request) {
+    try {
+      DataContext dataContext = DatabaseOrmService.getInstance()
+          .getDataContext();
+      SelectQuery query = new SelectQuery(EipTWorkflowRequest.class);
+      Expression exp11 = ExpressionFactory.matchDbExp(
+          EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, request.getParentId());
+      Expression exp12 = ExpressionFactory.matchExp(
+          EipTWorkflowRequest.PARENT_ID_PROPERTY, request.getParentId());
+      query.setQualifier(exp11.orExp(exp12));
+      Expression exp2 = ExpressionFactory.noMatchDbExp(
+          EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, request.getRequestId());
+      query.andQualifier(exp2);
+
+      query.addOrdering(EipTWorkflowRequest.UPDATE_DATE_PROPERTY, true);
+
+      List<?> requests = dataContext.performQuery(query);
+
+      if (requests == null || requests.size() == 0) {
+        // 指定した Request IDのレコードが見つからない場合
+        logger.debug("[WorkflowSelectData] Not found ID...");
+        return null;
+      }
+      return requests;
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  /**
+   * 重要度を表す画像名を取得します。 <BR>
+   * 1 : 高い : priority_high.gif <BR>
+   * 2 : やや高い : priority_middle_high.gif <BR>
+   * 3 : 普通 : priority_middle.gif <BR>
+   * 4 : やや低い : priority_middle_low.gif <BR>
+   * 5 : 低い : priority_low.gif <BR>
+   *
+   * @param i
+   * @return
+   */
+  public static String getPriorityImage(int i) {
+    String[] temp = { "priority_high.gif", "priority_middle_high.gif",
+        "priority_middle.gif", "priority_middle_low.gif", "priority_low.gif" };
+    String image = null;
+    try {
+      image = temp[i - 1];
+    } catch (Exception ex) {
+      // logger.error("Exeption", ex);
+    }
+    return image;
+  }
+
+  /**
+   * 重要度を表す文字列を取得します。 <BR>
+   * 1 : 高い : priority_high.gif <BR>
+   * 2 : やや高い : priority_middle_high.gif <BR>
+   * 3 : 普通 : priority_middle.gif <BR>
+   * 4 : やや低い : priority_middle_low.gif <BR>
+   * 5 : 低い : priority_low.gif <BR>
+   *
+   * @param i
+   * @return
+   */
+  public static String getPriorityString(int i) {
+    String[] temp = { "高い", "やや高い", "普通", "やや低い", "低い" };
+    String string = null;
+    try {
+      string = temp[i - 1];
+    } catch (Exception ex) {
+      // logger.error("Exeption", ex);
+    }
+    return string;
+  }
+
+  /**
+   * 状態を表す画像名を取得します。 <BR>
+   * 0 : 未着手 <BR>
+   * 10 : 10% <BR>
+   * 20 : 20% <BR>
+   * : :<BR>
+   * 90 : 90% <BR>
+   * 100 : 完了 <BR>
+   *
+   * @param i
+   * @return
+   */
+  public static String getStateImage(int i) {
+    String[] temp = { "state_000.gif", "state_010.gif", "state_020.gif",
+        "state_030.gif", "state_040.gif", "state_050.gif", "state_060.gif",
+        "state_070.gif", "state_080.gif", "state_090.gif", "state_100.gif" };
+    String image = null;
+    try {
+      image = temp[i / 10];
+    } catch (Exception ex) {
+      // logger.error("Exeption", ex);
+    }
+    return image;
+  }
+
+  /**
+   * 状態を表す文字列を取得します。 <BR>
+   * 0 : 未着手 <BR>
+   * 10 : 10% <BR>
+   * 20 : 20% <BR>
+   * : :<BR>
+   * 90 : 90% <BR>
+   * 100 : 完了 <BR>
+   *
+   * @param i
+   * @return
+   */
+  public static String getStateString(int i) {
+    if (i == 0)
+      return "未着手";
+    else if (i == 100)
+      return "完了";
+    else {
+      return new StringBuffer().append(i).append("%").toString();
+    }
+  }
+
+  /**
+   *
+   * @param status
+   */
+  public static String getStatusString(String status) {
+    String res = "";
+    if (DB_STATUS_REQUEST.equals(status)) {
+      res = "申請";
+    } else if (DB_STATUS_CONFIRM.equals(status)) {
+      res = "確認中";
+    } else if (DB_STATUS_WAIT.equals(status)) {
+      res = "確認前";
+    } else if (DB_STATUS_ACCEPT.equals(status)) {
+      res = "承認";
+    } else if (DB_STATUS_DENIAL.equals(status)) {
+      res = "否認";
+    } else if (DB_STATUS_THROUGH.equals(status)) {
+      res = "自動承認";
+    }
+    return res;
+  }
+
+  /**
+   * Date のオブジェクトを指定した形式の文字列に変換する．
+   *
+   * @param date
+   * @param dateFormat
+   * @return
+   */
+  public static String translateDate(Date date, String dateFormat) {
+    if (date == null)
+      return "Unknown";
+
+    // 日付を表示形式に変換
+    SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+    sdf.setTimeZone(TimeZone.getDefault());
+    return sdf.format(date);
+  }
+
+  /**
+   * 3 桁でカンマ区切りした文字列を取得する．
+   *
+   * @param money
+   * @return
+   */
+  public static String translateMoneyStr(String money) {
+    if (money == null || money.length() == 0)
+      return money;
+
+    StringBuffer sb = new StringBuffer();
+    int len = money.length();
+    int count = len / 3;
+    int del = len % 3;
+    sb.append(money.substring(0, del));
+    if (count > 0) {
+      if (len > 3 && del != 0) {
+        sb.append(",");
+      }
+      for (int i = 0; i < count; i++) {
+        sb.append(money.substring(del + 3 * i, del + 3 * i + 3));
+        if (i != count - 1) {
+          sb.append(",");
+        }
+      }
+    }
+    return sb.toString();
+  }
+
+  /**
+   * メール送信
+   */
+  public static boolean sendMail(RunData rundata, EipTWorkflowRequest request,
+      ALEipUser destUser, List<String> msgList) throws Exception {
+
+    String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    String subject = "[" + DatabaseOrmService.getInstance().getAlias()
+        + "]ワークフロー";
+
+    try {
+      List<ALEipUser> memberList = new ArrayList<ALEipUser>();
+      memberList.add(destUser);
+      List<ALEipUserAddr> destMemberList = ALMailUtils.getALEipUserAddrs(
+          memberList, ALEipUtils.getUserId(rundata), false);
+      for (int i = 0; i < destMemberList.size(); i++) {
+        List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
+        destMember.add(destMemberList.get(i));
+        ALMailUtils.sendMailDelegate(org_id, (int) destUser.getUserId()
+            .getValue(), destMember, subject, subject, WorkflowUtils
+            .createMsgForPc(rundata, request), WorkflowUtils
+            .createMsgForCellPhone(rundata, request, destUser,
+                (destMember.get(0)).getUserId()), ALMailUtils
+            .getSendDestType(ALMailUtils.KEY_MSGTYPE_WORKFLOW), msgList);
+      }
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * パソコンへ送信するメールの内容を作成する．
+   *
+   * @return
+   */
+  public static String createMsgForPc(RunData rundata,
+      EipTWorkflowRequest request) {
+    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
+
+    String CR = System.getProperty("line.separator");
+
+    ALBaseUser user = null;
+    ALEipUser user2 = null;
+
+    try {
+      user = (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(request
+          .getUserId().toString()));
+      user2 = ALEipUtils.getALEipUser(request.getUserId().intValue());
+    } catch (Exception e) {
+      return "";
+    }
+    StringBuffer body = new StringBuffer("");
+    body.append(user2.getAliasName().toString());
+    if (!user.getEmail().equals("")) {
+      body.append("(").append(user.getEmail()).append(")");
+    }
+
+    if ("D".equals(request.getProgress())) {
+      body.append("さんの申請は差し戻されました。").append(CR).append(CR);
+      body.append("[決裁状況]").append(CR);
+      body.append("差戻要確認").append(CR);
+    } else if ("A".equals(request.getProgress())) {
+      body.append("さんの申請は承認されました。").append(CR).append(CR);
+      body.append("[決裁状況]").append(CR);
+      body.append("承認済み").append(CR);
+    } else {
+      body.append("さんからの承認依頼です。").append(CR).append(CR);
+      body.append("[決裁状況]").append(CR);
+      body.append("決裁待ち").append(CR);
+    }
+
+    body.append("[表題]").append(CR);
+    body.append(request.getEipTWorkflowCategory().getCategoryName()).append(CR);
+
+    if (request.getRequestName() != null
+        && (!"".equals(request.getRequestName()))) {
+      body.append(request.getRequestName()).append(CR);
+    }
+
+    body.append("[申請日]")
+        .append(CR)
+        .append(
+            WorkflowUtils.translateDate(request.getCreateDate(),
+                "yyyy年M月d日H時m分")).append(CR);
+
+    body.append("[重要度]")
+        .append(CR)
+        .append(
+            WorkflowUtils.getPriorityString(request.getPriority().intValue()))
+        .append(CR);
+    body.append("[申請内容]").append(CR).append(request.getNote()).append(CR);
+
+    if (request.getPrice() != null && (request.getPrice().intValue() > 0)) {
+      body.append("[金額]").append(CR).append(request.getPrice()).append(" 円")
+          .append(CR);
+    }
+
+    body.append(CR);
+    body.append("[").append(DatabaseOrmService.getInstance().getAlias())
+        .append("へのアクセス]").append(CR);
+    if (enableAsp) {
+      body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
+    } else {
+      body.append("・社外").append(CR);
+      body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
+      body.append("・社内").append(CR);
+      body.append("　").append(ALMailUtils.getLocalurl()).append(CR).append(CR);
+    }
+
+    body.append("---------------------").append(CR);
+    body.append(DatabaseOrmService.getInstance().getAlias()).append(CR);
+
+    return body.toString();
+  }
+
+  /**
+   * 携帯電話へ送信するメールの内容を作成する．
+   *
+   * @return
+   */
+  public static String createMsgForCellPhone(RunData rundata,
+      EipTWorkflowRequest request, ALEipUser login_user, int destUserID) {
+    String CR = System.getProperty("line.separator");
+
+    ALBaseUser user = null;
+    ALEipUser user2 = null;
+
+    try {
+      user = (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(request
+          .getUserId().toString()));
+      user2 = ALEipUtils.getALEipUser(request.getUserId().intValue());
+    } catch (JetspeedSecurityException e) {
+      return "";
+    } catch (ALDBErrorException e) {
+      return "";
+    }
+
+    StringBuffer body = new StringBuffer("");
+    body.append(user2.getAliasName().toString());
+    if (!user.getEmail().equals("")) {
+      body.append("(").append(user.getEmail()).append(")");
+    }
+
+    if ("D".equals(request.getProgress())) {
+      body.append("さんの申請は差し戻されました。").append(CR).append(CR);
+      body.append("[決裁状況]").append(CR);
+      body.append("差戻要確認").append(CR);
+    } else if ("A".equals(request.getProgress())) {
+      body.append("さんの申請は承認されました。").append(CR).append(CR);
+      body.append("[決裁状況]").append(CR);
+      body.append("承認済み").append(CR);
+    } else {
+      body.append("さんからの承認依頼です。").append(CR).append(CR);
+      body.append("[決裁状況]").append(CR);
+      body.append("決裁待ち").append(CR);
+    }
+
+    body.append("[表題]").append(CR);
+    body.append(request.getEipTWorkflowCategory().getCategoryName()).append(CR);
+
+    if (request.getRequestName() != null
+        && (!"".equals(request.getRequestName()))) {
+      body.append(request.getRequestName()).append(CR);
+    }
+
+    body.append("[申請日]")
+        .append(CR)
+        .append(
+            WorkflowUtils.translateDate(request.getCreateDate(),
+                "yyyy年M月d日H時m分")).append(CR);
+
+    body.append("[重要度]")
+        .append(CR)
+        .append(
+            WorkflowUtils.getPriorityString(request.getPriority().intValue()))
+        .append(CR);
+    // body.append("[申請内容]").append(CR).append(request.getNote()).append(CR);
+
+    if (request.getPrice() != null && (request.getPrice().intValue() > 0)) {
+      body.append("[金額]").append(CR).append(request.getPrice()).append(" 円")
+          .append(CR);
+    }
+
+    ALEipUser destUser;
+    try {
+      destUser = ALEipUtils.getALEipUser(destUserID);
+    } catch (ALDBErrorException ex) {
+      logger.error("Exception", ex);
+      return "";
+    }
+
+    body.append(CR);
+    body.append("[").append(DatabaseOrmService.getInstance().getAlias())
+        .append("へのアクセス]").append(CR);
+    body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=")
+        .append(ALCellularUtils.getCellularKey(destUser)).append(CR);
+    body.append("---------------------").append(CR);
+    body.append(DatabaseOrmService.getInstance().getAlias()).append(CR);
+
+    return body.toString();
+  }
+
+  public static boolean hasWorkFlowAuthority(List<ALEipUser> memberList) {
+    int size = memberList.size();
+    List<ALNumberField> userIds = new ArrayList<ALNumberField>();
+    for (int i = 0; i < size; i++) {
+      userIds.add(memberList.get(i).getUserId());
+    }
+
+    return false;
+  }
+
+  public static boolean insertFileDataDelegate(RunData rundata,
+      Context context, EipTWorkflowRequest request,
+      EipTWorkflowRequest oldrequest, List<FileuploadLiteBean> fileuploadList,
+      String folderName, List<String> msgList) {
+
+    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
+    int uid = ALEipUtils.getUserId(rundata);
+    String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    String[] fileids = rundata.getParameters().getStrings("attachments");
+
+    // fileidsがnullなら、ファイルがアップロードされていないので、trueを返して終了
+    if (fileids == null)
+      return true;
+
+    int fileIDsize;
+    if (fileids[0].equals("")) {
+      fileIDsize = 0;
+    } else {
+      fileIDsize = fileids.length;
+    }
+    // 送られてきたFileIDの個数とDB上の当該RequestID中の添付ファイル検索を行った結果の個数が一致したら、
+    // 変更が無かったとみなし、trueを返して終了。
+    SelectQuery dbquery = new SelectQuery(EipTWorkflowFile.class);
+    dbquery
+        .andQualifier(ExpressionFactory.matchDbExp(
+            EipTWorkflowFile.EIP_TWORKFLOW_REQUEST_PROPERTY,
+            request.getRequestId()));
+    for (int i = 0; i < fileIDsize; i++) {
+      dbquery.orQualifier(ExpressionFactory.matchDbExp(
+          EipTWorkflowFile.FILE_ID_PK_COLUMN, fileids[i]));
+    }
+    List<?> files = dataContext.performQuery(dbquery);
+
+    if (files.size() == fileIDsize
+        && (fileuploadList == null || fileuploadList.size() <= 0))
+      return true;
+
+    SelectQuery query = new SelectQuery(EipTWorkflowFile.class);
+    query
+        .andQualifier(ExpressionFactory.matchDbExp(
+            EipTWorkflowFile.EIP_TWORKFLOW_REQUEST_PROPERTY,
+            request.getRequestId()));
+    for (int i = 0; i < fileIDsize; i++) {
+      Expression exp = ExpressionFactory.matchDbExp(
+          EipTWorkflowFile.FILE_ID_PK_COLUMN, Integer.parseInt(fileids[i]));
+      query.andQualifier(exp.notExp());
+    }
+    // DB上でトピックに属すが、送られてきたFileIDにIDが含まれていないファイルのリスト(削除されたファイルのリスト)
+    List<?> delFiles = dataContext.performQuery(query);
+
+    if (delFiles.size() > 0) {
+      // ローカルファイルに保存されているファイルを削除する．
+      File file = null;
+      int delsize = delFiles.size();
+      for (int i = 0; i < delsize; i++) {
+        file = new File(WorkflowUtils.getSaveDirPath(org_id, uid)
+            + (String) ((EipTWorkflowFile) delFiles.get(i)).getFilePath());
+        if (file.exists()) {
+          file.delete();
+        }
+      }
+      // データベースから添付ファイルのデータ削除
+      dataContext.deleteObjects(delFiles);
+    }
+
+    // 追加ファイルが無ければtrueを返して終了
+    if (fileuploadList == null || fileuploadList.size() <= 0) {
+      return true;
+    }
+
+    // ファイル追加処理
+    try {
+      FileuploadLiteBean filebean = null;
+      int size = fileuploadList.size();
+      for (int i = 0; i < size; i++) {
+        filebean = (FileuploadLiteBean) fileuploadList.get(i);
+
+        // サムネイル処理
+        String[] acceptExts = ImageIO.getWriterFormatNames();
+        byte[] fileThumbnail = FileuploadUtils.getBytesShrinkFilebean(org_id,
+            folderName, uid, filebean, acceptExts,
+            FileuploadUtils.DEF_THUMBNAIL_WIDTH,
+            FileuploadUtils.DEF_THUMBNAIL_HEIGTH, msgList);
+
+        String filename = FileuploadUtils.getNewFileName(WorkflowUtils
+            .getSaveDirPath(org_id, uid));
+
+        // 新規オブジェクトモデル
+        EipTWorkflowFile file = (EipTWorkflowFile) dataContext
+            .createAndRegisterNewObject(EipTWorkflowFile.class);
+        // 所有者
+        file.setOwnerId(Integer.valueOf(uid));
+        // リクエストID
+        file.setEipTWorkflowRequest(request);
+        // ファイル名
+        file.setFileName(filebean.getFileName());
+        // ファイルパス
+        file.setFilePath(WorkflowUtils.getRelativePath(filename));
+        // サムネイル画像
+        if (fileThumbnail != null) {
+          file.setFileThumbnail(fileThumbnail);
+        }
+        // 作成日
+        file.setCreateDate(Calendar.getInstance().getTime());
+        // 更新日
+        file.setUpdateDate(Calendar.getInstance().getTime());
+
+        // ファイルの移動
+        File srcFile = FileuploadUtils.getAbsolutePath(org_id, uid, folderName,
+            filebean.getFileId());
+        File destFile = new File(WorkflowUtils.getAbsolutePath(org_id, uid,
+            filename));
+        FileuploadUtils.copyFile(srcFile, destFile);
+
+        srcFile = null;
+        destFile = null;
+      }
+
+      // 添付ファイル保存先のフォルダを削除
+      File folder = FileuploadUtils.getFolder(org_id, uid, folderName);
+      FileuploadUtils.deleteFolder(folder);
+    } catch (Exception e) {
+      logger.error("Exception", e);
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * ユーザ毎のルート保存先（絶対パス）を取得します。
+   *
+   * @param uid
+   * @return
+   */
+  public static String getSaveDirPath(String orgId, int uid) {
+    ALOrgUtilsHandler handler = ALOrgUtilsFactoryService.getInstance()
+        .getOrgUtilsHandler();
+    File path = new File(handler.getDocumentPath(FOLDER_FILEDIR_WORKFLOW,
+        orgId, CATEGORY_KEY) + File.separator + uid);
+    if (!path.exists()) {
+      path.mkdirs();
+    }
+    return path.getAbsolutePath();
+  }
+
+  /**
+   * ユーザ毎の保存先（相対パス）を取得します。
+   *
+   * @param uid
+   * @return
+   */
+  public static String getRelativePath(String fileName) {
+    return new StringBuffer().append("/").append(fileName).toString();
+  }
+
+  /**
+   * 添付ファイル保存先（絶対パス）を取得します。
+   *
+   * @param uid
+   * @return
+   */
+  public static String getAbsolutePath(String orgId, int uid, String fileName) {
+    ALOrgUtilsHandler handler = ALOrgUtilsFactoryService.getInstance()
+        .getOrgUtilsHandler();
+    StringBuffer sb = new StringBuffer()
+        .append(
+            handler.getDocumentPath(FOLDER_FILEDIR_WORKFLOW, orgId,
+                CATEGORY_KEY)).append(File.separator).append(uid);
+    File f = new File(sb.toString());
+    if (!f.exists()) {
+      f.mkdirs();
+    }
+    return sb.append(File.separator).append(fileName).toString();
+  }
+
+  public static List<UserLiteBean> getAuthorityUsers(RunData rundata,
+      String groupname, boolean includeLoginuser) {
+
+    try {
+      // アクセス権限
+      ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
+      ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+      List<?> ulist = aclhandler.getAuthorityUsersFromGroup(rundata,
+          ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_SELF,
+          groupname, includeLoginuser);
+
+      int recNum = ulist.size();
+
+      List<UserLiteBean> list = new ArrayList<UserLiteBean>();
+
+      UserLiteBean user;
+      DataRow dataRow;
+      // ユーザデータを作成し、返却リストへ格納
+      for (int j = 0; j < recNum; j++) {
+        dataRow = (DataRow) ulist.get(j);
+        user = new UserLiteBean();
+        user.initField();
+        user.setUserId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
+            TurbineUser.USER_ID_PK_COLUMN)).intValue());
+        user.setName((String) ALEipUtils.getObjFromDataRow(dataRow,
+            TurbineUser.LOGIN_NAME_COLUMN));
+        user.setAliasName((String) ALEipUtils.getObjFromDataRow(dataRow,
+            TurbineUser.FIRST_NAME_COLUMN), (String) ALEipUtils
+            .getObjFromDataRow(dataRow, TurbineUser.LAST_NAME_COLUMN));
+        list.add(user);
+      }
+      return list;
+    } catch (InstantiationException e) {
+      return null;
+    }
+
+  }
+
+  /**
+   * ファイル検索のクエリを返します
+   *
+   * @param requestid
+   *          ファイルを検索するリクエストのid
+   * @return query
+   */
+  private static SelectQuery getSelectQueryForFiles(int requestid) {
+    SelectQuery query = new SelectQuery(EipTWorkflowFile.class);
+    Expression exp = ExpressionFactory.matchDbExp(
+        EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, Integer.valueOf(requestid));
+    query.setQualifier(exp);
+    return query;
+  }
+
+  /**
+   * 指定した ID に対するユーザの名前を取得する．
+   *
+   * @param userId
+   * @return
+   */
+  public static String getName(String userId) {
+    if (userId == null || userId.equals(""))
+      return null;
+
+    String firstName = null;
+    String lastName = null;
+    StringBuffer buffer = new StringBuffer();
+
+    try {
+      DataContext dataContext = DatabaseOrmService.getInstance()
+          .getDataContext();
+      SelectQuery query = new SelectQuery(TurbineUser.class);
+      Expression exp = ExpressionFactory.matchDbExp(
+          TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(userId));
+      query.setQualifier(exp);
+      List<?> destUserList = dataContext.performQuery(query);
+      if (destUserList == null || destUserList.size() <= 0)
+        return null;
+      firstName = ((TurbineUser) destUserList.get(0)).getFirstName();
+      lastName = ((TurbineUser) destUserList.get(0)).getLastName();
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+    return buffer.append(lastName).append(" ").append(firstName).toString();
+  }
+
+  /**
+   * 指定した ID に対するユーザのログイン名を取得する．
+   *
+   * @param userId
+   * @return
+   */
+  public static String getUserName(String userId) {
+    if (userId == null || userId.equals(""))
+      return null;
+
+    String userName = null;
+
+    try {
+      DataContext dataContext = DatabaseOrmService.getInstance()
+          .getDataContext();
+      SelectQuery query = new SelectQuery(TurbineUser.class);
+      Expression exp = ExpressionFactory.matchDbExp(
+          TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(userId));
+      query.setQualifier(exp);
+      List<?> destUserList = dataContext.performQuery(query);
+      if (destUserList == null || destUserList.size() <= 0)
+        return null;
+      userName = ((TurbineUser) destUserList.get(0)).getLoginName();
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+    return userName;
+  }
+
+  public static Integer getRouteIdFromCategoryId(Integer categoryId) {
+    if (categoryId == null || categoryId <= 0)
+      return null;
+
+    Integer routeId = null;
+
+    try {
+      DataContext dataContext = DatabaseOrmService.getInstance()
+          .getDataContext();
+      SelectQuery query = new SelectQuery(EipTWorkflowCategory.class);
+      Expression exp = ExpressionFactory.matchDbExp(
+          EipTWorkflowCategory.CATEGORY_ID_PK_COLUMN,
+          Integer.valueOf(categoryId));
+      query.setQualifier(exp);
+      List<?> list = dataContext.performQuery(query);
+      if (list == null || list.size() <= 0)
+        return null;
+      routeId = ((EipTWorkflowCategory) list.get(0)).getEipTWorkflowRoute()
+          .getRouteId();
+    } catch (Exception ex) {
+      return null;
+    }
+    return routeId;
+  }
+
+  /**
+   * 指定した ID のユーザを取得する
+   *
+   * @param userId
+   * @return
+   */
+  public static TurbineUser getTurbineUser(String userId) {
+    if (userId == null || userId.equals("")) {
+      return null;
+    }
+    try {
+      DataContext dataContext = DatabaseOrmService.getInstance()
+          .getDataContext();
+      SelectQuery query = new SelectQuery(TurbineUser.class);
+      Expression exp = ExpressionFactory.matchDbExp(
+          TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(userId));
+      query.setQualifier(exp);
+      List<?> destUserList = dataContext.performQuery(query);
+      if (destUserList == null || destUserList.size() <= 0) {
+        return null;
+      }
+      return (TurbineUser) destUserList.get(0);
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  /**
+   * 指定した ID のユーザが削除済みかどうかを調べる。
+   *
+   * @param userId
+   * @return
+   */
+  public static boolean getUserIsDisabledOrDeleted(String userId) {
+    TurbineUser user = getTurbineUser(userId);
+    if (user == null) {
+      return true;
+    }
+    String disabled;
+    disabled = user.getDisabled();
+    return ("T".equals(disabled) || "N".equals(disabled));
+  }
+}

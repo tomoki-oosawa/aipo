@@ -1,0 +1,183 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#if($!result.currentTab == "receive")
+#set($person = "差出人")
+#else
+#set($person = "受取人")
+#end
+#set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFormScreen").addQueryData("entityid","new")))
+#set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData('entityid',$result.AccountId)))
+#set ($newUrl3 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailListScreen").addQueryData("mode","recieve")))
+#set ($newUrl4 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFolderFormScreen")))
+#set ($submenulist = [["メールを作成する","javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.webmail.onLoadMailDialog);","images/icon/icon_add.gif"], ["アカウントを編集する","javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID', aipo.webmail.onLoadMailAccountDialog);","images/icon/icon_edit.gif"], ["メールを受信する","javascript:aipo.viewPage('$newUrl3','$!portlet.ID');aipo.webmail.onProcessingTimer();","images/webmail/webmail_receive_mail.gif"], ["フォルダを作成する","javascript:aipo.common.showDialog('$newUrl4','$!portlet.ID');aipo.webmail.onProcessingTimer();","images/webmail/webmail_folder_add.gif"]])
+#set ($tabs = [["受信トレイ", "receive","$!jslink.getPortletById($!portlet.getID()).addQueryData('template','WebMailListScreen').addQueryData('eventSubmit_doWebmail_show_received_mails','1').addQueryData('tab','receive')"], ["送信トレイ", "sent","$!jslink.getPortletById($!portlet.getID()).addQueryData('template','WebMailListScreen').addQueryData('eventSubmit_doWebmail_show_sent_mails','1').addQueryData('tab','sent')"]])
+#set ($indicator_id = "indicator-list-")
+#set ($StatStr = $!{result.StatStr})
+## ---------------------------------------------------------------------------
+#ALsubmenubar($submenulist "")
+<div class="p">
+#ALtableheaderSimpleWide()
+#ALtdcaption('メールアカウント')
+#ALtditemheader()
+<select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailListScreen").addQueryData("accountid",""))">（メールアカウントの選択）</option>
+#foreach( $record in $result.MailAccountList )
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailListScreen").addQueryData("accountid",$!record.AccountId))" #if ($!result.isMatch($!result.AccountId,$!record.AccountId.Value)) selected="selected" #end>$!record.AccountName</option>
+#end
+</select>
+#ALtditemfooter()
+#ALtablefooter()
+</div>
+#if($!result.AccountId == 0)
+メールアカウントを選択してください。<a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');">メールアカウントが未登録の場合は、こちらからご登録ください。</a>
+#else
+#ALajaxtabheader($tabs $!result.currentTab)
+#ALspacebothheader()
+#if(($errmsgs) && ($errmsgs.toString() != ""))
+#ALerrmsg($errmsgs)
+#else
+#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
+#ALajaxlistformheader('Webメール')
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+
+#if($!result.currentTab == "receive")
+<td style="width:150px;" valign="top">
+<div class="explorer_box" style="padding:2px 2px 2px 5px;width:150pt;overflow:scroll;">
+#foreach($record in $!result.FolderList)
+#set ($unreadNum = $result.getUnReadMailSumByFolderId($record.FolderId))
+<nobr>
+#if($result.FolderId == $record.FolderId)
+<img src="images/cabinet/folder_open.gif"/>
+#if ($unreadNum > 0)
+<b>${record.FolderName}(${unreadNum})</b>
+#else
+<b>${record.FolderName}</b>
+#end
+#else
+<img src="images/cabinet/folder_close.gif"/>
+#if ($unreadNum > 0)
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData("accountid", "$!result.AccountId").addQueryData("folderid" ,"$!record.FolderId").addQueryData("noupdateunread", "1"))', '$!portlet.ID');" >${record.FolderName}(${unreadNum})</a>
+#else
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData("accountid", "$!result.AccountId").addQueryData("folderid" ,"$!record.FolderId").addQueryData("noupdateunread", "1"))', '$!portlet.ID');" >${record.FolderName}</a>
+#end
+#end
+</nobr><br/>
+#end
+</div>
+</td>
+#end
+
+<td valign="top" style="padding:0px 0px 0px 5px">
+#if($!result.currentTab == "receive")
+<h4>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFolderDetailScreen").addQueryData("mode","folder_detail").addQueryData("accountid", "$!result.AccountId").addQueryData("folderid" ,"$!result.SelectedFolder.FolderId"))');">$!{result.SelectedFolder.FolderName}</a>
+</h4>
+#end
+
+#if($StatStr && !($StatStr == ''))
+<div class="spaceBottom"><div class="indicator" id="indicator-$portlet_id">$StatStr</div></div>
+#end
+#if($!result.List && $!result.List.size() <= 0)
+#if($!result.currentTab == "receive")
+<div class="message">受信メールはありません。</div>
+#else
+<div class="message">送信メールはありません。</div>
+#end
+#else
+<div class="clearfix"><div class="alignright small">未読数： $!{result.getUnReadMailSumByFolderId($result.FolderId)} 件</div></div>
+#ALajaxpageview('WebMailListScreen' $result)
+#ALtableheaderWide()
+<tr>
+#ALtdheadThin("#ALswitchCheckbox()")
+#ALtdheadThin("#ALajaxsort('read_flg' '状態' $result 'WebMailListScreen')")
+#ALtdheadW50("#ALajaxsort('subject' '件名' $result 'WebMailListScreen')")
+#ALtdheadW50("#ALajaxsort('person' $person $result 'WebMailListScreen')")
+#ALtdheadThin("#ALajaxsort('date' '日付' $result 'WebMailListScreen')")
+#ALtdheadThin('容量')
+#ALtdheadThin(' ')
+#ALtdheadThin(' ')
+</tr>
+#foreach ($record in $result.List)
+<tr>
+#ALtdcellAtt("<input name='check$!record.MailId' type='checkbox' value='$!record.MailId' />" 'align="center"')
+#if($!record.hasAttachments())
+#ALtdcellAtt("<img src='$!record.ReadImage' alt='$!record.ReadImageDescription' title='$!record.ReadImageDescription' /><img src='$!record.WithFilesImage' alt='$!record.WithFilesImageDescription' title='$!record.WithFilesImageDescription' />" 'align="left" nowrap')
+#else
+#ALtdcellAtt("<img src='$!record.ReadImage' alt='$!record.ReadImageDescription' title='$!record.ReadImageDescription' />" 'align="left"')
+#end
+
+#if(($!record.Subject) && ($!record.getSubject().toString() != ""))
+#set($MailSubject = $!record.Subject)
+#elseif($!record.Subject)
+#set($MailSubject = "無題")
+#end
+
+#ALtdcellheader()
+<a href='javascript:void(0);' onclick='aipo.common.showDialog("$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_mail','1').addQueryData('template','WebMailDetailScreen').addQueryData('entityid',$record.MailId).addQueryData('tab', $!result.currentTab))");'>$MailSubject</a>
+#ALtdcellfooter()
+#ALtdcellAtt("$!record.Person" 'align="left"')
+#ALtdcellAtt("$!{record.Date.Month}月$!{record.Date.Day}日 $!{record.Date.Hour}時$!{record.Date.Minute}分" 'align="left" nowrap')
+#ALtdcellAtt("$!{record.FileVolume}KB" 'align="right" nowrap')
+#ALtdcellAtt("#ALajaxbuttonLink('返信' $!jslink.getPortletById($!portlet.getID()).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_reply_mail','1').addQueryData('entityid', $!record.MailId).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '1') 'images/webmail/webmail_reply_mail.gif')" 'nowrap')
+#ALtdcellAtt("#ALajaxbuttonLink('転送' $!jslink.getPortletById($!portlet.getID()).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_forward_mail','1').addQueryData('entityid', $!record.MailId).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '2') 'images/webmail/webmail_forward_mail.gif')" 'nowrap')
+</tr>
+#end
+#ALtablefooter()
+#ALajaxpageviewFooter('WebMailListScreen' $result)
+
+</td>
+</tr>
+</table>
+
+
+#ALbuttonheaderRight()
+チェックしたメールを
+#ALajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")<br/>
+
+#if($!result.FolderList.size() > 1)
+フォルダ
+#ALselectpdheader('move_folder' '' '')
+#foreach($record in $!result.FolderList)
+#if($result.FolderId != $record.FolderId)
+<option value="${record.FolderId}">${record.FolderName}</option>
+#end
+#end
+#ALselectfooter()
+に#ALajaxbuttonCheckboxAction('移動する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('mode','multi_move')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
+#end
+#ALbuttonfooterRight()
+#end
+
+#if($result.CurrentPage > 1)
+<input type="hidden" id="page_start" name="page_start" value="$result.CurrentPage" />
+#end
+#if($StatStr && !($StatStr == ''))
+#set ($mailScreenUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailListScreen")))
+<input type="hidden" id="receiving" name="receiving" value="$mailScreenUrl" />
+<input type="hidden" id="receivingPid" name="receivingPid" value="$!portlet.ID" />
+#end
+
+#ALformfooter()
+#end
+#ALspacebothfooter()
+#ALajaxtabfooter()
+#end

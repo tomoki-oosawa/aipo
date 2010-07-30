@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>aipo</artifactId>
+    <groupId>com.aimluck.eip</groupId>
+    <version>${aipo.version}</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <groupId>com.aimluck.eip</groupId>
+  <artifactId>portlets</artifactId>
+  <version>${aipo.version}</version>
+  <packaging>pom</packaging>
+
+  <name>portlets</name>
+
+  <modules>
+    <module>accessctl</module>
+    <module>account</module>
+    <module>addressbook</module>
+    <module>blog</module>
+    <module>cabinet</module>
+    <module>cellular</module>
+    <module>deletesample</module>
+    <module>eventlog</module>
+    <module>externalsearch</module>
+    <module>exttimecard</module>
+    <module>facilities</module>
+    <module>fileio</module>
+    <module>fileupload</module>
+    <module>license</module>
+    <module>manhour</module>
+    <module>memo</module>
+    <module>msgboard</module>
+    <module>mygroup</module>
+    <module>mylink</module>
+    <module>news</module>
+    <module>note</module>
+    <module>page</module>
+    <module>schedule</module>
+    <module>system</module>
+    <module>timecard</module>
+    <module>todo</module>
+    <module>webmail</module>
+    <module>webpage</module>
+    <module>whatsnew</module>
+    <module>workflow</module>
+  </modules>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.aimluck.eip</groupId>
+      <artifactId>aipo-core</artifactId>
+      <version>${aipo.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.aimluck.eip</groupId>
+      <artifactId>lib</artifactId>
+      <version>${aipo.version}</version>
+      <type>pom</type>
+    </dependency>
+    <dependency>
+      <groupId>com.aimluck.eip</groupId>
+      <artifactId>aipo-lib-accessctl</artifactId>
+      <version>${aipo.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.aimluck.eip</groupId>
+      <artifactId>aipo-lib-addressbookuser</artifactId>
+      <version>${aipo.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.aimluck.eip</groupId>
+      <artifactId>aipo-lib-common-category</artifactId>
+      <version>${aipo.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.aimluck.eip</groupId>
+      <artifactId>aipo-lib-eventlog</artifactId>
+      <version>${aipo.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.aimluck.eip</groupId>
+      <artifactId>aipo-lib-user</artifactId>
+      <version>${aipo.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.aimluck.eip</groupId>
+      <artifactId>aipo-lib-facility</artifactId>
+      <version>${aipo.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.aimluck.eip</groupId>
+      <artifactId>aipo-lib-mail</artifactId>
+      <version>${aipo.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.aimluck.eip</groupId>
+      <artifactId>aipo-lib-userfacility</artifactId>
+      <version>${aipo.version}</version>
+    </dependency>
+  </dependencies>
+
+</project>

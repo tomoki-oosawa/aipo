@@ -1,0 +1,70 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-dlg-")
+## ---------------------------------------------------------------------------
+#if($!result.currentTab == "received_mailbox") 
+#set ($event_cancel = "eventSubmit_doWebmail_show_received_mails")
+#else 
+#set ($event_cancel = "eventSubmit_doWebmail_show_sent_mails")
+#end
+#ALdialogheader("メール詳細")
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+#ALajaxdetailformheader("メール")
+#ALtableheaderWide()
+#ALtdcaption('ヘッダ')
+#ALtditemheader()
+<input name="is_header_tiny" type="hidden" value="TRUE"/>
+<div id="WebMailHeaderFieldDetail" style="display:none">
+#foreach($headerline in $!result.Detail.Headers)
+$headerline<br />
+#end
+</div>
+<div id="WebMailHeaderFieldTiny">
+#if($!{result.Detail.Subject.toString()} != "")
+件名：$!result.Detail.Subject<br />
+#end
+#if($!{result.Detail.Date.toString()} != "")
+日付：$!{result.Detail.Date.Year}年$!{result.Detail.Date.Month}月$!{result.Detail.Date.Day}日 $!{result.Detail.Date.Hour}時$!{result.Detail.Date.Minute}分<br />
+#end
+宛先：$!result.Detail.To<br />
+#if($!{result.Detail.From.toString()} != "")
+差出人：$!result.Detail.From
+#end
+</div>
+<div align="right"><input name="category_input_button" type="button" class="button" value="詳細表示" onclick="aipo.webmail.switchHeader(this)" /></div>
+#ALtditemfooter()
+#ALtdcaption('本文')
+#ALtditemheader()
+$!result.Detail.Body
+#ALtditemfooter()
+#ALtdcaption('添付ファイル')
+#ALtditemheader()
+#set($count = 0)
+#foreach( $attachmentFileName in $!result.Detail.AttachmentFileNames ) 
+<a href="$jslink.getTemplate("WebMailFileScreen").addQueryData("accountid", $accountid).addQueryData("tab", $!result.currentTab).addQueryData("entityid", $entityid).addQueryData("attachmentIndex", $count)">$result.getStringCR($attachmentFileName)</a><br>
+#set( $count = $count + 1 )
+#end
+#ALtditemfooter()
+#ALtablefooter()
+#ALbuttonheader()
+#ALajaxbuttonNameEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_reply_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '1')" "$!portlet.ID" "aipo.webmail.onLoadMailDialog" "返信する")#ALajaxbuttonNameEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_forward_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '2')" "$!portlet.ID" "aipo.webmail.onLoadMailDialog" "転送する")#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('entityid', $entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")<input name="ajaxbuttonClose" class="button" type="button" value="　閉じる　" onclick="aipo.webmail.hideDialog();" />
+#ALbuttonfooter()
+#ALformfooter()
+#ALdialogfooter()

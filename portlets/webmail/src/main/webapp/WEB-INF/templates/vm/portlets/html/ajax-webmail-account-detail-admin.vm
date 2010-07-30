@@ -1,0 +1,90 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set($tabs = [["接続設定","connect","$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_mailaccount_detail','1').addQueryData('Template','WebMailAdminDetailScreen')"],["メール通知設定","mailarrert","$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_mailaccount_detail_option','1').addQueryData('Template','WebMailAdminSettingsScreen')"]])
+#set ($indicator_id = "indicator-dlg-")
+## ---------------------------------------------------------------------------
+#ALajaxtabheader($tabs "connect")
+#ALspacebothheader()
+<div style="padding:0px 0px 5px 0px">
+${alias}全体で利用するメールアカウントの設定です。
+スケジュールや伝言メモ、ワークフローなどを追加されたときに、
+このメールアカウントを利用して、ユーザーにメールで通知できます。
+</div>
+#if(!$!result.Detail)
+<div style="padding:0px 0px 5px 0px">
+<a href='javascript:void(0);' onclick='aipo.common.showDialog("$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_mailaccount_form','1').addQueryData('template','WebMailAdminFormScreen').addQueryData('entityid', 'new'))");'>ここをクリックし、メールアカウントを追加してください。</a>
+</div>
+#else
+#ALformheader('メールアカウント' $jslink $portlet)
+<input type="hidden" name="accountid" value="$!result.Detail.AccountId">
+#ALtableheaderWide()
+#ALtdcaption('メールアカウント名')
+#ALtditem("$!result.Detail.AccountName")
+#ALtdcaption('送信メールサーバ名（SMTP）')
+#ALtditem("$!result.Detail.SmtpserverName")
+#ALtdcaption('受信メールサーバ名（POP3）')
+#ALtditem("$!result.Detail.Pop3serverName")
+#ALtdcaption('受信用ユーザーID')
+#ALtditem("$!result.Detail.Pop3userName")
+#ALtdcaption('受信用ユーザーパスワード')
+#ALtditem("**********")
+#ALtdcaption('名前')
+#ALtditem("$!result.Detail.MailUserName")
+#ALtdcaption('メールアドレス')
+#ALtditem("$!result.Detail.MailAddress")
+#ALtdcaption('送信ポート番号（SMTP）')
+#ALtditem("$!result.Detail.SmtpPort")
+#ALtdcaption('受信ポート番号（POP3）')
+#ALtditem("$!result.Detail.Pop3Port")
+#ALtdcaption('送信時の認証方式')
+#ALtditemheader()
+#if ($!result.Detail.AuthSendFlg.toString() == "1")
+POP before SMTP
+#elseif ($!result.Detail.AuthSendFlg.toString() == "2")
+SMTP認証（ユーザーID：$!{result.Detail.AuthSendUserId}）
+#else
+認証なし
+#end
+#ALtditemfooter()
+#ALtdcaption('送信時の暗号化方式')
+#ALtditemheader()
+#if ($!result.Detail.SmtpEncryptionFlag.toString() == "1")
+SSL暗号化
+#else
+暗号化なし
+#end
+#ALtditemfooter()
+#ALtdcaption('受信時の暗号化方式')
+#ALtditemheader()
+#if ($!result.Detail.Pop3EncryptionFlag.toString() == "1")
+SSL暗号化
+#else
+暗号化なし
+#end
+#ALtditemfooter()
+#ALtablefooter()
+#ALbuttonheader()
+#ALajaxbuttonEdit("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAdminFormScreen').addQueryData('entityid',$!{result.Detail.AccountId})")
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAdminFormJSONScreen').addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onDeleteAdminAccount")
+#ALbuttonfooter()
+#ALformfooter()
+#end
+#ALspacebothfooter()
+#ALajaxtabfooter()

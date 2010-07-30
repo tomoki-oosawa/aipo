@@ -1,0 +1,87 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#if($mode=="new_form")
+#set ($action_str = "追加する")
+#set ($event_submit = "eventSubmit_doWebmail_insert_filter")
+#set ($subtitle = 'フィルタ追加')
+#else
+#set ($action_str = "更新する")
+#set ($event_submit = "eventSubmit_doWebmail_update_filter")
+#set ($subtitle = 'フィルタ編集')
+#end
+#set ($indicator_id = "indicator-dlg-")
+## ---------------------------------------------------------------------------
+#ALdialogheader($subtitle)
+#if(!$!result.MailAccount)
+#ALbuttonheader()
+<div class="message">メールアカウントを選択してください。</div>
+#ALajaxbuttonClose()
+#ALbuttonfooter()
+#else
+
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+#ALerrmsg($errmsgs)
+<div id="messageDiv"></div>
+#ALajaxscreenformheader("WebMailFilterForm" $jslink $portlet "WebMailFilterFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID', aipo.webmail.onReceiveMessage)")
+#if($mode=="new_form")
+<input type="hidden" name="mode" value="insert" />
+#else
+<input type="hidden" name="mode" value="update" />
+#end
+<input type="hidden" name="accountid" value="${result.MailAccount.AccountId}" />
+#ALtableheaderWide()
+#ALtdcaption("対象メールアカウント")
+#ALtditem($!result.MailAccount.AccountName)
+#ALtdcaption("#ALrequired($!result.getFieldName('filter_name'))")
+#ALtditem("#ALtextfield('filter_name' $!result.FilterName '90%' 50 'active')")
+#ALtdcaption("#ALrequired($!result.getFieldName('filter_string'))")
+#ALtdcellheader()
+<select name="filter_type">
+#foreach($record in $!result.TypeList.keySet())
+#if ($record == $result.FilterType)
+<option value="$record" selected="selected">${result.TypeList.get($record)}</option>
+#else
+<option value="$record">${result.TypeList.get($record)}</option>
+#end
+#end
+</select>
+が
+#ALtextfield('filter_string' $!result.FilterString '50%' 50 'auto')
+を含む
+#ALtdcellfooter()
+#ALtdcaption("#ALrequired($!result.getFieldName('dst_folder_id'))")
+#ALtdcellheader()
+<select name="dst_folder_id">
+#foreach($record in $!result.FolderList)
+#if ($record.FolderId.getValue() == $result.DstFolderId.getValue())
+<option value="${record.FolderId}" selected="selected">${record.FolderName}</option>
+#else
+<option value="${record.FolderId}">${record.FolderName}</option>
+#end
+#end
+</select>
+#ALtdcellfooter()
+#ALtablefooter()
+#ALbuttonheader()
+#ALsubmit($event_submit $action_str)#ALajaxbuttonClose()
+#ALbuttonfooter()
+#ALformfooter()
+#end
+#ALdialogfooter()

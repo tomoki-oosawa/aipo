@@ -1,0 +1,202 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+<table border="0" cellspacing="0" cellpadding="5"><tbody>
+<tr valign="middle"><td>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevDate.toString()}))', '$!portlet.ID');" title="前の日へ">
+<img src="images/schedule/arrow_left.gif" border="0" alt="前の日へ" /></a>&nbsp;
+</td><td nowrap="nowrap">
+<span style="font-weight:bold">
+$!{result.ViewDate.Year} 年 $!{result.ViewDate.Month} 月 $!{result.ViewDate.Day} 日 $!{result.ViewDate.DayOfWeek}
+</span>
+</td><td>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextDate.toString()}))', '$!portlet.ID');" title="次の日へ">
+<img src="images/schedule/arrow_right.gif" border="0" alt="次の日へ" /></a>&nbsp;
+</td><td>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.Today.toString()}))', '$!portlet.ID');" title="今日へ">
+<img src="images/schedule/schedule_today.gif" border="0" alt="今日へ" /></a>&nbsp;
+</td></tr></tbody></table>
+#ALformheader('スケジュール' $jslink $portlet)
+#ALtableheaderCalendar("100%")
+<tr>
+#foreach ( $num in [1..2] )
+<td class="calendarHeader"><img src="images/common/dot.gif" height="1" alt="" /></td> 
+#end
+</tr>
+#set($todoListSize = $result.ToDoResultDataList.size())
+#if($todoListSize > 0)
+<tr>
+#ALtdheadAtt("" "rowspan='$todoListSize' width='25'")	
+#set($todoCount = 1)
+#foreach($record in $result.ToDoResultDataList)
+#if($todoCount > 1) <tr> #end
+<td class="head" style="background-color:#FFE5E5;line-height:8pt;">
+<div class="calerndarTodoDiv small">
+<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.TodoId}))');">
+${record.TodoName}
+#if(! ${record.isPublic()})
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
+#end
+</a>
+</div>
+</td>
+#if($todoCount >= 1) </tr> #end
+#set($todoCount = $todoCount + 1)
+#end
+#end
+### 期間スケジュール（ここから） ###
+#set($termListSize = $result.TermResultDataList.size())
+#if($termListSize > 0)
+<tr>
+#ALtdheadAtt("" "rowspan='$termListSize' width='25'")   
+#set($termCount = 1)
+#foreach($record in $result.TermResultDataList)
+#if($termCount > 1) <tr> #end
+#set($addScheduleLink = "")
+<td class="head" style="background-color:#FFE5E5;line-height:8pt;">
+<div class="calerndarTermScheduleDiv small">
+<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid", $!{record.ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);">$record.Name
+#if(! ${record.isPublic()})
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
+#else
+<img class="dot_schedule" src="images/common/dot.gif" alt="" />
+#end
+#if(${record.isTmpreserve()})
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />
+#end
+</a>
+</div>
+</td>
+#if($termCount >= 1) </tr> #end
+#set($termCount = $termCount + 1)
+#end
+#end
+### 期間スケジュール（ここまで） ###
+#set($count = 0)
+#set($endHour = $!{result.EndHour} - 1)
+#foreach($hour in [$!{result.StartHour}..$endHour])
+<tr>
+#set($rowspan = $!{result.getRowspan($hour)})
+#ALtdheadAtt("$hour" "rowspan='$rowspan' width='25'")
+#if ($!{result.getResult($count)})
+#if (($!{result.getResult($count).Name.Value}))
+#ALtdcellheaderAtt("rowspan='$!{result.getResult($count).Rowspan}' style='background-color:#EDF1F2'")
+<div class="calendarScheduleDiv">
+<div class="small time">$!{result.getResult($count).Date}</div>
+<div class="small">
+#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{result.getResult($count).ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
+<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);">$!{result.getResult($count).Name} </a>
+#if(! ${result.getResult($count).isPublic()})
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
+#end
+#if($result.getResult($count).isDuplicate())
+<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="重複スケジュール" title="重複スケジュール" />
+#end
+#if($result.getResult($count).isRepeat())
+<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="繰り返し" title="繰り返し" />
+#end
+#if($result.getResult($count).isTmpreserve())
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />
+#end
+</div>
+</div>
+#ALtdcellfooter()
+#else
+	#if ($!{result.hasAuthoritySelfInsert()})
+#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{result.getResult($count).StartDate.toString()}).addQueryData('form_end', $!{result.getResult($count).EndDate.toString()})")
+<td rowspan="$!{result.getResult($count).Rowspan}" height="1" valign="top">
+<div class="calendarScheduleDiv">
+<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog);" title="予定追加"><img class="icon_schedule" src="images/icon/icon_edit.gif" alt="予定追加" />予定追加</a>
+</div>
+</td>
+	#end
+#end
+#end
+#set($count = $count+1)
+</tr>
+
+#set($end = $rowspan - 1 )
+#foreach($tmp in [1..${end}])
+<tr>
+#if ($!{result.getResult($count)})
+#if (($!{result.getResult($count).Name.Value}))
+#ALtdcellheaderAtt("rowspan='$!{result.getResult($count).Rowspan}' style='background-color:#EDF1F2'")
+<div class="calendarScheduleDiv">
+<div class="small time">$!{result.getResult($count).Date}</div>
+<div class="small">
+#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{result.getResult($count).ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
+<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$!{result.getResult($count).Name}</a>
+#if(! ${result.getResult($count).isPublic()})
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
+#end
+#if($result.getResult($count).isDuplicate())
+<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="重複スケジュール" title="重複スケジュール" />
+#end
+#if($result.getResult($count).isRepeat())
+<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="繰り返し" title="繰り返し" />
+#end
+#if($result.getResult($count).isTmpreserve())
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />
+#end
+</div>
+</div>
+#ALtdcellfooter()
+#else
+	#if ($!{result.hasAuthoritySelfInsert()})
+#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{result.getResult($count).StartDate.toString()}).addQueryData('form_end', $!{result.getResult($count).EndDate.toString()})")
+<td rowspan="$!{result.getResult($count).Rowspan}" height="1" valign="top">
+<div class="calendarScheduleDiv">
+<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加"><img class="icon_schedule" src="images/icon/icon_edit.gif" alt="予定追加" />予定追加</a>
+</div>
+</td>
+	#end
+#end
+#else
+<td style="display:none; width:1px;">&nbsp;</td>
+#end
+#set($count = $count+1)
+</tr>
+#end
+#end
+#if($!result.isDuplicate())
+#ALtdheadAtt("重複" "width='25'")
+#ALtditemheader()
+#foreach($record in $result.DuplicateScheduleList)
+<div class="calendarScheduleDiv">
+<div class="small time">${record.Date}</div>
+<div class="small">
+#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
+<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$record.Name</a>
+#if(! ${record.isPublic()})
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
+#end
+<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="重複スケジュール" title="重複スケジュール" />
+#if($record.isRepeat())
+<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="繰り返し" title="繰り返し" />
+#end
+#if($record.isTmpreserve())
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />
+#end
+</div>
+</div>
+#end
+#ALtditemfooter()
+#end
+#ALtablefooter()
+#ALformfooter()

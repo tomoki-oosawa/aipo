@@ -1,0 +1,120 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#if($!result.currentTab == "receive")
+#set($person = "差出人")
+#else
+#set($person = "受取人")
+#end
+#set ($receiveUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen").addQueryData("mode","recieve")))
+##set ($newUrl4 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen").addQueryData("mode","stoprecieving")))
+##set ($submenulist = [["メールを作成する","javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.webmail.onLoadMailDialog);","themes/$!theme/images/icon/icon_add.gif"], ["アカウントを編集する","javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.webmail.onLoadMailAccountDialog);","themes/$!theme/images/icon/icon_edit.gif"], ["メールを受信する","javascript:aipo.viewPage('$newUrl3','$!portlet.ID');aipo.webmail.onProcessingTimer();","themes/$!theme/images/icon/webmail_receive_mail.gif"], ["メール受信を中断する","javascript:aipo.viewPage('$newUrl4','$!portlet.ID');","themes/$!theme/images/icon/webmail_receive_mail.gif"]])
+#set ($tabs = [["受信トレイ", "receive","$!jslink.getPortletById($!portlet.getID()).addQueryData('template','WebMailScreen').addQueryData('tab','receive')"], ["送信トレイ", "sent","$!jslink.getPortletById($!portlet.getID()).addQueryData('template','WebMailScreen').addQueryData('tab','sent')"]])
+#set ($StatStr = $!{result.StatStr})
+## ---------------------------------------------------------------------------
+<div class="p">
+#ALtableheaderSimpleWide()
+#ALtdcaption('メールアカウント')
+#ALtditemheader()
+<div style="padding-right: 5px;float: left;">
+<select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen").addQueryData("accountid",""))">（メールアカウントの選択）</option>
+#foreach( $record in $result.MailAccountList )
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen").addQueryData("accountid",$!record.AccountId))" #if ($!result.isMatch($!result.AccountId,$!record.AccountId.Value)) selected="selected" #end>$!record.AccountName</option>
+#end
+</select>
+</div>
+<div style="padding-top: 2px; white-space: nowrap;">
+<div class="menuItemIcon menuBarIconSeparator" style="float:left;"></div>
+<div class="" style="float:left;">
+<a title="メールを受信する" href="javascript:aipo.viewPage('$receiveUrl','$!portlet.ID');aipo.webmail.onProcessingTimer();" class="subMenuBarItem">
+<img src="themes/$!theme/images/icon/webmail_receive_mail.gif" style="vertical-align: middle;" height="16" width="16">
+メールを受信する
+</a>
+</div>
+</div>
+#ALtditemfooter()
+#ALtablefooter()
+</div>
+#if($!result.AccountId == 0)
+メールアカウントを選択してください。<a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');">メールアカウントが未登録の場合は、こちらからご登録ください。</a>
+#else
+#ALajaxtabheader($tabs $!result.currentTab)
+#ALspacebothheader()
+#if(($errmsgs) && ($errmsgs.toString() != ""))
+#errmsg($errmsgs)
+#else
+#ALajaxlistformheader('Webメール')
+#if($StatStr && !($StatStr == ''))
+<div class="spaceBottom"><div class="indicator" id="indicator-$portlet_id">$StatStr</div></div>
+#end
+#if($!result.List && $!result.List.size() <= 0)
+#if($!result.currentTab == "receive")
+<div class="message">受信メールはありません。</div>
+#else
+<div class="message">送信メールはありません。</div>
+#end
+#else
+<div class="clearfix"><div class="alignright small">未読数： $!{result.getUnReadMailSumByFolderId($result.FolderId)} 件</div></div>
+#ALajaxpageview('WebMailScreen' $result)
+#ALtableheaderWide()
+<tr>
+#ALtdheadThin("#ALajaxsort('read_flg' '状態' $result 'WebMailScreen')")
+#ALtdheadW50("#ALajaxsort('subject' '件名' $result 'WebMailScreen')")
+#ALtdheadW50("#ALajaxsort('person' $person $result 'WebMailScreen')")
+#ALtdheadThin("#ALajaxsort('date' '日付' $result 'WebMailScreen')")
+#ALtdheadThin('容量')
+</tr>
+#foreach ($record in $result.List)
+#if(($!record.Subject) && ($!record.getSubject().toString() != ""))
+#set($MailSubject = $!record.Subject)
+#elseif($!record.Subject)
+#set($MailSubject = "無題")
+#end
+<tr>
+#if($!record.hasAttachments())
+#ALtdcellAtt("<img src='$!record.ReadImage' alt='$!record.ReadImageDescription' title='$!record.ReadImageDescription' /><img src='$!record.WithFilesImage' alt='$!record.WithFilesImageDescription' title='$!record.WithFilesImageDescription' />" 'align="left" nowrap')
+#else
+#ALtdcellAtt("<img src='$!record.ReadImage' alt='$!record.ReadImageDescription' title='$!record.ReadImageDescription' />" 'align="left"')
+#end
+#ALtdcellheader()
+<a href='javascript:void(0);' onclick='aipo.common.showDialog("$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailDetailScreen').addQueryData('entityid',$record.MailId).addQueryData('tab', $!result.currentTab))");'>$MailSubject</a>
+#ALtdcellfooter()
+#ALtdcellAtt("$!record.Person" 'align="left"')
+#ALtdcellAtt("$!{record.Date.Month}月$!{record.Date.Day}日 $!{record.Date.Hour}時$!{record.Date.Minute}分" 'align="left" nowrap')
+#ALtdcellAtt("$!{record.FileVolume}KB" 'align="right" nowrap')
+</tr>
+#end
+#ALtablefooter()
+#end
+
+#if($result.CurrentPage > 1)
+<input type="hidden" id="page_start" name="page_start" value="$result.CurrentPage" />
+#end
+#if($StatStr && !($StatStr == ''))
+#set ($mailScreenUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen")))
+<input type="hidden" id="receiving" name="receiving" value="$mailScreenUrl" />
+<input type="hidden" id="receivingPid" name="receivingPid" value="$!portlet.ID" />
+#end
+
+#ALformfooter()
+#end
+#ALspacebothfooter()
+#ALajaxtabfooter()
+#end
