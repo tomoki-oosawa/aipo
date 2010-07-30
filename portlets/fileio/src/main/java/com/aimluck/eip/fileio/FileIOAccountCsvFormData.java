@@ -1,0 +1,1135 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.aimluck.eip.fileio;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
+import org.apache.jetspeed.services.JetspeedSecurity;
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.resources.JetspeedResources;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
+
+import com.aimluck.commons.field.ALNumberField;
+import com.aimluck.commons.field.ALStringField;
+import com.aimluck.commons.utils.ALStringUtil;
+import com.aimluck.eip.cayenne.om.account.EipMPosition;
+import com.aimluck.eip.cayenne.om.account.EipMPost;
+import com.aimluck.eip.cayenne.om.security.TurbineGroup;
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
+import com.aimluck.eip.common.ALAbstractFormData;
+import com.aimluck.eip.common.ALBaseUser;
+import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
+import com.aimluck.eip.user.util.UserUtils;
+import com.aimluck.eip.util.ALEipUtils;
+
+/**
+ * 『アカウント』のフォームデータを管理するクラスです。 <BR>
+ *
+ */
+public class FileIOAccountCsvFormData extends ALAbstractFormData {
+
+  /** logger */
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+      .getLogger(FileIOAccountCsvFormData.class.getName());
+
+  /** ブラウザに表示するデフォルトのパスワード（ダミーパスワード） */
+  public static final String DEFAULT_VIEW_PASSWORD = "*";
+
+  /** ログイン名 */
+  private ALStringField username;
+
+  /** パスワード */
+  private ALStringField password;
+
+  /** 名前（名） */
+  private ALStringField firstname;
+
+  /** 名前（姓） */
+  private ALStringField lastname;
+
+  /** フリガナ（名） */
+  private ALStringField first_name_kana;
+
+  /** フリガナ（姓） */
+  private ALStringField last_name_kana;
+
+  /** メールアドレス */
+  private ALStringField email;
+
+  /** 電話番号（内線） */
+  private ALStringField in_telephone;
+
+  /** 電話番号（外線） */
+  private ALStringField out_telephone;
+
+  /** 電話番号（携帯） */
+  private ALStringField cellular_phone;
+
+  /** 携帯メールアドレス */
+  private ALStringField cellular_mail;
+
+  /** 部署名 */
+  private ALStringField post_name;
+
+  /** 部署リスト */
+  private List<String> post_name_list;
+
+  /** 役職 */
+  private ALStringField position_name;
+
+  /** 部署がデータベースに存在するか否か */
+  private boolean post_not_found;
+
+  /** 役職がデータベースに存在するか否か */
+  private boolean position_not_found;
+
+  /**
+   * 各フィールドを初期化します。 <BR>
+   *
+   * @see com.aimluck.eip.common.ALData#initField()
+   */
+  public void initField() {
+    // ログイン名
+    username = new ALStringField();
+    username.setFieldName("ログイン名");
+    username.setTrim(true);
+    // パスワード
+    password = new ALStringField();
+    password.setFieldName("パスワード");
+    password.setTrim(true);
+    // 名
+    firstname = new ALStringField();
+    firstname.setFieldName("名前（名）");
+    firstname.setTrim(true);
+    // 姓
+    lastname = new ALStringField();
+    lastname.setFieldName("名前（姓）");
+    lastname.setTrim(true);
+    // メールアドレス
+    email = new ALStringField();
+    email.setFieldName("メールアドレス");
+    email.setTrim(true);
+    // 内線番号
+    in_telephone = new ALStringField();
+    in_telephone.setFieldName("電話番号（内線）");
+    in_telephone.setTrim(true);
+
+    // 外線番号
+    out_telephone = new ALStringField();
+    out_telephone.setFieldName("電話番号（外線）");
+    out_telephone.setTrim(true);
+    // 携帯番号
+    cellular_phone = new ALStringField();
+    cellular_phone.setFieldName("電話番号（携帯）");
+    cellular_phone.setTrim(true);
+
+    // 携帯アドレス
+    cellular_mail = new ALStringField();
+    cellular_mail.setFieldName("携帯メールアドレス");
+    cellular_mail.setTrim(true);
+    // 名（フリガナ）
+    first_name_kana = new ALStringField();
+    first_name_kana.setFieldName("名前（フリガナ）");
+    first_name_kana.setTrim(true);
+    // 姓（フリガナ）
+    last_name_kana = new ALStringField();
+    last_name_kana.setFieldName("名前（フリガナ）");
+    last_name_kana.setTrim(true);
+
+    // 部署名
+    post_name_list = new ArrayList<String>();
+    post_name = new ALStringField();
+    post_name.setFieldName("部署名");
+    post_name.setTrim(true);
+
+    // 役職
+    position_name = new ALStringField();
+    position_name.setFieldName("役職");
+    position_name.setTrim(true);
+
+    setPostNotFound(false);
+    setPositionNotFound(false);
+  }
+
+  /**
+   * 各フィールドに対する制約条件を設定します。 <BR>
+   *
+   * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
+   */
+  protected void setValidator() {
+    // ユーザー名
+    username.setNotNull(true);
+    username.setCharacterType(ALStringField.TYPE_ASCII);
+    username.limitMaxLength(16);
+    // パスワード
+    password.setNotNull(true);
+    password.setCharacterType(ALStringField.TYPE_ALPHABET_NUMBER);
+    password.limitMaxLength(16);
+    // 名
+    firstname.setNotNull(true);
+    firstname.limitMaxLength(20);
+    // 姓
+    lastname.setNotNull(true);
+    lastname.limitMaxLength(20);
+
+    // 名（フリガナ）
+    first_name_kana.setNotNull(true);
+    first_name_kana.limitMaxLength(20);
+    // 姓（フリガナ）
+    last_name_kana.setNotNull(true);
+    last_name_kana.limitMaxLength(20);
+
+    // 内線
+    in_telephone.setCharacterType(ALStringField.TYPE_ALPHABET_NUMBER);
+    in_telephone.limitMaxLength(15);
+    // メールアドレス
+    email.setCharacterType(ALStringField.TYPE_ASCII);
+    email.limitMaxLength(50);
+
+    // 外線
+    out_telephone.setCharacterType(ALStringField.TYPE_NUMBER);
+    out_telephone.limitMaxLength(15);
+
+    // 携帯
+    cellular_phone.setCharacterType(ALStringField.TYPE_NUMBER);
+    cellular_phone.limitMaxLength(15);
+    // 携帯メール
+    cellular_mail.setCharacterType(ALStringField.TYPE_ASCII);
+    cellular_mail.limitMaxLength(50);
+
+    // 部署名
+    post_name.limitMaxLength(50);
+    // 役職
+    position_name.limitMaxLength(50);
+
+  }
+
+  /**
+   * フォームに入力されたデータの妥当性検証を行います。 <BR>
+   *
+   * @param msgList
+   * @return
+   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+   */
+  protected boolean validate(List<String> msgList) {
+    String usernamestr = username.getValue();
+    if (usernamestr == null || "admin".equals(usernamestr)
+        || "template".equals(usernamestr) || "anon".equals(usernamestr)
+        || usernamestr.startsWith(ALEipUtils.dummy_user_head)
+        || !username.validate(msgList)) {
+      username.setValue(null);
+    }
+    if (usernamestr != null) {
+      int length = usernamestr.length();
+      for (int i1 = 0; i1 < length; i1++) {
+        if (isSymbol(usernamestr.charAt(i1))) {
+          // 使用されているのが妥当な記号であるかの確認
+          if (!(usernamestr.charAt(i1) == "_".charAt(0)
+              || usernamestr.charAt(i1) == "-".charAt(0) || usernamestr
+              .charAt(i1) == ".".charAt(0))) {
+            msgList
+                .add("『 <span class='em'>ログイン名</span> 』に使用できる記号は「-」「.」「_」のみです。");
+            username.setValue(null);
+            break;
+          }
+        }
+      }
+    }
+
+    // if (usernameList.contains(usernamestr)) {
+    // username.setValue(null);
+    // msgList.add("<span class='em'>同じユーザー名は複数登録できません</span>");
+    // } else {
+    // usernameList.add(usernamestr);
+    // }
+
+    Map<String, TurbineUser> existedUserMap = getAllUsersFromDB();
+    if (existedUserMap == null)
+      existedUserMap = new LinkedHashMap<String, TurbineUser>();
+    if (existedUserMap.containsKey(usernamestr)) {
+      TurbineUser tmpuser2 = existedUserMap.get(usernamestr);
+      if (!("F".equals(tmpuser2.getDisabled()))) {
+        msgList.add("<span class='em'>一度削除したユーザー名は複数登録できません</span>");
+        username.setValue(null);
+      }
+    }
+
+    // パスワードの確認
+    if (!password.getValue().equals(DEFAULT_VIEW_PASSWORD)) {
+      if (!password.validate(msgList)) {
+        password.setValue(null);
+      }
+    }
+
+    if (!firstname.validate(msgList)) {
+      firstname.setValue(null);
+      lastname.setValue(null);
+    }
+    if (!lastname.validate(msgList)) {
+      firstname.setValue(null);
+      lastname.setValue(null);
+    }
+
+    // フリガナのカタカナへの変換
+    first_name_kana.setValue(ALStringUtil.convertHiragana2Katakana(ALStringUtil
+        .convertH2ZKana(first_name_kana.toString())));
+    last_name_kana.setValue(ALStringUtil.convertHiragana2Katakana(ALStringUtil
+        .convertH2ZKana(last_name_kana.toString())));
+
+    if (!first_name_kana.validate(msgList)) {
+      first_name_kana.setValue(null);
+      last_name_kana.setValue(null);
+    }
+    if (!last_name_kana.validate(msgList)) {
+      first_name_kana.setValue(null);
+      last_name_kana.setValue(null);
+    }
+
+    // メールアドレス
+    if (email.getValue() != null && !email.getValue().equals("")) {
+      if (!email.validate(msgList)
+          || (email.getValue() != null && email.getValue().trim().length() > 0 && !ALStringUtil
+              .isCellPhoneMailAddress(email.getValue()))) {
+        email.setValue(null);
+        msgList.add("『 <span class='em'>メールアドレス</span> 』を正しく入力してください。");
+      }
+    } else {
+      email.setValue("");
+    }
+
+    ALNumberField tel = new ALNumberField();
+    List<String> errmsg = new ArrayList<String>();
+    boolean isNumber = true;
+    if (out_telephone.getValue() != null
+        && !out_telephone.getValue().equals("")) {
+      String[] out_tels = out_telephone.getValue().split("-");
+      if (out_tels.length == 3) {
+        for (int i = 0; i < 3; i++) {
+          tel.setValue(out_tels[i]);
+          isNumber = isNumber & tel.validate(errmsg);
+        }
+        if (!isNumber || out_tels[0].length() > 5 || out_tels[1].length() > 4
+            || out_tels[2].length() > 4) {
+          out_telephone.setValue(null);
+          msgList.add("『 <span class='em'>電話番号</span> 』を正しく入力してください。");
+        }
+      } else {
+        out_telephone.setValue(null);
+        msgList.add("『 <span class='em'>電話番号</span> 』を正しく入力してください。");
+      }
+    } else {
+      out_telephone.setValue("");
+    }
+
+    if (in_telephone.getValue() != null && !in_telephone.getValue().equals("")) {
+
+      Pattern ptn = Pattern.compile("[-0-9]+");/* 半角数字とハイフンのみの文字列ならマッチ */
+      Matcher mc = ptn.matcher(in_telephone.getValue().toString());
+
+      if (!mc.matches()) {
+        in_telephone.setValue(null);
+        msgList.add("『 <span class='em'>内線番号</span> 』を正しく入力してください。");
+      }
+    } else {
+      in_telephone.setValue("");
+    }
+
+    isNumber = true;
+
+    if (cellular_phone.getValue() != null
+        && !cellular_phone.getValue().equals("")) {
+      String[] cell_tels = cellular_phone.getValue().split("-");
+      if (cell_tels.length == 3) {
+        for (int i = 0; i < 3; i++) {
+          tel.setValue(cell_tels[i]);
+          isNumber = isNumber & tel.validate(errmsg);
+        }
+        if (!isNumber || cell_tels[0].length() > 5 || cell_tels[1].length() > 4
+            || cell_tels[2].length() > 4) {
+          cellular_phone.setValue(null);
+          msgList.add("『 <span class='em'>携帯電話番号</span> 』を正しく入力してください。");
+        }
+      } else {
+        cellular_phone.setValue(null);
+        msgList.add("『 <span class='em'>携帯電話番号</span> 』を正しく入力してください。");
+      }
+    } else {
+      cellular_phone.setValue("");
+    }
+
+    // 携帯メールアドレス
+    if (cellular_mail.getValue() != null
+        && !cellular_mail.getValue().equals("")) {
+      if (!cellular_mail.validate(msgList)) {
+        cellular_mail.setValue(null);
+        msgList.add("『 <span class='em'>携帯メールアドレス</span> 』を正しく入力してください。");
+      } else if (cellular_mail.getValue().trim().length() > 0
+          && !ALStringUtil.isCellPhoneMailAddress(cellular_mail.getValue())) {
+        cellular_mail.setValue(null);
+        msgList.add("『 <span class='em'>携帯メールアドレス</span> 』を正しく入力してください。");
+      }
+    } else {
+      cellular_mail.setValue("");
+    }
+
+    if (post_name.getValue() != null && !post_name.getValue().equals("")) {
+
+      // ArrayList postnames = new ArrayList();
+      String[] st = post_name.toString().split("[/、]");
+      List<String> postCollection = new ArrayList<String>();
+      for (int k = 0; k < st.length; k++) {
+        ALStringField post = new ALStringField(st[k]);
+        if (!postCollection.contains(post.toString())) {
+          postCollection.add(post.toString());
+        }
+        if (post.validate(msgList)) {
+          if ((!st[k].equals("")) && (getEipMPost(post) == null)) {
+            setPostNotFound(true);
+            msgList.add("<span class='em'>部署が見つかりませんでした。</span>");
+          }
+        } else {
+          msgList.add("『 <span class='em'>部署名</span> 』を正しく入力してください。");
+          post_name.setValue(null);
+          break;
+        }
+      }
+
+      if (!post_name.toString().equals("") && post_name.toString() != null) {
+        StringBuffer sb = new StringBuffer();
+        for (int k = 0; k < postCollection.size(); k++) {
+          if (k != 0)
+            sb.append("/");
+          sb.append(postCollection.get(k));
+        }
+        post_name.setValue(sb.toString());
+      }
+    } else {
+      post_name.setValue("");
+    }
+
+    if (position_name.getValue() != null
+        && !position_name.getValue().equals("")) {
+      if (!position_name.validate(msgList)) {
+        position_name.setValue(null);
+        msgList.add("『 <span class='em'>役職名</span> 』を正しく入力してください。");
+      } else if ((!position_name.toString().equals(""))
+          && (getEipMPosition() == null)) {
+        setPositionNotFound(true);
+        msgList.add("<span class='em'>役職が見つかりませんでした。</span>");
+      }
+    } else {
+      position_name.setValue("");
+    }
+
+    return (msgList.size() == 0);
+  }
+
+  /**
+   * 『ユーザー』を読み込みます。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   */
+  protected boolean loadFormData(RunData rundata, Context context,
+      List<String> msgList) {
+    return false;
+  }
+
+  /**
+   * 『ユーザー』を追加します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   */
+  protected boolean insertFormData(RunData rundata, Context context,
+      List<String> msgList) {
+
+    // WebAPIのDBへ接続できるか確認
+    if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler()
+        .checkConnect()) {
+      msgList.add("コントロールパネルWebAPIのデータベースの接続に失敗したため、処理は実行されませんでした。");
+      return false;
+    }
+
+    boolean res = true;
+    try {
+      boolean isNewUser = false;
+      ALBaseUser user = null;
+      try {
+        user = (ALBaseUser) JetspeedSecurity.getUser(getUserName().getValue());
+        // ユーザー名
+        user.setUserName(JetspeedSecurity.convertUserName(username.getValue()));
+        if (!password.getValue().equals(DEFAULT_VIEW_PASSWORD)) {
+          JetspeedSecurity.forcePassword(user, password.getValue());
+        }
+        isNewUser = false;
+      } catch (Exception e) {
+        // オブジェクトモデルを生成
+        user = (ALBaseUser) JetspeedSecurity.getUserInstance();
+        rundata.getParameters().setProperties(user);
+        // ユーザー名
+        user.setUserName(JetspeedSecurity.convertUserName(getUserName()
+            .getValue()));
+        // JetspeedSecurity.forcePassword(user, password.getValue());
+        user.setPassword(password.getValue());
+        isNewUser = true;
+      }
+
+      Date now = new Date();
+      // 作成日
+      // 以下のメソッドは動作しないため、ALBaseUserにてオーバーライド
+      // user.setCreateDate(now);
+      // JetspeedSecurity.forcePassword(user, password.getValue());
+      user.setCreated(now);
+      user.setModified(now);
+      user.setLastLogin(now);
+      user.setCreatedUserId(ALEipUtils.getUserId(rundata));
+      user.setUpdatedUserId(ALEipUtils.getUserId(rundata));
+      user.setConfirmed(JetspeedResources.CONFIRM_VALUE);
+      user.setDisabled("F");
+      // user.setPassword(password.getValue());
+      user.setPasswordChanged(now);
+      user.setInTelephone(in_telephone.getValue());
+      user.setOutTelephone(out_telephone.getValue());
+      user.setCellularPhone(cellular_phone.getValue());
+      user.setCellularMail(cellular_mail.getValue());
+      user.setCompanyId(1);
+      user.setPositionId(0);
+      user.setPostId(0);
+      user.setFirstName(getFirstName().getValue());
+      user.setLastName(getLastName().getValue());
+      user.setFirstNameKana(first_name_kana.getValue());
+      user.setLastNameKana(last_name_kana.getValue());
+      user.setEmail(getEmail().getValue());
+
+      if (!position_name.getValue().equals("")) {
+        EipMPosition position = getEipMPosition();
+        if (position != null) {
+          user.setPositionId(position.getPositionId());
+        }
+      }
+
+      if (!isNewUser) {
+        // ユーザーを既にいるグループから削除。
+        DataContext dataContext = DatabaseOrmService.getInstance()
+            .getDataContext();
+        SelectQuery query2 = new SelectQuery(TurbineUserGroupRole.class);
+        Expression exp2 = ExpressionFactory.matchExp(
+            TurbineUserGroupRole.TURBINE_USER_PROPERTY, user.getUserId());
+        Expression exp3 = ExpressionFactory.noMatchExp(
+            TurbineUserGroupRole.TURBINE_GROUP_PROPERTY, Integer.valueOf(1));
+        Expression exp4 = ExpressionFactory.noMatchExp(
+            TurbineUserGroupRole.TURBINE_GROUP_PROPERTY, Integer.valueOf(2));
+        query2.setQualifier(exp2);
+        query2.andQualifier(exp3.andExp(exp4));
+        List<?> list = dataContext.performQuery(query2);
+        TurbineUserGroupRole ugr = null;
+        for (int i = 0; i < list.size(); i++) {
+          ugr = (TurbineUserGroupRole) list.get(i);
+          dataContext.deleteObject(ugr);
+        }
+
+        // ユーザーをグループに追加。
+        if (!post_name.toString().equals("") && post_name.toString() != null) {
+          String[] postnames = post_name.toString().split("/");
+          for (int i = 0; i < postnames.length; i++) {
+            SelectQuery query = new SelectQuery(TurbineGroup.class);
+            Expression exp = ExpressionFactory.matchExp(
+                TurbineGroup.GROUP_ALIAS_NAME_PROPERTY, postnames[i]);
+            query.setQualifier(exp);
+            List<?> alist = dataContext.performQuery(query);
+            JetspeedSecurity.joinGroup(user.getUserName(),
+                ((TurbineGroup) alist.get(0)).getName());
+          }
+        }
+        // ユーザーを更新
+        JetspeedSecurity.saveUser(user);
+      } else {
+        int postid = 0;
+        EipMPost post = getEipMPost(post_name);
+        if (post != null) {
+          postid = post.getPostId();
+          user.setPostId(postid);
+        }
+        // ユーザーを追加
+        JetspeedSecurity.addUser(user);
+
+        // // 部署Mapを取得
+        // Map map = ALEipManager.getInstance().getPostMap();
+        // int size = map.size();
+        // if (map != null && size != 0 && postid >= 1) {
+        // // グループへユーザを登録
+        // JetspeedSecurity.joinGroup(user.getUserName(),
+        // ((ALEipPost) ALEipManager.getInstance().getPostMap().get(
+        // Integer.valueOf(postid))).getGroupName().getValue());
+        // }
+
+        // // ログインユーザーにはグループ LoginUser に所属させる
+        // JetspeedSecurity.joinGroup(user.getUserName(), "LoginUser");
+        // logger.debug("JOIN GROUP:" + "LoginUser");
+
+        // ユーザーをグループに追加。
+        if (!post_name.toString().equals("") && post_name.toString() != null) {
+          String[] postnames = post_name.toString().split("/");
+          DataContext dataContext = DatabaseOrmService.getInstance()
+              .getDataContext();
+          for (int i = 0; i < postnames.length; i++) {
+            SelectQuery query = new SelectQuery(TurbineGroup.class);
+            Expression exp = ExpressionFactory.matchExp(
+                TurbineGroup.GROUP_ALIAS_NAME_PROPERTY, postnames[i]);
+            query.setQualifier(exp);
+            List<?> alist = dataContext.performQuery(query);
+            JetspeedSecurity.joinGroup(user.getUserName(),
+                ((TurbineGroup) alist.get(0)).getName());
+          }
+        }
+
+        // // ユーザの順番を登録する．
+        // StringBuffer statement = new StringBuffer();
+        // statement.append("INSERT INTO EIP_M_USER_POSITION ");
+        // statement.append("(USER_ID, POSITION) VALUES (");
+        // statement.append(user.getUserId());
+        // statement
+        // .append(", (SELECT COALESCE(MAX(EIP_M_USER_POSITION.POSITION),0)+1");
+        // statement.append(" FROM EIP_M_USER_POSITION))");
+        // String query = statement.toString();
+        // orm.executeStatement(query);
+
+        // 初期メールアカウントの作成
+        // if (email.getValue() != null && (!email.getValue().equals(""))) {
+        // ALMailUtils.insertMailAccountData(rundata, msgList, Integer
+        // .parseInt(user.getUserId()), "初期アカウント",
+        // ALMailUtils.ACCOUNT_TYPE_INIT, email.getValue(), "未設定", "未設定",
+        // 25, "未設定", 110, "未設定", "未設定", ALSmtpMailSender.AUTH_SEND_NONE,
+        // null, null, ALPop3MailReceiver.AUTH_RECEIVE_NORMAL, 0, 0, 1, "0");
+        // }
+
+        // ACLの登録
+        DataContext dataContext = DatabaseOrmService.getInstance()
+            .getDataContext();
+        int userid = Integer.parseInt(user.getUserId());
+
+        // アクセス権限
+        ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+            .getInstance())
+            .getService(ALAccessControlFactoryService.SERVICE_NAME);
+        ALAccessControlHandler aclhandler = aclservice
+            .getAccessControlHandler();
+        aclhandler.insertDefaultRole(userid);
+
+        dataContext.commitChanges();
+      }
+
+      /** ユーザリストのキャッシュをクリアする */
+      UserUtils.clearCache();
+
+      // WebAPIとのDB同期
+      if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler()
+          .addUser(user)) {
+        return false;
+      }
+
+    } catch (Exception e) {
+      logger.error("Exception", e);
+      res = false;
+    }
+
+    return res;
+  }
+
+  /**
+   * 『ユーザー』を更新します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   */
+  protected boolean updateFormData(RunData rundata, Context context,
+      List<String> msgList) {
+    return false;
+  }
+
+  /**
+   * 『ユーザー』を削除します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   */
+  protected boolean deleteFormData(RunData rundata, Context context,
+      List<String> msgList) {
+    return false;
+  }
+
+  /**
+   * 携帯メールアドレスを取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getCellularMail() {
+    return cellular_mail;
+  }
+
+  /**
+   * メールアドレスを取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getEmail() {
+    return email;
+  }
+
+  /**
+   * フリガナ（名）を取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getFirstNameKana() {
+    return first_name_kana;
+  }
+
+  /**
+   * 名前（名）を取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getFirstName() {
+    return firstname;
+  }
+
+  /**
+   * 電話番号（内線）を取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getInTelephone() {
+    return in_telephone;
+  }
+
+  /**
+   * フリガナ（姓）を取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getLastNameKana() {
+    return last_name_kana;
+  }
+
+  /**
+   * 名前（姓）を取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getLastName() {
+    return lastname;
+  }
+
+  /**
+   * 携帯電話番号を取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getCellularPhone() {
+    return cellular_phone;
+  }
+
+  /**
+   * 電話番号を取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getOutTelephone() {
+    return out_telephone;
+  }
+
+  /**
+   * パスワードを取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getPassword() {
+    return password;
+  }
+
+  /**
+   * ユーザー名を取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getUserName() {
+    return username;
+  }
+
+  /**
+   * 部署名を取得します <BR>
+   *
+   * @return
+   */
+  public ALStringField getPostName() {
+    return post_name;
+  }
+
+  public List<String> getPostNameList() {
+    return post_name_list;
+  }
+
+  /**
+   * 役職名を取得します <BR>
+   *
+   * @return
+   */
+  public ALStringField getPositionName() {
+    return position_name;
+  }
+
+  /**
+   * 部署がデータベースに存在するかを示すフラグを取得します <BR>
+   *
+   * @return
+   */
+  public boolean getPostNotFound() {
+    return post_not_found;
+  }
+
+  /**
+   * 役職がデータベースに存在するかを示すフラグを取得します <BR>
+   *
+   * @return
+   */
+  public boolean getPositionNotFound() {
+    return position_not_found;
+  }
+
+  /**
+   * 携帯メールアドレスを入力します <BR>
+   *
+   * @param str
+   */
+  public void setCellularMail(String str) {
+    cellular_mail.setValue(str);
+  }
+
+  /**
+   * メールアドレスを入力します <BR>
+   *
+   * @param str
+   */
+  public void setEmail(String str) {
+    email.setValue(str);
+  }
+
+  /**
+   * フリガナ（名）を入力します <BR>
+   *
+   * @param str
+   */
+  public void setFirstNameKana(String str) {
+    first_name_kana.setValue(str);
+  }
+
+  /**
+   * 名前（名）を入力します <BR>
+   *
+   * @param str
+   */
+  public void setFirstName(String str) {
+    firstname.setValue(str);
+  }
+
+  /**
+   * フリガナ（氏）を入力します <BR>
+   *
+   * @param str
+   */
+  public void setLastNameKana(String str) {
+    last_name_kana.setValue(str);
+  }
+
+  /**
+   * 名前（氏）を入力します <BR>
+   *
+   * @param str
+   */
+  public void setLastName(String str) {
+    lastname.setValue(str);
+  }
+
+  /**
+   * 携帯電話番号を入力します <BR>
+   *
+   * @param str
+   */
+  public void setCellularPhone(String str) {
+    cellular_phone.setValue(str);
+  }
+
+  /**
+   * パスワードを入力します <BR>
+   *
+   * @param str
+   */
+  public void setPassword(String str) {
+    password.setValue(str);
+  }
+
+  /**
+   * ログイン名を入力します <BR>
+   *
+   * @param str
+   */
+  public void setUserName(String str) {
+    username.setValue(str);
+  }
+
+  /**
+   * 部署名を入力します <BR>
+   *
+   * @param str
+   */
+  public void setPostName(String str) {
+    post_name.setValue(str);
+  }
+
+  public void setPostNameList(List<String> list) {
+    post_name_list.addAll(list);
+  }
+
+  /**
+   * 役職名を入力します <BR>
+   *
+   * @param str
+   */
+  public void setPositionName(String str) {
+    position_name.setValue(str);
+  }
+
+  /**
+   * 電話番号を入力します（部署） <BR>
+   *
+   * @param str
+   */
+  public void setOutTelephone(String str) {
+    out_telephone.setValue(str);
+  }
+
+  /**
+   * 内線番号を入力します（部署） <BR>
+   *
+   * @param str
+   */
+  public void setInTelephone(String str) {
+    in_telephone.setValue(str);
+  }
+
+  /**
+   * 部署がデータベースに存在するかを示すフラグを入力します <BR>
+   *
+   * @param flg
+   */
+  public void setPostNotFound(boolean flg) {
+    post_not_found = flg;
+  }
+
+  /**
+   * 役職がデータベースに存在するかを示すフラグを入力します <BR>
+   *
+   * @param flg
+   */
+  public void setPositionNotFound(boolean flg) {
+    position_not_found = flg;
+  }
+
+  /**
+   * 部署名から部署IDを取得 <BR>
+   *
+   * @return
+   */
+  private EipMPost getEipMPost(ALStringField post_name) {
+    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
+    SelectQuery query = new SelectQuery(EipMPost.class);
+    Expression exp = ExpressionFactory.matchExp(EipMPost.POST_NAME_PROPERTY,
+        post_name);
+    query.setQualifier(exp);
+    List<?> list = dataContext.performQuery(query);
+    if (list == null || list.size() == 0) {
+      return null;
+    }
+    EipMPost post = (EipMPost) list.get(0);
+    return post;
+  }
+
+  /**
+   * 役職名から役職IDを取得 <BR>
+   *
+   * @return
+   */
+  private EipMPosition getEipMPosition() {
+    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
+    SelectQuery query = new SelectQuery(EipMPosition.class);
+    Expression exp = ExpressionFactory.matchExp(
+        EipMPosition.POSITION_NAME_PROPERTY, position_name);
+    query.setQualifier(exp);
+    List<?> list = dataContext.performQuery(query);
+    if (list == null || list.size() == 0) {
+      return null;
+    }
+    EipMPosition position = (EipMPosition) list.get(0);
+    return position;
+  }
+
+  /**
+   * 読み取った単語を指定されたフィールドに格納します。 <BR>
+   *
+   * @param token
+   * @param i
+   */
+  public void addItemToken(String token, int i) {
+    switch (i) {
+    case -1:
+      break;
+    case 0:
+      try {
+        setUserName(token);
+      } catch (Exception e) {
+        logger.error(e);
+        e.printStackTrace();
+      }
+      break;
+    case 1:
+      setPassword(token);
+      break;
+    case 2:
+      setLastName(token);
+      break;
+    case 3:
+      setFirstName(token);
+      break;
+    case 4:
+      setLastNameKana(token);
+      break;
+    case 5:
+      setFirstNameKana(token);
+      break;
+    case 6:
+      setEmail(token);
+      break;
+    case 7:
+      setOutTelephone(token);
+      break;
+    case 8:
+      setInTelephone(token);
+      break;
+    case 9:
+      setCellularPhone(token);
+      break;
+    case 10:
+      setCellularMail(token);
+      break;
+    case 11:
+      setPostName(token);
+      break;
+    case 12:
+      setPositionName(token);
+      break;
+    default:
+      break;
+    }
+  }
+
+  /**
+   * 指定したchar型文字が記号であるかを判断します。
+   *
+   * @param ch
+   * @return
+   */
+  protected boolean isSymbol(char ch) {
+    byte[] chars;
+
+    try {
+      chars = (Character.valueOf(ch).toString()).getBytes("shift_jis");
+    } catch (UnsupportedEncodingException ex) {
+      return false;
+    }
+
+    if (chars == null || chars.length == 2 || Character.isDigit(ch)
+        || Character.isLetter(ch)) {
+      return false;
+    } else {
+      return true;
+    }
+
+  }
+
+  /**
+   *
+   * @return
+   */
+  private Map<String, TurbineUser> getAllUsersFromDB() {
+    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
+    Map<String, TurbineUser> map = null;
+    try {
+      SelectQuery query = new SelectQuery(TurbineUser.class);
+      List<?> list = dataContext.performQuery(query);
+
+      map = new LinkedHashMap<String, TurbineUser>();
+      TurbineUser user = null;
+      int size = list.size();
+      for (int i = 0; i < size; i++) {
+        user = (TurbineUser) list.get(i);
+        map.put(user.getLoginName(), user);
+      }
+    } catch (Exception ex) {
+      logger.error("[ALEipUtils]", ex);
+      // throw new ALDBErrorException();
+    }
+    return map;
+  }
+}

@@ -1,0 +1,97 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.aimluck.eip.modules.actions.cellular;
+
+import org.apache.jetspeed.portal.portlets.VelocityPortlet;
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
+
+import com.aimluck.eip.cellular.CellularFormData;
+import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.modules.actions.common.ALBaseAction;
+import com.aimluck.eip.util.ALEipUtils;
+
+/**
+ * アクションクラスです。 <BR>
+ *
+ */
+public class CellularAction extends ALBaseAction {
+
+  /** logger */
+  @SuppressWarnings("unused")
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+      .getLogger(CellularAction.class.getName());
+
+  /**
+   * 通常表示の際の処理を記述します。 <BR>
+   *
+   * @param portlet
+   * @param context
+   * @param rundata
+   * @throws java.lang.Exception
+   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
+   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
+   */
+  protected void buildNormalContext(VelocityPortlet portlet, Context context,
+      RunData rundata) throws Exception {
+
+    if (getMode() == null) {
+      doCellular_detail(rundata, context);
+    }
+  }
+
+  /**
+   * 携帯電話用の情報を表示します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
+  public void doCellular_detail(RunData rundata, Context context)
+      throws Exception {
+    ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, "1");
+
+    CellularFormData formData = new CellularFormData();
+    formData.initField();
+    formData.doViewForm(this, rundata, context);
+    setTemplate(rundata, "cellular");
+  }
+
+  /**
+   * 簡易アクセス用 URL を携帯電話にメールする．
+   *
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
+  public void doCellular_sendmail(RunData rundata, Context context)
+      throws Exception {
+    ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, "1");
+
+    CellularFormData formData = new CellularFormData();
+    formData.initField();
+    if (formData.doInsert(this, rundata, context)) {
+      context.put("finishedSendmail", "T");
+    }
+    setTemplate(rundata, "cellular");
+  }
+
+}

@@ -1,0 +1,304 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http:// www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function onClick_Select(button){
+	disableButton(button.form);
+	var option = button.form.SelectMenu0.options[button.form.SelectMenu0.selectedIndex];
+	button.form.action = "$!jslink.getPortletById($!portlet.ID)" + '?' + option.value + '=1';
+	button.form.submit();
+}
+
+function event_csv(button) {
+  disableButton(button.form);
+  button.form.action = "$!jslink.getPortletById($!portlet.ID)" + '?' + button.name + '=1';
+  button.form.submit();
+}
+
+function event_csv_page(button,page) {
+  	disableButton(button.form);
+  	button.form.action = "$!jslink.getPortletById($!portlet.ID)" + '?' + button.name + '=1' + '&csvpage=' + page;
+  	button.form.submit();
+}
+
+function event_csv_regist(button) {
+  if(confirm('部署を一括登録しますか？')) {
+    disableButton(button.form);
+    button.form.action = "$!jslink.getPortletById($!portlet.ID)" + '?' + button.name + '=1';
+    button.form.submit();
+  }
+}
+
+var flag = 0;
+
+function onChg1(obj){
+
+  	var n = document.readcsv.SelectMenu1.selectedIndex;
+
+	if(flag == 0){
+
+    	switch (n) {
+    	case 0:
+            break;
+        case 1:
+
+            break;
+        case 2:
+
+            break;
+        case 3:
+
+    		break;
+        case 4:
+
+            break;
+    	case 5:
+			flag = 1;
+            break;
+    	case 6:
+
+            break;
+    	case 7:
+
+            break;
+        default:
+            break;
+        }
+	}
+
+}
+
+function onChg2(obj){
+  	flag = 1;
+}
+
+//-->
+</script>
+#set($tabs = [["インポート", "",""]])
+#if(!$!result.List || $result.List.size() == 0)#ALerrmsg($errmsgs)#end
+#if($result.getClass().getName() == "com.aimluck.eip.account.AccountPostCsvSelectData")
+#if(! $result.List || $result.List.size() <= 0)
+<ul></ul>
+#end
+#end
+#ALtabheader($tabs "")
+<form name="io_select" action="" method="post" enctype="multipart/form-data">
+<input type="hidden" name="secid" value="$secid" />
+<select name="post$!{portlet.ID}" onChange="location.href=this.options[this.selectedIndex].value">
+<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_form_csv','1')">ユーザーアカウント</option>
+<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_postcsv_form','1')" selected>部署</option>
+<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_company_form','1')">アドレス(会社)帳</option>
+<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_form','1')">アドレス帳</option>
+<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doSchedule_form','1')">スケジュール</option>
+</select>
+を一括登録します。
+</form>
+
+
+<div style="margin:0px 0px 5px 0px">
+部署をファイルから一括して登録できます。
+<a href="$jslink.getTemplate('FileIOAccountPostCsvFileScreen')">こちらのテンプレート</a>の形式で作成したファイルをボタン [参照...] で指定し、
+ボタン [読み込む] を押してください。
+確認画面が表示された後に、ボタン [登録] を押すことで、登録が完了します。
+</div>
+<form name="readcsv" action="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_postcsv_upload','1')" method="post" enctype="multipart/form-data">
+<input type="hidden" name="secid" value="$secid" />
+<input type="hidden" name="temp_folder" value="$temp_folder">
+#ALtableheaderWide()
+<tr>
+<td width="150" class="caption">CSVファイルの指定</td>
+<td nowrap="nowrap">
+<input class="text" type="file" name="attachment" value="" size="30" style="ime-mode:disable">
+</td>
+</tr>
+
+<!--
+<tr>
+<th class="head">順序</th>
+
+
+<td class="item">
+<div style="width:100%; overflow:auto;">
+<table border="0" cellpaddin="0" cellspacing="0">
+<tr>
+<td class="item">
+<select name="SelectMenu1" size="1" onChange="onChg2(this)">
+<option value="-1">-使用しない-</option>
+<option value="0">氏名</option>
+<option value="1">氏名（フリガナ）</option>
+<option value="2">電話番号</option>
+<option value="3">携帯電話番号</option>
+<option value="4">メールアドレス</option>
+<option value="5">メールアドレス（携帯電話）</option>
+<option value="6">会社名</option>
+<option value="7">会社名（フリガナ）</option>
+<option value="8">郵便番号（会社）</option>
+<option value="9">住所（会社）</option>
+<option value="10">電話番号（会社）</option>
+<option value="11">FAX番号（会社）</option>
+<option value="12">部署名</option>
+<option value="13">役職</option>
+<option value="14">ログインID</option>
+<option value="15" selected>名字</option>
+<option value="16">名前</option>
+<option value="17">名字（フリガナ）</option>
+<option value="18">名前（フリガナ）</option>
+<option value="19">URL(会社)</option>
+</select>
+</td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+//-->
+<tr>
+#ALtdcellAtt("#ALsubmit('send' '読み込む')" 'colspan="12" align="center"')
+</tr>
+#ALtablefooter()
+
+
+#if($result.List && $result.getPageCount() > 0)
+#set($plist = [1..$result.getPageCount()])
+
+#if($result.List && $result.List.size() > 0)
+#set($showErrmsg1 = false)
+#set($showErrmsg2 = false)
+#set($showErrmsg3 = false)
+#set($showErrmsg4 = false)
+#set($showErrmsg5 = false)
+#set($showErrmsg6 = false)
+
+#foreach ($record in $result.List)
+#if($!record.getPostName().toString() == "")#set($showErrmsg1 = true)#end
+#if(! $!record.getOutTelephone().getValue())#set($showErrmsg2 = true)#end
+#if(! $!record.getInTelephone().getValue())#set($showErrmsg3 = true)#end
+#if(! $!record.getZipcode().getValue())#set($showErrmsg4 = true)#end
+#if(! $!record.getFaxNumber().getValue())#set($showErrmsg5 = true)#end
+#if($!record.getSamePost())#set($showErrmsg6 = true)#end
+
+#end
+#if($result.isError())${result.getLineCount()}件中${result.getNotErrorCount()}件のデータを登録しました。<br>以下のデータはエラーが見つかった為登録できませんでした。#end
+#set($showErrmsg = $showErrmsg1 || $showErrmsg2 || $showErrmsg3 || $showErrmsg4 || $showErrmsg5 || $showErrmsg6 )
+#if($showErrmsg)
+<ul>
+#if($showErrmsg1)
+<li><span span class="caution">（※1）&nbsp;部署名が入力されていません。</span></li>
+#end
+#if($showErrmsg2)
+<li><span class="caution">（※2）&nbsp;電話番号（外線）は 15 文字以下でハイフン（-）を含めて入力してください。</span></li>
+#end
+#if($showErrmsg3)
+<li><span class="caution">（※3）&nbsp;電話番号（内線）は 15 文字以下でハイフン（-）または半角数字で入力してください。</span></li>
+#end
+#if($showErrmsg4)
+<li><span class="caution">（※4）&nbsp;郵便番号は 7 文字でハイフン（-）を含めて入力してください。</span></li>
+#end
+#if($showErrmsg5)
+<li><span class="caution">（※5）&nbsp;FAX番号は 15 文字以下でハイフン（-）を含めて入力してください。</span></li>
+#end
+#if($showErrmsg6)
+<li><span class="caution">（※6）&nbsp;同じ名前の部署が既に存在します。</span></li>
+#end
+</ul>
+#else
+<br>
+<div style="margin:0px 0px 5px 0px">ボタン [登録する] をクリックして、登録してください。</div>
+#end
+
+#if($result.getErrorCount() > 0)
+## #if($result.getErrorCount() >= $result.getErrorCountMax())<span class="caution">${result.getLineCount()}件中${result.getErrorCountMax()}件以上エラーが発生しました。読み込みを中止します。</span> #else<span class="caution">${result.getLineCount()}件中${result.getErrorCount()}件エラーが発生しました。</span> #end
+<span class="caution">${result.getLineCount()}件中${result.getErrorCount()}件エラーが発生しました。</span>
+#end
+#if(($result.getPageCount() > 1)&&($result.getErrorCount() == 0))
+#foreach($p in $plist)
+#ALbutton('eventSubmit_doAccount_postcsv_list_page' $p "event_csv_page(this, $p)")
+#end
+#end
+<div style="width:100%; overflow:auto;">
+<table class="tableWrapper" style="margin: 1px"><tbody><tr><td>
+#ALtableheaderWide()
+<tr>
+<th nowrap="nowrap" class="head">登録の可否</th>
+<th nowrap="nowrap" class="head">部署名</th>
+<th nowrap="nowrap" class="head">郵便番号</th>
+<th nowrap="nowrap" class="head">住所</th>
+<th nowrap="nowrap" class="head">電話番号</th>
+<th nowrap="nowrap" class="head">内線番号</th>
+<th nowrap="nowrap" class="head">Fax番号</th>
+</tr>
+#set($con = 0)
+#foreach ($record in $result.List)
+#set($Err = false)
+#if($!record.getPostName().toString() == "")
+#set($Err = true)
+#end
+#set($con = $con +1)
+
+
+<tr>
+<td nowrap="nowrap" class="item">
+#if(!$record.IsError)可($!{record.LineCount}行目)#else <span class="caution">不可($!{record.LineCount}行目)</span> #end
+</td>
+<td nowrap="nowrap" class="item">
+#if($!record.getPostName().toString() != "")$!{record.getPostName().toString()}#else <span class="caution">※1</span> #end
+#if($!record.getSamePost())<span class="caution">※6</span>#end
+</td>
+<td nowrap="nowrap" class="item">
+#if($!record.getZipcode().getValue())$!{record.getZipcode().toString()}#else <span class="caution">※4</span> #end
+</td>
+<td nowrap="nowrap" class="item">
+#if($!record.getAddress().getValue())$!{record.getAddress().toString()}#else <span class="caution"></span> #end
+</td>
+<td nowrap="nowrap" class="item">
+#if($!record.getOutTelephone().getValue())$!{record.getOutTelephone().toString()}#else <span class="caution">※2</span> #end
+</td>
+<td nowrap="nowrap" class="item">
+#if($!record.getInTelephone().getValue())$!{record.getInTelephone().toString()}#else <span class="caution">※3</span> #end
+</td>
+<td nowrap="nowrap" class="item">
+#if($!record.getFaxNumber().getValue())$!{record.getFaxNumber().toString()}#else <span class="caution">※5</span> #end
+</td>
+</tr>
+#end
+#ALtablefooter()
+</td></tr></tbody></table>
+<br>
+</div>
+<br>
+#ALtableheaderWide()
+<tr>
+#if($result.isError())
+#ALtdcellAtt("#ALbutton('eventSubmit_doAccount_postcsv_form' '戻る' 'event_csv(this)')" 'colspan="11" align="center"')
+#elseif(($result.getErrorCount() >= $result.getLineCount()))
+##($result.getErrorCount() >= $result.getErrorCountMax())||
+#ALtdcellAtt("#ALbutton('eventSubmit_doAccount_postcsv_form' 'キャンセルする' 'event_csv(this)')" 'colspan="11" align="center"')
+#elseif($result.getErrorCount() > 0)
+#ALtdcellAtt("#ALbutton('eventSubmit_doAccount_postcsv_insert' '正常な部分のみ登録する' 'event_csv_regist(this)')#ALbutton('eventSubmit_doAccount_postcsv_form' 'キャンセルする' 'event_csv(this)')" 'colspan="12" align="center"')
+#else
+#ALtdcellAtt("#ALbutton('eventSubmit_doAccount_postcsv_insert' '登録する' 'event_csv_regist(this)')#ALbutton('eventSubmit_doAccount_postcsv_form' 'キャンセルする' 'event_csv(this)')" 'colspan="12" align="center"')
+#end
+</tr>
+#ALtablefooter()
+#end
+#end
+</form>
+
+#ALtabfooter()

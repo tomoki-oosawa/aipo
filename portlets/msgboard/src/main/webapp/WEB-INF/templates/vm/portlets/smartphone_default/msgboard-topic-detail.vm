@@ -1,0 +1,83 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+<script type="text/javascript">
+
+function onTopicDelete(form) {
+  if(confirm('この書き込みを削除してもよろしいですか？')) {
+    form.action = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_delete','1')";
+    form.submit();
+  }
+}
+
+function onCommentDelete(form) {
+  if(confirm('この書き込みを削除してもよろしいですか？')) {
+    form.action = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_reply_delete','1')";
+    form.submit();
+  }
+}
+</script>
+#set($methodlist = [["返信する", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_reply_form','1').addQueryData('entityid',${result.ParentTopic.TopicId}).addQueryData('mode','reply')"]])
+#set($linklist = [["掲示板へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_list','1')"],["トピック追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_form','1').addQueryData('entityid','new')"]])
+#ALcell_pagetitle_iphone($career "記事詳細")
+#ALcell_linklist_iphone($career $linklist)
+#ALcell_contents_header($career)
+#ALcell_msgboard_detail($career $!{result.ParentTopic})
+#foreach( $attachmentFile in $!result.ParentTopic.AttachmentFileList )
+<img src="images/msgboard/msgboard_item.gif">&nbsp;<a href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a><br>
+    #if($attachmentFile.isImage())
+    <img border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"><br>
+    #end
+#end
+#if($!result.isMatch($!{result.UserId} , $!{result.ParentTopic.OwnerId.Value}) || $!result.hasAclDeleteTopicOthers())
+<form action="$!jslink.getPortletById($!portlet.ID)" method="post">
+<input type="hidden" name="entityid" value=$!{result.ParentTopic.TopicId}>
+<input type="hidden" name="mode" value="delete">
+<input type="hidden" name="secid" value="$secid" />
+<p class="right ma0"><input type="button" onClick="onTopicDelete(this.form);return false" class="submit" name="eventSubmit_doMsgboard_topic_delete" value="削除する"></p>
+</form>
+#end
+<h3>コメント一覧</h3>
+#if(!$!result.CoTopicList || $!result.CoTopicList.size() <= 0)
+<p class="center">コメントはありません。</p>
+#else
+    #foreach ($record in $result.CoTopicList)
+    <h4>$!{record.TopicName}</h4>
+    #ALcell_msgboard_comment($career $!{record})
+        #foreach( $attachmentFile in $!record.AttachmentFileList )
+        <img src="images/msgboard/msgboard_item.gif">&nbsp;<a href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a><br>
+            #if($attachmentFile.isImage())
+            <img border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"><br>
+            #end
+        #end
+
+        #if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) || $!result.hasAclDeleteTopicOthers())
+        <form action="$!jslink.getPortletById($!portlet.ID)" method="post">
+        <input type="hidden" name="topic_reply_id" value=${record.TopicId}>
+        <input type="hidden" name="mode" value="delete_reply">
+        <input type="hidden" name="secid" value="$secid" />
+        <p class="right ma0"><input type="button" onClick="onCommentDelete(this.form);return false" class="submit" name="eventSubmit_doMsgboard_topic_reply_delete" value="削除する"></p>
+        </form>
+        #end
+    #end
+#end
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_reply_form','1').addQueryData('entityid',${result.ParentTopic.TopicId}).addQueryData('mode','reply')" class="btn">コメントする</a>
+#ALcell_contents_footer($career)
+#ALcell_linklist_iphone($career $linklist)
+

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Aipo is a groupware program developed by Aimluck,Inc.
+Copyright (C) 2004-2008 Aimluck,Inc.
+http://aipostyle.com/
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<registry>
+    <portlet-entry name="Note" hidden="false" type="ref" parent="Velocity" application="false">
+        <security-ref parent="user-view"/>
+        <meta-info>
+            <title>伝言メモ</title>
+            <description>伝言メモの送受信を行います。ポータル画面上では自分宛ての伝言が表示されます。</description>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
+        <parameter name="p1a-rows" value="5" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>表示件数（通常時）</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p1a-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1a-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1a-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1b-rows" value="20" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>表示件数（最大化時）</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p1b-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1b-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1b-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-sort" value="note_stat" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>ソート方法（受信履歴）</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p2a-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-sort.style.items" value="note_stat,client_name,accept_date" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-sort.style.values" value="状態,依頼者,受付日時" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2b-sort" value="accept_date" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>ソート方法（送信履歴）</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p2b-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2b-sort.style.items" value="client_name,accept_date" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2b-sort.style.values" value="依頼者,受付日時" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="action" value="note.NoteAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="function_mode1" value="NoteFormScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="function_screen1" value="true" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="function_image1" value="icon/icon_add.gif" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="function_caption1" value="伝言メモ追加" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="function_after_function1" value="aipo.note.afterFunction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3a-strlen" value="15" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>表示最大文字数</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p3a-strlen.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3a-strlen.style.items" value="10,15,30,0" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3a-strlen.style.values" value="10文字,15文字,30文字,制限なし" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <media-type ref="html"/>
+        <url cachedOnURL="true"/>
+    </portlet-entry>
+    <portlet-entry name="NoteGroup" hidden="false" type="ref" parent="Velocity" application="false">
+        <security-ref parent="user-view"/>
+        <meta-info>
+            <title>伝言メモ（送信用）</title>
+            <description>伝言メモの送受信を行います。伝言メモを送ることが多い方向けです。</description>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
+        <parameter name="template" value="notegroup" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1a-rows" value="5" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>表示件数（通常時）</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p1a-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1a-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1a-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1b-rows" value="20" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>表示件数（最大化時）</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p1b-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1b-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1b-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-sort" value="note_stat" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>ソート方法（受信履歴）</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p2a-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-sort.style.items" value="note_stat,client_name,accept_date" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-sort.style.values" value="状態,依頼者,受付日時" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2b-sort" value="create_date" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>ソート方法（送信履歴）</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p2b-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2b-sort.style.items" value="client_name,create_date" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2b-sort.style.values" value="依頼者,受付日時" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3b-group" value="" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>初期選択グループ</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p3b-group.style" value="GroupListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3b-group.style.initialvalue" value="（選択してください）" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3a-strlen" value="15" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>表示最大文字数</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p3a-strlen.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3a-strlen.style.items" value="10,15,30,0" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3a-strlen.style.values" value="10文字,15文字,30文字,制限なし" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="action" value="note.NoteGroupAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <media-type ref="html"/>
+        <url cachedOnURL="true"/>
+    </portlet-entry>
+</registry>

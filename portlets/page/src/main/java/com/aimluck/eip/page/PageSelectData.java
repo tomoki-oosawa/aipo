@@ -1,0 +1,149 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.aimluck.eip.page;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.jar.Attributes;
+
+import org.apache.jetspeed.om.profile.Portlets;
+import org.apache.jetspeed.portal.Portlet;
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.rundata.JetspeedRunData;
+import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
+
+import com.aimluck.eip.common.ALAbstractSelectData;
+import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.page.util.PageUtils;
+
+/**
+ * ページ設定の検索データを管理するためのクラスです。 <br />
+ */
+public class PageSelectData extends ALAbstractSelectData {
+
+  /** logger */
+  @SuppressWarnings("unused")
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+      .getLogger(PageSelectData.class.getName());
+
+  /**
+   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context)
+   */
+  protected List<Portlets> selectList(RunData rundata, Context context) {
+    Portlet portlet = (Portlet) context.get("portlet");
+    String selectedPortletId = portlet.getID();
+    if (selectedPortletId == null || selectedPortletId.equals("")) {
+      return null;
+    }
+
+    // タブ [個人設定] のIDを取得する。
+    String selectedPageId = PageUtils.getPortletSetId(rundata,
+        selectedPortletId);
+
+    Portlets portlets = ((JetspeedRunData) rundata).getProfile().getDocument()
+        .getPortlets();
+    if (portlets == null)
+      return null;
+
+    // ページの位置でソートする．
+    Portlets pane = null;
+    List<Portlets> portletList = new ArrayList<Portlets>();
+    int portletsLen = portlets.getPortletsCount();
+    for (int i = 0; i < portletsLen; i++) {
+      pane = portlets.getPortlets(i);
+      if (selectedPageId.equals(pane.getId())) {
+        continue;
+      }
+      portletList.add(pane);
+    }
+    Collections.sort(portletList, new Comparator<Portlets>() {
+      public int compare(Portlets pane1, Portlets pane2) {
+        Long pos1 = Long.valueOf(pane1.getLayout().getPosition());
+        Long pos2 = Long.valueOf(pane2.getLayout().getPosition());
+        return pos1.compareTo(pos2);
+      }
+    });
+
+    int length = portletList.size();
+    setPageParam(length);
+    int start = getStart();
+    int rowsNum = getRowsNum();
+
+    // Portlets pagePortlets = null;
+    int count = -1;
+    List<Portlets> list = new ArrayList<Portlets>();
+    for (int i = 0; i < rowsNum; i++) {
+      count = i + start;
+      if (count >= length)
+        break;
+      list.add(portletList.get(count));
+    }
+
+    portletList.clear();
+
+    return list;
+  }
+
+  /**
+   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context)
+   */
+  protected Object selectDetail(RunData rundata, Context context) {
+    String portletId = rundata.getParameters().getString(
+        ALEipConstants.ENTITY_ID);
+    if (portletId == null || portletId.equals(""))
+      return null;
+
+    return PageUtils.getPortlets(rundata, portletId);
+  }
+
+  /**
+   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   */
+  protected Object getResultData(Object obj) {
+    return getResultDataDetail(obj);
+  }
+
+  /**
+   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   */
+  protected Object getResultDataDetail(Object obj) {
+    Portlets record = (Portlets) obj;
+    PageResultData rd = new PageResultData();
+    rd.initField();
+    rd.setPageId(record.getId());
+    rd.setPageTitle(record.getTitle());
+    rd.setPageDescription(record.getDescription());
+    rd.setPortletNum(record.getEntryCount());
+    return rd;
+  }
+
+  /**
+   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   */
+  protected Attributes getColumnMap() {
+    return null;
+  }
+
+}

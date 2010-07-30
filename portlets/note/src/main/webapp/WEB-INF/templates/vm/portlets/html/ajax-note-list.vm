@@ -1,0 +1,117 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#if  ($!result.TargetUserId && ($!result.TargetUserId != "all"))
+#set ($target_username = $!result.getUserFullName($!result.TargetUserId))
+#set ($action_create_node = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doNote_create_note','1').addQueryData('target_user_id',$!result.TargetUserId)")
+#set ($action_received_notes = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doNote_list','1').addQueryData('tab','received_notes').addQueryData('target_user_id', $!result.TargetUserId)")
+#set ($action_sent_notes = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doNote_list','1').addQueryData('tab','sent_notes').addQueryData('target_user_id', $!result.TargetUserId)")
+#else
+#set ($action_create_node = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doNote_create_note','1')")
+#set ($action_received_notes = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doNote_list','1').addQueryData('tab','received_notes')")
+#set ($action_sent_notes = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doNote_list','1').addQueryData('tab','sent_notes')")
+#end
+#set ($tabs = [["受信履歴", "received_notes", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteListScreen').addQueryData('tab','received_notes')"], ["送信履歴", "sent_notes", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteListScreen').addQueryData('tab','sent_notes')"]])
+#set ($indicator_id = "indicator-list-")
+## ---------------------------------------------------------------------------
+#ALajaxtabheader($tabs $!result.currentTab)
+#ALspacebothheader()
+#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
+#if($!msg_type)
+#if($msg_type == "0")
+<div class="message">伝言メモを送信しました。</div>
+#elseif($msg_type == "1")
+<div class="message">伝言メモを送信しました。<br/>
+<span class="errmsg">宛先ユーザーのパソコン用メールアドレスが未設定のため、宛先ユーザーのパソコンに通知できませんでした。</span></div>
+#elseif($msg_type == "2")
+<div class="message">伝言メモを送信しました。<br/>
+<span class="errmsg">宛先ユーザーの携帯用メールアドレスが未設定のため、宛先ユーザーの携帯電話に通知できませんでした。</span></div>
+#elseif($msg_type == "3")
+<div class="message">伝言メモを送信しました。<br/>
+<span class="errmsg">宛先ユーザーのパソコン用と携帯用のメールアドレスが未設定のため、<br/>宛先ユーザーのパソコンと携帯電話に通知できませんでした。</span></div>
+#elseif($msg_type == "4")
+<div class="message">伝言メモを送信しました。<br/>
+<span class="errmsg">宛先ユーザーが存在しないため、伝言メモを送信できませんでした。</span></div>
+#elseif($msg_type == "5")
+<div class="message">伝言メモを送信しました。<br/>
+<span class="errmsg">管理者のメールアカウントが未設定のため、メールでの通知はできませんでした。</span>
+</div>
+#end
+#end
+#ALajaxlistformheader('伝言メモ')
+#if($result.List.size()<=0)
+<div class="message">#if($!result.currentTab == "received_notes") 受信した伝言メモはありません。#else 送信した伝言メモはありません。 #end</div>
+#else
+#if ($!result.currentTab == 'received_notes')
+#set($colcount = 8)
+#else
+#set($colcount = 7)
+#end
+#ALajaxpageview('NoteListScreen' $result)
+#ALtableheaderWide()
+<tr>
+#ALtdheadThin("#ALswitchCheckbox()")
+#if ($!result.currentTab == 'received_notes')
+#ALtdheadThin("#ALajaxsort('note_stat' '状態' $result 'NoteListScreen')")
+#end
+#ALtdheadW33("#ALajaxsort('client_name' '依頼者' $result 'NoteListScreen')")
+#ALtdheadW33('依頼者所属')
+#ALtdheadW33("#ALajaxsort('subject_type' '用件' $result 'NoteListScreen')")
+#ALtdheadThin('本文')
+#ALtdheadThin("#if ($!result.currentTab == 'received_notes') 送信者 #else 受信者 #end")
+#ALtdheadThin("#if ($!result.currentTab == 'received_notes') #ALajaxsort('accept_date' '受付日時' $result 'NoteListScreen') #else #ALajaxsort('create_date' '作成日時' $result 'NoteListScreen') #end")
+</tr>
+#foreach ($record in $result.List)
+#if ($!record.SubjectType.toString() == "0") #set ($subject = $!record.CustomSubject.toString()) #end
+#if ($!record.SubjectType.toString() == "1") #set ($subject = "再度電話します。") #end
+#if ($!record.SubjectType.toString()  == "2") #set ($subject = "折返しお電話ください。") #end
+#if ($!record.SubjectType.toString()  == "3") #set ($subject = "連絡があったことをお伝えください。") #end
+#if ($!record.SubjectType.toString()  == "4") #set ($subject = "伝言をお願いします。") #end
+<tr>
+#ALtdcellAtt("<input name='check$!record.NoteId' type='checkbox' value='$!record.NoteId'/>" 'align="center"')
+#if($!result.currentTab == 'received_notes')
+#if($record.NoteStat.toString() == "1" || $record.NoteStat.toString() == "2" || $record.NoteStat.toString() == "3")
+#ALtdcellAtt("<img src='$record.NoteStatImage' alt='$record.NoteStatImageDescription' title='$record.NoteStatImageDescription'/>" 'align="center"')
+#else
+#tdcell('')
+#end
+#end
+#ALtdcellheader()
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","NoteDetailScreen").addQueryData("entityid",$record.NoteId))');">$!record.ClientName</a>
+#ALtdcellfooter()
+#ALtdcell($!record.CompanyName)
+#ALtdcell($!subject)
+#ALtdcellAtt("#if($!record.hasMemo()) 有 #else 無 #end" 'align="center"')
+#ALtdcellAtt("#if ($!result.currentTab == 'received_notes') $!record.SrcUserFullName #else $!record.DestUserFullName #end" 'nowrap="nowrap"')
+#ALtdcellAtt("#if ($!result.currentTab == 'received_notes') $!{record.AcceptDate.Month}月$!{record.AcceptDate.Day}日 $!{record.AcceptDate.Hour}時$!{record.AcceptDate.Minute}分 #else $!{record.CreateDate.Month}月$!{record.CreateDate.Day}日 $!{record.CreateDate.Hour}時$!{record.CreateDate.Minute}分 #end" 'nowrap="nowrap"')
+</tr>
+#end
+#ALtablefooter()
+#ALbuttonheaderRight()
+#if($!result.currentTab == "received_notes")
+選択した伝言メモを#ALajaxbuttonCheckboxAction('既読にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_complete')" "$!portlet.ID" "aipo.note.onReceiveMessage")#ALajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
+#else
+選択した伝言メモを#ALajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
+#end
+#ALbuttonfooterRight()
+#ALajaxpageviewFooter('NoteListScreen' $result)
+#end
+#ALformfooter()
+#ALspacebothfooter()
+#ALajaxtabfooter()

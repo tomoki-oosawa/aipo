@@ -1,0 +1,60 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set($tabs = [["勤務時間設定", "",""]])
+## ---------------------------------------------------------------------------
+#ALdialogheaderCloseJS("勤務形態詳細" "aipo.exttimecard.hideDialog()")
+#ALspacebothheader()
+#ALformheader('ExtTimecardSettings' $jslink $portlet)
+#ALtableheaderWide()
+#ALtdcaption("勤務形態")
+#ALtditemheader()
+$!{result.Detail.SystemName}
+#ALtditemfooter()
+#ALtdcaption("勤務時間")
+#ALtditemheader()
+${result.Detail.StartHour}時${result.Detail.StartMinute}分 ～ $!{result.Detail.EndHour}時${result.Detail.EndMinute}分
+#ALtditemfooter()
+#ALtdcaption("休憩時間")
+#ALtditemheader()
+<h3>勤務時間内の場合</h3><span class="strong">$!{result.Detail.WorkTimeIn}</span>分の勤務に対して、休憩時間は<span class="strong">$!{result.Detail.RestTimeIn}</span>分<br />
+<h3>勤務時間外の場合</h3><span class="strong">$!{result.Detail.WorkTimeOut}</span>分の勤務に対して、休憩 時間は<span class="strong">$!{result.Detail.RestTimeOut}</span>分
+#ALtditemfooter()
+#ALtdcaption("日付切替時刻")
+#ALtditemheader()
+<div class="spaceTop">$!{result.Detail.ChangeHour}時を過ぎると次の日のタイムカードに切り替えます。</div>
+#ALtditemfooter()
+#ALtdcaption("勤務時間")
+#ALtditemheader()
+<label for="outgoing_add_flag_id">
+#if($result.Detail.OutgoingAddFlag == "T")
+	外出を勤怠時間に含める
+#else
+	外出を勤怠時間に含めない
+#end
+</label>
+#ALtditemfooter()
+#ALtablefooter()
+#ALbuttonheader()
+##ALajaxbuttonEdit("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemFormScreen')")
+#ALajaxbuttonClose()
+#ALbuttonfooter()
+#ALformfooter()
+#ALspacebothfooter()
+#ALdialogfooter()

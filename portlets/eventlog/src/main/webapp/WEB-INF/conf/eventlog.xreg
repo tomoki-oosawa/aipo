@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Aipo is a groupware program developed by Aimluck,Inc.
+Copyright (C) 2004-2008 Aimluck,Inc.
+http://aipostyle.com/
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<registry>
+    <portlet-entry name="Eventlog" hidden="false" type="ref" parent="Velocity" application="false">
+        <security-ref parent="admin-view"/>
+        <meta-info>
+            <title>イベントログ管理</title>
+            <description>イベントログを管理します。</description>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
+        <parameter name="template" value="eventlog" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1a-rows" value="50" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>イベントログ表示件数（通常時）</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p1a-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1a-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1a-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-sort" value="event_date" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>イベントログソート方法</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p2a-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-sort.style.items" value="event_date" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-sort.style.values" value="発生日時" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="action" value="eventlog.EventlogAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="_showtitlebar" value="false" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <media-type ref="html"/>
+        <url cachedOnURL="true"/>
+    </portlet-entry>
+</registry>

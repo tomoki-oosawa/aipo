@@ -1,0 +1,329 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http:// www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+function onClick_Select(button){
+    disableButton(button.form);
+    var option = button.form.SelectMenu0.options[button.form.SelectMenu0.selectedIndex];
+    button.form.action = "$!jslink.getPortletById($!portlet.ID)" + '?' + option.value + '=1';
+    button.form.submit();
+}
+
+function event_account_csv(button) {
+  disableButton(button.form);
+  button.form.action = "$!jslink.getPortletById($!portlet.ID)" + '?' + button.name + '=1';
+  button.form.submit();
+}
+
+function event_account_csv_page(button,page) {
+    disableButton(button.form);
+    button.form.action = "$!jslink.getPortletById($!portlet.ID)" + '?' + button.name + '=1' + '&csvpage=' + page;
+    button.form.submit();
+}
+
+function event_account_csv_regist(button) {
+  if(confirm('スケジュールを一括登録しますか？')) {
+    disableButton(button.form);
+    button.form.action = "$!jslink.getPortletById($!portlet.ID)" + '?' + button.name + '=1';
+    button.form.submit();
+  }
+}
+
+
+var flag = 0;
+
+function onChg1(obj){
+
+    var n = document.readcsv.SelectMenu1.selectedIndex;
+
+    if(flag == 0){
+
+        switch (n) {
+        case 0:
+            break;
+        case 1:
+
+            break;
+        case 2:
+
+            break;
+        case 3:
+
+            break;
+        case 4:
+
+            break;
+        case 5:
+            document.readcsv.SelectMenu1.selectedIndex = 5;
+            document.readcsv.SelectMenu2.selectedIndex = 7;
+            document.readcsv.SelectMenu3.selectedIndex = 6;
+            document.readcsv.SelectMenu4.selectedIndex = 8;
+            document.readcsv.SelectMenu5.selectedIndex = 3;
+            document.readcsv.SelectMenu6.selectedIndex = 2;
+            document.readcsv.SelectMenu7.selectedIndex = 4;
+            document.readcsv.SelectMenu8.selectedIndex = 1;
+            flag = 1;
+            break;
+        case 6:
+
+            break;
+        case 7:
+
+            break;
+        default:
+            break;
+        }
+    }
+
+}
+
+function onChg2(obj){
+    flag = 1;
+}
+
+//-->
+</script>
+#set($tabs = [["インポート", "",""]])
+#ALtabheader($tabs "")
+
+#if(! $result.List || $result.List.size() == 0)#ALerrmsg($errmsgs)#end
+#if($result.getClass().getName() == "com.aimluck.eip.account.ScheduleCsvSelectData")
+#if(! $result.List || $result.List.size() <= 0)
+<ul></ul>
+#end
+#end
+
+<form name="io_select" action="" method="post" enctype="multipart/form-data">
+<select name="post$!{portlet.ID}" onChange="location.href=this.options[this.selectedIndex].value">
+<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_form_csv','1')">ユーザーアカウント</option>
+<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_postcsv_form','1')">部署</option>
+<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_company_form','1')">アドレス(会社)帳</option>
+<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_form','1')">アドレス帳</option>
+<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doSchedule_form','1')" selected>スケジュール</option>
+</select>
+を一括登録します。
+</form>
+
+<div style="margin:0px 0px 5px 0px">
+スケジュールをファイルから一括して登録できます。
+<a href="$jslink.getTemplate('FileIOScheduleCsvFileScreen')">こちらのテンプレート</a>の形式で作成したファイルをボタン [参照...] で指定し、
+ボタン [読み込む] を押してください。
+確認画面が表示された後に、ボタン [登録] を押すことで、登録が完了します。
+</div>
+<form name="readcsv" action="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_upload_csv','1')" method="post" enctype="multipart/form-data">
+<input type="hidden" name="temp_folder" value="$temp_folder">
+#ALtableheaderWide()
+<tr>
+<td width="150" class="caption">CSVファイルの指定</td>
+
+<td nowrap="nowrap">
+<input class="text" type="file" name="attachment" value="" size="30" style="ime-mode:disable">
+</td>
+
+</tr>
+<tr>
+<td class="caption">オプション</td>
+<td class=item colspan="8"><input name="autotime_flg" type="checkbox" value="1">時間が入力されていない場合は自動的に値を代入する。</td>
+</tr>
+<!--
+<tr>
+<th class="head">順序</th>
+<th class="head">
+<select name="SelectMenu1" size="1" onChange="onChg1(this)">
+<option value="-1">-使用しない-</option>
+<option value="0">名前</option>
+<option value="1">予定</option>
+<option value="2">場所</option>
+<option value="3">内容</option>
+<option value="4" selected>開始日</option>
+<option value="5">終了日</option>
+<option value="6">開始時刻</option>
+<option value="7">終了時刻</option>
+<option value="8">ログインID</option>
+<option value="9">開始日時</option>
+<option value="10">終了日時</option>
+</select>
+</th>
+</tr>
+//-->
+<tr>
+#ALtdcellAtt("#ALsubmit('send' '読み込む')" 'colspan="9" align="center"')
+</tr>
+#ALtablefooter()
+
+
+#if($result.List && $result.getPageCount() > 0)
+#set($plist = [1..$result.getPageCount()])
+
+#if($result.List && $result.List.size() > 0)
+#set($showErrmsg1 = false)
+#set($showErrmsg2 = false)
+#set($showErrmsg3 = false)
+#set($showErrmsg4 = false)
+#set($showErrmsg5 = false)
+#set($showErrmsg6 = false)
+#set($showErrmsg7 = false)
+#set($showErrmsg8 = false)
+#set($showErrmsg9 = false)
+#set($showErrmsg10 = false)
+#set($showErrmsg11 = false)
+#foreach ($record in $result.List)
+#if($!record.User.AliasName.toString() == "")#set($showErrmsg1 = true)#end
+#if($!record.User.Name.toString() == "")#set($showErrmsg2 = true)#end
+#if($!record.getName().toString() == "")#set($showErrmsg3 = true)#end
+#if($!record.getUpdateDate().toString() == "")#set($showErrmsg4 = true)#end
+#if($!record.getStartDate().toString() == "")#set($showErrmsg5 = true)#end
+#if($!record.getEndDate().toString() == "")#set($showErrmsg6 = true)#end
+#if($!record.isTimeError())#set($showErrmsg7 = true)#end
+#if($!record.isDateError())#set($showErrmsg8 = true)#end
+#if(!$!record.Name)#set($showErrmsg9 = true)#end
+#if(!$!record.Place)#set($showErrmsg10 = true)#end
+#if(!$!record.Note)#set($showErrmsg11 = true)#end
+#end
+#if($result.isError())${result.getLineCount()}件中${result.getNotErrorCount()}件のスケジュールを登録しました。<br>以下のデータはエラーが見つかった為登録できませんでした。#end
+#set($showErrmsg = $showErrmsg1 || $showErrmsg2 || $showErrmsg3 || $showErrmsg4 || $showErrmsg5 || $showErrmsg6 || $showErrmsg7 || $showErrmsg8 || $showErrmsg9 || $showErrmsg10 || $showErrmsg11 )
+#if($showErrmsg)
+<ul>
+#if($showErrmsg1)
+<li><span class="caution">（※1）&nbsp;ユーザー名が入力されてません</span></li>
+#end
+#if($showErrmsg2)
+<li><span class="caution">（※2）&nbsp;名前に対応するログインIDが見つかりません。ユーザー管理画面より、該当するユーザーが存在しておりますかご確認ください。</span></li>
+#end
+#if($showErrmsg3)
+<li><span class="caution">（※3）&nbsp;スケジュール名が空白です</span></li>
+#end
+#if($showErrmsg4)
+<li><span class="caution">（※4）&nbsp;入力日時が正しく入力されてません。</span></li>
+#end
+#if($showErrmsg5)
+<li><span class="caution">（※5）&nbsp;開始日時が正しく入力されてません。</span></li>
+#end
+#if($showErrmsg6)
+<li><span class="caution">（※6）&nbsp;終了日時が正しく入力されてません。</span></li>
+#end
+#if($showErrmsg7)
+<li><span class="caution">（※7）&nbsp;終了日時は開始日時以降の日付を指定してください。</span></li>
+#end
+#if($showErrmsg8)
+<li><span class="caution">（※8）&nbsp;終了日は開始日と同じ日を指定してください。</span></li>
+#end
+#if($showErrmsg9)
+<li><span class="caution">（※9）&nbsp;予定は 50 文字以下で記入してください。</span></li>
+#end
+#if($showErrmsg10)
+<li><span class="caution">（※10）&nbsp;場所は 50 文字以下で記入してください。</span></li>
+#end
+#if($showErrmsg11)
+<li><span class="caution">（※11）&nbsp;予定は 1000 文字以下で記入してください。</span></li>
+#end
+</ul>
+#else
+<br>
+<div style="margin:0px 0px 5px 0px">ボタン [登録する] をクリックして、登録してください。</div>
+#end
+
+#if($result.getErrorCount() > 0)
+## #if($result.getErrorCount() >= $result.getErrorCountMax())<span class="caution">${result.getLineCount()}件中${result.getErrorCountMax()}件以上エラーが発生しました。読み込みを中止します。</span> #else<span class="caution">${result.getLineCount()}件中${result.getErrorCount()}件エラーが発生しました。</span> #end
+<span class="caution">${result.getLineCount()}件中${result.getErrorCount()}件エラーが発生しました。</span>
+#end
+#if(($result.getPageCount() > 1)&&($result.getErrorCount() == 0))
+#foreach($p in $plist)
+#ALbutton('eventSubmit_doSchedule_list_csv_page' $p "event_account_csv_page(this, $p)")
+#end
+#end
+<div style="width:100%; overflow:auto;">
+<table class="tableWrapper" style="margin: 1px"><tbody><tr><td>
+#ALtableheaderWide()
+<tr>
+<th nowrap="nowrap" class="head">登録の可否</th>
+<th nowrap="nowrap" class="head">名前</th>
+<th nowrap="nowrap" class="head">ログイン名</th>
+<th nowrap="nowrap" class="head">予定</th>
+<th nowrap="nowrap" class="head">場所</th>
+<th nowrap="nowrap" class="head">内容</th>
+<th nowrap="nowrap" class="head">開始日時</th>
+<th nowrap="nowrap" class="head">終了日時</th>
+</tr>
+#set($con = 0)
+#foreach ($record in $result.List)
+#set($Err = false)
+#if($!record.User.AliasName.toString() == "")#set($Err = true)#end
+#if($!record.User.Name.toString() == "")#set($Err = true)#end
+#if($!record.getName().toString() == "")#set($Err = true)#end
+#if($!record.getStartDate().toString() == "")#set($Err = true)#end
+#if($!record.getEndDate().toString() == "")#set($Err = true)#end
+#set($con = $con +1)
+
+
+<tr>
+<td nowrap="nowrap" class="item">
+#if(!$record.IsError)可($!{record.LineCount}行目)#else <span class="caution">不可($!{record.LineCount}行目)</span> #end
+</td>
+<td nowrap="nowrap" class="item">
+#if($!record.User.AliasName.toString() != "")$!{record.User.AliasName}#else <span class="caution">※1</span> #end
+</td>
+<td nowrap="nowrap" class="item">
+#if($!record.User.Name.toString() != "")$!{record.User.Name}#else <span class="caution">※2</span> #end
+</td>
+<td nowrap="nowrap" class="item">
+#if($!record.getName().toString() != "")$!{record.Name}#else <span class="caution">※3</span> #end
+#if(!$!record.Name)<span class="caution">※9</span>#end
+</td>
+<td nowrap="nowrap" class="item">
+#if($!record.Place)$!{record.Place}#else <span class="caution">※10</span> #end
+</td>
+<td nowrap="nowrap" class="item">
+#if($!record.Note)$!{record.Note}#else <span class="caution">※11</span> #end
+</td>
+<td nowrap="nowrap" class="item">
+#if($!record.getStartDate().toString() != "")$!{record.StartDate.Year}年$!{record.StartDate.Month}月$!{record.StartDate.Day}日$!{record.StartDate.Hour}時$!{record.StartDate.Minute}分#else <span class="caution">※5</span> #end
+</td>
+<td nowrap="nowrap" class="item">
+#if($!record.getEndDate().toString() != "")$!{record.EndDate.Year}年$!{record.EndDate.Month}月$!{record.EndDate.Day}日$!{record.EndDate.Hour}時$!{record.EndDate.Minute}分#else <span class="caution">※6</span> #end
+#if($!record.isTimeError())<span class="caution">※7</span>#end
+#if($!record.isDateError())<span class="caution">※8</span>#end
+</td>
+</tr>
+#end
+#ALtablefooter()
+</td></tr></tbody></table>
+</div>
+#ALtableheaderWide()
+<tr>
+#if($result.isError())
+#ALtdcellAtt("#ALbutton('eventSubmit_doSchedule_form' '戻る' 'event_account_csv(this)')" 'colspan="11" align="center"')
+#elseif(($result.getErrorCount() >= $result.getLineCount()))
+#ALtdcellAtt("#ALbutton('eventSubmit_doSchedule_form' 'キャンセルする' 'event_account_csv(this)')" 'colspan="11" align="center"')
+#elseif($result.getErrorCount() > 0)
+#ALtdcellAtt("#ALbutton('eventSubmit_doSchedule_insert_csv' '正常な部分のみ登録する' 'event_account_csv_regist(this)')#ALbutton('eventSubmit_doSchedule_form' 'キャンセルする' 'event_account_csv(this)')" 'colspan="11" align="center"')
+#else
+#ALtdcellAtt("#ALbutton('eventSubmit_doSchedule_insert_csv' '登録する' 'event_account_csv_regist(this)')#ALbutton('eventSubmit_doSchedule_form' 'キャンセルする' 'event_account_csv(this)')" 'colspan="11" align="center"')
+#end
+</tr>
+#ALtablefooter()
+#end
+#end
+</form>
+
+
+
+#ALtabfooter()

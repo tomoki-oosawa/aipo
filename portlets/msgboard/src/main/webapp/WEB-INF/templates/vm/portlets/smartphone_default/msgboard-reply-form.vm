@@ -1,0 +1,38 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_list','1')")
+#set ($action_str = "コメントする")
+#set ($subtitle = 'トピックにコメントする')
+#set ($event_submit = "eventSubmit_doMsgboard_topic_reply")
+#set($linklist = [["トピック一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_list','1')"]])
+<input type="hidden" name="mode" value="insert" />
+#ALcell_pagetitle_iphone($career $subtitle)
+#ALcell_linklist_iphone($career $linklist)
+#ALcell_contents_header($career)
+#ALcell_errmsg($career $errmsgsOnTopicDetail)
+#ALcell_formheader($career $jslink $portlet)
+<h3>タイトル#ALcell_must()</h3>
+#ALtextfield('topic_name' $!resultOnTopicDetail.TopicName '90%' 50 'active')
+<h3>$!resultOnTopicDetail.getFieldName('note')#ALcell_must()</h3>
+#ALtextarea('note' $!resultOnTopicDetail.Note 5 34)
+#ALcell_submit($career $event_submit $action_str)
+#ALcell_formfooter()
+#ALcell_contents_footer($career)
+#ALcell_linklist_iphone($career $linklist)

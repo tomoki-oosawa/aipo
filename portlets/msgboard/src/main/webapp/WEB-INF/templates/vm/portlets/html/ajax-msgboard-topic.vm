@@ -1,0 +1,52 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#ALtableheaderSimpleWide()
+#ALtdcaption('カテゴリ')
+#ALtditemheaderAtt("style='width: 80%;'")   
+#ALselectpdheader("topic" "99%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicScreen").addQueryData("filter","").addQueryData("filtertype","category"))">（全体）</option>
+#foreach( $record in $result.CategoryList )
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicScreen").addQueryData("filter",$!record.CategoryId).addQueryData("filtertype","category"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
+#end
+#ALselectfooter()
+#ALtditemfooter()
+#ALtablefooter()
+#if ($result.List.size() == 0)
+<div class="message">指定された条件に該当するトピックはありません。</div>
+#else
+#ALformheader('Msgboard' $jslink $portlet)
+#ALajaxpageview('MsgboardTopicScreen' $result)
+#ALtableheaderWide()
+<tr>
+#ALtdhead("#ALajaxsort('topic_name' 'トピック名' $result 'MsgboardTopicScreen')")
+#ALtdheadThin("#ALajaxsort('update_date' '更新日' $result 'MsgboardTopicScreen')")
+</tr>
+#foreach ($record in $result.List)
+<tr>
+#ALtdcellheader()
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicDetailScreen").addQueryData("entityid",$record.TopicId))', '$!portlet.ID', aipo.msgboard.onLoadMsgboardDetail);">$!record.TopicName</a>
+#if($record.isNew()) &nbsp;&nbsp;<img src="images/msgboard/msgboard_new_topic.gif" alt="新着" title="新着" /> #end
+#ALtdcellfooter()
+#ALtdcellAtt("$!{record.UpdateDate.Month}月$!{record.UpdateDate.Day}日$!{record.UpdateDate.Hour}時$!{record.UpdateDate.Minute}分" 'nowrap')
+</tr>
+#end
+#ALtablefooter()
+#ALformfooter()
+#end

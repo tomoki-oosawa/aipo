@@ -1,0 +1,45 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http:// www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-dlg-")
+## ---------------------------------------------------------------------------
+#ALdialogheader("イベントログ詳細")
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+#ALajaxdetailformheader("イベントログ")
+#ALtableheaderWide()
+#ALtdcaption('イベント発生日時')
+#ALtditem($!result.detail.EventDate)
+#ALtdcaption('操作ユーザー')
+#ALtditem($!result.detail.UserFullName)
+#if($!result.detail.DataNameFlag)
+#ALtdcaption('件名')
+#ALtditem($!result.detail.DataName)
+#end
+#ALtdcaption('機能名')
+#ALtditem($!result.detail.PortletName)
+#ALtdcaption('操作')
+#ALtditem($!result.detail.EventName)
+#ALtdcaption('接続IP')
+#ALtditem($!result.detail.IpAddr)
+#ALtablefooter()
+#ALbuttonheader()
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','EventlogFormJSONScreen').addQueryData('entityid',$!result.Detail.EventlogId).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.eventlog.onReceiveMessage")#ALajaxbuttonClose()
+#ALbuttonfooter()
+#ALformfooter()
+#ALdialogfooter()

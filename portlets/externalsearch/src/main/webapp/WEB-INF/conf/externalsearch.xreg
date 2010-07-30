@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Aipo is a groupware program developed by Aimluck,Inc.
+Copyright (C) 2004-2008 Aimluck,Inc.
+http://aipostyle.com/
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<registry>
+    <portlet-entry name="ExternalSearch" hidden="false" type="ref" parent="Velocity" application="false">
+        <security-ref parent="user-view"/>
+        <meta-info>
+            <title>検索窓</title>
+            <description>検索窓を管理します。</description>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
+        <parameter name="template" value="externalsearch" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1a-selects" value="yahoo" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>初期選択検索エンジン</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p1a-selects.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1a-selects.style.items" value="yahoo,google,tabi" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1a-selects.style.values" value="Yahoo!,Google,旅侍" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="action" value="externalsearch.ExternalSearchAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="_showtitlebar" value="false" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <media-type ref="html"/>
+        <url cachedOnURL="true"/>
+    </portlet-entry>
+</registry>

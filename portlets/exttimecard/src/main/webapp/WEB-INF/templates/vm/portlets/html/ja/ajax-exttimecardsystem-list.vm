@@ -1,0 +1,67 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set($tabs = [["勤務形態一覧", "",""]])
+#set ($indicator_id = "indicator-list-")
+
+#macro(ALajaxbuttonCheckboxEnable $name $url $indicator_id $portlet_id $rt)
+<input name="ajaxbuttonCheckboxEnable" class="button" type="button" value="$name" onclick="aimluck.io.ajaxCheckboxEnableSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $rt);" />
+#end
+#macro(ALajaxbuttonCheckboxDisable $name $url $indicator_id $portlet_id $rt)
+<input name="ajaxbuttonCheckboxDisable" class="button" type="button" value="$name" onclick="aimluck.io.ajaxCheckboxDisableSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $rt);" />
+#end
+## ---------------------------------------------------------------------------
+#ALtabheader($tabs "")
+#ALspacebothheader()
+#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
+#ALajaxlistformheader('勤務形態')
+#if($result.List.size() == 0)
+<div class="message"></div>
+#else
+#ALajaxpageview('ExtTimecardSystemListScreen' $result)
+#ALtableheaderWide()
+<tr>
+#ALtdheadThin("#ALswitchCheckbox()")
+#ALtdheadWide("#ALajaxsort('create_date' '勤務形態' $result 'ExtTimecardSystemListScreen')")
+#ALtdheadThin("")
+</tr>
+#foreach ($record in $result.List)
+##set($disabled_flg = $!record.Disabled)
+<tr>
+#if("$!record.SystemId" == "1")
+#ALtdcellAtt("" "")
+#else
+#ALtdcellAtt("<input name='check$!record.SystemName' type='checkbox' value='$!record.SystemId'/>" 'align="center"')
+#end
+#ALtdcellheader()
+$!record.SystemName
+#ALtdcellfooter()
+#ALtdcellAtt("#ALajaxbuttonLinkCallback('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemFormScreen').addQueryData('entityid', $!record.SystemId) 'images/icon/icon_edit.gif' $!portlet.ID 'aipo.exttimecardsystem.onLoadFormDialog')" 'nowrap="nowrap"')
+</tr>
+#end
+#ALtablefooter()
+#ALbuttonheaderRight()
+選択した勤務形態を
+#ALajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.exttimecardsystem.onReceiveMessage")
+#ALbuttonfooterRight()
+#ALajaxpageviewFooter('ExtTimecardSystemListScreen' $result)
+#end
+#ALformfooter()
+#ALspacebothfooter()
+#ALajaxtabfooter()
