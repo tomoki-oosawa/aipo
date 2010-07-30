@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Aipo is a groupware program developed by Aimluck,Inc.
+Copyright (C) 2004-2008 Aimluck,Inc.
+http://aipostyle.com/
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<portlets>
+    <metainfo>
+        <title>Aipo</title>
+    </metainfo>
+    <security-ref parent="owner-view"/>
+    <control name="TabControl"/>
+    <controller name="TabController"/>
+    <portlets>
+        <metainfo>
+            <title>マイページ</title>
+        </metainfo>
+        <security-ref parent="owner-only"/>
+        <layout position="0" size="-1"/>
+        <controller name="TwoColumnsRight"/>
+        <entry parent="AjaxScheduleWeekly">
+            <layout position="-1" size="-1">
+                <property name="column" value="1"/>
+                <property name="row" value="0"/>
+            </layout>
+            <parameter name="p1b-rows" value="18"/>
+        </entry>
+        <entry parent="Workflow">
+            <layout position="-1" size="-1">
+                <property name="column" value="1"/>
+                <property name="row" value="1"/>
+            </layout>
+        </entry>
+        <entry parent="ToDo">
+            <layout position="-1" size="-1">
+                <property name="column" value="1"/>
+                <property name="row" value="2"/>
+            </layout>
+        </entry>
+        <entry parent="Note">
+            <layout position="-1" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="2"/>
+            </layout>
+        </entry>
+        <entry parent="ExtTimecard">
+            <layout position="-1" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="1"/>
+            </layout>
+        </entry>
+        <entry parent="AddressBook">
+            <layout position="-1" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="3"/>
+            </layout>
+        </entry>
+        <entry parent="Memo">
+            <layout position="-1" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="4"/>
+            </layout>
+        </entry>
+        <entry parent="ExternalSearch">
+            <layout position="-1" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="5"/>
+            </layout>
+        </entry>
+        <entry parent="WebPage">
+            <metainfo>
+                <title>ニュース</title>
+            </metainfo>
+            <layout position="-1" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+            <parameter name="p1a-url" value="https://web07.sslsv.com/aipostyle.com/aiponews/gadget/"/>
+            <parameter name="p1b-normalheight" value="100"/>
+            <parameter name="p1c-maximizedheight" value="180"/>
+        </entry>
+        <entry parent="WebMail">
+            <layout position="-1" size="-1">
+                <property name="column" value="1"/>
+                <property name="row" value="3"/>
+            </layout>
+        </entry>
+    </portlets>
+    <portlets>
+        <metainfo>
+            <title>個人設定</title>
+        </metainfo>
+        <security-ref parent="owner-view"/>
+        <layout position="4" size="-1"/>
+        <control name="MenuControl"/>
+        <controller name="MenuController"/>
+        <entry parent="AccountPerson">
+            <layout position="0" size="-1"/>
+        </entry>
+        <entry parent="MyGroup">
+            <layout position="1" size="-1"/>
+        </entry>
+        <entry parent="Page">
+            <layout position="2" size="-1"/>
+        </entry>
+        <entry parent="Cellular">
+            <layout position="3" size="-1"/>
+        </entry>
+    </portlets>
+    <portlets>
+        <metainfo>
+            <title>スケジュール</title>
+            <description></description>
+        </metainfo>
+        <security-ref parent="owner-only"/>
+        <layout position="1" size="-1"/>
+        <controller name="OneColumn"/>
+        <entry parent="Schedule">
+            <layout position="-1" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="1"/>
+            </layout>
+            <parameter name="pba-template" value="schedule-weekly-group"/>
+        </entry>
+        <entry parent="Schedule">
+            <layout position="-1" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+            <parameter name="pba-template" value="schedule-monthly"/>
+        </entry>
+    </portlets>
+    <portlets>
+        <metainfo>
+            <title>グループ</title>
+            <description></description>
+        </metainfo>
+        <security-ref parent="owner-only"/>
+        <layout position="2" size="-1"/>
+        <controller name="TwoColumnsRight"/>
+        <entry parent="NoteGroup">
+            <layout position="-1" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+        <entry parent="ManHour">
+            <layout position="-1" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="1"/>
+            </layout>
+        </entry>
+        <entry parent="Schedule">
+            <layout position="-1" size="-1">
+                <property name="column" value="1"/>
+                <property name="row" value="0"/>
+            </layout>
+            <parameter name="pba-template" value="schedule-oneday-group"/>
+        </entry>
+        <entry parent="Workflow">
+            <layout position="-1" size="-1">
+                <property name="column" value="1"/>
+                <property name="row" value="1"/>
+            </layout>
+        </entry>
+    </portlets>
+    <portlets>
+        <metainfo>
+            <title>コミュニケーション</title>
+            <description></description>
+        </metainfo>
+        <security-ref parent="owner-only"/>
+        <layout position="3" size="-1"/>
+        <controller name="TwoColumnsRight"/>
+        <entry parent="WhatsNew">
+            <layout position="-1" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+        <entry parent="Msgboard">
+            <layout position="-1" size="-1">
+                <property name="column" value="1"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+        <entry parent="Blog">
+            <layout position="-1" size="-1">
+                <property name="column" value="1"/>
+                <property name="row" value="1"/>
+            </layout>
+        </entry>
+    </portlets>
+</portlets>

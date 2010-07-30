@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Aipo is a groupware program developed by Aimluck,Inc.
+Copyright (C) 2004-2008 Aimluck,Inc.
+http://aipostyle.com/
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<registry>
+    <portlet-entry type="instance" name="PortletCustomizer" hidden="true">
+        <security-ref parent="user-only"/>
+        <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
+        <parameter name="template" value="customizer-portlet" hidden="true"/>
+        <parameter name="action" value="portlets.CustomizeAction" hidden="true"/>
+        <parameter name="_security_ref" value="" type="style" hidden="false">
+            <security-ref parent="user-only"/>
+            <meta-info>
+                <title>このリソースのためのセキュリティ制限。このリソース外からロックする「管理者のみ」のような制限を与えないように注意してください。</title>
+            </meta-info>
+        </parameter>
+        <parameter name="_security_ref.style" value="RegistryEntryListBox" hidden="false"/>
+        <parameter name="_security_ref.style.registry" value="Security" hidden="false"/>
+        <parameter name="_skin" value="" type="style" hidden="false"/>
+        <parameter name="_skin.style" value="RegistryEntryListBox" hidden="false"/>
+        <parameter name="_skin.style.registry" value="Skin" hidden="false"/>
+        <meta-info>
+            <title>カスタマイズポートレット</title>
+        </meta-info>
+        <category>管理</category>
+        <category>カスタマイズポートレット</category>
+    </portlet-entry>
+    <portlet-entry type="instance" name="PortletSetCustomizer" hidden="true">
+        <security-ref parent="user-only"/>
+        <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
+        <parameter name="template" value="customizer-portletset" hidden="true"/>
+        <parameter name="action" value="portlets.CustomizeSetAction" hidden="true"/>
+        <parameter name="securityRef" value="" type="style" hidden="false">
+            <security-ref parent="user-only"/>
+        </parameter>
+        <parameter name="securityRef.style" value="RegistryEntryListBox" hidden="false"/>
+        <parameter name="securityRef.style.registry" value="Security" hidden="false"/>
+        <parameter name="securityRef.style.disabled-if-wml" value="true" hidden="false"/>
+        <parameter name="securityRef.style.javascript:onchange" value="document.securityRefs.submit()" hidden="false"/>
+        <parameter name="skin" value="" type="style" hidden="false"/>
+        <parameter name="skin.style" value="RegistryEntryListBox" hidden="false"/>
+        <parameter name="skin.style.registry" value="Skin" hidden="false"/>
+        <parameter name="skin.style.disabled-if-wml" value="true" hidden="false"/>
+        <parameter name="skin.style.javascript:onchange" value="document.skins.submit()" hidden="false"/>
+        <parameter name="control" value="" type="style" hidden="false"/>
+        <parameter name="control.style" value="RegistryEntryListBox" hidden="false"/>
+        <parameter name="control.style.registry" value="PortletControl" hidden="false"/>
+        <parameter name="control.style.disabled-if-wml" value="true" hidden="false"/>
+        <parameter name="control.style.select-hidden" value="true" hidden="false"/>
+        <parameter name="control.style.select-if-simple" value="true" hidden="false"/>
+        <parameter name="control.style.set-label" value="true" hidden="false"/>
+        <parameter name="control.style.javascript:onchange" value="this.form.submit()" hidden="false"/>
+        <parameter name="addRef" value="" type="style" hidden="false">
+            <security-ref parent="admin-only"/>
+        </parameter>
+        <parameter name="addRef.style" value="VelocityParameterPresentationStyle" hidden="false"/>
+        <parameter name="addRef.style.template" value="Button.vm" hidden="false"/>
+        <parameter name="addRef.style.no-access" value="addRefDisabled" hidden="false"/>
+        <parameter name="addRefDisabled" value="" type="style" hidden="false"/>
+        <parameter name="addRefDisabled.style" value="VelocityParameterPresentationStyle" hidden="false"/>
+        <parameter name="addRefDisabled.style.template" value="Button.vm" hidden="false"/>
+        <parameter name="addRefDisabled.style.disabled" value="true" hidden="false"/>
+        <parameter name="addRefDisabled.style.no-access" value="addRefDisabled" hidden="false"/>
+        <meta-info>
+            <title>カスタマイズ区画</title>
+        </meta-info>
+        <category>管理</category>
+        <category>カスタマイズ</category>
+    </portlet-entry>
+</registry>

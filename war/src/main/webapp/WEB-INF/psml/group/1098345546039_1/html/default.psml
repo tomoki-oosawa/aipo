@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Aipo is a groupware program developed by Aimluck,Inc.
+Copyright (C) 2004-2008 Aimluck,Inc.
+http://aipostyle.com/
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<portlets id="P-ffba7f019b-1003c">
+    <metainfo>
+        <title>Aipo</title>
+    </metainfo>
+    <security-ref parent="owner-view"/>
+    <control name="TabControl"/>
+    <controller name="TabController"/>
+    <portlets id="P-ffba7f0173-1002e">
+        <metainfo>
+            <title>マイページ</title>
+        </metainfo>
+        <security-ref parent="owner-only"/>
+        <layout position="0" size="-1"/>
+        <controller name="TwoColumnsRight"/>
+        <entry id="P-ffba7f0173-1002f" parent="ScheduleOneday">
+            <layout position="-1" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="1"/>
+            </layout>
+        </entry>
+        <entry id="P-ffba7f0173-10030" parent="ScheduleWeeklyGroup">
+            <layout position="-1" size="-1">
+                <property name="column" value="1"/>
+                <property name="row" value="3"/>
+            </layout>
+        </entry>
+        <entry id="P-ffba7f0173-10031" parent="WebMail">
+            <layout position="-1" size="-1">
+                <property name="column" value="1"/>
+                <property name="row" value="2"/>
+            </layout>
+        </entry>
+        <entry id="P-ffba7f0173-10032" parent="AddressBook">
+            <layout position="-1" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="2"/>
+            </layout>
+        </entry>
+        <entry id="P-ffba7f0173-10033" parent="ToDo">
+            <layout position="-1" size="-1">
+                <property name="column" value="1"/>
+                <property name="row" value="1"/>
+            </layout>
+        </entry>
+        <entry id="P-ffba7f0173-10034" parent="MyLink">
+            <metainfo>
+                <title>便利なリンク集</title>
+            </metainfo>
+            <layout position="-1" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="3"/>
+            </layout>
+            <parameter name="p1a-title1" value="【検索】 Google"/>
+            <parameter name="p1b-link1" value="http://www.google.co.jp/"/>
+            <parameter name="p2a-title2" value="【路線】 Yahoo!路線情報"/>
+            <parameter name="p2b-link2" value="http://transit.yahoo.co.jp/"/>
+            <parameter name="p3a-title3" value="【地図】 Mapion"/>
+            <parameter name="p3b-link3" value="http://www.mapion.co.jp/"/>
+            <parameter name="p4a-title4" value="【天気】 Yahoo!天気情報"/>
+            <parameter name="p4b-link4" value="http://weather.yahoo.co.jp/weather/"/>
+        </entry>
+        <entry id="P-ffba7f0173-10035" parent="ScheduleWeekly">
+            <layout position="-1" size="-1">
+                <property name="column" value="1"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+        <entry id="P-ffba7f0173-10036" parent="Note">
+            <layout position="-1" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+    </portlets>
+    <portlets id="P-ffba7f0173-10037">
+        <metainfo>
+            <title>個人設定</title>
+        </metainfo>
+        <security-ref parent="owner-view"/>
+        <layout position="1" size="-1"/>
+        <control name="MenuControl"/>
+        <controller name="MenuController"/>
+        <entry id="P-ffba7f0173-10038" parent="AccountEdit">
+            <layout position="0" size="-1"/>
+        </entry>
+        <entry id="P-ffba7f0173-10039" parent="WebMailAccountEdit">
+            <layout position="1" size="-1"/>
+        </entry>
+        <entry id="P-ffba7f0173-1003a" parent="MyGroup">
+            <layout position="2" size="-1"/>
+        </entry>
+        <entry id="P-ffba7f0173-1003b" parent="Page">
+            <layout position="3" size="-1"/>
+        </entry>
+    </portlets>
+</portlets>

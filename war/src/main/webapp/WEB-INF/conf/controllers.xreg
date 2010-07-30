@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Aipo is a groupware program developed by Aimluck,Inc.
+Copyright (C) 2004-2008 Aimluck,Inc.
+http://aipostyle.com/
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<registry>
+    <portlet-controller-entry name="CardPortletController" hidden="true">
+        <classname>org.apache.jetspeed.portal.controllers.VelocityPanedPortletController</classname>
+        <parameter name="template" value="card.vm" hidden="false"/>
+        <parameter name="action" value="controllers.PanedControllerAction" hidden="false"/>
+        <parameter name="parameter" value="pane" hidden="false"/>
+        <parameter name="defaultpane" value="0" hidden="false"/>
+        <media-type ref="html"/>
+    </portlet-controller-entry>
+    <portlet-controller-entry name="FlowPortletController" hidden="true">
+        <meta-info>
+            <title>連続フロー</title>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <parameter name="template" value="flow.vm" hidden="false"/>
+        <parameter name="action" value="controllers.RowColumnControllerAction" hidden="false"/>
+        <media-type ref="docomo_foma"/>
+        <media-type ref="docomo_imode"/>
+        <media-type ref="au"/>
+        <media-type ref="vodafone"/>
+        <media-type ref="html"/>
+        <media-type ref="wml"/>
+        <media-type ref="xhtml"/>
+        <media-type ref="iphone"/>
+        <media-type ref="wm"/>
+    </portlet-controller-entry>
+    <portlet-controller-entry name="GridPortletController" hidden="true">
+        <classname>org.apache.jetspeed.portal.controllers.GridPortletController</classname>
+        <media-type ref="html"/>
+    </portlet-controller-entry>
+    <portlet-controller-entry name="ColumnController" hidden="true">
+        <meta-info>
+            <title>一列 (非推奨)</title>
+            <description>このコントローラはなくなります。縦一列を使ってください。</description>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <parameter name="template" value="column.vm" hidden="false"/>
+        <parameter name="action" value="controllers.RowColumnControllerAction" hidden="false"/>
+        <media-type ref="html"/>
+        <media-type ref="wml"/>
+    </portlet-controller-entry>
+    <portlet-controller-entry name="RowController" hidden="false">
+        <meta-info>
+            <title>横一列</title>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <parameter name="template" value="row.vm" hidden="false"/>
+        <parameter name="action" value="controllers.RowColumnControllerAction" hidden="false"/>
+        <media-type ref="html"/>
+        <media-type ref="wml"/>
+    </portlet-controller-entry>
+    <portlet-controller-entry name="OneColumn" hidden="false">
+        <meta-info>
+            <title>縦一列</title>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <parameter name="template" value="multicolumn.vm" hidden="false"/>
+        <parameter name="action" value="controllers.MultiColumnControllerAction" hidden="false"/>
+        <parameter name="sizes" value="100%" hidden="false"/>
+        <parameter name="cols" value="1" hidden="false"/>
+        <media-type ref="docomo_foma"/>
+        <media-type ref="docomo_imode"/>
+        <media-type ref="au"/>
+        <media-type ref="vodafone"/>
+        <media-type ref="html"/>
+        <media-type ref="docomo_foma"/>
+        <media-type ref="iphone"/>
+        <media-type ref="wm"/>
+    </portlet-controller-entry>
+    <portlet-controller-entry name="TwoColumns" hidden="false">
+        <meta-info>
+            <title>二列 (50/50)</title>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <parameter name="template" value="multicolumn.vm" hidden="false"/>
+        <parameter name="action" value="controllers.MultiColumnControllerAction" hidden="false"/>
+        <parameter name="sizes" value="50%,50%" hidden="false"/>
+        <parameter name="cols" value="2" hidden="false"/>
+        <media-type ref="html"/>
+    </portlet-controller-entry>
+    <portlet-controller-entry name="TwoColumnsLeft" hidden="false">
+        <meta-info>
+            <title>二列 (75/25)</title>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <parameter name="template" value="multicolumn.vm" hidden="false"/>
+        <parameter name="action" value="controllers.MultiColumnControllerAction" hidden="false"/>
+        <parameter name="sizes" value="75%,25%" hidden="false"/>
+        <parameter name="cols" value="2" hidden="false"/>
+        <media-type ref="html"/>
+    </portlet-controller-entry>
+    <portlet-controller-entry name="TwoColumnsRight" hidden="false">
+        <meta-info>
+            <title>二列 (25/75)</title>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <parameter name="template" value="multicolumn.vm" hidden="false"/>
+        <parameter name="action" value="controllers.MultiColumnControllerAction" hidden="false"/>
+        <parameter name="sizes" value="25%,75%" hidden="false"/>
+        <parameter name="cols" value="2" hidden="false"/>
+        <media-type ref="html"/>
+    </portlet-controller-entry>
+    <portlet-controller-entry name="ThreeColumns" hidden="false">
+        <meta-info>
+            <title>三列 (25/50/25)</title>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <parameter name="template" value="multicolumn.vm" hidden="false"/>
+        <parameter name="action" value="controllers.MultiColumnControllerAction" hidden="false"/>
+        <parameter name="sizes" value="25%,50%,25%" hidden="false"/>
+        <parameter name="cols" value="3" hidden="false"/>
+        <media-type ref="html"/>
+    </portlet-controller-entry>
+    <portlet-controller-entry name="ThreeColumnsSymetric" hidden="false">
+        <meta-info>
+            <title>三列 (33/33/33)</title>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <parameter name="template" value="multicolumn.vm" hidden="false"/>
+        <parameter name="action" value="controllers.MultiColumnControllerAction" hidden="false"/>
+        <parameter name="sizes" value="33%,34%,33%" hidden="false"/>
+        <parameter name="cols" value="3" hidden="false"/>
+        <media-type ref="html"/>
+    </portlet-controller-entry>
+    <portlet-controller-entry name="TabController" hidden="false">
+        <meta-info>
+            <title>タブ区画</title>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.controllers.VelocityPanedPortletController</classname>
+        <parameter name="template" value="card.vm" hidden="false"/>
+        <parameter name="action" value="controllers.PanedControllerAction" hidden="false"/>
+        <parameter name="parameter" value="pane" hidden="false"/>
+        <parameter name="defaultpane" value="0" hidden="false"/>
+        <parameter name="control" value="TabControl" hidden="false"/>
+        <media-type ref="html"/>
+    </portlet-controller-entry>
+    <portlet-controller-entry name="MenuController" hidden="false">
+        <meta-info>
+            <title>メニュー区画</title>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.controllers.VelocityPanedPortletController</classname>
+        <parameter name="template" value="card.vm" hidden="false"/>
+        <parameter name="action" value="controllers.PanedControllerAction" hidden="false"/>
+        <parameter name="parameter" value="pane" hidden="false"/>
+        <parameter name="defaultpane" value="0" hidden="false"/>
+        <parameter name="control" value="MenuControl" hidden="false"/>
+        <media-type ref="html"/>
+    </portlet-controller-entry>
+</registry>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Aipo is a groupware program developed by Aimluck,Inc.
+Copyright (C) 2004-2008 Aimluck,Inc.
+http://aipostyle.com/
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<portlets id="01">
+    <metainfo>
+        <title>システム管理者ホーム</title>
+    </metainfo>
+    <security-ref parent="admin-view"/>
+    <layout position="-1" size="-1"/>
+    <control name="TabControl"/>
+    <controller name="TabController"/>
+    <portlets id="101">
+        <metainfo>
+            <title>システム管理</title>
+        </metainfo>
+        <security-ref parent="admin-view"/>
+        <layout position="0" size="-1"/>
+        <control name="MenuControl"/>
+        <controller name="MenuController"/>
+        <entry id="120" parent="AipoNews">
+            <layout position="0" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+        <entry id="130" parent="License">
+            <layout position="1" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+        <entry id="121" parent="Account">
+            <layout position="2" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+        <entry id="122" parent="Company">
+            <layout position="3" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+        <entry id="123" parent="Facilities">
+            <layout position="4" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+        <entry id="124" parent="WorkflowCategory">
+            <layout position="5" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+        <entry id="125" parent="WebMailAccountAdmin">
+            <layout position="6" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+<!--
+        <entry id="136" parent="TimecardSettings">
+            <layout position="7" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+-->
+        <entry id="137" parent="ExtTimecardSystem">
+            <layout position="7" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+        <entry id="138" parent="TwitterAdmin">
+            <layout position="8" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+        <entry id="127" parent="FileIO">
+            <layout position="9" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+        <entry id="128" parent="AccessControl">
+            <layout position="10" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+        <entry id="129" parent="Eventlog">
+            <layout position="11" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+        <entry id="131" parent="SysInfo">
+            <layout position="12" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+        <entry id="132" parent="DeleteSample">
+            <layout position="12" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+    </portlets>
+</portlets>

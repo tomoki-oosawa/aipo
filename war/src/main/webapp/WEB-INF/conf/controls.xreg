@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Aipo is a groupware program developed by Aimluck,Inc.
+Copyright (C) 2004-2008 Aimluck,Inc.
+http://aipostyle.com/
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<registry>
+    <portlet-control-entry name="ClearPortletControl" hidden="true">
+        <meta-info>
+            <title>クリアポートレットコントロール</title>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.controls.VelocityPortletControl</classname>
+        <parameter name="theme" value="clear.vm" hidden="false"/>
+        <parameter name="simple" value="true" hidden="false"/>
+        <media-type ref="docomo_foma"/>
+        <media-type ref="docomo_imode"/>
+        <media-type ref="au"/>
+        <media-type ref="vodafone"/>
+        <media-type ref="wml"/>
+        <media-type ref="html"/>
+        <media-type ref="iphone"/>
+        <media-type ref="wm"/>
+    </portlet-control-entry>
+    <portlet-control-entry name="FullScreenControl" hidden="true">
+        <meta-info>
+            <title>フルスクリーンコントロール</title>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.controls.VelocityPortletControl</classname>
+        <parameter name="theme" value="jetspeed.vm" hidden="false"/>
+        <media-type ref="html"/>
+        <media-type ref="wml"/>
+    </portlet-control-entry>
+    <portlet-control-entry name="BoxControl" hidden="true">
+        <meta-info>
+            <title>ボックスタイトルコントロール</title>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.controls.VelocityPortletControl</classname>
+        <parameter name="theme" value="jetspeed-box.vm" hidden="false"/>
+        <parameter name="thickness" value="2" hidden="false"/>
+        <parameter name="simple" value="true" hidden="false"/>
+        <media-type ref="html"/>
+    </portlet-control-entry>
+    <portlet-control-entry name="TitlePortletControl" hidden="false">
+        <meta-info>
+            <title>シンプルタイトルコントロール</title>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.controls.VelocityPortletControl</classname>
+        <parameter name="theme" value="jetspeed.vm" hidden="false"/>
+        <parameter name="simple" value="true" hidden="false"/>
+        <media-type ref="html"/>
+        <media-type ref="wml"/>
+    </portlet-control-entry>
+    <portlet-control-entry name="PanedPortletControl" hidden="true">
+        <meta-info>
+            <title>区画化ポートレットコントロール</title>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.controls.VelocityPortletSetControl</classname>
+        <parameter name="theme" value="jetspeed-tab.vm" hidden="false"/>
+        <media-type ref="html"/>
+    </portlet-control-entry>
+    <portlet-control-entry name="TabControl" hidden="false">
+        <meta-info>
+            <title>タブコントロール</title>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.controls.VelocityPortletSetControl</classname>
+        <parameter name="theme" value="jetspeed-tab.vm" hidden="false"/>
+        <media-type ref="html"/>
+    </portlet-control-entry>
+    <portlet-control-entry name="MenuControl" hidden="false">
+        <meta-info>
+            <title>左メニューコントロール</title>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.controls.VelocityPortletSetControl</classname>
+        <parameter name="tab-width" value="25%" hidden="false"/>
+        <parameter name="theme" value="jetspeed-menu.vm" hidden="false"/>
+        <media-type ref="html"/>
+    </portlet-control-entry>
+</registry>

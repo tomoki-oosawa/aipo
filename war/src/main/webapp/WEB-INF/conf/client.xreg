@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Aipo is a groupware program developed by Aimluck,Inc.
+Copyright (C) 2004-2008 Aimluck,Inc.
+http://aipostyle.com/
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<registry>
+    <client-entry name="docomo_foma" hidden="false">
+        <user-agent-pattern>DoCoMo/2\.0.*</user-agent-pattern>
+        <manufacturer>DoCoMo Foma</manufacturer>
+        <model></model>
+        <version></version>
+        <mimetype-map>
+            <mimetype>application/xhtml+xml</mimetype>
+        </mimetype-map>
+        <capability-map>
+            <capability>XHTML_DOM_DOCOMO_FOMA</capability>
+        </capability-map>
+    </client-entry>
+    <client-entry name="docomo_imode" hidden="false">
+        <user-agent-pattern>DoCoMo/1\.0.*</user-agent-pattern>
+        <manufacturer>DoCoMo i-mode</manufacturer>
+        <model></model>
+        <version></version>
+        <mimetype-map>
+            <mimetype>text/html</mimetype>
+        </mimetype-map>
+        <capability-map>
+            <capability>HTML_DOM_DOCOMO_IMODE</capability>
+        </capability-map>
+    </client-entry>
+    <client-entry name="iphone" hidden="false">
+        <user-agent-pattern>.*Android.*|Mozilla/5.0 \(iP.*</user-agent-pattern>
+        <manufacturer>IPHONE</manufacturer>
+        <model></model>
+        <version></version>
+        <mimetype-map>
+            <mimetype>text/html</mimetype>
+        </mimetype-map>
+        <capability-map>
+            <capability>HTML_DOM_IPHONE</capability>
+        </capability-map>
+    </client-entry>
+    <client-entry name="wm" hidden="false">
+        <user-agent-pattern>.*Windows CE.*</user-agent-pattern>
+        <manufacturer>Microsoft</manufacturer>
+        <model></model>
+        <version></version>
+        <mimetype-map>
+            <mimetype>text/html</mimetype>
+        </mimetype-map>
+        <capability-map>
+            <capability>HTML_DOM_WM</capability>
+        </capability-map>
+    </client-entry>
+    <client-entry name="au" hidden="false">
+        <user-agent-pattern>UP.*|.*UP\.Browser.*|KDDI-.*</user-agent-pattern>
+        <manufacturer>AU</manufacturer>
+        <model></model>
+        <version></version>
+        <mimetype-map>
+            <mimetype>text/html</mimetype>
+        </mimetype-map>
+        <capability-map>
+            <capability>XHTML_DOM_AU</capability>
+        </capability-map>
+    </client-entry>
+    <client-entry name="vodafone" hidden="false">
+        <user-agent-pattern>MOT-.*|Vodafone/.*|J-PHONE/.*|SoftBank/.*</user-agent-pattern>
+        <manufacturer>VODAFONE</manufacturer>
+        <model></model>
+        <version></version>
+        <mimetype-map>
+            <mimetype>text/html</mimetype>
+        </mimetype-map>
+        <capability-map>
+            <capability>HTML_DOM_VODAFONE</capability>
+        </capability-map>
+    </client-entry>
+    <client-entry name="ie5" hidden="false">
+        <user-agent-pattern>.*MSIE 5.*</user-agent-pattern>
+        <manufacturer>Microsoft</manufacturer>
+        <model>None</model>
+        <version>5.5</version>
+        <mimetype-map>
+            <mimetype>text/html</mimetype>
+            <mimetype>text/xml</mimetype>
+        </mimetype-map>
+        <capability-map>
+            <capability>HTML_3_2</capability>
+            <capability>HTML_JAVA</capability>
+            <capability>HTML_JAVASCRIPT</capability>
+            <capability>HTML_TABLE</capability>
+            <capability>HTML_NESTED_TABLE</capability>
+            <capability>HTML_FORM</capability>
+            <capability>HTML_FRAME</capability>
+            <capability>HTML_IMAGE</capability>
+            <capability>HTML_ACTIVE_X</capability>
+            <capability>HTML_CSS1</capability>
+            <capability>HTML_CSS2</capability>
+            <capability>HTML_CSSP</capability>
+            <capability>HTML_IFRAME</capability>
+            <capability>HTML_DOM_IE</capability>
+            <capability>HTTP_COOKIE</capability>
+        </capability-map>
+    </client-entry>
+    <client-entry name="ns4" hidden="false">
+        <user-agent-pattern>.*Mozilla/4.*</user-agent-pattern>
+        <manufacturer>Netscape</manufacturer>
+        <model>None</model>
+        <version>4.75</version>
+        <mimetype-map>
+            <mimetype>text/html</mimetype>
+        </mimetype-map>
+        <capability-map>
+            <capability>HTML_3_2</capability>
+            <capability>HTML_JAVA</capability>
+            <capability>HTML_JAVASCRIPT</capability>
+            <capability>HTML_TABLE</capability>
+            <capability>HTML_FORM</capability>
+            <capability>HTML_FRAME</capability>
+            <capability>HTML_IMAGE</capability>
+            <capability>HTML_CSS1</capability>
+            <capability>HTML_LAYER</capability>
+            <capability>HTML_PLUGIN</capability>
+            <capability>HTML_DOM_NS4</capability>
+            <capability>HTTP_COOKIE</capability>
+        </capability-map>
+    </client-entry>
+    <client-entry name="mozilla" hidden="false">
+        <user-agent-pattern>.*Mozilla/5.*</user-agent-pattern>
+        <manufacturer>Mozilla</manufacturer>
+        <model>Mozilla</model>
+        <version>1.x</version>
+        <mimetype-map>
+            <mimetype>text/html</mimetype>
+            <mimetype>text/xhtml</mimetype>
+            <mimetype>text/xml</mimetype>
+        </mimetype-map>
+        <capability-map>
+            <capability>HTML_3_2</capability>
+            <capability>HTML_4_0</capability>
+            <capability>HTML_JAVA</capability>
+            <capability>HTML_JAVA_JRE</capability>
+            <capability>HTML_JAVASCRIPT</capability>
+            <capability>HTML_TABLE</capability>
+            <capability>HTML_NESTED_TABLE</capability>
+            <capability>HTML_FORM</capability>
+            <capability>HTML_FRAME</capability>
+            <capability>HTML_IFRAME</capability>
+            <capability>HTML_IMAGE</capability>
+            <capability>HTML_CSS1</capability>
+            <capability>HTML_CSS2</capability>
+            <capability>HTML_CSSP</capability>
+            <capability>HTML_DOM_1</capability>
+            <capability>HTML_PLUGIN</capability>
+            <capability>HTTP_COOKIE</capability>
+        </capability-map>
+    </client-entry>
+    <client-entry name="lynx" hidden="false">
+        <user-agent-pattern>Lynx.*</user-agent-pattern>
+        <manufacturer>GNU</manufacturer>
+        <model>None</model>
+        <version></version>
+        <mimetype-map>
+            <mimetype>text/html</mimetype>
+        </mimetype-map>
+        <capability-map>
+            <capability>HTML_TABLE</capability>
+            <capability>HTML_NESTED_TABLE</capability>
+            <capability>HTML_FORM</capability>
+            <capability>HTML_FRAME</capability>
+            <capability>HTTP_COOKIE</capability>
+        </capability-map>
+    </client-entry>
+    <client-entry name="nokia_generic" hidden="false">
+        <user-agent-pattern>Nokia.*</user-agent-pattern>
+        <manufacturer>Nokia.*</manufacturer>
+        <model>Generic</model>
+        <version></version>
+        <mimetype-map>
+            <mimetype>text/vnd.wap.wml</mimetype>
+        </mimetype-map>
+        <capability-map/>
+    </client-entry>
+    <client-entry name="sonyericsson" hidden="false">
+        <user-agent-pattern>Ercis.*|SonyE.*</user-agent-pattern>
+        <manufacturer>SonyEricsson</manufacturer>
+        <model>Generic</model>
+        <version></version>
+        <mimetype-map>
+            <mimetype>text/vnd.wap.wml</mimetype>
+        </mimetype-map>
+        <capability-map/>
+    </client-entry>
+    <client-entry name="wapalizer" hidden="false">
+        <user-agent-pattern>Wapalizer.*</user-agent-pattern>
+        <manufacturer>Wapalizer.*</manufacturer>
+        <model>Generic</model>
+        <version></version>
+        <mimetype-map>
+            <mimetype>text/vnd.wap.wml</mimetype>
+        </mimetype-map>
+        <capability-map/>
+    </client-entry>
+    <client-entry name="klondike" hidden="false">
+        <user-agent-pattern>Klondike.*</user-agent-pattern>
+        <manufacturer>Klondike.*</manufacturer>
+        <model>Generic</model>
+        <version></version>
+        <mimetype-map>
+            <mimetype>text/vnd.wap.wml</mimetype>
+        </mimetype-map>
+        <capability-map/>
+    </client-entry>
+    <client-entry name="wml_generic" hidden="false">
+        <user-agent-pattern>.*WML.*|.*WAP.*|.*Wap.*|.*wml.*</user-agent-pattern>
+        <manufacturer>Generic</manufacturer>
+        <model>Generic</model>
+        <version></version>
+        <mimetype-map>
+            <mimetype>text/vnd.wap.wml</mimetype>
+        </mimetype-map>
+        <capability-map/>
+    </client-entry>
+    <client-entry name="vxml_generic" hidden="false">
+        <user-agent-pattern>.*VoiceXML.*</user-agent-pattern>
+        <manufacturer>Generic</manufacturer>
+        <model>Generic</model>
+        <version></version>
+        <mimetype-map>
+            <mimetype>text/vxml</mimetype>
+        </mimetype-map>
+        <capability-map/>
+    </client-entry>
+    <client-entry name="nuance" hidden="false">
+        <user-agent-pattern>Nuance.*</user-agent-pattern>
+        <manufacturer>Nuance.*</manufacturer>
+        <model>Generic</model>
+        <version></version>
+        <mimetype-map>
+            <mimetype>text/vxml</mimetype>
+        </mimetype-map>
+        <capability-map/>
+    </client-entry>
+    <client-entry name="agentxml" hidden="false">
+        <user-agent-pattern>agentxml/1.0.*</user-agent-pattern>
+        <manufacturer>Unknown</manufacturer>
+        <model>Generic</model>
+        <version></version>
+        <mimetype-map>
+            <mimetype>text/xml</mimetype>
+        </mimetype-map>
+        <capability-map/>
+    </client-entry>
+    <client-entry name="opera7" hidden="false">
+        <user-agent-pattern>.*Opera/7.*</user-agent-pattern>
+        <manufacturer>Opera</manufacturer>
+        <model>Opera7</model>
+        <version>7.x</version>
+        <mimetype-map>
+            <mimetype>text/html</mimetype>
+            <mimetype>text/xhtml</mimetype>
+            <mimetype>text/xml</mimetype>
+        </mimetype-map>
+        <capability-map>
+            <capability>HTML_3_2</capability>
+            <capability>HTML_4_0</capability>
+            <capability>HTML_JAVA</capability>
+            <capability>HTML_JAVA_JRE</capability>
+            <capability>HTML_JAVASCRIPT</capability>
+            <capability>HTML_TABLE</capability>
+            <capability>HTML_NESTED_TABLE</capability>
+            <capability>HTML_FORM</capability>
+            <capability>HTML_FRAME</capability>
+            <capability>HTML_IFRAME</capability>
+            <capability>HTML_IMAGE</capability>
+            <capability>HTML_CSS1</capability>
+            <capability>HTML_CSS2</capability>
+            <capability>HTML_CSSP</capability>
+            <capability>HTML_DOM_1</capability>
+            <capability>HTML_PLUGIN</capability>
+            <capability>HTTP_COOKIE</capability>
+        </capability-map>
+    </client-entry>
+</registry>

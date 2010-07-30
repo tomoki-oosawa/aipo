@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Aipo is a groupware program developed by Aimluck,Inc.
+Copyright (C) 2004-2008 Aimluck,Inc.
+http://aipostyle.com/
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<registry>
+    <security-entry name="admin-only">
+        <meta-info>
+            <title>管理者のみ</title>
+            <description>管理者権限を持ったユーザーへのフルアクセス</description>
+        </meta-info>
+        <access action="*">
+            <allow-if role="admin"/>
+        </access>
+    </security-entry>
+    <security-entry name="user-only">
+        <meta-info>
+            <title>ユーザーのみ</title>
+            <description>ユーザー権限を持ったユーザーへのフルアクセス</description>
+        </meta-info>
+        <access action="*">
+            <allow-if role="user"/>
+        </access>
+    </security-entry>
+    <security-entry name="owner-only">
+        <meta-info>
+            <title>所有者のみ</title>
+            <description>所有者へのフルアクセス</description>
+        </meta-info>
+        <access action="*">
+            <allow-if-owner/>
+        </access>
+    </security-entry>
+    <security-entry name="default">
+        <meta-info>
+            <title>デフォルト</title>
+            <description>ユーザー権限を持ったユーザーへのフルアクセス</description>
+        </meta-info>
+        <access action="*">
+            <allow-if role="user"/>
+        </access>
+        <access action="view">
+            <allow-if role="guest"/>
+        </access>
+    </security-entry>
+    <security-entry name="user-view_admin-all">
+        <meta-info>
+            <title>ユーザー(表示),管理者(制御)</title>
+            <description>ユーザーは表示可能、管理者はフルアクセスができます</description>
+        </meta-info>
+        <access action="*">
+            <allow-if role="admin"/>
+        </access>
+        <access action="view">
+            <allow-if role="user"/>
+        </access>
+    </security-entry>
+    <security-entry name="anon-view_admin-all">
+        <meta-info>
+            <title>匿名(表示),管理者(制御)</title>
+            <description>匿名ユーザーは表示可能、管理者はフルアクセスができます</description>
+        </meta-info>
+        <access action="*">
+            <allow-if role="admin"/>
+        </access>
+        <access action="view">
+            <allow-if user="anon"/>
+        </access>
+    </security-entry>
+    <security-entry name="admin-view">
+        <meta-info>
+            <title>管理者(表示)</title>
+            <description>管理者は表示できます</description>
+        </meta-info>
+        <access action="view">
+            <allow-if role="admin"/>
+        </access>
+    </security-entry>
+    <security-entry name="owner-view">
+        <meta-info>
+            <title>所有者（表示）</title>
+            <description>所有者は表示できます</description>
+        </meta-info>
+        <access action="view">
+            <allow-if-owner/>
+        </access>
+    </security-entry>
+    <security-entry name="user-view">
+        <meta-info>
+            <title>ユーザー（表示）</title>
+            <description>ユーザーは表示できます</description>
+        </meta-info>
+        <access action="view">
+            <allow-if-owner/>
+        </access>
+        <access action="view">
+            <allow-if role="user"/>
+        </access>
+        <access action="customize">
+            <allow-if-owner/>
+        </access>
+        <access action="customize">
+            <allow-if role="user"/>
+        </access>
+    </security-entry>
+</registry>

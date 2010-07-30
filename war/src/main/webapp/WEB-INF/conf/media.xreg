@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Aipo is a groupware program developed by Aimluck,Inc.
+Copyright (C) 2004-2008 Aimluck,Inc.
+http://aipostyle.com/
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<registry>
+    <media-type-entry name="docomo_foma" hidden="false">
+        <meta-info>
+            <title>XHTML</title>
+        </meta-info>
+        <mime-type>application/xhtml+xml</mime-type>
+        <character-set>Shift_JIS</character-set>
+        <capability-map>
+          <capability>XHTML_DOM_DOCOMO_FOMA</capability>
+        </capability-map>
+    </media-type-entry>
+    <media-type-entry name="docomo_imode" hidden="false">
+        <meta-info>
+            <title>HTML</title>
+        </meta-info>
+        <mime-type>text/html</mime-type>
+        <character-set>Shift_JIS</character-set>
+        <capability-map>
+          <capability>HTML_DOM_DOCOMO_IMODE</capability>
+        </capability-map>
+    </media-type-entry>
+    <media-type-entry name="iphone" hidden="false">
+        <meta-info>
+            <title>HTML</title>
+        </meta-info>
+        <mime-type>text/html</mime-type>
+        <character-set>Shift_JIS</character-set>
+        <capability-map>
+          <capability>HTML_DOM_IPHONE</capability>
+        </capability-map>
+    </media-type-entry>
+    <media-type-entry name="wm" hidden="false">
+        <meta-info>
+            <title>HTML</title>
+        </meta-info>
+        <mime-type>text/html</mime-type>
+        <character-set>Shift_JIS</character-set>
+        <capability-map>
+          <capability>HTML_DOM_WM</capability>
+        </capability-map>
+    </media-type-entry>
+    <media-type-entry name="au" hidden="false">
+        <meta-info>
+            <title>XHTML</title>
+        </meta-info>
+        <mime-type>text/html</mime-type>
+        <character-set>Shift_JIS</character-set>
+        <capability-map>
+          <capability>XHTML_DOM_AU</capability>
+        </capability-map>
+    </media-type-entry>
+    <media-type-entry name="vodafone" hidden="false">
+        <meta-info>
+            <title>HTML</title>
+        </meta-info>
+        <mime-type>text/html</mime-type>
+        <character-set>Shift_JIS</character-set>
+        <capability-map>
+          <capability>HTML_DOM_VODAFONE</capability>
+        </capability-map>
+    </media-type-entry>
+    <media-type-entry name="html" hidden="false">
+        <meta-info>
+            <title>HTML</title>
+            <description>HTML 4.0 準拠ブラウザのリッチ HTML</description>
+        </meta-info>
+        <mime-type>text/html</mime-type>
+        <character-set>UTF-8</character-set>
+        <capability-map/>
+    </media-type-entry>
+    <media-type-entry name="wml" hidden="false">
+        <meta-info>
+            <title>WML</title>
+            <description>WML 1.1 互換の携帯電話および PDA 用のフォーマット</description>
+        </meta-info>
+        <mime-type>text/vnd.wap.wml</mime-type>
+        <character-set>UTF-8</character-set>
+        <capability-map/>
+    </media-type-entry>
+    <media-type-entry name="xml" hidden="false">
+        <meta-info>
+            <title>XML</title>
+            <description>XML 1.0</description>
+        </meta-info>
+        <mime-type>text/xml</mime-type>
+        <capability-map/>
+    </media-type-entry>
+</registry>
