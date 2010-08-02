@@ -98,7 +98,7 @@ $!{result.SelectedFolderInfo.FolderName}
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFileDetailScreen").addQueryData("entityid",$record.FileId))');">$!record.FileTitle</a>
 #ALtdcellfooter()
 #ALtdcellheader()
-<a href="$jslink.getTemplate("CabinetFileRawScreen").addQueryData("entityid", ${record.FileId})">$record.FileName</a>
+<a href="$jslink.getTemplate("CabinetFileRawScreen").addQueryData("entityid", ${record.FileId})">$record.WbrFileName</a>
 #ALtdcellfooter()
 #ALtdcell($record.UpdateDate)
 <td class="item" align="right">$record.FileSize</td>

@@ -21,11 +21,12 @@ package com.aimluck.eip.cabinet;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 共有フォルダのファイルのResultDataです。 <BR>
- *
+ * 
  */
 public class CabinetFileResultData implements ALData {
 
@@ -69,7 +70,7 @@ public class CabinetFileResultData implements ALData {
   private boolean is_editable;
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -106,6 +107,13 @@ public class CabinetFileResultData implements ALData {
    */
   public ALStringField getFileName() {
     return file_name;
+  }
+
+  /**
+   * @return
+   */
+  public String getWbrFileName() {
+    return ALCommonUtils.replaceToAutoCR(file_name.getValue());
   }
 
   /**

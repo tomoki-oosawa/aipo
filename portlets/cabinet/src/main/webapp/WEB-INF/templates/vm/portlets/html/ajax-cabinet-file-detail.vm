@@ -29,7 +29,7 @@
 #ALtditem($!result.Detail.FileTitle)
 #ALtdcaption('ファイル名')
 #ALtditemheader()
-<a href="$jslink.getTemplate("CabinetFileRawScreen").addQueryData("entityid", ${result.Detail.FileId})">$!result.Detail.FileName</a>
+<a href="$jslink.getTemplate("CabinetFileRawScreen").addQueryData("entityid", ${result.Detail.FileId})">$!result.Detail.WbrFileName</a>
 #ALtditemfooter()
 #ALtdcaption('位置')
 #ALtditem("$!result.Detail.Position")
