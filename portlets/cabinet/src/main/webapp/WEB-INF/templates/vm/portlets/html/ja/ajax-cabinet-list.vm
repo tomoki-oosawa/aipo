@@ -102,7 +102,7 @@ $!{result.SelectedFolderInfo.FolderName}
 #ALtdcellfooter()
 #ALtdcell($record.UpdateDate)
 <td class="item" align="right">$record.FileSize</td>
-#if($result.isEditable())<td class="item" nowrap="nowrap">#ALajaxbuttonLink('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormScreen').addQueryData('entityid', ${record.FileId}) 'themes/$!theme/images/icon/icon_edit.gif')</td>#end
+#if($result.isEditable())<td class="item" nowrap="nowrap">#ALajaxbuttonLink('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormScreen').addQueryData('entityid', ${record.FileId}) "themes/$!theme/images/icon/icon_edit.gif")</td>#end
 </tr>
 #end
 #ALtablefooter()
