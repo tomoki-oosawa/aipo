@@ -30,7 +30,6 @@
 
 //]]>
 </script>
-
 <div class="none" id="indicator-$!portlet.ID">読み込み中...</div>
 <!-- WRAPPER -->
 ##<div id="wrapper">
@@ -44,7 +43,7 @@
 					#if(($!{hasAcl}) && $!{hasAcl} == "T")
 						<div id="memberpicker-$!portlet.ID" widgetId="memberpicker-$!portlet.ID"></div>
 					    <div id="memberfacilitylistwidget-$!portlet.ID" style="display:none"></div>
-                        <select size="10" multiple="multiple" style="display:none;" name="init_memberlist-$!portlet.ID" id="init_memberlist-$!portlet.ID">#foreach($record in  $!member_list) <option value=#if($record.UserFacilityType == "U") "$record.UserFacilityId" #else "f$record.UserFacilityId" #end> $record.AliasName </option>#end</select>
+                        <select size="10" multiple="multiple" style="display:none;" name="init_memberlist-$!portlet.ID" id="init_memberlist-$!portlet.ID">#foreach($record in  $!member_list) <option value=#if($record.UserFacilityType == "U") "$record.UserFacilityId" #else "f$record.UserFacilityId" #end> $!utils.escapeXML($record.AliasName.toString()) </option>#end</select>
 					#end
                         ##参加メンバー一覧ここまで
                     <div class="clearfix" style="padding-top: 5px;">

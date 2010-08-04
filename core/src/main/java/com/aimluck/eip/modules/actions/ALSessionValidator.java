@@ -41,13 +41,14 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.orgutils.ALOrgUtilsFactoryService;
 import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
 
 /**
  * セッションを制御するクラスです。 <br />
- *
+ * 
  */
 public class ALSessionValidator extends JetspeedSessionValidator {
 
@@ -55,7 +56,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       .getLogger(ALSessionValidator.class.getName());
 
   /**
-   *
+   * 
    * @see org.apache.turbine.modules.Action#doPerform(org.apache.turbine.util.RunData)
    */
   public void doPerform(RunData data) throws Exception {
@@ -83,6 +84,9 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     for (Map.Entry<String, String> e : attribute.entrySet()) {
       context.put(e.getKey(), e.getValue());
     }
+
+    // for preventing XSS on user name
+    context.put("utils", new ALCommonUtils());
 
     JetspeedUser loginuser = (JetspeedUser) data.getUser();
     if (loginuser == null || !loginuser.hasLoggedIn()) {

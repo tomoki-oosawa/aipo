@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *#
@@ -27,10 +27,9 @@
     dojo.require("aipo.widget.DropdownMemberFacilitypicker");
 
     ptConfig['$!portlet.ID'] = { group:"schedule" , thisUrl:"$!jslink.getPortletById($!portlet.ID)", jsonUrl:"$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleWeeklyJSONScreen')", formUrl: '$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen')', detailUrl: '$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen')', rowHeight:18, scheduleDivDaySum:7, tmpIndex:-1, distance:3, timeStart:$!time_start, timeEnd:$!time_end, timeInterval:$!time_interval, contentHeight: ($!time_end - $!time_start)*(60/$!time_interval)*18, contentScrollTop: $!time_start*(60/$!time_interval)*18 };
- 
+
 //]]>
 </script>
-
 <div class="none" id="indicator-$!portlet.ID">読み込み中...</div>
 <!-- WRAPPER -->
 ##<div id="wrapper">
@@ -42,18 +41,18 @@
 					</div>
                     <div id="content-$!portlet.ID" style="visibility:hidden">
 					#if(($!{hasAcl}) && $!{hasAcl} == "T")
-						<div id="memberpicker-$!portlet.ID" widgetId="memberpicker-$!portlet.ID"></div> 
+						<div id="memberpicker-$!portlet.ID" widgetId="memberpicker-$!portlet.ID"></div>
 					    <div id="memberfacilitylistwidget-$!portlet.ID" style="display:none"></div>
-                        <select size="10" multiple="multiple" style="display:none;" name="init_memberlist-$!portlet.ID" id="init_memberlist-$!portlet.ID">#foreach($record in  $!member_list) <option value=#if($record.UserFacilityType == "U") "$record.UserFacilityId" #else "f$record.UserFacilityId" #end> $record.AliasName </option>#end</select>
+                        <select size="10" multiple="multiple" style="display:none;" name="init_memberlist-$!portlet.ID" id="init_memberlist-$!portlet.ID">#foreach($record in  $!member_list) <option value=#if($record.UserFacilityType == "U") "$record.UserFacilityId" #else "f$record.UserFacilityId" #end> $!utils.escapeXML($record.AliasName.toString()) </option>#end</select>
 					#end
                         ##参加メンバー一覧ここまで
                     <div class="clearfix" style="padding-top: 5px;">
                      <ul class="headItem">
-                      <li><img src="images/schedule/arrow_left_w.gif" alt="前の週へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["prevWeek"])' style="cursor:pointer"/></li>
-                      <li><img src="images/schedule/arrow_left.gif" alt="前の日へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["prevDate"])' style="cursor:pointer"/></li>
+                      <li><img src="themes/$!theme/images/icon/arrow_left_w.gif" alt="前の週へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["prevWeek"])' style="cursor:pointer"/></li>
+                      <li><img src="themes/$!theme/images/icon/arrow_left.gif" alt="前の日へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["prevDate"])' style="cursor:pointer"/></li>
                       <li id="viewWeekly-$!portlet.ID" style="font-weight: bold;">&nbsp;</li>
-                      <li><img src="images/schedule/arrow_right.gif" alt="次の日へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextDate"])' style="cursor:pointer"/></li>
-                      <li><img src="images/schedule/arrow_right_w.gif" alt="次の週へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextWeek"])' style="cursor:pointer"/></li>
+                      <li><img src="themes/$!theme/images/icon/arrow_right.gif" alt="次の日へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextDate"])' style="cursor:pointer"/></li>
+                      <li><img src="themes/$!theme/images/icon/arrow_right_w.gif" alt="次の週へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextWeek"])' style="cursor:pointer"/></li>
                       <li><img src="images/schedule/schedule_today.gif" alt="今日へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["today"])' style="cursor:pointer"/> </li>
                       <li><img src="images/schedule/schedule_prevmonth.gif" alt="前月へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["prevMonth"])' style="cursor:pointer"/></li>
                       <li><img src="images/schedule/schedule_nextmonth.gif" alt="翌月へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextMonth"])' style="cursor:pointer"/></li>
@@ -109,7 +108,7 @@
                             <div class="weeklySpan">&nbsp;</div>
                           </td>
                         </tr>
-						
+
                         <tr>
                           <td width="50">
                             <div class='weeklyTermLeft' id='weeklyTermLeft'>
@@ -148,7 +147,7 @@
                           </td>
                         </tr>
 						<tr>
-						<td colspan="9">	
+						<td colspan="9">
 						<div id="termScheduleGarage-$!portlet.ID" class="termScheduleGarage" style="z-index: -1;">&nbsp;</div>
 						</td>
 						</tr>
@@ -563,15 +562,15 @@
                                   <div class="rightMinute">&nbsp;</div>
                                   <div class="rightMinuteBottom">&nbsp;</div>
                                 </div>
-                                
+
                                 <div id="scheduleDivAdd00_$!portlet.ID" class="scheduleDivAdd" style="left: 0%;">&nbsp;</div>
                                 <div id="scheduleDivAdd01_$!portlet.ID" class="scheduleDivAdd" style="left: 14.2857%;">&nbsp;</div>
                                 <div id="scheduleDivAdd02_$!portlet.ID" class="scheduleDivAdd" style="left: 28.5714%;">&nbsp;</div>
                                 <div id="scheduleDivAdd03_$!portlet.ID" class="scheduleDivAdd" style="left: 42.8571%;">&nbsp;</div>
                                 <div id="scheduleDivAdd04_$!portlet.ID" class="scheduleDivAdd" style="left: 57.1429%;">&nbsp;</div>
                                 <div id="scheduleDivAdd05_$!portlet.ID" class="scheduleDivAdd" style="left: 71.4286%;">&nbsp;</div>
-                                <div id="scheduleDivAdd06_$!portlet.ID" class="scheduleDivAdd" style="left: 85.7143%;">&nbsp;</div>           
-                    
+                                <div id="scheduleDivAdd06_$!portlet.ID" class="scheduleDivAdd" style="left: 85.7143%;">&nbsp;</div>
+
                                 <div id="scheduleGarage-$!portlet.ID" class="scheduleGarage">&nbsp;</div>
                               </div>
                             </td>
@@ -592,7 +591,7 @@
 
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
-	
+
   aipo.schedule.login_id = "$current_user_id";
   aipo.schedule.login_name = "$current_user_ln";
   aipo.schedule.login_aliasname = "$current_user";
@@ -606,18 +605,18 @@
   dojo.style("scheduleDivAdd05_"+portletId,'opacity', 0);
   dojo.style("scheduleDivAdd06_"+portletId,'opacity', 0);
   dojo.style(dojo.byId('weeklyScrollPane_$!portlet.ID'), 'height', ($!time_end - $!time_start)*(60/$!time_interval)*18 + 'px');
-  
+
 dojo.addOnLoad(function () {
-    var mpHTML = document.getElementById("memberpicker-$!portlet.ID"); 
+    var mpHTML = document.getElementById("memberpicker-$!portlet.ID");
     if(mpHTML){
        params = {
             widgetId: "member_to-$!portlet.ID",
-            iconURL: "images/icon/icon_member.gif", 
-            iconAlt: "参加者選択", 
+            iconURL: "themes/$!theme/images/icon/icon_member.gif",
+            iconAlt: "参加者選択",
             selectId: "member_to-$!portlet.ID" ,
-            inputId: "member_to_input-$!portlet.ID", 
-            buttonAddId: "button_member_add-$!portlet.ID", 
-            buttonRemoveId: "button_member_remove-$!portlet.ID", 
+            inputId: "member_to_input-$!portlet.ID",
+            buttonAddId: "button_member_add-$!portlet.ID",
+            buttonRemoveId: "button_member_remove-$!portlet.ID",
             memberFromId: "tmp_member_from-$!portlet.ID" ,
             memberToId: "tmp_member_to-$!portlet.ID" ,
             memberFromUrl: "$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserFacilityLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')",
@@ -627,8 +626,8 @@ dojo.addOnLoad(function () {
             groupSelectOptionKey: "groupId",
             groupSelectOptionValue: "name",
             memberGroupUrl: "$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen')",
-            changeGroupUrl: "$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserFacilityLiteJSONScreen').addQueryData('mode','group')" , 
-            tmpPortretId: "$!portlet.ID" 
+            changeGroupUrl: "$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserFacilityLiteJSONScreen').addQueryData('mode','group')" ,
+            tmpPortretId: "$!portlet.ID"
        };
        var mp = new aipo.widget.DropdownMemberFacilitypicker(params , mpHTML);
 	}
@@ -644,7 +643,7 @@ dojo.addOnLoad(function () {
         }
     }
 
-	
+
     for(i =0; i < ptConfig['$!portlet.ID'].scheduleDivDaySum; i++) {
       tmpDraggable = new aipo.calendar.WeeklyScheduleAddDraggable('scheduleDivAdd0'+i+'_$!portlet.ID' , {idx: i});
                          tmpDraggable.portletId = '$!portlet.ID';
@@ -653,9 +652,9 @@ dojo.addOnLoad(function () {
 
     tmpDraggable = new aipo.calendar.WeeklyTermScheduleAddDraggable('termScheduleDivAdd_$!portlet.ID',  {idx: 0});
     tmpDraggable.portletId = '$!portlet.ID';
-	
+
     aipo.calendar.populateWeeklySchedule('$!portlet.ID');
-		
+
 });
 
 //]]>

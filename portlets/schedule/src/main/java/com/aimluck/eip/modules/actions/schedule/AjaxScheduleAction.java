@@ -35,11 +35,12 @@ import com.aimluck.eip.orm.impl.PkgDatabaseOrmService;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.userfacility.beans.UserFacilityLiteBean;
 import com.aimluck.eip.userfacility.util.UserFacilityUtils;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * カレンダーのアクションクラスです。
- *
+ * 
  */
 public class AjaxScheduleAction extends ALBaseAction {
 
@@ -104,8 +105,8 @@ public class AjaxScheduleAction extends ALBaseAction {
         memberList.add(login_user);
       } else {
         String selected_users[] = selected_user.split(",");
-        List<UserFacilityLiteBean> ulist = ScheduleUtils.getALEipUserFacility(selected_users,
-            rundata);
+        List<UserFacilityLiteBean> ulist = ScheduleUtils.getALEipUserFacility(
+            selected_users, rundata);
         if (ulist == null || ulist.size() == 0) {
           UserFacilityLiteBean login_user = UserFacilityUtils
               .getUserFacilityLiteBean(rundata);
@@ -169,6 +170,10 @@ public class AjaxScheduleAction extends ALBaseAction {
       context.put(ALEipConstants.SECURE_ID, URLEncoder.encode((String) rundata
           .getUser().getTemp(ALEipConstants.SECURE_ID),
           ALEipConstants.DEF_CONTENT_ENCODING));
+
+      // For sanitizing
+      context.put("utils", new ALCommonUtils());
+
     } catch (Exception ex) {
       // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[AjaxScheduleAction] Exception.", ex);
@@ -188,7 +193,7 @@ public class AjaxScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを一覧表示します。
-   *
+   * 
    * @param rundata
    * @param context
    */

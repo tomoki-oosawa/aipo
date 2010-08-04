@@ -116,6 +116,7 @@ dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdow
       }
     },
     addOptionSync:function(value, text, is_selected) {
+      //text = text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
       var select = dojo.byId(this.memberToId);
       var selectsub = dojo.byId(this.selectId);
       if (this.memberLimit != 0 && select.options.length >= this.memberLimit) return;
@@ -167,7 +168,8 @@ dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdow
                 html += ' ';
             }
             var j = i % aipo.calendar.maximum_to;
-            html += "<span class=\"small color" + j +"\">" + t_o[i].text + "</span>";
+            var text = t_o[i].text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            html += "<span class=\"small color" + j +"\">" + text + "</span>";
         }
         input.innerHTML = html;
     },

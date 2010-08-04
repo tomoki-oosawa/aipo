@@ -31,7 +31,7 @@
                                 <div id="nameField">
                                   <div class="fieldMiddle">
                                     <div class="fieldRight">
-                                      <div class="fieldLeft clearfix">#if($!data.User.CompanyId >= 1) $!data.User.getCompanyName($!data.User.CompanyId) #end$!data.User.LastName $!data.User.FirstName さま</div>
+                                      <div class="fieldLeft clearfix">#if($!data.User.CompanyId >= 1) $!data.User.getCompanyName($!data.User.CompanyId) #end $utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString()) さま</div>
                                     </div>
                                   </div>
                                 </div>
