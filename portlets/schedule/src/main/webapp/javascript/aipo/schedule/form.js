@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -51,7 +51,7 @@ aipo.schedule.onLoadScheduleDialog = function(portlet_id){
             preOptions: { key:'1', value:'（未分類）' }
         };
         aimluck.io.createOptions("common_category_id", params);
-    
+
         var mpicker = dijit.byId("membernormalselect");
     	if(mpicker){
     	    var select = dojo.byId('init_memberlist');
@@ -62,7 +62,7 @@ aipo.schedule.onLoadScheduleDialog = function(portlet_id){
     	        mpicker.addOptionSync(s_o[i].value,s_o[i].text,true);
     	    }
         }
-        
+
         var fpicker = dijit.byId("facilityselect");
         if(fpicker){
             var select = dojo.byId('init_facilitylist');
@@ -73,51 +73,52 @@ aipo.schedule.onLoadScheduleDialog = function(portlet_id){
                 fpicker.addOptionSync(s_o[i].value,s_o[i].text,true);
             }
         }
-        
+
         var obj = dojo.byId("name");
         if(obj){
            obj.focus();
         }
-        
+
         var btn_ma = dojo.byId("button_member_add");
         if(btn_ma){
            dojo.connect(btn_ma, "onclick", function(){
               aipo.schedule.expandMember();
            });
         }
-       
+
         var btn_mr = dojo.byId("button_member_remove");
         if(btn_mr){
            dojo.connect(btn_mr, "onclick", function(){
               var select = dojo.byId("member_to");
               if(select.options.length == 0){
                   if((mpicker) && (aipo.schedule.login_aliasname != "undefined")){
-                      mpicker.addOptionSync(aipo.schedule.login_name, aipo.schedule.login_aliasname, true);
+                      var alias = aipo.schedule.login_aliasname.replace(/&amp;/g, "&").replace(/&quot;/g, "\"").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+                      mpicker.addOptionSync(aipo.schedule.login_name, alias, true);
                   }
               }
               aipo.schedule.expandMember();
            });
         }
-        
+
         var btn_fa = dojo.byId("button_facility_add");
         if(btn_fa){
            dojo.connect(btn_fa, "onclick", function(){
               aipo.schedule.expandFacility();
            });
         }
-        
+
         var btn_fr = dojo.byId("button_facility_remove");
         if(btn_fr){
            dojo.connect(btn_fr, "onclick", function(){
               aipo.schedule.expandFacility();
            });
         }
-        
+
         var form = dojo.byId('_scheduleForm');
         if(form){
           form.ignore_duplicate_facility.value = "false";
         }
-        
+
         aipo.schedule.shrinkMember();
         aipo.schedule.shrinkFacility();
     }
@@ -184,10 +185,10 @@ aipo.schedule.formSpanOn = function(form) {
     dojo.byId('repeatButtonField').style.display = "none";
     dojo.byId('normalField').style.display = "";
     dojo.byId('spanField').style.display = "";
-    
+
     dojo.byId('facilityField').style.display = "none";
     dojo.byId('facilityFieldButton').style.display = "none";
-    
+
     form.is_span.value = 'TRUE';
 }
 
@@ -198,10 +199,10 @@ aipo.schedule.formSpanOff = function(form) {
     dojo.byId('repeatButtonField').style.display = "";
     dojo.byId('normalField').style.display = "";
     dojo.byId('timeField').style.display = "";
-    
+
     dojo.byId('facilityFieldButton').style.display = "block";
     aipo.schedule.shrinkFacility();
-    
+
     form.is_repeat.value = 'FALSE';
     form.is_span.value = 'FALSE';
 }
@@ -217,7 +218,7 @@ aipo.schedule.formRepeatOff = function(form) {
     dojo.byId('timeField').style.display = "";
 
     dojo.byId('spanButtonField').style.display = "";
-    
+
     form.is_repeat.value = 'FALSE';
     form.is_span.value = 'FALSE';
 }
@@ -243,7 +244,7 @@ aipo.schedule.formEditRepeatAll = function(form) {
     dojo.byId('repeatField').style.display = "";
     dojo.byId('repeatField').text = '繰り返さない';
     dojo.byId('repeatButtonField').style.display = "";
-  
+
     dojo.byId('timeLabelField').style.display = "";
     dojo.byId('timeField').style.display = "";
 
@@ -254,7 +255,7 @@ aipo.schedule.formEditRepeatAll = function(form) {
 aipo.schedule.formRepeatOn = function(form) {
     dojo.byId('normalField').style.display = "none";
     dojo.byId('spanField').style.display = "none";
-    
+
     dojo.byId('spanButtonField').style.display = "none";
     dojo.byId('repeatField').style.display = "";
     dojo.byId('repeatButtonField').style.display = "";
@@ -332,13 +333,13 @@ aipo.schedule.onSubmit = function(form) {
     if((form.is_span.value != "TRUE") && (form.is_span.value != "true")
       && (form.is_repeat.value != "TRUE") && (form.is_repeat.value != "true")){
         form.end_date.value = form.start_date.value;
-        form.end_date_day.value = form.start_date_day.value;  
-        form.end_date_month.value = form.start_date_month.value; 
+        form.end_date_day.value = form.start_date_day.value;
+        form.end_date_month.value = form.start_date_month.value;
         form.end_date_year.value = form.start_date_year.value;
         form.limit_end_date.value = form.limit_start_date.value;
-        form.limit_end_date_day.value = form.limit_start_date_day.value;  
-        form.limit_end_date_month.value = form.limit_start_date_month.value; 
-        form.limit_end_date_year.value = form.limit_start_date_year.value;     
+        form.limit_end_date_day.value = form.limit_start_date_day.value;
+        form.limit_end_date_month.value = form.limit_start_date_month.value;
+        form.limit_end_date_year.value = form.limit_start_date_year.value;
     }
 }
 
@@ -348,33 +349,33 @@ aipo.schedule.onReceiveMessage = function(msg){
         if(arrDialog){
             arrDialog.hide();
         }
-        
+
         aipo.portletReload('schedule');
-    } 
-    
+    }
+
     if(msg != null && msg.match(/duplicate_facility/)){
-    
+
         if(confirm('既に同じ時間帯に施設が予約されています。スケジュールを登録しますか？')) {
 		    var form = dojo.byId('_scheduleForm');
 		    if(form){
 		      form.ignore_duplicate_facility.value = "true";
-		
+
 		       dojo.xhrPost({
 		            url: form.action,
 		            timeout: 30000,
 		            form: form,
 		            encoding: "utf-8",
 		            handleAs: "json-comment-filtered",
-		            headers: { X_REQUESTED_WITH: "XMLHttpRequest" }, 
+		            headers: { X_REQUESTED_WITH: "XMLHttpRequest" },
 		            load: function (response, ioArgs){
 		            },
 		            error: function (error) {
 		            }
 		        });
-		        	        
+
 		      aipo.schedule.onReceiveMessage("");
 		    }
-		  } 
+		  }
     }else if (dojo.byId('messageDiv')) {
         dojo.byId('messageDiv').innerHTML = msg;
     }
@@ -390,18 +391,19 @@ aipo.schedule.shrinkMember = function(){
             var t_o = m_t.options;
             to_size = t_o.length;
             for(i = 0 ; i < to_size; i++ ) {
-              HTML += "<span>" +  t_o[i].text + "</span>";
+              var text = t_o[i].text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+              HTML += "<span>" + text + "</span>";
               if(i < to_size - 1){
                   HTML += ",<wbr/>";
               }
-            } 
-        }  
+            }
+        }
         HTML += "</td><td style=\"border:none;\">";
         HTML += '<input type=\"button\" class=\"alignright\" value=\"参加メンバー選択\" onclick=\"aipo.schedule.expandMember();\" />'
-        HTML += "</td></tr></tbody></table>";     
+        HTML += "</td></tr></tbody></table>";
        node.innerHTML = HTML;
    }
-   
+
    var _node = dojo.byId("memberField");
    if(_node){
        dojo.style(_node, "display" , "none")
@@ -418,18 +420,19 @@ aipo.schedule.expandMember = function(){
             var t_o = m_t.options;
             to_size = t_o.length;
             for(i = 0 ; i < to_size; i++ ) {
-              HTML += "<span>" +  t_o[i].text + "</span>";
+              var text = t_o[i].text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+              HTML += "<span>" +  text + "</span>";
               if(i < to_size - 1){
                   HTML += ",<wbr/>";
               }
-            } 
+            }
        }
        HTML += "</td><td style=\"border:none;\">";
        HTML += '<input type=\"button\" class=\"alignright\" value=\"選択画面を隠す\" onclick=\"aipo.schedule.shrinkMember();\" />'
-       HTML += "</td></tr></tbody></table>";     
+       HTML += "</td></tr></tbody></table>";
        node.innerHTML = HTML;
    }
-   
+
    var _node = dojo.byId("memberField");
    if(_node){
        dojo.style(_node, "display" , "block");
@@ -450,14 +453,14 @@ aipo.schedule.shrinkFacility = function(){
               if(i < to_size - 1){
                   HTML += ",<wbr/>";
               }
-            } 
-        }  
+            }
+        }
         HTML += "</td><td style=\"border:none;\">";
         HTML += '<input type=\"button\" class=\"alignright\" value=\"施設予約\" onclick=\"aipo.schedule.expandFacility();\" />'
-        HTML += "</td></tr></tbody></table>";     
+        HTML += "</td></tr></tbody></table>";
        node.innerHTML = HTML;
    }
-   
+
    var _node = dojo.byId("facilityField");
    if(_node){
        dojo.style(_node, "display" , "none")
@@ -474,18 +477,19 @@ aipo.schedule.expandFacility = function(){
             var t_o = f_t.options;
             to_size = t_o.length;
             for(i = 0 ; i < to_size; i++ ) {
-              HTML += "<span>" +  t_o[i].text + "</span>";
+              var text = t_o[i].text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+              HTML += "<span>" +  text + "</span>";
               if(i < to_size - 1){
                   HTML += ",<wbr/>";
               }
-            } 
+            }
        }
        HTML += "</td><td style=\"border:none;\">";
        HTML += '<input type=\"button\" class=\"alignright\" value=\"選択画面を隠す\" onclick=\"aipo.schedule.shrinkFacility();\" />'
        HTML += "</td></tr></tbody></table>";
        node.innerHTML = HTML;
    }
-   
+
    var _node = dojo.byId("facilityField");
    if(_node){
        dojo.style(_node, "display" , "block");
