@@ -53,7 +53,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカード集計の検索データを管理するためのクラスです。 <br />
- *
+ * 
  */
 public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
   /** logger */
@@ -133,7 +133,7 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -197,7 +197,7 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
       int userid = record.getUserId();
       ALEipUser user = ALEipUtils.getALEipUser(userid);
       rd.setUserId(userid);
-      rd.setName(user.getAliasName().toString());
+      rd.setName(user.getAliasName().getValue());
       rd.setLoginName(user.getName().toString());
       rd.setSystemId(record.getEipTExtTimecardSystem().getSystemId());
       rd.setSystemName(record.getEipTExtTimecardSystem().getSystemName());
@@ -222,7 +222,7 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
       int userid = record.getUserId();
       ALEipUser user = ALEipUtils.getALEipUser(userid);
       rd.setUserId(userid);
-      rd.setName(user.getAliasName().toString());
+      rd.setName(user.getAliasName().getValue());
       rd.setLoginName(user.getName().toString());
       rd.setSystemId(record.getEipTExtTimecardSystem().getSystemId());
       rd.setSystemName(record.getEipTExtTimecardSystem().getSystemName());
@@ -252,7 +252,7 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public Map getPostMap() {
