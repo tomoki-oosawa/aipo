@@ -315,15 +315,17 @@ public class AddressBookWordSelectData extends ALAbstractSelectData {
           EipMAddressbook.EMAIL_PROPERTY, "%" + word + "%");
       Expression exp16 = ExpressionFactory.likeExp(
           EipMAddressbook.TELEPHONE_PROPERTY, "%" + word + "%");
-
       Expression exp17 = ExpressionFactory.likeExp(
+          EipMAddressbook.CELLULAR_PHONE_PROPERTY, "%" + word + "%");
+
+      Expression exp21 = ExpressionFactory.likeExp(
           EipMAddressbook.EIP_MADDRESSBOOK_COMPANY_PROPERTY + "."
               + EipMAddressbookCompany.COMPANY_NAME_PROPERTY, "%" + word + "%");
-      Expression exp18 = ExpressionFactory.likeExp(
+      Expression exp22 = ExpressionFactory.likeExp(
           EipMAddressbook.EIP_MADDRESSBOOK_COMPANY_PROPERTY + "."
               + EipMAddressbookCompany.COMPANY_NAME_KANA_PROPERTY, "%" + word
               + "%");
-      Expression exp19 = ExpressionFactory.likeExp(
+      Expression exp23 = ExpressionFactory.likeExp(
           EipMAddressbook.EIP_MADDRESSBOOK_COMPANY_PROPERTY + "."
               + EipMAddressbookCompany.TELEPHONE_PROPERTY, "%" + word + "%");
 
@@ -345,9 +347,9 @@ public class AddressBookWordSelectData extends ALAbstractSelectData {
               + transWord + "%");
 
       query.andQualifier(exp11.orExp(exp12).orExp(exp13).orExp(exp14).orExp(
-          exp15).orExp(exp16).orExp(exp17).orExp(exp18).orExp(exp19).orExp(
-          exp31).orExp(exp32).orExp(exp33).orExp(exp34).orExp(exp35).orExp(
-          exp36));
+          exp15).orExp(exp16).orExp(exp17).orExp(exp21).orExp(exp22).orExp(
+          exp23).orExp(exp31).orExp(exp32).orExp(exp33).orExp(exp34).orExp(
+          exp35).orExp(exp36));
 
     } else if ("corp".equals(currentTab)) {
       query = new SelectQuery(TurbineUser.class);
@@ -381,6 +383,10 @@ public class AddressBookWordSelectData extends ALAbstractSelectData {
 
       Expression exp21 = ExpressionFactory.likeExp(
           TurbineUser.OUT_TELEPHONE_PROPERTY, "%" + word + "%");
+      Expression exp22 = ExpressionFactory.likeExp(
+          TurbineUser.IN_TELEPHONE_PROPERTY, "%" + word + "%");
+      Expression exp23 = ExpressionFactory.likeExp(
+          TurbineUser.CELLULAR_PHONE_PROPERTY, "%" + word + "%");
 
       Expression exp31 = ExpressionFactory.likeExp(
           TurbineUser.FIRST_NAME_PROPERTY, "%" + transWord + "%");
@@ -396,8 +402,8 @@ public class AddressBookWordSelectData extends ALAbstractSelectData {
               + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY, "%" + transWord + "%");
 
       query.andQualifier(exp11.orExp(exp12).orExp(exp13).orExp(exp14).orExp(
-          exp15).orExp(exp16).orExp(exp21).orExp(exp31).orExp(exp32).orExp(
-          exp33).orExp(exp34).orExp(exp35));
+          exp15).orExp(exp16).orExp(exp21).orExp(exp22).orExp(exp23).orExp(
+          exp31).orExp(exp32).orExp(exp33).orExp(exp34).orExp(exp35));
     }
 
     return query;
