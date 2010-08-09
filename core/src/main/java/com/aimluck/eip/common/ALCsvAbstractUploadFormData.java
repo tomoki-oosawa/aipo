@@ -33,7 +33,7 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 
 /**
  * CSVデータを管理するための抽象クラスです。 <br />
- *
+ * 
  */
 public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
 
@@ -64,18 +64,18 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
 
   /**
    * 一時フォルダを指定します。 <br />
-   *
+   * 
    * @return
    */
   public abstract String getTempFilePath();
 
   /**
    * データに値を設定します。 <br />
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
-   *          エラーメッセージのリスト
+   *            エラーメッセージのリスト
    * @return TRUE 成功 FALSE 失敗
    */
   protected boolean setFormData(RunData rundata, Context context,
@@ -156,17 +156,14 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
       if (!reader.init(filepath)) {
         return false;
       }
-      /*
-      int i;
-      String token;
+
       try {
         page_count = 0;
         line_count = 0;
         while (reader.eof != -1) {
-          // if(j++ > 100)break;
-          for (i = 0; i < ALCsvTokenizer.CSV_SHOW_SIZE; i++) {
+          for (int i = 0; i < ALCsvTokenizer.CSV_SHOW_SIZE; i++) {
             while (reader.eof != -1) {
-              token = reader.nextToken();
+              reader.nextToken();
               if (reader.eof == -1)
                 break;
               if (reader.line)
@@ -181,7 +178,6 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
       } catch (Exception e) {
 
       }
-      */
 
     } catch (Exception ex) {
       logger.error("Exception", ex);
