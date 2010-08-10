@@ -176,8 +176,8 @@
             <option value="35" #if ($!result.StartDate.Minute == "35") selected="selected" #end>35分</option>
             <option value="40" #if ($!result.StartDate.Minute == "40") selected="selected" #end>40分</option>
             <option value="45" #if ($!result.StartDate.Minute == "45") selected="selected" #end>45分</option>
-            <option value="50" #if ($!result.StartDate.Minute == "55") selected="selected" #end>50分</option>
-            <option value="55" #if ($!result.StartDate.Minute == "60") selected="selected" #end>55分</option>
+            <option value="50" #if ($!result.StartDate.Minute == "50") selected="selected" #end>50分</option>
+            <option value="55" #if ($!result.StartDate.Minute == "55") selected="selected" #end>55分</option>
             </select>
         </span>～
         <span id="endTimeSpan">
@@ -197,8 +197,8 @@
             <option value="35" #if ($!result.EndDate.Minute == "35") selected="selected" #end>35分</option>
             <option value="40" #if ($!result.EndDate.Minute == "40") selected="selected" #end>40分</option>
             <option value="45" #if ($!result.EndDate.Minute == "45") selected="selected" #end>45分</option>
-            <option value="50" #if ($!result.EndDate.Minute == "55") selected="selected" #end>50分</option>
-            <option value="55" #if ($!result.EndDate.Minute == "60") selected="selected" #end>55分</option>
+            <option value="50" #if ($!result.EndDate.Minute == "50") selected="selected" #end>50分</option>
+            <option value="55" #if ($!result.EndDate.Minute == "55") selected="selected" #end>55分</option>
             </select>
         </span></div>
   </div>
