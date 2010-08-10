@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http:// www.gnu.org/licenses/>.
  *#
@@ -43,7 +43,13 @@
 #set($screenlink = "$jslink.getPortletById($!portlet.ID).addPathInfo('template','PortletFeatureLiteJSONScreen')")
 <select name="feature_id" id="feature_id" onchange="aipo.accessctl.changeAcls('$!portlet.ID', '$screenlink', this.options[this.selectedIndex].value)">
 #foreach( $record in $result.PortletFeatureList )
-<option value="$!record.FeatureId" #if ($!result.FeatureId.toString() == $!record.FeatureId.toString()) selected="selected" #end>$!record.FeatureAliasName</option>
+#if ($mode=="new_form")
+    <option value="$!record.FeatureId"  selected="selected" >$!record.FeatureAliasName</option>
+#else
+#if ($!result.FeatureId.toString() == $!record.FeatureId.toString())
+    <option value="$!record.FeatureId"  selected="selected" >$!record.FeatureAliasName</option>
+#end
+#end
 #end
 </select>
 #ALtditemfooter()
@@ -53,23 +59,23 @@
 #ALtdcaption("#ALrequired('所属メンバー')")
 #ALtditemheader()
 <div class="spaceTop spaceLeft small">左側にユーザーを追加してください。</div>
-<div dojoType="aipo.widget.MemberNormalSelectList" 
-    id="membernormalselect" 
-    widgetId="membernormalselect"  
-    buttonAddId="button_member_add" 
-    buttonRemoveId="button_member_remove" 
-    memberFromId="tmp_member_from" 
+<div dojoType="aipo.widget.MemberNormalSelectList"
+    id="membernormalselect"
+    widgetId="membernormalselect"
+    buttonAddId="button_member_add"
+    buttonRemoveId="button_member_remove"
+    memberFromId="tmp_member_from"
     memberToTitle="所属メンバー一覧"
-    memberToId="member_to" 
-    memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')" 
-    memberFromOptionKey="name" 
-    memberFromOptionValue="aliasName" 
-    groupSelectId="tmp_group" 
+    memberToId="member_to"
+    memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
+    memberFromOptionKey="name"
+    memberFromOptionValue="aliasName"
+    groupSelectId="tmp_group"
     groupSelectPreOptionKey="LoginUser"
     groupSelectPreOptionValue="（グループ全体）"
-    groupSelectOptionKey="groupId" 
-    groupSelectOptionValue="name" 
-    memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen').addQueryData('mode','post')" 
+    groupSelectOptionKey="groupId"
+    groupSelectOptionValue="name"
+    memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen').addQueryData('mode','post')"
     changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group')">
 </div>
 <select size="5" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.MemberList)<option value="$!record.Name">$!record.AliasName</option>#end</select>
