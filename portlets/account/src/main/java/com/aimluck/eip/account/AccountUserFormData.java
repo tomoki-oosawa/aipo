@@ -79,7 +79,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザーアカウントのフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class AccountUserFormData extends ALAbstractFormData {
 
@@ -189,7 +189,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 初期化します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -212,7 +212,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -305,7 +305,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -321,7 +321,8 @@ public class AccountUserFormData extends ALAbstractFormData {
         post.setFormData(rundata, context, msgList);
         position.setFormData(rundata, context, msgList);
 
-        List<FileuploadLiteBean> fileBeanList = FileuploadUtils.getFileuploadList(rundata);
+        List<FileuploadLiteBean> fileBeanList = FileuploadUtils
+            .getFileuploadList(rundata);
         if (fileBeanList != null && fileBeanList.size() > 0) {
           filebean = fileBeanList.get(0);
           if (filebean.getFileId() > 0) {
@@ -345,7 +346,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
   protected void setValidator() {
@@ -407,7 +408,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
@@ -422,7 +423,7 @@ public class AccountUserFormData extends ALAbstractFormData {
         SelectQuery query = new SelectQuery(TurbineUser.class, exp);
         List<?> ulist = dataContext.performQuery(query);
         if (ulist.size() > 0) {
-          //TurbineUser user = (TurbineUser) ulist.get(0);
+          // TurbineUser user = (TurbineUser) ulist.get(0);
           // if ("F".equals(user.getDisabled())) {
           msgList.add("ログイン名『 <span class='em'>" + username
               + "</span> 』はすでに登録されています。別のログイン名で登録してください。");
@@ -493,9 +494,9 @@ public class AccountUserFormData extends ALAbstractFormData {
 
     // フリガナのカタカナへの変換
     first_name_kana.setValue(ALStringUtil.convertHiragana2Katakana(ALStringUtil
-        .convertH2ZKana(first_name_kana.toString())));
+        .convertH2ZKana(first_name_kana.getValue())));
     last_name_kana.setValue(ALStringUtil.convertHiragana2Katakana(ALStringUtil
-        .convertH2ZKana(last_name_kana.toString())));
+        .convertH2ZKana(last_name_kana.getValue())));
     first_name_kana.validate(msgList);
     last_name_kana.validate(msgList);
 
@@ -571,7 +572,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を読み込みます。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -635,8 +636,8 @@ public class AccountUserFormData extends ALAbstractFormData {
         filebean.setFileName("以前の写真ファイル");
       }
 
-      postList = AccountUtils
-          .getPostBeanList(Integer.parseInt(user.getUserId()));
+      postList = AccountUtils.getPostBeanList(Integer
+          .parseInt(user.getUserId()));
 
       return true;
     } catch (Exception e) {
@@ -647,7 +648,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を追加します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -710,10 +711,10 @@ public class AccountUserFormData extends ALAbstractFormData {
         if (!out_telephone1.getValue().equals("")
             && !out_telephone2.getValue().equals("")
             && !out_telephone3.getValue().equals("")) {
-          user.setOutTelephone(new StringBuffer()
-              .append(out_telephone1.getValue()).append("-")
-              .append(out_telephone2.getValue()).append("-")
-              .append(out_telephone3.getValue()).toString());
+          user.setOutTelephone(new StringBuffer().append(
+              out_telephone1.getValue()).append("-").append(
+              out_telephone2.getValue()).append("-").append(
+              out_telephone3.getValue()).toString());
         } else {
           user.setOutTelephone("");
         }
@@ -721,10 +722,10 @@ public class AccountUserFormData extends ALAbstractFormData {
         if (!cellular_phone1.getValue().equals("")
             && !cellular_phone2.getValue().equals("")
             && !cellular_phone3.getValue().equals("")) {
-          user.setCellularPhone(new StringBuffer()
-              .append(cellular_phone1.getValue()).append("-")
-              .append(cellular_phone2.getValue()).append("-")
-              .append(cellular_phone3.getValue()).toString());
+          user.setCellularPhone(new StringBuffer().append(
+              cellular_phone1.getValue()).append("-").append(
+              cellular_phone2.getValue()).append("-").append(
+              cellular_phone3.getValue()).toString());
         } else {
           user.setCellularPhone("");
         }
@@ -782,8 +783,8 @@ public class AccountUserFormData extends ALAbstractFormData {
       }
 
       // 一時的な添付ファイルの削除
-      File folder = FileuploadUtils.getFolder(org_id,
-          ALEipUtils.getUserId(rundata), folderName);
+      File folder = FileuploadUtils.getFolder(org_id, ALEipUtils
+          .getUserId(rundata), folderName);
       FileuploadUtils.deleteFolder(folder);
     } catch (Exception e) {
       logger.error("Exception", e);
@@ -794,7 +795,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -857,10 +858,10 @@ public class AccountUserFormData extends ALAbstractFormData {
         if (!out_telephone1.getValue().equals("")
             && !out_telephone2.getValue().equals("")
             && !out_telephone3.getValue().equals("")) {
-          user.setOutTelephone(new StringBuffer()
-              .append(out_telephone1.getValue()).append("-")
-              .append(out_telephone2.getValue()).append("-")
-              .append(out_telephone3.getValue()).toString());
+          user.setOutTelephone(new StringBuffer().append(
+              out_telephone1.getValue()).append("-").append(
+              out_telephone2.getValue()).append("-").append(
+              out_telephone3.getValue()).toString());
         } else {
           user.setOutTelephone("");
         }
@@ -868,10 +869,10 @@ public class AccountUserFormData extends ALAbstractFormData {
         if (!cellular_phone1.getValue().equals("")
             && !cellular_phone2.getValue().equals("")
             && !cellular_phone3.getValue().equals("")) {
-          user.setCellularPhone(new StringBuffer()
-              .append(cellular_phone1.getValue()).append("-")
-              .append(cellular_phone2.getValue()).append("-")
-              .append(cellular_phone3.getValue()).toString());
+          user.setCellularPhone(new StringBuffer().append(
+              cellular_phone1.getValue()).append("-").append(
+              cellular_phone2.getValue()).append("-").append(
+              cellular_phone3.getValue()).toString());
         } else {
           user.setCellularPhone("");
         }
@@ -894,8 +895,8 @@ public class AccountUserFormData extends ALAbstractFormData {
         JetspeedSecurity.saveUser(user);
 
         // 部署を移動
-        List<UserGroupLiteBean> postList_old = AccountUtils.getPostBeanList(Integer.parseInt(user
-            .getUserId()));
+        List<UserGroupLiteBean> postList_old = AccountUtils
+            .getPostBeanList(Integer.parseInt(user.getUserId()));
         if (postList_old != null && postList_old.size() > 0) {
           UserGroupLiteBean uglb = null;
           int old_size = postList_old.size();
@@ -947,8 +948,8 @@ public class AccountUserFormData extends ALAbstractFormData {
       UserUtils.clearCache();
 
       // 一時的な添付ファイルの削除
-      File folder = FileuploadUtils.getFolder(org_id,
-          ALEipUtils.getUserId(rundata), folderName);
+      File folder = FileuploadUtils.getFolder(org_id, ALEipUtils
+          .getUserId(rundata), folderName);
       FileuploadUtils.deleteFolder(folder);
     } catch (Exception e) {
       logger.error("Exception", e);
@@ -959,12 +960,12 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を無効化します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return
-   *
+   * 
    */
   public boolean disableFormData(RunData rundata, Context context,
       List<String> msgList) {
@@ -1021,12 +1022,12 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を有効化します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return
-   *
+   * 
    */
   public boolean enableFormData(RunData rundata, Context context,
       List<String> msgList) {
@@ -1078,7 +1079,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -1159,7 +1160,7 @@ public class AccountUserFormData extends ALAbstractFormData {
       /*
        * ObjectId oid_ugr = new ObjectId("TurbineUserGroupRole",
        * TurbineUserGroupRole.TURBINE_USER_PROPERTY, userId);
-       *
+       * 
        * //TurbineUserGroupRole ugr = (TurbineUserGroupRole)
        * dataContext.refetchObject(oid_ugr); dataContext.deleteObject(ugr);
        */
@@ -1174,8 +1175,8 @@ public class AccountUserFormData extends ALAbstractFormData {
        */
 
       /*
-       * String query3 = "SELECT USER_ID FROM TURBINE_USER WHERE login_name= '"
-       * + user_name + "'"; SQLTemplate rawSelect3 = new
+       * String query3 = "SELECT USER_ID FROM TURBINE_USER WHERE login_name= '" +
+       * user_name + "'"; SQLTemplate rawSelect3 = new
        * SQLTemplate(TurbineUser.class, query3, true);
        * rawSelect3.setFetchingDataRows(true); List list3 =
        * dataContext.performQuery(rawSelect3);
@@ -1232,8 +1233,8 @@ public class AccountUserFormData extends ALAbstractFormData {
        * EipTWorkflowRequestMap.ORDER_INDEX_PROPERTY,
        * Integer.valueOf(request_number + 1));
        * workflow_request_map_query2.setQualifier
-       * (workflow_exp3.andExp(workflow_exp4)); List workflow_request_map_list2
-       * = dataContext.performQuery(workflow_request_map_query2); if
+       * (workflow_exp3.andExp(workflow_exp4)); List workflow_request_map_list2 =
+       * dataContext.performQuery(workflow_request_map_query2); if
        * (workflow_request_map_list2.size() == 1) { // 自動的に承認して次の人に回す
        * workflow_request_map.setStatus("A"); EipTWorkflowRequestMap
        * workflow_request_map2 = (EipTWorkflowRequestMap)
@@ -1295,7 +1296,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 添付ファイルを削除する．
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -1344,7 +1345,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 指定したchar型文字が記号であるかを判断します。
-   *
+   * 
    * @param ch
    * @return
    */
@@ -1368,7 +1369,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 携帯メールアドレスを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getCellularMail() {
@@ -1377,7 +1378,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 会社IDを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALNumberField getCompanyId() {
@@ -1386,7 +1387,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * アカウント有効/無効フラグを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getDisabled() {
@@ -1395,7 +1396,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * メールアドレスを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getEmail() {
@@ -1404,7 +1405,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * フリガナ（名）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFirstNameKana() {
@@ -1413,7 +1414,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 名前（名）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFirstName() {
@@ -1422,7 +1423,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（内線）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getInTelephone() {
@@ -1431,7 +1432,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * フリガナ（姓）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getLastNameKana() {
@@ -1440,7 +1441,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 名前（姓）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getLastName() {
@@ -1449,7 +1450,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getCellularPhone1() {
@@ -1458,7 +1459,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getCellularPhone2() {
@@ -1467,7 +1468,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getCellularPhone3() {
@@ -1476,7 +1477,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getOutTelephone1() {
@@ -1485,7 +1486,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getOutTelephone2() {
@@ -1494,7 +1495,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getOutTelephone3() {
@@ -1503,7 +1504,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * パスワードを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getPassword() {
@@ -1512,7 +1513,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * パスワード2を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getPassword2() {
@@ -1521,7 +1522,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 役職IDを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALNumberField getPositionId() {
@@ -1530,7 +1531,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 部署IDを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALNumberField getPostId() {
@@ -1539,7 +1540,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * ユーザー名を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getUserName() {
@@ -1548,7 +1549,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 役職リストを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public List<ALEipPosition> getPositionList() {
@@ -1556,7 +1557,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public List<UserGroupLiteBean> getPostList() {
@@ -1564,7 +1565,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -1572,7 +1573,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public Map<Integer, ALEipPosition> getPositionMap() {
@@ -1580,7 +1581,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public AccountPostFormData getPost() {
@@ -1588,7 +1589,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public AccountPositionFormData getPosition() {
@@ -1596,7 +1597,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public boolean isNewPost() {
@@ -1604,7 +1605,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public boolean isNewPosition() {
