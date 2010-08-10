@@ -57,7 +57,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * スケジュール詳細表示の検索結果を管理するクラスです。
- *
+ * 
  */
 public class ScheduleSelectData extends ALAbstractSelectData {
 
@@ -213,22 +213,24 @@ public class ScheduleSelectData extends ALAbstractSelectData {
     ScheduleDetailResultData rd = new ScheduleDetailResultData();
     rd.initField();
     try {
-      // List list = (List) record.getEipTScheduleMaps();
-
       DataContext dataContext = DatabaseOrmService.getInstance()
           .getDataContext();
 
+      // 選択した予定に対するダミースケジュールを検索
       SelectQuery schedulequery = new SelectQuery(EipTSchedule.class);
       Expression exp1 = ExpressionFactory.matchExp(
           EipTSchedule.PARENT_ID_PROPERTY, record.getScheduleId());
+      Expression exp2 = ExpressionFactory.matchExp(
+          EipTSchedule.START_DATE_PROPERTY, view_date.getValue());
       schedulequery.setQualifier(exp1);
-      List scheduleList = new ArrayList();
+      schedulequery.andQualifier(exp2);
+      List<Object> scheduleList = new ArrayList<Object>();
       scheduleList = dataContext.performQuery(schedulequery);
+
       scheduleList.add(record.getScheduleId());
 
-
+      // 元のスケジュール及びダミースケジュールに登録されているマップを検索
       SelectQuery mapquery = new SelectQuery(EipTScheduleMap.class);
-
       Expression mapexp1 = ExpressionFactory.inExp(
           EipTScheduleMap.SCHEDULE_ID_PROPERTY, scheduleList);
       mapquery.setQualifier(mapexp1);
@@ -419,7 +421,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
 
   /**
    * 共有メンバーを取得します。
-   *
+   * 
    * @return
    */
   public List getMemberList() {
@@ -428,7 +430,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
 
   /**
    * 状態を取得します。
-   *
+   * 
    * @param id
    * @return
    */
@@ -437,7 +439,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALDateTimeField getViewDate() {
@@ -451,7 +453,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
   public String getAclPortletFeature() {
@@ -461,7 +463,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
   /**
    * アクセス権限用メソッド。<br />
    * アクセス権限の有無を返します。
-   *
+   * 
    * @return
    */
   public boolean hasAuthorityOtherEdit() {
