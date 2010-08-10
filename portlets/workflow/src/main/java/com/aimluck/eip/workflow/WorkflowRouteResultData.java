@@ -25,12 +25,13 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフロー申請経路のResultDataです。<BR>
- *
+ * 
  */
 public class WorkflowRouteResultData implements ALData {
 
@@ -48,7 +49,7 @@ public class WorkflowRouteResultData implements ALData {
       .getLogger(WorkflowUtils.class.getName());
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -108,7 +109,7 @@ public class WorkflowRouteResultData implements ALData {
       while (st.hasMoreTokens()) {
         next_token = st.nextToken();
         if (!next_token.equals("")) {
-          username = WorkflowUtils.getName(next_token);
+          username = ALStringUtil.sanitizing(WorkflowUtils.getName(next_token));
           routeun.append(username);
           routeun.append("<br />");
         }
@@ -130,7 +131,7 @@ public class WorkflowRouteResultData implements ALData {
       while (st.hasMoreTokens()) {
         next_token = st.nextToken();
         if (!next_token.equals("")) {
-          username = WorkflowUtils.getName(next_token);
+          username = ALStringUtil.sanitizing(WorkflowUtils.getName(next_token));
           routeun.append(username);
           routeun.append(" -> ");
         }
