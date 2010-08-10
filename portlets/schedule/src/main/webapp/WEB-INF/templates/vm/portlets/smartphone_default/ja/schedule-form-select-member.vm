@@ -18,7 +18,7 @@
  *#
 ## ---------------------------------------------------------------------------
 #set ($title = "別のユーザーを選択")
-#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_member','1')")
+#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_selectmember','1')")
 #set($linklist = [["グループの選択へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_selectgroup','1')"],["自分のスケジュールへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
 #ALcell_pagetitle_iphone($career $title)
 #ALcell_linklist_iphone($career $linklist)
