@@ -102,8 +102,10 @@ public class ScheduleSelectData extends ALAbstractSelectData {
   private String aclPortletFeature;
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * @see
+   * com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules
+   * .actions.common.ALAction, org.apache.turbine.util.RunData,
+   * org.apache.velocity.context.Context)
    */
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -178,8 +180,9 @@ public class ScheduleSelectData extends ALAbstractSelectData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * @see
+   * com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context)
    */
   protected List selectList(RunData rundata, Context context) {
     // このメソッドは利用されません。
@@ -187,8 +190,9 @@ public class ScheduleSelectData extends ALAbstractSelectData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * @see
+   * com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context)
    */
   protected Object selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -197,7 +201,8 @@ public class ScheduleSelectData extends ALAbstractSelectData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   * @see
+   * com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
   protected Object getResultData(Object obj) {
     // このメソッドは利用されません。
@@ -205,7 +210,9 @@ public class ScheduleSelectData extends ALAbstractSelectData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   * @see
+   * com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang
+   * .Object)
    */
   protected Object getResultDataDetail(Object obj)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -287,9 +294,10 @@ public class ScheduleSelectData extends ALAbstractSelectData {
       // new Criteria().addIn(EipMFacilityConstants.FACILITY_ID, facilityIds));
 
       if (ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY.equals(type)) {
+        // 施設
         ALEipUser facilityuser = new ALEipUser();
         facilityuser.initField();
-        facilityuser.setUserId(-1);
+        facilityuser.setUserId(userid);
         facilityuser.setName("");
         facilityuser.setAliasName("", getFacilityName(facilities, userid));
         rd.setUser(facilityuser);
@@ -297,6 +305,8 @@ public class ScheduleSelectData extends ALAbstractSelectData {
         // ユーザー
         rd.setUser(ALEipUtils.getALEipUser(userid));
       }
+      // タイプ
+      rd.setType(type);
       // 開始日時
       rd.setStartDate(record.getStartDate());
       // オーナー

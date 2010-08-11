@@ -30,6 +30,7 @@
 <input type="hidden" name="delete_url" value="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen').addQueryData('mode','delete').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()})"/>
 <input type="hidden" name="change_status_url" value="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen').addQueryData('mode','change_status').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()})"/>
 <input type="hidden" name="view_date" value="$!{result.ViewDate.toString()}"/>
+<input type="hidden" name="type" value="$!{result.Detail.Type}"/>
 <input type="hidden" name="userid" value="$!{result.Detail.User.UserId.toString()}"/>
 #if($afterbehavior)
 <input type="hidden" name="afterbehavior" value="1" />
