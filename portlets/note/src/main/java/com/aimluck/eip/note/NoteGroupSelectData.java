@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -47,13 +46,14 @@ import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.note.util.NoteUtils;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 伝言メモの送信先に指定できるグループの検索データを管理するためのクラスです。 <br />
  */
-public class NoteGroupSelectData extends ALAbstractSelectData implements ALData {
+public class NoteGroupSelectData extends ALAbstractSelectData<TurbineUser>
+    implements ALData {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
       .getLogger(NoteGroupSelectData.class.getName());
@@ -71,8 +71,6 @@ public class NoteGroupSelectData extends ALAbstractSelectData implements ALData 
 
   /** 新着数 */
   private int newNoteAllSum = 0;
-
-  private DataContext dataContext;
 
   /**
    * 初期化処理を行います。 <BR>
@@ -103,15 +101,13 @@ public class NoteGroupSelectData extends ALAbstractSelectData implements ALData 
     } catch (Exception ex) {
       logger.debug("Exception", ex);
     }
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List<?> selectList(RunData rundata, Context context) {
+  protected List<TurbineUser> selectList(RunData rundata, Context context) {
     setCurrentTab(rundata, context);
     try {
       userId = Integer.toString(ALEipUtils.getUserId(rundata));
@@ -128,14 +124,14 @@ public class NoteGroupSelectData extends ALAbstractSelectData implements ALData 
 
       // 受信履歴の未読数と新着数をカウントアップする．
 
-      List<?> list = dataContext.performQuery(NoteUtils.getSelectQueryNoteList(
-          rundata, context));
+      List<EipTNoteMap> list = ALDataContext.performQuery(EipTNoteMap.class,
+          NoteUtils.getSelectQueryNoteList(rundata, context));
       // List list = orm_notemap.doSelect();
       if (list != null && list.size() > 0) {
         String stat = null;
         int size = list.size();
         for (int i = 0; i < size; i++) {
-          EipTNoteMap map = (EipTNoteMap) list.get(i);
+          EipTNoteMap map = list.get(i);
           stat = map.getNoteStat();
           if (NoteUtils.NOTE_STAT_NEW.equals(stat)) {
             // 新着数をカウントアップする．
@@ -151,13 +147,14 @@ public class NoteGroupSelectData extends ALAbstractSelectData implements ALData 
       String filter_type = ALEipUtils.getTemp(rundata, context,
           LIST_FILTER_TYPE_STR);
       if (filter == null || filter_type == null || filter.equals("")) {
-        return new ArrayList<Object>();
+        return new ArrayList<TurbineUser>();
       } else {
         SelectQuery query = getSelectQuery(rundata, context);
         buildSelectQueryForListView(query);
         buildSelectQueryForListViewSort(query, rundata, context);
 
-        List<?> ulist = dataContext.performQuery(query);
+        List<TurbineUser> ulist = ALDataContext.performQuery(TurbineUser.class,
+            query);
         return buildPaginatedList(ulist);
       }
     } catch (Exception ex) {
@@ -170,7 +167,7 @@ public class NoteGroupSelectData extends ALAbstractSelectData implements ALData 
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected TurbineUser selectDetail(RunData rundata, Context context) {
     setCurrentTab(rundata, context);
     return null;
   }
@@ -178,9 +175,8 @@ public class NoteGroupSelectData extends ALAbstractSelectData implements ALData 
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(TurbineUser user) {
     try {
-      TurbineUser user = (TurbineUser) obj;
       NoteGroupResultData rd = new NoteGroupResultData();
       rd.initField();
       rd.setUserId(user.getUserId().intValue());
@@ -195,7 +191,7 @@ public class NoteGroupSelectData extends ALAbstractSelectData implements ALData 
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(TurbineUser obj) {
     return null;
   }
 

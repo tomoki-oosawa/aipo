@@ -39,7 +39,7 @@ import com.aimluck.eip.page.util.PageUtils;
 /**
  * ページ設定の検索データを管理するためのクラスです。 <br />
  */
-public class PageSelectData extends ALAbstractSelectData {
+public class PageSelectData extends ALAbstractSelectData<Portlets> {
 
   /** logger */
   @SuppressWarnings("unused")
@@ -109,7 +109,7 @@ public class PageSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected Portlets selectDetail(RunData rundata, Context context) {
     String portletId = rundata.getParameters().getString(
         ALEipConstants.ENTITY_ID);
     if (portletId == null || portletId.equals(""))
@@ -121,15 +121,14 @@ public class PageSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(Portlets obj) {
     return getResultDataDetail(obj);
   }
 
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
-    Portlets record = (Portlets) obj;
+  protected Object getResultDataDetail(Portlets record) {
     PageResultData rd = new PageResultData();
     rd.initField();
     rd.setPageId(record.getId());

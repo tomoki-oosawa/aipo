@@ -30,14 +30,13 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALEipManager;
-import com.aimluck.eip.common.ALEipPosition;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザーアカウントの検索データを管理するためのクラスです。 <br />
  */
-public class AccountEditSelectData extends ALAbstractSelectData {
+public class AccountEditSelectData extends ALAbstractSelectData<ALBaseUser> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -50,7 +49,7 @@ public class AccountEditSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List<Object> selectList(RunData rundata, Context context) {
+  protected List<ALBaseUser> selectList(RunData rundata, Context context) {
     return null;
   }
 
@@ -61,7 +60,7 @@ public class AccountEditSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected ALBaseUser selectDetail(RunData rundata, Context context) {
     ALBaseUser baseUser = (ALBaseUser) rundata.getUser();
     return baseUser;
   }
@@ -71,7 +70,7 @@ public class AccountEditSelectData extends ALAbstractSelectData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(ALBaseUser obj) {
     return null;
   }
 
@@ -80,9 +79,8 @@ public class AccountEditSelectData extends ALAbstractSelectData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(ALBaseUser record) {
     try {
-      ALBaseUser record = (ALBaseUser) obj;
 
       List<String> postNames = ALEipUtils.getPostNameList(Integer
           .valueOf(record.getUserId()));
@@ -147,8 +145,8 @@ public class AccountEditSelectData extends ALAbstractSelectData {
   private String getPositionName(int id) {
     if (ALEipManager.getInstance().getPositionMap()
         .containsKey(Integer.valueOf(id))) {
-      return ((ALEipPosition) ALEipManager.getInstance().getPositionMap()
-          .get(Integer.valueOf(id))).getPositionName().getValue();
+      return (ALEipManager.getInstance().getPositionMap().get(Integer
+          .valueOf(id))).getPositionName().getValue();
     }
     return null;
   }

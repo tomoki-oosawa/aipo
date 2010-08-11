@@ -34,7 +34,7 @@ import com.aimluck.eip.timecard.util.TimecardUtils;
  * タイムカード集計の検索データを管理するためのクラスです。 <br />
  *
  */
-public class TimecardSettingsSelectData extends ALAbstractSelectData {
+public class TimecardSettingsSelectData extends ALAbstractSelectData<EipTTimecardSettings> {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
       .getLogger(TimecardSettingsSelectData.class.getName());
@@ -43,7 +43,7 @@ public class TimecardSettingsSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List<?> selectList(RunData rundata, Context context) {
+  protected List<EipTTimecardSettings> selectList(RunData rundata, Context context) {
     return null;
   }
 
@@ -51,23 +51,22 @@ public class TimecardSettingsSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected EipTTimecardSettings selectDetail(RunData rundata, Context context) {
     return TimecardUtils.getEipTTimecardSettings(rundata, context);
   }
 
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipTTimecardSettings obj) {
     return null;
   }
 
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(EipTTimecardSettings record) {
     try {
-      EipTTimecardSettings record = (EipTTimecardSettings) obj;
       TimecardSettingsResultData rd = new TimecardSettingsResultData();
       rd.initField();
       rd.setTimecardSettingsId(record.getTimecardSettingsId().intValue());

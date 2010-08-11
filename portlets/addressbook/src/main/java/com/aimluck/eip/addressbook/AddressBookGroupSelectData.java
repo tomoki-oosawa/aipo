@@ -21,7 +21,6 @@ package com.aimluck.eip.addressbook;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -36,15 +35,16 @@ import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレス帳グループの検索データクラスです。
  *
  */
-public class AddressBookGroupSelectData extends ALAbstractSelectData {
+public class AddressBookGroupSelectData extends
+    ALAbstractSelectData<EipMAddressGroup> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -69,16 +69,15 @@ public class AddressBookGroupSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List<?> selectList(RunData rundata, Context context) {
+  protected List<EipMAddressGroup> selectList(RunData rundata, Context context) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
 
       SelectQuery query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<?> list = dataContext.performQuery(query);
+      List<EipMAddressGroup> list = ALDataContext.performQuery(
+          EipMAddressGroup.class, query);
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -90,7 +89,7 @@ public class AddressBookGroupSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected EipMAddressGroup selectDetail(RunData rundata, Context context) {
     // オブジェクトモデルを取得
     return AddressBookUtils.getEipMAddressGroup(rundata, context);
   }
@@ -98,9 +97,8 @@ public class AddressBookGroupSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipMAddressGroup record) {
     try {
-      EipMAddressGroup record = (EipMAddressGroup) obj;
       AddressBookGroupResultData rd = new AddressBookGroupResultData();
       rd.initField();
       rd.setGroupId(record.getGroupId().longValue());
@@ -118,7 +116,7 @@ public class AddressBookGroupSelectData extends ALAbstractSelectData {
    *
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(EipMAddressGroup obj) {
     return getResultData(obj);
   }
 
@@ -142,8 +140,8 @@ public class AddressBookGroupSelectData extends ALAbstractSelectData {
     SelectQuery query = new SelectQuery(EipMAddressGroup.class);
 
     Expression exp = ExpressionFactory.matchExp(
-        EipMAddressGroup.OWNER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-            .getUserId(rundata)));
+        EipMAddressGroup.OWNER_ID_PROPERTY,
+        Integer.valueOf(ALEipUtils.getUserId(rundata)));
     query.setQualifier(exp);
 
     return buildSelectQueryForFilter(query, rundata, context);

@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -40,13 +39,15 @@ import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
+ *
  */
-public class AccessControlSelectData extends ALAbstractSelectData {
+public class AccessControlSelectData extends ALAbstractSelectData<EipTAclRole> {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
       .getLogger(AccessControlSelectData.class.getName());
@@ -69,9 +70,9 @@ public class AccessControlSelectData extends ALAbstractSelectData {
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-              "p2a-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
+          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+              .getInitParameter("p2a-sort"));
     }
 
     super.init(action, rundata, context);
@@ -95,16 +96,15 @@ public class AccessControlSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public List<Object> selectList(RunData rundata, Context context) {
+  public List<EipTAclRole> selectList(RunData rundata, Context context) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
 
       SelectQuery query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<?> list = dataContext.performQuery(query);
+      List<EipTAclRole> list = ALDataContext.performQuery(EipTAclRole.class,
+          query);
 
       aclRoleSum = list.size();
 
@@ -134,16 +134,14 @@ public class AccessControlSelectData extends ALAbstractSelectData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipTAclRole obj) {
     try {
-      EipTAclRole record = (EipTAclRole) obj;
+      EipTAclRole record = obj;
       AccessControlResultData rd = new AccessControlResultData();
       rd.initField();
       rd.setAclRoleId(record.getRoleId().longValue());
       rd.setAclRoleName(record.getRoleName());
-      rd
-          .setFeatureName(record.getEipTAclPortletFeature()
-              .getFeatureAliasName());
+      rd.setFeatureName(record.getEipTAclPortletFeature().getFeatureAliasName());
       rd.setNote(record.getNote());
 
       // アクセス権限
@@ -185,7 +183,7 @@ public class AccessControlSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public Object selectDetail(RunData rundata, Context context) {
+  public EipTAclRole selectDetail(RunData rundata, Context context) {
     return AccessControlUtils.getEipTAclRole(rundata, context);
   }
 
@@ -196,16 +194,14 @@ public class AccessControlSelectData extends ALAbstractSelectData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(EipTAclRole obj) {
     try {
       EipTAclRole record = (EipTAclRole) obj;
       AccessControlResultData rd = new AccessControlResultData();
       rd.initField();
       rd.setAclRoleId(record.getRoleId().longValue());
       rd.setAclRoleName(record.getRoleName());
-      rd
-          .setFeatureName(record.getEipTAclPortletFeature()
-              .getFeatureAliasName());
+      rd.setFeatureName(record.getEipTAclPortletFeature().getFeatureAliasName());
       rd.setNote(record.getNote());
 
       // アクセス権限
@@ -233,15 +229,15 @@ public class AccessControlSelectData extends ALAbstractSelectData {
       EipTAclUserRoleMap map = null;
       TurbineUser tuser = null;
 
-      List<?> maps = AccessControlUtils.getEipTAclUserRoleMaps(record.getRoleId()
-          .intValue());
+      List<?> maps = AccessControlUtils.getEipTAclUserRoleMaps(record
+          .getRoleId().intValue());
       if (maps != null && maps.size() > 0) {
         int size = maps.size();
         for (int i = 0; i < size; i++) {
           map = (EipTAclUserRoleMap) maps.get(i);
           tuser = map.getTurbineUser();
-          unamelist.add(new StringBuffer().append(tuser.getLastName()).append(
-              " ").append(tuser.getFirstName()).toString());
+          unamelist.add(new StringBuffer().append(tuser.getLastName())
+              .append(" ").append(tuser.getFirstName()).toString());
         }
         rd.addUserNameList(unamelist);
       }

@@ -21,7 +21,6 @@ package com.aimluck.eip.account;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -35,13 +34,13 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 部署の検索データを管理するためのクラスです。 <br />
  */
-public class AccountPostSelectData extends ALAbstractSelectData {
+public class AccountPostSelectData extends ALAbstractSelectData<EipMPost> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -74,15 +73,13 @@ public class AccountPostSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List<Object> selectList(RunData rundata, Context context) {
+  protected List<EipMPost> selectList(RunData rundata, Context context) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
       SelectQuery query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<?> list = dataContext.performQuery(query);
+      List<EipMPost> list = ALDataContext.performQuery(EipMPost.class, query);
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -110,7 +107,7 @@ public class AccountPostSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected EipMPost selectDetail(RunData rundata, Context context) {
     return AccountUtils.getEipMPost(rundata, context);
   }
 
@@ -119,8 +116,7 @@ public class AccountPostSelectData extends ALAbstractSelectData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
-    EipMPost record = (EipMPost) obj;
+  protected Object getResultData(EipMPost record) {
     AccountPostResultData rd = new AccountPostResultData();
     rd.initField();
     rd.setPostId(record.getPostId().intValue());
@@ -133,8 +129,7 @@ public class AccountPostSelectData extends ALAbstractSelectData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
-    EipMPost record = (EipMPost) obj;
+  protected Object getResultDataDetail(EipMPost record) {
     AccountPostResultData rd = new AccountPostResultData();
     rd.initField();
     rd.setPostId(record.getPostId().intValue());

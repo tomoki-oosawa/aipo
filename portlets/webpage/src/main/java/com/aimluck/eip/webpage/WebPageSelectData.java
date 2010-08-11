@@ -40,7 +40,8 @@ import com.aimluck.eip.util.ALEipUtils;
  * WebPageの検索データを管理するクラスです。 <BR>
  *
  */
-public class WebPageSelectData extends ALAbstractSelectData implements ALData {
+public class WebPageSelectData extends ALAbstractSelectData<VelocityPortlet>
+    implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -68,7 +69,7 @@ public class WebPageSelectData extends ALAbstractSelectData implements ALData {
    * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public List<?> selectList(RunData rundata, Context context) {
+  public List<VelocityPortlet> selectList(RunData rundata, Context context) {
     try {
       return null;
     } catch (Exception ex) {
@@ -84,7 +85,7 @@ public class WebPageSelectData extends ALAbstractSelectData implements ALData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(VelocityPortlet obj) {
     try {
       return null;
     } catch (Exception ex) {
@@ -102,7 +103,7 @@ public class WebPageSelectData extends ALAbstractSelectData implements ALData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public Object selectDetail(RunData rundata, Context context)
+  public VelocityPortlet selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException {
     try {
       VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
@@ -120,9 +121,8 @@ public class WebPageSelectData extends ALAbstractSelectData implements ALData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(VelocityPortlet portlet) {
     try {
-      VelocityPortlet portlet = (VelocityPortlet) obj;
       WebPageResultData rd = new WebPageResultData();
       rd.initField();
       String url = portlet.getPortletConfig().getInitParameter("p1a-url");

@@ -46,13 +46,15 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
+import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレス帳ワード検索用データクラスです。(社外アドレス検索用)
  *
  */
-public class AddressBookFilterdSelectData extends ALAbstractSelectData {
+public class AddressBookFilterdSelectData extends
+    ALAbstractSelectData<EipMAddressbook> {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
       .getLogger(AddressBookFilterdSelectData.class.getName());
@@ -106,14 +108,14 @@ public class AddressBookFilterdSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List<?> selectList(RunData rundata, Context context) {
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
+  protected List<EipMAddressbook> selectList(RunData rundata, Context context) {
 
     try {
       SelectQuery query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
-      List<?> list = dataContext.performQuery(query);
+      List<EipMAddressbook> list = ALDataContext.performQuery(
+          EipMAddressbook.class, query);
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -127,7 +129,7 @@ public class AddressBookFilterdSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected EipMAddressbook selectDetail(RunData rundata, Context context) {
     try {
       return AddressBookUtils.getEipMAddressbook(rundata, context);
     } catch (Exception ex) {
@@ -139,10 +141,8 @@ public class AddressBookFilterdSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipMAddressbook record) {
     try {
-
-      EipMAddressbook record = (EipMAddressbook) obj;
 
       AddressBookResultData rd = new AddressBookResultData();
       rd.initField();
@@ -185,9 +185,8 @@ public class AddressBookFilterdSelectData extends ALAbstractSelectData {
    *
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(EipMAddressbook record) {
     try {
-      EipMAddressbook record = (EipMAddressbook) obj;
 
       AddressBookResultData rd = new AddressBookResultData();
       rd.initField();

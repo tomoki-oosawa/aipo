@@ -44,6 +44,7 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
+import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
 
@@ -51,8 +52,8 @@ import com.aimluck.eip.workflow.util.WorkflowUtils;
  * ワークフロー検索データを管理するクラスです。 <BR>
  *
  */
-public class WorkflowAllSelectData extends ALAbstractSelectData implements
-    ALData {
+public class WorkflowAllSelectData extends
+    ALAbstractSelectData<EipTWorkflowRequest> implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -98,9 +99,9 @@ public class WorkflowAllSelectData extends ALAbstractSelectData implements
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     String sorttype = ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-              "p2a-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
+          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+              .getInitParameter("p2a-sort"));
     }
 
     if ("create_date".equals(ALEipUtils
@@ -176,16 +177,15 @@ public class WorkflowAllSelectData extends ALAbstractSelectData implements
    * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public List<Object> selectList(RunData rundata, Context context) {
+  public List<EipTWorkflowRequest> selectList(RunData rundata, Context context) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
 
       SelectQuery query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<?> list = dataContext.performQuery(query);
+      List<EipTWorkflowRequest> list = ALDataContext.performQuery(
+          EipTWorkflowRequest.class, query);
       // リクエストの総数をセットする．
       requestSum = list.size();
       return buildPaginatedList(list);
@@ -227,9 +227,8 @@ public class WorkflowAllSelectData extends ALAbstractSelectData implements
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipTWorkflowRequest record) {
     try {
-      EipTWorkflowRequest record = (EipTWorkflowRequest) obj;
       WorkflowResultData rd = new WorkflowResultData();
       rd.initField();
       rd.setRequestId(record.getRequestId().intValue());
@@ -307,7 +306,7 @@ public class WorkflowAllSelectData extends ALAbstractSelectData implements
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public Object selectDetail(RunData rundata, Context context) {
+  public EipTWorkflowRequest selectDetail(RunData rundata, Context context) {
     return WorkflowUtils.getEipTWorkflowRequestAll(rundata, context);
   }
 
@@ -318,7 +317,7 @@ public class WorkflowAllSelectData extends ALAbstractSelectData implements
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(EipTWorkflowRequest obj) {
     return WorkflowUtils.getResultDataDetail(obj, login_user);
   }
 

@@ -55,14 +55,15 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.util.ALCommonUtils;
+import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 掲示板トピックの検索データを管理するクラスです。 <BR>
  *
  */
-public class MsgboardTopicSelectData extends ALAbstractSelectData implements
-    ALData {
+public class MsgboardTopicSelectData extends
+    ALAbstractSelectData<EipTMsgboardTopic> implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -133,13 +134,13 @@ public class MsgboardTopicSelectData extends ALAbstractSelectData implements
         ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY,
         ALAccessControlConstants.VALUE_ACL_LIST);
 
-    hasAclDeleteTopicOthers = aclhandler.hasAuthority(ALEipUtils
-        .getUserId(rundata),
+    hasAclDeleteTopicOthers = aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
         ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC_OTHER,
         ALAccessControlConstants.VALUE_ACL_DELETE);
 
-    hasAclUpdateTopicOthers = aclhandler.hasAuthority(ALEipUtils
-        .getUserId(rundata),
+    hasAclUpdateTopicOthers = aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
         ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC_OTHER,
         ALAccessControlConstants.VALUE_ACL_UPDATE);
 
@@ -182,7 +183,7 @@ public class MsgboardTopicSelectData extends ALAbstractSelectData implements
    * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public List<?> selectList(RunData rundata, Context context) {
+  public List<EipTMsgboardTopic> selectList(RunData rundata, Context context) {
 
     try {
       SelectQuery query = getSelectQuery(rundata, context);
@@ -190,7 +191,8 @@ public class MsgboardTopicSelectData extends ALAbstractSelectData implements
       buildSelectQueryForListViewSort(query, rundata, context);
 
       // 表示するカラムのみデータベースから取得する．
-      List<?> list = dataContext.performQuery(query);
+      List<EipTMsgboardTopic> list = ALDataContext.performQuery(
+          EipTMsgboardTopic.class, query);
       // 件数をセットする．
       topicSum = list.size();
       return buildPaginatedList(list);
@@ -233,8 +235,8 @@ public class MsgboardTopicSelectData extends ALAbstractSelectData implements
     Expression exp12 = ExpressionFactory.matchExp(
         EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
             + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY + "."
-            + EipTMsgboardCategoryMap.USER_ID_PROPERTY, Integer
-            .valueOf(ALEipUtils.getUserId(rundata)));
+            + EipTMsgboardCategoryMap.USER_ID_PROPERTY,
+        Integer.valueOf(ALEipUtils.getUserId(rundata)));
     query.andQualifier((exp01.andExp(exp02.orExp(exp03))).orExp(exp11
         .andExp(exp12)));
     query.setDistinct(true);
@@ -249,9 +251,8 @@ public class MsgboardTopicSelectData extends ALAbstractSelectData implements
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipTMsgboardTopic record) {
     try {
-      EipTMsgboardTopic record = (EipTMsgboardTopic) obj;
       MsgboardTopicResultData rd = new MsgboardTopicResultData();
       rd.initField();
       rd.setTopicId(record.getTopicId().longValue());
@@ -299,12 +300,13 @@ public class MsgboardTopicSelectData extends ALAbstractSelectData implements
       doCheckAclPermission(rundata, context,
           ALAccessControlConstants.VALUE_ACL_DETAIL);
       action.setMode(ALEipConstants.MODE_DETAIL);
-      List<?> aList = selectDetailList(rundata, context);
+      List<EipTMsgboardTopic> aList = selectDetailList(rundata, context);
       if (aList != null) {
         coTopicList = new ArrayList<MsgboardTopicResultData>();
         int size = aList.size();
         for (int i = 0; i < size; i++) {
-          coTopicList.add((MsgboardTopicResultData)getResultDataDetail(aList.get(i)));
+          coTopicList.add((MsgboardTopicResultData) getResultDataDetail(aList
+              .get(i)));
         }
       }
 
@@ -332,8 +334,8 @@ public class MsgboardTopicSelectData extends ALAbstractSelectData implements
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public List<?> selectDetailList(RunData rundata, Context context)
-      throws ALPageNotFoundException, ALDBErrorException {
+  public List<EipTMsgboardTopic> selectDetailList(RunData rundata,
+      Context context) throws ALPageNotFoundException, ALDBErrorException {
     String topicid = ALEipUtils.getTemp(rundata, context,
         ALEipConstants.ENTITY_ID);
 
@@ -374,14 +376,14 @@ public class MsgboardTopicSelectData extends ALAbstractSelectData implements
       }
 
       // 表示するカラムのみデータベースから取得する．
-      return dataContext.performQuery(query);
+      return ALDataContext.performQuery(EipTMsgboardTopic.class, query);
     } catch (Exception ex) {
       logger.error("[MsgboardTopicSelectData]", ex);
       throw new ALDBErrorException();
     }
   }
 
-  public Object selectDetail(RunData rundata, Context context) {
+  public EipTMsgboardTopic selectDetail(RunData rundata, Context context) {
     ALEipUtils.redirectPageNotFound(rundata);
     return null;
   }
@@ -411,10 +413,9 @@ public class MsgboardTopicSelectData extends ALAbstractSelectData implements
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj)
+  protected Object getResultDataDetail(EipTMsgboardTopic record)
       throws ALPageNotFoundException, ALDBErrorException {
     try {
-      EipTMsgboardTopic record = (EipTMsgboardTopic) obj;
 
       // 親トピックのアクセス権限をもとに，返信フォーム表示の有無を決定する．
       if (record.getParentId().intValue() == 0) {
@@ -462,8 +463,8 @@ public class MsgboardTopicSelectData extends ALAbstractSelectData implements
       rd.setUpdateDate(record.getUpdateDate());
 
       @SuppressWarnings("unchecked")
-      List<EipTMsgboardFile> list = dataContext.performQuery(getSelectQueryForFiles(record
-          .getTopicId().intValue()));
+      List<EipTMsgboardFile> list = dataContext
+          .performQuery(getSelectQueryForFiles(record.getTopicId().intValue()));
       if (list != null && list.size() > 0) {
         List<FileuploadBean> attachmentFileList = new ArrayList<FileuploadBean>();
         FileuploadBean filebean = null;

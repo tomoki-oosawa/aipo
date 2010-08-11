@@ -55,13 +55,15 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.timecard.util.TimecardUtils;
+import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカード検索データを管理するクラスです。 <BR>
  *
  */
-public class TimecardSelectData extends ALAbstractSelectData implements ALData {
+public class TimecardSelectData extends ALAbstractSelectData<EipTTimecard>
+    implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -216,19 +218,17 @@ public class TimecardSelectData extends ALAbstractSelectData implements ALData {
    * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public List<?> selectList(RunData rundata, Context context) {
+  public List<EipTTimecard> selectList(RunData rundata, Context context) {
     try {
 
       if (!"".equals(target_user_id)) {
-        DataContext dataContext = DatabaseOrmService.getInstance()
-            .getDataContext();
 
         SelectQuery query = getSelectQuery(rundata, context);
         buildSelectQueryForListView(query);
         query.addOrdering(EipTTimecard.WORK_DATE_PROPERTY, true);
 
-        @SuppressWarnings("unchecked")
-        List<EipTTimecard> list = dataContext.performQuery(query);
+        List<EipTTimecard> list = ALDataContext.performQuery(
+            EipTTimecard.class, query);
         return buildPaginatedList(list);
       } else {
         return null;
@@ -246,9 +246,8 @@ public class TimecardSelectData extends ALAbstractSelectData implements ALData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipTTimecard record) {
     try {
-      EipTTimecard record = (EipTTimecard) obj;
       Date date = record.getWorkDate();
       String checkdate = ALDateUtil.format(date, "yyyyMMdd");
       Object value = datemap.get(checkdate);
@@ -337,7 +336,7 @@ public class TimecardSelectData extends ALAbstractSelectData implements ALData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public Object selectDetail(RunData rundata, Context context) {
+  public EipTTimecard selectDetail(RunData rundata, Context context) {
     try {
       Calendar cal = Calendar.getInstance();
       nowtime = cal.get(Calendar.HOUR_OF_DAY) + "時" + cal.get(Calendar.MINUTE)
@@ -368,10 +367,8 @@ public class TimecardSelectData extends ALAbstractSelectData implements ALData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(EipTTimecard record) {
     try {
-
-      EipTTimecard record = (EipTTimecard) obj;
       TimecardResultData rd = new TimecardResultData();
       rd.initField();
       rd.setWorkFlag(record.getWorkFlag());

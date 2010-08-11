@@ -21,7 +21,6 @@ package com.aimluck.eip.addressbook;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -39,16 +38,17 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
+import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレス帳での検索BOX用データです。
  *
  */
-public class AddressBookCompanyWordSelectData extends ALAbstractSelectData {
+public class AddressBookCompanyWordSelectData extends
+    ALAbstractSelectData<EipMAddressbookCompany> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -77,7 +77,8 @@ public class AddressBookCompanyWordSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List<?> selectList(RunData rundata, Context context) {
+  protected List<EipMAddressbookCompany> selectList(RunData rundata,
+      Context context) {
 
     // ページャからきた場合に検索ワードをセッションへ格納する
     if (!rundata.getParameters().containsKey(ALEipConstants.LIST_START)
@@ -95,15 +96,13 @@ public class AddressBookCompanyWordSelectData extends ALAbstractSelectData {
         "AddressBooksCompanyword"));
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
 
       SelectQuery query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      @SuppressWarnings("unchecked")
-      List<EipMAddressbookCompany> clist = dataContext.performQuery(query);
+      List<EipMAddressbookCompany> clist = ALDataContext.performQuery(
+          EipMAddressbookCompany.class, query);
       return buildPaginatedList(clist);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -117,16 +116,15 @@ public class AddressBookCompanyWordSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected EipMAddressbookCompany selectDetail(RunData rundata, Context context) {
     return null;
   }
 
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipMAddressbookCompany record) {
     try {
-      EipMAddressbookCompany record = (EipMAddressbookCompany) obj;
       AddressBookCompanyResultData rd = new AddressBookCompanyResultData();
       rd.initField();
       rd.setCompanyId(record.getCompanyId().intValue());
@@ -153,7 +151,7 @@ public class AddressBookCompanyWordSelectData extends ALAbstractSelectData {
    *
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(EipMAddressbookCompany obj) {
     return null;
   }
 
@@ -181,7 +179,8 @@ public class AddressBookCompanyWordSelectData extends ALAbstractSelectData {
     // Expression exp01 = ExpressionFactory.noMatchExp(
     // EipMAddressbookCompany.CREATE_USER_ID_PROPERTY, Integer.valueOf(1));
     Expression exp02 = ExpressionFactory.noMatchExp(
-        EipMAddressbookCompany.COMPANY_NAME_PROPERTY, AddressBookUtils.EMPTY_COMPANY_NAME);
+        EipMAddressbookCompany.COMPANY_NAME_PROPERTY,
+        AddressBookUtils.EMPTY_COMPANY_NAME);
     query.setQualifier(exp02);
 
     String word = searchWord.getValue();

@@ -44,7 +44,7 @@ import com.aimluck.eip.util.ALEipUtils;
  * 検索データを管理するための抽象クラスです。 <br />
  *
  */
-public abstract class ALAbstractSelectData implements ALData {
+public abstract class ALAbstractSelectData<M> implements ALData {
 
   /** logger */
   @SuppressWarnings("unused")
@@ -110,7 +110,7 @@ public abstract class ALAbstractSelectData implements ALData {
   /**
    *
    *
-   * @see com.aimluck.eip.common.ALData#initField()
+   * @see com.aimluck.eip.common.Object#initField()
    */
   public void initField() {
 
@@ -173,7 +173,7 @@ public abstract class ALAbstractSelectData implements ALData {
       doCheckAclPermission(rundata, context,
           ALAccessControlConstants.VALUE_ACL_LIST);
       action.setMode(ALEipConstants.MODE_LIST);
-      List<?> aList = selectList(rundata, context);
+      List<M> aList = selectList(rundata, context);
       if (aList != null) {
         list = new ArrayList<Object>();
         Object obj = null;
@@ -215,7 +215,7 @@ public abstract class ALAbstractSelectData implements ALData {
       init(action, rundata, context);
       doCheckAclPermission(rundata, context,
           ALAccessControlConstants.VALUE_ACL_LIST);
-      List<?> aList = selectList(rundata, context);
+      List<M> aList = selectList(rundata, context);
       if (aList != null) {
         list = new ArrayList<Object>();
         int size = aList.size();
@@ -250,7 +250,7 @@ public abstract class ALAbstractSelectData implements ALData {
       doCheckAclPermission(rundata, context,
           ALAccessControlConstants.VALUE_ACL_DETAIL);
       action.setMode(ALEipConstants.MODE_DETAIL);
-      Object obj = selectDetail(rundata, context);
+      M obj = selectDetail(rundata, context);
       if (obj != null) {
         data = getResultDataDetail(obj);
       }
@@ -285,8 +285,8 @@ public abstract class ALAbstractSelectData implements ALData {
    * @param records
    *            検索結果
    */
-  protected List<Object> buildPaginatedList(List<?> records) {
-    List<Object> list = new ArrayList<Object>();
+  protected List<M> buildPaginatedList(List<M> records) {
+    List<M> list = new ArrayList<M>();
 
     setPageParam(records.size());
 
@@ -498,7 +498,7 @@ public abstract class ALAbstractSelectData implements ALData {
    * @param context
    * @return
    */
-  protected abstract List<?> selectList(RunData rundata, Context context)
+  protected abstract List<M> selectList(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException;
 
   /**
@@ -508,7 +508,7 @@ public abstract class ALAbstractSelectData implements ALData {
    * @param context
    * @return
    */
-  protected abstract Object selectDetail(RunData rundata, Context context)
+  protected abstract M selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException;
 
   /**
@@ -517,7 +517,7 @@ public abstract class ALAbstractSelectData implements ALData {
    * @param obj
    * @return
    */
-  protected abstract Object getResultData(Object obj)
+  protected abstract Object getResultData(M obj)
       throws ALPageNotFoundException, ALDBErrorException;
 
   /**
@@ -526,7 +526,7 @@ public abstract class ALAbstractSelectData implements ALData {
    * @param obj
    * @return
    */
-  protected abstract Object getResultDataDetail(Object obj)
+  protected abstract Object getResultDataDetail(M obj)
       throws ALPageNotFoundException, ALDBErrorException;
 
   /**

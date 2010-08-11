@@ -21,7 +21,6 @@ package com.aimluck.eip.mygroup;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -39,13 +38,13 @@ import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.mygroup.util.MyGroupUtils;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * マイグループの検索データを管理するためのクラスです。 <br />
  */
-public class MyGroupSelectData extends ALAbstractSelectData {
+public class MyGroupSelectData extends ALAbstractSelectData<TurbineGroup> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -78,16 +77,15 @@ public class MyGroupSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List<?> selectList(RunData rundata, Context context) {
+  protected List<TurbineGroup> selectList(RunData rundata, Context context) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
 
       SelectQuery query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<?> list = dataContext.performQuery(query);
+      List<TurbineGroup> list = ALDataContext.performQuery(TurbineGroup.class,
+          query);
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -120,7 +118,7 @@ public class MyGroupSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected TurbineGroup selectDetail(RunData rundata, Context context) {
     return MyGroupUtils.getGroup(rundata, context);
   }
 
@@ -129,8 +127,7 @@ public class MyGroupSelectData extends ALAbstractSelectData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
-    TurbineGroup record = (TurbineGroup) obj;
+  protected Object getResultData(TurbineGroup record) {
     MyGroupResultData rd = new MyGroupResultData();
     rd.initField();
     rd.setGroupName(record.getGroupName());
@@ -143,8 +140,7 @@ public class MyGroupSelectData extends ALAbstractSelectData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
-    TurbineGroup record = (TurbineGroup) obj;
+  protected Object getResultDataDetail(TurbineGroup record) {
     MyGroupResultData rd = new MyGroupResultData();
     rd.initField();
     rd.setGroupName(record.getGroupName());

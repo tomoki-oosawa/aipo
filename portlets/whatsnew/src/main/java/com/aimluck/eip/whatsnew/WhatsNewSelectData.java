@@ -47,7 +47,8 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
  *
  */
 
-public class WhatsNewSelectData extends ALAbstractSelectData implements ALData {
+public class WhatsNewSelectData extends ALAbstractSelectData<WhatsNewContainer>
+    implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -116,7 +117,7 @@ public class WhatsNewSelectData extends ALAbstractSelectData implements ALData {
    * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public List<?> selectList(RunData rundata, Context context) {
+  public List<WhatsNewContainer> selectList(RunData rundata, Context context) {
     try {
       /** 31日以上たった新着情報を削除する */
       WhatsNewUtils.removeMonthOverWhatsNew();
@@ -272,9 +273,7 @@ public class WhatsNewSelectData extends ALAbstractSelectData implements ALData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
 
-  protected Object getResultData(Object obj) {
-
-    WhatsNewContainer record = (WhatsNewContainer) obj;
+  protected Object getResultData(WhatsNewContainer record) {
 
     WhatsNewResultData rd = WhatsNewUtils.setupWhatsNewResultData(record, uid,
         viewNum, viewSpan);
@@ -291,7 +290,7 @@ public class WhatsNewSelectData extends ALAbstractSelectData implements ALData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public Object selectDetail(RunData rundata, Context context) {
+  public WhatsNewContainer selectDetail(RunData rundata, Context context) {
     return null;
   }
 
@@ -302,7 +301,7 @@ public class WhatsNewSelectData extends ALAbstractSelectData implements ALData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(WhatsNewContainer obj) {
     return null;
   }
 

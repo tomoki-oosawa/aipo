@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -55,11 +54,11 @@ import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.timecard.util.TimecardUtils;
+import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -68,8 +67,8 @@ import com.aimluck.eip.util.ALEipUtils;
  *
  */
 
-public class TimecardSummaryListSelectData extends ALAbstractSelectData
-    implements ALData {
+public class TimecardSummaryListSelectData extends
+    ALAbstractSelectData<EipTTimecard> implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -102,7 +101,7 @@ public class TimecardSummaryListSelectData extends ALAbstractSelectData
   private String nowtime;
 
   /** 日付マップ */
-  private Map<String,TimecardSummaryResultData> datemap;
+  private Map<String, TimecardSummaryResultData> datemap;
 
   private ALNumberField shugyoNissu;
 
@@ -272,7 +271,7 @@ public class TimecardSummaryListSelectData extends ALAbstractSelectData
       aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
     }
 
-    datemap = new LinkedHashMap<String,TimecardSummaryResultData>();
+    datemap = new LinkedHashMap<String, TimecardSummaryResultData>();
     setupLists(rundata, context);
   }
 
@@ -283,22 +282,20 @@ public class TimecardSummaryListSelectData extends ALAbstractSelectData
    * com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine
    * .util.RunData, org.apache.velocity.context.Context)
    */
-  protected List<?> selectList(RunData rundata, Context context)
+  protected List<EipTTimecard> selectList(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     try {
       // 指定グループや指定ユーザをセッションに設定する．
       setupLists(rundata, context);
 
       if (!"".equals(target_user_id)) {
-        DataContext dataContext = DatabaseOrmService.getInstance()
-            .getDataContext();
 
         SelectQuery query = getSelectQuery(rundata, context);
         buildSelectQueryForListView(query);
         query.addOrdering(EipTTimecard.WORK_DATE_PROPERTY, true);
 
-        @SuppressWarnings("unchecked")
-        List<EipTTimecard> list = dataContext.performQuery(query);
+        List<EipTTimecard> list = ALDataContext.performQuery(
+            EipTTimecard.class, query);
         return buildPaginatedList(list);
       } else {
         return null;
@@ -316,7 +313,7 @@ public class TimecardSummaryListSelectData extends ALAbstractSelectData
    * com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine
    * .util.RunData, org.apache.velocity.context.Context)
    */
-  protected Object selectDetail(RunData rundata, Context context)
+  protected EipTTimecard selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     return null;
   }
@@ -327,10 +324,9 @@ public class TimecardSummaryListSelectData extends ALAbstractSelectData
    * @see
    * com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) throws ALPageNotFoundException,
-      ALDBErrorException {
+  protected Object getResultData(EipTTimecard record)
+      throws ALPageNotFoundException, ALDBErrorException {
     try {
-      EipTTimecard record = (EipTTimecard) obj;
       Date date = record.getWorkDate();
       String checkdate = ALDateUtil.format(date, "yyyyMMdd");
       Object value = datemap.get(checkdate);
@@ -372,9 +368,8 @@ public class TimecardSummaryListSelectData extends ALAbstractSelectData
    * com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang
    * .Object)
    */
-  protected Object getResultDataDetail(Object obj)
+  protected Object getResultDataDetail(EipTTimecard obj)
       throws ALPageNotFoundException, ALDBErrorException {
-    // TODO 自動生成されたメソッド・スタブ
     return null;
   }
 

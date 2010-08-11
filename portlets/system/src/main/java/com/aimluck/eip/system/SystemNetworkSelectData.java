@@ -37,7 +37,7 @@ import com.aimluck.eip.system.util.SystemUtils;
 
 /**
  */
-public class SystemNetworkSelectData extends ALAbstractSelectData {
+public class SystemNetworkSelectData extends ALAbstractSelectData<EipMCompany> {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
       .getLogger(SystemNetworkSelectData.class.getName());
@@ -50,7 +50,7 @@ public class SystemNetworkSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List<?> selectList(RunData rundata, Context context) {
+  protected List<EipMCompany> selectList(RunData rundata, Context context) {
     return null;
   }
 
@@ -58,7 +58,7 @@ public class SystemNetworkSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected EipMCompany selectDetail(RunData rundata, Context context) {
     servername = rundata.getServletConfig().getServletName();
 
     String company_id = rundata.getParameters().getString(
@@ -74,16 +74,14 @@ public class SystemNetworkSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipMCompany record) {
     return null;
   }
 
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
-    // オブジェクトモデルを取得
-    EipMCompany record = (EipMCompany) obj;
+  protected Object getResultDataDetail(EipMCompany record) {
 
     // Aipoサイト情報の取得
     String localurl = "";

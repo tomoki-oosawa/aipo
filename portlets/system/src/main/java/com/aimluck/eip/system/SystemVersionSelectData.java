@@ -31,7 +31,7 @@ import com.aimluck.eip.common.ALAbstractSelectData;
 
 /**
  */
-public class SystemVersionSelectData extends ALAbstractSelectData {
+public class SystemVersionSelectData extends ALAbstractSelectData<String> {
 
   /** logger */
   @SuppressWarnings("unused")
@@ -42,7 +42,7 @@ public class SystemVersionSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List<?> selectList(RunData rundata, Context context) {
+  protected List<String> selectList(RunData rundata, Context context) {
     return null;
   }
 
@@ -50,22 +50,21 @@ public class SystemVersionSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected String selectDetail(RunData rundata, Context context) {
     return JetspeedResources.getString("aipo.version", "");
   }
 
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(String license) {
     return null;
   }
 
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
-    String license = (String) obj;
+  protected Object getResultDataDetail(String license) {
     return license;
   }
 

@@ -38,7 +38,7 @@ import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
  */
-public class NewsSelectData extends ALAbstractSelectData {
+public class NewsSelectData extends ALAbstractSelectData<AipoLicense> {
 
   /** logger */
   @SuppressWarnings("unused")
@@ -49,7 +49,7 @@ public class NewsSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List<Object> selectList(RunData rundata, Context context) {
+  protected List<AipoLicense> selectList(RunData rundata, Context context) {
     return null;
   }
 
@@ -57,7 +57,7 @@ public class NewsSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected AipoLicense selectDetail(RunData rundata, Context context) {
     // ライセンス
     AipoLicense al = LicenseUtils.getAipoLicense(rundata, context);
 
@@ -78,15 +78,15 @@ public class NewsSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(AipoLicense obj) {
     return null;
   }
 
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
-    return ((AipoLicense) obj).getLicense();
+  protected Object getResultDataDetail(AipoLicense obj) {
+    return obj.getLicense();
   }
 
   /**

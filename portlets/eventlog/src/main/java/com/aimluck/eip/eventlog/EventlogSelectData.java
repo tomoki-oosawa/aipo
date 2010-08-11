@@ -23,7 +23,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -40,14 +39,15 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.eventlog.util.ALEventlogUtils;
 import com.aimluck.eip.eventlog.util.EventlogUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * イベントログ検索データを管理するクラスです。 <BR>
  *
  */
-public class EventlogSelectData extends ALAbstractSelectData implements ALData {
+public class EventlogSelectData extends ALAbstractSelectData<EipTEventlog>
+    implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -68,9 +68,9 @@ public class EventlogSelectData extends ALAbstractSelectData implements ALData {
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-              "p2a-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
+          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+              .getInitParameter("p2a-sort"));
     }
 
     String sort_type = ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
@@ -90,16 +90,15 @@ public class EventlogSelectData extends ALAbstractSelectData implements ALData {
    * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public List<Object> selectList(RunData rundata, Context context) {
+  public List<EipTEventlog> selectList(RunData rundata, Context context) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
 
       SelectQuery query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<?> list = dataContext.performQuery(query);
+      List<EipTEventlog> list = ALDataContext.performQuery(EipTEventlog.class,
+          query);
       // イベントログの総数をセットする．
       eventlogSum = list.size();
 
@@ -129,11 +128,10 @@ public class EventlogSelectData extends ALAbstractSelectData implements ALData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipTEventlog record) {
     try {
       DateFormat df = new SimpleDateFormat("yyyy年MM月dd日（EE）HH時mm分ss秒");
 
-      EipTEventlog record = (EipTEventlog) obj;
       EventlogResultData rd = new EventlogResultData();
       rd.initField();
       rd.setEventlogId(record.getEventlogId().longValue());
@@ -162,7 +160,7 @@ public class EventlogSelectData extends ALAbstractSelectData implements ALData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public Object selectDetail(RunData rundata, Context context) {
+  public EipTEventlog selectDetail(RunData rundata, Context context) {
     return EventlogUtils.getEipTEventlog(rundata, context);
   }
 
@@ -173,11 +171,10 @@ public class EventlogSelectData extends ALAbstractSelectData implements ALData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(EipTEventlog record) {
     try {
       DateFormat df = new SimpleDateFormat("yyyy年MM月dd日（EE）HH時mm分ss秒");
 
-      EipTEventlog record = (EipTEventlog) obj;
       EventlogResultData rd = new EventlogResultData();
       rd.initField();
       rd.setEventlogId(record.getEventlogId().longValue());
@@ -191,8 +188,8 @@ public class EventlogSelectData extends ALAbstractSelectData implements ALData {
       rd.setEventName(ALEventlogUtils.getEventAliasName(record.getEventType()));
       rd.setNote(record.getNote());
       // 各ポートレットのデータ名を取得
-      String dataName = EventlogUtils.getPortletDataName(record
-          .getPortletType(), record.getEntityId());
+      String dataName = EventlogUtils.getPortletDataName(
+          record.getPortletType(), record.getEntityId());
       if (dataName != null && !"".equals(dataName)) {
         rd.setDataName(dataName);
         rd.setDataNameFlag(true);

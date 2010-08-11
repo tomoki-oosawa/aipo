@@ -21,7 +21,6 @@ package com.aimluck.eip.note;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -37,15 +36,15 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.note.util.NoteUtils;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.util.ALCommonUtils;
+import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 伝言メモ依頼者検索データを管理するためのクラスです。 <br />
  */
-public class NoteClientSelectData extends ALAbstractSelectData implements
-    ALData {
+public class NoteClientSelectData extends ALAbstractSelectData<EipTNoteMap>
+    implements ALData {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
       .getLogger(NoteClientSelectData.class.getName());
@@ -58,8 +57,6 @@ public class NoteClientSelectData extends ALAbstractSelectData implements
 
   /** 受信未読数 */
   private int unreadReceivedNotesAllSum = 0;
-
-  private DataContext dataContext;
 
   /**
    *
@@ -74,15 +71,13 @@ public class NoteClientSelectData extends ALAbstractSelectData implements
 
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-              "p2a-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
+          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+              .getInitParameter("p2a-sort"));
       logger.debug("Init Parameter (Note) : "
           + ALEipUtils.getPortlet(rundata, context).getPortletConfig()
               .getInitParameter("p2a-sort"));
     }
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     super.init(action, rundata, context);
   }
@@ -91,7 +86,7 @@ public class NoteClientSelectData extends ALAbstractSelectData implements
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List<?> selectList(RunData rundata, Context context) {
+  protected List<EipTNoteMap> selectList(RunData rundata, Context context) {
 
     try {
       userId = Integer.toString(ALEipUtils.getUserId(rundata));
@@ -103,7 +98,8 @@ public class NoteClientSelectData extends ALAbstractSelectData implements
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<?> list = dataContext.performQuery(query);
+      List<EipTNoteMap> list = ALDataContext.performQuery(EipTNoteMap.class,
+          query);
 
       return buildPaginatedList(list);
     } catch (Exception ex) {
@@ -116,16 +112,15 @@ public class NoteClientSelectData extends ALAbstractSelectData implements
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected EipTNoteMap selectDetail(RunData rundata, Context context) {
     return null;
   }
 
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipTNoteMap map) {
     try {
-      EipTNoteMap map = (EipTNoteMap) obj;
       EipTNote record = map.getEipTNote();
 
       NoteClientResultData rd = new NoteClientResultData();
@@ -176,7 +171,7 @@ public class NoteClientSelectData extends ALAbstractSelectData implements
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(EipTNoteMap obj) {
     return null;
   }
 

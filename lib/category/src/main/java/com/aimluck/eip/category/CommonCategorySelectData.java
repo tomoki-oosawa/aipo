@@ -21,7 +21,6 @@ package com.aimluck.eip.category;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
@@ -38,17 +37,17 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
+import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 共有カテゴリ検索データを管理するクラスです。 <br />
  *
  */
-public class CommonCategorySelectData extends ALAbstractSelectData implements
-    ALData {
+public class CommonCategorySelectData extends
+    ALAbstractSelectData<EipTCommonCategory> implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -122,16 +121,15 @@ public class CommonCategorySelectData extends ALAbstractSelectData implements
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List<Object> selectList(RunData rundata, Context context) {
+  protected List<EipTCommonCategory> selectList(RunData rundata, Context context) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
 
       SelectQuery query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<?> list = dataContext.performQuery(query);
+      List<EipTCommonCategory> list = ALDataContext.performQuery(
+          EipTCommonCategory.class, query);
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -171,7 +169,7 @@ public class CommonCategorySelectData extends ALAbstractSelectData implements
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected EipTCommonCategory selectDetail(RunData rundata, Context context) {
     // オブジェクトモデルを取得
     return CommonCategoryUtils.getEipTCommonCategory(rundata, context);
   }
@@ -183,7 +181,7 @@ public class CommonCategorySelectData extends ALAbstractSelectData implements
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipTCommonCategory obj) {
     EipTCommonCategory record = (EipTCommonCategory) obj;
     CommonCategoryResultData rd = new CommonCategoryResultData();
     rd.initField();
@@ -200,7 +198,7 @@ public class CommonCategorySelectData extends ALAbstractSelectData implements
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(EipTCommonCategory obj) {
     EipTCommonCategory record = (EipTCommonCategory) obj;
     CommonCategoryResultData rd = new CommonCategoryResultData();
     rd.initField();
