@@ -38,7 +38,7 @@
 #ALtableheaderWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
-#ALtdheadWide("#ALajaxsort('create_date' '勤務形態' $result 'ExtTimecardSystemListScreen')")
+#ALtdheadWide("#ALajaxsort('system_name' '勤務形態' $result 'ExtTimecardSystemListScreen')")
 #ALtdheadThin("")
 </tr>
 #foreach ($record in $result.List)
