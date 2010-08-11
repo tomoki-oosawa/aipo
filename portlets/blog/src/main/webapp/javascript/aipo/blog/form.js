@@ -163,9 +163,15 @@ aipo.blog.onSubmitSerchButton = function(form,url,p_id){
     aipo.viewPage(exec_url, p_id);
 }
 
-aipo.blog.delCommentReply = function(button, id) {
+aipo.blog.delCommentReply = function(button, id, indicator_id, p_id) {
+  if(confirm('このコメントを削除してもよろしいですか？')) {
+    disableButton(button.form);
     var url = button.form.action + '&mode=commentdel&' + button.name + '=1&comment_id='+id;
-    aimluck.io.ajaxDeleteSubmit(button, url, aipo.blog.onReceiveMessage);
+    aimluck.io.disableForm(button.form, true);
+    aimluck.io.setHiddenValue(button);
+    button.form.action = url;
+    aimluck.io.submit(button.form, indicator_id, p_id, aipo.blog.onReceiveMessage);
+  }
 }
 
 aipo.blog.delBlogEntry = function(button, indicator_id, p_id) {

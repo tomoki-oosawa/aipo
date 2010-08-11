@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *#
@@ -38,13 +38,13 @@ $!{result.Detail.ThemaName}
 #if($!result.isMatch($!{result.UserId} , $!{result.Detail.OwnerId.Value}))
 #ALbutton("eventSubmit_doBlog_entry_delete" "削除する" "aipo.blog.delBlogEntry(this,'$indicator_id','$!{portlet.ID}');")
 #end
-</div> 
-</div> 
+</div>
+</div>
 <div>
 $!{result.Detail.Note}
 #if($!result.Detail.AttachmentFileList && $!result.Detail.AttachmentFileList.size() > 0)
 <div style="padding-top:15px;">
-#foreach( $attachmentFile in $!result.Detail.AttachmentFileList ) 
+#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
 <div style="padding-top:5px;">
 <img src="images/blog/blog_item.gif">&nbsp;<a href="$jslink.getTemplate("BlogFileRawScreen").addQueryData("ownerid", $!{result.Detail.OwnerId}).addQueryData("entityid", $!result.Detail.EntryId).addQueryData("attachmentIndex", $attachmentFile.FileId)"> $result.getStringCR($attachmentFile.FileNameField) </a><br>
 #if($attachmentFile.isImage())
@@ -59,7 +59,7 @@ $!{result.Detail.Note}
 #end
 </div>
 #end
-</div> 
+</div>
 #ALtditemfooter()
 </tr>
 #ALtablefooter()
@@ -80,13 +80,13 @@ $!{result.Detail.Note}
 </div>
 <div class="alignright">
 #if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}))
-#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogThemaFormJSONScreen').addQueryData('comment_id',${record.CommentId}).addQueryData('mode', 'delete_comment')" "$indicator_id" "$!portlet.ID" "aipo.blog.onReceiveMessage")
+#ALbutton("eventSubmit_doBlog_comment_delete" "削除する" "aipo.blog.delCommentReply(this, ${record.CommentId}, '$!indicator_id', '$!portlet.ID');")
 #end
-</div> 
-</div> 
+</div>
+</div>
 <div>
 ${record.Comment}
-</div> 
+</div>
 #ALtditemfooter()
 </tr>
 #end
