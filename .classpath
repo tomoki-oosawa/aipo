@@ -1,46 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="commons/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="commons/src/test/java"/>
 	<classpathentry kind="src" path="core/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="core/src/test/java"/>
 	<classpathentry excluding="org/apache/jetspeed/om/security/" kind="src" path="oms/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="oms/src/test/java"/>
 	<classpathentry kind="src" path="lib/accessctl/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="lib/accessctl/src/test/java"/>
 	<classpathentry kind="src" path="lib/addressbookuser/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="lib/addressbookuser/src/test/java"/>
 	<classpathentry kind="src" path="lib/category/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="lib/category/src/test/java"/>
 	<classpathentry kind="src" path="lib/eventlog/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="lib/eventlog/src/test/java"/>
 	<classpathentry kind="src" path="lib/user/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="lib/user/src/test/java"/>
 	<classpathentry kind="src" path="lib/facility/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="lib/facility/src/test/java"/>
 	<classpathentry kind="src" path="lib/mail/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="lib/mail/src/test/java"/>
 	<classpathentry kind="src" path="lib/userfacility/src/main/java"/>
+	<classpathentry kind="src" path="lib/userfacility/src/test/java"/>
 	<classpathentry kind="src" path="portlets/accessctl/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/accessctl/src/test/java"/>
 	<classpathentry kind="src" path="portlets/account/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/account/src/test/java"/>
 	<classpathentry kind="src" path="portlets/cellular/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/cellular/src/test/java"/>
 	<classpathentry kind="src" path="portlets/eventlog/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/eventlog/src/test/java"/>
 	<classpathentry kind="src" path="portlets/fileupload/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/fileupload/src/test/java"/>
 	<classpathentry kind="src" path="portlets/whatsnew/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/whatsnew/src/test/java"/>
 	<classpathentry kind="src" path="portlets/blog/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/blog/src/test/java"/>
 	<classpathentry kind="src" path="portlets/todo/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/todo/src/test/java"/>
 	<classpathentry kind="src" path="portlets/fileio/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/fileio/src/test/java"/>
 	<classpathentry kind="src" path="portlets/exttimecard/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/exttimecard/src/test/java"/>
 	<classpathentry kind="src" path="portlets/webpage/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/webpage/src/test/java"/>
 	<classpathentry kind="src" path="portlets/facilities/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/facilities/src/test/java"/>
 	<classpathentry kind="src" path="portlets/webmail/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/webmail/src/test/java"/>
 	<classpathentry kind="src" path="portlets/cabinet/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/cabinet/src/test/java"/>
 	<classpathentry kind="src" path="portlets/manhour/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/manhour/src/test/java"/>
 	<classpathentry kind="src" path="portlets/mylink/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/mylink/src/test/java"/>
 	<classpathentry kind="src" path="portlets/workflow/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/workflow/src/test/java"/>
 	<classpathentry kind="src" path="portlets/memo/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/memo/src/test/java"/>
 	<classpathentry kind="src" path="portlets/mygroup/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/mygroup/src/test/java"/>
 	<classpathentry kind="src" path="portlets/schedule/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/schedule/src/test/java"/>
 	<classpathentry kind="src" path="portlets/msgboard/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/msgboard/src/test/java"/>
 	<classpathentry kind="src" path="portlets/news/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/news/src/test/java"/>
 	<classpathentry kind="src" path="portlets/license/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/license/src/test/java"/>
 	<classpathentry kind="src" path="portlets/addressbook/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/addressbook/src/test/java"/>
 	<classpathentry kind="src" path="portlets/externalsearch/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/externalsearch/src/test/java"/>
 	<classpathentry kind="src" path="portlets/timecard/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/timecard/src/test/java"/>
 	<classpathentry kind="src" path="portlets/page/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/page/src/test/java"/>
 	<classpathentry kind="src" path="portlets/deletesample/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/deletesample/src/test/java"/>
 	<classpathentry kind="src" path="portlets/note/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/note/src/test/java"/>
 	<classpathentry kind="src" path="portlets/system/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/system/src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<accessrules>
 			<accessrule kind="accessible" pattern="sun/**"/>

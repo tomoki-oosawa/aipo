@@ -23,7 +23,6 @@
     <module>category</module>
     <module>eventlog</module>
     <module>facility</module>
-    <module>fileupload</module>
     <module>mail</module>
     <module>user</module>
     <module>userfacility</module>
