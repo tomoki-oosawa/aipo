@@ -30,19 +30,12 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.common.ALAbstractSelectData;
-import com.aimluck.eip.common.ALDBErrorException;
-import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.common.ALPageNotFoundException;
-import com.aimluck.eip.exttimecard.ExtTimecardSystemDetailResultData;
-import com.aimluck.eip.exttimecard.ExtTimecardSystemResultData;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
-import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
-import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカード集計の検索データを管理するためのクラスです。 <br />
- *
+ * 
  */
 public class ExtTimecardSystemSelectData extends ALAbstractSelectData {
   /** logger */
@@ -77,7 +70,7 @@ public class ExtTimecardSystemSelectData extends ALAbstractSelectData {
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -117,7 +110,7 @@ public class ExtTimecardSystemSelectData extends ALAbstractSelectData {
       rd.setRestTimeOut(record.getResttimeOut());
       rd.setChangeHour(record.getChangeHour());
       rd.setOutgoingAddFlag(record.getOutgoingAddFlag());
-      
+
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -163,6 +156,7 @@ public class ExtTimecardSystemSelectData extends ALAbstractSelectData {
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("create_date", EipTExtTimecardSystem.CREATE_DATE_PROPERTY);
+    map.putValue("system_name", EipTExtTimecardSystem.SYSTEM_NAME_PROPERTY);
     return map;
   }
 
