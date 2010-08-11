@@ -50,7 +50,7 @@ import com.aimluck.eip.whatsnew.beans.WhatsNewBean;
 
 /**
  * WhatsNewのユーティリティクラスです。 <BR>
- *
+ * 
  */
 public class WhatsNewUtils {
 
@@ -76,7 +76,7 @@ public class WhatsNewUtils {
 
   /**
    * 新着情報追加(個別新着情報)
-   *
+   * 
    * @param dataContext
    * @param type
    * @param entityid
@@ -98,8 +98,8 @@ public class WhatsNewUtils {
           EipTWhatsNew.ENTITY_ID_PROPERTY, Integer.valueOf(entityid));
       query.andQualifier(exp2);
       Expression exp3 = ExpressionFactory.matchExp(
-          EipTWhatsNew.PARENT_ID_PROPERTY,
-          Integer.valueOf(INDIVIDUAL_WHATS_NEW));
+          EipTWhatsNew.PARENT_ID_PROPERTY, Integer
+              .valueOf(INDIVIDUAL_WHATS_NEW));
       query.andQualifier(exp3);
       @SuppressWarnings("unchecked")
       List<EipTWhatsNew> entries = dataContext.performQuery(query);
@@ -124,7 +124,7 @@ public class WhatsNewUtils {
 
   /**
    * 新着情報追加(全員向け新着情報)
-   *
+   * 
    * @param dataContext
    * @param type
    * @param entityid
@@ -276,8 +276,8 @@ public class WhatsNewUtils {
       Calendar cal = Calendar.getInstance();
       cal.add(Calendar.MONTH, -1);
       query = new SelectQuery(EipTWhatsNew.class);
-      exp = ExpressionFactory.lessExp(EipTWhatsNew.UPDATE_DATE_PROPERTY,
-          cal.getTime());
+      exp = ExpressionFactory.lessExp(EipTWhatsNew.UPDATE_DATE_PROPERTY, cal
+          .getTime());
       query.setQualifier(exp);
       dataContext.deleteObjects(dataContext.performQuery(query));
       dataContext.commitChanges();
@@ -358,7 +358,7 @@ public class WhatsNewUtils {
       /** 保持件数以上のレコードに対して既読させる */
       /*
        * int denysize = deny_whatsnew.size(); Date date_object = new Date();
-       *
+       * 
        * if (denysize > 0) { dataContext =
        * DatabaseOrmService.getInstance().getDataContext(); for (int i = 0; i <
        * denysize; i++) { EipTWhatsNew whatsnew = (EipTWhatsNew) dataContext
@@ -702,6 +702,13 @@ public class WhatsNewUtils {
         bean.setName((String) dataRow.get(EipTSchedule.NAME_COLUMN));
         bean.setUpdateDate(ALDateUtil.format(dates[i], "yyyy/MM/dd/"));
         bean.addParamMap("userid", Integer.toString(uid).trim());
+
+        // view_dateの指定
+        Date start_date = (Date) ALEipUtils.getObjFromDataRow(dataRow,
+            EipTSchedule.START_DATE_COLUMN);
+        bean.addParamMap("view_date", ALDateUtil.format(start_date,
+            "yyyy-MM-dd-00-00"));
+
         rd.setBean(bean);
       }
     } else {
@@ -719,8 +726,8 @@ public class WhatsNewUtils {
       SelectQuery query = new SelectQuery(EipTWorkflowRequestMap.class);
       Expression exp = ExpressionFactory.matchDbExp(
           EipTWorkflowRequestMap.EIP_TWORKFLOW_REQUEST_PROPERTY + "."
-              + EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
-          request.getRequestId());
+              + EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, request
+              .getRequestId());
       query.setQualifier(exp);
       query.addOrdering(EipTWorkflowRequestMap.ORDER_INDEX_PROPERTY, true);
 
@@ -765,7 +772,7 @@ public class WhatsNewUtils {
   }
 
   /**
-   *
+   * 
    */
   public static void removeMonthOverWhatsNew() {
     int span = 31;
