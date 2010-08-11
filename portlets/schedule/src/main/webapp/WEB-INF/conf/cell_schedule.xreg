@@ -65,14 +65,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <parameter name="p3b-group.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p3b-group.style.items" value="0,1" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p3b-group.style.values" value="有効,無効" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p4b-behavior" value="0" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
-            <meta-info>
-                <title>トップ画面からの操作後はトップ画面に戻る</title>
-            </meta-info>
-        </parameter>
-        <parameter name="p4b-behavior.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p4b-behavior.style.items" value="1,0" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p4b-behavior.style.values" value="有効,無効" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p5a-view" value="1" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>ToDoの表示</title>
