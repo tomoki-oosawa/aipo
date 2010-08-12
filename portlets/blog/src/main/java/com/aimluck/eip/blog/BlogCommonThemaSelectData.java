@@ -44,11 +44,12 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ブログテーマ検索データを管理するクラスです。 <BR>
- *
+ * 
  */
 public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
     ALData {
@@ -62,7 +63,7 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
   private int loginuser_id = 0;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -81,7 +82,7 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
 
   /**
    * 一覧データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -171,7 +172,7 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -184,7 +185,7 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
 
   /**
    * 詳細データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -198,7 +199,7 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
 
   /**
    * ResultDataを取得します。（一覧データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
@@ -220,7 +221,7 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
 
   /**
    * ResultDataを取得します。（詳細データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
@@ -253,7 +254,8 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
         entryrd = new BlogEntryResultData();
         entryrd.initField();
         entryrd.setEntryId(entry.getEntryId().longValue());
-        entryrd.setTitle(entry.getTitle());
+        entryrd.setTitle(ALCommonUtils.compressString(entry.getTitle(),
+            getStrLength()));
         entryrd.setNote(BlogUtils.compressString(entry.getNote(), 100));
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日（EE）");
@@ -297,7 +299,7 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
   }
 
   /**
-   *
+   * 
    * @param id
    * @return
    */
@@ -308,7 +310,7 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
   public String getAclPortletFeature() {
