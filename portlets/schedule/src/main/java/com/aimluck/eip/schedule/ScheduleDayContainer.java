@@ -2,23 +2,25 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.aimluck.eip.schedule;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +32,7 @@ import com.aimluck.eip.schedule.util.ScheduleUtils;
 
 /**
  * スケジュールコンテナです。
- *
+ * 
  */
 public class ScheduleDayContainer implements ALData {
 
@@ -38,7 +40,7 @@ public class ScheduleDayContainer implements ALData {
   private ALDateTimeField today;
 
   /** <code>scheduleList</code> スケジュールリスト */
-  private List scheduleList;
+  private List<ScheduleResultData> scheduleList;
 
   /** <code>spanRd</code> 期間スケジュール */
   private ScheduleResultData spanRd;
@@ -56,13 +58,13 @@ public class ScheduleDayContainer implements ALData {
     // 日付
     today = new ALDateTimeField("yyyy-MM-dd-HH-mm");
     // スケジュールリスト
-    scheduleList = new ArrayList();
+    scheduleList = new ArrayList<ScheduleResultData>();
     spanRd = null;
   }
 
   /**
    * スケジュールリストを取得します。
-   *
+   * 
    * @return
    */
   public List getScheduleList() {
@@ -71,7 +73,7 @@ public class ScheduleDayContainer implements ALData {
 
   /**
    * 日付を設定します。
-   *
+   * 
    * @param date
    */
   public void setDate(Date date) {
@@ -84,7 +86,7 @@ public class ScheduleDayContainer implements ALData {
 
   /**
    * 日付を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getDate() {
@@ -93,7 +95,7 @@ public class ScheduleDayContainer implements ALData {
 
   /**
    * 期間スケジュールがあるかどうかを設定します。
-   *
+   * 
    * @param bool
    */
   public void setHasspan(boolean bool) {
@@ -102,7 +104,7 @@ public class ScheduleDayContainer implements ALData {
 
   /**
    * 期間スケジュールがNULLかどうか。
-   *
+   * 
    * @return
    */
   public boolean isSpanNull() {
@@ -111,7 +113,7 @@ public class ScheduleDayContainer implements ALData {
 
   /**
    * 期間スケジュールがあるかどうか。
-   *
+   * 
    * @return
    */
   public boolean isHasspan() {
@@ -120,15 +122,13 @@ public class ScheduleDayContainer implements ALData {
 
   /**
    * スケジュールを追加します。
-   *
+   * 
    * @param rd
    */
   public void addResultData(ScheduleResultData rd) {
     int size = scheduleList.size();
-    int position = 0;
     boolean canAdd = true;
     boolean repeat_del = false;
-    boolean pos_bool = false;
     for (int i = 0; i < size; i++) {
       repeat_del = false;
       ScheduleResultData rd2 = (ScheduleResultData) scheduleList.get(i);
@@ -150,14 +150,6 @@ public class ScheduleDayContainer implements ALData {
         scheduleList.remove(rd2);
         canAdd = true;
         repeat_del = true;
-      }
-
-      // スケジュールを挿入する位置を捕捉する。
-      // 開始日時の昇順
-      if (!pos_bool
-          && rd.getStartDate().getValue().before(rd2.getStartDate().getValue())) {
-        position = i;
-        pos_bool = true;
       }
 
       if (!repeat_del) {
@@ -189,17 +181,40 @@ public class ScheduleDayContainer implements ALData {
       }
     }
     if (canAdd) {
-      if (pos_bool) {
-        scheduleList.add(position, rd);
-      } else {
-        scheduleList.add(rd);
+      scheduleList.add(rd);
+      if (scheduleList.size() <= 1) {
+        // 並べ替え不要
+        return;
+      }
+      // 並べ替え実施(時間、名前の順)
+      ScheduleResultData[] schedule_array = scheduleList
+          .toArray(new ScheduleResultData[0]);
+      Arrays.sort(schedule_array, new Comparator<ScheduleResultData>() {
+        public int compare(ScheduleResultData o1, ScheduleResultData o2) {
+          ScheduleResultData sche1 = (ScheduleResultData) o1;
+          ScheduleResultData sche2 = (ScheduleResultData) o2;
+          if (sche1.getStartDate().getValue().equals(
+              sche2.getStartDate().getValue())) {
+            return sche1.getName().getValue().compareTo(
+                sche2.getName().getValue());
+          } else if (sche1.getStartDate().getValue().after(
+              sche2.getStartDate().getValue())) {
+            return 1;
+          } else {
+            return -1;
+          }
+        }
+      });
+      scheduleList.clear();
+      for (int i = 0; i < schedule_array.length; i++) {
+        scheduleList.add((ScheduleResultData) schedule_array[i]);
       }
     }
   }
 
   /**
    * 期間スケジュールを追加します。
-   *
+   * 
    * @param rd
    */
   public void setSpanResultData(ScheduleResultData rd) {
@@ -208,7 +223,7 @@ public class ScheduleDayContainer implements ALData {
 
   /**
    * 期間スケジュールを取得します。
-   *
+   * 
    * @return
    */
   public ScheduleResultData getSpanResultData() {
@@ -217,7 +232,7 @@ public class ScheduleDayContainer implements ALData {
 
   /**
    * 祝日かどうかを検証する． 祝日の場合，true．
-   *
+   * 
    * @return
    */
   public boolean isHoliday() {
@@ -226,11 +241,10 @@ public class ScheduleDayContainer implements ALData {
 
   /**
    * 祝日情報を取得する．
-   *
+   * 
    * @return
    */
   public ALHoliday getHoliday() {
     return holiday;
   }
-
 }
