@@ -245,10 +245,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   private boolean ignore_duplicate_facility;
 
   /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.
-   * actions.common.ALAction, org.apache.turbine.util.RunData,
-   * org.apache.velocity.context.Context)
+   * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.
+   *      actions.common.ALAction, org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context)
    */
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -568,9 +567,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
+   * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine
+   *      .util.RunData, org.apache.velocity.context.Context,
+   *      java.util.ArrayList)
    */
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
@@ -631,8 +630,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
   protected boolean validate(List<String> msgList) throws ALDBErrorException,
       ALPageNotFoundException {
@@ -783,9 +781,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
+   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine
+   *      .util.RunData, org.apache.velocity.context.Context,
+   *      java.util.ArrayList)
    */
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
@@ -978,9 +976,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
+   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine
+   *      .util.RunData, org.apache.velocity.context.Context,
+   *      java.util.ArrayList)
    */
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) throws ALDBErrorException {
@@ -1244,9 +1242,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
+   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine
+   *      .util.RunData, org.apache.velocity.context.Context,
+   *      java.util.ArrayList)
    */
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
@@ -1380,8 +1378,8 @@ public class ScheduleFormData extends ALAbstractFormData {
              * map.setCommonCategoryId(null); } else {
              * map.setCommonCategoryId(new Integer((int) (common_category_id
              * .getValue()))); map.setEipTSchedule(schedule);
-             * map.setEipTCommonCategory(category); } } else { for (int v = 0; v
-             * < size2; v++) { EipTScheduleMap map2 = (EipTScheduleMap)
+             * map.setEipTCommonCategory(category); } } else { for (int v = 0; v <
+             * size2; v++) { EipTScheduleMap map2 = (EipTScheduleMap)
              * scheduleMaps.get(v); if (userid == map2.getUserId().intValue()) {
              * EipTCommonCategory category = map2.getEipTCommonCategory(); if
              * (category != null) {
@@ -1624,8 +1622,8 @@ public class ScheduleFormData extends ALAbstractFormData {
            * common_category_id .getValue()); if (category == null) {
            * map.setCommonCategoryId(null); } else { map.setCommonCategoryId(new
            * Integer((int) (common_category_id .getValue())));
-           * map.setEipTSchedule(schedule); map.setEipTCommonCategory(category);
-           * } } else { for (int v = 0; v < size2; v++) { EipTScheduleMap map2 =
+           * map.setEipTSchedule(schedule); map.setEipTCommonCategory(category); } }
+           * else { for (int v = 0; v < size2; v++) { EipTScheduleMap map2 =
            * (EipTScheduleMap) scheduleMaps.get(v); if (userid ==
            * map2.getUserId().intValue()) { EipTCommonCategory category =
            * map2.getEipTCommonCategory(); if (category != null) {
@@ -1800,9 +1798,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
+   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine
+   *      .util.RunData, org.apache.velocity.context.Context,
+   *      java.util.ArrayList)
    */
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
@@ -1979,96 +1977,17 @@ public class ScheduleFormData extends ALAbstractFormData {
           int ownerid = ALEipUtils.getUserId(rundata);
           if (is_facility) {
             // 施設を削除する場合
-            EipTCommonCategory category1 = CommonCategoryUtils
-                .getEipTCommonCategory(dataContext, Long.valueOf(1));
-
-            EipTSchedule newSchedule = (EipTSchedule) dataContext
-                .createAndRegisterNewObject(EipTSchedule.class);
-            // 繰り返しの親スケジュール ID
-            newSchedule.setParentId(schedule.getScheduleId());
-            // 予定
-            newSchedule.setName(schedule.getName());
-            // 場所
-            newSchedule.setPlace(schedule.getPlace());
-            // 内容
-            newSchedule.setNote(schedule.getNote());
-            // 公開フラグ
-            newSchedule.setPublicFlag(schedule.getPublicFlag());
-            // 共有メンバーによる編集／削除フラグ
-            newSchedule.setEditFlag(schedule.getEditFlag());
-            // オーナーID
-            newSchedule.setOwnerId(Integer.valueOf(ownerid));
-            // 作成日
-            Date now = new Date();
-            newSchedule.setCreateDate(now);
-            newSchedule.setCreateUserId(Integer.valueOf(ownerid));
-            // 更新日
-            newSchedule.setUpdateDate(now);
-            newSchedule.setUpdateUserId(Integer.valueOf(ALEipUtils
-                .getUserId(rundata)));
-            // くりかえしパターン
-            newSchedule.setRepeatPattern("N");
-            // 開始日時
-            Calendar start_cal = Calendar.getInstance();
-            start_cal.setTime(schedule.getStartDate());
-            start_cal.set(Calendar.YEAR, Integer.valueOf(view_date.getYear()));
-            start_cal.set(Calendar.MONTH,
-                Integer.valueOf(view_date.getMonth()) - 1);
-            start_cal.set(Calendar.DAY_OF_MONTH, Integer.valueOf(view_date
-                .getDay()));
-            newSchedule.setStartDate(start_cal.getTime());
-            // 終了日時
-            Calendar end_cal = Calendar.getInstance();
-            end_cal.setTime(schedule.getEndDate());
-            end_cal.set(Calendar.YEAR, Integer.valueOf(view_date.getYear()));
-            end_cal.set(Calendar.MONTH,
-                Integer.valueOf(view_date.getMonth()) - 1);
-            end_cal.set(Calendar.DAY_OF_MONTH, Integer.valueOf(view_date
-                .getDay()));
-            newSchedule.setEndDate(end_cal.getTime());
-
-            int[] facilityIdList = new int[1];
-            facilityIdList[0] = userid;
-
-            // 既にダミーにされていなければ施設を削除する
-            List<?> list = schedule.getEipTScheduleMaps();
-            EipTScheduleMap map = null;
-            int size = list.size();
-
-            List<Integer> user_ids = new ArrayList<Integer>();
-            List<Integer> facility_ids = new ArrayList<Integer>();
-            for (int i = 0; i < size; i++) {
-              map = (EipTScheduleMap) list.get(i);
-              if (ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY.equals(map.getType())) {
-                facility_ids.add(map.getUserId());
-              } else {
-                user_ids.add(map.getUserId());
-              }
-
-              if (ScheduleUtils.SCHEDULEMAP_TYPE_USER.equals(map.getType())
-                  || map.getUserId() != userid) {
-                EipTScheduleMap newScheduleMap = (EipTScheduleMap) dataContext
-                    .createAndRegisterNewObject(EipTScheduleMap.class);
-                newScheduleMap.setEipTSchedule(newSchedule);
-                newScheduleMap.setType(map.getType());
-                newScheduleMap.setStatus(map.getStatus());
-                newScheduleMap.setUserId(map.getUserId());
-                EipTCommonCategory category = CommonCategoryUtils
-                    .getEipTCommonCategory(dataContext, map
-                        .getCommonCategoryId().longValue());
-                if (category == null) {
-                  newScheduleMap.setCommonCategoryId(Integer.valueOf(1));
-                  newScheduleMap.setEipTCommonCategory(category1);
-                } else {
-                  newScheduleMap.setCommonCategoryId(Integer
-                      .valueOf((int) (common_category_id.getValue())));
-                  newScheduleMap.setEipTCommonCategory(category);
-                }
-
+            memberList = new ArrayList();
+            this.loadFormData(rundata, context, msgList);
+            for (int i = 0; facilityList.size() > i; i++) {
+              if (((FacilityResultData) facilityList.get(i)).getFacilityId()
+                  .getValue() == userid) {
+                facilityList.remove(i);
+                break;
               }
             }
-            ScheduleUtils.insertDummySchedule(schedule, ownerid, view_date
-                .getValue(), view_date.getValue(), user_ids, facility_ids);
+            edit_repeat_flag.setValue(ScheduleFormData.FLAG_EDIT_REPEAT_ONE);
+            this.updateFormData(rundata, context, msgList);
           } else {
             // ユーザを削除する場合
             int[] memberIdList = new int[1];
@@ -2143,10 +2062,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#doViewForm(com.aimluck.eip.modules
-   * .actions.common.ALAction, org.apache.turbine.util.RunData,
-   * org.apache.velocity.context.Context)
+   * @see com.aimluck.eip.common.ALAbstractFormData#doViewForm(com.aimluck.eip.modules
+   *      .actions.common.ALAction, org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context)
    */
   public boolean doViewForm(ALAction action, RunData rundata, Context context) {
     boolean res = super.doViewForm(action, rundata, context);
@@ -2155,10 +2073,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#doInsert(com.aimluck.eip.modules
-   * .actions.common.ALAction, org.apache.turbine.util.RunData,
-   * org.apache.velocity.context.Context)
+   * @see com.aimluck.eip.common.ALAbstractFormData#doInsert(com.aimluck.eip.modules
+   *      .actions.common.ALAction, org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context)
    */
   public boolean doInsert(ALAction action, RunData rundata, Context context) {
     boolean res = super.doInsert(action, rundata, context);
@@ -2167,10 +2084,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#doUpdate(com.aimluck.eip.modules
-   * .actions.common.ALAction, org.apache.turbine.util.RunData,
-   * org.apache.velocity.context.Context)
+   * @see com.aimluck.eip.common.ALAbstractFormData#doUpdate(com.aimluck.eip.modules
+   *      .actions.common.ALAction, org.apache.turbine.util.RunData,
+   *      org.apache.velocity.context.Context)
    */
   public boolean doUpdate(ALAction action, RunData rundata, Context context) {
     boolean res = super.doUpdate(action, rundata, context);
@@ -2232,11 +2148,11 @@ public class ScheduleFormData extends ALAbstractFormData {
    * 指定した曜日が，選択範囲に入っているかを検証する．
    * 
    * @param selectedWeek
-   *          指定曜日
+   *            指定曜日
    * @param startWeek
-   *          期間開始曜日
+   *            期間開始曜日
    * @param endWeek
-   *          期間終了曜日
+   *            期間終了曜日
    * @return 選択範囲に入っている場合，true．
    */
   private boolean includeWeek(int selectedWeek, int startWeek, int endWeek) {
