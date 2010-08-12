@@ -69,16 +69,16 @@
 #ALtdcaptionAtt("#ALrequired('休憩時間')" "rowspan='2'")
 #ALtditemheader()
 <h3>勤務時間内の場合</h3>
-<input class="text" name="worktime_in" value="$!result.WorktimeIn" type="text" size="2" maxlength="3" style="ime-mode: disabled;">
+<input class="text" name="worktime_in" value="$!result.WorktimeIn" type="text" size="3" maxlength="3" style="ime-mode: disabled;">
 分の勤務に対して、休憩時間は
-<input class="text" name="resttime_in" value="$!result.ResttimeIn" type="text" size="2" maxlength="3" style="ime-mode: disabled;"> 分
+<input class="text" name="resttime_in" value="$!result.ResttimeIn" type="text" size="3" maxlength="3" style="ime-mode: disabled;"> 分
 <div class="spaceTop">#ALcaution('休憩時間は0から480の間で半角英数字で入力してください。')</div>
 #ALtditemfooter()
 #ALtditemheader()
 <h3>勤務時間外の場合</h3>
-<input class="text" name="worktime_out" value="$!result.WorktimeOut" type="text" size="2" maxlength="3" style="ime-mode: disabled;">
+<input class="text" name="worktime_out" value="$!result.WorktimeOut" type="text" size="3" maxlength="3" style="ime-mode: disabled;">
 分の勤務に対して、休憩 時間は
-<input class="text" name="resttime_out" value="$!result.ResttimeOut" type="text" size="2" maxlength="3" style="ime-mode: disabled;"> 分
+<input class="text" name="resttime_out" value="$!result.ResttimeOut" type="text" size="3" maxlength="3" style="ime-mode: disabled;"> 分
 <div class="spaceTop">#ALcaution('休憩時間は0から480の間で半角英数字で入力してください。')</div>
 #ALtditemfooter()
 #ALtdcaption("#ALrequired('日付切替時刻')")
