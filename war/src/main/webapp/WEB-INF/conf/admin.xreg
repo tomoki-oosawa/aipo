@@ -76,6 +76,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <parameter name="addRefDisabled.style.template" value="Button.vm" hidden="false"/>
         <parameter name="addRefDisabled.style.disabled" value="true" hidden="false"/>
         <parameter name="addRefDisabled.style.no-access" value="addRefDisabled" hidden="false"/>
+        <parameter name="size" value="50" hidden="false"/>
         <meta-info>
             <title>カスタマイズ区画</title>
         </meta-info>
