@@ -26,7 +26,6 @@ import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
-import com.aimluck.eip.orm.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -44,9 +43,9 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
-import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -114,7 +113,7 @@ public class AddressBookFilterdSelectData extends
       SelectQuery<EipMAddressbook> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
-      List<EipMAddressbook> list = ALDataContext.performQuery(query);
+      List<EipMAddressbook> list = query.perform();
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -266,8 +265,10 @@ public class AddressBookFilterdSelectData extends
    * @param context
    * @return
    */
-  private SelectQuery<EipMAddressbook> getSelectQuery(RunData rundata, Context context) {
-    SelectQuery<EipMAddressbook> query = new SelectQuery<EipMAddressbook>(EipMAddressbook.class);
+  private SelectQuery<EipMAddressbook> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipMAddressbook> query = new SelectQuery<EipMAddressbook>(
+        EipMAddressbook.class);
 
     Expression exp21 = ExpressionFactory.matchExp(
         EipMAddressbook.PUBLIC_FLAG_PROPERTY, "T");
@@ -341,7 +342,8 @@ public class AddressBookFilterdSelectData extends
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
           .getDataContext();
-      SelectQuery<EipMAddressGroup> query = new SelectQuery<EipMAddressGroup>(EipMAddressGroup.class);
+      SelectQuery<EipMAddressGroup> query = new SelectQuery<EipMAddressGroup>(
+          EipMAddressGroup.class);
       Expression exp = ExpressionFactory.matchExp(
           EipMAddressGroup.OWNER_ID_PROPERTY,
           Integer.valueOf(ALEipUtils.getUserId(rundata)));
@@ -375,8 +377,8 @@ public class AddressBookFilterdSelectData extends
    * @param crt
    * @param idx
    */
-  private void buildSelectQueryForAddressbookIndex(SelectQuery<EipMAddressbook> query,
-      String lastNameKana, int idx) {
+  private void buildSelectQueryForAddressbookIndex(
+      SelectQuery<EipMAddressbook> query, String lastNameKana, int idx) {
 
     // インデックスによる検索
     switch (idx) {

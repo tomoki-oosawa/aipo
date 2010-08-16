@@ -36,7 +36,6 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
-import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -75,7 +74,7 @@ public class ToDoMultiDelete extends ALAbstractCheckList {
           values);
       query.andQualifier(exp2);
 
-      List<EipTTodo> todolist = ALDataContext.performQuery(query);
+      List<EipTTodo> todolist = query.perform();
       if (todolist == null || todolist.size() == 0)
         return false;
 

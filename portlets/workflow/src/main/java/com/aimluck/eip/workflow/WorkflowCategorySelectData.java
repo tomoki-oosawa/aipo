@@ -21,7 +21,6 @@ package com.aimluck.eip.workflow;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import com.aimluck.eip.orm.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -35,8 +34,8 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCommonUtils;
-import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
 
@@ -101,7 +100,7 @@ public class WorkflowCategorySelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTWorkflowCategory> list = ALDataContext.performQuery(query);
+      List<EipTWorkflowCategory> list = query.perform();
       // 件数をセットする．
       categorySum = list.size();
       return buildPaginatedList(list);
@@ -118,8 +117,10 @@ public class WorkflowCategorySelectData extends
    * @param context
    * @return
    */
-  private SelectQuery<EipTWorkflowCategory> getSelectQuery(RunData rundata, Context context) {
-    SelectQuery<EipTWorkflowCategory> query = new SelectQuery<EipTWorkflowCategory>(EipTWorkflowCategory.class);
+  private SelectQuery<EipTWorkflowCategory> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTWorkflowCategory> query = new SelectQuery<EipTWorkflowCategory>(
+        EipTWorkflowCategory.class);
 
     return query;
   }

@@ -44,7 +44,6 @@ import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
-import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
 
@@ -184,7 +183,7 @@ public class WorkflowAllSelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTWorkflowRequest> list = ALDataContext.performQuery(query);
+      List<EipTWorkflowRequest> list = query.perform();
       // リクエストの総数をセットする．
       requestSum = list.size();
       return buildPaginatedList(list);
@@ -201,8 +200,10 @@ public class WorkflowAllSelectData extends
    * @param context
    * @return
    */
-  private SelectQuery<EipTWorkflowRequest> getSelectQuery(RunData rundata, Context context) {
-    SelectQuery<EipTWorkflowRequest> query = new SelectQuery<EipTWorkflowRequest>(EipTWorkflowRequest.class);
+  private SelectQuery<EipTWorkflowRequest> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTWorkflowRequest> query = new SelectQuery<EipTWorkflowRequest>(
+        EipTWorkflowRequest.class);
 
     if (TAB_UNFINISHED.equals(currentTab)) {
       Expression exp1 = ExpressionFactory.noMatchExp(
@@ -287,7 +288,8 @@ public class WorkflowAllSelectData extends
     DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     Expression exp = ExpressionFactory.matchDbExp(
         EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, entityId);
-    SelectQuery<EipTWorkflowRequest> query = new SelectQuery<EipTWorkflowRequest>(EipTWorkflowRequest.class, exp);
+    SelectQuery<EipTWorkflowRequest> query = new SelectQuery<EipTWorkflowRequest>(
+        EipTWorkflowRequest.class, exp);
     List<?> record = dataContext.performQuery(query);
     if (record.size() > 0) {
       return ((EipTWorkflowRequest) record.get(0)).getUserId().intValue();

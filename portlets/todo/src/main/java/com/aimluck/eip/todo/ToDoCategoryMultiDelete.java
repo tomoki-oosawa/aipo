@@ -37,7 +37,6 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
-import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -67,7 +66,8 @@ public class ToDoCategoryMultiDelete extends ALAbstractCheckList {
       DataContext dataContext = DatabaseOrmService.getInstance()
           .getDataContext();
 
-      SelectQuery<EipTTodoCategory> query = new SelectQuery<EipTTodoCategory>(EipTTodoCategory.class);
+      SelectQuery<EipTTodoCategory> query = new SelectQuery<EipTTodoCategory>(
+          EipTTodoCategory.class);
       Expression exp1 = ExpressionFactory.matchDbExp(
           TurbineUser.USER_ID_PK_COLUMN,
           Integer.valueOf(ALEipUtils.getUserId(rundata)));
@@ -76,7 +76,7 @@ public class ToDoCategoryMultiDelete extends ALAbstractCheckList {
           EipTTodoCategory.CATEGORY_ID_PK_COLUMN, values);
       query.andQualifier(exp2);
 
-      List<EipTTodoCategory> categorylist = ALDataContext.performQuery(query);
+      List<EipTTodoCategory> categorylist = query.perform();
       if (categorylist == null || categorylist.size() == 0)
         return false;
 

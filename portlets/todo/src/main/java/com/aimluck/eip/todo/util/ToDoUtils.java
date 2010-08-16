@@ -38,7 +38,6 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.orm.query.SelectQuery;
-import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -92,9 +91,10 @@ public class ToDoUtils {
       exp.andExp(ExpressionFactory.matchDbExp(EipTTodo.TURBINE_USER_PROPERTY
           + "." + TurbineUser.USER_ID_PK_COLUMN,
           Integer.valueOf(ALEipUtils.getUserId(rundata))));
-      SelectQuery<EipTTodo> query = new SelectQuery<EipTTodo>(EipTTodo.class, exp);
+      SelectQuery<EipTTodo> query = new SelectQuery<EipTTodo>(EipTTodo.class,
+          exp);
 
-      List<EipTTodo> todos = ALDataContext.performQuery(query);
+      List<EipTTodo> todos = query.perform();
 
       if (todos == null || todos.size() == 0) {
         // 指定したTodo IDのレコードが見つからない場合
@@ -142,9 +142,10 @@ public class ToDoUtils {
       Expression exp = ExpressionFactory.matchDbExp(EipTTodo.TODO_ID_PK_COLUMN,
           todoid);
       exp.andExp(ExpressionFactory.matchExp(EipTTodo.PUBLIC_FLAG_PROPERTY, "T"));
-      SelectQuery<EipTTodo> query = new SelectQuery<EipTTodo>(EipTTodo.class, exp);
+      SelectQuery<EipTTodo> query = new SelectQuery<EipTTodo>(EipTTodo.class,
+          exp);
 
-      List<EipTTodo> todos = ALDataContext.performQuery(query);
+      List<EipTTodo> todos = query.perform();
 
       if (todos == null || todos.size() == 0) {
         // 指定したTodo IDのレコードが見つからない場合
@@ -177,7 +178,8 @@ public class ToDoUtils {
     }
 
     try {
-      SelectQuery<EipTTodoCategory> query = new SelectQuery<EipTTodoCategory>(EipTTodoCategory.class);
+      SelectQuery<EipTTodoCategory> query = new SelectQuery<EipTTodoCategory>(
+          EipTTodoCategory.class);
       Expression exp1 = ExpressionFactory.matchDbExp(
           EipTTodoCategory.CATEGORY_ID_PK_COLUMN, categoryid);
       Expression exp2 = ExpressionFactory.matchExp(
@@ -186,7 +188,7 @@ public class ToDoUtils {
       query.setQualifier(exp1);
       query.andQualifier(exp2);
 
-      List<EipTTodoCategory> categories = ALDataContext.performQuery(query);
+      List<EipTTodoCategory> categories = query.perform();
       if (categories == null || categories.size() == 0) {
         // 指定したカテゴリIDのレコードが見つからない場合
         logger.debug("[Todo] Not found ID...");

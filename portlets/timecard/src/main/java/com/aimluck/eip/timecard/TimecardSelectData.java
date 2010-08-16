@@ -31,7 +31,6 @@ import java.util.jar.Attributes;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import com.aimluck.eip.orm.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
@@ -51,11 +50,11 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.timecard.util.TimecardUtils;
-import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -185,8 +184,10 @@ public class TimecardSelectData extends ALAbstractSelectData<EipTTimecard>
    * @param context
    * @return
    */
-  private SelectQuery<EipTTimecard> getSelectQuery(RunData rundata, Context context) {
-    SelectQuery<EipTTimecard> query = new SelectQuery<EipTTimecard>(EipTTimecard.class);
+  private SelectQuery<EipTTimecard> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTTimecard> query = new SelectQuery<EipTTimecard>(
+        EipTTimecard.class);
 
     Expression exp1 = ExpressionFactory.matchExp(EipTTimecard.USER_ID_PROPERTY,
         Integer.valueOf(target_user_id));
@@ -227,7 +228,7 @@ public class TimecardSelectData extends ALAbstractSelectData<EipTTimecard>
         buildSelectQueryForListView(query);
         query.addOrdering(EipTTimecard.WORK_DATE_PROPERTY, true);
 
-        List<EipTTimecard> list = ALDataContext.performQuery(query);
+        List<EipTTimecard> list = query.perform();
         return buildPaginatedList(list);
       } else {
         return null;
@@ -256,8 +257,7 @@ public class TimecardSelectData extends ALAbstractSelectData<EipTTimecard>
         listrd.setDate(date);
         datemap.put(checkdate, listrd);
       }
-      TimecardListResultData listrd = datemap
-          .get(checkdate);
+      TimecardListResultData listrd = datemap.get(checkdate);
 
       TimecardResultData rd = new TimecardResultData();
       rd.initField();
@@ -317,8 +317,10 @@ public class TimecardSelectData extends ALAbstractSelectData<EipTTimecard>
    * @param context
    * @return
    */
-  private SelectQuery<EipTTimecard> getSelectQueryDetail(RunData rundata, Context context) {
-    SelectQuery<EipTTimecard> query = new SelectQuery<EipTTimecard>(EipTTimecard.class);
+  private SelectQuery<EipTTimecard> getSelectQueryDetail(RunData rundata,
+      Context context) {
+    SelectQuery<EipTTimecard> query = new SelectQuery<EipTTimecard>(
+        EipTTimecard.class);
     Expression exp = ExpressionFactory.matchExp(EipTTimecard.USER_ID_PROPERTY,
         Integer.valueOf(ALEipUtils.getUserId(rundata)));
     query.setQualifier(exp);
@@ -605,10 +607,8 @@ public class TimecardSelectData extends ALAbstractSelectData<EipTTimecard>
 
       if (list.size() > 1) {
         for (int i = 0; i < list.size() - 1; i++) {
-          TimecardListResultData listrd1 = datemap
-              .get(list.get(i));
-          TimecardListResultData listrd2 = datemap
-              .get(list.get(i + 1));
+          TimecardListResultData listrd1 = datemap.get(list.get(i));
+          TimecardListResultData listrd2 = datemap.get(list.get(i + 1));
           int listrd1_size = listrd1.getList().size();
           if (listrd1_size > 0) {
             TimecardResultData listrd1_lastrd = (TimecardResultData) listrd1

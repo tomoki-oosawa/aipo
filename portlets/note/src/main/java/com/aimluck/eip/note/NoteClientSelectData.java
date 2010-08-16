@@ -37,7 +37,6 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCommonUtils;
-import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -98,7 +97,7 @@ public class NoteClientSelectData extends ALAbstractSelectData<EipTNoteMap>
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTNoteMap> list = ALDataContext.performQuery(query);
+      List<EipTNoteMap> list = query.perform();
 
       return buildPaginatedList(list);
     } catch (Exception ex) {

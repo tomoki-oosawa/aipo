@@ -55,7 +55,6 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.util.ALCommonUtils;
-import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -191,7 +190,7 @@ public class MsgboardTopicSelectData extends
       buildSelectQueryForListViewSort(query, rundata, context);
 
       // 表示するカラムのみデータベースから取得する．
-      List<EipTMsgboardTopic> list = ALDataContext.performQuery(query);
+      List<EipTMsgboardTopic> list = query.perform();
       // 件数をセットする．
       topicSum = list.size();
       return buildPaginatedList(list);
@@ -208,8 +207,10 @@ public class MsgboardTopicSelectData extends
    * @param context
    * @return
    */
-  private SelectQuery<EipTMsgboardTopic> getSelectQuery(RunData rundata, Context context) {
-    SelectQuery<EipTMsgboardTopic> query = new SelectQuery<EipTMsgboardTopic>(EipTMsgboardTopic.class);
+  private SelectQuery<EipTMsgboardTopic> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTMsgboardTopic> query = new SelectQuery<EipTMsgboardTopic>(
+        EipTMsgboardTopic.class);
 
     Expression exp1 = ExpressionFactory.matchExp(
         EipTMsgboardTopic.PARENT_ID_PROPERTY, Integer.valueOf(0));
@@ -364,8 +365,8 @@ public class MsgboardTopicSelectData extends
       parentTopic = getResultDataDetail(MsgboardUtils
           .getEipTMsgboardParentTopic(rundata, context, false));
 
-      SelectQuery<EipTMsgboardTopic> query = getSelectQueryForCotopic(rundata, context, topicid,
-          cotopicsort);
+      SelectQuery<EipTMsgboardTopic> query = getSelectQueryForCotopic(rundata,
+          context, topicid, cotopicsort);
       buildSelectQueryForListView(query);
 
       if ("response_new".equals(cotopicsort)) {
@@ -375,7 +376,7 @@ public class MsgboardTopicSelectData extends
       }
 
       // 表示するカラムのみデータベースから取得する．
-      return ALDataContext.performQuery(query);
+      return query.perform();
     } catch (Exception ex) {
       logger.error("[MsgboardTopicSelectData]", ex);
       throw new ALDBErrorException();
@@ -387,9 +388,10 @@ public class MsgboardTopicSelectData extends
     return null;
   }
 
-  private SelectQuery<EipTMsgboardTopic> getSelectQueryForCotopic(RunData rundata,
-      Context context, String topicid, String cotopicsort) {
-    SelectQuery<EipTMsgboardTopic> query = new SelectQuery<EipTMsgboardTopic>(EipTMsgboardTopic.class);
+  private SelectQuery<EipTMsgboardTopic> getSelectQueryForCotopic(
+      RunData rundata, Context context, String topicid, String cotopicsort) {
+    SelectQuery<EipTMsgboardTopic> query = new SelectQuery<EipTMsgboardTopic>(
+        EipTMsgboardTopic.class);
     Expression exp = ExpressionFactory.matchExp(
         EipTMsgboardTopic.PARENT_ID_PROPERTY, Integer.valueOf(topicid));
     query.setQualifier(exp);
@@ -398,7 +400,8 @@ public class MsgboardTopicSelectData extends
   }
 
   private SelectQuery<EipTMsgboardFile> getSelectQueryForFiles(int topicid) {
-    SelectQuery<EipTMsgboardFile> query = new SelectQuery<EipTMsgboardFile>(EipTMsgboardFile.class);
+    SelectQuery<EipTMsgboardFile> query = new SelectQuery<EipTMsgboardFile>(
+        EipTMsgboardFile.class);
     Expression exp = ExpressionFactory.matchDbExp(
         EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, Integer.valueOf(topicid));
     query.setQualifier(exp);

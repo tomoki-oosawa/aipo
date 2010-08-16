@@ -23,7 +23,6 @@ import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import com.aimluck.eip.orm.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -35,8 +34,8 @@ import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
-import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -76,7 +75,7 @@ public class AddressBookGroupSelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipMAddressGroup> list = ALDataContext.performQuery(query);
+      List<EipMAddressGroup> list = query.perform();
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -135,8 +134,10 @@ public class AddressBookGroupSelectData extends
    * @param context
    * @return
    */
-  private SelectQuery<EipMAddressGroup> getSelectQuery(RunData rundata, Context context) {
-    SelectQuery<EipMAddressGroup> query = new SelectQuery<EipMAddressGroup>(EipMAddressGroup.class);
+  private SelectQuery<EipMAddressGroup> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipMAddressGroup> query = new SelectQuery<EipMAddressGroup>(
+        EipMAddressGroup.class);
 
     Expression exp = ExpressionFactory.matchExp(
         EipMAddressGroup.OWNER_ID_PROPERTY,

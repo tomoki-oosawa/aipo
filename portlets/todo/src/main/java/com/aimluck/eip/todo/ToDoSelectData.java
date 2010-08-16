@@ -44,7 +44,6 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.todo.util.ToDoUtils;
 import com.aimluck.eip.util.ALCommonUtils;
-import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -121,7 +120,7 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
       SelectQuery<EipTTodoCategory> query = new SelectQuery<EipTTodoCategory>(
           EipTTodoCategory.class, exp);
       query.addOrdering(EipTTodoCategory.CATEGORY_NAME_PROPERTY, Ordering.ASC);
-      List<EipTTodoCategory> aList = ALDataContext.performQuery(query);
+      List<EipTTodoCategory> aList = query.perform();
 
       int size = aList.size();
       for (int i = 0; i < size; i++) {
@@ -153,7 +152,7 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTTodo> list = ALDataContext.performQuery(query);
+      List<EipTTodo> list = query.perform();
       // ToDo の総数をセットする．
       todoSum = list.size();
       return buildPaginatedList(list);

@@ -33,7 +33,6 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.SelectQuery;
-import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -80,7 +79,7 @@ public class AccountPositionSelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipMPosition> list = ALDataContext.performQuery(query);
+      List<EipMPosition> list = query.perform();
       return buildPaginatedList(list);
 
     } catch (Exception ex) {
@@ -96,7 +95,8 @@ public class AccountPositionSelectData extends
    * @param context
    * @return
    */
-  private SelectQuery<EipMPosition> getSelectQuery(RunData rundata, Context context) {
+  private SelectQuery<EipMPosition> getSelectQuery(RunData rundata,
+      Context context) {
     return new SelectQuery<EipMPosition>(EipMPosition.class);
   }
 

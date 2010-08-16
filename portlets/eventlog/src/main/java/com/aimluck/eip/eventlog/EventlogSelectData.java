@@ -39,7 +39,6 @@ import com.aimluck.eip.eventlog.util.ALEventlogUtils;
 import com.aimluck.eip.eventlog.util.EventlogUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.SelectQuery;
-import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -97,7 +96,7 @@ public class EventlogSelectData extends ALAbstractSelectData<EipTEventlog>
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTEventlog> list = ALDataContext.performQuery(query);
+      List<EipTEventlog> list = query.perform();
       // イベントログの総数をセットする．
       eventlogSum = list.size();
 
@@ -115,8 +114,10 @@ public class EventlogSelectData extends ALAbstractSelectData<EipTEventlog>
    * @param context
    * @return
    */
-  private SelectQuery<EipTEventlog> getSelectQuery(RunData rundata, Context context) {
-    SelectQuery<EipTEventlog> query = new SelectQuery<EipTEventlog>(EipTEventlog.class);
+  private SelectQuery<EipTEventlog> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTEventlog> query = new SelectQuery<EipTEventlog>(
+        EipTEventlog.class);
     return buildSelectQueryForFilter(query, rundata, context);
   }
 

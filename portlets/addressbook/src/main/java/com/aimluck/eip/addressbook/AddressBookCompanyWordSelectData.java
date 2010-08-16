@@ -40,7 +40,6 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
-import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -97,11 +96,12 @@ public class AddressBookCompanyWordSelectData extends
 
     try {
 
-      SelectQuery<EipMAddressbookCompany> query = getSelectQuery(rundata, context);
+      SelectQuery<EipMAddressbookCompany> query = getSelectQuery(rundata,
+          context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipMAddressbookCompany> clist = ALDataContext.performQuery(query);
+      List<EipMAddressbookCompany> clist = query.perform();
       return buildPaginatedList(clist);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -171,8 +171,10 @@ public class AddressBookCompanyWordSelectData extends
    * @param context
    * @return
    */
-  private SelectQuery<EipMAddressbookCompany> getSelectQuery(RunData rundata, Context context) {
-    SelectQuery<EipMAddressbookCompany> query = new SelectQuery<EipMAddressbookCompany>(EipMAddressbookCompany.class);
+  private SelectQuery<EipMAddressbookCompany> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipMAddressbookCompany> query = new SelectQuery<EipMAddressbookCompany>(
+        EipMAddressbookCompany.class);
 
     //
     // Expression exp01 = ExpressionFactory.noMatchExp(

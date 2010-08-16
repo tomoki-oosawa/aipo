@@ -47,7 +47,6 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.util.ALCommonUtils;
-import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
@@ -223,7 +222,7 @@ public class WorkflowSelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTWorkflowRequest> list = ALDataContext.performQuery(query);
+      List<EipTWorkflowRequest> list = query.perform();
       // リクエストの総数をセットする．
       requestSum = list.size();
       return buildPaginatedList(list);
@@ -240,8 +239,10 @@ public class WorkflowSelectData extends
    * @param context
    * @return
    */
-  private SelectQuery<EipTWorkflowRequest> getSelectQuery(RunData rundata, Context context) {
-    SelectQuery<EipTWorkflowRequest> query = new SelectQuery<EipTWorkflowRequest>(EipTWorkflowRequest.class);
+  private SelectQuery<EipTWorkflowRequest> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTWorkflowRequest> query = new SelectQuery<EipTWorkflowRequest>(
+        EipTWorkflowRequest.class);
 
     Integer login_user_id = Integer.valueOf((int) login_user.getUserId()
         .getValue());
@@ -444,7 +445,8 @@ public class WorkflowSelectData extends
    */
   @SuppressWarnings("unused")
   private SelectQuery<EipTWorkflowFile> getSelectQueryForFiles(int requestid) {
-    SelectQuery<EipTWorkflowFile> query = new SelectQuery<EipTWorkflowFile>(EipTWorkflowFile.class);
+    SelectQuery<EipTWorkflowFile> query = new SelectQuery<EipTWorkflowFile>(
+        EipTWorkflowFile.class);
     Expression exp = ExpressionFactory.matchDbExp(
         EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, Integer.valueOf(requestid));
     query.setQualifier(exp);

@@ -40,7 +40,6 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.todo.util.ToDoUtils;
 import com.aimluck.eip.util.ALCommonUtils;
-import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -92,7 +91,7 @@ public class ToDoCategorySelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTTodoCategory> list = ALDataContext.performQuery(query);
+      List<EipTTodoCategory> list = query.perform();
       // 件数をセットする．
       categorySum = list.size();
       return buildPaginatedList(list);

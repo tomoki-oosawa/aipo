@@ -32,7 +32,6 @@ import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import com.aimluck.eip.orm.query.SelectQuery;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -54,11 +53,11 @@ import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.timecard.util.TimecardUtils;
-import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -294,7 +293,7 @@ public class TimecardSummaryListSelectData extends
         buildSelectQueryForListView(query);
         query.addOrdering(EipTTimecard.WORK_DATE_PROPERTY, true);
 
-        List<EipTTimecard> list = ALDataContext.performQuery(query);
+        List<EipTTimecard> list = query.perform();
         return buildPaginatedList(list);
       } else {
         return null;
@@ -335,8 +334,7 @@ public class TimecardSummaryListSelectData extends
         listrd.setDate(date);
         datemap.put(checkdate, listrd);
       }
-      TimecardSummaryResultData listrd = datemap
-          .get(checkdate);
+      TimecardSummaryResultData listrd = datemap.get(checkdate);
 
       TimecardResultData rd = new TimecardResultData();
       rd.initField();
@@ -493,8 +491,10 @@ public class TimecardSummaryListSelectData extends
    * @param context
    * @return
    */
-  private SelectQuery<EipTTimecard> getSelectQuery(RunData rundata, Context context) {
-    SelectQuery<EipTTimecard> query = new SelectQuery<EipTTimecard>(EipTTimecard.class);
+  private SelectQuery<EipTTimecard> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTTimecard> query = new SelectQuery<EipTTimecard>(
+        EipTTimecard.class);
 
     Expression exp1 = ExpressionFactory.matchExp(EipTTimecard.USER_ID_PROPERTY,
         new Integer(target_user_id));
@@ -531,10 +531,8 @@ public class TimecardSummaryListSelectData extends
 
       if (list.size() > 1) {
         for (int i = 0; i < list.size() - 1; i++) {
-          TimecardSummaryResultData listrd1 = datemap
-              .get(list.get(i));
-          TimecardSummaryResultData listrd2 = datemap
-              .get(list.get(i + 1));
+          TimecardSummaryResultData listrd1 = datemap.get(list.get(i));
+          TimecardSummaryResultData listrd2 = datemap.get(list.get(i + 1));
           int listrd1_size = listrd1.getList().size();
           if (listrd1_size > 0) {
             TimecardResultData listrd1_lastrd = (TimecardResultData) listrd1

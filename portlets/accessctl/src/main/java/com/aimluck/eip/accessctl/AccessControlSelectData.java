@@ -40,7 +40,6 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
-import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -103,7 +102,7 @@ public class AccessControlSelectData extends ALAbstractSelectData<EipTAclRole> {
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTAclRole> list = ALDataContext.performQuery(query);
+      List<EipTAclRole> list = query.perform();
 
       aclRoleSum = list.size();
 
@@ -121,8 +120,10 @@ public class AccessControlSelectData extends ALAbstractSelectData<EipTAclRole> {
    * @param context
    * @return
    */
-  protected SelectQuery<EipTAclRole> getSelectQuery(RunData rundata, Context context) {
-    SelectQuery<EipTAclRole> query = new SelectQuery<EipTAclRole>(EipTAclRole.class);
+  protected SelectQuery<EipTAclRole> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTAclRole> query = new SelectQuery<EipTAclRole>(
+        EipTAclRole.class);
     return buildSelectQueryForFilter(query, rundata, context);
   }
 

@@ -36,7 +36,6 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCommonUtils;
-import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
 
@@ -97,7 +96,7 @@ public class WorkflowRouteSelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTWorkflowRoute> list = ALDataContext.performQuery(query);
+      List<EipTWorkflowRoute> list = query.perform();
       // 件数をセットする．
       routeSum = list.size();
       return buildPaginatedList(list);

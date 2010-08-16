@@ -46,7 +46,6 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.orm.query.SelectQuery;
-import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -124,8 +123,8 @@ public class NoteGroupSelectData extends ALAbstractSelectData<TurbineUser>
 
       // 受信履歴の未読数と新着数をカウントアップする．
 
-      List<EipTNoteMap> list = ALDataContext.performQuery(NoteUtils
-          .getSelectQueryNoteList(rundata, context));
+      List<EipTNoteMap> list = NoteUtils.getSelectQueryNoteList(rundata,
+          context).perform();
       // List list = orm_notemap.doSelect();
       if (list != null && list.size() > 0) {
         String stat = null;
@@ -153,7 +152,7 @@ public class NoteGroupSelectData extends ALAbstractSelectData<TurbineUser>
         buildSelectQueryForListView(query);
         buildSelectQueryForListViewSort(query, rundata, context);
 
-        List<TurbineUser> ulist = ALDataContext.performQuery(query);
+        List<TurbineUser> ulist = query.perform();
         return buildPaginatedList(ulist);
       }
     } catch (Exception ex) {

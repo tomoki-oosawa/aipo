@@ -50,7 +50,6 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.todo.util.ToDoUtils;
-import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -202,7 +201,8 @@ public class ToDoFormData extends ALAbstractFormData {
     // カテゴリ一覧
     categoryList = new ArrayList<ToDoCategoryResultData>();
     try {
-      SelectQuery<EipTTodoCategory> query = new SelectQuery<EipTTodoCategory>(EipTTodoCategory.class);
+      SelectQuery<EipTTodoCategory> query = new SelectQuery<EipTTodoCategory>(
+          EipTTodoCategory.class);
 
       //
       Expression exp1 = ExpressionFactory.matchDbExp(
@@ -214,11 +214,11 @@ public class ToDoFormData extends ALAbstractFormData {
       query.orQualifier(exp2);
       query.addOrdering(EipTTodoCategory.CATEGORY_NAME_PROPERTY, Ordering.ASC);
 
-      List<EipTTodoCategory> aList = ALDataContext.performQuery(query);
+      List<EipTTodoCategory> aList = query.perform();
 
       int size = aList.size();
       for (int i = 0; i < size; i++) {
-        EipTTodoCategory record = (EipTTodoCategory) aList.get(i);
+        EipTTodoCategory record = aList.get(i);
         ToDoCategoryResultData rd = new ToDoCategoryResultData();
         rd.initField();
         rd.setCategoryId(record.getCategoryId().longValue());
@@ -260,7 +260,8 @@ public class ToDoFormData extends ALAbstractFormData {
   protected boolean validate(List<String> msgList) {
 
     try {
-      SelectQuery<EipTTodoCategory> query = new SelectQuery<EipTTodoCategory>(EipTTodoCategory.class);
+      SelectQuery<EipTTodoCategory> query = new SelectQuery<EipTTodoCategory>(
+          EipTTodoCategory.class);
 
       Expression exp = ExpressionFactory.matchExp(
           EipTTodoCategory.CATEGORY_NAME_PROPERTY, category_name.getValue());
