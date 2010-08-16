@@ -29,7 +29,7 @@ import java.util.jar.Attributes;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import com.aimluck.eip.orm.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -171,7 +171,7 @@ public class NoteSelectData extends ALAbstractSelectData {
         myGroupList.add(myGroups.get(i));
       }
 
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTNoteMap> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
@@ -320,7 +320,7 @@ public class NoteSelectData extends ALAbstractSelectData {
 
       DataContext dataContext = DatabaseOrmService.getInstance()
           .getDataContext();
-      SelectQuery mapquery = new SelectQuery(EipTNoteMap.class);
+      SelectQuery<EipTNoteMap> mapquery = new SelectQuery<EipTNoteMap>(EipTNoteMap.class);
       Expression mapexp = ExpressionFactory.matchExp(
           EipTNoteMap.NOTE_ID_PROPERTY, record.getNoteId());
       mapquery.setQualifier(mapexp);
@@ -344,7 +344,7 @@ public class NoteSelectData extends ALAbstractSelectData {
         users.add(Integer.valueOf(notemap.getUserId()));
       }
 
-      SelectQuery query = new SelectQuery(TurbineUser.class);
+      SelectQuery<TurbineUser> query = new SelectQuery<TurbineUser>(TurbineUser.class);
       Expression exp = ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN,
           users);
       query.setQualifier(exp);
@@ -448,8 +448,8 @@ public class NoteSelectData extends ALAbstractSelectData {
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTNoteMap.class);
+  private SelectQuery<EipTNoteMap> getSelectQuery(RunData rundata, Context context) {
+    SelectQuery<EipTNoteMap> query = new SelectQuery<EipTNoteMap>(EipTNoteMap.class);
 
     Expression exp1 = ExpressionFactory.matchExp(EipTNoteMap.USER_ID_PROPERTY,
         Integer.valueOf(userId));
@@ -480,8 +480,8 @@ public class NoteSelectData extends ALAbstractSelectData {
    * @param context
    * @return
    */
-  private SelectQuery getSelectQueryForDetail(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTNote.class);
+  private SelectQuery<EipTNote> getSelectQueryForDetail(RunData rundata, Context context) {
+    SelectQuery<EipTNote> query = new SelectQuery<EipTNote>(EipTNote.class);
     return query;
   }
 

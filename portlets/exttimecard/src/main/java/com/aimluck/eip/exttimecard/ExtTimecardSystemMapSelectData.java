@@ -27,7 +27,6 @@ import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -49,11 +48,12 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカード集計の検索データを管理するためのクラスです。 <br />
- * 
+ *
  */
 public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
   /** logger */
@@ -111,8 +111,8 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
         TurbineUser user = (TurbineUser) list.get(i);
         SelectQuery map_query = new SelectQuery(EipTExtTimecardSystemMap.class);
         Expression exp = ExpressionFactory.matchExp(
-            EipTExtTimecardSystemMap.USER_ID_PROPERTY, Integer.valueOf(user
-                .getUserId()));
+            EipTExtTimecardSystemMap.USER_ID_PROPERTY,
+            Integer.valueOf(user.getUserId()));
         map_query.setQualifier(exp);
         List map_list = dataContext.performQuery(map_query);
         if (map_list.size() == 0) {
@@ -133,7 +133,7 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -252,7 +252,7 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public Map getPostMap() {

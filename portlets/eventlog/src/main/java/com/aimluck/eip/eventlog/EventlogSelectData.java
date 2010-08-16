@@ -23,7 +23,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -39,6 +38,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.eventlog.util.ALEventlogUtils;
 import com.aimluck.eip.eventlog.util.EventlogUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -93,12 +93,11 @@ public class EventlogSelectData extends ALAbstractSelectData<EipTEventlog>
   public List<EipTEventlog> selectList(RunData rundata, Context context) {
     try {
 
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTEventlog> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTEventlog> list = ALDataContext.performQuery(EipTEventlog.class,
-          query);
+      List<EipTEventlog> list = ALDataContext.performQuery(query);
       // イベントログの総数をセットする．
       eventlogSum = list.size();
 
@@ -116,8 +115,8 @@ public class EventlogSelectData extends ALAbstractSelectData<EipTEventlog>
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTEventlog.class);
+  private SelectQuery<EipTEventlog> getSelectQuery(RunData rundata, Context context) {
+    SelectQuery<EipTEventlog> query = new SelectQuery<EipTEventlog>(EipTEventlog.class);
     return buildSelectQueryForFilter(query, rundata, context);
   }
 

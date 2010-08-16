@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -21,10 +21,8 @@ package com.aimluck.eip.todo;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -38,18 +36,19 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.todo.util.ToDoUtils;
 import com.aimluck.eip.util.ALCommonUtils;
+import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ToDoカテゴリ検索データを管理するクラスです。 <BR>
- * 
+ *
  */
-public class ToDoCategorySelectData extends ALAbstractSelectData implements
-    ALData {
+public class ToDoCategorySelectData extends
+    ALAbstractSelectData<EipTTodoCategory> implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -59,7 +58,7 @@ public class ToDoCategorySelectData extends ALAbstractSelectData implements
   private int categorySum;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -80,23 +79,20 @@ public class ToDoCategorySelectData extends ALAbstractSelectData implements
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List selectList(RunData rundata, Context context) {
+  protected List<EipTTodoCategory> selectList(RunData rundata, Context context) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTTodoCategory> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List list = dataContext.performQuery(query);
+      List<EipTTodoCategory> list = ALDataContext.performQuery(query);
       // 件数をセットする．
       categorySum = list.size();
       return buildPaginatedList(list);
@@ -108,17 +104,19 @@ public class ToDoCategorySelectData extends ALAbstractSelectData implements
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTTodoCategory.class);
+  private SelectQuery<EipTTodoCategory> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTTodoCategory> query = new SelectQuery<EipTTodoCategory>(
+        EipTTodoCategory.class);
 
     Expression exp = ExpressionFactory.matchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(ALEipUtils
-            .getUserId(rundata)));
+        TurbineUser.USER_ID_PK_COLUMN,
+        Integer.valueOf(ALEipUtils.getUserId(rundata)));
     query.setQualifier(exp);
 
     return query;
@@ -126,14 +124,14 @@ public class ToDoCategorySelectData extends ALAbstractSelectData implements
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected Object selectDetail(RunData rundata, Context context)
+  protected EipTTodoCategory selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     // オブジェクトモデルを取得
     return ToDoUtils.getEipTTodoCategory(rundata, context);
@@ -141,13 +139,12 @@ public class ToDoCategorySelectData extends ALAbstractSelectData implements
 
   /**
    * ResultDataを取得します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
-    EipTTodoCategory record = (EipTTodoCategory) obj;
+  protected Object getResultData(EipTTodoCategory record) {
     ToDoCategoryResultData rd = new ToDoCategoryResultData();
     rd.initField();
     rd.setCategoryId(record.getCategoryId().longValue());
@@ -159,13 +156,12 @@ public class ToDoCategorySelectData extends ALAbstractSelectData implements
 
   /**
    * ResultDataを取得します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
-    EipTTodoCategory record = (EipTTodoCategory) obj;
+  protected Object getResultDataDetail(EipTTodoCategory record) {
     ToDoCategoryResultData rd = new ToDoCategoryResultData();
     rd.initField();
     rd.setCategoryId(record.getCategoryId().longValue());
@@ -193,7 +189,7 @@ public class ToDoCategorySelectData extends ALAbstractSelectData implements
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   public String getAclPortletFeature() {

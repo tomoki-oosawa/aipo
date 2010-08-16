@@ -23,7 +23,6 @@ import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -38,6 +37,7 @@ import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.mygroup.util.MyGroupUtils;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -80,12 +80,11 @@ public class MyGroupSelectData extends ALAbstractSelectData<TurbineGroup> {
   protected List<TurbineGroup> selectList(RunData rundata, Context context) {
     try {
 
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<TurbineGroup> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<TurbineGroup> list = ALDataContext.performQuery(TurbineGroup.class,
-          query);
+      List<TurbineGroup> list = ALDataContext.performQuery(query);
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -100,8 +99,8 @@ public class MyGroupSelectData extends ALAbstractSelectData<TurbineGroup> {
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(TurbineGroup.class);
+  private SelectQuery<TurbineGroup> getSelectQuery(RunData rundata, Context context) {
+    SelectQuery<TurbineGroup> query = new SelectQuery<TurbineGroup>(TurbineGroup.class);
 
     Expression exp = ExpressionFactory.matchExp(TurbineGroup.OWNER_ID_PROPERTY,
         Integer.valueOf(ALEipUtils.getUserId(rundata)));

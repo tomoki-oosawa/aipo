@@ -27,7 +27,6 @@ import org.apache.cayenne.DataRow;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -43,6 +42,7 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -90,9 +90,9 @@ public class CabinetSelectData extends ALAbstractSelectData {
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-              "p1c-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
+          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+              .getInitParameter("p1c-sort"));
       logger.debug("[CabinetSelectData] Init Parameter. : "
           + ALEipUtils.getPortlet(rundata, context).getPortletConfig()
               .getInitParameter("p1c-sort"));
@@ -197,8 +197,8 @@ public class CabinetSelectData extends ALAbstractSelectData {
 
     if (selected_folderinfo != null) {
       Expression exp = ExpressionFactory.matchDbExp(
-          EipTCabinetFolder.FOLDER_ID_PK_COLUMN, Integer
-              .valueOf(selected_folderinfo.getFolderId()));
+          EipTCabinetFolder.FOLDER_ID_PK_COLUMN,
+          Integer.valueOf(selected_folderinfo.getFolderId()));
       query.setQualifier(exp);
     }
     query.setDistinct(true);

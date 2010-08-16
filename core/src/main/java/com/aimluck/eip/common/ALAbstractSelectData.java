@@ -24,7 +24,6 @@ import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
@@ -34,6 +33,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.impl.PkgDatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
@@ -275,7 +275,7 @@ public abstract class ALAbstractSelectData<M> implements ALData {
    * @param records
    *            検索結果
    */
-  protected void buildSelectQueryForListView(SelectQuery query) {
+  protected void buildSelectQueryForListView(SelectQuery<M> query) {
     query.setPageSize(getRowsNum());
   }
 
@@ -322,7 +322,7 @@ public abstract class ALAbstractSelectData<M> implements ALData {
    * @param crt
    * @return
    */
-  protected SelectQuery buildSelectQueryForListViewSort(SelectQuery query,
+  protected SelectQuery<M> buildSelectQueryForListViewSort(SelectQuery<M> query,
       RunData rundata, Context context) {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     String sort_type = ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
@@ -354,7 +354,7 @@ public abstract class ALAbstractSelectData<M> implements ALData {
    * @param context
    * @return
    */
-  protected SelectQuery buildSelectQueryForFilter(SelectQuery query,
+  protected SelectQuery<M> buildSelectQueryForFilter(SelectQuery<M> query,
       RunData rundata, Context context) {
     String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
     String filter_type = ALEipUtils.getTemp(rundata, context,

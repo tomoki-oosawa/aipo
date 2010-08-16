@@ -25,7 +25,6 @@ import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -46,6 +45,7 @@ import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.note.util.NoteUtils;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -124,8 +124,8 @@ public class NoteGroupSelectData extends ALAbstractSelectData<TurbineUser>
 
       // 受信履歴の未読数と新着数をカウントアップする．
 
-      List<EipTNoteMap> list = ALDataContext.performQuery(EipTNoteMap.class,
-          NoteUtils.getSelectQueryNoteList(rundata, context));
+      List<EipTNoteMap> list = ALDataContext.performQuery(NoteUtils
+          .getSelectQueryNoteList(rundata, context));
       // List list = orm_notemap.doSelect();
       if (list != null && list.size() > 0) {
         String stat = null;
@@ -149,12 +149,11 @@ public class NoteGroupSelectData extends ALAbstractSelectData<TurbineUser>
       if (filter == null || filter_type == null || filter.equals("")) {
         return new ArrayList<TurbineUser>();
       } else {
-        SelectQuery query = getSelectQuery(rundata, context);
+        SelectQuery<TurbineUser> query = getSelectQuery(rundata, context);
         buildSelectQueryForListView(query);
         buildSelectQueryForListViewSort(query, rundata, context);
 
-        List<TurbineUser> ulist = ALDataContext.performQuery(TurbineUser.class,
-            query);
+        List<TurbineUser> ulist = ALDataContext.performQuery(query);
         return buildPaginatedList(ulist);
       }
     } catch (Exception ex) {
@@ -216,8 +215,10 @@ public class NoteGroupSelectData extends ALAbstractSelectData<TurbineUser>
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(TurbineUser.class);
+  private SelectQuery<TurbineUser> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<TurbineUser> query = new SelectQuery<TurbineUser>(
+        TurbineUser.class);
 
     Expression exp11 = ExpressionFactory.noMatchDbExp(
         TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(1));
@@ -245,8 +246,8 @@ public class NoteGroupSelectData extends ALAbstractSelectData<TurbineUser>
    * @param context
    * @return
    */
-  protected SelectQuery buildSelectQueryForFilter(SelectQuery query,
-      RunData rundata, Context context) {
+  protected SelectQuery<TurbineUser> buildSelectQueryForFilter(
+      SelectQuery<TurbineUser> query, RunData rundata, Context context) {
     String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
     String filter_type = ALEipUtils.getTemp(rundata, context,
         LIST_FILTER_TYPE_STR);

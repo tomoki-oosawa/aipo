@@ -29,7 +29,6 @@ import java.util.jar.Attributes;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
@@ -54,6 +53,7 @@ import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.manhour.util.ManHourUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -121,9 +121,9 @@ public class ManHourSelectData extends ALAbstractSelectData {
 
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-              "p1a-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
+          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+              .getInitParameter("p1a-sort"));
     }
 
     Calendar cal = Calendar.getInstance();
@@ -223,7 +223,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
         }
 
         cleanupDummySchedule(scheduleList);
-        //scheduleList = (ArrayList) buildPaginatedList(scheduleList);
+        // scheduleList = (ArrayList) buildPaginatedList(scheduleList);
         scheduleList = getScheduleList();
       }
       action.setResultData(this);
@@ -265,31 +265,35 @@ public class ManHourSelectData extends ALAbstractSelectData {
         int result = 0;
         if ("category".equals(sort)) {
           if ("asc".equals(sort_type)) {
-            result = ((ManHourResultData) o1).getCategoryName().getValue()
+            result = ((ManHourResultData) o1)
+                .getCategoryName()
+                .getValue()
                 .compareTo(
                     ((ManHourResultData) o2).getCategoryName().getValue());
           } else {
-            result = ((ManHourResultData) o2).getCategoryName().getValue()
+            result = ((ManHourResultData) o2)
+                .getCategoryName()
+                .getValue()
                 .compareTo(
                     ((ManHourResultData) o1).getCategoryName().getValue());
 
           }
         } else if ("user_name".equals(sort)) {
           if ("asc".equals(sort_type)) {
-            result = ((ManHourResultData) o1).getUser().getValue().compareTo(
-                ((ManHourResultData) o2).getUser().getValue());
+            result = ((ManHourResultData) o1).getUser().getValue()
+                .compareTo(((ManHourResultData) o2).getUser().getValue());
           } else {
-            result = ((ManHourResultData) o2).getUser().getValue().compareTo(
-                ((ManHourResultData) o1).getUser().getValue());
+            result = ((ManHourResultData) o2).getUser().getValue()
+                .compareTo(((ManHourResultData) o1).getUser().getValue());
 
           }
         } else if ("schedule".equals(sort)) {
           if ("asc".equals(sort_type)) {
-            result = ((ManHourResultData) o1).getName().getValue().compareTo(
-                ((ManHourResultData) o2).getName().getValue());
+            result = ((ManHourResultData) o1).getName().getValue()
+                .compareTo(((ManHourResultData) o2).getName().getValue());
           } else {
-            result = ((ManHourResultData) o2).getName().getValue().compareTo(
-                ((ManHourResultData) o1).getName().getValue());
+            result = ((ManHourResultData) o2).getName().getValue()
+                .compareTo(((ManHourResultData) o1).getName().getValue());
 
           }
         } else if ("time".equals(sort)) {
@@ -388,8 +392,8 @@ public class ManHourSelectData extends ALAbstractSelectData {
     if ((category_id != null) && (!category_id.equals("") && !is_normal)
         && (!category_id.equals("all"))) {
       Expression exp = ExpressionFactory.matchExp(
-          EipTScheduleMap.COMMON_CATEGORY_ID_PROPERTY, Integer
-              .valueOf(category_id));
+          EipTScheduleMap.COMMON_CATEGORY_ID_PROPERTY,
+          Integer.valueOf(category_id));
 
       query.andQualifier(exp15.orExp(exp));
 
@@ -551,18 +555,18 @@ public class ManHourSelectData extends ALAbstractSelectData {
               .getValue(), rd.getEndDate().getValue())) {
             Calendar temp = Calendar.getInstance();
             temp.setTime(field.getValue());
-            temp.set(Calendar.HOUR, Integer.parseInt(rd.getStartDate()
-                .getHour()));
-            temp.set(Calendar.MINUTE, Integer.parseInt(rd.getStartDate()
-                .getMinute()));
+            temp.set(Calendar.HOUR,
+                Integer.parseInt(rd.getStartDate().getHour()));
+            temp.set(Calendar.MINUTE,
+                Integer.parseInt(rd.getStartDate().getMinute()));
             temp.set(Calendar.SECOND, 0);
             temp.set(Calendar.MILLISECOND, 0);
             Calendar temp2 = Calendar.getInstance();
             temp2.setTime(field.getValue());
-            temp2.set(Calendar.HOUR, Integer
-                .parseInt(rd.getEndDate().getHour()));
-            temp2.set(Calendar.MINUTE, Integer.parseInt(rd.getEndDate()
-                .getMinute()));
+            temp2.set(Calendar.HOUR,
+                Integer.parseInt(rd.getEndDate().getHour()));
+            temp2.set(Calendar.MINUTE,
+                Integer.parseInt(rd.getEndDate().getMinute()));
             temp2.set(Calendar.SECOND, 0);
             temp2.set(Calendar.MILLISECOND, 0);
             ManHourResultData rd3 = new ManHourResultData();
@@ -648,26 +652,26 @@ public class ManHourSelectData extends ALAbstractSelectData {
           // ダミースケジュールではないときに
           // 重複スケジュールを検出する。
           // 時間が重なっている場合重複スケジュールとする。
-          if ((rd.getStartDate().getValue().before(
-              rd2.getStartDate().getValue()) && rd2.getStartDate().getValue()
-              .before(rd.getEndDate().getValue()))
-              || (rd2.getStartDate().getValue().before(
-                  rd.getStartDate().getValue()) && rd.getStartDate().getValue()
-                  .before(rd2.getEndDate().getValue()))
-              || (rd.getStartDate().getValue().before(
-                  rd2.getEndDate().getValue()) && rd2.getEndDate().getValue()
-                  .before(rd.getEndDate().getValue()))
-              || (rd2.getStartDate().getValue().before(
-                  rd.getEndDate().getValue()) && rd.getEndDate().getValue()
-                  .before(rd2.getEndDate().getValue()))
- //             || (rd.getEndDate().getValue()
- //                 .equals(rd2.getEndDate().getValue()) && rd.getStartDate()
- //                 .getValue().equals(rd2.getStartDate().getValue()))
-                  ) {
-            //rd2.setDuplicate(true);
+          if ((rd.getStartDate().getValue()
+              .before(rd2.getStartDate().getValue()) && rd2.getStartDate()
+              .getValue().before(rd.getEndDate().getValue()))
+              || (rd2.getStartDate().getValue()
+                  .before(rd.getStartDate().getValue()) && rd.getStartDate()
+                  .getValue().before(rd2.getEndDate().getValue()))
+              || (rd.getStartDate().getValue()
+                  .before(rd2.getEndDate().getValue()) && rd2.getEndDate()
+                  .getValue().before(rd.getEndDate().getValue()))
+              || (rd2.getStartDate().getValue()
+                  .before(rd.getEndDate().getValue()) && rd.getEndDate()
+                  .getValue().before(rd2.getEndDate().getValue()))
+          // || (rd.getEndDate().getValue()
+          // .equals(rd2.getEndDate().getValue()) && rd.getStartDate()
+          // .getValue().equals(rd2.getStartDate().getValue()))
+          ) {
+            // rd2.setDuplicate(true);
             rd.setDuplicate(true);
-            if(rd.getUserId().getValue() == rd2.getUserId().getValue()) {
-            	rd2.setDuplicate(true);
+            if (rd.getUserId().getValue() == rd2.getUserId().getValue()) {
+              rd2.setDuplicate(true);
             }
           }
         }

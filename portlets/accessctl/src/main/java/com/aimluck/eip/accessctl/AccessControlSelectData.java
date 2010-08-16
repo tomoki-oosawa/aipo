@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -39,6 +38,7 @@ import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
@@ -99,12 +99,11 @@ public class AccessControlSelectData extends ALAbstractSelectData<EipTAclRole> {
   public List<EipTAclRole> selectList(RunData rundata, Context context) {
     try {
 
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTAclRole> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTAclRole> list = ALDataContext.performQuery(EipTAclRole.class,
-          query);
+      List<EipTAclRole> list = ALDataContext.performQuery(query);
 
       aclRoleSum = list.size();
 
@@ -122,8 +121,8 @@ public class AccessControlSelectData extends ALAbstractSelectData<EipTAclRole> {
    * @param context
    * @return
    */
-  protected SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTAclRole.class);
+  protected SelectQuery<EipTAclRole> getSelectQuery(RunData rundata, Context context) {
+    SelectQuery<EipTAclRole> query = new SelectQuery<EipTAclRole>(EipTAclRole.class);
     return buildSelectQueryForFilter(query, rundata, context);
   }
 

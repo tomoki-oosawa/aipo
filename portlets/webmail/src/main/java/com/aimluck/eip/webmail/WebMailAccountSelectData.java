@@ -25,7 +25,6 @@ import java.util.jar.Attributes;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -41,6 +40,7 @@ import com.aimluck.eip.mail.ALMailReceiverContext;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.util.WebMailUtils;
 
@@ -69,9 +69,9 @@ public class WebMailAccountSelectData extends ALAbstractSelectData {
 
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-              "p2b-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
+          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+              .getInitParameter("p2b-sort"));
     }
 
     org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
@@ -109,12 +109,12 @@ public class WebMailAccountSelectData extends ALAbstractSelectData {
     SelectQuery query = new SelectQuery(EipMMailAccount.class);
 
     Expression exp1 = ExpressionFactory.matchExp(
-        EipMMailAccount.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-            .getUserId(rundata)));
+        EipMMailAccount.USER_ID_PROPERTY,
+        Integer.valueOf(ALEipUtils.getUserId(rundata)));
     query.setQualifier(exp1);
     Expression exp2 = ExpressionFactory.noMatchExp(
-        EipMMailAccount.ACCOUNT_TYPE_PROPERTY, Integer
-            .valueOf(ALMailUtils.ACCOUNT_TYPE_INIT));
+        EipMMailAccount.ACCOUNT_TYPE_PROPERTY,
+        Integer.valueOf(ALMailUtils.ACCOUNT_TYPE_INIT));
     query.andQualifier(exp2);
 
     return query;

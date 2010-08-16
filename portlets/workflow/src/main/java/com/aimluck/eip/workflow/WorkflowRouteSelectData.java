@@ -21,7 +21,6 @@ package com.aimluck.eip.workflow;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -35,6 +34,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
@@ -93,12 +93,11 @@ public class WorkflowRouteSelectData extends
   protected List<EipTWorkflowRoute> selectList(RunData rundata, Context context) {
     try {
 
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTWorkflowRoute> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTWorkflowRoute> list = ALDataContext.performQuery(
-          EipTWorkflowRoute.class, query);
+      List<EipTWorkflowRoute> list = ALDataContext.performQuery(query);
       // 件数をセットする．
       routeSum = list.size();
       return buildPaginatedList(list);
@@ -115,8 +114,10 @@ public class WorkflowRouteSelectData extends
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTWorkflowRoute.class);
+  private SelectQuery<EipTWorkflowRoute> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTWorkflowRoute> query = new SelectQuery<EipTWorkflowRoute>(
+        EipTWorkflowRoute.class);
 
     return query;
   }

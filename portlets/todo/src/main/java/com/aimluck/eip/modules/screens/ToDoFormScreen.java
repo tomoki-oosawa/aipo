@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -23,13 +23,12 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.todo.ToDoFormData;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ToDoを処理するクラスです。 <br />
- * 
+ *
  */
 public class ToDoFormScreen extends ALVelocityScreen {
   /** logger */
@@ -56,10 +55,10 @@ public class ToDoFormScreen extends ALVelocityScreen {
     formData.loadCategoryList(rundata, context);
     formData.doViewForm(this, rundata, context);
 
-    if(formData.getCategoryId().getValue()==0){
+    if (formData.getCategoryId().getValue() == 0) {
       formData.setCategoryId(1);
     }
-    
+
     String layout_template = "portlets/html/ja/ajax-todo-form.vm";
     setTemplate(rundata, context, layout_template);
   }

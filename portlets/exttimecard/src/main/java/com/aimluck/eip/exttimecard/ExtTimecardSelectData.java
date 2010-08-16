@@ -29,8 +29,6 @@ import java.util.jar.Attributes;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SQLTemplate;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -51,7 +49,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
-
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
@@ -508,8 +506,8 @@ public class ExtTimecardSelectData extends ALAbstractSelectData implements
   private SelectQuery getSelectQueryDetail(RunData rundata, Context context) {
     SelectQuery query = new SelectQuery(EipTExtTimecard.class);
     Expression exp = ExpressionFactory.matchExp(
-        EipTExtTimecard.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-            .getUserId(rundata)));
+        EipTExtTimecard.USER_ID_PROPERTY,
+        Integer.valueOf(ALEipUtils.getUserId(rundata)));
 
     Calendar calendar_now = Calendar.getInstance();
     Calendar from_calendar = Calendar.getInstance();

@@ -23,7 +23,7 @@ import java.util.List;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import com.aimluck.eip.orm.query.SelectQuery;
 import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.services.JetspeedSecurity;
@@ -110,7 +110,7 @@ public class NoteUtils {
 
     // アクセス権の判定
     DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
-    SelectQuery query1 = new SelectQuery(EipTNoteMap.class);
+    SelectQuery<EipTNoteMap> query1 = new SelectQuery<EipTNoteMap>(EipTNoteMap.class);
     Expression exp1 = ExpressionFactory.matchExp(EipTNoteMap.NOTE_ID_PROPERTY,
         Integer.valueOf(noteId));
     Expression exp2 = ExpressionFactory.matchExp(EipTNoteMap.USER_ID_PROPERTY,
@@ -202,7 +202,7 @@ public class NoteUtils {
 
       DataContext dataContext = DatabaseOrmService.getInstance()
           .getDataContext();
-      SelectQuery query = new SelectQuery(EipTNoteMap.class);
+      SelectQuery<EipTNoteMap> query = new SelectQuery<EipTNoteMap>(EipTNoteMap.class);
 
       Expression exp1 = ExpressionFactory.inDbExp(EipTNote.NOTE_ID_PK_COLUMN,
           nodeIds);
@@ -255,7 +255,7 @@ public class NoteUtils {
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
           .getDataContext();
-      SelectQuery query = new SelectQuery(TurbineUser.class);
+      SelectQuery<TurbineUser> query = new SelectQuery<TurbineUser>(TurbineUser.class);
       Expression exp = ExpressionFactory.matchExp(
           TurbineUser.LOGIN_NAME_PROPERTY, userLoginName);
       query.setQualifier(exp);
@@ -285,7 +285,7 @@ public class NoteUtils {
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
           .getDataContext();
-      SelectQuery query = new SelectQuery(TurbineUser.class);
+      SelectQuery<TurbineUser> query = new SelectQuery<TurbineUser>(TurbineUser.class);
       Expression exp = ExpressionFactory.matchDbExp(
           TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(userId));
       query.setQualifier(exp);
@@ -383,7 +383,7 @@ public class NoteUtils {
 
       // オブジェクトモデルを取得
       String[] noteIds = new String[values.size()];
-      noteIds = (String[]) values.toArray(noteIds);
+      noteIds = values.toArray(noteIds);
 
       List<?> eipTNoteMaps = NoteUtils.getEipTNoteMapList(rundata, context,
           tabReceive, noteIds);
@@ -396,7 +396,7 @@ public class NoteUtils {
         EipTNoteMap noteMap = (EipTNoteMap) eipTNoteMaps.get(i);
         EipTNote tmpnote = noteMap.getEipTNote();
 
-        SelectQuery mapquery = new SelectQuery(EipTNoteMap.class);
+        SelectQuery<EipTNoteMap> mapquery = new SelectQuery<EipTNoteMap>(EipTNoteMap.class);
         Expression mapexp = ExpressionFactory.matchExp(
             EipTNoteMap.NOTE_ID_PROPERTY, tmpnote.getNoteId());
         mapquery.setQualifier(mapexp);
@@ -466,11 +466,11 @@ public class NoteUtils {
     return currentTab;
   }
 
-  public static SelectQuery getSelectQueryNoteList(RunData rundata,
+  public static SelectQuery<EipTNoteMap> getSelectQueryNoteList(RunData rundata,
       Context context) {
     String userId = Integer.toString(ALEipUtils.getUserId(rundata));
 
-    SelectQuery query = new SelectQuery(EipTNoteMap.class);
+    SelectQuery<EipTNoteMap> query = new SelectQuery<EipTNoteMap>(EipTNoteMap.class);
     Expression exp01 = ExpressionFactory.matchExp(
         EipTNoteMap.NOTE_STAT_PROPERTY, NoteUtils.NOTE_STAT_NEW);
     Expression exp02 = ExpressionFactory.matchExp(
@@ -502,7 +502,7 @@ public class NoteUtils {
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
           .getDataContext();
-      SelectQuery query = getSelectQueryForNewReceivedNoteCount(userId);
+      SelectQuery<EipTNote> query = getSelectQueryForNewReceivedNoteCount(userId);
       List<?> list = dataContext.performQuery(query);
       newNoteAllSum = (list != null && list.size() > 0) ? list.size() : 0;
     } catch (Exception ex) {
@@ -512,10 +512,10 @@ public class NoteUtils {
     return newNoteAllSum;
   }
 
-  private static SelectQuery getSelectQueryForNewReceivedNoteCount(
+  private static SelectQuery<EipTNote> getSelectQueryForNewReceivedNoteCount(
       String srcUserId) {
     try {
-      SelectQuery query = new SelectQuery(EipTNote.class);
+      SelectQuery<EipTNote> query = new SelectQuery<EipTNote>(EipTNote.class);
       Expression exp1 = ExpressionFactory.noMatchExp(
           EipTNote.OWNER_ID_PROPERTY, Integer.valueOf(srcUserId));
       query.setQualifier(exp1);
@@ -551,7 +551,7 @@ public class NoteUtils {
           .getDataContext();
 
       // 未読数をセットする．
-      SelectQuery query = getSelectQueryForUnreadReceivedNoteCount(userId);
+      SelectQuery<EipTNote> query = getSelectQueryForUnreadReceivedNoteCount(userId);
       List<?> list = dataContext.performQuery(query);
       unreadNotesAllSum = (list != null && list.size() > 0) ? list.size() : 0;
     } catch (Exception ex) {
@@ -561,10 +561,10 @@ public class NoteUtils {
     return unreadNotesAllSum;
   }
 
-  private static SelectQuery getSelectQueryForUnreadReceivedNoteCount(
+  private static SelectQuery<EipTNote> getSelectQueryForUnreadReceivedNoteCount(
       String srcUserId) {
     try {
-      SelectQuery query = new SelectQuery(EipTNote.class);
+      SelectQuery<EipTNote> query = new SelectQuery<EipTNote>(EipTNote.class);
       Expression exp1 = ExpressionFactory.noMatchExp(
           EipTNote.OWNER_ID_PROPERTY, Integer.valueOf(srcUserId));
       query.setQualifier(exp1);

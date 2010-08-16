@@ -27,7 +27,6 @@ import java.util.jar.Attributes;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -51,6 +50,7 @@ import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
@@ -186,13 +186,12 @@ public class MsgboardTopicSelectData extends
   public List<EipTMsgboardTopic> selectList(RunData rundata, Context context) {
 
     try {
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTMsgboardTopic> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
       // 表示するカラムのみデータベースから取得する．
-      List<EipTMsgboardTopic> list = ALDataContext.performQuery(
-          EipTMsgboardTopic.class, query);
+      List<EipTMsgboardTopic> list = ALDataContext.performQuery(query);
       // 件数をセットする．
       topicSum = list.size();
       return buildPaginatedList(list);
@@ -209,8 +208,8 @@ public class MsgboardTopicSelectData extends
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTMsgboardTopic.class);
+  private SelectQuery<EipTMsgboardTopic> getSelectQuery(RunData rundata, Context context) {
+    SelectQuery<EipTMsgboardTopic> query = new SelectQuery<EipTMsgboardTopic>(EipTMsgboardTopic.class);
 
     Expression exp1 = ExpressionFactory.matchExp(
         EipTMsgboardTopic.PARENT_ID_PROPERTY, Integer.valueOf(0));
@@ -365,7 +364,7 @@ public class MsgboardTopicSelectData extends
       parentTopic = getResultDataDetail(MsgboardUtils
           .getEipTMsgboardParentTopic(rundata, context, false));
 
-      SelectQuery query = getSelectQueryForCotopic(rundata, context, topicid,
+      SelectQuery<EipTMsgboardTopic> query = getSelectQueryForCotopic(rundata, context, topicid,
           cotopicsort);
       buildSelectQueryForListView(query);
 
@@ -376,7 +375,7 @@ public class MsgboardTopicSelectData extends
       }
 
       // 表示するカラムのみデータベースから取得する．
-      return ALDataContext.performQuery(EipTMsgboardTopic.class, query);
+      return ALDataContext.performQuery(query);
     } catch (Exception ex) {
       logger.error("[MsgboardTopicSelectData]", ex);
       throw new ALDBErrorException();
@@ -388,9 +387,9 @@ public class MsgboardTopicSelectData extends
     return null;
   }
 
-  private SelectQuery getSelectQueryForCotopic(RunData rundata,
+  private SelectQuery<EipTMsgboardTopic> getSelectQueryForCotopic(RunData rundata,
       Context context, String topicid, String cotopicsort) {
-    SelectQuery query = new SelectQuery(EipTMsgboardTopic.class);
+    SelectQuery<EipTMsgboardTopic> query = new SelectQuery<EipTMsgboardTopic>(EipTMsgboardTopic.class);
     Expression exp = ExpressionFactory.matchExp(
         EipTMsgboardTopic.PARENT_ID_PROPERTY, Integer.valueOf(topicid));
     query.setQualifier(exp);
@@ -398,8 +397,8 @@ public class MsgboardTopicSelectData extends
     return query;
   }
 
-  private SelectQuery getSelectQueryForFiles(int topicid) {
-    SelectQuery query = new SelectQuery(EipTMsgboardFile.class);
+  private SelectQuery<EipTMsgboardFile> getSelectQueryForFiles(int topicid) {
+    SelectQuery<EipTMsgboardFile> query = new SelectQuery<EipTMsgboardFile>(EipTMsgboardFile.class);
     Expression exp = ExpressionFactory.matchDbExp(
         EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, Integer.valueOf(topicid));
     query.setQualifier(exp);

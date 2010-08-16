@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -32,10 +31,11 @@ import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
  * タイムカード集計の検索データを管理するためのクラスです。 <br />
- * 
+ *
  */
 public class ExtTimecardSystemSelectData extends ALAbstractSelectData {
   /** logger */
@@ -70,7 +70,7 @@ public class ExtTimecardSystemSelectData extends ALAbstractSelectData {
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return

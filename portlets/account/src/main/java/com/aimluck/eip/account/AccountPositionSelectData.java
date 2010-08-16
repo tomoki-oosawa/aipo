@@ -21,7 +21,6 @@ package com.aimluck.eip.account;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -33,6 +32,7 @@ import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -76,12 +76,11 @@ public class AccountPositionSelectData extends
    */
   protected List<EipMPosition> selectList(RunData rundata, Context context) {
     try {
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipMPosition> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipMPosition> list = ALDataContext.performQuery(EipMPosition.class,
-          query);
+      List<EipMPosition> list = ALDataContext.performQuery(query);
       return buildPaginatedList(list);
 
     } catch (Exception ex) {
@@ -97,8 +96,8 @@ public class AccountPositionSelectData extends
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    return new SelectQuery(EipMPosition.class);
+  private SelectQuery<EipMPosition> getSelectQuery(RunData rundata, Context context) {
+    return new SelectQuery<EipMPosition>(EipMPosition.class);
   }
 
   /**

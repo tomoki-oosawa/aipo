@@ -32,7 +32,6 @@ import javax.imageio.ImageIO;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -48,13 +47,14 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ブログエントリー検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
     ALData {
@@ -82,7 +82,7 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
   private DataContext dataContext;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -145,8 +145,8 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
         EipTBlogComment.OWNER_ID_PROPERTY, thisUserId);
     comment_query.setQualifier(exp1);
     Expression exp2 = ExpressionFactory.greaterExp(
-        EipTBlogComment.UPDATE_DATE_PROPERTY, reduceDate(Calendar.getInstance()
-            .getTime(), DELETE_DATE));
+        EipTBlogComment.UPDATE_DATE_PROPERTY,
+        reduceDate(Calendar.getInstance().getTime(), DELETE_DATE));
     comment_query.andQualifier(exp2);
     comment_query.addOrdering("eipTBlogEntry", true);
     List aList = dataContext.performQuery(comment_query);
@@ -167,8 +167,7 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
       rd.setEntryId(entry.getEntryId().longValue());
       rd.setOwnerId(entry.getOwnerId().longValue());
       rd.setOwnerName(BlogUtils.getUserFullName(entry.getOwnerId().intValue()));
-      rd.setTitle(ALCommonUtils
-          .compressString(entry.getTitle(), getStrLength()));
+      rd.setTitle(ALCommonUtils.compressString(entry.getTitle(), getStrLength()));
       rd.setTitleDate(sdf.format(record.getUpdateDate()));
 
       SelectQuery cquery = new SelectQuery(EipTBlogComment.class);
@@ -189,7 +188,7 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -216,7 +215,7 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -228,7 +227,7 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
@@ -241,9 +240,7 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
       rd.initField();
       rd.setEntryId(record.getEntryId().longValue());
       rd.setOwnerId(record.getOwnerId().longValue());
-      rd
-          .setOwnerName(BlogUtils.getUserFullName(record.getOwnerId()
-              .intValue()));
+      rd.setOwnerName(BlogUtils.getUserFullName(record.getOwnerId().intValue()));
       rd.setTitle(ALCommonUtils.compressString(record.getTitle(),
           getStrLength()));
       rd.setBlogId(record.getEipTBlog().getBlogId().intValue());
@@ -268,7 +265,7 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -281,7 +278,7 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
@@ -300,7 +297,7 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
 
   /**
    * エントリーの総数を返す． <BR>
-   * 
+   *
    * @return
    */
   public int getEntrySum() {
@@ -322,7 +319,7 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -339,7 +336,7 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
 
   /**
    * TitleDateの新しい順に並び替える。
-   * 
+   *
    * @param type
    * @param name
    * @return
@@ -364,7 +361,7 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
 
   /**
    * 引数dateの日時からday日前の日時を返します。
-   * 
+   *
    * @param date
    * @param day
    */
@@ -378,7 +375,7 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   public String getAclPortletFeature() {

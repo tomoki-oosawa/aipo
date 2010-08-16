@@ -27,7 +27,6 @@ import java.util.Map;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.om.security.UserIdPrincipal;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -56,6 +55,7 @@ import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALCellularUtils;
@@ -399,7 +399,7 @@ public class NoteFormData extends ALAbstractFormData {
       if (memberList != null) {
         int size = memberList.size();
         for (int i = 0; i < size; i++) {
-          ALEipUser user = (ALEipUser) memberList.get(i);
+          ALEipUser user = memberList.get(i);
           saveNoteMap(rundata, note, user.getUserId().toString(),
               NoteUtils.NOTE_STAT_NEW);
         }
@@ -418,7 +418,7 @@ public class NoteFormData extends ALAbstractFormData {
       if (memberList != null) {
         int size = memberList.size();
         for (int i = 0; i < size; i++) {
-          ALEipUser user = (ALEipUser) memberList.get(i);
+          ALEipUser user = memberList.get(i);
           if (user.getUserId().getValue() != loginUser.getUserId().getValue()) {
             WhatsNewUtils.insertWhatsNew(dataContext,
                 WhatsNewUtils.WHATS_NEW_TYPE_NOTE, note.getNoteId().intValue(),
@@ -445,7 +445,7 @@ public class NoteFormData extends ALAbstractFormData {
           destMember.add(destMemberList.get(i));
           ALMailUtils.sendMailDelegate(org_id, ALEipUtils.getUserId(rundata),
               destMember, subject, subject, createMsgForPc(),
-              createMsgForCellPhone(((ALEipUserAddr) destMember.get(0))
+              createMsgForCellPhone(destMember.get(0)
                   .getUserId()), add_dest_type_int, msgList);
         }
 

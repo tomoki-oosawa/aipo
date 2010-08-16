@@ -21,7 +21,7 @@ package com.aimluck.eip.workflow;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.query.SelectQuery;
+import com.aimluck.eip.orm.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -97,12 +97,11 @@ public class WorkflowCategorySelectData extends
       Context context) {
     try {
 
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTWorkflowCategory> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTWorkflowCategory> list = ALDataContext.performQuery(
-          EipTWorkflowCategory.class, query);
+      List<EipTWorkflowCategory> list = ALDataContext.performQuery(query);
       // 件数をセットする．
       categorySum = list.size();
       return buildPaginatedList(list);
@@ -119,8 +118,8 @@ public class WorkflowCategorySelectData extends
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTWorkflowCategory.class);
+  private SelectQuery<EipTWorkflowCategory> getSelectQuery(RunData rundata, Context context) {
+    SelectQuery<EipTWorkflowCategory> query = new SelectQuery<EipTWorkflowCategory>(EipTWorkflowCategory.class);
 
     return query;
   }

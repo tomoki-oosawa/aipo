@@ -22,11 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
@@ -34,7 +32,6 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.utils.ALDateUtil;
-import com.aimluck.eip.cayenne.om.portlet.EipTBlogThema;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodoCategory;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
@@ -43,17 +40,19 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.todo.util.ToDoUtils;
 import com.aimluck.eip.util.ALCommonUtils;
+import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ToDo検索データを管理するクラスです。 <BR>
  *
  */
-public class ToDoSelectData extends ALAbstractSelectData implements ALData {
+public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
+    ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -63,7 +62,7 @@ public class ToDoSelectData extends ALAbstractSelectData implements ALData {
   private String currentTab;
 
   /** カテゴリ一覧 */
-  private ArrayList categoryList;
+  private ArrayList<ToDoCategoryResultData> categoryList;
 
   /** ToDo の総数 */
   private int todoSum;
@@ -83,9 +82,9 @@ public class ToDoSelectData extends ALAbstractSelectData implements ALData {
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-              "p2a-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
+          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+              .getInitParameter("p2a-sort"));
       logger.debug("[ToDoSelectData] Init Parameter. : "
           + ALEipUtils.getPortlet(rundata, context).getPortletConfig()
               .getInitParameter("p2a-sort"));
@@ -112,22 +111,21 @@ public class ToDoSelectData extends ALAbstractSelectData implements ALData {
   public void loadCategoryList(RunData rundata, Context context) {
     try {
       // カテゴリ一覧
-      categoryList = new ArrayList();
+      categoryList = new ArrayList<ToDoCategoryResultData>();
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
       Expression exp = ExpressionFactory.matchExp(
-          EipTTodoCategory.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-              .getUserId(rundata)));
+          EipTTodoCategory.USER_ID_PROPERTY,
+          Integer.valueOf(ALEipUtils.getUserId(rundata)));
       exp.orExp(ExpressionFactory.matchExp(EipTTodoCategory.USER_ID_PROPERTY,
           Integer.valueOf(0)));
-      SelectQuery query = new SelectQuery(EipTTodoCategory.class, exp);
+      SelectQuery<EipTTodoCategory> query = new SelectQuery<EipTTodoCategory>(
+          EipTTodoCategory.class, exp);
       query.addOrdering(EipTTodoCategory.CATEGORY_NAME_PROPERTY, Ordering.ASC);
-      List aList = dataContext.performQuery(query);
+      List<EipTTodoCategory> aList = ALDataContext.performQuery(query);
 
       int size = aList.size();
       for (int i = 0; i < size; i++) {
-        EipTTodoCategory record = (EipTTodoCategory) aList.get(i);
+        EipTTodoCategory record = aList.get(i);
         ToDoCategoryResultData rd = new ToDoCategoryResultData();
         rd.initField();
         rd.setCategoryId(record.getCategoryId().longValue());
@@ -148,16 +146,14 @@ public class ToDoSelectData extends ALAbstractSelectData implements ALData {
    * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public List selectList(RunData rundata, Context context) {
+  public List<EipTTodo> selectList(RunData rundata, Context context) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
 
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTTodo> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List list = dataContext.performQuery(query);
+      List<EipTTodo> list = ALDataContext.performQuery(query);
       // ToDo の総数をセットする．
       todoSum = list.size();
       return buildPaginatedList(list);
@@ -174,12 +170,12 @@ public class ToDoSelectData extends ALAbstractSelectData implements ALData {
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTTodo.class);
+  private SelectQuery<EipTTodo> getSelectQuery(RunData rundata, Context context) {
+    SelectQuery<EipTTodo> query = new SelectQuery<EipTTodo>(EipTTodo.class);
 
     Expression exp1 = ExpressionFactory.matchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(ALEipUtils
-            .getUserId(rundata)));
+        TurbineUser.USER_ID_PK_COLUMN,
+        Integer.valueOf(ALEipUtils.getUserId(rundata)));
     query.setQualifier(exp1);
 
     if ("list".equals(currentTab)) {
@@ -202,15 +198,12 @@ public class ToDoSelectData extends ALAbstractSelectData implements ALData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipTTodo record) {
     try {
-      EipTTodo record = (EipTTodo) obj;
       ToDoResultData rd = new ToDoResultData();
       rd.initField();
       rd.setTodoId(record.getTodoId().intValue());
-      rd
-          .setCategoryId(record.getEipTTodoCategory().getCategoryId()
-              .longValue());
+      rd.setCategoryId(record.getEipTTodoCategory().getCategoryId().longValue());
 
       rd.setCategoryName(ALCommonUtils.compressString(record
           .getEipTTodoCategory().getCategoryName(), getStrLength()));
@@ -251,7 +244,7 @@ public class ToDoSelectData extends ALAbstractSelectData implements ALData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public Object selectDetail(RunData rundata, Context context)
+  public EipTTodo selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException {
     String js_peid = rundata.getParameters().getString("sch");
 
@@ -287,16 +280,13 @@ public class ToDoSelectData extends ALAbstractSelectData implements ALData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(EipTTodo record) {
     try {
-      EipTTodo record = (EipTTodo) obj;
       ToDoResultData rd = new ToDoResultData();
       rd.initField();
       rd.setTodoName(record.getTodoName());
       rd.setTodoId(record.getTodoId().longValue());
-      rd
-          .setCategoryId(record.getEipTTodoCategory().getCategoryId()
-              .longValue());
+      rd.setCategoryId(record.getEipTTodoCategory().getCategoryId().longValue());
       rd.setCategoryName(record.getEipTTodoCategory().getCategoryName());
       if (!ToDoUtils.isEmptyDate(record.getStartDate())) {
         rd.setStartDate(ALDateUtil.format(record.getStartDate(), "yyyy年M月d日"));
@@ -324,7 +314,7 @@ public class ToDoSelectData extends ALAbstractSelectData implements ALData {
    *
    * @return
    */
-  public ArrayList getCategoryList() {
+  public ArrayList<ToDoCategoryResultData> getCategoryList() {
     return categoryList;
   }
 

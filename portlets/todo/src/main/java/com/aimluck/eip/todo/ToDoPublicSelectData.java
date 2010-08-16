@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -23,10 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
@@ -43,19 +41,23 @@ import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.todo.util.ToDoUtils;
 import com.aimluck.eip.util.ALCommonUtils;
+import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 公開ToDoの検索データを管理するためのクラスです。 <br />
  */
-public class ToDoPublicSelectData extends ALAbstractSelectData {
+public class ToDoPublicSelectData extends ALAbstractSelectData<EipTTodo> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -71,7 +73,7 @@ public class ToDoPublicSelectData extends ALAbstractSelectData {
   private String target_user_id;
 
   /** グループリスト（My グループと部署） */
-  private List myGroupList = null;
+  private List<ALEipGroup> myGroupList = null;
 
   /** ToDo の総数 */
   private int publicTodoSum;
@@ -84,7 +86,7 @@ public class ToDoPublicSelectData extends ALAbstractSelectData {
   private String aclPortletFeature;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -95,9 +97,9 @@ public class ToDoPublicSelectData extends ALAbstractSelectData {
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-              "p3b-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
+          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+              .getInitParameter("p3b-sort"));
       logger.debug("[ToDoPublicSelectData] Init Parameter. : "
           + ALEipUtils.getPortlet(rundata, context).getPortletConfig()
               .getInitParameter("p3b-sort"));
@@ -124,7 +126,7 @@ public class ToDoPublicSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List selectList(RunData rundata, Context context)
+  protected List<EipTTodo> selectList(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     String tabParam = rundata.getParameters().getString("publictab");
     currentTab = ALEipUtils.getTemp(rundata, context, "publictab");
@@ -139,21 +141,19 @@ public class ToDoPublicSelectData extends ALAbstractSelectData {
     target_group_name = ToDoUtils.getTargetGroupName(rundata, context);
     target_user_id = ToDoUtils.getTargetUserId(rundata, context);
 
-    List myGroups = ALEipUtils.getMyGroups(rundata);
-    myGroupList = new ArrayList();
+    List<ALEipGroup> myGroups = ALEipUtils.getMyGroups(rundata);
+    myGroupList = new ArrayList<ALEipGroup>();
     int length = myGroups.size();
     for (int i = 0; i < length; i++) {
       myGroupList.add(myGroups.get(i));
     }
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTTodo> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List list = dataContext.performQuery(query);
+      List<EipTTodo> list = ALDataContext.performQuery(query);
       // ToDo の総数をセットする．
       publicTodoSum = list.size();
       return buildPaginatedList(list);
@@ -165,13 +165,13 @@ public class ToDoPublicSelectData extends ALAbstractSelectData {
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTTodo.class);
+  private SelectQuery<EipTTodo> getSelectQuery(RunData rundata, Context context) {
+    SelectQuery<EipTTodo> query = new SelectQuery<EipTTodo>(EipTTodo.class);
     Expression exp0 = ExpressionFactory.matchExp(EipTTodo.PUBLIC_FLAG_PROPERTY,
         "T");
     query.setQualifier(exp0);
@@ -210,7 +210,7 @@ public class ToDoPublicSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected Object selectDetail(RunData rundata, Context context)
+  protected EipTTodo selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     String js_peid = rundata.getParameters().getString("sch");
 
@@ -232,17 +232,16 @@ public class ToDoPublicSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) throws ALPageNotFoundException,
-      ALDBErrorException {
+  protected Object getResultData(EipTTodo record)
+      throws ALPageNotFoundException, ALDBErrorException {
     try {
-      EipTTodo record = (EipTTodo) obj;
 
       // 登録ユーザ名の設定
       ALBaseUser createdUser = ALEipUtils.getBaseUser(record.getTurbineUser()
           .getUserId().intValue());
-      String createdUserName = new StringBuffer().append(
-          createdUser.getLastName()).append(" ").append(
-          createdUser.getFirstName()).toString();
+      String createdUserName = new StringBuffer()
+          .append(createdUser.getLastName()).append(" ")
+          .append(createdUser.getFirstName()).toString();
 
       ToDoPublicResultData rd = new ToDoPublicResultData();
       rd.initField();
@@ -278,17 +277,16 @@ public class ToDoPublicSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj)
+  protected Object getResultDataDetail(EipTTodo record)
       throws ALPageNotFoundException, ALDBErrorException {
     try {
-      EipTTodo record = (EipTTodo) obj;
 
       // 登録ユーザ名の設定
       ALBaseUser createdUser = ALEipUtils.getBaseUser(record.getTurbineUser()
           .getUserId().intValue());
-      String createdUserName = new StringBuffer().append(
-          createdUser.getLastName()).append(" ").append(
-          createdUser.getFirstName()).toString();
+      String createdUserName = new StringBuffer()
+          .append(createdUser.getLastName()).append(" ")
+          .append(createdUser.getFirstName()).toString();
 
       ToDoPublicResultData rd = new ToDoPublicResultData();
       rd.initField();
@@ -316,13 +314,12 @@ public class ToDoPublicSelectData extends ALAbstractSelectData {
   }
 
   private int getUserId(RunData rundata, Context context, Integer entityId) {
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     Expression exp = ExpressionFactory.matchDbExp(EipTTodo.TODO_ID_PK_COLUMN,
         entityId);
-    SelectQuery query = new SelectQuery(EipTTodo.class, exp);
-    List record = dataContext.performQuery(query);
+    SelectQuery<EipTTodo> query = new SelectQuery<EipTTodo>(EipTTodo.class, exp);
+    List<EipTTodo> record = ALDataContext.performQuery(query);
     if (record.size() > 0) {
-      return ((EipTTodo) record.get(0)).getUserId().intValue();
+      return record.get(0).getUserId().intValue();
     } else {
       return -1;
     }
@@ -331,7 +328,7 @@ public class ToDoPublicSelectData extends ALAbstractSelectData {
 
   /**
    * 現在選択されているタブを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public String getCurrentTab() {
@@ -340,7 +337,7 @@ public class ToDoPublicSelectData extends ALAbstractSelectData {
 
   /**
    * ToDo の総数を返す． <BR>
-   * 
+   *
    * @return
    */
   public int getPublicTodoSum() {
@@ -356,11 +353,11 @@ public class ToDoPublicSelectData extends ALAbstractSelectData {
   }
 
   /**
-   * 
+   *
    * @param groupname
    * @return
    */
-  public List getUsers() {
+  public List<ALEipUser> getUsers() {
     if ((target_group_name != null) && (!target_group_name.equals(""))
         && (!target_group_name.equals("all"))) {
       return ALEipUtils.getUsers(target_group_name);
@@ -370,18 +367,18 @@ public class ToDoPublicSelectData extends ALAbstractSelectData {
   }
 
   /**
-   * 
+   *
    * @return
    */
-  public Map getPostMap() {
+  public Map<Integer, ALEipPost> getPostMap() {
     return ALEipManager.getInstance().getPostMap();
   }
 
   /**
-   * 
+   *
    * @return
    */
-  public List getMyGroupList() {
+  public List<ALEipGroup> getMyGroupList() {
     return myGroupList;
   }
 
@@ -402,7 +399,7 @@ public class ToDoPublicSelectData extends ALAbstractSelectData {
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -417,7 +414,7 @@ public class ToDoPublicSelectData extends ALAbstractSelectData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   public String getAclPortletFeature() {

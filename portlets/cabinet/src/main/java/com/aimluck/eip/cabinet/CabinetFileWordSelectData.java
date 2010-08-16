@@ -25,7 +25,6 @@ import java.util.jar.Attributes;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -43,6 +42,7 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -245,8 +245,8 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
     Expression exp13 = ExpressionFactory.likeExp(EipTCabinetFile.NOTE_PROPERTY,
         "%" + word + "%");
     Expression exp14 = ExpressionFactory.inExp(
-        EipTCabinetFile.FOLDER_ID_PROPERTY, CabinetUtils
-            .getAuthorizedVisibleFolderIds(rundata));
+        EipTCabinetFile.FOLDER_ID_PROPERTY,
+        CabinetUtils.getAuthorizedVisibleFolderIds(rundata));
 
     query.setQualifier(exp11.orExp(exp12).orExp(exp13));
     query.andQualifier(exp14);

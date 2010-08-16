@@ -30,8 +30,6 @@ import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SQLTemplate;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -43,14 +41,12 @@ import com.aimluck.eip.blog.util.calendar.CalendarElement;
 import com.aimluck.eip.blog.util.calendar.Day;
 import com.aimluck.eip.blog.util.calendar.Month;
 import com.aimluck.eip.blog.util.calendar.MonthCalendar;
-import com.aimluck.eip.cayenne.om.portlet.EipMAddressbook;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlog;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogComment;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFootmarkMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogThema;
-import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -62,6 +58,7 @@ import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -280,8 +277,8 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
 
   private void loadMonthCalendar() {
     MonthCalendar c = new MonthCalendar();
-    month = c.createCalendar(Integer.parseInt(viewMonth.getYear()), Integer
-        .parseInt(viewMonth.getMonth()));
+    month = c.createCalendar(Integer.parseInt(viewMonth.getYear()),
+        Integer.parseInt(viewMonth.getMonth()));
   }
 
   private void loadFootmark(EipTBlog blog) throws Exception {
@@ -675,9 +672,7 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
       rd.initField();
       rd.setEntryId(record.getEntryId().longValue());
       rd.setOwnerId(record.getOwnerId().longValue());
-      rd
-          .setOwnerName(BlogUtils.getUserFullName(record.getOwnerId()
-              .intValue()));
+      rd.setOwnerName(BlogUtils.getUserFullName(record.getOwnerId().intValue()));
       rd.setTitle(record.getTitle());
       rd.setNote(record.getNote());
       rd.setBlogId(record.getEipTBlog().getBlogId().longValue());

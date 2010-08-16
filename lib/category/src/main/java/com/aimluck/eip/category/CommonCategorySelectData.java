@@ -23,7 +23,6 @@ import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -37,6 +36,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALDataContext;
@@ -124,12 +124,11 @@ public class CommonCategorySelectData extends
   protected List<EipTCommonCategory> selectList(RunData rundata, Context context) {
     try {
 
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTCommonCategory> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTCommonCategory> list = ALDataContext.performQuery(
-          EipTCommonCategory.class, query);
+      List<EipTCommonCategory> list = ALDataContext.performQuery(query);
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -144,8 +143,8 @@ public class CommonCategorySelectData extends
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTCommonCategory.class);
+  private SelectQuery<EipTCommonCategory> getSelectQuery(RunData rundata, Context context) {
+    SelectQuery<EipTCommonCategory> query = new SelectQuery<EipTCommonCategory>(EipTCommonCategory.class);
 
     Expression exp = ExpressionFactory.noMatchDbExp(
         EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN, Integer.valueOf(1));

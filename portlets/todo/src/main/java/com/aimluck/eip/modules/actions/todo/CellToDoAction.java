@@ -26,7 +26,6 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.todo.CellToDoSelectData;
-import com.aimluck.eip.todo.ToDoSelectData;
 
 /**
  * ToDoのアクションクラスです。 <BR>

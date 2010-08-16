@@ -32,7 +32,7 @@ import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import com.aimluck.eip.orm.query.SelectQuery;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -290,12 +290,11 @@ public class TimecardSummaryListSelectData extends
 
       if (!"".equals(target_user_id)) {
 
-        SelectQuery query = getSelectQuery(rundata, context);
+        SelectQuery<EipTTimecard> query = getSelectQuery(rundata, context);
         buildSelectQueryForListView(query);
         query.addOrdering(EipTTimecard.WORK_DATE_PROPERTY, true);
 
-        List<EipTTimecard> list = ALDataContext.performQuery(
-            EipTTimecard.class, query);
+        List<EipTTimecard> list = ALDataContext.performQuery(query);
         return buildPaginatedList(list);
       } else {
         return null;
@@ -336,7 +335,7 @@ public class TimecardSummaryListSelectData extends
         listrd.setDate(date);
         datemap.put(checkdate, listrd);
       }
-      TimecardSummaryResultData listrd = (TimecardSummaryResultData) datemap
+      TimecardSummaryResultData listrd = datemap
           .get(checkdate);
 
       TimecardResultData rd = new TimecardResultData();
@@ -463,7 +462,7 @@ public class TimecardSummaryListSelectData extends
         boolean found = false;
         int length = userList.size();
         for (int i = 0; i < length; i++) {
-          eipUser = (ALEipUser) userList.get(i);
+          eipUser = userList.get(i);
           String eipUserId = eipUser.getUserId().getValueAsString();
           if (userid.equals(eipUserId)) {
             ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, userid);
@@ -473,7 +472,7 @@ public class TimecardSummaryListSelectData extends
           }
         }
         if (!found) {
-          eipUser = (ALEipUser) userList.get(0);
+          eipUser = userList.get(0);
           String userId = eipUser.getUserId().getValueAsString();
           ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, userId);
           target_user_id = userId;
@@ -494,8 +493,8 @@ public class TimecardSummaryListSelectData extends
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTTimecard.class);
+  private SelectQuery<EipTTimecard> getSelectQuery(RunData rundata, Context context) {
+    SelectQuery<EipTTimecard> query = new SelectQuery<EipTTimecard>(EipTTimecard.class);
 
     Expression exp1 = ExpressionFactory.matchExp(EipTTimecard.USER_ID_PROPERTY,
         new Integer(target_user_id));
@@ -532,9 +531,9 @@ public class TimecardSummaryListSelectData extends
 
       if (list.size() > 1) {
         for (int i = 0; i < list.size() - 1; i++) {
-          TimecardSummaryResultData listrd1 = (TimecardSummaryResultData) datemap
+          TimecardSummaryResultData listrd1 = datemap
               .get(list.get(i));
-          TimecardSummaryResultData listrd2 = (TimecardSummaryResultData) datemap
+          TimecardSummaryResultData listrd2 = datemap
               .get(list.get(i + 1));
           int listrd1_size = listrd1.getList().size();
           if (listrd1_size > 0) {
@@ -578,7 +577,7 @@ public class TimecardSummaryListSelectData extends
    * @return
    */
   public TimecardSummaryResultData getDateListValue(String date_str) {
-    return (TimecardSummaryResultData) datemap.get(date_str);
+    return datemap.get(date_str);
   }
 
   /**

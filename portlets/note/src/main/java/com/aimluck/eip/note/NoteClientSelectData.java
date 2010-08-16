@@ -21,7 +21,6 @@ package com.aimluck.eip.note;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -36,6 +35,7 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.note.util.NoteUtils;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
@@ -94,12 +94,11 @@ public class NoteClientSelectData extends ALAbstractSelectData<EipTNoteMap>
       unreadReceivedNotesAllSum = NoteUtils.getUnreadReceivedNotesAllSum(
           rundata, userId);
 
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTNoteMap> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTNoteMap> list = ALDataContext.performQuery(EipTNoteMap.class,
-          query);
+      List<EipTNoteMap> list = ALDataContext.performQuery(query);
 
       return buildPaginatedList(list);
     } catch (Exception ex) {
@@ -220,7 +219,8 @@ public class NoteClientSelectData extends ALAbstractSelectData<EipTNoteMap>
    * @param rundata
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
+  private SelectQuery<EipTNoteMap> getSelectQuery(RunData rundata,
+      Context context) {
     return NoteUtils.getSelectQueryNoteList(rundata, context);
   }
 

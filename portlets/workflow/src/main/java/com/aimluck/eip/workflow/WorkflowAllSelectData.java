@@ -24,7 +24,6 @@ import java.util.jar.Attributes;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -42,6 +41,7 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALDataContext;
@@ -180,12 +180,11 @@ public class WorkflowAllSelectData extends
   public List<EipTWorkflowRequest> selectList(RunData rundata, Context context) {
     try {
 
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTWorkflowRequest> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTWorkflowRequest> list = ALDataContext.performQuery(
-          EipTWorkflowRequest.class, query);
+      List<EipTWorkflowRequest> list = ALDataContext.performQuery(query);
       // リクエストの総数をセットする．
       requestSum = list.size();
       return buildPaginatedList(list);
@@ -202,8 +201,8 @@ public class WorkflowAllSelectData extends
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTWorkflowRequest.class);
+  private SelectQuery<EipTWorkflowRequest> getSelectQuery(RunData rundata, Context context) {
+    SelectQuery<EipTWorkflowRequest> query = new SelectQuery<EipTWorkflowRequest>(EipTWorkflowRequest.class);
 
     if (TAB_UNFINISHED.equals(currentTab)) {
       Expression exp1 = ExpressionFactory.noMatchExp(
@@ -288,7 +287,7 @@ public class WorkflowAllSelectData extends
     DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     Expression exp = ExpressionFactory.matchDbExp(
         EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, entityId);
-    SelectQuery query = new SelectQuery(EipTWorkflowRequest.class, exp);
+    SelectQuery<EipTWorkflowRequest> query = new SelectQuery<EipTWorkflowRequest>(EipTWorkflowRequest.class, exp);
     List<?> record = dataContext.performQuery(query);
     if (record.size() > 0) {
       return ((EipTWorkflowRequest) record.get(0)).getUserId().intValue();

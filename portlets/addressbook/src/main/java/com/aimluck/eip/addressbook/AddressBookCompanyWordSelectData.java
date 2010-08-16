@@ -23,7 +23,6 @@ import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -38,6 +37,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALDataContext;
@@ -97,12 +97,11 @@ public class AddressBookCompanyWordSelectData extends
 
     try {
 
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipMAddressbookCompany> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipMAddressbookCompany> clist = ALDataContext.performQuery(
-          EipMAddressbookCompany.class, query);
+      List<EipMAddressbookCompany> clist = ALDataContext.performQuery(query);
       return buildPaginatedList(clist);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -172,8 +171,8 @@ public class AddressBookCompanyWordSelectData extends
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipMAddressbookCompany.class);
+  private SelectQuery<EipMAddressbookCompany> getSelectQuery(RunData rundata, Context context) {
+    SelectQuery<EipMAddressbookCompany> query = new SelectQuery<EipMAddressbookCompany>(EipMAddressbookCompany.class);
 
     //
     // Expression exp01 = ExpressionFactory.noMatchExp(

@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,8 +20,6 @@ package com.aimluck.eip.modules.actions.todo;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -44,7 +42,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ToDoのアクションクラスです。 <BR>
- * 
+ *
  */
 public class ToDoAction extends ALBaseAction {
 
@@ -54,7 +52,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -64,12 +62,12 @@ public class ToDoAction extends ALBaseAction {
    */
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
-//    HttpServletRequest request = rundata.getRequest();
-//    StringBuffer sb = new StringBuffer();
-//    sb.append(request.getScheme()).append("://").append(request.getServerName())
-//        .append(":").append(request.getServerPort()).append("/").append(request.getRequestURI());
-//    String url = sb.toString();
-    
+    // HttpServletRequest request = rundata.getRequest();
+    // StringBuffer sb = new StringBuffer();
+    // sb.append(request.getScheme()).append("://").append(request.getServerName())
+    // .append(":").append(request.getServerPort()).append("/").append(request.getRequestURI());
+    // String url = sb.toString();
+
     // セッション情報のクリア
     clearToDoSession(rundata, context);
 
@@ -85,7 +83,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * 最大化表示の際の処理を記述します。 <BR>
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -120,7 +118,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * ToDo登録のフォームを表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -136,7 +134,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * ToDoを登録します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -163,7 +161,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * ToDoを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -188,7 +186,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * ToDoを削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -210,7 +208,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * ToDoを削除します。（複数） <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -230,7 +228,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * ToDoを一覧表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -242,17 +240,18 @@ public class ToDoAction extends ALBaseAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1b-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-        context).getPortletConfig().getInitParameter("p4a-strlen")));
+        .getPortlet(rundata, context).getPortletConfig()
+        .getInitParameter("p1b-rows")));
+    listData.setStrLength(Integer.parseInt(ALEipUtils
+        .getPortlet(rundata, context).getPortletConfig()
+        .getInitParameter("p4a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "todo-list");
   }
 
   /**
    * ToDoを詳細表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -269,7 +268,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * 公開ToDoの一覧を表示します． <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -282,17 +281,18 @@ public class ToDoAction extends ALBaseAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1b-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-        context).getPortletConfig().getInitParameter("p4a-strlen")));
+        .getPortlet(rundata, context).getPortletConfig()
+        .getInitParameter("p1b-rows")));
+    listData.setStrLength(Integer.parseInt(ALEipUtils
+        .getPortlet(rundata, context).getPortletConfig()
+        .getInitParameter("p4a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "todo-public-list");
   }
 
   /**
    * 公開 ToDo の詳細を表示する．
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -311,7 +311,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * ToDoの状態を完了にします。（複数） <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -325,7 +325,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * カテゴリ登録のフォームを表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -340,7 +340,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * カテゴリを登録します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -366,7 +366,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * カテゴリを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -391,7 +391,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * カテゴリを削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -414,7 +414,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * カテゴリを削除します。（複数） <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -434,7 +434,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * カテゴリを一覧表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -459,7 +459,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * カテゴリを詳細表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -482,7 +482,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * ToDoの状態を更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -502,7 +502,7 @@ public class ToDoAction extends ALBaseAction {
   }
 
   private void clearToDoSession(RunData rundata, Context context) {
-    List list = new ArrayList();
+    List<String> list = new ArrayList<String>();
     // エンティティIDの初期化
     list.add("entityid");
     // 選択しているタブ情報の削除

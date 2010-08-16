@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,7 +28,6 @@ import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -37,7 +36,6 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALDateField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
-import com.aimluck.eip.cayenne.om.portlet.EipMAddressGroup;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodoCategory;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
@@ -47,15 +45,17 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.todo.util.ToDoUtils;
+import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ToDoのフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class ToDoFormData extends ALAbstractFormData {
 
@@ -91,7 +91,7 @@ public class ToDoFormData extends ALAbstractFormData {
   private ALStringField end_date_check;
 
   /** カテゴリ一覧 */
-  private ArrayList categoryList;
+  private List<ToDoCategoryResultData> categoryList;
 
   /** 現在の年 */
   private int currentYear;
@@ -119,7 +119,7 @@ public class ToDoFormData extends ALAbstractFormData {
   private String aclPortletFeature;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -139,7 +139,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
+   *
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -194,29 +194,27 @@ public class ToDoFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
   public void loadCategoryList(RunData rundata, Context context) {
     // カテゴリ一覧
-    categoryList = new ArrayList();
+    categoryList = new ArrayList<ToDoCategoryResultData>();
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTTodoCategory.class);
+      SelectQuery<EipTTodoCategory> query = new SelectQuery<EipTTodoCategory>(EipTTodoCategory.class);
 
       //
       Expression exp1 = ExpressionFactory.matchDbExp(
-          TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(ALEipUtils
-              .getUserId(rundata)));
+          TurbineUser.USER_ID_PK_COLUMN,
+          Integer.valueOf(ALEipUtils.getUserId(rundata)));
       query.setQualifier(exp1);
       Expression exp2 = ExpressionFactory.matchExp(
           EipTTodoCategory.USER_ID_PROPERTY, Integer.valueOf(0));
       query.orQualifier(exp2);
       query.addOrdering(EipTTodoCategory.CATEGORY_NAME_PROPERTY, Ordering.ASC);
 
-      List aList = dataContext.performQuery(query);
+      List<EipTTodoCategory> aList = ALDataContext.performQuery(query);
 
       int size = aList.size();
       for (int i = 0; i < size; i++) {
@@ -234,7 +232,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * ToDoの各フィールドに対する制約条件を設定します。 <BR>
-   * 
+   *
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
   protected void setValidator() {
@@ -254,7 +252,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * ToDoのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
@@ -262,7 +260,7 @@ public class ToDoFormData extends ALAbstractFormData {
   protected boolean validate(List<String> msgList) {
 
     try {
-      SelectQuery query = new SelectQuery(EipTTodoCategory.class);
+      SelectQuery<EipTTodoCategory> query = new SelectQuery<EipTTodoCategory>(EipTTodoCategory.class);
 
       Expression exp = ExpressionFactory.matchExp(
           EipTTodoCategory.CATEGORY_NAME_PROPERTY, category_name.getValue());
@@ -300,8 +298,8 @@ public class ToDoFormData extends ALAbstractFormData {
       // 締め切り日
       if (end_date.validate(msgList) && isStartDate) {
         try {
-          if (end_date.getValue().getDate().before(
-              start_date.getValue().getDate())) {
+          if (end_date.getValue().getDate()
+              .before(start_date.getValue().getDate())) {
             msgList
                 .add("『 <span class='em'>締め切り日</span> 』は『 <span class='em'>開始日</span> 』以降の日付で指定してください。");
           }
@@ -322,7 +320,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * ToDoをデータベースから読み出します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -376,7 +374,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * ToDoをデータベースから削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -402,8 +400,8 @@ public class ToDoFormData extends ALAbstractFormData {
       dataContext.commitChanges();
 
       // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(entityId,
-          ALEventlogConstants.PORTLET_TYPE_TODO, todoName);
+      ALEventlogFactoryService.getInstance().getEventlogHandler()
+          .log(entityId, ALEventlogConstants.PORTLET_TYPE_TODO, todoName);
 
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -414,7 +412,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * ToDoをデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -431,8 +429,8 @@ public class ToDoFormData extends ALAbstractFormData {
           // TODO ロールバック
         }
       } else {
-        category = ToDoUtils.getEipTTodoCategory(dataContext, Long
-            .valueOf(category_id.getValue()));
+        category = ToDoUtils.getEipTTodoCategory(dataContext,
+            Long.valueOf(category_id.getValue()));
       }
 
       // 新規オブジェクトモデル
@@ -482,9 +480,11 @@ public class ToDoFormData extends ALAbstractFormData {
       }
 
       // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          todo.getTodoId(), ALEventlogConstants.PORTLET_TYPE_TODO,
-          todo_name.getValue());
+      ALEventlogFactoryService
+          .getInstance()
+          .getEventlogHandler()
+          .log(todo.getTodoId(), ALEventlogConstants.PORTLET_TYPE_TODO,
+              todo_name.getValue());
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
@@ -494,7 +494,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * ToDoカテゴリをデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -534,7 +534,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているToDoを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -556,8 +556,8 @@ public class ToDoFormData extends ALAbstractFormData {
           // TODO ロールバック
         }
       } else {
-        category = ToDoUtils.getEipTTodoCategory(dataContext, Long
-            .valueOf(category_id.getValue()));
+        category = ToDoUtils.getEipTTodoCategory(dataContext,
+            Long.valueOf(category_id.getValue()));
       }
 
       // Todo名
@@ -602,9 +602,11 @@ public class ToDoFormData extends ALAbstractFormData {
         category_id.setValue(category.getCategoryId().longValue());
       }
       // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          todo.getTodoId(), ALEventlogConstants.PORTLET_TYPE_TODO,
-          todo_name.getValue());
+      ALEventlogFactoryService
+          .getInstance()
+          .getEventlogHandler()
+          .log(todo.getTodoId(), ALEventlogConstants.PORTLET_TYPE_TODO,
+              todo_name.getValue());
 
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -615,7 +617,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * カテゴリIDを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALNumberField getCategoryId() {
@@ -624,7 +626,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getNote() {
@@ -633,7 +635,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * 優先度を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALNumberField getPriority() {
@@ -642,7 +644,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * 状態を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALNumberField getState() {
@@ -651,7 +653,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * ToDo名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getTodoName() {
@@ -660,7 +662,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * 締め切り日を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALDateField getEndDate() {
@@ -669,7 +671,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * 開始日を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALDateField getStartDate() {
@@ -678,16 +680,16 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * カテゴリ一覧を取得します。 <BR>
-   * 
+   *
    * @return
    */
-  public ArrayList getCategoryList() {
+  public List<ToDoCategoryResultData> getCategoryList() {
     return categoryList;
   }
 
   /**
    * 締め切り日指定フラグを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getEndDateCheck() {
@@ -696,7 +698,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * 開始日指定フラグを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getStartDateCheck() {
@@ -704,7 +706,7 @@ public class ToDoFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public int getCurrentYear() {
@@ -720,7 +722,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * カテゴリ名を取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getCategoryName() {
@@ -729,7 +731,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * 公開/非公開フラグを取得する．
-   * 
+   *
    * @return
    */
   public ALStringField getPublicFlag() {
@@ -743,7 +745,7 @@ public class ToDoFormData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   public String getAclPortletFeature() {
@@ -753,7 +755,7 @@ public class ToDoFormData extends ALAbstractFormData {
   public void setAclPortletFeature(String aclPortletFeature) {
     this.aclPortletFeature = aclPortletFeature;
   }
-  
+
   public void setCategoryId(long i) {
     category_id.setValue(i);
   }

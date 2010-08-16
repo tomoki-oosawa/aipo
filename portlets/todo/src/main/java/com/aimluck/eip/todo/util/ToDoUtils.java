@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -26,7 +26,6 @@ import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -38,12 +37,13 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.util.ALDataContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ToDoのユーティリティクラスです。 <BR>
- * 
+ *
  */
 public class ToDoUtils {
 
@@ -68,11 +68,11 @@ public class ToDoUtils {
 
   /**
    * Todo オブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param isJoin
-   *            カテゴリテーブルをJOINするかどうか
+   *          カテゴリテーブルをJOINするかどうか
    * @return
    */
   public static EipTTodo getEipTTodo(RunData rundata, Context context,
@@ -87,17 +87,14 @@ public class ToDoUtils {
         return null;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-
       Expression exp = ExpressionFactory.matchDbExp(EipTTodo.TODO_ID_PK_COLUMN,
           todoid);
       exp.andExp(ExpressionFactory.matchDbExp(EipTTodo.TURBINE_USER_PROPERTY
-          + "." + TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(ALEipUtils
-          .getUserId(rundata))));
-      SelectQuery query = new SelectQuery(EipTTodo.class, exp);
+          + "." + TurbineUser.USER_ID_PK_COLUMN,
+          Integer.valueOf(ALEipUtils.getUserId(rundata))));
+      SelectQuery<EipTTodo> query = new SelectQuery<EipTTodo>(EipTTodo.class, exp);
 
-      List todos = dataContext.performQuery(query);
+      List<EipTTodo> todos = ALDataContext.performQuery(query);
 
       if (todos == null || todos.size() == 0) {
         // 指定したTodo IDのレコードが見つからない場合
@@ -106,7 +103,7 @@ public class ToDoUtils {
       }
 
       // アクセス権の判定
-      EipTTodo todo = (EipTTodo) todos.get(0);
+      EipTTodo todo = todos.get(0);
       if ((uid != todo.getUserId().intValue())
           && "F".equals(todo.getPublicFlag())) {
         logger.debug("[Todo] Invalid user access...");
@@ -124,11 +121,11 @@ public class ToDoUtils {
 
   /**
    * 公開 Todo オブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param isJoin
-   *            カテゴリテーブルをJOINするかどうか
+   *          カテゴリテーブルをJOINするかどうか
    * @return
    */
   public static EipTTodo getEipTPublicTodo(RunData rundata, Context context,
@@ -142,23 +139,19 @@ public class ToDoUtils {
         return null;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
       Expression exp = ExpressionFactory.matchDbExp(EipTTodo.TODO_ID_PK_COLUMN,
           todoid);
-      exp
-          .andExp(ExpressionFactory
-              .matchExp(EipTTodo.PUBLIC_FLAG_PROPERTY, "T"));
-      SelectQuery query = new SelectQuery(EipTTodo.class, exp);
+      exp.andExp(ExpressionFactory.matchExp(EipTTodo.PUBLIC_FLAG_PROPERTY, "T"));
+      SelectQuery<EipTTodo> query = new SelectQuery<EipTTodo>(EipTTodo.class, exp);
 
-      List todos = dataContext.performQuery(query);
+      List<EipTTodo> todos = ALDataContext.performQuery(query);
 
       if (todos == null || todos.size() == 0) {
         // 指定したTodo IDのレコードが見つからない場合
         logger.debug("[Todo] Not found ID...");
         return null;
       }
-      return ((EipTTodo) todos.get(0));
+      return todos.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -167,7 +160,7 @@ public class ToDoUtils {
 
   /**
    * Todoカテゴリ オブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -184,25 +177,23 @@ public class ToDoUtils {
     }
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTTodoCategory.class);
+      SelectQuery<EipTTodoCategory> query = new SelectQuery<EipTTodoCategory>(EipTTodoCategory.class);
       Expression exp1 = ExpressionFactory.matchDbExp(
           EipTTodoCategory.CATEGORY_ID_PK_COLUMN, categoryid);
       Expression exp2 = ExpressionFactory.matchExp(
-          EipTTodoCategory.USER_ID_PROPERTY, Long.valueOf(ALEipUtils
-              .getUserId(rundata)));
+          EipTTodoCategory.USER_ID_PROPERTY,
+          Long.valueOf(ALEipUtils.getUserId(rundata)));
       query.setQualifier(exp1);
       query.andQualifier(exp2);
 
-      List categories = dataContext.performQuery(query);
+      List<EipTTodoCategory> categories = ALDataContext.performQuery(query);
       if (categories == null || categories.size() == 0) {
         // 指定したカテゴリIDのレコードが見つからない場合
         logger.debug("[Todo] Not found ID...");
         throw new ALPageNotFoundException();
       }
 
-      return (EipTTodoCategory) categories.get(0);
+      return categories.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       throw new ALDBErrorException();
@@ -211,7 +202,7 @@ public class ToDoUtils {
 
   /**
    * Todoカテゴリ オブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -229,7 +220,7 @@ public class ToDoUtils {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public static Date getEmptyDate() {
@@ -239,10 +230,11 @@ public class ToDoUtils {
   }
 
   /**
-   * 
+   *
    * @param date
    * @return
    */
+  @SuppressWarnings("deprecation")
   public static boolean isEmptyDate(Date date) {
     if (date == null)
       return false;
@@ -256,7 +248,7 @@ public class ToDoUtils {
    * 3 : 普通 : priority_middle.gif <BR>
    * 4 : やや低い : priority_middle_low.gif <BR>
    * 5 : 低い : priority_low.gif <BR>
-   * 
+   *
    * @param i
    * @return
    */
@@ -279,7 +271,7 @@ public class ToDoUtils {
    * 3 : 普通 : priority_middle.gif <BR>
    * 4 : やや低い : priority_middle_low.gif <BR>
    * 5 : 低い : priority_low.gif <BR>
-   * 
+   *
    * @param i
    * @return
    */
@@ -298,10 +290,11 @@ public class ToDoUtils {
    * 状態を表す画像名を取得します。 <BR>
    * 0 : 未着手 <BR>
    * 10 : 10% <BR>
-   * 20 : 20% <BR>: :<BR>
+   * 20 : 20% <BR>
+   * : :<BR>
    * 90 : 90% <BR>
    * 100 : 完了 <BR>
-   * 
+   *
    * @param i
    * @return
    */
@@ -322,10 +315,11 @@ public class ToDoUtils {
    * 状態を表す文字列を取得します。 <BR>
    * 0 : 未着手 <BR>
    * 10 : 10% <BR>
-   * 20 : 20% <BR>: :<BR>
+   * 20 : 20% <BR>
+   * : :<BR>
    * 90 : 90% <BR>
    * 100 : 完了 <BR>
-   * 
+   *
    * @param i
    * @return
    */
@@ -341,7 +335,7 @@ public class ToDoUtils {
 
   /**
    * 表示切り替えで指定したグループ ID を取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -362,7 +356,7 @@ public class ToDoUtils {
 
   /**
    * 表示切り替えで指定したユーザ ID を取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -384,7 +378,7 @@ public class ToDoUtils {
 
   /**
    * 現在日時と指定した日時とを比較する．
-   * 
+   *
    * @param endDate
    * @return 現在日時 < 指定日時 ：LIMIT_STATE_BEFORE <br>
    *         現在日時 == 指定日時 ：LIMIT_STATE_TODAY <br>

@@ -23,7 +23,7 @@ import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
+import com.aimluck.eip.orm.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -72,12 +72,11 @@ public class AddressBookGroupSelectData extends
   protected List<EipMAddressGroup> selectList(RunData rundata, Context context) {
     try {
 
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipMAddressGroup> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipMAddressGroup> list = ALDataContext.performQuery(
-          EipMAddressGroup.class, query);
+      List<EipMAddressGroup> list = ALDataContext.performQuery(query);
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -136,8 +135,8 @@ public class AddressBookGroupSelectData extends
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipMAddressGroup.class);
+  private SelectQuery<EipMAddressGroup> getSelectQuery(RunData rundata, Context context) {
+    SelectQuery<EipMAddressGroup> query = new SelectQuery<EipMAddressGroup>(EipMAddressGroup.class);
 
     Expression exp = ExpressionFactory.matchExp(
         EipMAddressGroup.OWNER_ID_PROPERTY,

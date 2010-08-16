@@ -24,7 +24,6 @@ import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
@@ -43,6 +42,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
@@ -219,12 +219,11 @@ public class WorkflowSelectData extends
   public List<EipTWorkflowRequest> selectList(RunData rundata, Context context) {
     try {
 
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTWorkflowRequest> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTWorkflowRequest> list = ALDataContext.performQuery(
-          EipTWorkflowRequest.class, query);
+      List<EipTWorkflowRequest> list = ALDataContext.performQuery(query);
       // リクエストの総数をセットする．
       requestSum = list.size();
       return buildPaginatedList(list);
@@ -241,8 +240,8 @@ public class WorkflowSelectData extends
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTWorkflowRequest.class);
+  private SelectQuery<EipTWorkflowRequest> getSelectQuery(RunData rundata, Context context) {
+    SelectQuery<EipTWorkflowRequest> query = new SelectQuery<EipTWorkflowRequest>(EipTWorkflowRequest.class);
 
     Integer login_user_id = Integer.valueOf((int) login_user.getUserId()
         .getValue());
@@ -444,8 +443,8 @@ public class WorkflowSelectData extends
    * @return
    */
   @SuppressWarnings("unused")
-  private SelectQuery getSelectQueryForFiles(int requestid) {
-    SelectQuery query = new SelectQuery(EipTWorkflowFile.class);
+  private SelectQuery<EipTWorkflowFile> getSelectQueryForFiles(int requestid) {
+    SelectQuery<EipTWorkflowFile> query = new SelectQuery<EipTWorkflowFile>(EipTWorkflowFile.class);
     Expression exp = ExpressionFactory.matchDbExp(
         EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, Integer.valueOf(requestid));
     query.setQualifier(exp);
