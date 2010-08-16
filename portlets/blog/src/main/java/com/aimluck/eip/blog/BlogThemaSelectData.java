@@ -21,7 +21,6 @@ package com.aimluck.eip.blog;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -37,7 +36,6 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -47,16 +45,15 @@ import com.aimluck.eip.util.ALEipUtils;
  * ブログテーマ検索データを管理するクラスです。 <BR>
  *
  */
-public class BlogThemaSelectData extends ALAbstractSelectData implements ALData {
+public class BlogThemaSelectData extends ALAbstractSelectData<EipTBlogThema>
+    implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(BlogThemaSelectData.class.getName());
+    .getLogger(BlogThemaSelectData.class.getName());
 
   /** テーマの総数 */
   private int themaSum;
-
-  private DataContext dataContext;
 
   /**
    *
@@ -72,10 +69,8 @@ public class BlogThemaSelectData extends ALAbstractSelectData implements ALData 
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, "thema_name");
       logger
-          .debug("[BlogCategorySelectData] Init Parameter. : " + "thema_name");
+        .debug("[BlogCategorySelectData] Init Parameter. : " + "thema_name");
     }
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     super.init(action, rundata, context);
   }
@@ -89,13 +84,13 @@ public class BlogThemaSelectData extends ALAbstractSelectData implements ALData 
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List selectList(RunData rundata, Context context) {
+  protected List<EipTBlogThema> selectList(RunData rundata, Context context) {
     try {
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTBlogThema> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List list = dataContext.performQuery(query);
+      List<EipTBlogThema> list = query.perform();
       // 件数をセットする．
       themaSum = list.size();
       return buildPaginatedList(list);
@@ -112,11 +107,13 @@ public class BlogThemaSelectData extends ALAbstractSelectData implements ALData 
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTBlogThema.class);
+  private SelectQuery<EipTBlogThema> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTBlogThema> query = new SelectQuery<EipTBlogThema>(
+      EipTBlogThema.class);
 
     Expression exp = ExpressionFactory.noMatchDbExp(
-        EipTBlogThema.THEMA_ID_PK_COLUMN, Integer.valueOf(1));
+      EipTBlogThema.THEMA_ID_PK_COLUMN, Integer.valueOf(1));
     query.setQualifier(exp);
 
     return query;
@@ -131,7 +128,7 @@ public class BlogThemaSelectData extends ALAbstractSelectData implements ALData 
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected EipTBlogThema selectDetail(RunData rundata, Context context) {
     // オブジェクトモデルを取得
     return BlogUtils.getEipTBlogThema(rundata, context);
   }
@@ -143,13 +140,12 @@ public class BlogThemaSelectData extends ALAbstractSelectData implements ALData 
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
-    EipTBlogThema record = (EipTBlogThema) obj;
+  protected Object getResultData(EipTBlogThema record) {
     BlogThemaResultData rd = new BlogThemaResultData();
     rd.initField();
     rd.setThemaId(record.getThemaId().longValue());
     rd.setThemaName(ALCommonUtils.compressString(record.getThemaName(),
-        getStrLength()));
+      getStrLength()));
     rd.setDescription(record.getDescription());
     return rd;
   }
@@ -161,8 +157,7 @@ public class BlogThemaSelectData extends ALAbstractSelectData implements ALData 
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
-    EipTBlogThema record = (EipTBlogThema) obj;
+  protected Object getResultDataDetail(EipTBlogThema record) {
     BlogThemaResultData rd = new BlogThemaResultData();
     rd.initField();
     rd.setThemaId(record.getThemaId().longValue());
@@ -170,9 +165,9 @@ public class BlogThemaSelectData extends ALAbstractSelectData implements ALData 
     rd.setDescription(record.getDescription());
 
     rd.setCreateUserName(BlogUtils.getUserFullName(record.getCreateUserId()
-        .intValue()));
+      .intValue()));
     rd.setUpdateUserName(BlogUtils.getUserFullName(record.getUpdateUserId()
-        .intValue()));
+      .intValue()));
     rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
     rd.setUpdateDate(ALDateUtil.format(record.getUpdateDate(), "yyyy年M月d日"));
     return rd;

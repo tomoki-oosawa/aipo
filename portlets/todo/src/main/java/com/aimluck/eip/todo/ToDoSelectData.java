@@ -24,7 +24,6 @@ import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.Ordering;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
@@ -119,7 +118,7 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
           Integer.valueOf(0)));
       SelectQuery<EipTTodoCategory> query = new SelectQuery<EipTTodoCategory>(
           EipTTodoCategory.class, exp);
-      query.addOrdering(EipTTodoCategory.CATEGORY_NAME_PROPERTY, Ordering.ASC);
+      query.orderAscending(EipTTodoCategory.CATEGORY_NAME_PROPERTY);
       List<EipTTodoCategory> aList = query.perform();
 
       int size = aList.size();

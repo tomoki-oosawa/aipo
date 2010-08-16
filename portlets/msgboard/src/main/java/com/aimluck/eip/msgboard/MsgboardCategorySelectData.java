@@ -70,8 +70,6 @@ public class MsgboardCategorySelectData extends ALAbstractSelectData implements
   /** <code>members</code> 共有メンバー */
   private List<ALEipUser> members;
 
-  private DataContext dataContext;
-
   /** 他人のカテゴリ編集権限 */
   private boolean authority_edit;
 
@@ -96,7 +94,6 @@ public class MsgboardCategorySelectData extends ALAbstractSelectData implements
     }
 
     uid = ALEipUtils.getUserId(rundata);
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     authority_edit = MsgboardUtils.checkPermission(rundata, context,
         ALAccessControlConstants.VALUE_ACL_UPDATE,
@@ -125,7 +122,7 @@ public class MsgboardCategorySelectData extends ALAbstractSelectData implements
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<?> list = dataContext.performQuery(query);
+      List<?> list = query.perform();
       // 件数をセットする．
       categorySum = list.size();
       return buildPaginatedList(list);
@@ -186,7 +183,7 @@ public class MsgboardCategorySelectData extends ALAbstractSelectData implements
       query.andQualifier((exp01.andExp(exp02.orExp(exp03))).orExp(exp11
           .andExp(exp02.orExp(exp03))));
     }
-    query.setDistinct(true);
+    query.distinct(true);
 
     return query;
   }
@@ -262,13 +259,12 @@ public class MsgboardCategorySelectData extends ALAbstractSelectData implements
       boolean public_flag = (MsgboardUtils.PUBLIC_FLG_VALUE_PUBLIC)
           .equals(record.getPublicFlag());
 
-      SelectQuery mapquery = new SelectQuery(EipTMsgboardCategoryMap.class);
+      SelectQuery<EipTMsgboardCategoryMap> mapquery = new SelectQuery<EipTMsgboardCategoryMap>(EipTMsgboardCategoryMap.class);
       Expression mapexp = ExpressionFactory.matchDbExp(
           EipTMsgboardCategory.CATEGORY_ID_PK_COLUMN, record.getCategoryId());
       mapquery.setQualifier(mapexp);
 
-      @SuppressWarnings("unchecked")
-      List<EipTMsgboardCategoryMap> list = dataContext.performQuery(mapquery);
+      List<EipTMsgboardCategoryMap> list = mapquery.perform();
 
       List<Integer> users = new ArrayList<Integer>();
       int size = list.size();
@@ -286,11 +282,11 @@ public class MsgboardCategorySelectData extends ALAbstractSelectData implements
         }
       }
 
-      SelectQuery query = new SelectQuery(TurbineUser.class);
+      SelectQuery<TurbineUser> query = new SelectQuery<TurbineUser>(TurbineUser.class);
       Expression exp = ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN,
           users);
       query.setQualifier(exp);
-      members = ALEipUtils.getUsersFromSelectQuery(query);
+      members = ALEipUtils.getUsersFromSelectQuery(query.getQuery());
 
       rd.setCategoryId(record.getCategoryId().intValue());
       rd.setCategoryName(record.getCategoryName());

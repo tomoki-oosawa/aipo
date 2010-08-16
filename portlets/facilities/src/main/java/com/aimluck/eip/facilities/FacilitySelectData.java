@@ -21,7 +21,6 @@ package com.aimluck.eip.facilities;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -35,7 +34,6 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -43,11 +41,12 @@ import com.aimluck.eip.util.ALEipUtils;
  * 施設検索データを管理するクラスです。 <BR>
  *
  */
-public class FacilitySelectData extends ALAbstractSelectData implements ALData {
+public class FacilitySelectData extends ALAbstractSelectData<EipMFacility>
+    implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FacilitySelectData.class.getName());
+    .getLogger(FacilitySelectData.class.getName());
 
   /** 施設の総数 */
   private int facilitySum;
@@ -65,8 +64,8 @@ public class FacilitySelectData extends ALAbstractSelectData implements ALData {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
-          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-              .getInitParameter("p2a-sort"));
+        ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+          .getInitParameter("p2a-sort"));
     }
 
     super.init(action, rundata, context);
@@ -81,16 +80,14 @@ public class FacilitySelectData extends ALAbstractSelectData implements ALData {
    * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public List selectList(RunData rundata, Context context) {
+  public List<EipMFacility>  selectList(RunData rundata, Context context) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
 
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipMFacility> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List list = dataContext.performQuery(query);
+      List<EipMFacility>  list = query.perform();
       // 施設の総数をセットする．
       facilitySum = list.size();
 
@@ -108,8 +105,10 @@ public class FacilitySelectData extends ALAbstractSelectData implements ALData {
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipMFacility.class);
+  private SelectQuery<EipMFacility> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipMFacility> query = new SelectQuery<EipMFacility>(
+      EipMFacility.class);
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
@@ -120,9 +119,8 @@ public class FacilitySelectData extends ALAbstractSelectData implements ALData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipMFacility record) {
     try {
-      EipMFacility record = (EipMFacility) obj;
       FacilityResultData rd = new FacilityResultData();
       rd.initField();
       rd.setFacilityId(record.getFacilityId().longValue());
@@ -143,7 +141,7 @@ public class FacilitySelectData extends ALAbstractSelectData implements ALData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public Object selectDetail(RunData rundata, Context context) {
+  public EipMFacility selectDetail(RunData rundata, Context context) {
     return FacilitiesUtils.getEipMFacility(rundata, context);
   }
 
@@ -154,9 +152,8 @@ public class FacilitySelectData extends ALAbstractSelectData implements ALData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(EipMFacility record) {
     try {
-      EipMFacility record = (EipMFacility) obj;
       FacilityResultData rd = new FacilityResultData();
       rd.initField();
       rd.setFacilityName(record.getFacilityName());

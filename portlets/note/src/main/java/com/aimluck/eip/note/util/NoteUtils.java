@@ -87,7 +87,7 @@ public class NoteUtils {
    * @return
    */
   public static EipTNote getEipTNoteDetail(RunData rundata, Context context,
-      SelectQuery query) {
+      SelectQuery<EipTNote> query) {
     String noteId = ALEipUtils.getTemp(rundata, context,
         ALEipConstants.ENTITY_ID);
 
@@ -109,14 +109,13 @@ public class NoteUtils {
     }
 
     // アクセス権の判定
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     SelectQuery<EipTNoteMap> query1 = new SelectQuery<EipTNoteMap>(EipTNoteMap.class);
     Expression exp1 = ExpressionFactory.matchExp(EipTNoteMap.NOTE_ID_PROPERTY,
         Integer.valueOf(noteId));
     Expression exp2 = ExpressionFactory.matchExp(EipTNoteMap.USER_ID_PROPERTY,
         uid);
     query1.setQualifier(exp1.andExp(exp2));
-    List<?> maps = dataContext.performQuery(query1);
+    List<EipTNoteMap> maps = query1.perform();
     if (maps == null || maps.size() == 0) {
       // 指定したアカウントIDのレコードが見つからない場合
       logger.debug("[Note] Invalid user access...");
@@ -134,13 +133,13 @@ public class NoteUtils {
       Expression exp = ExpressionFactory.matchDbExp(EipTNote.NOTE_ID_PK_COLUMN,
           Integer.valueOf(noteId));
       query.andQualifier(exp);
-      List<?> notes = dataContext.performQuery(query);
+      List<EipTNote> notes = query.perform();
       if (notes == null || notes.size() == 0) {
         // 指定したアカウントIDのレコードが見つからない場合
         logger.debug("[Note] Not found NoteID...");
         return null;
       }
-      return ((EipTNote) notes.get(0));
+      return notes.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -157,7 +156,7 @@ public class NoteUtils {
    * @return
    */
   public static EipTNoteMap getEipTNoteMap(RunData rundata, Context context,
-      SelectQuery query) {
+      SelectQuery<EipTNoteMap> query) {
 
     String noteId = ALEipUtils.getTemp(rundata, context,
         ALEipConstants.ENTITY_ID);
@@ -170,21 +169,19 @@ public class NoteUtils {
         return null;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
       Expression exp1 = ExpressionFactory.matchDbExp(
           EipTNote.NOTE_ID_PK_COLUMN, noteId);
       query.andQualifier(exp1);
       Expression exp2 = ExpressionFactory.matchExp(
           EipTNoteMap.DEL_FLG_PROPERTY, "F");
       query.andQualifier(exp2);
-      List<?> maps = dataContext.performQuery(query);
+      List<EipTNoteMap> maps = query.perform();
       if (maps == null || maps.size() == 0) {
         // 指定したアカウントIDのレコードが見つからない場合
         logger.debug("[Note] Not found NoteID...");
         return null;
       }
-      return ((EipTNoteMap) maps.get(0));
+      return maps.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -199,9 +196,6 @@ public class NoteUtils {
 
     try {
       Integer userid = Integer.valueOf(ALEipUtils.getUserId(rundata));
-
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
       SelectQuery<EipTNoteMap> query = new SelectQuery<EipTNoteMap>(EipTNoteMap.class);
 
       Expression exp1 = ExpressionFactory.inDbExp(EipTNote.NOTE_ID_PK_COLUMN,
@@ -226,7 +220,7 @@ public class NoteUtils {
         query.andQualifier(exp3);
       }
 
-      List<?> noteMaps = dataContext.performQuery(query);
+      List<?> noteMaps = query.perform();
       if (noteMaps == null || noteMaps.size() == 0) {
         // 指定したアカウントIDのレコードが見つからない場合
         logger.debug("[Note] Not found NoteIDs...");
@@ -253,13 +247,11 @@ public class NoteUtils {
     String userId = null;
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
       SelectQuery<TurbineUser> query = new SelectQuery<TurbineUser>(TurbineUser.class);
       Expression exp = ExpressionFactory.matchExp(
           TurbineUser.LOGIN_NAME_PROPERTY, userLoginName);
       query.setQualifier(exp);
-      List<?> destUserList = dataContext.performQuery(query);
+      List<?> destUserList = query.perform();
       if (destUserList == null || destUserList.size() <= 0)
         return null;
       userId = ((TurbineUser) destUserList.get(0)).getUserId().toString();
@@ -283,13 +275,11 @@ public class NoteUtils {
     String userName = null;
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
       SelectQuery<TurbineUser> query = new SelectQuery<TurbineUser>(TurbineUser.class);
       Expression exp = ExpressionFactory.matchDbExp(
           TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(userId));
       query.setQualifier(exp);
-      List<?> destUserList = dataContext.performQuery(query);
+      List<?> destUserList = query.perform();
       if (destUserList == null || destUserList.size() <= 0)
         return null;
       userName = ((TurbineUser) destUserList.get(0)).getLoginName();
@@ -400,7 +390,7 @@ public class NoteUtils {
         Expression mapexp = ExpressionFactory.matchExp(
             EipTNoteMap.NOTE_ID_PROPERTY, tmpnote.getNoteId());
         mapquery.setQualifier(mapexp);
-        List<?> maplist = dataContext.performQuery(mapquery);
+        List<?> maplist = mapquery.perform();
         if (maplist != null && maplist.size() > 0) {
           int count = 0;
           int size = maplist.size();
@@ -500,10 +490,8 @@ public class NoteUtils {
   public static int getNewReceivedNoteAllSum(RunData rundata, String userId) {
     int newNoteAllSum = 0;
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
       SelectQuery<EipTNote> query = getSelectQueryForNewReceivedNoteCount(userId);
-      List<?> list = dataContext.performQuery(query);
+      List<?> list = query.perform();
       newNoteAllSum = (list != null && list.size() > 0) ? list.size() : 0;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -547,12 +535,9 @@ public class NoteUtils {
   public static int getUnreadReceivedNotesAllSum(RunData rundata, String userId) {
     int unreadNotesAllSum = 0;
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-
       // 未読数をセットする．
       SelectQuery<EipTNote> query = getSelectQueryForUnreadReceivedNoteCount(userId);
-      List<?> list = dataContext.performQuery(query);
+      List<?> list = query.perform();
       unreadNotesAllSum = (list != null && list.size() > 0) ? list.size() : 0;
     } catch (Exception ex) {
       logger.error("Exception", ex);

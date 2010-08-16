@@ -493,10 +493,10 @@ public class NoteFormData extends ALAbstractFormData {
     }
   }
 
-  private SelectQuery getSelectQueryForDelete(RunData rundata, Context context) {
+  private SelectQuery<EipTNoteMap> getSelectQueryForDelete(RunData rundata, Context context) {
     String userId = Integer.toString(ALEipUtils.getUserId(rundata));
 
-    SelectQuery query = new SelectQuery(EipTNoteMap.class);
+    SelectQuery<EipTNoteMap> query = new SelectQuery<EipTNoteMap>(EipTNoteMap.class);
 
     if ("received_notes".equals(NoteUtils.getCurrentTab(rundata, context))) {
       Expression exp1 = ExpressionFactory.matchExp(

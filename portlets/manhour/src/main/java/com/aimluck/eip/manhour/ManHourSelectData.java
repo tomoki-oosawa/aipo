@@ -333,12 +333,10 @@ public class ManHourSelectData extends ALAbstractSelectData {
       throws ALPageNotFoundException, ALDBErrorException {
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
       SelectQuery query = getSelectQuery(rundata, context);
       // buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
-      List list = dataContext.performQuery(query);
+      List list = query.perform();
       return ScheduleUtils.sortByDummySchedule(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -481,10 +479,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
           EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(userid));
       mapquery.andQualifier(mapexp2);
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-
-      List schedulemaps = dataContext.performQuery(mapquery);
+      List schedulemaps = mapquery.perform();
       boolean is_member = (schedulemaps != null && schedulemaps.size() > 0) ? true
           : false;
 

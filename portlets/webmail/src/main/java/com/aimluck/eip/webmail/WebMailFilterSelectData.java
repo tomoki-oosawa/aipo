@@ -122,7 +122,7 @@ public class WebMailFilterSelectData extends ALAbstractSelectData {
             EipMMailAccount.USER_ID_PROPERTY, login_user.getUserId());
         SelectQuery query = new SelectQuery(EipMMailAccount.class, exp);
         // query.addOrdering(EipMMailAccount.ACCOUNT_ID_PK_COLUMN, true);
-        List accounts = dataContext.performQuery(query);
+        List accounts = query.perform();
         if (accounts != null && accounts.size() > 0) {
           mailAccount = (EipMMailAccount) accounts.get(0);
         } else {
@@ -192,7 +192,7 @@ public class WebMailFilterSelectData extends ALAbstractSelectData {
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List list = dataContext.performQuery(query);
+      List list = query.perform();
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);

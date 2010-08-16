@@ -2,30 +2,28 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.aimluck.eip.facilities;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.om.security.Group;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -45,17 +43,18 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 施設のフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class FacilityFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FacilityFormData.class.getName());
+    .getLogger(FacilityFormData.class.getName());
 
   /** 施設名 */
   private ALStringField facility_name;
@@ -70,7 +69,7 @@ public class FacilityFormData extends ALAbstractFormData {
   private DataContext dataContext;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -88,7 +87,7 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
+   *
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -104,7 +103,7 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * 施設の各フィールドに対する制約条件を設定します。 <BR>
-   * 
+   *
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
   protected void setValidator() {
@@ -117,7 +116,7 @@ public class FacilityFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -132,7 +131,7 @@ public class FacilityFormData extends ALAbstractFormData {
       if (res) {
         if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
           facilityid = ALEipUtils.getTemp(rundata, context,
-              ALEipConstants.ENTITY_ID);
+            ALEipConstants.ENTITY_ID);
         }
       }
     } catch (Exception ex) {
@@ -144,30 +143,31 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * 施設のフォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
   protected boolean validate(List<String> msgList) {
     try {
-      SelectQuery query = new SelectQuery(EipMFacility.class);
+      SelectQuery<EipMFacility> query = new SelectQuery<EipMFacility>(
+        EipMFacility.class);
       if (ALEipConstants.MODE_INSERT.equals(getMode())) {
         Expression exp = ExpressionFactory.matchExp(
-            EipMFacility.FACILITY_NAME_PROPERTY, facility_name.getValue());
+          EipMFacility.FACILITY_NAME_PROPERTY, facility_name.getValue());
         query.setQualifier(exp);
       } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
         Expression exp1 = ExpressionFactory.matchExp(
-            EipMFacility.FACILITY_NAME_PROPERTY, facility_name.getValue());
+          EipMFacility.FACILITY_NAME_PROPERTY, facility_name.getValue());
         query.setQualifier(exp1);
         Expression exp2 = ExpressionFactory.noMatchDbExp(
-            EipMFacility.FACILITY_ID_PK_COLUMN, Integer.valueOf(facilityid));
+          EipMFacility.FACILITY_ID_PK_COLUMN, Integer.valueOf(facilityid));
         query.andQualifier(exp2);
       }
 
-      if (dataContext.performQuery(query).size() != 0) {
+      if (query.perform().size() != 0) {
         msgList.add("施設名『 <span class='em'>" + facility_name.toString()
-            + "</span> 』は既に登録されています。");
+          + "</span> 』は既に登録されています。");
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -184,7 +184,7 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * 施設をデータベースから読み出します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -212,7 +212,7 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * 施設をデータベースから削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -228,14 +228,15 @@ public class FacilityFormData extends ALAbstractFormData {
       if (facility == null)
         return false;
 
-      SelectQuery query1 = new SelectQuery(EipTScheduleMap.class);
+      SelectQuery<EipTScheduleMap> query1 = new SelectQuery<EipTScheduleMap>(
+        EipTScheduleMap.class);
       Expression exp1 = ExpressionFactory.matchExp(
-          EipTScheduleMap.USER_ID_PROPERTY, facility.getFacilityId());
+        EipTScheduleMap.USER_ID_PROPERTY, facility.getFacilityId());
       Expression exp2 = ExpressionFactory.matchExp(
-          EipTScheduleMap.TYPE_PROPERTY, "F");
+        EipTScheduleMap.TYPE_PROPERTY, "F");
       query1.setQualifier(exp1.andExp(exp2));
 
-      List slist = dataContext.performQuery(query1);
+      List<EipTScheduleMap> slist = query1.perform();
       if (slist != null && slist.size() > 0) {
         // 施設のスケジュールを削除
         dataContext.deleteObjects(slist);
@@ -253,7 +254,7 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * 施設をデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -266,7 +267,7 @@ public class FacilityFormData extends ALAbstractFormData {
     try {
       // 新規オブジェクトモデル
       EipMFacility facility = (EipMFacility) dataContext
-          .createAndRegisterNewObject(EipMFacility.class);
+        .createAndRegisterNewObject(EipMFacility.class);
       // ユーザID
       facility.setUserId(Integer.valueOf(userId));
       // 施設名
@@ -280,7 +281,7 @@ public class FacilityFormData extends ALAbstractFormData {
 
       Group facility_group = JetspeedSecurity.getGroup("Facility");
       EipFacilityGroup fg = (EipFacilityGroup) dataContext
-          .createAndRegisterNewObject(EipFacilityGroup.class);
+        .createAndRegisterNewObject(EipFacilityGroup.class);
       fg.setEipMFacility(facility);
       fg.setTurbineGroup((TurbineGroup) facility_group);
 
@@ -295,7 +296,7 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されている施設を更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -329,7 +330,7 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getNote() {
@@ -338,7 +339,7 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * 施設名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFacilityName() {

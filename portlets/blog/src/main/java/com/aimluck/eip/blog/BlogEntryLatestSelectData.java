@@ -105,7 +105,7 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
     // String[] ext = { ".jpg", ".jpeg", ".JPG", ".JPEG" };
     String[] ext = ImageIO.getWriterFormatNames();
 
-    SelectQuery query = new SelectQuery(EipTBlogFile.class);
+    SelectQuery<EipTBlogFile> query = new SelectQuery<EipTBlogFile>(EipTBlogFile.class);
     Expression exp01 = ExpressionFactory.likeExp(EipTBlogFile.TITLE_PROPERTY,
         "%" + ext[0]);
     query.setQualifier(exp01);
@@ -115,9 +115,9 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
       query.orQualifier(exp02);
     }
 
-    query.addOrdering(EipTBlogFile.UPDATE_DATE_PROPERTY, false);
-    query.setFetchLimit(5);
-    List list = dataContext.performQuery(query);
+    query.orderDesending(EipTBlogFile.UPDATE_DATE_PROPERTY);
+    query.limit(5);
+    List list = query.perform();
     if (list != null && list.size() > 0) {
       int size = list.size();
       for (int i = 0; i < size; i++) {
@@ -148,8 +148,8 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
         EipTBlogComment.UPDATE_DATE_PROPERTY,
         reduceDate(Calendar.getInstance().getTime(), DELETE_DATE));
     comment_query.andQualifier(exp2);
-    comment_query.addOrdering("eipTBlogEntry", true);
-    List aList = dataContext.performQuery(comment_query);
+    comment_query.orderAscending("eipTBlogEntry");
+    List aList = comment_query.perform();
 
     // リストからcommentHistoryListを作成する
     int size = aList.size();
@@ -170,13 +170,12 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
       rd.setTitle(ALCommonUtils.compressString(entry.getTitle(), getStrLength()));
       rd.setTitleDate(sdf.format(record.getUpdateDate()));
 
-      SelectQuery cquery = new SelectQuery(EipTBlogComment.class);
-      cquery.addCustomDbAttribute(EipTBlogComment.COMMENT_ID_PK_COLUMN);
+      SelectQuery<EipTBlogComment> cquery = new SelectQuery<EipTBlogComment>(EipTBlogComment.class).select(EipTBlogComment.COMMENT_ID_PK_COLUMN);
       Expression cexp = ExpressionFactory.matchDbExp(
           EipTBlogComment.EIP_TBLOG_ENTRY_PROPERTY + "."
               + EipTBlogEntry.ENTRY_ID_PK_COLUMN, entry.getEntryId());
       cquery.setQualifier(cexp);
-      List list = dataContext.performQuery(cquery);
+      List<EipTBlogComment> list = cquery.perform();
       if (list != null && list.size() > 0) {
         rd.setCommentsNum(list.size());
       }
@@ -202,8 +201,8 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
 
       SelectQuery query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
-      query.addOrdering(EipTBlogEntry.CREATE_DATE_PROPERTY, false);
-      List list = dataContext.performQuery(query);
+      query.orderDesending(EipTBlogEntry.CREATE_DATE_PROPERTY);
+      List list = query.perform();
       // エントリーの総数をセットする．
       entrySum = list.size();
       return buildPaginatedList(list);

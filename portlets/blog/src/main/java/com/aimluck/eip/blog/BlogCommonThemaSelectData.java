@@ -26,7 +26,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -41,7 +40,6 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -49,21 +47,19 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ブログテーマ検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
     ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(BlogCommonThemaSelectData.class.getName());
-
-  private DataContext dataContext;
+    .getLogger(BlogCommonThemaSelectData.class.getName());
 
   private int loginuser_id = 0;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -73,8 +69,6 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
-
     loginuser_id = ALEipUtils.getUserId(rundata);
 
     super.init(action, rundata, context);
@@ -82,7 +76,7 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -95,8 +89,7 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      @SuppressWarnings("unchecked")
-      List aList = dataContext.performQuery(query);
+      List aList = query.perform();
       List list = buildPaginatedList(aList);
 
       if (list != null && list.size() > 0) {
@@ -172,20 +165,22 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTBlogThema.class);
-    query.addPrefetch(EipTBlogThema.EIP_TBLOG_ENTRYS_PROPERTY);
+  private SelectQuery<EipTBlogThema> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTBlogThema> query = new SelectQuery<EipTBlogThema>(
+      EipTBlogThema.class);
+    query.prefetch(EipTBlogThema.EIP_TBLOG_ENTRYS_PROPERTY);
     return query;
   }
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -199,7 +194,7 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
 
   /**
    * ResultDataを取得します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
@@ -221,7 +216,7 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
 
   /**
    * ResultDataを取得します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
@@ -255,7 +250,7 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
         entryrd.initField();
         entryrd.setEntryId(entry.getEntryId().longValue());
         entryrd.setTitle(ALCommonUtils.compressString(entry.getTitle(),
-            getStrLength()));
+          getStrLength()));
         entryrd.setNote(BlogUtils.compressString(entry.getNote(), 100));
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日（EE）");
@@ -263,7 +258,7 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
 
         entryrd.setOwnerId(entry.getOwnerId().intValue());
         entryrd.setOwnerName(BlogUtils.getUserFullName(entry.getOwnerId()
-            .intValue()));
+          .intValue()));
 
         List comments = entry.getEipTBlogComments();
         if (comments != null) {
@@ -299,7 +294,7 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -310,7 +305,7 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   public String getAclPortletFeature() {

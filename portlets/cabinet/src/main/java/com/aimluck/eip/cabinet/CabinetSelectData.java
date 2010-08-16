@@ -19,12 +19,9 @@
 package com.aimluck.eip.cabinet;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -41,7 +38,6 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
@@ -49,11 +45,11 @@ import com.aimluck.eip.util.ALEipUtils;
 /**
  * 共有フォルダのファイル検索データを管理するためのクラスです。 <br />
  */
-public class CabinetSelectData extends ALAbstractSelectData {
+public class CabinetSelectData extends ALAbstractSelectData<EipTCabinetFile> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CabinetSelectData.class.getName());
+    .getLogger(CabinetSelectData.class.getName());
 
   /** 選択されたフォルダ情報 */
   private FolderInfo selected_folderinfo = null;
@@ -91,17 +87,17 @@ public class CabinetSelectData extends ALAbstractSelectData {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
-          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-              .getInitParameter("p1c-sort"));
+        ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+          .getInitParameter("p1c-sort"));
       logger.debug("[CabinetSelectData] Init Parameter. : "
-          + ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-              .getInitParameter("p1c-sort"));
+        + ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+          .getInitParameter("p1c-sort"));
     }
 
     int fid = CabinetUtils.ROOT_FODLER_ID;
     if (isNormalContext) {
       String id = ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-          .getInitParameter("p3a-folder");
+        .getInitParameter("p3a-folder");
       fid = Integer.parseInt(id);
     } else {
       // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
@@ -109,11 +105,11 @@ public class CabinetSelectData extends ALAbstractSelectData {
         // ENTITY ID
         if (rundata.getParameters().containsKey(CabinetUtils.KEY_FOLDER_ID)) {
           ALEipUtils.setTemp(rundata, context, CabinetUtils.KEY_FOLDER_ID,
-              rundata.getParameters().getString(CabinetUtils.KEY_FOLDER_ID));
+            rundata.getParameters().getString(CabinetUtils.KEY_FOLDER_ID));
         }
       }
       String tmpfid = ALEipUtils.getTemp(rundata, context,
-          CabinetUtils.KEY_FOLDER_ID);
+        CabinetUtils.KEY_FOLDER_ID);
       if (tmpfid != null && !"".equals(tmpfid)) {
         try {
           fid = Integer.parseInt(tmpfid);
@@ -150,23 +146,20 @@ public class CabinetSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List selectList(RunData rundata, Context context)
+  protected List<EipTCabinetFile> selectList(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     try {
       CabinetUtils.setFolderVisible(folder_hierarchy_list, selected_folderinfo,
-          rundata);
+        rundata);
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTCabinetFile> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List list = dataContext.performQuery(query);
+      List<EipTCabinetFile> list = query.perform();
       // ファイル総数をセットする．
       if (list == null) {
-        return new ArrayList();
+        return new ArrayList<EipTCabinetFile>();
       } else {
         fileSum = list.size();
       }
@@ -184,24 +177,22 @@ public class CabinetSelectData extends ALAbstractSelectData {
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTCabinetFile.class);
-    query.addCustomDbAttribute(EipTCabinetFile.FILE_ID_PK_COLUMN);
-    query.addCustomDbAttribute(EipTCabinetFile.FOLDER_ID_COLUMN);
-    query.addCustomDbAttribute(EipTCabinetFile.FILE_TITLE_COLUMN);
-    query.addCustomDbAttribute(EipTCabinetFile.FILE_NAME_COLUMN);
-    query.addCustomDbAttribute(EipTCabinetFile.FILE_SIZE_COLUMN);
-
-    query.addCustomDbAttribute(EipTCabinetFile.UPDATE_USER_ID_COLUMN);
-    query.addCustomDbAttribute(EipTCabinetFile.UPDATE_DATE_COLUMN);
-
+  private SelectQuery<EipTCabinetFile> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTCabinetFile> query = new SelectQuery<EipTCabinetFile>(
+      EipTCabinetFile.class)
+      .select(EipTCabinetFile.FILE_ID_PK_COLUMN,
+        EipTCabinetFile.FOLDER_ID_COLUMN, EipTCabinetFile.FILE_TITLE_COLUMN,
+        EipTCabinetFile.FILE_NAME_COLUMN, EipTCabinetFile.FILE_SIZE_COLUMN,
+        EipTCabinetFile.UPDATE_USER_ID_COLUMN,
+        EipTCabinetFile.UPDATE_DATE_COLUMN);
     if (selected_folderinfo != null) {
       Expression exp = ExpressionFactory.matchDbExp(
-          EipTCabinetFolder.FOLDER_ID_PK_COLUMN,
-          Integer.valueOf(selected_folderinfo.getFolderId()));
+        EipTCabinetFolder.FOLDER_ID_PK_COLUMN,
+        Integer.valueOf(selected_folderinfo.getFolderId()));
       query.setQualifier(exp);
     }
-    query.setDistinct(true);
+    query.distinct(true);
 
     return buildSelectQueryForFilter(query, rundata, context);
   }
@@ -210,7 +201,7 @@ public class CabinetSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected Object selectDetail(RunData rundata, Context context)
+  protected EipTCabinetFile selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     return CabinetUtils.getEipTCabinetFile(rundata, context);
   }
@@ -218,33 +209,25 @@ public class CabinetSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) throws ALPageNotFoundException,
-      ALDBErrorException {
+  protected Object getResultData(EipTCabinetFile record)
+      throws ALPageNotFoundException, ALDBErrorException {
     try {
-      DataRow dataRow = (DataRow) obj;
 
       CabinetFileResultData rd = new CabinetFileResultData();
       rd.initField();
 
-      rd.setFileId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-          EipTCabinetFile.FILE_ID_PK_COLUMN)).longValue());
-      rd.setFileTitle((String) ALEipUtils.getObjFromDataRow(dataRow,
-          EipTCabinetFile.FILE_TITLE_COLUMN));
-      rd.setFileName((String) ALEipUtils.getObjFromDataRow(dataRow,
-          EipTCabinetFile.FILE_NAME_COLUMN));
-      rd.setFileSize(((Long) ALEipUtils.getObjFromDataRow(dataRow,
-          EipTCabinetFile.FILE_SIZE_COLUMN)).longValue());
+      rd.setFileId(record.getFileId());
+      rd.setFileTitle(record.getFileTitle());
+      rd.setFileName(record.getFileName());
+      rd.setFileSize(record.getFileSize());
 
       String updateUserName = "";
-      ALEipUser updateUser = ALEipUtils.getALEipUser(((Integer) ALEipUtils
-          .getObjFromDataRow(dataRow, EipTCabinetFile.UPDATE_USER_ID_COLUMN))
-          .intValue());
+      ALEipUser updateUser = ALEipUtils.getALEipUser(record.getUpdateUserId());
       if (updateUser != null) {
         updateUserName = updateUser.getAliasName().getValue();
       }
       rd.setUpdateUser(updateUserName);
-      rd.setUpdateDate(ALDateUtil.format((Date) ALEipUtils.getObjFromDataRow(
-          dataRow, EipTCabinetFile.UPDATE_DATE_COLUMN), "yyyy年M月d日"));
+      rd.setUpdateDate(ALDateUtil.format(record.getUpdateDate(), "yyyy年M月d日"));
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -255,7 +238,7 @@ public class CabinetSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj)
+  protected Object getResultDataDetail(EipTCabinetFile obj)
       throws ALPageNotFoundException, ALDBErrorException {
     try {
       EipTCabinetFile record = (EipTCabinetFile) obj;
@@ -267,14 +250,14 @@ public class CabinetSelectData extends ALAbstractSelectData {
       rd.setFileName(record.getFileName());
       rd.setFileSize(record.getFileSize().longValue());
       rd.setPosition(CabinetUtils.getFolderPosition(folder_hierarchy_list,
-          record.getFolderId().intValue()));
+        record.getFolderId().intValue()));
       rd.setNote(record.getNote());
       rd.setisEditable((CabinetUtils.isEditableFolder(record.getFolderId(),
-          rundata)));
+        rundata)));
 
       String createUserName = "";
       ALEipUser createUser = ALEipUtils.getALEipUser(record.getCreateUserId()
-          .intValue());
+        .intValue());
       if (createUser != null) {
         createUserName = createUser.getAliasName().getValue();
       }
@@ -282,7 +265,7 @@ public class CabinetSelectData extends ALAbstractSelectData {
       rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
       String updateUserName = "";
       ALEipUser updateUser = ALEipUtils.getALEipUser(record.getUpdateUserId()
-          .intValue());
+        .intValue());
       if (updateUser != null) {
         updateUserName = updateUser.getAliasName().getValue();
       }

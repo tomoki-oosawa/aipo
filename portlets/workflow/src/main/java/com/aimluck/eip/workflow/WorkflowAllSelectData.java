@@ -21,7 +21,6 @@ package com.aimluck.eip.workflow;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -40,7 +39,6 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -285,12 +283,11 @@ public class WorkflowAllSelectData extends
   }
 
   private int getUserId(RunData rundata, Context context, Integer entityId) {
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     Expression exp = ExpressionFactory.matchDbExp(
         EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, entityId);
     SelectQuery<EipTWorkflowRequest> query = new SelectQuery<EipTWorkflowRequest>(
         EipTWorkflowRequest.class, exp);
-    List<?> record = dataContext.performQuery(query);
+    List<?> record = query.perform();
     if (record.size() > 0) {
       return ((EipTWorkflowRequest) record.get(0)).getUserId().intValue();
     } else {

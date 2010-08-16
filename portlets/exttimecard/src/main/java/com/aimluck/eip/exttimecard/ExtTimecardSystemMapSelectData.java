@@ -104,7 +104,7 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
       }
       EipTExtTimecardSystem default_system = ExtTimecardUtils
           .getEipTExtTimecardSystemById(1);
-      List list = buildPaginatedList(dataContext.performQuery(query));
+      List list = buildPaginatedList(query.perform());
       List select_list = new ArrayList();
       mapSum = list.size();
       for (int i = 0; i < mapSum; i++) {
@@ -114,7 +114,7 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
             EipTExtTimecardSystemMap.USER_ID_PROPERTY,
             Integer.valueOf(user.getUserId()));
         map_query.setQualifier(exp);
-        List map_list = dataContext.performQuery(map_query);
+        List map_list = map_query.perform();
         if (map_list.size() == 0) {
           EipTExtTimecardSystemMap dummy_map = new EipTExtTimecardSystemMap();
           dummy_map.setUserId(user.getUserId());

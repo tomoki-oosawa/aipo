@@ -27,7 +27,6 @@ import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.Ordering;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -212,7 +211,7 @@ public class ToDoFormData extends ALAbstractFormData {
       Expression exp2 = ExpressionFactory.matchExp(
           EipTTodoCategory.USER_ID_PROPERTY, Integer.valueOf(0));
       query.orQualifier(exp2);
-      query.addOrdering(EipTTodoCategory.CATEGORY_NAME_PROPERTY, Ordering.ASC);
+      query.orderAscending(EipTTodoCategory.CATEGORY_NAME_PROPERTY);
 
       List<EipTTodoCategory> aList = query.perform();
 
@@ -277,7 +276,7 @@ public class ToDoFormData extends ALAbstractFormData {
       // exp1 AND ( exp2 OR exp3 )
       query.andQualifier(exp2.orExp(exp3));
 
-      if (dataContext.performQuery(query).size() != 0) {
+      if (query.perform().size() != 0) {
         msgList.add("カテゴリ名『 <span class='em'>" + category_name.toString()
             + "</span> 』は既に登録されています。");
       }

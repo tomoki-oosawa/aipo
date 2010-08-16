@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -37,7 +37,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * プロジェクト管理のアクションクラスです。 <BR>
- * 
+ *
  */
 public class ManHourAction extends ALBaseAction {
 
@@ -47,7 +47,7 @@ public class ManHourAction extends ALBaseAction {
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -71,7 +71,7 @@ public class ManHourAction extends ALBaseAction {
 
   /**
    * 最大化表示の際の処理を記述します。 <BR>
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -102,7 +102,7 @@ public class ManHourAction extends ALBaseAction {
 
   /**
    * 工数を集計します。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -119,7 +119,7 @@ public class ManHourAction extends ALBaseAction {
 
   /**
    * 共有カテゴリ登録のフォームを表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -134,7 +134,7 @@ public class ManHourAction extends ALBaseAction {
 
   /**
    * 共有カテゴリを登録します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -155,7 +155,7 @@ public class ManHourAction extends ALBaseAction {
 
   /**
    * 共有カテゴリを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -174,7 +174,7 @@ public class ManHourAction extends ALBaseAction {
 
   /**
    * 共有カテゴリを削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -191,7 +191,7 @@ public class ManHourAction extends ALBaseAction {
 
   /**
    * 共有カテゴリを削除します。（複数） <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -205,7 +205,7 @@ public class ManHourAction extends ALBaseAction {
 
   /**
    * 共有カテゴリを一覧表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -226,7 +226,7 @@ public class ManHourAction extends ALBaseAction {
 
   /**
    * カテゴリを詳細表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -245,7 +245,7 @@ public class ManHourAction extends ALBaseAction {
   }
 
   private void clearManHourSession(RunData rundata, Context context) {
-    List list = new ArrayList();
+    List<String> list = new ArrayList<String>();
     list.add("entityid");
     list.add("category_id");
     list.add("target_group_name");

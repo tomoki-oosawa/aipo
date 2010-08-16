@@ -91,13 +91,11 @@ public class AccountUserSelectData extends ALAbstractSelectData {
   protected List<Object> selectList(RunData rundata, Context context) {
     try {
       // 登録済みのユーザ数をデータベースから取得
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
 
       SelectQuery query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
-      List<?> list = dataContext.performQuery(query);
+      List<?> list = query.perform();
 
       registeredUserNum = list.size();
       return buildPaginatedList(list);

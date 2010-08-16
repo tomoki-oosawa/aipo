@@ -375,9 +375,9 @@ public class ExtTimecardSelectData extends ALAbstractSelectData implements
 
         SelectQuery query = getSelectQuery(rundata, context);
         buildSelectQueryForListView(query);
-        query.addOrdering(EipTExtTimecard.PUNCH_DATE_PROPERTY, true);
+        query.orderAscending(EipTExtTimecard.PUNCH_DATE_PROPERTY);
 
-        List list = dataContext.performQuery(query);
+        List list = query.perform();
         return buildPaginatedList(list);
       } else {
         return null;
@@ -547,8 +547,8 @@ public class ExtTimecardSelectData extends ALAbstractSelectData implements
       DataContext dataContext = DatabaseOrmService.getInstance()
           .getDataContext();
       SelectQuery query = getSelectQueryDetail(rundata, context);
-      query.addOrdering(EipTExtTimecard.PUNCH_DATE_PROPERTY, false);
-      List list = dataContext.performQuery(query);
+      query.orderDesending(EipTExtTimecard.PUNCH_DATE_PROPERTY);
+      List list = query.perform();
       if (list != null && list.size() > 0) {
         return list.get(0);
       } else {

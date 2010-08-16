@@ -90,7 +90,7 @@ public class WebMailAccountSelectData extends ALAbstractSelectData {
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List list = dataContext.performQuery(query);
+      List list = query.perform();
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);

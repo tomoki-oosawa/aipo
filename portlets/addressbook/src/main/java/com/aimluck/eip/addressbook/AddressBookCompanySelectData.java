@@ -76,15 +76,11 @@ public class AddressBookCompanySelectData extends ALAbstractSelectData {
    */
   protected List<?> selectList(RunData rundata, Context context) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-
       SelectQuery query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      @SuppressWarnings("unchecked")
-      List<EipMAddressbookCompany> list = dataContext.performQuery(query);
+      List<EipMAddressbookCompany> list = query.perform();
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);

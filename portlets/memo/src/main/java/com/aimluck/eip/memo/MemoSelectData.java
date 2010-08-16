@@ -19,13 +19,9 @@
 package com.aimluck.eip.memo;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -40,7 +36,6 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.memo.util.MemoUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -48,11 +43,12 @@ import com.aimluck.eip.util.ALEipUtils;
  * メモ帳の検索データを管理するクラスです。 <BR>
  *
  */
-public class MemoSelectData extends ALAbstractSelectData implements ALData {
+public class MemoSelectData extends ALAbstractSelectData<EipTMemo> implements
+    ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(MemoSelectData.class.getName());
+    .getLogger(MemoSelectData.class.getName());
 
   /** Memo の総数 */
   private int memoSum;
@@ -75,8 +71,8 @@ public class MemoSelectData extends ALAbstractSelectData implements ALData {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
-          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-              .getInitParameter("p2a-sort"));
+        ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+          .getInitParameter("p2a-sort"));
     }
   }
 
@@ -90,30 +86,22 @@ public class MemoSelectData extends ALAbstractSelectData implements ALData {
       // メモ一覧
       memoLiteList = new ArrayList<MemoLiteResultData>();
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      SelectQuery<EipTMemo> query = new SelectQuery<EipTMemo>(EipTMemo.class)
+        .select(EipTMemo.MEMO_ID_PK_COLUMN, EipTMemo.MEMO_NAME_COLUMN)
+        .setQualifier(
+          ExpressionFactory.matchExp(EipTMemo.OWNER_ID_PROPERTY,
+            Integer.valueOf(ALEipUtils.getUserId(rundata)))).distinct();
+      List<EipTMemo> aList = query.perform();
 
-      SelectQuery query = new SelectQuery(EipTMemo.class);
-      query.addCustomDbAttribute(EipTMemo.MEMO_ID_PK_COLUMN);
-      query.addCustomDbAttribute(EipTMemo.MEMO_NAME_COLUMN);
-
-      Expression exp = ExpressionFactory.matchExp(EipTMemo.OWNER_ID_PROPERTY,
-          Integer.valueOf(ALEipUtils.getUserId(rundata)));
-      query.setQualifier(exp);
-      query.setDistinct(true);
-      List<?> aList = dataContext.performQuery(query);
-
-      DataRow dataRow = null;
+      EipTMemo model = null;
       MemoLiteResultData rd = null;
       int size = aList.size();
       for (int i = 0; i < size; i++) {
-        dataRow = (DataRow) aList.get(i);
+        model = aList.get(i);
         rd = new MemoLiteResultData();
         rd.initField();
-        rd.setMemoId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-            EipTMemo.MEMO_ID_PK_COLUMN)).longValue());
-        rd.setMemoName((String) ALEipUtils.getObjFromDataRow(dataRow,
-            EipTMemo.MEMO_NAME_COLUMN));
+        rd.setMemoId(model.getMemoId());
+        rd.setMemoName(model.getMemoName());
         memoLiteList.add(rd);
       }
     } catch (Exception ex) {
@@ -130,16 +118,14 @@ public class MemoSelectData extends ALAbstractSelectData implements ALData {
    * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public List<Object> selectList(RunData rundata, Context context) {
+  public List<EipTMemo> selectList(RunData rundata, Context context) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
 
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTMemo> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<?> list = dataContext.performQuery(query);
+      List<EipTMemo> list = query.perform();
       // Memo の総数をセットする．
       memoSum = list.size();
 
@@ -157,17 +143,13 @@ public class MemoSelectData extends ALAbstractSelectData implements ALData {
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTMemo.class);
-    query.addCustomDbAttribute(EipTMemo.MEMO_ID_PK_COLUMN);
-    query.addCustomDbAttribute(EipTMemo.MEMO_NAME_COLUMN);
-    query.addCustomDbAttribute(EipTMemo.UPDATE_DATE_COLUMN);
-    query.addCustomDbAttribute(EipTMemo.CREATE_DATE_COLUMN);
-
-    Expression exp = ExpressionFactory.matchExp(EipTMemo.OWNER_ID_PROPERTY,
-        Integer.valueOf(ALEipUtils.getUserId(rundata)));
-    query.setQualifier(exp);
-
+  private SelectQuery<EipTMemo> getSelectQuery(RunData rundata, Context context) {
+    SelectQuery<EipTMemo> query = new SelectQuery<EipTMemo>(EipTMemo.class)
+      .select(EipTMemo.MEMO_ID_PK_COLUMN, EipTMemo.MEMO_NAME_COLUMN,
+        EipTMemo.MEMO_ID_PK_COLUMN, EipTMemo.MEMO_NAME_COLUMN,
+        EipTMemo.UPDATE_DATE_COLUMN, EipTMemo.CREATE_DATE_COLUMN).setQualifier(
+        ExpressionFactory.matchExp(EipTMemo.OWNER_ID_PROPERTY,
+          Integer.valueOf(ALEipUtils.getUserId(rundata))));
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
@@ -178,21 +160,15 @@ public class MemoSelectData extends ALAbstractSelectData implements ALData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipTMemo record) {
     try {
-      DataRow dataRow = (DataRow) obj;
       MemoResultData rd = new MemoResultData();
       rd.initField();
-      rd.setMemoId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-          EipTMemo.MEMO_ID_PK_COLUMN)).longValue());
-      rd.setMemoName((String) ALEipUtils.getObjFromDataRow(dataRow,
-          EipTMemo.MEMO_NAME_COLUMN));
-      rd.setNote((String) ALEipUtils.getObjFromDataRow(dataRow,
-          EipTMemo.NOTE_COLUMN));
-      rd.setUpdateDate(ALDateUtil.format((Date) ALEipUtils.getObjFromDataRow(
-          dataRow, EipTMemo.UPDATE_DATE_COLUMN), "yyyy年M月d日"));
-      rd.setCreateDate(ALDateUtil.format((Date) ALEipUtils.getObjFromDataRow(
-          dataRow, EipTMemo.CREATE_DATE_COLUMN), "yyyy年M月d日"));
+      rd.setMemoId(record.getMemoId());
+      rd.setMemoName(record.getMemoName());
+      rd.setNote(record.getNote());
+      rd.setUpdateDate(ALDateUtil.format(record.getUpdateDate(), "yyyy年M月d日"));
+      rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -209,7 +185,7 @@ public class MemoSelectData extends ALAbstractSelectData implements ALData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public Object selectDetail(RunData rundata, Context context)
+  public EipTMemo selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException {
     try {
       EipTMemo memo = MemoUtils.getEipTMemo(rundata, context);
@@ -226,9 +202,8 @@ public class MemoSelectData extends ALAbstractSelectData implements ALData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(EipTMemo record) {
     try {
-      EipTMemo record = (EipTMemo) obj;
       MemoResultData rd = new MemoResultData();
       rd.initField();
       rd.setMemoId(record.getMemoId().intValue());

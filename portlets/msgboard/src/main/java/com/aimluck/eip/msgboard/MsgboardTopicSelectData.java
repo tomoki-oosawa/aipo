@@ -24,7 +24,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
@@ -49,7 +48,6 @@ import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.msgboard.util.MsgboardUtils;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -66,7 +64,7 @@ public class MsgboardTopicSelectData extends
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(MsgboardTopicSelectData.class.getName());
+    .getLogger(MsgboardTopicSelectData.class.getName());
 
   /** カテゴリ一覧 */
   private List<MsgboardCategoryResultData> categoryList;
@@ -95,8 +93,6 @@ public class MsgboardTopicSelectData extends
   /** 他ユーザーの作成したトピックの削除権限 */
   private boolean hasAclDeleteTopicOthers;
 
-  private DataContext dataContext;
-
   /**
    *
    * @param action
@@ -112,36 +108,36 @@ public class MsgboardTopicSelectData extends
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       String sortStr = ALEipUtils.getPortlet(rundata, context)
-          .getPortletConfig().getInitParameter("p2a-sort");
+        .getPortletConfig().getInitParameter("p2a-sort");
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, sortStr);
       if ("update_date".equals(sortStr)) {
         ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR, "desc");
       }
 
       logger.debug("[MsgboardTopicSelectData] Init Parameter. : "
-          + ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-              .getInitParameter("p2a-sort"));
+        + ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+          .getInitParameter("p2a-sort"));
     }
 
     uid = ALEipUtils.getUserId(rundata);
 
     ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+      .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
     hasAclCategoryList = aclhandler.hasAuthority(ALEipUtils.getUserId(rundata),
-        ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY,
-        ALAccessControlConstants.VALUE_ACL_LIST);
+      ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY,
+      ALAccessControlConstants.VALUE_ACL_LIST);
 
     hasAclDeleteTopicOthers = aclhandler.hasAuthority(
-        ALEipUtils.getUserId(rundata),
-        ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC_OTHER,
-        ALAccessControlConstants.VALUE_ACL_DELETE);
+      ALEipUtils.getUserId(rundata),
+      ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC_OTHER,
+      ALAccessControlConstants.VALUE_ACL_DELETE);
 
     hasAclUpdateTopicOthers = aclhandler.hasAuthority(
-        ALEipUtils.getUserId(rundata),
-        ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC_OTHER,
-        ALAccessControlConstants.VALUE_ACL_UPDATE);
+      ALEipUtils.getUserId(rundata),
+      ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC_OTHER,
+      ALAccessControlConstants.VALUE_ACL_UPDATE);
 
     // カテゴリの初期値を取得する
     try {
@@ -149,18 +145,16 @@ public class MsgboardTopicSelectData extends
       if (filter == null) {
         VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
         String categoryId = portlet.getPortletConfig().getInitParameter(
-            "p3a-category");
+          "p3a-category");
         if (categoryId != null) {
           ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, categoryId);
           ALEipUtils
-              .setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
+            .setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
         }
       }
     } catch (Exception ex) {
       logger.debug("Exception", ex);
     }
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   /**
@@ -210,36 +204,36 @@ public class MsgboardTopicSelectData extends
   private SelectQuery<EipTMsgboardTopic> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<EipTMsgboardTopic> query = new SelectQuery<EipTMsgboardTopic>(
-        EipTMsgboardTopic.class);
+      EipTMsgboardTopic.class);
 
     Expression exp1 = ExpressionFactory.matchExp(
-        EipTMsgboardTopic.PARENT_ID_PROPERTY, Integer.valueOf(0));
+      EipTMsgboardTopic.PARENT_ID_PROPERTY, Integer.valueOf(0));
     query.setQualifier(exp1);
 
     // アクセス制御
     Expression exp01 = ExpressionFactory.matchExp(
-        EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
-            + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY, "T");
+      EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
+        + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY, "T");
 
     Expression exp02 = ExpressionFactory.matchExp(
-        EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
-            + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY + "."
-            + EipTMsgboardCategoryMap.STATUS_PROPERTY, "O");
+      EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
+        + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY + "."
+        + EipTMsgboardCategoryMap.STATUS_PROPERTY, "O");
     Expression exp03 = ExpressionFactory.matchExp(
-        EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
-            + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY + "."
-            + EipTMsgboardCategoryMap.STATUS_PROPERTY, "A");
+      EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
+        + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY + "."
+        + EipTMsgboardCategoryMap.STATUS_PROPERTY, "A");
     Expression exp11 = ExpressionFactory.matchExp(
-        EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
-            + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY, "F");
+      EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
+        + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY, "F");
     Expression exp12 = ExpressionFactory.matchExp(
-        EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
-            + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY + "."
-            + EipTMsgboardCategoryMap.USER_ID_PROPERTY,
-        Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
+        + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY + "."
+        + EipTMsgboardCategoryMap.USER_ID_PROPERTY,
+      Integer.valueOf(ALEipUtils.getUserId(rundata)));
     query.andQualifier((exp01.andExp(exp02.orExp(exp03))).orExp(exp11
-        .andExp(exp12)));
-    query.setDistinct(true);
+      .andExp(exp12)));
+    query.distinct(true);
 
     return buildSelectQueryForFilter(query, rundata, context);
   }
@@ -257,20 +251,20 @@ public class MsgboardTopicSelectData extends
       rd.initField();
       rd.setTopicId(record.getTopicId().longValue());
       rd.setTopicName(ALCommonUtils.compressString(record.getTopicName(),
-          getStrLength()));
+        getStrLength()));
       rd.setCategoryId(record.getEipTMsgboardCategory().getCategoryId()
-          .longValue());
+        .longValue());
       rd.setCategoryName(ALCommonUtils.compressString(record
-          .getEipTMsgboardCategory().getCategoryName(), getStrLength()));
+        .getEipTMsgboardCategory().getCategoryName(), getStrLength()));
 
       // 公開/非公開を設定する．
       rd.setPublicFlag("T".equals(record.getEipTMsgboardCategory()
-          .getPublicFlag()));
+        .getPublicFlag()));
       rd.setOwnerId(record.getOwnerId().longValue());
       rd.setOwnerName(ALEipUtils
-          .getUserFullName(record.getOwnerId().intValue()));
+        .getUserFullName(record.getOwnerId().intValue()));
       rd.setUpdateUser(ALEipUtils.getUserFullName(record.getUpdateUserId()
-          .intValue()));
+        .intValue()));
       rd.setUpdateDate(record.getUpdateDate());
 
       // 新着を設定する（期限は最終更新日からの 1 日間）．
@@ -298,7 +292,7 @@ public class MsgboardTopicSelectData extends
     try {
       init(action, rundata, context);
       doCheckAclPermission(rundata, context,
-          ALAccessControlConstants.VALUE_ACL_DETAIL);
+        ALAccessControlConstants.VALUE_ACL_DETAIL);
       action.setMode(ALEipConstants.MODE_DETAIL);
       List<EipTMsgboardTopic> aList = selectDetailList(rundata, context);
       if (aList != null) {
@@ -306,7 +300,7 @@ public class MsgboardTopicSelectData extends
         int size = aList.size();
         for (int i = 0; i < size; i++) {
           coTopicList.add((MsgboardTopicResultData) getResultDataDetail(aList
-              .get(i)));
+            .get(i)));
         }
       }
 
@@ -337,7 +331,7 @@ public class MsgboardTopicSelectData extends
   public List<EipTMsgboardTopic> selectDetailList(RunData rundata,
       Context context) throws ALPageNotFoundException, ALDBErrorException {
     String topicid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+      ALEipConstants.ENTITY_ID);
 
     try {
       /**
@@ -359,20 +353,20 @@ public class MsgboardTopicSelectData extends
     }
 
     String cotopicsort = ALEipUtils.getPortlet(rundata, context)
-        .getPortletConfig().getInitParameter("p2b-sort");
+      .getPortletConfig().getInitParameter("p2b-sort");
 
     try {
       parentTopic = getResultDataDetail(MsgboardUtils
-          .getEipTMsgboardParentTopic(rundata, context, false));
+        .getEipTMsgboardParentTopic(rundata, context, false));
 
       SelectQuery<EipTMsgboardTopic> query = getSelectQueryForCotopic(rundata,
-          context, topicid, cotopicsort);
+        context, topicid, cotopicsort);
       buildSelectQueryForListView(query);
 
       if ("response_new".equals(cotopicsort)) {
-        query.addOrdering(EipTMsgboardTopic.CREATE_DATE_PROPERTY, false);
+        query.orderDesending(EipTMsgboardTopic.CREATE_DATE_PROPERTY);
       } else {
-        query.addOrdering(EipTMsgboardTopic.CREATE_DATE_PROPERTY, true);
+        query.orderAscending(EipTMsgboardTopic.CREATE_DATE_PROPERTY);
       }
 
       // 表示するカラムのみデータベースから取得する．
@@ -391,19 +385,19 @@ public class MsgboardTopicSelectData extends
   private SelectQuery<EipTMsgboardTopic> getSelectQueryForCotopic(
       RunData rundata, Context context, String topicid, String cotopicsort) {
     SelectQuery<EipTMsgboardTopic> query = new SelectQuery<EipTMsgboardTopic>(
-        EipTMsgboardTopic.class);
+      EipTMsgboardTopic.class);
     Expression exp = ExpressionFactory.matchExp(
-        EipTMsgboardTopic.PARENT_ID_PROPERTY, Integer.valueOf(topicid));
+      EipTMsgboardTopic.PARENT_ID_PROPERTY, Integer.valueOf(topicid));
     query.setQualifier(exp);
-    query.setDistinct(true);
+    query.distinct(true);
     return query;
   }
 
   private SelectQuery<EipTMsgboardFile> getSelectQueryForFiles(int topicid) {
     SelectQuery<EipTMsgboardFile> query = new SelectQuery<EipTMsgboardFile>(
-        EipTMsgboardFile.class);
+      EipTMsgboardFile.class);
     Expression exp = ExpressionFactory.matchDbExp(
-        EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, Integer.valueOf(topicid));
+      EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, Integer.valueOf(topicid));
     query.setQualifier(exp);
     return query;
   }
@@ -427,7 +421,7 @@ public class MsgboardTopicSelectData extends
           int mapsize = categoryMap.size();
           for (int i = 0; i < mapsize; i++) {
             EipTMsgboardCategoryMap map = (EipTMsgboardCategoryMap) categoryMap
-                .get(i);
+              .get(i);
             if ("A".equals(map.getStatus())) {
               showReplyForm = true;
             } else {
@@ -452,21 +446,20 @@ public class MsgboardTopicSelectData extends
       rd.setTopicName(record.getTopicName());
       rd.setParentId(record.getParentId().longValue());
       rd.setCategoryId(record.getEipTMsgboardCategory().getCategoryId()
-          .longValue());
+        .longValue());
       rd.setCategoryName(record.getEipTMsgboardCategory().getCategoryName());
       // 公開/非公開を設定する．
       rd.setPublicFlag("T".equals(record.getEipTMsgboardCategory()
-          .getPublicFlag()));
+        .getPublicFlag()));
       rd.setOwnerId(record.getOwnerId().longValue());
       rd.setOwnerName(ALEipUtils
-          .getUserFullName(record.getOwnerId().intValue()));
+        .getUserFullName(record.getOwnerId().intValue()));
       rd.setNote(record.getNote());
       rd.setCreateDate(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());
 
-      @SuppressWarnings("unchecked")
-      List<EipTMsgboardFile> list = dataContext
-          .performQuery(getSelectQueryForFiles(record.getTopicId().intValue()));
+      List<EipTMsgboardFile> list = getSelectQueryForFiles(
+        record.getTopicId().intValue()).perform();
       if (list != null && list.size() > 0) {
         List<FileuploadBean> attachmentFileList = new ArrayList<FileuploadBean>();
         FileuploadBean filebean = null;
@@ -476,7 +469,7 @@ public class MsgboardTopicSelectData extends
           file = list.get(i);
           String realname = file.getFileName();
           javax.activation.DataHandler hData = new javax.activation.DataHandler(
-              new javax.activation.FileDataSource(realname));
+            new javax.activation.FileDataSource(realname));
 
           filebean = new FileuploadBean();
           filebean.setFileId(file.getFileId().intValue());
@@ -528,8 +521,8 @@ public class MsgboardTopicSelectData extends
     map.putValue("update_date", EipTMsgboardTopic.UPDATE_DATE_PROPERTY);
     map.putValue("category", EipTMsgboardCategory.CATEGORY_ID_PK_COLUMN);
     map.putValue("category_name",
-        EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
-            + EipTMsgboardCategory.CATEGORY_NAME_PROPERTY);
+      EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
+        + EipTMsgboardCategory.CATEGORY_NAME_PROPERTY);
     map.putValue("owner_name", EipTMsgboardTopic.OWNER_ID_PROPERTY);
     map.putValue("update_user", EipTMsgboardTopic.UPDATE_USER_ID_PROPERTY);
 

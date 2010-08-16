@@ -22,10 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.Ordering;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -42,7 +40,6 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -56,7 +53,7 @@ public class AddressBookFilterdSelectData extends
     ALAbstractSelectData<EipMAddressbook> {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AddressBookFilterdSelectData.class.getName());
+    .getLogger(AddressBookFilterdSelectData.class.getName());
 
   /** 現在選択されているタブ */
   private String currentTab;
@@ -146,9 +143,9 @@ public class AddressBookFilterdSelectData extends
       rd.initField();
       rd.setAddressId(record.getAddressId().intValue());
       rd.setName(new StringBuffer().append(record.getLastName()).append(" ")
-          .append(record.getFirstName()).toString());
+        .append(record.getFirstName()).toString());
       rd.setNameKana(new StringBuffer().append(record.getLastNameKana())
-          .append(' ').append(record.getFirstNameKana()).toString());
+        .append(' ').append(record.getFirstNameKana()).toString());
 
       EipMAddressbookCompany company = record.getEipMAddressbookCompany();
 
@@ -157,13 +154,13 @@ public class AddressBookFilterdSelectData extends
         // 「未分類」の会社情報ではない場合
 
         rd.setCompanyName(ALCommonUtils.compressString(
-            company.getCompanyName(), getStrLength()));
+          company.getCompanyName(), getStrLength()));
         rd.setCompanyId(company.getCompanyId().toString());
         rd.setPostName(ALCommonUtils.compressString(company.getPostName(),
-            getStrLength()));
+          getStrLength()));
       }
       rd.setPositionName(ALCommonUtils.compressString(record.getPositionName(),
-          getStrLength()));
+        getStrLength()));
       rd.setEmail(record.getEmail());
       rd.setTelephone(record.getTelephone());
       rd.setCellularPhone(record.getCellularPhone());
@@ -191,7 +188,7 @@ public class AddressBookFilterdSelectData extends
 
       // 登録ユーザ名の設定
       ALEipUser createdUser = ALEipUtils.getALEipUser(record.getCreateUserId()
-          .intValue());
+        .intValue());
       String createdUserName = createdUser.getAliasName().getValue();
       rd.setCreatedUser(createdUserName);
 
@@ -201,7 +198,7 @@ public class AddressBookFilterdSelectData extends
         updatedUserName = createdUserName;
       } else {
         ALEipUser updatedUser = ALEipUtils.getALEipUser(record
-            .getUpdateUserId().intValue());
+          .getUpdateUserId().intValue());
         updatedUserName = updatedUser.getAliasName().getValue();
       }
       rd.setUpdatedUser(updatedUserName);
@@ -210,9 +207,9 @@ public class AddressBookFilterdSelectData extends
       int addressId = record.getAddressId().intValue();
       rd.setAddressId(addressId);
       rd.setName(new StringBuffer().append(record.getLastName()).append(' ')
-          .append(record.getFirstName()).toString());
+        .append(record.getFirstName()).toString());
       rd.setNameKana(new StringBuffer().append(record.getLastNameKana())
-          .append(' ').append(record.getFirstNameKana()).toString());
+        .append(' ').append(record.getFirstNameKana()).toString());
       rd.setEmail(record.getEmail());
       rd.setTelephone(record.getTelephone());
       rd.setCellularPhone(record.getCellularPhone());
@@ -249,12 +246,12 @@ public class AddressBookFilterdSelectData extends
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("group", EipMAddressbook.EIP_TADDRESSBOOK_GROUP_MAP_PROPERTY
-        + "." + EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY + "."
-        + EipMAddressGroup.GROUP_ID_PK_COLUMN);
+      + "." + EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY + "."
+      + EipMAddressGroup.GROUP_ID_PK_COLUMN);
     map.putValue("name_kana", EipMAddressbook.LAST_NAME_KANA_PROPERTY);
     map.putValue("company_name_kana",
-        EipMAddressbook.EIP_MADDRESSBOOK_COMPANY_PROPERTY + "."
-            + EipMAddressbookCompany.COMPANY_NAME_KANA_PROPERTY);
+      EipMAddressbook.EIP_MADDRESSBOOK_COMPANY_PROPERTY + "."
+        + EipMAddressbookCompany.COMPANY_NAME_KANA_PROPERTY);
     return map;
   }
 
@@ -268,14 +265,14 @@ public class AddressBookFilterdSelectData extends
   private SelectQuery<EipMAddressbook> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<EipMAddressbook> query = new SelectQuery<EipMAddressbook>(
-        EipMAddressbook.class);
+      EipMAddressbook.class);
 
     Expression exp21 = ExpressionFactory.matchExp(
-        EipMAddressbook.PUBLIC_FLAG_PROPERTY, "T");
+      EipMAddressbook.PUBLIC_FLAG_PROPERTY, "T");
     Expression exp22 = ExpressionFactory.matchExp(
-        EipMAddressbook.OWNER_ID_PROPERTY, ALEipUtils.getUserId(rundata));
+      EipMAddressbook.OWNER_ID_PROPERTY, ALEipUtils.getUserId(rundata));
     Expression exp23 = ExpressionFactory.matchExp(
-        EipMAddressbook.PUBLIC_FLAG_PROPERTY, "F");
+      EipMAddressbook.PUBLIC_FLAG_PROPERTY, "F");
     query.setQualifier(exp21.orExp(exp22.andExp(exp23)));
 
     // インデックス指定時の条件文作成
@@ -289,13 +286,13 @@ public class AddressBookFilterdSelectData extends
         index = index_rundata;
         ALEipUtils.setTemp(rundata, context, LIST_INDEX_STR, index);
         buildSelectQueryForAddressbookIndex(query,
-            EipMAddressbook.LAST_NAME_KANA_PROPERTY, Integer.parseInt(index));
+          EipMAddressbook.LAST_NAME_KANA_PROPERTY, Integer.parseInt(index));
         context.put("idx", index);
       }
     } else if (index_session != null) {
       buildSelectQueryForAddressbookIndex(query,
-          EipMAddressbook.LAST_NAME_KANA_PROPERTY,
-          Integer.parseInt(index_session));
+        EipMAddressbook.LAST_NAME_KANA_PROPERTY,
+        Integer.parseInt(index_session));
       context.put("idx", index);
     }
 
@@ -340,18 +337,15 @@ public class AddressBookFilterdSelectData extends
   public void loadGroups(RunData rundata, Context context) {
     groupList = new ArrayList<AddressBookGroupResultData>();
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
       SelectQuery<EipMAddressGroup> query = new SelectQuery<EipMAddressGroup>(
-          EipMAddressGroup.class);
+        EipMAddressGroup.class);
       Expression exp = ExpressionFactory.matchExp(
-          EipMAddressGroup.OWNER_ID_PROPERTY,
-          Integer.valueOf(ALEipUtils.getUserId(rundata)));
+        EipMAddressGroup.OWNER_ID_PROPERTY,
+        Integer.valueOf(ALEipUtils.getUserId(rundata)));
       query.setQualifier(exp);
-      query.addOrdering(EipMAddressGroup.GROUP_NAME_PROPERTY, Ordering.ASC);
+      query.orderAscending(EipMAddressGroup.GROUP_NAME_PROPERTY);
 
-      @SuppressWarnings("unchecked")
-      List<EipMAddressGroup> aList = dataContext.performQuery(query);
+      List<EipMAddressGroup> aList = query.perform();
 
       int size = aList.size();
       for (int i = 0; i < size; i++) {
@@ -446,7 +440,7 @@ public class AddressBookFilterdSelectData extends
     case 52:
       Expression exp100 = ExpressionFactory.lessExp(lastNameKana, "ア");
       Expression exp101 = ExpressionFactory
-          .greaterOrEqualExp(lastNameKana, "ヴ");
+        .greaterOrEqualExp(lastNameKana, "ヴ");
       query.andQualifier(exp100.orExp(exp101));
       break;
     }

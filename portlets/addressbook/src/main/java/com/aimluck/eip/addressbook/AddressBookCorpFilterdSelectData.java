@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -45,7 +44,6 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -58,7 +56,7 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AddressBookCorpFilterdSelectData extends ALAbstractSelectData {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AddressBookFilterdSelectData.class.getName());
+    .getLogger(AddressBookFilterdSelectData.class.getName());
 
   /** 現在選択されているタブ */
   private String currentTab;
@@ -124,15 +122,13 @@ public class AddressBookCorpFilterdSelectData extends ALAbstractSelectData {
    *      org.apache.velocity.context.Context)
    */
   protected List<?> selectList(RunData rundata, Context context) {
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     try {
       SelectQuery query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      @SuppressWarnings("unchecked")
-      List<TurbineUser> list = dataContext.performQuery(query);
+      List<TurbineUser> list = query.perform();
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -150,7 +146,7 @@ public class AddressBookCorpFilterdSelectData extends ALAbstractSelectData {
     try {
       // 指定された ユーザIDを取得
       String userId = ALEipUtils.getTemp(rundata, context,
-          ALEipConstants.ENTITY_ID);
+        ALEipConstants.ENTITY_ID);
       if (userId == null || Integer.valueOf(userId) == null)
         return null;
 
@@ -172,20 +168,20 @@ public class AddressBookCorpFilterdSelectData extends ALAbstractSelectData {
       rd.initField();
       rd.setAddressId(record.getUserId().intValue());
       rd.setName(new StringBuffer().append(record.getLastName()).append(" ")
-          .append(record.getFirstName()).toString());
+        .append(record.getFirstName()).toString());
 
       if (record.getCompanyId().intValue() > 0) {
         rd.setCompanyName(ALCommonUtils.compressString(
-            ALEipUtils.getCompanyName(record.getCompanyId().intValue()),
-            getStrLength()));
+          ALEipUtils.getCompanyName(record.getCompanyId().intValue()),
+          getStrLength()));
       }
 
       rd.setPostList(AddressBookUtils.getPostBeanList(record.getUserId()
-          .intValue()));
+        .intValue()));
 
       if (record.getPositionId().intValue() > 0) {
         rd.setPositionName(ALCommonUtils.compressString(
-            ALEipUtils.getPositionName(record.getPositionId()), getStrLength()));
+          ALEipUtils.getPositionName(record.getPositionId()), getStrLength()));
       }
 
       rd.setEmail(record.getEmail());
@@ -215,9 +211,9 @@ public class AddressBookCorpFilterdSelectData extends ALAbstractSelectData {
       int userId = Integer.valueOf(record.getUserId()).intValue();
       rd.setAddressId(userId);
       rd.setName(new StringBuffer().append(record.getLastName()).append(' ')
-          .append(record.getFirstName()).toString());
+        .append(record.getFirstName()).toString());
       rd.setNameKana(new StringBuffer().append(record.getLastNameKana())
-          .append(' ').append(record.getFirstNameKana()).toString());
+        .append(' ').append(record.getFirstNameKana()).toString());
       rd.setEmail(record.getEmail());
       rd.setTelephone(record.getOutTelephone());
       rd.setInTelephone(record.getInTelephone());
@@ -226,7 +222,7 @@ public class AddressBookCorpFilterdSelectData extends ALAbstractSelectData {
       rd.setPostList(AddressBookUtils.getPostBeanList(userId));
       if (record.getPositionId() > 0) {
         rd.setPositionName(ALCommonUtils.compressString(
-            ALEipUtils.getPositionName(record.getPositionId()), getStrLength()));
+          ALEipUtils.getPositionName(record.getPositionId()), getStrLength()));
       }
 
       rd.setCreateDate(ALDateUtil.format(record.getCreated(), "yyyy年M月d日"));
@@ -244,8 +240,8 @@ public class AddressBookCorpFilterdSelectData extends ALAbstractSelectData {
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("corp_group", TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
-        + "." + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY + "."
-        + TurbineGroup.GROUP_NAME_COLUMN);
+      + "." + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY + "."
+      + TurbineGroup.GROUP_NAME_COLUMN);
     map.putValue("name_kana", TurbineUser.LAST_NAME_KANA_PROPERTY);
     return map;
   }
@@ -261,16 +257,16 @@ public class AddressBookCorpFilterdSelectData extends ALAbstractSelectData {
     SelectQuery query = new SelectQuery(TurbineUser.class);
 
     Expression exp11 = ExpressionFactory.matchExp(
-        TurbineUser.DISABLED_PROPERTY, "F");
+      TurbineUser.DISABLED_PROPERTY, "F");
     query.setQualifier(exp11);
     Expression exp21 = ExpressionFactory.noMatchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(1));
+      TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(1));
     Expression exp22 = ExpressionFactory.noMatchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(2));
+      TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(2));
     Expression exp23 = ExpressionFactory.noMatchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(3));
+      TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(3));
     Expression exp24 = ExpressionFactory.noMatchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(4));
+      TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(4));
     query.andQualifier(exp21.andExp(exp22).andExp(exp23).andExp(exp24));
 
     // インデックス指定時の条件文作成
@@ -278,8 +274,8 @@ public class AddressBookCorpFilterdSelectData extends ALAbstractSelectData {
       // 索引の保存
       index = rundata.getParameters().getString("idx");
       buildSelectQueryForAddressbookUserIndex(query,
-          TurbineUser.LAST_NAME_KANA_PROPERTY,
-          Integer.parseInt(rundata.getParameters().getString("idx")));
+        TurbineUser.LAST_NAME_KANA_PROPERTY,
+        Integer.parseInt(rundata.getParameters().getString("idx")));
     }
 
     return buildSelectQueryForFilter(query, rundata, context);
@@ -394,7 +390,7 @@ public class AddressBookCorpFilterdSelectData extends ALAbstractSelectData {
     case 52:
       Expression exp100 = ExpressionFactory.lessExp(lastNameKana, "ア");
       Expression exp101 = ExpressionFactory
-          .greaterOrEqualExp(lastNameKana, "ヴ");
+        .greaterOrEqualExp(lastNameKana, "ヴ");
       query.andQualifier(exp100.orExp(exp101));
       break;
     }

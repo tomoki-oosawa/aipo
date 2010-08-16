@@ -71,7 +71,7 @@ public class TimecardSummaryListSelectData extends
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(TimecardSummaryListSelectData.class.getName());
+    .getLogger(TimecardSummaryListSelectData.class.getName());
 
   /** <code>target_group_name</code> 表示対象の部署名 */
   private String target_group_name;
@@ -189,12 +189,12 @@ public class TimecardSummaryListSelectData extends
     view_date = new ALDateTimeField("yyyy-MM-dd");
 
     if (rundata.getParameters().containsKey("view_date_year")
-        && rundata.getParameters().containsKey("view_date_month")) {
+      && rundata.getParameters().containsKey("view_date_month")) {
 
       int tmpViewDate_year = Integer.parseInt(rundata.getParameters()
-          .getString("view_date_year"));
+        .getString("view_date_year"));
       int tmpViewDate_month = Integer.parseInt(rundata.getParameters()
-          .getString("view_date_month"));
+        .getString("view_date_month"));
 
       cal.set(Calendar.HOUR_OF_DAY, 0);
       cal.set(Calendar.MINUTE, 0);
@@ -253,17 +253,17 @@ public class TimecardSummaryListSelectData extends
 
     // アクセス権
     if (target_user_id == null || "".equals(target_user_id)
-        || userid.equals(target_user_id)) {
+      || userid.equals(target_user_id)) {
       aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
     } else {
       aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER;
     }
     ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+      .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
     hasAclSummaryOther = aclhandler.hasAuthority(ALEipUtils.getUserId(rundata),
-        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER,
-        ALAccessControlConstants.VALUE_ACL_LIST);
+      ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER,
+      ALAccessControlConstants.VALUE_ACL_LIST);
     if (!hasAclSummaryOther) {
       // 他ユーザーの閲覧権限がないときには、ログインユーザーのIDに変更する。
       target_user_id = userid;
@@ -291,7 +291,7 @@ public class TimecardSummaryListSelectData extends
 
         SelectQuery<EipTTimecard> query = getSelectQuery(rundata, context);
         buildSelectQueryForListView(query);
-        query.addOrdering(EipTTimecard.WORK_DATE_PROPERTY, true);
+        query.orderAscending(EipTTimecard.WORK_DATE_PROPERTY);
 
         List<EipTTimecard> list = query.perform();
         return buildPaginatedList(list);
@@ -390,7 +390,7 @@ public class TimecardSummaryListSelectData extends
   private void setupLists(RunData rundata, Context context) {
     target_group_name = getTargetGroupName(rundata, context);
     if ((target_group_name != null) && (!target_group_name.equals(""))
-        && (!target_group_name.equals("all"))) {
+      && (!target_group_name.equals("all"))) {
       userList = ALEipUtils.getUsers(target_group_name);
     } else {
       userList = ALEipUtils.getUsers("LoginUser");
@@ -494,15 +494,15 @@ public class TimecardSummaryListSelectData extends
   private SelectQuery<EipTTimecard> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<EipTTimecard> query = new SelectQuery<EipTTimecard>(
-        EipTTimecard.class);
+      EipTTimecard.class);
 
     Expression exp1 = ExpressionFactory.matchExp(EipTTimecard.USER_ID_PROPERTY,
-        new Integer(target_user_id));
+      new Integer(target_user_id));
     query.setQualifier(exp1);
 
     Calendar cal = Calendar.getInstance();
     Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-        EipTTimecard.WORK_DATE_PROPERTY, view_date.getValue());
+      EipTTimecard.WORK_DATE_PROPERTY, view_date.getValue());
 
     cal.setTime(view_date.getValue());
     cal.add(Calendar.MONTH, +1);
@@ -511,7 +511,7 @@ public class TimecardSummaryListSelectData extends
     view_date_add_month.setValue(cal.getTime());
 
     Expression exp12 = ExpressionFactory.lessOrEqualExp(
-        EipTTimecard.WORK_DATE_PROPERTY, view_date_add_month.getValue());
+      EipTTimecard.WORK_DATE_PROPERTY, view_date_add_month.getValue());
     query.andQualifier(exp11.andExp(exp12));
 
     return buildSelectQueryForFilter(query, rundata, context);
@@ -536,16 +536,16 @@ public class TimecardSummaryListSelectData extends
           int listrd1_size = listrd1.getList().size();
           if (listrd1_size > 0) {
             TimecardResultData listrd1_lastrd = (TimecardResultData) listrd1
-                .getList().get(listrd1_size - 1);
+              .getList().get(listrd1_size - 1);
 
             TimecardResultData listrd2_firstrd = (TimecardResultData) listrd2
-                .getList().get(0);
+              .getList().get(0);
             if (TimecardUtils.WORK_FLG_OFF.equals(listrd2_firstrd.getWorkFlag()
+              .getValue())
+              && TimecardUtils.WORK_FLG_ON.equals(listrd1_lastrd.getWorkFlag()
                 .getValue())
-                && TimecardUtils.WORK_FLG_ON.equals(listrd1_lastrd
-                    .getWorkFlag().getValue())
-                && !sameDay(listrd1_lastrd.getWorkDate().getValue(),
-                    listrd2_firstrd.getWorkDate().getValue())) {
+              && !sameDay(listrd1_lastrd.getWorkDate().getValue(),
+                listrd2_firstrd.getWorkDate().getValue())) {
 
               Date d = listrd2_firstrd.getWorkDate().getValue();
               Calendar cal = Calendar.getInstance();
@@ -601,7 +601,7 @@ public class TimecardSummaryListSelectData extends
     int date2Day = cal2.get(Calendar.DATE);
 
     if (date1Year == date2Year && date1Month == date2Month
-        && date1Day == date2Day) {
+      && date1Day == date2Day) {
       return true;
     }
     return false;
@@ -906,7 +906,7 @@ public class TimecardSummaryListSelectData extends
     BigDecimal decimal = new BigDecimal(minute / 60.0);
     DecimalFormat dformat = new DecimalFormat("##.#");
     String str = dformat.format(decimal.setScale(1, BigDecimal.ROUND_FLOOR)
-        .doubleValue());
+      .doubleValue());
     return str;
   }
 

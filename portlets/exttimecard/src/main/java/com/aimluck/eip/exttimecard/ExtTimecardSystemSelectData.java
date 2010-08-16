@@ -58,7 +58,7 @@ public class ExtTimecardSystemSelectData extends ALAbstractSelectData {
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List list = dataContext.performQuery(query);
+      List list = query.perform();
       // 件数をセットする．
       systemSum = list.size();
       return buildPaginatedList(list);

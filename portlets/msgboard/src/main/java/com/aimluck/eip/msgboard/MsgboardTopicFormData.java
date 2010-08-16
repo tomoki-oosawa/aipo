@@ -27,7 +27,6 @@ import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
@@ -51,6 +50,7 @@ import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
@@ -258,7 +258,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
       SelectQuery query = new SelectQuery(EipTMsgboardFile.class);
       query.andQualifier(ExpressionFactory.matchDbExp(
           EipTMsgboardFile.EIP_TMSGBOARD_TOPIC_PROPERTY, topic.getTopicId()));
-      fileuploadList = dataContext.performQuery(query);
+      fileuploadList = query.perform();
 
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -314,13 +314,12 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
       }
 
       // トピックを削除
-      SelectQuery query = new SelectQuery(EipTMsgboardTopic.class);
+      SelectQuery<EipTMsgboardTopic> query = new SelectQuery<EipTMsgboardTopic>(EipTMsgboardTopic.class);
       Expression exp = ExpressionFactory.inDbExp(
           EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, topicIdList);
       query.setQualifier(exp);
 
-      @SuppressWarnings("unchecked")
-      List<EipTMsgboardTopic> topics = dataContext.performQuery(query);
+      List<EipTMsgboardTopic> topics = query.perform();
 
       List<String> fpaths = new ArrayList<String>();
       if (topics.size() > 0) {

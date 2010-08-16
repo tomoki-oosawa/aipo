@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -49,7 +48,6 @@ import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -66,7 +64,7 @@ public class TimecardSelectData extends ALAbstractSelectData<EipTTimecard>
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(TimecardSelectData.class.getName());
+    .getLogger(TimecardSelectData.class.getName());
 
   /** <code>target_group_name</code> 表示対象の部署名 */
   private String target_group_name;
@@ -115,12 +113,12 @@ public class TimecardSelectData extends ALAbstractSelectData<EipTTimecard>
     view_date = new ALDateTimeField("yyyy-MM-dd");
 
     if (rundata.getParameters().containsKey("view_date_year")
-        && rundata.getParameters().containsKey("view_date_month")) {
+      && rundata.getParameters().containsKey("view_date_month")) {
 
       int tmpViewDate_year = Integer.parseInt(rundata.getParameters()
-          .getString("view_date_year"));
+        .getString("view_date_year"));
       int tmpViewDate_month = Integer.parseInt(rundata.getParameters()
-          .getString("view_date_month"));
+        .getString("view_date_month"));
 
       cal.set(Calendar.HOUR_OF_DAY, 0);
       cal.set(Calendar.MINUTE, 0);
@@ -152,17 +150,17 @@ public class TimecardSelectData extends ALAbstractSelectData<EipTTimecard>
 
     // アクセス権
     if (target_user_id == null || "".equals(target_user_id)
-        || userid.equals(target_user_id)) {
+      || userid.equals(target_user_id)) {
       aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
     } else {
       aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER;
     }
     ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+      .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
     hasAclSummaryOther = aclhandler.hasAuthority(ALEipUtils.getUserId(rundata),
-        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER,
-        ALAccessControlConstants.VALUE_ACL_LIST);
+      ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER,
+      ALAccessControlConstants.VALUE_ACL_LIST);
     if (!hasAclSummaryOther) {
       // 他ユーザーの閲覧権限がないときには、ログインユーザーのIDに変更する。
       target_user_id = userid;
@@ -170,7 +168,7 @@ public class TimecardSelectData extends ALAbstractSelectData<EipTTimecard>
     }
 
     hasAclXlsExport = aclhandler.hasAuthority(ALEipUtils.getUserId(rundata),
-        aclPortletFeature, ALAccessControlConstants.VALUE_ACL_EXPORT);
+      aclPortletFeature, ALAccessControlConstants.VALUE_ACL_EXPORT);
 
     datemap = new LinkedHashMap<String, TimecardListResultData>();
 
@@ -187,15 +185,15 @@ public class TimecardSelectData extends ALAbstractSelectData<EipTTimecard>
   private SelectQuery<EipTTimecard> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<EipTTimecard> query = new SelectQuery<EipTTimecard>(
-        EipTTimecard.class);
+      EipTTimecard.class);
 
     Expression exp1 = ExpressionFactory.matchExp(EipTTimecard.USER_ID_PROPERTY,
-        Integer.valueOf(target_user_id));
+      Integer.valueOf(target_user_id));
     query.setQualifier(exp1);
 
     Calendar cal = Calendar.getInstance();
     Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-        EipTTimecard.WORK_DATE_PROPERTY, view_date.getValue());
+      EipTTimecard.WORK_DATE_PROPERTY, view_date.getValue());
 
     cal.setTime(view_date.getValue());
     cal.add(Calendar.MONTH, +1);
@@ -204,7 +202,7 @@ public class TimecardSelectData extends ALAbstractSelectData<EipTTimecard>
     view_date_add_month.setValue(cal.getTime());
 
     Expression exp12 = ExpressionFactory.lessOrEqualExp(
-        EipTTimecard.WORK_DATE_PROPERTY, view_date_add_month.getValue());
+      EipTTimecard.WORK_DATE_PROPERTY, view_date_add_month.getValue());
     query.andQualifier(exp11.andExp(exp12));
 
     return buildSelectQueryForFilter(query, rundata, context);
@@ -226,7 +224,7 @@ public class TimecardSelectData extends ALAbstractSelectData<EipTTimecard>
 
         SelectQuery<EipTTimecard> query = getSelectQuery(rundata, context);
         buildSelectQueryForListView(query);
-        query.addOrdering(EipTTimecard.WORK_DATE_PROPERTY, true);
+        query.orderAscending(EipTTimecard.WORK_DATE_PROPERTY);
 
         List<EipTTimecard> list = query.perform();
         return buildPaginatedList(list);
@@ -304,7 +302,7 @@ public class TimecardSelectData extends ALAbstractSelectData<EipTTimecard>
     int date2Day = cal2.get(Calendar.DATE);
 
     if (date1Year == date2Year && date1Month == date2Month
-        && date1Day == date2Day) {
+      && date1Day == date2Day) {
       return true;
     }
     return false;
@@ -320,9 +318,9 @@ public class TimecardSelectData extends ALAbstractSelectData<EipTTimecard>
   private SelectQuery<EipTTimecard> getSelectQueryDetail(RunData rundata,
       Context context) {
     SelectQuery<EipTTimecard> query = new SelectQuery<EipTTimecard>(
-        EipTTimecard.class);
+      EipTTimecard.class);
     Expression exp = ExpressionFactory.matchExp(EipTTimecard.USER_ID_PROPERTY,
-        Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      Integer.valueOf(ALEipUtils.getUserId(rundata)));
     query.setQualifier(exp);
 
     return query;
@@ -341,15 +339,12 @@ public class TimecardSelectData extends ALAbstractSelectData<EipTTimecard>
     try {
       Calendar cal = Calendar.getInstance();
       nowtime = cal.get(Calendar.HOUR_OF_DAY) + "時" + cal.get(Calendar.MINUTE)
-          + "分";
+        + "分";
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
       SelectQuery<EipTTimecard> query = getSelectQueryDetail(rundata, context);
-      query.addOrdering(EipTTimecard.WORK_DATE_PROPERTY, false);
+      query.orderDesending(EipTTimecard.WORK_DATE_PROPERTY);
 
-      @SuppressWarnings("unchecked")
-      List<EipTTimecard> list = dataContext.performQuery(query);
+      List<EipTTimecard> list = query.perform();
       if (list != null && list.size() > 0) {
         return list.get(0);
       } else {
@@ -391,7 +386,7 @@ public class TimecardSelectData extends ALAbstractSelectData<EipTTimecard>
   private void setupLists(RunData rundata, Context context) {
     target_group_name = getTargetGroupName(rundata, context);
     if ((target_group_name != null) && (!target_group_name.equals(""))
-        && (!target_group_name.equals("all"))) {
+      && (!target_group_name.equals("all"))) {
       userList = ALEipUtils.getUsers(target_group_name);
     } else {
       userList = ALEipUtils.getUsers("LoginUser");
@@ -419,18 +414,18 @@ public class TimecardSelectData extends ALAbstractSelectData<EipTTimecard>
     if (ALEipUtils.isMatch(rundata, context)) {
       // 自ポートレットへのリクエストの場合に，グループ名を取得する．
       idParam = rundata.getParameters().getString(
-          TimecardUtils.TARGET_GROUP_NAME);
+        TimecardUtils.TARGET_GROUP_NAME);
     }
     target_group_name = ALEipUtils.getTemp(rundata, context,
-        TimecardUtils.TARGET_GROUP_NAME);
+      TimecardUtils.TARGET_GROUP_NAME);
 
     if (idParam == null && target_group_name == null) {
       ALEipUtils.setTemp(rundata, context, TimecardUtils.TARGET_GROUP_NAME,
-          "all");
+        "all");
       target_group_name = "all";
     } else if (idParam != null) {
       ALEipUtils.setTemp(rundata, context, TimecardUtils.TARGET_GROUP_NAME,
-          idParam);
+        idParam);
       target_group_name = idParam;
     }
     return target_group_name;
@@ -451,12 +446,12 @@ public class TimecardSelectData extends ALAbstractSelectData<EipTTimecard>
       idParam = rundata.getParameters().getString(TimecardUtils.TARGET_USER_ID);
     }
     target_user_id = ALEipUtils.getTemp(rundata, context,
-        TimecardUtils.TARGET_USER_ID);
+      TimecardUtils.TARGET_USER_ID);
 
     if (idParam == null && (target_user_id == null)) {
       // ログインユーザのスケジュールを表示するため，ログイン ID を設定する．
       ALEipUtils
-          .setTemp(rundata, context, TimecardUtils.TARGET_USER_ID, userid);
+        .setTemp(rundata, context, TimecardUtils.TARGET_USER_ID, userid);
       target_user_id = userid;
     } else if (idParam != null) {
       if (idParam.equals("none")) {
@@ -471,7 +466,7 @@ public class TimecardSelectData extends ALAbstractSelectData<EipTTimecard>
           String eipUserId = eipUser.getUserId().getValueAsString();
           if (userid.equals(eipUserId)) {
             ALEipUtils.setTemp(rundata, context, TimecardUtils.TARGET_USER_ID,
-                userid);
+              userid);
             target_user_id = userid;
             found = true;
             break;
@@ -481,13 +476,13 @@ public class TimecardSelectData extends ALAbstractSelectData<EipTTimecard>
           eipUser = userList.get(0);
           String userId = eipUser.getUserId().getValueAsString();
           ALEipUtils.setTemp(rundata, context, TimecardUtils.TARGET_USER_ID,
-              userId);
+            userId);
           target_user_id = userId;
         }
       } else {
         // ユーザで表示を切り替えた場合，指定したユーザの ID を設定する．
         ALEipUtils.setTemp(rundata, context, TimecardUtils.TARGET_USER_ID,
-            idParam);
+          idParam);
         target_user_id = idParam;
       }
     }
@@ -612,16 +607,16 @@ public class TimecardSelectData extends ALAbstractSelectData<EipTTimecard>
           int listrd1_size = listrd1.getList().size();
           if (listrd1_size > 0) {
             TimecardResultData listrd1_lastrd = (TimecardResultData) listrd1
-                .getList().get(listrd1_size - 1);
+              .getList().get(listrd1_size - 1);
 
             TimecardResultData listrd2_firstrd = (TimecardResultData) listrd2
-                .getList().get(0);
+              .getList().get(0);
             if (TimecardUtils.WORK_FLG_OFF.equals(listrd2_firstrd.getWorkFlag()
+              .getValue())
+              && TimecardUtils.WORK_FLG_ON.equals(listrd1_lastrd.getWorkFlag()
                 .getValue())
-                && TimecardUtils.WORK_FLG_ON.equals(listrd1_lastrd
-                    .getWorkFlag().getValue())
-                && !sameDay(listrd1_lastrd.getWorkDate().getValue(),
-                    listrd2_firstrd.getWorkDate().getValue())) {
+              && !sameDay(listrd1_lastrd.getWorkDate().getValue(),
+                listrd2_firstrd.getWorkDate().getValue())) {
 
               Date d = listrd2_firstrd.getWorkDate().getValue();
               Calendar cal = Calendar.getInstance();

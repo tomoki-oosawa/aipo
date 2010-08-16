@@ -276,7 +276,7 @@ public abstract class ALAbstractSelectData<M> implements ALData {
    *            検索結果
    */
   protected void buildSelectQueryForListView(SelectQuery<M> query) {
-    query.setPageSize(getRowsNum());
+    query.pageSize(getRowsNum());
   }
 
   /**
@@ -336,9 +336,9 @@ public abstract class ALAbstractSelectData<M> implements ALData {
       return query;
     if (sort_type != null
         && ALEipConstants.LIST_SORT_TYPE_DESC.equals(sort_type)) {
-      query.addOrdering(crt_key, false);
+      query.orderDesending(crt_key);
     } else {
-      query.addOrdering(crt_key, true);
+      query.orderAscending(crt_key);
       sort_type = ALEipConstants.LIST_SORT_TYPE_ASC;
     }
     current_sort = sort;

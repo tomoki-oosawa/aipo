@@ -29,7 +29,6 @@ import java.util.jar.Attributes;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import com.aimluck.eip.orm.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -49,6 +48,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -59,7 +59,7 @@ public class NoteSelectData extends ALAbstractSelectData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(NoteSelectData.class.getName());
+    .getLogger(NoteSelectData.class.getName());
 
   /** 現在選択しているタブ */
   private String currentTab;
@@ -117,11 +117,11 @@ public class NoteSelectData extends ALAbstractSelectData {
         sortkey = "p2b-sort";
       }
       sort = ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-          .getInitParameter(sortkey);
+        .getInitParameter(sortkey);
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, sort);
       logger.debug("Init Parameter (Note) : "
-          + ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-              .getInitParameter(sortkey));
+        + ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+          .getInitParameter(sortkey));
     } else {
       if ("received_notes".equals(getCurrentTab())) {
         if ("create_date".equals(sort)) {
@@ -133,7 +133,7 @@ public class NoteSelectData extends ALAbstractSelectData {
           sort = "create_date";
           ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, sort);
           ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR,
-              ALEipConstants.LIST_SORT_TYPE_DESC);
+            ALEipConstants.LIST_SORT_TYPE_DESC);
         }
       }
     }
@@ -143,11 +143,11 @@ public class NoteSelectData extends ALAbstractSelectData {
 
     // ポートレット WebMailAccountEdit のへのリンクを取得する．
     mailAccountURI = NoteUtils.getPortletURIinPersonalConfigPane(rundata,
-        "WebMailAccountEdit");
+      "WebMailAccountEdit");
 
     // ポートレット AccountEdit のへのリンクを取得する．
     userAccountURI = NoteUtils.getPortletURIinPersonalConfigPane(rundata,
-        "AccountEdit");
+      "AccountEdit");
 
     dataContext = DatabaseOrmService.getInstance().getDataContext();
 
@@ -175,7 +175,7 @@ public class NoteSelectData extends ALAbstractSelectData {
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<?> list = dataContext.performQuery(query);
+      List<EipTNoteMap> list = query.perform();
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -195,7 +195,7 @@ public class NoteSelectData extends ALAbstractSelectData {
     if ("received_notes".equals(currentTab)) {
       // 受信履歴の未読数をセットする．
       unreadNotesAllSum = NoteUtils.getUnreadReceivedNotesAllSum(rundata,
-          userId);
+        userId);
       // 受信履歴の新着数をセットする．
       newNoteAllSum = NoteUtils.getNewReceivedNoteAllSum(rundata, userId);
     } else {
@@ -206,7 +206,7 @@ public class NoteSelectData extends ALAbstractSelectData {
     }
 
     EipTNote note = NoteUtils.getEipTNoteDetail(rundata, context,
-        getSelectQueryForDetail(rundata, context));
+      getSelectQueryForDetail(rundata, context));
 
     if (note == null) {
       logger.debug("[NoteSelectData] This page cannot be loaded.");
@@ -233,13 +233,13 @@ public class NoteSelectData extends ALAbstractSelectData {
       rd.setDestUserId(map.getUserId());
 
       ALEipUser user = ALEipUtils.getALEipUser(Integer.valueOf(
-          record.getOwnerId()).intValue());
+        record.getOwnerId()).intValue());
       rd.setSrcUserFullName(user.getAliasName().getValue());
       rd.setDestUserFullName(destUserNames);
       rd.setClientName(ALCommonUtils.compressString(record.getClientName(),
-          getStrLength()));
+        getStrLength()));
       rd.setCompanyName(ALCommonUtils.compressString(record.getCompanyName(),
-          getStrLength()));
+        getStrLength()));
       rd.setTelephone(record.getTelephone());
       rd.setEmailAddress(record.getEmailAddress());
       if (record.getAddDestType().equals("1")) {
@@ -253,7 +253,7 @@ public class NoteSelectData extends ALAbstractSelectData {
       rd.setSubjectType(record.getSubjectType());
       if ("0".equals(record.getSubjectType())) {
         rd.setCustomSubject(ALCommonUtils.compressString(
-            record.getCustomSubject(), getStrLength()));
+          record.getCustomSubject(), getStrLength()));
       }
 
       rd.setMessage(record.getMessage());
@@ -292,8 +292,8 @@ public class NoteSelectData extends ALAbstractSelectData {
 
       // 伝言メモを登録
       if (map.getUserId().equals(userId)
-          && (!record.getOwnerId().equals(userId))
-          && map.getNoteStat().equals(NoteUtils.NOTE_STAT_NEW)) {
+        && (!record.getOwnerId().equals(userId))
+        && map.getNoteStat().equals(NoteUtils.NOTE_STAT_NEW)) {
         // 未読フラグ
         map.setNoteStat(NoteUtils.NOTE_STAT_UNREAD);
       }
@@ -319,12 +319,13 @@ public class NoteSelectData extends ALAbstractSelectData {
       EipTNote record = (EipTNote) obj;
 
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery<EipTNoteMap> mapquery = new SelectQuery<EipTNoteMap>(EipTNoteMap.class);
+        .getDataContext();
+      SelectQuery<EipTNoteMap> mapquery = new SelectQuery<EipTNoteMap>(
+        EipTNoteMap.class);
       Expression mapexp = ExpressionFactory.matchExp(
-          EipTNoteMap.NOTE_ID_PROPERTY, record.getNoteId());
+        EipTNoteMap.NOTE_ID_PROPERTY, record.getNoteId());
       mapquery.setQualifier(mapexp);
-      List<?> list = dataContext.performQuery(mapquery);
+      List<?> list = mapquery.perform();
 
       List<Integer> users = new ArrayList<Integer>();
       int size = list.size();
@@ -336,20 +337,21 @@ public class NoteSelectData extends ALAbstractSelectData {
 
         if ("T".equals(notemap.getDelFlg())) {
           statusList.put(Integer.valueOf(notemap.getUserId()),
-              NoteUtils.NOTE_STAT_DELETED);
+            NoteUtils.NOTE_STAT_DELETED);
         } else {
           statusList.put(Integer.valueOf(notemap.getUserId()),
-              notemap.getNoteStat());
+            notemap.getNoteStat());
         }
         users.add(Integer.valueOf(notemap.getUserId()));
       }
 
-      SelectQuery<TurbineUser> query = new SelectQuery<TurbineUser>(TurbineUser.class);
+      SelectQuery<TurbineUser> query = new SelectQuery<TurbineUser>(
+        TurbineUser.class);
       Expression exp = ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN,
-          users);
+        users);
       query.setQualifier(exp);
 
-      members = ALEipUtils.getUsersFromSelectQuery(query);
+      members = ALEipUtils.getUsersFromSelectQuery(query.getQuery());
 
       String destUserNames = "";
 
@@ -360,7 +362,7 @@ public class NoteSelectData extends ALAbstractSelectData {
       rd.setDestUserId(map.getUserId());
 
       ALEipUser user = ALEipUtils.getALEipUser(Integer.valueOf(
-          record.getOwnerId()).intValue());
+        record.getOwnerId()).intValue());
       rd.setSrcUserFullName(user.getAliasName().getValue());
       rd.setDestUserFullName(destUserNames);
       rd.setClientName(record.getClientName());
@@ -385,7 +387,7 @@ public class NoteSelectData extends ALAbstractSelectData {
 
       // 伝言メモの受信者の確認日時と未読／既読を登録する
       if (map.getUserId().equals(userId)
-          && (!record.getOwnerId().equals(userId))) {
+        && (!record.getOwnerId().equals(userId))) {
         if (map.getConfirmDate() == null) {
           // 確認日時
           map.setConfirmDate(nowDate);
@@ -425,16 +427,16 @@ public class NoteSelectData extends ALAbstractSelectData {
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("client_name", EipTNoteMap.EIP_TNOTE_PROPERTY + "."
-        + EipTNote.CLIENT_NAME_PROPERTY);
+      + EipTNote.CLIENT_NAME_PROPERTY);
     map.putValue("company_name", EipTNoteMap.EIP_TNOTE_PROPERTY + "."
-        + EipTNote.COMPANY_NAME_PROPERTY);
+      + EipTNote.COMPANY_NAME_PROPERTY);
     map.putValue("subject_type", EipTNoteMap.EIP_TNOTE_PROPERTY + "."
-        + EipTNote.SUBJECT_TYPE_PROPERTY);
+      + EipTNote.SUBJECT_TYPE_PROPERTY);
     map.putValue("create_date", EipTNoteMap.EIP_TNOTE_PROPERTY + "."
-        + EipTNote.CREATE_DATE_PROPERTY);
+      + EipTNote.CREATE_DATE_PROPERTY);
     map.putValue("confirm_date", EipTNoteMap.CONFIRM_DATE_PROPERTY);
     map.putValue("accept_date", EipTNoteMap.EIP_TNOTE_PROPERTY + "."
-        + EipTNote.ACCEPT_DATE_PROPERTY);
+      + EipTNote.ACCEPT_DATE_PROPERTY);
     // map.putValue("src_user", TurbineUserConstants.LAST_NAME_KANA);
     // map.putValue("dest_user", TurbineUserConstants.LAST_NAME_KANA);
     map.putValue("note_stat", EipTNoteMap.NOTE_STAT_PROPERTY);
@@ -448,25 +450,27 @@ public class NoteSelectData extends ALAbstractSelectData {
    * @param context
    * @return
    */
-  private SelectQuery<EipTNoteMap> getSelectQuery(RunData rundata, Context context) {
-    SelectQuery<EipTNoteMap> query = new SelectQuery<EipTNoteMap>(EipTNoteMap.class);
+  private SelectQuery<EipTNoteMap> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTNoteMap> query = new SelectQuery<EipTNoteMap>(
+      EipTNoteMap.class);
 
     Expression exp1 = ExpressionFactory.matchExp(EipTNoteMap.USER_ID_PROPERTY,
-        Integer.valueOf(userId));
+      Integer.valueOf(userId));
     query.setQualifier(exp1);
     Expression exp2 = ExpressionFactory.matchExp(EipTNoteMap.DEL_FLG_PROPERTY,
-        "F");
+      "F");
     query.andQualifier(exp2);
 
     if ("received_notes".equals(getCurrentTab())) {
       Expression exp3 = ExpressionFactory.noMatchExp(
-          EipTNoteMap.EIP_TNOTE_PROPERTY + "." + EipTNote.OWNER_ID_PROPERTY,
-          Integer.valueOf(userId));
+        EipTNoteMap.EIP_TNOTE_PROPERTY + "." + EipTNote.OWNER_ID_PROPERTY,
+        Integer.valueOf(userId));
       query.andQualifier(exp3);
     } else {
       Expression exp3 = ExpressionFactory.matchExp(
-          EipTNoteMap.EIP_TNOTE_PROPERTY + "." + EipTNote.OWNER_ID_PROPERTY,
-          Integer.valueOf(userId));
+        EipTNoteMap.EIP_TNOTE_PROPERTY + "." + EipTNote.OWNER_ID_PROPERTY,
+        Integer.valueOf(userId));
       query.andQualifier(exp3);
     }
 
@@ -480,7 +484,8 @@ public class NoteSelectData extends ALAbstractSelectData {
    * @param context
    * @return
    */
-  private SelectQuery<EipTNote> getSelectQueryForDetail(RunData rundata, Context context) {
+  private SelectQuery<EipTNote> getSelectQueryForDetail(RunData rundata,
+      Context context) {
     SelectQuery<EipTNote> query = new SelectQuery<EipTNote>(EipTNote.class);
     return query;
   }
@@ -505,13 +510,13 @@ public class NoteSelectData extends ALAbstractSelectData {
     if (mapListSize >= 2) {
       EipTNoteMap tmpmap = (EipTNoteMap) mapList.get(0);
       ALEipUser user = ALEipUtils.getALEipUser(Integer.valueOf(
-          tmpmap.getUserId()).intValue());
+        tmpmap.getUserId()).intValue());
       destUserNames.append(user.getAliasName());
       destUserNames.append("、・・・");
     } else {
       EipTNoteMap tmpmap = (EipTNoteMap) mapList.get(0);
       ALEipUser user = ALEipUtils.getALEipUser(Integer.valueOf(
-          tmpmap.getUserId()).intValue());
+        tmpmap.getUserId()).intValue());
       destUserNames.append(user.getAliasName());
     }
     return destUserNames.toString();
@@ -557,7 +562,7 @@ public class NoteSelectData extends ALAbstractSelectData {
   public String getUserFullName(String userId) {
     try {
       ALEipUser user = ALEipUtils.getALEipUser(Integer.valueOf(userId)
-          .intValue());
+        .intValue());
 
       return user.getAliasName().getValue();
     } catch (Exception e) {

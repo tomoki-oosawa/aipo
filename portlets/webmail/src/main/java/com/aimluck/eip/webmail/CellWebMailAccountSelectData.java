@@ -96,7 +96,7 @@ public class CellWebMailAccountSelectData extends ALAbstractSelectData {
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List list = dataContext.performQuery(query);
+      List list = query.perform();
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -122,7 +122,7 @@ public class CellWebMailAccountSelectData extends ALAbstractSelectData {
         EipMMailAccount.ACCOUNT_TYPE_PROPERTY,
         Integer.valueOf(ALMailUtils.ACCOUNT_TYPE_INIT));
     query.andQualifier(exp2);
-    query.addOrdering(EipMMailAccount.ACCOUNT_TYPE_PROPERTY, false);
+    query.orderDesending(EipMMailAccount.ACCOUNT_TYPE_PROPERTY);
 
     return query;
   }
