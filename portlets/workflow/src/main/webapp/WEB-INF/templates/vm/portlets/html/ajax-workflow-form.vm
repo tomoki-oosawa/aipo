@@ -112,7 +112,7 @@
 </select>
 <input id=$RouteChangeFlag type="checkbox" style="display:none"/>
 <br />
-<input #if ($!result.RouteId.toString() == "" || $!result.RouteId.toString() == "0") style="display:none;border:medium none;width:90%;" #else style="border:medium none;width:90%;" #end id="$Route_id" name="$Route" value="$!result.RouteH" readonly="readonly" />
+<div #if ($!result.RouteId.toString() == "" || $!result.RouteId.toString() == "0") style="display:none;" #end id="$Route_id" name="$Route">$!result.RouteH</div>
 </div>
 #ALtditemfooter()
 

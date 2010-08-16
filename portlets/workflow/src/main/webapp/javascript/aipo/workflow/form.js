@@ -75,9 +75,9 @@ aipo.workflow.setTemplate = function(array,rtnData){
         }
 
         if ( route == null || route == "") {
-            dojo.byId(array["named"]).value = "";
+            dojo.byId(array["named"]).innerHTML = "";
         } else {
-            dojo.byId(array["named"]).value = routeH;
+            dojo.byId(array["named"]).innerHTML = routeH;
         }
 
         memberFrom = dojo.byId('tmp_member_from');
