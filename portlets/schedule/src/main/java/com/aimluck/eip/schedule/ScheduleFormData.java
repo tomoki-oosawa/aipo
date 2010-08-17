@@ -653,6 +653,23 @@ public class ScheduleFormData extends ALAbstractFormData {
       end_date.setValue(tmp_end_date.getTime());
     }
 
+    if (is_span) {
+      // 開始日時 と 終了日時 の時間を 0時0分0秒 に設定する
+      Calendar tmp_start_date = Calendar.getInstance();
+      tmp_start_date.setTime(start_date.getValue());
+      tmp_start_date.set(Calendar.HOUR_OF_DAY, 0);
+      tmp_start_date.set(Calendar.MINUTE, 0);
+      tmp_start_date.set(Calendar.SECOND, 0);
+      start_date.setValue(tmp_start_date.getTime());
+
+      Calendar tmp_end_date = Calendar.getInstance();
+      tmp_end_date.setTime(end_date.getValue());
+      tmp_end_date.set(Calendar.HOUR_OF_DAY, 0);
+      tmp_end_date.set(Calendar.MINUTE, 0);
+      tmp_end_date.set(Calendar.SECOND, 0);
+      end_date.setValue(tmp_start_date.getTime());
+    }
+
     // 開始日時＆終了日時
     if (end_date.getValue().before(start_date.getValue())) {
       msgList
