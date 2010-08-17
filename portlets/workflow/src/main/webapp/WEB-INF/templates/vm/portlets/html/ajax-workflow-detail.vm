@@ -85,7 +85,7 @@ $!result.Detail.RouteName
 </tr>
 <tr>
 #ALtdheadThin("決裁")
-#ALtdheadThin("ユーザー名")
+#ALtdheadAtt("ユーザー名" "style='width:20%'")
 #ALtdheadThin("日時")
 #ALtdhead("コメント")
 </tr>
@@ -97,24 +97,29 @@ $!result.Detail.RouteName
 #if($confirm_view_flg)
 <span class="caution">$!{record.StatusString}</span>
 #end
-#elseif($!record.Status.Value == "R" || $!record.Status.Value == "A" || $!record.Status.Value == "D")
+#elseif($!record.Status.Value == "R" || $!record.Status.Value == "A" || $!record.Status.Value == "D" || $!record.Status.Value == "T")
 $!{record.StatusString}
 #end
 #ALtdcellfooter()
-#ALtdcellAtt("$!record.UserAliasName" 'nowrap')
+#ALtdcell("$!record.UserAliasName")
 #ALtdcellheaderAtt("nowrap='nowrap'")
-#if($!record.Status.Value == "R" || $!record.Status.Value == "A" || $!record.Status.Value == "D") $!{record.UpdateDate} #end
+#if($!record.Status.Value == "R" || $!record.Status.Value == "A" || $!record.Status.Value == "D" || $!record.Status.Value == "T") $!{record.UpdateDate} #end
 #ALtdcellfooter()
 #ALtdcellheader()
 #if($confirm_view_flg && $!record.Status.Value == "C" && $!record.UserId.Value == $!result.LoginUser.UserId.Value)
 #ALtextarea('comment' $!record.NoteR 10 40)
 <div class="alignleft">
 <div class="alignleft">#ALsubmitJS('eventSubmit_doWorkflow_accept' '承認する' "aipo.workflow.onAccept('$!portlet.ID');")／</div>
+#if(!($!result.Detail.CanRemandApplicant) && $!result.Detail.RemandingRecords.size() == 0)
+#ALsubmitJS('eventSubmit_doWorkflow_delete' '削除する' "aipo.workflow.onDelete('$!portlet.ID');")
+#else
 <div class="alignleft">
 <span id="order_field">
 #ALselectpdheader("passback_order" "90%" "" )
+#if($!result.Detail.CanRemandApplicant)
 <option value='0'>申請者</option>
-#foreach ($record in $result.Detail.DecisionRecords)
+#end
+#foreach ($record in $result.Detail.RemandingRecords)
 #if($!record.Status.Value == "A")
 <option value='$!record.Order'>$!record.UserAliasName</option>
 #end
@@ -122,6 +127,7 @@ $!{record.StatusString}
 #ALselectfooter()
 </span>に#ALsubmitJS('eventSubmit_doWorkflow_denial'  '差し戻す' "aipo.workflow.onDenial('$!portlet.ID');")</div>
 </div>
+#end
 #else
 $!record.Note
 #end

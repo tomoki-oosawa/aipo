@@ -85,7 +85,7 @@ $!result.Detail.RouteName
 </tr>
 <tr>
 #ALtdheadThin("決裁")
-#ALtdheadThin("ユーザー名")
+#ALtdheadAtt("ユーザー名" "style='width:20%'")
 #ALtdheadThin("日時")
 #ALtdhead("コメント")
 </tr>
@@ -101,7 +101,7 @@ $!result.Detail.RouteName
 $!{record.StatusString}
 #end
 #ALtdcellfooter()
-#ALtdcellAtt("$!record.UserAliasName" 'nowrap')
+#ALtdcell("$!record.UserAliasName")
 #ALtdcellheaderAtt("nowrap='nowrap'")
 #if($!record.Status.Value == "R" || $!record.Status.Value == "A" || $!record.Status.Value == "D" || $!record.Status.Value == "T") $!{record.UpdateDate} #end
 #ALtdcellfooter()
