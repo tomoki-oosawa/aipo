@@ -368,10 +368,12 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
           + "</span> 』は既に登録されています。");
       }
 
-      if (end_hour.getValue() * 60 + end_minute.getValue() >= change_hour
-        .getValue() * 60) {
+      long start_time = start_hour.getValue() * 60 + start_minute.getValue();
+      long end_time = end_hour.getValue() * 60 + end_minute.getValue();
+      long change_time = change_hour.getValue() * 60;
+      if (!isValidChangeTime(start_time, end_time, change_time)) {
         msgList
-          .add("『 <span class='em'>勤務終了時刻</span> 』は『 <span class='em'>日付切替時刻</span> 』以前の時刻を指定してください。");
+          .add("『 <span class='em'>日付切替時刻</span> 』は『 <span class='em'>勤務時間</span> 』の範囲外の時刻を指定してください。");
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -385,6 +387,31 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
     resttime_out.validate(msgList);
 
     return (msgList.size() == 0);
+  }
+
+  /**
+   * 勤務時間と日付切替時刻の関係の妥当性を検証します。
+   * 
+   * @param start_time
+   * @param end_time
+   * @param change_time
+   * @return
+   */
+  private boolean isValidChangeTime(long start_time, long end_time,
+      long change_time) {
+    if (end_time <= start_time) {
+      end_time += 24 * 60;
+    }
+
+    if (start_time <= change_time) {
+      return false;
+    } else {
+      change_time += 24 * 60;
+      if (end_time >= change_time) {
+        return false;
+      }
+    }
+    return true;
   }
 
   /**
