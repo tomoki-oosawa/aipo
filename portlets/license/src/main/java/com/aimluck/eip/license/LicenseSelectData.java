@@ -32,17 +32,19 @@ import com.aimluck.eip.license.util.LicenseUtils;
 
 /**
  */
-public class LicenseSelectData extends ALAbstractSelectData<AipoLicense> {
+public class LicenseSelectData extends
+    ALAbstractSelectData<AipoLicense, AipoLicense> {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(LicenseSelectData.class.getName());
+    .getLogger(LicenseSelectData.class.getName());
 
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected List<AipoLicense> selectList(RunData rundata, Context context) {
     return null;
   }
@@ -51,6 +53,7 @@ public class LicenseSelectData extends ALAbstractSelectData<AipoLicense> {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected AipoLicense selectDetail(RunData rundata, Context context) {
     return LicenseUtils.getAipoLicense(rundata, context);
   }
@@ -58,6 +61,7 @@ public class LicenseSelectData extends ALAbstractSelectData<AipoLicense> {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(AipoLicense obj) {
     return null;
   }
@@ -65,6 +69,7 @@ public class LicenseSelectData extends ALAbstractSelectData<AipoLicense> {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(AipoLicense license) {
 
     return license.getLicense();
@@ -73,6 +78,7 @@ public class LicenseSelectData extends ALAbstractSelectData<AipoLicense> {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     return null;
   }

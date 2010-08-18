@@ -41,54 +41,57 @@ import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフロー申請経路検索データを管理するクラスです。 <BR>
- *
+ * 
  */
 public class WorkflowRouteSelectData extends
-    ALAbstractSelectData<EipTWorkflowRoute> implements ALData {
+    ALAbstractSelectData<EipTWorkflowRoute, EipTWorkflowRoute> implements
+    ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowRouteSelectData.class.getName());
+    .getLogger(WorkflowRouteSelectData.class.getName());
 
   /** 申請経路の総数 */
   private int routeSum;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     String sorttype = ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
-          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-              .getInitParameter("p2a-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
+        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
+          "p2a-sort"));
     }
 
     if ("create_date".equals(ALEipUtils
-        .getTemp(rundata, context, LIST_SORT_STR))
-        && (sorttype == null || "".equals(sorttype))) {
+      .getTemp(rundata, context, LIST_SORT_STR))
+      && (sorttype == null || "".equals(sorttype))) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR,
-          ALEipConstants.LIST_SORT_TYPE_DESC);
+        ALEipConstants.LIST_SORT_TYPE_DESC);
     }
     super.init(action, rundata, context);
   }
 
   /**
    * 一覧データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected List<EipTWorkflowRoute> selectList(RunData rundata, Context context) {
     try {
 
@@ -108,7 +111,7 @@ public class WorkflowRouteSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -116,20 +119,21 @@ public class WorkflowRouteSelectData extends
   private SelectQuery<EipTWorkflowRoute> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<EipTWorkflowRoute> query = new SelectQuery<EipTWorkflowRoute>(
-        EipTWorkflowRoute.class);
+      EipTWorkflowRoute.class);
 
     return query;
   }
 
   /**
    * 詳細データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected EipTWorkflowRoute selectDetail(RunData rundata, Context context) {
     // オブジェクトモデルを取得
     return WorkflowUtils.getEipTWorkflowRoute(rundata, context);
@@ -137,28 +141,30 @@ public class WorkflowRouteSelectData extends
 
   /**
    * ResultDataを取得します。（一覧データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(EipTWorkflowRoute record) {
     WorkflowRouteResultData rd = new WorkflowRouteResultData();
     rd.initField();
     rd.setRouteId(record.getRouteId().longValue());
     rd.setRouteName(ALCommonUtils.compressString(record.getRouteName(),
-        getStrLength()));
+      getStrLength()));
     rd.setRoute(ALCommonUtils.compressString(record.getRoute(), getStrLength()));
     return rd;
   }
 
   /**
    * ResultDataを取得します。（詳細データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(EipTWorkflowRoute record) {
     WorkflowRouteDetailResultData rd = new WorkflowRouteDetailResultData();
     rd.initField();
@@ -175,6 +181,7 @@ public class WorkflowRouteSelectData extends
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("route_name", EipTWorkflowRoute.ROUTE_NAME_PROPERTY);

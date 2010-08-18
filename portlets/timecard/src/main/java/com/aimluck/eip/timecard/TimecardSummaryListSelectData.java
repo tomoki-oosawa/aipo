@@ -62,12 +62,12 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカード集計の一覧を処理するクラスです。 <br />
- *
- *
+ * 
+ * 
  */
 
 public class TimecardSummaryListSelectData extends
-    ALAbstractSelectData<EipTTimecard> implements ALData {
+    ALAbstractSelectData<EipTTimecard, EipTTimecard> implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -147,6 +147,7 @@ public class TimecardSummaryListSelectData extends
   /**
    *
    */
+  @Override
   public void initField() {
 
     shugyoNissu = new ALNumberField(0);
@@ -173,12 +174,13 @@ public class TimecardSummaryListSelectData extends
 
   /*
    * (非 Javadoc)
-   *
+   * 
    * @see
    * com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules
    * .actions.common.ALAction, org.apache.turbine.util.RunData,
    * org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -276,11 +278,12 @@ public class TimecardSummaryListSelectData extends
 
   /*
    * (非 Javadoc)
-   *
+   * 
    * @see
    * com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine
    * .util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   protected List<EipTTimecard> selectList(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     try {
@@ -306,11 +309,12 @@ public class TimecardSummaryListSelectData extends
 
   /*
    * (非 Javadoc)
-   *
+   * 
    * @see
    * com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine
    * .util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   protected EipTTimecard selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     return null;
@@ -318,10 +322,11 @@ public class TimecardSummaryListSelectData extends
 
   /*
    * (非 Javadoc)
-   *
+   * 
    * @see
    * com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(EipTTimecard record)
       throws ALPageNotFoundException, ALDBErrorException {
     try {
@@ -360,11 +365,12 @@ public class TimecardSummaryListSelectData extends
 
   /*
    * (非 Javadoc)
-   *
+   * 
    * @see
    * com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang
    * .Object)
    */
+  @Override
   protected Object getResultDataDetail(EipTTimecard obj)
       throws ALPageNotFoundException, ALDBErrorException {
     return null;
@@ -372,9 +378,10 @@ public class TimecardSummaryListSelectData extends
 
   /*
    * (非 Javadoc)
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     // TODO 自動生成されたメソッド・スタブ
     return null;
@@ -382,7 +389,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * 指定グループや指定ユーザをセッションに設定する．
-   *
+   * 
    * @param rundata
    * @param context
    * @throws ALDBErrorException
@@ -407,7 +414,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * 表示切り替えで指定したグループ ID を取得する．
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -433,7 +440,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * 表示切り替えで指定したユーザ ID を取得する．
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -486,7 +493,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -535,11 +542,10 @@ public class TimecardSummaryListSelectData extends
           TimecardSummaryResultData listrd2 = datemap.get(list.get(i + 1));
           int listrd1_size = listrd1.getList().size();
           if (listrd1_size > 0) {
-            TimecardResultData listrd1_lastrd = (TimecardResultData) listrd1
-              .getList().get(listrd1_size - 1);
+            TimecardResultData listrd1_lastrd = listrd1.getList().get(
+              listrd1_size - 1);
 
-            TimecardResultData listrd2_firstrd = (TimecardResultData) listrd2
-              .getList().get(0);
+            TimecardResultData listrd2_firstrd = listrd2.getList().get(0);
             if (TimecardUtils.WORK_FLG_OFF.equals(listrd2_firstrd.getWorkFlag()
               .getValue())
               && TimecardUtils.WORK_FLG_ON.equals(listrd1_lastrd.getWorkFlag()
@@ -580,7 +586,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * 指定した2つの日付を比較する．
-   *
+   * 
    * @param date1
    * @param date2
    * @param checkTime
@@ -702,7 +708,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * 表示切り替え時に指定するグループ名
-   *
+   * 
    * @return
    */
   public String getTargetGroupName() {
@@ -711,7 +717,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * 表示切り替え時に指定するユーザ ID
-   *
+   * 
    * @return
    */
   public String getTargetUserId() {
@@ -720,7 +726,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * 指定グループに属するユーザの一覧を取得する．
-   *
+   * 
    * @param groupname
    * @return
    */
@@ -740,7 +746,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * 部署の一覧を取得する．
-   *
+   * 
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -753,7 +759,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * My グループの一覧を取得する．
-   *
+   * 
    * @return
    */
   public List<ALEipGroup> getMyGroupList() {
@@ -766,7 +772,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * ログインユーザの ID を取得する．
-   *
+   * 
    * @return
    */
   public String getUserId() {
@@ -774,7 +780,7 @@ public class TimecardSummaryListSelectData extends
   }
 
   /**
-   *
+   * 
    * @param id
    * @return
    */
@@ -898,7 +904,7 @@ public class TimecardSummaryListSelectData extends
   }
 
   /**
-   *
+   * 
    * @param minute
    * @return
    */
@@ -913,9 +919,10 @@ public class TimecardSummaryListSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return aclPortletFeature;
   }

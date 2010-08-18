@@ -39,27 +39,29 @@ import com.aimluck.eip.util.ALEipUtils;
 /**
  * 部署の検索データを管理するためのクラスです。 <br />
  */
-public class AccountPostSelectData extends ALAbstractSelectData<EipMPost> {
+public class AccountPostSelectData extends
+    ALAbstractSelectData<EipMPost, EipMPost> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AccountPostSelectData.class.getName());
+    .getLogger(AccountPostSelectData.class.getName());
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
-          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-              .getInitParameter("p1a-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
+        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
+          "p1a-sort"));
     }
 
     super.init(action, rundata, context);
@@ -72,6 +74,7 @@ public class AccountPostSelectData extends ALAbstractSelectData<EipMPost> {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected List<EipMPost> selectList(RunData rundata, Context context) {
     try {
       SelectQuery<EipMPost> query = getSelectQuery(rundata, context);
@@ -88,7 +91,7 @@ public class AccountPostSelectData extends ALAbstractSelectData<EipMPost> {
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -99,13 +102,14 @@ public class AccountPostSelectData extends ALAbstractSelectData<EipMPost> {
 
   /**
    * 詳細情報を取得します。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected EipMPost selectDetail(RunData rundata, Context context) {
     return AccountUtils.getEipMPost(rundata, context);
   }
@@ -115,6 +119,7 @@ public class AccountPostSelectData extends ALAbstractSelectData<EipMPost> {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(EipMPost record) {
     AccountPostResultData rd = new AccountPostResultData();
     rd.initField();
@@ -128,6 +133,7 @@ public class AccountPostSelectData extends ALAbstractSelectData<EipMPost> {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(EipMPost record) {
     AccountPostResultData rd = new AccountPostResultData();
     rd.initField();
@@ -146,6 +152,7 @@ public class AccountPostSelectData extends ALAbstractSelectData<EipMPost> {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("post_name", EipMPost.POST_NAME_PROPERTY);
@@ -153,7 +160,7 @@ public class AccountPostSelectData extends ALAbstractSelectData<EipMPost> {
   }
 
   /**
-   *
+   * 
    * @param postid
    * @return
    */
@@ -163,7 +170,7 @@ public class AccountPostSelectData extends ALAbstractSelectData<EipMPost> {
 
   /**
    * あるグループに所属するメンバーのリストを取得します
-   *
+   * 
    * @param postid
    * @return
    */

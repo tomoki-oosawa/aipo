@@ -30,17 +30,17 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALEipManager;
-import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザーアカウントの検索データを管理するためのクラスです。 <br />
  */
-public class AccountEditSelectData extends ALAbstractSelectData<ALBaseUser> {
+public class AccountEditSelectData extends
+    ALAbstractSelectData<ALBaseUser, ALBaseUser> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AccountEditSelectData.class.getName());
+    .getLogger(AccountEditSelectData.class.getName());
 
   /**
    * @param rundata
@@ -49,6 +49,7 @@ public class AccountEditSelectData extends ALAbstractSelectData<ALBaseUser> {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected List<ALBaseUser> selectList(RunData rundata, Context context) {
     return null;
   }
@@ -60,6 +61,7 @@ public class AccountEditSelectData extends ALAbstractSelectData<ALBaseUser> {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected ALBaseUser selectDetail(RunData rundata, Context context) {
     ALBaseUser baseUser = (ALBaseUser) rundata.getUser();
     return baseUser;
@@ -70,6 +72,7 @@ public class AccountEditSelectData extends ALAbstractSelectData<ALBaseUser> {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(ALBaseUser obj) {
     return null;
   }
@@ -79,20 +82,21 @@ public class AccountEditSelectData extends ALAbstractSelectData<ALBaseUser> {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(ALBaseUser record) {
     try {
 
       List<String> postNames = ALEipUtils.getPostNameList(Integer
-          .valueOf(record.getUserId()));
+        .valueOf(record.getUserId()));
 
       AccountResultData rd = new AccountResultData();
       rd.initField();
       rd.setUserId(Integer.valueOf(record.getUserId()).intValue());
       rd.setUserName(record.getUserName());
       rd.setName(new StringBuffer().append(record.getLastName()).append(" ")
-          .append(record.getFirstName()).toString());
+        .append(record.getFirstName()).toString());
       rd.setNameKana(new StringBuffer().append(record.getLastNameKana())
-          .append(" ").append(record.getFirstNameKana()).toString());
+        .append(" ").append(record.getFirstNameKana()).toString());
       rd.setEmail(record.getEmail());
       rd.setOutTelephone(record.getOutTelephone());
       rd.setInTelephone(record.getInTelephone());
@@ -118,35 +122,36 @@ public class AccountEditSelectData extends ALAbstractSelectData<ALBaseUser> {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     return null;
   }
 
   /**
-   *
+   * 
    * @param id
    * @return
    */
   @SuppressWarnings("unused")
   private String getPostName(int id) {
     if (ALEipManager.getInstance().getPostMap()
-        .containsKey(Integer.valueOf(id))) {
-      return ((ALEipPost) ALEipManager.getInstance().getPostMap()
-          .get(Integer.valueOf(id))).getPostName().getValue();
+      .containsKey(Integer.valueOf(id))) {
+      return (ALEipManager.getInstance().getPostMap().get(Integer.valueOf(id)))
+        .getPostName().getValue();
     }
     return null;
   }
 
   /**
-   *
+   * 
    * @param id
    * @return
    */
   private String getPositionName(int id) {
-    if (ALEipManager.getInstance().getPositionMap()
-        .containsKey(Integer.valueOf(id))) {
+    if (ALEipManager.getInstance().getPositionMap().containsKey(
+      Integer.valueOf(id))) {
       return (ALEipManager.getInstance().getPositionMap().get(Integer
-          .valueOf(id))).getPositionName().getValue();
+        .valueOf(id))).getPositionName().getValue();
     }
     return null;
   }

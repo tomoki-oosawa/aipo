@@ -43,52 +43,54 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * イベントログ検索データを管理するクラスです。 <BR>
- *
+ * 
  */
-public class EventlogSelectData extends ALAbstractSelectData<EipTEventlog>
-    implements ALData {
+public class EventlogSelectData extends
+    ALAbstractSelectData<EipTEventlog, EipTEventlog> implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(EventlogSelectData.class.getName());
+    .getLogger(EventlogSelectData.class.getName());
 
   /** イベントログの総数 */
   private int eventlogSum;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
-          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-              .getInitParameter("p2a-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
+        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
+          "p2a-sort"));
     }
 
     String sort_type = ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
     if (sort_type == null || "".equals(sort_type)) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR,
-          ALEipConstants.LIST_SORT_TYPE_DESC);
+        ALEipConstants.LIST_SORT_TYPE_DESC);
     }
     super.init(action, rundata, context);
   }
 
   /**
    * 一覧データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   public List<EipTEventlog> selectList(RunData rundata, Context context) {
     try {
 
@@ -109,7 +111,7 @@ public class EventlogSelectData extends ALAbstractSelectData<EipTEventlog>
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -117,17 +119,18 @@ public class EventlogSelectData extends ALAbstractSelectData<EipTEventlog>
   private SelectQuery<EipTEventlog> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<EipTEventlog> query = new SelectQuery<EipTEventlog>(
-        EipTEventlog.class);
+      EipTEventlog.class);
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(EipTEventlog record) {
     try {
       DateFormat df = new SimpleDateFormat("yyyy年MM月dd日（EE）HH時mm分ss秒");
@@ -136,10 +139,10 @@ public class EventlogSelectData extends ALAbstractSelectData<EipTEventlog>
       rd.initField();
       rd.setEventlogId(record.getEventlogId().longValue());
       rd.setUserFullName(ALEipUtils.getUserFullName(record.getTurbineUser()
-          .getUserId().intValue()));
+        .getUserId().intValue()));
       rd.setEventDate(df.format(record.getUpdateDate()));
       rd.setPortletName(ALEventlogUtils.getPortletAliasName(record
-          .getPortletType()));
+        .getPortletType()));
       rd.setEntityId(record.getEntityId().longValue());
       rd.setIpAddr(record.getIpAddr());
       rd.setEventName(ALEventlogUtils.getEventAliasName(record.getEventType()));
@@ -153,24 +156,26 @@ public class EventlogSelectData extends ALAbstractSelectData<EipTEventlog>
 
   /**
    * 詳細データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   public EipTEventlog selectDetail(RunData rundata, Context context) {
     return EventlogUtils.getEipTEventlog(rundata, context);
   }
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(EipTEventlog record) {
     try {
       DateFormat df = new SimpleDateFormat("yyyy年MM月dd日（EE）HH時mm分ss秒");
@@ -179,17 +184,17 @@ public class EventlogSelectData extends ALAbstractSelectData<EipTEventlog>
       rd.initField();
       rd.setEventlogId(record.getEventlogId().longValue());
       rd.setUserFullName(ALEipUtils.getUserFullName(record.getTurbineUser()
-          .getUserId().intValue()));
+        .getUserId().intValue()));
       rd.setEventDate(df.format(record.getUpdateDate()));
       rd.setPortletName(ALEventlogUtils.getPortletAliasName(record
-          .getPortletType()));
+        .getPortletType()));
       rd.setEntityId(record.getEntityId().longValue());
       rd.setIpAddr(record.getIpAddr());
       rd.setEventName(ALEventlogUtils.getEventAliasName(record.getEventType()));
       rd.setNote(record.getNote());
       // 各ポートレットのデータ名を取得
-      String dataName = EventlogUtils.getPortletDataName(
-          record.getPortletType(), record.getEntityId());
+      String dataName = EventlogUtils.getPortletDataName(record
+        .getPortletType(), record.getEntityId());
       if (dataName != null && !"".equals(dataName)) {
         rd.setDataName(dataName);
         rd.setDataNameFlag(true);
@@ -210,7 +215,7 @@ public class EventlogSelectData extends ALAbstractSelectData<EipTEventlog>
 
   /**
    * イベントログの総数を返す． <BR>
-   *
+   * 
    * @return
    */
   public int getEventlogSum() {
@@ -221,11 +226,12 @@ public class EventlogSelectData extends ALAbstractSelectData<EipTEventlog>
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("event_date", EipTEventlog.EVENT_DATE_PROPERTY);
     map.putValue("user_name", EipTEventlog.TURBINE_USER_PROPERTY + "."
-        + TurbineUser.LAST_NAME_KANA_PROPERTY);
+      + TurbineUser.LAST_NAME_KANA_PROPERTY);
     map.putValue("portlet_id", EipTEventlog.PORTLET_TYPE_PROPERTY);
     map.putValue("event_type", EipTEventlog.EVENT_TYPE_PROPERTY);
     map.putValue("ip_addr", EipTEventlog.IP_ADDR_PROPERTY);
@@ -233,7 +239,7 @@ public class EventlogSelectData extends ALAbstractSelectData<EipTEventlog>
   }
 
   /**
-   *
+   * 
    * @param id
    * @return
    */

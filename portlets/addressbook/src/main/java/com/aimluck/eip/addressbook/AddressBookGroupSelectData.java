@@ -40,19 +40,20 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレス帳グループの検索データクラスです。
- *
+ * 
  */
 public class AddressBookGroupSelectData extends
-    ALAbstractSelectData<EipMAddressGroup> {
+    ALAbstractSelectData<EipMAddressGroup, EipMAddressGroup> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AddressBookGroupSelectData.class.getName());
+    .getLogger(AddressBookGroupSelectData.class.getName());
 
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
@@ -68,6 +69,7 @@ public class AddressBookGroupSelectData extends
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected List<EipMAddressGroup> selectList(RunData rundata, Context context) {
     try {
 
@@ -87,6 +89,7 @@ public class AddressBookGroupSelectData extends
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected EipMAddressGroup selectDetail(RunData rundata, Context context) {
     // オブジェクトモデルを取得
     return AddressBookUtils.getEipMAddressGroup(rundata, context);
@@ -95,6 +98,7 @@ public class AddressBookGroupSelectData extends
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(EipMAddressGroup record) {
     try {
       AddressBookGroupResultData rd = new AddressBookGroupResultData();
@@ -111,9 +115,10 @@ public class AddressBookGroupSelectData extends
 
   /**
    * 詳細データを取得します。
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(EipMAddressGroup obj) {
     return getResultData(obj);
   }
@@ -121,6 +126,7 @@ public class AddressBookGroupSelectData extends
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("group_name", EipMAddressGroup.GROUP_NAME_PROPERTY);
@@ -129,7 +135,7 @@ public class AddressBookGroupSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -137,11 +143,11 @@ public class AddressBookGroupSelectData extends
   private SelectQuery<EipMAddressGroup> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<EipMAddressGroup> query = new SelectQuery<EipMAddressGroup>(
-        EipMAddressGroup.class);
+      EipMAddressGroup.class);
 
     Expression exp = ExpressionFactory.matchExp(
-        EipMAddressGroup.OWNER_ID_PROPERTY,
-        Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      EipMAddressGroup.OWNER_ID_PROPERTY, Integer.valueOf(ALEipUtils
+        .getUserId(rundata)));
     query.setQualifier(exp);
 
     return buildSelectQueryForFilter(query, rundata, context);
@@ -154,9 +160,10 @@ public class AddressBookGroupSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_COMPANY_GROUP;
   }

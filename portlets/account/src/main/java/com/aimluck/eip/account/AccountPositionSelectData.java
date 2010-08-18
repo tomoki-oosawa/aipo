@@ -37,30 +37,31 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 役職の検索用データクラスです。
- *
+ * 
  */
 public class AccountPositionSelectData extends
-    ALAbstractSelectData<EipMPosition> {
+    ALAbstractSelectData<EipMPosition, EipMPosition> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AccountPositionSelectData.class.getName());
+    .getLogger(AccountPositionSelectData.class.getName());
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
-          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-              .getInitParameter("p1b-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
+        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
+          "p1b-sort"));
     }
 
     super.init(action, rundata, context);
@@ -73,6 +74,7 @@ public class AccountPositionSelectData extends
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected List<EipMPosition> selectList(RunData rundata, Context context) {
     try {
       SelectQuery<EipMPosition> query = getSelectQuery(rundata, context);
@@ -90,7 +92,7 @@ public class AccountPositionSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -107,6 +109,7 @@ public class AccountPositionSelectData extends
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected EipMPosition selectDetail(RunData rundata, Context context) {
     return AccountUtils.getEipMPosition(rundata, context);
   }
@@ -116,6 +119,7 @@ public class AccountPositionSelectData extends
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(EipMPosition record) {
     AccountPositionResultData rd = new AccountPositionResultData();
     rd.initField();
@@ -129,6 +133,7 @@ public class AccountPositionSelectData extends
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(EipMPosition record) {
     AccountPositionResultData rd = new AccountPositionResultData();
     rd.initField();
@@ -141,6 +146,7 @@ public class AccountPositionSelectData extends
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("position_name", EipMPosition.POSITION_NAME_PROPERTY);

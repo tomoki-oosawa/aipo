@@ -38,23 +38,24 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * WebPageの検索データを管理するクラスです。 <BR>
- *
+ * 
  */
-public class WebPageSelectData extends ALAbstractSelectData<VelocityPortlet>
-    implements ALData {
+public class WebPageSelectData extends
+    ALAbstractSelectData<VelocityPortlet, VelocityPortlet> implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WebPageSelectData.class.getName());
+    .getLogger(WebPageSelectData.class.getName());
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -62,13 +63,14 @@ public class WebPageSelectData extends ALAbstractSelectData<VelocityPortlet>
 
   /**
    * 一覧データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   public List<VelocityPortlet> selectList(RunData rundata, Context context) {
     try {
       return null;
@@ -80,11 +82,12 @@ public class WebPageSelectData extends ALAbstractSelectData<VelocityPortlet>
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(VelocityPortlet obj) {
     try {
       return null;
@@ -96,13 +99,14 @@ public class WebPageSelectData extends ALAbstractSelectData<VelocityPortlet>
 
   /**
    * 詳細データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   public VelocityPortlet selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException {
     try {
@@ -116,20 +120,21 @@ public class WebPageSelectData extends ALAbstractSelectData<VelocityPortlet>
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(VelocityPortlet portlet) {
     try {
       WebPageResultData rd = new WebPageResultData();
       rd.initField();
       String url = portlet.getPortletConfig().getInitParameter("p1a-url");
       int NormalHeight = Integer.parseInt(portlet.getPortletConfig()
-          .getInitParameter("p1b-normalheight"));
+        .getInitParameter("p1b-normalheight"));
       int MaximizedHeight = Integer.parseInt(portlet.getPortletConfig()
-          .getInitParameter("p1c-maximizedheight"));
+        .getInitParameter("p1c-maximizedheight"));
 
       if (url == null || url.toString() == "") {
         rd.setWebPageFlag(false);
@@ -156,6 +161,7 @@ public class WebPageSelectData extends ALAbstractSelectData<VelocityPortlet>
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     return null;
   }

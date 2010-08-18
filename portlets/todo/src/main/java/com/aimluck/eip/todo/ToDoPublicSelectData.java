@@ -57,7 +57,8 @@ import com.aimluck.eip.util.ALEipUtils;
 /**
  * 公開ToDoの検索データを管理するためのクラスです。 <br />
  */
-public class ToDoPublicSelectData extends ALAbstractSelectData<EipTTodo> {
+public class ToDoPublicSelectData extends
+    ALAbstractSelectData<EipTTodo, EipTTodo> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService

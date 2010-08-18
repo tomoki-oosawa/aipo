@@ -43,10 +43,10 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ブログテーマ検索データを管理するクラスです。 <BR>
- *
+ * 
  */
-public class BlogThemaSelectData extends ALAbstractSelectData<EipTBlogThema>
-    implements ALData {
+public class BlogThemaSelectData extends
+    ALAbstractSelectData<EipTBlogThema, EipTBlogThema> implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -56,13 +56,14 @@ public class BlogThemaSelectData extends ALAbstractSelectData<EipTBlogThema>
   private int themaSum;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
@@ -77,13 +78,14 @@ public class BlogThemaSelectData extends ALAbstractSelectData<EipTBlogThema>
 
   /**
    * 一覧データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected List<EipTBlogThema> selectList(RunData rundata, Context context) {
     try {
       SelectQuery<EipTBlogThema> query = getSelectQuery(rundata, context);
@@ -102,7 +104,7 @@ public class BlogThemaSelectData extends ALAbstractSelectData<EipTBlogThema>
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -121,13 +123,14 @@ public class BlogThemaSelectData extends ALAbstractSelectData<EipTBlogThema>
 
   /**
    * 詳細データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected EipTBlogThema selectDetail(RunData rundata, Context context) {
     // オブジェクトモデルを取得
     return BlogUtils.getEipTBlogThema(rundata, context);
@@ -135,11 +138,12 @@ public class BlogThemaSelectData extends ALAbstractSelectData<EipTBlogThema>
 
   /**
    * ResultDataを取得します。（一覧データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(EipTBlogThema record) {
     BlogThemaResultData rd = new BlogThemaResultData();
     rd.initField();
@@ -152,11 +156,12 @@ public class BlogThemaSelectData extends ALAbstractSelectData<EipTBlogThema>
 
   /**
    * ResultDataを取得します。（詳細データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(EipTBlogThema record) {
     BlogThemaResultData rd = new BlogThemaResultData();
     rd.initField();
@@ -177,6 +182,7 @@ public class BlogThemaSelectData extends ALAbstractSelectData<EipTBlogThema>
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("thema_name", EipTBlogThema.THEMA_NAME_PROPERTY);
@@ -190,9 +196,10 @@ public class BlogThemaSelectData extends ALAbstractSelectData<EipTBlogThema>
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_BLOG_THEME;
   }

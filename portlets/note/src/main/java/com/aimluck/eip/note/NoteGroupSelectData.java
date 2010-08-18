@@ -52,8 +52,8 @@ import com.aimluck.eip.util.ALEipUtils;
 /**
  * 伝言メモの送信先に指定できるグループの検索データを管理するためのクラスです。 <br />
  */
-public class NoteGroupSelectData extends ALAbstractSelectData<TurbineUser>
-    implements ALData {
+public class NoteGroupSelectData extends
+    ALAbstractSelectData<TurbineUser, TurbineUser> implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService

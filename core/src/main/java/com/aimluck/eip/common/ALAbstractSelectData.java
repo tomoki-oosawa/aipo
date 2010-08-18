@@ -44,7 +44,7 @@ import com.aimluck.eip.util.ALEipUtils;
  * 検索データを管理するための抽象クラスです。 <br />
  * 
  */
-public abstract class ALAbstractSelectData<M> implements ALData {
+public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /** logger */
   @SuppressWarnings("unused")
@@ -172,7 +172,7 @@ public abstract class ALAbstractSelectData<M> implements ALData {
       doCheckAclPermission(rundata, context,
         ALAccessControlConstants.VALUE_ACL_LIST);
       action.setMode(ALEipConstants.MODE_LIST);
-      List<M> aList = selectList(rundata, context);
+      List<M1> aList = selectList(rundata, context);
       if (aList != null) {
         list = new ArrayList<Object>();
         Object obj = null;
@@ -214,7 +214,7 @@ public abstract class ALAbstractSelectData<M> implements ALData {
       init(action, rundata, context);
       doCheckAclPermission(rundata, context,
         ALAccessControlConstants.VALUE_ACL_LIST);
-      List<M> aList = selectList(rundata, context);
+      List<M1> aList = selectList(rundata, context);
       if (aList != null) {
         list = new ArrayList<Object>();
         int size = aList.size();
@@ -249,7 +249,7 @@ public abstract class ALAbstractSelectData<M> implements ALData {
       doCheckAclPermission(rundata, context,
         ALAccessControlConstants.VALUE_ACL_DETAIL);
       action.setMode(ALEipConstants.MODE_DETAIL);
-      M obj = selectDetail(rundata, context);
+      M2 obj = selectDetail(rundata, context);
       if (obj != null) {
         data = getResultDataDetail(obj);
       }
@@ -274,7 +274,7 @@ public abstract class ALAbstractSelectData<M> implements ALData {
    * @param records
    *          検索結果
    */
-  protected void buildSelectQueryForListView(SelectQuery<M> query) {
+  protected void buildSelectQueryForListView(SelectQuery<M1> query) {
     query.pageSize(getRowsNum());
   }
 
@@ -284,8 +284,8 @@ public abstract class ALAbstractSelectData<M> implements ALData {
    * @param records
    *          検索結果
    */
-  protected List<M> buildPaginatedList(List<M> records) {
-    List<M> list = new ArrayList<M>();
+  protected List<M1> buildPaginatedList(List<M1> records) {
+    List<M1> list = new ArrayList<M1>();
 
     setPageParam(records.size());
 
@@ -321,8 +321,8 @@ public abstract class ALAbstractSelectData<M> implements ALData {
    * @param crt
    * @return
    */
-  protected SelectQuery<M> buildSelectQueryForListViewSort(
-      SelectQuery<M> query, RunData rundata, Context context) {
+  protected SelectQuery<M1> buildSelectQueryForListViewSort(
+      SelectQuery<M1> query, RunData rundata, Context context) {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     String sort_type = ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
     String crt_key = null;
@@ -355,7 +355,7 @@ public abstract class ALAbstractSelectData<M> implements ALData {
    * @param context
    * @return
    */
-  protected SelectQuery<M> buildSelectQueryForFilter(SelectQuery<M> query,
+  protected SelectQuery<M1> buildSelectQueryForFilter(SelectQuery<M1> query,
       RunData rundata, Context context) {
     String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
     String filter_type = ALEipUtils.getTemp(rundata, context,
@@ -501,7 +501,7 @@ public abstract class ALAbstractSelectData<M> implements ALData {
    * @param context
    * @return
    */
-  protected abstract List<M> selectList(RunData rundata, Context context)
+  protected abstract List<M1> selectList(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException;
 
   /**
@@ -511,7 +511,7 @@ public abstract class ALAbstractSelectData<M> implements ALData {
    * @param context
    * @return
    */
-  protected abstract M selectDetail(RunData rundata, Context context)
+  protected abstract M2 selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException;
 
   /**
@@ -520,7 +520,7 @@ public abstract class ALAbstractSelectData<M> implements ALData {
    * @param obj
    * @return
    */
-  protected abstract Object getResultData(M obj)
+  protected abstract Object getResultData(M1 obj)
       throws ALPageNotFoundException, ALDBErrorException;
 
   /**
@@ -529,7 +529,7 @@ public abstract class ALAbstractSelectData<M> implements ALData {
    * @param obj
    * @return
    */
-  protected abstract Object getResultDataDetail(M obj)
+  protected abstract Object getResultDataDetail(M2 obj)
       throws ALPageNotFoundException, ALDBErrorException;
 
   /**

@@ -56,7 +56,7 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class ScheduleWeeklySelectData extends
-    ALAbstractSelectData<EipTScheduleMap> {
+    ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> {
 
   /** <code>logger</code> logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -285,8 +285,8 @@ public class ScheduleWeeklySelectData extends
 
     // 自ユーザ
     Expression exp1 = ExpressionFactory.matchExp(
-      EipTScheduleMap.USER_ID_PROPERTY,
-      Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
+        .getUserId(rundata)));
     query.setQualifier(exp1);
     // ユーザのスケジュール
     Expression exp2 = ExpressionFactory.matchExp(EipTScheduleMap.TYPE_PROPERTY,

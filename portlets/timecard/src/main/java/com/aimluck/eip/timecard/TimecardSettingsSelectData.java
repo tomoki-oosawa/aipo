@@ -32,18 +32,21 @@ import com.aimluck.eip.timecard.util.TimecardUtils;
 
 /**
  * タイムカード集計の検索データを管理するためのクラスです。 <br />
- *
+ * 
  */
-public class TimecardSettingsSelectData extends ALAbstractSelectData<EipTTimecardSettings> {
+public class TimecardSettingsSelectData extends
+    ALAbstractSelectData<EipTTimecardSettings, EipTTimecardSettings> {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(TimecardSettingsSelectData.class.getName());
+    .getLogger(TimecardSettingsSelectData.class.getName());
 
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List<EipTTimecardSettings> selectList(RunData rundata, Context context) {
+  @Override
+  protected List<EipTTimecardSettings> selectList(RunData rundata,
+      Context context) {
     return null;
   }
 
@@ -51,6 +54,7 @@ public class TimecardSettingsSelectData extends ALAbstractSelectData<EipTTimecar
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected EipTTimecardSettings selectDetail(RunData rundata, Context context) {
     return TimecardUtils.getEipTTimecardSettings(rundata, context);
   }
@@ -58,6 +62,7 @@ public class TimecardSettingsSelectData extends ALAbstractSelectData<EipTTimecar
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(EipTTimecardSettings obj) {
     return null;
   }
@@ -65,13 +70,14 @@ public class TimecardSettingsSelectData extends ALAbstractSelectData<EipTTimecar
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(EipTTimecardSettings record) {
     try {
       TimecardSettingsResultData rd = new TimecardSettingsResultData();
       rd.initField();
       rd.setTimecardSettingsId(record.getTimecardSettingsId().intValue());
       rd.setStartTime(record.getStartHour() + "時" + record.getStartMinute()
-          + "分");
+        + "分");
       rd.setEndTime(record.getEndHour() + "時" + record.getEndMinute() + "分");
       rd.setWorktimeIn(record.getWorktimeIn().intValue());
       rd.setWorktimeOut(record.getWorktimeOut().intValue());
@@ -89,6 +95,7 @@ public class TimecardSettingsSelectData extends ALAbstractSelectData<EipTTimecar
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     return null;
   }

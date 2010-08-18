@@ -38,7 +38,8 @@ import com.aimluck.eip.system.util.SystemUtils;
 /**
  *
  */
-public class SystemNetworkSelectData extends ALAbstractSelectData<EipMCompany> {
+public class SystemNetworkSelectData extends
+    ALAbstractSelectData<EipMCompany, EipMCompany> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService

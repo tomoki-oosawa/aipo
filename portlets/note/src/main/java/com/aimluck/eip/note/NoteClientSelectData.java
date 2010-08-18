@@ -42,8 +42,8 @@ import com.aimluck.eip.util.ALEipUtils;
 /**
  * 伝言メモ依頼者検索データを管理するためのクラスです。 <br />
  */
-public class NoteClientSelectData extends ALAbstractSelectData<EipTNoteMap>
-    implements ALData {
+public class NoteClientSelectData extends
+    ALAbstractSelectData<EipTNoteMap, EipTNoteMap> implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService

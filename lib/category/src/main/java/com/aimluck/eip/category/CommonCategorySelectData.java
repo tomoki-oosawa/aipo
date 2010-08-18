@@ -46,7 +46,8 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class CommonCategorySelectData extends
-    ALAbstractSelectData<EipTCommonCategory> implements ALData {
+    ALAbstractSelectData<EipTCommonCategory, EipTCommonCategory> implements
+    ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService

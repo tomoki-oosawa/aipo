@@ -44,14 +44,14 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレス帳での検索BOX用データです。
- *
+ * 
  */
 public class AddressBookCompanyWordSelectData extends
-    ALAbstractSelectData<EipMAddressbookCompany> {
+    ALAbstractSelectData<EipMAddressbookCompany, EipMAddressbookCompany> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AddressBookCompanyWordSelectData.class.getName());
+    .getLogger(AddressBookCompanyWordSelectData.class.getName());
 
   /** 検索ワード */
   private ALStringField searchWord;
@@ -60,6 +60,7 @@ public class AddressBookCompanyWordSelectData extends
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
@@ -72,18 +73,19 @@ public class AddressBookCompanyWordSelectData extends
   }
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected List<EipMAddressbookCompany> selectList(RunData rundata,
       Context context) {
 
     // ページャからきた場合に検索ワードをセッションへ格納する
     if (!rundata.getParameters().containsKey(ALEipConstants.LIST_START)
-        && !rundata.getParameters().containsKey(ALEipConstants.LIST_SORT)) {
+      && !rundata.getParameters().containsKey(ALEipConstants.LIST_SORT)) {
       ALEipUtils.setTemp(rundata, context, "AddressBooksCompanyword", rundata
-          .getParameters().getString("sword"));
+        .getParameters().getString("sword"));
     }
 
     // 検索ワードの設定
@@ -92,12 +94,12 @@ public class AddressBookCompanyWordSelectData extends
     // セッションから値を取得する。
     // 検索ワード未指定時は空文字が入力される
     searchWord.setValue(ALEipUtils.getTemp(rundata, context,
-        "AddressBooksCompanyword"));
+      "AddressBooksCompanyword"));
 
     try {
 
       SelectQuery<EipMAddressbookCompany> query = getSelectQuery(rundata,
-          context);
+        context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
@@ -111,10 +113,11 @@ public class AddressBookCompanyWordSelectData extends
 
   /**
    * 未使用。
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected EipMAddressbookCompany selectDetail(RunData rundata, Context context) {
     return null;
   }
@@ -122,19 +125,20 @@ public class AddressBookCompanyWordSelectData extends
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(EipMAddressbookCompany record) {
     try {
       AddressBookCompanyResultData rd = new AddressBookCompanyResultData();
       rd.initField();
       rd.setCompanyId(record.getCompanyId().intValue());
       rd.setCompanyName(ALCommonUtils.compressString(record.getCompanyName(),
-          getStrLength()));
+        getStrLength()));
       rd.setCompanyNameKana(record.getCompanyNameKana());
       rd.setPostName(ALCommonUtils.compressString(record.getPostName(),
-          getStrLength()));
+        getStrLength()));
       rd.setZipcode(record.getZipcode());
       rd.setAddress(ALCommonUtils.compressString(record.getAddress(),
-          getStrLength()));
+        getStrLength()));
       rd.setTelephone(record.getTelephone());
       rd.setFaxNumber(record.getFaxNumber());
       rd.setUrl(record.getUrl());
@@ -147,9 +151,10 @@ public class AddressBookCompanyWordSelectData extends
 
   /**
    * 未使用。
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(EipMAddressbookCompany obj) {
     return null;
   }
@@ -157,16 +162,17 @@ public class AddressBookCompanyWordSelectData extends
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("company_name_kana",
-        EipMAddressbookCompany.COMPANY_NAME_KANA_PROPERTY);
+      EipMAddressbookCompany.COMPANY_NAME_KANA_PROPERTY);
     return map;
   }
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -174,66 +180,65 @@ public class AddressBookCompanyWordSelectData extends
   private SelectQuery<EipMAddressbookCompany> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<EipMAddressbookCompany> query = new SelectQuery<EipMAddressbookCompany>(
-        EipMAddressbookCompany.class);
+      EipMAddressbookCompany.class);
 
     //
     // Expression exp01 = ExpressionFactory.noMatchExp(
     // EipMAddressbookCompany.CREATE_USER_ID_PROPERTY, Integer.valueOf(1));
     Expression exp02 = ExpressionFactory.noMatchExp(
-        EipMAddressbookCompany.COMPANY_NAME_PROPERTY,
-        AddressBookUtils.EMPTY_COMPANY_NAME);
+      EipMAddressbookCompany.COMPANY_NAME_PROPERTY,
+      AddressBookUtils.EMPTY_COMPANY_NAME);
     query.setQualifier(exp02);
 
     String word = searchWord.getValue();
     String transWord = ALStringUtil.convertHiragana2Katakana(ALStringUtil
-        .convertH2ZKana(searchWord.getValue()));
+      .convertH2ZKana(searchWord.getValue()));
 
     Expression exp11 = ExpressionFactory.likeExp(
-        EipMAddressbookCompany.COMPANY_NAME_PROPERTY, "%" + word + "%");
+      EipMAddressbookCompany.COMPANY_NAME_PROPERTY, "%" + word + "%");
     Expression exp12 = ExpressionFactory.likeExp(
-        EipMAddressbookCompany.COMPANY_NAME_KANA_PROPERTY, "%" + word + "%");
+      EipMAddressbookCompany.COMPANY_NAME_KANA_PROPERTY, "%" + word + "%");
     Expression exp13 = ExpressionFactory.likeExp(
-        EipMAddressbookCompany.POST_NAME_PROPERTY, "%" + word + "%");
+      EipMAddressbookCompany.POST_NAME_PROPERTY, "%" + word + "%");
     Expression exp14 = ExpressionFactory.likeExp(
-        EipMAddressbookCompany.ZIPCODE_PROPERTY, "%" + word + "%");
+      EipMAddressbookCompany.ZIPCODE_PROPERTY, "%" + word + "%");
     Expression exp15 = ExpressionFactory.likeExp(
-        EipMAddressbookCompany.ADDRESS_PROPERTY, "%" + word + "%");
+      EipMAddressbookCompany.ADDRESS_PROPERTY, "%" + word + "%");
     Expression exp16 = ExpressionFactory.likeExp(
-        EipMAddressbookCompany.TELEPHONE_PROPERTY, "%" + word + "%");
+      EipMAddressbookCompany.TELEPHONE_PROPERTY, "%" + word + "%");
     Expression exp17 = ExpressionFactory.likeExp(
-        EipMAddressbookCompany.FAX_NUMBER_PROPERTY, "%" + word + "%");
+      EipMAddressbookCompany.FAX_NUMBER_PROPERTY, "%" + word + "%");
     Expression exp18 = ExpressionFactory.likeExp(
-        EipMAddressbookCompany.URL_PROPERTY, "%" + word + "%");
+      EipMAddressbookCompany.URL_PROPERTY, "%" + word + "%");
 
     Expression exp21 = ExpressionFactory.likeExp(
-        EipMAddressbookCompany.COMPANY_NAME_PROPERTY, "%" + transWord + "%");
+      EipMAddressbookCompany.COMPANY_NAME_PROPERTY, "%" + transWord + "%");
     Expression exp22 = ExpressionFactory.likeExp(
-        EipMAddressbookCompany.COMPANY_NAME_KANA_PROPERTY, "%" + transWord
-            + "%");
+      EipMAddressbookCompany.COMPANY_NAME_KANA_PROPERTY, "%" + transWord + "%");
     Expression exp23 = ExpressionFactory.likeExp(
-        EipMAddressbookCompany.POST_NAME_PROPERTY, "%" + transWord + "%");
+      EipMAddressbookCompany.POST_NAME_PROPERTY, "%" + transWord + "%");
     Expression exp24 = ExpressionFactory.likeExp(
-        EipMAddressbookCompany.ZIPCODE_PROPERTY, "%" + transWord + "%");
+      EipMAddressbookCompany.ZIPCODE_PROPERTY, "%" + transWord + "%");
     Expression exp25 = ExpressionFactory.likeExp(
-        EipMAddressbookCompany.ADDRESS_PROPERTY, "%" + transWord + "%");
+      EipMAddressbookCompany.ADDRESS_PROPERTY, "%" + transWord + "%");
     Expression exp26 = ExpressionFactory.likeExp(
-        EipMAddressbookCompany.TELEPHONE_PROPERTY, "%" + transWord + "%");
+      EipMAddressbookCompany.TELEPHONE_PROPERTY, "%" + transWord + "%");
     Expression exp27 = ExpressionFactory.likeExp(
-        EipMAddressbookCompany.FAX_NUMBER_PROPERTY, "%" + transWord + "%");
+      EipMAddressbookCompany.FAX_NUMBER_PROPERTY, "%" + transWord + "%");
     Expression exp28 = ExpressionFactory.likeExp(
-        EipMAddressbookCompany.URL_PROPERTY, "%" + transWord + "%");
+      EipMAddressbookCompany.URL_PROPERTY, "%" + transWord + "%");
 
     query.andQualifier(exp11.orExp(exp12).orExp(exp13).orExp(exp14)
-        .orExp(exp15).orExp(exp16).orExp(exp17).orExp(exp18).orExp(exp21)
-        .orExp(exp22).orExp(exp23).orExp(exp24).orExp(exp25).orExp(exp26)
-        .orExp(exp27).orExp(exp28));
+      .orExp(exp15).orExp(exp16).orExp(exp17).orExp(exp18).orExp(exp21).orExp(
+        exp22).orExp(exp23).orExp(exp24).orExp(exp25).orExp(exp26).orExp(exp27)
+      .orExp(exp28));
 
     return query;
   }
 
   /**
    * 検索ワードを取得します。
-   *
+   * 
    * @return
    */
   public ALStringField getSearchWord() {
@@ -243,9 +248,10 @@ public class AddressBookCompanyWordSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_COMPANY;
   }

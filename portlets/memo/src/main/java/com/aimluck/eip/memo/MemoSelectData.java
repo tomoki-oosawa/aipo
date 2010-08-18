@@ -45,8 +45,8 @@ import com.aimluck.eip.util.ALEipUtils;
  * メモ帳の検索データを管理するクラスです。 <BR>
  * 
  */
-public class MemoSelectData extends ALAbstractSelectData<EipTMemo> implements
-    ALData {
+public class MemoSelectData extends ALAbstractSelectData<EipTMemo, EipTMemo>
+    implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService

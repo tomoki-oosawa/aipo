@@ -48,7 +48,7 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class ToDoCategorySelectData extends
-    ALAbstractSelectData<EipTTodoCategory> implements ALData {
+    ALAbstractSelectData<EipTTodoCategory, EipTTodoCategory> implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService

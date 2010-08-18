@@ -47,14 +47,15 @@ import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフロー検索データを管理するクラスです。 <BR>
- *
+ * 
  */
 public class WorkflowAllSelectData extends
-    ALAbstractSelectData<EipTWorkflowRequest> implements ALData {
+    ALAbstractSelectData<EipTWorkflowRequest, EipTWorkflowRequest> implements
+    ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowAllSelectData.class.getName());
+    .getLogger(WorkflowAllSelectData.class.getName());
 
   //
   /** サブメニュー（作成分）のタブ（未完了） */
@@ -84,28 +85,29 @@ public class WorkflowAllSelectData extends
   private ALNumberField previous_id;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     String sorttype = ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
-          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-              .getInitParameter("p2a-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
+        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
+          "p2a-sort"));
     }
 
     if ("create_date".equals(ALEipUtils
-        .getTemp(rundata, context, LIST_SORT_STR))
-        && (sorttype == null || "".equals(sorttype))) {
+      .getTemp(rundata, context, LIST_SORT_STR))
+      && (sorttype == null || "".equals(sorttype))) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR,
-          ALEipConstants.LIST_SORT_TYPE_DESC);
+        ALEipConstants.LIST_SORT_TYPE_DESC);
     }
 
     String tabParam = rundata.getParameters().getString("alltab");
@@ -123,7 +125,7 @@ public class WorkflowAllSelectData extends
     super.init(action, rundata, context);
 
     String entityId_Str = rundata.getParameters().getString(
-        ALEipConstants.ENTITY_ID);
+      ALEipConstants.ENTITY_ID);
     if (entityId_Str == null || "".equals(entityId_Str)) {
       aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_OTHER;
     } else {
@@ -148,7 +150,7 @@ public class WorkflowAllSelectData extends
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -157,7 +159,7 @@ public class WorkflowAllSelectData extends
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -167,13 +169,14 @@ public class WorkflowAllSelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   public List<EipTWorkflowRequest> selectList(RunData rundata, Context context) {
     try {
 
@@ -193,7 +196,7 @@ public class WorkflowAllSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -201,16 +204,16 @@ public class WorkflowAllSelectData extends
   private SelectQuery<EipTWorkflowRequest> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<EipTWorkflowRequest> query = new SelectQuery<EipTWorkflowRequest>(
-        EipTWorkflowRequest.class);
+      EipTWorkflowRequest.class);
 
     if (TAB_UNFINISHED.equals(currentTab)) {
-      Expression exp1 = ExpressionFactory.noMatchExp(
-          EipTWorkflowRequest.PROGRESS_PROPERTY,
+      Expression exp1 = ExpressionFactory
+        .noMatchExp(EipTWorkflowRequest.PROGRESS_PROPERTY,
           WorkflowUtils.DB_PROGRESS_ACCEPT);
       query.setQualifier(exp1);
     } else if (TAB_FINISHED.equals(currentTab)) {
-      Expression exp1 = ExpressionFactory.matchExp(
-          EipTWorkflowRequest.PROGRESS_PROPERTY,
+      Expression exp1 = ExpressionFactory
+        .matchExp(EipTWorkflowRequest.PROGRESS_PROPERTY,
           WorkflowUtils.DB_PROGRESS_ACCEPT);
       query.setQualifier(exp1);
     }
@@ -220,27 +223,28 @@ public class WorkflowAllSelectData extends
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(EipTWorkflowRequest record) {
     try {
       WorkflowResultData rd = new WorkflowResultData();
       rd.initField();
       rd.setRequestId(record.getRequestId().intValue());
       rd.setCategoryId(record.getEipTWorkflowCategory().getCategoryId()
-          .longValue());
+        .longValue());
       rd.setCategoryName(ALCommonUtils.compressString(record
-          .getEipTWorkflowCategory().getCategoryName(), getStrLength()));
+        .getEipTWorkflowCategory().getCategoryName(), getStrLength()));
       rd.setRequestName(ALCommonUtils.compressString(record.getRequestName(),
-          getStrLength()));
+        getStrLength()));
       rd.setPriority(record.getPriority().intValue());
       rd.setPriorityImage(WorkflowUtils.getPriorityImage(record.getPriority()
-          .intValue()));
+        .intValue()));
       rd.setPriorityString(WorkflowUtils.getPriorityString(record.getPriority()
-          .intValue()));
+        .intValue()));
       rd.setProgress(record.getProgress());
       rd.setPrice(record.getPrice().longValue());
 
@@ -262,7 +266,7 @@ public class WorkflowAllSelectData extends
           if (WorkflowUtils.DB_STATUS_CONFIRM.equals(map.getStatus())) {
             // 最終閲覧者を取得する
             ALEipUser user = ALEipUtils
-                .getALEipUser(map.getUserId().intValue());
+              .getALEipUser(map.getUserId().intValue());
             lastUpdateUser = user.getAliasName().getValue();
             order = map.getOrderIndex().intValue() - 1;
             break;
@@ -274,7 +278,7 @@ public class WorkflowAllSelectData extends
 
       rd.setLastUpdateUser(lastUpdateUser);
       rd.setCreateDate(WorkflowUtils.translateDate(record.getCreateDate(),
-          "yyyy年M月d日H時m分"));
+        "yyyy年M月d日H時m分"));
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -284,9 +288,9 @@ public class WorkflowAllSelectData extends
 
   private int getUserId(RunData rundata, Context context, Integer entityId) {
     Expression exp = ExpressionFactory.matchDbExp(
-        EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, entityId);
+      EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, entityId);
     SelectQuery<EipTWorkflowRequest> query = new SelectQuery<EipTWorkflowRequest>(
-        EipTWorkflowRequest.class, exp);
+      EipTWorkflowRequest.class, exp);
     List<?> record = query.perform();
     if (record.size() > 0) {
       return ((EipTWorkflowRequest) record.get(0)).getUserId().intValue();
@@ -297,30 +301,32 @@ public class WorkflowAllSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   public EipTWorkflowRequest selectDetail(RunData rundata, Context context) {
     return WorkflowUtils.getEipTWorkflowRequestAll(rundata, context);
   }
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(EipTWorkflowRequest obj) {
     return WorkflowUtils.getResultDataDetail(obj, login_user);
   }
 
   /**
-   *
+   * 
    * @return
    */
   public List<WorkflowCategoryResultData> getCategoryList() {
@@ -333,7 +339,7 @@ public class WorkflowAllSelectData extends
 
   /**
    * 現在選択されているタブを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public String getCurrentTab() {
@@ -342,7 +348,7 @@ public class WorkflowAllSelectData extends
 
   /**
    * リクエストの総数を返す． <BR>
-   *
+   * 
    * @return
    */
   public int getRequestSum() {
@@ -353,6 +359,7 @@ public class WorkflowAllSelectData extends
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("request_name", EipTWorkflowRequest.REQUEST_NAME_PROPERTY);
@@ -370,7 +377,7 @@ public class WorkflowAllSelectData extends
   }
 
   /**
-   *
+   * 
    * @param id
    * @return
    */
@@ -385,9 +392,10 @@ public class WorkflowAllSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return aclPortletFeature;
   }
@@ -395,7 +403,7 @@ public class WorkflowAllSelectData extends
   /**
    * アクセス権限用メソッド。<br />
    * アクセス権限の有無を返します。
-   *
+   * 
    * @return
    */
   public boolean hasAuthorityOther() {

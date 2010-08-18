@@ -41,14 +41,15 @@ import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフローカテゴリ検索データを管理するクラスです。 <BR>
- *
+ * 
  */
 public class WorkflowCategorySelectData extends
-    ALAbstractSelectData<EipTWorkflowCategory> implements ALData {
+    ALAbstractSelectData<EipTWorkflowCategory, EipTWorkflowCategory> implements
+    ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowCategorySelectData.class.getName());
+    .getLogger(WorkflowCategorySelectData.class.getName());
 
   /** カテゴリの総数 */
   private int categorySum;
@@ -57,41 +58,43 @@ public class WorkflowCategorySelectData extends
   private List<WorkflowRouteResultData> routeList;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     String sorttype = ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
-          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-              .getInitParameter("p2a-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
+        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
+          "p2a-sort"));
     }
 
     if ("create_date".equals(ALEipUtils
-        .getTemp(rundata, context, LIST_SORT_STR))
-        && (sorttype == null || "".equals(sorttype))) {
+      .getTemp(rundata, context, LIST_SORT_STR))
+      && (sorttype == null || "".equals(sorttype))) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR,
-          ALEipConstants.LIST_SORT_TYPE_DESC);
+        ALEipConstants.LIST_SORT_TYPE_DESC);
     }
     super.init(action, rundata, context);
   }
 
   /**
    * 一覧データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected List<EipTWorkflowCategory> selectList(RunData rundata,
       Context context) {
     try {
@@ -112,7 +115,7 @@ public class WorkflowCategorySelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -120,20 +123,21 @@ public class WorkflowCategorySelectData extends
   private SelectQuery<EipTWorkflowCategory> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<EipTWorkflowCategory> query = new SelectQuery<EipTWorkflowCategory>(
-        EipTWorkflowCategory.class);
+      EipTWorkflowCategory.class);
 
     return query;
   }
 
   /**
    * 詳細データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected EipTWorkflowCategory selectDetail(RunData rundata, Context context) {
     // オブジェクトモデルを取得
     return WorkflowUtils.getEipTWorkflowCategory(rundata, context);
@@ -141,27 +145,29 @@ public class WorkflowCategorySelectData extends
 
   /**
    * ResultDataを取得します。（一覧データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(EipTWorkflowCategory record) {
     WorkflowCategoryResultData rd = new WorkflowCategoryResultData();
     rd.initField();
     rd.setCategoryId(record.getCategoryId().longValue());
     rd.setCategoryName(ALCommonUtils.compressString(record.getCategoryName(),
-        getStrLength()));
+      getStrLength()));
     return rd;
   }
 
   /**
    * ResultDataを取得します。（詳細データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(EipTWorkflowCategory record) {
     WorkflowCategoryDetailResultData rd = new WorkflowCategoryDetailResultData();
     rd.initField();
@@ -182,6 +188,7 @@ public class WorkflowCategorySelectData extends
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("category_name", EipTWorkflowCategory.CATEGORY_NAME_PROPERTY);
@@ -193,7 +200,7 @@ public class WorkflowCategorySelectData extends
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    */

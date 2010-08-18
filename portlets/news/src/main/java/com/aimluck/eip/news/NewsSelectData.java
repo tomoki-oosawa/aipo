@@ -38,17 +38,19 @@ import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
  */
-public class NewsSelectData extends ALAbstractSelectData<AipoLicense> {
+public class NewsSelectData extends
+    ALAbstractSelectData<AipoLicense, AipoLicense> {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(NewsSelectData.class.getName());
+    .getLogger(NewsSelectData.class.getName());
 
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected List<AipoLicense> selectList(RunData rundata, Context context) {
     return null;
   }
@@ -57,6 +59,7 @@ public class NewsSelectData extends ALAbstractSelectData<AipoLicense> {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected AipoLicense selectDetail(RunData rundata, Context context) {
     // ライセンス
     AipoLicense al = LicenseUtils.getAipoLicense(rundata, context);
@@ -65,7 +68,7 @@ public class NewsSelectData extends ALAbstractSelectData<AipoLicense> {
     SelectQuery query = new SelectQuery(TurbineUser.class);
     DataContext datacontext = DatabaseOrmService.getInstance().getDataContext();
     Expression exp = ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY,
-        "F");
+      "F");
     query.setQualifier(exp);
 
     List<?> list = datacontext.performQuery(query);
@@ -78,6 +81,7 @@ public class NewsSelectData extends ALAbstractSelectData<AipoLicense> {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(AipoLicense obj) {
     return null;
   }
@@ -85,6 +89,7 @@ public class NewsSelectData extends ALAbstractSelectData<AipoLicense> {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(AipoLicense obj) {
     return obj.getLicense();
   }
@@ -92,6 +97,7 @@ public class NewsSelectData extends ALAbstractSelectData<AipoLicense> {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     return null;
   }

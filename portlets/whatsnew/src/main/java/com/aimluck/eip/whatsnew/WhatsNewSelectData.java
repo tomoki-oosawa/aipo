@@ -44,15 +44,16 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
  * 新着情報の検索データを管理するクラスです。 <BR>
- *
+ * 
  */
 
-public class WhatsNewSelectData extends ALAbstractSelectData<WhatsNewContainer>
-    implements ALData {
+public class WhatsNewSelectData extends
+    ALAbstractSelectData<WhatsNewContainer, WhatsNewContainer> implements
+    ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WhatsNewSelectData.class.getName());
+    .getLogger(WhatsNewSelectData.class.getName());
 
   /** ログインユーザーID */
   private int uid;
@@ -66,6 +67,7 @@ public class WhatsNewSelectData extends ALAbstractSelectData<WhatsNewContainer>
   /**
    *
    */
+  @Override
   public void initField() {
     viewSpan = 0;
     viewNum = 100;
@@ -76,13 +78,14 @@ public class WhatsNewSelectData extends ALAbstractSelectData<WhatsNewContainer>
   public List<Integer> parentIds;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     uid = ALEipUtils.getUserId(rundata);
@@ -92,12 +95,12 @@ public class WhatsNewSelectData extends ALAbstractSelectData<WhatsNewContainer>
 
     /** 既読判定の指定 */
     Expression exp1 = ExpressionFactory.matchExp(
-        EipTWhatsNew.PARENT_ID_PROPERTY, Integer.valueOf(0));
+      EipTWhatsNew.PARENT_ID_PROPERTY, Integer.valueOf(0));
     query.setQualifier(exp1.notExp());
 
     /** 自分の既読の指定 */
     Expression exp2 = ExpressionFactory.matchExp(EipTWhatsNew.USER_ID_PROPERTY,
-        Integer.valueOf(uid));
+      Integer.valueOf(uid));
 
     query.andQualifier(exp2);
     @SuppressWarnings("unchecked")
@@ -110,34 +113,35 @@ public class WhatsNewSelectData extends ALAbstractSelectData<WhatsNewContainer>
 
   /**
    * 一覧データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   public List<WhatsNewContainer> selectList(RunData rundata, Context context) {
     try {
       /** 31日以上たった新着情報を削除する */
       WhatsNewUtils.removeMonthOverWhatsNew();
 
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
 
       List<WhatsNewContainer> list = new ArrayList<WhatsNewContainer>();
       list.add(getContainerPublic(rundata, context, dataContext,
-          WhatsNewUtils.WHATS_NEW_TYPE_BLOG_ENTRY));
+        WhatsNewUtils.WHATS_NEW_TYPE_BLOG_ENTRY));
       list.add(getContainer(rundata, context, dataContext,
-          WhatsNewUtils.WHATS_NEW_TYPE_BLOG_COMMENT));
+        WhatsNewUtils.WHATS_NEW_TYPE_BLOG_COMMENT));
       list.add(getContainerBoth(rundata, context, dataContext,
-          WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC));
+        WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC));
       list.add(getContainer(rundata, context, dataContext,
-          WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE));
+        WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE));
       list.add(getContainer(rundata, context, dataContext,
-          WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST));
+        WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST));
       list.add(getContainer(rundata, context, dataContext,
-          WhatsNewUtils.WHATS_NEW_TYPE_NOTE));
+        WhatsNewUtils.WHATS_NEW_TYPE_NOTE));
 
       return list;
     } catch (Exception ex) {
@@ -152,13 +156,13 @@ public class WhatsNewSelectData extends ALAbstractSelectData<WhatsNewContainer>
     WhatsNewContainer con = new WhatsNewContainer();
     SelectQuery query = new SelectQuery(EipTWhatsNew.class);
     Expression exp = ExpressionFactory.matchExp(EipTWhatsNew.USER_ID_PROPERTY,
-        Integer.valueOf(uid));
+      Integer.valueOf(uid));
     query.setQualifier(exp);
     Expression exp2 = ExpressionFactory.matchExp(
-        EipTWhatsNew.PORTLET_TYPE_PROPERTY, Integer.valueOf(type));
+      EipTWhatsNew.PORTLET_TYPE_PROPERTY, Integer.valueOf(type));
     query.andQualifier(exp2);
     Expression exp3 = ExpressionFactory.matchExp(
-        EipTWhatsNew.PARENT_ID_PROPERTY, Integer.valueOf("-1"));
+      EipTWhatsNew.PARENT_ID_PROPERTY, Integer.valueOf("-1"));
     query.andQualifier(exp3);
 
     /** 表示期限の条件を追加する */
@@ -180,7 +184,7 @@ public class WhatsNewSelectData extends ALAbstractSelectData<WhatsNewContainer>
 
     /** blogのtypeを指定 */
     Expression exp1 = ExpressionFactory.matchExp(
-        EipTWhatsNew.PORTLET_TYPE_PROPERTY, type);
+      EipTWhatsNew.PORTLET_TYPE_PROPERTY, type);
     query.setQualifier(exp1);
 
     /** 既読済みのレコード外し */
@@ -192,7 +196,7 @@ public class WhatsNewSelectData extends ALAbstractSelectData<WhatsNewContainer>
 
     /** 記事（parent_id = 0）の指定 */
     Expression exp3 = ExpressionFactory.matchExp(
-        EipTWhatsNew.PARENT_ID_PROPERTY, Integer.valueOf(0));
+      EipTWhatsNew.PARENT_ID_PROPERTY, Integer.valueOf(0));
     query.andQualifier(exp3);
 
     /** 表示期限の条件を追加する */
@@ -229,15 +233,15 @@ public class WhatsNewSelectData extends ALAbstractSelectData<WhatsNewContainer>
     WhatsNewContainer con = new WhatsNewContainer();
     SelectQuery query = new SelectQuery(EipTWhatsNew.class);
     Expression exp1 = ExpressionFactory.matchExp(
-        EipTWhatsNew.PORTLET_TYPE_PROPERTY, type);
+      EipTWhatsNew.PORTLET_TYPE_PROPERTY, type);
     query.setQualifier(exp1);
     if (parentIds != null && parentIds.size() > 0) {
       Expression exp2 = ExpressionFactory.inDbExp(
-          EipTWhatsNew.WHATSNEW_ID_PK_COLUMN, parentIds);
+        EipTWhatsNew.WHATSNEW_ID_PK_COLUMN, parentIds);
       query.andQualifier(exp2.notExp());
     }
     Expression exp3 = ExpressionFactory.matchExp(
-        EipTWhatsNew.PARENT_ID_PROPERTY, Integer.valueOf(0));
+      EipTWhatsNew.PARENT_ID_PROPERTY, Integer.valueOf(0));
     query.andQualifier(exp3);
     query.addOrdering(EipTWhatsNew.UPDATE_DATE_PROPERTY, false);
 
@@ -246,13 +250,13 @@ public class WhatsNewSelectData extends ALAbstractSelectData<WhatsNewContainer>
 
     query = new SelectQuery(EipTWhatsNew.class);
     Expression exp = ExpressionFactory.matchExp(EipTWhatsNew.USER_ID_PROPERTY,
-        Integer.valueOf(uid));
+      Integer.valueOf(uid));
     query.setQualifier(exp);
     Expression exp4 = ExpressionFactory.matchExp(
-        EipTWhatsNew.PORTLET_TYPE_PROPERTY, Integer.valueOf(type));
+      EipTWhatsNew.PORTLET_TYPE_PROPERTY, Integer.valueOf(type));
     query.andQualifier(exp4);
     Expression exp5 = ExpressionFactory.matchExp(
-        EipTWhatsNew.PARENT_ID_PROPERTY, Integer.valueOf("-1"));
+      EipTWhatsNew.PARENT_ID_PROPERTY, Integer.valueOf("-1"));
     query.andQualifier(exp5);
     query.addOrdering(EipTWhatsNew.UPDATE_DATE_PROPERTY, false);
     @SuppressWarnings("unchecked")
@@ -267,40 +271,43 @@ public class WhatsNewSelectData extends ALAbstractSelectData<WhatsNewContainer>
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
 
+  @Override
   protected Object getResultData(WhatsNewContainer record) {
 
     WhatsNewResultData rd = WhatsNewUtils.setupWhatsNewResultData(record, uid,
-        viewNum, viewSpan);
+      viewNum, viewSpan);
 
     return rd;
   }
 
   /**
    * 詳細データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   public WhatsNewContainer selectDetail(RunData rundata, Context context) {
     return null;
   }
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(WhatsNewContainer obj) {
     return null;
   }
@@ -309,6 +316,7 @@ public class WhatsNewSelectData extends ALAbstractSelectData<WhatsNewContainer>
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     // map.putValue("whatsnew_name", EipTWhatsNew.TODO_NAME_PROPERTY);
@@ -324,7 +332,7 @@ public class WhatsNewSelectData extends ALAbstractSelectData<WhatsNewContainer>
   }
 
   /**
-   *
+   * 
    * @param i
    */
   public void setViewSpan(int i) {
@@ -332,7 +340,7 @@ public class WhatsNewSelectData extends ALAbstractSelectData<WhatsNewContainer>
   }
 
   /**
-   *
+   * 
    * @param i
    */
   public void setViewNum(int i) {
@@ -341,7 +349,7 @@ public class WhatsNewSelectData extends ALAbstractSelectData<WhatsNewContainer>
 
   /**
    * @return SelectQuery
-   *
+   * 
    */
   private SelectQuery addSpanCriteria(SelectQuery query) {
 
@@ -362,7 +370,7 @@ public class WhatsNewSelectData extends ALAbstractSelectData<WhatsNewContainer>
       cal.set(Calendar.MILLISECOND, 0);
 
       Expression exp = ExpressionFactory.greaterOrEqualExp(
-          EipTWhatsNew.UPDATE_DATE_PROPERTY, cal.getTime());
+        EipTWhatsNew.UPDATE_DATE_PROPERTY, cal.getTime());
       query.andQualifier(exp);
     }
 
@@ -370,7 +378,7 @@ public class WhatsNewSelectData extends ALAbstractSelectData<WhatsNewContainer>
   }
 
   /**
-   *
+   * 
    * @param query
    * @return SelectQuery
    */

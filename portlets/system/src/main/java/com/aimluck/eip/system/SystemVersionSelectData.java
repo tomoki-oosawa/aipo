@@ -32,7 +32,8 @@ import com.aimluck.eip.common.ALAbstractSelectData;
 /**
  *
  */
-public class SystemVersionSelectData extends ALAbstractSelectData<String> {
+public class SystemVersionSelectData extends
+    ALAbstractSelectData<String, String> {
 
   /** logger */
   @SuppressWarnings("unused")

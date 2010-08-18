@@ -57,10 +57,11 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 掲示板トピックの検索データを管理するクラスです。 <BR>
- *
+ * 
  */
 public class MsgboardTopicSelectData extends
-    ALAbstractSelectData<EipTMsgboardTopic> implements ALData {
+    ALAbstractSelectData<EipTMsgboardTopic, EipTMsgboardTopic> implements
+    ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -94,13 +95,14 @@ public class MsgboardTopicSelectData extends
   private boolean hasAclDeleteTopicOthers;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -129,13 +131,13 @@ public class MsgboardTopicSelectData extends
       ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY,
       ALAccessControlConstants.VALUE_ACL_LIST);
 
-    hasAclDeleteTopicOthers = aclhandler.hasAuthority(
-      ALEipUtils.getUserId(rundata),
+    hasAclDeleteTopicOthers = aclhandler.hasAuthority(ALEipUtils
+      .getUserId(rundata),
       ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC_OTHER,
       ALAccessControlConstants.VALUE_ACL_DELETE);
 
-    hasAclUpdateTopicOthers = aclhandler.hasAuthority(
-      ALEipUtils.getUserId(rundata),
+    hasAclUpdateTopicOthers = aclhandler.hasAuthority(ALEipUtils
+      .getUserId(rundata),
       ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC_OTHER,
       ALAccessControlConstants.VALUE_ACL_UPDATE);
 
@@ -158,7 +160,7 @@ public class MsgboardTopicSelectData extends
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -169,13 +171,14 @@ public class MsgboardTopicSelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   public List<EipTMsgboardTopic> selectList(RunData rundata, Context context) {
 
     try {
@@ -196,7 +199,7 @@ public class MsgboardTopicSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -229,8 +232,8 @@ public class MsgboardTopicSelectData extends
     Expression exp12 = ExpressionFactory.matchExp(
       EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
         + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY + "."
-        + EipTMsgboardCategoryMap.USER_ID_PROPERTY,
-      Integer.valueOf(ALEipUtils.getUserId(rundata)));
+        + EipTMsgboardCategoryMap.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
+        .getUserId(rundata)));
     query.andQualifier((exp01.andExp(exp02.orExp(exp03))).orExp(exp11
       .andExp(exp12)));
     query.distinct(true);
@@ -240,11 +243,12 @@ public class MsgboardTopicSelectData extends
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(EipTMsgboardTopic record) {
     try {
       MsgboardTopicResultData rd = new MsgboardTopicResultData();
@@ -282,12 +286,13 @@ public class MsgboardTopicSelectData extends
 
   /**
    * 詳細表示します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @return TRUE 成功 FASLE 失敗
    */
+  @Override
   public boolean doViewDetail(ALAction action, RunData rundata, Context context) {
     try {
       init(action, rundata, context);
@@ -321,7 +326,7 @@ public class MsgboardTopicSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -377,6 +382,7 @@ public class MsgboardTopicSelectData extends
     }
   }
 
+  @Override
   public EipTMsgboardTopic selectDetail(RunData rundata, Context context) {
     ALEipUtils.redirectPageNotFound(rundata);
     return null;
@@ -404,11 +410,12 @@ public class MsgboardTopicSelectData extends
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(EipTMsgboardTopic record)
       throws ALPageNotFoundException, ALDBErrorException {
     try {
@@ -491,7 +498,7 @@ public class MsgboardTopicSelectData extends
   }
 
   /**
-   *
+   * 
    * @return
    */
   public List<MsgboardCategoryResultData> getCategoryList() {
@@ -504,7 +511,7 @@ public class MsgboardTopicSelectData extends
 
   /**
    * トピックの総数を返す． <BR>
-   *
+   * 
    * @return
    */
   public int getTopicSum() {
@@ -515,6 +522,7 @@ public class MsgboardTopicSelectData extends
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("topic_name", EipTMsgboardTopic.TOPIC_NAME_PROPERTY);
@@ -530,7 +538,7 @@ public class MsgboardTopicSelectData extends
   }
 
   /**
-   *
+   * 
    * @param id
    * @return
    */
@@ -561,16 +569,17 @@ public class MsgboardTopicSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC;
   }
 
   /**
    * 他ユーザのトピックを編集する権限があるかどうかを返します。
-   *
+   * 
    * @return
    */
   public boolean hasAclUpdateTopicOthers() {
@@ -579,7 +588,7 @@ public class MsgboardTopicSelectData extends
 
   /**
    * 他ユーザのトピックを削除する権限があるかどうかを返します。
-   *
+   * 
    * @return
    */
   public boolean hasAclDeleteTopicOthers() {

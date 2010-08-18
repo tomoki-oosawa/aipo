@@ -39,17 +39,18 @@ import com.aimluck.eip.page.util.PageUtils;
 /**
  * ページ設定の検索データを管理するためのクラスです。 <br />
  */
-public class PageSelectData extends ALAbstractSelectData<Portlets> {
+public class PageSelectData extends ALAbstractSelectData<Portlets, Portlets> {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(PageSelectData.class.getName());
+    .getLogger(PageSelectData.class.getName());
 
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected List<Portlets> selectList(RunData rundata, Context context) {
     Portlet portlet = (Portlet) context.get("portlet");
     String selectedPortletId = portlet.getID();
@@ -59,12 +60,13 @@ public class PageSelectData extends ALAbstractSelectData<Portlets> {
 
     // タブ [個人設定] のIDを取得する。
     String selectedPageId = PageUtils.getPortletSetId(rundata,
-        selectedPortletId);
+      selectedPortletId);
 
     Portlets portlets = ((JetspeedRunData) rundata).getProfile().getDocument()
-        .getPortlets();
-    if (portlets == null)
+      .getPortlets();
+    if (portlets == null) {
       return null;
+    }
 
     // ページの位置でソートする．
     Portlets pane = null;
@@ -95,8 +97,9 @@ public class PageSelectData extends ALAbstractSelectData<Portlets> {
     List<Portlets> list = new ArrayList<Portlets>();
     for (int i = 0; i < rowsNum; i++) {
       count = i + start;
-      if (count >= length)
+      if (count >= length) {
         break;
+      }
       list.add(portletList.get(count));
     }
 
@@ -109,11 +112,13 @@ public class PageSelectData extends ALAbstractSelectData<Portlets> {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected Portlets selectDetail(RunData rundata, Context context) {
     String portletId = rundata.getParameters().getString(
-        ALEipConstants.ENTITY_ID);
-    if (portletId == null || portletId.equals(""))
+      ALEipConstants.ENTITY_ID);
+    if (portletId == null || portletId.equals("")) {
       return null;
+    }
 
     return PageUtils.getPortlets(rundata, portletId);
   }
@@ -121,6 +126,7 @@ public class PageSelectData extends ALAbstractSelectData<Portlets> {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(Portlets obj) {
     return getResultDataDetail(obj);
   }
@@ -128,6 +134,7 @@ public class PageSelectData extends ALAbstractSelectData<Portlets> {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(Portlets record) {
     PageResultData rd = new PageResultData();
     rd.initField();
@@ -141,6 +148,7 @@ public class PageSelectData extends ALAbstractSelectData<Portlets> {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     return null;
   }

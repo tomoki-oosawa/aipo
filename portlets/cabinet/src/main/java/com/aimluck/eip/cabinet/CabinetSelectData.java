@@ -45,7 +45,8 @@ import com.aimluck.eip.util.ALEipUtils;
 /**
  * 共有フォルダのファイル検索データを管理するためのクラスです。 <br />
  */
-public class CabinetSelectData extends ALAbstractSelectData<EipTCabinetFile> {
+public class CabinetSelectData extends
+    ALAbstractSelectData<EipTCabinetFile, EipTCabinetFile> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -75,20 +76,21 @@ public class CabinetSelectData extends ALAbstractSelectData<EipTCabinetFile> {
   }
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
-        ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-          .getInitParameter("p1c-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
+        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
+          "p1c-sort"));
       logger.debug("[CabinetSelectData] Init Parameter. : "
         + ALEipUtils.getPortlet(rundata, context).getPortletConfig()
           .getInitParameter("p1c-sort"));
@@ -146,6 +148,7 @@ public class CabinetSelectData extends ALAbstractSelectData<EipTCabinetFile> {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected List<EipTCabinetFile> selectList(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     try {
@@ -172,7 +175,7 @@ public class CabinetSelectData extends ALAbstractSelectData<EipTCabinetFile> {
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -188,8 +191,8 @@ public class CabinetSelectData extends ALAbstractSelectData<EipTCabinetFile> {
         EipTCabinetFile.UPDATE_DATE_COLUMN);
     if (selected_folderinfo != null) {
       Expression exp = ExpressionFactory.matchDbExp(
-        EipTCabinetFolder.FOLDER_ID_PK_COLUMN,
-        Integer.valueOf(selected_folderinfo.getFolderId()));
+        EipTCabinetFolder.FOLDER_ID_PK_COLUMN, Integer
+          .valueOf(selected_folderinfo.getFolderId()));
       query.setQualifier(exp);
     }
     query.distinct(true);
@@ -201,6 +204,7 @@ public class CabinetSelectData extends ALAbstractSelectData<EipTCabinetFile> {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected EipTCabinetFile selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     return CabinetUtils.getEipTCabinetFile(rundata, context);
@@ -209,6 +213,7 @@ public class CabinetSelectData extends ALAbstractSelectData<EipTCabinetFile> {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(EipTCabinetFile record)
       throws ALPageNotFoundException, ALDBErrorException {
     try {
@@ -238,10 +243,11 @@ public class CabinetSelectData extends ALAbstractSelectData<EipTCabinetFile> {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(EipTCabinetFile obj)
       throws ALPageNotFoundException, ALDBErrorException {
     try {
-      EipTCabinetFile record = (EipTCabinetFile) obj;
+      EipTCabinetFile record = obj;
 
       CabinetFileResultData rd = new CabinetFileResultData();
       rd.initField();
@@ -289,6 +295,7 @@ public class CabinetSelectData extends ALAbstractSelectData<EipTCabinetFile> {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("file_title", EipTCabinetFile.FILE_TITLE_PROPERTY);
@@ -299,7 +306,7 @@ public class CabinetSelectData extends ALAbstractSelectData<EipTCabinetFile> {
   }
 
   /**
-   *
+   * 
    * @param id
    * @return
    */
@@ -309,7 +316,7 @@ public class CabinetSelectData extends ALAbstractSelectData<EipTCabinetFile> {
 
   /**
    * ファイル総数を取得する． <BR>
-   *
+   * 
    * @return
    */
   public int getFileSum() {
@@ -319,9 +326,10 @@ public class CabinetSelectData extends ALAbstractSelectData<EipTCabinetFile> {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_CABINET_FILE;
   }

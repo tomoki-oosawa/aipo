@@ -43,27 +43,29 @@ import com.aimluck.eip.util.ALEipUtils;
 /**
  * マイグループの検索データを管理するためのクラスです。 <br />
  */
-public class MyGroupSelectData extends ALAbstractSelectData<TurbineGroup> {
+public class MyGroupSelectData extends
+    ALAbstractSelectData<TurbineGroup, TurbineGroup> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(MyGroupSelectData.class.getName());
+    .getLogger(MyGroupSelectData.class.getName());
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
-          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-              .getInitParameter("p2a-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
+        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
+          "p2a-sort"));
     }
 
     super.init(action, rundata, context);
@@ -76,6 +78,7 @@ public class MyGroupSelectData extends ALAbstractSelectData<TurbineGroup> {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected List<TurbineGroup> selectList(RunData rundata, Context context) {
     try {
 
@@ -93,7 +96,7 @@ public class MyGroupSelectData extends ALAbstractSelectData<TurbineGroup> {
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -101,23 +104,24 @@ public class MyGroupSelectData extends ALAbstractSelectData<TurbineGroup> {
   private SelectQuery<TurbineGroup> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<TurbineGroup> query = new SelectQuery<TurbineGroup>(
-        TurbineGroup.class);
+      TurbineGroup.class);
 
     Expression exp = ExpressionFactory.matchExp(TurbineGroup.OWNER_ID_PROPERTY,
-        Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      Integer.valueOf(ALEipUtils.getUserId(rundata)));
     query.setQualifier(exp);
 
     return query;
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected TurbineGroup selectDetail(RunData rundata, Context context) {
     return MyGroupUtils.getGroup(rundata, context);
   }
@@ -127,6 +131,7 @@ public class MyGroupSelectData extends ALAbstractSelectData<TurbineGroup> {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(TurbineGroup record) {
     MyGroupResultData rd = new MyGroupResultData();
     rd.initField();
@@ -140,6 +145,7 @@ public class MyGroupSelectData extends ALAbstractSelectData<TurbineGroup> {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(TurbineGroup record) {
     MyGroupResultData rd = new MyGroupResultData();
     rd.initField();
@@ -152,6 +158,7 @@ public class MyGroupSelectData extends ALAbstractSelectData<TurbineGroup> {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("group_alias_name", TurbineGroup.GROUP_ALIAS_NAME_PROPERTY);
@@ -159,7 +166,7 @@ public class MyGroupSelectData extends ALAbstractSelectData<TurbineGroup> {
   }
 
   /**
-   *
+   * 
    * @param name
    * @return
    */
@@ -168,7 +175,7 @@ public class MyGroupSelectData extends ALAbstractSelectData<TurbineGroup> {
   }
 
   /**
-   *
+   * 
    * @param name
    * @return
    */

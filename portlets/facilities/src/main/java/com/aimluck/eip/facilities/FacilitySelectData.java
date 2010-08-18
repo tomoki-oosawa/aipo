@@ -39,10 +39,10 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 施設検索データを管理するクラスです。 <BR>
- *
+ * 
  */
-public class FacilitySelectData extends ALAbstractSelectData<EipMFacility>
-    implements ALData {
+public class FacilitySelectData extends
+    ALAbstractSelectData<EipMFacility, EipMFacility> implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -52,20 +52,21 @@ public class FacilitySelectData extends ALAbstractSelectData<EipMFacility>
   private int facilitySum;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
-        ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-          .getInitParameter("p2a-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
+        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
+          "p2a-sort"));
     }
 
     super.init(action, rundata, context);
@@ -73,21 +74,22 @@ public class FacilitySelectData extends ALAbstractSelectData<EipMFacility>
 
   /**
    * 一覧データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public List<EipMFacility>  selectList(RunData rundata, Context context) {
+  @Override
+  public List<EipMFacility> selectList(RunData rundata, Context context) {
     try {
 
       SelectQuery<EipMFacility> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipMFacility>  list = query.perform();
+      List<EipMFacility> list = query.perform();
       // 施設の総数をセットする．
       facilitySum = list.size();
 
@@ -100,7 +102,7 @@ public class FacilitySelectData extends ALAbstractSelectData<EipMFacility>
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -114,11 +116,12 @@ public class FacilitySelectData extends ALAbstractSelectData<EipMFacility>
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(EipMFacility record) {
     try {
       FacilityResultData rd = new FacilityResultData();
@@ -134,24 +137,26 @@ public class FacilitySelectData extends ALAbstractSelectData<EipMFacility>
 
   /**
    * 詳細データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   public EipMFacility selectDetail(RunData rundata, Context context) {
     return FacilitiesUtils.getEipMFacility(rundata, context);
   }
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(EipMFacility record) {
     try {
       FacilityResultData rd = new FacilityResultData();
@@ -170,7 +175,7 @@ public class FacilitySelectData extends ALAbstractSelectData<EipMFacility>
 
   /**
    * 施設の総数を返す． <BR>
-   *
+   * 
    * @return
    */
   public int getFacilitySum() {
@@ -181,6 +186,7 @@ public class FacilitySelectData extends ALAbstractSelectData<EipMFacility>
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("facility_name", EipMFacility.FACILITY_NAME_PROPERTY);
@@ -188,7 +194,7 @@ public class FacilitySelectData extends ALAbstractSelectData<EipMFacility>
   }
 
   /**
-   *
+   * 
    * @param id
    * @return
    */
