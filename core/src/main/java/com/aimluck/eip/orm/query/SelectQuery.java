@@ -34,8 +34,7 @@ public class SelectQuery<M> {
 
   private static final long serialVersionUID = 5404111688862773398L;
 
-  protected DataContext dataContext = DatabaseOrmService.getInstance()
-    .getDataContext();
+  protected DataContext dataContext;
 
   protected Class<M> rootClass;
 
@@ -44,11 +43,26 @@ public class SelectQuery<M> {
   public SelectQuery(Class<M> rootClass) {
     this.rootClass = rootClass;
     delegate = new org.apache.cayenne.query.SelectQuery(rootClass);
+    dataContext = DatabaseOrmService.getInstance().getDataContext();
+  }
+
+  public SelectQuery(DataContext dataContext, Class<M> rootClass) {
+    this.rootClass = rootClass;
+    delegate = new org.apache.cayenne.query.SelectQuery(rootClass);
+    this.dataContext = dataContext;
   }
 
   public SelectQuery(Class<M> rootClass, Expression qualifier) {
     this.rootClass = rootClass;
     delegate = new org.apache.cayenne.query.SelectQuery(rootClass, qualifier);
+    dataContext = DatabaseOrmService.getInstance().getDataContext();
+  }
+
+  public SelectQuery(DataContext dataContext, Class<M> rootClass,
+      Expression qualifier) {
+    this.rootClass = rootClass;
+    delegate = new org.apache.cayenne.query.SelectQuery(rootClass, qualifier);
+    this.dataContext = dataContext;
   }
 
   @SuppressWarnings("unchecked")
@@ -150,5 +164,9 @@ public class SelectQuery<M> {
 
   public org.apache.cayenne.query.SelectQuery getQuery() {
     return delegate;
+  }
+
+  public DataContext getDataContext() {
+    return dataContext;
   }
 }

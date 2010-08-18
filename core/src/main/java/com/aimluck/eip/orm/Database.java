@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.Persistent;
+import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -53,12 +54,39 @@ public class Database {
    * 検索用クエリを作成します。
    * 
    * @param <M>
+   * @param dataContext
+   * @param modelClass
+   * @return
+   */
+  public static <M> SelectQuery<M> query(DataContext dataContext,
+      Class<M> modelClass) {
+    return new SelectQuery<M>(dataContext, modelClass);
+  }
+
+  /**
+   * 検索用クエリを作成します。
+   * 
+   * @param <M>
    * @param modelClass
    * @param exp
    * @return
    */
   public static <M> SelectQuery<M> query(Class<M> modelClass, Expression exp) {
     return new SelectQuery<M>(modelClass, exp);
+  }
+
+  /**
+   * 検索用クエリを作成します。
+   * 
+   * @param <M>
+   * @param dataContext
+   * @param modelClass
+   * @param exp
+   * @return
+   */
+  public static <M> SelectQuery<M> query(DataContext dataContext,
+      Class<M> modelClass, Expression exp) {
+    return new SelectQuery<M>(dataContext, modelClass, exp);
   }
 
   /**
@@ -69,11 +97,24 @@ public class Database {
    * @param primaryKey
    * @return
    */
-  @SuppressWarnings("unchecked")
   public static <M> M get(Class<M> modelClass, Object primaryKey) {
-    DatabaseOrmService databaseOrmService = DatabaseOrmService.getInstance();
-    return (M) DataObjectUtils.objectForPK(databaseOrmService.getDataContext(),
-      modelClass, primaryKey);
+    return get(DatabaseOrmService.getInstance().getDataContext(), modelClass,
+      primaryKey);
+  }
+
+  /**
+   * プライマリキーで指定されたオブジェクトモデルを取得します。
+   * 
+   * @param <M>
+   * @param dataContext
+   * @param modelClass
+   * @param primaryKey
+   * @return
+   */
+  @SuppressWarnings("unchecked")
+  public static <M> M get(DataContext dataContext, Class<M> modelClass,
+      Object primaryKey) {
+    return (M) DataObjectUtils.objectForPK(dataContext, modelClass, primaryKey);
   }
 
   /**
@@ -83,11 +124,21 @@ public class Database {
    * @param modelClass
    * @return
    */
-  @SuppressWarnings("unchecked")
   public static <M> M create(Class<M> modelClass) {
-    DatabaseOrmService databaseOrmService = DatabaseOrmService.getInstance();
-    return (M) databaseOrmService.getDataContext().createAndRegisterNewObject(
-      modelClass);
+    return create(DatabaseOrmService.getInstance().getDataContext(), modelClass);
+  }
+
+  /**
+   * オブジェクトモデルを新規作成します。
+   * 
+   * @param <M>
+   * @param dataContext
+   * @param modelClass
+   * @return
+   */
+  @SuppressWarnings("unchecked")
+  public static <M> M create(DataContext dataContext, Class<M> modelClass) {
+    return (M) dataContext.createAndRegisterNewObject(modelClass);
 
   }
 
@@ -97,9 +148,17 @@ public class Database {
    * @param target
    */
   public static void delete(Persistent target) {
-    DatabaseOrmService databaseOrmService = DatabaseOrmService.getInstance();
-    databaseOrmService.getDataContext().deleteObject(target);
+    delete(DatabaseOrmService.getInstance().getDataContext(), target);
+  }
 
+  /**
+   * オブジェクトモデルを削除します。
+   * 
+   * @param dataContext
+   * @param target
+   */
+  public static void delete(DataContext dataContext, Persistent target) {
+    dataContext.deleteObject(target);
   }
 
   /**
@@ -108,8 +167,17 @@ public class Database {
    * @param target
    */
   public static void deleteAll(List<Persistent> target) {
-    DatabaseOrmService databaseOrmService = DatabaseOrmService.getInstance();
-    databaseOrmService.getDataContext().deleteObjects(target);
+    deleteAll(DatabaseOrmService.getInstance().getDataContext(), target);
+  }
+
+  /**
+   * オブジェクトモデルをすべて削除します。
+   * 
+   * @param dataContext
+   * @param target
+   */
+  public static void deleteAll(DataContext dataContext, List<Persistent> target) {
+    dataContext.deleteObjects(target);
 
   }
 
@@ -119,9 +187,17 @@ public class Database {
    * @param target
    */
   public static void deleteAll(Persistent... target) {
-    DatabaseOrmService databaseOrmService = DatabaseOrmService.getInstance();
-    databaseOrmService.getDataContext().deleteObjects(Arrays.asList(target));
+    deleteAll(DatabaseOrmService.getInstance().getDataContext(), target);
+  }
 
+  /**
+   * オブジェクトモデルをすべて削除します。
+   * 
+   * @param dataContext
+   * @param target
+   */
+  public static void deleteAll(DataContext dataContext, Persistent... target) {
+    dataContext.deleteObjects(Arrays.asList(target));
   }
 
   /**
@@ -129,8 +205,16 @@ public class Database {
    * 
    */
   public static void commit() {
-    DatabaseOrmService databaseOrmService = DatabaseOrmService.getInstance();
-    databaseOrmService.getDataContext().commitChanges();
+    commit(DatabaseOrmService.getInstance().getDataContext());
+  }
+
+  /**
+   * 現在までの更新をコミットします。
+   * 
+   * @param dataContext
+   */
+  public static void commit(DataContext dataContext) {
+    dataContext.commitChanges();
   }
 
   /**
@@ -138,9 +222,17 @@ public class Database {
    * 
    */
   public static void rollback() {
+    rollback(DatabaseOrmService.getInstance().getDataContext());
+  }
+
+  /**
+   * 現在までの更新をロールバックします。
+   * 
+   * @param dataContext
+   */
+  public static void rollback(DataContext dataContext) {
     try {
-      DatabaseOrmService databaseOrmService = DatabaseOrmService.getInstance();
-      databaseOrmService.getDataContext().rollbackChanges();
+      dataContext.rollbackChanges();
     } catch (Throwable t) {
       logger.warn(t);
     }
