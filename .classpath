@@ -123,5 +123,6 @@
 	<classpathentry kind="var" path="M2_REPO/xml-apis/xmlParserAPIs/2.0.2/xmlParserAPIs-2.0.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/skmail/skmail/0.5/skmail-0.5.jar"/>
 	<classpathentry kind="var" path="M2_REPO/skutility/skutility/0.5/skutility-0.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-codec/commons-codec/1.3/commons-codec-1.3.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
