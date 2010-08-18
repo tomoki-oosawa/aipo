@@ -22,7 +22,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -35,20 +34,20 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.memo.util.MemoUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * メモ帳のフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class MemoFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(MemoFormData.class.getName());
+    .getLogger(MemoFormData.class.getName());
 
   /** Memo名 */
   private ALStringField memo_name;
@@ -56,26 +55,23 @@ public class MemoFormData extends ALAbstractFormData {
   /** メモ */
   private ALStringField note;
 
-  private DataContext dataContext;
-
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -92,9 +88,10 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * Memoの各フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // Memo名必須項目
     memo_name.setNotNull(true);
@@ -106,11 +103,12 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * Memoのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     // Memo名
     memo_name.validate(msgList);
@@ -121,7 +119,7 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * Memoをデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -129,13 +127,15 @@ public class MemoFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTMemo memo = MemoUtils.getEipTMemo(rundata, context);
-      if (memo == null)
+      if (memo == null) {
         return false;
+      }
 
       // Memo名
       memo_name.setValue(memo.getMemoName());
@@ -150,7 +150,7 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * Memoをデータベースから削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -158,22 +158,24 @@ public class MemoFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTMemo memo = MemoUtils.getEipTMemo(rundata, context);
-      if (memo == null)
+      if (memo == null) {
         return false;
+      }
 
       // Memoを削除
-      dataContext.deleteObject(memo);
-      dataContext.commitChanges();
+      Database.delete(memo);
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          memo.getMemoId(), ALEventlogConstants.PORTLET_TYPE_MEMO,
-          memo.getMemoName());
+        memo.getMemoId(), ALEventlogConstants.PORTLET_TYPE_MEMO,
+        memo.getMemoName());
 
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -184,7 +186,7 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * Memoをデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -192,17 +194,18 @@ public class MemoFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // 新規オブジェクトモデル
-      EipTMemo memo = (EipTMemo) dataContext
-          .createAndRegisterNewObject(EipTMemo.class);
+      EipTMemo memo = Database.create(EipTMemo.class);
 
       Date now = Calendar.getInstance().getTime();
 
       // Memo名
       memo.setMemoName(memo_name.getValue());
+      // 作成者ID
       memo.setOwnerId(Integer.valueOf(ALEipUtils.getUserId(rundata)));
       // メモ
       memo.setNote(note.getValue());
@@ -210,14 +213,15 @@ public class MemoFormData extends ALAbstractFormData {
       memo.setCreateDate(now);
       // 更新日
       memo.setUpdateDate(now);
-      dataContext.commitChanges();
+      // Memoを登録
+      Database.commit();
 
       MemoUtils.saveMemoSelection(rundata, memo.getMemoId().toString());
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          memo.getMemoId(), ALEventlogConstants.PORTLET_TYPE_MEMO,
-          memo.getMemoName());
+        memo.getMemoId(), ALEventlogConstants.PORTLET_TYPE_MEMO,
+        memo.getMemoName());
 
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -228,7 +232,7 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているmemoを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -236,32 +240,33 @@ public class MemoFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTMemo memo = MemoUtils.getEipTMemo(rundata, context);
-      if (memo == null)
+      if (memo == null) {
         return false;
+      }
 
       Date now = Calendar.getInstance().getTime();
 
       // Memo名
       memo.setMemoName(memo_name.getValue());
+      // 作成者ID
       memo.setOwnerId(Integer.valueOf(ALEipUtils.getUserId(rundata)));
       // メモ
       memo.setNote(note.getValue());
       // 更新日
       memo.setUpdateDate(now);
       // Memoを更新
-      dataContext.commitChanges();
-
-      // MemoUtils.saveMemoSelection(rundata, memo.getMemoId().toString());
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          memo.getMemoId(), ALEventlogConstants.PORTLET_TYPE_MEMO,
-          memo.getMemoName());
+        memo.getMemoId(), ALEventlogConstants.PORTLET_TYPE_MEMO,
+        memo.getMemoName());
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
@@ -271,7 +276,7 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getNote() {
@@ -280,7 +285,7 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * Memo名を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getMemoName() {

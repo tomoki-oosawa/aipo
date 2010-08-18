@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.Attributes;
 
+import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -36,12 +37,13 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.memo.util.MemoUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * メモ帳の検索データを管理するクラスです。 <BR>
- *
+ * 
  */
 public class MemoSelectData extends ALAbstractSelectData<EipTMemo> implements
     ALData {
@@ -57,27 +59,28 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo> implements
   private List<MemoLiteResultData> memoLiteList;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
-        ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-          .getInitParameter("p2a-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
+        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
+          "p2a-sort"));
     }
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -86,19 +89,11 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo> implements
       // メモ一覧
       memoLiteList = new ArrayList<MemoLiteResultData>();
 
-      SelectQuery<EipTMemo> query = new SelectQuery<EipTMemo>(EipTMemo.class)
-        .select(EipTMemo.MEMO_ID_PK_COLUMN, EipTMemo.MEMO_NAME_COLUMN)
-        .setQualifier(
-          ExpressionFactory.matchExp(EipTMemo.OWNER_ID_PROPERTY,
-            Integer.valueOf(ALEipUtils.getUserId(rundata)))).distinct();
-      List<EipTMemo> aList = query.perform();
+      SelectQuery<EipTMemo> query = getSelectQuery(rundata, context);
+      List<EipTMemo> list = query.perform();
 
-      EipTMemo model = null;
-      MemoLiteResultData rd = null;
-      int size = aList.size();
-      for (int i = 0; i < size; i++) {
-        model = aList.get(i);
-        rd = new MemoLiteResultData();
+      for (EipTMemo model : list) {
+        MemoLiteResultData rd = new MemoLiteResultData();
         rd.initField();
         rd.setMemoId(model.getMemoId());
         rd.setMemoName(model.getMemoName());
@@ -111,13 +106,14 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo> implements
 
   /**
    * 一覧データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   public List<EipTMemo> selectList(RunData rundata, Context context) {
     try {
 
@@ -138,28 +134,29 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo> implements
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    */
   private SelectQuery<EipTMemo> getSelectQuery(RunData rundata, Context context) {
-    SelectQuery<EipTMemo> query = new SelectQuery<EipTMemo>(EipTMemo.class)
-      .select(EipTMemo.MEMO_ID_PK_COLUMN, EipTMemo.MEMO_NAME_COLUMN,
-        EipTMemo.MEMO_ID_PK_COLUMN, EipTMemo.MEMO_NAME_COLUMN,
-        EipTMemo.UPDATE_DATE_COLUMN, EipTMemo.CREATE_DATE_COLUMN).setQualifier(
-        ExpressionFactory.matchExp(EipTMemo.OWNER_ID_PROPERTY,
-          Integer.valueOf(ALEipUtils.getUserId(rundata))));
+    SelectQuery<EipTMemo> query = Database.query(EipTMemo.class);
+
+    Expression exp1 = ExpressionFactory.matchExp(EipTMemo.OWNER_ID_PROPERTY,
+      Integer.valueOf(ALEipUtils.getUserId(rundata)));
+    query.setQualifier(exp1);
+
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(EipTMemo record) {
     try {
       MemoResultData rd = new MemoResultData();
@@ -178,13 +175,14 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo> implements
 
   /**
    * 詳細データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   public EipTMemo selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException {
     try {
@@ -197,11 +195,12 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo> implements
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(EipTMemo record) {
     try {
       MemoResultData rd = new MemoResultData();
@@ -220,7 +219,7 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo> implements
 
   /**
    * Memo の総数を返す． <BR>
-   *
+   * 
    * @return
    */
   public int getMemoSum() {
@@ -231,6 +230,7 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo> implements
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("memo_name", EipTMemo.MEMO_NAME_PROPERTY);
