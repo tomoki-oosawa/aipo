@@ -20,10 +20,8 @@ package com.aimluck.eip.category;
 
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
@@ -32,10 +30,10 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.category.util.CommonCategoryUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
-import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
@@ -66,9 +64,6 @@ public class CommonCategoryMultiDelete extends ALAbstractCheckList {
   protected boolean action(RunData rundata, Context context,
       List<String> values, List<String> msgList) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-
       // アクセス権限
       int loginuserid = ALEipUtils.getUserId(rundata);
 
@@ -83,54 +78,40 @@ public class CommonCategoryMultiDelete extends ALAbstractCheckList {
           ALAccessControlConstants.VALUE_ACL_DELETE);
 
       // 共有カテゴリリストを取得
-      SelectQuery query = new SelectQuery(EipTCommonCategory.class);
+      SelectQuery<EipTCommonCategory> query = Database
+        .query(EipTCommonCategory.class);
       if (!hasAuthorityOtherDelete) {
         Expression exp1 = ExpressionFactory.matchExp(
-          EipTCommonCategory.CREATE_USER_ID_PROPERTY,
-          Integer.valueOf(loginuserid));
-        query.setQualifier(exp1);
+          EipTCommonCategory.CREATE_USER_ID_PROPERTY, Integer
+            .valueOf(loginuserid));
+        query.andQualifier(exp1);
       }
       Expression exp2 = ExpressionFactory.inDbExp(
         EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN, values);
       query.andQualifier(exp2);
 
-      List<?> categorylist = dataContext.performQuery(query);
-      if (categorylist == null || categorylist.size() == 0) {
+      List<EipTCommonCategory> commoncategory_list = query.perform();
+      if (commoncategory_list == null || commoncategory_list.size() == 0) {
         return false;
       }
 
-      // 共有カテゴリ「未分類」のオブジェクトを取得
-      EipTCommonCategory tmpCategory = CommonCategoryUtils
-        .getEipTCommonCategory(dataContext, Long.valueOf(1));
-
       // 共有カテゴリ内の ScheduleMap は「未分類」にカテゴリ変更する
-      EipTScheduleMap record = null;
-      EipTCommonCategory category = null;
-      int size = categorylist.size();
-      for (int i = 0; i < size; i++) {
-        category = (EipTCommonCategory) categorylist.get(i);
-        List<?> result = ALEipUtils.getObjectModels(dataContext,
-          EipTScheduleMap.class, EipTScheduleMap.COMMON_CATEGORY_ID_PROPERTY,
-          category.getCommonCategoryId(), false);
-        if (result != null && result.size() > 0) {
-          int size2 = result.size();
-          for (int j = 0; j < size2; j++) {
-            record = (EipTScheduleMap) result.get(j);
-            record.setEipTCommonCategory(tmpCategory);
-          }
-        }
+      for (EipTCommonCategory record : commoncategory_list) {
+        CommonCategoryUtils.setDefaultCommonCategoryToSchedule(record);
+
+        Database.delete(record);
       }
 
       // カテゴリを削除
-      dataContext.deleteObjects(categorylist);
-      dataContext.commitChanges();
+      Database.commit();
 
       // 一覧表示画面のフィルタに設定されているカテゴリのセッション情報を削除
       String filtername = CommonCategorySelectData.class.getName()
         + ALEipConstants.LIST_FILTER;
       ALEipUtils.removeTemp(rundata, context, filtername);
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error(t);
       return false;
     }
     return true;

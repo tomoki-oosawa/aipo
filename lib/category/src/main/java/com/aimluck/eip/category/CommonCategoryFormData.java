@@ -21,10 +21,8 @@ package com.aimluck.eip.category;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -33,14 +31,14 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.category.util.CommonCategoryUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
-import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -65,8 +63,6 @@ public class CommonCategoryFormData extends ALAbstractFormData {
   /** メモ */
   private ALStringField note;
 
-  private DataContext dataContext;
-
   /**
    * 
    * @param action
@@ -79,8 +75,6 @@ public class CommonCategoryFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     try {
       // カテゴリID
@@ -131,8 +125,8 @@ public class CommonCategoryFormData extends ALAbstractFormData {
   @Override
   protected boolean validate(List<String> msgList) {
     try {
-
-      SelectQuery query = new SelectQuery(EipTCommonCategory.class);
+      SelectQuery<EipTCommonCategory> query = Database
+        .query(EipTCommonCategory.class);
       Expression exp = ExpressionFactory.matchExp(
         EipTCommonCategory.NAME_PROPERTY, name.getValue());
       query.setQualifier(exp);
@@ -143,7 +137,7 @@ public class CommonCategoryFormData extends ALAbstractFormData {
         query.andQualifier(exp3);
       }
 
-      if (dataContext.performQuery(query).size() != 0) {
+      if (query.perform().size() != 0) {
         msgList.add("共有カテゴリ名『 <span class='em'>" + name.toString()
           + "</span> 』は既に登録されています。");
       }
@@ -205,8 +199,7 @@ public class CommonCategoryFormData extends ALAbstractFormData {
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
-      EipTCommonCategory category = (EipTCommonCategory) dataContext
-        .createAndRegisterNewObject(EipTCommonCategory.class);
+      EipTCommonCategory category = Database.create(EipTCommonCategory.class);
 
       category.setName(name.getValue());
       category.setNote(note.getValue());
@@ -215,16 +208,15 @@ public class CommonCategoryFormData extends ALAbstractFormData {
       category.setCreateDate(Calendar.getInstance().getTime());
       category.setUpdateDate(Calendar.getInstance().getTime());
 
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
-      ALEventlogFactoryService
-        .getInstance()
-        .getEventlogHandler()
-        .log(category.getCommonCategoryId(),
-          ALEventlogConstants.PORTLET_TYPE_COMMON_CATEGORY, name.getValue());
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        category.getCommonCategoryId(),
+        ALEventlogConstants.PORTLET_TYPE_COMMON_CATEGORY, name.getValue());
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error(t);
       return false;
     }
     return true;
@@ -261,7 +253,8 @@ public class CommonCategoryFormData extends ALAbstractFormData {
       // 他人が作成したカテゴリは権限がないと変更不可
       ALEipUser eipUser = ALEipUtils.getALEipUser(rundata);
       if (category.getCreateUserId().intValue() != eipUser.getUserId()
-        .getValue() && !authority_edit) {
+        .getValue()
+        && !authority_edit) {
         return false;
       }
 
@@ -270,22 +263,20 @@ public class CommonCategoryFormData extends ALAbstractFormData {
       // メモ
       category.setNote(note.getValue());
       // ユーザーID
-      // category.setCreateUserId(Integer.valueOf(ALEipUtils.getUserId(rundata)));
       category.setUpdateUserId(Integer.valueOf(ALEipUtils.getUserId(rundata)));
       // 更新日
       category.setUpdateDate(Calendar.getInstance().getTime());
 
       // 共有カテゴリを更新
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
-      ALEventlogFactoryService
-        .getInstance()
-        .getEventlogHandler()
-        .log(category.getCommonCategoryId(),
-          ALEventlogConstants.PORTLET_TYPE_COMMON_CATEGORY, name.getValue());
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        category.getCommonCategoryId(),
+        ALEventlogConstants.PORTLET_TYPE_COMMON_CATEGORY, name.getValue());
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error(t);
       return false;
     }
     return true;
@@ -322,27 +313,13 @@ public class CommonCategoryFormData extends ALAbstractFormData {
       // 他人が作成したカテゴリは権限がないと消せない
       ALEipUser eipUser = ALEipUtils.getALEipUser(rundata);
       if (category.getCreateUserId().intValue() != eipUser.getUserId()
-        .getValue() && !authority_delete) {
+        .getValue()
+        && !authority_delete) {
         return false;
       }
 
-      // TODO: OMを使わずに記述
       // 共有カテゴリ内の SchaduleMap は「未分類」にカテゴリ変更する
-      List<?> result = ALEipUtils.getObjectModels(dataContext,
-        EipTScheduleMap.class, EipTScheduleMap.COMMON_CATEGORY_ID_PROPERTY,
-        category.getCommonCategoryId(), false);
-      if (result != null && result.size() > 0) {
-        // 共有カテゴリ「未分類」のオブジェクトを取得
-        EipTCommonCategory tmpCategory = CommonCategoryUtils
-          .getEipTCommonCategory(dataContext, Long.valueOf(1));
-
-        EipTScheduleMap record = null;
-        int size = result.size();
-        for (int i = 0; i < size; i++) {
-          record = (EipTScheduleMap) result.get(i);
-          record.setEipTCommonCategory(tmpCategory);
-        }
-      }
+      CommonCategoryUtils.setDefaultCommonCategoryToSchedule(category);
 
       // entityIdを取得
       int entityId = category.getCommonCategoryId();
@@ -350,18 +327,15 @@ public class CommonCategoryFormData extends ALAbstractFormData {
       String categoryName = category.getName();
 
       // 共有カテゴリを削除
-      dataContext.deleteObject(category);
-      dataContext.commitChanges();
+      Database.delete(category);
+      Database.commit();
 
       // イベントログに保存
-      ALEventlogFactoryService
-        .getInstance()
-        .getEventlogHandler()
-        .log(entityId, ALEventlogConstants.PORTLET_TYPE_COMMON_CATEGORY,
-          categoryName);
-
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(entityId,
+        ALEventlogConstants.PORTLET_TYPE_COMMON_CATEGORY, categoryName);
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error(t);
       return false;
     }
     return true;

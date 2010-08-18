@@ -24,7 +24,6 @@ import java.util.List;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
@@ -33,8 +32,10 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.category.beans.CommonCategoryLiteBean;
 import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
+import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.util.ALEipUtils;
@@ -55,25 +56,40 @@ public class CommonCategoryUtils {
    * @param category_id
    * @return
    */
+  // TODO: 後で削除する。
   public static EipTCommonCategory getEipTCommonCategory(
       DataContext dataContext, Long category_id) {
     try {
+      EipTCommonCategory result = Database.get(EipTCommonCategory.class,
+        category_id);
 
-      SelectQuery query = new SelectQuery(EipTCommonCategory.class);
-
-      Expression exp = ExpressionFactory.matchDbExp(
-        EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN, category_id);
-
-      query.setQualifier(exp);
-
-      List<?> result = dataContext.performQuery(query);
-
-      if (result == null || result.size() == 0) {
+      if (result == null) {
         logger.debug("[CommonCategoryUtils] Not found ID...");
         return null;
       }
+      return result;
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
 
-      return ((EipTCommonCategory) result.get(0));
+  /**
+   * 指定されたIDの共有カテゴリを取得します。
+   * 
+   * @param category_id
+   * @return
+   */
+  public static EipTCommonCategory getEipTCommonCategory(Long category_id) {
+    try {
+      EipTCommonCategory result = Database.get(EipTCommonCategory.class,
+        category_id);
+
+      if (result == null) {
+        logger.debug("[CommonCategoryUtils] Not found ID...");
+        return null;
+      }
+      return result;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -95,11 +111,7 @@ public class CommonCategoryUtils {
         logger.debug("[CommonCategoryUtils] Empty ID...");
         return null;
       }
-
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-
-      return getEipTCommonCategory(dataContext, Long.valueOf(category_id));
+      return getEipTCommonCategory(Long.valueOf(category_id));
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -116,21 +128,16 @@ public class CommonCategoryUtils {
     List<CommonCategoryLiteBean> list = new ArrayList<CommonCategoryLiteBean>();
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      SelectQuery query = new SelectQuery(EipTCommonCategory.class);
+      SelectQuery<EipTCommonCategory> query = Database
+        .query(EipTCommonCategory.class);
 
       Expression exp = ExpressionFactory.noMatchDbExp(
         EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN, Integer.valueOf(1));
-      query.setQualifier(exp);
+      query.setQualifier(exp).orderAscending(EipTCommonCategory.NAME_PROPERTY);
 
-      query.addOrdering(EipTCommonCategory.NAME_PROPERTY, true);
+      List<EipTCommonCategory> commoncategory_list = query.perform();
 
-      List<?> aList = dataContext.performQuery(query);
-
-      int size = aList.size();
-      for (int i = 0; i < size; i++) {
-        EipTCommonCategory record = (EipTCommonCategory) aList.get(i);
+      for (EipTCommonCategory record : commoncategory_list) {
         CommonCategoryLiteBean bean = new CommonCategoryLiteBean();
         bean.initField();
         bean.setCategoryId(record.getCommonCategoryId().longValue());
@@ -162,9 +169,30 @@ public class CommonCategoryUtils {
     ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
       .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-    boolean hasAuthority = aclhandler.hasAuthority(
-      ALEipUtils.getUserId(rundata), pfeature, defineAclType);
+    boolean hasAuthority = aclhandler.hasAuthority(ALEipUtils
+      .getUserId(rundata), pfeature, defineAclType);
 
     return hasAuthority;
+  }
+
+  /**
+   * 指定された共有カテゴリ内の SchaduleMap を「未分類」にカテゴリ変更します。
+   * 
+   * @param category
+   */
+  public static void setDefaultCommonCategoryToSchedule(
+      EipTCommonCategory category) {
+    SelectQuery<EipTScheduleMap> query = Database.query(EipTScheduleMap.class);
+    Expression exp = ExpressionFactory.matchExp(
+      EipTScheduleMap.COMMON_CATEGORY_ID_PROPERTY, category
+        .getCommonCategoryId());
+    List<EipTScheduleMap> schedulemap_list = query.andQualifier(exp).perform();
+    if (schedulemap_list != null) {
+      EipTCommonCategory tmpCategory = CommonCategoryUtils
+        .getEipTCommonCategory(Long.valueOf(1));
+      for (EipTScheduleMap record : schedulemap_list) {
+        record.setEipTCommonCategory(tmpCategory);
+      }
+    }
   }
 }
