@@ -54,7 +54,7 @@ import com.aimluck.eip.util.ALEipUtils;
 /**
  * 伝言メモの検索データを管理するためのクラスです。 <br />
  */
-public class NoteSelectData extends ALAbstractSelectData {
+public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -155,7 +155,7 @@ public class NoteSelectData extends ALAbstractSelectData {
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<?> selectList(RunData rundata, Context context) {
+  protected List<EipTNoteMap> selectList(RunData rundata, Context context) {
 
     try {
       target_group_name = NoteUtils.getTargetGroupName(rundata, context);
@@ -185,7 +185,7 @@ public class NoteSelectData extends ALAbstractSelectData {
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected Object selectDetail(RunData rundata, Context context)
+  protected EipTNote selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException {
     userId = Integer.toString(ALEipUtils.getUserId(rundata));
     setCurrentTab(rundata, context);
@@ -218,9 +218,8 @@ public class NoteSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
   @Override
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipTNoteMap map) {
     try {
-      EipTNoteMap map = (EipTNoteMap) obj;
       EipTNote record = map.getEipTNote();
 
       String destUserNames = getDestUserNamesLimit(record);
@@ -310,15 +309,14 @@ public class NoteSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
   @Override
-  protected Object getResultDataDetail(Object obj) {
-    if (obj == null) {
+  protected Object getResultDataDetail(EipTNote record) {
+    if (record == null) {
       return null;
     }
     try {
       Date nowDate = Calendar.getInstance().getTime();
 
       EipTNoteMap map = null;
-      EipTNote record = (EipTNote) obj;
       Expression mapexp = ExpressionFactory.matchExp(
         EipTNoteMap.NOTE_ID_PROPERTY, record.getNoteId());
       List<EipTNoteMap> list = Database.query(EipTNoteMap.class, mapexp)
