@@ -197,14 +197,14 @@ public class ToDoFormData extends ALAbstractFormData {
     try {
 
       Expression exp1 = ExpressionFactory.matchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN,
-        Integer.valueOf(ALEipUtils.getUserId(rundata)));
+        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(ALEipUtils
+          .getUserId(rundata)));
       Expression exp2 = ExpressionFactory.matchExp(
         EipTTodoCategory.USER_ID_PROPERTY, Integer.valueOf(0));
 
-      List<EipTTodoCategory> categoryList2 = Database
-        .query(EipTTodoCategory.class, exp1).orQualifier(exp2)
-        .orderAscending(EipTTodoCategory.CATEGORY_NAME_PROPERTY).perform();
+      List<EipTTodoCategory> categoryList2 = Database.query(
+        EipTTodoCategory.class, exp1).orQualifier(exp2).orderAscending(
+        EipTTodoCategory.CATEGORY_NAME_PROPERTY).perform();
 
       for (EipTTodoCategory record : categoryList2) {
         ToDoCategoryResultData rd = new ToDoCategoryResultData();
@@ -260,8 +260,8 @@ public class ToDoFormData extends ALAbstractFormData {
       Expression exp3 = ExpressionFactory.matchExp(
         EipTTodoCategory.USER_ID_PROPERTY, Integer.valueOf(this.user_id));
 
-      if (Database.query(EipTTodoCategory.class, exp)
-        .andQualifier(exp2.orExp(exp3)).perform().size() != 0) {
+      if (Database.query(EipTTodoCategory.class, exp).andQualifier(
+        exp2.orExp(exp3)).perform().size() != 0) {
         msgList.add("カテゴリ名『 <span class='em'>" + category_name.toString()
           + "</span> 』は既に登録されています。");
       }
@@ -283,8 +283,8 @@ public class ToDoFormData extends ALAbstractFormData {
       // 締め切り日
       if (end_date.validate(msgList) && isStartDate) {
         try {
-          if (end_date.getValue().getDate()
-            .before(start_date.getValue().getDate())) {
+          if (end_date.getValue().getDate().before(
+            start_date.getValue().getDate())) {
             msgList
               .add("『 <span class='em'>締め切り日</span> 』は『 <span class='em'>開始日</span> 』以降の日付で指定してください。");
           }
@@ -389,8 +389,8 @@ public class ToDoFormData extends ALAbstractFormData {
       Database.commit();
 
       // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler()
-        .log(entityId, ALEventlogConstants.PORTLET_TYPE_TODO, todoName);
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(entityId,
+        ALEventlogConstants.PORTLET_TYPE_TODO, todoName);
 
     } catch (Throwable t) {
       Database.rollback();
@@ -432,8 +432,8 @@ public class ToDoFormData extends ALAbstractFormData {
       // カテゴリID
       todo.setEipTTodoCategory(category);
       // ユーザーID
-      TurbineUser tuser = Database.get(TurbineUser.class,
-        Integer.valueOf(user_id));
+      TurbineUser tuser = Database.get(TurbineUser.class, Integer
+        .valueOf(user_id));
       todo.setTurbineUser(tuser);
       // 開始日
       if (start_date_check.getValue() == null) {
@@ -470,11 +470,9 @@ public class ToDoFormData extends ALAbstractFormData {
       }
 
       // イベントログに保存
-      ALEventlogFactoryService
-        .getInstance()
-        .getEventlogHandler()
-        .log(todo.getTodoId(), ALEventlogConstants.PORTLET_TYPE_TODO,
-          todo_name.getValue());
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        todo.getTodoId(), ALEventlogConstants.PORTLET_TYPE_TODO,
+        todo_name.getValue());
 
     } catch (Throwable t) {
       Database.rollback();
@@ -557,8 +555,8 @@ public class ToDoFormData extends ALAbstractFormData {
       // カテゴリID
       todo.setEipTTodoCategory(category);
       // ユーザーID
-      TurbineUser tuser = Database.get(TurbineUser.class,
-        Integer.valueOf(user_id));
+      TurbineUser tuser = Database.get(TurbineUser.class, Integer
+        .valueOf(user_id));
 
       todo.setTurbineUser(tuser);
       // 開始日
@@ -594,11 +592,9 @@ public class ToDoFormData extends ALAbstractFormData {
         category_id.setValue(category.getCategoryId().longValue());
       }
       // イベントログに保存
-      ALEventlogFactoryService
-        .getInstance()
-        .getEventlogHandler()
-        .log(todo.getTodoId(), ALEventlogConstants.PORTLET_TYPE_TODO,
-          todo_name.getValue());
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        todo.getTodoId(), ALEventlogConstants.PORTLET_TYPE_TODO,
+        todo_name.getValue());
 
     } catch (Throwable t) {
       Database.rollback();

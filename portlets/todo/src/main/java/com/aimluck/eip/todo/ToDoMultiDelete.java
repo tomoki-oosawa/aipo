@@ -63,8 +63,8 @@ public class ToDoMultiDelete extends ALAbstractCheckList {
     try {
 
       Expression exp1 = ExpressionFactory.matchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN,
-        Integer.valueOf(ALEipUtils.getUserId(rundata)));
+        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(ALEipUtils
+          .getUserId(rundata)));
       Expression exp2 = ExpressionFactory.inDbExp(EipTTodo.TODO_ID_PK_COLUMN,
         values);
 
@@ -86,8 +86,8 @@ public class ToDoMultiDelete extends ALAbstractCheckList {
         Database.commit();
 
         // ログに保存
-        ALEventlogFactoryService.getInstance().getEventlogHandler()
-          .log(entityId, ALEventlogConstants.PORTLET_TYPE_TODO, todoName);
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          entityId, ALEventlogConstants.PORTLET_TYPE_TODO, todoName);
       }
     } catch (Throwable t) {
       Database.rollback();

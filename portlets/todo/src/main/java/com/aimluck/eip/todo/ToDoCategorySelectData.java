@@ -115,8 +115,8 @@ public class ToDoCategorySelectData extends
       Context context) {
 
     Expression exp = ExpressionFactory.matchDbExp(
-      TurbineUser.USER_ID_PK_COLUMN,
-      Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(ALEipUtils
+        .getUserId(rundata)));
 
     return Database.query(EipTTodoCategory.class).setQualifier(exp);
   }

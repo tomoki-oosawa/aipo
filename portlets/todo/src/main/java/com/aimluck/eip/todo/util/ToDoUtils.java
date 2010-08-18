@@ -87,8 +87,8 @@ public class ToDoUtils {
       Expression exp = ExpressionFactory.matchDbExp(EipTTodo.TODO_ID_PK_COLUMN,
         todoid);
       exp.andExp(ExpressionFactory.matchDbExp(EipTTodo.TURBINE_USER_PROPERTY
-        + "." + TurbineUser.USER_ID_PK_COLUMN,
-        Integer.valueOf(ALEipUtils.getUserId(rundata))));
+        + "." + TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(ALEipUtils
+        .getUserId(rundata))));
 
       List<EipTTodo> todoList = Database.query(EipTTodo.class, exp).perform();
 
@@ -176,11 +176,11 @@ public class ToDoUtils {
       Expression exp1 = ExpressionFactory.matchDbExp(
         EipTTodoCategory.CATEGORY_ID_PK_COLUMN, categoryid);
       Expression exp2 = ExpressionFactory.matchExp(
-        EipTTodoCategory.USER_ID_PROPERTY,
-        Long.valueOf(ALEipUtils.getUserId(rundata)));
+        EipTTodoCategory.USER_ID_PROPERTY, Long.valueOf(ALEipUtils
+          .getUserId(rundata)));
 
-      List<EipTTodoCategory> categoryList = Database
-        .query(EipTTodoCategory.class, exp1).andQualifier(exp2).perform();
+      List<EipTTodoCategory> categoryList = Database.query(
+        EipTTodoCategory.class, exp1).andQualifier(exp2).perform();
 
       if (categoryList == null || categoryList.size() == 0) {
         // 指定したカテゴリIDのレコードが見つからない場合

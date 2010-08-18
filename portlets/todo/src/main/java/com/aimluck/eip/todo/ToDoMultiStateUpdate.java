@@ -60,13 +60,13 @@ public class ToDoMultiStateUpdate extends ALAbstractCheckList {
     try {
 
       Expression exp1 = ExpressionFactory.matchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN,
-        Integer.valueOf(ALEipUtils.getUserId(rundata)));
+        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(ALEipUtils
+          .getUserId(rundata)));
       Expression exp2 = ExpressionFactory.inDbExp(EipTTodo.TODO_ID_PK_COLUMN,
         values);
 
-      List<EipTTodo> todoList = Database.query(EipTTodo.class)
-        .setQualifier(exp1).andQualifier(exp2).perform();
+      List<EipTTodo> todoList = Database.query(EipTTodo.class).setQualifier(
+        exp1).andQualifier(exp2).perform();
 
       if (todoList == null || todoList.size() == 0) {
         return false;

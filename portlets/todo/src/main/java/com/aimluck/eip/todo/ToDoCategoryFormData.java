@@ -218,12 +218,10 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
       Database.commit();
 
       // イベントログに保存
-      ALEventlogFactoryService
-        .getInstance()
-        .getEventlogHandler()
-        .log(category.getCategoryId(),
-          ALEventlogConstants.PORTLET_TYPE_TODO_CATEGORY,
-          category_name.getValue());
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        category.getCategoryId(),
+        ALEventlogConstants.PORTLET_TYPE_TODO_CATEGORY,
+        category_name.getValue());
 
     } catch (Throwable t) {
       Database.rollback();
@@ -267,12 +265,10 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
       Database.commit();
 
       // イベントログに保存
-      ALEventlogFactoryService
-        .getInstance()
-        .getEventlogHandler()
-        .log(category.getCategoryId(),
-          ALEventlogConstants.PORTLET_TYPE_TODO_CATEGORY,
-          category_name.getValue());
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        category.getCategoryId(),
+        ALEventlogConstants.PORTLET_TYPE_TODO_CATEGORY,
+        category_name.getValue());
 
     } catch (Throwable t) {
       Database.rollback();
@@ -313,11 +309,8 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
       Database.commit();
 
       // ログに保存
-      ALEventlogFactoryService
-        .getInstance()
-        .getEventlogHandler()
-        .log(entityId, ALEventlogConstants.PORTLET_TYPE_TODO_CATEGORY,
-          categoryName);
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(entityId,
+        ALEventlogConstants.PORTLET_TYPE_TODO_CATEGORY, categoryName);
 
       // 一覧表示画面のフィルタに設定されているカテゴリのセッション情報を削除
       String filtername = ToDoSelectData.class.getName()

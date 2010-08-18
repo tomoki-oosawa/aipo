@@ -202,7 +202,8 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
       ToDoResultData rd = new ToDoResultData();
       rd.initField();
       rd.setTodoId(record.getTodoId().intValue());
-      rd.setCategoryId(record.getEipTTodoCategory().getCategoryId().longValue());
+      rd.setCategoryId((int) record.getEipTTodoCategory().getCategoryId()
+        .longValue());
 
       rd.setCategoryName(ALCommonUtils.compressString(record
         .getEipTTodoCategory().getCategoryName(), getStrLength()));

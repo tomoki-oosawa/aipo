@@ -98,9 +98,9 @@ public class ToDoPublicSelectData extends ALAbstractSelectData<EipTTodo> {
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
-        ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-          .getInitParameter("p3b-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
+        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
+          "p3b-sort"));
       logger.debug("[ToDoPublicSelectData] Init Parameter. : "
         + ALEipUtils.getPortlet(rundata, context).getPortletConfig()
           .getInitParameter("p3b-sort"));
@@ -243,9 +243,9 @@ public class ToDoPublicSelectData extends ALAbstractSelectData<EipTTodo> {
       // 登録ユーザ名の設定
       ALBaseUser createdUser = ALEipUtils.getBaseUser(record.getTurbineUser()
         .getUserId().intValue());
-      String createdUserName = new StringBuffer()
-        .append(createdUser.getLastName()).append(" ")
-        .append(createdUser.getFirstName()).toString();
+      String createdUserName = new StringBuffer().append(
+        createdUser.getLastName()).append(" ").append(
+        createdUser.getFirstName()).toString();
 
       ToDoPublicResultData rd = new ToDoPublicResultData();
       rd.initField();
@@ -289,9 +289,9 @@ public class ToDoPublicSelectData extends ALAbstractSelectData<EipTTodo> {
       // 登録ユーザ名の設定
       ALBaseUser createdUser = ALEipUtils.getBaseUser(record.getTurbineUser()
         .getUserId().intValue());
-      String createdUserName = new StringBuffer()
-        .append(createdUser.getLastName()).append(" ")
-        .append(createdUser.getFirstName()).toString();
+      String createdUserName = new StringBuffer().append(
+        createdUser.getLastName()).append(" ").append(
+        createdUser.getFirstName()).toString();
 
       ToDoPublicResultData rd = new ToDoPublicResultData();
       rd.initField();

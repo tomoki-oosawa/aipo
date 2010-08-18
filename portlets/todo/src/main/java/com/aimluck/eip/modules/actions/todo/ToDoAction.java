@@ -242,11 +242,10 @@ public class ToDoAction extends ALBaseAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-      .getPortlet(rundata, context).getPortletConfig()
-      .getInitParameter("p1b-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils
-      .getPortlet(rundata, context).getPortletConfig()
-      .getInitParameter("p4a-strlen")));
+      .getPortlet(rundata, context).getPortletConfig().getInitParameter(
+        "p1b-rows")));
+    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
+      context).getPortletConfig().getInitParameter("p4a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "todo-list");
   }
@@ -283,11 +282,10 @@ public class ToDoAction extends ALBaseAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-      .getPortlet(rundata, context).getPortletConfig()
-      .getInitParameter("p1b-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils
-      .getPortlet(rundata, context).getPortletConfig()
-      .getInitParameter("p4a-strlen")));
+      .getPortlet(rundata, context).getPortletConfig().getInitParameter(
+        "p1b-rows")));
+    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
+      context).getPortletConfig().getInitParameter("p4a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "todo-public-list");
   }
