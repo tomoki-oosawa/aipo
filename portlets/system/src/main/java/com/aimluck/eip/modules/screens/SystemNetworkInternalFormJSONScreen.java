@@ -30,12 +30,13 @@ import com.aimluck.eip.system.SystemNetworkInternalFormData;
 
 /**
  * SystemNetworkInternalFormJSONScreen
- *
+ * 
  */
 public class SystemNetworkInternalFormJSONScreen extends ALJSONScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(SystemNetworkInternalFormJSONScreen.class.getName());
+    .getLogger(SystemNetworkInternalFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -49,7 +50,7 @@ public class SystemNetworkInternalFormJSONScreen extends ALJSONScreen {
       if (formData.doUpdate(this, rundata, context)) {
       } else {
         JSONArray json = JSONArray.fromObject(context
-            .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          .get(ALEipConstants.ERROR_MESSAGE_LIST));
         result = json.toString();
       }
 

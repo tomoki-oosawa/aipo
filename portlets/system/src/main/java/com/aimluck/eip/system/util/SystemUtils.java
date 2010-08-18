@@ -20,10 +20,8 @@ package com.aimluck.eip.system.util;
 
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
@@ -33,7 +31,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.cayenne.om.portlet.EipMMybox;
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -42,14 +40,14 @@ public class SystemUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(SystemUtils.class.getName());
+    .getLogger(SystemUtils.class.getName());
 
   /** Webアプリケーションサーバのポート番号 */
   private static final int WEBAPPSERVER_PORT = JetspeedResources.getInt(
-      "aipo.webappserver.port", 80);
+    "aipo.webappserver.port", 80);
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -62,21 +60,16 @@ public class SystemUtils {
         return result;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipMMybox.class);
       Expression exp = ExpressionFactory.matchDbExp(
-          EipMMybox.EIP_MCOMPANY_PROPERTY + "."
-              + EipMCompany.COMPANY_ID_PK_COLUMN, Integer.valueOf(company_id));
-      query.setQualifier(exp);
+        EipMMybox.EIP_MCOMPANY_PROPERTY + "."
+          + EipMCompany.COMPANY_ID_PK_COLUMN, Integer.valueOf(company_id));
 
-      @SuppressWarnings("unchecked")
-      List<EipMMybox> list = dataContext.performQuery(query);
+      List<EipMMybox> list = Database.query(EipMMybox.class, exp).perform();
       if (list == null || list.size() == 0) {
         logger.debug("Not found ID...");
         return result;
       }
-      result = (EipMMybox) list.get(0);
+      result = list.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
     }
@@ -84,7 +77,7 @@ public class SystemUtils {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -98,20 +91,15 @@ public class SystemUtils {
         return result;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipMCompany.class);
       Expression exp = ExpressionFactory.matchDbExp(
-          EipMCompany.COMPANY_ID_PK_COLUMN, Integer.valueOf(id));
-      query.setQualifier(exp);
+        EipMCompany.COMPANY_ID_PK_COLUMN, Integer.valueOf(id));
 
-      @SuppressWarnings("unchecked")
-      List<EipMCompany> list = dataContext.performQuery(query);
+      List<EipMCompany> list = Database.query(EipMCompany.class, exp).perform();
       if (list == null || list.size() == 0) {
         logger.debug("Not found ID...");
         return result;
       }
-      result = (EipMCompany) list.get(0);
+      result = list.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
     }
@@ -120,7 +108,7 @@ public class SystemUtils {
 
   /**
    * Webアプリケーションサーバのポート番号を取得する。
-   *
+   * 
    * @return
    */
   public static int getServerPort() {
@@ -128,28 +116,29 @@ public class SystemUtils {
   }
 
   /**
-   *
+   * 
    * @param ip
    * @param port
    * @param servername
-   *            Webアプリケーション名
+   *          Webアプリケーション名
    * @return
    */
   public static String getUrl(String ip, int port, String servername) {
-    if (ip == null || ip.length() == 0 || port == -1)
+    if (ip == null || ip.length() == 0 || port == -1) {
       return "";
+    }
 
     String protocol = JetspeedResources
-        .getString("access.url.protocol", "http");
+      .getString("access.url.protocol", "http");
 
     StringBuffer url = new StringBuffer();
 
     if (port == 80) {
       url.append(protocol).append("://").append(ip).append("/").append(
-          servername).append("/");
+        servername).append("/");
     } else {
       url.append(protocol).append("://").append(ip).append(":").append(port)
-          .append("/").append(servername).append("/");
+        .append("/").append(servername).append("/");
     }
 
     return url.toString();

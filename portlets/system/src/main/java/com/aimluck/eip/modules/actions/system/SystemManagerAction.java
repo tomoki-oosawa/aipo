@@ -33,7 +33,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * システム管理画面を制御するアクションクラスです。
- *
+ * 
  */
 public class SystemManagerAction extends ALBaseAction {
 
@@ -42,13 +42,14 @@ public class SystemManagerAction extends ALBaseAction {
    */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(SystemManagerAction.class.getName());
+    .getLogger(SystemManagerAction.class.getName());
 
   /**
-   *
+   * 
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
     if (getMode() == null) {
@@ -58,7 +59,7 @@ public class SystemManagerAction extends ALBaseAction {
 
   /**
    * ネットワーク情報を表示する． <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -75,7 +76,7 @@ public class SystemManagerAction extends ALBaseAction {
 
   /**
    * ネットワーク情報を登録するフォームを表示する． <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -94,7 +95,7 @@ public class SystemManagerAction extends ALBaseAction {
 
   /**
    * ネットワーク情報を更新する． <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -118,7 +119,7 @@ public class SystemManagerAction extends ALBaseAction {
 
   /**
    * バージョン情報を表示する． <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception

@@ -30,18 +30,20 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.common.ALAbstractSelectData;
 
 /**
+ *
  */
 public class SystemVersionSelectData extends ALAbstractSelectData<String> {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(SystemVersionSelectData.class.getName());
+    .getLogger(SystemVersionSelectData.class.getName());
 
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected List<String> selectList(RunData rundata, Context context) {
     return null;
   }
@@ -50,6 +52,7 @@ public class SystemVersionSelectData extends ALAbstractSelectData<String> {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected String selectDetail(RunData rundata, Context context) {
     return JetspeedResources.getString("aipo.version", "");
   }
@@ -57,6 +60,7 @@ public class SystemVersionSelectData extends ALAbstractSelectData<String> {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(String license) {
     return null;
   }
@@ -64,6 +68,7 @@ public class SystemVersionSelectData extends ALAbstractSelectData<String> {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(String license) {
     return license;
   }
@@ -71,6 +76,7 @@ public class SystemVersionSelectData extends ALAbstractSelectData<String> {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     return null;
   }

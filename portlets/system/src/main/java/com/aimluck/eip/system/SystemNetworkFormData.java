@@ -20,7 +20,6 @@ package com.aimluck.eip.system;
 
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -34,18 +33,18 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.system.util.SystemUtils;
 
 /**
  * 『ネットワーク情報』のフォームデータを管理するクラス．
- *
+ * 
  */
 public class SystemNetworkFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(SystemNetworkFormData.class.getName());
+    .getLogger(SystemNetworkFormData.class.getName());
 
   /** IP アドレス（グローバル） */
   private ALStringField ipaddress;
@@ -53,26 +52,23 @@ public class SystemNetworkFormData extends ALAbstractFormData {
   /** ポート番号 */
   private ALNumberField port;
 
-  private DataContext dataContext;
-
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   /**
    * 各フィールドを初期化する．
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -90,9 +86,10 @@ public class SystemNetworkFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドに対する制約条件を設定する．
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // IP アドレス（グローバル）
     ipaddress.setNotNull(true);
@@ -103,11 +100,12 @@ public class SystemNetworkFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性を検証します．
-   *
+   * 
    * @param msgList
    * @return
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
 
     ipaddress.validate(msgList);
@@ -117,8 +115,8 @@ public class SystemNetworkFormData extends ALAbstractFormData {
   }
 
   /**
-   *
-   *
+   * 
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -126,13 +124,15 @@ public class SystemNetworkFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipMCompany record = SystemUtils.getEipMCompany(rundata, context);
-      if (record == null)
+      if (record == null) {
         return false;
+      }
 
       // IP アドレス（グローバル）
       ipaddress.setValue(record.getIpaddress());
@@ -147,8 +147,8 @@ public class SystemNetworkFormData extends ALAbstractFormData {
   }
 
   /**
-   *
-   *
+   * 
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -156,14 +156,15 @@ public class SystemNetworkFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
   }
 
   /**
-   *
-   *
+   * 
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -171,13 +172,15 @@ public class SystemNetworkFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipMCompany record = SystemUtils.getEipMCompany(rundata, context);
-      if (record == null)
+      if (record == null) {
         return false;
+      }
 
       // IP アドレス（グローバル）
       record.setIpaddress(ipaddress.getValue());
@@ -185,12 +188,13 @@ public class SystemNetworkFormData extends ALAbstractFormData {
       record.setPort(Integer.valueOf((int) port.getValue()));
 
       // 会社を更新
-      dataContext.commitChanges();
+      Database.commit();
 
       // singletonの更新
       ALEipManager.getInstance().reloadCompany();
 
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -198,8 +202,8 @@ public class SystemNetworkFormData extends ALAbstractFormData {
   }
 
   /**
-   *
-   *
+   * 
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -207,6 +211,7 @@ public class SystemNetworkFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -214,7 +219,7 @@ public class SystemNetworkFormData extends ALAbstractFormData {
 
   /**
    * IP アドレスを取得する．
-   *
+   * 
    * @return
    */
   public ALStringField getIpaddress() {
@@ -223,7 +228,7 @@ public class SystemNetworkFormData extends ALAbstractFormData {
 
   /**
    * ポート番号を取得する．
-   *
+   * 
    * @return
    */
   public ALNumberField getPort() {

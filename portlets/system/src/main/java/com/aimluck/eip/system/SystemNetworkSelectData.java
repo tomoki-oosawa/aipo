@@ -36,11 +36,13 @@ import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.system.util.SystemUtils;
 
 /**
+ *
  */
 public class SystemNetworkSelectData extends ALAbstractSelectData<EipMCompany> {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(SystemNetworkSelectData.class.getName());
+    .getLogger(SystemNetworkSelectData.class.getName());
 
   private String servername;
 
@@ -50,6 +52,7 @@ public class SystemNetworkSelectData extends ALAbstractSelectData<EipMCompany> {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected List<EipMCompany> selectList(RunData rundata, Context context) {
     return null;
   }
@@ -58,11 +61,12 @@ public class SystemNetworkSelectData extends ALAbstractSelectData<EipMCompany> {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected EipMCompany selectDetail(RunData rundata, Context context) {
     servername = rundata.getServletConfig().getServletName();
 
     String company_id = rundata.getParameters().getString(
-        DatabaseOrmService.ORG_PRE, "");
+      DatabaseOrmService.ORG_PRE, "");
     if (company_id == null || "".equals(company_id)) {
       endword = "";
     } else {
@@ -74,6 +78,7 @@ public class SystemNetworkSelectData extends ALAbstractSelectData<EipMCompany> {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(EipMCompany record) {
     return null;
   }
@@ -81,6 +86,7 @@ public class SystemNetworkSelectData extends ALAbstractSelectData<EipMCompany> {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(EipMCompany record) {
 
     // Aipoサイト情報の取得
@@ -92,7 +98,7 @@ public class SystemNetworkSelectData extends ALAbstractSelectData<EipMCompany> {
       String ipaddress = record.getIpaddressInternal();
       if (null == ipaddress || "".equals(ipaddress)) {
         Enumeration<NetworkInterface> enuIfs = NetworkInterface
-            .getNetworkInterfaces();
+          .getNetworkInterfaces();
         if (null != enuIfs) {
           while (enuIfs.hasMoreElements()) {
             NetworkInterface ni = enuIfs.nextElement();
@@ -114,13 +120,13 @@ public class SystemNetworkSelectData extends ALAbstractSelectData<EipMCompany> {
       }
 
       localurl = SystemUtils.getUrl(ipaddress, port_internal, servername)
-          + endword;
+        + endword;
       // InetAddress.getLocalHost().getHostAddress(), SystemUtils
       // .getServerPort(), servername) + endword;
 
       String globalurl = SystemUtils.getUrl(record.getIpaddress(), record
-          .getPort().intValue(), servername)
-          + endword;
+        .getPort().intValue(), servername)
+        + endword;
 
       rd.setLocalUrl(localurl);
       rd.setGlobalUrl(globalurl);
@@ -136,8 +142,8 @@ public class SystemNetworkSelectData extends ALAbstractSelectData<EipMCompany> {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
-    // TODO 自動生成されたメソッド・スタブ
     return null;
   }
 
