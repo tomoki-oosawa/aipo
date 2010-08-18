@@ -42,17 +42,17 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ToDoのアクションクラスです。 <BR>
- *
+ * 
  */
 public class ToDoAction extends ALBaseAction {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ToDoAction.class.getName());
+    .getLogger(ToDoAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
@@ -60,6 +60,7 @@ public class ToDoAction extends ALBaseAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
     // HttpServletRequest request = rundata.getRequest();
@@ -74,20 +75,21 @@ public class ToDoAction extends ALBaseAction {
     ToDoSelectData listData = new ToDoSelectData();
     listData.initField();
     listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
-        .getInitParameter("p1a-rows")));
+      .getInitParameter("p1a-rows")));
     listData.setStrLength(Integer.parseInt(portlet.getPortletConfig()
-        .getInitParameter("p4a-strlen")));
+      .getInitParameter("p4a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "todo");
   }
 
   /**
    * 最大化表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
 
@@ -118,7 +120,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * ToDo登録のフォームを表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -134,7 +136,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * ToDoを登録します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -161,7 +163,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * ToDoを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -186,7 +188,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * ToDoを削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -208,7 +210,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * ToDoを削除します。（複数） <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -228,7 +230,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * ToDoを一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -240,18 +242,18 @@ public class ToDoAction extends ALBaseAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig()
-        .getInitParameter("p1b-rows")));
+      .getPortlet(rundata, context).getPortletConfig()
+      .getInitParameter("p1b-rows")));
     listData.setStrLength(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig()
-        .getInitParameter("p4a-strlen")));
+      .getPortlet(rundata, context).getPortletConfig()
+      .getInitParameter("p4a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "todo-list");
   }
 
   /**
    * ToDoを詳細表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -268,7 +270,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * 公開ToDoの一覧を表示します． <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -281,18 +283,18 @@ public class ToDoAction extends ALBaseAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig()
-        .getInitParameter("p1b-rows")));
+      .getPortlet(rundata, context).getPortletConfig()
+      .getInitParameter("p1b-rows")));
     listData.setStrLength(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig()
-        .getInitParameter("p4a-strlen")));
+      .getPortlet(rundata, context).getPortletConfig()
+      .getInitParameter("p4a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "todo-public-list");
   }
 
   /**
    * 公開 ToDo の詳細を表示する．
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -311,7 +313,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * ToDoの状態を完了にします。（複数） <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -325,7 +327,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * カテゴリ登録のフォームを表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -340,7 +342,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * カテゴリを登録します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -366,7 +368,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * カテゴリを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -391,7 +393,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * カテゴリを削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -414,7 +416,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * カテゴリを削除します。（複数） <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -434,7 +436,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * カテゴリを一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -448,7 +450,7 @@ public class ToDoAction extends ALBaseAction {
       // PSMLからパラメータをロードする
       // 最大表示件数（通常時）
       listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
-          .getInitParameter("p1c-rows")));
+        .getInitParameter("p1c-rows")));
 
       listData.doViewList(this, rundata, context);
       setTemplate(rundata, "todo-category-list");
@@ -459,7 +461,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * カテゴリを詳細表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -482,7 +484,7 @@ public class ToDoAction extends ALBaseAction {
 
   /**
    * ToDoの状態を更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception

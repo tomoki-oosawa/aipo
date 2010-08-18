@@ -21,10 +21,8 @@ package com.aimluck.eip.todo;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -37,7 +35,8 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -46,13 +45,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ToDoカテゴリのフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class ToDoCategoryFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ToDoCategoryFormData.class.getName());
+    .getLogger(ToDoCategoryFormData.class.getName());
 
   /** カテゴリ名 */
   private ALStringField category_name;
@@ -62,35 +61,33 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
 
   private Integer category_id;
 
-  private DataContext dataContext;
-
   /** ログインユーザーのID * */
   private int user_id;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
     String categoryid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+      ALEipConstants.ENTITY_ID);
     if (categoryid != null && Integer.valueOf(categoryid) != null) {
       category_id = Integer.valueOf(categoryid);
     }
 
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
     user_id = ALEipUtils.getUserId(rundata);
   }
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -106,9 +103,10 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
 
   /**
    * ToDoカテゴリの各フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // カテゴリ名必須項目
     category_name.setNotNull(true);
@@ -120,27 +118,29 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
 
   /**
    * ToDoカテゴリのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     try {
-      SelectQuery query = new SelectQuery(EipTTodoCategory.class);
+      SelectQuery<EipTTodoCategory> query = Database
+        .query(EipTTodoCategory.class);
 
       Expression exp = ExpressionFactory.matchExp(
-          EipTTodoCategory.CATEGORY_NAME_PROPERTY, category_name.getValue());
+        EipTTodoCategory.CATEGORY_NAME_PROPERTY, category_name.getValue());
 
       Expression exp2 = ExpressionFactory.matchExp(
-          EipTTodoCategory.USER_ID_PROPERTY, Integer.valueOf(0));
+        EipTTodoCategory.USER_ID_PROPERTY, Integer.valueOf(0));
 
       Expression exp3 = ExpressionFactory.matchExp(
-          EipTTodoCategory.USER_ID_PROPERTY, Integer.valueOf(this.user_id));
+        EipTTodoCategory.USER_ID_PROPERTY, Integer.valueOf(this.user_id));
 
       if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
         Expression exp4 = ExpressionFactory.noMatchDbExp(
-            EipTTodoCategory.CATEGORY_ID_PK_COLUMN, category_id);
+          EipTTodoCategory.CATEGORY_ID_PK_COLUMN, category_id);
         // exp AND (exp4 AND (exp3 OR exp2))
         query.setQualifier(exp4.andExp(exp.andExp(exp3.orExp(exp2))));
       } else {
@@ -148,9 +148,9 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
         query.setQualifier(exp.andExp(exp2.orExp(exp3)));
       }
 
-      if (dataContext.performQuery(query).size() != 0) {
+      if (query.perform().size() != 0) {
         msgList.add("カテゴリ名『 <span class='em'>" + category_name.toString()
-            + "</span> 』は既に登録されています。");
+          + "</span> 』は既に登録されています。");
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -166,7 +166,7 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
 
   /**
    * ToDoカテゴリをデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -174,14 +174,16 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTTodoCategory category = ToDoUtils.getEipTTodoCategory(rundata,
-          context);
-      if (category == null)
+        context);
+      if (category == null) {
         return false;
+      }
       // カテゴリ名
       category_name.setValue(category.getCategoryName());
       // メモ
@@ -195,7 +197,7 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
 
   /**
    * ToDoカテゴリをデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -203,32 +205,38 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
-      EipTTodoCategory category = (EipTTodoCategory) dataContext
-          .createAndRegisterNewObject(EipTTodoCategory.class);
+      EipTTodoCategory category = Database.create(EipTTodoCategory.class);
       category.setCategoryName(category_name.getValue());
       category.setNote(note.getValue());
       category.setUserId(Integer.valueOf(ALEipUtils.getUserId(rundata)));
       category.setCreateDate(Calendar.getInstance().getTime());
       category.setUpdateDate(Calendar.getInstance().getTime());
-      dataContext.commitChanges();
+      Database.commit();
+
       // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          (int) category.getCategoryId(),
+      ALEventlogFactoryService
+        .getInstance()
+        .getEventlogHandler()
+        .log(category.getCategoryId(),
           ALEventlogConstants.PORTLET_TYPE_TODO_CATEGORY,
           category_name.getValue());
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
+
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error(t);
       return false;
     }
+
     return true;
   }
 
   /**
    * データベースに格納されているToDoカテゴリを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -236,14 +244,16 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTTodoCategory category = ToDoUtils.getEipTTodoCategory(rundata,
-          context);
-      if (category == null)
+        context);
+      if (category == null) {
         return false;
+      }
       // カテゴリ名
       category.setCategoryName(category_name.getValue());
       // メモ
@@ -254,15 +264,19 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
       category.setUpdateDate(Calendar.getInstance().getTime());
 
       // Todoカテゴリを更新
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          (int) category.getCategoryId(),
+      ALEventlogFactoryService
+        .getInstance()
+        .getEventlogHandler()
+        .log(category.getCategoryId(),
           ALEventlogConstants.PORTLET_TYPE_TODO_CATEGORY,
           category_name.getValue());
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
+
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error(t);
       return false;
     }
     return true;
@@ -270,7 +284,7 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
 
   /**
    * ToDoカテゴリを削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -278,14 +292,16 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTTodoCategory category = ToDoUtils.getEipTTodoCategory(rundata,
-          context);
-      if (category == null)
+        context);
+      if (category == null) {
         return false;
+      }
 
       // entityIdを取得
       Integer entityId = category.getCategoryId();
@@ -293,19 +309,24 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
       String categoryName = category.getCategoryName();
 
       // Todoカテゴリを削除
-      dataContext.deleteObject(category);
-      dataContext.commitChanges();
+      Database.delete(category);
+      Database.commit();
 
       // ログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(entityId,
-          ALEventlogConstants.PORTLET_TYPE_TODO_CATEGORY, categoryName);
+      ALEventlogFactoryService
+        .getInstance()
+        .getEventlogHandler()
+        .log(entityId, ALEventlogConstants.PORTLET_TYPE_TODO_CATEGORY,
+          categoryName);
 
       // 一覧表示画面のフィルタに設定されているカテゴリのセッション情報を削除
       String filtername = ToDoSelectData.class.getName()
-          + ALEipConstants.LIST_FILTER;
+        + ALEipConstants.LIST_FILTER;
       ALEipUtils.removeTemp(rundata, context, filtername);
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
+
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error(t);
       return false;
     }
     return true;
@@ -313,7 +334,7 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
 
   /**
    * カテゴリ名を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getCategoryName() {
@@ -322,7 +343,7 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getNote() {
@@ -332,9 +353,10 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_TODO_CATEGORY_SELF;
   }

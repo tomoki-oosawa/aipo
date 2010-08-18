@@ -20,7 +20,6 @@ package com.aimluck.eip.todo;
 
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -29,26 +28,26 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.common.ALAbstractFormData;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.todo.util.ToDoUtils;
 
 /**
  * ToDoの状態を更新するクラスです。 <BR>
- *
+ * 
  */
 public class ToDoStateUpdateData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ToDoStateUpdateData.class.getName());
+    .getLogger(ToDoStateUpdateData.class.getName());
 
   /** 状態 */
   private ALNumberField state;
 
   /**
    * フィールドを初期化します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -59,9 +58,10 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
 
   /**
    * 状態フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // 0 から 100 まで
     state.limitValue(0, 100);
@@ -71,11 +71,12 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
 
   /**
    * 入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     int value = (int) state.getValue();
     // 0以上100以下で、10の倍数
@@ -83,7 +84,7 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -91,13 +92,14 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -105,6 +107,7 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -112,7 +115,7 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
 
   /**
    * 状態を更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -120,28 +123,28 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
-      // オブジェクトモデルを取得
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
       EipTTodo todo = ToDoUtils.getEipTTodo(rundata, context, false);
-      if (todo == null)
+      if (todo == null) {
         return false;
+      }
       todo.setState(Short.valueOf((short) state.getValue()));
 
       // Todoを更新
-      dataContext.commitChanges();
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
+      Database.commit();
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error(t);
       return false;
     }
     return true;
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -149,6 +152,7 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -156,7 +160,7 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
 
   /**
    * 状態を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALNumberField getState() {
@@ -166,9 +170,10 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF;
   }

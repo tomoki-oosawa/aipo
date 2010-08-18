@@ -31,12 +31,13 @@ import com.aimluck.eip.todo.ToDoCategoryMultiDelete;
 
 /**
  * ToDoカテゴリをJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class ToDoCategoryFormJSONScreen extends ALJSONScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ToDoCategoryFormJSONScreen.class.getName());
+    .getLogger(ToDoCategoryFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -52,7 +53,7 @@ public class ToDoCategoryFormJSONScreen extends ALJSONScreen {
         if (formData.doInsert(this, rundata, context)) {
         } else {
           JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+            .get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
 
@@ -63,7 +64,7 @@ public class ToDoCategoryFormJSONScreen extends ALJSONScreen {
         if (formData.doUpdate(this, rundata, context)) {
         } else {
           JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+            .get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
@@ -73,7 +74,7 @@ public class ToDoCategoryFormJSONScreen extends ALJSONScreen {
         if (formData.doDelete(this, rundata, context)) {
         } else {
           JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+            .get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if ("multi_delete".equals(mode)) {
@@ -82,7 +83,7 @@ public class ToDoCategoryFormJSONScreen extends ALJSONScreen {
         if (delete.doMultiAction(this, rundata, context)) {
         } else {
           JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+            .get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       }

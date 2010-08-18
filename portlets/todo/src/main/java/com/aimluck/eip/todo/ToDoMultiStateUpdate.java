@@ -20,7 +20,6 @@ package com.aimluck.eip.todo;
 
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -31,20 +30,19 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractCheckList;
-import com.aimluck.eip.orm.DatabaseOrmService;
-import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 複数のToDoの状態を更新するクラスです
- *
+ * 
  */
 public class ToDoMultiStateUpdate extends ALAbstractCheckList {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ToDoMultiStateUpdate.class.getName());
+    .getLogger(ToDoMultiStateUpdate.class.getName());
 
   /**
    * @param rundata
@@ -56,35 +54,32 @@ public class ToDoMultiStateUpdate extends ALAbstractCheckList {
    *      org.apache.velocity.context.Context, java.util.ArrayList,
    *      java.util.ArrayList)
    */
+  @Override
   protected boolean action(RunData rundata, Context context,
       List<String> values, List<String> msgList) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
 
-      SelectQuery<EipTTodo> query = new SelectQuery<EipTTodo>(EipTTodo.class);
       Expression exp1 = ExpressionFactory.matchDbExp(
-          TurbineUser.USER_ID_PK_COLUMN,
-          Integer.valueOf(ALEipUtils.getUserId(rundata)));
-      query.setQualifier(exp1);
+        TurbineUser.USER_ID_PK_COLUMN,
+        Integer.valueOf(ALEipUtils.getUserId(rundata)));
       Expression exp2 = ExpressionFactory.inDbExp(EipTTodo.TODO_ID_PK_COLUMN,
-          values);
-      query.andQualifier(exp2);
+        values);
 
-      List<EipTTodo> todolist = query.perform();
-      if (todolist == null || todolist.size() == 0)
+      List<EipTTodo> todoList = Database.query(EipTTodo.class)
+        .setQualifier(exp1).andQualifier(exp2).perform();
+
+      if (todoList == null || todoList.size() == 0) {
         return false;
+      }
 
-      EipTTodo todo = null;
-      int size = todolist.size();
-      for (int i = 0; i < size; i++) {
-        todo = (EipTTodo) todolist.get(i);
+      for (EipTTodo todo : todoList) {
         todo.setState(Short.valueOf((short) 100));
       }
 
-      dataContext.commitChanges();
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
+      Database.commit();
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error(t);
       return false;
     }
     return true;
@@ -93,9 +88,10 @@ public class ToDoMultiStateUpdate extends ALAbstractCheckList {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限を返します。
-   *
+   * 
    * @return
    */
+  @Override
   protected int getDefineAclType() {
     return ALAccessControlConstants.VALUE_ACL_UPDATE;
   }
@@ -103,9 +99,10 @@ public class ToDoMultiStateUpdate extends ALAbstractCheckList {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF;
   }

@@ -20,7 +20,6 @@ package com.aimluck.eip.todo;
 
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -31,8 +30,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractCheckList;
-import com.aimluck.eip.orm.DatabaseOrmService;
-import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -40,16 +38,16 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ToDoの複数削除を行うためのクラスです。 <BR>
- *
+ * 
  */
 public class ToDoMultiDelete extends ALAbstractCheckList {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ToDoMultiDelete.class.getName());
+    .getLogger(ToDoMultiDelete.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param values
@@ -59,44 +57,41 @@ public class ToDoMultiDelete extends ALAbstractCheckList {
    *      org.apache.velocity.context.Context, java.util.ArrayList,
    *      java.util.ArrayList)
    */
+  @Override
   protected boolean action(RunData rundata, Context context,
       List<String> values, List<String> msgList) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
 
-      SelectQuery<EipTTodo> query = new SelectQuery<EipTTodo>(EipTTodo.class);
       Expression exp1 = ExpressionFactory.matchDbExp(
-          TurbineUser.USER_ID_PK_COLUMN,
-          Integer.valueOf(ALEipUtils.getUserId(rundata)));
-      query.setQualifier(exp1);
+        TurbineUser.USER_ID_PK_COLUMN,
+        Integer.valueOf(ALEipUtils.getUserId(rundata)));
       Expression exp2 = ExpressionFactory.inDbExp(EipTTodo.TODO_ID_PK_COLUMN,
-          values);
-      query.andQualifier(exp2);
+        values);
 
-      List<EipTTodo> todolist = query.perform();
-      if (todolist == null || todolist.size() == 0)
+      List<EipTTodo> todoList = Database.query(EipTTodo.class, exp1)
+        .andQualifier(exp2).perform();
+      if (todoList == null || todoList.size() == 0) {
         return false;
+      }
 
-      int todolistsize = todolist.size();
-      for (int i = 0; i < todolistsize; i++) {
-        EipTTodo todo = (EipTTodo) todolist.get(i);
+      for (EipTTodo todo : todoList) {
 
         // entityIdを取得
         Integer entityId = todo.getTodoId();
         // カテゴリ名を取得
         String todoName = todo.getTodoName();
 
-        // Todoカテゴリを削除
-        dataContext.deleteObject(todo);
-        dataContext.commitChanges();
+        // Todoを削除
+        Database.delete(todo);
+        Database.commit();
 
         // ログに保存
         ALEventlogFactoryService.getInstance().getEventlogHandler()
-            .log(entityId, ALEventlogConstants.PORTLET_TYPE_TODO, todoName);
+          .log(entityId, ALEventlogConstants.PORTLET_TYPE_TODO, todoName);
       }
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error(t);
       return false;
     }
     return true;
@@ -105,9 +100,10 @@ public class ToDoMultiDelete extends ALAbstractCheckList {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限を返します。
-   *
+   * 
    * @return
    */
+  @Override
   protected int getDefineAclType() {
     return ALAccessControlConstants.VALUE_ACL_DELETE;
   }
@@ -115,9 +111,10 @@ public class ToDoMultiDelete extends ALAbstractCheckList {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF;
   }

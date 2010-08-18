@@ -27,15 +27,16 @@ import com.aimluck.eip.util.ALCellularUtils;
 
 /**
  * ToDo検索データを管理するクラス <BR>
- *
+ * 
  */
 public class CellToDoSelectData extends ToDoSelectData implements ALData {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CellToDoSelectData.class.getName());
+    .getLogger(CellToDoSelectData.class.getName());
 
+  @Override
   protected String getPortletURItoSchedule(RunData rundata,
       String schedulePortletId) {
     return ALCellularUtils.getPortletURIForCell(rundata, schedulePortletId);

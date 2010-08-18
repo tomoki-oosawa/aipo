@@ -39,6 +39,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.todo.util.ToDoUtils;
@@ -47,14 +48,14 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ToDo検索データを管理するクラスです。 <BR>
- *
+ * 
  */
 public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
     ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ToDoSelectData.class.getName());
+    .getLogger(ToDoSelectData.class.getName());
 
   /** 現在選択されているタブ */
   private String currentTab;
@@ -69,23 +70,24 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
   private String scheduleUrl;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
-          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-              .getInitParameter("p2a-sort"));
+        ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+          .getInitParameter("p2a-sort"));
       logger.debug("[ToDoSelectData] Init Parameter. : "
-          + ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-              .getInitParameter("p2a-sort"));
+        + ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+          .getInitParameter("p2a-sort"));
     }
 
     String tabParam = rundata.getParameters().getString("tab");
@@ -102,7 +104,7 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -112,18 +114,16 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
       categoryList = new ArrayList<ToDoCategoryResultData>();
 
       Expression exp = ExpressionFactory.matchExp(
-          EipTTodoCategory.USER_ID_PROPERTY,
-          Integer.valueOf(ALEipUtils.getUserId(rundata)));
+        EipTTodoCategory.USER_ID_PROPERTY,
+        Integer.valueOf(ALEipUtils.getUserId(rundata)));
       exp.orExp(ExpressionFactory.matchExp(EipTTodoCategory.USER_ID_PROPERTY,
-          Integer.valueOf(0)));
-      SelectQuery<EipTTodoCategory> query = new SelectQuery<EipTTodoCategory>(
-          EipTTodoCategory.class, exp);
-      query.orderAscending(EipTTodoCategory.CATEGORY_NAME_PROPERTY);
-      List<EipTTodoCategory> aList = query.perform();
+        Integer.valueOf(0)));
 
-      int size = aList.size();
-      for (int i = 0; i < size; i++) {
-        EipTTodoCategory record = aList.get(i);
+      List<EipTTodoCategory> categoryList2 = Database
+        .query(EipTTodoCategory.class, exp)
+        .orderAscending(EipTTodoCategory.CATEGORY_NAME_PROPERTY).perform();
+
+      for (EipTTodoCategory record : categoryList2) {
         ToDoCategoryResultData rd = new ToDoCategoryResultData();
         rd.initField();
         rd.setCategoryId(record.getCategoryId().longValue());
@@ -137,13 +137,14 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
 
   /**
    * 一覧データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   public List<EipTTodo> selectList(RunData rundata, Context context) {
     try {
 
@@ -152,7 +153,6 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
       buildSelectQueryForListViewSort(query, rundata, context);
 
       List<EipTTodo> list = query.perform();
-      // ToDo の総数をセットする．
       todoSum = list.size();
       return buildPaginatedList(list);
     } catch (Exception ex) {
@@ -163,26 +163,26 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    */
   private SelectQuery<EipTTodo> getSelectQuery(RunData rundata, Context context) {
-    SelectQuery<EipTTodo> query = new SelectQuery<EipTTodo>(EipTTodo.class);
+    SelectQuery<EipTTodo> query = Database.query(EipTTodo.class);
 
     Expression exp1 = ExpressionFactory.matchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN,
-        Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      TurbineUser.USER_ID_PK_COLUMN,
+      Integer.valueOf(ALEipUtils.getUserId(rundata)));
     query.setQualifier(exp1);
 
     if ("list".equals(currentTab)) {
       Expression exp2 = ExpressionFactory.noMatchExp(EipTTodo.STATE_PROPERTY,
-          Short.valueOf((short) 100));
+        Short.valueOf((short) 100));
       query.andQualifier(exp2);
     } else if ("complete".equals(currentTab)) {
       Expression exp2 = ExpressionFactory.matchExp(EipTTodo.STATE_PROPERTY,
-          Short.valueOf((short) 100));
+        Short.valueOf((short) 100));
       query.andQualifier(exp2);
     }
 
@@ -191,11 +191,12 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(EipTTodo record) {
     try {
       ToDoResultData rd = new ToDoResultData();
@@ -204,10 +205,10 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
       rd.setCategoryId(record.getEipTTodoCategory().getCategoryId().longValue());
 
       rd.setCategoryName(ALCommonUtils.compressString(record
-          .getEipTTodoCategory().getCategoryName(), getStrLength()));
+        .getEipTTodoCategory().getCategoryName(), getStrLength()));
 
       rd.setTodoName(ALCommonUtils.compressString(record.getTodoName(),
-          getStrLength()));
+        getStrLength()));
       if (!ToDoUtils.isEmptyDate(record.getStartDate())) {
         rd.setStartDate(ALDateUtil.format(record.getStartDate(), "yyyy年M月d日"));
       }
@@ -219,9 +220,9 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
       rd.setStateString(ToDoUtils.getStateString(record.getState().intValue()));
       rd.setPriority(record.getPriority().intValue());
       rd.setPriorityImage(ToDoUtils.getPriorityImage(record.getPriority()
-          .intValue()));
+        .intValue()));
       rd.setPriorityString(ToDoUtils.getPriorityString(record.getPriority()
-          .intValue()));
+        .intValue()));
       // 公開/非公開を設定する．
       rd.setPublicFlag("T".equals(record.getPublicFlag()));
       // 期限状態を設定する．
@@ -235,13 +236,14 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
 
   /**
    * 詳細データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   public EipTTodo selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException {
     String js_peid = rundata.getParameters().getString("sch");
@@ -273,11 +275,12 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(EipTTodo record) {
     try {
       ToDoResultData rd = new ToDoResultData();
@@ -294,7 +297,7 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
       }
       rd.setStateString(ToDoUtils.getStateString(record.getState().intValue()));
       rd.setPriorityString(ToDoUtils.getPriorityString(record.getPriority()
-          .intValue()));
+        .intValue()));
       rd.setNote(record.getNote());
       // 公開/非公開を設定する．
       rd.setPublicFlag("T".equals(record.getPublicFlag()));
@@ -309,16 +312,16 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
   }
 
   /**
-   *
+   * 
    * @return
    */
-  public ArrayList<ToDoCategoryResultData> getCategoryList() {
+  public List<ToDoCategoryResultData> getCategoryList() {
     return categoryList;
   }
 
   /**
    * 現在選択されているタブを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public String getCurrentTab() {
@@ -327,7 +330,7 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
 
   /**
    * ToDo の総数を返す． <BR>
-   *
+   * 
    * @return
    */
   public int getTodoSum() {
@@ -338,6 +341,7 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("todo_name", EipTTodo.TODO_NAME_PROPERTY);
@@ -345,13 +349,13 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
     map.putValue("priority", EipTTodo.PRIORITY_PROPERTY);
     map.putValue("end_date", EipTTodo.END_DATE_PROPERTY);
     map.putValue("category_name", EipTTodo.EIP_TTODO_CATEGORY_PROPERTY + "."
-        + EipTTodoCategory.CATEGORY_NAME_PROPERTY);
+      + EipTTodoCategory.CATEGORY_NAME_PROPERTY);
     map.putValue("category", EipTTodoCategory.CATEGORY_ID_PK_COLUMN);
     return map;
   }
 
   /**
-   *
+   * 
    * @param id
    * @return
    */
@@ -366,9 +370,10 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF;
   }
