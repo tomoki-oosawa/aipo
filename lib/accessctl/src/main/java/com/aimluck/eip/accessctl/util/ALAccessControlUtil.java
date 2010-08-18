@@ -21,13 +21,11 @@ package com.aimluck.eip.accessctl.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.cayenne.DataObjectUtils;
-import org.apache.cayenne.access.DataContext;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.accessctl.bean.AccessControlAclBean;
 import com.aimluck.eip.cayenne.om.account.EipTAclPortletFeature;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 
 public class ALAccessControlUtil {
@@ -41,11 +39,8 @@ public class ALAccessControlUtil {
       RunData rundata, String featureid) {
     List<AccessControlAclBean> list = new ArrayList<AccessControlAclBean>();
 
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
-    EipTAclPortletFeature feature = (EipTAclPortletFeature) DataObjectUtils
-      .objectForPK(dataContext, EipTAclPortletFeature.class,
-        Integer.parseInt(featureid));
-
+    EipTAclPortletFeature feature = Database.get(EipTAclPortletFeature.class,
+      Integer.parseInt(featureid));
     if (feature == null) {
       return null;
     }
@@ -82,5 +77,4 @@ public class ALAccessControlUtil {
     acl.setAclName(aclTypeName);
     acls.add(acl);
   }
-
 }
