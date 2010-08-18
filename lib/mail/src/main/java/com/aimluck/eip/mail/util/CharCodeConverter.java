@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -26,12 +26,14 @@ import java.io.UnsupportedEncodingException;
  * 
  */
 public class CharCodeConverter {
+
   public static final byte[] SJIS_KANA;
+
   static {
     try {
       // 全角への変換テーブル
       SJIS_KANA = "。「」、・ヲァィゥェォャュョッーアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワン゛゜"
-          .getBytes("Shift_JIS");
+        .getBytes("Shift_JIS");
     } catch (UnsupportedEncodingException e) {
       throw new RuntimeException("CANT HAPPEN");
     }
@@ -68,8 +70,9 @@ public class CharCodeConverter {
           sjisToJis(out, SJIS_KANA[kanaIndex], SJIS_KANA[kanaIndex + 1]);
         } else {
           i++;
-          if (i == len)
+          if (i == len) {
             break;
+          }
           sjisToJis(out, sjisBytes[i - 1], sjisBytes[i]);
         }
       }
@@ -89,19 +92,22 @@ public class CharCodeConverter {
     int h = (bh << 1) & 0xFF;
     int l = bl & 0xFF;
     if (l < 0x9F) {
-      if (h < 0x3F)
+      if (h < 0x3F) {
         h += 0x1F;
-      else
+      } else {
         h -= 0x61;
-      if (l > 0x7E)
+      }
+      if (l > 0x7E) {
         l -= 0x20;
-      else
+      } else {
         l -= 0x1F;
+      }
     } else {
-      if (h < 0x3F)
+      if (h < 0x3F) {
         h += 0x20;
-      else
+      } else {
         h -= 0x60;
+      }
       l -= 0x7E;
     }
     out.write(h);

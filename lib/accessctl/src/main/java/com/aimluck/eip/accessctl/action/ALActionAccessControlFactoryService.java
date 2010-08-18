@@ -32,8 +32,9 @@ public class ALActionAccessControlFactoryService extends
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALActionAccessControlFactoryService.class.getName());
+    .getLogger(ALActionAccessControlFactoryService.class.getName());
 
+  @Override
   public ALAccessControlHandler getAccessControlHandler() {
     return handler;
   }

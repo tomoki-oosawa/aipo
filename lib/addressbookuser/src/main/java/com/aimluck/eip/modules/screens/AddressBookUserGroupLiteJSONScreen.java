@@ -29,13 +29,14 @@ import com.aimluck.eip.addressbookuser.util.AddressBookUserUtils;
 
 /**
  * 社外アドレスグループの情報をJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class AddressBookUserGroupLiteJSONScreen extends ALJSONScreen {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AddressBookUserLiteJSONScreen.class.getName());
+    .getLogger(AddressBookUserLiteJSONScreen.class.getName());
 
+  @Override
   protected String getJSONString(RunData rundata, Context context)
       throws Exception {
     String result = "";
@@ -46,7 +47,7 @@ public class AddressBookUserGroupLiteJSONScreen extends ALJSONScreen {
       // String mode = rundata.getParameters().getString("mode");
 
       json = JSONArray.fromObject(AddressBookUserUtils
-          .getAddressBookUserGroupLiteBeans(rundata));
+        .getAddressBookUserGroupLiteBeans(rundata));
 
       result = json.toString();
     } catch (Exception e) {

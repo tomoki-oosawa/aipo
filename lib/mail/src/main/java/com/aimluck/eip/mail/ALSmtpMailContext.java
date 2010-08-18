@@ -23,7 +23,7 @@ import java.util.Map;
 
 /**
  * メール送信用の情報を保持するクラスです。 <br />
- *
+ * 
  */
 public class ALSmtpMailContext implements ALMailContext {
 
@@ -52,10 +52,10 @@ public class ALSmtpMailContext implements ALMailContext {
   private String[] filePaths;
 
   /** メールヘッダに追記する情報 */
-  Map<String,String> additionalHeaders;
+  Map<String, String> additionalHeaders;
 
   public ALSmtpMailContext() {
-    additionalHeaders = new LinkedHashMap<String,String>();
+    additionalHeaders = new LinkedHashMap<String, String>();
   }
 
   public String[] getTo() {
@@ -90,7 +90,7 @@ public class ALSmtpMailContext implements ALMailContext {
     return filePaths;
   }
 
-  public Map<String,String> getAdditionalHeaders() {
+  public Map<String, String> getAdditionalHeaders() {
     return additionalHeaders;
   }
 
@@ -126,9 +126,10 @@ public class ALSmtpMailContext implements ALMailContext {
     filePaths = strs;
   }
 
-  public void setAdditionalHeaders(Map<String,String> m) {
-    if (m == null || m.size() == 0)
+  public void setAdditionalHeaders(Map<String, String> m) {
+    if (m == null || m.size() == 0) {
       return;
+    }
     additionalHeaders.putAll(m);
   }
 }

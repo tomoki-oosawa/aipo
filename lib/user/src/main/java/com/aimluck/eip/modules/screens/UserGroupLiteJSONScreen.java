@@ -29,14 +29,15 @@ import com.aimluck.eip.user.util.UserUtils;
 
 /**
  * グループ情報をJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class UserGroupLiteJSONScreen extends ALJSONScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(UserLiteJSONScreen.class.getName());
+    .getLogger(UserLiteJSONScreen.class.getName());
 
+  @Override
   protected String getJSONString(RunData rundata, Context context)
       throws Exception {
     String result = "";
@@ -47,13 +48,13 @@ public class UserGroupLiteJSONScreen extends ALJSONScreen {
       String mode = rundata.getParameters().getString("mode");
       if ("mygroup".equals(mode)) {
         json = JSONArray.fromObject(UserUtils.getUserGroupLiteBeans(rundata,
-            true, false));
+          true, false));
       } else if ("post".equals(mode)) {
         json = JSONArray.fromObject(UserUtils.getUserGroupLiteBeans(rundata,
-            false, true));
+          false, true));
       } else {
         json = JSONArray.fromObject(UserUtils.getUserGroupLiteBeans(rundata,
-            true, true));
+          true, true));
       }
 
       result = json.toString();

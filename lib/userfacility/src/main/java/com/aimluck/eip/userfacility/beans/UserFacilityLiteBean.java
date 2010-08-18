@@ -24,7 +24,7 @@ import com.aimluck.eip.common.ALData;
 
 /**
  * ユーザーのBeanです。 <br />
- *
+ * 
  */
 public class UserFacilityLiteBean implements ALData, Cloneable {
 
@@ -41,7 +41,7 @@ public class UserFacilityLiteBean implements ALData, Cloneable {
   private ALStringField type;
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -52,7 +52,7 @@ public class UserFacilityLiteBean implements ALData, Cloneable {
   }
 
   /**
-   *
+   * 
    * @param string
    */
   public void setName(String string) {
@@ -60,17 +60,17 @@ public class UserFacilityLiteBean implements ALData, Cloneable {
   }
 
   /**
-   *
+   * 
    * @param firstName
    * @param lastName
    */
   public void setAliasName(String firstName, String lastName) {
     alias_name.setValue(new StringBuffer().append(lastName).append(" ")
-        .append(firstName).toString());
+      .append(firstName).toString());
   }
 
   /**
-   *
+   * 
    * @param firstName
    * @param lastName
    */
@@ -79,7 +79,7 @@ public class UserFacilityLiteBean implements ALData, Cloneable {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public String getName() {
@@ -87,7 +87,7 @@ public class UserFacilityLiteBean implements ALData, Cloneable {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public String getAliasName() {

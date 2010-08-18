@@ -44,12 +44,12 @@ import com.sun.mail.pop3.POP3Message;
 
 /**
  * メール受信（POP3）を操作する抽象クラスです。 <br />
- *
+ * 
  */
 public abstract class ALPop3MailReceiver implements ALMailReceiver {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALPop3MailReceiver.class.getName());
+    .getLogger(ALPop3MailReceiver.class.getName());
 
   /** <code>AUTH_RECEIVE_NORMAL</code> 受信時の認証方式（標準） */
   public static final int AUTH_RECEIVE_NORMAL = 0;
@@ -103,7 +103,7 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
 
   /**
    * コンストラクタ
-   *
+   * 
    * @param rcontext
    */
   public ALPop3MailReceiver(ALMailReceiverContext rcontext) {
@@ -114,7 +114,7 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
 
   /**
    * POP3 サーバからメールを受信する．
-   *
+   * 
    * @param delete
    *          受信したメールを削除するかどうか．削除する場合は，true．
    * @param enableSavingDays
@@ -149,11 +149,11 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
     try {
       // POP3 サーバへの接続
       Session session = getSession(rcontext.getAuthReceiveFlag(),
-          rcontext.getEncryptionFlag());
+        rcontext.getEncryptionFlag());
       pop3Store = session.getStore("pop3");
       pop3Store.connect(rcontext.getPop3Host(),
-          Integer.parseInt(rcontext.getPop3Port()), rcontext.getPop3UserId(),
-          rcontext.getPop3UserPasswd());
+        Integer.parseInt(rcontext.getPop3Port()), rcontext.getPop3UserId(),
+        rcontext.getPop3UserPasswd());
 
       if (!pop3Store.isConnected()) {
         // POP3 サーバへの接続失敗時の処理
@@ -196,7 +196,7 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
       String uid = null;
       totalMessages = messages.length;
       for (int i = 0; i < totalMessages; i++) {
-        uid = pop3Folder.getUID((MimeMessage) messages[i]);
+        uid = pop3Folder.getUID(messages[i]);
         if (uid == null) {
           String[] xuidls = messages[i].getHeader("X-UIDL");
           if (xuidls != null && xuidls.length > 0) {
@@ -229,8 +229,8 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
       newUIDL.clear();
 
       ALStaticObject.getInstance().updateAccountStat(rcontext.getAccountId(),
-          ALPop3MailReceiveThread.KEY_RECEIVE_MAIL_ALL_NUM,
-          Integer.valueOf(mailNumOnServer));
+        ALPop3MailReceiveThread.KEY_RECEIVE_MAIL_ALL_NUM,
+        Integer.valueOf(mailNumOnServer));
 
       // 現時点から指定日数を引いた日時を取得．
       Calendar cal = Calendar.getInstance();
@@ -280,9 +280,9 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
           receivedMailNum++;
 
           ALStaticObject.getInstance().updateAccountStat(
-              rcontext.getAccountId(),
-              ALPop3MailReceiveThread.KEY_RECEIVE_MAIL_NUM,
-              Integer.valueOf(receivedMailNum));
+            rcontext.getAccountId(),
+            ALPop3MailReceiveThread.KEY_RECEIVE_MAIL_NUM,
+            Integer.valueOf(receivedMailNum));
         }
 
         finishedReceiving = true;
@@ -293,8 +293,9 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
     } catch (AuthenticationFailedException ae) {
       logger.error("Exception", ae);
       // 受信済みの最新の UID の一覧を保存する．
-      if (!finishedReceiving)
+      if (!finishedReceiving) {
         receivedUIDL.remove(nowReceivedUID);
+      }
       if (receiveFolder != null) {
         receiveFolder.saveUID(receivedUIDL);
         if (receivedUIDL != null) {
@@ -309,8 +310,9 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
     } catch (MessagingException me) {
       logger.error("Exception", me);
       // 受信済みの最新の UID の一覧を保存する．
-      if (!finishedReceiving)
+      if (!finishedReceiving) {
         receivedUIDL.remove(nowReceivedUID);
+      }
       if (receiveFolder != null) {
         receiveFolder.saveUID(receivedUIDL);
         if (receivedUIDL != null) {
@@ -325,8 +327,9 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
     } catch (Exception e) {
       logger.error("Exception", e);
       // 受信済みの最新の UID の一覧を保存する．
-      if (!finishedReceiving)
+      if (!finishedReceiving) {
         receivedUIDL.remove(nowReceivedUID);
+      }
       if (receiveFolder != null) {
         receiveFolder.saveUID(receivedUIDL);
         if (receivedUIDL != null) {
@@ -341,8 +344,9 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
     } catch (Throwable t) {
       logger.error("Throwable", t);
       // 受信済みの最新の UID の一覧を保存する．
-      if (!finishedReceiving)
+      if (!finishedReceiving) {
         receivedUIDL.remove(nowReceivedUID);
+      }
       if (receiveFolder != null) {
         receiveFolder.saveUID(receivedUIDL);
         if (receivedUIDL != null) {
@@ -404,7 +408,7 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
 
   /**
    * Pop3 before SMTP 用のユーザ認証．
-   *
+   * 
    * @param pop3Host
    * @param pop3Port
    * @param pop3UserId
@@ -434,7 +438,7 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
       Session session = Session.getInstance(props, null);
       pop3Store = session.getStore("pop3");
       pop3Store.connect(pop3Host, Integer.parseInt(pop3Port), pop3UserId,
-          pop3UserPasswd);
+        pop3UserPasswd);
       res = pop3Store.isConnected();
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -454,7 +458,7 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
 
   /**
    * 新着メール数を取得する．
-   *
+   * 
    * @param denyReceivedMail
    *          受信済みメッセージを取り込まない場合は，true．
    * @param authReceiveFlag
@@ -473,11 +477,11 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
     try {
       // POP3 サーバへの接続
       Session session = getSession(rcontext.getAuthReceiveFlag(),
-          rcontext.getEncryptionFlag());
+        rcontext.getEncryptionFlag());
       pop3Store = session.getStore("pop3");
       pop3Store.connect(rcontext.getPop3Host(),
-          Integer.parseInt(rcontext.getPop3Port()), rcontext.getPop3UserId(),
-          rcontext.getPop3UserPasswd());
+        Integer.parseInt(rcontext.getPop3Port()), rcontext.getPop3UserId(),
+        rcontext.getPop3UserPasswd());
 
       // POP3 サーバ上のメールフォルダを開く
       pop3Folder = (POP3Folder) pop3Store.getFolder("INBOX");
@@ -523,7 +527,7 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
       String uid = null;
       totalMessages = messages.length;
       for (int i = 0; i < totalMessages; i++) {
-        uid = pop3Folder.getUID((MimeMessage) messages[i]);
+        uid = pop3Folder.getUID(messages[i]);
         if (uid == null) {
           String[] xuidls = messages[i].getHeader("X-UIDL");
           if (xuidls != null && xuidls.length > 0) {
@@ -555,7 +559,7 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
   }
 
   /**
-   *
+   * 
    * @param authReceiveFlag
    *          受信時の認証方式
    * @param encryptFlag

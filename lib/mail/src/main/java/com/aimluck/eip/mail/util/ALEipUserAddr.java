@@ -23,7 +23,7 @@ import java.util.List;
 
 /**
  * ユーザーの情報（メールアドレス）を保持するクラスです。 <br />
- *
+ * 
  */
 public class ALEipUserAddr {
 
@@ -46,8 +46,9 @@ public class ALEipUserAddr {
   }
 
   public void setPcMailAddr(String pc_mailaddr) {
-    if (pc_mailaddr == null)
+    if (pc_mailaddr == null) {
       return;
+    }
     this.pc_mailaddr = pc_mailaddr;
   }
 
@@ -56,8 +57,9 @@ public class ALEipUserAddr {
   }
 
   public void setCellMailAddr(String cell_mailaddr) {
-    if (cell_mailaddr == null)
+    if (cell_mailaddr == null) {
       return;
+    }
     this.cell_mailaddr = cell_mailaddr;
   }
 
@@ -77,12 +79,13 @@ public class ALEipUserAddr {
     }
 
     int size = list.size();
-    if (size == 0)
+    if (size == 0) {
       return null;
+    }
 
     String[] addrs = new String[size];
     for (int i = 0; i < size; i++) {
-      addrs[i] = (String) list.get(i);
+      addrs[i] = list.get(i);
     }
     return addrs;
   }

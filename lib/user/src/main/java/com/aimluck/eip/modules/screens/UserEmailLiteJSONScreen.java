@@ -29,14 +29,15 @@ import com.aimluck.eip.user.util.UserUtils;
 
 /**
  * ユーザーのメール情報をJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class UserEmailLiteJSONScreen extends ALJSONScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(UserEmailLiteJSONScreen.class.getName());
+    .getLogger(UserEmailLiteJSONScreen.class.getName());
 
+  @Override
   protected String getJSONString(RunData rundata, Context context)
       throws Exception {
     String result = "";
@@ -50,10 +51,10 @@ public class UserEmailLiteJSONScreen extends ALJSONScreen {
 
         // ログインユーザをリストに含める場合、true
         boolean include_loginuser = rundata.getParameters().getBoolean(
-            "inc_luser", true);
+          "inc_luser", true);
 
         json = JSONArray.fromObject(UserUtils.getUserEmailLiteBeansFromGroup(
-            rundata, groupname, include_loginuser));
+          rundata, groupname, include_loginuser));
       } else {
         json = new JSONArray();
       }

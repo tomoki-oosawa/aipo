@@ -30,13 +30,13 @@ import com.aimluck.eip.mail.ALMailSenderContext;
 
 /**
  * データベースを利用し、メールの送受信を操作するクラスです。 <br />
- *
+ * 
  */
 public class ALDbMailHandler extends ALMailHandler {
 
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALDbMailHandler.class.getName());
+    .getLogger(ALDbMailHandler.class.getName());
 
   /**
    * コンストラクタ
@@ -48,14 +48,17 @@ public class ALDbMailHandler extends ALMailHandler {
     return new ALDbMailHandler();
   }
 
+  @Override
   protected ALMailReceiver getALMailReceiver(ALMailReceiverContext rcontext) {
     return new ALDbPop3MailReceiver(rcontext);
   }
 
+  @Override
   public ALMailSender getALMailSender(ALMailSenderContext scontext) {
     return new ALDbSmtpMailSender(scontext);
   }
 
+  @Override
   public ALFolder getALFolder(int type_mail, String org_id, int user_id,
       int account_id) {
     return new ALDbLocalFolder(type_mail, org_id, user_id, account_id);
@@ -63,11 +66,12 @@ public class ALDbMailHandler extends ALMailHandler {
 
   /**
    * アカウントフォルダを削除する．
-   *
+   * 
    * @param userRootFolderName
    * @param accountName
    * @return
    */
+  @Override
   public boolean removeAccount(String org_id, int user_id, int account_id) {
     return true;
   }

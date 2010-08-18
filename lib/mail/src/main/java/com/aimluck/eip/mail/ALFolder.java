@@ -25,9 +25,10 @@ import org.apache.velocity.context.Context;
 
 /**
  * 送受信したメールを保持するローカルフォルダを表すインターフェイスです。 <br />
- *
+ * 
  */
 public interface ALFolder {
+
   /** 受信 */
   public static final int TYPE_RECEIVE = 1;
 
@@ -39,7 +40,7 @@ public interface ALFolder {
 
   /**
    * メールのインデックス情報を取得する。
-   *
+   * 
    * @return
    */
   abstract public List<?> getIndexRows(RunData rundata, Context context)
@@ -59,7 +60,7 @@ public interface ALFolder {
 
   /**
    * メールを取得する。
-   *
+   * 
    * @param mailId
    * @return
    */
@@ -67,9 +68,9 @@ public interface ALFolder {
 
   /**
    * メールを保存する。
-   *
+   * 
    * @param type
-   *            送受信フラグ
+   *          送受信フラグ
    * @param localMailMessage
    * @return
    */
@@ -78,7 +79,7 @@ public interface ALFolder {
   /**
    * 受信サーバから受信した受信可能サイズを超えたメールを保存する。<br />
    * このメールはヘッダ情報のみ、受信サーバから取得し、他の情報は取得しない。
-   *
+   * 
    * @param localMailMessage
    * @return
    */
@@ -86,7 +87,7 @@ public interface ALFolder {
 
   /**
    * 指定されたインデックスのメールを削除する。
-   *
+   * 
    * @mailId
    * @return
    */
@@ -94,7 +95,7 @@ public interface ALFolder {
 
   /**
    * 指定されたインデックスのメールを削除する．
-   *
+   * 
    * @param msgIndexes
    * @return
    */
@@ -102,49 +103,49 @@ public interface ALFolder {
 
   /**
    * 保存してある UID リストを取得する。
-   *
+   * 
    * @return
    */
   abstract public List<String> loadUID();
 
   /**
    * UID の一覧を保存する．
-   *
+   * 
    * @param oldUIDL
    */
   abstract public void saveUID(List<String> oldUIDL);
 
   /**
    * ルートフォルダをセットする。
-   *
+   * 
    * @param str
    */
   abstract public void setRootFolderPath(String str);
 
   /**
    * 自身のフォルダまでのフルパスを取得する。
-   *
+   * 
    * @return
    */
   abstract public String getFullName();
 
   /**
    * 新着メール数を取得する。
-   *
+   * 
    * @return
    */
   abstract public int getNewMailNum();
 
   /**
    * 新着メール数を更新する．
-   *
+   * 
    * @param num
    */
   abstract public void setNewMailNum(int num);
 
   /**
    * 指定したフォルダ内の未読メール数を取得する．
-   *
+   * 
    * @return
    */
   abstract public int getUnreadMailNum();
@@ -156,54 +157,54 @@ public interface ALFolder {
 
   /**
    * 表示する項目数を設定します。
-   *
+   * 
    * @param num
    */
   abstract public void setRowsNum(int num);
 
   /**
    * 表示文字数を取得します。
-   *
+   * 
    * @return
    */
   abstract public int getStrLength();
 
   /**
    * 表示する項目数を取得します。
-   *
+   * 
    * @return
    */
   abstract public int getRowsNum();
 
   /**
    * 総件数を取得します。
-   *
+   * 
    * @return
    */
   abstract public int getCount();
 
   /**
    * 総ページ数を取得します。
-   *
+   * 
    * @return
    */
   abstract public int getPagesNum();
 
   /**
    * 現在表示されているページを取得します。
-   *
+   * 
    * @return
    */
   abstract public int getCurrentPage();
 
   /**
-   *
+   * 
    * @return
    */
   abstract String getCurrentSort();
 
   /**
-   *
+   * 
    * @return
    */
   abstract String getCurrentSortType();

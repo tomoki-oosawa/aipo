@@ -20,7 +20,7 @@ package com.aimluck.eip.accessctl.action;
 
 /**
  * ログ保存用ライブラリの定数です。
- *
+ * 
  */
 public class ALActionAccessControlConstants {
 

@@ -42,16 +42,16 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザーのユーティリティクラスです。 <br />
- *
+ * 
  */
 public class UserFacilityUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(UserFacilityUtils.class.getName());
+    .getLogger(UserFacilityUtils.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @return
    */
@@ -59,7 +59,7 @@ public class UserFacilityUtils {
       RunData rundata, String groupname) {
 
     List<UserLiteBean> tmp_u_list = UserUtils.getUserLiteBeansFromGroup(
-        rundata, groupname, true);
+      rundata, groupname, true);
     int t_size = tmp_u_list.size();
 
     List<UserFacilityLiteBean> list = new ArrayList<UserFacilityLiteBean>();
@@ -91,7 +91,7 @@ public class UserFacilityUtils {
       String query = statement.toString();
 
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       @SuppressWarnings("deprecation")
       SQLTemplate rawSelect = new SQLTemplate(TurbineUser.class, query, true);
       rawSelect.setFetchingDataRows(true);
@@ -106,16 +106,16 @@ public class UserFacilityUtils {
         user = new UserFacilityLiteBean();
         user.initField();
         user.setUserFacilityId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-            EipMFacility.FACILITY_ID_PK_COLUMN)).intValue());
+          EipMFacility.FACILITY_ID_PK_COLUMN)).intValue());
         user.setName("f" + user.getUserFacilityId());
         user.setAliasName((String) ALEipUtils.getObjFromDataRow(dataRow,
-            EipMFacility.FACILITY_NAME_COLUMN));
+          EipMFacility.FACILITY_NAME_COLUMN));
         user.setUserFacilityType("F");
         list.add(user);
       }
     } else {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       SelectQuery query = new SelectQuery(EipMFacility.class);
       List<?> aList = dataContext.performQuery(query);
       int size = aList.size();
@@ -135,7 +135,7 @@ public class UserFacilityUtils {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @return
    */
@@ -145,7 +145,7 @@ public class UserFacilityUtils {
     List<UserFacilityLiteBean> list = new ArrayList<UserFacilityLiteBean>();
     try {
       List tmp_u_list = UserUtils.getUserGroupLiteBeans(rundata, isMygroup,
-          isPost);
+        isPost);
       int t_size = tmp_u_list.size();
       UserLiteBean t_user;
       for (int i = 0; i < t_size; i++) {
@@ -184,10 +184,10 @@ public class UserFacilityUtils {
     UserFacilityLiteBean user = new UserFacilityLiteBean();
     user.initField();
     user.setUserFacilityId(Integer
-        .parseInt(jdata.getJetspeedUser().getUserId()));
+      .parseInt(jdata.getJetspeedUser().getUserId()));
     user.setName(jdata.getJetspeedUser().getUserName());
     user.setAliasName(jdata.getJetspeedUser().getFirstName(), jdata
-        .getJetspeedUser().getLastName());
+      .getJetspeedUser().getLastName());
     user.setUserFacilityType("U");
     return user;
   }

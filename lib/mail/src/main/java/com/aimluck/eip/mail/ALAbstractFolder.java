@@ -65,13 +65,13 @@ import com.sk_jp.mail.MultipartUtility;
 
 /**
  * 送受信したメールを保持するローカルフォルダの抽象クラスです。 <br />
- *
+ * 
  */
 public abstract class ALAbstractFolder implements ALFolder {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALAbstractFolder.class.getName());
+    .getLogger(ALAbstractFolder.class.getName());
 
   /** 受信 or 送信 */
   protected int type_mail = -1;
@@ -113,16 +113,16 @@ public abstract class ALAbstractFolder implements ALFolder {
   private String current_sort_type;
 
   protected final String LIST_SORT_STR = new StringBuffer()
-      .append(this.getClass().getName()).append(ALEipConstants.LIST_SORT)
-      .toString();
+    .append(this.getClass().getName()).append(ALEipConstants.LIST_SORT)
+    .toString();
 
   protected final String LIST_SORT_TYPE_STR = new StringBuffer()
-      .append(this.getClass().getName()).append(ALEipConstants.LIST_SORT_TYPE)
-      .toString();
+    .append(this.getClass().getName()).append(ALEipConstants.LIST_SORT_TYPE)
+    .toString();
 
   /**
    * コンストラクタ
-   *
+   * 
    * @param parentFolder
    *          親フォルダ
    * @param folderName
@@ -139,12 +139,12 @@ public abstract class ALAbstractFolder implements ALFolder {
   protected void init(RunData rundata, Context context) {
     if (rundata.getParameters().containsKey(ALEipConstants.LIST_SORT)) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, rundata
-          .getParameters().getString(ALEipConstants.LIST_SORT));
+        .getParameters().getString(ALEipConstants.LIST_SORT));
     }
 
     if (rundata.getParameters().containsKey(ALEipConstants.LIST_SORT_TYPE)) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR, rundata
-          .getParameters().getString(ALEipConstants.LIST_SORT_TYPE));
+        .getParameters().getString(ALEipConstants.LIST_SORT_TYPE));
     }
 
     if (rundata.getParameters().containsKey(ALEipConstants.LIST_START)) {
@@ -157,7 +157,7 @@ public abstract class ALAbstractFolder implements ALFolder {
       boolean isRead) {
     try {
       EipTMail email = (EipTMail) dataContext
-          .createAndRegisterNewObject(EipTMail.class);
+        .createAndRegisterNewObject(EipTMail.class);
 
       String mail = "";
       if (saveContents) {
@@ -173,7 +173,7 @@ public abstract class ALAbstractFolder implements ALFolder {
           newMsg.addHeader(h.getName(), h.getValue());
         }
         newMsg
-            .setText("メールのサイズが7MBを超えていたため、このメールを受信できませんでした。\r\n 誠に恐れ入りますが、別のメーラーで受信してください。");
+          .setText("メールのサイズが7MBを超えていたため、このメールを受信できませんでした。\r\n 誠に恐れ入りますが、別のメーラーで受信してください。");
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         newMsg.writeTo(output);
         mail = output.toString();
@@ -212,8 +212,8 @@ public abstract class ALAbstractFolder implements ALFolder {
 
       if (presonAddress != null && presonAddress.length > 0) {
         String personaladdr = ALMailUtils.getOneString(
-            ALMailUtils.getTokens(presonAddress[0].toString(), ALMailUtils.CR),
-            "");
+          ALMailUtils.getTokens(presonAddress[0].toString(), ALMailUtils.CR),
+          "");
         try {
           preson = MailUtility.decodeText(personaladdr);
           if (presonAddress.length > 1) {
@@ -264,7 +264,7 @@ public abstract class ALAbstractFolder implements ALFolder {
 
       // アカウントのフォルダに代入
       EipMMailAccount account = ALMailUtils.getMailAccount(org_id, user_id,
-          account_id);
+        account_id);
       int folder_id = account.getDefaultFolderId();
 
       // フォルダ振り分け処理
@@ -307,7 +307,7 @@ public abstract class ALAbstractFolder implements ALFolder {
 
   /**
    * インデックス情報を取得します。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -323,8 +323,8 @@ public abstract class ALAbstractFolder implements ALFolder {
       String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
       if (sort == null || sort.equals("")) {
         ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
-            ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-                .getInitParameter("p2a-sort"));
+          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+            .getInitParameter("p2a-sort"));
       }
 
       init(rundata, context);
@@ -332,15 +332,15 @@ public abstract class ALAbstractFolder implements ALFolder {
       // ソート対象が日時だった場合、ソート順を逆にする．
       if ("date".equals(ALEipUtils.getTemp(rundata, context, LIST_SORT_STR))) {
         String sort_type = ALEipUtils.getTemp(rundata, context,
-            LIST_SORT_TYPE_STR);
+          LIST_SORT_TYPE_STR);
         if (sort_type == null || sort_type.equals("")) {
           ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR,
-              ALEipConstants.LIST_SORT_TYPE_DESC);
+            ALEipConstants.LIST_SORT_TYPE_DESC);
         }
       }
 
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       SelectQuery query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
@@ -356,7 +356,7 @@ public abstract class ALAbstractFolder implements ALFolder {
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -379,10 +379,10 @@ public abstract class ALAbstractFolder implements ALFolder {
     query.addCustomDbAttribute(EipTMail.FILE_VOLUME_COLUMN);
     query.addCustomDbAttribute(EipTMail.HAS_FILES_COLUMN);
     Expression exp1 = ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY,
-        Integer.valueOf(user_id));
+      Integer.valueOf(user_id));
     query.setQualifier(exp1);
     Expression exp2 = ExpressionFactory.matchExp(EipTMail.ACCOUNT_ID_PROPERTY,
-        Integer.valueOf(account_id));
+      Integer.valueOf(account_id));
     query.andQualifier(exp2);
     Expression exp3 = ExpressionFactory.matchExp(EipTMail.TYPE_PROPERTY, type);
     query.andQualifier(exp3);
@@ -390,7 +390,7 @@ public abstract class ALAbstractFolder implements ALFolder {
     // folder_id が空でなければ、フォルダIDで絞り込む
     if (!("".equals(folder_id))) {
       Expression exp4 = ExpressionFactory.matchExp(EipTMail.FOLDER_ID_PROPERTY,
-          Integer.valueOf(folder_id));
+        Integer.valueOf(folder_id));
       query.andQualifier(exp4);
     }
 
@@ -401,7 +401,7 @@ public abstract class ALAbstractFolder implements ALFolder {
 
   /**
    * 保存してある UID リストを取得する．
-   *
+   * 
    * @return
    */
   public List<String> loadUID() {
@@ -410,7 +410,7 @@ public abstract class ALAbstractFolder implements ALFolder {
     BufferedReader reader = null;
     try {
       String indexFilename = getFullName() + File.separator
-          + ALFolder.FILE_UIDL;
+        + ALFolder.FILE_UIDL;
       File uidlFile = new File(indexFilename);
       if (!uidlFile.exists()) {
         uidlFile.createNewFile();
@@ -421,7 +421,7 @@ public abstract class ALAbstractFolder implements ALFolder {
       }
 
       reader = new BufferedReader(new InputStreamReader(new FileInputStream(
-          uidlFile)));
+        uidlFile)));
       String line = null;
       while ((line = reader.readLine()) != null) {
         oldUIDL.add(line);
@@ -441,7 +441,7 @@ public abstract class ALAbstractFolder implements ALFolder {
 
   /**
    * UID の一覧を保存する．
-   *
+   * 
    * @param oldUIDL
    */
   public void saveUID(List<String> oldUIDL) {
@@ -456,7 +456,7 @@ public abstract class ALAbstractFolder implements ALFolder {
       writer = new PrintWriter(new FileOutputStream(new File(uidlFilename)));
       int length = oldUIDL.size();
       for (int i = 0; i < length; i++) {
-        writer.println((String) oldUIDL.get(i));
+        writer.println(oldUIDL.get(i));
       }
 
       writer.flush();
@@ -474,17 +474,17 @@ public abstract class ALAbstractFolder implements ALFolder {
 
   protected String getRootFolderPath() {
     return (rootFolderPath != null && !"".equals(rootFolderPath)) ? rootFolderPath
-        : ALMailUtils.rootFolderPath;
+      : ALMailUtils.rootFolderPath;
   }
 
   protected String getCategoryKey() {
     return (categoryKey != null && !"".equals(categoryKey)) ? categoryKey
-        : ALMailUtils.categoryKey;
+      : ALMailUtils.categoryKey;
   }
 
   /**
    * 自身のフォルダまでのフルパスを取得する。
-   *
+   * 
    * @return
    */
   public String getFullName() {
@@ -493,23 +493,23 @@ public abstract class ALAbstractFolder implements ALFolder {
 
     if (categoryKeytmp != null && !"".equals(categoryKeytmp)) {
       ALOrgUtilsHandler handler = ALOrgUtilsFactoryService.getInstance()
-          .getOrgUtilsHandler();
+        .getOrgUtilsHandler();
       File docPath = handler.getDocumentPath(getRootFolderPath(), org_id,
-          categoryKeytmp);
+        categoryKeytmp);
       String pathStr = null;
       try {
         pathStr = docPath.getCanonicalPath();
       } catch (IOException e) {
         logger.error("ALAbstractFolder: unable to resolve file path for "
-            + pathStr);
+          + pathStr);
       }
       fullName = new StringBuffer(pathStr);
       fullName.append(File.separator).append(user_id).append(File.separator)
-          .append(account_id);
+        .append(account_id);
     } else {
       fullName = new StringBuffer(getRootFolderPath());
       fullName.append(File.separator).append(org_id).append(File.separator)
-          .append(user_id).append(File.separator).append(account_id);
+        .append(user_id).append(File.separator).append(account_id);
     }
 
     if (ALFolder.TYPE_RECEIVE == type_mail) {
@@ -529,7 +529,7 @@ public abstract class ALAbstractFolder implements ALFolder {
 
   /**
    * ページング結果のリストを取得します。
-   *
+   * 
    * @param records
    *          検索結果
    */
@@ -539,7 +539,7 @@ public abstract class ALAbstractFolder implements ALFolder {
 
   /**
    * ページング結果のリストを取得します。
-   *
+   * 
    * @param records
    *          検索結果
    */
@@ -558,7 +558,7 @@ public abstract class ALAbstractFolder implements ALFolder {
   }
 
   /**
-   *
+   * 
    * @param cnt
    */
   protected void setPageParam(int cnt) {
@@ -570,7 +570,7 @@ public abstract class ALAbstractFolder implements ALFolder {
 
   /**
    * ソート用の <code>SelectQuery</code> を構築します。
-   *
+   * 
    * @param crt
    * @return
    */
@@ -580,13 +580,15 @@ public abstract class ALAbstractFolder implements ALFolder {
     String sort_type = ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
     String crt_key = null;
     Attributes map = getColumnMap();
-    if (sort == null)
+    if (sort == null) {
       return query;
+    }
     crt_key = map.getValue(sort);
-    if (crt_key == null)
+    if (crt_key == null) {
       return query;
+    }
     if (sort_type != null
-        && ALEipConstants.LIST_SORT_TYPE_DESC.equals(sort_type)) {
+      && ALEipConstants.LIST_SORT_TYPE_DESC.equals(sort_type)) {
       query.addOrdering(crt_key, false);
     } else {
       query.addOrdering(crt_key, true);
@@ -599,7 +601,7 @@ public abstract class ALAbstractFolder implements ALFolder {
 
   /**
    * 表示する項目数を設定します。
-   *
+   * 
    * @param num
    */
   public void setRowsNum(int num) {
@@ -610,7 +612,7 @@ public abstract class ALAbstractFolder implements ALFolder {
 
   /**
    * 表示文字数を設定します。
-   *
+   * 
    * @param num
    */
   public void setStrLength(int num) {
@@ -621,7 +623,7 @@ public abstract class ALAbstractFolder implements ALFolder {
 
   /**
    * 表示文字数を取得します。
-   *
+   * 
    * @return
    */
   public int getStrLength() {
@@ -630,7 +632,7 @@ public abstract class ALAbstractFolder implements ALFolder {
 
   /**
    * 表示する項目数を取得します。
-   *
+   * 
    * @return
    */
   public int getRowsNum() {
@@ -639,7 +641,7 @@ public abstract class ALAbstractFolder implements ALFolder {
 
   /**
    * 総件数を取得します。
-   *
+   * 
    * @return
    */
   public int getCount() {
@@ -648,7 +650,7 @@ public abstract class ALAbstractFolder implements ALFolder {
 
   /**
    * 総ページ数を取得します。
-   *
+   * 
    * @return
    */
   public int getPagesNum() {
@@ -657,7 +659,7 @@ public abstract class ALAbstractFolder implements ALFolder {
 
   /**
    * 現在表示されているページを取得します。
-   *
+   * 
    * @return
    */
   public int getCurrentPage() {
@@ -665,7 +667,7 @@ public abstract class ALAbstractFolder implements ALFolder {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public String getCurrentSort() {
@@ -673,7 +675,7 @@ public abstract class ALAbstractFolder implements ALFolder {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public String getCurrentSortType() {
@@ -681,7 +683,7 @@ public abstract class ALAbstractFolder implements ALFolder {
   }
 
   /**
-   *
+   * 
    * @return
    */
   protected abstract Attributes getColumnMap();

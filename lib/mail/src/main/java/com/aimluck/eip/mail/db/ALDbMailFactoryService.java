@@ -27,15 +27,16 @@ import com.aimluck.eip.mail.ALMailHandler;
 /**
  * メールを操作するクラスを生成するファクトリクラスです。 <br />
  * データベースにメール本体を保存します。
- *
+ * 
  */
 public class ALDbMailFactoryService extends ALMailFactoryService {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALDbMailFactoryService.class.getName());
+    .getLogger(ALDbMailFactoryService.class.getName());
 
+  @Override
   public ALMailHandler getMailHandler() {
     return ALDbMailHandler.getInstance();
   }

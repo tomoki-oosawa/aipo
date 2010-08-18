@@ -29,14 +29,15 @@ import com.aimluck.eip.userfacility.util.UserFacilityUtils;
 
 /**
  * 施設情報をJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class UserFacilityLiteJSONScreen extends ALJSONScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(UserFacilityLiteJSONScreen.class.getName());
+    .getLogger(UserFacilityLiteJSONScreen.class.getName());
 
+  @Override
   protected String getJSONString(RunData rundata, Context context)
       throws Exception {
     String result = "";
@@ -49,7 +50,7 @@ public class UserFacilityLiteJSONScreen extends ALJSONScreen {
         String groupname = rundata.getParameters().getString("groupname");
 
         json = JSONArray.fromObject(UserFacilityUtils
-            .getUserFacilityLiteBeansFromGroup(rundata, groupname));
+          .getUserFacilityLiteBeansFromGroup(rundata, groupname));
       } else {
         json = new JSONArray();
       }

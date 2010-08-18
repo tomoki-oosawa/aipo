@@ -41,16 +41,16 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 共有カテゴリのユーティリティクラスです。 <BR>
- *
+ * 
  */
 public class CommonCategoryUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CommonCategoryUtils.class.getName());
+    .getLogger(CommonCategoryUtils.class.getName());
 
   /**
-   *
+   * 
    * @param dataContext
    * @param category_id
    * @return
@@ -62,7 +62,7 @@ public class CommonCategoryUtils {
       SelectQuery query = new SelectQuery(EipTCommonCategory.class);
 
       Expression exp = ExpressionFactory.matchDbExp(
-          EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN, category_id);
+        EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN, category_id);
 
       query.setQualifier(exp);
 
@@ -81,7 +81,7 @@ public class CommonCategoryUtils {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -89,7 +89,7 @@ public class CommonCategoryUtils {
   public static EipTCommonCategory getEipTCommonCategory(RunData rundata,
       Context context) {
     String category_id = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+      ALEipConstants.ENTITY_ID);
     try {
       if (category_id == null || Integer.valueOf(category_id) == null) {
         logger.debug("[CommonCategoryUtils] Empty ID...");
@@ -97,7 +97,7 @@ public class CommonCategoryUtils {
       }
 
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
 
       return getEipTCommonCategory(dataContext, Long.valueOf(category_id));
     } catch (Exception ex) {
@@ -107,7 +107,7 @@ public class CommonCategoryUtils {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @return
    */
@@ -117,11 +117,11 @@ public class CommonCategoryUtils {
 
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       SelectQuery query = new SelectQuery(EipTCommonCategory.class);
 
       Expression exp = ExpressionFactory.noMatchDbExp(
-          EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN, Integer.valueOf(1));
+        EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN, Integer.valueOf(1));
       query.setQualifier(exp);
 
       query.addOrdering(EipTCommonCategory.NAME_PROPERTY, true);
@@ -145,7 +145,7 @@ public class CommonCategoryUtils {
 
   /**
    * アクセス権限をチェックします。
-   *
+   * 
    * @return
    */
   public static boolean CheckPermission(RunData rundata, Context context,
@@ -160,10 +160,10 @@ public class CommonCategoryUtils {
     }
 
     ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+      .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
     boolean hasAuthority = aclhandler.hasAuthority(
-        ALEipUtils.getUserId(rundata), pfeature, defineAclType);
+      ALEipUtils.getUserId(rundata), pfeature, defineAclType);
 
     return hasAuthority;
   }

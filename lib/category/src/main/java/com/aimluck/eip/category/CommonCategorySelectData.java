@@ -43,14 +43,14 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 共有カテゴリ検索データを管理するクラスです。 <br />
- *
+ * 
  */
 public class CommonCategorySelectData extends
     ALAbstractSelectData<EipTCommonCategory> implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CommonCategorySelectData.class.getName());
+    .getLogger(CommonCategorySelectData.class.getName());
 
   /** ログインユーザ ID */
   private int uid;
@@ -68,58 +68,48 @@ public class CommonCategorySelectData extends
   private boolean authority_detail;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
     uid = ALEipUtils.getUserId(rundata);
 
-    authority_list = CommonCategoryUtils
-        .CheckPermission(
-            rundata,
-            context,
-            ALAccessControlConstants.VALUE_ACL_LIST,
-            ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
+    authority_list = CommonCategoryUtils.CheckPermission(rundata, context,
+      ALAccessControlConstants.VALUE_ACL_LIST,
+      ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
 
-    authority_detail = CommonCategoryUtils
-        .CheckPermission(
-            rundata,
-            context,
-            ALAccessControlConstants.VALUE_ACL_DETAIL,
-            ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
+    authority_detail = CommonCategoryUtils.CheckPermission(rundata, context,
+      ALAccessControlConstants.VALUE_ACL_DETAIL,
+      ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
 
-    authority_edit = CommonCategoryUtils
-        .CheckPermission(
-            rundata,
-            context,
-            ALAccessControlConstants.VALUE_ACL_UPDATE,
-            ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
+    authority_edit = CommonCategoryUtils.CheckPermission(rundata, context,
+      ALAccessControlConstants.VALUE_ACL_UPDATE,
+      ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
 
-    authority_delete = CommonCategoryUtils
-        .CheckPermission(
-            rundata,
-            context,
-            ALAccessControlConstants.VALUE_ACL_DELETE,
-            ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
+    authority_delete = CommonCategoryUtils.CheckPermission(rundata, context,
+      ALAccessControlConstants.VALUE_ACL_DELETE,
+      ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
 
     super.init(action, rundata, context);
   }
 
   /**
    * 一覧データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected List<EipTCommonCategory> selectList(RunData rundata, Context context) {
     try {
 
@@ -137,7 +127,7 @@ public class CommonCategorySelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -145,15 +135,15 @@ public class CommonCategorySelectData extends
   private SelectQuery<EipTCommonCategory> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<EipTCommonCategory> query = new SelectQuery<EipTCommonCategory>(
-        EipTCommonCategory.class);
+      EipTCommonCategory.class);
 
     Expression exp = ExpressionFactory.noMatchDbExp(
-        EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN, Integer.valueOf(1));
+      EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN, Integer.valueOf(1));
     query.setQualifier(exp);
 
     if (!authority_list) {
       Expression exp2 = ExpressionFactory.matchExp(
-          EipTCommonCategory.CREATE_USER_ID_PROPERTY, Integer.valueOf(uid));
+        EipTCommonCategory.CREATE_USER_ID_PROPERTY, Integer.valueOf(uid));
       query.andQualifier(exp2);
     }
 
@@ -162,13 +152,14 @@ public class CommonCategorySelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected EipTCommonCategory selectDetail(RunData rundata, Context context) {
     // オブジェクトモデルを取得
     return CommonCategoryUtils.getEipTCommonCategory(rundata, context);
@@ -176,13 +167,14 @@ public class CommonCategorySelectData extends
 
   /**
    * ResultDataを取得します。（一覧データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(EipTCommonCategory obj) {
-    EipTCommonCategory record = (EipTCommonCategory) obj;
+    EipTCommonCategory record = obj;
     CommonCategoryResultData rd = new CommonCategoryResultData();
     rd.initField();
     rd.setCommonCategoryId(record.getCommonCategoryId().longValue());
@@ -193,13 +185,14 @@ public class CommonCategorySelectData extends
 
   /**
    * ResultDataを取得します。（詳細データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(EipTCommonCategory obj) {
-    EipTCommonCategory record = (EipTCommonCategory) obj;
+    EipTCommonCategory record = obj;
     CommonCategoryResultData rd = new CommonCategoryResultData();
     rd.initField();
     rd.setCommonCategoryId(record.getCommonCategoryId().longValue());
@@ -215,6 +208,7 @@ public class CommonCategorySelectData extends
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("name", EipTCommonCategory.NAME_PROPERTY);
@@ -223,7 +217,7 @@ public class CommonCategorySelectData extends
 
   /**
    * ログインユーザID
-   *
+   * 
    * @return
    */
   public int getUserId() {
@@ -231,7 +225,7 @@ public class CommonCategorySelectData extends
   }
 
   /**
-   *
+   * 
    * @param id
    * @return
    */
@@ -258,9 +252,10 @@ public class CommonCategorySelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY;
   }

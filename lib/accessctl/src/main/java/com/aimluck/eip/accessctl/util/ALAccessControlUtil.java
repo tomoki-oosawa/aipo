@@ -33,18 +33,18 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 public class ALAccessControlUtil {
 
   /**
-   *
+   * 
    * @param rundata
    * @return
    */
-  public static List<AccessControlAclBean> getAclLiteBeansFromFeatureId(RunData rundata,
-      String featureid) {
+  public static List<AccessControlAclBean> getAclLiteBeansFromFeatureId(
+      RunData rundata, String featureid) {
     List<AccessControlAclBean> list = new ArrayList<AccessControlAclBean>();
 
     DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     EipTAclPortletFeature feature = (EipTAclPortletFeature) DataObjectUtils
-        .objectForPK(dataContext, EipTAclPortletFeature.class, Integer
-            .parseInt(featureid));
+      .objectForPK(dataContext, EipTAclPortletFeature.class,
+        Integer.parseInt(featureid));
 
     if (feature == null) {
       return null;
@@ -53,23 +53,23 @@ public class ALAccessControlUtil {
     int defineAclType = feature.getAclType().intValue();
 
     addAcls(list, defineAclType, ALAccessControlConstants.VALUE_ACL_LIST,
-        "acllist", "一覧表示");
+      "acllist", "一覧表示");
     addAcls(list, defineAclType, ALAccessControlConstants.VALUE_ACL_DETAIL,
-        "acldetail", "詳細表示");
+      "acldetail", "詳細表示");
     addAcls(list, defineAclType, ALAccessControlConstants.VALUE_ACL_INSERT,
-        "aclinsert", "追加");
+      "aclinsert", "追加");
     addAcls(list, defineAclType, ALAccessControlConstants.VALUE_ACL_UPDATE,
-        "aclupdate", "編集");
+      "aclupdate", "編集");
     addAcls(list, defineAclType, ALAccessControlConstants.VALUE_ACL_DELETE,
-        "acldelete", "削除");
+      "acldelete", "削除");
     addAcls(list, defineAclType, ALAccessControlConstants.VALUE_ACL_EXPORT,
-        "aclexport", "外部出力");
+      "aclexport", "外部出力");
 
     return list;
   }
 
-  private static void addAcls(List<AccessControlAclBean> acls, int defineAclType, int aclType,
-      String aclTypeId, String aclTypeName) {
+  private static void addAcls(List<AccessControlAclBean> acls,
+      int defineAclType, int aclType, String aclTypeId, String aclTypeName) {
     boolean hasAcl = ((defineAclType & aclType) == aclType);
 
     if (!hasAcl) {

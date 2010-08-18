@@ -34,11 +34,11 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 public class ALEventlogUtils {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALEventlogUtils.class.getName());
+    .getLogger(ALEventlogUtils.class.getName());
 
   /**
    * mode を DB に保存するための数値に変換します。
-   *
+   * 
    * @param mode
    * @return
    */
@@ -81,7 +81,7 @@ public class ALEventlogUtils {
 
   /**
    * ポートレット名 を DB に保存するための数値に変換します。
-   *
+   * 
    * @param p_name
    * @return
    */
@@ -148,7 +148,7 @@ public class ALEventlogUtils {
   // }
   /**
    * イベントのエイリアス名を取得します。
-   *
+   * 
    * @param eventType
    * @return
    */
@@ -156,7 +156,7 @@ public class ALEventlogUtils {
     int type = ALActionEventlogConstants.EVENT_TYPE_NONE;
 
     if (eventType > 0
-        && eventType < ALActionEventlogConstants.EVENT_ALIAS_NAME.length) {
+      && eventType < ALActionEventlogConstants.EVENT_ALIAS_NAME.length) {
       type = eventType;
     }
 
@@ -165,7 +165,7 @@ public class ALEventlogUtils {
 
   /**
    * ポートレットのエイリアス名を取得します。
-   *
+   * 
    * @param eventType
    * @return
    */
@@ -186,7 +186,7 @@ public class ALEventlogUtils {
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_BLOG_THEMA) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_BLOG_THEMA;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_WORKFLOW
-        || portletType == ALEventlogConstants.PORTLET_TYPE_WORKFLOW_CATEGORY) {
+      || portletType == ALEventlogConstants.PORTLET_TYPE_WORKFLOW_CATEGORY) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_WORKFLOW;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_TODO) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_TODO;
@@ -205,7 +205,7 @@ public class ALEventlogUtils {
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_MEMO) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_MEMO;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_MSGBOARD_TOPIC
-        || portletType == ALEventlogConstants.PORTLET_TYPE_MSGBOARD_CATEGORY) {
+      || portletType == ALEventlogConstants.PORTLET_TYPE_MSGBOARD_CATEGORY) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_MSGBOARD;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_EXTERNALSEARCH) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_EXTERNALSEARCH;
@@ -218,7 +218,7 @@ public class ALEventlogUtils {
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_CABINET_FOLDER) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_CABINET_FOLDER;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_WEBMAIL
-        || portletType == ALEventlogConstants.PORTLET_TYPE_WEBMAIL_ACCOUNT) {
+      || portletType == ALEventlogConstants.PORTLET_TYPE_WEBMAIL_ACCOUNT) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_WEBMAIL;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_WEBMAIL_FOLDER) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_WEBMAIL_FOLDER;
@@ -245,7 +245,7 @@ public class ALEventlogUtils {
 
   /**
    * ポートレットIDからそのポートレットのPSMLのparentの文字列を取得する
-   *
+   * 
    * @param rundata
    * @param portletEntryId
    * @return
@@ -254,19 +254,22 @@ public class ALEventlogUtils {
   public static String getPortletName(RunData rundata, String portletEntryId) {
     try {
       Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-          .getDocument().getPortlets();
-      if (portlets == null)
+        .getDocument().getPortlets();
+      if (portlets == null) {
         return null;
+      }
 
       Portlets[] portletList = portlets.getPortletsArray();
-      if (portletList == null)
+      if (portletList == null) {
         return null;
+      }
 
       int length = portletList.length;
       for (int i = 0; i < length; i++) {
         Entry[] entries = portletList[i].getEntriesArray();
-        if (entries == null || entries.length <= 0)
+        if (entries == null || entries.length <= 0) {
           continue;
+        }
 
         int ent_length = entries.length;
         for (int j = 0; j < ent_length; j++) {

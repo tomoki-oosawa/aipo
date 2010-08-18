@@ -48,13 +48,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 共有カテゴリのフォームデータを管理するクラスです。 <br />
- *
+ * 
  */
 public class CommonCategoryFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CommonCategoryFormData.class.getName());
+    .getLogger(CommonCategoryFormData.class.getName());
 
   /** カテゴリID */
   private Integer category_id;
@@ -68,13 +68,14 @@ public class CommonCategoryFormData extends ALAbstractFormData {
   private DataContext dataContext;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -84,14 +85,14 @@ public class CommonCategoryFormData extends ALAbstractFormData {
     try {
       // カテゴリID
       category_id = Integer.valueOf(ALEipUtils.getTemp(rundata, context,
-          ALEipConstants.ENTITY_ID));
+        ALEipConstants.ENTITY_ID));
     } catch (Exception e) {
       category_id = null;
     }
   }
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -107,9 +108,10 @@ public class CommonCategoryFormData extends ALAbstractFormData {
 
   /**
    * ToDoカテゴリの各フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // カテゴリ名必須項目
     name.setNotNull(true);
@@ -121,28 +123,29 @@ public class CommonCategoryFormData extends ALAbstractFormData {
 
   /**
    * 共有カテゴリのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     try {
 
       SelectQuery query = new SelectQuery(EipTCommonCategory.class);
       Expression exp = ExpressionFactory.matchExp(
-          EipTCommonCategory.NAME_PROPERTY, name.getValue());
+        EipTCommonCategory.NAME_PROPERTY, name.getValue());
       query.setQualifier(exp);
 
       if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
         Expression exp3 = ExpressionFactory.noMatchDbExp(
-            EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN, category_id);
+          EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN, category_id);
         query.andQualifier(exp3);
       }
 
       if (dataContext.performQuery(query).size() != 0) {
         msgList.add("共有カテゴリ名『 <span class='em'>" + name.toString()
-            + "</span> 』は既に登録されています。");
+          + "</span> 』は既に登録されています。");
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -158,7 +161,7 @@ public class CommonCategoryFormData extends ALAbstractFormData {
 
   /**
    * 共有カテゴリをデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -166,14 +169,16 @@ public class CommonCategoryFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTCommonCategory category = CommonCategoryUtils.getEipTCommonCategory(
-          rundata, context);
-      if (category == null)
+        rundata, context);
+      if (category == null) {
         return false;
+      }
 
       // カテゴリ名
       name.setValue(category.getName());
@@ -188,7 +193,7 @@ public class CommonCategoryFormData extends ALAbstractFormData {
 
   /**
    * 共有カテゴリをデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -196,11 +201,12 @@ public class CommonCategoryFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       EipTCommonCategory category = (EipTCommonCategory) dataContext
-          .createAndRegisterNewObject(EipTCommonCategory.class);
+        .createAndRegisterNewObject(EipTCommonCategory.class);
 
       category.setName(name.getValue());
       category.setNote(note.getValue());
@@ -213,10 +219,10 @@ public class CommonCategoryFormData extends ALAbstractFormData {
 
       // イベントログに保存
       ALEventlogFactoryService
-          .getInstance()
-          .getEventlogHandler()
-          .log(category.getCommonCategoryId(),
-              ALEventlogConstants.PORTLET_TYPE_COMMON_CATEGORY, name.getValue());
+        .getInstance()
+        .getEventlogHandler()
+        .log(category.getCommonCategoryId(),
+          ALEventlogConstants.PORTLET_TYPE_COMMON_CATEGORY, name.getValue());
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
@@ -226,7 +232,7 @@ public class CommonCategoryFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されている共有カテゴリを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -234,26 +240,28 @@ public class CommonCategoryFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTCommonCategory category = CommonCategoryUtils.getEipTCommonCategory(
-          rundata, context);
-      if (category == null)
+        rundata, context);
+      if (category == null) {
         return false;
+      }
 
       boolean authority_edit = CommonCategoryUtils
-          .CheckPermission(
-              rundata,
-              context,
-              ALAccessControlConstants.VALUE_ACL_UPDATE,
-              ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
+        .CheckPermission(
+          rundata,
+          context,
+          ALAccessControlConstants.VALUE_ACL_UPDATE,
+          ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
 
       // 他人が作成したカテゴリは権限がないと変更不可
       ALEipUser eipUser = ALEipUtils.getALEipUser(rundata);
       if (category.getCreateUserId().intValue() != eipUser.getUserId()
-          .getValue() && !authority_edit) {
+        .getValue() && !authority_edit) {
         return false;
       }
 
@@ -272,10 +280,10 @@ public class CommonCategoryFormData extends ALAbstractFormData {
 
       // イベントログに保存
       ALEventlogFactoryService
-          .getInstance()
-          .getEventlogHandler()
-          .log(category.getCommonCategoryId(),
-              ALEventlogConstants.PORTLET_TYPE_COMMON_CATEGORY, name.getValue());
+        .getInstance()
+        .getEventlogHandler()
+        .log(category.getCommonCategoryId(),
+          ALEventlogConstants.PORTLET_TYPE_COMMON_CATEGORY, name.getValue());
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
@@ -285,7 +293,7 @@ public class CommonCategoryFormData extends ALAbstractFormData {
 
   /**
    * 共有カテゴリを削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -293,38 +301,40 @@ public class CommonCategoryFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTCommonCategory category = CommonCategoryUtils.getEipTCommonCategory(
-          rundata, context);
-      if (category == null)
+        rundata, context);
+      if (category == null) {
         return false;
+      }
 
       boolean authority_delete = CommonCategoryUtils
-          .CheckPermission(
-              rundata,
-              context,
-              ALAccessControlConstants.VALUE_ACL_DELETE,
-              ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
+        .CheckPermission(
+          rundata,
+          context,
+          ALAccessControlConstants.VALUE_ACL_DELETE,
+          ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
 
       // 他人が作成したカテゴリは権限がないと消せない
       ALEipUser eipUser = ALEipUtils.getALEipUser(rundata);
       if (category.getCreateUserId().intValue() != eipUser.getUserId()
-          .getValue() && !authority_delete) {
+        .getValue() && !authority_delete) {
         return false;
       }
 
       // TODO: OMを使わずに記述
       // 共有カテゴリ内の SchaduleMap は「未分類」にカテゴリ変更する
       List<?> result = ALEipUtils.getObjectModels(dataContext,
-          EipTScheduleMap.class, EipTScheduleMap.COMMON_CATEGORY_ID_PROPERTY,
-          category.getCommonCategoryId(), false);
+        EipTScheduleMap.class, EipTScheduleMap.COMMON_CATEGORY_ID_PROPERTY,
+        category.getCommonCategoryId(), false);
       if (result != null && result.size() > 0) {
         // 共有カテゴリ「未分類」のオブジェクトを取得
         EipTCommonCategory tmpCategory = CommonCategoryUtils
-            .getEipTCommonCategory(dataContext, Long.valueOf(1));
+          .getEipTCommonCategory(dataContext, Long.valueOf(1));
 
         EipTScheduleMap record = null;
         int size = result.size();
@@ -345,10 +355,10 @@ public class CommonCategoryFormData extends ALAbstractFormData {
 
       // イベントログに保存
       ALEventlogFactoryService
-          .getInstance()
-          .getEventlogHandler()
-          .log(entityId, ALEventlogConstants.PORTLET_TYPE_COMMON_CATEGORY,
-              categoryName);
+        .getInstance()
+        .getEventlogHandler()
+        .log(entityId, ALEventlogConstants.PORTLET_TYPE_COMMON_CATEGORY,
+          categoryName);
 
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -359,7 +369,7 @@ public class CommonCategoryFormData extends ALAbstractFormData {
 
   /**
    * 共有カテゴリIDを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public Integer getCategoryId() {
@@ -368,7 +378,7 @@ public class CommonCategoryFormData extends ALAbstractFormData {
 
   /**
    * 共有カテゴリ名を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getName() {
@@ -377,7 +387,7 @@ public class CommonCategoryFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getNote() {
@@ -387,9 +397,10 @@ public class CommonCategoryFormData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY;
   }

@@ -216,8 +216,9 @@ public class ALMailUtils {
    */
   public static EipMMailAccount getMailAccount(String orgId, int userId,
       int accountId) {
-    if (userId < 0 || accountId < 0)
+    if (userId < 0 || accountId < 0) {
       return null;
+    }
 
     try {
 
@@ -257,8 +258,9 @@ public class ALMailUtils {
    * @return
    */
   public static String getAccountName(int userId, int accountId) {
-    if (userId < 0 || accountId < 0)
+    if (userId < 0 || accountId < 0) {
       return null;
+    }
 
     String accountName = null;
     try {
@@ -282,24 +284,25 @@ public class ALMailUtils {
    * @return
    */
   public static ALMailMessage getReplyMessage(ALMailMessage mailmsg) {
-    if (mailmsg == null)
+    if (mailmsg == null) {
       return null;
+    }
 
     ALLocalMailMessage msg = null;
     try {
       msg = (ALLocalMailMessage) mailmsg;
 
       StringBuffer sb = new StringBuffer();
-      sb.append(" ").append(CR).append("----- Original Message ----- ").append(
-        CR);
+      sb.append(" ").append(CR).append("----- Original Message ----- ")
+        .append(CR);
       sb.append("From: ").append(getAddressString(msg.getFrom())).append(CR);
-      sb.append("To: ").append(
-        getAddressString(msg.getRecipients(Message.RecipientType.TO))).append(
-        CR);
+      sb.append("To: ")
+        .append(getAddressString(msg.getRecipients(Message.RecipientType.TO)))
+        .append(CR);
       sb.append("Sent: ").append(msg.getSentDate()).append(CR);
-      sb.append("Subject: ").append(
-        UnicodeCorrecter.correctToISO2022JP(msg.getSubject())).append(CR)
-        .append(" ").append(CR);
+      sb.append("Subject: ")
+        .append(UnicodeCorrecter.correctToISO2022JP(msg.getSubject()))
+        .append(CR).append(" ").append(CR);
 
       msg.setSubject(MimeUtility.encodeText("Re: "
         + UnicodeCorrecter.correctToISO2022JP(msg.getSubject())));
@@ -326,24 +329,25 @@ public class ALMailUtils {
    * @return
    */
   public static ALMailMessage getForwardMessage(ALMailMessage mailmsg) {
-    if (mailmsg == null)
+    if (mailmsg == null) {
       return null;
+    }
 
     ALLocalMailMessage msg = null;
     try {
       msg = (ALLocalMailMessage) mailmsg;
 
       StringBuffer sb = new StringBuffer();
-      sb.append(" ").append(CR).append("----- Original Message ----- ").append(
-        CR);
+      sb.append(" ").append(CR).append("----- Original Message ----- ")
+        .append(CR);
       sb.append("From: ").append(getAddressString(msg.getFrom())).append(CR);
-      sb.append("To: ").append(
-        getAddressString(msg.getRecipients(Message.RecipientType.TO))).append(
-        CR);
+      sb.append("To: ")
+        .append(getAddressString(msg.getRecipients(Message.RecipientType.TO)))
+        .append(CR);
       sb.append("Sent: ").append(msg.getSentDate()).append(CR);
-      sb.append("Subject: ").append(
-        UnicodeCorrecter.correctToISO2022JP(msg.getSubject())).append(CR)
-        .append(" ").append(CR);
+      sb.append("Subject: ")
+        .append(UnicodeCorrecter.correctToISO2022JP(msg.getSubject()))
+        .append(CR).append(" ").append(CR);
 
       msg.setSubject(MimeUtility.encodeText("Fwd: "
         + UnicodeCorrecter.correctToISO2022JP(msg.getSubject())));
@@ -370,10 +374,12 @@ public class ALMailUtils {
    * @return
    */
   public static String[] getLines(String str) {
-    if (str == null || str.equals(""))
+    if (str == null || str.equals("")) {
       return null;
-    if (str.indexOf(CR) < 0)
+    }
+    if (str.indexOf(CR) < 0) {
       return new String[] { str };
+    }
 
     String token = null;
     List<String> tokens = new ArrayList<String>();
@@ -387,7 +393,7 @@ public class ALMailUtils {
       reader.close();
 
       lines = new String[tokens.size()];
-      lines = (String[]) tokens.toArray(lines);
+      lines = tokens.toArray(lines);
     } catch (Exception ioe) {
       logger.error("Exception", ioe);
       try {
@@ -409,10 +415,12 @@ public class ALMailUtils {
    * @return
    */
   public static String[] getTokens(String line, String delim) {
-    if (line == null || line.equals(""))
+    if (line == null || line.equals("")) {
       return null;
-    if (line.indexOf(delim) < 0)
+    }
+    if (line.indexOf(delim) < 0) {
       return new String[] { line };
+    }
 
     StringTokenizer st = new StringTokenizer(line, delim);
     int length = st.countTokens();
@@ -430,8 +438,9 @@ public class ALMailUtils {
    * @return
    */
   public static int[] reverse(int[] objs) {
-    if (objs == null)
+    if (objs == null) {
       return null;
+    }
     int length = objs.length;
     int[] destObjs = new int[length];
     System.arraycopy(objs, 0, destObjs, 0, length);
@@ -452,8 +461,9 @@ public class ALMailUtils {
    * @return
    */
   public static String getAddressString(Address[] addresses) {
-    if (addresses == null)
+    if (addresses == null) {
       return "";
+    }
     StringBuffer sb = new StringBuffer();
     InternetAddress addr = null;
     int length = addresses.length - 1;
@@ -462,8 +472,8 @@ public class ALMailUtils {
       if (addr.getPersonal() != null) {
         String personaladdr = getOneString(
           getTokens(addr.getPersonal(), "\r\n"), "");
-        sb.append(MailUtility.decodeText(personaladdr)).append(" <").append(
-          addr.getAddress()).append(">, ");
+        sb.append(MailUtility.decodeText(personaladdr)).append(" <")
+          .append(addr.getAddress()).append(">, ");
       } else {
         sb.append(addr.getAddress()).append(", ");
       }
@@ -472,8 +482,8 @@ public class ALMailUtils {
     if (addr.getPersonal() != null) {
       String personaladdr = getOneString(getTokens(addr.getPersonal(), "\r\n"),
         "");
-      sb.append(MailUtility.decodeText(personaladdr)).append(" <").append(
-        addr.getAddress()).append(">");
+      sb.append(MailUtility.decodeText(personaladdr)).append(" <")
+        .append(addr.getAddress()).append(">");
     } else {
       sb.append(addr.getAddress());
     }
@@ -488,8 +498,9 @@ public class ALMailUtils {
    * @return
    */
   public static String getOneString(String[] strs, String delim) {
-    if (strs == null)
+    if (strs == null) {
       return "";
+    }
     String delimiter = delim + " ";
     StringBuffer sb = new StringBuffer();
     int length = strs.length - 1;
@@ -507,8 +518,9 @@ public class ALMailUtils {
    * @return
    */
   public static String translateDate(Date date) {
-    if (date == null)
+    if (date == null) {
       return null;
+    }
 
     // 日付を表示形式に変換
     SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
@@ -523,8 +535,9 @@ public class ALMailUtils {
    * @return
    */
   public static Date translateDate(String dateStr) {
-    if (dateStr == null || dateStr.equals(""))
+    if (dateStr == null || dateStr.equals("")) {
       return null;
+    }
     Date date = null;
 
     // 日付を表示形式に変換
@@ -549,8 +562,9 @@ public class ALMailUtils {
    */
   public static String getProperty(String filename, String key) {
     File file = getFile(filename);
-    if (file == null)
+    if (file == null) {
       return null;
+    }
 
     String value = null;
     Properties prop = new Properties();
@@ -588,8 +602,9 @@ public class ALMailUtils {
    */
   public static void setProperty(String filename, String key, String value) {
     File file = getFile(filename);
-    if (file == null)
+    if (file == null) {
       return;
+    }
 
     Properties prop = new Properties();
     FileInputStream input = null;
@@ -610,13 +625,15 @@ public class ALMailUtils {
    * @return
    */
   public static File getFile(String filename) {
-    if (filename == null)
+    if (filename == null) {
       return null;
+    }
     File file = new File(filename);
     if (!file.exists()) {
       try {
-        if (!file.createNewFile())
+        if (!file.createNewFile()) {
           return null;
+        }
       } catch (IOException e) {
         return null;
       }
@@ -630,8 +647,9 @@ public class ALMailUtils {
    * @return
    */
   public static boolean deleteFolder(File folder) {
-    if (folder == null)
+    if (folder == null) {
       return true;
+    }
 
     String[] files = folder.list();
     if (files == null) {
@@ -712,8 +730,9 @@ public class ALMailUtils {
     sb.append(dir).append(File.separator).append(userId).append(".lock");
 
     File lockFile = new File(sb.toString());
-    if (!lockFile.delete())
+    if (!lockFile.delete()) {
       return false;
+    }
     return true;
   }
 
@@ -727,8 +746,9 @@ public class ALMailUtils {
     try {
       String[] receivedHeaders = msg.getHeader("Received");
 
-      if (receivedHeaders == null || receivedHeaders.length == 0)
+      if (receivedHeaders == null || receivedHeaders.length == 0) {
         return null;
+      }
 
       Date receivedDate = null;
       StringTokenizer st = new StringTokenizer(receivedHeaders[0], ";");
@@ -765,8 +785,8 @@ public class ALMailUtils {
   public static String encodeWordJIS(String s) {
     try {
       return "=?ISO-2022-JP?B?"
-        + new String(Base64
-          .encodeBase64(CharCodeConverter.sjisToJis(UnicodeCorrecter
+        + new String(
+          Base64.encodeBase64(CharCodeConverter.sjisToJis(UnicodeCorrecter
             .correctToCP932(s).getBytes("Windows-31J")))) + "?=";
     } catch (UnsupportedEncodingException e) {
       throw new RuntimeException("CANT HAPPEN");
@@ -791,8 +811,8 @@ public class ALMailUtils {
       } else if (count == 2) {
         String name = st.nextToken().trim();
         String addressStr = st.nextToken().trim();
-        address = new InternetAddress(addressStr, ALMailUtils
-          .encodeWordJIS(name));
+        address = new InternetAddress(addressStr,
+          ALMailUtils.encodeWordJIS(name));
       }
     } catch (Exception e) {
       logger.error("Exception", e);
@@ -814,15 +834,16 @@ public class ALMailUtils {
     int filePathsLength = filePaths.length;
     for (int i = 0; i < filePathsLength; i++) {
       file = new File(filePaths[i]);
-      if (!file.exists())
+      if (!file.exists()) {
         continue;
+      }
       checkedList.add(filePaths[i]);
     }
 
     int checkedListLength = checkedList.size();
     String[] filePathList = new String[checkedListLength];
     for (int i = 0; i < checkedListLength; i++) {
-      filePathList[i] = (String) checkedList.get(i);
+      filePathList[i] = checkedList.get(i);
     }
     return filePathList;
   }
@@ -884,8 +905,9 @@ public class ALMailUtils {
     byte[] decryptedData = null;
     try {
       decryptedData = cryptPBEWithMD5AndDES(Cipher.DECRYPT_MODE, password, data);
-      if (decryptedData == null)
+      if (decryptedData == null) {
         return null;
+      }
     } catch (Exception e) {
       logger.error("Exception", e);
       return null;
@@ -982,8 +1004,9 @@ public class ALMailUtils {
    */
   public static ALMailReceiverContext getALPop3MailReceiverContext(
       String orgId, EipMMailAccount account) {
-    if (account == null)
+    if (account == null) {
       return null;
+    }
 
     ALPop3MailReceiverContext rcontext = new ALPop3MailReceiverContext();
     try {
@@ -999,8 +1022,8 @@ public class ALMailUtils {
       rcontext.setEnableSavingDays(Integer.parseInt(account
         .getDelAtPop3BeforeDaysFlg()) == 1);
       rcontext.setSavingDays(account.getDelAtPop3BeforeDays().intValue());
-      rcontext.setDenyReceivedMail(Integer
-        .parseInt(account.getNonReceivedFlg()) == 1);
+      rcontext
+        .setDenyReceivedMail(Integer.parseInt(account.getNonReceivedFlg()) == 1);
       rcontext.setAuthReceiveFlag(account.getAuthReceiveFlg().intValue());
       rcontext.setEncryptionFlag(account.getPop3EncryptionFlg());
     } catch (Exception e) {
@@ -1019,8 +1042,9 @@ public class ALMailUtils {
    */
   public static ALMailSenderContext getALSmtpMailSenderContext(String orgId,
       EipMMailAccount account) {
-    if (account == null)
+    if (account == null) {
       return null;
+    }
 
     ALSmtpMailSenderContext scontext = new ALSmtpMailSenderContext();
 
@@ -1212,8 +1236,8 @@ public class ALMailUtils {
           EipMMailAccount.USER_ID_PROPERTY, Integer.valueOf(userId));
         query.setQualifier(exp1);
         Expression exp2 = ExpressionFactory.matchExp(
-          EipMMailAccount.ACCOUNT_TYPE_PROPERTY, Integer
-            .valueOf(ACCOUNT_TYPE_INIT));
+          EipMMailAccount.ACCOUNT_TYPE_PROPERTY,
+          Integer.valueOf(ACCOUNT_TYPE_INIT));
         query.andQualifier(exp2);
         List<?> list = dataContext.performQuery(query);
         if (list == null || list.size() <= 0) {
@@ -1292,10 +1316,12 @@ public class ALMailUtils {
       dataContext.commitChanges();
 
       // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        mailAccount.getAccountId(),
-        ALEventlogConstants.PORTLET_TYPE_WEBMAIL_ACCOUNT,
-        mailAccount.getAccountName());
+      ALEventlogFactoryService
+        .getInstance()
+        .getEventlogHandler()
+        .log(mailAccount.getAccountId(),
+          ALEventlogConstants.PORTLET_TYPE_WEBMAIL_ACCOUNT,
+          mailAccount.getAccountName());
     } catch (Exception ex) {
       ex.printStackTrace();
       logger.error("Exception", ex);
@@ -1310,11 +1336,13 @@ public class ALMailUtils {
       List<String> msgList) throws Exception {
 
     if (destType < VALUE_MSGTYPE_DEST_NONE
-      || destType > VALUE_MSGTYPE_DEST_PC_CELLULAR)
+      || destType > VALUE_MSGTYPE_DEST_PC_CELLULAR) {
       return false;
+    }
 
-    if (destMemberList == null || destMemberList.size() == 0)
+    if (destMemberList == null || destMemberList.size() == 0) {
       return false;
+    }
 
     // メールの送信
     EipMMailAccount account = getEipMMailAccountForAdmin();
@@ -1360,14 +1388,14 @@ public class ALMailUtils {
       if ((destType == VALUE_MSGTYPE_DEST_PC || destType == VALUE_MSGTYPE_DEST_PC_CELLULAR)
         && (destEmailAddrsSize > 0)) {
         String[] tos = new String[destEmailAddrsSize];
-        tos = (String[]) destEmailAddrs.toArray(tos);
+        tos = destEmailAddrs.toArray(tos);
 
         // 送信メッセージのコンテキスト
         ALSmtpMailContext mailcontext = ALMailUtils.getALSmtpMailContext(tos,
-          null, null, account.getMailAddress(), ALStringUtil
-            .unsanitizing(account.getMailUserName()), ALStringUtil
-            .unsanitizing(pcSubject), ALStringUtil.unsanitizing(pcBody), null,
-          null);
+          null, null, account.getMailAddress(),
+          ALStringUtil.unsanitizing(account.getMailUserName()),
+          ALStringUtil.unsanitizing(pcSubject),
+          ALStringUtil.unsanitizing(pcBody), null, null);
 
         successSendToPc = mailhandler.send(scontext, mailcontext);
       }
@@ -1376,13 +1404,13 @@ public class ALMailUtils {
       if ((destType == VALUE_MSGTYPE_DEST_CELLULAR || destType == VALUE_MSGTYPE_DEST_PC_CELLULAR)
         && (destCellularEMailAddrsSize > 0)) {
         String[] tos = new String[destCellularEMailAddrsSize];
-        tos = (String[]) destCellularEMailAddrs.toArray(tos);
+        tos = destCellularEMailAddrs.toArray(tos);
 
         ALSmtpMailContext mailcontext = ALMailUtils.getALSmtpMailContext(tos,
-          null, null, account.getMailAddress(), ALStringUtil
-            .unsanitizing(account.getMailUserName()), ALStringUtil
-            .unsanitizing(cellularSubject), ALStringUtil
-            .unsanitizing(cellularBody), null, null);
+          null, null, account.getMailAddress(),
+          ALStringUtil.unsanitizing(account.getMailUserName()),
+          ALStringUtil.unsanitizing(cellularSubject),
+          ALStringUtil.unsanitizing(cellularBody), null, null);
 
         successSendToCell = mailhandler.send(scontext, mailcontext);
       }
@@ -1429,11 +1457,13 @@ public class ALMailUtils {
       List<String> msgList) throws Exception {
 
     if (destType < VALUE_MSGTYPE_DEST_NONE
-      || destType > VALUE_MSGTYPE_DEST_PC_CELLULAR)
+      || destType > VALUE_MSGTYPE_DEST_PC_CELLULAR) {
       return false;
+    }
 
-    if (destMemberList == null || destMemberList.size() == 0)
+    if (destMemberList == null || destMemberList.size() == 0) {
       return false;
+    }
 
     // メールの送信
     EipMMailAccount account = getEipMMailAccountForAdmin();
@@ -1479,14 +1509,14 @@ public class ALMailUtils {
       if ((destType == VALUE_MSGTYPE_DEST_PC || destType == VALUE_MSGTYPE_DEST_PC_CELLULAR)
         && (destEmailAddrsSize > 0)) {
         String[] tos = new String[destEmailAddrsSize];
-        tos = (String[]) destEmailAddrs.toArray(tos);
+        tos = destEmailAddrs.toArray(tos);
 
         // 送信メッセージのコンテキスト
         ALSmtpMailContext mailcontext = ALMailUtils.getALSmtpMailContext(tos,
-          null, null, account.getMailAddress(), ALStringUtil
-            .unsanitizing(account.getMailUserName()), ALStringUtil
-            .unsanitizing(pcSubject), ALStringUtil.unsanitizing(pcBody), null,
-          null);
+          null, null, account.getMailAddress(),
+          ALStringUtil.unsanitizing(account.getMailUserName()),
+          ALStringUtil.unsanitizing(pcSubject),
+          ALStringUtil.unsanitizing(pcBody), null, null);
 
         successSendToPc = mailhandler.send(scontext, mailcontext);
       }
@@ -1500,13 +1530,13 @@ public class ALMailUtils {
       if (((destType == VALUE_MSGTYPE_DEST_CELLULAR) || (destType == VALUE_MSGTYPE_DEST_PC_CELLULAR))
         && (destCellularEmailAddrsSize > 0)) {
         String[] tos = new String[destCellularEmailAddrsSize];
-        tos = (String[]) destCellularEmailAddrs.toArray(tos);
+        tos = destCellularEmailAddrs.toArray(tos);
 
         ALSmtpMailContext mailcontext = ALMailUtils.getALSmtpMailContext(tos,
-          null, null, account.getMailAddress(), ALStringUtil
-            .unsanitizing(account.getMailUserName()), ALStringUtil
-            .unsanitizing(cellularSubject), ALStringUtil
-            .unsanitizing(cellularBody), null, null);
+          null, null, account.getMailAddress(),
+          ALStringUtil.unsanitizing(account.getMailUserName()),
+          ALStringUtil.unsanitizing(cellularSubject),
+          ALStringUtil.unsanitizing(cellularBody), null, null);
 
         successSendToCell = mailhandler.send(scontext, mailcontext);
 
@@ -1650,8 +1680,9 @@ public class ALMailUtils {
   public static boolean setSendDestType(int keyMsgtype, int valueMsgtype) {
     try {
       if (valueMsgtype < VALUE_MSGTYPE_DEST_NONE
-        || valueMsgtype > VALUE_MSGTYPE_DEST_PC_CELLULAR)
+        || valueMsgtype > VALUE_MSGTYPE_DEST_PC_CELLULAR) {
         return false;
+      }
 
       DataContext dataContext = DatabaseOrmService.getInstance()
         .getDataContext();
@@ -1751,8 +1782,9 @@ public class ALMailUtils {
   }
 
   private static String getUrl(String ip, int port, String servername) {
-    if (ip == null || ip.length() == 0 || port == -1)
+    if (ip == null || ip.length() == 0 || port == -1) {
       return "";
+    }
 
     String protocol = JetspeedResources
       .getString("access.url.protocol", "http");
@@ -1760,8 +1792,8 @@ public class ALMailUtils {
     StringBuffer url = new StringBuffer();
 
     if (port == 80) {
-      url.append(protocol).append("://").append(ip).append("/").append(
-        servername).append("/");
+      url.append(protocol).append("://").append(ip).append("/")
+        .append(servername).append("/");
     } else {
       url.append(protocol).append("://").append(ip).append(":").append(port)
         .append("/").append(servername).append("/");
@@ -1771,11 +1803,13 @@ public class ALMailUtils {
 
   public static boolean setNotifyTime(int hour, int minute) {
     StringBuffer sb = new StringBuffer();
-    if (hour < 10)
+    if (hour < 10) {
       sb.append("0");
+    }
     sb.append(Integer.toString(hour)).append(":");
-    if (minute < 10)
+    if (minute < 10) {
       sb.append("0");
+    }
     sb.append(Integer.toString(minute)).append(":00");
 
     Time time = new Time(0);
@@ -1789,8 +1823,9 @@ public class ALMailUtils {
     query.setQualifier(exp);
 
     List<?> list = dataContext.performQuery(query);
-    if (list == null || list.size() == 0)
+    if (list == null || list.size() == 0) {
       return false;
+    }
 
     EipMMailNotifyConf notify = (EipMMailNotifyConf) list.get(0);
     notify.setNotifyTime(time);
@@ -1806,8 +1841,9 @@ public class ALMailUtils {
     query.setQualifier(exp);
 
     List<?> list = dataContext.performQuery(query);
-    if (list == null || list.size() == 0)
+    if (list == null || list.size() == 0) {
       return null;
+    }
 
     Date date = ((EipMMailNotifyConf) list.get(0)).getNotifyTime();
     Calendar cal = Calendar.getInstance();
@@ -1816,11 +1852,13 @@ public class ALMailUtils {
     StringBuffer sb = new StringBuffer();
     int hour = cal.get(Calendar.HOUR_OF_DAY);
     int minute = cal.get(Calendar.MINUTE);
-    if (hour < 10)
+    if (hour < 10) {
       sb.append("0");
+    }
     sb.append(hour).append(":");
-    if (minute < 10)
+    if (minute < 10) {
       sb.append("0");
+    }
     sb.append(minute);
 
     return sb.toString();
@@ -1971,8 +2009,8 @@ public class ALMailUtils {
 
     } else if (FILTER_TYPE_SUBJECT.equals(filterType)) {
       // 件名を含む
-      return MailUtility.decodeText(subject).toLowerCase().contains(
-        filterString.toLowerCase());
+      return MailUtility.decodeText(subject).toLowerCase()
+        .contains(filterString.toLowerCase());
     }
 
     return false;

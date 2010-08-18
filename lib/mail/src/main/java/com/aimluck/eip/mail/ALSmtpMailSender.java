@@ -18,7 +18,6 @@
  */
 package com.aimluck.eip.mail;
 
-import java.security.Security;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
@@ -154,8 +153,8 @@ public abstract class ALSmtpMailSender implements ALMailSender {
       /** SSL 暗号化 */
       smtpServerProp.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY);
       smtpServerProp.setProperty("mail.smtp.socketFactory.fallback", "false");
-      smtpServerProp.setProperty("mail.smtp.socketFactory.port", scontext
-        .getSmtpPort());
+      smtpServerProp.setProperty("mail.smtp.socketFactory.port",
+        scontext.getSmtpPort());
     }
 
     // SMTP サーバのアドレスをセット
@@ -166,8 +165,10 @@ public abstract class ALSmtpMailSender implements ALMailSender {
       && !"".equals(scontext.getAuthSendUserPassword())) {
       /** SMTP AUTH */
       smtpServerProp.put("mail.smtp.auth", "true");
-      session = Session.getInstance(smtpServerProp, new ALSmtpAuth(scontext
-        .getAuthSendUserId(), scontext.getAuthSendUserPassword()));
+      session = Session.getInstance(
+        smtpServerProp,
+        new ALSmtpAuth(scontext.getAuthSendUserId(), scontext
+          .getAuthSendUserPassword()));
     } else {
       session = Session.getInstance(smtpServerProp, null);
     }
@@ -182,8 +183,9 @@ public abstract class ALSmtpMailSender implements ALMailSender {
       msg.setFrom(new InternetAddress(mcontext.getFrom(), ALMailUtils
         .encodeWordJIS(mcontext.getName())));
       // メールのあて先（to）をセット
-      if (mcontext.getTo() == null)
+      if (mcontext.getTo() == null) {
         throw new MessagingException();
+      }
       setRecipient(msg, Message.RecipientType.TO, mcontext.getTo());
       // メールのあて先（cc）をセット
       if (mcontext.getCc() != null) {
@@ -247,8 +249,9 @@ public abstract class ALSmtpMailSender implements ALMailSender {
             mimeFile = new MimeBodyPart();
             mimeFile.setDataHandler(new DataHandler(new FileDataSource(
               checkedFilePaths[i])));
-            MailUtility.setFileName(mimeFile, ALMailUtils
-              .getFileNameFromText(checkedFilePaths[i]), "ISO-2022-JP", null);
+            MailUtility.setFileName(mimeFile,
+              ALMailUtils.getFileNameFromText(checkedFilePaths[i]),
+              "ISO-2022-JP", null);
 
             // 添付ファイルをボディパートに追加
             multiPart.addBodyPart(mimeFile);
@@ -286,8 +289,9 @@ public abstract class ALSmtpMailSender implements ALMailSender {
 
       ALLocalMailMessage msg = createMessage(mcontext);
 
-      if (msg == null)
+      if (msg == null) {
         return SEND_MSG_FAIL;
+      }
 
       int mailSize = msg.getSize();
       if (mailSize > MAIL_MAX_SIZE) {
@@ -300,9 +304,10 @@ public abstract class ALSmtpMailSender implements ALMailSender {
       } else if (scontext.getAuthSendFlag() == AUTH_SEND_POP_BEFORE_SMTP) {
         // POP before SMTP を実行する．
         // 認証のみ検証する．メールは受信しない．
-        boolean success = ALPop3MailReceiver.isAuthenticatedUser(scontext
-          .getPop3Host(), scontext.getPop3Port(), scontext.getPop3UserId(),
-          scontext.getPop3UserPasswd(), scontext.getPop3EncryptionFlag());
+        boolean success = ALPop3MailReceiver.isAuthenticatedUser(
+          scontext.getPop3Host(), scontext.getPop3Port(),
+          scontext.getPop3UserId(), scontext.getPop3UserPasswd(),
+          scontext.getPop3EncryptionFlag());
         if (!success) {
           return SEND_MSG_FAIL_POP_BEFORE_SMTP_AUTH;
         } else {
@@ -350,8 +355,9 @@ public abstract class ALSmtpMailSender implements ALMailSender {
    */
   private void setRecipient(Message msg, Message.RecipientType recipientType,
       String[] addrString) throws AddressException, MessagingException {
-    if (addrString == null)
+    if (addrString == null) {
       return;
+    }
     int addrStringLength = addrString.length;
     InternetAddress[] address = new InternetAddress[addrStringLength];
     for (int i = 0; i < addrStringLength; i++) {

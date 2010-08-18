@@ -22,11 +22,11 @@ import java.util.HashMap;
 
 /**
  * メール受信時の排他制御用のクラスです。 <br />
- *
+ * 
  */
 public class ALStaticObject {
 
-  private HashMap<Object,Object> map;
+  private final HashMap<Object, Object> map;
 
   private static ALStaticObject so = new ALStaticObject();
 
@@ -35,12 +35,12 @@ public class ALStaticObject {
   }
 
   private ALStaticObject() {
-    map = new HashMap<Object,Object>();
+    map = new HashMap<Object, Object>();
   }
 
   public void addAccountId(int accountId) {
     synchronized (map) {
-      map.put(Integer.valueOf(accountId), new HashMap<Object,Object>());
+      map.put(Integer.valueOf(accountId), new HashMap<Object, Object>());
     }
   }
 
@@ -58,7 +58,7 @@ public class ALStaticObject {
       }
 
       @SuppressWarnings("unchecked")
-      HashMap<Object,Object> stats = (HashMap<Object,Object>) obj;
+      HashMap<Object, Object> stats = (HashMap<Object, Object>) obj;
       stats.put(statKey, statValue);
     }
   }
@@ -72,7 +72,7 @@ public class ALStaticObject {
         }
 
         @SuppressWarnings("unchecked")
-        HashMap<Object,Object> stats = (HashMap<Object,Object>) obj;
+        HashMap<Object, Object> stats = (HashMap<Object, Object>) obj;
         return stats.get(statKey);
       } catch (Exception e) {
         return null;

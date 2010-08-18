@@ -36,12 +36,12 @@ import com.sun.mail.pop3.POP3Message;
 
 /**
  * メール受信時のメモリ占有を解除するためのクラスです。 <br />
- *
+ * 
  */
 public class ALPop3Message extends POP3Message implements ALMailMessage {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALPop3Message.class.getName());
+    .getLogger(ALPop3Message.class.getName());
 
   // private POP3Folder folder;
 
@@ -53,7 +53,7 @@ public class ALPop3Message extends POP3Message implements ALMailMessage {
 
   /**
    * コンストラクタ
-   *
+   * 
    * @param msg
    * @param i
    * @throws MessagingException
@@ -68,7 +68,7 @@ public class ALPop3Message extends POP3Message implements ALMailMessage {
 
   /**
    * コンテンツを削除する．
-   *
+   * 
    */
   public void clearContents() {
     this.content = null;
@@ -76,12 +76,13 @@ public class ALPop3Message extends POP3Message implements ALMailMessage {
 
   /**
    * 件名を取得する．
-   *
+   * 
    * @see javax.mail.Message#getSubject()
    */
+  @Override
   public String getSubject() throws MessagingException {
     String subject = UnicodeCorrecter.correctToCP932(MailUtility
-        .decodeText(super.getSubject()));
+      .decodeText(super.getSubject()));
 
     if (subject == null || subject.equals("")) {
       subject = "無題";
@@ -92,7 +93,7 @@ public class ALPop3Message extends POP3Message implements ALMailMessage {
   /**
    * POP3 サーバから受信した受信可能サイズを超えたメールをローカルファイルシステムに保存する． このメールはヘッダ情報のみ POP3
    * サーバから取得し，他の情報は取得しない．
-   *
+   * 
    * @param filePath
    * @throws MessagingException
    * @throws IOException
@@ -102,7 +103,7 @@ public class ALPop3Message extends POP3Message implements ALMailMessage {
     try {
       String charset = System.getProperty("mail.mime.charset", "ISO-2022-JP");
       PrintWriter writer = new PrintWriter(new OutputStreamWriter(
-          new FileOutputStream(filePath), charset));
+        new FileOutputStream(filePath), charset));
 
       String line = null;
       Enumeration<?> enu = getAllHeaderLines();
@@ -116,7 +117,7 @@ public class ALPop3Message extends POP3Message implements ALMailMessage {
       writer.println();
 
       writer.println("【重要】『" + DatabaseOrmService.getInstance().getAlias()
-          + "』 からのお知らせです。");
+        + "』 からのお知らせです。");
       writer.println("メールのサイズが大きすぎたため、このメールの本文を受信できませんでした。");
       writer.println("受信可能なメールサイズは、7MB までです。");
 

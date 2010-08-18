@@ -43,13 +43,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザーのユーティリティクラスです。 <br />
- *
+ * 
  */
 public class UserUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(UserUtils.class.getName());
+    .getLogger(UserUtils.class.getName());
 
   /** userLiteBeanキャッシュ用の変数 */
   private static Hashtable<String, ArrayList<UserLiteBean>> userLiteBeans = new Hashtable<String, ArrayList<UserLiteBean>>();
@@ -58,7 +58,7 @@ public class UserUtils {
   private static Hashtable<String, ArrayList<UserEmailLiteBean>> userEmailLiteBeans = new Hashtable<String, ArrayList<UserEmailLiteBean>>();
 
   /**
-   *
+   * 
    * @param rundata
    * @return
    */
@@ -70,12 +70,12 @@ public class UserUtils {
       /** キャッシュを出力する */
       @SuppressWarnings("unchecked")
       List<UserLiteBean> res = (List<UserLiteBean>) userLiteBeans.get(
-          org_id + "_" + groupname).clone();
+        org_id + "_" + groupname).clone();
       if (!includeLoginuser && login_user_id > 3) {
         /** ログインユーザを返り値から除く */
         UserLiteBean user;
         for (int i = 0; i < res.size(); i++) {
-          user = (UserLiteBean) res.get(i);
+          user = res.get(i);
           if (Integer.valueOf(user.getUserId()) == login_user_id) {
             res.remove(i);
             break;
@@ -90,7 +90,7 @@ public class UserUtils {
       StringBuffer statement = new StringBuffer();
       statement.append("SELECT DISTINCT ");
       statement
-          .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, D.POSITION ");
+        .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, D.POSITION ");
       statement.append("FROM TURBINE_USER_GROUP_ROLE as A ");
       statement.append("LEFT JOIN TURBINE_USER as B ");
       statement.append("  on A.USER_ID = B.USER_ID ");
@@ -104,7 +104,7 @@ public class UserUtils {
       String query = statement.toString();
 
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       @SuppressWarnings("deprecation")
       SQLTemplate rawSelect = new SQLTemplate(TurbineUser.class, query, true);
       rawSelect.setFetchingDataRows(true);
@@ -120,12 +120,12 @@ public class UserUtils {
         user = new UserLiteBean();
         user.initField();
         user.setUserId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-            TurbineUser.USER_ID_PK_COLUMN)).intValue());
+          TurbineUser.USER_ID_PK_COLUMN)).intValue());
         user.setName((String) ALEipUtils.getObjFromDataRow(dataRow,
-            TurbineUser.LOGIN_NAME_COLUMN));
+          TurbineUser.LOGIN_NAME_COLUMN));
         user.setAliasName((String) ALEipUtils.getObjFromDataRow(dataRow,
-            TurbineUser.FIRST_NAME_COLUMN), (String) ALEipUtils
-            .getObjFromDataRow(dataRow, TurbineUser.LAST_NAME_COLUMN));
+          TurbineUser.FIRST_NAME_COLUMN), (String) ALEipUtils
+          .getObjFromDataRow(dataRow, TurbineUser.LAST_NAME_COLUMN));
         list.add(user);
         cache_list.add(user);
       }
@@ -136,7 +136,7 @@ public class UserUtils {
       if (!includeLoginuser && login_user_id > 3) {
         /** 返り値からログインユーザを除く */
         for (int i = 0; i < list.size(); i++) {
-          user = (UserLiteBean) list.get(i);
+          user = list.get(i);
           if (Integer.valueOf(user.getUserId()) == login_user_id) {
             list.remove(i);
             break;
@@ -148,7 +148,7 @@ public class UserUtils {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @return
    */
@@ -162,7 +162,7 @@ public class UserUtils {
       /** キャッシュを出力する */
       @SuppressWarnings("unchecked")
       List<UserEmailLiteBean> res = (ArrayList<UserEmailLiteBean>) (userEmailLiteBeans
-          .get(org_id + "_" + groupname)).clone();
+        .get(org_id + "_" + groupname)).clone();
       if (!includeLoginuser && login_user_id > 3) {
         /** ログインユーザを返り値から除く */
         UserEmailLiteBean user;
@@ -180,7 +180,7 @@ public class UserUtils {
       StringBuffer statement = new StringBuffer();
       statement.append("SELECT DISTINCT ");
       statement
-          .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, B.EMAIL, D.POSITION ");
+        .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, B.EMAIL, D.POSITION ");
       statement.append("FROM TURBINE_USER_GROUP_ROLE as A ");
       statement.append("LEFT JOIN TURBINE_USER as B ");
       statement.append("  on A.USER_ID = B.USER_ID ");
@@ -194,7 +194,7 @@ public class UserUtils {
       String query = statement.toString();
 
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       @SuppressWarnings("deprecation")
       SQLTemplate rawSelect = new SQLTemplate(TurbineUser.class, query, true);
       rawSelect.setFetchingDataRows(true);
@@ -210,14 +210,14 @@ public class UserUtils {
         user = new UserEmailLiteBean();
         user.initField();
         user.setUserId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-            TurbineUser.USER_ID_PK_COLUMN)).intValue());
+          TurbineUser.USER_ID_PK_COLUMN)).intValue());
         user.setName((String) ALEipUtils.getObjFromDataRow(dataRow,
-            TurbineUser.LOGIN_NAME_COLUMN));
+          TurbineUser.LOGIN_NAME_COLUMN));
         user.setAliasName((String) ALEipUtils.getObjFromDataRow(dataRow,
-            TurbineUser.FIRST_NAME_COLUMN), (String) ALEipUtils
-            .getObjFromDataRow(dataRow, TurbineUser.LAST_NAME_COLUMN));
+          TurbineUser.FIRST_NAME_COLUMN), (String) ALEipUtils
+          .getObjFromDataRow(dataRow, TurbineUser.LAST_NAME_COLUMN));
         user.setEmail((String) ALEipUtils.getObjFromDataRow(dataRow,
-            TurbineUser.EMAIL_COLUMN));
+          TurbineUser.EMAIL_COLUMN));
         list.add(user);
         cache_list.add(user);
       }
@@ -228,7 +228,7 @@ public class UserUtils {
       if (!includeLoginuser && login_user_id > 3) {
         /** 返り値からログインユーザを除く */
         for (int i = 0; i < list.size(); i++) {
-          user = (UserEmailLiteBean) list.get(i);
+          user = list.get(i);
           if (Integer.valueOf(user.getUserId()) == login_user_id) {
             list.remove(i);
             break;
@@ -240,7 +240,7 @@ public class UserUtils {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @return
    */
@@ -263,7 +263,7 @@ public class UserUtils {
       }
       if (isPost) {
         Map<Integer, ALEipPost> postmap = ALEipManager.getInstance()
-            .getPostMap();
+          .getPostMap();
         for (Iterator<ALEipPost> i = postmap.values().iterator(); i.hasNext();) {
           ALEipPost post = i.next();
           bean = new UserGroupLiteBean();

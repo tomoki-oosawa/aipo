@@ -20,7 +20,7 @@ package com.aimluck.eip.mail;
 
 /**
  * メール送信（SMTP）用の情報を保持するクラスです。 <br />
- *
+ * 
  */
 public class ALSmtpMailSenderContext implements ALMailSenderContext {
 

@@ -29,14 +29,15 @@ import com.aimluck.eip.category.util.CommonCategoryUtils;
 
 /**
  * 共通カテゴリの情報をJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class CommonCategoryLiteJSONScreen extends ALJSONScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CommonCategoryLiteJSONScreen.class.getName());
+    .getLogger(CommonCategoryLiteJSONScreen.class.getName());
 
+  @Override
   protected String getJSONString(RunData rundata, Context context)
       throws Exception {
     String result = "";
@@ -44,7 +45,7 @@ public class CommonCategoryLiteJSONScreen extends ALJSONScreen {
     try {
 
       JSONArray json = JSONArray.fromObject(CommonCategoryUtils
-          .getCommonCategoryLiteBeans(rundata));
+        .getCommonCategoryLiteBeans(rundata));
       result = json.toString();
     } catch (Exception e) {
       logger.error("[ERROR]", e);

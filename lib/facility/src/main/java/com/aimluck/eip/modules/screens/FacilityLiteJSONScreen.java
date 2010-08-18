@@ -29,14 +29,15 @@ import com.aimluck.eip.facility.util.FacilityUtils;
 
 /**
  * 施設の情報をJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class FacilityLiteJSONScreen extends ALJSONScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FacilityLiteJSONScreen.class.getName());
+    .getLogger(FacilityLiteJSONScreen.class.getName());
 
+  @Override
   protected String getJSONString(RunData rundata, Context context)
       throws Exception {
     String result = "";

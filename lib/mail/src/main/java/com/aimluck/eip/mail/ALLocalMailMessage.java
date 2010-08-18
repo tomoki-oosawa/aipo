@@ -54,12 +54,12 @@ import com.sk_jp.mail.MultipartUtility;
 
 /**
  * ローカルに保存するメールを表すクラスです。 <br />
- *
+ * 
  */
 public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALLocalMailMessage.class.getName());
+    .getLogger(ALLocalMailMessage.class.getName());
 
   public static final String MESSAGE_ID = "Message-ID";
 
@@ -101,7 +101,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
   /**
    * コンストラクタ
-   *
+   * 
    * @param source
    *          メール
    * @param fileName
@@ -116,7 +116,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
   /**
    * コンストラクタ
-   *
+   * 
    * @param fileName
    *          自身の保存先のファイル名
    * @throws MessagingException
@@ -128,7 +128,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
   /**
    * コンストラクタ
-   *
+   * 
    * @param session
    */
   public ALLocalMailMessage(Session session) throws MessagingException {
@@ -142,7 +142,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
   /**
    * ファイル名を返す．
-   *
+   * 
    * @return
    */
   public String getMailMassageFileName() {
@@ -151,29 +151,32 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
   /**
    * メールヘッダを追加する．
-   *
+   * 
    * @see javax.mail.internet.MimePart#addHeaderLine(java.lang.String)
    */
+  @Override
   public void addHeaderLine(String line) throws MessagingException {
     StringTokenizer st = new StringTokenizer(line, ":");
-    if (!st.hasMoreTokens())
+    if (!st.hasMoreTokens()) {
       return;
+    }
     String key = st.nextToken();
-    if (!st.hasMoreTokens())
+    if (!st.hasMoreTokens()) {
       return;
+    }
     String value = st.nextToken().trim();
     addHeader(key, value);
   }
 
   /**
    * 指定されたフォルダからメールを読み込む．
-   *
+   * 
    * @param folderPath
    */
   public void readMail(String folderPath) {
     try {
       FileInputStream input = new FileInputStream(folderPath + File.separator
-          + getMailMassageFileName());
+        + getMailMassageFileName());
       parse(input);
       input.close();
 
@@ -184,13 +187,13 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
   /**
    * 指定されたフォルダにメールを保存する．
-   *
+   * 
    * @param folderPath
    */
   public void saveMail(String folderPath) {
     try {
       FileOutputStream output = new FileOutputStream(folderPath
-          + File.separator + getMailMassageFileName());
+        + File.separator + getMailMassageFileName());
       writeTo(output);
       output.close();
     } catch (Exception e) {
@@ -200,18 +203,19 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
   /**
    * 指定されたフォルダに添付ファイルを保存する．
-   *
+   * 
    * @param filePath
    * @param fileBytes
    */
   public void saveAttachmentFile(String filePath, byte[] fileBytes) {
     try {
       File file = new File(filePath);
-      if (!file.exists())
+      if (!file.exists()) {
         file.createNewFile();
+      }
 
       DataOutputStream out = new DataOutputStream(new BufferedOutputStream(
-          new FileOutputStream(filePath)));
+        new FileOutputStream(filePath)));
       out.write(fileBytes);
       out.flush();
       out.close();
@@ -222,14 +226,14 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
   /**
    * メールボディ部のテキストを取得する．
-   *
+   * 
    * @return
    */
   public String getBodyText() {
     String text = null;
     try {
       text = UnicodeCorrecter.correctToCP932(MultipartUtility
-          .getFirstPlainText(this));
+        .getFirstPlainText(this));
       // FirstPlainPartExtractor h = new FirstPlainPartExtractor();
       // MultipartUtility.process(this, h);
       // text = UnicodeCorrecter.correctToCP932(h.getText());
@@ -241,7 +245,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
   /**
    * メールの全てのヘッダを取得する． エンコードを変換する．
-   *
+   * 
    * @return
    */
   public String getHeader() {
@@ -261,7 +265,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
   /**
    * メールの全てのヘッダ情報を配列として取得する．
-   *
+   * 
    * @return
    */
   public String[] getHeaderArray() {
@@ -270,7 +274,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
   /**
    * メールの本文を一行毎に格納した配列を取得する．
-   *
+   * 
    * @return
    */
   public String[] getBodyTextArray() {
@@ -279,7 +283,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
   /**
    * 添付ファイルのファイル名を配列として取得する．
-   *
+   * 
    * @return
    */
   public String[] getAttachmentFileNameArray() {
@@ -297,9 +301,10 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
   /**
    * メッセージ ID を独自形式にするためのオーバーライドメソッド．
-   *
+   * 
    * @see javax.mail.internet.MimeMessage#updateHeaders()
    */
+  @Override
   protected void updateHeaders() throws MessagingException {
     super.updateHeaders();
 
@@ -309,7 +314,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
   /**
    * メッセージ ID を生成する．
-   *
+   * 
    * @return
    */
   private String getMessageId() {
@@ -323,25 +328,26 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
     Random random = new Random(cal.getTimeInMillis());
     int tmp = random.nextInt();
     int randomNumber = (tmp != Integer.MIN_VALUE ? Math.abs(tmp) : Math
-        .abs(tmp + 1));
+      .abs(tmp + 1));
 
     String smtpHostName = session.getProperty(ALSmtpMailSender.MAIL_SMTP_HOST);
 
     StringBuffer messageId = new StringBuffer();
     messageId.append(time).append(".").append(randomNumber).append("@")
-        .append(smtpHostName);
+      .append(smtpHostName);
 
     return messageId.toString();
   }
 
   /**
    * 件名を取得する．
-   *
+   * 
    * @see javax.mail.Message#getSubject()
    */
+  @Override
   public String getSubject() throws MessagingException {
     String subject = UnicodeCorrecter.correctToCP932(MailUtility
-        .decodeText(super.getSubject()));
+      .decodeText(super.getSubject()));
 
     if (subject == null || subject.equals("")) {
       subject = "";
@@ -351,7 +357,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
   /**
    * このメールが，HTML メールかを検証する． HTML メールの場合は，true．
-   *
+   * 
    * @return
    */
   public boolean isHtmlMail() {
@@ -371,24 +377,25 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
    * boolean htmlMail = false; try { htmlMail = isHtmlMailSub(this); } catch
    * (MessagingException me) { htmlMail = false; } catch (IOException e) {
    * htmlMail = false; } return htmlMail; ? }
-   *
+   * 
    * private boolean isHtmlMailSub(Part part) throws IOException,
    * MessagingException { if (part.isMimeType("text/plain")) { return false; }
    * else if (part.isMimeType("text/html")) { return true; } else if
    * (part.isMimeType("multipart/*")) { Multipart mp = (Multipart)
    * part.getContent(); for (int i = 0; i < mp.getCount(); i++) { if
    * (isHtmlMailSub(mp.getBodyPart(i))) { return true; } } }
-   *
+   * 
    * return false; }
-   *
+   * 
    * /** 添付ファイルを含んでいるかを検証する． 含んでいる場合は，true． @return
    */
   public boolean hasAttachments() {
     ALAttachmentsExtractor h = new ALAttachmentsExtractor();
     try {
       MultipartUtility.process(this, h);
-      if (h.getCount() > 0)
+      if (h.getCount() > 0) {
         return true;
+      }
     } catch (Exception e) {
       logger.error("Exception", e);
       return false;
@@ -398,7 +405,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
   /**
    * 指定したインデックスのコンテンツの InputStream を取得する．
-   *
+   * 
    * @param attachmentIndex
    * @return
    */
@@ -417,7 +424,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
   /**
    * 指定したインデックスの添付ファイル名を取得する．
-   *
+   * 
    * @param attachmentIndex
    * @return
    */
@@ -434,6 +441,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
     return filename;
   }
 
+  @Override
   public int getSize() {
     byte[] b = null;
     ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -460,9 +468,10 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
   /**
    * メールの送信日時を取得する．
-   *
+   * 
    * @see javax.mail.Message#getSentDate()
    */
+  @Override
   public Date getSentDate() throws MessagingException {
     // Date ヘッダの不正なタイムゾーンへの対応
     return MailUtility.parseDate(getHeader(DATE, null));
@@ -472,9 +481,10 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
    * 受信したメールの TO，CC，BCC のフォーマットが RFC に則っていない場合には， 独自処理で対処する： ・「
    * <user@domain」や「user@domain>」のように片方のカッコのみ見つかった場合の処理 ・「 < <user@domain>」や「
    * <user@domain>>」のようにカッコの対が揃っていない場合の処理
-   *
+   * 
    * @see javax.mail.Message#getRecipients(javax.mail.Message.RecipientType)
    */
+  @Override
   public Address[] getRecipients(javax.mail.Message.RecipientType recipienttype)
       throws MessagingException {
 
@@ -490,15 +500,15 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
     while (st.hasMoreTokens()) {
       token = st.nextToken();
       if ((token.indexOf('<') >= 0 && token.indexOf('>') == -1)
-          || (token.indexOf('<') == -1 && token.indexOf('>') >= 0)) {
+        || (token.indexOf('<') == -1 && token.indexOf('>') >= 0)) {
         // 「<user@domain」や「user@domain>」のように
         // 片方のカッコのみ見つかった場合の処理
         found = true;
       } else {
         if ((token.indexOf('<') >= 0 && token.indexOf('<') != token
-            .lastIndexOf('<'))
-            || (token.indexOf('>') >= 0 && token.indexOf('>') != token
-                .lastIndexOf('>'))) {
+          .lastIndexOf('<'))
+          || (token.indexOf('>') >= 0 && token.indexOf('>') != token
+            .lastIndexOf('>'))) {
           // 「<<user@domain>」や「<user@domain>>」のように
           // カッコの対が揃っていない場合の処理
           found = true;

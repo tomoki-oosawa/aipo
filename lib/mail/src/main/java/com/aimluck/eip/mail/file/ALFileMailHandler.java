@@ -36,12 +36,12 @@ import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
 
 /**
  * ローカルのファイルシステムを利用し、メールの送受信を操作するクラスです。 <br />
- *
+ * 
  */
 public class ALFileMailHandler extends ALMailHandler {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALFileMailHandler.class.getName());
+    .getLogger(ALFileMailHandler.class.getName());
 
   /** カテゴリキー（mail） */
   protected String categoryKey = null;
@@ -56,14 +56,17 @@ public class ALFileMailHandler extends ALMailHandler {
     return new ALFileMailHandler();
   }
 
+  @Override
   protected ALMailReceiver getALMailReceiver(ALMailReceiverContext rcontext) {
     return new ALFilePop3MailReceiver(rcontext);
   }
 
+  @Override
   public ALMailSender getALMailSender(ALMailSenderContext scontext) {
     return new ALFileSmtpMailSender(scontext);
   }
 
+  @Override
   public ALFolder getALFolder(int type_mail, String org_id, int user_id,
       int account_id) {
     return new ALFileLocalFolder(type_mail, org_id, user_id, account_id);
@@ -71,39 +74,40 @@ public class ALFileMailHandler extends ALMailHandler {
 
   protected String getCategoryKey() {
     return (categoryKey != null && !"".equals(categoryKey)) ? categoryKey
-        : ALMailUtils.categoryKey;
+      : ALMailUtils.categoryKey;
   }
 
   /**
    * アカウントフォルダを削除する．
-   *
+   * 
    * @param userRootFolderName
    * @param accountName
    * @return
    */
+  @Override
   public boolean removeAccount(String org_id, int user_id, int account_id) {
     StringBuffer fullName = null;
     String categoryKeytmp = getCategoryKey();
 
     if (categoryKeytmp != null && !"".equals(categoryKeytmp)) {
       ALOrgUtilsHandler handler = ALOrgUtilsFactoryService.getInstance()
-          .getOrgUtilsHandler();
+        .getOrgUtilsHandler();
       File docPath = handler.getDocumentPath(ALMailUtils.rootFolderPath,
-          org_id, categoryKeytmp);
+        org_id, categoryKeytmp);
       String pathStr = null;
       try {
         pathStr = docPath.getCanonicalPath();
       } catch (IOException e) {
         logger.error("ALFileMailHandler: unable to resolve file path for "
-            + pathStr);
+          + pathStr);
       }
       fullName = new StringBuffer(pathStr);
       fullName.append(File.separator).append(user_id).append(File.separator)
-          .append(account_id);
+        .append(account_id);
     } else {
       fullName = new StringBuffer(ALMailUtils.rootFolderPath);
       fullName.append(File.separator).append(org_id).append(File.separator)
-          .append(user_id).append(File.separator).append(account_id);
+        .append(user_id).append(File.separator).append(account_id);
     }
 
     String path = fullName.toString();

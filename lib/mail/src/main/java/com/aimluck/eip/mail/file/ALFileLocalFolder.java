@@ -52,19 +52,19 @@ import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
  * ローカルのファイルシステムを利用し、送受信したメールを保持するローカルフォルダのクラスです。 <br />
- *
+ * 
  */
 public class ALFileLocalFolder extends ALAbstractFolder {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALFileLocalFolder.class.getName());
+    .getLogger(ALFileLocalFolder.class.getName());
 
   /** メールのファイル名規則 */
   public static final String DEFAULT_MAIL_FILENAME_DATE_FORMAT = "yyyyMMddHHmmssSSS";
 
   /**
    * コンストラクタ
-   *
+   * 
    * @param parentFolder
    *          親フォルダ
    * @param folderName
@@ -77,20 +77,20 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * メールを取得します。
-   *
+   * 
    * @param index
    * @return
    */
   public ALLocalMailMessage getMail(int mailid) {
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       SelectQuery query = new SelectQuery(EipTMail.class);
       Expression exp1 = ExpressionFactory.matchDbExp(
-          EipTMail.MAIL_ID_PK_COLUMN, Integer.valueOf(mailid));
+        EipTMail.MAIL_ID_PK_COLUMN, Integer.valueOf(mailid));
       query.setQualifier(exp1);
       Expression exp2 = ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY,
-          user_id);
+        user_id);
       query.andQualifier(exp2);
       List<?> mails = dataContext.performQuery(query);
       if (mails == null || mails.size() == 0) {
@@ -100,7 +100,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
       }
       EipTMail email = ((EipTMail) mails.get(0));
       ALLocalMailMessage msg = readMail(getFullName() + File.separator
-          + email.getFilePath());
+        + email.getFilePath());
 
       // 未読→既読に変更
       email.setReadFlg("T");
@@ -115,7 +115,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * 指定されたファイルを読み込み，mail メッセージを取得する．
-   *
+   * 
    * @param fileName
    * @return
    */
@@ -138,7 +138,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * メールを保存する。
-   *
+   * 
    * @param messages
    * @return
    */
@@ -157,7 +157,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
           dataContext = DataContext.createDataContext(orgId);
         }
         res = insertMailToDB(dataContext, (MimeMessage) mail, tmpFileName,
-            false, false);
+          false, false);
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -169,7 +169,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
   /**
    * 受信サーバから受信した受信可能サイズを超えたメールを保存する。<br />
    * このメールはヘッダ情報のみ、受信サーバから取得し、他の情報は取得しない。
-   *
+   * 
    * @param localMailMessage
    * @return
    */
@@ -187,7 +187,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
           dataContext = DataContext.createDataContext(orgId);
         }
         res = insertMailToDB(dataContext, (MimeMessage) mail, tmpFileName,
-            false, false);
+          false, false);
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -198,7 +198,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * メールをファイルに保存します。
-   *
+   * 
    * @param mail
    * @return
    */
@@ -224,7 +224,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
           newMsg.addHeader(h.getName(), h.getValue());
         }
         newMsg
-            .setText("メールのサイズが7MBを超えていたため、このメールを受信できませんでした。\r\n 誠に恐れ入りますが、別のメーラーで受信してください。");
+          .setText("メールのサイズが7MBを超えていたため、このメールを受信できませんでした。\r\n 誠に恐れ入りますが、別のメーラーで受信してください。");
         newMsg.writeTo(output);
       }
 
@@ -259,23 +259,23 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * 指定されたインデックスのメールを削除する．
-   *
+   * 
    * @return
    */
   public boolean deleteMail(int mailid) {
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
 
       SelectQuery query = new SelectQuery(EipTMail.class);
       Expression exp1 = ExpressionFactory.matchDbExp(
-          EipTMail.MAIL_ID_PK_COLUMN, Integer.valueOf(mailid));
+        EipTMail.MAIL_ID_PK_COLUMN, Integer.valueOf(mailid));
       query.setQualifier(exp1);
       Expression exp2 = ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY,
-          user_id);
+        user_id);
       query.andQualifier(exp2);
       Expression exp3 = ExpressionFactory.matchExp(
-          EipTMail.ACCOUNT_ID_PROPERTY, account_id);
+        EipTMail.ACCOUNT_ID_PROPERTY, account_id);
       query.andQualifier(exp3);
 
       // より厳密にはメールフォルダも指定する。
@@ -309,20 +309,20 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * 指定されたインデックスのメールを削除する．
-   *
+   * 
    * @param msgIndexes
    * @return
    */
   public boolean deleteMails(List<String> msgIndexes) {
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       SelectQuery query = new SelectQuery(EipTMail.class);
       Expression exp1 = ExpressionFactory.inDbExp(EipTMail.MAIL_ID_PK_COLUMN,
-          msgIndexes);
+        msgIndexes);
       query.setQualifier(exp1);
       Expression exp2 = ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY,
-          Integer.valueOf(user_id));
+        Integer.valueOf(user_id));
       query.andQualifier(exp2);
       List<?> mails = dataContext.performQuery(query);
       if (mails == null || mails.size() == 0) {
@@ -361,6 +361,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("read_flg", EipTMail.READ_FLG_PROPERTY);
@@ -373,7 +374,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * 新着メール数を取得する。
-   *
+   * 
    * @return
    */
   public int getNewMailNum() {
@@ -382,7 +383,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * 新着メール数を更新する．
-   *
+   * 
    * @param num
    */
   public void setNewMailNum(int num) {
@@ -391,7 +392,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * 指定したフォルダ内のメールの総数を取得する。
-   *
+   * 
    * @param type
    *          送受信フラグ
    * @return
@@ -402,7 +403,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * 指定したフォルダ内の未読メール数を取得する．
-   *
+   * 
    * @return
    */
   public int getUnreadMailNum() {
@@ -417,13 +418,13 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * 新しいファイル名を生成する．
-   *
+   * 
    * @return
    */
   public String getNewFileName() {
     int count = 0;
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-        DEFAULT_MAIL_FILENAME_DATE_FORMAT);
+      DEFAULT_MAIL_FILENAME_DATE_FORMAT);
     Date date = new Date();
     String tmpname = simpleDateFormat.format(date);
     String pop3MailPath = getFullName() + File.separator;
@@ -435,8 +436,9 @@ public class ALFileLocalFolder extends ALAbstractFolder {
       newFileName = tmpname + count;
       newFilePath = pop3MailPath + newFileName;
       file = new File(newFilePath);
-      if (!file.exists())
+      if (!file.exists()) {
         break;
+      }
       count += 1;
     }
     return newFileName;

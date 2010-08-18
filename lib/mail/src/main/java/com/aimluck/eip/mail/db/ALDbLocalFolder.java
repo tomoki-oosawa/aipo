@@ -42,20 +42,20 @@ import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
  * データベースを利用し、送受信したメールを保持するローカルフォルダのクラスです。 <br />
- *
+ * 
  */
 public class ALDbLocalFolder extends ALAbstractFolder {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALDbLocalFolder.class.getName());
+    .getLogger(ALDbLocalFolder.class.getName());
 
   /**
    * コンストラクタ
-   *
+   * 
    * @param parentFolder
-   *            親フォルダ
+   *          親フォルダ
    * @param folderName
-   *            自身のフォルダ名
+   *          自身のフォルダ名
    */
   public ALDbLocalFolder(int type_mail, String org_id, int user_id,
       int account_id) {
@@ -64,20 +64,20 @@ public class ALDbLocalFolder extends ALAbstractFolder {
 
   /**
    * メールを取得します。
-   *
+   * 
    * @param index
    * @return
    */
   public ALLocalMailMessage getMail(int mailid) {
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       SelectQuery query = new SelectQuery(EipTMail.class);
       Expression exp1 = ExpressionFactory.matchDbExp(
-          EipTMail.MAIL_ID_PK_COLUMN, Integer.valueOf(mailid));
+        EipTMail.MAIL_ID_PK_COLUMN, Integer.valueOf(mailid));
       query.setQualifier(exp1);
       Expression exp2 = ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY,
-          user_id);
+        user_id);
       query.andQualifier(exp2);
       List<?> mails = dataContext.performQuery(query);
       if (mails == null || mails.size() == 0) {
@@ -101,7 +101,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
 
   /**
    * 指定されたファイルを読み込み，mail メッセージを取得する．
-   *
+   * 
    * @param fileName
    * @return
    */
@@ -125,7 +125,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
 
   /**
    * メールを保存する。
-   *
+   * 
    * @param messages
    * @return
    */
@@ -148,7 +148,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
   /**
    * 受信サーバから受信した受信可能サイズを超えたメールを保存する。<br />
    * このメールはヘッダ情報のみ、受信サーバから取得し、他の情報は取得しない。
-   *
+   * 
    * @param localMailMessage
    * @return
    */
@@ -170,25 +170,25 @@ public class ALDbLocalFolder extends ALAbstractFolder {
 
   /**
    * 指定されたインデックスのメールを削除する．
-   *
+   * 
    * @param msgIndexes
-   *            逆順に並んだ int の配列．たとえば，{5, 3, 2} など．
+   *          逆順に並んだ int の配列．たとえば，{5, 3, 2} など．
    * @return
    */
   public boolean deleteMail(int mailid) {
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
 
       SelectQuery query = new SelectQuery(EipTMail.class);
       Expression exp1 = ExpressionFactory.matchDbExp(
-          EipTMail.MAIL_ID_PK_COLUMN, Integer.valueOf(mailid));
+        EipTMail.MAIL_ID_PK_COLUMN, Integer.valueOf(mailid));
       query.setQualifier(exp1);
       Expression exp2 = ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY,
-          user_id);
+        user_id);
       query.andQualifier(exp2);
       Expression exp3 = ExpressionFactory.matchExp(
-          EipTMail.ACCOUNT_ID_PROPERTY, account_id);
+        EipTMail.ACCOUNT_ID_PROPERTY, account_id);
       query.andQualifier(exp3);
 
       // より厳密にはメールフォルダも指定する。
@@ -211,7 +211,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
 
   /**
    * 指定されたインデックスのメールを削除する．
-   *
+   * 
    * @param msgIndexes
    * @return
    */
@@ -223,6 +223,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("subject", EipTMail.SUBJECT_PROPERTY);
@@ -234,7 +235,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
 
   /**
    * 新着メール数を取得する。
-   *
+   * 
    * @return
    */
   public int getNewMailNum() {
@@ -243,7 +244,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
 
   /**
    * 新着メール数を更新する．
-   *
+   * 
    * @param num
    */
   public void setNewMailNum(int num) {
@@ -252,9 +253,9 @@ public class ALDbLocalFolder extends ALAbstractFolder {
 
   /**
    * 指定したフォルダ内のメールの総数を取得する。
-   *
+   * 
    * @param type
-   *            送受信フラグ
+   *          送受信フラグ
    * @return
    */
   public int getMailSum() {
@@ -263,7 +264,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
 
   /**
    * 指定したフォルダ内の未読メール数を取得する．
-   *
+   * 
    * @return
    */
   public int getUnreadMailNum() {

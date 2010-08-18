@@ -42,21 +42,21 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーティリティクラスです。 <br />
- *
+ * 
  */
 public class AddressBookUserUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AddressBookUserUtils.class.getName());
+    .getLogger(AddressBookUserUtils.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @return
    */
-  public static List<AddressBookUserLiteBean> getAddressBookUserLiteBeansFromGroup(String groupid,
-      int loginuserid) {
+  public static List<AddressBookUserLiteBean> getAddressBookUserLiteBeansFromGroup(
+      String groupid, int loginuserid) {
     List<AddressBookUserLiteBean> list = new ArrayList<AddressBookUserLiteBean>();
     DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
 
@@ -67,19 +67,19 @@ public class AddressBookUserUtils {
       query.addCustomDbAttribute(EipMAddressbook.FIRST_NAME_COLUMN);
 
       Expression exp21 = ExpressionFactory.matchExp(
-          EipMAddressbook.PUBLIC_FLAG_PROPERTY, "T");
+        EipMAddressbook.PUBLIC_FLAG_PROPERTY, "T");
       Expression exp22 = ExpressionFactory.matchExp(
-          EipMAddressbook.OWNER_ID_PROPERTY, loginuserid);
+        EipMAddressbook.OWNER_ID_PROPERTY, loginuserid);
       Expression exp23 = ExpressionFactory.matchExp(
-          EipMAddressbook.PUBLIC_FLAG_PROPERTY, "F");
+        EipMAddressbook.PUBLIC_FLAG_PROPERTY, "F");
       query.setQualifier(exp21.orExp(exp22.andExp(exp23)));
 
       if (groupid != null && !"".equals(groupid) && !"all".equals(groupid)) {
 
         Expression exp31 = ExpressionFactory.matchDbExp(
-            EipMAddressbook.EIP_TADDRESSBOOK_GROUP_MAP_PROPERTY + "."
-                + EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY + "."
-                + EipMAddressGroup.GROUP_ID_PK_COLUMN, groupid);
+          EipMAddressbook.EIP_TADDRESSBOOK_GROUP_MAP_PROPERTY + "."
+            + EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY + "."
+            + EipMAddressGroup.GROUP_ID_PK_COLUMN, groupid);
         query.andQualifier(exp31);
       }
 
@@ -93,10 +93,10 @@ public class AddressBookUserUtils {
         address = new AddressBookUserLiteBean();
         address.initField();
         address.setAddressId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-            EipMAddressbook.ADDRESS_ID_PK_COLUMN)).intValue());
+          EipMAddressbook.ADDRESS_ID_PK_COLUMN)).intValue());
         address.setFullName((String) ALEipUtils.getObjFromDataRow(dataRow,
-            EipMAddressbook.LAST_NAME_COLUMN), (String) ALEipUtils
-            .getObjFromDataRow(dataRow, EipMAddressbook.FIRST_NAME_COLUMN));
+          EipMAddressbook.LAST_NAME_COLUMN), (String) ALEipUtils
+          .getObjFromDataRow(dataRow, EipMAddressbook.FIRST_NAME_COLUMN));
         list.add(address);
       }
 
@@ -108,16 +108,17 @@ public class AddressBookUserUtils {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @return
    */
-  public static List<AddressBookUserGroupLiteBean> getAddressBookUserGroupLiteBeans(RunData rundata) {
+  public static List<AddressBookUserGroupLiteBean> getAddressBookUserGroupLiteBeans(
+      RunData rundata) {
     List<AddressBookUserGroupLiteBean> list = new ArrayList<AddressBookUserGroupLiteBean>();
 
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
 
       // 自分がオーナのグループを取得
       SelectQuery query = new SelectQuery(EipMAddressGroup.class);
@@ -125,8 +126,8 @@ public class AddressBookUserUtils {
       query.addCustomDbAttribute(EipMAddressGroup.GROUP_NAME_COLUMN);
 
       Expression exp = ExpressionFactory.matchExp(
-          EipMAddressGroup.OWNER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-              .getUserId(rundata)));
+        EipMAddressGroup.OWNER_ID_PROPERTY,
+        Integer.valueOf(ALEipUtils.getUserId(rundata)));
       query.setQualifier(exp);
       query.addOrdering(EipMAddressGroup.GROUP_NAME_PROPERTY, Ordering.ASC);
       List<?> glist = dataContext.performQuery(query);
@@ -140,9 +141,9 @@ public class AddressBookUserUtils {
         bean = new AddressBookUserGroupLiteBean();
         bean.initField();
         bean.setGroupId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-            EipMAddressGroup.GROUP_ID_PK_COLUMN)).intValue());
+          EipMAddressGroup.GROUP_ID_PK_COLUMN)).intValue());
         bean.setName((String) ALEipUtils.getObjFromDataRow(dataRow,
-            EipMAddressGroup.GROUP_NAME_COLUMN));
+          EipMAddressGroup.GROUP_NAME_COLUMN));
         list.add(bean);
       }
 
@@ -153,12 +154,12 @@ public class AddressBookUserUtils {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @return
    */
-  public static List<AddressBookUserEmailLiteBean> getAddressBookUserEmailLiteBeansFromGroup(String groupid,
-      int loginuserid) {
+  public static List<AddressBookUserEmailLiteBean> getAddressBookUserEmailLiteBeansFromGroup(
+      String groupid, int loginuserid) {
     List<AddressBookUserEmailLiteBean> list = new ArrayList<AddressBookUserEmailLiteBean>();
     DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
 
@@ -170,19 +171,19 @@ public class AddressBookUserUtils {
       query.addCustomDbAttribute(EipMAddressbook.EMAIL_COLUMN);
 
       Expression exp21 = ExpressionFactory.matchExp(
-          EipMAddressbook.PUBLIC_FLAG_PROPERTY, "T");
+        EipMAddressbook.PUBLIC_FLAG_PROPERTY, "T");
       Expression exp22 = ExpressionFactory.matchExp(
-          EipMAddressbook.OWNER_ID_PROPERTY, loginuserid);
+        EipMAddressbook.OWNER_ID_PROPERTY, loginuserid);
       Expression exp23 = ExpressionFactory.matchExp(
-          EipMAddressbook.PUBLIC_FLAG_PROPERTY, "F");
+        EipMAddressbook.PUBLIC_FLAG_PROPERTY, "F");
       query.setQualifier(exp21.orExp(exp22.andExp(exp23)));
 
       if (groupid != null && !"".equals(groupid) && !"all".equals(groupid)) {
 
         Expression exp31 = ExpressionFactory.matchDbExp(
-            EipMAddressbook.EIP_TADDRESSBOOK_GROUP_MAP_PROPERTY + "."
-                + EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY + "."
-                + EipMAddressGroup.GROUP_ID_PK_COLUMN, groupid);
+          EipMAddressbook.EIP_TADDRESSBOOK_GROUP_MAP_PROPERTY + "."
+            + EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY + "."
+            + EipMAddressGroup.GROUP_ID_PK_COLUMN, groupid);
         query.andQualifier(exp31);
       }
 
@@ -196,12 +197,12 @@ public class AddressBookUserUtils {
         address = new AddressBookUserEmailLiteBean();
         address.initField();
         address.setAddressId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-            EipMAddressbook.ADDRESS_ID_PK_COLUMN)).intValue());
+          EipMAddressbook.ADDRESS_ID_PK_COLUMN)).intValue());
         address.setFullName((String) ALEipUtils.getObjFromDataRow(dataRow,
-            EipMAddressbook.LAST_NAME_COLUMN), (String) ALEipUtils
-            .getObjFromDataRow(dataRow, EipMAddressbook.FIRST_NAME_COLUMN));
+          EipMAddressbook.LAST_NAME_COLUMN), (String) ALEipUtils
+          .getObjFromDataRow(dataRow, EipMAddressbook.FIRST_NAME_COLUMN));
         address.setEmail((String) ALEipUtils.getObjFromDataRow(dataRow,
-            EipMAddressbook.EMAIL_COLUMN));
+          EipMAddressbook.EMAIL_COLUMN));
         list.add(address);
       }
 

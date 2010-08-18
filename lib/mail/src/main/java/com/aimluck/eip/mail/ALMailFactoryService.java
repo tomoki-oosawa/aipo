@@ -31,14 +31,14 @@ import org.apache.turbine.services.rundata.RunDataService;
 
 /**
  * メールを操作するクラスを生成するファクトリクラスです。 <br />
- *
+ * 
  */
 abstract public class ALMailFactoryService extends TurbineBaseService {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALMailFactoryService.class.getName());
+    .getLogger(ALMailFactoryService.class.getName());
 
   /**
    * The key under which this service is stored in TurbineServices.
@@ -50,7 +50,7 @@ abstract public class ALMailFactoryService extends TurbineBaseService {
 
   public static ALMailFactoryService getInstance() {
     return (ALMailFactoryService) TurbineServices.getInstance().getService(
-        ALMailFactoryService.SERVICE_NAME);
+      ALMailFactoryService.SERVICE_NAME);
   }
 
   abstract public ALMailHandler getMailHandler();
@@ -70,22 +70,23 @@ abstract public class ALMailFactoryService extends TurbineBaseService {
   /**
    * This is the early initialization method called by the Turbine
    * <code>Service</code> framework
-   *
+   * 
    * @param conf
-   *            The <code>ServletConfig</code>
-   * @exception throws
-   *                a <code>InitializationException</code> if the service
-   *                fails to initialize
+   *          The <code>ServletConfig</code>
+   * @exception throws a <code>InitializationException</code> if the service
+   *            fails to initialize
    */
+  @Override
   public synchronized void init(ServletConfig conf)
       throws InitializationException {
-    if (getInit())
+    if (getInit()) {
       return;
+    }
 
     super.init(conf);
 
     this.runDataService = (JetspeedRunDataService) TurbineServices
-        .getInstance().getService(RunDataService.SERVICE_NAME);
+      .getInstance().getService(RunDataService.SERVICE_NAME);
 
     setInit(true);
   }

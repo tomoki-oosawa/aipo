@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -87,7 +87,7 @@ public class ALPop3MailReceiveThread implements Runnable {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALPop3MailReceiveThread.class.getName());
+    .getLogger(ALPop3MailReceiveThread.class.getName());
 
   /**
    * コンストラクタ
@@ -114,37 +114,37 @@ public class ALPop3MailReceiveThread implements Runnable {
     ob.addAccountId(mailAccountId);
 
     try {
-      EipMMailAccount account = ALMailUtils.getMailAccount(orgId, Integer
-          .parseInt(userId), mailAccountId);
+      EipMMailAccount account = ALMailUtils.getMailAccount(orgId,
+        Integer.parseInt(userId), mailAccountId);
       if (processType == PROCESS_TYPE_RECEIVEMAIL) {
         logger
-            .info("[ALFilePop3MailReceiveThread] start receivemail (orgId, userId, mailAccountId)=("
-                + orgId + "," + userId + "," + mailAccountId + ")");
+          .info("[ALFilePop3MailReceiveThread] start receivemail (orgId, userId, mailAccountId)=("
+            + orgId + "," + userId + "," + mailAccountId + ")");
 
-        ob.updateAccountStat(mailAccountId, KEY_RECEIVE_MAIL_NUM, Integer
-            .valueOf(0));
+        ob.updateAccountStat(mailAccountId, KEY_RECEIVE_MAIL_NUM,
+          Integer.valueOf(0));
         // メール受信
         int res = receiveMail(orgId, account);
 
-        ob.updateAccountStat(mailAccountId, KEY_RECEIVE_MAIL_NUM, Integer
-            .valueOf(res));
+        ob.updateAccountStat(mailAccountId, KEY_RECEIVE_MAIL_NUM,
+          Integer.valueOf(res));
       } else if (processType == PROCESS_TYPE_GET_NEWMAILNUM) {
         logger
-            .info("[ALFilePop3MailReceiveThread] start newmailnum (orgId, userId, mailAccountId)=("
-                + orgId + "," + userId + "," + mailAccountId + ")");
+          .info("[ALFilePop3MailReceiveThread] start newmailnum (orgId, userId, mailAccountId)=("
+            + orgId + "," + userId + "," + mailAccountId + ")");
 
         // 新着メール数確認
         int res = checkNewMailNum(orgId, account);
         if (res >= 0) {
-          ob.updateAccountStat(mailAccountId, KEY_NEW_MAIL_NUM, Integer
-              .valueOf(res));
+          ob.updateAccountStat(mailAccountId, KEY_NEW_MAIL_NUM,
+            Integer.valueOf(res));
         }
       }
     } catch (Exception e) {
       logger.error("[ALFilePop3MailReceiveThread]", e);
     } finally {
       ob.updateAccountStat(mailAccountId, KEY_RECEIVE_STAT,
-          PROCESS_STAT_FINISHED);
+        PROCESS_STAT_FINISHED);
     }
   }
 
@@ -155,28 +155,29 @@ public class ALPop3MailReceiveThread implements Runnable {
    */
   private int receiveMail(String orgId, EipMMailAccount account) {
     ALStaticObject.getInstance().updateAccountStat(mailAccountId,
-        KEY_RECEIVE_STAT, PROCESS_STAT_PROCESSING);
+      KEY_RECEIVE_STAT, PROCESS_STAT_PROCESSING);
     int result = ALPop3MailReceiver.RECEIVE_MSG_FAIL;
-    if (account == null)
+    if (account == null) {
       return result;
+    }
 
     try {
       ALMailHandler handler = ALMailFactoryService.getInstance()
-          .getMailHandler();
+        .getMailHandler();
       ALMailReceiverContext rcontext = ALMailUtils
-          .getALPop3MailReceiverContext(orgId, account);
+        .getALPop3MailReceiverContext(orgId, account);
 
       result = handler.receive(rcontext, orgId);
 
       if (result <= ALPop3MailReceiver.RECEIVE_MSG_FAIL
-          && result != ALPop3MailReceiver.RECEIVE_MSG_FAIL_OVER_MAIL_MAX_SIZE) {
+        && result != ALPop3MailReceiver.RECEIVE_MSG_FAIL_OVER_MAIL_MAX_SIZE) {
         // 受信に失敗した場合の処理
         return result;
       }
 
       // 最終受信日を保存する．
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       account.setLastReceivedDate(new Date());
       dataContext.commitChanges();
     } catch (Exception ex) {
@@ -194,14 +195,15 @@ public class ALPop3MailReceiveThread implements Runnable {
    */
   private int checkNewMailNum(String orgId, EipMMailAccount account) {
     int res = -1;
-    if (account == null)
+    if (account == null) {
       return res;
+    }
 
     try {
       ALMailHandler handler = ALMailFactoryService.getInstance()
-          .getMailHandler();
+        .getMailHandler();
       ALMailReceiverContext rcontext = ALMailUtils
-          .getALPop3MailReceiverContext(orgId, account);
+        .getALPop3MailReceiverContext(orgId, account);
 
       res = handler.getNewMailSum(rcontext);
 
@@ -219,8 +221,9 @@ public class ALPop3MailReceiveThread implements Runnable {
    * @return
    */
   public static int getNewMailNum(User user, int mailAccountId) {
-    if (user == null)
+    if (user == null) {
       return PROCESS_STAT_NONPROCESSING;
+    }
 
     ALStaticObject ob = ALStaticObject.getInstance();
     Object obj = ob.getAccountStat(mailAccountId, KEY_NEW_MAIL_NUM);
@@ -250,7 +253,7 @@ public class ALPop3MailReceiveThread implements Runnable {
    */
   public static boolean isReceiving(User user, int mailAccountId) {
     Object objRS = ALStaticObject.getInstance().getAccountStat(mailAccountId,
-        KEY_RECEIVE_STAT);
+      KEY_RECEIVE_STAT);
     if (objRS == null || (Integer) objRS != PROCESS_STAT_PROCESSING) {
       return false;
     }
@@ -282,13 +285,13 @@ public class ALPop3MailReceiveThread implements Runnable {
       StringBuffer sb = new StringBuffer();
 
       Object objRMAN = ALStaticObject.getInstance().getAccountStat(
-          mailAccountId, KEY_RECEIVE_MAIL_ALL_NUM);
+        mailAccountId, KEY_RECEIVE_MAIL_ALL_NUM);
       Object objRMN = ALStaticObject.getInstance().getAccountStat(
-          mailAccountId, KEY_RECEIVE_MAIL_NUM);
+        mailAccountId, KEY_RECEIVE_MAIL_NUM);
 
       if (objRMAN != null) {
         sb.append("メールを受信中です（ ").append(objRMAN).append(" 件中 ").append(objRMN)
-            .append(" 件を受信 ）。");
+          .append(" 件を受信 ）。");
       } else {
         sb.append("メール受信サーバに問い合わせ中です。");
       }

@@ -33,14 +33,15 @@ import com.aimluck.eip.user.util.UserUtils;
 
 /**
  * ユーザー情報をJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class UserLiteJSONScreen extends ALJSONScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(UserLiteJSONScreen.class.getName());
+    .getLogger(UserLiteJSONScreen.class.getName());
 
+  @Override
   protected String getJSONString(RunData rundata, Context context)
       throws Exception {
     String result = "";
@@ -54,14 +55,14 @@ public class UserLiteJSONScreen extends ALJSONScreen {
 
         // ログインユーザをリストに含める場合、true
         boolean include_loginuser = rundata.getParameters().getBoolean(
-            "inc_luser", true);
+          "inc_luser", true);
 
         json = JSONArray.fromObject(UserUtils.getUserLiteBeansFromGroup(
-            rundata, groupname, include_loginuser));
+          rundata, groupname, include_loginuser));
       } else if ("group_loginname".equals(mode)) {
         String groupname = rundata.getParameters().getString("groupname");
         List<UserLiteBean> users = UserUtils.getUserLiteBeansFromGroup(rundata,
-            groupname, false);
+          groupname, false);
         List<UserLiteBean> outputs = new ArrayList<UserLiteBean>();
         for (UserLiteBean datarow : users) {
           UserLiteBean user = datarow;

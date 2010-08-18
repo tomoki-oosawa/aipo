@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -43,7 +43,7 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ALActionEventlogHandler extends ALEventlogHandler {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALActionEventlogHandler.class.getName());
+    .getLogger(ALActionEventlogHandler.class.getName());
 
   public ALActionEventlogHandler() {
   }
@@ -55,6 +55,7 @@ public class ALActionEventlogHandler extends ALEventlogHandler {
   /**
    * ログ
    */
+  @Override
   public void log(int entity_id, int portlet_type, String note) {
     logActionEvent(entity_id, portlet_type, note);
   }
@@ -110,6 +111,7 @@ public class ALActionEventlogHandler extends ALEventlogHandler {
    * @param mode
    * @return
    */
+  @Override
   public void logLogin(int userid) {
     // rundataの取得
     RunData rundata = ALEventlogFactoryService.getInstance().getRunData();
@@ -129,6 +131,7 @@ public class ALActionEventlogHandler extends ALEventlogHandler {
    * @param mode
    * @return
    */
+  @Override
   public void logLogout(int userid) {
     // rundataの取得
     RunData rundata = ALEventlogFactoryService.getInstance().getRunData();
@@ -148,6 +151,7 @@ public class ALActionEventlogHandler extends ALEventlogHandler {
    * @param mode
    * @return
    */
+  @Override
   public void logXlsScreen(int userid, String Note, int _p_type) {
     // rundataの取得
     RunData rundata = ALEventlogFactoryService.getInstance().getRunData();
@@ -163,11 +167,11 @@ public class ALActionEventlogHandler extends ALEventlogHandler {
   /**
    * 
    * @param event_type
-   *            イベント種別
+   *          イベント種別
    * @param uid
-   *            ユーザーID
+   *          ユーザーID
    * @param p_type
-   *            ポートレットTYPE
+   *          ポートレットTYPE
    * @param note
    * @return
    */
@@ -175,14 +179,14 @@ public class ALActionEventlogHandler extends ALEventlogHandler {
       String ip_addr, String note) {
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
 
       // 新規オブジェクトモデル
       EipTEventlog log = (EipTEventlog) dataContext
-          .createAndRegisterNewObject(EipTEventlog.class);
+        .createAndRegisterNewObject(EipTEventlog.class);
 
       TurbineUser tuser = (TurbineUser) DataObjectUtils.objectForPK(
-          dataContext, TurbineUser.class, Integer.valueOf(uid));
+        dataContext, TurbineUser.class, Integer.valueOf(uid));
       // ユーザーID
       log.setTurbineUser(tuser);
       // イベント発生日

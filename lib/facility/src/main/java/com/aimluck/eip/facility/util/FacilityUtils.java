@@ -32,20 +32,20 @@ import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
  * 施設のユーティリティクラスです。 <br />
- *
+ * 
  */
 public class FacilityUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FacilityUtils.class.getName());
+    .getLogger(FacilityUtils.class.getName());
 
   public static List<FacilityLiteBean> getFacilityLiteBeans() {
     List<FacilityLiteBean> facilityAllList = new ArrayList<FacilityLiteBean>();
 
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       SelectQuery query = new SelectQuery(EipMFacility.class);
       query.addOrdering(EipMFacility.FACILITY_NAME_PROPERTY, true);
       List<?> aList = dataContext.performQuery(query);

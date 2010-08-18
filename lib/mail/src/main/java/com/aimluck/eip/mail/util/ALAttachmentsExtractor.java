@@ -33,9 +33,10 @@ import com.sk_jp.mail.MailUtility;
 /**
  * com.sk_jp.mail.AttachmentsExtractor を継承し、<br />
  * text/plain のパートを添付ファイルとして取り扱えるように拡張したクラスです。 <br />
- *
+ * 
  */
 public class ALAttachmentsExtractor extends AttachmentsExtractor {
+
   private final int mode;
 
   private final List<Part> attachmentParts = new ArrayList<Part>();
@@ -50,7 +51,7 @@ public class ALAttachmentsExtractor extends AttachmentsExtractor {
 
   /**
    * 添付ファイル一覧を得るための PartHandler を作成する．
-   *
+   * 
    * @param mode
    *          動作モード．MODE_ で始まる識別子を or 指定します。
    */
@@ -60,10 +61,11 @@ public class ALAttachmentsExtractor extends AttachmentsExtractor {
 
   /**
    * MultipartUtility#process() から呼びだされるメソッド．
-   *
+   * 
    * @see com.sk_jp.mail.PartHandler#processPart(javax.mail.Part,
    *      javax.mail.internet.ContentType)
    */
+  @Override
   public boolean processPart(Part part, ContentType context)
       throws MessagingException, IOException {
     if (part.isMimeType("message/*")) {
@@ -82,7 +84,7 @@ public class ALAttachmentsExtractor extends AttachmentsExtractor {
     }
 
     if ((mode & MODE_IGNORE_INLINE) != 0
-        && Part.INLINE.equalsIgnoreCase(part.getDisposition())) {
+      && Part.INLINE.equalsIgnoreCase(part.getDisposition())) {
       return true;
     }
     attachmentParts.add(part);
@@ -91,11 +93,12 @@ public class ALAttachmentsExtractor extends AttachmentsExtractor {
 
   /**
    * 指定添付ファイルのファイル名を取得する．
-   *
+   * 
    * @see com.sk_jp.mail.AttachmentsExtractor#getFileName(int)
    */
+  @Override
   public String getFileName(int index) throws MessagingException {
-    Part part = (Part) attachmentParts.get(index);
+    Part part = attachmentParts.get(index);
     String name = MailUtility.getFileName(part);
     if (name == null) {
       // 添付ファイル名が取得できない場合は、指定されていなかった場合か、
@@ -117,6 +120,7 @@ public class ALAttachmentsExtractor extends AttachmentsExtractor {
   /**
    * 添付ファイルの個数を取得する．
    */
+  @Override
   public int getCount() {
     return attachmentParts.size();
   }
@@ -124,28 +128,30 @@ public class ALAttachmentsExtractor extends AttachmentsExtractor {
   /**
    * 指定添付ファイルの Content-Type を取得する．
    */
+  @Override
   public String getContentType(int index) throws MessagingException {
-    return MailUtility.unfold(((Part) attachmentParts.get(index))
-        .getContentType());
+    return MailUtility.unfold((attachmentParts.get(index)).getContentType());
   }
 
   /**
    * 指定添付ファイルのサイズを取得する．
-   *
+   * 
    * @see com.sk_jp.mail.AttachmentsExtractor#getSize(int)
    */
+  @Override
   public int getSize(int index) throws MessagingException {
-    return ((Part) attachmentParts.get(index)).getSize();
+    return (attachmentParts.get(index)).getSize();
   }
 
   /**
    * 指定添付ファイルを読み込むストリームを取得する．
-   *
+   * 
    * @see com.sk_jp.mail.AttachmentsExtractor#getInputStream(int)
    */
+  @Override
   public InputStream getInputStream(int index) throws MessagingException,
       IOException {
-    return ((Part) attachmentParts.get(index)).getInputStream();
+    return (attachmentParts.get(index)).getInputStream();
   }
 
 }

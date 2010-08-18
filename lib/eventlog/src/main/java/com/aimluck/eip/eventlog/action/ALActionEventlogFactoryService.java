@@ -21,22 +21,22 @@ package com.aimluck.eip.eventlog.action;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
-import com.aimluck.eip.eventlog.action.ALActionEventlogHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.eventlog.ALEventlogHandler;
 
 /**
  * ログ保存サービス用ファクトリクラスです。 <BR>
- *
- *
+ * 
+ * 
  */
 public class ALActionEventlogFactoryService extends ALEventlogFactoryService {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALActionEventlogFactoryService.class.getName());
+    .getLogger(ALActionEventlogFactoryService.class.getName());
 
+  @Override
   public ALEventlogHandler getEventlogHandler() {
     return ALActionEventlogHandler.getInstance();
   }

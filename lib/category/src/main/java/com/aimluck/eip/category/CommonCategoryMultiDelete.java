@@ -43,16 +43,16 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 複数の共有カテゴリを削除するクラスです。 <br />
- *
+ * 
  */
 public class CommonCategoryMultiDelete extends ALAbstractCheckList {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CommonCategoryMultiDelete.class.getName());
+    .getLogger(CommonCategoryMultiDelete.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param values
@@ -62,45 +62,46 @@ public class CommonCategoryMultiDelete extends ALAbstractCheckList {
    *      org.apache.velocity.context.Context, java.util.ArrayList,
    *      java.util.ArrayList)
    */
+  @Override
   protected boolean action(RunData rundata, Context context,
       List<String> values, List<String> msgList) {
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
 
       // アクセス権限
       int loginuserid = ALEipUtils.getUserId(rundata);
 
       ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-          .getInstance())
-          .getService(ALAccessControlFactoryService.SERVICE_NAME);
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
       boolean hasAuthorityOtherDelete = aclhandler
-          .hasAuthority(
-              loginuserid,
-              ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER,
-              ALAccessControlConstants.VALUE_ACL_DELETE);
+        .hasAuthority(
+          loginuserid,
+          ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER,
+          ALAccessControlConstants.VALUE_ACL_DELETE);
 
       // 共有カテゴリリストを取得
       SelectQuery query = new SelectQuery(EipTCommonCategory.class);
       if (!hasAuthorityOtherDelete) {
         Expression exp1 = ExpressionFactory.matchExp(
-            EipTCommonCategory.CREATE_USER_ID_PROPERTY,
-            Integer.valueOf(loginuserid));
+          EipTCommonCategory.CREATE_USER_ID_PROPERTY,
+          Integer.valueOf(loginuserid));
         query.setQualifier(exp1);
       }
       Expression exp2 = ExpressionFactory.inDbExp(
-          EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN, values);
+        EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN, values);
       query.andQualifier(exp2);
 
       List<?> categorylist = dataContext.performQuery(query);
-      if (categorylist == null || categorylist.size() == 0)
+      if (categorylist == null || categorylist.size() == 0) {
         return false;
+      }
 
       // 共有カテゴリ「未分類」のオブジェクトを取得
       EipTCommonCategory tmpCategory = CommonCategoryUtils
-          .getEipTCommonCategory(dataContext, Long.valueOf(1));
+        .getEipTCommonCategory(dataContext, Long.valueOf(1));
 
       // 共有カテゴリ内の ScheduleMap は「未分類」にカテゴリ変更する
       EipTScheduleMap record = null;
@@ -109,8 +110,8 @@ public class CommonCategoryMultiDelete extends ALAbstractCheckList {
       for (int i = 0; i < size; i++) {
         category = (EipTCommonCategory) categorylist.get(i);
         List<?> result = ALEipUtils.getObjectModels(dataContext,
-            EipTScheduleMap.class, EipTScheduleMap.COMMON_CATEGORY_ID_PROPERTY,
-            category.getCommonCategoryId(), false);
+          EipTScheduleMap.class, EipTScheduleMap.COMMON_CATEGORY_ID_PROPERTY,
+          category.getCommonCategoryId(), false);
         if (result != null && result.size() > 0) {
           int size2 = result.size();
           for (int j = 0; j < size2; j++) {
@@ -126,7 +127,7 @@ public class CommonCategoryMultiDelete extends ALAbstractCheckList {
 
       // 一覧表示画面のフィルタに設定されているカテゴリのセッション情報を削除
       String filtername = CommonCategorySelectData.class.getName()
-          + ALEipConstants.LIST_FILTER;
+        + ALEipConstants.LIST_FILTER;
       ALEipUtils.removeTemp(rundata, context, filtername);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -138,9 +139,10 @@ public class CommonCategoryMultiDelete extends ALAbstractCheckList {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限を返します。
-   *
+   * 
    * @return
    */
+  @Override
   protected int getDefineAclType() {
     return ALAccessControlConstants.VALUE_ACL_DELETE;
   }
@@ -148,9 +150,10 @@ public class CommonCategoryMultiDelete extends ALAbstractCheckList {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY;
   }

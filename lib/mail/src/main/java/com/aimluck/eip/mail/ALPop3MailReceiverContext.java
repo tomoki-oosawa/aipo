@@ -20,7 +20,7 @@ package com.aimluck.eip.mail;
 
 /**
  * メール受信（POP3）用の情報を保持するクラスです。 <br />
- *
+ * 
  */
 public class ALPop3MailReceiverContext implements ALMailReceiverContext {
 

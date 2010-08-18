@@ -38,12 +38,12 @@ import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
  * メールの送受信を操作するインターフェイスです。 <br />
- *
+ * 
  */
 public abstract class ALMailHandler {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALMailHandler.class.getName());
+    .getLogger(ALMailHandler.class.getName());
 
   /**
    * コンストラクタ
@@ -53,7 +53,7 @@ public abstract class ALMailHandler {
 
   /**
    * メールを受信する．
-   *
+   * 
    * @return
    * @throws Exception
    */
@@ -79,7 +79,7 @@ public abstract class ALMailHandler {
 
   /**
    * メールを送信する．
-   *
+   * 
    * @param userRootFolderName
    * @param accountName
    * @param smtpHost
@@ -93,11 +93,11 @@ public abstract class ALMailHandler {
    * @param msgText
    * @param filePaths
    * @param authSendFlag
-   *            送信時の認証方式
+   *          送信時の認証方式
    * @param authSendUserId
-   *            SMTP認証時のユーザID
+   *          SMTP認証時のユーザID
    * @param authSendUserPassword
-   *            SMTP認証時のユーザパスワード
+   *          SMTP認証時のユーザパスワード
    * @return
    * @throws Exception
    */
@@ -137,7 +137,7 @@ public abstract class ALMailHandler {
 
   /**
    * 未読メールの総数を取得する．
-   *
+   * 
    * @param userRootFolderName
    * @param accountName
    * @param folderName
@@ -147,20 +147,19 @@ public abstract class ALMailHandler {
     int mailSum = 0;
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
 
       SelectQuery query = new SelectQuery(EipTMail.class);
       query.addCustomDbAttribute(EipTMail.MAIL_ID_PK_COLUMN);
       query.setPageSize(1);
 
       Expression exp1 = ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY,
-          Integer.valueOf(rcontext.getUserId()));
+        Integer.valueOf(rcontext.getUserId()));
       Expression exp2 = ExpressionFactory.matchExp(
-          EipTMail.ACCOUNT_ID_PROPERTY, Integer
-              .valueOf(rcontext.getAccountId()));
+        EipTMail.ACCOUNT_ID_PROPERTY, Integer.valueOf(rcontext.getAccountId()));
       Expression exp3 = ExpressionFactory.matchExp(EipTMail.TYPE_PROPERTY, "R");
       Expression exp4 = ExpressionFactory.matchExp(EipTMail.READ_FLG_PROPERTY,
-          "F");
+        "F");
       query.setQualifier(exp1.andExp(exp2).andExp(exp3).andExp(exp4));
       List<?> mails = dataContext.performQuery(query);
 
@@ -173,23 +172,24 @@ public abstract class ALMailHandler {
 
   /**
    * フォルダごとの未読メールの総数を取得する．
-   *
+   * 
    * @param userRootFolderName
    * @param accountName
    * @param folderName
    * @return
    */
-  public Map<Integer,Integer> getUnReadMailSumMap(ALMailReceiverContext rcontext) {
-    Map<Integer,Integer> mailSumMap = new HashMap<Integer,Integer>();
+  public Map<Integer, Integer> getUnReadMailSumMap(
+      ALMailReceiverContext rcontext) {
+    Map<Integer, Integer> mailSumMap = new HashMap<Integer, Integer>();
 
-    //int mailSum = 0;
+    // int mailSum = 0;
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
 
       // アカウントのフォルダ一覧を取得する
       EipMMailAccount account = ALMailUtils.getMailAccount(rcontext.getOrgId(),
-          rcontext.getUserId(), rcontext.getAccountId());
+        rcontext.getUserId(), rcontext.getAccountId());
       List<EipTMailFolder> folders = ALMailUtils.getEipTMailFolderAll(account);
       List<Integer> folder_ids = new ArrayList<Integer>();
 
@@ -208,15 +208,14 @@ public abstract class ALMailHandler {
        * query.setPageSize(1);
        */
       Expression exp1 = ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY,
-          Integer.valueOf(rcontext.getUserId()));
+        Integer.valueOf(rcontext.getUserId()));
       Expression exp2 = ExpressionFactory.matchExp(
-          EipTMail.ACCOUNT_ID_PROPERTY, Integer
-              .valueOf(rcontext.getAccountId()));
+        EipTMail.ACCOUNT_ID_PROPERTY, Integer.valueOf(rcontext.getAccountId()));
       Expression exp3 = ExpressionFactory.matchExp(EipTMail.TYPE_PROPERTY, "R");
       Expression exp4 = ExpressionFactory.matchExp(EipTMail.READ_FLG_PROPERTY,
-          "F");
-      //Expression exp5 = ExpressionFactory.inExp(EipTMail.FOLDER_ID_PROPERTY,
-      //    folder_ids);
+        "F");
+      // Expression exp5 = ExpressionFactory.inExp(EipTMail.FOLDER_ID_PROPERTY,
+      // folder_ids);
 
       query.setQualifier(exp1.andExp(exp2).andExp(exp3).andExp(exp4));
       query.addOrdering(EipTMail.FOLDER_ID_PROPERTY, true);
@@ -242,7 +241,7 @@ public abstract class ALMailHandler {
 
   /**
    * 新着メール数を取得する．
-   *
+   * 
    * @param userRootFolderName
    * @param accountName
    * @param pop3Host
@@ -250,15 +249,15 @@ public abstract class ALMailHandler {
    * @param pop3UserId
    * @param pop3UserPasswd
    * @param denyReceivedMail
-   *            受信済みメッセージを取り込まない場合は，true を設定し，新着メールと見なさない．
+   *          受信済みメッセージを取り込まない場合は，true を設定し，新着メールと見なさない．
    * @param authReceiveFlag
-   *            受信時の認証方式
+   *          受信時の認証方式
    * @return 新着メール数
    * @throws Exception
    */
   public int getNewMailSum(ALMailReceiverContext rcontext) throws Exception {
     int result = -1;
-    //boolean createLock = false;
+    // boolean createLock = false;
 
     try {
       // 未ロック時の場合，新着メール数の取得処理に移る．
@@ -277,7 +276,7 @@ public abstract class ALMailHandler {
 
   /**
    * アカウントフォルダを削除する．
-   *
+   * 
    * @param userRootFolderName
    * @param accountName
    * @return
