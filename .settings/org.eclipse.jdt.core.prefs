@@ -1,4 +1,4 @@
-#Wed Aug 18 13:28:52 JST 2010
+#Wed Aug 18 18:34:27 JST 2010
 eclipse.preferences.version=1
 org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled
 org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.5
@@ -277,4 +277,4 @@ org.eclipse.jdt.core.formatter.tabulation.size=2
 org.eclipse.jdt.core.formatter.use_on_off_tags=false
 org.eclipse.jdt.core.formatter.use_tabs_only_for_leading_indentations=false
 org.eclipse.jdt.core.formatter.wrap_before_binary_operator=true
-org.eclipse.jdt.core.formatter.wrap_outer_expressions_when_nested=true
+org.eclipse.jdt.core.formatter.wrap_outer_expressions_when_nested=false
