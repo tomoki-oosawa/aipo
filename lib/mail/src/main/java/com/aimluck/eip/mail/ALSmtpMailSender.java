@@ -46,12 +46,12 @@ import com.sun.mail.smtp.SMTPTransport;
 
 /**
  * メール送信（SMTP）を操作する抽象クラスです。 <br />
- *
+ * 
  */
 public abstract class ALSmtpMailSender implements ALMailSender {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALSmtpMailSender.class.getName());
+    .getLogger(ALSmtpMailSender.class.getName());
 
   /** <code>AUTH_SEND_NONE</code> 送信時の認証方式（認証なし） */
   public static final int AUTH_SEND_NONE = 0;
@@ -133,7 +133,7 @@ public abstract class ALSmtpMailSender implements ALMailSender {
 
   /**
    * 新規作成のメールを取得します。
-   *
+   * 
    * @param mcontext
    * @return
    */
@@ -152,25 +152,22 @@ public abstract class ALSmtpMailSender implements ALMailSender {
 
     if (scontext.getEncryptionFlag() == ENCRYPTION_SEND_SSL) {
       /** SSL 暗号化 */
-      Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
       smtpServerProp.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY);
       smtpServerProp.setProperty("mail.smtp.socketFactory.fallback", "false");
-      smtpServerProp.setProperty("mail.smtp.socketFactory.port",
-          scontext.getSmtpPort());
+      smtpServerProp.setProperty("mail.smtp.socketFactory.port", scontext
+        .getSmtpPort());
     }
 
     // SMTP サーバのアドレスをセット
     if (scontext.getAuthSendFlag() == AUTH_SEND_SMTP_AUTH
-        && scontext.getAuthSendUserId() != null
-        && !"".equals(scontext.getAuthSendUserId())
-        && scontext.getAuthSendUserPassword() != null
-        && !"".equals(scontext.getAuthSendUserPassword())) {
+      && scontext.getAuthSendUserId() != null
+      && !"".equals(scontext.getAuthSendUserId())
+      && scontext.getAuthSendUserPassword() != null
+      && !"".equals(scontext.getAuthSendUserPassword())) {
       /** SMTP AUTH */
       smtpServerProp.put("mail.smtp.auth", "true");
-      session = Session.getInstance(
-          smtpServerProp,
-          new ALSmtpAuth(scontext.getAuthSendUserId(), scontext
-              .getAuthSendUserPassword()));
+      session = Session.getInstance(smtpServerProp, new ALSmtpAuth(scontext
+        .getAuthSendUserId(), scontext.getAuthSendUserPassword()));
     } else {
       session = Session.getInstance(smtpServerProp, null);
     }
@@ -183,7 +180,7 @@ public abstract class ALSmtpMailSender implements ALMailSender {
       msg = new ALLocalMailMessage(session);
       // 送信元メールアドレスと送信者名をセット
       msg.setFrom(new InternetAddress(mcontext.getFrom(), ALMailUtils
-          .encodeWordJIS(mcontext.getName())));
+        .encodeWordJIS(mcontext.getName())));
       // メールのあて先（to）をセット
       if (mcontext.getTo() == null)
         throw new MessagingException();
@@ -200,7 +197,7 @@ public abstract class ALSmtpMailSender implements ALMailSender {
       msg.setHeader(ALLocalMailMessage.CONTENT_TYPE, "text/plain");
       msg.setHeader(ALLocalMailMessage.CONTENT_TRANSFER_ENCORDING, "7bit");
       msg.setHeader(ALLocalMailMessage.X_Mailer,
-          ALLocalMailMessage.X_Mailer_Value);
+        ALLocalMailMessage.X_Mailer_Value);
       // メールの件名をセット
       msg.setSubject(ALMailUtils.encodeWordJIS(mcontext.getSubject()));
       // メールの送信日時をセット
@@ -214,7 +211,7 @@ public abstract class ALSmtpMailSender implements ALMailSender {
           String value = null;
           Map.Entry<String, String> entry = null;
           for (Iterator<Map.Entry<String, String>> i = headers.entrySet()
-              .iterator(); i.hasNext();) {
+            .iterator(); i.hasNext();) {
             entry = i.next();
             key = entry.getKey();
             value = entry.getValue();
@@ -228,7 +225,7 @@ public abstract class ALSmtpMailSender implements ALMailSender {
         ALMailUtils.setTextContent(msg, mcontext.getMsgText());
       } else {
         String[] checkedFilePaths = ALMailUtils.checkFilesExistance(mcontext
-            .getFilePaths());
+          .getFilePaths());
         int checkedFilePathsLength = checkedFilePaths.length;
         if (checkedFilePathsLength <= 0) {
           // MultiPart にせず，メールの本文をセット
@@ -249,10 +246,9 @@ public abstract class ALSmtpMailSender implements ALMailSender {
           for (int i = 0; i < checkedFilePathsLength; i++) {
             mimeFile = new MimeBodyPart();
             mimeFile.setDataHandler(new DataHandler(new FileDataSource(
-                checkedFilePaths[i])));
-            MailUtility.setFileName(mimeFile,
-                ALMailUtils.getFileNameFromText(checkedFilePaths[i]),
-                "ISO-2022-JP", null);
+              checkedFilePaths[i])));
+            MailUtility.setFileName(mimeFile, ALMailUtils
+              .getFileNameFromText(checkedFilePaths[i]), "ISO-2022-JP", null);
 
             // 添付ファイルをボディパートに追加
             multiPart.addBodyPart(mimeFile);
@@ -273,7 +269,7 @@ public abstract class ALSmtpMailSender implements ALMailSender {
 
   /**
    * SMTP サーバへメールを送信する．
-   *
+   * 
    * @param to
    * @param cc
    * @param bcc
@@ -304,10 +300,9 @@ public abstract class ALSmtpMailSender implements ALMailSender {
       } else if (scontext.getAuthSendFlag() == AUTH_SEND_POP_BEFORE_SMTP) {
         // POP before SMTP を実行する．
         // 認証のみ検証する．メールは受信しない．
-        boolean success = ALPop3MailReceiver.isAuthenticatedUser(
-            scontext.getPop3Host(), scontext.getPop3Port(),
-            scontext.getPop3UserId(), scontext.getPop3UserPasswd(),
-            scontext.getPop3EncryptionFlag());
+        boolean success = ALPop3MailReceiver.isAuthenticatedUser(scontext
+          .getPop3Host(), scontext.getPop3Port(), scontext.getPop3UserId(),
+          scontext.getPop3UserPasswd(), scontext.getPop3EncryptionFlag());
         if (!success) {
           return SEND_MSG_FAIL_POP_BEFORE_SMTP_AUTH;
         } else {
@@ -320,7 +315,7 @@ public abstract class ALSmtpMailSender implements ALMailSender {
         SMTPTransport smtpt = (SMTPTransport) transport;
         smtpt.setSASLRealm("localhost"); // [SASLレルム]
         smtpt.connect(scontext.getSmtpHost(), scontext.getAuthSendUserId(),
-            scontext.getAuthSendUserPassword());
+          scontext.getAuthSendUserPassword());
         smtpt.sendMessage(msg, msg.getAllRecipients());
         smtpt.close();
       }
@@ -346,7 +341,7 @@ public abstract class ALSmtpMailSender implements ALMailSender {
 
   /**
    * メールの宛名をセットする．
-   *
+   * 
    * @param msg
    * @param recipientType
    * @param addrString

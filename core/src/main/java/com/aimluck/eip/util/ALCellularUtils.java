@@ -26,6 +26,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.cayenne.DataRow;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.jetspeed.capability.CapabilityMap;
 import org.apache.jetspeed.capability.CapabilityMapFactory;
 import org.apache.jetspeed.om.profile.Entry;
@@ -36,14 +37,11 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
-import org.apache.jetspeed.util.Base64;
 import org.apache.jetspeed.util.MimeType;
 import org.apache.jetspeed.util.template.JetspeedLink;
 import org.apache.jetspeed.util.template.JetspeedLinkFactory;
 import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.RunData;
-
-import sun.misc.BASE64Decoder;
 
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.common.ALEipConstants;
@@ -51,17 +49,17 @@ import com.aimluck.eip.common.ALEipUser;
 
 /**
  * Aimluck EIP のユーティリティクラスです。
- *
+ * 
  */
 public class ALCellularUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALCellularUtils.class.getName());
+    .getLogger(ALCellularUtils.class.getName());
 
   /**
    * 携帯電話の固有 ID によるログイン認証時のアクセス URL に付加する値を取得します。
-   *
+   * 
    * @param username
    * @return
    */
@@ -76,7 +74,8 @@ public class ALCellularUtils {
     long value = crc32.getValue();
     String base64value = null;
     try {
-      base64value = Base64.encodeAsString(String.valueOf(value));
+      base64value = new String(Base64.encodeBase64(String.valueOf(value)
+        .getBytes()));
     } catch (Exception e) {
     }
 
@@ -85,7 +84,7 @@ public class ALCellularUtils {
 
   /**
    * 携帯電話の固有 ID を取得します。
-   *
+   * 
    * @param rundata
    * @return
    */
@@ -99,7 +98,7 @@ public class ALCellularUtils {
       MimeType mime = cm.getPreferredType();
       if (mime != null) {
         MediaTypeEntry media = (MediaTypeEntry) Registry.getEntry(
-            Registry.MEDIA_TYPE, cm.getPreferredMediaType());
+          Registry.MEDIA_TYPE, cm.getPreferredMediaType());
         if ("docomo_imode".equals(media.getName())) {
           int lastindex = useragent.lastIndexOf("ser");
           if (lastindex >= 0) {
@@ -152,21 +151,21 @@ public class ALCellularUtils {
 
   /**
    * アクセス元の端末が携帯電話であるかを判定します。
-   *
+   * 
    * @param data
    * @return
    */
   public static boolean isCellularPhone(RunData data) {
     boolean isCellularPhone = false;
     CapabilityMap cm = CapabilityMapFactory.getCapabilityMap(data.getRequest()
-        .getHeader("User-Agent"));
+      .getHeader("User-Agent"));
     MimeType mime = cm.getPreferredType();
     if (mime != null) {
       MediaTypeEntry media = (MediaTypeEntry) Registry.getEntry(
-          Registry.MEDIA_TYPE, cm.getPreferredMediaType());
+        Registry.MEDIA_TYPE, cm.getPreferredMediaType());
       String mediatype = media.getName();
       if ("docomo_imode".equals(mediatype) || "docomo_foma".equals(mediatype)
-          || "au".equals(mediatype) || "vodafone".equals(mediatype)) {
+        || "au".equals(mediatype) || "vodafone".equals(mediatype)) {
         isCellularPhone = true;
       }
     }
@@ -175,7 +174,7 @@ public class ALCellularUtils {
 
   /**
    * データベースの検索結果から、指定したキーに対応する値を取得します。
-   *
+   * 
    * @param dataRow
    * @param key
    * @return
@@ -191,7 +190,7 @@ public class ALCellularUtils {
 
   /**
    * 携帯電話からのアクセス用 URL を取得します。
-   *
+   * 
    * @param useraddr
    * @return
    */
@@ -200,12 +199,12 @@ public class ALCellularUtils {
 
     String servlet_name = rundata.getServletConfig().getServletName();
     String key = eipUser.getName().getValue()
-        + "_"
-        + getCheckValueForCellLogin(eipUser.getName().getValue(), eipUser
-            .getUserId().toString());
+      + "_"
+      + getCheckValueForCellLogin(eipUser.getName().getValue(), eipUser
+        .getUserId().toString());
     EipMCompany record = ALEipUtils.getEipMCompany("1");
     String domain = ALEipUtils.getUrl(record.getIpaddress(), record.getPort()
-        .intValue(), servlet_name);
+      .intValue(), servlet_name);
     if (domain != null && domain.length() > 0) {
       url = domain + "?key=" + key;
     } else {
@@ -216,22 +215,22 @@ public class ALCellularUtils {
 
   /**
    * 携帯電話からのアクセス用 key を取得します。
-   *
+   * 
    * @param useraddr
    * @return
    */
   public static String getCellularKey(ALEipUser eipUser) {
     String key = eipUser.getName().getValue()
-        + "_"
-        + getCheckValueForCellLogin(eipUser.getName().getValue(), eipUser
-            .getUserId().toString());
+      + "_"
+      + getCheckValueForCellLogin(eipUser.getName().getValue(), eipUser
+        .getUserId().toString());
 
     return key;
   }
 
   /**
    * Triple DES で文字列を暗号化します。
-   *
+   * 
    * @param plain
    *          暗号化対象文字列
    * @return 暗号化文字列
@@ -249,19 +248,18 @@ public class ALCellularUtils {
       tripleDesKeyData[i] = kyebyte[i];
     }
     SecretKey secretKey = new SecretKeySpec(tripleDesKeyData,
-        KEY_CRPTY_ALGORITHM);
+      KEY_CRPTY_ALGORITHM);
 
     Cipher cipher = Cipher.getInstance(KEY_CRPTY_ALGORITHM);
     cipher.init(Cipher.ENCRYPT_MODE, secretKey);
     byte[] encryptedMessage = cipher.doFinal(plain.getBytes());
 
-    sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
-    return encoder.encodeBuffer(encryptedMessage);
+    return new String(Base64.encodeBase64(encryptedMessage));
   }
 
   /**
    * Triple DES で文字列を復号します。
-   *
+   * 
    * @param plain
    *          復号対象文字列
    * @return 復号文字列
@@ -280,20 +278,20 @@ public class ALCellularUtils {
       tripleDesKeyData[i] = kyebyte[i];
     }
     SecretKey secretKey = new SecretKeySpec(tripleDesKeyData,
-        KEY_CRPTY_ALGORITHM);
+      KEY_CRPTY_ALGORITHM);
 
     Cipher cipher = Cipher.getInstance(KEY_CRPTY_ALGORITHM);
     cipher.init(Cipher.DECRYPT_MODE, secretKey);
 
-    BASE64Decoder decoder = new sun.misc.BASE64Decoder();
-    byte[] decParam = decoder.decodeBuffer(plain.trim());
+    Base64 decoder = new Base64();
+    byte[] decParam = decoder.decode(plain.trim().getBytes());
 
     return String.valueOf(cipher.doFinal(decParam));
   }
 
   /**
    * 指定したエントリー名のポートレットへの URI を取得します。
-   *
+   * 
    * @param rundata
    * @param portletEntryName
    *          PSML ファイルに記述されているタグ entry の要素 parent
@@ -303,7 +301,7 @@ public class ALCellularUtils {
       String portletEntryId) {
     try {
       Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-          .getDocument().getPortlets();
+        .getDocument().getPortlets();
       if (portlets == null) {
         return null;
       }
@@ -318,13 +316,11 @@ public class ALCellularUtils {
         if (entries[j].getId().equals(portletEntryId)) {
           JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
           DynamicURI duri = jsLink.getLink(JetspeedLink.CURRENT, null, null,
-              JetspeedLink.CURRENT, null);
-          duri = duri
-              .addPathInfo(JetspeedResources.PATH_PORTLETID_KEY,
-                  entries[j].getId())
-              .addQueryData(JetspeedResources.PATH_ACTION_KEY,
-                  "controls.Maximize")
-              .addQueryData(ALEipConstants.MODE, ALEipConstants.MODE_LIST);
+            JetspeedLink.CURRENT, null);
+          duri = duri.addPathInfo(JetspeedResources.PATH_PORTLETID_KEY,
+            entries[j].getId()).addQueryData(JetspeedResources.PATH_ACTION_KEY,
+            "controls.Maximize").addQueryData(ALEipConstants.MODE,
+            ALEipConstants.MODE_LIST);
           return duri.toString();
         }
       }

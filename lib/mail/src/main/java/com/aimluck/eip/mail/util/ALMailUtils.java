@@ -61,6 +61,7 @@ import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.daemonfactory.DaemonFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -98,19 +99,17 @@ import com.aimluck.eip.services.daemonfactory.AipoDaemonFactoryService;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
-import com.sk_jp.io.CharCodeConverter;
 import com.sk_jp.mail.JISDataSource;
 import com.sk_jp.mail.MailUtility;
-import com.sun.mail.util.BASE64EncoderStream;
 
 /**
  * メールのユーティリティクラスです。 <BR>
- *
+ * 
  */
 public class ALMailUtils {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALMailUtils.class.getName());
+    .getLogger(ALMailUtils.class.getName());
 
   /** 改行文字 */
   public static final String CR = System.getProperty("line.separator");
@@ -187,13 +186,13 @@ public class ALMailUtils {
   public static final String DATE_FORMAT = "yyyy/MM/dd HH:mm";
 
   public static final String storePath = JetspeedResources.getString(
-      "aipo.home", "");
+    "aipo.home", "");
 
   public static final String rootFolderPath = JetspeedResources.getString(
-      "aipo.mail.home", "");
+    "aipo.mail.home", "");
 
   public static final String categoryKey = JetspeedResources.getString(
-      "aipo.mail.key", "");
+    "aipo.mail.key", "");
 
   /** メールアカウントのパスワードを暗号化する時の共通鍵 */
   private static final String seacretPassword = "1t's a s3@cr3t k3y";
@@ -210,7 +209,7 @@ public class ALMailUtils {
 
   /**
    * メールアカウントを取得する．
-   *
+   * 
    * @param userId
    * @param accountId
    * @return
@@ -231,10 +230,10 @@ public class ALMailUtils {
 
       SelectQuery query = new SelectQuery(EipMMailAccount.class);
       Expression exp1 = ExpressionFactory.matchExp(
-          EipMMailAccount.USER_ID_PROPERTY, Integer.valueOf(userId));
+        EipMMailAccount.USER_ID_PROPERTY, Integer.valueOf(userId));
       query.setQualifier(exp1);
       Expression exp2 = ExpressionFactory.matchDbExp(
-          EipMMailAccount.ACCOUNT_ID_PK_COLUMN, Integer.valueOf(accountId));
+        EipMMailAccount.ACCOUNT_ID_PK_COLUMN, Integer.valueOf(accountId));
       query.andQualifier(exp2);
       List<?> accounts = dataContext.performQuery(query);
       if (accounts == null || accounts.size() == 0) {
@@ -252,7 +251,7 @@ public class ALMailUtils {
 
   /**
    * メールアカウント名を取得する．
-   *
+   * 
    * @param userId
    * @param accountId
    * @return
@@ -278,7 +277,7 @@ public class ALMailUtils {
 
   /**
    * メールの返信に必要な値をセットする．
-   *
+   * 
    * @param msg
    * @return
    */
@@ -291,19 +290,19 @@ public class ALMailUtils {
       msg = (ALLocalMailMessage) mailmsg;
 
       StringBuffer sb = new StringBuffer();
-      sb.append(" ").append(CR).append("----- Original Message ----- ")
-          .append(CR);
+      sb.append(" ").append(CR).append("----- Original Message ----- ").append(
+        CR);
       sb.append("From: ").append(getAddressString(msg.getFrom())).append(CR);
-      sb.append("To: ")
-          .append(getAddressString(msg.getRecipients(Message.RecipientType.TO)))
-          .append(CR);
+      sb.append("To: ").append(
+        getAddressString(msg.getRecipients(Message.RecipientType.TO))).append(
+        CR);
       sb.append("Sent: ").append(msg.getSentDate()).append(CR);
-      sb.append("Subject: ")
-          .append(UnicodeCorrecter.correctToISO2022JP(msg.getSubject()))
-          .append(CR).append(" ").append(CR);
+      sb.append("Subject: ").append(
+        UnicodeCorrecter.correctToISO2022JP(msg.getSubject())).append(CR)
+        .append(" ").append(CR);
 
       msg.setSubject(MimeUtility.encodeText("Re: "
-          + UnicodeCorrecter.correctToISO2022JP(msg.getSubject())));
+        + UnicodeCorrecter.correctToISO2022JP(msg.getSubject())));
       msg.setRecipient(Message.RecipientType.TO, msg.getReplyTo()[0]);
       String[] lines = msg.getBodyTextArray();
       if (lines != null && lines.length > 0) {
@@ -322,7 +321,7 @@ public class ALMailUtils {
 
   /**
    * メールの転送に必要な値をセットする．
-   *
+   * 
    * @param msg
    * @return
    */
@@ -335,19 +334,19 @@ public class ALMailUtils {
       msg = (ALLocalMailMessage) mailmsg;
 
       StringBuffer sb = new StringBuffer();
-      sb.append(" ").append(CR).append("----- Original Message ----- ")
-          .append(CR);
+      sb.append(" ").append(CR).append("----- Original Message ----- ").append(
+        CR);
       sb.append("From: ").append(getAddressString(msg.getFrom())).append(CR);
-      sb.append("To: ")
-          .append(getAddressString(msg.getRecipients(Message.RecipientType.TO)))
-          .append(CR);
+      sb.append("To: ").append(
+        getAddressString(msg.getRecipients(Message.RecipientType.TO))).append(
+        CR);
       sb.append("Sent: ").append(msg.getSentDate()).append(CR);
-      sb.append("Subject: ")
-          .append(UnicodeCorrecter.correctToISO2022JP(msg.getSubject()))
-          .append(CR).append(" ").append(CR);
+      sb.append("Subject: ").append(
+        UnicodeCorrecter.correctToISO2022JP(msg.getSubject())).append(CR)
+        .append(" ").append(CR);
 
       msg.setSubject(MimeUtility.encodeText("Fwd: "
-          + UnicodeCorrecter.correctToISO2022JP(msg.getSubject())));
+        + UnicodeCorrecter.correctToISO2022JP(msg.getSubject())));
       // msg.setRecipient(Message.RecipientType.TO, msg.getFrom()[0]);
       String[] lines = msg.getBodyTextArray();
       if (lines != null && lines.length > 0) {
@@ -366,7 +365,7 @@ public class ALMailUtils {
 
   /**
    * 改行を含む文字列を，改行で区切った文字列の配列を取得する．
-   *
+   * 
    * @param str
    * @return
    */
@@ -402,7 +401,7 @@ public class ALMailUtils {
 
   /**
    * 区切り文字で区切った文字列の配列を取得する．
-   *
+   * 
    * @param line
    *          区切り文字を含む文字列
    * @param delim
@@ -426,7 +425,7 @@ public class ALMailUtils {
 
   /**
    * 指定された配列の並び順を逆にする．
-   *
+   * 
    * @param objs
    * @return
    */
@@ -448,7 +447,7 @@ public class ALMailUtils {
 
   /**
    * 複数のアドレスをカンマ区切りの1つの文字列に変換する．
-   *
+   * 
    * @param addresses
    * @return
    */
@@ -462,9 +461,9 @@ public class ALMailUtils {
       addr = (InternetAddress) addresses[i];
       if (addr.getPersonal() != null) {
         String personaladdr = getOneString(
-            getTokens(addr.getPersonal(), "\r\n"), "");
-        sb.append(MailUtility.decodeText(personaladdr)).append(" <")
-            .append(addr.getAddress()).append(">, ");
+          getTokens(addr.getPersonal(), "\r\n"), "");
+        sb.append(MailUtility.decodeText(personaladdr)).append(" <").append(
+          addr.getAddress()).append(">, ");
       } else {
         sb.append(addr.getAddress()).append(", ");
       }
@@ -472,9 +471,9 @@ public class ALMailUtils {
     addr = (InternetAddress) addresses[length];
     if (addr.getPersonal() != null) {
       String personaladdr = getOneString(getTokens(addr.getPersonal(), "\r\n"),
-          "");
-      sb.append(MailUtility.decodeText(personaladdr)).append(" <")
-          .append(addr.getAddress()).append(">");
+        "");
+      sb.append(MailUtility.decodeText(personaladdr)).append(" <").append(
+        addr.getAddress()).append(">");
     } else {
       sb.append(addr.getAddress());
     }
@@ -483,7 +482,7 @@ public class ALMailUtils {
 
   /**
    * 複数の文字列を区切り文字で区切った1つの文字列に変換する．
-   *
+   * 
    * @param addresses
    * @param delim
    * @return
@@ -503,7 +502,7 @@ public class ALMailUtils {
 
   /**
    * Date のオブジェクトを "yyyy/MM/dd hh:mm" 形式の文字列に変換する．
-   *
+   * 
    * @param date
    * @return
    */
@@ -519,7 +518,7 @@ public class ALMailUtils {
 
   /**
    * "yyyy/MM/dd hh:mm" 形式の文字列を Date のオブジェクトに変換する．
-   *
+   * 
    * @param dateStr
    * @return
    */
@@ -541,7 +540,7 @@ public class ALMailUtils {
 
   /**
    * 指定したプロパティファイルから値を取得する．
-   *
+   * 
    * @param filename
    *          プロパティファイル名
    * @param key
@@ -579,7 +578,7 @@ public class ALMailUtils {
 
   /**
    * 指定したプロパティファイルに値を保存する．
-   *
+   * 
    * @param filename
    *          プロパティファイル名
    * @param key
@@ -606,7 +605,7 @@ public class ALMailUtils {
 
   /**
    * 指定したファイル名に対するクラス File のオブジェクトを取得する．
-   *
+   * 
    * @param filename
    * @return
    */
@@ -627,7 +626,7 @@ public class ALMailUtils {
 
   /**
    * 指定したフォルダ以下を全て削除する．
-   *
+   * 
    * @return
    */
   public static boolean deleteFolder(File folder) {
@@ -663,7 +662,7 @@ public class ALMailUtils {
 
   /**
    * [メール削除機能] ロックファイルを生成する．
-   *
+   * 
    * @param dir
    * @param userId
    * @return
@@ -703,7 +702,7 @@ public class ALMailUtils {
 
   /**
    * [メール削除機能] ロックファイルを削除する．
-   *
+   * 
    * @param dir
    * @param userId
    * @return
@@ -720,7 +719,7 @@ public class ALMailUtils {
 
   /**
    * 受信メールの受信日時を取得する（ヘッダ Recieved を解析する）．
-   *
+   * 
    * @param msg
    * @return
    */
@@ -766,9 +765,9 @@ public class ALMailUtils {
   public static String encodeWordJIS(String s) {
     try {
       return "=?ISO-2022-JP?B?"
-          + new String(BASE64EncoderStream.encode(CharCodeConverter
-              .sjisToJis(UnicodeCorrecter.correctToCP932(s).getBytes(
-                  "Windows-31J")))) + "?=";
+        + new String(Base64
+          .encodeBase64(CharCodeConverter.sjisToJis(UnicodeCorrecter
+            .correctToCP932(s).getBytes("Windows-31J")))) + "?=";
     } catch (UnsupportedEncodingException e) {
       throw new RuntimeException("CANT HAPPEN");
     }
@@ -776,7 +775,7 @@ public class ALMailUtils {
 
   /**
    * String 型のアドレス → InternetAddress 型のアドレス に変換する．
-   *
+   * 
    * @param addr
    * @return
    */
@@ -792,8 +791,8 @@ public class ALMailUtils {
       } else if (count == 2) {
         String name = st.nextToken().trim();
         String addressStr = st.nextToken().trim();
-        address = new InternetAddress(addressStr,
-            ALMailUtils.encodeWordJIS(name));
+        address = new InternetAddress(addressStr, ALMailUtils
+          .encodeWordJIS(name));
       }
     } catch (Exception e) {
       logger.error("Exception", e);
@@ -804,7 +803,7 @@ public class ALMailUtils {
 
   /**
    * ファイルが存在することを確認する．
-   *
+   * 
    * @param filePaths
    *          ファイルへのフルパス
    * @return
@@ -833,7 +832,7 @@ public class ALMailUtils {
     BufferedReader reader = null;
     try {
       reader = new BufferedReader(new InputStreamReader(new FileInputStream(
-          FilePath + ".txt"), ALEipConstants.DEF_CONTENT_ENCODING));
+        FilePath + ".txt"), ALEipConstants.DEF_CONTENT_ENCODING));
       line = reader.readLine();
     } catch (Exception e) {
       logger.error("Exception", e);
@@ -860,7 +859,7 @@ public class ALMailUtils {
 
   /**
    * 「暗号化＋Base64符号化」の文字列を，もとの文字列に復号する．
-   *
+   * 
    * @param password
    * @param data
    * @return
@@ -871,7 +870,7 @@ public class ALMailUtils {
 
   /**
    * 「暗号化＋Base64符号化」の文字列を，もとの文字列に復号する．
-   *
+   * 
    * @param password
    * @param data
    * @return
@@ -896,7 +895,7 @@ public class ALMailUtils {
 
   /**
    * 「暗号化＋Base64符号化」した文字列を取得する．
-   *
+   * 
    * @param password
    * @param data
    * @return
@@ -907,7 +906,7 @@ public class ALMailUtils {
 
   /**
    * 「暗号化＋Base64符号化」した文字列を取得する．
-   *
+   * 
    * @param password
    * @param data
    * @return
@@ -930,7 +929,7 @@ public class ALMailUtils {
 
   /**
    * 指定したパスワードでデータを暗号化／復号する． 暗号化方式：PBEWithMD5AndDES
-   *
+   * 
    * @param cipherMode
    *          Cipher.ENCRYPT_MODE もしくは Cipher.DECRYPT_MODE
    * @param password
@@ -946,7 +945,7 @@ public class ALMailUtils {
 
     // Salt
     byte[] salt = { (byte) 0xc7, (byte) 0x73, (byte) 0x21, (byte) 0x8c,
-        (byte) 0x7e, (byte) 0xc8, (byte) 0xee, (byte) 0x99 };
+      (byte) 0x7e, (byte) 0xc8, (byte) 0xee, (byte) 0x99 };
 
     // Iteration count
     int count = 20;
@@ -976,7 +975,7 @@ public class ALMailUtils {
 
   /**
    * メール受信用コンテキスト（POP3）を取得します。
-   *
+   * 
    * @param orgId
    * @param account
    * @return
@@ -995,13 +994,13 @@ public class ALMailUtils {
       rcontext.setPop3Port(account.getPop3Port());
       rcontext.setPop3UserId(account.getPop3userName());
       rcontext.setPop3UserPasswd(new String(ALMailUtils
-          .getDecryptedMailAccountPasswd(account.getPop3password())));
+        .getDecryptedMailAccountPasswd(account.getPop3password())));
       rcontext.setDelete(Integer.parseInt(account.getDelAtPop3Flg()) == 1);
       rcontext.setEnableSavingDays(Integer.parseInt(account
-          .getDelAtPop3BeforeDaysFlg()) == 1);
+        .getDelAtPop3BeforeDaysFlg()) == 1);
       rcontext.setSavingDays(account.getDelAtPop3BeforeDays().intValue());
-      rcontext
-          .setDenyReceivedMail(Integer.parseInt(account.getNonReceivedFlg()) == 1);
+      rcontext.setDenyReceivedMail(Integer
+        .parseInt(account.getNonReceivedFlg()) == 1);
       rcontext.setAuthReceiveFlag(account.getAuthReceiveFlg().intValue());
       rcontext.setEncryptionFlag(account.getPop3EncryptionFlg());
     } catch (Exception e) {
@@ -1013,7 +1012,7 @@ public class ALMailUtils {
 
   /**
    * メール送信用コンテキスト（SMTP）を取得します。
-   *
+   * 
    * @param orgId
    * @param account
    * @return
@@ -1043,10 +1042,10 @@ public class ALMailUtils {
       scontext.setEncryptionFlag(account.getSmtpEncryptionFlg());
 
       byte[] auth_pass = ALMailUtils.getDecryptedMailAccountPasswd(account
-          .getAuthSendUserPasswd());
+        .getAuthSendUserPasswd());
       if (auth_pass != null) {
         scontext.setAuthSendUserPassword(new String(ALMailUtils
-            .getDecryptedMailAccountPasswd(account.getAuthSendUserPasswd())));
+          .getDecryptedMailAccountPasswd(account.getAuthSendUserPasswd())));
       } else {
         scontext.setAuthSendUserPassword(null);
       }
@@ -1055,7 +1054,7 @@ public class ALMailUtils {
       scontext.setPop3Port(account.getPop3Port());
       scontext.setPop3UserId(account.getPop3userName());
       scontext.setPop3UserPasswd(new String(ALMailUtils
-          .getDecryptedMailAccountPasswd(account.getPop3password())));
+        .getDecryptedMailAccountPasswd(account.getPop3password())));
       scontext.setPop3EncryptionFlag(account.getSmtpEncryptionFlg());
 
     } catch (Exception e) {
@@ -1066,14 +1065,14 @@ public class ALMailUtils {
 
   /**
    * 送信メッセージ（SMTP）のコンテキストを取得します。
-   *
+   * 
    * @param orgId
    * @param account
    * @return
    */
   public static ALSmtpMailContext getALSmtpMailContext(String[] to,
       String[] cc, String[] bcc, String from, String name, String subject,
-      String msgText, String[] filePaths, Map<String,String> additionalHeaders) {
+      String msgText, String[] filePaths, Map<String, String> additionalHeaders) {
 
     ALSmtpMailContext mailcontext = new ALSmtpMailContext();
     mailcontext.setTo(to);
@@ -1091,7 +1090,7 @@ public class ALMailUtils {
 
   /**
    * 管理者 admin のメールアカウントのオブジェクトモデルを取得する． <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param isJoin
@@ -1101,11 +1100,11 @@ public class ALMailUtils {
   public static EipMMailAccount getEipMMailAccountForAdmin() {
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       SelectQuery query = new SelectQuery(EipMMailAccount.class);
       // admin の ID を指定
       Expression exp = ExpressionFactory.matchExp(
-          EipMMailAccount.USER_ID_PROPERTY, Integer.valueOf(1));
+        EipMMailAccount.USER_ID_PROPERTY, Integer.valueOf(1));
       query.andQualifier(exp);
       List<?> accounts = dataContext.performQuery(query);
       if (accounts == null || accounts.size() == 0) {
@@ -1122,22 +1121,22 @@ public class ALMailUtils {
 
   /**
    * デフォルトのメールアカウントの情報をデータベースから所得する．
-   *
+   * 
    * @param userId
    * @return
    */
   public static EipMMailAccount getFirstEipMMailAccount(int userId) {
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       SelectQuery query = new SelectQuery(EipMMailAccount.class);
       Expression exp1 = ExpressionFactory.matchExp(
-          EipMMailAccount.USER_ID_PROPERTY, Integer.valueOf(userId));
+        EipMMailAccount.USER_ID_PROPERTY, Integer.valueOf(userId));
       query.setQualifier(exp1);
       Expression exp21 = ExpressionFactory.matchExp(
-          EipMMailAccount.ACCOUNT_TYPE_PROPERTY, "1");
+        EipMMailAccount.ACCOUNT_TYPE_PROPERTY, "1");
       Expression exp22 = ExpressionFactory.matchExp(
-          EipMMailAccount.ACCOUNT_TYPE_PROPERTY, "2");
+        EipMMailAccount.ACCOUNT_TYPE_PROPERTY, "2");
       query.andQualifier(exp21.orExp(exp22));
       List<?> accounts = dataContext.performQuery(query);
       if (accounts == null || accounts.size() == 0) {
@@ -1154,7 +1153,7 @@ public class ALMailUtils {
 
   /**
    * メールアカウント情報をデータベースに保存する．
-   *
+   * 
    * @param rundata
    * @param msgList
    * @param userId
@@ -1195,7 +1194,7 @@ public class ALMailUtils {
 
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
 
       Date createdDate = Calendar.getInstance().getTime();
 
@@ -1205,26 +1204,26 @@ public class ALMailUtils {
       if (accountType == ACCOUNT_TYPE_INIT) {
         // 新規オブジェクトモデル
         mailAccount = (EipMMailAccount) dataContext
-            .createAndRegisterNewObject(EipMMailAccount.class);
+          .createAndRegisterNewObject(EipMMailAccount.class);
         mailAccount.setAccountType(Integer.toString(ACCOUNT_TYPE_INIT));
       } else {
         SelectQuery query = new SelectQuery(EipMMailAccount.class);
         Expression exp1 = ExpressionFactory.matchExp(
-            EipMMailAccount.USER_ID_PROPERTY, Integer.valueOf(userId));
+          EipMMailAccount.USER_ID_PROPERTY, Integer.valueOf(userId));
         query.setQualifier(exp1);
         Expression exp2 = ExpressionFactory.matchExp(
-            EipMMailAccount.ACCOUNT_TYPE_PROPERTY,
-            Integer.valueOf(ACCOUNT_TYPE_INIT));
+          EipMMailAccount.ACCOUNT_TYPE_PROPERTY, Integer
+            .valueOf(ACCOUNT_TYPE_INIT));
         query.andQualifier(exp2);
         List<?> list = dataContext.performQuery(query);
         if (list == null || list.size() <= 0) {
           // 新規オブジェクトモデル
           mailAccount = (EipMMailAccount) dataContext
-              .createAndRegisterNewObject(EipMMailAccount.class);
+            .createAndRegisterNewObject(EipMMailAccount.class);
 
           SelectQuery query3 = new SelectQuery(EipMMailAccount.class);
           Expression exp3 = ExpressionFactory.matchExp(
-              EipMMailAccount.USER_ID_PROPERTY, Integer.valueOf(userId));
+            EipMMailAccount.USER_ID_PROPERTY, Integer.valueOf(userId));
           query3.setQualifier(exp3);
           List<?> mails = dataContext.performQuery(query3);
           int count = (mails != null && mails.size() > 0) ? mails.size() : 0;
@@ -1252,7 +1251,7 @@ public class ALMailUtils {
       mailAccount.setPop3serverName(Pop3ServerName);
       mailAccount.setPop3userName(pop3UserName);
       mailAccount.setPop3password(ALMailUtils
-          .getEncryptedMailAccountPasswd(pop3Password.getBytes()));
+        .getEncryptedMailAccountPasswd(pop3Password.getBytes()));
       mailAccount.setMailUserName(mailUserName);
       mailAccount.setMailAddress(mailAddress);
       mailAccount.setSmtpPort(Integer.toString(smtpPort));
@@ -1261,14 +1260,14 @@ public class ALMailUtils {
       mailAccount.setAuthSendUserId(authSendUserId);
       if (authSendUserPasswd != null) {
         mailAccount.setAuthSendUserPasswd(ALMailUtils
-            .getEncryptedMailAccountPasswd(authSendUserPasswd.getBytes()));
+          .getEncryptedMailAccountPasswd(authSendUserPasswd.getBytes()));
       }
       mailAccount.setSmtpEncryptionFlg((short) smtpEncryptionFlg);
       mailAccount.setPop3EncryptionFlg((short) pop3EncryptionFlg);
       mailAccount.setAuthReceiveFlg(Short.valueOf((short) authReceiveFlg));
       mailAccount.setDelAtPop3Flg(Integer.valueOf(delAtPop3Flg).toString());
       mailAccount.setDelAtPop3BeforeDaysFlg(Integer.valueOf(
-          delAtPop3BeforeDaysFlg).toString());
+        delAtPop3BeforeDaysFlg).toString());
       mailAccount.setDelAtPop3BeforeDays(Integer.valueOf(delAtPop3BeforeDays));
       mailAccount.setNonReceivedFlg(nonReceivedFlg);
       mailAccount.setUpdateDate(createdDate);
@@ -1281,7 +1280,7 @@ public class ALMailUtils {
 
       // フォルダ「受信トレイ」を作成する
       mailFolder = (EipTMailFolder) dataContext
-          .createAndRegisterNewObject(EipTMailFolder.class);
+        .createAndRegisterNewObject(EipTMailFolder.class);
       mailFolder.setEipMMailAccount(mailAccount);
       mailFolder.setFolderName(EipTMailFolder.DEFAULT_FOLDER_NAME);
       mailFolder.setCreateDate(createdDate);
@@ -1293,12 +1292,10 @@ public class ALMailUtils {
       dataContext.commitChanges();
 
       // イベントログに保存
-      ALEventlogFactoryService
-          .getInstance()
-          .getEventlogHandler()
-          .log(mailAccount.getAccountId(),
-              ALEventlogConstants.PORTLET_TYPE_WEBMAIL_ACCOUNT,
-              mailAccount.getAccountName());
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        mailAccount.getAccountId(),
+        ALEventlogConstants.PORTLET_TYPE_WEBMAIL_ACCOUNT,
+        mailAccount.getAccountName());
     } catch (Exception ex) {
       ex.printStackTrace();
       logger.error("Exception", ex);
@@ -1308,12 +1305,12 @@ public class ALMailUtils {
   }
 
   public static boolean sendMailDelegate(String org_id, int srcUserId,
-      List<ALEipUserAddr> destMemberList, String pcSubject, String cellularSubject,
-      String pcBody, String cellularBody, int destType, List<String> msgList)
-      throws Exception {
+      List<ALEipUserAddr> destMemberList, String pcSubject,
+      String cellularSubject, String pcBody, String cellularBody, int destType,
+      List<String> msgList) throws Exception {
 
     if (destType < VALUE_MSGTYPE_DEST_NONE
-        || destType > VALUE_MSGTYPE_DEST_PC_CELLULAR)
+      || destType > VALUE_MSGTYPE_DEST_PC_CELLULAR)
       return false;
 
     if (destMemberList == null || destMemberList.size() == 0)
@@ -1354,38 +1351,38 @@ public class ALMailUtils {
       int destCellularEMailAddrsSize = destCellularEMailAddrs.size();
 
       ALMailHandler mailhandler = ALMailFactoryService.getInstance()
-          .getMailHandler();
+        .getMailHandler();
       // 送信サーバ情報
       ALMailSenderContext scontext = ALMailUtils.getALSmtpMailSenderContext(
-          org_id, account);
+        org_id, account);
 
       // パソコンへメールを送信
       if ((destType == VALUE_MSGTYPE_DEST_PC || destType == VALUE_MSGTYPE_DEST_PC_CELLULAR)
-          && (destEmailAddrsSize > 0)) {
+        && (destEmailAddrsSize > 0)) {
         String[] tos = new String[destEmailAddrsSize];
         tos = (String[]) destEmailAddrs.toArray(tos);
 
         // 送信メッセージのコンテキスト
         ALSmtpMailContext mailcontext = ALMailUtils.getALSmtpMailContext(tos,
-            null, null, account.getMailAddress(),
-            ALStringUtil.unsanitizing(account.getMailUserName()),
-            ALStringUtil.unsanitizing(pcSubject),
-            ALStringUtil.unsanitizing(pcBody), null, null);
+          null, null, account.getMailAddress(), ALStringUtil
+            .unsanitizing(account.getMailUserName()), ALStringUtil
+            .unsanitizing(pcSubject), ALStringUtil.unsanitizing(pcBody), null,
+          null);
 
         successSendToPc = mailhandler.send(scontext, mailcontext);
       }
 
       // 携帯電話へメールを送信
       if ((destType == VALUE_MSGTYPE_DEST_CELLULAR || destType == VALUE_MSGTYPE_DEST_PC_CELLULAR)
-          && (destCellularEMailAddrsSize > 0)) {
+        && (destCellularEMailAddrsSize > 0)) {
         String[] tos = new String[destCellularEMailAddrsSize];
         tos = (String[]) destCellularEMailAddrs.toArray(tos);
 
         ALSmtpMailContext mailcontext = ALMailUtils.getALSmtpMailContext(tos,
-            null, null, account.getMailAddress(),
-            ALStringUtil.unsanitizing(account.getMailUserName()),
-            ALStringUtil.unsanitizing(cellularSubject),
-            ALStringUtil.unsanitizing(cellularBody), null, null);
+          null, null, account.getMailAddress(), ALStringUtil
+            .unsanitizing(account.getMailUserName()), ALStringUtil
+            .unsanitizing(cellularSubject), ALStringUtil
+            .unsanitizing(cellularBody), null, null);
 
         successSendToCell = mailhandler.send(scontext, mailcontext);
       }
@@ -1427,12 +1424,12 @@ public class ALMailUtils {
   }
 
   public static boolean sendMailDelegate_note(String org_id, int srcUserId,
-      List<ALEipUserAddr> destMemberList, String pcSubject, String cellularSubject,
-      String pcBody, String cellularBody, int destType, List<String> msgList)
-      throws Exception {
+      List<ALEipUserAddr> destMemberList, String pcSubject,
+      String cellularSubject, String pcBody, String cellularBody, int destType,
+      List<String> msgList) throws Exception {
 
     if (destType < VALUE_MSGTYPE_DEST_NONE
-        || destType > VALUE_MSGTYPE_DEST_PC_CELLULAR)
+      || destType > VALUE_MSGTYPE_DEST_PC_CELLULAR)
       return false;
 
     if (destMemberList == null || destMemberList.size() == 0)
@@ -1473,50 +1470,50 @@ public class ALMailUtils {
       int destCellularEmailAddrsSize = destCellularEmailAddrs.size();
 
       ALMailHandler mailhandler = ALMailFactoryService.getInstance()
-          .getMailHandler();
+        .getMailHandler();
       // 送信サーバ情報
       ALMailSenderContext scontext = ALMailUtils.getALSmtpMailSenderContext(
-          org_id, account);
+        org_id, account);
 
       // パソコンへメールを送信
       if ((destType == VALUE_MSGTYPE_DEST_PC || destType == VALUE_MSGTYPE_DEST_PC_CELLULAR)
-          && (destEmailAddrsSize > 0)) {
+        && (destEmailAddrsSize > 0)) {
         String[] tos = new String[destEmailAddrsSize];
         tos = (String[]) destEmailAddrs.toArray(tos);
 
         // 送信メッセージのコンテキスト
         ALSmtpMailContext mailcontext = ALMailUtils.getALSmtpMailContext(tos,
-            null, null, account.getMailAddress(),
-            ALStringUtil.unsanitizing(account.getMailUserName()),
-            ALStringUtil.unsanitizing(pcSubject),
-            ALStringUtil.unsanitizing(pcBody), null, null);
+          null, null, account.getMailAddress(), ALStringUtil
+            .unsanitizing(account.getMailUserName()), ALStringUtil
+            .unsanitizing(pcSubject), ALStringUtil.unsanitizing(pcBody), null,
+          null);
 
         successSendToPc = mailhandler.send(scontext, mailcontext);
       }
       // PCへ送信するにチェックはしてあるが, 送信先PCのアドレスが未登録
       if (((destType == VALUE_MSGTYPE_DEST_PC) || (destType == VALUE_MSGTYPE_DEST_PC_CELLULAR))
-          && destEmailAddrsSize <= 0) {
+        && destEmailAddrsSize <= 0) {
         successSendToPc = -1;
       }
 
       // 携帯電話へメールを送信
       if (((destType == VALUE_MSGTYPE_DEST_CELLULAR) || (destType == VALUE_MSGTYPE_DEST_PC_CELLULAR))
-          && (destCellularEmailAddrsSize > 0)) {
+        && (destCellularEmailAddrsSize > 0)) {
         String[] tos = new String[destCellularEmailAddrsSize];
         tos = (String[]) destCellularEmailAddrs.toArray(tos);
 
         ALSmtpMailContext mailcontext = ALMailUtils.getALSmtpMailContext(tos,
-            null, null, account.getMailAddress(),
-            ALStringUtil.unsanitizing(account.getMailUserName()),
-            ALStringUtil.unsanitizing(cellularSubject),
-            ALStringUtil.unsanitizing(cellularBody), null, null);
+          null, null, account.getMailAddress(), ALStringUtil
+            .unsanitizing(account.getMailUserName()), ALStringUtil
+            .unsanitizing(cellularSubject), ALStringUtil
+            .unsanitizing(cellularBody), null, null);
 
         successSendToCell = mailhandler.send(scontext, mailcontext);
 
       }
       // 携帯へ送信するにチェックはしてあるが, 送信先携帯のアドレスが未登録
       if (((destType == VALUE_MSGTYPE_DEST_CELLULAR) || (destType == VALUE_MSGTYPE_DEST_PC_CELLULAR))
-          && destCellularEmailAddrsSize <= 0) {
+        && destCellularEmailAddrsSize <= 0) {
         successSendToCell = -1;
       }
     }
@@ -1562,7 +1559,7 @@ public class ALMailUtils {
 
   /**
    * ALEipUserのリストをもとに、ALEipUserAddrのリストを取得する。
-   *
+   * 
    * @param memberList
    * @param loginUserId
    * @param includeLoginUser
@@ -1582,7 +1579,7 @@ public class ALMailUtils {
       }
       try {
         ALBaseUser baseuser = (ALBaseUser) JetspeedSecurity.getUser(user
-            .getName().getValue());
+          .getName().getValue());
         useraddr = new ALEipUserAddr();
         useraddr.setUserId(Integer.valueOf(baseuser.getUserId()));
         useraddr.setPcMailAddr(baseuser.getEmail());
@@ -1598,7 +1595,7 @@ public class ALMailUtils {
 
   /**
    * プロパティファイルから送信先の設定を取得する。
-   *
+   * 
    * @param keyMsgtype
    * @return
    */
@@ -1607,13 +1604,13 @@ public class ALMailUtils {
 
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       SelectQuery query = new SelectQuery(EipMMailNotifyConf.class);
       Expression exp1 = ExpressionFactory.matchExp(
-          EipMMailNotifyConf.USER_ID_PROPERTY, Integer.valueOf(1));
+        EipMMailNotifyConf.USER_ID_PROPERTY, Integer.valueOf(1));
       query.setQualifier(exp1);
       Expression exp2 = ExpressionFactory.matchExp(
-          EipMMailNotifyConf.NOTIFY_TYPE_PROPERTY, Integer.valueOf(keyMsgtype));
+        EipMMailNotifyConf.NOTIFY_TYPE_PROPERTY, Integer.valueOf(keyMsgtype));
       query.andQualifier(exp2);
       List<?> confs = dataContext.performQuery(query);
       if (confs == null || confs.size() == 0) {
@@ -1646,21 +1643,21 @@ public class ALMailUtils {
 
   /**
    * プロパティファイルから送信先の設定を取得する。
-   *
+   * 
    * @param keyMsgtype
    * @return
    */
   public static boolean setSendDestType(int keyMsgtype, int valueMsgtype) {
     try {
       if (valueMsgtype < VALUE_MSGTYPE_DEST_NONE
-          || valueMsgtype > VALUE_MSGTYPE_DEST_PC_CELLULAR)
+        || valueMsgtype > VALUE_MSGTYPE_DEST_PC_CELLULAR)
         return false;
 
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       SelectQuery query = new SelectQuery(EipMMailNotifyConf.class);
       Expression exp1 = ExpressionFactory.matchExp(
-          EipMMailNotifyConf.NOTIFY_TYPE_PROPERTY, Integer.valueOf(keyMsgtype));
+        EipMMailNotifyConf.NOTIFY_TYPE_PROPERTY, Integer.valueOf(keyMsgtype));
       query.setQualifier(exp1);
       List<?> confs = dataContext.performQuery(query);
 
@@ -1686,10 +1683,10 @@ public class ALMailUtils {
 
     EipMCompany record = ALEipUtils.getEipMCompany("1");
     String domain = getUrl(record.getIpaddress(), record.getPort().intValue(),
-        getServletName());
+      getServletName());
 
     JetspeedRunDataService runDataService = (JetspeedRunDataService) TurbineServices
-        .getInstance().getService(RunDataService.SERVICE_NAME);
+      .getInstance().getService(RunDataService.SERVICE_NAME);
 
     JetspeedRunData rundata = null;
     if (runDataService != null) {
@@ -1699,7 +1696,7 @@ public class ALMailUtils {
     if (domain != null && domain.length() > 0) {
       String endword;
       String company_id = rundata.getParameters().getString(
-          DatabaseOrmService.ORG_PRE, "");
+        DatabaseOrmService.ORG_PRE, "");
       if (company_id == null || "".equals(company_id)) {
         endword = "";
       } else {
@@ -1721,7 +1718,7 @@ public class ALMailUtils {
       String ipaddress = record.getIpaddressInternal();
       if (null == ipaddress || "".equals(ipaddress)) {
         java.util.Enumeration<?> enuIfs = NetworkInterface
-            .getNetworkInterfaces();
+          .getNetworkInterfaces();
         if (null != enuIfs) {
           while (enuIfs.hasMoreElements()) {
             NetworkInterface ni = (NetworkInterface) enuIfs.nextElement();
@@ -1748,7 +1745,7 @@ public class ALMailUtils {
 
   private static String getServletName() {
     AipoDaemonFactoryService aipoDaemonService = (AipoDaemonFactoryService) TurbineServices
-        .getInstance().getService(DaemonFactoryService.SERVICE_NAME);
+      .getInstance().getService(DaemonFactoryService.SERVICE_NAME);
     ServletConfig servlet_config = aipoDaemonService.getServletConfig();
     return servlet_config.getServletName();
   }
@@ -1758,16 +1755,16 @@ public class ALMailUtils {
       return "";
 
     String protocol = JetspeedResources
-        .getString("access.url.protocol", "http");
+      .getString("access.url.protocol", "http");
 
     StringBuffer url = new StringBuffer();
 
     if (port == 80) {
-      url.append(protocol).append("://").append(ip).append("/")
-          .append(servername).append("/");
+      url.append(protocol).append("://").append(ip).append("/").append(
+        servername).append("/");
     } else {
       url.append(protocol).append("://").append(ip).append(":").append(port)
-          .append("/").append(servername).append("/");
+        .append("/").append(servername).append("/");
     }
     return url.toString();
   }
@@ -1788,7 +1785,7 @@ public class ALMailUtils {
 
     SelectQuery query = new SelectQuery(EipMMailNotifyConf.class);
     Expression exp = ExpressionFactory.matchDbExp(
-        EipMMailNotifyConf.NOTIFY_ID_PK_COLUMN, "1");
+      EipMMailNotifyConf.NOTIFY_ID_PK_COLUMN, "1");
     query.setQualifier(exp);
 
     List<?> list = dataContext.performQuery(query);
@@ -1805,7 +1802,7 @@ public class ALMailUtils {
     DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     SelectQuery query = new SelectQuery(EipMMailNotifyConf.class);
     Expression exp = ExpressionFactory.matchDbExp(
-        EipMMailNotifyConf.NOTIFY_ID_PK_COLUMN, "1");
+      EipMMailNotifyConf.NOTIFY_ID_PK_COLUMN, "1");
     query.setQualifier(exp);
 
     List<?> list = dataContext.performQuery(query);
@@ -1831,7 +1828,7 @@ public class ALMailUtils {
 
   /**
    * フォルダオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -1846,10 +1843,10 @@ public class ALMailUtils {
         return null;
       }
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       SelectQuery query = new SelectQuery(EipTMailFolder.class);
       Expression exp = ExpressionFactory.matchDbExp(
-          EipTMailFolder.EIP_MMAIL_ACCOUNT_PROPERTY, account);
+        EipTMailFolder.EIP_MMAIL_ACCOUNT_PROPERTY, account);
       query.addOrdering(EipTMailFolder.FOLDER_NAME_PROPERTY, true);
       query.setQualifier(exp);
 
@@ -1880,7 +1877,7 @@ public class ALMailUtils {
 
   /**
    * 指定されたフォルダに入っているメールを全て取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -1894,10 +1891,10 @@ public class ALMailUtils {
       }
 
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       SelectQuery query = new SelectQuery(EipTMail.class);
       Expression exp = ExpressionFactory.matchDbExp(
-          EipTMail.FOLDER_ID_PROPERTY, folder.getFolderId());
+        EipTMail.FOLDER_ID_PROPERTY, folder.getFolderId());
       query.setQualifier(exp);
 
       List<?> mails = dataContext.performQuery(query);
@@ -1915,7 +1912,7 @@ public class ALMailUtils {
 
   /**
    * フィルタオブジェクトモデルを取得します。（アカウントで検索） <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -1923,10 +1920,10 @@ public class ALMailUtils {
   public static List<?> getEipTMailFilters(EipMMailAccount mailAccount) {
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       SelectQuery query = new SelectQuery(EipTMailFilter.class);
       Expression exp = ExpressionFactory.matchExp(
-          EipTMailFilter.EIP_MMAIL_ACCOUNT_PROPERTY, mailAccount);
+        EipTMailFilter.EIP_MMAIL_ACCOUNT_PROPERTY, mailAccount);
       query.setQualifier(exp);
       query.addOrdering(EipTMailFilter.SORT_ORDER_PROPERTY, true);
 
@@ -1945,7 +1942,7 @@ public class ALMailUtils {
 
   /**
    * メールがフィルタの条件(件名、送信元ドメイン、送信元メールアドレス)に合致するかどうか調べます。
-   *
+   * 
    * @param mailFilter
    * @param subject
    * @param person
@@ -1974,8 +1971,8 @@ public class ALMailUtils {
 
     } else if (FILTER_TYPE_SUBJECT.equals(filterType)) {
       // 件名を含む
-      return MailUtility.decodeText(subject).toLowerCase()
-          .contains(filterString.toLowerCase());
+      return MailUtility.decodeText(subject).toLowerCase().contains(
+        filterString.toLowerCase());
     }
 
     return false;
@@ -1983,7 +1980,7 @@ public class ALMailUtils {
 
   /**
    * フィルタタイプの一覧を取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
