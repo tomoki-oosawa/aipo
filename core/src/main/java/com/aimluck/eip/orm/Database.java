@@ -21,6 +21,7 @@ package com.aimluck.eip.orm;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.cayenne.DataObject;
 import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.access.DataContext;
@@ -166,7 +167,7 @@ public class Database {
    * 
    * @param target
    */
-  public static void deleteAll(List<Persistent> target) {
+  public static void deleteAll(List<?> target) {
     deleteAll(DatabaseOrmService.getInstance().getDataContext(), target);
   }
 
@@ -176,7 +177,7 @@ public class Database {
    * @param dataContext
    * @param target
    */
-  public static void deleteAll(DataContext dataContext, List<Persistent> target) {
+  public static void deleteAll(DataContext dataContext, List<?> target) {
     dataContext.deleteObjects(target);
 
   }
@@ -186,7 +187,7 @@ public class Database {
    * 
    * @param target
    */
-  public static void deleteAll(Persistent... target) {
+  public static void deleteAll(DataObject... target) {
     deleteAll(DatabaseOrmService.getInstance().getDataContext(), target);
   }
 
@@ -196,7 +197,7 @@ public class Database {
    * @param dataContext
    * @param target
    */
-  public static void deleteAll(DataContext dataContext, Persistent... target) {
+  public static void deleteAll(DataContext dataContext, DataObject... target) {
     dataContext.deleteObjects(Arrays.asList(target));
   }
 
