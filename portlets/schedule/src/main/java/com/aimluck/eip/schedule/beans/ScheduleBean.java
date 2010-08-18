@@ -31,7 +31,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * スケジュールの検索データを管理するクラスです。
- *
+ * 
  */
 public class ScheduleBean implements ALData, Cloneable {
 
@@ -57,7 +57,7 @@ public class ScheduleBean implements ALData, Cloneable {
   private ALStringField name;
 
   /** <code>date</code> 日付 */
-  //private ALStringField date;
+  // private ALStringField date;
 
   /** <code>ptn</code> 繰り返しパターン */
   private String ptn;
@@ -204,7 +204,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 終了時間を取得します。
-   *
+   * 
    * @return
    */
   public String getEndDate() {
@@ -213,7 +213,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 開始時間を取得します。
-   *
+   * 
    * @return
    */
   public String getStartDate() {
@@ -222,7 +222,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 終了時間を設定します。
-   *
+   * 
    * @param date
    */
   public void setEndDate(Date date) {
@@ -231,7 +231,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 開始時間を設定します。
-   *
+   * 
    * @param date
    */
   public void setStartDate(Date date) {
@@ -240,7 +240,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 予定を取得します。
-   *
+   * 
    * @return
    */
   public String getName() {
@@ -249,7 +249,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 詳細を表示するかどうか
-   *
+   * 
    * @return
    */
   public boolean isShowDetail() {
@@ -258,7 +258,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 予定を設定します。
-   *
+   * 
    * @param string
    */
   public void setName(String string) {
@@ -267,7 +267,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * フォーマットを設定します。
-   *
+   * 
    * @param string
    */
   public void setFormat(String string) {
@@ -276,7 +276,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * スケジュールIDを取得します。
-   *
+   * 
    * @return
    */
   public String getScheduleId() {
@@ -285,7 +285,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * スケジュールIDを設定します。
-   *
+   * 
    * @param number
    */
   public void setScheduleId(int number) {
@@ -294,7 +294,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 親スケジュール ID を取得します。
-   *
+   * 
    * @return
    */
   public String getParentId() {
@@ -303,7 +303,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 親スケジュール ID を設定します。
-   *
+   * 
    * @param number
    */
   public void setParentId(int number) {
@@ -312,7 +312,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * オーナーかどうかを設定します。
-   *
+   * 
    * @param bool
    */
   public void setOwner(boolean bool) {
@@ -321,7 +321,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * オーナーかどうか
-   *
+   * 
    * @return
    */
   public boolean isOwner() {
@@ -330,7 +330,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 仮スケジュールかどうか
-   *
+   * 
    * @return
    */
   public boolean isTmpreserve() {
@@ -339,7 +339,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 公開するかどうか
-   *
+   * 
    * @return
    */
   public boolean isPublic() {
@@ -348,7 +348,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 仮スケジュールかどうかを設定します。
-   *
+   * 
    * @param bool
    */
   public void setTmpreserve(boolean bool) {
@@ -357,7 +357,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 確認済みスケジュールかどうか
-   *
+   * 
    * @return
    */
   public boolean isConfirm() {
@@ -366,7 +366,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 確認済みスケジュールかどうかを設定します。
-   *
+   * 
    * @param bool
    */
   public void setConfirm(boolean bool) {
@@ -375,7 +375,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 重複スケジュールかどうか
-   *
+   * 
    * @return
    */
   public boolean isDuplicate() {
@@ -384,7 +384,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 重複スケジュールかどうかを設定島します。
-   *
+   * 
    * @param bool
    */
   public void setDuplicate(boolean bool) {
@@ -393,7 +393,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 公開するかどうかを設定します。
-   *
+   * 
    * @param bool
    */
   public void setPublic(boolean bool) {
@@ -402,7 +402,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 表示するかどうか
-   *
+   * 
    * @return
    */
   public boolean isHidden() {
@@ -411,7 +411,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 表示するかどうかを設定します。
-   *
+   * 
    * @param bool
    */
   public void setHidden(boolean bool) {
@@ -420,7 +420,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 非公開かどうか
-   *
+   * 
    */
   public boolean isPrivate() {
     return !is_public && !is_hidden;
@@ -428,7 +428,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * ログインユーザーかどうか
-   *
+   * 
    * @return
    */
   public boolean isLoginuser() {
@@ -437,7 +437,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * ログインユーザーかどうかを設定します。
-   *
+   * 
    * @param b
    */
   public void setLoginuser(boolean b) {
@@ -446,7 +446,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 共有メンバーかどうか
-   *
+   * 
    * @return
    */
   public boolean isMember() {
@@ -455,7 +455,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 共有メンバーかどうかを設定します。
-   *
+   * 
    * @param b
    */
   public void setMember(boolean b) {
@@ -464,7 +464,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 繰り返しかどうか
-   *
+   * 
    * @return
    */
   public boolean isRepeat() {
@@ -473,7 +473,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 繰り返しかどうかを設定します。
-   *
+   * 
    * @param bool
    */
   public void setRepeat(boolean bool) {
@@ -482,7 +482,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * ダミーかどうか
-   *
+   * 
    * @return
    */
   public boolean isDummy() {
@@ -491,7 +491,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * ダミーかどうかを設定します。
-   *
+   * 
    * @param bool
    */
   public void setDummy(boolean bool) {
@@ -501,6 +501,7 @@ public class ScheduleBean implements ALData, Cloneable {
   /*
    * @see java.lang.Object#clone()
    */
+  @Override
   public Object clone() {
     try {
       return (super.clone());
@@ -511,7 +512,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * rowspanを設定します。
-   *
+   * 
    * @param number
    */
   public void setRowspan(int number) {
@@ -520,7 +521,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * rowspanを取得します。
-   *
+   * 
    * @return
    */
   public int getRowspan() {
@@ -529,7 +530,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 繰り返しパターンを取得します。
-   *
+   * 
    * @return
    */
   public String getPattern() {
@@ -538,7 +539,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 繰り返しパターンを設定します。
-   *
+   * 
    * @param string
    */
   public void setPattern(String string) {
@@ -547,7 +548,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 共有メンバーによる編集／削除フラグを取得する．
-   *
+   * 
    * @return
    */
   public boolean isEditable() {
@@ -556,7 +557,7 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 共有メンバーによる編集／削除フラグを設定する．
-   *
+   * 
    * @param string
    */
   public void setEditFlag(boolean bool) {
@@ -565,41 +566,39 @@ public class ScheduleBean implements ALData, Cloneable {
 
   /**
    * 日付を取得します。
-   *
+   * 
    * @return
    */
   public String getDate() {
     if (start_date.getValue().equals(end_date.getValue())) {
       return start_date.toString();
     } else if ((start_date.getYear().equals(end_date.getYear())
-        && start_date.getMonth().equals(end_date.getMonth()) && start_date
-        .getDay().equals(end_date.getDay()))
-        || is_repeat) {
+      && start_date.getMonth().equals(end_date.getMonth()) && start_date
+      .getDay().equals(end_date.getDay())) || is_repeat) {
       return new StringBuffer().append(start_date.toString()).append('-')
-          .append(end_date.toString()).toString();
+        .append(end_date.toString()).toString();
     } else {
       return new StringBuffer().append(start_date.toString()).append('-')
-          .append("24:00").toString();
+        .append("24:00").toString();
     }
   }
 
   /**
    * 日付を取得します。
-   *
+   * 
    * @return
    */
   public String getDate2() {
     if (start_date.getValue().equals(end_date.getValue())) {
       return start_date.toString();
     } else if ((start_date.getYear().equals(end_date.getYear())
-        && start_date.getMonth().equals(end_date.getMonth()) && start_date
-        .getDay().equals(end_date.getDay()))
-        || is_repeat) {
+      && start_date.getMonth().equals(end_date.getMonth()) && start_date
+      .getDay().equals(end_date.getDay())) || is_repeat) {
       return new StringBuffer().append(start_date.toString()).append('～')
-          .append(end_date.toString()).toString();
+        .append(end_date.toString()).toString();
     } else {
       return new StringBuffer().append(start_date.toString()).append('～')
-          .append("24:00").toString();
+        .append("24:00").toString();
     }
   }
 

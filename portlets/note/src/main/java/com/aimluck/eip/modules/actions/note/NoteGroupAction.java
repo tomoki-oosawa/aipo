@@ -34,12 +34,13 @@ public class NoteGroupAction extends NoteAction {
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(NoteGroupAction.class.getName());
+    .getLogger(NoteGroupAction.class.getName());
 
   /**
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
     NoteGroupSelectData listData = new NoteGroupSelectData();
@@ -47,17 +48,18 @@ public class NoteGroupAction extends NoteAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（通常時）
     listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
-        .getInitParameter("p1a-rows")));
+      .getInitParameter("p1a-rows")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "notegroup");
   }
 
   /**
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
 

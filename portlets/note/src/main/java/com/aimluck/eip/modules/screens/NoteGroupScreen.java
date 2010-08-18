@@ -21,10 +21,8 @@ package com.aimluck.eip.modules.screens;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -36,17 +34,18 @@ import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.note.NoteGroupSelectData;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 伝言メモの送信先に指定できるグループの一覧を処理するクラスです。 <br />
- *
+ * 
  */
 public class NoteGroupScreen extends ALVelocityScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(NoteGroupScreen.class.getName());
+    .getLogger(NoteGroupScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
@@ -67,7 +66,7 @@ public class NoteGroupScreen extends ALVelocityScreen {
       // PSMLからパラメータをロードする
       // 最大表示件数（最大化時）
       listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
-          .getInitParameter("p1a-rows")));
+        .getInitParameter("p1a-rows")));
       listData.doViewList(this, rundata, context);
       String layout_template = "portlets/html/ja/ajax-notegroup.vm";
       setTemplate(rundata, context, layout_template);
@@ -91,7 +90,6 @@ public class NoteGroupScreen extends ALVelocityScreen {
     if (rundata.getParameters().containsKey("state")) {
       state.setValue(rundata.getParameters().getString("state"));
     } else {
-      // TODO エラーページへリダイレクト
       return;
     }
 
@@ -101,42 +99,39 @@ public class NoteGroupScreen extends ALVelocityScreen {
     if (rundata.getParameters().containsKey("entityid")) {
       eid.setValue(rundata.getParameters().getString("entityid"));
     } else {
-      // TODO エラーページへリダイレクト or ページ変更
       return;
     }
 
     int value = (int) state.getValue();
     // 0以上100以下で、10の倍数
     boolean isValid = (value % 10 == 0 && state.validate(msgList) && eid
-        .validate(msgList));
+      .validate(msgList));
 
     if (!isValid) {
-      // TODO エラーページへリダイレクト or ページ変更
       return;
     }
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
 
-      SelectQuery query = new SelectQuery(EipTTodo.class);
       Expression exp1 = ExpressionFactory.matchDbExp(
-          TurbineUser.USER_ID_PK_COLUMN, Integer
-              .valueOf(ALEipUtils.getUserId(rundata)));
-      query.setQualifier(exp1);
+        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(ALEipUtils
+          .getUserId(rundata)));
       Expression exp2 = ExpressionFactory.matchDbExp(
-          EipTTodo.TODO_ID_PK_COLUMN, Integer.valueOf((int) eid.getValue()));
-      query.andQualifier(exp2);
+        EipTTodo.TODO_ID_PK_COLUMN, Integer.valueOf((int) eid.getValue()));
 
-      List<?> list = dataContext.performQuery(query);
-      if (list == null || list.size() == 0)
+      List<EipTTodo> list = Database.query(EipTTodo.class, exp1).andQualifier(
+        exp2).perform();
+
+      if (list == null || list.size() == 0) {
         return;
+      }
 
-      EipTTodo todo = (EipTTodo) list.get(0);
+      EipTTodo todo = list.get(0);
       todo.setState(Short.valueOf((short) value));
-      dataContext.commitChanges();
+      Database.commit();
 
     } catch (Exception ex) {
+      Database.rollback();
       logger.error(ex);
       return;
     }

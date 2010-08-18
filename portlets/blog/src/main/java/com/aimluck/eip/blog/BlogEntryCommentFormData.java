@@ -60,13 +60,13 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
  * ブログエントリー・コメントのフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(BlogEntryCommentFormData.class.getName());
+    .getLogger(BlogEntryCommentFormData.class.getName());
 
   /** コメント */
   private ALStringField comment;
@@ -83,13 +83,14 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
   // private int view_uid;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -97,7 +98,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
     dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     sendEmailToPC = "true".equals(ALEipUtils.getPortlet(rundata, context)
-        .getPortletConfig().getInitParameter("p2a-email"));
+      .getPortletConfig().getInitParameter("p2a-email"));
 
     login_user = ALEipUtils.getALEipUser(rundata);
 
@@ -118,7 +119,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -131,9 +132,10 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * 掲示板の各フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // メモ必須項目
     comment.setNotNull(true);
@@ -143,11 +145,12 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * トピックのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     // メモ
     comment.validate(msgList);
@@ -156,7 +159,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * トピックをデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -164,6 +167,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -171,7 +175,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * コメントをデータベースから削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -179,6 +183,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     try {
@@ -186,7 +191,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
       // オブジェクトモデルを取得
       EipTBlogComment comment = BlogUtils.getEipTBlogComment(rundata, context,
-          commentid);
+        commentid);
       if (comment == null) {
         // 指定した トピック ID のレコードが見つからない場合
         logger.debug("[BlogEntryCommentFormData] Not found ID...");
@@ -206,7 +211,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * コメントをデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -214,12 +219,13 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     try {
       // オブジェクトモデルを取得
       EipTBlogEntry parententry = BlogUtils.getEipTBlogParentEntry(rundata,
-          context);
+        context);
       if (parententry == null) {
         // 指定した エントリー ID のレコードが見つからない場合
         logger.debug("[BlogEntryCommentFormData] Not found ID...");
@@ -230,12 +236,12 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
       Date updateDate = Calendar.getInstance().getTime();
 
       EipTBlogEntry entry = (EipTBlogEntry) DataObjectUtils.objectForPK(
-          dataContext, EipTBlogEntry.class,
-          Integer.valueOf(parententry.getEntryId().intValue()));
+        dataContext, EipTBlogEntry.class, Integer.valueOf(parententry
+          .getEntryId().intValue()));
 
       // 新規オブジェクトモデル
       EipTBlogComment blogcomment = (EipTBlogComment) dataContext
-          .createAndRegisterNewObject(EipTBlogComment.class);
+        .createAndRegisterNewObject(EipTBlogComment.class);
       // ユーザーID
       blogcomment.setOwnerId(Integer.valueOf(uid));
       // コメント
@@ -253,16 +259,14 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
       /* 記事の持ち主に新着ポートレット登録 */
 
       ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-          .getInstance())
-          .getService(ALAccessControlFactoryService.SERVICE_NAME);
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
       if (aclhandler.hasAuthority(entry.getOwnerId(),
-          ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_SELF,
-          ALAccessControlConstants.VALUE_ACL_DETAIL)) {
-        WhatsNewUtils.insertWhatsNew(dataContext,
-            WhatsNewUtils.WHATS_NEW_TYPE_BLOG_COMMENT,
-            blogcomment.getCommentId(), entry.getOwnerId().intValue());
+        ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_SELF,
+        ALAccessControlConstants.VALUE_ACL_DETAIL)) {
+        WhatsNewUtils.insertWhatsNew(WhatsNewUtils.WHATS_NEW_TYPE_BLOG_COMMENT,
+          blogcomment.getCommentId(), entry.getOwnerId().intValue());
       }
 
       // メール送信
@@ -270,18 +274,18 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
         ArrayList memberList = new ArrayList();
         memberList.add(ALEipUtils.getALEipUser(entry.getOwnerId().intValue()));
         List destMemberList = ALMailUtils.getALEipUserAddrs(memberList,
-            ALEipUtils.getUserId(rundata), false);
+          ALEipUtils.getUserId(rundata), false);
 
         String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
         String subject = "[" + JetspeedResources.getString("aipo.alias")
-            + "]ブログコメント";
+          + "]ブログコメント";
 
         // パソコン、携帯電話へメールを送信
         ALMailUtils.sendMailDelegate(org_id, (int) login_user.getUserId()
-            .getValue(), destMemberList, subject, subject,
-            createMsgForPc(rundata),
-            createMsgForCellPhone(rundata, entry.getOwnerId()), ALMailUtils
-                .getSendDestType(ALMailUtils.KEY_MSGTYPE_BLOG), msgList);
+          .getValue(), destMemberList, subject, subject,
+          createMsgForPc(rundata), createMsgForCellPhone(rundata, entry
+            .getOwnerId()), ALMailUtils
+            .getSendDestType(ALMailUtils.KEY_MSGTYPE_BLOG), msgList);
       }
     } catch (Exception e) {
       // TODO: エラー処理
@@ -293,7 +297,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * パソコンへ送信するメールの内容を作成する．
-   *
+   * 
    * @return
    */
   private String createMsgForPc(RunData rundata) {
@@ -305,12 +309,12 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
     ALBaseUser user2 = null;
     try {
       user2 = (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(user
-          .getUserId().toString()));
+        .getUserId().toString()));
     } catch (Exception e) {
       return "";
     }
     String username = new StringBuffer().append(user2.getLastName())
-        .append(" ").append(user2.getFirstName()).toString();
+      .append(" ").append(user2.getFirstName()).toString();
     body.append(username);
     String e_mail_addr = user2.getEmail();
     if (!e_mail_addr.equals("")) {
@@ -325,7 +329,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
     body.append(CR);
     body.append("[").append(DatabaseOrmService.getInstance().getAlias())
-        .append("へのアクセス]").append(CR);
+      .append("へのアクセス]").append(CR);
     if (enableAsp) {
       body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
     } else {
@@ -342,7 +346,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話へ送信するメールの内容を作成する．
-   *
+   * 
    * @return
    */
   private String createMsgForCellPhone(RunData rundata, int destUserID) {
@@ -352,12 +356,12 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
     ALBaseUser user2 = null;
     try {
       user2 = (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(user
-          .getUserId().toString()));
+        .getUserId().toString()));
     } catch (Exception e) {
       return "";
     }
     String username = new StringBuffer().append(user2.getLastName())
-        .append(" ").append(user2.getFirstName()).toString();
+      .append(" ").append(user2.getFirstName()).toString();
     body.append(username);
     String e_mail_addr = user2.getEmail();
     if (!e_mail_addr.equals("")) {
@@ -379,9 +383,9 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
     }
 
     body.append("[").append(DatabaseOrmService.getInstance().getAlias())
-        .append("へのアクセス]").append(CR);
-    body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=")
-        .append(ALCellularUtils.getCellularKey(destUser)).append(CR);
+      .append("へのアクセス]").append(CR);
+    body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
+      ALCellularUtils.getCellularKey(destUser)).append(CR);
     body.append("---------------------").append(CR);
     body.append(DatabaseOrmService.getInstance().getAlias()).append(CR);
     return body.toString();
@@ -389,7 +393,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているコメントを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -397,6 +401,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -404,12 +409,13 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * エントリー詳細表示ページからデータを新規登録します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @return TRUE 成功 FALSE 失敗
    */
+  @Override
   public boolean doInsert(ALAction action, RunData rundata, Context context) {
     try {
       if (!doCheckSecurity(rundata, context)) {
@@ -417,13 +423,13 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
       }
       init(action, rundata, context);
       doCheckAclPermission(rundata, context,
-          ALAccessControlConstants.VALUE_ACL_INSERT);
+        ALAccessControlConstants.VALUE_ACL_INSERT);
       action.setMode(ALEipConstants.MODE_INSERT);
 
       ArrayList msgList = new ArrayList();
       setValidator();
       boolean res = (setFormData(rundata, context, msgList)
-          && validate(msgList) && insertFormData(rundata, context, msgList));
+        && validate(msgList) && insertFormData(rundata, context, msgList));
       if (!res) {
         action.setMode(ALEipConstants.MODE_NEW_FORM);
         setMode(action.getMode());
@@ -453,12 +459,13 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * エントリー詳細表示ページにフォームを表示します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @return TRUE 成功 FALSE 失敗
    */
+  @Override
   public boolean doViewForm(ALAction action, RunData rundata, Context context) {
     try {
       init(action, rundata, context);
@@ -494,10 +501,11 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
@@ -507,7 +515,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getComment() {
@@ -517,9 +525,10 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_REPLY;
   }

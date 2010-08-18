@@ -44,9 +44,10 @@ import com.aimluck.eip.util.ALEipUtils;
  */
 public class NoteClientSelectData extends ALAbstractSelectData<EipTNoteMap>
     implements ALData {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(NoteClientSelectData.class.getName());
+    .getLogger(NoteClientSelectData.class.getName());
 
   /** ポートレットにアクセスしているユーザ ID */
   private String userId;
@@ -58,24 +59,25 @@ public class NoteClientSelectData extends ALAbstractSelectData<EipTNoteMap>
   private int unreadReceivedNotesAllSum = 0;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
-          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-              .getInitParameter("p2a-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
+        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
+          "p2a-sort"));
       logger.debug("Init Parameter (Note) : "
-          + ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-              .getInitParameter("p2a-sort"));
+        + ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+          .getInitParameter("p2a-sort"));
     }
 
     super.init(action, rundata, context);
@@ -85,13 +87,14 @@ public class NoteClientSelectData extends ALAbstractSelectData<EipTNoteMap>
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected List<EipTNoteMap> selectList(RunData rundata, Context context) {
 
     try {
       userId = Integer.toString(ALEipUtils.getUserId(rundata));
       newNoteAllSum = NoteUtils.getNewReceivedNoteAllSum(rundata, userId);
       unreadReceivedNotesAllSum = NoteUtils.getUnreadReceivedNotesAllSum(
-          rundata, userId);
+        rundata, userId);
 
       SelectQuery<EipTNoteMap> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
@@ -110,6 +113,7 @@ public class NoteClientSelectData extends ALAbstractSelectData<EipTNoteMap>
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected EipTNoteMap selectDetail(RunData rundata, Context context) {
     return null;
   }
@@ -117,6 +121,7 @@ public class NoteClientSelectData extends ALAbstractSelectData<EipTNoteMap>
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(EipTNoteMap map) {
     try {
       EipTNote record = map.getEipTNote();
@@ -125,14 +130,14 @@ public class NoteClientSelectData extends ALAbstractSelectData<EipTNoteMap>
       rd.initField();
       rd.setNoteId(record.getNoteId().intValue());
       rd.setClientName(ALCommonUtils.compressString(record.getClientName(),
-          getStrLength()));
+        getStrLength()));
       rd.setNoteStat(map.getNoteStat());
       rd.setAcceptDate(record.getAcceptDate());
 
       String subject = "";
       if (record.getSubjectType().equals("0")) {
         subject = ALCommonUtils.compressString(record.getCustomSubject(),
-            getStrLength());
+          getStrLength());
       } else if (record.getSubjectType().equals("1")) {
         subject = "再度電話します";
       } else if (record.getSubjectType().equals("2")) {
@@ -169,6 +174,7 @@ public class NoteClientSelectData extends ALAbstractSelectData<EipTNoteMap>
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(EipTNoteMap obj) {
     return null;
   }
@@ -176,14 +182,15 @@ public class NoteClientSelectData extends ALAbstractSelectData<EipTNoteMap>
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("client_name", EipTNoteMap.EIP_TNOTE_PROPERTY + "."
-        + EipTNote.CLIENT_NAME_PROPERTY);
+      + EipTNote.CLIENT_NAME_PROPERTY);
     map.putValue("subject_type", EipTNoteMap.EIP_TNOTE_PROPERTY + "."
-        + EipTNote.SUBJECT_TYPE_PROPERTY);
+      + EipTNote.SUBJECT_TYPE_PROPERTY);
     map.putValue("accept_date", EipTNoteMap.EIP_TNOTE_PROPERTY + "."
-        + EipTNote.ACCEPT_DATE_PROPERTY);
+      + EipTNote.ACCEPT_DATE_PROPERTY);
     map.putValue("note_stat", EipTNoteMap.NOTE_STAT_PROPERTY);
     return map;
   }
@@ -214,7 +221,7 @@ public class NoteClientSelectData extends ALAbstractSelectData<EipTNoteMap>
 
   /**
    * 検索条件を設定した Criteria を返す． <BR>
-   *
+   * 
    * @param rundata
    * @return
    */
@@ -234,7 +241,7 @@ public class NoteClientSelectData extends ALAbstractSelectData<EipTNoteMap>
   public String getUserFullName(String userId) {
     try {
       ALEipUser user = ALEipUtils.getALEipUser(Integer.valueOf(userId)
-          .intValue());
+        .intValue());
       return user.getAliasName().getValue();
     } catch (Exception e) {
       return "";

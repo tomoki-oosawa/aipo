@@ -34,7 +34,6 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SQLTemplate;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.om.security.UserIdPrincipal;
@@ -74,7 +73,9 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.mail.util.ALMailUtils;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.AjaxScheduleResultData;
 import com.aimluck.eip.schedule.AjaxTermScheduleWeekContainer;
 import com.aimluck.eip.schedule.ScheduleResultData;
@@ -134,9 +135,7 @@ public class ScheduleUtils {
       ALDBErrorException {
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      SelectQuery query = new SelectQuery(EipTSchedule.class);
+      SelectQuery<EipTSchedule> query = Database.query(EipTSchedule.class);
 
       // スケジュールID
       Expression exp1 = ExpressionFactory.matchDbExp(
@@ -151,8 +150,7 @@ public class ScheduleUtils {
         query.andQualifier(exp2);
       }
 
-      @SuppressWarnings("unchecked")
-      List<EipTSchedule> schedules = dataContext.performQuery(query);
+      List<EipTSchedule> schedules = query.perform();
 
       // 指定したSchedule IDのレコードが見つからない場合
       if (schedules == null || schedules.size() == 0) {
@@ -163,7 +161,8 @@ public class ScheduleUtils {
       EipTSchedule record = schedules.get(0);
 
       // 条件が足りないかも（by Komori 2006/06/09）
-      SelectQuery mapquery = new SelectQuery(EipTScheduleMap.class);
+      SelectQuery<EipTScheduleMap> mapquery = Database
+        .query(EipTScheduleMap.class);
       Expression mapexp1 = ExpressionFactory.matchExp(
         EipTScheduleMap.SCHEDULE_ID_PROPERTY, record.getScheduleId());
       mapquery.setQualifier(mapexp1);
@@ -174,8 +173,7 @@ public class ScheduleUtils {
         EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(userid));
       mapquery.andQualifier(mapexp3);
 
-      @SuppressWarnings("unchecked")
-      List<EipTScheduleMap> schedulemaps = dataContext.performQuery(mapquery);
+      List<EipTScheduleMap> schedulemaps = mapquery.perform();
       boolean is_member = (schedulemaps != null && schedulemaps.size() > 0) ? true
         : false;
 
@@ -230,9 +228,7 @@ public class ScheduleUtils {
     }
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      SelectQuery query = new SelectQuery(EipTSchedule.class);
+      SelectQuery<EipTSchedule> query = Database.query(EipTSchedule.class);
 
       // スケジュールID
       Expression exp1 = ExpressionFactory.matchDbExp(
@@ -247,13 +243,10 @@ public class ScheduleUtils {
         query.andQualifier(exp2);
       }
 
-      @SuppressWarnings("unchecked")
-      List<EipTSchedule> schedules = dataContext.performQuery(query);
+      List<EipTSchedule> schedules = query.perform();
 
       // 指定したSchedule IDのレコードが見つからない場合
       if (schedules == null || schedules.size() == 0) {
-
-        // TODO: エラー処理
         logger.error("[ScheduleUtils] Not found record.");
         throw new ALPageNotFoundException();
       }
@@ -262,7 +255,8 @@ public class ScheduleUtils {
 
       // Integer.valueOf(userid)
       // 条件が足りないかも（by Komori 2006/06/09）
-      SelectQuery mapquery = new SelectQuery(EipTScheduleMap.class);
+      SelectQuery<EipTScheduleMap> mapquery = Database
+        .query(EipTScheduleMap.class);
       Expression mapexp1 = ExpressionFactory.matchExp(
         EipTScheduleMap.SCHEDULE_ID_PROPERTY, record.getScheduleId());
       mapquery.setQualifier(mapexp1);
@@ -274,8 +268,7 @@ public class ScheduleUtils {
           .getUserId(rundata)));
       mapquery.andQualifier(mapexp21.orExp(mapexp22));
 
-      @SuppressWarnings("unchecked")
-      List<EipTScheduleMap> schedulemaps = dataContext.performQuery(mapquery);
+      List<EipTScheduleMap> schedulemaps = mapquery.perform();
       boolean is_member = (schedulemaps != null && schedulemaps.size() > 0) ? true
         : false;
 
@@ -331,8 +324,6 @@ public class ScheduleUtils {
         throw new ALPageNotFoundException();
       }
     } catch (NumberFormatException ex) {
-
-      // TODO: エラー処理
       logger.error("[ScheduleUtils] NumberFormatException: ENTITYID is wrong.",
         ex);
       throw new ALPageNotFoundException();
@@ -347,18 +338,12 @@ public class ScheduleUtils {
         WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE, Integer.parseInt(scheduleid),
         ALEipUtils.getUserId(rundata));
     } catch (NumberFormatException e) {
-      // TODO Auto-generated catch block
       logger.error("[ScheduleUtils]", e);
     }
-    /**
-     * 
-     */
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      SelectQuery query = new SelectQuery(EipTSchedule.class);
-      query.setRefreshingObjects(true);
+      SelectQuery<EipTSchedule> query = Database.query(EipTSchedule.class);
+      query.getQuery().setRefreshingObjects(true);
 
       // スケジュールID
       Expression exp1 = ExpressionFactory.matchDbExp(
@@ -379,8 +364,7 @@ public class ScheduleUtils {
           + EipTScheduleMap.TYPE_PROPERTY, type);
       query.andQualifier(exp3);
 
-      @SuppressWarnings("unchecked")
-      List<EipTSchedule> schedules = dataContext.performQuery(query);
+      List<EipTSchedule> schedules = query.perform();
 
       // 指定したSchedule IDのレコードが見つからない場合
       if (schedules == null || schedules.size() == 0) {
@@ -394,7 +378,8 @@ public class ScheduleUtils {
 
       // 条件が足りないかも（by Komori 2006/06/09）
       // Integer.valueOf(id)
-      SelectQuery mapquery = new SelectQuery(EipTScheduleMap.class);
+      SelectQuery<EipTScheduleMap> mapquery = Database
+        .query(EipTScheduleMap.class);
       Expression mapexp1 = ExpressionFactory.matchExp(
         EipTScheduleMap.SCHEDULE_ID_PROPERTY, record.getScheduleId());
       mapquery.setQualifier(mapexp1);
@@ -410,8 +395,7 @@ public class ScheduleUtils {
         EipTScheduleMap.TYPE_PROPERTY, type);
       mapquery.andQualifier(mapexp3);
 
-      @SuppressWarnings("unchecked")
-      List<EipTScheduleMap> schedulemaps = dataContext.performQuery(mapquery);
+      List<EipTScheduleMap> schedulemaps = mapquery.perform();
       boolean is_member = (schedulemaps != null && schedulemaps.size() > 0) ? true
         : false;
 
@@ -470,9 +454,8 @@ public class ScheduleUtils {
     }
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      SelectQuery query = new SelectQuery(EipTScheduleMap.class);
+      SelectQuery<EipTScheduleMap> query = Database
+        .query(EipTScheduleMap.class);
 
       // スケジュールID
       Expression exp1 = ExpressionFactory.matchExp(
@@ -484,8 +467,7 @@ public class ScheduleUtils {
           .getUserId(rundata)));
       query.andQualifier(exp2);
 
-      @SuppressWarnings("unchecked")
-      List<EipTScheduleMap> schedules = dataContext.performQuery(query);
+      List<EipTScheduleMap> schedules = query.perform();
 
       // 指定したIDのレコードが見つからない場合
       if (schedules == null || schedules.size() == 0) {
@@ -512,9 +494,8 @@ public class ScheduleUtils {
     Integer scheduleid = schedule.getScheduleId();
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      SelectQuery query = new SelectQuery(EipTScheduleMap.class);
+      SelectQuery<EipTScheduleMap> query = Database
+        .query(EipTScheduleMap.class);
 
       // スケジュールID
       Expression exp1 = ExpressionFactory.matchExp(
@@ -526,8 +507,7 @@ public class ScheduleUtils {
       // .getUserId(rundata)));
       // query.andQualifier(exp2);
 
-      @SuppressWarnings("unchecked")
-      List<EipTScheduleMap> schedules = dataContext.performQuery(query);
+      List<EipTScheduleMap> schedules = query.perform();
 
       // 指定したIDのレコードが見つからない場合
       if (schedules == null || schedules.size() == 0) {
@@ -552,7 +532,7 @@ public class ScheduleUtils {
    * @param rundata
    * @param context
    * @param includeLoginUser
-   *            ログインユーザーを共有メンバーとして取り扱う場合，true．
+   *          ログインユーザーを共有メンバーとして取り扱う場合，true．
    * @return
    */
   public static List<ALEipUser> getUsers(RunData rundata, Context context,
@@ -578,9 +558,8 @@ public class ScheduleUtils {
     }
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      SelectQuery mapquery = new SelectQuery(EipTScheduleMap.class);
+      SelectQuery<EipTScheduleMap> mapquery = Database
+        .query(EipTScheduleMap.class);
 
       // スケジュールID
       Expression exp1 = ExpressionFactory.matchExp(
@@ -592,8 +571,7 @@ public class ScheduleUtils {
             .getUserId(rundata)));
         mapquery.andQualifier(exp2);
       }
-      @SuppressWarnings("unchecked")
-      List<EipTScheduleMap> schedulemaps = dataContext.performQuery(mapquery);
+      List<EipTScheduleMap> schedulemaps = mapquery.perform();
 
       List<Integer> uidlist = new ArrayList<Integer>();
       EipTScheduleMap map = null;
@@ -605,17 +583,16 @@ public class ScheduleUtils {
         }
       }
 
-      SelectQuery userquery = new SelectQuery(TurbineUser.class);
+      SelectQuery<TurbineUser> userquery = Database.query(TurbineUser.class);
       Expression userexp = ExpressionFactory.inDbExp(
         TurbineUser.USER_ID_PK_COLUMN, uidlist);
       userquery.setQualifier(userexp);
       List<Ordering> orders = new ArrayList<Ordering>();
       orders.add(new Ordering(TurbineUser.LAST_NAME_KANA_PROPERTY, true));
       orders.add(new Ordering(TurbineUser.FIRST_NAME_KANA_PROPERTY, true));
-      userquery.addOrderings(orders);
+      userquery.getQuery().addOrderings(orders);
 
-      @SuppressWarnings("unchecked")
-      List<TurbineUser> ulist = dataContext.performQuery(userquery);
+      List<TurbineUser> ulist = userquery.perform();
 
       TurbineUser tuser;
       ALEipUser user;
@@ -755,7 +732,7 @@ public class ScheduleUtils {
    * 
    * @param rundata
    * @param portletEntryName
-   *            PSML ファイルに記述されているタグ entry の要素 parent
+   *          PSML ファイルに記述されているタグ entry の要素 parent
    * @return
    */
   public static String getPortletURIinPersonalConfigPane(RunData rundata,
@@ -923,7 +900,7 @@ public class ScheduleUtils {
    * @param date1
    * @param date2
    * @param checkTime
-   *            時間まで比較する場合，true．
+   *          時間まで比較する場合，true．
    * @return 等しい場合，true．
    */
   public static boolean equalsToDate(Date date1, Date date2, boolean checkTime) {
@@ -1070,11 +1047,9 @@ public class ScheduleUtils {
   public static void insertDummySchedule(EipTSchedule schedule, int ownerid,
       Date startDate, Date endDate, int[] memberIdList, int[] facilityIdList)
       throws ALDBErrorException {
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     // ダミーのスケジュールを登録する．
-    EipTSchedule dummySchedule = (EipTSchedule) dataContext
-      .createAndRegisterNewObject(EipTSchedule.class);
+    EipTSchedule dummySchedule = Database.create(EipTSchedule.class);
 
     // 親スケジュール ID
     dummySchedule.setParentId(schedule.getScheduleId());
@@ -1107,8 +1082,7 @@ public class ScheduleUtils {
     // orm.doInsert(dummySchedule);
     int size = memberIdList.length;
     for (int i = 0; i < size; i++) {
-      EipTScheduleMap map = (EipTScheduleMap) dataContext
-        .createAndRegisterNewObject(EipTScheduleMap.class);
+      EipTScheduleMap map = Database.create(EipTScheduleMap.class);
       int userid = memberIdList[i];
       map.setEipTSchedule(dummySchedule);
       map.setUserId(Integer.valueOf(userid));
@@ -1124,8 +1098,7 @@ public class ScheduleUtils {
     if (facilityIdList != null && facilityIdList.length > 0) {
       int fsize = facilityIdList.length;
       for (int i = 0; i < fsize; i++) {
-        EipTScheduleMap map = (EipTScheduleMap) dataContext
-          .createAndRegisterNewObject(EipTScheduleMap.class);
+        EipTScheduleMap map = Database.create(EipTScheduleMap.class);
         int fid = facilityIdList[i];
         map.setEipTSchedule(dummySchedule);
         map.setUserId(Integer.valueOf(fid));
@@ -1140,7 +1113,7 @@ public class ScheduleUtils {
     }
 
     // スケジュールを登録
-    dataContext.commitChanges();
+    Database.commit();
   }
 
   /**
@@ -1156,11 +1129,9 @@ public class ScheduleUtils {
   public static void insertDummySchedule(EipTSchedule schedule, int ownerid,
       Date startDate, Date endDate, int[] memberIdList)
       throws ALDBErrorException {
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     // ダミーのスケジュールを登録する．
-    EipTSchedule dummySchedule = (EipTSchedule) dataContext
-      .createAndRegisterNewObject(EipTSchedule.class);
+    EipTSchedule dummySchedule = Database.create(EipTSchedule.class);
     // 親スケジュール ID
     dummySchedule.setParentId(schedule.getScheduleId());
     // 予定
@@ -1193,8 +1164,7 @@ public class ScheduleUtils {
     // orm.doInsert(dummySchedule);
     int size = memberIdList.length;
     for (int i = 0; i < size; i++) {
-      EipTScheduleMap map = (EipTScheduleMap) dataContext
-        .createAndRegisterNewObject(EipTScheduleMap.class);
+      EipTScheduleMap map = Database.create(EipTScheduleMap.class);
       int userid = memberIdList[i];
       // map.setPrimaryKey(dummySchedule.getScheduleId(), userid);
       map.setEipTSchedule(dummySchedule);
@@ -1208,17 +1178,15 @@ public class ScheduleUtils {
     }
 
     // スケジュールを登録
-    dataContext.commitChanges();
+    Database.commit();
   }
 
   public static void insertDummySchedule(EipTSchedule schedule, int ownerid,
       Date startDate, Date endDate, List<Integer> memberIdList,
       List<Integer> facilityIdList) throws ALDBErrorException {
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     // ダミーのスケジュールを登録する．
-    EipTSchedule dummySchedule = (EipTSchedule) dataContext
-      .createAndRegisterNewObject(EipTSchedule.class);
+    EipTSchedule dummySchedule = Database.create(EipTSchedule.class);
 
     // 親スケジュール ID
     dummySchedule.setParentId(schedule.getScheduleId());
@@ -1251,8 +1219,7 @@ public class ScheduleUtils {
     // orm.doInsert(dummySchedule);
     int size = memberIdList.size();
     for (int i = 0; i < size; i++) {
-      EipTScheduleMap map = (EipTScheduleMap) dataContext
-        .createAndRegisterNewObject(EipTScheduleMap.class);
+      EipTScheduleMap map = Database.create(EipTScheduleMap.class);
       int userid = (memberIdList.get(i)).intValue();
       map.setEipTSchedule(dummySchedule);
       map.setUserId(Integer.valueOf(userid));
@@ -1268,8 +1235,7 @@ public class ScheduleUtils {
     if (facilityIdList != null) {
       int fsize = facilityIdList.size();
       for (int i = 0; i < fsize; i++) {
-        EipTScheduleMap map = (EipTScheduleMap) dataContext
-          .createAndRegisterNewObject(EipTScheduleMap.class);
+        EipTScheduleMap map = Database.create(EipTScheduleMap.class);
         int fid = (facilityIdList.get(i)).intValue();
         map.setEipTSchedule(dummySchedule);
         map.setUserId(Integer.valueOf(fid));
@@ -1284,7 +1250,7 @@ public class ScheduleUtils {
     }
 
     // スケジュールを登録
-    dataContext.commitChanges();
+    Database.commit();
   }
 
   /**
@@ -1371,11 +1337,11 @@ public class ScheduleUtils {
    * 指定した曜日が，選択範囲に入っているかを検証する．
    * 
    * @param selectedWeek
-   *            指定曜日
+   *          指定曜日
    * @param startWeek
-   *            期間開始曜日
+   *          期間開始曜日
    * @param endWeek
-   *            期間終了曜日
+   *          期間終了曜日
    * @return 選択範囲に入っている場合，true．
    */
   public static boolean includeWeek(int selectedWeek, int startWeek, int endWeek) {
@@ -1976,7 +1942,8 @@ public class ScheduleUtils {
           throw new ALPageNotFoundException();
         }
 
-        SelectQuery query = new SelectQuery(EipTScheduleMap.class);
+        SelectQuery<EipTScheduleMap> query = Database
+          .query(EipTScheduleMap.class);
 
         Expression exp1 = ExpressionFactory.matchExp(
           EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf((int) login_user
@@ -2000,17 +1967,7 @@ public class ScheduleUtils {
             EipTScheduleMap.SCHEDULE_ID_PROPERTY, Integer.valueOf(id));
           query.andQualifier(mapexp);
         }
-
-        // List list = dataContext.performQuery(query);
-        // int count = (list != null && list.size() > 0) ? list.size() : 0;
-
-        // if (count > 0) {
-        // msgList.add("1日に指定できる『期間ｽｹｼﾞｭｰﾙ』は1つのみです。");
-        //
-        // }
       } catch (Exception e) {
-
-        // TODO: エラー処理
         logger.error("[ScheduleFormData]", e);
         throw new ALDBErrorException();
 
@@ -2024,13 +1981,13 @@ public class ScheduleUtils {
    * 同一期間内に複数の ToDo を追加する. 第一引数の List を排他制御しないで処理するので注意.
    * 
    * @param weekSpanConList
-   *            複数の期間スケジュールを保持するリスト
+   *          複数の期間スケジュールを保持するリスト
    * @param viewStartDate
-   *            表示開始の年月日
+   *          表示開始の年月日
    * @param index
-   *            期間スケジュールの追加位置
+   *          期間スケジュールの追加位置
    * @param rd
-   *            期間スケジュール
+   *          期間スケジュール
    */
   public static void addToDo(List<ScheduleToDoWeekContainer> weekConList,
       Date viewStartDate, int index, ScheduleToDoResultData rd) {
@@ -2081,9 +2038,7 @@ public class ScheduleUtils {
 
   public static boolean isSpanDuplicate(int user_id, Date start_date,
       Date end_date, Integer update_id) {
-    SelectQuery query = new SelectQuery(EipTScheduleMap.class);
-
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
+    SelectQuery<EipTScheduleMap> query = Database.query(EipTScheduleMap.class);
 
     Expression exp1 = ExpressionFactory.matchExp(
       EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(user_id));
@@ -2107,7 +2062,7 @@ public class ScheduleUtils {
       query.andQualifier(mapexp);
     }
 
-    List<?> list = dataContext.performQuery(query);
+    List<EipTScheduleMap> list = query.perform();
     int count = (list != null && list.size() > 0) ? list.size() : 0;
     return count > 0;
   }
@@ -2128,12 +2083,9 @@ public class ScheduleUtils {
       }
     }
 
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     Expression exp = ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN,
       tmp_ids);
-    SelectQuery query = new SelectQuery(TurbineUser.class, exp);
-    @SuppressWarnings("unchecked")
-    List<TurbineUser> users = dataContext.performQuery(query);
+    List<TurbineUser> users = Database.query(TurbineUser.class, exp).perform();
     if (users.size() == 0) {
       return null;
     }
@@ -2241,14 +2193,10 @@ public class ScheduleUtils {
 
     // facilityIDを元にデータを取得
     if (f_ids != null && f_ids.size() > 0) {
-      DataContext f_dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      SelectQuery f_query = new SelectQuery(EipMFacility.class);
       Expression f_exp = ExpressionFactory.inDbExp(
         EipMFacility.FACILITY_ID_PK_COLUMN, f_ids);
-      f_query.setQualifier(f_exp);
-      @SuppressWarnings("unchecked")
-      List<EipMFacility> facilities = f_dataContext.performQuery(f_query);
+      List<EipMFacility> facilities = Database.query(EipMFacility.class, f_exp)
+        .perform();
       if (facilities.size() == 0) {
         return null;
       }
@@ -2430,10 +2378,7 @@ public class ScheduleUtils {
     }
     Expression exp = ExpressionFactory.matchDbExp(
       EipTSchedule.SCHEDULE_ID_PK_COLUMN, Integer.valueOf(scheduleId));
-    SelectQuery query = new SelectQuery(EipTSchedule.class, exp);
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
-    @SuppressWarnings("unchecked")
-    List<EipTSchedule> list = dataContext.performQuery(query);
+    List<EipTSchedule> list = Database.query(EipTSchedule.class, exp).perform();
     if (list.size() == 0) {
       return ALEipUtils.getUserId(rundata);
     } else {
@@ -2448,14 +2393,12 @@ public class ScheduleUtils {
       return false;
     }
     int userId = ALEipUtils.getUserId(rundata);
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     Expression exp11 = ExpressionFactory.matchExp(
       EipTScheduleMap.SCHEDULE_ID_PROPERTY, Integer.valueOf(scheduleId));
     Expression exp12 = ExpressionFactory.matchExp(
       EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(userId));
-    SelectQuery query = new SelectQuery(EipTScheduleMap.class, exp11);
-    query.andQualifier(exp12);
-    List<?> list = dataContext.performQuery(query);
+    List<EipTScheduleMap> list = Database.query(EipTScheduleMap.class, exp11)
+      .andQualifier(exp12).perform();
     if (list.size() == 0) {
       return false;
     } else {
@@ -2694,7 +2637,6 @@ public class ScheduleUtils {
     return result.toString();
   }
 
-  @SuppressWarnings("unchecked")
   public static boolean isDuplicateFacilitySchedule(EipTSchedule schedule,
       List<Integer> facilityIdList, Integer _old_scheduleid, Date _old_viewDate) {
     /* ダミースケジュール検索用 */
@@ -2702,8 +2644,6 @@ public class ScheduleUtils {
 
     boolean result = false;
     {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
 
       Date start_date;
       Date end_date;
@@ -2782,7 +2722,8 @@ public class ScheduleUtils {
       // 施設予約状況をチェックする
       if (facilityIdList.size() > 0) {
         List<Integer> fids = facilityIdList;
-        SelectQuery fquery = new SelectQuery(EipTScheduleMap.class);
+        SelectQuery<EipTScheduleMap> fquery = Database
+          .query(EipTScheduleMap.class);
         Expression fexp1 = ExpressionFactory.inExp(
           EipTScheduleMap.USER_ID_PROPERTY, fids);
         fquery.setQualifier(fexp1);
@@ -2926,8 +2867,8 @@ public class ScheduleUtils {
           fquery.andQualifier(exp00);
         }
 
-        fquery.setDistinct(true);
-        List<EipTScheduleMap> f_list = dataContext.performQuery(fquery);
+        fquery.distinct(true);
+        List<EipTScheduleMap> f_list = fquery.perform();
         if (f_list != null && f_list.size() > 0) {
           // 繰り返しスケジュール同士の時刻幅での比較
           boolean existFacility = false;
@@ -3049,7 +2990,6 @@ public class ScheduleUtils {
                   }
 
                   /* 期限内の日付を全て比較 */
-                  SelectQuery dquery = null;
                   Expression dexp1 = ExpressionFactory.matchExp(
                     EipTSchedule.NAME_PROPERTY, "dummy");
 
@@ -3084,9 +3024,8 @@ public class ScheduleUtils {
                     try {
                       dexp3 = ExpressionFactory.matchExp(
                         EipTSchedule.START_DATE_PROPERTY, ddate);
-                      dquery = new SelectQuery(EipTSchedule.class, dexp1
-                        .andExp(dexp2).andExp(dexp3));
-                      temp = dataContext.performQuery(dquery);
+                      temp = Database.query(EipTSchedule.class,
+                        dexp1.andExp(dexp2).andExp(dexp3)).perform();
                       if (temp == null || temp.size() <= 0) {
                         existFacility = true;
                         break;
@@ -3102,9 +3041,8 @@ public class ScheduleUtils {
                         try {
                           dexp3 = ExpressionFactory.matchExp(
                             EipTSchedule.START_DATE_PROPERTY, ddate);
-                          dquery = new SelectQuery(EipTSchedule.class, dexp1
-                            .andExp(dexp2).andExp(dexp3));
-                          temp = dataContext.performQuery(dquery);
+                          temp = Database.query(EipTSchedule.class,
+                            dexp1.andExp(dexp2).andExp(dexp3)).perform();
                           if (temp == null || temp.size() <= 0) {
                             existFacility = true;
                             break;
@@ -3131,9 +3069,8 @@ public class ScheduleUtils {
                         try {
                           dexp3 = ExpressionFactory.matchExp(
                             EipTSchedule.START_DATE_PROPERTY, ddate);
-                          dquery = new SelectQuery(EipTSchedule.class, dexp1
-                            .andExp(dexp2).andExp(dexp3));
-                          temp = dataContext.performQuery(dquery);
+                          temp = Database.query(EipTSchedule.class,
+                            dexp1.andExp(dexp2).andExp(dexp3)).perform();
                           if (temp == null || temp.size() <= 0) {
                             existFacility = true;
                             break;
@@ -3181,9 +3118,8 @@ public class ScheduleUtils {
                         try {
                           dexp3 = ExpressionFactory.matchExp(
                             EipTSchedule.START_DATE_PROPERTY, ddate);
-                          dquery = new SelectQuery(EipTSchedule.class, dexp1
-                            .andExp(dexp2).andExp(dexp3));
-                          temp = dataContext.performQuery(dquery);
+                          temp = Database.query(EipTSchedule.class,
+                            dexp1.andExp(dexp2).andExp(dexp3)).perform();
                           if (temp == null || temp.size() <= 0) {
                             existFacility = true;
                             break;

@@ -59,13 +59,13 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
  * ブログエントリーのフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class BlogEntryFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(BlogEntryFormData.class.getName());
+    .getLogger(BlogEntryFormData.class.getName());
 
   /** Title */
   private ALStringField title;
@@ -88,7 +88,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
   private boolean is_new_thema;
 
   /** 添付ファイル */
-  private FileuploadLiteBean filebean = null;
+  private final FileuploadLiteBean filebean = null;
 
   /** 添付ファイルリスト */
   private List fileuploadList = null;
@@ -113,13 +113,14 @@ public class BlogEntryFormData extends ALAbstractFormData {
   private DataContext dataContext;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -143,7 +144,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -174,7 +175,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -184,9 +185,10 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * エントリーの各フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // Title必須項目
     title.setNotNull(true);
@@ -200,11 +202,12 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * エントリーのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     // Title
     title.validate(msgList);
@@ -222,7 +225,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * エントリーをデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -230,13 +233,15 @@ public class BlogEntryFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTBlogEntry entry = BlogUtils.getEipTBlogEntry(rundata, context);
-      if (entry == null)
+      if (entry == null) {
         return false;
+      }
       // Title
       title.setValue(entry.getTitle());
       // メモ
@@ -248,8 +253,8 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
       SelectQuery filequery = new SelectQuery(EipTBlogFile.class);
       Expression fileexp = ExpressionFactory.matchDbExp(
-          EipTBlogFile.EIP_TBLOG_ENTRY_PROPERTY + "."
-              + EipTBlogEntry.ENTRY_ID_PK_COLUMN, entry.getEntryId());
+        EipTBlogFile.EIP_TBLOG_ENTRY_PROPERTY + "."
+          + EipTBlogEntry.ENTRY_ID_PK_COLUMN, entry.getEntryId());
       filequery.setQualifier(fileexp);
       List files = dataContext.performQuery(filequery);
       FileuploadLiteBean filebean = null;
@@ -259,7 +264,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
         filebean = new FileuploadLiteBean();
         filebean.initField();
         filebean.setFolderName(BlogUtils.PREFIX_DBFILE
-            + Integer.toString(file.getFileId()));
+          + Integer.toString(file.getFileId()));
         filebean.setFileName(file.getTitle());
         filebean.setFileId(file.getFileId());
         fileuploadList.add(filebean);
@@ -274,7 +279,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * エントリーをデータベースから削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -282,13 +287,15 @@ public class BlogEntryFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTBlogEntry entry = BlogUtils.getEipTBlogEntry(rundata, context);
-      if (entry == null)
+      if (entry == null) {
         return false;
+      }
 
       // entityIdの取得
       int entityId = entry.getEntryId();
@@ -309,8 +316,8 @@ public class BlogEntryFormData extends ALAbstractFormData {
       dataContext.commitChanges();
 
       // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler()
-          .log(entityId, ALEventlogConstants.PORTLET_TYPE_BLOG_ENTRY, todoName);
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(entityId,
+        ALEventlogConstants.PORTLET_TYPE_BLOG_ENTRY, todoName);
 
       if (fpaths.size() > 0) {
         // ローカルファイルに保存されているファイルを削除する．
@@ -318,7 +325,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
         int fsize = fpaths.size();
         for (int i = 0; i < fsize; i++) {
           file = new File(BlogUtils.getSaveDirPath(org_id, uid)
-              + (String) fpaths.get(i));
+            + (String) fpaths.get(i));
           if (file.exists()) {
             file.delete();
           }
@@ -333,7 +340,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * エントリーをデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -341,6 +348,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     boolean res = true;
@@ -348,13 +356,14 @@ public class BlogEntryFormData extends ALAbstractFormData {
       if (is_new_thema) {
         // テーマの登録処理
         res = blogthema.insertFormData(rundata, context, msgList);
-        if (res)
+        if (res) {
           thema_id.setValue(blogthema.getThemaId());
+        }
       }
 
       if (res) {
         thema = (EipTBlogThema) DataObjectUtils.objectForPK(dataContext,
-            EipTBlogThema.class, Integer.valueOf((int) thema_id.getValue()));
+          EipTBlogThema.class, Integer.valueOf((int) thema_id.getValue()));
 
         blog = BlogUtils.getEipTBlog(rundata, context);
         if (blog == null) {
@@ -367,7 +376,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
         // 新規オブジェクトモデル
         EipTBlogEntry entry = (EipTBlogEntry) dataContext
-            .createAndRegisterNewObject(EipTBlogEntry.class);
+          .createAndRegisterNewObject(EipTBlogEntry.class);
         // Owner ID
         entry.setOwnerId(Integer.valueOf(uid));
         // Title
@@ -391,16 +400,14 @@ public class BlogEntryFormData extends ALAbstractFormData {
         dataContext.commitChanges();
 
         /* 自分以外の全員に新着ポートレット登録 */
-        WhatsNewUtils.insertWhatsNewPublic(dataContext,
-            WhatsNewUtils.WHATS_NEW_TYPE_BLOG_ENTRY, entry.getEntryId()
-                .intValue(), uid);
+        WhatsNewUtils.insertWhatsNewPublic(
+          WhatsNewUtils.WHATS_NEW_TYPE_BLOG_ENTRY, entry.getEntryId()
+            .intValue(), uid);
 
         // イベントログに保存
-        ALEventlogFactoryService
-            .getInstance()
-            .getEventlogHandler()
-            .log(blog.getBlogId(), ALEventlogConstants.PORTLET_TYPE_BLOG_ENTRY,
-                title.getValue());
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          blog.getBlogId(), ALEventlogConstants.PORTLET_TYPE_BLOG_ENTRY,
+          title.getValue());
 
       }
     } catch (Exception ex) {
@@ -439,9 +446,9 @@ public class BlogEntryFormData extends ALAbstractFormData {
         filebean = (FileuploadLiteBean) attachmentFileNameList.get(i);
         String foldername = filebean.getFolderName();
         if (foldername != null
-            && foldername.startsWith(BlogUtils.PREFIX_DBFILE)) {
+          && foldername.startsWith(BlogUtils.PREFIX_DBFILE)) {
           String index = foldername.substring(BlogUtils.PREFIX_DBFILE.length(),
-              foldername.length());
+            foldername.length());
           idlist.add(Integer.valueOf(index));
         }
       }
@@ -474,16 +481,16 @@ public class BlogEntryFormData extends ALAbstractFormData {
           // サムネイル処理
           String[] acceptExts = ImageIO.getWriterFormatNames();
           byte[] fileThumbnail = FileuploadUtils.getBytesShrinkFilebean(org_id,
-              folderName, uid, newfilebean, acceptExts,
-              FileuploadUtils.DEF_THUMBNAIL_WIDTH,
-              FileuploadUtils.DEF_THUMBNAIL_HEIGTH, msgList);
+            folderName, uid, newfilebean, acceptExts,
+            FileuploadUtils.DEF_THUMBNAIL_WIDTH,
+            FileuploadUtils.DEF_THUMBNAIL_HEIGTH, msgList);
 
           String filename = FileuploadUtils.getNewFileName(BlogUtils
-              .getSaveDirPath(org_id, uid));
+            .getSaveDirPath(org_id, uid));
 
           // 新規オブジェクトモデル
           EipTBlogFile file = (EipTBlogFile) dataContext
-              .createAndRegisterNewObject(EipTBlogFile.class);
+            .createAndRegisterNewObject(EipTBlogFile.class);
           file.setOwnerId(Integer.valueOf(uid));
           file.setTitle(newfilebean.getFileName());
           file.setFilePath(BlogUtils.getRelativePath(filename));
@@ -496,9 +503,9 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
           // ファイルの移動
           File srcFile = FileuploadUtils.getAbsolutePath(org_id, uid,
-              folderName, newfilebean.getFileId());
+            folderName, newfilebean.getFileId());
           File destFile = new File(BlogUtils.getAbsolutePath(org_id, uid,
-              filename));
+            filename));
           FileuploadUtils.copyFile(srcFile, destFile);
 
           srcFile = null;
@@ -539,7 +546,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているエントリーを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -547,27 +554,29 @@ public class BlogEntryFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     boolean res = false;
     try {
       // オブジェクトモデルを取得
       EipTBlogEntry entry = BlogUtils.getEipTBlogEntry(rundata, context);
-      if (entry == null)
+      if (entry == null) {
         return false;
+      }
 
       if (is_new_thema) {
         // テーマの登録処理
         res = blogthema.insertFormData(rundata, context, msgList);
 
         if (res) {
-          thema = (EipTBlogThema) BlogUtils.getEipTBlogThema(dataContext,
-              (long) blogthema.getThemaId());
+          thema = BlogUtils.getEipTBlogThema(dataContext, (long) blogthema
+            .getThemaId());
           thema_id.setValue(thema.getThemaId().longValue());
         }
       } else {
         thema = (EipTBlogThema) DataObjectUtils.objectForPK(dataContext,
-            EipTBlogThema.class, Integer.valueOf((int) thema_id.getValue()));
+          EipTBlogThema.class, Integer.valueOf((int) thema_id.getValue()));
         res = true;
       }
 
@@ -607,7 +616,8 @@ public class BlogEntryFormData extends ALAbstractFormData {
             if (!attIdList.contains(file.getFileId())) {
               // ファイルシステムから削除
               File fileonsysytem = new File(BlogUtils.getSaveDirPath(org_id,
-                  uid) + (String) file.getFilePath());
+                uid)
+                + file.getFilePath());
               if (fileonsysytem.exists()) {
                 fileonsysytem.delete();
               }
@@ -624,11 +634,9 @@ public class BlogEntryFormData extends ALAbstractFormData {
         dataContext.commitChanges();
 
         // イベントログに保存
-        ALEventlogFactoryService
-            .getInstance()
-            .getEventlogHandler()
-            .log(entry.getEntryId(),
-                ALEventlogConstants.PORTLET_TYPE_BLOG_ENTRY, title.getValue());
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          entry.getEntryId(), ALEventlogConstants.PORTLET_TYPE_BLOG_ENTRY,
+          title.getValue());
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -638,10 +646,11 @@ public class BlogEntryFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
@@ -662,7 +671,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * 添付ファイルを削除する．
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -676,7 +685,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
       ArrayList msgList = new ArrayList();
       setValidator();
       boolean res = (setFormData(rundata, context, msgList) && deleteAttachments(
-          rundata, context, msgList));
+        rundata, context, msgList));
       action.setResultData(this);
       action.addErrorMessages(msgList);
       action.putData(rundata, context);
@@ -702,12 +711,12 @@ public class BlogEntryFormData extends ALAbstractFormData {
     }
 
     return FileuploadUtils.deleteAttachments(org_id, uid, folderName,
-        fileuploadList);
+      fileuploadList);
   }
 
   /**
    * カテゴリIDを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALNumberField getThemaId() {
@@ -716,7 +725,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getNote() {
@@ -725,7 +734,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * Title を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getTitle() {
@@ -734,7 +743,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * カテゴリ一覧を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ArrayList getThemaList() {
@@ -750,7 +759,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * テーマを取得します。
-   *
+   * 
    * @return
    */
   public BlogThemaFormData getBlogThema() {
@@ -780,9 +789,10 @@ public class BlogEntryFormData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_SELF;
   }

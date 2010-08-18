@@ -245,9 +245,10 @@ public class ScheduleFormData extends ALAbstractFormData {
   private boolean ignore_duplicate_facility;
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.
-   *      actions.common.ALAction, org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.
+   * actions.common.ALAction, org.apache.turbine.util.RunData,
+   * org.apache.velocity.context.Context)
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -568,9 +569,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine
-   *      .util.RunData, org.apache.velocity.context.Context,
-   *      java.util.ArrayList)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean setFormData(RunData rundata, Context context,
@@ -633,7 +634,8 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
   @Override
   protected boolean validate(List<String> msgList) throws ALDBErrorException,
@@ -803,9 +805,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine
-   *      .util.RunData, org.apache.velocity.context.Context,
-   *      java.util.ArrayList)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
@@ -1000,9 +1002,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine
-   *      .util.RunData, org.apache.velocity.context.Context,
-   *      java.util.ArrayList)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
@@ -1221,14 +1223,11 @@ public class ScheduleFormData extends ALAbstractFormData {
       int u_size = userIds.size();
       for (int i = 0; i < u_size; i++) {
         Integer _id = (Integer) userIds.get(i);
-        WhatsNewUtils.insertWhatsNew(dataContext,
-          WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE, schedule.getScheduleId()
-            .intValue(), _id.intValue());
+        WhatsNewUtils.insertWhatsNew(WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
+          schedule.getScheduleId().intValue(), _id.intValue());
       }
 
     } catch (Exception e) {
-
-      // TODO: エラー処理
       logger.error("[ScheduleFormData]", e);
       throw new ALDBErrorException();
     }
@@ -1266,9 +1265,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine
-   *      .util.RunData, org.apache.velocity.context.Context,
-   *      java.util.ArrayList)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
@@ -1405,8 +1404,8 @@ public class ScheduleFormData extends ALAbstractFormData {
              * map.setCommonCategoryId(null); } else {
              * map.setCommonCategoryId(new Integer((int) (common_category_id
              * .getValue()))); map.setEipTSchedule(schedule);
-             * map.setEipTCommonCategory(category); } } else { for (int v = 0; v <
-             * size2; v++) { EipTScheduleMap map2 = (EipTScheduleMap)
+             * map.setEipTCommonCategory(category); } } else { for (int v = 0; v
+             * < size2; v++) { EipTScheduleMap map2 = (EipTScheduleMap)
              * scheduleMaps.get(v); if (userid == map2.getUserId().intValue()) {
              * EipTCommonCategory category = map2.getEipTCommonCategory(); if
              * (category != null) {
@@ -1648,8 +1647,8 @@ public class ScheduleFormData extends ALAbstractFormData {
            * common_category_id .getValue()); if (category == null) {
            * map.setCommonCategoryId(null); } else { map.setCommonCategoryId(new
            * Integer((int) (common_category_id .getValue())));
-           * map.setEipTSchedule(schedule); map.setEipTCommonCategory(category); } }
-           * else { for (int v = 0; v < size2; v++) { EipTScheduleMap map2 =
+           * map.setEipTSchedule(schedule); map.setEipTCommonCategory(category);
+           * } } else { for (int v = 0; v < size2; v++) { EipTScheduleMap map2 =
            * (EipTScheduleMap) scheduleMaps.get(v); if (userid ==
            * map2.getUserId().intValue()) { EipTCommonCategory category =
            * map2.getEipTCommonCategory(); if (category != null) {
@@ -1753,13 +1752,11 @@ public class ScheduleFormData extends ALAbstractFormData {
       int size = userIds.size();
       for (int i = 0; i < size; i++) {
         Integer _id = (Integer) userIds.get(i);
-        WhatsNewUtils.insertWhatsNew(dataContext,
-          WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE, entity_id, _id.intValue());
+        WhatsNewUtils.insertWhatsNew(WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
+          entity_id, _id.intValue());
       }
 
     } catch (Exception e) {
-
-      // TODO: エラー処理
       logger.error("[ScheduleFormData]", e);
       throw new ALDBErrorException();
     }
@@ -1823,9 +1820,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine
-   *      .util.RunData, org.apache.velocity.context.Context,
-   *      java.util.ArrayList)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,
@@ -2087,9 +2084,10 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#doViewForm(com.aimluck.eip.modules
-   *      .actions.common.ALAction, org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#doViewForm(com.aimluck.eip.modules
+   * .actions.common.ALAction, org.apache.turbine.util.RunData,
+   * org.apache.velocity.context.Context)
    */
   @Override
   public boolean doViewForm(ALAction action, RunData rundata, Context context) {
@@ -2099,9 +2097,10 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#doInsert(com.aimluck.eip.modules
-   *      .actions.common.ALAction, org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#doInsert(com.aimluck.eip.modules
+   * .actions.common.ALAction, org.apache.turbine.util.RunData,
+   * org.apache.velocity.context.Context)
    */
   @Override
   public boolean doInsert(ALAction action, RunData rundata, Context context) {
@@ -2111,9 +2110,10 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#doUpdate(com.aimluck.eip.modules
-   *      .actions.common.ALAction, org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#doUpdate(com.aimluck.eip.modules
+   * .actions.common.ALAction, org.apache.turbine.util.RunData,
+   * org.apache.velocity.context.Context)
    */
   @Override
   public boolean doUpdate(ALAction action, RunData rundata, Context context) {
@@ -2175,11 +2175,11 @@ public class ScheduleFormData extends ALAbstractFormData {
    * 指定した曜日が，選択範囲に入っているかを検証する．
    * 
    * @param selectedWeek
-   *            指定曜日
+   *          指定曜日
    * @param startWeek
-   *            期間開始曜日
+   *          期間開始曜日
    * @param endWeek
-   *            期間終了曜日
+   *          期間終了曜日
    * @return 選択範囲に入っている場合，true．
    */
   private boolean includeWeek(int selectedWeek, int startWeek, int endWeek) {

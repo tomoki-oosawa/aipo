@@ -38,13 +38,14 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * スケジュールのユーティリティクラスです。
- *
+ * 
  */
 public class CellScheduleUtils {
 
   /** <code>logger</code> loger */
+  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CellScheduleUtils.class.getName());
+    .getLogger(CellScheduleUtils.class.getName());
 
   public static List<ALEipUser> getShareUserMemberList(RunData rundata) {
     List<ALEipUser> memberList = new ArrayList<ALEipUser>();
@@ -57,7 +58,7 @@ public class CellScheduleUtils {
     if (str != null && str.length > 0) {
       SelectQuery query = new SelectQuery(TurbineUser.class);
       Expression exp = ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY,
-          str);
+        str);
       query.setQualifier(exp);
       List<ALEipUser> sharuserlist = ALEipUtils.getUsersFromSelectQuery(query);
       int sharuserSize = sharuserlist.size();
@@ -81,11 +82,11 @@ public class CellScheduleUtils {
         }
       }
       str = new String[list.size()];
-      str = (String[]) list.toArray(str);
+      str = list.toArray(str);
 
       SelectQuery query = new SelectQuery(TurbineUser.class);
       Expression exp = ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY,
-          str);
+        str);
       query.setQualifier(exp);
       List<ALEipUser> sharuserslist = ALEipUtils.getUsersFromSelectQuery(query);
       int sharusersSize = sharuserslist.size();
@@ -103,19 +104,21 @@ public class CellScheduleUtils {
     return memberList;
   }
 
-  public static List<FacilityResultData> getShareFacilityMemberList(RunData rundata) {
+  public static List<FacilityResultData> getShareFacilityMemberList(
+      RunData rundata) {
     List<FacilityResultData> facilityMemberList = new ArrayList<FacilityResultData>();
     FacilityResultData f_record = null;
     String facstr[] = rundata.getParameters().getStrings("sharefac");
     if (facstr != null && facstr.length > 0) {
       SelectQuery fquery = new SelectQuery(EipMFacility.class);
       Expression fexp = ExpressionFactory.inDbExp(
-          EipMFacility.FACILITY_ID_PK_COLUMN, facstr);
+        EipMFacility.FACILITY_ID_PK_COLUMN, facstr);
       fquery.setQualifier(fexp);
-      List<FacilityResultData> f_list = FacilitiesUtils.getFacilitiesFromSelectQuery(fquery);
+      List<FacilityResultData> f_list = FacilitiesUtils
+        .getFacilitiesFromSelectQuery(fquery);
       int f_list_size = f_list.size();
       for (int i = 0; i < f_list_size; i++) {
-        f_record =  f_list.get(i);
+        f_record = f_list.get(i);
         if (!FacilitiesUtils.isContains(facilityMemberList, f_record)) {
           facilityMemberList.add(f_record);
         }
@@ -134,13 +137,14 @@ public class CellScheduleUtils {
         }
       }
       String[] str = new String[list.size()];
-      str = (String[]) list.toArray(str);
+      str = list.toArray(str);
 
       SelectQuery fquery = new SelectQuery(EipMFacility.class);
       Expression fexp = ExpressionFactory.inDbExp(
-          EipMFacility.FACILITY_ID_PK_COLUMN, str);
+        EipMFacility.FACILITY_ID_PK_COLUMN, str);
       fquery.setQualifier(fexp);
-      List<FacilityResultData> f_list = FacilitiesUtils.getFacilitiesFromSelectQuery(fquery);
+      List<FacilityResultData> f_list = FacilitiesUtils
+        .getFacilitiesFromSelectQuery(fquery);
       int fsize = f_list.size();
       for (int i = 0; i < fsize; i++) {
         f_record = f_list.get(i);

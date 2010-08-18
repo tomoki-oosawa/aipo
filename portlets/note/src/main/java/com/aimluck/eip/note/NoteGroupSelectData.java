@@ -45,6 +45,7 @@ import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.note.util.NoteUtils;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -53,9 +54,10 @@ import com.aimluck.eip.util.ALEipUtils;
  */
 public class NoteGroupSelectData extends ALAbstractSelectData<TurbineUser>
     implements ALData {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(NoteGroupSelectData.class.getName());
+    .getLogger(NoteGroupSelectData.class.getName());
 
   /** 現在選択しているタブ */
   private String currentTab;
@@ -73,11 +75,12 @@ public class NoteGroupSelectData extends ALAbstractSelectData<TurbineUser>
 
   /**
    * 初期化処理を行います。 <BR>
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
@@ -91,7 +94,7 @@ public class NoteGroupSelectData extends ALAbstractSelectData<TurbineUser>
       if (filter == null || filter.equals("")) {
         VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
         String groupName = portlet.getPortletConfig().getInitParameter(
-            "p3b-group");
+          "p3b-group");
         if (groupName != null) {
           ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, groupName);
           ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "group");
@@ -106,31 +109,27 @@ public class NoteGroupSelectData extends ALAbstractSelectData<TurbineUser>
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected List<TurbineUser> selectList(RunData rundata, Context context) {
     setCurrentTab(rundata, context);
     try {
       userId = Integer.toString(ALEipUtils.getUserId(rundata));
       userAliasName = ALEipUtils.getALEipUser(rundata).getAliasName()
-          .toString();
+        .toString();
       NoteUtils.getTargetGroupName(rundata, context);
 
       List<ALEipGroup> myGroups = ALEipUtils.getMyGroups(rundata);
       myGroupList = new ArrayList<ALEipGroup>();
-      int length = myGroups.size();
-      for (int i = 0; i < length; i++) {
-        myGroupList.add(myGroups.get(i));
+      for (ALEipGroup group : myGroups) {
+        myGroupList.add(group);
       }
 
       // 受信履歴の未読数と新着数をカウントアップする．
-
       List<EipTNoteMap> list = NoteUtils.getSelectQueryNoteList(rundata,
-          context).perform();
-      // List list = orm_notemap.doSelect();
+        context).perform();
       if (list != null && list.size() > 0) {
         String stat = null;
-        int size = list.size();
-        for (int i = 0; i < size; i++) {
-          EipTNoteMap map = list.get(i);
+        for (EipTNoteMap map : list) {
           stat = map.getNoteStat();
           if (NoteUtils.NOTE_STAT_NEW.equals(stat)) {
             // 新着数をカウントアップする．
@@ -144,7 +143,7 @@ public class NoteGroupSelectData extends ALAbstractSelectData<TurbineUser>
 
       String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
       String filter_type = ALEipUtils.getTemp(rundata, context,
-          LIST_FILTER_TYPE_STR);
+        LIST_FILTER_TYPE_STR);
       if (filter == null || filter_type == null || filter.equals("")) {
         return new ArrayList<TurbineUser>();
       } else {
@@ -165,6 +164,7 @@ public class NoteGroupSelectData extends ALAbstractSelectData<TurbineUser>
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected TurbineUser selectDetail(RunData rundata, Context context) {
     setCurrentTab(rundata, context);
     return null;
@@ -173,6 +173,7 @@ public class NoteGroupSelectData extends ALAbstractSelectData<TurbineUser>
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(TurbineUser user) {
     try {
       NoteGroupResultData rd = new NoteGroupResultData();
@@ -189,6 +190,7 @@ public class NoteGroupSelectData extends ALAbstractSelectData<TurbineUser>
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(TurbineUser obj) {
     return null;
   }
@@ -196,42 +198,42 @@ public class NoteGroupSelectData extends ALAbstractSelectData<TurbineUser>
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("src_user", TurbineUser.LAST_NAME_KANA_PROPERTY);
     map.putValue("group", TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY + "."
-        + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY + "."
-        + TurbineGroup.GROUP_NAME_PROPERTY);
+      + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY + "."
+      + TurbineGroup.GROUP_NAME_PROPERTY);
     map.putValue("userposition", TurbineUser.EIP_MUSER_POSITION_PROPERTY + "."
-        + EipMUserPosition.POSITION_PROPERTY); // ユーザの順番
+      + EipMUserPosition.POSITION_PROPERTY); // ユーザの順番
     return map;
   }
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    */
   private SelectQuery<TurbineUser> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<TurbineUser> query = new SelectQuery<TurbineUser>(
-        TurbineUser.class);
+    SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
 
     Expression exp11 = ExpressionFactory.noMatchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(1));
+      TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(1));
     Expression exp12 = ExpressionFactory.noMatchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(2));
+      TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(2));
     Expression exp13 = ExpressionFactory.noMatchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(3));
+      TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(3));
     query.setQualifier(exp11.andExp(exp12).andExp(exp13));
 
     Expression exp2 = ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY,
-        "F");
+      "F");
     query.andQualifier(exp2);
     Expression exp3 = ExpressionFactory.noMatchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(userId));
+      TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(userId));
     query.andQualifier(exp3);
 
     return buildSelectQueryForFilter(query, rundata, context);
@@ -239,24 +241,27 @@ public class NoteGroupSelectData extends ALAbstractSelectData<TurbineUser>
 
   /**
    * フィルタ用の <code>SelectQuery</code> を構築します。
-   *
+   * 
    * @param crt
    * @param rundata
    * @param context
    * @return
    */
+  @Override
   protected SelectQuery<TurbineUser> buildSelectQueryForFilter(
       SelectQuery<TurbineUser> query, RunData rundata, Context context) {
     String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
     String filter_type = ALEipUtils.getTemp(rundata, context,
-        LIST_FILTER_TYPE_STR);
+      LIST_FILTER_TYPE_STR);
     String crt_key = null;
     Attributes map = getColumnMap();
-    if (filter == null || filter_type == null || filter.equals(""))
+    if (filter == null || filter_type == null || filter.equals("")) {
       return query;
+    }
     crt_key = map.getValue(filter_type);
-    if (crt_key == null)
+    if (crt_key == null) {
       return query;
+    }
 
     Expression exp = ExpressionFactory.matchExp(crt_key, filter);
     query.andQualifier(exp);
@@ -279,7 +284,7 @@ public class NoteGroupSelectData extends ALAbstractSelectData<TurbineUser>
 
   /**
    * 現在選択されているタブを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public String getCurrentTab() {
@@ -303,7 +308,7 @@ public class NoteGroupSelectData extends ALAbstractSelectData<TurbineUser>
   }
 
   /**
-   *
+   * 
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -311,7 +316,7 @@ public class NoteGroupSelectData extends ALAbstractSelectData<TurbineUser>
   }
 
   /**
-   *
+   * 
    * @return
    */
   public List<ALEipGroup> getMyGroupList() {

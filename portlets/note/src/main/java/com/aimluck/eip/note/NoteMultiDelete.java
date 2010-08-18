@@ -36,15 +36,16 @@ public class NoteMultiDelete extends ALAbstractCheckList {
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(NoteMultiDelete.class.getName());
+    .getLogger(NoteMultiDelete.class.getName());
 
   /**
    * @see com.aimluck.eip.common.ALAbstractCheckList#action(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList,
    *      java.util.ArrayList)
    */
-  protected boolean action(RunData rundata, Context context, List<String> values,
-      List<String> msgList) {
+  @Override
+  protected boolean action(RunData rundata, Context context,
+      List<String> values, List<String> msgList) {
     return NoteUtils.deleteNotes(rundata, context, values, msgList);
   }
 }

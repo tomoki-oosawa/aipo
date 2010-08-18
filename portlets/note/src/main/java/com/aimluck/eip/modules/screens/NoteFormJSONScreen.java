@@ -33,12 +33,12 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 伝言メモをJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class NoteFormJSONScreen extends ALJSONScreen {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(NoteFormJSONScreen.class.getName());
+    .getLogger(NoteFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -57,7 +57,7 @@ public class NoteFormJSONScreen extends ALJSONScreen {
           ALEipUtils.setTemp(rundata, context, "tab", "sent_notes");
         } else {
           JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+            .get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
 
@@ -67,7 +67,7 @@ public class NoteFormJSONScreen extends ALJSONScreen {
         if (data.doMultiAction(this, rundata, context)) {
         } else {
           JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+            .get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
@@ -77,7 +77,7 @@ public class NoteFormJSONScreen extends ALJSONScreen {
         if (formData.doDelete(this, rundata, context)) {
         } else {
           JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+            .get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if ("multi_delete".equals(mode)) {
@@ -86,7 +86,7 @@ public class NoteFormJSONScreen extends ALJSONScreen {
         if (delete.doMultiAction(this, rundata, context)) {
         } else {
           JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+            .get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
 
@@ -96,7 +96,7 @@ public class NoteFormJSONScreen extends ALJSONScreen {
         if (update.doMultiAction(this, rundata, context)) {
         } else {
           JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+            .get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else {

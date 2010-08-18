@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -34,9 +34,10 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class NoteListScreen extends NoteScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(NoteListScreen.class.getName());
+    .getLogger(NoteListScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
@@ -50,19 +51,17 @@ public class NoteListScreen extends NoteScreen {
 
       if ("update".equals(mode)) {
         updateState(rundata, context, portlet);
-      } 
-      
+      }
+
       ALEipUtils.removeTemp(rundata, context, NoteUtils.TARGET_USER_ID);
       NoteSelectData listData = new NoteSelectData();
       listData.initField();
       // PSMLからパラメータをロードする
       // 最大表示件数（最大化時）
-      listData.setRowsNum(Integer.parseInt(ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-              "p1b-rows")));
-      listData.setStrLength(Integer.parseInt(ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-              "p3a-strlen")));
+      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(rundata,
+        context).getPortletConfig().getInitParameter("p1b-rows")));
+      listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
+        context).getPortletConfig().getInitParameter("p3a-strlen")));
       listData.doViewList(this, rundata, context);
       String layout_template = "portlets/html/ja/ajax-note-list.vm";
       setTemplate(rundata, context, layout_template);

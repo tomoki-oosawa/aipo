@@ -20,10 +20,8 @@ package com.aimluck.eip.note.util;
 
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import com.aimluck.eip.orm.query.SelectQuery;
 import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.services.JetspeedSecurity;
@@ -43,7 +41,8 @@ import com.aimluck.eip.cayenne.om.portlet.EipTNoteMap;
 import com.aimluck.eip.cayenne.om.security.TurbineGroup;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
@@ -53,9 +52,10 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
  * 伝言メモのユーティリティクラスです <br />
  */
 public class NoteUtils {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(NoteUtils.class.getName());
+    .getLogger(NoteUtils.class.getName());
 
   public static final String DATE_TIME_FORMAT = ALDateTimeField.DEFAULT_DATE_TIME_FORMAT;
 
@@ -81,7 +81,7 @@ public class NoteUtils {
 
   /**
    * 詳細表示用の EipTNote オブジェクトモデルを取得する．
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -89,33 +89,26 @@ public class NoteUtils {
   public static EipTNote getEipTNoteDetail(RunData rundata, Context context,
       SelectQuery<EipTNote> query) {
     String noteId = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+      ALEipConstants.ENTITY_ID);
 
     int uid = ALEipUtils.getUserId(rundata);
 
     try {
-      /**
-       * 新着ポートレット既読処理
-       */
+      // 新着ポートレット既読処理
       WhatsNewUtils.shiftWhatsNewReadFlag(WhatsNewUtils.WHATS_NEW_TYPE_NOTE,
-          Integer.parseInt(noteId), uid);
-
-      /**
-       *
-       */
+        Integer.parseInt(noteId), uid);
     } catch (NumberFormatException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      logger.error(e);
     }
 
     // アクセス権の判定
-    SelectQuery<EipTNoteMap> query1 = new SelectQuery<EipTNoteMap>(EipTNoteMap.class);
     Expression exp1 = ExpressionFactory.matchExp(EipTNoteMap.NOTE_ID_PROPERTY,
-        Integer.valueOf(noteId));
+      Integer.valueOf(noteId));
     Expression exp2 = ExpressionFactory.matchExp(EipTNoteMap.USER_ID_PROPERTY,
-        uid);
-    query1.setQualifier(exp1.andExp(exp2));
-    List<EipTNoteMap> maps = query1.perform();
+      uid);
+
+    List<EipTNoteMap> maps = Database.query(EipTNoteMap.class,
+      exp1.andExp(exp2)).perform();
     if (maps == null || maps.size() == 0) {
       // 指定したアカウントIDのレコードが見つからない場合
       logger.debug("[Note] Invalid user access...");
@@ -124,16 +117,16 @@ public class NoteUtils {
 
     try {
       if (noteId == null || noteId.equals("")
-          || Integer.valueOf(noteId) == null) {
+        || Integer.valueOf(noteId) == null) {
         // アカウントIDが空の場合
         logger.debug("[Note] Empty NoteID...");
         return null;
       }
 
       Expression exp = ExpressionFactory.matchDbExp(EipTNote.NOTE_ID_PK_COLUMN,
-          Integer.valueOf(noteId));
-      query.andQualifier(exp);
-      List<EipTNote> notes = query.perform();
+        Integer.valueOf(noteId));
+
+      List<EipTNote> notes = query.andQualifier(exp).perform();
       if (notes == null || notes.size() == 0) {
         // 指定したアカウントIDのレコードが見つからない場合
         logger.debug("[Note] Not found NoteID...");
@@ -148,7 +141,7 @@ public class NoteUtils {
 
   /**
    * EipTNote オブジェクトモデルを取得する． <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param isJoin
@@ -159,23 +152,23 @@ public class NoteUtils {
       SelectQuery<EipTNoteMap> query) {
 
     String noteId = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+      ALEipConstants.ENTITY_ID);
 
     try {
       if (noteId == null || noteId.equals("")
-          || Integer.valueOf(noteId) == null) {
+        || Integer.valueOf(noteId) == null) {
         // アカウントIDが空の場合
         logger.debug("[Note] Empty NoteID...");
         return null;
       }
 
       Expression exp1 = ExpressionFactory.matchDbExp(
-          EipTNote.NOTE_ID_PK_COLUMN, noteId);
-      query.andQualifier(exp1);
+        EipTNote.NOTE_ID_PK_COLUMN, noteId);
       Expression exp2 = ExpressionFactory.matchExp(
-          EipTNoteMap.DEL_FLG_PROPERTY, "F");
-      query.andQualifier(exp2);
-      List<EipTNoteMap> maps = query.perform();
+        EipTNoteMap.DEL_FLG_PROPERTY, "F");
+
+      List<EipTNoteMap> maps = query.andQualifier(exp1).andQualifier(exp2)
+        .perform();
       if (maps == null || maps.size() == 0) {
         // 指定したアカウントIDのレコードが見つからない場合
         logger.debug("[Note] Not found NoteID...");
@@ -188,39 +181,40 @@ public class NoteUtils {
     }
   }
 
-  public static List<?> getEipTNoteMapList(RunData rundata, Context context,
-      boolean tabReceive, String[] nodeIds) {
+  public static List<EipTNoteMap> getEipTNoteMapList(RunData rundata,
+      Context context, boolean tabReceive, String[] nodeIds) {
 
-    if (nodeIds == null)
+    if (nodeIds == null) {
       return null;
+    }
 
     try {
       Integer userid = Integer.valueOf(ALEipUtils.getUserId(rundata));
-      SelectQuery<EipTNoteMap> query = new SelectQuery<EipTNoteMap>(EipTNoteMap.class);
+      SelectQuery<EipTNoteMap> query = Database.query(EipTNoteMap.class);
 
       Expression exp1 = ExpressionFactory.inDbExp(EipTNote.NOTE_ID_PK_COLUMN,
-          nodeIds);
+        nodeIds);
       query.setQualifier(exp1);
 
       if (tabReceive) {
         Expression exp2 = ExpressionFactory.matchExp(
-            EipTNoteMap.USER_ID_PROPERTY, userid);
+          EipTNoteMap.USER_ID_PROPERTY, userid);
         query.andQualifier(exp2);
         Expression exp3 = ExpressionFactory.noMatchExp(
-            EipTNoteMap.EIP_TNOTE_PROPERTY + "." + EipTNote.OWNER_ID_PROPERTY,
-            userid);
+          EipTNoteMap.EIP_TNOTE_PROPERTY + "." + EipTNote.OWNER_ID_PROPERTY,
+          userid);
         query.andQualifier(exp3);
       } else {
         Expression exp2 = ExpressionFactory.matchExp(
-            EipTNoteMap.USER_ID_PROPERTY, userid);
+          EipTNoteMap.USER_ID_PROPERTY, userid);
         query.andQualifier(exp2);
         Expression exp3 = ExpressionFactory.matchExp(
-            EipTNoteMap.EIP_TNOTE_PROPERTY + "." + EipTNote.OWNER_ID_PROPERTY,
-            userid);
+          EipTNoteMap.EIP_TNOTE_PROPERTY + "." + EipTNote.OWNER_ID_PROPERTY,
+          userid);
         query.andQualifier(exp3);
       }
 
-      List<?> noteMaps = query.perform();
+      List<EipTNoteMap> noteMaps = query.perform();
       if (noteMaps == null || noteMaps.size() == 0) {
         // 指定したアカウントIDのレコードが見つからない場合
         logger.debug("[Note] Not found NoteIDs...");
@@ -236,25 +230,27 @@ public class NoteUtils {
 
   /**
    * ユーザのログイン名をもとにユーザ ID を取得する．
-   *
+   * 
    * @param userLoginName
    *          ユーザのログイン名
    * @return
    */
   public static String getUserId(String userLoginName) {
-    if (userLoginName == null || userLoginName.equals(""))
+    if (userLoginName == null || userLoginName.equals("")) {
       return null;
+    }
     String userId = null;
 
     try {
-      SelectQuery<TurbineUser> query = new SelectQuery<TurbineUser>(TurbineUser.class);
       Expression exp = ExpressionFactory.matchExp(
-          TurbineUser.LOGIN_NAME_PROPERTY, userLoginName);
-      query.setQualifier(exp);
-      List<?> destUserList = query.perform();
-      if (destUserList == null || destUserList.size() <= 0)
+        TurbineUser.LOGIN_NAME_PROPERTY, userLoginName);
+
+      List<TurbineUser> destUserList = Database.query(TurbineUser.class)
+        .setQualifier(exp).perform();
+      if (destUserList == null || destUserList.size() <= 0) {
         return null;
-      userId = ((TurbineUser) destUserList.get(0)).getUserId().toString();
+      }
+      userId = (destUserList.get(0)).getUserId().toString();
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -264,25 +260,27 @@ public class NoteUtils {
 
   /**
    * 指定した ID に対するユーザのログイン名を取得する．
-   *
+   * 
    * @param userId
    * @return
    */
   public static String getUserName(String userId) {
-    if (userId == null || userId.equals(""))
+    if (userId == null || userId.equals("")) {
       return null;
+    }
 
     String userName = null;
 
     try {
-      SelectQuery<TurbineUser> query = new SelectQuery<TurbineUser>(TurbineUser.class);
       Expression exp = ExpressionFactory.matchDbExp(
-          TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(userId));
-      query.setQualifier(exp);
-      List<?> destUserList = query.perform();
-      if (destUserList == null || destUserList.size() <= 0)
+        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(userId));
+
+      List<TurbineUser> destUserList = Database.query(TurbineUser.class)
+        .setQualifier(exp).perform();
+      if (destUserList == null || destUserList.size() <= 0) {
         return null;
-      userName = ((TurbineUser) destUserList.get(0)).getLoginName();
+      }
+      userName = (destUserList.get(0)).getLoginName();
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -291,7 +289,7 @@ public class NoteUtils {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -365,62 +363,58 @@ public class NoteUtils {
 
     try {
       String user_id = Integer.toString(ALEipUtils.getUserId(rundata));
-      if (user_id == null)
+      if (user_id == null) {
         return false;
-
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      }
 
       // オブジェクトモデルを取得
       String[] noteIds = new String[values.size()];
       noteIds = values.toArray(noteIds);
 
-      List<?> eipTNoteMaps = NoteUtils.getEipTNoteMapList(rundata, context,
-          tabReceive, noteIds);
+      List<EipTNoteMap> eipTNoteMaps = NoteUtils.getEipTNoteMapList(rundata,
+        context, tabReceive, noteIds);
 
-      if (eipTNoteMaps == null)
+      if (eipTNoteMaps == null) {
         return false;
+      }
 
-      int length = eipTNoteMaps.size();
-      for (int i = 0; i < length; i++) {
-        EipTNoteMap noteMap = (EipTNoteMap) eipTNoteMaps.get(i);
+      for (EipTNoteMap noteMap : eipTNoteMaps) {
         EipTNote tmpnote = noteMap.getEipTNote();
 
-        SelectQuery<EipTNoteMap> mapquery = new SelectQuery<EipTNoteMap>(EipTNoteMap.class);
         Expression mapexp = ExpressionFactory.matchExp(
-            EipTNoteMap.NOTE_ID_PROPERTY, tmpnote.getNoteId());
-        mapquery.setQualifier(mapexp);
-        List<?> maplist = mapquery.perform();
+          EipTNoteMap.NOTE_ID_PROPERTY, tmpnote.getNoteId());
+
+        List<EipTNoteMap> maplist = Database.query(EipTNoteMap.class, mapexp)
+          .perform();
+
         if (maplist != null && maplist.size() > 0) {
           int count = 0;
           int size = maplist.size();
-          for (int j = 0; j < size; j++) {
-            EipTNoteMap tmpmap = (EipTNoteMap) maplist.get(j);
+          for (EipTNoteMap tmpmap : maplist) {
             if ("T".equals(tmpmap.getDelFlg())) {
               count++;
             }
           }
           if (count == size - 1) {
             // 伝言メモを削除する．
-            dataContext.deleteObject(noteMap.getEipTNote());
+            Database.delete(noteMap.getEipTNote());
           } else {
             // 伝言メモのマップの削除フラグを立てる．
             noteMap.setDelFlg("T");
           }
 
           // イベントログに保存
-          ALEventlogFactoryService
-              .getInstance()
-              .getEventlogHandler()
-              .log(noteMap.getEipTNote().getNoteId(),
-                  ALEventlogConstants.PORTLET_TYPE_NOTE,
-                  getNoteSubject(noteMap.getEipTNote()));
+          ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+            noteMap.getEipTNote().getNoteId(),
+            ALEventlogConstants.PORTLET_TYPE_NOTE,
+            getNoteSubject(noteMap.getEipTNote()));
 
         }
       }
 
-      dataContext.commitChanges();
+      Database.commit();
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -456,26 +450,26 @@ public class NoteUtils {
     return currentTab;
   }
 
-  public static SelectQuery<EipTNoteMap> getSelectQueryNoteList(RunData rundata,
-      Context context) {
+  public static SelectQuery<EipTNoteMap> getSelectQueryNoteList(
+      RunData rundata, Context context) {
     String userId = Integer.toString(ALEipUtils.getUserId(rundata));
 
-    SelectQuery<EipTNoteMap> query = new SelectQuery<EipTNoteMap>(EipTNoteMap.class);
+    SelectQuery<EipTNoteMap> query = Database.query(EipTNoteMap.class);
     Expression exp01 = ExpressionFactory.matchExp(
-        EipTNoteMap.NOTE_STAT_PROPERTY, NoteUtils.NOTE_STAT_NEW);
+      EipTNoteMap.NOTE_STAT_PROPERTY, NoteUtils.NOTE_STAT_NEW);
     Expression exp02 = ExpressionFactory.matchExp(
-        EipTNoteMap.NOTE_STAT_PROPERTY, NoteUtils.NOTE_STAT_UNREAD);
+      EipTNoteMap.NOTE_STAT_PROPERTY, NoteUtils.NOTE_STAT_UNREAD);
     query.setQualifier(exp01.orExp(exp02));
 
     Expression exp1 = ExpressionFactory.matchExp(EipTNoteMap.USER_ID_PROPERTY,
-        Integer.valueOf(userId));
+      Integer.valueOf(userId));
     query.andQualifier(exp1);
     Expression exp2 = ExpressionFactory.matchExp(EipTNoteMap.DEL_FLG_PROPERTY,
-        "F");
+      "F");
     query.andQualifier(exp2);
     Expression exp3 = ExpressionFactory.noMatchExp(
-        EipTNoteMap.EIP_TNOTE_PROPERTY + "." + EipTNote.OWNER_ID_PROPERTY,
-        Integer.valueOf(userId));
+      EipTNoteMap.EIP_TNOTE_PROPERTY + "." + EipTNote.OWNER_ID_PROPERTY,
+      Integer.valueOf(userId));
     query.andQualifier(exp3);
 
     return query;
@@ -483,7 +477,7 @@ public class NoteUtils {
 
   /**
    * 受信した新着メモの総数を取得する．
-   *
+   * 
    * @param userid
    * @return
    */
@@ -491,7 +485,7 @@ public class NoteUtils {
     int newNoteAllSum = 0;
     try {
       SelectQuery<EipTNote> query = getSelectQueryForNewReceivedNoteCount(userId);
-      List<?> list = query.perform();
+      List<EipTNote> list = query.perform();
       newNoteAllSum = (list != null && list.size() > 0) ? list.size() : 0;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -503,21 +497,21 @@ public class NoteUtils {
   private static SelectQuery<EipTNote> getSelectQueryForNewReceivedNoteCount(
       String srcUserId) {
     try {
-      SelectQuery<EipTNote> query = new SelectQuery<EipTNote>(EipTNote.class);
+      SelectQuery<EipTNote> query = Database.query(EipTNote.class);
       Expression exp1 = ExpressionFactory.noMatchExp(
-          EipTNote.OWNER_ID_PROPERTY, Integer.valueOf(srcUserId));
+        EipTNote.OWNER_ID_PROPERTY, Integer.valueOf(srcUserId));
       query.setQualifier(exp1);
-      Expression exp2 = ExpressionFactory
-          .matchExp(EipTNote.EIP_TNOTE_MAPS_PROPERTY + "."
-              + EipTNoteMap.USER_ID_PROPERTY, Integer.valueOf(srcUserId));
+      Expression exp2 = ExpressionFactory.matchExp(
+        EipTNote.EIP_TNOTE_MAPS_PROPERTY + "." + EipTNoteMap.USER_ID_PROPERTY,
+        Integer.valueOf(srcUserId));
       query.andQualifier(exp2);
-      Expression exp3 = ExpressionFactory
-          .matchExp(EipTNote.EIP_TNOTE_MAPS_PROPERTY + "."
-              + EipTNoteMap.DEL_FLG_PROPERTY, "F");
+      Expression exp3 = ExpressionFactory.matchExp(
+        EipTNote.EIP_TNOTE_MAPS_PROPERTY + "." + EipTNoteMap.DEL_FLG_PROPERTY,
+        "F");
       query.andQualifier(exp3);
-      Expression exp4 = ExpressionFactory.matchExp(
-          EipTNote.EIP_TNOTE_MAPS_PROPERTY + "."
-              + EipTNoteMap.NOTE_STAT_PROPERTY, NoteUtils.NOTE_STAT_NEW);
+      Expression exp4 = ExpressionFactory
+        .matchExp(EipTNote.EIP_TNOTE_MAPS_PROPERTY + "."
+          + EipTNoteMap.NOTE_STAT_PROPERTY, NoteUtils.NOTE_STAT_NEW);
       query.andQualifier(exp4);
       return query;
     } catch (Exception ex) {
@@ -528,7 +522,7 @@ public class NoteUtils {
 
   /**
    * 受信した未読メモの総数を取得する
-   *
+   * 
    * @param userId
    * @return
    */
@@ -537,7 +531,7 @@ public class NoteUtils {
     try {
       // 未読数をセットする．
       SelectQuery<EipTNote> query = getSelectQueryForUnreadReceivedNoteCount(userId);
-      List<?> list = query.perform();
+      List<EipTNote> list = query.perform();
       unreadNotesAllSum = (list != null && list.size() > 0) ? list.size() : 0;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -549,21 +543,21 @@ public class NoteUtils {
   private static SelectQuery<EipTNote> getSelectQueryForUnreadReceivedNoteCount(
       String srcUserId) {
     try {
-      SelectQuery<EipTNote> query = new SelectQuery<EipTNote>(EipTNote.class);
+      SelectQuery<EipTNote> query = Database.query(EipTNote.class);
       Expression exp1 = ExpressionFactory.noMatchExp(
-          EipTNote.OWNER_ID_PROPERTY, Integer.valueOf(srcUserId));
+        EipTNote.OWNER_ID_PROPERTY, Integer.valueOf(srcUserId));
       query.setQualifier(exp1);
-      Expression exp2 = ExpressionFactory
-          .matchExp(EipTNote.EIP_TNOTE_MAPS_PROPERTY + "."
-              + EipTNoteMap.USER_ID_PROPERTY, Integer.valueOf(srcUserId));
+      Expression exp2 = ExpressionFactory.matchExp(
+        EipTNote.EIP_TNOTE_MAPS_PROPERTY + "." + EipTNoteMap.USER_ID_PROPERTY,
+        Integer.valueOf(srcUserId));
       query.andQualifier(exp2);
-      Expression exp3 = ExpressionFactory
-          .matchExp(EipTNote.EIP_TNOTE_MAPS_PROPERTY + "."
-              + EipTNoteMap.DEL_FLG_PROPERTY, "F");
+      Expression exp3 = ExpressionFactory.matchExp(
+        EipTNote.EIP_TNOTE_MAPS_PROPERTY + "." + EipTNoteMap.DEL_FLG_PROPERTY,
+        "F");
       query.andQualifier(exp3);
-      Expression exp4 = ExpressionFactory.matchExp(
-          EipTNote.EIP_TNOTE_MAPS_PROPERTY + "."
-              + EipTNoteMap.NOTE_STAT_PROPERTY, NoteUtils.NOTE_STAT_UNREAD);
+      Expression exp4 = ExpressionFactory
+        .matchExp(EipTNote.EIP_TNOTE_MAPS_PROPERTY + "."
+          + EipTNoteMap.NOTE_STAT_PROPERTY, NoteUtils.NOTE_STAT_UNREAD);
       query.andQualifier(exp4);
       return query;
     } catch (Exception ex) {
@@ -574,7 +568,7 @@ public class NoteUtils {
 
   /**
    * 指定したエントリー名を持つ個人設定ページに含まれるポートレットへの URI を取得する．
-   *
+   * 
    * @param rundata
    * @param portletEntryName
    *          PSML ファイルに記述されているタグ entry の要素 parent
@@ -584,19 +578,22 @@ public class NoteUtils {
       String portletEntryName) {
     try {
       Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-          .getDocument().getPortlets();
-      if (portlets == null)
+        .getDocument().getPortlets();
+      if (portlets == null) {
         return null;
+      }
 
       Portlets[] portletList = portlets.getPortletsArray();
-      if (portletList == null)
+      if (portletList == null) {
         return null;
+      }
 
       int length = portletList.length;
       for (int i = 0; i < length; i++) {
         Entry[] entries = portletList[i].getEntriesArray();
-        if (entries == null || entries.length <= 0)
+        if (entries == null || entries.length <= 0) {
           continue;
+        }
 
         int ent_length = entries.length;
         for (int j = 0; j < ent_length; j++) {
@@ -604,11 +601,10 @@ public class NoteUtils {
             JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
 
             DynamicURI duri = jsLink.getLink(JetspeedLink.CURRENT, null, null,
-                JetspeedLink.CURRENT, null);
+              JetspeedLink.CURRENT, null);
             duri = duri.addPathInfo(JetspeedResources.PATH_PANEID_KEY,
-                portletList[i].getId() + "," + entries[j].getId())
-                .addQueryData(JetspeedResources.PATH_ACTION_KEY,
-                    "controls.Restore");
+              portletList[i].getId() + "," + entries[j].getId()).addQueryData(
+              JetspeedResources.PATH_ACTION_KEY, "controls.Restore");
             return duri.toString();
           }
         }

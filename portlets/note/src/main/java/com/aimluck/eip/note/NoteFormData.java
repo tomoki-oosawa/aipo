@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.om.security.UserIdPrincipal;
@@ -55,6 +54,7 @@ import com.aimluck.eip.mail.util.ALEipUserAddr;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.note.util.NoteUtils;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
@@ -173,8 +173,6 @@ public class NoteFormData extends ALAbstractFormData {
 
   private ALEipUser loginUser;
 
-  private DataContext dataContext;
-
   private String org_id;
 
   @Override
@@ -188,12 +186,11 @@ public class NoteFormData extends ALAbstractFormData {
 
     List<ALEipGroup> myGroups = ALEipUtils.getMyGroups(rundata);
     myGroupList = new ArrayList<ALEipGroup>();
-    int length = myGroups.size();
-    for (int i = 0; i < length; i++) {
-      myGroupList.add(myGroups.get(i));
+    for (ALEipGroup group : myGroups) {
+      myGroupList.add(group);
+
     }
 
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
     org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
 
     ParameterParser parser = rundata.getParameters();
@@ -353,8 +350,7 @@ public class NoteFormData extends ALAbstractFormData {
       Date nowDate = Calendar.getInstance().getTime();
 
       // 新規オブジェクトモデル
-      EipTNote note = (EipTNote) dataContext
-        .createAndRegisterNewObject(EipTNote.class);
+      EipTNote note = Database.create(EipTNote.class);
       // 送信元ユーザ ID（アカウント ID）
       note.setOwnerId(Integer.toString(ALEipUtils.getUserId(rundata)));
       // 依頼者名
@@ -403,15 +399,13 @@ public class NoteFormData extends ALAbstractFormData {
 
       // MAP の登録
       if (memberList != null) {
-        int size = memberList.size();
-        for (int i = 0; i < size; i++) {
-          ALEipUser user = memberList.get(i);
+        for (ALEipUser user : memberList) {
           saveNoteMap(rundata, note, user.getUserId().toString(),
             NoteUtils.NOTE_STAT_NEW);
         }
       }
 
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -420,13 +414,10 @@ public class NoteFormData extends ALAbstractFormData {
 
       /* 送信先に新着ポートレット登録 */
       if (memberList != null) {
-        int size = memberList.size();
-        for (int i = 0; i < size; i++) {
-          ALEipUser user = memberList.get(i);
+        for (ALEipUser user : memberList) {
           if (user.getUserId().getValue() != loginUser.getUserId().getValue()) {
-            WhatsNewUtils.insertWhatsNew(dataContext,
-              WhatsNewUtils.WHATS_NEW_TYPE_NOTE, note.getNoteId().intValue(),
-              (int) user.getUserId().getValue());
+            WhatsNewUtils.insertWhatsNew(WhatsNewUtils.WHATS_NEW_TYPE_NOTE,
+              note.getNoteId().intValue(), (int) user.getUserId().getValue());
           }
         }
       }
@@ -444,9 +435,9 @@ public class NoteFormData extends ALAbstractFormData {
         List<ALEipUserAddr> destMemberList = ALMailUtils.getALEipUserAddrs(
           memberList, (int) loginUser.getUserId().getValue(), false);
 
-        for (int i = 0; i < destMemberList.size(); i++) {
+        for (ALEipUserAddr member : destMemberList) {
           List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
-          destMember.add(destMemberList.get(i));
+          destMember.add(member);
           ALMailUtils.sendMailDelegate(org_id, ALEipUtils.getUserId(rundata),
             destMember, subject, subject, createMsgForPc(),
             createMsgForCellPhone(destMember.get(0).getUserId()),
@@ -511,8 +502,7 @@ public class NoteFormData extends ALAbstractFormData {
       Context context) {
     String userId = Integer.toString(ALEipUtils.getUserId(rundata));
 
-    SelectQuery<EipTNoteMap> query = new SelectQuery<EipTNoteMap>(
-      EipTNoteMap.class);
+    SelectQuery<EipTNoteMap> query = Database.query(EipTNoteMap.class);
 
     if ("received_notes".equals(NoteUtils.getCurrentTab(rundata, context))) {
       Expression exp1 = ExpressionFactory.matchExp(
@@ -626,7 +616,7 @@ public class NoteFormData extends ALAbstractFormData {
    * @param rundata
    * @param context
    * @param msgList
-   *            エラーメッセージのリスト
+   *          エラーメッセージのリスト
    * @return TRUE 成功 FALSE 失敗
    */
   @Override
@@ -845,8 +835,7 @@ public class NoteFormData extends ALAbstractFormData {
 
   private void saveNoteMap(RunData rundata, EipTNote note, String userId,
       String stat) throws ALDBErrorException {
-    EipTNoteMap map = (EipTNoteMap) dataContext
-      .createAndRegisterNewObject(EipTNoteMap.class);
+    EipTNoteMap map = Database.create(EipTNoteMap.class);
     // map.setPrimaryKey(noteId, userId);
     map.setEipTNote(note);
     map.setUserId(userId);

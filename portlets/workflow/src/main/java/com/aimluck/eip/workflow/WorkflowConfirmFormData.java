@@ -51,13 +51,13 @@ import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフローの承認／否認のフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class WorkflowConfirmFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowConfirmFormData.class.getName());
+    .getLogger(WorkflowConfirmFormData.class.getName());
 
   /** コメント */
   private ALStringField comment;
@@ -71,13 +71,14 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
   private DataContext dataContext;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -87,7 +88,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -104,9 +105,10 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
 
   /**
    * リクエストの各フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // コメントの文字数制限
     comment.limitMaxLength(1000);
@@ -119,11 +121,12 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
 
   /**
    * リクエストのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     // コメント
     comment.validate(msgList);
@@ -137,7 +140,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
 
   /**
    * リクエストをデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -145,6 +148,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -152,7 +156,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
 
   /**
    * リクエストをデータベースから削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -160,6 +164,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -167,7 +172,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
 
   /**
    * リクエストをデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -175,6 +180,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -182,7 +188,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているリクエストを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -190,16 +196,18 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTWorkflowRequest request = WorkflowUtils.getEipTWorkflowRequest(
-          rundata, context, true);
-      if (request == null)
+        rundata, context, true);
+      if (request == null) {
         return false;
+      }
 
-      int login_user_id = (int) ALEipUtils.getUserId(rundata);
+      int login_user_id = ALEipUtils.getUserId(rundata);
       EipTWorkflowRequestMap map = null;
       int order = 0;
       List<?> maps = WorkflowUtils.getEipTWorkflowRequestMap(request);
@@ -230,7 +238,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
 
           // 次のユーザーが削除済みだった場合は自動的に承認させる
           if (WorkflowUtils.getUserIsDisabledOrDeleted(map.getUserId()
-              .toString())) {
+            .toString())) {
             // 自動承認
             map.setStatus(WorkflowUtils.DB_STATUS_THROUGH);
           } else {
@@ -257,10 +265,10 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
 
         // 差し戻し先が申請者であり、有効である場合
         EipTWorkflowRequestMap applicantMap = (EipTWorkflowRequestMap) maps
-            .get(0);
+          .get(0);
         if (passback_user_order == 0
-            && !WorkflowUtils.getUserIsDisabledOrDeleted(applicantMap
-                .getUserId().toString())) {
+          && !WorkflowUtils.getUserIsDisabledOrDeleted(applicantMap.getUserId()
+            .toString())) {
           // 申請者に差し戻す
           request.setProgress(WorkflowUtils.DB_PROGRESS_DENAIL);
 
@@ -288,7 +296,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
 
             // 差し戻し先が無効化、もしくは削除されていた場合
             if (WorkflowUtils.getUserIsDisabledOrDeleted(passbackMap
-                .getUserId().toString())) {
+              .getUserId().toString())) {
               // 自動承認した上で次の人を見に行く
               passbackMap.setStatus(WorkflowUtils.DB_STATUS_THROUGH);
             } else {
@@ -314,39 +322,36 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
       dataContext.commitChanges();
 
       // イベントログに保存
-      ALEventlogFactoryService
-          .getInstance()
-          .getEventlogHandler()
-          .log(
-              request.getRequestId(),
-              ALEventlogConstants.PORTLET_TYPE_WORKFLOW,
-              request.getEipTWorkflowCategory().getCategoryName() + " "
-                  + request.getRequestName());
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        request.getRequestId(),
+        ALEventlogConstants.PORTLET_TYPE_WORKFLOW,
+        request.getEipTWorkflowCategory().getCategoryName() + " "
+          + request.getRequestName());
 
       if (sendMailMap != null) {
         /* 次の申請先に新着ポートレット登録 */
         ALEipUser nextUser = ALEipUtils.getALEipUser(sendMailMap.getUserId()
-            .intValue());
+          .intValue());
 
         ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-            .getInstance())
-            .getService(ALAccessControlFactoryService.SERVICE_NAME);
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
         ALAccessControlHandler aclhandler = aclservice
-            .getAccessControlHandler();
+          .getAccessControlHandler();
 
         if (aclhandler.hasAuthority((int) nextUser.getUserId().getValue(),
-            ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_SELF,
-            ALAccessControlConstants.VALUE_ACL_DETAIL)) {
-          WhatsNewUtils.insertWhatsNew(dataContext,
-              WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST, request
-                  .getRequestId().intValue(), (int) nextUser.getUserId()
-                  .getValue());
+          ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_SELF,
+          ALAccessControlConstants.VALUE_ACL_DETAIL)) {
+          WhatsNewUtils
+            .insertWhatsNew(WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST,
+              request.getRequestId().intValue(), (int) nextUser.getUserId()
+                .getValue());
         }
 
         // 次の申請先にメール送信
-        WorkflowUtils.sendMail(rundata, request,
-            ALEipUtils.getALEipUser(sendMailMap.getUserId().intValue()),
-            new ArrayList<String>());
+        WorkflowUtils.sendMail(rundata, request, ALEipUtils
+          .getALEipUser(sendMailMap.getUserId().intValue()),
+          new ArrayList<String>());
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -376,9 +381,10 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_SELF;
   }

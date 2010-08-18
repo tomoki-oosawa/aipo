@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -239,8 +239,9 @@ public class NoteResultData implements ALData {
    * @param field
    */
   public void setAcceptDate(Date date) {
-    if (date == null)
+    if (date == null) {
       return;
+    }
     accept_date.setValue(date);
   }
 
@@ -276,8 +277,9 @@ public class NoteResultData implements ALData {
    * @param field
    */
   public void setConfirmDate(Date date) {
-    if (date == null)
+    if (date == null) {
       return;
+    }
     confirm_date.setValue(date);
   }
 
@@ -285,8 +287,9 @@ public class NoteResultData implements ALData {
    * @param field
    */
   public void setCreateDate(Date date) {
-    if (date == null)
+    if (date == null) {
       return;
+    }
     create_date.setValue(date);
   }
 
@@ -347,8 +350,9 @@ public class NoteResultData implements ALData {
    * @param field
    */
   public void setUpdateDate(Date date) {
-    if (date == null)
+    if (date == null) {
       return;
+    }
     update_date.setValue(date);
   }
 

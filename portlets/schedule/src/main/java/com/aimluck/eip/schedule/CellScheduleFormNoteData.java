@@ -382,9 +382,10 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.
-   *      actions.common.ALAction, org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.
+   * actions.common.ALAction, org.apache.turbine.util.RunData,
+   * org.apache.velocity.context.Context)
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -613,9 +614,9 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine
-   *      .util.RunData, org.apache.velocity.context.Context,
-   *      java.util.ArrayList)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean setFormData(RunData rundata, Context context,
@@ -663,7 +664,8 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
   @Override
   protected boolean validate(List<String> msgList) throws ALDBErrorException,
@@ -684,9 +686,9 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine
-   *      .util.RunData, org.apache.velocity.context.Context,
-   *      java.util.ArrayList)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
@@ -718,9 +720,9 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine
-   *      .util.RunData, org.apache.velocity.context.Context,
-   *      java.util.ArrayList)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
@@ -904,9 +906,8 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
       int u_size = userIds.size();
       for (int i = 0; i < u_size; i++) {
         Integer _id = userIds.get(i);
-        WhatsNewUtils.insertWhatsNew(dataContext,
-          WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE, schedule.getScheduleId()
-            .intValue(), _id.intValue());
+        WhatsNewUtils.insertWhatsNew(WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
+          schedule.getScheduleId().intValue(), _id.intValue());
       }
 
     } catch (Exception e) {
@@ -980,10 +981,10 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
    * destCellularEMailAddrsSize = destCellularEMailAddrs.size(); if
    * (add_dest_type_int == 0) { msg_type = this.MSG_TYPE_NON_ADDR_PC_CELL;
    * return true; } else if (add_dest_type_int == 1) { if (destEmailAddrsSize ==
-   * 0) { msg_type = MSG_TYPE_NON_ADDR_PC; return true; } validUserEmail = true; }
-   * else if (add_dest_type_int == 2) { if (destCellularEMailAddrsSize == 0) {
-   * msg_type = MSG_TYPE_NON_ADDR_CELL; return true; } validCellularMail = true; }
-   * else if (add_dest_type_int == 3) { if ((destEmailAddrsSize == 0) &&
+   * 0) { msg_type = MSG_TYPE_NON_ADDR_PC; return true; } validUserEmail = true;
+   * } else if (add_dest_type_int == 2) { if (destCellularEMailAddrsSize == 0) {
+   * msg_type = MSG_TYPE_NON_ADDR_CELL; return true; } validCellularMail = true;
+   * } else if (add_dest_type_int == 3) { if ((destEmailAddrsSize == 0) &&
    * (destCellularEMailAddrsSize == 0)) { msg_type = MSG_TYPE_NON_ADDR_PC_CELL;
    * return true; } else { if (destEmailAddrsSize == 0) { msg_type =
    * MSG_TYPE_NON_ADDR_PC; } else { validUserEmail = true; } if
@@ -1025,14 +1026,14 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
    * Calendar end_cal = Calendar.getInstance();
    * end_cal.setTime(schedule.getEndDate());
    * 
-   * StringBuffer result = new StringBuffer(); // DN -> 毎日 (A = N -> 期限なし A = L ->
-   * 期限あり) // WnnnnnnnN W01111110 -> 毎週(月～金用) // MnnN M25 -> 毎月25日 // S ->
+   * StringBuffer result = new StringBuffer(); // DN -> 毎日 (A = N -> 期限なし A = L
+   * -> 期限あり) // WnnnnnnnN W01111110 -> 毎週(月～金用) // MnnN M25 -> 毎月25日 // S ->
    * 期間での指定 String ptn = schedule.getRepeatPattern(); int count = 0; boolean
-   * is_repeat = true; boolean is_span = false; // 毎日 if (ptn.charAt(0) == 'D') {
-   * result.append("毎日"); count = 1; // 毎週 } else if (ptn.charAt(0) == 'W') {
-   * result.append(new StringBuffer().append("毎週 ").append( ptn.charAt(1) != '0' ?
-   * "日" : "").append( ptn.charAt(2) != '0' ? "月" : "").append( ptn.charAt(3) !=
-   * '0' ? "火" : "").append( ptn.charAt(4) != '0' ? "水" : "").append(
+   * is_repeat = true; boolean is_span = false; // 毎日 if (ptn.charAt(0) == 'D')
+   * { result.append("毎日"); count = 1; // 毎週 } else if (ptn.charAt(0) == 'W') {
+   * result.append(new StringBuffer().append("毎週 ").append( ptn.charAt(1) != '0'
+   * ? "日" : "").append( ptn.charAt(2) != '0' ? "月" : "").append( ptn.charAt(3)
+   * != '0' ? "火" : "").append( ptn.charAt(4) != '0' ? "水" : "").append(
    * ptn.charAt(5) != '0' ? "木" : "").append( ptn.charAt(6) != '0' ? "金" :
    * "").append( ptn.charAt(7) != '0' ? "土" : "").append(" 曜日").toString());
    * count = 8; // 毎月 } else if (ptn.charAt(0) == 'M') { result.append("毎月
@@ -1100,8 +1101,8 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
    * @return
    */
   /*
-   * private String createMsgForCellPhone() { ALBaseUser user = null; try { user =
-   * (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(
+   * private String createMsgForCellPhone() { ALBaseUser user = null; try { user
+   * = (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(
    * loginUser.getUserId().toString())); } catch (Exception e) { return ""; }
    * String CR = System.getProperty("line.separator"); StringBuffer body = new
    * StringBuffer(""); body.append(loginUser.getAliasName().toString()); if
@@ -1127,9 +1128,9 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
    */
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine
-   *      .util.RunData, org.apache.velocity.context.Context,
-   *      java.util.ArrayList)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
 
   @Override
@@ -1507,9 +1508,8 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
       int u_size = userIds.size();
       for (int i = 0; i < u_size; i++) {
         Integer _id = userIds.get(i);
-        WhatsNewUtils.insertWhatsNew(dataContext,
-          WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE, schedule.getScheduleId()
-            .intValue(), _id.intValue());
+        WhatsNewUtils.insertWhatsNew(WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
+          schedule.getScheduleId().intValue(), _id.intValue());
       }
 
     } catch (Exception e) {
@@ -1567,9 +1567,9 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine
-   *      .util.RunData, org.apache.velocity.context.Context,
-   *      java.util.ArrayList)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,

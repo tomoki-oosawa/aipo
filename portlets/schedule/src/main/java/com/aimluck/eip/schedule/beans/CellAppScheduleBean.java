@@ -34,7 +34,7 @@ public class CellAppScheduleBean implements ALData, Cloneable {
 
   private String end_date;
 
-  private String format = "yyyyMMddHHmm";
+  private final String format = "yyyyMMddHHmm";
 
   private ALDateTimeField timeField;
 
@@ -105,9 +105,9 @@ public class CellAppScheduleBean implements ALData, Cloneable {
     sb.append("\"").append(str).append("\"");
     return sb.toString();
   }
+
   @Override
   protected Object clone() throws CloneNotSupportedException {
-    // TODO 自動生成されたメソッド・スタブ
     return super.clone();
   }
 }

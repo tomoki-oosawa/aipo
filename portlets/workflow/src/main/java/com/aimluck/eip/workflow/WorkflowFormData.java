@@ -67,13 +67,13 @@ import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフローのフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class WorkflowFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowFormData.class.getName());
+    .getLogger(WorkflowFormData.class.getName());
 
   /** Request名 */
   private ALStringField request_name;
@@ -126,13 +126,14 @@ public class WorkflowFormData extends ALAbstractFormData {
   private DataContext dataContext;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -148,7 +149,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -187,7 +188,7 @@ public class WorkflowFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -196,7 +197,7 @@ public class WorkflowFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -205,7 +206,7 @@ public class WorkflowFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -213,6 +214,7 @@ public class WorkflowFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res = super.setFormData(rundata, context, msgList);
@@ -220,18 +222,18 @@ public class WorkflowFormData extends ALAbstractFormData {
       try {
         String mode = rundata.getParameters().getString(ALEipConstants.MODE);
         if (ALEipConstants.MODE_INSERT.equals(mode)
-            || ALEipConstants.MODE_UPDATE.equals(mode)) {
+          || ALEipConstants.MODE_UPDATE.equals(mode)) {
 
           is_saved_route = rundata.getParameters().getBoolean("is_saved_route");
           String userNames[] = rundata.getParameters().getStrings("positions");
           if (is_saved_route) {
 
             DataContext dataContext = DatabaseOrmService.getInstance()
-                .getDataContext();
+              .getDataContext();
 
             SelectQuery query1 = new SelectQuery(EipTWorkflowRoute.class);
             Expression exp1 = ExpressionFactory.matchDbExp(
-                EipTWorkflowRoute.ROUTE_ID_PK_COLUMN, route_id.getValue());
+              EipTWorkflowRoute.ROUTE_ID_PK_COLUMN, route_id.getValue());
 
             query1.setQualifier(exp1);
 
@@ -251,7 +253,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
               SelectQuery query = new SelectQuery(TurbineUser.class);
               Expression exp2 = ExpressionFactory.inExp(
-                  TurbineUser.LOGIN_NAME_PROPERTY, routeUserNames);
+                TurbineUser.LOGIN_NAME_PROPERTY, routeUserNames);
               query.setQualifier(exp2);
 
               List<?> list = dataContext.performQuery(query);
@@ -268,7 +270,8 @@ public class WorkflowFormData extends ALAbstractFormData {
                 user.initField();
                 user.setUserId(record1.getUserId().intValue());
                 user.setName(record1.getLoginName());
-                user.setAliasName(record1.getFirstName(), record1.getLastName());
+                user
+                  .setAliasName(record1.getFirstName(), record1.getLastName());
                 memberList.add(user);
               }
 
@@ -281,12 +284,12 @@ public class WorkflowFormData extends ALAbstractFormData {
           } else if (userNames != null && userNames.length > 0) {
 
             DataContext dataContext = DatabaseOrmService.getInstance()
-                .getDataContext();
+              .getDataContext();
             SelectQuery query = new SelectQuery(TurbineUser.class);
             Expression exp1 = ExpressionFactory.inExp(
-                TurbineUser.LOGIN_NAME_PROPERTY, userNames);
+              TurbineUser.LOGIN_NAME_PROPERTY, userNames);
             Expression exp2 = ExpressionFactory.matchExp(
-                TurbineUser.DISABLED_PROPERTY, "F");
+              TurbineUser.DISABLED_PROPERTY, "F");
             query.setQualifier(exp1);
             query.andQualifier(exp2);
 
@@ -328,7 +331,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * テンプレートを渡す
-   *
+   * 
    * @param num
    * @return
    */
@@ -346,7 +349,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * 指定したユーザ名のオブジェクトを取得する．
-   *
+   * 
    * @param userList
    * @param userName
    * @return
@@ -364,9 +367,10 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * リクエストの各フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // リクエスト名の文字数制限
     request_name.limitMaxLength(50);
@@ -379,11 +383,12 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * リクエストのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     // リクエスト名
     request_name.validate(msgList);
@@ -405,7 +410,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * リクエストをデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -413,25 +418,27 @@ public class WorkflowFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTWorkflowRequest request = WorkflowUtils
-          .getEipTWorkflowRequestForOwner(rundata, context);
-      if (request == null)
+        .getEipTWorkflowRequestForOwner(rundata, context);
+      if (request == null) {
         return false;
+      }
 
       // リクエスト名
       request_name.setValue(request.getRequestName());
       // カテゴリID
       category_id.setValue(request.getEipTWorkflowCategory().getCategoryId()
-          .longValue());
+        .longValue());
       // 申請経路ID
       if (request.getEipTWorkflowRoute() != null) {
         is_saved_route = true;
         route_id.setValue(request.getEipTWorkflowRoute().getRouteId()
-            .longValue());
+          .longValue());
         route.setValue(request.getEipTWorkflowRoute().getRoute());
       }
       // 優先度
@@ -460,7 +467,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * リクエストをデータベースから削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -468,18 +475,19 @@ public class WorkflowFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTWorkflowRequest request = WorkflowUtils.getEipTWorkflowRequestAll(
-          rundata, context);
+        rundata, context);
       int userId = ALEipUtils.getUserId(rundata);
 
       if (!request.getUserId().equals(userId)) {
         // 自分のワークフローではない場合、そのワークフローが自分より前に差し戻せるか確かめる
         List<?> requestMapList = WorkflowUtils
-            .getEipTWorkflowRequestMap(request);
+          .getEipTWorkflowRequestMap(request);
         EipTWorkflowRequestMap requestMap;
         TurbineUser requestMapUser;
         int listLength = requestMapList.size();
@@ -491,7 +499,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
           // 自分より前に差し戻せるなら、削除させない
           requestMapUser = WorkflowUtils.getTurbineUser(requestMap.getUserId()
-              .toString());
+            .toString());
           if ("F".equals(requestMapUser.getDisabled())) {
             return false;
           }
@@ -505,9 +513,9 @@ public class WorkflowFormData extends ALAbstractFormData {
       // ファイル削除処理
       List<String> fpaths = new ArrayList<String>();
       SelectQuery query = new SelectQuery(EipTWorkflowFile.class);
-      query.andQualifier(ExpressionFactory.matchDbExp(
-          EipTWorkflowFile.EIP_TWORKFLOW_REQUEST_PROPERTY,
-          request.getRequestId()));
+      query.andQualifier(ExpressionFactory
+        .matchDbExp(EipTWorkflowFile.EIP_TWORKFLOW_REQUEST_PROPERTY, request
+          .getRequestId()));
       List<?> files = dataContext.performQuery(query);
       if (files != null && files.size() > 0) {
         int fsize = files.size();
@@ -522,7 +530,7 @@ public class WorkflowFormData extends ALAbstractFormData {
         int fsize = fpaths.size();
         for (int i = 0; i < fsize; i++) {
           file = new File(WorkflowUtils.getSaveDirPath(org_id, uid)
-              + fpaths.get(i));
+            + fpaths.get(i));
           if (file.exists()) {
             file.delete();
           }
@@ -534,12 +542,9 @@ public class WorkflowFormData extends ALAbstractFormData {
       dataContext.commitChanges();
 
       // イベントログに保存
-      ALEventlogFactoryService
-          .getInstance()
-          .getEventlogHandler()
-          .log(request.getRequestId(),
-              ALEventlogConstants.PORTLET_TYPE_WORKFLOW,
-              catname + " " + reqname);
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        request.getRequestId(), ALEventlogConstants.PORTLET_TYPE_WORKFLOW,
+        catname + " " + reqname);
 
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -550,7 +555,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * リクエストをデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -558,17 +563,18 @@ public class WorkflowFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       Date nowDate = Calendar.getInstance().getTime();
 
       EipTWorkflowCategory category = WorkflowUtils.getEipTWorkflowCategory(
-          dataContext, Long.valueOf(category_id.getValue()));
+        dataContext, Long.valueOf(category_id.getValue()));
 
       // 新規オブジェクトモデル
       EipTWorkflowRequest request = (EipTWorkflowRequest) dataContext
-          .createAndRegisterNewObject(EipTWorkflowRequest.class);
+        .createAndRegisterNewObject(EipTWorkflowRequest.class);
 
       // リクエスト名
       request.setRequestName(request_name.getValue());
@@ -579,12 +585,12 @@ public class WorkflowFormData extends ALAbstractFormData {
       // 申請経路ID
       if (is_saved_route) {
         EipTWorkflowRoute route = WorkflowUtils.getEipTWorkflowRoute(
-            dataContext, Long.valueOf(route_id.getValue()));
+          dataContext, Long.valueOf(route_id.getValue()));
         request.setEipTWorkflowRoute(route);
       }
       // ユーザーID
       request.setUserId(Integer
-          .valueOf((int) login_user.getUserId().getValue()));
+        .valueOf((int) login_user.getUserId().getValue()));
       // 優先度
       request.setPriority(Short.valueOf((short) priority.getValue()));
       // メモ
@@ -600,7 +606,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
       // 申請先の設定
       insertEipTWorkflowRequestMap(request, login_user,
-          WorkflowUtils.DB_STATUS_REQUEST, 0, nowDate);
+        WorkflowUtils.DB_STATUS_REQUEST, 0, nowDate);
 
       // 申請先が削除・無効化されていたら次へまわす
       int size = memberList.size();
@@ -609,13 +615,13 @@ public class WorkflowFormData extends ALAbstractFormData {
       for (i = 0; i < size; i++) {
         toUser = memberList.get(i);
         if (WorkflowUtils.getUserIsDisabledOrDeleted(toUser.getUserId()
-            .getValueAsString())) {
+          .getValueAsString())) {
           insertEipTWorkflowRequestMap(request, toUser,
-              WorkflowUtils.DB_STATUS_THROUGH, i + 1, nowDate);
+            WorkflowUtils.DB_STATUS_THROUGH, i + 1, nowDate);
         } else {
           // 0から数えてi番目のユーザーが確認中
           insertEipTWorkflowRequestMap(request, toUser,
-              WorkflowUtils.DB_STATUS_CONFIRM, (i + 1), nowDate);
+            WorkflowUtils.DB_STATUS_CONFIRM, (i + 1), nowDate);
           break;
         }
       }
@@ -623,12 +629,12 @@ public class WorkflowFormData extends ALAbstractFormData {
       // i + 1番目のユーザー以降の状態を「確認前」状態にする
       for (int j = i + 1; j < size; j++) {
         insertEipTWorkflowRequestMap(request, memberList.get(j),
-            WorkflowUtils.DB_STATUS_WAIT, (j + 1), nowDate);
+          WorkflowUtils.DB_STATUS_WAIT, (j + 1), nowDate);
       }
 
       // 添付ファイル処理
       if (!WorkflowUtils.insertFileDataDelegate(rundata, context, request,
-          null, fileuploadList, folderName, msgList)) {
+        null, fileuploadList, folderName, msgList)) {
         return false;
       }
 
@@ -636,33 +642,28 @@ public class WorkflowFormData extends ALAbstractFormData {
       dataContext.commitChanges();
 
       // イベントログに保存
-      ALEventlogFactoryService
-          .getInstance()
-          .getEventlogHandler()
-          .log(
-              request.getRequestId(),
-              ALEventlogConstants.PORTLET_TYPE_WORKFLOW,
-              request.getEipTWorkflowCategory().getCategoryName() + " "
-                  + request_name.getValue());
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        request.getRequestId(),
+        ALEventlogConstants.PORTLET_TYPE_WORKFLOW,
+        request.getEipTWorkflowCategory().getCategoryName() + " "
+          + request_name.getValue());
 
       // 削除・無効化されていない最初の申請先に新着ポートレット登録
       ALEipUser nextUser = memberList.get(i);
       ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-          .getInstance())
-          .getService(ALAccessControlFactoryService.SERVICE_NAME);
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
       if (aclhandler.hasAuthority((int) nextUser.getUserId().getValue(),
-          ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_SELF,
-          ALAccessControlConstants.VALUE_ACL_DETAIL)) {
-        WhatsNewUtils.insertWhatsNew(dataContext,
-            WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST, request
-                .getRequestId().intValue(), (int) nextUser.getUserId()
-                .getValue());
+        ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_SELF,
+        ALAccessControlConstants.VALUE_ACL_DETAIL)) {
+        WhatsNewUtils.insertWhatsNew(
+          WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST, request.getRequestId()
+            .intValue(), (int) nextUser.getUserId().getValue());
       }
       // 次の申請先にメール送信
       WorkflowUtils.sendMail(rundata, request, nextUser,
-          new ArrayList<String>());
+        new ArrayList<String>());
 
       File folder = FileuploadUtils.getFolder(org_id, uid, folderName);
       // 添付ファイル保存先のフォルダを削除
@@ -677,7 +678,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているリクエストを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -685,23 +686,25 @@ public class WorkflowFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTWorkflowRequest oldrequest = WorkflowUtils
-          .getEipTWorkflowRequestForOwner(rundata, context);
-      if (oldrequest == null)
+        .getEipTWorkflowRequestForOwner(rundata, context);
+      if (oldrequest == null) {
         return false;
+      }
 
       Date nowDate = Calendar.getInstance().getTime();
 
       EipTWorkflowCategory category = WorkflowUtils.getEipTWorkflowCategory(
-          dataContext, Long.valueOf(category_id.getValue()));
+        dataContext, Long.valueOf(category_id.getValue()));
 
       // 新規オブジェクトモデル
       EipTWorkflowRequest request = (EipTWorkflowRequest) dataContext
-          .createAndRegisterNewObject(EipTWorkflowRequest.class);
+        .createAndRegisterNewObject(EipTWorkflowRequest.class);
 
       // リクエスト名
       request.setRequestName(request_name.getValue());
@@ -716,12 +719,12 @@ public class WorkflowFormData extends ALAbstractFormData {
       // 申請経路ID
       if (is_saved_route) {
         EipTWorkflowRoute route = WorkflowUtils.getEipTWorkflowRoute(
-            dataContext, Long.valueOf(route_id.getValue()));
+          dataContext, Long.valueOf(route_id.getValue()));
         request.setEipTWorkflowRoute(route);
       }
       // ユーザーID
       request.setUserId(Integer
-          .valueOf((int) login_user.getUserId().getValue()));
+        .valueOf((int) login_user.getUserId().getValue()));
       // 優先度
       request.setPriority(Short.valueOf((short) priority.getValue()));
       // メモ
@@ -737,7 +740,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
       // 申請先の設定
       insertEipTWorkflowRequestMap(request, login_user,
-          WorkflowUtils.DB_STATUS_REQUEST, 0, nowDate);
+        WorkflowUtils.DB_STATUS_REQUEST, 0, nowDate);
 
       // 申請先が削除・無効化されていたら次へまわす
       int size = memberList.size();
@@ -746,13 +749,13 @@ public class WorkflowFormData extends ALAbstractFormData {
       for (i = 0; i < size; i++) {
         toUser = memberList.get(i);
         if (WorkflowUtils.getUserIsDisabledOrDeleted(toUser.getUserId()
-            .getValueAsString())) {
+          .getValueAsString())) {
           insertEipTWorkflowRequestMap(request, toUser,
-              WorkflowUtils.DB_STATUS_THROUGH, i + 1, nowDate);
+            WorkflowUtils.DB_STATUS_THROUGH, i + 1, nowDate);
         } else {
           // 0から数えてi番目のユーザーが確認中
           insertEipTWorkflowRequestMap(request, toUser,
-              WorkflowUtils.DB_STATUS_CONFIRM, (i + 1), nowDate);
+            WorkflowUtils.DB_STATUS_CONFIRM, (i + 1), nowDate);
           break;
         }
       }
@@ -760,12 +763,12 @@ public class WorkflowFormData extends ALAbstractFormData {
       // i + 1番目のユーザー以降の状態を「確認前」状態にする
       for (int j = i + 1; j < size; j++) {
         insertEipTWorkflowRequestMap(request, memberList.get(j),
-            WorkflowUtils.DB_STATUS_WAIT, (j + 1), nowDate);
+          WorkflowUtils.DB_STATUS_WAIT, (j + 1), nowDate);
       }
 
       // 添付ファイル処理
       if (!WorkflowUtils.insertFileDataDelegate(rundata, context, request,
-          oldrequest, fileuploadList, folderName, msgList)) {
+        oldrequest, fileuploadList, folderName, msgList)) {
         return false;
       }
 
@@ -778,34 +781,29 @@ public class WorkflowFormData extends ALAbstractFormData {
       dataContext.commitChanges();
 
       // イベントログに保存
-      ALEventlogFactoryService
-          .getInstance()
-          .getEventlogHandler()
-          .log(
-              request.getRequestId(),
-              ALEventlogConstants.PORTLET_TYPE_WORKFLOW,
-              request.getEipTWorkflowCategory().getCategoryName() + " "
-                  + request_name.getValue());
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        request.getRequestId(),
+        ALEventlogConstants.PORTLET_TYPE_WORKFLOW,
+        request.getEipTWorkflowCategory().getCategoryName() + " "
+          + request_name.getValue());
 
       // 削除・無効化されていない最初の申請先に新着ポートレット登録
       ALEipUser nextUser = memberList.get(i);
 
       ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-          .getInstance())
-          .getService(ALAccessControlFactoryService.SERVICE_NAME);
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
       if (aclhandler.hasAuthority((int) nextUser.getUserId().getValue(),
-          ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_SELF,
-          ALAccessControlConstants.VALUE_ACL_DETAIL)) {
-        WhatsNewUtils.insertWhatsNew(dataContext,
-            WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST, request
-                .getRequestId().intValue(), (int) nextUser.getUserId()
-                .getValue());
+        ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_SELF,
+        ALAccessControlConstants.VALUE_ACL_DETAIL)) {
+        WhatsNewUtils.insertWhatsNew(
+          WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST, request.getRequestId()
+            .intValue(), (int) nextUser.getUserId().getValue());
       }
       // 次の申請先にメール送信
       WorkflowUtils.sendMail(rundata, request, nextUser,
-          new ArrayList<String>());
+        new ArrayList<String>());
 
       File folder = FileuploadUtils.getFolder(org_id, uid, folderName);
       // 添付ファイル保存先のフォルダを削除
@@ -819,7 +817,7 @@ public class WorkflowFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param request
    * @param user
    * @param status
@@ -828,7 +826,7 @@ public class WorkflowFormData extends ALAbstractFormData {
   private void insertEipTWorkflowRequestMap(EipTWorkflowRequest request,
       ALEipUser user, String status, int order, Date now) {
     EipTWorkflowRequestMap map = (EipTWorkflowRequestMap) dataContext
-        .createAndRegisterNewObject(EipTWorkflowRequestMap.class);
+      .createAndRegisterNewObject(EipTWorkflowRequestMap.class);
     int userid = (int) user.getUserId().getValue();
     map.setEipTWorkflowRequest(request);
     map.setUserId(Integer.valueOf(userid));
@@ -841,7 +839,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * テンプレートを渡す
-   *
+   * 
    * @param num
    * @return
    */
@@ -858,14 +856,14 @@ public class WorkflowFormData extends ALAbstractFormData {
         List<ALEipUser> list = new ArrayList<ALEipUser>();
         SelectQuery query = new SelectQuery(TurbineUser.class);
         Expression exp11 = ExpressionFactory.matchExp(
-            TurbineUser.DISABLED_PROPERTY, "F");
+          TurbineUser.DISABLED_PROPERTY, "F");
         Expression exp = ExpressionFactory.matchDbExp(
-            TurbineUser.USER_ID_PK_COLUMN, routeArray[0]);
+          TurbineUser.USER_ID_PK_COLUMN, routeArray[0]);
 
         Expression exptmp;
         for (int i = 1; i < routeArrayLength; i++) {
           exptmp = ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN,
-              routeArray[i]);
+            routeArray[i]);
           exp = exp.orExp(exptmp);
         }
         exp = exp.andExp(exp11);
@@ -881,8 +879,8 @@ public class WorkflowFormData extends ALAbstractFormData {
             user = list.get(j);
             String userid = user.getUserId().toString();
             if (userid.equals(routeArray[i])) {
-              result.append(user.getName()).append(",")
-                  .append(user.getAliasName().toString()).append(",");
+              result.append(user.getName()).append(",").append(
+                user.getAliasName().toString()).append(",");
             }
           }
         }
@@ -895,7 +893,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * テンプレートを渡す
-   *
+   * 
    * @param num
    * @return
    */
@@ -930,7 +928,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * カテゴリIDを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALNumberField getCategoryId() {
@@ -939,7 +937,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * 申請経路IDを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALNumberField getRouteId() {
@@ -948,7 +946,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getNote() {
@@ -957,7 +955,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * メモのフィールドを設定します。 <BR>
-   *
+   * 
    * @param str
    * @return
    */
@@ -967,7 +965,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * 金額を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALNumberField getPrice() {
@@ -976,7 +974,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * 金額を設定します。 <BR>
-   *
+   * 
    * @param str
    * @return
    */
@@ -986,7 +984,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * 優先度を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALNumberField getPriority() {
@@ -995,7 +993,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * 優先度を設定します。 <BR>
-   *
+   * 
    * @param str
    * @return
    */
@@ -1005,7 +1003,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * リクエスト名を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getRequestName() {
@@ -1014,7 +1012,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * リクエスト名を格納します。 <BR>
-   *
+   * 
    * @param str
    * @return
    */
@@ -1025,7 +1023,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * カテゴリ一覧を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public List<WorkflowCategoryResultData> getCategoryList() {
@@ -1034,7 +1032,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * 申請経路一覧を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public List<WorkflowRouteResultData> getRouteList() {
@@ -1043,7 +1041,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * グループメンバーを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -1052,7 +1050,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * グループメンバーを格納します。 <BR>
-   *
+   * 
    * @param str
    * @return
    */
@@ -1061,7 +1059,7 @@ public class WorkflowFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param groupname
    * @return
    */
@@ -1070,7 +1068,7 @@ public class WorkflowFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -1091,9 +1089,10 @@ public class WorkflowFormData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_SELF;
   }

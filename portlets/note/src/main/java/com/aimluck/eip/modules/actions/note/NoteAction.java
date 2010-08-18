@@ -44,12 +44,13 @@ public class NoteAction extends ALBaseAction {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(NoteAction.class.getName());
+    .getLogger(NoteAction.class.getName());
 
   /**
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
     // セッション情報をクリアする
@@ -60,11 +61,12 @@ public class NoteAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
 
@@ -95,16 +97,16 @@ public class NoteAction extends ALBaseAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（通常時）
     listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
-        .getInitParameter("p1a-rows")));
+      .getInitParameter("p1a-rows")));
     listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-        context).getPortletConfig().getInitParameter("p3a-strlen")));
+      context).getPortletConfig().getInitParameter("p3a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "note");
   }
 
   /**
    * 新規に伝言メモを作成するページを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -145,7 +147,7 @@ public class NoteAction extends ALBaseAction {
 
   /**
    * 伝言メモを一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -157,17 +159,17 @@ public class NoteAction extends ALBaseAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1b-rows")));
+      .getPortlet(rundata, context).getPortletConfig().getInitParameter(
+        "p1b-rows")));
     listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-        context).getPortletConfig().getInitParameter("p3a-strlen")));
+      context).getPortletConfig().getInitParameter("p3a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "note-list");
   }
 
   /**
    * 伝言メモを一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -188,7 +190,7 @@ public class NoteAction extends ALBaseAction {
 
   /**
    * 伝言メモを削除する（単数）． <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -213,7 +215,7 @@ public class NoteAction extends ALBaseAction {
 
   /**
    * 伝言メモを削除する（複数）． <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -236,7 +238,7 @@ public class NoteAction extends ALBaseAction {
 
   /**
    * ノーマル画面の伝言メモを既読にする（複数）． <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -250,7 +252,7 @@ public class NoteAction extends ALBaseAction {
 
   /**
    * 最大化画面の伝言メモを既読にする（複数）． <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception

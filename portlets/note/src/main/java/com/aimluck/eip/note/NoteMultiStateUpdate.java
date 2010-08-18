@@ -20,10 +20,8 @@ package com.aimluck.eip.note;
 
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -35,7 +33,7 @@ import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.note.util.NoteUtils;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
@@ -43,51 +41,47 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
  * 複数の伝言メモを既読にするクラスです
  */
 public class NoteMultiStateUpdate extends ALAbstractCheckList {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(NoteMultiStateUpdate.class.getName());
+    .getLogger(NoteMultiStateUpdate.class.getName());
 
   /**
    * @see com.aimluck.eip.common.ALAbstractCheckList#action(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList,
    *      java.util.ArrayList)
    */
-  protected boolean action(RunData rundata, Context context, List<String> values,
-      List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
+  @Override
+  protected boolean action(RunData rundata, Context context,
+      List<String> values, List<String> msgList)
+      throws ALPageNotFoundException, ALDBErrorException {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTNoteMap.class);
+
       Expression exp1 = ExpressionFactory.matchExp(
-          EipTNoteMap.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-              .getUserId(rundata)));
-      query.setQualifier(exp1);
+        EipTNoteMap.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
+          .getUserId(rundata)));
       Expression exp2 = ExpressionFactory.inDbExp(EipTNote.NOTE_ID_PK_COLUMN,
-          values);
-      query.andQualifier(exp2);
-      List<?> list = dataContext.performQuery(query);
+        values);
 
-      if (list == null || list.size() <= 0)
+      List<EipTNoteMap> list = Database.query(EipTNoteMap.class, exp1)
+        .andQualifier(exp2).perform();
+
+      if (list == null || list.size() <= 0) {
         return false;
-
-      EipTNoteMap notemap = null;
-      int size = list.size();
-      int uid = ALEipUtils.getUserId(rundata);
-      for (int i = 0; i < size; i++) {
-        notemap = (EipTNoteMap) list.get(i);
-        notemap.setNoteStat(NoteUtils.NOTE_STAT_READ);
-        /**
-         * 新着ポートレット既読処理
-         */
-        WhatsNewUtils.shiftWhatsNewReadFlag(WhatsNewUtils.WHATS_NEW_TYPE_NOTE,
-            notemap.getNoteId().intValue(), uid);
-        /**
-         *
-         */
       }
 
-      dataContext.commitChanges();
+      int uid = ALEipUtils.getUserId(rundata);
+      for (EipTNoteMap notemap : list) {
+        notemap.setNoteStat(NoteUtils.NOTE_STAT_READ);
+
+        // 新着ポートレット既読処理
+        WhatsNewUtils.shiftWhatsNewReadFlag(WhatsNewUtils.WHATS_NEW_TYPE_NOTE,
+          notemap.getNoteId().intValue(), uid);
+      }
+
+      Database.commit();
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }

@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -47,7 +46,7 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.note.util.NoteUtils;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -93,16 +92,15 @@ public class NoteSelectData extends ALAbstractSelectData {
   /** <code>userAccountURI</code> ポートレット AccountEdit のへのリンク */
   private String userAccountURI;
 
-  private DataContext dataContext;
-
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
@@ -149,8 +147,6 @@ public class NoteSelectData extends ALAbstractSelectData {
     userAccountURI = NoteUtils.getPortletURIinPersonalConfigPane(rundata,
       "AccountEdit");
 
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
-
     super.init(action, rundata, context);
   }
 
@@ -158,6 +154,7 @@ public class NoteSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected List<?> selectList(RunData rundata, Context context) {
 
     try {
@@ -187,6 +184,7 @@ public class NoteSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected Object selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException {
     userId = Integer.toString(ALEipUtils.getUserId(rundata));
@@ -219,6 +217,7 @@ public class NoteSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(Object obj) {
     try {
       EipTNoteMap map = (EipTNoteMap) obj;
@@ -252,8 +251,8 @@ public class NoteSelectData extends ALAbstractSelectData {
       }
       rd.setSubjectType(record.getSubjectType());
       if ("0".equals(record.getSubjectType())) {
-        rd.setCustomSubject(ALCommonUtils.compressString(
-          record.getCustomSubject(), getStrLength()));
+        rd.setCustomSubject(ALCommonUtils.compressString(record
+          .getCustomSubject(), getStrLength()));
       }
 
       rd.setMessage(record.getMessage());
@@ -297,11 +296,12 @@ public class NoteSelectData extends ALAbstractSelectData {
         // 未読フラグ
         map.setNoteStat(NoteUtils.NOTE_STAT_UNREAD);
       }
-      dataContext.commitChanges();
+      Database.commit();
 
       return rd;
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error(t);
       return null;
     }
   }
@@ -309,28 +309,23 @@ public class NoteSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(Object obj) {
-    if (obj == null)
+    if (obj == null) {
       return null;
+    }
     try {
       Date nowDate = Calendar.getInstance().getTime();
 
       EipTNoteMap map = null;
       EipTNote record = (EipTNote) obj;
-
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      SelectQuery<EipTNoteMap> mapquery = new SelectQuery<EipTNoteMap>(
-        EipTNoteMap.class);
       Expression mapexp = ExpressionFactory.matchExp(
         EipTNoteMap.NOTE_ID_PROPERTY, record.getNoteId());
-      mapquery.setQualifier(mapexp);
-      List<?> list = mapquery.perform();
+      List<EipTNoteMap> list = Database.query(EipTNoteMap.class, mapexp)
+        .perform();
 
       List<Integer> users = new ArrayList<Integer>();
-      int size = list.size();
-      for (int i = 0; i < size; i++) {
-        EipTNoteMap notemap = (EipTNoteMap) list.get(i);
+      for (EipTNoteMap notemap : list) {
         if (userId.equals(notemap.getUserId())) {
           map = notemap;
         }
@@ -339,14 +334,13 @@ public class NoteSelectData extends ALAbstractSelectData {
           statusList.put(Integer.valueOf(notemap.getUserId()),
             NoteUtils.NOTE_STAT_DELETED);
         } else {
-          statusList.put(Integer.valueOf(notemap.getUserId()),
-            notemap.getNoteStat());
+          statusList.put(Integer.valueOf(notemap.getUserId()), notemap
+            .getNoteStat());
         }
         users.add(Integer.valueOf(notemap.getUserId()));
       }
 
-      SelectQuery<TurbineUser> query = new SelectQuery<TurbineUser>(
-        TurbineUser.class);
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
       Expression exp = ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN,
         users);
       query.setQualifier(exp);
@@ -408,7 +402,7 @@ public class NoteSelectData extends ALAbstractSelectData {
         rd.setUpdateDate(nowDate);
 
         // 伝言メモを登録
-        dataContext.commitChanges();
+        Database.commit();
       } else {
         rd.setConfirmDate(map.getConfirmDate());
         rd.setNoteStat(map.getNoteStat());
@@ -416,6 +410,7 @@ public class NoteSelectData extends ALAbstractSelectData {
       }
       return rd;
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return null;
     }
@@ -424,6 +419,7 @@ public class NoteSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("client_name", EipTNoteMap.EIP_TNOTE_PROPERTY + "."
@@ -445,15 +441,14 @@ public class NoteSelectData extends ALAbstractSelectData {
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    */
   private SelectQuery<EipTNoteMap> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipTNoteMap> query = new SelectQuery<EipTNoteMap>(
-      EipTNoteMap.class);
+    SelectQuery<EipTNoteMap> query = Database.query(EipTNoteMap.class);
 
     Expression exp1 = ExpressionFactory.matchExp(EipTNoteMap.USER_ID_PROPERTY,
       Integer.valueOf(userId));
@@ -479,27 +474,27 @@ public class NoteSelectData extends ALAbstractSelectData {
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    */
   private SelectQuery<EipTNote> getSelectQueryForDetail(RunData rundata,
       Context context) {
-    SelectQuery<EipTNote> query = new SelectQuery<EipTNote>(EipTNote.class);
-    return query;
+    return Database.query(EipTNote.class);
   }
 
   private String getDestUserNamesLimit(EipTNote note) throws ALDBErrorException {
     StringBuffer destUserNames = new StringBuffer();
-    List<?> mapList = note.getEipTNoteMaps();
+    @SuppressWarnings("unchecked")
+    List<EipTNoteMap> mapList = note.getEipTNoteMaps();
     if (mapList == null || mapList.size() == 0) {
       logger.error("[NoteSelectData] DatabaseException");
       throw new ALDBErrorException();
     }
     int mapListSize = mapList.size();
     for (int i = 0; i < mapListSize; i++) {
-      EipTNoteMap tmpmap = (EipTNoteMap) mapList.get(i);
+      EipTNoteMap tmpmap = mapList.get(i);
       if (tmpmap.getUserId().equals(userId)) {
         mapList.remove(i);
         break;
@@ -508,13 +503,13 @@ public class NoteSelectData extends ALAbstractSelectData {
 
     mapListSize = mapList.size();
     if (mapListSize >= 2) {
-      EipTNoteMap tmpmap = (EipTNoteMap) mapList.get(0);
+      EipTNoteMap tmpmap = mapList.get(0);
       ALEipUser user = ALEipUtils.getALEipUser(Integer.valueOf(
         tmpmap.getUserId()).intValue());
       destUserNames.append(user.getAliasName());
       destUserNames.append("、・・・");
     } else {
-      EipTNoteMap tmpmap = (EipTNoteMap) mapList.get(0);
+      EipTNoteMap tmpmap = mapList.get(0);
       ALEipUser user = ALEipUtils.getALEipUser(Integer.valueOf(
         tmpmap.getUserId()).intValue());
       destUserNames.append(user.getAliasName());
@@ -536,7 +531,7 @@ public class NoteSelectData extends ALAbstractSelectData {
 
   /**
    * 現在選択されているタブを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public String getCurrentTab() {
@@ -575,7 +570,7 @@ public class NoteSelectData extends ALAbstractSelectData {
   }
 
   /**
-   *
+   * 
    * @param groupname
    * @return
    */
@@ -592,7 +587,7 @@ public class NoteSelectData extends ALAbstractSelectData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -600,7 +595,7 @@ public class NoteSelectData extends ALAbstractSelectData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public List<ALEipGroup> getMyGroupList() {
@@ -609,7 +604,7 @@ public class NoteSelectData extends ALAbstractSelectData {
 
   /**
    * 状態を取得する．
-   *
+   * 
    * @param id
    * @return
    */
@@ -619,7 +614,7 @@ public class NoteSelectData extends ALAbstractSelectData {
 
   /**
    * 送信先メンバーを取得します。
-   *
+   * 
    * @return
    */
   public List<ALEipUser> getMemberList() {
