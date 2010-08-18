@@ -786,8 +786,8 @@ public class ALEipUtils {
    * @return
    */
   public static String getPositionName(int id) {
-    if (ALEipManager.getInstance().getPositionMap()
-      .containsKey(Integer.valueOf(id))) {
+    if (ALEipManager.getInstance().getPositionMap().containsKey(
+      Integer.valueOf(id))) {
       return (ALEipManager.getInstance().getPositionMap().get(Integer
         .valueOf(id))).getPositionName().getValue();
     }
@@ -897,8 +897,8 @@ public class ALEipUtils {
             list.add(ALAccessControlConstants.DEF_PERMISSION_ERROR_STR);
             JSONArray json = JSONArray.fromObject(list);
 
-            StringBuffer result = new StringBuffer().append("/* ")
-              .append(json.toString()).append(" */");
+            StringBuffer result = new StringBuffer().append("/* ").append(
+              json.toString()).append(" */");
 
             out.print(result.toString());
             out.flush();
@@ -1234,8 +1234,8 @@ public class ALEipUtils {
     StringBuffer url = new StringBuffer();
 
     if (port == 80) {
-      url.append(protocol).append("://").append(ip).append("/")
-        .append(servername).append("/");
+      url.append(protocol).append("://").append(ip).append("/").append(
+        servername).append("/");
     } else {
       url.append(protocol).append("://").append(ip).append(":").append(port)
         .append("/").append(servername).append("/");
@@ -1340,11 +1340,9 @@ public class ALEipUtils {
             JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
             DynamicURI duri = jsLink.getLink(JetspeedLink.CURRENT, null, null,
               JetspeedLink.CURRENT, null);
-            duri = duri
-              .addPathInfo(JetspeedResources.PATH_PANEID_KEY,
-                portletList[i].getId())
-              .addPathInfo(JetspeedResources.PATH_PORTLETID_KEY,
-                entries[j].getId())
+            duri = duri.addPathInfo(JetspeedResources.PATH_PANEID_KEY,
+              portletList[i].getId()).addPathInfo(
+              JetspeedResources.PATH_PORTLETID_KEY, entries[j].getId())
               .addQueryData(JetspeedResources.PATH_ACTION_KEY,
                 "controls.Maximize");
             return duri.toString();

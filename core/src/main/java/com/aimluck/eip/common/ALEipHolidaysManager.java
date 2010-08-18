@@ -57,19 +57,13 @@ public class ALEipHolidaysManager {
   private final String FILE_HOLI_DAYS_DEFAULT = (JetspeedResources.getString(
     "aipo.home", "").equals("")) ? "" : JetspeedResources.getString(
     "aipo.home", "")
-    + File.separator
-    + "conf"
-    + File.separator
-    + "holidays_default.properties";
+    + File.separator + "conf" + File.separator + "holidays_default.properties";
 
   /** ユーザ定義の祝日が書かれたファイルへのパス */
   private final String FILE_HOLI_DAYS_USER = (JetspeedResources.getString(
     "aipo.home", "").equals("")) ? "" : JetspeedResources.getString(
     "aipo.home", "")
-    + File.separator
-    + "conf"
-    + File.separator
-    + "holidays_user.properties";
+    + File.separator + "conf" + File.separator + "holidays_user.properties";
 
   /** デフォルトの祝日一覧 */
   private List<ALHoliday> defaultHolidays = null;

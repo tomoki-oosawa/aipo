@@ -148,9 +148,8 @@ public class ALSessionValidator extends JetspeedSessionValidator {
 
       Class<?> cls = null;
       try {
-        cls = Class.forName(new StringBuffer()
-          .append("com.aimluck.eip.modules.screens.").append(template)
-          .toString());
+        cls = Class.forName(new StringBuffer().append(
+          "com.aimluck.eip.modules.screens.").append(template).toString());
       } catch (Exception e) {
         cls = null;
       }
@@ -193,8 +192,8 @@ public class ALSessionValidator extends JetspeedSessionValidator {
               sb.append("&");
             }
             key = (String) enu.nextElement();
-            sb.append(key).append("=")
-              .append(data.getRequest().getParameter(key));
+            sb.append(key).append("=").append(
+              data.getRequest().getParameter(key));
             count = count + 1;
           }
 

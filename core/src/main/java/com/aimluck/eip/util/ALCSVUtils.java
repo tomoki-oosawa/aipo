@@ -54,10 +54,10 @@ public class ALCSVUtils {
     // formData.initField();
     formData.doUpdate(action, rundata, context);
 
-    ALEipUtils.setTemp(rundata, context, "page_count",
-      Integer.toString(formData.getPageCount()));
-    ALEipUtils.setTemp(rundata, context, "line_count",
-      Integer.toString(formData.getLineCount()));
+    ALEipUtils.setTemp(rundata, context, "page_count", Integer
+      .toString(formData.getPageCount()));
+    ALEipUtils.setTemp(rundata, context, "line_count", Integer
+      .toString(formData.getLineCount()));
 
   }
 
@@ -78,10 +78,10 @@ public class ALCSVUtils {
     listData.setLineCount(line_count);
     listData.doViewList(action, rundata, context);
 
-    ALEipUtils.setTemp(rundata, context, "line_count",
-      Integer.toString(listData.getLineCount()));
-    ALEipUtils.setTemp(rundata, context, "error_count",
-      Integer.toString(listData.getErrorCount()));
+    ALEipUtils.setTemp(rundata, context, "line_count", Integer
+      .toString(listData.getLineCount()));
+    ALEipUtils.setTemp(rundata, context, "error_count", Integer
+      .toString(listData.getErrorCount()));
   }
 
   /** テンプレートに出力する際のエラーリスト作成* */

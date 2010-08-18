@@ -82,8 +82,8 @@ public class ALDateUtil {
    * @return
    */
   public static String formatDate(int year, int month, int day) {
-    return formatDate(String.valueOf(year), String.valueOf(month),
-      String.valueOf(day));
+    return formatDate(String.valueOf(year), String.valueOf(month), String
+      .valueOf(day));
   }
 
   /**

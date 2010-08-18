@@ -113,8 +113,8 @@ public class ALEipAuthentication extends TurbineBaseService implements
 
     if (password.startsWith(ALEipConstants.KEY_CELLULAR_UID)) {
       // 携帯電話の固有 ID でログイン認証する．
-      String cellularUid = password.substring(
-        ALEipConstants.KEY_CELLULAR_UID.length(), password.length());
+      String cellularUid = password.substring(ALEipConstants.KEY_CELLULAR_UID
+        .length(), password.length());
       try {
         user = loginCellularUid(username, cellularUid);
       } catch (UnknownUserException e) {

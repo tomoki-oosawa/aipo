@@ -94,8 +94,8 @@ public class ALJLogoutUser extends ActionEvent {
       ALEipUser logoutuser = ALEipUtils.getALEipUser(username);
       if (logoutuser != null) {
         int logoutUserId = (int) logoutuser.getUserId().getValue();
-        ALEventlogFactoryService.getInstance().getEventlogHandler()
-          .logLogout(logoutUserId);
+        ALEventlogFactoryService.getInstance().getEventlogHandler().logLogout(
+          logoutUserId);
       }
     }
 

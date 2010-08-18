@@ -341,11 +341,10 @@ public class ALBaseUser extends
     StringBuffer str = new StringBuffer();
     Calendar cal = Calendar.getInstance();
     cal.setTime(super.getLastAccessDate());
-    return str.append(cal.get(Calendar.YEAR)).append("年")
-      .append((cal.get(Calendar.MONTH) + 1)).append("月")
-      .append(cal.get(Calendar.DATE)).append("日 ")
-      .append(cal.get(Calendar.HOUR_OF_DAY)).append("時")
-      .append(cal.get(Calendar.MINUTE)).append("分").toString();
+    return str.append(cal.get(Calendar.YEAR)).append("年").append(
+      (cal.get(Calendar.MONTH) + 1)).append("月").append(cal.get(Calendar.DATE))
+      .append("日 ").append(cal.get(Calendar.HOUR_OF_DAY)).append("時").append(
+        cal.get(Calendar.MINUTE)).append("分").toString();
   }
 
 }

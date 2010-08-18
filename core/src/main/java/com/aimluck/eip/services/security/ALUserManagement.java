@@ -485,9 +485,8 @@ public class ALUserManagement extends TurbineBaseService implements
         JetspeedSecurity.grantRole(user.getUserName(), JetspeedSecurity
           .getRole(roles[ix]).getName());
       } catch (Exception e) {
-        logger.error(
-          "Could not grant role: " + roles[ix] + " to user "
-            + user.getUserName(), e);
+        logger.error("Could not grant role: " + roles[ix] + " to user "
+          + user.getUserName(), e);
       }
     }
     try {
@@ -555,12 +554,12 @@ public class ALUserManagement extends TurbineBaseService implements
 
     String encrypted = JetspeedSecurity.encryptPassword(oldPassword);
     if (!accountExists(user)) {
-      throw new UnknownUserException(
-        Localization.getString("UPDATEACCOUNT_NOUSER"));
+      throw new UnknownUserException(Localization
+        .getString("UPDATEACCOUNT_NOUSER"));
     }
     if (!user.getPassword().equals(encrypted)) {
-      throw new UserException(
-        Localization.getString("UPDATEACCOUNT_BADOLDPASSWORD"));
+      throw new UserException(Localization
+        .getString("UPDATEACCOUNT_BADOLDPASSWORD"));
     }
     user.setPassword(JetspeedSecurity.encryptPassword(newPassword));
 

@@ -222,8 +222,8 @@ public class ALPermissionManagement extends TurbineBaseService implements
 
       if (cascadeDelete) {
         Expression exp = ExpressionFactory.matchDbExp(
-          TurbineRolePermission.PERMISSION_ID_PK_COLUMN,
-          Integer.valueOf(permission.getId()));
+          TurbineRolePermission.PERMISSION_ID_PK_COLUMN, Integer
+            .valueOf(permission.getId()));
         SelectQuery query = new SelectQuery(TurbineRolePermission.class, exp);
         List<?> rolepermissions = dataContext.performQuery(query);
         dataContext.deleteObjects(rolepermissions);
@@ -285,8 +285,8 @@ public class ALPermissionManagement extends TurbineBaseService implements
       Expression exp1 = ExpressionFactory.matchDbExp(
         TurbineRolePermission.ROLE_ID_PK_COLUMN, Integer.valueOf(role.getId()));
       Expression exp2 = ExpressionFactory.matchDbExp(
-        TurbineRolePermission.PERMISSION_ID_PK_COLUMN,
-        Integer.valueOf(permission.getId()));
+        TurbineRolePermission.PERMISSION_ID_PK_COLUMN, Integer
+          .valueOf(permission.getId()));
       SelectQuery query = new SelectQuery(TurbineRolePermission.class);
       query.setQualifier(exp1);
       query.andQualifier(exp2);
@@ -326,8 +326,8 @@ public class ALPermissionManagement extends TurbineBaseService implements
       Expression exp1 = ExpressionFactory.matchDbExp(
         TurbineRolePermission.ROLE_ID_PK_COLUMN, Integer.valueOf(role.getId()));
       Expression exp2 = ExpressionFactory.matchDbExp(
-        TurbineRolePermission.PERMISSION_ID_PK_COLUMN,
-        Integer.valueOf(permission.getId()));
+        TurbineRolePermission.PERMISSION_ID_PK_COLUMN, Integer
+          .valueOf(permission.getId()));
       SelectQuery query = new SelectQuery(TurbineRolePermission.class);
       query.setQualifier(exp1);
       query.andQualifier(exp2);

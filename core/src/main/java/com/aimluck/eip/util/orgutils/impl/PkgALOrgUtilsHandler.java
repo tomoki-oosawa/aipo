@@ -80,8 +80,8 @@ public class PkgALOrgUtilsHandler extends ALOrgUtilsHandler {
     hash.put("alias", JetspeedResources.getString("aipo.alias"));
     hash.put("aliasjp", JetspeedResources.getString("aipo.aliasjp"));
     hash.put("copyright", JetspeedResources.getString("aipo.copyright"));
-    hash.put("copyright_short",
-      JetspeedResources.getString("aipo.copyright_short"));
+    hash.put("copyright_short", JetspeedResources
+      .getString("aipo.copyright_short"));
     return hash;
   }
 

@@ -259,8 +259,8 @@ public class ALRoleManagement extends TurbineBaseService implements
         dataContext.deleteObjects(roles);
 
         Expression exp2 = ExpressionFactory.matchDbExp(
-          TurbineRolePermission.ROLE_ID_PK_COLUMN,
-          Integer.valueOf(role.getId()));
+          TurbineRolePermission.ROLE_ID_PK_COLUMN, Integer
+            .valueOf(role.getId()));
         SelectQuery query2 = new SelectQuery(TurbineRolePermission.class, exp2);
         List<?> rolepermmisions = dataContext.performQuery(query2);
         dataContext.deleteObjects(rolepermmisions);

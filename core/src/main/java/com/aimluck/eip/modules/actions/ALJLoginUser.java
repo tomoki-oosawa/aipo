@@ -169,8 +169,8 @@ public class ALJLoginUser extends ActionEvent {
         JetspeedSecurity.saveUser(user);
 
         int loginUserId = Integer.parseInt(user.getUserId());
-        ALEventlogFactoryService.getInstance().getEventlogHandler()
-          .logLogin(loginUserId);
+        ALEventlogFactoryService.getInstance().getEventlogHandler().logLogin(
+          loginUserId);
 
       } catch (LoginException e) {
         /*
@@ -210,10 +210,10 @@ public class ALJLoginUser extends ActionEvent {
         String message = other.getMessage() != null ? other.getMessage()
           : other.toString();
         data.setMessage(message);
-        data.setStackTrace(
-          org.apache.turbine.util.StringUtils.stackTrace(other), other);
-        JetspeedUser juser = new FakeJetspeedUser(
-          JetspeedSecurity.getAnonymousUserName(), false);
+        data.setStackTrace(org.apache.turbine.util.StringUtils
+          .stackTrace(other), other);
+        JetspeedUser juser = new FakeJetspeedUser(JetspeedSecurity
+          .getAnonymousUserName(), false);
         data.setUser(juser);
         return;
       }
@@ -344,11 +344,8 @@ public class ALJLoginUser extends ActionEvent {
 
         if (ALCellularUtils.isCellularPhone(data)) {
           JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-          rundata
-            .setRedirectURI(jsLink
-              .getPortletById("")
-              .addQueryData(JetspeedResources.PATH_ACTION_KEY,
-                "controls.Restore").toString());
+          rundata.setRedirectURI(jsLink.getPortletById("").addQueryData(
+            JetspeedResources.PATH_ACTION_KEY, "controls.Restore").toString());
           rundata.getResponse().sendRedirect(rundata.getRedirectURI());
           JetspeedLinkFactory.putInstance(jsLink);
           jsLink = null;

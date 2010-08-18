@@ -317,12 +317,10 @@ public class ALCellularUtils {
           JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
           DynamicURI duri = jsLink.getLink(JetspeedLink.CURRENT, null, null,
             JetspeedLink.CURRENT, null);
-          duri = duri
-            .addPathInfo(JetspeedResources.PATH_PORTLETID_KEY,
-              entries[j].getId())
-            .addQueryData(JetspeedResources.PATH_ACTION_KEY,
-              "controls.Maximize")
-            .addQueryData(ALEipConstants.MODE, ALEipConstants.MODE_LIST);
+          duri = duri.addPathInfo(JetspeedResources.PATH_PORTLETID_KEY,
+            entries[j].getId()).addQueryData(JetspeedResources.PATH_ACTION_KEY,
+            "controls.Maximize").addQueryData(ALEipConstants.MODE,
+            ALEipConstants.MODE_LIST);
           return duri.toString();
         }
       }

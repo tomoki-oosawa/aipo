@@ -141,8 +141,8 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
     context.put(ALEipConstants.MODE, mode);
     context.put(ALEipConstants.RESULT, result);
     context.put(ALEipConstants.ERROR_MESSAGE_LIST, errmsgList);
-    context.put(ALEipConstants.ENTITY_ID,
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID));
+    context.put(ALEipConstants.ENTITY_ID, ALEipUtils.getTemp(rundata, context,
+      ALEipConstants.ENTITY_ID));
     context.put("utils", new ALCommonUtils());
 
     ALOrgUtilsHandler handler = ALOrgUtilsFactoryService.getInstance()
@@ -154,8 +154,8 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
     }
 
     // For security
-    context.put(ALEipConstants.SECURE_ID,
-      rundata.getUser().getTemp(ALEipConstants.SECURE_ID));
+    context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(
+      ALEipConstants.SECURE_ID));
   }
 
 }

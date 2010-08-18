@@ -90,25 +90,21 @@ public abstract class ALAbstractSelectData<M> implements ALData {
   /** アクセス権限の有無 */
   protected boolean hasAuthority;
 
-  protected final String LIST_SORT_STR = new StringBuffer()
-    .append(this.getClass().getName()).append(ALEipConstants.LIST_SORT)
+  protected final String LIST_SORT_STR = new StringBuffer().append(
+    this.getClass().getName()).append(ALEipConstants.LIST_SORT).toString();
+
+  protected final String LIST_SORT_TYPE_STR = new StringBuffer().append(
+    this.getClass().getName()).append(ALEipConstants.LIST_SORT_TYPE).toString();
+
+  protected final String LIST_FILTER_STR = new StringBuffer().append(
+    this.getClass().getName()).append(ALEipConstants.LIST_FILTER).toString();
+
+  protected final String LIST_FILTER_TYPE_STR = new StringBuffer().append(
+    this.getClass().getName()).append(ALEipConstants.LIST_FILTER_TYPE)
     .toString();
 
-  protected final String LIST_SORT_TYPE_STR = new StringBuffer()
-    .append(this.getClass().getName()).append(ALEipConstants.LIST_SORT_TYPE)
-    .toString();
-
-  protected final String LIST_FILTER_STR = new StringBuffer()
-    .append(this.getClass().getName()).append(ALEipConstants.LIST_FILTER)
-    .toString();
-
-  protected final String LIST_FILTER_TYPE_STR = new StringBuffer()
-    .append(this.getClass().getName()).append(ALEipConstants.LIST_FILTER_TYPE)
-    .toString();
-
-  protected final String LIST_INDEX_STR = new StringBuffer()
-    .append(this.getClass().getName()).append(ALEipConstants.LIST_INDEX)
-    .toString();;
+  protected final String LIST_INDEX_STR = new StringBuffer().append(
+    this.getClass().getName()).append(ALEipConstants.LIST_INDEX).toString();;
 
   /**
    * 
