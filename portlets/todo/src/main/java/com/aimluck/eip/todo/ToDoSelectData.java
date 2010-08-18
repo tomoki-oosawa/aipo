@@ -82,9 +82,9 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
-        ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-          .getInitParameter("p2a-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
+        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
+          "p2a-sort"));
       logger.debug("[ToDoSelectData] Init Parameter. : "
         + ALEipUtils.getPortlet(rundata, context).getPortletConfig()
           .getInitParameter("p2a-sort"));
@@ -114,14 +114,14 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
       categoryList = new ArrayList<ToDoCategoryResultData>();
 
       Expression exp = ExpressionFactory.matchExp(
-        EipTTodoCategory.USER_ID_PROPERTY,
-        Integer.valueOf(ALEipUtils.getUserId(rundata)));
+        EipTTodoCategory.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
+          .getUserId(rundata)));
       exp.orExp(ExpressionFactory.matchExp(EipTTodoCategory.USER_ID_PROPERTY,
         Integer.valueOf(0)));
 
-      List<EipTTodoCategory> categoryList2 = Database
-        .query(EipTTodoCategory.class, exp)
-        .orderAscending(EipTTodoCategory.CATEGORY_NAME_PROPERTY).perform();
+      List<EipTTodoCategory> categoryList2 = Database.query(
+        EipTTodoCategory.class, exp).orderAscending(
+        EipTTodoCategory.CATEGORY_NAME_PROPERTY).perform();
 
       for (EipTTodoCategory record : categoryList2) {
         ToDoCategoryResultData rd = new ToDoCategoryResultData();
@@ -172,8 +172,8 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo> implements
     SelectQuery<EipTTodo> query = Database.query(EipTTodo.class);
 
     Expression exp1 = ExpressionFactory.matchDbExp(
-      TurbineUser.USER_ID_PK_COLUMN,
-      Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(ALEipUtils
+        .getUserId(rundata)));
     query.setQualifier(exp1);
 
     if ("list".equals(currentTab)) {
