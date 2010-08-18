@@ -21,7 +21,6 @@ package com.aimluck.eip.category.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -49,30 +48,6 @@ public class CommonCategoryUtils {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(CommonCategoryUtils.class.getName());
-
-  /**
-   * 
-   * @param dataContext
-   * @param category_id
-   * @return
-   */
-  // TODO: 後で削除する。
-  public static EipTCommonCategory getEipTCommonCategory(
-      DataContext dataContext, Long category_id) {
-    try {
-      EipTCommonCategory result = Database.get(EipTCommonCategory.class,
-        category_id);
-
-      if (result == null) {
-        logger.debug("[CommonCategoryUtils] Not found ID...");
-        return null;
-      }
-      return result;
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
-      return null;
-    }
-  }
 
   /**
    * 指定されたIDの共有カテゴリを取得します。

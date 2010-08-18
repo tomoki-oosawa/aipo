@@ -52,14 +52,14 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 『スケジュール』のフォームデータを管理するクラスです。 <BR>
- *
- *
+ * 
+ * 
  */
 public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FileIOScheduleCsvFormData.class.getName());
+    .getLogger(FileIOScheduleCsvFormData.class.getName());
 
   /** データコンテキスト */
   private DataContext dataContext;
@@ -109,6 +109,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   private boolean is_auto_time;
 
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     dataContext = DatabaseOrmService.getInstance().getDataContext();
@@ -118,7 +119,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -179,12 +180,12 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
     // 開始日時
     start_date_time = new ALDateTimeField(
-        ALDateTimeField.DEFAULT_DATE_TIME_FORMAT);
+      ALDateTimeField.DEFAULT_DATE_TIME_FORMAT);
     start_date_time.setFieldName("開始日時");
 
     // 終了日時
     end_date_time = new ALDateTimeField(
-        ALDateTimeField.DEFAULT_DATE_TIME_FORMAT);
+      ALDateTimeField.DEFAULT_DATE_TIME_FORMAT);
     end_date_time.setFieldName("終了日時");
 
     start_date_time.setValue("");
@@ -199,9 +200,10 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // ユーザーID
     username.limitMaxLength(16);
@@ -222,15 +224,16 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     String usernamestr = username.getValue();
     if ("admin".equals(usernamestr) || "template".equals(usernamestr)
-        || "anon".equals(usernamestr) || !username.validate(msgList)) {
+      || "anon".equals(usernamestr) || !username.validate(msgList)) {
       username.setValue(null);
     }
     if (!userfullname.validate(msgList)) {
@@ -269,12 +272,12 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
     if (!start_date.toString().equals("") && !end_date.toString().equals("")) {
       if (is_auto_time) {
         if ((start_time.toString().equals(""))
-            && (end_time.toString().equals(""))) {
+          && (end_time.toString().equals(""))) {
           this.setStartTime("00:00");
           this.setEndTime("00:00");
         }
       } else if ((start_time.toString().equals(""))
-          && (end_time.toString().equals(""))) {
+        && (end_time.toString().equals(""))) {
         msgList.add("『 <span class='em'>開始,終了時刻</span> 』が正しく入力されていません。");
       }
       if (compareToDate(start_date.getValue(), end_date.getValue()) != 0) {
@@ -308,10 +311,10 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
     }
 
     if (!end_date_time.toString().equals("")
-        && !start_date_time.toString().equals("")) {
+      && !start_date_time.toString().equals("")) {
       if (end_date_time.getValue().before(start_date_time.getValue())) {
         msgList
-            .add("『 <span class='em'>終了日時</span> 』は『 <span class='em'>開始日時</span> 』以降の日付を指定してください。");
+          .add("『 <span class='em'>終了日時</span> 』は『 <span class='em'>開始日時</span> 』以降の日付を指定してください。");
         start_date.setValue("");
         end_date.setValue("");
         start_time.setValue("");
@@ -324,7 +327,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を読み込みます。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -332,6 +335,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -339,7 +343,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を追加します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -347,6 +351,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
@@ -364,7 +369,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
       // 新規オブジェクトモデル
       EipTSchedule schedule = (EipTSchedule) dataContext
-          .createAndRegisterNewObject(EipTSchedule.class);
+        .createAndRegisterNewObject(EipTSchedule.class);
       // 親スケジュール ID
       schedule.setParentId(Integer.valueOf(1));
       // 予定
@@ -395,16 +400,16 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
       schedule.setRepeatPattern("N");
       schedule.setStartDate(start_date_time.getValue());
 
-      EipTCommonCategory category = CommonCategoryUtils.getEipTCommonCategory(
-          dataContext, Long.valueOf(1));
+      EipTCommonCategory category = CommonCategoryUtils
+        .getEipTCommonCategory(Long.valueOf(1));
 
       // // スケジュールを登録
       // orm.doInsert(schedule);
       int size = memberList.size();
       for (int i = 0; i < size; i++) {
         EipTScheduleMap map = (EipTScheduleMap) dataContext
-            .createAndRegisterNewObject(EipTScheduleMap.class);
-        ALEipUser user = (ALEipUser) memberList.get(i);
+          .createAndRegisterNewObject(EipTScheduleMap.class);
+        ALEipUser user = memberList.get(i);
         int userid = (int) user.getUserId().getValue();
 
         schedule.setOwnerId(Integer.valueOf(userid));
@@ -442,7 +447,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 『スケジュール』を更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -450,6 +455,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -457,7 +463,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 『スケジュール』を削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -465,6 +471,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -472,7 +479,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * ユーザーの氏名からユーザーIDを取得する。 <BR>
-   *
+   * 
    * @param userFullName
    * @return
    */
@@ -481,11 +488,11 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
     DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     SelectQuery query = new SelectQuery(TurbineUser.class);
     Expression exp1 = ExpressionFactory.matchExp(
-        TurbineUser.FIRST_NAME_PROPERTY, userfirstname);
+      TurbineUser.FIRST_NAME_PROPERTY, userfirstname);
     Expression exp2 = ExpressionFactory.matchExp(
-        TurbineUser.LAST_NAME_PROPERTY, userlastname);
-    Expression exp3 = ExpressionFactory.matchExp(
-        TurbineUser.DISABLED_PROPERTY, "F");
+      TurbineUser.LAST_NAME_PROPERTY, userlastname);
+    Expression exp3 = ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY,
+      "F");
 
     query.setQualifier(exp1.andExp(exp2.andExp(exp3)));
 
@@ -504,7 +511,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * オブジェクトモデルからログイン名を取得する。 <BR>
-   *
+   * 
    * @param userFullName
    * @return
    */
@@ -529,7 +536,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * ユーザー名(フルネーム)を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getUserFullName() {
@@ -538,7 +545,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * ユーザー名(名)を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getUserFirstName() {
@@ -547,7 +554,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * ユーザー名(氏)を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getUserLastName() {
@@ -556,7 +563,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 予定を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getScheduleName() {
@@ -565,7 +572,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 備考を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getNote() {
@@ -574,7 +581,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 場所を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getPlace() {
@@ -583,7 +590,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 作成日時を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALDateTimeField getCreateDate() {
@@ -592,7 +599,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 開始日を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALDateTimeField getStartDate() {
@@ -601,7 +608,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 終了日を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALDateTimeField getEndDate() {
@@ -610,7 +617,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 開始時刻を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALDateTimeField getStartTime() {
@@ -619,7 +626,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 終了時刻を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALDateTimeField getEndTime() {
@@ -628,7 +635,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 開始日時を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALDateTimeField getStartDateTime() {
@@ -648,7 +655,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 終了日時を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALDateTimeField getEndDateTime() {
@@ -668,7 +675,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * ログイン名を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setUserName(String str) {
@@ -677,7 +684,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * ユーザー名(フルネーム)を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setUserFullName(String str) {
@@ -686,7 +693,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * ユーザー名(名)を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setUserFirstName(String str) {
@@ -695,7 +702,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * ユーザー名(氏)を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setUserLastName(String str) {
@@ -704,7 +711,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 予定を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setScheduleName(String str) {
@@ -713,7 +720,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 備考を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setNote(String str) {
@@ -722,7 +729,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 場所を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setPlace(String str) {
@@ -731,7 +738,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 入力日時を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setCreateDate(String str) {
@@ -740,7 +747,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 開始日を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setStartDate(String str) {
@@ -749,7 +756,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 終了日を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setEndDate(String str) {
@@ -758,7 +765,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 開始時刻を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setStartTime(String str) {
@@ -767,7 +774,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 終了時刻を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setEndTime(String str) {
@@ -776,7 +783,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 開始日時を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setStartDateTime(String str) {
@@ -785,7 +792,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 終了日時を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setEndDateTime(String str) {
@@ -794,7 +801,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 入力日時を入力します
-   *
+   * 
    * @param date
    */
   public void setCreateDate(Date date) {
@@ -803,7 +810,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 開始日を入力します <BR>
-   *
+   * 
    * @param date
    */
   public void setStartDate(Date date) {
@@ -812,7 +819,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 終了日を入力します <BR>
-   *
+   * 
    * @param date
    */
   public void setEndDate(Date date) {
@@ -821,7 +828,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 開始時刻を入力します <BR>
-   *
+   * 
    * @param date
    */
   public void setStartTime(Date date) {
@@ -830,7 +837,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 終了時刻を入力します <BR>
-   *
+   * 
    * @param date
    */
   public void setEndTime(Date date) {
@@ -839,7 +846,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 開始日時を入力します <BR>
-   *
+   * 
    * @param date
    */
   public void setStartDate_Time(Date date) {
@@ -848,7 +855,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 終了日時を入力します <BR>
-   *
+   * 
    * @param date
    */
   public void setEndDateTime(Date date) {
@@ -857,7 +864,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 時間を自動補完する場合は"1"を入力します <BR>
-   *
+   * 
    * @param flag
    */
   public void setIsAutoTime(String flag) {
@@ -870,7 +877,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 二つの日付を比較します。 <BR>
-   *
+   * 
    * @param date1
    * @param date2
    * @return
@@ -889,7 +896,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
     int date2Day = cal2.get(Calendar.DATE);
 
     if (date1Year == date2Year && date1Month == date2Month
-        && date1Day == date2Day) {
+      && date1Day == date2Day) {
       return 0;
     }
     if (cal1.after(cal2)) {
@@ -901,60 +908,60 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 読み取った単語を指定されたフィールドに格納します。 <BR>
-   *
+   * 
    * @param token
    * @param i
    */
   public void addItemToken(String token, int i) {
     StringTokenizer st;
     switch (i) {
-    case -1:
-      break;
-    case 0:
-      st = new StringTokenizer(token);
-      String Fullname = "";
-      if (st.hasMoreTokens()) {
-        this.setUserLastName(st.nextToken());
-        Fullname += this.getUserLastName().toString();
-      }
-      if (st.hasMoreTokens()) {
-        this.setUserFirstName(st.nextToken());
-        Fullname += this.getUserFirstName().toString();
-      }
-      this.setUserFullName(Fullname);
-      break;
-    case 1:
-      this.setScheduleName(token);
-      break;
-    case 2:
-      this.setPlace(token);
-      break;
-    case 3:
-      this.setNote(token);
-      break;
-    case 4:
-      this.setStartDate(token);
-      break;
-    case 5:
-      this.setEndDate(token);
-      break;
-    case 6:
-      this.setStartTime(token);
-      break;
-    case 7:
-      this.setEndTime(token);
-      break;
-    case 8:
-      this.setUserName(token);
-      break;
-    case 9:
-      this.setStartDateTime(token);
-      break;
-    case 10:
-      this.setEndDateTime(token);
-      break;
-    default:
-      break;
+      case -1:
+        break;
+      case 0:
+        st = new StringTokenizer(token);
+        String Fullname = "";
+        if (st.hasMoreTokens()) {
+          this.setUserLastName(st.nextToken());
+          Fullname += this.getUserLastName().toString();
+        }
+        if (st.hasMoreTokens()) {
+          this.setUserFirstName(st.nextToken());
+          Fullname += this.getUserFirstName().toString();
+        }
+        this.setUserFullName(Fullname);
+        break;
+      case 1:
+        this.setScheduleName(token);
+        break;
+      case 2:
+        this.setPlace(token);
+        break;
+      case 3:
+        this.setNote(token);
+        break;
+      case 4:
+        this.setStartDate(token);
+        break;
+      case 5:
+        this.setEndDate(token);
+        break;
+      case 6:
+        this.setStartTime(token);
+        break;
+      case 7:
+        this.setEndTime(token);
+        break;
+      case 8:
+        this.setUserName(token);
+        break;
+      case 9:
+        this.setStartDateTime(token);
+        break;
+      case 10:
+        this.setEndDateTime(token);
+        break;
+      default:
+        break;
     }
 
   }

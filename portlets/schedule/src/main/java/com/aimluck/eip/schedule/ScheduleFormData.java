@@ -225,7 +225,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   private DataContext dataContext;
 
-  private int msg_type = 0;
+  private final int msg_type = 0;
 
   private String org_id;
 
@@ -249,6 +249,7 @@ public class ScheduleFormData extends ALAbstractFormData {
    *      actions.common.ALAction, org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     is_facility = rundata.getParameters().getBoolean("is_facility");
@@ -571,6 +572,7 @@ public class ScheduleFormData extends ALAbstractFormData {
    *      .util.RunData, org.apache.velocity.context.Context,
    *      java.util.ArrayList)
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res = super.setFormData(rundata, context, msgList);
@@ -619,6 +621,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   /*
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // 予定
     name.setNotNull(true);
@@ -632,6 +635,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   /*
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) throws ALDBErrorException,
       ALPageNotFoundException {
     // 開始日時
@@ -803,14 +807,16 @@ public class ScheduleFormData extends ALAbstractFormData {
    *      .util.RunData, org.apache.velocity.context.Context,
    *      java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     try {
       // オブジェクトモデルを取得
       EipTSchedule record = ScheduleUtils.getEipTSchedule(rundata, context,
         false);
-      if (record == null)
+      if (record == null) {
         return false;
+      }
 
       is_owner = (record.getOwnerId().intValue() == login_user.getUserId()
         .getValue()) ? true : false;
@@ -998,6 +1004,7 @@ public class ScheduleFormData extends ALAbstractFormData {
    *      .util.RunData, org.apache.velocity.context.Context,
    *      java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) throws ALDBErrorException {
     EipTSchedule schedule = null;
@@ -1116,8 +1123,8 @@ public class ScheduleFormData extends ALAbstractFormData {
         }
       }
 
-      EipTCommonCategory category1 = CommonCategoryUtils.getEipTCommonCategory(
-        dataContext, Long.valueOf(1));
+      EipTCommonCategory category1 = CommonCategoryUtils
+        .getEipTCommonCategory(Long.valueOf(1));
 
       // 2007.3.28 ToDo連携
       // // スケジュールを登録
@@ -1138,7 +1145,7 @@ public class ScheduleFormData extends ALAbstractFormData {
           map.setStatus("T");
         }
         EipTCommonCategory category = CommonCategoryUtils
-          .getEipTCommonCategory(dataContext, common_category_id.getValue());
+          .getEipTCommonCategory(common_category_id.getValue());
         if (category == null) {
           map.setCommonCategoryId(Integer.valueOf(1));
           map.setEipTSchedule(schedule);
@@ -1239,7 +1246,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
         for (int i = 0; i < destMemberList.size(); i++) {
           List destMember = new ArrayList();
-          destMember.add((ALEipUserAddr) destMemberList.get(i));
+          destMember.add(destMemberList.get(i));
           ALMailUtils.sendMailDelegate(org_id, ALEipUtils.getUserId(rundata),
             destMember, subject, subject, ScheduleUtils.createMsgForPc(rundata,
               schedule, memberList), ScheduleUtils.createMsgForCellPhone(
@@ -1263,6 +1270,7 @@ public class ScheduleFormData extends ALAbstractFormData {
    *      .util.RunData, org.apache.velocity.context.Context,
    *      java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     ArrayList newmemberList = new ArrayList();
@@ -1273,8 +1281,9 @@ public class ScheduleFormData extends ALAbstractFormData {
       int f_size = facilityList.size();
       // 施設のアクセスコントロールのチェック
       if (!facilityCheckAclPermission(f_size, msgList, rundata,
-        ALAccessControlConstants.VALUE_ACL_UPDATE))
+        ALAccessControlConstants.VALUE_ACL_UPDATE)) {
         return false;
+      }
 
       // TODO: DBトランザクション
       // Validate のときに SELECT していることに注意する
@@ -1301,8 +1310,9 @@ public class ScheduleFormData extends ALAbstractFormData {
 
       // オブジェクトモデルを取得
       schedule = ScheduleUtils.getEipTSchedule(rundata, context, false);
-      if (schedule == null)
+      if (schedule == null) {
         return false;
+      }
       entity_id = schedule.getScheduleId().intValue();
       // int ownerid = ALEipUtils.getUserId(rundata);
       int ownerid = schedule.getOwnerId();
@@ -1333,8 +1343,8 @@ public class ScheduleFormData extends ALAbstractFormData {
         }
       }
 
-      EipTCommonCategory category1 = CommonCategoryUtils.getEipTCommonCategory(
-        dataContext, Long.valueOf(1));
+      EipTCommonCategory category1 = CommonCategoryUtils
+        .getEipTCommonCategory(Long.valueOf(1));
 
       // if (is_repeat && edit_repeat_flag.getValue() ==
       // FLAG_EDIT_REPEAT_ONE) {
@@ -1422,7 +1432,7 @@ public class ScheduleFormData extends ALAbstractFormData {
               }
             }
             EipTCommonCategory category = CommonCategoryUtils
-              .getEipTCommonCategory(dataContext, common_category_id.getValue());
+              .getEipTCommonCategory(common_category_id.getValue());
             if (category == null) {
               map.setCommonCategoryId(Integer.valueOf(1));
               map.setEipTCommonCategory(category1);
@@ -1665,7 +1675,7 @@ public class ScheduleFormData extends ALAbstractFormData {
           }
 
           EipTCommonCategory category = CommonCategoryUtils
-            .getEipTCommonCategory(dataContext, common_category_id.getValue());
+            .getEipTCommonCategory(common_category_id.getValue());
           if (category == null) {
             map.setCommonCategoryId(Integer.valueOf(1));
             map.setEipTSchedule(schedule);
@@ -1768,7 +1778,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         if (edit_repeat_flag.getValue() == FLAG_EDIT_REPEAT_ONE) {
           for (int i = 0; i < destMemberList.size(); i++) {
             List destMember = new ArrayList();
-            destMember.add((ALEipUserAddr) destMemberList.get(i));
+            destMember.add(destMemberList.get(i));
             ALMailUtils.sendMailDelegate(org_id, ALEipUtils.getUserId(rundata),
               destMember, subject, subject, ScheduleUtils.createMsgForPc(
                 rundata, newSchedule, memberList), ScheduleUtils
@@ -1780,7 +1790,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         } else {
           for (int i = 0; i < destMemberList.size(); i++) {
             List destMember = new ArrayList();
-            destMember.add((ALEipUserAddr) destMemberList.get(i));
+            destMember.add(destMemberList.get(i));
             ALMailUtils.sendMailDelegate(org_id, ALEipUtils.getUserId(rundata),
               destMember, subject, subject, ScheduleUtils.createMsgForPc(
                 rundata, schedule, memberList), ScheduleUtils
@@ -1817,6 +1827,7 @@ public class ScheduleFormData extends ALAbstractFormData {
    *      .util.RunData, org.apache.velocity.context.Context,
    *      java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     try {
@@ -1842,8 +1853,9 @@ public class ScheduleFormData extends ALAbstractFormData {
       // オブジェクトモデルを取得
       EipTSchedule schedule = ScheduleUtils.getEipTSchedule(rundata, context,
         false);
-      if (schedule == null)
+      if (schedule == null) {
         return false;
+      }
 
       // 共有メンバーを取得する．
       List members = ScheduleUtils.getUsers(rundata, context, true);
@@ -2079,6 +2091,7 @@ public class ScheduleFormData extends ALAbstractFormData {
    *      .actions.common.ALAction, org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   public boolean doViewForm(ALAction action, RunData rundata, Context context) {
     boolean res = super.doViewForm(action, rundata, context);
     // post(action, rundata, context);
@@ -2090,6 +2103,7 @@ public class ScheduleFormData extends ALAbstractFormData {
    *      .actions.common.ALAction, org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   public boolean doInsert(ALAction action, RunData rundata, Context context) {
     boolean res = super.doInsert(action, rundata, context);
     // post(action, rundata, context);
@@ -2101,6 +2115,7 @@ public class ScheduleFormData extends ALAbstractFormData {
    *      .actions.common.ALAction, org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   public boolean doUpdate(ALAction action, RunData rundata, Context context) {
     boolean res = super.doUpdate(action, rundata, context);
     // post(action, rundata, context);
@@ -2627,6 +2642,7 @@ public class ScheduleFormData extends ALAbstractFormData {
    * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return aclPortletFeature;
   }
