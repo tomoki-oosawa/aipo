@@ -20,7 +20,7 @@ package com.aimluck.commons.field;
 
 /**
  * 入力フィールド値が指定どおりではない場合にスローされます。 <br />
- *
+ * 
  */
 public class ALIllegalDateException extends Exception {
 
@@ -31,7 +31,7 @@ public class ALIllegalDateException extends Exception {
 
   /**
    * 詳細メッセージを指定しないで ALIllegalDateException を構築します。
-   *
+   * 
    */
   public ALIllegalDateException() {
     super();
@@ -39,7 +39,7 @@ public class ALIllegalDateException extends Exception {
 
   /**
    * 指定された詳細メッセージを持つ ALIllegalDateException を構築します。
-   *
+   * 
    * @param msg
    */
   public ALIllegalDateException(String msg) {

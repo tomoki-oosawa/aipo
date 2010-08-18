@@ -22,20 +22,20 @@ import java.util.Comparator;
 
 /**
  * 半角文字の比較用クラスです。 <br />
- *
+ * 
  */
 public abstract class ALAbstractComparator<T> implements Comparator<T> {
 
   /**
    * コンストラクタ
-   *
+   * 
    */
   public ALAbstractComparator() {
   }
 
   /**
    * 指定されたオブジェクトを比較します。
-   *
+   * 
    */
   public int compare(Object obj1, Object obj2) {
     return compare(getCharArray(obj1), getCharArray(obj2));
@@ -43,7 +43,7 @@ public abstract class ALAbstractComparator<T> implements Comparator<T> {
 
   /**
    * 指定されたオブジェクトを比較します。
-   *
+   * 
    * @param chars1
    * @param chars2
    * @return
@@ -69,7 +69,7 @@ public abstract class ALAbstractComparator<T> implements Comparator<T> {
 
   /**
    * char配列を取得します。
-   *
+   * 
    * @param obj
    * @return
    */

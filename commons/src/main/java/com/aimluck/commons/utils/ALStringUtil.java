@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 
 /**
  * 入力フィールドで取り扱う文字列に対するユーティリティクラスです。 <br />
- *
+ * 
  */
 public class ALStringUtil {
 
@@ -37,38 +37,37 @@ public class ALStringUtil {
 
   /**
    * メールアドレス形式であるかを判定します。
-   *
+   * 
    * @param argStr
-   *            チェック対象文字列
+   *          チェック対象文字列
    * @return メールアドレス形式であればtrue、それ以外はfalse。
    */
   public static boolean isMailAddress(String str) {
     Pattern mailPattern = Pattern.compile(
-        "[\\w\\.\\-]+@([\\w\\-]+\\.)+[\\w\\-]+", Pattern.CASE_INSENSITIVE);
+      "[\\w\\.\\-]+@([\\w\\-]+\\.)+[\\w\\-]+", Pattern.CASE_INSENSITIVE);
     Matcher objMch = mailPattern.matcher(str);
     return objMch.matches();
   }
 
   /**
    * 携帯電話のメールアドレス形式であるかを判定します。
-   *
+   * 
    * @param argStr
-   *            チェック対象文字列
+   *          チェック対象文字列
    * @return メールアドレス形式であればtrue、それ以外はfalse。
    */
   public static boolean isCellPhoneMailAddress(String str) {
-    Pattern mailPattern = Pattern
-        .compile("[\\w\\.\\-\\_\\/]+@([\\w\\-]+\\.)+[\\w\\-]+",
-            Pattern.CASE_INSENSITIVE);
+    Pattern mailPattern = Pattern.compile(
+      "[\\w\\.\\-\\_\\/]+@([\\w\\-]+\\.)+[\\w\\-]+", Pattern.CASE_INSENSITIVE);
     Matcher objMch = mailPattern.matcher(str);
     return objMch.matches();
   }
 
   /**
    * 指定文字が半角カナかどうかを判定します。
-   *
+   * 
    * @param chr
-   *            チェック対象文字
+   *          チェック対象文字
    * @return 半角カナならば true,それ以外は false
    */
   public static boolean isHankakuKana(char chr) {
@@ -77,9 +76,9 @@ public class ALStringUtil {
 
   /**
    * 指定文字列が半角数字のみかをどうかを判定します。
-   *
+   * 
    * @param String
-   *            str チェックする文字列
+   *          str チェックする文字列
    * @return 半角数字のみであればtrue、それ以外はfalse。
    */
   public static boolean isNumber(String str) {
@@ -93,7 +92,7 @@ public class ALStringUtil {
 
   /**
    * 指定文字列に含まれるひらがなをカタカナに変換します。
-   *
+   * 
    * @param str
    * @return
    */
@@ -105,7 +104,7 @@ public class ALStringUtil {
         ret = ret + (char) (code + 0x60);
         ;
       } else {
-        ret = ret + (char) code;
+        ret = ret + code;
       }
     }
     return ret;
@@ -113,20 +112,21 @@ public class ALStringUtil {
 
   /**
    * 指定文字列に含まれる半角カナを全角カナに変換します。
-   *
+   * 
    * @param str
    * @return
    */
   public static String convertH2ZKana(String str) {
-    if (str == null)
+    if (str == null) {
       return null;
+    }
 
     return convertH2ZKana(str, 0, str.length());
   }
 
   /**
    * 指定文字列に含まれる半角カナを全角カナに変換します。
-   *
+   * 
    * @param str
    * @param pos
    * @param length
@@ -171,9 +171,9 @@ public class ALStringUtil {
 
   /**
    * HTML文字列におけるメタ文字を置き換え、無害化します。
-   *
+   * 
    * @param argStr
-   *            メタ文字列
+   *          メタ文字列
    * @return 変換後文字列
    */
   public static String sanitizing(String str) {
@@ -187,23 +187,23 @@ public class ALStringUtil {
     for (int i = 0; i < len; i++) {
       char originalCharacter = str.charAt(i);
       switch (originalCharacter) {
-      case '<':
-        buff.append("&lt;");
-        break;
-      case '>':
-        buff.append("&gt;");
-        break;
-      case '\'':
-        buff.append("&#39;");
-        break;
-      case '\"':
-        buff.append("&quot;");
-        break;
-      case '&':
-        buff.append("&amp;");
-        break;
-      default:
-        buff.append(originalCharacter);
+        case '<':
+          buff.append("&lt;");
+          break;
+        case '>':
+          buff.append("&gt;");
+          break;
+        case '\'':
+          buff.append("&#39;");
+          break;
+        case '\"':
+          buff.append("&quot;");
+          break;
+        case '&':
+          buff.append("&amp;");
+          break;
+        default:
+          buff.append(originalCharacter);
       }
     }
     return buff.toString();
@@ -211,9 +211,9 @@ public class ALStringUtil {
 
   /**
    * 無害化(サニタイジング)された文字列を復元します。
-   *
+   * 
    * @param str
-   *            サニタイジングされた文字を含む文字列
+   *          サニタイジングされた文字を含む文字列
    * @return サニタイジング前文字列
    */
   public static String unsanitizing(String str) {

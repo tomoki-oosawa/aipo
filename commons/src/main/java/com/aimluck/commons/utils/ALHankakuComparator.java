@@ -20,21 +20,22 @@ package com.aimluck.commons.utils;
 
 /**
  * 半角文字の比較用クラスです。 <br />
- *
+ * 
  */
 public class ALHankakuComparator<T> extends ALAbstractComparator<T> {
 
   /**
    * コンストラクタ
-   *
+   * 
    */
   public ALHankakuComparator() {
   }
 
   /**
    * char配列を取得します。
-   *
+   * 
    */
+  @Override
   protected char[] getCharArray(Object obj) {
     if (obj instanceof char[][]) {
       return ((char[][]) obj)[ALKanaMapTable.INDEX_HANKAKU];

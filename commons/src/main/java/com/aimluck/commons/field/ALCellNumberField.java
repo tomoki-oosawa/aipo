@@ -23,7 +23,7 @@ import java.util.List;
 
 /**
  * 携帯電話用の入力フィールドを表すクラス（数字用）です。 <br />
- *
+ * 
  */
 public class ALCellNumberField extends ALNumberField {
 
@@ -34,7 +34,7 @@ public class ALCellNumberField extends ALNumberField {
 
   /**
    * コンストラクタ
-   *
+   * 
    */
   public ALCellNumberField() {
     super();
@@ -42,7 +42,7 @@ public class ALCellNumberField extends ALNumberField {
 
   /**
    * コンストラクタ
-   *
+   * 
    * @param value
    */
   public ALCellNumberField(long value) {
@@ -51,7 +51,7 @@ public class ALCellNumberField extends ALNumberField {
 
   /**
    * コンストラクタ
-   *
+   * 
    * @param str
    */
   public ALCellNumberField(String str) {
@@ -60,10 +60,11 @@ public class ALCellNumberField extends ALNumberField {
 
   /**
    * 入力フィールド値を検証します。
-   *
+   * 
    * @param msgList
    * @return
    */
+  @Override
   public boolean validate(List<String> msgList) {
     if (msgList == null) {
       msgList = new ArrayList<String>();
@@ -86,13 +87,13 @@ public class ALCellNumberField extends ALNumberField {
           if (longValue < getMinValue()) {
             // 設定値が最小値を下回る場合
             msgList.add("『 " + fieldName + " 』には" + getMinValue()
-                + "以上の値を入力してください。");
+              + "以上の値を入力してください。");
             return false;
           }
           if (longValue > getMaxValue()) {
             // 設定値が最大値を上回る場合
             msgList.add("『 " + fieldName + " 』には" + getMaxValue()
-                + "以下の値を入力してください。");
+              + "以下の値を入力してください。");
             return false;
           }
         }

@@ -23,7 +23,7 @@ import java.util.List;
 
 /**
  * 携帯電話用の入力フィールドを表すクラス（年月日用）です。 <br />
- *
+ * 
  */
 public class ALCellDateField extends ALDateField {
 
@@ -34,7 +34,7 @@ public class ALCellDateField extends ALDateField {
 
   /**
    * コンストラクタ
-   *
+   * 
    */
   public ALCellDateField() {
     super();
@@ -42,7 +42,7 @@ public class ALCellDateField extends ALDateField {
 
   /**
    * コンストラクタ
-   *
+   * 
    * @param container
    */
   public ALCellDateField(ALDateContainer container) {
@@ -51,10 +51,11 @@ public class ALCellDateField extends ALDateField {
 
   /**
    * 入力フィールド値を検証します。
-   *
+   * 
    * @param msgList
    * @return
    */
+  @Override
   public boolean validate(List<String> msgList) {
     if (msgList == null) {
       msgList = new ArrayList<String>();

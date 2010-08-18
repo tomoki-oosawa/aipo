@@ -26,7 +26,7 @@ import com.aimluck.commons.utils.ALStringUtil;
 
 /**
  * 入力フィールドを表すクラス（数字用）です。 <br />
- *
+ * 
  */
 public class ALNumberField extends ALAbstractField {
 
@@ -49,14 +49,14 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * コンストラクタ
-   *
+   * 
    */
   public ALNumberField() {
   }
 
   /**
    * コンストラクタ
-   *
+   * 
    * @param value
    */
   public ALNumberField(long value) {
@@ -65,7 +65,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * コンストラクタ
-   *
+   * 
    * @param str
    */
   public ALNumberField(String str) {
@@ -74,7 +74,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 入力フィールド値（数字）を設定します。
-   *
+   * 
    * @param value
    */
   public void setValue(long value) {
@@ -83,8 +83,9 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 入力フィールド値（数字の文字列）を設定します。
-   *
+   * 
    */
+  @Override
   public void setValue(String str) {
     if (str == null) {
       value = null;
@@ -95,7 +96,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 入力フィールド値（数字）を取得します。
-   *
+   * 
    * @return
    */
   public long getValue() {
@@ -111,7 +112,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 入力フィールド値の文字列表現を取得します。
-   *
+   * 
    * @return
    */
   public String getValueAsString() {
@@ -120,7 +121,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 数字の大きさ制限の有無を判定します。
-   *
+   * 
    * @return
    */
   public boolean isLimitValue() {
@@ -129,7 +130,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 数字の大きさ制限（最小値と最大値）を設定します。
-   *
+   * 
    * @param min
    * @param max
    */
@@ -145,7 +146,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 数字の大きさ制限（最小値）を設定します。
-   *
+   * 
    * @return
    */
   public long getMinValue() {
@@ -154,7 +155,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 数字の大きさ制限（最大値）を設定します。
-   *
+   * 
    * @return
    */
   public long getMaxValue() {
@@ -163,7 +164,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 数字の大きさ制限（最小値）を設定します。
-   *
+   * 
    * @param min
    */
   public void limitMinValue(long min) {
@@ -177,7 +178,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 文字列の長さ制限（最大値）を設定します。
-   *
+   * 
    * @param max
    */
   public void limitMaxValue(long max) {
@@ -191,7 +192,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 入力フィールド値を検証します。
-   *
+   * 
    * @param msgList
    * @return
    */
@@ -210,7 +211,7 @@ public class ALNumberField extends ALAbstractField {
       if (!isNumberValue()) {
         // 有効な数値が設定されていない場合
         msgList.add("『 <span class='em'>" + fieldName
-            + "</span> 』に正しい数値を入力してください。");
+          + "</span> 』に正しい数値を入力してください。");
         return false;
       } else {
         if (isLimitValue()) { // 値制限がある場合
@@ -218,13 +219,13 @@ public class ALNumberField extends ALAbstractField {
           if (longValue < getMinValue()) {
             // 設定値が最小値を下回る場合
             msgList.add("『 <span class='em'>" + fieldName + "</span> 』には"
-                + getMinValue() + "以上の値を入力してください。");
+              + getMinValue() + "以上の値を入力してください。");
             return false;
           }
           if (longValue > getMaxValue()) {
             // 設定値が最大値を上回る場合
             msgList.add("『 <span class='em'>" + fieldName + "</span> 』には"
-                + getMaxValue() + "以下の値を入力してください。");
+              + getMaxValue() + "以下の値を入力してください。");
             return false;
           }
         }
@@ -235,7 +236,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 入力フィールド値がNullではないかどうかを判定します。
-   *
+   * 
    * @return
    */
   protected boolean isNotNullValue() {
@@ -248,7 +249,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 入力フィールド値が数字かどうかを判定します。
-   *
+   * 
    * @return
    */
   protected boolean isNumberValue() {
@@ -261,7 +262,7 @@ public class ALNumberField extends ALAbstractField {
       int len = value.length();
       for (int i = 0; i < len; i++) {
         chars = (Character.valueOf(value.charAt(i)).toString())
-            .getBytes(ENCORDE_CONFIRM_CHARTYPE);
+          .getBytes(ENCORDE_CONFIRM_CHARTYPE);
         if (chars.length > 1) {
           return false;
         }
@@ -280,8 +281,9 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 入力フィールド値の文字列表現を取得します。
-   *
+   * 
    */
+  @Override
   public String toString() {
     return ALStringUtil.sanitizing(value);
   }

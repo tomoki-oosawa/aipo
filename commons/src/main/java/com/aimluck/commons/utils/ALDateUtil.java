@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -42,7 +42,7 @@ public class ALDateUtil {
    */
   public static Calendar dateToCalendar(String strDate) {
     return dateToCalendar(strDate.substring(0, 4), strDate.substring(4, 6),
-        strDate.substring(6, 8), false);
+      strDate.substring(6, 8), false);
   }
 
   /**
@@ -82,8 +82,8 @@ public class ALDateUtil {
    * @return
    */
   public static String formatDate(int year, int month, int day) {
-    return formatDate(String.valueOf(year), String.valueOf(month), String
-        .valueOf(day));
+    return formatDate(String.valueOf(year), String.valueOf(month),
+      String.valueOf(day));
   }
 
   /**
@@ -147,32 +147,32 @@ public class ALDateUtil {
    */
   public static String getStringMonth(int month) {
     switch (month) {
-    case Calendar.JANUARY:
-      return "01";
-    case Calendar.FEBRUARY:
-      return "02";
-    case Calendar.MARCH:
-      return "03";
-    case Calendar.APRIL:
-      return "04";
-    case Calendar.MAY:
-      return "05";
-    case Calendar.JUNE:
-      return "06";
-    case Calendar.JULY:
-      return "07";
-    case Calendar.AUGUST:
-      return "08";
-    case Calendar.SEPTEMBER:
-      return "09";
-    case Calendar.OCTOBER:
-      return "10";
-    case Calendar.NOVEMBER:
-      return "11";
-    case Calendar.DECEMBER:
-      return "12";
-    default:
-      return null;
+      case Calendar.JANUARY:
+        return "01";
+      case Calendar.FEBRUARY:
+        return "02";
+      case Calendar.MARCH:
+        return "03";
+      case Calendar.APRIL:
+        return "04";
+      case Calendar.MAY:
+        return "05";
+      case Calendar.JUNE:
+        return "06";
+      case Calendar.JULY:
+        return "07";
+      case Calendar.AUGUST:
+        return "08";
+      case Calendar.SEPTEMBER:
+        return "09";
+      case Calendar.OCTOBER:
+        return "10";
+      case Calendar.NOVEMBER:
+        return "11";
+      case Calendar.DECEMBER:
+        return "12";
+      default:
+        return null;
     }
   }
 
@@ -197,27 +197,27 @@ public class ALDateUtil {
   public static String getDayOfWeek(Calendar cal) {
     String res = "";
     switch (cal.get(Calendar.DAY_OF_WEEK)) {
-    case Calendar.SUNDAY:
-      res = "（日）";
-      break;
-    case Calendar.MONDAY:
-      res = "（月）";
-      break;
-    case Calendar.TUESDAY:
-      res = "（火）";
-      break;
-    case Calendar.WEDNESDAY:
-      res = "（水）";
-      break;
-    case Calendar.THURSDAY:
-      res = "（木）";
-      break;
-    case Calendar.FRIDAY:
-      res = "（金）";
-      break;
-    case Calendar.SATURDAY:
-      res = "（土）";
-      break;
+      case Calendar.SUNDAY:
+        res = "（日）";
+        break;
+      case Calendar.MONDAY:
+        res = "（月）";
+        break;
+      case Calendar.TUESDAY:
+        res = "（火）";
+        break;
+      case Calendar.WEDNESDAY:
+        res = "（水）";
+        break;
+      case Calendar.THURSDAY:
+        res = "（木）";
+        break;
+      case Calendar.FRIDAY:
+        res = "（金）";
+        break;
+      case Calendar.SATURDAY:
+        res = "（土）";
+        break;
     }
     return res;
   }

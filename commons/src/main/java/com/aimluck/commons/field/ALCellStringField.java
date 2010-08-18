@@ -23,7 +23,7 @@ import java.util.List;
 
 /**
  * 携帯電話用の入力フィールドを表すクラス（文字列用）です。 <br />
- *
+ * 
  */
 public class ALCellStringField extends ALStringField {
 
@@ -34,7 +34,7 @@ public class ALCellStringField extends ALStringField {
 
   /**
    * コンストラクタ
-   *
+   * 
    */
   public ALCellStringField() {
     super();
@@ -42,7 +42,7 @@ public class ALCellStringField extends ALStringField {
 
   /**
    * コンストラクタ
-   *
+   * 
    * @param str
    */
   public ALCellStringField(String str) {
@@ -51,10 +51,11 @@ public class ALCellStringField extends ALStringField {
 
   /**
    * 入力フィールド値を検証します。
-   *
+   * 
    * @param msgList
    * @return
    */
+  @Override
   public boolean validate(List<String> msgList) {
     if (msgList == null) {
       msgList = new ArrayList<String>();
@@ -68,19 +69,19 @@ public class ALCellStringField extends ALStringField {
     } else {
       if (!isValidCharacterType()) {
         msgList.add("『 " + fieldName + " 』は" + getCharTypeByName()
-            + "で入力してください。");
+          + "で入力してください。");
         return false;
       } else {
         if (isLimitLength()) {
           int len = valueByteLength();
           if (len < getMinLength()) {
             msgList.add("『 " + fieldName + " 』は" + getMinLength()
-                + "文字以上で入力してください。");
+              + "文字以上で入力してください。");
             return false;
           }
           if (len > getMaxLength()) {
             msgList.add("『 " + fieldName + " 』は" + getMaxLength()
-                + "文字以下で入力してください。");
+              + "文字以下で入力してください。");
             return false;
           }
         }

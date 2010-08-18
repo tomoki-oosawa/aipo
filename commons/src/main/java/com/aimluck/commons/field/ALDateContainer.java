@@ -26,7 +26,7 @@ import java.util.GregorianCalendar;
 
 /**
  * 日付を表すクラス（年月日用）です。 <br />
- *
+ * 
  */
 public class ALDateContainer implements Serializable {
 
@@ -49,14 +49,14 @@ public class ALDateContainer implements Serializable {
 
   /**
    * コンストラクタ
-   *
+   * 
    */
   public ALDateContainer() {
   }
 
   /**
    * 日付がNullではないかどうかを判定します。
-   *
+   * 
    * @return
    */
   public boolean isNotNullValue() {
@@ -65,7 +65,7 @@ public class ALDateContainer implements Serializable {
 
   /**
    * 年の値を設定します。
-   *
+   * 
    * @param str
    */
   public void setYear(String str) {
@@ -74,7 +74,7 @@ public class ALDateContainer implements Serializable {
 
   /**
    * 年の値を設定します。
-   *
+   * 
    * @param i
    */
   public void setYear(int i) {
@@ -83,7 +83,7 @@ public class ALDateContainer implements Serializable {
 
   /**
    * 月の値を設定します。
-   *
+   * 
    * @param str
    */
   public void setMonth(String str) {
@@ -92,7 +92,7 @@ public class ALDateContainer implements Serializable {
 
   /**
    * 月の値を設定します。
-   *
+   * 
    * @param i
    */
   public void setMonth(int i) {
@@ -101,7 +101,7 @@ public class ALDateContainer implements Serializable {
 
   /**
    * 日の値を設定します。
-   *
+   * 
    * @param str
    */
   public void setDay(String str) {
@@ -110,7 +110,7 @@ public class ALDateContainer implements Serializable {
 
   /**
    * 日の値を設定します。
-   *
+   * 
    * @param i
    */
   public void setDay(int i) {
@@ -119,7 +119,7 @@ public class ALDateContainer implements Serializable {
 
   /**
    * 日付の値を設定します。
-   *
+   * 
    * @param date
    */
   public void setDate(Date date) {
@@ -140,7 +140,7 @@ public class ALDateContainer implements Serializable {
 
   /**
    * 年の文字列表現を取得します。
-   *
+   * 
    * @return
    */
   public String toStringYear() {
@@ -149,7 +149,7 @@ public class ALDateContainer implements Serializable {
 
   /**
    * 月の文字列表現を取得します。
-   *
+   * 
    * @return
    */
   public String toStringMonth() {
@@ -158,7 +158,7 @@ public class ALDateContainer implements Serializable {
 
   /**
    * 日の文字列表現を取得します。
-   *
+   * 
    * @return
    */
   public String toStringDay() {
@@ -167,7 +167,7 @@ public class ALDateContainer implements Serializable {
 
   /**
    * 年がNullではないかどうかを判定します。
-   *
+   * 
    * @return
    */
   public boolean isNullYear() {
@@ -184,7 +184,7 @@ public class ALDateContainer implements Serializable {
 
   /**
    * 月がNullではないかどうかを判定します。
-   *
+   * 
    * @return
    */
   public boolean isNullMonth() {
@@ -201,7 +201,7 @@ public class ALDateContainer implements Serializable {
 
   /**
    * 日がNullではないかどうかを判定します。
-   *
+   * 
    * @return
    */
   public boolean isNullDay() {
@@ -218,7 +218,7 @@ public class ALDateContainer implements Serializable {
 
   /**
    * 年の値を取得します。
-   *
+   * 
    * @return
    * @throws NumberFormatException
    * @throws ALIllegalDateException
@@ -237,7 +237,7 @@ public class ALDateContainer implements Serializable {
 
   /**
    * 月の値を取得します。
-   *
+   * 
    * @return
    * @throws NumberFormatException
    * @throws ALIllegalDateException
@@ -256,7 +256,7 @@ public class ALDateContainer implements Serializable {
 
   /**
    * 日の値を取得します。
-   *
+   * 
    * @return
    * @throws NumberFormatException
    * @throws ALIllegalDateException
@@ -275,7 +275,7 @@ public class ALDateContainer implements Serializable {
 
   /**
    * 日付の値を取得します。
-   *
+   * 
    * @return
    * @throws NumberFormatException
    * @throws ALIllegalDateException
@@ -297,13 +297,13 @@ public class ALDateContainer implements Serializable {
       return date;
     } catch (IllegalArgumentException ex) {
       throw new ALIllegalDateException("Year = " + year + ", Month = " + month
-          + ", Day = " + day);
+        + ", Day = " + day);
     }
   }
 
   /**
    * 全角文字が含まれているかどうかを判定します。
-   *
+   * 
    * @param str
    * @return
    */
@@ -317,7 +317,7 @@ public class ALDateContainer implements Serializable {
     try {
       for (int i = 0; i < length; i++) {
         chars = (Character.valueOf(str.charAt(i)).toString())
-            .getBytes(ALAbstractField.ENCORDE_CONFIRM_CHARTYPE);
+          .getBytes(ALAbstractField.ENCORDE_CONFIRM_CHARTYPE);
 
         if (chars.length > 1) {
           return false;
@@ -332,13 +332,14 @@ public class ALDateContainer implements Serializable {
 
   /**
    * 入力フィールド値の文字列表現を取得します。
-   *
+   * 
    */
+  @Override
   public String toString() {
     StringBuffer sb = new StringBuffer();
     try {
       sb.append(toStringYear()).append("/").append(toStringMonth()).append("/")
-          .append(toStringDay());
+        .append(toStringDay());
     } catch (Throwable ex) {
       return "";
     }
