@@ -403,7 +403,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       end_time += 24 * 60;
     }
 
-    if (start_time <= change_time) {
+    if (start_time <= change_time && change_time <= end_time) {
       return false;
     } else {
       change_time += 24 * 60;
