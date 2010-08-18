@@ -34,21 +34,21 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * チェックボックスで選択された項目に対してのアクションを定義するクラスです。 <br />
- *
+ * 
  */
 public abstract class ALAbstractCheckList {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALAbstractCheckList.class.getName());
+    .getLogger(ALAbstractCheckList.class.getName());
 
   /** アクセス権限の有無 */
   protected boolean hasAuthority;
 
   /**
    * チェックリストで選択された項目に対してアクションを実行します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -74,8 +74,9 @@ public abstract class ALAbstractCheckList {
           res = true;
         }
       }
-      if (res)
+      if (res) {
         res = action(rundata, context, values, msgList);
+      }
       action.setResultData(this);
       action.setErrorMessages(msgList);
       action.putData(rundata, context);
@@ -94,28 +95,28 @@ public abstract class ALAbstractCheckList {
 
   /**
    * チェックリストで選択された項目に対してアクションを実行するための抽象メソッドです。
-   *
+   * 
    * @param rundata
    * @param context
    * @param values
-   *            チェックされた項目の値のリスト
+   *          チェックされた項目の値のリスト
    * @param msgList
    * @return
    */
   protected abstract boolean action(RunData rundata, Context context,
-      List<String> values, List<String> msgList) throws ALPageNotFoundException,
-      ALDBErrorException;
+      List<String> values, List<String> msgList)
+      throws ALPageNotFoundException, ALDBErrorException;
 
   /**
    * セキュリティをチェックします。
-   *
+   * 
    * @return
    */
   protected boolean doCheckSecurity(RunData rundata, Context context) {
     String reqSecid = rundata.getParameters().getString(
-        ALEipConstants.SECURE_ID);
+      ALEipConstants.SECURE_ID);
     String sessionSecid = (String) rundata.getUser().getTemp(
-        ALEipConstants.SECURE_ID);
+      ALEipConstants.SECURE_ID);
     if (reqSecid == null || !reqSecid.equals(sessionSecid)) {
       return false;
     }
@@ -125,7 +126,7 @@ public abstract class ALAbstractCheckList {
 
   /**
    * アクセス権限をチェックします。
-   *
+   * 
    * @return
    */
   protected boolean doCheckAclPermission(RunData rundata, Context context,
@@ -140,11 +141,11 @@ public abstract class ALAbstractCheckList {
     }
 
     ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+      .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
     hasAuthority = aclhandler.hasAuthority(ALEipUtils.getUserId(rundata),
-        pfeature, defineAclType);
+      pfeature, defineAclType);
 
     if (!hasAuthority) {
       throw new ALPermissionException();
@@ -156,7 +157,7 @@ public abstract class ALAbstractCheckList {
   /**
    * アクセス権限用メソッド。<br />
    * アクセス権限の有無を返します。
-   *
+   * 
    * @return
    */
   public boolean hasAuthority() {
@@ -166,7 +167,7 @@ public abstract class ALAbstractCheckList {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限を返します。
-   *
+   * 
    * @return
    */
   protected int getDefineAclType() {
@@ -176,7 +177,7 @@ public abstract class ALAbstractCheckList {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
   public String getAclPortletFeature() {

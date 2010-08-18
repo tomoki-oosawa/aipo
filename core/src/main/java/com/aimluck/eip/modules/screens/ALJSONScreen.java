@@ -37,17 +37,17 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ブラウザにJSONデータを返すクラスです。 <br />
- *
+ * 
  */
 public abstract class ALJSONScreen extends RawScreen implements ALAction {
 
   /** <code>logger</code> loger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALJSONScreen.class.getName());
+    .getLogger(ALJSONScreen.class.getName());
 
   /** コンテントタイプ */
   private static final String CONTENT_TYPE = "text/json;charset="
-      + ALEipConstants.DEF_CONTENT_ENCODING;
+    + ALEipConstants.DEF_CONTENT_ENCODING;
 
   /** 表示モード */
   private String mode = "";
@@ -65,9 +65,10 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
   private List<String> errmsgList;
 
   /**
-   *
+   * 
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
    */
+  @Override
   protected void doOutput(RunData rundata) throws Exception {
     ServletOutputStream out = null;
 
@@ -84,8 +85,8 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
 
       ALEipUtils.setupContext(rundata, context);
 
-      StringBuffer result = new StringBuffer().append("/* ").append(
-          getJSONString(rundata, context)).append(" */");
+      StringBuffer result = new StringBuffer().append("/* ")
+        .append(getJSONString(rundata, context)).append(" */");
 
       HttpServletResponse response = rundata.getResponse();
 
@@ -100,9 +101,10 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
   }
 
   /**
-   *
+   * 
    * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.util.RunData)
    */
+  @Override
   protected String getContentType(RunData rundata) {
     return CONTENT_TYPE;
   }
@@ -111,7 +113,7 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
       throws Exception;
 
   /**
-   *
+   * 
    * @param obj
    */
   public void setResultData(Object obj) {
@@ -119,7 +121,7 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
   }
 
   /**
-   *
+   * 
    * @param obj
    */
   public void addResultData(Object obj) {
@@ -130,7 +132,7 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
   }
 
   /**
-   *
+   * 
    * @param objList
    */
   public void setResultDataList(List<Object> objList) {
@@ -138,7 +140,7 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
   }
 
   /**
-   *
+   * 
    * @param msg
    */
   public void addErrorMessage(String msg) {
@@ -149,7 +151,7 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
   }
 
   /**
-   *
+   * 
    * @param msg
    */
   public void addErrorMessages(List<String> msgs) {
@@ -160,7 +162,7 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
   }
 
   /**
-   *
+   * 
    * @param msgs
    */
   public void setErrorMessages(List<String> msgs) {
@@ -168,7 +170,7 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
   }
 
   /**
-   *
+   * 
    * @param mode
    */
   public void setMode(String mode) {
@@ -176,7 +178,7 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public String getMode() {
@@ -184,7 +186,7 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
   }
 
   /**
-   *
+   * 
    * @param context
    */
   public void putData(RunData rundata, Context context) {
@@ -193,8 +195,8 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
     context.put(ALEipConstants.RESULT_LIST, resultList);
     context.put(ALEipConstants.MESSAGE_LIST, msgList);
     context.put(ALEipConstants.ERROR_MESSAGE_LIST, errmsgList);
-    context.put(ALEipConstants.ENTITY_ID, ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID));
+    context.put(ALEipConstants.ENTITY_ID,
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID));
   }
 
 }

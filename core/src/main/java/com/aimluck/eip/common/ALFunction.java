@@ -20,7 +20,7 @@ package com.aimluck.eip.common;
 
 /**
  * ポートレットの情報を表すクラスです。 <br />
- *
+ * 
  */
 public class ALFunction {
 

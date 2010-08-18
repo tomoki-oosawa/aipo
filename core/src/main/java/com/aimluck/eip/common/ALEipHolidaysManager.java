@@ -40,13 +40,13 @@ import com.aimluck.commons.field.ALIllegalDateException;
 /**
  * 祝日を保持するシングルトンクラスです。 <br />
  * この実装は同期化されない点に注意してください。
- *
+ * 
  */
 public class ALEipHolidaysManager {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALEipHolidaysManager.class.getName());
+    .getLogger(ALEipHolidaysManager.class.getName());
 
   /** デフォルトエンコーディングを表わすシステムプロパティのキー */
   protected static final String KEY_ENCODING = "content.defaultencoding";
@@ -54,22 +54,22 @@ public class ALEipHolidaysManager {
   private static ALEipHolidaysManager manager = new ALEipHolidaysManager();
 
   /** デフォルトの祝日が書かれたファイルへのパス */
-  private String FILE_HOLI_DAYS_DEFAULT = (JetspeedResources.getString(
-      "aipo.home", "").equals("")) ? "" : JetspeedResources.getString(
-      "aipo.home", "")
-      + File.separator
-      + "conf"
-      + File.separator
-      + "holidays_default.properties";
+  private final String FILE_HOLI_DAYS_DEFAULT = (JetspeedResources.getString(
+    "aipo.home", "").equals("")) ? "" : JetspeedResources.getString(
+    "aipo.home", "")
+    + File.separator
+    + "conf"
+    + File.separator
+    + "holidays_default.properties";
 
   /** ユーザ定義の祝日が書かれたファイルへのパス */
-  private String FILE_HOLI_DAYS_USER = (JetspeedResources.getString(
-      "aipo.home", "").equals("")) ? "" : JetspeedResources.getString(
-      "aipo.home", "")
-      + File.separator
-      + "conf"
-      + File.separator
-      + "holidays_user.properties";
+  private final String FILE_HOLI_DAYS_USER = (JetspeedResources.getString(
+    "aipo.home", "").equals("")) ? "" : JetspeedResources.getString(
+    "aipo.home", "")
+    + File.separator
+    + "conf"
+    + File.separator
+    + "holidays_user.properties";
 
   /** デフォルトの祝日一覧 */
   private List<ALHoliday> defaultHolidays = null;
@@ -89,7 +89,7 @@ public class ALEipHolidaysManager {
 
   /**
    * クラス ALEipHolidaysManager のインスタンスを取得する．
-   *
+   * 
    * @return クラス ALEipHolidaysManager のインスタンス
    */
   public static ALEipHolidaysManager getInstance() {
@@ -98,7 +98,7 @@ public class ALEipHolidaysManager {
 
   /**
    * 指定した日付が祝日であるかを検証する．
-   *
+   * 
    * @param date
    *          検証する日付
    * @return 指定した日付の祝日情報．指定した日付が祝日ではない場合は，null．
@@ -134,7 +134,7 @@ public class ALEipHolidaysManager {
 
   /**
    * 指定した日付が祝日であるかを検証する．
-   *
+   * 
    * @param list
    * @param year
    * @param month
@@ -187,14 +187,14 @@ public class ALEipHolidaysManager {
       if (defaultFile.exists()) {
         // デフォルトの祝日を読み込む．
         reader = new BufferedReader(new InputStreamReader(new FileInputStream(
-            defaultFile), ALEipConstants.DEF_CONTENT_ENCODING));
+          defaultFile), ALEipConstants.DEF_CONTENT_ENCODING));
         loadHoliday(reader, defaultHolidays);
       }
 
       if (userFile.exists()) {
         // ユーザ定義の祝日を読み込む．
         reader = new BufferedReader(new InputStreamReader(new FileInputStream(
-            userFile), ALEipConstants.DEF_CONTENT_ENCODING));
+          userFile), ALEipConstants.DEF_CONTENT_ENCODING));
         loadHoliday(reader, userHolidays);
       }
 
@@ -211,15 +211,16 @@ public class ALEipHolidaysManager {
 
   /**
    * 祝日情報をテキストファイルから読み込む．
-   *
+   * 
    * @param reader
    * @param list
    * @throws Exception
    */
   private void loadHoliday(BufferedReader reader, List<ALHoliday> list)
       throws Exception {
-    if (reader == null)
+    if (reader == null) {
       return;
+    }
 
     List<String> dummyList = new ArrayList<String>();
     StringTokenizer st = null;
@@ -243,7 +244,7 @@ public class ALEipHolidaysManager {
 
   /**
    * 祝日情報を日付で昇順に並び替える比較関数を取得する．
-   *
+   * 
    * @return 祝日情報を日付で昇順に並び替える比較関数
    */
   private Comparator<ALHoliday> getHolidaysComparator() {
@@ -257,8 +258,8 @@ public class ALEipHolidaysManager {
           // 日付の昇順
           if ((ret = day0.compareTo(day1)) == 0) {
             // 日付が同じ場合，祝日名の昇順
-            String name0 = ((ALHoliday) obj0).getName().getValue();
-            String name1 = ((ALHoliday) obj1).getName().getValue();
+            String name0 = (obj0).getName().getValue();
+            String name1 = (obj1).getName().getValue();
             ret = name0.compareTo(name1);
           }
         } catch (Exception ex) {

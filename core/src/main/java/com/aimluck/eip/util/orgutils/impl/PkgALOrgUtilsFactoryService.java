@@ -23,13 +23,14 @@ import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
 
 /**
  * 同期サービス用ファクトリクラスです。 <BR>
- *
- *
+ * 
+ * 
  */
 public class PkgALOrgUtilsFactoryService extends ALOrgUtilsFactoryService {
 
-  private ALOrgUtilsHandler handler = new PkgALOrgUtilsHandler();
+  private final ALOrgUtilsHandler handler = new PkgALOrgUtilsHandler();
 
+  @Override
   public ALOrgUtilsHandler getOrgUtilsHandler() {
     return handler;
   }

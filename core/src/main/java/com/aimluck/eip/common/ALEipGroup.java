@@ -26,7 +26,7 @@ import com.aimluck.commons.field.ALStringField;
 
 /**
  * グループを表すクラスです。 <br />
- *
+ * 
  */
 public class ALEipGroup implements ALData, Serializable {
 
@@ -45,7 +45,7 @@ public class ALEipGroup implements ALData, Serializable {
   }
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -54,7 +54,7 @@ public class ALEipGroup implements ALData, Serializable {
   }
 
   /**
-   *
+   * 
    * @param in
    * @throws IOException
    * @throws ClassNotFoundException
@@ -66,7 +66,7 @@ public class ALEipGroup implements ALData, Serializable {
   }
 
   /**
-   *
+   * 
    * @param string
    */
   public void setName(String string) {
@@ -74,7 +74,7 @@ public class ALEipGroup implements ALData, Serializable {
   }
 
   /**
-   *
+   * 
    * @param string
    */
   public void setAliasName(String string) {
@@ -82,7 +82,7 @@ public class ALEipGroup implements ALData, Serializable {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALStringField getName() {
@@ -90,7 +90,7 @@ public class ALEipGroup implements ALData, Serializable {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALStringField getAliasName() {

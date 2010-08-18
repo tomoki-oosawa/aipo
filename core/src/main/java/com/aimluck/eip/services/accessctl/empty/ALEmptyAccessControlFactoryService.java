@@ -26,7 +26,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 
 /**
  * アクセス権限を管理するクラスを生成するファクトリクラスです。 <br />
- *
+ * 
  */
 public class ALEmptyAccessControlFactoryService extends
     ALAccessControlFactoryService {
@@ -34,13 +34,14 @@ public class ALEmptyAccessControlFactoryService extends
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALEmptyAccessControlFactoryService.class.getName());
+    .getLogger(ALEmptyAccessControlFactoryService.class.getName());
 
   ALAccessControlHandler handler = new ALEmptyAccessControlHandler();
 
   /**
    *
    */
+  @Override
   public ALAccessControlHandler getAccessControlHandler() {
     return handler;
   }

@@ -32,13 +32,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 定期的にテンポラリフォルダに存在するファイルを削除するデーモンクラスです。 <br />
- *
+ * 
  */
 public class DeleteTemporaryFileDaemon implements Daemon {
 
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(DeleteTemporaryFileDaemon.class.getName());
+    .getLogger(DeleteTemporaryFileDaemon.class.getName());
 
   private int status = Daemon.STATUS_NOT_PROCESSED;
 
@@ -50,7 +50,7 @@ public class DeleteTemporaryFileDaemon implements Daemon {
 
   /**
    * テンポラリファイルを削除し、インターバルの時間をセット
-   *
+   * 
    */
   public void run() {
 

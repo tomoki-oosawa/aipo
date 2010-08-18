@@ -23,7 +23,7 @@ import com.aimluck.commons.field.ALStringField;
 
 /**
  * 部署情報を表すクラスです。 <br />
- *
+ * 
  */
 public class ALEipPost implements ALData {
 
@@ -37,7 +37,7 @@ public class ALEipPost implements ALData {
   private ALStringField group_name;
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {

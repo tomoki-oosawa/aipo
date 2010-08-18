@@ -22,7 +22,7 @@ import org.apache.jetspeed.services.resources.JetspeedResources;
 
 /**
  * Aimluck EIP の定数です。 <br />
- *
+ * 
  */
 public class ALEipConstants {
 
@@ -98,7 +98,7 @@ public class ALEipConstants {
 
   /** デフォルトエンコーディング */
   public static final String DEF_CONTENT_ENCODING = JetspeedResources
-      .getString(JetspeedResources.CONTENT_ENCODING_KEY, "utf-8");
+    .getString(JetspeedResources.CONTENT_ENCODING_KEY, "utf-8");
 
   /** ユーザーの状態：削除 */
   public static final String USER_STAT_DISABLED = "T";

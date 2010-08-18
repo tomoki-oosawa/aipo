@@ -25,7 +25,7 @@ import org.apache.velocity.context.Context;
 
 /**
  * 通信中にタイムアウトした場合の処理クラスです。 <br />
- *
+ * 
  */
 public class ALVelocityTimeoutScreen extends ALVelocityScreen implements
     ALErrorScreen {
@@ -33,8 +33,9 @@ public class ALVelocityTimeoutScreen extends ALVelocityScreen implements
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALVelocityTimeoutScreen.class.getName());
+    .getLogger(ALVelocityTimeoutScreen.class.getName());
 
+  @Override
   protected void doOutput(RunData rundata, Context context) {
     String layout_template = "screens/html/AjaxTimeout.vm";
     setTemplate(rundata, context, layout_template);

@@ -27,7 +27,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 /**
  * ユーザー情報を表すクラスです。 <br />
- *
+ * 
  */
 public class ALBaseUser extends
     org.apache.jetspeed.om.security.BaseJetspeedUser {
@@ -69,7 +69,7 @@ public class ALBaseUser extends
 
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALBaseUser.class.getName());
+    .getLogger(ALBaseUser.class.getName());
 
   /**
    *
@@ -79,7 +79,7 @@ public class ALBaseUser extends
   }
 
   /**
-   *
+   * 
    * @return
    */
   public String getInTelephone() {
@@ -87,7 +87,7 @@ public class ALBaseUser extends
   }
 
   /**
-   *
+   * 
    * @param str
    */
   public void setInTelephone(String str) {
@@ -95,7 +95,7 @@ public class ALBaseUser extends
   }
 
   /**
-   *
+   * 
    * @return
    */
   public String getOutTelephone() {
@@ -103,7 +103,7 @@ public class ALBaseUser extends
   }
 
   /**
-   *
+   * 
    * @param str
    */
   public void setOutTelephone(String str) {
@@ -111,7 +111,7 @@ public class ALBaseUser extends
   }
 
   /**
-   *
+   * 
    * @return
    */
   public String getCellularPhone() {
@@ -119,7 +119,7 @@ public class ALBaseUser extends
   }
 
   /**
-   *
+   * 
    * @param str
    */
   public void setCellularPhone(String str) {
@@ -127,7 +127,7 @@ public class ALBaseUser extends
   }
 
   /**
-   *
+   * 
    * @return
    */
   public String getCellularMail() {
@@ -135,7 +135,7 @@ public class ALBaseUser extends
   }
 
   /**
-   *
+   * 
    * @param str
    */
   public void setCellularMail(String str) {
@@ -143,7 +143,7 @@ public class ALBaseUser extends
   }
 
   /**
-   *
+   * 
    * @return
    */
   public int getCompanyId() {
@@ -151,7 +151,7 @@ public class ALBaseUser extends
   }
 
   /**
-   *
+   * 
    * @param str
    */
   public void setCompanyId(int id) {
@@ -159,7 +159,7 @@ public class ALBaseUser extends
   }
 
   /**
-   *
+   * 
    * @return
    */
   public int getPostId() {
@@ -167,7 +167,7 @@ public class ALBaseUser extends
   }
 
   /**
-   *
+   * 
    * @param str
    */
   public void setPostId(int id) {
@@ -175,7 +175,7 @@ public class ALBaseUser extends
   }
 
   /**
-   *
+   * 
    * @return
    */
   public int getPositionId() {
@@ -183,7 +183,7 @@ public class ALBaseUser extends
   }
 
   /**
-   *
+   * 
    * @param str
    */
   public void setPositionId(int id) {
@@ -191,7 +191,7 @@ public class ALBaseUser extends
   }
 
   /**
-   *
+   * 
    * @return
    */
   public String getFirstNameKana() {
@@ -199,7 +199,7 @@ public class ALBaseUser extends
   }
 
   /**
-   *
+   * 
    * @param str
    */
   public void setFirstNameKana(String str) {
@@ -207,7 +207,7 @@ public class ALBaseUser extends
   }
 
   /**
-   *
+   * 
    * @return
    */
   public String getLastNameKana() {
@@ -215,7 +215,7 @@ public class ALBaseUser extends
   }
 
   /**
-   *
+   * 
    * @param str
    */
   public void setLastNameKana(String str) {
@@ -223,23 +223,25 @@ public class ALBaseUser extends
   }
 
   /**
-   *
+   * 
    * @return byte[]
    */
   public byte[] getPhoto() {
     Object obj = getPerm(PHOTO);
 
-    if (obj instanceof byte[])
+    if (obj instanceof byte[]) {
       return (byte[]) obj;
+    }
 
-    if (obj == null || "".equals(obj))
+    if (obj == null || "".equals(obj)) {
       return null;
+    }
 
     return ((String) obj).getBytes();
   }
 
   /**
-   *
+   * 
    * @param v
    */
   public void setPhoto(byte[] b) {
@@ -304,14 +306,14 @@ public class ALBaseUser extends
 
   /**
    * 会社名を取得します。
-   *
+   * 
    * @param id
    *          会社ID
    * @return 会社名
    */
   public String getCompanyName(int id) {
     Map<Integer, ALEipCompany> companyMap = ALEipManager.getInstance()
-        .getCompanyMap();
+      .getCompanyMap();
     ALEipCompany company = companyMap.get(Integer.valueOf(id));
     return company.getCompanyName().toString();
   }
@@ -332,7 +334,7 @@ public class ALBaseUser extends
 
   /**
    * 最終アクセス時間を取得します。
-   *
+   * 
    * @return
    */
   public String getLastAccessTime() {
@@ -340,10 +342,10 @@ public class ALBaseUser extends
     Calendar cal = Calendar.getInstance();
     cal.setTime(super.getLastAccessDate());
     return str.append(cal.get(Calendar.YEAR)).append("年")
-        .append((cal.get(Calendar.MONTH) + 1)).append("月")
-        .append(cal.get(Calendar.DATE)).append("日 ")
-        .append(cal.get(Calendar.HOUR_OF_DAY)).append("時")
-        .append(cal.get(Calendar.MINUTE)).append("分").toString();
+      .append((cal.get(Calendar.MONTH) + 1)).append("月")
+      .append(cal.get(Calendar.DATE)).append("日 ")
+      .append(cal.get(Calendar.HOUR_OF_DAY)).append("時")
+      .append(cal.get(Calendar.MINUTE)).append("分").toString();
   }
 
 }

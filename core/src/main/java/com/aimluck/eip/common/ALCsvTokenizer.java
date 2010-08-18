@@ -29,15 +29,15 @@ import org.apache.jetspeed.services.resources.JetspeedResources;
 
 /**
  * CSVファイルをセルごとに読み取るためのクラスです。 <br />
- *
+ * 
  */
 public class ALCsvTokenizer {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALCsvTokenizer.class.getName());
+    .getLogger(ALCsvTokenizer.class.getName());
 
   public static final String CSV_TEMP_FOLDER = JetspeedResources.getString(
-      "aipo.tmp.directory", "") + System.getProperty("file.separator") + "csv";
+    "aipo.tmp.directory", "") + System.getProperty("file.separator") + "csv";
 
   /** 一度に表示される件数 */
   public static final int CSV_SHOW_SIZE = 1000;
@@ -73,7 +73,7 @@ public class ALCsvTokenizer {
 
   /**
    * コンストラクタ <BR>
-   *
+   * 
    */
   public ALCsvTokenizer() {
     line = false;
@@ -83,7 +83,7 @@ public class ALCsvTokenizer {
 
   /**
    * 指定したファイルパスで初期化します。 <br />
-   *
+   * 
    * @param fname
    */
   public boolean init(String fname) {
@@ -112,7 +112,7 @@ public class ALCsvTokenizer {
 
   /**
    * CSVファイルを１アイテムずつ読み取ります。 <br />
-   *
+   * 
    * @return
    */
   public String nextToken() {
@@ -177,8 +177,9 @@ public class ALCsvTokenizer {
             return str;
           }
           if (((ch == ',') || (ch == '\n')) && (!inquote)) {
-            if (ch == '\n')
+            if (ch == '\n') {
               line = true;
+            }
             return str;
           }
         }
@@ -193,7 +194,7 @@ public class ALCsvTokenizer {
 
   /**
    * CSVファイルを指定した行から読み取ります。 <br />
-   *
+   * 
    * @param fname
    * @param i
    */
@@ -203,18 +204,22 @@ public class ALCsvTokenizer {
     }
     int line_count = 0;
     while (eof != -1) {
-      if (line_count >= i)
+      if (line_count >= i) {
         break;
+      }
 
       while (eof != -1) {
         nextToken();
-        if (eof == -1)
+        if (eof == -1) {
           break;
-        if (line)
+        }
+        if (line) {
           break;
+        }
       }
-      if (eof == -1)
+      if (eof == -1) {
         break;
+      }
       line_count++;
     }
     return true;

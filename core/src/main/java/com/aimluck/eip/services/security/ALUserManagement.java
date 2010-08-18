@@ -77,13 +77,13 @@ import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
  * ユーザーを管理するクラスです。 <br />
- *
+ * 
  */
 public class ALUserManagement extends TurbineBaseService implements
     UserManagement, CredentialsManagement {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALUserManagement.class.getName());
+    .getLogger(ALUserManagement.class.getName());
 
   private final static String CONFIG_SECURE_PASSWORDS_KEY = "secure.passwords";
 
@@ -124,9 +124,9 @@ public class ALUserManagement extends TurbineBaseService implements
       // baseuser.setObjectdata(null);
       baseuser.setPasswordChanged(tuser.getPasswordChanged());
       baseuser.setCompanyId((tuser.getCompanyId() != null) ? tuser
-          .getCompanyId().intValue() : 0);
+        .getCompanyId().intValue() : 0);
       baseuser.setPositionId((tuser.getPositionId() != null) ? tuser
-          .getPositionId().intValue() : 0);
+        .getPositionId().intValue() : 0);
       baseuser.setInTelephone(tuser.getInTelephone());
       baseuser.setOutTelephone(tuser.getOutTelephone());
       baseuser.setCellularPhone(tuser.getCellularPhone());
@@ -136,9 +136,9 @@ public class ALUserManagement extends TurbineBaseService implements
       baseuser.setFirstNameKana(tuser.getFirstNameKana());
       baseuser.setPhoto(tuser.getPhoto());
       baseuser.setCreatedUserId((tuser.getCreatedUserId() != null) ? tuser
-          .getCreatedUserId().intValue() : 0);
+        .getCreatedUserId().intValue() : 0);
       baseuser.setUpdatedUserId((tuser.getUpdatedUserId() != null) ? tuser
-          .getUpdatedUserId().intValue() : 0);
+        .getUpdatedUserId().intValue() : 0);
       return baseuser;
     } catch (Exception e) {
       e.printStackTrace();
@@ -162,15 +162,15 @@ public class ALUserManagement extends TurbineBaseService implements
     SelectQuery query = new SelectQuery(TurbineUser.class);
     if (principal instanceof UserNamePrincipal) {
       Expression exp = ExpressionFactory.matchExp(
-          TurbineUser.LOGIN_NAME_PROPERTY, principal.getName());
+        TurbineUser.LOGIN_NAME_PROPERTY, principal.getName());
       query.setQualifier(exp);
     } else if (principal instanceof UserIdPrincipal) {
       Expression exp = ExpressionFactory.matchDbExp(
-          TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(principal.getName()));
+        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(principal.getName()));
       query.setQualifier(exp);
     } else {
       throw new UserException("Invalid Principal Type in getUser: "
-          + principal.getClass().getName());
+        + principal.getClass().getName());
     }
     List<?> users;
     try {
@@ -182,7 +182,7 @@ public class ALUserManagement extends TurbineBaseService implements
     }
     if (users.size() > 1) {
       throw new UserException("Multiple Users with same username '"
-          + principal.getName() + "'");
+        + principal.getName() + "'");
     }
     if (users.size() == 1) {
       try {
@@ -190,7 +190,7 @@ public class ALUserManagement extends TurbineBaseService implements
         return juser;
       } catch (UserException e) {
         String message = "Failed to retrieve user '" + principal.getName()
-            + "'";
+          + "'";
         logger.error(message, e);
         throw new UserException(message, e);
       }
@@ -213,15 +213,15 @@ public class ALUserManagement extends TurbineBaseService implements
     SelectQuery query = new SelectQuery(TurbineUser.class);
     if (principal instanceof UserNamePrincipal) {
       Expression exp = ExpressionFactory.matchExp(
-          TurbineUser.LOGIN_NAME_PROPERTY, principal.getName());
+        TurbineUser.LOGIN_NAME_PROPERTY, principal.getName());
       query.setQualifier(exp);
     } else if (principal instanceof UserIdPrincipal) {
       Expression exp = ExpressionFactory.matchDbExp(
-          TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(principal.getName()));
+        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(principal.getName()));
       query.setQualifier(exp);
     } else {
       throw new UserException("Invalid Principal Type in getUser: "
-          + principal.getClass().getName());
+        + principal.getClass().getName());
     }
     List<?> users;
     try {
@@ -233,7 +233,7 @@ public class ALUserManagement extends TurbineBaseService implements
     }
     if (users.size() > 1) {
       throw new UserException("Multiple Users with same username '"
-          + principal.getName() + "'");
+        + principal.getName() + "'");
     }
     if (users.size() == 1) {
       try {
@@ -241,7 +241,7 @@ public class ALUserManagement extends TurbineBaseService implements
         return juser;
       } catch (UserException e) {
         String message = "Failed to retrieve user '" + principal.getName()
-            + "'";
+          + "'";
         logger.error(message, e);
         throw new UserException(message, e);
       }
@@ -256,7 +256,7 @@ public class ALUserManagement extends TurbineBaseService implements
     List<JetspeedUser> users = new ArrayList<JetspeedUser>();
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
 
       if (dataContext == null) {
         String message = "Failed to retrieve users";
@@ -285,7 +285,7 @@ public class ALUserManagement extends TurbineBaseService implements
     List<JetspeedUser> users = new ArrayList<JetspeedUser>();
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       if (dataContext == null) {
         String message = "Failed to retrieve users : " + filter;
         throw new UserException(message);
@@ -310,7 +310,7 @@ public class ALUserManagement extends TurbineBaseService implements
   public void saveUser(JetspeedUser user) throws JetspeedSecurityException {
     if (!accountExists(user, true)) {
       throw new UnknownUserException("Cannot save user '" + user.getUserName()
-          + "', User doesn't exist");
+        + "', User doesn't exist");
     }
 
     DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
@@ -322,13 +322,13 @@ public class ALUserManagement extends TurbineBaseService implements
       }
 
       Expression exp = ExpressionFactory.matchDbExp(
-          TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(user.getUserId()));
+        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(user.getUserId()));
       SelectQuery query = new SelectQuery(TurbineUser.class, exp);
       List<?> users = dataContext.performQuery(query);
 
       if (users == null || users.size() == 0) {
         throw new UnknownUserException("Cannot save user '"
-            + user.getUserName() + "', User doesn't exist");
+          + user.getUserName() + "', User doesn't exist");
       }
 
       ALBaseUser baseuser = (ALBaseUser) user;
@@ -375,7 +375,7 @@ public class ALUserManagement extends TurbineBaseService implements
   public void addUser(JetspeedUser user) throws JetspeedSecurityException {
     if (accountExists(user)) {
       throw new NotUniqueUserException("The account '" + user.getUserName()
-          + "' already exists");
+        + "' already exists");
     }
     String initialPassword = user.getPassword();
     String encrypted = JetspeedSecurity.encryptPassword(initialPassword);
@@ -390,7 +390,7 @@ public class ALUserManagement extends TurbineBaseService implements
     ALBaseUser baseuser = (ALBaseUser) user;
     // 新規オブジェクトモデル
     TurbineUser tuser = (TurbineUser) dataContext
-        .createAndRegisterNewObject(TurbineUser.class);
+      .createAndRegisterNewObject(TurbineUser.class);
     tuser.setLoginName(baseuser.getUserName());
     tuser.setPasswordValue(baseuser.getPassword());
     tuser.setFirstName(baseuser.getFirstName());
@@ -442,7 +442,7 @@ public class ALUserManagement extends TurbineBaseService implements
     Role role = JetspeedSecurity.getRole("user");
     // 新規オブジェクトモデル
     TurbineUserGroupRole user_group_role = (TurbineUserGroupRole) dataContext
-        .createAndRegisterNewObject(TurbineUserGroupRole.class);
+      .createAndRegisterNewObject(TurbineUserGroupRole.class);
     user_group_role.setTurbineUser(tuser);
     user_group_role.setTurbineGroup((TurbineGroup) group);
     user_group_role.setTurbineRole((TurbineRole) role);
@@ -451,9 +451,9 @@ public class ALUserManagement extends TurbineBaseService implements
     SelectQuery query = new SelectQuery(EipMUserPosition.class);
     List<?> userposlist = dataContext.performQuery(query);
     int new_pos = (userposlist != null && userposlist.size() > 0) ? userposlist
-        .size() + 1 : 1;
+      .size() + 1 : 1;
     EipMUserPosition userposition = (EipMUserPosition) dataContext
-        .createAndRegisterNewObject(EipMUserPosition.class);
+      .createAndRegisterNewObject(EipMUserPosition.class);
     userposition.setTurbineUser(tuser);
     userposition.setPosition(Integer.valueOf(new_pos));
 
@@ -473,7 +473,7 @@ public class ALUserManagement extends TurbineBaseService implements
   }
 
   /**
-   *
+   * 
    * @param user
    * @throws JetspeedSecurityException
    */
@@ -483,11 +483,11 @@ public class ALUserManagement extends TurbineBaseService implements
     for (int ix = 0; ix < roles.length; ix++) {
       try {
         JetspeedSecurity.grantRole(user.getUserName(), JetspeedSecurity
-            .getRole(roles[ix]).getName());
+          .getRole(roles[ix]).getName());
       } catch (Exception e) {
         logger.error(
-            "Could not grant role: " + roles[ix] + " to user "
-                + user.getUserName(), e);
+          "Could not grant role: " + roles[ix] + " to user "
+            + user.getUserName(), e);
       }
     }
     try {
@@ -512,7 +512,7 @@ public class ALUserManagement extends TurbineBaseService implements
   public void removeUser(Principal principal) throws JetspeedSecurityException {
     if (systemUsers.contains(principal.getName())) {
       throw new UserException("[" + principal.getName()
-          + "] is a system user and cannot be removed");
+        + "] is a system user and cannot be removed");
     }
 
     JetspeedUser user = getUser(principal);
@@ -526,14 +526,14 @@ public class ALUserManagement extends TurbineBaseService implements
       }
 
       Expression exp = ExpressionFactory.matchDbExp(
-          TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(user.getUserId()));
+        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(user.getUserId()));
       SelectQuery query = new SelectQuery(TurbineUser.class, exp);
 
       List<?> users = dataContext.performQuery(query);
 
       if (users == null || users.size() == 0) {
         throw new UserException("[" + principal.getName()
-            + "] is a system user and cannot be removed");
+          + "] is a system user and cannot be removed");
       }
 
       dataContext.deleteObject((TurbineUser) users.get(0));
@@ -556,11 +556,11 @@ public class ALUserManagement extends TurbineBaseService implements
     String encrypted = JetspeedSecurity.encryptPassword(oldPassword);
     if (!accountExists(user)) {
       throw new UnknownUserException(
-          Localization.getString("UPDATEACCOUNT_NOUSER"));
+        Localization.getString("UPDATEACCOUNT_NOUSER"));
     }
     if (!user.getPassword().equals(encrypted)) {
       throw new UserException(
-          Localization.getString("UPDATEACCOUNT_BADOLDPASSWORD"));
+        Localization.getString("UPDATEACCOUNT_BADOLDPASSWORD"));
     }
     user.setPassword(JetspeedSecurity.encryptPassword(newPassword));
 
@@ -576,7 +576,7 @@ public class ALUserManagement extends TurbineBaseService implements
       throws JetspeedSecurityException {
     if (!accountExists(user)) {
       throw new UnknownUserException("The account '" + user.getUserName()
-          + "' does not exist");
+        + "' does not exist");
     }
     user.setPassword(JetspeedSecurity.encryptPassword(password));
     saveUser(user);
@@ -617,9 +617,9 @@ public class ALUserManagement extends TurbineBaseService implements
         // We need to use unicode here, to be independent of platform's
         // default encoding. Thanks to SGawin for spotting this.
         byte[] digest = md.digest(password
-            .getBytes(ALEipConstants.DEF_CONTENT_ENCODING));
+          .getBytes(ALEipConstants.DEF_CONTENT_ENCODING));
         ByteArrayOutputStream bas = new ByteArrayOutputStream(digest.length
-            + digest.length / 3 + 1);
+          + digest.length / 3 + 1);
         OutputStream encodedStream = MimeUtility.encode(bas, "base64");
         encodedStream.write(digest);
         encodedStream.flush();
@@ -635,22 +635,24 @@ public class ALUserManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public synchronized void init(ServletConfig conf)
       throws InitializationException {
-    if (getInit())
+    if (getInit()) {
       return;
+    }
 
     super.init(conf);
 
     ResourceService serviceConf = ((TurbineServices) TurbineServices
-        .getInstance()).getResources(JetspeedSecurityService.SERVICE_NAME);
+      .getInstance()).getResources(JetspeedSecurityService.SERVICE_NAME);
 
     securePasswords = serviceConf.getBoolean(CONFIG_SECURE_PASSWORDS_KEY,
-        securePasswords);
+      securePasswords);
     passwordsAlgorithm = serviceConf.getString(
-        CONFIG_SECURE_PASSWORDS_ALGORITHM, passwordsAlgorithm);
+      CONFIG_SECURE_PASSWORDS_ALGORITHM, passwordsAlgorithm);
     systemUsers = serviceConf.getVector(CONFIG_SYSTEM_USERS,
-        new Vector<Object>());
+      new Vector<Object>());
 
     try {
       roles = serviceConf.getStringArray(CONFIG_NEWUSER_ROLES);
@@ -662,13 +664,13 @@ public class ALUserManagement extends TurbineBaseService implements
     }
 
     this.runDataService = (JetspeedRunDataService) TurbineServices
-        .getInstance().getService(RunDataService.SERVICE_NAME);
+      .getInstance().getService(RunDataService.SERVICE_NAME);
 
     setInit(true);
   }
 
   /**
-   *
+   * 
    * @param user
    * @return
    * @throws UserException
@@ -688,7 +690,7 @@ public class ALUserManagement extends TurbineBaseService implements
     }
 
     Expression exp = ExpressionFactory.matchExp(
-        TurbineUser.LOGIN_NAME_PROPERTY, user.getUserName());
+      TurbineUser.LOGIN_NAME_PROPERTY, user.getUserName());
     SelectQuery query = new SelectQuery(TurbineUser.class, exp);
 
     List<?> users;

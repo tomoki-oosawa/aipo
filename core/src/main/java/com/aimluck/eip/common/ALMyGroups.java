@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * マイグループの情報を保持するクラスです。 <br />
- *
+ * 
  */
 public class ALMyGroups implements Serializable {
 
@@ -54,7 +54,7 @@ public class ALMyGroups implements Serializable {
 
   public ALEipGroup get(int index) {
     synchronized (list) {
-      return (ALEipGroup) list.get(index);
+      return list.get(index);
     }
   }
 

@@ -51,17 +51,18 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ブラウザにXLSファイルを返すクラスです。 <br />
- *
+ * 
  */
 public abstract class ALXlsScreen extends RawScreen implements ALAction {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALXlsScreen.class.getName());
+    .getLogger(ALXlsScreen.class.getName());
 
   /** アクセス権限の有無 */
   protected boolean hasAuthority;
 
+  @Override
   protected void doOutput(RunData rundata) throws Exception {
     VelocityContext context = new VelocityContext();
     ServletOutputStream out = null;
@@ -73,8 +74,9 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
 
       // xlsファイルのフルパス
       String realpath = getFolderPath() + File.separator + getFileName();
-      if (realpath == null || "".equals(realpath))
+      if (realpath == null || "".equals(realpath)) {
         return;
+      }
 
       // xlsファイルの作成
       createXLSFile(rundata, context, realpath);
@@ -85,7 +87,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
       HttpServletResponse response = rundata.getResponse();
       // ファイル名の送信
       response.setHeader("Content-disposition", "attachment; filename=\""
-          + getFileName() + "\"");
+        + getFileName() + "\"");
       response.setHeader("Cache-Control", "aipo");
       response.setHeader("Pragma", "aipo");
 
@@ -109,7 +111,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
 
   /**
    * 初期化処理を行います。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -121,7 +123,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
 
   /**
    * xlsファイルを」作成します。
-   *
+   * 
    * @param rundata
    */
   protected boolean createXLSFile(RunData rundata, Context context,
@@ -148,7 +150,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
 
   /**
    * xlsファイルの中身（シート）を生成します。
-   *
+   * 
    * @param rundata
    * @param context
    * @param wb
@@ -159,20 +161,20 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
 
   /**
    * xlsファイルを保存するフォルダを取得します。
-   *
+   * 
    * @return
    */
   protected abstract String getFolderPath();
 
   /**
    * xlsファイル名を取得します。
-   *
+   * 
    * @return
    */
   protected abstract String getFileName();
 
   /**
-   *
+   * 
    * @param wb
    * @param sheet_name
    * @param headers
@@ -200,7 +202,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
 
   /**
    * xlsシートに行を追加する。
-   *
+   * 
    * @param newrow
    * @param cell_enc_types
    * @param rows
@@ -211,7 +213,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
       HSSFCell cell_newrow = newrow.createCell((short) j);
       if (cell_enc_types[j] == HSSFCell.CELL_TYPE_NUMERIC) {
         try {
-          cell_newrow.setCellValue((double) Double.parseDouble(rows[j]));
+          cell_newrow.setCellValue(Double.parseDouble(rows[j]));
         } catch (Exception e) {
           cell_newrow.setCellValue("");
         }
@@ -243,12 +245,13 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.util.RunData)
    */
+  @Override
   protected String getContentType(RunData rundata) {
     return "application/octet-stream";
   }
 
   /**
-   *
+   * 
    * @param obj
    */
   public void setResultData(Object obj) {
@@ -256,7 +259,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
   }
 
   /**
-   *
+   * 
    * @param obj
    */
   public void addResultData(Object obj) {
@@ -264,7 +267,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
   }
 
   /**
-   *
+   * 
    * @param objList
    */
   public void setResultDataList(List<Object> objList) {
@@ -272,7 +275,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
   }
 
   /**
-   *
+   * 
    * @param msg
    */
   public void addErrorMessage(String msg) {
@@ -280,7 +283,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
   }
 
   /**
-   *
+   * 
    * @param msg
    */
   public void addErrorMessages(List<String> msgs) {
@@ -288,7 +291,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
   }
 
   /**
-   *
+   * 
    * @param msgs
    */
   public void setErrorMessages(List<String> msgs) {
@@ -296,7 +299,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
   }
 
   /**
-   *
+   * 
    * @param mode
    */
   public void setMode(String mode) {
@@ -304,7 +307,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public String getMode() {
@@ -312,7 +315,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
   }
 
   /**
-   *
+   * 
    * @param context
    */
   public void putData(RunData rundata, Context context) {
@@ -321,7 +324,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
 
   /**
    * アクセス権限をチェックします。
-   *
+   * 
    * @return
    */
   protected boolean doCheckAclPermission(RunData rundata, Context context,
@@ -336,11 +339,11 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
     }
 
     ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+      .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
     hasAuthority = aclhandler.hasAuthority(ALEipUtils.getUserId(rundata),
-        pfeature, defineAclType);
+      pfeature, defineAclType);
 
     if (!hasAuthority) {
       throw new ALPermissionException();
@@ -352,7 +355,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
   /**
    * アクセス権限用メソッド。<br />
    * アクセス権限の有無を返します。
-   *
+   * 
    * @return
    */
   public boolean hasAuthority() {
@@ -362,7 +365,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限を返します。
-   *
+   * 
    * @return
    */
   protected int getDefineAclType() {
@@ -372,7 +375,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
   public String getAclPortletFeature() {

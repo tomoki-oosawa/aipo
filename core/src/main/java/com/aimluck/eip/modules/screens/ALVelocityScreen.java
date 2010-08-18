@@ -48,17 +48,17 @@ import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
 
 /**
  * ブラウザにHTML（Velocity）を返すクラスです。 <br />
- *
+ * 
  */
 public abstract class ALVelocityScreen extends RawScreen implements ALAction {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALVelocityScreen.class.getName());
+    .getLogger(ALVelocityScreen.class.getName());
 
   /** コンテントタイプ */
   private static final String CONTENT_TYPE = "text/json;charset="
-      + ALEipConstants.DEF_CONTENT_ENCODING;
+    + ALEipConstants.DEF_CONTENT_ENCODING;
 
   /** 表示モード */
   private String mode;
@@ -83,7 +83,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
       out = response.getOutputStream();
 
       writer = new BufferedWriter(new OutputStreamWriter(out,
-          ALEipConstants.DEF_CONTENT_ENCODING));
+        ALEipConstants.DEF_CONTENT_ENCODING));
       Template templete = Velocity.getTemplate(template);
       templete.merge(context, writer);
       writer.flush();
@@ -97,6 +97,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
    *
    *
    */
+  @Override
   protected void doOutput(RunData rundata) throws Exception {
 
     VelocityContext context = new VelocityContext();
@@ -119,7 +120,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
       throws Exception;
 
   /**
-   *
+   * 
    * @param obj
    */
   public void setResultData(Object obj) {
@@ -127,17 +128,18 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
   }
 
   /**
-   *
+   * 
    * @param obj
    */
   public void addResultData(Object obj) {
-    if (resultList == null)
+    if (resultList == null) {
       resultList = new ArrayList<Object>();
+    }
     resultList.add(obj);
   }
 
   /**
-   *
+   * 
    * @param objList
    */
   public void setResultDataList(List<Object> objList) {
@@ -145,27 +147,29 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
   }
 
   /**
-   *
+   * 
    * @param msg
    */
   public void addErrorMessage(String msg) {
-    if (errmsgList == null)
+    if (errmsgList == null) {
       errmsgList = new ArrayList<String>();
+    }
     errmsgList.add(msg);
   }
 
   /**
-   *
+   * 
    * @param msg
    */
   public void addErrorMessages(List<String> msgs) {
-    if (errmsgList == null)
+    if (errmsgList == null) {
       errmsgList = new ArrayList<String>();
+    }
     errmsgList.addAll(msgs);
   }
 
   /**
-   *
+   * 
    * @param msgs
    */
   public void setErrorMessages(List<String> msgs) {
@@ -173,7 +177,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
   }
 
   /**
-   *
+   * 
    * @param mode
    */
   public void setMode(String mode) {
@@ -181,7 +185,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public String getMode() {
@@ -189,7 +193,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
   }
 
   /**
-   *
+   * 
    * @param context
    */
   public void putData(RunData rundata, Context context) {
@@ -199,18 +203,18 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
     context.put(ALEipConstants.MESSAGE_LIST, msgList);
     context.put(ALEipConstants.ERROR_MESSAGE_LIST, errmsgList);
     context.put(ALEipConstants.ENTITY_ID,
-        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID));
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID));
     context.put("config", new JetspeedResources());
     context.put("utils", new ALCommonUtils());
 
     // For security
     context.put(ALEipConstants.SECURE_ID,
-        rundata.getUser().getTemp(ALEipConstants.SECURE_ID));
+      rundata.getUser().getTemp(ALEipConstants.SECURE_ID));
 
     ALOrgUtilsHandler handler = ALOrgUtilsFactoryService.getInstance()
-        .getOrgUtilsHandler();
+      .getOrgUtilsHandler();
     HashMap<String, String> attribute = handler
-        .getParameters(DatabaseOrmService.getInstance().getOrgId(rundata));
+      .getParameters(DatabaseOrmService.getInstance().getOrgId(rundata));
     for (Map.Entry<String, String> e : attribute.entrySet()) {
       context.put(e.getKey(), e.getValue());
     }

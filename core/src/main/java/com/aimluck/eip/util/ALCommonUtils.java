@@ -28,13 +28,13 @@ import org.apache.turbine.util.DynamicURI;
 
 /**
  * Aimluck EIP のユーティリティクラスです。 <br />
- *
+ * 
  */
 public class ALCommonUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALCommonUtils.class.getName());
+    .getLogger(ALCommonUtils.class.getName());
 
   /** 乱数生成用アルゴリズム（SHA1） */
   public static final String DEF_RANDOM_ALGORITHM = "SHA1PRNG";
@@ -55,7 +55,7 @@ public class ALCommonUtils {
 
   /**
    * * 長いアルファベットのテキストを自動的に折り返すヘルパー
-   *
+   * 
    * @subpackage helper
    * @param string
    *          $text
@@ -63,8 +63,9 @@ public class ALCommonUtils {
    * @return string
    */
   public static String replaceToAutoCRString(String str) {
-    if (str == null || "".equals(str))
+    if (str == null || "".equals(str)) {
       return "";
+    }
     StringBuffer res = new StringBuffer("");
     int step = 6;
     int size = str.length();
@@ -82,7 +83,7 @@ public class ALCommonUtils {
 
   /**
    * * 長いアルファベットのテキストを自動的に折り返すヘルパー
-   *
+   * 
    * @subpackage helper
    * @param string
    *          $text
@@ -90,8 +91,9 @@ public class ALCommonUtils {
    * @return string
    */
   public static String replaceToAutoCRChild(String str) {
-    if (str == null || "".equals(str))
+    if (str == null || "".equals(str)) {
       return "";
+    }
 
     StringBuffer res = null;
     String head, body, tail;
@@ -132,7 +134,7 @@ public class ALCommonUtils {
 
   /**
    * * 長いアルファベットのテキストを自動的に折り返すヘルパー
-   *
+   * 
    * @subpackage helper
    * @param string
    *          $text
@@ -140,8 +142,9 @@ public class ALCommonUtils {
    * @return string
    */
   public static String replaceToAutoCR(String str) {
-    if (str == null || "".equals(str))
+    if (str == null || "".equals(str)) {
       return "";
+    }
 
     StringBuffer res = null;
     String head, body, tail;
@@ -182,7 +185,7 @@ public class ALCommonUtils {
 
   /**
    * 第二引数で指定した長さで、第一引数の文字列を丸める。
-   *
+   * 
    * @param src
    *          元の文字列
    * @param length
@@ -190,8 +193,9 @@ public class ALCommonUtils {
    * @return ●処理後の文字列
    */
   public static String compressString(String src, int length) {
-    if (src == null || src.length() == 0 || length <= 0)
+    if (src == null || src.length() == 0 || length <= 0) {
       return src;
+    }
 
     String subject;
     if (src.length() > length) {
@@ -205,7 +209,7 @@ public class ALCommonUtils {
 
   /**
    * ランダムなセキュリティIDを生成する。
-   *
+   * 
    * @return string Base64エンコードされた文字列
    */
   public static String getSecureRandomBase64() {
@@ -228,7 +232,7 @@ public class ALCommonUtils {
 
   /**
    * セキュリティID生成用のSecureRandomを生成します。
-   *
+   * 
    * @return random セキュリティID生成用のSecureRandom
    */
   public static SecureRandom getSecureRandom() {

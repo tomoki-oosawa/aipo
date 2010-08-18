@@ -41,16 +41,17 @@ import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
  * データベースマッピングクラスです。 <br />
- *
+ * 
  */
 public class PkgDatabaseOrmService extends DatabaseOrmService {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(PkgDatabaseOrmService.class.getName());
+    .getLogger(PkgDatabaseOrmService.class.getName());
 
   public static final String ORG_PKG = "org001";
 
+  @Override
   protected void initOrm(ServletContext context) throws InitializationException {
     logger.debug("initOrm");
 
@@ -58,7 +59,7 @@ public class PkgDatabaseOrmService extends DatabaseOrmService {
 
     // ORG_PKG にユーザテーブルをマッピングする
     DataDomain dataDomain = Configuration.getSharedConfiguration().getDomain(
-        SHARED_DOMAIN);
+      SHARED_DOMAIN);
     Collection<?> dataMaps = dataDomain.getDataMaps();
 
     Iterator<?> iter = dataMaps.iterator();
@@ -69,26 +70,32 @@ public class PkgDatabaseOrmService extends DatabaseOrmService {
     }
   }
 
+  @Override
   public String getDefaultOrgId() {
     return ORG_PKG;
   }
 
+  @Override
   public String getOrgId(String company_id) {
     return null;
   }
 
+  @Override
   public String getCompanyId(String org_id) {
     return null;
   }
 
+  @Override
   public String getOrgId(RunData rundata) {
     return ORG_PKG;
   }
 
+  @Override
   public String getOrgId(HttpSession session) {
     return ORG_PKG;
   }
 
+  @Override
   public DataContext getDataContext() {
     RunData rundata = getRunData();
     try {
@@ -102,6 +109,7 @@ public class PkgDatabaseOrmService extends DatabaseOrmService {
     }
   }
 
+  @Override
   public List<String> getOrgKeys() {
     List<String> orglist = new ArrayList<String>();
     orglist.add(ORG_PKG);

@@ -20,13 +20,13 @@ package com.aimluck.eip.common;
 
 /**
  * Aimluck EIP で取り扱うオブジェクトの基本となるインターフェースです。 <br />
- *
+ * 
  */
 public interface ALData {
 
   /**
    * オブジェクトのフィールドを初期化するメソッドです。
-   *
+   * 
    */
   public void initField();
 

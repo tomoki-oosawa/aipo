@@ -24,14 +24,14 @@ import org.apache.jetspeed.services.rundata.JetspeedRunData;
 
 /**
  * ポートレット画面表示時に各アプリケーションのセッションを初期化するための ユーティリティクラスです。 <br />
- *
+ * 
  */
 public class ALSessionInitializer {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALSessionInitializer.class.getName());
+    .getLogger(ALSessionInitializer.class.getName());
 
   public void initializeSession(JetspeedRunData jdata, String peid) {
 
@@ -48,7 +48,7 @@ public class ALSessionInitializer {
     // end for debug
 
     String portletName = jdata.getProfile().getDocument().getEntryById(peid)
-        .getParent();
+      .getParent();
 
     if (portletName.startsWith("Schedule")) {
     } else if (portletName.startsWith("ToDo")) {

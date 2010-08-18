@@ -22,7 +22,7 @@ import com.aimluck.eip.common.ALBaseUser;
 
 /**
  * データ同期を管理する抽象クラスです。 <br />
- *
+ * 
  */
 public abstract class ALDataSyncHandler {
 

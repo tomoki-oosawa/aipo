@@ -38,7 +38,7 @@ import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
 
 /**
  * Velocity Portlet を扱う際の抽象クラスです。 <br />
- *
+ * 
  */
 public abstract class ALBaseAction extends VelocityPortletAction implements
     ALAction {
@@ -46,7 +46,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALBaseAction.class.getName());
+    .getLogger(ALBaseAction.class.getName());
 
   /** 表示モード */
   private String mode;
@@ -61,7 +61,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
   private List<String> errmsgList;
 
   /**
-   *
+   * 
    * @param obj
    */
   public void setResultData(Object obj) {
@@ -69,7 +69,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
   }
 
   /**
-   *
+   * 
    * @param obj
    */
   public void addResultData(Object obj) {
@@ -80,7 +80,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
   }
 
   /**
-   *
+   * 
    * @param objList
    */
   public void setResultDataList(List<Object> objList) {
@@ -88,7 +88,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
   }
 
   /**
-   *
+   * 
    * @param msg
    */
   public void addErrorMessage(String msg) {
@@ -99,7 +99,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
   }
 
   /**
-   *
+   * 
    * @param msg
    */
   public void addErrorMessages(List<String> msgs) {
@@ -110,7 +110,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
   }
 
   /**
-   *
+   * 
    * @param msgs
    */
   public void setErrorMessages(List<String> msgs) {
@@ -118,7 +118,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
   }
 
   /**
-   *
+   * 
    * @param mode
    */
   public void setMode(String mode) {
@@ -126,7 +126,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
   }
 
   /**
-   *
+   * 
    * @return
    */
   public String getMode() {
@@ -134,28 +134,28 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
   }
 
   /**
-   *
+   * 
    * @param context
    */
   public void putData(RunData rundata, Context context) {
     context.put(ALEipConstants.MODE, mode);
     context.put(ALEipConstants.RESULT, result);
     context.put(ALEipConstants.ERROR_MESSAGE_LIST, errmsgList);
-    context.put(ALEipConstants.ENTITY_ID, ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID));
+    context.put(ALEipConstants.ENTITY_ID,
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID));
     context.put("utils", new ALCommonUtils());
 
     ALOrgUtilsHandler handler = ALOrgUtilsFactoryService.getInstance()
-        .getOrgUtilsHandler();
+      .getOrgUtilsHandler();
     HashMap<String, String> attribute = handler
-        .getParameters(DatabaseOrmService.getInstance().getOrgId(rundata));
+      .getParameters(DatabaseOrmService.getInstance().getOrgId(rundata));
     for (Map.Entry<String, String> e : attribute.entrySet()) {
       context.put(e.getKey(), e.getValue());
     }
 
     // For security
-    context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(
-        ALEipConstants.SECURE_ID));
+    context.put(ALEipConstants.SECURE_ID,
+      rundata.getUser().getTemp(ALEipConstants.SECURE_ID));
   }
 
 }

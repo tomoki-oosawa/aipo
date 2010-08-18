@@ -23,13 +23,14 @@ import com.aimluck.eip.services.datasync.ALDataSyncHandler;
 
 /**
  * 同期サービス用ファクトリクラスです。 <BR>
- *
- *
+ * 
+ * 
  */
 public class ALEmptyDataSyncFactoryService extends ALDataSyncFactoryService {
 
-  private ALDataSyncHandler handler = new ALEmptyDataSyncHandler();
+  private final ALDataSyncHandler handler = new ALEmptyDataSyncHandler();
 
+  @Override
   public ALDataSyncHandler getDataSyncHandler() {
     return handler;
   }

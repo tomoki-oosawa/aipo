@@ -30,17 +30,17 @@ import com.aimluck.eip.common.ALEipConstants;
 
 /**
  * ブラウザにCSVファイルを返すクラスです。 <br />
- *
+ * 
  */
 public abstract class ALCSVScreen extends RawScreen {
 
   /** <code>logger</code> loger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALCSVScreen.class.getName());
+    .getLogger(ALCSVScreen.class.getName());
 
   /** コンテントタイプ */
   private static final String CONTENT_TYPE = "text/json;charset="
-      + ALEipConstants.DEF_CONTENT_ENCODING;
+    + ALEipConstants.DEF_CONTENT_ENCODING;
 
   /** CSV ファイルのエンコーディング名 */
   public static final String DEF_CSV_FILE_ENCODING = "Shift_JIS";
@@ -48,9 +48,10 @@ public abstract class ALCSVScreen extends RawScreen {
   private String csvFileEncoding = DEF_CSV_FILE_ENCODING;
 
   /**
-   *
+   * 
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
    */
+  @Override
   protected void doOutput(RunData rundata) throws Exception {
     ServletOutputStream out = null;
 
@@ -63,7 +64,7 @@ public abstract class ALCSVScreen extends RawScreen {
       HttpServletResponse response = rundata.getResponse();
       // ファイル名の送信
       response.setHeader("Content-disposition", "attachment; filename=\""
-          + fileName + "\"");
+        + fileName + "\"");
       response.setHeader("Cache-Control", "aipo");
       response.setHeader("Pragma", "aipo");
 
@@ -80,7 +81,7 @@ public abstract class ALCSVScreen extends RawScreen {
 
   /**
    * ファイルに'\"'を正しく出力するためのエスケープを加えます。 <br />
-   *
+   * 
    * @param str
    * @return
    */
@@ -89,17 +90,19 @@ public abstract class ALCSVScreen extends RawScreen {
     char ch;
     for (int i = 0; i < str.length(); i++) {
       ch = str.charAt(i);
-      if (ch == '\"')
+      if (ch == '\"') {
         res += ch;
+      }
       res += ch;
     }
     return res;
   }
 
   /**
-   *
+   * 
    * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.util.RunData)
    */
+  @Override
   protected String getContentType(RunData rundata) {
     return CONTENT_TYPE;
   }

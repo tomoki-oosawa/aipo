@@ -58,7 +58,7 @@ import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
  * グループを管理するクラスです。 <br />
- *
+ * 
  */
 public class ALGroupManagement extends TurbineBaseService implements
     GroupManagement {
@@ -77,22 +77,22 @@ public class ALGroupManagement extends TurbineBaseService implements
 
   /**
    * グループを追加します。
-   *
+   * 
    * @param group
    */
   public void addGroup(Group group) throws JetspeedSecurityException {
     if (groupExists(group.getName())) {
       throw new GroupException("The group '" + group.getName()
-          + "' already exists");
+        + "' already exists");
     }
 
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       dataContext.commitChanges();
     } catch (Exception e) {
       throw new GroupException("Failed to create group '" + group.getName()
-          + "'", e);
+        + "'", e);
     }
 
     try {
@@ -103,14 +103,15 @@ public class ALGroupManagement extends TurbineBaseService implements
       } catch (Exception e2) {
       }
       throw new GroupException("failed to add default PSML for Group resource",
-          e);
+        e);
     }
   }
 
   /**
    *
    */
-  public Iterator<Group> getGroups(String username) throws JetspeedSecurityException {
+  public Iterator<Group> getGroups(String username)
+      throws JetspeedSecurityException {
     JetspeedUser user = null;
     try {
       user = JetspeedSecurity.getUser(new UserNamePrincipal(username));
@@ -120,19 +121,20 @@ public class ALGroupManagement extends TurbineBaseService implements
 
     DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     Expression exp = ExpressionFactory.matchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, user.getUserId());
+      TurbineUser.USER_ID_PK_COLUMN, user.getUserId());
     SelectQuery query = new SelectQuery(TurbineUserGroupRole.class, exp);
 
     List<?> rels;
-    HashMap<String,Group> groups;
+    HashMap<String, Group> groups;
 
     try {
       rels = dataContext.performQuery(query);
 
       if (rels.size() > 0) {
-        groups = new HashMap<String,Group>(rels.size());
-      } else
-        groups = new HashMap<String,Group>();
+        groups = new HashMap<String, Group>(rels.size());
+      } else {
+        groups = new HashMap<String, Group>();
+      }
 
       for (int ix = 0; ix < rels.size(); ix++) {
         TurbineUserGroupRole rel = (TurbineUserGroupRole) rels.get(ix);
@@ -162,7 +164,7 @@ public class ALGroupManagement extends TurbineBaseService implements
   }
 
   /**
-   *
+   * 
    * @param group
    * @throws GroupException
    */
@@ -171,7 +173,7 @@ public class ALGroupManagement extends TurbineBaseService implements
       String org_id = DatabaseOrmService.getInstance().getOrgId(getRunData());
 
       JetspeedRunDataService runDataService = (JetspeedRunDataService) TurbineServices
-          .getInstance().getService(RunDataService.SERVICE_NAME);
+        .getInstance().getService(RunDataService.SERVICE_NAME);
       JetspeedRunData rundata = runDataService.getCurrentRunData();
       Profile profile = Profiler.createProfile();
       profile.setGroup(group);
@@ -193,23 +195,23 @@ public class ALGroupManagement extends TurbineBaseService implements
   public void saveGroup(Group group) throws JetspeedSecurityException {
     if (!groupExists(group.getName())) {
       throw new GroupException("The group '" + group.getName()
-          + "' doesn't exists");
+        + "' doesn't exists");
     }
 
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
 
       if (group instanceof TurbineGroup) {
         dataContext.commitChanges();
       } else {
         throw new GroupException(
-            "TurbineGroupManagment: Group is not a Turbine group, cannot update");
+          "TurbineGroupManagment: Group is not a Turbine group, cannot update");
       }
 
     } catch (Exception e) {
       throw new GroupException("Failed to create group '" + group.getName()
-          + "'", e);
+        + "'", e);
     }
 
   }
@@ -220,12 +222,12 @@ public class ALGroupManagement extends TurbineBaseService implements
   public void removeGroup(String groupname) throws JetspeedSecurityException {
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       Group group = this.getGroup(groupname);
 
       if (cascadeDelete) {
         Expression exp = ExpressionFactory.matchDbExp(
-            TurbineGroup.GROUP_ID_PK_COLUMN, Integer.valueOf(group.getId()));
+          TurbineGroup.GROUP_ID_PK_COLUMN, Integer.valueOf(group.getId()));
         SelectQuery query = new SelectQuery(TurbineUserGroupRole.class, exp);
 
         List<?> groups = dataContext.performQuery(query);
@@ -265,12 +267,12 @@ public class ALGroupManagement extends TurbineBaseService implements
       Role role = JetspeedSecurity.getRole(rolename);
 
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       // 新規オブジェクトモデル
       TurbineUserGroupRole user_group_role = (TurbineUserGroupRole) dataContext
-          .createAndRegisterNewObject(TurbineUserGroupRole.class);
+        .createAndRegisterNewObject(TurbineUserGroupRole.class);
       TurbineUser tuser = (TurbineUser) DataObjectUtils.objectForPK(
-          dataContext, TurbineUser.class, Integer.valueOf(user.getUserId()));
+        dataContext, TurbineUser.class, Integer.valueOf(user.getUserId()));
 
       user_group_role.setTurbineUser(tuser);
       user_group_role.setTurbineGroup((TurbineGroup) group);
@@ -279,7 +281,7 @@ public class ALGroupManagement extends TurbineBaseService implements
 
     } catch (Exception e) {
       throw new GroupException("Join group '" + groupname + "' to user '"
-          + username + "' failed: ", e);
+        + username + "' failed: ", e);
     }
   }
 
@@ -302,14 +304,14 @@ public class ALGroupManagement extends TurbineBaseService implements
       Role role = JetspeedSecurity.getRole(rolename);
 
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
 
       Expression exp1 = ExpressionFactory.matchDbExp(
-          TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(user.getUserId()));
+        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(user.getUserId()));
       Expression exp2 = ExpressionFactory.matchDbExp(
-          TurbineGroup.GROUP_ID_PK_COLUMN, Integer.valueOf(group.getId()));
+        TurbineGroup.GROUP_ID_PK_COLUMN, Integer.valueOf(group.getId()));
       Expression exp3 = ExpressionFactory.matchDbExp(
-          TurbineRole.ROLE_ID_PK_COLUMN, Integer.valueOf(role.getId()));
+        TurbineRole.ROLE_ID_PK_COLUMN, Integer.valueOf(role.getId()));
       SelectQuery query = new SelectQuery(TurbineUserGroupRole.class);
       query.setQualifier(exp1);
       query.andQualifier(exp2);
@@ -322,7 +324,7 @@ public class ALGroupManagement extends TurbineBaseService implements
 
     } catch (Exception e) {
       throw new GroupException("Unjoin group '" + groupname + "' to user '"
-          + username + "' failed: ", e);
+        + username + "' failed: ", e);
     }
   }
 
@@ -338,16 +340,16 @@ public class ALGroupManagement extends TurbineBaseService implements
       Group group = this.getGroup(groupname);
 
       Expression exp1 = ExpressionFactory.matchDbExp(
-          TurbineUser.USER_ID_PK_COLUMN, user.getUserId());
+        TurbineUser.USER_ID_PK_COLUMN, user.getUserId());
       Expression exp2 = ExpressionFactory.matchDbExp(
-          TurbineGroup.GROUP_ID_PK_COLUMN, group.getId());
+        TurbineGroup.GROUP_ID_PK_COLUMN, group.getId());
 
       SelectQuery query = new SelectQuery(TurbineUserGroupRole.class);
       query.setQualifier(exp1);
       query.andQualifier(exp2);
 
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       groups = dataContext.performQuery(query);
     } catch (Exception e) {
       throw new GroupException("Failed to check group '" + groupname + "'", e);
@@ -362,20 +364,20 @@ public class ALGroupManagement extends TurbineBaseService implements
     List<?> groups;
     try {
       Expression exp = ExpressionFactory.matchExp(
-          TurbineGroup.GROUP_NAME_PROPERTY, groupname);
+        TurbineGroup.GROUP_NAME_PROPERTY, groupname);
 
       SelectQuery query = new SelectQuery(TurbineGroup.class, exp);
 
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       groups = dataContext.performQuery(query);
     } catch (Exception e) {
       throw new GroupException("Failed to retrieve group '" + groupname + "'",
-          e);
+        e);
     }
     if (groups.size() > 1) {
       throw new GroupException("Multiple Groups with same groupname '"
-          + groupname + "'");
+        + groupname + "'");
     }
     if (groups.size() == 1) {
       TurbineGroup group = (TurbineGroup) groups.get(0);
@@ -394,7 +396,7 @@ public class ALGroupManagement extends TurbineBaseService implements
   }
 
   /**
-   *
+   * 
    * @param groupName
    * @return
    * @throws GroupException
@@ -403,12 +405,12 @@ public class ALGroupManagement extends TurbineBaseService implements
     List<?> groups;
     try {
       Expression exp = ExpressionFactory.matchExp(
-          TurbineGroup.GROUP_NAME_PROPERTY, groupName);
+        TurbineGroup.GROUP_NAME_PROPERTY, groupName);
 
       SelectQuery query = new SelectQuery(TurbineGroup.class, exp);
 
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       groups = dataContext.performQuery(query);
     } catch (Exception e) {
       throw new GroupException("Failed to check account's presence", e);
@@ -422,22 +424,24 @@ public class ALGroupManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public synchronized void init(ServletConfig conf)
       throws InitializationException {
-    if (getInit())
+    if (getInit()) {
       return;
+    }
 
     super.init(conf);
 
     ResourceService serviceConf = ((TurbineServices) TurbineServices
-        .getInstance()).getResources(JetspeedSecurityService.SERVICE_NAME);
+      .getInstance()).getResources(JetspeedSecurityService.SERVICE_NAME);
 
     this.runDataService = (JetspeedRunDataService) TurbineServices
-        .getInstance().getService(RunDataService.SERVICE_NAME);
+      .getInstance().getService(RunDataService.SERVICE_NAME);
 
     defaultRole = serviceConf.getString(CONFIG_DEFAULT_ROLE, defaultRole);
     cascadeDelete = serviceConf.getBoolean(CASCADE_DELETE,
-        DEFAULT_CASCADE_DELETE);
+      DEFAULT_CASCADE_DELETE);
 
     setInit(true);
   }

@@ -41,13 +41,13 @@ import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
  * 会社情報、部署情報、役職情報をメモリ上に保持するクラスです。 <br />
- *
+ * 
  */
 public class ALEipManager {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALEipManager.class.getName());
+    .getLogger(ALEipManager.class.getName());
 
   /** Singleton */
   private static ALEipManager manager = new ALEipManager();
@@ -56,13 +56,13 @@ public class ALEipManager {
   private JetspeedRunDataService runDataService = null;
 
   /** 会社リスト */
-  private Map<String, Map<Integer, ALEipCompany>> companysMap = new LinkedHashMap<String, Map<Integer, ALEipCompany>>();
+  private final Map<String, Map<Integer, ALEipCompany>> companysMap = new LinkedHashMap<String, Map<Integer, ALEipCompany>>();
 
   /** 部署リスト */
-  private Map<String, Map<Integer, ALEipPost>> postsMap = new LinkedHashMap<String, Map<Integer, ALEipPost>>();
+  private final Map<String, Map<Integer, ALEipPost>> postsMap = new LinkedHashMap<String, Map<Integer, ALEipPost>>();
 
   /** 役職リスト */
-  private Map<String, Map<Integer, ALEipPosition>> positionsMap = new LinkedHashMap<String, Map<Integer, ALEipPosition>>();
+  private final Map<String, Map<Integer, ALEipPosition>> positionsMap = new LinkedHashMap<String, Map<Integer, ALEipPosition>>();
 
   /**
    *
@@ -70,14 +70,14 @@ public class ALEipManager {
    */
   private ALEipManager() {
     this.runDataService = (JetspeedRunDataService) TurbineServices
-        .getInstance().getService(RunDataService.SERVICE_NAME);
+      .getInstance().getService(RunDataService.SERVICE_NAME);
     initCompany();
     initPost();
     initPosition();
   }
 
   /**
-   *
+   * 
    * @return
    */
   public static ALEipManager getInstance() {
@@ -140,7 +140,7 @@ public class ALEipManager {
         Collections.sort(list, new Comparator<Object>() {
           public int compare(Object l1, Object l2) {
             return ((EipMPost) l1).getPostName().compareTo(
-                ((EipMPost) l2).getPostName());
+              ((EipMPost) l2).getPostName());
           }
         });
         int size = list.size();
@@ -205,7 +205,7 @@ public class ALEipManager {
       try {
         org_id = DatabaseOrmService.getInstance().getOrgId(getRunData());
         DataContext dataContext = DatabaseOrmService.getInstance()
-            .getDataContext();
+          .getDataContext();
         SelectQuery query = new SelectQuery(EipMCompany.class);
         List<?> list = dataContext.performQuery(query);
         int size = list.size();
@@ -241,13 +241,13 @@ public class ALEipManager {
       try {
         org_id = DatabaseOrmService.getInstance().getOrgId(getRunData());
         DataContext dataContext = DatabaseOrmService.getInstance()
-            .getDataContext();
+          .getDataContext();
         SelectQuery query = new SelectQuery(EipMPost.class);
         List<?> list = dataContext.performQuery(query);
         Collections.sort(list, new Comparator<Object>() {
           public int compare(Object l1, Object l2) {
             return ((EipMPost) l1).getPostName().compareTo(
-                ((EipMPost) l2).getPostName());
+              ((EipMPost) l2).getPostName());
           }
         });
         int size = list.size();
@@ -284,7 +284,7 @@ public class ALEipManager {
       try {
         org_id = DatabaseOrmService.getInstance().getOrgId(getRunData());
         DataContext dataContext = DatabaseOrmService.getInstance()
-            .getDataContext();
+          .getDataContext();
         SelectQuery query = new SelectQuery(EipMPosition.class);
         List<?> list = dataContext.performQuery(query);
         int size = list.size();
@@ -313,7 +313,7 @@ public class ALEipManager {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public Map<Integer, ALEipCompany> getCompanyMap() {
@@ -332,7 +332,7 @@ public class ALEipManager {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -351,7 +351,7 @@ public class ALEipManager {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public Map<Integer, ALEipPosition> getPositionMap() {

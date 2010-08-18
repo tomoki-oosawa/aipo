@@ -25,26 +25,30 @@ import com.aimluck.eip.services.eventlog.ALEventlogHandler;
 
 /**
  * イベントログを管理するクラスです。 <br />
- *
+ * 
  */
 public class ALEmptyEventlogHandler extends ALEventlogHandler {
 
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALEmptyEventlogHandler.class.getName());
+    .getLogger(ALEmptyEventlogHandler.class.getName());
 
+  @Override
   public void log(int entity_id, int portlet_type, String note) {
 
   }
 
+  @Override
   public void logLogin(int userid) {
 
   }
 
+  @Override
   public void logLogout(int userid) {
 
   }
 
+  @Override
   public void logXlsScreen(int userid, String Note, int _p_type) {
 
   }

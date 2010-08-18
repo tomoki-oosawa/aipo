@@ -36,12 +36,13 @@ import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
  * CSVファイルの内容を管理するための抽象クラスです。 <br />
- *
+ * 
  */
+@SuppressWarnings("rawtypes")
 public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALCsvAbstractSelectData.class.getName());
+    .getLogger(ALCsvAbstractSelectData.class.getName());
 
   /** データを分割表示する際の分割数 */
   protected int page_count;
@@ -69,23 +70,25 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
 
   /**
    * (non-Javadoc)
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
     dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
+  @Override
   protected Object selectDetail(RunData rundata, Context context) {
     return null;
   }
 
   /**
    * エラーが残った行のみをファイル出力します。 <br />
-   *
+   * 
    * @param rundata
    * @param str
    * @param filepath
@@ -96,7 +99,7 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
     BufferedWriter writer = null;
     try {
       writer = new BufferedWriter((new OutputStreamWriter(new FileOutputStream(
-          filepath), "Shift_JIS")));
+        filepath), "Shift_JIS")));
       /** ファイル内容の出力* */
       writer.write(str, 0, str.length());
       writer.flush();
@@ -108,7 +111,7 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
 
   /**
    * Shift_JISコードで'\"'を正常に出力するための関数です。 <br />
-   *
+   * 
    * @param str
    * @return
    */
@@ -117,8 +120,9 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
     char ch;
     for (int i = 0; i < str.length(); i++) {
       ch = str.charAt(i);
-      if (ch == '\"')
+      if (ch == '\"') {
         res += ch;
+      }
       res += ch;
     }
     return res;
@@ -127,6 +131,7 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
   /**
    *
    */
+  @Override
   protected Object getResultData(Object obj) {
     return obj;
   }
@@ -136,6 +141,7 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(Object obj) {
     return null;
   }
@@ -144,6 +150,7 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     return map;
@@ -151,7 +158,7 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
 
   /**
    * ページ数を設定します。 <br />
-   *
+   * 
    * @param i
    */
   public void setPageCount(int i) {
@@ -160,7 +167,7 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
 
   /**
    * ページ数を取得します。 <br />
-   *
+   * 
    * @return
    */
   public int getPageCount() {
@@ -169,7 +176,7 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
 
   /**
    * ライン総数を設定します。 <br />
-   *
+   * 
    * @param i
    */
   public void setLineCount(int i) {
@@ -178,7 +185,7 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
 
   /**
    * ライン総数を取得します。 <br />
-   *
+   * 
    * @return
    */
   public int getLineCount() {
@@ -187,7 +194,7 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
 
   /**
    * 正しく入力されたデータの総数を入力します。 <br />
-   *
+   * 
    * @param i
    */
   public void setNotErrorCount(int i) {
@@ -196,7 +203,7 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
 
   /**
    * 正しく入力されたデータの総数を取得します。 <br />
-   *
+   * 
    * @return
    */
   public int getNotErrorCount() {
@@ -205,7 +212,7 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
 
   /**
    * エラーの数を入力します。 <br />
-   *
+   * 
    * @param i
    */
   public void setErrorCount(int i) {
@@ -214,7 +221,7 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
 
   /**
    * エラーの数を取得します。 <br />
-   *
+   * 
    * @return
    */
   public int getErrorCount() {
@@ -225,13 +232,14 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
    * 表示モードを設定します。 <br />
    */
   public void setState(int i) {
-    if ((i > -1) && (i < 3))
+    if ((i > -1) && (i < 3)) {
       stats = i;
+    }
   }
 
   /**
    * 表示モードを取得します。 <br />
-   *
+   * 
    * @return
    */
   public int getState() {
@@ -240,7 +248,7 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
 
   /**
    * データがエラーかどうかを返します。 <br />
-   *
+   * 
    * @return
    */
   public boolean isError() {
@@ -253,7 +261,7 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
 
   /**
    * CSVファイルの読み込み順序を設定します。 <br />
-   *
+   * 
    * @param s
    */
   public void setSequency(List<?> s) {
@@ -262,7 +270,7 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
 
   /**
    * CSVファイルの読み込み順序を取得します。 <br />
-   *
+   * 
    * @return
    */
   public List<?> getSequency() {
@@ -271,7 +279,7 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
 
   /**
    * 一時フォルダの番号を指定します。 <br />
-   *
+   * 
    * @param folderIndex
    */
   public void setTempFolderIndex(String folderIndex) {
@@ -280,7 +288,7 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
 
   /**
    * 一時フォルダの番号を取得します。 <br />
-   *
+   * 
    * @return
    */
   public String getTempFolderIndex() {

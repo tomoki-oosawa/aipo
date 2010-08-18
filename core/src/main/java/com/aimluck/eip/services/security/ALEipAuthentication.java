@@ -51,13 +51,13 @@ import com.aimluck.eip.util.ALCommonUtils;
 
 /**
  * ライセンス検証のためのクラスです。 <br />
- *
+ * 
  */
 public class ALEipAuthentication extends TurbineBaseService implements
     PortalAuthentication {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALEipAuthentication.class.getName());
+    .getLogger(ALEipAuthentication.class.getName());
 
   private JetspeedRunDataService runDataService = null;
 
@@ -74,7 +74,7 @@ public class ALEipAuthentication extends TurbineBaseService implements
   private int expirationPeriod = 0;
 
   /**
-   *
+   * 
    * @param username
    * @param cellular_uid
    * @return
@@ -84,13 +84,13 @@ public class ALEipAuthentication extends TurbineBaseService implements
   public JetspeedUser loginCellularUid(String username, String cellular_uid)
       throws UnknownUserException, JetspeedSecurityException {
     JetspeedUser user = JetspeedUserManagement.getUser(new UserNamePrincipal(
-        username));
+      username));
     ALBaseUser baseUser = (ALBaseUser) user;
     if (cellular_uid == null || cellular_uid.length() == 0
-        || !cellular_uid.equals(baseUser.getCelluarUId())) {
+      || !cellular_uid.equals(baseUser.getCelluarUId())) {
       logger.error("Invalid cellular uid for user: " + username);
       throw new UnknownUserException(
-          "[ALEipAuthentication] Credential authentication failure");
+        "[ALEipAuthentication] Credential authentication failure");
     }
 
     return user;
@@ -114,7 +114,7 @@ public class ALEipAuthentication extends TurbineBaseService implements
     if (password.startsWith(ALEipConstants.KEY_CELLULAR_UID)) {
       // 携帯電話の固有 ID でログイン認証する．
       String cellularUid = password.substring(
-          ALEipConstants.KEY_CELLULAR_UID.length(), password.length());
+        ALEipConstants.KEY_CELLULAR_UID.length(), password.length());
       try {
         user = loginCellularUid(username, cellularUid);
       } catch (UnknownUserException e) {
@@ -148,19 +148,19 @@ public class ALEipAuthentication extends TurbineBaseService implements
       Date passwordExpireDate = null;
       if (passwordLastChangedDate != null) {
         GregorianCalendar gcal = (GregorianCalendar) GregorianCalendar
-            .getInstance();
+          .getInstance();
         gcal.setTime(passwordLastChangedDate);
         gcal.add(GregorianCalendar.DATE, this.expirationPeriod);
         passwordExpireDate = gcal.getTime();
         if (logger.isDebugEnabled()) {
           logger.debug("TurbineAuthentication: password last changed = "
-              + passwordLastChangedDate.toString() + ", password expires = "
-              + passwordExpireDate.toString());
+            + passwordLastChangedDate.toString() + ", password expires = "
+            + passwordExpireDate.toString());
         }
       }
 
       if (passwordExpireDate == null
-          || (new Date().getTime() > passwordExpireDate.getTime())) {
+        || (new Date().getTime() > passwordExpireDate.getTime())) {
         throw new CredentialExpiredException("Password expired");
       }
 
@@ -192,7 +192,7 @@ public class ALEipAuthentication extends TurbineBaseService implements
 
     // for security
     rundata.getUser().setTemp(ALEipConstants.SECURE_ID,
-        ALCommonUtils.getSecureRandomBase64());
+      ALCommonUtils.getSecureRandomBase64());
 
     return user;
   }
@@ -204,7 +204,7 @@ public class ALEipAuthentication extends TurbineBaseService implements
     JetspeedUser user = null;
     try {
       user = JetspeedUserManagement
-          .getUser(new UserNamePrincipal(anonymousUser));
+        .getUser(new UserNamePrincipal(anonymousUser));
       user.setHasLoggedIn(Boolean.valueOf(false));
       putUserIntoContext(user);
       if (cachingEnable) {
@@ -236,6 +236,7 @@ public class ALEipAuthentication extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public synchronized void init(ServletConfig conf)
       throws InitializationException {
     if (getInit()) {
@@ -245,14 +246,14 @@ public class ALEipAuthentication extends TurbineBaseService implements
     super.init(conf);
 
     ResourceService serviceConf = ((TurbineServices) TurbineServices
-        .getInstance()).getResources(JetspeedSecurityService.SERVICE_NAME);
+      .getInstance()).getResources(JetspeedSecurityService.SERVICE_NAME);
 
     anonymousUser = serviceConf.getString(CONFIG_ANONYMOUS_USER, anonymousUser);
     cachingEnable = serviceConf.getBoolean(CACHING_ENABLE, cachingEnable);
     expirationPeriod = serviceConf.getInt(CONFIG_PASSWORD_EXPIRATION_PERIOD, 0);
 
     this.runDataService = (JetspeedRunDataService) TurbineServices
-        .getInstance().getService(RunDataService.SERVICE_NAME);
+      .getInstance().getService(RunDataService.SERVICE_NAME);
 
     setInit(true);
   }

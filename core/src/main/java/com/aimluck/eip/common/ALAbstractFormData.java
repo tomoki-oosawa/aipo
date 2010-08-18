@@ -41,13 +41,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * フォームデータを管理するための抽象クラスです。 <br />
- *
+ * 
  */
 public abstract class ALAbstractFormData implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALAbstractFormData.class.getName());
+    .getLogger(ALAbstractFormData.class.getName());
 
   /** 現在のモード */
   private String mode;
@@ -59,7 +59,7 @@ public abstract class ALAbstractFormData implements ALData {
    * 初期化処理を行います。 <br />
    * <code>doViewForm/doInsert/doUpdate/doDelete</code> 実行時に呼ばれます。 <br />
    * 下位クラスで初期化処理を追記する場合は、このメソッドをオーバーライドしてください。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -72,12 +72,12 @@ public abstract class ALAbstractFormData implements ALData {
       // ENTITY ID
       if (rundata.getParameters().containsKey(ALEipConstants.ENTITY_ID)) {
         // entityid=new を指定することによって明示的にセッション変数を削除することができる。
-        if (rundata.getParameters().getString(ALEipConstants.ENTITY_ID).equals(
-            "new")) {
+        if (rundata.getParameters().getString(ALEipConstants.ENTITY_ID)
+          .equals("new")) {
           ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
         } else {
           ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID,
-              rundata.getParameters().getString(ALEipConstants.ENTITY_ID));
+            rundata.getParameters().getString(ALEipConstants.ENTITY_ID));
         }
       }
     }
@@ -86,7 +86,7 @@ public abstract class ALAbstractFormData implements ALData {
   /**
    * 指定されたフィールドのフィールド名を取得します。 <br />
    * フィールド名が取得できない場合はNULLを返します。
-   *
+   * 
    * @param argString
    * @return フィールド名
    */
@@ -105,7 +105,7 @@ public abstract class ALAbstractFormData implements ALData {
 
   /**
    * フォームを表示します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -115,7 +115,7 @@ public abstract class ALAbstractFormData implements ALData {
     try {
       init(action, rundata, context);
       boolean isedit = (ALEipUtils.getTemp(rundata, context,
-          ALEipConstants.ENTITY_ID) != null);
+        ALEipConstants.ENTITY_ID) != null);
 
       int aclType = ALAccessControlConstants.VALUE_ACL_INSERT;
       if (isedit) {
@@ -124,12 +124,12 @@ public abstract class ALAbstractFormData implements ALData {
       doCheckAclPermission(rundata, context, aclType);
 
       action.setMode(isedit ? ALEipConstants.MODE_EDIT_FORM
-          : ALEipConstants.MODE_NEW_FORM);
+        : ALEipConstants.MODE_NEW_FORM);
       mode = action.getMode();
 
       List<String> msgList = new ArrayList<String>();
       boolean res = (isedit) ? loadFormData(rundata, context, msgList)
-          : setFormData(rundata, context, msgList);
+        : setFormData(rundata, context, msgList);
       action.setResultData(this);
       action.addErrorMessages(msgList);
       action.putData(rundata, context);
@@ -149,7 +149,7 @@ public abstract class ALAbstractFormData implements ALData {
 
   /**
    * データを新規登録します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -164,14 +164,14 @@ public abstract class ALAbstractFormData implements ALData {
       init(action, rundata, context);
 
       doCheckAclPermission(rundata, context,
-          ALAccessControlConstants.VALUE_ACL_INSERT);
+        ALAccessControlConstants.VALUE_ACL_INSERT);
 
       action.setMode(ALEipConstants.MODE_INSERT);
       mode = action.getMode();
       List<String> msgList = new ArrayList<String>();
       setValidator();
       boolean res = (setFormData(rundata, context, msgList)
-          && validate(msgList) && insertFormData(rundata, context, msgList));
+        && validate(msgList) && insertFormData(rundata, context, msgList));
       if (!res) {
         action.setMode(ALEipConstants.MODE_NEW_FORM);
         mode = action.getMode();
@@ -195,7 +195,7 @@ public abstract class ALAbstractFormData implements ALData {
 
   /**
    * データを更新します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -210,14 +210,14 @@ public abstract class ALAbstractFormData implements ALData {
       init(action, rundata, context);
 
       doCheckAclPermission(rundata, context,
-          ALAccessControlConstants.VALUE_ACL_UPDATE);
+        ALAccessControlConstants.VALUE_ACL_UPDATE);
 
       action.setMode(ALEipConstants.MODE_UPDATE);
       mode = action.getMode();
       List<String> msgList = new ArrayList<String>();
       setValidator();
       boolean res = (setFormData(rundata, context, msgList)
-          && validate(msgList) && updateFormData(rundata, context, msgList));
+        && validate(msgList) && updateFormData(rundata, context, msgList));
       if (!res) {
         action.setMode(ALEipConstants.MODE_EDIT_FORM);
         mode = action.getMode();
@@ -241,7 +241,7 @@ public abstract class ALAbstractFormData implements ALData {
 
   /**
    * データを削除します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -256,7 +256,7 @@ public abstract class ALAbstractFormData implements ALData {
       init(action, rundata, context);
 
       doCheckAclPermission(rundata, context,
-          ALAccessControlConstants.VALUE_ACL_DELETE);
+        ALAccessControlConstants.VALUE_ACL_DELETE);
 
       action.setMode(ALEipConstants.MODE_DELETE);
       mode = action.getMode();
@@ -281,11 +281,11 @@ public abstract class ALAbstractFormData implements ALData {
 
   /**
    * データに値を設定します。
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
-   *            エラーメッセージのリスト
+   *          エラーメッセージのリスト
    * @return TRUE 成功 FALSE 失敗
    */
   protected boolean setFormData(RunData rundata, Context context,
@@ -300,41 +300,46 @@ public abstract class ALAbstractFormData implements ALData {
         // フィールドが ALDateTimeField の場合
         if (obj instanceof ALDateTimeField) {
           ALDateTimeField field = (ALDateTimeField) obj;
-          String yearString = new StringBuffer().append(name).append(
-              ALEipConstants.POST_DATE_YEAR).toString();
-          String monthString = new StringBuffer().append(name).append(
-              ALEipConstants.POST_DATE_MONTH).toString();
-          String dayString = new StringBuffer().append(name).append(
-              ALEipConstants.POST_DATE_DAY).toString();
-          String hourString = new StringBuffer().append(name).append(
-              ALEipConstants.POST_DATE_HOUR).toString();
-          String minitusString = new StringBuffer().append(name).append(
-              ALEipConstants.POST_DATE_MINUTE).toString();
+          String yearString = new StringBuffer().append(name)
+            .append(ALEipConstants.POST_DATE_YEAR).toString();
+          String monthString = new StringBuffer().append(name)
+            .append(ALEipConstants.POST_DATE_MONTH).toString();
+          String dayString = new StringBuffer().append(name)
+            .append(ALEipConstants.POST_DATE_DAY).toString();
+          String hourString = new StringBuffer().append(name)
+            .append(ALEipConstants.POST_DATE_HOUR).toString();
+          String minitusString = new StringBuffer().append(name)
+            .append(ALEipConstants.POST_DATE_MINUTE).toString();
           int year;
           int month;
           int day;
           int hour;
           int minitue;
-          if (rundata.getParameters().containsKey(yearString))
+          if (rundata.getParameters().containsKey(yearString)) {
             year = rundata.getParameters().getInt(yearString);
-          else
+          } else {
             continue;
-          if (rundata.getParameters().containsKey(monthString))
+          }
+          if (rundata.getParameters().containsKey(monthString)) {
             month = rundata.getParameters().getInt(monthString) - 1;
-          else
+          } else {
             continue;
-          if (rundata.getParameters().containsKey(dayString))
+          }
+          if (rundata.getParameters().containsKey(dayString)) {
             day = rundata.getParameters().getInt(dayString);
-          else
+          } else {
             continue;
-          if (rundata.getParameters().containsKey(hourString))
+          }
+          if (rundata.getParameters().containsKey(hourString)) {
             hour = rundata.getParameters().getInt(hourString);
-          else
+          } else {
             continue;
-          if (rundata.getParameters().containsKey(minitusString))
+          }
+          if (rundata.getParameters().containsKey(minitusString)) {
             minitue = rundata.getParameters().getInt(minitusString);
-          else
+          } else {
             continue;
+          }
           Calendar cal = Calendar.getInstance();
           cal.set(year, month, day, hour, minitue);
           cal.set(Calendar.SECOND, 0);
@@ -344,25 +349,28 @@ public abstract class ALAbstractFormData implements ALData {
           // フィールドが ALDateField の場合
         } else if (obj instanceof ALDateField) {
           ALDateField field = (ALDateField) obj;
-          String yearString = new StringBuffer().append(name).append(
-              ALEipConstants.POST_DATE_YEAR).toString();
-          String monthString = new StringBuffer().append(name).append(
-              ALEipConstants.POST_DATE_MONTH).toString();
-          String dayString = new StringBuffer().append(name).append(
-              ALEipConstants.POST_DATE_DAY).toString();
+          String yearString = new StringBuffer().append(name)
+            .append(ALEipConstants.POST_DATE_YEAR).toString();
+          String monthString = new StringBuffer().append(name)
+            .append(ALEipConstants.POST_DATE_MONTH).toString();
+          String dayString = new StringBuffer().append(name)
+            .append(ALEipConstants.POST_DATE_DAY).toString();
           ALDateContainer con = new ALDateContainer();
-          if (rundata.getParameters().containsKey(yearString))
+          if (rundata.getParameters().containsKey(yearString)) {
             con.setYear(rundata.getParameters().getString(yearString));
-          else
+          } else {
             continue;
-          if (rundata.getParameters().containsKey(monthString))
+          }
+          if (rundata.getParameters().containsKey(monthString)) {
             con.setMonth(rundata.getParameters().getString(monthString));
-          else
+          } else {
             continue;
-          if (rundata.getParameters().containsKey(dayString))
+          }
+          if (rundata.getParameters().containsKey(dayString)) {
             con.setDay(rundata.getParameters().getString(dayString));
-          else
+          } else {
             continue;
+          }
           field.setValue(con);
 
           // フィールドが ALAbstractField の場合
@@ -382,27 +390,27 @@ public abstract class ALAbstractFormData implements ALData {
 
   /**
    * 各フィールドに対する制約条件を設定する抽象メソッドです。
-   *
+   * 
    */
   protected abstract void setValidator() throws ALPageNotFoundException,
       ALDBErrorException;
 
   /**
    * フォームに入力されたデータの妥当性検証を行う抽象メソッドです。
-   *
+   * 
    * @param msgList
-   *            エラーメッセージのリスト
+   *          エラーメッセージのリスト
    */
   protected abstract boolean validate(List<String> msgList)
       throws ALPageNotFoundException, ALDBErrorException;
 
   /**
    * データを読み込む抽象メソッドです。
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
-   *            エラーメッセージのリスト
+   *          エラーメッセージのリスト
    * @return TRUE 成功 FALSE 失敗
    */
   protected abstract boolean loadFormData(RunData rundata, Context context,
@@ -410,11 +418,11 @@ public abstract class ALAbstractFormData implements ALData {
 
   /**
    * データを新規登録する抽象メソッドです。
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
-   *            エラーメッセージのリスト
+   *          エラーメッセージのリスト
    * @return TRUE 成功 FALSE 失敗
    */
   protected abstract boolean insertFormData(RunData rundata, Context context,
@@ -422,11 +430,11 @@ public abstract class ALAbstractFormData implements ALData {
 
   /**
    * データを更新する抽象メソッドです。
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
-   *            エラーメッセージのリスト
+   *          エラーメッセージのリスト
    * @return TRUE 成功 FALSE 失敗
    */
   protected abstract boolean updateFormData(RunData rundata, Context context,
@@ -434,11 +442,11 @@ public abstract class ALAbstractFormData implements ALData {
 
   /**
    * データを削除する抽象メソッドです。
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
-   *            エラーメッセージのリスト
+   *          エラーメッセージのリスト
    * @return TRUE 成功 FALSE 失敗
    */
   protected abstract boolean deleteFormData(RunData rundata, Context context,
@@ -446,14 +454,14 @@ public abstract class ALAbstractFormData implements ALData {
 
   /**
    * セキュリティをチェックします。
-   *
+   * 
    * @return
    */
   protected boolean doCheckSecurity(RunData rundata, Context context) {
     String reqSecid = rundata.getParameters().getString(
-        ALEipConstants.SECURE_ID);
+      ALEipConstants.SECURE_ID);
     String sessionSecid = (String) rundata.getUser().getTemp(
-        ALEipConstants.SECURE_ID);
+      ALEipConstants.SECURE_ID);
     if (reqSecid == null || !reqSecid.equals(sessionSecid)) {
       return false;
     }
@@ -463,7 +471,7 @@ public abstract class ALAbstractFormData implements ALData {
 
   /**
    * アクセス権限をチェックします。
-   *
+   * 
    * @return
    */
   protected boolean doCheckAclPermission(RunData rundata, Context context,
@@ -479,11 +487,11 @@ public abstract class ALAbstractFormData implements ALData {
     }
 
     ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+      .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
     hasAuthority = aclhandler.hasAuthority(ALEipUtils.getUserId(rundata),
-        pfeature, defineAclType);
+      pfeature, defineAclType);
 
     if (!hasAuthority) {
       throw new ALPermissionException();
@@ -495,7 +503,7 @@ public abstract class ALAbstractFormData implements ALData {
   /**
    * アクセス権限用メソッド。<br />
    * アクセス権限の有無を返します。
-   *
+   * 
    * @return
    */
   public boolean hasAuthority() {
@@ -505,7 +513,7 @@ public abstract class ALAbstractFormData implements ALData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
   public String getAclPortletFeature() {
@@ -513,7 +521,7 @@ public abstract class ALAbstractFormData implements ALData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public String getMode() {
@@ -521,7 +529,7 @@ public abstract class ALAbstractFormData implements ALData {
   }
 
   /**
-   *
+   * 
    * @param string
    */
   public void setMode(String string) {

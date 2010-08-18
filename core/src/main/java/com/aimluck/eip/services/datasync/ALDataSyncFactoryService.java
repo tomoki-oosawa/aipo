@@ -31,26 +31,26 @@ import org.apache.turbine.services.rundata.RunDataService;
 
 /**
  * クラスを生成する抽象ファクトリクラスです。 <br />
- *
+ * 
  */
 public abstract class ALDataSyncFactoryService extends TurbineBaseService {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALDataSyncFactoryService.class.getName());
+    .getLogger(ALDataSyncFactoryService.class.getName());
 
   public static final String SERVICE_NAME = "ALDataSyncFactoryService";
 
   protected JetspeedRunDataService runDataService = null;
 
   /**
-   *
+   * 
    * @return
    */
   public static ALDataSyncFactoryService getInstance() {
     return (ALDataSyncFactoryService) TurbineServices.getInstance().getService(
-        ALDataSyncFactoryService.SERVICE_NAME);
+      ALDataSyncFactoryService.SERVICE_NAME);
   }
 
   public abstract ALDataSyncHandler getDataSyncHandler();
@@ -66,15 +66,17 @@ public abstract class ALDataSyncFactoryService extends TurbineBaseService {
   /**
    *
    */
+  @Override
   public synchronized void init(ServletConfig conf)
       throws InitializationException {
-    if (getInit())
+    if (getInit()) {
       return;
+    }
 
     super.init(conf);
 
     this.runDataService = (JetspeedRunDataService) TurbineServices
-        .getInstance().getService(RunDataService.SERVICE_NAME);
+      .getInstance().getService(RunDataService.SERVICE_NAME);
 
     setInit(true);
   }

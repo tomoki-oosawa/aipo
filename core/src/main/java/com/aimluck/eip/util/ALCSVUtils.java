@@ -34,7 +34,7 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 
 /**
  * Aimluck EIP のユーティリティクラスです。 <br />
- *
+ * 
  */
 public class ALCSVUtils {
 
@@ -43,7 +43,7 @@ public class ALCSVUtils {
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALEipUtils.class.getName());
+    .getLogger(ALEipUtils.class.getName());
 
   public static String DB_NAME_POSTGRESQL = "postgresql";
 
@@ -55,9 +55,9 @@ public class ALCSVUtils {
     formData.doUpdate(action, rundata, context);
 
     ALEipUtils.setTemp(rundata, context, "page_count",
-        Integer.toString(formData.getPageCount()));
+      Integer.toString(formData.getPageCount()));
     ALEipUtils.setTemp(rundata, context, "line_count",
-        Integer.toString(formData.getLineCount()));
+      Integer.toString(formData.getLineCount()));
 
   }
 
@@ -67,11 +67,11 @@ public class ALCSVUtils {
       throws Exception {
     listData.setState(ALCsvTokenizer.CSV_LIST_MODE_READ);
     List<String> sequency = stringToArray(ALEipUtils.getTemp(rundata, context,
-        "sequency"));
+      "sequency"));
     int page_count = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-        "page_count"));
+      "page_count"));
     int line_count = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-        "line_count"));
+      "line_count"));
 
     listData.setSequency(sequency);
     listData.setPageCount(page_count);
@@ -79,9 +79,9 @@ public class ALCSVUtils {
     listData.doViewList(action, rundata, context);
 
     ALEipUtils.setTemp(rundata, context, "line_count",
-        Integer.toString(listData.getLineCount()));
+      Integer.toString(listData.getLineCount()));
     ALEipUtils.setTemp(rundata, context, "error_count",
-        Integer.toString(listData.getErrorCount()));
+      Integer.toString(listData.getErrorCount()));
   }
 
   /** テンプレートに出力する際のエラーリスト作成* */
@@ -90,18 +90,18 @@ public class ALCSVUtils {
     listData.setState(ALCsvTokenizer.CSV_LIST_MODE_ERROR);
 
     List<String> sequency = stringToArray(ALEipUtils.getTemp(rundata, context,
-        "sequency"));
+      "sequency"));
     int page_count = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-        "page_count"));
+      "page_count"));
     int line_count = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-        "line_count"));
+      "line_count"));
 
     listData.setSequency(sequency);
     listData.setPageCount(page_count);
     listData.setLineCount(line_count);
 
     int error_count = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-        "error_count"));
+      "error_count"));
 
     listData.setErrorCount(error_count);
     listData.doViewList(action, rundata, context);
@@ -113,18 +113,18 @@ public class ALCSVUtils {
       ALAction action, ALCsvAbstractSelectData listData) throws Exception {
 
     List<String> sequency = stringToArray(ALEipUtils.getTemp(rundata, context,
-        "sequency"));
+      "sequency"));
     int page_count = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-        "page_count"));
+      "page_count"));
     int line_count = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-        "line_count"));
+      "line_count"));
 
     listData.setSequency(sequency);
     listData.setPageCount(page_count);
     listData.setLineCount(line_count);
 
     int error_count = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-        "error_count"));
+      "error_count"));
 
     listData.setErrorCount(error_count);
 
@@ -147,8 +147,9 @@ public class ALCSVUtils {
     int i;
     String str = "";
     for (i = 0; i < arg.size(); i++) {
-      if (i != 0)
+      if (i != 0) {
         str += ",";
+      }
       str += arg.get(i).toString();
     }
     return str;

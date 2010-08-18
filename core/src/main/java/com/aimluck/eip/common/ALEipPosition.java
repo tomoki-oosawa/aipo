@@ -23,7 +23,7 @@ import com.aimluck.commons.field.ALStringField;
 
 /**
  * 役職を表すクラスです。 <br />
- *
+ * 
  */
 public class ALEipPosition implements ALData {
 
@@ -34,7 +34,7 @@ public class ALEipPosition implements ALData {
   private ALStringField position_name;
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {

@@ -20,7 +20,7 @@ package com.aimluck.eip.common;
 
 /**
  * この例外は、アクセスされたページが見つからない場合にスローされます。 <br />
- *
+ * 
  */
 public class ALPageNotFoundException extends Exception {
 

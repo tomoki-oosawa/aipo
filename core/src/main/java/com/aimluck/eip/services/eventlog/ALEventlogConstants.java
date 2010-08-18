@@ -20,15 +20,15 @@ package com.aimluck.eip.services.eventlog;
 
 /**
  * イベントログの定数です。 <br />
- *
+ * 
  */
 public class ALEventlogConstants {
 
   /**
    * PORTLET_TYPE
-   *
+   * 
    * 1-99 管理者用ポートレット 100- 一般ポートレット 0 その他ポートレット
-   *
+   * 
    * XX1- 一般ポートレット上位2桁:ポートレットごとに振る 10X-
    * 一般ポートレット上位2桁:ポートレットごとの詳細モード(category,thema etc...)
    */

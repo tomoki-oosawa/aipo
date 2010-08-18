@@ -33,7 +33,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * Velocity Portlet を扱う際の抽象クラスです。 <br />
- *
+ * 
  */
 public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
     implements ALAction {
@@ -41,7 +41,7 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALSecureBaseAction.class.getName());
+    .getLogger(ALSecureBaseAction.class.getName());
 
   /** 表示モード */
   private String mode;
@@ -56,7 +56,7 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
   private List<String> errmsgList;
 
   /**
-   *
+   * 
    * @param obj
    */
   public void setResultData(Object obj) {
@@ -64,7 +64,7 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
   }
 
   /**
-   *
+   * 
    * @param obj
    */
   public void addResultData(Object obj) {
@@ -75,7 +75,7 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
   }
 
   /**
-   *
+   * 
    * @param objList
    */
   public void setResultDataList(List<Object> objList) {
@@ -83,7 +83,7 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
   }
 
   /**
-   *
+   * 
    * @param msg
    */
   public void addErrorMessages(List<String> msgs) {
@@ -94,7 +94,7 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
   }
 
   /**
-   *
+   * 
    * @param msg
    */
   public void addErrorMessage(String msg) {
@@ -105,7 +105,7 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
   }
 
   /**
-   *
+   * 
    * @param msgs
    */
   public void setErrorMessages(List<String> msgs) {
@@ -113,7 +113,7 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
   }
 
   /**
-   *
+   * 
    * @param mode
    */
   public void setMode(String mode) {
@@ -121,7 +121,7 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
   }
 
   /**
-   *
+   * 
    * @return
    */
   public String getMode() {
@@ -129,7 +129,7 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
   }
 
   /**
-   *
+   * 
    * @param context
    */
   public void putData(RunData rundata, Context context) {
@@ -137,12 +137,12 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
     context.put(ALEipConstants.RESULT, result);
     context.put(ALEipConstants.ERROR_MESSAGE_LIST, errmsgList);
     context.put(ALEipConstants.ENTITY_ID,
-        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID));
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID));
     context.put("utils", new ALCommonUtils());
 
     // For security
     context.put(ALEipConstants.SECURE_ID,
-        rundata.getUser().getTemp(ALEipConstants.SECURE_ID));
+      rundata.getUser().getTemp(ALEipConstants.SECURE_ID));
   }
 
 }

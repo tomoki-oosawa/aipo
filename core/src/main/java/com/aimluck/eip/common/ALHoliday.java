@@ -23,7 +23,7 @@ import com.aimluck.commons.field.ALStringField;
 
 /**
  * 祝日を表すクラスです。 <br />
- *
+ * 
  */
 public class ALHoliday {
 

@@ -85,8 +85,6 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
-import com.aimluck.eip.common.ALEipPosition;
-import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALMyGroups;
 import com.aimluck.eip.common.ALPermissionException;
@@ -97,7 +95,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 
 /**
  * Aimluck EIP のユーティリティクラスです。 <br />
- *
+ * 
  */
 public class ALEipUtils {
 
@@ -105,12 +103,12 @@ public class ALEipUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALEipUtils.class.getName());
+    .getLogger(ALEipUtils.class.getName());
 
   /**
    * セッション変数に値を格納します。 <br />
    * セッション変数は各ポートレット毎に管理されます。
-   *
+   * 
    * @param rundata
    * @param context
    * @param key
@@ -123,26 +121,26 @@ public class ALEipUtils {
 
     JetspeedRunData jdata = (JetspeedRunData) rundata;
     VelocityPortlet portlet = ((VelocityPortlet) context
-        .get(JetspeedResources.PATH_PORTLET_KEY));
+      .get(JetspeedResources.PATH_PORTLET_KEY));
 
     if (portlet == null) {
       // Screen の場合
       String js_peid = rundata.getParameters().getString(
-          JetspeedResources.PATH_PORTLETID_KEY);
+        JetspeedResources.PATH_PORTLETID_KEY);
       jdata.getUser().setTemp(
-          new StringBuffer().append(js_peid).append(key).toString(), value);
+        new StringBuffer().append(js_peid).append(key).toString(), value);
     } else {
       // Action の場合
       jdata.getUser().setTemp(
-          new StringBuffer().append(portlet.getID()).append(key).toString(),
-          value);
+        new StringBuffer().append(portlet.getID()).append(key).toString(),
+        value);
     }
   }
 
   /**
    * セッション変数を削除します。 <br />
    * セッション変数は各ポートレット毎に管理されます。
-   *
+   * 
    * @param rundata
    * @param context
    * @param key
@@ -151,17 +149,17 @@ public class ALEipUtils {
   public static void removeTemp(RunData rundata, Context context, String key) {
     JetspeedRunData jdata = (JetspeedRunData) rundata;
     VelocityPortlet portlet = ((VelocityPortlet) context
-        .get(JetspeedResources.PATH_PORTLET_KEY));
+      .get(JetspeedResources.PATH_PORTLET_KEY));
     if (portlet == null) {
       // Screen の場合
       String js_peid = rundata.getParameters().getString(
-          JetspeedResources.PATH_PORTLETID_KEY);
+        JetspeedResources.PATH_PORTLETID_KEY);
       jdata.getUser().removeTemp(
-          new StringBuffer().append(js_peid).append(key).toString());
+        new StringBuffer().append(js_peid).append(key).toString());
     } else {
       // Action の場合
       jdata.getUser().removeTemp(
-          new StringBuffer().append(portlet.getID()).append(key).toString());
+        new StringBuffer().append(portlet.getID()).append(key).toString());
     }
   }
 
@@ -169,24 +167,24 @@ public class ALEipUtils {
       List<String> list) {
     JetspeedRunData jdata = (JetspeedRunData) rundata;
     VelocityPortlet portlet = ((VelocityPortlet) context
-        .get(JetspeedResources.PATH_PORTLET_KEY));
+      .get(JetspeedResources.PATH_PORTLET_KEY));
     int size = list.size();
     if (portlet == null) {
       // Screen の場合
       String js_peid = rundata.getParameters().getString(
-          JetspeedResources.PATH_PORTLETID_KEY);
+        JetspeedResources.PATH_PORTLETID_KEY);
       for (int i = 0; i < size; i++) {
         jdata.getUser().removeTemp(
-            new StringBuffer().append(js_peid).append(list.get(i).toString())
-                .toString());
+          new StringBuffer().append(js_peid).append(list.get(i).toString())
+            .toString());
       }
     } else {
       // Action の場合
       String peid = portlet.getID();
       for (int i = 0; i < size; i++) {
         jdata.getUser().removeTemp(
-            new StringBuffer().append(peid).append(list.get(i).toString())
-                .toString());
+          new StringBuffer().append(peid).append(list.get(i).toString())
+            .toString());
       }
     }
   }
@@ -194,7 +192,7 @@ public class ALEipUtils {
   /**
    * セッション変数の値を取得します。 <br />
    * セッション変数は各ポートレット毎に管理されます。
-   *
+   * 
    * @param rundata
    * @param context
    * @param key
@@ -205,24 +203,24 @@ public class ALEipUtils {
     JetspeedRunData jdata = (JetspeedRunData) rundata;
     Object obj = null;
     VelocityPortlet portlet = ((VelocityPortlet) context
-        .get(JetspeedResources.PATH_PORTLET_KEY));
+      .get(JetspeedResources.PATH_PORTLET_KEY));
     if (portlet == null) {
       // Screen の場合
       String js_peid = rundata.getParameters().getString(
-          JetspeedResources.PATH_PORTLETID_KEY);
+        JetspeedResources.PATH_PORTLETID_KEY);
       obj = jdata.getUser().getTemp(
-          new StringBuffer().append(js_peid).append(key).toString());
+        new StringBuffer().append(js_peid).append(key).toString());
     } else {
       // Action の場合
       obj = jdata.getUser().getTemp(
-          new StringBuffer().append(portlet.getID()).append(key).toString());
+        new StringBuffer().append(portlet.getID()).append(key).toString());
     }
     return (obj == null) ? null : obj.toString();
   }
 
   /**
    * セッションに保存されているエンティティIDを整数値として返します。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -230,7 +228,7 @@ public class ALEipUtils {
   public static int getEntityId(RunData rundata, Context context) {
     int entity_id = 0;
     String entity_id_str = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+      ALEipConstants.ENTITY_ID);
     try {
       entity_id = Integer.parseInt(entity_id_str);
     } catch (Exception e) {
@@ -241,7 +239,7 @@ public class ALEipUtils {
 
   /**
    * ユーザーIDを返します。
-   *
+   * 
    * @param rundata
    * @return ユーザーID
    */
@@ -253,7 +251,7 @@ public class ALEipUtils {
 
   /**
    * ポートレットを返します。
-   *
+   * 
    * @param rundata
    * @param context
    * @return 自ポートレット
@@ -264,7 +262,7 @@ public class ALEipUtils {
 
   /**
    * 指定したポートレット ID を持つポートレットのオブジェクトを取得します。
-   *
+   * 
    * @param rundata
    * @param portletId
    * @return 自ポートレット
@@ -272,7 +270,7 @@ public class ALEipUtils {
   public static Portlet getPortlet(RunData rundata, String portletId) {
     try {
       Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-          .getDocument().getPortlets();
+        .getDocument().getPortlets();
       if (portlets == null) {
         return null;
       }
@@ -293,7 +291,7 @@ public class ALEipUtils {
         for (int j = 0; j < ent_length; j++) {
           if (entries[j].getId().equals(portletId)) {
             PortletWrapper wrapper = (PortletWrapper) PortletFactory
-                .getPortlet(entries[j]);
+              .getPortlet(entries[j]);
             if (wrapper != null) {
               return wrapper.getPortlet();
             } else {
@@ -312,7 +310,7 @@ public class ALEipUtils {
   /**
    * リクエストが自ポートレットに対するものであるかを返します。 <br />
    * true となる場合、そのポートレットに対するフォーム送信となります。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -326,7 +324,7 @@ public class ALEipUtils {
     }
     String peid1 = portlet.getID();
     String peid2 = rundata.getParameters().getString(
-        JetspeedResources.PATH_PORTLETID_KEY);
+      JetspeedResources.PATH_PORTLETID_KEY);
     if (peid1 == null || peid2 == null) {
       return false;
     }
@@ -335,7 +333,7 @@ public class ALEipUtils {
 
   /**
    * 指定されたグループに所属するユーザーを取得します。
-   *
+   * 
    * @param groupname
    *          グループ名
    * @return ALEipUser の List
@@ -347,7 +345,7 @@ public class ALEipUtils {
     StringBuffer statement = new StringBuffer();
     statement.append("SELECT DISTINCT ");
     statement
-        .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, D.POSITION ");
+      .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, D.POSITION ");
     statement.append("FROM TURBINE_USER_GROUP_ROLE as A ");
     statement.append("LEFT JOIN TURBINE_USER as B ");
     statement.append("  on A.USER_ID = B.USER_ID ");
@@ -377,12 +375,12 @@ public class ALEipUtils {
       user = new ALEipUser();
       user.initField();
       user.setUserId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-          TurbineUser.USER_ID_PK_COLUMN)).intValue());
+        TurbineUser.USER_ID_PK_COLUMN)).intValue());
       user.setName((String) ALEipUtils.getObjFromDataRow(dataRow,
-          TurbineUser.LOGIN_NAME_COLUMN));
+        TurbineUser.LOGIN_NAME_COLUMN));
       user.setAliasName((String) ALEipUtils.getObjFromDataRow(dataRow,
-          TurbineUser.FIRST_NAME_COLUMN), (String) ALEipUtils
-          .getObjFromDataRow(dataRow, TurbineUser.LAST_NAME_COLUMN));
+        TurbineUser.FIRST_NAME_COLUMN), (String) ALEipUtils.getObjFromDataRow(
+        dataRow, TurbineUser.LAST_NAME_COLUMN));
       list.add(user);
     }
     return list;
@@ -390,7 +388,7 @@ public class ALEipUtils {
 
   /**
    * 指定されたグループに所属するユーザーのIDを取得します。
-   *
+   * 
    * @param groupname
    *          グループ名
    * @return Integer の List
@@ -416,7 +414,7 @@ public class ALEipUtils {
 
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       @SuppressWarnings("deprecation")
       SQLTemplate rawSelect = new SQLTemplate(TurbineUser.class, query, true);
       rawSelect.setParameters(Collections.singletonMap("groupName", groupname));
@@ -430,7 +428,7 @@ public class ALEipUtils {
       for (int j = 0; j < recNum; j++) {
         dataRow = (DataRow) ulist.get(j);
         list.add((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-            TurbineUser.USER_ID_PK_COLUMN));
+          TurbineUser.USER_ID_PK_COLUMN));
       }
     } catch (Exception ex) {
       logger.error("[ALEipUtils]", ex);
@@ -440,7 +438,7 @@ public class ALEipUtils {
 
   /**
    * 指定された部署に所属するユーザーを取得します。
-   *
+   * 
    * @param postid
    *          部署ID
    * @return ALEipUser の List
@@ -452,7 +450,7 @@ public class ALEipUtils {
     StringBuffer statement = new StringBuffer();
     statement.append("SELECT DISTINCT ");
     statement
-        .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, D.POSITION ");
+      .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, D.POSITION ");
     statement.append("FROM TURBINE_USER_GROUP_ROLE as A ");
     statement.append("LEFT JOIN TURBINE_USER as B ");
     statement.append("  on A.USER_ID = B.USER_ID ");
@@ -482,12 +480,12 @@ public class ALEipUtils {
       user = new ALEipUser();
       user.initField();
       user.setUserId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-          TurbineUser.USER_ID_PK_COLUMN)).intValue());
+        TurbineUser.USER_ID_PK_COLUMN)).intValue());
       user.setName((String) ALEipUtils.getObjFromDataRow(dataRow,
-          TurbineUser.LOGIN_NAME_COLUMN));
+        TurbineUser.LOGIN_NAME_COLUMN));
       user.setAliasName((String) ALEipUtils.getObjFromDataRow(dataRow,
-          TurbineUser.FIRST_NAME_COLUMN), (String) ALEipUtils
-          .getObjFromDataRow(dataRow, TurbineUser.LAST_NAME_COLUMN));
+        TurbineUser.FIRST_NAME_COLUMN), (String) ALEipUtils.getObjFromDataRow(
+        dataRow, TurbineUser.LAST_NAME_COLUMN));
       list.add(user);
     }
     return list;
@@ -495,7 +493,7 @@ public class ALEipUtils {
 
   /**
    * <code>SelectQuery</code> の条件に従ってユーザーを取得します。
-   *
+   * 
    * @param crt
    * @return ALEipUser の List
    */
@@ -503,9 +501,9 @@ public class ALEipUtils {
     List<ALEipUser> list = new ArrayList<ALEipUser>();
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       query.addOrdering(TurbineUser.EIP_MUSER_POSITION_PROPERTY + "."
-          + EipMUserPosition.POSITION_PROPERTY, true);
+        + EipMUserPosition.POSITION_PROPERTY, true);
       List<?> ulist = dataContext.performQuery(query);
       int size = ulist.size();
 
@@ -526,7 +524,7 @@ public class ALEipUtils {
 
   /**
    * 自ユーザーの簡易オブジェクトを取得します。
-   *
+   * 
    * @param crt
    * @return ALEipUser
    */
@@ -537,24 +535,25 @@ public class ALEipUtils {
     user.setUserId(Integer.parseInt(jdata.getJetspeedUser().getUserId()));
     user.setName(jdata.getJetspeedUser().getUserName());
     user.setAliasName(jdata.getJetspeedUser().getFirstName(), jdata
-        .getJetspeedUser().getLastName());
+      .getJetspeedUser().getLastName());
     return user;
   }
 
   /**
    * 指定したユーザーIDの簡易オブジェクトを取得します。
-   *
+   * 
    * @param id
    * @return
    */
   public static ALEipUser getALEipUser(int id) throws ALDBErrorException {
     DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     Expression exp = ExpressionFactory.matchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(id));
+      TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(id));
     SelectQuery query = new SelectQuery(TurbineUser.class, exp);
     List<?> users = dataContext.performQuery(query);
-    if (users.size() == 0)
+    if (users.size() == 0) {
       return null;
+    }
 
     TurbineUser tuser = (TurbineUser) users.get(0);
     ALEipUser user = new ALEipUser();
@@ -568,7 +567,7 @@ public class ALEipUtils {
 
   /**
    * 指定したユーザーIDの簡易オブジェクトを取得します。
-   *
+   * 
    * @param id
    * @return
    */
@@ -576,11 +575,12 @@ public class ALEipUtils {
       throws ALDBErrorException {
     DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     Expression exp = ExpressionFactory.matchExp(
-        TurbineUser.LOGIN_NAME_PROPERTY, loginname);
+      TurbineUser.LOGIN_NAME_PROPERTY, loginname);
     SelectQuery query = new SelectQuery(TurbineUser.class, exp);
     List<?> users = dataContext.performQuery(query);
-    if (users.size() == 0)
+    if (users.size() == 0) {
       return null;
+    }
 
     TurbineUser tuser = (TurbineUser) users.get(0);
     ALEipUser user = new ALEipUser();
@@ -594,7 +594,7 @@ public class ALEipUtils {
 
   /**
    * 指定したユーザーIDのオブジェクトを取得します。
-   *
+   * 
    * @param userid
    *          ユーザID
    * @return
@@ -615,7 +615,7 @@ public class ALEipUtils {
 
   /**
    * ユーザーのフルネームを取得します。
-   *
+   * 
    * @param userid
    *          ユーザID
    * @return
@@ -625,7 +625,7 @@ public class ALEipUtils {
     ALBaseUser user = getBaseUser(userid);
     if (user != null) {
       userName = new StringBuffer().append(user.getLastName()).append(" ")
-          .append(user.getFirstName()).toString();
+        .append(user.getFirstName()).toString();
     }
     return userName;
   }
@@ -633,7 +633,7 @@ public class ALEipUtils {
   /**
    * 部署の変更を行います。 <br>
    * 部署に関連付けされているグループの更新も同時に行います。
-   *
+   * 
    * @param rundata
    * @param username
    *          ユーザー名
@@ -647,9 +647,8 @@ public class ALEipUtils {
       ALBaseUser user = (ALBaseUser) JetspeedSecurity.getUser(username);
 
       // グループへ追加
-      JetspeedSecurity.joinGroup(username, ((ALEipPost) ALEipManager
-          .getInstance().getPostMap().get(Integer.valueOf(postid)))
-          .getGroupName().getValue());
+      JetspeedSecurity.joinGroup(username, (ALEipManager.getInstance()
+        .getPostMap().get(Integer.valueOf(postid))).getGroupName().getValue());
 
       // 部署を変更
       user.setPostId(postid);
@@ -674,16 +673,16 @@ public class ALEipUtils {
    * 自ユーザーのマイグループを再読み込みします。 <br>
    * 読み込まれたマイグループはセッションに保存されます。 <br>
    * マイグループの更新が行われた場合はこのメソッドを呼び出してください。
-   *
+   * 
    * @param rundata
    */
   public static void reloadMygroup(RunData rundata) throws ALDBErrorException {
     List<ALEipGroup> ulist = new ArrayList<ALEipGroup>();
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       Expression exp = ExpressionFactory.matchExp(
-          TurbineGroup.OWNER_ID_PROPERTY, Integer.valueOf(getUserId(rundata)));
+        TurbineGroup.OWNER_ID_PROPERTY, Integer.valueOf(getUserId(rundata)));
       SelectQuery query = new SelectQuery(TurbineGroup.class, exp);
       List<?> list = dataContext.performQuery(query);
 
@@ -711,7 +710,7 @@ public class ALEipUtils {
 
   /**
    * 自ユーザーのマイグループを取得します。
-   *
+   * 
    * @param rundata
    * @return ALEipGroup の List
    */
@@ -731,7 +730,7 @@ public class ALEipUtils {
 
   /**
    * 会社名を取得します。
-   *
+   * 
    * @param id
    * @return
    */
@@ -739,11 +738,11 @@ public class ALEipUtils {
     String companyName = null;
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       SelectQuery query = new SelectQuery(EipMCompany.class);
       query.addCustomDbAttribute(EipMCompany.COMPANY_NAME_COLUMN);
       Expression exp = ExpressionFactory.matchDbExp(
-          EipMCompany.COMPANY_ID_PK_COLUMN, Integer.valueOf(id));
+        EipMCompany.COMPANY_ID_PK_COLUMN, Integer.valueOf(id));
       query.setQualifier(exp);
       List<?> list = dataContext.performQuery(query);
 
@@ -755,7 +754,7 @@ public class ALEipUtils {
 
       DataRow dataRow = (DataRow) list.get(0);
       companyName = (String) ALEipUtils.getObjFromDataRow(dataRow,
-          EipMCompany.COMPANY_NAME_COLUMN);
+        EipMCompany.COMPANY_NAME_COLUMN);
 
     } catch (Exception ex) {
       logger.error("[ALEipUtils]", ex);
@@ -767,37 +766,37 @@ public class ALEipUtils {
 
   /**
    * 部署名を取得します。
-   *
+   * 
    * @param id
    * @return
    */
   public static String getPostName(int id) {
     if (ALEipManager.getInstance().getPostMap()
-        .containsKey(Integer.valueOf(id))) {
-      return ((ALEipPost) ALEipManager.getInstance().getPostMap()
-          .get(Integer.valueOf(id))).getPostName().getValue();
+      .containsKey(Integer.valueOf(id))) {
+      return (ALEipManager.getInstance().getPostMap().get(Integer.valueOf(id)))
+        .getPostName().getValue();
     }
     return null;
   }
 
   /**
    * 役職名を取得します。
-   *
+   * 
    * @param id
    * @return
    */
   public static String getPositionName(int id) {
     if (ALEipManager.getInstance().getPositionMap()
-        .containsKey(Integer.valueOf(id))) {
-      return ((ALEipPosition) ALEipManager.getInstance().getPositionMap()
-          .get(Integer.valueOf(id))).getPositionName().getValue();
+      .containsKey(Integer.valueOf(id))) {
+      return (ALEipManager.getInstance().getPositionMap().get(Integer
+        .valueOf(id))).getPositionName().getValue();
     }
     return null;
   }
 
   /**
    * ページが見つからない場合に、リダイレクト処理します。
-   *
+   * 
    * @return
    */
   public static boolean redirectPageNotFound(RunData rundata) {
@@ -824,7 +823,7 @@ public class ALEipUtils {
 
   /**
    * データベースエラーの場合に、リダイレクト処理します。
-   *
+   * 
    * @return
    */
   public static boolean redirectDBError(RunData rundata) {
@@ -832,7 +831,7 @@ public class ALEipUtils {
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       DynamicURI duri = jsLink.getPage();
       String template = rundata.getParameters().getString(
-          JetspeedResources.PATH_TEMPLATE_KEY);
+        JetspeedResources.PATH_TEMPLATE_KEY);
       if (template != null && !("".equals(template))) {
         if (template.endsWith("DetailScreen")) {
           VelocityContext context = new VelocityContext();
@@ -842,9 +841,9 @@ public class ALEipUtils {
             HttpServletResponse response = rundata.getResponse();
             out = response.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-                out, ALEipConstants.DEF_CONTENT_ENCODING));
+              out, ALEipConstants.DEF_CONTENT_ENCODING));
             Template templete = Velocity
-                .getTemplate("screens/html/AjaxDBError.vm");
+              .getTemplate("screens/html/AjaxDBError.vm");
             templete.merge(context, writer);
             writer.flush();
             writer.close();
@@ -874,7 +873,7 @@ public class ALEipUtils {
 
   /**
    * パーミッションエラーの場合に、リダイレクト処理します。
-   *
+   * 
    * @return
    */
   public static boolean redirectPermissionError(RunData rundata) {
@@ -882,7 +881,7 @@ public class ALEipUtils {
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       DynamicURI duri = jsLink.getPage();
       String template = rundata.getParameters().getString(
-          JetspeedResources.PATH_TEMPLATE_KEY);
+        JetspeedResources.PATH_TEMPLATE_KEY);
       if (template != null && !("".equals(template))) {
 
         if (template.endsWith("JSONScreen")) {
@@ -899,7 +898,7 @@ public class ALEipUtils {
             JSONArray json = JSONArray.fromObject(list);
 
             StringBuffer result = new StringBuffer().append("/* ")
-                .append(json.toString()).append(" */");
+              .append(json.toString()).append(" */");
 
             out.print(result.toString());
             out.flush();
@@ -909,7 +908,7 @@ public class ALEipUtils {
           }
           return true;
         } else if (template.endsWith("FormScreen")
-            || template.endsWith("DetailScreen")) {
+          || template.endsWith("DetailScreen")) {
           VelocityContext context = new VelocityContext();
           setupContext(rundata, context);
           try {
@@ -917,9 +916,9 @@ public class ALEipUtils {
             HttpServletResponse response = rundata.getResponse();
             out = response.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-                out, ALEipConstants.DEF_CONTENT_ENCODING));
+              out, ALEipConstants.DEF_CONTENT_ENCODING));
             Template templete = Velocity
-                .getTemplate("screens/html/AjaxPermissionError.vm");
+              .getTemplate("screens/html/AjaxPermissionError.vm");
             templete.merge(context, writer);
             writer.flush();
             writer.close();
@@ -936,9 +935,9 @@ public class ALEipUtils {
             HttpServletResponse response = rundata.getResponse();
             out = response.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-                out, ALEipConstants.DEF_CONTENT_ENCODING));
+              out, ALEipConstants.DEF_CONTENT_ENCODING));
             Template templete = Velocity
-                .getTemplate("portlets/html/PermissionError.vm");
+              .getTemplate("portlets/html/PermissionError.vm");
             templete.merge(context, writer);
             writer.flush();
             writer.close();
@@ -950,7 +949,7 @@ public class ALEipUtils {
         } else if (template.equals("Customize") || template.equals("Home")) {
           // ポートレットカスタマイズ
           duri.addPathInfo(JetspeedResources.PATH_TEMPLATE_KEY,
-              "PermissionError");
+            "PermissionError");
           rundata.setRedirectURI(duri.toString());
           rundata.getResponse().sendRedirect(rundata.getRedirectURI());
           // TODO add by Haruo Kaneko
@@ -960,7 +959,7 @@ public class ALEipUtils {
           return true;
         } else if (isCellularPhone(rundata)) {
           duri.addPathInfo(JetspeedResources.PATH_TEMPLATE_KEY,
-              "CellPermissionError");
+            "CellPermissionError");
           rundata.setRedirectURI(duri.toString());
           rundata.getResponse().sendRedirect(rundata.getRedirectURI());
           JetspeedLinkFactory.putInstance(jsLink);
@@ -973,7 +972,7 @@ public class ALEipUtils {
           return true;
         } else if (isSmartPhone(rundata)) {
           duri.addPathInfo(JetspeedResources.PATH_TEMPLATE_KEY,
-              "CellPermissionError");
+            "CellPermissionError");
           rundata.setRedirectURI(duri.toString());
           rundata.getResponse().sendRedirect(rundata.getRedirectURI());
           JetspeedLinkFactory.putInstance(jsLink);
@@ -996,7 +995,8 @@ public class ALEipUtils {
 
       JetspeedRunData jdata = (JetspeedRunData) rundata;
       if (jdata.getMode() == JetspeedRunData.MAXIMIZE) {
-        duri.addPathInfo(JetspeedResources.PATH_TEMPLATE_KEY, "PermissionError");
+        duri
+          .addPathInfo(JetspeedResources.PATH_TEMPLATE_KEY, "PermissionError");
         rundata.setRedirectURI(duri.toString());
         rundata.getResponse().sendRedirect(rundata.getRedirectURI());
         // TODO add by Haruo Kaneko
@@ -1005,7 +1005,7 @@ public class ALEipUtils {
         jsLink = null;
       } else {
         Context context = (Context) jdata.getTemplateInfo().getTemplateContext(
-            "VelocityPortletContext");
+          "VelocityPortletContext");
         context.put(JetspeedResources.PATH_TEMPLATE_KEY, "PermissionError");
       }
 
@@ -1023,17 +1023,18 @@ public class ALEipUtils {
 
   /**
    * 改行コードを含む文字列を、複数行に分割します。
-   *
+   * 
    * @return
    */
   public static String getMessageList(String msgline) {
     StringBuffer sb = new StringBuffer();
     ALStringField field = null;
 
-    if (msgline == null || msgline.equals(""))
+    if (msgline == null || msgline.equals("")) {
       return "";
+    }
     if (msgline.indexOf("\r") < 0 && msgline.indexOf("\n") < 0
-        && msgline.indexOf("\r\n") < 0) {
+      && msgline.indexOf("\r\n") < 0) {
       field = new ALStringField();
       field.setTrim(false);
       field.setValue(msgline);
@@ -1049,9 +1050,8 @@ public class ALEipUtils {
         field.setTrim(false);
         field.setValue(token);
         sb.append(
-            ALCommonUtils
-                .replaceToAutoCR(replaceStrToLink(replaseLeftSpace(field
-                    .toString())))).append("<br/>");
+          ALCommonUtils.replaceToAutoCR(replaceStrToLink(replaseLeftSpace(field
+            .toString())))).append("<br/>");
       }
       reader.close();
     } catch (IOException ioe) {
@@ -1071,7 +1071,7 @@ public class ALEipUtils {
 
   /**
    * 左端の半角空文字を「&nbsp;」に変換する。
-   *
+   * 
    * @param str
    * @return
    */
@@ -1098,21 +1098,21 @@ public class ALEipUtils {
 
   /**
    * アクセス元の端末が携帯電話であるかを判定します。
-   *
+   * 
    * @param data
    * @return
    */
   public static boolean isCellularPhone(RunData data) {
     boolean isCellularPhone = false;
     CapabilityMap cm = CapabilityMapFactory.getCapabilityMap(data.getRequest()
-        .getHeader("User-Agent"));
+      .getHeader("User-Agent"));
     MimeType mime = cm.getPreferredType();
     if (mime != null) {
       MediaTypeEntry media = (MediaTypeEntry) Registry.getEntry(
-          Registry.MEDIA_TYPE, cm.getPreferredMediaType());
+        Registry.MEDIA_TYPE, cm.getPreferredMediaType());
       String mediatype = media.getName();
       if ("docomo_imode".equals(mediatype) || "docomo_foma".equals(mediatype)
-          || "au".equals(mediatype) || "vodafone".equals(mediatype)) {
+        || "au".equals(mediatype) || "vodafone".equals(mediatype)) {
         isCellularPhone = true;
       }
     }
@@ -1121,18 +1121,18 @@ public class ALEipUtils {
 
   /**
    * アクセス元の端末がスマートフォンであるかを判定します。
-   *
+   * 
    * @param data
    * @return
    */
   public static boolean isSmartPhone(RunData data) {
     boolean isSmartPhone = false;
     CapabilityMap cm = CapabilityMapFactory.getCapabilityMap(data.getRequest()
-        .getHeader("User-Agent"));
+      .getHeader("User-Agent"));
     MimeType mime = cm.getPreferredType();
     if (mime != null) {
       MediaTypeEntry media = (MediaTypeEntry) Registry.getEntry(
-          Registry.MEDIA_TYPE, cm.getPreferredMediaType());
+        Registry.MEDIA_TYPE, cm.getPreferredMediaType());
       String mediatype = media.getName();
       if ("iphone".equals(mediatype) || "wm".equals(mediatype)) {
         isSmartPhone = true;
@@ -1143,7 +1143,7 @@ public class ALEipUtils {
 
   /**
    * 指定した2つの日付を比較します。
-   *
+   * 
    * @param date1
    * @param date2
    * @return 等しい場合、0。date1>date2の場合、1。date1 < date2の場合、2。
@@ -1168,8 +1168,8 @@ public class ALEipUtils {
     int date2Second = cal2.get(Calendar.SECOND);
 
     if (date1Year == date2Year && date1Month == date2Month
-        && date1Day == date2Day && date1Hour == date2Hour
-        && date1Minute == date2Minute && date1Second == date2Second) {
+      && date1Day == date2Day && date1Hour == date2Hour
+      && date1Minute == date2Minute && date1Second == date2Second) {
       return 0;
     }
     if (cal1.after(cal2)) {
@@ -1181,7 +1181,7 @@ public class ALEipUtils {
 
   /**
    * データベースの検索結果から、指定したキーに対応する値を取得します。
-   *
+   * 
    * @param dataRow
    * @param key
    * @return
@@ -1197,7 +1197,7 @@ public class ALEipUtils {
 
   /**
    * 会社情報のオブジェクトを取得します。
-   *
+   * 
    * @param id
    * @return
    */
@@ -1205,7 +1205,7 @@ public class ALEipUtils {
     DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     SelectQuery query = new SelectQuery(EipMCompany.class);
     Expression exp = ExpressionFactory.matchDbExp(
-        EipMCompany.COMPANY_ID_PK_COLUMN, Integer.valueOf(id));
+      EipMCompany.COMPANY_ID_PK_COLUMN, Integer.valueOf(id));
     query.setQualifier(exp);
     List<?> list = dataContext.performQuery(query);
     if (list == null || list.size() == 0) {
@@ -1216,7 +1216,7 @@ public class ALEipUtils {
   }
 
   /**
-   *
+   * 
    * @param ip
    * @param port
    * @param servername
@@ -1224,38 +1224,39 @@ public class ALEipUtils {
    * @return
    */
   public static String getUrl(String ip, int port, String servername) {
-    if (ip == null || ip.length() == 0 || port == -1)
+    if (ip == null || ip.length() == 0 || port == -1) {
       return "";
+    }
 
     String protocol = JetspeedResources
-        .getString("access.url.protocol", "http");
+      .getString("access.url.protocol", "http");
 
     StringBuffer url = new StringBuffer();
 
     if (port == 80) {
       url.append(protocol).append("://").append(ip).append("/")
-          .append(servername).append("/");
+        .append(servername).append("/");
     } else {
       url.append(protocol).append("://").append(ip).append(":").append(port)
-          .append("/").append(servername).append("/");
+        .append("/").append(servername).append("/");
     }
 
     return url.toString();
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    */
   public static void setupContext(RunData rundata, Context context) {
     String js_peid;
     if (!rundata.getParameters().containsKey(
-        JetspeedResources.PATH_PORTLETID_KEY)) {
+      JetspeedResources.PATH_PORTLETID_KEY)) {
       return;
     }
     js_peid = rundata.getParameters().getString(
-        JetspeedResources.PATH_PORTLETID_KEY);
+      JetspeedResources.PATH_PORTLETID_KEY);
 
     Portlet portlet = getPortlet(rundata, js_peid);
     context.put("portlet", portlet);
@@ -1264,7 +1265,7 @@ public class ALEipUtils {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param key
@@ -1285,7 +1286,7 @@ public class ALEipUtils {
   }
 
   /**
-   *
+   * 
    * @param dataContext
    * @param classname
    * @param search_key
@@ -1296,7 +1297,7 @@ public class ALEipUtils {
       Class<?> classname, String search_key, Integer search_value, boolean isDb) {
     SelectQuery query = new SelectQuery(classname);
     Expression exp = isDb ? ExpressionFactory.matchDbExp(search_key,
-        search_value) : ExpressionFactory.matchExp(search_key, search_value);
+      search_value) : ExpressionFactory.matchExp(search_key, search_value);
     query.setQualifier(exp);
     List<?> list = dataContext.performQuery(query);
     if (list == null || list.size() <= 0) {
@@ -1307,7 +1308,7 @@ public class ALEipUtils {
 
   /**
    * 指定したエントリー名のポートレットへの URI を取得します。
-   *
+   * 
    * @param rundata
    * @param portletEntryName
    *          PSML ファイルに記述されているタグ entry の要素 parent
@@ -1316,7 +1317,7 @@ public class ALEipUtils {
   public static String getPortletURI(RunData rundata, String portletEntryId) {
     try {
       Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-          .getDocument().getPortlets();
+        .getDocument().getPortlets();
       if (portlets == null) {
         return null;
       }
@@ -1338,14 +1339,14 @@ public class ALEipUtils {
           if (entries[j].getId().equals(portletEntryId)) {
             JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
             DynamicURI duri = jsLink.getLink(JetspeedLink.CURRENT, null, null,
-                JetspeedLink.CURRENT, null);
+              JetspeedLink.CURRENT, null);
             duri = duri
-                .addPathInfo(JetspeedResources.PATH_PANEID_KEY,
-                    portletList[i].getId())
-                .addPathInfo(JetspeedResources.PATH_PORTLETID_KEY,
-                    entries[j].getId())
-                .addQueryData(JetspeedResources.PATH_ACTION_KEY,
-                    "controls.Maximize");
+              .addPathInfo(JetspeedResources.PATH_PANEID_KEY,
+                portletList[i].getId())
+              .addPathInfo(JetspeedResources.PATH_PORTLETID_KEY,
+                entries[j].getId())
+              .addQueryData(JetspeedResources.PATH_ACTION_KEY,
+                "controls.Maximize");
             return duri.toString();
           }
         }
@@ -1358,7 +1359,7 @@ public class ALEipUtils {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param portletEntryId
    * @return
@@ -1367,7 +1368,7 @@ public class ALEipUtils {
       String portletEntryId) {
     try {
       Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-          .getDocument().getPortlets();
+        .getDocument().getPortlets();
       if (portlets == null) {
         return null;
       }
@@ -1389,10 +1390,10 @@ public class ALEipUtils {
           if (entries[j].getId().equals(portletEntryId)) {
             JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
             DynamicURI duri = jsLink.getLink(JetspeedLink.CURRENT, null, null,
-                JetspeedLink.CURRENT, null);
+              JetspeedLink.CURRENT, null);
             duri = duri.addPathInfo(JetspeedResources.PATH_PANEID_KEY,
-                portletList[i].getId()).addQueryData(
-                JetspeedResources.PATH_ACTION_KEY, "controls.Restore");
+              portletList[i].getId()).addQueryData(
+              JetspeedResources.PATH_ACTION_KEY, "controls.Restore");
             return duri.toString();
           }
         }
@@ -1406,18 +1407,18 @@ public class ALEipUtils {
 
   /**
    * 文字列内のリンクにタグAを追加します。
-   *
+   * 
    * @param msg
    * @return
    */
   public static String replaceStrToLink(String msg) {
     if (msg != null) {
       String newMsg = msg
-          .replaceAll(
-              "(https?|ftp|gopher|telnet|whois|news)\\:([\\w|\\:\\!\\#\\$\\%\\=\\&\\-\\^\\`\\\\|\\@\\~\\[\\{\\]\\}\\;\\+\\*\\,\\.\\?\\/]+)",
-              "<a href=\"$1\\:$2\" target=\"_blank\">$1\\:$2</a>");
+        .replaceAll(
+          "(https?|ftp|gopher|telnet|whois|news)\\:([\\w|\\:\\!\\#\\$\\%\\=\\&\\-\\^\\`\\\\|\\@\\~\\[\\{\\]\\}\\;\\+\\*\\,\\.\\?\\/]+)",
+          "<a href=\"$1\\:$2\" target=\"_blank\">$1\\:$2</a>");
       return newMsg.replaceAll("[\\w\\.\\-]+@([\\w\\-]+\\.)+[\\w\\-]+",
-          "<a href='mailto:$0'>$0</a>");
+        "<a href='mailto:$0'>$0</a>");
     } else {
       return "";
     }
@@ -1425,7 +1426,7 @@ public class ALEipUtils {
 
   /**
    * 古いファイル(parent_folder下のファイル)を消します。
-   *
+   * 
    * @param parent_folder
    *          親フォルダ
    * @param cal
@@ -1443,12 +1444,13 @@ public class ALEipUtils {
         return false;
       }
       String folders_path[] = parent_folder.list();
-      if (folders_path.length == 0)
+      if (folders_path.length == 0) {
         return true;
+      }
       int length = folders_path.length;
       for (int i = 0; i < length; i++) {
         File folder = new File(parent_folder.getAbsolutePath() + File.separator
-            + folders_path[i]);
+          + folders_path[i]);
         mod.setTimeInMillis(folder.lastModified());// ファイルの最終更新日時を格納
         if (folder.isDirectory()) {
           if (!deleteOldFolder(folder, cal)) {// フォルダの中身が空もしくは全部削除された場合
@@ -1479,11 +1481,11 @@ public class ALEipUtils {
 
   /**
    * フォルダを再帰的に消します。
-   *
+   * 
    * @param parent_folder
    *          親フォルダ
    * @param cal
-   *
+   * 
    * @return フォルダの中身が全て消去されたときのみtrueを返します
    */
   public static boolean deleteFolder(File parent_folder) {
@@ -1498,12 +1500,13 @@ public class ALEipUtils {
         }
       }
       String folders_path[] = parent_folder.list();
-      if (folders_path.length == 0)
+      if (folders_path.length == 0) {
         return true;
+      }
       int length = folders_path.length;
       for (int i = 0; i < length; i++) {
         File folder = new File(parent_folder.getAbsolutePath() + File.separator
-            + folders_path[i]);
+          + folders_path[i]);
         if (folder.isDirectory()) {
           if (!deleteFolder(folder)) {// フォルダの中身が空もしくは全部削除された場合
             flag = false;
@@ -1526,7 +1529,7 @@ public class ALEipUtils {
 
   /**
    * ユーザーの所属する部署を取得します。
-   *
+   * 
    * @param id
    *          ユーザーID
    * @return 所属する部署リスト
@@ -1534,12 +1537,12 @@ public class ALEipUtils {
   public static List<String> getPostNameList(int id) {
     SelectQuery query = new SelectQuery(TurbineUserGroupRole.class);
     Expression exp1 = ExpressionFactory.matchExp(
-        TurbineUserGroupRole.TURBINE_USER_PROPERTY, Integer.valueOf(id));
+      TurbineUserGroupRole.TURBINE_USER_PROPERTY, Integer.valueOf(id));
     Expression exp2 = ExpressionFactory.greaterExp(
-        TurbineUserGroupRole.TURBINE_GROUP_PROPERTY, Integer.valueOf(3));
+      TurbineUserGroupRole.TURBINE_GROUP_PROPERTY, Integer.valueOf(3));
     Expression exp3 = ExpressionFactory.matchExp(
-        TurbineUserGroupRole.TURBINE_GROUP_PROPERTY + "."
-            + TurbineGroup.OWNER_ID_PROPERTY, Integer.valueOf(1));
+      TurbineUserGroupRole.TURBINE_GROUP_PROPERTY + "."
+        + TurbineGroup.OWNER_ID_PROPERTY, Integer.valueOf(1));
     query.setQualifier(exp1);
     query.andQualifier(exp2);
     query.andQualifier(exp3);
@@ -1558,7 +1561,7 @@ public class ALEipUtils {
 
   /**
    * アクセス権限をチェックします（ポートレットカスタマイズ）
-   *
+   * 
    * @return
    */
   public static boolean CheckAclPermissionForCustomize(RunData rundata,
@@ -1588,10 +1591,10 @@ public class ALEipUtils {
     }
 
     ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+      .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
     return aclhandler.hasAuthority(ALEipUtils.getUserId(rundata), pfeature,
-        defineAclType);
+      defineAclType);
   }
 
   public static int getLimitUsers() {
@@ -1606,7 +1609,7 @@ public class ALEipUtils {
       if (list != null && list.size() > 0) {
         DataRow dataRow = (DataRow) list.get(0);
         Integer result = (Integer) ALEipUtils.getObjFromDataRow(dataRow,
-            AipoLicense.LIMIT_USERS_COLUMN);
+          AipoLicense.LIMIT_USERS_COLUMN);
         return result.intValue();
       }
     } catch (Exception e) {
@@ -1617,7 +1620,7 @@ public class ALEipUtils {
 
   /**
    * 現在登録されている有効なユーザー数(システムユーザ、論理削除は除く)を取得します。
-   *
+   * 
    * @return
    */
   public static int getCurrentUserNumEnabledOnly(RunData rundata) {
@@ -1629,14 +1632,15 @@ public class ALEipUtils {
       // RES_USER_NUMは3だが2として計算しないといけない。
 
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       Expression exp = ExpressionFactory.matchExp(
-          TurbineUser.DISABLED_PROPERTY, "F");
+        TurbineUser.DISABLED_PROPERTY, "F");
       SelectQuery query = new SelectQuery(TurbineUser.class);
       query.setQualifier(exp);
       List<?> list = dataContext.performQuery(query);
-      if (list == null || list.size() <= 0)
+      if (list == null || list.size() <= 0) {
         return -1;
+      }
       int size = list.size();
       // admin,anonユーザが含まれるので2ユーザ分減算
       registeredUserNum = size - 2;
@@ -1650,7 +1654,7 @@ public class ALEipUtils {
 
   /**
    * 現在登録されている有効なユーザー数(システムユーザ、論理削除、無効化は除く)を取得します。
-   *
+   * 
    * @return
    */
   public static int getCurrentUserNum(RunData rundata) {
@@ -1662,14 +1666,15 @@ public class ALEipUtils {
       // RES_USER_NUMは3だが2として計算しないといけない。
 
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       Expression exp = ExpressionFactory.noMatchExp(
-          TurbineUser.DISABLED_PROPERTY, "T");
+        TurbineUser.DISABLED_PROPERTY, "T");
       SelectQuery query = new SelectQuery(TurbineUser.class);
       query.setQualifier(exp);
       List<?> list = dataContext.performQuery(query);
-      if (list == null || list.size() <= 0)
+      if (list == null || list.size() <= 0) {
         return -1;
+      }
       int size = list.size();
       // admin,anonユーザが含まれるので2ユーザ分減算
       registeredUserNum = size - 2;

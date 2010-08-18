@@ -38,7 +38,7 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALCsvAbstractUploadFormData.class.getName());
+    .getLogger(ALCsvAbstractUploadFormData.class.getName());
 
   /** 添付ファイル名の最大文字数 */
   private final int FIELD_ATTACHMENT_MAX_LEN = 128;
@@ -55,6 +55,7 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
   /** CSVファイルの行数 */
   protected int line_count;
 
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -75,9 +76,10 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
    * @param rundata
    * @param context
    * @param msgList
-   *            エラーメッセージのリスト
+   *          エラーメッセージのリスト
    * @return TRUE 成功 FALSE 失敗
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
@@ -103,6 +105,7 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
   /**
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     attachmentName.setNotNull(true);
     attachmentName.limitMaxLength(FIELD_ATTACHMENT_MAX_LEN);
@@ -112,6 +115,7 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
   /**
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     attachmentName.validate(msgList);
 
@@ -122,6 +126,7 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     return true;
@@ -131,6 +136,7 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -140,6 +146,7 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
 
@@ -164,13 +171,16 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
           for (int i = 0; i < ALCsvTokenizer.CSV_SHOW_SIZE; i++) {
             while (reader.eof != -1) {
               reader.nextToken();
-              if (reader.eof == -1)
+              if (reader.eof == -1) {
                 break;
-              if (reader.line)
+              }
+              if (reader.line) {
                 break;
+              }
             }
-            if (reader.eof == -1)
+            if (reader.eof == -1) {
               break;
+            }
             line_count++;
           }
           page_count++;
@@ -191,6 +201,7 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {

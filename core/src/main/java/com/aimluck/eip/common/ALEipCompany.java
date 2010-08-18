@@ -23,7 +23,7 @@ import com.aimluck.commons.field.ALStringField;
 
 /**
  * セッションへ格納する会社情報を表すクラスです。 <br />
- *
+ * 
  */
 public class ALEipCompany implements ALData {
 
@@ -34,7 +34,7 @@ public class ALEipCompany implements ALData {
   private ALStringField company_name;
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {

@@ -34,23 +34,24 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 部署とマイグループをListBoxで返すクラスです。 <br />
- *
+ * 
  */
 public class GroupListBox extends ListBox {
 
   public static final String INITIAL_VALUE = "initialvalue";
 
-  private String DEF_INITIAL_VALUE = "（全体）";
+  private final String DEF_INITIAL_VALUE = "（全体）";
 
   /**
    * 表示オプションを初期化します。
-   *
+   * 
    * @param data
    */
+  @Override
   protected void init(RunData data) {
 
     // 部署の取得
-    Map<Integer, ALEipPost>  postMap = ALEipManager.getInstance().getPostMap();
+    Map<Integer, ALEipPost> postMap = ALEipManager.getInstance().getPostMap();
     Collection<ALEipPost> postCollection = postMap.values();
     try {
       // マイグループの取得
@@ -78,7 +79,7 @@ public class GroupListBox extends ListBox {
       ALEipGroup group = null;
       Iterator<ALEipGroup> iter2 = mygroupList.iterator();
       while (iter2.hasNext()) {
-        group = (ALEipGroup) iter2.next();
+        group = iter2.next();
         groupKeys[count] = group.getName().toString();
         groupValues[count] = group.getAliasName().toString();
         count++;
@@ -89,7 +90,7 @@ public class GroupListBox extends ListBox {
       this.values = groupValues;
       this.size = Integer.toString(length);
       this.multiple = Boolean.valueOf(
-          (String) this.getParm(MULTIPLE_CHOICE, "false")).booleanValue();
+        (String) this.getParm(MULTIPLE_CHOICE, "false")).booleanValue();
     } catch (ALDBErrorException e) {
       ALEipUtils.redirectPageNotFound(data);
     }

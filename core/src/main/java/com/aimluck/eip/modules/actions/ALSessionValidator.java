@@ -53,34 +53,35 @@ import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
 public class ALSessionValidator extends JetspeedSessionValidator {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALSessionValidator.class.getName());
+    .getLogger(ALSessionValidator.class.getName());
 
   /**
    * 
    * @see org.apache.turbine.modules.Action#doPerform(org.apache.turbine.util.RunData)
    */
+  @Override
   public void doPerform(RunData data) throws Exception {
 
     try {
       super.doPerform(data);
     } catch (Throwable other) {
       data.setScreenTemplate(JetspeedResources
-          .getString(TurbineConstants.TEMPLATE_ERROR));
+        .getString(TurbineConstants.TEMPLATE_ERROR));
       String message = other.getMessage() != null ? other.getMessage() : other
-          .toString();
+        .toString();
       data.setMessage(message);
       data.setStackTrace(org.apache.turbine.util.StringUtils.stackTrace(other),
-          other);
+        other);
       return;
     }
 
     // for switching theme org by org
     Context context = org.apache.turbine.services.velocity.TurbineVelocity
-        .getContext(data);
+      .getContext(data);
     ALOrgUtilsHandler handler = ALOrgUtilsFactoryService.getInstance()
-        .getOrgUtilsHandler();
+      .getOrgUtilsHandler();
     HashMap<String, String> attribute = handler
-        .getParameters(DatabaseOrmService.getInstance().getOrgId(data));
+      .getParameters(DatabaseOrmService.getInstance().getOrgId(data));
     for (Map.Entry<String, String> e : attribute.entrySet()) {
       context.put(e.getKey(), e.getValue());
     }
@@ -110,12 +111,12 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     JetspeedUser user = (JetspeedUser) data.getUser();
 
     if ((user == null || !user.hasLoggedIn())
-        && JetspeedResources.getBoolean("automatic.logon.enable", false)) {
+      && JetspeedResources.getBoolean("automatic.logon.enable", false)) {
 
       if (data.getRequest().getCookies() != null) {
         String userName = data.getCookies().getString("username", "");
         String loginCookieValue = data.getCookies()
-            .getString("logincookie", "");
+          .getString("logincookie", "");
 
         if (userName.length() > 0 && loginCookieValue.length() > 0) {
           try {
@@ -136,7 +137,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       }
 
     } else if ((user == null || !user.hasLoggedIn())
-        && !JetspeedResources.getBoolean("automatic.logon.enable", false)) {
+      && !JetspeedResources.getBoolean("automatic.logon.enable", false)) {
 
       // 理由等 ：セッションが切れた時に、エラーメッセージの表示に不具合あり
       // 対処方法：ログイン画面以外でユーザがログインしていない場合はエラーページへスクリーンを変更
@@ -147,19 +148,20 @@ public class ALSessionValidator extends JetspeedSessionValidator {
 
       Class<?> cls = null;
       try {
-        cls = Class.forName(new StringBuffer().append(
-            "com.aimluck.eip.modules.screens.").append(template).toString());
+        cls = Class.forName(new StringBuffer()
+          .append("com.aimluck.eip.modules.screens.").append(template)
+          .toString());
       } catch (Exception e) {
         cls = null;
       }
       String newTemplate = null;
       if (cls != null) {
         if (Class.forName("com.aimluck.eip.modules.screens.ALJSONScreen")
-            .isAssignableFrom(cls)) {
+          .isAssignableFrom(cls)) {
           newTemplate = "ALJSONTimeoutScreen";
         } else if (Class.forName(
-            "com.aimluck.eip.modules.screens.ALVelocityScreen")
-            .isAssignableFrom(cls)) {
+          "com.aimluck.eip.modules.screens.ALVelocityScreen").isAssignableFrom(
+          cls)) {
           newTemplate = "ALVelocityTimeoutScreen";
         }
       }
@@ -176,7 +178,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
 
       } else {
         if (!uri.equals("/" + servername + "/portal/")
-            && !uri.equals("/" + servername + "/portal")) {
+          && !uri.equals("/" + servername + "/portal")) {
           data.setScreenTemplate("Timeout");
 
           StringBuffer sb = new StringBuffer(uri);
@@ -191,8 +193,8 @@ public class ALSessionValidator extends JetspeedSessionValidator {
               sb.append("&");
             }
             key = (String) enu.nextElement();
-            sb.append(key).append("=").append(
-                data.getRequest().getParameter(key));
+            sb.append(key).append("=")
+              .append(data.getRequest().getParameter(key));
             count = count + 1;
           }
 
@@ -218,23 +220,23 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       jdata = (JetspeedRunData) data;
     } catch (ClassCastException e) {
       logger.error(
-          "The RunData object does not implement the expected interface, "
-              + "please verify the RunData factory settings", e);
+        "The RunData object does not implement the expected interface, "
+          + "please verify the RunData factory settings", e);
       return;
     }
-    String language = (String) data.getRequest().getParameter("js_language");
+    String language = data.getRequest().getParameter("js_language");
 
     if (null != language) {
       user.setPerm("language", language);
     }
 
     CustomLocalizationService locService = (CustomLocalizationService) ServiceUtil
-        .getServiceByName(LocalizationService.SERVICE_NAME);
+      .getServiceByName(LocalizationService.SERVICE_NAME);
     Locale locale = locService.getLocale(data);
 
     if (locale == null) {
       locale = new Locale(TurbineResources.getString("locale.default.language",
-          "en"), TurbineResources.getString("locale.default.country", "US"));
+        "en"), TurbineResources.getString("locale.default.country", "US"));
     }
 
     data.getUser().setTemp("locale", locale);

@@ -53,13 +53,13 @@ import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
  * パーミッションを管理するクラスです。 <br />
- *
+ * 
  */
 public class ALPermissionManagement extends TurbineBaseService implements
     PermissionManagement {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALPermissionManagement.class.getName());
+    .getLogger(ALPermissionManagement.class.getName());
 
   private JetspeedRunDataService runDataService = null;
 
@@ -101,19 +101,19 @@ public class ALPermissionManagement extends TurbineBaseService implements
 
     try {
       Expression exp = ExpressionFactory.matchDbExp(
-          TurbineRolePermission.ROLE_ID_PK_COLUMN, Integer
-              .valueOf(role.getId()));
+        TurbineRolePermission.ROLE_ID_PK_COLUMN, Integer.valueOf(role.getId()));
 
       SelectQuery query = new SelectQuery(TurbineRolePermission.class, exp);
 
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       rels = dataContext.performQuery(query);
 
       if (rels.size() > 0) {
         perms = new HashMap<String, Permission>(rels.size());
-      } else
+      } else {
         perms = new HashMap<String, Permission>();
+      }
 
       for (int ix = 0; ix < rels.size(); ix++) {
         TurbineRolePermission rel = (TurbineRolePermission) rels.get(ix);
@@ -136,7 +136,7 @@ public class ALPermissionManagement extends TurbineBaseService implements
       SelectQuery query = new SelectQuery(TurbinePermission.class);
 
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       permissions = dataContext.performQuery(query);
 
     } catch (Exception e) {
@@ -153,22 +153,22 @@ public class ALPermissionManagement extends TurbineBaseService implements
       throws JetspeedSecurityException {
     if (permissionExists(permission.getName())) {
       throw new PermissionException("The permission '" + permission.getName()
-          + "' already exists");
+        + "' already exists");
     }
 
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       // 新規オブジェクトモデル
       TurbinePermission tpermission = (TurbinePermission) dataContext
-          .createAndRegisterNewObject(TurbinePermission.class);
+        .createAndRegisterNewObject(TurbinePermission.class);
       tpermission.setName(permission.getName());
       tpermission.setOBJECTDATA(null);
       dataContext.commitChanges();
 
     } catch (Exception e) {
       String message = "Failed to create permission '" + permission.getName()
-          + "'";
+        + "'";
       logger.error(message, e);
       throw new PermissionException(message, e);
     }
@@ -182,23 +182,23 @@ public class ALPermissionManagement extends TurbineBaseService implements
 
     if (!permissionExists(permission.getName())) {
       throw new PermissionException("The permission '" + permission.getName()
-          + "' doesn't exists");
+        + "' doesn't exists");
     }
 
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
 
       if (permission instanceof TurbinePermission) {
         dataContext.commitChanges();
       } else {
         throw new PermissionException(
-            "TurbinePermissionManagment: Permission is not a Turbine permission, cannot update");
+          "TurbinePermissionManagment: Permission is not a Turbine permission, cannot update");
       }
 
     } catch (Exception e) {
       String message = "Failed to create permission '" + permission.getName()
-          + "'";
+        + "'";
       logger.error(message, e);
       throw new PermissionException(message, e);
     }
@@ -214,16 +214,16 @@ public class ALPermissionManagement extends TurbineBaseService implements
 
       if (systemPermissions.contains(permissionName)) {
         throw new PermissionException("[" + permissionName
-            + "] is a system permission and cannot be removed");
+          + "] is a system permission and cannot be removed");
       }
       Permission permission = this.getPermission(permissionName);
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
 
       if (cascadeDelete) {
         Expression exp = ExpressionFactory.matchDbExp(
-            TurbineRolePermission.PERMISSION_ID_PK_COLUMN, Integer
-                .valueOf(permission.getId()));
+          TurbineRolePermission.PERMISSION_ID_PK_COLUMN,
+          Integer.valueOf(permission.getId()));
         SelectQuery query = new SelectQuery(TurbineRolePermission.class, exp);
         List<?> rolepermissions = dataContext.performQuery(query);
         dataContext.deleteObjects(rolepermissions);
@@ -255,17 +255,17 @@ public class ALPermissionManagement extends TurbineBaseService implements
       Permission permission = this.getPermission(permissionName);
 
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       // 新規オブジェクトモデル
       TurbineRolePermission role_permission = (TurbineRolePermission) dataContext
-          .createAndRegisterNewObject(TurbineRolePermission.class);
+        .createAndRegisterNewObject(TurbineRolePermission.class);
       role_permission.setRoleId(Integer.parseInt(role.getId()));
       role_permission.setPermissionId(Integer.parseInt(permission.getId()));
       dataContext.commitChanges();
 
     } catch (Exception e) {
       String message = "Grant permission '" + permissionName + "' to role '"
-          + roleName + "' failed: ";
+        + roleName + "' failed: ";
       logger.error(message, e);
       throw new PermissionException(message, e);
     }
@@ -281,13 +281,12 @@ public class ALPermissionManagement extends TurbineBaseService implements
       Permission permission = this.getPermission(permissionName);
 
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       Expression exp1 = ExpressionFactory.matchDbExp(
-          TurbineRolePermission.ROLE_ID_PK_COLUMN, Integer
-              .valueOf(role.getId()));
+        TurbineRolePermission.ROLE_ID_PK_COLUMN, Integer.valueOf(role.getId()));
       Expression exp2 = ExpressionFactory.matchDbExp(
-          TurbineRolePermission.PERMISSION_ID_PK_COLUMN, Integer
-              .valueOf(permission.getId()));
+        TurbineRolePermission.PERMISSION_ID_PK_COLUMN,
+        Integer.valueOf(permission.getId()));
       SelectQuery query = new SelectQuery(TurbineRolePermission.class);
       query.setQualifier(exp1);
       query.andQualifier(exp2);
@@ -300,7 +299,7 @@ public class ALPermissionManagement extends TurbineBaseService implements
       }
     } catch (Exception e) {
       String message = "Revoke permission '" + permissionName + "' to role '"
-          + roleName + "' failed: ";
+        + roleName + "' failed: ";
       logger.error(message, e);
       throw new PermissionException(message, e);
     }
@@ -323,13 +322,12 @@ public class ALPermissionManagement extends TurbineBaseService implements
       Permission permission = this.getPermission(permissionName);
 
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       Expression exp1 = ExpressionFactory.matchDbExp(
-          TurbineRolePermission.ROLE_ID_PK_COLUMN, Integer
-              .valueOf(role.getId()));
+        TurbineRolePermission.ROLE_ID_PK_COLUMN, Integer.valueOf(role.getId()));
       Expression exp2 = ExpressionFactory.matchDbExp(
-          TurbineRolePermission.PERMISSION_ID_PK_COLUMN, Integer
-              .valueOf(permission.getId()));
+        TurbineRolePermission.PERMISSION_ID_PK_COLUMN,
+        Integer.valueOf(permission.getId()));
       SelectQuery query = new SelectQuery(TurbineRolePermission.class);
       query.setQualifier(exp1);
       query.andQualifier(exp2);
@@ -352,7 +350,7 @@ public class ALPermissionManagement extends TurbineBaseService implements
 
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
 
       SelectQuery query = new SelectQuery(TurbinePermission.class);
       permissions = dataContext.performQuery(query);
@@ -364,8 +362,8 @@ public class ALPermissionManagement extends TurbineBaseService implements
     }
     if (permissions.size() > 1) {
       throw new PermissionException(
-          "Multiple Permissions with same permissionname '" + permissionName
-              + "'");
+        "Multiple Permissions with same permissionname '" + permissionName
+          + "'");
     }
     if (permissions.size() == 1) {
       TurbinePermission permission = (TurbinePermission) permissions.get(0);
@@ -384,7 +382,7 @@ public class ALPermissionManagement extends TurbineBaseService implements
   }
 
   /**
-   *
+   * 
    * @param permissionName
    * @return
    * @throws PermissionException
@@ -394,9 +392,9 @@ public class ALPermissionManagement extends TurbineBaseService implements
     List<?> permissions;
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       Expression exp = ExpressionFactory.matchExp(
-          TurbinePermission.PERMISSION_NAME_PROPERTY, permissionName);
+        TurbinePermission.PERMISSION_NAME_PROPERTY, permissionName);
       SelectQuery query = new SelectQuery(TurbinePermission.class, exp);
       permissions = dataContext.performQuery(query);
     } catch (Exception e) {
@@ -412,24 +410,26 @@ public class ALPermissionManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public synchronized void init(ServletConfig conf)
       throws InitializationException {
-    if (getInit())
+    if (getInit()) {
       return;
+    }
 
     super.init(conf);
 
     ResourceService serviceConf = ((TurbineServices) TurbineServices
-        .getInstance()).getResources(JetspeedSecurityService.SERVICE_NAME);
+      .getInstance()).getResources(JetspeedSecurityService.SERVICE_NAME);
 
     this.runDataService = (JetspeedRunDataService) TurbineServices
-        .getInstance().getService(RunDataService.SERVICE_NAME);
+      .getInstance().getService(RunDataService.SERVICE_NAME);
 
     cascadeDelete = serviceConf.getBoolean(CASCADE_DELETE,
-        DEFAULT_CASCADE_DELETE);
+      DEFAULT_CASCADE_DELETE);
     cachingEnable = serviceConf.getBoolean(CACHING_ENABLE, cachingEnable);
     systemPermissions = serviceConf.getVector(CONFIG_SYSTEM_PERMISSIONS,
-        new Vector<Object>());
+      new Vector<Object>());
     setInit(true);
   }
 

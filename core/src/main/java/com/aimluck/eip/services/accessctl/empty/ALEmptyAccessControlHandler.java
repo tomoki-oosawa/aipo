@@ -37,17 +37,18 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アクセス権限を管理するクラスです。 <br />
- *
+ * 
  */
 public class ALEmptyAccessControlHandler extends ALAccessControlHandler {
 
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALEmptyAccessControlHandler.class.getName());
+    .getLogger(ALEmptyAccessControlHandler.class.getName());
 
+  @Override
   public boolean hasAuthority(int userId, String featerName, int aclType) {
     if (ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER
-        .equals(featerName)) {
+      .equals(featerName)) {
       boolean updatable = (aclType & ALAccessControlConstants.VALUE_ACL_UPDATE) == ALAccessControlConstants.VALUE_ACL_UPDATE;
       boolean deletable = (aclType & ALAccessControlConstants.VALUE_ACL_DELETE) == ALAccessControlConstants.VALUE_ACL_DELETE;
       return (!updatable && !deletable);
@@ -55,8 +56,9 @@ public class ALEmptyAccessControlHandler extends ALAccessControlHandler {
     return true;
   }
 
-  public List<Integer> getAcceptUserIdsExceptLoginUser(DataContext dataContext, int uid,
-      String feat, int acl_type) {
+  @Override
+  public List<Integer> getAcceptUserIdsExceptLoginUser(DataContext dataContext,
+      int uid, String feat, int acl_type) {
     StringBuffer sb = new StringBuffer();
     sb.append("SELECT ");
     sb.append(TurbineUser.USER_ID_PK_COLUMN);
@@ -81,13 +83,14 @@ public class ALEmptyAccessControlHandler extends ALAccessControlHandler {
     for (int i = 0; i < size; i++) {
       DataRow raw = (DataRow) list.get(i);
       userIds.add((Integer) ALEipUtils.getObjFromDataRow(raw,
-          TurbineUser.USER_ID_PK_COLUMN));
+        TurbineUser.USER_ID_PK_COLUMN));
     }
     return userIds;
   }
 
-  public List<Integer> getAcceptUserIdsInListExceptLoginUser(DataContext dataContext,
-      int uid, String feat, int acl_type, List<?> ulist) {
+  @Override
+  public List<Integer> getAcceptUserIdsInListExceptLoginUser(
+      DataContext dataContext, int uid, String feat, int acl_type, List<?> ulist) {
     List<Integer> userIds = new ArrayList<Integer>();
     int u_size;
     if ((ulist == null) || (u_size = ulist.size()) < 1) {
@@ -127,11 +130,12 @@ public class ALEmptyAccessControlHandler extends ALAccessControlHandler {
     for (int i = 0; i < size; i++) {
       DataRow raw = (DataRow) list.get(i);
       userIds.add((Integer) ALEipUtils.getObjFromDataRow(raw,
-          TurbineUser.USER_ID_PK_COLUMN));
+        TurbineUser.USER_ID_PK_COLUMN));
     }
     return userIds;
   }
 
+  @Override
   public List<?> getAuthorityUsersFromGroup(RunData rundata, String feat,
       String groupname, boolean includeLoginuser) {
 
@@ -141,7 +145,7 @@ public class ALEmptyAccessControlHandler extends ALAccessControlHandler {
 
     statement.append("SELECT DISTINCT ");
     statement
-        .append("B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, D.POSITION ");
+      .append("B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, D.POSITION ");
     statement.append("FROM TURBINE_USER_GROUP_ROLE as A ");
     statement.append("LEFT JOIN TURBINE_USER as B ");
     statement.append("on A.USER_ID = B.USER_ID ");
@@ -161,6 +165,7 @@ public class ALEmptyAccessControlHandler extends ALAccessControlHandler {
     return ulist;
   }
 
+  @Override
   public void insertDefaultRole(int uid) throws Exception {
 
   }

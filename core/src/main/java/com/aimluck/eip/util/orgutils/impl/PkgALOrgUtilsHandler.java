@@ -35,8 +35,9 @@ public class PkgALOrgUtilsHandler extends ALOrgUtilsHandler {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(PkgALOrgUtilsHandler.class.getName());
+    .getLogger(PkgALOrgUtilsHandler.class.getName());
 
+  @Override
   public File getDocumentPath(String rootPath, String org_name,
       String categoryKey) {
 
@@ -48,7 +49,7 @@ public class PkgALOrgUtilsHandler extends ALOrgUtilsHandler {
         rootDir.mkdirs();
       } catch (Exception e) {
         logger.error("[ALSoftOrgUtilsHandler] Can't create directory...:"
-            + rootPath);
+          + rootPath);
         return rootDir;
       }
     }
@@ -61,15 +62,17 @@ public class PkgALOrgUtilsHandler extends ALOrgUtilsHandler {
 
     // パスを作成
     base = new File(rootDir.getAbsolutePath() + File.separator + org_name
-        + File.separator + categoryKey);
+      + File.separator + categoryKey);
 
     return base;
   }
 
+  @Override
   public String getThemeName(String org_name) {
     return JetspeedResources.getString("aipo.theme");
   }
 
+  @Override
   public HashMap<String, String> getParameters(String org_name) {
     HashMap<String, String> hash = new HashMap<String, String>();
 
@@ -77,8 +80,8 @@ public class PkgALOrgUtilsHandler extends ALOrgUtilsHandler {
     hash.put("alias", JetspeedResources.getString("aipo.alias"));
     hash.put("aliasjp", JetspeedResources.getString("aipo.aliasjp"));
     hash.put("copyright", JetspeedResources.getString("aipo.copyright"));
-    hash.put("copyright_short", JetspeedResources
-        .getString("aipo.copyright_short"));
+    hash.put("copyright_short",
+      JetspeedResources.getString("aipo.copyright_short"));
     return hash;
   }
 

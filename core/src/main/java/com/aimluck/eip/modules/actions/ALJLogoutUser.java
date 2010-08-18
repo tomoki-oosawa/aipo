@@ -37,13 +37,14 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ログアウト処理用のクラスです。 <br />
- *
+ * 
  */
 public class ALJLogoutUser extends ActionEvent {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALJLogoutUser.class.getName());
+    .getLogger(ALJLogoutUser.class.getName());
 
+  @Override
   public void doPerform(RunData data) throws Exception {
 
     String username = data.getParameters().getString("user");
@@ -53,11 +54,11 @@ public class ALJLogoutUser extends ActionEvent {
       Cookie loginCookie = new Cookie("logincookie", "");
 
       String comment = JetspeedResources.getString(
-          "automatic.logon.cookie.comment", "");
+        "automatic.logon.cookie.comment", "");
       String domain = JetspeedResources
-          .getString("automatic.logon.cookie.domain");
+        .getString("automatic.logon.cookie.domain");
       String path = JetspeedResources.getString("automatic.logon.cookie.path",
-          "/");
+        "/");
 
       if (domain == null) {
         String server = data.getServerName();
@@ -94,17 +95,17 @@ public class ALJLogoutUser extends ActionEvent {
       if (logoutuser != null) {
         int logoutUserId = (int) logoutuser.getUserId().getValue();
         ALEventlogFactoryService.getInstance().getEventlogHandler()
-            .logLogout(logoutUserId);
+          .logLogout(logoutUserId);
       }
     }
 
     data.setMessage(JetspeedResources
-        .getString(TurbineConstants.LOGOUT_MESSAGE));
+      .getString(TurbineConstants.LOGOUT_MESSAGE));
 
     JetspeedLink jsLink = null;
 
     data.setScreen(JetspeedResources
-        .getString(TurbineConstants.SCREEN_HOMEPAGE));
+      .getString(TurbineConstants.SCREEN_HOMEPAGE));
 
     try {
       jsLink = JetspeedLinkFactory.getInstance(data);
@@ -114,7 +115,7 @@ public class ALJLogoutUser extends ActionEvent {
 
     if (ALEipUtils.isCellularPhone(data)) {
       data.setRedirectURI(jsLink.getHomePage().addQueryData("logout", "T")
-          .toString());
+        .toString());
     } else {
       data.setRedirectURI(jsLink.getHomePage().toString());
     }

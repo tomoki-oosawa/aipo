@@ -26,17 +26,18 @@ import com.aimluck.eip.services.eventlog.ALEventlogHandler;
 
 /**
  * イベントログを管理するクラスを生成するファクトリクラスです。 <br />
- *
+ * 
  */
 public class ALEmptyEventlogFactoryService extends ALEventlogFactoryService {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALEmptyEventlogFactoryService.class.getName());
+    .getLogger(ALEmptyEventlogFactoryService.class.getName());
 
   ALEventlogHandler handler = new ALEmptyEventlogHandler();
 
+  @Override
   public ALEventlogHandler getEventlogHandler() {
     return handler;
   }

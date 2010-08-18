@@ -23,38 +23,47 @@ import com.aimluck.eip.services.datasync.ALDataSyncHandler;
 
 public class ALEmptyDataSyncHandler extends ALDataSyncHandler {
 
+  @Override
   public boolean checkConnect() {
     return true;
   }
 
+  @Override
   public boolean addUser(ALBaseUser user) {
     return true;
   }
 
+  @Override
   public boolean updateUser(ALBaseUser user) {
     return true;
   }
 
+  @Override
   public boolean deleteUser(String username) {
     return true;
   }
 
+  @Override
   public boolean enableUser(String username) {
     return true;
   }
 
+  @Override
   public boolean disableUser(String username) {
     return true;
   }
 
+  @Override
   public boolean multiDeleteUser(String[] username_list, int size) {
     return true;
   }
 
+  @Override
   public boolean multiEnableUser(String[] username_list, int size) {
     return true;
   }
 
+  @Override
   public boolean multiDisableUser(String[] username_list, int size) {
     return true;
   }

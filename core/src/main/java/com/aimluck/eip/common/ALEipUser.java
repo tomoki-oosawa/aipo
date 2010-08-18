@@ -23,7 +23,7 @@ import com.aimluck.commons.field.ALStringField;
 
 /**
  * ユーザー情報を表すクラスです。 <br />
- *
+ * 
  */
 public class ALEipUser implements ALData {
 
@@ -37,7 +37,7 @@ public class ALEipUser implements ALData {
   private ALStringField alias_name;
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -47,7 +47,7 @@ public class ALEipUser implements ALData {
   }
 
   /**
-   *
+   * 
    * @param string
    */
   public void setName(String string) {
@@ -55,17 +55,17 @@ public class ALEipUser implements ALData {
   }
 
   /**
-   *
+   * 
    * @param firstName
    * @param lastName
    */
   public void setAliasName(String firstName, String lastName) {
     alias_name.setValue(new StringBuffer().append(lastName).append(" ")
-        .append(firstName).toString());
+      .append(firstName).toString());
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALStringField getName() {
@@ -73,7 +73,7 @@ public class ALEipUser implements ALData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALStringField getAliasName() {

@@ -27,15 +27,16 @@ import org.apache.velocity.context.Context;
 
 /**
  * Ajax通信中にタイムアウトした場合の処理クラスです。 <br />
- *
+ * 
  */
 public class ALJSONTimeoutScreen extends ALJSONScreen implements ALErrorScreen {
 
   /** <code>logger</code> loger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALJSONTimeoutScreen.class.getName());
+    .getLogger(ALJSONTimeoutScreen.class.getName());
 
+  @Override
   protected String getJSONString(RunData rundata, Context context) {
     JSONObject json = new JSONObject();
     json.put("error", ALErrorScreen.ERROR_CODE_TIMEOUT);

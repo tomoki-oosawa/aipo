@@ -27,13 +27,13 @@ import org.apache.turbine.util.RunData;
 
 /**
  * アクセス権限を管理する抽象クラスです。 <br />
- *
+ * 
  */
 public abstract class ALAccessControlHandler {
 
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALAccessControlHandler.class.getName());
+    .getLogger(ALAccessControlHandler.class.getName());
 
   public abstract boolean hasAuthority(int userId, String featerName,
       int aclType);

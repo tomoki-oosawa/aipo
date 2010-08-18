@@ -20,7 +20,7 @@ package com.aimluck.eip.common;
 
 /**
  * この例外は、データベースへのアクセス時にエラーが発生した場合にスローされます。 <br />
- *
+ * 
  */
 public class ALDBErrorException extends Exception {
 

@@ -20,7 +20,7 @@ package com.aimluck.eip.modules.screens;
 
 /**
  * ブラウザにエラーを出力する Screen のインターフェースです。 <br />
- *
+ * 
  */
 public interface ALErrorScreen {
 

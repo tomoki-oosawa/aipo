@@ -23,13 +23,13 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 /**
  * イベントログを管理する抽象クラスです。 <br />
- *
+ * 
  */
 public abstract class ALEventlogHandler {
 
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALEventlogHandler.class.getName());
+    .getLogger(ALEventlogHandler.class.getName());
 
   public abstract void log(int entity_id, int portlet_type, String note);
 

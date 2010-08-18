@@ -28,19 +28,20 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ログインユーザーの一覧をListBoxで返すクラスです。 <br />
- *
+ * 
  */
 public class LoginUserListBox extends ListBox {
 
   public static final String INITIAL_VALUE = "initialvalue";
 
-  private String DEF_INITIAL_VALUE = "（ユーザー選択）";
+  private final String DEF_INITIAL_VALUE = "（ユーザー選択）";
 
   /**
    * 表示オプションを初期化します。
-   *
+   * 
    * @param data
    */
+  @Override
   protected void init(RunData data) {
 
     // ログインユーザの取得
@@ -64,7 +65,7 @@ public class LoginUserListBox extends ListBox {
     this.values = groupValues;
     this.size = Integer.toString(length + 1);
     this.multiple = Boolean.valueOf(
-        (String) this.getParm(MULTIPLE_CHOICE, "false")).booleanValue();
+      (String) this.getParm(MULTIPLE_CHOICE, "false")).booleanValue();
   }
 
 }

@@ -31,14 +31,14 @@ import org.apache.turbine.services.rundata.RunDataService;
 
 /**
  * アクセス権限を管理するクラスを生成する抽象ファクトリクラスです。 <br />
- *
+ * 
  */
 public abstract class ALAccessControlFactoryService extends TurbineBaseService {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ALAccessControlFactoryService.class.getName());
+    .getLogger(ALAccessControlFactoryService.class.getName());
 
   public static final String SERVICE_NAME = "ALAccessControlFactoryService";
 
@@ -46,7 +46,7 @@ public abstract class ALAccessControlFactoryService extends TurbineBaseService {
 
   public static ALAccessControlFactoryService getInstance() {
     return (ALAccessControlFactoryService) TurbineServices.getInstance()
-        .getService(ALAccessControlFactoryService.SERVICE_NAME);
+      .getService(ALAccessControlFactoryService.SERVICE_NAME);
   }
 
   public abstract ALAccessControlHandler getAccessControlHandler();
@@ -62,15 +62,17 @@ public abstract class ALAccessControlFactoryService extends TurbineBaseService {
   /**
    *
    */
+  @Override
   public synchronized void init(ServletConfig conf)
       throws InitializationException {
-    if (getInit())
+    if (getInit()) {
       return;
+    }
 
     super.init(conf);
 
     this.runDataService = (JetspeedRunDataService) TurbineServices
-        .getInstance().getService(RunDataService.SERVICE_NAME);
+      .getInstance().getService(RunDataService.SERVICE_NAME);
 
     setInit(true);
   }

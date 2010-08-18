@@ -47,13 +47,13 @@ import com.aimluck.eip.common.ALDBErrorException;
 
 /**
  * データベースマッピングクラスです。 <br />
- *
+ * 
  */
 abstract public class DatabaseOrmService extends TurbineBaseService {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(DatabaseOrmService.class.getName());
+    .getLogger(DatabaseOrmService.class.getName());
 
   public static final String SERVICE_NAME = "DatabaseOrmService";
 
@@ -69,7 +69,7 @@ abstract public class DatabaseOrmService extends TurbineBaseService {
       throws InitializationException;
 
   /**
-   *
+   * 
    * @param srcDataDomainName
    * @param srcDataMapName
    * @param destDataDomainName
@@ -78,14 +78,14 @@ abstract public class DatabaseOrmService extends TurbineBaseService {
       String destDataDomainName) {
 
     DataDomain destDataDomain = Configuration.getSharedConfiguration()
-        .getDomain(destDataDomainName);
+      .getDomain(destDataDomainName);
 
     if (destDataDomain == null) {
       return;
     }
 
     DataDomain sharedDataDomain = Configuration.getSharedConfiguration()
-        .getDomain(srcDataDomainName);
+      .getDomain(srcDataDomainName);
     destDataDomain.addMap(sharedDataDomain.getMap(srcDataMapName));
 
     Collection<?> nodes = destDataDomain.getDataNodes();
@@ -104,7 +104,7 @@ abstract public class DatabaseOrmService extends TurbineBaseService {
 
   public static DatabaseOrmService getInstance() {
     return (DatabaseOrmService) TurbineServices.getInstance().getService(
-        DatabaseOrmService.SERVICE_NAME);
+      DatabaseOrmService.SERVICE_NAME);
   }
 
   abstract public String getOrgId(String company_id);
@@ -120,7 +120,7 @@ abstract public class DatabaseOrmService extends TurbineBaseService {
   abstract public String getDefaultOrgId();
 
   /**
-   *
+   * 
    * @param session
    * @return
    */
@@ -128,17 +128,16 @@ abstract public class DatabaseOrmService extends TurbineBaseService {
     synchronized (session) {
       try {
         DataContext ctxt = (DataContext) session
-            .getAttribute(ServletUtil.DATA_CONTEXT_KEY);
+          .getAttribute(ServletUtil.DATA_CONTEXT_KEY);
 
         if (ctxt == null) {
           JetspeedRunData rundata = getInstance().getRunData();
           if (rundata != null
-              && rundata.getParameters()
-                  .containsKey(DatabaseOrmService.ORG_PRE)
-              && !"".equals(rundata.getParameters().getString(
-                  DatabaseOrmService.ORG_PRE))) {
+            && rundata.getParameters().containsKey(DatabaseOrmService.ORG_PRE)
+            && !"".equals(rundata.getParameters().getString(
+              DatabaseOrmService.ORG_PRE))) {
             ctxt = DataContext.createDataContext(rundata.getParameters()
-                .getString(DatabaseOrmService.ORG_PRE));
+              .getString(DatabaseOrmService.ORG_PRE));
           } else {
             String org_id = DatabaseOrmService.getInstance().getOrgId(session);
             ctxt = DataContext.createDataContext(org_id);
@@ -150,13 +149,12 @@ abstract public class DatabaseOrmService extends TurbineBaseService {
         DataContext ctxt = null;
         JetspeedRunData rundata = getInstance().getRunData();
         if (rundata != null
-            && rundata.getParameters()
-                .containsKey(DatabaseOrmService.ORG_PRE)
-            && !"".equals(rundata.getParameters().getString(
-                DatabaseOrmService.ORG_PRE))) {
+          && rundata.getParameters().containsKey(DatabaseOrmService.ORG_PRE)
+          && !"".equals(rundata.getParameters().getString(
+            DatabaseOrmService.ORG_PRE))) {
           ctxt = DataContext.createDataContext(rundata.getParameters()
-              .getString(DatabaseOrmService.ORG_PRE));
-        }else{
+            .getString(DatabaseOrmService.ORG_PRE));
+        } else {
           ctxt = DataContext.createDataContext(getInstance().getDefaultOrgId());
         }
 
@@ -186,7 +184,7 @@ abstract public class DatabaseOrmService extends TurbineBaseService {
       String dataNodeName) {
     try {
       DataSource ds = new org.apache.cayenne.conn.PoolManager(jdbcDriver,
-          dataSourceUrl, minCons, maxCons, userName, password);
+        dataSourceUrl, minCons, maxCons, userName, password);
 
       DataDomain domain = new DataDomain(domainName);
 
@@ -209,9 +207,10 @@ abstract public class DatabaseOrmService extends TurbineBaseService {
   public void remomveDomain(String domainName) {
     try {
       DataDomain domain = Configuration.getSharedConfiguration().getDomain(
-          domainName);
-      if (domain == null)
+        domainName);
+      if (domain == null) {
         throw new ALDBErrorException();
+      }
 
       domain.shutdown();
 
@@ -224,15 +223,17 @@ abstract public class DatabaseOrmService extends TurbineBaseService {
   /**
    *
    */
+  @Override
   public synchronized void init(ServletConfig conf)
       throws InitializationException {
-    if (getInit())
+    if (getInit()) {
       return;
+    }
 
     super.init(conf);
 
     this.runDataService = (JetspeedRunDataService) TurbineServices
-        .getInstance().getService(RunDataService.SERVICE_NAME);
+      .getInstance().getService(RunDataService.SERVICE_NAME);
 
     initOrm(conf.getServletContext());
     setInit(true);

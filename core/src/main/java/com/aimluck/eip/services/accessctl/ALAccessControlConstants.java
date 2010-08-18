@@ -20,7 +20,7 @@ package com.aimluck.eip.services.accessctl;
 
 /**
  * アクセスコントロール用の定数です。 <br />
- *
+ * 
  */
 public class ALAccessControlConstants {
 
