@@ -21,14 +21,13 @@ package com.aimluck.eip.facility.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.facility.beans.FacilityLiteBean;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
  * 施設のユーティリティクラスです。 <br />
@@ -44,15 +43,12 @@ public class FacilityUtils {
     List<FacilityLiteBean> facilityAllList = new ArrayList<FacilityLiteBean>();
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      SelectQuery query = new SelectQuery(EipMFacility.class);
-      query.addOrdering(EipMFacility.FACILITY_NAME_PROPERTY, true);
-      List<?> aList = dataContext.performQuery(query);
+      SelectQuery<EipMFacility> query = Database.query(EipMFacility.class);
 
-      int size = aList.size();
-      for (int i = 0; i < size; i++) {
-        EipMFacility record = (EipMFacility) aList.get(i);
+      List<EipMFacility> facility_list = query.orderAscending(
+        EipMFacility.FACILITY_NAME_PROPERTY).perform();
+
+      for (EipMFacility record : facility_list) {
         FacilityLiteBean bean = new FacilityLiteBean();
         bean.initField();
         bean.setFacilityId(record.getFacilityId().longValue());
