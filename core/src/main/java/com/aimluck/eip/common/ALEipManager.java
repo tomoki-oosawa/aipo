@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
@@ -37,6 +36,7 @@ import org.apache.turbine.services.rundata.RunDataService;
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.cayenne.om.account.EipMPosition;
 import com.aimluck.eip.cayenne.om.account.EipMPost;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
@@ -91,20 +91,18 @@ public class ALEipManager {
     companysMap.clear();
 
     String org_id = null;
-    List<?> org_list = DatabaseOrmService.getInstance().getOrgKeys();
-    Iterator<?> iter = org_list.iterator();
+    List<String> org_list = DatabaseOrmService.getInstance().getOrgKeys();
+    Iterator<String> iter = org_list.iterator();
     while (iter.hasNext()) {
       try {
         /** 会社リスト */
         Map<Integer, ALEipCompany> companyMap = new LinkedHashMap<Integer, ALEipCompany>();
 
-        org_id = (String) iter.next();
+        org_id = iter.next();
         DataContext dataContext = DataContext.createDataContext(org_id);
-        SelectQuery query = new SelectQuery(EipMCompany.class);
-        List<?> list = dataContext.performQuery(query);
-        int size = list.size();
-        for (int i = 0; i < size; i++) {
-          EipMCompany record = (EipMCompany) list.get(i);
+        List<EipMCompany> list = Database.query(dataContext, EipMCompany.class)
+          .perform();
+        for (EipMCompany record : list) {
           ALEipCompany company = new ALEipCompany();
           company.initField();
           company.setCompanyId(record.getCompanyId().intValue());
@@ -126,26 +124,23 @@ public class ALEipManager {
     postsMap.clear();
 
     String org_id = null;
-    List<?> org_list = DatabaseOrmService.getInstance().getOrgKeys();
-    Iterator<?> iter = org_list.iterator();
+    List<String> org_list = DatabaseOrmService.getInstance().getOrgKeys();
+    Iterator<String> iter = org_list.iterator();
     while (iter.hasNext()) {
       try {
         /** 部署リスト */
         Map<Integer, ALEipPost> postMap = new LinkedHashMap<Integer, ALEipPost>();
 
-        org_id = (String) iter.next();
+        org_id = iter.next();
         DataContext dataContext = DataContext.createDataContext(org_id);
-        SelectQuery query = new SelectQuery(EipMPost.class);
-        List<?> list = dataContext.performQuery(query);
-        Collections.sort(list, new Comparator<Object>() {
-          public int compare(Object l1, Object l2) {
-            return ((EipMPost) l1).getPostName().compareTo(
-              ((EipMPost) l2).getPostName());
+        List<EipMPost> list = Database.query(dataContext, EipMPost.class)
+          .perform();
+        Collections.sort(list, new Comparator<EipMPost>() {
+          public int compare(EipMPost l1, EipMPost l2) {
+            return (l1).getPostName().compareTo((l2).getPostName());
           }
         });
-        int size = list.size();
-        for (int i = 0; i < size; i++) {
-          EipMPost record = (EipMPost) list.get(i);
+        for (EipMPost record : list) {
           ALEipPost post = new ALEipPost();
           post.initField();
           post.setPostId(record.getPostId().intValue());
@@ -169,20 +164,18 @@ public class ALEipManager {
     positionsMap.clear();
 
     String org_id = null;
-    List<?> org_list = DatabaseOrmService.getInstance().getOrgKeys();
-    Iterator<?> iter = org_list.iterator();
+    List<String> org_list = DatabaseOrmService.getInstance().getOrgKeys();
+    Iterator<String> iter = org_list.iterator();
     while (iter.hasNext()) {
       try {
         /** 役職リスト */
         Map<Integer, ALEipPosition> positionMap = new LinkedHashMap<Integer, ALEipPosition>();
 
-        org_id = (String) iter.next();
+        org_id = iter.next();
         DataContext dataContext = DataContext.createDataContext(org_id);
-        SelectQuery query = new SelectQuery(EipMPosition.class);
-        List<?> list = dataContext.performQuery(query);
-        int size = list.size();
-        for (int i = 0; i < size; i++) {
-          EipMPosition record = (EipMPosition) list.get(i);
+        List<EipMPosition> list = Database.query(dataContext,
+          EipMPosition.class).perform();
+        for (EipMPosition record : list) {
           ALEipPosition position = new ALEipPosition();
           position.initField();
           position.setPositionId(record.getPositionId().intValue());
@@ -204,19 +197,14 @@ public class ALEipManager {
     synchronized (companysMap) {
       try {
         org_id = DatabaseOrmService.getInstance().getOrgId(getRunData());
-        DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-        SelectQuery query = new SelectQuery(EipMCompany.class);
-        List<?> list = dataContext.performQuery(query);
-        int size = list.size();
+        List<EipMCompany> list = Database.query(EipMCompany.class).perform();
         Map<Integer, ALEipCompany> companyMap = companysMap.remove(org_id);
         if (companyMap == null) {
           companyMap = new LinkedHashMap<Integer, ALEipCompany>();
         } else {
           companyMap.clear();
         }
-        for (int i = 0; i < size; i++) {
-          EipMCompany record = (EipMCompany) list.get(i);
+        for (EipMCompany record : list) {
           ALEipCompany company = new ALEipCompany();
           company.initField();
           company.setCompanyId(record.getCompanyId().intValue());
@@ -240,25 +228,19 @@ public class ALEipManager {
     synchronized (postsMap) {
       try {
         org_id = DatabaseOrmService.getInstance().getOrgId(getRunData());
-        DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-        SelectQuery query = new SelectQuery(EipMPost.class);
-        List<?> list = dataContext.performQuery(query);
-        Collections.sort(list, new Comparator<Object>() {
-          public int compare(Object l1, Object l2) {
-            return ((EipMPost) l1).getPostName().compareTo(
-              ((EipMPost) l2).getPostName());
+        List<EipMPost> list = Database.query(EipMPost.class).perform();
+        Collections.sort(list, new Comparator<EipMPost>() {
+          public int compare(EipMPost l1, EipMPost l2) {
+            return (l1).getPostName().compareTo((l2).getPostName());
           }
         });
-        int size = list.size();
         Map<Integer, ALEipPost> postMap = postsMap.remove(org_id);
         if (postMap == null) {
           postMap = new LinkedHashMap<Integer, ALEipPost>();
         } else {
           postMap.clear();
         }
-        for (int i = 0; i < size; i++) {
-          EipMPost record = (EipMPost) list.get(i);
+        for (EipMPost record : list) {
           ALEipPost post = new ALEipPost();
           post.initField();
           post.setPostId(record.getPostId().intValue());
@@ -283,11 +265,7 @@ public class ALEipManager {
     synchronized (positionsMap) {
       try {
         org_id = DatabaseOrmService.getInstance().getOrgId(getRunData());
-        DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-        SelectQuery query = new SelectQuery(EipMPosition.class);
-        List<?> list = dataContext.performQuery(query);
-        int size = list.size();
+        List<EipMPosition> list = Database.query(EipMPosition.class).perform();
 
         Map<Integer, ALEipPosition> positionMap = positionsMap.remove(org_id);
         if (positionMap == null) {
@@ -295,8 +273,7 @@ public class ALEipManager {
         } else {
           positionMap.clear();
         }
-        for (int i = 0; i < size; i++) {
-          EipMPosition record = (EipMPosition) list.get(i);
+        for (EipMPosition record : list) {
           ALEipPosition position = new ALEipPosition();
           position.initField();
           position.setPositionId(record.getPositionId().intValue());
@@ -306,7 +283,6 @@ public class ALEipManager {
 
         positionsMap.put(org_id, positionMap);
       } catch (Exception e) {
-        // TODO: エラー処理
         logger.error("[" + org_id + ":ALEipManager]", e);
       }
     }
