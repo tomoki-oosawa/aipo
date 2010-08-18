@@ -21,12 +21,8 @@ package com.aimluck.eip.addressbookuser.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -37,7 +33,8 @@ import com.aimluck.eip.addressbookuser.beans.AddressBookUserLiteBean;
 import com.aimluck.eip.cayenne.om.portlet.EipMAddressGroup;
 import com.aimluck.eip.cayenne.om.portlet.EipMAddressbook;
 import com.aimluck.eip.cayenne.om.portlet.EipTAddressbookGroupMap;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -58,48 +55,20 @@ public class AddressBookUserUtils {
   public static List<AddressBookUserLiteBean> getAddressBookUserLiteBeansFromGroup(
       String groupid, int loginuserid) {
     List<AddressBookUserLiteBean> list = new ArrayList<AddressBookUserLiteBean>();
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     try {
-      SelectQuery query = new SelectQuery(EipMAddressbook.class);
-      query.addCustomDbAttribute(EipMAddressbook.ADDRESS_ID_PK_COLUMN);
-      query.addCustomDbAttribute(EipMAddressbook.LAST_NAME_COLUMN);
-      query.addCustomDbAttribute(EipMAddressbook.FIRST_NAME_COLUMN);
+      SelectQuery<EipMAddressbook> query = getSelectQueryForAddressBook(
+        groupid, loginuserid);
 
-      Expression exp21 = ExpressionFactory.matchExp(
-        EipMAddressbook.PUBLIC_FLAG_PROPERTY, "T");
-      Expression exp22 = ExpressionFactory.matchExp(
-        EipMAddressbook.OWNER_ID_PROPERTY, loginuserid);
-      Expression exp23 = ExpressionFactory.matchExp(
-        EipMAddressbook.PUBLIC_FLAG_PROPERTY, "F");
-      query.setQualifier(exp21.orExp(exp22.andExp(exp23)));
+      List<EipMAddressbook> addressbook_list = query.perform();
 
-      if (groupid != null && !"".equals(groupid) && !"all".equals(groupid)) {
-
-        Expression exp31 = ExpressionFactory.matchDbExp(
-          EipMAddressbook.EIP_TADDRESSBOOK_GROUP_MAP_PROPERTY + "."
-            + EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY + "."
-            + EipMAddressGroup.GROUP_ID_PK_COLUMN, groupid);
-        query.andQualifier(exp31);
-      }
-
-      List<?> alist = dataContext.performQuery(query);
-
-      DataRow dataRow;
-      AddressBookUserLiteBean address = null;
-      int size = alist.size();
-      for (int i = 0; i < size; i++) {
-        dataRow = (DataRow) alist.get(i);
-        address = new AddressBookUserLiteBean();
+      for (EipMAddressbook record : addressbook_list) {
+        AddressBookUserLiteBean address = new AddressBookUserLiteBean();
         address.initField();
-        address.setAddressId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-          EipMAddressbook.ADDRESS_ID_PK_COLUMN)).intValue());
-        address.setFullName((String) ALEipUtils.getObjFromDataRow(dataRow,
-          EipMAddressbook.LAST_NAME_COLUMN), (String) ALEipUtils
-          .getObjFromDataRow(dataRow, EipMAddressbook.FIRST_NAME_COLUMN));
+        address.setAddressId(record.getAddressId());
+        address.setFullName(record.getLastName(), record.getFirstName());
         list.add(address);
       }
-
     } catch (Exception e) {
       logger.error("[AddressBookUserUtils]", e);
     }
@@ -117,36 +86,24 @@ public class AddressBookUserUtils {
     List<AddressBookUserGroupLiteBean> list = new ArrayList<AddressBookUserGroupLiteBean>();
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-
       // 自分がオーナのグループを取得
-      SelectQuery query = new SelectQuery(EipMAddressGroup.class);
-      query.addCustomDbAttribute(EipMAddressGroup.GROUP_ID_PK_COLUMN);
-      query.addCustomDbAttribute(EipMAddressGroup.GROUP_NAME_COLUMN);
+      SelectQuery<EipMAddressGroup> query = Database
+        .query(EipMAddressGroup.class);
 
       Expression exp = ExpressionFactory.matchExp(
-        EipMAddressGroup.OWNER_ID_PROPERTY,
-        Integer.valueOf(ALEipUtils.getUserId(rundata)));
-      query.setQualifier(exp);
-      query.addOrdering(EipMAddressGroup.GROUP_NAME_PROPERTY, Ordering.ASC);
-      List<?> glist = dataContext.performQuery(query);
+        EipMAddressGroup.OWNER_ID_PROPERTY, Integer.valueOf(ALEipUtils
+          .getUserId(rundata)));
+      query.setQualifier(exp).orderAscending(
+        EipMAddressGroup.GROUP_NAME_PROPERTY);
 
-      // Mapへ値をセット
-      DataRow dataRow;
-      AddressBookUserGroupLiteBean bean = null;
-      int size = glist.size();
-      for (int i = 0; i < size; i++) {
-        dataRow = (DataRow) glist.get(i);
-        bean = new AddressBookUserGroupLiteBean();
+      List<EipMAddressGroup> addressgroup_list = query.perform();
+      for (EipMAddressGroup record : addressgroup_list) {
+        AddressBookUserGroupLiteBean bean = new AddressBookUserGroupLiteBean();
         bean.initField();
-        bean.setGroupId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-          EipMAddressGroup.GROUP_ID_PK_COLUMN)).intValue());
-        bean.setName((String) ALEipUtils.getObjFromDataRow(dataRow,
-          EipMAddressGroup.GROUP_NAME_COLUMN));
+        bean.setGroupId(record.getGroupId());
+        bean.setName(record.getGroupName());
         list.add(bean);
       }
-
     } catch (Exception e) {
       logger.error("[AddressBookUserUtils]", e);
     }
@@ -161,55 +118,48 @@ public class AddressBookUserUtils {
   public static List<AddressBookUserEmailLiteBean> getAddressBookUserEmailLiteBeansFromGroup(
       String groupid, int loginuserid) {
     List<AddressBookUserEmailLiteBean> list = new ArrayList<AddressBookUserEmailLiteBean>();
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     try {
-      SelectQuery query = new SelectQuery(EipMAddressbook.class);
-      query.addCustomDbAttribute(EipMAddressbook.ADDRESS_ID_PK_COLUMN);
-      query.addCustomDbAttribute(EipMAddressbook.LAST_NAME_COLUMN);
-      query.addCustomDbAttribute(EipMAddressbook.FIRST_NAME_COLUMN);
-      query.addCustomDbAttribute(EipMAddressbook.EMAIL_COLUMN);
+      SelectQuery<EipMAddressbook> query = getSelectQueryForAddressBook(
+        groupid, loginuserid);
 
-      Expression exp21 = ExpressionFactory.matchExp(
-        EipMAddressbook.PUBLIC_FLAG_PROPERTY, "T");
-      Expression exp22 = ExpressionFactory.matchExp(
-        EipMAddressbook.OWNER_ID_PROPERTY, loginuserid);
-      Expression exp23 = ExpressionFactory.matchExp(
-        EipMAddressbook.PUBLIC_FLAG_PROPERTY, "F");
-      query.setQualifier(exp21.orExp(exp22.andExp(exp23)));
+      List<EipMAddressbook> addressbook_list = query.perform();
 
-      if (groupid != null && !"".equals(groupid) && !"all".equals(groupid)) {
-
-        Expression exp31 = ExpressionFactory.matchDbExp(
-          EipMAddressbook.EIP_TADDRESSBOOK_GROUP_MAP_PROPERTY + "."
-            + EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY + "."
-            + EipMAddressGroup.GROUP_ID_PK_COLUMN, groupid);
-        query.andQualifier(exp31);
+      for (EipMAddressbook record : addressbook_list) {
+        AddressBookUserEmailLiteBean bean = new AddressBookUserEmailLiteBean();
+        bean.initField();
+        bean.setAddressId(record.getAddressId());
+        bean.setFullName(record.getLastName(), record.getFirstName());
+        bean.setEmail(record.getEmail());
+        list.add(bean);
       }
-
-      List<?> alist = dataContext.performQuery(query);
-
-      DataRow dataRow;
-      AddressBookUserEmailLiteBean address = null;
-      int size = alist.size();
-      for (int i = 0; i < size; i++) {
-        dataRow = (DataRow) alist.get(i);
-        address = new AddressBookUserEmailLiteBean();
-        address.initField();
-        address.setAddressId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-          EipMAddressbook.ADDRESS_ID_PK_COLUMN)).intValue());
-        address.setFullName((String) ALEipUtils.getObjFromDataRow(dataRow,
-          EipMAddressbook.LAST_NAME_COLUMN), (String) ALEipUtils
-          .getObjFromDataRow(dataRow, EipMAddressbook.FIRST_NAME_COLUMN));
-        address.setEmail((String) ALEipUtils.getObjFromDataRow(dataRow,
-          EipMAddressbook.EMAIL_COLUMN));
-        list.add(address);
-      }
-
     } catch (Exception e) {
       logger.error("[AddressBookUserUtils]", e);
     }
 
     return list;
+  }
+
+  private static SelectQuery<EipMAddressbook> getSelectQueryForAddressBook(
+      String groupid, int loginuserid) {
+    SelectQuery<EipMAddressbook> query = Database.query(EipMAddressbook.class);
+
+    Expression exp21 = ExpressionFactory.matchExp(
+      EipMAddressbook.PUBLIC_FLAG_PROPERTY, "T");
+    Expression exp22 = ExpressionFactory.matchExp(
+      EipMAddressbook.OWNER_ID_PROPERTY, loginuserid);
+    Expression exp23 = ExpressionFactory.matchExp(
+      EipMAddressbook.PUBLIC_FLAG_PROPERTY, "F");
+    query.setQualifier(exp21.orExp(exp22.andExp(exp23)));
+
+    if (groupid != null && !"".equals(groupid) && !"all".equals(groupid)) {
+      Expression exp31 = ExpressionFactory.matchDbExp(
+        EipMAddressbook.EIP_TADDRESSBOOK_GROUP_MAP_PROPERTY + "."
+          + EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY + "."
+          + EipMAddressGroup.GROUP_ID_PK_COLUMN, groupid);
+      query.andQualifier(exp31);
+    }
+
+    return query;
   }
 }
