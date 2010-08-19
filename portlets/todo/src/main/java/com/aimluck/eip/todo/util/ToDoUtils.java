@@ -90,7 +90,7 @@ public class ToDoUtils {
         + "." + TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(ALEipUtils
         .getUserId(rundata))));
 
-      List<EipTTodo> todoList = Database.query(EipTTodo.class, exp).perform();
+      List<EipTTodo> todoList = Database.query(EipTTodo.class, exp).fetchList();
 
       if (todoList == null || todoList.size() == 0) {
         // 指定したTodo IDのレコードが見つからない場合
@@ -140,7 +140,7 @@ public class ToDoUtils {
       exp
         .andExp(ExpressionFactory.matchExp(EipTTodo.PUBLIC_FLAG_PROPERTY, "T"));
 
-      List<EipTTodo> todoList = Database.query(EipTTodo.class, exp).perform();
+      List<EipTTodo> todoList = Database.query(EipTTodo.class, exp).fetchList();
 
       if (todoList == null || todoList.size() == 0) {
         // 指定したTodo IDのレコードが見つからない場合
@@ -180,7 +180,7 @@ public class ToDoUtils {
           .getUserId(rundata)));
 
       List<EipTTodoCategory> categoryList = Database.query(
-        EipTTodoCategory.class, exp1).andQualifier(exp2).perform();
+        EipTTodoCategory.class, exp1).andQualifier(exp2).fetchList();
 
       if (categoryList == null || categoryList.size() == 0) {
         // 指定したカテゴリIDのレコードが見つからない場合

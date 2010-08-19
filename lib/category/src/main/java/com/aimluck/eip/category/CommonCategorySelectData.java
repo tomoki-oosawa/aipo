@@ -36,6 +36,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -118,7 +119,7 @@ public class CommonCategorySelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTCommonCategory> list = query.perform();
+      List<EipTCommonCategory> list = query.fetchList();
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -135,8 +136,8 @@ public class CommonCategorySelectData extends
    */
   private SelectQuery<EipTCommonCategory> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipTCommonCategory> query = new SelectQuery<EipTCommonCategory>(
-      EipTCommonCategory.class);
+    SelectQuery<EipTCommonCategory> query = Database
+      .query(EipTCommonCategory.class);
 
     Expression exp = ExpressionFactory.noMatchDbExp(
       EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN, Integer.valueOf(1));

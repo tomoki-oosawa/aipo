@@ -148,7 +148,7 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
         query.setQualifier(exp.andExp(exp2.orExp(exp3)));
       }
 
-      if (query.perform().size() != 0) {
+      if (query.fetchList().size() != 0) {
         msgList.add("カテゴリ名『 <span class='em'>" + category_name.toString()
           + "</span> 』は既に登録されています。");
       }

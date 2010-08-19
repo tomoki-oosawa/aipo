@@ -96,7 +96,7 @@ public class AccountUserSelectData extends
       SelectQuery<TurbineUser> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
-      List<TurbineUser> list = query.perform();
+      List<TurbineUser> list = query.fetchList();
 
       registeredUserNum = list.size();
       return buildPaginatedList(list);

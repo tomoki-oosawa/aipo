@@ -80,7 +80,7 @@ public class AddressBookCompanySelectData extends ALAbstractSelectData {
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipMAddressbookCompany> list = query.perform();
+      List<EipMAddressbookCompany> list = query.fetchList();
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);

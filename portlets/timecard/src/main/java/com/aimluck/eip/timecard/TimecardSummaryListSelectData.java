@@ -296,7 +296,7 @@ public class TimecardSummaryListSelectData extends
         buildSelectQueryForListView(query);
         query.orderAscending(EipTTimecard.WORK_DATE_PROPERTY);
 
-        List<EipTTimecard> list = query.perform();
+        List<EipTTimecard> list = query.fetchList();
         return buildPaginatedList(list);
       } else {
         return null;

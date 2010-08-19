@@ -69,7 +69,7 @@ public class FacilityMultiDelete extends ALAbstractCheckList {
         EipTScheduleMap.TYPE_PROPERTY, "F");
       query1.setQualifier(exp1.andExp(exp2));
 
-      List<EipTScheduleMap> slist = query1.perform();
+      List<EipTScheduleMap> slist = query1.fetchList();
       if (slist != null && slist.size() > 0) {
         // 施設のスケジュールを削除
         dataContext.deleteObjects(slist);
@@ -81,7 +81,7 @@ public class FacilityMultiDelete extends ALAbstractCheckList {
         EipMFacility.FACILITY_ID_PK_COLUMN, values);
       query.setQualifier(exp);
 
-      List<EipMFacility> flist = query.perform();
+      List<EipMFacility> flist = query.fetchList();
       if (flist == null || flist.size() == 0)
         return false;
 

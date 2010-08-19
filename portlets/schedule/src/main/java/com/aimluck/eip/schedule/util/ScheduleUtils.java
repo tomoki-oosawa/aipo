@@ -150,7 +150,7 @@ public class ScheduleUtils {
         query.andQualifier(exp2);
       }
 
-      List<EipTSchedule> schedules = query.perform();
+      List<EipTSchedule> schedules = query.fetchList();
 
       // 指定したSchedule IDのレコードが見つからない場合
       if (schedules == null || schedules.size() == 0) {
@@ -173,7 +173,7 @@ public class ScheduleUtils {
         EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(userid));
       mapquery.andQualifier(mapexp3);
 
-      List<EipTScheduleMap> schedulemaps = mapquery.perform();
+      List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
       boolean is_member = (schedulemaps != null && schedulemaps.size() > 0) ? true
         : false;
 
@@ -243,7 +243,7 @@ public class ScheduleUtils {
         query.andQualifier(exp2);
       }
 
-      List<EipTSchedule> schedules = query.perform();
+      List<EipTSchedule> schedules = query.fetchList();
 
       // 指定したSchedule IDのレコードが見つからない場合
       if (schedules == null || schedules.size() == 0) {
@@ -268,7 +268,7 @@ public class ScheduleUtils {
           .getUserId(rundata)));
       mapquery.andQualifier(mapexp21.orExp(mapexp22));
 
-      List<EipTScheduleMap> schedulemaps = mapquery.perform();
+      List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
       boolean is_member = (schedulemaps != null && schedulemaps.size() > 0) ? true
         : false;
 
@@ -364,7 +364,7 @@ public class ScheduleUtils {
           + EipTScheduleMap.TYPE_PROPERTY, type);
       query.andQualifier(exp3);
 
-      List<EipTSchedule> schedules = query.perform();
+      List<EipTSchedule> schedules = query.fetchList();
 
       // 指定したSchedule IDのレコードが見つからない場合
       if (schedules == null || schedules.size() == 0) {
@@ -395,7 +395,7 @@ public class ScheduleUtils {
         EipTScheduleMap.TYPE_PROPERTY, type);
       mapquery.andQualifier(mapexp3);
 
-      List<EipTScheduleMap> schedulemaps = mapquery.perform();
+      List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
       boolean is_member = (schedulemaps != null && schedulemaps.size() > 0) ? true
         : false;
 
@@ -467,7 +467,7 @@ public class ScheduleUtils {
           .getUserId(rundata)));
       query.andQualifier(exp2);
 
-      List<EipTScheduleMap> schedules = query.perform();
+      List<EipTScheduleMap> schedules = query.fetchList();
 
       // 指定したIDのレコードが見つからない場合
       if (schedules == null || schedules.size() == 0) {
@@ -507,7 +507,7 @@ public class ScheduleUtils {
       // .getUserId(rundata)));
       // query.andQualifier(exp2);
 
-      List<EipTScheduleMap> schedules = query.perform();
+      List<EipTScheduleMap> schedules = query.fetchList();
 
       // 指定したIDのレコードが見つからない場合
       if (schedules == null || schedules.size() == 0) {
@@ -571,7 +571,7 @@ public class ScheduleUtils {
             .getUserId(rundata)));
         mapquery.andQualifier(exp2);
       }
-      List<EipTScheduleMap> schedulemaps = mapquery.perform();
+      List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
 
       List<Integer> uidlist = new ArrayList<Integer>();
       EipTScheduleMap map = null;
@@ -592,7 +592,7 @@ public class ScheduleUtils {
       orders.add(new Ordering(TurbineUser.FIRST_NAME_KANA_PROPERTY, true));
       userquery.getQuery().addOrderings(orders);
 
-      List<TurbineUser> ulist = userquery.perform();
+      List<TurbineUser> ulist = userquery.fetchList();
 
       TurbineUser tuser;
       ALEipUser user;
@@ -2062,7 +2062,7 @@ public class ScheduleUtils {
       query.andQualifier(mapexp);
     }
 
-    List<EipTScheduleMap> list = query.perform();
+    List<EipTScheduleMap> list = query.fetchList();
     int count = (list != null && list.size() > 0) ? list.size() : 0;
     return count > 0;
   }
@@ -2085,7 +2085,7 @@ public class ScheduleUtils {
 
     Expression exp = ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN,
       tmp_ids);
-    List<TurbineUser> users = Database.query(TurbineUser.class, exp).perform();
+    List<TurbineUser> users = Database.query(TurbineUser.class, exp).fetchList();
     if (users.size() == 0) {
       return null;
     }
@@ -2196,7 +2196,7 @@ public class ScheduleUtils {
       Expression f_exp = ExpressionFactory.inDbExp(
         EipMFacility.FACILITY_ID_PK_COLUMN, f_ids);
       List<EipMFacility> facilities = Database.query(EipMFacility.class, f_exp)
-        .perform();
+        .fetchList();
       if (facilities.size() == 0) {
         return null;
       }
@@ -2378,7 +2378,7 @@ public class ScheduleUtils {
     }
     Expression exp = ExpressionFactory.matchDbExp(
       EipTSchedule.SCHEDULE_ID_PK_COLUMN, Integer.valueOf(scheduleId));
-    List<EipTSchedule> list = Database.query(EipTSchedule.class, exp).perform();
+    List<EipTSchedule> list = Database.query(EipTSchedule.class, exp).fetchList();
     if (list.size() == 0) {
       return ALEipUtils.getUserId(rundata);
     } else {
@@ -2398,7 +2398,7 @@ public class ScheduleUtils {
     Expression exp12 = ExpressionFactory.matchExp(
       EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(userId));
     List<EipTScheduleMap> list = Database.query(EipTScheduleMap.class, exp11)
-      .andQualifier(exp12).perform();
+      .andQualifier(exp12).fetchList();
     if (list.size() == 0) {
       return false;
     } else {
@@ -2868,7 +2868,7 @@ public class ScheduleUtils {
         }
 
         fquery.distinct(true);
-        List<EipTScheduleMap> f_list = fquery.perform();
+        List<EipTScheduleMap> f_list = fquery.fetchList();
         if (f_list != null && f_list.size() > 0) {
           // 繰り返しスケジュール同士の時刻幅での比較
           boolean existFacility = false;
@@ -3025,7 +3025,7 @@ public class ScheduleUtils {
                       dexp3 = ExpressionFactory.matchExp(
                         EipTSchedule.START_DATE_PROPERTY, ddate);
                       temp = Database.query(EipTSchedule.class,
-                        dexp1.andExp(dexp2).andExp(dexp3)).perform();
+                        dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
                       if (temp == null || temp.size() <= 0) {
                         existFacility = true;
                         break;
@@ -3042,7 +3042,7 @@ public class ScheduleUtils {
                           dexp3 = ExpressionFactory.matchExp(
                             EipTSchedule.START_DATE_PROPERTY, ddate);
                           temp = Database.query(EipTSchedule.class,
-                            dexp1.andExp(dexp2).andExp(dexp3)).perform();
+                            dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
                           if (temp == null || temp.size() <= 0) {
                             existFacility = true;
                             break;
@@ -3070,7 +3070,7 @@ public class ScheduleUtils {
                           dexp3 = ExpressionFactory.matchExp(
                             EipTSchedule.START_DATE_PROPERTY, ddate);
                           temp = Database.query(EipTSchedule.class,
-                            dexp1.andExp(dexp2).andExp(dexp3)).perform();
+                            dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
                           if (temp == null || temp.size() <= 0) {
                             existFacility = true;
                             break;
@@ -3119,7 +3119,7 @@ public class ScheduleUtils {
                           dexp3 = ExpressionFactory.matchExp(
                             EipTSchedule.START_DATE_PROPERTY, ddate);
                           temp = Database.query(EipTSchedule.class,
-                            dexp1.andExp(dexp2).andExp(dexp3)).perform();
+                            dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
                           if (temp == null || temp.size() <= 0) {
                             existFacility = true;
                             break;

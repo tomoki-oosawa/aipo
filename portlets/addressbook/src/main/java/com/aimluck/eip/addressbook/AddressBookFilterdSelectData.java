@@ -112,7 +112,7 @@ public class AddressBookFilterdSelectData extends
       SelectQuery<EipMAddressbook> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
-      List<EipMAddressbook> list = query.perform();
+      List<EipMAddressbook> list = query.fetchList();
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -351,7 +351,7 @@ public class AddressBookFilterdSelectData extends
       query.setQualifier(exp);
       query.orderAscending(EipMAddressGroup.GROUP_NAME_PROPERTY);
 
-      List<EipMAddressGroup> aList = query.perform();
+      List<EipMAddressGroup> aList = query.fetchList();
 
       int size = aList.size();
       for (int i = 0; i < size; i++) {

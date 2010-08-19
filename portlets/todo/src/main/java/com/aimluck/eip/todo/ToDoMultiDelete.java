@@ -69,7 +69,7 @@ public class ToDoMultiDelete extends ALAbstractCheckList {
         values);
 
       List<EipTTodo> todoList = Database.query(EipTTodo.class, exp1)
-        .andQualifier(exp2).perform();
+        .andQualifier(exp2).fetchList();
       if (todoList == null || todoList.size() == 0) {
         return false;
       }

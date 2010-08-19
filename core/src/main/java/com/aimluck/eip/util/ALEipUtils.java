@@ -26,7 +26,6 @@ import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -39,8 +38,6 @@ import org.apache.cayenne.DataRow;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SQLTemplate;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.capability.CapabilityMap;
 import org.apache.jetspeed.capability.CapabilityMapFactory;
 import org.apache.jetspeed.modules.actions.controls.Restore;
@@ -88,7 +85,8 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALMyGroups;
 import com.aimluck.eip.common.ALPermissionException;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
@@ -356,33 +354,26 @@ public class ALEipUtils {
     statement.append("WHERE B.USER_ID > 3 AND B.DISABLED = 'F'");
     statement.append(" AND C.GROUP_NAME = #bind($groupName) ");
     statement.append("ORDER BY D.POSITION");
+
     String query = statement.toString();
 
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
-    @SuppressWarnings("deprecation")
-    SQLTemplate rawSelect = new SQLTemplate(TurbineUser.class, query, true);
-    rawSelect.setParameters(Collections.singletonMap("groupName", groupname));
-    rawSelect.setFetchingDataRows(true);
-    List<?> ulist = dataContext.performQuery(rawSelect);
+    try {
+      List<TurbineUser> list2 = Database.sql(TurbineUser.class, query).param(
+        "groupName", groupname).fetchList();
 
-    int recNum = ulist.size();
-
-    ALEipUser user;
-    DataRow dataRow;
-    // ユーザデータを作成し、返却リストへ格納
-    for (int j = 0; j < recNum; j++) {
-      dataRow = (DataRow) ulist.get(j);
-      user = new ALEipUser();
-      user.initField();
-      user.setUserId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-        TurbineUser.USER_ID_PK_COLUMN)).intValue());
-      user.setName((String) ALEipUtils.getObjFromDataRow(dataRow,
-        TurbineUser.LOGIN_NAME_COLUMN));
-      user.setAliasName((String) ALEipUtils.getObjFromDataRow(dataRow,
-        TurbineUser.FIRST_NAME_COLUMN), (String) ALEipUtils.getObjFromDataRow(
-        dataRow, TurbineUser.LAST_NAME_COLUMN));
-      list.add(user);
+      ALEipUser user;
+      for (TurbineUser tuser : list2) {
+        user = new ALEipUser();
+        user.initField();
+        user.setUserId(tuser.getUserId());
+        user.setName(tuser.getLoginName());
+        user.setAliasName(tuser.getFirstName(), tuser.getLastName());
+        list.add(user);
+      }
+    } catch (Throwable t) {
+      logger.error(t);
     }
+
     return list;
   }
 
@@ -413,26 +404,15 @@ public class ALEipUtils {
     String query = statement.toString();
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      @SuppressWarnings("deprecation")
-      SQLTemplate rawSelect = new SQLTemplate(TurbineUser.class, query, true);
-      rawSelect.setParameters(Collections.singletonMap("groupName", groupname));
-      rawSelect.setFetchingDataRows(true);
-      List<?> ulist = dataContext.performQuery(rawSelect);
-
-      int recNum = ulist.size();
-
-      DataRow dataRow;
-      // ユーザデータを作成し、返却リストへ格納
-      for (int j = 0; j < recNum; j++) {
-        dataRow = (DataRow) ulist.get(j);
-        list.add((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-          TurbineUser.USER_ID_PK_COLUMN));
+      List<TurbineUser> list2 = Database.sql(TurbineUser.class, query).param(
+        "groupName", groupname).fetchList();
+      for (TurbineUser tuser : list2) {
+        list.add(tuser.getUserId());
       }
-    } catch (Exception ex) {
-      logger.error("[ALEipUtils]", ex);
+    } catch (Throwable t) {
+      logger.error(t);
     }
+
     return list;
   }
 
@@ -463,31 +443,23 @@ public class ALEipUtils {
     statement.append("ORDER BY D.POSITION");
     String query = statement.toString();
 
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
-    @SuppressWarnings("deprecation")
-    SQLTemplate rawSelect = new SQLTemplate(TurbineUser.class, query, true);
-    rawSelect.setParameters(Collections.singletonMap("postId", postid));
-    rawSelect.setFetchingDataRows(true);
-    List<?> ulist = dataContext.performQuery(rawSelect);
+    try {
+      List<TurbineUser> list2 = Database.sql(TurbineUser.class, query).param(
+        "postId", postid).fetchList();
 
-    int recNum = ulist.size();
-
-    ALEipUser user;
-    DataRow dataRow;
-    // ユーザデータを作成し、返却リストへ格納
-    for (int j = 0; j < recNum; j++) {
-      dataRow = (DataRow) ulist.get(j);
-      user = new ALEipUser();
-      user.initField();
-      user.setUserId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-        TurbineUser.USER_ID_PK_COLUMN)).intValue());
-      user.setName((String) ALEipUtils.getObjFromDataRow(dataRow,
-        TurbineUser.LOGIN_NAME_COLUMN));
-      user.setAliasName((String) ALEipUtils.getObjFromDataRow(dataRow,
-        TurbineUser.FIRST_NAME_COLUMN), (String) ALEipUtils.getObjFromDataRow(
-        dataRow, TurbineUser.LAST_NAME_COLUMN));
-      list.add(user);
+      ALEipUser user;
+      for (TurbineUser tuser : list2) {
+        user = new ALEipUser();
+        user.initField();
+        user.setUserId(tuser.getUserId());
+        user.setName(tuser.getLoginName());
+        user.setAliasName(tuser.getFirstName(), tuser.getLastName());
+        list.add(user);
+      }
+    } catch (Throwable t) {
+      logger.error(t);
     }
+
     return list;
   }
 
@@ -497,18 +469,15 @@ public class ALEipUtils {
    * @param crt
    * @return ALEipUser の List
    */
-  public static List<ALEipUser> getUsersFromSelectQuery(SelectQuery query) {
+  public static List<ALEipUser> getUsersFromSelectQuery(
+      SelectQuery<TurbineUser> query) {
     List<ALEipUser> list = new ArrayList<ALEipUser>();
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      query.addOrdering(TurbineUser.EIP_MUSER_POSITION_PROPERTY + "."
-        + EipMUserPosition.POSITION_PROPERTY, true);
-      List<?> ulist = dataContext.performQuery(query);
-      int size = ulist.size();
+      List<TurbineUser> ulist = query.orderAscending(
+        TurbineUser.EIP_MUSER_POSITION_PROPERTY + "."
+          + EipMUserPosition.POSITION_PROPERTY).fetchList();
 
-      for (int i = 0; i < size; i++) {
-        TurbineUser record = (TurbineUser) ulist.get(i);
+      for (TurbineUser record : ulist) {
         ALEipUser user = new ALEipUser();
         user.initField();
         user.setUserId(record.getUserId().intValue());
@@ -516,8 +485,8 @@ public class ALEipUtils {
         user.setAliasName(record.getFirstName(), record.getLastName());
         list.add(user);
       }
-    } catch (Exception ex) {
-      logger.error("[ALEipUtils]", ex);
+    } catch (Throwable t) {
+      logger.error(t);
     }
     return list;
   }
@@ -546,16 +515,11 @@ public class ALEipUtils {
    * @return
    */
   public static ALEipUser getALEipUser(int id) throws ALDBErrorException {
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
-    Expression exp = ExpressionFactory.matchDbExp(
-      TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(id));
-    SelectQuery query = new SelectQuery(TurbineUser.class, exp);
-    List<?> users = dataContext.performQuery(query);
-    if (users.size() == 0) {
+
+    TurbineUser tuser = Database.get(TurbineUser.class, id);
+    if (tuser == null) {
       return null;
     }
-
-    TurbineUser tuser = (TurbineUser) users.get(0);
     ALEipUser user = new ALEipUser();
     user.initField();
     user.setUserId(tuser.getUserId().intValue());
@@ -573,16 +537,14 @@ public class ALEipUtils {
    */
   public static ALEipUser getALEipUser(String loginname)
       throws ALDBErrorException {
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     Expression exp = ExpressionFactory.matchExp(
       TurbineUser.LOGIN_NAME_PROPERTY, loginname);
-    SelectQuery query = new SelectQuery(TurbineUser.class, exp);
-    List<?> users = dataContext.performQuery(query);
+    List<TurbineUser> users = Database.query(TurbineUser.class, exp).fetchList();
     if (users.size() == 0) {
       return null;
     }
 
-    TurbineUser tuser = (TurbineUser) users.get(0);
+    TurbineUser tuser = users.get(0);
     ALEipUser user = new ALEipUser();
     user.initField();
     user.setUserId(tuser.getUserId().intValue());
@@ -679,16 +641,12 @@ public class ALEipUtils {
   public static void reloadMygroup(RunData rundata) throws ALDBErrorException {
     List<ALEipGroup> ulist = new ArrayList<ALEipGroup>();
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
       Expression exp = ExpressionFactory.matchExp(
         TurbineGroup.OWNER_ID_PROPERTY, Integer.valueOf(getUserId(rundata)));
-      SelectQuery query = new SelectQuery(TurbineGroup.class, exp);
-      List<?> list = dataContext.performQuery(query);
+      List<TurbineGroup> list = Database.query(TurbineGroup.class, exp)
+        .fetchList();
 
-      int size = list.size();
-      for (int i = 0; i < size; i++) {
-        TurbineGroup record = (TurbineGroup) list.get(i);
+      for (TurbineGroup record : list) {
         ALEipGroup group = new ALEipGroup();
         group.initField();
         group.setName(record.getGroupName());
@@ -737,14 +695,10 @@ public class ALEipUtils {
   public static String getCompanyName(int id) {
     String companyName = null;
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      SelectQuery query = new SelectQuery(EipMCompany.class);
-      query.addCustomDbAttribute(EipMCompany.COMPANY_NAME_COLUMN);
       Expression exp = ExpressionFactory.matchDbExp(
         EipMCompany.COMPANY_ID_PK_COLUMN, Integer.valueOf(id));
-      query.setQualifier(exp);
-      List<?> list = dataContext.performQuery(query);
+      List<EipMCompany> list = Database.query(EipMCompany.class, exp).select(
+        EipMCompany.COMPANY_NAME_COLUMN).fetchList();
 
       if (list == null || list.size() == 0) {
         // 指定したCompany IDのレコードが見つからない場合
@@ -752,9 +706,8 @@ public class ALEipUtils {
         return null;
       }
 
-      DataRow dataRow = (DataRow) list.get(0);
-      companyName = (String) ALEipUtils.getObjFromDataRow(dataRow,
-        EipMCompany.COMPANY_NAME_COLUMN);
+      EipMCompany record = list.get(0);
+      companyName = record.getCompanyName();
 
     } catch (Exception ex) {
       logger.error("[ALEipUtils]", ex);
@@ -1202,17 +1155,14 @@ public class ALEipUtils {
    * @return
    */
   public static EipMCompany getEipMCompany(String id) {
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
-    SelectQuery query = new SelectQuery(EipMCompany.class);
     Expression exp = ExpressionFactory.matchDbExp(
       EipMCompany.COMPANY_ID_PK_COLUMN, Integer.valueOf(id));
-    query.setQualifier(exp);
-    List<?> list = dataContext.performQuery(query);
+    List<EipMCompany> list = Database.query(EipMCompany.class, exp).fetchList();
     if (list == null || list.size() == 0) {
       logger.debug("Not found ID...");
       return null;
     }
-    return (EipMCompany) list.get(0);
+    return list.get(0);
   }
 
   /**
@@ -1291,15 +1241,16 @@ public class ALEipUtils {
    * @param classname
    * @param search_key
    * @param search_value
+   * @param isDb
    * @return
+   * @deprecated
    */
+  @Deprecated
   public static List<?> getObjectModels(DataContext dataContext,
       Class<?> classname, String search_key, Integer search_value, boolean isDb) {
-    SelectQuery query = new SelectQuery(classname);
     Expression exp = isDb ? ExpressionFactory.matchDbExp(search_key,
       search_value) : ExpressionFactory.matchExp(search_key, search_value);
-    query.setQualifier(exp);
-    List<?> list = dataContext.performQuery(query);
+    List<?> list = Database.query(dataContext, classname, exp).fetchList();
     if (list == null || list.size() <= 0) {
       return null;
     }
@@ -1533,7 +1484,8 @@ public class ALEipUtils {
    * @return 所属する部署リスト
    */
   public static List<String> getPostNameList(int id) {
-    SelectQuery query = new SelectQuery(TurbineUserGroupRole.class);
+    SelectQuery<TurbineUserGroupRole> query = Database
+      .query(TurbineUserGroupRole.class);
     Expression exp1 = ExpressionFactory.matchExp(
       TurbineUserGroupRole.TURBINE_USER_PROPERTY, Integer.valueOf(id));
     Expression exp2 = ExpressionFactory.greaterExp(
@@ -1544,14 +1496,11 @@ public class ALEipUtils {
     query.setQualifier(exp1);
     query.andQualifier(exp2);
     query.andQualifier(exp3);
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
-    List<?> list = dataContext.performQuery(query);
+    List<TurbineUserGroupRole> list = query.fetchList();
 
     List<String> postNames = new ArrayList<String>();
-    TurbineUserGroupRole ugr = null;
-    for (int j = 0; j < list.size(); j++) {
-      ugr = (TurbineUserGroupRole) list.get(j);
-      postNames.add(ugr.getTurbineGroup().getGroupAliasName());
+    for (TurbineUserGroupRole role : list) {
+      postNames.add(role.getTurbineGroup().getGroupAliasName());
     }
 
     return postNames;
@@ -1596,18 +1545,14 @@ public class ALEipUtils {
   }
 
   public static int getLimitUsers() {
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     try {
-      SelectQuery query = new SelectQuery(AipoLicense.class);
 
-      query.addCustomDbAttribute(AipoLicense.LIMIT_USERS_COLUMN);
-
-      List<?> list = dataContext.performQuery(query);
+      List<AipoLicense> list = Database.query(AipoLicense.class).select(
+        AipoLicense.LIMIT_USERS_COLUMN).fetchList();
 
       if (list != null && list.size() > 0) {
-        DataRow dataRow = (DataRow) list.get(0);
-        Integer result = (Integer) ALEipUtils.getObjFromDataRow(dataRow,
-          AipoLicense.LIMIT_USERS_COLUMN);
+        AipoLicense record = list.get(0);
+        Integer result = record.getLimitUsers();
         return result.intValue();
       }
     } catch (Exception e) {
@@ -1629,13 +1574,10 @@ public class ALEipUtils {
       // システムユーザtemplateは論理削除されているため
       // RES_USER_NUMは3だが2として計算しないといけない。
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
       Expression exp = ExpressionFactory.matchExp(
         TurbineUser.DISABLED_PROPERTY, "F");
-      SelectQuery query = new SelectQuery(TurbineUser.class);
-      query.setQualifier(exp);
-      List<?> list = dataContext.performQuery(query);
+
+      List<TurbineUser> list = Database.query(TurbineUser.class, exp).fetchList();
       if (list == null || list.size() <= 0) {
         return -1;
       }
@@ -1663,13 +1605,10 @@ public class ALEipUtils {
       // システムユーザtemplateは論理削除されているため
       // RES_USER_NUMは3だが2として計算しないといけない。
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
       Expression exp = ExpressionFactory.noMatchExp(
         TurbineUser.DISABLED_PROPERTY, "T");
-      SelectQuery query = new SelectQuery(TurbineUser.class);
-      query.setQualifier(exp);
-      List<?> list = dataContext.performQuery(query);
+
+      List<TurbineUser> list = Database.query(TurbineUser.class, exp).fetchList();
       if (list == null || list.size() <= 0) {
         return -1;
       }

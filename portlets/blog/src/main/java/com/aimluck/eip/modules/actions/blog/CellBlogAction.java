@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -41,17 +40,18 @@ import com.aimluck.eip.blog.BlogUserSelectData;
 import com.aimluck.eip.blog.BlogWordSelectData;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ブログのアクションクラスです。 <BR>
- *
+ * 
  */
 public class CellBlogAction extends BlogAction {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CellBlogAction.class.getName());
+    .getLogger(CellBlogAction.class.getName());
 
   /** 返信用キー */
   private final String RESULT_ON_COMMENT_DETAIL = "resultOnCommentDetail";
@@ -67,7 +67,7 @@ public class CellBlogAction extends BlogAction {
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
@@ -75,6 +75,7 @@ public class CellBlogAction extends BlogAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
 
@@ -82,11 +83,12 @@ public class CellBlogAction extends BlogAction {
 
   /**
    * 最大化表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
 
@@ -114,11 +116,12 @@ public class CellBlogAction extends BlogAction {
 
   /**
    * エントリー登録のフォームを表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doBlog_entry_form(RunData rundata, Context context)
       throws Exception {
     BlogEntryFormData formData = new BlogEntryFormData();
@@ -130,11 +133,12 @@ public class CellBlogAction extends BlogAction {
 
   /**
    * エントリーを登録します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doBlog_entry_insert(RunData rundata, Context context)
       throws Exception {
     BlogEntryFormData formData = new BlogEntryFormData();
@@ -156,11 +160,12 @@ public class CellBlogAction extends BlogAction {
 
   /**
    * エントリーを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doBlog_entry_update(RunData rundata, Context context)
       throws Exception {
     BlogEntryFormData formData = new BlogEntryFormData();
@@ -182,11 +187,12 @@ public class CellBlogAction extends BlogAction {
 
   /**
    * エントリーを削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doBlog_entry_delete(RunData rundata, Context context)
       throws Exception {
     BlogEntryFormData formData = new BlogEntryFormData();
@@ -205,11 +211,12 @@ public class CellBlogAction extends BlogAction {
 
   /**
    * エントリーを一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doBlog_entry_list(RunData rundata, Context context)
       throws Exception {
     ALEipUtils.removeTemp(rundata, context, "view_month");
@@ -219,11 +226,12 @@ public class CellBlogAction extends BlogAction {
 
   /**
    * エントリーを一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doBlog_entry_list_user(RunData rundata, Context context)
       throws Exception {
     int userid = ALEipUtils.getUserId(rundata);
@@ -233,22 +241,22 @@ public class CellBlogAction extends BlogAction {
       userid = Integer.parseInt(rundata.getParameters().getString("view_uid"));
     }
     context.put("view_uid", ALEipUtils.getALEipUser(userid).getUserId()
-        .toString());
+      .toString());
     context.put("view_title", ALEipUtils.getALEipUser(userid).getAliasName()
-        .toString()
-        + "のﾌﾞﾛｸﾞ");
+      .toString()
+      + "のﾌﾞﾛｸﾞ");
 
     // ユーザー一覧を得る
     List list = new ArrayList();
     SelectQuery query = new SelectQuery(TurbineUser.class);
     Expression exp1 = ExpressionFactory.noMatchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.toString(1));
+      TurbineUser.USER_ID_PK_COLUMN, Integer.toString(1));
     Expression exp2 = ExpressionFactory.noMatchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.toString(2));
+      TurbineUser.USER_ID_PK_COLUMN, Integer.toString(2));
     Expression exp3 = ExpressionFactory.noMatchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.toString(3));
+      TurbineUser.USER_ID_PK_COLUMN, Integer.toString(3));
     Expression exp11 = ExpressionFactory.matchExp(
-        TurbineUser.DISABLED_PROPERTY, "F");
+      TurbineUser.DISABLED_PROPERTY, "F");
     query.setQualifier(exp1.andExp(exp2.andExp(exp3.andExp(exp11))));
     list = ALEipUtils.getUsersFromSelectQuery(query);
     context.put("users", list);
@@ -260,21 +268,22 @@ public class CellBlogAction extends BlogAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1b-rows")));
+      .getPortlet(rundata, context).getPortletConfig().getInitParameter(
+        "p1b-rows")));
     listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-        context).getPortletConfig().getInitParameter("p3a-strlen")));
+      context).getPortletConfig().getInitParameter("p3a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "blog-entry-list-user");
   }
 
   /**
    * 最新のエントリーを一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doBlog_entry_list_latest(RunData rundata, Context context)
       throws Exception {
     BlogEntryLatestSelectData listData = new BlogEntryLatestSelectData();
@@ -282,21 +291,22 @@ public class CellBlogAction extends BlogAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1b-rows")));
+      .getPortlet(rundata, context).getPortletConfig().getInitParameter(
+        "p1b-rows")));
     listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-        context).getPortletConfig().getInitParameter("p3a-strlen")));
+      context).getPortletConfig().getInitParameter("p3a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "blog-entry-list");
   }
 
   /**
    * エントリーの詳細を表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doBlog_entry_detail(RunData rundata, Context context)
       throws Exception {
     // MODEを取得
@@ -319,7 +329,7 @@ public class CellBlogAction extends BlogAction {
 
   /**
    * コメント登録のフォームを表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -335,11 +345,12 @@ public class CellBlogAction extends BlogAction {
 
   /**
    * エントリーにコメントします。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doBlog_entry_reply(RunData rundata, Context context)
       throws Exception {
     BlogEntryCommentFormData formData = new BlogEntryCommentFormData();
@@ -347,7 +358,7 @@ public class CellBlogAction extends BlogAction {
     if (formData.doInsert(this, rundata, context)) {
       // データ登録が成功したとき
       rundata.getParameters().setString("entityid",
-          rundata.getParameters().get("entryid"));
+        rundata.getParameters().get("entryid"));
       doBlog_entry_detail(rundata, context);
 
       // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
@@ -368,11 +379,12 @@ public class CellBlogAction extends BlogAction {
 
   /**
    * コメントを削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doBlog_entry_comment_delete(RunData rundata, Context context)
       throws Exception {
     BlogEntryCommentFormData formData = new BlogEntryCommentFormData();
@@ -391,11 +403,12 @@ public class CellBlogAction extends BlogAction {
 
   /**
    * グループの一覧を表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doBlog_group_list(RunData rundata, Context context)
       throws Exception {
     BlogUserSelectData listData = new BlogUserSelectData();
@@ -411,11 +424,12 @@ public class CellBlogAction extends BlogAction {
 
   /**
    * 共通テーマの一覧を表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doBlog_common_thema_list(RunData rundata, Context context)
       throws Exception {
     BlogCommonThemaSelectData listData = new BlogCommonThemaSelectData();
@@ -426,11 +440,12 @@ public class CellBlogAction extends BlogAction {
 
   /**
    * 共通テーマを詳細表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doBlog_common_thema_detail(RunData rundata, Context context)
       throws Exception {
     BlogCommonThemaSelectData detailData = new BlogCommonThemaSelectData();
@@ -444,11 +459,12 @@ public class CellBlogAction extends BlogAction {
 
   /**
    * テーマ登録のフォームを表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doBlog_thema_form(RunData rundata, Context context)
       throws Exception {
     BlogThemaFormData formData = new BlogThemaFormData();
@@ -459,11 +475,12 @@ public class CellBlogAction extends BlogAction {
 
   /**
    * テーマを登録します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doBlog_thema_insert(RunData rundata, Context context)
       throws Exception {
     BlogThemaFormData formData = new BlogThemaFormData();
@@ -485,11 +502,12 @@ public class CellBlogAction extends BlogAction {
 
   /**
    * テーマを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doBlog_thema_update(RunData rundata, Context context)
       throws Exception {
     BlogThemaFormData formData = new BlogThemaFormData();
@@ -510,11 +528,12 @@ public class CellBlogAction extends BlogAction {
 
   /**
    * テーマを削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doBlog_thema_delete(RunData rundata, Context context)
       throws Exception {
     BlogThemaFormData formData = new BlogThemaFormData();
@@ -533,11 +552,12 @@ public class CellBlogAction extends BlogAction {
 
   /**
    * テーマを一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doBlog_thema_list(RunData rundata, Context context)
       throws Exception {
     VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
@@ -546,9 +566,9 @@ public class CellBlogAction extends BlogAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（通常時）
     listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
-        .getInitParameter("p1c-rows")));
+      .getInitParameter("p1c-rows")));
     listData.setStrLength(Integer.parseInt(portlet.getPortletConfig()
-        .getInitParameter("p4a-strlen")));
+      .getInitParameter("p4a-strlen")));
 
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "blog-thema-list");
@@ -556,11 +576,12 @@ public class CellBlogAction extends BlogAction {
 
   /**
    * テーマを詳細表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doBlog_thema_detail(RunData rundata, Context context)
       throws Exception {
     BlogThemaSelectData detailData = new BlogThemaSelectData();
@@ -575,11 +596,12 @@ public class CellBlogAction extends BlogAction {
 
   /**
    * 検索一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doBlog_search_list(RunData rundata, Context context)
       throws Exception {
     BlogWordSelectData listData = new BlogWordSelectData();
@@ -593,34 +615,38 @@ public class CellBlogAction extends BlogAction {
   }
 
   /**
-   *
+   * 
    * @param obj
    */
+  @Override
   public void setResultDataOnCommentDetail(Object obj) {
     resultOnCommentDetail = obj;
   }
 
   /**
-   *
+   * 
    * @param msg
    */
+  @Override
   public void addErrorMessagesOnCommentDetail(ArrayList msgs) {
-    if (errmsgListOnCommentDetail == null)
+    if (errmsgListOnCommentDetail == null) {
       errmsgListOnCommentDetail = new ArrayList();
+    }
     errmsgListOnCommentDetail.addAll(msgs);
   }
 
   /**
-   *
+   * 
    * @param context
    */
+  @Override
   public void putDataOnCommentDetail(RunData rundata, Context context) {
     context.put(RESULT_ON_COMMENT_DETAIL, resultOnCommentDetail);
     context
-        .put(ERROR_MESSAGE_LIST_ON_COMMENT_DETAIL, errmsgListOnCommentDetail);
+      .put(ERROR_MESSAGE_LIST_ON_COMMENT_DETAIL, errmsgListOnCommentDetail);
     // For security
     context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(
-        ALEipConstants.SECURE_ID));
+      ALEipConstants.SECURE_ID));
     String entityid = rundata.getParameters().get("entityid");
     if (entityid != null && !"".equals(entityid)) {
       context.put("entityid", entityid);

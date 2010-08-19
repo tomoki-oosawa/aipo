@@ -30,7 +30,6 @@ import java.util.StringTokenizer;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
@@ -56,6 +55,7 @@ import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
@@ -237,7 +237,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
             query1.setQualifier(exp1);
 
-            List<?> list1 = dataContext.performQuery(query1);
+            List<?> list1 = query1.fetchList();
 
             EipTWorkflowRoute record = (EipTWorkflowRoute) list1.get(0);
             String route = record.getRoute();
@@ -256,7 +256,7 @@ public class WorkflowFormData extends ALAbstractFormData {
                 TurbineUser.LOGIN_NAME_PROPERTY, routeUserNames);
               query.setQualifier(exp2);
 
-              List<?> list = dataContext.performQuery(query);
+              List<?> list = query.fetchList();
 
               TurbineUser record1 = null;
               int length = routeUserNames.length;
@@ -293,7 +293,7 @@ public class WorkflowFormData extends ALAbstractFormData {
             query.setQualifier(exp1);
             query.andQualifier(exp2);
 
-            List<?> list = dataContext.performQuery(query);
+            List<?> list = query.fetchList();
 
             TurbineUser record = null;
             int length = userNames.length;
@@ -516,7 +516,7 @@ public class WorkflowFormData extends ALAbstractFormData {
       query.andQualifier(ExpressionFactory
         .matchDbExp(EipTWorkflowFile.EIP_TWORKFLOW_REQUEST_PROPERTY, request
           .getRequestId()));
-      List<?> files = dataContext.performQuery(query);
+      List<?> files = query.fetchList();
       if (files != null && files.size() > 0) {
         int fsize = files.size();
         for (int j = 0; j < fsize; j++) {

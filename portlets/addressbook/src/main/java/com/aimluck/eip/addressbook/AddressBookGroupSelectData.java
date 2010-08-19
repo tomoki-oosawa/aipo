@@ -77,7 +77,7 @@ public class AddressBookGroupSelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipMAddressGroup> list = query.perform();
+      List<EipMAddressGroup> list = query.fetchList();
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);

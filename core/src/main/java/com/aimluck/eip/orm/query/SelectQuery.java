@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.cayenne.DataObject;
 import org.apache.cayenne.DataRow;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
@@ -30,29 +29,26 @@ import org.apache.cayenne.query.Ordering;
 
 import com.aimluck.eip.orm.DatabaseOrmService;
 
-public class SelectQuery<M> {
+public class SelectQuery<M> extends AbstractQuery<M> {
 
   private static final long serialVersionUID = 5404111688862773398L;
-
-  protected DataContext dataContext;
-
-  protected Class<M> rootClass;
 
   protected org.apache.cayenne.query.SelectQuery delegate;
 
   public SelectQuery(Class<M> rootClass) {
-    this.rootClass = rootClass;
+    super(rootClass);
     delegate = new org.apache.cayenne.query.SelectQuery(rootClass);
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   public SelectQuery(DataContext dataContext, Class<M> rootClass) {
+    super(dataContext, rootClass);
     this.rootClass = rootClass;
     delegate = new org.apache.cayenne.query.SelectQuery(rootClass);
     this.dataContext = dataContext;
   }
 
   public SelectQuery(Class<M> rootClass, Expression qualifier) {
+    super(rootClass);
     this.rootClass = rootClass;
     delegate = new org.apache.cayenne.query.SelectQuery(rootClass, qualifier);
     dataContext = DatabaseOrmService.getInstance().getDataContext();
@@ -60,36 +56,27 @@ public class SelectQuery<M> {
 
   public SelectQuery(DataContext dataContext, Class<M> rootClass,
       Expression qualifier) {
+    super(dataContext, rootClass);
     this.rootClass = rootClass;
     delegate = new org.apache.cayenne.query.SelectQuery(rootClass, qualifier);
     this.dataContext = dataContext;
   }
 
   @SuppressWarnings("unchecked")
-  public List<M> perform() {
+  public List<M> fetchList() {
     if (delegate.isFetchingDataRows()) {
       List<DataRow> dataRows = dataContext.performQuery(delegate);
-      List<String> attrNames = delegate.getCustomDbAttributes();
       List<M> results = new ArrayList<M>(dataRows.size());
       for (DataRow dataRow : dataRows) {
-        try {
-          M model = rootClass.newInstance();
-          DataObject obj = (DataObject) model;
-          for (String attrName : attrNames) {
-            obj.writeProperty(attrName, dataRow.get("attrName"));
-          }
+        M model = newInstanceFromRowData(dataRow, rootClass);
+        if (model == null) {
           results.add(model);
-        } catch (InstantiationException ignore) {
-          // ignore
-        } catch (IllegalAccessException ignore) {
-          // ignore
         }
       }
       return results;
     } else {
       return dataContext.performQuery(delegate);
     }
-
   }
 
   public SelectQuery<M> setQualifier(Expression qualifier) {
@@ -166,7 +153,4 @@ public class SelectQuery<M> {
     return delegate;
   }
 
-  public DataContext getDataContext() {
-    return dataContext;
-  }
 }

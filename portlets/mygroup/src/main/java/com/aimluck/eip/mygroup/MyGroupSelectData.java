@@ -86,7 +86,7 @@ public class MyGroupSelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<TurbineGroup> list = query.perform();
+      List<TurbineGroup> list = query.fetchList();
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);

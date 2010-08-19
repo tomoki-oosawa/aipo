@@ -26,7 +26,6 @@ import java.util.StringTokenizer;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -42,6 +41,7 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
@@ -49,13 +49,13 @@ import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフロー申請経路のフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class WorkflowRouteFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowRouteFormData.class.getName());
+    .getLogger(WorkflowRouteFormData.class.getName());
 
   /** 申請経路名 */
   private ALStringField route_name;
@@ -73,19 +73,20 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
   private List<ALEipUser> memberList;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
     String routeid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+      ALEipConstants.ENTITY_ID);
     if (routeid != null && Integer.valueOf(routeid) != null) {
       route_id = Integer.valueOf(routeid);
     }
@@ -94,7 +95,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -114,6 +115,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
     memberList = new ArrayList<ALEipUser>();
   }
 
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res = super.setFormData(rundata, context, msgList);
@@ -123,18 +125,18 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
         if (userNames != null && userNames.length > 0) {
 
           DataContext dataContext = DatabaseOrmService.getInstance()
-              .getDataContext();
+            .getDataContext();
           SelectQuery query = new SelectQuery(TurbineUser.class);
           Expression exp1 = ExpressionFactory.inExp(
-              TurbineUser.LOGIN_NAME_PROPERTY, userNames);
+            TurbineUser.LOGIN_NAME_PROPERTY, userNames);
           Expression exp2 = ExpressionFactory.matchExp(
-              TurbineUser.DISABLED_PROPERTY, "F");
+            TurbineUser.DISABLED_PROPERTY, "F");
           query.setQualifier(exp1);
           query.andQualifier(exp2);
 
           memberList.addAll(ALEipUtils.getUsersFromSelectQuery(query));
 
-          List<?> list = dataContext.performQuery(query);
+          List<?> list = query.fetchList();
 
           TurbineUser record = null;
           int length = userNames.length;
@@ -158,9 +160,10 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
   /**
    * ワークフロー申請経路の各フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // カテゴリ名必須項目
     route_name.setNotNull(true);
@@ -174,25 +177,26 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
   /**
    * ワークフロー申請経路のフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     try {
       SelectQuery query = new SelectQuery(EipTWorkflowRoute.class);
       Expression exp1 = ExpressionFactory.matchExp(
-          EipTWorkflowRoute.ROUTE_NAME_PROPERTY, route_name.getValue());
+        EipTWorkflowRoute.ROUTE_NAME_PROPERTY, route_name.getValue());
       query.setQualifier(exp1);
       if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
         Expression exp2 = ExpressionFactory.noMatchDbExp(
-            EipTWorkflowRoute.ROUTE_ID_PK_COLUMN, route_id);
+          EipTWorkflowRoute.ROUTE_ID_PK_COLUMN, route_id);
         query.andQualifier(exp2);
       }
-      if (dataContext.performQuery(query).size() != 0) {
+      if (query.fetchList().size() != 0) {
         msgList.add("申請経路名『 <span class='em'>" + route_name.toString()
-            + "</span> 』は既に登録されています。");
+          + "</span> 』は既に登録されています。");
       }
       if (route.getValue() == null) {
         msgList.add("『 <span class='em'>申請先</span> 』を指定してください。");
@@ -212,7 +216,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
   /**
    * ワークフロー申請経路をデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -220,14 +224,16 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTWorkflowRoute routeobj = WorkflowUtils.getEipTWorkflowRoute(rundata,
-          context);
-      if (route == null)
+        context);
+      if (route == null) {
         return false;
+      }
       // カテゴリ名
       route_name.setValue(routeobj.getRouteName());
       // 申請経路
@@ -249,16 +255,17 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
       if (size > 0) {
         SelectQuery query = new SelectQuery(TurbineUser.class);
         Expression exp = ExpressionFactory.inDbExp(
-            TurbineUser.USER_ID_PK_COLUMN, userarray);
+          TurbineUser.USER_ID_PK_COLUMN, userarray);
         query.setQualifier(exp);
-        //memberList.addAll(ALEipUtils.getUsersFromSelectQuery(query));
+        // memberList.addAll(ALEipUtils.getUsersFromSelectQuery(query));
 
-        //取得したクエリがソートされてしまうので、元の順序に並び替えて配列に入れる
-        List<ALEipUser> memberListTmp = ALEipUtils.getUsersFromSelectQuery(query);
-        for( int i = 0; i < userarray.length; i++){
-          for( int j = 0; j < memberListTmp.size(); j++){
+        // 取得したクエリがソートされてしまうので、元の順序に並び替えて配列に入れる
+        List<ALEipUser> memberListTmp = ALEipUtils
+          .getUsersFromSelectQuery(query);
+        for (int i = 0; i < userarray.length; i++) {
+          for (int j = 0; j < memberListTmp.size(); j++) {
             ALEipUser usertmp = memberListTmp.get(j);
-            if(userarray[i].compareTo(usertmp.getUserId().toString()) == 0){
+            if (userarray[i].compareTo(usertmp.getUserId().toString()) == 0) {
               memberList.add(usertmp);
             }
           }
@@ -274,7 +281,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
   /**
    * ワークフロー申請経路をデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -282,11 +289,12 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       EipTWorkflowRoute routeobj = (EipTWorkflowRoute) dataContext
-          .createAndRegisterNewObject(EipTWorkflowRoute.class);
+        .createAndRegisterNewObject(EipTWorkflowRoute.class);
       routeobj.setRouteName(route_name.getValue());
       routeobj.setNote(note.getValue());
       routeobj.setCreateDate(Calendar.getInstance().getTime());
@@ -295,9 +303,8 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
       dataContext.commitChanges();
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          routeobj.getRouteId(),
-          ALEventlogConstants.PORTLET_TYPE_WORKFLOW_ROUTE,
-          routeobj.getRouteName());
+        routeobj.getRouteId(), ALEventlogConstants.PORTLET_TYPE_WORKFLOW_ROUTE,
+        routeobj.getRouteName());
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
@@ -307,7 +314,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているワークフロー申請経路を更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -315,14 +322,16 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTWorkflowRoute routeobj = WorkflowUtils.getEipTWorkflowRoute(rundata,
-          context);
-      if (route == null)
+        context);
+      if (route == null) {
         return false;
+      }
       // カテゴリ名
       routeobj.setRouteName(route_name.getValue());
       // 申請経路
@@ -336,9 +345,8 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
       dataContext.commitChanges();
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          routeobj.getRouteId(),
-          ALEventlogConstants.PORTLET_TYPE_WORKFLOW_ROUTE,
-          routeobj.getRouteName());
+        routeobj.getRouteId(), ALEventlogConstants.PORTLET_TYPE_WORKFLOW_ROUTE,
+        routeobj.getRouteName());
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
@@ -348,7 +356,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
   /**
    * ワークフロー申請経路を削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -356,14 +364,16 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTWorkflowRoute routeobj = WorkflowUtils.getEipTWorkflowRoute(rundata,
-          context);
-      if (routeobj == null)
+        context);
+      if (routeobj == null) {
         return false;
+      }
 
       if (routeobj.getRouteId().intValue() == 1) {
         // カテゴリ「未分類」は削除不可
@@ -377,9 +387,8 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          routeobj.getRouteId(),
-          ALEventlogConstants.PORTLET_TYPE_WORKFLOW_ROUTE,
-          routeobj.getRouteName());
+        routeobj.getRouteId(), ALEventlogConstants.PORTLET_TYPE_WORKFLOW_ROUTE,
+        routeobj.getRouteName());
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
@@ -389,7 +398,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
   /**
    * 申請経路名を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getRouteName() {
@@ -398,7 +407,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
   /**
    * 申請経路を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getRoute() {
@@ -407,7 +416,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getNote() {
@@ -420,7 +429,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
   /**
    * 指定したユーザ名のオブジェクトを取得する．
-   *
+   * 
    * @param userList
    * @param userName
    * @return

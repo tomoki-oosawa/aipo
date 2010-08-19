@@ -89,7 +89,7 @@ public class FacilitySelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipMFacility> list = query.perform();
+      List<EipMFacility> list = query.fetchList();
       // 施設の総数をセットする．
       facilitySum = list.size();
 

@@ -178,7 +178,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   protected List<EipTScheduleMap> selectList(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     try {
-      List<EipTScheduleMap> list = getSelectQuery(rundata, context).perform();
+      List<EipTScheduleMap> list = getSelectQuery(rundata, context).fetchList();
 
       if (viewTodo == 1) {
         // ToDO の読み込み
@@ -257,7 +257,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         EipTScheduleMap.USER_ID_PROPERTY, userid);
       mapquery.andQualifier(mapexp2);
 
-      List<EipTScheduleMap> schedulemaps = mapquery.perform();
+      List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
       boolean is_member = (schedulemaps != null && schedulemaps.size() > 0) ? true
         : false;
 
@@ -490,7 +490,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
     try {
       SelectQuery<EipMFacility> query = Database.query(EipMFacility.class)
         .select(EipMFacility.FACILITY_ID_PK_COLUMN);
-      List<EipMFacility> aList = query.perform();
+      List<EipMFacility> aList = query.fetchList();
 
       for (EipMFacility record : aList) {
         facilityIdAllList.add(record.getFacilityId());
@@ -514,7 +514,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   @Override
   public void loadTodo(RunData rundata, Context context) {
     try {
-      List<EipTTodo> todos = getSelectQueryForTodo(rundata, context).perform();
+      List<EipTTodo> todos = getSelectQueryForTodo(rundata, context).fetchList();
 
       int todossize = todos.size();
       for (int i = 0; i < todossize; i++) {

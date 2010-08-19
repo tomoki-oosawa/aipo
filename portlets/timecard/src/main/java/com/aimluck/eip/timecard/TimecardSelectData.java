@@ -228,7 +228,7 @@ public class TimecardSelectData extends
         buildSelectQueryForListView(query);
         query.orderAscending(EipTTimecard.WORK_DATE_PROPERTY);
 
-        List<EipTTimecard> list = query.perform();
+        List<EipTTimecard> list = query.fetchList();
         return buildPaginatedList(list);
       } else {
         return null;
@@ -348,7 +348,7 @@ public class TimecardSelectData extends
       SelectQuery<EipTTimecard> query = getSelectQueryDetail(rundata, context);
       query.orderDesending(EipTTimecard.WORK_DATE_PROPERTY);
 
-      List<EipTTimecard> list = query.perform();
+      List<EipTTimecard> list = query.fetchList();
       if (list != null && list.size() > 0) {
         return list.get(0);
       } else {

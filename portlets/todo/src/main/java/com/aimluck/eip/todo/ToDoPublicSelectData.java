@@ -156,7 +156,7 @@ public class ToDoPublicSelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTTodo> list = query.perform();
+      List<EipTTodo> list = query.fetchList();
       // ToDo の総数をセットする．
       publicTodoSum = list.size();
       return buildPaginatedList(list);
@@ -323,7 +323,7 @@ public class ToDoPublicSelectData extends
     Expression exp = ExpressionFactory.matchDbExp(EipTTodo.TODO_ID_PK_COLUMN,
       entityId);
     SelectQuery<EipTTodo> query = new SelectQuery<EipTTodo>(EipTTodo.class, exp);
-    List<EipTTodo> record = query.perform();
+    List<EipTTodo> record = query.fetchList();
     if (record.size() > 0) {
       return record.get(0).getUserId().intValue();
     } else {

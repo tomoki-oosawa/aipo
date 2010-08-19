@@ -89,7 +89,7 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List aList = query.perform();
+      List aList = query.fetchList();
       List list = buildPaginatedList(aList);
 
       if (list != null && list.size() > 0) {

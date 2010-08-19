@@ -120,7 +120,7 @@ public class NoteGroupScreen extends ALVelocityScreen {
         EipTTodo.TODO_ID_PK_COLUMN, Integer.valueOf((int) eid.getValue()));
 
       List<EipTTodo> list = Database.query(EipTTodo.class, exp1).andQualifier(
-        exp2).perform();
+        exp2).fetchList();
 
       if (list == null || list.size() == 0) {
         return;

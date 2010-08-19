@@ -70,7 +70,7 @@ public class ToDoCategoryMultiDelete extends ALAbstractCheckList {
         EipTTodoCategory.CATEGORY_ID_PK_COLUMN, values);
 
       List<EipTTodoCategory> categoryList = Database.query(
-        EipTTodoCategory.class, exp1).andQualifier(exp2).perform();
+        EipTTodoCategory.class, exp1).andQualifier(exp2).fetchList();
       if (categoryList == null || categoryList.size() == 0) {
         return false;
       }

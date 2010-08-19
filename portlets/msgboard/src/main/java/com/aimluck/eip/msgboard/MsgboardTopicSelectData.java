@@ -187,7 +187,7 @@ public class MsgboardTopicSelectData extends
       buildSelectQueryForListViewSort(query, rundata, context);
 
       // 表示するカラムのみデータベースから取得する．
-      List<EipTMsgboardTopic> list = query.perform();
+      List<EipTMsgboardTopic> list = query.fetchList();
       // 件数をセットする．
       topicSum = list.size();
       return buildPaginatedList(list);
@@ -375,7 +375,7 @@ public class MsgboardTopicSelectData extends
       }
 
       // 表示するカラムのみデータベースから取得する．
-      return query.perform();
+      return query.fetchList();
     } catch (Exception ex) {
       logger.error("[MsgboardTopicSelectData]", ex);
       throw new ALDBErrorException();
@@ -466,7 +466,7 @@ public class MsgboardTopicSelectData extends
       rd.setUpdateDate(record.getUpdateDate());
 
       List<EipTMsgboardFile> list = getSelectQueryForFiles(
-        record.getTopicId().intValue()).perform();
+        record.getTopicId().intValue()).fetchList();
       if (list != null && list.size() > 0) {
         List<FileuploadBean> attachmentFileList = new ArrayList<FileuploadBean>();
         FileuploadBean filebean = null;

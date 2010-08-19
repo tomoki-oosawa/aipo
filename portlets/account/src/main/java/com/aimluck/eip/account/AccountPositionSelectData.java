@@ -81,7 +81,7 @@ public class AccountPositionSelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipMPosition> list = query.perform();
+      List<EipMPosition> list = query.fetchList();
       return buildPaginatedList(list);
 
     } catch (Exception ex) {

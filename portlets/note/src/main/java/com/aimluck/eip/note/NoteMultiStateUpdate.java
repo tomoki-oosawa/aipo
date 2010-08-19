@@ -64,7 +64,7 @@ public class NoteMultiStateUpdate extends ALAbstractCheckList {
         values);
 
       List<EipTNoteMap> list = Database.query(EipTNoteMap.class, exp1)
-        .andQualifier(exp2).perform();
+        .andQualifier(exp2).fetchList();
 
       if (list == null || list.size() <= 0) {
         return false;

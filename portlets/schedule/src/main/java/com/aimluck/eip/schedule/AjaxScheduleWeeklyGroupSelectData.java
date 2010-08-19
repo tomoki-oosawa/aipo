@@ -27,7 +27,6 @@ import java.util.jar.Attributes;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Parameter;
 import org.apache.jetspeed.om.profile.Portlets;
@@ -54,6 +53,7 @@ import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.todo.util.ToDoUtils;
@@ -61,13 +61,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * カレンダー用週間スケジュールの検索結果を管理するクラスです。
- *
+ * 
  */
 public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
   /** <code>logger</code> logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AjaxScheduleWeeklyGroupSelectData.class.getName());
+    .getLogger(AjaxScheduleWeeklyGroupSelectData.class.getName());
 
   /** <code>prevDate</code> 前の日 */
   private ALDateTimeField prevDate;
@@ -153,9 +153,12 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
   // protected ORMappingEipTTodo orm_todo;
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * @see
+   * com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules
+   * .actions.common.ALAction, org.apache.turbine.util.RunData,
+   * org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     // 展開されるパラメータは以下の通りです。
@@ -196,7 +199,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
       // e.g. 2004-3-14
       if (rundata.getParameters().containsKey("view_start")) {
         ALEipUtils.setTemp(rundata, context, "view_start", rundata
-            .getParameters().getString("view_start"));
+          .getParameters().getString("view_start"));
       }
     }
 
@@ -249,9 +252,9 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
     nextMonth.setValue(cal3.getTime());
 
     ALEipUtils.setTemp(rundata, context, "tmpStart", viewStart.toString()
-        + "-00-00");
+      + "-00-00");
     ALEipUtils.setTemp(rundata, context, "tmpEnd", viewStart.toString()
-        + "-00-00");
+      + "-00-00");
 
     weekTodoConList = new ArrayList<String>();
     weekTermConList = new ArrayList<String>();
@@ -259,7 +262,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
     if (action != null) {
       // ToDo 表示設定
       viewTodo = Integer.parseInt(ALEipUtils.getPortlet(rundata, context)
-          .getPortletConfig().getInitParameter("p5a-view"));
+        .getPortletConfig().getInitParameter("p5a-view"));
     }
     dataContext = DatabaseOrmService.getInstance().getDataContext();
 
@@ -314,7 +317,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
     SelectQuery member_query = new SelectQuery(TurbineUser.class);
     Expression exp = ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN,
-        u_list);
+      u_list);
     member_query.setQualifier(exp);
     member_query.toString();
     temp_list.addAll(ALEipUtils.getUsersFromSelectQuery(member_query));
@@ -367,10 +370,10 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
     SelectQuery facility_query = new SelectQuery(EipMFacility.class);
     Expression exp = ExpressionFactory.inDbExp(
-        EipMFacility.FACILITY_ID_PK_COLUMN, f_list);
+      EipMFacility.FACILITY_ID_PK_COLUMN, f_list);
     facility_query.setQualifier(exp);
     temp_list.addAll(FacilitiesUtils
-        .getFacilitiesFromSelectQuery(facility_query));
+      .getFacilitiesFromSelectQuery(facility_query.getQuery()));
     int tmpsize = temp_list.size();
     for (int i = 0; i < tmpsize; i++) {
       FacilityResultData facility = (FacilityResultData) temp_list.get(i);
@@ -390,9 +393,11 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * @see
+   * com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   protected List selectList(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     try {
@@ -402,12 +407,12 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
       List list = new ArrayList();
       SelectQuery uquery = getSelectQuery(rundata, context);
       if (uquery != null) {
-        list.addAll(dataContext.performQuery(uquery));
+        list.addAll(uquery.fetchList());
       }
 
       SelectQuery fquery = getSelectQueryForFacility(rundata, context);
       if (fquery != null) {
-        list.addAll(dataContext.performQuery(fquery));
+        list.addAll(fquery.fetchList());
       }
 
       if (viewTodo == 1) {
@@ -432,7 +437,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
   /**
    * ログインユーザーのスケジュールが上にくるようにソートする．
-   *
+   * 
    * @param list
    * @return
    */
@@ -453,7 +458,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
       } else if (userid == map.getUserId().intValue()) {
         loginUserList.add(map);
       } else if (map.getEipTSchedule().getOwnerId().intValue() == map
-          .getUserId().intValue()) {
+        .getUserId().intValue()) {
         ownerList.add(map);
       } else {
         normalList.add(map);
@@ -472,7 +477,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
   private boolean savePsmlParameters(RunData rundata, Context context) {
     try {
       String portletEntryId = rundata.getParameters()
-          .getString("js_peid", null);
+        .getString("js_peid", null);
       if (portletEntryId == null || "".equals(portletEntryId)) {
         return false;
       }
@@ -501,19 +506,22 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
       Profile profile = ((JetspeedRunData) rundata).getProfile();
       Portlets portlets = profile.getDocument().getPortlets();
-      if (portlets == null)
+      if (portlets == null) {
         return false;
+      }
 
       Portlets[] portletList = portlets.getPortletsArray();
-      if (portletList == null)
+      if (portletList == null) {
         return false;
+      }
 
       PsmlParameter param = null;
       int length = portletList.length;
       for (int i = 0; i < length; i++) {
         Entry[] entries = portletList[i].getEntriesArray();
-        if (entries == null || entries.length <= 0)
+        if (entries == null || entries.length <= 0) {
           continue;
+        }
 
         int ent_length = entries.length;
         for (int j = 0; j < ent_length; j++) {
@@ -564,7 +572,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
   /**
    * 検索条件を設定した SelectQuery を返します。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -580,17 +588,17 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
     }
 
     Expression exp20 = ExpressionFactory.matchExp(
-        EipTScheduleMap.TYPE_PROPERTY, ScheduleUtils.SCHEDULEMAP_TYPE_USER);
+      EipTScheduleMap.TYPE_PROPERTY, ScheduleUtils.SCHEDULEMAP_TYPE_USER);
 
     SelectQuery query = new SelectQuery(EipTScheduleMap.class);
 
     query.setQualifier(exp20);
 
     Expression exp21 = ExpressionFactory.matchExp(
-        EipTScheduleMap.USER_ID_PROPERTY, memberList.get(0));
+      EipTScheduleMap.USER_ID_PROPERTY, memberList.get(0));
     for (int i = 1; i < membersize; i++) {
       Expression exp1 = ExpressionFactory.matchExp(
-          EipTScheduleMap.USER_ID_PROPERTY, memberList.get(i));
+        EipTScheduleMap.USER_ID_PROPERTY, memberList.get(i));
       exp21 = exp21.orExp(exp1);
     }
 
@@ -598,32 +606,32 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
     // 終了日時
     Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.END_DATE_PROPERTY, viewStart.getValue());
+      EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+        + EipTSchedule.END_DATE_PROPERTY, viewStart.getValue());
     // 開始日時
     Expression exp12 = ExpressionFactory.lessOrEqualExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.START_DATE_PROPERTY, viewEndCrt.getValue());
+      EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+        + EipTSchedule.START_DATE_PROPERTY, viewEndCrt.getValue());
     // 通常スケジュール
     Expression exp13 = ExpressionFactory.noMatchExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
+      EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
     // 期間スケジュール
     Expression exp14 = ExpressionFactory.noMatchExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
+      EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
     query.andQualifier((exp11.andExp(exp12)).orExp(exp13.andExp(exp14)));
     // 開始日時でソート
-    query.addOrdering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-        + EipTSchedule.START_DATE_PROPERTY, true);
+    query.orderAscending(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+      + EipTSchedule.START_DATE_PROPERTY);
 
-    query.setDistinct(true);
+    query.distinct(true);
     return query;
   }
 
   /**
    * 検索条件を設定した SelectQuery を返します。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -640,17 +648,17 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
     }
 
     Expression exp20 = ExpressionFactory.matchExp(
-        EipTScheduleMap.TYPE_PROPERTY, ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY);
+      EipTScheduleMap.TYPE_PROPERTY, ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY);
 
     SelectQuery query = new SelectQuery(EipTScheduleMap.class);
 
     query.setQualifier(exp20);
 
     Expression exp21 = ExpressionFactory.matchExp(
-        EipTScheduleMap.USER_ID_PROPERTY, facilityList.get(0));
+      EipTScheduleMap.USER_ID_PROPERTY, facilityList.get(0));
     for (int i = 0; i < facilitysize; i++) {
       Expression exp1 = ExpressionFactory.matchExp(
-          EipTScheduleMap.USER_ID_PROPERTY, facilityList.get(i));
+        EipTScheduleMap.USER_ID_PROPERTY, facilityList.get(i));
       exp21 = exp21.orExp(exp1);
     }
 
@@ -658,32 +666,34 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
     // 終了日時
     Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.END_DATE_PROPERTY, viewStart.getValue());
+      EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+        + EipTSchedule.END_DATE_PROPERTY, viewStart.getValue());
     // 開始日時
     Expression exp12 = ExpressionFactory.lessOrEqualExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.START_DATE_PROPERTY, viewEndCrt.getValue());
+      EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+        + EipTSchedule.START_DATE_PROPERTY, viewEndCrt.getValue());
     // 通常スケジュール
     Expression exp13 = ExpressionFactory.noMatchExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
+      EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
     // 期間スケジュール
     Expression exp14 = ExpressionFactory.noMatchExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
+      EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
     query.andQualifier((exp11.andExp(exp12)).orExp(exp13.andExp(exp14)));
     // 開始日時でソート
-    query.addOrdering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-        + EipTSchedule.START_DATE_PROPERTY, true);
+    query.orderAscending(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+      + EipTSchedule.START_DATE_PROPERTY);
 
-    query.setDistinct(true);
+    query.distinct(true);
     return query;
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   * @see
+   * com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(Object obj) throws ALPageNotFoundException,
       ALDBErrorException {
     AjaxScheduleResultData rd = new AjaxScheduleResultData();
@@ -692,18 +702,19 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
       EipTScheduleMap record = (EipTScheduleMap) obj;
       EipTSchedule schedule = record.getEipTSchedule();
       // スケジュールが棄却されている場合は表示しない
-      if ("R".equals(record.getStatus()))
+      if ("R".equals(record.getStatus())) {
         return rd;
+      }
 
       // is_memberのチェック
       SelectQuery mapquery = new SelectQuery(EipTScheduleMap.class);
       Expression mapexp1 = ExpressionFactory.matchExp(
-          EipTScheduleMap.SCHEDULE_ID_PROPERTY, schedule.getScheduleId());
+        EipTScheduleMap.SCHEDULE_ID_PROPERTY, schedule.getScheduleId());
       mapquery.setQualifier(mapexp1);
 
       try {
         recordMemberList = new ArrayList();
-        List tmpList = dataContext.performQuery(mapquery);
+        List tmpList = mapquery.fetchList();
         int tmpSize = tmpList.size();
         int tmpUserId = record.getUserId().intValue();
         EipTScheduleMap tmpMap;
@@ -727,12 +738,12 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
       }
 
       Expression mapexp2 = ExpressionFactory.matchExp(
-          EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(userid));
+        EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(userid));
       mapquery.andQualifier(mapexp2);
 
-      List schedulemaps = dataContext.performQuery(mapquery);
+      List schedulemaps = mapquery.fetchList();
       boolean is_member = (schedulemaps != null && schedulemaps.size() > 0) ? true
-          : false;
+        : false;
 
       // ID
       rd.setScheduleId(schedule.getScheduleId().intValue());
@@ -771,14 +782,14 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
       if (rd.getPattern().equals("S")) {
         int stime;
         if (ScheduleUtils.equalsToDate(ScheduleUtils.getEmptyDate(), rd
-            .getStartDate().getValue(), false)) {
+          .getStartDate().getValue(), false)) {
           stime = 0;
         } else {
           stime = -(int) ((viewStart.getValue().getTime() - rd.getStartDate()
-              .getValue().getTime()) / 86400000);
+            .getValue().getTime()) / 86400000);
         }
         int etime = -(int) ((viewStart.getValue().getTime() - rd.getEndDate()
-            .getValue().getTime()) / 86400000);
+          .getValue().getTime()) / 86400000);
         if (stime < 0) {
           stime = 0;
         }
@@ -796,7 +807,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
           int schedule_id = (int) rd.getScheduleId().getValue();
           if (!(doneTermList.contains(schedule_id))) {
             ScheduleUtils.addTerm(weekTermConList, viewStart.getValue(), count,
-                rd);
+              rd);
             if (!show_all && !rd.isDummy()) {
               doneTermList.add(schedule_id);
             }
@@ -818,17 +829,22 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * @see
+   * com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   protected Object selectDetail(RunData rundata, Context context) {
     // このメソッドは利用されません。
     return null;
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   * @see
+   * com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang
+   * .Object)
    */
+  @Override
   protected Object getResultDataDetail(Object obj) {
     // このメソッドは利用されません。
     return null;
@@ -837,6 +853,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
   /*
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     // このメソッドは利用されません。
     return null;
@@ -845,19 +862,22 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
   private Portlet getPortletURI(RunData rundata, String portletEntryId) {
     try {
       Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-          .getDocument().getPortlets();
-      if (portlets == null)
+        .getDocument().getPortlets();
+      if (portlets == null) {
         return null;
+      }
 
       Portlets[] portletList = portlets.getPortletsArray();
-      if (portletList == null)
+      if (portletList == null) {
         return null;
+      }
 
       int length = portletList.length;
       for (int i = 0; i < length; i++) {
         Entry[] entries = portletList[i].getEntriesArray();
-        if (entries == null || entries.length <= 0)
+        if (entries == null || entries.length <= 0) {
           continue;
+        }
 
         int ent_length = entries.length;
         for (int j = 0; j < ent_length; j++) {
@@ -880,7 +900,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
     todoList = new ArrayList();
     try {
       SelectQuery query = getSelectQueryForTodo(rundata, context);
-      List todos = dataContext.performQuery(query);
+      List todos = query.fetchList();
 
       int todossize = todos.size();
       for (int i = 0; i < todossize; i++) {
@@ -890,7 +910,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
         // ポートレット ToDoPublic のへのリンクを取得する．
         String todo_url = ScheduleUtils.getPortletURItoTodoDetailPane(rundata,
-            "ToDo", record.getTodoId().longValue(), portletId);
+          "ToDo", record.getTodoId().longValue(), portletId);
         rd.setTodoId(record.getTodoId().intValue());
         rd.setTodoName(record.getTodoName());
         rd.setUserId(record.getTurbineUser().getUserId().intValue());
@@ -902,14 +922,14 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
         int stime;
         if (ScheduleUtils.equalsToDate(ToDoUtils.getEmptyDate(), rd
-            .getStartDate().getValue(), false)) {
+          .getStartDate().getValue(), false)) {
           stime = 0;
         } else {
           stime = -(int) ((viewStart.getValue().getTime() - rd.getStartDate()
-              .getValue().getTime()) / 86400000);
+            .getValue().getTime()) / 86400000);
         }
         int etime = -(int) ((viewStart.getValue().getTime() - rd.getEndDate()
-            .getValue().getTime()) / 86400000);
+          .getValue().getTime()) / 86400000);
         if (stime < 0) {
           stime = 0;
         }
@@ -925,7 +945,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
         if (col > 0) {
           // ToDo を格納
           ScheduleUtils.addToDo(weekTodoConList, viewStart.getValue(), count,
-              rd);
+            rd);
         }
       }
     } catch (Exception ex) {
@@ -939,36 +959,36 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
     SelectQuery query = new SelectQuery(EipTTodo.class);
 
     Expression exp1 = ExpressionFactory.noMatchExp(EipTTodo.STATE_PROPERTY,
-        Short.valueOf((short) 100));
+      Short.valueOf((short) 100));
     query.setQualifier(exp1);
     Expression exp2 = ExpressionFactory.matchExp(
-        EipTTodo.ADDON_SCHEDULE_FLG_PROPERTY, "T");
+      EipTTodo.ADDON_SCHEDULE_FLG_PROPERTY, "T");
     query.andQualifier(exp2);
     Expression exp3 = ExpressionFactory.matchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, uid);
+      TurbineUser.USER_ID_PK_COLUMN, uid);
     query.andQualifier(exp3);
 
     // 終了日時
     Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-        EipTTodo.END_DATE_PROPERTY, viewStart.getValue());
+      EipTTodo.END_DATE_PROPERTY, viewStart.getValue());
     // 開始日時
     Expression exp12 = ExpressionFactory.lessOrEqualExp(
-        EipTTodo.START_DATE_PROPERTY, viewEndCrt.getValue());
+      EipTTodo.START_DATE_PROPERTY, viewEndCrt.getValue());
 
     // 開始日時のみ指定されている ToDo を検索
     Expression exp21 = ExpressionFactory.lessOrEqualExp(
-        EipTTodo.START_DATE_PROPERTY, viewEndCrt.getValue());
+      EipTTodo.START_DATE_PROPERTY, viewEndCrt.getValue());
     Expression exp22 = ExpressionFactory.matchExp(EipTTodo.END_DATE_PROPERTY,
-        ToDoUtils.getEmptyDate());
+      ToDoUtils.getEmptyDate());
 
     // 終了日時のみ指定されている ToDo を検索
     Expression exp31 = ExpressionFactory.greaterOrEqualExp(
-        EipTTodo.END_DATE_PROPERTY, viewStart.getValue());
+      EipTTodo.END_DATE_PROPERTY, viewStart.getValue());
     Expression exp32 = ExpressionFactory.matchExp(EipTTodo.START_DATE_PROPERTY,
-        ToDoUtils.getEmptyDate());
+      ToDoUtils.getEmptyDate());
 
     query.andQualifier((exp11.andExp(exp12)).orExp(exp21.andExp(exp22)).orExp(
-        exp31.andExp(exp32)));
+      exp31.andExp(exp32)));
     return query;
   }
 
@@ -1004,7 +1024,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
   /**
    * 表示開始日時を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getViewStart() {
@@ -1013,7 +1033,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
   /**
    * 表示終了日時を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getViewEnd() {
@@ -1022,7 +1042,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
   /**
    * 表示タイプを取得します。
-   *
+   * 
    * @return
    */
   public String getViewtype() {
@@ -1031,7 +1051,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
   /**
    * 表示終了日時 (Criteria) を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getViewEndCrt() {
@@ -1040,7 +1060,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
   /**
    * 前の日を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getPrevDate() {
@@ -1049,7 +1069,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
   /**
    * 前の週を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getPrevWeek() {
@@ -1058,7 +1078,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
   /**
    * 次の日を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getNextDate() {
@@ -1067,7 +1087,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
   /**
    * 次の週を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getNextWeek() {
@@ -1076,7 +1096,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
   /**
    * 今日を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getToday() {
@@ -1085,7 +1105,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
   /**
    * 先月を取得する．
-   *
+   * 
    * @return
    */
   public ALDateTimeField getPrevMonth() {
@@ -1094,7 +1114,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
   /**
    * 来月を取得する．
-   *
+   * 
    * @return
    */
   public ALDateTimeField getNextMonth() {
@@ -1103,7 +1123,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
   /**
    * 週間スケジュールコンテナを取得します。
-   *
+   * 
    * @return
    */
   public AjaxScheduleWeekContainer getContainer() {
@@ -1125,9 +1145,10 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return acl_feat;
   }

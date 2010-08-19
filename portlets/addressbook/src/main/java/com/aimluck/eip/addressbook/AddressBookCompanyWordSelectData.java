@@ -103,7 +103,7 @@ public class AddressBookCompanyWordSelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipMAddressbookCompany> clist = query.perform();
+      List<EipMAddressbookCompany> clist = query.fetchList();
       return buildPaginatedList(clist);
     } catch (Exception ex) {
       logger.error("Exception", ex);

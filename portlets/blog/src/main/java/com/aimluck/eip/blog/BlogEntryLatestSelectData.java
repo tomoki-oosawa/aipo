@@ -117,7 +117,7 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
 
     query.orderDesending(EipTBlogFile.UPDATE_DATE_PROPERTY);
     query.limit(5);
-    List list = query.perform();
+    List list = query.fetchList();
     if (list != null && list.size() > 0) {
       int size = list.size();
       for (int i = 0; i < size; i++) {
@@ -149,7 +149,7 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
         reduceDate(Calendar.getInstance().getTime(), DELETE_DATE));
     comment_query.andQualifier(exp2);
     comment_query.orderAscending("eipTBlogEntry");
-    List aList = comment_query.perform();
+    List aList = comment_query.fetchList();
 
     // リストからcommentHistoryListを作成する
     int size = aList.size();
@@ -175,7 +175,7 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
           EipTBlogComment.EIP_TBLOG_ENTRY_PROPERTY + "."
               + EipTBlogEntry.ENTRY_ID_PK_COLUMN, entry.getEntryId());
       cquery.setQualifier(cexp);
-      List<EipTBlogComment> list = cquery.perform();
+      List<EipTBlogComment> list = cquery.fetchList();
       if (list != null && list.size() > 0) {
         rd.setCommentsNum(list.size());
       }
@@ -202,7 +202,7 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
       SelectQuery query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       query.orderDesending(EipTBlogEntry.CREATE_DATE_PROPERTY);
-      List list = query.perform();
+      List list = query.fetchList();
       // エントリーの総数をセットする．
       entrySum = list.size();
       return buildPaginatedList(list);

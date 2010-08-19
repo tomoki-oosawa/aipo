@@ -336,7 +336,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
       SelectQuery query = getSelectQuery(rundata, context);
       // buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
-      List list = query.perform();
+      List list = query.fetchList();
       return ScheduleUtils.sortByDummySchedule(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -479,7 +479,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
           EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(userid));
       mapquery.andQualifier(mapexp2);
 
-      List schedulemaps = mapquery.perform();
+      List schedulemaps = mapquery.fetchList();
       boolean is_member = (schedulemaps != null && schedulemaps.size() > 0) ? true
           : false;
 

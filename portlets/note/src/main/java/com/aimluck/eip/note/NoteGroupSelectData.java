@@ -126,7 +126,7 @@ public class NoteGroupSelectData extends
 
       // 受信履歴の未読数と新着数をカウントアップする．
       List<EipTNoteMap> list = NoteUtils.getSelectQueryNoteList(rundata,
-        context).perform();
+        context).fetchList();
       if (list != null && list.size() > 0) {
         String stat = null;
         for (EipTNoteMap map : list) {
@@ -151,7 +151,7 @@ public class NoteGroupSelectData extends
         buildSelectQueryForListView(query);
         buildSelectQueryForListViewSort(query, rundata, context);
 
-        List<TurbineUser> ulist = query.perform();
+        List<TurbineUser> ulist = query.fetchList();
         return buildPaginatedList(ulist);
       }
     } catch (Exception ex) {

@@ -108,7 +108,7 @@ public class NoteUtils {
       uid);
 
     List<EipTNoteMap> maps = Database.query(EipTNoteMap.class,
-      exp1.andExp(exp2)).perform();
+      exp1.andExp(exp2)).fetchList();
     if (maps == null || maps.size() == 0) {
       // 指定したアカウントIDのレコードが見つからない場合
       logger.debug("[Note] Invalid user access...");
@@ -126,7 +126,7 @@ public class NoteUtils {
       Expression exp = ExpressionFactory.matchDbExp(EipTNote.NOTE_ID_PK_COLUMN,
         Integer.valueOf(noteId));
 
-      List<EipTNote> notes = query.andQualifier(exp).perform();
+      List<EipTNote> notes = query.andQualifier(exp).fetchList();
       if (notes == null || notes.size() == 0) {
         // 指定したアカウントIDのレコードが見つからない場合
         logger.debug("[Note] Not found NoteID...");
@@ -168,7 +168,7 @@ public class NoteUtils {
         EipTNoteMap.DEL_FLG_PROPERTY, "F");
 
       List<EipTNoteMap> maps = query.andQualifier(exp1).andQualifier(exp2)
-        .perform();
+        .fetchList();
       if (maps == null || maps.size() == 0) {
         // 指定したアカウントIDのレコードが見つからない場合
         logger.debug("[Note] Not found NoteID...");
@@ -214,7 +214,7 @@ public class NoteUtils {
         query.andQualifier(exp3);
       }
 
-      List<EipTNoteMap> noteMaps = query.perform();
+      List<EipTNoteMap> noteMaps = query.fetchList();
       if (noteMaps == null || noteMaps.size() == 0) {
         // 指定したアカウントIDのレコードが見つからない場合
         logger.debug("[Note] Not found NoteIDs...");
@@ -246,7 +246,7 @@ public class NoteUtils {
         TurbineUser.LOGIN_NAME_PROPERTY, userLoginName);
 
       List<TurbineUser> destUserList = Database.query(TurbineUser.class)
-        .setQualifier(exp).perform();
+        .setQualifier(exp).fetchList();
       if (destUserList == null || destUserList.size() <= 0) {
         return null;
       }
@@ -276,7 +276,7 @@ public class NoteUtils {
         TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(userId));
 
       List<TurbineUser> destUserList = Database.query(TurbineUser.class)
-        .setQualifier(exp).perform();
+        .setQualifier(exp).fetchList();
       if (destUserList == null || destUserList.size() <= 0) {
         return null;
       }
@@ -385,7 +385,7 @@ public class NoteUtils {
           EipTNoteMap.NOTE_ID_PROPERTY, tmpnote.getNoteId());
 
         List<EipTNoteMap> maplist = Database.query(EipTNoteMap.class, mapexp)
-          .perform();
+          .fetchList();
 
         if (maplist != null && maplist.size() > 0) {
           int count = 0;
@@ -485,7 +485,7 @@ public class NoteUtils {
     int newNoteAllSum = 0;
     try {
       SelectQuery<EipTNote> query = getSelectQueryForNewReceivedNoteCount(userId);
-      List<EipTNote> list = query.perform();
+      List<EipTNote> list = query.fetchList();
       newNoteAllSum = (list != null && list.size() > 0) ? list.size() : 0;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -531,7 +531,7 @@ public class NoteUtils {
     try {
       // 未読数をセットする．
       SelectQuery<EipTNote> query = getSelectQueryForUnreadReceivedNoteCount(userId);
-      List<EipTNote> list = query.perform();
+      List<EipTNote> list = query.fetchList();
       unreadNotesAllSum = (list != null && list.size() > 0) ? list.size() : 0;
     } catch (Exception ex) {
       logger.error("Exception", ex);

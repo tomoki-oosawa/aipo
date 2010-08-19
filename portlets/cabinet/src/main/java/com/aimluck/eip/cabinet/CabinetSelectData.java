@@ -159,7 +159,7 @@ public class CabinetSelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTCabinetFile> list = query.perform();
+      List<EipTCabinetFile> list = query.fetchList();
       // ファイル総数をセットする．
       if (list == null) {
         return new ArrayList<EipTCabinetFile>();

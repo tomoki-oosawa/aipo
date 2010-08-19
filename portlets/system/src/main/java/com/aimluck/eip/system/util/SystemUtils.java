@@ -64,7 +64,7 @@ public class SystemUtils {
         EipMMybox.EIP_MCOMPANY_PROPERTY + "."
           + EipMCompany.COMPANY_ID_PK_COLUMN, Integer.valueOf(company_id));
 
-      List<EipMMybox> list = Database.query(EipMMybox.class, exp).perform();
+      List<EipMMybox> list = Database.query(EipMMybox.class, exp).fetchList();
       if (list == null || list.size() == 0) {
         logger.debug("Not found ID...");
         return result;
@@ -94,7 +94,7 @@ public class SystemUtils {
       Expression exp = ExpressionFactory.matchDbExp(
         EipMCompany.COMPANY_ID_PK_COLUMN, Integer.valueOf(id));
 
-      List<EipMCompany> list = Database.query(EipMCompany.class, exp).perform();
+      List<EipMCompany> list = Database.query(EipMCompany.class, exp).fetchList();
       if (list == null || list.size() == 0) {
         logger.debug("Not found ID...");
         return result;

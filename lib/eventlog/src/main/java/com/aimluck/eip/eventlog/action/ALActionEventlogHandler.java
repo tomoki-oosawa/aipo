@@ -20,8 +20,6 @@ package com.aimluck.eip.eventlog.action;
 
 import java.util.Calendar;
 
-import org.apache.cayenne.DataObjectUtils;
-import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -30,7 +28,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTEventlog;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.eventlog.util.ALEventlogUtils;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.eventlog.ALEventlogHandler;
@@ -178,15 +176,11 @@ public class ALActionEventlogHandler extends ALEventlogHandler {
   private boolean saveEvent(int event_type, int uid, int p_type, int entity_id,
       String ip_addr, String note) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
 
       // 新規オブジェクトモデル
-      EipTEventlog log = (EipTEventlog) dataContext
-        .createAndRegisterNewObject(EipTEventlog.class);
+      EipTEventlog log = Database.create(EipTEventlog.class);
 
-      TurbineUser tuser = (TurbineUser) DataObjectUtils.objectForPK(
-        dataContext, TurbineUser.class, Integer.valueOf(uid));
+      TurbineUser tuser = Database.get(TurbineUser.class, Integer.valueOf(uid));
       // ユーザーID
       log.setTurbineUser(tuser);
       // イベント発生日
@@ -206,10 +200,11 @@ public class ALActionEventlogHandler extends ALEventlogHandler {
       // note
       log.setNote(note);
 
-      dataContext.commitChanges();
+      Database.commit();
 
       return true;
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }

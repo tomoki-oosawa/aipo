@@ -290,7 +290,7 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
     query.setQualifier(exp);
     query.orderDesending(EipTBlogFootmarkMap.UPDATE_DATE_PROPERTY);
     query.limit(10);
-    List<EipTBlogFootmarkMap> list = query.perform();
+    List<EipTBlogFootmarkMap> list = query.fetchList();
 
     if (list != null && list.size() > 0) {
       int size = list.size();
@@ -325,7 +325,7 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
       buildSelectQueryForListView(query);
       query.orderDesending(EipTBlogEntry.CREATE_DATE_PROPERTY);
 
-      List aList = query.perform();
+      List aList = query.fetchList();
       // エントリーの総数をセットする．
       entrySum = aList.size();
       List list = buildPaginatedList(aList);
@@ -465,7 +465,7 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
         EipTBlogComment.EIP_TBLOG_ENTRY_PROPERTY + "."
           + EipTBlogEntry.ENTRY_ID_PK_COLUMN, record.getEntryId());
       query.setQualifier(exp);
-      List list = query.perform();
+      List list = query.fetchList();
       if (list != null && list.size() > 0) {
         rd.setCommentsNum(list.size());
       }
@@ -516,7 +516,7 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
     Expression exp = ExpressionFactory.matchExp(EipTBlog.OWNER_ID_PROPERTY,
       Integer.valueOf(view_uid));
     query.setQualifier(exp);
-    List list = query.perform();
+    List list = query.fetchList();
     if (list == null || list.size() <= 0) {
       // 新規オブジェクトモデル
       EipTBlog blog = (EipTBlog) dataContext
@@ -563,7 +563,7 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
       EipTBlogFootmarkMap.CREATE_DATE_PROPERTY, today.getValue());
     query.andQualifier(exp3);
 
-    List list = query.perform();
+    List list = query.fetchList();
     if (list == null || list.size() <= 0) {
       // あしあとを登録する
       EipTBlogFootmarkMap footmark = (EipTBlogFootmarkMap) dataContext
@@ -640,7 +640,7 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
       SelectQuery query = getSelectQueryForCalendar(rundata, context);
       query.orderDesending(EipTBlogEntry.UPDATE_DATE_PROPERTY);
 
-      List list = query.perform();
+      List list = query.fetchList();
 
       DataRow dataRow = null;
       int size = list.size();
@@ -690,7 +690,7 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
           + EipTBlogEntry.ENTRY_ID_PK_COLUMN, record.getEntryId());
       query.orderAscending(EipTBlogComment.UPDATE_DATE_PROPERTY);
       query.setQualifier(exp);
-      List comments = query.perform();
+      List comments = query.fetchList();
 
       if (comments != null && comments.size() > 0) {
         int size = comments.size();
@@ -724,7 +724,7 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
         EipTBlogFile.EIP_TBLOG_ENTRY_PROPERTY + "."
           + EipTBlogEntry.ENTRY_ID_PK_COLUMN, record.getEntryId());
       filequery.setQualifier(fileexp);
-      List files = filequery.perform();
+      List files = filequery.fetchList();
 
       if (files != null && files.size() > 0) {
         ArrayList attachmentFileList = new ArrayList();

@@ -97,7 +97,7 @@ public class WhatsNewUtils {
         EipTWhatsNew.PARENT_ID_PROPERTY, Integer.valueOf(INDIVIDUAL_WHATS_NEW));
       query.andQualifier(exp3);
       @SuppressWarnings("unchecked")
-      List<EipTWhatsNew> entries = query.perform();
+      List<EipTWhatsNew> entries = query.fetchList();
       if (entries == null || entries.size() < 1) {
         // 新規オブジェクトモデル
         entry = Database.create(EipTWhatsNew.class);
@@ -139,7 +139,7 @@ public class WhatsNewUtils {
       Expression exp2 = ExpressionFactory.matchExp(
         EipTWhatsNew.ENTITY_ID_PROPERTY, Integer.valueOf(entityid));
       query.andQualifier(exp2);
-      List<EipTWhatsNew> entries = query.perform();
+      List<EipTWhatsNew> entries = query.fetchList();
       if (!(entries == null || entries.size() < 1)) {
         // 更新である場合、今までの新着情報は削除する
         Database.deleteAll(entries);
@@ -188,7 +188,7 @@ public class WhatsNewUtils {
         EipTWhatsNew.PARENT_ID_PROPERTY, Integer.valueOf("-1"));
       query.andQualifier(exp3);
 
-      List<EipTWhatsNew> entries = query.perform();
+      List<EipTWhatsNew> entries = query.fetchList();
       if (entries != null && entries.size() > 0) {
         Database.deleteAll(entries);
       }
@@ -217,7 +217,7 @@ public class WhatsNewUtils {
         EipTWhatsNew.ENTITY_ID_PROPERTY, Integer.valueOf(entityid));
       query.andQualifier(exp2);
       query.orderAscending(EipTWhatsNew.PARENT_ID_PROPERTY);
-      List<EipTWhatsNew> entries = query.perform();
+      List<EipTWhatsNew> entries = query.fetchList();
 
       if (entries != null && entries.size() > 0
         && (entries.get(0)).getParentId().intValue() != -1) {
@@ -265,7 +265,7 @@ public class WhatsNewUtils {
       cal.add(Calendar.MONTH, -1);
       exp = ExpressionFactory.lessExp(EipTWhatsNew.UPDATE_DATE_PROPERTY, cal
         .getTime());
-      Database.deleteAll(Database.query(EipTWhatsNew.class, exp).perform());
+      Database.deleteAll(Database.query(EipTWhatsNew.class, exp).fetchList());
       Database.commit();
 
     } catch (Exception e) {
@@ -329,7 +329,7 @@ public class WhatsNewUtils {
       Expression exp2 = ExpressionFactory.inExp(
         EipTWhatsNew.ENTITY_ID_PROPERTY, deids);
       query.andQualifier(exp2);
-      List<EipTWhatsNew> entries = query.perform();
+      List<EipTWhatsNew> entries = query.fetchList();
       if (entries != null && entries.size() > 0) {
         Database.deleteAll(entries);
         Database.commit();
@@ -359,7 +359,7 @@ public class WhatsNewUtils {
       List<EipTBlogEntry> entries = Database.query(EipTBlogEntry.class, exp)
         .orderDesending(EipTBlogEntry.CREATE_DATE_PROPERTY).select(
           EipTBlogEntry.ENTRY_ID_PK_COLUMN, EipTBlogEntry.TITLE_COLUMN,
-          EipTBlogEntry.OWNER_ID_COLUMN).perform();
+          EipTBlogEntry.OWNER_ID_COLUMN).fetchList();
 
       if (entries == null || entries.size() <= 0) {
         return null;
@@ -394,7 +394,7 @@ public class WhatsNewUtils {
 
       List<EipTBlogComment> entries = Database
         .query(EipTBlogComment.class, exp).orderDesending(
-          EipTBlogComment.CREATE_DATE_PROPERTY).perform();
+          EipTBlogComment.CREATE_DATE_PROPERTY).fetchList();
 
       if (entries == null || entries.size() <= 0) {
         return null;
@@ -464,7 +464,7 @@ public class WhatsNewUtils {
 
       List<EipTWorkflowRequest> entries = Database.query(
         EipTWorkflowRequest.class, exp).orderDesending(
-        EipTWorkflowRequest.UPDATE_DATE_PROPERTY).perform();
+        EipTWorkflowRequest.UPDATE_DATE_PROPERTY).fetchList();
 
       if (entries == null || entries.size() <= 0) {
         return null;
@@ -535,7 +535,7 @@ public class WhatsNewUtils {
         exp).orderDesending(EipTWorkflowRequest.CREATE_DATE_PROPERTY).select(
         EipTMsgboardTopic.TOPIC_ID_PK_COLUMN,
         EipTMsgboardTopic.TOPIC_NAME_COLUMN, EipTMsgboardTopic.OWNER_ID_COLUMN,
-        EipTMsgboardTopic.PARENT_ID_COLUMN).perform();
+        EipTMsgboardTopic.PARENT_ID_COLUMN).fetchList();
       if (entries == null || entries.size() <= 0) {
         return null;
       }
@@ -574,7 +574,7 @@ public class WhatsNewUtils {
       List<EipTNote> entries = Database.query(EipTNote.class).orderDesending(
         EipTNote.CREATE_DATE_PROPERTY).select(EipTNote.NOTE_ID_PK_COLUMN,
         EipTNote.CLIENT_NAME_COLUMN, EipTNote.SUBJECT_TYPE_COLUMN,
-        EipTNote.CUSTOM_SUBJECT_COLUMN, EipTNote.OWNER_ID_COLUMN).perform();
+        EipTNote.CUSTOM_SUBJECT_COLUMN, EipTNote.OWNER_ID_COLUMN).fetchList();
       if (entries == null || entries.size() <= 0) {
         return null;
       }
@@ -628,7 +628,7 @@ public class WhatsNewUtils {
         .orderDesending(EipTSchedule.UPDATE_DATE_PROPERTY).select(
           EipTSchedule.SCHEDULE_ID_PK_COLUMN, EipTSchedule.START_DATE_COLUMN,
           EipTSchedule.NAME_COLUMN, EipTSchedule.UPDATE_USER_ID_COLUMN)
-        .perform();
+        .fetchList();
       if (entries == null || entries.size() <= 0) {
         return null;
       }
@@ -677,7 +677,7 @@ public class WhatsNewUtils {
 
       List<EipTWorkflowRequestMap> maps = Database.query(
         EipTWorkflowRequestMap.class, exp).orderAscending(
-        EipTWorkflowRequestMap.ORDER_INDEX_PROPERTY).perform();
+        EipTWorkflowRequestMap.ORDER_INDEX_PROPERTY).fetchList();
 
       if (maps == null || maps.size() == 0) {
         // 指定した Request IDのレコードが見つからない場合
@@ -704,7 +704,7 @@ public class WhatsNewUtils {
         Expression exp1 = ExpressionFactory.lessExp(
           EipTWhatsNew.UPDATE_DATE_PROPERTY, cal.getTime());
         List<EipTWhatsNew> entries1 = Database.query(EipTWhatsNew.class, exp1)
-          .perform();
+          .fetchList();
 
         if (entries1 != null && entries1.size() > 0) {
           Database.deleteAll(entries1);
@@ -729,7 +729,7 @@ public class WhatsNewUtils {
       Expression exp1 = ExpressionFactory.lessExp(
         EipTWhatsNew.UPDATE_DATE_PROPERTY, cal.getTime());
       List<EipTWhatsNew> entries1 = Database.query(EipTWhatsNew.class, exp1)
-        .perform();
+        .fetchList();
       if (entries1 != null && entries1.size() > 0) {
         Database.deleteAll(entries1);
         Database.commit();

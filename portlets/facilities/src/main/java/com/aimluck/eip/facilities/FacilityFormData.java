@@ -165,7 +165,7 @@ public class FacilityFormData extends ALAbstractFormData {
         query.andQualifier(exp2);
       }
 
-      if (query.perform().size() != 0) {
+      if (query.fetchList().size() != 0) {
         msgList.add("施設名『 <span class='em'>" + facility_name.toString()
           + "</span> 』は既に登録されています。");
       }
@@ -236,7 +236,7 @@ public class FacilityFormData extends ALAbstractFormData {
         EipTScheduleMap.TYPE_PROPERTY, "F");
       query1.setQualifier(exp1.andExp(exp2));
 
-      List<EipTScheduleMap> slist = query1.perform();
+      List<EipTScheduleMap> slist = query1.fetchList();
       if (slist != null && slist.size() > 0) {
         // 施設のスケジュールを削除
         dataContext.deleteObjects(slist);

@@ -103,7 +103,7 @@ public class WorkflowCategorySelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTWorkflowCategory> list = query.perform();
+      List<EipTWorkflowCategory> list = query.fetchList();
       // 件数をセットする．
       categorySum = list.size();
       return buildPaginatedList(list);

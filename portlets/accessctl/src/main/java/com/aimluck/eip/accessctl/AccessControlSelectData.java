@@ -105,7 +105,7 @@ public class AccessControlSelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTAclRole> list = query.perform();
+      List<EipTAclRole> list = query.fetchList();
 
       aclRoleSum = list.size();
 

@@ -29,7 +29,6 @@ import java.util.Map;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
@@ -61,6 +60,7 @@ import com.aimluck.eip.mail.util.ALEipUserAddr;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -600,7 +600,7 @@ public class ScheduleFormData extends ALAbstractFormData {
           Expression fexp = ExpressionFactory.inDbExp(
             EipMFacility.FACILITY_ID_PK_COLUMN, f_id);
           fquery.setQualifier(fexp);
-          List f_list = dataContext.performQuery(fquery);
+          List f_list = fquery.fetchList();
 
           int f_size = f_list.size();
           for (int i = 0; i < f_size; i++) {
@@ -949,7 +949,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       Expression mapexp = ExpressionFactory.matchExp(
         EipTScheduleMap.SCHEDULE_ID_PROPERTY, record.getScheduleId());
       mapquery.setQualifier(mapexp);
-      List list = dataContext.performQuery(mapquery);
+      List list = mapquery.fetchList();
 
       List users = new ArrayList();
       List facilityIds = new ArrayList();
@@ -988,8 +988,8 @@ public class ScheduleFormData extends ALAbstractFormData {
         Expression fexp = ExpressionFactory.inDbExp(
           EipMFacility.FACILITY_ID_PK_COLUMN, facilityIds);
         fquery.setQualifier(fexp);
-        facilityList.addAll(FacilitiesUtils
-          .getFacilitiesFromSelectQuery(fquery));
+        facilityList.addAll(FacilitiesUtils.getFacilitiesFromSelectQuery(fquery
+          .getQuery()));
       }
     } catch (Exception e) {
 
@@ -2037,7 +2037,7 @@ public class ScheduleFormData extends ALAbstractFormData {
             dummy_query.setQualifier(exp1);
             dummy_query.andQualifier(exp2);
             dummy_query.andQualifier(exp3);
-            List list = dataContext.performQuery(dummy_query);
+            List list = dummy_query.fetchList();
             EipTSchedule dummy;
             EipTScheduleMap dummymap;
             /** ダミー登録されている人数をカウントする */
@@ -2215,7 +2215,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       EipTSchedule.EIP_TSCHEDULE_MAPS_PROPERTY + "."
         + EipTScheduleMap.STATUS_PROPERTY, "D");
     query.andQualifier(exp2);
-    List dellist = dataContext.performQuery(query);
+    List dellist = query.fetchList();
     // ダミースケジュールの削除
     dataContext.deleteObjects(dellist);
 

@@ -25,7 +25,6 @@ import java.util.jar.Attributes;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -35,7 +34,6 @@ import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.eip.cabinet.util.CabinetUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolder;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolderMap;
-import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategoryMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -43,6 +41,7 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -53,7 +52,7 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CabinetFolderSelectData.class.getName());
+    .getLogger(CabinetFolderSelectData.class.getName());
 
   /** フォルダ情報一覧 */
   private ArrayList folder_hierarchy_list;
@@ -71,23 +70,24 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
   private boolean editable;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-              "p3c-sort"));
+        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
+          "p3c-sort"));
       logger.debug("[CabinetSelectData] Init Parameter. : "
-          + ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-              .getInitParameter("p3c-sort"));
+        + ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+          .getInitParameter("p3c-sort"));
       dataContext = DatabaseOrmService.getInstance().getDataContext();
     }
 
@@ -101,7 +101,7 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
       if (rundata.getParameters().containsKey(CabinetUtils.KEY_FOLDER_ID)) {
         // entityid=new を指定することによって明示的にセッション変数を削除することができる。
         ALEipUtils.setTemp(rundata, context, CabinetUtils.KEY_FOLDER_ID,
-            rundata.getParameters().getString(CabinetUtils.KEY_FOLDER_ID));
+          rundata.getParameters().getString(CabinetUtils.KEY_FOLDER_ID));
       }
     }
 
@@ -112,6 +112,7 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected List selectList(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     return null;
@@ -121,6 +122,7 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected Object selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     // オブジェクトモデルを取得
@@ -130,6 +132,7 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(Object obj) throws ALPageNotFoundException,
       ALDBErrorException {
     return null;
@@ -138,6 +141,7 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(Object obj)
       throws ALPageNotFoundException, ALDBErrorException {
 
@@ -152,22 +156,22 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
       rd.setFolderName(record.getFolderName());
       rd.setNote(record.getNote());
       rd.setPosition(CabinetUtils.getFolderPosition(folder_hierarchy_list,
-          folder_id));
+        folder_id));
       int tmp_public_flag = Integer.valueOf(record.getPublicFlag());
       int access_control_folder_id;
       if (tmp_public_flag == CabinetUtils.ACCESS_PUBLIC_ALL) {
         /** 上位のフォルダからアクセス権限を継承している */
         access_control_folder_id = CabinetUtils.getAccessControlFolderId(record
-            .getParentId());
+          .getParentId());
         rd.setAccessFlag(Integer.valueOf(CabinetUtils.getFolderByPK(
-            access_control_folder_id).getPublicFlag()));
+          access_control_folder_id).getPublicFlag()));
       } else {
         rd.setAccessFlag(tmp_public_flag);
         access_control_folder_id = (int) rd.getFolderId().getValue();
       }
       String createUserName = "";
       ALEipUser createUser = ALEipUtils.getALEipUser(record.getCreateUserId()
-          .intValue());
+        .intValue());
       if (createUser != null) {
         createUserName = createUser.getAliasName().getValue();
       }
@@ -176,7 +180,7 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
       rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
       String updateUserName = "";
       ALEipUser updateUser = ALEipUtils.getALEipUser(record.getUpdateUserId()
-          .intValue());
+        .intValue());
       if (updateUser != null) {
         updateUserName = updateUser.getAliasName().getValue();
       }
@@ -184,10 +188,10 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
       // メンバーのリストを取得
       SelectQuery mapquery = new SelectQuery(EipTCabinetFolderMap.class);
       Expression mapexp = ExpressionFactory.matchDbExp(
-          EipTCabinetFolderMap.EIP_TCABINET_FOLDER_PROPERTY,
-          access_control_folder_id);
+        EipTCabinetFolderMap.EIP_TCABINET_FOLDER_PROPERTY,
+        access_control_folder_id);
       mapquery.setQualifier(mapexp);
-      List list = dataContext.performQuery(mapquery);
+      List list = mapquery.fetchList();
 
       List users = new ArrayList();
       for (int i = 0; i < list.size(); i++) {
@@ -196,7 +200,7 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
       }
       SelectQuery query = new SelectQuery(TurbineUser.class);
       Expression exp = ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN,
-          users);
+        users);
       query.setQualifier(exp);
       members.addAll(ALEipUtils.getUsersFromSelectQuery(query));
 
@@ -223,6 +227,7 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     return map;
@@ -243,9 +248,10 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_CABINET_FOLDER;
   }

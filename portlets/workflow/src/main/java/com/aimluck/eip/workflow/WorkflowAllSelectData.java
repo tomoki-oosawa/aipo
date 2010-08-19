@@ -184,7 +184,7 @@ public class WorkflowAllSelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTWorkflowRequest> list = query.perform();
+      List<EipTWorkflowRequest> list = query.fetchList();
       // リクエストの総数をセットする．
       requestSum = list.size();
       return buildPaginatedList(list);
@@ -291,7 +291,7 @@ public class WorkflowAllSelectData extends
       EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, entityId);
     SelectQuery<EipTWorkflowRequest> query = new SelectQuery<EipTWorkflowRequest>(
       EipTWorkflowRequest.class, exp);
-    List<?> record = query.perform();
+    List<?> record = query.fetchList();
     if (record.size() > 0) {
       return ((EipTWorkflowRequest) record.get(0)).getUserId().intValue();
     } else {

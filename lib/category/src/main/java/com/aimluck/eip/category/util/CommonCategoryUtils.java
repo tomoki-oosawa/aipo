@@ -110,7 +110,7 @@ public class CommonCategoryUtils {
         EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN, Integer.valueOf(1));
       query.setQualifier(exp).orderAscending(EipTCommonCategory.NAME_PROPERTY);
 
-      List<EipTCommonCategory> commoncategory_list = query.perform();
+      List<EipTCommonCategory> commoncategory_list = query.fetchList();
 
       for (EipTCommonCategory record : commoncategory_list) {
         CommonCategoryLiteBean bean = new CommonCategoryLiteBean();
@@ -161,7 +161,7 @@ public class CommonCategoryUtils {
     Expression exp = ExpressionFactory.matchExp(
       EipTScheduleMap.COMMON_CATEGORY_ID_PROPERTY, category
         .getCommonCategoryId());
-    List<EipTScheduleMap> schedulemap_list = query.andQualifier(exp).perform();
+    List<EipTScheduleMap> schedulemap_list = query.andQualifier(exp).fetchList();
     if (schedulemap_list != null) {
       EipTCommonCategory tmpCategory = CommonCategoryUtils
         .getEipTCommonCategory(Long.valueOf(1));

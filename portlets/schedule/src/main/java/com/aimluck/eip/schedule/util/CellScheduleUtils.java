@@ -24,7 +24,6 @@ import java.util.StringTokenizer;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -34,6 +33,7 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -115,7 +115,7 @@ public class CellScheduleUtils {
         EipMFacility.FACILITY_ID_PK_COLUMN, facstr);
       fquery.setQualifier(fexp);
       List<FacilityResultData> f_list = FacilitiesUtils
-        .getFacilitiesFromSelectQuery(fquery);
+        .getFacilitiesFromSelectQuery(fquery.getQuery());
       int f_list_size = f_list.size();
       for (int i = 0; i < f_list_size; i++) {
         f_record = f_list.get(i);
@@ -144,7 +144,7 @@ public class CellScheduleUtils {
         EipMFacility.FACILITY_ID_PK_COLUMN, str);
       fquery.setQualifier(fexp);
       List<FacilityResultData> f_list = FacilitiesUtils
-        .getFacilitiesFromSelectQuery(fquery);
+        .getFacilitiesFromSelectQuery(fquery.getQuery());
       int fsize = f_list.size();
       for (int i = 0; i < fsize; i++) {
         f_record = f_list.get(i);

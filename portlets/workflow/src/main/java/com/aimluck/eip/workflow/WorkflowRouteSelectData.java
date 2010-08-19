@@ -99,7 +99,7 @@ public class WorkflowRouteSelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTWorkflowRoute> list = query.perform();
+      List<EipTWorkflowRoute> list = query.fetchList();
       // 件数をセットする．
       routeSum = list.size();
       return buildPaginatedList(list);

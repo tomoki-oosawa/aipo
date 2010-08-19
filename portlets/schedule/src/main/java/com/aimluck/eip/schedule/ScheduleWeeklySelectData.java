@@ -257,7 +257,7 @@ public class ScheduleWeeklySelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
     try {
 
-      List<EipTScheduleMap> list = getSelectQuery(rundata, context).perform();
+      List<EipTScheduleMap> list = getSelectQuery(rundata, context).fetchList();
 
       if (viewTodo == 1) {
         // ToDo の読み込み
@@ -422,7 +422,7 @@ public class ScheduleWeeklySelectData extends
   public void loadTodo(RunData rundata, Context context) {
     try {
       SelectQuery<EipTTodo> query = getSelectQueryForTodo(rundata, context);
-      List<EipTTodo> todos = query.perform();
+      List<EipTTodo> todos = query.fetchList();
 
       int todossize = todos.size();
       for (int i = 0; i < todossize; i++) {

@@ -92,7 +92,7 @@ public class BlogThemaSelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTBlogThema> list = query.perform();
+      List<EipTBlogThema> list = query.fetchList();
       // 件数をセットする．
       themaSum = list.size();
       return buildPaginatedList(list);

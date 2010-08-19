@@ -79,7 +79,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
         user_id);
 
       List<EipTMail> mail_list = query.andQualifier(exp1).andQualifier(exp2)
-        .perform();
+        .fetchList();
 
       if (mail_list == null || mail_list.size() == 0) {
         // 指定したMail IDのレコードが見つからない場合
@@ -190,7 +190,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
       // より厳密にはメールフォルダも指定する。
 
       List<EipTMail> mail_list = query.andQualifier(exp1).andQualifier(exp2)
-        .andQualifier(exp3).perform();
+        .andQualifier(exp3).fetchList();
       if (mail_list == null || mail_list.size() == 0) {
         // 指定したMail IDのレコードが見つからない場合
         logger.debug("[ALDbLocalFolder] Not found ID...");

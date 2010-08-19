@@ -100,7 +100,7 @@ public class NoteClientSelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTNoteMap> list = query.perform();
+      List<EipTNoteMap> list = query.fetchList();
 
       return buildPaginatedList(list);
     } catch (Exception ex) {

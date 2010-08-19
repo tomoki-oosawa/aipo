@@ -94,7 +94,7 @@ public class ToDoCategorySelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTTodoCategory> list = query.perform();
+      List<EipTTodoCategory> list = query.fetchList();
       // 件数をセットする．
       categorySum = list.size();
       return buildPaginatedList(list);

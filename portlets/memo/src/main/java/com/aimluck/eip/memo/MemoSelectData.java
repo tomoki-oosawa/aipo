@@ -90,7 +90,7 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo, EipTMemo>
       memoLiteList = new ArrayList<MemoLiteResultData>();
 
       SelectQuery<EipTMemo> query = getSelectQuery(rundata, context);
-      List<EipTMemo> list = query.perform();
+      List<EipTMemo> list = query.fetchList();
 
       for (EipTMemo model : list) {
         MemoLiteResultData rd = new MemoLiteResultData();
@@ -121,7 +121,7 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo, EipTMemo>
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTMemo> list = query.perform();
+      List<EipTMemo> list = query.fetchList();
       // Memo の総数をセットする．
       memoSum = list.size();
 

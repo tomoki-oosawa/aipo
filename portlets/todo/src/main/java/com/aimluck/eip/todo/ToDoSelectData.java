@@ -121,7 +121,7 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
 
       List<EipTTodoCategory> categoryList2 = Database.query(
         EipTTodoCategory.class, exp).orderAscending(
-        EipTTodoCategory.CATEGORY_NAME_PROPERTY).perform();
+        EipTTodoCategory.CATEGORY_NAME_PROPERTY).fetchList();
 
       for (EipTTodoCategory record : categoryList2) {
         ToDoCategoryResultData rd = new ToDoCategoryResultData();
@@ -152,7 +152,7 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTTodo> list = query.perform();
+      List<EipTTodo> list = query.fetchList();
       todoSum = list.size();
       return buildPaginatedList(list);
     } catch (Exception ex) {

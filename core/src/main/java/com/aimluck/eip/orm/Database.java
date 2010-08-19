@@ -29,6 +29,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
+import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
@@ -88,6 +89,32 @@ public class Database {
   public static <M> SelectQuery<M> query(DataContext dataContext,
       Class<M> modelClass, Expression exp) {
     return new SelectQuery<M>(dataContext, modelClass, exp);
+  }
+
+  /**
+   * SQL検索クエリを作成します。
+   * 
+   * @param <M>
+   * @param modelClass
+   * @param sql
+   * @return
+   */
+  public static <M> SQLTemplate<M> sql(Class<M> modelClass, String sql) {
+    return new SQLTemplate<M>(modelClass, sql);
+  }
+
+  /**
+   * SQL検索クエリを作成します。
+   * 
+   * @param <M>
+   * @param dataContext
+   * @param modelClass
+   * @param sql
+   * @return
+   */
+  public static <M> SQLTemplate<M> sql(DataContext dataContext,
+      Class<M> modelClass, String sql) {
+    return new SQLTemplate<M>(dataContext, modelClass, sql);
   }
 
   /**

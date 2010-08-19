@@ -60,7 +60,7 @@ public class AddressBookUserUtils {
       SelectQuery<EipMAddressbook> query = getSelectQueryForAddressBook(
         groupid, loginuserid);
 
-      List<EipMAddressbook> addressbook_list = query.perform();
+      List<EipMAddressbook> addressbook_list = query.fetchList();
 
       for (EipMAddressbook record : addressbook_list) {
         AddressBookUserLiteBean address = new AddressBookUserLiteBean();
@@ -96,7 +96,7 @@ public class AddressBookUserUtils {
       query.setQualifier(exp).orderAscending(
         EipMAddressGroup.GROUP_NAME_PROPERTY);
 
-      List<EipMAddressGroup> addressgroup_list = query.perform();
+      List<EipMAddressGroup> addressgroup_list = query.fetchList();
       for (EipMAddressGroup record : addressgroup_list) {
         AddressBookUserGroupLiteBean bean = new AddressBookUserGroupLiteBean();
         bean.initField();
@@ -123,7 +123,7 @@ public class AddressBookUserUtils {
       SelectQuery<EipMAddressbook> query = getSelectQueryForAddressBook(
         groupid, loginuserid);
 
-      List<EipMAddressbook> addressbook_list = query.perform();
+      List<EipMAddressbook> addressbook_list = query.fetchList();
 
       for (EipMAddressbook record : addressbook_list) {
         AddressBookUserEmailLiteBean bean = new AddressBookUserEmailLiteBean();

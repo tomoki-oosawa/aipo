@@ -224,7 +224,7 @@ public class WorkflowSelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTWorkflowRequest> list = query.perform();
+      List<EipTWorkflowRequest> list = query.fetchList();
       // リクエストの総数をセットする．
       requestSum = list.size();
       return buildPaginatedList(list);

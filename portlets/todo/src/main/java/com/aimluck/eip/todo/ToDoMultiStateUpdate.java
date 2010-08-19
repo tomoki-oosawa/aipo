@@ -66,7 +66,7 @@ public class ToDoMultiStateUpdate extends ALAbstractCheckList {
         values);
 
       List<EipTTodo> todoList = Database.query(EipTTodo.class).setQualifier(
-        exp1).andQualifier(exp2).perform();
+        exp1).andQualifier(exp2).fetchList();
 
       if (todoList == null || todoList.size() == 0) {
         return false;

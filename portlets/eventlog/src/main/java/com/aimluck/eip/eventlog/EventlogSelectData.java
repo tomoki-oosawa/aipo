@@ -98,7 +98,7 @@ public class EventlogSelectData extends
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTEventlog> list = query.perform();
+      List<EipTEventlog> list = query.fetchList();
       // イベントログの総数をセットする．
       eventlogSum = list.size();
 

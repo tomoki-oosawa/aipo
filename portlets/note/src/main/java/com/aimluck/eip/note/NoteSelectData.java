@@ -172,7 +172,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTNoteMap> list = query.perform();
+      List<EipTNoteMap> list = query.fetchList();
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -320,7 +320,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
       Expression mapexp = ExpressionFactory.matchExp(
         EipTNoteMap.NOTE_ID_PROPERTY, record.getNoteId());
       List<EipTNoteMap> list = Database.query(EipTNoteMap.class, mapexp)
-        .perform();
+        .fetchList();
 
       List<Integer> users = new ArrayList<Integer>();
       for (EipTNoteMap notemap : list) {
@@ -343,7 +343,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
         users);
       query.setQualifier(exp);
 
-      members = ALEipUtils.getUsersFromSelectQuery(query.getQuery());
+      members = ALEipUtils.getUsersFromSelectQuery(query);
 
       String destUserNames = "";
 

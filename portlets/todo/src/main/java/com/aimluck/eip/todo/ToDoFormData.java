@@ -204,7 +204,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
       List<EipTTodoCategory> categoryList2 = Database.query(
         EipTTodoCategory.class, exp1).orQualifier(exp2).orderAscending(
-        EipTTodoCategory.CATEGORY_NAME_PROPERTY).perform();
+        EipTTodoCategory.CATEGORY_NAME_PROPERTY).fetchList();
 
       for (EipTTodoCategory record : categoryList2) {
         ToDoCategoryResultData rd = new ToDoCategoryResultData();
@@ -261,7 +261,7 @@ public class ToDoFormData extends ALAbstractFormData {
         EipTTodoCategory.USER_ID_PROPERTY, Integer.valueOf(this.user_id));
 
       if (Database.query(EipTTodoCategory.class, exp).andQualifier(
-        exp2.orExp(exp3)).perform().size() != 0) {
+        exp2.orExp(exp3)).fetchList().size() != 0) {
         msgList.add("カテゴリ名『 <span class='em'>" + category_name.toString()
           + "</span> 』は既に登録されています。");
       }

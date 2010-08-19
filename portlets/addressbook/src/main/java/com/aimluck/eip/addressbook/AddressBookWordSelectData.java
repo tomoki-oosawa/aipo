@@ -143,13 +143,13 @@ public class AddressBookWordSelectData extends ALAbstractSelectData {
         SelectQuery query = getSelectQuery(rundata, context);
         buildSelectQueryForListView(query);
         buildSelectQueryForListViewSort(query, rundata, context);
-        list = query.perform();
+        list = query.fetchList();
       } else if ("corp".equals(currentTab)) {
         // 社内アドレス検索時
         SelectQuery query = getSelectQuery(rundata, context);
         buildSelectQueryForListView(query);
         buildSelectQueryForListViewSort(query, rundata, context);
-        list = query.perform();
+        list = query.fetchList();
       } else {
         logger.info("unknown_addressTab_selected");
         return new ArrayList<Object>();
@@ -419,7 +419,7 @@ public class AddressBookWordSelectData extends ALAbstractSelectData {
           Integer.valueOf(ALEipUtils.getUserId(rundata)));
         query.setQualifier(exp);
 
-        List<EipMAddressGroup> aList = query.perform();
+        List<EipMAddressGroup> aList = query.fetchList();
         int size = aList.size();
         for (int i = 0; i < size; i++) {
           EipMAddressGroup record = aList.get(i);

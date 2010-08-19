@@ -30,7 +30,6 @@ import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -45,6 +44,7 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -54,7 +54,7 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AccountChangeTurnFormData.class.getName());
+    .getLogger(AccountChangeTurnFormData.class.getName());
 
   // ユーザ名のリスト
   private ALStringField positions;
@@ -66,13 +66,14 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
 
   /**
    * 初期化します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -82,7 +83,7 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -93,7 +94,7 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -101,6 +102,7 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res = true;
@@ -110,13 +112,13 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
         if (positions.getValue() == null || positions.getValue().equals("")) {
           SelectQuery query = new SelectQuery(TurbineUser.class);
           ObjectId oid = new ObjectId("TurbineUser",
-              TurbineUser.USER_ID_PK_COLUMN, 3);
+            TurbineUser.USER_ID_PK_COLUMN, 3);
           Expression exp1 = ExpressionFactory.matchAllDbExp(
-              oid.getIdSnapshot(), Expression.GREATER_THAN);
+            oid.getIdSnapshot(), Expression.GREATER_THAN);
           Expression exp2 = ExpressionFactory.matchExp(
-              TurbineUser.COMPANY_ID_PROPERTY, Integer.valueOf(1));
+            TurbineUser.COMPANY_ID_PROPERTY, Integer.valueOf(1));
           Expression exp3 = ExpressionFactory.noMatchExp(
-              TurbineUser.DISABLED_PROPERTY, "T");
+            TurbineUser.DISABLED_PROPERTY, "T");
           query.setQualifier(exp1);
           query.andQualifier(exp2);
           query.andQualifier(exp3);
@@ -130,16 +132,16 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
             count++;
           }
           DataContext dataContext = DatabaseOrmService.getInstance()
-              .getDataContext();
+            .getDataContext();
           SelectQuery query = new SelectQuery(TurbineUser.class);
           Expression exp1 = ExpressionFactory.inExp(
-              TurbineUser.LOGIN_NAME_PROPERTY, userNames);
+            TurbineUser.LOGIN_NAME_PROPERTY, userNames);
           Expression exp2 = ExpressionFactory.noMatchExp(
-              TurbineUser.DISABLED_PROPERTY, "T");
+            TurbineUser.DISABLED_PROPERTY, "T");
           query.setQualifier(exp1);
           query.andQualifier(exp2);
 
-          List<?> list = dataContext.performQuery(query);
+          List<?> list = query.fetchList();
 
           TurbineUser turbineUser = null;
           int length = userNames.length;
@@ -148,8 +150,8 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
             ALEipUser user = new ALEipUser();
             user.initField();
             user.setName(turbineUser.getLoginName());
-            user.setAliasName(turbineUser.getFirstName(),
-                turbineUser.getLastName());
+            user.setAliasName(turbineUser.getFirstName(), turbineUser
+              .getLastName());
             userList.add(user);
           }
         }
@@ -163,19 +165,21 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
   }
 
   /**
    * フォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     if (positions.getValue() != null && (!positions.getValue().equals(""))) {
       // 受信したユーザ ID の検証
@@ -194,10 +198,10 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
           if (isSymbol(unameValue.charAt(i1))) {
             // 使用されているのが妥当な記号であるかの確認
             if (!(unameValue.charAt(i1) == "_".charAt(0)
-                || unameValue.charAt(i1) == "-".charAt(0) || unameValue
-                .charAt(i1) == ".".charAt(0))) {
+              || unameValue.charAt(i1) == "-".charAt(0) || unameValue
+              .charAt(i1) == ".".charAt(0))) {
               msgList
-                  .add("『 <span class='em'>ログイン名</span> 』に使用できる記号は「-」「.」「_」のみです。");
+                .add("『 <span class='em'>ログイン名</span> 』に使用できる記号は「-」「.」「_」のみです。");
               break;
             }
           }
@@ -209,7 +213,7 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を読み込みます。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -217,6 +221,7 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
@@ -229,7 +234,7 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を追加します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -237,6 +242,7 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -244,7 +250,7 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -252,21 +258,22 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     boolean res = true;
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
       Expression exp1 = ExpressionFactory.inExp(
-          TurbineUser.LOGIN_NAME_PROPERTY, userNames);
+        TurbineUser.LOGIN_NAME_PROPERTY, userNames);
       SelectQuery query = new SelectQuery(TurbineUser.class, exp1);
       // Expression exp2 = ExpressionFactory.matchExp(
       // TurbineUser.DISABLED_PROPERTY, "F");
-      query.addOrdering(TurbineUser.EIP_MUSER_POSITION_PROPERTY + "."
-          + EipMUserPosition.POSITION_PROPERTY, true);
+      query.orderAscending(TurbineUser.EIP_MUSER_POSITION_PROPERTY + "."
+        + EipMUserPosition.POSITION_PROPERTY);
       // query.andQualifier(exp2);
-      List<?> list = dataContext.performQuery(query);
+      List<?> list = query.fetchList();
 
       // 場所を入れ替えたユーザの ID と移動先のインデックスを保持する．
       // (ユーザ ID，移動先インデックス)
@@ -285,7 +292,7 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
       Integer value = null;
       Map.Entry<TurbineUser, Integer> entry = null;
       for (Iterator<Map.Entry<TurbineUser, Integer>> i = map.entrySet()
-          .iterator(); i.hasNext();) {
+        .iterator(); i.hasNext();) {
         entry = i.next();
         key = entry.getKey();
         value = entry.getValue();
@@ -303,7 +310,7 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -311,6 +318,7 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -318,7 +326,7 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
 
   /**
    * 指定したchar型文字が記号であるかを判断します。
-   *
+   * 
    * @param ch
    * @return
    */
@@ -332,7 +340,7 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
     }
 
     if (chars == null || chars.length == 2 || Character.isDigit(ch)
-        || Character.isLetter(ch)) {
+      || Character.isLetter(ch)) {
       return false;
     } else {
       return true;
@@ -342,7 +350,7 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
 
   /**
    * 指定したユーザ名のオブジェクトを取得する．
-   *
+   * 
    * @param userList
    * @param userName
    * @return
@@ -360,7 +368,7 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
 
   /**
    * ユーザ情報のリストを取得する．
-   *
+   * 
    * @return
    */
   public List<ALEipUser> getUserList() {

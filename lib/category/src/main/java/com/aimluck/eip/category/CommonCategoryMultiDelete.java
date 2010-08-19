@@ -90,7 +90,7 @@ public class CommonCategoryMultiDelete extends ALAbstractCheckList {
         EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN, values);
       query.andQualifier(exp2);
 
-      List<EipTCommonCategory> commoncategory_list = query.perform();
+      List<EipTCommonCategory> commoncategory_list = query.fetchList();
       if (commoncategory_list == null || commoncategory_list.size() == 0) {
         return false;
       }

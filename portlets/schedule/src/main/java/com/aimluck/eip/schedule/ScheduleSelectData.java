@@ -27,8 +27,6 @@ import java.util.jar.Attributes;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
@@ -49,6 +47,7 @@ import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -63,7 +62,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
 
   /** <code>logger</code> logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ScheduleSelectData.class.getName());
+    .getLogger(ScheduleSelectData.class.getName());
 
   /** <code>members</code> 共有メンバー */
   private List members;
@@ -107,6 +106,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
    * .actions.common.ALAction, org.apache.turbine.util.RunData,
    * org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     // 展開されるパラメータは以下の通りです。
@@ -134,7 +134,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
       String tmpid = rundata.getParameters().getString("userid");
       if (tmpid != null && tmpid.startsWith(ScheduleUtils.TARGET_FACILITY_ID)) {
         userid = Integer.parseInt(tmpid.substring(
-            ScheduleUtils.TARGET_FACILITY_ID.length(), tmpid.length()));
+          ScheduleUtils.TARGET_FACILITY_ID.length(), tmpid.length()));
         type = ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY;
       } else {
         userid = rundata.getParameters().getInt("userid");
@@ -142,7 +142,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
       }
     } else if (rundata.getParameters().containsKey("facilityid")) {
       userid = Integer
-          .parseInt(rundata.getParameters().getString("facilityid"));
+        .parseInt(rundata.getParameters().getString("facilityid"));
       type = ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY;
     } else {
       userid = loginuserid;
@@ -158,24 +158,24 @@ public class ScheduleSelectData extends ALAbstractSelectData {
 
     // アクセス権限
     ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+      .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
     hasAuthorityOtherEdit = aclhandler.hasAuthority(loginuserid,
-        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
-        ALAccessControlConstants.VALUE_ACL_UPDATE);
+      ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+      ALAccessControlConstants.VALUE_ACL_UPDATE);
 
     hasAuthorityOtherDelete = aclhandler.hasAuthority(loginuserid,
-        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
-        ALAccessControlConstants.VALUE_ACL_DELETE);
+      ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+      ALAccessControlConstants.VALUE_ACL_DELETE);
 
     hasAuthoritySelfEdit = aclhandler.hasAuthority(loginuserid,
-        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
-        ALAccessControlConstants.VALUE_ACL_UPDATE);
+      ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
+      ALAccessControlConstants.VALUE_ACL_UPDATE);
 
     hasAuthoritySelfDelete = aclhandler.hasAuthority(loginuserid,
-        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
-        ALAccessControlConstants.VALUE_ACL_DELETE);
+      ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
+      ALAccessControlConstants.VALUE_ACL_DELETE);
 
   }
 
@@ -184,6 +184,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
    * com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine
    * .util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   protected List selectList(RunData rundata, Context context) {
     // このメソッドは利用されません。
     return null;
@@ -194,16 +195,18 @@ public class ScheduleSelectData extends ALAbstractSelectData {
    * com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine
    * .util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   protected Object selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     return ScheduleUtils.getEipTScheduleDetail(rundata, context, false, userid,
-        type);
+      type);
   }
 
   /*
    * @see
    * com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(Object obj) {
     // このメソッドは利用されません。
     return null;
@@ -214,6 +217,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
    * com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang
    * .Object)
    */
+  @Override
   protected Object getResultDataDetail(Object obj)
       throws ALPageNotFoundException, ALDBErrorException {
     EipTSchedule record = (EipTSchedule) obj;
@@ -221,29 +225,29 @@ public class ScheduleSelectData extends ALAbstractSelectData {
     rd.initField();
     try {
       DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+        .getDataContext();
 
       // 選択した予定に対するダミースケジュールを検索
       SelectQuery schedulequery = new SelectQuery(EipTSchedule.class);
       Expression exp1 = ExpressionFactory.matchExp(
-          EipTSchedule.PARENT_ID_PROPERTY, record.getScheduleId());
+        EipTSchedule.PARENT_ID_PROPERTY, record.getScheduleId());
       Expression exp2 = ExpressionFactory.matchExp(
-          EipTSchedule.START_DATE_PROPERTY, view_date.getValue());
+        EipTSchedule.START_DATE_PROPERTY, view_date.getValue());
       schedulequery.setQualifier(exp1);
       schedulequery.andQualifier(exp2);
       List<Object> scheduleList = new ArrayList<Object>();
-      scheduleList = dataContext.performQuery(schedulequery);
+      scheduleList = schedulequery.fetchList();
 
       scheduleList.add(record.getScheduleId());
 
       // 元のスケジュール及びダミースケジュールに登録されているマップを検索
       SelectQuery mapquery = new SelectQuery(EipTScheduleMap.class);
       Expression mapexp1 = ExpressionFactory.inExp(
-          EipTScheduleMap.SCHEDULE_ID_PROPERTY, scheduleList);
+        EipTScheduleMap.SCHEDULE_ID_PROPERTY, scheduleList);
       mapquery.setQualifier(mapexp1);
-      mapquery.addOrdering(EipTScheduleMap.SCHEDULE_ID_PROPERTY, Ordering.ASC);
+      mapquery.orderAscending(EipTScheduleMap.SCHEDULE_ID_PROPERTY);
 
-      List list = dataContext.performQuery(mapquery);
+      List list = mapquery.fetchList();
 
       List users = new ArrayList();
       List facilityIds = new ArrayList();
@@ -276,7 +280,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
       }
       SelectQuery query = new SelectQuery(TurbineUser.class);
       Expression exp = ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN,
-          users);
+        users);
       query.setQualifier(exp);
       members = ALEipUtils.getUsersFromSelectQuery(query);
       // members = ALEipUtils.getUsersFromCriteria(rundata, new
@@ -286,9 +290,10 @@ public class ScheduleSelectData extends ALAbstractSelectData {
       if (facilityIds.size() > 0) {
         SelectQuery fquery = new SelectQuery(EipMFacility.class);
         Expression fexp = ExpressionFactory.inDbExp(
-            EipMFacility.FACILITY_ID_PK_COLUMN, facilityIds);
+          EipMFacility.FACILITY_ID_PK_COLUMN, facilityIds);
         fquery.setQualifier(fexp);
-        facilities = FacilitiesUtils.getFacilitiesFromSelectQuery(fquery);
+        facilities = FacilitiesUtils.getFacilitiesFromSelectQuery(fquery
+          .getQuery());
       }
       // facilities = FacilitiesUtils.getFacilitiesFromCriteria(org_id,
       // new Criteria().addIn(EipMFacilityConstants.FACILITY_ID, facilityIds));
@@ -344,18 +349,18 @@ public class ScheduleSelectData extends ALAbstractSelectData {
         // 毎週
       } else if (ptn.charAt(0) == 'W') {
         rd.addText(new StringBuffer().append("毎週 ").append(
-            ptn.charAt(1) != '0' ? "日" : "").append(
-            ptn.charAt(2) != '0' ? "月" : "").append(
-            ptn.charAt(3) != '0' ? "火" : "").append(
-            ptn.charAt(4) != '0' ? "水" : "").append(
-            ptn.charAt(5) != '0' ? "木" : "").append(
-            ptn.charAt(6) != '0' ? "金" : "").append(
-            ptn.charAt(7) != '0' ? "土" : "").append(" 曜日").toString());
+          ptn.charAt(1) != '0' ? "日" : "").append(
+          ptn.charAt(2) != '0' ? "月" : "").append(
+          ptn.charAt(3) != '0' ? "火" : "").append(
+          ptn.charAt(4) != '0' ? "水" : "").append(
+          ptn.charAt(5) != '0' ? "木" : "").append(
+          ptn.charAt(6) != '0' ? "金" : "").append(
+          ptn.charAt(7) != '0' ? "土" : "").append(" 曜日").toString());
         count = 8;
         // 毎月
       } else if (ptn.charAt(0) == 'M') {
         rd.addText(new StringBuffer().append("毎月 ").append(
-            Integer.parseInt(ptn.substring(1, 3))).append("日").toString());
+          Integer.parseInt(ptn.substring(1, 3))).append("日").toString());
         count = 3;
         // 期間
       } else if (ptn.charAt(0) == 'S') {
@@ -374,20 +379,20 @@ public class ScheduleSelectData extends ALAbstractSelectData {
           rd.setLimit(true);
           // 期限
           rd.addText(new StringBuffer().append(" （").append(
-              rd.getStartDate().getYear()).append("年").append(
-              rd.getStartDate().getMonth()).append("月").append(
-              rd.getStartDate().getDay()).append("日 から ").append(
-              rd.getEndDate().getYear()).append("年").append(
-              rd.getEndDate().getMonth()).append("月").append(
-              rd.getEndDate().getDay()).append("日 まで）").toString());
+            rd.getStartDate().getYear()).append("年").append(
+            rd.getStartDate().getMonth()).append("月").append(
+            rd.getStartDate().getDay()).append("日 から ").append(
+            rd.getEndDate().getYear()).append("年").append(
+            rd.getEndDate().getMonth()).append("月").append(
+            rd.getEndDate().getDay()).append("日 まで）").toString());
         }
       }
       // 登録者
       rd.setCreateUser(ALEipUtils.getALEipUser(record.getCreateUserId()
-          .intValue()));
+        .intValue()));
       // 更新者
       rd.setUpdateUser(ALEipUtils.getALEipUser(record.getUpdateUserId()
-          .intValue()));
+        .intValue()));
       // 登録日時
       rd.setCreateDate(record.getCreateDate());
       // 更新日時
@@ -412,6 +417,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
   /*
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     // このメソッドは利用されません。
     return null;
@@ -466,6 +472,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
    * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return aclPortletFeature;
   }

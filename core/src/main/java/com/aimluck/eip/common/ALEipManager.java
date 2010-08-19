@@ -101,7 +101,7 @@ public class ALEipManager {
         org_id = iter.next();
         DataContext dataContext = DataContext.createDataContext(org_id);
         List<EipMCompany> list = Database.query(dataContext, EipMCompany.class)
-          .perform();
+          .fetchList();
         for (EipMCompany record : list) {
           ALEipCompany company = new ALEipCompany();
           company.initField();
@@ -134,7 +134,7 @@ public class ALEipManager {
         org_id = iter.next();
         DataContext dataContext = DataContext.createDataContext(org_id);
         List<EipMPost> list = Database.query(dataContext, EipMPost.class)
-          .perform();
+          .fetchList();
         Collections.sort(list, new Comparator<EipMPost>() {
           public int compare(EipMPost l1, EipMPost l2) {
             return (l1).getPostName().compareTo((l2).getPostName());
@@ -174,7 +174,7 @@ public class ALEipManager {
         org_id = iter.next();
         DataContext dataContext = DataContext.createDataContext(org_id);
         List<EipMPosition> list = Database.query(dataContext,
-          EipMPosition.class).perform();
+          EipMPosition.class).fetchList();
         for (EipMPosition record : list) {
           ALEipPosition position = new ALEipPosition();
           position.initField();
@@ -197,7 +197,7 @@ public class ALEipManager {
     synchronized (companysMap) {
       try {
         org_id = DatabaseOrmService.getInstance().getOrgId(getRunData());
-        List<EipMCompany> list = Database.query(EipMCompany.class).perform();
+        List<EipMCompany> list = Database.query(EipMCompany.class).fetchList();
         Map<Integer, ALEipCompany> companyMap = companysMap.remove(org_id);
         if (companyMap == null) {
           companyMap = new LinkedHashMap<Integer, ALEipCompany>();
@@ -228,7 +228,7 @@ public class ALEipManager {
     synchronized (postsMap) {
       try {
         org_id = DatabaseOrmService.getInstance().getOrgId(getRunData());
-        List<EipMPost> list = Database.query(EipMPost.class).perform();
+        List<EipMPost> list = Database.query(EipMPost.class).fetchList();
         Collections.sort(list, new Comparator<EipMPost>() {
           public int compare(EipMPost l1, EipMPost l2) {
             return (l1).getPostName().compareTo((l2).getPostName());
@@ -265,7 +265,7 @@ public class ALEipManager {
     synchronized (positionsMap) {
       try {
         org_id = DatabaseOrmService.getInstance().getOrgId(getRunData());
-        List<EipMPosition> list = Database.query(EipMPosition.class).perform();
+        List<EipMPosition> list = Database.query(EipMPosition.class).fetchList();
 
         Map<Integer, ALEipPosition> positionMap = positionsMap.remove(org_id);
         if (positionMap == null) {

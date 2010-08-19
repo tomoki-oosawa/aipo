@@ -46,7 +46,7 @@ public class FacilityUtils {
       SelectQuery<EipMFacility> query = Database.query(EipMFacility.class);
 
       List<EipMFacility> facility_list = query.orderAscending(
-        EipMFacility.FACILITY_NAME_PROPERTY).perform();
+        EipMFacility.FACILITY_NAME_PROPERTY).fetchList();
 
       for (EipMFacility record : facility_list) {
         FacilityLiteBean bean = new FacilityLiteBean();

@@ -142,7 +142,7 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List list = query.perform();
+      List list = query.fetchList();
       // 総数をセットする．
       if (list != null) {
         searchSum = list.size();

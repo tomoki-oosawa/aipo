@@ -137,7 +137,7 @@ public class CommonCategoryFormData extends ALAbstractFormData {
         query.andQualifier(exp3);
       }
 
-      if (query.perform().size() != 0) {
+      if (query.fetchList().size() != 0) {
         msgList.add("共有カテゴリ名『 <span class='em'>" + name.toString()
           + "</span> 』は既に登録されています。");
       }

@@ -263,7 +263,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
       SelectQuery query = new SelectQuery(EipTMsgboardFile.class);
       query.andQualifier(ExpressionFactory.matchDbExp(
         EipTMsgboardFile.EIP_TMSGBOARD_TOPIC_PROPERTY, topic.getTopicId()));
-      fileuploadList = query.perform();
+      fileuploadList = query.fetchList();
 
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -326,7 +326,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
         EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, topicIdList);
       query.setQualifier(exp);
 
-      List<EipTMsgboardTopic> topics = query.perform();
+      List<EipTMsgboardTopic> topics = query.fetchList();
 
       List<String> fpaths = new ArrayList<String>();
       if (topics.size() > 0) {

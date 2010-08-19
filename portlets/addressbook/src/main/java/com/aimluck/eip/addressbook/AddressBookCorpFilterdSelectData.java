@@ -128,7 +128,7 @@ public class AddressBookCorpFilterdSelectData extends ALAbstractSelectData {
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<TurbineUser> list = query.perform();
+      List<TurbineUser> list = query.fetchList();
       return buildPaginatedList(list);
     } catch (Exception ex) {
       logger.error("Exception", ex);
