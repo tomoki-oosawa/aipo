@@ -61,7 +61,7 @@ public class SQLTemplate<M> extends AbstractQuery<M> {
     List<M> results = new ArrayList<M>(dataRows.size());
     for (DataRow dataRow : dataRows) {
       M model = newInstanceFromRowData(dataRow, rootClass);
-      if (model == null) {
+      if (model != null) {
         results.add(model);
       }
     }

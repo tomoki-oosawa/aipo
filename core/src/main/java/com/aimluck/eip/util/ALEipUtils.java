@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONArray;
 
 import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.capability.CapabilityMap;
@@ -118,15 +117,16 @@ public class ALEipUtils {
       String value) {
 
     JetspeedRunData jdata = (JetspeedRunData) rundata;
-    VelocityPortlet portlet = ((VelocityPortlet) context
-      .get(JetspeedResources.PATH_PORTLET_KEY));
+    VelocityPortlet portlet =
+      ((VelocityPortlet) context.get(JetspeedResources.PATH_PORTLET_KEY));
 
     if (portlet == null) {
       // Screen の場合
-      String js_peid = rundata.getParameters().getString(
-        JetspeedResources.PATH_PORTLETID_KEY);
+      String js_peid =
+        rundata.getParameters().getString(JetspeedResources.PATH_PORTLETID_KEY);
       jdata.getUser().setTemp(
-        new StringBuffer().append(js_peid).append(key).toString(), value);
+        new StringBuffer().append(js_peid).append(key).toString(),
+        value);
     } else {
       // Action の場合
       jdata.getUser().setTemp(
@@ -146,12 +146,12 @@ public class ALEipUtils {
    */
   public static void removeTemp(RunData rundata, Context context, String key) {
     JetspeedRunData jdata = (JetspeedRunData) rundata;
-    VelocityPortlet portlet = ((VelocityPortlet) context
-      .get(JetspeedResources.PATH_PORTLET_KEY));
+    VelocityPortlet portlet =
+      ((VelocityPortlet) context.get(JetspeedResources.PATH_PORTLET_KEY));
     if (portlet == null) {
       // Screen の場合
-      String js_peid = rundata.getParameters().getString(
-        JetspeedResources.PATH_PORTLETID_KEY);
+      String js_peid =
+        rundata.getParameters().getString(JetspeedResources.PATH_PORTLETID_KEY);
       jdata.getUser().removeTemp(
         new StringBuffer().append(js_peid).append(key).toString());
     } else {
@@ -164,16 +164,18 @@ public class ALEipUtils {
   public static void removeTemp(RunData rundata, Context context,
       List<String> list) {
     JetspeedRunData jdata = (JetspeedRunData) rundata;
-    VelocityPortlet portlet = ((VelocityPortlet) context
-      .get(JetspeedResources.PATH_PORTLET_KEY));
+    VelocityPortlet portlet =
+      ((VelocityPortlet) context.get(JetspeedResources.PATH_PORTLET_KEY));
     int size = list.size();
     if (portlet == null) {
       // Screen の場合
-      String js_peid = rundata.getParameters().getString(
-        JetspeedResources.PATH_PORTLETID_KEY);
+      String js_peid =
+        rundata.getParameters().getString(JetspeedResources.PATH_PORTLETID_KEY);
       for (int i = 0; i < size; i++) {
         jdata.getUser().removeTemp(
-          new StringBuffer().append(js_peid).append(list.get(i).toString())
+          new StringBuffer()
+            .append(js_peid)
+            .append(list.get(i).toString())
             .toString());
       }
     } else {
@@ -181,7 +183,9 @@ public class ALEipUtils {
       String peid = portlet.getID();
       for (int i = 0; i < size; i++) {
         jdata.getUser().removeTemp(
-          new StringBuffer().append(peid).append(list.get(i).toString())
+          new StringBuffer()
+            .append(peid)
+            .append(list.get(i).toString())
             .toString());
       }
     }
@@ -200,18 +204,20 @@ public class ALEipUtils {
   public static String getTemp(RunData rundata, Context context, String key) {
     JetspeedRunData jdata = (JetspeedRunData) rundata;
     Object obj = null;
-    VelocityPortlet portlet = ((VelocityPortlet) context
-      .get(JetspeedResources.PATH_PORTLET_KEY));
+    VelocityPortlet portlet =
+      ((VelocityPortlet) context.get(JetspeedResources.PATH_PORTLET_KEY));
     if (portlet == null) {
       // Screen の場合
-      String js_peid = rundata.getParameters().getString(
-        JetspeedResources.PATH_PORTLETID_KEY);
-      obj = jdata.getUser().getTemp(
-        new StringBuffer().append(js_peid).append(key).toString());
+      String js_peid =
+        rundata.getParameters().getString(JetspeedResources.PATH_PORTLETID_KEY);
+      obj =
+        jdata.getUser().getTemp(
+          new StringBuffer().append(js_peid).append(key).toString());
     } else {
       // Action の場合
-      obj = jdata.getUser().getTemp(
-        new StringBuffer().append(portlet.getID()).append(key).toString());
+      obj =
+        jdata.getUser().getTemp(
+          new StringBuffer().append(portlet.getID()).append(key).toString());
     }
     return (obj == null) ? null : obj.toString();
   }
@@ -225,8 +231,8 @@ public class ALEipUtils {
    */
   public static int getEntityId(RunData rundata, Context context) {
     int entity_id = 0;
-    String entity_id_str = ALEipUtils.getTemp(rundata, context,
-      ALEipConstants.ENTITY_ID);
+    String entity_id_str =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       entity_id = Integer.parseInt(entity_id_str);
     } catch (Exception e) {
@@ -267,8 +273,8 @@ public class ALEipUtils {
    */
   public static Portlet getPortlet(RunData rundata, String portletId) {
     try {
-      Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-        .getDocument().getPortlets();
+      Portlets portlets =
+        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
       if (portlets == null) {
         return null;
       }
@@ -288,8 +294,8 @@ public class ALEipUtils {
         int ent_length = entries.length;
         for (int j = 0; j < ent_length; j++) {
           if (entries[j].getId().equals(portletId)) {
-            PortletWrapper wrapper = (PortletWrapper) PortletFactory
-              .getPortlet(entries[j]);
+            PortletWrapper wrapper =
+              (PortletWrapper) PortletFactory.getPortlet(entries[j]);
             if (wrapper != null) {
               return wrapper.getPortlet();
             } else {
@@ -321,8 +327,8 @@ public class ALEipUtils {
       return true;
     }
     String peid1 = portlet.getID();
-    String peid2 = rundata.getParameters().getString(
-      JetspeedResources.PATH_PORTLETID_KEY);
+    String peid2 =
+      rundata.getParameters().getString(JetspeedResources.PATH_PORTLETID_KEY);
     if (peid1 == null || peid2 == null) {
       return false;
     }
@@ -358,8 +364,11 @@ public class ALEipUtils {
     String query = statement.toString();
 
     try {
-      List<TurbineUser> list2 = Database.sql(TurbineUser.class, query).param(
-        "groupName", groupname).fetchList();
+      List<TurbineUser> list2 =
+        Database
+          .sql(TurbineUser.class, query)
+          .param("groupName", groupname)
+          .fetchList();
 
       ALEipUser user;
       for (TurbineUser tuser : list2) {
@@ -404,8 +413,11 @@ public class ALEipUtils {
     String query = statement.toString();
 
     try {
-      List<TurbineUser> list2 = Database.sql(TurbineUser.class, query).param(
-        "groupName", groupname).fetchList();
+      List<TurbineUser> list2 =
+        Database
+          .sql(TurbineUser.class, query)
+          .param("groupName", groupname)
+          .fetchList();
       for (TurbineUser tuser : list2) {
         list.add(tuser.getUserId());
       }
@@ -444,8 +456,11 @@ public class ALEipUtils {
     String query = statement.toString();
 
     try {
-      List<TurbineUser> list2 = Database.sql(TurbineUser.class, query).param(
-        "postId", postid).fetchList();
+      List<TurbineUser> list2 =
+        Database
+          .sql(TurbineUser.class, query)
+          .param("postId", postid)
+          .fetchList();
 
       ALEipUser user;
       for (TurbineUser tuser : list2) {
@@ -473,9 +488,11 @@ public class ALEipUtils {
       SelectQuery<TurbineUser> query) {
     List<ALEipUser> list = new ArrayList<ALEipUser>();
     try {
-      List<TurbineUser> ulist = query.orderAscending(
-        TurbineUser.EIP_MUSER_POSITION_PROPERTY + "."
-          + EipMUserPosition.POSITION_PROPERTY).fetchList();
+      List<TurbineUser> ulist =
+        query.orderAscending(
+          TurbineUser.EIP_MUSER_POSITION_PROPERTY
+            + "."
+            + EipMUserPosition.POSITION_PROPERTY).fetchList();
 
       for (TurbineUser record : ulist) {
         ALEipUser user = new ALEipUser();
@@ -504,7 +521,8 @@ public class ALEipUtils {
     user.setUserId(Integer.parseInt(jdata.getJetspeedUser().getUserId()));
     user.setName(jdata.getJetspeedUser().getUserName());
     user.setAliasName(jdata.getJetspeedUser().getFirstName(), jdata
-      .getJetspeedUser().getLastName());
+      .getJetspeedUser()
+      .getLastName());
     return user;
   }
 
@@ -537,9 +555,10 @@ public class ALEipUtils {
    */
   public static ALEipUser getALEipUser(String loginname)
       throws ALDBErrorException {
-    Expression exp = ExpressionFactory.matchExp(
-      TurbineUser.LOGIN_NAME_PROPERTY, loginname);
-    List<TurbineUser> users = Database.query(TurbineUser.class, exp).fetchList();
+    Expression exp =
+      ExpressionFactory.matchExp(TurbineUser.LOGIN_NAME_PROPERTY, loginname);
+    List<TurbineUser> users =
+      Database.query(TurbineUser.class, exp).fetchList();
     if (users.size() == 0) {
       return null;
     }
@@ -586,8 +605,9 @@ public class ALEipUtils {
     String userName = "";
     ALBaseUser user = getBaseUser(userid);
     if (user != null) {
-      userName = new StringBuffer().append(user.getLastName()).append(" ")
-        .append(user.getFirstName()).toString();
+      userName =
+        new StringBuffer().append(user.getLastName()).append(" ").append(
+          user.getFirstName()).toString();
     }
     return userName;
   }
@@ -609,7 +629,8 @@ public class ALEipUtils {
       ALBaseUser user = (ALBaseUser) JetspeedSecurity.getUser(username);
 
       // グループへ追加
-      JetspeedSecurity.joinGroup(username, (ALEipManager.getInstance()
+      JetspeedSecurity.joinGroup(username, (ALEipManager
+        .getInstance()
         .getPostMap().get(Integer.valueOf(postid))).getGroupName().getValue());
 
       // 部署を変更
@@ -641,10 +662,11 @@ public class ALEipUtils {
   public static void reloadMygroup(RunData rundata) throws ALDBErrorException {
     List<ALEipGroup> ulist = new ArrayList<ALEipGroup>();
     try {
-      Expression exp = ExpressionFactory.matchExp(
-        TurbineGroup.OWNER_ID_PROPERTY, Integer.valueOf(getUserId(rundata)));
-      List<TurbineGroup> list = Database.query(TurbineGroup.class, exp)
-        .fetchList();
+      Expression exp =
+        ExpressionFactory.matchExp(TurbineGroup.OWNER_ID_PROPERTY, Integer
+          .valueOf(getUserId(rundata)));
+      List<TurbineGroup> list =
+        Database.query(TurbineGroup.class, exp).fetchList();
 
       for (TurbineGroup record : list) {
         ALEipGroup group = new ALEipGroup();
@@ -695,10 +717,12 @@ public class ALEipUtils {
   public static String getCompanyName(int id) {
     String companyName = null;
     try {
-      Expression exp = ExpressionFactory.matchDbExp(
-        EipMCompany.COMPANY_ID_PK_COLUMN, Integer.valueOf(id));
-      List<EipMCompany> list = Database.query(EipMCompany.class, exp).select(
-        EipMCompany.COMPANY_NAME_COLUMN).fetchList();
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipMCompany.COMPANY_ID_PK_COLUMN, Integer
+          .valueOf(id));
+      List<EipMCompany> list =
+        Database.query(EipMCompany.class, exp).select(
+          EipMCompany.COMPANY_NAME_COLUMN).fetchList();
 
       if (list == null || list.size() == 0) {
         // 指定したCompany IDのレコードが見つからない場合
@@ -724,10 +748,13 @@ public class ALEipUtils {
    * @return
    */
   public static String getPostName(int id) {
-    if (ALEipManager.getInstance().getPostMap()
+    if (ALEipManager
+      .getInstance()
+      .getPostMap()
       .containsKey(Integer.valueOf(id))) {
       return (ALEipManager.getInstance().getPostMap().get(Integer.valueOf(id)))
-        .getPostName().getValue();
+        .getPostName()
+        .getValue();
     }
     return null;
   }
@@ -783,8 +810,8 @@ public class ALEipUtils {
     try {
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       DynamicURI duri = jsLink.getPage();
-      String template = rundata.getParameters().getString(
-        JetspeedResources.PATH_TEMPLATE_KEY);
+      String template =
+        rundata.getParameters().getString(JetspeedResources.PATH_TEMPLATE_KEY);
       if (template != null && !("".equals(template))) {
         if (template.endsWith("DetailScreen")) {
           VelocityContext context = new VelocityContext();
@@ -793,10 +820,12 @@ public class ALEipUtils {
             ServletOutputStream out = null;
             HttpServletResponse response = rundata.getResponse();
             out = response.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-              out, ALEipConstants.DEF_CONTENT_ENCODING));
-            Template templete = Velocity
-              .getTemplate("screens/html/AjaxDBError.vm");
+            BufferedWriter writer =
+              new BufferedWriter(new OutputStreamWriter(
+                out,
+                ALEipConstants.DEF_CONTENT_ENCODING));
+            Template templete =
+              Velocity.getTemplate("screens/html/AjaxDBError.vm");
             templete.merge(context, writer);
             writer.flush();
             writer.close();
@@ -833,8 +862,8 @@ public class ALEipUtils {
     try {
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       DynamicURI duri = jsLink.getPage();
-      String template = rundata.getParameters().getString(
-        JetspeedResources.PATH_TEMPLATE_KEY);
+      String template =
+        rundata.getParameters().getString(JetspeedResources.PATH_TEMPLATE_KEY);
       if (template != null && !("".equals(template))) {
 
         if (template.endsWith("JSONScreen")) {
@@ -850,8 +879,9 @@ public class ALEipUtils {
             list.add(ALAccessControlConstants.DEF_PERMISSION_ERROR_STR);
             JSONArray json = JSONArray.fromObject(list);
 
-            StringBuffer result = new StringBuffer().append("/* ").append(
-              json.toString()).append(" */");
+            StringBuffer result =
+              new StringBuffer().append("/* ").append(json.toString()).append(
+                " */");
 
             out.print(result.toString());
             out.flush();
@@ -868,10 +898,12 @@ public class ALEipUtils {
             ServletOutputStream out = null;
             HttpServletResponse response = rundata.getResponse();
             out = response.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-              out, ALEipConstants.DEF_CONTENT_ENCODING));
-            Template templete = Velocity
-              .getTemplate("screens/html/AjaxPermissionError.vm");
+            BufferedWriter writer =
+              new BufferedWriter(new OutputStreamWriter(
+                out,
+                ALEipConstants.DEF_CONTENT_ENCODING));
+            Template templete =
+              Velocity.getTemplate("screens/html/AjaxPermissionError.vm");
             templete.merge(context, writer);
             writer.flush();
             writer.close();
@@ -887,10 +919,12 @@ public class ALEipUtils {
             ServletOutputStream out = null;
             HttpServletResponse response = rundata.getResponse();
             out = response.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-              out, ALEipConstants.DEF_CONTENT_ENCODING));
-            Template templete = Velocity
-              .getTemplate("portlets/html/PermissionError.vm");
+            BufferedWriter writer =
+              new BufferedWriter(new OutputStreamWriter(
+                out,
+                ALEipConstants.DEF_CONTENT_ENCODING));
+            Template templete =
+              Velocity.getTemplate("portlets/html/PermissionError.vm");
             templete.merge(context, writer);
             writer.flush();
             writer.close();
@@ -901,7 +935,8 @@ public class ALEipUtils {
 
         } else if (template.equals("Customize") || template.equals("Home")) {
           // ポートレットカスタマイズ
-          duri.addPathInfo(JetspeedResources.PATH_TEMPLATE_KEY,
+          duri.addPathInfo(
+            JetspeedResources.PATH_TEMPLATE_KEY,
             "PermissionError");
           rundata.setRedirectURI(duri.toString());
           rundata.getResponse().sendRedirect(rundata.getRedirectURI());
@@ -911,7 +946,8 @@ public class ALEipUtils {
           jsLink = null;
           return true;
         } else if (isCellularPhone(rundata)) {
-          duri.addPathInfo(JetspeedResources.PATH_TEMPLATE_KEY,
+          duri.addPathInfo(
+            JetspeedResources.PATH_TEMPLATE_KEY,
             "CellPermissionError");
           rundata.setRedirectURI(duri.toString());
           rundata.getResponse().sendRedirect(rundata.getRedirectURI());
@@ -924,7 +960,8 @@ public class ALEipUtils {
           }
           return true;
         } else if (isSmartPhone(rundata)) {
-          duri.addPathInfo(JetspeedResources.PATH_TEMPLATE_KEY,
+          duri.addPathInfo(
+            JetspeedResources.PATH_TEMPLATE_KEY,
             "CellPermissionError");
           rundata.setRedirectURI(duri.toString());
           rundata.getResponse().sendRedirect(rundata.getRedirectURI());
@@ -957,8 +994,9 @@ public class ALEipUtils {
 
         jsLink = null;
       } else {
-        Context context = (Context) jdata.getTemplateInfo().getTemplateContext(
-          "VelocityPortletContext");
+        Context context =
+          (Context) jdata.getTemplateInfo().getTemplateContext(
+            "VelocityPortletContext");
         context.put(JetspeedResources.PATH_TEMPLATE_KEY, "PermissionError");
       }
 
@@ -986,7 +1024,8 @@ public class ALEipUtils {
     if (msgline == null || msgline.equals("")) {
       return "";
     }
-    if (msgline.indexOf("\r") < 0 && msgline.indexOf("\n") < 0
+    if (msgline.indexOf("\r") < 0
+      && msgline.indexOf("\n") < 0
       && msgline.indexOf("\r\n") < 0) {
       field = new ALStringField();
       field.setTrim(false);
@@ -1057,15 +1096,19 @@ public class ALEipUtils {
    */
   public static boolean isCellularPhone(RunData data) {
     boolean isCellularPhone = false;
-    CapabilityMap cm = CapabilityMapFactory.getCapabilityMap(data.getRequest()
-      .getHeader("User-Agent"));
+    CapabilityMap cm =
+      CapabilityMapFactory.getCapabilityMap(data.getRequest().getHeader(
+        "User-Agent"));
     MimeType mime = cm.getPreferredType();
     if (mime != null) {
-      MediaTypeEntry media = (MediaTypeEntry) Registry.getEntry(
-        Registry.MEDIA_TYPE, cm.getPreferredMediaType());
+      MediaTypeEntry media =
+        (MediaTypeEntry) Registry.getEntry(Registry.MEDIA_TYPE, cm
+          .getPreferredMediaType());
       String mediatype = media.getName();
-      if ("docomo_imode".equals(mediatype) || "docomo_foma".equals(mediatype)
-        || "au".equals(mediatype) || "vodafone".equals(mediatype)) {
+      if ("docomo_imode".equals(mediatype)
+        || "docomo_foma".equals(mediatype)
+        || "au".equals(mediatype)
+        || "vodafone".equals(mediatype)) {
         isCellularPhone = true;
       }
     }
@@ -1080,12 +1123,14 @@ public class ALEipUtils {
    */
   public static boolean isSmartPhone(RunData data) {
     boolean isSmartPhone = false;
-    CapabilityMap cm = CapabilityMapFactory.getCapabilityMap(data.getRequest()
-      .getHeader("User-Agent"));
+    CapabilityMap cm =
+      CapabilityMapFactory.getCapabilityMap(data.getRequest().getHeader(
+        "User-Agent"));
     MimeType mime = cm.getPreferredType();
     if (mime != null) {
-      MediaTypeEntry media = (MediaTypeEntry) Registry.getEntry(
-        Registry.MEDIA_TYPE, cm.getPreferredMediaType());
+      MediaTypeEntry media =
+        (MediaTypeEntry) Registry.getEntry(Registry.MEDIA_TYPE, cm
+          .getPreferredMediaType());
       String mediatype = media.getName();
       if ("iphone".equals(mediatype) || "wm".equals(mediatype)) {
         isSmartPhone = true;
@@ -1120,9 +1165,12 @@ public class ALEipUtils {
     int date2Minute = cal2.get(Calendar.MINUTE);
     int date2Second = cal2.get(Calendar.SECOND);
 
-    if (date1Year == date2Year && date1Month == date2Month
-      && date1Day == date2Day && date1Hour == date2Hour
-      && date1Minute == date2Minute && date1Second == date2Second) {
+    if (date1Year == date2Year
+      && date1Month == date2Month
+      && date1Day == date2Day
+      && date1Hour == date2Hour
+      && date1Minute == date2Minute
+      && date1Second == date2Second) {
       return 0;
     }
     if (cal1.after(cal2)) {
@@ -1155,8 +1203,9 @@ public class ALEipUtils {
    * @return
    */
   public static EipMCompany getEipMCompany(String id) {
-    Expression exp = ExpressionFactory.matchDbExp(
-      EipMCompany.COMPANY_ID_PK_COLUMN, Integer.valueOf(id));
+    Expression exp =
+      ExpressionFactory.matchDbExp(EipMCompany.COMPANY_ID_PK_COLUMN, Integer
+        .valueOf(id));
     List<EipMCompany> list = Database.query(EipMCompany.class, exp).fetchList();
     if (list == null || list.size() == 0) {
       logger.debug("Not found ID...");
@@ -1178,8 +1227,8 @@ public class ALEipUtils {
       return "";
     }
 
-    String protocol = JetspeedResources
-      .getString("access.url.protocol", "http");
+    String protocol =
+      JetspeedResources.getString("access.url.protocol", "http");
 
     StringBuffer url = new StringBuffer();
 
@@ -1187,8 +1236,15 @@ public class ALEipUtils {
       url.append(protocol).append("://").append(ip).append("/").append(
         servername).append("/");
     } else {
-      url.append(protocol).append("://").append(ip).append(":").append(port)
-        .append("/").append(servername).append("/");
+      url
+        .append(protocol)
+        .append("://")
+        .append(ip)
+        .append(":")
+        .append(port)
+        .append("/")
+        .append(servername)
+        .append("/");
     }
 
     return url.toString();
@@ -1205,8 +1261,8 @@ public class ALEipUtils {
       JetspeedResources.PATH_PORTLETID_KEY)) {
       return;
     }
-    js_peid = rundata.getParameters().getString(
-      JetspeedResources.PATH_PORTLETID_KEY);
+    js_peid =
+      rundata.getParameters().getString(JetspeedResources.PATH_PORTLETID_KEY);
 
     Portlet portlet = getPortlet(rundata, js_peid);
     context.put("portlet", portlet);
@@ -1236,28 +1292,6 @@ public class ALEipUtils {
   }
 
   /**
-   * 
-   * @param dataContext
-   * @param classname
-   * @param search_key
-   * @param search_value
-   * @param isDb
-   * @return
-   * @deprecated
-   */
-  @Deprecated
-  public static List<?> getObjectModels(DataContext dataContext,
-      Class<?> classname, String search_key, Integer search_value, boolean isDb) {
-    Expression exp = isDb ? ExpressionFactory.matchDbExp(search_key,
-      search_value) : ExpressionFactory.matchExp(search_key, search_value);
-    List<?> list = Database.query(dataContext, classname, exp).fetchList();
-    if (list == null || list.size() <= 0) {
-      return null;
-    }
-    return list;
-  }
-
-  /**
    * 指定したエントリー名のポートレットへの URI を取得します。
    * 
    * @param rundata
@@ -1267,8 +1301,8 @@ public class ALEipUtils {
    */
   public static String getPortletURI(RunData rundata, String portletEntryId) {
     try {
-      Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-        .getDocument().getPortlets();
+      Portlets portlets =
+        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
       if (portlets == null) {
         return null;
       }
@@ -1289,12 +1323,20 @@ public class ALEipUtils {
         for (int j = 0; j < ent_length; j++) {
           if (entries[j].getId().equals(portletEntryId)) {
             JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-            DynamicURI duri = jsLink.getLink(JetspeedLink.CURRENT, null, null,
-              JetspeedLink.CURRENT, null);
-            duri = duri.addPathInfo(JetspeedResources.PATH_PANEID_KEY,
-              portletList[i].getId()).addPathInfo(
-              JetspeedResources.PATH_PORTLETID_KEY, entries[j].getId())
-              .addQueryData(JetspeedResources.PATH_ACTION_KEY,
+            DynamicURI duri =
+              jsLink.getLink(
+                JetspeedLink.CURRENT,
+                null,
+                null,
+                JetspeedLink.CURRENT,
+                null);
+            duri =
+              duri.addPathInfo(
+                JetspeedResources.PATH_PANEID_KEY,
+                portletList[i].getId()).addPathInfo(
+                JetspeedResources.PATH_PORTLETID_KEY,
+                entries[j].getId()).addQueryData(
+                JetspeedResources.PATH_ACTION_KEY,
                 "controls.Maximize");
             return duri.toString();
           }
@@ -1316,8 +1358,8 @@ public class ALEipUtils {
   public static String getPortletURItoTopPage(RunData rundata,
       String portletEntryId) {
     try {
-      Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-        .getDocument().getPortlets();
+      Portlets portlets =
+        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
       if (portlets == null) {
         return null;
       }
@@ -1338,11 +1380,19 @@ public class ALEipUtils {
         for (int j = 0; j < ent_length; j++) {
           if (entries[j].getId().equals(portletEntryId)) {
             JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-            DynamicURI duri = jsLink.getLink(JetspeedLink.CURRENT, null, null,
-              JetspeedLink.CURRENT, null);
-            duri = duri.addPathInfo(JetspeedResources.PATH_PANEID_KEY,
-              portletList[i].getId()).addQueryData(
-              JetspeedResources.PATH_ACTION_KEY, "controls.Restore");
+            DynamicURI duri =
+              jsLink.getLink(
+                JetspeedLink.CURRENT,
+                null,
+                null,
+                JetspeedLink.CURRENT,
+                null);
+            duri =
+              duri.addPathInfo(
+                JetspeedResources.PATH_PANEID_KEY,
+                portletList[i].getId()).addQueryData(
+                JetspeedResources.PATH_ACTION_KEY,
+                "controls.Restore");
             return duri.toString();
           }
         }
@@ -1362,11 +1412,13 @@ public class ALEipUtils {
    */
   public static String replaceStrToLink(String msg) {
     if (msg != null) {
-      String newMsg = msg
-        .replaceAll(
-          "(https?|ftp|gopher|telnet|whois|news)\\:([\\w|\\:\\!\\#\\$\\%\\=\\&\\-\\^\\`\\\\|\\@\\~\\[\\{\\]\\}\\;\\+\\*\\,\\.\\?\\/]+)",
-          "<a href=\"$1\\:$2\" target=\"_blank\">$1\\:$2</a>");
-      return newMsg.replaceAll("[\\w\\.\\-]+@([\\w\\-]+\\.)+[\\w\\-]+",
+      String newMsg =
+        msg
+          .replaceAll(
+            "(https?|ftp|gopher|telnet|whois|news)\\:([\\w|\\:\\!\\#\\$\\%\\=\\&\\-\\^\\`\\\\|\\@\\~\\[\\{\\]\\}\\;\\+\\*\\,\\.\\?\\/]+)",
+            "<a href=\"$1\\:$2\" target=\"_blank\">$1\\:$2</a>");
+      return newMsg.replaceAll(
+        "[\\w\\.\\-]+@([\\w\\-]+\\.)+[\\w\\-]+",
         "<a href='mailto:$0'>$0</a>");
     } else {
       return "";
@@ -1398,8 +1450,10 @@ public class ALEipUtils {
       }
       int length = folders_path.length;
       for (int i = 0; i < length; i++) {
-        File folder = new File(parent_folder.getAbsolutePath() + File.separator
-          + folders_path[i]);
+        File folder =
+          new File(parent_folder.getAbsolutePath()
+            + File.separator
+            + folders_path[i]);
         mod.setTimeInMillis(folder.lastModified());// ファイルの最終更新日時を格納
         if (folder.isDirectory()) {
           if (!deleteOldFolder(folder, cal)) {// フォルダの中身が空もしくは全部削除された場合
@@ -1454,8 +1508,10 @@ public class ALEipUtils {
       }
       int length = folders_path.length;
       for (int i = 0; i < length; i++) {
-        File folder = new File(parent_folder.getAbsolutePath() + File.separator
-          + folders_path[i]);
+        File folder =
+          new File(parent_folder.getAbsolutePath()
+            + File.separator
+            + folders_path[i]);
         if (folder.isDirectory()) {
           if (!deleteFolder(folder)) {// フォルダの中身が空もしくは全部削除された場合
             flag = false;
@@ -1484,14 +1540,19 @@ public class ALEipUtils {
    * @return 所属する部署リスト
    */
   public static List<String> getPostNameList(int id) {
-    SelectQuery<TurbineUserGroupRole> query = Database
-      .query(TurbineUserGroupRole.class);
-    Expression exp1 = ExpressionFactory.matchExp(
-      TurbineUserGroupRole.TURBINE_USER_PROPERTY, Integer.valueOf(id));
-    Expression exp2 = ExpressionFactory.greaterExp(
-      TurbineUserGroupRole.TURBINE_GROUP_PROPERTY, Integer.valueOf(3));
-    Expression exp3 = ExpressionFactory.matchExp(
-      TurbineUserGroupRole.TURBINE_GROUP_PROPERTY + "."
+    SelectQuery<TurbineUserGroupRole> query =
+      Database.query(TurbineUserGroupRole.class);
+    Expression exp1 =
+      ExpressionFactory.matchExp(
+        TurbineUserGroupRole.TURBINE_USER_PROPERTY,
+        Integer.valueOf(id));
+    Expression exp2 =
+      ExpressionFactory.greaterExp(
+        TurbineUserGroupRole.TURBINE_GROUP_PROPERTY,
+        Integer.valueOf(3));
+    Expression exp3 =
+      ExpressionFactory.matchExp(TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
+        + "."
         + TurbineGroup.OWNER_ID_PROPERTY, Integer.valueOf(1));
     query.setQualifier(exp1);
     query.andQualifier(exp2);
@@ -1532,23 +1593,30 @@ public class ALEipUtils {
 
   public static boolean getHasAuthority(RunData rundata, Context context,
       int defineAclType) {
-    String pfeature = ALAccessControlConstants.POERTLET_FEATURE_PORTLET_CUSTOMIZE;
+    String pfeature =
+      ALAccessControlConstants.POERTLET_FEATURE_PORTLET_CUSTOMIZE;
     if (pfeature == null || "".equals(pfeature)) {
       return true;
     }
 
-    ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-      .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-    return aclhandler.hasAuthority(ALEipUtils.getUserId(rundata), pfeature,
+    return aclhandler.hasAuthority(
+      ALEipUtils.getUserId(rundata),
+      pfeature,
       defineAclType);
   }
 
   public static int getLimitUsers() {
     try {
 
-      List<AipoLicense> list = Database.query(AipoLicense.class).select(
-        AipoLicense.LIMIT_USERS_COLUMN).fetchList();
+      List<AipoLicense> list =
+        Database
+          .query(AipoLicense.class)
+          .select(AipoLicense.LIMIT_USERS_COLUMN)
+          .fetchList();
 
       if (list != null && list.size() > 0) {
         AipoLicense record = list.get(0);
@@ -1574,10 +1642,11 @@ public class ALEipUtils {
       // システムユーザtemplateは論理削除されているため
       // RES_USER_NUMは3だが2として計算しないといけない。
 
-      Expression exp = ExpressionFactory.matchExp(
-        TurbineUser.DISABLED_PROPERTY, "F");
+      Expression exp =
+        ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
 
-      List<TurbineUser> list = Database.query(TurbineUser.class, exp).fetchList();
+      List<TurbineUser> list =
+        Database.query(TurbineUser.class, exp).fetchList();
       if (list == null || list.size() <= 0) {
         return -1;
       }
@@ -1605,10 +1674,11 @@ public class ALEipUtils {
       // システムユーザtemplateは論理削除されているため
       // RES_USER_NUMは3だが2として計算しないといけない。
 
-      Expression exp = ExpressionFactory.noMatchExp(
-        TurbineUser.DISABLED_PROPERTY, "T");
+      Expression exp =
+        ExpressionFactory.noMatchExp(TurbineUser.DISABLED_PROPERTY, "T");
 
-      List<TurbineUser> list = Database.query(TurbineUser.class, exp).fetchList();
+      List<TurbineUser> list =
+        Database.query(TurbineUser.class, exp).fetchList();
       if (list == null || list.size() <= 0) {
         return -1;
       }

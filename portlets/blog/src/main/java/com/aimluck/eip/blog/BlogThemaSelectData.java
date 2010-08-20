@@ -18,7 +18,6 @@
  */
 package com.aimluck.eip.blog;
 
-import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
@@ -36,6 +35,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -86,16 +86,17 @@ public class BlogThemaSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<EipTBlogThema> selectList(RunData rundata, Context context) {
+  protected ResultList<EipTBlogThema> selectList(RunData rundata,
+      Context context) {
     try {
       SelectQuery<EipTBlogThema> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTBlogThema> list = query.fetchList();
+      ResultList<EipTBlogThema> list = query.getResultList();
       // 件数をセットする．
-      themaSum = list.size();
-      return buildPaginatedList(list);
+      themaSum = list.getTotalCount();
+      return list;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -111,11 +112,12 @@ public class BlogThemaSelectData extends
    */
   private SelectQuery<EipTBlogThema> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipTBlogThema> query = new SelectQuery<EipTBlogThema>(
-      EipTBlogThema.class);
+    SelectQuery<EipTBlogThema> query =
+      new SelectQuery<EipTBlogThema>(EipTBlogThema.class);
 
-    Expression exp = ExpressionFactory.noMatchDbExp(
-      EipTBlogThema.THEMA_ID_PK_COLUMN, Integer.valueOf(1));
+    Expression exp =
+      ExpressionFactory.noMatchDbExp(EipTBlogThema.THEMA_ID_PK_COLUMN, Integer
+        .valueOf(1));
     query.setQualifier(exp);
 
     return query;
@@ -148,7 +150,8 @@ public class BlogThemaSelectData extends
     BlogThemaResultData rd = new BlogThemaResultData();
     rd.initField();
     rd.setThemaId(record.getThemaId().longValue());
-    rd.setThemaName(ALCommonUtils.compressString(record.getThemaName(),
+    rd.setThemaName(ALCommonUtils.compressString(
+      record.getThemaName(),
       getStrLength()));
     rd.setDescription(record.getDescription());
     return rd;
@@ -169,9 +172,11 @@ public class BlogThemaSelectData extends
     rd.setThemaName(record.getThemaName());
     rd.setDescription(record.getDescription());
 
-    rd.setCreateUserName(BlogUtils.getUserFullName(record.getCreateUserId()
+    rd.setCreateUserName(BlogUtils.getUserFullName(record
+      .getCreateUserId()
       .intValue()));
-    rd.setUpdateUserName(BlogUtils.getUserFullName(record.getUpdateUserId()
+    rd.setUpdateUserName(BlogUtils.getUserFullName(record
+      .getUpdateUserId()
       .intValue()));
     rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
     rd.setUpdateDate(ALDateUtil.format(record.getUpdateDate(), "yyyy年M月d日"));

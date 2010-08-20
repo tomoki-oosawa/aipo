@@ -21,13 +21,8 @@ package com.aimluck.eip.accessctl.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.cayenne.DataObjectUtils;
-import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SQLTemplate;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -37,10 +32,10 @@ import com.aimluck.eip.cayenne.om.account.EipTAclRole;
 import com.aimluck.eip.cayenne.om.account.EipTAclUserRoleMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALEipUser;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
-import com.aimluck.eip.util.ALEipUtils;
 
 public class ALActionAccessControlHandler extends ALAccessControlHandler {
 
@@ -51,32 +46,33 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
   @Override
   public boolean hasAuthority(int userId, String featerName, int aclType) {
 
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
-    SelectQuery query = new SelectQuery(EipTAclRole.class);
-    Expression exp11 = ExpressionFactory.matchDbExp(
-      EipTAclRole.EIP_TACL_USER_ROLE_MAPS_PROPERTY + "."
-        + EipTAclUserRoleMap.TURBINE_USER_PROPERTY + "."
+    SelectQuery<EipTAclRole> query = Database.query(EipTAclRole.class);
+    Expression exp11 =
+      ExpressionFactory.matchDbExp(EipTAclRole.EIP_TACL_USER_ROLE_MAPS_PROPERTY
+        + "."
+        + EipTAclUserRoleMap.TURBINE_USER_PROPERTY
+        + "."
         + TurbineUser.USER_ID_PK_COLUMN, userId);
-    Expression exp12 = ExpressionFactory.matchExp(
-      EipTAclRole.EIP_TACL_PORTLET_FEATURE_PROPERTY + "."
+    Expression exp12 =
+      ExpressionFactory.matchExp(EipTAclRole.EIP_TACL_PORTLET_FEATURE_PROPERTY
+        + "."
         + EipTAclPortletFeature.FEATURE_NAME_PROPERTY, featerName);
     query.setQualifier(exp11.andExp(exp12));
-    query.setDistinct(true);
+    query.distinct(true);
 
-    List<?> roles = dataContext.performQuery(query);
-    if (roles == null || roles.size() == 0) {
+    EipTAclRole role = query.fetchSingle();
+    if (role == null) {
       return false;
     }
 
-    EipTAclRole role = (EipTAclRole) roles.get(0);
     int dbAclType = role.getAclType().intValue();
 
     return ((dbAclType & aclType) == aclType);
   }
 
   @Override
-  public List<Integer> getAcceptUserIdsExceptLoginUser(DataContext dataContext,
-      int uid, String feat, int acl_type) {
+  public List<Integer> getAcceptUserIdsExceptLoginUser(int uid, String feat,
+      int acl_type) {
     StringBuffer sb = new StringBuffer();
     sb.append("SELECT ");
     sb.append(TurbineUser.USER_ID_PK_COLUMN);
@@ -108,30 +104,21 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
     sb.append(Integer.toString(uid));
     sb.append(")");
 
+    List<Integer> userIds = new ArrayList<Integer>();
     String sqlString = sb.toString();
 
-    @SuppressWarnings("deprecation")
-    SQLTemplate query = new SQLTemplate(TurbineUser.class, sqlString, true);
-    query.setFetchingDataRows(true);
+    List<TurbineUser> list =
+      Database.sql(TurbineUser.class, sqlString).fetchList();
 
-    List<?> list = dataContext.performQuery(query);
-    List<Integer> userIds = new ArrayList<Integer>();
-    int size;
-    if ((list == null) || ((size = list.size()) < 1)) {
-      return userIds;
-    }
-
-    for (int i = 0; i < size; i++) {
-      DataRow row = (DataRow) list.get(i);
-      userIds.add((Integer) ALEipUtils.getObjFromDataRow(row,
-        TurbineUser.USER_ID_PK_COLUMN));
+    for (TurbineUser tuser : list) {
+      userIds.add(tuser.getUserId());
     }
     return userIds;
   }
 
   @Override
-  public List<Integer> getAcceptUserIdsInListExceptLoginUser(
-      DataContext dataContext, int uid, String feat, int acl_type, List<?> ulist) {
+  public List<Integer> getAcceptUserIdsInListExceptLoginUser(int uid,
+      String feat, int acl_type, List<ALEipUser> ulist) {
     List<Integer> userIds = new ArrayList<Integer>();
     int u_size;
     if ((ulist == null) || (u_size = ulist.size()) < 1) {
@@ -167,7 +154,7 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
     sb.append(TurbineUser.USER_ID_PK_COLUMN);
     sb.append(" in (");
     for (int i = 0; i < u_size; i++) {
-      ALEipUser member = (ALEipUser) ulist.get(i);
+      ALEipUser member = ulist.get(i);
       sb.append(Long.toString(member.getUserId().getValue()));
       if (i + 1 < u_size) {
         sb.append(",");
@@ -181,29 +168,18 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
 
     String sqlString = sb.toString();
 
-    @SuppressWarnings("deprecation")
-    SQLTemplate query = new SQLTemplate(TurbineUser.class, sqlString, true);
-    query.setFetchingDataRows(true);
+    List<TurbineUser> list =
+      Database.sql(TurbineUser.class, sqlString).fetchList();
 
-    List<?> list = dataContext.performQuery(query);
-    int size;
-    if (list == null || (size = list.size()) < 1) {
-      return userIds;
-    }
-
-    for (int i = 0; i < size; i++) {
-      DataRow raw = (DataRow) list.get(i);
-      userIds.add((Integer) ALEipUtils.getObjFromDataRow(raw,
-        TurbineUser.USER_ID_PK_COLUMN));
+    for (TurbineUser tuser : list) {
+      userIds.add(tuser.getUserId());
     }
     return userIds;
   }
 
   @Override
-  public List<?> getAuthorityUsersFromGroup(RunData rundata, String feat,
-      String groupname, boolean includeLoginuser) {
-
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
+  public List<TurbineUser> getAuthorityUsersFromGroup(RunData rundata,
+      String feat, String groupname, boolean includeLoginuser) {
 
     int listNumber = ALAccessControlConstants.VALUE_ACL_LIST;
     int detailNumber = ALAccessControlConstants.VALUE_ACL_DETAIL;
@@ -253,12 +229,9 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
     statement.append(" AND C.GROUP_NAME = '").append(groupname).append("' ");
     statement.append("ORDER BY D.POSITION");
 
-    // String merged1 = sb.toString();
-    String merged2 = statement.toString();
-    SQLTemplate stemp = new SQLTemplate(TurbineUser.class, merged2);
-    stemp.setFetchingDataRows(true);
-    List<?> ulist = dataContext.performQuery(stemp);
-    return ulist;
+    List<TurbineUser> list =
+      Database.sql(TurbineUser.class, statement.toString()).fetchList();
+    return list;
   }
 
   /**
@@ -269,23 +242,17 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
   public void insertDefaultRole(int uid) throws Exception {
     // 現在のロール27種
     int role = ALAccessControlConstants.ROLE_NUM;
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
-    TurbineUser tuser = (TurbineUser) DataObjectUtils.objectForPK(dataContext,
-      TurbineUser.class, Integer.valueOf(uid));
-    SelectQuery query = new SelectQuery(EipTAclRole.class);
+    TurbineUser tuser = Database.get(TurbineUser.class, Integer.valueOf(uid));
     List<Integer> integerList = new ArrayList<Integer>(role);
     for (int i = 0; i < role; i++) {
       integerList.add(Integer.valueOf(i + 1));
     }
-    Expression exp = ExpressionFactory.inDbExp(EipTAclRole.ROLE_ID_PK_COLUMN,
-      integerList);
-    query.setQualifier(exp);
-    List<?> list = dataContext.performQuery(query);
-    int size = list.size();
-    for (int i = 0; i < size; i++) {
-      EipTAclUserRoleMap map = (EipTAclUserRoleMap) dataContext
-        .createAndRegisterNewObject(EipTAclUserRoleMap.class);
-      map.setEipTAclRole((EipTAclRole) list.get(i));
+    Expression exp =
+      ExpressionFactory.inDbExp(EipTAclRole.ROLE_ID_PK_COLUMN, integerList);
+    List<EipTAclRole> list = Database.query(EipTAclRole.class, exp).fetchList();
+    for (EipTAclRole role2 : list) {
+      EipTAclUserRoleMap map = Database.create(EipTAclUserRoleMap.class);
+      map.setEipTAclRole(role2);
       map.setTurbineUser(tuser);
     }
   }

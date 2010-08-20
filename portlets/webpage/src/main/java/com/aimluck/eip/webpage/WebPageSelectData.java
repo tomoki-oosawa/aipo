@@ -18,7 +18,6 @@
  */
 package com.aimluck.eip.webpage;
 
-import java.util.List;
 import java.util.jar.Attributes;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,6 +33,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -71,7 +71,7 @@ public class WebPageSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  public List<VelocityPortlet> selectList(RunData rundata, Context context) {
+  public ResultList<VelocityPortlet> selectList(RunData rundata, Context context) {
     try {
       return null;
     } catch (Exception ex) {
@@ -131,10 +131,12 @@ public class WebPageSelectData extends
       WebPageResultData rd = new WebPageResultData();
       rd.initField();
       String url = portlet.getPortletConfig().getInitParameter("p1a-url");
-      int NormalHeight = Integer.parseInt(portlet.getPortletConfig()
-        .getInitParameter("p1b-normalheight"));
-      int MaximizedHeight = Integer.parseInt(portlet.getPortletConfig()
-        .getInitParameter("p1c-maximizedheight"));
+      int NormalHeight =
+        Integer.parseInt(portlet.getPortletConfig().getInitParameter(
+          "p1b-normalheight"));
+      int MaximizedHeight =
+        Integer.parseInt(portlet.getPortletConfig().getInitParameter(
+          "p1c-maximizedheight"));
 
       if (url == null || url.toString() == "") {
         rd.setWebPageFlag(false);

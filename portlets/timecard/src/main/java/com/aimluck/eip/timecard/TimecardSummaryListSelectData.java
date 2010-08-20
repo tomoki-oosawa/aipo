@@ -53,6 +53,7 @@ import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -193,10 +194,10 @@ public class TimecardSummaryListSelectData extends
     if (rundata.getParameters().containsKey("view_date_year")
       && rundata.getParameters().containsKey("view_date_month")) {
 
-      int tmpViewDate_year = Integer.parseInt(rundata.getParameters()
-        .getString("view_date_year"));
-      int tmpViewDate_month = Integer.parseInt(rundata.getParameters()
-        .getString("view_date_month"));
+      int tmpViewDate_year =
+        Integer.parseInt(rundata.getParameters().getString("view_date_year"));
+      int tmpViewDate_month =
+        Integer.parseInt(rundata.getParameters().getString("view_date_month"));
 
       cal.set(Calendar.HOUR_OF_DAY, 0);
       cal.set(Calendar.MINUTE, 0);
@@ -254,22 +255,29 @@ public class TimecardSummaryListSelectData extends
     }
 
     // アクセス権
-    if (target_user_id == null || "".equals(target_user_id)
+    if (target_user_id == null
+      || "".equals(target_user_id)
       || userid.equals(target_user_id)) {
-      aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
     } else {
-      aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER;
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER;
     }
-    ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-      .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-    hasAclSummaryOther = aclhandler.hasAuthority(ALEipUtils.getUserId(rundata),
-      ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER,
-      ALAccessControlConstants.VALUE_ACL_LIST);
+    hasAclSummaryOther =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER,
+        ALAccessControlConstants.VALUE_ACL_LIST);
     if (!hasAclSummaryOther) {
       // 他ユーザーの閲覧権限がないときには、ログインユーザーのIDに変更する。
       target_user_id = userid;
-      aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
     }
 
     datemap = new LinkedHashMap<String, TimecardSummaryResultData>();
@@ -284,7 +292,7 @@ public class TimecardSummaryListSelectData extends
    * .util.RunData, org.apache.velocity.context.Context)
    */
   @Override
-  protected List<EipTTimecard> selectList(RunData rundata, Context context)
+  protected ResultList<EipTTimecard> selectList(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     try {
       // 指定グループや指定ユーザをセッションに設定する．
@@ -296,8 +304,7 @@ public class TimecardSummaryListSelectData extends
         buildSelectQueryForListView(query);
         query.orderAscending(EipTTimecard.WORK_DATE_PROPERTY);
 
-        List<EipTTimecard> list = query.fetchList();
-        return buildPaginatedList(list);
+        return query.getResultList();
       } else {
         return null;
       }
@@ -396,7 +403,8 @@ public class TimecardSummaryListSelectData extends
    */
   private void setupLists(RunData rundata, Context context) {
     target_group_name = getTargetGroupName(rundata, context);
-    if ((target_group_name != null) && (!target_group_name.equals(""))
+    if ((target_group_name != null)
+      && (!target_group_name.equals(""))
       && (!target_group_name.equals("all"))) {
       userList = ALEipUtils.getUsers(target_group_name);
     } else {
@@ -500,16 +508,19 @@ public class TimecardSummaryListSelectData extends
    */
   private SelectQuery<EipTTimecard> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipTTimecard> query = new SelectQuery<EipTTimecard>(
-      EipTTimecard.class);
+    SelectQuery<EipTTimecard> query =
+      new SelectQuery<EipTTimecard>(EipTTimecard.class);
 
-    Expression exp1 = ExpressionFactory.matchExp(EipTTimecard.USER_ID_PROPERTY,
-      new Integer(target_user_id));
+    Expression exp1 =
+      ExpressionFactory.matchExp(EipTTimecard.USER_ID_PROPERTY, new Integer(
+        target_user_id));
     query.setQualifier(exp1);
 
     Calendar cal = Calendar.getInstance();
-    Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-      EipTTimecard.WORK_DATE_PROPERTY, view_date.getValue());
+    Expression exp11 =
+      ExpressionFactory.greaterOrEqualExp(
+        EipTTimecard.WORK_DATE_PROPERTY,
+        view_date.getValue());
 
     cal.setTime(view_date.getValue());
     cal.add(Calendar.MONTH, +1);
@@ -517,8 +528,10 @@ public class TimecardSummaryListSelectData extends
     ALDateTimeField view_date_add_month = new ALDateTimeField("yyyy-MM-dd");
     view_date_add_month.setValue(cal.getTime());
 
-    Expression exp12 = ExpressionFactory.lessOrEqualExp(
-      EipTTimecard.WORK_DATE_PROPERTY, view_date_add_month.getValue());
+    Expression exp12 =
+      ExpressionFactory.lessOrEqualExp(
+        EipTTimecard.WORK_DATE_PROPERTY,
+        view_date_add_month.getValue());
     query.andQualifier(exp11.andExp(exp12));
 
     return buildSelectQueryForFilter(query, rundata, context);
@@ -542,15 +555,18 @@ public class TimecardSummaryListSelectData extends
           TimecardSummaryResultData listrd2 = datemap.get(list.get(i + 1));
           int listrd1_size = listrd1.getList().size();
           if (listrd1_size > 0) {
-            TimecardResultData listrd1_lastrd = listrd1.getList().get(
-              listrd1_size - 1);
+            TimecardResultData listrd1_lastrd =
+              listrd1.getList().get(listrd1_size - 1);
 
             TimecardResultData listrd2_firstrd = listrd2.getList().get(0);
-            if (TimecardUtils.WORK_FLG_OFF.equals(listrd2_firstrd.getWorkFlag()
+            if (TimecardUtils.WORK_FLG_OFF.equals(listrd2_firstrd
+              .getWorkFlag()
               .getValue())
-              && TimecardUtils.WORK_FLG_ON.equals(listrd1_lastrd.getWorkFlag()
+              && TimecardUtils.WORK_FLG_ON.equals(listrd1_lastrd
+                .getWorkFlag()
                 .getValue())
-              && !sameDay(listrd1_lastrd.getWorkDate().getValue(),
+              && !sameDay(
+                listrd1_lastrd.getWorkDate().getValue(),
                 listrd2_firstrd.getWorkDate().getValue())) {
 
               Date d = listrd2_firstrd.getWorkDate().getValue();
@@ -606,7 +622,8 @@ public class TimecardSummaryListSelectData extends
     int date2Month = cal2.get(Calendar.MONTH) + 1;
     int date2Day = cal2.get(Calendar.DATE);
 
-    if (date1Year == date2Year && date1Month == date2Month
+    if (date1Year == date2Year
+      && date1Month == date2Month
       && date1Day == date2Day) {
       return true;
     }
@@ -911,8 +928,8 @@ public class TimecardSummaryListSelectData extends
   private String minuteToHour(long minute) {
     BigDecimal decimal = new BigDecimal(minute / 60.0);
     DecimalFormat dformat = new DecimalFormat("##.#");
-    String str = dformat.format(decimal.setScale(1, BigDecimal.ROUND_FLOOR)
-      .doubleValue());
+    String str =
+      dformat.format(decimal.setScale(1, BigDecimal.ROUND_FLOOR).doubleValue());
     return str;
   }
 

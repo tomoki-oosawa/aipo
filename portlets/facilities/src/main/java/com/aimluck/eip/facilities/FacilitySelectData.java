@@ -18,7 +18,6 @@
  */
 package com.aimluck.eip.facilities;
 
-import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -34,6 +33,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -65,8 +65,9 @@ public class FacilitySelectData extends
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-          "p2a-sort"));
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p2a-sort"));
     }
 
     super.init(action, rundata, context);
@@ -82,18 +83,18 @@ public class FacilitySelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  public List<EipMFacility> selectList(RunData rundata, Context context) {
+  public ResultList<EipMFacility> selectList(RunData rundata, Context context) {
     try {
 
       SelectQuery<EipMFacility> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipMFacility> list = query.fetchList();
+      ResultList<EipMFacility> list = query.getResultList();
       // 施設の総数をセットする．
-      facilitySum = list.size();
+      facilitySum = list.getTotalCount();
 
-      return buildPaginatedList(list);
+      return list;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -109,8 +110,8 @@ public class FacilitySelectData extends
    */
   private SelectQuery<EipMFacility> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipMFacility> query = new SelectQuery<EipMFacility>(
-      EipMFacility.class);
+    SelectQuery<EipMFacility> query =
+      new SelectQuery<EipMFacility>(EipMFacility.class);
     return buildSelectQueryForFilter(query, rundata, context);
   }
 

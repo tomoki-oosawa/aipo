@@ -40,6 +40,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.todo.util.ToDoUtils;
@@ -83,10 +84,13 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-          "p2a-sort"));
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p2a-sort"));
       logger.debug("[ToDoSelectData] Init Parameter. : "
-        + ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+        + ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
           .getInitParameter("p2a-sort"));
     }
 
@@ -113,15 +117,16 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
       // カテゴリ一覧
       categoryList = new ArrayList<ToDoCategoryResultData>();
 
-      Expression exp = ExpressionFactory.matchExp(
-        EipTTodoCategory.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-          .getUserId(rundata)));
-      exp.orExp(ExpressionFactory.matchExp(EipTTodoCategory.USER_ID_PROPERTY,
+      Expression exp =
+        ExpressionFactory.matchExp(EipTTodoCategory.USER_ID_PROPERTY, Integer
+          .valueOf(ALEipUtils.getUserId(rundata)));
+      exp.orExp(ExpressionFactory.matchExp(
+        EipTTodoCategory.USER_ID_PROPERTY,
         Integer.valueOf(0)));
 
-      List<EipTTodoCategory> categoryList2 = Database.query(
-        EipTTodoCategory.class, exp).orderAscending(
-        EipTTodoCategory.CATEGORY_NAME_PROPERTY).fetchList();
+      List<EipTTodoCategory> categoryList2 =
+        Database.query(EipTTodoCategory.class, exp).orderAscending(
+          EipTTodoCategory.CATEGORY_NAME_PROPERTY).fetchList();
 
       for (EipTTodoCategory record : categoryList2) {
         ToDoCategoryResultData rd = new ToDoCategoryResultData();
@@ -145,16 +150,17 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
    *      org.apache.velocity.context.Context)
    */
   @Override
-  public List<EipTTodo> selectList(RunData rundata, Context context) {
+  public ResultList<EipTTodo> selectList(RunData rundata, Context context) {
     try {
 
       SelectQuery<EipTTodo> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTTodo> list = query.fetchList();
-      todoSum = list.size();
-      return buildPaginatedList(list);
+      ResultList<EipTTodo> resultList = query.getResultList();
+      setPageParam(resultList.getTotalCount());
+      todoSum = resultList.getTotalCount();
+      return resultList;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -171,18 +177,20 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
   private SelectQuery<EipTTodo> getSelectQuery(RunData rundata, Context context) {
     SelectQuery<EipTTodo> query = Database.query(EipTTodo.class);
 
-    Expression exp1 = ExpressionFactory.matchDbExp(
-      TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(ALEipUtils
-        .getUserId(rundata)));
+    Expression exp1 =
+      ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+        .valueOf(ALEipUtils.getUserId(rundata)));
     query.setQualifier(exp1);
 
     if ("list".equals(currentTab)) {
-      Expression exp2 = ExpressionFactory.noMatchExp(EipTTodo.STATE_PROPERTY,
-        Short.valueOf((short) 100));
+      Expression exp2 =
+        ExpressionFactory.noMatchExp(EipTTodo.STATE_PROPERTY, Short
+          .valueOf((short) 100));
       query.andQualifier(exp2);
     } else if ("complete".equals(currentTab)) {
-      Expression exp2 = ExpressionFactory.matchExp(EipTTodo.STATE_PROPERTY,
-        Short.valueOf((short) 100));
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTTodo.STATE_PROPERTY, Short
+          .valueOf((short) 100));
       query.andQualifier(exp2);
     }
 
@@ -202,13 +210,17 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
       ToDoResultData rd = new ToDoResultData();
       rd.initField();
       rd.setTodoId(record.getTodoId().intValue());
-      rd.setCategoryId((int) record.getEipTTodoCategory().getCategoryId()
+      rd.setCategoryId((int) record
+        .getEipTTodoCategory()
+        .getCategoryId()
         .longValue());
 
       rd.setCategoryName(ALCommonUtils.compressString(record
-        .getEipTTodoCategory().getCategoryName(), getStrLength()));
+        .getEipTTodoCategory()
+        .getCategoryName(), getStrLength()));
 
-      rd.setTodoName(ALCommonUtils.compressString(record.getTodoName(),
+      rd.setTodoName(ALCommonUtils.compressString(
+        record.getTodoName(),
         getStrLength()));
       if (!ToDoUtils.isEmptyDate(record.getStartDate())) {
         rd.setStartDate(ALDateUtil.format(record.getStartDate(), "yyyy年M月d日"));
@@ -220,9 +232,11 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
       rd.setStateImage(ToDoUtils.getStateImage(record.getState().intValue()));
       rd.setStateString(ToDoUtils.getStateString(record.getState().intValue()));
       rd.setPriority(record.getPriority().intValue());
-      rd.setPriorityImage(ToDoUtils.getPriorityImage(record.getPriority()
+      rd.setPriorityImage(ToDoUtils.getPriorityImage(record
+        .getPriority()
         .intValue()));
-      rd.setPriorityString(ToDoUtils.getPriorityString(record.getPriority()
+      rd.setPriorityString(ToDoUtils.getPriorityString(record
+        .getPriority()
         .intValue()));
       // 公開/非公開を設定する．
       rd.setPublicFlag("T".equals(record.getPublicFlag()));
@@ -288,7 +302,8 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
       rd.initField();
       rd.setTodoName(record.getTodoName());
       rd.setTodoId(record.getTodoId().longValue());
-      rd.setCategoryId(record.getEipTTodoCategory().getCategoryId().longValue());
+      rd
+        .setCategoryId(record.getEipTTodoCategory().getCategoryId().longValue());
       rd.setCategoryName(record.getEipTTodoCategory().getCategoryName());
       if (!ToDoUtils.isEmptyDate(record.getStartDate())) {
         rd.setStartDate(ALDateUtil.format(record.getStartDate(), "yyyy年M月d日"));
@@ -297,7 +312,8 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
         rd.setEndDate(ALDateUtil.format(record.getEndDate(), "yyyy年M月d日"));
       }
       rd.setStateString(ToDoUtils.getStateString(record.getState().intValue()));
-      rd.setPriorityString(ToDoUtils.getPriorityString(record.getPriority()
+      rd.setPriorityString(ToDoUtils.getPriorityString(record
+        .getPriority()
         .intValue()));
       rd.setNote(record.getNote());
       // 公開/非公開を設定する．
@@ -349,7 +365,8 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
     map.putValue("state", EipTTodo.STATE_PROPERTY);
     map.putValue("priority", EipTTodo.PRIORITY_PROPERTY);
     map.putValue("end_date", EipTTodo.END_DATE_PROPERTY);
-    map.putValue("category_name", EipTTodo.EIP_TTODO_CATEGORY_PROPERTY + "."
+    map.putValue("category_name", EipTTodo.EIP_TTODO_CATEGORY_PROPERTY
+      + "."
       + EipTTodoCategory.CATEGORY_NAME_PROPERTY);
     map.putValue("category", EipTTodoCategory.CATEGORY_ID_PK_COLUMN);
     return map;

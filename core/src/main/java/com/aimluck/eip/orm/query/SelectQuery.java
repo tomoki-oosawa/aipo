@@ -35,6 +35,10 @@ public class SelectQuery<M> extends AbstractQuery<M> {
 
   protected org.apache.cayenne.query.SelectQuery delegate;
 
+  protected int page = 1;
+
+  protected int totalCount = 0;
+
   public SelectQuery(Class<M> rootClass) {
     super(rootClass);
     delegate = new org.apache.cayenne.query.SelectQuery(rootClass);
@@ -66,17 +70,81 @@ public class SelectQuery<M> extends AbstractQuery<M> {
   public List<M> fetchList() {
     if (delegate.isFetchingDataRows()) {
       List<DataRow> dataRows = dataContext.performQuery(delegate);
-      List<M> results = new ArrayList<M>(dataRows.size());
-      for (DataRow dataRow : dataRows) {
-        M model = newInstanceFromRowData(dataRow, rootClass);
-        if (model == null) {
-          results.add(model);
+      totalCount = dataRows.size();
+      List<M> results = new ArrayList<M>();
+      int pageSize = delegate.getPageSize();
+      if (pageSize > 0) {
+        int num = ((int) (Math.ceil(totalCount / (double) pageSize)));
+        if ((num > 0) && (num < page)) {
+          page = num;
+        }
+        int start = pageSize * (page - 1);
+        int end =
+          (start + pageSize <= totalCount) ? start + pageSize : totalCount;
+        for (int i = start; i < end; i++) {
+          M model = newInstanceFromRowData(dataRows.get(i), rootClass);
+          if (model != null) {
+            results.add(model);
+          }
+        }
+      } else {
+        page = 1;
+        for (DataRow dataRow : dataRows) {
+          M model = newInstanceFromRowData(dataRow, rootClass);
+          if (model != null) {
+            results.add(model);
+          }
         }
       }
+
       return results;
     } else {
-      return dataContext.performQuery(delegate);
+      List<M> list = dataContext.performQuery(delegate);
+      totalCount = list.size();
+      List<M> results = new ArrayList<M>();
+      int pageSize = delegate.getPageSize();
+      if (pageSize > 0) {
+        int num = ((int) (Math.ceil(totalCount / (double) pageSize)));
+        if ((num > 0) && (num < page)) {
+          page = num;
+        }
+        int start = pageSize * (page - 1);
+        int end =
+          (start + pageSize <= totalCount) ? start + pageSize : totalCount;
+        for (int i = start; i < end; i++) {
+          M model = list.get(i);
+          if (model != null) {
+            results.add(model);
+          }
+        }
+        return results;
+      } else {
+        page = 1;
+        return list;
+      }
     }
+  }
+
+  public ResultList<M> getResultList() {
+    List<M> fetchList = fetchList();
+    return new ResultList<M>(
+      fetchList,
+      page,
+      delegate.getPageSize(),
+      totalCount);
+  }
+
+  public SelectQuery<M> where(Where where) {
+    delegate.andQualifier(where.exp);
+    return this;
+  }
+
+  public SelectQuery<M> where(Where... where) {
+    List<Where> list = Arrays.asList(where);
+    for (Where w : list) {
+      delegate.andQualifier(w.exp);
+    }
+    return this;
   }
 
   public SelectQuery<M> setQualifier(Expression qualifier) {
@@ -111,6 +179,11 @@ public class SelectQuery<M> extends AbstractQuery<M> {
 
   public SelectQuery<M> orderDesending(String ordering) {
     delegate.addOrdering(ordering, Ordering.DESC);
+    return this;
+  }
+
+  public SelectQuery<M> page(int page) {
+    this.page = page;
     return this;
   }
 

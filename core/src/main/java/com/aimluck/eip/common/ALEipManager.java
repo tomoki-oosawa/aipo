@@ -56,21 +56,25 @@ public class ALEipManager {
   private JetspeedRunDataService runDataService = null;
 
   /** 会社リスト */
-  private final Map<String, Map<Integer, ALEipCompany>> companysMap = new LinkedHashMap<String, Map<Integer, ALEipCompany>>();
+  private final Map<String, Map<Integer, ALEipCompany>> companysMap =
+    new LinkedHashMap<String, Map<Integer, ALEipCompany>>();
 
   /** 部署リスト */
-  private final Map<String, Map<Integer, ALEipPost>> postsMap = new LinkedHashMap<String, Map<Integer, ALEipPost>>();
+  private final Map<String, Map<Integer, ALEipPost>> postsMap =
+    new LinkedHashMap<String, Map<Integer, ALEipPost>>();
 
   /** 役職リスト */
-  private final Map<String, Map<Integer, ALEipPosition>> positionsMap = new LinkedHashMap<String, Map<Integer, ALEipPosition>>();
+  private final Map<String, Map<Integer, ALEipPosition>> positionsMap =
+    new LinkedHashMap<String, Map<Integer, ALEipPosition>>();
 
   /**
    *
    *
    */
   private ALEipManager() {
-    this.runDataService = (JetspeedRunDataService) TurbineServices
-      .getInstance().getService(RunDataService.SERVICE_NAME);
+    this.runDataService =
+      (JetspeedRunDataService) TurbineServices.getInstance().getService(
+        RunDataService.SERVICE_NAME);
     initCompany();
     initPost();
     initPosition();
@@ -96,12 +100,13 @@ public class ALEipManager {
     while (iter.hasNext()) {
       try {
         /** 会社リスト */
-        Map<Integer, ALEipCompany> companyMap = new LinkedHashMap<Integer, ALEipCompany>();
+        Map<Integer, ALEipCompany> companyMap =
+          new LinkedHashMap<Integer, ALEipCompany>();
 
         org_id = iter.next();
         DataContext dataContext = DataContext.createDataContext(org_id);
-        List<EipMCompany> list = Database.query(dataContext, EipMCompany.class)
-          .fetchList();
+        List<EipMCompany> list =
+          Database.query(dataContext, EipMCompany.class).fetchList();
         for (EipMCompany record : list) {
           ALEipCompany company = new ALEipCompany();
           company.initField();
@@ -129,12 +134,13 @@ public class ALEipManager {
     while (iter.hasNext()) {
       try {
         /** 部署リスト */
-        Map<Integer, ALEipPost> postMap = new LinkedHashMap<Integer, ALEipPost>();
+        Map<Integer, ALEipPost> postMap =
+          new LinkedHashMap<Integer, ALEipPost>();
 
         org_id = iter.next();
         DataContext dataContext = DataContext.createDataContext(org_id);
-        List<EipMPost> list = Database.query(dataContext, EipMPost.class)
-          .fetchList();
+        List<EipMPost> list =
+          Database.query(dataContext, EipMPost.class).fetchList();
         Collections.sort(list, new Comparator<EipMPost>() {
           public int compare(EipMPost l1, EipMPost l2) {
             return (l1).getPostName().compareTo((l2).getPostName());
@@ -169,12 +175,13 @@ public class ALEipManager {
     while (iter.hasNext()) {
       try {
         /** 役職リスト */
-        Map<Integer, ALEipPosition> positionMap = new LinkedHashMap<Integer, ALEipPosition>();
+        Map<Integer, ALEipPosition> positionMap =
+          new LinkedHashMap<Integer, ALEipPosition>();
 
         org_id = iter.next();
         DataContext dataContext = DataContext.createDataContext(org_id);
-        List<EipMPosition> list = Database.query(dataContext,
-          EipMPosition.class).fetchList();
+        List<EipMPosition> list =
+          Database.query(dataContext, EipMPosition.class).fetchList();
         for (EipMPosition record : list) {
           ALEipPosition position = new ALEipPosition();
           position.initField();
@@ -265,7 +272,8 @@ public class ALEipManager {
     synchronized (positionsMap) {
       try {
         org_id = DatabaseOrmService.getInstance().getOrgId(getRunData());
-        List<EipMPosition> list = Database.query(EipMPosition.class).fetchList();
+        List<EipMPosition> list =
+          Database.query(EipMPosition.class).fetchList();
 
         Map<Integer, ALEipPosition> positionMap = positionsMap.remove(org_id);
         if (positionMap == null) {

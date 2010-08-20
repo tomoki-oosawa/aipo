@@ -161,7 +161,8 @@ public class ALDateTimeField extends ALAbstractField {
       // 日付として正しいかを調べる
       String dateStr = translateDate(calendar.getTime(), format);
       if (dateStr == null) {
-        msgList.add("『 <span class='em'>" + fieldName
+        msgList.add("『 <span class='em'>"
+          + fieldName
           + "</span> 』を正しい日付形式で指定してください。");
         return false;
       }

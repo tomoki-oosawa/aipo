@@ -25,14 +25,12 @@ import java.io.OutputStreamWriter;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
  * CSVファイルの内容を管理するための抽象クラスです。 <br />
@@ -65,9 +63,6 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
   /** 一時フォルダの番号 */
   protected String folderIndex;
 
-  /** データコンテキスト */
-  protected DataContext dataContext;
-
   /**
    * (non-Javadoc)
    * 
@@ -78,7 +73,6 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   @Override
@@ -98,8 +92,9 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
       throws Exception {
     BufferedWriter writer = null;
     try {
-      writer = new BufferedWriter((new OutputStreamWriter(new FileOutputStream(
-        filepath), "Shift_JIS")));
+      writer =
+        new BufferedWriter((new OutputStreamWriter(new FileOutputStream(
+          filepath), "Shift_JIS")));
       /** ファイル内容の出力* */
       writer.write(str, 0, str.length());
       writer.flush();

@@ -2,40 +2,34 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.aimluck.eip.webmail;
 
-import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.cayenne.om.portlet.EipMMailNotifyConf;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.mail.util.ALMailUtils;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.ResultList;
 
 /**
  * 管理者メール通知設定の検索データを管理するためのクラスです。 <br />
@@ -43,9 +37,10 @@ import com.aimluck.eip.orm.DatabaseOrmService;
 public class WebMailAdminSettingsSelectData extends ALAbstractSelectData {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WebMailAdminSettingsSelectData.class.getName());
+    .getLogger(WebMailAdminSettingsSelectData.class.getName());
 
-  protected List selectList(RunData rundata, Context context)
+  @Override
+  protected ResultList selectList(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     return null;
   }
@@ -56,6 +51,7 @@ public class WebMailAdminSettingsSelectData extends ALAbstractSelectData {
    * @param obj
    * @return
    */
+  @Override
   protected Object getResultData(Object obj) throws ALPageNotFoundException,
       ALDBErrorException {
     return null;
@@ -68,26 +64,26 @@ public class WebMailAdminSettingsSelectData extends ALAbstractSelectData {
    * @param context
    * @return
    */
+  @Override
   protected Object selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     WebMailAdminSettingsResultData rd = new WebMailAdminSettingsResultData();
     rd.initField();
     rd
-        .setMsgTypeBlog(ALMailUtils
-            .getSendDestType(ALMailUtils.KEY_MSGTYPE_BLOG));
+      .setMsgTypeBlog(ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_BLOG));
     rd
-        .setMsgTypeNote(ALMailUtils
-            .getSendDestType(ALMailUtils.KEY_MSGTYPE_NOTE));
+      .setMsgTypeNote(ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_NOTE));
     rd.setMsgTypeSchedule(ALMailUtils
-        .getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE));
+      .getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE));
     rd.setMsgTypeWorkflow(ALMailUtils
-        .getSendDestType(ALMailUtils.KEY_MSGTYPE_WORKFLOW));
+      .getSendDestType(ALMailUtils.KEY_MSGTYPE_WORKFLOW));
 
     String timestr = ALMailUtils.getNotifyTime();
-    rd.setMsgNotifyTimeHour(timestr.charAt(0) == '0' ? timestr.substring(1, 2)
-        : timestr.substring(0, 2));
+    rd.setMsgNotifyTimeHour(timestr.charAt(0) == '0'
+      ? timestr.substring(1, 2)
+      : timestr.substring(0, 2));
     rd.setMsgNotifyTimeMinute(timestr.charAt(3) == '0' ? timestr
-        .substring(4, 5) : timestr.substring(3, 5));
+      .substring(4, 5) : timestr.substring(3, 5));
     return rd;
   }
 
@@ -97,6 +93,7 @@ public class WebMailAdminSettingsSelectData extends ALAbstractSelectData {
    * @param obj
    * @return
    */
+  @Override
   protected Object getResultDataDetail(Object obj)
       throws ALPageNotFoundException, ALDBErrorException {
     return obj;
@@ -106,6 +103,7 @@ public class WebMailAdminSettingsSelectData extends ALAbstractSelectData {
    * 
    * @return
    */
+  @Override
   protected Attributes getColumnMap() {
     return null;
   }

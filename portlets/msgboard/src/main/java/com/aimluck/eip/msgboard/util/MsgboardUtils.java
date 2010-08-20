@@ -60,24 +60,25 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
  * 掲示板のユーティリティクラス <BR>
- *
+ * 
  */
 public class MsgboardUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(MsgboardUtils.class.getName());
+    .getLogger(MsgboardUtils.class.getName());
 
   /** 所有者の識別子 */
   public static final String OWNER_ID = "ownerid";
 
   /** 掲示板の添付ファイルを保管するディレクトリの指定 */
   private static final String FOLDER_FILEDIR_MSGBOARD = JetspeedResources
-      .getString("aipo.filedir", "");
+    .getString("aipo.filedir", "");
 
   /** 掲示板の添付ファイルを保管するディレクトリのカテゴリキーの指定 */
   protected static final String CATEGORY_KEY = JetspeedResources.getString(
-      "aipo.msgboard.categorykey", "");
+    "aipo.msgboard.categorykey",
+    "");
 
   /** 全てのユーザーが閲覧／返信可 */
   public static final int ACCESS_PUBLIC_ALL = 0;
@@ -108,7 +109,7 @@ public class MsgboardUtils {
 
   /**
    * トピックオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param isJoin
@@ -118,8 +119,8 @@ public class MsgboardUtils {
   public static EipTMsgboardTopic getEipTMsgboardParentTopic(RunData rundata,
       Context context, boolean isJoin) throws ALPageNotFoundException,
       ALDBErrorException {
-    String topicid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String topicid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (topicid == null || Integer.valueOf(topicid) == null) {
         // トピック ID が空の場合
@@ -129,28 +130,41 @@ public class MsgboardUtils {
 
       int userid = ALEipUtils.getUserId(rundata);
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       SelectQuery query = new SelectQuery(EipTMsgboardTopic.class);
-      Expression exp1 = ExpressionFactory.matchDbExp(
-          EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, Integer.valueOf(topicid));
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(
+          EipTMsgboardTopic.TOPIC_ID_PK_COLUMN,
+          Integer.valueOf(topicid));
       query.setQualifier(exp1);
-      Expression exp2 = ExpressionFactory.matchExp(
-          EipTMsgboardTopic.PARENT_ID_PROPERTY, Integer.valueOf(0));
+      Expression exp2 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.PARENT_ID_PROPERTY,
+          Integer.valueOf(0));
       query.andQualifier(exp2);
 
       // アクセス制御
-      Expression exp11 = ExpressionFactory.matchExp(
-          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
-              + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY, "T");
-      Expression exp12 = ExpressionFactory.matchExp(
-          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
-              + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY, "F");
-      Expression exp13 = ExpressionFactory.matchExp(
-          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
-              + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY + "."
-              + EipTMsgboardCategoryMap.USER_ID_PROPERTY, Integer
-              .valueOf(userid));
+      Expression exp11 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
+          "T");
+      Expression exp12 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
+          "F");
+      Expression exp13 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
+            + "."
+            + EipTMsgboardCategoryMap.USER_ID_PROPERTY,
+          Integer.valueOf(userid));
       query.andQualifier(exp11.orExp(exp12.andExp(exp13)));
       query.setDistinct(true);
 
@@ -173,7 +187,7 @@ public class MsgboardUtils {
 
   /**
    * 返信記事オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param isSuperUser
@@ -190,17 +204,20 @@ public class MsgboardUtils {
         throw new ALPageNotFoundException();
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       SelectQuery query = new SelectQuery(EipTMsgboardTopic.class);
-      Expression exp1 = ExpressionFactory.matchDbExp(
-          EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, Integer.valueOf(topicid));
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(
+          EipTMsgboardTopic.TOPIC_ID_PK_COLUMN,
+          Integer.valueOf(topicid));
       query.setQualifier(exp1);
 
       if (!isSuperUser) {
-        Expression exp2 = ExpressionFactory.matchExp(
-            EipTMsgboardTopic.OWNER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-                .getUserId(rundata)));
+        Expression exp2 =
+          ExpressionFactory.matchExp(
+            EipTMsgboardTopic.OWNER_ID_PROPERTY,
+            Integer.valueOf(ALEipUtils.getUserId(rundata)));
         query.andQualifier(exp2);
       }
 
@@ -223,7 +240,7 @@ public class MsgboardUtils {
 
   /**
    * ファイルオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -231,8 +248,8 @@ public class MsgboardUtils {
   public static EipTMsgboardFile getEipTMsgboardFile(RunData rundata)
       throws ALPageNotFoundException, ALDBErrorException {
     try {
-      int attachmentIndex = rundata.getParameters().getInt("attachmentIndex",
-          -1);
+      int attachmentIndex =
+        rundata.getParameters().getInt("attachmentIndex", -1);
       if (attachmentIndex < 0) {
         // ID が空の場合
         logger.debug("[MsgboardUtils] Empty ID...");
@@ -240,11 +257,13 @@ public class MsgboardUtils {
 
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       SelectQuery query = new SelectQuery(EipTMsgboardFile.class);
-      Expression exp = ExpressionFactory.matchDbExp(
-          EipTMsgboardFile.FILE_ID_PK_COLUMN, Integer.valueOf(attachmentIndex));
+      Expression exp =
+        ExpressionFactory.matchDbExp(
+          EipTMsgboardFile.FILE_ID_PK_COLUMN,
+          Integer.valueOf(attachmentIndex));
       query.andQualifier(exp);
 
       @SuppressWarnings("unchecked")
@@ -264,17 +283,18 @@ public class MsgboardUtils {
 
   /**
    * トピックオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param isJoin
    *          カテゴリテーブルをJOINするかどうか
    * @return
    */
-  public static List<EipTMsgboardTopic> getEipTMsgboardTopicList(RunData rundata, Context context,
-      boolean isJoin) throws ALPageNotFoundException, ALDBErrorException {
-    String topicid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+  public static List<EipTMsgboardTopic> getEipTMsgboardTopicList(
+      RunData rundata, Context context, boolean isJoin)
+      throws ALPageNotFoundException, ALDBErrorException {
+    String topicid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (topicid == null || Integer.valueOf(topicid) == null) {
         // トピック ID が空の場合
@@ -282,28 +302,41 @@ public class MsgboardUtils {
         throw new ALPageNotFoundException();
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       SelectQuery query = new SelectQuery(EipTMsgboardTopic.class);
-      Expression exp001 = ExpressionFactory.matchExp(
-          EipTMsgboardTopic.PARENT_ID_PROPERTY, Integer.valueOf(topicid));
+      Expression exp001 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.PARENT_ID_PROPERTY,
+          Integer.valueOf(topicid));
 
       // アクセス制御
-      Expression exp01 = ExpressionFactory.matchDbExp(
-          EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, Integer.valueOf(topicid));
-      Expression exp11 = ExpressionFactory.matchExp(
-          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
-              + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY, "T");
-      Expression exp21 = ExpressionFactory.matchExp(
-          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
-              + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY, "F");
-      Expression exp22 = ExpressionFactory.matchExp(
-          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
-              + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY + "."
-              + EipTMsgboardCategoryMap.USER_ID_PROPERTY, Integer
-              .valueOf(ALEipUtils.getUserId(rundata)));
+      Expression exp01 =
+        ExpressionFactory.matchDbExp(
+          EipTMsgboardTopic.TOPIC_ID_PK_COLUMN,
+          Integer.valueOf(topicid));
+      Expression exp11 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
+          "T");
+      Expression exp21 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
+          "F");
+      Expression exp22 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
+            + "."
+            + EipTMsgboardCategoryMap.USER_ID_PROPERTY,
+          Integer.valueOf(ALEipUtils.getUserId(rundata)));
       query.setQualifier((exp01.andExp(exp11.orExp(exp21.andExp(exp22))))
-          .orExp(exp001));
+        .orExp(exp001));
       query.setDistinct(true);
 
       @SuppressWarnings("unchecked")
@@ -325,18 +358,18 @@ public class MsgboardUtils {
 
   /**
    * トピックオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param isSuperUser
    *          カテゴリテーブルをJOINするかどうか
    * @return
    */
-  public static List<EipTMsgboardTopic> getEipTMsgboardTopicListToDeleteTopic(RunData rundata,
-      Context context, boolean isSuperUser) throws ALPageNotFoundException,
-      ALDBErrorException {
-    String topicid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+  public static List<EipTMsgboardTopic> getEipTMsgboardTopicListToDeleteTopic(
+      RunData rundata, Context context, boolean isSuperUser)
+      throws ALPageNotFoundException, ALDBErrorException {
+    String topicid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (topicid == null || Integer.valueOf(topicid) == null) {
         // トピック ID が空の場合
@@ -346,16 +379,21 @@ public class MsgboardUtils {
 
       int userid = ALEipUtils.getUserId(rundata);
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       SelectQuery query = new SelectQuery(EipTMsgboardTopic.class);
 
-      Expression exp01 = ExpressionFactory.matchDbExp(
-          EipTMsgboardTopic.OWNER_ID_COLUMN, Integer.valueOf(userid));
-      Expression exp02 = ExpressionFactory.matchDbExp(
-          EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, Integer.valueOf(topicid));
-      Expression exp03 = ExpressionFactory.matchExp(
-          EipTMsgboardTopic.PARENT_ID_PROPERTY, Integer.valueOf(topicid));
+      Expression exp01 =
+        ExpressionFactory.matchDbExp(EipTMsgboardTopic.OWNER_ID_COLUMN, Integer
+          .valueOf(userid));
+      Expression exp02 =
+        ExpressionFactory.matchDbExp(
+          EipTMsgboardTopic.TOPIC_ID_PK_COLUMN,
+          Integer.valueOf(topicid));
+      Expression exp03 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.PARENT_ID_PROPERTY,
+          Integer.valueOf(topicid));
 
       if (isSuperUser) {
         query.andQualifier((exp02).orExp(exp03));
@@ -397,7 +435,7 @@ public class MsgboardUtils {
 
   /**
    * カテゴリオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -405,8 +443,8 @@ public class MsgboardUtils {
   public static EipTMsgboardCategory getEipTMsgboardCategory(RunData rundata,
       Context context, boolean ownerOnly) throws ALPageNotFoundException,
       ALDBErrorException {
-    String categoryid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String categoryid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (categoryid == null || Integer.valueOf(categoryid) == null) {
         // カテゴリ IDが空の場合
@@ -414,17 +452,21 @@ public class MsgboardUtils {
         throw new ALPageNotFoundException();
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       SelectQuery query = new SelectQuery(EipTMsgboardCategory.class);
 
-      Expression exp1 = ExpressionFactory.matchDbExp(
-          EipTMsgboardCategory.CATEGORY_ID_PK_COLUMN, Integer
-              .valueOf(categoryid));
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(
+          EipTMsgboardCategory.CATEGORY_ID_PK_COLUMN,
+          Integer.valueOf(categoryid));
       query.setQualifier(exp1);
-      Expression exp2 = ExpressionFactory.noMatchDbExp(
-          EipTMsgboardCategory.TURBINE_USER_PROPERTY + "."
-              + TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(0));
+      Expression exp2 =
+        ExpressionFactory.noMatchDbExp(
+          EipTMsgboardCategory.TURBINE_USER_PROPERTY
+            + "."
+            + TurbineUser.USER_ID_PK_COLUMN,
+          Integer.valueOf(0));
       query.andQualifier(exp2);
       if (ownerOnly) {
         /*
@@ -439,35 +481,50 @@ public class MsgboardUtils {
 
       int loginUserId = ALEipUtils.getUserId(rundata);
 
-      ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+      ALAccessControlFactoryService aclservice =
+        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
           .getInstance())
           .getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-      boolean hasAclviewOther = aclhandler.hasAuthority(loginUserId,
+      boolean hasAclviewOther =
+        aclhandler.hasAuthority(
+          loginUserId,
           ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY_OTHER,
           ALAccessControlConstants.VALUE_ACL_LIST);
 
-      Expression exp01 = ExpressionFactory.matchExp(
-          EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY, "T");
-      Expression exp02 = ExpressionFactory.matchExp(
-          EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY + "."
-              + EipTMsgboardCategoryMap.STATUS_PROPERTY, "O");
-      Expression exp03 = ExpressionFactory.matchExp(
-          EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY + "."
-              + EipTMsgboardCategoryMap.STATUS_PROPERTY, "A");
-      Expression exp11 = ExpressionFactory.matchExp(
-          EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY, "F");
-      Expression exp12 = ExpressionFactory.matchExp(
-          EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY + "."
-              + EipTMsgboardCategoryMap.USER_ID_PROPERTY, Integer
-              .valueOf(loginUserId));
+      Expression exp01 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
+          "T");
+      Expression exp02 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
+            + "."
+            + EipTMsgboardCategoryMap.STATUS_PROPERTY,
+          "O");
+      Expression exp03 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
+            + "."
+            + EipTMsgboardCategoryMap.STATUS_PROPERTY,
+          "A");
+      Expression exp11 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
+          "F");
+      Expression exp12 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
+            + "."
+            + EipTMsgboardCategoryMap.USER_ID_PROPERTY,
+          Integer.valueOf(loginUserId));
 
       if (!hasAclviewOther) {
         query.andQualifier((exp01.andExp(exp02.orExp(exp03))).orExp(exp11
-            .andExp(exp12)));
+          .andExp(exp12)));
       } else {
         query.andQualifier((exp01.andExp(exp02.orExp(exp03))).orExp(exp11
-            .andExp(exp02.orExp(exp03))));
+          .andExp(exp02.orExp(exp03))));
       }
       query.setDistinct(true);
 
@@ -489,13 +546,14 @@ public class MsgboardUtils {
 
   /**
    * <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    */
-  public static List<Integer> getWhatsNewInsertList(RunData rundata, int categoryid,
-      String is_public) throws ALPageNotFoundException, ALDBErrorException {
+  public static List<Integer> getWhatsNewInsertList(RunData rundata,
+      int categoryid, String is_public) throws ALPageNotFoundException,
+      ALDBErrorException {
 
     int userid = ALEipUtils.getUserId(rundata);
     DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
@@ -507,26 +565,35 @@ public class MsgboardUtils {
         SelectQuery query = new SelectQuery(EipTMsgboardCategoryMap.class);
         query.addCustomDbAttribute(EipTMsgboardCategoryMap.USER_ID_COLUMN);
 
-        Expression exp1 = ExpressionFactory.matchExp(
-            EipTMsgboardCategoryMap.CATEGORY_ID_PROPERTY, Integer
-                .valueOf(categoryid));
+        Expression exp1 =
+          ExpressionFactory.matchExp(
+            EipTMsgboardCategoryMap.CATEGORY_ID_PROPERTY,
+            Integer.valueOf(categoryid));
         query.setQualifier(exp1);
 
         // アクセス制御
-        Expression exp11 = ExpressionFactory.matchExp(
-            EipTMsgboardCategoryMap.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
-                + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
+        Expression exp11 =
+          ExpressionFactory.matchExp(
+            EipTMsgboardCategoryMap.EIP_TMSGBOARD_CATEGORY_PROPERTY
+              + "."
+              + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
             PUBLIC_FLG_VALUE_PUBLIC);
-        Expression exp12 = ExpressionFactory.matchExp(
-            EipTMsgboardCategoryMap.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
-                + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
+        Expression exp12 =
+          ExpressionFactory.matchExp(
+            EipTMsgboardCategoryMap.EIP_TMSGBOARD_CATEGORY_PROPERTY
+              + "."
+              + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
             PUBLIC_FLG_VALUE_NONPUBLIC);
-        Expression exp13 = ExpressionFactory.matchExp(
-            EipTMsgboardCategoryMap.STATUS_PROPERTY, STAT_VALUE_SHARE);
-        Expression exp14 = ExpressionFactory.matchExp(
-            EipTMsgboardCategoryMap.STATUS_PROPERTY, STAT_VALUE_OWNER);
+        Expression exp13 =
+          ExpressionFactory.matchExp(
+            EipTMsgboardCategoryMap.STATUS_PROPERTY,
+            STAT_VALUE_SHARE);
+        Expression exp14 =
+          ExpressionFactory.matchExp(
+            EipTMsgboardCategoryMap.STATUS_PROPERTY,
+            STAT_VALUE_OWNER);
         query.andQualifier(exp11.orExp(exp12.andExp(exp13)).orExp(
-            exp12.andExp(exp14)));
+          exp12.andExp(exp14)));
         query.setDistinct(true);
 
         @SuppressWarnings("unchecked")
@@ -536,7 +603,9 @@ public class MsgboardUtils {
           int size = uids.size();
           for (int i = 0; i < size; i++) {
             DataRow uid = uids.get(i);
-            Integer id = (Integer) ALEipUtils.getObjFromDataRow(uid,
+            Integer id =
+              (Integer) ALEipUtils.getObjFromDataRow(
+                uid,
                 EipTMsgboardCategoryMap.USER_ID_COLUMN);
             if (id.intValue() != userid) {
               result.add(ALEipUtils.getALEipUser(id.intValue()));
@@ -545,15 +614,18 @@ public class MsgboardUtils {
         }
 
         /* メンバー全員に新着ポートレット登録 */
-        ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        ALAccessControlFactoryService aclservice =
+          (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
             .getInstance())
             .getService(ALAccessControlFactoryService.SERVICE_NAME);
-        ALAccessControlHandler aclhandler = aclservice
-            .getAccessControlHandler();
-        List<Integer> userIds = aclhandler.getAcceptUserIdsInListExceptLoginUser(
-            dataContext, (int) ALEipUtils.getUserId(rundata),
+        ALAccessControlHandler aclhandler =
+          aclservice.getAccessControlHandler();
+        List<Integer> userIds =
+          aclhandler.getAcceptUserIdsInListExceptLoginUser(
+            ALEipUtils.getUserId(rundata),
             ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC,
-            ALAccessControlConstants.VALUE_ACL_DETAIL, result);
+            ALAccessControlConstants.VALUE_ACL_DETAIL,
+            result);
 
         return userIds;
       } catch (Exception ex) {
@@ -562,11 +634,13 @@ public class MsgboardUtils {
       }
     } else {
       /* 自分以外の全員に新着ポートレット登録 */
-      ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+      ALAccessControlFactoryService aclservice =
+        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
           .getInstance())
           .getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-      List<Integer> userIds = aclhandler.getAcceptUserIdsExceptLoginUser(dataContext,
+      List<Integer> userIds =
+        aclhandler.getAcceptUserIdsExceptLoginUser(
           ALEipUtils.getUserId(rundata),
           ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC,
           ALAccessControlConstants.VALUE_ACL_DETAIL);
@@ -575,35 +649,45 @@ public class MsgboardUtils {
     }
   }
 
-  public static List<MsgboardCategoryResultData> loadCategoryList(RunData rundata) {
+  public static List<MsgboardCategoryResultData> loadCategoryList(
+      RunData rundata) {
     // カテゴリ一覧
-    List<MsgboardCategoryResultData> categoryList = new ArrayList<MsgboardCategoryResultData>();
+    List<MsgboardCategoryResultData> categoryList =
+      new ArrayList<MsgboardCategoryResultData>();
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       SelectQuery query = new SelectQuery(EipTMsgboardCategory.class);
 
       // アクセス制御
-      Expression exp01 = ExpressionFactory.matchExp(
+      Expression exp01 =
+        ExpressionFactory.matchExp(
           EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
           MsgboardUtils.PUBLIC_FLG_VALUE_PUBLIC);
-      Expression exp02 = ExpressionFactory.matchExp(
-          EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY + "."
-              + EipTMsgboardCategoryMap.STATUS_PROPERTY,
+      Expression exp02 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
+            + "."
+            + EipTMsgboardCategoryMap.STATUS_PROPERTY,
           MsgboardUtils.STAT_VALUE_OWNER);
-      Expression exp03 = ExpressionFactory.matchExp(
-          EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY + "."
-              + EipTMsgboardCategoryMap.STATUS_PROPERTY,
+      Expression exp03 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
+            + "."
+            + EipTMsgboardCategoryMap.STATUS_PROPERTY,
           MsgboardUtils.STAT_VALUE_ALL);
-      Expression exp11 = ExpressionFactory.matchExp(
+      Expression exp11 =
+        ExpressionFactory.matchExp(
           EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
           MsgboardUtils.PUBLIC_FLG_VALUE_NONPUBLIC);
-      Expression exp12 = ExpressionFactory.matchExp(
-          EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY + "."
-              + EipTMsgboardCategoryMap.USER_ID_PROPERTY, Integer
-              .valueOf(ALEipUtils.getUserId(rundata)));
+      Expression exp12 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
+            + "."
+            + EipTMsgboardCategoryMap.USER_ID_PROPERTY,
+          Integer.valueOf(ALEipUtils.getUserId(rundata)));
       query.setQualifier((exp01.andExp(exp02.orExp(exp03))).orExp(exp11
-          .andExp(exp12)));
+        .andExp(exp12)));
       query.setDistinct(true);
 
       MsgboardCategoryResultData otherRd = null;
@@ -635,8 +719,9 @@ public class MsgboardUtils {
   }
 
   public static boolean insertFileDataDelegate(RunData rundata,
-      Context context, EipTMsgboardTopic topic, List<FileuploadLiteBean> fileuploadList,
-      String folderName, List<String> msgList) {
+      Context context, EipTMsgboardTopic topic,
+      List<FileuploadLiteBean> fileuploadList, String folderName,
+      List<String> msgList) {
 
     DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     int uid = ALEipUtils.getUserId(rundata);
@@ -644,8 +729,9 @@ public class MsgboardUtils {
     String[] fileids = rundata.getParameters().getStrings("attachments");
 
     // fileidsがnullなら、ファイルがアップロードされていないので、trueを返して終了
-    if (fileids == null)
+    if (fileids == null) {
       return true;
+    }
 
     int fileIDsize;
     if (fileids[0].equals("")) {
@@ -657,25 +743,31 @@ public class MsgboardUtils {
     // 変更が無かったとみなし、trueを返して終了。
     SelectQuery dbquery = new SelectQuery(EipTMsgboardFile.class);
     dbquery.andQualifier(ExpressionFactory.matchDbExp(
-        EipTMsgboardFile.EIP_TMSGBOARD_TOPIC_PROPERTY, topic.getTopicId()));
+      EipTMsgboardFile.EIP_TMSGBOARD_TOPIC_PROPERTY,
+      topic.getTopicId()));
     for (int i = 0; i < fileIDsize; i++) {
       dbquery.orQualifier(ExpressionFactory.matchDbExp(
-          EipTMsgboardFile.FILE_ID_PK_COLUMN, fileids[i]));
+        EipTMsgboardFile.FILE_ID_PK_COLUMN,
+        fileids[i]));
     }
 
     @SuppressWarnings("unchecked")
     List<EipTMsgboardFile> files = dataContext.performQuery(dbquery);
 
     if (files.size() == fileIDsize
-        && (fileuploadList == null || fileuploadList.size() <= 0))
+      && (fileuploadList == null || fileuploadList.size() <= 0)) {
       return true;
+    }
 
     SelectQuery query = new SelectQuery(EipTMsgboardFile.class);
     query.andQualifier(ExpressionFactory.matchDbExp(
-        EipTMsgboardFile.EIP_TMSGBOARD_TOPIC_PROPERTY, topic.getTopicId()));
+      EipTMsgboardFile.EIP_TMSGBOARD_TOPIC_PROPERTY,
+      topic.getTopicId()));
     for (int i = 0; i < fileIDsize; i++) {
-      Expression exp = ExpressionFactory.matchDbExp(
-          EipTMsgboardFile.FILE_ID_PK_COLUMN, Integer.parseInt(fileids[i]));
+      Expression exp =
+        ExpressionFactory.matchDbExp(
+          EipTMsgboardFile.FILE_ID_PK_COLUMN,
+          Integer.parseInt(fileids[i]));
       query.andQualifier(exp.notExp());
     }
     // DB上でトピックに属すが、送られてきたFileIDにIDが含まれていないファイルのリスト(削除されたファイルのリスト)
@@ -687,8 +779,9 @@ public class MsgboardUtils {
       File file = null;
       int delsize = delFiles.size();
       for (int i = 0; i < delsize; i++) {
-        file = new File(MsgboardUtils.getSaveDirPath(org_id, uid)
-            + (String) (delFiles.get(i)).getFilePath());
+        file =
+          new File(MsgboardUtils.getSaveDirPath(org_id, uid)
+            + (delFiles.get(i)).getFilePath());
         if (file.exists()) {
           file.delete();
         }
@@ -711,16 +804,25 @@ public class MsgboardUtils {
 
         // サムネイル処理
         String[] acceptExts = ImageIO.getWriterFormatNames();
-        byte[] fileThumbnail = FileuploadUtils.getBytesShrinkFilebean(org_id,
-            folderName, uid, filebean, acceptExts,
+        byte[] fileThumbnail =
+          FileuploadUtils.getBytesShrinkFilebean(
+            org_id,
+            folderName,
+            uid,
+            filebean,
+            acceptExts,
             FileuploadUtils.DEF_THUMBNAIL_WIDTH,
-            FileuploadUtils.DEF_THUMBNAIL_HEIGTH, msgList);
+            FileuploadUtils.DEF_THUMBNAIL_HEIGTH,
+            msgList);
 
-        String filename = FileuploadUtils.getNewFileName(MsgboardUtils
-            .getSaveDirPath(org_id, uid));
+        String filename =
+          FileuploadUtils.getNewFileName(MsgboardUtils.getSaveDirPath(
+            org_id,
+            uid));
 
         // 新規オブジェクトモデル
-        EipTMsgboardFile file = (EipTMsgboardFile) dataContext
+        EipTMsgboardFile file =
+          (EipTMsgboardFile) dataContext
             .createAndRegisterNewObject(EipTMsgboardFile.class);
         // 所有者
         file.setOwnerId(Integer.valueOf(uid));
@@ -740,10 +842,11 @@ public class MsgboardUtils {
         file.setUpdateDate(Calendar.getInstance().getTime());
 
         // ファイルの移動
-        File srcFile = FileuploadUtils.getAbsolutePath(org_id, uid, folderName,
-            filebean.getFileId());
-        File destFile = new File(MsgboardUtils.getAbsolutePath(org_id, uid,
-            filename));
+        File srcFile =
+          FileuploadUtils.getAbsolutePath(org_id, uid, folderName, filebean
+            .getFileId());
+        File destFile =
+          new File(MsgboardUtils.getAbsolutePath(org_id, uid, filename));
         FileuploadUtils.copyFile(srcFile, destFile);
 
         srcFile = null;
@@ -762,16 +865,20 @@ public class MsgboardUtils {
 
   /**
    * ユーザ毎のルート保存先（絶対パス）を取得します。
-   *
+   * 
    * @param uid
    * @return
    */
   public static String getSaveDirPath(String orgId, int uid) {
-    ALOrgUtilsHandler handler = ALOrgUtilsFactoryService.getInstance()
-        .getOrgUtilsHandler();
-    File path = new File(handler.getDocumentPath(FOLDER_FILEDIR_MSGBOARD,
-        orgId, CATEGORY_KEY)
-        + File.separator + uid);
+    ALOrgUtilsHandler handler =
+      ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
+    File path =
+      new File(handler.getDocumentPath(
+        FOLDER_FILEDIR_MSGBOARD,
+        orgId,
+        CATEGORY_KEY)
+        + File.separator
+        + uid);
     if (!path.exists()) {
       path.mkdirs();
     }
@@ -780,7 +887,7 @@ public class MsgboardUtils {
 
   /**
    * ユーザ毎の保存先（相対パス）を取得します。
-   *
+   * 
    * @param uid
    * @return
    */
@@ -790,16 +897,19 @@ public class MsgboardUtils {
 
   /**
    * 添付ファイル保存先（絶対パス）を取得します。
-   *
+   * 
    * @param uid
    * @return
    */
   public static String getAbsolutePath(String orgId, int uid, String fileName) {
-    ALOrgUtilsHandler handler = ALOrgUtilsFactoryService.getInstance()
-        .getOrgUtilsHandler();
-    StringBuffer sb = new StringBuffer().append(
-        handler.getDocumentPath(FOLDER_FILEDIR_MSGBOARD, orgId, CATEGORY_KEY))
-        .append(File.separator).append(uid);
+    ALOrgUtilsHandler handler =
+      ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
+    StringBuffer sb =
+      new StringBuffer()
+        .append(
+          handler.getDocumentPath(FOLDER_FILEDIR_MSGBOARD, orgId, CATEGORY_KEY))
+        .append(File.separator)
+        .append(uid);
     File f = new File(sb.toString());
     if (!f.exists()) {
       f.mkdirs();
@@ -813,8 +923,9 @@ public class MsgboardUtils {
     boolean isPublic = false;
 
     SelectQuery query = new SelectQuery(EipTMsgboardTopic.class);
-    Expression exp = ExpressionFactory.matchExp(
-        EipTMsgboardTopic.PARENT_ID_PROPERTY, entityid);
+    Expression exp =
+      ExpressionFactory
+        .matchExp(EipTMsgboardTopic.PARENT_ID_PROPERTY, entityid);
     query.setQualifier(exp);
     query.addCustomDbAttribute(EipTMsgboardTopic.TOPIC_ID_PK_COLUMN);
     query.setDistinct(true);
@@ -823,15 +934,16 @@ public class MsgboardUtils {
     List<DataRow> topics = dataContext.performQuery(query);
 
     query = new SelectQuery(EipTMsgboardTopic.class);
-    exp = ExpressionFactory.matchDbExp(EipTMsgboardTopic.TOPIC_ID_PK_COLUMN,
+    exp =
+      ExpressionFactory.matchDbExp(
+        EipTMsgboardTopic.TOPIC_ID_PK_COLUMN,
         entityid);
     query.setQualifier(exp);
 
     @SuppressWarnings("unchecked")
     List<EipTMsgboardTopic> topic = dataContext.performQuery(query);
     if (topic != null
-        && (((EipTMsgboardTopic) topic.get(0)).getEipTMsgboardCategory()
-            .getPublicFlag().equals("T"))) {
+      && ((topic.get(0)).getEipTMsgboardCategory().getPublicFlag().equals("T"))) {
       isPublic = true;
     }
 
@@ -843,33 +955,41 @@ public class MsgboardUtils {
 
       if (isPublic) {
         for (int i = 0; i < size; i++) {
-          dataRow =  topics.get(i);
+          dataRow = topics.get(i);
           _id = (Integer) dataRow.get(EipTMsgboardTopic.TOPIC_ID_PK_COLUMN);
           WhatsNewUtils.shiftWhatsNewReadFlagPublic(
-              WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC, _id.intValue(), uid);
+            WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
+            _id.intValue(),
+            uid);
         }
       } else {
         for (int i = 0; i < size; i++) {
           dataRow = topics.get(i);
           _id = (Integer) dataRow.get(EipTMsgboardTopic.TOPIC_ID_PK_COLUMN);
           WhatsNewUtils.shiftWhatsNewReadFlag(
-              WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC, _id.intValue(), uid);
+            WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
+            _id.intValue(),
+            uid);
         }
       }
     }
     if (isPublic) {
       WhatsNewUtils.shiftWhatsNewReadFlagPublic(
-          WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC, entityid, uid);
+        WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
+        entityid,
+        uid);
     } else {
       WhatsNewUtils.shiftWhatsNewReadFlag(
-          WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC, entityid, uid);
+        WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
+        entityid,
+        uid);
     }
 
   }
 
   /**
    * アクセス権限をチェックします。
-   *
+   * 
    * @return
    */
   public static boolean checkPermission(RunData rundata, Context context,
@@ -883,11 +1003,15 @@ public class MsgboardUtils {
       return true;
     }
 
-    ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-    boolean hasAuthority = aclhandler.hasAuthority(ALEipUtils
-        .getUserId(rundata), pfeature, defineAclType);
+    boolean hasAuthority =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        pfeature,
+        defineAclType);
 
     return hasAuthority;
   }

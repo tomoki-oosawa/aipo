@@ -210,7 +210,8 @@ public class ALNumberField extends ALAbstractField {
     } else {
       if (!isNumberValue()) {
         // 有効な数値が設定されていない場合
-        msgList.add("『 <span class='em'>" + fieldName
+        msgList.add("『 <span class='em'>"
+          + fieldName
           + "</span> 』に正しい数値を入力してください。");
         return false;
       } else {
@@ -218,14 +219,20 @@ public class ALNumberField extends ALAbstractField {
           long longValue = getValue();
           if (longValue < getMinValue()) {
             // 設定値が最小値を下回る場合
-            msgList.add("『 <span class='em'>" + fieldName + "</span> 』には"
-              + getMinValue() + "以上の値を入力してください。");
+            msgList.add("『 <span class='em'>"
+              + fieldName
+              + "</span> 』には"
+              + getMinValue()
+              + "以上の値を入力してください。");
             return false;
           }
           if (longValue > getMaxValue()) {
             // 設定値が最大値を上回る場合
-            msgList.add("『 <span class='em'>" + fieldName + "</span> 』には"
-              + getMaxValue() + "以下の値を入力してください。");
+            msgList.add("『 <span class='em'>"
+              + fieldName
+              + "</span> 』には"
+              + getMaxValue()
+              + "以下の値を入力してください。");
             return false;
           }
         }
@@ -261,8 +268,9 @@ public class ALNumberField extends ALAbstractField {
       byte[] chars;
       int len = value.length();
       for (int i = 0; i < len; i++) {
-        chars = (Character.valueOf(value.charAt(i)).toString())
-          .getBytes(ENCORDE_CONFIRM_CHARTYPE);
+        chars =
+          (Character.valueOf(value.charAt(i)).toString())
+            .getBytes(ENCORDE_CONFIRM_CHARTYPE);
         if (chars.length > 1) {
           return false;
         }

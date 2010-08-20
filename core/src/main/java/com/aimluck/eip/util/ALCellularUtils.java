@@ -74,8 +74,8 @@ public class ALCellularUtils {
     long value = crc32.getValue();
     String base64value = null;
     try {
-      base64value = new String(Base64.encodeBase64(String.valueOf(value)
-        .getBytes()));
+      base64value =
+        new String(Base64.encodeBase64(String.valueOf(value).getBytes()));
     } catch (Exception e) {
     }
 
@@ -97,8 +97,9 @@ public class ALCellularUtils {
       CapabilityMap cm = CapabilityMapFactory.getCapabilityMap(useragent);
       MimeType mime = cm.getPreferredType();
       if (mime != null) {
-        MediaTypeEntry media = (MediaTypeEntry) Registry.getEntry(
-          Registry.MEDIA_TYPE, cm.getPreferredMediaType());
+        MediaTypeEntry media =
+          (MediaTypeEntry) Registry.getEntry(Registry.MEDIA_TYPE, cm
+            .getPreferredMediaType());
         if ("docomo_imode".equals(media.getName())) {
           int lastindex = useragent.lastIndexOf("ser");
           if (lastindex >= 0) {
@@ -157,15 +158,19 @@ public class ALCellularUtils {
    */
   public static boolean isCellularPhone(RunData data) {
     boolean isCellularPhone = false;
-    CapabilityMap cm = CapabilityMapFactory.getCapabilityMap(data.getRequest()
-      .getHeader("User-Agent"));
+    CapabilityMap cm =
+      CapabilityMapFactory.getCapabilityMap(data.getRequest().getHeader(
+        "User-Agent"));
     MimeType mime = cm.getPreferredType();
     if (mime != null) {
-      MediaTypeEntry media = (MediaTypeEntry) Registry.getEntry(
-        Registry.MEDIA_TYPE, cm.getPreferredMediaType());
+      MediaTypeEntry media =
+        (MediaTypeEntry) Registry.getEntry(Registry.MEDIA_TYPE, cm
+          .getPreferredMediaType());
       String mediatype = media.getName();
-      if ("docomo_imode".equals(mediatype) || "docomo_foma".equals(mediatype)
-        || "au".equals(mediatype) || "vodafone".equals(mediatype)) {
+      if ("docomo_imode".equals(mediatype)
+        || "docomo_foma".equals(mediatype)
+        || "au".equals(mediatype)
+        || "vodafone".equals(mediatype)) {
         isCellularPhone = true;
       }
     }
@@ -198,13 +203,18 @@ public class ALCellularUtils {
     String url;
 
     String servlet_name = rundata.getServletConfig().getServletName();
-    String key = eipUser.getName().getValue()
-      + "_"
-      + getCheckValueForCellLogin(eipUser.getName().getValue(), eipUser
-        .getUserId().toString());
+    String key =
+      eipUser.getName().getValue()
+        + "_"
+        + getCheckValueForCellLogin(eipUser.getName().getValue(), eipUser
+          .getUserId()
+          .toString());
     EipMCompany record = ALEipUtils.getEipMCompany("1");
-    String domain = ALEipUtils.getUrl(record.getIpaddress(), record.getPort()
-      .intValue(), servlet_name);
+    String domain =
+      ALEipUtils.getUrl(
+        record.getIpaddress(),
+        record.getPort().intValue(),
+        servlet_name);
     if (domain != null && domain.length() > 0) {
       url = domain + "?key=" + key;
     } else {
@@ -220,10 +230,12 @@ public class ALCellularUtils {
    * @return
    */
   public static String getCellularKey(ALEipUser eipUser) {
-    String key = eipUser.getName().getValue()
-      + "_"
-      + getCheckValueForCellLogin(eipUser.getName().getValue(), eipUser
-        .getUserId().toString());
+    String key =
+      eipUser.getName().getValue()
+        + "_"
+        + getCheckValueForCellLogin(eipUser.getName().getValue(), eipUser
+          .getUserId()
+          .toString());
 
     return key;
   }
@@ -247,8 +259,8 @@ public class ALCellularUtils {
     for (int i = 0; i < len; i++) {
       tripleDesKeyData[i] = kyebyte[i];
     }
-    SecretKey secretKey = new SecretKeySpec(tripleDesKeyData,
-      KEY_CRPTY_ALGORITHM);
+    SecretKey secretKey =
+      new SecretKeySpec(tripleDesKeyData, KEY_CRPTY_ALGORITHM);
 
     Cipher cipher = Cipher.getInstance(KEY_CRPTY_ALGORITHM);
     cipher.init(Cipher.ENCRYPT_MODE, secretKey);
@@ -277,8 +289,8 @@ public class ALCellularUtils {
     for (int i = 0; i < len; i++) {
       tripleDesKeyData[i] = kyebyte[i];
     }
-    SecretKey secretKey = new SecretKeySpec(tripleDesKeyData,
-      KEY_CRPTY_ALGORITHM);
+    SecretKey secretKey =
+      new SecretKeySpec(tripleDesKeyData, KEY_CRPTY_ALGORITHM);
 
     Cipher cipher = Cipher.getInstance(KEY_CRPTY_ALGORITHM);
     cipher.init(Cipher.DECRYPT_MODE, secretKey);
@@ -300,8 +312,8 @@ public class ALCellularUtils {
   public static String getPortletURIForCell(RunData rundata,
       String portletEntryId) {
     try {
-      Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-        .getDocument().getPortlets();
+      Portlets portlets =
+        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
       if (portlets == null) {
         return null;
       }
@@ -315,12 +327,21 @@ public class ALCellularUtils {
       for (int j = 0; j < ent_length; j++) {
         if (entries[j].getId().equals(portletEntryId)) {
           JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-          DynamicURI duri = jsLink.getLink(JetspeedLink.CURRENT, null, null,
-            JetspeedLink.CURRENT, null);
-          duri = duri.addPathInfo(JetspeedResources.PATH_PORTLETID_KEY,
-            entries[j].getId()).addQueryData(JetspeedResources.PATH_ACTION_KEY,
-            "controls.Maximize").addQueryData(ALEipConstants.MODE,
-            ALEipConstants.MODE_LIST);
+          DynamicURI duri =
+            jsLink.getLink(
+              JetspeedLink.CURRENT,
+              null,
+              null,
+              JetspeedLink.CURRENT,
+              null);
+          duri =
+            duri.addPathInfo(
+              JetspeedResources.PATH_PORTLETID_KEY,
+              entries[j].getId()).addQueryData(
+              JetspeedResources.PATH_ACTION_KEY,
+              "controls.Maximize").addQueryData(
+              ALEipConstants.MODE,
+              ALEipConstants.MODE_LIST);
           return duri.toString();
         }
       }

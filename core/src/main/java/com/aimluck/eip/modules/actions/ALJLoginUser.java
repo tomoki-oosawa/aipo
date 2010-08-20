@@ -68,8 +68,8 @@ public class ALJLoginUser extends ActionEvent {
       String username = data.getParameters().getString("username", "");
       String password = data.getParameters().getString("password", "");
 
-      boolean newUserApproval = JetspeedResources.getBoolean(
-        "newuser.approval.enable", false);
+      boolean newUserApproval =
+        JetspeedResources.getBoolean("newuser.approval.enable", false);
       String secretkey = data.getParameters().getString("secretkey", null);
       if (secretkey != null) {
         // its the first logon - we are verifying the secretkey
@@ -93,19 +93,22 @@ public class ALJLoginUser extends ActionEvent {
         if (!secretkey.equals(confirm_value)
           && !confirm_value.equals(JetspeedResources.CONFIRM_VALUE)) {
           if (newUserApproval) {
-            data.setMessage(Localization.getString(rundata,
+            data.setMessage(Localization.getString(
+              rundata,
               "JLOGINUSER_KEYNOTVALID"));
             // data.setScreenTemplate("NewUserAwaitingAcceptance");
             return;
           } else {
             if (user.getConfirmed().equals(
               JetspeedResources.CONFIRM_VALUE_REJECTED)) {
-              data.setMessage(Localization.getString(rundata,
+              data.setMessage(Localization.getString(
+                rundata,
                 "JLOGINUSER_KEYNOTVALID"));
               // data.setScreenTemplate("NewUserRejected");
               return;
             } else {
-              data.setMessage(Localization.getString(rundata,
+              data.setMessage(Localization.getString(
+                rundata,
                 "JLOGINUSER_KEYNOTVALID"));
               // data.setScreenTemplate("ConfirmRegistration");
               return;
@@ -150,7 +153,8 @@ public class ALJLoginUser extends ActionEvent {
             if (valid) {
               ALEipUser eipuser = ALEipUtils.getALEipUser(username);
               if (eipuser != null) {
-                if (!(ALCellularUtils.getCheckValueForCellLogin(username,
+                if (!(ALCellularUtils.getCheckValueForCellLogin(
+                  username,
                   eipuser.getUserId().toString())).equals(base64value)) {
                   username = "";
                 }
@@ -187,7 +191,8 @@ public class ALJLoginUser extends ActionEvent {
           if (!disableCheck(data)) {
             logger.info("JLoginUser: Credential Failure on login for user: "
               + username);
-            data.setMessage(Localization.getString(rundata,
+            data.setMessage(Localization.getString(
+              rundata,
               "PASSWORDFORM_FAILED_MSG"));
           }
         } else if (e instanceof AccountExpiredException) {
@@ -198,7 +203,8 @@ public class ALJLoginUser extends ActionEvent {
            * data.setScreenTemplate( JetspeedResources.getString(
            * JetspeedResources.CHANGE_PASSWORD_TEMPLATE, "ChangePassword"));
            */
-          data.setMessage(Localization.getString(rundata,
+          data.setMessage(Localization.getString(
+            rundata,
             "PASSWORDFORM_EXPIRED_MSG"));
           data.getParameters().setString("username", username);
         }
@@ -207,13 +213,13 @@ public class ALJLoginUser extends ActionEvent {
       } catch (Throwable other) {
         // data.setScreenTemplate(
         // JetspeedResources.getString(TurbineConstants.TEMPLATE_ERROR));
-        String message = other.getMessage() != null ? other.getMessage()
-          : other.toString();
+        String message =
+          other.getMessage() != null ? other.getMessage() : other.toString();
         data.setMessage(message);
         data.setStackTrace(org.apache.turbine.util.StringUtils
           .stackTrace(other), other);
-        JetspeedUser juser = new FakeJetspeedUser(JetspeedSecurity
-          .getAnonymousUserName(), false);
+        JetspeedUser juser =
+          new FakeJetspeedUser(JetspeedSecurity.getAnonymousUserName(), false);
         data.setUser(juser);
         return;
       }
@@ -222,7 +228,8 @@ public class ALJLoginUser extends ActionEvent {
         // ログイン無効ユーザに対してログイン画面を表示していた．
         // 対処方法：ログイン無効のユーザーを匿名ユーザーとして取り扱い処理する．
         data.setUser(JetspeedSecurity.getAnonymousUser());
-        data.setMessage(Localization.getString(rundata,
+        data.setMessage(Localization.getString(
+          rundata,
           "JLOGINUSER_ACCOUNT_DISABLED"));
         // data.setScreenTemplate(JetspeedResources.getString("logon.disabled.form"));
         data.getUser().setHasLoggedIn(Boolean.valueOf(false));
@@ -244,7 +251,8 @@ public class ALJLoginUser extends ActionEvent {
         if (JetspeedSecurity.isDisableAccountCheckEnabled()) {
           // dst: this needs some refactoring. I don't believe this api is
           // necessary
-          JetspeedSecurity.resetDisableAccountCheck(data.getParameters()
+          JetspeedSecurity.resetDisableAccountCheck(data
+            .getParameters()
             .getString("username", ""));
         }
 
@@ -253,14 +261,16 @@ public class ALJLoginUser extends ActionEvent {
           || !confirmed.equals(JetspeedResources.CONFIRM_VALUE)) {
           if (confirmed != null
             && confirmed.equals(JetspeedResources.CONFIRM_VALUE_REJECTED)) {
-            data.setMessage(Localization.getString(rundata,
+            data.setMessage(Localization.getString(
+              rundata,
               "JLOGINUSER_KEYNOTVALID"));
             // data.setScreenTemplate("NewUserRejected");
             data.getUser().setHasLoggedIn(Boolean.valueOf(false));
             return;
           } else {
 
-            data.setMessage(Localization.getString(rundata,
+            data.setMessage(Localization.getString(
+              rundata,
               "JLOGINUSER_CONFIRMFIRST"));
 
             // data.setScreenTemplate("ConfirmRegistration");
@@ -272,22 +282,22 @@ public class ALJLoginUser extends ActionEvent {
 
         // user has logged in successfully at this point
 
-        boolean automaticLogonEnabled = JetspeedResources.getBoolean(
-          "automatic.logon.enable", false);
+        boolean automaticLogonEnabled =
+          JetspeedResources.getBoolean("automatic.logon.enable", false);
         if (automaticLogonEnabled) {
           // Does the user want to use this facility?
-          boolean userRequestsRememberMe = data.getParameters().getBoolean(
-            "rememberme", false);
+          boolean userRequestsRememberMe =
+            data.getParameters().getBoolean("rememberme", false);
           if (userRequestsRememberMe) {
             // save cookies on the users machine.
-            int maxage = JetspeedResources.getInt(
-              "automatic.logon.cookie.maxage", -1);
-            String comment = JetspeedResources.getString(
-              "automatic.logon.cookie.comment", "");
-            String domain = JetspeedResources
-              .getString("automatic.logon.cookie.domain");
-            String path = JetspeedResources.getString(
-              "automatic.logon.cookie.path", "/");
+            int maxage =
+              JetspeedResources.getInt("automatic.logon.cookie.maxage", -1);
+            String comment =
+              JetspeedResources.getString("automatic.logon.cookie.comment", "");
+            String domain =
+              JetspeedResources.getString("automatic.logon.cookie.domain");
+            String path =
+              JetspeedResources.getString("automatic.logon.cookie.path", "/");
 
             if (domain == null) {
               String server = data.getServerName();
@@ -297,8 +307,8 @@ public class ALJLoginUser extends ActionEvent {
             String loginCookieValue = null;
 
             if (JetspeedResources.getString(
-              "automatic.logon.cookie.generation", "everylogon").equals(
-              "everylogon")) {
+              "automatic.logon.cookie.generation",
+              "everylogon").equals("everylogon")) {
               loginCookieValue = "" + Math.random();
               data.getUser().setPerm("logincookie", loginCookieValue);
               JetspeedSecurity.saveUser(data.getJetspeedUser());
@@ -311,8 +321,8 @@ public class ALJLoginUser extends ActionEvent {
               }
             }
 
-            Cookie userName = new Cookie("username", data.getUser()
-              .getUserName());
+            Cookie userName =
+              new Cookie("username", data.getUser().getUserName());
             Cookie loginCookie = new Cookie("logincookie", loginCookieValue);
 
             userName.setMaxAge(maxage);
@@ -345,7 +355,8 @@ public class ALJLoginUser extends ActionEvent {
         if (ALCellularUtils.isCellularPhone(data)) {
           JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
           rundata.setRedirectURI(jsLink.getPortletById("").addQueryData(
-            JetspeedResources.PATH_ACTION_KEY, "controls.Restore").toString());
+            JetspeedResources.PATH_ACTION_KEY,
+            "controls.Restore").toString());
           rundata.getResponse().sendRedirect(rundata.getRedirectURI());
           JetspeedLinkFactory.putInstance(jsLink);
           jsLink = null;
@@ -377,7 +388,9 @@ public class ALJLoginUser extends ActionEvent {
       return false;
     }
 
-    if (chars == null || chars.length == 2 || Character.isDigit(ch)
+    if (chars == null
+      || chars.length == 2
+      || Character.isDigit(ch)
       || Character.isLetter(ch)) {
       return false;
     } else {
@@ -391,11 +404,14 @@ public class ALJLoginUser extends ActionEvent {
     boolean disabled = false;
     // disable user after a configurable number of strikes
     if (JetspeedSecurity.isDisableAccountCheckEnabled()) {
-      disabled = JetspeedSecurity.checkDisableAccount(data.getParameters()
-        .getString("username", ""));
+      disabled =
+        JetspeedSecurity.checkDisableAccount(data.getParameters().getString(
+          "username",
+          ""));
 
       if (disabled) {
-        data.setMessage(Localization.getString(data,
+        data.setMessage(Localization.getString(
+          data,
           "JLOGINUSER_ACCOUNT_DISABLED"));
         data.setScreenTemplate(JetspeedResources
           .getString("logon.disabled.form"));

@@ -46,6 +46,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -193,15 +194,15 @@ public class AccessControlFormData extends ALAbstractFormData {
     try {
       if (res) {
         if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
-          acl_role_id = ALEipUtils.getTemp(rundata, context,
-            ALEipConstants.ENTITY_ID);
+          acl_role_id =
+            ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
         }
 
         String[] str = rundata.getParameters().getStrings("member_to");
         if (str != null && str.length > 0) {
-          SelectQuery query = new SelectQuery(TurbineUser.class);
-          Expression exp = ExpressionFactory.inExp(
-            TurbineUser.LOGIN_NAME_PROPERTY, str);
+          SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+          Expression exp =
+            ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY, str);
           query.setQualifier(exp);
           memberList.addAll(ALEipUtils.getUsersFromSelectQuery(query));
         }
@@ -227,22 +228,29 @@ public class AccessControlFormData extends ALAbstractFormData {
     if (tmp_acl_role_name != null && !"".equals(tmp_acl_role_name)) {
       // ロール名の重複をチェックする
       try {
-        SelectQuery query = new SelectQuery(EipTAclRole.class);
+        SelectQuery<EipTAclRole> query = Database.query(EipTAclRole.class);
         if (ALEipConstants.MODE_INSERT.equals(getMode())) {
-          Expression exp = ExpressionFactory.matchExp(
-            EipTAclRole.ROLE_NAME_PROPERTY, tmp_acl_role_name);
+          Expression exp =
+            ExpressionFactory.matchExp(
+              EipTAclRole.ROLE_NAME_PROPERTY,
+              tmp_acl_role_name);
           query.setQualifier(exp);
         } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
-          Expression exp1 = ExpressionFactory.matchExp(
-            EipTAclRole.ROLE_NAME_PROPERTY, tmp_acl_role_name);
+          Expression exp1 =
+            ExpressionFactory.matchExp(
+              EipTAclRole.ROLE_NAME_PROPERTY,
+              tmp_acl_role_name);
           query.setQualifier(exp1);
-          Expression exp2 = ExpressionFactory.noMatchDbExp(
-            EipTAclRole.ROLE_ID_PK_COLUMN, Integer.valueOf(acl_role_id));
+          Expression exp2 =
+            ExpressionFactory.noMatchDbExp(
+              EipTAclRole.ROLE_ID_PK_COLUMN,
+              Integer.valueOf(acl_role_id));
           query.andQualifier(exp2);
         }
 
         if (query.fetchList().size() != 0) {
-          msgList.add("ロール名『 <span class='em'>" + acl_role_name.toString()
+          msgList.add("ロール名『 <span class='em'>"
+            + acl_role_name.toString()
             + "</span> 』は既に登録されています。");
         }
       } catch (Exception ex) {
@@ -264,9 +272,12 @@ public class AccessControlFormData extends ALAbstractFormData {
     aclexport.validate(msgList);
 
     // アクセス権限
-    if (acllist.getValue() == 0 && acldetail.getValue() == 0
-      && aclinsert.getValue() == 0 && aclupdate.getValue() == 0
-      && acldelete.getValue() == 0 && aclexport.getValue() == 0) {
+    if (acllist.getValue() == 0
+      && acldetail.getValue() == 0
+      && aclinsert.getValue() == 0
+      && aclupdate.getValue() == 0
+      && acldelete.getValue() == 0
+      && aclexport.getValue() == 0) {
       msgList.add("アクセス権限を選択してください。");
     }
 
@@ -285,20 +296,25 @@ public class AccessControlFormData extends ALAbstractFormData {
         uids.add(Integer.valueOf((int) user.getUserId().getValue()));
       }
 
-      SelectQuery rolequery = new SelectQuery(EipTAclRole.class);
-      Expression exp11 = ExpressionFactory.matchDbExp(
-        EipTAclRole.EIP_TACL_PORTLET_FEATURE_PROPERTY + "."
-          + EipTAclPortletFeature.FEATURE_ID_PK_COLUMN, Integer
-          .valueOf((int) feature_id.getValue()));
-      Expression exp12 = ExpressionFactory.inDbExp(
-        EipTAclRole.EIP_TACL_USER_ROLE_MAPS_PROPERTY + "."
-          + EipTAclUserRoleMap.TURBINE_USER_PROPERTY + "."
+      SelectQuery<EipTAclRole> rolequery = Database.query(EipTAclRole.class);
+      Expression exp11 =
+        ExpressionFactory.matchDbExp(
+          EipTAclRole.EIP_TACL_PORTLET_FEATURE_PROPERTY
+            + "."
+            + EipTAclPortletFeature.FEATURE_ID_PK_COLUMN,
+          Integer.valueOf((int) feature_id.getValue()));
+      Expression exp12 =
+        ExpressionFactory.inDbExp(EipTAclRole.EIP_TACL_USER_ROLE_MAPS_PROPERTY
+          + "."
+          + EipTAclUserRoleMap.TURBINE_USER_PROPERTY
+          + "."
           + TurbineUser.USER_ID_PK_COLUMN, uids);
       rolequery.setQualifier(exp11.andExp(exp12));
 
       if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
-        Expression exp13 = ExpressionFactory.noMatchDbExp(
-          EipTAclRole.ROLE_ID_PK_COLUMN, Integer.valueOf(acl_role_id));
+        Expression exp13 =
+          ExpressionFactory.noMatchDbExp(EipTAclRole.ROLE_ID_PK_COLUMN, Integer
+            .valueOf(acl_role_id));
         rolequery.andQualifier(exp13);
       }
 
@@ -336,8 +352,10 @@ public class AccessControlFormData extends ALAbstractFormData {
       // ロール名
       acl_role_name.setValue(aclrole.getRoleName());
 
-      List<?> aclUserRoleMaps = AccessControlUtils
-        .getEipTAclUserRoleMaps(aclrole.getRoleId().intValue());
+      List<?> aclUserRoleMaps =
+        AccessControlUtils.getEipTAclUserRoleMaps(aclrole
+          .getRoleId()
+          .intValue());
       if (aclUserRoleMaps != null && aclUserRoleMaps.size() > 0) {
         EipTAclUserRoleMap rolemap = null;
         TurbineUser tuser = null;
@@ -363,18 +381,30 @@ public class AccessControlFormData extends ALAbstractFormData {
 
       // アクセス権限
       int tmpAclType = aclrole.getAclType();
-      AccessControlUtils.setupAcl(ALAccessControlConstants.VALUE_ACL_LIST,
-        tmpAclType, acllist);
-      AccessControlUtils.setupAcl(ALAccessControlConstants.VALUE_ACL_DETAIL,
-        tmpAclType, acldetail);
-      AccessControlUtils.setupAcl(ALAccessControlConstants.VALUE_ACL_INSERT,
-        tmpAclType, aclinsert);
-      AccessControlUtils.setupAcl(ALAccessControlConstants.VALUE_ACL_UPDATE,
-        tmpAclType, aclupdate);
-      AccessControlUtils.setupAcl(ALAccessControlConstants.VALUE_ACL_DELETE,
-        tmpAclType, acldelete);
-      AccessControlUtils.setupAcl(ALAccessControlConstants.VALUE_ACL_EXPORT,
-        tmpAclType, aclexport);
+      AccessControlUtils.setupAcl(
+        ALAccessControlConstants.VALUE_ACL_LIST,
+        tmpAclType,
+        acllist);
+      AccessControlUtils.setupAcl(
+        ALAccessControlConstants.VALUE_ACL_DETAIL,
+        tmpAclType,
+        acldetail);
+      AccessControlUtils.setupAcl(
+        ALAccessControlConstants.VALUE_ACL_INSERT,
+        tmpAclType,
+        aclinsert);
+      AccessControlUtils.setupAcl(
+        ALAccessControlConstants.VALUE_ACL_UPDATE,
+        tmpAclType,
+        aclupdate);
+      AccessControlUtils.setupAcl(
+        ALAccessControlConstants.VALUE_ACL_DELETE,
+        tmpAclType,
+        acldelete);
+      AccessControlUtils.setupAcl(
+        ALAccessControlConstants.VALUE_ACL_EXPORT,
+        tmpAclType,
+        aclexport);
 
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -398,18 +428,18 @@ public class AccessControlFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
 
-      String aclroleid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+      String aclroleid =
+        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
       if (aclroleid == null || Integer.valueOf(aclroleid) == null) {
         // IDが空の場合
         logger.debug("[AccessControlUtils] Empty ID...");
         return false;
       }
 
-      Expression exp = ExpressionFactory.matchDbExp(
-        EipTAclRole.ROLE_ID_PK_COLUMN, aclroleid);
-      SelectQuery query = new SelectQuery(EipTAclRole.class, exp);
-      List<?> aclroles = query.fetchList();
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipTAclRole.ROLE_ID_PK_COLUMN, aclroleid);
+      SelectQuery<EipTAclRole> query = Database.query(EipTAclRole.class, exp);
+      List<EipTAclRole> aclroles = query.fetchList();
       if (aclroles == null || aclroles.size() == 0) {
         // 指定したIDのレコードが見つからない場合
         logger.debug("[AccessControlUtils] Not found ID...");
@@ -417,7 +447,7 @@ public class AccessControlFormData extends ALAbstractFormData {
       }
 
       // オブジェクトを削除（Cayenneのカスケード設定でEipTAclUserRoleMapも同時に削除）
-      dataContext.deleteObject((EipTAclRole) aclroles.get(0));
+      dataContext.deleteObject(aclroles.get(0));
 
       dataContext.commitChanges();
     } catch (Exception ex) {
@@ -444,17 +474,19 @@ public class AccessControlFormData extends ALAbstractFormData {
       Date now = Calendar.getInstance().getTime();
 
       // 新規オブジェクトモデル
-      EipTAclRole aclrole = (EipTAclRole) dataContext
-        .createAndRegisterNewObject(EipTAclRole.class);
+      EipTAclRole aclrole =
+        (EipTAclRole) dataContext.createAndRegisterNewObject(EipTAclRole.class);
       aclrole.setRoleName(acl_role_name.getValue());
       aclrole.setNote(note.getValue());
 
       long aclType = getAclTypeValue();
       aclrole.setAclType(Integer.valueOf((int) aclType));
 
-      EipTAclPortletFeature feature = (EipTAclPortletFeature) DataObjectUtils
-        .objectForPK(dataContext, EipTAclPortletFeature.class, Integer
-          .valueOf((int) feature_id.getValue()));
+      EipTAclPortletFeature feature =
+        (EipTAclPortletFeature) DataObjectUtils.objectForPK(
+          dataContext,
+          EipTAclPortletFeature.class,
+          Integer.valueOf((int) feature_id.getValue()));
       aclrole.setEipTAclPortletFeature(feature);
 
       // 登録日
@@ -508,9 +540,11 @@ public class AccessControlFormData extends ALAbstractFormData {
       long aclType = getAclTypeValue();
       aclrole.setAclType(Integer.valueOf((int) aclType));
 
-      EipTAclPortletFeature feature = (EipTAclPortletFeature) DataObjectUtils
-        .objectForPK(dataContext, EipTAclPortletFeature.class, Integer
-          .valueOf((int) feature_id.getValue()));
+      EipTAclPortletFeature feature =
+        (EipTAclPortletFeature) DataObjectUtils.objectForPK(
+          dataContext,
+          EipTAclPortletFeature.class,
+          Integer.valueOf((int) feature_id.getValue()));
       aclrole.setEipTAclPortletFeature(feature);
 
       // userMapの登録
@@ -532,28 +566,34 @@ public class AccessControlFormData extends ALAbstractFormData {
   }
 
   private void insertEipTAclUserRoleMap(EipTAclRole aclrole, ALEipUser user) {
-    EipTAclUserRoleMap map = (EipTAclUserRoleMap) dataContext
-      .createAndRegisterNewObject(EipTAclUserRoleMap.class);
+    EipTAclUserRoleMap map =
+      (EipTAclUserRoleMap) dataContext
+        .createAndRegisterNewObject(EipTAclUserRoleMap.class);
     int userid = (int) user.getUserId().getValue();
     // ユーザーID
-    TurbineUser tuser = (TurbineUser) DataObjectUtils.objectForPK(dataContext,
-      TurbineUser.class, Integer.valueOf(userid));
+    TurbineUser tuser =
+      (TurbineUser) DataObjectUtils.objectForPK(
+        dataContext,
+        TurbineUser.class,
+        Integer.valueOf(userid));
     map.setEipTAclRole(aclrole);
     map.setTurbineUser(tuser);
   }
 
   private boolean deleteEipTAclUserRoleMap(RunData rundata, Context context) {
-    String aclroleid = ALEipUtils.getTemp(rundata, context,
-      ALEipConstants.ENTITY_ID);
+    String aclroleid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     if (aclroleid == null || Integer.valueOf(aclroleid) == null) {
       // IDが空の場合
       logger.debug("[AccessControlFormData] Empty ID...");
       return false;
     }
 
-    SelectQuery query = new SelectQuery(EipTAclUserRoleMap.class);
-    Expression exp = ExpressionFactory.matchDbExp(
-      EipTAclUserRoleMap.EIP_TACL_ROLE_PROPERTY + "."
+    SelectQuery<EipTAclUserRoleMap> query =
+      Database.query(EipTAclUserRoleMap.class);
+    Expression exp =
+      ExpressionFactory.matchDbExp(EipTAclUserRoleMap.EIP_TACL_ROLE_PROPERTY
+        + "."
         + EipTAclRole.ROLE_ID_PK_COLUMN, aclroleid);
     query.setQualifier(exp);
     List<?> maps = query.fetchList();
@@ -566,12 +606,19 @@ public class AccessControlFormData extends ALAbstractFormData {
   }
 
   private long getAclTypeValue() {
-    long aclType = acllist.getValue() * ALAccessControlConstants.VALUE_ACL_LIST
-      + acldetail.getValue() * ALAccessControlConstants.VALUE_ACL_DETAIL
-      + aclinsert.getValue() * ALAccessControlConstants.VALUE_ACL_INSERT
-      + aclupdate.getValue() * ALAccessControlConstants.VALUE_ACL_UPDATE
-      + acldelete.getValue() * ALAccessControlConstants.VALUE_ACL_DELETE
-      + aclexport.getValue() * ALAccessControlConstants.VALUE_ACL_EXPORT;
+    long aclType =
+      acllist.getValue()
+        * ALAccessControlConstants.VALUE_ACL_LIST
+        + acldetail.getValue()
+        * ALAccessControlConstants.VALUE_ACL_DETAIL
+        + aclinsert.getValue()
+        * ALAccessControlConstants.VALUE_ACL_INSERT
+        + aclupdate.getValue()
+        * ALAccessControlConstants.VALUE_ACL_UPDATE
+        + acldelete.getValue()
+        * ALAccessControlConstants.VALUE_ACL_DELETE
+        + aclexport.getValue()
+        * ALAccessControlConstants.VALUE_ACL_EXPORT;
     return aclType;
   }
 

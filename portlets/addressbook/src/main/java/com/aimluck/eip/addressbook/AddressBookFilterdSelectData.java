@@ -40,6 +40,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -106,14 +107,14 @@ public class AddressBookFilterdSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<EipMAddressbook> selectList(RunData rundata, Context context) {
+  protected ResultList<EipMAddressbook> selectList(RunData rundata,
+      Context context) {
 
     try {
       SelectQuery<EipMAddressbook> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
-      List<EipMAddressbook> list = query.fetchList();
-      return buildPaginatedList(list);
+      return query.getResultList();
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -146,10 +147,16 @@ public class AddressBookFilterdSelectData extends
       AddressBookResultData rd = new AddressBookResultData();
       rd.initField();
       rd.setAddressId(record.getAddressId().intValue());
-      rd.setName(new StringBuffer().append(record.getLastName()).append(" ")
-        .append(record.getFirstName()).toString());
-      rd.setNameKana(new StringBuffer().append(record.getLastNameKana())
-        .append(' ').append(record.getFirstNameKana()).toString());
+      rd.setName(new StringBuffer()
+        .append(record.getLastName())
+        .append(" ")
+        .append(record.getFirstName())
+        .toString());
+      rd.setNameKana(new StringBuffer()
+        .append(record.getLastNameKana())
+        .append(' ')
+        .append(record.getFirstNameKana())
+        .toString());
 
       EipMAddressbookCompany company = record.getEipMAddressbookCompany();
 
@@ -158,12 +165,15 @@ public class AddressBookFilterdSelectData extends
         // 「未分類」の会社情報ではない場合
 
         rd.setCompanyName(ALCommonUtils.compressString(
-          company.getCompanyName(), getStrLength()));
+          company.getCompanyName(),
+          getStrLength()));
         rd.setCompanyId(company.getCompanyId().toString());
-        rd.setPostName(ALCommonUtils.compressString(company.getPostName(),
+        rd.setPostName(ALCommonUtils.compressString(
+          company.getPostName(),
           getStrLength()));
       }
-      rd.setPositionName(ALCommonUtils.compressString(record.getPositionName(),
+      rd.setPositionName(ALCommonUtils.compressString(
+        record.getPositionName(),
         getStrLength()));
       rd.setEmail(record.getEmail());
       rd.setTelephone(record.getTelephone());
@@ -192,8 +202,8 @@ public class AddressBookFilterdSelectData extends
       rd.initField();
 
       // 登録ユーザ名の設定
-      ALEipUser createdUser = ALEipUtils.getALEipUser(record.getCreateUserId()
-        .intValue());
+      ALEipUser createdUser =
+        ALEipUtils.getALEipUser(record.getCreateUserId().intValue());
       String createdUserName = createdUser.getAliasName().getValue();
       rd.setCreatedUser(createdUserName);
 
@@ -202,8 +212,8 @@ public class AddressBookFilterdSelectData extends
       if (record.getCreateUserId().equals(record.getUpdateUserId())) {
         updatedUserName = createdUserName;
       } else {
-        ALEipUser updatedUser = ALEipUtils.getALEipUser(record
-          .getUpdateUserId().intValue());
+        ALEipUser updatedUser =
+          ALEipUtils.getALEipUser(record.getUpdateUserId().intValue());
         updatedUserName = updatedUser.getAliasName().getValue();
       }
       rd.setUpdatedUser(updatedUserName);
@@ -211,10 +221,16 @@ public class AddressBookFilterdSelectData extends
       // アドレスID の設定
       int addressId = record.getAddressId().intValue();
       rd.setAddressId(addressId);
-      rd.setName(new StringBuffer().append(record.getLastName()).append(' ')
-        .append(record.getFirstName()).toString());
-      rd.setNameKana(new StringBuffer().append(record.getLastNameKana())
-        .append(' ').append(record.getFirstNameKana()).toString());
+      rd.setName(new StringBuffer()
+        .append(record.getLastName())
+        .append(' ')
+        .append(record.getFirstName())
+        .toString());
+      rd.setNameKana(new StringBuffer()
+        .append(record.getLastNameKana())
+        .append(' ')
+        .append(record.getFirstNameKana())
+        .toString());
       rd.setEmail(record.getEmail());
       rd.setTelephone(record.getTelephone());
       rd.setCellularPhone(record.getCellularPhone());
@@ -252,11 +268,15 @@ public class AddressBookFilterdSelectData extends
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("group", EipMAddressbook.EIP_TADDRESSBOOK_GROUP_MAP_PROPERTY
-      + "." + EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY + "."
+      + "."
+      + EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY
+      + "."
       + EipMAddressGroup.GROUP_ID_PK_COLUMN);
     map.putValue("name_kana", EipMAddressbook.LAST_NAME_KANA_PROPERTY);
-    map.putValue("company_name_kana",
-      EipMAddressbook.EIP_MADDRESSBOOK_COMPANY_PROPERTY + "."
+    map.putValue(
+      "company_name_kana",
+      EipMAddressbook.EIP_MADDRESSBOOK_COMPANY_PROPERTY
+        + "."
         + EipMAddressbookCompany.COMPANY_NAME_KANA_PROPERTY);
     return map;
   }
@@ -270,15 +290,16 @@ public class AddressBookFilterdSelectData extends
    */
   private SelectQuery<EipMAddressbook> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipMAddressbook> query = new SelectQuery<EipMAddressbook>(
-      EipMAddressbook.class);
+    SelectQuery<EipMAddressbook> query =
+      new SelectQuery<EipMAddressbook>(EipMAddressbook.class);
 
-    Expression exp21 = ExpressionFactory.matchExp(
-      EipMAddressbook.PUBLIC_FLAG_PROPERTY, "T");
-    Expression exp22 = ExpressionFactory.matchExp(
-      EipMAddressbook.OWNER_ID_PROPERTY, ALEipUtils.getUserId(rundata));
-    Expression exp23 = ExpressionFactory.matchExp(
-      EipMAddressbook.PUBLIC_FLAG_PROPERTY, "F");
+    Expression exp21 =
+      ExpressionFactory.matchExp(EipMAddressbook.PUBLIC_FLAG_PROPERTY, "T");
+    Expression exp22 =
+      ExpressionFactory.matchExp(EipMAddressbook.OWNER_ID_PROPERTY, ALEipUtils
+        .getUserId(rundata));
+    Expression exp23 =
+      ExpressionFactory.matchExp(EipMAddressbook.PUBLIC_FLAG_PROPERTY, "F");
     query.setQualifier(exp21.orExp(exp22.andExp(exp23)));
 
     // インデックス指定時の条件文作成
@@ -291,14 +312,17 @@ public class AddressBookFilterdSelectData extends
       } else {
         index = index_rundata;
         ALEipUtils.setTemp(rundata, context, LIST_INDEX_STR, index);
-        buildSelectQueryForAddressbookIndex(query,
-          EipMAddressbook.LAST_NAME_KANA_PROPERTY, Integer.parseInt(index));
+        buildSelectQueryForAddressbookIndex(
+          query,
+          EipMAddressbook.LAST_NAME_KANA_PROPERTY,
+          Integer.parseInt(index));
         context.put("idx", index);
       }
     } else if (index_session != null) {
-      buildSelectQueryForAddressbookIndex(query,
-        EipMAddressbook.LAST_NAME_KANA_PROPERTY, Integer
-          .parseInt(index_session));
+      buildSelectQueryForAddressbookIndex(
+        query,
+        EipMAddressbook.LAST_NAME_KANA_PROPERTY,
+        Integer.parseInt(index_session));
       context.put("idx", index);
     }
 
@@ -343,11 +367,11 @@ public class AddressBookFilterdSelectData extends
   public void loadGroups(RunData rundata, Context context) {
     groupList = new ArrayList<AddressBookGroupResultData>();
     try {
-      SelectQuery<EipMAddressGroup> query = new SelectQuery<EipMAddressGroup>(
-        EipMAddressGroup.class);
-      Expression exp = ExpressionFactory.matchExp(
-        EipMAddressGroup.OWNER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-          .getUserId(rundata)));
+      SelectQuery<EipMAddressGroup> query =
+        new SelectQuery<EipMAddressGroup>(EipMAddressGroup.class);
+      Expression exp =
+        ExpressionFactory.matchExp(EipMAddressGroup.OWNER_ID_PROPERTY, Integer
+          .valueOf(ALEipUtils.getUserId(rundata)));
       query.setQualifier(exp);
       query.orderAscending(EipMAddressGroup.GROUP_NAME_PROPERTY);
 
@@ -384,79 +408,79 @@ public class AddressBookFilterdSelectData extends
     switch (idx) {
       // ア行
       case 1:
-        Expression exp01 = ExpressionFactory.greaterOrEqualExp(lastNameKana,
-          "ア");
+        Expression exp01 =
+          ExpressionFactory.greaterOrEqualExp(lastNameKana, "ア");
         Expression exp02 = ExpressionFactory.lessExp(lastNameKana, "カ");
         query.andQualifier(exp01.andExp(exp02));
         break;
       // カ行
       case 6:
-        Expression exp11 = ExpressionFactory.greaterOrEqualExp(lastNameKana,
-          "カ");
+        Expression exp11 =
+          ExpressionFactory.greaterOrEqualExp(lastNameKana, "カ");
         Expression exp12 = ExpressionFactory.lessExp(lastNameKana, "サ");
         query.andQualifier(exp11.andExp(exp12));
         break;
       // サ行
       case 11:
-        Expression exp21 = ExpressionFactory.greaterOrEqualExp(lastNameKana,
-          "サ");
+        Expression exp21 =
+          ExpressionFactory.greaterOrEqualExp(lastNameKana, "サ");
         Expression exp22 = ExpressionFactory.lessExp(lastNameKana, "タ");
         query.andQualifier(exp21.andExp(exp22));
         break;
       // タ行
       case 16:
-        Expression exp31 = ExpressionFactory.greaterOrEqualExp(lastNameKana,
-          "タ");
+        Expression exp31 =
+          ExpressionFactory.greaterOrEqualExp(lastNameKana, "タ");
         Expression exp32 = ExpressionFactory.lessExp(lastNameKana, "ナ");
         query.andQualifier(exp31.andExp(exp32));
         break;
       // ナ行
       case 21:
-        Expression exp41 = ExpressionFactory.greaterOrEqualExp(lastNameKana,
-          "ナ");
+        Expression exp41 =
+          ExpressionFactory.greaterOrEqualExp(lastNameKana, "ナ");
         Expression exp42 = ExpressionFactory.lessExp(lastNameKana, "ハ");
         query.andQualifier(exp41.andExp(exp42));
         break;
       // ハ行
       case 26:
-        Expression exp51 = ExpressionFactory.greaterOrEqualExp(lastNameKana,
-          "ハ");
+        Expression exp51 =
+          ExpressionFactory.greaterOrEqualExp(lastNameKana, "ハ");
         Expression exp52 = ExpressionFactory.lessExp(lastNameKana, "マ");
         query.andQualifier(exp51.andExp(exp52));
         break;
       // マ行
       case 31:
-        Expression exp61 = ExpressionFactory.greaterOrEqualExp(lastNameKana,
-          "マ");
+        Expression exp61 =
+          ExpressionFactory.greaterOrEqualExp(lastNameKana, "マ");
         Expression exp62 = ExpressionFactory.lessExp(lastNameKana, "ヤ");
         query.andQualifier(exp61.andExp(exp62));
         break;
       // ヤ行
       case 36:
-        Expression exp71 = ExpressionFactory.greaterOrEqualExp(lastNameKana,
-          "ヤ");
+        Expression exp71 =
+          ExpressionFactory.greaterOrEqualExp(lastNameKana, "ヤ");
         Expression exp72 = ExpressionFactory.lessExp(lastNameKana, "ラ");
         query.andQualifier(exp71.andExp(exp72));
         break;
       // ラ行
       case 41:
-        Expression exp81 = ExpressionFactory.greaterOrEqualExp(lastNameKana,
-          "ラ");
+        Expression exp81 =
+          ExpressionFactory.greaterOrEqualExp(lastNameKana, "ラ");
         Expression exp82 = ExpressionFactory.lessExp(lastNameKana, "ワ");
         query.andQualifier(exp81.andExp(exp82));
         break;
       // ワ行
       case 46:
-        Expression exp91 = ExpressionFactory.greaterOrEqualExp(lastNameKana,
-          "ワ");
+        Expression exp91 =
+          ExpressionFactory.greaterOrEqualExp(lastNameKana, "ワ");
         Expression exp92 = ExpressionFactory.lessOrEqualExp(lastNameKana, "ヴ");
         query.andQualifier(exp91.andExp(exp92));
         break;
       // 英数(上記以外)
       case 52:
         Expression exp100 = ExpressionFactory.lessExp(lastNameKana, "ア");
-        Expression exp101 = ExpressionFactory.greaterOrEqualExp(lastNameKana,
-          "ヴ");
+        Expression exp101 =
+          ExpressionFactory.greaterOrEqualExp(lastNameKana, "ヴ");
         query.andQualifier(exp100.orExp(exp101));
         break;
     }

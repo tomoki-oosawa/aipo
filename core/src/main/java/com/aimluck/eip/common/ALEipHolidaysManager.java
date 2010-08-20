@@ -55,15 +55,21 @@ public class ALEipHolidaysManager {
 
   /** デフォルトの祝日が書かれたファイルへのパス */
   private final String FILE_HOLI_DAYS_DEFAULT = (JetspeedResources.getString(
-    "aipo.home", "").equals("")) ? "" : JetspeedResources.getString(
-    "aipo.home", "")
-    + File.separator + "conf" + File.separator + "holidays_default.properties";
+    "aipo.home",
+    "").equals("")) ? "" : JetspeedResources.getString("aipo.home", "")
+    + File.separator
+    + "conf"
+    + File.separator
+    + "holidays_default.properties";
 
   /** ユーザ定義の祝日が書かれたファイルへのパス */
   private final String FILE_HOLI_DAYS_USER = (JetspeedResources.getString(
-    "aipo.home", "").equals("")) ? "" : JetspeedResources.getString(
-    "aipo.home", "")
-    + File.separator + "conf" + File.separator + "holidays_user.properties";
+    "aipo.home",
+    "").equals("")) ? "" : JetspeedResources.getString("aipo.home", "")
+    + File.separator
+    + "conf"
+    + File.separator
+    + "holidays_user.properties";
 
   /** デフォルトの祝日一覧 */
   private List<ALHoliday> defaultHolidays = null;
@@ -180,15 +186,18 @@ public class ALEipHolidaysManager {
     try {
       if (defaultFile.exists()) {
         // デフォルトの祝日を読み込む．
-        reader = new BufferedReader(new InputStreamReader(new FileInputStream(
-          defaultFile), ALEipConstants.DEF_CONTENT_ENCODING));
+        reader =
+          new BufferedReader(new InputStreamReader(new FileInputStream(
+            defaultFile), ALEipConstants.DEF_CONTENT_ENCODING));
         loadHoliday(reader, defaultHolidays);
       }
 
       if (userFile.exists()) {
         // ユーザ定義の祝日を読み込む．
-        reader = new BufferedReader(new InputStreamReader(new FileInputStream(
-          userFile), ALEipConstants.DEF_CONTENT_ENCODING));
+        reader =
+          new BufferedReader(new InputStreamReader(
+            new FileInputStream(userFile),
+            ALEipConstants.DEF_CONTENT_ENCODING));
         loadHoliday(reader, userHolidays);
       }
 

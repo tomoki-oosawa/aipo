@@ -32,6 +32,7 @@ import com.aimluck.eip.accessctl.util.ALAccessControlUtil;
  *
  */
 public class PortletFeatureLiteJSONScreen extends ALJSONScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(PortletFeatureLiteJSONScreen.class.getName());
@@ -47,8 +48,9 @@ public class PortletFeatureLiteJSONScreen extends ALJSONScreen {
       String featureid = rundata.getParameters().getString("featureid");
 
       if (featureid != null && !"".equals(featureid)) {
-        json = JSONArray.fromObject(ALAccessControlUtil
-          .getAclLiteBeansFromFeatureId(rundata, featureid));
+        json =
+          JSONArray.fromObject(ALAccessControlUtil
+            .getAclLiteBeansFromFeatureId(rundata, featureid));
       } else {
         json = new JSONArray();
       }

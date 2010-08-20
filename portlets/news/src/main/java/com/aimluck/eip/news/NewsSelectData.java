@@ -35,6 +35,7 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.license.util.LicenseUtils;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.ResultList;
 
 /**
  */
@@ -51,7 +52,7 @@ public class NewsSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<AipoLicense> selectList(RunData rundata, Context context) {
+  protected ResultList<AipoLicense> selectList(RunData rundata, Context context) {
     return null;
   }
 
@@ -67,8 +68,8 @@ public class NewsSelectData extends
     // ユーザ数
     SelectQuery query = new SelectQuery(TurbineUser.class);
     DataContext datacontext = DatabaseOrmService.getInstance().getDataContext();
-    Expression exp = ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY,
-      "F");
+    Expression exp =
+      ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
     query.setQualifier(exp);
 
     List<?> list = datacontext.performQuery(query);

@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -52,7 +51,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.manhour.util.ManHourUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -67,7 +66,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ManHourSelectData.class.getName());
+    .getLogger(ManHourSelectData.class.getName());
 
   private String target_group_name;
 
@@ -109,21 +108,23 @@ public class ManHourSelectData extends ALAbstractSelectData {
   private boolean hasAclSummaryOther;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
-          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-              .getInitParameter("p1a-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p1a-sort"));
     }
 
     Calendar cal = Calendar.getInstance();
@@ -146,10 +147,10 @@ public class ManHourSelectData extends ALAbstractSelectData {
       ALEipUtils.setTemp(rundata, context, "target_user_id", userid);
     }
 
-    target_group_name = ALEipUtils.getParameter(rundata, context,
-        "target_group_name");
-    target_user_id = ALEipUtils
-        .getParameter(rundata, context, "target_user_id");
+    target_group_name =
+      ALEipUtils.getParameter(rundata, context, "target_group_name");
+    target_user_id =
+      ALEipUtils.getParameter(rundata, context, "target_user_id");
     category_id = ALEipUtils.getParameter(rundata, context, "category_id");
 
     List myGroups = ALEipUtils.getMyGroups(rundata);
@@ -165,27 +166,33 @@ public class ManHourSelectData extends ALAbstractSelectData {
 
     // アクセス権
     if (target_user_id.equals(userid)) {
-      aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_SUMMARY_SELF;
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_SUMMARY_SELF;
     } else {
-      aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_SUMMARY_OTHER;
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_SUMMARY_OTHER;
     }
-    ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-    hasAclSummaryOther = aclhandler.hasAuthority(ALEipUtils.getUserId(rundata),
+    hasAclSummaryOther =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
         ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_SUMMARY_OTHER,
         ALAccessControlConstants.VALUE_ACL_LIST);
     if (!hasAclSummaryOther) {
       // 他ユーザーの閲覧権限がないときには、ログインユーザーのIDに変更する。
       target_user_id = userid;
-      aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_SUMMARY_SELF;
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_SUMMARY_SELF;
     }
 
     super.init(action, rundata, context);
   }
 
   /**
-   *
+   * 
    * @return
    */
   public boolean isNormal() {
@@ -194,7 +201,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
   }
 
   /**
-   *
+   * 
    * @param bool
    */
   public void setNormal(boolean bool) {
@@ -203,17 +210,20 @@ public class ManHourSelectData extends ALAbstractSelectData {
 
   /**
    * 一覧表示します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @return TRUE 成功 FASLE 失敗
    */
+  @Override
   public boolean doViewList(ALAction action, RunData rundata, Context context) {
     try {
       init(action, rundata, context);
-      doCheckAclPermission(rundata, context,
-          ALAccessControlConstants.VALUE_ACL_LIST);
+      doCheckAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_LIST);
       action.setMode(ALEipConstants.MODE_LIST);
       List aList = selectList(rundata, context);
       if (aList != null) {
@@ -247,8 +257,9 @@ public class ManHourSelectData extends ALAbstractSelectData {
    * ALAbstractSelectData で定義されている getList() をオーバーライドする。<br />
    * 返り値は、ALAbstractSelectData の変数 list ではなく、 <br />
    * このクラスのグローバル変数 scheduleList を返す。
-   *
+   * 
    */
+  @Override
   public List getList() {
     return scheduleList;
   }
@@ -265,55 +276,61 @@ public class ManHourSelectData extends ALAbstractSelectData {
         int result = 0;
         if ("category".equals(sort)) {
           if ("asc".equals(sort_type)) {
-            result = ((ManHourResultData) o1)
-                .getCategoryName()
-                .getValue()
-                .compareTo(
-                    ((ManHourResultData) o2).getCategoryName().getValue());
+            result =
+              ((ManHourResultData) o1).getCategoryName().getValue().compareTo(
+                ((ManHourResultData) o2).getCategoryName().getValue());
           } else {
-            result = ((ManHourResultData) o2)
-                .getCategoryName()
-                .getValue()
-                .compareTo(
-                    ((ManHourResultData) o1).getCategoryName().getValue());
+            result =
+              ((ManHourResultData) o2).getCategoryName().getValue().compareTo(
+                ((ManHourResultData) o1).getCategoryName().getValue());
 
           }
         } else if ("user_name".equals(sort)) {
           if ("asc".equals(sort_type)) {
-            result = ((ManHourResultData) o1).getUser().getValue()
-                .compareTo(((ManHourResultData) o2).getUser().getValue());
+            result =
+              ((ManHourResultData) o1).getUser().getValue().compareTo(
+                ((ManHourResultData) o2).getUser().getValue());
           } else {
-            result = ((ManHourResultData) o2).getUser().getValue()
-                .compareTo(((ManHourResultData) o1).getUser().getValue());
+            result =
+              ((ManHourResultData) o2).getUser().getValue().compareTo(
+                ((ManHourResultData) o1).getUser().getValue());
 
           }
         } else if ("schedule".equals(sort)) {
           if ("asc".equals(sort_type)) {
-            result = ((ManHourResultData) o1).getName().getValue()
-                .compareTo(((ManHourResultData) o2).getName().getValue());
+            result =
+              ((ManHourResultData) o1).getName().getValue().compareTo(
+                ((ManHourResultData) o2).getName().getValue());
           } else {
-            result = ((ManHourResultData) o2).getName().getValue()
-                .compareTo(((ManHourResultData) o1).getName().getValue());
+            result =
+              ((ManHourResultData) o2).getName().getValue().compareTo(
+                ((ManHourResultData) o1).getName().getValue());
 
           }
         } else if ("time".equals(sort)) {
           if ("asc".equals(sort_type)) {
-            result = ((ManHourResultData) o1).getStartDate().getValue()
-                .compareTo(((ManHourResultData) o2).getStartDate().getValue());
+            result =
+              ((ManHourResultData) o1).getStartDate().getValue().compareTo(
+                ((ManHourResultData) o2).getStartDate().getValue());
           } else {
-            result = ((ManHourResultData) o2).getStartDate().getValue()
-                .compareTo(((ManHourResultData) o1).getStartDate().getValue());
+            result =
+              ((ManHourResultData) o2).getStartDate().getValue().compareTo(
+                ((ManHourResultData) o1).getStartDate().getValue());
 
           }
         } else if ("manhour".equals(sort)) {
           if ("asc".equals(sort_type)) {
-            result = Double.valueOf(((ManHourResultData) o1).getManHourMin())
+            result =
+              Double
+                .valueOf(((ManHourResultData) o1).getManHourMin())
                 .compareTo(
-                    Double.valueOf(((ManHourResultData) o2).getManHourMin()));
+                  Double.valueOf(((ManHourResultData) o2).getManHourMin()));
           } else {
-            result = Double.valueOf(((ManHourResultData) o2).getManHourMin())
+            result =
+              Double
+                .valueOf(((ManHourResultData) o2).getManHourMin())
                 .compareTo(
-                    Double.valueOf(((ManHourResultData) o1).getManHourMin()));
+                  Double.valueOf(((ManHourResultData) o1).getManHourMin()));
 
           }
         }
@@ -329,7 +346,8 @@ public class ManHourSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List selectList(RunData rundata, Context context)
+  @Override
+  protected ResultList selectList(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
     try {
@@ -337,7 +355,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
       // buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
       List list = query.fetchList();
-      return ScheduleUtils.sortByDummySchedule(list);
+      return new ResultList(ScheduleUtils.sortByDummySchedule(list));
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -346,7 +364,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -355,9 +373,12 @@ public class ManHourSelectData extends ALAbstractSelectData {
     SelectQuery query = new SelectQuery(EipTScheduleMap.class);
 
     // 終了日時
-    Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.END_DATE_PROPERTY, view_date.getValue());
+    Expression exp11 =
+      ExpressionFactory.greaterOrEqualExp(
+        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.END_DATE_PROPERTY,
+        view_date.getValue());
 
     Calendar cal = Calendar.getInstance();
     cal.setTime(view_date.getValue());
@@ -367,61 +388,77 @@ public class ManHourSelectData extends ALAbstractSelectData {
     view_date_add_month.setValue(cal.getTime());
 
     // 開始日時
-    Expression exp12 = ExpressionFactory.lessOrEqualExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.START_DATE_PROPERTY, view_date_add_month.getValue());
+    Expression exp12 =
+      ExpressionFactory.lessOrEqualExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.START_DATE_PROPERTY, view_date_add_month.getValue());
 
     // 通常スケジュール
-    Expression exp13 = ExpressionFactory.noMatchExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
+    Expression exp13 =
+      ExpressionFactory.noMatchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
     // 期間スケジュール
-    Expression exp14 = ExpressionFactory.noMatchExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
+    Expression exp14 =
+      ExpressionFactory.noMatchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
 
     query.setQualifier((exp11.andExp(exp12).andExp(exp14)).orExp(exp13
-        .andExp(exp14)));
+      .andExp(exp14)));
 
-    Expression exp15 = ExpressionFactory.matchExp(
-        EipTScheduleMap.STATUS_PROPERTY, "D");
+    Expression exp15 =
+      ExpressionFactory.matchExp(EipTScheduleMap.STATUS_PROPERTY, "D");
 
     // 共有カテゴリ
-    if ((category_id != null) && (!category_id.equals("") && !is_normal)
-        && (!category_id.equals("all"))) {
-      Expression exp = ExpressionFactory.matchExp(
+    if ((category_id != null)
+      && (!category_id.equals("") && !is_normal)
+      && (!category_id.equals("all"))) {
+      Expression exp =
+        ExpressionFactory.matchExp(
           EipTScheduleMap.COMMON_CATEGORY_ID_PROPERTY,
           Integer.valueOf(category_id));
 
       query.andQualifier(exp15.orExp(exp));
 
     } else {
-      Expression exp = ExpressionFactory.noMatchExp(
-          EipTScheduleMap.COMMON_CATEGORY_ID_PROPERTY, Integer.valueOf(1));
+      Expression exp =
+        ExpressionFactory.noMatchExp(
+          EipTScheduleMap.COMMON_CATEGORY_ID_PROPERTY,
+          Integer.valueOf(1));
 
       query.andQualifier(exp15.orExp(exp));
     }
 
     // ユーザー
     if (is_normal) {
-      Expression exp1 = ExpressionFactory.matchDbExp(
-          TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(userid));
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+          .valueOf(userid));
       query.andQualifier(exp1);
-    } else if ((target_user_id != null) && (!target_user_id.equals(""))
-        && (!target_user_id.equals("all"))) {
-      Expression exp1 = ExpressionFactory.matchDbExp(
-          TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(target_user_id));
+    } else if ((target_user_id != null)
+      && (!target_user_id.equals(""))
+      && (!target_user_id.equals("all"))) {
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+          .valueOf(target_user_id));
       query.andQualifier(exp1);
     }
 
     // グループ
-    if ((target_group_name != null) && (!target_group_name.equals(""))
-        && (!target_group_name.equals("all")) && !is_normal) {
+    if ((target_group_name != null)
+      && (!target_group_name.equals(""))
+      && (!target_group_name.equals("all"))
+      && !is_normal) {
       // 選択したグループを指定する．
-      Expression exp2 = ExpressionFactory.matchExp(
-          EipTScheduleMap.TURBINE_USER_GROUP_ROLE_PROPERTY + "."
-              + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY + "."
-              + TurbineGroup.GROUP_NAME_PROPERTY, target_group_name);
+      Expression exp2 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.TURBINE_USER_GROUP_ROLE_PROPERTY
+            + "."
+            + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
+            + "."
+            + TurbineGroup.GROUP_NAME_PROPERTY,
+          target_group_name);
       query.andQualifier(exp2);
 
     }
@@ -433,6 +470,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected Object selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     // String js_peid = rundata.getParameters().getString("sch");
@@ -443,6 +481,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(Object obj) throws ALPageNotFoundException,
       ALDBErrorException {
     try {
@@ -452,8 +491,8 @@ public class ManHourSelectData extends ALAbstractSelectData {
       EipTCommonCategory category = record.getEipTCommonCategory();
 
       // 登録ユーザ名の設定
-      ALEipUser createdUser = ALEipUtils.getALEipUser(record.getUserId()
-          .intValue());
+      ALEipUser createdUser =
+        ALEipUtils.getALEipUser(record.getUserId().intValue());
 
       String createdUserName = createdUser.getAliasName().toString();
 
@@ -467,21 +506,25 @@ public class ManHourSelectData extends ALAbstractSelectData {
 
       // スケジュール
       // スケジュールが棄却されている場合は表示しない
-      if ("R".equals(record.getStatus()))
+      if ("R".equals(record.getStatus())) {
         return rd;
+      }
       int userid_int = Integer.parseInt(userid);
 
       SelectQuery mapquery = new SelectQuery(EipTScheduleMap.class);
-      Expression mapexp1 = ExpressionFactory.matchExp(
-          EipTScheduleMap.SCHEDULE_ID_PROPERTY, schedule.getScheduleId());
+      Expression mapexp1 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.SCHEDULE_ID_PROPERTY,
+          schedule.getScheduleId());
       mapquery.setQualifier(mapexp1);
-      Expression mapexp2 = ExpressionFactory.matchExp(
-          EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(userid));
+      Expression mapexp2 =
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+          .valueOf(userid));
       mapquery.andQualifier(mapexp2);
 
       List schedulemaps = mapquery.fetchList();
-      boolean is_member = (schedulemaps != null && schedulemaps.size() > 0) ? true
-          : false;
+      boolean is_member =
+        (schedulemaps != null && schedulemaps.size() > 0) ? true : false;
 
       // boolean is_member = orm_map.count(new Criteria().add(
       // EipTScheduleMapConstants.SCHEDULE_ID, schedule.getScheduleId()).add(
@@ -493,14 +536,17 @@ public class ManHourSelectData extends ALAbstractSelectData {
       // 共有メンバーではない
       // オーナーではない
       if ((!"D".equals(record.getStatus()))
-          && "P".equals(schedule.getPublicFlag())
-          && (userid_int != record.getUserId().intValue())
-          && (userid_int != schedule.getOwnerId().intValue()) && !is_member)
+        && "P".equals(schedule.getPublicFlag())
+        && (userid_int != record.getUserId().intValue())
+        && (userid_int != schedule.getOwnerId().intValue())
+        && !is_member) {
         return rd;
+      }
 
       if ("C".equals(schedule.getPublicFlag())
-          && (userid_int != record.getUserId().intValue())
-          && (userid_int != schedule.getOwnerId().intValue()) && !is_member) {
+        && (userid_int != record.getUserId().intValue())
+        && (userid_int != schedule.getOwnerId().intValue())
+        && !is_member) {
         // 名前
         rd.setName("非公開");
         // 仮スケジュールかどうか
@@ -546,22 +592,26 @@ public class ManHourSelectData extends ALAbstractSelectData {
 
           field = new ALDateTimeField("yyyy-MM-dd");
           field.setValue(cal.getTime());
-          if (ScheduleUtils.isView(field, rd.getPattern(), rd.getStartDate()
-              .getValue(), rd.getEndDate().getValue())) {
+          if (ScheduleUtils.isView(field, rd.getPattern(), rd
+            .getStartDate()
+            .getValue(), rd.getEndDate().getValue())) {
             Calendar temp = Calendar.getInstance();
             temp.setTime(field.getValue());
-            temp.set(Calendar.HOUR,
-                Integer.parseInt(rd.getStartDate().getHour()));
-            temp.set(Calendar.MINUTE,
-                Integer.parseInt(rd.getStartDate().getMinute()));
+            temp.set(Calendar.HOUR, Integer.parseInt(rd
+              .getStartDate()
+              .getHour()));
+            temp.set(Calendar.MINUTE, Integer.parseInt(rd
+              .getStartDate()
+              .getMinute()));
             temp.set(Calendar.SECOND, 0);
             temp.set(Calendar.MILLISECOND, 0);
             Calendar temp2 = Calendar.getInstance();
             temp2.setTime(field.getValue());
-            temp2.set(Calendar.HOUR,
-                Integer.parseInt(rd.getEndDate().getHour()));
-            temp2.set(Calendar.MINUTE,
-                Integer.parseInt(rd.getEndDate().getMinute()));
+            temp2.set(Calendar.HOUR, Integer
+              .parseInt(rd.getEndDate().getHour()));
+            temp2.set(Calendar.MINUTE, Integer.parseInt(rd
+              .getEndDate()
+              .getMinute()));
             temp2.set(Calendar.SECOND, 0);
             temp2.set(Calendar.MILLISECOND, 0);
             ManHourResultData rd3 = new ManHourResultData();
@@ -613,19 +663,21 @@ public class ManHourSelectData extends ALAbstractSelectData {
       repeat_del = false;
       ManHourResultData rd2 = (ManHourResultData) scheduleList.get(i);
       if (rd.isRepeat()
-          && rd2.isDummy()
-          && rd.getScheduleId().getValue() == rd2.getParentId().getValue()
-          && ScheduleUtils.equalsToDate(rd.getStartDate().getValue(), rd2
-              .getStartDate().getValue(), false)) {
+        && rd2.isDummy()
+        && rd.getScheduleId().getValue() == rd2.getParentId().getValue()
+        && ScheduleUtils.equalsToDate(rd.getStartDate().getValue(), rd2
+          .getStartDate()
+          .getValue(), false)) {
         // [繰り返しスケジュール] 親の ID を検索
         canAdd = false;
         break;
       }
       if (rd2.isRepeat()
-          && rd.isDummy()
-          && rd2.getScheduleId().getValue() == rd.getParentId().getValue()
-          && ScheduleUtils.equalsToDate(rd.getStartDate().getValue(), rd2
-              .getStartDate().getValue(), false)) {
+        && rd.isDummy()
+        && rd2.getScheduleId().getValue() == rd.getParentId().getValue()
+        && ScheduleUtils.equalsToDate(rd.getStartDate().getValue(), rd2
+          .getStartDate()
+          .getValue(), false)) {
         // [繰り返しスケジュール] 親の ID を検索
         scheduleList.remove(rd2);
         canAdd = true;
@@ -635,7 +687,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
       // スケジュールを挿入する位置を捕捉する。
       // 開始日時の昇順
       if (!pos_bool
-          && rd.getStartDate().getValue().before(rd2.getStartDate().getValue())) {
+        && rd.getStartDate().getValue().before(rd2.getStartDate().getValue())) {
         position = i;
         pos_bool = true;
       }
@@ -647,18 +699,30 @@ public class ManHourSelectData extends ALAbstractSelectData {
           // ダミースケジュールではないときに
           // 重複スケジュールを検出する。
           // 時間が重なっている場合重複スケジュールとする。
-          if ((rd.getStartDate().getValue()
-              .before(rd2.getStartDate().getValue()) && rd2.getStartDate()
-              .getValue().before(rd.getEndDate().getValue()))
-              || (rd2.getStartDate().getValue()
-                  .before(rd.getStartDate().getValue()) && rd.getStartDate()
-                  .getValue().before(rd2.getEndDate().getValue()))
-              || (rd.getStartDate().getValue()
-                  .before(rd2.getEndDate().getValue()) && rd2.getEndDate()
-                  .getValue().before(rd.getEndDate().getValue()))
-              || (rd2.getStartDate().getValue()
-                  .before(rd.getEndDate().getValue()) && rd.getEndDate()
-                  .getValue().before(rd2.getEndDate().getValue()))
+          if ((rd.getStartDate().getValue().before(
+            rd2.getStartDate().getValue()) && rd2
+            .getStartDate()
+            .getValue()
+            .before(rd.getEndDate().getValue()))
+            || (rd2.getStartDate().getValue().before(
+              rd.getStartDate().getValue()) && rd
+              .getStartDate()
+              .getValue()
+              .before(rd2.getEndDate().getValue()))
+            || (rd
+              .getStartDate()
+              .getValue()
+              .before(rd2.getEndDate().getValue()) && rd2
+              .getEndDate()
+              .getValue()
+              .before(rd.getEndDate().getValue()))
+            || (rd2
+              .getStartDate()
+              .getValue()
+              .before(rd.getEndDate().getValue()) && rd
+              .getEndDate()
+              .getValue()
+              .before(rd2.getEndDate().getValue()))
           // || (rd.getEndDate().getValue()
           // .equals(rd2.getEndDate().getValue()) && rd.getStartDate()
           // .getValue().equals(rd2.getStartDate().getValue()))
@@ -693,7 +757,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
 
   /**
    * ダミースケジュールを一覧から削除する。
-   *
+   * 
    * @param list
    */
   private void cleanupDummySchedule(List list) {
@@ -717,6 +781,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(Object obj)
       throws ALPageNotFoundException, ALDBErrorException {
     return null;
@@ -731,14 +796,15 @@ public class ManHourSelectData extends ALAbstractSelectData {
   }
 
   /**
-   *
+   * 
    * @param groupname
    * @return
    */
   public List getUsers() {
     if (hasAclSummaryOther) {
-      if ((target_group_name != null) && (!target_group_name.equals(""))
-          && (!target_group_name.equals("all"))) {
+      if ((target_group_name != null)
+        && (!target_group_name.equals(""))
+        && (!target_group_name.equals("all"))) {
         return ALEipUtils.getUsers(target_group_name);
       } else {
         return ALEipUtils.getUsers("LoginUser");
@@ -755,7 +821,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public Map getPostMap() {
@@ -763,7 +829,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public List getMyGroupList() {
@@ -771,9 +837,10 @@ public class ManHourSelectData extends ALAbstractSelectData {
   }
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
 
@@ -786,7 +853,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
   }
 
   /**
-   *
+   * 
    * @param id
    * @return
    */
@@ -795,7 +862,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public String getScheduleUrl() {
@@ -803,7 +870,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALDateTimeField getViewDate() {
@@ -811,7 +878,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public String getCategoryId() {
@@ -823,7 +890,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public double getTotalManHourPast() {
@@ -831,7 +898,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public double getTotalManHourPlan() {
@@ -841,9 +908,10 @@ public class ManHourSelectData extends ALAbstractSelectData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return aclPortletFeature;
   }

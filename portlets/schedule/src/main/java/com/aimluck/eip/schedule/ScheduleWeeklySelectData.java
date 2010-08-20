@@ -43,6 +43,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -165,7 +166,8 @@ public class ScheduleWeeklySelectData extends
       // e.g. 2004-3-14
       if (rundata.getParameters().containsKey("view_start")) {
         ALEipUtils.setTemp(rundata, context, "view_start", rundata
-          .getParameters().getString("view_start"));
+          .getParameters()
+          .getString("view_start"));
       }
     }
 
@@ -227,8 +229,11 @@ public class ScheduleWeeklySelectData extends
 
     if (action != null) {
       // ToDo 表示設定
-      viewTodo = Integer.parseInt(ALEipUtils.getPortlet(rundata, context)
-        .getPortletConfig().getInitParameter("p5a-view"));
+      viewTodo =
+        Integer.parseInt(ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p5a-view"));
     }
     dataContext = DatabaseOrmService.getInstance().getDataContext();
 
@@ -238,13 +243,16 @@ public class ScheduleWeeklySelectData extends
     int userId = ALEipUtils.getUserId(rundata);
 
     // アクセス権限
-    ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-      .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-    hasAuthoritySelfInsert = aclhandler.hasAuthority(userId,
-      ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
-      ALAccessControlConstants.VALUE_ACL_INSERT);
+    hasAuthoritySelfInsert =
+      aclhandler.hasAuthority(
+        userId,
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
+        ALAccessControlConstants.VALUE_ACL_INSERT);
   }
 
   /*
@@ -253,8 +261,8 @@ public class ScheduleWeeklySelectData extends
    * .util.RunData, org.apache.velocity.context.Context)
    */
   @Override
-  protected List<EipTScheduleMap> selectList(RunData rundata, Context context)
-      throws ALPageNotFoundException, ALDBErrorException {
+  protected ResultList<EipTScheduleMap> selectList(RunData rundata,
+      Context context) throws ALPageNotFoundException, ALDBErrorException {
     try {
 
       List<EipTScheduleMap> list = getSelectQuery(rundata, context).fetchList();
@@ -264,7 +272,7 @@ public class ScheduleWeeklySelectData extends
         loadTodo(rundata, context);
       }
 
-      return ScheduleUtils.sortByDummySchedule(list);
+      return new ResultList(ScheduleUtils.sortByDummySchedule(list));
     } catch (Exception e) {
       logger.error("[ScheduleWeeklySelectData] TorqueException");
       throw new ALDBErrorException();
@@ -284,34 +292,43 @@ public class ScheduleWeeklySelectData extends
     SelectQuery<EipTScheduleMap> query = Database.query(EipTScheduleMap.class);
 
     // 自ユーザ
-    Expression exp1 = ExpressionFactory.matchExp(
-      EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-        .getUserId(rundata)));
+    Expression exp1 =
+      ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+        .valueOf(ALEipUtils.getUserId(rundata)));
     query.setQualifier(exp1);
     // ユーザのスケジュール
-    Expression exp2 = ExpressionFactory.matchExp(EipTScheduleMap.TYPE_PROPERTY,
-      ScheduleUtils.SCHEDULEMAP_TYPE_USER);
+    Expression exp2 =
+      ExpressionFactory.matchExp(
+        EipTScheduleMap.TYPE_PROPERTY,
+        ScheduleUtils.SCHEDULEMAP_TYPE_USER);
     query.andQualifier(exp2);
 
     // 終了日時
-    Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-      EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-        + EipTSchedule.END_DATE_PROPERTY, viewStart.getValue());
+    Expression exp11 =
+      ExpressionFactory.greaterOrEqualExp(
+        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.END_DATE_PROPERTY,
+        viewStart.getValue());
     // 開始日時
-    Expression exp12 = ExpressionFactory.lessOrEqualExp(
-      EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+    Expression exp12 =
+      ExpressionFactory.lessOrEqualExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
         + EipTSchedule.START_DATE_PROPERTY, viewEndCrt.getValue());
     // 通常スケジュール
-    Expression exp13 = ExpressionFactory.noMatchExp(
-      EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+    Expression exp13 =
+      ExpressionFactory.noMatchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
         + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
     // 期間スケジュール
-    Expression exp14 = ExpressionFactory.noMatchExp(
-      EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+    Expression exp14 =
+      ExpressionFactory.noMatchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
         + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
     query.andQualifier((exp11.andExp(exp12)).orExp(exp13.andExp(exp14)));
     // 開始日時でソート
-    query.orderAscending(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+    query.orderAscending(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+      + "."
       + EipTSchedule.START_DATE_PROPERTY);
 
     return query;
@@ -355,10 +372,16 @@ public class ScheduleWeeklySelectData extends
 
       // 期間スケジュールの場合
       if (rd.getPattern().equals("S")) {
-        int stime = -(int) ((viewStart.getValue().getTime() - rd.getStartDate()
-          .getValue().getTime()) / 86400000);
-        int etime = -(int) ((viewStart.getValue().getTime() - rd.getEndDate()
-          .getValue().getTime()) / 86400000);
+        int stime =
+          -(int) ((viewStart.getValue().getTime() - rd
+            .getStartDate()
+            .getValue()
+            .getTime()) / 86400000);
+        int etime =
+          -(int) ((viewStart.getValue().getTime() - rd
+            .getEndDate()
+            .getValue()
+            .getTime()) / 86400000);
         if (stime < 0) {
           stime = 0;
         }
@@ -372,8 +395,11 @@ public class ScheduleWeeklySelectData extends
         rd.setRowspan(col);
         if (col > 0) {
           // 期間スケジュール を格納
-          ScheduleUtils.addTermSchedule(termWeekConList, viewStart.getValue(),
-            count, rd);
+          ScheduleUtils.addTermSchedule(
+            termWeekConList,
+            viewStart.getValue(),
+            count,
+            rd);
         }
 
         return rd;
@@ -431,8 +457,10 @@ public class ScheduleWeeklySelectData extends
         rd.initField();
 
         // ポートレット ToDoPublic のへのリンクを取得する．
-        String todo_url = ScheduleUtils.getPortletURItoTodoDetailPane(rundata,
-          "ToDo", record.getTodoId().longValue(), portletId);
+        String todo_url =
+          ScheduleUtils.getPortletURItoTodoDetailPane(rundata, "ToDo", record
+            .getTodoId()
+            .longValue(), portletId);
         rd.setTodoId(record.getTodoId().intValue());
         rd.setTodoName(record.getTodoName());
         rd.setUserId(record.getTurbineUser().getUserId().intValue());
@@ -444,14 +472,21 @@ public class ScheduleWeeklySelectData extends
 
         int stime;
         if (ScheduleUtils.equalsToDate(ToDoUtils.getEmptyDate(), rd
-          .getStartDate().getValue(), false)) {
+          .getStartDate()
+          .getValue(), false)) {
           stime = 0;
         } else {
-          stime = -(int) ((viewStart.getValue().getTime() - rd.getStartDate()
-            .getValue().getTime()) / 86400000);
+          stime =
+            -(int) ((viewStart.getValue().getTime() - rd
+              .getStartDate()
+              .getValue()
+              .getTime()) / 86400000);
         }
-        int etime = -(int) ((viewStart.getValue().getTime() - rd.getEndDate()
-          .getValue().getTime()) / 86400000);
+        int etime =
+          -(int) ((viewStart.getValue().getTime() - rd
+            .getEndDate()
+            .getValue()
+            .getTime()) / 86400000);
         if (stime < 0) {
           stime = 0;
         }
@@ -466,7 +501,10 @@ public class ScheduleWeeklySelectData extends
         rd.setRowspan(col);
         if (col > 0) {
           // ToDo を格納
-          ScheduleUtils.addToDo(weekTodoConList, viewStart.getValue(), count,
+          ScheduleUtils.addToDo(
+            weekTodoConList,
+            viewStart.getValue(),
+            count,
             rd);
         }
       }
@@ -481,34 +519,41 @@ public class ScheduleWeeklySelectData extends
     Integer uid = Integer.valueOf(ALEipUtils.getUserId(rundata));
     SelectQuery<EipTTodo> query = new SelectQuery<EipTTodo>(EipTTodo.class);
 
-    Expression exp1 = ExpressionFactory.noMatchExp(EipTTodo.STATE_PROPERTY,
-      Short.valueOf((short) 100));
+    Expression exp1 =
+      ExpressionFactory.noMatchExp(EipTTodo.STATE_PROPERTY, Short
+        .valueOf((short) 100));
     query.setQualifier(exp1);
-    Expression exp2 = ExpressionFactory.matchExp(
-      EipTTodo.ADDON_SCHEDULE_FLG_PROPERTY, "T");
+    Expression exp2 =
+      ExpressionFactory.matchExp(EipTTodo.ADDON_SCHEDULE_FLG_PROPERTY, "T");
     query.andQualifier(exp2);
-    Expression exp3 = ExpressionFactory.matchDbExp(
-      TurbineUser.USER_ID_PK_COLUMN, uid);
+    Expression exp3 =
+      ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, uid);
     query.andQualifier(exp3);
 
     // 終了日時
-    Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-      EipTTodo.END_DATE_PROPERTY, viewStart.getValue());
+    Expression exp11 =
+      ExpressionFactory.greaterOrEqualExp(EipTTodo.END_DATE_PROPERTY, viewStart
+        .getValue());
     // 開始日時
-    Expression exp12 = ExpressionFactory.lessOrEqualExp(
-      EipTTodo.START_DATE_PROPERTY, viewEndCrt.getValue());
+    Expression exp12 =
+      ExpressionFactory.lessOrEqualExp(EipTTodo.START_DATE_PROPERTY, viewEndCrt
+        .getValue());
 
     // 開始日時のみ指定されている ToDo を検索
-    Expression exp21 = ExpressionFactory.lessOrEqualExp(
-      EipTTodo.START_DATE_PROPERTY, viewEndCrt.getValue());
-    Expression exp22 = ExpressionFactory.matchExp(EipTTodo.END_DATE_PROPERTY,
-      ToDoUtils.getEmptyDate());
+    Expression exp21 =
+      ExpressionFactory.lessOrEqualExp(EipTTodo.START_DATE_PROPERTY, viewEndCrt
+        .getValue());
+    Expression exp22 =
+      ExpressionFactory.matchExp(EipTTodo.END_DATE_PROPERTY, ToDoUtils
+        .getEmptyDate());
 
     // 終了日時のみ指定されている ToDo を検索
-    Expression exp31 = ExpressionFactory.greaterOrEqualExp(
-      EipTTodo.END_DATE_PROPERTY, viewStart.getValue());
-    Expression exp32 = ExpressionFactory.matchExp(EipTTodo.START_DATE_PROPERTY,
-      ToDoUtils.getEmptyDate());
+    Expression exp31 =
+      ExpressionFactory.greaterOrEqualExp(EipTTodo.END_DATE_PROPERTY, viewStart
+        .getValue());
+    Expression exp32 =
+      ExpressionFactory.matchExp(EipTTodo.START_DATE_PROPERTY, ToDoUtils
+        .getEmptyDate());
 
     query.andQualifier((exp11.andExp(exp12)).orExp(exp21.andExp(exp22)).orExp(
       exp31.andExp(exp32)));

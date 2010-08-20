@@ -33,6 +33,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -60,8 +61,9 @@ public class AccountPostSelectData extends
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-          "p1a-sort"));
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p1a-sort"));
     }
 
     super.init(action, rundata, context);
@@ -75,14 +77,13 @@ public class AccountPostSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<EipMPost> selectList(RunData rundata, Context context) {
+  protected ResultList<EipMPost> selectList(RunData rundata, Context context) {
     try {
       SelectQuery<EipMPost> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipMPost> list = query.fetchList();
-      return buildPaginatedList(list);
+      return query.getResultList();
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;

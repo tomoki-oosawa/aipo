@@ -18,7 +18,6 @@
  */
 package com.aimluck.eip.exttimecard;
 
-import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.access.DataContext;
@@ -31,16 +30,17 @@ import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
  * タイムカード集計の検索データを管理するためのクラスです。 <br />
- *
+ * 
  */
 public class ExtTimecardSystemSelectData extends ALAbstractSelectData {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ExtTimecardSystemSelectData.class.getName());
+    .getLogger(ExtTimecardSystemSelectData.class.getName());
 
   /** システムの総数 */
   private int systemSum;
@@ -49,19 +49,20 @@ public class ExtTimecardSystemSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List selectList(RunData rundata, Context context) {
+  @Override
+  protected ResultList selectList(RunData rundata, Context context) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
 
       SelectQuery query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List list = query.fetchList();
+      ResultList list = query.getResultList();
       // 件数をセットする．
-      systemSum = list.size();
-      return buildPaginatedList(list);
+      systemSum = list.getTotalCount();
+      return list;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -70,7 +71,7 @@ public class ExtTimecardSystemSelectData extends ALAbstractSelectData {
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -85,6 +86,7 @@ public class ExtTimecardSystemSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected Object selectDetail(RunData rundata, Context context) {
     return ExtTimecardUtils.getEipTExtTimecardSystem(rundata, context);
   }
@@ -92,10 +94,12 @@ public class ExtTimecardSystemSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(Object obj) {
     try {
       EipTExtTimecardSystem record = (EipTExtTimecardSystem) obj;
-      ExtTimecardSystemDetailResultData rd = new ExtTimecardSystemDetailResultData();
+      ExtTimecardSystemDetailResultData rd =
+        new ExtTimecardSystemDetailResultData();
       rd.initField();
       rd.setSystemId(record.getSystemId().intValue());
       rd.setUserId(record.getUserId().intValue());
@@ -121,10 +125,12 @@ public class ExtTimecardSystemSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(Object obj) {
     try {
       EipTExtTimecardSystem record = (EipTExtTimecardSystem) obj;
-      ExtTimecardSystemDetailResultData rd = new ExtTimecardSystemDetailResultData();
+      ExtTimecardSystemDetailResultData rd =
+        new ExtTimecardSystemDetailResultData();
       rd.initField();
       rd.setSystemId(record.getSystemId().intValue());
       rd.setUserId(record.getUserId().intValue());
@@ -153,6 +159,7 @@ public class ExtTimecardSystemSelectData extends ALAbstractSelectData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("create_date", EipTExtTimecardSystem.CREATE_DATE_PROPERTY);

@@ -84,19 +84,22 @@ public class WhatsNewUtils {
     EipTWhatsNew entry = null;
     try {
       SelectQuery<EipTWhatsNew> query = Database.query(EipTWhatsNew.class);
-      Expression exp = ExpressionFactory.matchExp(
-        EipTWhatsNew.PORTLET_TYPE_PROPERTY, Integer.valueOf(type));
+      Expression exp =
+        ExpressionFactory.matchExp(EipTWhatsNew.PORTLET_TYPE_PROPERTY, Integer
+          .valueOf(type));
       query.setQualifier(exp);
-      Expression exp1 = ExpressionFactory.matchExp(
-        EipTWhatsNew.USER_ID_PROPERTY, Integer.valueOf(uid));
+      Expression exp1 =
+        ExpressionFactory.matchExp(EipTWhatsNew.USER_ID_PROPERTY, Integer
+          .valueOf(uid));
       query.andQualifier(exp1);
-      Expression exp2 = ExpressionFactory.matchExp(
-        EipTWhatsNew.ENTITY_ID_PROPERTY, Integer.valueOf(entityid));
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTWhatsNew.ENTITY_ID_PROPERTY, Integer
+          .valueOf(entityid));
       query.andQualifier(exp2);
-      Expression exp3 = ExpressionFactory.matchExp(
-        EipTWhatsNew.PARENT_ID_PROPERTY, Integer.valueOf(INDIVIDUAL_WHATS_NEW));
+      Expression exp3 =
+        ExpressionFactory.matchExp(EipTWhatsNew.PARENT_ID_PROPERTY, Integer
+          .valueOf(INDIVIDUAL_WHATS_NEW));
       query.andQualifier(exp3);
-      @SuppressWarnings("unchecked")
       List<EipTWhatsNew> entries = query.fetchList();
       if (entries == null || entries.size() < 1) {
         // 新規オブジェクトモデル
@@ -130,14 +133,17 @@ public class WhatsNewUtils {
     try {
       SelectQuery<EipTWhatsNew> query = Database.query(EipTWhatsNew.class);
       // ポートレットタイプがtypeである かつ parentidが0である かつ エンティティーＩＤがentityidである
-      Expression exp = ExpressionFactory.matchExp(
-        EipTWhatsNew.PORTLET_TYPE_PROPERTY, Integer.valueOf(type));
+      Expression exp =
+        ExpressionFactory.matchExp(EipTWhatsNew.PORTLET_TYPE_PROPERTY, Integer
+          .valueOf(type));
       query.setQualifier(exp);
-      Expression exp1 = ExpressionFactory.matchExp(
-        EipTWhatsNew.PARENT_ID_PROPERTY, Integer.valueOf("0"));
+      Expression exp1 =
+        ExpressionFactory.matchExp(EipTWhatsNew.PARENT_ID_PROPERTY, Integer
+          .valueOf("0"));
       query.andQualifier(exp1);
-      Expression exp2 = ExpressionFactory.matchExp(
-        EipTWhatsNew.ENTITY_ID_PROPERTY, Integer.valueOf(entityid));
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTWhatsNew.ENTITY_ID_PROPERTY, Integer
+          .valueOf(entityid));
       query.andQualifier(exp2);
       List<EipTWhatsNew> entries = query.fetchList();
       if (!(entries == null || entries.size() < 1)) {
@@ -175,17 +181,21 @@ public class WhatsNewUtils {
   public static void shiftWhatsNewReadFlag(int type, int entityid, int uid) {
     try {
       SelectQuery<EipTWhatsNew> query = Database.query(EipTWhatsNew.class);
-      Expression exp = ExpressionFactory.matchExp(
-        EipTWhatsNew.PORTLET_TYPE_PROPERTY, Integer.valueOf(type));
+      Expression exp =
+        ExpressionFactory.matchExp(EipTWhatsNew.PORTLET_TYPE_PROPERTY, Integer
+          .valueOf(type));
       query.setQualifier(exp);
-      Expression exp1 = ExpressionFactory.matchExp(
-        EipTWhatsNew.USER_ID_PROPERTY, Integer.valueOf(uid));
+      Expression exp1 =
+        ExpressionFactory.matchExp(EipTWhatsNew.USER_ID_PROPERTY, Integer
+          .valueOf(uid));
       query.andQualifier(exp1);
-      Expression exp2 = ExpressionFactory.matchExp(
-        EipTWhatsNew.ENTITY_ID_PROPERTY, Integer.valueOf(entityid));
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTWhatsNew.ENTITY_ID_PROPERTY, Integer
+          .valueOf(entityid));
       query.andQualifier(exp2);
-      Expression exp3 = ExpressionFactory.matchExp(
-        EipTWhatsNew.PARENT_ID_PROPERTY, Integer.valueOf("-1"));
+      Expression exp3 =
+        ExpressionFactory.matchExp(EipTWhatsNew.PARENT_ID_PROPERTY, Integer
+          .valueOf("-1"));
       query.andQualifier(exp3);
 
       List<EipTWhatsNew> entries = query.fetchList();
@@ -210,16 +220,19 @@ public class WhatsNewUtils {
       List<Integer> uids = ALEipUtils.getUserIds("LoginUser");
 
       // その記事に関する新着情報レコードを探す(0番に親が入る(アップデート前のデータは除く))
-      Expression exp = ExpressionFactory.matchExp(
-        EipTWhatsNew.PORTLET_TYPE_PROPERTY, Integer.valueOf(type));
+      Expression exp =
+        ExpressionFactory.matchExp(EipTWhatsNew.PORTLET_TYPE_PROPERTY, Integer
+          .valueOf(type));
       query.setQualifier(exp);
-      Expression exp2 = ExpressionFactory.matchExp(
-        EipTWhatsNew.ENTITY_ID_PROPERTY, Integer.valueOf(entityid));
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTWhatsNew.ENTITY_ID_PROPERTY, Integer
+          .valueOf(entityid));
       query.andQualifier(exp2);
       query.orderAscending(EipTWhatsNew.PARENT_ID_PROPERTY);
       List<EipTWhatsNew> entries = query.fetchList();
 
-      if (entries != null && entries.size() > 0
+      if (entries != null
+        && entries.size() > 0
         && (entries.get(0)).getParentId().intValue() != -1) {
 
         // 新しいアルゴリズムによる全体向けWhatsNew用の処理
@@ -263,8 +276,9 @@ public class WhatsNewUtils {
       // 1ヶ月以上前のWhatsNewを消す
       Calendar cal = Calendar.getInstance();
       cal.add(Calendar.MONTH, -1);
-      exp = ExpressionFactory.lessExp(EipTWhatsNew.UPDATE_DATE_PROPERTY, cal
-        .getTime());
+      exp =
+        ExpressionFactory.lessExp(EipTWhatsNew.UPDATE_DATE_PROPERTY, cal
+          .getTime());
       Database.deleteAll(Database.query(EipTWhatsNew.class, exp).fetchList());
       Database.commit();
 
@@ -320,14 +334,16 @@ public class WhatsNewUtils {
 
     if (deids != null) {
       SelectQuery<EipTWhatsNew> query = Database.query(EipTWhatsNew.class);
-      Expression exp = ExpressionFactory.matchExp(
-        EipTWhatsNew.PORTLET_TYPE_PROPERTY, Integer.valueOf(type));
+      Expression exp =
+        ExpressionFactory.matchExp(EipTWhatsNew.PORTLET_TYPE_PROPERTY, Integer
+          .valueOf(type));
       query.setQualifier(exp);
-      Expression exp1 = ExpressionFactory.matchExp(
-        EipTWhatsNew.USER_ID_PROPERTY, Integer.valueOf(uid));
+      Expression exp1 =
+        ExpressionFactory.matchExp(EipTWhatsNew.USER_ID_PROPERTY, Integer
+          .valueOf(uid));
       query.andQualifier(exp1);
-      Expression exp2 = ExpressionFactory.inExp(
-        EipTWhatsNew.ENTITY_ID_PROPERTY, deids);
+      Expression exp2 =
+        ExpressionFactory.inExp(EipTWhatsNew.ENTITY_ID_PROPERTY, deids);
       query.andQualifier(exp2);
       List<EipTWhatsNew> entries = query.fetchList();
       if (entries != null && entries.size() > 0) {
@@ -353,12 +369,14 @@ public class WhatsNewUtils {
        * whatsnew.setCreateDate(date_object); } dataContext.commitChanges(); }
        */
 
-      Expression exp = ExpressionFactory.inDbExp(
-        EipTBlogEntry.ENTRY_ID_PK_COLUMN, eids);
+      Expression exp =
+        ExpressionFactory.inDbExp(EipTBlogEntry.ENTRY_ID_PK_COLUMN, eids);
 
-      List<EipTBlogEntry> entries = Database.query(EipTBlogEntry.class, exp)
-        .orderDesending(EipTBlogEntry.CREATE_DATE_PROPERTY).select(
-          EipTBlogEntry.ENTRY_ID_PK_COLUMN, EipTBlogEntry.TITLE_COLUMN,
+      List<EipTBlogEntry> entries =
+        Database.query(EipTBlogEntry.class, exp).orderDesending(
+          EipTBlogEntry.CREATE_DATE_PROPERTY).select(
+          EipTBlogEntry.ENTRY_ID_PK_COLUMN,
+          EipTBlogEntry.TITLE_COLUMN,
           EipTBlogEntry.OWNER_ID_COLUMN).fetchList();
 
       if (entries == null || entries.size() <= 0) {
@@ -389,11 +407,11 @@ public class WhatsNewUtils {
         rd.setBean(bean);
       }
     } else if (WhatsNewUtils.WHATS_NEW_TYPE_BLOG_COMMENT == type) {
-      Expression exp = ExpressionFactory.inDbExp(
-        EipTBlogComment.COMMENT_ID_PK_COLUMN, eids);
+      Expression exp =
+        ExpressionFactory.inDbExp(EipTBlogComment.COMMENT_ID_PK_COLUMN, eids);
 
-      List<EipTBlogComment> entries = Database
-        .query(EipTBlogComment.class, exp).orderDesending(
+      List<EipTBlogComment> entries =
+        Database.query(EipTBlogComment.class, exp).orderDesending(
           EipTBlogComment.CREATE_DATE_PROPERTY).fetchList();
 
       if (entries == null || entries.size() <= 0) {
@@ -416,11 +434,12 @@ public class WhatsNewUtils {
           for (int j = 0; j < size2; j++) {
             WhatsNewBean tmpb = tmp.get(j);
             if (tmpb.getEntityId().getValue() == entryId) {
-              StringBuffer sb = new StringBuffer(tmpb.getOwnerName().getValue());
+              StringBuffer sb =
+                new StringBuffer(tmpb.getOwnerName().getValue());
               try {
                 List<String> array = Arrays.asList(sb.toString().split(","));
-                ALEipUser tmpowner = ALEipUtils.getALEipUser(entry.getOwnerId()
-                  .intValue());
+                ALEipUser tmpowner =
+                  ALEipUtils.getALEipUser(entry.getOwnerId().intValue());
                 if (array.contains(tmpowner.getAliasName().getValue())) {
                   continue;
                 }
@@ -447,8 +466,8 @@ public class WhatsNewUtils {
         bean.setPortletName("[ ブログ ] ");
 
         try {
-          ALEipUser owner = ALEipUtils.getALEipUser(entry.getOwnerId()
-            .intValue());
+          ALEipUser owner =
+            ALEipUtils.getALEipUser(entry.getOwnerId().intValue());
           bean.setOwnerName(owner.getAliasName().getValue());
         } catch (Exception e) {
           bean.setOwnerName("");
@@ -459,12 +478,14 @@ public class WhatsNewUtils {
         rd.setBean(bean);
       }
     } else if (WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST == type) {
-      Expression exp = ExpressionFactory.inDbExp(
-        EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, eids);
+      Expression exp =
+        ExpressionFactory.inDbExp(
+          EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
+          eids);
 
-      List<EipTWorkflowRequest> entries = Database.query(
-        EipTWorkflowRequest.class, exp).orderDesending(
-        EipTWorkflowRequest.UPDATE_DATE_PROPERTY).fetchList();
+      List<EipTWorkflowRequest> entries =
+        Database.query(EipTWorkflowRequest.class, exp).orderDesending(
+          EipTWorkflowRequest.UPDATE_DATE_PROPERTY).fetchList();
 
       if (entries == null || entries.size() <= 0) {
         return null;
@@ -490,8 +511,8 @@ public class WhatsNewUtils {
           if ("A".equals(entry.getProgress())) {
             // すべて承認済みの場合、最終承認者をセットする
             map = maps.get(m_size - 1);
-            ALEipUser user = ALEipUtils
-              .getALEipUser(map.getUserId().intValue());
+            ALEipUser user =
+              ALEipUtils.getALEipUser(map.getUserId().intValue());
             lastUpdateUser = user.getAliasName().getValue();
           } else {
             // 最終閲覧者を取得する
@@ -506,8 +527,8 @@ public class WhatsNewUtils {
               }
             }
             map = maps.get(unum);
-            ALEipUser user = ALEipUtils
-              .getALEipUser(map.getUserId().intValue());
+            ALEipUser user =
+              ALEipUtils.getALEipUser(map.getUserId().intValue());
             lastUpdateUser = user.getAliasName().getValue();
           }
 
@@ -528,14 +549,16 @@ public class WhatsNewUtils {
         rd.setBean(bean);
       }
     } else if (WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC == type) {
-      Expression exp = ExpressionFactory.inDbExp(
-        EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, eids);
+      Expression exp =
+        ExpressionFactory.inDbExp(EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, eids);
 
-      List<EipTMsgboardTopic> entries = Database.query(EipTMsgboardTopic.class,
-        exp).orderDesending(EipTWorkflowRequest.CREATE_DATE_PROPERTY).select(
-        EipTMsgboardTopic.TOPIC_ID_PK_COLUMN,
-        EipTMsgboardTopic.TOPIC_NAME_COLUMN, EipTMsgboardTopic.OWNER_ID_COLUMN,
-        EipTMsgboardTopic.PARENT_ID_COLUMN).fetchList();
+      List<EipTMsgboardTopic> entries =
+        Database.query(EipTMsgboardTopic.class, exp).orderDesending(
+          EipTWorkflowRequest.CREATE_DATE_PROPERTY).select(
+          EipTMsgboardTopic.TOPIC_ID_PK_COLUMN,
+          EipTMsgboardTopic.TOPIC_NAME_COLUMN,
+          EipTMsgboardTopic.OWNER_ID_COLUMN,
+          EipTMsgboardTopic.PARENT_ID_COLUMN).fetchList();
       if (entries == null || entries.size() <= 0) {
         return null;
       }
@@ -568,13 +591,17 @@ public class WhatsNewUtils {
         rd.setBean(bean);
       }
     } else if (WhatsNewUtils.WHATS_NEW_TYPE_NOTE == type) {
-      Expression exp = ExpressionFactory.inDbExp(EipTNote.NOTE_ID_PK_COLUMN,
-        eids);
+      Expression exp =
+        ExpressionFactory.inDbExp(EipTNote.NOTE_ID_PK_COLUMN, eids);
 
-      List<EipTNote> entries = Database.query(EipTNote.class).orderDesending(
-        EipTNote.CREATE_DATE_PROPERTY).select(EipTNote.NOTE_ID_PK_COLUMN,
-        EipTNote.CLIENT_NAME_COLUMN, EipTNote.SUBJECT_TYPE_COLUMN,
-        EipTNote.CUSTOM_SUBJECT_COLUMN, EipTNote.OWNER_ID_COLUMN).fetchList();
+      List<EipTNote> entries =
+        Database.query(EipTNote.class, exp).orderDesending(
+          EipTNote.CREATE_DATE_PROPERTY).select(
+          EipTNote.NOTE_ID_PK_COLUMN,
+          EipTNote.CLIENT_NAME_COLUMN,
+          EipTNote.SUBJECT_TYPE_COLUMN,
+          EipTNote.CUSTOM_SUBJECT_COLUMN,
+          EipTNote.OWNER_ID_COLUMN).fetchList();
       if (entries == null || entries.size() <= 0) {
         return null;
       }
@@ -621,14 +648,16 @@ public class WhatsNewUtils {
         rd.setBean(bean);
       }
     } else if (WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE == type) {
-      Expression exp = ExpressionFactory.inDbExp(
-        EipTSchedule.SCHEDULE_ID_PK_COLUMN, eids);
+      Expression exp =
+        ExpressionFactory.inDbExp(EipTSchedule.SCHEDULE_ID_PK_COLUMN, eids);
 
-      List<EipTSchedule> entries = Database.query(EipTSchedule.class, exp)
-        .orderDesending(EipTSchedule.UPDATE_DATE_PROPERTY).select(
-          EipTSchedule.SCHEDULE_ID_PK_COLUMN, EipTSchedule.START_DATE_COLUMN,
-          EipTSchedule.NAME_COLUMN, EipTSchedule.UPDATE_USER_ID_COLUMN)
-        .fetchList();
+      List<EipTSchedule> entries =
+        Database.query(EipTSchedule.class, exp).orderDesending(
+          EipTSchedule.UPDATE_DATE_PROPERTY).select(
+          EipTSchedule.SCHEDULE_ID_PK_COLUMN,
+          EipTSchedule.START_DATE_COLUMN,
+          EipTSchedule.NAME_COLUMN,
+          EipTSchedule.UPDATE_USER_ID_COLUMN).fetchList();
       if (entries == null || entries.size() <= 0) {
         return null;
       }
@@ -656,7 +685,8 @@ public class WhatsNewUtils {
 
         // view_dateの指定
         Date start_date = schedule.getStartDate();
-        bean.addParamMap("view_date", ALDateUtil.format(start_date,
+        bean.addParamMap("view_date", ALDateUtil.format(
+          start_date,
           "yyyy-MM-dd-00-00"));
 
         rd.setBean(bean);
@@ -671,13 +701,16 @@ public class WhatsNewUtils {
   private static List<EipTWorkflowRequestMap> getEipTWorkflowRequestMap(
       EipTWorkflowRequest request) {
     try {
-      Expression exp = ExpressionFactory.matchDbExp(
-        EipTWorkflowRequestMap.EIP_TWORKFLOW_REQUEST_PROPERTY + "."
-          + EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, request.getRequestId());
+      Expression exp =
+        ExpressionFactory.matchDbExp(
+          EipTWorkflowRequestMap.EIP_TWORKFLOW_REQUEST_PROPERTY
+            + "."
+            + EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
+          request.getRequestId());
 
-      List<EipTWorkflowRequestMap> maps = Database.query(
-        EipTWorkflowRequestMap.class, exp).orderAscending(
-        EipTWorkflowRequestMap.ORDER_INDEX_PROPERTY).fetchList();
+      List<EipTWorkflowRequestMap> maps =
+        Database.query(EipTWorkflowRequestMap.class, exp).orderAscending(
+          EipTWorkflowRequestMap.ORDER_INDEX_PROPERTY).fetchList();
 
       if (maps == null || maps.size() == 0) {
         // 指定した Request IDのレコードが見つからない場合
@@ -701,10 +734,11 @@ public class WhatsNewUtils {
           cal.add(Calendar.DAY_OF_MONTH, -1 * span);
         }
 
-        Expression exp1 = ExpressionFactory.lessExp(
-          EipTWhatsNew.UPDATE_DATE_PROPERTY, cal.getTime());
-        List<EipTWhatsNew> entries1 = Database.query(EipTWhatsNew.class, exp1)
-          .fetchList();
+        Expression exp1 =
+          ExpressionFactory.lessExp(EipTWhatsNew.UPDATE_DATE_PROPERTY, cal
+            .getTime());
+        List<EipTWhatsNew> entries1 =
+          Database.query(EipTWhatsNew.class, exp1).fetchList();
 
         if (entries1 != null && entries1.size() > 0) {
           Database.deleteAll(entries1);
@@ -726,10 +760,11 @@ public class WhatsNewUtils {
       Calendar cal = Calendar.getInstance();
       cal.add(Calendar.DAY_OF_MONTH, -1 * span);
 
-      Expression exp1 = ExpressionFactory.lessExp(
-        EipTWhatsNew.UPDATE_DATE_PROPERTY, cal.getTime());
-      List<EipTWhatsNew> entries1 = Database.query(EipTWhatsNew.class, exp1)
-        .fetchList();
+      Expression exp1 =
+        ExpressionFactory.lessExp(EipTWhatsNew.UPDATE_DATE_PROPERTY, cal
+          .getTime());
+      List<EipTWhatsNew> entries1 =
+        Database.query(EipTWhatsNew.class, exp1).fetchList();
       if (entries1 != null && entries1.size() > 0) {
         Database.deleteAll(entries1);
         Database.commit();

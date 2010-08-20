@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -48,6 +48,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -63,7 +64,7 @@ public class ScheduleOnedaySelectData extends ALAbstractSelectData {
 
   /** <code>logger</code> logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ScheduleOnedaySelectData.class.getName());
+    .getLogger(ScheduleOnedaySelectData.class.getName());
 
   /** <code>viewDate</code> 表示する日付 */
   private ALDateTimeField viewDate;
@@ -131,9 +132,12 @@ public class ScheduleOnedaySelectData extends ALAbstractSelectData {
   private boolean hasAuthoritySelfInsert = false;
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * @see
+   * com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules
+   * .actions.common.ALAction, org.apache.turbine.util.RunData,
+   * org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     // 展開されるパラメータは以下の通りです。
@@ -150,14 +154,23 @@ public class ScheduleOnedaySelectData extends ALAbstractSelectData {
     to.set(Calendar.MINUTE, 0);
     today.setValue(to.getTime());
     // 表示開始時間の設定
-    startHour = Integer.parseInt(ALEipUtils.getPortlet(rundata, context)
-        .getPortletConfig().getInitParameter("p1a-rows"));
+    startHour =
+      Integer.parseInt(ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p1a-rows"));
     // 表示終了時間の設定
-    endHour = Integer.parseInt(ALEipUtils.getPortlet(rundata, context)
-        .getPortletConfig().getInitParameter("p1b-rows"));
+    endHour =
+      Integer.parseInt(ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p1b-rows"));
     // ToDo 表示設定
-    viewToDo = Integer.parseInt(ALEipUtils.getPortlet(rundata, context)
-        .getPortletConfig().getInitParameter("p5a-view"));
+    viewToDo =
+      Integer.parseInt(ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p5a-view"));
     tmpIndex = 0;
     count = 0;
     // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
@@ -166,7 +179,8 @@ public class ScheduleOnedaySelectData extends ALAbstractSelectData {
       // e.g. 2004-3-14
       if (rundata.getParameters().containsKey("view_date")) {
         ALEipUtils.setTemp(rundata, context, "view_date", rundata
-            .getParameters().getString("view_date"));
+          .getParameters()
+          .getString("view_date"));
       }
     }
     // viewDate に値を設定する。
@@ -204,9 +218,9 @@ public class ScheduleOnedaySelectData extends ALAbstractSelectData {
     }
 
     ALEipUtils.setTemp(rundata, context, "tmpStart", viewDate.toString()
-        + "-00-00");
+      + "-00-00");
     ALEipUtils.setTemp(rundata, context, "tmpEnd", viewDate.toString()
-        + "-00-00");
+      + "-00-00");
 
     dataContext = DatabaseOrmService.getInstance().getDataContext();
     termList = new ArrayList();
@@ -218,24 +232,29 @@ public class ScheduleOnedaySelectData extends ALAbstractSelectData {
     int userId = ALEipUtils.getUserId(rundata);
 
     // アクセス権限
-    ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-    hasAuthoritySelfInsert = aclhandler.hasAuthority(userId,
+    hasAuthoritySelfInsert =
+      aclhandler.hasAuthority(
+        userId,
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
         ALAccessControlConstants.VALUE_ACL_INSERT);
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * @see
+   * com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context)
    */
-  protected List selectList(RunData rundata, Context context)
+  @Override
+  protected ResultList selectList(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     try {
-      List resultBaseList = dataContext.performQuery(getSelectQuery(rundata,
-          context));
+      List resultBaseList =
+        dataContext.performQuery(getSelectQuery(rundata, context));
       List resultList = ScheduleUtils.sortByDummySchedule(resultBaseList);
 
       List list = new ArrayList();
@@ -246,24 +265,26 @@ public class ScheduleOnedaySelectData extends ALAbstractSelectData {
       boolean canAdd = true;
       for (int i = 0; i < resultSize; i++) {
         EipTScheduleMap record = (EipTScheduleMap) resultList.get(i);
-        EipTSchedule schedule = (EipTSchedule) (record.getEipTSchedule());
+        EipTSchedule schedule = (record.getEipTSchedule());
         delList.clear();
         canAdd = true;
         size = list.size();
         for (int j = 0; j < size; j++) {
           EipTScheduleMap record2 = (EipTScheduleMap) list.get(j);
-          EipTSchedule schedule2 = (EipTSchedule) (record2.getEipTSchedule());
+          EipTSchedule schedule2 = (record2.getEipTSchedule());
           if (!schedule.getRepeatPattern().equals("N")
-              && "D".equals(record2.getStatus())
-              && schedule.getScheduleId().intValue() == schedule2.getParentId()
-                  .intValue()) {
+            && "D".equals(record2.getStatus())
+            && schedule.getScheduleId().intValue() == schedule2
+              .getParentId()
+              .intValue()) {
             canAdd = false;
             break;
           }
           if (!schedule2.getRepeatPattern().equals("N")
-              && "D".equals(record.getStatus())
-              && schedule2.getScheduleId().intValue() == schedule.getParentId()
-                  .intValue()) {
+            && "D".equals(record.getStatus())
+            && schedule2.getScheduleId().intValue() == schedule
+              .getParentId()
+              .intValue()) {
             // [繰り返しスケジュール] 親の ID を検索
             if (!delList.contains(record2)) {
               delList.add(record2);
@@ -332,7 +353,7 @@ public class ScheduleOnedaySelectData extends ALAbstractSelectData {
         loadToDo(rundata, context);
       }
 
-      return list;
+      return new ResultList(list);
     } catch (Exception e) {
 
       // TODO: エラー処理
@@ -351,18 +372,23 @@ public class ScheduleOnedaySelectData extends ALAbstractSelectData {
   protected SelectQuery getSelectQuery(RunData rundata, Context context) {
     SelectQuery query = new SelectQuery(EipTScheduleMap.class);
 
-    Expression exp1 = ExpressionFactory.matchExp(
-        EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-            .getUserId(rundata)));
+    Expression exp1 =
+      ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+        .valueOf(ALEipUtils.getUserId(rundata)));
     query.setQualifier(exp1);
-    Expression exp2 = ExpressionFactory.matchExp(EipTScheduleMap.TYPE_PROPERTY,
+    Expression exp2 =
+      ExpressionFactory.matchExp(
+        EipTScheduleMap.TYPE_PROPERTY,
         ScheduleUtils.SCHEDULEMAP_TYPE_USER);
     query.andQualifier(exp2);
 
     // 終了日時
-    Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.END_DATE_PROPERTY, viewDate.getValue());
+    Expression exp11 =
+      ExpressionFactory.greaterOrEqualExp(
+        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.END_DATE_PROPERTY,
+        viewDate.getValue());
 
     // 日付を1日ずつずらす
     Calendar cal = Calendar.getInstance();
@@ -372,41 +398,50 @@ public class ScheduleOnedaySelectData extends ALAbstractSelectData {
     field.setValue(cal.getTime());
     // 開始日時
     // LESS_EQUALからLESS_THANへ修正、期間スケジュールFIXのため(Haruo Kaneko)
-    Expression exp12 = ExpressionFactory.lessExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.START_DATE_PROPERTY, field.getValue());
+    Expression exp12 =
+      ExpressionFactory.lessExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.START_DATE_PROPERTY, field.getValue());
     // 通常スケジュール
-    Expression exp13 = ExpressionFactory.noMatchExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
+    Expression exp13 =
+      ExpressionFactory.noMatchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
     // 期間スケジュール
-    Expression exp14 = ExpressionFactory.noMatchExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
+    Expression exp14 =
+      ExpressionFactory.noMatchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
     query.andQualifier((exp11.andExp(exp12)).orExp(exp13.andExp(exp14)));
     // 開始日時でソート
     List orders = new ArrayList();
-    orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-        + EipTSchedule.START_DATE_PROPERTY, true));
-    orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-        + EipTSchedule.END_DATE_PROPERTY, true));
+    orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+      + "."
+      + EipTSchedule.START_DATE_PROPERTY, true));
+    orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+      + "."
+      + EipTSchedule.END_DATE_PROPERTY, true));
     query.addOrderings(orders);
 
     return query;
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * @see
+   * com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   protected Object selectDetail(RunData rundata, Context context) {
     // このメソッドは利用されません。
     return null;
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   * @see
+   * com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(Object obj) throws ALPageNotFoundException,
       ALDBErrorException {
     ScheduleResultData rd = new ScheduleResultData();
@@ -417,10 +452,11 @@ public class ScheduleOnedaySelectData extends ALAbstractSelectData {
     try {
       EipTScheduleMap record = (EipTScheduleMap) obj;
       EipTSchedule schedule = record.getEipTSchedule();
-      if ("R".equals(record.getStatus()))
+      if ("R".equals(record.getStatus())) {
         return rd;
+      }
       if (!ScheduleUtils.isView(viewDate, schedule.getRepeatPattern(), schedule
-          .getStartDate(), schedule.getEndDate())) {
+        .getStartDate(), schedule.getEndDate())) {
         return rd;
       }
       // ID
@@ -453,8 +489,9 @@ public class ScheduleOnedaySelectData extends ALAbstractSelectData {
       // 繰り返しスケジュールの場合
       if (!rd.getPattern().equals("N")) {
 
-        if (!ScheduleUtils.isView(viewDate, rd.getPattern(), rd.getStartDate()
-            .getValue(), rd.getEndDate().getValue())) {
+        if (!ScheduleUtils.isView(viewDate, rd.getPattern(), rd
+          .getStartDate()
+          .getValue(), rd.getEndDate().getValue())) {
           return rd;
         }
         rd.setRepeat(true);
@@ -464,12 +501,18 @@ public class ScheduleOnedaySelectData extends ALAbstractSelectData {
       boolean dup = false;
       int sta = startHour * 4;
       int eta = endHour * 4;
-      int st = Integer.parseInt(rd.getStartDate().getHour()) * 4
-          + Integer.parseInt(rd.getStartDate().getMinute()) / 15;
-      int ed = Integer.parseInt(rd.getEndDate().getHour()) * 4
-          + Integer.parseInt(rd.getEndDate().getMinute()) / 15;
+      int st =
+        Integer.parseInt(rd.getStartDate().getHour())
+          * 4
+          + Integer.parseInt(rd.getStartDate().getMinute())
+          / 15;
+      int ed =
+        Integer.parseInt(rd.getEndDate().getHour())
+          * 4
+          + Integer.parseInt(rd.getEndDate().getMinute())
+          / 15;
       if (!(rd.getStartDate().getDay().equals(rd.getEndDate().getDay()))
-          && rd.getEndDate().getHour().equals("0")) {
+        && rd.getEndDate().getHour().equals("0")) {
         ed = 4 * 24;
       }
       if ((ed - sta > 0 && eta - st > 0) || (ed - sta == 0 && st == ed)) {
@@ -484,14 +527,16 @@ public class ScheduleOnedaySelectData extends ALAbstractSelectData {
         int tmpRowIndex = rowIndex;
         if (ed - st == 0) {
           rd.setRowspan(1);
-          Integer rowspan = (Integer) rowspanMap.get(Integer.valueOf(rd
-              .getStartDate().getHour()));
+          Integer rowspan =
+            (Integer) rowspanMap.get(Integer.valueOf(rd
+              .getStartDate()
+              .getHour()));
           if (rowspan.intValue() > 4) {
-            ((ScheduleResultData) resultData[tmpIndex]).setDuplicate(true);
+            (resultData[tmpIndex]).setDuplicate(true);
             rd.setDuplicate(true);
           }
           rowspanMap.put(Integer.valueOf(rd.getStartDate().getHour()), Integer
-              .valueOf(rowspan.intValue() + 1));
+            .valueOf(rowspan.intValue() + 1));
           rowIndex++;
           ed++;
         } else {
@@ -519,7 +564,7 @@ public class ScheduleOnedaySelectData extends ALAbstractSelectData {
           rd.setDuplicate(true);
           dup = true;
           is_duplicate = true;
-          ((ScheduleResultData) resultData[tmpIndex]).setDuplicate(true);
+          (resultData[tmpIndex]).setDuplicate(true);
         }
         if (!dup) {
           resultData[st - sta] = rd;
@@ -539,8 +584,11 @@ public class ScheduleOnedaySelectData extends ALAbstractSelectData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   * @see
+   * com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang
+   * .Object)
    */
+  @Override
   protected Object getResultDataDetail(Object obj) {
     // このメソッドは利用されません。
     return null;
@@ -549,32 +597,41 @@ public class ScheduleOnedaySelectData extends ALAbstractSelectData {
   /*
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     // このメソッドは利用されません。
     return null;
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#doViewList(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * @see
+   * com.aimluck.eip.common.ALAbstractSelectData#doViewList(com.aimluck.eip.
+   * modules.actions.common.ALAction, org.apache.turbine.util.RunData,
+   * org.apache.velocity.context.Context)
    */
+  @Override
   public boolean doViewList(ALAction action, RunData rundata, Context context) {
     boolean res = super.doViewList(action, rundata, context);
     // 後処理
-    if (res)
+    if (res) {
       postDoList();
+    }
     return res;
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#doSelectList(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * @see
+   * com.aimluck.eip.common.ALAbstractSelectData#doSelectList(com.aimluck.eip
+   * .modules.actions.common.ALAction, org.apache.turbine.util.RunData,
+   * org.apache.velocity.context.Context)
    */
+  @Override
   public boolean doSelectList(ALAction action, RunData rundata, Context context) {
     boolean res = super.doSelectList(action, rundata, context);
     // 後処理
-    if (res)
+    if (res) {
       postDoList();
+    }
     return res;
   }
 
@@ -619,8 +676,11 @@ public class ScheduleOnedaySelectData extends ALAbstractSelectData {
         rd.initField();
 
         // ポートレット ToDo のへのリンクを取得する．
-        String todo_url = getPortletURItoTodo(rundata, record.getTodoId()
-            .longValue(), portletId);
+        String todo_url =
+          getPortletURItoTodo(
+            rundata,
+            record.getTodoId().longValue(),
+            portletId);
 
         rd.setTodoId(record.getTodoId().intValue());
         rd.setTodoName(record.getTodoName());
@@ -640,45 +700,55 @@ public class ScheduleOnedaySelectData extends ALAbstractSelectData {
 
   protected String getPortletURItoTodo(RunData rundata, long entityid,
       String schedulePortletId) {
-    return ScheduleUtils.getPortletURItoTodoDetailPane(rundata, "ToDo",
-        entityid, schedulePortletId);
+    return ScheduleUtils.getPortletURItoTodoDetailPane(
+      rundata,
+      "ToDo",
+      entityid,
+      schedulePortletId);
   }
 
   private SelectQuery getSelectQueryForTodo(RunData rundata, Context context) {
     Integer uid = Integer.valueOf(ALEipUtils.getUserId(rundata));
     SelectQuery query = new SelectQuery(EipTTodo.class);
 
-    Expression exp1 = ExpressionFactory.noMatchExp(EipTTodo.STATE_PROPERTY,
-        Short.valueOf((short) 100));
+    Expression exp1 =
+      ExpressionFactory.noMatchExp(EipTTodo.STATE_PROPERTY, Short
+        .valueOf((short) 100));
     query.setQualifier(exp1);
-    Expression exp2 = ExpressionFactory.matchExp(
-        EipTTodo.ADDON_SCHEDULE_FLG_PROPERTY, "T");
+    Expression exp2 =
+      ExpressionFactory.matchExp(EipTTodo.ADDON_SCHEDULE_FLG_PROPERTY, "T");
     query.andQualifier(exp2);
-    Expression exp3 = ExpressionFactory.matchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, uid);
+    Expression exp3 =
+      ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, uid);
     query.andQualifier(exp3);
 
     // 終了日時
-    Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-        EipTTodo.END_DATE_PROPERTY, viewDate.getValue());
+    Expression exp11 =
+      ExpressionFactory.greaterOrEqualExp(EipTTodo.END_DATE_PROPERTY, viewDate
+        .getValue());
     // 開始日時
-    Expression exp12 = ExpressionFactory.lessOrEqualExp(
-        EipTTodo.START_DATE_PROPERTY, viewDate.getValue());
+    Expression exp12 =
+      ExpressionFactory.lessOrEqualExp(EipTTodo.START_DATE_PROPERTY, viewDate
+        .getValue());
 
     // 開始日時のみ指定されている ToDo を検索
-    Expression exp21 = ExpressionFactory.lessOrEqualExp(
-        EipTTodo.START_DATE_PROPERTY, viewDate.getValue());
-    Expression exp22 = ExpressionFactory.matchExp(EipTTodo.END_DATE_PROPERTY,
-        ToDoUtils.getEmptyDate());
+    Expression exp21 =
+      ExpressionFactory.lessOrEqualExp(EipTTodo.START_DATE_PROPERTY, viewDate
+        .getValue());
+    Expression exp22 =
+      ExpressionFactory.matchExp(EipTTodo.END_DATE_PROPERTY, ToDoUtils
+        .getEmptyDate());
 
     // 終了日時のみ指定されている ToDo を検索
-    Expression exp31 = ExpressionFactory.greaterOrEqualExp(
-        EipTTodo.END_DATE_PROPERTY, viewDate.getValue());
-    Expression exp32 = ExpressionFactory.matchExp(EipTTodo.START_DATE_PROPERTY,
-        ToDoUtils.getEmptyDate());
+    Expression exp31 =
+      ExpressionFactory.greaterOrEqualExp(EipTTodo.END_DATE_PROPERTY, viewDate
+        .getValue());
+    Expression exp32 =
+      ExpressionFactory.matchExp(EipTTodo.START_DATE_PROPERTY, ToDoUtils
+        .getEmptyDate());
 
     query.andQualifier((exp11.andExp(exp12)).orExp(exp21.andExp(exp22)).orExp(
-        exp31.andExp(exp32)));
+      exp31.andExp(exp32)));
     return query;
   }
 
@@ -820,6 +890,7 @@ public class ScheduleOnedaySelectData extends ALAbstractSelectData {
    * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
   }

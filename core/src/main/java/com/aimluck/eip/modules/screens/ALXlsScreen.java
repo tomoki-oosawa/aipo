@@ -87,7 +87,8 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
       HttpServletResponse response = rundata.getResponse();
       // ファイル名の送信
       response.setHeader("Content-disposition", "attachment; filename=\""
-        + getFileName() + "\"");
+        + getFileName()
+        + "\"");
       response.setHeader("Cache-Control", "aipo");
       response.setHeader("Pragma", "aipo");
 
@@ -338,12 +339,16 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
       return true;
     }
 
-    ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-      .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-    hasAuthority = aclhandler.hasAuthority(ALEipUtils.getUserId(rundata),
-      pfeature, defineAclType);
+    hasAuthority =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        pfeature,
+        defineAclType);
 
     if (!hasAuthority) {
       throw new ALPermissionException();

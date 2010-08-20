@@ -25,13 +25,16 @@ package com.aimluck.eip.accessctl.action;
 public class ALActionAccessControlConstants {
 
   /** アクセス権限の機能名（ブログ（自分の記事）） */
-  public static final String POERTLET_FEATURE_BLOG_ENTRY_SELF = "blog_entry_self";
+  public static final String POERTLET_FEATURE_BLOG_ENTRY_SELF =
+    "blog_entry_self";
 
   /** アクセス権限の機能名（ブログ（他ユーザーの記事）） */
-  public static final String POERTLET_FEATURE_BLOG_ENTRY_OTHER = "blog_entry_other";
+  public static final String POERTLET_FEATURE_BLOG_ENTRY_OTHER =
+    "blog_entry_other";
 
   /** アクセス権限の機能名（ブログ（他ユーザーへのコメント）） */
-  public static final String POERTLET_FEATURE_BLOG_ENTRY_REPLY = "blog_entry_reply";
+  public static final String POERTLET_FEATURE_BLOG_ENTRY_REPLY =
+    "blog_entry_reply";
 
   /** アクセス権限の機能名（ブログ（テーマ）） */
   public static final String POERTLET_FEATURE_BLOG_THEME = "blog_theme";
@@ -40,13 +43,16 @@ public class ALActionAccessControlConstants {
   public static final String POERTLET_FEATURE_MSGBOARD_TOPIC = "msgboard_topic";
 
   /** アクセス権限の機能名（掲示板（トピック返信）） */
-  public static final String POERTLET_FEATURE_MSGBOARD_TOPIC_REPLY = "msgboard_topic_reply";
+  public static final String POERTLET_FEATURE_MSGBOARD_TOPIC_REPLY =
+    "msgboard_topic_reply";
 
   /** アクセス権限の機能名（掲示板（カテゴリ）） */
-  public static final String POERTLET_FEATURE_MSGBOARD_CATEGORY = "msgboard_category";
+  public static final String POERTLET_FEATURE_MSGBOARD_CATEGORY =
+    "msgboard_category";
 
   /** アクセス権限の機能名（掲示板（他ユーザーのトピック）） */
-  public static final String POERTLET_FEATURE_MSGBOARD_TOPIC_OTHER = "msgboard_topic_other";
+  public static final String POERTLET_FEATURE_MSGBOARD_TOPIC_OTHER =
+    "msgboard_topic_other";
 
   /** アクセス権限の機能名（スケジュール（自分の予定）） */
   public static final String POERTLET_FEATURE_SCHEDULE_SELF = "schedule_self";
@@ -55,40 +61,51 @@ public class ALActionAccessControlConstants {
   public static final String POERTLET_FEATURE_SCHEDULE_OTHER = "schedule_other";
 
   /** アクセス権限の機能名 (スケジュール 施設の予約操作) */
-  public static final String POERTLET_FEATURE_SCHEDULE_FACILITY = "schedule_facility";
+  public static final String POERTLET_FEATURE_SCHEDULE_FACILITY =
+    "schedule_facility";
 
   /** アクセス権限の機能名（ToDo（自分のToDo）） */
   public static final String POERTLET_FEATURE_TODO_TODO_SELF = "todo_todo_self";
 
   /** アクセス権限の機能名（ToDo（他ユーザーのToDo）） */
-  public static final String POERTLET_FEATURE_TODO_TODO_OTHER = "todo_todo_other";
+  public static final String POERTLET_FEATURE_TODO_TODO_OTHER =
+    "todo_todo_other";
 
   /** アクセス権限の機能名（ToDo（カテゴリ）） */
-  public static final String POERTLET_FEATURE_TODO_CATEGORY_SELF = "todo_category_self";
+  public static final String POERTLET_FEATURE_TODO_CATEGORY_SELF =
+    "todo_category_self";
 
   /** アクセス権限の機能名（ワークフロー（自分の依頼）） */
-  public static final String POERTLET_FEATURE_WORKFLOW_REQUEST_SELF = "workflow_request_self";
+  public static final String POERTLET_FEATURE_WORKFLOW_REQUEST_SELF =
+    "workflow_request_self";
 
   /** アクセス権限の機能名（ワークフロー（他ユーザーの依頼）） */
-  public static final String POERTLET_FEATURE_WORKFLOW_REQUEST_OTHER = "workflow_request_other";
+  public static final String POERTLET_FEATURE_WORKFLOW_REQUEST_OTHER =
+    "workflow_request_other";
 
   /** アクセス権限の機能名（アドレス帳（社内アドレス）） */
-  public static final String POERTLET_FEATURE_ADDRESSBOOK_ADDRESS_INSIDE = "addressbook_address_inside";
+  public static final String POERTLET_FEATURE_ADDRESSBOOK_ADDRESS_INSIDE =
+    "addressbook_address_inside";
 
   /** アクセス権限の機能名（アドレス帳（社外アドレス）） */
-  public static final String POERTLET_FEATURE_ADDRESSBOOK_ADDRESS_OUTSIDE = "addressbook_address_outside";
+  public static final String POERTLET_FEATURE_ADDRESSBOOK_ADDRESS_OUTSIDE =
+    "addressbook_address_outside";
 
   /** アクセス権限の機能名（アドレス帳（会社情報）） */
-  public static final String POERTLET_FEATURE_ADDRESSBOOK_COMPANY = "addressbook_company";
+  public static final String POERTLET_FEATURE_ADDRESSBOOK_COMPANY =
+    "addressbook_company";
 
   /** アクセス権限の機能名（アドレス帳（社外グループ）） */
-  public static final String POERTLET_FEATURE_ADDRESSBOOK_COMPANY_GROUP = "addressbook_company_group";
+  public static final String POERTLET_FEATURE_ADDRESSBOOK_COMPANY_GROUP =
+    "addressbook_company_group";
 
   /** アクセス権限の機能名（タイムカード（自分のタイムカード）） */
-  public static final String POERTLET_FEATURE_TIMECARD_TIMECARD_SELF = "timecard_timecard_self";
+  public static final String POERTLET_FEATURE_TIMECARD_TIMECARD_SELF =
+    "timecard_timecard_self";
 
   /** アクセス権限の機能名（タイムカード（他人のタイムカード）） */
-  public static final String POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER = "timecard_timecard_other";
+  public static final String POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER =
+    "timecard_timecard_other";
 
   /** アクセス権限の機能名（共有フォルダ（ファイル）） */
   public static final String POERTLET_FEATURE_CABINET_FILE = "cabinet_file";
@@ -97,12 +114,15 @@ public class ALActionAccessControlConstants {
   public static final String POERTLET_FEATURE_CABINET_FOLDER = "cabinet_folder";
 
   /** アクセス権限の機能名（プロジェクト管理（自分の工数）） */
-  public static final String POERTLET_FEATURE_MANHOUR_SUMMARY_SELF = "manhour_summary_self";
+  public static final String POERTLET_FEATURE_MANHOUR_SUMMARY_SELF =
+    "manhour_summary_self";
 
   /** アクセス権限の機能名（プロジェクト管理（他ユーザの工数）） */
-  public static final String POERTLET_FEATURE_MANHOUR_SUMMARY_OTHER = "manhour_summary_other";
+  public static final String POERTLET_FEATURE_MANHOUR_SUMMARY_OTHER =
+    "manhour_summary_other";
 
   /** アクセス権限の機能名（プロジェクト管理（共有カテゴリ）） */
-  public static final String POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY = "manhour_common_category";
+  public static final String POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY =
+    "manhour_common_category";
 
 }

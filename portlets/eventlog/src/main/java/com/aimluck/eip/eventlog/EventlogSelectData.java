@@ -20,7 +20,6 @@ package com.aimluck.eip.eventlog;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -38,6 +37,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.eventlog.util.ALEventlogUtils;
 import com.aimluck.eip.eventlog.util.EventlogUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -69,13 +69,17 @@ public class EventlogSelectData extends
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-          "p2a-sort"));
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p2a-sort"));
     }
 
     String sort_type = ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
     if (sort_type == null || "".equals(sort_type)) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR,
+      ALEipUtils.setTemp(
+        rundata,
+        context,
+        LIST_SORT_TYPE_STR,
         ALEipConstants.LIST_SORT_TYPE_DESC);
     }
     super.init(action, rundata, context);
@@ -91,18 +95,18 @@ public class EventlogSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  public List<EipTEventlog> selectList(RunData rundata, Context context) {
+  public ResultList<EipTEventlog> selectList(RunData rundata, Context context) {
     try {
 
       SelectQuery<EipTEventlog> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTEventlog> list = query.fetchList();
+      ResultList<EipTEventlog> list = query.getResultList();
       // イベントログの総数をセットする．
-      eventlogSum = list.size();
+      eventlogSum = list.getTotalCount();
 
-      return buildPaginatedList(list);
+      return list;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -118,8 +122,8 @@ public class EventlogSelectData extends
    */
   private SelectQuery<EipTEventlog> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipTEventlog> query = new SelectQuery<EipTEventlog>(
-      EipTEventlog.class);
+    SelectQuery<EipTEventlog> query =
+      new SelectQuery<EipTEventlog>(EipTEventlog.class);
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
@@ -138,8 +142,10 @@ public class EventlogSelectData extends
       EventlogResultData rd = new EventlogResultData();
       rd.initField();
       rd.setEventlogId(record.getEventlogId().longValue());
-      rd.setUserFullName(ALEipUtils.getUserFullName(record.getTurbineUser()
-        .getUserId().intValue()));
+      rd.setUserFullName(ALEipUtils.getUserFullName(record
+        .getTurbineUser()
+        .getUserId()
+        .intValue()));
       rd.setEventDate(df.format(record.getUpdateDate()));
       rd.setPortletName(ALEventlogUtils.getPortletAliasName(record
         .getPortletType()));
@@ -183,8 +189,10 @@ public class EventlogSelectData extends
       EventlogResultData rd = new EventlogResultData();
       rd.initField();
       rd.setEventlogId(record.getEventlogId().longValue());
-      rd.setUserFullName(ALEipUtils.getUserFullName(record.getTurbineUser()
-        .getUserId().intValue()));
+      rd.setUserFullName(ALEipUtils.getUserFullName(record
+        .getTurbineUser()
+        .getUserId()
+        .intValue()));
       rd.setEventDate(df.format(record.getUpdateDate()));
       rd.setPortletName(ALEventlogUtils.getPortletAliasName(record
         .getPortletType()));
@@ -193,8 +201,9 @@ public class EventlogSelectData extends
       rd.setEventName(ALEventlogUtils.getEventAliasName(record.getEventType()));
       rd.setNote(record.getNote());
       // 各ポートレットのデータ名を取得
-      String dataName = EventlogUtils.getPortletDataName(record
-        .getPortletType(), record.getEntityId());
+      String dataName =
+        EventlogUtils.getPortletDataName(record.getPortletType(), record
+          .getEntityId());
       if (dataName != null && !"".equals(dataName)) {
         rd.setDataName(dataName);
         rd.setDataNameFlag(true);
@@ -230,7 +239,8 @@ public class EventlogSelectData extends
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("event_date", EipTEventlog.EVENT_DATE_PROPERTY);
-    map.putValue("user_name", EipTEventlog.TURBINE_USER_PROPERTY + "."
+    map.putValue("user_name", EipTEventlog.TURBINE_USER_PROPERTY
+      + "."
       + TurbineUser.LAST_NAME_KANA_PROPERTY);
     map.putValue("portlet_id", EipTEventlog.PORTLET_TYPE_PROPERTY);
     map.putValue("event_type", EipTEventlog.EVENT_TYPE_PROPERTY);

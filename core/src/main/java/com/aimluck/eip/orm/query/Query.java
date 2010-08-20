@@ -22,6 +22,11 @@ import java.util.List;
 
 import org.apache.cayenne.access.DataContext;
 
+/**
+ * 
+ * 
+ * @param <M>
+ */
 public interface Query<M> {
 
   public DataContext getDataContext();

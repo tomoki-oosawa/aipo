@@ -19,7 +19,6 @@
 package com.aimluck.eip.webmail;
 
 import java.util.Date;
-import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.access.DataContext;
@@ -40,6 +39,7 @@ import com.aimluck.eip.mail.ALMailReceiverContext;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.util.WebMailUtils;
@@ -50,28 +50,30 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
 public class WebMailAccountSelectData extends ALAbstractSelectData {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WebMailAccountSelectData.class.getName());
+    .getLogger(WebMailAccountSelectData.class.getName());
 
   private String org_id;
 
   private DataContext dataContext;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
-          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-              .getInitParameter("p2b-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p2b-sort"));
     }
 
     org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
@@ -84,14 +86,14 @@ public class WebMailAccountSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List selectList(RunData rundata, Context context) {
+  @Override
+  protected ResultList selectList(RunData rundata, Context context) {
     try {
       SelectQuery query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List list = query.fetchList();
-      return buildPaginatedList(list);
+      return query.getResultList();
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -100,7 +102,7 @@ public class WebMailAccountSelectData extends ALAbstractSelectData {
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -108,11 +110,12 @@ public class WebMailAccountSelectData extends ALAbstractSelectData {
   private SelectQuery getSelectQuery(RunData rundata, Context context) {
     SelectQuery query = new SelectQuery(EipMMailAccount.class);
 
-    Expression exp1 = ExpressionFactory.matchExp(
-        EipMMailAccount.USER_ID_PROPERTY,
-        Integer.valueOf(ALEipUtils.getUserId(rundata)));
+    Expression exp1 =
+      ExpressionFactory.matchExp(EipMMailAccount.USER_ID_PROPERTY, Integer
+        .valueOf(ALEipUtils.getUserId(rundata)));
     query.setQualifier(exp1);
-    Expression exp2 = ExpressionFactory.noMatchExp(
+    Expression exp2 =
+      ExpressionFactory.noMatchExp(
         EipMMailAccount.ACCOUNT_TYPE_PROPERTY,
         Integer.valueOf(ALMailUtils.ACCOUNT_TYPE_INIT));
     query.andQualifier(exp2);
@@ -124,6 +127,7 @@ public class WebMailAccountSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected Object selectDetail(RunData rundata, Context context) {
     int userId = ALEipUtils.getUserId(rundata);
 
@@ -132,8 +136,8 @@ public class WebMailAccountSelectData extends ALAbstractSelectData {
       // 管理者用のメールアカウントを表示する場合
       account = ALMailUtils.getEipMMailAccountForAdmin();
     } else {
-      int accountId = rundata.getParameters().getInt(WebMailUtils.ACCOUNT_ID,
-          -1);
+      int accountId =
+        rundata.getParameters().getInt(WebMailUtils.ACCOUNT_ID, -1);
       account = ALMailUtils.getMailAccount(null, userId, accountId);
     }
     return account;
@@ -142,6 +146,7 @@ public class WebMailAccountSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(Object obj) {
     try {
       EipMMailAccount record = (EipMMailAccount) obj;
@@ -152,10 +157,10 @@ public class WebMailAccountSelectData extends ALAbstractSelectData {
       rd.setMailAddress(record.getMailAddress());
 
       // 未読メール数を取得し，セットする．
-      ALMailHandler handler = ALMailFactoryService.getInstance()
-          .getMailHandler();
-      ALMailReceiverContext rcontext = ALMailUtils
-          .getALPop3MailReceiverContext(org_id, record);
+      ALMailHandler handler =
+        ALMailFactoryService.getInstance().getMailHandler();
+      ALMailReceiverContext rcontext =
+        ALMailUtils.getALPop3MailReceiverContext(org_id, record);
       rd.setCountUnRead(handler.getUnReadMailSum(rcontext));
 
       // 最終更新日を取得し，セットする．
@@ -172,9 +177,11 @@ public class WebMailAccountSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(Object obj) {
-    if (obj == null)
+    if (obj == null) {
       return null;
+    }
     try {
       EipMMailAccount record = (EipMMailAccount) obj;
 
@@ -207,6 +214,7 @@ public class WebMailAccountSelectData extends ALAbstractSelectData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("account_name", EipMMailAccount.ACCOUNT_NAME_PROPERTY);

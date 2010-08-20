@@ -42,6 +42,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -121,14 +122,18 @@ public class WorkflowSelectData extends
     String sorttype = ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-          "p2a-sort"));
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p2a-sort"));
     }
 
     if ("create_date".equals(ALEipUtils
       .getTemp(rundata, context, LIST_SORT_STR))
       && (sorttype == null || "".equals(sorttype))) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR,
+      ALEipUtils.setTemp(
+        rundata,
+        context,
+        LIST_SORT_TYPE_STR,
         ALEipConstants.LIST_SORT_TYPE_DESC);
     }
 
@@ -162,7 +167,8 @@ public class WorkflowSelectData extends
       }
     } else {
       if (TAB_UNCONFIRMED.equals(currentTab)
-        || TAB_CONFIRMED.equals(currentTab) || TAB_COMPLETED.equals(currentTab)) {
+        || TAB_CONFIRMED.equals(currentTab)
+        || TAB_COMPLETED.equals(currentTab)) {
         currentTab = TAB_UNFINISHED;
       }
     }
@@ -178,13 +184,16 @@ public class WorkflowSelectData extends
     login_user = ALEipUtils.getALEipUser(rundata);
 
     // アクセス権限
-    ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-      .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-    hasAuthorityOther = aclhandler.hasAuthority(ALEipUtils.getUserId(rundata),
-      ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_OTHER,
-      ALAccessControlConstants.VALUE_ACL_LIST);
+    hasAuthorityOther =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_OTHER,
+        ALAccessControlConstants.VALUE_ACL_LIST);
 
     super.init(action, rundata, context);
   }
@@ -217,17 +226,18 @@ public class WorkflowSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  public List<EipTWorkflowRequest> selectList(RunData rundata, Context context) {
+  public ResultList<EipTWorkflowRequest> selectList(RunData rundata,
+      Context context) {
     try {
 
       SelectQuery<EipTWorkflowRequest> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTWorkflowRequest> list = query.fetchList();
+      ResultList<EipTWorkflowRequest> list = query.getResultList();
       // リクエストの総数をセットする．
-      requestSum = list.size();
-      return buildPaginatedList(list);
+      requestSum = list.getTotalCount();
+      return list;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -243,72 +253,91 @@ public class WorkflowSelectData extends
    */
   private SelectQuery<EipTWorkflowRequest> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipTWorkflowRequest> query = new SelectQuery<EipTWorkflowRequest>(
-      EipTWorkflowRequest.class);
+    SelectQuery<EipTWorkflowRequest> query =
+      new SelectQuery<EipTWorkflowRequest>(EipTWorkflowRequest.class);
 
-    Integer login_user_id = Integer.valueOf((int) login_user.getUserId()
-      .getValue());
+    Integer login_user_id =
+      Integer.valueOf((int) login_user.getUserId().getValue());
 
     if (SUBMENU_REQUESTED.equals(currentSubMenu)) {
       // 確認依頼
 
-      Expression exp1 = ExpressionFactory.matchExp(
-        EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY + "."
-          + EipTWorkflowRequestMap.USER_ID_PROPERTY, login_user_id);
+      Expression exp1 =
+        ExpressionFactory.matchExp(
+          EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY
+            + "."
+            + EipTWorkflowRequestMap.USER_ID_PROPERTY,
+          login_user_id);
       query.setQualifier(exp1);
 
       if (TAB_UNCONFIRMED.equals(currentTab)) {
-        Expression exp21 = ExpressionFactory
-          .matchExp(EipTWorkflowRequest.PROGRESS_PROPERTY,
+        Expression exp21 =
+          ExpressionFactory.matchExp(
+            EipTWorkflowRequest.PROGRESS_PROPERTY,
             WorkflowUtils.DB_PROGRESS_WAIT);
-        Expression exp22 = ExpressionFactory.matchExp(
-          EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY + "."
-            + EipTWorkflowRequestMap.STATUS_PROPERTY,
-          WorkflowUtils.DB_STATUS_CONFIRM);
-        Expression exp31 = ExpressionFactory.matchExp(
-          EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY + "."
-            + EipTWorkflowRequestMap.STATUS_PROPERTY,
-          WorkflowUtils.DB_STATUS_REQUEST);
-        Expression exp32 = ExpressionFactory.matchExp(
-          EipTWorkflowRequest.PROGRESS_PROPERTY,
-          WorkflowUtils.DB_PROGRESS_DENAIL);
+        Expression exp22 =
+          ExpressionFactory.matchExp(
+            EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY
+              + "."
+              + EipTWorkflowRequestMap.STATUS_PROPERTY,
+            WorkflowUtils.DB_STATUS_CONFIRM);
+        Expression exp31 =
+          ExpressionFactory.matchExp(
+            EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY
+              + "."
+              + EipTWorkflowRequestMap.STATUS_PROPERTY,
+            WorkflowUtils.DB_STATUS_REQUEST);
+        Expression exp32 =
+          ExpressionFactory.matchExp(
+            EipTWorkflowRequest.PROGRESS_PROPERTY,
+            WorkflowUtils.DB_PROGRESS_DENAIL);
 
         query.andQualifier((exp21.andExp(exp22)).orExp(exp31.andExp(exp32)));
       } else if (TAB_CONFIRMED.equals(currentTab)) {
-        Expression exp2 = ExpressionFactory
-          .matchExp(EipTWorkflowRequest.PROGRESS_PROPERTY,
+        Expression exp2 =
+          ExpressionFactory.matchExp(
+            EipTWorkflowRequest.PROGRESS_PROPERTY,
             WorkflowUtils.DB_PROGRESS_WAIT);
         query.andQualifier(exp2);
 
-        Expression exp3 = ExpressionFactory.matchExp(
-          EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY + "."
-            + EipTWorkflowRequestMap.STATUS_PROPERTY,
-          WorkflowUtils.DB_STATUS_ACCEPT);
+        Expression exp3 =
+          ExpressionFactory.matchExp(
+            EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY
+              + "."
+              + EipTWorkflowRequestMap.STATUS_PROPERTY,
+            WorkflowUtils.DB_STATUS_ACCEPT);
         query.andQualifier(exp3);
       } else {
-        Expression exp2 = ExpressionFactory.matchExp(
-          EipTWorkflowRequest.PROGRESS_PROPERTY,
-          WorkflowUtils.DB_PROGRESS_ACCEPT);
+        Expression exp2 =
+          ExpressionFactory.matchExp(
+            EipTWorkflowRequest.PROGRESS_PROPERTY,
+            WorkflowUtils.DB_PROGRESS_ACCEPT);
         query.andQualifier(exp2);
 
-        Expression exp3 = ExpressionFactory.matchExp(
-          EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY + "."
-            + EipTWorkflowRequestMap.STATUS_PROPERTY,
-          WorkflowUtils.DB_STATUS_ACCEPT);
+        Expression exp3 =
+          ExpressionFactory.matchExp(
+            EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY
+              + "."
+              + EipTWorkflowRequestMap.STATUS_PROPERTY,
+            WorkflowUtils.DB_STATUS_ACCEPT);
         query.andQualifier(exp3);
       }
     } else {
       // 作成分
-      Expression exp1 = ExpressionFactory.matchExp(
-        EipTWorkflowRequest.USER_ID_PROPERTY, login_user_id);
+      Expression exp1 =
+        ExpressionFactory.matchExp(
+          EipTWorkflowRequest.USER_ID_PROPERTY,
+          login_user_id);
       query.setQualifier(exp1);
 
       if (TAB_UNFINISHED.equals(currentTab)) {
         List<String> progressList = new ArrayList<String>();
         progressList.add(WorkflowUtils.DB_PROGRESS_WAIT);
         progressList.add(WorkflowUtils.DB_PROGRESS_DENAIL);
-        Expression exp2 = ExpressionFactory.inExp(
-          EipTWorkflowRequest.PROGRESS_PROPERTY, progressList);
+        Expression exp2 =
+          ExpressionFactory.inExp(
+            EipTWorkflowRequest.PROGRESS_PROPERTY,
+            progressList);
         query.andQualifier(exp2);
 
         // C（確認）/ W（待ち状態）/ D（否認）があれば、未完了の状態
@@ -316,14 +345,18 @@ public class WorkflowSelectData extends
         stausList.add(WorkflowUtils.DB_STATUS_CONFIRM);
         stausList.add(WorkflowUtils.DB_STATUS_WAIT);
         stausList.add(WorkflowUtils.DB_STATUS_DENIAL);
-        Expression exp3 = ExpressionFactory.inExp(
-          EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY + "."
-            + EipTWorkflowRequestMap.STATUS_PROPERTY, stausList);
+        Expression exp3 =
+          ExpressionFactory.inExp(
+            EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY
+              + "."
+              + EipTWorkflowRequestMap.STATUS_PROPERTY,
+            stausList);
         query.andQualifier(exp3);
       } else {
-        Expression exp2 = ExpressionFactory.matchExp(
-          EipTWorkflowRequest.PROGRESS_PROPERTY,
-          WorkflowUtils.DB_PROGRESS_ACCEPT);
+        Expression exp2 =
+          ExpressionFactory.matchExp(
+            EipTWorkflowRequest.PROGRESS_PROPERTY,
+            WorkflowUtils.DB_PROGRESS_ACCEPT);
         query.andQualifier(exp2);
       }
     }
@@ -344,16 +377,22 @@ public class WorkflowSelectData extends
       WorkflowResultData rd = new WorkflowResultData();
       rd.initField();
       rd.setRequestId(record.getRequestId().intValue());
-      rd.setCategoryId(record.getEipTWorkflowCategory().getCategoryId()
+      rd.setCategoryId(record
+        .getEipTWorkflowCategory()
+        .getCategoryId()
         .longValue());
       rd.setCategoryName(ALCommonUtils.compressString(record
-        .getEipTWorkflowCategory().getCategoryName(), getStrLength()));
-      rd.setRequestName(ALCommonUtils.compressString(record.getRequestName(),
+        .getEipTWorkflowCategory()
+        .getCategoryName(), getStrLength()));
+      rd.setRequestName(ALCommonUtils.compressString(
+        record.getRequestName(),
         getStrLength()));
       rd.setPriority(record.getPriority().intValue());
-      rd.setPriorityImage(WorkflowUtils.getPriorityImage(record.getPriority()
+      rd.setPriorityImage(WorkflowUtils.getPriorityImage(record
+        .getPriority()
         .intValue()));
-      rd.setPriorityString(WorkflowUtils.getPriorityString(record.getPriority()
+      rd.setPriorityString(WorkflowUtils.getPriorityString(record
+        .getPriority()
         .intValue()));
       rd.setProgress(record.getProgress());
       rd.setPrice(record.getPrice().longValue());
@@ -375,8 +414,8 @@ public class WorkflowSelectData extends
           map = (EipTWorkflowRequestMap) maps.get(i);
           if (WorkflowUtils.DB_STATUS_CONFIRM.equals(map.getStatus())) {
             // 最終閲覧者を取得する
-            ALEipUser user = ALEipUtils
-              .getALEipUser(map.getUserId().intValue());
+            ALEipUser user =
+              ALEipUtils.getALEipUser(map.getUserId().intValue());
             lastUpdateUser = user.getAliasName().getValue();
             order = map.getOrderIndex().intValue() - 1;
             break;
@@ -387,7 +426,8 @@ public class WorkflowSelectData extends
       rd.setStateString(order + "/" + (size - 1));
 
       rd.setLastUpdateUser(lastUpdateUser);
-      rd.setCreateDate(WorkflowUtils.translateDate(record.getCreateDate(),
+      rd.setCreateDate(WorkflowUtils.translateDate(
+        record.getCreateDate(),
         "yyyy年M月d日H時m分"));
       return rd;
     } catch (Exception ex) {
@@ -410,17 +450,18 @@ public class WorkflowSelectData extends
       throws ALPageNotFoundException {
     try {
 
-      EipTWorkflowRequest request = WorkflowUtils.getEipTWorkflowRequest(
-        rundata, context, false);
+      EipTWorkflowRequest request =
+        WorkflowUtils.getEipTWorkflowRequest(rundata, context, false);
 
       /**
        * 新着ポートレット既読処理
        */
-      String entryid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+      String entryid =
+        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
       WhatsNewUtils.shiftWhatsNewReadFlag(
-        WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST, Integer
-          .parseInt(entryid), (int) login_user.getUserId().getValue());
+        WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST,
+        Integer.parseInt(entryid),
+        (int) login_user.getUserId().getValue());
       /**
        *
        */
@@ -450,10 +491,12 @@ public class WorkflowSelectData extends
    */
   @SuppressWarnings("unused")
   private SelectQuery<EipTWorkflowFile> getSelectQueryForFiles(int requestid) {
-    SelectQuery<EipTWorkflowFile> query = new SelectQuery<EipTWorkflowFile>(
-      EipTWorkflowFile.class);
-    Expression exp = ExpressionFactory.matchDbExp(
-      EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, Integer.valueOf(requestid));
+    SelectQuery<EipTWorkflowFile> query =
+      new SelectQuery<EipTWorkflowFile>(EipTWorkflowFile.class);
+    Expression exp =
+      ExpressionFactory.matchDbExp(
+        EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
+        Integer.valueOf(requestid));
     query.setQualifier(exp);
     return query;
   }
@@ -508,8 +551,10 @@ public class WorkflowSelectData extends
     map.putValue("priority", EipTWorkflowRequest.PRIORITY_PROPERTY);
     map.putValue("price", EipTWorkflowRequest.PRICE_PROPERTY);
     map.putValue("create_date", EipTWorkflowRequest.CREATE_DATE_PROPERTY);
-    map.putValue("category",
-      EipTWorkflowRequest.EIP_TWORKFLOW_CATEGORY_PROPERTY + "."
+    map.putValue(
+      "category",
+      EipTWorkflowRequest.EIP_TWORKFLOW_CATEGORY_PROPERTY
+        + "."
         + EipTWorkflowCategory.CATEGORY_ID_PK_COLUMN);
     return map;
   }

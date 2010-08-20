@@ -24,11 +24,8 @@ import java.util.List;
 
 import javax.servlet.ServletConfig;
 
-import org.apache.cayenne.DataObjectUtils;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.om.profile.Profile;
 import org.apache.jetspeed.om.profile.ProfileException;
 import org.apache.jetspeed.om.security.BaseJetspeedGroupRole;
@@ -60,7 +57,8 @@ import com.aimluck.eip.cayenne.om.security.TurbineRole;
 import com.aimluck.eip.cayenne.om.security.TurbineRolePermission;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
  * ロールを管理するクラスです。 <br />
@@ -99,18 +97,15 @@ public class ALRoleManagement extends TurbineBaseService implements
       throw new RoleException("Failed to Retrieve User: ", e);
     }
 
-    List<?> rels;
+    List<TurbineUserGroupRole> rels;
     HashMap<String, GroupRole> roles;
 
     try {
-      Expression exp = ExpressionFactory.matchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(user.getUserId()));
+      Expression exp =
+        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+          .valueOf(user.getUserId()));
 
-      SelectQuery query = new SelectQuery(TurbineUserGroupRole.class, exp);
-
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      rels = dataContext.performQuery(query);
+      rels = Database.query(TurbineUserGroupRole.class, exp).fetchList();
 
       if (rels.size() > 0) {
         roles = new HashMap<String, GroupRole>(rels.size());
@@ -119,7 +114,7 @@ public class ALRoleManagement extends TurbineBaseService implements
       }
 
       for (int ix = 0; ix < rels.size(); ix++) {
-        TurbineUserGroupRole rel = (TurbineUserGroupRole) rels.get(ix);
+        TurbineUserGroupRole rel = rels.get(ix);
         Role role = rel.getTurbineRole();
         Group group = rel.getTurbineGroup();
         GroupRole groupRole = new BaseJetspeedGroupRole();
@@ -137,13 +132,9 @@ public class ALRoleManagement extends TurbineBaseService implements
    *
    */
   public Iterator<?> getRoles() throws JetspeedSecurityException {
-    List<?> roles;
+    List<TurbineRole> roles;
     try {
-      SelectQuery query = new SelectQuery(TurbineRole.class);
-
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      roles = dataContext.performQuery(query);
+      roles = Database.query(TurbineRole.class).fetchList();
     } catch (Exception e) {
       throw new RoleException("Failed to retrieve roles ", e);
     }
@@ -156,22 +147,22 @@ public class ALRoleManagement extends TurbineBaseService implements
   public void addRole(Role role) throws JetspeedSecurityException {
 
     if (roleExists(role.getName())) {
-      throw new RoleException("The role '" + role.getName()
+      throw new RoleException("The role '"
+        + role.getName()
         + "' already exists");
     }
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
       // 新規オブジェクトモデル
-      TurbineRole trole = (TurbineRole) dataContext
-        .createAndRegisterNewObject(TurbineRole.class);
+      TurbineRole trole = Database.create(TurbineRole.class);
       trole.setName(role.getName());
       trole.setObjectdata(null);
-      dataContext.commitChanges();
+      Database.commit();
 
     } catch (Exception e) {
-      throw new RoleException("Failed to create role '" + role.getName() + "'",
+      Database.rollback();
+      throw new RoleException(
+        "Failed to create role '" + role.getName() + "'",
         e);
     }
 
@@ -197,8 +188,9 @@ public class ALRoleManagement extends TurbineBaseService implements
    */
   protected void addDefaultRolePSML(Role role) throws RoleException {
     try {
-      JetspeedRunDataService runDataService = (JetspeedRunDataService) TurbineServices
-        .getInstance().getService(RunDataService.SERVICE_NAME);
+      JetspeedRunDataService runDataService =
+        (JetspeedRunDataService) TurbineServices.getInstance().getService(
+          RunDataService.SERVICE_NAME);
       JetspeedRunData rundata = runDataService.getCurrentRunData();
       Profile profile = Profiler.createProfile();
       profile.setRole(role);
@@ -218,23 +210,24 @@ public class ALRoleManagement extends TurbineBaseService implements
    */
   public void saveRole(Role role) throws JetspeedSecurityException {
     if (!roleExists(role.getName())) {
-      throw new RoleException("The role '" + role.getName()
+      throw new RoleException("The role '"
+        + role.getName()
         + "' doesn't exists");
     }
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
 
       if (role instanceof TurbineRole) {
-        dataContext.commitChanges();
+        Database.commit();
       } else {
         throw new RoleException(
           "TurbineRoleManagment: Role is not a Turbine role, cannot update");
       }
 
     } catch (Exception e) {
-      throw new RoleException("Failed to create role '" + role.getName() + "'",
+      Database.rollback();
+      throw new RoleException(
+        "Failed to create role '" + role.getName() + "'",
         e);
     }
 
@@ -247,37 +240,33 @@ public class ALRoleManagement extends TurbineBaseService implements
     try {
       Role role = this.getRole(rolename);
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-
       if (cascadeDelete) {
         // CASCADE TURBINE_USER_GROUP_ROLE, TURBINE_ROLE_PERMISSION
-        Expression exp1 = ExpressionFactory.matchDbExp(
-          TurbineRole.ROLE_ID_PK_COLUMN, Integer.valueOf(role.getId()));
-        SelectQuery query1 = new SelectQuery(TurbineUserGroupRole.class, exp1);
-        List<?> roles = dataContext.performQuery(query1);
-        dataContext.deleteObjects(roles);
-
-        Expression exp2 = ExpressionFactory.matchDbExp(
-          TurbineRolePermission.ROLE_ID_PK_COLUMN, Integer
+        Expression exp1 =
+          ExpressionFactory.matchDbExp(TurbineRole.ROLE_ID_PK_COLUMN, Integer
             .valueOf(role.getId()));
-        SelectQuery query2 = new SelectQuery(TurbineRolePermission.class, exp2);
-        List<?> rolepermmisions = dataContext.performQuery(query2);
-        dataContext.deleteObjects(rolepermmisions);
+
+        Database.query(TurbineUserGroupRole.class, exp1).deleteAll();
+
+        Expression exp2 =
+          ExpressionFactory.matchDbExp(
+            TurbineRolePermission.ROLE_ID_PK_COLUMN,
+            Integer.valueOf(role.getId()));
+
+        Database.query(TurbineRolePermission.class, exp2).deleteAll();
 
       }
 
-      dataContext.deleteObject((TurbineRole) role);
+      Database.delete((TurbineRole) role);
 
       PsmlManager.removeRoleDocuments(role);
-
-      dataContext.commitChanges();
+      Database.commit();
 
       if (cachingEnable) {
         JetspeedSecurityCache.removeAllRoles(rolename);
       }
     } catch (Exception e) {
-
+      Database.rollback();
       throw new RoleException("Failed to remove role '" + rolename + "'", e);
     } finally {
 
@@ -300,24 +289,26 @@ public class ALRoleManagement extends TurbineBaseService implements
       Role role = this.getRole(rolename);
       Group group = JetspeedSecurity.getGroup(groupname);
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
       // 新規オブジェクトモデル
-      TurbineUserGroupRole user_group_role = (TurbineUserGroupRole) dataContext
-        .createAndRegisterNewObject(TurbineUserGroupRole.class);
-      TurbineUser tuser = (TurbineUser) DataObjectUtils.objectForPK(
-        dataContext, TurbineUser.class, Integer.valueOf(user.getUserId()));
+      TurbineUserGroupRole user_group_role =
+        Database.create(TurbineUserGroupRole.class);
+      TurbineUser tuser =
+        Database.get(TurbineUser.class, Integer.valueOf(user.getUserId()));
       user_group_role.setTurbineUser(tuser);
       user_group_role.setTurbineGroup((TurbineGroup) group);
       user_group_role.setTurbineRole((TurbineRole) role);
-      dataContext.commitChanges();
+      Database.commit();
 
       if (cachingEnable) {
         JetspeedSecurityCache.addRole(username, role, group);
       }
     } catch (Exception e) {
-      throw new RoleException("Grant role '" + rolename + "' to user '"
-        + username + "' failed: ", e);
+      Database.rollback();
+      throw new RoleException("Grant role '"
+        + rolename
+        + "' to user '"
+        + username
+        + "' failed: ", e);
     }
   }
 
@@ -336,30 +327,33 @@ public class ALRoleManagement extends TurbineBaseService implements
       Role role = this.getRole(rolename);
       Group group = JetspeedSecurity.getGroup(groupname);
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      Expression exp1 = ExpressionFactory.matchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(user.getUserId()));
-      Expression exp2 = ExpressionFactory.matchDbExp(
-        TurbineGroup.GROUP_ID_PK_COLUMN, Integer.valueOf(group.getId()));
-      Expression exp3 = ExpressionFactory.matchDbExp(
-        TurbineRole.ROLE_ID_PK_COLUMN, Integer.valueOf(role.getId()));
-      SelectQuery query = new SelectQuery(TurbineUserGroupRole.class);
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+          .valueOf(user.getUserId()));
+      Expression exp2 =
+        ExpressionFactory.matchDbExp(TurbineGroup.GROUP_ID_PK_COLUMN, Integer
+          .valueOf(group.getId()));
+      Expression exp3 =
+        ExpressionFactory.matchDbExp(TurbineRole.ROLE_ID_PK_COLUMN, Integer
+          .valueOf(role.getId()));
+      SelectQuery<TurbineUserGroupRole> query =
+        Database.query(TurbineUserGroupRole.class);
       query.setQualifier(exp1);
       query.andQualifier(exp2);
       query.andQualifier(exp3);
-      List<?> list = dataContext.performQuery(query);
-
-      dataContext.deleteObjects(list);
-      dataContext.commitChanges();
+      query.deleteAll();
+      Database.commit();
 
       if (cachingEnable) {
         JetspeedSecurityCache.removeRole(username, rolename, groupname);
       }
 
     } catch (Exception e) {
-      throw new RoleException("Revoke role '" + rolename + "' to user '"
-        + username + "' failed: ", e);
+      throw new RoleException("Revoke role '"
+        + rolename
+        + "' to user '"
+        + username
+        + "' failed: ", e);
     }
 
   }
@@ -374,7 +368,7 @@ public class ALRoleManagement extends TurbineBaseService implements
 
   public boolean hasRole(String username, String rolename, String groupname)
       throws JetspeedSecurityException {
-    List<?> roles;
+    List<TurbineUserGroupRole> roles;
 
     try {
       if (cachingEnable) {
@@ -387,20 +381,22 @@ public class ALRoleManagement extends TurbineBaseService implements
       Role role = this.getRole(rolename);
       Group group = JetspeedSecurity.getGroup(groupname);
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      Expression exp1 = ExpressionFactory.matchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(user.getUserId()));
-      Expression exp2 = ExpressionFactory.matchDbExp(
-        TurbineGroup.GROUP_ID_PK_COLUMN, Integer.valueOf(group.getId()));
-      Expression exp3 = ExpressionFactory.matchDbExp(
-        TurbineRole.ROLE_ID_PK_COLUMN, Integer.valueOf(role.getId()));
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+          .valueOf(user.getUserId()));
+      Expression exp2 =
+        ExpressionFactory.matchDbExp(TurbineGroup.GROUP_ID_PK_COLUMN, Integer
+          .valueOf(group.getId()));
+      Expression exp3 =
+        ExpressionFactory.matchDbExp(TurbineRole.ROLE_ID_PK_COLUMN, Integer
+          .valueOf(role.getId()));
 
-      SelectQuery query = new SelectQuery(TurbineUserGroupRole.class);
+      SelectQuery<TurbineUserGroupRole> query =
+        Database.query(TurbineUserGroupRole.class);
       query.setQualifier(exp1);
       query.andQualifier(exp2);
       query.andQualifier(exp3);
-      roles = dataContext.performQuery(query);
+      roles = query.fetchList();
 
     } catch (Exception e) {
       throw new RoleException("Failed to check role '" + rolename + "'", e);
@@ -412,25 +408,23 @@ public class ALRoleManagement extends TurbineBaseService implements
    *
    */
   public Role getRole(String rolename) throws JetspeedSecurityException {
-    List<?> roles;
+    List<TurbineRole> roles;
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      Expression exp = ExpressionFactory.matchExp(
-        TurbineRole.ROLE_NAME_PROPERTY, rolename);
-      SelectQuery query = new SelectQuery(TurbineRole.class, exp);
-      roles = dataContext.performQuery(query);
+      Expression exp =
+        ExpressionFactory.matchExp(TurbineRole.ROLE_NAME_PROPERTY, rolename);
+      roles = Database.query(TurbineRole.class, exp).fetchList();
 
     } catch (Exception e) {
       throw new RoleException("Failed to retrieve role '" + rolename + "'", e);
     }
     if (roles.size() > 1) {
-      throw new RoleException("Multiple Roles with same rolename '" + rolename
+      throw new RoleException("Multiple Roles with same rolename '"
+        + rolename
         + "'");
     }
     if (roles.size() == 1) {
-      TurbineRole role = (TurbineRole) roles.get(0);
+      TurbineRole role = roles.get(0);
       return role;
     }
     throw new RoleException("Unknown role '" + rolename + "'");
@@ -452,15 +446,12 @@ public class ALRoleManagement extends TurbineBaseService implements
    * @throws RoleException
    */
   protected boolean roleExists(String roleName) throws RoleException {
-    List<?> roles;
+    List<TurbineRole> roles;
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      Expression exp = ExpressionFactory.matchExp(
-        TurbineRole.ROLE_NAME_PROPERTY, roleName);
-      SelectQuery query = new SelectQuery(TurbineRole.class, exp);
-      roles = dataContext.performQuery(query);
+      Expression exp =
+        ExpressionFactory.matchExp(TurbineRole.ROLE_NAME_PROPERTY, roleName);
+      roles = Database.query(TurbineRole.class, exp).fetchList();
 
     } catch (Exception e) {
       throw new RoleException("Failed to check account's presence", e);
@@ -483,14 +474,16 @@ public class ALRoleManagement extends TurbineBaseService implements
 
     super.init(conf);
 
-    ResourceService serviceConf = ((TurbineServices) TurbineServices
-      .getInstance()).getResources(JetspeedSecurityService.SERVICE_NAME);
+    ResourceService serviceConf =
+      ((TurbineServices) TurbineServices.getInstance())
+        .getResources(JetspeedSecurityService.SERVICE_NAME);
 
-    this.runDataService = (JetspeedRunDataService) TurbineServices
-      .getInstance().getService(RunDataService.SERVICE_NAME);
+    this.runDataService =
+      (JetspeedRunDataService) TurbineServices.getInstance().getService(
+        RunDataService.SERVICE_NAME);
 
-    cascadeDelete = serviceConf.getBoolean(CASCADE_DELETE,
-      DEFAULT_CASCADE_DELETE);
+    cascadeDelete =
+      serviceConf.getBoolean(CASCADE_DELETE, DEFAULT_CASCADE_DELETE);
     cachingEnable = serviceConf.getBoolean(CACHING_ENABLE, cachingEnable);
 
     setInit(true);

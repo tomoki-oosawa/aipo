@@ -37,8 +37,10 @@ public class ALCsvTokenizer {
     .getLogger(ALCsvTokenizer.class.getName());
 
   public static final String CSV_TEMP_FOLDER = JetspeedResources.getString(
-    "aipo.tmp.directory", "")
-    + System.getProperty("file.separator") + "csv";
+    "aipo.tmp.directory",
+    "")
+    + System.getProperty("file.separator")
+    + "csv";
 
   /** 一度に表示される件数 */
   public static final int CSV_SHOW_SIZE = 1000;

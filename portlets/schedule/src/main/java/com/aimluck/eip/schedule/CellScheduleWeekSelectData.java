@@ -28,7 +28,6 @@ import java.util.jar.Attributes;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -43,18 +42,19 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 週間スケジュールの検索結果を管理するクラスです。
- *
+ * 
  */
 public class CellScheduleWeekSelectData extends ALAbstractSelectData {
 
   /** <code>logger</code> logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ScheduleWeeklySelectData.class.getName());
+    .getLogger(ScheduleWeeklySelectData.class.getName());
 
   private ALDateTimeField startDate;
 
@@ -71,6 +71,7 @@ public class CellScheduleWeekSelectData extends ALAbstractSelectData {
   /** ログインユーザID */
   private int userid;
 
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -105,6 +106,7 @@ public class CellScheduleWeekSelectData extends ALAbstractSelectData {
     aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
   }
 
+  @Override
   protected Object getResultData(Object object) throws ALPageNotFoundException,
       ALDBErrorException {
     ArrayList resultList = new ArrayList();
@@ -120,21 +122,23 @@ public class CellScheduleWeekSelectData extends ALAbstractSelectData {
 
       // is_memberのチェック
       SelectQuery mapquery = new SelectQuery(EipTScheduleMap.class);
-      Expression mapexp1 = ExpressionFactory.matchExp(
-          EipTScheduleMap.SCHEDULE_ID_PROPERTY, map.getScheduleId());
+      Expression mapexp1 =
+        ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, map
+          .getScheduleId());
       mapquery.setQualifier(mapexp1);
 
-      Expression mapexp2 = ExpressionFactory.matchExp(
-          EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(userid));
+      Expression mapexp2 =
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+          .valueOf(userid));
       mapquery.andQualifier(mapexp2);
 
-      Expression mapexp3 = ExpressionFactory.noMatchExp(
-          EipTScheduleMap.STATUS_PROPERTY, "R");
+      Expression mapexp3 =
+        ExpressionFactory.noMatchExp(EipTScheduleMap.STATUS_PROPERTY, "R");
       mapquery.andQualifier(mapexp3);
 
       List schedulemaps = dataContext.performQuery(mapquery);
-      boolean is_member = (schedulemaps != null && schedulemaps.size() > 0) ? true
-          : false;
+      boolean is_member =
+        (schedulemaps != null && schedulemaps.size() > 0) ? true : false;
 
       rd.setScheduleId(map.getScheduleId());
       rd.setName(map.getEipTSchedule().getName());
@@ -154,14 +158,15 @@ public class CellScheduleWeekSelectData extends ALAbstractSelectData {
         rd.setName("非公開");
       }
       boolean hidden = map.getEipTSchedule().getPublicFlag().equals("P");
-      if ( !hidden || is_member) {
-      	resultList.add(rd);
+      if (!hidden || is_member) {
+        resultList.add(rd);
       }
     }
     return resultList;
   }
 
-  protected List selectList(RunData rundata, Context context) {
+  @Override
+  protected ResultList selectList(RunData rundata, Context context) {
     ArrayList scheduleMapList = new ArrayList();
     Calendar cal = Calendar.getInstance();
     cal.setTime(startDate.getValue());
@@ -171,47 +176,55 @@ public class CellScheduleWeekSelectData extends ALAbstractSelectData {
     // 通常、期間スケジュール、または日単位繰り返し
     for (int k = 0; k < 7; k++) {
       SelectQuery query = new SelectQuery(EipTScheduleMap.class);
-      Expression exp = ExpressionFactory.matchExp(
-          EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(userid));
-      Expression exp0 = ExpressionFactory.noMatchExp(
-          EipTScheduleMap.STATUS_PROPERTY, "D");
-      Expression exp00 = ExpressionFactory.noMatchExp(
-          EipTScheduleMap.STATUS_PROPERTY, "R");
+      Expression exp =
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+          .valueOf(userid));
+      Expression exp0 =
+        ExpressionFactory.noMatchExp(EipTScheduleMap.STATUS_PROPERTY, "D");
+      Expression exp00 =
+        ExpressionFactory.noMatchExp(EipTScheduleMap.STATUS_PROPERTY, "R");
 
-      Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-              + EipTSchedule.END_DATE_PROPERTY, cal.getTime());
+      Expression exp11 =
+        ExpressionFactory.greaterOrEqualExp(
+          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+            + "."
+            + EipTSchedule.END_DATE_PROPERTY,
+          cal.getTime());
       cal.add(Calendar.DAY_OF_MONTH, 1);
-      Expression exp12 = ExpressionFactory.lessExp(
-          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-              + EipTSchedule.START_DATE_PROPERTY, cal.getTime());
-      Expression exp13 = ExpressionFactory.matchExp(
-          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-              + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
-      Expression exp14 = ExpressionFactory.matchExp(
-          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-              + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
+      Expression exp12 =
+        ExpressionFactory.lessExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.START_DATE_PROPERTY, cal.getTime());
+      Expression exp13 =
+        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
+      Expression exp14 =
+        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
       Expression exp10 = exp11.andExp(exp12.andExp(exp13.orExp(exp14)));
 
-      Expression exp21 = ExpressionFactory.matchExp(
-          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-              + EipTSchedule.REPEAT_PATTERN_PROPERTY, "DN");
-      Expression exp22 = ExpressionFactory.matchExp(
-          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-              + EipTSchedule.REPEAT_PATTERN_PROPERTY, "DL");
+      Expression exp21 =
+        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.REPEAT_PATTERN_PROPERTY, "DN");
+      Expression exp22 =
+        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.REPEAT_PATTERN_PROPERTY, "DL");
       Expression exp20 = exp21.orExp(exp22.andExp(exp11).andExp(exp12));
 
       query.setQualifier((exp10.orExp(exp20)).andExp(exp).andExp(exp0).andExp(
-          exp00));
+        exp00));
 
-/*
-      List orders = new ArrayList();
-      orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-          + EipTSchedule.START_DATE_PROPERTY, true));
-      orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-          + EipTSchedule.END_DATE_PROPERTY, true));
-      query.addOrderings(orders);
-*/
+      /*
+       * List orders = new ArrayList(); orders.add(new
+       * Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "." +
+       * EipTSchedule.START_DATE_PROPERTY, true)); orders.add(new
+       * Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "." +
+       * EipTSchedule.END_DATE_PROPERTY, true)); query.addOrderings(orders);
+       */
 
       List list = dataContext.performQuery(query);
       scheduleMapList.add(list);
@@ -219,14 +232,17 @@ public class CellScheduleWeekSelectData extends ALAbstractSelectData {
 
     // 週間、または毎月の場合
     SelectQuery query = new SelectQuery(EipTScheduleMap.class);
-    Expression exp = ExpressionFactory.matchExp(
-        EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(userid));
-    Expression exp2 = ExpressionFactory.noMatchExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
-    Expression exp3 = ExpressionFactory.noMatchExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
+    Expression exp =
+      ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+        .valueOf(userid));
+    Expression exp2 =
+      ExpressionFactory.noMatchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
+    Expression exp3 =
+      ExpressionFactory.noMatchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
 
     query.setQualifier(exp);
     query.andQualifier(exp2);
@@ -250,13 +266,13 @@ public class CellScheduleWeekSelectData extends ALAbstractSelectData {
                 cal2.add(Calendar.DAY_OF_MONTH, 1);
                 if (schedule.getStartDate().compareTo(cal2.getTime()) < 0) {
                   List list2 = (List) scheduleMapList.get(index);
-                  list2.add((EipTScheduleMap) list.get(k));
+                  list2.add(list.get(k));
                   scheduleMapList.set(index, list2);
                 }
               }
             } else {
               List list2 = (List) scheduleMapList.get(index);
-              list2.add((EipTScheduleMap) list.get(k));
+              list2.add(list.get(k));
               scheduleMapList.set(index, list2);
             }
           }
@@ -275,20 +291,21 @@ public class CellScheduleWeekSelectData extends ALAbstractSelectData {
           index += cal_event.getActualMaximum(Calendar.DAY_OF_MONTH);
           cal2.add(Calendar.MONTH, 1);
         }
-        if (index >= 0 && index <= 6
-            && cal_event.getActualMaximum(Calendar.DAY_OF_MONTH) >= day) {
+        if (index >= 0
+          && index <= 6
+          && cal_event.getActualMaximum(Calendar.DAY_OF_MONTH) >= day) {
           if (pattern.endsWith("L")) {
             if (schedule.getEndDate().compareTo(cal2.getTime()) >= 0) {
               cal2.add(Calendar.DAY_OF_MONTH, 1);
               if (schedule.getStartDate().compareTo(cal2.getTime()) < 0) {
                 List list2 = (List) scheduleMapList.get(index);
-                list2.add((EipTScheduleMap) list.get(k));
+                list2.add(list.get(k));
                 scheduleMapList.set(index, list2);
               }
             }
           } else {
             List list2 = (List) scheduleMapList.get(index);
-            list2.add((EipTScheduleMap) list.get(k));
+            list2.add(list.get(k));
             scheduleMapList.set(index, list2);
           }
         }
@@ -298,10 +315,11 @@ public class CellScheduleWeekSelectData extends ALAbstractSelectData {
     // ダミースケジュールの処理
 
     SelectQuery queryD = new SelectQuery(EipTScheduleMap.class);
-    Expression expD = ExpressionFactory.matchExp(
-        EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(userid));
-    Expression expD2 = ExpressionFactory.matchExp(
-        EipTScheduleMap.STATUS_PROPERTY, "D");
+    Expression expD =
+      ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+        .valueOf(userid));
+    Expression expD2 =
+      ExpressionFactory.matchExp(EipTScheduleMap.STATUS_PROPERTY, "D");
     queryD.setQualifier(expD);
     queryD.andQualifier(expD2);
     List listD = dataContext.performQuery(queryD);
@@ -322,7 +340,8 @@ public class CellScheduleWeekSelectData extends ALAbstractSelectData {
             for (int m = 0; m < list2.size(); m++) {
               scheduleM = ((EipTScheduleMap) list2.get(m)).getEipTSchedule();
               if (scheduleD.getParentId().intValue() == scheduleM
-                  .getScheduleId().intValue()) {
+                .getScheduleId()
+                .intValue()) {
                 list2.remove(m);
                 scheduleMapList.set(k, list2);
                 break;
@@ -335,56 +354,57 @@ public class CellScheduleWeekSelectData extends ALAbstractSelectData {
     }
 
     int size = scheduleMapList.size();
-    for (int i = 0 ; i < size ; i++){
-    	List slist = (List) scheduleMapList.get(i);
+    for (int i = 0; i < size; i++) {
+      List slist = (List) scheduleMapList.get(i);
 
-		// ソート
-		Collections.sort(slist, new Comparator() {
-			public int compare(Object a, Object b) {
-				Calendar cal = Calendar.getInstance();
-				Calendar cal2 = Calendar.getInstance();
-				EipTSchedule p1 = null;
-				EipTSchedule p2 = null;
-				try {
-					p1 = ((EipTScheduleMap) a).getEipTSchedule();
-					p2 = ((EipTScheduleMap) b).getEipTSchedule();
+      // ソート
+      Collections.sort(slist, new Comparator() {
+        public int compare(Object a, Object b) {
+          Calendar cal = Calendar.getInstance();
+          Calendar cal2 = Calendar.getInstance();
+          EipTSchedule p1 = null;
+          EipTSchedule p2 = null;
+          try {
+            p1 = ((EipTScheduleMap) a).getEipTSchedule();
+            p2 = ((EipTScheduleMap) b).getEipTSchedule();
 
-				} catch (Exception e) {
-					logger.error("Exception", e);
-				}
-				cal.setTime(p1.getStartDate());
-				cal.set(0, 0, 0);
-				cal2.setTime(p2.getStartDate());
-				cal2.set(0, 0, 0);
-				if ((cal.getTime()).compareTo(cal2.getTime()) != 0) {
-					return (cal.getTime()).compareTo(cal2.getTime());
-				} else {
-					cal.setTime(p1.getEndDate());
-					cal.set(0, 0, 0);
-					cal2.setTime(p2.getEndDate());
-					cal2.set(0, 0, 0);
+          } catch (Exception e) {
+            logger.error("Exception", e);
+          }
+          cal.setTime(p1.getStartDate());
+          cal.set(0, 0, 0);
+          cal2.setTime(p2.getStartDate());
+          cal2.set(0, 0, 0);
+          if ((cal.getTime()).compareTo(cal2.getTime()) != 0) {
+            return (cal.getTime()).compareTo(cal2.getTime());
+          } else {
+            cal.setTime(p1.getEndDate());
+            cal.set(0, 0, 0);
+            cal2.setTime(p2.getEndDate());
+            cal2.set(0, 0, 0);
 
-					return (cal.getTime()).compareTo(cal2.getTime());
-				}
-			}
-		});
+            return (cal.getTime()).compareTo(cal2.getTime());
+          }
+        }
+      });
 
-		scheduleMapList.set(i, slist);
+      scheduleMapList.set(i, slist);
     }
 
-
-
-    return scheduleMapList;
+    return new ResultList(scheduleMapList);
   }
 
+  @Override
   protected Object getResultDataDetail(Object object) {
     return null;
   }
 
+  @Override
   protected Object selectDetail(RunData rundata, Context context) {
     return null;
   }
 
+  @Override
   protected Attributes getColumnMap() {
     return null;
   }
@@ -393,16 +413,16 @@ public class CellScheduleWeekSelectData extends ALAbstractSelectData {
     Calendar cal = Calendar.getInstance();
     StringBuffer day = new StringBuffer();
     day.append(cal.get(Calendar.YEAR)).append("-").append(
-        cal.get(Calendar.MONDAY) + 1).append("-")
-        .append(cal.get(Calendar.DATE));
+      cal.get(Calendar.MONDAY) + 1).append("-").append(cal.get(Calendar.DATE));
     return day.toString();
   }
 
+  @Override
   public String getAclPortletFeature() {
     return aclPortletFeature;
   }
 
-  //add by motegi
+  // add by motegi
   protected ALDateTimeField getStartDate() {
     return startDate;
   }

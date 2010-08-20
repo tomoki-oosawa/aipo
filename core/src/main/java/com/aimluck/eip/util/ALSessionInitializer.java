@@ -47,8 +47,8 @@ public class ALSessionInitializer {
     // }
     // end for debug
 
-    String portletName = jdata.getProfile().getDocument().getEntryById(peid)
-      .getParent();
+    String portletName =
+      jdata.getProfile().getDocument().getEntryById(peid).getParent();
 
     if (portletName.startsWith("Schedule")) {
     } else if (portletName.startsWith("ToDo")) {

@@ -22,7 +22,6 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -33,6 +32,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.system.util.SystemUtils;
 
 /**
@@ -54,7 +54,7 @@ public class SystemNetworkSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<EipMCompany> selectList(RunData rundata, Context context) {
+  protected ResultList<EipMCompany> selectList(RunData rundata, Context context) {
     return null;
   }
 
@@ -66,8 +66,8 @@ public class SystemNetworkSelectData extends
   protected EipMCompany selectDetail(RunData rundata, Context context) {
     servername = rundata.getServletConfig().getServletName();
 
-    String company_id = rundata.getParameters().getString(
-      DatabaseOrmService.ORG_PRE, "");
+    String company_id =
+      rundata.getParameters().getString(DatabaseOrmService.ORG_PRE, "");
     if (company_id == null || "".equals(company_id)) {
       endword = "";
     } else {
@@ -98,8 +98,8 @@ public class SystemNetworkSelectData extends
     try {
       String ipaddress = record.getIpaddressInternal();
       if (null == ipaddress || "".equals(ipaddress)) {
-        Enumeration<NetworkInterface> enuIfs = NetworkInterface
-          .getNetworkInterfaces();
+        Enumeration<NetworkInterface> enuIfs =
+          NetworkInterface.getNetworkInterfaces();
         if (null != enuIfs) {
           while (enuIfs.hasMoreElements()) {
             NetworkInterface ni = enuIfs.nextElement();
@@ -120,14 +120,17 @@ public class SystemNetworkSelectData extends
         port_internal = 80;
       }
 
-      localurl = SystemUtils.getUrl(ipaddress, port_internal, servername)
-        + endword;
+      localurl =
+        SystemUtils.getUrl(ipaddress, port_internal, servername) + endword;
       // InetAddress.getLocalHost().getHostAddress(), SystemUtils
       // .getServerPort(), servername) + endword;
 
-      String globalurl = SystemUtils.getUrl(record.getIpaddress(), record
-        .getPort().intValue(), servername)
-        + endword;
+      String globalurl =
+        SystemUtils.getUrl(
+          record.getIpaddress(),
+          record.getPort().intValue(),
+          servername)
+          + endword;
 
       rd.setLocalUrl(localurl);
       rd.setGlobalUrl(globalurl);

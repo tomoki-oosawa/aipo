@@ -67,21 +67,22 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     } catch (Throwable other) {
       data.setScreenTemplate(JetspeedResources
         .getString(TurbineConstants.TEMPLATE_ERROR));
-      String message = other.getMessage() != null ? other.getMessage() : other
-        .toString();
+      String message =
+        other.getMessage() != null ? other.getMessage() : other.toString();
       data.setMessage(message);
-      data.setStackTrace(org.apache.turbine.util.StringUtils.stackTrace(other),
+      data.setStackTrace(
+        org.apache.turbine.util.StringUtils.stackTrace(other),
         other);
       return;
     }
 
     // for switching theme org by org
-    Context context = org.apache.turbine.services.velocity.TurbineVelocity
-      .getContext(data);
-    ALOrgUtilsHandler handler = ALOrgUtilsFactoryService.getInstance()
-      .getOrgUtilsHandler();
-    HashMap<String, String> attribute = handler
-      .getParameters(DatabaseOrmService.getInstance().getOrgId(data));
+    Context context =
+      org.apache.turbine.services.velocity.TurbineVelocity.getContext(data);
+    ALOrgUtilsHandler handler =
+      ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
+    HashMap<String, String> attribute =
+      handler.getParameters(DatabaseOrmService.getInstance().getOrgId(data));
     for (Map.Entry<String, String> e : attribute.entrySet()) {
       context.put(e.getKey(), e.getValue());
     }
@@ -115,8 +116,8 @@ public class ALSessionValidator extends JetspeedSessionValidator {
 
       if (data.getRequest().getCookies() != null) {
         String userName = data.getCookies().getString("username", "");
-        String loginCookieValue = data.getCookies()
-          .getString("logincookie", "");
+        String loginCookieValue =
+          data.getCookies().getString("logincookie", "");
 
         if (userName.length() > 0 && loginCookieValue.length() > 0) {
           try {
@@ -148,14 +149,16 @@ public class ALSessionValidator extends JetspeedSessionValidator {
 
       Class<?> cls = null;
       try {
-        cls = Class.forName(new StringBuffer().append(
-          "com.aimluck.eip.modules.screens.").append(template).toString());
+        cls =
+          Class.forName(new StringBuffer().append(
+            "com.aimluck.eip.modules.screens.").append(template).toString());
       } catch (Exception e) {
         cls = null;
       }
       String newTemplate = null;
       if (cls != null) {
-        if (Class.forName("com.aimluck.eip.modules.screens.ALJSONScreen")
+        if (Class
+          .forName("com.aimluck.eip.modules.screens.ALJSONScreen")
           .isAssignableFrom(cls)) {
           newTemplate = "ALJSONTimeoutScreen";
         } else if (Class.forName(
@@ -220,7 +223,8 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     } catch (ClassCastException e) {
       logger.error(
         "The RunData object does not implement the expected interface, "
-          + "please verify the RunData factory settings", e);
+          + "please verify the RunData factory settings",
+        e);
       return;
     }
     String language = data.getRequest().getParameter("js_language");
@@ -229,13 +233,16 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       user.setPerm("language", language);
     }
 
-    CustomLocalizationService locService = (CustomLocalizationService) ServiceUtil
-      .getServiceByName(LocalizationService.SERVICE_NAME);
+    CustomLocalizationService locService =
+      (CustomLocalizationService) ServiceUtil
+        .getServiceByName(LocalizationService.SERVICE_NAME);
     Locale locale = locService.getLocale(data);
 
     if (locale == null) {
-      locale = new Locale(TurbineResources.getString("locale.default.language",
-        "en"), TurbineResources.getString("locale.default.country", "US"));
+      locale =
+        new Locale(
+          TurbineResources.getString("locale.default.language", "en"),
+          TurbineResources.getString("locale.default.country", "US"));
     }
 
     data.getUser().setTemp("locale", locale);

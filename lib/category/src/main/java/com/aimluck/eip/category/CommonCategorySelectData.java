@@ -18,7 +18,6 @@
  */
 package com.aimluck.eip.category;
 
-import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
@@ -37,6 +36,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -83,21 +83,37 @@ public class CommonCategorySelectData extends
 
     uid = ALEipUtils.getUserId(rundata);
 
-    authority_list = CommonCategoryUtils.CheckPermission(rundata, context,
-      ALAccessControlConstants.VALUE_ACL_LIST,
-      ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
+    authority_list =
+      CommonCategoryUtils
+        .CheckPermission(
+          rundata,
+          context,
+          ALAccessControlConstants.VALUE_ACL_LIST,
+          ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
 
-    authority_detail = CommonCategoryUtils.CheckPermission(rundata, context,
-      ALAccessControlConstants.VALUE_ACL_DETAIL,
-      ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
+    authority_detail =
+      CommonCategoryUtils
+        .CheckPermission(
+          rundata,
+          context,
+          ALAccessControlConstants.VALUE_ACL_DETAIL,
+          ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
 
-    authority_edit = CommonCategoryUtils.CheckPermission(rundata, context,
-      ALAccessControlConstants.VALUE_ACL_UPDATE,
-      ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
+    authority_edit =
+      CommonCategoryUtils
+        .CheckPermission(
+          rundata,
+          context,
+          ALAccessControlConstants.VALUE_ACL_UPDATE,
+          ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
 
-    authority_delete = CommonCategoryUtils.CheckPermission(rundata, context,
-      ALAccessControlConstants.VALUE_ACL_DELETE,
-      ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
+    authority_delete =
+      CommonCategoryUtils
+        .CheckPermission(
+          rundata,
+          context,
+          ALAccessControlConstants.VALUE_ACL_DELETE,
+          ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
 
     super.init(action, rundata, context);
   }
@@ -112,15 +128,15 @@ public class CommonCategorySelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<EipTCommonCategory> selectList(RunData rundata, Context context) {
+  protected ResultList<EipTCommonCategory> selectList(RunData rundata,
+      Context context) {
     try {
 
       SelectQuery<EipTCommonCategory> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTCommonCategory> list = query.fetchList();
-      return buildPaginatedList(list);
+      return query.getResultList();
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -136,16 +152,20 @@ public class CommonCategorySelectData extends
    */
   private SelectQuery<EipTCommonCategory> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipTCommonCategory> query = Database
-      .query(EipTCommonCategory.class);
+    SelectQuery<EipTCommonCategory> query =
+      Database.query(EipTCommonCategory.class);
 
-    Expression exp = ExpressionFactory.noMatchDbExp(
-      EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN, Integer.valueOf(1));
+    Expression exp =
+      ExpressionFactory.noMatchDbExp(
+        EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN,
+        Integer.valueOf(1));
     query.setQualifier(exp);
 
     if (!authority_list) {
-      Expression exp2 = ExpressionFactory.matchExp(
-        EipTCommonCategory.CREATE_USER_ID_PROPERTY, Integer.valueOf(uid));
+      Expression exp2 =
+        ExpressionFactory.matchExp(
+          EipTCommonCategory.CREATE_USER_ID_PROPERTY,
+          Integer.valueOf(uid));
       query.andQualifier(exp2);
     }
 

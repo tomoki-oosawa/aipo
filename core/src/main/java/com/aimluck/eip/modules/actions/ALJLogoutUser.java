@@ -53,12 +53,12 @@ public class ALJLogoutUser extends ActionEvent {
       Cookie userName = new Cookie("username", "");
       Cookie loginCookie = new Cookie("logincookie", "");
 
-      String comment = JetspeedResources.getString(
-        "automatic.logon.cookie.comment", "");
-      String domain = JetspeedResources
-        .getString("automatic.logon.cookie.domain");
-      String path = JetspeedResources.getString("automatic.logon.cookie.path",
-        "/");
+      String comment =
+        JetspeedResources.getString("automatic.logon.cookie.comment", "");
+      String domain =
+        JetspeedResources.getString("automatic.logon.cookie.domain");
+      String path =
+        JetspeedResources.getString("automatic.logon.cookie.path", "/");
 
       if (domain == null) {
         String server = data.getServerName();
@@ -114,7 +114,9 @@ public class ALJLogoutUser extends ActionEvent {
     }
 
     if (ALEipUtils.isCellularPhone(data)) {
-      data.setRedirectURI(jsLink.getHomePage().addQueryData("logout", "T")
+      data.setRedirectURI(jsLink
+        .getHomePage()
+        .addQueryData("logout", "T")
         .toString());
     } else {
       data.setRedirectURI(jsLink.getHomePage().toString());

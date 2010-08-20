@@ -18,7 +18,6 @@
  */
 package com.aimluck.eip.account;
 
-import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -32,6 +31,7 @@ import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -60,8 +60,9 @@ public class AccountPositionSelectData extends
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-          "p1b-sort"));
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p1b-sort"));
     }
 
     super.init(action, rundata, context);
@@ -75,14 +76,13 @@ public class AccountPositionSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<EipMPosition> selectList(RunData rundata, Context context) {
+  protected ResultList<EipMPosition> selectList(RunData rundata, Context context) {
     try {
       SelectQuery<EipMPosition> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipMPosition> list = query.fetchList();
-      return buildPaginatedList(list);
+      return query.getResultList();
 
     } catch (Exception ex) {
       logger.error("Exception", ex);

@@ -36,19 +36,19 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileio.util.FileIOScheduleCsvUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * CSV ファイルから読み込んだスケジュール情報を表示するクラス．
- *
- *
+ * 
+ * 
  */
 public class FileIOScheduleCsvSelectData extends ALCsvAbstractSelectData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FileIOScheduleCsvSelectData.class.getName());
+    .getLogger(FileIOScheduleCsvSelectData.class.getName());
 
   /** 時間を表すフィールドを自動補完するか否か */
   private String autotime_flg;
@@ -56,15 +56,16 @@ public class FileIOScheduleCsvSelectData extends ALCsvAbstractSelectData {
   /**
    * 初期化 <BR>
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   /**
    * 各フィールドの初期化
    */
+  @Override
   public void initField() {
     autotime_flg = "";
     super.initField();
@@ -72,33 +73,40 @@ public class FileIOScheduleCsvSelectData extends ALCsvAbstractSelectData {
 
   /**
    * スケジュール一覧を取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List<FileIOScheduleCsvData> selectList(RunData rundata, Context context) {
+  @Override
+  protected ResultList<FileIOScheduleCsvData> selectList(RunData rundata,
+      Context context) {
     String filepath;
     try {
       if (stats == ALCsvTokenizer.CSV_LIST_MODE_READ) {
-        return readScheduleInfoFromCsv(rundata);
+        return new ResultList(readScheduleInfoFromCsv(rundata));
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_NO_ERROR) {
-        filepath = FileIOScheduleCsvUtils
-            .getScheduleCsvFolderName(getTempFolderIndex())
+        filepath =
+          FileIOScheduleCsvUtils.getScheduleCsvFolderName(getTempFolderIndex())
             + File.separator
             + FileIOScheduleCsvUtils.FOLDER_TMP_FOR_USERINFO_CSV_FILENAME;
-        return readScheduleInfoFromCsvPage(rundata, filepath, (rundata
-            .getParameters().getInteger("csvpage") - 1),
-            ALCsvTokenizer.CSV_SHOW_SIZE);
+        return new ResultList(readScheduleInfoFromCsvPage(
+          rundata,
+          filepath,
+          (rundata.getParameters().getInteger("csvpage") - 1),
+          ALCsvTokenizer.CSV_SHOW_SIZE));
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_ERROR) {
-        filepath = FileIOScheduleCsvUtils
-            .getScheduleCsvFolderName(getTempFolderIndex())
+        filepath =
+          FileIOScheduleCsvUtils.getScheduleCsvFolderName(getTempFolderIndex())
             + File.separator
             + FileIOScheduleCsvUtils.FOLDER_TMP_FOR_USERINFO_CSV_TEMP_FILENAME;
-        return readScheduleInfoFromCsvPage(rundata, filepath, 0,
-            ALCsvTokenizer.CSV_SHOW_ERROR_SIZE);
+        return new ResultList(readScheduleInfoFromCsvPage(
+          rundata,
+          filepath,
+          0,
+          ALCsvTokenizer.CSV_SHOW_ERROR_SIZE));
       } else {
         return null;
       }
@@ -115,26 +123,28 @@ public class FileIOScheduleCsvSelectData extends ALCsvAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected Object selectDetail(RunData rundata, Context context) {
     return null;
   }
 
   /**
    * CSVファイルを読み込んで表示用リストを作成します <BR>
-   *
+   * 
    * @param rundata
    * @return
    * @throws Exception
    */
-  private List<FileIOScheduleCsvData> readScheduleInfoFromCsv(RunData rundata) throws Exception {
+  private List<FileIOScheduleCsvData> readScheduleInfoFromCsv(RunData rundata)
+      throws Exception {
 
-    String filepath = FileIOScheduleCsvUtils
-        .getScheduleCsvFolderName(getTempFolderIndex())
+    String filepath =
+      FileIOScheduleCsvUtils.getScheduleCsvFolderName(getTempFolderIndex())
         + File.separator
         + FileIOScheduleCsvUtils.FOLDER_TMP_FOR_USERINFO_CSV_FILENAME;
 
-    String filepath_err = FileIOScheduleCsvUtils
-        .getScheduleCsvFolderName(getTempFolderIndex())
+    String filepath_err =
+      FileIOScheduleCsvUtils.getScheduleCsvFolderName(getTempFolderIndex())
         + File.separator
         + FileIOScheduleCsvUtils.FOLDER_TMP_FOR_USERINFO_CSV_TEMP_FILENAME;
 
@@ -164,25 +174,29 @@ public class FileIOScheduleCsvSelectData extends ALCsvAbstractSelectData {
       for (j = 0; j < sequency.size(); j++) {
         token = reader.nextToken();
         /** エラー出力用の文字列 */
-        if (j > 0)
+        if (j > 0) {
           e_line.append(",");
+        }
         e_line.append("\"");
         e_line.append(makeOutputItem(token));
         e_line.append("\"");
 
         i = Integer.parseInt((String) sequency.get(j));
         formData.addItemToken(token, i);
-        if (reader.eof == -1)
+        if (reader.eof == -1) {
           break;
-        if (reader.line)
+        }
+        if (reader.line) {
           break;
+        }
       }
       while ((!reader.line) && (reader.eof != -1)) {
         reader.nextToken();
       }
 
-      if (reader.eof == -1 && j == 0)
+      if (reader.eof == -1 && j == 0) {
         break;
+      }
 
       // カンマ不足対策
       for (j++; j < sequency.size(); j++) {
@@ -192,20 +206,22 @@ public class FileIOScheduleCsvSelectData extends ALCsvAbstractSelectData {
       }
 
       formData.setValidator();
-      if (!formData.validate(errmsg))
+      if (!formData.validate(errmsg)) {
         b_err = true;
+      }
 
       try {
-        ALDateTimeField date = new ALDateTimeField(
-            ALDateTimeField.DEFAULT_DATE_TIME_FORMAT);
+        ALDateTimeField date =
+          new ALDateTimeField(ALDateTimeField.DEFAULT_DATE_TIME_FORMAT);
 
-        ALEipUser user = ALEipUtils.getALEipUser(formData.getUserName()
-            .getValue());
+        ALEipUser user =
+          ALEipUtils.getALEipUser(formData.getUserName().getValue());
         if (user == null) {
           user = new ALEipUser();
           user.initField();
           user.setAliasName(formData.getUserFirstName().toString(), formData
-              .getUserLastName().toString());
+            .getUserLastName()
+            .toString());
           b_err = true;
         }
 
@@ -261,47 +277,54 @@ public class FileIOScheduleCsvSelectData extends ALCsvAbstractSelectData {
         if (!formData.getUserFullName().toString().equals("名前")) {
           if (ErrCount == 0) {
             if (!b_err) {
-              if (list.size() < ALCsvTokenizer.CSV_SHOW_SIZE)
+              if (list.size() < ALCsvTokenizer.CSV_SHOW_SIZE) {
                 list.add(data);
+              }
             } else {
               // list.clear();// エラーが初めて発生した場合。
               list.add(data);
               ErrCount++;
             }
           } else {
-            if (b_err)
+            if (b_err) {
               ErrCount++;
+            }
             list.add(data);
           }
         } else {
-          if (ErrCount > 0)
+          if (ErrCount > 0) {
             ErrCount--;
+          }
           int lc = getLineCount();
           setLineCount(lc - 1);
         }
-        if (ErrCount >= ALCsvTokenizer.CSV_SHOW_ERROR_SIZE)
+        if (ErrCount >= ALCsvTokenizer.CSV_SHOW_ERROR_SIZE) {
           break;
+        }
       } catch (Exception e) {
         logger.error("readError", e);
       }
-      if (reader.eof == -1)
+      if (reader.eof == -1) {
         break;
+      }
     }
     setErrorCount(ErrCount);
-    if (ErrCount > 0)
+    if (ErrCount > 0) {
       outputErrorData(rundata, ErrorCode, filepath_err);
+    }
     return list;
   }
 
   /**
    * CSVファイルを読み込んでページ毎に表示用リストを作成します <BR>
-   *
+   * 
    * @param rundata
    * @return
    * @throws Exception
    */
-  private List<FileIOScheduleCsvData> readScheduleInfoFromCsvPage(RunData rundata, String filepath,
-      int StartLine, int LineLimit) throws Exception {
+  private List<FileIOScheduleCsvData> readScheduleInfoFromCsvPage(
+      RunData rundata, String filepath, int StartLine, int LineLimit)
+      throws Exception {
 
     int line_index = StartLine * (ALCsvTokenizer.CSV_SHOW_SIZE);
 
@@ -320,8 +343,9 @@ public class FileIOScheduleCsvSelectData extends ALCsvAbstractSelectData {
     while (reader.eof != -1) {
       line++;
       boolean b_err = false;
-      if (line > LineLimit)
+      if (line > LineLimit) {
         break;
+      }
       List<String> errmsg = new ArrayList<String>();
       FileIOScheduleCsvFormData formData = new FileIOScheduleCsvFormData();
       formData.initField();
@@ -330,10 +354,12 @@ public class FileIOScheduleCsvSelectData extends ALCsvAbstractSelectData {
         token = reader.nextToken();
         i = Integer.parseInt((String) sequency.get(j));
         formData.addItemToken(token, i);
-        if (reader.eof == -1)
+        if (reader.eof == -1) {
           break;
-        if (reader.line)
+        }
+        if (reader.line) {
           break;
+        }
         if (j == sequency.size() - 1) {
           if (stats == ALCsvTokenizer.CSV_LIST_MODE_ERROR) {
             token = reader.nextToken();
@@ -349,19 +375,21 @@ public class FileIOScheduleCsvSelectData extends ALCsvAbstractSelectData {
       formData.setValidator();
       formData.validate(errmsg);
 
-      if (reader.eof == -1)
+      if (reader.eof == -1) {
         break;
+      }
       try {
-        ALDateTimeField date = new ALDateTimeField(
-            ALDateTimeField.DEFAULT_DATE_TIME_FORMAT);
+        ALDateTimeField date =
+          new ALDateTimeField(ALDateTimeField.DEFAULT_DATE_TIME_FORMAT);
 
-        ALEipUser user = ALEipUtils.getALEipUser(formData.getUserName()
-            .getValue());
+        ALEipUser user =
+          ALEipUtils.getALEipUser(formData.getUserName().getValue());
         if (user == null) {
           user = new ALEipUser();
           user.initField();
           user.setAliasName(formData.getUserFirstName().toString(), formData
-              .getUserLastName().toString());
+            .getUserLastName()
+            .toString());
           b_err = true;
         }
 
@@ -410,8 +438,9 @@ public class FileIOScheduleCsvSelectData extends ALCsvAbstractSelectData {
       } catch (Exception e) {
         logger.error("readError");
       }
-      if (reader.eof == -1)
+      if (reader.eof == -1) {
         break;
+      }
     }
 
     return list;
@@ -419,7 +448,7 @@ public class FileIOScheduleCsvSelectData extends ALCsvAbstractSelectData {
 
   /**
    * 時刻を自動入力する場合はここで"1"を入力します <BR>
-   *
+   * 
    * @param flag
    */
   public void setIsAutoTime(String flag) {

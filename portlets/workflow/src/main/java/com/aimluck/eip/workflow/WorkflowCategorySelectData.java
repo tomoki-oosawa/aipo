@@ -34,6 +34,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -72,14 +73,18 @@ public class WorkflowCategorySelectData extends
     String sorttype = ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-          "p2a-sort"));
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p2a-sort"));
     }
 
     if ("create_date".equals(ALEipUtils
       .getTemp(rundata, context, LIST_SORT_STR))
       && (sorttype == null || "".equals(sorttype))) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR,
+      ALEipUtils.setTemp(
+        rundata,
+        context,
+        LIST_SORT_TYPE_STR,
         ALEipConstants.LIST_SORT_TYPE_DESC);
     }
     super.init(action, rundata, context);
@@ -95,18 +100,19 @@ public class WorkflowCategorySelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<EipTWorkflowCategory> selectList(RunData rundata,
+  protected ResultList<EipTWorkflowCategory> selectList(RunData rundata,
       Context context) {
     try {
 
-      SelectQuery<EipTWorkflowCategory> query = getSelectQuery(rundata, context);
+      SelectQuery<EipTWorkflowCategory> query =
+        getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTWorkflowCategory> list = query.fetchList();
+      ResultList<EipTWorkflowCategory> list = query.getResultList();
       // 件数をセットする．
-      categorySum = list.size();
-      return buildPaginatedList(list);
+      categorySum = list.getTotalCount();
+      return list;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -122,8 +128,8 @@ public class WorkflowCategorySelectData extends
    */
   private SelectQuery<EipTWorkflowCategory> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipTWorkflowCategory> query = new SelectQuery<EipTWorkflowCategory>(
-      EipTWorkflowCategory.class);
+    SelectQuery<EipTWorkflowCategory> query =
+      new SelectQuery<EipTWorkflowCategory>(EipTWorkflowCategory.class);
 
     return query;
   }
@@ -155,7 +161,8 @@ public class WorkflowCategorySelectData extends
     WorkflowCategoryResultData rd = new WorkflowCategoryResultData();
     rd.initField();
     rd.setCategoryId(record.getCategoryId().longValue());
-    rd.setCategoryName(ALCommonUtils.compressString(record.getCategoryName(),
+    rd.setCategoryName(ALCommonUtils.compressString(
+      record.getCategoryName(),
       getStrLength()));
     return rd;
   }
@@ -169,7 +176,8 @@ public class WorkflowCategorySelectData extends
    */
   @Override
   protected Object getResultDataDetail(EipTWorkflowCategory record) {
-    WorkflowCategoryDetailResultData rd = new WorkflowCategoryDetailResultData();
+    WorkflowCategoryDetailResultData rd =
+      new WorkflowCategoryDetailResultData();
     rd.initField();
     rd.setCategoryId(record.getCategoryId().longValue());
     rd.setCategoryName(record.getCategoryName());

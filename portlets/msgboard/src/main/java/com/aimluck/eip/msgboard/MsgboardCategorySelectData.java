@@ -41,6 +41,7 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.msgboard.util.MsgboardUtils;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -94,13 +95,19 @@ public class MsgboardCategorySelectData extends ALAbstractSelectData implements
 
     uid = ALEipUtils.getUserId(rundata);
 
-    authority_edit = MsgboardUtils.checkPermission(rundata, context,
-      ALAccessControlConstants.VALUE_ACL_UPDATE,
-      ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY_OTHER);
+    authority_edit =
+      MsgboardUtils.checkPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_UPDATE,
+        ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY_OTHER);
 
-    authority_delete = MsgboardUtils.checkPermission(rundata, context,
-      ALAccessControlConstants.VALUE_ACL_DELETE,
-      ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY_OTHER);
+    authority_delete =
+      MsgboardUtils.checkPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_DELETE,
+        ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY_OTHER);
 
     super.init(action, rundata, context);
   }
@@ -115,17 +122,17 @@ public class MsgboardCategorySelectData extends ALAbstractSelectData implements
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<?> selectList(RunData rundata, Context context) {
+  protected ResultList<?> selectList(RunData rundata, Context context) {
     try {
 
       SelectQuery query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<?> list = query.fetchList();
+      ResultList<?> list = query.getResultList();
       // 件数をセットする．
-      categorySum = list.size();
-      return buildPaginatedList(list);
+      categorySum = list.getTotalCount();
+      return list;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -142,38 +149,54 @@ public class MsgboardCategorySelectData extends ALAbstractSelectData implements
   private SelectQuery getSelectQuery(RunData rundata, Context context) {
     SelectQuery query = new SelectQuery(EipTMsgboardCategoryMap.class);
 
-    Expression exp1 = ExpressionFactory.noMatchDbExp(
-      EipTMsgboardCategoryMap.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
-        + EipTMsgboardCategory.TURBINE_USER_PROPERTY + "."
-        + TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(0));
+    Expression exp1 =
+      ExpressionFactory.noMatchDbExp(
+        EipTMsgboardCategoryMap.EIP_TMSGBOARD_CATEGORY_PROPERTY
+          + "."
+          + EipTMsgboardCategory.TURBINE_USER_PROPERTY
+          + "."
+          + TurbineUser.USER_ID_PK_COLUMN,
+        Integer.valueOf(0));
     query.setQualifier(exp1);
 
     // アクセス制御
 
     int loginUserId = ALEipUtils.getUserId(rundata);
 
-    ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-      .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-    boolean hasAclviewOther = aclhandler.hasAuthority(loginUserId,
-      ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY_OTHER,
-      ALAccessControlConstants.VALUE_ACL_LIST);
+    boolean hasAclviewOther =
+      aclhandler.hasAuthority(
+        loginUserId,
+        ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY_OTHER,
+        ALAccessControlConstants.VALUE_ACL_LIST);
 
-    Expression exp01 = ExpressionFactory.matchExp(
-      EipTMsgboardCategoryMap.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
-        + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
-      MsgboardUtils.PUBLIC_FLG_VALUE_PUBLIC);
-    Expression exp02 = ExpressionFactory.matchExp(
-      EipTMsgboardCategoryMap.STATUS_PROPERTY, MsgboardUtils.STAT_VALUE_OWNER);
-    Expression exp03 = ExpressionFactory.matchExp(
-      EipTMsgboardCategoryMap.STATUS_PROPERTY, MsgboardUtils.STAT_VALUE_ALL);
-    Expression exp11 = ExpressionFactory.matchExp(
-      EipTMsgboardCategoryMap.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
-        + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
-      MsgboardUtils.PUBLIC_FLG_VALUE_NONPUBLIC);
-    Expression exp12 = ExpressionFactory.matchExp(
-      EipTMsgboardCategoryMap.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-        .getUserId(rundata)));
+    Expression exp01 =
+      ExpressionFactory.matchExp(
+        EipTMsgboardCategoryMap.EIP_TMSGBOARD_CATEGORY_PROPERTY
+          + "."
+          + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
+        MsgboardUtils.PUBLIC_FLG_VALUE_PUBLIC);
+    Expression exp02 =
+      ExpressionFactory.matchExp(
+        EipTMsgboardCategoryMap.STATUS_PROPERTY,
+        MsgboardUtils.STAT_VALUE_OWNER);
+    Expression exp03 =
+      ExpressionFactory.matchExp(
+        EipTMsgboardCategoryMap.STATUS_PROPERTY,
+        MsgboardUtils.STAT_VALUE_ALL);
+    Expression exp11 =
+      ExpressionFactory.matchExp(
+        EipTMsgboardCategoryMap.EIP_TMSGBOARD_CATEGORY_PROPERTY
+          + "."
+          + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
+        MsgboardUtils.PUBLIC_FLG_VALUE_NONPUBLIC);
+    Expression exp12 =
+      ExpressionFactory.matchExp(
+        EipTMsgboardCategoryMap.USER_ID_PROPERTY,
+        Integer.valueOf(ALEipUtils.getUserId(rundata)));
 
     if (!hasAclviewOther) {
       query.andQualifier((exp01.andExp(exp02.orExp(exp03))).orExp(exp11
@@ -229,8 +252,10 @@ public class MsgboardCategorySelectData extends ALAbstractSelectData implements
       // 公開/非公開を設定する．
       rd.setPublicFlag((MsgboardUtils.PUBLIC_FLG_VALUE_PUBLIC).equals(category
         .getPublicFlag()));
-      rd.setOwnerName(ALEipUtils.getUserFullName(category.getTurbineUser()
-        .getUserId().intValue()));
+      rd.setOwnerName(ALEipUtils.getUserFullName(category
+        .getTurbineUser()
+        .getUserId()
+        .intValue()));
     } catch (Exception e) {
 
       // TODO: エラー処理
@@ -258,13 +283,15 @@ public class MsgboardCategorySelectData extends ALAbstractSelectData implements
       EipTMsgboardCategory record = (EipTMsgboardCategory) obj;
 
       // 公開区分
-      boolean public_flag = (MsgboardUtils.PUBLIC_FLG_VALUE_PUBLIC)
-        .equals(record.getPublicFlag());
+      boolean public_flag =
+        (MsgboardUtils.PUBLIC_FLG_VALUE_PUBLIC).equals(record.getPublicFlag());
 
-      SelectQuery<EipTMsgboardCategoryMap> mapquery = new SelectQuery<EipTMsgboardCategoryMap>(
-        EipTMsgboardCategoryMap.class);
-      Expression mapexp = ExpressionFactory.matchDbExp(
-        EipTMsgboardCategory.CATEGORY_ID_PK_COLUMN, record.getCategoryId());
+      SelectQuery<EipTMsgboardCategoryMap> mapquery =
+        new SelectQuery<EipTMsgboardCategoryMap>(EipTMsgboardCategoryMap.class);
+      Expression mapexp =
+        ExpressionFactory.matchDbExp(
+          EipTMsgboardCategory.CATEGORY_ID_PK_COLUMN,
+          record.getCategoryId());
       mapquery.setQualifier(mapexp);
 
       List<EipTMsgboardCategoryMap> list = mapquery.fetchList();
@@ -285,10 +312,10 @@ public class MsgboardCategorySelectData extends ALAbstractSelectData implements
         }
       }
 
-      SelectQuery<TurbineUser> query = new SelectQuery<TurbineUser>(
-        TurbineUser.class);
-      Expression exp = ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN,
-        users);
+      SelectQuery<TurbineUser> query =
+        new SelectQuery<TurbineUser>(TurbineUser.class);
+      Expression exp =
+        ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, users);
       query.setQualifier(exp);
       members = ALEipUtils.getUsersFromSelectQuery(query);
 
@@ -298,8 +325,10 @@ public class MsgboardCategorySelectData extends ALAbstractSelectData implements
       // 公開/非公開を設定する．
       // rd.setPublicFlag("T".equals(record.getPublicFlag()));
       rd.setOwnerId(record.getTurbineUser().getUserId().intValue());
-      rd.setOwnerName(ALEipUtils.getUserFullName(record.getTurbineUser()
-        .getUserId().intValue()));
+      rd.setOwnerName(ALEipUtils.getUserFullName(record
+        .getTurbineUser()
+        .getUserId()
+        .intValue()));
       rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
       rd.setUpdateDate(ALDateUtil.format(record.getUpdateDate(), "yyyy年M月d日"));
 
@@ -331,12 +360,17 @@ public class MsgboardCategorySelectData extends ALAbstractSelectData implements
   @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
-    map.putValue("category_name",
-      EipTMsgboardCategoryMap.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
+    map.putValue(
+      "category_name",
+      EipTMsgboardCategoryMap.EIP_TMSGBOARD_CATEGORY_PROPERTY
+        + "."
         + EipTMsgboardCategory.CATEGORY_NAME_PROPERTY);
-    map.putValue("create_user",
-      EipTMsgboardCategoryMap.EIP_TMSGBOARD_CATEGORY_PROPERTY + "."
-        + EipTMsgboardCategory.TURBINE_USER_PROPERTY + "."
+    map.putValue(
+      "create_user",
+      EipTMsgboardCategoryMap.EIP_TMSGBOARD_CATEGORY_PROPERTY
+        + "."
+        + EipTMsgboardCategory.TURBINE_USER_PROPERTY
+        + "."
         + TurbineUser.LAST_NAME_KANA_PROPERTY);
     return map;
   }

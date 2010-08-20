@@ -20,10 +20,12 @@ package com.aimluck.eip.services.accessctl;
 
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
+
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.common.ALEipUser;
 
 /**
  * アクセス権限を管理する抽象クラスです。 <br />
@@ -38,13 +40,13 @@ public abstract class ALAccessControlHandler {
   public abstract boolean hasAuthority(int userId, String featerName,
       int aclType);
 
-  public abstract List<Integer> getAcceptUserIdsExceptLoginUser(
-      DataContext dataContext, int uid, String feat, int acl_type);
+  public abstract List<Integer> getAcceptUserIdsExceptLoginUser(int uid,
+      String feat, int acl_type);
 
-  public abstract List<Integer> getAcceptUserIdsInListExceptLoginUser(
-      DataContext dataContext, int uid, String feat, int acl_type, List<?> ulist);
+  public abstract List<Integer> getAcceptUserIdsInListExceptLoginUser(int uid,
+      String feat, int acl_type, List<ALEipUser> ulist);
 
-  public abstract List<?> getAuthorityUsersFromGroup(RunData rundata,
+  public abstract List<TurbineUser> getAuthorityUsersFromGroup(RunData rundata,
       String feat, String groupname, boolean includeLoginuser);
 
   public abstract void insertDefaultRole(int uid) throws Exception;

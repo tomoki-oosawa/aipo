@@ -34,6 +34,7 @@ import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
@@ -70,15 +71,15 @@ public class AddressBookGroupSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<EipMAddressGroup> selectList(RunData rundata, Context context) {
+  protected ResultList<EipMAddressGroup> selectList(RunData rundata,
+      Context context) {
     try {
 
       SelectQuery<EipMAddressGroup> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipMAddressGroup> list = query.fetchList();
-      return buildPaginatedList(list);
+      return query.getResultList();
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -142,12 +143,12 @@ public class AddressBookGroupSelectData extends
    */
   private SelectQuery<EipMAddressGroup> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipMAddressGroup> query = new SelectQuery<EipMAddressGroup>(
-      EipMAddressGroup.class);
+    SelectQuery<EipMAddressGroup> query =
+      new SelectQuery<EipMAddressGroup>(EipMAddressGroup.class);
 
-    Expression exp = ExpressionFactory.matchExp(
-      EipMAddressGroup.OWNER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-        .getUserId(rundata)));
+    Expression exp =
+      ExpressionFactory.matchExp(EipMAddressGroup.OWNER_ID_PROPERTY, Integer
+        .valueOf(ALEipUtils.getUserId(rundata)));
     query.setQualifier(exp);
 
     return buildSelectQueryForFilter(query, rundata, context);

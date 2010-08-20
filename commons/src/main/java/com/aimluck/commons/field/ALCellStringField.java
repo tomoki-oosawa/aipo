@@ -68,19 +68,28 @@ public class ALCellStringField extends ALStringField {
       }
     } else {
       if (!isValidCharacterType()) {
-        msgList.add("『 " + fieldName + " 』は" + getCharTypeByName()
+        msgList.add("『 "
+          + fieldName
+          + " 』は"
+          + getCharTypeByName()
           + "で入力してください。");
         return false;
       } else {
         if (isLimitLength()) {
           int len = valueByteLength();
           if (len < getMinLength()) {
-            msgList.add("『 " + fieldName + " 』は" + getMinLength()
+            msgList.add("『 "
+              + fieldName
+              + " 』は"
+              + getMinLength()
               + "文字以上で入力してください。");
             return false;
           }
           if (len > getMaxLength()) {
-            msgList.add("『 " + fieldName + " 』は" + getMaxLength()
+            msgList.add("『 "
+              + fieldName
+              + " 』は"
+              + getMaxLength()
               + "文字以下で入力してください。");
             return false;
           }

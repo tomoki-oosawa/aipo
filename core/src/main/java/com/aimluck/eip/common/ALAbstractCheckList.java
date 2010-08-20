@@ -113,10 +113,10 @@ public abstract class ALAbstractCheckList {
    * @return
    */
   protected boolean doCheckSecurity(RunData rundata, Context context) {
-    String reqSecid = rundata.getParameters().getString(
-      ALEipConstants.SECURE_ID);
-    String sessionSecid = (String) rundata.getUser().getTemp(
-      ALEipConstants.SECURE_ID);
+    String reqSecid =
+      rundata.getParameters().getString(ALEipConstants.SECURE_ID);
+    String sessionSecid =
+      (String) rundata.getUser().getTemp(ALEipConstants.SECURE_ID);
     if (reqSecid == null || !reqSecid.equals(sessionSecid)) {
       return false;
     }
@@ -140,12 +140,16 @@ public abstract class ALAbstractCheckList {
       return true;
     }
 
-    ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-      .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-    hasAuthority = aclhandler.hasAuthority(ALEipUtils.getUserId(rundata),
-      pfeature, defineAclType);
+    hasAuthority =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        pfeature,
+        defineAclType);
 
     if (!hasAuthority) {
       throw new ALPermissionException();

@@ -18,7 +18,6 @@
  */
 package com.aimluck.eip.workflow;
 
-import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -34,6 +33,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -69,14 +69,18 @@ public class WorkflowRouteSelectData extends
     String sorttype = ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-          "p2a-sort"));
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p2a-sort"));
     }
 
     if ("create_date".equals(ALEipUtils
       .getTemp(rundata, context, LIST_SORT_STR))
       && (sorttype == null || "".equals(sorttype))) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR,
+      ALEipUtils.setTemp(
+        rundata,
+        context,
+        LIST_SORT_TYPE_STR,
         ALEipConstants.LIST_SORT_TYPE_DESC);
     }
     super.init(action, rundata, context);
@@ -92,17 +96,18 @@ public class WorkflowRouteSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<EipTWorkflowRoute> selectList(RunData rundata, Context context) {
+  protected ResultList<EipTWorkflowRoute> selectList(RunData rundata,
+      Context context) {
     try {
 
       SelectQuery<EipTWorkflowRoute> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTWorkflowRoute> list = query.fetchList();
+      ResultList<EipTWorkflowRoute> list = query.getResultList();
       // 件数をセットする．
-      routeSum = list.size();
-      return buildPaginatedList(list);
+      routeSum = list.getTotalCount();
+      return list;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -118,8 +123,8 @@ public class WorkflowRouteSelectData extends
    */
   private SelectQuery<EipTWorkflowRoute> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipTWorkflowRoute> query = new SelectQuery<EipTWorkflowRoute>(
-      EipTWorkflowRoute.class);
+    SelectQuery<EipTWorkflowRoute> query =
+      new SelectQuery<EipTWorkflowRoute>(EipTWorkflowRoute.class);
 
     return query;
   }
@@ -151,9 +156,11 @@ public class WorkflowRouteSelectData extends
     WorkflowRouteResultData rd = new WorkflowRouteResultData();
     rd.initField();
     rd.setRouteId(record.getRouteId().longValue());
-    rd.setRouteName(ALCommonUtils.compressString(record.getRouteName(),
+    rd.setRouteName(ALCommonUtils.compressString(
+      record.getRouteName(),
       getStrLength()));
-    rd.setRoute(ALCommonUtils.compressString(record.getRoute(), getStrLength()));
+    rd
+      .setRoute(ALCommonUtils.compressString(record.getRoute(), getStrLength()));
     return rd;
   }
 

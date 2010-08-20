@@ -41,8 +41,11 @@ public class ALDateUtil {
    * @return
    */
   public static Calendar dateToCalendar(String strDate) {
-    return dateToCalendar(strDate.substring(0, 4), strDate.substring(4, 6),
-      strDate.substring(6, 8), false);
+    return dateToCalendar(
+      strDate.substring(0, 4),
+      strDate.substring(4, 6),
+      strDate.substring(6, 8),
+      false);
   }
 
   /**

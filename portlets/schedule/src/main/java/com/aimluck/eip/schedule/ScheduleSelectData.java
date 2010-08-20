@@ -47,6 +47,7 @@ import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -133,16 +134,17 @@ public class ScheduleSelectData extends ALAbstractSelectData {
     if (rundata.getParameters().containsKey("userid")) {
       String tmpid = rundata.getParameters().getString("userid");
       if (tmpid != null && tmpid.startsWith(ScheduleUtils.TARGET_FACILITY_ID)) {
-        userid = Integer.parseInt(tmpid.substring(
-          ScheduleUtils.TARGET_FACILITY_ID.length(), tmpid.length()));
+        userid =
+          Integer.parseInt(tmpid.substring(ScheduleUtils.TARGET_FACILITY_ID
+            .length(), tmpid.length()));
         type = ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY;
       } else {
         userid = rundata.getParameters().getInt("userid");
         type = ScheduleUtils.SCHEDULEMAP_TYPE_USER;
       }
     } else if (rundata.getParameters().containsKey("facilityid")) {
-      userid = Integer
-        .parseInt(rundata.getParameters().getString("facilityid"));
+      userid =
+        Integer.parseInt(rundata.getParameters().getString("facilityid"));
       type = ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY;
     } else {
       userid = loginuserid;
@@ -151,31 +153,42 @@ public class ScheduleSelectData extends ALAbstractSelectData {
 
     // 自分に関係のある予定なのかどうか判断する
     if (!ScheduleUtils.hasRelation(rundata)) {
-      aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
     } else {
-      aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
     }
 
     // アクセス権限
-    ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-      .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-    hasAuthorityOtherEdit = aclhandler.hasAuthority(loginuserid,
-      ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
-      ALAccessControlConstants.VALUE_ACL_UPDATE);
+    hasAuthorityOtherEdit =
+      aclhandler.hasAuthority(
+        loginuserid,
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+        ALAccessControlConstants.VALUE_ACL_UPDATE);
 
-    hasAuthorityOtherDelete = aclhandler.hasAuthority(loginuserid,
-      ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
-      ALAccessControlConstants.VALUE_ACL_DELETE);
+    hasAuthorityOtherDelete =
+      aclhandler.hasAuthority(
+        loginuserid,
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+        ALAccessControlConstants.VALUE_ACL_DELETE);
 
-    hasAuthoritySelfEdit = aclhandler.hasAuthority(loginuserid,
-      ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
-      ALAccessControlConstants.VALUE_ACL_UPDATE);
+    hasAuthoritySelfEdit =
+      aclhandler.hasAuthority(
+        loginuserid,
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
+        ALAccessControlConstants.VALUE_ACL_UPDATE);
 
-    hasAuthoritySelfDelete = aclhandler.hasAuthority(loginuserid,
-      ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
-      ALAccessControlConstants.VALUE_ACL_DELETE);
+    hasAuthoritySelfDelete =
+      aclhandler.hasAuthority(
+        loginuserid,
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
+        ALAccessControlConstants.VALUE_ACL_DELETE);
 
   }
 
@@ -185,7 +198,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
    * .util.RunData, org.apache.velocity.context.Context)
    */
   @Override
-  protected List selectList(RunData rundata, Context context) {
+  protected ResultList selectList(RunData rundata, Context context) {
     // このメソッドは利用されません。
     return null;
   }
@@ -198,7 +211,11 @@ public class ScheduleSelectData extends ALAbstractSelectData {
   @Override
   protected Object selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
-    return ScheduleUtils.getEipTScheduleDetail(rundata, context, false, userid,
+    return ScheduleUtils.getEipTScheduleDetail(
+      rundata,
+      context,
+      false,
+      userid,
       type);
   }
 
@@ -224,15 +241,17 @@ public class ScheduleSelectData extends ALAbstractSelectData {
     ScheduleDetailResultData rd = new ScheduleDetailResultData();
     rd.initField();
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
 
       // 選択した予定に対するダミースケジュールを検索
       SelectQuery schedulequery = new SelectQuery(EipTSchedule.class);
-      Expression exp1 = ExpressionFactory.matchExp(
-        EipTSchedule.PARENT_ID_PROPERTY, record.getScheduleId());
-      Expression exp2 = ExpressionFactory.matchExp(
-        EipTSchedule.START_DATE_PROPERTY, view_date.getValue());
+      Expression exp1 =
+        ExpressionFactory.matchExp(EipTSchedule.PARENT_ID_PROPERTY, record
+          .getScheduleId());
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTSchedule.START_DATE_PROPERTY, view_date
+          .getValue());
       schedulequery.setQualifier(exp1);
       schedulequery.andQualifier(exp2);
       List<Object> scheduleList = new ArrayList<Object>();
@@ -242,8 +261,10 @@ public class ScheduleSelectData extends ALAbstractSelectData {
 
       // 元のスケジュール及びダミースケジュールに登録されているマップを検索
       SelectQuery mapquery = new SelectQuery(EipTScheduleMap.class);
-      Expression mapexp1 = ExpressionFactory.inExp(
-        EipTScheduleMap.SCHEDULE_ID_PROPERTY, scheduleList);
+      Expression mapexp1 =
+        ExpressionFactory.inExp(
+          EipTScheduleMap.SCHEDULE_ID_PROPERTY,
+          scheduleList);
       mapquery.setQualifier(mapexp1);
       mapquery.orderAscending(EipTScheduleMap.SCHEDULE_ID_PROPERTY);
 
@@ -279,8 +300,8 @@ public class ScheduleSelectData extends ALAbstractSelectData {
         }
       }
       SelectQuery query = new SelectQuery(TurbineUser.class);
-      Expression exp = ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN,
-        users);
+      Expression exp =
+        ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, users);
       query.setQualifier(exp);
       members = ALEipUtils.getUsersFromSelectQuery(query);
       // members = ALEipUtils.getUsersFromCriteria(rundata, new
@@ -289,11 +310,13 @@ public class ScheduleSelectData extends ALAbstractSelectData {
 
       if (facilityIds.size() > 0) {
         SelectQuery fquery = new SelectQuery(EipMFacility.class);
-        Expression fexp = ExpressionFactory.inDbExp(
-          EipMFacility.FACILITY_ID_PK_COLUMN, facilityIds);
+        Expression fexp =
+          ExpressionFactory.inDbExp(
+            EipMFacility.FACILITY_ID_PK_COLUMN,
+            facilityIds);
         fquery.setQualifier(fexp);
-        facilities = FacilitiesUtils.getFacilitiesFromSelectQuery(fquery
-          .getQuery());
+        facilities =
+          FacilitiesUtils.getFacilitiesFromSelectQuery(fquery.getQuery());
       }
       // facilities = FacilitiesUtils.getFacilitiesFromCriteria(org_id,
       // new Criteria().addIn(EipMFacilityConstants.FACILITY_ID, facilityIds));
@@ -388,10 +411,12 @@ public class ScheduleSelectData extends ALAbstractSelectData {
         }
       }
       // 登録者
-      rd.setCreateUser(ALEipUtils.getALEipUser(record.getCreateUserId()
+      rd.setCreateUser(ALEipUtils.getALEipUser(record
+        .getCreateUserId()
         .intValue()));
       // 更新者
-      rd.setUpdateUser(ALEipUtils.getALEipUser(record.getUpdateUserId()
+      rd.setUpdateUser(ALEipUtils.getALEipUser(record
+        .getUpdateUserId()
         .intValue()));
       // 登録日時
       rd.setCreateDate(record.getCreateDate());

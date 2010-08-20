@@ -89,8 +89,10 @@ public class GroupListBox extends ListBox {
       this.items = groupKeys;
       this.values = groupValues;
       this.size = Integer.toString(length);
-      this.multiple = Boolean.valueOf(
-        (String) this.getParm(MULTIPLE_CHOICE, "false")).booleanValue();
+      this.multiple =
+        Boolean
+          .valueOf((String) this.getParm(MULTIPLE_CHOICE, "false"))
+          .booleanValue();
     } catch (ALDBErrorException e) {
       ALEipUtils.redirectPageNotFound(data);
     }

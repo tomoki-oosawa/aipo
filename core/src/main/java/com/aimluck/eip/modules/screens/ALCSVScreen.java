@@ -64,7 +64,8 @@ public abstract class ALCSVScreen extends RawScreen {
       HttpServletResponse response = rundata.getResponse();
       // ファイル名の送信
       response.setHeader("Content-disposition", "attachment; filename=\""
-        + fileName + "\"");
+        + fileName
+        + "\"");
       response.setHeader("Cache-Control", "aipo");
       response.setHeader("Pragma", "aipo");
 

@@ -61,8 +61,12 @@ public class PkgALOrgUtilsHandler extends ALOrgUtilsHandler {
     File base = null;
 
     // パスを作成
-    base = new File(rootDir.getAbsolutePath() + File.separator + org_name
-      + File.separator + categoryKey);
+    base =
+      new File(rootDir.getAbsolutePath()
+        + File.separator
+        + org_name
+        + File.separator
+        + categoryKey);
 
     return base;
   }

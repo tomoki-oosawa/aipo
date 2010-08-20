@@ -19,7 +19,6 @@
 package com.aimluck.eip.cabinet;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.access.DataContext;
@@ -42,18 +41,19 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 共有フォルダのファイル検索用データ．
- *
+ * 
  */
 public class CabinetFileWordSelectData extends ALAbstractSelectData {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CabinetFileWordSelectData.class.getName());
+    .getLogger(CabinetFileWordSelectData.class.getName());
 
   /** 検索ワード */
   private ALStringField searchWord;
@@ -72,6 +72,7 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
@@ -81,8 +82,8 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
     }
 
     int fid = CabinetUtils.ROOT_FODLER_ID;
-    String tmpfid = ALEipUtils.getTemp(rundata, context,
-        CabinetUtils.KEY_FOLDER_ID);
+    String tmpfid =
+      ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_FOLDER_ID);
     if (tmpfid != null && !"".equals(tmpfid)) {
       try {
         fid = Integer.parseInt(tmpfid);
@@ -110,17 +111,19 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
   }
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List selectList(RunData rundata, Context context) {
+  @Override
+  protected ResultList selectList(RunData rundata, Context context) {
     // ページャからきた場合に検索ワードをセッションへ格納する
     if (!rundata.getParameters().containsKey(ALEipConstants.LIST_START)
-        && !rundata.getParameters().containsKey(ALEipConstants.LIST_SORT)
-        && rundata.getParameters().containsKey("sword")) {
+      && !rundata.getParameters().containsKey(ALEipConstants.LIST_SORT)
+      && rundata.getParameters().containsKey("sword")) {
       ALEipUtils.setTemp(rundata, context, "CabinetFileWord", rundata
-          .getParameters().getString("sword"));
+        .getParameters()
+        .getString("sword"));
     }
 
     // 検索ワードの設定
@@ -129,27 +132,29 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
     // セッションから値を取得する。
     // 検索ワード未指定時は空文字が入力される
     searchWord
-        .setValue(ALEipUtils.getTemp(rundata, context, "CabinetFileWord"));
+      .setValue(ALEipUtils.getTemp(rundata, context, "CabinetFileWord"));
 
     try {
-      CabinetUtils.setFolderVisible(folder_hierarchy_list, selected_folderinfo,
-          rundata);
+      CabinetUtils.setFolderVisible(
+        folder_hierarchy_list,
+        selected_folderinfo,
+        rundata);
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
 
       SelectQuery query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List list = query.fetchList();
+      ResultList list = query.getResultList();
       // 総数をセットする．
       if (list != null) {
-        searchSum = list.size();
-        return buildPaginatedList(list);
+        searchSum = list.getTotalCount();
+        return list;
       } else {
         logger.info("cabinetFile search > result is null");
-        return new ArrayList();
+        return new ResultList(new ArrayList());
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -159,10 +164,11 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
 
   /**
    * 未使用。
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected Object selectDetail(RunData rundata, Context context) {
     return null;
   }
@@ -170,6 +176,7 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(Object obj) {
     try {
       EipTCabinetFile record = (EipTCabinetFile) obj;
@@ -182,14 +189,15 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
       rd.setFileSize(record.getFileSize().longValue());
 
       rd.setFolderId(record.getEipTCabinetFolder().getFolderId().intValue());
-      rd.setFolderName(((EipTCabinetFolder) record.getEipTCabinetFolder())
-          .getFolderName());
+      rd.setFolderName((record.getEipTCabinetFolder()).getFolderName());
       rd.setisEditable(CabinetUtils.isEditableFolder(record
-          .getEipTCabinetFolder().getFolderId().intValue(), rundata));
+        .getEipTCabinetFolder()
+        .getFolderId()
+        .intValue(), rundata));
 
       String updateUserName = "";
-      ALEipUser updateUser = ALEipUtils.getALEipUser(record.getUpdateUserId()
-          .intValue());
+      ALEipUser updateUser =
+        ALEipUtils.getALEipUser(record.getUpdateUserId().intValue());
       if (updateUser != null) {
         updateUserName = updateUser.getAliasName().getValue();
       }
@@ -204,9 +212,10 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
 
   /**
    * 未使用。
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(Object obj) {
     return null;
   }
@@ -214,10 +223,12 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("folder_name", EipTCabinetFile.EIP_TCABINET_FOLDER_PROPERTY
-        + "." + EipTCabinetFolder.FOLDER_NAME_PROPERTY);
+      + "."
+      + EipTCabinetFolder.FOLDER_NAME_PROPERTY);
     map.putValue("file_title", EipTCabinetFile.FILE_TITLE_PROPERTY);
     map.putValue("file_name", EipTCabinetFile.FILE_NAME_PROPERTY);
     // map.putValue("update_user", TurbineUserConstants.LAST_NAME_KANA);
@@ -228,7 +239,7 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -238,15 +249,20 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
 
     String word = searchWord.getValue();
 
-    Expression exp11 = ExpressionFactory.likeExp(
-        EipTCabinetFile.FILE_TITLE_PROPERTY, "%" + word + "%");
-    Expression exp12 = ExpressionFactory.likeExp(
-        EipTCabinetFile.FILE_NAME_PROPERTY, "%" + word + "%");
-    Expression exp13 = ExpressionFactory.likeExp(EipTCabinetFile.NOTE_PROPERTY,
-        "%" + word + "%");
-    Expression exp14 = ExpressionFactory.inExp(
-        EipTCabinetFile.FOLDER_ID_PROPERTY,
-        CabinetUtils.getAuthorizedVisibleFolderIds(rundata));
+    Expression exp11 =
+      ExpressionFactory.likeExp(EipTCabinetFile.FILE_TITLE_PROPERTY, "%"
+        + word
+        + "%");
+    Expression exp12 =
+      ExpressionFactory.likeExp(EipTCabinetFile.FILE_NAME_PROPERTY, "%"
+        + word
+        + "%");
+    Expression exp13 =
+      ExpressionFactory
+        .likeExp(EipTCabinetFile.NOTE_PROPERTY, "%" + word + "%");
+    Expression exp14 =
+      ExpressionFactory.inExp(EipTCabinetFile.FOLDER_ID_PROPERTY, CabinetUtils
+        .getAuthorizedVisibleFolderIds(rundata));
 
     query.setQualifier(exp11.orExp(exp12).orExp(exp13));
     query.andQualifier(exp14);
@@ -256,7 +272,7 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
 
   /**
    * 検索ワードを取得します。
-   *
+   * 
    * @return
    */
   public ALStringField getSearchWord() {
@@ -278,9 +294,10 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_CABINET_FILE;
   }

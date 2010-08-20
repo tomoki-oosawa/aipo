@@ -18,7 +18,6 @@
  */
 package com.aimluck.eip.note;
 
-import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -35,6 +34,7 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.note.util.NoteUtils;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -73,10 +73,13 @@ public class NoteClientSelectData extends
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-          "p2a-sort"));
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p2a-sort"));
       logger.debug("Init Parameter (Note) : "
-        + ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+        + ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
           .getInitParameter("p2a-sort"));
     }
 
@@ -88,21 +91,19 @@ public class NoteClientSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<EipTNoteMap> selectList(RunData rundata, Context context) {
+  protected ResultList<EipTNoteMap> selectList(RunData rundata, Context context) {
 
     try {
       userId = Integer.toString(ALEipUtils.getUserId(rundata));
       newNoteAllSum = NoteUtils.getNewReceivedNoteAllSum(rundata, userId);
-      unreadReceivedNotesAllSum = NoteUtils.getUnreadReceivedNotesAllSum(
-        rundata, userId);
+      unreadReceivedNotesAllSum =
+        NoteUtils.getUnreadReceivedNotesAllSum(rundata, userId);
 
       SelectQuery<EipTNoteMap> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTNoteMap> list = query.fetchList();
-
-      return buildPaginatedList(list);
+      return query.getResultList();
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -129,15 +130,18 @@ public class NoteClientSelectData extends
       NoteClientResultData rd = new NoteClientResultData();
       rd.initField();
       rd.setNoteId(record.getNoteId().intValue());
-      rd.setClientName(ALCommonUtils.compressString(record.getClientName(),
+      rd.setClientName(ALCommonUtils.compressString(
+        record.getClientName(),
         getStrLength()));
       rd.setNoteStat(map.getNoteStat());
       rd.setAcceptDate(record.getAcceptDate());
 
       String subject = "";
       if (record.getSubjectType().equals("0")) {
-        subject = ALCommonUtils.compressString(record.getCustomSubject(),
-          getStrLength());
+        subject =
+          ALCommonUtils.compressString(
+            record.getCustomSubject(),
+            getStrLength());
       } else if (record.getSubjectType().equals("1")) {
         subject = "再度電話します";
       } else if (record.getSubjectType().equals("2")) {
@@ -185,11 +189,14 @@ public class NoteClientSelectData extends
   @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
-    map.putValue("client_name", EipTNoteMap.EIP_TNOTE_PROPERTY + "."
+    map.putValue("client_name", EipTNoteMap.EIP_TNOTE_PROPERTY
+      + "."
       + EipTNote.CLIENT_NAME_PROPERTY);
-    map.putValue("subject_type", EipTNoteMap.EIP_TNOTE_PROPERTY + "."
+    map.putValue("subject_type", EipTNoteMap.EIP_TNOTE_PROPERTY
+      + "."
       + EipTNote.SUBJECT_TYPE_PROPERTY);
-    map.putValue("accept_date", EipTNoteMap.EIP_TNOTE_PROPERTY + "."
+    map.putValue("accept_date", EipTNoteMap.EIP_TNOTE_PROPERTY
+      + "."
       + EipTNote.ACCEPT_DATE_PROPERTY);
     map.putValue("note_stat", EipTNoteMap.NOTE_STAT_PROPERTY);
     return map;
@@ -240,8 +247,8 @@ public class NoteClientSelectData extends
 
   public String getUserFullName(String userId) {
     try {
-      ALEipUser user = ALEipUtils.getALEipUser(Integer.valueOf(userId)
-        .intValue());
+      ALEipUser user =
+        ALEipUtils.getALEipUser(Integer.valueOf(userId).intValue());
       return user.getAliasName().getValue();
     } catch (Exception e) {
       return "";

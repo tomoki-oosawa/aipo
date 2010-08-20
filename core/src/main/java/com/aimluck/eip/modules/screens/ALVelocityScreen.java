@@ -82,8 +82,10 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
       HttpServletResponse response = rundata.getResponse();
       out = response.getOutputStream();
 
-      writer = new BufferedWriter(new OutputStreamWriter(out,
-        ALEipConstants.DEF_CONTENT_ENCODING));
+      writer =
+        new BufferedWriter(new OutputStreamWriter(
+          out,
+          ALEipConstants.DEF_CONTENT_ENCODING));
       Template templete = Velocity.getTemplate(template);
       templete.merge(context, writer);
       writer.flush();
@@ -202,7 +204,9 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
     context.put(ALEipConstants.RESULT_LIST, resultList);
     context.put(ALEipConstants.MESSAGE_LIST, msgList);
     context.put(ALEipConstants.ERROR_MESSAGE_LIST, errmsgList);
-    context.put(ALEipConstants.ENTITY_ID, ALEipUtils.getTemp(rundata, context,
+    context.put(ALEipConstants.ENTITY_ID, ALEipUtils.getTemp(
+      rundata,
+      context,
       ALEipConstants.ENTITY_ID));
     context.put("config", new JetspeedResources());
     context.put("utils", new ALCommonUtils());
@@ -211,10 +215,10 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
     context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(
       ALEipConstants.SECURE_ID));
 
-    ALOrgUtilsHandler handler = ALOrgUtilsFactoryService.getInstance()
-      .getOrgUtilsHandler();
-    HashMap<String, String> attribute = handler
-      .getParameters(DatabaseOrmService.getInstance().getOrgId(rundata));
+    ALOrgUtilsHandler handler =
+      ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
+    HashMap<String, String> attribute =
+      handler.getParameters(DatabaseOrmService.getInstance().getOrgId(rundata));
     for (Map.Entry<String, String> e : attribute.entrySet()) {
       context.put(e.getKey(), e.getValue());
     }

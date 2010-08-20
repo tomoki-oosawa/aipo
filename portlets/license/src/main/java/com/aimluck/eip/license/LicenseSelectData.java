@@ -18,7 +18,6 @@
  */
 package com.aimluck.eip.license;
 
-import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -29,6 +28,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.cayenne.om.account.AipoLicense;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.license.util.LicenseUtils;
+import com.aimluck.eip.orm.query.ResultList;
 
 /**
  */
@@ -45,7 +45,7 @@ public class LicenseSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<AipoLicense> selectList(RunData rundata, Context context) {
+  protected ResultList<AipoLicense> selectList(RunData rundata, Context context) {
     return null;
   }
 

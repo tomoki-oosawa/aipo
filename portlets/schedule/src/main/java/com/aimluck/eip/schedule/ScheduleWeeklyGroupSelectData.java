@@ -46,6 +46,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -100,8 +101,8 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   private boolean hasAuthorityFacilityInsert = false;
 
   /** ログインユーザのスケジュールの上位表示フラグ名 */
-  protected final String FLAG_CHANGE_TURN_STR = new StringBuffer()
-    .append(this.getClass().getName()).append("flagchangeturn").toString();
+  protected final String FLAG_CHANGE_TURN_STR = new StringBuffer().append(
+    this.getClass().getName()).append("flagchangeturn").toString();
 
   /*
    * @see
@@ -127,8 +128,8 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
       String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
       if (filter == null || filter.equals("")) {
         VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-        String groupName = portlet.getPortletConfig().getInitParameter(
-          "p3a-group");
+        String groupName =
+          portlet.getPortletConfig().getInitParameter("p3a-group");
         if (groupName != null) {
           ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, groupName);
           ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "group");
@@ -136,34 +137,43 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
       }
 
       // ログインユーザのスケジュールを上位表示するかを確認する．
-      String flag_changeturn = ALEipUtils.getTemp(rundata, context,
-        FLAG_CHANGE_TURN_STR);
+      String flag_changeturn =
+        ALEipUtils.getTemp(rundata, context, FLAG_CHANGE_TURN_STR);
       if (flag_changeturn == null || flag_changeturn.equals("")) {
         VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-        String changeturnFlag = portlet.getPortletConfig().getInitParameter(
-          "p3b-group");
+        String changeturnFlag =
+          portlet.getPortletConfig().getInitParameter("p3b-group");
         if (changeturnFlag != null) {
-          ALEipUtils.setTemp(rundata, context, FLAG_CHANGE_TURN_STR,
+          ALEipUtils.setTemp(
+            rundata,
+            context,
+            FLAG_CHANGE_TURN_STR,
             changeturnFlag);
         }
       }
 
       // アクセス権限
-      ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+      ALAccessControlFactoryService aclservice =
+        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-      hasAuthoritySelfInsert = aclhandler.hasAuthority(userid,
-        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
-        ALAccessControlConstants.VALUE_ACL_INSERT);
+      hasAuthoritySelfInsert =
+        aclhandler.hasAuthority(
+          userid,
+          ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
+          ALAccessControlConstants.VALUE_ACL_INSERT);
 
-      hasAuthorityFacilityInsert = aclhandler.hasAuthority(userid,
-        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_FACILITY,
-        ALAccessControlConstants.VALUE_ACL_INSERT);
+      hasAuthorityFacilityInsert =
+        aclhandler.hasAuthority(
+          userid,
+          ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_FACILITY,
+          ALAccessControlConstants.VALUE_ACL_INSERT);
 
       // ポートレット MyGroup のへのリンクを取得する．
-      myGroupURI = ScheduleUtils.getPortletURIinPersonalConfigPane(rundata,
-        "MyGroup");
+      myGroupURI =
+        ScheduleUtils.getPortletURIinPersonalConfigPane(rundata, "MyGroup");
     } catch (Exception ex) {
       logger.error("Exception", ex);
     }
@@ -175,8 +185,8 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
    * .util.RunData, org.apache.velocity.context.Context)
    */
   @Override
-  protected List<EipTScheduleMap> selectList(RunData rundata, Context context)
-      throws ALPageNotFoundException, ALDBErrorException {
+  protected ResultList<EipTScheduleMap> selectList(RunData rundata,
+      Context context) throws ALPageNotFoundException, ALDBErrorException {
     try {
       List<EipTScheduleMap> list = getSelectQuery(rundata, context).fetchList();
 
@@ -185,7 +195,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         loadTodo(rundata, context);
       }
 
-      return ScheduleUtils.sortByDummySchedule(list);
+      return new ResultList(ScheduleUtils.sortByDummySchedule(list));
     } catch (Exception e) {
       logger.error("[ScheduleWeeklyGroupSelectData]", e);
       throw new ALDBErrorException();
@@ -203,30 +213,37 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   @Override
   protected SelectQuery<EipTScheduleMap> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipTScheduleMap> query = new SelectQuery<EipTScheduleMap>(
-      EipTScheduleMap.class);
+    SelectQuery<EipTScheduleMap> query =
+      new SelectQuery<EipTScheduleMap>(EipTScheduleMap.class);
 
     // 終了日時
-    Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-      EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-        + EipTSchedule.END_DATE_PROPERTY, getViewStart().getValue());
+    Expression exp11 =
+      ExpressionFactory.greaterOrEqualExp(
+        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.END_DATE_PROPERTY,
+        getViewStart().getValue());
     // 開始日時
-    Expression exp12 = ExpressionFactory.lessExp(
-      EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+    Expression exp12 =
+      ExpressionFactory.lessExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
         + EipTSchedule.START_DATE_PROPERTY, getViewEndCrt().getValue());
     // 通常スケジュール
-    Expression exp13 = ExpressionFactory.noMatchExp(
-      EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+    Expression exp13 =
+      ExpressionFactory.noMatchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
         + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
     // 期間スケジュール
-    Expression exp14 = ExpressionFactory.noMatchExp(
-      EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+    Expression exp14 =
+      ExpressionFactory.noMatchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
         + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
 
     query.setQualifier((exp11.andExp(exp12)).orExp(exp13.andExp(exp14)));
 
     // 開始日時でソート
-    query.orderAscending(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+    query.orderAscending(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+      + "."
       + EipTSchedule.START_DATE_PROPERTY);
 
     return buildSelectQueryForFilter(query, rundata, context);
@@ -248,18 +265,20 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         return rd;
       }
 
-      SelectQuery<EipTScheduleMap> mapquery = Database
-        .query(EipTScheduleMap.class);
-      Expression mapexp1 = ExpressionFactory.matchExp(
-        EipTScheduleMap.SCHEDULE_ID_PROPERTY, schedule.getScheduleId());
+      SelectQuery<EipTScheduleMap> mapquery =
+        Database.query(EipTScheduleMap.class);
+      Expression mapexp1 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.SCHEDULE_ID_PROPERTY,
+          schedule.getScheduleId());
       mapquery.setQualifier(mapexp1);
-      Expression mapexp2 = ExpressionFactory.matchExp(
-        EipTScheduleMap.USER_ID_PROPERTY, userid);
+      Expression mapexp2 =
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, userid);
       mapquery.andQualifier(mapexp2);
 
       List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
-      boolean is_member = (schedulemaps != null && schedulemaps.size() > 0) ? true
-        : false;
+      boolean is_member =
+        (schedulemaps != null && schedulemaps.size() > 0) ? true : false;
 
       // Dummy スケジュールではない
       // 完全に隠す
@@ -326,10 +345,16 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
 
       // 期間スケジュールの場合（「ログインユーザの期間スケジュール」もしくは「完全非公開以外の期間スケジュール」）
       if (rd.getPattern().equals("S")) {
-        int stime = -(int) ((getViewStart().getValue().getTime() - rd
-          .getStartDate().getValue().getTime()) / 86400000);
-        int etime = -(int) ((getViewStart().getValue().getTime() - rd
-          .getEndDate().getValue().getTime()) / 86400000);
+        int stime =
+          -(int) ((getViewStart().getValue().getTime() - rd
+            .getStartDate()
+            .getValue()
+            .getTime()) / 86400000);
+        int etime =
+          -(int) ((getViewStart().getValue().getTime() - rd
+            .getEndDate()
+            .getValue()
+            .getTime()) / 86400000);
         if (stime < 0) {
           stime = 0;
         }
@@ -340,12 +365,15 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         }
         rd.setRowspan(col);
         if (col > 0) {
-          List<ScheduleTermWeekContainer> terms = termmap.get(record
-            .getUserId());
+          List<ScheduleTermWeekContainer> terms =
+            termmap.get(record.getUserId());
           if (terms != null) {
             // 期間スケジュールを格納
-            ScheduleUtils.addTermSchedule(terms, getViewStart().getValue(),
-              count, rd);
+            ScheduleUtils.addTermSchedule(
+              terms,
+              getViewStart().getValue(),
+              count,
+              rd);
           }
         }
         return rd;
@@ -369,16 +397,16 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   protected SelectQuery<EipTScheduleMap> buildSelectQueryForFilter(
       SelectQuery<EipTScheduleMap> query, RunData rundata, Context context) {
     String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
-    String filter_type = ALEipUtils.getTemp(rundata, context,
-      LIST_FILTER_TYPE_STR);
+    String filter_type =
+      ALEipUtils.getTemp(rundata, context, LIST_FILTER_TYPE_STR);
     String crt_key = null;
     Attributes map = getColumnMap();
 
     if (filter == null || filter_type == null || filter.equals("")) {
       // crt.add(EipTScheduleMapConstants.USER_ID,
       // ALEipUtils.getUserId(rundata));
-      Expression exp1 = ExpressionFactory.matchExp(
-        EipTScheduleMap.USER_ID_PROPERTY, userid);
+      Expression exp1 =
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, userid);
       query.andQualifier(exp1);
 
       members = new ArrayList<ALEipUser>();
@@ -444,25 +472,31 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
     }
 
     if ("Facility".equals(filter)) {
-      Expression exp21 = ExpressionFactory.matchExp(
-        EipTScheduleMap.TYPE_PROPERTY, ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY);
+      Expression exp21 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.TYPE_PROPERTY,
+          ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY);
       Expression exp22 = ExpressionFactory.inExp(crt_key, facilityIds);
 
       query.andQualifier(exp21.andExp(exp22));
     } else {
-      Expression exp11 = ExpressionFactory.matchExp(
-        EipTScheduleMap.TYPE_PROPERTY, ScheduleUtils.SCHEDULEMAP_TYPE_USER);
+      Expression exp11 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.TYPE_PROPERTY,
+          ScheduleUtils.SCHEDULEMAP_TYPE_USER);
       Expression exp12 = ExpressionFactory.inExp(crt_key, ulist);
 
-      Expression exp21 = ExpressionFactory.matchExp(
-        EipTScheduleMap.TYPE_PROPERTY, ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY);
+      Expression exp21 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.TYPE_PROPERTY,
+          ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY);
       Expression exp22 = ExpressionFactory.inExp(crt_key, facilityIds);
 
       query.andQualifier((exp11.andExp(exp12)).orExp(exp21.andExp(exp22)));
     }
     members = ALEipUtils.getUsers(filter);
-    String flag_changeturn = ALEipUtils.getTemp(rundata, context,
-      FLAG_CHANGE_TURN_STR);
+    String flag_changeturn =
+      ALEipUtils.getTemp(rundata, context, FLAG_CHANGE_TURN_STR);
     if ("0".equals(flag_changeturn)) {
       // ログインユーザの行けジュールを一番上に表示させるため，
       // メンバリストの初めの要素にログインユーザを配置する．
@@ -488,8 +522,9 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
     List<Integer> facilityIdAllList = new ArrayList<Integer>();
 
     try {
-      SelectQuery<EipMFacility> query = Database.query(EipMFacility.class)
-        .select(EipMFacility.FACILITY_ID_PK_COLUMN);
+      SelectQuery<EipMFacility> query =
+        Database.query(EipMFacility.class).select(
+          EipMFacility.FACILITY_ID_PK_COLUMN);
       List<EipMFacility> aList = query.fetchList();
 
       for (EipMFacility record : aList) {
@@ -514,7 +549,8 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   @Override
   public void loadTodo(RunData rundata, Context context) {
     try {
-      List<EipTTodo> todos = getSelectQueryForTodo(rundata, context).fetchList();
+      List<EipTTodo> todos =
+        getSelectQueryForTodo(rundata, context).fetchList();
 
       int todossize = todos.size();
       for (int i = 0; i < todossize; i++) {
@@ -525,11 +561,17 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         // ポートレット ToDo のへのリンクを取得する．
         String todo_url = "";
         if (userid.intValue() == record.getTurbineUser().getUserId().intValue()) {
-          todo_url = ScheduleUtils.getPortletURItoTodoDetailPane(rundata,
-            "ToDo", record.getTodoId().longValue(), portletId);
+          todo_url =
+            ScheduleUtils.getPortletURItoTodoDetailPane(rundata, "ToDo", record
+              .getTodoId()
+              .longValue(), portletId);
         } else {
-          todo_url = ScheduleUtils.getPortletURItoTodoPublicDetailPane(rundata,
-            "ToDo", record.getTodoId().longValue(), portletId);
+          todo_url =
+            ScheduleUtils.getPortletURItoTodoPublicDetailPane(
+              rundata,
+              "ToDo",
+              record.getTodoId().longValue(),
+              portletId);
         }
 
         rd.setTodoId(record.getTodoId().intValue());
@@ -543,14 +585,21 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
 
         int stime;
         if (ScheduleUtils.equalsToDate(ToDoUtils.getEmptyDate(), rd
-          .getStartDate().getValue(), false)) {
+          .getStartDate()
+          .getValue(), false)) {
           stime = 0;
         } else {
-          stime = -(int) ((getViewStart().getValue().getTime() - rd
-            .getStartDate().getValue().getTime()) / 86400000);
+          stime =
+            -(int) ((getViewStart().getValue().getTime() - rd
+              .getStartDate()
+              .getValue()
+              .getTime()) / 86400000);
         }
-        int etime = -(int) ((getViewStart().getValue().getTime() - rd
-          .getEndDate().getValue().getTime()) / 86400000);
+        int etime =
+          -(int) ((getViewStart().getValue().getTime() - rd
+            .getEndDate()
+            .getValue()
+            .getTime()) / 86400000);
         if (stime < 0) {
           stime = 0;
         }
@@ -563,11 +612,14 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         // rowspan を設定
         rd.setRowspan(col);
         if (col > 0) {
-          List<ScheduleToDoWeekContainer> usertodos1 = todomap.get(record
-            .getTurbineUser().getUserId());
+          List<ScheduleToDoWeekContainer> usertodos1 =
+            todomap.get(record.getTurbineUser().getUserId());
           if (usertodos1 != null) {
             // ToDo を格納
-            ScheduleUtils.addToDo(usertodos1, getViewStart().getValue(), count,
+            ScheduleUtils.addToDo(
+              usertodos1,
+              getViewStart().getValue(),
+              count,
               rd);
           }
         }
@@ -581,38 +633,49 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   private SelectQuery<EipTTodo> getSelectQueryForTodo(RunData rundata,
       Context context) {
     SelectQuery<EipTTodo> query = Database.query(EipTTodo.class);
-    Expression exp1 = ExpressionFactory.noMatchExp(EipTTodo.STATE_PROPERTY,
-      Short.valueOf((short) 100));
+    Expression exp1 =
+      ExpressionFactory.noMatchExp(EipTTodo.STATE_PROPERTY, Short
+        .valueOf((short) 100));
     query.setQualifier(exp1);
 
-    Expression exp01 = ExpressionFactory.matchDbExp(
-      TurbineUser.USER_ID_PK_COLUMN, userid);
-    Expression exp02 = ExpressionFactory.noMatchDbExp(
-      TurbineUser.USER_ID_PK_COLUMN, userid);
-    Expression exp03 = ExpressionFactory.matchExp(
-      EipTTodo.PUBLIC_FLAG_PROPERTY, "T");
-    Expression exp04 = ExpressionFactory.matchExp(
-      EipTTodo.ADDON_SCHEDULE_FLG_PROPERTY, "T");
+    Expression exp01 =
+      ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, userid);
+    Expression exp02 =
+      ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, userid);
+    Expression exp03 =
+      ExpressionFactory.matchExp(EipTTodo.PUBLIC_FLAG_PROPERTY, "T");
+    Expression exp04 =
+      ExpressionFactory.matchExp(EipTTodo.ADDON_SCHEDULE_FLG_PROPERTY, "T");
     query.andQualifier(exp01.orExp(exp02.andExp(exp03)).andExp(exp04));
 
     // 終了日時
-    Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-      EipTTodo.END_DATE_PROPERTY, getViewStart().getValue());
+    Expression exp11 =
+      ExpressionFactory.greaterOrEqualExp(
+        EipTTodo.END_DATE_PROPERTY,
+        getViewStart().getValue());
     // 開始日時
-    Expression exp12 = ExpressionFactory.lessOrEqualExp(
-      EipTTodo.START_DATE_PROPERTY, getViewEnd().getValue());
+    Expression exp12 =
+      ExpressionFactory.lessOrEqualExp(
+        EipTTodo.START_DATE_PROPERTY,
+        getViewEnd().getValue());
 
     // 開始日時のみ指定されている ToDo を検索
-    Expression exp21 = ExpressionFactory.lessOrEqualExp(
-      EipTTodo.START_DATE_PROPERTY, getViewEnd().getValue());
-    Expression exp22 = ExpressionFactory.matchExp(EipTTodo.END_DATE_PROPERTY,
-      ToDoUtils.getEmptyDate());
+    Expression exp21 =
+      ExpressionFactory.lessOrEqualExp(
+        EipTTodo.START_DATE_PROPERTY,
+        getViewEnd().getValue());
+    Expression exp22 =
+      ExpressionFactory.matchExp(EipTTodo.END_DATE_PROPERTY, ToDoUtils
+        .getEmptyDate());
 
     // 終了日時のみ指定されている ToDo を検索
-    Expression exp31 = ExpressionFactory.greaterOrEqualExp(
-      EipTTodo.END_DATE_PROPERTY, getViewStart().getValue());
-    Expression exp32 = ExpressionFactory.matchExp(EipTTodo.START_DATE_PROPERTY,
-      ToDoUtils.getEmptyDate());
+    Expression exp31 =
+      ExpressionFactory.greaterOrEqualExp(
+        EipTTodo.END_DATE_PROPERTY,
+        getViewStart().getValue());
+    Expression exp32 =
+      ExpressionFactory.matchExp(EipTTodo.START_DATE_PROPERTY, ToDoUtils
+        .getEmptyDate());
 
     query.andQualifier((exp11.andExp(exp12)).orExp(exp21.andExp(exp22)).orExp(
       exp31.andExp(exp32)));

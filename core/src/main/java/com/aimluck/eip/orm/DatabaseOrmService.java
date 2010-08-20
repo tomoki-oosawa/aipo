@@ -77,15 +77,15 @@ abstract public class DatabaseOrmService extends TurbineBaseService {
   protected void copyDataMap(String srcDataDomainName, String srcDataMapName,
       String destDataDomainName) {
 
-    DataDomain destDataDomain = Configuration.getSharedConfiguration()
-      .getDomain(destDataDomainName);
+    DataDomain destDataDomain =
+      Configuration.getSharedConfiguration().getDomain(destDataDomainName);
 
     if (destDataDomain == null) {
       return;
     }
 
-    DataDomain sharedDataDomain = Configuration.getSharedConfiguration()
-      .getDomain(srcDataDomainName);
+    DataDomain sharedDataDomain =
+      Configuration.getSharedConfiguration().getDomain(srcDataDomainName);
     destDataDomain.addMap(sharedDataDomain.getMap(srcDataMapName));
 
     Collection<?> nodes = destDataDomain.getDataNodes();
@@ -127,8 +127,8 @@ abstract public class DatabaseOrmService extends TurbineBaseService {
   public static DataContext getDefaultContext(HttpSession session) {
     synchronized (session) {
       try {
-        DataContext ctxt = (DataContext) session
-          .getAttribute(ServletUtil.DATA_CONTEXT_KEY);
+        DataContext ctxt =
+          (DataContext) session.getAttribute(ServletUtil.DATA_CONTEXT_KEY);
 
         if (ctxt == null) {
           JetspeedRunData rundata = getInstance().getRunData();
@@ -136,8 +136,9 @@ abstract public class DatabaseOrmService extends TurbineBaseService {
             && rundata.getParameters().containsKey(DatabaseOrmService.ORG_PRE)
             && !"".equals(rundata.getParameters().getString(
               DatabaseOrmService.ORG_PRE))) {
-            ctxt = DataContext.createDataContext(rundata.getParameters()
-              .getString(DatabaseOrmService.ORG_PRE));
+            ctxt =
+              DataContext.createDataContext(rundata.getParameters().getString(
+                DatabaseOrmService.ORG_PRE));
           } else {
             String org_id = DatabaseOrmService.getInstance().getOrgId(session);
             ctxt = DataContext.createDataContext(org_id);
@@ -152,8 +153,9 @@ abstract public class DatabaseOrmService extends TurbineBaseService {
           && rundata.getParameters().containsKey(DatabaseOrmService.ORG_PRE)
           && !"".equals(rundata.getParameters().getString(
             DatabaseOrmService.ORG_PRE))) {
-          ctxt = DataContext.createDataContext(rundata.getParameters()
-            .getString(DatabaseOrmService.ORG_PRE));
+          ctxt =
+            DataContext.createDataContext(rundata.getParameters().getString(
+              DatabaseOrmService.ORG_PRE));
         } else {
           ctxt = DataContext.createDataContext(getInstance().getDefaultOrgId());
         }
@@ -183,8 +185,14 @@ abstract public class DatabaseOrmService extends TurbineBaseService {
       int maxCons, String userName, String password, String domainName,
       String dataNodeName) {
     try {
-      DataSource ds = new org.apache.cayenne.conn.PoolManager(jdbcDriver,
-        dataSourceUrl, minCons, maxCons, userName, password);
+      DataSource ds =
+        new org.apache.cayenne.conn.PoolManager(
+          jdbcDriver,
+          dataSourceUrl,
+          minCons,
+          maxCons,
+          userName,
+          password);
 
       DataDomain domain = new DataDomain(domainName);
 
@@ -206,8 +214,8 @@ abstract public class DatabaseOrmService extends TurbineBaseService {
 
   public void remomveDomain(String domainName) {
     try {
-      DataDomain domain = Configuration.getSharedConfiguration().getDomain(
-        domainName);
+      DataDomain domain =
+        Configuration.getSharedConfiguration().getDomain(domainName);
       if (domain == null) {
         throw new ALDBErrorException();
       }
@@ -232,8 +240,9 @@ abstract public class DatabaseOrmService extends TurbineBaseService {
 
     super.init(conf);
 
-    this.runDataService = (JetspeedRunDataService) TurbineServices
-      .getInstance().getService(RunDataService.SERVICE_NAME);
+    this.runDataService =
+      (JetspeedRunDataService) TurbineServices.getInstance().getService(
+        RunDataService.SERVICE_NAME);
 
     initOrm(conf.getServletContext());
     setInit(true);

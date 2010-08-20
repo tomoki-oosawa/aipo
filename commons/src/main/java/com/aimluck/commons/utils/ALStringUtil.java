@@ -43,8 +43,10 @@ public class ALStringUtil {
    * @return メールアドレス形式であればtrue、それ以外はfalse。
    */
   public static boolean isMailAddress(String str) {
-    Pattern mailPattern = Pattern.compile(
-      "[\\w\\.\\-]+@([\\w\\-]+\\.)+[\\w\\-]+", Pattern.CASE_INSENSITIVE);
+    Pattern mailPattern =
+      Pattern.compile(
+        "[\\w\\.\\-]+@([\\w\\-]+\\.)+[\\w\\-]+",
+        Pattern.CASE_INSENSITIVE);
     Matcher objMch = mailPattern.matcher(str);
     return objMch.matches();
   }
@@ -57,8 +59,10 @@ public class ALStringUtil {
    * @return メールアドレス形式であればtrue、それ以外はfalse。
    */
   public static boolean isCellPhoneMailAddress(String str) {
-    Pattern mailPattern = Pattern.compile(
-      "[\\w\\.\\-\\_\\/]+@([\\w\\-]+\\.)+[\\w\\-]+", Pattern.CASE_INSENSITIVE);
+    Pattern mailPattern =
+      Pattern.compile(
+        "[\\w\\.\\-\\_\\/]+@([\\w\\-]+\\.)+[\\w\\-]+",
+        Pattern.CASE_INSENSITIVE);
     Matcher objMch = mailPattern.matcher(str);
     return objMch.matches();
   }

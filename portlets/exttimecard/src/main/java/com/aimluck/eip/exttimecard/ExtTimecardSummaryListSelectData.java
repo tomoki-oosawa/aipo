@@ -54,6 +54,7 @@ import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -62,8 +63,8 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカード集計の一覧を処理するクラスです。 <br />
- *
- *
+ * 
+ * 
  */
 
 public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
@@ -71,7 +72,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ExtTimecardSummaryListSelectData.class.getName());
+    .getLogger(ExtTimecardSummaryListSelectData.class.getName());
 
   /** <code>target_group_name</code> 表示対象の部署名 */
   private String target_group_name;
@@ -156,10 +157,10 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
   private boolean hasAclviewOther;
 
   /** <code>hasAuthoritySelfInsert</code> アクセス権限 */
-  private boolean hasAuthoritySelfInsert = false;
+  private final boolean hasAuthoritySelfInsert = false;
 
   /** <code>hasAuthorityFacilityInsert</code> アクセス権限 */
-  private boolean hasAuthorityFacilityInsert = false;
+  private final boolean hasAuthorityFacilityInsert = false;
 
   /** <code>target_user_id</code> 表示対象のユーザ ログイン名 */
   private String target_user_name;
@@ -167,17 +168,19 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
   /**
    *
    */
+  @Override
   public void initField() {
   }
 
   /*
    * (非 Javadoc)
-   *
+   * 
    * @see
    * com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules
    * .actions.common.ALAction, org.apache.turbine.util.RunData,
    * org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     // TODO 自動生成されたメソッド・スタブ
@@ -217,7 +220,8 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
       // e.g. 2004-3-14
       if (rundata.getParameters().containsKey("view_month")) {
         ALEipUtils.setTemp(rundata, context, "view_month", rundata
-            .getParameters().getString("view_month"));
+          .getParameters()
+          .getString("view_month"));
       }
     }
 
@@ -269,9 +273,9 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
     prevMonth.setValue(cal2.getTime());
 
     ALEipUtils.setTemp(rundata, context, "tmpStart", viewStart.toString()
-        + "-00-00");
+      + "-00-00");
     ALEipUtils.setTemp(rundata, context, "tmpEnd", viewStart.toString()
-        + "-00-00");
+      + "-00-00");
 
     // ログインユーザの ID を設定する．
     userid = Integer.toString(ALEipUtils.getUserId(rundata));
@@ -315,27 +319,38 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
     }
 
     // アクセス権
-    if (target_user_id == null || "".equals(target_user_id)
-        || userid.equals(target_user_id)) {
-      aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
+    if (target_user_id == null
+      || "".equals(target_user_id)
+      || userid.equals(target_user_id)) {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
     } else {
-      aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER;
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER;
     }
-    ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-    hasAclSummaryOther = aclhandler.hasAuthority(ALEipUtils.getUserId(rundata),
+    hasAclSummaryOther =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
         ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER,
         ALAccessControlConstants.VALUE_ACL_LIST);
-    hasAclXlsExport = aclhandler.hasAuthority(ALEipUtils.getUserId(rundata),
+    hasAclXlsExport =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
         ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER,
         ALAccessControlConstants.VALUE_ACL_EXPORT);
 
     if (!hasAclSummaryOther) {
       // 他ユーザーの閲覧権限がないときには、グループを未選択にする。
       target_group_name = "only";
-      aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
-      hasAclXlsExport = aclhandler.hasAuthority(ALEipUtils.getUserId(rundata),
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
+      hasAclXlsExport =
+        aclhandler.hasAuthority(
+          ALEipUtils.getUserId(rundata),
           ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF,
           ALAccessControlConstants.VALUE_ACL_EXPORT);
     }
@@ -349,22 +364,25 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * 一覧表示します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @return TRUE 成功 FASLE 失敗
    */
+  @Override
   public boolean doViewList(ALAction action, RunData rundata, Context context) {
     try {
       init(action, rundata, context);
-      doCheckAclPermission(rundata, context,
-          ALAccessControlConstants.VALUE_ACL_LIST);
+      doCheckAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_LIST);
       action.setMode(ALEipConstants.MODE_LIST);
       for (int i = 0; i < userList.size(); i++) {
         ALEipUser eipUser = (ALEipUser) userList.get(i);
-        List aList = selectList(rundata, context, eipUser.getUserId()
-            .getValueAsString());
+        List aList =
+          selectList(rundata, context, eipUser.getUserId().getValueAsString());
         if (aList != null) {
           list = new ArrayList();
           Object obj = null;
@@ -396,7 +414,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /*
    * (非 Javadoc)
-   *
+   * 
    * @see
    * com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine
    * .util.RunData, org.apache.velocity.context.Context)
@@ -408,8 +426,8 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
       setupLists(rundata, context);
 
       if (!"".equals(target_user_id)) {
-        DataContext dataContext = DatabaseOrmService.getInstance()
-            .getDataContext();
+        DataContext dataContext =
+          DatabaseOrmService.getInstance().getDataContext();
 
         SelectQuery query = getSelectQuery(rundata, context, target_user_id);
         buildSelectQueryForListView(query);
@@ -428,27 +446,27 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /*
    * (非 Javadoc)
-   *
+   * 
    * @see
    * com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine
    * .util.RunData, org.apache.velocity.context.Context)
    */
-  protected List selectList(RunData rundata, Context context)
+  @Override
+  protected ResultList selectList(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     try {
       // 指定グループや指定ユーザをセッションに設定する．
       setupLists(rundata, context);
 
       if (!"".equals(target_user_id)) {
-        DataContext dataContext = DatabaseOrmService.getInstance()
-            .getDataContext();
+        DataContext dataContext =
+          DatabaseOrmService.getInstance().getDataContext();
 
         SelectQuery query = getSelectQuery(rundata, context, target_user_id);
         buildSelectQueryForListView(query);
         query.orderAscending(EipTExtTimecard.PUNCH_DATE_PROPERTY);
 
-        List list = query.fetchList();
-        return buildPaginatedList(list);
+        return query.getResultList();
       } else {
         return null;
       }
@@ -460,11 +478,12 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /*
    * (非 Javadoc)
-   *
+   * 
    * @see
    * com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine
    * .util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   protected Object selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     // TODO 自動生成されたメソッド・スタブ
@@ -473,18 +492,19 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /*
    * (非 Javadoc)
-   *
+   * 
    * @see
    * com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(Object obj) throws ALPageNotFoundException,
       ALDBErrorException {
     try {
@@ -522,11 +542,12 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /*
    * (非 Javadoc)
-   *
+   * 
    * @see
    * com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang
    * .Object)
    */
+  @Override
   protected Object getResultDataDetail(Object obj)
       throws ALPageNotFoundException, ALDBErrorException {
     // TODO 自動生成されたメソッド・スタブ
@@ -535,9 +556,10 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /*
    * (非 Javadoc)
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     // TODO 自動生成されたメソッド・スタブ
     return null;
@@ -545,7 +567,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * ログイン中のユーザー情報を取得
-   *
+   * 
    */
 
   private List getUserList(int userid) {
@@ -566,19 +588,20 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * 指定グループや指定ユーザをセッションに設定する．
-   *
+   * 
    * @param rundata
    * @param context
    * @throws ALDBErrorException
    */
   private void setupLists(RunData rundata, Context context) {
     target_group_name = getTargetGroupName(rundata, context);
-    if ((target_group_name != null) && (!target_group_name.equals(""))
-        && (!target_group_name.equals("all"))
-        && (!target_group_name.equals("only"))) {
+    if ((target_group_name != null)
+      && (!target_group_name.equals(""))
+      && (!target_group_name.equals("all"))
+      && (!target_group_name.equals("only"))) {
       userList = ALEipUtils.getUsers(target_group_name);
     } else if (target_group_name.equals("all")
-        || target_group_name.equals("only")) {
+      || target_group_name.equals("only")) {
 
       userList = getUserList(Integer.parseInt(userid));
     } else {
@@ -596,7 +619,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * 表示切り替えで指定したグループ ID を取得する．
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -622,7 +645,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * 表示切り替えで指定したユーザ ID を取得する．
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -675,7 +698,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -684,8 +707,9 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
       String target_user_id) {
     SelectQuery query = new SelectQuery(EipTExtTimecard.class);
 
-    Expression exp1 = ExpressionFactory.matchExp(
-        EipTExtTimecard.USER_ID_PROPERTY, new Integer(target_user_id));
+    Expression exp1 =
+      ExpressionFactory.matchExp(EipTExtTimecard.USER_ID_PROPERTY, new Integer(
+        target_user_id));
     query.setQualifier(exp1);
 
     Calendar cal = Calendar.getInstance();
@@ -695,13 +719,16 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
     cal.set(Calendar.MINUTE, 0);
     cal.set(Calendar.SECOND, 0);
     cal.set(Calendar.MILLISECOND, 0);
-    Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-        EipTExtTimecard.PUNCH_DATE_PROPERTY, cal.getTime());
+    Expression exp11 =
+      ExpressionFactory.greaterOrEqualExp(
+        EipTExtTimecard.PUNCH_DATE_PROPERTY,
+        cal.getTime());
 
     cal.add(Calendar.MONTH, +1);
     cal.add(Calendar.MILLISECOND, -1);
-    Expression exp12 = ExpressionFactory.lessOrEqualExp(
-        EipTExtTimecard.PUNCH_DATE_PROPERTY, cal.getTime());
+    Expression exp12 =
+      ExpressionFactory.lessOrEqualExp(EipTExtTimecard.PUNCH_DATE_PROPERTY, cal
+        .getTime());
     query.andQualifier(exp11.andExp(exp12));
 
     return buildSelectQueryForFilter(query, rundata, context);
@@ -709,7 +736,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * ユーザー毎のタイムカード一覧を取得する。
-   *
+   * 
    * @return
    */
   public List getUserExtTimecards() {
@@ -719,7 +746,8 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
     /** 以下、ユーザーごとの処理 */
     for (Object user_id : userset) {
       ArrayList userlist = (ArrayList) usermap.get(user_id);
-      ExtTimecardSummaryResultData summary_rd = new ExtTimecardSummaryResultData();
+      ExtTimecardSummaryResultData summary_rd =
+        new ExtTimecardSummaryResultData();
       int work_day = 0, overtime_day = 0, off_day = 0;
       /** 就業、残業、休出日数 */
       float work_hour = 0, overtime_hour = 0, off_hour = 0;
@@ -733,8 +761,8 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
       summary_rd.initField();
 
       /** タイムカード設定を取得 */
-      EipTExtTimecardSystem timecard_system = ExtTimecardUtils
-          .getEipTExtTimecardSystemByUserId((Integer) user_id);
+      EipTExtTimecardSystem timecard_system =
+        ExtTimecardUtils.getEipTExtTimecardSystemByUserId((Integer) user_id);
 
       /**
        * userlistにはユーザー日ごとのタイムカードのResultDataがリストで入っているため、
@@ -805,7 +833,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * グループ毎のタイムカード一覧を取得する。
-   *
+   * 
    * @return
    */
 
@@ -816,7 +844,8 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
       ALEipUser eipUser = (ALEipUser) userList.get(i);
       int user_id = Integer.parseInt(eipUser.getUserId().getValueAsString());
       ArrayList userlist = (ArrayList) usermap.get(user_id);
-      ExtTimecardSummaryResultData summary_rd = new ExtTimecardSummaryResultData();
+      ExtTimecardSummaryResultData summary_rd =
+        new ExtTimecardSummaryResultData();
       int work_day = 0, overtime_day = 0, off_day = 0;
       /** 就業、残業、休出日数 */
       float work_hour = 0, overtime_hour = 0, off_hour = 0;
@@ -830,8 +859,8 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
       summary_rd.initField();
 
       /** タイムカード設定を取得 */
-      EipTExtTimecardSystem timecard_system = ExtTimecardUtils
-          .getEipTExtTimecardSystemByUserId((Integer) user_id);
+      EipTExtTimecardSystem timecard_system =
+        ExtTimecardUtils.getEipTExtTimecardSystemByUserId(user_id);
 
       /**
        * userlistにはユーザー日ごとのタイムカードのResultDataがリストで入っているため、
@@ -931,23 +960,26 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
       if (list.size() > 1) {
         for (int i = 0; i < list.size() - 1; i++) {
-          ExtTimecardSummaryResultData listrd1 = (ExtTimecardSummaryResultData) datemap
-              .get(list.get(i));
-          ExtTimecardSummaryResultData listrd2 = (ExtTimecardSummaryResultData) datemap
-              .get(list.get(i + 1));
+          ExtTimecardSummaryResultData listrd1 =
+            (ExtTimecardSummaryResultData) datemap.get(list.get(i));
+          ExtTimecardSummaryResultData listrd2 =
+            (ExtTimecardSummaryResultData) datemap.get(list.get(i + 1));
           int listrd1_size = listrd1.getList().size();
           if (listrd1_size > 0) {
-            ExtTimecardResultData listrd1_lastrd = (ExtTimecardResultData) listrd1
-                .getList().get(listrd1_size - 1);
+            ExtTimecardResultData listrd1_lastrd =
+              (ExtTimecardResultData) listrd1.getList().get(listrd1_size - 1);
 
-            ExtTimecardResultData listrd2_firstrd = (ExtTimecardResultData) listrd2
-                .getList().get(0);
+            ExtTimecardResultData listrd2_firstrd =
+              (ExtTimecardResultData) listrd2.getList().get(0);
             if (ExtTimecardUtils.WORK_FLG_OFF.equals(listrd2_firstrd
-                .getWorkFlag().getValue())
-                && ExtTimecardUtils.WORK_FLG_ON.equals(listrd1_lastrd
-                    .getWorkFlag().getValue())
-                && !sameDay(listrd1_lastrd.getWorkDate().getValue(),
-                    listrd2_firstrd.getWorkDate().getValue())) {
+              .getWorkFlag()
+              .getValue())
+              && ExtTimecardUtils.WORK_FLG_ON.equals(listrd1_lastrd
+                .getWorkFlag()
+                .getValue())
+              && !sameDay(
+                listrd1_lastrd.getWorkDate().getValue(),
+                listrd2_firstrd.getWorkDate().getValue())) {
 
               Date d = listrd2_firstrd.getWorkDate().getValue();
               Calendar cal = Calendar.getInstance();
@@ -982,7 +1014,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * 指定した2つの日付を比較する．
-   *
+   * 
    * @param date1
    * @param date2
    * @param checkTime
@@ -1002,8 +1034,9 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
     int date2Month = cal2.get(Calendar.MONTH) + 1;
     int date2Day = cal2.get(Calendar.DATE);
 
-    if (date1Year == date2Year && date1Month == date2Month
-        && date1Day == date2Day) {
+    if (date1Year == date2Year
+      && date1Month == date2Month
+      && date1Day == date2Day) {
       return true;
     }
     return false;
@@ -1011,17 +1044,17 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * userListを設定する．
-   *
+   * 
    */
   public void setuserList(String target_group_name) {
     this.target_group_name = target_group_name;
     if ((this.target_group_name != null)
-        && (!this.target_group_name.equals(""))
-        && (!this.target_group_name.equals("all"))
-        && (!this.target_group_name.equals("only"))) {
+      && (!this.target_group_name.equals(""))
+      && (!this.target_group_name.equals("all"))
+      && (!this.target_group_name.equals("only"))) {
       userList = ALEipUtils.getUsers(target_group_name);
     } else if (this.target_group_name.equals("all")
-        || this.target_group_name.equals("only")) {
+      || this.target_group_name.equals("only")) {
       userList = getUserList(Integer.parseInt(userid));
     } else {
       userList = ALEipUtils.getUsers("LoginUser");
@@ -1030,7 +1063,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * 表示切り替え時に指定するグループ名
-   *
+   * 
    * @return
    */
   public String getTargetGroupName() {
@@ -1039,7 +1072,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * 表示切り替え時に指定するユーザ ID
-   *
+   * 
    * @return
    */
   public String getTargetUserId() {
@@ -1048,7 +1081,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * 指定グループに属するユーザの一覧を取得する．
-   *
+   * 
    * @param groupname
    * @return
    */
@@ -1068,7 +1101,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * 部署の一覧を取得する．
-   *
+   * 
    * @return
    */
   public Map getPostMap() {
@@ -1081,7 +1114,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * My グループの一覧を取得する．
-   *
+   * 
    * @return
    */
   public List getMyGroupList() {
@@ -1094,7 +1127,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * ログインユーザの ID を取得する．
-   *
+   * 
    * @return
    */
   public String getUserId() {
@@ -1102,7 +1135,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
   }
 
   /**
-   *
+   * 
    * @param id
    * @return
    */
@@ -1119,31 +1152,32 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
   }
 
   /**
-   *
+   * 
    * @param minute
    * @return
    */
   private String minuteToHour(long minute) {
     BigDecimal decimal = new BigDecimal(minute / 60.0);
     DecimalFormat dformat = new DecimalFormat("##.#");
-    String str = dformat.format(decimal.setScale(1, BigDecimal.ROUND_FLOOR)
-        .doubleValue());
+    String str =
+      dformat.format(decimal.setScale(1, BigDecimal.ROUND_FLOOR).doubleValue());
     return str;
   }
 
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return aclPortletFeature;
   }
 
   /**
    * 表示開始日時を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getViewStart() {
@@ -1152,7 +1186,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * 表示終了日時を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getViewEnd() {
@@ -1161,7 +1195,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * 表示終了日時 (Criteria) を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getViewEndCrt() {
@@ -1170,7 +1204,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * 前の月を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getPrevMonth() {
@@ -1179,7 +1213,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * 次の月を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getNextMonth() {
@@ -1188,7 +1222,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * 今月を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getCurrentMonth() {
@@ -1197,7 +1231,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * 現在の月を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getViewMonth() {
@@ -1206,7 +1240,7 @@ public class ExtTimecardSummaryListSelectData extends ALAbstractSelectData
 
   /**
    * 今日を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getToday() {

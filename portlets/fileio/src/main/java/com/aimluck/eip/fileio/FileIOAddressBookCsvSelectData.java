@@ -30,16 +30,17 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.common.ALCsvAbstractSelectData;
 import com.aimluck.eip.common.ALCsvTokenizer;
 import com.aimluck.eip.fileio.util.FileIOAddressBookCsvUtils;
+import com.aimluck.eip.orm.query.ResultList;
 
 /**
  * CSV ファイルから読み込んだアドレス帳情報を表示するクラス．
- *
- *
+ * 
+ * 
  */
 public class FileIOAddressBookCsvSelectData extends ALCsvAbstractSelectData {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FileIOAddressBookCsvSelectData.class.getName());
+    .getLogger(FileIOAddressBookCsvSelectData.class.getName());
 
   /** 会社情報のみ入力する場合はtrue */
   private boolean is_company_only;
@@ -47,6 +48,7 @@ public class FileIOAddressBookCsvSelectData extends ALCsvAbstractSelectData {
   /**
    * フィールドの初期化
    */
+  @Override
   public void initField() {
     super.initField();
     setIsCompanyOnly(false);
@@ -55,30 +57,38 @@ public class FileIOAddressBookCsvSelectData extends ALCsvAbstractSelectData {
   /**
    * CSVファイルからアドレス帳情報を取得します <BR>
    */
-  protected List<?> selectList(RunData rundata, Context context) {
+  @Override
+  protected ResultList<?> selectList(RunData rundata, Context context) {
     String filepath;
     try {
       if (stats == ALCsvTokenizer.CSV_LIST_MODE_READ) {
-        return readAddressBookInfoFromCsv(rundata);
+        return new ResultList(readAddressBookInfoFromCsv(rundata));
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_NO_ERROR) {
-        filepath = FileIOAddressBookCsvUtils
+        filepath =
+          FileIOAddressBookCsvUtils
             .getAddressBookCsvFolderName(getTempFolderIndex())
             + File.separator
             + FileIOAddressBookCsvUtils.CSV_ADDRESSBOOK_TEMP_FILENAME;
-        return readAddressBookInfoFromCsvPage(rundata, filepath, (rundata
-            .getParameters().getInteger("csvpage") - 1),
-            ALCsvTokenizer.CSV_SHOW_SIZE);
+        return new ResultList(readAddressBookInfoFromCsvPage(
+          rundata,
+          filepath,
+          (rundata.getParameters().getInteger("csvpage") - 1),
+          ALCsvTokenizer.CSV_SHOW_SIZE));
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_ERROR) {
         if (this.error_count > 0) {
-          filepath = FileIOAddressBookCsvUtils
+          filepath =
+            FileIOAddressBookCsvUtils
               .getAddressBookCsvFolderName(getTempFolderIndex())
               + File.separator
               + FileIOAddressBookCsvUtils.CSV_ADDRESSBOOK_TEMP_ERROR_FILENAME;
         } else {
           return null;
         }
-        return readAddressBookInfoFromCsvPage(rundata, filepath, 0,
-            ALCsvTokenizer.CSV_SHOW_ERROR_SIZE);
+        return new ResultList(readAddressBookInfoFromCsvPage(
+          rundata,
+          filepath,
+          0,
+          ALCsvTokenizer.CSV_SHOW_ERROR_SIZE));
       } else {
         return null;
       }
@@ -90,18 +100,21 @@ public class FileIOAddressBookCsvSelectData extends ALCsvAbstractSelectData {
 
   /**
    * CSVファイルを読み込んで表示用リストを作成します <BR>
-   *
+   * 
    * @param rundata
    * @return
    * @throws Exception
    */
-  private List<FileIOAddressBookCsvData> readAddressBookInfoFromCsv(RunData rundata) throws Exception {
-    String filepath = FileIOAddressBookCsvUtils
+  private List<FileIOAddressBookCsvData> readAddressBookInfoFromCsv(
+      RunData rundata) throws Exception {
+    String filepath =
+      FileIOAddressBookCsvUtils
         .getAddressBookCsvFolderName(getTempFolderIndex())
         + File.separator
         + FileIOAddressBookCsvUtils.CSV_ADDRESSBOOK_TEMP_FILENAME;
 
-    String filepath_err = FileIOAddressBookCsvUtils
+    String filepath_err =
+      FileIOAddressBookCsvUtils
         .getAddressBookCsvFolderName(getTempFolderIndex())
         + File.separator
         + FileIOAddressBookCsvUtils.CSV_ADDRESSBOOK_TEMP_ERROR_FILENAME;
@@ -111,7 +124,8 @@ public class FileIOAddressBookCsvSelectData extends ALCsvAbstractSelectData {
       return null;
     }
 
-    List<FileIOAddressBookCsvData> list = new ArrayList<FileIOAddressBookCsvData>();
+    List<FileIOAddressBookCsvData> list =
+      new ArrayList<FileIOAddressBookCsvData>();
     int ErrCount = 0;// エラーが発生した回数
 
     String token;
@@ -120,38 +134,44 @@ public class FileIOAddressBookCsvSelectData extends ALCsvAbstractSelectData {
     String ErrorCode = "";
     StringBuffer e_line = new StringBuffer();
 
-    List<FileIOAddressBookCsvData> collectList = new ArrayList<FileIOAddressBookCsvData>();
+    List<FileIOAddressBookCsvData> collectList =
+      new ArrayList<FileIOAddressBookCsvData>();
 
     while (reader.eof != -1) {
       line++;
       boolean b_err = false;
       List<String> errmsg = new ArrayList<String>();
-      FileIOAddressBookCsvFormData formData = new FileIOAddressBookCsvFormData();
+      FileIOAddressBookCsvFormData formData =
+        new FileIOAddressBookCsvFormData();
       formData.initField();
       formData.setIsCompanyOnly(is_company_only);
       e_line.append("");
       for (j = 0; j < sequency.size(); j++) {
         token = reader.nextToken();
 
-        if (j > 0)
+        if (j > 0) {
           e_line.append(",");
+        }
         e_line.append("\"");
         e_line.append(makeOutputItem(token));
         e_line.append("\"");
 
         i = Integer.parseInt((String) sequency.get(j));
         formData.addItemToken(token, i);
-        if (reader.eof == -1)
+        if (reader.eof == -1) {
           break;
-        if (reader.line)
+        }
+        if (reader.line) {
           break;
+        }
       }
       while ((!reader.line) && (reader.eof != -1)) {
         reader.nextToken();
       }
 
-      if (reader.eof == -1 && j == 0)
+      if (reader.eof == -1 && j == 0) {
         break;
+      }
 
       // カンマ不足対策
       for (j++; j < sequency.size(); j++) {
@@ -161,8 +181,9 @@ public class FileIOAddressBookCsvSelectData extends ALCsvAbstractSelectData {
       }
 
       formData.setValidator();
-      if (!formData.validate(errmsg))
+      if (!formData.validate(errmsg)) {
         b_err = true;
+      }
 
       try {
         FileIOAddressBookCsvData data = new FileIOAddressBookCsvData();
@@ -170,13 +191,16 @@ public class FileIOAddressBookCsvSelectData extends ALCsvAbstractSelectData {
         data.setLineCount(line);
 
         StringBuffer sb = new StringBuffer();
-        sb.append(formData.getLastName().toString() + " "
-            + formData.getFirstName().toString());
+        sb.append(formData.getLastName().toString()
+          + " "
+          + formData.getFirstName().toString());
 
-        data.setName(formData.getLastName().toString() + " "
-            + formData.getFirstName().toString());
-        data.setNameKana(formData.getLastNameKana().toString() + " "
-            + formData.getFirstNameKana().toString());
+        data.setName(formData.getLastName().toString()
+          + " "
+          + formData.getFirstName().toString());
+        data.setNameKana(formData.getLastNameKana().toString()
+          + " "
+          + formData.getFirstNameKana().toString());
         data.setCreatedUser(formData.getUserName().toString());
 
         data.setTelephone(formData.getTelephone());
@@ -197,10 +221,12 @@ public class FileIOAddressBookCsvSelectData extends ALCsvAbstractSelectData {
         FileIOAddressBookCsvData pdata; // 同じデータがないか判別
         for (k = 0; k < collectList.size(); k++) {
           pdata = collectList.get(k);
-          if ((data.getCompanyName().toString().equals(pdata.getCompanyName()
-              .toString()))
-              && (data.getPostName().toString().equals(pdata.getPostName()
-                  .toString()))) {
+          if ((data.getCompanyName().toString().equals(pdata
+            .getCompanyName()
+            .toString()))
+            && (data.getPostName().toString().equals(pdata
+              .getPostName()
+              .toString()))) {
 
             if (is_company_only) {
               data.setSameCompany(true);
@@ -216,15 +242,15 @@ public class FileIOAddressBookCsvSelectData extends ALCsvAbstractSelectData {
           data.setSameCompany(true);
         }
         if ((data.getName().toString().equals(""))
-            && (data.getCompanyNameKana().toString().equals(""))) {
+          && (data.getCompanyNameKana().toString().equals(""))) {
           b_err = true;
         }
         if ((!data.getName().toString().equals(""))
-            && (data.getNameKana().toString().equals(""))) {
+          && (data.getNameKana().toString().equals(""))) {
           b_err = true;
         }
         if ((!data.getCompanyName().toString().equals(""))
-            && (data.getCompanyNameKana().toString().equals(""))) {
+          && (data.getCompanyNameKana().toString().equals(""))) {
           b_err = true;
         }
         data.setIsError(b_err);
@@ -238,34 +264,39 @@ public class FileIOAddressBookCsvSelectData extends ALCsvAbstractSelectData {
         }
 
         if ((!formData.getFirstName().toString().equals("名前（名）"))
-            && (!formData.getCompanyName().toString().equals("会社名"))) {
+          && (!formData.getCompanyName().toString().equals("会社名"))) {
           if (ErrCount == 0) {
             if (!b_err) {
-              if (list.size() < ALCsvTokenizer.CSV_SHOW_SIZE)
+              if (list.size() < ALCsvTokenizer.CSV_SHOW_SIZE) {
                 list.add(data);
+              }
             } else {
               // list.clear();// エラーが初めて発生した場合。
               list.add(data);
               ErrCount++;
             }
           } else {
-            if (b_err)
+            if (b_err) {
               ErrCount++;
+            }
             list.add(data);
           }
         } else {
-          if (ErrCount > 0)
+          if (ErrCount > 0) {
             ErrCount--;
+          }
           int lc = getLineCount();
           setLineCount(lc - 1);
         }
-        if (ErrCount >= ALCsvTokenizer.CSV_SHOW_ERROR_SIZE)
+        if (ErrCount >= ALCsvTokenizer.CSV_SHOW_ERROR_SIZE) {
           break;
+        }
       } catch (Exception e) {
         logger.error("readError");
       }
-      if (reader.eof == -1)
+      if (reader.eof == -1) {
         break;
+      }
     }
     collectList.clear();
     collectList = null;
@@ -278,7 +309,7 @@ public class FileIOAddressBookCsvSelectData extends ALCsvAbstractSelectData {
 
   /**
    * CSVファイルを読み込んでページ毎に表示用リストを作成します <BR>
-   *
+   * 
    * @param rundata
    * @param filepath
    * @param StartLine
@@ -286,8 +317,9 @@ public class FileIOAddressBookCsvSelectData extends ALCsvAbstractSelectData {
    * @return
    * @throws Exception
    */
-  private List<FileIOAddressBookCsvData> readAddressBookInfoFromCsvPage(RunData rundata, String filepath,
-      int StartLine, int LineLimit) throws Exception {
+  private List<FileIOAddressBookCsvData> readAddressBookInfoFromCsvPage(
+      RunData rundata, String filepath, int StartLine, int LineLimit)
+      throws Exception {
 
     int line_index = StartLine * ALCsvTokenizer.CSV_SHOW_SIZE;
 
@@ -296,28 +328,33 @@ public class FileIOAddressBookCsvSelectData extends ALCsvAbstractSelectData {
       return null;
     }
 
-    List<FileIOAddressBookCsvData> list = new ArrayList<FileIOAddressBookCsvData>();
+    List<FileIOAddressBookCsvData> list =
+      new ArrayList<FileIOAddressBookCsvData>();
 
     String token;
     int i, j;
     int line = 0;
     while (reader.eof != -1) {
       line++;
-      if (line > LineLimit)
+      if (line > LineLimit) {
         break;
+      }
 
       List<String> errmsg = new ArrayList<String>();
-      FileIOAddressBookCsvFormData formData = new FileIOAddressBookCsvFormData();
+      FileIOAddressBookCsvFormData formData =
+        new FileIOAddressBookCsvFormData();
       formData.initField();
       formData.setIsCompanyOnly(is_company_only);
       for (j = 0; j < sequency.size(); j++) {
         token = reader.nextToken();
         i = Integer.parseInt((String) sequency.get(j));
         formData.addItemToken(token, i);
-        if (reader.eof == -1)
+        if (reader.eof == -1) {
           break;
-        if (reader.line)
+        }
+        if (reader.line) {
           break;
+        }
         if (j == sequency.size() - 1) {
           if (stats == ALCsvTokenizer.CSV_LIST_MODE_ERROR) {
             token = reader.nextToken();
@@ -331,16 +368,19 @@ public class FileIOAddressBookCsvSelectData extends ALCsvAbstractSelectData {
 
       formData.setValidator();
       boolean iserror = !(formData.validate(errmsg));
-      if (reader.eof == -1)
+      if (reader.eof == -1) {
         break;
+      }
       try {
         FileIOAddressBookCsvData data = new FileIOAddressBookCsvData();
         data.initField();
         data.setLineCount(line + line_index);
-        data.setName(formData.getLastName().toString() + " "
-            + formData.getFirstName().toString());
-        data.setNameKana(formData.getLastNameKana().toString() + " "
-            + formData.getFirstNameKana().toString());
+        data.setName(formData.getLastName().toString()
+          + " "
+          + formData.getFirstName().toString());
+        data.setNameKana(formData.getLastNameKana().toString()
+          + " "
+          + formData.getFirstNameKana().toString());
         data.setCreatedUser(formData.getUserName().toString());
 
         data.setTelephone(formData.getTelephone());
@@ -365,14 +405,15 @@ public class FileIOAddressBookCsvSelectData extends ALCsvAbstractSelectData {
           data.setIsError(iserror);
         }
         if ((!formData.getFirstName().toString().equals("名前（名）"))
-            && (!formData.getCompanyName().toString().equals("会社名"))) {
+          && (!formData.getCompanyName().toString().equals("会社名"))) {
           list.add(data);
         }
       } catch (Exception e) {
         logger.error("readError");
       }
-      if (reader.eof == -1)
+      if (reader.eof == -1) {
         break;
+      }
     }
 
     return list;
@@ -380,7 +421,7 @@ public class FileIOAddressBookCsvSelectData extends ALCsvAbstractSelectData {
 
   /**
    * 会社情報のみ入力する場合はtrueを設定します <BR>
-   *
+   * 
    * @param flag
    */
   public void setIsCompanyOnly(boolean flag) {

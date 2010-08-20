@@ -64,8 +64,10 @@ public class LoginUserListBox extends ListBox {
     this.items = groupKeys;
     this.values = groupValues;
     this.size = Integer.toString(length + 1);
-    this.multiple = Boolean.valueOf(
-      (String) this.getParm(MULTIPLE_CHOICE, "false")).booleanValue();
+    this.multiple =
+      Boolean
+        .valueOf((String) this.getParm(MULTIPLE_CHOICE, "false"))
+        .booleanValue();
   }
 
 }

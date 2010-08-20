@@ -96,11 +96,13 @@ public class ALDateField extends ALAbstractField {
         value.getDate();
       } catch (NumberFormatException ex) {
 
-        msgList.add("『 <span class='em'>" + fieldName
+        msgList.add("『 <span class='em'>"
+          + fieldName
           + "</span> 』を正しく入力してください。");
         return false;
       } catch (ALIllegalDateException ex) {
-        msgList.add(" 『 <span class='em'>" + fieldName
+        msgList.add(" 『 <span class='em'>"
+          + fieldName
           + "</span> 』を正しく入力してください。");
         return false;
       }
@@ -266,8 +268,11 @@ public class ALDateField extends ALAbstractField {
     if (value == null) {
       return ALStringUtil.sanitizing(null);
     } else {
-      return ALStringUtil.sanitizing(value.toStringYear() + '/'
-        + value.toStringMonth() + '/' + value.toStringDay());
+      return ALStringUtil.sanitizing(value.toStringYear()
+        + '/'
+        + value.toStringMonth()
+        + '/'
+        + value.toStringDay());
     }
   }
 }

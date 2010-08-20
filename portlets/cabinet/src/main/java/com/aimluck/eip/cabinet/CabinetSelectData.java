@@ -19,7 +19,6 @@
 package com.aimluck.eip.cabinet;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
@@ -38,6 +37,8 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
@@ -89,29 +90,38 @@ public class CabinetSelectData extends
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-          "p1c-sort"));
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p1c-sort"));
       logger.debug("[CabinetSelectData] Init Parameter. : "
-        + ALEipUtils.getPortlet(rundata, context).getPortletConfig()
+        + ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
           .getInitParameter("p1c-sort"));
     }
 
     int fid = CabinetUtils.ROOT_FODLER_ID;
     if (isNormalContext) {
-      String id = ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-        .getInitParameter("p3a-folder");
+      String id =
+        ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p3a-folder");
       fid = Integer.parseInt(id);
     } else {
       // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
       if (ALEipUtils.isMatch(rundata, context)) {
         // ENTITY ID
         if (rundata.getParameters().containsKey(CabinetUtils.KEY_FOLDER_ID)) {
-          ALEipUtils.setTemp(rundata, context, CabinetUtils.KEY_FOLDER_ID,
+          ALEipUtils.setTemp(
+            rundata,
+            context,
+            CabinetUtils.KEY_FOLDER_ID,
             rundata.getParameters().getString(CabinetUtils.KEY_FOLDER_ID));
         }
       }
-      String tmpfid = ALEipUtils.getTemp(rundata, context,
-        CabinetUtils.KEY_FOLDER_ID);
+      String tmpfid =
+        ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_FOLDER_ID);
       if (tmpfid != null && !"".equals(tmpfid)) {
         try {
           fid = Integer.parseInt(tmpfid);
@@ -149,24 +159,26 @@ public class CabinetSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<EipTCabinetFile> selectList(RunData rundata, Context context)
-      throws ALPageNotFoundException, ALDBErrorException {
+  protected ResultList<EipTCabinetFile> selectList(RunData rundata,
+      Context context) throws ALPageNotFoundException, ALDBErrorException {
     try {
-      CabinetUtils.setFolderVisible(folder_hierarchy_list, selected_folderinfo,
+      CabinetUtils.setFolderVisible(
+        folder_hierarchy_list,
+        selected_folderinfo,
         rundata);
 
       SelectQuery<EipTCabinetFile> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTCabinetFile> list = query.fetchList();
+      ResultList<EipTCabinetFile> list = query.getResultList();
       // ファイル総数をセットする．
       if (list == null) {
-        return new ArrayList<EipTCabinetFile>();
+        return new ResultList<EipTCabinetFile>(new ArrayList());
       } else {
         fileSum = list.size();
       }
-      return buildPaginatedList(list);
+      return list;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -182,17 +194,20 @@ public class CabinetSelectData extends
    */
   private SelectQuery<EipTCabinetFile> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipTCabinetFile> query = new SelectQuery<EipTCabinetFile>(
-      EipTCabinetFile.class)
-      .select(EipTCabinetFile.FILE_ID_PK_COLUMN,
-        EipTCabinetFile.FOLDER_ID_COLUMN, EipTCabinetFile.FILE_TITLE_COLUMN,
-        EipTCabinetFile.FILE_NAME_COLUMN, EipTCabinetFile.FILE_SIZE_COLUMN,
+    SelectQuery<EipTCabinetFile> query =
+      Database.query(EipTCabinetFile.class).select(
+        EipTCabinetFile.FILE_ID_PK_COLUMN,
+        EipTCabinetFile.FOLDER_ID_COLUMN,
+        EipTCabinetFile.FILE_TITLE_COLUMN,
+        EipTCabinetFile.FILE_NAME_COLUMN,
+        EipTCabinetFile.FILE_SIZE_COLUMN,
         EipTCabinetFile.UPDATE_USER_ID_COLUMN,
         EipTCabinetFile.UPDATE_DATE_COLUMN);
     if (selected_folderinfo != null) {
-      Expression exp = ExpressionFactory.matchDbExp(
-        EipTCabinetFolder.FOLDER_ID_PK_COLUMN, Integer
-          .valueOf(selected_folderinfo.getFolderId()));
+      Expression exp =
+        ExpressionFactory.matchDbExp(
+          EipTCabinetFolder.FOLDER_ID_PK_COLUMN,
+          Integer.valueOf(selected_folderinfo.getFolderId()));
       query.setQualifier(exp);
     }
     query.distinct(true);
@@ -255,23 +270,25 @@ public class CabinetSelectData extends
       rd.setFileTitle(record.getFileTitle());
       rd.setFileName(record.getFileName());
       rd.setFileSize(record.getFileSize().longValue());
-      rd.setPosition(CabinetUtils.getFolderPosition(folder_hierarchy_list,
+      rd.setPosition(CabinetUtils.getFolderPosition(
+        folder_hierarchy_list,
         record.getFolderId().intValue()));
       rd.setNote(record.getNote());
-      rd.setisEditable((CabinetUtils.isEditableFolder(record.getFolderId(),
+      rd.setisEditable((CabinetUtils.isEditableFolder(
+        record.getFolderId(),
         rundata)));
 
       String createUserName = "";
-      ALEipUser createUser = ALEipUtils.getALEipUser(record.getCreateUserId()
-        .intValue());
+      ALEipUser createUser =
+        ALEipUtils.getALEipUser(record.getCreateUserId().intValue());
       if (createUser != null) {
         createUserName = createUser.getAliasName().getValue();
       }
       rd.setCreateUser(createUserName);
       rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
       String updateUserName = "";
-      ALEipUser updateUser = ALEipUtils.getALEipUser(record.getUpdateUserId()
-        .intValue());
+      ALEipUser updateUser =
+        ALEipUtils.getALEipUser(record.getUpdateUserId().intValue());
       if (updateUser != null) {
         updateUserName = updateUser.getAliasName().getValue();
       }

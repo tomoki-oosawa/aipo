@@ -141,14 +141,16 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
     context.put(ALEipConstants.MODE, mode);
     context.put(ALEipConstants.RESULT, result);
     context.put(ALEipConstants.ERROR_MESSAGE_LIST, errmsgList);
-    context.put(ALEipConstants.ENTITY_ID, ALEipUtils.getTemp(rundata, context,
+    context.put(ALEipConstants.ENTITY_ID, ALEipUtils.getTemp(
+      rundata,
+      context,
       ALEipConstants.ENTITY_ID));
     context.put("utils", new ALCommonUtils());
 
-    ALOrgUtilsHandler handler = ALOrgUtilsFactoryService.getInstance()
-      .getOrgUtilsHandler();
-    HashMap<String, String> attribute = handler
-      .getParameters(DatabaseOrmService.getInstance().getOrgId(rundata));
+    ALOrgUtilsHandler handler =
+      ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
+    HashMap<String, String> attribute =
+      handler.getParameters(DatabaseOrmService.getInstance().getOrgId(rundata));
     for (Map.Entry<String, String> e : attribute.entrySet()) {
       context.put(e.getKey(), e.getValue());
     }

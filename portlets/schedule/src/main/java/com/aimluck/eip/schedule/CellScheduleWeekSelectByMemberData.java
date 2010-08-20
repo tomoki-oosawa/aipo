@@ -23,12 +23,10 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.jar.Attributes;
 
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -36,32 +34,26 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALCellStringField;
-import com.aimluck.commons.field.ALDateTimeField;
-import com.aimluck.commons.field.ALNumberField;
-import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
-import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
-import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.util.ALEipUtils;
-
-import org.apache.jetspeed.modules.actions.portlets.*;
 
 /**
  * 週間スケジュールの検索結果を管理するクラスです。
- *
+ * 
  */
 public class CellScheduleWeekSelectByMemberData extends
     CellScheduleWeekSelectData {
 
   /** <code>logger</code> logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ScheduleWeeklySelectData.class.getName());
+    .getLogger(ScheduleWeeklySelectData.class.getName());
 
   private DataContext dataContext;
 
@@ -70,6 +62,7 @@ public class CellScheduleWeekSelectByMemberData extends
   /** <code>login_user</code> 表示対象ユーザー */
   private ALEipUser targerUser;
 
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -78,22 +71,23 @@ public class CellScheduleWeekSelectByMemberData extends
     user = new ALCellStringField();
     user.setNotNull(true);
 
-
     // 表示対象ユーザー取得
     String tmpTargetUser = rundata.getParameters().getString("selectedmember");
     if (tmpTargetUser == null || tmpTargetUser.equals("")) {
       targerUser = ALEipUtils.getALEipUser(rundata);
     } else {
       targerUser = ALEipUtils.getALEipUser(Integer.parseInt(tmpTargetUser));
-      //setTemplate(rundata, "schedule-menu-select-member");
+      // setTemplate(rundata, "schedule-menu-select-member");
     }
   }
 
+  @Override
   public void initField() {
 
   }
 
-  protected List selectList(RunData rundata, Context context) {
+  @Override
+  protected ResultList selectList(RunData rundata, Context context) {
     ArrayList scheduleMapList = new ArrayList();
     Calendar cal = Calendar.getInstance();
     cal.setTime(getStartDate().getValue());
@@ -105,46 +99,54 @@ public class CellScheduleWeekSelectByMemberData extends
     // 通常、期間スケジュール、または日単位繰り返し
     for (int k = 0; k < 7; k++) {
       SelectQuery query = new SelectQuery(EipTScheduleMap.class);
-      Expression exp = ExpressionFactory.matchExp(
-          EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(userid));
-      Expression exp0 = ExpressionFactory.noMatchExp(
-          EipTScheduleMap.STATUS_PROPERTY, "D");
-      Expression exp00 = ExpressionFactory.noMatchExp(
-          EipTScheduleMap.STATUS_PROPERTY, "R");
+      Expression exp =
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+          .valueOf(userid));
+      Expression exp0 =
+        ExpressionFactory.noMatchExp(EipTScheduleMap.STATUS_PROPERTY, "D");
+      Expression exp00 =
+        ExpressionFactory.noMatchExp(EipTScheduleMap.STATUS_PROPERTY, "R");
 
-      Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-              + EipTSchedule.END_DATE_PROPERTY, cal.getTime());
+      Expression exp11 =
+        ExpressionFactory.greaterOrEqualExp(
+          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+            + "."
+            + EipTSchedule.END_DATE_PROPERTY,
+          cal.getTime());
       cal.add(Calendar.DAY_OF_MONTH, 1);
-      Expression exp12 = ExpressionFactory.lessExp(
-          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-              + EipTSchedule.START_DATE_PROPERTY, cal.getTime());
-      Expression exp13 = ExpressionFactory.matchExp(
-          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-              + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
-      Expression exp14 = ExpressionFactory.matchExp(
-          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-              + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
+      Expression exp12 =
+        ExpressionFactory.lessExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.START_DATE_PROPERTY, cal.getTime());
+      Expression exp13 =
+        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
+      Expression exp14 =
+        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
       Expression exp10 = exp11.andExp(exp12.andExp(exp13.orExp(exp14)));
 
-      Expression exp21 = ExpressionFactory.matchExp(
-          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-              + EipTSchedule.REPEAT_PATTERN_PROPERTY, "DN");
-      Expression exp22 = ExpressionFactory.matchExp(
-          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-              + EipTSchedule.REPEAT_PATTERN_PROPERTY, "DL");
+      Expression exp21 =
+        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.REPEAT_PATTERN_PROPERTY, "DN");
+      Expression exp22 =
+        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.REPEAT_PATTERN_PROPERTY, "DL");
       Expression exp20 = exp21.orExp(exp22.andExp(exp11).andExp(exp12));
 
       query.setQualifier((exp10.orExp(exp20)).andExp(exp).andExp(exp0).andExp(
-          exp00));
+        exp00));
 
       /*
        * List orders = new ArrayList(); orders.add(new
        * Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "." +
        * EipTSchedule.START_DATE_PROPERTY, true)); orders.add(new
        * Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "." +
-       * EipTSchedule.END_DATE_PROPERTY, true));
-       * query.addOrderings(orders);
+       * EipTSchedule.END_DATE_PROPERTY, true)); query.addOrderings(orders);
        */
 
       List list = dataContext.performQuery(query);
@@ -153,14 +155,17 @@ public class CellScheduleWeekSelectByMemberData extends
 
     // 週間、または毎月の場合
     SelectQuery query = new SelectQuery(EipTScheduleMap.class);
-    Expression exp = ExpressionFactory.matchExp(
-        EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(userid));
-    Expression exp2 = ExpressionFactory.noMatchExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
-    Expression exp3 = ExpressionFactory.noMatchExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
+    Expression exp =
+      ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+        .valueOf(userid));
+    Expression exp2 =
+      ExpressionFactory.noMatchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
+    Expression exp3 =
+      ExpressionFactory.noMatchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
 
     query.setQualifier(exp);
     query.andQualifier(exp2);
@@ -184,13 +189,13 @@ public class CellScheduleWeekSelectByMemberData extends
                 cal2.add(Calendar.DAY_OF_MONTH, 1);
                 if (schedule.getStartDate().compareTo(cal2.getTime()) < 0) {
                   List list2 = (List) scheduleMapList.get(index);
-                  list2.add((EipTScheduleMap) list.get(k));
+                  list2.add(list.get(k));
                   scheduleMapList.set(index, list2);
                 }
               }
             } else {
               List list2 = (List) scheduleMapList.get(index);
-              list2.add((EipTScheduleMap) list.get(k));
+              list2.add(list.get(k));
               scheduleMapList.set(index, list2);
             }
           }
@@ -209,20 +214,21 @@ public class CellScheduleWeekSelectByMemberData extends
           index += cal_event.getActualMaximum(Calendar.DAY_OF_MONTH);
           cal2.add(Calendar.MONTH, 1);
         }
-        if (index >= 0 && index <= 6
-            && cal_event.getActualMaximum(Calendar.DAY_OF_MONTH) >= day) {
+        if (index >= 0
+          && index <= 6
+          && cal_event.getActualMaximum(Calendar.DAY_OF_MONTH) >= day) {
           if (pattern.endsWith("L")) {
             if (schedule.getEndDate().compareTo(cal2.getTime()) >= 0) {
               cal2.add(Calendar.DAY_OF_MONTH, 1);
               if (schedule.getStartDate().compareTo(cal2.getTime()) < 0) {
                 List list2 = (List) scheduleMapList.get(index);
-                list2.add((EipTScheduleMap) list.get(k));
+                list2.add(list.get(k));
                 scheduleMapList.set(index, list2);
               }
             }
           } else {
             List list2 = (List) scheduleMapList.get(index);
-            list2.add((EipTScheduleMap) list.get(k));
+            list2.add(list.get(k));
             scheduleMapList.set(index, list2);
           }
         }
@@ -232,10 +238,11 @@ public class CellScheduleWeekSelectByMemberData extends
     // ダミースケジュールの処理
 
     SelectQuery queryD = new SelectQuery(EipTScheduleMap.class);
-    Expression expD = ExpressionFactory.matchExp(
-        EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(userid));
-    Expression expD2 = ExpressionFactory.matchExp(
-        EipTScheduleMap.STATUS_PROPERTY, "D");
+    Expression expD =
+      ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+        .valueOf(userid));
+    Expression expD2 =
+      ExpressionFactory.matchExp(EipTScheduleMap.STATUS_PROPERTY, "D");
     queryD.setQualifier(expD);
     queryD.andQualifier(expD2);
     List listD = dataContext.performQuery(queryD);
@@ -256,7 +263,8 @@ public class CellScheduleWeekSelectByMemberData extends
             for (int m = 0; m < list2.size(); m++) {
               scheduleM = ((EipTScheduleMap) list2.get(m)).getEipTSchedule();
               if (scheduleD.getParentId().intValue() == scheduleM
-                  .getScheduleId().intValue()) {
+                .getScheduleId()
+                .intValue()) {
                 list2.remove(m);
                 scheduleMapList.set(k, list2);
                 break;
@@ -306,7 +314,7 @@ public class CellScheduleWeekSelectByMemberData extends
       scheduleMapList.set(i, slist);
     }
 
-    return scheduleMapList;
+    return new ResultList(scheduleMapList);
   }
 
   public ALEipUser getTargerUser() {

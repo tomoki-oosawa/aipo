@@ -25,7 +25,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.DataRow;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -57,6 +56,7 @@ import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -65,9 +65,10 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
  * ブログエントリー検索データを管理するクラスです。 <BR>
- *
+ * 
  */
-public class BlogEntrySelectData extends ALAbstractSelectData implements ALData {
+public class BlogEntrySelectData extends
+    ALAbstractSelectData<EipTBlogEntry, EipTBlogEntry> implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -81,7 +82,7 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
 
   private List commentList;
 
-  private List footmarkList;
+  private List<BlogFootmarkResultData> footmarkList;
 
   private int uid;
 
@@ -119,13 +120,14 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
   private String aclPortletFeature = null;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     dataContext = DatabaseOrmService.getInstance().getDataContext();
@@ -134,7 +136,8 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
     ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
     if (rundata.getParameters().containsKey(ALEipConstants.ENTITY_ID)) {
       ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, rundata
-        .getParameters().get(ALEipConstants.ENTITY_ID));
+        .getParameters()
+        .get(ALEipConstants.ENTITY_ID));
     }
 
     // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
@@ -153,7 +156,8 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
 
       if (rundata.getParameters().containsKey("view_day")) {
         ALEipUtils.setTemp(rundata, context, "view_day", rundata
-          .getParameters().getString("view_day"));
+          .getParameters()
+          .getString("view_day"));
       }
 
       // if (rundata.getParameters().containsKey("view_uid")) {
@@ -197,7 +201,7 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
       viewMonth.setValue(cal.getTime());
     } else {
       viewMonth.setValue(tmpViewMonth);
-      if (!viewMonth.validate(new ArrayList())) {
+      if (!viewMonth.validate(new ArrayList<String>())) {
         ALEipUtils.removeTemp(rundata, context, "view_month");
         throw new ALPageNotFoundException();
       }
@@ -227,8 +231,8 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
     loadMonthCalendar();
 
     // ポートレット AccountEdit のへのリンクを取得する．
-    userAccountURI = BlogUtils.getPortletURIinPersonalConfigPane(rundata,
-      "AccountEdit");
+    userAccountURI =
+      BlogUtils.getPortletURIinPersonalConfigPane(rundata, "AccountEdit");
 
     super.init(action, rundata, context);
 
@@ -237,8 +241,8 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
       view_uid = record.getOwnerId();
     } else {
       if (rundata.getParameters().containsKey("view_uid")) {
-        view_uid = Integer.parseInt(rundata.getParameters().getString(
-          "view_uid"));
+        view_uid =
+          Integer.parseInt(rundata.getParameters().getString("view_uid"));
       } else {
         view_uid = uid;
       }
@@ -258,14 +262,16 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
 
     // アクセス権
     if (view_uid == uid) {
-      aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_SELF;
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_SELF;
     } else {
-      aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER;
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER;
     }
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -276,17 +282,19 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
 
   private void loadMonthCalendar() {
     MonthCalendar c = new MonthCalendar();
-    month = c.createCalendar(Integer.parseInt(viewMonth.getYear()),
-      Integer.parseInt(viewMonth.getMonth()));
+    month =
+      c.createCalendar(Integer.parseInt(viewMonth.getYear()), Integer
+        .parseInt(viewMonth.getMonth()));
   }
 
   private void loadFootmark(EipTBlog blog) throws Exception {
-    footmarkList = new ArrayList();
+    footmarkList = new ArrayList<BlogFootmarkResultData>();
 
-    SelectQuery<EipTBlogFootmarkMap> query = new SelectQuery<EipTBlogFootmarkMap>(
-      EipTBlogFootmarkMap.class);
-    Expression exp = ExpressionFactory.matchExp(
-      EipTBlogFootmarkMap.BLOG_ID_PROPERTY, blog.getBlogId());
+    SelectQuery<EipTBlogFootmarkMap> query =
+      new SelectQuery<EipTBlogFootmarkMap>(EipTBlogFootmarkMap.class);
+    Expression exp =
+      ExpressionFactory.matchExp(EipTBlogFootmarkMap.BLOG_ID_PROPERTY, blog
+        .getBlogId());
     query.setQualifier(exp);
     query.orderDesending(EipTBlogFootmarkMap.UPDATE_DATE_PROPERTY);
     query.limit(10);
@@ -299,7 +307,8 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
         BlogFootmarkResultData footmark = new BlogFootmarkResultData();
         footmark.initField();
         footmark.setUserId(record.getUserId().longValue());
-        footmark.setUserName(BlogUtils.getUserFullName(record.getUserId()
+        footmark.setUserName(BlogUtils.getUserFullName(record
+          .getUserId()
           .intValue()));
 
         SimpleDateFormat format = new SimpleDateFormat("MM/dd HH:mm");
@@ -312,27 +321,27 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
 
   /**
    * 一覧データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public List selectList(RunData rundata, Context context) {
+  @Override
+  public ResultList<EipTBlogEntry> selectList(RunData rundata, Context context) {
     try {
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTBlogEntry> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       query.orderDesending(EipTBlogEntry.CREATE_DATE_PROPERTY);
 
-      List aList = query.fetchList();
+      ResultList<EipTBlogEntry> list = query.getResultList();
       // エントリーの総数をセットする．
-      entrySum = aList.size();
-      List list = buildPaginatedList(aList);
+      entrySum = list.getTotalCount();
 
       EipTBlog blog = null;
       if (list != null && list.size() > 0) {
-        EipTBlogEntry record = (EipTBlogEntry) list.get(0);
+        EipTBlogEntry record = list.get(0);
         blog = record.getEipTBlog();
       } else {
         blog = getBlog(view_uid);
@@ -358,23 +367,30 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTBlogEntry.class);
+  private SelectQuery<EipTBlogEntry> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTBlogEntry> query =
+      new SelectQuery<EipTBlogEntry>(EipTBlogEntry.class);
 
-    Expression exp1 = ExpressionFactory.matchExp(
-      EipTBlogEntry.OWNER_ID_PROPERTY, Integer.valueOf(view_uid));
+    Expression exp1 =
+      ExpressionFactory.matchExp(EipTBlogEntry.OWNER_ID_PROPERTY, Integer
+        .valueOf(view_uid));
     query.setQualifier(exp1);
 
     // 月毎の記事表示
-    Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-      EipTBlogEntry.CREATE_DATE_PROPERTY, viewStart.getValue());
-    Expression exp12 = ExpressionFactory.lessOrEqualExp(
-      EipTBlogEntry.CREATE_DATE_PROPERTY, viewEndCrt.getValue());
+    Expression exp11 =
+      ExpressionFactory.greaterOrEqualExp(
+        EipTBlogEntry.CREATE_DATE_PROPERTY,
+        viewStart.getValue());
+    Expression exp12 =
+      ExpressionFactory.lessOrEqualExp(
+        EipTBlogEntry.CREATE_DATE_PROPERTY,
+        viewEndCrt.getValue());
     query.andQualifier(exp11.andExp(exp12));
 
     if (viewDay != null) {
@@ -388,13 +404,17 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
       cal.set(Calendar.MINUTE, 0);
       tmpViewDay.setValue(cal.getTime());
 
-      Expression exp21 = ExpressionFactory.greaterOrEqualExp(
-        EipTBlogEntry.CREATE_DATE_PROPERTY, tmpViewDay.getValue());
+      Expression exp21 =
+        ExpressionFactory.greaterOrEqualExp(
+          EipTBlogEntry.CREATE_DATE_PROPERTY,
+          tmpViewDay.getValue());
 
       cal.set(Calendar.DATE, Integer.valueOf(viewDay) + 1);
       tmpViewDay.setValue(cal.getTime());
-      Expression exp22 = ExpressionFactory.lessExp(
-        EipTBlogEntry.CREATE_DATE_PROPERTY, tmpViewDay.getValue());
+      Expression exp22 =
+        ExpressionFactory.lessExp(
+          EipTBlogEntry.CREATE_DATE_PROPERTY,
+          tmpViewDay.getValue());
 
       query.andQualifier(exp21.andExp(exp22));
     }
@@ -406,24 +426,31 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    */
-  private SelectQuery getSelectQueryForCalendar(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTBlogEntry.class)
-      .select(EipTBlogEntry.CREATE_DATE_COLUMN);
+  private SelectQuery<EipTBlogEntry> getSelectQueryForCalendar(RunData rundata,
+      Context context) {
+    SelectQuery<EipTBlogEntry> query =
+      new SelectQuery<EipTBlogEntry>(EipTBlogEntry.class)
+        .select(EipTBlogEntry.CREATE_DATE_COLUMN);
 
-    Expression exp1 = ExpressionFactory.matchExp(
-      EipTBlogEntry.OWNER_ID_PROPERTY, Integer.valueOf(view_uid));
+    Expression exp1 =
+      ExpressionFactory.matchExp(EipTBlogEntry.OWNER_ID_PROPERTY, Integer
+        .valueOf(view_uid));
     query.setQualifier(exp1);
 
     // 月毎の記事表示
-    Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-      EipTBlogEntry.CREATE_DATE_PROPERTY, viewStart.getValue());
-    Expression exp12 = ExpressionFactory.lessOrEqualExp(
-      EipTBlogEntry.CREATE_DATE_PROPERTY, viewEndCrt.getValue());
+    Expression exp11 =
+      ExpressionFactory.greaterOrEqualExp(
+        EipTBlogEntry.CREATE_DATE_PROPERTY,
+        viewStart.getValue());
+    Expression exp12 =
+      ExpressionFactory.lessOrEqualExp(
+        EipTBlogEntry.CREATE_DATE_PROPERTY,
+        viewEndCrt.getValue());
     query.andQualifier(exp11.andExp(exp12));
 
     query.distinct(true);
@@ -433,25 +460,27 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
-  protected Object getResultData(Object obj) {
+  @Override
+  protected Object getResultData(EipTBlogEntry record) {
     try {
-      EipTBlogEntry record = (EipTBlogEntry) obj;
 
       BlogEntryResultData rd = new BlogEntryResultData();
       rd.initField();
       rd.setEntryId(record.getEntryId().longValue());
       rd.setOwnerId(record.getOwnerId().longValue());
-      rd.setTitle(ALCommonUtils.compressString(record.getTitle(),
+      rd.setTitle(ALCommonUtils.compressString(
+        record.getTitle(),
         getStrLength()));
       rd.setNote(BlogUtils.compressString(record.getNote(), 100));
       rd.setBlogId(record.getEipTBlog().getBlogId().longValue());
       rd.setThemaId(record.getEipTBlogThema().getThemaId().longValue());
-      rd.setThemaName(ALCommonUtils.compressString(record.getEipTBlogThema()
+      rd.setThemaName(ALCommonUtils.compressString(record
+        .getEipTBlogThema()
         .getThemaName(), getStrLength()));
       rd.setAllowComments("T".equals(record.getAllowComments()));
 
@@ -460,12 +489,14 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
       SimpleDateFormat sdf2 = new SimpleDateFormat("dd");
       rd.setDay(Integer.parseInt((sdf2.format(record.getCreateDate()))));
 
-      SelectQuery query = new SelectQuery(EipTBlogComment.class);
-      Expression exp = ExpressionFactory.matchDbExp(
-        EipTBlogComment.EIP_TBLOG_ENTRY_PROPERTY + "."
+      SelectQuery<EipTBlogComment> query =
+        new SelectQuery<EipTBlogComment>(EipTBlogComment.class);
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipTBlogComment.EIP_TBLOG_ENTRY_PROPERTY
+          + "."
           + EipTBlogEntry.ENTRY_ID_PK_COLUMN, record.getEntryId());
       query.setQualifier(exp);
-      List list = query.fetchList();
+      List<EipTBlogComment> list = query.fetchList();
       if (list != null && list.size() > 0) {
         rd.setCommentsNum(list.size());
       }
@@ -477,6 +508,7 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
     }
   }
 
+  @SuppressWarnings("unused")
   private boolean containsSelectedView(String viewDay, int day) {
     String dayStr = "" + day;
     if (viewDay != null && !"".equals(viewDay)) {
@@ -499,7 +531,7 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
     String d_day = "" + date.getDate();
     int size = month.size();
     for (int i = 0; i < size; i++) {
-      element = (CalendarElement) month.get(i);
+      element = month.get(i);
       if (d_day.equals(element.getLabel())) {
         ((Day) element).setBlogEntry(true);
       }
@@ -508,19 +540,20 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
 
   /**
    * ブログIDを取得する
-   *
+   * 
    * @param view_uid
    */
   private EipTBlog getBlog(int view_uid) throws Exception {
-    SelectQuery query = new SelectQuery(EipTBlog.class);
-    Expression exp = ExpressionFactory.matchExp(EipTBlog.OWNER_ID_PROPERTY,
-      Integer.valueOf(view_uid));
+    SelectQuery<EipTBlog> query = new SelectQuery<EipTBlog>(EipTBlog.class);
+    Expression exp =
+      ExpressionFactory.matchExp(EipTBlog.OWNER_ID_PROPERTY, Integer
+        .valueOf(view_uid));
     query.setQualifier(exp);
-    List list = query.fetchList();
+    List<EipTBlog> list = query.fetchList();
     if (list == null || list.size() <= 0) {
       // 新規オブジェクトモデル
-      EipTBlog blog = (EipTBlog) dataContext
-        .createAndRegisterNewObject(EipTBlog.class);
+      EipTBlog blog =
+        (EipTBlog) dataContext.createAndRegisterNewObject(EipTBlog.class);
       // ユーザーID
       blog.setOwnerId(Integer.valueOf(view_uid));
       // 作成日
@@ -531,14 +564,14 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
       dataContext.commitChanges();
       return blog;
     } else {
-      EipTBlog blog = (EipTBlog) list.get(0);
+      EipTBlog blog = list.get(0);
       return blog;
     }
   }
 
   /**
    * あしあと機能
-   *
+   * 
    */
   private void footmark(RunData rundata, EipTBlog blog) throws Exception {
     if (blog.getOwnerId().intValue() == ALEipUtils.getUserId(rundata)) {
@@ -552,22 +585,28 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
     cal.set(Calendar.MINUTE, 0);
     today.setValue(cal.getTime());
 
-    SelectQuery query = new SelectQuery(EipTBlogFootmarkMap.class);
-    Expression exp1 = ExpressionFactory.matchExp(
-      EipTBlogFootmarkMap.BLOG_ID_PROPERTY, blog.getBlogId());
+    SelectQuery<EipTBlogFootmarkMap> query =
+      new SelectQuery<EipTBlogFootmarkMap>(EipTBlogFootmarkMap.class);
+    Expression exp1 =
+      ExpressionFactory.matchExp(EipTBlogFootmarkMap.BLOG_ID_PROPERTY, blog
+        .getBlogId());
     query.setQualifier(exp1);
-    Expression exp2 = ExpressionFactory.matchExp(
-      EipTBlogFootmarkMap.USER_ID_PROPERTY, Integer.valueOf(uid));
+    Expression exp2 =
+      ExpressionFactory.matchExp(EipTBlogFootmarkMap.USER_ID_PROPERTY, Integer
+        .valueOf(uid));
     query.andQualifier(exp2);
-    Expression exp3 = ExpressionFactory.matchExp(
-      EipTBlogFootmarkMap.CREATE_DATE_PROPERTY, today.getValue());
+    Expression exp3 =
+      ExpressionFactory.matchExp(
+        EipTBlogFootmarkMap.CREATE_DATE_PROPERTY,
+        today.getValue());
     query.andQualifier(exp3);
 
-    List list = query.fetchList();
+    List<EipTBlogFootmarkMap> list = query.fetchList();
     if (list == null || list.size() <= 0) {
       // あしあとを登録する
-      EipTBlogFootmarkMap footmark = (EipTBlogFootmarkMap) dataContext
-        .createAndRegisterNewObject(EipTBlogFootmarkMap.class);
+      EipTBlogFootmarkMap footmark =
+        (EipTBlogFootmarkMap) dataContext
+          .createAndRegisterNewObject(EipTBlogFootmarkMap.class);
       footmark.setEipTBlog(blog);
       footmark.setUserId(Integer.valueOf(uid));
       footmark.setCreateDate(Calendar.getInstance().getTime());
@@ -575,7 +614,7 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
       dataContext.commitChanges();
     } else {
       // あしあとを更新する
-      EipTBlogFootmarkMap footmark = (EipTBlogFootmarkMap) list.get(0);
+      EipTBlogFootmarkMap footmark = list.get(0);
       footmark.setUpdateDate(Calendar.getInstance().getTime());
       dataContext.commitChanges();
     }
@@ -583,23 +622,25 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
 
   /**
    * 詳細データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public Object selectDetail(RunData rundata, Context context) {
+  @Override
+  public EipTBlogEntry selectDetail(RunData rundata, Context context) {
 
     try {
       /**
        * 新着ポートレット既読処理
        */
-      String entityid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+      String entityid =
+        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
       WhatsNewUtils.shiftWhatsNewReadFlagPublic(
-        WhatsNewUtils.WHATS_NEW_TYPE_BLOG_ENTRY, Integer.parseInt(entityid),
+        WhatsNewUtils.WHATS_NEW_TYPE_BLOG_ENTRY,
+        Integer.parseInt(entityid),
         uid);
     } catch (Exception e) {
       // TODO: handle exception
@@ -609,11 +650,11 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
     try {
       setupDetailCalendar(rundata, context);
 
-      Object obj = BlogUtils.getEipTBlogEntry(rundata, context);
+      EipTBlogEntry obj = BlogUtils.getEipTBlogEntry(rundata, context);
 
       if (obj != null) {
         EipTBlog blog = null;
-        EipTBlogEntry record = (EipTBlogEntry) obj;
+        EipTBlogEntry record = obj;
 
         blog = record.getEipTBlog();
 
@@ -637,17 +678,14 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
 
   private void setupDetailCalendar(RunData rundata, Context context) {
     try {
-      SelectQuery query = getSelectQueryForCalendar(rundata, context);
+      SelectQuery<EipTBlogEntry> query =
+        getSelectQueryForCalendar(rundata, context);
       query.orderDesending(EipTBlogEntry.UPDATE_DATE_PROPERTY);
 
-      List list = query.fetchList();
+      List<EipTBlogEntry> list = query.fetchList();
 
-      DataRow dataRow = null;
-      int size = list.size();
-      for (int i = 0; i < size; i++) {
-        dataRow = (DataRow) list.get(i);
-        setBlogEntryToMonthCalendar((Date) ALEipUtils.getObjFromDataRow(
-          dataRow, EipTBlogEntry.CREATE_DATE_COLUMN));
+      for (EipTBlogEntry entry : list) {
+        setBlogEntryToMonthCalendar(entry.getCreateDate());
       }
 
     } catch (Exception ex) {
@@ -657,21 +695,21 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
-  protected Object getResultDataDetail(Object obj) {
+  @Override
+  protected Object getResultDataDetail(EipTBlogEntry record) {
     try {
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日（EE） HH時mm分");
-
-      EipTBlogEntry record = (EipTBlogEntry) obj;
       BlogEntryResultData rd = new BlogEntryResultData();
       rd.initField();
       rd.setEntryId(record.getEntryId().longValue());
       rd.setOwnerId(record.getOwnerId().longValue());
-      rd.setOwnerName(BlogUtils.getUserFullName(record.getOwnerId().intValue()));
+      rd
+        .setOwnerName(BlogUtils.getUserFullName(record.getOwnerId().intValue()));
       rd.setTitle(record.getTitle());
       rd.setNote(record.getNote());
       rd.setBlogId(record.getEipTBlog().getBlogId().longValue());
@@ -684,9 +722,11 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
 
       commentList = new ArrayList();
 
-      SelectQuery query = new SelectQuery(EipTBlogComment.class);
-      Expression exp = ExpressionFactory.matchDbExp(
-        EipTBlogComment.EIP_TBLOG_ENTRY_PROPERTY + "."
+      SelectQuery<EipTBlogComment> query =
+        new SelectQuery<EipTBlogComment>(EipTBlogComment.class);
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipTBlogComment.EIP_TBLOG_ENTRY_PROPERTY
+          + "."
           + EipTBlogEntry.ENTRY_ID_PK_COLUMN, record.getEntryId());
       query.orderAscending(EipTBlogComment.UPDATE_DATE_PROPERTY);
       query.setQualifier(exp);
@@ -701,9 +741,12 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
           comment.setCommentId(blogcomment.getCommentId().longValue());
           comment.setOwnerId(blogcomment.getOwnerId().longValue());
           comment.setOwnerName(BlogUtils.getUserFullName(blogcomment
-            .getOwnerId().intValue()));
+            .getOwnerId()
+            .intValue()));
           comment.setComment(blogcomment.getComment());
-          comment.setEntryId(blogcomment.getEipTBlogEntry().getEntryId()
+          comment.setEntryId(blogcomment
+            .getEipTBlogEntry()
+            .getEntryId()
             .longValue());
           comment.setUpdateDate(sdf.format(blogcomment.getUpdateDate()));
           comment.setUpdateDateAlternative(blogcomment.getUpdateDate());
@@ -712,30 +755,34 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
            * 新着ポートレット既読処理
            */
           WhatsNewUtils.shiftWhatsNewReadFlag(
-            WhatsNewUtils.WHATS_NEW_TYPE_BLOG_COMMENT, (int) comment
-              .getCommentId().getValue(), uid);
+            WhatsNewUtils.WHATS_NEW_TYPE_BLOG_COMMENT,
+            (int) comment.getCommentId().getValue(),
+            uid);
 
           commentList.add(comment);
         }
       }
 
-      SelectQuery filequery = new SelectQuery(EipTBlogFile.class);
-      Expression fileexp = ExpressionFactory.matchDbExp(
-        EipTBlogFile.EIP_TBLOG_ENTRY_PROPERTY + "."
+      SelectQuery<EipTBlogFile> filequery =
+        new SelectQuery<EipTBlogFile>(EipTBlogFile.class);
+      Expression fileexp =
+        ExpressionFactory.matchDbExp(EipTBlogFile.EIP_TBLOG_ENTRY_PROPERTY
+          + "."
           + EipTBlogEntry.ENTRY_ID_PK_COLUMN, record.getEntryId());
       filequery.setQualifier(fileexp);
-      List files = filequery.fetchList();
+      List<EipTBlogFile> files = filequery.fetchList();
 
       if (files != null && files.size() > 0) {
         ArrayList attachmentFileList = new ArrayList();
         FileuploadBean filebean = null;
         int size = files.size();
         for (int i = 0; i < size; i++) {
-          EipTBlogFile file = (EipTBlogFile) files.get(i);
+          EipTBlogFile file = files.get(i);
 
           String realname = file.getTitle();
-          javax.activation.DataHandler hData = new javax.activation.DataHandler(
-            new javax.activation.FileDataSource(realname));
+          javax.activation.DataHandler hData =
+            new javax.activation.DataHandler(
+              new javax.activation.FileDataSource(realname));
 
           filebean = new FileuploadBean();
           filebean.setFileId(file.getFileId());
@@ -761,7 +808,7 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ArrayList getThemaList() {
@@ -782,7 +829,7 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
 
   /**
    * エントリーの総数を返す． <BR>
-   *
+   * 
    * @return
    */
   public int getEntrySum() {
@@ -793,6 +840,7 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("thema", EipTBlogThema.THEMA_ID_PK_COLUMN);
@@ -808,7 +856,7 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
   }
 
   /**
-   *
+   * 
    * @param id
    * @return
    */
@@ -822,7 +870,7 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
 
   /**
    * 現在の月を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getViewMonth() {
@@ -831,7 +879,7 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
 
   /**
    * 前の月を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getPrevMonth() {
@@ -840,7 +888,7 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
 
   /**
    * 次の月を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getNextMonth() {
@@ -862,9 +910,10 @@ public class BlogEntrySelectData extends ALAbstractSelectData implements ALData 
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return aclPortletFeature;
   }

@@ -101,7 +101,8 @@ public abstract class AbstractQuery<M> implements Query<M> {
     DbAttribute attribute;
     Object val;
     for (Iterator<DbAttribute> it = pk.iterator(); it.hasNext(); idMap.put(
-      attribute.getName(), val)) {
+      attribute.getName(),
+      val)) {
       attribute = it.next();
       String key = attribute.getName();
 
@@ -119,11 +120,11 @@ public abstract class AbstractQuery<M> implements Query<M> {
       M model = rootClass.newInstance();
       CayenneDataObject obj = (CayenneDataObject) model;
 
-      ObjEntity objEntity = getDataContext().getEntityResolver()
-        .lookupObjEntity(obj);
+      ObjEntity objEntity =
+        getDataContext().getEntityResolver().lookupObjEntity(obj);
 
-      ObjectId objId = createObjectId(objEntity.getName(), dataRow, objEntity
-        .getDbEntity());
+      ObjectId objId =
+        createObjectId(objEntity.getName(), dataRow, objEntity.getDbEntity());
       if (objId != null) {
         obj.setObjectId(objId);
       }

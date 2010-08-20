@@ -30,6 +30,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -50,7 +51,7 @@ public class AccountEditSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<ALBaseUser> selectList(RunData rundata, Context context) {
+  protected ResultList<ALBaseUser> selectList(RunData rundata, Context context) {
     return null;
   }
 
@@ -86,17 +87,23 @@ public class AccountEditSelectData extends
   protected Object getResultDataDetail(ALBaseUser record) {
     try {
 
-      List<String> postNames = ALEipUtils.getPostNameList(Integer
-        .valueOf(record.getUserId()));
+      List<String> postNames =
+        ALEipUtils.getPostNameList(Integer.valueOf(record.getUserId()));
 
       AccountResultData rd = new AccountResultData();
       rd.initField();
       rd.setUserId(Integer.valueOf(record.getUserId()).intValue());
       rd.setUserName(record.getUserName());
-      rd.setName(new StringBuffer().append(record.getLastName()).append(" ")
-        .append(record.getFirstName()).toString());
-      rd.setNameKana(new StringBuffer().append(record.getLastNameKana())
-        .append(" ").append(record.getFirstNameKana()).toString());
+      rd.setName(new StringBuffer()
+        .append(record.getLastName())
+        .append(" ")
+        .append(record.getFirstName())
+        .toString());
+      rd.setNameKana(new StringBuffer()
+        .append(record.getLastNameKana())
+        .append(" ")
+        .append(record.getFirstNameKana())
+        .toString());
       rd.setEmail(record.getEmail());
       rd.setOutTelephone(record.getOutTelephone());
       rd.setInTelephone(record.getInTelephone());
@@ -134,10 +141,13 @@ public class AccountEditSelectData extends
    */
   @SuppressWarnings("unused")
   private String getPostName(int id) {
-    if (ALEipManager.getInstance().getPostMap()
+    if (ALEipManager
+      .getInstance()
+      .getPostMap()
       .containsKey(Integer.valueOf(id))) {
       return (ALEipManager.getInstance().getPostMap().get(Integer.valueOf(id)))
-        .getPostName().getValue();
+        .getPostName()
+        .getValue();
     }
     return null;
   }

@@ -33,6 +33,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.impl.PkgDatabaseOrmService;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -99,8 +100,9 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
   protected final String LIST_FILTER_STR = new StringBuffer().append(
     this.getClass().getName()).append(ALEipConstants.LIST_FILTER).toString();
 
-  protected final String LIST_FILTER_TYPE_STR = new StringBuffer().append(
-    this.getClass().getName()).append(ALEipConstants.LIST_FILTER_TYPE)
+  protected final String LIST_FILTER_TYPE_STR = new StringBuffer()
+    .append(this.getClass().getName())
+    .append(ALEipConstants.LIST_FILTER_TYPE)
     .toString();
 
   protected final String LIST_INDEX_STR = new StringBuffer().append(
@@ -128,32 +130,37 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
       // ENTITY ID をセッション変数に設定
       if (rundata.getParameters().containsKey(ALEipConstants.ENTITY_ID)) {
         ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, rundata
-          .getParameters().getString(ALEipConstants.ENTITY_ID));
+          .getParameters()
+          .getString(ALEipConstants.ENTITY_ID));
       }
 
       if (rundata.getParameters().containsKey(ALEipConstants.LIST_SORT)) {
         ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, rundata
-          .getParameters().getString(ALEipConstants.LIST_SORT));
+          .getParameters()
+          .getString(ALEipConstants.LIST_SORT));
       }
 
       if (rundata.getParameters().containsKey(ALEipConstants.LIST_SORT_TYPE)) {
         ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR, rundata
-          .getParameters().getString(ALEipConstants.LIST_SORT_TYPE));
+          .getParameters()
+          .getString(ALEipConstants.LIST_SORT_TYPE));
       }
 
       if (rundata.getParameters().containsKey(ALEipConstants.LIST_START)) {
-        current_page = rundata.getParameters()
-          .getInt(ALEipConstants.LIST_START);
+        current_page =
+          rundata.getParameters().getInt(ALEipConstants.LIST_START);
       }
 
       if (rundata.getParameters().containsKey(ALEipConstants.LIST_FILTER)) {
         ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, rundata
-          .getParameters().getString(ALEipConstants.LIST_FILTER));
+          .getParameters()
+          .getString(ALEipConstants.LIST_FILTER));
       }
 
       if (rundata.getParameters().containsKey(ALEipConstants.LIST_FILTER_TYPE)) {
         ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, rundata
-          .getParameters().getString(ALEipConstants.LIST_FILTER_TYPE));
+          .getParameters()
+          .getString(ALEipConstants.LIST_FILTER_TYPE));
       }
     }
   }
@@ -169,19 +176,19 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
   public boolean doViewList(ALAction action, RunData rundata, Context context) {
     try {
       init(action, rundata, context);
-      doCheckAclPermission(rundata, context,
+      doCheckAclPermission(
+        rundata,
+        context,
         ALAccessControlConstants.VALUE_ACL_LIST);
       action.setMode(ALEipConstants.MODE_LIST);
-      List<M1> aList = selectList(rundata, context);
-      if (aList != null) {
+      ResultList<M1> resultList = selectList(rundata, context);
+      if (resultList != null) {
+        if (resultList.getTotalCount() > 0) {
+          setPageParam(resultList.getTotalCount());
+        }
         list = new ArrayList<Object>();
-        Object obj = null;
-        int size = aList.size();
-        for (int i = 0; i < size; i++) {
-          obj = getResultData(aList.get(i));
-          if (obj != null) {
-            list.add(obj);
-          }
+        for (M1 model : resultList) {
+          list.add(getResultData(model));
         }
       }
       action.setResultData(this);
@@ -212,14 +219,18 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
   public boolean doSelectList(ALAction action, RunData rundata, Context context) {
     try {
       init(action, rundata, context);
-      doCheckAclPermission(rundata, context,
+      doCheckAclPermission(
+        rundata,
+        context,
         ALAccessControlConstants.VALUE_ACL_LIST);
-      List<M1> aList = selectList(rundata, context);
-      if (aList != null) {
+      ResultList<M1> resultList = selectList(rundata, context);
+      if (resultList != null) {
+        if (resultList.getTotalCount() > 0) {
+          setPageParam(resultList.getTotalCount());
+        }
         list = new ArrayList<Object>();
-        int size = aList.size();
-        for (int i = 0; i < size; i++) {
-          list.add(getResultData(aList.get(i)));
+        for (M1 model : resultList) {
+          list.add(getResultData(model));
         }
       }
       return (list != null);
@@ -246,7 +257,9 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
   public boolean doViewDetail(ALAction action, RunData rundata, Context context) {
     try {
       init(action, rundata, context);
-      doCheckAclPermission(rundata, context,
+      doCheckAclPermission(
+        rundata,
+        context,
         ALAccessControlConstants.VALUE_ACL_DETAIL);
       action.setMode(ALEipConstants.MODE_DETAIL);
       M2 obj = selectDetail(rundata, context);
@@ -276,6 +289,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
    */
   protected void buildSelectQueryForListView(SelectQuery<M1> query) {
     query.pageSize(getRowsNum());
+    query.page(current_page);
   }
 
   /**
@@ -283,7 +297,9 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
    * 
    * @param records
    *          検索結果
+   * @deprecated
    */
+  @Deprecated
   protected List<M1> buildPaginatedList(List<M1> records) {
     List<M1> list = new ArrayList<M1>();
 
@@ -358,8 +374,8 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
   protected SelectQuery<M1> buildSelectQueryForFilter(SelectQuery<M1> query,
       RunData rundata, Context context) {
     String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
-    String filter_type = ALEipUtils.getTemp(rundata, context,
-      LIST_FILTER_TYPE_STR);
+    String filter_type =
+      ALEipUtils.getTemp(rundata, context, LIST_FILTER_TYPE_STR);
     String crt_key = null;
     Attributes map = getColumnMap();
     if (filter == null || filter_type == null || filter.equals("")) {
@@ -501,7 +517,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
    * @param context
    * @return
    */
-  protected abstract List<M1> selectList(RunData rundata, Context context)
+  protected abstract ResultList<M1> selectList(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException;
 
   /**
@@ -555,12 +571,16 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
       return true;
     }
 
-    ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-      .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-    hasAuthority = aclhandler.hasAuthority(ALEipUtils.getUserId(rundata),
-      pfeature, defineAclType);
+    hasAuthority =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        pfeature,
+        defineAclType);
 
     if (!hasAuthority) {
       throw new ALPermissionException();

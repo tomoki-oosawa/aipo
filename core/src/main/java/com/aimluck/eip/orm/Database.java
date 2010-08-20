@@ -126,7 +126,9 @@ public class Database {
    * @return
    */
   public static <M> M get(Class<M> modelClass, Object primaryKey) {
-    return get(DatabaseOrmService.getInstance().getDataContext(), modelClass,
+    return get(
+      DatabaseOrmService.getInstance().getDataContext(),
+      modelClass,
       primaryKey);
   }
 

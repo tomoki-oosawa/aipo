@@ -76,7 +76,10 @@ public abstract class ALAbstractFormData implements ALData {
           "new")) {
           ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
         } else {
-          ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID,
+          ALEipUtils.setTemp(
+            rundata,
+            context,
+            ALEipConstants.ENTITY_ID,
             rundata.getParameters().getString(ALEipConstants.ENTITY_ID));
         }
       }
@@ -114,8 +117,8 @@ public abstract class ALAbstractFormData implements ALData {
   public boolean doViewForm(ALAction action, RunData rundata, Context context) {
     try {
       init(action, rundata, context);
-      boolean isedit = (ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID) != null);
+      boolean isedit =
+        (ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID) != null);
 
       int aclType = ALAccessControlConstants.VALUE_ACL_INSERT;
       if (isedit) {
@@ -123,13 +126,17 @@ public abstract class ALAbstractFormData implements ALData {
       }
       doCheckAclPermission(rundata, context, aclType);
 
-      action.setMode(isedit ? ALEipConstants.MODE_EDIT_FORM
+      action.setMode(isedit
+        ? ALEipConstants.MODE_EDIT_FORM
         : ALEipConstants.MODE_NEW_FORM);
       mode = action.getMode();
 
       List<String> msgList = new ArrayList<String>();
-      boolean res = (isedit) ? loadFormData(rundata, context, msgList)
-        : setFormData(rundata, context, msgList);
+      boolean res =
+        (isedit) ? loadFormData(rundata, context, msgList) : setFormData(
+          rundata,
+          context,
+          msgList);
       action.setResultData(this);
       action.addErrorMessages(msgList);
       action.putData(rundata, context);
@@ -163,15 +170,20 @@ public abstract class ALAbstractFormData implements ALData {
 
       init(action, rundata, context);
 
-      doCheckAclPermission(rundata, context,
+      doCheckAclPermission(
+        rundata,
+        context,
         ALAccessControlConstants.VALUE_ACL_INSERT);
 
       action.setMode(ALEipConstants.MODE_INSERT);
       mode = action.getMode();
       List<String> msgList = new ArrayList<String>();
       setValidator();
-      boolean res = (setFormData(rundata, context, msgList)
-        && validate(msgList) && insertFormData(rundata, context, msgList));
+      boolean res =
+        (setFormData(rundata, context, msgList) && validate(msgList) && insertFormData(
+          rundata,
+          context,
+          msgList));
       if (!res) {
         action.setMode(ALEipConstants.MODE_NEW_FORM);
         mode = action.getMode();
@@ -209,15 +221,20 @@ public abstract class ALAbstractFormData implements ALData {
 
       init(action, rundata, context);
 
-      doCheckAclPermission(rundata, context,
+      doCheckAclPermission(
+        rundata,
+        context,
         ALAccessControlConstants.VALUE_ACL_UPDATE);
 
       action.setMode(ALEipConstants.MODE_UPDATE);
       mode = action.getMode();
       List<String> msgList = new ArrayList<String>();
       setValidator();
-      boolean res = (setFormData(rundata, context, msgList)
-        && validate(msgList) && updateFormData(rundata, context, msgList));
+      boolean res =
+        (setFormData(rundata, context, msgList) && validate(msgList) && updateFormData(
+          rundata,
+          context,
+          msgList));
       if (!res) {
         action.setMode(ALEipConstants.MODE_EDIT_FORM);
         mode = action.getMode();
@@ -255,7 +272,9 @@ public abstract class ALAbstractFormData implements ALData {
 
       init(action, rundata, context);
 
-      doCheckAclPermission(rundata, context,
+      doCheckAclPermission(
+        rundata,
+        context,
         ALAccessControlConstants.VALUE_ACL_DELETE);
 
       action.setMode(ALEipConstants.MODE_DELETE);
@@ -300,16 +319,23 @@ public abstract class ALAbstractFormData implements ALData {
         // フィールドが ALDateTimeField の場合
         if (obj instanceof ALDateTimeField) {
           ALDateTimeField field = (ALDateTimeField) obj;
-          String yearString = new StringBuffer().append(name).append(
-            ALEipConstants.POST_DATE_YEAR).toString();
-          String monthString = new StringBuffer().append(name).append(
-            ALEipConstants.POST_DATE_MONTH).toString();
-          String dayString = new StringBuffer().append(name).append(
-            ALEipConstants.POST_DATE_DAY).toString();
-          String hourString = new StringBuffer().append(name).append(
-            ALEipConstants.POST_DATE_HOUR).toString();
-          String minitusString = new StringBuffer().append(name).append(
-            ALEipConstants.POST_DATE_MINUTE).toString();
+          String yearString =
+            new StringBuffer().append(name).append(
+              ALEipConstants.POST_DATE_YEAR).toString();
+          String monthString =
+            new StringBuffer().append(name).append(
+              ALEipConstants.POST_DATE_MONTH).toString();
+          String dayString =
+            new StringBuffer()
+              .append(name)
+              .append(ALEipConstants.POST_DATE_DAY)
+              .toString();
+          String hourString =
+            new StringBuffer().append(name).append(
+              ALEipConstants.POST_DATE_HOUR).toString();
+          String minitusString =
+            new StringBuffer().append(name).append(
+              ALEipConstants.POST_DATE_MINUTE).toString();
           int year;
           int month;
           int day;
@@ -349,12 +375,17 @@ public abstract class ALAbstractFormData implements ALData {
           // フィールドが ALDateField の場合
         } else if (obj instanceof ALDateField) {
           ALDateField field = (ALDateField) obj;
-          String yearString = new StringBuffer().append(name).append(
-            ALEipConstants.POST_DATE_YEAR).toString();
-          String monthString = new StringBuffer().append(name).append(
-            ALEipConstants.POST_DATE_MONTH).toString();
-          String dayString = new StringBuffer().append(name).append(
-            ALEipConstants.POST_DATE_DAY).toString();
+          String yearString =
+            new StringBuffer().append(name).append(
+              ALEipConstants.POST_DATE_YEAR).toString();
+          String monthString =
+            new StringBuffer().append(name).append(
+              ALEipConstants.POST_DATE_MONTH).toString();
+          String dayString =
+            new StringBuffer()
+              .append(name)
+              .append(ALEipConstants.POST_DATE_DAY)
+              .toString();
           ALDateContainer con = new ALDateContainer();
           if (rundata.getParameters().containsKey(yearString)) {
             con.setYear(rundata.getParameters().getString(yearString));
@@ -458,10 +489,10 @@ public abstract class ALAbstractFormData implements ALData {
    * @return
    */
   protected boolean doCheckSecurity(RunData rundata, Context context) {
-    String reqSecid = rundata.getParameters().getString(
-      ALEipConstants.SECURE_ID);
-    String sessionSecid = (String) rundata.getUser().getTemp(
-      ALEipConstants.SECURE_ID);
+    String reqSecid =
+      rundata.getParameters().getString(ALEipConstants.SECURE_ID);
+    String sessionSecid =
+      (String) rundata.getUser().getTemp(ALEipConstants.SECURE_ID);
     if (reqSecid == null || !reqSecid.equals(sessionSecid)) {
       return false;
     }
@@ -486,12 +517,16 @@ public abstract class ALAbstractFormData implements ALData {
       return true;
     }
 
-    ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-      .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-    hasAuthority = aclhandler.hasAuthority(ALEipUtils.getUserId(rundata),
-      pfeature, defineAclType);
+    hasAuthority =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        pfeature,
+        defineAclType);
 
     if (!hasAuthority) {
       throw new ALPermissionException();

@@ -19,7 +19,6 @@
 package com.aimluck.eip.account;
 
 import java.security.SecureRandom;
-import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 
@@ -44,6 +43,7 @@ import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -89,17 +89,17 @@ public class AccountUserSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<TurbineUser> selectList(RunData rundata, Context context) {
+  protected ResultList<TurbineUser> selectList(RunData rundata, Context context) {
     try {
       // 登録済みのユーザ数をデータベースから取得
 
       SelectQuery<TurbineUser> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
-      List<TurbineUser> list = query.fetchList();
+      ResultList<TurbineUser> list = query.getResultList();
 
-      registeredUserNum = list.size();
-      return buildPaginatedList(list);
+      registeredUserNum = list.getTotalCount();
+      return list;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -116,34 +116,44 @@ public class AccountUserSelectData extends
   private SelectQuery<TurbineUser> getSelectQuery(RunData rundata,
       Context context) {
 
-    ObjectId oid = new ObjectId("TurbineUser", TurbineUser.USER_ID_PK_COLUMN, 3);
-    Expression exp1 = ExpressionFactory.matchAllDbExp(oid.getIdSnapshot(),
-      Expression.GREATER_THAN);
-    Expression exp2 = ExpressionFactory.matchExp(
-      TurbineUser.COMPANY_ID_PROPERTY, Integer.valueOf(1));
+    ObjectId oid =
+      new ObjectId("TurbineUser", TurbineUser.USER_ID_PK_COLUMN, 3);
+    Expression exp1 =
+      ExpressionFactory.matchAllDbExp(
+        oid.getIdSnapshot(),
+        Expression.GREATER_THAN);
+    Expression exp2 =
+      ExpressionFactory.matchExp(TurbineUser.COMPANY_ID_PROPERTY, Integer
+        .valueOf(1));
     // Expression exp3 =
     // ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY,
     // "F");
-    Expression exp3 = ExpressionFactory.noMatchExp(
-      TurbineUser.DISABLED_PROPERTY, "T");
+    Expression exp3 =
+      ExpressionFactory.noMatchExp(TurbineUser.DISABLED_PROPERTY, "T");
 
-    SelectQuery<TurbineUser> query = Database.query(TurbineUser.class, exp1)
-      .andQualifier(exp2).andQualifier(exp3);
+    SelectQuery<TurbineUser> query =
+      Database.query(TurbineUser.class, exp1).andQualifier(exp2).andQualifier(
+        exp3);
 
     String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
     current_filter = filter;
 
     Map<Integer, ALEipPost> gMap = ALEipManager.getInstance().getPostMap();
-    if (filter == null || "".equals(filter)
+    if (filter == null
+      || "".equals(filter)
       || !gMap.containsKey(Integer.valueOf(filter))) {
       return query;
     }
-    String groupName = (ALEipManager.getInstance().getPostMap().get(Integer
-      .valueOf(filter))).getGroupName().getValue();
+    String groupName =
+      (ALEipManager.getInstance().getPostMap().get(Integer.valueOf(filter)))
+        .getGroupName()
+        .getValue();
 
-    Expression exp4 = ExpressionFactory.matchExp(
-      TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY + "."
-        + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY + "."
+    Expression exp4 =
+      ExpressionFactory.matchExp(TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
+        + "."
+        + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
+        + "."
         + TurbineGroup.GROUP_NAME_PROPERTY, groupName);
     query.andQualifier(exp4);
 
@@ -167,13 +177,14 @@ public class AccountUserSelectData extends
 
     // 指定部署が存在しているかを確認し、存在していなければ値を削除する
     Map<Integer, ALEipPost> gMap = ALEipManager.getInstance().getPostMap();
-    if (filter != null && filter.trim().length() != 0
+    if (filter != null
+      && filter.trim().length() != 0
       && !gMap.containsKey(Integer.valueOf(filter))) {
       filter = null;
     }
 
-    String filter_type = ALEipUtils.getTemp(rundata, context,
-      LIST_FILTER_TYPE_STR);
+    String filter_type =
+      ALEipUtils.getTemp(rundata, context, LIST_FILTER_TYPE_STR);
     String crt_key = null;
     Attributes map = getColumnMap();
     if (filter == null || filter_type == null || filter.equals("")) {
@@ -198,10 +209,13 @@ public class AccountUserSelectData extends
    */
   @SuppressWarnings("unused")
   private String getPostName(int id) {
-    if (ALEipManager.getInstance().getPostMap()
+    if (ALEipManager
+      .getInstance()
+      .getPostMap()
       .containsKey(Integer.valueOf(id))) {
       return (ALEipManager.getInstance().getPostMap().get(Integer.valueOf(id)))
-        .getPostName().getValue();
+        .getPostName()
+        .getValue();
     }
     return null;
   }
@@ -246,10 +260,14 @@ public class AccountUserSelectData extends
       rd.initField();
       rd.setUserId(record.getUserId().intValue());
       rd.setUserName(record.getLoginName());
-      rd.setName(new StringBuffer().append(record.getLastName()).append(" ")
-        .append(record.getFirstName()).toString());
+      rd.setName(new StringBuffer()
+        .append(record.getLastName())
+        .append(" ")
+        .append(record.getFirstName())
+        .toString());
       rd.setPostNameList(ALEipUtils.getPostNameList(record.getUserId()));
-      rd.setPositionName(ALEipUtils.getPositionName(record.getPositionId()
+      rd.setPositionName(ALEipUtils.getPositionName(record
+        .getPositionId()
         .intValue()));
       rd.setDisabled(record.getDisabled());
       return rd;
@@ -273,10 +291,16 @@ public class AccountUserSelectData extends
       rd.initField();
       rd.setUserId(Integer.valueOf(record.getUserId()).intValue());
       rd.setUserName(record.getUserName());
-      rd.setName(new StringBuffer().append(record.getLastName()).append(" ")
-        .append(record.getFirstName()).toString());
-      rd.setNameKana(new StringBuffer().append(record.getLastNameKana())
-        .append(" ").append(record.getFirstNameKana()).toString());
+      rd.setName(new StringBuffer()
+        .append(record.getLastName())
+        .append(" ")
+        .append(record.getFirstName())
+        .toString());
+      rd.setNameKana(new StringBuffer()
+        .append(record.getLastNameKana())
+        .append(" ")
+        .append(record.getFirstNameKana())
+        .toString());
       rd.setEmail(record.getEmail());
       rd.setOutTelephone(record.getOutTelephone());
       rd.setInTelephone(record.getInTelephone());
@@ -308,7 +332,8 @@ public class AccountUserSelectData extends
     map.putValue("post", "POST_ID");
     map.putValue("login_name", TurbineUser.LOGIN_NAME_PROPERTY);
     map.putValue("name_kana", TurbineUser.LAST_NAME_KANA_PROPERTY);
-    map.putValue("userposition", TurbineUser.EIP_MUSER_POSITION_PROPERTY + "."
+    map.putValue("userposition", TurbineUser.EIP_MUSER_POSITION_PROPERTY
+      + "."
       + EipMUserPosition.POSITION_PROPERTY); // ユーザの順番
     return map;
   }

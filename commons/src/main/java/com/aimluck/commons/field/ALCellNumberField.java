@@ -86,13 +86,19 @@ public class ALCellNumberField extends ALNumberField {
           long longValue = getValue();
           if (longValue < getMinValue()) {
             // 設定値が最小値を下回る場合
-            msgList.add("『 " + fieldName + " 』には" + getMinValue()
+            msgList.add("『 "
+              + fieldName
+              + " 』には"
+              + getMinValue()
               + "以上の値を入力してください。");
             return false;
           }
           if (longValue > getMaxValue()) {
             // 設定値が最大値を上回る場合
-            msgList.add("『 " + fieldName + " 』には" + getMaxValue()
+            msgList.add("『 "
+              + fieldName
+              + " 』には"
+              + getMaxValue()
               + "以下の値を入力してください。");
             return false;
           }

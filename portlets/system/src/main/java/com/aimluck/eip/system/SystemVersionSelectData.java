@@ -18,7 +18,6 @@
  */
 package com.aimluck.eip.system;
 
-import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -28,6 +27,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALAbstractSelectData;
+import com.aimluck.eip.orm.query.ResultList;
 
 /**
  *
@@ -45,7 +45,7 @@ public class SystemVersionSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<String> selectList(RunData rundata, Context context) {
+  protected ResultList<String> selectList(RunData rundata, Context context) {
     return null;
   }
 

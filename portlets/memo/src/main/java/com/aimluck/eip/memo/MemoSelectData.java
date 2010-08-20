@@ -38,6 +38,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.memo.util.MemoUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -74,8 +75,9 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo, EipTMemo>
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-          "p2a-sort"));
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p2a-sort"));
     }
   }
 
@@ -114,18 +116,18 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo, EipTMemo>
    *      org.apache.velocity.context.Context)
    */
   @Override
-  public List<EipTMemo> selectList(RunData rundata, Context context) {
+  public ResultList<EipTMemo> selectList(RunData rundata, Context context) {
     try {
 
       SelectQuery<EipTMemo> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTMemo> list = query.fetchList();
+      ResultList<EipTMemo> list = query.getResultList();
       // Memo の総数をセットする．
-      memoSum = list.size();
+      memoSum = list.getTotalCount();
 
-      return buildPaginatedList(list);
+      return list;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -142,8 +144,9 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo, EipTMemo>
   private SelectQuery<EipTMemo> getSelectQuery(RunData rundata, Context context) {
     SelectQuery<EipTMemo> query = Database.query(EipTMemo.class);
 
-    Expression exp1 = ExpressionFactory.matchExp(EipTMemo.OWNER_ID_PROPERTY,
-      Integer.valueOf(ALEipUtils.getUserId(rundata)));
+    Expression exp1 =
+      ExpressionFactory.matchExp(EipTMemo.OWNER_ID_PROPERTY, Integer
+        .valueOf(ALEipUtils.getUserId(rundata)));
     query.setQualifier(exp1);
 
     return buildSelectQueryForFilter(query, rundata, context);

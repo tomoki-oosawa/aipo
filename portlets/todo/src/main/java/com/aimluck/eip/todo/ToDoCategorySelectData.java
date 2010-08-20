@@ -18,7 +18,6 @@
  */
 package com.aimluck.eip.todo;
 
-import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
@@ -37,6 +36,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.todo.util.ToDoUtils;
@@ -88,16 +88,17 @@ public class ToDoCategorySelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<EipTTodoCategory> selectList(RunData rundata, Context context) {
+  protected ResultList<EipTTodoCategory> selectList(RunData rundata,
+      Context context) {
     try {
       SelectQuery<EipTTodoCategory> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTTodoCategory> list = query.fetchList();
+      ResultList<EipTTodoCategory> list = query.getResultList();
       // 件数をセットする．
-      categorySum = list.size();
-      return buildPaginatedList(list);
+      categorySum = list.getTotalCount();
+      return list;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -114,9 +115,9 @@ public class ToDoCategorySelectData extends
   private SelectQuery<EipTTodoCategory> getSelectQuery(RunData rundata,
       Context context) {
 
-    Expression exp = ExpressionFactory.matchDbExp(
-      TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(ALEipUtils
-        .getUserId(rundata)));
+    Expression exp =
+      ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+        .valueOf(ALEipUtils.getUserId(rundata)));
 
     return Database.query(EipTTodoCategory.class).setQualifier(exp);
   }
@@ -149,7 +150,8 @@ public class ToDoCategorySelectData extends
     ToDoCategoryResultData rd = new ToDoCategoryResultData();
     rd.initField();
     rd.setCategoryId(record.getCategoryId().longValue());
-    rd.setCategoryName(ALCommonUtils.compressString(record.getCategoryName(),
+    rd.setCategoryName(ALCommonUtils.compressString(
+      record.getCategoryName(),
       getStrLength()));
     rd.setNote(record.getNote());
     return rd;

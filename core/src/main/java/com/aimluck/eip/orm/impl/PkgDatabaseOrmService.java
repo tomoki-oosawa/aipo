@@ -58,8 +58,8 @@ public class PkgDatabaseOrmService extends DatabaseOrmService {
     ServletUtil.initializeSharedConfiguration(context);
 
     // ORG_PKG にユーザテーブルをマッピングする
-    DataDomain dataDomain = Configuration.getSharedConfiguration().getDomain(
-      SHARED_DOMAIN);
+    DataDomain dataDomain =
+      Configuration.getSharedConfiguration().getDomain(SHARED_DOMAIN);
     Collection<?> dataMaps = dataDomain.getDataMaps();
 
     Iterator<?> iter = dataMaps.iterator();

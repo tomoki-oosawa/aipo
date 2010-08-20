@@ -39,9 +39,11 @@ public class AipoDaemonFactoryService extends JetspeedDaemonFactoryService {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(AipoDaemonFactoryService.class.getName());
 
-  private final Hashtable<String, Daemon> daemons = new Hashtable<String, Daemon>();
+  private final Hashtable<String, Daemon> daemons =
+    new Hashtable<String, Daemon>();
 
-  private final Hashtable<String, DaemonThread> threads = new Hashtable<String, DaemonThread>();
+  private final Hashtable<String, DaemonThread> threads =
+    new Hashtable<String, DaemonThread>();
 
   protected ServletConfig config = null;
 
@@ -120,7 +122,8 @@ public class AipoDaemonFactoryService extends JetspeedDaemonFactoryService {
 
     int status = this.getStatus(entry);
 
-    if (status != Daemon.STATUS_PROCESSING && status != Daemon.STATUS_UNKNOWN
+    if (status != Daemon.STATUS_PROCESSING
+      && status != Daemon.STATUS_UNKNOWN
       && dt != null) {
       synchronized (dt) {
         dt.notify();

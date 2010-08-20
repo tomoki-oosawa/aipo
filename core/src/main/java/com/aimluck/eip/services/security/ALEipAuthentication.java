@@ -69,7 +69,8 @@ public class ALEipAuthentication extends TurbineBaseService implements
 
   private boolean cachingEnable = true;
 
-  private final static String CONFIG_PASSWORD_EXPIRATION_PERIOD = "password.expiration.period";
+  private final static String CONFIG_PASSWORD_EXPIRATION_PERIOD =
+    "password.expiration.period";
 
   private int expirationPeriod = 0;
 
@@ -83,10 +84,11 @@ public class ALEipAuthentication extends TurbineBaseService implements
    */
   public JetspeedUser loginCellularUid(String username, String cellular_uid)
       throws UnknownUserException, JetspeedSecurityException {
-    JetspeedUser user = JetspeedUserManagement.getUser(new UserNamePrincipal(
-      username));
+    JetspeedUser user =
+      JetspeedUserManagement.getUser(new UserNamePrincipal(username));
     ALBaseUser baseUser = (ALBaseUser) user;
-    if (cellular_uid == null || cellular_uid.length() == 0
+    if (cellular_uid == null
+      || cellular_uid.length() == 0
       || !cellular_uid.equals(baseUser.getCelluarUId())) {
       logger.error("Invalid cellular uid for user: " + username);
       throw new UnknownUserException(
@@ -113,8 +115,9 @@ public class ALEipAuthentication extends TurbineBaseService implements
 
     if (password.startsWith(ALEipConstants.KEY_CELLULAR_UID)) {
       // 携帯電話の固有 ID でログイン認証する．
-      String cellularUid = password.substring(ALEipConstants.KEY_CELLULAR_UID
-        .length(), password.length());
+      String cellularUid =
+        password.substring(ALEipConstants.KEY_CELLULAR_UID.length(), password
+          .length());
       try {
         user = loginCellularUid(username, cellularUid);
       } catch (UnknownUserException e) {
@@ -147,14 +150,15 @@ public class ALEipAuthentication extends TurbineBaseService implements
       Date passwordLastChangedDate = user.getPasswordChanged();
       Date passwordExpireDate = null;
       if (passwordLastChangedDate != null) {
-        GregorianCalendar gcal = (GregorianCalendar) GregorianCalendar
-          .getInstance();
+        GregorianCalendar gcal =
+          (GregorianCalendar) GregorianCalendar.getInstance();
         gcal.setTime(passwordLastChangedDate);
         gcal.add(GregorianCalendar.DATE, this.expirationPeriod);
         passwordExpireDate = gcal.getTime();
         if (logger.isDebugEnabled()) {
           logger.debug("TurbineAuthentication: password last changed = "
-            + passwordLastChangedDate.toString() + ", password expires = "
+            + passwordLastChangedDate.toString()
+            + ", password expires = "
             + passwordExpireDate.toString());
         }
       }
@@ -191,7 +195,8 @@ public class ALEipAuthentication extends TurbineBaseService implements
     }
 
     // for security
-    rundata.getUser().setTemp(ALEipConstants.SECURE_ID,
+    rundata.getUser().setTemp(
+      ALEipConstants.SECURE_ID,
       ALCommonUtils.getSecureRandomBase64());
 
     return user;
@@ -203,8 +208,8 @@ public class ALEipAuthentication extends TurbineBaseService implements
   public JetspeedUser getAnonymousUser() throws LoginException {
     JetspeedUser user = null;
     try {
-      user = JetspeedUserManagement
-        .getUser(new UserNamePrincipal(anonymousUser));
+      user =
+        JetspeedUserManagement.getUser(new UserNamePrincipal(anonymousUser));
       user.setHasLoggedIn(Boolean.valueOf(false));
       putUserIntoContext(user);
       if (cachingEnable) {
@@ -245,15 +250,17 @@ public class ALEipAuthentication extends TurbineBaseService implements
 
     super.init(conf);
 
-    ResourceService serviceConf = ((TurbineServices) TurbineServices
-      .getInstance()).getResources(JetspeedSecurityService.SERVICE_NAME);
+    ResourceService serviceConf =
+      ((TurbineServices) TurbineServices.getInstance())
+        .getResources(JetspeedSecurityService.SERVICE_NAME);
 
     anonymousUser = serviceConf.getString(CONFIG_ANONYMOUS_USER, anonymousUser);
     cachingEnable = serviceConf.getBoolean(CACHING_ENABLE, cachingEnable);
     expirationPeriod = serviceConf.getInt(CONFIG_PASSWORD_EXPIRATION_PERIOD, 0);
 
-    this.runDataService = (JetspeedRunDataService) TurbineServices
-      .getInstance().getService(RunDataService.SERVICE_NAME);
+    this.runDataService =
+      (JetspeedRunDataService) TurbineServices.getInstance().getService(
+        RunDataService.SERVICE_NAME);
 
     setInit(true);
   }

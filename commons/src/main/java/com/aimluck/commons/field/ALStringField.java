@@ -51,8 +51,8 @@ public class ALStringField extends ALAbstractField {
   public static final int TYPE_HANKAKUKANA = 4;
 
   /** 文字の種類（半角英数字カナ文字） */
-  public static final int TYPE_ALPHABET_NUMBER_HANKAKUKANA = TYPE_ALPHABET_NUMBER
-    | TYPE_HANKAKUKANA;
+  public static final int TYPE_ALPHABET_NUMBER_HANKAKUKANA =
+    TYPE_ALPHABET_NUMBER | TYPE_HANKAKUKANA;
 
   /** 文字の種類（全角文字） */
   public static final int TYPE_MULTIBYTE = 8;
@@ -248,8 +248,11 @@ public class ALStringField extends ALAbstractField {
     } else {
       if (!isValidCharacterType()) {
         // 設定されている文字セット以外の文字を含む場合
-        msgList.add("『 <span class='em'>" + fieldName + "</span> 』は"
-          + getCharTypeByName() + "で入力してください。");
+        msgList.add("『 <span class='em'>"
+          + fieldName
+          + "</span> 』は"
+          + getCharTypeByName()
+          + "で入力してください。");
         return false;
       } else {
         if (isLimitLength()) {
@@ -257,14 +260,20 @@ public class ALStringField extends ALAbstractField {
           int len = value.length();
           if (len < getMinLength()) {
             // 文字列長が最小値を下回る場合
-            msgList.add("『 <span class='em'>" + fieldName + "</span> 』は"
-              + getMinLength() + "文字以上で入力してください。");
+            msgList.add("『 <span class='em'>"
+              + fieldName
+              + "</span> 』は"
+              + getMinLength()
+              + "文字以上で入力してください。");
             return false;
           }
           if (len > getMaxLength()) {
             // 文字列長が最大値を上回る場合
-            msgList.add("『 <span class='em'>" + fieldName + "</span> 』は"
-              + getMaxLength() + "文字以下で入力してください。");
+            msgList.add("『 <span class='em'>"
+              + fieldName
+              + "</span> 』は"
+              + getMaxLength()
+              + "文字以下で入力してください。");
             return false;
           }
         }
@@ -307,8 +316,8 @@ public class ALStringField extends ALAbstractField {
     byte[] chars;
 
     try {
-      chars = (Character.valueOf(ch).toString())
-        .getBytes(ENCORDE_CONFIRM_CHARTYPE);
+      chars =
+        (Character.valueOf(ch).toString()).getBytes(ENCORDE_CONFIRM_CHARTYPE);
     } catch (UnsupportedEncodingException ex) {
       return TYPE_ALL;
     }

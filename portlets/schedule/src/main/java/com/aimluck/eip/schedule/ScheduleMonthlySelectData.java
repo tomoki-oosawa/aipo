@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -51,6 +51,7 @@ import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -71,7 +72,7 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
 
   /** <code>logger</code> logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ScheduleMonthlySelectData.class.getName());
+    .getLogger(ScheduleMonthlySelectData.class.getName());
 
   /** <code>viewMonth</code> 現在の月 */
   private ALDateTimeField viewMonth;
@@ -148,9 +149,12 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
   private String target_user_name;
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * @see
+   * com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules
+   * .actions.common.ALAction, org.apache.turbine.util.RunData,
+   * org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
@@ -191,7 +195,8 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
       // e.g. 2004-3-14
       if (rundata.getParameters().containsKey("view_month")) {
         ALEipUtils.setTemp(rundata, context, "view_month", rundata
-            .getParameters().getString("view_month"));
+          .getParameters()
+          .getString("view_month"));
       }
     }
 
@@ -259,9 +264,9 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
     prevMonth.setValue(cal2.getTime());
 
     ALEipUtils.setTemp(rundata, context, "tmpStart", viewStart.toString()
-        + "-00-00");
+      + "-00-00");
     ALEipUtils.setTemp(rundata, context, "tmpEnd", viewStart.toString()
-        + "-00-00");
+      + "-00-00");
 
     // ログインユーザの ID を設定する．
     userid = Integer.toString(ALEipUtils.getUserId(rundata));
@@ -275,8 +280,8 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
     }
 
     try {
-      String groupFilter = ALEipUtils.getTemp(rundata, context,
-          TARGET_GROUP_NAME);
+      String groupFilter =
+        ALEipUtils.getTemp(rundata, context, TARGET_GROUP_NAME);
       if (groupFilter == null || groupFilter.equals("")) {
         VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
         groupFilter = portlet.getPortletConfig().getInitParameter("p3a-group");
@@ -301,16 +306,18 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
             paramId = Integer.parseInt(userFilter);
             if (paramId > 3) {
               // ユーザーIDを取得する
-              String query = "SELECT LOGIN_NAME FROM TURBINE_USER WHERE USER_ID = '"
-                  + paramId + "' AND DISABLED = 'F'";
-              SQLTemplate rawSelect = new SQLTemplate(TurbineUser.class, query,
-                  true);
+              String query =
+                "SELECT LOGIN_NAME FROM TURBINE_USER WHERE USER_ID = '"
+                  + paramId
+                  + "' AND DISABLED = 'F'";
+              SQLTemplate rawSelect =
+                new SQLTemplate(TurbineUser.class, query, true);
               rawSelect.setFetchingDataRows(true);
               List list = dataContext.performQuery(rawSelect);
               if (list != null && list.size() != 0) {
                 // 指定したユーザが存在する場合，セッションに保存する．
                 ALEipUtils
-                    .setTemp(rundata, context, TARGET_USER_ID, userFilter);
+                  .setTemp(rundata, context, TARGET_USER_ID, userFilter);
               } else {
                 ALEipUtils.removeTemp(rundata, context, TARGET_USER_ID);
               }
@@ -324,24 +331,34 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
     }
 
     // ToDo 表示設定
-    viewTodo = Integer.parseInt(ALEipUtils.getPortlet(rundata, context)
-        .getPortletConfig().getInitParameter("p5a-view"));
+    viewTodo =
+      Integer.parseInt(ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p5a-view"));
 
     // アクセスコントロール
     int loginUserId = ALEipUtils.getUserId(rundata);
 
-    ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-    hasAclviewOther = aclhandler.hasAuthority(loginUserId,
+    hasAclviewOther =
+      aclhandler.hasAuthority(
+        loginUserId,
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
         ALAccessControlConstants.VALUE_ACL_DETAIL);
 
-    hasAuthoritySelfInsert = aclhandler.hasAuthority(loginUserId,
+    hasAuthoritySelfInsert =
+      aclhandler.hasAuthority(
+        loginUserId,
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
         ALAccessControlConstants.VALUE_ACL_INSERT);
 
-    hasAuthorityFacilityInsert = aclhandler.hasAuthority(loginUserId,
+    hasAuthorityFacilityInsert =
+      aclhandler.hasAuthority(
+        loginUserId,
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_FACILITY,
         ALAccessControlConstants.VALUE_ACL_INSERT);
 
@@ -350,27 +367,30 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * @see
+   * com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context)
    */
-  protected List selectList(RunData rundata, Context context)
+  @Override
+  protected ResultList selectList(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     try {
       // 指定グループや指定ユーザをセッションに設定する．
       setupLists(rundata, context);
 
       SelectQuery query = getSelectQuery(rundata, context);
-      if (query == null)
+      if (query == null) {
         return null;
+      }
       List list = dataContext.performQuery(query);
 
       if (!target_user_id.startsWith(ScheduleUtils.TARGET_FACILITY_ID)
-          && viewTodo == 1) {
+        && viewTodo == 1) {
         // ToDo の読み込み
         loadTodo(rundata, context);
       }
 
-      return ScheduleUtils.sortByDummySchedule(list);
+      return new ResultList(ScheduleUtils.sortByDummySchedule(list));
     } catch (Exception e) {
 
       // TODO: エラー処理
@@ -391,45 +411,57 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
     SelectQuery query = new SelectQuery(EipTScheduleMap.class);
 
     // 終了日時
-    Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.END_DATE_PROPERTY, viewStart.getValue());
+    Expression exp11 =
+      ExpressionFactory.greaterOrEqualExp(
+        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.END_DATE_PROPERTY,
+        viewStart.getValue());
     // 開始日時
-    Expression exp12 = ExpressionFactory.lessOrEqualExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.START_DATE_PROPERTY, viewEndCrt.getValue());
+    Expression exp12 =
+      ExpressionFactory.lessOrEqualExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.START_DATE_PROPERTY, viewEndCrt.getValue());
     // 通常スケジュール
-    Expression exp13 = ExpressionFactory.noMatchExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
+    Expression exp13 =
+      ExpressionFactory.noMatchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
     // 期間スケジュール
-    Expression exp14 = ExpressionFactory.noMatchExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
+    Expression exp14 =
+      ExpressionFactory.noMatchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
 
     query.setQualifier((exp11.andExp(exp12)).orExp(exp13.andExp(exp14)));
 
     if ((target_user_id != null) && (!target_user_id.equals(""))) {
       if (target_user_id.startsWith(ScheduleUtils.TARGET_FACILITY_ID)) {
-        String fid = target_user_id.substring(ScheduleUtils.TARGET_FACILITY_ID
-            .length(), target_user_id.length());
+        String fid =
+          target_user_id.substring(
+            ScheduleUtils.TARGET_FACILITY_ID.length(),
+            target_user_id.length());
         // 指定ユーザをセットする．
-        Expression exp1 = ExpressionFactory.matchExp(
-            EipTScheduleMap.USER_ID_PROPERTY, fid);
+        Expression exp1 =
+          ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, fid);
         query.andQualifier(exp1);
         // 設備のスケジュール
-        Expression exp2 = ExpressionFactory.matchExp(
+        Expression exp2 =
+          ExpressionFactory.matchExp(
             EipTScheduleMap.TYPE_PROPERTY,
             ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY);
         query.andQualifier(exp2);
       } else {
         // 指定ユーザをセットする．
-        Expression exp3 = ExpressionFactory.matchExp(
-            EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(target_user_id));
+        Expression exp3 =
+          ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+            .valueOf(target_user_id));
         query.andQualifier(exp3);
         // ユーザのスケジュール
-        Expression exp4 = ExpressionFactory.matchExp(
-            EipTScheduleMap.TYPE_PROPERTY, ScheduleUtils.SCHEDULEMAP_TYPE_USER);
+        Expression exp4 =
+          ExpressionFactory.matchExp(
+            EipTScheduleMap.TYPE_PROPERTY,
+            ScheduleUtils.SCHEDULEMAP_TYPE_USER);
         query.andQualifier(exp4);
       }
     } else {
@@ -438,14 +470,17 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
     }
 
     // 開始日時でソート
-    query.addOrdering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-        + EipTSchedule.START_DATE_PROPERTY, true);
+    query.addOrdering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+      + "."
+      + EipTSchedule.START_DATE_PROPERTY, true);
     return query;
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   * @see
+   * com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(Object obj) throws ALPageNotFoundException,
       ALDBErrorException {
     ScheduleResultData rd = new ScheduleResultData();
@@ -454,21 +489,25 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
       EipTScheduleMap record = (EipTScheduleMap) obj;
       EipTSchedule schedule = record.getEipTSchedule();
       // スケジュールが棄却されている場合は表示しない
-      if ("R".equals(record.getStatus()))
+      if ("R".equals(record.getStatus())) {
         return rd;
+      }
       int userid_int = Integer.parseInt(userid);
 
       SelectQuery mapquery = new SelectQuery(EipTScheduleMap.class);
-      Expression mapexp1 = ExpressionFactory.matchExp(
-          EipTScheduleMap.SCHEDULE_ID_PROPERTY, schedule.getScheduleId());
+      Expression mapexp1 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.SCHEDULE_ID_PROPERTY,
+          schedule.getScheduleId());
       mapquery.setQualifier(mapexp1);
-      Expression mapexp2 = ExpressionFactory.matchExp(
-          EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(userid));
+      Expression mapexp2 =
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+          .valueOf(userid));
       mapquery.andQualifier(mapexp2);
 
       List schedulemaps = dataContext.performQuery(mapquery);
-      boolean is_member = (schedulemaps != null && schedulemaps.size() > 0) ? true
-          : false;
+      boolean is_member =
+        (schedulemaps != null && schedulemaps.size() > 0) ? true : false;
 
       // Dummy スケジュールではない
       // 完全に隠す
@@ -476,14 +515,17 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
       // 共有メンバーではない
       // オーナーではない
       if ((!"D".equals(record.getStatus()))
-          && "P".equals(schedule.getPublicFlag())
-          && (userid_int != record.getUserId().intValue())
-          && (userid_int != schedule.getOwnerId().intValue()) && !is_member)
+        && "P".equals(schedule.getPublicFlag())
+        && (userid_int != record.getUserId().intValue())
+        && (userid_int != schedule.getOwnerId().intValue())
+        && !is_member) {
         return rd;
+      }
 
       if ("C".equals(schedule.getPublicFlag())
-          && (userid_int != record.getUserId().intValue())
-          && (userid_int != schedule.getOwnerId().intValue()) && !is_member) {
+        && (userid_int != record.getUserId().intValue())
+        && (userid_int != schedule.getOwnerId().intValue())
+        && !is_member) {
         // 名前
         rd.setName("非公開");
         // 仮スケジュールかどうか
@@ -519,17 +561,23 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
 
       // 期間スケジュールの場合
       if (rd.getPattern().equals("S")) {
-        int stime = -(int) ((viewStart.getValue().getTime() - rd.getStartDate()
-            .getValue().getTime()) / 86400000);
-        int etime = -(int) ((viewStart.getValue().getTime() - rd.getEndDate()
-            .getValue().getTime()) / 86400000);
+        int stime =
+          -(int) ((viewStart.getValue().getTime() - rd
+            .getStartDate()
+            .getValue()
+            .getTime()) / 86400000);
+        int etime =
+          -(int) ((viewStart.getValue().getTime() - rd
+            .getEndDate()
+            .getValue()
+            .getTime()) / 86400000);
         if (stime < 0) {
           stime = 0;
         }
         int count = stime;
         int col = etime - stime + 1;
         int row = count / 7;
-        count = (int) count % 7;
+        count = count % 7;
         // 行をまたがる場合
         while (count + col > 7) {
           ScheduleResultData rd3 = (ScheduleResultData) rd.clone();
@@ -564,17 +612,22 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * @see
+   * com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   protected Object selectDetail(RunData rundata, Context context) {
     // このメソッドは利用されません。
     return null;
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   * @see
+   * com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang
+   * .Object)
    */
+  @Override
   protected Object getResultDataDetail(Object obj) {
     // このメソッドは利用されません。
     return null;
@@ -583,6 +636,7 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
   /*
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     // このメソッドは利用されません。
     return null;
@@ -602,11 +656,17 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
         // ポートレット ToDo のへのリンクを取得する．
         String todo_url = "";
         if (userid.equals(target_user_id)) {
-          todo_url = ScheduleUtils.getPortletURItoTodoDetailPane(rundata,
-              "ToDo", record.getTodoId().longValue(), portletId);
+          todo_url =
+            ScheduleUtils.getPortletURItoTodoDetailPane(rundata, "ToDo", record
+              .getTodoId()
+              .longValue(), portletId);
         } else {
-          todo_url = ScheduleUtils.getPortletURItoTodoPublicDetailPane(rundata,
-              "ToDo", record.getTodoId().longValue(), portletId);
+          todo_url =
+            ScheduleUtils.getPortletURItoTodoPublicDetailPane(
+              rundata,
+              "ToDo",
+              record.getTodoId().longValue(),
+              portletId);
         }
         rd.setTodoId(record.getTodoId().longValue());
         rd.setTodoName(record.getTodoName());
@@ -619,21 +679,28 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
 
         int stime;
         if (ScheduleUtils.equalsToDate(ToDoUtils.getEmptyDate(), rd
-            .getStartDate().getValue(), false)) {
+          .getStartDate()
+          .getValue(), false)) {
           stime = 0;
         } else {
-          stime = -(int) ((viewStart.getValue().getTime() - rd.getStartDate()
-              .getValue().getTime()) / 86400000);
+          stime =
+            -(int) ((viewStart.getValue().getTime() - rd
+              .getStartDate()
+              .getValue()
+              .getTime()) / 86400000);
         }
-        int etime = -(int) ((viewStart.getValue().getTime() - rd.getEndDate()
-            .getValue().getTime()) / 86400000);
+        int etime =
+          -(int) ((viewStart.getValue().getTime() - rd
+            .getEndDate()
+            .getValue()
+            .getTime()) / 86400000);
         if (stime < 0) {
           stime = 0;
         }
         int count = stime;
         int col = etime - stime + 1;
         int row = count / 7;
-        count = (int) count % 7;
+        count = count % 7;
         // 行をまたがる場合
         while (count + col > 7) {
           ScheduleToDoResultData rd3 = (ScheduleToDoResultData) rd.clone();
@@ -658,17 +725,19 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
 
   private SelectQuery getSelectQueryForTodo(RunData rundata, Context context) {
     SelectQuery query = new SelectQuery(EipTTodo.class);
-    Expression exp1 = ExpressionFactory.noMatchExp(EipTTodo.STATE_PROPERTY,
-        Short.valueOf((short) 100));
+    Expression exp1 =
+      ExpressionFactory.noMatchExp(EipTTodo.STATE_PROPERTY, Short
+        .valueOf((short) 100));
     query.setQualifier(exp1);
-    Expression exp2 = ExpressionFactory.matchExp(
-        EipTTodo.ADDON_SCHEDULE_FLG_PROPERTY, "T");
+    Expression exp2 =
+      ExpressionFactory.matchExp(EipTTodo.ADDON_SCHEDULE_FLG_PROPERTY, "T");
     query.andQualifier(exp2);
 
     if ((target_user_id != null) && (!target_user_id.equals(""))) {
       // 指定ユーザをセットする．
-      Expression exp3 = ExpressionFactory.matchDbExp(
-          TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(target_user_id));
+      Expression exp3 =
+        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+          .valueOf(target_user_id));
       query.andQualifier(exp3);
     } else {
       // 表示できるユーザがいない場合の処理
@@ -676,32 +745,42 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
     }
 
     if (!userid.equals(target_user_id)) {
-      Expression exp4 = ExpressionFactory.matchExp(
-          EipTTodo.PUBLIC_FLAG_PROPERTY, "T");
+      Expression exp4 =
+        ExpressionFactory.matchExp(EipTTodo.PUBLIC_FLAG_PROPERTY, "T");
       query.andQualifier(exp4);
     }
 
     // 終了日時
-    Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-        EipTTodo.END_DATE_PROPERTY, getViewStart().getValue());
+    Expression exp11 =
+      ExpressionFactory.greaterOrEqualExp(
+        EipTTodo.END_DATE_PROPERTY,
+        getViewStart().getValue());
     // 開始日時
-    Expression exp12 = ExpressionFactory.lessOrEqualExp(
-        EipTTodo.START_DATE_PROPERTY, getViewEnd().getValue());
+    Expression exp12 =
+      ExpressionFactory.lessOrEqualExp(
+        EipTTodo.START_DATE_PROPERTY,
+        getViewEnd().getValue());
 
     // 開始日時のみ指定されている ToDo を検索
-    Expression exp21 = ExpressionFactory.lessOrEqualExp(
-        EipTTodo.START_DATE_PROPERTY, getViewEnd().getValue());
-    Expression exp22 = ExpressionFactory.matchExp(EipTTodo.END_DATE_PROPERTY,
-        ToDoUtils.getEmptyDate());
+    Expression exp21 =
+      ExpressionFactory.lessOrEqualExp(
+        EipTTodo.START_DATE_PROPERTY,
+        getViewEnd().getValue());
+    Expression exp22 =
+      ExpressionFactory.matchExp(EipTTodo.END_DATE_PROPERTY, ToDoUtils
+        .getEmptyDate());
 
     // 終了日時のみ指定されている ToDo を検索
-    Expression exp31 = ExpressionFactory.greaterOrEqualExp(
-        EipTTodo.END_DATE_PROPERTY, getViewStart().getValue());
-    Expression exp32 = ExpressionFactory.matchExp(EipTTodo.START_DATE_PROPERTY,
-        ToDoUtils.getEmptyDate());
+    Expression exp31 =
+      ExpressionFactory.greaterOrEqualExp(
+        EipTTodo.END_DATE_PROPERTY,
+        getViewStart().getValue());
+    Expression exp32 =
+      ExpressionFactory.matchExp(EipTTodo.START_DATE_PROPERTY, ToDoUtils
+        .getEmptyDate());
 
     query.andQualifier((exp11.andExp(exp12)).orExp(exp21.andExp(exp22)).orExp(
-        exp31.andExp(exp32)));
+      exp31.andExp(exp32)));
 
     query.addOrdering(EipTTodo.START_DATE_PROPERTY, true);
     return query;
@@ -806,18 +885,20 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
    */
   private void setupLists(RunData rundata, Context context) {
     target_group_name = getTargetGroupName(rundata, context);
-    if ((target_group_name != null) && (!target_group_name.equals(""))
-        && (!target_group_name.equals("all"))) {
+    if ((target_group_name != null)
+      && (!target_group_name.equals(""))
+      && (!target_group_name.equals("all"))) {
       userList = ALEipUtils.getUsers(target_group_name);
       facilityList = FacilitiesUtils.getFacilityList(target_group_name);
     } else {
       userList = ALEipUtils.getUsers("LoginUser");
-      facilityList = FacilitiesUtils
-          .getFacilitiesFromSelectQuery(new SelectQuery(EipMFacility.class));
+      facilityList =
+        FacilitiesUtils.getFacilitiesFromSelectQuery(new SelectQuery(
+          EipMFacility.class));
     }
 
     if ((userList == null || userList.size() == 0)
-        && (facilityList == null || facilityList.size() == 0)) {
+      && (facilityList == null || facilityList.size() == 0)) {
       target_user_id = "";
       ALEipUtils.removeTemp(rundata, context, TARGET_USER_ID);
       return;
@@ -828,8 +909,8 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
       if ("".equals(target_user_id) || target_user_id.startsWith("f")) {
         target_user_name = null;
       } else {
-        ALEipUser tempuser = (ALEipUser) ALEipUtils.getALEipUser(Integer
-            .parseInt(target_user_id));
+        ALEipUser tempuser =
+          ALEipUtils.getALEipUser(Integer.parseInt(target_user_id));
         target_user_name = tempuser.getName().getValue();
       }
     } catch (Exception e) {
@@ -921,7 +1002,7 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
             FacilityResultData rd = (FacilityResultData) facilityList.get(0);
             target_user_id = "f" + rd.getFacilityId().getValue();
             ALEipUtils
-                .setTemp(rundata, context, TARGET_USER_ID, target_user_id);
+              .setTemp(rundata, context, TARGET_USER_ID, target_user_id);
           } else {
             target_user_id = userid;
           }
@@ -952,8 +1033,9 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
   }
 
   private boolean containsUserId(List list, String userid) {
-    if (list == null || list.size() <= 0)
+    if (list == null || list.size() <= 0) {
       return false;
+    }
 
     ALEipUser eipUser;
     int size = list.size();
@@ -968,8 +1050,9 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
   }
 
   private boolean containsFacilityId(List list, String facility_id) {
-    if (list == null || list.size() <= 0)
+    if (list == null || list.size() <= 0) {
       return false;
+    }
 
     FacilityResultData facility;
     int size = list.size();
@@ -1089,6 +1172,7 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
    * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
   }

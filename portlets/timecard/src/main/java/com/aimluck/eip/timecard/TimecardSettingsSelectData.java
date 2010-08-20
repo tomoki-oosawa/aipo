@@ -18,7 +18,6 @@
  */
 package com.aimluck.eip.timecard;
 
-import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -28,6 +27,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTTimecardSettings;
 import com.aimluck.eip.common.ALAbstractSelectData;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.timecard.util.TimecardUtils;
 
 /**
@@ -45,7 +45,7 @@ public class TimecardSettingsSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<EipTTimecardSettings> selectList(RunData rundata,
+  protected ResultList<EipTTimecardSettings> selectList(RunData rundata,
       Context context) {
     return null;
   }
@@ -76,7 +76,9 @@ public class TimecardSettingsSelectData extends
       TimecardSettingsResultData rd = new TimecardSettingsResultData();
       rd.initField();
       rd.setTimecardSettingsId(record.getTimecardSettingsId().intValue());
-      rd.setStartTime(record.getStartHour() + "時" + record.getStartMinute()
+      rd.setStartTime(record.getStartHour()
+        + "時"
+        + record.getStartMinute()
         + "分");
       rd.setEndTime(record.getEndHour() + "時" + record.getEndMinute() + "分");
       rd.setWorktimeIn(record.getWorktimeIn().intValue());

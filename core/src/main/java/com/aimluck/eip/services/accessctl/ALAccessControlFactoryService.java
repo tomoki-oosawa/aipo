@@ -45,7 +45,8 @@ public abstract class ALAccessControlFactoryService extends TurbineBaseService {
   protected JetspeedRunDataService runDataService = null;
 
   public static ALAccessControlFactoryService getInstance() {
-    return (ALAccessControlFactoryService) TurbineServices.getInstance()
+    return (ALAccessControlFactoryService) TurbineServices
+      .getInstance()
       .getService(ALAccessControlFactoryService.SERVICE_NAME);
   }
 
@@ -71,8 +72,9 @@ public abstract class ALAccessControlFactoryService extends TurbineBaseService {
 
     super.init(conf);
 
-    this.runDataService = (JetspeedRunDataService) TurbineServices
-      .getInstance().getService(RunDataService.SERVICE_NAME);
+    this.runDataService =
+      (JetspeedRunDataService) TurbineServices.getInstance().getService(
+        RunDataService.SERVICE_NAME);
 
     setInit(true);
   }

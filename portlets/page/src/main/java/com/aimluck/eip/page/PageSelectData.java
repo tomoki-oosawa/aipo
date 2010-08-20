@@ -34,6 +34,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.page.util.PageUtils;
 
 /**
@@ -51,7 +52,7 @@ public class PageSelectData extends ALAbstractSelectData<Portlets, Portlets> {
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<Portlets> selectList(RunData rundata, Context context) {
+  protected ResultList<Portlets> selectList(RunData rundata, Context context) {
     Portlet portlet = (Portlet) context.get("portlet");
     String selectedPortletId = portlet.getID();
     if (selectedPortletId == null || selectedPortletId.equals("")) {
@@ -59,11 +60,11 @@ public class PageSelectData extends ALAbstractSelectData<Portlets, Portlets> {
     }
 
     // タブ [個人設定] のIDを取得する。
-    String selectedPageId = PageUtils.getPortletSetId(rundata,
-      selectedPortletId);
+    String selectedPageId =
+      PageUtils.getPortletSetId(rundata, selectedPortletId);
 
-    Portlets portlets = ((JetspeedRunData) rundata).getProfile().getDocument()
-      .getPortlets();
+    Portlets portlets =
+      ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
     if (portlets == null) {
       return null;
     }
@@ -105,7 +106,7 @@ public class PageSelectData extends ALAbstractSelectData<Portlets, Portlets> {
 
     portletList.clear();
 
-    return list;
+    return new ResultList(list);
   }
 
   /**
@@ -114,8 +115,8 @@ public class PageSelectData extends ALAbstractSelectData<Portlets, Portlets> {
    */
   @Override
   protected Portlets selectDetail(RunData rundata, Context context) {
-    String portletId = rundata.getParameters().getString(
-      ALEipConstants.ENTITY_ID);
+    String portletId =
+      rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
     if (portletId == null || portletId.equals("")) {
       return null;
     }

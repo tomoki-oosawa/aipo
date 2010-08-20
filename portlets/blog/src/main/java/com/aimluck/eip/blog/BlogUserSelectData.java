@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -43,6 +43,7 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -54,7 +55,7 @@ public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(BlogUserSelectData.class.getName());
+    .getLogger(BlogUserSelectData.class.getName());
 
   /** 表示対象の部署名 */
   private String target_group_name;
@@ -75,6 +76,7 @@ public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
@@ -103,19 +105,21 @@ public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
    * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  public List selectList(RunData rundata, Context context) {
+  @Override
+  public ResultList selectList(RunData rundata, Context context) {
     try {
       latestBlogerIds = getLatestBlogerIds();
 
       String groupname = null;
-      if ((target_group_name != null) && (!target_group_name.equals(""))
-          && (!target_group_name.equals("all"))) {
+      if ((target_group_name != null)
+        && (!target_group_name.equals(""))
+        && (!target_group_name.equals("all"))) {
         groupname = target_group_name;
       } else {
         groupname = "LoginUser";
       }
 
-      return BlogUtils.getBlogUserResultDataList(groupname);
+      return new ResultList(BlogUtils.getBlogUserResultDataList(groupname));
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -129,12 +133,14 @@ public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(Object obj) {
     BlogUserResultData rd = (BlogUserResultData) obj;
 
     if (latestBlogerIds != null
-        && latestBlogerIds.contains(Integer.valueOf((int) rd.getUserId()
-            .getValue()))) {
+      && latestBlogerIds.contains(Integer.valueOf((int) rd
+        .getUserId()
+        .getValue()))) {
       rd.setNewlyCreateEntry(true);
     } else {
       rd.setNewlyCreateEntry(false);
@@ -151,12 +157,15 @@ public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
       field.setValue(cal.getTime());
 
       SelectQuery query = new SelectQuery(EipTBlogEntry.class);
-      Expression exp = ExpressionFactory.greaterOrEqualExp(
-          EipTBlogEntry.CREATE_DATE_PROPERTY, field.getValue());
+      Expression exp =
+        ExpressionFactory.greaterOrEqualExp(
+          EipTBlogEntry.CREATE_DATE_PROPERTY,
+          field.getValue());
       query.setQualifier(exp);
       List list = dataContext.performQuery(query);
-      if (list == null || list.size() <= 0)
+      if (list == null || list.size() <= 0) {
         return null;
+      }
 
       List blogerids = new ArrayList();
       Integer id = null;
@@ -165,8 +174,9 @@ public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
       for (int i = 0; i < size; i++) {
         entry = (EipTBlogEntry) list.get(i);
         id = entry.getOwnerId();
-        if (!blogerids.contains(id))
+        if (!blogerids.contains(id)) {
           blogerids.add(id);
+        }
       }
 
       return blogerids;
@@ -184,6 +194,7 @@ public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   public Object selectDetail(RunData rundata, Context context) {
     return null;
   }
@@ -195,6 +206,7 @@ public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(Object obj) {
     return null;
   }
@@ -203,6 +215,7 @@ public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     return map;
@@ -247,6 +260,7 @@ public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
    * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER;
   }

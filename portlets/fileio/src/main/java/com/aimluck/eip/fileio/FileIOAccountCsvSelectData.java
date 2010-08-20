@@ -42,17 +42,18 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileio.util.FileIOAccountCsvUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * CSV ファイルから読み込んだアカウント情報を表示するクラス．
- *
+ * 
  */
 public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FileIOAccountCsvSelectData.class.getName());
+    .getLogger(FileIOAccountCsvSelectData.class.getName());
 
   /** 最大登録可能数を超えているかのフラグ */
   private boolean overMaxUser = false;
@@ -63,6 +64,7 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
   /**
    * 初期化
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -72,36 +74,43 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
 
   /**
    * アカウント一覧を取得します。 ただし、論理削除されているアカウントは取得しません。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List<Object> selectList(RunData rundata, Context context) {
+  @Override
+  protected ResultList<Object> selectList(RunData rundata, Context context) {
     String filepath;
     try {
       if (stats == ALCsvTokenizer.CSV_LIST_MODE_READ) {
-        return readAccountInfoFromCsv(rundata);
+        return new ResultList(readAccountInfoFromCsv(rundata));
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_NO_ERROR) {
-        filepath = FileIOAccountCsvUtils
-            .getAccountCsvFolderName(getTempFolderIndex())
-            + File.separator + FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_FILENAME;
-        return readAccountInfoFromCsvPage(rundata, filepath, (rundata
-            .getParameters().getInteger("csvpage") - 1),
-            ALCsvTokenizer.CSV_SHOW_SIZE);
+        filepath =
+          FileIOAccountCsvUtils.getAccountCsvFolderName(getTempFolderIndex())
+            + File.separator
+            + FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_FILENAME;
+        return new ResultList(readAccountInfoFromCsvPage(
+          rundata,
+          filepath,
+          (rundata.getParameters().getInteger("csvpage") - 1),
+          ALCsvTokenizer.CSV_SHOW_SIZE));
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_ERROR) {
         if (this.error_count > 0) {
-          filepath = FileIOAccountCsvUtils
-              .getAccountCsvFolderName(getTempFolderIndex())
+          filepath =
+            FileIOAccountCsvUtils.getAccountCsvFolderName(getTempFolderIndex())
               + File.separator
               + FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_ERROR_FILENAME;
         } else {
           return null;
         }
-        return readAccountInfoFromCsvPage(rundata, filepath, 0,
-            ALCsvTokenizer.CSV_SHOW_ERROR_SIZE);
+        return new ResultList(readAccountInfoFromCsvPage(
+          rundata,
+          filepath,
+          0,
+          ALCsvTokenizer.CSV_SHOW_ERROR_SIZE));
       } else {
         return null;
       }
@@ -123,24 +132,26 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected Object selectDetail(RunData rundata, Context context) {
     return null;
   }
 
   /**
    * CSVファイルを読み込んで表示用リストを作成します <BR>
-   *
+   * 
    * @param rundata
    * @return
    * @throws Exception
    */
   private List<Object> readAccountInfoFromCsv(RunData rundata) throws Exception {
-    String filepath = FileIOAccountCsvUtils
-        .getAccountCsvFolderName(getTempFolderIndex())
-        + File.separator + FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_FILENAME;
+    String filepath =
+      FileIOAccountCsvUtils.getAccountCsvFolderName(getTempFolderIndex())
+        + File.separator
+        + FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_FILENAME;
 
-    String filepath_err = FileIOAccountCsvUtils
-        .getAccountCsvFolderName(getTempFolderIndex())
+    String filepath_err =
+      FileIOAccountCsvUtils.getAccountCsvFolderName(getTempFolderIndex())
         + File.separator
         + FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_ERROR_FILENAME;
 
@@ -156,8 +167,9 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
 
     List<Object> list = new ArrayList<Object>();
     Map<String, TurbineUser> existedUserMap = getAllUsersFromDB();
-    if (existedUserMap == null)
+    if (existedUserMap == null) {
       existedUserMap = new LinkedHashMap<String, TurbineUser>();
+    }
     int ErrCount = 0;
 
     // 同一ユーザの存在を確認するために，ユーザ名のリストを保持する．
@@ -182,25 +194,29 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
       for (j = 0; j < sequency.size(); j++) {
         token = reader.nextToken();
 
-        if (j > 0)
+        if (j > 0) {
           e_line.append(",");
+        }
         e_line.append("\"");
         e_line.append(makeOutputItem(token));
         e_line.append("\"");
 
         i = Integer.parseInt((String) sequency.get(j));
         formData.addItemToken(token, i);
-        if (reader.eof == -1)
+        if (reader.eof == -1) {
           break;
-        if (reader.line)
+        }
+        if (reader.line) {
           break;
+        }
       }
       while ((!reader.line) && (reader.eof != -1)) {
         reader.nextToken();
       }
 
-      if (reader.eof == -1 && j == 0)
+      if (reader.eof == -1 && j == 0) {
         break;
+      }
 
       // カンマ不足対策
       for (j++; j < sequency.size(); j++) {
@@ -227,8 +243,9 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
       }
 
       formData.setValidator();
-      if (!formData.validate(errmsg))
+      if (!formData.validate(errmsg)) {
         b_err = true;
+      }
 
       try {
         String username = formData.getUserName().getValue();
@@ -282,27 +299,30 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
 
         if (b_err) {
           ErrorCode += e_line.toString();
-          ErrorCode += "," + Integer.toString(line) + ","
-              + Boolean.toString(same_user);
+          ErrorCode +=
+            "," + Integer.toString(line) + "," + Boolean.toString(same_user);
           ErrorCode += "\n";
         }
         if (ErrCount == 0) {
           if (!b_err) {
-            if (list.size() < ALCsvTokenizer.CSV_SHOW_SIZE)
+            if (list.size() < ALCsvTokenizer.CSV_SHOW_SIZE) {
               list.add(data);
+            }
           } else {
             // list.clear();// エラーが初めて発生した場合。
             list.add(data);
             ErrCount++;
           }
         } else {
-          if (b_err)
+          if (b_err) {
             ErrCount++;
+          }
           list.add(data);
         }
 
-        if (ErrCount >= ALCsvTokenizer.CSV_SHOW_ERROR_SIZE)
+        if (ErrCount >= ALCsvTokenizer.CSV_SHOW_ERROR_SIZE) {
           break;
+        }
 
       } catch (Exception e) {
         logger.error(e);
@@ -326,14 +346,15 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
     }
 
     setErrorCount(ErrCount);
-    if (ErrCount > 0)
+    if (ErrCount > 0) {
       outputErrorData(rundata, ErrorCode, filepath_err);
+    }
     return list;
   }
 
   /**
    * CSVファイルを読み込んでページ毎の表示用リストを作成します <BR>
-   *
+   * 
    * @param rundata
    * @param filepath
    * @param StartLine
@@ -341,8 +362,8 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
    * @return
    * @throws Exception
    */
-  private List<Object> readAccountInfoFromCsvPage(RunData rundata, String filepath,
-      int StartLine, int LineLimit) throws Exception {
+  private List<Object> readAccountInfoFromCsvPage(RunData rundata,
+      String filepath, int StartLine, int LineLimit) throws Exception {
 
     int line_index = StartLine * ALCsvTokenizer.CSV_SHOW_SIZE;
 
@@ -352,8 +373,9 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
     }
 
     Map<String, TurbineUser> existedUserMap = getAllUsersFromDB();
-    if (existedUserMap == null)
+    if (existedUserMap == null) {
       existedUserMap = new LinkedHashMap<String, TurbineUser>();
+    }
 
     List<Object> list = new ArrayList<Object>();
 
@@ -364,8 +386,9 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
       boolean iserror = false;
       boolean same_user = false;
       line++;
-      if (line > LineLimit)
+      if (line > LineLimit) {
         break;
+      }
       List<String> errmsg = new ArrayList<String>();
       FileIOAccountCsvFormData formData = new FileIOAccountCsvFormData();
       formData.initField();
@@ -373,10 +396,12 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
         token = reader.nextToken();
         i = Integer.parseInt((String) sequency.get(j));
         formData.addItemToken(token, i);
-        if (reader.eof == -1)
+        if (reader.eof == -1) {
           break;
-        if (reader.line)
+        }
+        if (reader.line) {
           break;
+        }
 
         if (j == sequency.size() - 1) {
           if (stats == ALCsvTokenizer.CSV_LIST_MODE_ERROR) {
@@ -398,8 +423,9 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
         continue;
       }
 
-      if (reader.eof == -1)
+      if (reader.eof == -1) {
         break;
+      }
 
       formData.setValidator();
       if (!formData.validate(errmsg)) {
@@ -465,15 +491,16 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
       } catch (Exception e) {
         logger.error("readError");
       }
-      if (reader.eof == -1)
+      if (reader.eof == -1) {
         break;
+      }
     }
 
     return list;
   }
 
   /**
-   *
+   * 
    * @return
    */
   private Map<String, TurbineUser> getAllUsersFromDB() {
@@ -501,6 +528,7 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(Object obj) {
     return obj;
   }
@@ -510,6 +538,7 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(Object obj) {
     return null;
   }
@@ -518,6 +547,7 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     return map;

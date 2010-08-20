@@ -46,6 +46,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -93,8 +94,8 @@ public class NoteGroupSelectData extends
       String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
       if (filter == null || filter.equals("")) {
         VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-        String groupName = portlet.getPortletConfig().getInitParameter(
-          "p3b-group");
+        String groupName =
+          portlet.getPortletConfig().getInitParameter("p3b-group");
         if (groupName != null) {
           ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, groupName);
           ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "group");
@@ -110,12 +111,12 @@ public class NoteGroupSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<TurbineUser> selectList(RunData rundata, Context context) {
+  protected ResultList<TurbineUser> selectList(RunData rundata, Context context) {
     setCurrentTab(rundata, context);
     try {
       userId = Integer.toString(ALEipUtils.getUserId(rundata));
-      userAliasName = ALEipUtils.getALEipUser(rundata).getAliasName()
-        .toString();
+      userAliasName =
+        ALEipUtils.getALEipUser(rundata).getAliasName().toString();
       NoteUtils.getTargetGroupName(rundata, context);
 
       List<ALEipGroup> myGroups = ALEipUtils.getMyGroups(rundata);
@@ -125,8 +126,8 @@ public class NoteGroupSelectData extends
       }
 
       // 受信履歴の未読数と新着数をカウントアップする．
-      List<EipTNoteMap> list = NoteUtils.getSelectQueryNoteList(rundata,
-        context).fetchList();
+      List<EipTNoteMap> list =
+        NoteUtils.getSelectQueryNoteList(rundata, context).fetchList();
       if (list != null && list.size() > 0) {
         String stat = null;
         for (EipTNoteMap map : list) {
@@ -142,17 +143,16 @@ public class NoteGroupSelectData extends
       }
 
       String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
-      String filter_type = ALEipUtils.getTemp(rundata, context,
-        LIST_FILTER_TYPE_STR);
+      String filter_type =
+        ALEipUtils.getTemp(rundata, context, LIST_FILTER_TYPE_STR);
       if (filter == null || filter_type == null || filter.equals("")) {
-        return new ArrayList<TurbineUser>();
+        return new ResultList<TurbineUser>(new ArrayList<TurbineUser>());
       } else {
         SelectQuery<TurbineUser> query = getSelectQuery(rundata, context);
         buildSelectQueryForListView(query);
         buildSelectQueryForListViewSort(query, rundata, context);
 
-        List<TurbineUser> ulist = query.fetchList();
-        return buildPaginatedList(ulist);
+        return query.getResultList();
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -202,10 +202,13 @@ public class NoteGroupSelectData extends
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("src_user", TurbineUser.LAST_NAME_KANA_PROPERTY);
-    map.putValue("group", TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY + "."
-      + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY + "."
+    map.putValue("group", TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
+      + "."
+      + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
+      + "."
       + TurbineGroup.GROUP_NAME_PROPERTY);
-    map.putValue("userposition", TurbineUser.EIP_MUSER_POSITION_PROPERTY + "."
+    map.putValue("userposition", TurbineUser.EIP_MUSER_POSITION_PROPERTY
+      + "."
       + EipMUserPosition.POSITION_PROPERTY); // ユーザの順番
     return map;
   }
@@ -221,19 +224,23 @@ public class NoteGroupSelectData extends
       Context context) {
     SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
 
-    Expression exp11 = ExpressionFactory.noMatchDbExp(
-      TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(1));
-    Expression exp12 = ExpressionFactory.noMatchDbExp(
-      TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(2));
-    Expression exp13 = ExpressionFactory.noMatchDbExp(
-      TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(3));
+    Expression exp11 =
+      ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+        .valueOf(1));
+    Expression exp12 =
+      ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+        .valueOf(2));
+    Expression exp13 =
+      ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+        .valueOf(3));
     query.setQualifier(exp11.andExp(exp12).andExp(exp13));
 
-    Expression exp2 = ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY,
-      "F");
+    Expression exp2 =
+      ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
     query.andQualifier(exp2);
-    Expression exp3 = ExpressionFactory.noMatchDbExp(
-      TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(userId));
+    Expression exp3 =
+      ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+        .valueOf(userId));
     query.andQualifier(exp3);
 
     return buildSelectQueryForFilter(query, rundata, context);
@@ -251,8 +258,8 @@ public class NoteGroupSelectData extends
   protected SelectQuery<TurbineUser> buildSelectQueryForFilter(
       SelectQuery<TurbineUser> query, RunData rundata, Context context) {
     String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
-    String filter_type = ALEipUtils.getTemp(rundata, context,
-      LIST_FILTER_TYPE_STR);
+    String filter_type =
+      ALEipUtils.getTemp(rundata, context, LIST_FILTER_TYPE_STR);
     String crt_key = null;
     Attributes map = getColumnMap();
     if (filter == null || filter_type == null || filter.equals("")) {

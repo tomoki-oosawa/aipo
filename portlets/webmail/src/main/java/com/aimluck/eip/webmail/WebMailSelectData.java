@@ -57,6 +57,7 @@ import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.mail.util.UnicodeCorrecter;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.beans.WebmailAccountLiteBean;
@@ -69,7 +70,7 @@ import com.sk_jp.mail.MailUtility;
 public class WebMailSelectData extends ALAbstractSelectData {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WebMailSelectData.class.getName());
+    .getLogger(WebMailSelectData.class.getName());
 
   /** 現在選択されているタブ (＝受信メール or 送信メール) */
   private String currentTab = null;
@@ -86,10 +87,10 @@ public class WebMailSelectData extends ALAbstractSelectData {
   private int folderId = -1;
 
   /** フォルダに対する未読メール数のマップ */
-  private Map<Integer,Integer> unreadMailSumMap;
+  private Map<Integer, Integer> unreadMailSumMap;
 
   /** 最終受信日 */
-  private String finalAccessDateStr = null;
+  private final String finalAccessDateStr = null;
 
   private String org_id;
 
@@ -108,20 +109,22 @@ public class WebMailSelectData extends ALAbstractSelectData {
   private List<EipTMailFolder> mailFolderList;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-              "p2a-sort"));
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p2a-sort"));
     }
 
     org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
@@ -139,12 +142,13 @@ public class WebMailSelectData extends ALAbstractSelectData {
       currentTab = tabParam;
     }
 
-    String tmpAccoundId = ALEipUtils.getTemp(rundata, context,
-        WebMailUtils.ACCOUNT_ID);
+    String tmpAccoundId =
+      ALEipUtils.getTemp(rundata, context, WebMailUtils.ACCOUNT_ID);
     if (tmpAccoundId == null || "".equals(tmpAccoundId)) {
       ALEipUtils.setTemp(rundata, context, WebMailUtils.ACCOUNT_ID, ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-              "p3a-accounts"));
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p3a-accounts"));
     }
 
     // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
@@ -152,25 +156,33 @@ public class WebMailSelectData extends ALAbstractSelectData {
       // アカウントID
       if (rundata.getParameters().containsKey(WebMailUtils.ACCOUNT_ID)) {
         ALEipUtils.setTemp(rundata, context, WebMailUtils.ACCOUNT_ID, rundata
-            .getParameters().getString(WebMailUtils.ACCOUNT_ID));
+          .getParameters()
+          .getString(WebMailUtils.ACCOUNT_ID));
       }
 
       // フォルダID
       if (rundata.getParameters().containsKey(WebMailUtils.FOLDER_ID)) {
         ALEipUtils.setTemp(rundata, context, WebMailUtils.FOLDER_ID, rundata
-            .getParameters().getString(WebMailUtils.FOLDER_ID));
+          .getParameters()
+          .getString(WebMailUtils.FOLDER_ID));
       }
     }
 
     try {
-      accountId = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
+      accountId =
+        Integer.parseInt(ALEipUtils.getTemp(
+          rundata,
+          context,
           WebMailUtils.ACCOUNT_ID));
     } catch (Exception e) {
       accountId = 0;
     }
 
     try {
-      folderId = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
+      folderId =
+        Integer.parseInt(ALEipUtils.getTemp(
+          rundata,
+          context,
           WebMailUtils.FOLDER_ID));
     } catch (Exception e) {
       folderId = 0;
@@ -179,18 +191,18 @@ public class WebMailSelectData extends ALAbstractSelectData {
     // アカウントIDが取得できなかったとき、デフォルトのアカウントIDを取得する
     if (accountId == 0) {
       try {
-        Expression exp = ExpressionFactory.matchExp(
-            EipMMailAccount.USER_ID_PROPERTY, userId);
+        Expression exp =
+          ExpressionFactory.matchExp(EipMMailAccount.USER_ID_PROPERTY, userId);
         SelectQuery query = new SelectQuery(EipMMailAccount.class, exp);
 
         query.addCustomDbAttribute(EipMMailAccount.ACCOUNT_ID_PK_COLUMN);
         List accounts = dataContext.performQuery(query);
         if (accounts != null && accounts.size() > 0) {
           DataRow dataRow = (DataRow) accounts.get(0);
-          accountId = (Integer) dataRow
-              .get(EipMMailAccount.ACCOUNT_ID_PK_COLUMN);
+          accountId =
+            (Integer) dataRow.get(EipMMailAccount.ACCOUNT_ID_PK_COLUMN);
           ALEipUtils.setTemp(rundata, context, WebMailUtils.ACCOUNT_ID, Integer
-              .toString(accountId));
+            .toString(accountId));
         } else {
           // アカウントが一つも見つからなかった
           return;
@@ -200,12 +212,12 @@ public class WebMailSelectData extends ALAbstractSelectData {
     }
 
     // アカウントを取得
-    EipMMailAccount account = ALMailUtils.getMailAccount(org_id, userId,
-        accountId);
+    EipMMailAccount account =
+      ALMailUtils.getMailAccount(org_id, userId, accountId);
 
     // 現在選択中のフォルダを取得
-    selectedFolder = WebMailUtils.getEipTMailFolder(account, String
-        .valueOf(folderId));
+    selectedFolder =
+      WebMailUtils.getEipTMailFolder(account, String.valueOf(folderId));
 
     // フォルダが取得できなかったとき、アカウントに紐付いたデフォルトのフォルダIDを取得する
     if (selectedFolder == null) {
@@ -213,11 +225,11 @@ public class WebMailSelectData extends ALAbstractSelectData {
 
       // セッションにセット
       ALEipUtils.setTemp(rundata, context, WebMailUtils.FOLDER_ID, String
-          .valueOf(folderId));
+        .valueOf(folderId));
 
       // 再取得
-      selectedFolder = WebMailUtils.getEipTMailFolder(account, String
-          .valueOf(folderId));
+      selectedFolder =
+        WebMailUtils.getEipTMailFolder(account, String.valueOf(folderId));
     }
 
     // フォルダリストを取得
@@ -225,11 +237,14 @@ public class WebMailSelectData extends ALAbstractSelectData {
 
     // 現在選択しているタブが受信トレイか送信トレイか
     if (accountId > 0) {
-      int type_mail = (WebMailUtils.TAB_RECEIVE.equals(currentTab)) ? ALFolder.TYPE_RECEIVE
+      int type_mail =
+        (WebMailUtils.TAB_RECEIVE.equals(currentTab))
+          ? ALFolder.TYPE_RECEIVE
           : ALFolder.TYPE_SEND;
-      ALMailHandler handler = ALMailFactoryService.getInstance()
-          .getMailHandler();
-      folder = handler.getALFolder(type_mail, org_id, userId, Integer
+      ALMailHandler handler =
+        ALMailFactoryService.getInstance().getMailHandler();
+      folder =
+        handler.getALFolder(type_mail, org_id, userId, Integer
           .valueOf(accountId));
       folder.setRowsNum(super.getRowsNum());
     }
@@ -238,17 +253,20 @@ public class WebMailSelectData extends ALAbstractSelectData {
 
     // ソート対象が日時だった場合、ソート順を逆にする．
     if ("date".equals(ALEipUtils.getTemp(rundata, context, LIST_SORT_STR))) {
-      String sort_type = ALEipUtils.getTemp(rundata, context,
-          LIST_SORT_TYPE_STR);
+      String sort_type =
+        ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
       if (sort_type == null || sort_type.equals("")) {
-        ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR,
-            ALEipConstants.LIST_SORT_TYPE_DESC);
+        ALEipUtils.setTemp(
+          rundata,
+          context,
+          LIST_SORT_TYPE_STR,
+          ALEipConstants.LIST_SORT_TYPE_DESC);
       }
     }
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -257,11 +275,12 @@ public class WebMailSelectData extends ALAbstractSelectData {
       // メールアカウント一覧
       mailAccountList = new ArrayList();
 
-      List aList = WebMailUtils.getMailAccountNameList(ALEipUtils
-          .getUserId(rundata));
+      List aList =
+        WebMailUtils.getMailAccountNameList(ALEipUtils.getUserId(rundata));
 
-      if (aList == null)
+      if (aList == null) {
         return;
+      }
 
       WebmailAccountLiteBean bean = null;
       DataRow dataRow = null;
@@ -270,10 +289,12 @@ public class WebMailSelectData extends ALAbstractSelectData {
         dataRow = (DataRow) iter.next();
         bean = new WebmailAccountLiteBean();
         bean.initField();
-        bean.setAccountId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-            EipMMailAccount.ACCOUNT_ID_PK_COLUMN)).intValue());
-        bean.setAccountName((String) ALEipUtils.getObjFromDataRow(dataRow,
-            EipMMailAccount.ACCOUNT_NAME_COLUMN));
+        bean.setAccountId(((Integer) ALEipUtils.getObjFromDataRow(
+          dataRow,
+          EipMMailAccount.ACCOUNT_ID_PK_COLUMN)).intValue());
+        bean.setAccountName((String) ALEipUtils.getObjFromDataRow(
+          dataRow,
+          EipMMailAccount.ACCOUNT_NAME_COLUMN));
         mailAccountList.add(bean);
       }
     } catch (Exception ex) {
@@ -283,11 +304,12 @@ public class WebMailSelectData extends ALAbstractSelectData {
 
   /**
    * メールの一覧を取得する． <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List selectList(RunData rundata, Context context) {
+  @Override
+  protected ResultList selectList(RunData rundata, Context context) {
     try {
       if (folder == null) {
         return null;
@@ -297,27 +319,28 @@ public class WebMailSelectData extends ALAbstractSelectData {
       // ・フォルダの切り替え、受信送信タブの移動、ソート時には未読メール数をセッションから取得する
       // ・メールのフォルダ間移動、メール詳細画面を出した後は未読メール数をデータベースから取得する
       // ・セッションが空の場合は未読メール数をデータベースから取得する
-      String unreadMailSumMapString = ALEipUtils.getTemp(rundata, context,
-          "unreadmailsummap");
+      String unreadMailSumMapString =
+        ALEipUtils.getTemp(rundata, context, "unreadmailsummap");
       if ((rundata.getParameters().containsKey("noupdateunread")
-          || rundata.getParameters().containsKey("sort") || rundata
-          .getParameters().containsKey("tab"))
-          && unreadMailSumMapString != null
-          && !rundata.getParameters().containsKey("updateunread")) {
+        || rundata.getParameters().containsKey("sort") || rundata
+        .getParameters()
+        .containsKey("tab"))
+        && unreadMailSumMapString != null
+        && !rundata.getParameters().containsKey("updateunread")) {
         // セッションから得た文字列をHashMapに再構成
-        unreadMailSumMap = WebMailUtils
-            .getUnreadMailSumMapFromString(unreadMailSumMapString);
+        unreadMailSumMap =
+          WebMailUtils.getUnreadMailSumMapFromString(unreadMailSumMapString);
       } else {
         // セッションが空か、パラメータが指定されていなければ取得しなおす
-        unreadMailSumMap = WebMailUtils.getUnreadMailNumberMap(rundata, userId,
-            accountId);
+        unreadMailSumMap =
+          WebMailUtils.getUnreadMailNumberMap(rundata, userId, accountId);
       }
 
       // セッションに保存
       ALEipUtils.setTemp(rundata, context, "unreadmailsummap", unreadMailSumMap
-          .toString());
+        .toString());
 
-      return folder.getIndexRows(rundata, context);
+      return new ResultList(folder.getIndexRows(rundata, context));
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -328,9 +351,10 @@ public class WebMailSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected Object selectDetail(RunData rundata, Context context) {
-    String mailid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String mailid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
     if (mailid == null || Integer.valueOf(mailid) == null) {
       // Mail IDが空の場合
@@ -342,50 +366,62 @@ public class WebMailSelectData extends ALAbstractSelectData {
 
   /**
    * ResultDataを取得する（メールの一覧） <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(Object obj) {
     DataRow dataRow = (DataRow) obj;
 
     WebMailIndexRowResultData rd = new WebMailIndexRowResultData();
     rd.initField();
 
-    rd.setMailId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-        EipTMail.MAIL_ID_PK_COLUMN)).toString());
+    rd.setMailId(((Integer) ALEipUtils.getObjFromDataRow(
+      dataRow,
+      EipTMail.MAIL_ID_PK_COLUMN)).toString());
 
-    String isRead = (String) ALEipUtils.getObjFromDataRow(dataRow,
-        EipTMail.READ_FLG_COLUMN);
+    String isRead =
+      (String) ALEipUtils.getObjFromDataRow(dataRow, EipTMail.READ_FLG_COLUMN);
     if ("T".equals(isRead)) {
-      rd.setReadImage("themes/"+getTheme()+"/images/icon/webmail_readmail.gif");
+      rd.setReadImage("themes/"
+        + getTheme()
+        + "/images/icon/webmail_readmail.gif");
       rd.setReadImageDescription("既読");
     } else {
-      rd.setReadImage("themes/"+getTheme()+"/images/icon/webmail_unreadmail.gif");
+      rd.setReadImage("themes/"
+        + getTheme()
+        + "/images/icon/webmail_unreadmail.gif");
       rd.setReadImageDescription("未読");
     }
 
-    String s = (String) ALEipUtils.getObjFromDataRow(dataRow,
-        EipTMail.SUBJECT_COLUMN);
+    String s =
+      (String) ALEipUtils.getObjFromDataRow(dataRow, EipTMail.SUBJECT_COLUMN);
     try {
       s = MimeUtility.decodeText(MimeUtility.unfold(s));
       s = UnicodeCorrecter.correctToCP932(MailUtility.decodeText(s));
       rd.setSubject(ALCommonUtils.compressString(s, getStrLength()));
     } catch (UnsupportedEncodingException unsupportedencodingexception) {
       rd.setSubject(ALCommonUtils.compressString(MailUtility
-          .decodeText((String) ALEipUtils.getObjFromDataRow(dataRow,
-              EipTMail.SUBJECT_COLUMN)), getStrLength()));
+        .decodeText((String) ALEipUtils.getObjFromDataRow(
+          dataRow,
+          EipTMail.SUBJECT_COLUMN)), getStrLength()));
     }
 
     rd.setPerson(MailUtility.decodeText((String) ALEipUtils.getObjFromDataRow(
-        dataRow, EipTMail.PERSON_COLUMN)));
+      dataRow,
+      EipTMail.PERSON_COLUMN)));
 
-    rd.setDate((Date) ALEipUtils.getObjFromDataRow(dataRow,
-        EipTMail.EVENT_DATE_COLUMN));
-    rd.setFileVolume(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-        EipTMail.FILE_VOLUME_COLUMN)).toString());
+    rd.setDate((Date) ALEipUtils.getObjFromDataRow(
+      dataRow,
+      EipTMail.EVENT_DATE_COLUMN));
+    rd.setFileVolume(((Integer) ALEipUtils.getObjFromDataRow(
+      dataRow,
+      EipTMail.FILE_VOLUME_COLUMN)).toString());
 
-    boolean hasAttachments = ("T".equals((String) ALEipUtils.getObjFromDataRow(
-        dataRow, EipTMail.HAS_FILES_COLUMN)));
+    boolean hasAttachments =
+      ("T".equals(ALEipUtils.getObjFromDataRow(
+        dataRow,
+        EipTMail.HAS_FILES_COLUMN)));
 
     if (hasAttachments) {
       rd.setWithFilesImage("images/webmail/webmail_withfiles.gif");
@@ -399,6 +435,7 @@ public class WebMailSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(Object obj) {
     WebMailResultData rd = null;
     try {
@@ -418,7 +455,7 @@ public class WebMailSelectData extends ALAbstractSelectData {
       rd.setSubject(msg.getSubject());
       rd.setFrom(ALMailUtils.getAddressString(msg.getFrom()));
       rd.setTo(ALMailUtils.getAddressString(msg
-          .getRecipients(Message.RecipientType.TO)));
+        .getRecipients(Message.RecipientType.TO)));
       rd.setDate(date);
       // int length = 0;
       // String[] bodyTexts = null;
@@ -456,7 +493,7 @@ public class WebMailSelectData extends ALAbstractSelectData {
 
   /**
    * 現在選択されているタブを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public String getCurrentTab() {
@@ -465,7 +502,7 @@ public class WebMailSelectData extends ALAbstractSelectData {
 
   /**
    * 現在のアカウントが持つメールフォルダを取得します。
-   *
+   * 
    * @return
    */
   public List getFolderList() {
@@ -476,12 +513,13 @@ public class WebMailSelectData extends ALAbstractSelectData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     return null;
   }
 
   /**
-   *
+   * 
    * @return
    */
   public List getMailAccountList() {
@@ -490,7 +528,7 @@ public class WebMailSelectData extends ALAbstractSelectData {
 
   /**
    * 現在選択中のアカウントIDを取得します。
-   *
+   * 
    * @return
    */
   public int getAccountId() {
@@ -499,7 +537,7 @@ public class WebMailSelectData extends ALAbstractSelectData {
 
   /**
    * 現在選択中のフォルダIDを取得します。
-   *
+   * 
    * @return
    */
   public int getFolderId() {
@@ -508,7 +546,7 @@ public class WebMailSelectData extends ALAbstractSelectData {
 
   /**
    * 現在選択中のフォルダを取得します。
-   *
+   * 
    * @return
    */
   public EipTMailFolder getSelectedFolder() {
@@ -525,11 +563,11 @@ public class WebMailSelectData extends ALAbstractSelectData {
 
   /**
    * フォルダ別未読メール数を取得する。
-   *
+   * 
    * @return
    */
   public int getUnReadMailSumByFolderId(int folder_id) {
-    return (Integer) unreadMailSumMap.get(folder_id);
+    return unreadMailSumMap.get(folder_id);
   }
 
   public String getFinalAccessDate() {
@@ -538,52 +576,58 @@ public class WebMailSelectData extends ALAbstractSelectData {
 
   /**
    * 表示する項目数を取得します。
-   *
+   * 
    * @return
    */
+  @Override
   public int getRowsNum() {
     return folder.getRowsNum();
   }
 
   /**
    * 総件数を取得します。
-   *
+   * 
    * @return
    */
+  @Override
   public int getCount() {
     return folder.getCount();
   }
 
   /**
    * 総ページ数を取得します。
-   *
+   * 
    * @return
    */
+  @Override
   public int getPagesNum() {
     return folder.getPagesNum();
   }
 
   /**
    * 現在表示されているページを取得します。
-   *
+   * 
    * @return
    */
+  @Override
   public int getCurrentPage() {
     return folder.getCurrentPage();
   }
 
   /**
-   *
+   * 
    * @return
    */
+  @Override
   public String getCurrentSort() {
     return folder.getCurrentSort();
   }
 
   /**
-   *
+   * 
    * @return
    */
+  @Override
   public String getCurrentSortType() {
     return folder.getCurrentSortType();
   }
@@ -591,12 +635,13 @@ public class WebMailSelectData extends ALAbstractSelectData {
   /**
    * @return
    */
+  @Override
   public int getStart() {
     return folder.getStart();
   }
 
   /**
-   *
+   * 
    * @param id
    * @return
    */

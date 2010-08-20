@@ -66,12 +66,12 @@ public class ALCSVUtils {
       ALAction action, ALCsvAbstractSelectData listData)// 最初に呼び出されたとき
       throws Exception {
     listData.setState(ALCsvTokenizer.CSV_LIST_MODE_READ);
-    List<String> sequency = stringToArray(ALEipUtils.getTemp(rundata, context,
-      "sequency"));
-    int page_count = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-      "page_count"));
-    int line_count = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-      "line_count"));
+    List<String> sequency =
+      stringToArray(ALEipUtils.getTemp(rundata, context, "sequency"));
+    int page_count =
+      Integer.parseInt(ALEipUtils.getTemp(rundata, context, "page_count"));
+    int line_count =
+      Integer.parseInt(ALEipUtils.getTemp(rundata, context, "line_count"));
 
     listData.setSequency(sequency);
     listData.setPageCount(page_count);
@@ -89,19 +89,19 @@ public class ALCSVUtils {
       ALAction action, ALCsvAbstractSelectData listData) throws Exception {
     listData.setState(ALCsvTokenizer.CSV_LIST_MODE_ERROR);
 
-    List<String> sequency = stringToArray(ALEipUtils.getTemp(rundata, context,
-      "sequency"));
-    int page_count = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-      "page_count"));
-    int line_count = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-      "line_count"));
+    List<String> sequency =
+      stringToArray(ALEipUtils.getTemp(rundata, context, "sequency"));
+    int page_count =
+      Integer.parseInt(ALEipUtils.getTemp(rundata, context, "page_count"));
+    int line_count =
+      Integer.parseInt(ALEipUtils.getTemp(rundata, context, "line_count"));
 
     listData.setSequency(sequency);
     listData.setPageCount(page_count);
     listData.setLineCount(line_count);
 
-    int error_count = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-      "error_count"));
+    int error_count =
+      Integer.parseInt(ALEipUtils.getTemp(rundata, context, "error_count"));
 
     listData.setErrorCount(error_count);
     listData.doViewList(action, rundata, context);
@@ -112,19 +112,19 @@ public class ALCSVUtils {
   public static void makeListPage(RunData rundata, Context context,
       ALAction action, ALCsvAbstractSelectData listData) throws Exception {
 
-    List<String> sequency = stringToArray(ALEipUtils.getTemp(rundata, context,
-      "sequency"));
-    int page_count = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-      "page_count"));
-    int line_count = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-      "line_count"));
+    List<String> sequency =
+      stringToArray(ALEipUtils.getTemp(rundata, context, "sequency"));
+    int page_count =
+      Integer.parseInt(ALEipUtils.getTemp(rundata, context, "page_count"));
+    int line_count =
+      Integer.parseInt(ALEipUtils.getTemp(rundata, context, "line_count"));
 
     listData.setSequency(sequency);
     listData.setPageCount(page_count);
     listData.setLineCount(line_count);
 
-    int error_count = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-      "error_count"));
+    int error_count =
+      Integer.parseInt(ALEipUtils.getTemp(rundata, context, "error_count"));
 
     listData.setErrorCount(error_count);
 

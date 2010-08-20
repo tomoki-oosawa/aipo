@@ -18,7 +18,6 @@
  */
 package com.aimluck.eip.webmail;
 
-import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.access.DataContext;
@@ -36,6 +35,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.util.WebMailUtils;
@@ -48,7 +48,7 @@ public class CellWebMailAccountSelectData extends ALAbstractSelectData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CellWebMailAccountSelectData.class.getName());
+    .getLogger(CellWebMailAccountSelectData.class.getName());
 
   private DataContext dataContext;
 
@@ -57,28 +57,33 @@ public class CellWebMailAccountSelectData extends ALAbstractSelectData {
   private int accountId;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
-          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-              .getInitParameter("p2a-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p2a-sort"));
     }
 
     dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     userId = ALEipUtils.getUserId(rundata);
     try {
-      accountId = Integer.valueOf(ALEipUtils.getTemp(rundata, context,
+      accountId =
+        Integer.valueOf(ALEipUtils.getTemp(
+          rundata,
+          context,
           WebMailUtils.ACCOUNT_ID));
     } catch (Exception e) {
       accountId = 0;
@@ -90,14 +95,14 @@ public class CellWebMailAccountSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
-  protected List selectList(RunData rundata, Context context) {
+  @Override
+  protected ResultList selectList(RunData rundata, Context context) {
     try {
       SelectQuery query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List list = query.fetchList();
-      return buildPaginatedList(list);
+      return query.getResultList();
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -106,7 +111,7 @@ public class CellWebMailAccountSelectData extends ALAbstractSelectData {
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -114,11 +119,12 @@ public class CellWebMailAccountSelectData extends ALAbstractSelectData {
   private SelectQuery getSelectQuery(RunData rundata, Context context) {
     SelectQuery query = new SelectQuery(EipMMailAccount.class);
 
-    Expression exp1 = ExpressionFactory.matchExp(
-        EipMMailAccount.USER_ID_PROPERTY,
-        Integer.valueOf(ALEipUtils.getUserId(rundata)));
+    Expression exp1 =
+      ExpressionFactory.matchExp(EipMMailAccount.USER_ID_PROPERTY, Integer
+        .valueOf(ALEipUtils.getUserId(rundata)));
     query.setQualifier(exp1);
-    Expression exp2 = ExpressionFactory.noMatchExp(
+    Expression exp2 =
+      ExpressionFactory.noMatchExp(
         EipMMailAccount.ACCOUNT_TYPE_PROPERTY,
         Integer.valueOf(ALMailUtils.ACCOUNT_TYPE_INIT));
     query.andQualifier(exp2);
@@ -131,6 +137,7 @@ public class CellWebMailAccountSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected Object selectDetail(RunData rundata, Context context) {
 
     return ALMailUtils.getMailAccount(null, userId, accountId);
@@ -139,6 +146,7 @@ public class CellWebMailAccountSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
+  @Override
   protected Object getResultData(Object obj) {
     try {
       EipMMailAccount record = (EipMMailAccount) obj;
@@ -157,6 +165,7 @@ public class CellWebMailAccountSelectData extends ALAbstractSelectData {
   /**
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
+  @Override
   protected Object getResultDataDetail(Object obj) {
     return null;
   }
@@ -165,6 +174,7 @@ public class CellWebMailAccountSelectData extends ALAbstractSelectData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
+  @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("account_name", EipMMailAccount.ACCOUNT_NAME_PROPERTY);

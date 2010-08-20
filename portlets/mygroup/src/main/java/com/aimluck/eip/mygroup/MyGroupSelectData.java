@@ -37,6 +37,7 @@ import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.mygroup.util.MyGroupUtils;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -64,8 +65,9 @@ public class MyGroupSelectData extends
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-          "p2a-sort"));
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p2a-sort"));
     }
 
     super.init(action, rundata, context);
@@ -79,15 +81,14 @@ public class MyGroupSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected List<TurbineGroup> selectList(RunData rundata, Context context) {
+  protected ResultList<TurbineGroup> selectList(RunData rundata, Context context) {
     try {
 
       SelectQuery<TurbineGroup> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<TurbineGroup> list = query.fetchList();
-      return buildPaginatedList(list);
+      return query.getResultList();
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -103,11 +104,12 @@ public class MyGroupSelectData extends
    */
   private SelectQuery<TurbineGroup> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<TurbineGroup> query = new SelectQuery<TurbineGroup>(
-      TurbineGroup.class);
+    SelectQuery<TurbineGroup> query =
+      new SelectQuery<TurbineGroup>(TurbineGroup.class);
 
-    Expression exp = ExpressionFactory.matchExp(TurbineGroup.OWNER_ID_PROPERTY,
-      Integer.valueOf(ALEipUtils.getUserId(rundata)));
+    Expression exp =
+      ExpressionFactory.matchExp(TurbineGroup.OWNER_ID_PROPERTY, Integer
+        .valueOf(ALEipUtils.getUserId(rundata)));
     query.setQualifier(exp);
 
     return query;

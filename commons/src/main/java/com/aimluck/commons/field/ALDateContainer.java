@@ -296,8 +296,12 @@ public class ALDateContainer implements Serializable {
       date = calendar.getTime();
       return date;
     } catch (IllegalArgumentException ex) {
-      throw new ALIllegalDateException("Year = " + year + ", Month = " + month
-        + ", Day = " + day);
+      throw new ALIllegalDateException("Year = "
+        + year
+        + ", Month = "
+        + month
+        + ", Day = "
+        + day);
     }
   }
 
@@ -316,8 +320,9 @@ public class ALDateContainer implements Serializable {
     int length = str.length();
     try {
       for (int i = 0; i < length; i++) {
-        chars = (Character.valueOf(str.charAt(i)).toString())
-          .getBytes(ALAbstractField.ENCORDE_CONFIRM_CHARTYPE);
+        chars =
+          (Character.valueOf(str.charAt(i)).toString())
+            .getBytes(ALAbstractField.ENCORDE_CONFIRM_CHARTYPE);
 
         if (chars.length > 1) {
           return false;
@@ -338,7 +343,11 @@ public class ALDateContainer implements Serializable {
   public String toString() {
     StringBuffer sb = new StringBuffer();
     try {
-      sb.append(toStringYear()).append("/").append(toStringMonth()).append("/")
+      sb
+        .append(toStringYear())
+        .append("/")
+        .append(toStringMonth())
+        .append("/")
         .append(toStringDay());
     } catch (Throwable ex) {
       return "";

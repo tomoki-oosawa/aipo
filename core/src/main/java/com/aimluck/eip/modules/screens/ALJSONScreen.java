@@ -85,8 +85,11 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
 
       ALEipUtils.setupContext(rundata, context);
 
-      StringBuffer result = new StringBuffer().append("/* ").append(
-        getJSONString(rundata, context)).append(" */");
+      StringBuffer result =
+        new StringBuffer()
+          .append("/* ")
+          .append(getJSONString(rundata, context))
+          .append(" */");
 
       HttpServletResponse response = rundata.getResponse();
 
@@ -195,7 +198,9 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
     context.put(ALEipConstants.RESULT_LIST, resultList);
     context.put(ALEipConstants.MESSAGE_LIST, msgList);
     context.put(ALEipConstants.ERROR_MESSAGE_LIST, errmsgList);
-    context.put(ALEipConstants.ENTITY_ID, ALEipUtils.getTemp(rundata, context,
+    context.put(ALEipConstants.ENTITY_ID, ALEipUtils.getTemp(
+      rundata,
+      context,
       ALEipConstants.ENTITY_ID));
   }
 

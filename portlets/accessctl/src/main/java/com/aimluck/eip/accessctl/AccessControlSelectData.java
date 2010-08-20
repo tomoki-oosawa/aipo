@@ -38,6 +38,7 @@ import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
@@ -72,8 +73,9 @@ public class AccessControlSelectData extends
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-          "p2a-sort"));
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p2a-sort"));
     }
 
     super.init(action, rundata, context);
@@ -98,18 +100,17 @@ public class AccessControlSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  public List<EipTAclRole> selectList(RunData rundata, Context context) {
+  public ResultList<EipTAclRole> selectList(RunData rundata, Context context) {
     try {
 
       SelectQuery<EipTAclRole> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<EipTAclRole> list = query.fetchList();
+      ResultList<EipTAclRole> list = query.getResultList();
 
-      aclRoleSum = list.size();
-
-      return buildPaginatedList(list);
+      aclRoleSum = list.getTotalCount();
+      return list;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -125,8 +126,8 @@ public class AccessControlSelectData extends
    */
   protected SelectQuery<EipTAclRole> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipTAclRole> query = new SelectQuery<EipTAclRole>(
-      EipTAclRole.class);
+    SelectQuery<EipTAclRole> query =
+      new SelectQuery<EipTAclRole>(EipTAclRole.class);
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
@@ -145,7 +146,8 @@ public class AccessControlSelectData extends
       rd.initField();
       rd.setAclRoleId(record.getRoleId().longValue());
       rd.setAclRoleName(record.getRoleName());
-      rd.setFeatureName(record.getEipTAclPortletFeature().getFeatureAliasName());
+      rd
+        .setFeatureName(record.getEipTAclPortletFeature().getFeatureAliasName());
       rd.setNote(record.getNote());
 
       // アクセス権限
@@ -207,7 +209,8 @@ public class AccessControlSelectData extends
       rd.initField();
       rd.setAclRoleId(record.getRoleId().longValue());
       rd.setAclRoleName(record.getRoleName());
-      rd.setFeatureName(record.getEipTAclPortletFeature().getFeatureAliasName());
+      rd
+        .setFeatureName(record.getEipTAclPortletFeature().getFeatureAliasName());
       rd.setNote(record.getNote());
 
       // アクセス権限
@@ -235,8 +238,9 @@ public class AccessControlSelectData extends
       EipTAclUserRoleMap map = null;
       TurbineUser tuser = null;
 
-      List<?> maps = AccessControlUtils.getEipTAclUserRoleMaps(record
-        .getRoleId().intValue());
+      List<?> maps =
+        AccessControlUtils
+          .getEipTAclUserRoleMaps(record.getRoleId().intValue());
       if (maps != null && maps.size() > 0) {
         int size = maps.size();
         for (int i = 0; i < size; i++) {
@@ -269,8 +273,10 @@ public class AccessControlSelectData extends
     Attributes map = new Attributes();
     map.putValue("acl_role_name", EipTAclRole.ROLE_NAME_PROPERTY);
     map.putValue("feature_name", EipTAclRole.EIP_TACL_PORTLET_FEATURE_PROPERTY
-      + "." + EipTAclPortletFeature.FEATURE_NAME_PROPERTY);
-    map.putValue("feature", EipTAclRole.EIP_TACL_PORTLET_FEATURE_PROPERTY + "."
+      + "."
+      + EipTAclPortletFeature.FEATURE_NAME_PROPERTY);
+    map.putValue("feature", EipTAclRole.EIP_TACL_PORTLET_FEATURE_PROPERTY
+      + "."
       + EipTAclPortletFeature.FEATURE_ID_PK_COLUMN);
     return map;
   }
