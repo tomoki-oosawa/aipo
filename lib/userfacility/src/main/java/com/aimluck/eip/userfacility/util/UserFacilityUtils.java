@@ -21,24 +21,18 @@ package com.aimluck.eip.userfacility.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.query.SQLTemplate;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
-import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.facility.beans.FacilityLiteBean;
 import com.aimluck.eip.facility.util.FacilityUtils;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.user.beans.UserLiteBean;
 import com.aimluck.eip.user.util.UserUtils;
 import com.aimluck.eip.userfacility.beans.UserFacilityLiteBean;
-import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザーのユーティリティクラスです。 <br />
@@ -58,8 +52,8 @@ public class UserFacilityUtils {
   public static List<UserFacilityLiteBean> getUserFacilityLiteBeansFromGroup(
       RunData rundata, String groupname) {
 
-    List<UserLiteBean> tmp_u_list = UserUtils.getUserLiteBeansFromGroup(
-      rundata, groupname, true);
+    List<UserLiteBean> tmp_u_list =
+      UserUtils.getUserLiteBeansFromGroup(rundata, groupname, true);
     int t_size = tmp_u_list.size();
 
     List<UserFacilityLiteBean> list = new ArrayList<UserFacilityLiteBean>();
@@ -90,37 +84,22 @@ public class UserFacilityUtils {
 
       String query = statement.toString();
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      @SuppressWarnings("deprecation")
-      SQLTemplate rawSelect = new SQLTemplate(TurbineUser.class, query, true);
-      rawSelect.setFetchingDataRows(true);
-      List<?> ulist = dataContext.performQuery(rawSelect);
+      List<EipMFacility> list2 =
+        Database.sql(EipMFacility.class, query).fetchList();
 
-      int recNum = ulist.size();
-
-      DataRow dataRow;
       // ユーザデータを作成し、返却リストへ格納
-      for (int j = 0; j < recNum; j++) {
-        dataRow = (DataRow) ulist.get(j);
+      for (EipMFacility record : list2) {
         user = new UserFacilityLiteBean();
         user.initField();
-        user.setUserFacilityId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-          EipMFacility.FACILITY_ID_PK_COLUMN)).intValue());
+        user.setUserFacilityId(record.getFacilityId());
         user.setName("f" + user.getUserFacilityId());
-        user.setAliasName((String) ALEipUtils.getObjFromDataRow(dataRow,
-          EipMFacility.FACILITY_NAME_COLUMN));
+        user.setAliasName(record.getFacilityName());
         user.setUserFacilityType("F");
         list.add(user);
       }
     } else {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      SelectQuery query = new SelectQuery(EipMFacility.class);
-      List<?> aList = dataContext.performQuery(query);
-      int size = aList.size();
-      for (int i = 0; i < size; i++) {
-        EipMFacility record = (EipMFacility) aList.get(i);
+      List<EipMFacility> aList = Database.query(EipMFacility.class).fetchList();
+      for (EipMFacility record : aList) {
         user = new UserFacilityLiteBean();
         user.initField();
         user.setUserFacilityId(record.getFacilityId().intValue());
@@ -144,8 +123,8 @@ public class UserFacilityUtils {
     UserFacilityLiteBean user;
     List<UserFacilityLiteBean> list = new ArrayList<UserFacilityLiteBean>();
     try {
-      List tmp_u_list = UserUtils.getUserGroupLiteBeans(rundata, isMygroup,
-        isPost);
+      List tmp_u_list =
+        UserUtils.getUserGroupLiteBeans(rundata, isMygroup, isPost);
       int t_size = tmp_u_list.size();
       UserLiteBean t_user;
       for (int i = 0; i < t_size; i++) {
@@ -187,7 +166,8 @@ public class UserFacilityUtils {
       .parseInt(jdata.getJetspeedUser().getUserId()));
     user.setName(jdata.getJetspeedUser().getUserName());
     user.setAliasName(jdata.getJetspeedUser().getFirstName(), jdata
-      .getJetspeedUser().getLastName());
+      .getJetspeedUser()
+      .getLastName());
     user.setUserFacilityType("U");
     return user;
   }

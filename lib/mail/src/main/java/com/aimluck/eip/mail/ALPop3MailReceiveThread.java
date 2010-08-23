@@ -20,7 +20,6 @@ package com.aimluck.eip.mail;
 
 import java.util.Date;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -29,7 +28,7 @@ import org.apache.turbine.om.security.User;
 import com.aimluck.eip.cayenne.om.portlet.EipMMailAccount;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.mail.util.ALStaticObject;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 
 /**
  * メール受信（POP3）を操作するクラスです。 <br />
@@ -193,11 +192,10 @@ public class ALPop3MailReceiveThread implements Runnable {
       }
 
       // 最終受信日を保存する．
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
       account.setLastReceivedDate(new Date());
-      dataContext.commitChanges();
+      Database.commit();
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("[ALFilePop3MailReceiveThread]", ex);
       result = ALPop3MailReceiver.RECEIVE_MSG_FAIL;
       return result;

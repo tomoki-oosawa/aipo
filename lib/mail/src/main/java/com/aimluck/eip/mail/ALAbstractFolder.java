@@ -44,7 +44,6 @@ import javax.mail.internet.MimeMessage;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -57,7 +56,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.mail.util.ALAttachmentsExtractor;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.orgutils.ALOrgUtilsFactoryService;
 import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
@@ -71,8 +70,8 @@ import com.sk_jp.mail.MultipartUtility;
 public abstract class ALAbstractFolder implements ALFolder {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALAbstractFolder.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALAbstractFolder.class.getName());
 
   /** 受信 or 送信 */
   protected int type_mail = -1;
@@ -113,13 +112,11 @@ public abstract class ALAbstractFolder implements ALFolder {
   /** 現在のソートタイプ （asc:昇順、desc:降順） */
   private String current_sort_type;
 
-  protected final String LIST_SORT_STR =
-    new StringBuffer().append(this.getClass().getName()).append(
-      ALEipConstants.LIST_SORT).toString();
+  protected final String LIST_SORT_STR = new StringBuffer().append(
+    this.getClass().getName()).append(ALEipConstants.LIST_SORT).toString();
 
-  protected final String LIST_SORT_TYPE_STR =
-    new StringBuffer().append(this.getClass().getName()).append(
-      ALEipConstants.LIST_SORT_TYPE).toString();
+  protected final String LIST_SORT_TYPE_STR = new StringBuffer().append(
+    this.getClass().getName()).append(ALEipConstants.LIST_SORT_TYPE).toString();
 
   /**
    * コンストラクタ
@@ -270,10 +267,9 @@ public abstract class ALAbstractFolder implements ALFolder {
       int folder_id = account.getDefaultFolderId();
 
       // フォルダ振り分け処理
-      List<?> filters = ALMailUtils.getEipTMailFilters(account);
+      List<EipTMailFilter> filters = ALMailUtils.getEipTMailFilters(account);
       if (filters != null) {
-        for (Object filter : filters) {
-          EipTMailFilter mailFilter = (EipTMailFilter) filter;
+        for (EipTMailFilter mailFilter : filters) {
           if (ALMailUtils.isMatchFilter(mailFilter, subject, preson)) {
             folder_id = mailFilter.getEipTMailFolder().getFolderId();
             break;
@@ -315,7 +311,7 @@ public abstract class ALAbstractFolder implements ALFolder {
    * @param context
    * @return
    */
-  public List<?> getIndexRows(RunData rundata, Context context)
+  public List<EipTMail> getIndexRows(RunData rundata, Context context)
       throws Exception {
     try {
       // // 未読メール総数をセットする．
@@ -346,15 +342,11 @@ public abstract class ALAbstractFolder implements ALFolder {
         }
       }
 
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTMail> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<?> list = dataContext.performQuery(query);
-
-      return buildPaginatedList(list);
+      return query.getResultList();
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -368,7 +360,7 @@ public abstract class ALAbstractFolder implements ALFolder {
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
+  private SelectQuery<EipTMail> getSelectQuery(RunData rundata, Context context) {
     String type = (type_mail == TYPE_RECEIVE) ? "R" : "S";
 
     // メールタイプが「受信」の場合、セッションからフォルダIDを取得する
@@ -377,14 +369,14 @@ public abstract class ALAbstractFolder implements ALFolder {
       folder_id = ALEipUtils.getTemp(rundata, context, ALMailUtils.FOLDER_ID);
     }
 
-    SelectQuery query = new SelectQuery(EipTMail.class);
-    query.addCustomDbAttribute(EipTMail.MAIL_ID_PK_COLUMN);
-    query.addCustomDbAttribute(EipTMail.READ_FLG_COLUMN);
-    query.addCustomDbAttribute(EipTMail.SUBJECT_COLUMN);
-    query.addCustomDbAttribute(EipTMail.PERSON_COLUMN);
-    query.addCustomDbAttribute(EipTMail.EVENT_DATE_COLUMN);
-    query.addCustomDbAttribute(EipTMail.FILE_VOLUME_COLUMN);
-    query.addCustomDbAttribute(EipTMail.HAS_FILES_COLUMN);
+    SelectQuery<EipTMail> query = Database.query(EipTMail.class);
+    query.select(EipTMail.MAIL_ID_PK_COLUMN);
+    query.select(EipTMail.READ_FLG_COLUMN);
+    query.select(EipTMail.SUBJECT_COLUMN);
+    query.select(EipTMail.PERSON_COLUMN);
+    query.select(EipTMail.EVENT_DATE_COLUMN);
+    query.select(EipTMail.FILE_VOLUME_COLUMN);
+    query.select(EipTMail.HAS_FILES_COLUMN);
     Expression exp1 =
       ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY, Integer
         .valueOf(user_id));
@@ -404,7 +396,7 @@ public abstract class ALAbstractFolder implements ALFolder {
       query.andQualifier(exp4);
     }
 
-    query.setDistinct(true);
+    query.distinct(true);
 
     return query;
   }
@@ -553,8 +545,8 @@ public abstract class ALAbstractFolder implements ALFolder {
    * @param records
    *          検索結果
    */
-  protected void buildSelectQueryForListView(SelectQuery query) {
-    query.setPageSize(getRowsNum());
+  protected void buildSelectQueryForListView(SelectQuery<EipTMail> query) {
+    query.pageSize(getRowsNum());
   }
 
   /**
@@ -563,8 +555,8 @@ public abstract class ALAbstractFolder implements ALFolder {
    * @param records
    *          検索結果
    */
-  protected List<Object> buildPaginatedList(List<?> records) {
-    List<Object> list = new ArrayList<Object>();
+  protected List<EipTMail> buildPaginatedList(List<EipTMail> records) {
+    List<EipTMail> list = new ArrayList<EipTMail>();
 
     setPageParam(records.size());
 
@@ -594,8 +586,8 @@ public abstract class ALAbstractFolder implements ALFolder {
    * @param crt
    * @return
    */
-  protected SelectQuery buildSelectQueryForListViewSort(SelectQuery query,
-      RunData rundata, Context context) {
+  protected SelectQuery<EipTMail> buildSelectQueryForListViewSort(
+      SelectQuery<EipTMail> query, RunData rundata, Context context) {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     String sort_type = ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
     String crt_key = null;
@@ -609,9 +601,9 @@ public abstract class ALAbstractFolder implements ALFolder {
     }
     if (sort_type != null
       && ALEipConstants.LIST_SORT_TYPE_DESC.equals(sort_type)) {
-      query.addOrdering(crt_key, false);
+      query.orderDesending(crt_key);
     } else {
-      query.addOrdering(crt_key, true);
+      query.orderAscending(crt_key);
       sort_type = ALEipConstants.LIST_SORT_TYPE_ASC;
     }
     current_sort = sort;

@@ -24,9 +24,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.query.SQLTemplate;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -35,6 +32,7 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.user.beans.UserEmailLiteBean;
 import com.aimluck.eip.user.beans.UserGroupLiteBean;
@@ -107,32 +105,17 @@ public class UserUtils {
       statement.append("ORDER BY D.POSITION");
       String query = statement.toString();
 
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      @SuppressWarnings("deprecation")
-      SQLTemplate rawSelect = new SQLTemplate(TurbineUser.class, query, true);
-      rawSelect.setFetchingDataRows(true);
-      List<?> ulist = dataContext.performQuery(rawSelect);
-
-      int recNum = ulist.size();
+      List<TurbineUser> list2 =
+        Database.sql(TurbineUser.class, query).fetchList();
 
       UserLiteBean user;
-      DataRow dataRow;
       // ユーザデータを作成し、返却リストへ格納
-      for (int j = 0; j < recNum; j++) {
-        dataRow = (DataRow) ulist.get(j);
+      for (TurbineUser tuser : list2) {
         user = new UserLiteBean();
         user.initField();
-        user.setUserId(((Integer) ALEipUtils.getObjFromDataRow(
-          dataRow,
-          TurbineUser.USER_ID_PK_COLUMN)).intValue());
-        user.setName((String) ALEipUtils.getObjFromDataRow(
-          dataRow,
-          TurbineUser.LOGIN_NAME_COLUMN));
-        user.setAliasName((String) ALEipUtils.getObjFromDataRow(
-          dataRow,
-          TurbineUser.FIRST_NAME_COLUMN), (String) ALEipUtils
-          .getObjFromDataRow(dataRow, TurbineUser.LAST_NAME_COLUMN));
+        user.setUserId(tuser.getUserId());
+        user.setName(tuser.getLoginName());
+        user.setAliasName(tuser.getFirstName(), tuser.getLastName());
         list.add(user);
         cache_list.add(user);
       }
@@ -203,35 +186,18 @@ public class UserUtils {
       statement.append("ORDER BY D.POSITION");
       String query = statement.toString();
 
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      @SuppressWarnings("deprecation")
-      SQLTemplate rawSelect = new SQLTemplate(TurbineUser.class, query, true);
-      rawSelect.setFetchingDataRows(true);
-      List<?> ulist = dataContext.performQuery(rawSelect);
-
-      int recNum = ulist.size();
+      List<TurbineUser> list2 =
+        Database.sql(TurbineUser.class, query).fetchList();
 
       UserEmailLiteBean user;
-      DataRow dataRow;
       // ユーザデータを作成し、返却リストへ格納
-      for (int j = 0; j < recNum; j++) {
-        dataRow = (DataRow) ulist.get(j);
+      for (TurbineUser tuser : list2) {
         user = new UserEmailLiteBean();
         user.initField();
-        user.setUserId(((Integer) ALEipUtils.getObjFromDataRow(
-          dataRow,
-          TurbineUser.USER_ID_PK_COLUMN)).intValue());
-        user.setName((String) ALEipUtils.getObjFromDataRow(
-          dataRow,
-          TurbineUser.LOGIN_NAME_COLUMN));
-        user.setAliasName((String) ALEipUtils.getObjFromDataRow(
-          dataRow,
-          TurbineUser.FIRST_NAME_COLUMN), (String) ALEipUtils
-          .getObjFromDataRow(dataRow, TurbineUser.LAST_NAME_COLUMN));
-        user.setEmail((String) ALEipUtils.getObjFromDataRow(
-          dataRow,
-          TurbineUser.EMAIL_COLUMN));
+        user.setUserId(tuser.getUserId());
+        user.setName(tuser.getLoginName());
+        user.setAliasName(tuser.getFirstName(), tuser.getLastName());
+        user.setEmail(tuser.getEmail());
         list.add(user);
         cache_list.add(user);
       }

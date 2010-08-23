@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1766,14 +1767,14 @@ public class ALMailUtils {
     try {
       String ipaddress = record.getIpaddressInternal();
       if (null == ipaddress || "".equals(ipaddress)) {
-        java.util.Enumeration<?> enuIfs =
+        Enumeration<NetworkInterface> enuIfs =
           NetworkInterface.getNetworkInterfaces();
         if (null != enuIfs) {
           while (enuIfs.hasMoreElements()) {
-            NetworkInterface ni = (NetworkInterface) enuIfs.nextElement();
-            java.util.Enumeration<?> enuAddrs = ni.getInetAddresses();
+            NetworkInterface ni = enuIfs.nextElement();
+            Enumeration<InetAddress> enuAddrs = ni.getInetAddresses();
             while (enuAddrs.hasMoreElements()) {
-              InetAddress in4 = (InetAddress) enuAddrs.nextElement();
+              InetAddress in4 = enuAddrs.nextElement();
               if (!in4.isLoopbackAddress()) {
                 ipaddress = in4.getHostAddress();
               }
@@ -1963,7 +1964,7 @@ public class ALMailUtils {
    * @param context
    * @return
    */
-  public static List<?> getEipTMails(EipTMailFolder folder) {
+  public static List<EipTMail> getEipTMails(EipTMailFolder folder) {
     try {
       if (folder == null) {
         logger.debug("[WebMail Folder] Empty Folder...");
