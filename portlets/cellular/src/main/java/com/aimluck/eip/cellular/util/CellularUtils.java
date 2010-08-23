@@ -43,11 +43,11 @@ import com.aimluck.eip.util.ALCellularUtils;
  */
 public class CellularUtils {
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CellularUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(CellularUtils.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -62,11 +62,12 @@ public class CellularUtils {
         return result;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       SelectQuery query = new SelectQuery(EipMCompany.class);
-      Expression exp = ExpressionFactory.matchDbExp(
-          EipMCompany.COMPANY_ID_PK_COLUMN, Integer.valueOf(id));
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipMCompany.COMPANY_ID_PK_COLUMN, Integer
+          .valueOf(id));
       query.setQualifier(exp);
       List<?> list = dataContext.performQuery(query);
       if (list == null || list.size() == 0) {
@@ -81,18 +82,26 @@ public class CellularUtils {
   }
 
   public static String getUrl(String ip, int port, String servername) {
-    if (ip == null || ip.length() == 0 || port == -1)
+    if (ip == null || ip.length() == 0 || port == -1) {
       return "";
+    }
 
-    String protocol = JetspeedResources
-        .getString("access.url.protocol", "http");
+    String protocol =
+      JetspeedResources.getString("access.url.protocol", "http");
     StringBuffer url = new StringBuffer();
     if (port == 80) {
-      url.append(protocol).append("://").append(ip).append("/")
-          .append(servername).append("/");
+      url.append(protocol).append("://").append(ip).append("/").append(
+        servername).append("/");
     } else {
-      url.append(protocol).append("://").append(ip).append(":").append(port)
-          .append("/").append(servername).append("/");
+      url
+        .append(protocol)
+        .append("://")
+        .append(ip)
+        .append(":")
+        .append(port)
+        .append("/")
+        .append(servername)
+        .append("/");
     }
 
     return url.toString();
@@ -105,54 +114,49 @@ public class CellularUtils {
     JetspeedRunData jdata = (JetspeedRunData) rundata;
     try {
       // 最新のユーザ情報を取得する．
-      baseUser = (ALBaseUser) JetspeedUserManagement
-          .getUser(new UserNamePrincipal(jdata.getJetspeedUser().getUserName()));
+      baseUser =
+        (ALBaseUser) JetspeedUserManagement.getUser(new UserNamePrincipal(jdata
+          .getJetspeedUser()
+          .getUserName()));
     } catch (JetspeedSecurityException e) {
       e.printStackTrace();
       baseUser = (ALBaseUser) rundata.getUser();
     }
 
     String servername = rundata.getServletConfig().getServletName();
-    String key = baseUser.getUserName()
+    String key =
+      baseUser.getUserName()
         + "_"
-        + ALCellularUtils.getCheckValueForCellLogin(baseUser.getUserName(),
-            baseUser.getUserId());
+        + ALCellularUtils.getCheckValueForCellLogin(
+          baseUser.getUserName(),
+          baseUser.getUserId());
     EipMCompany record = CellularUtils.getEipMCompany(rundata, context);
-    String domain = CellularUtils.getUrl(record.getIpaddress(), record
-        .getPort().intValue(), servername);
+    String domain =
+      CellularUtils.getUrl(
+        record.getIpaddress(),
+        record.getPort().intValue(),
+        servername);
     if (domain != null && domain.length() > 0) {
       String endword;
-      String company_id = rundata.getParameters().getString(
-          DatabaseOrmService.ORG_PRE, "");
+      String company_id =
+        rundata.getParameters().getString(DatabaseOrmService.ORG_PRE, "");
       if (company_id == null || "".equals(company_id)) {
         endword = "";
       } else {
         endword = "portal/org/" + company_id + "/";
       }
 
-      url = CellularUtils.getUrl(record.getIpaddress(), record.getPort()
-          .intValue(), servername)
-          + endword + "?key=" + key;
+      url =
+        CellularUtils.getUrl(
+          record.getIpaddress(),
+          record.getPort().intValue(),
+          servername)
+          + endword
+          + "?key="
+          + key;
     } else {
       url = "";
     }
     return url;
   }
-
-  /*
-   * @SuppressWarnings("unused") private static String getSecretMsg(String
-   * aipo_server_identity, String aipo_username) { String delim = "/"; Date
-   * now_date = Calendar.getInstance().getTime(); SimpleDateFormat sdf = new
-   * SimpleDateFormat("yyyyMMddHHmm");
-   *
-   * SecureRandom random = new SecureRandom(); byte bytes[] = new byte[5];
-   * random.nextBytes(bytes); sun.misc.BASE64Encoder encoder64 = new
-   * sun.misc.BASE64Encoder(); String nonce = encoder64.encodeBuffer(bytes);
-   *
-   * StringBuffer msg = new StringBuffer();
-   * msg.append(aipo_username).append(delim).append(aipo_server_identity)
-   * .append(delim).append(sdf.format(now_date)).append(delim).append(nonce);
-   * return msg.toString(); }
-   */
-
 }
