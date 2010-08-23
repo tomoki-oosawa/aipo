@@ -23,10 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -47,7 +45,9 @@ import com.aimluck.eip.mail.ALMailMessage;
 import com.aimluck.eip.mail.ALMailReceiverContext;
 import com.aimluck.eip.mail.ALPop3MailReceiveThread;
 import com.aimluck.eip.mail.util.ALMailUtils;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.WebMailFormData;
 
@@ -55,8 +55,8 @@ import com.aimluck.eip.webmail.WebMailFormData;
  */
 public class WebMailUtils {
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WebMailUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(WebMailUtils.class.getName());
 
   /** セッションの識別子 */
   public static final String FOLDER_ID = ALMailUtils.FOLDER_ID;
@@ -69,9 +69,11 @@ public class WebMailUtils {
   /** タブ「送信トレイ」 */
   public static final String TAB_SENT = "sent";
 
-  public static final String DATE_TIME_FORMAT = ALDateTimeField.DEFAULT_DATE_TIME_FORMAT;
+  public static final String DATE_TIME_FORMAT =
+    ALDateTimeField.DEFAULT_DATE_TIME_FORMAT;
 
-  public static final String CREATED_DATE_FORMAT = ALDateTimeField.DEFAULT_DATE_FORMAT;
+  public static final String CREATED_DATE_FORMAT =
+    ALDateTimeField.DEFAULT_DATE_FORMAT;
 
   public final static String ACCOUNT_ID = "accountid";
 
@@ -82,27 +84,30 @@ public class WebMailUtils {
   public final static String CONFIRM_LAST_TIME = "confirmlasttime";
 
   /** フィルタタイプ */
-  public final static String FILTER_TYPE_MAILADDRESS = ALMailUtils.FILTER_TYPE_MAILADDRESS;
+  public final static String FILTER_TYPE_MAILADDRESS =
+    ALMailUtils.FILTER_TYPE_MAILADDRESS;
 
-  public final static String FILTER_TYPE_DOMAIN = ALMailUtils.FILTER_TYPE_DOMAIN;
+  public final static String FILTER_TYPE_DOMAIN =
+    ALMailUtils.FILTER_TYPE_DOMAIN;
 
-  public final static String FILTER_TYPE_SUBJECT = ALMailUtils.FILTER_TYPE_SUBJECT;
+  public final static String FILTER_TYPE_SUBJECT =
+    ALMailUtils.FILTER_TYPE_SUBJECT;
 
   public static final List getMailAccountNameList(int userId) {
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
-    SelectQuery query = new SelectQuery(EipMMailAccount.class);
-    query.addCustomDbAttribute(EipMMailAccount.ACCOUNT_ID_PK_COLUMN);
-    query.addCustomDbAttribute(EipMMailAccount.ACCOUNT_NAME_COLUMN);
-    Expression exp = ExpressionFactory.matchExp(
-        EipMMailAccount.USER_ID_PROPERTY, Integer.valueOf(userId));
-    query.setQualifier(exp);
+    SelectQuery<EipMMailAccount> query = Database.query(EipMMailAccount.class);
 
-    return dataContext.performQuery(query);
+    query.select(EipMMailAccount.ACCOUNT_ID_PK_COLUMN);
+    query.select(EipMMailAccount.ACCOUNT_NAME_COLUMN);
+    Expression exp =
+      ExpressionFactory.matchExp(EipMMailAccount.USER_ID_PROPERTY, Integer
+        .valueOf(userId));
+
+    return query.setQualifier(exp).fetchList();
   }
 
   /**
    * 選択したメールをローカルファイルシステムから取得する．
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -112,11 +117,11 @@ public class WebMailUtils {
       RunData rundata, Context context, int mailType) throws Exception {
     String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
     int uid = ALEipUtils.getUserId(rundata);
-    int accountId = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-        ACCOUNT_ID));
+    int accountId =
+      Integer.parseInt(ALEipUtils.getTemp(rundata, context, ACCOUNT_ID));
 
-    String mailid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String mailid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     if (mailid == null || Integer.valueOf(mailid) == null) {
       // Mail IDが空の場合
       logger.debug("[Mail] Empty ID...");
@@ -124,7 +129,9 @@ public class WebMailUtils {
     }
 
     String currentTab = ALEipUtils.getTemp(rundata, context, "tab");
-    int type_mail = (WebMailUtils.TAB_RECEIVE.equals(currentTab)) ? ALFolder.TYPE_RECEIVE
+    int type_mail =
+      (WebMailUtils.TAB_RECEIVE.equals(currentTab))
+        ? ALFolder.TYPE_RECEIVE
         : ALFolder.TYPE_SEND;
     ALMailHandler handler = ALMailFactoryService.getInstance().getMailHandler();
     ALFolder folder = handler.getALFolder(type_mail, org_id, uid, accountId);
@@ -142,21 +149,23 @@ public class WebMailUtils {
   /**
    * 複数のメールアドレスを含む文字列の中のメールアドレス形式をチェックします。 想定メール形式は address@aimluck.com xxxyyy
    * <address@aimluck.com>
-   *
+   * 
    * @param argstr
-   *            複数メールアドレス
+   *          複数メールアドレス
    * @param delim
    * @return
    */
   public static boolean checkAddress(String argstr, String delim) {
     String[] addresses;
-    if (argstr == null || argstr.trim().length() == 0)
+    if (argstr == null || argstr.trim().length() == 0) {
       return false;
+    }
     addresses = ALMailUtils.getTokens(argstr, delim);
     for (int i = 0; i < addresses.length; i++) {
       String str = addresses[i].trim();
-      if (str.length() == 0)
+      if (str.length() == 0) {
         continue;
+      }
       if (str.charAt(str.length() - 1) == '>') {
         // 氏名付きアドレス指定 sei mei <seimei@xxx.com>
         int idx = str.indexOf("<");
@@ -185,12 +194,82 @@ public class WebMailUtils {
      * 文字化けを起こす特殊記号 【囲み英数字／ローマ数字】①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ
      * 【単位記号】㍉㌔㌢㍍㌘㌧㌃㌶㍑㍗㌍・㌣㌫㍊㌻㎜㎝㎞㎎㎏㏄㎡ 【省略文字／囲み文字／年号】㍻〝〟№㏍℡㊤㊥㊦㊧㊨㈱㈲㈹㍾㍽㍼∮∑∟⊿
      */
-    char[] unusualchars = { '①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨', '⑩',
-        '⑪', '⑫', '⑬', '⑭', '⑮', '⑯', '⑰', '⑱', '⑲', '⑳', 'Ⅰ', 'Ⅱ', 'Ⅲ', 'Ⅳ',
-        'Ⅴ', 'Ⅵ', 'Ⅶ', 'Ⅷ', 'Ⅸ', 'Ⅹ', '㍉', '㌔', '㌢', '㍍', '㌘', '㌧', '㌃', '㌶',
-        '㍑', '㍗', '㌍', '・', '㌣', '㌫', '㍊', '㌻', '㎜', '㎝', '㎞', '㎎', '㎏', '㏄',
-        '㎡', '㍻', '〝', '〟', '№', '㏍', '℡', '㊤', '㊥', '㊦', '㊧', '㊨', '㈱', '㈲',
-        '㈹', '㍾', '㍽', '㍼', '∮', '∑', '∟', '⊿' };
+    char[] unusualchars =
+      {
+        '①',
+        '②',
+        '③',
+        '④',
+        '⑤',
+        '⑥',
+        '⑦',
+        '⑧',
+        '⑨',
+        '⑩',
+        '⑪',
+        '⑫',
+        '⑬',
+        '⑭',
+        '⑮',
+        '⑯',
+        '⑰',
+        '⑱',
+        '⑲',
+        '⑳',
+        'Ⅰ',
+        'Ⅱ',
+        'Ⅲ',
+        'Ⅳ',
+        'Ⅴ',
+        'Ⅵ',
+        'Ⅶ',
+        'Ⅷ',
+        'Ⅸ',
+        'Ⅹ',
+        '㍉',
+        '㌔',
+        '㌢',
+        '㍍',
+        '㌘',
+        '㌧',
+        '㌃',
+        '㌶',
+        '㍑',
+        '㍗',
+        '㌍',
+        '・',
+        '㌣',
+        '㌫',
+        '㍊',
+        '㌻',
+        '㎜',
+        '㎝',
+        '㎞',
+        '㎎',
+        '㎏',
+        '㏄',
+        '㎡',
+        '㍻',
+        '〝',
+        '〟',
+        '№',
+        '㏍',
+        '℡',
+        '㊤',
+        '㊥',
+        '㊦',
+        '㊧',
+        '㊨',
+        '㈱',
+        '㈲',
+        '㈹',
+        '㍾',
+        '㍽',
+        '㍼',
+        '∮',
+        '∑',
+        '∟',
+        '⊿' };
     int unusuallen = unusualchars.length;
     int length = str.length();
     Character cha = null;
@@ -219,7 +298,7 @@ public class WebMailUtils {
 
   /**
    * POP3 サーバからメールを受信する。
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -233,8 +312,8 @@ public class WebMailUtils {
       // 現在使用中のアカウントIDを取得
       int accountId = 0;
       try {
-        accountId = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-            ACCOUNT_ID));
+        accountId =
+          Integer.parseInt(ALEipUtils.getTemp(rundata, context, ACCOUNT_ID));
       } catch (Exception ex) {
       }
       if (accountId <= 0) {
@@ -242,8 +321,11 @@ public class WebMailUtils {
       }
 
       // アカウントがユーザーのものであるかどうかチェックする
-      EipMMailAccount account = ALMailUtils.getMailAccount(null, Integer
-          .parseInt(user.getUserId()), accountId);
+      EipMMailAccount account =
+        ALMailUtils.getMailAccount(
+          null,
+          Integer.parseInt(user.getUserId()),
+          accountId);
       if (account == null) {
         return;
       }
@@ -251,7 +333,11 @@ public class WebMailUtils {
       if (!ALPop3MailReceiveThread.isProcessing(user, accountId)) {
         // メールと接続してなければ新規にスレッドを生成
         String orgId = DatabaseOrmService.getInstance().getOrgId(rundata);
-        Runnable receiver = new ALPop3MailReceiveThread(orgId, user, accountId,
+        Runnable receiver =
+          new ALPop3MailReceiveThread(
+            orgId,
+            user,
+            accountId,
             ALPop3MailReceiveThread.PROCESS_TYPE_RECEIVEMAIL);
         Thread mailthread = new Thread(receiver);
 
@@ -265,7 +351,7 @@ public class WebMailUtils {
 
   /**
    * POP3 サーバから新着メール数を取得する。
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -275,8 +361,12 @@ public class WebMailUtils {
     synchronized (ALPop3MailReceiveThread.KEY_SYNCHRONIZED_LOCK) {
       if (!ALPop3MailReceiveThread.isProcessing(user, accountId)) {
         // メールと接続してなければ新規にスレッドを生成
-        Thread mailthread = new Thread(new ALPop3MailReceiveThread(orgId, user,
-            accountId, ALPop3MailReceiveThread.PROCESS_TYPE_GET_NEWMAILNUM));
+        Thread mailthread =
+          new Thread(new ALPop3MailReceiveThread(
+            orgId,
+            user,
+            accountId,
+            ALPop3MailReceiveThread.PROCESS_TYPE_GET_NEWMAILNUM));
         mailthread.start();
       }
 
@@ -302,7 +392,7 @@ public class WebMailUtils {
 
   /**
    * POP3 サーバと通信後の結果を取得する。
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -320,7 +410,7 @@ public class WebMailUtils {
 
   /**
    * POP3 サーバと通信後の結果を取得する。
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -334,7 +424,7 @@ public class WebMailUtils {
 
   /**
    * 未読メール総数を取得する。
-   *
+   * 
    * @param rundata
    * @param userId
    * @param accountId
@@ -343,48 +433,49 @@ public class WebMailUtils {
   public static int getUnreadMailNumber(RunData rundata, int userId,
       int accountId) {
     String orgId = DatabaseOrmService.getInstance().getOrgId(rundata);
-    EipMMailAccount account = ALMailUtils.getMailAccount(orgId, userId,
-        accountId);
+    EipMMailAccount account =
+      ALMailUtils.getMailAccount(orgId, userId, accountId);
     ALMailHandler handler = ALMailFactoryService.getInstance().getMailHandler();
-    ALMailReceiverContext rcontext = ALMailUtils.getALPop3MailReceiverContext(
-        orgId, account);
+    ALMailReceiverContext rcontext =
+      ALMailUtils.getALPop3MailReceiverContext(orgId, account);
 
     return handler.getUnReadMailSum(rcontext);
   }
 
   /**
    * フォルダ別未読メール数を取得する。
-   *
+   * 
    * @param rundata
    * @param userId
    * @param accountId
    * @return
    */
-  public static Map<Integer,Integer> getUnreadMailNumberMap(RunData rundata, int userId,
-      int accountId) {
+  public static Map<Integer, Integer> getUnreadMailNumberMap(RunData rundata,
+      int userId, int accountId) {
     String orgId = DatabaseOrmService.getInstance().getOrgId(rundata);
-    EipMMailAccount account = ALMailUtils.getMailAccount(orgId, userId,
-        accountId);
+    EipMMailAccount account =
+      ALMailUtils.getMailAccount(orgId, userId, accountId);
     ALMailHandler handler = ALMailFactoryService.getInstance().getMailHandler();
-    ALMailReceiverContext rcontext = ALMailUtils.getALPop3MailReceiverContext(
-        orgId, account);
+    ALMailReceiverContext rcontext =
+      ALMailUtils.getALPop3MailReceiverContext(orgId, account);
 
     return handler.getUnReadMailSumMap(rcontext);
   }
 
   public static boolean isNewMessage(RunData rundata, Context context) {
-    String accountId = rundata.getParameters().getString(
-        WebMailUtils.ACCOUNT_ID);
+    String accountId =
+      rundata.getParameters().getString(WebMailUtils.ACCOUNT_ID);
     if (accountId == null || "".equals(accountId)) {
       return true;
     }
-    EipMMailAccount account = ALMailUtils.getMailAccount(null, ALEipUtils
-        .getUserId(rundata), Integer.parseInt(accountId));
+    EipMMailAccount account =
+      ALMailUtils.getMailAccount(null, ALEipUtils.getUserId(rundata), Integer
+        .parseInt(accountId));
     String orgId = DatabaseOrmService.getInstance().getOrgId(rundata);
 
     ALMailHandler handler = ALMailFactoryService.getInstance().getMailHandler();
-    ALMailReceiverContext rcontext = ALMailUtils.getALPop3MailReceiverContext(
-        orgId, account);
+    ALMailReceiverContext rcontext =
+      ALMailUtils.getALPop3MailReceiverContext(orgId, account);
     int res = -1;
     try {
       res = handler.getNewMailSum(rcontext);
@@ -397,7 +488,7 @@ public class WebMailUtils {
 
   /**
    * フォルダオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -408,32 +499,33 @@ public class WebMailUtils {
       int accountId, folderId;
 
       try {
-        accountId = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-            ACCOUNT_ID));
-        folderId = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-            FOLDER_ID));
+        accountId =
+          Integer.parseInt(ALEipUtils.getTemp(rundata, context, ACCOUNT_ID));
+        folderId =
+          Integer.parseInt(ALEipUtils.getTemp(rundata, context, FOLDER_ID));
       } catch (Exception e) {
         logger.debug("[Mail] Empty ID...");
         return null;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTMailFolder.class);
-      Expression exp = ExpressionFactory.matchDbExp(
-          EipTMailFolder.FOLDER_ID_PK_COLUMN, folderId);
-      Expression exp2 = ExpressionFactory.matchDbExp(
-          EipTMailFolder.EIP_MMAIL_ACCOUNT_PROPERTY + "."
-              + EipMMailAccount.ACCOUNT_ID_PK_COLUMN, accountId);
-      query.setQualifier(exp.andExp(exp2));
+      SelectQuery<EipTMailFolder> query = Database.query(EipTMailFolder.class);
 
-      List folders = dataContext.performQuery(query);
-      if (folders == null || folders.size() == 0) {
-        // 指定したフォルダIDのレコードが見つからない場合
+      Expression exp =
+        ExpressionFactory.matchDbExp(
+          EipTMailFolder.FOLDER_ID_PK_COLUMN,
+          folderId);
+      Expression exp2 =
+        ExpressionFactory.matchDbExp(EipTMailFolder.EIP_MMAIL_ACCOUNT_PROPERTY
+          + "."
+          + EipMMailAccount.ACCOUNT_ID_PK_COLUMN, accountId);
+
+      EipTMailFolder folder =
+        query.setQualifier(exp.andExp(exp2)).fetchSingle();
+      if (folder == null) {
         logger.debug("[WebMail Folder] Not found ID...");
         return null;
       }
-      return ((EipTMailFolder) folders.get(0));
+      return folder;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -442,7 +534,7 @@ public class WebMailUtils {
 
   /**
    * フォルダオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -460,22 +552,24 @@ public class WebMailUtils {
         folderId = account.getDefaultFolderId().toString();
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTMailFolder.class);
-      Expression exp = ExpressionFactory.matchDbExp(
-          EipTMailFolder.FOLDER_ID_PK_COLUMN, folderId);
-      Expression exp2 = ExpressionFactory.matchDbExp(
-          EipTMailFolder.EIP_MMAIL_ACCOUNT_PROPERTY, account);
-      query.setQualifier(exp.andExp(exp2));
+      SelectQuery<EipTMailFolder> query = Database.query(EipTMailFolder.class);
 
-      List folders = dataContext.performQuery(query);
-      if (folders == null || folders.size() == 0) {
-        // 指定したフォルダIDのレコードが見つからない場合
+      Expression exp =
+        ExpressionFactory.matchDbExp(
+          EipTMailFolder.FOLDER_ID_PK_COLUMN,
+          folderId);
+      Expression exp2 =
+        ExpressionFactory.matchDbExp(
+          EipTMailFolder.EIP_MMAIL_ACCOUNT_PROPERTY,
+          account);
+
+      EipTMailFolder folder =
+        query.setQualifier(exp.andExp(exp2)).fetchSingle();
+      if (folder == null) {
         logger.debug("[WebMail Folder] Not found ID...");
         return null;
       }
-      return ((EipTMailFolder) folders.get(0));
+      return folder;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -484,7 +578,7 @@ public class WebMailUtils {
 
   /**
    * フィルタオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -498,22 +592,24 @@ public class WebMailUtils {
         return null;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTMailFilter.class);
-      Expression exp = ExpressionFactory.matchDbExp(
-          EipTMailFilter.FILTER_ID_PK_COLUMN, filterId);
-      Expression exp2 = ExpressionFactory.matchDbExp(
-          EipTMailFilter.EIP_MMAIL_ACCOUNT_PROPERTY, account);
-      query.setQualifier(exp.andExp(exp2));
+      SelectQuery<EipTMailFilter> query = Database.query(EipTMailFilter.class);
 
-      List filters = dataContext.performQuery(query);
-      if (filters == null || filters.size() == 0) {
-        // 指定したフィルタIDのレコードが見つからない場合
+      Expression exp =
+        ExpressionFactory.matchDbExp(
+          EipTMailFilter.FILTER_ID_PK_COLUMN,
+          filterId);
+      Expression exp2 =
+        ExpressionFactory.matchDbExp(
+          EipTMailFilter.EIP_MMAIL_ACCOUNT_PROPERTY,
+          account);
+
+      EipTMailFilter filter =
+        query.setQualifier(exp.andExp(exp2)).fetchSingle();
+      if (filter == null) {
         logger.debug("[WebMail Filter] Not found ID...");
         return null;
       }
-      return (EipTMailFilter) filters.get(0);
+      return filter;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -522,7 +618,7 @@ public class WebMailUtils {
 
   /**
    * フィルタオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -533,42 +629,41 @@ public class WebMailUtils {
       int accountId, filterId;
 
       try {
-        accountId = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-            ACCOUNT_ID));
-        filterId = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-            FILTER_ID));
+        accountId =
+          Integer.parseInt(ALEipUtils.getTemp(rundata, context, ACCOUNT_ID));
+        filterId =
+          Integer.parseInt(ALEipUtils.getTemp(rundata, context, FILTER_ID));
       } catch (Exception e) {
         logger.debug("[WebMail Filter] Empty ID...");
         return null;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTMailFilter.class);
-      Expression exp = ExpressionFactory.matchDbExp(
-          EipTMailFilter.FILTER_ID_PK_COLUMN, filterId);
-      Expression exp2 = ExpressionFactory.matchDbExp(
-          EipTMailFilter.EIP_MMAIL_ACCOUNT_PROPERTY + "."
-              + EipMMailAccount.ACCOUNT_ID_PK_COLUMN, accountId);
-      query.setQualifier(exp.andExp(exp2));
+      SelectQuery<EipTMailFilter> query = Database.query(EipTMailFilter.class);
+      Expression exp =
+        ExpressionFactory.matchDbExp(
+          EipTMailFilter.FILTER_ID_PK_COLUMN,
+          filterId);
+      Expression exp2 =
+        ExpressionFactory.matchDbExp(EipTMailFilter.EIP_MMAIL_ACCOUNT_PROPERTY
+          + "."
+          + EipMMailAccount.ACCOUNT_ID_PK_COLUMN, accountId);
 
-      List filters = dataContext.performQuery(query);
-      if (filters == null || filters.size() == 0) {
-        // 指定したフィルタIDのレコードが見つからない場合
+      EipTMailFilter filter =
+        query.setQualifier(exp.andExp(exp2)).fetchSingle();
+      if (filter == null) {
         logger.debug("[WebMail Filter] Not found ID...");
         return null;
       }
-      return ((EipTMailFilter) filters.get(0));
+      return filter;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
     }
   }
 
-
   /**
    * 指定されたアカウントのフィルタの最後のソート番号を取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -581,21 +676,22 @@ public class WebMailUtils {
         return 0;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTMailFilter.class);
-      Expression exp = ExpressionFactory.matchDbExp(
-          EipTMailFilter.EIP_MMAIL_ACCOUNT_PROPERTY, account);
-      query.setQualifier(exp);
-      query.addOrdering(EipTMailFilter.SORT_ORDER_PROPERTY, false);
+      SelectQuery<EipTMailFilter> query = Database.query(EipTMailFilter.class);
 
-      List filters = dataContext.performQuery(query);
-      if (filters == null || filters.size() == 0) {
-        // 指定したフィルタIDのレコードが見つからない場合
+      Expression exp =
+        ExpressionFactory.matchDbExp(
+          EipTMailFilter.EIP_MMAIL_ACCOUNT_PROPERTY,
+          account);
+      query
+        .setQualifier(exp)
+        .orderDesending(EipTMailFilter.SORT_ORDER_PROPERTY);
+
+      EipTMailFilter filter = query.fetchSingle();
+      if (filter == null) {
         logger.debug("[WebMail Filter] Not found ID...");
         return 0;
       }
-      return ((EipTMailFilter) filters.get(0)).getSortOrder();
+      return filter.getSortOrder();
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return 0;
@@ -604,7 +700,7 @@ public class WebMailUtils {
 
   /**
    * セッションに保存されたString値から メール未読数のHashMap を作りなおします。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -617,8 +713,9 @@ public class WebMailUtils {
       for (String entry : entries) {
         entry = entry.trim();
         String[] keyValue = entry.split("=");
-        unreadSumMap.put(Integer.valueOf(keyValue[0]).intValue(),
-            Integer.valueOf(keyValue[1]).intValue());
+        unreadSumMap.put(Integer.valueOf(keyValue[0]).intValue(), Integer
+          .valueOf(keyValue[1])
+          .intValue());
       }
       return unreadSumMap;
     } catch (Exception e) {

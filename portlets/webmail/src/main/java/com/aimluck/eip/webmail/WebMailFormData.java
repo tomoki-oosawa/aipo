@@ -18,12 +18,9 @@
  */
 package com.aimluck.eip.webmail;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -49,8 +46,6 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALPageNotFoundException;
-import com.aimluck.eip.fileupload.FileuploadFormData;
-import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.mail.ALFolder;
@@ -70,8 +65,8 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
  * Webメールフォームデータを管理するためのクラスです。 <br />
  */
 public class WebMailFormData extends ALAbstractFormData {
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WebMailFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(WebMailFormData.class.getName());
 
   /** 件名の最大文字数 */
   private final int FIELD_SUBJECT_MAX_LEN = 256;
@@ -125,13 +120,17 @@ public class WebMailFormData extends ALAbstractFormData {
 
   private String org_id;
 
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
     userId = ALEipUtils.getUserId(rundata);
     try {
-      accountId = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
+      accountId =
+        Integer.parseInt(ALEipUtils.getTemp(
+          rundata,
+          context,
           WebMailUtils.ACCOUNT_ID));
     } catch (Exception e) {
       accountId = 0;
@@ -181,6 +180,7 @@ public class WebMailFormData extends ALAbstractFormData {
   /**
    * 各フィールドに対する制約条件を設定する抽象メソッドです。
    */
+  @Override
   protected void setValidator() {
     // 宛先を必須項目にする
     to.setNotNull(true);
@@ -202,22 +202,25 @@ public class WebMailFormData extends ALAbstractFormData {
 
   /**
    * フォームデータの妥当性を検証する．
-   *
+   * 
    * @param msgList
-   *            エラーメッセージのリスト
+   *          エラーメッセージのリスト
    */
+  @Override
   public boolean validate(List<String> msgList) {
     String delim = ",";
     if (to.validate(msgList)
-        && !WebMailUtils.checkAddress(to.getValue(), delim)) {
+      && !WebMailUtils.checkAddress(to.getValue(), delim)) {
       msgList.add("『 <span class='em'>宛先</span> 』を正しく入力してください。");
     }
-    if (cc.validate(msgList) && cc.getValue().trim().length() > 0
-        && !WebMailUtils.checkAddress(cc.getValue(), delim)) {
+    if (cc.validate(msgList)
+      && cc.getValue().trim().length() > 0
+      && !WebMailUtils.checkAddress(cc.getValue(), delim)) {
       msgList.add("『 <span class='em'>CC</span> 』を正しく入力してください。");
     }
-    if (bcc.validate(msgList) && bcc.getValue().trim().length() > 0
-        && !WebMailUtils.checkAddress(bcc.getValue(), delim)) {
+    if (bcc.validate(msgList)
+      && bcc.getValue().trim().length() > 0
+      && !WebMailUtils.checkAddress(bcc.getValue(), delim)) {
       msgList.add("『 <span class='em'>BCC</span> 』を正しく入力してください。");
     }
     subject.validate(msgList);
@@ -225,42 +228,42 @@ public class WebMailFormData extends ALAbstractFormData {
 
     /*
      * StringBuffer sb = new StringBuffer(); String toErr =
-     * checkUnusualChar(to.getValue()); if (toErr != null && !toErr.equals("")) {
-     * sb.append( "『 <span class='em'>宛名 </span> 』に次の機種依存文字が含まれています ： " + toErr + "
-     * <br> "); }
-     *
+     * checkUnusualChar(to.getValue()); if (toErr != null && !toErr.equals(""))
+     * { sb.append( "『 <span class='em'>宛名 </span> 』に次の機種依存文字が含まれています ： " +
+     * toErr + " <br> "); }
+     * 
      * String ccErr = checkUnusualChar(cc.getValue()); if (ccErr != null &&
      * !ccErr.equals("")) { sb.append( "『 <span class='em'>CC </span>
      * 』に次の機種依存文字が含まれています ： " + ccErr + " <br> "); }
-     *
+     * 
      * String bccErr = checkUnusualChar(bcc.getValue()); if (bccErr != null &&
      * !bccErr.equals("")) { sb.append( "『 <span class='em'>BCC </span>
      * 』に次の機種依存文字が含まれています ： " + bccErr + " <br> "); }
-     *
-     * String subjectErr = checkUnusualChar(subject.getValue()); if (subjectErr !=
-     * null && !subjectErr.equals("")) { sb.append( "『 <span class='em'>件名
+     * 
+     * String subjectErr = checkUnusualChar(subject.getValue()); if (subjectErr
+     * != null && !subjectErr.equals("")) { sb.append( "『 <span class='em'>件名
      * </span> 』に次の機種依存文字が含まれています ： " + subjectErr + " <br> "); }
-     *
-     * String bodyErr = checkUnusualChar(body.getValue()); if (bodyErr != null &&
-     * !bodyErr.equals("")) { sb.append( "『 <span class='em'>本文 </span>
+     * 
+     * String bodyErr = checkUnusualChar(body.getValue()); if (bodyErr != null
+     * && !bodyErr.equals("")) { sb.append( "『 <span class='em'>本文 </span>
      * 』に次の機種依存文字が含まれています ： " + bodyErr + " <br> "); }
-     *
-     * int length = attachmentFileNameList.size(); AttachmentFile attachmentFile =
-     * null; String attachmentFileErr = ""; String tmpErr = null; for (int i =
+     * 
+     * int length = attachmentFileNameList.size(); AttachmentFile attachmentFile
+     * = null; String attachmentFileErr = ""; String tmpErr = null; for (int i =
      * 0; i < length; i++) { attachmentFile = (AttachmentFile)
      * attachmentFileNameList.get(i); if(i == 0){ tmpErr =
      * checkUnusualChar(attachmentFile.getFileName().getValue()); if(tmpErr !=
-     * null && !tmpErr.equals("")){ attachmentFileErr += tmpErr; } }else{ tmpErr =
-     * checkUnusualChar(attachmentFile.getFileName().getValue()); if(tmpErr !=
+     * null && !tmpErr.equals("")){ attachmentFileErr += tmpErr; } }else{ tmpErr
+     * = checkUnusualChar(attachmentFile.getFileName().getValue()); if(tmpErr !=
      * null && !tmpErr.equals("")){ if(attachmentFileErr.equals("")){
-     * attachmentFileErr += tmpErr; }else{ attachmentFileErr = attachmentFileErr +
-     * "," + tmpErr; } } } } if (attachmentFileErr != null &&
+     * attachmentFileErr += tmpErr; }else{ attachmentFileErr = attachmentFileErr
+     * + "," + tmpErr; } } } } if (attachmentFileErr != null &&
      * !attachmentFileErr.equals("")) { sb.append( "『 <span class='em'>添付ファイル
      * </span> 』に次の機種依存文字が含まれています ： " + attachmentFileErr + " <br> "); }
-     *
+     * 
      * if (sb.length() > 0) {
-     * sb.append("送信先では正しく表示されない可能性があるため、機種依存文字の入力を制限しています。 <br> "); sb.append( "
-     * <a href=\"javascript:open_help()\"> <span>Aipo で入力できる機種依存文字はこちらを参照ください。
+     * sb.append("送信先では正しく表示されない可能性があるため、機種依存文字の入力を制限しています。 <br> "); sb.append(
+     * " <a href=\"javascript:open_help()\"> <span>Aipo で入力できる機種依存文字はこちらを参照ください。
      * </span> </a>"); msgList.add(sb.toString()); }
      */
     return (msgList.size() == 0);
@@ -270,23 +273,30 @@ public class WebMailFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       int index;
       try {
-        index = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
+        index =
+          Integer.parseInt(ALEipUtils.getTemp(
+            rundata,
+            context,
             ALEipConstants.ENTITY_ID));
       } catch (Exception e) {
         return false;
       }
 
       String currentTab = ALEipUtils.getTemp(rundata, context, "tab");
-      int type_mail = (WebMailUtils.TAB_RECEIVE.equals(currentTab)) ? ALFolder.TYPE_RECEIVE
+      int type_mail =
+        (WebMailUtils.TAB_RECEIVE.equals(currentTab))
+          ? ALFolder.TYPE_RECEIVE
           : ALFolder.TYPE_SEND;
-      ALMailHandler handler = ALMailFactoryService.getInstance()
-          .getMailHandler();
-      ALFolder folder = handler.getALFolder(type_mail, org_id, userId, Integer
+      ALMailHandler handler =
+        ALMailFactoryService.getInstance().getMailHandler();
+      ALFolder folder =
+        handler.getALFolder(type_mail, org_id, userId, Integer
           .valueOf(accountId));
       folder.deleteMail(index);
 
@@ -301,21 +311,26 @@ public class WebMailFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
 
     String[] attachmentFilepaths = null;
-    boolean success = false;
     try {
       FileuploadLiteBean filebean = null;
       File file = null;
-      boolean hasAttachments = (fileuploadList != null && fileuploadList.size() > 0);
+      boolean hasAttachments =
+        (fileuploadList != null && fileuploadList.size() > 0);
       if (hasAttachments) {
         int size = fileuploadList.size();
         attachmentFilepaths = new String[size];
         for (int i = 0; i < size; i++) {
           filebean = (FileuploadLiteBean) fileuploadList.get(i);
-          file = FileuploadUtils.getAbsolutePath(org_id, userId, folderName,
+          file =
+            FileuploadUtils.getAbsolutePath(
+              org_id,
+              userId,
+              folderName,
               filebean.getFileId());
           attachmentFilepaths[i] = file.getAbsolutePath();
         }
@@ -331,8 +346,11 @@ public class WebMailFormData extends ALAbstractFormData {
       if (getMailType().getValue() == TYPE_REPLY_MAIL) {
         ALLocalMailMessage msg = null;
         try {
-          msg = (ALLocalMailMessage) WebMailUtils.getSelectedLocalMailMessage(
-              rundata, context, (int) getMailType().getValue());
+          msg =
+            (ALLocalMailMessage) WebMailUtils.getSelectedLocalMailMessage(
+              rundata,
+              context,
+              (int) getMailType().getValue());
           if (msg == null) {
             return false;
           }
@@ -356,32 +374,32 @@ public class WebMailFormData extends ALAbstractFormData {
         }
       }
 
-      if (map != null && map.size() == 0)
+      if (map != null && map.size() == 0) {
         map = null;
+      }
 
       String delim = ",";
 
       // オブジェクトモデルを取得
-      EipMMailAccount account = ALMailUtils.getMailAccount(null, userId,
-          accountId);
+      EipMMailAccount account =
+        ALMailUtils.getMailAccount(null, userId, accountId);
 
-      ALMailHandler handler = ALMailFactoryService.getInstance()
-          .getMailHandler();
+      ALMailHandler handler =
+        ALMailFactoryService.getInstance().getMailHandler();
       // 送信サーバ情報
-      ALMailSenderContext scontext = ALMailUtils.getALSmtpMailSenderContext(
-          org_id, account);
+      ALMailSenderContext scontext =
+        ALMailUtils.getALSmtpMailSenderContext(org_id, account);
 
       // 送信メッセージのコンテキスト
-      ALSmtpMailContext mailcontext = ALMailUtils.getALSmtpMailContext(
-          ALMailUtils
-              .getTokens(ALStringUtil.unsanitizing(to.getValue()), delim),
-          ALMailUtils
-              .getTokens(ALStringUtil.unsanitizing(cc.getValue()), delim),
-          ALMailUtils.getTokens(ALStringUtil.unsanitizing(bcc.getValue()),
-              delim), account.getMailAddress(), ALStringUtil
-              .unsanitizing(account.getMailUserName()), ALStringUtil
-              .unsanitizing(subject.getValue()), ALStringUtil.unsanitizing(body
-              .getValue()), attachmentFilepaths, map);
+      ALSmtpMailContext mailcontext =
+        ALMailUtils.getALSmtpMailContext(ALMailUtils.getTokens(ALStringUtil
+          .unsanitizing(to.getValue()), delim), ALMailUtils.getTokens(
+          ALStringUtil.unsanitizing(cc.getValue()),
+          delim), ALMailUtils.getTokens(ALStringUtil.unsanitizing(bcc
+          .getValue()), delim), account.getMailAddress(), ALStringUtil
+          .unsanitizing(account.getMailUserName()), ALStringUtil
+          .unsanitizing(subject.getValue()), ALStringUtil.unsanitizing(body
+          .getValue()), attachmentFilepaths, map);
 
       int success_send = handler.send(scontext, mailcontext);
 
@@ -414,18 +432,23 @@ public class WebMailFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
 
     try {
-      ALLocalMailMessage msg = (ALLocalMailMessage) WebMailUtils
-          .getSelectedLocalMailMessage(rundata, context, (int) getMailType()
-              .getValue());
-      if (msg == null)
+      ALLocalMailMessage msg =
+        (ALLocalMailMessage) WebMailUtils.getSelectedLocalMailMessage(
+          rundata,
+          context,
+          (int) getMailType().getValue());
+      if (msg == null) {
         return false;
+      }
 
-      mailType.setValue(rundata.getParameters().getInt(WebMailUtils.MAIL_TYPE,
-          TYPE_NEW_MAIL));
+      mailType.setValue(rundata.getParameters().getInt(
+        WebMailUtils.MAIL_TYPE,
+        TYPE_NEW_MAIL));
 
       String tmpSubject = null;
       if (getMailType().getValue() == TYPE_NEW_MAIL) {
@@ -466,11 +489,11 @@ public class WebMailFormData extends ALAbstractFormData {
       // Body
       try {
         // オブジェクトモデルを取得
-        EipMMailAccount account = ALMailUtils.getMailAccount(null, userId,
-            accountId);
+        EipMMailAccount account =
+          ALMailUtils.getMailAccount(null, userId, accountId);
         // 署名と返信とを本文に追加
         if (account.getSignature() != null
-            && !"".equals(account.getSignature())) {
+          && !"".equals(account.getSignature())) {
           body.setValue(replies + "\r\n\r\n\r\n" + account.getSignature());
         } else {
           body.setValue(replies.toString());
@@ -487,9 +510,6 @@ public class WebMailFormData extends ALAbstractFormData {
             folderName = "undefined";
           }
 
-          File folder = FileuploadUtils.getFolder(org_id, ALEipUtils
-              .getUserId(rundata), folderName);
-          String folderpath = folder.getAbsolutePath();
           File rootFolder = FileuploadUtils.getRootFolder(org_id, userId);
           File saveFolder = new File(rootFolder + File.separator + folderName);
           if (!saveFolder.exists()) {
@@ -500,8 +520,12 @@ public class WebMailFormData extends ALAbstractFormData {
             String newAttachmentFileName = getNewAttachmentFileName(saveFolder);
             int fileId = Integer.parseInt(newAttachmentFileName);
             String realfilename = filenames[i];
-            String filepath = rootFolder + File.separator + folderName
-                + File.separator + newAttachmentFileName;
+            String filepath =
+              rootFolder
+                + File.separator
+                + folderName
+                + File.separator
+                + newAttachmentFileName;
             File file = new File(filepath);
             file.createNewFile();
             InputStream inputStream = msg.getInputStream(i);
@@ -515,7 +539,8 @@ public class WebMailFormData extends ALAbstractFormData {
             fileOutput.close();
             inputStream.close();
             // 一時添付ファイル名の保存
-            PrintWriter writer = new PrintWriter(new OutputStreamWriter(
+            PrintWriter writer =
+              new PrintWriter(new OutputStreamWriter(
                 new FileOutputStream(filepath + FileuploadUtils.EXT_FILENAME),
                 FileuploadUtils.FILE_ENCODING));
             writer.println(realfilename);
@@ -538,16 +563,18 @@ public class WebMailFormData extends ALAbstractFormData {
     }
   }
 
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     return false;
   }
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
@@ -557,13 +584,13 @@ public class WebMailFormData extends ALAbstractFormData {
       fileuploadList = FileuploadUtils.getFileuploadList(rundata);
       // Body
       // オブジェクトモデルを取得
-      EipMMailAccount account = ALMailUtils.getMailAccount(null, userId,
-          accountId);
+      EipMMailAccount account =
+        ALMailUtils.getMailAccount(null, userId, accountId);
       // 署名を本文に追加
       if (!ALEipConstants.MODE_INSERT.equals(rundata.getParameters().get(
-          ALEipConstants.MODE))
-          && account.getSignature() != null
-          && !"".equals(account.getSignature())) {
+        ALEipConstants.MODE))
+        && account.getSignature() != null
+        && !"".equals(account.getSignature())) {
         StringBuffer bodybuf = new StringBuffer();
         if (body.getValue() != null) {
           bodybuf.append(body.getValue());
@@ -668,7 +695,7 @@ public class WebMailFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public Map getPostMap() {
@@ -688,13 +715,15 @@ public class WebMailFormData extends ALAbstractFormData {
   }
 
   public String getAddrForCell(ALStringField addrs_filed) {
-    if (addrs_filed == null)
+    if (addrs_filed == null) {
       return "";
+    }
 
     String addrs = addrs_filed.getValue();
 
-    if (addrs == null || addrs.length() == 0)
+    if (addrs == null || addrs.length() == 0) {
       return "";
+    }
 
     StringBuffer addrbuf = new StringBuffer();
     int count = 0;
@@ -729,7 +758,7 @@ public class WebMailFormData extends ALAbstractFormData {
     for (int i = 0; i < length; i++) {
       file = new File(folder.getAbsolutePath() + File.separator + filenames[i]);
       if (file.isFile()
-          && !file.getName().endsWith(FileuploadUtils.EXT_FILENAME)) {
+        && !file.getName().endsWith(FileuploadUtils.EXT_FILENAME)) {
         try {
           tmpInt = Integer.parseInt(file.getName());
           if (maxNum <= tmpInt) {

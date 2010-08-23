@@ -18,19 +18,16 @@
  */
 package com.aimluck.eip.modules.parameters;
 
-import java.util.Iterator;
 import java.util.List;
 
-import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.modules.parameters.ListBox;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.cayenne.om.portlet.EipMMailAccount;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -40,25 +37,23 @@ public class WebMailAccountIdListBox extends ListBox {
 
   public static final String INITIAL_VALUE = "initialvalue";
 
-  private String DEF_INITIAL_VALUE = "（メールアカウントの選択）";
+  private final String DEF_INITIAL_VALUE = "（メールアカウントの選択）";
 
   /**
    * Initialize options
    * 
    * @param data
    */
+  @Override
   protected void init(RunData data) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipMMailAccount.class);
-      query.addCustomDbAttribute(EipMMailAccount.ACCOUNT_ID_PK_COLUMN);
-      query.addCustomDbAttribute(EipMMailAccount.ACCOUNT_NAME_COLUMN);
-      Expression exp = ExpressionFactory.matchExp(
-          EipMMailAccount.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-              .getUserId(data)));
-      query.setQualifier(exp);
-      List accounts = dataContext.performQuery(query);
+      SelectQuery<EipMMailAccount> query =
+        Database.query(EipMMailAccount.class);
+
+      Expression exp =
+        ExpressionFactory.matchExp(EipMMailAccount.USER_ID_PROPERTY, Integer
+          .valueOf(ALEipUtils.getUserId(data)));
+      List<EipMMailAccount> accounts = query.setQualifier(exp).fetchList();
 
       int length = 1;
       if (accounts != null && accounts.size() > 0) {
@@ -72,15 +67,9 @@ public class WebMailAccountIdListBox extends ListBox {
       values[0] = (String) this.getParm(INITIAL_VALUE, DEF_INITIAL_VALUE);
       int count = 1;
 
-      DataRow dataRow = null;
-      Iterator iter = accounts.iterator();
-      while (iter.hasNext()) {
-        dataRow = (DataRow) iter.next();
-
-        keys[count] = ((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-            EipMMailAccount.ACCOUNT_ID_PK_COLUMN)).toString();
-        values[count] = (String) ALEipUtils.getObjFromDataRow(dataRow,
-            EipMMailAccount.ACCOUNT_NAME_COLUMN);
+      for (EipMMailAccount account : accounts) {
+        keys[count] = account.getAccountId().toString();
+        values[count] = account.getAccountName();
         count++;
       }
 
@@ -88,8 +77,10 @@ public class WebMailAccountIdListBox extends ListBox {
       this.items = keys;
       this.values = values;
       this.size = Integer.toString(length);
-      this.multiple = Boolean.valueOf(
-          (String) this.getParm(MULTIPLE_CHOICE, "false")).booleanValue();
+      this.multiple =
+        Boolean
+          .valueOf((String) this.getParm(MULTIPLE_CHOICE, "false"))
+          .booleanValue();
     } catch (Exception e) {
       ALEipUtils.redirectPageNotFound(data);
     }

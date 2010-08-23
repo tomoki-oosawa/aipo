@@ -18,13 +18,10 @@
  */
 package com.aimluck.eip.webmail;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -34,7 +31,8 @@ import com.aimluck.eip.cayenne.om.portlet.EipMMailAccount;
 import com.aimluck.eip.cayenne.om.portlet.EipTMailFilter;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.mail.util.ALMailUtils;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.util.WebMailUtils;
 
@@ -43,76 +41,89 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
  */
 public class WebMailFilterMultiDelete extends ALAbstractCheckList {
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WebMailFilterMultiDelete.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(WebMailFilterMultiDelete.class
+      .getName());
 
   /**
    * @see com.aimluck.eip.common.ALAbstractCheckList#action(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList,
    *      java.util.ArrayList)
    */
-  protected boolean action(RunData rundata, Context context, List<String> values,
-      List<String> msgList) {
+  @Override
+  protected boolean action(RunData rundata, Context context,
+      List<String> values, List<String> msgList) {
     try {
       int accountId = -1;
       try {
-        accountId = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
+        accountId =
+          Integer.parseInt(ALEipUtils.getTemp(
+            rundata,
+            context,
             WebMailUtils.ACCOUNT_ID));
-        if (accountId < 0)
+        if (accountId < 0) {
           return false;
+        }
       } catch (Exception e) {
         return false;
       }
 
       // 現在操作中のメールアカウントを取得する
       int userId = ALEipUtils.getUserId(rundata);
-      EipMMailAccount mailAccount = ALMailUtils.getMailAccount(null,
-          (int) userId, accountId);
+      EipMMailAccount mailAccount =
+        ALMailUtils.getMailAccount(null, userId, accountId);
 
       // フィルタを削除
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      Expression exp = ExpressionFactory.inDbExp(
-          EipTMailFilter.FILTER_ID_PK_COLUMN, values);
-      Expression exp2 = ExpressionFactory.matchExp(
-          EipTMailFilter.EIP_MMAIL_ACCOUNT_PROPERTY, mailAccount);
-      SelectQuery query = new SelectQuery(EipTMailFilter.class, exp
-          .andExp(exp2));
-      query.addOrdering(EipTMailFilter.SORT_ORDER_PROPERTY, true);
-      List deleteFilterList = dataContext.performQuery(query);
-      
+      SelectQuery<EipTMailFilter> query = Database.query(EipTMailFilter.class);
+
+      Expression exp =
+        ExpressionFactory.inDbExp(EipTMailFilter.FILTER_ID_PK_COLUMN, values);
+      Expression exp2 =
+        ExpressionFactory.matchExp(
+          EipTMailFilter.EIP_MMAIL_ACCOUNT_PROPERTY,
+          mailAccount);
+      query.setQualifier(exp.andExp(exp2)).orderAscending(
+        EipTMailFilter.SORT_ORDER_PROPERTY);
+
+      List<EipTMailFilter> deleteFilterList = query.fetchList();
+
       // 削除対象のフィルタが見つかったら
       if (deleteFilterList != null && deleteFilterList.size() != 0) {
-        int minSortOrder = ((EipTMailFilter) deleteFilterList.get(0)).getSortOrder();
-  
+        int minSortOrder = (deleteFilterList.get(0)).getSortOrder();
+
         // ソート番号のずれを直す
-        SelectQuery query2 = new SelectQuery(EipTMailFilter.class);
-        Expression exp3 = ExpressionFactory.matchExp(
-            EipTMailFilter.EIP_MMAIL_ACCOUNT_PROPERTY, mailAccount);
-        Expression exp4 = ExpressionFactory.greaterOrEqualExp(
-            EipTMailFilter.SORT_ORDER_PROPERTY, minSortOrder + 1);
-        Expression exp5 = ExpressionFactory.inDbExp(
-            EipTMailFilter.FILTER_ID_PK_COLUMN, values);
+        SelectQuery<EipTMailFilter> query2 =
+          Database.query(EipTMailFilter.class);
+        Expression exp3 =
+          ExpressionFactory.matchExp(
+            EipTMailFilter.EIP_MMAIL_ACCOUNT_PROPERTY,
+            mailAccount);
+        Expression exp4 =
+          ExpressionFactory.greaterOrEqualExp(
+            EipTMailFilter.SORT_ORDER_PROPERTY,
+            minSortOrder + 1);
+        Expression exp5 =
+          ExpressionFactory.inDbExp(EipTMailFilter.FILTER_ID_PK_COLUMN, values);
         query2.setQualifier(exp3.andExp(exp4.andExp(exp5.notExp())));
-        List correctFilterList = dataContext.performQuery(query2);
-        
+
+        List<EipTMailFilter> correctFilterList = query2.fetchList();
+
         // 最小のソート番号以降で、削除されていないフィルタのリストを取り出し、
         // 連番を振りなおす
-        EipTMailFilter correctFilter;
-        for (Object rs : correctFilterList) {
-          correctFilter = (EipTMailFilter) rs;
+        for (EipTMailFilter correctFilter : correctFilterList) {
           correctFilter.setSortOrder(minSortOrder);
           minSortOrder++;
         }
-        
-        dataContext.deleteObjects(deleteFilterList);
-        dataContext.commitChanges();
+
+        Database.deleteAll(deleteFilterList);
+        Database.commit();
       }
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
+      return true;
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error(t);
       return false;
     }
-    return true;
   }
 
 }

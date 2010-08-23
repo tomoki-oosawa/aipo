@@ -34,7 +34,6 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
@@ -43,20 +42,19 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
 /**
  * ウェブメールのフォルダを管理するためのクラスです。 <br />
  */
-public class WebMailFolderSelectData extends ALAbstractSelectData {
+public class WebMailFolderSelectData extends
+    ALAbstractSelectData<EipTMailFolder, EipTMailFolder> {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WebMailFolderSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService
+      .getLogger(WebMailFolderSelectData.class.getName());
 
   /** フォルダID */
   String folder_id = null;
 
   /** メールアカウント */
   private EipMMailAccount mail_account;
-
-  /** アクセス制限（編集の可否） */
-  private boolean editable;
 
   /**
    * 
@@ -87,7 +85,6 @@ public class WebMailFolderSelectData extends ALAbstractSelectData {
     }
 
     ALEipUser login_user = ALEipUtils.getALEipUser(rundata);
-    String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
 
     // 現在操作中のメールアカウントを取得する
     mail_account =
@@ -126,7 +123,7 @@ public class WebMailFolderSelectData extends ALAbstractSelectData {
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected Object selectDetail(RunData rundata, Context context)
+  protected EipTMailFolder selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     // オブジェクトモデルを取得
     EipTMailFolder folder = WebMailUtils.getEipTMailFolder(rundata, context);
@@ -140,8 +137,8 @@ public class WebMailFolderSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
   @Override
-  protected Object getResultData(Object obj) throws ALPageNotFoundException,
-      ALDBErrorException {
+  protected Object getResultData(EipTMailFolder obj)
+      throws ALPageNotFoundException, ALDBErrorException {
     return null;
   }
 
@@ -151,12 +148,10 @@ public class WebMailFolderSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
   @Override
-  protected Object getResultDataDetail(Object obj)
+  protected Object getResultDataDetail(EipTMailFolder record)
       throws ALPageNotFoundException, ALDBErrorException {
 
     try {
-      EipTMailFolder record = (EipTMailFolder) obj;
-
       folder_id = record.getFolderId().toString();
 
       WebMailFolderResultData rd = new WebMailFolderResultData();

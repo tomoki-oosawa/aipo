@@ -19,14 +19,11 @@
 package com.aimluck.eip.webmail;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -44,7 +41,8 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
@@ -52,13 +50,13 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
  * 共有フォルダのフォルダフォームデータを管理するクラス <BR>
- *
+ * 
  */
 public class WebMailFilterFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WebMailFilterFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(WebMailFilterFormData.class.getName());
 
   /** フィルタ名 */
   private ALStringField filter_name;
@@ -84,20 +82,17 @@ public class WebMailFilterFormData extends ALAbstractFormData {
   /** アカウントに紐付くフォルダリスト */
   private ArrayList folderList;
 
-  private Map<String,String> typeList;
-
-  private DataContext dataContext;
-
-  private String org_id;
+  private Map<String, String> typeList;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
@@ -108,30 +103,35 @@ public class WebMailFilterFormData extends ALAbstractFormData {
       try {
         // パラメータにアカウントIDがあった場合
         if (rundata.getParameters().containsKey(WebMailUtils.ACCOUNT_ID)) {
-          mailAccountId = Integer.parseInt(rundata.getParameters().get(
+          mailAccountId =
+            Integer.parseInt(rundata.getParameters().get(
               WebMailUtils.ACCOUNT_ID));
         } else {
           // 無い場合はセッションからアカウントIDを取得する。
-          mailAccountId = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
+          mailAccountId =
+            Integer.parseInt(ALEipUtils.getTemp(
+              rundata,
+              context,
               WebMailUtils.ACCOUNT_ID));
         }
 
         // フィルタIDを取得
-        filterId = ALEipUtils.getTemp(rundata, context,
-            ALEipConstants.ENTITY_ID);
+        filterId =
+          ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
       } catch (Exception e) {
         logger.error("[WebMail Filter] mail account was not found.");
         return;
       }
     }
 
-    org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
     login_user = ALEipUtils.getALEipUser(rundata);
 
     // メールアカウントを取得する
-    mailAccount = ALMailUtils.getMailAccount(null, (int) login_user.getUserId()
-        .getValue(), mailAccountId);
+    mailAccount =
+      ALMailUtils.getMailAccount(
+        null,
+        (int) login_user.getUserId().getValue(),
+        mailAccountId);
 
     if (mailAccount == null) {
       logger.error("[WebMail Filter] mail account was not found.");
@@ -145,10 +145,11 @@ public class WebMailFilterFormData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine
-   *      .util.RunData, org.apache.velocity.context.Context,
-   *      java.util.ArrayList)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     // フォルダ一覧
@@ -161,7 +162,7 @@ public class WebMailFilterFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -189,9 +190,10 @@ public class WebMailFilterFormData extends ALAbstractFormData {
 
   /**
    * フォルダの各フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // フィルタ名必須項目
     filter_name.setNotNull(true);
@@ -206,11 +208,12 @@ public class WebMailFilterFormData extends ALAbstractFormData {
 
   /**
    * フォルダのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     // フィルタ名
     filter_name.validate(msgList);
@@ -223,7 +226,7 @@ public class WebMailFilterFormData extends ALAbstractFormData {
 
     // 同じフィルタ名が無いかどうか確かめる
     if (existsFilterName(filter_name.getValue(), ALEipConstants.MODE_UPDATE
-        .equals(getMode()))) {
+      .equals(getMode()))) {
       msgList.add("このフィルタ名と同じフィルタがすでに存在するため、登録できません。フィルタ名を変更してください。");
     }
 
@@ -232,7 +235,7 @@ public class WebMailFilterFormData extends ALAbstractFormData {
 
   /**
    * 同じアカウントに同じ名前のフィルタがあるかどうか調べます。
-   *
+   * 
    * @return
    */
   private boolean existsFilterName(String fname, boolean is_update) {
@@ -241,18 +244,22 @@ public class WebMailFilterFormData extends ALAbstractFormData {
     }
 
     try {
-      SelectQuery query = new SelectQuery(EipTMailFilter.class);
-      Expression exp = ExpressionFactory.matchExp(
-          EipTMailFilter.FILTER_NAME_PROPERTY, fname);
+      SelectQuery<EipTMailFilter> query = Database.query(EipTMailFilter.class);
+      Expression exp =
+        ExpressionFactory.matchExp(EipTMailFilter.FILTER_NAME_PROPERTY, fname);
       if (is_update) {
-        exp = exp.andExp(ExpressionFactory.noMatchDbExp(
-            EipTMailFilter.FILTER_ID_PK_COLUMN, filterId));
+        exp =
+          exp.andExp(ExpressionFactory.noMatchDbExp(
+            EipTMailFilter.FILTER_ID_PK_COLUMN,
+            filterId));
       }
-      Expression exp2 = ExpressionFactory.matchExp(
-          EipTMailFilter.EIP_MMAIL_ACCOUNT_PROPERTY, mailAccount);
-      query.setQualifier(exp.andExp(exp2));
+      Expression exp2 =
+        ExpressionFactory.matchExp(
+          EipTMailFilter.EIP_MMAIL_ACCOUNT_PROPERTY,
+          mailAccount);
 
-      List list = dataContext.performQuery(query);
+      List<EipTMailFilter> list =
+        query.setQualifier(exp.andExp(exp2)).fetchList();
       if (list != null && list.size() > 0) {
         return true;
       }
@@ -264,7 +271,7 @@ public class WebMailFilterFormData extends ALAbstractFormData {
 
   /**
    * フィルタをデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -272,18 +279,20 @@ public class WebMailFilterFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // フィルタIDを取得
-      String filterId = ALEipUtils.getTemp(rundata, context,
-          ALEipConstants.ENTITY_ID);
+      String filterId =
+        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
       // オブジェクトモデルを取得
-      EipTMailFilter filter = WebMailUtils.getEipTMailFilter(mailAccount,
-          filterId);
-      if (filter == null)
+      EipTMailFilter filter =
+        WebMailUtils.getEipTMailFilter(mailAccount, filterId);
+      if (filter == null) {
         return false;
+      }
 
       // フィルタ名
       filter_name.setValue(filter.getFilterName());
@@ -308,7 +317,7 @@ public class WebMailFilterFormData extends ALAbstractFormData {
 
   /**
    * フィルタをデータベースから削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -316,46 +325,51 @@ public class WebMailFilterFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // フィルタIDを取得
-      String filterId = ALEipUtils.getTemp(rundata, context,
-          ALEipConstants.ENTITY_ID);
+      String filterId =
+        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
       // 削除するフィルタオブジェクトモデルを取得する．
-      EipTMailFilter filter = WebMailUtils.getEipTMailFilter(mailAccount,
-          filterId);
+      EipTMailFilter filter =
+        WebMailUtils.getEipTMailFilter(mailAccount, filterId);
 
       // ソート番号を取得
       int sortOrder = filter.getSortOrder();
 
       // ソート番号のずれをなおす
-      SelectQuery query = new SelectQuery(EipTMailFilter.class);
-      Expression exp = ExpressionFactory.matchExp(
-          EipTMailFilter.EIP_MMAIL_ACCOUNT_PROPERTY, filter
-              .getEipMMailAccount());
-      Expression exp2 = ExpressionFactory.greaterOrEqualExp(
-          EipTMailFilter.SORT_ORDER_PROPERTY, sortOrder + 1);
-      query.setQualifier(exp.andExp(exp2));
-      List filters = dataContext.performQuery(query);
-      EipTMailFilter correctFilter;
-      for (Object rs : filters) {
-        correctFilter = (EipTMailFilter) rs;
-        correctFilter.setSortOrder(correctFilter.getSortOrder() - 1);
+      SelectQuery<EipTMailFilter> query = Database.query(EipTMailFilter.class);
+
+      Expression exp =
+        ExpressionFactory.matchExp(
+          EipTMailFilter.EIP_MMAIL_ACCOUNT_PROPERTY,
+          filter.getEipMMailAccount());
+      Expression exp2 =
+        ExpressionFactory.greaterOrEqualExp(
+          EipTMailFilter.SORT_ORDER_PROPERTY,
+          sortOrder + 1);
+
+      List<EipTMailFilter> filters =
+        query.setQualifier(exp.andExp(exp2)).fetchList();
+      for (EipTMailFilter correct_filter : filters) {
+        correct_filter.setSortOrder(correct_filter.getSortOrder() - 1);
       }
 
       // フィルタ情報を削除、オーダー番号を更新
-      dataContext.deleteObject(filter);
-      dataContext.commitChanges();
+      Database.delete(filter);
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          filter.getFilterId(),
-          ALEventlogConstants.PORTLET_TYPE_WEBMAIL_FILTER,
-          filter.getFilterName());
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
+        filter.getFilterId(),
+        ALEventlogConstants.PORTLET_TYPE_WEBMAIL_FILTER,
+        filter.getFilterName());
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error(t);
       return false;
     }
     return true;
@@ -363,7 +377,7 @@ public class WebMailFilterFormData extends ALAbstractFormData {
 
   /**
    * フィルタをデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -371,19 +385,18 @@ public class WebMailFilterFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
-    boolean res = false;
     try {
-      int uid = ALEipUtils.getUserId(rundata);
-
       // 当該アカウントに所属する振り分け先フォルダを取得する
-      EipTMailFolder mailFolder = WebMailUtils.getEipTMailFolder(mailAccount,
-          String.valueOf(dst_folder_id.getValue()));
+      EipTMailFolder mailFolder =
+        WebMailUtils.getEipTMailFolder(mailAccount, String
+          .valueOf(dst_folder_id.getValue()));
 
       // 新規オブジェクトモデル
-      EipTMailFilter filter = (EipTMailFilter) dataContext
-          .createAndRegisterNewObject(EipTMailFilter.class);
+      EipTMailFilter filter = Database.create(EipTMailFilter.class);
+
       // フィルタ名
       filter.setFilterName(filter_name.getValue());
 
@@ -401,28 +414,28 @@ public class WebMailFilterFormData extends ALAbstractFormData {
 
       // ソート番号
       filter
-          .setSortOrder(WebMailUtils.getMailFilterLastSortOrder(mailAccount) + 1);
+        .setSortOrder(WebMailUtils.getMailFilterLastSortOrder(mailAccount) + 1);
 
-      // フォルダを登録
-      dataContext.commitChanges();
+      // フィルタを登録
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          filter.getFilterId(),
-          ALEventlogConstants.PORTLET_TYPE_WEBMAIL_FILTER,
-          filter_name.getValue());
+        filter.getFilterId(),
+        ALEventlogConstants.PORTLET_TYPE_WEBMAIL_FILTER,
+        filter_name.getValue());
 
-      res = true;
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
+      return true;
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error(t);
       return false;
     }
-    return res;
   }
 
   /**
    * データベースに格納されているフィルタを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -430,22 +443,25 @@ public class WebMailFilterFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // フィルタIDを取得
-      String filterId = ALEipUtils.getTemp(rundata, context,
-          ALEipConstants.ENTITY_ID);
+      String filterId =
+        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
       // オブジェクトモデルを取得
-      EipTMailFilter filter = WebMailUtils.getEipTMailFilter(mailAccount,
-          filterId);
-      if (filter == null)
+      EipTMailFilter filter =
+        WebMailUtils.getEipTMailFilter(mailAccount, filterId);
+      if (filter == null) {
         return false;
+      }
 
       // 当該アカウントに所属する振り分け先フォルダを取得する
-      EipTMailFolder mailFolder = WebMailUtils.getEipTMailFolder(mailAccount,
-          String.valueOf(dst_folder_id.getValue()));
+      EipTMailFolder mailFolder =
+        WebMailUtils.getEipTMailFolder(mailAccount, String
+          .valueOf(dst_folder_id.getValue()));
 
       // フィルタ名
       filter.setFilterName(filter_name.getValue());
@@ -460,34 +476,34 @@ public class WebMailFilterFormData extends ALAbstractFormData {
       filter.setEipTMailFolder(mailFolder);
 
       // フィルタを更新
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          filter.getFilterId(),
-          ALEventlogConstants.PORTLET_TYPE_WEBMAIL_FILTER,
-          filter_name.getValue());
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
+        filter.getFilterId(),
+        ALEventlogConstants.PORTLET_TYPE_WEBMAIL_FILTER,
+        filter_name.getValue());
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error(t);
       return false;
     }
     return true;
   }
 
   /**
-   *
+   * 
    * フォルダ一覧をロードします。
-   *
+   * 
    * @param rundata
    * @param context
    */
   public void loadMailFolderList(RunData rundata, Context context) {
     try {
       // フォルダ一覧を取得する
-      List mailFolders = ALMailUtils.getEipTMailFolderAll(mailAccount);
-      EipTMailFolder folder;
-      for (Object rs : mailFolders) {
-        folder = (EipTMailFolder) rs;
+      List<EipTMailFolder> mailFolders =
+        ALMailUtils.getEipTMailFolderAll(mailAccount);
+      for (EipTMailFolder folder : mailFolders) {
         WebMailFolderResultData rd = new WebMailFolderResultData();
         rd.initField();
         rd.setFolderId(folder.getFolderId().longValue());
@@ -501,7 +517,7 @@ public class WebMailFilterFormData extends ALAbstractFormData {
 
   /**
    * 選択中のメールアカウントを取得する． <BR>
-   *
+   * 
    * @return
    */
   public EipMMailAccount getMailAccount() {
@@ -510,7 +526,7 @@ public class WebMailFilterFormData extends ALAbstractFormData {
 
   /**
    * フィルタ名を取得する． <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFilterName() {
@@ -519,7 +535,7 @@ public class WebMailFilterFormData extends ALAbstractFormData {
 
   /**
    * フィルタ文字列を取得する． <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFilterString() {
@@ -528,7 +544,7 @@ public class WebMailFilterFormData extends ALAbstractFormData {
 
   /**
    * フィルタ種別を取得する． <BR>
-   *
+   * 
    * @return
    */
   public String getFilterType() {
@@ -537,7 +553,7 @@ public class WebMailFilterFormData extends ALAbstractFormData {
 
   /**
    * 振り分け先フォルダIDを取得する． <BR>
-   *
+   * 
    * @return
    */
   public ALNumberField getDstFolderId() {
@@ -546,7 +562,7 @@ public class WebMailFilterFormData extends ALAbstractFormData {
 
   /**
    * フォルダ一覧を取得する． <BR>
-   *
+   * 
    * @return
    */
   public ArrayList getFolderList() {
@@ -555,15 +571,15 @@ public class WebMailFilterFormData extends ALAbstractFormData {
 
   /**
    * フィルタタイプ一覧を取得する． <BR>
-   *
+   * 
    * @return
    */
-  public Map<String,String> getTypeList() {
+  public Map<String, String> getTypeList() {
     return typeList;
   }
 
   /**
-   *
+   * 
    * @param id
    * @return
    */

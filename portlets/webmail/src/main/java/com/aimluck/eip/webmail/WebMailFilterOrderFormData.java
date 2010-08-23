@@ -21,7 +21,6 @@ package com.aimluck.eip.webmail;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -36,7 +35,7 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.util.WebMailUtils;
 
@@ -46,8 +45,9 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
 public class WebMailFilterOrderFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WebMailFilterOrderFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(WebMailFilterOrderFormData.class
+      .getName());
 
   /** フィルタ名のリスト */
   private ALStringField positions;
@@ -67,6 +67,7 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
@@ -77,11 +78,15 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
       try {
         // パラメータにアカウントIDがあった場合
         if (rundata.getParameters().containsKey(WebMailUtils.ACCOUNT_ID)) {
-          mailAccountId = Integer.parseInt(rundata.getParameters().get(
+          mailAccountId =
+            Integer.parseInt(rundata.getParameters().get(
               WebMailUtils.ACCOUNT_ID));
         } else {
           // 無い場合はセッションからアカウントIDを取得する。
-          mailAccountId = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
+          mailAccountId =
+            Integer.parseInt(ALEipUtils.getTemp(
+              rundata,
+              context,
               WebMailUtils.ACCOUNT_ID));
         }
       } catch (Exception e) {
@@ -90,12 +95,14 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
       }
     }
 
-    String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
     ALEipUser login_user = ALEipUtils.getALEipUser(rundata);
 
     // メールアカウントを取得する
-    mailAccount = ALMailUtils.getMailAccount(null, (int) login_user.getUserId()
-        .getValue(), mailAccountId);
+    mailAccount =
+      ALMailUtils.getMailAccount(
+        null,
+        (int) login_user.getUserId().getValue(),
+        mailAccountId);
 
     if (mailAccount == null) {
       logger.error("[WebMail Filter] mail account was not found.");
@@ -120,7 +127,7 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -128,6 +135,7 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res = true;
@@ -157,6 +165,7 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
    * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
   }
 
@@ -167,6 +176,7 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     if (positions.getValue() != null && (!positions.getValue().equals(""))) {
       return true;
@@ -184,6 +194,7 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
@@ -204,6 +215,7 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -219,6 +231,7 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     boolean res = true;
@@ -232,12 +245,9 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
         }
 
         // 現存するフィルタのリスト。
-        DataContext dataContext = DatabaseOrmService.getInstance()
-            .getDataContext();
-        List filters = ALMailUtils.getEipTMailFilters(mailAccount);
-        EipTMailFilter filter;
-        for (Object rs : filters) {
-          filter = (EipTMailFilter) rs;
+        List<EipTMailFilter> filters =
+          ALMailUtils.getEipTMailFilters(mailAccount);
+        for (EipTMailFilter filter : filters) {
           String filter_id = filter.getFilterId().toString();
 
           // フィルタのIDでorderの中を探し、順番を得る。
@@ -251,7 +261,7 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
         }
 
         // orderとフィルタのリストの整合性を確認したうえで、データを更新する
-        dataContext.commitChanges();
+        Database.commit();
       }
     } catch (Exception e) {
       logger.error("Exception", e);
@@ -270,6 +280,7 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;

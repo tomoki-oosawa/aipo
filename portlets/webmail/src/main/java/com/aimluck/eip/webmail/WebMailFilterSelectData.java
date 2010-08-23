@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -42,7 +41,7 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
@@ -52,11 +51,13 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
 /**
  * フィルタを管理するためのクラスです。 <br />
  */
-public class WebMailFilterSelectData extends ALAbstractSelectData {
+public class WebMailFilterSelectData extends
+    ALAbstractSelectData<EipTMailFilter, EipTMailFilter> {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WebMailFilterSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService
+      .getLogger(WebMailFilterSelectData.class.getName());
 
   /** フィルタID */
   String filterId = null;
@@ -66,8 +67,6 @@ public class WebMailFilterSelectData extends ALAbstractSelectData {
 
   /** メールアカウント一覧 */
   private ArrayList mailAccountList;
-
-  private DataContext dataContext;
 
   /**
    * 
@@ -113,9 +112,7 @@ public class WebMailFilterSelectData extends ALAbstractSelectData {
       }
     }
 
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
     ALEipUser login_user = ALEipUtils.getALEipUser(rundata);
-    String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
 
     // 現在操作中のメールアカウントを取得する
     mailAccount =
@@ -127,17 +124,18 @@ public class WebMailFilterSelectData extends ALAbstractSelectData {
     // アカウントIDが取得できなかったとき、デフォルトのアカウントIDを取得する
     if (mailAccount == null) {
       try {
+        SelectQuery<EipMMailAccount> query =
+          Database.query(EipMMailAccount.class);
+
         Expression exp =
           ExpressionFactory.matchExp(
             EipMMailAccount.USER_ID_PROPERTY,
             login_user.getUserId());
-        SelectQuery query = new SelectQuery(EipMMailAccount.class, exp);
-        // query.addOrdering(EipMMailAccount.ACCOUNT_ID_PK_COLUMN, true);
-        List accounts = query.fetchList();
-        if (accounts != null && accounts.size() > 0) {
-          mailAccount = (EipMMailAccount) accounts.get(0);
+        EipMMailAccount account = query.setQualifier(exp).fetchSingle();
+
+        if (account != null) {
+          mailAccount = account;
         } else {
-          // アカウントが一つも見つからなかった
           logger.error("[WebMail Filter] mail account was not found.");
           return;
         }
@@ -208,7 +206,6 @@ public class WebMailFilterSelectData extends ALAbstractSelectData {
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List list = query.fetchList();
       return query.getResultList();
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -224,7 +221,7 @@ public class WebMailFilterSelectData extends ALAbstractSelectData {
    * @return
    */
   private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTMailFilter.class);
+    SelectQuery query = Database.query(EipTMailFilter.class);
 
     Expression exp =
       ExpressionFactory.matchDbExp(
@@ -240,7 +237,7 @@ public class WebMailFilterSelectData extends ALAbstractSelectData {
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected Object selectDetail(RunData rundata, Context context)
+  protected EipTMailFilter selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     // オブジェクトモデルを取得
     EipTMailFilter filter =
@@ -254,10 +251,9 @@ public class WebMailFilterSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
   @Override
-  protected Object getResultData(Object obj) throws ALPageNotFoundException,
-      ALDBErrorException {
+  protected Object getResultData(EipTMailFilter record)
+      throws ALPageNotFoundException, ALDBErrorException {
     try {
-      EipTMailFilter record = (EipTMailFilter) obj;
       filterId = record.getFilterId().toString();
 
       WebMailFilterResultData rd = new WebMailFilterResultData();
@@ -284,11 +280,10 @@ public class WebMailFilterSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
   @Override
-  protected Object getResultDataDetail(Object obj)
+  protected Object getResultDataDetail(EipTMailFilter record)
       throws ALPageNotFoundException, ALDBErrorException {
 
     try {
-      EipTMailFilter record = (EipTMailFilter) obj;
       filterId = record.getFilterId().toString();
 
       WebMailFilterResultData rd = new WebMailFilterResultData();

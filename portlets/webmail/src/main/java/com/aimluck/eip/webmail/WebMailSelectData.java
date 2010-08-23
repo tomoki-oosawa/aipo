@@ -69,8 +69,8 @@ import com.sk_jp.mail.MailUtility;
  */
 public class WebMailSelectData extends ALAbstractSelectData {
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WebMailSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(WebMailSelectData.class.getName());
 
   /** 現在選択されているタブ (＝受信メール or 送信メール) */
   private String currentTab = null;

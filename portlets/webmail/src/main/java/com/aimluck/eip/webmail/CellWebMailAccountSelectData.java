@@ -20,7 +20,6 @@ package com.aimluck.eip.webmail;
 
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -34,7 +33,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
@@ -44,13 +43,13 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
  *
  *
  */
-public class CellWebMailAccountSelectData extends ALAbstractSelectData {
+public class CellWebMailAccountSelectData extends
+    ALAbstractSelectData<EipMMailAccount, EipMMailAccount> {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(CellWebMailAccountSelectData.class.getName());
-
-  private DataContext dataContext;
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(CellWebMailAccountSelectData.class
+      .getName());
 
   private int userId;
 
@@ -76,8 +75,6 @@ public class CellWebMailAccountSelectData extends ALAbstractSelectData {
         .getInitParameter("p2a-sort"));
     }
 
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
-
     userId = ALEipUtils.getUserId(rundata);
     try {
       accountId =
@@ -96,9 +93,10 @@ public class CellWebMailAccountSelectData extends ALAbstractSelectData {
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected ResultList selectList(RunData rundata, Context context) {
+  protected ResultList<EipMMailAccount> selectList(RunData rundata,
+      Context context) {
     try {
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipMMailAccount> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
@@ -116,18 +114,19 @@ public class CellWebMailAccountSelectData extends ALAbstractSelectData {
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipMMailAccount.class);
+  private SelectQuery<EipMMailAccount> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipMMailAccount> query = Database.query(EipMMailAccount.class);
 
     Expression exp1 =
       ExpressionFactory.matchExp(EipMMailAccount.USER_ID_PROPERTY, Integer
         .valueOf(ALEipUtils.getUserId(rundata)));
-    query.setQualifier(exp1);
     Expression exp2 =
       ExpressionFactory.noMatchExp(
         EipMMailAccount.ACCOUNT_TYPE_PROPERTY,
         Integer.valueOf(ALMailUtils.ACCOUNT_TYPE_INIT));
-    query.andQualifier(exp2);
+
+    query.setQualifier(exp1.andExp(exp2));
     query.orderDesending(EipMMailAccount.ACCOUNT_TYPE_PROPERTY);
 
     return query;
@@ -138,8 +137,7 @@ public class CellWebMailAccountSelectData extends ALAbstractSelectData {
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected Object selectDetail(RunData rundata, Context context) {
-
+  protected EipMMailAccount selectDetail(RunData rundata, Context context) {
     return ALMailUtils.getMailAccount(null, userId, accountId);
   }
 
@@ -147,9 +145,8 @@ public class CellWebMailAccountSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
   @Override
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipMMailAccount record) {
     try {
-      EipMMailAccount record = (EipMMailAccount) obj;
       WebMailAccountResultData rd = new WebMailAccountResultData();
       rd.initField();
       rd.setAccountId(record.getAccountId().intValue());
@@ -166,7 +163,7 @@ public class CellWebMailAccountSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
   @Override
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(EipMMailAccount record) {
     return null;
   }
 

@@ -26,7 +26,6 @@ import java.util.List;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -45,8 +44,9 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
-import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
@@ -59,8 +59,8 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
 public class WebMailFolderFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WebMailFolderFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(WebMailFolderFormData.class.getName());
 
   /** フォルダ名 */
   private ALStringField folder_name;
@@ -88,6 +88,7 @@ public class WebMailFolderFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
@@ -97,7 +98,10 @@ public class WebMailFolderFormData extends ALAbstractFormData {
     if (ALEipUtils.isMatch(rundata, context)) {
       try {
         // セッションからアカウントIDを取得する。
-        mailAccountId = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
+        mailAccountId =
+          Integer.parseInt(ALEipUtils.getTemp(
+            rundata,
+            context,
             WebMailUtils.ACCOUNT_ID));
       } catch (Exception e) {
         logger.error("[WebMail Folder] mail account was not found.");
@@ -106,7 +110,8 @@ public class WebMailFolderFormData extends ALAbstractFormData {
 
       if (rundata.getParameters().containsKey(ALEipConstants.ENTITY_ID)) {
         ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, rundata
-            .getParameters().getString(ALEipConstants.ENTITY_ID));
+          .getParameters()
+          .getString(ALEipConstants.ENTITY_ID));
         folderId = rundata.getParameters().get(ALEipConstants.ENTITY_ID);
       }
     }
@@ -116,16 +121,19 @@ public class WebMailFolderFormData extends ALAbstractFormData {
     login_user = ALEipUtils.getALEipUser(rundata);
 
     // メールアカウントを取得する
-    mailAccount = ALMailUtils.getMailAccount("", (int) login_user.getUserId()
-        .getValue(), mailAccountId);
+    mailAccount =
+      ALMailUtils.getMailAccount(
+        "",
+        (int) login_user.getUserId().getValue(),
+        mailAccountId);
     if (mailAccount == null) {
       logger.error("[WebMail Folder] mail account was not found.");
       return;
     }
 
     // 指定されたフォルダがアカウントのものかどうかチェックする
-    EipTMailFolder folder = WebMailUtils.getEipTMailFolder(mailAccount,
-        folderId);
+    EipTMailFolder folder =
+      WebMailUtils.getEipTMailFolder(mailAccount, folderId);
     if (folder == null) {
       logger.error("[WebMail Folder] mail folder was not found.");
       return;
@@ -139,6 +147,7 @@ public class WebMailFolderFormData extends ALAbstractFormData {
    * com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine
    * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
@@ -169,6 +178,7 @@ public class WebMailFolderFormData extends ALAbstractFormData {
    * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // フォルダ名必須項目
     folder_name.setNotNull(true);
@@ -183,13 +193,14 @@ public class WebMailFolderFormData extends ALAbstractFormData {
    * @return TRUE 成功 FALSE 失敗
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     // フォルダ名
     folder_name.validate(msgList);
 
     // 同じフォルダ名が無いかどうか確かめる
     if (existsFolderName(folder_name.getValue(), ALEipConstants.MODE_UPDATE
-        .equals(getMode()))) {
+      .equals(getMode()))) {
       msgList.add("このフォルダ名と同じフォルダがすでに存在するため、登録できません。フォルダ名を変更してください。");
     }
 
@@ -207,18 +218,22 @@ public class WebMailFolderFormData extends ALAbstractFormData {
     }
 
     try {
-      SelectQuery query = new SelectQuery(EipTMailFolder.class);
-      Expression exp = ExpressionFactory.matchExp(
-          EipTMailFolder.FOLDER_NAME_PROPERTY, fname);
+      SelectQuery<EipTMailFolder> query = Database.query(EipTMailFolder.class);
+      Expression exp =
+        ExpressionFactory.matchExp(EipTMailFolder.FOLDER_NAME_PROPERTY, fname);
       if (is_update) {
-        exp = exp.andExp(ExpressionFactory.noMatchDbExp(
-            EipTMailFolder.FOLDER_ID_PK_COLUMN, folderId));
+        exp =
+          exp.andExp(ExpressionFactory.noMatchDbExp(
+            EipTMailFolder.FOLDER_ID_PK_COLUMN,
+            folderId));
       }
-      Expression exp2 = ExpressionFactory.matchExp(
-          EipTMailFolder.EIP_MMAIL_ACCOUNT_PROPERTY, mailAccount);
-      query.setQualifier(exp.andExp(exp2));
+      Expression exp2 =
+        ExpressionFactory.matchExp(
+          EipTMailFolder.EIP_MMAIL_ACCOUNT_PROPERTY,
+          mailAccount);
 
-      List list = dataContext.performQuery(query);
+      List<EipTMailFolder> list =
+        query.setQualifier(exp.andExp(exp2)).fetchList();
       if (list != null && list.size() > 0) {
         return true;
       }
@@ -238,14 +253,16 @@ public class WebMailFolderFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTMailFolder folder = WebMailUtils.getEipTMailFolder(mailAccount,
-          folderId);
-      if (folder == null)
+      EipTMailFolder folder =
+        WebMailUtils.getEipTMailFolder(mailAccount, folderId);
+      if (folder == null) {
         return false;
+      }
 
       // フォルダ名
       folder_name.setValue(folder.getFolderName());
@@ -267,11 +284,12 @@ public class WebMailFolderFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
-      String folderId = ALEipUtils.getTemp(rundata, context,
-          WebMailUtils.FOLDER_ID);
+      String folderId =
+        ALEipUtils.getTemp(rundata, context, WebMailUtils.FOLDER_ID);
       int delete_id = Integer.parseInt(folderId);
 
       // デフォルトのフォルダは削除不可。
@@ -280,25 +298,27 @@ public class WebMailFolderFormData extends ALAbstractFormData {
       }
 
       // 削除するフォルダオブジェクトモデルを取得する．
-      EipTMailFolder folder = WebMailUtils.getEipTMailFolder(mailAccount,
-          folderId);
+      EipTMailFolder folder =
+        WebMailUtils.getEipTMailFolder(mailAccount, folderId);
 
       // 一緒に削除するメール
       List folderMails = ALMailUtils.getEipTMails(folder);
 
       // 振り分け先として指定してあるフィルタは、振り分け先をデフォルトに変更
-      SelectQuery query = new SelectQuery(EipTMailFilter.class);
-      Expression exp = ExpressionFactory.matchDbExp(
-          EipTMailFilter.EIP_TMAIL_FOLDER_PROPERTY, folder);
-      query.setQualifier(exp);
-      List filters = dataContext.performQuery(query);
+      SelectQuery<EipTMailFilter> query = Database.query(EipTMailFilter.class);
+
+      Expression exp =
+        ExpressionFactory.matchDbExp(
+          EipTMailFilter.EIP_TMAIL_FOLDER_PROPERTY,
+          folder);
+
+      List<EipTMailFilter> filters = query.setQualifier(exp).fetchList();
       if (filters != null && filters.size() != 0) {
-        EipTMailFilter filter;
-        EipTMailFolder defaultFolder = WebMailUtils.getEipTMailFolder(mailAccount,
-            mailAccount.getDefaultFolderId().toString());
-        for (Object rs : filters) {
-          // 振り分け先をデフォルトに変更
-          filter = (EipTMailFilter) rs;
+        EipTMailFolder defaultFolder =
+          WebMailUtils.getEipTMailFolder(mailAccount, mailAccount
+            .getDefaultFolderId()
+            .toString());
+        for (EipTMailFilter filter : filters) {
           filter.setEipTMailFolder(defaultFolder);
         }
       }
@@ -313,31 +333,33 @@ public class WebMailFolderFormData extends ALAbstractFormData {
         }
       }
       // フォルダ情報を削除
-      dataContext.deleteObject(folder);
-      dataContext.commitChanges();
+      Database.delete(folder);
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          folder.getFolderId(),
-          ALEventlogConstants.PORTLET_TYPE_WEBMAIL_FOLDER,
-          folder.getFolderName());
+        folder.getFolderId(),
+        ALEventlogConstants.PORTLET_TYPE_WEBMAIL_FOLDER,
+        folder.getFolderName());
 
       // ローカルファイルに保存されているファイルを削除する．
       if (mailPaths.size() > 0) {
         File file = null;
         int size = mailPaths.size();
         for (int k = 0; k < size; k++) {
-          file = new File(ALMailUtils.getLocalurl() + (String) mailPaths.get(k));
+          file =
+            new File(ALMailUtils.getLocalurl() + (String) mailPaths.get(k));
           if (file.exists()) {
             file.delete();
           }
         }
       }
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
+      return true;
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error(t);
       return false;
     }
-    return true;
   }
 
   /**
@@ -350,15 +372,13 @@ public class WebMailFolderFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
-    boolean res = false;
     try {
-      int uid = ALEipUtils.getUserId(rundata);
-
       // 新規オブジェクトモデル
-      EipTMailFolder folder = (EipTMailFolder) dataContext
-          .createAndRegisterNewObject(EipTMailFolder.class);
+      EipTMailFolder folder = Database.create(EipTMailFolder.class);
+
       // フォルダ名
       folder.setFolderName(folder_name.getValue());
       // 作成日
@@ -369,20 +389,18 @@ public class WebMailFolderFormData extends ALAbstractFormData {
       folder.setEipMMailAccount(mailAccount);
 
       // フォルダを登録
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          folder.getFolderId(),
-          ALEventlogConstants.PORTLET_TYPE_WEBMAIL_FOLDER,
-          folder_name.getValue());
-
-      res = true;
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
+        folder.getFolderId(),
+        ALEventlogConstants.PORTLET_TYPE_WEBMAIL_FOLDER,
+        folder_name.getValue());
+      return true;
+    } catch (Throwable t) {
+      logger.error(t);
       return false;
     }
-    return res;
   }
 
   /**
@@ -395,14 +413,16 @@ public class WebMailFolderFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTMailFolder folder = WebMailUtils.getEipTMailFolder(mailAccount,
-          folderId);
-      if (folder == null)
+      EipTMailFolder folder =
+        WebMailUtils.getEipTMailFolder(mailAccount, folderId);
+      if (folder == null) {
         return false;
+      }
 
       // フォルダ名
       folder.setFolderName(folder_name.getValue());
@@ -411,18 +431,19 @@ public class WebMailFolderFormData extends ALAbstractFormData {
       // folder.setUpdateDate(Calendar.getInstance().getTime());
 
       // フォルダを更新
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          folder.getFolderId(),
-          ALEventlogConstants.PORTLET_TYPE_WEBMAIL_FOLDER,
-          folder_name.getValue());
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
+        folder.getFolderId(),
+        ALEventlogConstants.PORTLET_TYPE_WEBMAIL_FOLDER,
+        folder_name.getValue());
+      return true;
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error(t);
       return false;
     }
-    return true;
   }
 
   /**

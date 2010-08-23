@@ -22,10 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -33,6 +31,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
+import com.aimluck.eip.addressbookuser.beans.AddressBookUserEmailLiteBean;
 import com.aimluck.eip.addressbookuser.util.AddressBookUserUtils;
 import com.aimluck.eip.cayenne.om.account.EipMUserPosition;
 import com.aimluck.eip.cayenne.om.security.TurbineGroup;
@@ -43,7 +42,8 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -51,8 +51,9 @@ import com.aimluck.eip.util.ALEipUtils;
  */
 public class WebMailAddressbookFormData extends ALAbstractFormData {
 
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WebMailAddressbookFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(WebMailAddressbookFormData.class
+      .getName());
 
   /** 社内 */
   public static final int TYPE_EXTERNAL = 0;
@@ -67,8 +68,6 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
 
   private List externalGroupList = null;
 
-  private List internalUserList = null;
-
   private ALStringField current_internal_group_name = null;
 
   private ALStringField current_external_group_name = null;
@@ -82,13 +81,10 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
   /**  */
   private int userId = -1;
 
-  private DataContext dataContext;
-
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     userId = ALEipUtils.getUserId(rundata);
 
@@ -101,43 +97,44 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
       }
     }
 
-    externalGroupList = AddressBookUserUtils
-        .getAddressBookUserGroupLiteBeans(rundata);
-
-    internalUserList = new ArrayList();
+    externalGroupList =
+      AddressBookUserUtils.getAddressBookUserGroupLiteBeans(rundata);
 
     toRecipientList = new ArrayList();
     ccRecipientList = new ArrayList();
     bccRecipientList = new ArrayList();
 
     try {
-      String[] detail_to_recipients = rundata.getParameters().getStrings(
-          "detail_to_recipients");
+      String[] detail_to_recipients =
+        rundata.getParameters().getStrings("detail_to_recipients");
       if (detail_to_recipients != null) {
         int length = detail_to_recipients.length;
         for (int i = 0; i < length; i++) {
           toRecipientList.add(new ALStringField(new String(
-              detail_to_recipients[i].getBytes("8859_1"), "utf-8")));
+            detail_to_recipients[i].getBytes("8859_1"),
+            "utf-8")));
         }
       }
 
-      String[] detail_cc_recipients = rundata.getParameters().getStrings(
-          "detail_cc_recipients");
+      String[] detail_cc_recipients =
+        rundata.getParameters().getStrings("detail_cc_recipients");
       if (detail_cc_recipients != null) {
         int length = detail_cc_recipients.length;
         for (int i = 0; i < length; i++) {
           ccRecipientList.add(new ALStringField(new String(
-              detail_cc_recipients[i].getBytes("8859_1"), "utf-8")));
+            detail_cc_recipients[i].getBytes("8859_1"),
+            "utf-8")));
         }
       }
 
-      String[] detail_bcc_recipients = rundata.getParameters().getStrings(
-          "detail_bcc_recipients");
+      String[] detail_bcc_recipients =
+        rundata.getParameters().getStrings("detail_bcc_recipients");
       if (detail_bcc_recipients != null) {
         int length = detail_bcc_recipients.length;
         for (int i = 0; i < length; i++) {
           bccRecipientList.add(new ALStringField(new String(
-              detail_bcc_recipients[i].getBytes("8859_1"), "utf-8")));
+            detail_bcc_recipients[i].getBytes("8859_1"),
+            "utf-8")));
         }
       }
 
@@ -149,6 +146,7 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
   /**
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // グループ名
     current_internal_group_name.setNotNull(true);
@@ -159,6 +157,7 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
   /**
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     return (msgList.size() == 0);
   }
@@ -168,6 +167,7 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
@@ -175,15 +175,16 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
     if (res) {
       try {
         String str[] = rundata.getParameters().getStrings("detail_recipients");
-        if (str == null)
+        if (str == null) {
           return res;
+        }
 
         ALStringField field = null;
         int size = str.length;
         for (int i = 0; i < size; i++) {
           field = new ALStringField();
           field.setValue(ALStringUtil.unsanitizing(new String(str[i]
-              .getBytes("8859_1"), "UTF-8")));
+            .getBytes("8859_1"), "UTF-8")));
           toRecipientList.add(field);
           ccRecipientList.add(field);
           bccRecipientList.add(field);
@@ -202,6 +203,7 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     boolean res = false;
@@ -220,6 +222,7 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -231,6 +234,7 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -242,6 +246,7 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -272,14 +277,12 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
    * @param groupname
    * @return
    */
-  public List getInternalUsers() {
-    List list = null;
+  public List<TurbineUser> getInternalUsers() {
     String groupName = getCurrentInternalGroupName().toString();
     if (groupName == null || groupName.equals("") || groupName.equals("all")) {
       groupName = "LoginUser";
     }
-    list = getPostMygroupUsers(groupName);
-    return list;
+    return getPostMygroupUsers(groupName);
   }
 
   /**
@@ -287,68 +290,16 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
    * 
    * @return
    */
-  public List getExternalUsers() {
-    List list = null;
+  public List<AddressBookUserEmailLiteBean> getExternalUsers() {
     String groupId = getCurrentExternalGroupName().toString();
     try {
-
-      list = AddressBookUserUtils.getAddressBookUserEmailLiteBeansFromGroup(
-          groupId, Integer.valueOf(userId));
-
-      // if (groupName == null || groupName.equals("") ||
-      // groupName.equals("all")) {
-      // // 全体を指定された場合
-      // list = getAddressgroupAllUsers();
-      //
-      // // 返却するオブジェクトの作成
-      // ArrayList objList = new ArrayList();
-      // if (list != null) {
-      // int size = list.size();
-      // for (int i = 0; i < size; i++) {
-      // objList.add(getResultData(list.get(i), groupName));
-      // }
-      // }
-      // return objList;
-      // } else {
-      // // 特定グループを指定された時
-      // SelectQuery mapquery = new SelectQuery(EipMAddressGroup.class);
-      // Expression exp01 = ExpressionFactory.matchExp(
-      // EipMAddressGroup.OWNER_ID_PROPERTY, Integer.valueOf(userId));
-      // mapquery.setQualifier(exp01);
-      // Expression exp02 = ExpressionFactory.matchDbExp(
-      // EipMAddressGroup.GROUP_ID_PK_COLUMN, Integer.valueOf(groupName));
-      // mapquery.andQualifier(exp02);
-      // List maplist = dataContext.performQuery(mapquery);
-      // List idlist = new ArrayList();
-      // if (idlist != null) {
-      // int size = maplist.size();
-      // for (int i = 0; i < size; i++) {
-      // EipMAddressGroup group = (EipMAddressGroup) maplist.get(i);
-      // idlist.add(group.getGroupId());
-      // }
-      // }
-      //
-      // SelectQuery query = new SelectQuery(EipMAddressbookGroupView.class);
-      // Expression exp = ExpressionFactory.inExp(
-      // EipMAddressbookGroupView.GROUP_ID_PROPERTY, idlist);
-      // query.andQualifier(exp);
-      // query.addOrdering(EipMAddressbookGroupView.NAME_KANA_PROPERTY, true);
-      // list = dataContext.performQuery(query);
-      //
-      // // 返却するオブジェクトの作成
-      // ArrayList objList = new ArrayList();
-      // if (list != null) {
-      // int size = list.size();
-      // for (int i = 0; i < size; i++) {
-      // objList.add(getResultData(list.get(i), groupName));
-      // }
-      // }
-      // return objList;
-      // }
+      return AddressBookUserUtils.getAddressBookUserEmailLiteBeansFromGroup(
+        groupId,
+        Integer.valueOf(userId));
     } catch (Exception ex) {
       logger.error("Exception", ex);
+      return null;
     }
-    return list;
   }
 
   /**
@@ -357,85 +308,29 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
    * @param groupName
    * @return
    */
-  private List getPostMygroupUsers(String groupName) {
-    List list = null;
-
+  private List<TurbineUser> getPostMygroupUsers(String groupName) {
     try {
-      SelectQuery query = new SelectQuery(TurbineUser.class);
-      Expression exp1 = ExpressionFactory.matchExp(
-          TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY + "."
-              + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY + "."
-              + TurbineGroup.GROUP_NAME_PROPERTY, groupName);
-      query.setQualifier(exp1);
-      Expression exp2 = ExpressionFactory.matchExp(
-          TurbineUser.DISABLED_PROPERTY, "F");
-      query.andQualifier(exp2);
-      query.addOrdering(TurbineUser.EIP_MUSER_POSITION_PROPERTY + "."
-          + EipMUserPosition.POSITION_PROPERTY, true);
-      list = dataContext.performQuery(query);
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+
+      Expression exp1 =
+        ExpressionFactory.matchExp(TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
+          + "."
+          + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
+          + "."
+          + TurbineGroup.GROUP_NAME_PROPERTY, groupName);
+      Expression exp2 =
+        ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
+      query.setQualifier(exp1.andExp(exp2));
+      query.orderAscending(TurbineUser.EIP_MUSER_POSITION_PROPERTY
+        + "."
+        + EipMUserPosition.POSITION_PROPERTY);
+
+      return query.fetchList();
     } catch (Exception ex) {
       logger.error("Exception", ex);
+      return null;
     }
-    return list;
   }
-
-  // /**
-  // * 外部アドレス全体を取得する。
-  // *
-  // * @return
-  // */
-  // private List getAddressgroupAllUsers() {
-  // List list = null;
-  // try {
-  // SelectQuery query = new SelectQuery(EipMAddressbookView.class);
-  // // 公開アドレス
-  // Expression exp1 = ExpressionFactory.matchExp(
-  // EipMAddressbookView.PUBLIC_FLAG_PROPERTY, "T");
-  // // アドレス所有者
-  // Expression exp2 = ExpressionFactory.matchExp(
-  // EipMAddressbookView.OWNER_ID_PROPERTY, Integer.valueOf(userId));
-  // query.setQualifier(exp1.orExp(exp2));
-  // // ソートする（名前の昇順）
-  // query.addOrdering(EipMAddressbookView.LAST_NAME_KANA_PROPERTY, true);
-  // list = dataContext.performQuery(query);
-  // } catch (Exception ex) {
-  // logger.error("Exception", ex);
-  // }
-  // return list;
-  // }
-
-  // /**
-  // * アドレス情報を返す際の返却オブジェクトを作成する。
-  // *
-  // * @see
-  // com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
-  // */
-  // private Object getResultData(Object obj, String type) {
-  // try {
-  // AddressBookResultData rd = new AddressBookResultData();
-  // if (type == null || type.trim().length() == 0 || "all".equals(type)) {
-  // // 全体時
-  // EipMAddressbookView record = (EipMAddressbookView) obj;
-  // rd.initField();
-  // rd.setAddressId(record.getAddressId().intValue());
-  // rd.setName(new StringBuffer().append(record.getLastName()).append(" ")
-  // .append(record.getFirstName()).toString());
-  // rd.setEmail(record.getEmail());
-  // } else {
-  // // 特定グループ指定時
-  // EipMAddressbookGroupView record = (EipMAddressbookGroupView) obj;
-  // rd.initField();
-  // rd.setAddressId(record.getAddressId().intValue());
-  // rd.setName(new StringBuffer().append(record.getLastName()).append(" ")
-  // .append(record.getFirstName()).toString());
-  // rd.setEmail(record.getEmail());
-  // }
-  // return rd;
-  // } catch (Exception ex) {
-  // logger.error("Exception", ex);
-  // return null;
-  // }
-  // }
 
   /**
    * 
