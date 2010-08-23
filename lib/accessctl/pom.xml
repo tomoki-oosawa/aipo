@@ -5,7 +5,7 @@
   <parent>
     <artifactId>lib</artifactId>
     <groupId>com.aimluck.eip</groupId>
-    <version>${aipo.version}</version>
+    <version>5.0.3</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
