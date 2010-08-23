@@ -63,14 +63,19 @@ public class ToDoCategoryMultiDelete extends ALAbstractCheckList {
       List<String> values, List<String> msgList) {
     try {
 
-      Expression exp1 = ExpressionFactory.matchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(ALEipUtils
-          .getUserId(rundata)));
-      Expression exp2 = ExpressionFactory.inDbExp(
-        EipTTodoCategory.CATEGORY_ID_PK_COLUMN, values);
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+          .valueOf(ALEipUtils.getUserId(rundata)));
+      Expression exp2 =
+        ExpressionFactory.inDbExp(
+          EipTTodoCategory.CATEGORY_ID_PK_COLUMN,
+          values);
 
-      List<EipTTodoCategory> categoryList = Database.query(
-        EipTTodoCategory.class, exp1).andQualifier(exp2).fetchList();
+      List<EipTTodoCategory> categoryList =
+        Database
+          .query(EipTTodoCategory.class, exp1)
+          .andQualifier(exp2)
+          .fetchList();
       if (categoryList == null || categoryList.size() == 0) {
         return false;
       }
@@ -89,13 +94,14 @@ public class ToDoCategoryMultiDelete extends ALAbstractCheckList {
 
         // ログに保存
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          entityId, ALEventlogConstants.PORTLET_TYPE_TODO_CATEGORY,
+          entityId,
+          ALEventlogConstants.PORTLET_TYPE_TODO_CATEGORY,
           categoryName);
       }
 
       // 一覧表示画面のフィルタに設定されているカテゴリのセッション情報を削除
-      String filtername = ToDoSelectData.class.getName()
-        + ALEipConstants.LIST_FILTER;
+      String filtername =
+        ToDoSelectData.class.getName() + ALEipConstants.LIST_FILTER;
       ALEipUtils.removeTemp(rundata, context, filtername);
 
     } catch (Throwable t) {

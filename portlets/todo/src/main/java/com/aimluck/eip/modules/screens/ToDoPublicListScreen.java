@@ -44,7 +44,8 @@ public class ToDoPublicListScreen extends ToDoScreen {
     try {
       ToDoPublicSelectData listData = new ToDoPublicSelectData();
       listData.initField();
-      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(rundata,
+      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
         context).getPortletConfig().getInitParameter("p1b-rows")));
       listData.doViewList(this, rundata, context);
 

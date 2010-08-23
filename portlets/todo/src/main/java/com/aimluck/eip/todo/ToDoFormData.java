@@ -127,7 +127,8 @@ public class ToDoFormData extends ALAbstractFormData {
 
     user_id = ALEipUtils.getUserId(rundata);
 
-    aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF;
+    aclPortletFeature =
+      ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF;
   }
 
   /**
@@ -196,15 +197,19 @@ public class ToDoFormData extends ALAbstractFormData {
     categoryList = new ArrayList<ToDoCategoryResultData>();
     try {
 
-      Expression exp1 = ExpressionFactory.matchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(ALEipUtils
-          .getUserId(rundata)));
-      Expression exp2 = ExpressionFactory.matchExp(
-        EipTTodoCategory.USER_ID_PROPERTY, Integer.valueOf(0));
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+          .valueOf(ALEipUtils.getUserId(rundata)));
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTTodoCategory.USER_ID_PROPERTY, Integer
+          .valueOf(0));
 
-      List<EipTTodoCategory> categoryList2 = Database.query(
-        EipTTodoCategory.class, exp1).orQualifier(exp2).orderAscending(
-        EipTTodoCategory.CATEGORY_NAME_PROPERTY).fetchList();
+      List<EipTTodoCategory> categoryList2 =
+        Database
+          .query(EipTTodoCategory.class, exp1)
+          .orQualifier(exp2)
+          .orderAscending(EipTTodoCategory.CATEGORY_NAME_PROPERTY)
+          .fetchList();
 
       for (EipTTodoCategory record : categoryList2) {
         ToDoCategoryResultData rd = new ToDoCategoryResultData();
@@ -251,18 +256,23 @@ public class ToDoFormData extends ALAbstractFormData {
 
     try {
 
-      Expression exp = ExpressionFactory.matchExp(
-        EipTTodoCategory.CATEGORY_NAME_PROPERTY, category_name.getValue());
+      Expression exp =
+        ExpressionFactory.matchExp(
+          EipTTodoCategory.CATEGORY_NAME_PROPERTY,
+          category_name.getValue());
 
-      Expression exp2 = ExpressionFactory.matchExp(
-        EipTTodoCategory.USER_ID_PROPERTY, Integer.valueOf(0));
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTTodoCategory.USER_ID_PROPERTY, Integer
+          .valueOf(0));
 
-      Expression exp3 = ExpressionFactory.matchExp(
-        EipTTodoCategory.USER_ID_PROPERTY, Integer.valueOf(this.user_id));
+      Expression exp3 =
+        ExpressionFactory.matchExp(EipTTodoCategory.USER_ID_PROPERTY, Integer
+          .valueOf(this.user_id));
 
       if (Database.query(EipTTodoCategory.class, exp).andQualifier(
         exp2.orExp(exp3)).fetchList().size() != 0) {
-        msgList.add("カテゴリ名『 <span class='em'>" + category_name.toString()
+        msgList.add("カテゴリ名『 <span class='em'>"
+          + category_name.toString()
           + "</span> 』は既に登録されています。");
       }
     } catch (Exception ex) {
@@ -326,7 +336,9 @@ public class ToDoFormData extends ALAbstractFormData {
       // ToDo名
       todo_name.setValue(todo.getTodoName());
       // カテゴリID
-      category_id.setValue(todo.getEipTTodoCategory().getCategoryId()
+      category_id.setValue(todo
+        .getEipTTodoCategory()
+        .getCategoryId()
         .longValue());
       // 開始日
       if (ToDoUtils.isEmptyDate(todo.getStartDate())) {
@@ -389,8 +401,10 @@ public class ToDoFormData extends ALAbstractFormData {
       Database.commit();
 
       // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(entityId,
-        ALEventlogConstants.PORTLET_TYPE_TODO, todoName);
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        entityId,
+        ALEventlogConstants.PORTLET_TYPE_TODO,
+        todoName);
 
     } catch (Throwable t) {
       Database.rollback();
@@ -420,8 +434,8 @@ public class ToDoFormData extends ALAbstractFormData {
           // TODO ロールバック
         }
       } else {
-        category = ToDoUtils.getEipTTodoCategory(Long.valueOf(category_id
-          .getValue()));
+        category =
+          ToDoUtils.getEipTTodoCategory(Long.valueOf(category_id.getValue()));
       }
 
       // 新規オブジェクトモデル
@@ -432,8 +446,8 @@ public class ToDoFormData extends ALAbstractFormData {
       // カテゴリID
       todo.setEipTTodoCategory(category);
       // ユーザーID
-      TurbineUser tuser = Database.get(TurbineUser.class, Integer
-        .valueOf(user_id));
+      TurbineUser tuser =
+        Database.get(TurbineUser.class, Integer.valueOf(user_id));
       todo.setTurbineUser(tuser);
       // 開始日
       if (start_date_check.getValue() == null) {
@@ -471,7 +485,8 @@ public class ToDoFormData extends ALAbstractFormData {
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        todo.getTodoId(), ALEventlogConstants.PORTLET_TYPE_TODO,
+        todo.getTodoId(),
+        ALEventlogConstants.PORTLET_TYPE_TODO,
         todo_name.getValue());
 
     } catch (Throwable t) {
@@ -496,7 +511,9 @@ public class ToDoFormData extends ALAbstractFormData {
     try {
 
       setAclPortletFeature(ALAccessControlConstants.POERTLET_FEATURE_TODO_CATEGORY_SELF);
-      doCheckAclPermission(rundata, context,
+      doCheckAclPermission(
+        rundata,
+        context,
         ALAccessControlConstants.VALUE_ACL_INSERT);
       setAclPortletFeature(ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF);
 
@@ -546,8 +563,8 @@ public class ToDoFormData extends ALAbstractFormData {
         if (!insertCategoryData(rundata, context)) {
         }
       } else {
-        category = ToDoUtils.getEipTTodoCategory(Long.valueOf(category_id
-          .getValue()));
+        category =
+          ToDoUtils.getEipTTodoCategory(Long.valueOf(category_id.getValue()));
       }
 
       // Todo名
@@ -555,8 +572,8 @@ public class ToDoFormData extends ALAbstractFormData {
       // カテゴリID
       todo.setEipTTodoCategory(category);
       // ユーザーID
-      TurbineUser tuser = Database.get(TurbineUser.class, Integer
-        .valueOf(user_id));
+      TurbineUser tuser =
+        Database.get(TurbineUser.class, Integer.valueOf(user_id));
 
       todo.setTurbineUser(tuser);
       // 開始日
@@ -593,7 +610,8 @@ public class ToDoFormData extends ALAbstractFormData {
       }
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        todo.getTodoId(), ALEventlogConstants.PORTLET_TYPE_TODO,
+        todo.getTodoId(),
+        ALEventlogConstants.PORTLET_TYPE_TODO,
         todo_name.getValue());
 
     } catch (Throwable t) {

@@ -74,8 +74,8 @@ public class ToDoUtils {
    */
   public static EipTTodo getEipTTodo(RunData rundata, Context context,
       boolean isJoin) throws ALPageNotFoundException {
-    String todoid = ALEipUtils.getTemp(rundata, context,
-      ALEipConstants.ENTITY_ID);
+    String todoid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     int uid = ALEipUtils.getUserId(rundata);
     try {
       if (todoid == null || Integer.valueOf(todoid) == null) {
@@ -84,10 +84,11 @@ public class ToDoUtils {
         return null;
       }
 
-      Expression exp = ExpressionFactory.matchDbExp(EipTTodo.TODO_ID_PK_COLUMN,
-        todoid);
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipTTodo.TODO_ID_PK_COLUMN, todoid);
       exp.andExp(ExpressionFactory.matchDbExp(EipTTodo.TURBINE_USER_PROPERTY
-        + "." + TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(ALEipUtils
+        + "."
+        + TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(ALEipUtils
         .getUserId(rundata))));
 
       List<EipTTodo> todoList = Database.query(EipTTodo.class, exp).fetchList();
@@ -126,8 +127,8 @@ public class ToDoUtils {
    */
   public static EipTTodo getEipTPublicTodo(RunData rundata, Context context,
       boolean isJoin) {
-    String todoid = ALEipUtils.getTemp(rundata, context,
-      ALEipConstants.ENTITY_ID);
+    String todoid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (todoid == null || Integer.valueOf(todoid) == null) {
         // Todo IDが空の場合
@@ -135,8 +136,8 @@ public class ToDoUtils {
         return null;
       }
 
-      Expression exp = ExpressionFactory.matchDbExp(EipTTodo.TODO_ID_PK_COLUMN,
-        todoid);
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipTTodo.TODO_ID_PK_COLUMN, todoid);
       exp
         .andExp(ExpressionFactory.matchExp(EipTTodo.PUBLIC_FLAG_PROPERTY, "T"));
 
@@ -163,8 +164,8 @@ public class ToDoUtils {
    */
   public static EipTTodoCategory getEipTTodoCategory(RunData rundata,
       Context context) throws ALPageNotFoundException, ALDBErrorException {
-    String categoryid = ALEipUtils.getTemp(rundata, context,
-      ALEipConstants.ENTITY_ID);
+    String categoryid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
     if (categoryid == null || Integer.valueOf(categoryid) == null) {
       // カテゴリIDが空の場合
@@ -173,14 +174,19 @@ public class ToDoUtils {
     }
 
     try {
-      Expression exp1 = ExpressionFactory.matchDbExp(
-        EipTTodoCategory.CATEGORY_ID_PK_COLUMN, categoryid);
-      Expression exp2 = ExpressionFactory.matchExp(
-        EipTTodoCategory.USER_ID_PROPERTY, Long.valueOf(ALEipUtils
-          .getUserId(rundata)));
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(
+          EipTTodoCategory.CATEGORY_ID_PK_COLUMN,
+          categoryid);
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTTodoCategory.USER_ID_PROPERTY, Long
+          .valueOf(ALEipUtils.getUserId(rundata)));
 
-      List<EipTTodoCategory> categoryList = Database.query(
-        EipTTodoCategory.class, exp1).andQualifier(exp2).fetchList();
+      List<EipTTodoCategory> categoryList =
+        Database
+          .query(EipTTodoCategory.class, exp1)
+          .andQualifier(exp2)
+          .fetchList();
 
       if (categoryList == null || categoryList.size() == 0) {
         // 指定したカテゴリIDのレコードが見つからない場合
@@ -247,8 +253,13 @@ public class ToDoUtils {
    * @return
    */
   public static String getPriorityImage(int i) {
-    String[] temp = { "priority_high.gif", "priority_middle_high.gif",
-      "priority_middle.gif", "priority_middle_low.gif", "priority_low.gif" };
+    String[] temp =
+      {
+        "priority_high.gif",
+        "priority_middle_high.gif",
+        "priority_middle.gif",
+        "priority_middle_low.gif",
+        "priority_low.gif" };
     String image = null;
     try {
       image = temp[i - 1];
@@ -291,9 +302,19 @@ public class ToDoUtils {
    * @return
    */
   public static String getStateImage(int i) {
-    String[] temp = { "state_000.gif", "state_010.gif", "state_020.gif",
-      "state_030.gif", "state_040.gif", "state_050.gif", "state_060.gif",
-      "state_070.gif", "state_080.gif", "state_090.gif", "state_100.gif" };
+    String[] temp =
+      {
+        "state_000.gif",
+        "state_010.gif",
+        "state_020.gif",
+        "state_030.gif",
+        "state_040.gif",
+        "state_050.gif",
+        "state_060.gif",
+        "state_070.gif",
+        "state_080.gif",
+        "state_090.gif",
+        "state_100.gif" };
     String image = null;
     try {
       image = temp[i / 10];

@@ -55,7 +55,8 @@ public class ToDoListScreen extends ToDoScreen {
       ToDoSelectData listData = new ToDoSelectData();
       listData.initField();
       listData.loadCategoryList(rundata, context);
-      listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
+      listData.setRowsNum(Integer.parseInt(portlet
+        .getPortletConfig()
         .getInitParameter("p1b-rows")));
       listData.doViewList(this, rundata, context);
 

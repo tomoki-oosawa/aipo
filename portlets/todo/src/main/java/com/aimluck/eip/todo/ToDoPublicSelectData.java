@@ -348,8 +348,7 @@ public class ToDoPublicSelectData extends
   private int getUserId(RunData rundata, Context context, Integer entityId) {
     Expression exp =
       ExpressionFactory.matchDbExp(EipTTodo.TODO_ID_PK_COLUMN, entityId);
-    SelectQuery<EipTTodo> query =
-      new SelectQuery<EipTTodo>(EipTTodo.class, exp);
+    SelectQuery<EipTTodo> query = Database.query(EipTTodo.class, exp);
     List<EipTTodo> record = query.fetchList();
     if (record.size() > 0) {
       return record.get(0).getUserId().intValue();

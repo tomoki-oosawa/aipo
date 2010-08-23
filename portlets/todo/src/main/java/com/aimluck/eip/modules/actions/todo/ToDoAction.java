@@ -74,9 +74,11 @@ public class ToDoAction extends ALBaseAction {
 
     ToDoSelectData listData = new ToDoSelectData();
     listData.initField();
-    listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
+    listData.setRowsNum(Integer.parseInt(portlet
+      .getPortletConfig()
       .getInitParameter("p1a-rows")));
-    listData.setStrLength(Integer.parseInt(portlet.getPortletConfig()
+    listData.setStrLength(Integer.parseInt(portlet
+      .getPortletConfig()
       .getInitParameter("p4a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "todo");
@@ -242,9 +244,11 @@ public class ToDoAction extends ALBaseAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-      .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-        "p1b-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1b-rows")));
+    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
       context).getPortletConfig().getInitParameter("p4a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "todo-list");
@@ -282,9 +286,11 @@ public class ToDoAction extends ALBaseAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-      .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-        "p1b-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1b-rows")));
+    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
       context).getPortletConfig().getInitParameter("p4a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "todo-public-list");
@@ -447,7 +453,8 @@ public class ToDoAction extends ALBaseAction {
       listData.initField();
       // PSMLからパラメータをロードする
       // 最大表示件数（通常時）
-      listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
+      listData.setRowsNum(Integer.parseInt(portlet
+        .getPortletConfig()
         .getInitParameter("p1c-rows")));
 
       listData.doViewList(this, rundata, context);

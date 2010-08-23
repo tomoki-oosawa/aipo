@@ -77,8 +77,8 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
-    String categoryid = ALEipUtils.getTemp(rundata, context,
-      ALEipConstants.ENTITY_ID);
+    String categoryid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     if (categoryid != null && Integer.valueOf(categoryid) != null) {
       category_id = Integer.valueOf(categoryid);
     }
@@ -126,21 +126,27 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
   @Override
   protected boolean validate(List<String> msgList) {
     try {
-      SelectQuery<EipTTodoCategory> query = Database
-        .query(EipTTodoCategory.class);
+      SelectQuery<EipTTodoCategory> query =
+        Database.query(EipTTodoCategory.class);
 
-      Expression exp = ExpressionFactory.matchExp(
-        EipTTodoCategory.CATEGORY_NAME_PROPERTY, category_name.getValue());
+      Expression exp =
+        ExpressionFactory.matchExp(
+          EipTTodoCategory.CATEGORY_NAME_PROPERTY,
+          category_name.getValue());
 
-      Expression exp2 = ExpressionFactory.matchExp(
-        EipTTodoCategory.USER_ID_PROPERTY, Integer.valueOf(0));
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTTodoCategory.USER_ID_PROPERTY, Integer
+          .valueOf(0));
 
-      Expression exp3 = ExpressionFactory.matchExp(
-        EipTTodoCategory.USER_ID_PROPERTY, Integer.valueOf(this.user_id));
+      Expression exp3 =
+        ExpressionFactory.matchExp(EipTTodoCategory.USER_ID_PROPERTY, Integer
+          .valueOf(this.user_id));
 
       if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
-        Expression exp4 = ExpressionFactory.noMatchDbExp(
-          EipTTodoCategory.CATEGORY_ID_PK_COLUMN, category_id);
+        Expression exp4 =
+          ExpressionFactory.noMatchDbExp(
+            EipTTodoCategory.CATEGORY_ID_PK_COLUMN,
+            category_id);
         // exp AND (exp4 AND (exp3 OR exp2))
         query.setQualifier(exp4.andExp(exp.andExp(exp3.orExp(exp2))));
       } else {
@@ -149,7 +155,8 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
       }
 
       if (query.fetchList().size() != 0) {
-        msgList.add("カテゴリ名『 <span class='em'>" + category_name.toString()
+        msgList.add("カテゴリ名『 <span class='em'>"
+          + category_name.toString()
           + "</span> 』は既に登録されています。");
       }
     } catch (Exception ex) {
@@ -179,8 +186,8 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTTodoCategory category = ToDoUtils.getEipTTodoCategory(rundata,
-        context);
+      EipTTodoCategory category =
+        ToDoUtils.getEipTTodoCategory(rundata, context);
       if (category == null) {
         return false;
       }
@@ -247,8 +254,8 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTTodoCategory category = ToDoUtils.getEipTTodoCategory(rundata,
-        context);
+      EipTTodoCategory category =
+        ToDoUtils.getEipTTodoCategory(rundata, context);
       if (category == null) {
         return false;
       }
@@ -293,8 +300,8 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTTodoCategory category = ToDoUtils.getEipTTodoCategory(rundata,
-        context);
+      EipTTodoCategory category =
+        ToDoUtils.getEipTTodoCategory(rundata, context);
       if (category == null) {
         return false;
       }
@@ -309,12 +316,14 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
       Database.commit();
 
       // ログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(entityId,
-        ALEventlogConstants.PORTLET_TYPE_TODO_CATEGORY, categoryName);
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        entityId,
+        ALEventlogConstants.PORTLET_TYPE_TODO_CATEGORY,
+        categoryName);
 
       // 一覧表示画面のフィルタに設定されているカテゴリのセッション情報を削除
-      String filtername = ToDoSelectData.class.getName()
-        + ALEipConstants.LIST_FILTER;
+      String filtername =
+        ToDoSelectData.class.getName() + ALEipConstants.LIST_FILTER;
       ALEipUtils.removeTemp(rundata, context, filtername);
 
     } catch (Throwable t) {
