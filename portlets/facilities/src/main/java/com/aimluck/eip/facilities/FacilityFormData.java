@@ -21,7 +21,6 @@ package com.aimluck.eip.facilities;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.om.security.Group;
@@ -42,13 +41,13 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 施設のフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class FacilityFormData extends ALAbstractFormData {
 
@@ -66,28 +65,25 @@ public class FacilityFormData extends ALAbstractFormData {
 
   private int userId;
 
-  private DataContext dataContext;
-
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     userId = ALEipUtils.getUserId(rundata);
   }
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -103,9 +99,10 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * 施設の各フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // 施設名必須項目
     facility_name.setNotNull(true);
@@ -116,7 +113,7 @@ public class FacilityFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -124,14 +121,15 @@ public class FacilityFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res = super.setFormData(rundata, context, msgList);
     try {
       if (res) {
         if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
-          facilityid = ALEipUtils.getTemp(rundata, context,
-            ALEipConstants.ENTITY_ID);
+          facilityid =
+            ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
         }
       }
     } catch (Exception ex) {
@@ -143,30 +141,37 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * 施設のフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     try {
-      SelectQuery<EipMFacility> query = new SelectQuery<EipMFacility>(
-        EipMFacility.class);
+      SelectQuery<EipMFacility> query = Database.query(EipMFacility.class);
       if (ALEipConstants.MODE_INSERT.equals(getMode())) {
-        Expression exp = ExpressionFactory.matchExp(
-          EipMFacility.FACILITY_NAME_PROPERTY, facility_name.getValue());
+        Expression exp =
+          ExpressionFactory.matchExp(
+            EipMFacility.FACILITY_NAME_PROPERTY,
+            facility_name.getValue());
         query.setQualifier(exp);
       } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
-        Expression exp1 = ExpressionFactory.matchExp(
-          EipMFacility.FACILITY_NAME_PROPERTY, facility_name.getValue());
+        Expression exp1 =
+          ExpressionFactory.matchExp(
+            EipMFacility.FACILITY_NAME_PROPERTY,
+            facility_name.getValue());
         query.setQualifier(exp1);
-        Expression exp2 = ExpressionFactory.noMatchDbExp(
-          EipMFacility.FACILITY_ID_PK_COLUMN, Integer.valueOf(facilityid));
+        Expression exp2 =
+          ExpressionFactory.noMatchDbExp(
+            EipMFacility.FACILITY_ID_PK_COLUMN,
+            Integer.valueOf(facilityid));
         query.andQualifier(exp2);
       }
 
       if (query.fetchList().size() != 0) {
-        msgList.add("施設名『 <span class='em'>" + facility_name.toString()
+        msgList.add("施設名『 <span class='em'>"
+          + facility_name.toString()
           + "</span> 』は既に登録されています。");
       }
     } catch (Exception ex) {
@@ -184,7 +189,7 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * 施設をデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -192,13 +197,15 @@ public class FacilityFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipMFacility facility = FacilitiesUtils.getEipMFacility(rundata, context);
-      if (facility == null)
+      if (facility == null) {
         return false;
+      }
       // 施設名
       facility_name.setValue(facility.getFacilityName());
       // メモ
@@ -212,7 +219,7 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * 施設をデータベースから削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -220,32 +227,36 @@ public class FacilityFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipMFacility facility = FacilitiesUtils.getEipMFacility(rundata, context);
-      if (facility == null)
+      if (facility == null) {
         return false;
+      }
 
-      SelectQuery<EipTScheduleMap> query1 = new SelectQuery<EipTScheduleMap>(
-        EipTScheduleMap.class);
-      Expression exp1 = ExpressionFactory.matchExp(
-        EipTScheduleMap.USER_ID_PROPERTY, facility.getFacilityId());
-      Expression exp2 = ExpressionFactory.matchExp(
-        EipTScheduleMap.TYPE_PROPERTY, "F");
+      SelectQuery<EipTScheduleMap> query1 =
+        Database.query(EipTScheduleMap.class);
+      Expression exp1 =
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, facility
+          .getFacilityId());
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTScheduleMap.TYPE_PROPERTY, "F");
       query1.setQualifier(exp1.andExp(exp2));
 
       List<EipTScheduleMap> slist = query1.fetchList();
       if (slist != null && slist.size() > 0) {
         // 施設のスケジュールを削除
-        dataContext.deleteObjects(slist);
+        Database.deleteAll(slist);
       }
       // 施設を削除
-      dataContext.deleteObject(facility);
-      dataContext.commitChanges();
+      Database.delete(facility);
+      Database.commit();
       // orm.doDelete(facility);
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -254,7 +265,7 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * 施設をデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -262,12 +273,12 @@ public class FacilityFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // 新規オブジェクトモデル
-      EipMFacility facility = (EipMFacility) dataContext
-        .createAndRegisterNewObject(EipMFacility.class);
+      EipMFacility facility = Database.create(EipMFacility.class);
       // ユーザID
       facility.setUserId(Integer.valueOf(userId));
       // 施設名
@@ -280,14 +291,14 @@ public class FacilityFormData extends ALAbstractFormData {
       facility.setUpdateDate(Calendar.getInstance().getTime());
 
       Group facility_group = JetspeedSecurity.getGroup("Facility");
-      EipFacilityGroup fg = (EipFacilityGroup) dataContext
-        .createAndRegisterNewObject(EipFacilityGroup.class);
+      EipFacilityGroup fg = Database.create(EipFacilityGroup.class);
       fg.setEipMFacility(facility);
       fg.setTurbineGroup((TurbineGroup) facility_group);
 
       // 施設を登録
-      dataContext.commitChanges();
+      Database.commit();
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -296,7 +307,7 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されている施設を更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -304,13 +315,15 @@ public class FacilityFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipMFacility facility = FacilitiesUtils.getEipMFacility(rundata, context);
-      if (facility == null)
+      if (facility == null) {
         return false;
+      }
 
       // 施設名
       facility.setFacilityName(facility_name.getValue());
@@ -320,8 +333,9 @@ public class FacilityFormData extends ALAbstractFormData {
       facility.setUpdateDate(Calendar.getInstance().getTime());
 
       // 施設を更新
-      dataContext.commitChanges();
+      Database.commit();
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -330,7 +344,7 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getNote() {
@@ -339,7 +353,7 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * 施設名を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFacilityName() {

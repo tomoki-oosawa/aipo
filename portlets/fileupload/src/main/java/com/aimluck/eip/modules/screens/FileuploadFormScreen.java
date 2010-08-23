@@ -32,13 +32,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ファイルのアップロードを処理するクラスです。 <br />
- *
+ * 
  */
 public class FileuploadFormScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FileuploadFormScreen.class.getName());
+    .getLogger(FileuploadFormScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
@@ -61,7 +61,7 @@ public class FileuploadFormScreen extends ALVelocityScreen {
 
   /**
    * 添付ファイルの入力フォームを開く．
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -70,14 +70,16 @@ public class FileuploadFormScreen extends ALVelocityScreen {
       throws Exception {
     context.put("data", rundata);
     context.put("js_peid", rundata.getParameters().getString("js_peid", ""));
-    context.put("msize",
-        rundata.getParameters().getString(FileuploadUtils.KEY_MAX_SIZE, "0"));
-    context.put("nsize",
-        rundata.getParameters().getString(FileuploadUtils.KEY_NOW_SIZE, "0"));
+    context.put("msize", rundata.getParameters().getString(
+      FileuploadUtils.KEY_MAX_SIZE,
+      "0"));
+    context.put("nsize", rundata.getParameters().getString(
+      FileuploadUtils.KEY_NOW_SIZE,
+      "0"));
 
     HttpServletResponse response = rundata.getResponse();
     response
-        .setContentType("text/html; " + ALEipConstants.DEF_CONTENT_ENCODING);
+      .setContentType("text/html; " + ALEipConstants.DEF_CONTENT_ENCODING);
 
     FileuploadFormData formData = new FileuploadFormData();
     formData.initField();
@@ -89,7 +91,7 @@ public class FileuploadFormScreen extends ALVelocityScreen {
 
   /**
    * 添付ファイルのアップロードを受け付ける．
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -102,7 +104,7 @@ public class FileuploadFormScreen extends ALVelocityScreen {
 
     HttpServletResponse response = rundata.getResponse();
     response
-        .setContentType("text/html; " + ALEipConstants.DEF_CONTENT_ENCODING);
+      .setContentType("text/html; " + ALEipConstants.DEF_CONTENT_ENCODING);
 
     FileuploadFormData formData = new FileuploadFormData();
     formData.initField();

@@ -33,13 +33,13 @@ import org.apache.turbine.util.RunData;
 
 /**
  * ファイルを出力するクラスです。 <br />
- *
+ * 
  */
 public class FileuploadRawScreen extends RawScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FileuploadRawScreen.class.getName());
+    .getLogger(FileuploadRawScreen.class.getName());
 
   /** ファイル名 */
   private String fileName = null;
@@ -50,13 +50,14 @@ public class FileuploadRawScreen extends RawScreen {
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.util.RunData)
    */
+  @Override
   protected String getContentType(RunData rundata) {
     return "application/octet-stream";
   }
 
   /**
    * ファイル名
-   *
+   * 
    * @return
    */
   protected String getFileName() {
@@ -65,7 +66,7 @@ public class FileuploadRawScreen extends RawScreen {
 
   /**
    * ファイル名
-   *
+   * 
    * @return
    */
   protected String getFilePath() {
@@ -83,17 +84,19 @@ public class FileuploadRawScreen extends RawScreen {
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
    */
+  @Override
   protected void doOutput(RunData rundata) throws Exception {
     BufferedInputStream input = null;
     ServletOutputStream out = null;
     try {
-      String attachmentRealName = new String(getFileName()
-          .getBytes("Shift_JIS"), "8859_1");
+      String attachmentRealName =
+        new String(getFileName().getBytes("Shift_JIS"), "8859_1");
 
       HttpServletResponse response = rundata.getResponse();
       // ファイル名の送信(attachment部分をinlineに変更すればインライン表示)
       response.setHeader("Content-disposition", "attachment; filename=\""
-          + attachmentRealName + "\"");
+        + attachmentRealName
+        + "\"");
       response.setHeader("Cache-Control", "aipo");
       response.setHeader("Pragma", "aipo");
 

@@ -28,13 +28,13 @@ import com.aimluck.eip.common.ALBaseUser;
 
 /**
  * 顔写真を画像データとして出力するクラスです。 <br />
- *
+ * 
  */
 public class FileuploadFacePhotoScreen extends FileuploadThumbnailScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FileuploadFacePhotoScreen.class.getName());
+    .getLogger(FileuploadFacePhotoScreen.class.getName());
 
   /** 取得したい顔画像のユーザーID */
   private static final String KEY_FACE_PHOTO_ID = "uid";
@@ -42,19 +42,22 @@ public class FileuploadFacePhotoScreen extends FileuploadThumbnailScreen {
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
    */
+  @Override
   protected void doOutput(RunData rundata) throws Exception {
     try {
       String uid = rundata.getParameters().getString(KEY_FACE_PHOTO_ID);
-      if (uid == null || uid.length() <= 0)
+      if (uid == null || uid.length() <= 0) {
         return;
+      }
 
-      ALBaseUser user = (ALBaseUser) JetspeedSecurity
-          .getUser(new UserIdPrincipal(uid));
+      ALBaseUser user =
+        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(uid));
 
       byte[] photo = user.getPhoto();
 
-      if (photo == null)
+      if (photo == null) {
         return;
+      }
 
       super.setFile(photo);
       super.setFileName("photo.jpg");

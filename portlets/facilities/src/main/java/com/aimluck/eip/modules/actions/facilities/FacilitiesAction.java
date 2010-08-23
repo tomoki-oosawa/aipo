@@ -33,18 +33,18 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 施設予約のアクションクラスです。 <BR>
- *
+ * 
  */
 public class FacilitiesAction extends ALBaseAction {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FacilitiesAction.class.getName());
+    .getLogger(FacilitiesAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
@@ -52,6 +52,7 @@ public class FacilitiesAction extends ALBaseAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
 
@@ -62,7 +63,7 @@ public class FacilitiesAction extends ALBaseAction {
 
   /**
    * 施設登録のフォームを表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -77,7 +78,7 @@ public class FacilitiesAction extends ALBaseAction {
 
   /**
    * 施設を登録します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -91,8 +92,9 @@ public class FacilitiesAction extends ALBaseAction {
       // doTodo_list(rundata, context);
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
-          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-          "eventSubmit_doFacility_list", "1").toString());
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doFacility_list",
+        "1").toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
       jsLink = null;
     } else {
@@ -102,7 +104,7 @@ public class FacilitiesAction extends ALBaseAction {
 
   /**
    * 施設を更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -116,8 +118,9 @@ public class FacilitiesAction extends ALBaseAction {
       // doTodo_list(rundata, context);
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
-          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-          "eventSubmit_doFacility_list", "1").toString());
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doFacility_list",
+        "1").toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
       jsLink = null;
     } else {
@@ -127,7 +130,7 @@ public class FacilitiesAction extends ALBaseAction {
 
   /**
    * 施設を削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -141,8 +144,9 @@ public class FacilitiesAction extends ALBaseAction {
       // doTodo_list(rundata, context);
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
-          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-          "eventSubmit_doFacility_list", "1").toString());
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doFacility_list",
+        "1").toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
       jsLink = null;
     }
@@ -150,7 +154,7 @@ public class FacilitiesAction extends ALBaseAction {
 
   /**
    * 施設を一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -160,15 +164,16 @@ public class FacilitiesAction extends ALBaseAction {
     FacilitySelectData listData = new FacilitySelectData();
     listData.initField();
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1a-rows")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1a-rows")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "facility");
   }
 
   /**
    * 施設を詳細表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception

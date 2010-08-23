@@ -23,12 +23,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SQLTemplate;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -37,29 +33,30 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.facilities.FacilityResultData;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 施設のユーティリティクラスです。 <BR>
- *
+ * 
  */
 public class FacilitiesUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FacilitiesUtils.class.getName());
+    .getLogger(FacilitiesUtils.class.getName());
 
   /**
    * 施設オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    */
   public static EipMFacility getEipMFacility(RunData rundata, Context context) {
-    String facilityid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String facilityid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (facilityid == null || Integer.valueOf(facilityid) == null) {
         // Facilities IDが空の場合
@@ -67,18 +64,18 @@ public class FacilitiesUtils {
         return null;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      Expression exp = ExpressionFactory.matchDbExp(
-          EipMFacility.FACILITY_ID_PK_COLUMN, facilityid);
-      SelectQuery query = new SelectQuery(EipMFacility.class, exp);
-      List<?> facilities = dataContext.performQuery(query);
+      Expression exp =
+        ExpressionFactory.matchDbExp(
+          EipMFacility.FACILITY_ID_PK_COLUMN,
+          facilityid);
+      List<EipMFacility> facilities =
+        Database.query(EipMFacility.class, exp).fetchList();
       if (facilities == null || facilities.size() == 0) {
         // 指定したFacilities IDのレコードが見つからない場合
         logger.debug("[Facilities] Not found ID...");
         return null;
       }
-      return ((EipMFacility) facilities.get(0));
+      return facilities.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -86,23 +83,18 @@ public class FacilitiesUtils {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    */
   public static List<FacilityResultData> getFacilityAllList() {
-    List<FacilityResultData> facilityAllList = new ArrayList<FacilityResultData>();
+    List<FacilityResultData> facilityAllList =
+      new ArrayList<FacilityResultData>();
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipMFacility.class);
-      @SuppressWarnings("unchecked")
-      List<EipMFacility> aList = dataContext.performQuery(query);
+      List<EipMFacility> aList = Database.query(EipMFacility.class).fetchList();
 
-      int size = aList.size();
-      for (int i = 0; i < size; i++) {
-        EipMFacility record = aList.get(i);
+      for (EipMFacility record : aList) {
         FacilityResultData rd = new FacilityResultData();
         rd.initField();
         rd.setFacilityId(record.getFacilityId().longValue());
@@ -132,26 +124,16 @@ public class FacilitiesUtils {
     String query = statement.toString();
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      @SuppressWarnings("deprecation")
-      SQLTemplate rawSelect = new SQLTemplate(EipMFacility.class, query, true);
-      rawSelect.setFetchingDataRows(true);
-      @SuppressWarnings("unchecked")
-      List<DataRow> flist = dataContext.performQuery(rawSelect);
-      int recNum = flist.size();
+      List<EipMFacility> list2 =
+        Database.sql(EipMFacility.class, query).fetchList();
 
       FacilityResultData frd;
-      DataRow dataRow;
       // ユーザデータを作成し、返却リストへ格納
-      for (int j = 0; j < recNum; j++) {
-        dataRow = flist.get(j);
+      for (EipMFacility record : list2) {
         frd = new FacilityResultData();
         frd.initField();
-        frd.setFacilityId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-            EipMFacility.FACILITY_ID_PK_COLUMN)).intValue());
-        frd.setFacilityName((String) ALEipUtils.getObjFromDataRow(dataRow,
-            EipMFacility.FACILITY_NAME_COLUMN));
+        frd.setFacilityId(record.getFacilityId());
+        frd.setFacilityName(record.getFacilityName());
         list.add(frd);
       }
     } catch (Exception ex) {
@@ -177,21 +159,12 @@ public class FacilitiesUtils {
     String query = statement.toString();
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      @SuppressWarnings("deprecation")
-      SQLTemplate rawSelect = new SQLTemplate(EipMFacility.class, query, true);
-      rawSelect.setFetchingDataRows(true);
-      @SuppressWarnings("unchecked")
-      List<DataRow> flist = dataContext.performQuery(rawSelect);
-      int recNum = flist.size();
+      List<EipMFacility> list2 =
+        Database.sql(EipMFacility.class, query).fetchList();
 
-      DataRow dataRow;
       // ユーザデータを作成し、返却リストへ格納
-      for (int j = 0; j < recNum; j++) {
-        dataRow = flist.get(j);
-        list.add((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-            EipMFacility.FACILITY_ID_PK_COLUMN));
+      for (EipMFacility record : list2) {
+        list.add(record.getFacilityId());
       }
     } catch (Exception ex) {
       logger.error("[Exception]", ex);
@@ -201,17 +174,12 @@ public class FacilitiesUtils {
   }
 
   public static List<FacilityResultData> getFacilitiesFromSelectQuery(
-      SelectQuery query) {
+      SelectQuery<EipMFacility> query) {
     List<FacilityResultData> list = new ArrayList<FacilityResultData>();
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      List<?> aList = dataContext.performQuery(query);
+      List<EipMFacility> aList = query.fetchList();
 
-      int size = aList.size();
-
-      for (int i = 0; i < size; i++) {
-        EipMFacility record = (EipMFacility) aList.get(i);
+      for (EipMFacility record : aList) {
         FacilityResultData rd = new FacilityResultData();
         rd.initField();
         rd.setFacilityName(record.getFacilityName());
@@ -224,7 +192,7 @@ public class FacilitiesUtils {
     Collections.sort(list, new Comparator<FacilityResultData>() {
       public int compare(FacilityResultData str1, FacilityResultData str2) {
         return str1.getStringFacilityName().compareTo(
-            str2.getStringFacilityName());
+          str2.getStringFacilityName());
       }
     });
     return list;
@@ -232,7 +200,7 @@ public class FacilitiesUtils {
 
   /**
    * 第一引数のリストに，第二引数で指定したユーザ ID が含まれているかを検証する．
-   *
+   * 
    * @param memberIdList
    * @param memberId
    * @return

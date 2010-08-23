@@ -52,13 +52,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ファイルアップロードのユーティリティクラスです。 <BR>
- *
+ * 
  */
 public class FileuploadUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FileuploadUtils.class.getName());
+    .getLogger(FileuploadUtils.class.getName());
 
   /** KEY（アップロードしたファイルID一覧） */
   public static final String KEY_FILEUPLOAD_ID_LIST = "attachments";
@@ -92,24 +92,30 @@ public class FileuploadUtils {
 
   /** デフォルトエンコーディングを表わすシステムプロパティのキー */
   public static final String FILE_ENCODING = JetspeedResources.getString(
-      "content.defaultencoding", "UTF-8");
+    "content.defaultencoding",
+    "UTF-8");
 
   /** アカウントの添付ファイルを一時保管するディレクトリの指定 */
-  public static final String FOLDER_TMP_FOR_ATTACHMENT_FILES = JetspeedResources
-      .getString("aipo.tmp.fileupload.attachment.directory", "");
+  public static final String FOLDER_TMP_FOR_ATTACHMENT_FILES =
+    JetspeedResources.getString("aipo.tmp.fileupload.attachment.directory", "");
 
   // private static int MAP_MAX = 1048576; // = 2^20
 
   /**
    * 添付ファイル保存先のユーザのルートフォルダ
-   *
+   * 
    * @param org_id
    * @param userId
    * @return
    */
   public static File getRootFolder(String org_id, int userId) {
-    String rootPath = FileuploadUtils.FOLDER_TMP_FOR_ATTACHMENT_FILES
-        + File.separator + org_id + File.separator + userId + File.separator;
+    String rootPath =
+      FileuploadUtils.FOLDER_TMP_FOR_ATTACHMENT_FILES
+        + File.separator
+        + org_id
+        + File.separator
+        + userId
+        + File.separator;
     File folder = new File(rootPath);
     if (!folder.exists()) {
       if (!folder.mkdirs()) {
@@ -121,14 +127,19 @@ public class FileuploadUtils {
 
   /**
    * 添付ファイル保存先
-   *
+   * 
    * @param org_id
    * @param userId
    * @return
    */
   public static File getFolder(String org_id, int userId, String folderName) {
-    String path = FileuploadUtils.FOLDER_TMP_FOR_ATTACHMENT_FILES
-        + File.separator + org_id + File.separator + userId + File.separator
+    String path =
+      FileuploadUtils.FOLDER_TMP_FOR_ATTACHMENT_FILES
+        + File.separator
+        + org_id
+        + File.separator
+        + userId
+        + File.separator
         + folderName;
     File folder = new File(path);
     if (!folder.exists()) {
@@ -139,7 +150,7 @@ public class FileuploadUtils {
 
   /**
    * 保存されている添付ファイルへのフルパス
-   *
+   * 
    * @param org_id
    * @param userId
    * @return
@@ -152,14 +163,14 @@ public class FileuploadUtils {
 
   /**
    * 新しいファイル名を生成する．
-   *
+   * 
    * @return
    */
   public static String getNewFileName(String folderPath) {
     int count = 0;
 
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-        DEFAULT_FILENAME_DATE_FORMAT);
+    SimpleDateFormat simpleDateFormat =
+      new SimpleDateFormat(DEFAULT_FILENAME_DATE_FORMAT);
     Date date = new Date();
     String tmpname = simpleDateFormat.format(date);
     String path = folderPath + File.separator;
@@ -176,15 +187,16 @@ public class FileuploadUtils {
       newFileName = tmpname + count;
       newFilePath = path + newFileName;
       file = new File(newFilePath);
-      if (!file.exists())
+      if (!file.exists()) {
         break;
+      }
       count += 1;
     }
     return newFileName;
   }
 
   /**
-   *
+   * 
    * @param folder
    * @return
    */
@@ -225,10 +237,11 @@ public class FileuploadUtils {
   }
 
   public static List<FileuploadLiteBean> getFileuploadList(RunData rundata) {
-    String[] fileids = rundata.getParameters().getStrings(
-        KEY_FILEUPLOAD_ID_LIST);
-    if (fileids == null)
+    String[] fileids =
+      rundata.getParameters().getStrings(KEY_FILEUPLOAD_ID_LIST);
+    if (fileids == null) {
       return null;
+    }
 
     List<FileuploadLiteBean> fileNameList = new ArrayList<FileuploadLiteBean>();
     FileuploadLiteBean filebean = null;
@@ -252,18 +265,21 @@ public class FileuploadUtils {
       }
     }
 
-    String folderName = rundata.getParameters().getString(
+    String folderName =
+      rundata.getParameters().getString(
         FileuploadUtils.KEY_FILEUPLOAD_FODLER_NAME);
-    if (folderName == null || folderName.equals(""))
+    if (folderName == null || folderName.equals("")) {
       return null;
+    }
 
     String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
     File folder = getFolder(org_id, ALEipUtils.getUserId(rundata), folderName);
     String folderpath = folder.getAbsolutePath();
 
     for (int i = 0; i < length; i++) {
-      if (fileids[i] == null || fileids[i].equals(""))
+      if (fileids[i] == null || fileids[i].equals("")) {
         continue;
+      }
 
       try {
         fileid = Integer.parseInt(fileids[i]);
@@ -273,12 +289,17 @@ public class FileuploadUtils {
 
       BufferedReader reader = null;
       try {
-        reader = new BufferedReader(new InputStreamReader(new FileInputStream(
-            folderpath + File.separator + fileids[i] + EXT_FILENAME),
+        reader =
+          new BufferedReader(new InputStreamReader(
+            new FileInputStream(folderpath
+              + File.separator
+              + fileids[i]
+              + EXT_FILENAME),
             FILE_ENCODING));
         String line = reader.readLine();
-        if (line == null || line.length() <= 0)
+        if (line == null || line.length() <= 0) {
           continue;
+        }
 
         filebean = new FileuploadLiteBean();
         filebean.initField();
@@ -304,7 +325,7 @@ public class FileuploadUtils {
    * ファイルをコピーします。<br />
    * from "c:\\abc.txt"<br />
    * to "c:\\tmp\\abc.txt"
-   *
+   * 
    * @return
    */
   public static boolean copyFile(File from, File to) {
@@ -320,20 +341,22 @@ public class FileuploadUtils {
       logger.error("Exception", ex);
       res = false;
     } finally {
-      if (destChannel != null)
+      if (destChannel != null) {
         try {
           destChannel.close();
         } catch (IOException ex) {
           logger.error("Exception", ex);
           res = false;
         }
-      if (srcChannel != null)
+      }
+      if (srcChannel != null) {
         try {
           srcChannel.close();
         } catch (IOException ex) {
           logger.error("Exception", ex);
           res = false;
         }
+      }
     }
 
     return res;
@@ -341,13 +364,14 @@ public class FileuploadUtils {
 
   /**
    * 指定したフォルダの容量を取得します。
-   *
+   * 
    * @param folderPath
    * @return
    */
   public static long getFolderSize(String folderPath) {
-    if (folderPath == null || folderPath.equals(""))
+    if (folderPath == null || folderPath.equals("")) {
       return 0;
+    }
 
     File folder = new File(folderPath);
     if (!folder.exists()) {
@@ -373,13 +397,14 @@ public class FileuploadUtils {
 
   /**
    * 指定したファイルのサイズを取得する．
-   *
+   * 
    * @param file
    * @return
    */
   public static int getFileSize(File file) {
-    if (file == null)
+    if (file == null) {
       return -1;
+    }
 
     FileInputStream fileInputStream = null;
     int size = -1;
@@ -413,12 +438,13 @@ public class FileuploadUtils {
 
   /**
    * 指定したフォルダ以下を全て削除する．
-   *
+   * 
    * @return
    */
   public static boolean deleteFolder(File folder) {
-    if (folder == null)
+    if (folder == null) {
       return true;
+    }
 
     String[] files = folder.list();
     if (files == null) {
@@ -457,8 +483,13 @@ public class FileuploadUtils {
       String folderName, List<FileuploadLiteBean> attachmentFileNameList) {
     File folder = null;
     try {
-      String folderpath = FileuploadUtils.FOLDER_TMP_FOR_ATTACHMENT_FILES
-          + File.separator + org_id + File.separator + userId + File.separator
+      String folderpath =
+        FileuploadUtils.FOLDER_TMP_FOR_ATTACHMENT_FILES
+          + File.separator
+          + org_id
+          + File.separator
+          + userId
+          + File.separator
           + folderName;
       folder = new File(folderpath);
       if (!folder.exists()) {
@@ -473,8 +504,8 @@ public class FileuploadUtils {
       boolean isDelete = true;
       for (int i = 0; i < uploadedfolders_length; i++) {
         isDelete = true;
-        uploadedFolder = new File(folderpath + File.separator
-            + uploadedFolders[i]);
+        uploadedFolder =
+          new File(folderpath + File.separator + uploadedFolders[i]);
         if (uploadedFolder.isDirectory()) {
           uploadedFolderName = uploadedFolder.getName();
           for (int j = 0; j < length; j++) {
@@ -498,7 +529,7 @@ public class FileuploadUtils {
   }
 
   /**
-   *
+   * 
    * @param org_id
    * @param folderName
    * @param uid
@@ -566,7 +597,7 @@ public class FileuploadUtils {
 
   /**
    * 縮小した画像のバイナリを返す。
-   *
+   * 
    * @param org_id
    * @param folderName
    * @param uid
@@ -614,8 +645,8 @@ public class FileuploadUtils {
       fileinput = new FileInputStream(srcfilepath.toString());
 
       BufferedImage orgImage = ImageIO.read(fileinput);
-      BufferedImage shrinkImage = FileuploadUtils.shrinkImage(orgImage, width,
-          height);
+      BufferedImage shrinkImage =
+        FileuploadUtils.shrinkImage(orgImage, width, height);
       Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("jpg");
       ImageWriter writer = writers.next();
 
@@ -643,17 +674,19 @@ public class FileuploadUtils {
 
   /**
    * Java1.5：BMP, bmp, jpeg, wbmp, gif, png, JPG, jpg, WBMP, JPEG
-   *
+   * 
    * @param fileType
    * @return
    */
   public static boolean isImage(String fileName) {
-    if (fileName == null || "".equals(fileName))
+    if (fileName == null || "".equals(fileName)) {
       return false;
+    }
 
     int index = fileName.lastIndexOf(".");
-    if (index < 1)
+    if (index < 1) {
       return false;
+    }
 
     String fileType = getFileTypeName(fileName);
 
@@ -669,24 +702,26 @@ public class FileuploadUtils {
 
   /**
    * ファイル名からファイルの拡張子を取得する。
-   *
+   * 
    * @param fileName
    * @return
    */
   public static String getFileTypeName(String fileName) {
-    if (fileName == null || "".equals(fileName))
+    if (fileName == null || "".equals(fileName)) {
       return null;
+    }
 
     int index = fileName.lastIndexOf(".");
-    if (index < 1)
+    if (index < 1) {
       return null;
+    }
 
     return fileName.substring(index + 1, fileName.length());
   }
 
   /**
    * 縦横の縮小率で小さい方を縮小率とする。
-   *
+   * 
    * @param imgfile
    * @param dim
    * @return
@@ -697,16 +732,23 @@ public class FileuploadUtils {
     int iwidth = imgfile.getWidth();
     int iheight = imgfile.getHeight();
 
-    double ratio = Math.min((double) width / (double) iwidth, (double) height
+    double ratio =
+      Math.min((double) width / (double) iwidth, (double) height
         / (double) iheight);
     int shrinkedWidth = (int) (iwidth * ratio);
     int shrinkedHeight = (int) (iheight * ratio);
 
     // イメージデータを縮小する
-    Image targetImage = imgfile.getScaledInstance(shrinkedWidth,
-        shrinkedHeight, Image.SCALE_AREA_AVERAGING);
-    BufferedImage tmpImage = new BufferedImage(targetImage.getWidth(null),
-        targetImage.getHeight(null), BufferedImage.TYPE_INT_RGB);
+    Image targetImage =
+      imgfile.getScaledInstance(
+        shrinkedWidth,
+        shrinkedHeight,
+        Image.SCALE_AREA_AVERAGING);
+    BufferedImage tmpImage =
+      new BufferedImage(
+        targetImage.getWidth(null),
+        targetImage.getHeight(null),
+        BufferedImage.TYPE_INT_RGB);
     Graphics2D g = tmpImage.createGraphics();
     g.drawImage(targetImage, 0, 0, null);
 

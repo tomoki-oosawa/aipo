@@ -44,12 +44,12 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ファイルアップロードのフォームデータを管理するクラスです。 <br />
- *
+ * 
  */
 public class FileuploadFormData extends ALAbstractFormData {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FileuploadFormData.class.getName());
+    .getLogger(FileuploadFormData.class.getName());
 
   public static final String ATTACHMENT_INIT = "attachmentinit";
 
@@ -83,6 +83,7 @@ public class FileuploadFormData extends ALAbstractFormData {
 
   File rootFolder = null;
 
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -91,7 +92,8 @@ public class FileuploadFormData extends ALAbstractFormData {
     org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
     rootFolder = FileuploadUtils.getRootFolder(org_id, userId);
 
-    folderName = rundata.getParameters().getString(
+    folderName =
+      rundata.getParameters().getString(
         FileuploadUtils.KEY_FILEUPLOAD_FODLER_NAME);
     if (folderName == null || "".equals(folderName)) {
       folderName = getNewAttachmentFolderName(rootFolder);
@@ -100,13 +102,14 @@ public class FileuploadFormData extends ALAbstractFormData {
 
   /**
    * データに値をセットする． <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    *          エラーメッセージのリスト
    * @return TRUE 成功 FALSE 失敗
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
@@ -130,6 +133,7 @@ public class FileuploadFormData extends ALAbstractFormData {
   /**
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     attachmentName.setNotNull(true);
     attachmentName.limitMaxLength(FIELD_ATTACHMENT_MAX_LEN);
@@ -139,6 +143,7 @@ public class FileuploadFormData extends ALAbstractFormData {
   /**
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
 
     if (attachmentItem != null) {
@@ -173,6 +178,7 @@ public class FileuploadFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     return true;
@@ -182,6 +188,7 @@ public class FileuploadFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -191,6 +198,7 @@ public class FileuploadFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
 
@@ -202,19 +210,23 @@ public class FileuploadFormData extends ALAbstractFormData {
       String newAttachmentFileName = getNewAttachmentFileName(saveFolder);
       int fileId = Integer.parseInt(newAttachmentFileName);
 
-      String realfilename = FileuploadUtils.getRealFileName(attachmentItem
-          .getName());
+      String realfilename =
+        FileuploadUtils.getRealFileName(attachmentItem.getName());
 
-      String filepath = rootFolder + File.separator + folderName
-          + File.separator + newAttachmentFileName;
+      String filepath =
+        rootFolder
+          + File.separator
+          + folderName
+          + File.separator
+          + newAttachmentFileName;
       File file = new File(filepath);
       file.createNewFile();
       attachmentItem.write(file.getAbsolutePath());
 
       // 一時添付ファイル名の保存
-      PrintWriter writer = new PrintWriter(new OutputStreamWriter(
-          new FileOutputStream(filepath + FileuploadUtils.EXT_FILENAME),
-          FileuploadUtils.FILE_ENCODING));
+      PrintWriter writer =
+        new PrintWriter(new OutputStreamWriter(new FileOutputStream(filepath
+          + FileuploadUtils.EXT_FILENAME), FileuploadUtils.FILE_ENCODING));
       writer.println(realfilename);
       writer.flush();
       writer.close();
@@ -234,6 +246,7 @@ public class FileuploadFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -278,7 +291,7 @@ public class FileuploadFormData extends ALAbstractFormData {
     for (int i = 0; i < length; i++) {
       file = new File(folder.getAbsolutePath() + File.separator + filenames[i]);
       if (file.isFile()
-          && !file.getName().endsWith(FileuploadUtils.EXT_FILENAME)) {
+        && !file.getName().endsWith(FileuploadUtils.EXT_FILENAME)) {
         try {
           tmpInt = Integer.parseInt(file.getName());
           if (maxNum <= tmpInt) {

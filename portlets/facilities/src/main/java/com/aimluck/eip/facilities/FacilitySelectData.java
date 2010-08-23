@@ -33,6 +33,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
@@ -110,8 +111,7 @@ public class FacilitySelectData extends
    */
   private SelectQuery<EipMFacility> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipMFacility> query =
-      new SelectQuery<EipMFacility>(EipMFacility.class);
+    SelectQuery<EipMFacility> query = Database.query(EipMFacility.class);
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
