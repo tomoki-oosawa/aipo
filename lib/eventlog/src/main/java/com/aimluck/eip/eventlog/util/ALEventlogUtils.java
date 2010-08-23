@@ -33,8 +33,8 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
  */
 public class ALEventlogUtils {
 
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ALEventlogUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ALEventlogUtils.class.getName());
 
   /**
    * mode を DB に保存するための数値に変換します。
@@ -79,73 +79,6 @@ public class ALEventlogUtils {
     return ALActionEventlogConstants.EVENT_TYPE_NONE;
   }
 
-  /**
-   * ポートレット名 を DB に保存するための数値に変換します。
-   * 
-   * @param p_name
-   * @return
-   */
-  // たぶんいらない
-  // public static int getPortletTypeValue(String p_name) {
-  // if (ALActionEventlogConstants.PORTLET_NAME_ACCOUNT.equals(p_name)) {
-  // return ALActionEventlogConstants.PORTLET_TYPE_ACCOUNT;
-  // } else if (ALActionEventlogConstants.PORTLET_NAME_AJAXSCHEDULEWEEKLY
-  // .equals(p_name)) {
-  // return ALActionEventlogConstants.PORTLET_TYPE_AJAXSCHEDULEWEEKLY;
-  // } else if
-  // (ALActionEventlogConstants.PORTLET_NAME_BLOG_ENTRY.equals(p_name)) {
-  // return ALActionEventlogConstants.PORTLET_TYPE_BLOG_ENTRY;
-  // } else if (ALActionEventlogConstants.PORTLET_NAME_WORKFLOW.equals(p_name))
-  // {
-  // return ALActionEventlogConstants.PORTLET_TYPE_WORKFLOW;
-  // } else if (ALActionEventlogConstants.PORTLET_NAME_TODO.equals(p_name)) {
-  // return ALActionEventlogConstants.PORTLET_TYPE_TODO;
-  // } else if
-  // (ALActionEventlogConstants.PORTLET_NAME_TODO_CATEGORY.equals(p_name)) {
-  // return ALActionEventlogConstants.PORTLET_TYPE_TODO_CATEGORY;
-  // } else if (ALActionEventlogConstants.PORTLET_NAME_NOTE.equals(p_name)) {
-  // return ALActionEventlogConstants.PORTLET_TYPE_NOTE;
-  // } else if (ALActionEventlogConstants.PORTLET_NAME_TIMECARD.equals(p_name))
-  // {
-  // return ALActionEventlogConstants.PORTLET_TYPE_TIMECARD;
-  // } else if (ALActionEventlogConstants.PORTLET_NAME_ADDRESSBOOK
-  // .equals(p_name)) {
-  // return ALActionEventlogConstants.PORTLET_TYPE_ADDRESSBOOK;
-  // } else if (ALActionEventlogConstants.PORTLET_NAME_MEMO.equals(p_name)) {
-  // return ALActionEventlogConstants.PORTLET_TYPE_MEMO;
-  // } else if (ALActionEventlogConstants.PORTLET_NAME_MSGBOARD.equals(p_name))
-  // {
-  // return ALActionEventlogConstants.PORTLET_TYPE_MSGBOARD;
-  // } else if (ALActionEventlogConstants.PORTLET_NAME_EXTERNALSEARCH
-  // .equals(p_name)) {
-  // return ALActionEventlogConstants.PORTLET_TYPE_EXTERNALSEARCH;
-  // } else if (ALActionEventlogConstants.PORTLET_NAME_MYLINK.equals(p_name)) {
-  // return ALActionEventlogConstants.PORTLET_TYPE_MYLINK;
-  // } else if (ALActionEventlogConstants.PORTLET_NAME_WHATSNEW.equals(p_name))
-  // {
-  // return ALActionEventlogConstants.PORTLET_TYPE_WHATSNEW;
-  // } else if (ALActionEventlogConstants.PORTLET_NAME_CABINET.equals(p_name)) {
-  // return ALActionEventlogConstants.PORTLET_TYPE_CABINET;
-  // } else if (ALActionEventlogConstants.PORTLET_NAME_WEBMAIL.equals(p_name)) {
-  // return ALActionEventlogConstants.PORTLET_TYPE_WEBMAIL;
-  // } else if (ALActionEventlogConstants.PORTLET_NAME_SCHEDULE.equals(p_name))
-  // {
-  // return ALActionEventlogConstants.PORTLET_TYPE_SCHEDULE;
-  // } else if (ALActionEventlogConstants.PORTLET_NAME_MANHOUR.equals(p_name)) {
-  // return ALActionEventlogConstants.PORTLET_TYPE_MANHOUR;
-  // } else if (ALActionEventlogConstants.PORTLET_NAME_ACCOUNTPERSON
-  // .equals(p_name)) {
-  // return ALActionEventlogConstants.PORTLET_TYPE_ACCOUNTPERSON;
-  // } else if (ALActionEventlogConstants.PORTLET_NAME_MYGROUP.equals(p_name)) {
-  // return ALActionEventlogConstants.PORTLET_TYPE_MYGROUP;
-  // } else if (ALActionEventlogConstants.PORTLET_NAME_PAGE.equals(p_name)) {
-  // return ALActionEventlogConstants.PORTLET_TYPE_PAGE;
-  // } else if (ALActionEventlogConstants.PORTLET_NAME_CELLULAR.equals(p_name))
-  // {
-  // return ALActionEventlogConstants.PORTLET_TYPE_CELLULAR;
-  // }
-  // return ALActionEventlogConstants.PORTLET_TYPE_NONE;
-  // }
   /**
    * イベントのエイリアス名を取得します。
    * 
@@ -250,11 +183,10 @@ public class ALEventlogUtils {
    * @param portletEntryId
    * @return
    */
-  // たぶんいらない
   public static String getPortletName(RunData rundata, String portletEntryId) {
     try {
-      Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-        .getDocument().getPortlets();
+      Portlets portlets =
+        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
       if (portlets == null) {
         return null;
       }
@@ -284,5 +216,4 @@ public class ALEventlogUtils {
     }
     return null;
   }
-
 }

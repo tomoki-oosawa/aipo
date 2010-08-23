@@ -46,8 +46,9 @@ import com.aimluck.eip.util.ALEipUtils;
 public class CommonCategoryMultiDelete extends ALAbstractCheckList {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(CommonCategoryMultiDelete.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(CommonCategoryMultiDelete.class
+      .getName());
 
   /**
    * 
@@ -67,27 +68,33 @@ public class CommonCategoryMultiDelete extends ALAbstractCheckList {
       // アクセス権限
       int loginuserid = ALEipUtils.getUserId(rundata);
 
-      ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+      ALAccessControlFactoryService aclservice =
+        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-      boolean hasAuthorityOtherDelete = aclhandler
-        .hasAuthority(
-          loginuserid,
-          ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER,
-          ALAccessControlConstants.VALUE_ACL_DELETE);
+      boolean hasAuthorityOtherDelete =
+        aclhandler
+          .hasAuthority(
+            loginuserid,
+            ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER,
+            ALAccessControlConstants.VALUE_ACL_DELETE);
 
       // 共有カテゴリリストを取得
-      SelectQuery<EipTCommonCategory> query = Database
-        .query(EipTCommonCategory.class);
+      SelectQuery<EipTCommonCategory> query =
+        Database.query(EipTCommonCategory.class);
       if (!hasAuthorityOtherDelete) {
-        Expression exp1 = ExpressionFactory.matchExp(
-          EipTCommonCategory.CREATE_USER_ID_PROPERTY, Integer
-            .valueOf(loginuserid));
+        Expression exp1 =
+          ExpressionFactory.matchExp(
+            EipTCommonCategory.CREATE_USER_ID_PROPERTY,
+            Integer.valueOf(loginuserid));
         query.andQualifier(exp1);
       }
-      Expression exp2 = ExpressionFactory.inDbExp(
-        EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN, values);
+      Expression exp2 =
+        ExpressionFactory.inDbExp(
+          EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN,
+          values);
       query.andQualifier(exp2);
 
       List<EipTCommonCategory> commoncategory_list = query.fetchList();
@@ -98,16 +105,15 @@ public class CommonCategoryMultiDelete extends ALAbstractCheckList {
       // 共有カテゴリ内の ScheduleMap は「未分類」にカテゴリ変更する
       for (EipTCommonCategory record : commoncategory_list) {
         CommonCategoryUtils.setDefaultCommonCategoryToSchedule(record);
-
-        Database.delete(record);
       }
 
       // カテゴリを削除
+      Database.deleteAll(commoncategory_list);
       Database.commit();
 
       // 一覧表示画面のフィルタに設定されているカテゴリのセッション情報を削除
-      String filtername = CommonCategorySelectData.class.getName()
-        + ALEipConstants.LIST_FILTER;
+      String filtername =
+        CommonCategorySelectData.class.getName() + ALEipConstants.LIST_FILTER;
       ALEipUtils.removeTemp(rundata, context, filtername);
     } catch (Throwable t) {
       Database.rollback();
