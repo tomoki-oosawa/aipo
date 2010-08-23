@@ -29,18 +29,18 @@ import com.aimluck.eip.webpage.WebPageSelectData;
 
 /**
  * WebPageのアクションクラスです。<BR>
- *
+ * 
  */
 public class WebPageAction extends ALBaseAction {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WebPageAction.class.getName());
+    .getLogger(WebPageAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。<BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
@@ -48,6 +48,7 @@ public class WebPageAction extends ALBaseAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
     WebPageSelectData listData = new WebPageSelectData();
@@ -56,13 +57,14 @@ public class WebPageAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildMaximizedContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
     WebPageSelectData listData = new WebPageSelectData();
