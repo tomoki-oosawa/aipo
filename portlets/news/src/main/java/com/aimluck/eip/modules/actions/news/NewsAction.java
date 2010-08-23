@@ -36,7 +36,7 @@ public class NewsAction extends ALBaseAction {
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(NewsAction.class.getName());
+    .getLogger(NewsAction.class.getName());
 
   /**
    *
@@ -52,7 +52,7 @@ public class NewsAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -66,7 +66,7 @@ public class NewsAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception

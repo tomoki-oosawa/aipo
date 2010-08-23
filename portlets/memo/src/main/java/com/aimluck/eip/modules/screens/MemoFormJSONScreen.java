@@ -33,13 +33,13 @@ import com.aimluck.eip.memo.MemoMultiDelete;
 
 /**
  * メモ帳をJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class MemoFormJSONScreen extends ALJSONScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(MemoFormJSONScreen.class.getName());
+    .getLogger(MemoFormJSONScreen.class.getName());
 
   /**
    *
@@ -57,8 +57,8 @@ public class MemoFormJSONScreen extends ALJSONScreen {
         if (formData.doInsert(this, rundata, context)) {
         } else {
           @SuppressWarnings("rawtypes")
-          ArrayList list = (ArrayList) context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST);
+          ArrayList list =
+            (ArrayList) context.get(ALEipConstants.ERROR_MESSAGE_LIST);
           JSONArray json = JSONArray.fromObject(list);
           result = json.toString();
         }
@@ -67,8 +67,9 @@ public class MemoFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doUpdate(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
@@ -76,16 +77,18 @@ public class MemoFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doDelete(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if ("multi_delete".equals(mode)) {
         MemoMultiDelete delete = new MemoMultiDelete();
         if (delete.doMultiAction(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       }

@@ -18,17 +18,13 @@
  */
 package com.aimluck.eip.license.util;
 
-import java.util.List;
-
-import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.account.AipoLicense;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 
 /**
  * ライセンス情報のユーティリティクラスです <br />
@@ -37,28 +33,20 @@ public class LicenseUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(LicenseUtils.class.getName());
+    .getLogger(LicenseUtils.class.getName());
 
   /**
    * AipoLicense オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
-   *
+   * 
    * @return
    */
   public static AipoLicense getAipoLicense(RunData rundata, Context context) {
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(AipoLicense.class);
-      List<?> list = dataContext.performQuery(query);
-      if (list == null || list.size() <= 0) {
-        return null;
-      }
-
-      return (AipoLicense) list.get(0);
+      return Database.query(AipoLicense.class).fetchSingle();
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;

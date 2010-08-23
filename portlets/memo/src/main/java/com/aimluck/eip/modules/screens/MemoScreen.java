@@ -29,13 +29,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * メモ帳の一覧を処理するクラスです。 <br />
- *
+ * 
  */
 public class MemoScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(MemoScreen.class.getName());
+    .getLogger(MemoScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
@@ -43,9 +43,11 @@ public class MemoScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
-      ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID,
-          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-              .getInitParameter("p1a-memos").trim());
+      ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p1a-memos")
+        .trim());
       MemoSelectData listData = new MemoSelectData();
       listData.initField();
       listData.loadMemoIdList(rundata, context);

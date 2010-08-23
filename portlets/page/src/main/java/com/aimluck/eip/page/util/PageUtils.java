@@ -44,18 +44,20 @@ public class PageUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(PageUtils.class.getName());
+    .getLogger(PageUtils.class.getName());
 
   public static Portlets getPortlets(RunData rundata, String portletId) {
     Portlets portletSet = null;
-    Portlets portlets = ((JetspeedRunData) rundata).getProfile().getDocument()
-        .getPortlets();
-    if (portlets == null)
+    Portlets portlets =
+      ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
+    if (portlets == null) {
       return null;
+    }
 
     Portlets[] portletList = portlets.getPortletsArray();
-    if (portletList == null)
+    if (portletList == null) {
       return null;
+    }
 
     int length = portletList.length;
     for (int i = 0; i < length; i++) {
@@ -71,21 +73,23 @@ public class PageUtils {
       List<String> values, List<String> msgList) {
 
     try {
-      if (values == null || values.size() <= 0)
+      if (values == null || values.size() <= 0) {
         return false;
+      }
 
       // 個人設定のページ ID を取得する．
       String portletId = rundata.getParameters().getString("js_peid");
       String pageId = getPortletSetId(rundata, portletId);
 
-      Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-          .getDocument().getPortlets();
-      if (portlets == null)
+      Portlets portlets =
+        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
+      if (portlets == null) {
         return false;
+      }
 
       Portlets p = null;
 
-      List<Integer>  deletedList = new ArrayList<Integer> ();
+      List<Integer> deletedList = new ArrayList<Integer>();
       List<String> list = new ArrayList<String>(values);
       int valuesLength = values.size();
       int portletsLength = portlets.getPortletsCount();
@@ -94,8 +98,9 @@ public class PageUtils {
           p = portlets.getPortlets(i);
 
           // 個人設定のページは削除不可にする．
-          if (p.getId().equals(pageId))
+          if (p.getId().equals(pageId)) {
             continue;
+          }
 
           if (p.getId().equals(list.get(j))) {
             deletedList.add(Integer.valueOf(i));
@@ -107,7 +112,7 @@ public class PageUtils {
       int length = deletedList.size();
       Collections.sort(deletedList);
       for (int i = length - 1; i >= 0; i--) {
-        portlets.removePortlets(((Integer) deletedList.get(i)).intValue());
+        portlets.removePortlets((deletedList.get(i)).intValue());
       }
 
       doSave(rundata, context);
@@ -124,12 +129,13 @@ public class PageUtils {
    * Updates the layout position based on physical order within the resorted
    * portlet list. Assures that layout position is always consecutive and within
    * bounds.
-   *
+   * 
    * @param set
    */
   public static void updateLayoutPositions(Portlets set) {
-    if (set == null)
+    if (set == null) {
       return;
+    }
 
     // Load the panes into a list
     List<Portlets> list = new ArrayList<Portlets>();
@@ -178,27 +184,30 @@ public class PageUtils {
 
   /**
    * 指定したポートレット ID を含むページの ID を取得する．
-   *
+   * 
    * @param rundata
    * @param portletId
    * @return
    */
   public static String getPortletSetId(RunData rundata, String portletId) {
     try {
-      Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-          .getDocument().getPortlets();
-      if (portlets == null)
+      Portlets portlets =
+        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
+      if (portlets == null) {
         return null;
+      }
 
       Portlets[] portletList = portlets.getPortletsArray();
-      if (portletList == null)
+      if (portletList == null) {
         return null;
+      }
 
       int length = portletList.length;
       for (int i = 0; i < length; i++) {
         Entry[] entries = portletList[i].getEntriesArray();
-        if (entries == null || entries.length <= 0)
+        if (entries == null || entries.length <= 0) {
           continue;
+        }
 
         int ent_length = entries.length;
         for (int j = 0; j < ent_length; j++) {
@@ -216,33 +225,36 @@ public class PageUtils {
 
   /**
    * 指定したポートレット ID を持つポートレットのオブジェクトを取得する．
-   *
+   * 
    * @param rundata
    * @param portletId
    * @return
    */
   public static Portlet getPortlet(RunData rundata, String portletId) {
     try {
-      Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-          .getDocument().getPortlets();
-      if (portlets == null)
+      Portlets portlets =
+        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
+      if (portlets == null) {
         return null;
+      }
 
       Portlets[] portletList = portlets.getPortletsArray();
-      if (portletList == null)
+      if (portletList == null) {
         return null;
+      }
 
       int length = portletList.length;
       for (int i = 0; i < length; i++) {
         Entry[] entries = portletList[i].getEntriesArray();
-        if (entries == null || entries.length <= 0)
+        if (entries == null || entries.length <= 0) {
           continue;
+        }
 
         int ent_length = entries.length;
         for (int j = 0; j < ent_length; j++) {
           if (entries[j].getId().equals(portletId)) {
-            PortletWrapper wrapper = (PortletWrapper) PortletFactory
-                .getPortlet(entries[j]);
+            PortletWrapper wrapper =
+              (PortletWrapper) PortletFactory.getPortlet(entries[j]);
             if (wrapper != null) {
               return wrapper.getPortlet();
             } else {

@@ -27,7 +27,6 @@ import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.om.security.Group;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -51,20 +50,22 @@ import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.mygroup.util.MyGroupUtils;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * マイグループのフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class MyGroupFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(MyGroupFormData.class.getName());
+    .getLogger(MyGroupFormData.class.getName());
 
   /** グループ名 */
   private ALStringField group_alias_name;
@@ -85,6 +86,7 @@ public class MyGroupFormData extends ALAbstractFormData {
 
   private DataContext dataContext;
 
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -96,7 +98,7 @@ public class MyGroupFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -110,7 +112,7 @@ public class MyGroupFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -120,7 +122,7 @@ public class MyGroupFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -128,26 +130,26 @@ public class MyGroupFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res = super.setFormData(rundata, context, msgList);
     if (res) {
       try {
         if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
-          mygroup_name = ALEipUtils.getTemp(rundata, context,
-              ALEipConstants.ENTITY_ID);
+          mygroup_name =
+            ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
         }
 
-        String str[] = getStrList(rundata.getParameters().getStrings(
-            "member_to"));
+        String str[] =
+          getStrList(rundata.getParameters().getStrings("member_to"));
         if (str != null && str.length > 0) {
-          SelectQuery query = new SelectQuery(TurbineUser.class);
-          Expression exp = ExpressionFactory.inExp(
-              TurbineUser.LOGIN_NAME_PROPERTY, str);
+          SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+          Expression exp =
+            ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY, str);
           query.setQualifier(exp);
 
-          @SuppressWarnings("unchecked")
-          List<TurbineUser> list = dataContext.performQuery(query);
+          List<TurbineUser> list = query.fetchList();
           int size = list.size();
           for (int i = 0; i < size; i++) {
             TurbineUser record = list.get(i);
@@ -159,15 +161,14 @@ public class MyGroupFormData extends ALAbstractFormData {
           }
         }
 
-        String f_id[] = getStrList(rundata.getParameters().getStrings(
-            "facility_to"));
+        String f_id[] =
+          getStrList(rundata.getParameters().getStrings("facility_to"));
         if (f_id != null && f_id.length > 0) {
-          SelectQuery fquery = new SelectQuery(EipMFacility.class);
-          Expression exp = ExpressionFactory.inDbExp(
-              EipMFacility.FACILITY_ID_PK_COLUMN, f_id);
+          SelectQuery<EipMFacility> fquery = Database.query(EipMFacility.class);
+          Expression exp =
+            ExpressionFactory.inDbExp(EipMFacility.FACILITY_ID_PK_COLUMN, f_id);
           fquery.setQualifier(exp);
-          @SuppressWarnings("unchecked")
-          List<EipMFacility> f_list = dataContext.performQuery(fquery);
+          List<EipMFacility> f_list = fquery.fetchList();
 
           int f_size = f_list.size();
           for (int i = 0; i < f_size; i++) {
@@ -187,14 +188,15 @@ public class MyGroupFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param memberIdList
    * @param memberId
    * @return
    */
   private String[] getStrList(String[] strs) {
-    if (strs == null || strs.length <= 0)
+    if (strs == null || strs.length <= 0) {
       return null;
+    }
 
     ArrayList<String> list = new ArrayList<String>();
     int len = strs.length;
@@ -211,9 +213,10 @@ public class MyGroupFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // グループ名
     group_alias_name.setNotNull(true);
@@ -222,38 +225,46 @@ public class MyGroupFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     try {
-      SelectQuery query = new SelectQuery(TurbineGroup.class);
+      SelectQuery<TurbineGroup> query = Database.query(TurbineGroup.class);
       if (ALEipConstants.MODE_INSERT.equals(getMode())) {
-        Expression exp1 = ExpressionFactory
-            .matchExp(TurbineGroup.GROUP_ALIAS_NAME_PROPERTY,
-                group_alias_name.getValue());
-        Expression exp2 = ExpressionFactory.matchExp(
-            TurbineGroup.OWNER_ID_PROPERTY, Integer.valueOf(userId));
+        Expression exp1 =
+          ExpressionFactory.matchExp(
+            TurbineGroup.GROUP_ALIAS_NAME_PROPERTY,
+            group_alias_name.getValue());
+        Expression exp2 =
+          ExpressionFactory.matchExp(TurbineGroup.OWNER_ID_PROPERTY, Integer
+            .valueOf(userId));
         query.setQualifier(exp1);
         query.andQualifier(exp2);
       } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
-        Expression exp1 = ExpressionFactory
-            .matchExp(TurbineGroup.GROUP_ALIAS_NAME_PROPERTY,
-                group_alias_name.getValue());
-        Expression exp2 = ExpressionFactory.matchExp(
-            TurbineGroup.OWNER_ID_PROPERTY, Integer.valueOf(userId));
+        Expression exp1 =
+          ExpressionFactory.matchExp(
+            TurbineGroup.GROUP_ALIAS_NAME_PROPERTY,
+            group_alias_name.getValue());
+        Expression exp2 =
+          ExpressionFactory.matchExp(TurbineGroup.OWNER_ID_PROPERTY, Integer
+            .valueOf(userId));
         query.setQualifier(exp1);
         query.andQualifier(exp2);
-        Expression exp3 = ExpressionFactory.noMatchExp(
-            TurbineGroup.GROUP_NAME_PROPERTY, mygroup_name);
+        Expression exp3 =
+          ExpressionFactory.noMatchExp(
+            TurbineGroup.GROUP_NAME_PROPERTY,
+            mygroup_name);
         query.andQualifier(exp3);
       }
 
-      if (dataContext.performQuery(query).size() != 0) {
-        msgList.add("グループ名『 <span class='em'>" + group_alias_name.toString()
-            + "</span> 』は既に登録されています。");
+      if (query.fetchList().size() != 0) {
+        msgList.add("グループ名『 <span class='em'>"
+          + group_alias_name.toString()
+          + "</span> 』は既に登録されています。");
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -266,7 +277,7 @@ public class MyGroupFormData extends ALAbstractFormData {
 
   /**
    * 『マイグループ』を読み込みます。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -274,13 +285,15 @@ public class MyGroupFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       TurbineGroup record = MyGroupUtils.getGroup(rundata, context);
-      if (record == null)
+      if (record == null) {
         return false;
+      }
       // グループ名
       group_alias_name.setValue(record.getGroupAliasName());
       // TODO: 公開フラグの読み込み
@@ -298,7 +311,7 @@ public class MyGroupFormData extends ALAbstractFormData {
 
   /**
    * 『マイグループ』を追加します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -306,16 +319,19 @@ public class MyGroupFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // グループオブジェクトモデルを生成
-      TurbineGroup group = (TurbineGroup) dataContext
+      TurbineGroup group =
+        (TurbineGroup) dataContext
           .createAndRegisterNewObject(TurbineGroup.class);
       String name = group_alias_name.getValue();
       // グループ名
-      String groupName = new StringBuffer().append(new Date().getTime())
-          .append("_").append(ALEipUtils.getUserId(rundata)).toString();
+      String groupName =
+        new StringBuffer().append(new Date().getTime()).append("_").append(
+          ALEipUtils.getUserId(rundata)).toString();
       group.setGroupName(groupName);
       // オーナIDの設定、作成者がオーナとなるので、自分自身のUID
       group.setOwnerId(Integer.valueOf(ALEipUtils.getUserId(rundata)));
@@ -330,8 +346,9 @@ public class MyGroupFormData extends ALAbstractFormData {
       // グループにユーザーを追加
       int size = memberList.size();
       for (int i = 0; i < size; i++) {
-        JetspeedSecurity.joinGroup(memberList.get(i).getName().getValue(),
-            group.getGroupName());
+        JetspeedSecurity.joinGroup(
+          memberList.get(i).getName().getValue(),
+          group.getGroupName());
       }
 
       // グループに施設を追加する．
@@ -339,8 +356,11 @@ public class MyGroupFormData extends ALAbstractFormData {
       int f_size = facilityList.size();
       for (int i = 0; i < f_size; i++) {
         int fid = (int) facilityList.get(i).getFacilityId().getValue();
-        EipMFacility facility = (EipMFacility) DataObjectUtils.objectForPK(
-            dataContext, EipMFacility.class, Integer.valueOf(fid));
+        EipMFacility facility =
+          (EipMFacility) DataObjectUtils.objectForPK(
+            dataContext,
+            EipMFacility.class,
+            Integer.valueOf(fid));
 
         insertFacilityGroup(facility, (TurbineGroup) jetspeedgroup);
       }
@@ -348,12 +368,10 @@ public class MyGroupFormData extends ALAbstractFormData {
       dataContext.commitChanges();
 
       // イベントログに保存
-      ALEventlogFactoryService
-          .getInstance()
-          .getEventlogHandler()
-          .log(Integer.parseInt(group.getId()),
-              ALEventlogConstants.PORTLET_TYPE_MYGROUP,
-              group.getGroupAliasName());
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        Integer.parseInt(group.getId()),
+        ALEventlogConstants.PORTLET_TYPE_MYGROUP,
+        group.getGroupAliasName());
 
       ALEipUtils.reloadMygroup(rundata);
     } catch (Exception ex) {
@@ -366,7 +384,8 @@ public class MyGroupFormData extends ALAbstractFormData {
   private void insertFacilityGroup(EipMFacility facility,
       TurbineGroup turbine_group) {
     try {
-      EipFacilityGroup fg = (EipFacilityGroup) dataContext
+      EipFacilityGroup fg =
+        (EipFacilityGroup) dataContext
           .createAndRegisterNewObject(EipFacilityGroup.class);
       fg.setEipMFacility(facility);
       fg.setTurbineGroup(turbine_group);
@@ -377,7 +396,7 @@ public class MyGroupFormData extends ALAbstractFormData {
 
   /**
    * 『マイグループ』を更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -385,13 +404,15 @@ public class MyGroupFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       TurbineGroup record = MyGroupUtils.getGroup(rundata, context);
-      if (record == null)
+      if (record == null) {
         return false;
+      }
       // グループ名
       record.setGroupAliasName(group_alias_name.getValue());
 
@@ -402,68 +423,79 @@ public class MyGroupFormData extends ALAbstractFormData {
       List<ALEipUser> users = ALEipUtils.getUsers(record.getGroupName());
       int size = users.size();
       for (int i = 0; i < size; i++) {
-        JetspeedSecurity.unjoinGroup(((ALEipUser) users.get(i)).getName()
-            .getValue(), record.getGroupName());
+        JetspeedSecurity.unjoinGroup(
+          (users.get(i)).getName().getValue(),
+          record.getGroupName());
       }
 
       // グループにユーザーを追加
       size = memberList.size();
       for (int i = 0; i < size; i++) {
-        JetspeedSecurity.joinGroup(memberList.get(i).getName().getValue(),
-            record.getGroupName());
+        JetspeedSecurity.joinGroup(
+          memberList.get(i).getName().getValue(),
+          record.getGroupName());
       }
 
       // グループから施設を削除
-      List<Integer> oldFIdList = FacilitiesUtils.getFacilityIds(record
-          .getGroupName());
+      List<Integer> oldFIdList =
+        FacilitiesUtils.getFacilityIds(record.getGroupName());
       if (oldFIdList != null && oldFIdList.size() > 0) {
 
-        SelectQuery query = new SelectQuery(EipFacilityGroup.class);
-        Expression exp1 = ExpressionFactory.inDbExp(
-            EipMFacility.FACILITY_ID_PK_COLUMN, oldFIdList);
+        SelectQuery<EipFacilityGroup> query =
+          Database.query(EipFacilityGroup.class);
+        Expression exp1 =
+          ExpressionFactory.inDbExp(
+            EipMFacility.FACILITY_ID_PK_COLUMN,
+            oldFIdList);
         query.setQualifier(exp1);
-        Expression exp2 = ExpressionFactory.matchDbExp(
-            EipFacilityGroup.TURBINE_GROUP_PROPERTY + "."
-                + TurbineGroup.GROUP_ID_PK_COLUMN, record.getId());
+        Expression exp2 =
+          ExpressionFactory.matchDbExp(EipFacilityGroup.TURBINE_GROUP_PROPERTY
+            + "."
+            + TurbineGroup.GROUP_ID_PK_COLUMN, record.getId());
         query.andQualifier(exp2);
-        @SuppressWarnings("unchecked")
-        List<EipFacilityGroup> flist = dataContext.performQuery(query);
+        List<EipFacilityGroup> flist = query.fetchList();
         if (flist != null && flist.size() > 0) {
           dataContext.deleteObjects(flist);
         }
       }
 
       // グループに施設を追加する．
-      TurbineGroup tgroup = (TurbineGroup) DataObjectUtils.objectForPK(
-          dataContext, TurbineGroup.class, Integer.valueOf(record.getId()));
+      TurbineGroup tgroup =
+        (TurbineGroup) DataObjectUtils.objectForPK(
+          dataContext,
+          TurbineGroup.class,
+          Integer.valueOf(record.getId()));
 
       int f_size = facilityList.size();
       for (int i = 0; i < f_size; i++) {
         int fid = (int) facilityList.get(i).getFacilityId().getValue();
 
-        Expression fexp = ExpressionFactory.matchDbExp(
-            EipMFacility.FACILITY_ID_PK_COLUMN, Integer.valueOf(fid));
-        SelectQuery fquery = new SelectQuery(EipMFacility.class, fexp);
-        @SuppressWarnings("unchecked")
-        List<EipMFacility> list = dataContext.performQuery(fquery);
-        if (list == null || list.size() <= 0)
+        Expression fexp =
+          ExpressionFactory.matchDbExp(
+            EipMFacility.FACILITY_ID_PK_COLUMN,
+            Integer.valueOf(fid));
+        SelectQuery<EipMFacility> fquery =
+          Database.query(EipMFacility.class, fexp);
+        List<EipMFacility> list = fquery.fetchList();
+        if (list == null || list.size() <= 0) {
           continue;
+        }
 
         EipMFacility facility = list.get(0);
         insertFacilityGroup(facility, tgroup);
       }
 
-      dataContext.commitChanges();
+      Database.commit();
+
       // イベントログに保存
-      ALEventlogFactoryService
-          .getInstance()
-          .getEventlogHandler()
-          .log(Integer.parseInt(record.getId()),
-              ALEventlogConstants.PORTLET_TYPE_MYGROUP,
-              record.getGroupAliasName());
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        Integer.parseInt(record.getId()),
+        ALEventlogConstants.PORTLET_TYPE_MYGROUP,
+        record.getGroupAliasName());
 
       ALEipUtils.reloadMygroup(rundata);
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -472,7 +504,7 @@ public class MyGroupFormData extends ALAbstractFormData {
 
   /**
    * 『マイグループ』を削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -480,19 +512,22 @@ public class MyGroupFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       TurbineGroup record = MyGroupUtils.getGroup(rundata, context);
-      if (record == null)
+      if (record == null) {
         return false;
+      }
 
-      Expression exp = ExpressionFactory.matchDbExp(
-          TurbineGroup.GROUP_ID_PK_COLUMN, record.getId());
-      SelectQuery query = new SelectQuery(EipFacilityGroup.class, exp);
-      @SuppressWarnings("unchecked")
-      List<EipFacilityGroup> fglist = dataContext.performQuery(query);
+      Expression exp =
+        ExpressionFactory.matchDbExp(TurbineGroup.GROUP_ID_PK_COLUMN, record
+          .getId());
+      SelectQuery<EipFacilityGroup> query =
+        Database.query(EipFacilityGroup.class, exp);
+      List<EipFacilityGroup> fglist = query.fetchList();
       if (fglist != null && fglist.size() > 0) {
         dataContext.deleteObjects(fglist);
       }
@@ -501,20 +536,19 @@ public class MyGroupFormData extends ALAbstractFormData {
       List<ALEipUser> users = ALEipUtils.getUsers(record.getGroupName());
       int size = users.size();
       for (int i = 0; i < size; i++) {
-        JetspeedSecurity.unjoinGroup(((ALEipUser) users.get(i)).getName()
-            .getValue(), record.getGroupName());
+        JetspeedSecurity.unjoinGroup(
+          (users.get(i)).getName().getValue(),
+          record.getGroupName());
       }
 
       // グループを削除(Turbine_GROUP)
       JetspeedSecurity.removeGroup(record.getGroupName());
 
       // イベントログに保存
-      ALEventlogFactoryService
-          .getInstance()
-          .getEventlogHandler()
-          .log(Integer.parseInt(record.getId()),
-              ALEventlogConstants.PORTLET_TYPE_MYGROUP,
-              record.getGroupAliasName());
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        Integer.parseInt(record.getId()),
+        ALEventlogConstants.PORTLET_TYPE_MYGROUP,
+        record.getGroupAliasName());
 
       // マイグループの再読み込み（セッションのリフレッシュ）
       ALEipUtils.reloadMygroup(rundata);
@@ -527,7 +561,7 @@ public class MyGroupFormData extends ALAbstractFormData {
 
   /**
    * グループ名を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getGroupAliasName() {
@@ -536,7 +570,7 @@ public class MyGroupFormData extends ALAbstractFormData {
 
   /**
    * グループメンバーを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -544,7 +578,7 @@ public class MyGroupFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param groupname
    * @return
    */
@@ -553,7 +587,7 @@ public class MyGroupFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {

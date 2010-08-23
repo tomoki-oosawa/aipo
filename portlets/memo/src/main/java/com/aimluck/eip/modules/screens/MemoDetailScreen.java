@@ -28,13 +28,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * メモ帳の詳細画面を処理するクラスです。 <br />
- *
+ * 
  */
 public class MemoDetailScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(MemoDetailScreen.class.getName());
+    .getLogger(MemoDetailScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)

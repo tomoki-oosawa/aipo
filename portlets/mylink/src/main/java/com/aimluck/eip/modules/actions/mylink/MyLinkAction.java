@@ -34,13 +34,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * Myリンクのアクションクラスです。<BR>
- *
+ * 
  */
 public class MyLinkAction extends ALBaseAction {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(MyLinkAction.class.getName());
+    .getLogger(MyLinkAction.class.getName());
 
   /** タイトルパラメータの接頭語 */
   private static final String TITLE = "title";
@@ -50,7 +50,7 @@ public class MyLinkAction extends ALBaseAction {
 
   /**
    * 通常表示の際の処理を記述します。<BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
@@ -58,6 +58,7 @@ public class MyLinkAction extends ALBaseAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
 
@@ -68,13 +69,14 @@ public class MyLinkAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildMaximizedContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
 
@@ -95,7 +97,7 @@ public class MyLinkAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -117,12 +119,20 @@ public class MyLinkAction extends ALBaseAction {
         StringBuffer sb = new StringBuffer();
         rd = new MyLinkResultData();
         rd.initField();
-        sb.append("p").append(Integer.toHexString(i)).append("a-")
-            .append(TITLE).append(Integer.toHexString(i));
+        sb
+          .append("p")
+          .append(Integer.toHexString(i))
+          .append("a-")
+          .append(TITLE)
+          .append(Integer.toHexString(i));
         title = portlet.getPortletConfig().getInitParameter(sb.toString());
         sb = new StringBuffer();
-        sb.append("p").append(Integer.toHexString(i)).append("b-").append(LINK)
-            .append(Integer.toHexString(i));
+        sb
+          .append("p")
+          .append(Integer.toHexString(i))
+          .append("b-")
+          .append(LINK)
+          .append(Integer.toHexString(i));
         link = portlet.getPortletConfig().getInitParameter(sb.toString());
 
         if (title != null && (!title.equals(""))) {

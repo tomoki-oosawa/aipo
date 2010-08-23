@@ -57,8 +57,8 @@ public class CellScheduleUtils {
     String str[] = rundata.getParameters().getStrings("shareuser");
     if (str != null && str.length > 0) {
       SelectQuery query = new SelectQuery(TurbineUser.class);
-      Expression exp = ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY,
-        str);
+      Expression exp =
+        ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY, str);
       query.setQualifier(exp);
       List<ALEipUser> sharuserlist = ALEipUtils.getUsersFromSelectQuery(query);
       int sharuserSize = sharuserlist.size();
@@ -85,8 +85,8 @@ public class CellScheduleUtils {
       str = list.toArray(str);
 
       SelectQuery query = new SelectQuery(TurbineUser.class);
-      Expression exp = ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY,
-        str);
+      Expression exp =
+        ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY, str);
       query.setQualifier(exp);
       List<ALEipUser> sharuserslist = ALEipUtils.getUsersFromSelectQuery(query);
       int sharusersSize = sharuserslist.size();
@@ -106,16 +106,17 @@ public class CellScheduleUtils {
 
   public static List<FacilityResultData> getShareFacilityMemberList(
       RunData rundata) {
-    List<FacilityResultData> facilityMemberList = new ArrayList<FacilityResultData>();
+    List<FacilityResultData> facilityMemberList =
+      new ArrayList<FacilityResultData>();
     FacilityResultData f_record = null;
     String facstr[] = rundata.getParameters().getStrings("sharefac");
     if (facstr != null && facstr.length > 0) {
       SelectQuery fquery = new SelectQuery(EipMFacility.class);
-      Expression fexp = ExpressionFactory.inDbExp(
-        EipMFacility.FACILITY_ID_PK_COLUMN, facstr);
+      Expression fexp =
+        ExpressionFactory.inDbExp(EipMFacility.FACILITY_ID_PK_COLUMN, facstr);
       fquery.setQualifier(fexp);
-      List<FacilityResultData> f_list = FacilitiesUtils
-        .getFacilitiesFromSelectQuery(fquery.getQuery());
+      List<FacilityResultData> f_list =
+        FacilitiesUtils.getFacilitiesFromSelectQuery(fquery);
       int f_list_size = f_list.size();
       for (int i = 0; i < f_list_size; i++) {
         f_record = f_list.get(i);
@@ -140,11 +141,11 @@ public class CellScheduleUtils {
       str = list.toArray(str);
 
       SelectQuery fquery = new SelectQuery(EipMFacility.class);
-      Expression fexp = ExpressionFactory.inDbExp(
-        EipMFacility.FACILITY_ID_PK_COLUMN, str);
+      Expression fexp =
+        ExpressionFactory.inDbExp(EipMFacility.FACILITY_ID_PK_COLUMN, str);
       fquery.setQualifier(fexp);
-      List<FacilityResultData> f_list = FacilitiesUtils
-        .getFacilitiesFromSelectQuery(fquery.getQuery());
+      List<FacilityResultData> f_list =
+        FacilitiesUtils.getFacilitiesFromSelectQuery(fquery);
       int fsize = f_list.size();
       for (int i = 0; i < fsize; i++) {
         f_record = f_list.get(i);

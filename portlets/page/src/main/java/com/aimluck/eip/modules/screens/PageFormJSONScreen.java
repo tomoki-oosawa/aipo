@@ -31,12 +31,13 @@ import com.aimluck.eip.page.PageMultiDelete;
 
 /**
  * ページ設定をJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class PageFormJSONScreen extends ALJSONScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(PageFormJSONScreen.class.getName());
+    .getLogger(PageFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -51,8 +52,9 @@ public class PageFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doInsert(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
 
@@ -62,8 +64,9 @@ public class PageFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doUpdate(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
@@ -72,8 +75,9 @@ public class PageFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doDelete(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if ("multi_delete".equals(mode)) {
@@ -81,8 +85,9 @@ public class PageFormJSONScreen extends ALJSONScreen {
         PageMultiDelete delete = new PageMultiDelete();
         if (delete.doMultiAction(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       }

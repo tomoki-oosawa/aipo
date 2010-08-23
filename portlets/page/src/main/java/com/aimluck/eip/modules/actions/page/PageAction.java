@@ -39,19 +39,20 @@ import com.aimluck.eip.util.ALEipUtils;
 /**
  * ページ設定の取り扱いに関するアクションクラスです。 <br />
  * org.apache.jetspeed.modules.actions.portlets.CustomizeSetAction から処理を移管した．
- *
+ * 
  */
 public class PageAction extends ALBaseAction {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(PageAction.class.getName());
+    .getLogger(PageAction.class.getName());
 
   /**
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
     if (getMode() == null) {
@@ -61,7 +62,7 @@ public class PageAction extends ALBaseAction {
 
   /**
    * ページの一覧を表示する．<BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -70,15 +71,16 @@ public class PageAction extends ALBaseAction {
     PageSelectData listData = new PageSelectData();
     listData.initField();
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1a-rows")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1a-rows")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "page");
   }
 
   /**
    * ページを登録するフォームを表示する．<BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -95,7 +97,7 @@ public class PageAction extends ALBaseAction {
 
   /**
    * ページを登録する．<BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -110,8 +112,9 @@ public class PageAction extends ALBaseAction {
     if (formData.doInsert(this, rundata, context)) {
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
-          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-          "eventSubmit_doPage_list", "1").toString());
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doPage_list",
+        "1").toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
       jsLink = null;
     } else {
@@ -121,7 +124,7 @@ public class PageAction extends ALBaseAction {
 
   /**
    * ページを更新する．<BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -136,8 +139,9 @@ public class PageAction extends ALBaseAction {
     if (formData.doUpdate(this, rundata, context)) {
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
-          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-          "eventSubmit_doPage_list", "1").toString());
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doPage_list",
+        "1").toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
       jsLink = null;
     } else {
@@ -147,7 +151,7 @@ public class PageAction extends ALBaseAction {
 
   /**
    * ページの詳細を表示する．<BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -164,7 +168,7 @@ public class PageAction extends ALBaseAction {
 
   /**
    * ページを削除する．<BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -179,8 +183,9 @@ public class PageAction extends ALBaseAction {
     if (formData.doDelete(this, rundata, context)) {
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
-          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-          "eventSubmit_doPage_list", "1").toString());
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doPage_list",
+        "1").toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
       jsLink = null;
     } else {
@@ -199,8 +204,9 @@ public class PageAction extends ALBaseAction {
     multiDelete.doMultiAction(this, rundata, context);
     JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
     rundata.setRedirectURI(jsLink.getPortletById(
-        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-        "eventSubmit_doPage_list", "1").toString());
+      ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+      "eventSubmit_doPage_list",
+      "1").toString());
     rundata.getResponse().sendRedirect(rundata.getRedirectURI());
     jsLink = null;
   }

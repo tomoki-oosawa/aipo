@@ -32,13 +32,13 @@ import com.aimluck.eip.license.LicenseFormData;
 
 /**
  * LicenseFormJSONScreen
- *
+ * 
  */
 public class LicenseFormJSONScreen extends ALJSONScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(LicenseFormJSONScreen.class.getName());
+    .getLogger(LicenseFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -52,8 +52,8 @@ public class LicenseFormJSONScreen extends ALJSONScreen {
       if (formData.doUpdate(this, rundata, context)) {
       } else {
         @SuppressWarnings("rawtypes")
-        ArrayList list = (ArrayList) context
-            .get(ALEipConstants.ERROR_MESSAGE_LIST);
+        ArrayList list =
+          (ArrayList) context.get(ALEipConstants.ERROR_MESSAGE_LIST);
         JSONArray json = JSONArray.fromObject(list);
         result = json.toString();
       }

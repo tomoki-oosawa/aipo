@@ -21,10 +21,8 @@ package com.aimluck.eip.news;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -34,8 +32,9 @@ import com.aimluck.eip.cayenne.om.account.AipoLicense;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.license.util.LicenseUtils;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
  */
@@ -66,13 +65,12 @@ public class NewsSelectData extends
     AipoLicense al = LicenseUtils.getAipoLicense(rundata, context);
 
     // ユーザ数
-    SelectQuery query = new SelectQuery(TurbineUser.class);
-    DataContext datacontext = DatabaseOrmService.getInstance().getDataContext();
+    SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
     Expression exp =
       ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
     query.setQualifier(exp);
 
-    List<?> list = datacontext.performQuery(query);
+    List<TurbineUser> list = query.fetchList();
 
     context.put("UserNum", (String.valueOf(list.size() - 2)));
 

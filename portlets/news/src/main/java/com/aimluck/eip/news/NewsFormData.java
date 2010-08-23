@@ -29,10 +29,8 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
@@ -48,13 +46,14 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.license.util.LicenseUtils;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 
 public class NewsFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(NewsFormData.class.getName());
+    .getLogger(NewsFormData.class.getName());
 
   private ALStringField company_name;
 
@@ -96,6 +95,7 @@ public class NewsFormData extends ALAbstractFormData {
     equalsVersion();
   }
 
+  @Override
   protected void setValidator() {
     company_name.limitMaxLength(200);
 
@@ -116,23 +116,30 @@ public class NewsFormData extends ALAbstractFormData {
     content.limitMaxLength(400);
   }
 
+  @Override
   protected boolean validate(List<String> msgList) {
-    if (!company_name.validate(msgList))
+    if (!company_name.validate(msgList)) {
       company_name.setValue(null);
-    if (!post_name.validate(msgList))
+    }
+    if (!post_name.validate(msgList)) {
       post_name.setValue(null);
-    if (!customer_name.validate(msgList))
+    }
+    if (!customer_name.validate(msgList)) {
       customer_name.setValue(null);
-    if (!email.validate(msgList))
+    }
+    if (!email.validate(msgList)) {
       email.setValue(null);
-    if (!email_confirm.validate(msgList))
+    }
+    if (!email_confirm.validate(msgList)) {
       email_confirm.setValue(null);
-    if (!content.validate(msgList))
+    }
+    if (!content.validate(msgList)) {
       content.setValue(null);
+    }
 
     if (!email.toString().equals(email_confirm.toString())) {
       msgList
-          .add("『 <span class='em'>メールアドレス</span> 』と『 <span class='em'>メールアドレス（確認用）</span> 』には同じものを入力してください。");
+        .add("『 <span class='em'>メールアドレス</span> 』と『 <span class='em'>メールアドレス（確認用）</span> 』には同じものを入力してください。");
       email.setValue(null);
       email_confirm.setValue(null);
     } else if (!ALStringUtil.isCellPhoneMailAddress(email.toString())) {
@@ -142,12 +149,14 @@ public class NewsFormData extends ALAbstractFormData {
     return (msgList.size() == 0);
   }
 
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res = super.setFormData(rundata, context, msgList);
     return res;
   }
 
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msglist) {
     return false;
@@ -159,8 +168,8 @@ public class NewsFormData extends ALAbstractFormData {
     try {
 
       String url_str = JetspeedResources.getString("aipo.version_url", "");
-      latest_version = aipo_version = JetspeedResources.getString(
-          "aipo.version", "");
+      latest_version =
+        aipo_version = JetspeedResources.getString("aipo.version", "");
       URL url = new URL(url_str);
 
       InputStream is = url.openStream();
@@ -192,26 +201,28 @@ public class NewsFormData extends ALAbstractFormData {
     }
 
     // ユーザ数
-    SelectQuery query = new SelectQuery(TurbineUser.class);
-    DataContext datacontext = DatabaseOrmService.getInstance().getDataContext();
-    Expression exp = ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY,
-        "F");
+    SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+    Expression exp =
+      ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
     query.setQualifier(exp);
 
-    List<?> list = datacontext.performQuery(query);
+    List<TurbineUser> list = query.fetchList();
     context.put("UserNum", (String.valueOf(list.size() - 2)));
   }
 
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
   }
 
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
   }
 
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -255,15 +266,16 @@ public class NewsFormData extends ALAbstractFormData {
 
     String body = null;
     try {
-      String news_url = (String) JetspeedResources.getString("aipo.news_url",
-          "");
+      String news_url = JetspeedResources.getString("aipo.news_url", "");
 
       URL url = new URL(news_url);
 
       conn = (HttpURLConnection) url.openConnection();
       conn.setRequestMethod("GET");
 
-      reader = new BufferedReader(new InputStreamReader(conn.getInputStream(),
+      reader =
+        new BufferedReader(new InputStreamReader(
+          conn.getInputStream(),
           ALEipConstants.DEF_CONTENT_ENCODING));
 
       StringBuffer sb = new StringBuffer();

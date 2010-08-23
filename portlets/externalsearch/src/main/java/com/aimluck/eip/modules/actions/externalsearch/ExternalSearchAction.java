@@ -29,18 +29,18 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 検索窓のアクションクラスです。 <BR>
- *
+ * 
  */
 public class ExternalSearchAction extends ALBaseAction {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ExternalSearchAction.class.getName());
+    .getLogger(ExternalSearchAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
@@ -48,6 +48,7 @@ public class ExternalSearchAction extends ALBaseAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
     doExternalsearch_list(rundata, context);
@@ -55,11 +56,12 @@ public class ExternalSearchAction extends ALBaseAction {
 
   /**
    * 最大化表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
     doViewPage(rundata, context, "externalsearch-list");
@@ -67,7 +69,7 @@ public class ExternalSearchAction extends ALBaseAction {
 
   /**
    * 検索窓を表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -78,8 +80,11 @@ public class ExternalSearchAction extends ALBaseAction {
   }
 
   private void doViewPage(RunData rundata, Context context, String vm_template) {
-    String def_searchengine = ALEipUtils.getPortlet(rundata, context)
-        .getPortletConfig().getInitParameter("p1a-selects", "");
+    String def_searchengine =
+      ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p1a-selects", "");
     if (!"".equals(def_searchengine)) {
       context.put("def_searchengine", def_searchengine);
     }

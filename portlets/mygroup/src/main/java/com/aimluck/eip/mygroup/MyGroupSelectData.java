@@ -37,6 +37,7 @@ import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.mygroup.util.MyGroupUtils;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
@@ -104,8 +105,7 @@ public class MyGroupSelectData extends
    */
   private SelectQuery<TurbineGroup> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<TurbineGroup> query =
-      new SelectQuery<TurbineGroup>(TurbineGroup.class);
+    SelectQuery<TurbineGroup> query = Database.query(TurbineGroup.class);
 
     Expression exp =
       ExpressionFactory.matchExp(TurbineGroup.OWNER_ID_PROPERTY, Integer

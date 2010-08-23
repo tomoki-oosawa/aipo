@@ -106,7 +106,7 @@ public class PageSelectData extends ALAbstractSelectData<Portlets, Portlets> {
 
     portletList.clear();
 
-    return new ResultList(list);
+    return new ResultList<Portlets>(list);
   }
 
   /**

@@ -28,13 +28,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * メモ帳の一覧を処理するクラスです。 <br />
- *
+ * 
  */
 public class MemoListScreen extends MemoScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(MemoListScreen.class.getName());
+    .getLogger(MemoListScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
@@ -44,9 +44,9 @@ public class MemoListScreen extends MemoScreen {
     try {
       MemoSelectData listData = new MemoSelectData();
       listData.initField();
-      listData.setRowsNum(Integer.parseInt(ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig()
-          .getInitParameter("p1b-rows")));
+      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p1b-rows")));
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-memo-list.vm";

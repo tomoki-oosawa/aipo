@@ -370,7 +370,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
     if (f_list.size() == 0) {
       return false;
     }
-    ArrayList temp_list = new ArrayList();
+    List temp_list = new ArrayList();
     facilityList = new ArrayList();
 
     SelectQuery facility_query = new SelectQuery(EipMFacility.class);
@@ -378,7 +378,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
       ExpressionFactory.inDbExp(EipMFacility.FACILITY_ID_PK_COLUMN, f_list);
     facility_query.setQualifier(exp);
     temp_list.addAll(FacilitiesUtils
-      .getFacilitiesFromSelectQuery(facility_query.getQuery()));
+      .getFacilitiesFromSelectQuery(facility_query));
     int tmpsize = temp_list.size();
     for (int i = 0; i < tmpsize; i++) {
       FacilityResultData facility = (FacilityResultData) temp_list.get(i);

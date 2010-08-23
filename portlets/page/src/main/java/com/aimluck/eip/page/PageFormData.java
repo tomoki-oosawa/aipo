@@ -53,7 +53,7 @@ import com.aimluck.eip.util.ALEipUtils;
 public class PageFormData extends ALAbstractFormData {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(PageFormData.class.getName());
+    .getLogger(PageFormData.class.getName());
 
   /** 追加可能なページ（タブ）数。タブ [個人設定] を数に含める */
   private static final int MAX_PAGE_NUM = 6;
@@ -73,6 +73,7 @@ public class PageFormData extends ALAbstractFormData {
   /** ページを追加可能かどうか */
   private boolean enableAddPage = true;
 
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
@@ -82,18 +83,21 @@ public class PageFormData extends ALAbstractFormData {
       if (rundata.getParameters().containsKey(ALEipConstants.ENTITY_ID)) {
         // entityid=new を指定することによって明示的にセッション変数を削除することができる。
         if (rundata.getParameters().getString(ALEipConstants.ENTITY_ID).equals(
-            "new")) {
+          "new")) {
           ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
         } else {
-          ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID,
-              rundata.getParameters().getString(ALEipConstants.ENTITY_ID));
+          ALEipUtils.setTemp(
+            rundata,
+            context,
+            ALEipConstants.ENTITY_ID,
+            rundata.getParameters().getString(ALEipConstants.ENTITY_ID));
         }
       }
     }
 
     // 現在のページ（タブ）数を取得
-    Portlets portlets = ((JetspeedRunData) rundata).getProfile().getDocument()
-        .getPortlets();
+    Portlets portlets =
+      ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
     if (portlets != null) {
       Portlets[] portletList = portlets.getPortletsArray();
       currentPageNum = portletList.length;
@@ -103,6 +107,7 @@ public class PageFormData extends ALAbstractFormData {
   /**
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // ページ名
     page_title.setNotNull(true);
@@ -116,6 +121,7 @@ public class PageFormData extends ALAbstractFormData {
   /**
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
 
     // ページ（タブ）数をチェック
@@ -132,26 +138,29 @@ public class PageFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
 
     try {
-      String pageId = ALEipUtils.getTemp(rundata, context,
-          ALEipConstants.ENTITY_ID);
+      String pageId =
+        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
       if (pageId == null || pageId.equals("")) {
         // ENTITY_ID を含まないアクセスの場合：
         return false;
       }
       page_id.setValue(pageId);
 
-      Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-          .getDocument().getPortlets();
-      if (portlets == null)
+      Portlets portlets =
+        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
+      if (portlets == null) {
         return false;
+      }
 
       Portlets[] portletList = portlets.getPortletsArray();
-      if (portletList == null)
+      if (portletList == null) {
         return false;
+      }
 
       String pageidStr = page_id.getValue();
       int length = portletList.length;
@@ -176,21 +185,24 @@ public class PageFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
-      Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-          .getDocument().getPortlets();
+      Portlets portlets =
+        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
 
       String title = page_title.getValue();
-      if (title == null || title.equals(""))
+      if (title == null || title.equals("")) {
         title = "マイページ";
+      }
 
       if (portlets != null) {
         // 最後に配置しているタブポートレットの位置を 1 つ後にずらす
         Portlets[] portletList = portlets.getPortletsArray();
-        if (portletList == null)
+        if (portletList == null) {
           return false;
+        }
 
         int length = portletList.length;
         if (length >= MAX_PAGE_NUM) {
@@ -226,8 +238,9 @@ public class PageFormData extends ALAbstractFormData {
         p.getMetaInfo().setTitle(title);
         p.getMetaInfo().setDescription(page_description.getValue());
         p.setId(JetspeedIdGenerator.getNextPeid());
-        SecurityReference defaultRef = PortalToolkit
-            .getDefaultSecurityRef(((JetspeedRunData) rundata).getProfile());
+        SecurityReference defaultRef =
+          PortalToolkit.getDefaultSecurityRef(((JetspeedRunData) rundata)
+            .getProfile());
         if (defaultRef != null) {
           p.setSecurityRef(defaultRef);
         }
@@ -246,24 +259,28 @@ public class PageFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
 
     try {
-      String pageId = ALEipUtils.getTemp(rundata, context,
-          ALEipConstants.ENTITY_ID);
-      if (pageId == null || pageId.equals(""))
+      String pageId =
+        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+      if (pageId == null || pageId.equals("")) {
         return false;
+      }
       page_id.setValue(pageId);
 
-      Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-          .getDocument().getPortlets();
-      if (portlets == null)
+      Portlets portlets =
+        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
+      if (portlets == null) {
         return false;
+      }
 
       Portlets[] portletList = portlets.getPortletsArray();
-      if (portletList == null)
+      if (portletList == null) {
         return false;
+      }
 
       String pageidStr = page_id.getValue();
       int length = portletList.length;
@@ -292,14 +309,16 @@ public class PageFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     boolean result = false;
     try {
-      String portletId = ALEipUtils.getTemp(rundata, context,
-          ALEipConstants.ENTITY_ID);
-      if (portletId == null || portletId.equals(""))
+      String portletId =
+        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+      if (portletId == null || portletId.equals("")) {
         return false;
+      }
 
       List<String> values = new ArrayList<String>();
       values.add(portletId);

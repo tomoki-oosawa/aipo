@@ -174,7 +174,8 @@ public class MemoFormData extends ALAbstractFormData {
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        memo.getMemoId(), ALEventlogConstants.PORTLET_TYPE_MEMO,
+        memo.getMemoId(),
+        ALEventlogConstants.PORTLET_TYPE_MEMO,
         memo.getMemoName());
 
     } catch (Exception ex) {
@@ -220,7 +221,8 @@ public class MemoFormData extends ALAbstractFormData {
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        memo.getMemoId(), ALEventlogConstants.PORTLET_TYPE_MEMO,
+        memo.getMemoId(),
+        ALEventlogConstants.PORTLET_TYPE_MEMO,
         memo.getMemoName());
 
     } catch (Exception ex) {
@@ -265,7 +267,8 @@ public class MemoFormData extends ALAbstractFormData {
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        memo.getMemoId(), ALEventlogConstants.PORTLET_TYPE_MEMO,
+        memo.getMemoId(),
+        ALEventlogConstants.PORTLET_TYPE_MEMO,
         memo.getMemoName());
     } catch (Exception ex) {
       logger.error("Exception", ex);

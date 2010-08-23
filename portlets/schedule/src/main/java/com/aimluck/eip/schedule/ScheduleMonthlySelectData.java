@@ -893,8 +893,9 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
     } else {
       userList = ALEipUtils.getUsers("LoginUser");
       facilityList =
-        FacilitiesUtils.getFacilitiesFromSelectQuery(new SelectQuery(
-          EipMFacility.class));
+        FacilitiesUtils
+          .getFacilitiesFromSelectQuery(new com.aimluck.eip.orm.query.SelectQuery(
+            EipMFacility.class));
     }
 
     if ((userList == null || userList.size() == 0)

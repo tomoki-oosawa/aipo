@@ -315,8 +315,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
             EipMFacility.FACILITY_ID_PK_COLUMN,
             facilityIds);
         fquery.setQualifier(fexp);
-        facilities =
-          FacilitiesUtils.getFacilitiesFromSelectQuery(fquery.getQuery());
+        facilities = FacilitiesUtils.getFacilitiesFromSelectQuery(fquery);
       }
       // facilities = FacilitiesUtils.getFacilitiesFromCriteria(org_id,
       // new Criteria().addIn(EipMFacilityConstants.FACILITY_ID, facilityIds));

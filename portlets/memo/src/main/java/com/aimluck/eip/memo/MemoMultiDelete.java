@@ -21,10 +21,8 @@ package com.aimluck.eip.memo;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -32,23 +30,24 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTMemo;
 import com.aimluck.eip.common.ALAbstractCheckList;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * メモ帳の複数削除を行うためのクラスです。 <BR>
- *
+ * 
  */
 public class MemoMultiDelete extends ALAbstractCheckList {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(MemoMultiDelete.class.getName());
+    .getLogger(MemoMultiDelete.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param values
@@ -58,11 +57,10 @@ public class MemoMultiDelete extends ALAbstractCheckList {
    *      org.apache.velocity.context.Context, java.util.ArrayList,
    *      java.util.ArrayList)
    */
-  protected boolean action(RunData rundata, Context context, List<String> values,
-      List<String> msgList) {
+  @Override
+  protected boolean action(RunData rundata, Context context,
+      List<String> values, List<String> msgList) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
 
       List<Integer> ids = new ArrayList<Integer>();
       int size = values.size();
@@ -70,36 +68,39 @@ public class MemoMultiDelete extends ALAbstractCheckList {
         ids.add(Integer.valueOf(values.get(i)));
       }
 
-      SelectQuery query = new SelectQuery(EipTMemo.class);
-      Expression exp1 = ExpressionFactory.matchExp(EipTMemo.OWNER_ID_PROPERTY,
-          Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      SelectQuery<EipTMemo> query = Database.query(EipTMemo.class);
+      Expression exp1 =
+        ExpressionFactory.matchExp(EipTMemo.OWNER_ID_PROPERTY, Integer
+          .valueOf(ALEipUtils.getUserId(rundata)));
       query.setQualifier(exp1);
-      Expression exp2 = ExpressionFactory.inDbExp(EipTMemo.MEMO_ID_PK_COLUMN,
-          ids);
+      Expression exp2 =
+        ExpressionFactory.inDbExp(EipTMemo.MEMO_ID_PK_COLUMN, ids);
 
       query.andQualifier(exp2);
 
-      List<?> memos = dataContext.performQuery(query);
-      if (memos == null || memos.size() == 0)
+      List<EipTMemo> memos = query.fetchList();
+      if (memos == null || memos.size() == 0) {
         return false;
+      }
 
       int lsize = memos.size();
       for (int i = 0; i < lsize; i++) {
-        EipTMemo memo = (EipTMemo) memos.get(i);
+        EipTMemo memo = memos.get(i);
         // メモを削除
-        dataContext.deleteObject(memo);
-        dataContext.commitChanges();
+        Database.delete(memo);
+        Database.commit();
         // イベントログに保存
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-            memo.getMemoId(), ALEventlogConstants.PORTLET_TYPE_MEMO,
-            memo.getMemoName());
+          memo.getMemoId(),
+          ALEventlogConstants.PORTLET_TYPE_MEMO,
+          memo.getMemoName());
       }
 
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
     return true;
   }
-
 }

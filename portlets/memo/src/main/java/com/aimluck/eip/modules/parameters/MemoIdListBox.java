@@ -21,15 +21,14 @@ package com.aimluck.eip.modules.parameters;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.modules.parameters.ListBox;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTMemo;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -39,22 +38,22 @@ public class MemoIdListBox extends ListBox {
 
   public static final String INITIAL_VALUE = "initialvalue";
 
-  private String DEF_INITIAL_VALUE = "（メモの選択）";
+  private final String DEF_INITIAL_VALUE = "（メモの選択）";
 
   /**
    * Initialize options
-   *
+   * 
    * @param data
    */
+  @Override
   protected void init(RunData data) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTMemo.class);
-      Expression exp = ExpressionFactory.matchExp(EipTMemo.OWNER_ID_PROPERTY,
-          Integer.valueOf(ALEipUtils.getUserId(data)));
+      SelectQuery<EipTMemo> query = Database.query(EipTMemo.class);
+      Expression exp =
+        ExpressionFactory.matchExp(EipTMemo.OWNER_ID_PROPERTY, Integer
+          .valueOf(ALEipUtils.getUserId(data)));
       query.setQualifier(exp);
-      List<?> memos = dataContext.performQuery(query);
+      List<EipTMemo> memos = query.fetchList();
 
       int length = 1;
       if (memos != null && memos.size() > 0) {
@@ -69,9 +68,9 @@ public class MemoIdListBox extends ListBox {
       int count = 1;
 
       EipTMemo memo = null;
-      Iterator<?> iter = memos.iterator();
+      Iterator<EipTMemo> iter = memos.iterator();
       while (iter.hasNext()) {
-        memo = (EipTMemo) iter.next();
+        memo = iter.next();
         memoKeys[count] = memo.getMemoId().toString();
         memoValues[count] = memo.getMemoName();
         count++;
@@ -81,8 +80,10 @@ public class MemoIdListBox extends ListBox {
       this.items = memoKeys;
       this.values = memoValues;
       this.size = Integer.toString(length);
-      this.multiple = Boolean.valueOf(
-          (String) this.getParm(MULTIPLE_CHOICE, "false")).booleanValue();
+      this.multiple =
+        Boolean
+          .valueOf((String) this.getParm(MULTIPLE_CHOICE, "false"))
+          .booleanValue();
     } catch (Exception e) {
       ALEipUtils.redirectPageNotFound(data);
     }

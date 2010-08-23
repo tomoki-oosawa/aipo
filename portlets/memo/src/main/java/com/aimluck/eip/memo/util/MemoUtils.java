@@ -20,10 +20,8 @@ package com.aimluck.eip.memo.util;
 
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Parameter;
 import org.apache.jetspeed.om.profile.Portlets;
@@ -39,36 +37,39 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.cayenne.om.portlet.EipTMemo;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * Memoのユーティリティクラスです。 <BR>
- *
+ * 
  */
 public class MemoUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(MemoUtils.class.getName());
+    .getLogger(MemoUtils.class.getName());
 
   /**
    * Memo オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    */
   public static EipTMemo getEipTMemo(RunData rundata, Context context)
       throws ALPageNotFoundException {
-    String memoid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String memoid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
-      if (memoid == null || "".equals(memoid)
-          || Integer.valueOf(memoid) == null) {
+      if (memoid == null
+        || "".equals(memoid)
+        || Integer.valueOf(memoid) == null) {
         memoid = rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
-        if (memoid == null || "".equals(memoid)
-            || Integer.valueOf(memoid) == null) {
+        if (memoid == null
+          || "".equals(memoid)
+          || Integer.valueOf(memoid) == null) {
           // Memo IDが空の場合
           logger.debug("[MemoUtils] Empty ID...");
           return null;
@@ -86,7 +87,7 @@ public class MemoUtils {
 
   /**
    * 初期セレクトメモを設定します
-   *
+   * 
    * @param rundata
    * @param index
    * @return
@@ -102,19 +103,22 @@ public class MemoUtils {
     try {
       Profile profile = ((JetspeedRunData) rundata).getProfile();
       Portlets portlets = profile.getDocument().getPortlets();
-      if (portlets == null)
+      if (portlets == null) {
         return false;
+      }
 
       Portlets[] portletList = portlets.getPortletsArray();
-      if (portletList == null)
+      if (portletList == null) {
         return false;
+      }
 
       PsmlParameter param = null;
       int length = portletList.length;
       for (int i = 0; i < length; i++) {
         Entry[] entries = portletList[i].getEntriesArray();
-        if (entries == null || entries.length <= 0)
+        if (entries == null || entries.length <= 0) {
           continue;
+        }
 
         int ent_length = entries.length;
         for (int j = 0; j < ent_length; j++) {
@@ -155,7 +159,7 @@ public class MemoUtils {
 
   /**
    * Memo オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -170,15 +174,13 @@ public class MemoUtils {
         return null;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTMemo.class);
-      Expression exp = ExpressionFactory.matchDbExp(EipTMemo.MEMO_ID_PK_COLUMN,
-          memoid);
-      exp.andExp(ExpressionFactory.matchExp(EipTMemo.OWNER_ID_PROPERTY,
-          Integer.valueOf(ALEipUtils.getUserId(rundata))));
+      SelectQuery<EipTMemo> query = Database.query(EipTMemo.class);
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipTMemo.MEMO_ID_PK_COLUMN, memoid);
+      exp.andExp(ExpressionFactory.matchExp(EipTMemo.OWNER_ID_PROPERTY, Integer
+        .valueOf(ALEipUtils.getUserId(rundata))));
       query.setQualifier(exp);
-      List<?> memos = dataContext.performQuery(query);
+      List<EipTMemo> memos = query.fetchList();
       if (memos == null || memos.size() == 0) {
         // 指定したMemo IDのレコードが見つからない場合
         logger.debug("[MemoUtils] Not found ID...");
@@ -186,13 +188,13 @@ public class MemoUtils {
       }
 
       // アクセス権の判定
-      EipTMemo memo = (EipTMemo) memos.get(0);
+      EipTMemo memo = memos.get(0);
       if (uid != memo.getOwnerId().intValue()) {
         logger.debug("[MemoUtils] Invalid user access...");
         throw new ALPageNotFoundException();
       }
 
-      return ((EipTMemo) memos.get(0));
+      return memos.get(0);
     } catch (ALPageNotFoundException pageNotFound) {
       logger.error(pageNotFound);
       throw pageNotFound;

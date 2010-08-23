@@ -32,17 +32,17 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * メモ帳のアクションクラスです。 <BR>
- *
+ * 
  */
 public class MemoAction extends ALBaseAction {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(MemoAction.class.getName());
+    .getLogger(MemoAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
@@ -50,15 +50,18 @@ public class MemoAction extends ALBaseAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
 
     // セッション情報のクリア
     clearMemoSession(rundata, context);
 
-    ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID,
-        ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-            .getInitParameter("p1a-memos").trim());
+    ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, ALEipUtils
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1a-memos")
+      .trim());
     MemoSelectData listData = new MemoSelectData();
     listData.initField();
     listData.loadMemoIdList(rundata, context);
@@ -68,11 +71,12 @@ public class MemoAction extends ALBaseAction {
 
   /**
    * 最大化表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
     try {
@@ -85,7 +89,7 @@ public class MemoAction extends ALBaseAction {
 
   /**
    * Memoを一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -96,8 +100,9 @@ public class MemoAction extends ALBaseAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig()
-        .getInitParameter("p1b-rows")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1b-rows")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "memo-list");
   }
@@ -110,7 +115,8 @@ public class MemoAction extends ALBaseAction {
 
     // jdata.getUser().removeTemp(peid + "entityid");
     jdata.getUser().removeTemp(
-        new StringBuffer(peid)
-            .append("com.aimluck.eip.memo.MemoSelectDatasort").toString());
+      new StringBuffer(peid)
+        .append("com.aimluck.eip.memo.MemoSelectDatasort")
+        .toString());
   }
 }

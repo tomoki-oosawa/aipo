@@ -29,18 +29,18 @@ import com.aimluck.eip.modules.actions.common.ALBaseAction;
 
 /**
  * 検索窓のアクションクラスです。 <BR>
- *
+ * 
  */
 public class LicenseAction extends ALBaseAction {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(LicenseAction.class.getName());
+    .getLogger(LicenseAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
@@ -48,6 +48,7 @@ public class LicenseAction extends ALBaseAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
     doLicense_detail(rundata, context);
@@ -55,7 +56,7 @@ public class LicenseAction extends ALBaseAction {
 
   /**
    * ライセンス情報を表示する． <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception

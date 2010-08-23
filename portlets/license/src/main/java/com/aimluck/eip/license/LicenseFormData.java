@@ -38,13 +38,13 @@ import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
  * Licenseのフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class LicenseFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(LicenseFormData.class.getName());
+    .getLogger(LicenseFormData.class.getName());
 
   /** License */
   private ALStringField license_1;
@@ -64,13 +64,14 @@ public class LicenseFormData extends ALAbstractFormData {
   private DataContext dataContext;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
@@ -81,7 +82,7 @@ public class LicenseFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -114,9 +115,10 @@ public class LicenseFormData extends ALAbstractFormData {
 
   /**
    * Licenseの各フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // License
     license_1.setNotNull(true);
@@ -144,11 +146,12 @@ public class LicenseFormData extends ALAbstractFormData {
 
   /**
    * Licenseのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     // License
     List<String> dummy = new ArrayList<String>();
@@ -177,6 +180,7 @@ public class LicenseFormData extends ALAbstractFormData {
 
   /**
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     return true;
@@ -184,7 +188,7 @@ public class LicenseFormData extends ALAbstractFormData {
 
   /**
    * Licenseをデータベースから削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -192,6 +196,7 @@ public class LicenseFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -199,7 +204,7 @@ public class LicenseFormData extends ALAbstractFormData {
 
   /**
    * Licenseをデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -207,6 +212,7 @@ public class LicenseFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -214,7 +220,7 @@ public class LicenseFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているToDoを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -222,6 +228,7 @@ public class LicenseFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
@@ -229,7 +236,8 @@ public class LicenseFormData extends ALAbstractFormData {
       AipoLicense license = LicenseUtils.getAipoLicense(rundata, context);
       if (license == null) {
         // 新規オブジェクトモデル
-        license = (AipoLicense) dataContext
+        license =
+          (AipoLicense) dataContext
             .createAndRegisterNewObject(AipoLicense.class);
       }
 

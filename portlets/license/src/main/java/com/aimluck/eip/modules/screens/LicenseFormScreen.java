@@ -28,13 +28,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * LicenseFormScreen
- *
+ * 
  */
 public class LicenseFormScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(LicenseFormScreen.class.getName());
+    .getLogger(LicenseFormScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
@@ -52,7 +52,7 @@ public class LicenseFormScreen extends ALVelocityScreen {
 
   /**
    * ライセンス情報を登録するフォームを表示する． <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
