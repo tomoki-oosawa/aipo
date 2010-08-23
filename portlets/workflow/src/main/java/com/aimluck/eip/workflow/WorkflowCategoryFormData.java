@@ -22,10 +22,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -41,7 +39,8 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
@@ -49,13 +48,13 @@ import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフローカテゴリのフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowCategoryFormData.class.getName());
+    .getLogger(WorkflowCategoryFormData.class.getName());
 
   /** カテゴリ名 */
   private ALStringField category_name;
@@ -75,31 +74,28 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
   /** 申請経路一覧 */
   private List<WorkflowRouteResultData> routeList;
 
-  private DataContext dataContext;
-
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
-    String categoryid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String categoryid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     if (categoryid != null && Integer.valueOf(categoryid) != null) {
       category_id = Integer.valueOf(categoryid);
     }
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -123,9 +119,10 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * ワークフローカテゴリの各フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // カテゴリ名必須項目
     category_name.setNotNull(true);
@@ -139,26 +136,32 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * ワークフローカテゴリのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     try {
-      SelectQuery query = new SelectQuery(EipTWorkflowCategory.class);
-      Expression exp1 = ExpressionFactory
-          .matchExp(EipTWorkflowCategory.CATEGORY_NAME_PROPERTY,
-              category_name.getValue());
+      SelectQuery<EipTWorkflowCategory> query =
+        Database.query(EipTWorkflowCategory.class);
+      Expression exp1 =
+        ExpressionFactory.matchExp(
+          EipTWorkflowCategory.CATEGORY_NAME_PROPERTY,
+          category_name.getValue());
       query.setQualifier(exp1);
       if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
-        Expression exp2 = ExpressionFactory.noMatchDbExp(
-            EipTWorkflowCategory.CATEGORY_ID_PK_COLUMN, category_id);
+        Expression exp2 =
+          ExpressionFactory.noMatchDbExp(
+            EipTWorkflowCategory.CATEGORY_ID_PK_COLUMN,
+            category_id);
         query.andQualifier(exp2);
       }
-      if (dataContext.performQuery(query).size() != 0) {
-        msgList.add("分類名『 <span class='em'>" + category_name.toString()
-            + "</span> 』は既に登録されています。");
+      if (query.fetchList().size() != 0) {
+        msgList.add("分類名『 <span class='em'>"
+          + category_name.toString()
+          + "</span> 』は既に登録されています。");
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -175,7 +178,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * ワークフローカテゴリをデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -183,14 +186,16 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTWorkflowCategory category = WorkflowUtils.getEipTWorkflowCategory(
-          rundata, context);
-      if (category == null)
+      EipTWorkflowCategory category =
+        WorkflowUtils.getEipTWorkflowCategory(rundata, context);
+      if (category == null) {
         return false;
+      }
       // カテゴリ名
       category_name.setValue(category.getCategoryName());
       // テンプレート
@@ -198,8 +203,10 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
       // メモ
       note.setValue(category.getNote());
       // 申請経路ID
-      route_id.setValue(category.getEipTWorkflowRoute().getRouteId()
-          .longValue());
+      route_id.setValue(category
+        .getEipTWorkflowRoute()
+        .getRouteId()
+        .longValue());
       // 申請経路
       route.setValue(category.getEipTWorkflowRoute().getRoute());
     } catch (Exception ex) {
@@ -211,7 +218,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * ワークフローカテゴリをデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -219,13 +226,14 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
-      EipTWorkflowRoute route = WorkflowUtils.getEipTWorkflowRoute(dataContext,
-          Long.valueOf(route_id.getValue()));
-      EipTWorkflowCategory category = (EipTWorkflowCategory) dataContext
-          .createAndRegisterNewObject(EipTWorkflowCategory.class);
+      EipTWorkflowRoute route =
+        WorkflowUtils.getEipTWorkflowRoute(Long.valueOf(route_id.getValue()));
+      EipTWorkflowCategory category =
+        Database.create(EipTWorkflowCategory.class);
       category.setCategoryName(category_name.getValue());
       category.setNote(note.getValue());
       category.setUserId(Integer.valueOf(ALEipUtils.getUserId(rundata)));
@@ -233,15 +241,14 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
       category.setUpdateDate(Calendar.getInstance().getTime());
       category.setTemplate(ordertemplate.getValue());
       category.setEipTWorkflowRoute(route);
-      dataContext.commitChanges();
+      Database.commit();
       // イベントログに保存
-      ALEventlogFactoryService
-          .getInstance()
-          .getEventlogHandler()
-          .log(category.getCategoryId(),
-              ALEventlogConstants.PORTLET_TYPE_WORKFLOW_CATEGORY,
-              category.getCategoryName());
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        category.getCategoryId(),
+        ALEventlogConstants.PORTLET_TYPE_WORKFLOW_CATEGORY,
+        category.getCategoryName());
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -250,7 +257,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているワークフローカテゴリを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -258,16 +265,18 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTWorkflowRoute route = WorkflowUtils.getEipTWorkflowRoute(dataContext,
-          Long.valueOf(route_id.getValue()));
-      EipTWorkflowCategory category = WorkflowUtils.getEipTWorkflowCategory(
-          rundata, context);
-      if (category == null)
+      EipTWorkflowRoute route =
+        WorkflowUtils.getEipTWorkflowRoute(Long.valueOf(route_id.getValue()));
+      EipTWorkflowCategory category =
+        WorkflowUtils.getEipTWorkflowCategory(rundata, context);
+      if (category == null) {
         return false;
+      }
       // カテゴリ名
       category.setCategoryName(category_name.getValue());
       // テンプレート
@@ -282,15 +291,14 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
       category.setEipTWorkflowRoute(route);
 
       // カテゴリを更新
-      dataContext.commitChanges();
+      Database.commit();
       // イベントログに保存
-      ALEventlogFactoryService
-          .getInstance()
-          .getEventlogHandler()
-          .log(category.getCategoryId(),
-              ALEventlogConstants.PORTLET_TYPE_WORKFLOW_CATEGORY,
-              category.getCategoryName());
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        category.getCategoryId(),
+        ALEventlogConstants.PORTLET_TYPE_WORKFLOW_CATEGORY,
+        category.getCategoryName());
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -299,7 +307,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * ワークフローカテゴリを削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -307,14 +315,16 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTWorkflowCategory category = WorkflowUtils.getEipTWorkflowCategory(
-          rundata, context);
-      if (category == null)
+      EipTWorkflowCategory category =
+        WorkflowUtils.getEipTWorkflowCategory(rundata, context);
+      if (category == null) {
         return false;
+      }
 
       if (category.getCategoryId().intValue() == 1) {
         // カテゴリ「未分類」は削除不可
@@ -323,37 +333,39 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
       }
 
       // ワーフクローカテゴリを削除
-      dataContext.deleteObject(category);
+      Database.delete(category);
 
       // このカテゴリに含まれる依頼をカテゴリ「未分類」に移す。
-      SelectQuery query = new SelectQuery(EipTWorkflowRequest.class);
-      Expression exp1 = ExpressionFactory.matchDbExp(
-          EipTWorkflowRequest.EIP_TWORKFLOW_CATEGORY_PROPERTY + "."
-              + EipTWorkflowCategory.CATEGORY_ID_PK_COLUMN,
+      SelectQuery<EipTWorkflowRequest> query =
+        Database.query(EipTWorkflowRequest.class);
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(
+          EipTWorkflowRequest.EIP_TWORKFLOW_CATEGORY_PROPERTY
+            + "."
+            + EipTWorkflowCategory.CATEGORY_ID_PK_COLUMN,
           category.getCategoryId());
       query.setQualifier(exp1);
-      List<?> requests = dataContext.performQuery(query);
+      List<EipTWorkflowRequest> requests = query.fetchList();
       if (requests != null && requests.size() > 0) {
         EipTWorkflowRequest request = null;
-        EipTWorkflowCategory defaultCategory = WorkflowUtils
-            .getEipTWorkflowCategory(dataContext, Long.valueOf(1));
+        EipTWorkflowCategory defaultCategory =
+          WorkflowUtils.getEipTWorkflowCategory(Long.valueOf(1));
         int size = requests.size();
         for (int i = 0; i < size; i++) {
-          request = (EipTWorkflowRequest) requests.get(i);
+          request = requests.get(i);
           request.setEipTWorkflowCategory(defaultCategory);
         }
       }
 
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
-      ALEventlogFactoryService
-          .getInstance()
-          .getEventlogHandler()
-          .log(category.getCategoryId(),
-              ALEventlogConstants.PORTLET_TYPE_WORKFLOW_CATEGORY,
-              category.getCategoryName());
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        category.getCategoryId(),
+        ALEventlogConstants.PORTLET_TYPE_WORKFLOW_CATEGORY,
+        category.getCategoryName());
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -362,13 +374,13 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * テンプレートを渡す
-   *
+   * 
    * @param num
    * @return
    */
   public String routeTemplate(int num) {
     for (WorkflowRouteResultData o : routeList) {
-      WorkflowRouteResultData tmp =  o;
+      WorkflowRouteResultData tmp = o;
       if (tmp.getRouteId().getValue() == num) {
         return tmp.getRouteH();
       }
@@ -379,7 +391,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * カテゴリ名を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getCategoryName() {
@@ -388,7 +400,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * テンプレートを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getTemplate() {
@@ -397,7 +409,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getNote() {
@@ -406,7 +418,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * 申請経路IDを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALNumberField getRouteId() {
@@ -437,7 +449,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * カテゴリ一覧を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public List<WorkflowRouteResultData> getRouteList() {
@@ -445,7 +457,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    */

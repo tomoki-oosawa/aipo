@@ -28,13 +28,13 @@ import com.aimluck.eip.workflow.WorkflowRouteFormData;
 
 /**
  * ワークフロー分類を処理するクラスです。 <br />
- *
+ * 
  */
 public class WorkflowRouteFormScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowRouteFormScreen.class.getName());
+    .getLogger(WorkflowRouteFormScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)

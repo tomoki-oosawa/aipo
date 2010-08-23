@@ -21,10 +21,8 @@ package com.aimluck.eip.workflow;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -33,23 +31,24 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequest;
 import com.aimluck.eip.common.ALAbstractCheckList;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフローカテゴリの複数削除を行うためのクラスです。 <BR>
- *
+ * 
  */
 public class WorkflowCategoryMultiDelete extends ALAbstractCheckList {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowCategoryMultiDelete.class.getName());
+    .getLogger(WorkflowCategoryMultiDelete.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param values
@@ -59,11 +58,10 @@ public class WorkflowCategoryMultiDelete extends ALAbstractCheckList {
    *      org.apache.velocity.context.Context, java.util.ArrayList,
    *      java.util.ArrayList)
    */
-  protected boolean action(RunData rundata, Context context, List<String> values,
-      List<String> msgList) {
+  @Override
+  protected boolean action(RunData rundata, Context context,
+      List<String> values, List<String> msgList) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
 
       List<Integer> intValues = new ArrayList<Integer>();
       int valuesize = values.size();
@@ -74,54 +72,63 @@ public class WorkflowCategoryMultiDelete extends ALAbstractCheckList {
         }
       }
 
-      SelectQuery query = new SelectQuery(EipTWorkflowCategory.class);
-      Expression exp1 = ExpressionFactory.inDbExp(
-          EipTWorkflowCategory.CATEGORY_ID_PK_COLUMN, intValues);
+      SelectQuery<EipTWorkflowCategory> query =
+        Database.query(EipTWorkflowCategory.class);
+      Expression exp1 =
+        ExpressionFactory.inDbExp(
+          EipTWorkflowCategory.CATEGORY_ID_PK_COLUMN,
+          intValues);
       query.setQualifier(exp1);
-      List<?> categorylist = dataContext.performQuery(query);
-      if (categorylist == null || categorylist.size() == 0)
+      List<EipTWorkflowCategory> categorylist = query.fetchList();
+      if (categorylist == null || categorylist.size() == 0) {
         return false;
+      }
 
       // カテゴリを削除
-      dataContext.deleteObjects(categorylist);
+      Database.deleteAll(categorylist);
 
       // これらカテゴリに含まれる依頼をカテゴリ「未分類」に移す。
       List<Integer> categoryIds = new ArrayList<Integer>();
       EipTWorkflowCategory category = null;
       int catesize = categorylist.size();
       for (int i = 0; i < catesize; i++) {
-        category = (EipTWorkflowCategory) categorylist.get(i);
+        category = categorylist.get(i);
         categoryIds.add(category.getCategoryId());
       }
 
-      SelectQuery reqquery = new SelectQuery(EipTWorkflowRequest.class);
-      Expression reqexp1 = ExpressionFactory.inDbExp(
-          EipTWorkflowRequest.EIP_TWORKFLOW_CATEGORY_PROPERTY + "."
-              + EipTWorkflowCategory.CATEGORY_ID_PK_COLUMN, categoryIds);
+      SelectQuery<EipTWorkflowRequest> reqquery =
+        Database.query(EipTWorkflowRequest.class);
+      Expression reqexp1 =
+        ExpressionFactory.inDbExp(
+          EipTWorkflowRequest.EIP_TWORKFLOW_CATEGORY_PROPERTY
+            + "."
+            + EipTWorkflowCategory.CATEGORY_ID_PK_COLUMN,
+          categoryIds);
       reqquery.setQualifier(reqexp1);
-      List<?> requests = dataContext.performQuery(reqquery);
+      List<EipTWorkflowRequest> requests = reqquery.fetchList();
       if (requests != null && requests.size() > 0) {
         EipTWorkflowRequest request = null;
-        EipTWorkflowCategory defaultCategory = WorkflowUtils
-            .getEipTWorkflowCategory(dataContext, Long.valueOf(1));
+        EipTWorkflowCategory defaultCategory =
+          WorkflowUtils.getEipTWorkflowCategory(Long.valueOf(1));
         int size = requests.size();
         for (int i = 0; i < size; i++) {
-          request = (EipTWorkflowRequest) requests.get(i);
+          request = requests.get(i);
           request.setEipTWorkflowCategory(defaultCategory);
 
           // イベントログに保存
           ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-              category.getCategoryId(),
-              ALEventlogConstants.PORTLET_TYPE_WORKFLOW_CATEGORY,
-              category.getCategoryName());
+            category.getCategoryId(),
+            ALEventlogConstants.PORTLET_TYPE_WORKFLOW_CATEGORY,
+            category.getCategoryName());
 
           // ワークフローカテゴリを削除
-          dataContext.deleteObject(category);
+          Database.delete(category);
         }
       }
 
-      dataContext.commitChanges();
+      Database.commit();
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }

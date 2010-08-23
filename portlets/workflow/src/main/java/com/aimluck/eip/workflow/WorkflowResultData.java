@@ -30,7 +30,7 @@ import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフローのResultDataです。 <BR>
- *
+ * 
  */
 public class WorkflowResultData implements ALData {
 
@@ -74,7 +74,7 @@ public class WorkflowResultData implements ALData {
   private List<FileuploadBean> attachmentFileList = null;
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {

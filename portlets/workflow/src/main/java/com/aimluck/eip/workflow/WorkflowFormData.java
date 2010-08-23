@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -54,6 +53,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -123,8 +123,6 @@ public class WorkflowFormData extends ALAbstractFormData {
   /** <code>login_user</code> ログインユーザー */
   private ALEipUser login_user;
 
-  private DataContext dataContext;
-
   /**
    * 
    * @param action
@@ -137,8 +135,6 @@ public class WorkflowFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     login_user = ALEipUtils.getALEipUser(rundata);
 
@@ -228,18 +224,18 @@ public class WorkflowFormData extends ALAbstractFormData {
           String userNames[] = rundata.getParameters().getStrings("positions");
           if (is_saved_route) {
 
-            DataContext dataContext = DatabaseOrmService.getInstance()
-              .getDataContext();
-
-            SelectQuery query1 = new SelectQuery(EipTWorkflowRoute.class);
-            Expression exp1 = ExpressionFactory.matchDbExp(
-              EipTWorkflowRoute.ROUTE_ID_PK_COLUMN, route_id.getValue());
+            SelectQuery<EipTWorkflowRoute> query1 =
+              Database.query(EipTWorkflowRoute.class);
+            Expression exp1 =
+              ExpressionFactory.matchDbExp(
+                EipTWorkflowRoute.ROUTE_ID_PK_COLUMN,
+                route_id.getValue());
 
             query1.setQualifier(exp1);
 
-            List<?> list1 = query1.fetchList();
+            List<EipTWorkflowRoute> list1 = query1.fetchList();
 
-            EipTWorkflowRoute record = (EipTWorkflowRoute) list1.get(0);
+            EipTWorkflowRoute record = list1.get(0);
             String route = record.getRoute();
 
             if (!"".equals(route)) {
@@ -251,12 +247,15 @@ public class WorkflowFormData extends ALAbstractFormData {
                 routeUserNames[i] = WorkflowUtils.getUserName(st.nextToken());
               }
 
-              SelectQuery query = new SelectQuery(TurbineUser.class);
-              Expression exp2 = ExpressionFactory.inExp(
-                TurbineUser.LOGIN_NAME_PROPERTY, routeUserNames);
+              SelectQuery<TurbineUser> query =
+                Database.query(TurbineUser.class);
+              Expression exp2 =
+                ExpressionFactory.inExp(
+                  TurbineUser.LOGIN_NAME_PROPERTY,
+                  routeUserNames);
               query.setQualifier(exp2);
 
-              List<?> list = query.fetchList();
+              List<TurbineUser> list = query.fetchList();
 
               TurbineUser record1 = null;
               int length = routeUserNames.length;
@@ -283,17 +282,17 @@ public class WorkflowFormData extends ALAbstractFormData {
             }
           } else if (userNames != null && userNames.length > 0) {
 
-            DataContext dataContext = DatabaseOrmService.getInstance()
-              .getDataContext();
-            SelectQuery query = new SelectQuery(TurbineUser.class);
-            Expression exp1 = ExpressionFactory.inExp(
-              TurbineUser.LOGIN_NAME_PROPERTY, userNames);
-            Expression exp2 = ExpressionFactory.matchExp(
-              TurbineUser.DISABLED_PROPERTY, "F");
+            SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+            Expression exp1 =
+              ExpressionFactory.inExp(
+                TurbineUser.LOGIN_NAME_PROPERTY,
+                userNames);
+            Expression exp2 =
+              ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
             query.setQualifier(exp1);
             query.andQualifier(exp2);
 
-            List<?> list = query.fetchList();
+            List<TurbineUser> list = query.fetchList();
 
             TurbineUser record = null;
             int length = userNames.length;
@@ -354,10 +353,11 @@ public class WorkflowFormData extends ALAbstractFormData {
    * @param userName
    * @return
    */
-  private TurbineUser getEipUserRecord(List<?> userList, String userName) {
+  private TurbineUser getEipUserRecord(List<TurbineUser> userList,
+      String userName) {
     int size = userList.size();
     for (int i = 0; i < size; i++) {
-      TurbineUser record = (TurbineUser) userList.get(i);
+      TurbineUser record = userList.get(i);
       if (record.getLoginName().equals(userName)) {
         return record;
       }
@@ -423,8 +423,8 @@ public class WorkflowFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTWorkflowRequest request = WorkflowUtils
-        .getEipTWorkflowRequestForOwner(rundata, context);
+      EipTWorkflowRequest request =
+        WorkflowUtils.getEipTWorkflowRequestForOwner(rundata, context);
       if (request == null) {
         return false;
       }
@@ -432,12 +432,16 @@ public class WorkflowFormData extends ALAbstractFormData {
       // リクエスト名
       request_name.setValue(request.getRequestName());
       // カテゴリID
-      category_id.setValue(request.getEipTWorkflowCategory().getCategoryId()
+      category_id.setValue(request
+        .getEipTWorkflowCategory()
+        .getCategoryId()
         .longValue());
       // 申請経路ID
       if (request.getEipTWorkflowRoute() != null) {
         is_saved_route = true;
-        route_id.setValue(request.getEipTWorkflowRoute().getRouteId()
+        route_id.setValue(request
+          .getEipTWorkflowRoute()
+          .getRouteId()
           .longValue());
         route.setValue(request.getEipTWorkflowRoute().getRoute());
       }
@@ -448,11 +452,12 @@ public class WorkflowFormData extends ALAbstractFormData {
       // 金額
       price.setValue(request.getPrice().longValue());
 
-      List<?> maps = WorkflowUtils.getEipTWorkflowRequestMap(request);
+      List<EipTWorkflowRequestMap> maps =
+        WorkflowUtils.getEipTWorkflowRequestMap(request);
       EipTWorkflowRequestMap map = null;
       int size = maps.size();
       for (int i = 0; i < size; i++) {
-        map = (EipTWorkflowRequestMap) maps.get(i);
+        map = maps.get(i);
         int user_id = map.getUserId().intValue();
         if (!WorkflowUtils.DB_STATUS_REQUEST.equals(map.getStatus())) {
           memberList.add(ALEipUtils.getALEipUser(user_id));
@@ -480,26 +485,26 @@ public class WorkflowFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTWorkflowRequest request = WorkflowUtils.getEipTWorkflowRequestAll(
-        rundata, context);
+      EipTWorkflowRequest request =
+        WorkflowUtils.getEipTWorkflowRequestAll(rundata, context);
       int userId = ALEipUtils.getUserId(rundata);
 
       if (!request.getUserId().equals(userId)) {
         // 自分のワークフローではない場合、そのワークフローが自分より前に差し戻せるか確かめる
-        List<?> requestMapList = WorkflowUtils
-          .getEipTWorkflowRequestMap(request);
+        List<EipTWorkflowRequestMap> requestMapList =
+          WorkflowUtils.getEipTWorkflowRequestMap(request);
         EipTWorkflowRequestMap requestMap;
         TurbineUser requestMapUser;
         int listLength = requestMapList.size();
         for (int i = 0; i < listLength; i++) {
-          requestMap = (EipTWorkflowRequestMap) requestMapList.get(i);
+          requestMap = requestMapList.get(i);
           if (requestMap.getUserId().intValue() == userId) {
             break;
           }
 
           // 自分より前に差し戻せるなら、削除させない
-          requestMapUser = WorkflowUtils.getTurbineUser(requestMap.getUserId()
-            .toString());
+          requestMapUser =
+            WorkflowUtils.getTurbineUser(requestMap.getUserId().toString());
           if ("F".equals(requestMapUser.getDisabled())) {
             return false;
           }
@@ -512,15 +517,16 @@ public class WorkflowFormData extends ALAbstractFormData {
 
       // ファイル削除処理
       List<String> fpaths = new ArrayList<String>();
-      SelectQuery query = new SelectQuery(EipTWorkflowFile.class);
-      query.andQualifier(ExpressionFactory
-        .matchDbExp(EipTWorkflowFile.EIP_TWORKFLOW_REQUEST_PROPERTY, request
-          .getRequestId()));
-      List<?> files = query.fetchList();
+      SelectQuery<EipTWorkflowFile> query =
+        Database.query(EipTWorkflowFile.class);
+      query.andQualifier(ExpressionFactory.matchDbExp(
+        EipTWorkflowFile.EIP_TWORKFLOW_REQUEST_PROPERTY,
+        request.getRequestId()));
+      List<EipTWorkflowFile> files = query.fetchList();
       if (files != null && files.size() > 0) {
         int fsize = files.size();
         for (int j = 0; j < fsize; j++) {
-          fpaths.add(((EipTWorkflowFile) files.get(j)).getFilePath());
+          fpaths.add((files.get(j)).getFilePath());
         }
       }
 
@@ -529,8 +535,8 @@ public class WorkflowFormData extends ALAbstractFormData {
         File file = null;
         int fsize = fpaths.size();
         for (int i = 0; i < fsize; i++) {
-          file = new File(WorkflowUtils.getSaveDirPath(org_id, uid)
-            + fpaths.get(i));
+          file =
+            new File(WorkflowUtils.getSaveDirPath(org_id, uid) + fpaths.get(i));
           if (file.exists()) {
             file.delete();
           }
@@ -538,15 +544,17 @@ public class WorkflowFormData extends ALAbstractFormData {
       }
 
       // リクエストを削除
-      dataContext.deleteObject(request);
-      dataContext.commitChanges();
+      Database.delete(request);
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        request.getRequestId(), ALEventlogConstants.PORTLET_TYPE_WORKFLOW,
+        request.getRequestId(),
+        ALEventlogConstants.PORTLET_TYPE_WORKFLOW,
         catname + " " + reqname);
 
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -569,12 +577,12 @@ public class WorkflowFormData extends ALAbstractFormData {
     try {
       Date nowDate = Calendar.getInstance().getTime();
 
-      EipTWorkflowCategory category = WorkflowUtils.getEipTWorkflowCategory(
-        dataContext, Long.valueOf(category_id.getValue()));
+      EipTWorkflowCategory category =
+        WorkflowUtils.getEipTWorkflowCategory(Long.valueOf(category_id
+          .getValue()));
 
       // 新規オブジェクトモデル
-      EipTWorkflowRequest request = (EipTWorkflowRequest) dataContext
-        .createAndRegisterNewObject(EipTWorkflowRequest.class);
+      EipTWorkflowRequest request = Database.create(EipTWorkflowRequest.class);
 
       // リクエスト名
       request.setRequestName(request_name.getValue());
@@ -584,8 +592,8 @@ public class WorkflowFormData extends ALAbstractFormData {
       request.setEipTWorkflowCategory(category);
       // 申請経路ID
       if (is_saved_route) {
-        EipTWorkflowRoute route = WorkflowUtils.getEipTWorkflowRoute(
-          dataContext, Long.valueOf(route_id.getValue()));
+        EipTWorkflowRoute route =
+          WorkflowUtils.getEipTWorkflowRoute(Long.valueOf(route_id.getValue()));
         request.setEipTWorkflowRoute(route);
       }
       // ユーザーID
@@ -605,8 +613,12 @@ public class WorkflowFormData extends ALAbstractFormData {
       request.setUpdateDate(Calendar.getInstance().getTime());
 
       // 申請先の設定
-      insertEipTWorkflowRequestMap(request, login_user,
-        WorkflowUtils.DB_STATUS_REQUEST, 0, nowDate);
+      insertEipTWorkflowRequestMap(
+        request,
+        login_user,
+        WorkflowUtils.DB_STATUS_REQUEST,
+        0,
+        nowDate);
 
       // 申請先が削除・無効化されていたら次へまわす
       int size = memberList.size();
@@ -614,55 +626,82 @@ public class WorkflowFormData extends ALAbstractFormData {
       int i;
       for (i = 0; i < size; i++) {
         toUser = memberList.get(i);
-        if (WorkflowUtils.getUserIsDisabledOrDeleted(toUser.getUserId()
+        if (WorkflowUtils.getUserIsDisabledOrDeleted(toUser
+          .getUserId()
           .getValueAsString())) {
-          insertEipTWorkflowRequestMap(request, toUser,
-            WorkflowUtils.DB_STATUS_THROUGH, i + 1, nowDate);
+          insertEipTWorkflowRequestMap(
+            request,
+            toUser,
+            WorkflowUtils.DB_STATUS_THROUGH,
+            i + 1,
+            nowDate);
         } else {
           // 0から数えてi番目のユーザーが確認中
-          insertEipTWorkflowRequestMap(request, toUser,
-            WorkflowUtils.DB_STATUS_CONFIRM, (i + 1), nowDate);
+          insertEipTWorkflowRequestMap(
+            request,
+            toUser,
+            WorkflowUtils.DB_STATUS_CONFIRM,
+            (i + 1),
+            nowDate);
           break;
         }
       }
 
       // i + 1番目のユーザー以降の状態を「確認前」状態にする
       for (int j = i + 1; j < size; j++) {
-        insertEipTWorkflowRequestMap(request, memberList.get(j),
-          WorkflowUtils.DB_STATUS_WAIT, (j + 1), nowDate);
+        insertEipTWorkflowRequestMap(
+          request,
+          memberList.get(j),
+          WorkflowUtils.DB_STATUS_WAIT,
+          (j + 1),
+          nowDate);
       }
 
       // 添付ファイル処理
-      if (!WorkflowUtils.insertFileDataDelegate(rundata, context, request,
-        null, fileuploadList, folderName, msgList)) {
+      if (!WorkflowUtils.insertFileDataDelegate(
+        rundata,
+        context,
+        request,
+        null,
+        fileuploadList,
+        folderName,
+        msgList)) {
         return false;
       }
 
       // リクエストを登録
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         request.getRequestId(),
         ALEventlogConstants.PORTLET_TYPE_WORKFLOW,
-        request.getEipTWorkflowCategory().getCategoryName() + " "
+        request.getEipTWorkflowCategory().getCategoryName()
+          + " "
           + request_name.getValue());
 
       // 削除・無効化されていない最初の申請先に新着ポートレット登録
       ALEipUser nextUser = memberList.get(i);
-      ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+      ALAccessControlFactoryService aclservice =
+        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-      if (aclhandler.hasAuthority((int) nextUser.getUserId().getValue(),
+      if (aclhandler.hasAuthority(
+        (int) nextUser.getUserId().getValue(),
         ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_SELF,
         ALAccessControlConstants.VALUE_ACL_DETAIL)) {
         WhatsNewUtils.insertWhatsNew(
-          WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST, request.getRequestId()
-            .intValue(), (int) nextUser.getUserId().getValue());
+          WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST,
+          request.getRequestId().intValue(),
+          (int) nextUser.getUserId().getValue());
       }
       // 次の申請先にメール送信
-      WorkflowUtils.sendMail(rundata, request, nextUser,
+      WorkflowUtils.sendMail(
+        rundata,
+        request,
+        nextUser,
         new ArrayList<String>());
 
       File folder = FileuploadUtils.getFolder(org_id, uid, folderName);
@@ -670,6 +709,7 @@ public class WorkflowFormData extends ALAbstractFormData {
       FileuploadUtils.deleteFolder(folder);
 
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -691,20 +731,20 @@ public class WorkflowFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTWorkflowRequest oldrequest = WorkflowUtils
-        .getEipTWorkflowRequestForOwner(rundata, context);
+      EipTWorkflowRequest oldrequest =
+        WorkflowUtils.getEipTWorkflowRequestForOwner(rundata, context);
       if (oldrequest == null) {
         return false;
       }
 
       Date nowDate = Calendar.getInstance().getTime();
 
-      EipTWorkflowCategory category = WorkflowUtils.getEipTWorkflowCategory(
-        dataContext, Long.valueOf(category_id.getValue()));
+      EipTWorkflowCategory category =
+        WorkflowUtils.getEipTWorkflowCategory(Long.valueOf(category_id
+          .getValue()));
 
       // 新規オブジェクトモデル
-      EipTWorkflowRequest request = (EipTWorkflowRequest) dataContext
-        .createAndRegisterNewObject(EipTWorkflowRequest.class);
+      EipTWorkflowRequest request = Database.create(EipTWorkflowRequest.class);
 
       // リクエスト名
       request.setRequestName(request_name.getValue());
@@ -718,8 +758,8 @@ public class WorkflowFormData extends ALAbstractFormData {
       request.setEipTWorkflowCategory(category);
       // 申請経路ID
       if (is_saved_route) {
-        EipTWorkflowRoute route = WorkflowUtils.getEipTWorkflowRoute(
-          dataContext, Long.valueOf(route_id.getValue()));
+        EipTWorkflowRoute route =
+          WorkflowUtils.getEipTWorkflowRoute(Long.valueOf(route_id.getValue()));
         request.setEipTWorkflowRoute(route);
       }
       // ユーザーID
@@ -739,8 +779,12 @@ public class WorkflowFormData extends ALAbstractFormData {
       request.setUpdateDate(Calendar.getInstance().getTime());
 
       // 申請先の設定
-      insertEipTWorkflowRequestMap(request, login_user,
-        WorkflowUtils.DB_STATUS_REQUEST, 0, nowDate);
+      insertEipTWorkflowRequestMap(
+        request,
+        login_user,
+        WorkflowUtils.DB_STATUS_REQUEST,
+        0,
+        nowDate);
 
       // 申請先が削除・無効化されていたら次へまわす
       int size = memberList.size();
@@ -748,61 +792,88 @@ public class WorkflowFormData extends ALAbstractFormData {
       int i;
       for (i = 0; i < size; i++) {
         toUser = memberList.get(i);
-        if (WorkflowUtils.getUserIsDisabledOrDeleted(toUser.getUserId()
+        if (WorkflowUtils.getUserIsDisabledOrDeleted(toUser
+          .getUserId()
           .getValueAsString())) {
-          insertEipTWorkflowRequestMap(request, toUser,
-            WorkflowUtils.DB_STATUS_THROUGH, i + 1, nowDate);
+          insertEipTWorkflowRequestMap(
+            request,
+            toUser,
+            WorkflowUtils.DB_STATUS_THROUGH,
+            i + 1,
+            nowDate);
         } else {
           // 0から数えてi番目のユーザーが確認中
-          insertEipTWorkflowRequestMap(request, toUser,
-            WorkflowUtils.DB_STATUS_CONFIRM, (i + 1), nowDate);
+          insertEipTWorkflowRequestMap(
+            request,
+            toUser,
+            WorkflowUtils.DB_STATUS_CONFIRM,
+            (i + 1),
+            nowDate);
           break;
         }
       }
 
       // i + 1番目のユーザー以降の状態を「確認前」状態にする
       for (int j = i + 1; j < size; j++) {
-        insertEipTWorkflowRequestMap(request, memberList.get(j),
-          WorkflowUtils.DB_STATUS_WAIT, (j + 1), nowDate);
+        insertEipTWorkflowRequestMap(
+          request,
+          memberList.get(j),
+          WorkflowUtils.DB_STATUS_WAIT,
+          (j + 1),
+          nowDate);
       }
 
       // 添付ファイル処理
-      if (!WorkflowUtils.insertFileDataDelegate(rundata, context, request,
-        oldrequest, fileuploadList, folderName, msgList)) {
+      if (!WorkflowUtils.insertFileDataDelegate(
+        rundata,
+        context,
+        request,
+        oldrequest,
+        fileuploadList,
+        folderName,
+        msgList)) {
         return false;
       }
 
       // リクエストを登録
-      dataContext.commitChanges();
+      Database.commit();
 
       // 再申請済みを設定する
       oldrequest.setProgress(WorkflowUtils.DB_PROGRESS_REAPPLY);
       // リクエストを登録
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         request.getRequestId(),
         ALEventlogConstants.PORTLET_TYPE_WORKFLOW,
-        request.getEipTWorkflowCategory().getCategoryName() + " "
+        request.getEipTWorkflowCategory().getCategoryName()
+          + " "
           + request_name.getValue());
 
       // 削除・無効化されていない最初の申請先に新着ポートレット登録
       ALEipUser nextUser = memberList.get(i);
 
-      ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+      ALAccessControlFactoryService aclservice =
+        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-      if (aclhandler.hasAuthority((int) nextUser.getUserId().getValue(),
+      if (aclhandler.hasAuthority(
+        (int) nextUser.getUserId().getValue(),
         ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_SELF,
         ALAccessControlConstants.VALUE_ACL_DETAIL)) {
         WhatsNewUtils.insertWhatsNew(
-          WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST, request.getRequestId()
-            .intValue(), (int) nextUser.getUserId().getValue());
+          WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST,
+          request.getRequestId().intValue(),
+          (int) nextUser.getUserId().getValue());
       }
       // 次の申請先にメール送信
-      WorkflowUtils.sendMail(rundata, request, nextUser,
+      WorkflowUtils.sendMail(
+        rundata,
+        request,
+        nextUser,
         new ArrayList<String>());
 
       File folder = FileuploadUtils.getFolder(org_id, uid, folderName);
@@ -810,6 +881,7 @@ public class WorkflowFormData extends ALAbstractFormData {
       FileuploadUtils.deleteFolder(folder);
 
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -825,8 +897,7 @@ public class WorkflowFormData extends ALAbstractFormData {
    */
   private void insertEipTWorkflowRequestMap(EipTWorkflowRequest request,
       ALEipUser user, String status, int order, Date now) {
-    EipTWorkflowRequestMap map = (EipTWorkflowRequestMap) dataContext
-      .createAndRegisterNewObject(EipTWorkflowRequestMap.class);
+    EipTWorkflowRequestMap map = Database.create(EipTWorkflowRequestMap.class);
     int userid = (int) user.getUserId().getValue();
     map.setEipTWorkflowRequest(request);
     map.setUserId(Integer.valueOf(userid));
@@ -854,16 +925,20 @@ public class WorkflowFormData extends ALAbstractFormData {
 
         // ユーザー一覧を得る
         List<ALEipUser> list = new ArrayList<ALEipUser>();
-        SelectQuery query = new SelectQuery(TurbineUser.class);
-        Expression exp11 = ExpressionFactory.matchExp(
-          TurbineUser.DISABLED_PROPERTY, "F");
-        Expression exp = ExpressionFactory.matchDbExp(
-          TurbineUser.USER_ID_PK_COLUMN, routeArray[0]);
+        SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+        Expression exp11 =
+          ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
+        Expression exp =
+          ExpressionFactory.matchDbExp(
+            TurbineUser.USER_ID_PK_COLUMN,
+            routeArray[0]);
 
         Expression exptmp;
         for (int i = 1; i < routeArrayLength; i++) {
-          exptmp = ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN,
-            routeArray[i]);
+          exptmp =
+            ExpressionFactory.matchDbExp(
+              TurbineUser.USER_ID_PK_COLUMN,
+              routeArray[i]);
           exp = exp.orExp(exptmp);
         }
         exp = exp.andExp(exp11);

@@ -35,17 +35,17 @@ import com.aimluck.eip.workflow.WorkflowSelectData;
 
 /**
  * ワークフローのアクションクラスです。 <BR>
- *
+ * 
  */
 public class WorkflowAction extends ALBaseAction {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowAction.class.getName());
+    .getLogger(WorkflowAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
@@ -53,6 +53,7 @@ public class WorkflowAction extends ALBaseAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
 
@@ -61,21 +62,24 @@ public class WorkflowAction extends ALBaseAction {
 
     WorkflowSelectData listData = new WorkflowSelectData();
     listData.initField();
-    listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
-        .getInitParameter("p1a-rows")));
-    listData.setStrLength(Integer.parseInt(portlet.getPortletConfig()
-        .getInitParameter("p3a-strlen")));
+    listData.setRowsNum(Integer.parseInt(portlet
+      .getPortletConfig()
+      .getInitParameter("p1a-rows")));
+    listData.setStrLength(Integer.parseInt(portlet
+      .getPortletConfig()
+      .getInitParameter("p3a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "workflow");
   }
 
   /**
    * 最大化表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
 
@@ -97,7 +101,7 @@ public class WorkflowAction extends ALBaseAction {
 
   /**
    * 依頼を一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -111,17 +115,19 @@ public class WorkflowAction extends ALBaseAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1b-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-        context).getPortletConfig().getInitParameter("p3a-strlen")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1b-rows")));
+    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
+      context).getPortletConfig().getInitParameter("p3a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "workflow-list");
   }
 
   /**
    * 全依頼を一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -135,10 +141,12 @@ public class WorkflowAction extends ALBaseAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1b-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-        context).getPortletConfig().getInitParameter("p3a-strlen")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1b-rows")));
+    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
+      context).getPortletConfig().getInitParameter("p3a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "workflow-list-admin");
   }

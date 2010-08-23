@@ -21,10 +21,8 @@ package com.aimluck.eip.workflow;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -32,20 +30,21 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRoute;
 import com.aimluck.eip.common.ALAbstractCheckList;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
  * ワークフローカテゴリの複数削除を行うためのクラスです。 <BR>
- *
+ * 
  */
 public class WorkflowRouteMultiDelete extends ALAbstractCheckList {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowRouteMultiDelete.class.getName());
+    .getLogger(WorkflowRouteMultiDelete.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param values
@@ -55,11 +54,10 @@ public class WorkflowRouteMultiDelete extends ALAbstractCheckList {
    *      org.apache.velocity.context.Context, java.util.ArrayList,
    *      java.util.ArrayList)
    */
+  @Override
   protected boolean action(RunData rundata, Context context,
       List<String> values, List<String> msgList) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
 
       List<Integer> intValues = new ArrayList<Integer>();
       int valuesize = values.size();
@@ -70,19 +68,24 @@ public class WorkflowRouteMultiDelete extends ALAbstractCheckList {
         }
       }
 
-      SelectQuery query = new SelectQuery(EipTWorkflowRoute.class);
-      Expression exp1 = ExpressionFactory.inDbExp(
-          EipTWorkflowRoute.ROUTE_ID_PK_COLUMN, intValues);
+      SelectQuery<EipTWorkflowRoute> query =
+        Database.query(EipTWorkflowRoute.class);
+      Expression exp1 =
+        ExpressionFactory.inDbExp(
+          EipTWorkflowRoute.ROUTE_ID_PK_COLUMN,
+          intValues);
       query.setQualifier(exp1);
-      List<?> routelist = dataContext.performQuery(query);
-      if (routelist == null || routelist.size() == 0)
+      List<EipTWorkflowRoute> routelist = query.fetchList();
+      if (routelist == null || routelist.size() == 0) {
         return false;
+      }
 
       // 申請経路を削除
-      dataContext.deleteObjects(routelist);
+      Database.deleteAll(routelist);
 
-      dataContext.commitChanges();
+      Database.commit();
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }

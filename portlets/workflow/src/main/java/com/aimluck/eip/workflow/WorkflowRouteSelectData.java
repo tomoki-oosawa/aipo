@@ -33,6 +33,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -124,7 +125,7 @@ public class WorkflowRouteSelectData extends
   private SelectQuery<EipTWorkflowRoute> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<EipTWorkflowRoute> query =
-      new SelectQuery<EipTWorkflowRoute>(EipTWorkflowRoute.class);
+      Database.query(EipTWorkflowRoute.class);
 
     return query;
   }

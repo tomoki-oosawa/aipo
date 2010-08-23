@@ -33,20 +33,21 @@ public class WorkflowFileRawScreen extends FileuploadRawScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowFileRawScreen.class.getName());
+    .getLogger(WorkflowFileRawScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
    */
+  @Override
   protected void doOutput(RunData rundata) throws Exception {
     try {
-      EipTWorkflowFile workflowfile = WorkflowUtils
-          .getEipTWorkflowFile(rundata);
+      EipTWorkflowFile workflowfile =
+        WorkflowUtils.getEipTWorkflowFile(rundata);
 
       super.setFilePath(WorkflowUtils.getSaveDirPath(DatabaseOrmService
-          .getInstance().getOrgId(rundata), workflowfile.getOwnerId()
-          .intValue())
-          + workflowfile.getFilePath());
+        .getInstance()
+        .getOrgId(rundata), workflowfile.getOwnerId().intValue())
+        + workflowfile.getFilePath());
       super.setFileName(workflowfile.getFileName());
       super.doOutput(rundata);
     } catch (Exception e) {

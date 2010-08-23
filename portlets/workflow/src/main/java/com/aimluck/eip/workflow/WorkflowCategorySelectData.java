@@ -34,6 +34,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -129,7 +130,7 @@ public class WorkflowCategorySelectData extends
   private SelectQuery<EipTWorkflowCategory> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<EipTWorkflowCategory> query =
-      new SelectQuery<EipTWorkflowCategory>(EipTWorkflowCategory.class);
+      Database.query(EipTWorkflowCategory.class);
 
     return query;
   }

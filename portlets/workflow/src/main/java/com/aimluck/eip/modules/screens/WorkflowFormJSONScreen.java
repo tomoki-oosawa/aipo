@@ -35,13 +35,13 @@ import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフローをJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class WorkflowFormJSONScreen extends ALJSONScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowFormJSONScreen.class.getName());
+    .getLogger(WorkflowFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -57,8 +57,9 @@ public class WorkflowFormJSONScreen extends ALJSONScreen {
         formData.loadRouteList(rundata, context);
         if (formData.doInsert(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       }
@@ -69,8 +70,9 @@ public class WorkflowFormJSONScreen extends ALJSONScreen {
         formData.loadRouteList(rundata, context);
         if (formData.doUpdate(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if ("accept".equals(mode)) {
@@ -79,8 +81,9 @@ public class WorkflowFormJSONScreen extends ALJSONScreen {
         formData.setAcceptFlg(true);
         if (formData.doUpdate(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if ("denial".equals(mode)) {
@@ -89,8 +92,9 @@ public class WorkflowFormJSONScreen extends ALJSONScreen {
         formData.setAcceptFlg(false);
         if (formData.doUpdate(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
@@ -101,13 +105,14 @@ public class WorkflowFormJSONScreen extends ALJSONScreen {
         formData.loadRouteList(rundata, context);
         if (formData.doDelete(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if ("categorytemplate".equals(mode)) {
-        int value = Integer
-            .valueOf(rundata.getParameters().getStrings("value")[0]);
+        int value =
+          Integer.valueOf(rundata.getParameters().getStrings("value")[0]);
         WorkflowFormData formData = new WorkflowFormData();
         Map<String, String> map = new HashMap<String, String>();
 
@@ -128,8 +133,8 @@ public class WorkflowFormJSONScreen extends ALJSONScreen {
         JSONArray json = JSONArray.fromObject(map);
         result = json.toString();
       } else if ("routetemplate".equals(mode)) {
-        Integer value = Integer.valueOf(rundata.getParameters().getStrings(
-            "value")[0]);
+        Integer value =
+          Integer.valueOf(rundata.getParameters().getStrings("value")[0]);
         WorkflowFormData formData = new WorkflowFormData();
         Map<String, String> map = new HashMap<String, String>();
 

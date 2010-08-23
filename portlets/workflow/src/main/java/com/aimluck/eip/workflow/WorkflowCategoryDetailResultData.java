@@ -26,10 +26,11 @@ import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフローカテゴリのResultDataです。<BR>
- *
+ * 
  */
 public class WorkflowCategoryDetailResultData extends
     WorkflowCategoryResultData {
+
   /** メモ */
   protected ALStringField note;
 
@@ -49,9 +50,10 @@ public class WorkflowCategoryDetailResultData extends
   protected ALStringField route;
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
+  @Override
   public void initField() {
     super.initField();
     note = new ALStringField();

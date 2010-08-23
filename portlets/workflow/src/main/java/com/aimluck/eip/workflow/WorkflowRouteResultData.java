@@ -46,7 +46,7 @@ public class WorkflowRouteResultData implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowUtils.class.getName());
+    .getLogger(WorkflowUtils.class.getName());
 
   /**
    * 

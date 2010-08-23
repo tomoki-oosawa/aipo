@@ -23,7 +23,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
@@ -39,7 +38,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
@@ -68,8 +67,6 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
   /** 差し戻し先の順位 */
   private ALNumberField passback_order;
 
-  private DataContext dataContext;
-
   /**
    * 
    * @param action
@@ -82,8 +79,6 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   /**
@@ -201,8 +196,8 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTWorkflowRequest request = WorkflowUtils.getEipTWorkflowRequest(
-        rundata, context, true);
+      EipTWorkflowRequest request =
+        WorkflowUtils.getEipTWorkflowRequest(rundata, context, true);
       if (request == null) {
         return false;
       }
@@ -210,10 +205,11 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
       int login_user_id = ALEipUtils.getUserId(rundata);
       EipTWorkflowRequestMap map = null;
       int order = 0;
-      List<?> maps = WorkflowUtils.getEipTWorkflowRequestMap(request);
+      List<EipTWorkflowRequestMap> maps =
+        WorkflowUtils.getEipTWorkflowRequestMap(request);
       int size = maps.size();
       for (int i = 0; i < size; i++) {
-        map = (EipTWorkflowRequestMap) maps.get(i);
+        map = maps.get(i);
         if (WorkflowUtils.DB_STATUS_CONFIRM.equals(map.getStatus())) {
           order = i + 1;
           break;
@@ -234,10 +230,11 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
         for (; order < size; order++) {
           // まだ申請先が残っている場合
           // 次の申請先を指定
-          map = (EipTWorkflowRequestMap) maps.get(order);
+          map = maps.get(order);
 
           // 次のユーザーが削除済みだった場合は自動的に承認させる
-          if (WorkflowUtils.getUserIsDisabledOrDeleted(map.getUserId()
+          if (WorkflowUtils.getUserIsDisabledOrDeleted(map
+            .getUserId()
             .toString())) {
             // 自動承認
             map.setStatus(WorkflowUtils.DB_STATUS_THROUGH);
@@ -264,10 +261,10 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
         map.setUpdateDate(now);
 
         // 差し戻し先が申請者であり、有効である場合
-        EipTWorkflowRequestMap applicantMap = (EipTWorkflowRequestMap) maps
-          .get(0);
+        EipTWorkflowRequestMap applicantMap = maps.get(0);
         if (passback_user_order == 0
-          && !WorkflowUtils.getUserIsDisabledOrDeleted(applicantMap.getUserId()
+          && !WorkflowUtils.getUserIsDisabledOrDeleted(applicantMap
+            .getUserId()
             .toString())) {
           // 申請者に差し戻す
           request.setProgress(WorkflowUtils.DB_PROGRESS_DENAIL);
@@ -283,7 +280,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
           int i;
           for (i = passback_user_order; i < size; i++) {
             // 差し戻し先のmap
-            passbackMap = (EipTWorkflowRequestMap) maps.get(i);
+            passbackMap = maps.get(i);
             int user_id = passbackMap.getUserId().intValue();
 
             // 差し戻し先が自分自身だ
@@ -296,7 +293,8 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
 
             // 差し戻し先が無効化、もしくは削除されていた場合
             if (WorkflowUtils.getUserIsDisabledOrDeleted(passbackMap
-              .getUserId().toString())) {
+              .getUserId()
+              .toString())) {
               // 自動承認した上で次の人を見に行く
               passbackMap.setStatus(WorkflowUtils.DB_STATUS_THROUGH);
             } else {
@@ -319,41 +317,47 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
       request.setUpdateDate(now);
 
       // リクエストを更新
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         request.getRequestId(),
         ALEventlogConstants.PORTLET_TYPE_WORKFLOW,
-        request.getEipTWorkflowCategory().getCategoryName() + " "
+        request.getEipTWorkflowCategory().getCategoryName()
+          + " "
           + request.getRequestName());
 
       if (sendMailMap != null) {
         /* 次の申請先に新着ポートレット登録 */
-        ALEipUser nextUser = ALEipUtils.getALEipUser(sendMailMap.getUserId()
-          .intValue());
+        ALEipUser nextUser =
+          ALEipUtils.getALEipUser(sendMailMap.getUserId().intValue());
 
-        ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-          .getInstance())
-          .getService(ALAccessControlFactoryService.SERVICE_NAME);
-        ALAccessControlHandler aclhandler = aclservice
-          .getAccessControlHandler();
+        ALAccessControlFactoryService aclservice =
+          (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+            .getInstance())
+            .getService(ALAccessControlFactoryService.SERVICE_NAME);
+        ALAccessControlHandler aclhandler =
+          aclservice.getAccessControlHandler();
 
-        if (aclhandler.hasAuthority((int) nextUser.getUserId().getValue(),
+        if (aclhandler.hasAuthority(
+          (int) nextUser.getUserId().getValue(),
           ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_SELF,
           ALAccessControlConstants.VALUE_ACL_DETAIL)) {
-          WhatsNewUtils
-            .insertWhatsNew(WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST,
-              request.getRequestId().intValue(), (int) nextUser.getUserId()
-                .getValue());
+          WhatsNewUtils.insertWhatsNew(
+            WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST,
+            request.getRequestId().intValue(),
+            (int) nextUser.getUserId().getValue());
         }
 
         // 次の申請先にメール送信
-        WorkflowUtils.sendMail(rundata, request, ALEipUtils
-          .getALEipUser(sendMailMap.getUserId().intValue()),
+        WorkflowUtils.sendMail(
+          rundata,
+          request,
+          ALEipUtils.getALEipUser(sendMailMap.getUserId().intValue()),
           new ArrayList<String>());
       }
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -361,12 +365,12 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
   }
 
   private EipTWorkflowRequestMap getEipTWorkflowRequestMapWithRequester(
-      List<?> maps) {
+      List<EipTWorkflowRequestMap> maps) {
     // 申請者のMapを取得
     EipTWorkflowRequestMap map = null;
     int size = maps.size();
     for (int i = 0; i < size; i++) {
-      map = (EipTWorkflowRequestMap) maps.get(i);
+      map = maps.get(i);
       if (WorkflowUtils.DB_STATUS_REQUEST.equals(map.getStatus())) {
         break;
       }

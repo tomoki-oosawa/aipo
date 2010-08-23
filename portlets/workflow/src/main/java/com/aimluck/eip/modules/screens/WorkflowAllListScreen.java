@@ -28,13 +28,13 @@ import com.aimluck.eip.workflow.WorkflowAllSelectData;
 
 /**
  * ワークフローの管理者用の一覧を処理するクラスです。 <br />
- *
+ * 
  */
 public class WorkflowAllListScreen extends WorkflowAllScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowAllListScreen.class.getName());
+    .getLogger(WorkflowAllListScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
@@ -47,10 +47,12 @@ public class WorkflowAllListScreen extends WorkflowAllScreen {
       listData.initField();
       listData.loadCategoryList(rundata, context);
       listData.loadRouteList(rundata, context);
-      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-          context).getPortletConfig().getInitParameter("p1b-rows")));
-      listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-          context).getPortletConfig().getInitParameter("p3a-strlen")));
+      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p1b-rows")));
+      listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p3a-strlen")));
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-workflow-list-admin.vm";

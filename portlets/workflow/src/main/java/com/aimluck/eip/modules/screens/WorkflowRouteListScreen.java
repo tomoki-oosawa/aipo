@@ -28,13 +28,13 @@ import com.aimluck.eip.workflow.WorkflowRouteSelectData;
 
 /**
  * ワークフロー分類の一覧を処理するクラスです。 <br />
- *
+ * 
  */
 public class WorkflowRouteListScreen extends WorkflowRouteScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowRouteListScreen.class.getName());
+    .getLogger(WorkflowRouteListScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
@@ -45,12 +45,12 @@ public class WorkflowRouteListScreen extends WorkflowRouteScreen {
     try {
       WorkflowRouteSelectData listData = new WorkflowRouteSelectData();
       listData.initField();
-      listData.setRowsNum(Integer.parseInt(ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig()
-          .getInitParameter("p1a-rows")));
-      listData.setStrLength(Integer.parseInt(ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig()
-          .getInitParameter("p3a-strlen")));
+      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p1a-rows")));
+      listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p3a-strlen")));
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-workflow-route-list.vm";

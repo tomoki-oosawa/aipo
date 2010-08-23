@@ -28,13 +28,8 @@ import java.util.TimeZone;
 
 import javax.imageio.ImageIO;
 
-import org.apache.cayenne.DataObjectUtils;
-import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.om.security.UserIdPrincipal;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -63,7 +58,9 @@ import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.mail.util.ALEipUserAddr;
 import com.aimluck.eip.mail.util.ALMailUtils;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
@@ -81,13 +78,13 @@ import com.aimluck.eip.workflow.WorkflowRouteResultData;
 
 /**
  * ワークフローのユーティリティクラスです。 <BR>
- *
+ * 
  */
 public class WorkflowUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowUtils.class.getName());
+    .getLogger(WorkflowUtils.class.getName());
 
   /** 申請 */
   public static final String DB_STATUS_REQUEST = "R";
@@ -124,19 +121,21 @@ public class WorkflowUtils {
 
   /** デフォルトエンコーディングを表わすシステムプロパティのキー */
   public static final String FILE_ENCODING = JetspeedResources.getString(
-      "content.defaultencoding", "UTF-8");
+    "content.defaultencoding",
+    "UTF-8");
 
   /** ワークフローの添付ファイルを保管するディレクトリの指定 */
   private static final String FOLDER_FILEDIR_WORKFLOW = JetspeedResources
-      .getString("aipo.filedir", "");
+    .getString("aipo.filedir", "");
 
   /** ワークフローの添付ファイルを保管するディレクトリのカテゴリキーの指定 */
   protected static final String CATEGORY_KEY = JetspeedResources.getString(
-      "aipo.workflow.categorykey", "");
+    "aipo.workflow.categorykey",
+    "");
 
   /**
    * Request オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param mode_update
@@ -145,8 +144,8 @@ public class WorkflowUtils {
   public static EipTWorkflowRequest getEipTWorkflowRequest(RunData rundata,
       Context context, boolean mode_update) throws ALPageNotFoundException {
     int uid = ALEipUtils.getUserId(rundata);
-    String requestid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String requestid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (requestid == null || Integer.valueOf(requestid) == null) {
         // Request IDが空の場合
@@ -155,46 +154,58 @@ public class WorkflowUtils {
       }
 
       // アクセス権の判定
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query10 = new SelectQuery(EipTWorkflowRequestMap.class);
-      Expression exp10 = ExpressionFactory.matchDbExp(
-          EipTWorkflowRequestMap.EIP_TWORKFLOW_REQUEST_PROPERTY + "."
-              + EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
+      SelectQuery<EipTWorkflowRequestMap> query10 =
+        Database.query(EipTWorkflowRequestMap.class);
+      Expression exp10 =
+        ExpressionFactory.matchDbExp(
+          EipTWorkflowRequestMap.EIP_TWORKFLOW_REQUEST_PROPERTY
+            + "."
+            + EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
           Integer.valueOf(requestid));
-      Expression exp11 = ExpressionFactory.matchExp(
-          EipTWorkflowRequestMap.USER_ID_PROPERTY, uid);
+      Expression exp11 =
+        ExpressionFactory
+          .matchExp(EipTWorkflowRequestMap.USER_ID_PROPERTY, uid);
       query10.setQualifier(exp10.andExp(exp11));
-      List<?> maps = dataContext.performQuery(query10);
+      List<EipTWorkflowRequestMap> maps = query10.fetchList();
       if (maps == null || maps.size() == 0) {
         // 指定したアカウントIDのレコードが見つからない場合
         logger.debug("[WorkFlow] Invalid user access...");
         throw new ALPageNotFoundException();
       }
 
-      SelectQuery query = new SelectQuery(EipTWorkflowRequest.class);
-      Expression exp1 = ExpressionFactory.matchDbExp(
-          EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, requestid);
+      SelectQuery<EipTWorkflowRequest> query =
+        Database.query(EipTWorkflowRequest.class);
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(
+          EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
+          requestid);
       query.setQualifier(exp1);
 
-      Expression exp2 = ExpressionFactory.matchExp(
-          EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY + "."
-              + EipTWorkflowRequestMap.USER_ID_PROPERTY,
+      Expression exp2 =
+        ExpressionFactory.matchExp(
+          EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY
+            + "."
+            + EipTWorkflowRequestMap.USER_ID_PROPERTY,
           Integer.valueOf(ALEipUtils.getUserId(rundata)));
       query.andQualifier(exp2);
 
       if (mode_update) {
-        Expression exp3 = ExpressionFactory.matchExp(
-            EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY + "."
-                + EipTWorkflowRequestMap.STATUS_PROPERTY, DB_STATUS_CONFIRM);
+        Expression exp3 =
+          ExpressionFactory.matchExp(
+            EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY
+              + "."
+              + EipTWorkflowRequestMap.STATUS_PROPERTY,
+            DB_STATUS_CONFIRM);
         query.andQualifier(exp3);
 
-        Expression exp4 = ExpressionFactory.matchExp(
-            EipTWorkflowRequest.PROGRESS_PROPERTY, DB_PROGRESS_WAIT);
+        Expression exp4 =
+          ExpressionFactory.matchExp(
+            EipTWorkflowRequest.PROGRESS_PROPERTY,
+            DB_PROGRESS_WAIT);
         query.andQualifier(exp4);
       }
 
-      List<?> requests = dataContext.performQuery(query);
+      List<EipTWorkflowRequest> requests = query.fetchList();
 
       if (requests == null || requests.size() == 0) {
         // 指定した Request IDのレコードが見つからない場合
@@ -202,9 +213,7 @@ public class WorkflowUtils {
         return null;
       }
 
-      EipTWorkflowRequest request = (EipTWorkflowRequest) requests.get(0);
-
-      return (request);
+      return requests.get(0);
     } catch (ALPageNotFoundException pageNotFound) {
       logger.error(pageNotFound);
       throw pageNotFound;
@@ -216,7 +225,7 @@ public class WorkflowUtils {
 
   /**
    * Request オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param mode_update
@@ -224,16 +233,17 @@ public class WorkflowUtils {
    */
   public static EipTWorkflowRequest getEipTWorkflowRequestAll(RunData rundata,
       Context context) {
-    String requestid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String requestid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
     try {
       /**
        * 新着ポートレット既読処理
        */
       WhatsNewUtils.shiftWhatsNewReadFlag(
-          WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST,
-          Integer.parseInt(requestid), ALEipUtils.getUserId(rundata));
+        WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST,
+        Integer.parseInt(requestid),
+        ALEipUtils.getUserId(rundata));
     } catch (Exception e) {
       logger.error("Exception", e);
     }
@@ -244,21 +254,21 @@ public class WorkflowUtils {
         return null;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTWorkflowRequest.class);
-      Expression exp1 = ExpressionFactory.matchDbExp(
-          EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, requestid);
+      SelectQuery<EipTWorkflowRequest> query =
+        Database.query(EipTWorkflowRequest.class);
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(
+          EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
+          requestid);
       query.setQualifier(exp1);
 
-      List<?> requests = dataContext.performQuery(query);
-
+      List<EipTWorkflowRequest> requests = query.fetchList();
       if (requests == null || requests.size() == 0) {
         // 指定した Request IDのレコードが見つからない場合
         logger.debug("[WorkflowUtils] Not found ID...");
         return null;
       }
-      return ((EipTWorkflowRequest) requests.get(0));
+      return requests.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -267,7 +277,7 @@ public class WorkflowUtils {
 
   /**
    * Request オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param mode_update
@@ -275,8 +285,8 @@ public class WorkflowUtils {
    */
   public static EipTWorkflowRequest getEipTWorkflowRequestForOwner(
       RunData rundata, Context context) {
-    String requestid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String requestid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (requestid == null || Integer.valueOf(requestid) == null) {
         // Request IDが空の場合
@@ -284,26 +294,28 @@ public class WorkflowUtils {
         return null;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTWorkflowRequest.class);
-      Expression exp1 = ExpressionFactory.matchDbExp(
-          EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, requestid);
+      SelectQuery<EipTWorkflowRequest> query =
+        Database.query(EipTWorkflowRequest.class);
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(
+          EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
+          requestid);
       query.setQualifier(exp1);
 
-      Expression exp2 = ExpressionFactory.matchExp(
+      Expression exp2 =
+        ExpressionFactory.matchExp(
           EipTWorkflowRequest.USER_ID_PROPERTY,
           Integer.valueOf(ALEipUtils.getUserId(rundata)));
       query.andQualifier(exp2);
 
-      List<?> requests = dataContext.performQuery(query);
+      List<EipTWorkflowRequest> requests = query.fetchList();
 
       if (requests == null || requests.size() == 0) {
         // 指定した Request IDのレコードが見つからない場合
         logger.debug("[WorkflowUtils] Not found ID...");
         return null;
       }
-      return ((EipTWorkflowRequest) requests.get(0));
+      return requests.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -312,7 +324,7 @@ public class WorkflowUtils {
 
   /**
    * ファイルオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -320,8 +332,8 @@ public class WorkflowUtils {
   public static EipTWorkflowFile getEipTWorkflowFile(RunData rundata)
       throws ALPageNotFoundException, ALDBErrorException {
     try {
-      int attachmentIndex = rundata.getParameters().getInt("attachmentIndex",
-          -1);
+      int attachmentIndex =
+        rundata.getParameters().getInt("attachmentIndex", -1);
       if (attachmentIndex < 0) {
         // ID が空の場合
         logger.debug("[WorkflowUtils] Empty ID...");
@@ -329,39 +341,41 @@ public class WorkflowUtils {
 
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTWorkflowFile.class);
-      Expression exp = ExpressionFactory.matchDbExp(
-          EipTWorkflowFile.FILE_ID_PK_COLUMN, Integer.valueOf(attachmentIndex));
+      SelectQuery<EipTWorkflowFile> query =
+        Database.query(EipTWorkflowFile.class);
+      Expression exp =
+        ExpressionFactory.matchDbExp(
+          EipTWorkflowFile.FILE_ID_PK_COLUMN,
+          Integer.valueOf(attachmentIndex));
       query.andQualifier(exp);
-      List<?> files = dataContext.performQuery(query);
+      List<EipTWorkflowFile> files = query.fetchList();
       if (files == null || files.size() == 0) {
         // 指定した ID のレコードが見つからない場合
         logger.debug("[WorkflowUtils] Not found ID...");
         throw new ALPageNotFoundException();
       }
-      return (EipTWorkflowFile) files.get(0);
+      return files.get(0);
     } catch (Exception ex) {
-      // TODO: エラー処理
       logger.error("[WorkflowUtils]", ex);
       throw new ALDBErrorException();
     }
   }
 
-  public static List<?> getEipTWorkflowRequestMap(EipTWorkflowRequest request) {
+  public static List<EipTWorkflowRequestMap> getEipTWorkflowRequestMap(
+      EipTWorkflowRequest request) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTWorkflowRequestMap.class);
-      Expression exp = ExpressionFactory.matchDbExp(
-          EipTWorkflowRequestMap.EIP_TWORKFLOW_REQUEST_PROPERTY + "."
-              + EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
+      SelectQuery<EipTWorkflowRequestMap> query =
+        Database.query(EipTWorkflowRequestMap.class);
+      Expression exp =
+        ExpressionFactory.matchDbExp(
+          EipTWorkflowRequestMap.EIP_TWORKFLOW_REQUEST_PROPERTY
+            + "."
+            + EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
           request.getRequestId());
       query.setQualifier(exp);
-      query.addOrdering(EipTWorkflowRequestMap.ORDER_INDEX_PROPERTY, true);
+      query.orderAscending(EipTWorkflowRequestMap.ORDER_INDEX_PROPERTY);
 
-      List<?> maps = dataContext.performQuery(query);
+      List<EipTWorkflowRequestMap> maps = query.fetchList();
 
       if (maps == null || maps.size() == 0) {
         // 指定した Request IDのレコードが見つからない場合
@@ -377,7 +391,7 @@ public class WorkflowUtils {
 
   /**
    * ワークフローカテゴリ オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param mode_update
@@ -385,8 +399,8 @@ public class WorkflowUtils {
    */
   public static EipTWorkflowCategory getEipTWorkflowCategory(RunData rundata,
       Context context) {
-    String categoryid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String categoryid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (categoryid == null || Integer.valueOf(categoryid) == null) {
         // Request IDが空の場合
@@ -394,21 +408,22 @@ public class WorkflowUtils {
         return null;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTWorkflowCategory.class);
-      Expression exp1 = ExpressionFactory.matchDbExp(
-          EipTWorkflowCategory.CATEGORY_ID_PK_COLUMN, categoryid);
+      SelectQuery<EipTWorkflowCategory> query =
+        Database.query(EipTWorkflowCategory.class);
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(
+          EipTWorkflowCategory.CATEGORY_ID_PK_COLUMN,
+          categoryid);
       query.setQualifier(exp1);
 
-      List<?> categories = dataContext.performQuery(query);
+      List<EipTWorkflowCategory> categories = query.fetchList();
 
       if (categories == null || categories.size() == 0) {
         // 指定したカテゴリIDのレコードが見つからない場合
         logger.debug("[WorkflowUtils] Not found ID...");
         return null;
       }
-      return ((EipTWorkflowCategory) categories.get(0));
+      return categories.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -417,16 +432,15 @@ public class WorkflowUtils {
 
   /**
    * ワークフローカテゴリ オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    */
-  public static EipTWorkflowCategory getEipTWorkflowCategory(
-      DataContext dataContext, Long category_id) {
+  public static EipTWorkflowCategory getEipTWorkflowCategory(Long category_id) {
     try {
-      EipTWorkflowCategory category = (EipTWorkflowCategory) DataObjectUtils
-          .objectForPK(dataContext, EipTWorkflowCategory.class, category_id);
+      EipTWorkflowCategory category =
+        Database.get(EipTWorkflowCategory.class, category_id);
 
       return category;
     } catch (Exception ex) {
@@ -437,7 +451,7 @@ public class WorkflowUtils {
 
   /**
    * カテゴリの一覧を取得する。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -445,16 +459,14 @@ public class WorkflowUtils {
       RunData rundata, Context context) {
     try {
       // カテゴリ一覧
-      List<WorkflowCategoryResultData> categoryList = new ArrayList<WorkflowCategoryResultData>();
+      List<WorkflowCategoryResultData> categoryList =
+        new ArrayList<WorkflowCategoryResultData>();
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTWorkflowCategory.class);
-      List<?> aList = dataContext.performQuery(query);
+      SelectQuery<EipTWorkflowCategory> query =
+        Database.query(EipTWorkflowCategory.class);
+      List<EipTWorkflowCategory> aList = query.fetchList();
 
-      int size = aList.size();
-      for (int i = 0; i < size; i++) {
-        EipTWorkflowCategory record = (EipTWorkflowCategory) aList.get(i);
+      for (EipTWorkflowCategory record : aList) {
         WorkflowCategoryResultData rd = new WorkflowCategoryResultData();
         rd.initField();
         rd.setCategoryId(record.getCategoryId().longValue());
@@ -472,7 +484,7 @@ public class WorkflowUtils {
 
   /**
    * ワークフロー申請経路 オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param mode_update
@@ -480,8 +492,8 @@ public class WorkflowUtils {
    */
   public static EipTWorkflowRoute getEipTWorkflowRoute(RunData rundata,
       Context context) {
-    String routeid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String routeid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (routeid == null || Integer.valueOf(routeid) == null) {
         // Request IDが空の場合
@@ -489,21 +501,22 @@ public class WorkflowUtils {
         return null;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTWorkflowRoute.class);
-      Expression exp1 = ExpressionFactory.matchDbExp(
-          EipTWorkflowRoute.ROUTE_ID_PK_COLUMN, routeid);
+      SelectQuery<EipTWorkflowRoute> query =
+        Database.query(EipTWorkflowRoute.class);
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(
+          EipTWorkflowRoute.ROUTE_ID_PK_COLUMN,
+          routeid);
       query.setQualifier(exp1);
 
-      List<?> routes = dataContext.performQuery(query);
+      List<EipTWorkflowRoute> routes = query.fetchList();
 
       if (routes == null || routes.size() == 0) {
         // 指定したカテゴリIDのレコードが見つからない場合
         logger.debug("[WorkflowUtils] Not found ID...");
         return null;
       }
-      return ((EipTWorkflowRoute) routes.get(0));
+      return routes.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -512,16 +525,14 @@ public class WorkflowUtils {
 
   /**
    * ワークフロー申請経路 オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    */
-  public static EipTWorkflowRoute getEipTWorkflowRoute(DataContext dataContext,
-      Long route_id) {
+  public static EipTWorkflowRoute getEipTWorkflowRoute(Long route_id) {
     try {
-      EipTWorkflowRoute route = (EipTWorkflowRoute) DataObjectUtils
-          .objectForPK(dataContext, EipTWorkflowRoute.class, route_id);
+      EipTWorkflowRoute route = Database.get(EipTWorkflowRoute.class, route_id);
 
       return route;
     } catch (Exception ex) {
@@ -532,7 +543,7 @@ public class WorkflowUtils {
 
   /**
    * 申請経路の一覧を取得する。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -540,17 +551,15 @@ public class WorkflowUtils {
       Context context) {
     try {
       // 申請経路一覧
-      List<WorkflowRouteResultData> routeList = new ArrayList<WorkflowRouteResultData>();
+      List<WorkflowRouteResultData> routeList =
+        new ArrayList<WorkflowRouteResultData>();
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTWorkflowRoute.class);
-      query.addOrdering(EipTWorkflowRoute.ROUTE_NAME_PROPERTY, Ordering.ASC);
-      List<?> aList = dataContext.performQuery(query);
+      SelectQuery<EipTWorkflowRoute> query =
+        Database.query(EipTWorkflowRoute.class);
+      query.orderAscending(EipTWorkflowRoute.ROUTE_NAME_PROPERTY);
+      List<EipTWorkflowRoute> aList = query.fetchList();
 
-      int size = aList.size();
-      for (int i = 0; i < size; i++) {
-        EipTWorkflowRoute record = (EipTWorkflowRoute) aList.get(i);
+      for (EipTWorkflowRoute record : aList) {
         WorkflowRouteResultData rd = new WorkflowRouteResultData();
         rd.initField();
         rd.setRouteId(record.getRouteId().longValue());
@@ -568,7 +577,7 @@ public class WorkflowUtils {
 
   /**
    * 依頼の詳細情報を取得する。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -580,11 +589,14 @@ public class WorkflowUtils {
       rd.setUserId(record.getUserId().longValue());
       rd.setRequestName(record.getRequestName());
       rd.setRequestId(record.getRequestId().longValue());
-      rd.setCategoryId(record.getEipTWorkflowCategory().getCategoryId()
-          .longValue());
+      rd.setCategoryId(record
+        .getEipTWorkflowCategory()
+        .getCategoryId()
+        .longValue());
       rd.setCategoryName(record.getEipTWorkflowCategory().getCategoryName());
-      rd.setPriorityString(WorkflowUtils.getPriorityString(record.getPriority()
-          .intValue()));
+      rd.setPriorityString(WorkflowUtils.getPriorityString(record
+        .getPriority()
+        .intValue()));
       rd.setNote(record.getNote());
       rd.setPrice(record.getPrice().longValue());
       rd.setProgress(record.getProgress());
@@ -593,16 +605,19 @@ public class WorkflowUtils {
         rd.setRouteName(record.getEipTWorkflowRoute().getRouteName());
       }
 
-      List<WorkflowDecisionRecordData> drList = new ArrayList<WorkflowDecisionRecordData>();
-      List<WorkflowDecisionRecordData> remandList = new ArrayList<WorkflowDecisionRecordData>();
+      List<WorkflowDecisionRecordData> drList =
+        new ArrayList<WorkflowDecisionRecordData>();
+      List<WorkflowDecisionRecordData> remandList =
+        new ArrayList<WorkflowDecisionRecordData>();
       ALEipUser user = null;
       EipTWorkflowRequestMap map = null;
       WorkflowDecisionRecordData drd = null;
-      List<?> maps = WorkflowUtils.getEipTWorkflowRequestMap(record);
+      List<EipTWorkflowRequestMap> maps =
+        WorkflowUtils.getEipTWorkflowRequestMap(record);
       int size = maps.size();
       boolean is_past = true;
       for (int i = 0; i < size; i++) {
-        map = (EipTWorkflowRequestMap) maps.get(i);
+        map = maps.get(i);
         drd = new WorkflowDecisionRecordData();
         drd.initField();
 
@@ -618,8 +633,9 @@ public class WorkflowUtils {
         drd.setStatusString(WorkflowUtils.getStatusString(map.getStatus()));
         drd.setOrder(map.getOrderIndex().intValue());
         drd.setNote(map.getNote());
-        drd.setUpdateDate(WorkflowUtils.translateDate(map.getUpdateDate(),
-            "yyyy年M月d日H時m分"));
+        drd.setUpdateDate(WorkflowUtils.translateDate(
+          map.getUpdateDate(),
+          "yyyy年M月d日H時m分"));
         drList.add(drd);
 
         // 無効化、もしくは削除されているユーザーは差し戻し先として選べないようにする
@@ -637,21 +653,23 @@ public class WorkflowUtils {
 
       // 過去の申請内容
       if (record.getParentId().intValue() != 0) {
-        List<?> oldReuqests = getOldRequests(record);
+        List<EipTWorkflowRequest> oldReuqests = getOldRequests(record);
         if (oldReuqests != null && oldReuqests.size() > 0) {
-          List<WorkflowOldRequestResultData> oldList = new ArrayList<WorkflowOldRequestResultData>();
+          List<WorkflowOldRequestResultData> oldList =
+            new ArrayList<WorkflowOldRequestResultData>();
           int osize = oldReuqests.size();
           for (int i = 0; i < osize; i++) {
-            EipTWorkflowRequest request = (EipTWorkflowRequest) oldReuqests
-                .get(i);
-            WorkflowOldRequestResultData orrd = new WorkflowOldRequestResultData();
+            EipTWorkflowRequest request = oldReuqests.get(i);
+            WorkflowOldRequestResultData orrd =
+              new WorkflowOldRequestResultData();
             orrd.initField();
             orrd.setRequestId(request.getRequestId().intValue());
             orrd.setRequestName(request.getRequestName());
-            orrd.setCategoryName(request.getEipTWorkflowCategory()
-                .getCategoryName());
-            orrd.setUpdateDate(WorkflowUtils.translateDate(
-                request.getUpdateDate(), "yyyy年M月d日H時m分"));
+            orrd.setCategoryName(request
+              .getEipTWorkflowCategory()
+              .getCategoryName());
+            orrd.setUpdateDate(WorkflowUtils.translateDate(request
+              .getUpdateDate(), "yyyy年M月d日H時m分"));
             oldList.add(orrd);
           }
           rd.setOldRequestLinks(oldList);
@@ -659,19 +677,16 @@ public class WorkflowUtils {
       }
 
       // ファイルリスト
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      List<?> list = dataContext.performQuery(getSelectQueryForFiles(record
-          .getRequestId().intValue()));
+      List<EipTWorkflowFile> list =
+        getSelectQueryForFiles(record.getRequestId().intValue()).fetchList();
       if (list != null && list.size() > 0) {
-        List<FileuploadBean> attachmentFileList = new ArrayList<FileuploadBean>();
+        List<FileuploadBean> attachmentFileList =
+          new ArrayList<FileuploadBean>();
         FileuploadBean filebean = null;
-        EipTWorkflowFile file = null;
-        int lsize = list.size();
-        for (int i = 0; i < lsize; i++) {
-          file = (EipTWorkflowFile) list.get(i);
+        for (EipTWorkflowFile file : list) {
           String realname = file.getFileName();
-          javax.activation.DataHandler hData = new javax.activation.DataHandler(
+          javax.activation.DataHandler hData =
+            new javax.activation.DataHandler(
               new javax.activation.FileDataSource(realname));
 
           filebean = new FileuploadBean();
@@ -686,10 +701,12 @@ public class WorkflowUtils {
         rd.setAttachmentFiles(attachmentFileList);
       }
 
-      rd.setCreateDate(WorkflowUtils.translateDate(record.getCreateDate(),
-          "yyyy年M月d日H時m分"));
-      rd.setUpdateDate(WorkflowUtils.translateDate(record.getUpdateDate(),
-          "yyyy年M月d日H時m分"));
+      rd.setCreateDate(WorkflowUtils.translateDate(
+        record.getCreateDate(),
+        "yyyy年M月d日H時m分"));
+      rd.setUpdateDate(WorkflowUtils.translateDate(
+        record.getUpdateDate(),
+        "yyyy年M月d日H時m分"));
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -697,23 +714,29 @@ public class WorkflowUtils {
     }
   }
 
-  private static List<?> getOldRequests(EipTWorkflowRequest request) {
+  private static List<EipTWorkflowRequest> getOldRequests(
+      EipTWorkflowRequest request) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTWorkflowRequest.class);
-      Expression exp11 = ExpressionFactory.matchDbExp(
-          EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, request.getParentId());
-      Expression exp12 = ExpressionFactory.matchExp(
-          EipTWorkflowRequest.PARENT_ID_PROPERTY, request.getParentId());
+      SelectQuery<EipTWorkflowRequest> query =
+        Database.query(EipTWorkflowRequest.class);
+      Expression exp11 =
+        ExpressionFactory.matchDbExp(
+          EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
+          request.getParentId());
+      Expression exp12 =
+        ExpressionFactory.matchExp(
+          EipTWorkflowRequest.PARENT_ID_PROPERTY,
+          request.getParentId());
       query.setQualifier(exp11.orExp(exp12));
-      Expression exp2 = ExpressionFactory.noMatchDbExp(
-          EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, request.getRequestId());
+      Expression exp2 =
+        ExpressionFactory.noMatchDbExp(
+          EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
+          request.getRequestId());
       query.andQualifier(exp2);
 
-      query.addOrdering(EipTWorkflowRequest.UPDATE_DATE_PROPERTY, true);
+      query.orderAscending(EipTWorkflowRequest.UPDATE_DATE_PROPERTY);
 
-      List<?> requests = dataContext.performQuery(query);
+      List<EipTWorkflowRequest> requests = query.fetchList();
 
       if (requests == null || requests.size() == 0) {
         // 指定した Request IDのレコードが見つからない場合
@@ -734,13 +757,18 @@ public class WorkflowUtils {
    * 3 : 普通 : priority_middle.gif <BR>
    * 4 : やや低い : priority_middle_low.gif <BR>
    * 5 : 低い : priority_low.gif <BR>
-   *
+   * 
    * @param i
    * @return
    */
   public static String getPriorityImage(int i) {
-    String[] temp = { "priority_high.gif", "priority_middle_high.gif",
-        "priority_middle.gif", "priority_middle_low.gif", "priority_low.gif" };
+    String[] temp =
+      {
+        "priority_high.gif",
+        "priority_middle_high.gif",
+        "priority_middle.gif",
+        "priority_middle_low.gif",
+        "priority_low.gif" };
     String image = null;
     try {
       image = temp[i - 1];
@@ -757,7 +785,7 @@ public class WorkflowUtils {
    * 3 : 普通 : priority_middle.gif <BR>
    * 4 : やや低い : priority_middle_low.gif <BR>
    * 5 : 低い : priority_low.gif <BR>
-   *
+   * 
    * @param i
    * @return
    */
@@ -780,14 +808,24 @@ public class WorkflowUtils {
    * : :<BR>
    * 90 : 90% <BR>
    * 100 : 完了 <BR>
-   *
+   * 
    * @param i
    * @return
    */
   public static String getStateImage(int i) {
-    String[] temp = { "state_000.gif", "state_010.gif", "state_020.gif",
-        "state_030.gif", "state_040.gif", "state_050.gif", "state_060.gif",
-        "state_070.gif", "state_080.gif", "state_090.gif", "state_100.gif" };
+    String[] temp =
+      {
+        "state_000.gif",
+        "state_010.gif",
+        "state_020.gif",
+        "state_030.gif",
+        "state_040.gif",
+        "state_050.gif",
+        "state_060.gif",
+        "state_070.gif",
+        "state_080.gif",
+        "state_090.gif",
+        "state_100.gif" };
     String image = null;
     try {
       image = temp[i / 10];
@@ -805,22 +843,22 @@ public class WorkflowUtils {
    * : :<BR>
    * 90 : 90% <BR>
    * 100 : 完了 <BR>
-   *
+   * 
    * @param i
    * @return
    */
   public static String getStateString(int i) {
-    if (i == 0)
+    if (i == 0) {
       return "未着手";
-    else if (i == 100)
+    } else if (i == 100) {
       return "完了";
-    else {
+    } else {
       return new StringBuffer().append(i).append("%").toString();
     }
   }
 
   /**
-   *
+   * 
    * @param status
    */
   public static String getStatusString(String status) {
@@ -843,14 +881,15 @@ public class WorkflowUtils {
 
   /**
    * Date のオブジェクトを指定した形式の文字列に変換する．
-   *
+   * 
    * @param date
    * @param dateFormat
    * @return
    */
   public static String translateDate(Date date, String dateFormat) {
-    if (date == null)
+    if (date == null) {
       return "Unknown";
+    }
 
     // 日付を表示形式に変換
     SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
@@ -860,13 +899,14 @@ public class WorkflowUtils {
 
   /**
    * 3 桁でカンマ区切りした文字列を取得する．
-   *
+   * 
    * @param money
    * @return
    */
   public static String translateMoneyStr(String money) {
-    if (money == null || money.length() == 0)
+    if (money == null || money.length() == 0) {
       return money;
+    }
 
     StringBuffer sb = new StringBuffer();
     int len = money.length();
@@ -894,23 +934,30 @@ public class WorkflowUtils {
       ALEipUser destUser, List<String> msgList) throws Exception {
 
     String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
-    String subject = "[" + DatabaseOrmService.getInstance().getAlias()
-        + "]ワークフロー";
+    String subject =
+      "[" + DatabaseOrmService.getInstance().getAlias() + "]ワークフロー";
 
     try {
       List<ALEipUser> memberList = new ArrayList<ALEipUser>();
       memberList.add(destUser);
-      List<ALEipUserAddr> destMemberList = ALMailUtils.getALEipUserAddrs(
-          memberList, ALEipUtils.getUserId(rundata), false);
+      List<ALEipUserAddr> destMemberList =
+        ALMailUtils.getALEipUserAddrs(
+          memberList,
+          ALEipUtils.getUserId(rundata),
+          false);
       for (int i = 0; i < destMemberList.size(); i++) {
         List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
         destMember.add(destMemberList.get(i));
-        ALMailUtils.sendMailDelegate(org_id, (int) destUser.getUserId()
-            .getValue(), destMember, subject, subject, WorkflowUtils
-            .createMsgForPc(rundata, request), WorkflowUtils
-            .createMsgForCellPhone(rundata, request, destUser,
-                (destMember.get(0)).getUserId()), ALMailUtils
-            .getSendDestType(ALMailUtils.KEY_MSGTYPE_WORKFLOW), msgList);
+        ALMailUtils.sendMailDelegate(org_id, (int) destUser
+          .getUserId()
+          .getValue(), destMember, subject, subject, WorkflowUtils
+          .createMsgForPc(rundata, request), WorkflowUtils
+          .createMsgForCellPhone(
+            rundata,
+            request,
+            destUser,
+            (destMember.get(0)).getUserId()), ALMailUtils
+          .getSendDestType(ALMailUtils.KEY_MSGTYPE_WORKFLOW), msgList);
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -921,7 +968,7 @@ public class WorkflowUtils {
 
   /**
    * パソコンへ送信するメールの内容を作成する．
-   *
+   * 
    * @return
    */
   public static String createMsgForPc(RunData rundata,
@@ -934,8 +981,10 @@ public class WorkflowUtils {
     ALEipUser user2 = null;
 
     try {
-      user = (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(request
-          .getUserId().toString()));
+      user =
+        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(request
+          .getUserId()
+          .toString()));
       user2 = ALEipUtils.getALEipUser(request.getUserId().intValue());
     } catch (Exception e) {
       return "";
@@ -964,31 +1013,39 @@ public class WorkflowUtils {
     body.append(request.getEipTWorkflowCategory().getCategoryName()).append(CR);
 
     if (request.getRequestName() != null
-        && (!"".equals(request.getRequestName()))) {
+      && (!"".equals(request.getRequestName()))) {
       body.append(request.getRequestName()).append(CR);
     }
 
-    body.append("[申請日]")
-        .append(CR)
-        .append(
-            WorkflowUtils.translateDate(request.getCreateDate(),
-                "yyyy年M月d日H時m分")).append(CR);
+    body
+      .append("[申請日]")
+      .append(CR)
+      .append(
+        WorkflowUtils.translateDate(request.getCreateDate(), "yyyy年M月d日H時m分"))
+      .append(CR);
 
-    body.append("[重要度]")
-        .append(CR)
-        .append(
-            WorkflowUtils.getPriorityString(request.getPriority().intValue()))
-        .append(CR);
+    body
+      .append("[重要度]")
+      .append(CR)
+      .append(WorkflowUtils.getPriorityString(request.getPriority().intValue()))
+      .append(CR);
     body.append("[申請内容]").append(CR).append(request.getNote()).append(CR);
 
     if (request.getPrice() != null && (request.getPrice().intValue() > 0)) {
-      body.append("[金額]").append(CR).append(request.getPrice()).append(" 円")
-          .append(CR);
+      body
+        .append("[金額]")
+        .append(CR)
+        .append(request.getPrice())
+        .append(" 円")
+        .append(CR);
     }
 
     body.append(CR);
-    body.append("[").append(DatabaseOrmService.getInstance().getAlias())
-        .append("へのアクセス]").append(CR);
+    body
+      .append("[")
+      .append(DatabaseOrmService.getInstance().getAlias())
+      .append("へのアクセス]")
+      .append(CR);
     if (enableAsp) {
       body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
     } else {
@@ -1006,7 +1063,7 @@ public class WorkflowUtils {
 
   /**
    * 携帯電話へ送信するメールの内容を作成する．
-   *
+   * 
    * @return
    */
   public static String createMsgForCellPhone(RunData rundata,
@@ -1017,8 +1074,10 @@ public class WorkflowUtils {
     ALEipUser user2 = null;
 
     try {
-      user = (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(request
-          .getUserId().toString()));
+      user =
+        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(request
+          .getUserId()
+          .toString()));
       user2 = ALEipUtils.getALEipUser(request.getUserId().intValue());
     } catch (JetspeedSecurityException e) {
       return "";
@@ -1050,26 +1109,31 @@ public class WorkflowUtils {
     body.append(request.getEipTWorkflowCategory().getCategoryName()).append(CR);
 
     if (request.getRequestName() != null
-        && (!"".equals(request.getRequestName()))) {
+      && (!"".equals(request.getRequestName()))) {
       body.append(request.getRequestName()).append(CR);
     }
 
-    body.append("[申請日]")
-        .append(CR)
-        .append(
-            WorkflowUtils.translateDate(request.getCreateDate(),
-                "yyyy年M月d日H時m分")).append(CR);
+    body
+      .append("[申請日]")
+      .append(CR)
+      .append(
+        WorkflowUtils.translateDate(request.getCreateDate(), "yyyy年M月d日H時m分"))
+      .append(CR);
 
-    body.append("[重要度]")
-        .append(CR)
-        .append(
-            WorkflowUtils.getPriorityString(request.getPriority().intValue()))
-        .append(CR);
+    body
+      .append("[重要度]")
+      .append(CR)
+      .append(WorkflowUtils.getPriorityString(request.getPriority().intValue()))
+      .append(CR);
     // body.append("[申請内容]").append(CR).append(request.getNote()).append(CR);
 
     if (request.getPrice() != null && (request.getPrice().intValue() > 0)) {
-      body.append("[金額]").append(CR).append(request.getPrice()).append(" 円")
-          .append(CR);
+      body
+        .append("[金額]")
+        .append(CR)
+        .append(request.getPrice())
+        .append(" 円")
+        .append(CR);
     }
 
     ALEipUser destUser;
@@ -1081,10 +1145,13 @@ public class WorkflowUtils {
     }
 
     body.append(CR);
-    body.append("[").append(DatabaseOrmService.getInstance().getAlias())
-        .append("へのアクセス]").append(CR);
-    body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=")
-        .append(ALCellularUtils.getCellularKey(destUser)).append(CR);
+    body
+      .append("[")
+      .append(DatabaseOrmService.getInstance().getAlias())
+      .append("へのアクセス]")
+      .append(CR);
+    body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
+      ALCellularUtils.getCellularKey(destUser)).append(CR);
     body.append("---------------------").append(CR);
     body.append(DatabaseOrmService.getInstance().getAlias()).append(CR);
 
@@ -1106,14 +1173,14 @@ public class WorkflowUtils {
       EipTWorkflowRequest oldrequest, List<FileuploadLiteBean> fileuploadList,
       String folderName, List<String> msgList) {
 
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     int uid = ALEipUtils.getUserId(rundata);
     String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
     String[] fileids = rundata.getParameters().getStrings("attachments");
 
     // fileidsがnullなら、ファイルがアップロードされていないので、trueを返して終了
-    if (fileids == null)
+    if (fileids == null) {
       return true;
+    }
 
     int fileIDsize;
     if (fileids[0].equals("")) {
@@ -1123,47 +1190,53 @@ public class WorkflowUtils {
     }
     // 送られてきたFileIDの個数とDB上の当該RequestID中の添付ファイル検索を行った結果の個数が一致したら、
     // 変更が無かったとみなし、trueを返して終了。
-    SelectQuery dbquery = new SelectQuery(EipTWorkflowFile.class);
-    dbquery
-        .andQualifier(ExpressionFactory.matchDbExp(
-            EipTWorkflowFile.EIP_TWORKFLOW_REQUEST_PROPERTY,
-            request.getRequestId()));
+    SelectQuery<EipTWorkflowFile> dbquery =
+      Database.query(EipTWorkflowFile.class);
+    dbquery.andQualifier(ExpressionFactory.matchDbExp(
+      EipTWorkflowFile.EIP_TWORKFLOW_REQUEST_PROPERTY,
+      request.getRequestId()));
     for (int i = 0; i < fileIDsize; i++) {
       dbquery.orQualifier(ExpressionFactory.matchDbExp(
-          EipTWorkflowFile.FILE_ID_PK_COLUMN, fileids[i]));
+        EipTWorkflowFile.FILE_ID_PK_COLUMN,
+        fileids[i]));
     }
-    List<?> files = dataContext.performQuery(dbquery);
+    List<EipTWorkflowFile> files = dbquery.fetchList();
+    ;
 
     if (files.size() == fileIDsize
-        && (fileuploadList == null || fileuploadList.size() <= 0))
+      && (fileuploadList == null || fileuploadList.size() <= 0)) {
       return true;
+    }
 
-    SelectQuery query = new SelectQuery(EipTWorkflowFile.class);
-    query
-        .andQualifier(ExpressionFactory.matchDbExp(
-            EipTWorkflowFile.EIP_TWORKFLOW_REQUEST_PROPERTY,
-            request.getRequestId()));
+    SelectQuery<EipTWorkflowFile> query =
+      Database.query(EipTWorkflowFile.class);
+    query.andQualifier(ExpressionFactory.matchDbExp(
+      EipTWorkflowFile.EIP_TWORKFLOW_REQUEST_PROPERTY,
+      request.getRequestId()));
     for (int i = 0; i < fileIDsize; i++) {
-      Expression exp = ExpressionFactory.matchDbExp(
-          EipTWorkflowFile.FILE_ID_PK_COLUMN, Integer.parseInt(fileids[i]));
+      Expression exp =
+        ExpressionFactory.matchDbExp(
+          EipTWorkflowFile.FILE_ID_PK_COLUMN,
+          Integer.parseInt(fileids[i]));
       query.andQualifier(exp.notExp());
     }
     // DB上でトピックに属すが、送られてきたFileIDにIDが含まれていないファイルのリスト(削除されたファイルのリスト)
-    List<?> delFiles = dataContext.performQuery(query);
+    List<EipTWorkflowFile> delFiles = query.fetchList();
 
     if (delFiles.size() > 0) {
       // ローカルファイルに保存されているファイルを削除する．
       File file = null;
       int delsize = delFiles.size();
       for (int i = 0; i < delsize; i++) {
-        file = new File(WorkflowUtils.getSaveDirPath(org_id, uid)
-            + (String) ((EipTWorkflowFile) delFiles.get(i)).getFilePath());
+        file =
+          new File(WorkflowUtils.getSaveDirPath(org_id, uid)
+            + (delFiles.get(i)).getFilePath());
         if (file.exists()) {
           file.delete();
         }
       }
       // データベースから添付ファイルのデータ削除
-      dataContext.deleteObjects(delFiles);
+      Database.deleteAll(delFiles);
     }
 
     // 追加ファイルが無ければtrueを返して終了
@@ -1176,21 +1249,28 @@ public class WorkflowUtils {
       FileuploadLiteBean filebean = null;
       int size = fileuploadList.size();
       for (int i = 0; i < size; i++) {
-        filebean = (FileuploadLiteBean) fileuploadList.get(i);
+        filebean = fileuploadList.get(i);
 
         // サムネイル処理
         String[] acceptExts = ImageIO.getWriterFormatNames();
-        byte[] fileThumbnail = FileuploadUtils.getBytesShrinkFilebean(org_id,
-            folderName, uid, filebean, acceptExts,
+        byte[] fileThumbnail =
+          FileuploadUtils.getBytesShrinkFilebean(
+            org_id,
+            folderName,
+            uid,
+            filebean,
+            acceptExts,
             FileuploadUtils.DEF_THUMBNAIL_WIDTH,
-            FileuploadUtils.DEF_THUMBNAIL_HEIGTH, msgList);
+            FileuploadUtils.DEF_THUMBNAIL_HEIGTH,
+            msgList);
 
-        String filename = FileuploadUtils.getNewFileName(WorkflowUtils
-            .getSaveDirPath(org_id, uid));
+        String filename =
+          FileuploadUtils.getNewFileName(WorkflowUtils.getSaveDirPath(
+            org_id,
+            uid));
 
         // 新規オブジェクトモデル
-        EipTWorkflowFile file = (EipTWorkflowFile) dataContext
-            .createAndRegisterNewObject(EipTWorkflowFile.class);
+        EipTWorkflowFile file = Database.create(EipTWorkflowFile.class);
         // 所有者
         file.setOwnerId(Integer.valueOf(uid));
         // リクエストID
@@ -1209,10 +1289,11 @@ public class WorkflowUtils {
         file.setUpdateDate(Calendar.getInstance().getTime());
 
         // ファイルの移動
-        File srcFile = FileuploadUtils.getAbsolutePath(org_id, uid, folderName,
-            filebean.getFileId());
-        File destFile = new File(WorkflowUtils.getAbsolutePath(org_id, uid,
-            filename));
+        File srcFile =
+          FileuploadUtils.getAbsolutePath(org_id, uid, folderName, filebean
+            .getFileId());
+        File destFile =
+          new File(WorkflowUtils.getAbsolutePath(org_id, uid, filename));
         FileuploadUtils.copyFile(srcFile, destFile);
 
         srcFile = null;
@@ -1231,15 +1312,20 @@ public class WorkflowUtils {
 
   /**
    * ユーザ毎のルート保存先（絶対パス）を取得します。
-   *
+   * 
    * @param uid
    * @return
    */
   public static String getSaveDirPath(String orgId, int uid) {
-    ALOrgUtilsHandler handler = ALOrgUtilsFactoryService.getInstance()
-        .getOrgUtilsHandler();
-    File path = new File(handler.getDocumentPath(FOLDER_FILEDIR_WORKFLOW,
-        orgId, CATEGORY_KEY) + File.separator + uid);
+    ALOrgUtilsHandler handler =
+      ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
+    File path =
+      new File(handler.getDocumentPath(
+        FOLDER_FILEDIR_WORKFLOW,
+        orgId,
+        CATEGORY_KEY)
+        + File.separator
+        + uid);
     if (!path.exists()) {
       path.mkdirs();
     }
@@ -1248,7 +1334,7 @@ public class WorkflowUtils {
 
   /**
    * ユーザ毎の保存先（相対パス）を取得します。
-   *
+   * 
    * @param uid
    * @return
    */
@@ -1258,17 +1344,19 @@ public class WorkflowUtils {
 
   /**
    * 添付ファイル保存先（絶対パス）を取得します。
-   *
+   * 
    * @param uid
    * @return
    */
   public static String getAbsolutePath(String orgId, int uid, String fileName) {
-    ALOrgUtilsHandler handler = ALOrgUtilsFactoryService.getInstance()
-        .getOrgUtilsHandler();
-    StringBuffer sb = new StringBuffer()
+    ALOrgUtilsHandler handler =
+      ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
+    StringBuffer sb =
+      new StringBuffer()
         .append(
-            handler.getDocumentPath(FOLDER_FILEDIR_WORKFLOW, orgId,
-                CATEGORY_KEY)).append(File.separator).append(uid);
+          handler.getDocumentPath(FOLDER_FILEDIR_WORKFLOW, orgId, CATEGORY_KEY))
+        .append(File.separator)
+        .append(uid);
     File f = new File(sb.toString());
     if (!f.exists()) {
       f.mkdirs();
@@ -1281,33 +1369,29 @@ public class WorkflowUtils {
 
     try {
       // アクセス権限
-      ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+      ALAccessControlFactoryService aclservice =
+        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
           .getInstance())
           .getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-      List<?> ulist = aclhandler.getAuthorityUsersFromGroup(rundata,
+      List<TurbineUser> ulist =
+        aclhandler.getAuthorityUsersFromGroup(
+          rundata,
           ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_SELF,
-          groupname, includeLoginuser);
-
-      int recNum = ulist.size();
+          groupname,
+          includeLoginuser);
 
       List<UserLiteBean> list = new ArrayList<UserLiteBean>();
 
       UserLiteBean user;
-      DataRow dataRow;
       // ユーザデータを作成し、返却リストへ格納
-      for (int j = 0; j < recNum; j++) {
-        dataRow = (DataRow) ulist.get(j);
+      for (TurbineUser tuser : ulist) {
         user = new UserLiteBean();
         user.initField();
-        user.setUserId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-            TurbineUser.USER_ID_PK_COLUMN)).intValue());
-        user.setName((String) ALEipUtils.getObjFromDataRow(dataRow,
-            TurbineUser.LOGIN_NAME_COLUMN));
-        user.setAliasName((String) ALEipUtils.getObjFromDataRow(dataRow,
-            TurbineUser.FIRST_NAME_COLUMN), (String) ALEipUtils
-            .getObjFromDataRow(dataRow, TurbineUser.LAST_NAME_COLUMN));
+        user.setUserId(tuser.getUserId());
+        user.setName(tuser.getLoginName());
+        user.setAliasName(tuser.getFirstName(), tuser.getLastName());
         list.add(user);
       }
       return list;
@@ -1319,45 +1403,50 @@ public class WorkflowUtils {
 
   /**
    * ファイル検索のクエリを返します
-   *
+   * 
    * @param requestid
    *          ファイルを検索するリクエストのid
    * @return query
    */
-  private static SelectQuery getSelectQueryForFiles(int requestid) {
-    SelectQuery query = new SelectQuery(EipTWorkflowFile.class);
-    Expression exp = ExpressionFactory.matchDbExp(
-        EipTWorkflowRequest.REQUEST_ID_PK_COLUMN, Integer.valueOf(requestid));
+  private static SelectQuery<EipTWorkflowFile> getSelectQueryForFiles(
+      int requestid) {
+    SelectQuery<EipTWorkflowFile> query =
+      Database.query(EipTWorkflowFile.class);
+    Expression exp =
+      ExpressionFactory.matchDbExp(
+        EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
+        Integer.valueOf(requestid));
     query.setQualifier(exp);
     return query;
   }
 
   /**
    * 指定した ID に対するユーザの名前を取得する．
-   *
+   * 
    * @param userId
    * @return
    */
   public static String getName(String userId) {
-    if (userId == null || userId.equals(""))
+    if (userId == null || userId.equals("")) {
       return null;
+    }
 
     String firstName = null;
     String lastName = null;
     StringBuffer buffer = new StringBuffer();
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(TurbineUser.class);
-      Expression exp = ExpressionFactory.matchDbExp(
-          TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(userId));
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+      Expression exp =
+        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+          .valueOf(userId));
       query.setQualifier(exp);
-      List<?> destUserList = dataContext.performQuery(query);
-      if (destUserList == null || destUserList.size() <= 0)
+      List<TurbineUser> destUserList = query.fetchList();
+      if (destUserList == null || destUserList.size() <= 0) {
         return null;
-      firstName = ((TurbineUser) destUserList.get(0)).getFirstName();
-      lastName = ((TurbineUser) destUserList.get(0)).getLastName();
+      }
+      firstName = (destUserList.get(0)).getFirstName();
+      lastName = (destUserList.get(0)).getLastName();
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -1367,27 +1456,28 @@ public class WorkflowUtils {
 
   /**
    * 指定した ID に対するユーザのログイン名を取得する．
-   *
+   * 
    * @param userId
    * @return
    */
   public static String getUserName(String userId) {
-    if (userId == null || userId.equals(""))
+    if (userId == null || userId.equals("")) {
       return null;
+    }
 
     String userName = null;
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(TurbineUser.class);
-      Expression exp = ExpressionFactory.matchDbExp(
-          TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(userId));
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+      Expression exp =
+        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+          .valueOf(userId));
       query.setQualifier(exp);
-      List<?> destUserList = dataContext.performQuery(query);
-      if (destUserList == null || destUserList.size() <= 0)
+      List<TurbineUser> destUserList = query.fetchList();
+      if (destUserList == null || destUserList.size() <= 0) {
         return null;
-      userName = ((TurbineUser) destUserList.get(0)).getLoginName();
+      }
+      userName = (destUserList.get(0)).getLoginName();
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -1396,24 +1486,25 @@ public class WorkflowUtils {
   }
 
   public static Integer getRouteIdFromCategoryId(Integer categoryId) {
-    if (categoryId == null || categoryId <= 0)
+    if (categoryId == null || categoryId <= 0) {
       return null;
+    }
 
     Integer routeId = null;
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTWorkflowCategory.class);
-      Expression exp = ExpressionFactory.matchDbExp(
+      SelectQuery<EipTWorkflowCategory> query =
+        Database.query(EipTWorkflowCategory.class);
+      Expression exp =
+        ExpressionFactory.matchDbExp(
           EipTWorkflowCategory.CATEGORY_ID_PK_COLUMN,
           Integer.valueOf(categoryId));
       query.setQualifier(exp);
-      List<?> list = dataContext.performQuery(query);
-      if (list == null || list.size() <= 0)
+      List<EipTWorkflowCategory> list = query.fetchList();
+      if (list == null || list.size() <= 0) {
         return null;
-      routeId = ((EipTWorkflowCategory) list.get(0)).getEipTWorkflowRoute()
-          .getRouteId();
+      }
+      routeId = (list.get(0)).getEipTWorkflowRoute().getRouteId();
     } catch (Exception ex) {
       return null;
     }
@@ -1422,7 +1513,7 @@ public class WorkflowUtils {
 
   /**
    * 指定した ID のユーザを取得する
-   *
+   * 
    * @param userId
    * @return
    */
@@ -1431,17 +1522,16 @@ public class WorkflowUtils {
       return null;
     }
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(TurbineUser.class);
-      Expression exp = ExpressionFactory.matchDbExp(
-          TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(userId));
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+      Expression exp =
+        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+          .valueOf(userId));
       query.setQualifier(exp);
-      List<?> destUserList = dataContext.performQuery(query);
+      List<TurbineUser> destUserList = query.fetchList();
       if (destUserList == null || destUserList.size() <= 0) {
         return null;
       }
-      return (TurbineUser) destUserList.get(0);
+      return destUserList.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -1450,7 +1540,7 @@ public class WorkflowUtils {
 
   /**
    * 指定した ID のユーザが削除済みかどうかを調べる。
-   *
+   * 
    * @param userId
    * @return
    */

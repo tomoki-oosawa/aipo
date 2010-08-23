@@ -25,7 +25,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ワークフローのResultDataです。 <BR>
- *
+ * 
  */
 public class WorkflowDecisionRecordData implements ALData {
 
@@ -51,7 +51,7 @@ public class WorkflowDecisionRecordData implements ALData {
   private ALStringField update_date;
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {

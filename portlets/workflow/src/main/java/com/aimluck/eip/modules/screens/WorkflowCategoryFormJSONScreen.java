@@ -31,13 +31,13 @@ import com.aimluck.eip.workflow.WorkflowCategoryMultiDelete;
 
 /**
  * ワークフロー分類をJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class WorkflowCategoryFormJSONScreen extends ALJSONScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowCategoryFormJSONScreen.class.getName());
+    .getLogger(WorkflowCategoryFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -54,8 +54,9 @@ public class WorkflowCategoryFormJSONScreen extends ALJSONScreen {
 
         if (formData.doInsert(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
 
@@ -66,8 +67,9 @@ public class WorkflowCategoryFormJSONScreen extends ALJSONScreen {
         formData.loadRouteList(rundata, context);
         if (formData.doUpdate(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
@@ -77,8 +79,9 @@ public class WorkflowCategoryFormJSONScreen extends ALJSONScreen {
         formData.loadRouteList(rundata, context);
         if (formData.doDelete(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_MULTI_DELETE.equals(mode)) {
@@ -86,13 +89,14 @@ public class WorkflowCategoryFormJSONScreen extends ALJSONScreen {
         WorkflowCategoryMultiDelete delete = new WorkflowCategoryMultiDelete();
         if (delete.doMultiAction(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if ("routetemplate".equals(mode)) {
-        int value = Integer
-            .valueOf(rundata.getParameters().getStrings("value")[0]);
+        int value =
+          Integer.valueOf(rundata.getParameters().getStrings("value")[0]);
         WorkflowCategoryFormData formData = new WorkflowCategoryFormData();
         formData.initField();
         formData.loadRouteList(rundata, context);

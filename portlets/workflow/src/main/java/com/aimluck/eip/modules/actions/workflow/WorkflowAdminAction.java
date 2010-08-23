@@ -31,18 +31,18 @@ import com.aimluck.eip.workflow.WorkflowRouteSelectData;
 
 /**
  * ワークフローの管理者用アクションクラスです。 <BR>
- *
+ * 
  */
 public class WorkflowAdminAction extends ALBaseAction {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowAdminAction.class.getName());
+    .getLogger(WorkflowAdminAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
@@ -50,6 +50,7 @@ public class WorkflowAdminAction extends ALBaseAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
     if (getMode() == null) {
@@ -59,7 +60,7 @@ public class WorkflowAdminAction extends ALBaseAction {
 
   /**
    * カテゴリを一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -69,18 +70,19 @@ public class WorkflowAdminAction extends ALBaseAction {
     WorkflowCategorySelectData listData = new WorkflowCategorySelectData();
     listData.initField();
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig()
-        .getInitParameter("p1a-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig()
-        .getInitParameter("p3a-strlen")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1a-rows")));
+    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
+      context).getPortletConfig().getInitParameter("p3a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "workflow-category-list");
   }
 
   /**
    * 申請経路を一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -90,11 +92,12 @@ public class WorkflowAdminAction extends ALBaseAction {
     WorkflowRouteSelectData listData = new WorkflowRouteSelectData();
     listData.initField();
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig()
-        .getInitParameter("p1a-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig()
-        .getInitParameter("p3a-strlen")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1a-rows")));
+    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
+      context).getPortletConfig().getInitParameter("p3a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "workflow-route-list");
   }

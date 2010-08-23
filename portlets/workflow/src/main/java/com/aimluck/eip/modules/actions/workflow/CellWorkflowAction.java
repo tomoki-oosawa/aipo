@@ -38,7 +38,7 @@ import com.aimluck.eip.workflow.WorkflowSelectData;
 
 /**
  * ワークフローの携帯用アクションクラスです。 <BR>
- *
+ * 
  */
 public class CellWorkflowAction extends WorkflowAction {
 
@@ -46,11 +46,11 @@ public class CellWorkflowAction extends WorkflowAction {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CellWorkflowAction.class.getName());
+    .getLogger(CellWorkflowAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
@@ -58,6 +58,7 @@ public class CellWorkflowAction extends WorkflowAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
 
@@ -65,11 +66,12 @@ public class CellWorkflowAction extends WorkflowAction {
 
   /**
    * 最大化表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
 
@@ -96,11 +98,12 @@ public class CellWorkflowAction extends WorkflowAction {
 
   /**
    * 依頼を一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doWorkflow_list(RunData rundata, Context context)
       throws Exception {
     WorkflowSelectData listData = new WorkflowSelectData();
@@ -110,10 +113,12 @@ public class CellWorkflowAction extends WorkflowAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1b-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-        context).getPortletConfig().getInitParameter("p3a-strlen")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1b-rows")));
+    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
+      context).getPortletConfig().getInitParameter("p3a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "workflow-list");
   }
@@ -125,11 +130,12 @@ public class CellWorkflowAction extends WorkflowAction {
 
   /**
    * 全依頼を一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doWorkflow_list_all(RunData rundata, Context context)
       throws Exception {
     WorkflowAllSelectData listData = new WorkflowAllSelectData();
@@ -139,17 +145,19 @@ public class CellWorkflowAction extends WorkflowAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1b-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-        context).getPortletConfig().getInitParameter("p3a-strlen")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1b-rows")));
+    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
+      context).getPortletConfig().getInitParameter("p3a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "workflow-list-admin");
   }
 
   /**
    * 依頼を詳細表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -167,7 +175,7 @@ public class CellWorkflowAction extends WorkflowAction {
 
   /**
    * 差し戻された依頼を削除する
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -182,8 +190,9 @@ public class CellWorkflowAction extends WorkflowAction {
     if (formData.doDelete(this, rundata, context)) {
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
-          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-          "eventSubmit_doWorkflow_list", "1").toString());
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doWorkflow_list",
+        "1").toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
       jsLink = null;
     }
@@ -192,7 +201,7 @@ public class CellWorkflowAction extends WorkflowAction {
 
   /**
    * 依頼を否認する
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -205,8 +214,9 @@ public class CellWorkflowAction extends WorkflowAction {
     if (formData.doUpdate(this, rundata, context)) {
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
-          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-          "eventSubmit_doWorkflow_list", "1").toString());
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doWorkflow_list",
+        "1").toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
       jsLink = null;
     }
@@ -215,7 +225,7 @@ public class CellWorkflowAction extends WorkflowAction {
 
   /**
    * 依頼を承認する
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -228,8 +238,9 @@ public class CellWorkflowAction extends WorkflowAction {
     if (formData.doUpdate(this, rundata, context)) {
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
-          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-          "eventSubmit_doWorkflow_list", "1").toString());
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doWorkflow_list",
+        "1").toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
       jsLink = null;
     }

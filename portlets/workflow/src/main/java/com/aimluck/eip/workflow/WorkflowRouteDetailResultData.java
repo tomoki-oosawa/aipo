@@ -23,7 +23,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ワークフロー申請経路のResultDataです。<BR>
- *
+ * 
  */
 public class WorkflowRouteDetailResultData extends WorkflowRouteResultData {
 
@@ -37,9 +37,10 @@ public class WorkflowRouteDetailResultData extends WorkflowRouteResultData {
   protected ALStringField update_date;
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
+  @Override
   public void initField() {
     super.initField();
     note = new ALStringField();
@@ -72,6 +73,7 @@ public class WorkflowRouteDetailResultData extends WorkflowRouteResultData {
   /**
    * @param string
    */
+  @Override
   public void setRoute(String string) {
     route.setValue(string);
   }

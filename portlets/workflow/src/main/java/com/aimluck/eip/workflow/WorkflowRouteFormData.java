@@ -23,7 +23,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -40,7 +39,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -67,8 +66,6 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
   private Integer route_id;
 
-  private DataContext dataContext;
-
   /** <code>memberList</code> メンバーリスト */
   private List<ALEipUser> memberList;
 
@@ -85,13 +82,11 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
-    String routeid = ALEipUtils.getTemp(rundata, context,
-      ALEipConstants.ENTITY_ID);
+    String routeid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     if (routeid != null && Integer.valueOf(routeid) != null) {
       route_id = Integer.valueOf(routeid);
     }
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   /**
@@ -124,19 +119,17 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
         String userNames[] = rundata.getParameters().getStrings("positions");
         if (userNames != null && userNames.length > 0) {
 
-          DataContext dataContext = DatabaseOrmService.getInstance()
-            .getDataContext();
-          SelectQuery query = new SelectQuery(TurbineUser.class);
-          Expression exp1 = ExpressionFactory.inExp(
-            TurbineUser.LOGIN_NAME_PROPERTY, userNames);
-          Expression exp2 = ExpressionFactory.matchExp(
-            TurbineUser.DISABLED_PROPERTY, "F");
+          SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+          Expression exp1 =
+            ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY, userNames);
+          Expression exp2 =
+            ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
           query.setQualifier(exp1);
           query.andQualifier(exp2);
 
           memberList.addAll(ALEipUtils.getUsersFromSelectQuery(query));
 
-          List<?> list = query.fetchList();
+          List<TurbineUser> list = query.fetchList();
 
           TurbineUser record = null;
           int length = userNames.length;
@@ -185,17 +178,23 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
   @Override
   protected boolean validate(List<String> msgList) {
     try {
-      SelectQuery query = new SelectQuery(EipTWorkflowRoute.class);
-      Expression exp1 = ExpressionFactory.matchExp(
-        EipTWorkflowRoute.ROUTE_NAME_PROPERTY, route_name.getValue());
+      SelectQuery<EipTWorkflowRoute> query =
+        Database.query(EipTWorkflowRoute.class);
+      Expression exp1 =
+        ExpressionFactory.matchExp(
+          EipTWorkflowRoute.ROUTE_NAME_PROPERTY,
+          route_name.getValue());
       query.setQualifier(exp1);
       if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
-        Expression exp2 = ExpressionFactory.noMatchDbExp(
-          EipTWorkflowRoute.ROUTE_ID_PK_COLUMN, route_id);
+        Expression exp2 =
+          ExpressionFactory.noMatchDbExp(
+            EipTWorkflowRoute.ROUTE_ID_PK_COLUMN,
+            route_id);
         query.andQualifier(exp2);
       }
       if (query.fetchList().size() != 0) {
-        msgList.add("申請経路名『 <span class='em'>" + route_name.toString()
+        msgList.add("申請経路名『 <span class='em'>"
+          + route_name.toString()
           + "</span> 』は既に登録されています。");
       }
       if (route.getValue() == null) {
@@ -229,8 +228,8 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTWorkflowRoute routeobj = WorkflowUtils.getEipTWorkflowRoute(rundata,
-        context);
+      EipTWorkflowRoute routeobj =
+        WorkflowUtils.getEipTWorkflowRoute(rundata, context);
       if (route == null) {
         return false;
       }
@@ -253,15 +252,15 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
       }
 
       if (size > 0) {
-        SelectQuery query = new SelectQuery(TurbineUser.class);
-        Expression exp = ExpressionFactory.inDbExp(
-          TurbineUser.USER_ID_PK_COLUMN, userarray);
+        SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+        Expression exp =
+          ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, userarray);
         query.setQualifier(exp);
         // memberList.addAll(ALEipUtils.getUsersFromSelectQuery(query));
 
         // 取得したクエリがソートされてしまうので、元の順序に並び替えて配列に入れる
-        List<ALEipUser> memberListTmp = ALEipUtils
-          .getUsersFromSelectQuery(query);
+        List<ALEipUser> memberListTmp =
+          ALEipUtils.getUsersFromSelectQuery(query);
         for (int i = 0; i < userarray.length; i++) {
           for (int j = 0; j < memberListTmp.size(); j++) {
             ALEipUser usertmp = memberListTmp.get(j);
@@ -293,19 +292,20 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
-      EipTWorkflowRoute routeobj = (EipTWorkflowRoute) dataContext
-        .createAndRegisterNewObject(EipTWorkflowRoute.class);
+      EipTWorkflowRoute routeobj = Database.create(EipTWorkflowRoute.class);
       routeobj.setRouteName(route_name.getValue());
       routeobj.setNote(note.getValue());
       routeobj.setCreateDate(Calendar.getInstance().getTime());
       routeobj.setUpdateDate(Calendar.getInstance().getTime());
       routeobj.setRoute(route.getValue());
-      dataContext.commitChanges();
+      Database.commit();
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        routeobj.getRouteId(), ALEventlogConstants.PORTLET_TYPE_WORKFLOW_ROUTE,
+        routeobj.getRouteId(),
+        ALEventlogConstants.PORTLET_TYPE_WORKFLOW_ROUTE,
         routeobj.getRouteName());
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -327,8 +327,8 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTWorkflowRoute routeobj = WorkflowUtils.getEipTWorkflowRoute(rundata,
-        context);
+      EipTWorkflowRoute routeobj =
+        WorkflowUtils.getEipTWorkflowRoute(rundata, context);
       if (route == null) {
         return false;
       }
@@ -342,12 +342,14 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
       routeobj.setUpdateDate(Calendar.getInstance().getTime());
 
       // カテゴリを更新
-      dataContext.commitChanges();
+      Database.commit();
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        routeobj.getRouteId(), ALEventlogConstants.PORTLET_TYPE_WORKFLOW_ROUTE,
+        routeobj.getRouteId(),
+        ALEventlogConstants.PORTLET_TYPE_WORKFLOW_ROUTE,
         routeobj.getRouteName());
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -369,8 +371,8 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTWorkflowRoute routeobj = WorkflowUtils.getEipTWorkflowRoute(rundata,
-        context);
+      EipTWorkflowRoute routeobj =
+        WorkflowUtils.getEipTWorkflowRoute(rundata, context);
       if (routeobj == null) {
         return false;
       }
@@ -382,14 +384,16 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
       }
 
       // ワーフクロー申請経路を削除
-      dataContext.deleteObject(routeobj);
-      dataContext.commitChanges();
+      Database.delete(routeobj);
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        routeobj.getRouteId(), ALEventlogConstants.PORTLET_TYPE_WORKFLOW_ROUTE,
+        routeobj.getRouteId(),
+        ALEventlogConstants.PORTLET_TYPE_WORKFLOW_ROUTE,
         routeobj.getRouteName());
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -434,10 +438,11 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
    * @param userName
    * @return
    */
-  private TurbineUser getEipUserRecord(List<?> userList, String userName) {
+  private TurbineUser getEipUserRecord(List<TurbineUser> userList,
+      String userName) {
     int size = userList.size();
     for (int i = 0; i < size; i++) {
-      TurbineUser record = (TurbineUser) userList.get(i);
+      TurbineUser record = userList.get(i);
       if (record.getLoginName().equals(userName)) {
         return record;
       }

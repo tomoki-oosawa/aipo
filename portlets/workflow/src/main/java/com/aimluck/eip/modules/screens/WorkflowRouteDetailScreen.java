@@ -28,13 +28,13 @@ import com.aimluck.eip.workflow.WorkflowRouteSelectData;
 
 /**
  * ワークフロー申請経路の詳細画面を処理するクラスです。 <br />
- *
+ * 
  */
 public class WorkflowRouteDetailScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowRouteDetailScreen.class.getName());
+    .getLogger(WorkflowRouteDetailScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)

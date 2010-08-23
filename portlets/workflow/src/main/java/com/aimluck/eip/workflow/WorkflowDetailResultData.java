@@ -27,7 +27,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ワークフローのResultDataです。 <BR>
- *
+ * 
  */
 public class WorkflowDetailResultData extends WorkflowResultData {
 
@@ -59,9 +59,10 @@ public class WorkflowDetailResultData extends WorkflowResultData {
   private ALStringField route_name;
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
+  @Override
   public void initField() {
     super.initField();
     parent_id = new ALNumberField();
@@ -96,7 +97,6 @@ public class WorkflowDetailResultData extends WorkflowResultData {
     return ALEipUtils.getMessageList(note.getValue());
   }
 
-
   public List<WorkflowDecisionRecordData> getDecisionRecords() {
     return drlist;
   }
@@ -112,7 +112,6 @@ public class WorkflowDetailResultData extends WorkflowResultData {
   public boolean getCanRemandApplicant() {
     return can_remand_applicant;
   }
-
 
   /**
    * @param string

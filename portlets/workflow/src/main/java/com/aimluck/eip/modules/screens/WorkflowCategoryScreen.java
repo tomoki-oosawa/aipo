@@ -28,13 +28,13 @@ import com.aimluck.eip.workflow.WorkflowCategorySelectData;
 
 /**
  * ワークフロー分類の一覧を処理するクラスです。 <br />
- *
+ * 
  */
 public class WorkflowCategoryScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowCategoryScreen.class.getName());
+    .getLogger(WorkflowCategoryScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
@@ -45,15 +45,16 @@ public class WorkflowCategoryScreen extends ALVelocityScreen {
 
       WorkflowCategorySelectData listData = new WorkflowCategorySelectData();
       listData.initField();
-      listData.setRowsNum(Integer.parseInt(ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig()
-          .getInitParameter("p1a-rows")));
-      listData.setStrLength(Integer.parseInt(ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig()
-          .getInitParameter("p3a-strlen")));
+      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p1a-rows")));
+      listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p3a-strlen")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-workflow-category-list.vm";
+      String layout_template =
+        "portlets/html/ja/ajax-workflow-category-list.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

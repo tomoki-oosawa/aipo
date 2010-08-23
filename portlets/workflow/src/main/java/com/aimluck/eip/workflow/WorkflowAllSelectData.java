@@ -39,6 +39,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -213,7 +214,7 @@ public class WorkflowAllSelectData extends
   private SelectQuery<EipTWorkflowRequest> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<EipTWorkflowRequest> query =
-      new SelectQuery<EipTWorkflowRequest>(EipTWorkflowRequest.class);
+      Database.query(EipTWorkflowRequest.class);
 
     if (TAB_UNFINISHED.equals(currentTab)) {
       Expression exp1 =
@@ -268,18 +269,19 @@ public class WorkflowAllSelectData extends
       String lastUpdateUser = null;
       EipTWorkflowRequestMap map = null;
       int order = 0;
-      List<?> maps = WorkflowUtils.getEipTWorkflowRequestMap(record);
+      List<EipTWorkflowRequestMap> maps =
+        WorkflowUtils.getEipTWorkflowRequestMap(record);
       int size = maps.size();
 
       if (WorkflowUtils.DB_PROGRESS_ACCEPT.equals(record.getProgress())) {
         // すべて承認済みの場合、最終承認者をセットする
-        map = (EipTWorkflowRequestMap) maps.get(size - 1);
+        map = maps.get(size - 1);
         ALEipUser user = ALEipUtils.getALEipUser(map.getUserId().intValue());
         lastUpdateUser = user.getAliasName().getValue();
         order = map.getOrderIndex().intValue();
       } else {
         for (int i = 0; i < size; i++) {
-          map = (EipTWorkflowRequestMap) maps.get(i);
+          map = maps.get(i);
           if (WorkflowUtils.DB_STATUS_CONFIRM.equals(map.getStatus())) {
             // 最終閲覧者を取得する
             ALEipUser user =
@@ -310,10 +312,10 @@ public class WorkflowAllSelectData extends
         EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
         entityId);
     SelectQuery<EipTWorkflowRequest> query =
-      new SelectQuery<EipTWorkflowRequest>(EipTWorkflowRequest.class, exp);
-    List<?> record = query.fetchList();
+      Database.query(EipTWorkflowRequest.class, exp);
+    List<EipTWorkflowRequest> record = query.fetchList();
     if (record.size() > 0) {
-      return ((EipTWorkflowRequest) record.get(0)).getUserId().intValue();
+      return (record.get(0)).getUserId().intValue();
     } else {
       return -1;
     }

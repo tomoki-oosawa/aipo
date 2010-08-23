@@ -28,13 +28,13 @@ import com.aimluck.eip.workflow.WorkflowSelectData;
 
 /**
  * ワークフローの一覧を処理するクラスです。 <br />
- *
+ * 
  */
 public class WorkflowListScreen extends WorkflowScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowListScreen.class.getName());
+    .getLogger(WorkflowListScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
@@ -46,12 +46,12 @@ public class WorkflowListScreen extends WorkflowScreen {
       listData.initField();
       listData.loadCategoryList(rundata, context);
       listData.loadRouteList(rundata, context);
-      listData.setRowsNum(Integer.parseInt(ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig()
-          .getInitParameter("p1b-rows")));
-      listData.setStrLength(Integer.parseInt(ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig()
-          .getInitParameter("p3a-strlen")));
+      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p1b-rows")));
+      listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p3a-strlen")));
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-workflow-list.vm";

@@ -28,13 +28,13 @@ import com.aimluck.eip.workflow.WorkflowAllSelectData;
 
 /**
  * ワークフローの管理者用の一覧を処理するクラスです。 <br />
- *
+ * 
  */
 public class WorkflowAllScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WorkflowAllScreen.class.getName());
+    .getLogger(WorkflowAllScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
@@ -44,12 +44,12 @@ public class WorkflowAllScreen extends ALVelocityScreen {
     try {
       WorkflowAllSelectData listData = new WorkflowAllSelectData();
       listData.initField();
-      listData.setRowsNum(Integer.parseInt(ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig()
-          .getInitParameter("p1a-rows")));
-      listData.setStrLength(Integer.parseInt(ALEipUtils
-          .getPortlet(rundata, context).getPortletConfig()
-          .getInitParameter("p3a-strlen")));
+      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p1a-rows")));
+      listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p3a-strlen")));
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-workflow.vm";
