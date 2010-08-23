@@ -47,16 +47,16 @@ import com.aimluck.eip.orm.query.SelectQuery;
  */
 public class ALDbLocalFolder extends ALAbstractFolder {
 
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ALDbLocalFolder.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ALDbLocalFolder.class.getName());
 
   /**
    * コンストラクタ
    * 
    * @param parentFolder
-   *            親フォルダ
+   *          親フォルダ
    * @param folderName
-   *            自身のフォルダ名
+   *          自身のフォルダ名
    */
   public ALDbLocalFolder(int type_mail, String org_id, int user_id,
       int account_id) {
@@ -73,20 +73,18 @@ public class ALDbLocalFolder extends ALAbstractFolder {
     try {
       SelectQuery<EipTMail> query = Database.query(EipTMail.class);
 
-      Expression exp1 = ExpressionFactory.matchDbExp(
-        EipTMail.MAIL_ID_PK_COLUMN, Integer.valueOf(mailid));
-      Expression exp2 = ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY,
-        user_id);
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(EipTMail.MAIL_ID_PK_COLUMN, Integer
+          .valueOf(mailid));
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY, user_id);
 
-      List<EipTMail> mail_list = query.andQualifier(exp1).andQualifier(exp2)
-        .fetchList();
-
-      if (mail_list == null || mail_list.size() == 0) {
-        // 指定したMail IDのレコードが見つからない場合
+      EipTMail email = query.setQualifier(exp1.andExp(exp2)).fetchSingle();
+      if (email == null) {
         logger.debug("[Mail] Not found ID...");
         return null;
       }
-      EipTMail email = mail_list.get(0);
+
       ALLocalMailMessage msg = readMail(new String(email.getMail()));
 
       // 未読→既読に変更
@@ -116,7 +114,8 @@ public class ALDbLocalFolder extends ALAbstractFolder {
     ByteArrayInputStream input = null;
     try {
       input = new ByteArrayInputStream(mail.getBytes());
-      localmsg = new ALLocalMailMessage(Session.getDefaultInstance(prop), input);
+      localmsg =
+        new ALLocalMailMessage(Session.getDefaultInstance(prop), input);
       input.close();
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -179,26 +178,24 @@ public class ALDbLocalFolder extends ALAbstractFolder {
   public boolean deleteMail(int mailid) {
     try {
       SelectQuery<EipTMail> query = Database.query(EipTMail.class);
-      Expression exp1 = ExpressionFactory.matchDbExp(
-        EipTMail.MAIL_ID_PK_COLUMN, Integer.valueOf(mailid));
-      Expression exp2 = ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY,
-        user_id);
-      Expression exp3 = ExpressionFactory.matchExp(
-        EipTMail.ACCOUNT_ID_PROPERTY, account_id);
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(EipTMail.MAIL_ID_PK_COLUMN, Integer
+          .valueOf(mailid));
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY, user_id);
+      Expression exp3 =
+        ExpressionFactory.matchExp(EipTMail.ACCOUNT_ID_PROPERTY, account_id);
       query.andQualifier(exp1).andQualifier(exp2).andQualifier(exp3);
 
-      // より厳密にはメールフォルダも指定する。
-
-      List<EipTMail> mail_list = query.andQualifier(exp1).andQualifier(exp2)
-        .andQualifier(exp3).fetchList();
-      if (mail_list == null || mail_list.size() == 0) {
-        // 指定したMail IDのレコードが見つからない場合
+      EipTMail mail =
+        query.setQualifier(exp1.andExp(exp2).andExp(exp3)).fetchSingle();
+      if (mail == null) {
         logger.debug("[ALDbLocalFolder] Not found ID...");
         throw new ALPageNotFoundException();
       }
 
       // メールを削除する
-      Database.delete(mail_list.get(0));
+      Database.delete(mail);
       Database.commit();
     } catch (Throwable t) {
       Database.rollback();
@@ -254,7 +251,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
    * 指定したフォルダ内のメールの総数を取得する。
    * 
    * @param type
-   *            送受信フラグ
+   *          送受信フラグ
    * @return
    */
   public int getMailSum() {

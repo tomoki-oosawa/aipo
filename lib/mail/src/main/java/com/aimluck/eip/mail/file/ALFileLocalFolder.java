@@ -57,19 +57,20 @@ import com.aimluck.eip.orm.query.SelectQuery;
  */
 public class ALFileLocalFolder extends ALAbstractFolder {
 
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ALFileLocalFolder.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ALFileLocalFolder.class.getName());
 
   /** メールのファイル名規則 */
-  public static final String DEFAULT_MAIL_FILENAME_DATE_FORMAT = "yyyyMMddHHmmssSSS";
+  public static final String DEFAULT_MAIL_FILENAME_DATE_FORMAT =
+    "yyyyMMddHHmmssSSS";
 
   /**
    * コンストラクタ
    * 
    * @param parentFolder
-   *            親フォルダ
+   *          親フォルダ
    * @param folderName
-   *            自身のフォルダ名
+   *          自身のフォルダ名
    */
   public ALFileLocalFolder(int type_mail, String org_id, int user_id,
       int account_id) {
@@ -86,21 +87,20 @@ public class ALFileLocalFolder extends ALAbstractFolder {
     try {
       SelectQuery<EipTMail> query = Database.query(EipTMail.class);
 
-      Expression exp1 = ExpressionFactory.matchDbExp(
-        EipTMail.MAIL_ID_PK_COLUMN, Integer.valueOf(mailid));
-      Expression exp2 = ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY,
-        user_id);
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(EipTMail.MAIL_ID_PK_COLUMN, Integer
+          .valueOf(mailid));
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY, user_id);
 
-      List<EipTMail> mail_list = query.andQualifier(exp1).andQualifier(exp2)
-        .fetchList();
-
-      if (mail_list == null || mail_list.size() == 0) {
-        // 指定したMail IDのレコードが見つからない場合
+      EipTMail email = query.setQualifier(exp1.andExp(exp2)).fetchSingle();
+      if (email == null) {
         logger.debug("[Mail] Not found ID...");
         return null;
       }
-      EipTMail email = mail_list.get(0);
-      ALLocalMailMessage msg = readMail(new String(email.getMail()));
+
+      ALLocalMailMessage msg =
+        readMail(getFullName() + File.separator + email.getFilePath());
 
       // 未読→既読に変更
       email.setReadFlg("T");
@@ -129,7 +129,8 @@ public class ALFileLocalFolder extends ALAbstractFolder {
     BufferedInputStream input = null;
     try {
       input = new BufferedInputStream(new FileInputStream(filepath));
-      localmsg = new ALLocalMailMessage(Session.getDefaultInstance(prop), input);
+      localmsg =
+        new ALLocalMailMessage(Session.getDefaultInstance(prop), input);
       input.close();
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -157,8 +158,13 @@ public class ALFileLocalFolder extends ALAbstractFolder {
         } else {
           dataContext = DataContext.createDataContext(orgId);
         }
-        res = insertMailToDB(dataContext, (MimeMessage) mail, tmpFileName,
-          false, false);
+        res =
+          insertMailToDB(
+            dataContext,
+            (MimeMessage) mail,
+            tmpFileName,
+            false,
+            false);
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -187,8 +193,13 @@ public class ALFileLocalFolder extends ALAbstractFolder {
         } else {
           dataContext = DataContext.createDataContext(orgId);
         }
-        res = insertMailToDB(dataContext, (MimeMessage) mail, tmpFileName,
-          false, false);
+        res =
+          insertMailToDB(
+            dataContext,
+            (MimeMessage) mail,
+            tmpFileName,
+            false,
+            false);
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -266,15 +277,20 @@ public class ALFileLocalFolder extends ALAbstractFolder {
   public boolean deleteMail(int mailid) {
     try {
       SelectQuery<EipTMail> query = Database.query(EipTMail.class);
-      Expression exp1 = ExpressionFactory.matchDbExp(
-        EipTMail.MAIL_ID_PK_COLUMN, Integer.valueOf(mailid));
-      Expression exp2 = ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY,
-        user_id);
-      Expression exp3 = ExpressionFactory.matchExp(
-        EipTMail.ACCOUNT_ID_PROPERTY, account_id);
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(EipTMail.MAIL_ID_PK_COLUMN, Integer
+          .valueOf(mailid));
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY, user_id);
+      Expression exp3 =
+        ExpressionFactory.matchExp(EipTMail.ACCOUNT_ID_PROPERTY, account_id);
 
-      List<EipTMail> mail_list = query.andQualifier(exp1).andQualifier(exp2)
-        .andQualifier(exp3).fetchList();
+      List<EipTMail> mail_list =
+        query
+          .andQualifier(exp1)
+          .andQualifier(exp2)
+          .andQualifier(exp3)
+          .fetchList();
       if (mail_list == null || mail_list.size() == 0) {
         logger.debug("[ALDbLocalFolder] Not found ID...");
         throw new ALPageNotFoundException();
@@ -283,18 +299,18 @@ public class ALFileLocalFolder extends ALAbstractFolder {
       EipTMail record = mail_list.get(0);
       String filePath = record.getFilePath();
 
-      // メールを削除する
-      Database.delete(record);
-      Database.commit();
-
       // ファイル削除
       File file = new File(getFullName() + File.separator + filePath);
       if (file.exists()) {
         file.delete();
       }
 
-    } catch (Exception e) {
-      logger.error("Exception", e);
+      // メールを削除する
+      Database.delete(record);
+      Database.commit();
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error(t);
       return false;
     }
     return true;
@@ -308,30 +324,29 @@ public class ALFileLocalFolder extends ALAbstractFolder {
    */
   public boolean deleteMails(List<String> msgIndexes) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
       SelectQuery<EipTMail> query = Database.query(EipTMail.class);
-      Expression exp1 = ExpressionFactory.inDbExp(EipTMail.MAIL_ID_PK_COLUMN,
-        msgIndexes);
-      Expression exp2 = ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY,
-        Integer.valueOf(user_id));
+      Expression exp1 =
+        ExpressionFactory.inDbExp(EipTMail.MAIL_ID_PK_COLUMN, msgIndexes);
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY, Integer
+          .valueOf(user_id));
 
-      List<EipTMail> mail_list = query.andQualifier(exp1).andQualifier(exp2)
-        .fetchList();
+      List<EipTMail> mail_list =
+        query.andQualifier(exp1).andQualifier(exp2).fetchList();
       if (mail_list == null || mail_list.size() == 0) {
         logger.debug("[ALFileLocalFolder] Not found ID...");
         throw new ALPageNotFoundException();
       }
 
-      // メールを削除
       for (EipTMail record : mail_list) {
         String filePath = record.getFilePath();
         File file = new File(getFullName() + File.separator + filePath);
         if (file.exists()) {
           file.delete();
         }
-        Database.delete(record);
       }
+
+      Database.deleteAll(mail_list);
       Database.commit();
     } catch (Throwable t) {
       Database.rollback();
@@ -378,7 +393,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
    * 指定したフォルダ内のメールの総数を取得する。
    * 
    * @param type
-   *            送受信フラグ
+   *          送受信フラグ
    * @return
    */
   public int getMailSum() {
@@ -407,8 +422,8 @@ public class ALFileLocalFolder extends ALAbstractFolder {
    */
   public String getNewFileName() {
     int count = 0;
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-      DEFAULT_MAIL_FILENAME_DATE_FORMAT);
+    SimpleDateFormat simpleDateFormat =
+      new SimpleDateFormat(DEFAULT_MAIL_FILENAME_DATE_FORMAT);
     Date date = new Date();
     String tmpname = simpleDateFormat.format(date);
     String pop3MailPath = getFullName() + File.separator;

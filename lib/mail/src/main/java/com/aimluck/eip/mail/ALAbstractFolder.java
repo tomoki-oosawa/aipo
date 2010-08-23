@@ -56,6 +56,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTMailFilter;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.mail.util.ALAttachmentsExtractor;
 import com.aimluck.eip.mail.util.ALMailUtils;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.orgutils.ALOrgUtilsFactoryService;
@@ -70,8 +71,8 @@ import com.sk_jp.mail.MultipartUtility;
 public abstract class ALAbstractFolder implements ALFolder {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ALAbstractFolder.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ALAbstractFolder.class.getName());
 
   /** 受信 or 送信 */
   protected int type_mail = -1;
@@ -112,13 +113,13 @@ public abstract class ALAbstractFolder implements ALFolder {
   /** 現在のソートタイプ （asc:昇順、desc:降順） */
   private String current_sort_type;
 
-  protected final String LIST_SORT_STR = new StringBuffer()
-    .append(this.getClass().getName()).append(ALEipConstants.LIST_SORT)
-    .toString();
+  protected final String LIST_SORT_STR =
+    new StringBuffer().append(this.getClass().getName()).append(
+      ALEipConstants.LIST_SORT).toString();
 
-  protected final String LIST_SORT_TYPE_STR = new StringBuffer()
-    .append(this.getClass().getName()).append(ALEipConstants.LIST_SORT_TYPE)
-    .toString();
+  protected final String LIST_SORT_TYPE_STR =
+    new StringBuffer().append(this.getClass().getName()).append(
+      ALEipConstants.LIST_SORT_TYPE).toString();
 
   /**
    * コンストラクタ
@@ -139,12 +140,14 @@ public abstract class ALAbstractFolder implements ALFolder {
   protected void init(RunData rundata, Context context) {
     if (rundata.getParameters().containsKey(ALEipConstants.LIST_SORT)) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, rundata
-        .getParameters().getString(ALEipConstants.LIST_SORT));
+        .getParameters()
+        .getString(ALEipConstants.LIST_SORT));
     }
 
     if (rundata.getParameters().containsKey(ALEipConstants.LIST_SORT_TYPE)) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR, rundata
-        .getParameters().getString(ALEipConstants.LIST_SORT_TYPE));
+        .getParameters()
+        .getString(ALEipConstants.LIST_SORT_TYPE));
     }
 
     if (rundata.getParameters().containsKey(ALEipConstants.LIST_START)) {
@@ -156,8 +159,7 @@ public abstract class ALAbstractFolder implements ALFolder {
       MimeMessage mimeMessage, String filePath, boolean saveContents,
       boolean isRead) {
     try {
-      EipTMail email = (EipTMail) dataContext
-        .createAndRegisterNewObject(EipTMail.class);
+      EipTMail email = Database.create(dataContext, EipTMail.class);
 
       String mail = "";
       if (saveContents) {
@@ -211,9 +213,9 @@ public abstract class ALAbstractFolder implements ALFolder {
       }
 
       if (presonAddress != null && presonAddress.length > 0) {
-        String personaladdr = ALMailUtils.getOneString(
-          ALMailUtils.getTokens(presonAddress[0].toString(), ALMailUtils.CR),
-          "");
+        String personaladdr =
+          ALMailUtils.getOneString(ALMailUtils.getTokens(presonAddress[0]
+            .toString(), ALMailUtils.CR), "");
         try {
           preson = MailUtility.decodeText(personaladdr);
           if (presonAddress.length > 1) {
@@ -263,8 +265,8 @@ public abstract class ALAbstractFolder implements ALFolder {
       String read_flg = isRead ? "T" : "F";
 
       // アカウントのフォルダに代入
-      EipMMailAccount account = ALMailUtils.getMailAccount(org_id, user_id,
-        account_id);
+      EipMMailAccount account =
+        ALMailUtils.getMailAccount(org_id, user_id, account_id);
       int folder_id = account.getDefaultFolderId();
 
       // フォルダ振り分け処理
@@ -297,9 +299,10 @@ public abstract class ALAbstractFolder implements ALFolder {
       // 更新日
       email.setUpdateDate(Calendar.getInstance().getTime());
 
-      dataContext.commitChanges();
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
+      Database.commit(dataContext);
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error(t);
       return false;
     }
     return true;
@@ -322,25 +325,29 @@ public abstract class ALAbstractFolder implements ALFolder {
 
       String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
       if (sort == null || sort.equals("")) {
-        ALEipUtils.setTemp(rundata, context, LIST_SORT_STR,
-          ALEipUtils.getPortlet(rundata, context).getPortletConfig()
-            .getInitParameter("p2a-sort"));
+        ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p2a-sort"));
       }
 
       init(rundata, context);
 
       // ソート対象が日時だった場合、ソート順を逆にする．
       if ("date".equals(ALEipUtils.getTemp(rundata, context, LIST_SORT_STR))) {
-        String sort_type = ALEipUtils.getTemp(rundata, context,
-          LIST_SORT_TYPE_STR);
+        String sort_type =
+          ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
         if (sort_type == null || sort_type.equals("")) {
-          ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR,
+          ALEipUtils.setTemp(
+            rundata,
+            context,
+            LIST_SORT_TYPE_STR,
             ALEipConstants.LIST_SORT_TYPE_DESC);
         }
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       SelectQuery query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
@@ -378,19 +385,22 @@ public abstract class ALAbstractFolder implements ALFolder {
     query.addCustomDbAttribute(EipTMail.EVENT_DATE_COLUMN);
     query.addCustomDbAttribute(EipTMail.FILE_VOLUME_COLUMN);
     query.addCustomDbAttribute(EipTMail.HAS_FILES_COLUMN);
-    Expression exp1 = ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY,
-      Integer.valueOf(user_id));
+    Expression exp1 =
+      ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY, Integer
+        .valueOf(user_id));
     query.setQualifier(exp1);
-    Expression exp2 = ExpressionFactory.matchExp(EipTMail.ACCOUNT_ID_PROPERTY,
-      Integer.valueOf(account_id));
+    Expression exp2 =
+      ExpressionFactory.matchExp(EipTMail.ACCOUNT_ID_PROPERTY, Integer
+        .valueOf(account_id));
     query.andQualifier(exp2);
     Expression exp3 = ExpressionFactory.matchExp(EipTMail.TYPE_PROPERTY, type);
     query.andQualifier(exp3);
 
     // folder_id が空でなければ、フォルダIDで絞り込む
     if (!("".equals(folder_id))) {
-      Expression exp4 = ExpressionFactory.matchExp(EipTMail.FOLDER_ID_PROPERTY,
-        Integer.valueOf(folder_id));
+      Expression exp4 =
+        ExpressionFactory.matchExp(EipTMail.FOLDER_ID_PROPERTY, Integer
+          .valueOf(folder_id));
       query.andQualifier(exp4);
     }
 
@@ -409,8 +419,8 @@ public abstract class ALAbstractFolder implements ALFolder {
 
     BufferedReader reader = null;
     try {
-      String indexFilename = getFullName() + File.separator
-        + ALFolder.FILE_UIDL;
+      String indexFilename =
+        getFullName() + File.separator + ALFolder.FILE_UIDL;
       File uidlFile = new File(indexFilename);
       if (!uidlFile.exists()) {
         uidlFile.createNewFile();
@@ -420,8 +430,8 @@ public abstract class ALAbstractFolder implements ALFolder {
         }
       }
 
-      reader = new BufferedReader(new InputStreamReader(new FileInputStream(
-        uidlFile)));
+      reader =
+        new BufferedReader(new InputStreamReader(new FileInputStream(uidlFile)));
       String line = null;
       while ((line = reader.readLine()) != null) {
         oldUIDL.add(line);
@@ -473,12 +483,14 @@ public abstract class ALAbstractFolder implements ALFolder {
   }
 
   protected String getRootFolderPath() {
-    return (rootFolderPath != null && !"".equals(rootFolderPath)) ? rootFolderPath
+    return (rootFolderPath != null && !"".equals(rootFolderPath))
+      ? rootFolderPath
       : ALMailUtils.rootFolderPath;
   }
 
   protected String getCategoryKey() {
-    return (categoryKey != null && !"".equals(categoryKey)) ? categoryKey
+    return (categoryKey != null && !"".equals(categoryKey))
+      ? categoryKey
       : ALMailUtils.categoryKey;
   }
 
@@ -492,10 +504,10 @@ public abstract class ALAbstractFolder implements ALFolder {
     String categoryKeytmp = getCategoryKey();
 
     if (categoryKeytmp != null && !"".equals(categoryKeytmp)) {
-      ALOrgUtilsHandler handler = ALOrgUtilsFactoryService.getInstance()
-        .getOrgUtilsHandler();
-      File docPath = handler.getDocumentPath(getRootFolderPath(), org_id,
-        categoryKeytmp);
+      ALOrgUtilsHandler handler =
+        ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
+      File docPath =
+        handler.getDocumentPath(getRootFolderPath(), org_id, categoryKeytmp);
       String pathStr = null;
       try {
         pathStr = docPath.getCanonicalPath();
@@ -504,12 +516,20 @@ public abstract class ALAbstractFolder implements ALFolder {
           + pathStr);
       }
       fullName = new StringBuffer(pathStr);
-      fullName.append(File.separator).append(user_id).append(File.separator)
+      fullName
+        .append(File.separator)
+        .append(user_id)
+        .append(File.separator)
         .append(account_id);
     } else {
       fullName = new StringBuffer(getRootFolderPath());
-      fullName.append(File.separator).append(org_id).append(File.separator)
-        .append(user_id).append(File.separator).append(account_id);
+      fullName
+        .append(File.separator)
+        .append(org_id)
+        .append(File.separator)
+        .append(user_id)
+        .append(File.separator)
+        .append(account_id);
     }
 
     if (ALFolder.TYPE_RECEIVE == type_mail) {

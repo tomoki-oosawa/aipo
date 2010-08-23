@@ -23,10 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
@@ -34,7 +32,8 @@ import com.aimluck.eip.cayenne.om.portlet.EipMMailAccount;
 import com.aimluck.eip.cayenne.om.portlet.EipTMail;
 import com.aimluck.eip.cayenne.om.portlet.EipTMailFolder;
 import com.aimluck.eip.mail.util.ALMailUtils;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
  * メールの送受信を操作するインターフェイスです。 <br />
@@ -42,8 +41,8 @@ import com.aimluck.eip.orm.DatabaseOrmService;
  */
 public abstract class ALMailHandler {
 
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ALMailHandler.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ALMailHandler.class.getName());
 
   /**
    * コンストラクタ
@@ -123,17 +122,27 @@ public abstract class ALMailHandler {
   abstract public ALFolder getALFolder(int type_mail, String org_id,
       int user_id, int account_id);
 
-  // /**
-  // * ローカルストア内の指定したフォルダに含まれるメッセージを1つ取得する．
-  // *
-  // * @param userRootFolderName
-  // * @param accountName
-  // * @param folderName
-  // * LocalStore.FOLDER_RECEIVEなどを指定する．
-  // * @param index
-  // * @return
-  // */
-  // abstract public ALMailMessage getMail(int index);
+  private SelectQuery<EipTMail> getUnReadMailQuery(
+      ALMailReceiverContext rcontext) {
+    try {
+      SelectQuery<EipTMail> query = Database.query(EipTMail.class);
+
+      Expression exp1 =
+        ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY, Integer
+          .valueOf(rcontext.getUserId()));
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTMail.ACCOUNT_ID_PROPERTY, Integer
+          .valueOf(rcontext.getAccountId()));
+      Expression exp3 = ExpressionFactory.matchExp(EipTMail.TYPE_PROPERTY, "R");
+      Expression exp4 =
+        ExpressionFactory.matchExp(EipTMail.READ_FLG_PROPERTY, "F");
+
+      return query.setQualifier(exp1.andExp(exp2).andExp(exp3).andExp(exp4));
+    } catch (Exception e) {
+      logger.error("error", e);
+      return null;
+    }
+  }
 
   /**
    * 未読メールの総数を取得する．
@@ -144,30 +153,18 @@ public abstract class ALMailHandler {
    * @return
    */
   public int getUnReadMailSum(ALMailReceiverContext rcontext) {
-    int mailSum = 0;
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
+      SelectQuery<EipTMail> query = getUnReadMailQuery(rcontext);
 
-      SelectQuery query = new SelectQuery(EipTMail.class);
-      query.addCustomDbAttribute(EipTMail.MAIL_ID_PK_COLUMN);
-      query.setPageSize(1);
+      query.select(EipTMail.MAIL_ID_PK_COLUMN);
+      query.pageSize(1);
 
-      Expression exp1 = ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY,
-        Integer.valueOf(rcontext.getUserId()));
-      Expression exp2 = ExpressionFactory.matchExp(
-        EipTMail.ACCOUNT_ID_PROPERTY, Integer.valueOf(rcontext.getAccountId()));
-      Expression exp3 = ExpressionFactory.matchExp(EipTMail.TYPE_PROPERTY, "R");
-      Expression exp4 = ExpressionFactory.matchExp(EipTMail.READ_FLG_PROPERTY,
-        "F");
-      query.setQualifier(exp1.andExp(exp2).andExp(exp3).andExp(exp4));
-      List<?> mails = dataContext.performQuery(query);
+      List<EipTMail> mails = query.fetchList();
 
-      mailSum = (mails != null) ? mails.size() : 0;
+      return (mails != null) ? mails.size() : 0;
     } catch (Exception e) {
-      mailSum = 0;
+      return 0;
     }
-    return mailSum;
   }
 
   /**
@@ -182,14 +179,13 @@ public abstract class ALMailHandler {
       ALMailReceiverContext rcontext) {
     Map<Integer, Integer> mailSumMap = new HashMap<Integer, Integer>();
 
-    // int mailSum = 0;
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-
       // アカウントのフォルダ一覧を取得する
-      EipMMailAccount account = ALMailUtils.getMailAccount(rcontext.getOrgId(),
-        rcontext.getUserId(), rcontext.getAccountId());
+      EipMMailAccount account =
+        ALMailUtils.getMailAccount(
+          rcontext.getOrgId(),
+          rcontext.getUserId(),
+          rcontext.getAccountId());
       List<EipTMailFolder> folders = ALMailUtils.getEipTMailFolderAll(account);
       List<Integer> folder_ids = new ArrayList<Integer>();
 
@@ -202,30 +198,17 @@ public abstract class ALMailHandler {
       }
 
       // 未読メールをフォルダIDでソートして取得する
-      SelectQuery query = new SelectQuery(EipTMail.class);
-      /*
-       * query.addCustomDbAttribute(EipTMail.MAIL_ID_PK_COLUMN);
-       * query.setPageSize(1);
-       */
-      Expression exp1 = ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY,
-        Integer.valueOf(rcontext.getUserId()));
-      Expression exp2 = ExpressionFactory.matchExp(
-        EipTMail.ACCOUNT_ID_PROPERTY, Integer.valueOf(rcontext.getAccountId()));
-      Expression exp3 = ExpressionFactory.matchExp(EipTMail.TYPE_PROPERTY, "R");
-      Expression exp4 = ExpressionFactory.matchExp(EipTMail.READ_FLG_PROPERTY,
-        "F");
-      // Expression exp5 = ExpressionFactory.inExp(EipTMail.FOLDER_ID_PROPERTY,
-      // folder_ids);
+      SelectQuery<EipTMail> query = getUnReadMailQuery(rcontext);
 
-      query.setQualifier(exp1.andExp(exp2).andExp(exp3).andExp(exp4));
-      query.addOrdering(EipTMail.FOLDER_ID_PROPERTY, true);
-      List<?> mails = dataContext.performQuery(query);
+      List<EipTMail> mail_list =
+        query.orderAscending(EipTMail.FOLDER_ID_PROPERTY).fetchList();
 
       // 取得したメールの数をフォルダごとに数え、mailSumMap に代入する。
-      int counting_folder_id = ((EipTMail) mails.get(0)).getFolderId(), count = 0;
+      int counting_folder_id = (mail_list.get(0)).getFolderId(), count = 0;
       folder_id = 0;
-      for (Object mail : mails) {
-        folder_id = ((EipTMail) mail).getFolderId();
+
+      for (EipTMail mail : mail_list) {
+        folder_id = mail.getFolderId();
         if (folder_id != counting_folder_id) {
           mailSumMap.put(counting_folder_id, count);
           count = 0;
@@ -283,15 +266,5 @@ public abstract class ALMailHandler {
    */
   abstract public boolean removeAccount(String org_id, int user_id,
       int account_id);
-
-  // /**
-  // * 指定したフォルダ内のメールの総数を取得する．
-  // *
-  // * @return
-  // */
-  // public int getMailSum(String userRootFolderName, String accountName,
-  // String folderName) {
-  // return 0;
-  // }
 
 }
