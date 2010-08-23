@@ -90,11 +90,12 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
           .append("/* ")
           .append(getJSONString(rundata, context))
           .append(" */");
+      byte[] byteResult = result.toString().getBytes(
+          ALEipConstants.DEF_CONTENT_ENCODING);
 
       HttpServletResponse response = rundata.getResponse();
-
       out = response.getOutputStream();
-      out.print(result.toString());
+      out.write(byteResult);
       out.flush();
       out.close();
     } catch (Exception e) {

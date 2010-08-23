@@ -138,7 +138,9 @@ public abstract class ALAbstractFormData implements ALData {
           context,
           msgList);
       action.setResultData(this);
-      action.addErrorMessages(msgList);
+      if (!msgList.isEmpty()){
+    	  action.addErrorMessages(msgList);
+      }
       action.putData(rundata, context);
       return res;
     } catch (ALPermissionException e) {
@@ -189,7 +191,9 @@ public abstract class ALAbstractFormData implements ALData {
         mode = action.getMode();
       }
       action.setResultData(this);
-      action.addErrorMessages(msgList);
+      if (!msgList.isEmpty()){
+    	  action.addErrorMessages(msgList);
+      }
       action.putData(rundata, context);
 
       return res;
@@ -240,7 +244,9 @@ public abstract class ALAbstractFormData implements ALData {
         mode = action.getMode();
       }
       action.setResultData(this);
-      action.addErrorMessages(msgList);
+      if (!msgList.isEmpty()){
+    	  action.addErrorMessages(msgList);
+      }
       action.putData(rundata, context);
 
       return res;
@@ -283,7 +289,9 @@ public abstract class ALAbstractFormData implements ALData {
       List<String> msgList = new ArrayList<String>();
       boolean res = deleteFormData(rundata, context, msgList);
       action.setResultData(this);
-      action.addErrorMessages(msgList);
+      if (!msgList.isEmpty()){
+    	  action.addErrorMessages(msgList);
+      }
       action.putData(rundata, context);
       return res;
     } catch (ALPermissionException e) {
