@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -41,13 +41,15 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
  * Webメールのファイルを処理するクラスです。 <br />
  */
 public class WebMailFileScreen extends RawScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WebMailFileScreen.class.getName());
+    .getLogger(WebMailFileScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.util.RunData)
    */
+  @Override
   protected String getContentType(RunData rundata) {
     return "application/octet-stream";
   }
@@ -55,34 +57,42 @@ public class WebMailFileScreen extends RawScreen {
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
    */
+  @Override
   protected void doOutput(RunData rundata) throws Exception {
     ServletOutputStream out = null;
 
     try {
       String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
       int uid = ALEipUtils.getUserId(rundata);
-      int accountid = Integer.parseInt(rundata.getParameters().getString(
+      int accountid =
+        Integer.parseInt(rundata.getParameters().getString(
           WebMailUtils.ACCOUNT_ID));
       int mailindex = rundata.getParameters().getInt(ALEipConstants.ENTITY_ID);
       int attachmentIndex = rundata.getParameters().getInt("attachmentIndex");
-      if (attachmentIndex < 0)
+      if (attachmentIndex < 0) {
         return;
+      }
 
       String currentTab = rundata.getParameters().getString("tab");
-      int type_mail = (WebMailUtils.TAB_RECEIVE.equals(currentTab)) ? ALFolder.TYPE_RECEIVE
+      int type_mail =
+        (WebMailUtils.TAB_RECEIVE.equals(currentTab))
+          ? ALFolder.TYPE_RECEIVE
           : ALFolder.TYPE_SEND;
-      ALMailHandler handler = ALMailFactoryService.getInstance()
-          .getMailHandler();
+      ALMailHandler handler =
+        ALMailFactoryService.getInstance().getMailHandler();
       ALFolder folder = handler.getALFolder(type_mail, org_id, uid, accountid);
       ALLocalMailMessage msg = (ALLocalMailMessage) folder.getMail(mailindex);
 
-      String fileName = new String(msg.getFileName(attachmentIndex).getBytes(
-          "Shift_JIS"), "8859_1");
+      String fileName =
+        new String(
+          msg.getFileName(attachmentIndex).getBytes("Shift_JIS"),
+          "8859_1");
       InputStream in = msg.getInputStream(attachmentIndex);
       HttpServletResponse response = rundata.getResponse();
       // ファイル名の送信(attachment部分をinlineに変更すればインライン表示)
       response.setHeader("Content-disposition", "attachment; filename=\""
-          + fileName + "\"");
+        + fileName
+        + "\"");
       response.setHeader("Cache-Control", "aipo");
       response.setHeader("Pragma", "aipo");
 

@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,9 +33,10 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
  * 
  */
 public class WebMailScreen extends ALVelocityScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WebMailScreen.class.getName());
+    .getLogger(WebMailScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
@@ -59,10 +60,12 @@ public class WebMailScreen extends ALVelocityScreen {
       WebMailSelectData listData = new WebMailSelectData();
       listData.initField();
       listData.loadMailAccountList(rundata, context);
-      listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
-          .getInitParameter("p1a-rows")));
-      listData.setStrLength(Integer.parseInt(portlet.getPortletConfig()
-          .getInitParameter("p4a-strlen")));
+      listData.setRowsNum(Integer.parseInt(portlet
+        .getPortletConfig()
+        .getInitParameter("p1a-rows")));
+      listData.setStrLength(Integer.parseInt(portlet
+        .getPortletConfig()
+        .getInitParameter("p4a-strlen")));
       listData.doViewList(this, rundata, context);
 
       setTemplate(rundata, context, "portlets/html/ja/ajax-webmail.vm");

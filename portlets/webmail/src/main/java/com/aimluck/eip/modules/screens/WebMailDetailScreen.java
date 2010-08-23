@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,9 +33,10 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
  * 
  */
 public class WebMailDetailScreen extends ALVelocityScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WebMailDetailScreen.class.getName());
+    .getLogger(WebMailDetailScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
@@ -46,10 +47,12 @@ public class WebMailDetailScreen extends ALVelocityScreen {
       WebMailSelectData detailData = new WebMailSelectData();
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
-      String mailIndex = rundata.getParameters().getString(
-          ALEipConstants.ENTITY_ID);
-      context.put(WebMailUtils.ACCOUNT_ID, ALEipUtils.getTemp(rundata, context,
-          WebMailUtils.ACCOUNT_ID));
+      String mailIndex =
+        rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
+      context.put(WebMailUtils.ACCOUNT_ID, ALEipUtils.getTemp(
+        rundata,
+        context,
+        WebMailUtils.ACCOUNT_ID));
       context.put("currentTab", ALEipUtils.getTemp(rundata, context, "tab"));
       context.put(ALEipConstants.ENTITY_ID, mailIndex);
       setTemplate(rundata, context, "portlets/html/ja/ajax-webmail-detail.vm");

@@ -54,9 +54,10 @@ import com.aimluck.eip.webmail.WebMailFormData;
 /**
  */
 public class WebMailUtils {
+
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(WebMailUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WebMailUtils.class.getName());
 
   /** セッションの識別子 */
   public static final String FOLDER_ID = ALMailUtils.FOLDER_ID;

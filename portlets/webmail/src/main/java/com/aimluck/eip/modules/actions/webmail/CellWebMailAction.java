@@ -33,27 +33,31 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
  * Webメールのアクションクラスです。
- *
+ * 
  */
 public class CellWebMailAction extends WebMailAction {
 
   /** <code>logger</code> logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CellWebMailAction.class.getName());
+    .getLogger(CellWebMailAction.class.getName());
 
   /*
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
+   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#
+   * buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
+   * org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) {
 
   }
 
   /*
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildMaximizedContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
+   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#
+   * buildMaximizedContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
+   * org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
     // MODEを取得
@@ -96,7 +100,7 @@ public class CellWebMailAction extends WebMailAction {
 
   /**
    * メールを作成するページを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -106,8 +110,8 @@ public class CellWebMailAction extends WebMailAction {
     ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
     // ACCOUNT_ID の取得
-    String accountId = rundata.getParameters().getString(
-        WebMailUtils.ACCOUNT_ID);
+    String accountId =
+      rundata.getParameters().getString(WebMailUtils.ACCOUNT_ID);
     if (accountId != null) {
       // ACCOUNT_ID をセッションに登録する．
       ALEipUtils.setTemp(rundata, context, WebMailUtils.ACCOUNT_ID, accountId);
@@ -120,7 +124,7 @@ public class CellWebMailAction extends WebMailAction {
 
   /**
    * 指定したメール種別に応じて，メールを作成するページを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    * @param mailType
@@ -136,7 +140,7 @@ public class CellWebMailAction extends WebMailAction {
 
   /**
    * 指定したフォルダにあるメールの内容を表示する．
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -146,10 +150,12 @@ public class CellWebMailAction extends WebMailAction {
     WebMailSelectData detailData = new WebMailSelectData();
     detailData.initField();
     if (detailData.doViewDetail(this, rundata, context)) {
-      String mailIndex = rundata.getParameters().getString(
-          ALEipConstants.ENTITY_ID);
-      context.put(WebMailUtils.ACCOUNT_ID, ALEipUtils.getTemp(rundata, context,
-          WebMailUtils.ACCOUNT_ID));
+      String mailIndex =
+        rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
+      context.put(WebMailUtils.ACCOUNT_ID, ALEipUtils.getTemp(
+        rundata,
+        context,
+        WebMailUtils.ACCOUNT_ID));
       context.put("currentTab", ALEipUtils.getTemp(rundata, context, "tab"));
       context.put(ALEipConstants.ENTITY_ID, mailIndex);
       setTemplate(rundata, "webmail-detail");
@@ -160,7 +166,7 @@ public class CellWebMailAction extends WebMailAction {
 
   /**
    * 受信したメールを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -176,7 +182,7 @@ public class CellWebMailAction extends WebMailAction {
 
   /**
    * 送信したメールを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -192,11 +198,12 @@ public class CellWebMailAction extends WebMailAction {
 
   /**
    * POP3 サーバからメールを受信し，受信トレイを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doWebmail_receive_mails(RunData rundata, Context context)
       throws Exception {
     setAccountIdToSession(rundata, context);
@@ -212,14 +219,14 @@ public class CellWebMailAction extends WebMailAction {
 
   /**
    * リクエストに含まれる AccountID をセッションにセットする．
-   *
+   * 
    * @param rundata
    * @param context
    */
   private void setAccountIdToSession(RunData rundata, Context context) {
     // ACCOUNT_ID の取得
-    String accountId = rundata.getParameters().getString(
-        WebMailUtils.ACCOUNT_ID);
+    String accountId =
+      rundata.getParameters().getString(WebMailUtils.ACCOUNT_ID);
     if (accountId != null) {
       // ACCOUNT_ID をセッションに登録する．
       ALEipUtils.setTemp(rundata, context, WebMailUtils.ACCOUNT_ID, accountId);
@@ -228,7 +235,7 @@ public class CellWebMailAction extends WebMailAction {
 
   /**
    * スケジュールのメニューを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -243,8 +250,11 @@ public class CellWebMailAction extends WebMailAction {
     // }
     // context.put(LAST_TIME, ALEipUtils.getTemp(rundata, context, LAST_TIME));
 
-    int rowsNum = Integer.parseInt(ALEipUtils.getPortlet(rundata, context)
-        .getPortletConfig().getInitParameter("p1b-rows"));
+    int rowsNum =
+      Integer.parseInt(ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p1b-rows"));
 
     CellWebMailAccountSelectData listData = new CellWebMailAccountSelectData();
     listData.initField();
@@ -256,7 +266,7 @@ public class CellWebMailAction extends WebMailAction {
 
   /**
    * メール一覧ページを表示させる.
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -270,10 +280,12 @@ public class CellWebMailAction extends WebMailAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（通常時）
     VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-    listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
-        .getInitParameter("p1b-rows")));
-    listData.setStrLength(Integer.parseInt(portlet.getPortletConfig()
-        .getInitParameter("p4a-strlen")));
+    listData.setRowsNum(Integer.parseInt(portlet
+      .getPortletConfig()
+      .getInitParameter("p1b-rows")));
+    listData.setStrLength(Integer.parseInt(portlet
+      .getPortletConfig()
+      .getInitParameter("p4a-strlen")));
 
     listData.doViewList(this, rundata, context);
 

@@ -21,7 +21,6 @@ package com.aimluck.eip.modules.actions.webmail;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -36,11 +35,13 @@ import com.aimluck.eip.webmail.WebMailAdminSettingsSelectData;
  * 管理者用メールアカウントの取り扱いに関するアクションクラスです。 <br />
  */
 public class WebMailAdminAction extends ALBaseAction {
+
+  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WebMailAdminAction.class.getName());
+    .getLogger(WebMailAdminAction.class.getName());
 
   /**
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
@@ -48,6 +49,7 @@ public class WebMailAdminAction extends ALBaseAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
     if (getMode() == null) {
@@ -56,18 +58,19 @@ public class WebMailAdminAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
   }
 
   /**
    * メールアカウントのフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -82,7 +85,7 @@ public class WebMailAdminAction extends ALBaseAction {
 
   /**
    * メールアカウントを追加するフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -90,8 +93,9 @@ public class WebMailAdminAction extends ALBaseAction {
   public void doWebmail_mailaccount_insert(RunData rundata, Context context)
       throws Exception {
     WebMailAccountFormData formData = new WebMailAccountFormData();
-    rundata.getRequest().setAttribute("account_name",
-        DatabaseOrmService.getInstance().getAlias() + "システムメールアカウント");
+    rundata.getRequest().setAttribute(
+      "account_name",
+      DatabaseOrmService.getInstance().getAlias() + "システムメールアカウント");
     formData.initField();
     if (formData.doInsert(this, rundata, context)) {
       // データ登録が成功したとき
@@ -111,7 +115,7 @@ public class WebMailAdminAction extends ALBaseAction {
 
   /**
    * メールアカウントを更新するフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -136,7 +140,7 @@ public class WebMailAdminAction extends ALBaseAction {
 
   /**
    * メールアカウントを削除する． <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -159,7 +163,7 @@ public class WebMailAdminAction extends ALBaseAction {
 
   /**
    * メールアカウントの詳細を表示する．
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -174,7 +178,7 @@ public class WebMailAdminAction extends ALBaseAction {
 
   /**
    * メールアカウントのフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -189,14 +193,15 @@ public class WebMailAdminAction extends ALBaseAction {
 
   /**
    * メールアカウントの詳細を表示する．
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
   public void doWebmail_mailaccount_detail_option(RunData rundata,
       Context context) throws Exception {
-    WebMailAdminSettingsSelectData detailData = new WebMailAdminSettingsSelectData();
+    WebMailAdminSettingsSelectData detailData =
+      new WebMailAdminSettingsSelectData();
     detailData.initField();
     detailData.doViewDetail(this, rundata, context);
     setTemplate(rundata, "webmail-account-detail-admin-option");
@@ -204,7 +209,7 @@ public class WebMailAdminAction extends ALBaseAction {
 
   /**
    * メールアカウントを更新するフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception

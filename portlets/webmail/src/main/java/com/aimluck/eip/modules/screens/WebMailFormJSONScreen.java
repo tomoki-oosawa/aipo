@@ -2,23 +2,21 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.aimluck.eip.modules.screens;
-
-import java.util.ArrayList;
 
 import net.sf.json.JSONArray;
 
@@ -40,7 +38,7 @@ import com.aimluck.eip.webmail.WebMailMultiMove;
 public class WebMailFormJSONScreen extends ALJSONScreen {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WebMailFormJSONScreen.class.getName());
+    .getLogger(WebMailFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -55,9 +53,9 @@ public class WebMailFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doInsert(this, rundata, context)) {
         } else {
-          ArrayList list = (ArrayList) context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST);
-          JSONArray json = JSONArray.fromObject(list);
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
@@ -66,9 +64,9 @@ public class WebMailFormJSONScreen extends ALJSONScreen {
         if (formData.doDelete(this, rundata, context)) {
           ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
         } else {
-          ArrayList list = (ArrayList) context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST);
-          JSONArray json = JSONArray.fromObject(list);
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
 
@@ -78,9 +76,9 @@ public class WebMailFormJSONScreen extends ALJSONScreen {
         if (delete.doMultiAction(this, rundata, context)) {
           this.setMode(ALEipConstants.MODE_DELETE);
         } else {
-          ArrayList list = (ArrayList) context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST);
-          JSONArray json = JSONArray.fromObject(list);
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
 
@@ -90,9 +88,9 @@ public class WebMailFormJSONScreen extends ALJSONScreen {
         if (move.doMultiAction(this, rundata, context)) {
           this.setMode("multi_move");
         } else {
-          ArrayList list = (ArrayList) context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST);
-          JSONArray json = JSONArray.fromObject(list);
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       }
