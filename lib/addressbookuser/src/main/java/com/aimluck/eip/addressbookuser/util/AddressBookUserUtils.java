@@ -54,11 +54,12 @@ public class AddressBookUserUtils {
    */
   public static List<AddressBookUserLiteBean> getAddressBookUserLiteBeansFromGroup(
       String groupid, int loginuserid) {
-    List<AddressBookUserLiteBean> list = new ArrayList<AddressBookUserLiteBean>();
+    List<AddressBookUserLiteBean> list =
+      new ArrayList<AddressBookUserLiteBean>();
 
     try {
-      SelectQuery<EipMAddressbook> query = getSelectQueryForAddressBook(
-        groupid, loginuserid);
+      SelectQuery<EipMAddressbook> query =
+        getSelectQueryForAddressBook(groupid, loginuserid);
 
       List<EipMAddressbook> addressbook_list = query.fetchList();
 
@@ -83,16 +84,17 @@ public class AddressBookUserUtils {
    */
   public static List<AddressBookUserGroupLiteBean> getAddressBookUserGroupLiteBeans(
       RunData rundata) {
-    List<AddressBookUserGroupLiteBean> list = new ArrayList<AddressBookUserGroupLiteBean>();
+    List<AddressBookUserGroupLiteBean> list =
+      new ArrayList<AddressBookUserGroupLiteBean>();
 
     try {
       // 自分がオーナのグループを取得
-      SelectQuery<EipMAddressGroup> query = Database
-        .query(EipMAddressGroup.class);
+      SelectQuery<EipMAddressGroup> query =
+        Database.query(EipMAddressGroup.class);
 
-      Expression exp = ExpressionFactory.matchExp(
-        EipMAddressGroup.OWNER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-          .getUserId(rundata)));
+      Expression exp =
+        ExpressionFactory.matchExp(EipMAddressGroup.OWNER_ID_PROPERTY, Integer
+          .valueOf(ALEipUtils.getUserId(rundata)));
       query.setQualifier(exp).orderAscending(
         EipMAddressGroup.GROUP_NAME_PROPERTY);
 
@@ -117,11 +119,12 @@ public class AddressBookUserUtils {
    */
   public static List<AddressBookUserEmailLiteBean> getAddressBookUserEmailLiteBeansFromGroup(
       String groupid, int loginuserid) {
-    List<AddressBookUserEmailLiteBean> list = new ArrayList<AddressBookUserEmailLiteBean>();
+    List<AddressBookUserEmailLiteBean> list =
+      new ArrayList<AddressBookUserEmailLiteBean>();
 
     try {
-      SelectQuery<EipMAddressbook> query = getSelectQueryForAddressBook(
-        groupid, loginuserid);
+      SelectQuery<EipMAddressbook> query =
+        getSelectQueryForAddressBook(groupid, loginuserid);
 
       List<EipMAddressbook> addressbook_list = query.fetchList();
 
@@ -144,19 +147,24 @@ public class AddressBookUserUtils {
       String groupid, int loginuserid) {
     SelectQuery<EipMAddressbook> query = Database.query(EipMAddressbook.class);
 
-    Expression exp21 = ExpressionFactory.matchExp(
-      EipMAddressbook.PUBLIC_FLAG_PROPERTY, "T");
-    Expression exp22 = ExpressionFactory.matchExp(
-      EipMAddressbook.OWNER_ID_PROPERTY, loginuserid);
-    Expression exp23 = ExpressionFactory.matchExp(
-      EipMAddressbook.PUBLIC_FLAG_PROPERTY, "F");
+    Expression exp21 =
+      ExpressionFactory.matchExp(EipMAddressbook.PUBLIC_FLAG_PROPERTY, "T");
+    Expression exp22 =
+      ExpressionFactory
+        .matchExp(EipMAddressbook.OWNER_ID_PROPERTY, loginuserid);
+    Expression exp23 =
+      ExpressionFactory.matchExp(EipMAddressbook.PUBLIC_FLAG_PROPERTY, "F");
     query.setQualifier(exp21.orExp(exp22.andExp(exp23)));
 
     if (groupid != null && !"".equals(groupid) && !"all".equals(groupid)) {
-      Expression exp31 = ExpressionFactory.matchDbExp(
-        EipMAddressbook.EIP_TADDRESSBOOK_GROUP_MAP_PROPERTY + "."
-          + EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY + "."
-          + EipMAddressGroup.GROUP_ID_PK_COLUMN, groupid);
+      Expression exp31 =
+        ExpressionFactory.matchDbExp(
+          EipMAddressbook.EIP_TADDRESSBOOK_GROUP_MAP_PROPERTY
+            + "."
+            + EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY
+            + "."
+            + EipMAddressGroup.GROUP_ID_PK_COLUMN,
+          groupid);
       query.andQualifier(exp31);
     }
 

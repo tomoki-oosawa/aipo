@@ -47,8 +47,8 @@ import com.aimluck.eip.orm.query.SelectQuery;
  */
 public class ALDbLocalFolder extends ALAbstractFolder {
 
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALDbLocalFolder.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALDbLocalFolder.class.getName());
 
   /**
    * コンストラクタ

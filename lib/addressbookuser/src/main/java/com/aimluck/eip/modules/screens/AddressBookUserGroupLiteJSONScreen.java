@@ -32,6 +32,7 @@ import com.aimluck.eip.addressbookuser.util.AddressBookUserUtils;
  * 
  */
 public class AddressBookUserGroupLiteJSONScreen extends ALJSONScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(AddressBookUserLiteJSONScreen.class.getName());
@@ -46,8 +47,9 @@ public class AddressBookUserGroupLiteJSONScreen extends ALJSONScreen {
 
       // String mode = rundata.getParameters().getString("mode");
 
-      json = JSONArray.fromObject(AddressBookUserUtils
-        .getAddressBookUserGroupLiteBeans(rundata));
+      json =
+        JSONArray.fromObject(AddressBookUserUtils
+          .getAddressBookUserGroupLiteBeans(rundata));
 
       result = json.toString();
     } catch (Exception e) {

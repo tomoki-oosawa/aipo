@@ -104,7 +104,8 @@ public abstract class ALSmtpMailSender implements ALMailSender {
   public static final String MAIL_SMTP_PORT = "mail.smtp.port";
 
   /** SMTP サーバとの接続時のタイムアウト */
-  public static final String MAIL_SMTP_CONNECTION_TIMEOUT = "mail.stmp.connectiontimeout";
+  public static final String MAIL_SMTP_CONNECTION_TIMEOUT =
+    "mail.stmp.connectiontimeout";
 
   /** SMTP サーバとの接続後のタイムアウト */
   public static final String MAIL_SMTP_TIMEOUT = "mail.stmp.timeout";
@@ -153,8 +154,8 @@ public abstract class ALSmtpMailSender implements ALMailSender {
       /** SSL 暗号化 */
       smtpServerProp.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY);
       smtpServerProp.setProperty("mail.smtp.socketFactory.fallback", "false");
-      smtpServerProp.setProperty("mail.smtp.socketFactory.port",
-        scontext.getSmtpPort());
+      smtpServerProp.setProperty("mail.smtp.socketFactory.port", scontext
+        .getSmtpPort());
     }
 
     // SMTP サーバのアドレスをセット
@@ -165,10 +166,9 @@ public abstract class ALSmtpMailSender implements ALMailSender {
       && !"".equals(scontext.getAuthSendUserPassword())) {
       /** SMTP AUTH */
       smtpServerProp.put("mail.smtp.auth", "true");
-      session = Session.getInstance(
-        smtpServerProp,
-        new ALSmtpAuth(scontext.getAuthSendUserId(), scontext
-          .getAuthSendUserPassword()));
+      session =
+        Session.getInstance(smtpServerProp, new ALSmtpAuth(scontext
+          .getAuthSendUserId(), scontext.getAuthSendUserPassword()));
     } else {
       session = Session.getInstance(smtpServerProp, null);
     }
@@ -198,7 +198,8 @@ public abstract class ALSmtpMailSender implements ALMailSender {
       // メールの形式をセット
       msg.setHeader(ALLocalMailMessage.CONTENT_TYPE, "text/plain");
       msg.setHeader(ALLocalMailMessage.CONTENT_TRANSFER_ENCORDING, "7bit");
-      msg.setHeader(ALLocalMailMessage.X_Mailer,
+      msg.setHeader(
+        ALLocalMailMessage.X_Mailer,
         ALLocalMailMessage.X_Mailer_Value);
       // メールの件名をセット
       msg.setSubject(ALMailUtils.encodeWordJIS(mcontext.getSubject()));
@@ -212,8 +213,8 @@ public abstract class ALSmtpMailSender implements ALMailSender {
           String key = null;
           String value = null;
           Map.Entry<String, String> entry = null;
-          for (Iterator<Map.Entry<String, String>> i = headers.entrySet()
-            .iterator(); i.hasNext();) {
+          for (Iterator<Map.Entry<String, String>> i =
+            headers.entrySet().iterator(); i.hasNext();) {
             entry = i.next();
             key = entry.getKey();
             value = entry.getValue();
@@ -226,8 +227,8 @@ public abstract class ALSmtpMailSender implements ALMailSender {
         // メールの本文をセット
         ALMailUtils.setTextContent(msg, mcontext.getMsgText());
       } else {
-        String[] checkedFilePaths = ALMailUtils.checkFilesExistance(mcontext
-          .getFilePaths());
+        String[] checkedFilePaths =
+          ALMailUtils.checkFilesExistance(mcontext.getFilePaths());
         int checkedFilePathsLength = checkedFilePaths.length;
         if (checkedFilePathsLength <= 0) {
           // MultiPart にせず，メールの本文をセット
@@ -249,9 +250,8 @@ public abstract class ALSmtpMailSender implements ALMailSender {
             mimeFile = new MimeBodyPart();
             mimeFile.setDataHandler(new DataHandler(new FileDataSource(
               checkedFilePaths[i])));
-            MailUtility.setFileName(mimeFile,
-              ALMailUtils.getFileNameFromText(checkedFilePaths[i]),
-              "ISO-2022-JP", null);
+            MailUtility.setFileName(mimeFile, ALMailUtils
+              .getFileNameFromText(checkedFilePaths[i]), "ISO-2022-JP", null);
 
             // 添付ファイルをボディパートに追加
             multiPart.addBodyPart(mimeFile);
@@ -304,10 +304,13 @@ public abstract class ALSmtpMailSender implements ALMailSender {
       } else if (scontext.getAuthSendFlag() == AUTH_SEND_POP_BEFORE_SMTP) {
         // POP before SMTP を実行する．
         // 認証のみ検証する．メールは受信しない．
-        boolean success = ALPop3MailReceiver.isAuthenticatedUser(
-          scontext.getPop3Host(), scontext.getPop3Port(),
-          scontext.getPop3UserId(), scontext.getPop3UserPasswd(),
-          scontext.getPop3EncryptionFlag());
+        boolean success =
+          ALPop3MailReceiver.isAuthenticatedUser(
+            scontext.getPop3Host(),
+            scontext.getPop3Port(),
+            scontext.getPop3UserId(),
+            scontext.getPop3UserPasswd(),
+            scontext.getPop3EncryptionFlag());
         if (!success) {
           return SEND_MSG_FAIL_POP_BEFORE_SMTP_AUTH;
         } else {
@@ -319,7 +322,9 @@ public abstract class ALSmtpMailSender implements ALMailSender {
         Transport transport = session.getTransport("smtp");
         SMTPTransport smtpt = (SMTPTransport) transport;
         smtpt.setSASLRealm("localhost"); // [SASLレルム]
-        smtpt.connect(scontext.getSmtpHost(), scontext.getAuthSendUserId(),
+        smtpt.connect(
+          scontext.getSmtpHost(),
+          scontext.getAuthSendUserId(),
           scontext.getAuthSendUserPassword());
         smtpt.sendMessage(msg, msg.getAllRecipients());
         smtpt.close();

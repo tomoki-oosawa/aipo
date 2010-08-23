@@ -54,15 +54,18 @@ public class UserLiteJSONScreen extends ALJSONScreen {
         String groupname = rundata.getParameters().getString("groupname");
 
         // ログインユーザをリストに含める場合、true
-        boolean include_loginuser = rundata.getParameters().getBoolean(
-          "inc_luser", true);
+        boolean include_loginuser =
+          rundata.getParameters().getBoolean("inc_luser", true);
 
-        json = JSONArray.fromObject(UserUtils.getUserLiteBeansFromGroup(
-          rundata, groupname, include_loginuser));
+        json =
+          JSONArray.fromObject(UserUtils.getUserLiteBeansFromGroup(
+            rundata,
+            groupname,
+            include_loginuser));
       } else if ("group_loginname".equals(mode)) {
         String groupname = rundata.getParameters().getString("groupname");
-        List<UserLiteBean> users = UserUtils.getUserLiteBeansFromGroup(rundata,
-          groupname, false);
+        List<UserLiteBean> users =
+          UserUtils.getUserLiteBeansFromGroup(rundata, groupname, false);
         List<UserLiteBean> outputs = new ArrayList<UserLiteBean>();
         for (UserLiteBean datarow : users) {
           UserLiteBean user = datarow;

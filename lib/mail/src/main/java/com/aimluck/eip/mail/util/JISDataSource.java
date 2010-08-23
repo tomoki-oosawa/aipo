@@ -36,8 +36,10 @@ public class JISDataSource implements DataSource {
 
   public JISDataSource(String s) {
     try {
-      data = CharCodeConverter.sjisToJis(UnicodeCorrecter.correctToCP932(s)
-        .getBytes("Windows-31J"));
+      data =
+        CharCodeConverter.sjisToJis(UnicodeCorrecter
+          .correctToCP932(s)
+          .getBytes("Windows-31J"));
     } catch (UnsupportedEncodingException e) {
       throw new RuntimeException("CANT HAPPEN");
     }

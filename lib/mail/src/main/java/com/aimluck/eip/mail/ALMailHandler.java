@@ -41,8 +41,8 @@ import com.aimluck.eip.orm.query.SelectQuery;
  */
 public abstract class ALMailHandler {
 
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALMailHandler.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALMailHandler.class.getName());
 
   /**
    * コンストラクタ

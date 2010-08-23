@@ -148,12 +148,13 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
 
     try {
       // POP3 サーバへの接続
-      Session session = getSession(rcontext.getAuthReceiveFlag(),
-        rcontext.getEncryptionFlag());
+      Session session =
+        getSession(rcontext.getAuthReceiveFlag(), rcontext.getEncryptionFlag());
       pop3Store = session.getStore("pop3");
-      pop3Store.connect(rcontext.getPop3Host(),
-        Integer.parseInt(rcontext.getPop3Port()), rcontext.getPop3UserId(),
-        rcontext.getPop3UserPasswd());
+      pop3Store
+        .connect(rcontext.getPop3Host(), Integer.parseInt(rcontext
+          .getPop3Port()), rcontext.getPop3UserId(), rcontext
+          .getPop3UserPasswd());
 
       if (!pop3Store.isConnected()) {
         // POP3 サーバへの接続失敗時の処理
@@ -228,7 +229,8 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
       oldUIDL.clear();
       newUIDL.clear();
 
-      ALStaticObject.getInstance().updateAccountStat(rcontext.getAccountId(),
+      ALStaticObject.getInstance().updateAccountStat(
+        rcontext.getAccountId(),
         ALPop3MailReceiveThread.KEY_RECEIVE_MAIL_ALL_NUM,
         Integer.valueOf(mailNumOnServer));
 
@@ -255,7 +257,8 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
             }
           }
           // （新着メール）メールを受信し保存する．
-          alPop3MailMessage = new ALPop3Message((POP3Message) tmpMessage, i + 1);
+          alPop3MailMessage =
+            new ALPop3Message((POP3Message) tmpMessage, i + 1);
           if (tmpMessage.getSize() <= MAIL_MAX_SIZE) {
             // 受信可能なメール容量以下であれば，登録する．
             receiveFolder.saveMail(alPop3MailMessage, orgId);
@@ -437,7 +440,10 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
       }
       Session session = Session.getInstance(props, null);
       pop3Store = session.getStore("pop3");
-      pop3Store.connect(pop3Host, Integer.parseInt(pop3Port), pop3UserId,
+      pop3Store.connect(
+        pop3Host,
+        Integer.parseInt(pop3Port),
+        pop3UserId,
         pop3UserPasswd);
       res = pop3Store.isConnected();
     } catch (Exception ex) {
@@ -476,12 +482,13 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
     int newMailSum = -1;
     try {
       // POP3 サーバへの接続
-      Session session = getSession(rcontext.getAuthReceiveFlag(),
-        rcontext.getEncryptionFlag());
+      Session session =
+        getSession(rcontext.getAuthReceiveFlag(), rcontext.getEncryptionFlag());
       pop3Store = session.getStore("pop3");
-      pop3Store.connect(rcontext.getPop3Host(),
-        Integer.parseInt(rcontext.getPop3Port()), rcontext.getPop3UserId(),
-        rcontext.getPop3UserPasswd());
+      pop3Store
+        .connect(rcontext.getPop3Host(), Integer.parseInt(rcontext
+          .getPop3Port()), rcontext.getPop3UserId(), rcontext
+          .getPop3UserPasswd());
 
       // POP3 サーバ上のメールフォルダを開く
       pop3Folder = (POP3Folder) pop3Store.getFolder("INBOX");

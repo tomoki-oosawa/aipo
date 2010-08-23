@@ -85,8 +85,9 @@ abstract public class ALMailFactoryService extends TurbineBaseService {
 
     super.init(conf);
 
-    this.runDataService = (JetspeedRunDataService) TurbineServices
-      .getInstance().getService(RunDataService.SERVICE_NAME);
+    this.runDataService =
+      (JetspeedRunDataService) TurbineServices.getInstance().getService(
+        RunDataService.SERVICE_NAME);
 
     setInit(true);
   }

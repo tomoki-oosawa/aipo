@@ -62,8 +62,8 @@ public class AddressBookUserLiteBean implements ALData {
    * @param field
    */
   public void setFullName(String lname, String fname) {
-    full_name.setValue(new StringBuffer().append(lname).append(" ")
-      .append(fname).toString());
+    full_name.setValue(new StringBuffer().append(lname).append(" ").append(
+      fname).toString());
   }
 
 }

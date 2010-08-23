@@ -73,7 +73,8 @@ public class ALFileMailHandler extends ALMailHandler {
   }
 
   protected String getCategoryKey() {
-    return (categoryKey != null && !"".equals(categoryKey)) ? categoryKey
+    return (categoryKey != null && !"".equals(categoryKey))
+      ? categoryKey
       : ALMailUtils.categoryKey;
   }
 
@@ -90,10 +91,13 @@ public class ALFileMailHandler extends ALMailHandler {
     String categoryKeytmp = getCategoryKey();
 
     if (categoryKeytmp != null && !"".equals(categoryKeytmp)) {
-      ALOrgUtilsHandler handler = ALOrgUtilsFactoryService.getInstance()
-        .getOrgUtilsHandler();
-      File docPath = handler.getDocumentPath(ALMailUtils.rootFolderPath,
-        org_id, categoryKeytmp);
+      ALOrgUtilsHandler handler =
+        ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
+      File docPath =
+        handler.getDocumentPath(
+          ALMailUtils.rootFolderPath,
+          org_id,
+          categoryKeytmp);
       String pathStr = null;
       try {
         pathStr = docPath.getCanonicalPath();
@@ -102,12 +106,20 @@ public class ALFileMailHandler extends ALMailHandler {
           + pathStr);
       }
       fullName = new StringBuffer(pathStr);
-      fullName.append(File.separator).append(user_id).append(File.separator)
+      fullName
+        .append(File.separator)
+        .append(user_id)
+        .append(File.separator)
         .append(account_id);
     } else {
       fullName = new StringBuffer(ALMailUtils.rootFolderPath);
-      fullName.append(File.separator).append(org_id).append(File.separator)
-        .append(user_id).append(File.separator).append(account_id);
+      fullName
+        .append(File.separator)
+        .append(org_id)
+        .append(File.separator)
+        .append(user_id)
+        .append(File.separator)
+        .append(account_id);
     }
 
     String path = fullName.toString();

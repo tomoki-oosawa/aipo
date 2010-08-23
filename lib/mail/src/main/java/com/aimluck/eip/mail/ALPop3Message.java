@@ -81,8 +81,9 @@ public class ALPop3Message extends POP3Message implements ALMailMessage {
    */
   @Override
   public String getSubject() throws MessagingException {
-    String subject = UnicodeCorrecter.correctToCP932(MailUtility
-      .decodeText(super.getSubject()));
+    String subject =
+      UnicodeCorrecter.correctToCP932(MailUtility
+        .decodeText(super.getSubject()));
 
     if (subject == null || subject.equals("")) {
       subject = "無題";
@@ -102,8 +103,10 @@ public class ALPop3Message extends POP3Message implements ALMailMessage {
       IOException {
     try {
       String charset = System.getProperty("mail.mime.charset", "ISO-2022-JP");
-      PrintWriter writer = new PrintWriter(new OutputStreamWriter(
-        new FileOutputStream(filePath), charset));
+      PrintWriter writer =
+        new PrintWriter(new OutputStreamWriter(
+          new FileOutputStream(filePath),
+          charset));
 
       String line = null;
       Enumeration<?> enu = getAllHeaderLines();
@@ -116,7 +119,8 @@ public class ALPop3Message extends POP3Message implements ALMailMessage {
       }
       writer.println();
 
-      writer.println("【重要】『" + DatabaseOrmService.getInstance().getAlias()
+      writer.println("【重要】『"
+        + DatabaseOrmService.getInstance().getAlias()
         + "』 からのお知らせです。");
       writer.println("メールのサイズが大きすぎたため、このメールの本文を受信できませんでした。");
       writer.println("受信可能なメールサイズは、7MB までです。");

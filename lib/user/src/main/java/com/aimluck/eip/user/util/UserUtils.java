@@ -52,10 +52,12 @@ public class UserUtils {
     .getLogger(UserUtils.class.getName());
 
   /** userLiteBeanキャッシュ用の変数 */
-  private static Hashtable<String, ArrayList<UserLiteBean>> userLiteBeans = new Hashtable<String, ArrayList<UserLiteBean>>();
+  private static Hashtable<String, ArrayList<UserLiteBean>> userLiteBeans =
+    new Hashtable<String, ArrayList<UserLiteBean>>();
 
   /** userEmailLiteBeanキャッシュ用の変数 */
-  private static Hashtable<String, ArrayList<UserEmailLiteBean>> userEmailLiteBeans = new Hashtable<String, ArrayList<UserEmailLiteBean>>();
+  private static Hashtable<String, ArrayList<UserEmailLiteBean>> userEmailLiteBeans =
+    new Hashtable<String, ArrayList<UserEmailLiteBean>>();
 
   /**
    * 
@@ -69,8 +71,10 @@ public class UserUtils {
     if (userLiteBeans.containsKey(org_id + "_" + groupname)) {
       /** キャッシュを出力する */
       @SuppressWarnings("unchecked")
-      List<UserLiteBean> res = (List<UserLiteBean>) userLiteBeans.get(
-        org_id + "_" + groupname).clone();
+      List<UserLiteBean> res =
+        (List<UserLiteBean>) userLiteBeans
+          .get(org_id + "_" + groupname)
+          .clone();
       if (!includeLoginuser && login_user_id > 3) {
         /** ログインユーザを返り値から除く */
         UserLiteBean user;
@@ -103,8 +107,8 @@ public class UserUtils {
       statement.append("ORDER BY D.POSITION");
       String query = statement.toString();
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       @SuppressWarnings("deprecation")
       SQLTemplate rawSelect = new SQLTemplate(TurbineUser.class, query, true);
       rawSelect.setFetchingDataRows(true);
@@ -119,11 +123,14 @@ public class UserUtils {
         dataRow = (DataRow) ulist.get(j);
         user = new UserLiteBean();
         user.initField();
-        user.setUserId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
+        user.setUserId(((Integer) ALEipUtils.getObjFromDataRow(
+          dataRow,
           TurbineUser.USER_ID_PK_COLUMN)).intValue());
-        user.setName((String) ALEipUtils.getObjFromDataRow(dataRow,
+        user.setName((String) ALEipUtils.getObjFromDataRow(
+          dataRow,
           TurbineUser.LOGIN_NAME_COLUMN));
-        user.setAliasName((String) ALEipUtils.getObjFromDataRow(dataRow,
+        user.setAliasName((String) ALEipUtils.getObjFromDataRow(
+          dataRow,
           TurbineUser.FIRST_NAME_COLUMN), (String) ALEipUtils
           .getObjFromDataRow(dataRow, TurbineUser.LAST_NAME_COLUMN));
         list.add(user);
@@ -157,12 +164,15 @@ public class UserUtils {
     int login_user_id = null != rundata ? ALEipUtils.getUserId(rundata) : 0;
     String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
     ArrayList<UserEmailLiteBean> list = new ArrayList<UserEmailLiteBean>();
-    ArrayList<UserEmailLiteBean> cache_list = new ArrayList<UserEmailLiteBean>();// キャッシュに保存する用のリスト(返り値用のリストは値が変更される可能性があるので使えない)
+    ArrayList<UserEmailLiteBean> cache_list =
+      new ArrayList<UserEmailLiteBean>();// キャッシュに保存する用のリスト(返り値用のリストは値が変更される可能性があるので使えない)
     if (userEmailLiteBeans.containsKey(org_id + "_" + groupname)) {
       /** キャッシュを出力する */
       @SuppressWarnings("unchecked")
-      List<UserEmailLiteBean> res = (ArrayList<UserEmailLiteBean>) (userEmailLiteBeans
-        .get(org_id + "_" + groupname)).clone();
+      List<UserEmailLiteBean> res =
+        (ArrayList<UserEmailLiteBean>) (userEmailLiteBeans.get(org_id
+          + "_"
+          + groupname)).clone();
       if (!includeLoginuser && login_user_id > 3) {
         /** ログインユーザを返り値から除く */
         UserEmailLiteBean user;
@@ -193,8 +203,8 @@ public class UserUtils {
       statement.append("ORDER BY D.POSITION");
       String query = statement.toString();
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       @SuppressWarnings("deprecation")
       SQLTemplate rawSelect = new SQLTemplate(TurbineUser.class, query, true);
       rawSelect.setFetchingDataRows(true);
@@ -209,14 +219,18 @@ public class UserUtils {
         dataRow = (DataRow) ulist.get(j);
         user = new UserEmailLiteBean();
         user.initField();
-        user.setUserId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
+        user.setUserId(((Integer) ALEipUtils.getObjFromDataRow(
+          dataRow,
           TurbineUser.USER_ID_PK_COLUMN)).intValue());
-        user.setName((String) ALEipUtils.getObjFromDataRow(dataRow,
+        user.setName((String) ALEipUtils.getObjFromDataRow(
+          dataRow,
           TurbineUser.LOGIN_NAME_COLUMN));
-        user.setAliasName((String) ALEipUtils.getObjFromDataRow(dataRow,
+        user.setAliasName((String) ALEipUtils.getObjFromDataRow(
+          dataRow,
           TurbineUser.FIRST_NAME_COLUMN), (String) ALEipUtils
           .getObjFromDataRow(dataRow, TurbineUser.LAST_NAME_COLUMN));
-        user.setEmail((String) ALEipUtils.getObjFromDataRow(dataRow,
+        user.setEmail((String) ALEipUtils.getObjFromDataRow(
+          dataRow,
           TurbineUser.EMAIL_COLUMN));
         list.add(user);
         cache_list.add(user);
@@ -262,8 +276,8 @@ public class UserUtils {
         }
       }
       if (isPost) {
-        Map<Integer, ALEipPost> postmap = ALEipManager.getInstance()
-          .getPostMap();
+        Map<Integer, ALEipPost> postmap =
+          ALEipManager.getInstance().getPostMap();
         for (Iterator<ALEipPost> i = postmap.values().iterator(); i.hasNext();) {
           ALEipPost post = i.next();
           bean = new UserGroupLiteBean();

@@ -65,8 +65,8 @@ public class UserFacilityLiteBean implements ALData, Cloneable {
    * @param lastName
    */
   public void setAliasName(String firstName, String lastName) {
-    alias_name.setValue(new StringBuffer().append(lastName).append(" ")
-      .append(firstName).toString());
+    alias_name.setValue(new StringBuffer().append(lastName).append(" ").append(
+      firstName).toString());
   }
 
   /**

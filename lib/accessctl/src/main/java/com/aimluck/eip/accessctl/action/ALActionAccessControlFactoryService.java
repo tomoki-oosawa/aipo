@@ -27,7 +27,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 public class ALActionAccessControlFactoryService extends
     ALAccessControlFactoryService {
 
-  ALAccessControlHandler handler = new ALActionAccessControlHandler();
+  protected ALAccessControlHandler handler = new ALActionAccessControlHandler();
 
   /** logger */
   @SuppressWarnings("unused")

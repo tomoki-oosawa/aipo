@@ -57,8 +57,8 @@ import com.aimluck.eip.orm.query.SelectQuery;
  */
 public class ALFileLocalFolder extends ALAbstractFolder {
 
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALFileLocalFolder.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALFileLocalFolder.class.getName());
 
   /** メールのファイル名規則 */
   public static final String DEFAULT_MAIL_FILENAME_DATE_FORMAT =

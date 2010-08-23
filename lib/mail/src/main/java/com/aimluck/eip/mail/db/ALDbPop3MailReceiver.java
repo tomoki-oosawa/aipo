@@ -34,8 +34,11 @@ public class ALDbPop3MailReceiver extends ALPop3MailReceiver {
 
   @Override
   protected ALFolder getALFolder() {
-    return new ALDbLocalFolder(ALFolder.TYPE_RECEIVE, rcontext.getOrgId(),
-      rcontext.getUserId(), rcontext.getAccountId());
+    return new ALDbLocalFolder(
+      ALFolder.TYPE_RECEIVE,
+      rcontext.getOrgId(),
+      rcontext.getUserId(),
+      rcontext.getAccountId());
   }
 
 }

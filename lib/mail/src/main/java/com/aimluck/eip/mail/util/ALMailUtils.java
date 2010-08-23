@@ -109,8 +109,8 @@ import com.sk_jp.mail.MailUtility;
  */
 public class ALMailUtils {
 
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALMailUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALMailUtils.class.getName());
 
   /** 改行文字 */
   public static final String CR = System.getProperty("line.separator");
@@ -171,14 +171,17 @@ public class ALMailUtils {
 
   public static final String DATE_FORMAT = "yyyy/MM/dd HH:mm";
 
-  public static final String storePath =
-    JetspeedResources.getString("aipo.home", "");
+  public static final String storePath = JetspeedResources.getString(
+    "aipo.home",
+    "");
 
-  public static final String rootFolderPath =
-    JetspeedResources.getString("aipo.mail.home", "");
+  public static final String rootFolderPath = JetspeedResources.getString(
+    "aipo.mail.home",
+    "");
 
-  public static final String categoryKey =
-    JetspeedResources.getString("aipo.mail.key", "");
+  public static final String categoryKey = JetspeedResources.getString(
+    "aipo.mail.key",
+    "");
 
   /** メールアカウントのパスワードを暗号化する時の共通鍵 */
   private static final String seacretPassword = "1t's a s3@cr3t k3y";

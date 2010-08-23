@@ -114,36 +114,51 @@ public class ALPop3MailReceiveThread implements Runnable {
     ob.addAccountId(mailAccountId);
 
     try {
-      EipMMailAccount account = ALMailUtils.getMailAccount(orgId,
-        Integer.parseInt(userId), mailAccountId);
+      EipMMailAccount account =
+        ALMailUtils.getMailAccount(
+          orgId,
+          Integer.parseInt(userId),
+          mailAccountId);
       if (processType == PROCESS_TYPE_RECEIVEMAIL) {
         logger
           .info("[ALFilePop3MailReceiveThread] start receivemail (orgId, userId, mailAccountId)=("
-            + orgId + "," + userId + "," + mailAccountId + ")");
+            + orgId
+            + ","
+            + userId
+            + ","
+            + mailAccountId
+            + ")");
 
-        ob.updateAccountStat(mailAccountId, KEY_RECEIVE_MAIL_NUM,
-          Integer.valueOf(0));
+        ob.updateAccountStat(mailAccountId, KEY_RECEIVE_MAIL_NUM, Integer
+          .valueOf(0));
         // メール受信
         int res = receiveMail(orgId, account);
 
-        ob.updateAccountStat(mailAccountId, KEY_RECEIVE_MAIL_NUM,
-          Integer.valueOf(res));
+        ob.updateAccountStat(mailAccountId, KEY_RECEIVE_MAIL_NUM, Integer
+          .valueOf(res));
       } else if (processType == PROCESS_TYPE_GET_NEWMAILNUM) {
         logger
           .info("[ALFilePop3MailReceiveThread] start newmailnum (orgId, userId, mailAccountId)=("
-            + orgId + "," + userId + "," + mailAccountId + ")");
+            + orgId
+            + ","
+            + userId
+            + ","
+            + mailAccountId
+            + ")");
 
         // 新着メール数確認
         int res = checkNewMailNum(orgId, account);
         if (res >= 0) {
-          ob.updateAccountStat(mailAccountId, KEY_NEW_MAIL_NUM,
-            Integer.valueOf(res));
+          ob.updateAccountStat(mailAccountId, KEY_NEW_MAIL_NUM, Integer
+            .valueOf(res));
         }
       }
     } catch (Exception e) {
       logger.error("[ALFilePop3MailReceiveThread]", e);
     } finally {
-      ob.updateAccountStat(mailAccountId, KEY_RECEIVE_STAT,
+      ob.updateAccountStat(
+        mailAccountId,
+        KEY_RECEIVE_STAT,
         PROCESS_STAT_FINISHED);
     }
   }
@@ -154,18 +169,20 @@ public class ALPop3MailReceiveThread implements Runnable {
    * @param account
    */
   private int receiveMail(String orgId, EipMMailAccount account) {
-    ALStaticObject.getInstance().updateAccountStat(mailAccountId,
-      KEY_RECEIVE_STAT, PROCESS_STAT_PROCESSING);
+    ALStaticObject.getInstance().updateAccountStat(
+      mailAccountId,
+      KEY_RECEIVE_STAT,
+      PROCESS_STAT_PROCESSING);
     int result = ALPop3MailReceiver.RECEIVE_MSG_FAIL;
     if (account == null) {
       return result;
     }
 
     try {
-      ALMailHandler handler = ALMailFactoryService.getInstance()
-        .getMailHandler();
-      ALMailReceiverContext rcontext = ALMailUtils
-        .getALPop3MailReceiverContext(orgId, account);
+      ALMailHandler handler =
+        ALMailFactoryService.getInstance().getMailHandler();
+      ALMailReceiverContext rcontext =
+        ALMailUtils.getALPop3MailReceiverContext(orgId, account);
 
       result = handler.receive(rcontext, orgId);
 
@@ -176,8 +193,8 @@ public class ALPop3MailReceiveThread implements Runnable {
       }
 
       // 最終受信日を保存する．
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       account.setLastReceivedDate(new Date());
       dataContext.commitChanges();
     } catch (Exception ex) {
@@ -200,10 +217,10 @@ public class ALPop3MailReceiveThread implements Runnable {
     }
 
     try {
-      ALMailHandler handler = ALMailFactoryService.getInstance()
-        .getMailHandler();
-      ALMailReceiverContext rcontext = ALMailUtils
-        .getALPop3MailReceiverContext(orgId, account);
+      ALMailHandler handler =
+        ALMailFactoryService.getInstance().getMailHandler();
+      ALMailReceiverContext rcontext =
+        ALMailUtils.getALPop3MailReceiverContext(orgId, account);
 
       res = handler.getNewMailSum(rcontext);
 
@@ -252,8 +269,10 @@ public class ALPop3MailReceiveThread implements Runnable {
    * @return
    */
   public static boolean isReceiving(User user, int mailAccountId) {
-    Object objRS = ALStaticObject.getInstance().getAccountStat(mailAccountId,
-      KEY_RECEIVE_STAT);
+    Object objRS =
+      ALStaticObject.getInstance().getAccountStat(
+        mailAccountId,
+        KEY_RECEIVE_STAT);
     if (objRS == null || (Integer) objRS != PROCESS_STAT_PROCESSING) {
       return false;
     }
@@ -284,13 +303,21 @@ public class ALPop3MailReceiveThread implements Runnable {
     if (isReceiving(user, mailAccountId)) {
       StringBuffer sb = new StringBuffer();
 
-      Object objRMAN = ALStaticObject.getInstance().getAccountStat(
-        mailAccountId, KEY_RECEIVE_MAIL_ALL_NUM);
-      Object objRMN = ALStaticObject.getInstance().getAccountStat(
-        mailAccountId, KEY_RECEIVE_MAIL_NUM);
+      Object objRMAN =
+        ALStaticObject.getInstance().getAccountStat(
+          mailAccountId,
+          KEY_RECEIVE_MAIL_ALL_NUM);
+      Object objRMN =
+        ALStaticObject.getInstance().getAccountStat(
+          mailAccountId,
+          KEY_RECEIVE_MAIL_NUM);
 
       if (objRMAN != null) {
-        sb.append("メールを受信中です（ ").append(objRMAN).append(" 件中 ").append(objRMN)
+        sb
+          .append("メールを受信中です（ ")
+          .append(objRMAN)
+          .append(" 件中 ")
+          .append(objRMN)
           .append(" 件を受信 ）。");
       } else {
         sb.append("メール受信サーバに問い合わせ中です。");

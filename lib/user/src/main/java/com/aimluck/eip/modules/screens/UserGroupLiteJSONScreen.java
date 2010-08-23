@@ -47,14 +47,23 @@ public class UserGroupLiteJSONScreen extends ALJSONScreen {
 
       String mode = rundata.getParameters().getString("mode");
       if ("mygroup".equals(mode)) {
-        json = JSONArray.fromObject(UserUtils.getUserGroupLiteBeans(rundata,
-          true, false));
+        json =
+          JSONArray.fromObject(UserUtils.getUserGroupLiteBeans(
+            rundata,
+            true,
+            false));
       } else if ("post".equals(mode)) {
-        json = JSONArray.fromObject(UserUtils.getUserGroupLiteBeans(rundata,
-          false, true));
+        json =
+          JSONArray.fromObject(UserUtils.getUserGroupLiteBeans(
+            rundata,
+            false,
+            true));
       } else {
-        json = JSONArray.fromObject(UserUtils.getUserGroupLiteBeans(rundata,
-          true, true));
+        json =
+          JSONArray.fromObject(UserUtils.getUserGroupLiteBeans(
+            rundata,
+            true,
+            true));
       }
 
       result = json.toString();

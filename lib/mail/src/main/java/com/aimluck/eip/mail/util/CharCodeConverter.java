@@ -32,8 +32,9 @@ public class CharCodeConverter {
   static {
     try {
       // 全角への変換テーブル
-      SJIS_KANA = "。「」、・ヲァィゥェォャュョッーアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワン゛゜"
-        .getBytes("Shift_JIS");
+      SJIS_KANA =
+        "。「」、・ヲァィゥェォャュョッーアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワン゛゜"
+          .getBytes("Shift_JIS");
     } catch (UnsupportedEncodingException e) {
       throw new RuntimeException("CANT HAPPEN");
     }

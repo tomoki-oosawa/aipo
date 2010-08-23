@@ -33,8 +33,8 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
  */
 public class ALEventlogUtils {
 
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALEventlogUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALEventlogUtils.class.getName());
 
   /**
    * mode を DB に保存するための数値に変換します。

@@ -44,8 +44,9 @@ public class CommonCategoryLiteJSONScreen extends ALJSONScreen {
 
     try {
 
-      JSONArray json = JSONArray.fromObject(CommonCategoryUtils
-        .getCommonCategoryLiteBeans(rundata));
+      JSONArray json =
+        JSONArray.fromObject(CommonCategoryUtils
+          .getCommonCategoryLiteBeans(rundata));
       result = json.toString();
     } catch (Exception e) {
       logger.error("[ERROR]", e);

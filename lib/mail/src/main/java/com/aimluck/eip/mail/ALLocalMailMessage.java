@@ -85,7 +85,8 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
   public static final String CONTENT_TYPE = "Content-Type";
 
-  public static final String CONTENT_TRANSFER_ENCORDING = "Content-Transfer-Encoding";
+  public static final String CONTENT_TRANSFER_ENCORDING =
+    "Content-Transfer-Encoding";
 
   public static final String X_Mailer = "X-Mailer";
 
@@ -175,8 +176,10 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
    */
   public void readMail(String folderPath) {
     try {
-      FileInputStream input = new FileInputStream(folderPath + File.separator
-        + getMailMassageFileName());
+      FileInputStream input =
+        new FileInputStream(folderPath
+          + File.separator
+          + getMailMassageFileName());
       parse(input);
       input.close();
 
@@ -192,8 +195,10 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
    */
   public void saveMail(String folderPath) {
     try {
-      FileOutputStream output = new FileOutputStream(folderPath
-        + File.separator + getMailMassageFileName());
+      FileOutputStream output =
+        new FileOutputStream(folderPath
+          + File.separator
+          + getMailMassageFileName());
       writeTo(output);
       output.close();
     } catch (Exception e) {
@@ -214,8 +219,9 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
         file.createNewFile();
       }
 
-      DataOutputStream out = new DataOutputStream(new BufferedOutputStream(
-        new FileOutputStream(filePath)));
+      DataOutputStream out =
+        new DataOutputStream(new BufferedOutputStream(new FileOutputStream(
+          filePath)));
       out.write(fileBytes);
       out.flush();
       out.close();
@@ -232,8 +238,9 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
   public String getBodyText() {
     String text = null;
     try {
-      text = UnicodeCorrecter.correctToCP932(MultipartUtility
-        .getFirstPlainText(this));
+      text =
+        UnicodeCorrecter.correctToCP932(MultipartUtility
+          .getFirstPlainText(this));
       // FirstPlainPartExtractor h = new FirstPlainPartExtractor();
       // MultipartUtility.process(this, h);
       // text = UnicodeCorrecter.correctToCP932(h.getText());
@@ -327,14 +334,14 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
     Random random = new Random(cal.getTimeInMillis());
     int tmp = random.nextInt();
-    int randomNumber = (tmp != Integer.MIN_VALUE ? Math.abs(tmp) : Math
-      .abs(tmp + 1));
+    int randomNumber =
+      (tmp != Integer.MIN_VALUE ? Math.abs(tmp) : Math.abs(tmp + 1));
 
     String smtpHostName = session.getProperty(ALSmtpMailSender.MAIL_SMTP_HOST);
 
     StringBuffer messageId = new StringBuffer();
-    messageId.append(time).append(".").append(randomNumber).append("@")
-      .append(smtpHostName);
+    messageId.append(time).append(".").append(randomNumber).append("@").append(
+      smtpHostName);
 
     return messageId.toString();
   }
@@ -346,8 +353,9 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
    */
   @Override
   public String getSubject() throws MessagingException {
-    String subject = UnicodeCorrecter.correctToCP932(MailUtility
-      .decodeText(super.getSubject()));
+    String subject =
+      UnicodeCorrecter.correctToCP932(MailUtility
+        .decodeText(super.getSubject()));
 
     if (subject == null || subject.equals("")) {
       subject = "";

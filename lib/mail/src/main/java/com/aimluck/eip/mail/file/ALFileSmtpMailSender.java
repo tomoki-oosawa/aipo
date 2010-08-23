@@ -42,8 +42,11 @@ public class ALFileSmtpMailSender extends ALSmtpMailSender {
 
   @Override
   protected ALFolder getALFolder() {
-    return new ALFileLocalFolder(ALFolder.TYPE_SEND, scontext.getOrgId(),
-      scontext.getUserId(), scontext.getAccountId());
+    return new ALFileLocalFolder(
+      ALFolder.TYPE_SEND,
+      scontext.getOrgId(),
+      scontext.getUserId(),
+      scontext.getAccountId());
   }
 
 }

@@ -46,9 +46,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class CommonCategoryMultiDelete extends ALAbstractCheckList {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(CommonCategoryMultiDelete.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(CommonCategoryMultiDelete.class.getName());
 
   /**
    * 

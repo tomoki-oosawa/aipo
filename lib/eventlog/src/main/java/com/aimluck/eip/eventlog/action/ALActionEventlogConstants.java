@@ -72,7 +72,8 @@ public class ALActionEventlogConstants {
 
   public static final String EVENT_MODE_DELETE = ALEipConstants.MODE_DELETE;
 
-  public static final String EVENT_MODE_MULTI_DELETE = ALEipConstants.MODE_MULTI_DELETE;
+  public static final String EVENT_MODE_MULTI_DELETE =
+    ALEipConstants.MODE_MULTI_DELETE;
 
   public static final String EVENT_MODE_INSERT = ALEipConstants.MODE_INSERT;
 
@@ -80,7 +81,8 @@ public class ALActionEventlogConstants {
 
   public static final String EVENT_MODE_NEW_FORM = ALEipConstants.MODE_NEW_FORM;
 
-  public static final String EVENT_MODE_EDIT_FORM = ALEipConstants.MODE_EDIT_FORM;
+  public static final String EVENT_MODE_EDIT_FORM =
+    ALEipConstants.MODE_EDIT_FORM;
 
   public static final String EVENT_MODE_LIST = ALEipConstants.MODE_LIST;
 
@@ -105,9 +107,25 @@ public class ALActionEventlogConstants {
   /**
    * EVENT_ALIAS_NAME
    */
-  public static final String[] EVENT_ALIAS_NAME = { "その他のイベント", "更新", "削除",
-    "削除", "追加", "フォーム", "新規フォーム", "編集フォーム", "一覧", "詳細", "ログイン", "ログアウト", "承認",
-    "差し戻し", "出勤", "退勤", "参加・キャンセル", "Excelファイルとしてダウンロード" };
+  public static final String[] EVENT_ALIAS_NAME = {
+    "その他のイベント",
+    "更新",
+    "削除",
+    "削除",
+    "追加",
+    "フォーム",
+    "新規フォーム",
+    "編集フォーム",
+    "一覧",
+    "詳細",
+    "ログイン",
+    "ログアウト",
+    "承認",
+    "差し戻し",
+    "出勤",
+    "退勤",
+    "参加・キャンセル",
+    "Excelファイルとしてダウンロード" };
 
   // /**
   // * PORTLET_TYPE
@@ -218,9 +236,11 @@ public class ALActionEventlogConstants {
 
   public static final String PORTLET_TYPE_STR_ADDRESSBOOK = "アドレス帳(アドレス)";
 
-  public static final String PORTLET_TYPE_STR_ADDRESSBOOK_COMPANY = "アドレス帳(会社情報)";
+  public static final String PORTLET_TYPE_STR_ADDRESSBOOK_COMPANY =
+    "アドレス帳(会社情報)";
 
-  public static final String PORTLET_TYPE_STR_ADDRESSBOOK_GROUP = "アドレス帳(社外グループ)";
+  public static final String PORTLET_TYPE_STR_ADDRESSBOOK_GROUP =
+    "アドレス帳(社外グループ)";
 
   public static final String PORTLET_TYPE_STR_MEMO = "メモ帳";
 

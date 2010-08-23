@@ -78,8 +78,11 @@ public class CommonCategoryFormData extends ALAbstractFormData {
 
     try {
       // カテゴリID
-      category_id = Integer.valueOf(ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID));
+      category_id =
+        Integer.valueOf(ALEipUtils.getTemp(
+          rundata,
+          context,
+          ALEipConstants.ENTITY_ID));
     } catch (Exception e) {
       category_id = null;
     }
@@ -125,20 +128,24 @@ public class CommonCategoryFormData extends ALAbstractFormData {
   @Override
   protected boolean validate(List<String> msgList) {
     try {
-      SelectQuery<EipTCommonCategory> query = Database
-        .query(EipTCommonCategory.class);
-      Expression exp = ExpressionFactory.matchExp(
-        EipTCommonCategory.NAME_PROPERTY, name.getValue());
+      SelectQuery<EipTCommonCategory> query =
+        Database.query(EipTCommonCategory.class);
+      Expression exp =
+        ExpressionFactory.matchExp(EipTCommonCategory.NAME_PROPERTY, name
+          .getValue());
       query.setQualifier(exp);
 
       if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
-        Expression exp3 = ExpressionFactory.noMatchDbExp(
-          EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN, category_id);
+        Expression exp3 =
+          ExpressionFactory.noMatchDbExp(
+            EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN,
+            category_id);
         query.andQualifier(exp3);
       }
 
       if (query.fetchList().size() != 0) {
-        msgList.add("共有カテゴリ名『 <span class='em'>" + name.toString()
+        msgList.add("共有カテゴリ名『 <span class='em'>"
+          + name.toString()
           + "</span> 』は既に登録されています。");
       }
     } catch (Exception ex) {
@@ -168,8 +175,8 @@ public class CommonCategoryFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTCommonCategory category = CommonCategoryUtils.getEipTCommonCategory(
-        rundata, context);
+      EipTCommonCategory category =
+        CommonCategoryUtils.getEipTCommonCategory(rundata, context);
       if (category == null) {
         return false;
       }
@@ -213,7 +220,8 @@ public class CommonCategoryFormData extends ALAbstractFormData {
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         category.getCommonCategoryId(),
-        ALEventlogConstants.PORTLET_TYPE_COMMON_CATEGORY, name.getValue());
+        ALEventlogConstants.PORTLET_TYPE_COMMON_CATEGORY,
+        name.getValue());
     } catch (Throwable t) {
       Database.rollback();
       logger.error(t);
@@ -237,22 +245,24 @@ public class CommonCategoryFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTCommonCategory category = CommonCategoryUtils.getEipTCommonCategory(
-        rundata, context);
+      EipTCommonCategory category =
+        CommonCategoryUtils.getEipTCommonCategory(rundata, context);
       if (category == null) {
         return false;
       }
 
-      boolean authority_edit = CommonCategoryUtils
-        .CheckPermission(
-          rundata,
-          context,
-          ALAccessControlConstants.VALUE_ACL_UPDATE,
-          ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
+      boolean authority_edit =
+        CommonCategoryUtils
+          .CheckPermission(
+            rundata,
+            context,
+            ALAccessControlConstants.VALUE_ACL_UPDATE,
+            ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
 
       // 他人が作成したカテゴリは権限がないと変更不可
       ALEipUser eipUser = ALEipUtils.getALEipUser(rundata);
-      if (category.getCreateUserId().intValue() != eipUser.getUserId()
+      if (category.getCreateUserId().intValue() != eipUser
+        .getUserId()
         .getValue()
         && !authority_edit) {
         return false;
@@ -273,7 +283,8 @@ public class CommonCategoryFormData extends ALAbstractFormData {
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         category.getCommonCategoryId(),
-        ALEventlogConstants.PORTLET_TYPE_COMMON_CATEGORY, name.getValue());
+        ALEventlogConstants.PORTLET_TYPE_COMMON_CATEGORY,
+        name.getValue());
     } catch (Throwable t) {
       Database.rollback();
       logger.error(t);
@@ -297,22 +308,24 @@ public class CommonCategoryFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTCommonCategory category = CommonCategoryUtils.getEipTCommonCategory(
-        rundata, context);
+      EipTCommonCategory category =
+        CommonCategoryUtils.getEipTCommonCategory(rundata, context);
       if (category == null) {
         return false;
       }
 
-      boolean authority_delete = CommonCategoryUtils
-        .CheckPermission(
-          rundata,
-          context,
-          ALAccessControlConstants.VALUE_ACL_DELETE,
-          ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
+      boolean authority_delete =
+        CommonCategoryUtils
+          .CheckPermission(
+            rundata,
+            context,
+            ALAccessControlConstants.VALUE_ACL_DELETE,
+            ALAccessControlConstants.POERTLET_FEATURE_MANHOUR_COMMON_CATEGORY_OTHER);
 
       // 他人が作成したカテゴリは権限がないと消せない
       ALEipUser eipUser = ALEipUtils.getALEipUser(rundata);
-      if (category.getCreateUserId().intValue() != eipUser.getUserId()
+      if (category.getCreateUserId().intValue() != eipUser
+        .getUserId()
         .getValue()
         && !authority_delete) {
         return false;
@@ -331,8 +344,10 @@ public class CommonCategoryFormData extends ALAbstractFormData {
       Database.commit();
 
       // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(entityId,
-        ALEventlogConstants.PORTLET_TYPE_COMMON_CATEGORY, categoryName);
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        entityId,
+        ALEventlogConstants.PORTLET_TYPE_COMMON_CATEGORY,
+        categoryName);
     } catch (Throwable t) {
       Database.rollback();
       logger.error(t);

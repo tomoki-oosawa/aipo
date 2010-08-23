@@ -28,6 +28,7 @@ import javax.mail.MessagingException;
  * 
  */
 public interface ALMailMessage {
+
   abstract public void writeTo(OutputStream os) throws IOException,
       MessagingException;
 
