@@ -34,12 +34,13 @@ import com.aimluck.eip.common.ALEipConstants;
 
 /**
  * ユーザーアカウントをJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class AccountUserFormJSONScreen extends ALJSONScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AccountUserFormJSONScreen.class.getName());
+    .getLogger(AccountUserFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -54,8 +55,9 @@ public class AccountUserFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doInsert(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
 
@@ -65,8 +67,9 @@ public class AccountUserFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doUpdate(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
@@ -75,8 +78,9 @@ public class AccountUserFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doDelete(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
 
@@ -97,8 +101,9 @@ public class AccountUserFormJSONScreen extends ALJSONScreen {
         AccountUserMultiDelete delete = new AccountUserMultiDelete();
         if (delete.doMultiAction(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if ("multi_enable".equals(mode)) {
@@ -106,8 +111,9 @@ public class AccountUserFormJSONScreen extends ALJSONScreen {
         AccountUserMultiEnable delete = new AccountUserMultiEnable();
         if (delete.doMultiAction(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
 
@@ -116,8 +122,9 @@ public class AccountUserFormJSONScreen extends ALJSONScreen {
         AccountUserMultiDisable delete = new AccountUserMultiDisable();
         if (delete.doMultiAction(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if ("updatepasswd".equals(mode)) {
@@ -125,8 +132,9 @@ public class AccountUserFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doUpdate(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       }

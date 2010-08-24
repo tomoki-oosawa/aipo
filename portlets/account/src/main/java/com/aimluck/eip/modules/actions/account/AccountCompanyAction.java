@@ -39,14 +39,14 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * システム管理画面にて、会社情報を管理するアクションクラスです。
- *
+ * 
  */
 public class AccountCompanyAction extends ALSecureBaseAction {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AccountCompanyAction.class.getName());
+    .getLogger(AccountCompanyAction.class.getName());
 
   /**
    * @param portlet
@@ -56,10 +56,12 @@ public class AccountCompanyAction extends ALSecureBaseAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
 
-    String chg_adminpasswd = JetspeedResources.getString("aipo.chg_adminpasswd", "false");
+    String chg_adminpasswd =
+      JetspeedResources.getString("aipo.chg_adminpasswd", "false");
     context.put("chg_adminpasswd", chg_adminpasswd);
 
     if (getMode() == null) {
@@ -69,7 +71,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -83,7 +85,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -97,8 +99,9 @@ public class AccountCompanyAction extends ALSecureBaseAction {
       // doAccount_list(rundata, context);
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
-          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-          "eventSubmit_doAccount_list", "1").toString());
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doAccount_list",
+        "1").toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
       jsLink = null;
     } else {
@@ -107,7 +110,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -121,7 +124,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -134,8 +137,9 @@ public class AccountCompanyAction extends ALSecureBaseAction {
       // doAccount_post_list(rundata, context);
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
-          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-          "eventSubmit_doAccount_post_list", "1").toString());
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doAccount_post_list",
+        "1").toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
       jsLink = null;
     } else {
@@ -144,7 +148,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -157,15 +161,16 @@ public class AccountCompanyAction extends ALSecureBaseAction {
       // doAccount_post_list(rundata, context);
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
-          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-          "eventSubmit_doAccount_post_list", "1").toString());
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doAccount_post_list",
+        "1").toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
       jsLink = null;
     }
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -178,8 +183,9 @@ public class AccountCompanyAction extends ALSecureBaseAction {
       // doAccount_post_list(rundata, context);
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
-          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-          "eventSubmit_doAccount_post_list", "1").toString());
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doAccount_post_list",
+        "1").toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
       jsLink = null;
 
@@ -189,7 +195,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -198,14 +204,15 @@ public class AccountCompanyAction extends ALSecureBaseAction {
       throws Exception {
     AccountPostSelectData listData = new AccountPostSelectData();
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1a-rows")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1a-rows")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "account-post-list");
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -223,7 +230,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
 
   /**
    * 部署を削除します（複数） <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -234,14 +241,15 @@ public class AccountCompanyAction extends ALSecureBaseAction {
     delete.doMultiAction(this, rundata, context);
     JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
     rundata.setRedirectURI(jsLink.getPortletById(
-        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-        "eventSubmit_doAccount_post_list", "1").toString());
+      ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+      "eventSubmit_doAccount_post_list",
+      "1").toString());
     rundata.getResponse().sendRedirect(rundata.getRedirectURI());
     jsLink = null;
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -255,7 +263,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -268,8 +276,9 @@ public class AccountCompanyAction extends ALSecureBaseAction {
       // doAccount_position_list(rundata, context);
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
-          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-          "eventSubmit_doAccount_position_list", "1").toString());
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doAccount_position_list",
+        "1").toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
       jsLink = null;
     } else {
@@ -278,7 +287,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -291,15 +300,16 @@ public class AccountCompanyAction extends ALSecureBaseAction {
       // doAccount_position_list(rundata, context);
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
-          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-          "eventSubmit_doAccount_position_list", "1").toString());
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doAccount_position_list",
+        "1").toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
       jsLink = null;
     }
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -312,8 +322,9 @@ public class AccountCompanyAction extends ALSecureBaseAction {
       // doAccount_position_list(rundata, context);
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
-          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-          "eventSubmit_doAccount_position_list", "1").toString());
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doAccount_position_list",
+        "1").toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
       jsLink = null;
     } else {
@@ -322,7 +333,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -331,14 +342,15 @@ public class AccountCompanyAction extends ALSecureBaseAction {
       throws Exception {
     AccountPositionSelectData listData = new AccountPositionSelectData();
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1b-rows")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1b-rows")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "account-position-list");
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -356,7 +368,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
 
   /**
    * 役職を削除します（複数） <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -367,8 +379,9 @@ public class AccountCompanyAction extends ALSecureBaseAction {
     delete.doMultiAction(this, rundata, context);
     JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
     rundata.setRedirectURI(jsLink.getPortletById(
-        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-        "eventSubmit_doAccount_position_list", "1").toString());
+      ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+      "eventSubmit_doAccount_position_list",
+      "1").toString());
     rundata.getResponse().sendRedirect(rundata.getRedirectURI());
     jsLink = null;
   }

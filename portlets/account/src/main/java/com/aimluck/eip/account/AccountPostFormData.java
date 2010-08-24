@@ -24,10 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -47,18 +45,19 @@ import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 部署のフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class AccountPostFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AccountPostFormData.class.getName());
+    .getLogger(AccountPostFormData.class.getName());
 
   /** 部署名 */
   private ALStringField post_name;
@@ -104,17 +103,16 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   private ALStringField group_name;
 
-  private DataContext dataContext;
-
   /**
    * 初期化します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -122,11 +120,10 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     // 部署名
     post_name = new ALStringField();
@@ -173,14 +170,15 @@ public class AccountPostFormData extends ALAbstractFormData {
     fax_number3.setFieldName("FAX番号");
     fax_number3.setTrim(true);
 
-    if (is_join_member)
+    if (is_join_member) {
       memberList = new ArrayList<ALEipUser>();
+    }
 
     group_name = new ALStringField();
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -188,30 +186,35 @@ public class AccountPostFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res = super.setFormData(rundata, context, msgList);
     if (res) {
       try {
         if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
-          post_id = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
+          post_id =
+            Integer.parseInt(ALEipUtils.getTemp(
+              rundata,
+              context,
               ALEipConstants.ENTITY_ID));
         }
 
         if (is_join_member) {
           String str[] = rundata.getParameters().getStrings("member_to");
-          if (str == null)
+          if (str == null) {
             return res;
+          }
 
-          Expression exp = ExpressionFactory.inExp(
-              TurbineUser.LOGIN_NAME_PROPERTY, str);
-          SelectQuery query = new SelectQuery(TurbineUser.class);
+          Expression exp =
+            ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY, str);
+          SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
           query.setQualifier(exp);
-          List<?> list = dataContext.performQuery(query);
+          List<TurbineUser> list = query.fetchList();
 
           int size = list.size();
           for (int i = 0; i < size; i++) {
-            TurbineUser record = (TurbineUser) list.get(i);
+            TurbineUser record = list.get(i);
             ALEipUser user = new ALEipUser();
             user.initField();
             user.setName(record.getLoginName());
@@ -228,9 +231,10 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     post_name.setNotNull(true);
     post_name.limitMaxLength(50);
@@ -257,11 +261,12 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     List<String> dummy = new ArrayList<String>();
     post_name.validate(msgList);
@@ -272,23 +277,27 @@ public class AccountPostFormData extends ALAbstractFormData {
     }
 
     try {
-      SelectQuery query = new SelectQuery(EipMPost.class);
+      SelectQuery<EipMPost> query = Database.query(EipMPost.class);
       if (ALEipConstants.MODE_INSERT.equals(getMode())) {
-        Expression exp = ExpressionFactory.matchExp(
-            EipMPost.POST_NAME_PROPERTY, post_name.getValue());
+        Expression exp =
+          ExpressionFactory.matchExp(EipMPost.POST_NAME_PROPERTY, post_name
+            .getValue());
         query.setQualifier(exp);
       } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
-        Expression exp1 = ExpressionFactory.matchExp(
-            EipMPost.POST_NAME_PROPERTY, post_name.getValue());
+        Expression exp1 =
+          ExpressionFactory.matchExp(EipMPost.POST_NAME_PROPERTY, post_name
+            .getValue());
         query.setQualifier(exp1);
-        Expression exp2 = ExpressionFactory.noMatchDbExp(
-            EipMPost.POST_ID_PK_COLUMN, Integer.valueOf(post_id));
+        Expression exp2 =
+          ExpressionFactory.noMatchDbExp(EipMPost.POST_ID_PK_COLUMN, Integer
+            .valueOf(post_id));
         query.andQualifier(exp2);
       }
 
-      if (dataContext.performQuery(query).size() != 0) {
-        msgList.add("部署名『 <span class='em'>" + post_name
-            + "</span> 』は既に登録されています。");
+      if (query.fetchList().size() != 0) {
+        msgList.add("部署名『 <span class='em'>"
+          + post_name
+          + "</span> 』は既に登録されています。");
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -301,11 +310,11 @@ public class AccountPostFormData extends ALAbstractFormData {
       }
     }
     if (!post_out_telephone1.getValue().equals("")
-        || !post_out_telephone2.getValue().equals("")
-        || !post_out_telephone3.getValue().equals("")) {
+      || !post_out_telephone2.getValue().equals("")
+      || !post_out_telephone3.getValue().equals("")) {
       if (!post_out_telephone1.validate(dummy)
-          || !post_out_telephone2.validate(dummy)
-          || !post_out_telephone3.validate(dummy)) {
+        || !post_out_telephone2.validate(dummy)
+        || !post_out_telephone3.validate(dummy)) {
         msgList.add("『 <span class='em'>電話番号（外線）</span> 』を正しく入力してください。");
       }
     }
@@ -313,10 +322,11 @@ public class AccountPostFormData extends ALAbstractFormData {
     post_in_telephone.validate(msgList);
 
     if (!fax_number1.getValue().equals("")
-        || !fax_number2.getValue().equals("")
-        || !fax_number3.getValue().equals("")) {
-      if (!fax_number1.validate(dummy) || !fax_number2.validate(dummy)
-          || !fax_number3.validate(dummy)) {
+      || !fax_number2.getValue().equals("")
+      || !fax_number3.getValue().equals("")) {
+      if (!fax_number1.validate(dummy)
+        || !fax_number2.validate(dummy)
+        || !fax_number3.validate(dummy)) {
         msgList.add("『 <span class='em'>FAX番号</span> 』を正しく入力してください。");
       }
     }
@@ -325,7 +335,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 『部署』を読み込みます。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -333,13 +343,15 @@ public class AccountPostFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipMPost record = AccountUtils.getEipMPost(rundata, context);
-      if (record == null)
+      if (record == null) {
         return false;
+      }
 
       // 部署名
       post_name.setValue(record.getPostName());
@@ -379,14 +391,14 @@ public class AccountPostFormData extends ALAbstractFormData {
       post_id = record.getPostId().intValue();
 
       if (is_join_member) {
-        SelectQuery query = new SelectQuery(TurbineGroup.class);
-        Expression exp = ExpressionFactory.matchExp(
-            TurbineGroup.GROUP_ALIAS_NAME_PROPERTY, post_name);
+        SelectQuery<TurbineGroup> query = Database.query(TurbineGroup.class);
+        Expression exp =
+          ExpressionFactory.matchExp(
+            TurbineGroup.GROUP_ALIAS_NAME_PROPERTY,
+            post_name);
         query.setQualifier(exp);
-        DataContext dataContext = DatabaseOrmService.getInstance()
-            .getDataContext();
-        List<?> list = dataContext.performQuery(query);
-        TurbineGroup tg = (TurbineGroup) list.get(0);
+        List<TurbineGroup> list = query.fetchList();
+        TurbineGroup tg = list.get(0);
         memberList.addAll(ALEipUtils.getUsers(tg.getGroupName()));
       }
 
@@ -399,7 +411,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 『部署』を追加します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -407,20 +419,18 @@ public class AccountPostFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
-      if (dataContext == null) {
-        dataContext = DatabaseOrmService.getInstance().getDataContext();
-      }
 
       // グループオブジェクトモデルを生成
-      TurbineGroup group = (TurbineGroup) dataContext
-          .createAndRegisterNewObject(TurbineGroup.class);
+      TurbineGroup group = Database.create(TurbineGroup.class);
       String name = post_name.getValue();
       // グループ名(時間+ユーザIDで一意となるグループ名を作成)
-      String groupName = new StringBuffer().append(new Date().getTime())
-          .append("_").append(ALEipUtils.getUserId(rundata)).toString();
+      String groupName =
+        new StringBuffer().append(new Date().getTime()).append("_").append(
+          ALEipUtils.getUserId(rundata)).toString();
       group.setGroupName(groupName);
       // オーナIDの設定、作成者がオーナとなるので、自分自身のUID
       group.setOwnerId(Integer.valueOf(ALEipUtils.getUserId(rundata)));
@@ -432,16 +442,18 @@ public class AccountPostFormData extends ALAbstractFormData {
       JetspeedSecurity.addGroup(group);
 
       // 部署オブジェクトモデルを生成
-      EipMPost record = (EipMPost) dataContext
-          .createAndRegisterNewObject(EipMPost.class);
+      EipMPost record = Database.create(EipMPost.class);
       // 部署名
       record.setPostName(post_name.getValue());
       // 会社ID
       record.setCompanyId(Integer.valueOf(1));
       // 郵便番号
       if (!zipcode1.getValue().equals("") && !zipcode2.getValue().equals("")) {
-        record.setZipcode(new StringBuffer().append(zipcode1.getValue())
-            .append("-").append(zipcode2.getValue()).toString());
+        record.setZipcode(new StringBuffer()
+          .append(zipcode1.getValue())
+          .append("-")
+          .append(zipcode2.getValue())
+          .toString());
       } else {
         record.setZipcode("");
       }
@@ -449,12 +461,12 @@ public class AccountPostFormData extends ALAbstractFormData {
       record.setAddress(address.getValue());
       // 電話番号（外線）
       if (!post_out_telephone1.getValue().equals("")
-          && !post_out_telephone2.getValue().equals("")
-          && !post_out_telephone3.getValue().equals("")) {
-        record.setOutTelephone(new StringBuffer()
-            .append(post_out_telephone1.getValue()).append("-")
-            .append(post_out_telephone2.getValue()).append("-")
-            .append(post_out_telephone3.getValue()).toString());
+        && !post_out_telephone2.getValue().equals("")
+        && !post_out_telephone3.getValue().equals("")) {
+        record.setOutTelephone(new StringBuffer().append(
+          post_out_telephone1.getValue()).append("-").append(
+          post_out_telephone2.getValue()).append("-").append(
+          post_out_telephone3.getValue()).toString());
       } else {
         record.setOutTelephone("");
       }
@@ -464,11 +476,15 @@ public class AccountPostFormData extends ALAbstractFormData {
 
       // FAX番号
       if (!fax_number1.getValue().equals("")
-          && !fax_number2.getValue().equals("")
-          && !fax_number3.getValue().equals("")) {
-        record.setFaxNumber(new StringBuffer().append(fax_number1.getValue())
-            .append("-").append(fax_number2.getValue()).append("-")
-            .append(fax_number3.getValue()).toString());
+        && !fax_number2.getValue().equals("")
+        && !fax_number3.getValue().equals("")) {
+        record.setFaxNumber(new StringBuffer()
+          .append(fax_number1.getValue())
+          .append("-")
+          .append(fax_number2.getValue())
+          .append("-")
+          .append(fax_number3.getValue())
+          .toString());
       } else {
         record.setFaxNumber("");
       }
@@ -480,18 +496,20 @@ public class AccountPostFormData extends ALAbstractFormData {
       // 更新日
       record.setUpdateDate(now);
       // 部署を追加
-      dataContext.commitChanges();
+      Database.commit();
       // singletonオブジェクトのリフレッシュ
       ALEipManager.getInstance().reloadPost();
       if (is_join_member) {
         int size = memberList.size();
         for (int i = 0; i < size; i++) {
-          ALEipUtils.changePost(rundata, ((ALEipUser) memberList.get(i))
-              .getName().getValue(), record.getPostId().intValue());
+          ALEipUtils.changePost(rundata, (memberList.get(i))
+            .getName()
+            .getValue(), record.getPostId().intValue());
         }
       }
       post_id = record.getPostId().intValue();
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -500,7 +518,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 『部署』を更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -508,19 +526,24 @@ public class AccountPostFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipMPost record = AccountUtils.getEipMPost(rundata, context);
-      if (record == null)
+      if (record == null) {
         return false;
+      }
       // 部署名
       record.setPostName(post_name.getValue());
       // 郵便番号
       if (!zipcode1.getValue().equals("") && !zipcode2.getValue().equals("")) {
-        record.setZipcode(new StringBuffer().append(zipcode1.getValue())
-            .append("-").append(zipcode2.getValue()).toString());
+        record.setZipcode(new StringBuffer()
+          .append(zipcode1.getValue())
+          .append("-")
+          .append(zipcode2.getValue())
+          .toString());
       } else {
         record.setZipcode("");
       }
@@ -528,12 +551,12 @@ public class AccountPostFormData extends ALAbstractFormData {
       record.setAddress(address.getValue());
       // 電話番号（外線）
       if (!post_out_telephone1.getValue().equals("")
-          && !post_out_telephone2.getValue().equals("")
-          && !post_out_telephone3.getValue().equals("")) {
-        record.setOutTelephone(new StringBuffer()
-            .append(post_out_telephone1.getValue()).append("-")
-            .append(post_out_telephone2.getValue()).append("-")
-            .append(post_out_telephone3.getValue()).toString());
+        && !post_out_telephone2.getValue().equals("")
+        && !post_out_telephone3.getValue().equals("")) {
+        record.setOutTelephone(new StringBuffer().append(
+          post_out_telephone1.getValue()).append("-").append(
+          post_out_telephone2.getValue()).append("-").append(
+          post_out_telephone3.getValue()).toString());
       } else {
         record.setOutTelephone("");
       }
@@ -543,24 +566,29 @@ public class AccountPostFormData extends ALAbstractFormData {
 
       // FAX番号
       if (!fax_number1.getValue().equals("")
-          && !fax_number2.getValue().equals("")
-          && !fax_number3.getValue().equals("")) {
-        record.setFaxNumber(new StringBuffer().append(fax_number1.getValue())
-            .append("-").append(fax_number2.getValue()).append("-")
-            .append(fax_number3.getValue()).toString());
+        && !fax_number2.getValue().equals("")
+        && !fax_number3.getValue().equals("")) {
+        record.setFaxNumber(new StringBuffer()
+          .append(fax_number1.getValue())
+          .append("-")
+          .append(fax_number2.getValue())
+          .append("-")
+          .append(fax_number3.getValue())
+          .toString());
       } else {
         record.setFaxNumber("");
       }
       // 更新日
       record.setUpdateDate(new Date());
 
-      dataContext.commitChanges();
+      Database.commit();
       post_id = record.getPostId().intValue();
 
-      TurbineGroup group = (TurbineGroup) JetspeedSecurity.getGroup(record
-          .getGroupName());
-      if (group == null)
+      TurbineGroup group =
+        (TurbineGroup) JetspeedSecurity.getGroup(record.getGroupName());
+      if (group == null) {
         return false;
+      }
 
       // グループ名
       group.setGroupAliasName(post_name.getValue());
@@ -576,20 +604,23 @@ public class AccountPostFormData extends ALAbstractFormData {
         List<ALEipUser> users = ALEipUtils.getUsers(record.getGroupName());
         int size = users.size();
         for (int i = 0; i < size; i++) {
-          JetspeedSecurity.unjoinGroup(users.get(i).getName()
-              .getValue(), record.getGroupName());
+          JetspeedSecurity.unjoinGroup(
+            users.get(i).getName().getValue(),
+            record.getGroupName());
         }
 
         size = memberList.size();
         for (int i = 0; i < size; i++) {
-          ALEipUtils.changePost(rundata, ((ALEipUser) memberList.get(i))
-              .getName().getValue(), record.getPostId().intValue());
+          ALEipUtils.changePost(rundata, (memberList.get(i))
+            .getName()
+            .getValue(), record.getPostId().intValue());
         }
       }
 
-      dataContext.commitChanges();
+      Database.commit();
 
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -599,7 +630,7 @@ public class AccountPostFormData extends ALAbstractFormData {
   /**
    * 『部署』を削除します。 <BR>
    * このとき部署に関連づけられているグループも削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -607,34 +638,37 @@ public class AccountPostFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipMPost record = AccountUtils.getEipMPost(rundata, context);
-      if (record == null)
+      if (record == null) {
         return false;
+      }
 
       // グループからユーザーを削除
       List<ALEipUser> users = ALEipUtils.getUsers(record.getGroupName());
       int size = users.size();
       for (int i = 0; i < size; i++) {
-        JetspeedSecurity.unjoinGroup(users.get(i).getName()
-            .getValue(), record.getGroupName());
+        JetspeedSecurity.unjoinGroup(users.get(i).getName().getValue(), record
+          .getGroupName());
       }
 
       // グループを削除
       JetspeedSecurity.removeGroup(record.getGroupName());
 
       // 部署を削除
-      dataContext.deleteObject(record);
+      Database.delete(record);
 
-      dataContext.commitChanges();
+      Database.commit();
 
       // singletonオブジェクトのリフレッシュ
       ALEipManager.getInstance().reloadPost();
 
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -643,7 +677,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 部署名を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getPostName() {
@@ -652,7 +686,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 住所を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getAddress() {
@@ -661,7 +695,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFaxNumber1() {
@@ -670,7 +704,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFaxNumber2() {
@@ -679,7 +713,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFaxNumber3() {
@@ -688,7 +722,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（外線）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getOutTelephone1() {
@@ -697,7 +731,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（外線）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getOutTelephone2() {
@@ -706,7 +740,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（外線）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getOutTelephone3() {
@@ -715,7 +749,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（内線）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getInTelephone() {
@@ -724,7 +758,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getZipcode1() {
@@ -733,7 +767,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getZipcode2() {
@@ -742,7 +776,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 所属メンバーを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -754,7 +788,7 @@ public class AccountPostFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param groupname
    * @return
    */
@@ -769,7 +803,7 @@ public class AccountPostFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -777,7 +811,7 @@ public class AccountPostFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param bool
    */
   public void setJoinMember(boolean bool) {
@@ -785,7 +819,7 @@ public class AccountPostFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public boolean isJoinMember() {
@@ -793,7 +827,7 @@ public class AccountPostFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public int getPostId() {

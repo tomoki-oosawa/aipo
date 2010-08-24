@@ -44,7 +44,7 @@ public class AccountPasswdFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AccountPasswdFormData.class.getName());
+    .getLogger(AccountPasswdFormData.class.getName());
 
   /** 新しいパスワード */
   private ALStringField new_passwd;
@@ -54,16 +54,18 @@ public class AccountPasswdFormData extends ALAbstractFormData {
 
   /**
    * 初期化する <BR>
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     if (ALEipUtils.isMatch(rundata, context)) {
       ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, rundata
-          .getUser().getUserName());
+        .getUser()
+        .getUserName());
     }
   }
 
@@ -86,6 +88,7 @@ public class AccountPasswdFormData extends ALAbstractFormData {
   /**
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // 新しいパスワード
     new_passwd.setNotNull(true);
@@ -101,6 +104,7 @@ public class AccountPasswdFormData extends ALAbstractFormData {
   /**
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     new_passwd.validate(msgList);
     new_passwd_confirm.validate(msgList);
@@ -115,6 +119,7 @@ public class AccountPasswdFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -124,6 +129,7 @@ public class AccountPasswdFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -133,18 +139,22 @@ public class AccountPasswdFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     boolean res = true;
     try {
 
       ALBaseUser user = AccountUtils.getBaseUser(rundata, context);
-      if (user == null)
+      if (user == null) {
         return false;
+      }
 
       // WebAPIのDBへ接続できるか確認
-      if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler()
-          .checkConnect()) {
+      if (!ALDataSyncFactoryService
+        .getInstance()
+        .getDataSyncHandler()
+        .checkConnect()) {
         msgList.add("コントロールパネルWebAPIのデータベースの接続に失敗したため、処理は実行されませんでした。");
         return false;
       }
@@ -156,8 +166,10 @@ public class AccountPasswdFormData extends ALAbstractFormData {
       JetspeedSecurity.saveUser(user);
 
       // WebAPIとのDB同期
-      if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler()
-          .updateUser(user)) {
+      if (!ALDataSyncFactoryService
+        .getInstance()
+        .getDataSyncHandler()
+        .updateUser(user)) {
         return false;
       }
 
@@ -176,6 +188,7 @@ public class AccountPasswdFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;

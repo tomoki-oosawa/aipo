@@ -31,12 +31,13 @@ import com.aimluck.eip.common.ALEipConstants;
 
 /**
  * 部署をJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class AccountPostFormJSONScreen extends ALJSONScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AccountPostFormJSONScreen.class.getName());
+    .getLogger(AccountPostFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -52,8 +53,9 @@ public class AccountPostFormJSONScreen extends ALJSONScreen {
 
         if (formData.doInsert(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
 
@@ -63,8 +65,9 @@ public class AccountPostFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doUpdate(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
@@ -73,8 +76,9 @@ public class AccountPostFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doDelete(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if ("multi_delete".equals(mode)) {
@@ -82,8 +86,9 @@ public class AccountPostFormJSONScreen extends ALJSONScreen {
         AccountPostMultiDelete delete = new AccountPostMultiDelete();
         if (delete.doMultiAction(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       }

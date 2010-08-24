@@ -40,14 +40,14 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザーアカウントの取り扱いに関するアクションクラスです。
- *
+ * 
  */
 public class AccountAction extends ALSecureBaseAction {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AccountAction.class.getName());
+    .getLogger(AccountAction.class.getName());
 
   /**
    * @param portlet
@@ -57,6 +57,7 @@ public class AccountAction extends ALSecureBaseAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
 
@@ -67,7 +68,7 @@ public class AccountAction extends ALSecureBaseAction {
 
   /**
    * 古くなった一時ファイルを消します
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -82,7 +83,7 @@ public class AccountAction extends ALSecureBaseAction {
 
   /**
    * 登録画面用のフォームを表示します。
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -100,7 +101,7 @@ public class AccountAction extends ALSecureBaseAction {
 
   /**
    * アカウントの登録を行います。
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -113,9 +114,10 @@ public class AccountAction extends ALSecureBaseAction {
       // データの登録に成功したとき
       // doAccount_list(rundata, context);
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      rundata.setRedirectURI(jsLink
-          .getPortletById(ALEipUtils.getPortlet(rundata, context).getID())
-          .addQueryData("eventSubmit_doAccount_list", "1").toString());
+      rundata.setRedirectURI(jsLink.getPortletById(
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doAccount_list",
+        "1").toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
       JetspeedLinkFactory.putInstance(jsLink);
       jsLink = null;
@@ -126,7 +128,7 @@ public class AccountAction extends ALSecureBaseAction {
 
   /**
    * アカウントの削除を行います。
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -139,16 +141,17 @@ public class AccountAction extends ALSecureBaseAction {
       // データの削除に成功したとき
       // doAccount_list(rundata, context);
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      rundata.setRedirectURI(jsLink
-          .getPortletById(ALEipUtils.getPortlet(rundata, context).getID())
-          .addQueryData("eventSubmit_doAccount_list", "1").toString());
+      rundata.setRedirectURI(jsLink.getPortletById(
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doAccount_list",
+        "1").toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
       jsLink = null;
     }
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -162,9 +165,10 @@ public class AccountAction extends ALSecureBaseAction {
       // データの更新に成功したとき
       // doAccount_list(rundata, context);
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      rundata.setRedirectURI(jsLink
-          .getPortletById(ALEipUtils.getPortlet(rundata, context).getID())
-          .addQueryData("eventSubmit_doAccount_list", "1").toString());
+      rundata.setRedirectURI(jsLink.getPortletById(
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doAccount_list",
+        "1").toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
       // TODO add by Haruo Kaneko
       JetspeedLinkFactory.putInstance(jsLink);
@@ -176,7 +180,7 @@ public class AccountAction extends ALSecureBaseAction {
 
   /**
    * アカウント一覧を表示します。
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -185,15 +189,16 @@ public class AccountAction extends ALSecureBaseAction {
     AccountUserSelectData listData = new AccountUserSelectData();
     // 会社/部署/役職テーブルデータをマップへロード
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig()
-        .getInitParameter("p1a-rows")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1a-rows")));
     listData.doViewList(this, rundata, context);
     // 一時ファイルを削除
     // deleteTempFiles();
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -211,7 +216,7 @@ public class AccountAction extends ALSecureBaseAction {
 
   /**
    * ユーザーアカウントを削除します（複数） <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -221,15 +226,16 @@ public class AccountAction extends ALSecureBaseAction {
     AccountUserMultiDelete delete = new AccountUserMultiDelete();
     delete.doMultiAction(this, rundata, context);
     JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-    rundata.setRedirectURI(jsLink
-        .getPortletById(ALEipUtils.getPortlet(rundata, context).getID())
-        .addQueryData("eventSubmit_doAccount_list", "1").toString());
+    rundata.setRedirectURI(jsLink.getPortletById(
+      ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+      "eventSubmit_doAccount_list",
+      "1").toString());
     rundata.getResponse().sendRedirect(rundata.getRedirectURI());
     jsLink = null;
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -251,7 +257,7 @@ public class AccountAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -264,9 +270,10 @@ public class AccountAction extends ALSecureBaseAction {
     if (formData.doUpdate(this, rundata, context)) {
       // データの更新に成功したとき
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      rundata.setRedirectURI(jsLink
-          .getPortletById(ALEipUtils.getPortlet(rundata, context).getID())
-          .addQueryData("eventSubmit_doAccount_list", "1").toString());
+      rundata.setRedirectURI(jsLink.getPortletById(
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doAccount_list",
+        "1").toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
       JetspeedLinkFactory.putInstance(jsLink);
       jsLink = null;

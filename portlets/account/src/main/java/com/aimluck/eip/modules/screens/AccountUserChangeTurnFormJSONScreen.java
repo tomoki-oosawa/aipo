@@ -30,12 +30,13 @@ import com.aimluck.eip.common.ALEipConstants;
 
 /**
  * ユーザーアカウントの順番情報をJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class AccountUserChangeTurnFormJSONScreen extends ALJSONScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AccountUserChangeTurnFormJSONScreen.class.getName());
+    .getLogger(AccountUserChangeTurnFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -48,8 +49,9 @@ public class AccountUserChangeTurnFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doUpdate(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       }

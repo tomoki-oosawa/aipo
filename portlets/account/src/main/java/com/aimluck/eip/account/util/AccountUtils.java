@@ -21,10 +21,8 @@ package com.aimluck.eip.account.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -42,7 +40,8 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.user.beans.UserGroupLiteBean;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -53,27 +52,28 @@ public class AccountUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AccountUtils.class.getName());
+    .getLogger(AccountUtils.class.getName());
 
   /** CSVファイルを一時保管するディレクトリの指定 */
   public static final String FOLDER_TMP_FOR_CSV_FILES = JetspeedResources
-      .getString("aipo.tmp.directory", "");
+    .getString("aipo.tmp.directory", "");
 
   /** CSVファイル名 */
-  public static final String FOLDER_TMP_FOR_USERINFO_CSV_FILENAME = "user_info.csv";
+  public static final String FOLDER_TMP_FOR_USERINFO_CSV_FILENAME =
+    "user_info.csv";
 
   public static final int CSV_FILE_COL_COUNT = 11;
 
   /**
    * セッション中のエンティティIDで示されるユーザ情報を取得する。 論理削除されたユーザを取得した場合はnullを返す。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    */
   public static ALBaseUser getBaseUser(RunData rundata, Context context) {
-    String userid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String userid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (userid == null) {
         logger.debug("Empty ID...");
@@ -97,7 +97,7 @@ public class AccountUtils {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -111,17 +111,16 @@ public class AccountUtils {
         return result;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      Expression exp = ExpressionFactory.matchDbExp(
-          EipMCompany.COMPANY_ID_PK_COLUMN, Integer.valueOf(id));
-      SelectQuery query = new SelectQuery(EipMCompany.class, exp);
-      List<?> list = dataContext.performQuery(query);
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipMCompany.COMPANY_ID_PK_COLUMN, Integer
+          .valueOf(id));
+      List<EipMCompany> list =
+        Database.query(EipMCompany.class, exp).fetchList();
       if (list == null || list.size() == 0) {
         logger.debug("Not found ID...");
         return result;
       }
-      result = (EipMCompany) list.get(0);
+      result = list.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
     }
@@ -130,7 +129,7 @@ public class AccountUtils {
 
   /**
    * セッションに格納されているIDを用いて、部署情報を取得します。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -144,17 +143,15 @@ public class AccountUtils {
         return result;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      Expression exp = ExpressionFactory.matchDbExp(EipMPost.POST_ID_PK_COLUMN,
-          Integer.valueOf(id));
-      SelectQuery query = new SelectQuery(EipMPost.class, exp);
-      List<?> list = dataContext.performQuery(query);
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipMPost.POST_ID_PK_COLUMN, Integer
+          .valueOf(id));
+      List<EipMPost> list = Database.query(EipMPost.class, exp).fetchList();
       if (list == null || list.size() == 0) {
         logger.debug("Not found ID...");
         return result;
       }
-      result = (EipMPost) list.get(0);
+      result = list.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
     }
@@ -162,7 +159,7 @@ public class AccountUtils {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -176,17 +173,17 @@ public class AccountUtils {
         return result;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      Expression exp = ExpressionFactory.matchDbExp(
-          EipMPosition.POSITION_ID_PK_COLUMN, Integer.valueOf(id));
-      SelectQuery query = new SelectQuery(EipMPosition.class, exp);
-      List<?> list = dataContext.performQuery(query);
+      Expression exp =
+        ExpressionFactory.matchDbExp(
+          EipMPosition.POSITION_ID_PK_COLUMN,
+          Integer.valueOf(id));
+      List<EipMPosition> list =
+        Database.query(EipMPosition.class, exp).fetchList();
       if (list == null || list.size() == 0) {
         logger.debug("Not found ID...");
         return result;
       }
-      result = (EipMPosition) list.get(0);
+      result = list.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
     }
@@ -194,8 +191,9 @@ public class AccountUtils {
   }
 
   public static String[] getCsvSplitStrings(String line) {
-    if (line == null || line.equals(""))
+    if (line == null || line.equals("")) {
       return null;
+    }
 
     try {
       List<String> list = new ArrayList<String>();
@@ -226,7 +224,7 @@ public class AccountUtils {
       }
 
       String[] strings = new String[list.size()];
-      strings = (String[]) list.toArray(strings);
+      strings = list.toArray(strings);
       return strings;
     } catch (Exception e) {
       return null;
@@ -235,25 +233,30 @@ public class AccountUtils {
 
   /**
    * ユーザーの所属する部署の一覧を取得します。
-   *
+   * 
    * @param uid
-   *            ユーザーID
+   *          ユーザーID
    * @return 所属する部署リスト
    */
   public static List<UserGroupLiteBean> getPostBeanList(int uid) {
-    SelectQuery query = new SelectQuery(TurbineUserGroupRole.class);
-    Expression exp1 = ExpressionFactory.matchExp(
-        TurbineUserGroupRole.TURBINE_USER_PROPERTY, Integer.valueOf(uid));
-    Expression exp2 = ExpressionFactory.greaterExp(
-        TurbineUserGroupRole.TURBINE_GROUP_PROPERTY, Integer.valueOf(3));
-    Expression exp3 = ExpressionFactory.matchExp(
-        TurbineUserGroupRole.TURBINE_GROUP_PROPERTY + "."
-            + TurbineGroup.OWNER_ID_PROPERTY, Integer.valueOf(1));
+    SelectQuery<TurbineUserGroupRole> query =
+      Database.query(TurbineUserGroupRole.class);
+    Expression exp1 =
+      ExpressionFactory.matchExp(
+        TurbineUserGroupRole.TURBINE_USER_PROPERTY,
+        Integer.valueOf(uid));
+    Expression exp2 =
+      ExpressionFactory.greaterExp(
+        TurbineUserGroupRole.TURBINE_GROUP_PROPERTY,
+        Integer.valueOf(3));
+    Expression exp3 =
+      ExpressionFactory.matchExp(TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
+        + "."
+        + TurbineGroup.OWNER_ID_PROPERTY, Integer.valueOf(1));
     query.setQualifier(exp1);
     query.andQualifier(exp2);
     query.andQualifier(exp3);
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
-    List<?> list = dataContext.performQuery(query);
+    List<TurbineUserGroupRole> list = query.fetchList();
 
     if (list == null || list.size() < 0) {
       return null;
@@ -261,12 +264,9 @@ public class AccountUtils {
 
     List<UserGroupLiteBean> resultList = new ArrayList<UserGroupLiteBean>();
 
-    TurbineUserGroupRole ugr = null;
     TurbineGroup group = null;
     UserGroupLiteBean bean = null;
-    int size = list.size();
-    for (int i = 0; i < size; i++) {
-      ugr = (TurbineUserGroupRole) list.get(i);
+    for (TurbineUserGroupRole ugr : list) {
       group = ugr.getTurbineGroup();
       bean = new UserGroupLiteBean();
       bean.initField();
@@ -278,10 +278,9 @@ public class AccountUtils {
     return resultList;
   }
 
-
   /**
    * 指定した ID のユーザが削除済みかどうかを調べる。
-   *
+   * 
    * @param userId
    * @return
    */
@@ -291,17 +290,16 @@ public class AccountUtils {
     }
     String disabled;
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(TurbineUser.class);
-      Expression exp = ExpressionFactory.matchDbExp(
-          TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(userId));
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+      Expression exp =
+        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+          .valueOf(userId));
       query.setQualifier(exp);
-      List<?> destUserList = dataContext.performQuery(query);
+      List<TurbineUser> destUserList = query.fetchList();
       if (destUserList == null || destUserList.size() <= 0) {
         return true;
       }
-      disabled = ((TurbineUser) destUserList.get(0)).getDisabled();
+      disabled = (destUserList.get(0)).getDisabled();
       return ("T".equals(disabled) || "N".equals(disabled));
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -311,47 +309,61 @@ public class AccountUtils {
 
   /**
    * 指定されたユーザーが削除／無効化されたとき、申請が来ているワークフローを全て承認します。
-   *
+   * 
    * @param uid
    */
   public static boolean acceptWorkflow(int uid) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
       String userId = Integer.toString(uid);
 
       // 申請が来ているワークフローを取得する
-      SelectQuery workflow_request_map_query = new SelectQuery(EipTWorkflowRequestMap.class);
-      Expression workflow_exp = ExpressionFactory.matchExp(
-          EipTWorkflowRequestMap.USER_ID_PROPERTY, userId);
-      Expression workflow_exp2 = ExpressionFactory.matchExp(
-          EipTWorkflowRequestMap.STATUS_PROPERTY, "C");
-      workflow_request_map_query.setQualifier(workflow_exp.andExp(workflow_exp2));
-      List<?> workflow_request_map_list = dataContext.performQuery(workflow_request_map_query);
+      SelectQuery<EipTWorkflowRequestMap> workflow_request_map_query =
+        Database.query(EipTWorkflowRequestMap.class);
+      Expression workflow_exp =
+        ExpressionFactory.matchExp(
+          EipTWorkflowRequestMap.USER_ID_PROPERTY,
+          userId);
+      Expression workflow_exp2 =
+        ExpressionFactory.matchExp(EipTWorkflowRequestMap.STATUS_PROPERTY, "C");
+      workflow_request_map_query.setQualifier(workflow_exp
+        .andExp(workflow_exp2));
+      List<EipTWorkflowRequestMap> workflow_request_map_list =
+        workflow_request_map_query.fetchList();
       EipTWorkflowRequestMap workflow_request_map = null;
       int list_size = workflow_request_map_list.size();
 
       // 申請が来ているワークフローの数だけ繰り返す
       for (int j = 0; j < list_size; j++) {
-        workflow_request_map = (EipTWorkflowRequestMap) workflow_request_map_list.get(j);
+        workflow_request_map = workflow_request_map_list.get(j);
 
         // ワークフローを最後の人まで見ていく
         int request_number = workflow_request_map.getOrderIndex();
         while (true) {
           // 次の人がいるかどうか
-          SelectQuery workflow_request_map_query2 = new SelectQuery(EipTWorkflowRequestMap.class);
-          Expression workflow_exp3 = ExpressionFactory.matchExp(
-              EipTWorkflowRequestMap.EIP_TWORKFLOW_REQUEST_PROPERTY, workflow_request_map.getEipTWorkflowRequest());
-          Expression workflow_exp4 = ExpressionFactory.matchExp(
-              EipTWorkflowRequestMap.ORDER_INDEX_PROPERTY, Integer.valueOf(request_number + 1));
-          workflow_request_map_query2.setQualifier(workflow_exp3.andExp(workflow_exp4));
-          List<?> workflow_request_map_list2 = dataContext.performQuery(workflow_request_map_query2);
+          SelectQuery<EipTWorkflowRequestMap> workflow_request_map_query2 =
+            Database.query(EipTWorkflowRequestMap.class);
+          Expression workflow_exp3 =
+            ExpressionFactory.matchExp(
+              EipTWorkflowRequestMap.EIP_TWORKFLOW_REQUEST_PROPERTY,
+              workflow_request_map.getEipTWorkflowRequest());
+          Expression workflow_exp4 =
+            ExpressionFactory.matchExp(
+              EipTWorkflowRequestMap.ORDER_INDEX_PROPERTY,
+              Integer.valueOf(request_number + 1));
+          workflow_request_map_query2.setQualifier(workflow_exp3
+            .andExp(workflow_exp4));
+          List<EipTWorkflowRequestMap> workflow_request_map_list2 =
+            workflow_request_map_query2.fetchList();
 
           // 自身を自動承認状態にする
           workflow_request_map.setStatus("T");
           if (workflow_request_map_list2.size() == 1) {
             // 次の人が見つかった
-            EipTWorkflowRequestMap workflow_request_map2 = (EipTWorkflowRequestMap) workflow_request_map_list2.get(0);
-            if (getUserIsDisabledOrDeleted(workflow_request_map2.getUserId().toString())) {
+            EipTWorkflowRequestMap workflow_request_map2 =
+              workflow_request_map_list2.get(0);
+            if (getUserIsDisabledOrDeleted(workflow_request_map2
+              .getUserId()
+              .toString())) {
               // 次の人が削除済み、もしくは無効化されていたら自動承認した上で次の人に回す
               workflow_request_map2.setStatus("T");
               request_number += 1;

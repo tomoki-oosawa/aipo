@@ -30,13 +30,13 @@ import com.aimluck.eip.common.ALEipConstants;
 
 /**
  * 管理者のパスワード変更フォームの情報をJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class AccountAdminFormJSONScreen extends ALJSONScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AccountAdminFormJSONScreen.class.getName());
+    .getLogger(AccountAdminFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -50,8 +50,9 @@ public class AccountAdminFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doUpdate(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       }

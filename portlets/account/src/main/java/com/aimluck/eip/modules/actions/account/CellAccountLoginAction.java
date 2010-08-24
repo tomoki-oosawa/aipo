@@ -27,7 +27,6 @@ import java.util.Map;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -37,20 +36,22 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.orgutils.ALOrgUtilsFactoryService;
 import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
 
 /**
  * ログイン画面を表示するアクションクラスです。
- *
+ * 
  */
 public class CellAccountLoginAction extends ALBaseAction {
 
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CellAccountLoginAction.class.getName());
+    .getLogger(CellAccountLoginAction.class.getName());
 
   private String org_id;
 
@@ -62,19 +63,20 @@ public class CellAccountLoginAction extends ALBaseAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
 
-    String action_logout = rundata.getParameters().getString("logout", "")
-        .trim();
+    String action_logout =
+      rundata.getParameters().getString("logout", "").trim();
     if ("T".equals(action_logout)) {
       setTemplate(rundata, "accountlogout-info");
     }
 
     org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
 
-    ALOrgUtilsHandler handler = ALOrgUtilsFactoryService.getInstance()
-        .getOrgUtilsHandler();
+    ALOrgUtilsHandler handler =
+      ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
     HashMap<String, String> attribute = handler.getParameters(org_id);
     for (Map.Entry<String, String> e : attribute.entrySet()) {
       context.put(e.getKey(), e.getValue());
@@ -109,8 +111,8 @@ public class CellAccountLoginAction extends ALBaseAction {
         if (isSymbol(username.charAt(i1))) {
           // 使用されているのが妥当な記号であるかの確認
           if (!(username.charAt(i1) == "_".charAt(0)
-              || username.charAt(i1) == "-".charAt(0) || username.charAt(i1) == "."
-              .charAt(0))) {
+            || username.charAt(i1) == "-".charAt(0) || username.charAt(i1) == "."
+            .charAt(0))) {
             valid = false;
             break;
           }
@@ -121,15 +123,17 @@ public class CellAccountLoginAction extends ALBaseAction {
         // ALEipUser eipuser = ALEipUtils.getALEipUser(username);
 
         DataContext dataContext = DataContext.createDataContext(org_id);
-        Expression exp = ExpressionFactory.matchExp(
-            TurbineUser.LOGIN_NAME_PROPERTY, username);
-        SelectQuery query = new SelectQuery(TurbineUser.class, exp);
-        List<?> users = dataContext.performQuery(query);
+        Expression exp =
+          ExpressionFactory.matchExp(TurbineUser.LOGIN_NAME_PROPERTY, username);
+        SelectQuery<TurbineUser> query =
+          Database.query(dataContext, TurbineUser.class, exp);
+        List<TurbineUser> users = query.fetchList();
         if (users.size() != 0) {
-          TurbineUser tuser = (TurbineUser) users.get(0);
+          TurbineUser tuser = users.get(0);
 
           if (!(ALCellularUtils.getCheckValueForCellLogin(username, tuser
-              .getUserId().toString())).equals(base64value)) {
+            .getUserId()
+            .toString())).equals(base64value)) {
             username = "";
           }
 
@@ -150,7 +154,7 @@ public class CellAccountLoginAction extends ALBaseAction {
 
   /**
    * 簡易ログイン説明ページを表示する． <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -165,9 +169,9 @@ public class CellAccountLoginAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * 指定したchar型文字が記号であるかを判断します。
-   *
+   * 
    * @param ch
    * @return
    */
@@ -180,8 +184,10 @@ public class CellAccountLoginAction extends ALBaseAction {
       return false;
     }
 
-    if (chars == null || chars.length == 2 || Character.isDigit(ch)
-        || Character.isLetter(ch)) {
+    if (chars == null
+      || chars.length == 2
+      || Character.isDigit(ch)
+      || Character.isLetter(ch)) {
       return false;
     } else {
       return true;

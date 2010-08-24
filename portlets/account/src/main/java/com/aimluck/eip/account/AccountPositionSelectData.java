@@ -31,6 +31,7 @@ import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
@@ -99,7 +100,7 @@ public class AccountPositionSelectData extends
    */
   private SelectQuery<EipMPosition> getSelectQuery(RunData rundata,
       Context context) {
-    return new SelectQuery<EipMPosition>(EipMPosition.class);
+    return Database.query(EipMPosition.class);
   }
 
   /**

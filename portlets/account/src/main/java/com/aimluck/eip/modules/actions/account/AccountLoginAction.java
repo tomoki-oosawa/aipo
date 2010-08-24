@@ -38,13 +38,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ログイン画面を表示するアクションクラスです。
- *
+ * 
  */
 public class AccountLoginAction extends ALBaseAction {
 
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AccountLoginAction.class.getName());
+    .getLogger(AccountLoginAction.class.getName());
 
   private String org_id;
 
@@ -62,8 +62,8 @@ public class AccountLoginAction extends ALBaseAction {
     // マッキントッシュからのアクセスを弾きます
     if (isMac(rundata)) {
       if (!isMacBrowser(rundata, ".*Mac.*Safari.*")
-          && !isMacBrowser(rundata, ".*Mac.*FireFox.*")
-          && !isMacBrowser(rundata, ".*Mac.*Netscape.*")) {
+        && !isMacBrowser(rundata, ".*Mac.*FireFox.*")
+        && !isMacBrowser(rundata, ".*Mac.*Netscape.*")) {
         setTemplate(rundata, "accountlogin-mac");
         return;
       }
@@ -80,7 +80,7 @@ public class AccountLoginAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * @param groupname
    * @return
    */
@@ -89,7 +89,7 @@ public class AccountLoginAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -106,7 +106,7 @@ public class AccountLoginAction extends ALBaseAction {
 
   /**
    * マッキントッシュからのアクセスかどうかを判断します。
-   *
+   * 
    * @param rundata
    * @return
    */

@@ -33,6 +33,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
@@ -98,7 +99,7 @@ public class AccountPostSelectData extends
    * @return
    */
   private SelectQuery<EipMPost> getSelectQuery(RunData rundata, Context context) {
-    return new SelectQuery<EipMPost>(EipMPost.class);
+    return Database.query(EipMPost.class);
   }
 
   /**

@@ -27,7 +27,7 @@ import com.aimluck.eip.common.ALData;
 
 /**
  * ユーザーアカウントのResultDataです。 <BR>
- *
+ * 
  */
 public class AccountResultData implements ALData {
 
@@ -70,7 +70,7 @@ public class AccountResultData implements ALData {
   private boolean has_photo;
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {

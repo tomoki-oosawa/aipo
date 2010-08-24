@@ -56,7 +56,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AccountEditFormData.class.getName());
+    .getLogger(AccountEditFormData.class.getName());
 
   /** 名前（名） */
   private ALStringField firstname;
@@ -113,18 +113,20 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 初期化処理を行います。 <BR>
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
     if (ALEipUtils.isMatch(rundata, context)) {
       ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, rundata
-          .getUser().getUserName());
+        .getUser()
+        .getUserName());
     }
 
     folderName = rundata.getParameters().getString("folderName");
@@ -133,7 +135,7 @@ public class AccountEditFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -194,7 +196,7 @@ public class AccountEditFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -202,23 +204,30 @@ public class AccountEditFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
     boolean res = super.setFormData(rundata, context, msgList);
     try {
       if (res) {
-        List<FileuploadLiteBean> fileBeanList = FileuploadUtils
-            .getFileuploadList(rundata);
+        List<FileuploadLiteBean> fileBeanList =
+          FileuploadUtils.getFileuploadList(rundata);
         if (fileBeanList != null && fileBeanList.size() > 0) {
           filebean = fileBeanList.get(0);
           if (filebean.getFileId() > 0) {
             // 顔写真をセットする．
             String[] acceptExts = ImageIO.getWriterFormatNames();
-            facePhoto = FileuploadUtils.getBytesShrinkFilebean(org_id,
-                folderName, ALEipUtils.getUserId(rundata), filebean,
-                acceptExts, FileuploadUtils.DEF_THUMBNAIL_WIDTH,
-                FileuploadUtils.DEF_THUMBNAIL_HEIGTH, msgList);
+            facePhoto =
+              FileuploadUtils.getBytesShrinkFilebean(
+                org_id,
+                folderName,
+                ALEipUtils.getUserId(rundata),
+                filebean,
+                acceptExts,
+                FileuploadUtils.DEF_THUMBNAIL_WIDTH,
+                FileuploadUtils.DEF_THUMBNAIL_HEIGTH,
+                msgList);
           } else {
             facePhoto = null;
           }
@@ -232,9 +241,10 @@ public class AccountEditFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // 名
     firstname.setNotNull(true);
@@ -280,6 +290,7 @@ public class AccountEditFormData extends ALAbstractFormData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     List<String> dummy = new ArrayList<String>();
     firstname.validate(msgList);
@@ -287,9 +298,9 @@ public class AccountEditFormData extends ALAbstractFormData {
 
     // 名前(フリガナ)をカタカナへと変換します
     first_name_kana.setValue(ALStringUtil.convertHiragana2Katakana(ALStringUtil
-        .convertH2ZKana(first_name_kana.toString())));
+      .convertH2ZKana(first_name_kana.toString())));
     last_name_kana.setValue(ALStringUtil.convertHiragana2Katakana(ALStringUtil
-        .convertH2ZKana(last_name_kana.toString())));
+      .convertH2ZKana(last_name_kana.toString())));
     first_name_kana.validate(msgList);
     last_name_kana.validate(msgList);
 
@@ -305,32 +316,35 @@ public class AccountEditFormData extends ALAbstractFormData {
 
     // メールアドレス
     email.validate(msgList);
-    if (email.getValue() != null && email.getValue().trim().length() > 0
-        && !ALStringUtil.isMailAddress(email.getValue())) {
+    if (email.getValue() != null
+      && email.getValue().trim().length() > 0
+      && !ALStringUtil.isMailAddress(email.getValue())) {
       msgList.add("『 <span class='em'> メールアドレス </span>』を正しく入力してください。");
     }
 
     // 携帯メールアドレス
     cellular_mail.validate(msgList);
     if (cellular_mail.getValue().trim().length() > 0
-        && !ALStringUtil.isCellPhoneMailAddress(cellular_mail.getValue())) {
+      && !ALStringUtil.isCellPhoneMailAddress(cellular_mail.getValue())) {
       msgList.add("『 <span class='em'> 携帯メールアドレス </span>』を正しく入力してください。");
     }
 
     if (!out_telephone1.getValue().equals("")
-        || !out_telephone2.getValue().equals("")
-        || !out_telephone3.getValue().equals("")) {
-      if (!out_telephone1.validate(dummy) || !out_telephone2.validate(dummy)
-          || !out_telephone3.validate(dummy)) {
+      || !out_telephone2.getValue().equals("")
+      || !out_telephone3.getValue().equals("")) {
+      if (!out_telephone1.validate(dummy)
+        || !out_telephone2.validate(dummy)
+        || !out_telephone3.validate(dummy)) {
         msgList.add("『 <span class='em'>電話番号（外線）</span> 』を正しく入力してください。");
       }
     }
 
     if (!cellular_phone1.getValue().equals("")
-        || !cellular_phone2.getValue().equals("")
-        || !cellular_phone3.getValue().equals("")) {
-      if (!cellular_phone1.validate(dummy) || !cellular_phone2.validate(dummy)
-          || !cellular_phone3.validate(dummy)) {
+      || !cellular_phone2.getValue().equals("")
+      || !cellular_phone3.getValue().equals("")) {
+      if (!cellular_phone1.validate(dummy)
+        || !cellular_phone2.validate(dummy)
+        || !cellular_phone3.validate(dummy)) {
         msgList.add("『 <span class='em'>電話番号（携帯）</span> 』を正しく入力してください。");
       }
     }
@@ -351,13 +365,14 @@ public class AccountEditFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       ALBaseUser user = (ALBaseUser) rundata.getUser();
       if (user == null) {
         logger
-            .debug("Not found. (" + AccountEditFormData.class.getName() + ")");
+          .debug("Not found. (" + AccountEditFormData.class.getName() + ")");
         return false;
       }
       firstname.setValue(user.getFirstName());
@@ -405,7 +420,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * メールアドレスを設定します。
-   *
+   * 
    * @return
    */
   public void loadEmail(RunData rundata) {
@@ -413,7 +428,7 @@ public class AccountEditFormData extends ALAbstractFormData {
       ALBaseUser user = (ALBaseUser) rundata.getUser();
       if (user == null) {
         logger
-            .debug("Not found. (" + AccountEditFormData.class.getName() + ")");
+          .debug("Not found. (" + AccountEditFormData.class.getName() + ")");
         email.setValue("");
       } else {
         email.setValue(user.getEmail());
@@ -425,7 +440,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 未使用。
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -433,13 +448,14 @@ public class AccountEditFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -447,17 +463,21 @@ public class AccountEditFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // 編集者自身を示すオブジェクト
       ALBaseUser user = (ALBaseUser) rundata.getUser();
-      if (user == null)
+      if (user == null) {
         return false;
+      }
 
       // WebAPIのDBへ接続できるか確認
-      if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler()
-          .checkConnect()) {
+      if (!ALDataSyncFactoryService
+        .getInstance()
+        .getDataSyncHandler()
+        .checkConnect()) {
         msgList.add("コントロールパネルWebAPIのデータベースの接続に失敗したため、処理は実行されませんでした。");
         return false;
       }
@@ -468,23 +488,23 @@ public class AccountEditFormData extends ALAbstractFormData {
       user.setLastName(lastname.getValue());
       user.setInTelephone(in_telephone.getValue());
       if (!out_telephone1.getValue().equals("")
-          && !out_telephone2.getValue().equals("")
-          && !out_telephone3.getValue().equals("")) {
-        user.setOutTelephone(new StringBuffer()
-            .append(out_telephone1.getValue()).append("-")
-            .append(out_telephone2.getValue()).append("-")
-            .append(out_telephone3.getValue()).toString());
+        && !out_telephone2.getValue().equals("")
+        && !out_telephone3.getValue().equals("")) {
+        user.setOutTelephone(new StringBuffer().append(
+          out_telephone1.getValue()).append("-").append(
+          out_telephone2.getValue()).append("-").append(
+          out_telephone3.getValue()).toString());
       } else {
         user.setOutTelephone("");
       }
 
       if (!cellular_phone1.getValue().equals("")
-          && !cellular_phone2.getValue().equals("")
-          && !cellular_phone3.getValue().equals("")) {
-        user.setCellularPhone(new StringBuffer()
-            .append(cellular_phone1.getValue()).append("-")
-            .append(cellular_phone2.getValue()).append("-")
-            .append(cellular_phone3.getValue()).toString());
+        && !cellular_phone2.getValue().equals("")
+        && !cellular_phone3.getValue().equals("")) {
+        user.setCellularPhone(new StringBuffer().append(
+          cellular_phone1.getValue()).append("-").append(
+          cellular_phone2.getValue()).append("-").append(
+          cellular_phone3.getValue()).toString());
       } else {
         user.setCellularPhone("");
       }
@@ -506,21 +526,25 @@ public class AccountEditFormData extends ALAbstractFormData {
       JetspeedSecurity.saveUser(user);
 
       // WebAPIとのDB同期
-      if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler()
-          .updateUser(user)) {
+      if (!ALDataSyncFactoryService
+        .getInstance()
+        .getDataSyncHandler()
+        .updateUser(user)) {
         return false;
       }
 
       // イベントログに保存
-      ALEventlogFactoryService
-          .getInstance()
-          .getEventlogHandler()
-          .log(Integer.valueOf(user.getUserId()),
-              ALEventlogConstants.PORTLET_TYPE_ACCOUNTPERSON, null);
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        Integer.valueOf(user.getUserId()),
+        ALEventlogConstants.PORTLET_TYPE_ACCOUNTPERSON,
+        null);
 
       // 一時的な添付ファイルの削除
-      File folder = FileuploadUtils.getFolder(org_id,
-          ALEipUtils.getUserId(rundata), folderName);
+      File folder =
+        FileuploadUtils.getFolder(
+          org_id,
+          ALEipUtils.getUserId(rundata),
+          folderName);
       FileuploadUtils.deleteFolder(folder);
 
       return true;
@@ -538,6 +562,7 @@ public class AccountEditFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -545,7 +570,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 添付ファイルを削除する．
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -559,8 +584,11 @@ public class AccountEditFormData extends ALAbstractFormData {
       action.setMode(mode);
       List<String> msgList = new ArrayList<String>();
       setValidator();
-      boolean res = (setFormData(rundata, context, msgList) && deleteAttachments(
-          rundata, context, msgList));
+      boolean res =
+        (setFormData(rundata, context, msgList) && deleteAttachments(
+          rundata,
+          context,
+          msgList));
       action.setResultData(this);
       action.addErrorMessages(msgList);
       action.putData(rundata, context);
@@ -588,13 +616,16 @@ public class AccountEditFormData extends ALAbstractFormData {
 
     List<FileuploadLiteBean> fileBeanList = new ArrayList<FileuploadLiteBean>();
     fileBeanList.add(filebean);
-    return FileuploadUtils.deleteAttachments(org_id, userId, folderName,
-        fileBeanList);
+    return FileuploadUtils.deleteAttachments(
+      org_id,
+      userId,
+      folderName,
+      fileBeanList);
   }
 
   /**
    * 携帯メールアドレスを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getCellularMail() {
@@ -603,7 +634,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * メールアドレスを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getEmail() {
@@ -612,7 +643,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * フリガナ（名）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFirstNameKana() {
@@ -621,7 +652,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 名前（名）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFirstName() {
@@ -630,7 +661,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（内線）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getInTelephone() {
@@ -639,7 +670,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * フリガナ（姓）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getLastNameKana() {
@@ -648,7 +679,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 名前（姓）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getLastName() {
@@ -657,7 +688,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getCellularPhone1() {
@@ -666,7 +697,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getCellularPhone2() {
@@ -675,7 +706,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getCellularPhone3() {
@@ -684,7 +715,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getOutTelephone1() {
@@ -693,7 +724,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getOutTelephone2() {
@@ -702,7 +733,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getOutTelephone3() {
@@ -714,8 +745,9 @@ public class AccountEditFormData extends ALAbstractFormData {
   }
 
   public List<FileuploadLiteBean> getAttachmentFileNameList() {
-    if (filebean == null)
+    if (filebean == null) {
       return null;
+    }
     List<FileuploadLiteBean> list = new ArrayList<FileuploadLiteBean>();
     list.add(filebean);
     return list;

@@ -24,7 +24,6 @@ import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -33,21 +32,23 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.account.util.AccountUtils;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractCheckList;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
 
 /**
  * ユーザアカウントを複数無効化するためのクラス． <BR>
- *
+ * 
  */
 public class AccountUserMultiDisable extends ALAbstractCheckList {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AccountUserMultiDelete.class.getName());
+    .getLogger(AccountUserMultiDelete.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param values
@@ -57,39 +58,44 @@ public class AccountUserMultiDisable extends ALAbstractCheckList {
    *      org.apache.velocity.context.Context, java.util.ArrayList,
    *      java.util.ArrayList)
    */
-  protected boolean action(RunData rundata, Context context, List<String> values,
-      List<String> msgList) {
+  @Override
+  protected boolean action(RunData rundata, Context context,
+      List<String> values, List<String> msgList) {
 
     try {
       // WebAPIのDBへ接続できるか確認
-      if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler()
-          .checkConnect()) {
+      if (!ALDataSyncFactoryService
+        .getInstance()
+        .getDataSyncHandler()
+        .checkConnect()) {
         msgList.add("コントロールパネルWebAPIのデータベースの接続に失敗したため、処理は実行されませんでした。");
         return false;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      Expression exp = ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY,
-          values);
-      SelectQuery query = new SelectQuery(TurbineUser.class, exp);
-      List<?> ulist = dataContext.performQuery(query);
-      if (ulist == null || ulist.size() == 0)
+      Expression exp =
+        ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY, values);
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class, exp);
+      List<TurbineUser> ulist = query.fetchList();
+      if (ulist == null || ulist.size() == 0) {
         return false;
+      }
 
       int size = ulist.size();
       String[] user_name_list = new String[size];
 
       for (int i = 0; i < size; i++) {
-        TurbineUser record = (TurbineUser) ulist.get(i);
+        TurbineUser record = ulist.get(i);
         String user_name = record.getLoginName();
         user_name_list[i] = user_name;
-        if (user_name == null)
+        if (user_name == null) {
           return false;
+        }
 
         // ユーザーを無効化
-        ObjectId oid_user = new ObjectId("TurbineUser",
-            TurbineUser.LOGIN_NAME_COLUMN, user_name);
+        DataContext dataContext =
+          DatabaseOrmService.getInstance().getDataContext();
+        ObjectId oid_user =
+          new ObjectId("TurbineUser", TurbineUser.LOGIN_NAME_COLUMN, user_name);
         TurbineUser user = (TurbineUser) dataContext.refetchObject(oid_user);
         user.setPositionId(Integer.valueOf(0));
         user.setDisabled("N");
@@ -98,16 +104,19 @@ public class AccountUserMultiDisable extends ALAbstractCheckList {
         AccountUtils.acceptWorkflow(user.getUserId());
       }
 
-      dataContext.commitChanges();
+      Database.commit();
 
       // WebAPIとのDB同期
-      if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler()
-          .multiDisableUser(user_name_list, size)) {
+      if (!ALDataSyncFactoryService
+        .getInstance()
+        .getDataSyncHandler()
+        .multiDisableUser(user_name_list, size)) {
         return false;
       }
 
       return true;
     } catch (Exception e) {
+      Database.rollback();
       logger.error("Exception", e);
       return false;
     }

@@ -23,7 +23,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -37,17 +36,17 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 
 /**
  * 会社情報のフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class AccountCompanyFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AccountCompanyFormData.class.getName());
+    .getLogger(AccountCompanyFormData.class.getName());
 
   /** 会社名 */
   private ALStringField company_name;
@@ -79,27 +78,24 @@ public class AccountCompanyFormData extends ALAbstractFormData {
   /** FAX番号 */
   private ALStringField fax_number3;
 
-  private DataContext dataContext;
-
   /**
    * 初期化します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -143,9 +139,10 @@ public class AccountCompanyFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     company_name.setNotNull(true);
     company_name.limitMaxLength(50);
@@ -170,11 +167,12 @@ public class AccountCompanyFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     List<String> dummy = new ArrayList<String>();
     company_name.validate(msgList);
@@ -185,18 +183,21 @@ public class AccountCompanyFormData extends ALAbstractFormData {
         msgList.add("『 <span class='em'>郵便番号</span> 』は7桁の半角数字で入力してください。");
       }
     }
-    if (!telephone1.getValue().equals("") || !telephone2.getValue().equals("")
-        || !telephone3.getValue().equals("")) {
-      if (!telephone1.validate(dummy) || !telephone2.validate(dummy)
-          || !telephone3.validate(dummy)) {
+    if (!telephone1.getValue().equals("")
+      || !telephone2.getValue().equals("")
+      || !telephone3.getValue().equals("")) {
+      if (!telephone1.validate(dummy)
+        || !telephone2.validate(dummy)
+        || !telephone3.validate(dummy)) {
         msgList.add("『 <span class='em'>電話番号</span> 』を正しく入力してください。");
       }
     }
     if (!fax_number1.getValue().equals("")
-        || !fax_number2.getValue().equals("")
-        || !fax_number3.getValue().equals("")) {
-      if (!fax_number1.validate(dummy) || !fax_number2.validate(dummy)
-          || !fax_number3.validate(dummy)) {
+      || !fax_number2.getValue().equals("")
+      || !fax_number3.getValue().equals("")) {
+      if (!fax_number1.validate(dummy)
+        || !fax_number2.validate(dummy)
+        || !fax_number3.validate(dummy)) {
         msgList.add("『 <span class='em'>FAX番号</span> 』を正しく入力してください。");
       }
     }
@@ -206,7 +207,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
 
   /**
    * 『会社』を読み込みます。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -214,13 +215,15 @@ public class AccountCompanyFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipMCompany record = AccountUtils.getEipMCompany(rundata, context);
-      if (record == null)
+      if (record == null) {
         return false;
+      }
       // 会社名
       company_name.setValue(record.getCompanyName());
       // 郵便番号
@@ -263,7 +266,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
 
   /**
    * 『会社』を追加します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -271,6 +274,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     //
@@ -281,7 +285,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
 
   /**
    * 『会社』を更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -289,19 +293,24 @@ public class AccountCompanyFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipMCompany record = AccountUtils.getEipMCompany(rundata, context);
-      if (record == null)
+      if (record == null) {
         return false;
+      }
       // 会社名
       record.setCompanyName(company_name.getValue());
       // 郵便番号
       if (!zipcode1.getValue().equals("") && !zipcode2.getValue().equals("")) {
-        record.setZipcode(new StringBuffer().append(zipcode1.getValue())
-            .append("-").append(zipcode2.getValue()).toString());
+        record.setZipcode(new StringBuffer()
+          .append(zipcode1.getValue())
+          .append("-")
+          .append(zipcode2.getValue())
+          .toString());
       } else {
         record.setZipcode("");
       }
@@ -310,21 +319,29 @@ public class AccountCompanyFormData extends ALAbstractFormData {
       record.setAddress(address.getValue());
       // 電話番号
       if (!telephone1.getValue().equals("")
-          && !telephone2.getValue().equals("")
-          && !telephone3.getValue().equals("")) {
-        record.setTelephone(new StringBuffer().append(telephone1.getValue())
-            .append("-").append(telephone2.getValue()).append("-").append(
-                telephone3.getValue()).toString());
+        && !telephone2.getValue().equals("")
+        && !telephone3.getValue().equals("")) {
+        record.setTelephone(new StringBuffer()
+          .append(telephone1.getValue())
+          .append("-")
+          .append(telephone2.getValue())
+          .append("-")
+          .append(telephone3.getValue())
+          .toString());
       } else {
         record.setTelephone("");
       }
       // FAX番号
       if (!fax_number1.getValue().equals("")
-          && !fax_number2.getValue().equals("")
-          && !fax_number3.getValue().equals("")) {
-        record.setFaxNumber(new StringBuffer().append(fax_number1.getValue())
-            .append("-").append(fax_number2.getValue()).append("-").append(
-                fax_number3.getValue()).toString());
+        && !fax_number2.getValue().equals("")
+        && !fax_number3.getValue().equals("")) {
+        record.setFaxNumber(new StringBuffer()
+          .append(fax_number1.getValue())
+          .append("-")
+          .append(fax_number2.getValue())
+          .append("-")
+          .append(fax_number3.getValue())
+          .toString());
       } else {
         record.setFaxNumber("");
       }
@@ -332,12 +349,13 @@ public class AccountCompanyFormData extends ALAbstractFormData {
       record.setUpdateDate(new Date());
 
       // 会社を更新
-      dataContext.commitChanges();
+      Database.commit();
 
       // singletonの更新
       ALEipManager.getInstance().reloadCompany();
 
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -346,7 +364,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
 
   /**
    * 『会社』を削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -354,6 +372,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     //
@@ -364,7 +383,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
 
   /**
    * 住所を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getAddress() {
@@ -373,7 +392,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
 
   /**
    * 会社名を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getCompanyName() {
@@ -382,7 +401,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFaxNumber1() {
@@ -391,7 +410,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFaxNumber2() {
@@ -400,7 +419,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFaxNumber3() {
@@ -409,7 +428,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getTelephone1() {
@@ -418,7 +437,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getTelephone2() {
@@ -427,7 +446,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getTelephone3() {
@@ -436,7 +455,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getZipcode1() {
@@ -445,7 +464,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getZipcode2() {

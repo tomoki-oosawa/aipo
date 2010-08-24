@@ -37,21 +37,20 @@ public class AccountAdminEditAction extends ALBaseAction {
 
   /** logger */
   @SuppressWarnings("unused")
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AccountAdminEditAction.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AccountAdminEditAction.class.getName());
 
   /**
    * @param portlet
    * @param context
    * @param rundata
    * @throws java.lang.Exception
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet, org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
+   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
+   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
-  protected void buildNormalContext(
-    VelocityPortlet portlet,
-    Context context,
-    RunData rundata)
-    throws Exception {
+  @Override
+  protected void buildNormalContext(VelocityPortlet portlet, Context context,
+      RunData rundata) throws Exception {
     if (getMode() == null) {
       doAccount_adminpasswd_form(rundata, context);
     }
@@ -59,12 +58,13 @@ public class AccountAdminEditAction extends ALBaseAction {
 
   /**
    * 管理者パスワード変更用のフォームを表示します。
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
   public void doAccount_adminpasswd_form(RunData rundata, Context context)
-    throws Exception {
+      throws Exception {
     AccountPasswdFormData formData = new AccountPasswdFormData();
     formData.initField();
     formData.doViewForm(this, rundata, context);
@@ -73,22 +73,22 @@ public class AccountAdminEditAction extends ALBaseAction {
 
   /**
    * 管理者パスワードの変更を行います。
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
   public void doAccount_adminpasswd_update(RunData rundata, Context context)
-    throws Exception {
+      throws Exception {
     AccountPasswdFormData formData = new AccountPasswdFormData();
     formData.initField();
     if (formData.doUpdate(this, rundata, context)) {
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      rundata.setRedirectURI(
-        jsLink
-          .getPortletById(ALEipUtils.getPortlet(rundata, context).getID())
-          .addQueryData("eventSubmit_doAccount_return_adminpasswd_form", "1")
-          .toString()
-          + "&success=true");
+      rundata.setRedirectURI(jsLink.getPortletById(
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doAccount_return_adminpasswd_form",
+        "1").toString()
+        + "&success=true");
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
       JetspeedLinkFactory.putInstance(jsLink);
       jsLink = null;
@@ -100,14 +100,13 @@ public class AccountAdminEditAction extends ALBaseAction {
 
   /**
    * 管理者パスワードの変更に成功した場合の画面遷移時に呼び出されるメソッドです。
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
-  public void doAccount_return_adminpasswd_form(
-    RunData rundata,
-    Context context)
-    throws Exception {
+  public void doAccount_return_adminpasswd_form(RunData rundata, Context context)
+      throws Exception {
     context.put("success", rundata.getParameters().getString("success"));
     AccountPasswdFormData formData = new AccountPasswdFormData();
     formData.initField();

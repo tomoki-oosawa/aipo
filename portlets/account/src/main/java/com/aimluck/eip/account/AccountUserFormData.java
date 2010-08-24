@@ -35,7 +35,6 @@ import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SQLTemplate;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.om.security.UserNamePrincipal;
 import org.apache.jetspeed.services.JetspeedSecurity;
@@ -69,7 +68,9 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
@@ -85,7 +86,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AccountUserFormData.class.getName());
+    .getLogger(AccountUserFormData.class.getName());
 
   /** ブラウザに表示するデフォルトのパスワード（ダミーパスワード） */
   private static final String DEFAULT_VIEW_PASSWORD = "******";
@@ -182,8 +183,6 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   private String org_id;
 
-  private DataContext dataContext;
-
   /** 顔写真データ */
   private byte[] facePhoto;
 
@@ -196,6 +195,7 @@ public class AccountUserFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -206,8 +206,6 @@ public class AccountUserFormData extends ALAbstractFormData {
     is_new_position = rundata.getParameters().getBoolean("is_new_position");
 
     org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   /**
@@ -313,6 +311,7 @@ public class AccountUserFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res = super.setFormData(rundata, context, msgList);
@@ -321,17 +320,23 @@ public class AccountUserFormData extends ALAbstractFormData {
         post.setFormData(rundata, context, msgList);
         position.setFormData(rundata, context, msgList);
 
-        List<FileuploadLiteBean> fileBeanList = FileuploadUtils
-            .getFileuploadList(rundata);
+        List<FileuploadLiteBean> fileBeanList =
+          FileuploadUtils.getFileuploadList(rundata);
         if (fileBeanList != null && fileBeanList.size() > 0) {
           filebean = fileBeanList.get(0);
           if (filebean.getFileId() > 0) {
             // 顔写真をセットする．
             String[] acceptExts = ImageIO.getWriterFormatNames();
-            facePhoto = FileuploadUtils.getBytesShrinkFilebean(org_id,
-                folderName, ALEipUtils.getUserId(rundata), filebean,
-                acceptExts, FileuploadUtils.DEF_THUMBNAIL_WIDTH,
-                FileuploadUtils.DEF_THUMBNAIL_HEIGTH, msgList);
+            facePhoto =
+              FileuploadUtils.getBytesShrinkFilebean(
+                org_id,
+                folderName,
+                ALEipUtils.getUserId(rundata),
+                filebean,
+                acceptExts,
+                FileuploadUtils.DEF_THUMBNAIL_WIDTH,
+                FileuploadUtils.DEF_THUMBNAIL_HEIGTH,
+                msgList);
           } else {
             facePhoto = null;
           }
@@ -349,6 +354,7 @@ public class AccountUserFormData extends ALAbstractFormData {
    * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // ユーザー名
     username.setNotNull(true);
@@ -413,20 +419,23 @@ public class AccountUserFormData extends ALAbstractFormData {
    * @return
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     ArrayList<String> dummy = new ArrayList<String>();
     username.validate(msgList);
     if (ALEipConstants.MODE_INSERT.equals(getMode())) {
       try {
-        Expression exp = ExpressionFactory.matchExp(
-            TurbineUser.LOGIN_NAME_PROPERTY, username.getValue());
-        SelectQuery query = new SelectQuery(TurbineUser.class, exp);
-        List<?> ulist = dataContext.performQuery(query);
+        Expression exp =
+          ExpressionFactory.matchExp(TurbineUser.LOGIN_NAME_PROPERTY, username
+            .getValue());
+        SelectQuery<TurbineUser> query = Database.query(TurbineUser.class, exp);
+        List<TurbineUser> ulist = query.fetchList();
         if (ulist.size() > 0) {
           // TurbineUser user = (TurbineUser) ulist.get(0);
           // if ("F".equals(user.getDisabled())) {
-          msgList.add("ログイン名『 <span class='em'>" + username
-              + "</span> 』はすでに登録されています。別のログイン名で登録してください。");
+          msgList.add("ログイン名『 <span class='em'>"
+            + username
+            + "</span> 』はすでに登録されています。別のログイン名で登録してください。");
           // } else {
           // msgList.add("ログイン名『 <span class='em'>" + username
           // + "</span> 』はすでに削除されています。一旦削除したログイン名では登録できません。");
@@ -444,10 +453,10 @@ public class AccountUserFormData extends ALAbstractFormData {
       if (isSymbol(unameValue.charAt(i1))) {
         // 使用されているのが妥当な記号であるかの確認
         if (!(unameValue.charAt(i1) == "_".charAt(0)
-            || unameValue.charAt(i1) == "-".charAt(0) || unameValue.charAt(i1) == "."
-            .charAt(0))) {
+          || unameValue.charAt(i1) == "-".charAt(0) || unameValue.charAt(i1) == "."
+          .charAt(0))) {
           msgList
-              .add("『 <span class='em'>ログイン名</span> 』に使用できる記号は「-」「.」「_」のみです。");
+            .add("『 <span class='em'>ログイン名</span> 』に使用できる記号は「-」「.」「_」のみです。");
           break;
         }
       }
@@ -457,10 +466,11 @@ public class AccountUserFormData extends ALAbstractFormData {
     if (ALEipConstants.MODE_INSERT.equals(getMode())) {
       if (username.getValue().length() > 5) {
         if (ALEipUtils.dummy_user_head.equals((username.getValue()).substring(
-            0, 6))) {
+          0,
+          6))) {
           msgList.add("ログイン名の先頭に『 <span class='em'>"
-              + ALEipUtils.dummy_user_head
-              + "</span> 』は使用出来ません。別のログイン名で登録してください。");
+            + ALEipUtils.dummy_user_head
+            + "</span> 』は使用出来ません。別のログイン名で登録してください。");
         }
       }
     }
@@ -469,19 +479,19 @@ public class AccountUserFormData extends ALAbstractFormData {
     if (ALEipConstants.MODE_INSERT.equals(getMode())) {
       if (!password.getValue().equals(password2.getValue())) {
         msgList
-            .add("『 <span class='em'>パスワード</span> 』と『 <span class='em'>パスワード（確認用）</span> 』を正しく入力してください。");
+          .add("『 <span class='em'>パスワード</span> 』と『 <span class='em'>パスワード（確認用）</span> 』を正しく入力してください。");
       } else {
         password.validate(msgList);
         password2.validate(msgList);
       }
     } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
       if (password.getValue().equals(DEFAULT_VIEW_PASSWORD)
-          && password2.getValue().equals(DEFAULT_VIEW_PASSWORD)) {
+        && password2.getValue().equals(DEFAULT_VIEW_PASSWORD)) {
         dontUpdatePasswd = true;
       } else {
         if (!password.getValue().equals(password2.getValue())) {
           msgList
-              .add("『 <span class='em'>パスワード</span> 』と『 <span class='em'>パスワード（確認用）</span> 』を正しく入力してください。");
+            .add("『 <span class='em'>パスワード</span> 』と『 <span class='em'>パスワード（確認用）</span> 』を正しく入力してください。");
         } else {
           password.validate(msgList);
           password2.validate(msgList);
@@ -494,36 +504,42 @@ public class AccountUserFormData extends ALAbstractFormData {
 
     // フリガナのカタカナへの変換
     first_name_kana.setValue(ALStringUtil.convertHiragana2Katakana(ALStringUtil
-        .convertH2ZKana(first_name_kana.getValue())));
+      .convertH2ZKana(first_name_kana.getValue())));
     last_name_kana.setValue(ALStringUtil.convertHiragana2Katakana(ALStringUtil
-        .convertH2ZKana(last_name_kana.getValue())));
+      .convertH2ZKana(last_name_kana.getValue())));
     first_name_kana.validate(msgList);
     last_name_kana.validate(msgList);
 
     // メールアドレス
     email.validate(msgList);
-    if (email.getValue() != null && email.getValue().trim().length() > 0
-        && !ALStringUtil.isCellPhoneMailAddress(email.getValue())) {
+    if (email.getValue() != null
+      && email.getValue().trim().length() > 0
+      && !ALStringUtil.isCellPhoneMailAddress(email.getValue())) {
       msgList.add("『 <span class='em'> メールアドレス </span>』を正しく入力してください。");
     }
 
     if (!out_telephone1.getValue().equals("")
-        || !out_telephone2.getValue().equals("")
-        || !out_telephone3.getValue().equals("")) {
+      || !out_telephone2.getValue().equals("")
+      || !out_telephone3.getValue().equals("")) {
 
-      if (!out_telephone1.validate(dummy) || !out_telephone2.validate(dummy)
-          || !out_telephone3.validate(dummy)) {
+      if (!out_telephone1.validate(dummy)
+        || !out_telephone2.validate(dummy)
+        || !out_telephone3.validate(dummy)) {
         msgList.add("『 <span class='em'>電話番号（外線）</span> 』を正しく入力してください。");
       } else {
         // 電話番号の長さチェック
-        int req_size = out_telephone1.getValue().length()
+        int req_size =
+          out_telephone1.getValue().length()
             + out_telephone2.getValue().length()
             + out_telephone3.getValue().length();
-        int limit_size = out_telephone1.getMaxLength()
-            + out_telephone2.getMaxLength() + out_telephone3.getMaxLength();
+        int limit_size =
+          out_telephone1.getMaxLength()
+            + out_telephone2.getMaxLength()
+            + out_telephone3.getMaxLength();
         if (req_size > limit_size) {
-          msgList.add("『 <span class='em'>電話番号（外線）</span> 』を" + limit_size
-              + "桁以内で正しく入力してください。");
+          msgList.add("『 <span class='em'>電話番号（外線）</span> 』を"
+            + limit_size
+            + "桁以内で正しく入力してください。");
         }
       }
     }
@@ -538,10 +554,11 @@ public class AccountUserFormData extends ALAbstractFormData {
     }
 
     if (!cellular_phone1.getValue().equals("")
-        || !cellular_phone2.getValue().equals("")
-        || !cellular_phone3.getValue().equals("")) {
-      if (!cellular_phone1.validate(dummy) || !cellular_phone2.validate(dummy)
-          || !cellular_phone3.validate(dummy)) {
+      || !cellular_phone2.getValue().equals("")
+      || !cellular_phone3.getValue().equals("")) {
+      if (!cellular_phone1.validate(dummy)
+        || !cellular_phone2.validate(dummy)
+        || !cellular_phone3.validate(dummy)) {
         msgList.add("『 <span class='em'>電話番号（携帯）</span> 』を正しく入力してください。");
       }
     }
@@ -549,7 +566,7 @@ public class AccountUserFormData extends ALAbstractFormData {
     // 携帯メールアドレス
     cellular_mail.validate(msgList);
     if (cellular_mail.getValue().trim().length() > 0
-        && !ALStringUtil.isCellPhoneMailAddress(cellular_mail.getValue())) {
+      && !ALStringUtil.isCellPhoneMailAddress(cellular_mail.getValue())) {
       msgList.add("『 <span class='em'> 携帯メールアドレス </span>』を正しく入力してください。");
     }
 
@@ -580,12 +597,14 @@ public class AccountUserFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       ALBaseUser user = AccountUtils.getBaseUser(rundata, context);
-      if (user == null)
+      if (user == null) {
         return false;
+      }
       // ユーザー名
       username.setValue(user.getUserName());
       // パスワード
@@ -636,8 +655,8 @@ public class AccountUserFormData extends ALAbstractFormData {
         filebean.setFileName("以前の写真ファイル");
       }
 
-      postList = AccountUtils.getPostBeanList(Integer
-          .parseInt(user.getUserId()));
+      postList =
+        AccountUtils.getPostBeanList(Integer.parseInt(user.getUserId()));
 
       return true;
     } catch (Exception e) {
@@ -656,6 +675,7 @@ public class AccountUserFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
 
@@ -670,8 +690,10 @@ public class AccountUserFormData extends ALAbstractFormData {
       }
 
       // WebAPIのDBへ接続できるか確認
-      if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler()
-          .checkConnect()) {
+      if (!ALDataSyncFactoryService
+        .getInstance()
+        .getDataSyncHandler()
+        .checkConnect()) {
         msgList.add("コントロールパネルWebAPIのデータベースの接続に失敗したため、処理は実行されませんでした。");
         return false;
       }
@@ -685,8 +707,9 @@ public class AccountUserFormData extends ALAbstractFormData {
       if (is_new_position && res) {
         // 役職登録も同時に行う場合
         res = position.insertFormData(rundata, context, msgList);
-        if (res)
+        if (res) {
           position_id.setValue(position.getPositionId());
+        }
       }
       if (res) { // オブジェクトモデルを生成
         ALBaseUser user = (ALBaseUser) JetspeedSecurity.getUserInstance();
@@ -709,23 +732,23 @@ public class AccountUserFormData extends ALAbstractFormData {
         user.setPasswordChanged(new Date());
         user.setInTelephone(in_telephone.getValue());
         if (!out_telephone1.getValue().equals("")
-            && !out_telephone2.getValue().equals("")
-            && !out_telephone3.getValue().equals("")) {
+          && !out_telephone2.getValue().equals("")
+          && !out_telephone3.getValue().equals("")) {
           user.setOutTelephone(new StringBuffer().append(
-              out_telephone1.getValue()).append("-").append(
-              out_telephone2.getValue()).append("-").append(
-              out_telephone3.getValue()).toString());
+            out_telephone1.getValue()).append("-").append(
+            out_telephone2.getValue()).append("-").append(
+            out_telephone3.getValue()).toString());
         } else {
           user.setOutTelephone("");
         }
 
         if (!cellular_phone1.getValue().equals("")
-            && !cellular_phone2.getValue().equals("")
-            && !cellular_phone3.getValue().equals("")) {
+          && !cellular_phone2.getValue().equals("")
+          && !cellular_phone3.getValue().equals("")) {
           user.setCellularPhone(new StringBuffer().append(
-              cellular_phone1.getValue()).append("-").append(
-              cellular_phone2.getValue()).append("-").append(
-              cellular_phone3.getValue()).toString());
+            cellular_phone1.getValue()).append("-").append(
+            cellular_phone2.getValue()).append("-").append(
+            cellular_phone3.getValue()).toString());
         } else {
           user.setCellularPhone("");
         }
@@ -762,31 +785,38 @@ public class AccountUserFormData extends ALAbstractFormData {
         // }
 
         // アクセス権限
-        ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        ALAccessControlFactoryService aclservice =
+          (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
             .getInstance())
             .getService(ALAccessControlFactoryService.SERVICE_NAME);
-        ALAccessControlHandler aclhandler = aclservice
-            .getAccessControlHandler();
+        ALAccessControlHandler aclhandler =
+          aclservice.getAccessControlHandler();
         aclhandler.insertDefaultRole(Integer.parseInt(user.getUserId()));
 
-        dataContext.commitChanges();
+        Database.commit();
 
         /** ユーザリストのキャッシュをクリアする */
         UserUtils.clearCache();
 
         // WebAPIとのDB同期
-        if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler()
-            .addUser(user)) {
+        if (!ALDataSyncFactoryService
+          .getInstance()
+          .getDataSyncHandler()
+          .addUser(user)) {
           return false;
         }
 
       }
 
       // 一時的な添付ファイルの削除
-      File folder = FileuploadUtils.getFolder(org_id, ALEipUtils
-          .getUserId(rundata), folderName);
+      File folder =
+        FileuploadUtils.getFolder(
+          org_id,
+          ALEipUtils.getUserId(rundata),
+          folderName);
       FileuploadUtils.deleteFolder(folder);
     } catch (Exception e) {
+      Database.rollback();
       logger.error("Exception", e);
       res = false;
     }
@@ -803,27 +833,32 @@ public class AccountUserFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     boolean res = true;
     try {
       // WebAPIのDBへ接続できるか確認
-      if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler()
-          .checkConnect()) {
+      if (!ALDataSyncFactoryService
+        .getInstance()
+        .getDataSyncHandler()
+        .checkConnect()) {
         msgList.add("コントロールパネルWebAPIのデータベースの接続に失敗したため、処理は実行されませんでした。");
         return false;
       }
       if (is_new_post) {
         // 部署登録も同時に行う場合
         res = post.insertFormData(rundata, context, msgList);
-        if (res)
+        if (res) {
           post_id.setValue(post.getPostId());
+        }
       }
       if (is_new_position && res) {
         // 役職登録も同時に行う場合
         res = position.insertFormData(rundata, context, msgList);
-        if (res)
+        if (res) {
           position_id.setValue(position.getPositionId());
+        }
       }
       if (res) {
         ALBaseUser user = AccountUtils.getBaseUser(rundata, context);
@@ -837,42 +872,46 @@ public class AccountUserFormData extends ALAbstractFormData {
         if (!dontUpdatePasswd) {
           JetspeedSecurity.forcePassword(user, password.getValue());
         } else {
-          Expression exp = ExpressionFactory.matchDbExp(
-              TurbineUser.USER_ID_PK_COLUMN, user.getUserId());
-          SelectQuery query = new SelectQuery(TurbineUser.class, exp);
-          List<?> list = dataContext.performQuery(query);
-          if (list == null || list.size() == 0)
+          Expression exp =
+            ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, user
+              .getUserId());
+          SelectQuery<TurbineUser> query =
+            Database.query(TurbineUser.class, exp);
+          List<TurbineUser> list = query.fetchList();
+          if (list == null || list.size() == 0) {
             return false;
-          TurbineUser tuser = (TurbineUser) list.get(0);
+          }
+          TurbineUser tuser = list.get(0);
           user.setPassword(tuser.getPasswordValue());
         }
         String strDisabled = user.getDisabled();
         // String strDisabled = disabled.getValue();
         user.setDisabled(strDisabled);
-        if (!"T".equals(strDisabled) && "T".equals(oldDisabled)
-            && JetspeedSecurity.isDisableAccountCheckEnabled()) {
+        if (!"T".equals(strDisabled)
+          && "T".equals(oldDisabled)
+          && JetspeedSecurity.isDisableAccountCheckEnabled()) {
           JetspeedSecurity.resetDisableAccountCheck(user.getUserName());
         }
 
         user.setInTelephone(in_telephone.getValue());
         if (!out_telephone1.getValue().equals("")
-            && !out_telephone2.getValue().equals("")
-            && !out_telephone3.getValue().equals("")) {
+          && !out_telephone2.getValue().equals("")
+          && !out_telephone3.getValue().equals("")) {
           user.setOutTelephone(new StringBuffer().append(
-              out_telephone1.getValue()).append("-").append(
-              out_telephone2.getValue()).append("-").append(
-              out_telephone3.getValue()).toString());
+            out_telephone1.getValue()).append("-").append(
+            out_telephone2.getValue()).append("-").append(
+            out_telephone3.getValue()).toString());
         } else {
           user.setOutTelephone("");
         }
 
         if (!cellular_phone1.getValue().equals("")
-            && !cellular_phone2.getValue().equals("")
-            && !cellular_phone3.getValue().equals("")) {
+          && !cellular_phone2.getValue().equals("")
+          && !cellular_phone3.getValue().equals("")) {
           user.setCellularPhone(new StringBuffer().append(
-              cellular_phone1.getValue()).append("-").append(
-              cellular_phone2.getValue()).append("-").append(
-              cellular_phone3.getValue()).toString());
+            cellular_phone1.getValue()).append("-").append(
+            cellular_phone2.getValue()).append("-").append(
+            cellular_phone3.getValue()).toString());
         } else {
           user.setCellularPhone("");
         }
@@ -895,14 +934,14 @@ public class AccountUserFormData extends ALAbstractFormData {
         JetspeedSecurity.saveUser(user);
 
         // 部署を移動
-        List<UserGroupLiteBean> postList_old = AccountUtils
-            .getPostBeanList(Integer.parseInt(user.getUserId()));
+        List<UserGroupLiteBean> postList_old =
+          AccountUtils.getPostBeanList(Integer.parseInt(user.getUserId()));
         if (postList_old != null && postList_old.size() > 0) {
           UserGroupLiteBean uglb = null;
           int old_size = postList_old.size();
           // グループからユーザーを削除
           for (int i = 0; i < old_size; i++) {
-            uglb = (UserGroupLiteBean) postList_old.get(i);
+            uglb = postList_old.get(i);
             JetspeedSecurity.unjoinGroup(user.getUserName(), uglb.getGroupId());
           }
         }
@@ -938,8 +977,10 @@ public class AccountUserFormData extends ALAbstractFormData {
           currentUser.setLastNameKana(user.getLastNameKana());
         }
         // WebAPIとのDB同期
-        if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler()
-            .updateUser(user)) {
+        if (!ALDataSyncFactoryService
+          .getInstance()
+          .getDataSyncHandler()
+          .updateUser(user)) {
           return false;
         }
       }
@@ -948,8 +989,11 @@ public class AccountUserFormData extends ALAbstractFormData {
       UserUtils.clearCache();
 
       // 一時的な添付ファイルの削除
-      File folder = FileuploadUtils.getFolder(org_id, ALEipUtils
-          .getUserId(rundata), folderName);
+      File folder =
+        FileuploadUtils.getFolder(
+          org_id,
+          ALEipUtils.getUserId(rundata),
+          folderName);
       FileuploadUtils.deleteFolder(folder);
     } catch (Exception e) {
       logger.error("Exception", e);
@@ -974,46 +1018,49 @@ public class AccountUserFormData extends ALAbstractFormData {
         return false;
       }
       // WebAPIのDBへ接続できるか確認
-      if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler()
-          .checkConnect()) {
+      if (!ALDataSyncFactoryService
+        .getInstance()
+        .getDataSyncHandler()
+        .checkConnect()) {
         msgList.add("コントロールパネルWebAPIのデータベースの接続に失敗したため、処理は実行されませんでした。");
         return false;
       }
-      String user_name = ALEipUtils.getTemp(rundata, context,
-          ALEipConstants.ENTITY_ID);
+      String user_name =
+        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
       if (user_name == null || "".equals(user_name)) {
         return false;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(TurbineUser.class);
-      Expression exp = ExpressionFactory.matchExp(
-          TurbineUser.LOGIN_NAME_PROPERTY, user_name);
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+      Expression exp =
+        ExpressionFactory.matchExp(TurbineUser.LOGIN_NAME_PROPERTY, user_name);
       query.setQualifier(exp);
-      List<?> list = dataContext.performQuery(query);
+      List<TurbineUser> list = query.fetchList();
 
       if (list == null || list.size() == 0) {
         return false;
       }
 
-      TurbineUser target_user = (TurbineUser) list.get(0);
+      TurbineUser target_user = list.get(0);
       target_user.setDisabled("N");
 
       // ワークフロー自動承認
       AccountUtils.acceptWorkflow(target_user.getUserId());
 
-      dataContext.commitChanges();
+      Database.commit();
 
       // WebAPIとのDB同期
       String[] user_name_list = { user_name };
-      if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler()
-          .multiDisableUser(user_name_list, user_name_list.length)) {
+      if (!ALDataSyncFactoryService
+        .getInstance()
+        .getDataSyncHandler()
+        .multiDisableUser(user_name_list, user_name_list.length)) {
         return false;
       }
 
     } catch (Exception e) {
+      Database.rollback();
       logger.error("Exception", e);
       return false;
     }
@@ -1036,41 +1083,44 @@ public class AccountUserFormData extends ALAbstractFormData {
         return false;
       }
       // WebAPIのDBへ接続できるか確認
-      if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler()
-          .checkConnect()) {
+      if (!ALDataSyncFactoryService
+        .getInstance()
+        .getDataSyncHandler()
+        .checkConnect()) {
         msgList.add("コントロールパネルWebAPIのデータベースの接続に失敗したため、処理は実行されませんでした。");
         return false;
       }
-      String user_name = ALEipUtils.getTemp(rundata, context,
-          ALEipConstants.ENTITY_ID);
+      String user_name =
+        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
       if (user_name == null || "".equals(user_name)) {
         return false;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(TurbineUser.class);
-      Expression exp = ExpressionFactory.matchExp(
-          TurbineUser.LOGIN_NAME_PROPERTY, user_name);
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+      Expression exp =
+        ExpressionFactory.matchExp(TurbineUser.LOGIN_NAME_PROPERTY, user_name);
       query.setQualifier(exp);
-      List<?> list = dataContext.performQuery(query);
+      List<TurbineUser> list = query.fetchList();
 
       if (list == null || list.size() == 0) {
         return false;
       }
 
-      ((TurbineUser) list.get(0)).setDisabled("F");
-      dataContext.commitChanges();
+      (list.get(0)).setDisabled("F");
+      Database.commit();
 
       // WebAPIとのDB同期
       String[] user_name_list = { user_name };
-      if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler()
-          .multiEnableUser(user_name_list, user_name_list.length)) {
+      if (!ALDataSyncFactoryService
+        .getInstance()
+        .getDataSyncHandler()
+        .multiEnableUser(user_name_list, user_name_list.length)) {
         return false;
       }
 
     } catch (Exception e) {
+      Database.rollback();
       logger.error("Exception", e);
       return false;
     }
@@ -1087,6 +1137,7 @@ public class AccountUserFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     /*
@@ -1100,23 +1151,26 @@ public class AccountUserFormData extends ALAbstractFormData {
     try {
       // WebAPIのDBへ接続できるか確認
       logger.debug("deleteFormData");
-      if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler()
-          .checkConnect()) {
+      if (!ALDataSyncFactoryService
+        .getInstance()
+        .getDataSyncHandler()
+        .checkConnect()) {
         msgList.add("コントロールパネルWebAPIのデータベースの接続に失敗したため、処理は実行されませんでした。");
         return false;
       }
       logger.debug("enddeleteFormData");
-      String user_name = ALEipUtils.getTemp(rundata, context,
-          ALEipConstants.ENTITY_ID);
+      String user_name =
+        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
-      if (user_name == null)
+      if (user_name == null) {
         return false;
+      }
 
       // ユーザーを論理削除
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      ObjectId oid_user = new ObjectId("TurbineUser",
-          TurbineUser.LOGIN_NAME_COLUMN, user_name);
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
+      ObjectId oid_user =
+        new ObjectId("TurbineUser", TurbineUser.LOGIN_NAME_COLUMN, user_name);
       TurbineUser user = (TurbineUser) dataContext.refetchObject(oid_user);
 
       user.setPositionId(Integer.valueOf(0));
@@ -1131,29 +1185,33 @@ public class AccountUserFormData extends ALAbstractFormData {
        */
 
       // ユーザーIDを取得する
-      SelectQuery query = new SelectQuery(TurbineUser.class);
-      Expression exp1 = ExpressionFactory.matchExp(
-          TurbineUser.LOGIN_NAME_PROPERTY, user_name);
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+      Expression exp1 =
+        ExpressionFactory.matchExp(TurbineUser.LOGIN_NAME_PROPERTY, user_name);
       query.setQualifier(exp1);
-      List<?> list3 = dataContext.performQuery(query);
+      List<TurbineUser> list3 = query.fetchList();
 
       int userNum = list3.size();
-      if (userNum != 1)
+      if (userNum != 1) {
         return false;
-      TurbineUser deleteuser = (TurbineUser) list3.get(0);
+      }
+      TurbineUser deleteuser = list3.get(0);
       String userId;
       userId = deleteuser.getUserId().toString();
 
       // 対象ユーザのユーザーグループロールをすべて削除する
-      SelectQuery query2 = new SelectQuery(TurbineUserGroupRole.class);
-      Expression exp2 = ExpressionFactory.matchExp(
-          TurbineUserGroupRole.TURBINE_USER_PROPERTY, userId);
+      SelectQuery<TurbineUserGroupRole> query2 =
+        Database.query(TurbineUserGroupRole.class);
+      Expression exp2 =
+        ExpressionFactory.matchExp(
+          TurbineUserGroupRole.TURBINE_USER_PROPERTY,
+          userId);
       query2.setQualifier(exp2);
-      List<?> list4 = dataContext.performQuery(query2);
+      List<TurbineUserGroupRole> list4 = query2.fetchList();
 
       TurbineUserGroupRole ugr = null;
       for (int i = 0; i < list4.size(); i++) {
-        ugr = (TurbineUserGroupRole) list4.get(i);
+        ugr = list4.get(i);
         dataContext.deleteObject(ugr);
       }
 
@@ -1175,8 +1233,8 @@ public class AccountUserFormData extends ALAbstractFormData {
        */
 
       /*
-       * String query3 = "SELECT USER_ID FROM TURBINE_USER WHERE login_name= '" +
-       * user_name + "'"; SQLTemplate rawSelect3 = new
+       * String query3 = "SELECT USER_ID FROM TURBINE_USER WHERE login_name= '"
+       * + user_name + "'"; SQLTemplate rawSelect3 = new
        * SQLTemplate(TurbineUser.class, query3, true);
        * rawSelect3.setFetchingDataRows(true); List list3 =
        * dataContext.performQuery(rawSelect3);
@@ -1187,11 +1245,11 @@ public class AccountUserFormData extends ALAbstractFormData {
       @SuppressWarnings("deprecation")
       SQLTemplate rawSelect4 = new SQLTemplate(EipTTodo.class, sql4, false);
       dataContext.performQuery(rawSelect4);
-      String sql5 = "DELETE FROM EIP_T_TODO_CATEGORY WHERE USER_ID = '"
-          + userId + "'";
+      String sql5 =
+        "DELETE FROM EIP_T_TODO_CATEGORY WHERE USER_ID = '" + userId + "'";
       @SuppressWarnings("deprecation")
-      SQLTemplate rawSelect5 = new SQLTemplate(EipTTodoCategory.class, sql5,
-          false);
+      SQLTemplate rawSelect5 =
+        new SQLTemplate(EipTTodoCategory.class, sql5, false);
       dataContext.performQuery(rawSelect5);
 
       // ブログを削除する
@@ -1201,11 +1259,11 @@ public class AccountUserFormData extends ALAbstractFormData {
       dataContext.performQuery(rawSelect6);
 
       // ブログの足跡を削除する
-      String sql7 = "DELETE FROM EIP_T_BLOG_FOOTMARK_MAP WHERE USER_ID = '"
-          + userId + "'";
+      String sql7 =
+        "DELETE FROM EIP_T_BLOG_FOOTMARK_MAP WHERE USER_ID = '" + userId + "'";
       @SuppressWarnings("deprecation")
-      SQLTemplate rawSelect7 = new SQLTemplate(EipTBlogFootmarkMap.class, sql7,
-          false);
+      SQLTemplate rawSelect7 =
+        new SQLTemplate(EipTBlogFootmarkMap.class, sql7, false);
       dataContext.performQuery(rawSelect7);
 
       // ワークフロー自動承認
@@ -1233,8 +1291,8 @@ public class AccountUserFormData extends ALAbstractFormData {
        * EipTWorkflowRequestMap.ORDER_INDEX_PROPERTY,
        * Integer.valueOf(request_number + 1));
        * workflow_request_map_query2.setQualifier
-       * (workflow_exp3.andExp(workflow_exp4)); List workflow_request_map_list2 =
-       * dataContext.performQuery(workflow_request_map_query2); if
+       * (workflow_exp3.andExp(workflow_exp4)); List workflow_request_map_list2
+       * = dataContext.performQuery(workflow_request_map_query2); if
        * (workflow_request_map_list2.size() == 1) { // 自動的に承認して次の人に回す
        * workflow_request_map.setStatus("A"); EipTWorkflowRequestMap
        * workflow_request_map2 = (EipTWorkflowRequestMap)
@@ -1242,18 +1300,19 @@ public class AccountUserFormData extends ALAbstractFormData {
        * workflow_request_map2.setStatus("C"); } }
        */
 
-      dataContext.commitChanges();
+      Database.commit();
 
       // 他のユーザの順番を変更する．
-      SelectQuery p_query = new SelectQuery(EipMUserPosition.class);
-      p_query.addOrdering(EipMUserPosition.POSITION_PROPERTY, true);
-      List<?> userPositions = dataContext.performQuery(p_query);
+      SelectQuery<EipMUserPosition> p_query =
+        Database.query(EipMUserPosition.class);
+      p_query.orderAscending(EipMUserPosition.POSITION_PROPERTY);
+      List<EipMUserPosition> userPositions = p_query.fetchList();
       if (userPositions != null && userPositions.size() > 0) {
         EipMUserPosition userPosition = null;
         int index = -1;
         int size = userPositions.size();
         for (int i = 0; i < size; i++) {
-          userPosition = (EipMUserPosition) userPositions.get(i);
+          userPosition = userPositions.get(i);
           if (userId.equals(userPosition.getTurbineUser().toString())) {
             // 指定したユーザを削除する．
             dataContext.deleteObject(userPosition);
@@ -1263,32 +1322,35 @@ public class AccountUserFormData extends ALAbstractFormData {
         }
         if (index >= 0) {
           for (int i = index + 1; i < size; i++) {
-            userPosition = (EipMUserPosition) userPositions.get(i);
+            userPosition = userPositions.get(i);
             userPosition.setPosition(Integer.valueOf(i));
           }
         }
       }
 
       // PSMLを削除
-      JetspeedUser juser = JetspeedSecurity.getUser(new UserNamePrincipal(
-          user_name));
+      JetspeedUser juser =
+        JetspeedSecurity.getUser(new UserNamePrincipal(user_name));
       PsmlManager.removeUserDocuments(juser);
 
       // ユーザー名の先頭に"dummy_userid_"を追加
-      String dummy_user_name = ALEipUtils.dummy_user_head + userId + "_"
-          + user_name;
+      String dummy_user_name =
+        ALEipUtils.dummy_user_head + userId + "_" + user_name;
       user.setLoginName(dummy_user_name);
 
-      dataContext.commitChanges();
+      Database.commit();
 
       // WebAPIとのDB同期
-      if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler()
-          .deleteUser(user_name)) {
+      if (!ALDataSyncFactoryService
+        .getInstance()
+        .getDataSyncHandler()
+        .deleteUser(user_name)) {
         return false;
       }
 
       return true;
     } catch (Exception e) {
+      Database.rollback();
       logger.error("Exception", e);
       return false;
     }
@@ -1310,8 +1372,11 @@ public class AccountUserFormData extends ALAbstractFormData {
       setMode(mode);
       ArrayList<String> msgList = new ArrayList<String>();
       setValidator();
-      boolean res = (setFormData(rundata, context, msgList) && deleteAttachments(
-          rundata, context, msgList));
+      boolean res =
+        (setFormData(rundata, context, msgList) && deleteAttachments(
+          rundata,
+          context,
+          msgList));
       action.setResultData(this);
       action.addErrorMessages(msgList);
       action.putData(rundata, context);
@@ -1337,10 +1402,14 @@ public class AccountUserFormData extends ALAbstractFormData {
     }
     int userId = ALEipUtils.getUserId(rundata);
 
-    ArrayList<FileuploadLiteBean> fileBeanList = new ArrayList<FileuploadLiteBean>();
+    ArrayList<FileuploadLiteBean> fileBeanList =
+      new ArrayList<FileuploadLiteBean>();
     fileBeanList.add(filebean);
-    return FileuploadUtils.deleteAttachments(org_id, userId, folderName,
-        fileBeanList);
+    return FileuploadUtils.deleteAttachments(
+      org_id,
+      userId,
+      folderName,
+      fileBeanList);
   }
 
   /**
@@ -1358,8 +1427,10 @@ public class AccountUserFormData extends ALAbstractFormData {
       return false;
     }
 
-    if (chars == null || chars.length == 2 || Character.isDigit(ch)
-        || Character.isLetter(ch)) {
+    if (chars == null
+      || chars.length == 2
+      || Character.isDigit(ch)
+      || Character.isLetter(ch)) {
       return false;
     } else {
       return true;
@@ -1617,8 +1688,9 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   public List<FileuploadLiteBean> getAttachmentFileNameList() {
-    if (filebean == null)
+    if (filebean == null) {
       return null;
+    }
     ArrayList<FileuploadLiteBean> list = new ArrayList<FileuploadLiteBean>();
     list.add(filebean);
     return list;

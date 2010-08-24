@@ -46,7 +46,7 @@ public class CellAccountEasyLoginFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CellAccountEasyLoginFormData.class.getName());
+    .getLogger(CellAccountEasyLoginFormData.class.getName());
 
   /** 携帯電話の固有 ID */
   private ALStringField cellular_uid;
@@ -62,13 +62,14 @@ public class CellAccountEasyLoginFormData extends ALAbstractFormData {
 
   /**
    * 初期化します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -77,9 +78,9 @@ public class CellAccountEasyLoginFormData extends ALAbstractFormData {
       JetspeedRunData jdata = (JetspeedRunData) rundata;
       try {
         // 最新のユーザ情報を取得する．
-        baseUser = (ALBaseUser) JetspeedUserManagement
-            .getUser(new UserNamePrincipal(jdata.getJetspeedUser()
-                .getUserName()));
+        baseUser =
+          (ALBaseUser) JetspeedUserManagement.getUser(new UserNamePrincipal(
+            jdata.getJetspeedUser().getUserName()));
       } catch (JetspeedSecurityException e) {
         baseUser = (ALBaseUser) rundata.getUser();
       }
@@ -108,6 +109,7 @@ public class CellAccountEasyLoginFormData extends ALAbstractFormData {
   /**
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // 携帯電話の固有 ID
     cellular_uid.setNotNull(true);
@@ -118,6 +120,7 @@ public class CellAccountEasyLoginFormData extends ALAbstractFormData {
   /**
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     cellular_uid.validate(msgList);
     return (msgList.size() == 0);
@@ -127,6 +130,7 @@ public class CellAccountEasyLoginFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -136,6 +140,7 @@ public class CellAccountEasyLoginFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
@@ -156,6 +161,7 @@ public class CellAccountEasyLoginFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -165,6 +171,7 @@ public class CellAccountEasyLoginFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
@@ -181,7 +188,7 @@ public class CellAccountEasyLoginFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -189,6 +196,7 @@ public class CellAccountEasyLoginFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
@@ -198,10 +206,12 @@ public class CellAccountEasyLoginFormData extends ALAbstractFormData {
       String celluid = ALCellularUtils.getCellularUid(rundata);
       cellular_uid.setValue(celluid);
 
-      key = baseUser.getUserName()
+      key =
+        baseUser.getUserName()
           + "_"
-          + ALCellularUtils.getCheckValueForCellLogin(baseUser.getUserName(),
-              baseUser.getUserId());
+          + ALCellularUtils.getCheckValueForCellLogin(
+            baseUser.getUserName(),
+            baseUser.getUserId());
     }
 
     return res;

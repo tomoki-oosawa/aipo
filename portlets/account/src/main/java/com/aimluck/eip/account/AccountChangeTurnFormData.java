@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.cayenne.ObjectId;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -43,7 +42,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -110,15 +109,18 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
       res = super.setFormData(rundata, context, msgList);
       if (res) {
         if (positions.getValue() == null || positions.getValue().equals("")) {
-          SelectQuery query = new SelectQuery(TurbineUser.class);
-          ObjectId oid = new ObjectId("TurbineUser",
-            TurbineUser.USER_ID_PK_COLUMN, 3);
-          Expression exp1 = ExpressionFactory.matchAllDbExp(
-            oid.getIdSnapshot(), Expression.GREATER_THAN);
-          Expression exp2 = ExpressionFactory.matchExp(
-            TurbineUser.COMPANY_ID_PROPERTY, Integer.valueOf(1));
-          Expression exp3 = ExpressionFactory.noMatchExp(
-            TurbineUser.DISABLED_PROPERTY, "T");
+          SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+          ObjectId oid =
+            new ObjectId("TurbineUser", TurbineUser.USER_ID_PK_COLUMN, 3);
+          Expression exp1 =
+            ExpressionFactory.matchAllDbExp(
+              oid.getIdSnapshot(),
+              Expression.GREATER_THAN);
+          Expression exp2 =
+            ExpressionFactory.matchExp(TurbineUser.COMPANY_ID_PROPERTY, Integer
+              .valueOf(1));
+          Expression exp3 =
+            ExpressionFactory.noMatchExp(TurbineUser.DISABLED_PROPERTY, "T");
           query.setQualifier(exp1);
           query.andQualifier(exp2);
           query.andQualifier(exp3);
@@ -131,17 +133,15 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
             userNames[count] = st.nextToken();
             count++;
           }
-          DataContext dataContext = DatabaseOrmService.getInstance()
-            .getDataContext();
-          SelectQuery query = new SelectQuery(TurbineUser.class);
-          Expression exp1 = ExpressionFactory.inExp(
-            TurbineUser.LOGIN_NAME_PROPERTY, userNames);
-          Expression exp2 = ExpressionFactory.noMatchExp(
-            TurbineUser.DISABLED_PROPERTY, "T");
+          SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+          Expression exp1 =
+            ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY, userNames);
+          Expression exp2 =
+            ExpressionFactory.noMatchExp(TurbineUser.DISABLED_PROPERTY, "T");
           query.setQualifier(exp1);
           query.andQualifier(exp2);
 
-          List<?> list = query.fetchList();
+          List<TurbineUser> list = query.fetchList();
 
           TurbineUser turbineUser = null;
           int length = userNames.length;
@@ -263,25 +263,25 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
       List<String> msgList) {
     boolean res = true;
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      Expression exp1 = ExpressionFactory.inExp(
-        TurbineUser.LOGIN_NAME_PROPERTY, userNames);
-      SelectQuery query = new SelectQuery(TurbineUser.class, exp1);
+      Expression exp1 =
+        ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY, userNames);
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class, exp1);
       // Expression exp2 = ExpressionFactory.matchExp(
       // TurbineUser.DISABLED_PROPERTY, "F");
-      query.orderAscending(TurbineUser.EIP_MUSER_POSITION_PROPERTY + "."
+      query.orderAscending(TurbineUser.EIP_MUSER_POSITION_PROPERTY
+        + "."
         + EipMUserPosition.POSITION_PROPERTY);
       // query.andQualifier(exp2);
-      List<?> list = query.fetchList();
+      List<TurbineUser> list = query.fetchList();
 
       // 場所を入れ替えたユーザの ID と移動先のインデックスを保持する．
       // (ユーザ ID，移動先インデックス)
-      LinkedHashMap<TurbineUser, Integer> map = new LinkedHashMap<TurbineUser, Integer>();
+      LinkedHashMap<TurbineUser, Integer> map =
+        new LinkedHashMap<TurbineUser, Integer>();
       TurbineUser currentUser = null;
       int length = userNames.length;
       for (int i = 0; i < length; i++) {
-        currentUser = (TurbineUser) list.get(i);
+        currentUser = list.get(i);
 
         if (!currentUser.getLoginName().equals(userNames[i])) {
           map.put(getEipUserRecord(list, userNames[i]), Integer.valueOf(i + 1));
@@ -291,8 +291,8 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
       TurbineUser key = null;
       Integer value = null;
       Map.Entry<TurbineUser, Integer> entry = null;
-      for (Iterator<Map.Entry<TurbineUser, Integer>> i = map.entrySet()
-        .iterator(); i.hasNext();) {
+      for (Iterator<Map.Entry<TurbineUser, Integer>> i =
+        map.entrySet().iterator(); i.hasNext();) {
         entry = i.next();
         key = entry.getKey();
         value = entry.getValue();
@@ -300,8 +300,9 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
         userPosition.setPosition(value);
       }
 
-      dataContext.commitChanges();
+      Database.commit();
     } catch (Exception e) {
+      Database.rollback();
       logger.error("Exception", e);
       res = false;
     }
@@ -339,7 +340,9 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
       return false;
     }
 
-    if (chars == null || chars.length == 2 || Character.isDigit(ch)
+    if (chars == null
+      || chars.length == 2
+      || Character.isDigit(ch)
       || Character.isLetter(ch)) {
       return false;
     } else {
@@ -355,10 +358,11 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
    * @param userName
    * @return
    */
-  private TurbineUser getEipUserRecord(List<?> userList, String userName) {
+  private TurbineUser getEipUserRecord(List<TurbineUser> userList,
+      String userName) {
     int size = userList.size();
     for (int i = 0; i < size; i++) {
-      TurbineUser record = (TurbineUser) userList.get(i);
+      TurbineUser record = userList.get(i);
       if (record.getLoginName().equals(userName)) {
         return record;
       }

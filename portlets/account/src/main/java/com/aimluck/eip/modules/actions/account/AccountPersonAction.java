@@ -40,13 +40,13 @@ import com.aimluck.eip.modules.actions.common.ALBaseAction;
 
 /**
  * 個人設定・ユーザー情報用アクションクラスです。
- *
+ * 
  */
 public class AccountPersonAction extends ALBaseAction {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AccountPersonAction.class.getName());
+    .getLogger(AccountPersonAction.class.getName());
 
   /**
    * @param portlet
@@ -56,6 +56,7 @@ public class AccountPersonAction extends ALBaseAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
     // MODEを取得
@@ -73,11 +74,12 @@ public class AccountPersonAction extends ALBaseAction {
 
   /**
    * 最大化表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
 
@@ -112,20 +114,24 @@ public class AccountPersonAction extends ALBaseAction {
 
     context.put("isMaximized", Boolean.valueOf(true));
 
-    context.put("PURL_AccountEdit", getPortletURIinPersonalConfigPane(rundata,
-        "AccountEdit"));
+    context.put("PURL_AccountEdit", getPortletURIinPersonalConfigPane(
+      rundata,
+      "AccountEdit"));
     context.put("PURL_WebMailAccountEdit", getPortletURIinPersonalConfigPane(
-        rundata, "WebMailAccountEdit"));
-    context.put("PURL_MyGroup", getPortletURIinPersonalConfigPane(rundata,
-        "MyGroup"));
+      rundata,
+      "WebMailAccountEdit"));
+    context.put("PURL_MyGroup", getPortletURIinPersonalConfigPane(
+      rundata,
+      "MyGroup"));
     context
-        .put("PURL_Page", getPortletURIinPersonalConfigPane(rundata, "Page"));
-    context.put("PURL_Cellular", getPortletURIinPersonalConfigPane(rundata,
-        "Cellular"));
+      .put("PURL_Page", getPortletURIinPersonalConfigPane(rundata, "Page"));
+    context.put("PURL_Cellular", getPortletURIinPersonalConfigPane(
+      rundata,
+      "Cellular"));
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -152,7 +158,7 @@ public class AccountPersonAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -166,7 +172,7 @@ public class AccountPersonAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -180,7 +186,7 @@ public class AccountPersonAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -194,7 +200,7 @@ public class AccountPersonAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -232,7 +238,7 @@ public class AccountPersonAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -263,40 +269,51 @@ public class AccountPersonAction extends ALBaseAction {
 
   /**
    * 指定したエントリー名を持つ個人設定ページに含まれるポートレットへの URI を取得する．
-   *
+   * 
    * @param rundata
    * @param portletEntryName
-   *            PSML ファイルに記述されているタグ entry の要素 parent
+   *          PSML ファイルに記述されているタグ entry の要素 parent
    * @return
    */
   private String getPortletURIinPersonalConfigPane(RunData rundata,
       String portletEntryName) {
     try {
-      Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-          .getDocument().getPortlets();
-      if (portlets == null)
+      Portlets portlets =
+        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
+      if (portlets == null) {
         return null;
+      }
 
       Portlets[] portletList = portlets.getPortletsArray();
-      if (portletList == null)
+      if (portletList == null) {
         return null;
+      }
 
       int length = portletList.length;
       for (int i = 0; i < length; i++) {
         Entry[] entries = portletList[i].getEntriesArray();
-        if (entries == null || entries.length <= 0)
+        if (entries == null || entries.length <= 0) {
           continue;
+        }
 
         int ent_length = entries.length;
         for (int j = 0; j < ent_length; j++) {
           if (entries[j].getParent().equals(portletEntryName)) {
             JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
 
-            DynamicURI duri = jsLink.getLink(JetspeedLink.CURRENT, null, null,
-                JetspeedLink.CURRENT, null);
-            duri = duri.addPathInfo(JetspeedResources.PATH_PANEID_KEY,
+            DynamicURI duri =
+              jsLink.getLink(
+                JetspeedLink.CURRENT,
+                null,
+                null,
+                JetspeedLink.CURRENT,
+                null);
+            duri =
+              duri.addPathInfo(
+                JetspeedResources.PATH_PANEID_KEY,
                 entries[j].getId()).addQueryData(
-                JetspeedResources.PATH_ACTION_KEY, "controls.Restore");
+                JetspeedResources.PATH_ACTION_KEY,
+                "controls.Restore");
             return duri.toString();
           }
         }

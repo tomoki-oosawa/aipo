@@ -20,10 +20,8 @@ package com.aimluck.eip.account;
 
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -34,22 +32,23 @@ import com.aimluck.eip.cayenne.om.account.EipMPost;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 部署を複数削除するためのクラス． <BR>
  * このとき部署に関連づけられているグループも削除する．
- *
+ * 
  */
 public class AccountPostMultiDelete extends ALAbstractCheckList {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AccountPostMultiDelete.class.getName());
+    .getLogger(AccountPostMultiDelete.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param values
@@ -59,41 +58,42 @@ public class AccountPostMultiDelete extends ALAbstractCheckList {
    *      org.apache.velocity.context.Context, java.util.ArrayList,
    *      java.util.ArrayList)
    */
+  @Override
   protected boolean action(RunData rundata, Context context,
       List<String> values, List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      List<?> list = getEipMPosts(rundata, context, values);
-      if (list == null || list.size() == 0)
+      List<EipMPost> list = getEipMPosts(rundata, context, values);
+      if (list == null || list.size() == 0) {
         return false;
-
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      }
 
       int listsize = list.size();
       for (int i = 0; i < listsize; i++) {
-        EipMPost record = (EipMPost) list.get(i);
+        EipMPost record = list.get(i);
         // グループからユーザーを削除
         List<ALEipUser> users = ALEipUtils.getUsers(record.getGroupName());
         int size = users.size();
         for (int j = 0; j < size; j++) {
-          JetspeedSecurity.unjoinGroup(users.get(j).getName().getValue(),
-              record.getGroupName());
+          JetspeedSecurity.unjoinGroup(
+            users.get(j).getName().getValue(),
+            record.getGroupName());
         }
 
         // グループを削除
         JetspeedSecurity.removeGroup(record.getGroupName());
 
         // 部署を削除
-        dataContext.deleteObject(record);
+        Database.deleteAll(record);
       }
 
-      dataContext.commitChanges();
+      Database.commit();
 
       // singletonオブジェクトのリフレッシュ
       ALEipManager.getInstance().reloadPost();
 
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -101,14 +101,14 @@ public class AccountPostMultiDelete extends ALAbstractCheckList {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    */
-  private List<?> getEipMPosts(RunData rundata, Context context,
+  private List<EipMPost> getEipMPosts(RunData rundata, Context context,
       List<String> values) {
-    List<?> list = null;
+    List<EipMPost> list = null;
 
     try {
       if (values == null || values.size() == 0) {
@@ -116,12 +116,10 @@ public class AccountPostMultiDelete extends ALAbstractCheckList {
         return null;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      Expression exp = ExpressionFactory.inDbExp(EipMPost.POST_ID_PK_COLUMN,
-          values);
-      SelectQuery query = new SelectQuery(EipMPost.class, exp);
-      list = dataContext.performQuery(query);
+      Expression exp =
+        ExpressionFactory.inDbExp(EipMPost.POST_ID_PK_COLUMN, values);
+      SelectQuery<EipMPost> query = Database.query(EipMPost.class, exp);
+      list = query.fetchList();
       if (list == null || list.size() == 0) {
         logger.debug("Not found ID...");
         return null;

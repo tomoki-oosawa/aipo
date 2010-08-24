@@ -21,11 +21,9 @@ package com.aimluck.eip.account;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SQLTemplate;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -35,20 +33,22 @@ import com.aimluck.eip.cayenne.om.account.EipMPosition;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
  * 役職を複数削除するためのクラスです．
- *
+ * 
  */
 public class AccountPositionMultiDelete extends ALAbstractCheckList {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AccountPositionMultiDelete.class.getName());
+    .getLogger(AccountPositionMultiDelete.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param values
@@ -58,50 +58,52 @@ public class AccountPositionMultiDelete extends ALAbstractCheckList {
    *      org.apache.velocity.context.Context, java.util.ArrayList,
    *      java.util.ArrayList)
    */
+  @Override
   protected boolean action(RunData rundata, Context context,
       List<String> values, List<String> msgList) {
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     try {
       // オブジェクトモデル群を取得
-      List<?> list = getEipMPositions(rundata, context, dataContext, values);
-      if (list == null || list.size() == 0)
+      List<EipMPosition> list = getEipMPositions(rundata, context, values);
+      if (list == null || list.size() == 0) {
         return false;
+      }
 
       EipMPosition position = null;
       List<Integer> ids = new ArrayList<Integer>();
       int size = list.size();
       for (int i = 0; i < size; i++) {
-        position = (EipMPosition) list.get(i);
+        position = list.get(i);
         ids.add(position.getPositionId());
       }
 
       // 役職を削除
-      Expression exp = ExpressionFactory.inDbExp(
-          EipMPosition.POSITION_ID_PK_COLUMN, ids);
-      SelectQuery query = new SelectQuery(EipMPosition.class, exp);
-      List<?> postisions = dataContext.performQuery(query);
+      Expression exp =
+        ExpressionFactory.inDbExp(EipMPosition.POSITION_ID_PK_COLUMN, ids);
+      SelectQuery<EipMPosition> query = Database.query(EipMPosition.class, exp);
+      List<EipMPosition> postisions = query.fetchList();
 
       // 役職を削除
       int psize = postisions.size();
       for (int i = 0; i < psize; i++) {
-        dataContext.deleteObject((EipMPosition) list.get(i));
+        Database.delete(list.get(i));
       }
 
       // この役職に設定されているユーザーの役職IDを0とする
       int idssize = ids.size();
       for (int i = 0; i < idssize; i++) {
-        String sql = "UPDATE TURBINE_USER set POSITION_ID = 0 where POSITION_ID = "
-            + ((Integer) ids.get(i)).intValue();
-        @SuppressWarnings("deprecation")
-        SQLTemplate rawSelect = new SQLTemplate(TurbineUser.class, sql, false);
-        dataContext.performQuery(rawSelect);
+        String sql =
+          "UPDATE TURBINE_USER set POSITION_ID = 0 where POSITION_ID = "
+            + (ids.get(i)).intValue();
+        SQLTemplate rawSelect = new SQLTemplate(TurbineUser.class, sql);
+        DatabaseOrmService.getInstance().getDataContext().performQuery(
+          rawSelect);
       }
-      dataContext.commitChanges();
+      Database.commit();
 
       ALEipManager.getInstance().reloadPosition();
 
     } catch (Exception ex) {
-      dataContext.rollbackChanges();
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -109,14 +111,14 @@ public class AccountPositionMultiDelete extends ALAbstractCheckList {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    */
-  private List<?> getEipMPositions(RunData rundata, Context context,
-      DataContext dataContext, List<String> values) {
-    List<?> list = null;
+  private List<EipMPosition> getEipMPositions(RunData rundata, Context context,
+      List<String> values) {
+    List<EipMPosition> list = null;
 
     try {
       if (values == null || values.size() == 0) {
@@ -124,10 +126,10 @@ public class AccountPositionMultiDelete extends ALAbstractCheckList {
         return null;
       }
 
-      Expression exp = ExpressionFactory.inDbExp(
-          EipMPosition.POSITION_ID_PK_COLUMN, values);
-      SelectQuery query = new SelectQuery(EipMPosition.class, exp);
-      list = dataContext.performQuery(query);
+      Expression exp =
+        ExpressionFactory.inDbExp(EipMPosition.POSITION_ID_PK_COLUMN, values);
+      SelectQuery<EipMPosition> query = Database.query(EipMPosition.class, exp);
+      list = query.fetchList();
       if (list == null || list.size() == 0) {
         logger.debug("Not found ID...");
         return null;

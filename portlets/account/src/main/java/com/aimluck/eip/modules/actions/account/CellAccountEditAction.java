@@ -37,13 +37,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 個人設定用-ユーザ情報用アクションクラス
- *
+ * 
  */
 public class CellAccountEditAction extends ALBaseAction {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CellAccountEditAction.class.getName());
+    .getLogger(CellAccountEditAction.class.getName());
 
   public static final String MODE_CONFIG = "config";
 
@@ -55,6 +55,7 @@ public class CellAccountEditAction extends ALBaseAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
     // if (getMode() == null) {
@@ -64,11 +65,12 @@ public class CellAccountEditAction extends ALBaseAction {
 
   /**
    * 最大化表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
 
@@ -96,8 +98,8 @@ public class CellAccountEditAction extends ALBaseAction {
           if (isSymbol(username.charAt(i1))) {
             // 使用されているのが妥当な記号であるかの確認
             if (!(username.charAt(i1) == "_".charAt(0)
-                || username.charAt(i1) == "-".charAt(0) || username.charAt(i1) == "."
-                .charAt(0))) {
+              || username.charAt(i1) == "-".charAt(0) || username.charAt(i1) == "."
+              .charAt(0))) {
               valid = false;
               break;
             }
@@ -108,7 +110,8 @@ public class CellAccountEditAction extends ALBaseAction {
           ALEipUser eipuser = ALEipUtils.getALEipUser(username);
           if (eipuser != null) {
             if (!(ALCellularUtils.getCheckValueForCellLogin(username, eipuser
-                .getUserId().toString())).equals(base64value)) {
+              .getUserId()
+              .toString())).equals(base64value)) {
               username = "";
             }
           } else {
@@ -137,7 +140,7 @@ public class CellAccountEditAction extends ALBaseAction {
 
   /**
    * 簡易ログイン設定用のフォームを表示する． <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -152,7 +155,7 @@ public class CellAccountEditAction extends ALBaseAction {
 
   /**
    * 簡易ログイン用に携帯電話の固有番号を登録する． <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -171,7 +174,7 @@ public class CellAccountEditAction extends ALBaseAction {
 
   /**
    * 簡易ログイン用に携帯電話の固有番号を削除する． <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -189,9 +192,9 @@ public class CellAccountEditAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * 指定したchar型文字が記号であるかを判断します。
-   *
+   * 
    * @param ch
    * @return
    */
@@ -204,8 +207,10 @@ public class CellAccountEditAction extends ALBaseAction {
       return false;
     }
 
-    if (chars == null || chars.length == 2 || Character.isDigit(ch)
-        || Character.isLetter(ch)) {
+    if (chars == null
+      || chars.length == 2
+      || Character.isDigit(ch)
+      || Character.isLetter(ch)) {
       return false;
     } else {
       return true;
