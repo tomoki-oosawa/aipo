@@ -30,11 +30,8 @@ import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
-import org.apache.cayenne.ObjectId;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SQLTemplate;
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.om.security.UserNamePrincipal;
 import org.apache.jetspeed.services.JetspeedSecurity;
@@ -1167,22 +1164,14 @@ public class AccountUserFormData extends ALAbstractFormData {
       }
 
       // ユーザーを論理削除
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      ObjectId oid_user =
-        new ObjectId("TurbineUser", TurbineUser.LOGIN_NAME_COLUMN, user_name);
-      TurbineUser user = (TurbineUser) dataContext.refetchObject(oid_user);
+      TurbineUser user =
+        Database.get(
+          TurbineUser.class,
+          TurbineUser.LOGIN_NAME_COLUMN,
+          user_name);
 
       user.setPositionId(Integer.valueOf(0));
       user.setDisabled("T");
-      // dataContext.commitChanges();
-
-      /*
-       * String query1 = "UPDATE TURBINE_USER SET DISABLED = 'T', POST_ID = 0,
-       * POSITION_ID = 0 WHERE LOGIN_NAME = '" + user_name + "'"; SQLTemplate
-       * rawSelect1 = new SQLTemplate(TurbineUser.class, query1, false);
-       * dataContext.performQuery(rawSelect1);
-       */
 
       // ユーザーIDを取得する
       SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
@@ -1212,93 +1201,28 @@ public class AccountUserFormData extends ALAbstractFormData {
       TurbineUserGroupRole ugr = null;
       for (int i = 0; i < list4.size(); i++) {
         ugr = list4.get(i);
-        dataContext.deleteObject(ugr);
+        Database.delete(ugr);
       }
-
-      /*
-       * ObjectId oid_ugr = new ObjectId("TurbineUserGroupRole",
-       * TurbineUserGroupRole.TURBINE_USER_PROPERTY, userId);
-       * 
-       * //TurbineUserGroupRole ugr = (TurbineUserGroupRole)
-       * dataContext.refetchObject(oid_ugr); dataContext.deleteObject(ugr);
-       */
-
-      // dataContext.commitChanges();
-      /*
-       * String query2 = "DELETE FROM TURBINE_USER_GROUP_ROLE " + "WHERE USER_ID
-       * IN " + "(SELECT USER_ID FROM TURBINE_USER WHERE login_name= '" +
-       * user_name + "')"; SQLTemplate rawSelect2 = new
-       * SQLTemplate(TurbineUser.class, query2, false);
-       * dataContext.performQuery(rawSelect2);
-       */
-
-      /*
-       * String query3 = "SELECT USER_ID FROM TURBINE_USER WHERE login_name= '"
-       * + user_name + "'"; SQLTemplate rawSelect3 = new
-       * SQLTemplate(TurbineUser.class, query3, true);
-       * rawSelect3.setFetchingDataRows(true); List list3 =
-       * dataContext.performQuery(rawSelect3);
-       */
 
       // ToDoを削除する
       String sql4 = "DELETE FROM EIP_T_TODO WHERE USER_ID = '" + userId + "'";
-      @SuppressWarnings("deprecation")
-      SQLTemplate rawSelect4 = new SQLTemplate(EipTTodo.class, sql4, false);
-      dataContext.performQuery(rawSelect4);
+      Database.sql(EipTTodo.class, sql4).execute();
+
       String sql5 =
         "DELETE FROM EIP_T_TODO_CATEGORY WHERE USER_ID = '" + userId + "'";
-      @SuppressWarnings("deprecation")
-      SQLTemplate rawSelect5 =
-        new SQLTemplate(EipTTodoCategory.class, sql5, false);
-      dataContext.performQuery(rawSelect5);
+      Database.sql(EipTTodoCategory.class, sql5).execute();
 
       // ブログを削除する
       String sql6 = "DELETE FROM EIP_T_BLOG WHERE OWNER_ID = '" + userId + "'";
-      @SuppressWarnings("deprecation")
-      SQLTemplate rawSelect6 = new SQLTemplate(EipTBlog.class, sql6, false);
-      dataContext.performQuery(rawSelect6);
+      Database.sql(EipTBlog.class, sql6).execute();
 
       // ブログの足跡を削除する
       String sql7 =
         "DELETE FROM EIP_T_BLOG_FOOTMARK_MAP WHERE USER_ID = '" + userId + "'";
-      @SuppressWarnings("deprecation")
-      SQLTemplate rawSelect7 =
-        new SQLTemplate(EipTBlogFootmarkMap.class, sql7, false);
-      dataContext.performQuery(rawSelect7);
+      Database.sql(EipTBlogFootmarkMap.class, sql7).execute();
 
       // ワークフロー自動承認
       AccountUtils.acceptWorkflow(deleteuser.getUserId());
-      /*
-       * SelectQuery workflow_request_map_query = new
-       * SelectQuery(EipTWorkflowRequestMap.class); Expression workflow_exp =
-       * ExpressionFactory.matchExp( EipTWorkflowRequestMap.USER_ID_PROPERTY,
-       * userId); Expression workflow_exp2 = ExpressionFactory.matchExp(
-       * EipTWorkflowRequestMap.STATUS_PROPERTY, "C");
-       * workflow_request_map_query
-       * .setQualifier(workflow_exp.andExp(workflow_exp2)); List
-       * workflow_request_map_list =
-       * dataContext.performQuery(workflow_request_map_query);
-       * EipTWorkflowRequestMap workflow_request_map = null; for (int j = 0; j <
-       * list4.size(); j++) { workflow_request_map = (EipTWorkflowRequestMap)
-       * workflow_request_map_list.get(j); // 次の人がいるかどうか int request_number =
-       * workflow_request_map.getOrderIndex(); SelectQuery
-       * workflow_request_map_query2 = new
-       * SelectQuery(EipTWorkflowRequestMap.class); Expression workflow_exp3 =
-       * ExpressionFactory.matchExp(
-       * EipTWorkflowRequestMap.EIP_TWORKFLOW_REQUEST_PROPERTY,
-       * workflow_request_map.getEipTWorkflowRequest()); Expression
-       * workflow_exp4 = ExpressionFactory.matchExp(
-       * EipTWorkflowRequestMap.ORDER_INDEX_PROPERTY,
-       * Integer.valueOf(request_number + 1));
-       * workflow_request_map_query2.setQualifier
-       * (workflow_exp3.andExp(workflow_exp4)); List workflow_request_map_list2
-       * = dataContext.performQuery(workflow_request_map_query2); if
-       * (workflow_request_map_list2.size() == 1) { // 自動的に承認して次の人に回す
-       * workflow_request_map.setStatus("A"); EipTWorkflowRequestMap
-       * workflow_request_map2 = (EipTWorkflowRequestMap)
-       * workflow_request_map_list2.get(0);
-       * workflow_request_map2.setStatus("C"); } }
-       */
 
       Database.commit();
 
@@ -1315,7 +1239,7 @@ public class AccountUserFormData extends ALAbstractFormData {
           userPosition = userPositions.get(i);
           if (userId.equals(userPosition.getTurbineUser().toString())) {
             // 指定したユーザを削除する．
-            dataContext.deleteObject(userPosition);
+            Database.delete(userPosition);
             index = i;
             break;
           }

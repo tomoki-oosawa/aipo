@@ -149,23 +149,6 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
           post_id_list.add(mpost.getPostId());
         }
       }
-
-      /*
-       * if (tuser.getPostId().intValue() > 0) { // 部署のオブジェクトモデルを取得 EipMPost
-       * postRecord = (EipMPost) DataObjectUtils.objectForPK( dataContext,
-       * EipMPost.class, tuser.getPostId()); if (postRecord == null) return
-       * false; // 部署名 post_name.setValue(postRecord.getPostName()); // 郵便番号
-       * post_zipcode.setValue(postRecord.getZipcode()); // 住所
-       * post_address.setValue(postRecord.getAddress()); // 電話番号(外線)
-       * post_out_telephone.setValue(postRecord.getOutTelephone()); // 電話番号(内線)
-       * post_in_telephone.setValue(postRecord.getInTelephone());
-       * 
-       * // FAX番号 post_fax_number.setValue(postRecord.getFaxNumber());
-       * 
-       * // 部署に所属するメンバ
-       * memberList.addAll(ALEipUtils.getUsersFromPost(postRecord.getPostId()
-       * .intValue())); }
-       */
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;

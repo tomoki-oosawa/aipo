@@ -20,11 +20,8 @@ package com.aimluck.eip.account;
 
 import java.util.List;
 
-import org.apache.cayenne.ObjectId;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SQLTemplate;
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.om.security.UserNamePrincipal;
 import org.apache.jetspeed.services.JetspeedSecurity;
@@ -44,7 +41,6 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
@@ -104,29 +100,16 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
         }
 
         // ユーザーを論理削除
-        DataContext dataContext =
-          DatabaseOrmService.getInstance().getDataContext();
-        ObjectId oid_user =
-          new ObjectId("TurbineUser", TurbineUser.LOGIN_NAME_COLUMN, user_name);
-        TurbineUser user = (TurbineUser) dataContext.refetchObject(oid_user);
+        TurbineUser user =
+          Database.get(
+            TurbineUser.class,
+            TurbineUser.LOGIN_NAME_COLUMN,
+            user_name);
         user.setPositionId(Integer.valueOf(0));
         user.setDisabled("T");
-        // dataContext.commitChanges();
 
         // ユーザーIDを取得する
         String userId = record.getUserId().toString();
-
-        /*
-         * SelectQuery getuser_query = Database.query(TurbineUser.class);
-         * Expression exp1 =
-         * ExpressionFactory.matchExp(TurbineUser.LOGIN_NAME_PROPERTY,
-         * user_name); getuser_query.setQualifier(exp1); List list3 =
-         * dataContext.performQuery(getuser_query);
-         * 
-         * int userNum = list3.size(); if (userNum != 1) return false;
-         * TurbineUser deleteuser = (TurbineUser) list3.get(0); String userId;
-         * userId = deleteuser.getUserId().toString();
-         */
 
         // 対象ユーザのユーザーグループロールをすべて削除する
         SelectQuery<TurbineUserGroupRole> ugr_query =
@@ -140,55 +123,28 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
         TurbineUserGroupRole ugr = null;
         for (int j = 0; j < list4.size(); j++) {
           ugr = list4.get(j);
-          dataContext.deleteObject(ugr);
+          Database.delete(ugr);
         }
-        // dataContext.commitChanges();
-
-        /*
-         * // ユーザーを論理削除 String sql1 = "UPDATE TURBINE_USER SET DISABLED = 'T',
-         * POST_ID = 0, POSITION_ID = 0 WHERE LOGIN_NAME = '" + user_name + "'";
-         * SQLTemplate rawSelect1 = new SQLTemplate(TurbineUser.class, sql1,
-         * false); dataContext.performQuery(rawSelect1); //
-         * 対象ユーザのユーザーグループロールをすべて削除する処理 String sql2 = "DELETE FROM
-         * TURBINE_USER_GROUP_ROLE " + "WHERE USER_ID IN " + "(SELECT USER_ID
-         * FROM TURBINE_USER WHERE login_name= '" + user_name + "')";
-         * SQLTemplate rawSelect2 = new SQLTemplate(TurbineUser.class, sql2,
-         * false); dataContext.performQuery(rawSelect2); // ユーザーIDを取得する int
-         * userId = record.getUserId().intValue(); // 指定したユーザを削除する． String sql3
-         * = "DELETE FROM EIP_M_USER_POSITION WHERE USER_ID = '" + userId + "'";
-         * SQLTemplate rawSelect3 = new SQLTemplate(EipMUserPosition.class,
-         * sql3, false); dataContext.performQuery(rawSelect3);
-         */
 
         // ToDoを削除する
         String sql4 = "DELETE FROM EIP_T_TODO WHERE USER_ID = '" + userId + "'";
-        @SuppressWarnings("deprecation")
-        SQLTemplate rawSelect4 = new SQLTemplate(EipTTodo.class, sql4, false);
-        dataContext.performQuery(rawSelect4);
+        Database.sql(EipTTodo.class, sql4);
 
         String sql5 =
           "DELETE FROM EIP_T_TODO_CATEGORY WHERE USER_ID = '" + userId + "'";
-        @SuppressWarnings("deprecation")
-        SQLTemplate rawSelect5 =
-          new SQLTemplate(EipTTodoCategory.class, sql5, false);
-        dataContext.performQuery(rawSelect5);
+        Database.sql(EipTTodoCategory.class, sql5);
 
         // ブログを削除する
         String sql6 =
           "DELETE FROM EIP_T_BLOG WHERE OWNER_ID = '" + userId + "'";
-        @SuppressWarnings("deprecation")
-        SQLTemplate rawSelect6 = new SQLTemplate(EipTBlog.class, sql6, false);
-        dataContext.performQuery(rawSelect6);
+        Database.sql(EipTBlog.class, sql6);
 
         // ブログの足跡を削除する
         String sql7 =
           "DELETE FROM EIP_T_BLOG_FOOTMARK_MAP WHERE USER_ID = '"
             + userId
             + "'";
-        @SuppressWarnings("deprecation")
-        SQLTemplate rawSelect7 =
-          new SQLTemplate(EipTBlogFootmarkMap.class, sql7, false);
-        dataContext.performQuery(rawSelect7);
+        Database.sql(EipTBlogFootmarkMap.class, sql7);
 
         // ワークフロー自動承認
         AccountUtils.acceptWorkflow(record.getUserId());

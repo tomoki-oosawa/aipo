@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.apache.cayenne.DataObject;
 import org.apache.cayenne.DataObjectUtils;
+import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
@@ -133,7 +134,7 @@ public class Database {
   }
 
   /**
-   * プライマリキーで指定されたオブジェクトモデルを取得します。
+   * 指定されたオブジェクトモデルを取得します。
    * 
    * @param <M>
    * @param dataContext
@@ -145,6 +146,38 @@ public class Database {
   public static <M> M get(DataContext dataContext, Class<M> modelClass,
       Object primaryKey) {
     return (M) DataObjectUtils.objectForPK(dataContext, modelClass, primaryKey);
+  }
+
+  /**
+   * 
+   * @param <M>
+   * @param modelClass
+   * @param key
+   * @param value
+   * @return
+   */
+  public static <M> M get(Class<M> modelClass, String key, Object value) {
+    return get(
+      DatabaseOrmService.getInstance().getDataContext(),
+      modelClass,
+      key,
+      value);
+  }
+
+  /**
+   * 
+   * @param <M>
+   * @param dataContext
+   * @param modelClass
+   * @param key
+   * @param value
+   * @return
+   */
+  @SuppressWarnings("unchecked")
+  public static <M> M get(DataContext dataContext, Class<M> modelClass,
+      String key, Object value) {
+    return (M) dataContext.refetchObject(new ObjectId(modelClass
+      .getSimpleName(), key, value));
   }
 
   /**

@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SQLTemplate;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -34,7 +33,6 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
@@ -94,9 +92,7 @@ public class AccountPositionMultiDelete extends ALAbstractCheckList {
         String sql =
           "UPDATE TURBINE_USER set POSITION_ID = 0 where POSITION_ID = "
             + (ids.get(i)).intValue();
-        SQLTemplate rawSelect = new SQLTemplate(TurbineUser.class, sql);
-        DatabaseOrmService.getInstance().getDataContext().performQuery(
-          rawSelect);
+        Database.sql(TurbineUser.class, sql).execute();
       }
       Database.commit();
 

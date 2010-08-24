@@ -54,6 +54,11 @@ public class SQLTemplate<M> extends AbstractQuery<M> {
     this.dataContext = dataContext;
   }
 
+  public void execute() {
+    delegate.setParameters(parameters);
+    dataContext.performQuery(delegate);
+  }
+
   public List<M> fetchList() {
     delegate.setParameters(parameters);
     @SuppressWarnings("unchecked")

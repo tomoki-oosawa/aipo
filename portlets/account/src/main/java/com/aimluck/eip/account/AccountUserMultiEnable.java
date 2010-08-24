@@ -20,8 +20,6 @@ package com.aimluck.eip.account;
 
 import java.util.List;
 
-import org.apache.cayenne.ObjectId;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -32,7 +30,6 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
 
@@ -92,12 +89,11 @@ public class AccountUserMultiEnable extends ALAbstractCheckList {
         }
 
         // ユーザーを有効化
-        ObjectId oid_user =
-          new ObjectId("TurbineUser", TurbineUser.LOGIN_NAME_COLUMN, user_name);
-
-        DataContext dataContext =
-          DatabaseOrmService.getInstance().getDataContext();
-        TurbineUser user = (TurbineUser) dataContext.refetchObject(oid_user);
+        TurbineUser user =
+          Database.get(
+            TurbineUser.class,
+            TurbineUser.LOGIN_NAME_COLUMN,
+            user_name);
         user.setPositionId(Integer.valueOf(0));
         user.setDisabled("F");
 
