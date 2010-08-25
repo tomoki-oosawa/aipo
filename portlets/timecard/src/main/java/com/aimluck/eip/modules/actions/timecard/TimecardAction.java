@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -40,7 +40,7 @@ public class TimecardAction extends ALBaseAction {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(TimecardAction.class.getName());
+    .getLogger(TimecardAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
@@ -52,6 +52,7 @@ public class TimecardAction extends ALBaseAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
 
@@ -59,7 +60,7 @@ public class TimecardAction extends ALBaseAction {
     clearTimecardSession(rundata, context);
 
     ALEipUtils.setTemp(rundata, context, TimecardUtils.TARGET_USER_ID, String
-        .valueOf(ALEipUtils.getUserId(rundata)));
+      .valueOf(ALEipUtils.getUserId(rundata)));
     TimecardSelectData detailData = new TimecardSelectData();
     detailData.initField();
     detailData.doViewDetail(this, rundata, context);
@@ -73,6 +74,7 @@ public class TimecardAction extends ALBaseAction {
    * @param context
    * @param rundata
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
     // MODEを取得
@@ -115,7 +117,8 @@ public class TimecardAction extends ALBaseAction {
    */
   public void doTimecard_summary_list(RunData rundata, Context context)
       throws Exception {
-    TimecardSummaryListSelectData listData = new TimecardSummaryListSelectData();
+    TimecardSummaryListSelectData listData =
+      new TimecardSummaryListSelectData();
     listData.initField();
     listData.setRowsNum(200);
     listData.doViewList(this, rundata, context);

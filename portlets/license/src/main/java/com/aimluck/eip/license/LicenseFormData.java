@@ -21,7 +21,6 @@ package com.aimluck.eip.license;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -34,7 +33,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.license.util.LicenseUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 
 /**
  * Licenseのフォームデータを管理するクラスです。 <BR>
@@ -61,8 +60,6 @@ public class LicenseFormData extends ALAbstractFormData {
 
   private String license_key;
 
-  private DataContext dataContext;
-
   /**
    * 
    * @param action
@@ -74,8 +71,6 @@ public class LicenseFormData extends ALAbstractFormData {
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     super.init(action, rundata, context);
   }
@@ -236,9 +231,7 @@ public class LicenseFormData extends ALAbstractFormData {
       AipoLicense license = LicenseUtils.getAipoLicense(rundata, context);
       if (license == null) {
         // 新規オブジェクトモデル
-        license =
-          (AipoLicense) dataContext
-            .createAndRegisterNewObject(AipoLicense.class);
+        license = Database.create(AipoLicense.class);
       }
 
       StringBuffer sb = new StringBuffer();
@@ -252,9 +245,10 @@ public class LicenseFormData extends ALAbstractFormData {
       license_key = sb.toString().trim();
 
       license.setLicense(license_key);
-      dataContext.commitChanges();
+      Database.commit();
 
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }

@@ -24,7 +24,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTWhatsNew;
 
 /**
  * 新着情報のアイテムを格納します。 <BR>
- *
+ * 
  */
 public class WhatsNewContainer {
 
@@ -34,7 +34,7 @@ public class WhatsNewContainer {
   private int type;
 
   /**
-   *
+   * 
    * @param List
    */
   public void setList(List<EipTWhatsNew> list) {
@@ -42,7 +42,7 @@ public class WhatsNewContainer {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public List<EipTWhatsNew> getList() {
@@ -50,7 +50,7 @@ public class WhatsNewContainer {
   }
 
   /**
-   *
+   * 
    * @param int
    */
   public void setType(int i) {
@@ -58,7 +58,7 @@ public class WhatsNewContainer {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public int getType() {

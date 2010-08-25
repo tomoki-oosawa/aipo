@@ -34,14 +34,19 @@ import com.aimluck.eip.orm.query.ResultList;
 /**
  * 管理者メール通知設定の検索データを管理するためのクラスです。 <br />
  */
-public class WebMailAdminSettingsSelectData extends ALAbstractSelectData {
+public class WebMailAdminSettingsSelectData
+    extends
+    ALAbstractSelectData<WebMailAdminSettingsResultData, WebMailAdminSettingsResultData> {
+
   /** logger */
+  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(WebMailAdminSettingsSelectData.class.getName());
 
   @Override
-  protected ResultList selectList(RunData rundata, Context context)
-      throws ALPageNotFoundException, ALDBErrorException {
+  protected ResultList<WebMailAdminSettingsResultData> selectList(
+      RunData rundata, Context context) throws ALPageNotFoundException,
+      ALDBErrorException {
     return null;
   }
 
@@ -52,8 +57,8 @@ public class WebMailAdminSettingsSelectData extends ALAbstractSelectData {
    * @return
    */
   @Override
-  protected Object getResultData(Object obj) throws ALPageNotFoundException,
-      ALDBErrorException {
+  protected Object getResultData(WebMailAdminSettingsResultData obj)
+      throws ALPageNotFoundException, ALDBErrorException {
     return null;
   }
 
@@ -65,8 +70,8 @@ public class WebMailAdminSettingsSelectData extends ALAbstractSelectData {
    * @return
    */
   @Override
-  protected Object selectDetail(RunData rundata, Context context)
-      throws ALPageNotFoundException, ALDBErrorException {
+  protected WebMailAdminSettingsResultData selectDetail(RunData rundata,
+      Context context) throws ALPageNotFoundException, ALDBErrorException {
     WebMailAdminSettingsResultData rd = new WebMailAdminSettingsResultData();
     rd.initField();
     rd
@@ -94,7 +99,7 @@ public class WebMailAdminSettingsSelectData extends ALAbstractSelectData {
    * @return
    */
   @Override
-  protected Object getResultDataDetail(Object obj)
+  protected Object getResultDataDetail(WebMailAdminSettingsResultData obj)
       throws ALPageNotFoundException, ALDBErrorException {
     return obj;
   }

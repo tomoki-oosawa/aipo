@@ -46,9 +46,8 @@ public class WebMailFolderSelectData extends
     ALAbstractSelectData<EipTMailFolder, EipTMailFolder> {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService
-      .getLogger(WebMailFolderSelectData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WebMailFolderSelectData.class.getName());
 
   /** フォルダID */
   String folder_id = null;
@@ -113,8 +112,8 @@ public class WebMailFolderSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected ResultList selectList(RunData rundata, Context context)
-      throws ALPageNotFoundException, ALDBErrorException {
+  protected ResultList<EipTMailFolder> selectList(RunData rundata,
+      Context context) throws ALPageNotFoundException, ALDBErrorException {
     return null;
   }
 

@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -45,9 +45,8 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
 public class WebMailFilterOrderFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(WebMailFilterOrderFormData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WebMailFilterOrderFormData.class.getName());
 
   /** フィルタ名のリスト */
   private ALStringField positions;
@@ -56,7 +55,7 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
   private EipMMailAccount mailAccount;
 
   /** フィルタ情報のリスト */
-  private List filterList = null;
+  private List<WebMailFilterResultData> filterList = null;
 
   /**
    * 初期化します。
@@ -109,7 +108,7 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
       return;
     }
 
-    filterList = new ArrayList();
+    filterList = new ArrayList<WebMailFilterResultData>();
 
     super.init(action, rundata, context);
   }
@@ -142,10 +141,9 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
     try {
       res = super.setFormData(rundata, context, msgList);
       if (res) {
-        List filters = ALMailUtils.getEipTMailFilters(mailAccount);
-        EipTMailFilter filter;
-        for (Object rs : filters) {
-          filter = (EipTMailFilter) rs;
+        List<EipTMailFilter> filters =
+          ALMailUtils.getEipTMailFilters(mailAccount);
+        for (EipTMailFilter filter : filters) {
           WebMailFilterResultData rd = new WebMailFilterResultData();
           rd.initField();
           rd.setFilterId(filter.getFilterId().longValue());
@@ -239,7 +237,7 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
       if (positions.getValue() != null && (!positions.getValue().equals(""))) {
         // formから受け取ったfilter_idのリスト。この順番にSortOrderを変更したい。
         String[] orders = positions.getValue().split(",");
-        ArrayList order = new ArrayList();
+        List<String> order = new ArrayList<String>();
         for (String rs : orders) {
           order.add(rs);
         }
@@ -291,7 +289,7 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
    * 
    * @return
    */
-  public List getFilterList() {
+  public List<WebMailFilterResultData> getFilterList() {
     return filterList;
   }
 

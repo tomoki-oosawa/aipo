@@ -41,6 +41,7 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.msgboard.util.MsgboardUtils;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -53,8 +54,9 @@ import com.aimluck.eip.util.ALEipUtils;
  * 掲示板カテゴリ検索データを管理するクラスです。 <BR>
  * 
  */
-public class MsgboardCategorySelectData extends ALAbstractSelectData implements
-    ALData {
+public class MsgboardCategorySelectData extends
+    ALAbstractSelectData<EipTMsgboardCategoryMap, EipTMsgboardCategory>
+    implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -122,14 +124,16 @@ public class MsgboardCategorySelectData extends ALAbstractSelectData implements
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected ResultList<?> selectList(RunData rundata, Context context) {
+  protected ResultList<EipTMsgboardCategoryMap> selectList(RunData rundata,
+      Context context) {
     try {
 
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTMsgboardCategoryMap> query =
+        getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      ResultList<?> list = query.getResultList();
+      ResultList<EipTMsgboardCategoryMap> list = query.getResultList();
       // 件数をセットする．
       categorySum = list.getTotalCount();
       return list;
@@ -146,8 +150,10 @@ public class MsgboardCategorySelectData extends ALAbstractSelectData implements
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTMsgboardCategoryMap.class);
+  private SelectQuery<EipTMsgboardCategoryMap> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTMsgboardCategoryMap> query =
+      Database.query(EipTMsgboardCategoryMap.class);
 
     Expression exp1 =
       ExpressionFactory.noMatchDbExp(
@@ -220,7 +226,7 @@ public class MsgboardCategorySelectData extends ALAbstractSelectData implements
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected Object selectDetail(RunData rundata, Context context)
+  protected EipTMsgboardCategory selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     // オブジェクトモデルを取得
     return MsgboardUtils.getEipTMsgboardCategory(rundata, context, false);
@@ -234,12 +240,11 @@ public class MsgboardCategorySelectData extends ALAbstractSelectData implements
    * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
   @Override
-  protected Object getResultData(Object obj) throws ALPageNotFoundException,
-      ALDBErrorException {
+  protected Object getResultData(EipTMsgboardCategoryMap record)
+      throws ALPageNotFoundException, ALDBErrorException {
     MsgboardCategoryResultData rd = new MsgboardCategoryResultData();
     rd.initField();
     try {
-      EipTMsgboardCategoryMap record = (EipTMsgboardCategoryMap) obj;
       EipTMsgboardCategory category = record.getEipTMsgboardCategory();
 
       rd.setCategoryId(category.getCategoryId().intValue());
@@ -273,15 +278,12 @@ public class MsgboardCategorySelectData extends ALAbstractSelectData implements
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
   @Override
-  protected Object getResultDataDetail(Object obj)
+  protected Object getResultDataDetail(EipTMsgboardCategory record)
       throws ALPageNotFoundException, ALDBErrorException {
     MsgboardCategoryResultData rd = new MsgboardCategoryResultData();
     rd.initField();
     try {
       String loginUserStatus = null;
-
-      EipTMsgboardCategory record = (EipTMsgboardCategory) obj;
-
       // 公開区分
       boolean public_flag =
         (MsgboardUtils.PUBLIC_FLG_VALUE_PUBLIC).equals(record.getPublicFlag());

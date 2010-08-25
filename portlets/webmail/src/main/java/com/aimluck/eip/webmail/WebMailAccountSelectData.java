@@ -108,7 +108,7 @@ public class WebMailAccountSelectData extends
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
+  private SelectQuery<EipMMailAccount> getSelectQuery(RunData rundata, Context context) {
     SelectQuery<EipMMailAccount> query = Database.query(EipMMailAccount.class);
 
     Expression exp1 =

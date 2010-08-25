@@ -28,7 +28,7 @@ import com.aimluck.eip.common.ALData;
 
 /**
  * 新着情報のBeanです。 <BR>
- *
+ * 
  */
 public class WhatsNewBean implements ALData, Comparable<WhatsNewBean> {
 
@@ -55,7 +55,7 @@ public class WhatsNewBean implements ALData, Comparable<WhatsNewBean> {
   private ALStringField js_function_name;
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -74,7 +74,7 @@ public class WhatsNewBean implements ALData, Comparable<WhatsNewBean> {
   }
 
   /**
-   *
+   * 
    * @param key
    * @param value
    */
@@ -87,7 +87,7 @@ public class WhatsNewBean implements ALData, Comparable<WhatsNewBean> {
   }
 
   /**
-   *
+   * 
    * @return
    */
 
@@ -96,7 +96,7 @@ public class WhatsNewBean implements ALData, Comparable<WhatsNewBean> {
   }
 
   /**
-   *
+   * 
    * @param string
    */
   public void setName(String string) {
@@ -104,7 +104,7 @@ public class WhatsNewBean implements ALData, Comparable<WhatsNewBean> {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public String getName() {
@@ -112,7 +112,7 @@ public class WhatsNewBean implements ALData, Comparable<WhatsNewBean> {
   }
 
   /**
-   *
+   * 
    * @param string
    */
   public void setOwnerName(String string) {
@@ -120,7 +120,7 @@ public class WhatsNewBean implements ALData, Comparable<WhatsNewBean> {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALStringField getOwnerName() {
@@ -128,7 +128,7 @@ public class WhatsNewBean implements ALData, Comparable<WhatsNewBean> {
   }
 
   /**
-   *
+   * 
    * @param string
    */
   public void setEntityId(int i) {
@@ -136,7 +136,7 @@ public class WhatsNewBean implements ALData, Comparable<WhatsNewBean> {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALNumberField getEntityId() {
@@ -187,8 +187,8 @@ public class WhatsNewBean implements ALData, Comparable<WhatsNewBean> {
 
   public int compareTo(WhatsNewBean obj) {
     // 更新日時で比較します
-    return obj.getUpdateDate().getValue()
-        .compareTo(this.getUpdateDate().getValue());
+    return obj.getUpdateDate().getValue().compareTo(
+      this.getUpdateDate().getValue());
   }
 
 }

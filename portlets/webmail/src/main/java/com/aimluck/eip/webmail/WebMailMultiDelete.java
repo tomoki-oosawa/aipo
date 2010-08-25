@@ -40,39 +40,48 @@ public class WebMailMultiDelete extends ALAbstractCheckList {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WebMailMultiDelete.class.getName());
+    .getLogger(WebMailMultiDelete.class.getName());
 
   /**
    * @see com.aimluck.eip.common.ALAbstractCheckList#action(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList,
    *      java.util.ArrayList)
    */
-  protected boolean action(RunData rundata, Context context, List<String> values,
-      List<String> msgList) {
+  @Override
+  protected boolean action(RunData rundata, Context context,
+      List<String> values, List<String> msgList) {
     try {
       int accountId = -1;
       try {
-        accountId = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
+        accountId =
+          Integer.parseInt(ALEipUtils.getTemp(
+            rundata,
+            context,
             WebMailUtils.ACCOUNT_ID));
-        if (accountId < 0)
+        if (accountId < 0) {
           return false;
+        }
       } catch (Exception e) {
         return false;
       }
 
       String currentTab = ALEipUtils.getTemp(rundata, context, "tab");
-      if (currentTab == null || "".equals(currentTab))
+      if (currentTab == null || "".equals(currentTab)) {
         return false;
+      }
 
-      int type_mail = (WebMailUtils.TAB_RECEIVE.equals(currentTab)) ? ALFolder.TYPE_RECEIVE
+      int type_mail =
+        (WebMailUtils.TAB_RECEIVE.equals(currentTab))
+          ? ALFolder.TYPE_RECEIVE
           : ALFolder.TYPE_SEND;
       int userId = ALEipUtils.getUserId(rundata);
 
       String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
 
-      ALMailHandler handler = ALMailFactoryService.getInstance()
-          .getMailHandler();
-      ALFolder folder = handler.getALFolder(type_mail, org_id, userId, Integer
+      ALMailHandler handler =
+        ALMailFactoryService.getInstance().getMailHandler();
+      ALFolder folder =
+        handler.getALFolder(type_mail, org_id, userId, Integer
           .valueOf(accountId));
       folder.deleteMails(values);
     } catch (Exception ex) {

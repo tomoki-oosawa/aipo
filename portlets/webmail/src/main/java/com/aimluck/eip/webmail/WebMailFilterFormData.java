@@ -55,8 +55,8 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
 public class WebMailFilterFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(WebMailFilterFormData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WebMailFilterFormData.class.getName());
 
   /** フィルタ名 */
   private ALStringField filter_name;
@@ -80,7 +80,7 @@ public class WebMailFilterFormData extends ALAbstractFormData {
   private EipMMailAccount mailAccount;
 
   /** アカウントに紐付くフォルダリスト */
-  private ArrayList folderList;
+  private List<WebMailFolderResultData> folderList;
 
   private Map<String, String> typeList;
 
@@ -185,7 +185,7 @@ public class WebMailFilterFormData extends ALAbstractFormData {
     dst_folder_id.setFieldName("振り分け先");
 
     // フォルダ一覧
-    folderList = new ArrayList();
+    folderList = new ArrayList<WebMailFolderResultData>();
   }
 
   /**
@@ -565,7 +565,7 @@ public class WebMailFilterFormData extends ALAbstractFormData {
    * 
    * @return
    */
-  public ArrayList getFolderList() {
+  public List<WebMailFolderResultData> getFolderList() {
     return folderList;
   }
 

@@ -32,12 +32,13 @@ import com.aimluck.eip.msgboard.MsgboardTopicReplyFormData;
 
 /**
  * 掲示板トピックをJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class MsgboardTopicFormJSONScreen extends ALJSONScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(MsgboardTopicFormJSONScreen.class.getName());
+    .getLogger(MsgboardTopicFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -53,8 +54,9 @@ public class MsgboardTopicFormJSONScreen extends ALJSONScreen {
         formData.loadCategoryList(rundata, context);
         if (formData.doInsert(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
 
@@ -65,8 +67,9 @@ public class MsgboardTopicFormJSONScreen extends ALJSONScreen {
         formData.loadCategoryList(rundata, context);
         if (formData.doUpdate(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
@@ -76,16 +79,18 @@ public class MsgboardTopicFormJSONScreen extends ALJSONScreen {
         formData.loadCategoryList(rundata, context);
         if (formData.doDelete(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_MULTI_DELETE.equals(mode)) {
         MsgboardTopicMultiDelete delete = new MsgboardTopicMultiDelete();
         if (delete.doMultiAction(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if ("topic_reply".equals(mode)) {
@@ -93,8 +98,9 @@ public class MsgboardTopicFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doInsert(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if ("delete_reply".equals(mode)) {
@@ -102,15 +108,16 @@ public class MsgboardTopicFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doDelete(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       }
 
       /*
        * else if ("multi_complete".equals(mode)) {
-       *
+       * 
        * ToDoMultiStateUpdate delete = new ToDoMultiStateUpdate(); if
        * (delete.doMultiAction(this, rundata, context)) { } else { ArrayList
        * list = (ArrayList) context .get(ALEipConstants.ERROR_MESSAGE_LIST);

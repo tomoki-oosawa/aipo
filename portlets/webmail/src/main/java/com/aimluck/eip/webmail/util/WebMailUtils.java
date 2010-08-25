@@ -94,7 +94,7 @@ public class WebMailUtils {
   public final static String FILTER_TYPE_SUBJECT =
     ALMailUtils.FILTER_TYPE_SUBJECT;
 
-  public static final List getMailAccountNameList(int userId) {
+  public static final List<EipMMailAccount> getMailAccountNameList(int userId) {
     SelectQuery<EipMMailAccount> query = Database.query(EipMMailAccount.class);
 
     query.select(EipMMailAccount.ACCOUNT_ID_PK_COLUMN);
@@ -189,7 +189,7 @@ public class WebMailUtils {
   }
 
   public static String checkUnusualChar(String str) {
-    ArrayList unusualChars = new ArrayList();
+    List<Character> unusualChars = new ArrayList<Character>();
 
     /**
      * 文字化けを起こす特殊記号 【囲み英数字／ローマ数字】①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ
@@ -706,9 +706,10 @@ public class WebMailUtils {
    * @param context
    * @return
    */
-  public static HashMap getUnreadMailSumMapFromString(String str) {
+  public static HashMap<Integer, Integer> getUnreadMailSumMapFromString(
+      String str) {
 
-    HashMap unreadSumMap = new HashMap();
+    HashMap<Integer, Integer> unreadSumMap = new HashMap<Integer, Integer>();
     try {
       String[] entries = str.split("\\{")[1].split("\\}")[0].split(",");
       for (String entry : entries) {

@@ -2,23 +2,24 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.aimluck.eip.webmail;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALStringField;
@@ -32,7 +33,7 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
  */
 public class WebMailResultData implements ALData {
   /** 総ヘッダ情報 */
-  private ArrayList headers = null;
+  private List<String> headers = null;
 
   /** 件名 */
   private ALStringField subject = null;
@@ -57,7 +58,7 @@ public class WebMailResultData implements ALData {
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
-    headers = new ArrayList();
+    headers = new ArrayList<String>();
     subject = new ALStringField();
     from = new ALStringField();
     to = new ALStringField();
@@ -68,7 +69,7 @@ public class WebMailResultData implements ALData {
   /**
    * @return
    */
-  public ArrayList getHeaders() {
+  public List<String> getHeaders() {
     return headers;
   }
 
@@ -76,8 +77,9 @@ public class WebMailResultData implements ALData {
    * @param field
    */
   public void setHeaders(String[] fields) {
-    if (fields == null)
+    if (fields == null) {
       return;
+    }
 
     ALStringField line = null;
     int length = fields.length;
@@ -101,8 +103,9 @@ public class WebMailResultData implements ALData {
    * @param strings
    */
   public void setAttachmentFileNames(String[] strings) {
-    if (strings == null || strings.length == 0)
+    if (strings == null || strings.length == 0) {
       return;
+    }
     int length = strings.length;
     attachmentFileNames = new ALStringField[length];
     for (int i = 0; i < length; i++) {

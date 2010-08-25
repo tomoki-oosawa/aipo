@@ -48,9 +48,10 @@ import com.aimluck.eip.util.ALEipUtils;
  * タイムカードのファイル出力を取り扱うクラスです
  */
 public class TimecardXlsExportScreen extends ALXlsScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(TimecardXlsExportScreen.class.getName());
+    .getLogger(TimecardXlsExportScreen.class.getName());
 
   public static final String FILE_NAME = "timecard.xls";
 
@@ -65,32 +66,38 @@ public class TimecardXlsExportScreen extends ALXlsScreen {
 
   /**
    * 初期化処理を行います。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    */
+  @Override
   public void init(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
-    String target_user_id = rundata.getParameters().getString(
-        TimecardUtils.TARGET_USER_ID);
+    String target_user_id =
+      rundata.getParameters().getString(TimecardUtils.TARGET_USER_ID);
     userid = Integer.toString(ALEipUtils.getUserId(rundata));
 
-    rootFolder = TimecardUtils.getRootFolder(DatabaseOrmService.getInstance()
-        .getOrgId(rundata), ALEipUtils.getUserId(rundata));
+    rootFolder =
+      TimecardUtils.getRootFolder(DatabaseOrmService.getInstance().getOrgId(
+        rundata), ALEipUtils.getUserId(rundata));
 
     // アクセス権
-    if (target_user_id == null || "".equals(target_user_id)
-        || userid.equals(target_user_id)) {
-      aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
+    if (target_user_id == null
+      || "".equals(target_user_id)
+      || userid.equals(target_user_id)) {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
     } else {
-      aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER;
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER;
     }
 
     super.init(rundata, context);
   }
 
+  @Override
   protected boolean createHSSFWorkbook(RunData rundata, Context context,
       HSSFWorkbook wb) {
     try {
@@ -114,9 +121,13 @@ public class TimecardXlsExportScreen extends ALXlsScreen {
     // ヘッダ部作成
     String[] headers = { "日付", "合計", "状態", "勤怠時間", "修正理由" };
     // 0：日本語，1：英数字
-    short[] cell_enc_types = { HSSFCell.ENCODING_UTF_16,
-        HSSFCell.CELL_TYPE_NUMERIC, HSSFCell.ENCODING_UTF_16,
-        HSSFCell.ENCODING_UTF_16, HSSFCell.ENCODING_UTF_16 };
+    short[] cell_enc_types =
+      {
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16 };
     HSSFSheet sheet = createHSSFSheet(wb, sheet_name, headers, cell_enc_types);
 
     int rowcount = 0;
@@ -130,13 +141,12 @@ public class TimecardXlsExportScreen extends ALXlsScreen {
     List<String> daykeys = listData.getDateListKeys();
     int daykeysize = daykeys.size();
     for (int i = 0; i < daykeysize; i++) {
-      tclistrd = (TimecardListResultData) listData
-          .getDateListValue((String) daykeys.get(i));
+      tclistrd = listData.getDateListValue(daykeys.get(i));
       List<TimecardResultData> viewlist = tclistrd.getViewList();
       int viewlistsize = viewlist.size();
 
       for (int j = 0; j < viewlistsize; j++) {
-        TimecardResultData rd = (TimecardResultData) viewlist.get(j);
+        TimecardResultData rd = viewlist.get(j);
         String workStr = null;
         if ("0".equals(rd.getWorkFlag().toString())) {
           workStr = "退勤";
@@ -144,33 +154,48 @@ public class TimecardXlsExportScreen extends ALXlsScreen {
           workStr = "出勤";
         }
 
-        String[] rows = { tclistrd.getDateStr(), tclistrd.getSummayTimes(),
-            workStr, rd.getWorkDateStr(), rd.getReason().toString() };
+        String[] rows =
+          {
+            tclistrd.getDateStr(),
+            tclistrd.getSummayTimes(),
+            workStr,
+            rd.getWorkDateStr(),
+            rd.getReason().toString() };
 
         rowcount = rowcount + 1;
         addRow(sheet.createRow(rowcount), cell_enc_types, rows);
       }
-      sheet.addMergedRegion(new Region(rowcount - viewlistsize + 1, (short) 0,
-          rowcount, (short) 0));
+      sheet.addMergedRegion(new Region(
+        rowcount - viewlistsize + 1,
+        (short) 0,
+        rowcount,
+        (short) 0));
       HSSFRow row = sheet.getRow(rowcount - viewlistsize + 1);
       HSSFCell cell1 = row.getCell((short) 0);
       cell1.setCellStyle(style_col);
 
-      sheet.addMergedRegion(new Region(rowcount - viewlistsize + 1, (short) 1,
-          rowcount, (short) 1));
+      sheet.addMergedRegion(new Region(
+        rowcount - viewlistsize + 1,
+        (short) 1,
+        rowcount,
+        (short) 1));
       HSSFCell cell2 = row.getCell((short) 1);
       cell2.setCellStyle(style_col);
     }
 
     int uid = ALEipUtils.getUserId(rundata);
     ALEventlogFactoryService.getInstance().getEventlogHandler().logXlsScreen(
-        uid, "タイムカード出力", ALEventlogConstants.PORTLET_TYPE_TIMECARD_XLS_SCREEN);
+      uid,
+      "タイムカード出力",
+      ALEventlogConstants.PORTLET_TYPE_TIMECARD_XLS_SCREEN);
   }
 
+  @Override
   protected String getFolderPath() {
     return rootFolder.getAbsolutePath();
   }
 
+  @Override
   protected String getFileName() {
     return FILE_NAME;
   }
@@ -178,9 +203,10 @@ public class TimecardXlsExportScreen extends ALXlsScreen {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return aclPortletFeature;
   }

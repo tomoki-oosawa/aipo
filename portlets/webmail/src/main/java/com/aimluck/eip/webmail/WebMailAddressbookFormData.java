@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -32,6 +32,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.addressbookuser.beans.AddressBookUserEmailLiteBean;
+import com.aimluck.eip.addressbookuser.beans.AddressBookUserGroupLiteBean;
 import com.aimluck.eip.addressbookuser.util.AddressBookUserUtils;
 import com.aimluck.eip.cayenne.om.account.EipMUserPosition;
 import com.aimluck.eip.cayenne.om.security.TurbineGroup;
@@ -39,7 +40,9 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
@@ -51,9 +54,8 @@ import com.aimluck.eip.util.ALEipUtils;
  */
 public class WebMailAddressbookFormData extends ALAbstractFormData {
 
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(WebMailAddressbookFormData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WebMailAddressbookFormData.class.getName());
 
   /** 社内 */
   public static final int TYPE_EXTERNAL = 0;
@@ -64,19 +66,19 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
   /** 社内／社外 */
   private ALStringField type_company = null;
 
-  private List internalGroupList = null;
+  private List<ALEipGroup> internalGroupList = null;
 
-  private List externalGroupList = null;
+  private List<AddressBookUserGroupLiteBean> externalGroupList = null;
 
   private ALStringField current_internal_group_name = null;
 
   private ALStringField current_external_group_name = null;
 
-  private ArrayList toRecipientList = null;
+  private ArrayList<ALStringField> toRecipientList = null;
 
-  private ArrayList ccRecipientList = null;
+  private ArrayList<ALStringField> ccRecipientList = null;
 
-  private ArrayList bccRecipientList = null;
+  private ArrayList<ALStringField> bccRecipientList = null;
 
   /**  */
   private int userId = -1;
@@ -88,8 +90,8 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
 
     userId = ALEipUtils.getUserId(rundata);
 
-    List myGroups = ALEipUtils.getMyGroups(rundata);
-    internalGroupList = new ArrayList();
+    List<ALEipGroup> myGroups = ALEipUtils.getMyGroups(rundata);
+    internalGroupList = new ArrayList<ALEipGroup>();
     if (myGroups != null) {
       int length = myGroups.size();
       for (int i = 0; i < length; i++) {
@@ -100,9 +102,9 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
     externalGroupList =
       AddressBookUserUtils.getAddressBookUserGroupLiteBeans(rundata);
 
-    toRecipientList = new ArrayList();
-    ccRecipientList = new ArrayList();
-    bccRecipientList = new ArrayList();
+    toRecipientList = new ArrayList<ALStringField>();
+    ccRecipientList = new ArrayList<ALStringField>();
+    bccRecipientList = new ArrayList<ALStringField>();
 
     try {
       String[] detail_to_recipients =
@@ -336,7 +338,7 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
    * 
    * @return
    */
-  public Map getPostMap() {
+  public Map<Integer, ALEipPost> getPostMap() {
     return ALEipManager.getInstance().getPostMap();
   }
 
@@ -345,15 +347,15 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
    * 
    * @return
    */
-  public List getToRecipientList() {
+  public List<ALStringField> getToRecipientList() {
     return toRecipientList;
   }
 
-  public List getCcRecipientList() {
+  public List<ALStringField> getCcRecipientList() {
     return ccRecipientList;
   }
 
-  public List getBccRecipientList() {
+  public List<ALStringField> getBccRecipientList() {
     return bccRecipientList;
   }
 
@@ -369,11 +371,11 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
    * 
    * @return
    */
-  public List getInternalGroupList() {
+  public List<ALEipGroup> getInternalGroupList() {
     return internalGroupList;
   }
 
-  public List getExternalGroupList() {
+  public List<AddressBookUserGroupLiteBean> getExternalGroupList() {
     return externalGroupList;
   }
 

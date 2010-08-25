@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.DataRow;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -55,9 +54,8 @@ public class WebMailFilterSelectData extends
     ALAbstractSelectData<EipTMailFilter, EipTMailFilter> {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService
-      .getLogger(WebMailFilterSelectData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WebMailFilterSelectData.class.getName());
 
   /** フィルタID */
   String filterId = null;
@@ -66,7 +64,7 @@ public class WebMailFilterSelectData extends
   private EipMMailAccount mailAccount;
 
   /** メールアカウント一覧 */
-  private ArrayList mailAccountList;
+  private List<WebmailAccountLiteBean> mailAccountList;
 
   /**
    * 
@@ -160,9 +158,9 @@ public class WebMailFilterSelectData extends
   public void loadMailAccountList(RunData rundata, Context context) {
     try {
       // メールアカウント一覧
-      mailAccountList = new ArrayList();
+      mailAccountList = new ArrayList<WebmailAccountLiteBean>();
 
-      List aList =
+      List<EipMMailAccount> aList =
         WebMailUtils.getMailAccountNameList(ALEipUtils.getUserId(rundata));
 
       if (aList == null) {
@@ -170,18 +168,13 @@ public class WebMailFilterSelectData extends
       }
 
       WebmailAccountLiteBean bean = null;
-      DataRow dataRow = null;
-      Iterator iter = aList.iterator();
+      Iterator<EipMMailAccount> iter = aList.iterator();
       while (iter.hasNext()) {
-        dataRow = (DataRow) iter.next();
+        EipMMailAccount account = iter.next();
         bean = new WebmailAccountLiteBean();
         bean.initField();
-        bean.setAccountId(((Integer) ALEipUtils.getObjFromDataRow(
-          dataRow,
-          EipMMailAccount.ACCOUNT_ID_PK_COLUMN)).intValue());
-        bean.setAccountName((String) ALEipUtils.getObjFromDataRow(
-          dataRow,
-          EipMMailAccount.ACCOUNT_NAME_COLUMN));
+        bean.setAccountId(account.getAccountId());
+        bean.setAccountName(account.getAccountName());
         mailAccountList.add(bean);
       }
     } catch (Exception ex) {
@@ -199,10 +192,10 @@ public class WebMailFilterSelectData extends
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected ResultList selectList(RunData rundata, Context context)
-      throws ALPageNotFoundException, ALDBErrorException {
+  protected ResultList<EipTMailFilter> selectList(RunData rundata,
+      Context context) throws ALPageNotFoundException, ALDBErrorException {
     try {
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTMailFilter> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
@@ -220,8 +213,9 @@ public class WebMailFilterSelectData extends
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = Database.query(EipTMailFilter.class);
+  private SelectQuery<EipTMailFilter> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTMailFilter> query = Database.query(EipTMailFilter.class);
 
     Expression exp =
       ExpressionFactory.matchDbExp(
@@ -337,7 +331,7 @@ public class WebMailFilterSelectData extends
    * 
    * @return
    */
-  public List getMailAccountList() {
+  public List<WebmailAccountLiteBean> getMailAccountList() {
     return mailAccountList;
   }
 

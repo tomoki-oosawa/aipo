@@ -27,13 +27,13 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
 
 /**
- *　プロジェクト管理のResultDataです。 <br />
+ * プロジェクト管理のResultDataです。 <br />
  */
 public class ManHourResultData implements ALData {
 
   /** category * */
 
-  /** category_id  */
+  /** category_id */
   private ALNumberField category_id;
 
   /** ユーザー名 */
@@ -62,13 +62,14 @@ public class ManHourResultData implements ALData {
   private ALStringField name;
 
   /** <code>date</code> 日付 */
-  //private ALStringField date;
+  // private ALStringField date;
 
   /** <code>ptn</code> 繰り返しパターン */
   private String ptn;
 
   /** <code>format</code> フォーマット */
   private String format1 = "yyyy年M月d日 H:mm";
+
   private String format2 = "H:mm";
 
   /** <code>is_owner</code> オーナーかどうか */
@@ -107,9 +108,8 @@ public class ManHourResultData implements ALData {
   /** <code>rowspan</code> rowspan */
   private int rowspan;
 
-
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -145,7 +145,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 終了時間を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getEndDate() {
@@ -154,7 +154,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 開始時間を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getStartDate() {
@@ -163,7 +163,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 終了時間を設定します。
-   *
+   * 
    * @param date
    */
   public void setEndDate(Date date) {
@@ -172,7 +172,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 開始時間を設定します。
-   *
+   * 
    * @param date
    */
   public void setStartDate(Date date) {
@@ -181,7 +181,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 予定を取得します。
-   *
+   * 
    * @return
    */
   public ALStringField getName() {
@@ -190,7 +190,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 詳細を表示するかどうか
-   *
+   * 
    * @return
    */
   public boolean isShowDetail() {
@@ -199,7 +199,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 予定を設定します。
-   *
+   * 
    * @param string
    */
   public void setName(String string) {
@@ -208,7 +208,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * フォーマットを設定します。
-   *
+   * 
    * @param string
    */
   public void setFormat(String string) {
@@ -218,7 +218,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * スケジュールIDを取得します。
-   *
+   * 
    * @return
    */
   public ALNumberField getScheduleId() {
@@ -227,7 +227,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * スケジュールIDを設定します。
-   *
+   * 
    * @param number
    */
   public void setScheduleId(int number) {
@@ -236,7 +236,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 親スケジュール ID を取得します。
-   *
+   * 
    * @return
    */
   public ALNumberField getParentId() {
@@ -245,7 +245,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 親スケジュール ID を設定します。
-   *
+   * 
    * @param number
    */
   public void setParentId(int number) {
@@ -254,7 +254,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * オーナーかどうかを設定します。
-   *
+   * 
    * @param bool
    */
   public void setOwner(boolean bool) {
@@ -263,7 +263,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * オーナーかどうか
-   *
+   * 
    * @return
    */
   public boolean isOwner() {
@@ -272,7 +272,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 仮スケジュールかどうか
-   *
+   * 
    * @return
    */
   public boolean isTmpreserve() {
@@ -281,7 +281,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 公開するかどうか
-   *
+   * 
    * @return
    */
   public boolean isPublic() {
@@ -290,7 +290,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 仮スケジュールかどうかを設定します。
-   *
+   * 
    * @param bool
    */
   public void setTmpreserve(boolean bool) {
@@ -299,7 +299,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 確認済みスケジュールかどうか
-   *
+   * 
    * @return
    */
   public boolean isConfirm() {
@@ -308,7 +308,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 確認済みスケジュールかどうかを設定します。
-   *
+   * 
    * @param bool
    */
   public void setConfirm(boolean bool) {
@@ -317,7 +317,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 重複スケジュールかどうか
-   *
+   * 
    * @return
    */
   public boolean isDuplicate() {
@@ -326,7 +326,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 重複スケジュールかどうかを設定島します。
-   *
+   * 
    * @param bool
    */
   public void setDuplicate(boolean bool) {
@@ -335,7 +335,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 公開するかどうかを設定します。
-   *
+   * 
    * @param bool
    */
   public void setPublic(boolean bool) {
@@ -344,7 +344,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 表示するかどうか
-   *
+   * 
    * @return
    */
   public boolean isHidden() {
@@ -353,7 +353,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 表示するかどうかを設定します。
-   *
+   * 
    * @param bool
    */
   public void setHidden(boolean bool) {
@@ -362,7 +362,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 非公開かどうか
-   *
+   * 
    */
   public boolean isPrivate() {
     return !is_public && !is_hidden;
@@ -370,7 +370,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * ログインユーザーかどうか
-   *
+   * 
    * @return
    */
   public boolean isLoginuser() {
@@ -379,7 +379,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * ログインユーザーかどうかを設定します。
-   *
+   * 
    * @param b
    */
   public void setLoginuser(boolean b) {
@@ -388,7 +388,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 共有メンバーかどうか
-   *
+   * 
    * @return
    */
   public boolean isMember() {
@@ -397,7 +397,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 共有メンバーかどうかを設定します。
-   *
+   * 
    * @param b
    */
   public void setMember(boolean b) {
@@ -406,7 +406,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 繰り返しかどうか
-   *
+   * 
    * @return
    */
   public boolean isRepeat() {
@@ -415,7 +415,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 繰り返しかどうかを設定します。
-   *
+   * 
    * @param bool
    */
   public void setRepeat(boolean bool) {
@@ -424,7 +424,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * ダミーかどうか
-   *
+   * 
    * @return
    */
   public boolean isDummy() {
@@ -433,7 +433,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * ダミーかどうかを設定します。
-   *
+   * 
    * @param bool
    */
   public void setDummy(boolean bool) {
@@ -442,7 +442,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * rowspanを設定します。
-   *
+   * 
    * @param number
    */
   public void setRowspan(int number) {
@@ -451,7 +451,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * rowspanを取得します。
-   *
+   * 
    * @return
    */
   public int getRowspan() {
@@ -460,7 +460,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 繰り返しパターンを取得します。
-   *
+   * 
    * @return
    */
   public String getPattern() {
@@ -469,7 +469,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 繰り返しパターンを設定します。
-   *
+   * 
    * @param string
    */
   public void setPattern(String string) {
@@ -478,7 +478,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 共有メンバーによる編集／削除フラグを取得する．
-   *
+   * 
    * @return
    */
   public boolean isEditable() {
@@ -487,7 +487,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 共有メンバーによる編集／削除フラグを設定する．
-   *
+   * 
    * @param string
    */
   public void setEditFlag(boolean bool) {
@@ -496,41 +496,55 @@ public class ManHourResultData implements ALData {
 
   /**
    * 日付を取得します。
-   *
+   * 
    * @return
    */
   public String getDate() {
     if (start_date.getValue().equals(end_date.getValue())) {
       return start_date.toString();
     } else if ((start_date.getYear().equals(end_date.getYear())
-        && start_date.getMonth().equals(end_date.getMonth()) && start_date
-        .getDay().equals(end_date.getDay()))
-        || is_repeat) {
-      return new StringBuffer().append(start_date.toString()).append('-')
-          .append(end_date.toString()).toString();
+      && start_date.getMonth().equals(end_date.getMonth()) && start_date
+      .getDay()
+      .equals(end_date.getDay()))
+      || is_repeat) {
+      return new StringBuffer()
+        .append(start_date.toString())
+        .append('-')
+        .append(end_date.toString())
+        .toString();
     } else {
-      return new StringBuffer().append(start_date.toString()).append('-')
-          .append("24:00").toString();
+      return new StringBuffer()
+        .append(start_date.toString())
+        .append('-')
+        .append("24:00")
+        .toString();
     }
   }
 
   /**
    * 日付を取得します。
-   *
+   * 
    * @return
    */
   public String getDate2() {
     if (start_date.getValue().equals(end_date.getValue())) {
       return start_date.toString();
     } else if ((start_date.getYear().equals(end_date.getYear())
-        && start_date.getMonth().equals(end_date.getMonth()) && start_date
-        .getDay().equals(end_date.getDay()))
-        || is_repeat) {
-      return new StringBuffer().append(start_date.toString()).append('～')
-          .append(end_date.toString()).toString();
+      && start_date.getMonth().equals(end_date.getMonth()) && start_date
+      .getDay()
+      .equals(end_date.getDay()))
+      || is_repeat) {
+      return new StringBuffer()
+        .append(start_date.toString())
+        .append('～')
+        .append(end_date.toString())
+        .toString();
     } else {
-      return new StringBuffer().append(start_date.toString()).append('～')
-          .append("24:00").toString();
+      return new StringBuffer()
+        .append(start_date.toString())
+        .append('～')
+        .append("24:00")
+        .toString();
     }
   }
 
@@ -543,7 +557,7 @@ public class ManHourResultData implements ALData {
   }
 
   public double getManHour() {
-    return ( getManHourMin() * 100 / 60.0 ) / 100.0;
+    return (getManHourMin() * 100 / 60.0) / 100.0;
   }
 
   public ALNumberField getCategoryId() {

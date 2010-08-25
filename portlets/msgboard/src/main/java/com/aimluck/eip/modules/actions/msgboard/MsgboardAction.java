@@ -40,19 +40,20 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 掲示板のアクションクラス <BR>
- *
+ * 
  */
 public class MsgboardAction extends ALBaseAction {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(MsgboardAction.class.getName());
+    .getLogger(MsgboardAction.class.getName());
 
   /** 返信用キー */
   private final String RESULT_ON_TOPIC_DETAIL = "resultOnTopicDetail";
 
   /** 返信用エラーメッセージキー */
-  private final String ERROR_MESSAGE_LIST_ON_TOPIC_DETAIL = "errmsgsOnTopicDetail";
+  private final String ERROR_MESSAGE_LIST_ON_TOPIC_DETAIL =
+    "errmsgsOnTopicDetail";
 
   /** 返信用 result */
   private Object resultOnTopicDetail;
@@ -62,7 +63,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
@@ -70,6 +71,7 @@ public class MsgboardAction extends ALBaseAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
 
@@ -79,21 +81,24 @@ public class MsgboardAction extends ALBaseAction {
     MsgboardTopicSelectData listData = new MsgboardTopicSelectData();
     listData.initField();
     listData.loadCategoryList(rundata, context);
-    listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
-        .getInitParameter("p1a-rows")));
-    listData.setStrLength(Integer.parseInt(portlet.getPortletConfig()
-        .getInitParameter("p4a-strlen")));
+    listData.setRowsNum(Integer.parseInt(portlet
+      .getPortletConfig()
+      .getInitParameter("p1a-rows")));
+    listData.setStrLength(Integer.parseInt(portlet
+      .getPortletConfig()
+      .getInitParameter("p4a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "msgboard-topic");
   }
 
   /**
    * 最大化表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
 
@@ -120,7 +125,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * トピック登録のフォームを表示する. <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -136,7 +141,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * トピックを登録します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -163,7 +168,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * トピックを削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -187,7 +192,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * 返信記事を削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -210,7 +215,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * トピックを削除します。（複数） <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -230,7 +235,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * トピックを一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -243,17 +248,19 @@ public class MsgboardAction extends ALBaseAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1b-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-        context).getPortletConfig().getInitParameter("p4a-strlen")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1b-rows")));
+    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
+      context).getPortletConfig().getInitParameter("p4a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "msgboard-topic-list");
   }
 
   /**
    * トピックを詳細表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -276,7 +283,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * カテゴリ登録のフォームを表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -291,7 +298,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * カテゴリを登録します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -317,7 +324,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * カテゴリを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -343,7 +350,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * カテゴリを削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -367,7 +374,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * カテゴリを削除します。（複数） <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -387,7 +394,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * カテゴリを一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -399,11 +406,13 @@ public class MsgboardAction extends ALBaseAction {
     listData.initField();
     // PSMLからパラメータをロードする
     // 最大表示件数（通常時）
-    listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
-        .getInitParameter("p1c-rows")));
+    listData.setRowsNum(Integer.parseInt(portlet
+      .getPortletConfig()
+      .getInitParameter("p1c-rows")));
 
-    listData.setStrLength(Integer.parseInt(portlet.getPortletConfig()
-        .getInitParameter("p5a-strlen")));
+    listData.setStrLength(Integer.parseInt(portlet
+      .getPortletConfig()
+      .getInitParameter("p5a-strlen")));
 
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "msgboard-category-list");
@@ -412,7 +421,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * カテゴリを詳細表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -432,7 +441,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * トピックを別のカテゴリに移動する． <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -470,7 +479,7 @@ public class MsgboardAction extends ALBaseAction {
   // }
   /**
    * 掲示板で使用したセッション情報を消去する．
-   *
+   * 
    */
   public void clearMsgboardSession(RunData rundata, Context context) {
     List<String> list = new ArrayList<String>();
@@ -518,7 +527,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * トピックに返信します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -549,7 +558,7 @@ public class MsgboardAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * @param obj
    */
   public void setResultDataOnTopicDetail(Object obj) {
@@ -557,17 +566,18 @@ public class MsgboardAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * @param msg
    */
   public void addErrorMessagesOnTopicDetail(List<String> msgs) {
-    if (errmsgListOnTopicDetail == null)
+    if (errmsgListOnTopicDetail == null) {
       errmsgListOnTopicDetail = new ArrayList<String>();
+    }
     errmsgListOnTopicDetail.addAll(msgs);
   }
 
   /**
-   *
+   * 
    * @param context
    */
   public void putDataOnTopicDetail(RunData rundata, Context context) {
@@ -576,6 +586,6 @@ public class MsgboardAction extends ALBaseAction {
 
     // For security
     context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(
-        ALEipConstants.SECURE_ID));
+      ALEipConstants.SECURE_ID));
   }
 }

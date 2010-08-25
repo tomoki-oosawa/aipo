@@ -47,9 +47,8 @@ public class CellWebMailAccountSelectData extends
     ALAbstractSelectData<EipMMailAccount, EipMMailAccount> {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(CellWebMailAccountSelectData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(CellWebMailAccountSelectData.class.getName());
 
   private int userId;
 

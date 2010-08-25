@@ -25,11 +25,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
@@ -49,7 +46,9 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.msgboard.MsgboardCategoryResultData;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
@@ -130,9 +129,8 @@ public class MsgboardUtils {
 
       int userid = ALEipUtils.getUserId(rundata);
 
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      SelectQuery query = new SelectQuery(EipTMsgboardTopic.class);
+      SelectQuery<EipTMsgboardTopic> query =
+        Database.query(EipTMsgboardTopic.class);
       Expression exp1 =
         ExpressionFactory.matchDbExp(
           EipTMsgboardTopic.TOPIC_ID_PK_COLUMN,
@@ -166,10 +164,9 @@ public class MsgboardUtils {
             + EipTMsgboardCategoryMap.USER_ID_PROPERTY,
           Integer.valueOf(userid));
       query.andQualifier(exp11.orExp(exp12.andExp(exp13)));
-      query.setDistinct(true);
+      query.distinct(true);
 
-      @SuppressWarnings("unchecked")
-      List<EipTMsgboardTopic> topics = dataContext.performQuery(query);
+      List<EipTMsgboardTopic> topics = query.fetchList();
       if (topics == null || topics.size() == 0) {
         // 指定した トピック ID のレコードが見つからない場合
         logger.debug("[MsgboardTopic] Not found ID...");
@@ -204,9 +201,8 @@ public class MsgboardUtils {
         throw new ALPageNotFoundException();
       }
 
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      SelectQuery query = new SelectQuery(EipTMsgboardTopic.class);
+      SelectQuery<EipTMsgboardTopic> query =
+        Database.query(EipTMsgboardTopic.class);
       Expression exp1 =
         ExpressionFactory.matchDbExp(
           EipTMsgboardTopic.TOPIC_ID_PK_COLUMN,
@@ -221,8 +217,7 @@ public class MsgboardUtils {
         query.andQualifier(exp2);
       }
 
-      @SuppressWarnings("unchecked")
-      List<EipTMsgboardTopic> topics = dataContext.performQuery(query);
+      List<EipTMsgboardTopic> topics = query.fetchList();
       if (topics == null || topics.size() == 0) {
         // 指定した トピック ID のレコードが見つからない場合
         logger.debug("[MsgboardTopic] Not found ID...");
@@ -230,8 +225,6 @@ public class MsgboardUtils {
       }
       return topics.get(0);
     } catch (Exception ex) {
-
-      // TODO: エラー処理
       logger.error("[MsgboardUtils]", ex);
       throw new ALDBErrorException();
 
@@ -257,17 +250,15 @@ public class MsgboardUtils {
 
       }
 
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      SelectQuery query = new SelectQuery(EipTMsgboardFile.class);
+      SelectQuery<EipTMsgboardFile> query =
+        Database.query(EipTMsgboardFile.class);
       Expression exp =
         ExpressionFactory.matchDbExp(
           EipTMsgboardFile.FILE_ID_PK_COLUMN,
           Integer.valueOf(attachmentIndex));
       query.andQualifier(exp);
 
-      @SuppressWarnings("unchecked")
-      List<EipTMsgboardFile> files = dataContext.performQuery(query);
+      List<EipTMsgboardFile> files = query.fetchList();
       if (files == null || files.size() == 0) {
         // 指定した ID のレコードが見つからない場合
         logger.debug("[MsgboardUtils] Not found ID...");
@@ -302,9 +293,8 @@ public class MsgboardUtils {
         throw new ALPageNotFoundException();
       }
 
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      SelectQuery query = new SelectQuery(EipTMsgboardTopic.class);
+      SelectQuery<EipTMsgboardTopic> query =
+        Database.query(EipTMsgboardTopic.class);
       Expression exp001 =
         ExpressionFactory.matchExp(
           EipTMsgboardTopic.PARENT_ID_PROPERTY,
@@ -337,10 +327,9 @@ public class MsgboardUtils {
           Integer.valueOf(ALEipUtils.getUserId(rundata)));
       query.setQualifier((exp01.andExp(exp11.orExp(exp21.andExp(exp22))))
         .orExp(exp001));
-      query.setDistinct(true);
+      query.distinct(true);
 
-      @SuppressWarnings("unchecked")
-      List<EipTMsgboardTopic> topics = dataContext.performQuery(query);
+      List<EipTMsgboardTopic> topics = query.fetchList();
       if (topics == null || topics.size() == 0) {
         // 指定した トピック ID のレコードが見つからない場合
         logger.debug("[MsgboardTopic] Not found ID...");
@@ -348,8 +337,6 @@ public class MsgboardUtils {
       }
       return topics;
     } catch (Exception ex) {
-
-      // TODO: エラー処理
       logger.error("[MsgboardUtils]", ex);
       throw new ALDBErrorException();
 
@@ -379,9 +366,8 @@ public class MsgboardUtils {
 
       int userid = ALEipUtils.getUserId(rundata);
 
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      SelectQuery query = new SelectQuery(EipTMsgboardTopic.class);
+      SelectQuery<EipTMsgboardTopic> query =
+        Database.query(EipTMsgboardTopic.class);
 
       Expression exp01 =
         ExpressionFactory.matchDbExp(EipTMsgboardTopic.OWNER_ID_COLUMN, Integer
@@ -401,8 +387,7 @@ public class MsgboardUtils {
         query.andQualifier((exp01.andExp(exp02)).orExp(exp03));
       }
 
-      @SuppressWarnings("unchecked")
-      List<EipTMsgboardTopic> topics = dataContext.performQuery(query);
+      List<EipTMsgboardTopic> topics = query.fetchList();
       if (topics == null || topics.size() == 0) {
         // 指定した トピック ID のレコードが見つからない場合
         logger.debug("[MsgboardTopic] Not found ID...");
@@ -452,9 +437,8 @@ public class MsgboardUtils {
         throw new ALPageNotFoundException();
       }
 
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      SelectQuery query = new SelectQuery(EipTMsgboardCategory.class);
+      SelectQuery<EipTMsgboardCategory> query =
+        Database.query(EipTMsgboardCategory.class);
 
       Expression exp1 =
         ExpressionFactory.matchDbExp(
@@ -526,10 +510,9 @@ public class MsgboardUtils {
         query.andQualifier((exp01.andExp(exp02.orExp(exp03))).orExp(exp11
           .andExp(exp02.orExp(exp03))));
       }
-      query.setDistinct(true);
+      query.distinct(true);
 
-      @SuppressWarnings("unchecked")
-      List<EipTMsgboardCategory> categories = dataContext.performQuery(query);
+      List<EipTMsgboardCategory> categories = query.fetchList();
       if (categories == null || categories.size() == 0) {
         // 指定したカテゴリ IDのレコードが見つからない場合
         logger.debug("[MsgboardUtils] Not found ID...");
@@ -537,7 +520,6 @@ public class MsgboardUtils {
       }
       return categories.get(0);
     } catch (Exception ex) {
-      // TODO: エラー処理
       logger.error("[MsgboardUtils]", ex);
       throw new ALDBErrorException();
 
@@ -556,14 +538,14 @@ public class MsgboardUtils {
       ALDBErrorException {
 
     int userid = ALEipUtils.getUserId(rundata);
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     List<ALEipUser> result = new ArrayList<ALEipUser>();
 
     if ("F".equals(is_public)) {
       try {
 
-        SelectQuery query = new SelectQuery(EipTMsgboardCategoryMap.class);
-        query.addCustomDbAttribute(EipTMsgboardCategoryMap.USER_ID_COLUMN);
+        SelectQuery<EipTMsgboardCategoryMap> query =
+          Database.query(EipTMsgboardCategoryMap.class);
+        query.select(EipTMsgboardCategoryMap.USER_ID_COLUMN);
 
         Expression exp1 =
           ExpressionFactory.matchExp(
@@ -594,19 +576,15 @@ public class MsgboardUtils {
             STAT_VALUE_OWNER);
         query.andQualifier(exp11.orExp(exp12.andExp(exp13)).orExp(
           exp12.andExp(exp14)));
-        query.setDistinct(true);
+        query.distinct(true);
 
-        @SuppressWarnings("unchecked")
-        List<DataRow> uids = dataContext.performQuery(query);
+        List<EipTMsgboardCategoryMap> uids = query.fetchList();
 
         if (uids != null && uids.size() != 0) {
           int size = uids.size();
           for (int i = 0; i < size; i++) {
-            DataRow uid = uids.get(i);
-            Integer id =
-              (Integer) ALEipUtils.getObjFromDataRow(
-                uid,
-                EipTMsgboardCategoryMap.USER_ID_COLUMN);
+            EipTMsgboardCategoryMap uid = uids.get(i);
+            Integer id = uid.getUserId();
             if (id.intValue() != userid) {
               result.add(ALEipUtils.getALEipUser(id.intValue()));
             }
@@ -655,9 +633,8 @@ public class MsgboardUtils {
     List<MsgboardCategoryResultData> categoryList =
       new ArrayList<MsgboardCategoryResultData>();
     try {
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      SelectQuery query = new SelectQuery(EipTMsgboardCategory.class);
+      SelectQuery<EipTMsgboardCategory> query =
+        Database.query(EipTMsgboardCategory.class);
 
       // アクセス制御
       Expression exp01 =
@@ -688,12 +665,11 @@ public class MsgboardUtils {
           Integer.valueOf(ALEipUtils.getUserId(rundata)));
       query.setQualifier((exp01.andExp(exp02.orExp(exp03))).orExp(exp11
         .andExp(exp12)));
-      query.setDistinct(true);
+      query.distinct(true);
 
       MsgboardCategoryResultData otherRd = null;
 
-      @SuppressWarnings("unchecked")
-      List<EipTMsgboardCategory> aList = dataContext.performQuery(query);
+      List<EipTMsgboardCategory> aList = query.fetchList();
       int size = aList.size();
       for (int i = 0; i < size; i++) {
         EipTMsgboardCategory record = aList.get(i);
@@ -723,7 +699,6 @@ public class MsgboardUtils {
       List<FileuploadLiteBean> fileuploadList, String folderName,
       List<String> msgList) {
 
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     int uid = ALEipUtils.getUserId(rundata);
     String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
     String[] fileids = rundata.getParameters().getStrings("attachments");
@@ -741,7 +716,8 @@ public class MsgboardUtils {
     }
     // 送られてきたFileIDの個数とDB上の当該TopicID中の添付ファイル検索を行った結果の個数が一致したら、
     // 変更が無かったとみなし、trueを返して終了。
-    SelectQuery dbquery = new SelectQuery(EipTMsgboardFile.class);
+    SelectQuery<EipTMsgboardFile> dbquery =
+      Database.query(EipTMsgboardFile.class);
     dbquery.andQualifier(ExpressionFactory.matchDbExp(
       EipTMsgboardFile.EIP_TMSGBOARD_TOPIC_PROPERTY,
       topic.getTopicId()));
@@ -751,15 +727,15 @@ public class MsgboardUtils {
         fileids[i]));
     }
 
-    @SuppressWarnings("unchecked")
-    List<EipTMsgboardFile> files = dataContext.performQuery(dbquery);
+    List<EipTMsgboardFile> files = dbquery.fetchList();
 
     if (files.size() == fileIDsize
       && (fileuploadList == null || fileuploadList.size() <= 0)) {
       return true;
     }
 
-    SelectQuery query = new SelectQuery(EipTMsgboardFile.class);
+    SelectQuery<EipTMsgboardFile> query =
+      Database.query(EipTMsgboardFile.class);
     query.andQualifier(ExpressionFactory.matchDbExp(
       EipTMsgboardFile.EIP_TMSGBOARD_TOPIC_PROPERTY,
       topic.getTopicId()));
@@ -771,8 +747,8 @@ public class MsgboardUtils {
       query.andQualifier(exp.notExp());
     }
     // DB上でトピックに属すが、送られてきたFileIDにIDが含まれていないファイルのリスト(削除されたファイルのリスト)
-    @SuppressWarnings("unchecked")
-    List<EipTMsgboardFile> delFiles = dataContext.performQuery(query);
+
+    List<EipTMsgboardFile> delFiles = query.fetchList();
 
     if (delFiles.size() > 0) {
       // ローカルファイルに保存されているファイルを削除する．
@@ -787,7 +763,7 @@ public class MsgboardUtils {
         }
       }
       // データベースから添付ファイルのデータ削除
-      dataContext.deleteObjects(delFiles);
+      Database.deleteAll(delFiles);
     }
 
     // 追加ファイルが無ければtrueを返して終了
@@ -821,9 +797,7 @@ public class MsgboardUtils {
             uid));
 
         // 新規オブジェクトモデル
-        EipTMsgboardFile file =
-          (EipTMsgboardFile) dataContext
-            .createAndRegisterNewObject(EipTMsgboardFile.class);
+        EipTMsgboardFile file = Database.create(EipTMsgboardFile.class);
         // 所有者
         file.setOwnerId(Integer.valueOf(uid));
         // トピックID
@@ -857,6 +831,7 @@ public class MsgboardUtils {
       File folder = FileuploadUtils.getFolder(org_id, uid, folderName);
       FileuploadUtils.deleteFolder(folder);
     } catch (Exception e) {
+      Database.rollback();
       logger.error("Exception", e);
       return false;
     }
@@ -919,29 +894,27 @@ public class MsgboardUtils {
 
   public static void shiftWhatsNewReadFlag(RunData rundata, int entityid) {
     int uid = ALEipUtils.getUserId(rundata);
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     boolean isPublic = false;
 
-    SelectQuery query = new SelectQuery(EipTMsgboardTopic.class);
+    SelectQuery<EipTMsgboardTopic> query =
+      Database.query(EipTMsgboardTopic.class);
     Expression exp =
       ExpressionFactory
         .matchExp(EipTMsgboardTopic.PARENT_ID_PROPERTY, entityid);
     query.setQualifier(exp);
-    query.addCustomDbAttribute(EipTMsgboardTopic.TOPIC_ID_PK_COLUMN);
-    query.setDistinct(true);
+    query.select(EipTMsgboardTopic.TOPIC_ID_PK_COLUMN);
+    query.distinct(true);
 
-    @SuppressWarnings("unchecked")
-    List<DataRow> topics = dataContext.performQuery(query);
+    List<EipTMsgboardTopic> topics = query.fetchList();
 
-    query = new SelectQuery(EipTMsgboardTopic.class);
+    query = Database.query(EipTMsgboardTopic.class);
     exp =
       ExpressionFactory.matchDbExp(
         EipTMsgboardTopic.TOPIC_ID_PK_COLUMN,
         entityid);
     query.setQualifier(exp);
 
-    @SuppressWarnings("unchecked")
-    List<EipTMsgboardTopic> topic = dataContext.performQuery(query);
+    List<EipTMsgboardTopic> topic = query.fetchList();
     if (topic != null
       && ((topic.get(0)).getEipTMsgboardCategory().getPublicFlag().equals("T"))) {
       isPublic = true;
@@ -950,13 +923,12 @@ public class MsgboardUtils {
     if (topics != null) {
 
       int size = topics.size();
-      DataRow dataRow = null;
       Integer _id = null;
 
       if (isPublic) {
         for (int i = 0; i < size; i++) {
-          dataRow = topics.get(i);
-          _id = (Integer) dataRow.get(EipTMsgboardTopic.TOPIC_ID_PK_COLUMN);
+          EipTMsgboardTopic record = topics.get(i);
+          _id = record.getTopicId();
           WhatsNewUtils.shiftWhatsNewReadFlagPublic(
             WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
             _id.intValue(),
@@ -964,8 +936,8 @@ public class MsgboardUtils {
         }
       } else {
         for (int i = 0; i < size; i++) {
-          dataRow = topics.get(i);
-          _id = (Integer) dataRow.get(EipTMsgboardTopic.TOPIC_ID_PK_COLUMN);
+          EipTMsgboardTopic record = topics.get(i);
+          _id = record.getTopicId();
           WhatsNewUtils.shiftWhatsNewReadFlag(
             WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
             _id.intValue(),

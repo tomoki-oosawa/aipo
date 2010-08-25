@@ -29,11 +29,8 @@ import java.util.jar.Attributes;
 import javax.mail.Message;
 import javax.mail.internet.MimeUtility;
 
-import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -52,12 +49,15 @@ import com.aimluck.eip.mail.ALFolder;
 import com.aimluck.eip.mail.ALLocalMailMessage;
 import com.aimluck.eip.mail.ALMailFactoryService;
 import com.aimluck.eip.mail.ALMailHandler;
+import com.aimluck.eip.mail.ALMailMessage;
 import com.aimluck.eip.mail.ALPop3MailReceiveThread;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.mail.util.UnicodeCorrecter;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.beans.WebmailAccountLiteBean;
@@ -67,10 +67,11 @@ import com.sk_jp.mail.MailUtility;
 /**
  * Webメール検索データを管理するためのクラスです。 <br />
  */
-public class WebMailSelectData extends ALAbstractSelectData {
+public class WebMailSelectData extends
+    ALAbstractSelectData<EipTMail, ALMailMessage> {
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(WebMailSelectData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WebMailSelectData.class.getName());
 
   /** 現在選択されているタブ (＝受信メール or 送信メール) */
   private String currentTab = null;
@@ -94,8 +95,6 @@ public class WebMailSelectData extends ALAbstractSelectData {
 
   private String org_id;
 
-  private DataContext dataContext;
-
   /** 受信トレイと送信トレイ */
   private ALFolder folder;
 
@@ -103,7 +102,7 @@ public class WebMailSelectData extends ALAbstractSelectData {
   private EipTMailFolder selectedFolder;
 
   /** メールアカウント一覧 */
-  private ArrayList mailAccountList;
+  private List<WebmailAccountLiteBean> mailAccountList;
 
   /** メールフォルダ一覧 */
   private List<EipTMailFolder> mailFolderList;
@@ -128,7 +127,6 @@ public class WebMailSelectData extends ALAbstractSelectData {
     }
 
     org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
     userId = ALEipUtils.getUserId(rundata);
     user = (JetspeedUser) ((JetspeedRunData) rundata).getUser();
 
@@ -193,14 +191,14 @@ public class WebMailSelectData extends ALAbstractSelectData {
       try {
         Expression exp =
           ExpressionFactory.matchExp(EipMMailAccount.USER_ID_PROPERTY, userId);
-        SelectQuery query = new SelectQuery(EipMMailAccount.class, exp);
+        SelectQuery<EipMMailAccount> query =
+          Database.query(EipMMailAccount.class, exp);
 
-        query.addCustomDbAttribute(EipMMailAccount.ACCOUNT_ID_PK_COLUMN);
-        List accounts = dataContext.performQuery(query);
+        query.select(EipMMailAccount.ACCOUNT_ID_PK_COLUMN);
+        List<EipMMailAccount> accounts = query.fetchList();
         if (accounts != null && accounts.size() > 0) {
-          DataRow dataRow = (DataRow) accounts.get(0);
-          accountId =
-            (Integer) dataRow.get(EipMMailAccount.ACCOUNT_ID_PK_COLUMN);
+          EipMMailAccount account = accounts.get(0);
+          accountId = account.getAccountId();
           ALEipUtils.setTemp(rundata, context, WebMailUtils.ACCOUNT_ID, Integer
             .toString(accountId));
         } else {
@@ -273,9 +271,9 @@ public class WebMailSelectData extends ALAbstractSelectData {
   public void loadMailAccountList(RunData rundata, Context context) {
     try {
       // メールアカウント一覧
-      mailAccountList = new ArrayList();
+      mailAccountList = new ArrayList<WebmailAccountLiteBean>();
 
-      List aList =
+      List<EipMMailAccount> aList =
         WebMailUtils.getMailAccountNameList(ALEipUtils.getUserId(rundata));
 
       if (aList == null) {
@@ -283,18 +281,13 @@ public class WebMailSelectData extends ALAbstractSelectData {
       }
 
       WebmailAccountLiteBean bean = null;
-      DataRow dataRow = null;
-      Iterator iter = aList.iterator();
+      Iterator<EipMMailAccount> iter = aList.iterator();
       while (iter.hasNext()) {
-        dataRow = (DataRow) iter.next();
+        EipMMailAccount account = iter.next();
         bean = new WebmailAccountLiteBean();
         bean.initField();
-        bean.setAccountId(((Integer) ALEipUtils.getObjFromDataRow(
-          dataRow,
-          EipMMailAccount.ACCOUNT_ID_PK_COLUMN)).intValue());
-        bean.setAccountName((String) ALEipUtils.getObjFromDataRow(
-          dataRow,
-          EipMMailAccount.ACCOUNT_NAME_COLUMN));
+        bean.setAccountId(account.getAccountId());
+        bean.setAccountName(account.getAccountName());
         mailAccountList.add(bean);
       }
     } catch (Exception ex) {
@@ -309,7 +302,7 @@ public class WebMailSelectData extends ALAbstractSelectData {
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected ResultList selectList(RunData rundata, Context context) {
+  protected ResultList<EipTMail> selectList(RunData rundata, Context context) {
     try {
       if (folder == null) {
         return null;
@@ -340,7 +333,7 @@ public class WebMailSelectData extends ALAbstractSelectData {
       ALEipUtils.setTemp(rundata, context, "unreadmailsummap", unreadMailSumMap
         .toString());
 
-      return new ResultList(folder.getIndexRows(rundata, context));
+      return new ResultList<EipTMail>(folder.getIndexRows(rundata, context));
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -352,7 +345,7 @@ public class WebMailSelectData extends ALAbstractSelectData {
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected ALMailMessage selectDetail(RunData rundata, Context context) {
     String mailid =
       ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
@@ -370,18 +363,14 @@ public class WebMailSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
   @Override
-  protected Object getResultData(Object obj) {
-    DataRow dataRow = (DataRow) obj;
+  protected Object getResultData(EipTMail record) {
 
     WebMailIndexRowResultData rd = new WebMailIndexRowResultData();
     rd.initField();
 
-    rd.setMailId(((Integer) ALEipUtils.getObjFromDataRow(
-      dataRow,
-      EipTMail.MAIL_ID_PK_COLUMN)).toString());
+    rd.setMailId(record.getMailId().toString());
 
-    String isRead =
-      (String) ALEipUtils.getObjFromDataRow(dataRow, EipTMail.READ_FLG_COLUMN);
+    String isRead = record.getReadFlg();
     if ("T".equals(isRead)) {
       rd.setReadImage("themes/"
         + getTheme()
@@ -394,34 +383,22 @@ public class WebMailSelectData extends ALAbstractSelectData {
       rd.setReadImageDescription("未読");
     }
 
-    String s =
-      (String) ALEipUtils.getObjFromDataRow(dataRow, EipTMail.SUBJECT_COLUMN);
+    String s = record.getSubject();
     try {
       s = MimeUtility.decodeText(MimeUtility.unfold(s));
       s = UnicodeCorrecter.correctToCP932(MailUtility.decodeText(s));
       rd.setSubject(ALCommonUtils.compressString(s, getStrLength()));
     } catch (UnsupportedEncodingException unsupportedencodingexception) {
-      rd.setSubject(ALCommonUtils.compressString(MailUtility
-        .decodeText((String) ALEipUtils.getObjFromDataRow(
-          dataRow,
-          EipTMail.SUBJECT_COLUMN)), getStrLength()));
+      rd.setSubject(ALCommonUtils.compressString(MailUtility.decodeText(record
+        .getSubject()), getStrLength()));
     }
 
-    rd.setPerson(MailUtility.decodeText((String) ALEipUtils.getObjFromDataRow(
-      dataRow,
-      EipTMail.PERSON_COLUMN)));
+    rd.setPerson(MailUtility.decodeText(record.getPerson()));
 
-    rd.setDate((Date) ALEipUtils.getObjFromDataRow(
-      dataRow,
-      EipTMail.EVENT_DATE_COLUMN));
-    rd.setFileVolume(((Integer) ALEipUtils.getObjFromDataRow(
-      dataRow,
-      EipTMail.FILE_VOLUME_COLUMN)).toString());
+    rd.setDate(record.getEventDate());
+    rd.setFileVolume(record.getFileVolume().toString());
 
-    boolean hasAttachments =
-      ("T".equals(ALEipUtils.getObjFromDataRow(
-        dataRow,
-        EipTMail.HAS_FILES_COLUMN)));
+    boolean hasAttachments = ("T".equals(record.getHasFiles()));
 
     if (hasAttachments) {
       rd.setWithFilesImage("images/webmail/webmail_withfiles.gif");
@@ -436,7 +413,7 @@ public class WebMailSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
   @Override
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(ALMailMessage obj) {
     WebMailResultData rd = null;
     try {
       ALLocalMailMessage msg = (ALLocalMailMessage) obj;
@@ -505,7 +482,7 @@ public class WebMailSelectData extends ALAbstractSelectData {
    * 
    * @return
    */
-  public List getFolderList() {
+  public List<EipTMailFolder> getFolderList() {
     return mailFolderList;
   }
 
@@ -522,7 +499,7 @@ public class WebMailSelectData extends ALAbstractSelectData {
    * 
    * @return
    */
-  public List getMailAccountList() {
+  public List<WebmailAccountLiteBean> getMailAccountList() {
     return mailAccountList;
   }
 

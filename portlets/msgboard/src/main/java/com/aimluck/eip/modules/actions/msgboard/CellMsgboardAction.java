@@ -36,19 +36,20 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 掲示板のアクションクラス <BR>
- *
+ * 
  */
 public class CellMsgboardAction extends MsgboardAction {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(MsgboardAction.class.getName());
+    .getLogger(MsgboardAction.class.getName());
 
   /** 返信用キー */
   private final String RESULT_ON_TOPIC_DETAIL = "resultOnTopicDetail";
 
   /** 返信用エラーメッセージキー */
-  private final String ERROR_MESSAGE_LIST_ON_TOPIC_DETAIL = "errmsgsOnTopicDetail";
+  private final String ERROR_MESSAGE_LIST_ON_TOPIC_DETAIL =
+    "errmsgsOnTopicDetail";
 
   /** 返信用 result */
   private Object resultOnTopicDetail;
@@ -58,7 +59,7 @@ public class CellMsgboardAction extends MsgboardAction {
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
@@ -66,6 +67,7 @@ public class CellMsgboardAction extends MsgboardAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
 
@@ -73,11 +75,12 @@ public class CellMsgboardAction extends MsgboardAction {
 
   /**
    * 最大化表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
 
@@ -101,11 +104,12 @@ public class CellMsgboardAction extends MsgboardAction {
 
   /**
    * トピック登録のフォームを表示する. <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doMsgboard_topic_form(RunData rundata, Context context)
       throws Exception {
     MsgboardTopicFormData formData = new MsgboardTopicFormData();
@@ -117,11 +121,12 @@ public class CellMsgboardAction extends MsgboardAction {
 
   /**
    * トピックを登録します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doMsgboard_topic_insert(RunData rundata, Context context)
       throws Exception {
     MsgboardTopicFormData formData = new MsgboardTopicFormData();
@@ -144,11 +149,12 @@ public class CellMsgboardAction extends MsgboardAction {
 
   /**
    * トピックを削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doMsgboard_topic_delete(RunData rundata, Context context)
       throws Exception {
     MsgboardTopicFormData formData = new MsgboardTopicFormData();
@@ -168,11 +174,12 @@ public class CellMsgboardAction extends MsgboardAction {
 
   /**
    * 返信記事を削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doMsgboard_topic_reply_delete(RunData rundata, Context context)
       throws Exception {
     MsgboardTopicReplyFormData formData = new MsgboardTopicReplyFormData();
@@ -191,11 +198,12 @@ public class CellMsgboardAction extends MsgboardAction {
 
   /**
    * トピックを削除します。（複数） <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doMsgboard_topic_multi_delete(RunData rundata, Context context)
       throws Exception {
     MsgboardTopicMultiDelete delete = new MsgboardTopicMultiDelete();
@@ -211,11 +219,12 @@ public class CellMsgboardAction extends MsgboardAction {
 
   /**
    * トピックを一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doMsgboard_topic_list(RunData rundata, Context context)
       throws Exception {
     MsgboardTopicSelectData listData = new MsgboardTopicSelectData();
@@ -224,21 +233,24 @@ public class CellMsgboardAction extends MsgboardAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1b-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-        context).getPortletConfig().getInitParameter("p4a-strlen")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1b-rows")));
+    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
+      context).getPortletConfig().getInitParameter("p4a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "msgboard-topic-list");
   }
 
   /**
    * トピックを詳細表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doMsgboard_topic_detail(RunData rundata, Context context)
       throws Exception {
     MsgboardTopicSelectData detailData = new MsgboardTopicSelectData();
@@ -257,8 +269,9 @@ public class CellMsgboardAction extends MsgboardAction {
 
   /**
    * 掲示板で使用したセッション情報を消去する．
-   *
+   * 
    */
+  @Override
   public void clearMsgboardSession(RunData rundata, Context context) {
     List<String> list = new ArrayList<String>();
     list.add("entityid");
@@ -275,7 +288,7 @@ public class CellMsgboardAction extends MsgboardAction {
 
   /**
    * 返信フォームを表示する. <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -291,11 +304,12 @@ public class CellMsgboardAction extends MsgboardAction {
 
   /**
    * トピックに返信します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
+  @Override
   public void doMsgboard_topic_reply(RunData rundata, Context context)
       throws Exception {
     MsgboardTopicReplyFormData formData = new MsgboardTopicReplyFormData();
@@ -309,33 +323,37 @@ public class CellMsgboardAction extends MsgboardAction {
   }
 
   /**
-   *
+   * 
    * @param obj
    */
+  @Override
   public void setResultDataOnTopicDetail(Object obj) {
     resultOnTopicDetail = obj;
   }
 
   /**
-   *
+   * 
    * @param msg
    */
+  @Override
   public void addErrorMessagesOnTopicDetail(List<String> msgs) {
-    if (errmsgListOnTopicDetail == null)
+    if (errmsgListOnTopicDetail == null) {
       errmsgListOnTopicDetail = new ArrayList<String>();
+    }
     errmsgListOnTopicDetail.addAll(msgs);
   }
 
   /**
-   *
+   * 
    * @param context
    */
+  @Override
   public void putDataOnTopicDetail(RunData rundata, Context context) {
     context.put(RESULT_ON_TOPIC_DETAIL, resultOnTopicDetail);
     context.put(ERROR_MESSAGE_LIST_ON_TOPIC_DETAIL, errmsgListOnTopicDetail);
 
     // For security
     context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(
-        ALEipConstants.SECURE_ID));
+      ALEipConstants.SECURE_ID));
   }
 }

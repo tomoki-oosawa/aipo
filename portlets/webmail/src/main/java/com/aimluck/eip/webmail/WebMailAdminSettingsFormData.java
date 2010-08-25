@@ -38,7 +38,7 @@ import com.aimluck.eip.mail.util.ALMailUtils;
 public class WebMailAdminSettingsFormData extends ALAbstractFormData {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WebMailAdminSettingsFormData.class.getName());
+    .getLogger(WebMailAdminSettingsFormData.class.getName());
 
   private static final int FLG_NOTIFY_NONCHECKED = 0;
 
@@ -117,36 +117,41 @@ public class WebMailAdminSettingsFormData extends ALAbstractFormData {
     notify_time_minute.setValue(0);
   }
 
+  @Override
   protected void setValidator() throws ALPageNotFoundException,
       ALDBErrorException {
   }
 
-  protected boolean validate(List<String> msgList) throws ALPageNotFoundException,
-      ALDBErrorException {
+  @Override
+  protected boolean validate(List<String> msgList)
+      throws ALPageNotFoundException, ALDBErrorException {
     return true;
   }
 
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
     setNotifyFlg(pc_flg_blog, cell_flg_blog, ALMailUtils
-        .getSendDestType(ALMailUtils.KEY_MSGTYPE_BLOG));
+      .getSendDestType(ALMailUtils.KEY_MSGTYPE_BLOG));
     setNotifyFlg(pc_flg_note, cell_flg_note, ALMailUtils
-        .getSendDestType(ALMailUtils.KEY_MSGTYPE_NOTE));
+      .getSendDestType(ALMailUtils.KEY_MSGTYPE_NOTE));
     setNotifyFlg(pc_flg_schedule, cell_flg_schedule, ALMailUtils
-        .getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE));
+      .getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE));
     setNotifyFlg(pc_flg_workflow, cell_flg_workflow, ALMailUtils
-        .getSendDestType(ALMailUtils.KEY_MSGTYPE_WORKFLOW));
+      .getSendDestType(ALMailUtils.KEY_MSGTYPE_WORKFLOW));
 
     String timestr = ALMailUtils.getNotifyTime();
     notify_time_hour.setValue(timestr.charAt(0) == '0' ? timestr
-        .substring(1, 2) : timestr.substring(0, 2));
-    notify_time_minute.setValue(timestr.charAt(3) == '0' ? timestr.substring(4,
-        5) : timestr.substring(3, 5));
+      .substring(1, 2) : timestr.substring(0, 2));
+    notify_time_minute.setValue(timestr.charAt(3) == '0' ? timestr.substring(
+      4,
+      5) : timestr.substring(3, 5));
 
     return true;
   }
 
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res = super.setFormData(rundata, context, msgList);
@@ -183,29 +188,35 @@ public class WebMailAdminSettingsFormData extends ALAbstractFormData {
     return res;
   }
 
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     return false;
   }
 
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
     try {
       ALMailUtils.setSendDestType(ALMailUtils.KEY_MSGTYPE_BLOG, msg_type_blog);
       ALMailUtils.setSendDestType(ALMailUtils.KEY_MSGTYPE_NOTE, msg_type_note);
-      ALMailUtils.setSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE,
-          msg_type_schedule);
-      ALMailUtils.setSendDestType(ALMailUtils.KEY_MSGTYPE_WORKFLOW,
-          msg_type_workflow);
-      ALMailUtils.setNotifyTime((int) notify_time_hour.getValue(),
-          (int) notify_time_minute.getValue());
+      ALMailUtils.setSendDestType(
+        ALMailUtils.KEY_MSGTYPE_SCHEDULE,
+        msg_type_schedule);
+      ALMailUtils.setSendDestType(
+        ALMailUtils.KEY_MSGTYPE_WORKFLOW,
+        msg_type_workflow);
+      ALMailUtils.setNotifyTime(
+        (int) notify_time_hour.getValue(),
+        (int) notify_time_minute.getValue());
     } catch (Exception e) {
       logger.error("Exception", e);
     }
     return true;
   }
 
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     return false;
@@ -225,7 +236,7 @@ public class WebMailAdminSettingsFormData extends ALAbstractFormData {
 
   /**
    * メール送信時のメッセージ種別(スケジュール)
-   *
+   * 
    * @return
    */
   public ALNumberField getPcFlgSchedule() {
@@ -234,7 +245,7 @@ public class WebMailAdminSettingsFormData extends ALAbstractFormData {
 
   /**
    * メール送信時のメッセージ種別(スケジュール)
-   *
+   * 
    * @return
    */
   public ALNumberField getCellFlgSchedule() {
@@ -243,7 +254,7 @@ public class WebMailAdminSettingsFormData extends ALAbstractFormData {
 
   /**
    * メール送信時のメッセージ種別(伝言メモ)
-   *
+   * 
    * @return
    */
   public ALNumberField getPcFlgNote() {
@@ -252,7 +263,7 @@ public class WebMailAdminSettingsFormData extends ALAbstractFormData {
 
   /**
    * メール送信時のメッセージ種別(伝言メモ)
-   *
+   * 
    * @return
    */
   public ALNumberField getCellFlgNote() {
@@ -261,7 +272,7 @@ public class WebMailAdminSettingsFormData extends ALAbstractFormData {
 
   /**
    * メール送信時のメッセージ種別(ブログ)
-   *
+   * 
    * @return
    */
   public ALNumberField getPcFlgBlog() {
@@ -270,7 +281,7 @@ public class WebMailAdminSettingsFormData extends ALAbstractFormData {
 
   /**
    * メール送信時のメッセージ種別(ブログ)
-   *
+   * 
    * @return
    */
   public ALNumberField getCellFlgBlog() {
@@ -279,7 +290,7 @@ public class WebMailAdminSettingsFormData extends ALAbstractFormData {
 
   /**
    * メール送信時のメッセージ種別(ワークフロー)
-   *
+   * 
    * @return
    */
   public ALNumberField getPcFlgWorkflow() {
@@ -288,7 +299,7 @@ public class WebMailAdminSettingsFormData extends ALAbstractFormData {
 
   /**
    * メール送信時のメッセージ種別(ワークフロー)
-   *
+   * 
    * @return
    */
   public ALNumberField getCellFlgWorkflow() {
@@ -297,14 +308,14 @@ public class WebMailAdminSettingsFormData extends ALAbstractFormData {
 
   /**
    * メール通知時間
-   *
+   * 
    * @return
    */
   public int getNotifyTimeHour() {
-    return (int)notify_time_hour.getValue();
+    return (int) notify_time_hour.getValue();
   }
 
-  public int getNotifyTimeMinute(){
-    return (int)notify_time_minute.getValue();
+  public int getNotifyTimeMinute() {
+    return (int) notify_time_minute.getValue();
   }
 }

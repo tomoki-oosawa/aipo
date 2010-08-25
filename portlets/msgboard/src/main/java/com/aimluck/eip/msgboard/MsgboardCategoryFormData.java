@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.cayenne.DataObjectUtils;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -44,7 +42,7 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.msgboard.util.MsgboardUtils;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
@@ -82,8 +80,6 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
   /** <code>groups</code> グループ */
   private List<ALEipGroup> groups;
 
-  private DataContext dataContext;
-
   /** 他人のカテゴリ編集権限 */
   private boolean authority_edit;
 
@@ -103,15 +99,19 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
     login_user = ALEipUtils.getALEipUser(rundata);
     groups = ALEipUtils.getMyGroups(rundata);
 
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
+    authority_edit =
+      MsgboardUtils.checkPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_UPDATE,
+        ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY_OTHER);
 
-    authority_edit = MsgboardUtils.checkPermission(rundata, context,
-      ALAccessControlConstants.VALUE_ACL_UPDATE,
-      ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY_OTHER);
-
-    authority_delete = MsgboardUtils.checkPermission(rundata, context,
-      ALAccessControlConstants.VALUE_ACL_DELETE,
-      ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY_OTHER);
+    authority_delete =
+      MsgboardUtils.checkPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_DELETE,
+        ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY_OTHER);
 
     // スーパークラスのメソッドを呼び出す。
     super.init(action, rundata, context);
@@ -201,8 +201,8 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
       int uid = (int) login_user.getUserId().getValue();
 
       // オブジェクトモデルを取得
-      EipTMsgboardCategory category = MsgboardUtils.getEipTMsgboardCategory(
-        rundata, context, true);
+      EipTMsgboardCategory category =
+        MsgboardUtils.getEipTMsgboardCategory(rundata, context, true);
       if (category == null) {
         return false;
       }
@@ -211,16 +211,19 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
       // メモ
       note.setValue(category.getNote());
       // 公開区分
-      boolean public_flag = (MsgboardUtils.PUBLIC_FLG_VALUE_PUBLIC)
-        .equals(category.getPublicFlag());
+      boolean public_flag =
+        (MsgboardUtils.PUBLIC_FLG_VALUE_PUBLIC)
+          .equals(category.getPublicFlag());
 
       // このカテゴリを共有しているメンバーを取得
-      SelectQuery mapquery = new SelectQuery(EipTMsgboardCategoryMap.class);
-      Expression mapexp = ExpressionFactory.matchDbExp(
-        EipTMsgboardCategory.CATEGORY_ID_PK_COLUMN, category.getCategoryId());
+      SelectQuery<EipTMsgboardCategoryMap> mapquery =
+        Database.query(EipTMsgboardCategoryMap.class);
+      Expression mapexp =
+        ExpressionFactory.matchDbExp(
+          EipTMsgboardCategory.CATEGORY_ID_PK_COLUMN,
+          category.getCategoryId());
       mapquery.setQualifier(mapexp);
 
-      @SuppressWarnings("unchecked")
       List<EipTMsgboardCategoryMap> list = mapquery.fetchList();
 
       List<Integer> users = new ArrayList<Integer>();
@@ -233,9 +236,9 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
         }
       }
 
-      SelectQuery query = new SelectQuery(TurbineUser.class);
-      Expression exp = ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN,
-        users);
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+      Expression exp =
+        ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, users);
       query.setQualifier(exp);
       memberList.addAll(ALEipUtils.getUsersFromSelectQuery(query));
 
@@ -279,13 +282,13 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     try {
-      TurbineUser tuser = (TurbineUser) DataObjectUtils.objectForPK(
-        dataContext, TurbineUser.class, Integer.valueOf(ALEipUtils
+      TurbineUser tuser =
+        Database.get(TurbineUser.class, Integer.valueOf(ALEipUtils
           .getUserId(rundata)));
 
       // 新規オブジェクトモデル
-      EipTMsgboardCategory category = (EipTMsgboardCategory) dataContext
-        .createAndRegisterNewObject(EipTMsgboardCategory.class);
+      EipTMsgboardCategory category =
+        Database.create(EipTMsgboardCategory.class);
       // カテゴリ名
       category.setCategoryName(category_name.getValue());
       // メモ
@@ -307,8 +310,8 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
 
       int size = memberList.size();
       for (int i = 0; i < size; i++) {
-        EipTMsgboardCategoryMap map = (EipTMsgboardCategoryMap) dataContext
-          .createAndRegisterNewObject(EipTMsgboardCategoryMap.class);
+        EipTMsgboardCategoryMap map =
+          Database.create(EipTMsgboardCategoryMap.class);
         ALEipUser user = memberList.get(i);
         int userid = (int) user.getUserId().getValue();
         map.setEipTMsgboardCategory(category);
@@ -328,7 +331,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
       }
 
       // 掲示板カテゴリを登録
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -337,7 +340,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
         category.getCategoryName());
 
     } catch (Exception e) {
-      // TODO: エラー処理
+      Database.rollback();
       logger.error("[MsgboardFormData]", e);
       throw new ALDBErrorException();
     }
@@ -359,8 +362,8 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     try {
       // オブジェクトモデルを取得
-      EipTMsgboardCategory category = MsgboardUtils.getEipTMsgboardCategory(
-        rundata, context, true);
+      EipTMsgboardCategory category =
+        MsgboardUtils.getEipTMsgboardCategory(rundata, context, true);
       if (category == null) {
         return false;
       }
@@ -382,19 +385,21 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
       // 更新日
       category.setUpdateDate(Calendar.getInstance().getTime());
 
-      SelectQuery mapquery = new SelectQuery(EipTMsgboardCategoryMap.class);
-      Expression mapexp = ExpressionFactory.matchExp(
-        EipTMsgboardCategoryMap.CATEGORY_ID_PROPERTY, category.getCategoryId());
+      SelectQuery<EipTMsgboardCategoryMap> mapquery =
+        Database.query(EipTMsgboardCategoryMap.class);
+      Expression mapexp =
+        ExpressionFactory.matchExp(
+          EipTMsgboardCategoryMap.CATEGORY_ID_PROPERTY,
+          category.getCategoryId());
       mapquery.setQualifier(mapexp);
 
-      @SuppressWarnings("unchecked")
       List<EipTMsgboardCategoryMap> maplist = mapquery.fetchList();
-      dataContext.deleteObjects(maplist);
+      Database.deleteAll(maplist);
 
       int size = memberList.size();
       for (int i = 0; i < size; i++) {
-        EipTMsgboardCategoryMap map = (EipTMsgboardCategoryMap) dataContext
-          .createAndRegisterNewObject(EipTMsgboardCategoryMap.class);
+        EipTMsgboardCategoryMap map =
+          Database.create(EipTMsgboardCategoryMap.class);
         ALEipUser user = memberList.get(i);
         int userid = (int) user.getUserId().getValue();
         map.setEipTMsgboardCategory(category);
@@ -412,7 +417,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
           map.setStatus(MsgboardUtils.STAT_VALUE_SHARE);
         }
       }
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -421,6 +426,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
         category.getCategoryName());
 
     } catch (Exception e) {
+      Database.rollback();
       // TODO: エラー処理
       logger.error("[MsgboardFormData]", e);
       throw new ALDBErrorException();
@@ -443,8 +449,8 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     try {
       // オブジェクトモデルを取得
-      EipTMsgboardCategory category = MsgboardUtils.getEipTMsgboardCategory(
-        rundata, context, true);
+      EipTMsgboardCategory category =
+        MsgboardUtils.getEipTMsgboardCategory(rundata, context, true);
       if (category == null) {
         return false;
       }
@@ -459,14 +465,15 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_MSGBOARD_CATEGORY,
         category.getCategoryName());
 
-      dataContext.deleteObject(category);
-      dataContext.commitChanges();
+      Database.delete(category);
+      Database.commit();
 
       // 一覧表示画面のフィルタに設定されているカテゴリのセッション情報を削除
-      String filtername = MsgboardTopicSelectData.class.getName()
-        + ALEipConstants.LIST_FILTER;
+      String filtername =
+        MsgboardTopicSelectData.class.getName() + ALEipConstants.LIST_FILTER;
       ALEipUtils.removeTemp(rundata, context, filtername);
     } catch (Exception e) {
+      Database.rollback();
       // TODO: エラー処理
       logger.error("[MsgboardFormData]", e);
       throw new ALDBErrorException();
@@ -507,9 +514,9 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
           memberList.add(login_user);
         }
 
-        SelectQuery query = new SelectQuery(TurbineUser.class);
-        Expression exp = ExpressionFactory.inExp(
-          TurbineUser.LOGIN_NAME_PROPERTY, str);
+        SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+        Expression exp =
+          ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY, str);
         query.setQualifier(exp);
         memberList.addAll(ALEipUtils.getUsersFromSelectQuery(query));
       }

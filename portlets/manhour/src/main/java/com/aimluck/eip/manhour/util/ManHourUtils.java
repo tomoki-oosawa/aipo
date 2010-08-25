@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,22 +29,22 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 工数管理のユーティリティクラスです。 <br />
- *
+ * 
  */
 public class ManHourUtils {
 
   /** logger */
+  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ManHourUtils.class.getName());
+    .getLogger(ManHourUtils.class.getName());
 
   public static final String VIEW_DATE_YEAR = "view_date_year";
 
   public static final String VIEW_DATE_MONTH = "view_date_month";
 
-
   /**
    * 表示切り替えで指定した月を取得する．
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -55,7 +55,7 @@ public class ManHourUtils {
     view_date_month = ALEipUtils.getTemp(rundata, context, VIEW_DATE_MONTH);
     if (idParam == null && view_date_month == null) {
       Calendar cal = Calendar.getInstance();
-      view_date_month = Integer.toString(cal.get(Calendar.MONTH)+1);
+      view_date_month = Integer.toString(cal.get(Calendar.MONTH) + 1);
       ALEipUtils.setTemp(rundata, context, VIEW_DATE_MONTH, view_date_month);
     } else if (idParam != null) {
       ALEipUtils.setTemp(rundata, context, VIEW_DATE_MONTH, idParam);
@@ -66,7 +66,7 @@ public class ManHourUtils {
 
   /**
    * 表示切り替えで指定した年を取得する．
-   *
+   * 
    * @param rundata
    * @param context
    * @return

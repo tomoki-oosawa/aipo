@@ -32,9 +32,10 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 掲示板トピックのResultData <BR>
- *
+ * 
  */
 public class MsgboardTopicResultData implements ALData {
+
   /** トピック ID */
   private ALNumberField topic_id;
 
@@ -81,7 +82,7 @@ public class MsgboardTopicResultData implements ALData {
   private List<FileuploadBean> attachmentFileList = null;
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -266,7 +267,7 @@ public class MsgboardTopicResultData implements ALData {
 
   /**
    * 公開/非公開フラグ．
-   *
+   * 
    * @return
    */
   public boolean isPublic() {

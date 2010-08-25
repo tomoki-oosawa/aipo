@@ -75,7 +75,6 @@ public class WhatsNewUtils {
   /**
    * 新着情報追加(個別新着情報)
    * 
-   * @param dataContext
    * @param type
    * @param entityid
    * @param uid
@@ -123,7 +122,6 @@ public class WhatsNewUtils {
   /**
    * 新着情報追加(全員向け新着情報)
    * 
-   * @param dataContext
    * @param type
    * @param entityid
    * @param uid
@@ -353,21 +351,6 @@ public class WhatsNewUtils {
     }
 
     if (WhatsNewUtils.WHATS_NEW_TYPE_BLOG_ENTRY == type) {
-
-      /** 保持件数以上のレコードに対して既読させる */
-      /*
-       * int denysize = deny_whatsnew.size(); Date date_object = new Date();
-       * 
-       * if (denysize > 0) { dataContext =
-       * DatabaseOrmService.getInstance().getDataContext(); for (int i = 0; i <
-       * denysize; i++) { EipTWhatsNew whatsnew = (EipTWhatsNew) dataContext
-       * .createAndRegisterNewObject(EipTWhatsNew.class);
-       * whatsnew.setUserId(uid); whatsnew.setPortletType(type);
-       * whatsnew.setParentId((deny_whatsnew.get(i)).getWhatsNewId());
-       * whatsnew.setEntityId((deny_whatsnew.get(i)).getEntityId());
-       * whatsnew.setUpdateDate(date_object);
-       * whatsnew.setCreateDate(date_object); } dataContext.commitChanges(); }
-       */
 
       Expression exp =
         ExpressionFactory.inDbExp(EipTBlogEntry.ENTRY_ID_PK_COLUMN, eids);

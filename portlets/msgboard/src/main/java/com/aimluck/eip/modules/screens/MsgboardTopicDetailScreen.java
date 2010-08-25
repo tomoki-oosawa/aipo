@@ -33,19 +33,21 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 掲示板トピックの詳細画面を処理するクラスです。 <br />
- *
+ * 
  */
 
 public class MsgboardTopicDetailScreen extends ALVelocityScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(MsgboardTopicDetailScreen.class.getName());
+    .getLogger(MsgboardTopicDetailScreen.class.getName());
 
   /** 返信用キー */
   private final String RESULT_ON_TOPIC_DETAIL = "resultOnTopicDetail";
 
   /** 返信用エラーメッセージキー */
-  private final String ERROR_MESSAGE_LIST_ON_TOPIC_DETAIL = "errmsgsOnTopicDetail";
+  private final String ERROR_MESSAGE_LIST_ON_TOPIC_DETAIL =
+    "errmsgsOnTopicDetail";
 
   /** 返信用 result */
   private Object resultOnTopicDetail;
@@ -66,7 +68,7 @@ public class MsgboardTopicDetailScreen extends ALVelocityScreen {
       if (detailData.showReplyForm()) {
         MsgboardTopicReplyFormData formData = new MsgboardTopicReplyFormData();
         formData
-            .setAclPortletFeature(ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC_REPLY);
+          .setAclPortletFeature(ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC_REPLY);
         formData.initField();
         formData.doViewForm(this, rundata, context);
       }
@@ -81,7 +83,7 @@ public class MsgboardTopicDetailScreen extends ALVelocityScreen {
   }
 
   /**
-   *
+   * 
    * @param obj
    */
   public void setResultDataOnTopicDetail(Object obj) {
@@ -89,17 +91,18 @@ public class MsgboardTopicDetailScreen extends ALVelocityScreen {
   }
 
   /**
-   *
+   * 
    * @param msg
    */
   public void addErrorMessagesOnTopicDetail(List<String> msgs) {
-    if (errmsgListOnTopicDetail == null)
+    if (errmsgListOnTopicDetail == null) {
       errmsgListOnTopicDetail = new ArrayList<String>();
+    }
     errmsgListOnTopicDetail.addAll(msgs);
   }
 
   /**
-   *
+   * 
    * @param context
    */
   public void putDataOnTopicDetail(RunData rundata, Context context) {

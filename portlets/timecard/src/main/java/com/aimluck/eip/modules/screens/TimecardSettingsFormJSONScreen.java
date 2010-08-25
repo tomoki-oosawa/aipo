@@ -31,12 +31,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカード集計をJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class TimecardSettingsFormJSONScreen extends ALJSONScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(TimecardSettingsFormJSONScreen.class.getName());
+    .getLogger(TimecardSettingsFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -50,8 +51,8 @@ public class TimecardSettingsFormJSONScreen extends ALJSONScreen {
       formData.initField();
       if (formData.doUpdate(this, rundata, context)) {
       } else {
-        JSONArray json = JSONArray.fromObject(context
-            .get(ALEipConstants.ERROR_MESSAGE_LIST));
+        JSONArray json =
+          JSONArray.fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
         result = json.toString();
       }
     } catch (Exception e) {

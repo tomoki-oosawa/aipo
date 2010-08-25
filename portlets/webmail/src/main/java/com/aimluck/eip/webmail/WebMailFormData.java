@@ -45,6 +45,7 @@ import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
@@ -65,8 +66,9 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
  * Webメールフォームデータを管理するためのクラスです。 <br />
  */
 public class WebMailFormData extends ALAbstractFormData {
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(WebMailFormData.class.getName());
+
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WebMailFormData.class.getName());
 
   /** 件名の最大文字数 */
   private final int FIELD_SUBJECT_MAX_LEN = 256;
@@ -108,7 +110,7 @@ public class WebMailFormData extends ALAbstractFormData {
   private ALStringField body = null;
 
   /** 添付ファイルリスト */
-  private List fileuploadList = null;
+  private List<FileuploadLiteBean> fileuploadList = null;
 
   private String folderName = null;
 
@@ -174,7 +176,7 @@ public class WebMailFormData extends ALAbstractFormData {
     body.setFieldName("本文");
     body.setTrim(false);
 
-    fileuploadList = new ArrayList();
+    fileuploadList = new ArrayList<FileuploadLiteBean>();
   }
 
   /**
@@ -225,47 +227,6 @@ public class WebMailFormData extends ALAbstractFormData {
     }
     subject.validate(msgList);
     body.validate(msgList);
-
-    /*
-     * StringBuffer sb = new StringBuffer(); String toErr =
-     * checkUnusualChar(to.getValue()); if (toErr != null && !toErr.equals(""))
-     * { sb.append( "『 <span class='em'>宛名 </span> 』に次の機種依存文字が含まれています ： " +
-     * toErr + " <br> "); }
-     * 
-     * String ccErr = checkUnusualChar(cc.getValue()); if (ccErr != null &&
-     * !ccErr.equals("")) { sb.append( "『 <span class='em'>CC </span>
-     * 』に次の機種依存文字が含まれています ： " + ccErr + " <br> "); }
-     * 
-     * String bccErr = checkUnusualChar(bcc.getValue()); if (bccErr != null &&
-     * !bccErr.equals("")) { sb.append( "『 <span class='em'>BCC </span>
-     * 』に次の機種依存文字が含まれています ： " + bccErr + " <br> "); }
-     * 
-     * String subjectErr = checkUnusualChar(subject.getValue()); if (subjectErr
-     * != null && !subjectErr.equals("")) { sb.append( "『 <span class='em'>件名
-     * </span> 』に次の機種依存文字が含まれています ： " + subjectErr + " <br> "); }
-     * 
-     * String bodyErr = checkUnusualChar(body.getValue()); if (bodyErr != null
-     * && !bodyErr.equals("")) { sb.append( "『 <span class='em'>本文 </span>
-     * 』に次の機種依存文字が含まれています ： " + bodyErr + " <br> "); }
-     * 
-     * int length = attachmentFileNameList.size(); AttachmentFile attachmentFile
-     * = null; String attachmentFileErr = ""; String tmpErr = null; for (int i =
-     * 0; i < length; i++) { attachmentFile = (AttachmentFile)
-     * attachmentFileNameList.get(i); if(i == 0){ tmpErr =
-     * checkUnusualChar(attachmentFile.getFileName().getValue()); if(tmpErr !=
-     * null && !tmpErr.equals("")){ attachmentFileErr += tmpErr; } }else{ tmpErr
-     * = checkUnusualChar(attachmentFile.getFileName().getValue()); if(tmpErr !=
-     * null && !tmpErr.equals("")){ if(attachmentFileErr.equals("")){
-     * attachmentFileErr += tmpErr; }else{ attachmentFileErr = attachmentFileErr
-     * + "," + tmpErr; } } } } if (attachmentFileErr != null &&
-     * !attachmentFileErr.equals("")) { sb.append( "『 <span class='em'>添付ファイル
-     * </span> 』に次の機種依存文字が含まれています ： " + attachmentFileErr + " <br> "); }
-     * 
-     * if (sb.length() > 0) {
-     * sb.append("送信先では正しく表示されない可能性があるため、機種依存文字の入力を制限しています。 <br> "); sb.append(
-     * " <a href=\"javascript:open_help()\"> <span>Aipo で入力できる機種依存文字はこちらを参照ください。
-     * </span> </a>"); msgList.add(sb.toString()); }
-     */
     return (msgList.size() == 0);
   }
 
@@ -325,7 +286,7 @@ public class WebMailFormData extends ALAbstractFormData {
         int size = fileuploadList.size();
         attachmentFilepaths = new String[size];
         for (int i = 0; i < size; i++) {
-          filebean = (FileuploadLiteBean) fileuploadList.get(i);
+          filebean = fileuploadList.get(i);
           file =
             FileuploadUtils.getAbsolutePath(
               org_id,
@@ -342,7 +303,7 @@ public class WebMailFormData extends ALAbstractFormData {
       }
 
       // 返信メールの場合は，ヘッダを追加する．
-      Map map = null;
+      Map<String, String> map = null;
       if (getMailType().getValue() == TYPE_REPLY_MAIL) {
         ALLocalMailMessage msg = null;
         try {
@@ -360,7 +321,7 @@ public class WebMailFormData extends ALAbstractFormData {
         String in_reply_tos = msg.getMessageID();
         StringBuffer reference = new StringBuffer();
         String[] references = msg.getHeader("References");
-        map = new LinkedHashMap();
+        map = new LinkedHashMap<String, String>();
         if (references != null && references.length > 0) {
           reference.append(ALMailUtils.getOneString(references, " "));
         }
@@ -698,11 +659,11 @@ public class WebMailFormData extends ALAbstractFormData {
    * 
    * @return
    */
-  public Map getPostMap() {
+  public Map<Integer, ALEipPost> getPostMap() {
     return ALEipManager.getInstance().getPostMap();
   }
 
-  public List getAttachmentFileNameList() {
+  public List<FileuploadLiteBean> getAttachmentFileNameList() {
     return fileuploadList;
   }
 

@@ -26,22 +26,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.query.SelectQuery;
-
 import com.aimluck.commons.field.ALDateField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimecardSettings;
 import com.aimluck.eip.common.ALData;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.timecard.util.TimecardUtils;
 
 /**
  * 一日分のタイムカード(出勤・退勤の履歴)を保持する。<br>
  * 一日ごとの勤務時間・残業時間などを計算し、その結果を保持する。
- *
- *
+ * 
+ * 
  */
 public class TimecardSummaryResultData implements ALData {
 
@@ -69,10 +67,8 @@ public class TimecardSummaryResultData implements ALData {
 
   private ALStringField sotai = null;
 
-  private DataContext dataContext;
-
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -93,12 +89,10 @@ public class TimecardSummaryResultData implements ALData {
     kyushutsu = new ALNumberField(0);
     chikoku = new ALStringField();
     sotai = new ALStringField();
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   /**
-   *
+   * 
    * @param date
    */
   public void setDate(Date date) {
@@ -113,7 +107,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALNumberField getKyushutsu() {
@@ -121,7 +115,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @param kyushutsu
    */
   public void setKyushutsu(ALNumberField kyushutsu) {
@@ -129,7 +123,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALNumberField getShugyo() {
@@ -137,7 +131,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALStringField getShugyoStr() {
@@ -145,7 +139,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @param shugyo
    */
   public void setShugyo(ALNumberField shugyo) {
@@ -153,7 +147,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALNumberField getJikannai() {
@@ -161,7 +155,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALStringField getJikannaiStr() {
@@ -169,7 +163,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALNumberField getJikannai1() {
@@ -177,7 +171,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALStringField getJikannai1Str() {
@@ -185,7 +179,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALNumberField getJikannai2() {
@@ -193,7 +187,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALStringField getJikannai2Str() {
@@ -201,7 +195,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALNumberField getZangyo() {
@@ -209,7 +203,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALStringField getZangyoStr() {
@@ -217,7 +211,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @param zangyo
    */
   public void setZangyo(ALNumberField zangyo) {
@@ -225,7 +219,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALNumberField getZangyo1() {
@@ -233,7 +227,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALStringField getZangyo1Str() {
@@ -241,7 +235,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALNumberField getZangyo2() {
@@ -249,7 +243,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALStringField getZangyo2Str() {
@@ -257,7 +251,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALStringField getChikoku() {
@@ -265,7 +259,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALStringField getSotai() {
@@ -273,20 +267,20 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @param minute
    * @return
    */
   private String minuteToHour(long minute) {
     BigDecimal decimal = new BigDecimal(minute / 60.0);
     DecimalFormat dformat = new DecimalFormat("##.#");
-    String str = dformat.format(decimal.setScale(1, BigDecimal.ROUND_FLOOR)
-        .doubleValue());
+    String str =
+      dformat.format(decimal.setScale(1, BigDecimal.ROUND_FLOOR).doubleValue());
     return str;
   }
 
   /**
-   *
+   * 
    * @return
    */
   public String getDateStr() {
@@ -299,7 +293,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public List<TimecardResultData> getList() {
@@ -307,7 +301,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public List<TimecardResultData> getViewList() {
@@ -326,7 +320,7 @@ public class TimecardSummaryResultData implements ALData {
   }
 
   /**
-   *
+   * 
    * @param rd
    */
   public void addTimecardResultData(TimecardResultData rd) {
@@ -335,7 +329,7 @@ public class TimecardSummaryResultData implements ALData {
 
   /**
    * 就業時間、残業時間などを計算する。
-   *
+   * 
    */
   public void calc() {
     try {
@@ -370,36 +364,43 @@ public class TimecardSummaryResultData implements ALData {
           startDate = rd.getWorkDate().getValue();
           // 出勤データが連続するときは、退勤データを挿入
           if (startflg == true) {
-            tempList.add(createTimecardResultData(startDate,
-                TimecardUtils.WORK_FLG_OFF));
+            tempList.add(createTimecardResultData(
+              startDate,
+              TimecardUtils.WORK_FLG_OFF));
           }
 
           tempList.add(rd);
           startflg = true;
 
-        } else if (TimecardUtils.WORK_FLG_OFF.equals(rd.getWorkFlag()
-            .getValue())) {
+        } else if (TimecardUtils.WORK_FLG_OFF.equals(rd
+          .getWorkFlag()
+          .getValue())) {
           // 日の最初が出勤ではないときは、0:00のデータを追加する
           // 退勤データが連続するときは、出勤データを挿入
           if (startflg == false) {
-            tempList.add(createTimecardResultData(startDate,
-                TimecardUtils.WORK_FLG_ON));
+            tempList.add(createTimecardResultData(
+              startDate,
+              TimecardUtils.WORK_FLG_ON));
           }
 
           endDate = rd.getWorkDate().getValue();
 
           // 勤務時間内外の区切るを挿入
           if (kinmuStartDate.after(startDate) && kinmuStartDate.before(endDate)) {
-            tempList.add(createTimecardResultData(kinmuStartDate,
-                TimecardUtils.WORK_FLG_OFF));
-            tempList.add(createTimecardResultData(kinmuStartDate,
-                TimecardUtils.WORK_FLG_ON));
+            tempList.add(createTimecardResultData(
+              kinmuStartDate,
+              TimecardUtils.WORK_FLG_OFF));
+            tempList.add(createTimecardResultData(
+              kinmuStartDate,
+              TimecardUtils.WORK_FLG_ON));
           }
           if (kinmuEndDate.after(startDate) && kinmuEndDate.before(endDate)) {
-            tempList.add(createTimecardResultData(kinmuEndDate,
-                TimecardUtils.WORK_FLG_OFF));
-            tempList.add(createTimecardResultData(kinmuEndDate,
-                TimecardUtils.WORK_FLG_ON));
+            tempList.add(createTimecardResultData(
+              kinmuEndDate,
+              TimecardUtils.WORK_FLG_OFF));
+            tempList.add(createTimecardResultData(
+              kinmuEndDate,
+              TimecardUtils.WORK_FLG_ON));
           }
 
           tempList.add(rd);
@@ -418,16 +419,20 @@ public class TimecardSummaryResultData implements ALData {
 
         // 勤務時間内外の区別をつける
         if (kinmuStartDate.after(startDate) && kinmuStartDate.before(endDate)) {
-          tempList.add(createTimecardResultData(kinmuStartDate,
-              TimecardUtils.WORK_FLG_OFF));
-          tempList.add(createTimecardResultData(kinmuStartDate,
-              TimecardUtils.WORK_FLG_ON));
+          tempList.add(createTimecardResultData(
+            kinmuStartDate,
+            TimecardUtils.WORK_FLG_OFF));
+          tempList.add(createTimecardResultData(
+            kinmuStartDate,
+            TimecardUtils.WORK_FLG_ON));
         }
         if (kinmuEndDate.after(startDate) && kinmuEndDate.before(endDate)) {
-          tempList.add(createTimecardResultData(kinmuEndDate,
-              TimecardUtils.WORK_FLG_OFF));
-          tempList.add(createTimecardResultData(kinmuEndDate,
-              TimecardUtils.WORK_FLG_ON));
+          tempList.add(createTimecardResultData(
+            kinmuEndDate,
+            TimecardUtils.WORK_FLG_OFF));
+          tempList.add(createTimecardResultData(
+            kinmuEndDate,
+            TimecardUtils.WORK_FLG_ON));
         }
 
         TimecardResultData rd = new TimecardResultData();
@@ -446,14 +451,15 @@ public class TimecardSummaryResultData implements ALData {
         if (TimecardUtils.WORK_FLG_ON.equals(rd.getWorkFlag().getValue())) {
           startDate = rd.getWorkDate().getValue();
           if (kinmuStartDate.equals(startDate)
-              || (kinmuStartDate.before(startDate) && kinmuEndDate
-                  .after(startDate))) {
+            || (kinmuStartDate.before(startDate) && kinmuEndDate
+              .after(startDate))) {
             iszangyo = false;
           } else {
             iszangyo = true;
           }
-        } else if (TimecardUtils.WORK_FLG_OFF.equals(rd.getWorkFlag()
-            .getValue())) {
+        } else if (TimecardUtils.WORK_FLG_OFF.equals(rd
+          .getWorkFlag()
+          .getValue())) {
           endDate = rd.getWorkDate().getValue();
           long millisecond = endDate.getTime() - startDate.getTime();
           shugyo_temp += millisecond / 1000 / 60;
@@ -494,8 +500,10 @@ public class TimecardSummaryResultData implements ALData {
       }
       // 相対
       if (tempList.size() > 0) {
-        if (kinmuEndDate.after(tempList.get(tempList.size() - 1).getWorkDate()
-            .getValue())) {
+        if (kinmuEndDate.after(tempList
+          .get(tempList.size() - 1)
+          .getWorkDate()
+          .getValue())) {
           this.sotai.setValue("○");
         }
       }
@@ -508,7 +516,7 @@ public class TimecardSummaryResultData implements ALData {
 
   /**
    * TimecardResultDataオブジェクトのインスタンスを作る
-   *
+   * 
    * @param date
    * @param workflag
    * @return
@@ -523,21 +531,15 @@ public class TimecardSummaryResultData implements ALData {
 
   /**
    * 勤務時間設定をDBから取得する
-   *
+   * 
    * @return
    */
   private EipTTimecardSettings loadEipTTimecardSettings() {
 
-    SelectQuery query = new SelectQuery(EipTTimecardSettings.class);
+    SelectQuery<EipTTimecardSettings> query =
+      Database.query(EipTTimecardSettings.class);
 
-    @SuppressWarnings("unchecked")
-    List<EipTTimecardSettings> aList = dataContext.performQuery(query);
-    if (aList != null && aList.size() > 0) {
-      EipTTimecardSettings record = aList.get(0);
-      return record;
-    } else {
-      return null;
-    }
+    return query.fetchSingle();
   }
 
 }

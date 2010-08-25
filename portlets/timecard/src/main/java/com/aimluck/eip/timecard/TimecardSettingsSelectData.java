@@ -36,6 +36,7 @@ import com.aimluck.eip.timecard.util.TimecardUtils;
  */
 public class TimecardSettingsSelectData extends
     ALAbstractSelectData<EipTTimecardSettings, EipTTimecardSettings> {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(TimecardSettingsSelectData.class.getName());

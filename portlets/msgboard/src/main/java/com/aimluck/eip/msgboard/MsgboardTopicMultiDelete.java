@@ -20,10 +20,8 @@ package com.aimluck.eip.msgboard;
 
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -31,7 +29,8 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardTopic;
 import com.aimluck.eip.common.ALAbstractCheckList;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -39,16 +38,16 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 掲示板トピックを複数削除するためのクラス． <BR>
- *
+ * 
  */
 public class MsgboardTopicMultiDelete extends ALAbstractCheckList {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(MsgboardTopicMultiDelete.class.getName());
+    .getLogger(MsgboardTopicMultiDelete.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param values
@@ -58,29 +57,34 @@ public class MsgboardTopicMultiDelete extends ALAbstractCheckList {
    *      org.apache.velocity.context.Context, java.util.ArrayList,
    *      java.util.ArrayList)
    */
+  @Override
   protected boolean action(RunData rundata, Context context,
       List<String> values, List<String> msgList) {
     try {
       int ownerid_int = ALEipUtils.getUserId(rundata);
       Integer ownerid = Integer.valueOf(ownerid_int);
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTMsgboardTopic.class);
+      SelectQuery<EipTMsgboardTopic> query =
+        Database.query(EipTMsgboardTopic.class);
 
       for (int i = 0; i < values.size(); i++) {
-        String id = (String) values.get(i);
-        Expression exp01 = ExpressionFactory.matchDbExp(
-            EipTMsgboardTopic.OWNER_ID_COLUMN, ownerid);
-        Expression exp02 = ExpressionFactory.matchDbExp(
-            EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, Integer.valueOf(id));
-        Expression exp03 = ExpressionFactory.matchExp(
-            EipTMsgboardTopic.PARENT_ID_PROPERTY, Integer.valueOf(id));
+        String id = values.get(i);
+        Expression exp01 =
+          ExpressionFactory.matchDbExp(
+            EipTMsgboardTopic.OWNER_ID_COLUMN,
+            ownerid);
+        Expression exp02 =
+          ExpressionFactory.matchDbExp(
+            EipTMsgboardTopic.TOPIC_ID_PK_COLUMN,
+            Integer.valueOf(id));
+        Expression exp03 =
+          ExpressionFactory.matchExp(
+            EipTMsgboardTopic.PARENT_ID_PROPERTY,
+            Integer.valueOf(id));
         query.orQualifier((exp01.andExp(exp02)).orExp(exp03));
       }
 
-      @SuppressWarnings("unchecked")
-      List<EipTMsgboardTopic> list = dataContext.performQuery(query);
+      List<EipTMsgboardTopic> list = query.fetchList();
       if (list == null || list.size() == 0) {
         // トピックリストが空の場合
         logger.debug("[MsgboardMultiDelete] Empty TopicIDs...");
@@ -90,18 +94,17 @@ public class MsgboardTopicMultiDelete extends ALAbstractCheckList {
       int size = list.size();
       for (int i = 0; i < size; i++) {
         EipTMsgboardTopic topic = list.get(i);
-        dataContext.deleteObject(topic);
+        Database.delete(topic);
         // イベントログに保存
-        ALEventlogFactoryService
-            .getInstance()
-            .getEventlogHandler()
-            .log(topic.getTopicId(),
-                ALEventlogConstants.PORTLET_TYPE_MSGBOARD_TOPIC,
-                topic.getTopicName());
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          topic.getTopicId(),
+          ALEventlogConstants.PORTLET_TYPE_MSGBOARD_TOPIC,
+          topic.getTopicName());
       }
 
-      dataContext.commitChanges();
+      Database.commit();
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -111,9 +114,10 @@ public class MsgboardTopicMultiDelete extends ALAbstractCheckList {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限を返します。
-   *
+   * 
    * @return
    */
+  @Override
   protected int getDefineAclType() {
     return ALAccessControlConstants.VALUE_ACL_DELETE;
   }
@@ -121,9 +125,10 @@ public class MsgboardTopicMultiDelete extends ALAbstractCheckList {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC;
   }

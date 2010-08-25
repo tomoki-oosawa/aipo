@@ -56,8 +56,8 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
  */
 public class WebMailAccountFormData extends ALAbstractFormData {
 
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(WebMailAccountFormData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WebMailAccountFormData.class.getName());
 
   private final int DEF_SMTP_PORT = 25;
 

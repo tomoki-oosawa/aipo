@@ -39,22 +39,26 @@ public class MsgboardCategoryListBox extends ListBox {
 
   public static final String INITIAL_VALUE = "initialvalue";
 
-  private String DEF_INITIAL_VALUE = "";
+  private final String DEF_INITIAL_VALUE = "";
 
   /**
    * Initialize options
-   *
+   * 
    * @param data
    */
+  @Override
   protected void init(RunData data) {
     // カテゴリ一覧を取得
-    List<MsgboardCategoryResultData> categoryList = MsgboardUtils.loadCategoryList(data);
+    List<MsgboardCategoryResultData> categoryList =
+      MsgboardUtils.loadCategoryList(data);
 
-    ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-    boolean hasAclCategoryList = aclhandler.hasAuthority(ALEipUtils
-        .getUserId(data),
+    boolean hasAclCategoryList =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(data),
         ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY,
         ALAccessControlConstants.VALUE_ACL_LIST);
 
@@ -85,8 +89,10 @@ public class MsgboardCategoryListBox extends ListBox {
     this.items = categoryKeys;
     this.values = categoryValues;
     this.size = Integer.toString(length);
-    this.multiple = Boolean.valueOf(
-        (String) this.getParm(MULTIPLE_CHOICE, "false")).booleanValue();
+    this.multiple =
+      Boolean
+        .valueOf((String) this.getParm(MULTIPLE_CHOICE, "false"))
+        .booleanValue();
 
   }
 }

@@ -27,6 +27,7 @@ import com.aimluck.eip.util.ALEipUtils;
  * WebメールアカウントのDetailResultDataです。 <br />
  */
 public class WebMailAccountDetailResultData implements ALData {
+
   private static final int DEF_SMTP_PORT = 25;
 
   private static final int DEF_POP3_PORT = 110;

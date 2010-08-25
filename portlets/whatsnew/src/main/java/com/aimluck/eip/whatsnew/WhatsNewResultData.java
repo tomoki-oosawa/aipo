@@ -30,7 +30,7 @@ import com.aimluck.eip.whatsnew.beans.WhatsNewBean;
 
 /**
  * 新着情報のResultDataです。 <BR>
- *
+ * 
  */
 public class WhatsNewResultData implements ALData {
 
@@ -53,7 +53,7 @@ public class WhatsNewResultData implements ALData {
   private ALNumberField parent_id;
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -126,7 +126,6 @@ public class WhatsNewResultData implements ALData {
   public long getParentId() {
     return parent_id.getValue();
   }
-
 
   /**
    * @param string

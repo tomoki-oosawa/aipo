@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -45,7 +44,6 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -59,8 +57,8 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
 public class WebMailFolderFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(WebMailFolderFormData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WebMailFolderFormData.class.getName());
 
   /** フォルダ名 */
   private ALStringField folder_name;
@@ -75,10 +73,6 @@ public class WebMailFolderFormData extends ALAbstractFormData {
   private EipMMailAccount mailAccount;
 
   private String folderId = null;
-
-  private DataContext dataContext;
-
-  private String org_id;
 
   /**
    * 
@@ -116,8 +110,6 @@ public class WebMailFolderFormData extends ALAbstractFormData {
       }
     }
 
-    org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
     login_user = ALEipUtils.getALEipUser(rundata);
 
     // メールアカウントを取得する
@@ -290,7 +282,7 @@ public class WebMailFolderFormData extends ALAbstractFormData {
     try {
       String folderId =
         ALEipUtils.getTemp(rundata, context, WebMailUtils.FOLDER_ID);
-      int delete_id = Integer.parseInt(folderId);
+      // int delete_id = Integer.parseInt(folderId);
 
       // デフォルトのフォルダは削除不可。
       if (mailAccount.getDefaultFolderId() == Integer.parseInt(folderId)) {
@@ -302,7 +294,7 @@ public class WebMailFolderFormData extends ALAbstractFormData {
         WebMailUtils.getEipTMailFolder(mailAccount, folderId);
 
       // 一緒に削除するメール
-      List folderMails = ALMailUtils.getEipTMails(folder);
+      List<EipTMail> folderMails = ALMailUtils.getEipTMails(folder);
 
       // 振り分け先として指定してあるフィルタは、振り分け先をデフォルトに変更
       SelectQuery<EipTMailFilter> query = Database.query(EipTMailFilter.class);
@@ -324,11 +316,9 @@ public class WebMailFolderFormData extends ALAbstractFormData {
       }
 
       // ローカルファイルに保存されているメールのパスのリスト
-      ArrayList mailPaths = new ArrayList();
+      List<String> mailPaths = new ArrayList<String>();
       if (folderMails != null && folderMails.size() > 0) {
-        EipTMail mail;
-        for (Object obj : folderMails.toArray()) {
-          mail = (EipTMail) obj;
+        for (EipTMail mail : folderMails) {
           mailPaths.add(mail.getFilePath());
         }
       }
@@ -347,8 +337,7 @@ public class WebMailFolderFormData extends ALAbstractFormData {
         File file = null;
         int size = mailPaths.size();
         for (int k = 0; k < size; k++) {
-          file =
-            new File(ALMailUtils.getLocalurl() + (String) mailPaths.get(k));
+          file = new File(ALMailUtils.getLocalurl() + mailPaths.get(k));
           if (file.exists()) {
             file.delete();
           }

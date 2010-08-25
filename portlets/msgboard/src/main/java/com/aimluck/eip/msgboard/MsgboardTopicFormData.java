@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.cayenne.DataObjectUtils;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -49,6 +47,7 @@ import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.msgboard.util.MsgboardUtils;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -97,8 +96,6 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
   private EipTMsgboardCategory category;
 
-  private DataContext dataContext;
-
   private String org_id;
 
   private String aclPortletFeature = null;
@@ -130,27 +127,30 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
     uid = ALEipUtils.getUserId(rundata);
     org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
 
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
-
     folderName = rundata.getParameters().getString("folderName");
 
-    ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-      .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-    hasAclCategoryList = aclhandler.hasAuthority(ALEipUtils.getUserId(rundata),
-      ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY,
-      ALAccessControlConstants.VALUE_ACL_LIST);
+    hasAclCategoryList =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY,
+        ALAccessControlConstants.VALUE_ACL_LIST);
 
-    hasAclDeleteTopicOthers = aclhandler.hasAuthority(ALEipUtils
-      .getUserId(rundata),
-      ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC_OTHER,
-      ALAccessControlConstants.VALUE_ACL_DELETE);
+    hasAclDeleteTopicOthers =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC_OTHER,
+        ALAccessControlConstants.VALUE_ACL_DELETE);
 
-    hasAclUpdateTopicOthers = aclhandler.hasAuthority(ALEipUtils
-      .getUserId(rundata),
-      ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC_OTHER,
-      ALAccessControlConstants.VALUE_ACL_UPDATE);
+    hasAclUpdateTopicOthers =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC_OTHER,
+        ALAccessControlConstants.VALUE_ACL_UPDATE);
   }
 
   /**
@@ -176,7 +176,8 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
     fileuploadList = new ArrayList<FileuploadLiteBean>();
 
-    aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC;
+    aclPortletFeature =
+      ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC;
   }
 
   /**
@@ -247,8 +248,8 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTMsgboardTopic topic = MsgboardUtils.getEipTMsgboardParentTopic(
-        rundata, context, false);
+      EipTMsgboardTopic topic =
+        MsgboardUtils.getEipTMsgboardParentTopic(rundata, context, false);
       if (topic == null) {
         return false;
       }
@@ -260,9 +261,10 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
       // 内容
       note.setValue(topic.getNote());
       // ファイル
-      SelectQuery query = new SelectQuery(EipTMsgboardFile.class);
+      SelectQuery query = Database.query(EipTMsgboardFile.class);
       query.andQualifier(ExpressionFactory.matchDbExp(
-        EipTMsgboardFile.EIP_TMSGBOARD_TOPIC_PROPERTY, topic.getTopicId()));
+        EipTMsgboardFile.EIP_TMSGBOARD_TOPIC_PROPERTY,
+        topic.getTopicId()));
       fileuploadList = query.fetchList();
 
     } catch (Exception ex) {
@@ -288,21 +290,30 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
     try {
 
       // FIX_ME イベントログのために一度IDと名前を取得
-      int parentid = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID));
+      int parentid =
+        Integer.parseInt(ALEipUtils.getTemp(
+          rundata,
+          context,
+          ALEipConstants.ENTITY_ID));
 
-      EipTMsgboardTopic parent = (EipTMsgboardTopic) DataObjectUtils
-        .objectForPK(dataContext, EipTMsgboardTopic.class, (long) parentid);
+      EipTMsgboardTopic parent =
+        Database.get(EipTMsgboardTopic.class, (long) parentid);
 
       // オブジェクトモデルを取得
       List<EipTMsgboardTopic> list;
 
       if (this.hasAclDeleteTopicOthers) {
-        list = MsgboardUtils.getEipTMsgboardTopicListToDeleteTopic(rundata,
-          context, true);
+        list =
+          MsgboardUtils.getEipTMsgboardTopicListToDeleteTopic(
+            rundata,
+            context,
+            true);
       } else {
-        list = MsgboardUtils.getEipTMsgboardTopicListToDeleteTopic(rundata,
-          context, false);
+        list =
+          MsgboardUtils.getEipTMsgboardTopicListToDeleteTopic(
+            rundata,
+            context,
+            false);
       }
 
       if (list == null) {
@@ -320,10 +331,12 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
       }
 
       // トピックを削除
-      SelectQuery<EipTMsgboardTopic> query = new SelectQuery<EipTMsgboardTopic>(
-        EipTMsgboardTopic.class);
-      Expression exp = ExpressionFactory.inDbExp(
-        EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, topicIdList);
+      SelectQuery<EipTMsgboardTopic> query =
+        new SelectQuery<EipTMsgboardTopic>(EipTMsgboardTopic.class);
+      Expression exp =
+        ExpressionFactory.inDbExp(
+          EipTMsgboardTopic.TOPIC_ID_PK_COLUMN,
+          topicIdList);
       query.setQualifier(exp);
 
       List<EipTMsgboardTopic> topics = query.fetchList();
@@ -342,16 +355,16 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
         }
       }
 
-      dataContext.deleteObjects(topics);
-      dataContext.commitChanges();
+      Database.deleteAll(topics);
+      Database.commit();
 
       if (fpaths.size() > 0) {
         // ローカルファイルに保存されているファイルを削除する．
         File file = null;
         int fsize = fpaths.size();
         for (int i = 0; i < fsize; i++) {
-          file = new File(MsgboardUtils.getSaveDirPath(org_id, uid)
-            + fpaths.get(i));
+          file =
+            new File(MsgboardUtils.getSaveDirPath(org_id, uid) + fpaths.get(i));
           if (file.exists()) {
             file.delete();
           }
@@ -360,10 +373,12 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        parent.getTopicId(), ALEventlogConstants.PORTLET_TYPE_MSGBOARD_TOPIC,
+        parent.getTopicId(),
+        ALEventlogConstants.PORTLET_TYPE_MSGBOARD_TOPIC,
         parent.getTopicName());
 
     } catch (Exception e) {
+      Database.rollback();
       // TODO: エラー処理
       logger.error("[MsgboardCategorySelectData]", e);
       throw new ALDBErrorException();
@@ -391,14 +406,13 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
           // TODO ロールバック
         }
       } else {
-        category = (EipTMsgboardCategory) DataObjectUtils.objectForPK(
-          dataContext, EipTMsgboardCategory.class, Integer
+        category =
+          Database.get(EipTMsgboardCategory.class, Integer
             .valueOf((int) category_id.getValue()));
       }
 
       // 新規オブジェクトモデル
-      EipTMsgboardTopic topic = (EipTMsgboardTopic) dataContext
-        .createAndRegisterNewObject(EipTMsgboardTopic.class);
+      EipTMsgboardTopic topic = Database.create(EipTMsgboardTopic.class);
       // トピック名
       topic.setTopicName(topic_name.getValue());
       // 親トピックID
@@ -419,32 +433,43 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
       topic.setUpdateDate(Calendar.getInstance().getTime());
 
       // ファイルをデータベースに登録する．
-      if (!MsgboardUtils.insertFileDataDelegate(rundata, context, topic,
-        fileuploadList, folderName, msgList)) {
+      if (!MsgboardUtils.insertFileDataDelegate(
+        rundata,
+        context,
+        topic,
+        fileuploadList,
+        folderName,
+        msgList)) {
         return false;
       }
 
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        topic.getTopicId(), ALEventlogConstants.PORTLET_TYPE_MSGBOARD_TOPIC,
+        topic.getTopicId(),
+        ALEventlogConstants.PORTLET_TYPE_MSGBOARD_TOPIC,
         topic.getTopicName());
 
       /* 自分以外の全員に新着ポートレット登録 */
       if ("T".equals(topic.getEipTMsgboardCategory().getPublicFlag())) {
         WhatsNewUtils.insertWhatsNewPublic(
-          WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC, topic.getTopicId(), uid);
+          WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
+          topic.getTopicId(),
+          uid);
       } else {
-        List<Integer> userIds = MsgboardUtils.getWhatsNewInsertList(rundata,
-          category.getCategoryId().intValue(), category.getPublicFlag());
+        List<Integer> userIds =
+          MsgboardUtils.getWhatsNewInsertList(rundata, category
+            .getCategoryId()
+            .intValue(), category.getPublicFlag());
 
         int u_size = userIds.size();
         for (int i = 0; i < u_size; i++) {
           Integer _id = userIds.get(i);
           WhatsNewUtils.insertWhatsNew(
-            WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC, topic.getTopicId()
-              .intValue(), _id.intValue());
+            WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
+            topic.getTopicId().intValue(),
+            _id.intValue());
         }
       }
 
@@ -472,18 +497,19 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
     try {
 
       setAclPortletFeature(ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY);
-      doCheckAclPermission(rundata, context,
+      doCheckAclPermission(
+        rundata,
+        context,
         ALAccessControlConstants.VALUE_ACL_INSERT);
       setAclPortletFeature(ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC);
 
       int userid = ALEipUtils.getUserId(rundata);
 
-      TurbineUser tuser = (TurbineUser) DataObjectUtils.objectForPK(
-        dataContext, TurbineUser.class, Integer.valueOf(userid));
+      TurbineUser tuser =
+        Database.get(TurbineUser.class, Integer.valueOf(userid));
 
       // 新規オブジェクトモデル
-      category = (EipTMsgboardCategory) dataContext
-        .createAndRegisterNewObject(EipTMsgboardCategory.class);
+      category = Database.create(EipTMsgboardCategory.class);
       // カテゴリ名
       category.setCategoryName(category_name.getValue());
       // 公開区分
@@ -498,13 +524,13 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
       category.setUpdateDate(Calendar.getInstance().getTime());
 
       // マップの登録
-      EipTMsgboardCategoryMap map = (EipTMsgboardCategoryMap) dataContext
-        .createAndRegisterNewObject(EipTMsgboardCategoryMap.class);
+      EipTMsgboardCategoryMap map =
+        Database.create(EipTMsgboardCategoryMap.class);
       map.setEipTMsgboardCategory(category);
       map.setUserId(Integer.valueOf(userid));
       map.setStatus(MsgboardUtils.STAT_VALUE_OWNER);
 
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -516,6 +542,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
       ALEipUtils.redirectPermissionError(rundata);
       return false;
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -542,14 +569,14 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
         }
       } else {
-        category = (EipTMsgboardCategory) DataObjectUtils.objectForPK(
-          dataContext, EipTMsgboardCategory.class, Integer
+        category =
+          Database.get(EipTMsgboardCategory.class, Integer
             .valueOf((int) category_id.getValue()));
       }
 
       // 新規オブジェクトモデル
-      EipTMsgboardTopic topic = MsgboardUtils.getEipTMsgboardParentTopic(
-        rundata, context, false);
+      EipTMsgboardTopic topic =
+        MsgboardUtils.getEipTMsgboardParentTopic(rundata, context, false);
       // トピック名
       topic.setTopicName(topic_name.getValue());
       // カテゴリID
@@ -562,32 +589,43 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
       topic.setUpdateDate(Calendar.getInstance().getTime());
 
       // ファイルをデータベースに登録する．
-      if (!MsgboardUtils.insertFileDataDelegate(rundata, context, topic,
-        fileuploadList, folderName, msgList)) {
+      if (!MsgboardUtils.insertFileDataDelegate(
+        rundata,
+        context,
+        topic,
+        fileuploadList,
+        folderName,
+        msgList)) {
         return false;
       }
 
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        topic.getTopicId(), ALEventlogConstants.PORTLET_TYPE_MSGBOARD_TOPIC,
+        topic.getTopicId(),
+        ALEventlogConstants.PORTLET_TYPE_MSGBOARD_TOPIC,
         topic.getTopicName());
 
       /* 自分以外の全員に新着ポートレット登録 */
       if ("T".equals(topic.getEipTMsgboardCategory().getPublicFlag())) {
         WhatsNewUtils.insertWhatsNewPublic(
-          WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC, topic.getTopicId(), uid);
+          WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
+          topic.getTopicId(),
+          uid);
       } else {
-        List<Integer> userIds = MsgboardUtils.getWhatsNewInsertList(rundata,
-          category.getCategoryId().intValue(), category.getPublicFlag());
+        List<Integer> userIds =
+          MsgboardUtils.getWhatsNewInsertList(rundata, category
+            .getCategoryId()
+            .intValue(), category.getPublicFlag());
 
         int u_size = userIds.size();
         for (int i = 0; i < u_size; i++) {
           Integer _id = userIds.get(i);
           WhatsNewUtils.insertWhatsNew(
-            WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC, topic.getTopicId()
-              .intValue(), _id.intValue());
+            WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
+            topic.getTopicId().intValue(),
+            _id.intValue());
         }
       }
 
@@ -595,6 +633,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
       // 添付ファイル保存先のフォルダを削除
       FileuploadUtils.deleteFolder(folder);
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }

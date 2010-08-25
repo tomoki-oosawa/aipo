@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -163,14 +163,14 @@ public class TimecardResultData implements ALData {
   }
 
   /**
-   * 
+   *
    */
   public ALStringField getNowTime() {
     return now_time;
   }
 
   /**
-   * 
+   *
    */
   public ALDateTimeField getWorkDate() {
     return work_date;
@@ -182,28 +182,28 @@ public class TimecardResultData implements ALData {
   }
 
   /**
-   * 
+   *
    */
   public ALStringField getRefixFlag() {
     return refix_flag;
   }
 
   /**
-   * 
+   *
    */
   public ALStringField getListDate() {
     return list_date;
   }
 
   /**
-   * 
+   *
    */
   public ALStringField getTimecardId() {
     return timecard_id;
   }
 
   /**
-   * 
+   *
    */
   public ALStringField getReason() {
     return reason;
@@ -215,7 +215,7 @@ public class TimecardResultData implements ALData {
    * @param date1
    * @param date2
    * @param checkTime
-   *            時間まで比較する場合，true．
+   *          時間まで比較する場合，true．
    * @return 等しい場合，true．
    */
   private boolean equalsToDate(Date date1, Date date2, boolean checkTime) {
@@ -235,14 +235,18 @@ public class TimecardResultData implements ALData {
     int date2Minute = cal.get(Calendar.MINUTE);
     int date2Second = cal.get(Calendar.SECOND);
     if (checkTime) {
-      if (date1Year == date2Year && date1Month == date2Month
-          && date1Day == date2Day && date1Hour == date2Hour
-          && date1Minute == date2Minute && date1Second == date2Second) {
+      if (date1Year == date2Year
+        && date1Month == date2Month
+        && date1Day == date2Day
+        && date1Hour == date2Hour
+        && date1Minute == date2Minute
+        && date1Second == date2Second) {
         return true;
       }
     } else {
-      if (date1Year == date2Year && date1Month == date2Month
-          && date1Day == date2Day) {
+      if (date1Year == date2Year
+        && date1Month == date2Month
+        && date1Day == date2Day) {
         return true;
       }
     }

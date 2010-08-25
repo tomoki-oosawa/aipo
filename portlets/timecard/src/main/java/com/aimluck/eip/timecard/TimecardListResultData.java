@@ -32,7 +32,7 @@ import com.aimluck.eip.timecard.util.TimecardUtils;
 
 /**
  * タイムカードのResultDataです。 <BR>
- *
+ * 
  */
 public class TimecardListResultData implements ALData {
 
@@ -41,7 +41,7 @@ public class TimecardListResultData implements ALData {
   private List<TimecardResultData> list = null;
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -78,7 +78,7 @@ public class TimecardListResultData implements ALData {
 
     int size = list.size();
     for (int i = 0; i < size; i++) {
-      rd = (TimecardResultData) list.get(i);
+      rd = list.get(i);
       if (!TimecardUtils.WORK_FLG_DUMMY.equals(rd.getWorkFlag().getValue())) {
         viewlist.add(rd);
       }
@@ -102,7 +102,7 @@ public class TimecardListResultData implements ALData {
     }
 
     if (size == 1) {
-      rd = (TimecardResultData) list.get(size - 1);
+      rd = list.get(size - 1);
       if (TimecardUtils.WORK_FLG_ON.equals(rd.getWorkFlag().getValue())) {
         workOnDate = rd.getWorkDate().getValue();
         Calendar cal = Calendar.getInstance();
@@ -118,7 +118,7 @@ public class TimecardListResultData implements ALData {
       }
     } else {
       for (int i = 0; i < size; i++) {
-        rd = (TimecardResultData) list.get(i);
+        rd = list.get(i);
         if (TimecardUtils.WORK_FLG_ON.equals(rd.getWorkFlag().getValue())) {
           workOnDate = rd.getWorkDate().getValue();
         } else {
@@ -139,7 +139,8 @@ public class TimecardListResultData implements ALData {
 
     BigDecimal decimal = new BigDecimal(millisecond / 1000 / 60 / 60);
     DecimalFormat dformat = new DecimalFormat("##.#");
-    return dformat.format(decimal.setScale(1, BigDecimal.ROUND_FLOOR)
-        .doubleValue());
+    return dformat.format(decimal
+      .setScale(1, BigDecimal.ROUND_FLOOR)
+      .doubleValue());
   }
 }

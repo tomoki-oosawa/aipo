@@ -31,18 +31,18 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカード集計のアクションクラスです。 <BR>
- *
+ * 
  */
 public class TimecardSettingsAction extends ALBaseAction {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(TimecardSettingsAction.class.getName());
+    .getLogger(TimecardSettingsAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
@@ -50,6 +50,7 @@ public class TimecardSettingsAction extends ALBaseAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
     if (getMode() == null) {
@@ -58,7 +59,7 @@ public class TimecardSettingsAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception

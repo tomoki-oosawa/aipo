@@ -23,10 +23,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
@@ -36,18 +34,19 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimecard;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimecardSettings;
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカードのユーティリティクラスです。 <BR>
- *
+ * 
  */
 public class TimecardUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(TimecardUtils.class.getName());
+    .getLogger(TimecardUtils.class.getName());
 
   /** <code>TARGET_GROUP_NAME</code> グループによる表示切り替え用変数の識別子 */
   public static final String TARGET_GROUP_NAME = "target_group_name";
@@ -66,20 +65,20 @@ public class TimecardUtils {
 
   /** タイムカードファイルを一時保管するディレクトリの指定 */
   public static final String FOLDER_TMP_FOR_TIMECARD_FILES = JetspeedResources
-      .getString("aipo.tmp.timecard.directory", "");
+    .getString("aipo.tmp.timecard.directory", "");
 
   /**
    * Todo オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param isJoin
-   *            カテゴリテーブルをJOINするかどうか
+   *          カテゴリテーブルをJOINするかどうか
    * @return
    */
   public static EipTTimecard getEipTTimecard(RunData rundata, Context context) {
-    String timecardid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String timecardid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (timecardid == null || Integer.valueOf(timecardid) == null) {
         // Todo IDが空の場合
@@ -87,19 +86,18 @@ public class TimecardUtils {
         return null;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTTimecard.class);
-      Expression exp11 = ExpressionFactory.matchDbExp(
-          EipTTimecard.TIMECARD_ID_PK_COLUMN, timecardid);
+      SelectQuery<EipTTimecard> query = Database.query(EipTTimecard.class);
+      Expression exp11 =
+        ExpressionFactory.matchDbExp(
+          EipTTimecard.TIMECARD_ID_PK_COLUMN,
+          timecardid);
       query.setQualifier(exp11);
-      Expression exp21 = ExpressionFactory.matchExp(
-          EipTTimecard.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-              .getUserId(rundata)));
+      Expression exp21 =
+        ExpressionFactory.matchExp(EipTTimecard.USER_ID_PROPERTY, Integer
+          .valueOf(ALEipUtils.getUserId(rundata)));
       query.andQualifier(exp21);
 
-      @SuppressWarnings("unchecked")
-      List<EipTTimecard> timecards = dataContext.performQuery(query);
+      List<EipTTimecard> timecards = query.fetchList();
       if (timecards == null || timecards.size() == 0) {
         // 指定したTimecard IDのレコードが見つからない場合
         logger.debug("[Timecard] Not found ID...");
@@ -113,13 +111,13 @@ public class TimecardUtils {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public static EipTTimecardSettings getEipTTimecardSettings(RunData rundata,
       Context context) {
-    String settingid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String settingid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (settingid == null || Integer.valueOf(settingid) == null) {
         // Setting IDが空の場合
@@ -127,18 +125,20 @@ public class TimecardUtils {
         return null;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTTimecardSettings.class);
-      Expression exp1 = ExpressionFactory.matchDbExp(
-          EipTTimecardSettings.TIMECARD_SETTINGS_ID_PK_COLUMN, settingid);
-      Expression exp2 = ExpressionFactory.matchExp(
-          EipTTimecardSettings.USER_ID_PROPERTY, Integer.valueOf(1));
+      SelectQuery<EipTTimecardSettings> query =
+        Database.query(EipTTimecardSettings.class);
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(
+          EipTTimecardSettings.TIMECARD_SETTINGS_ID_PK_COLUMN,
+          settingid);
+      Expression exp2 =
+        ExpressionFactory.matchExp(
+          EipTTimecardSettings.USER_ID_PROPERTY,
+          Integer.valueOf(1));
 
       query.setQualifier(exp1.andExp(exp2));
 
-      @SuppressWarnings("unchecked")
-      List<EipTTimecardSettings> slist = dataContext.performQuery(query);
+      List<EipTTimecardSettings> slist = query.fetchList();
       if (slist == null || slist.size() == 0) {
         // 指定したSetting IDのレコードが見つからない場合
         logger.debug("[TimecardUtils] Not found ID...");
@@ -154,11 +154,11 @@ public class TimecardUtils {
 
   /**
    * 指定した2つの日付を比較する．
-   *
+   * 
    * @param date1
    * @param date2
    * @param checkTime
-   *            時間まで比較する場合，true．
+   *          時間まで比較する場合，true．
    * @return 等しい場合，0. date1>date2の場合, 1. date1 <date2の場合, 2.
    */
   public static boolean sameDay(Date date1, Date date2) {
@@ -174,8 +174,9 @@ public class TimecardUtils {
     int date2Month = cal2.get(Calendar.MONTH) + 1;
     int date2Day = cal2.get(Calendar.DATE);
 
-    if (date1Year == date2Year && date1Month == date2Month
-        && date1Day == date2Day) {
+    if (date1Year == date2Year
+      && date1Month == date2Month
+      && date1Day == date2Day) {
       return true;
     }
     return false;
@@ -183,14 +184,19 @@ public class TimecardUtils {
 
   /**
    * 一時ファイル保存先のユーザのルートフォルダ
-   *
+   * 
    * @param org_id
    * @param userId
    * @return
    */
   public static File getRootFolder(String org_id, int userId) {
-    String rootPath = TimecardUtils.FOLDER_TMP_FOR_TIMECARD_FILES
-        + File.separator + org_id + File.separator + userId + File.separator;
+    String rootPath =
+      TimecardUtils.FOLDER_TMP_FOR_TIMECARD_FILES
+        + File.separator
+        + org_id
+        + File.separator
+        + userId
+        + File.separator;
     File folder = new File(rootPath);
     if (!folder.exists()) {
       if (!folder.mkdirs()) {

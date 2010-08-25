@@ -23,10 +23,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -38,8 +36,9 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
@@ -91,8 +90,7 @@ public class WhatsNewSelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
     uid = ALEipUtils.getUserId(rundata);
     parentIds = new ArrayList<Integer>();
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
-    SelectQuery query = new SelectQuery(EipTWhatsNew.class);
+    SelectQuery<EipTWhatsNew> query = Database.query(EipTWhatsNew.class);
 
     /** 既読判定の指定 */
     Expression exp1 =
@@ -106,8 +104,7 @@ public class WhatsNewSelectData extends
         .valueOf(uid));
 
     query.andQualifier(exp2);
-    @SuppressWarnings("unchecked")
-    List<EipTWhatsNew> readflags = dataContext.performQuery(query);
+    List<EipTWhatsNew> readflags = query.fetchList();
     for (int i = 0; i < readflags.size(); i++) {
       parentIds.add(readflags.get(i).getParentId());
     }
@@ -130,40 +127,29 @@ public class WhatsNewSelectData extends
       /** 31日以上たった新着情報を削除する */
       WhatsNewUtils.removeMonthOverWhatsNew();
 
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-
       List<WhatsNewContainer> list = new ArrayList<WhatsNewContainer>();
       list.add(getContainerPublic(
         rundata,
         context,
-        dataContext,
         WhatsNewUtils.WHATS_NEW_TYPE_BLOG_ENTRY));
       list.add(getContainer(
         rundata,
         context,
-        dataContext,
         WhatsNewUtils.WHATS_NEW_TYPE_BLOG_COMMENT));
       list.add(getContainerBoth(
         rundata,
         context,
-        dataContext,
         WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC));
       list.add(getContainer(
         rundata,
         context,
-        dataContext,
         WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE));
       list.add(getContainer(
         rundata,
         context,
-        dataContext,
         WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST));
-      list.add(getContainer(
-        rundata,
-        context,
-        dataContext,
-        WhatsNewUtils.WHATS_NEW_TYPE_NOTE));
+      list
+        .add(getContainer(rundata, context, WhatsNewUtils.WHATS_NEW_TYPE_NOTE));
 
       return new ResultList<WhatsNewContainer>(list);
     } catch (Exception ex) {
@@ -174,9 +160,9 @@ public class WhatsNewSelectData extends
   }
 
   private WhatsNewContainer getContainer(RunData rundata, Context context,
-      DataContext dataContext, int type) {
+      int type) {
     WhatsNewContainer con = new WhatsNewContainer();
-    SelectQuery query = new SelectQuery(EipTWhatsNew.class);
+    SelectQuery<EipTWhatsNew> query = Database.query(EipTWhatsNew.class);
     Expression exp =
       ExpressionFactory.matchExp(EipTWhatsNew.USER_ID_PROPERTY, Integer
         .valueOf(uid));
@@ -193,9 +179,8 @@ public class WhatsNewSelectData extends
     /** 表示期限の条件を追加する */
     query = addSpanCriteria(query);
 
-    query.addOrdering(EipTWhatsNew.UPDATE_DATE_PROPERTY, false);
-    @SuppressWarnings("unchecked")
-    List<EipTWhatsNew> temp = dataContext.performQuery(query);
+    query.orderDesending(EipTWhatsNew.UPDATE_DATE_PROPERTY);
+    List<EipTWhatsNew> temp = query.fetchList();
     con.setList(temp);
     con.setType(type);
 
@@ -203,9 +188,9 @@ public class WhatsNewSelectData extends
   }
 
   private WhatsNewContainer getContainerPublic(RunData rundata,
-      Context context, DataContext dataContext, int type) {
+      Context context, int type) {
     WhatsNewContainer con = new WhatsNewContainer();
-    SelectQuery query = new SelectQuery(EipTWhatsNew.class);
+    SelectQuery<EipTWhatsNew> query = Database.query(EipTWhatsNew.class);
 
     /** blogのtypeを指定 */
     Expression exp1 =
@@ -231,10 +216,8 @@ public class WhatsNewSelectData extends
     /** 表示件数の条件を追加する */
     query = addNumberCriteria(query);
 
-    query.addOrdering(EipTWhatsNew.UPDATE_DATE_PROPERTY, false);
-    @SuppressWarnings("unchecked")
-    List<EipTWhatsNew> result = dataContext.performQuery(query);
-
+    query.orderDesending(EipTWhatsNew.UPDATE_DATE_PROPERTY);
+    List<EipTWhatsNew> result = query.fetchList();
     /** 既読物を抜く */
     List<EipTWhatsNew> filterd_result = new ArrayList<EipTWhatsNew>();
     int size = result.size();
@@ -255,9 +238,9 @@ public class WhatsNewSelectData extends
   }
 
   private WhatsNewContainer getContainerBoth(RunData rundata, Context context,
-      DataContext dataContext, int type) {
+      int type) {
     WhatsNewContainer con = new WhatsNewContainer();
-    SelectQuery query = new SelectQuery(EipTWhatsNew.class);
+    SelectQuery<EipTWhatsNew> query = Database.query(EipTWhatsNew.class);
     Expression exp1 =
       ExpressionFactory.matchExp(EipTWhatsNew.PORTLET_TYPE_PROPERTY, type);
     query.setQualifier(exp1);
@@ -271,12 +254,11 @@ public class WhatsNewSelectData extends
       ExpressionFactory.matchExp(EipTWhatsNew.PARENT_ID_PROPERTY, Integer
         .valueOf(0));
     query.andQualifier(exp3);
-    query.addOrdering(EipTWhatsNew.UPDATE_DATE_PROPERTY, false);
+    query.orderDesending(EipTWhatsNew.UPDATE_DATE_PROPERTY);
 
-    @SuppressWarnings("unchecked")
-    List<EipTWhatsNew> temp = dataContext.performQuery(query);
+    List<EipTWhatsNew> temp = query.fetchList();
 
-    query = new SelectQuery(EipTWhatsNew.class);
+    query = Database.query(EipTWhatsNew.class);
     Expression exp =
       ExpressionFactory.matchExp(EipTWhatsNew.USER_ID_PROPERTY, Integer
         .valueOf(uid));
@@ -289,9 +271,8 @@ public class WhatsNewSelectData extends
       ExpressionFactory.matchExp(EipTWhatsNew.PARENT_ID_PROPERTY, Integer
         .valueOf("-1"));
     query.andQualifier(exp5);
-    query.addOrdering(EipTWhatsNew.UPDATE_DATE_PROPERTY, false);
-    @SuppressWarnings("unchecked")
-    List<EipTWhatsNew> performQuery = dataContext.performQuery(query);
+    query.orderDesending(EipTWhatsNew.UPDATE_DATE_PROPERTY);
+    List<EipTWhatsNew> performQuery = query.fetchList();
     temp.addAll(performQuery);
 
     con.setList(temp);
@@ -382,7 +363,8 @@ public class WhatsNewSelectData extends
    * @return SelectQuery
    * 
    */
-  private SelectQuery addSpanCriteria(SelectQuery query) {
+  private SelectQuery<EipTWhatsNew> addSpanCriteria(
+      SelectQuery<EipTWhatsNew> query) {
 
     if (viewSpan > 0) {
       Calendar cal = Calendar.getInstance();
@@ -415,10 +397,11 @@ public class WhatsNewSelectData extends
    * @param query
    * @return SelectQuery
    */
-  private SelectQuery addNumberCriteria(SelectQuery query) {
+  private SelectQuery<EipTWhatsNew> addNumberCriteria(
+      SelectQuery<EipTWhatsNew> query) {
 
     if (viewNum > 0) {
-      query.setFetchLimit(viewNum);
+      query.limit(viewNum);
     }
     return query;
   }

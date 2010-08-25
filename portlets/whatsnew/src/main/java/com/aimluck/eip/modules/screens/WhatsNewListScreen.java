@@ -25,17 +25,18 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.whatsnew.WhatsNewSelectData;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.whatsnew.WhatsNewSelectData;
 
 /**
  * 新着情報の一覧を処理するクラスです。 <br />
- *
+ * 
  */
 public class WhatsNewListScreen extends WhatsNewScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(WhatsNewListScreen.class.getName());
+    .getLogger(WhatsNewListScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
@@ -53,10 +54,12 @@ public class WhatsNewListScreen extends WhatsNewScreen {
 
       WhatsNewSelectData listData = new WhatsNewSelectData();
       listData.initField();
-      listData.setViewSpan(Integer.parseInt(portlet.getPortletConfig()
-          .getInitParameter("p1a-span")));
-      listData.setViewNum(Integer.parseInt(portlet.getPortletConfig()
-          .getInitParameter("p2a-rows")));
+      listData.setViewSpan(Integer.parseInt(portlet
+        .getPortletConfig()
+        .getInitParameter("p1a-span")));
+      listData.setViewNum(Integer.parseInt(portlet
+        .getPortletConfig()
+        .getInitParameter("p2a-rows")));
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-whatsnew-list.vm";

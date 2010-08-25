@@ -37,17 +37,17 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * プロジェクト管理のアクションクラスです。 <BR>
- *
+ * 
  */
 public class ManHourAction extends ALBaseAction {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ManHourAction.class.getName());
+    .getLogger(ManHourAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
@@ -55,6 +55,7 @@ public class ManHourAction extends ALBaseAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
 
@@ -71,11 +72,12 @@ public class ManHourAction extends ALBaseAction {
 
   /**
    * 最大化表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
 
@@ -102,7 +104,7 @@ public class ManHourAction extends ALBaseAction {
 
   /**
    * 工数を集計します。
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -111,15 +113,16 @@ public class ManHourAction extends ALBaseAction {
     ManHourSelectData listData = new ManHourSelectData();
     listData.initField();
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1a-rows")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1a-rows")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "manhour-list");
   }
 
   /**
    * 共有カテゴリ登録のフォームを表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -134,7 +137,7 @@ public class ManHourAction extends ALBaseAction {
 
   /**
    * 共有カテゴリを登録します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -155,7 +158,7 @@ public class ManHourAction extends ALBaseAction {
 
   /**
    * 共有カテゴリを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -174,7 +177,7 @@ public class ManHourAction extends ALBaseAction {
 
   /**
    * 共有カテゴリを削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -191,7 +194,7 @@ public class ManHourAction extends ALBaseAction {
 
   /**
    * 共有カテゴリを削除します。（複数） <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -205,7 +208,7 @@ public class ManHourAction extends ALBaseAction {
 
   /**
    * 共有カテゴリを一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -215,10 +218,12 @@ public class ManHourAction extends ALBaseAction {
     CommonCategorySelectData listData = new CommonCategorySelectData();
     listData.initField();
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p2a-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-        context).getPortletConfig().getInitParameter("p3a-strlen")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p2a-rows")));
+    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
+      context).getPortletConfig().getInitParameter("p3a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "manhour-category-list");
 
@@ -226,7 +231,7 @@ public class ManHourAction extends ALBaseAction {
 
   /**
    * カテゴリを詳細表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception

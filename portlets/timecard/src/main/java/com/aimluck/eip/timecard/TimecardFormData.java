@@ -22,11 +22,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -42,7 +39,8 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -51,13 +49,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカードのフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class TimecardFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(TimecardFormData.class.getName());
+    .getLogger(TimecardFormData.class.getName());
 
   /** ToDo名 */
 
@@ -79,28 +77,25 @@ public class TimecardFormData extends ALAbstractFormData {
 
   private int login_uid;
 
-  private DataContext dataContext;
-
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
     login_uid = ALEipUtils.getUserId(rundata);
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -127,9 +122,10 @@ public class TimecardFormData extends ALAbstractFormData {
 
   /**
    * タイムカードの各フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     reason.setNotNull(true);
     reason.limitMaxLength(1000);
@@ -139,28 +135,28 @@ public class TimecardFormData extends ALAbstractFormData {
 
   /**
    * タイムカードのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     try {
       if (getMode() == ALEipConstants.MODE_INSERT) {
-        SelectQuery workflg_query = new SelectQuery(EipTTimecard.class);
-        Expression workflg_exp = ExpressionFactory.matchExp(
-            EipTTimecard.USER_ID_PROPERTY, Integer.valueOf(login_uid));
+        SelectQuery<EipTTimecard> workflg_query =
+          Database.query(EipTTimecard.class);
+        Expression workflg_exp =
+          ExpressionFactory.matchExp(EipTTimecard.USER_ID_PROPERTY, Integer
+            .valueOf(login_uid));
         workflg_query.setQualifier(workflg_exp);
-        workflg_query.addOrdering(EipTTimecard.WORK_DATE_PROPERTY, false);
-        workflg_query.setFetchingDataRows(true);
+        workflg_query.orderDesending(EipTTimecard.WORK_DATE_PROPERTY);
 
-        @SuppressWarnings("unchecked")
-        List<DataRow> workflg_list = dataContext.performQuery(workflg_query);
+        List<EipTTimecard> workflg_list = workflg_query.fetchList();
         if (workflg_list != null && workflg_list.size() > 0) {
-          DataRow dataRow = workflg_list.get(0);
+          EipTTimecard record = workflg_list.get(0);
 
-          if (((String) ALEipUtils.getObjFromDataRow(dataRow,
-              EipTTimecard.WORK_FLAG_COLUMN)).equals(work_flag.getValue())) {
+          if (record.getWorkFlag().equals(work_flag.getValue())) {
             return false;
           } else {
             return true;
@@ -175,7 +171,7 @@ public class TimecardFormData extends ALAbstractFormData {
       if (cal.getTime().before(work_date.getValue())) {
         // 未来時刻へは変更不可とする
         msgList
-            .add("『 <span class='em'>勤怠時間</span> 』は『 <span class='em'>現在の時刻</span> 』以前で指定してください。");
+          .add("『 <span class='em'>勤怠時間</span> 』は『 <span class='em'>現在の時刻</span> 』以前で指定してください。");
 
         return false;
       }
@@ -186,20 +182,23 @@ public class TimecardFormData extends ALAbstractFormData {
       cal.set(Calendar.MINUTE, 0);
       cal.set(Calendar.MILLISECOND, 0);
 
-      SelectQuery query = new SelectQuery(EipTTimecard.class);
-      Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-          EipTTimecard.WORK_DATE_PROPERTY, cal.getTime());
+      SelectQuery<EipTTimecard> query = Database.query(EipTTimecard.class);
+      Expression exp11 =
+        ExpressionFactory.greaterOrEqualExp(
+          EipTTimecard.WORK_DATE_PROPERTY,
+          cal.getTime());
       cal.add(Calendar.MONTH, +1);
-      Expression exp12 = ExpressionFactory.lessExp(
-          EipTTimecard.WORK_DATE_PROPERTY, cal.getTime());
+      Expression exp12 =
+        ExpressionFactory.lessExp(EipTTimecard.WORK_DATE_PROPERTY, cal
+          .getTime());
       query.setQualifier(exp11.andExp(exp12));
-      Expression exp21 = ExpressionFactory.matchExp(
-          EipTTimecard.USER_ID_PROPERTY, Integer.valueOf(login_uid));
+      Expression exp21 =
+        ExpressionFactory.matchExp(EipTTimecard.USER_ID_PROPERTY, Integer
+          .valueOf(login_uid));
       query.andQualifier(exp21);
-      query.addOrdering(EipTTimecard.WORK_DATE_PROPERTY, true);
+      query.orderAscending(EipTTimecard.WORK_DATE_PROPERTY);
 
-      @SuppressWarnings("unchecked")
-      List<EipTTimecard> list = dataContext.performQuery(query);
+      List<EipTTimecard> list = query.fetchList();
 
       if (list == null || list.size() <= 0) {
 
@@ -223,12 +222,12 @@ public class TimecardFormData extends ALAbstractFormData {
 
               } else {
                 msgList
-                    .add("『 <span class='em'>勤怠時間</span> 』は『 <span class='em'>前の勤怠時間</span> 』以降で指定してください。");
+                  .add("『 <span class='em'>勤怠時間</span> 』は『 <span class='em'>前の勤怠時間</span> 』以降で指定してください。");
               }
             }
           } else {
             msgList
-                .add("『 <span class='em'>勤怠時間</span> 』は『 <span class='em'>後の勤怠時間</span> 』以前で指定してください。");
+              .add("『 <span class='em'>勤怠時間</span> 』は『 <span class='em'>後の勤怠時間</span> 』以前で指定してください。");
           }
         } else {
           if (timecard0 != null) {
@@ -236,7 +235,7 @@ public class TimecardFormData extends ALAbstractFormData {
 
             } else {
               msgList
-                  .add("『 <span class='em'>勤怠時間</span> 』は『 <span class='em'>前の勤怠時間</span> 』以降で指定してください。");
+                .add("『 <span class='em'>勤怠時間</span> 』は『 <span class='em'>前の勤怠時間</span> 』以降で指定してください。");
             }
           }
         }
@@ -283,6 +282,7 @@ public class TimecardFormData extends ALAbstractFormData {
     return null;
   }
 
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res = super.setFormData(rundata, context, msgList);
@@ -290,7 +290,10 @@ public class TimecardFormData extends ALAbstractFormData {
     if (res) {
       if (getMode() == ALEipConstants.MODE_UPDATE) {
         try {
-          entity_id = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
+          entity_id =
+            Integer.parseInt(ALEipUtils.getTemp(
+              rundata,
+              context,
               ALEipConstants.ENTITY_ID));
         } catch (Exception e) {
 
@@ -303,7 +306,7 @@ public class TimecardFormData extends ALAbstractFormData {
 
   /**
    * タイムカードをデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -311,13 +314,15 @@ public class TimecardFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTTimecard timecard = TimecardUtils.getEipTTimecard(rundata, context);
-      if (timecard == null)
+      if (timecard == null) {
         return false;
+      }
       // ToDo名
       timecard_id.setValue(timecard.getTimecardId().longValue());
       user_id.setValue(timecard.getUserId().intValue());
@@ -337,7 +342,7 @@ public class TimecardFormData extends ALAbstractFormData {
 
   /**
    * タイムカードをデータベースから削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -345,23 +350,25 @@ public class TimecardFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTTimecard timecard = TimecardUtils.getEipTTimecard(rundata, context);
-      if (timecard == null)
+      if (timecard == null) {
         return false;
+      }
       // 打刻情報を削除
-      dataContext.deleteObject(timecard);
+      Database.delete(timecard);
       // イベントログに保存
-      ALEventlogFactoryService
-          .getInstance()
-          .getEventlogHandler()
-          .log(timecard.getTimecardId(),
-              ALEventlogConstants.PORTLET_TYPE_TIMECARD, reason.getValue());
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        timecard.getTimecardId(),
+        ALEventlogConstants.PORTLET_TYPE_TIMECARD,
+        reason.getValue());
 
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -370,7 +377,7 @@ public class TimecardFormData extends ALAbstractFormData {
 
   /**
    * タイムカードをデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -378,13 +385,13 @@ public class TimecardFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
 
       // 新規オブジェクトモデル
-      EipTTimecard timecard = (EipTTimecard) dataContext
-          .createAndRegisterNewObject(EipTTimecard.class);
+      EipTTimecard timecard = Database.create(EipTTimecard.class);
       // ユーザーID
       timecard.setUserId(Integer.valueOf(ALEipUtils.getUserId(rundata)));
 
@@ -397,17 +404,16 @@ public class TimecardFormData extends ALAbstractFormData {
       // 更新日
       timecard.setUpdateDate(Calendar.getInstance().getTime());
       // タイムカードを登録
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
-      ALEventlogFactoryService
-          .getInstance()
-          .getEventlogHandler()
-          .log(timecard.getTimecardId(),
-              ALEventlogConstants.PORTLET_TYPE_TIMECARD, null);
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        timecard.getTimecardId(),
+        ALEventlogConstants.PORTLET_TYPE_TIMECARD,
+        null);
 
     } catch (Exception ex) {
-
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -416,7 +422,7 @@ public class TimecardFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているタイムカードを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -424,6 +430,7 @@ public class TimecardFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
@@ -440,16 +447,16 @@ public class TimecardFormData extends ALAbstractFormData {
       // 更新日
       timecard.setUpdateDate(Calendar.getInstance().getTime());
       // タイムカードを更新
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
-      ALEventlogFactoryService
-          .getInstance()
-          .getEventlogHandler()
-          .log(timecard.getTimecardId(),
-              ALEventlogConstants.PORTLET_TYPE_TIMECARD, reason.getValue());
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        timecard.getTimecardId(),
+        ALEventlogConstants.PORTLET_TYPE_TIMECARD,
+        reason.getValue());
 
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -457,7 +464,7 @@ public class TimecardFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public void setWorkFlag(String str) {
@@ -474,7 +481,7 @@ public class TimecardFormData extends ALAbstractFormData {
 
   /**
    * 指定した2つの日付を比較する．
-   *
+   * 
    * @param date1
    * @param date2
    * @param checkTime
@@ -500,9 +507,12 @@ public class TimecardFormData extends ALAbstractFormData {
     int date2Minute = cal2.get(Calendar.MINUTE);
     int date2Second = cal2.get(Calendar.SECOND);
 
-    if (date1Year == date2Year && date1Month == date2Month
-        && date1Day == date2Day && date1Hour == date2Hour
-        && date1Minute == date2Minute && date1Second == date2Second) {
+    if (date1Year == date2Year
+      && date1Month == date2Month
+      && date1Day == date2Day
+      && date1Hour == date2Hour
+      && date1Minute == date2Minute
+      && date1Second == date2Second) {
       return 0;
     }
     if (cal1.after(cal2)) {
@@ -515,9 +525,10 @@ public class TimecardFormData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
   }

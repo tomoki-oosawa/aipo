@@ -35,6 +35,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALDateTimeField;
+import com.aimluck.eip.category.beans.CommonCategoryLiteBean;
 import com.aimluck.eip.category.util.CommonCategoryUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
@@ -45,12 +46,15 @@ import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.manhour.util.ManHourUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
@@ -62,7 +66,8 @@ import com.aimluck.eip.util.ALEipUtils;
 /**
  * プロジェクト管理の検索データを管理するためのクラスです。 <br />
  */
-public class ManHourSelectData extends ALAbstractSelectData {
+public class ManHourSelectData extends
+    ALAbstractSelectData<EipTScheduleMap, ManHourResultData> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -74,7 +79,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
   private String target_user_id;
 
   /** グループリスト（My グループと部署） */
-  private List myGroupList = null;
+  private List<ALEipGroup> myGroupList = null;
 
   /** ポートレット Schedule への URL */
   private String scheduleUrl;
@@ -86,13 +91,13 @@ public class ManHourSelectData extends ALAbstractSelectData {
   private String category_id;
 
   /** 共有カテゴリリスト */
-  private List categoryList = null;
+  private List<CommonCategoryLiteBean> categoryList = null;
 
   /** 集計日付 */
   private ALDateTimeField view_date;
 
   /** スケジュール一覧 */
-  private List scheduleList;
+  private List<ManHourResultData> scheduleList;
 
   /** 工数合計 */
   private double totalManHourMinPast;
@@ -153,14 +158,14 @@ public class ManHourSelectData extends ALAbstractSelectData {
       ALEipUtils.getParameter(rundata, context, "target_user_id");
     category_id = ALEipUtils.getParameter(rundata, context, "category_id");
 
-    List myGroups = ALEipUtils.getMyGroups(rundata);
-    myGroupList = new ArrayList();
+    List<ALEipGroup> myGroups = ALEipUtils.getMyGroups(rundata);
+    myGroupList = new ArrayList<ALEipGroup>();
     int length = myGroups.size();
     for (int i = 0; i < length; i++) {
       myGroupList.add(myGroups.get(i));
     }
 
-    scheduleList = new ArrayList();
+    scheduleList = new ArrayList<ManHourResultData>();
 
     categoryList = CommonCategoryUtils.getCommonCategoryLiteBeans(rundata);
 
@@ -225,7 +230,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
         context,
         ALAccessControlConstants.VALUE_ACL_LIST);
       action.setMode(ALEipConstants.MODE_LIST);
-      List aList = selectList(rundata, context);
+      List<EipTScheduleMap> aList = selectList(rundata, context);
       if (aList != null) {
         int size = aList.size();
         for (int i = 0; i < size; i++) {
@@ -260,84 +265,76 @@ public class ManHourSelectData extends ALAbstractSelectData {
    * 
    */
   @Override
-  public List getList() {
-    return scheduleList;
+  public List<Object> getList() {
+    return Arrays.asList(scheduleList.toArray());
   }
 
   /**
    *
    */
-  private List getScheduleList() {
-    Object[] obj = scheduleList.toArray();
-    Arrays.sort(obj, new Comparator() {
-      public int compare(Object o1, Object o2) {
+  private List<ManHourResultData> getScheduleList() {
+    ManHourResultData[] obj = (ManHourResultData[]) scheduleList.toArray();
+    Arrays.sort(obj, new Comparator<ManHourResultData>() {
+      public int compare(ManHourResultData o1, ManHourResultData o2) {
         String sort = getCurrentSort();
         String sort_type = getCurrentSortType();
         int result = 0;
         if ("category".equals(sort)) {
           if ("asc".equals(sort_type)) {
             result =
-              ((ManHourResultData) o1).getCategoryName().getValue().compareTo(
-                ((ManHourResultData) o2).getCategoryName().getValue());
+              (o1).getCategoryName().getValue().compareTo(
+                (o2).getCategoryName().getValue());
           } else {
             result =
-              ((ManHourResultData) o2).getCategoryName().getValue().compareTo(
-                ((ManHourResultData) o1).getCategoryName().getValue());
+              (o2).getCategoryName().getValue().compareTo(
+                (o1).getCategoryName().getValue());
 
           }
         } else if ("user_name".equals(sort)) {
           if ("asc".equals(sort_type)) {
             result =
-              ((ManHourResultData) o1).getUser().getValue().compareTo(
-                ((ManHourResultData) o2).getUser().getValue());
+              (o1).getUser().getValue().compareTo((o2).getUser().getValue());
           } else {
             result =
-              ((ManHourResultData) o2).getUser().getValue().compareTo(
-                ((ManHourResultData) o1).getUser().getValue());
+              (o2).getUser().getValue().compareTo((o1).getUser().getValue());
 
           }
         } else if ("schedule".equals(sort)) {
           if ("asc".equals(sort_type)) {
             result =
-              ((ManHourResultData) o1).getName().getValue().compareTo(
-                ((ManHourResultData) o2).getName().getValue());
+              (o1).getName().getValue().compareTo((o2).getName().getValue());
           } else {
             result =
-              ((ManHourResultData) o2).getName().getValue().compareTo(
-                ((ManHourResultData) o1).getName().getValue());
+              (o2).getName().getValue().compareTo((o1).getName().getValue());
 
           }
         } else if ("time".equals(sort)) {
           if ("asc".equals(sort_type)) {
             result =
-              ((ManHourResultData) o1).getStartDate().getValue().compareTo(
-                ((ManHourResultData) o2).getStartDate().getValue());
+              (o1).getStartDate().getValue().compareTo(
+                (o2).getStartDate().getValue());
           } else {
             result =
-              ((ManHourResultData) o2).getStartDate().getValue().compareTo(
-                ((ManHourResultData) o1).getStartDate().getValue());
+              (o2).getStartDate().getValue().compareTo(
+                (o1).getStartDate().getValue());
 
           }
         } else if ("manhour".equals(sort)) {
           if ("asc".equals(sort_type)) {
             result =
-              Double
-                .valueOf(((ManHourResultData) o1).getManHourMin())
-                .compareTo(
-                  Double.valueOf(((ManHourResultData) o2).getManHourMin()));
+              Double.valueOf((o1).getManHourMin()).compareTo(
+                Double.valueOf((o2).getManHourMin()));
           } else {
             result =
-              Double
-                .valueOf(((ManHourResultData) o2).getManHourMin())
-                .compareTo(
-                  Double.valueOf(((ManHourResultData) o1).getManHourMin()));
+              Double.valueOf((o2).getManHourMin()).compareTo(
+                Double.valueOf((o1).getManHourMin()));
 
           }
         }
         return result;
       }
     });
-    ArrayList list = new ArrayList();
+    List<ManHourResultData> list = new ArrayList<ManHourResultData>();
     list.addAll(Arrays.asList(obj));
     return list;
   }
@@ -347,15 +344,16 @@ public class ManHourSelectData extends ALAbstractSelectData {
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected ResultList selectList(RunData rundata, Context context)
-      throws ALPageNotFoundException, ALDBErrorException {
+  protected ResultList<EipTScheduleMap> selectList(RunData rundata,
+      Context context) throws ALPageNotFoundException, ALDBErrorException {
 
     try {
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTScheduleMap> query = getSelectQuery(rundata, context);
       // buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
-      List list = query.fetchList();
-      return new ResultList(ScheduleUtils.sortByDummySchedule(list));
+      List<EipTScheduleMap> list = query.fetchList();
+      return new ResultList<EipTScheduleMap>(ScheduleUtils
+        .sortByDummySchedule(list));
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -369,8 +367,9 @@ public class ManHourSelectData extends ALAbstractSelectData {
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTScheduleMap.class);
+  private SelectQuery<EipTScheduleMap> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTScheduleMap> query = Database.query(EipTScheduleMap.class);
 
     // 終了日時
     Expression exp11 =
@@ -471,7 +470,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected Object selectDetail(RunData rundata, Context context)
+  protected ManHourResultData selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     // String js_peid = rundata.getParameters().getString("sch");
 
@@ -482,10 +481,9 @@ public class ManHourSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
   @Override
-  protected Object getResultData(Object obj) throws ALPageNotFoundException,
-      ALDBErrorException {
+  protected Object getResultData(EipTScheduleMap record)
+      throws ALPageNotFoundException, ALDBErrorException {
     try {
-      EipTScheduleMap record = (EipTScheduleMap) obj;
 
       EipTSchedule schedule = record.getEipTSchedule();
       EipTCommonCategory category = record.getEipTCommonCategory();
@@ -511,7 +509,8 @@ public class ManHourSelectData extends ALAbstractSelectData {
       }
       int userid_int = Integer.parseInt(userid);
 
-      SelectQuery mapquery = new SelectQuery(EipTScheduleMap.class);
+      SelectQuery<EipTScheduleMap> mapquery =
+        Database.query(EipTScheduleMap.class);
       Expression mapexp1 =
         ExpressionFactory.matchExp(
           EipTScheduleMap.SCHEDULE_ID_PROPERTY,
@@ -522,7 +521,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
           .valueOf(userid));
       mapquery.andQualifier(mapexp2);
 
-      List schedulemaps = mapquery.fetchList();
+      List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
       boolean is_member =
         (schedulemaps != null && schedulemaps.size() > 0) ? true : false;
 
@@ -661,7 +660,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
     boolean pos_bool = false;
     for (int i = 0; i < size; i++) {
       repeat_del = false;
-      ManHourResultData rd2 = (ManHourResultData) scheduleList.get(i);
+      ManHourResultData rd2 = scheduleList.get(i);
       if (rd.isRepeat()
         && rd2.isDummy()
         && rd.getScheduleId().getValue() == rd2.getParentId().getValue()
@@ -760,16 +759,16 @@ public class ManHourSelectData extends ALAbstractSelectData {
    * 
    * @param list
    */
-  private void cleanupDummySchedule(List list) {
+  private void cleanupDummySchedule(List<ManHourResultData> list) {
     if (list == null || list.size() <= 0) {
       return;
     }
 
     ManHourResultData rd = null;
-    List dummyList = new ArrayList();
+    List<ManHourResultData> dummyList = new ArrayList<ManHourResultData>();
     int size = list.size();
     for (int i = 0; i < size; i++) {
-      rd = (ManHourResultData) list.get(i);
+      rd = list.get(i);
       if (rd.isDummy()) {
         dummyList.add(rd);
       }
@@ -782,7 +781,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
   @Override
-  protected Object getResultDataDetail(Object obj)
+  protected Object getResultDataDetail(ManHourResultData obj)
       throws ALPageNotFoundException, ALDBErrorException {
     return null;
   }
@@ -800,7 +799,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
    * @param groupname
    * @return
    */
-  public List getUsers() {
+  public List<ALEipUser> getUsers() {
     if (hasAclSummaryOther) {
       if ((target_group_name != null)
         && (!target_group_name.equals(""))
@@ -811,7 +810,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
       }
     } else {
       try {
-        List users = new ArrayList();
+        List<ALEipUser> users = new ArrayList<ALEipUser>();
         users.add(ALEipUtils.getALEipUser(Integer.parseInt(userid)));
         return users;
       } catch (Exception e) {
@@ -824,7 +823,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
    * 
    * @return
    */
-  public Map getPostMap() {
+  public Map<Integer, ALEipPost> getPostMap() {
     return ALEipManager.getInstance().getPostMap();
   }
 
@@ -832,7 +831,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
    * 
    * @return
    */
-  public List getMyGroupList() {
+  public List<ALEipGroup> getMyGroupList() {
     return myGroupList;
   }
 
@@ -885,7 +884,7 @@ public class ManHourSelectData extends ALAbstractSelectData {
     return category_id;
   }
 
-  public List getCategoryList() {
+  public List<CommonCategoryLiteBean> getCategoryList() {
     return categoryList;
   }
 

@@ -31,13 +31,14 @@ import com.aimluck.eip.msgboard.MsgboardTopicMultiDelete;
 
 /**
  * 掲示板トピックの一覧を処理するクラスです。 <br />
- *
+ * 
  */
 
 public class MsgboardTopicDetailJSONScreen extends ALJSONScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(MsgboardTopicDetailJSONScreen.class.getName());
+    .getLogger(MsgboardTopicDetailJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -53,8 +54,9 @@ public class MsgboardTopicDetailJSONScreen extends ALJSONScreen {
         formData.loadCategoryList(rundata, context);
         if (formData.doInsert(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
 
@@ -65,8 +67,9 @@ public class MsgboardTopicDetailJSONScreen extends ALJSONScreen {
         formData.loadCategoryList(rundata, context);
         if (formData.doUpdate(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
@@ -76,16 +79,18 @@ public class MsgboardTopicDetailJSONScreen extends ALJSONScreen {
         formData.loadCategoryList(rundata, context);
         if (formData.doDelete(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_MULTI_DELETE.equals(mode)) {
         MsgboardTopicMultiDelete delete = new MsgboardTopicMultiDelete();
         if (delete.doMultiAction(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       }

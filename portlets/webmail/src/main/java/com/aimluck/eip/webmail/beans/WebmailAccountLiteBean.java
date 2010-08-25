@@ -26,6 +26,7 @@ import com.aimluck.eip.common.ALData;
  * WebメールアカウントのBeanです。 <br />
  */
 public class WebmailAccountLiteBean implements ALData, Cloneable {
+
   /** The value for the accountId field */
   private ALNumberField accountId;
 
