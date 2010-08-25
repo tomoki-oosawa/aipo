@@ -48,6 +48,7 @@ import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -196,8 +197,7 @@ public class TimecardSelectData extends
    */
   private SelectQuery<EipTTimecard> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipTTimecard> query =
-      new SelectQuery<EipTTimecard>(EipTTimecard.class);
+    SelectQuery<EipTTimecard> query = Database.query(EipTTimecard.class);
 
     Expression exp1 =
       ExpressionFactory.matchExp(EipTTimecard.USER_ID_PROPERTY, Integer
@@ -336,8 +336,7 @@ public class TimecardSelectData extends
    */
   private SelectQuery<EipTTimecard> getSelectQueryDetail(RunData rundata,
       Context context) {
-    SelectQuery<EipTTimecard> query =
-      new SelectQuery<EipTTimecard>(EipTTimecard.class);
+    SelectQuery<EipTTimecard> query = Database.query(EipTTimecard.class);
     Expression exp =
       ExpressionFactory.matchExp(EipTTimecard.USER_ID_PROPERTY, Integer
         .valueOf(ALEipUtils.getUserId(rundata)));

@@ -23,8 +23,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.cayenne.DataObjectUtils;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.om.security.Group;
@@ -51,7 +49,6 @@ import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.mygroup.util.MyGroupUtils;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -84,16 +81,12 @@ public class MyGroupFormData extends ALAbstractFormData {
 
   private String mygroup_name = null;
 
-  private DataContext dataContext;
-
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
     userId = ALEipUtils.getUserId(rundata);
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   /**
@@ -324,9 +317,7 @@ public class MyGroupFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       // グループオブジェクトモデルを生成
-      TurbineGroup group =
-        (TurbineGroup) dataContext
-          .createAndRegisterNewObject(TurbineGroup.class);
+      TurbineGroup group = Database.create(TurbineGroup.class);
       String name = group_alias_name.getValue();
       // グループ名
       String groupName =
@@ -357,15 +348,12 @@ public class MyGroupFormData extends ALAbstractFormData {
       for (int i = 0; i < f_size; i++) {
         int fid = (int) facilityList.get(i).getFacilityId().getValue();
         EipMFacility facility =
-          (EipMFacility) DataObjectUtils.objectForPK(
-            dataContext,
-            EipMFacility.class,
-            Integer.valueOf(fid));
+          Database.get(EipMFacility.class, Integer.valueOf(fid));
 
         insertFacilityGroup(facility, (TurbineGroup) jetspeedgroup);
       }
 
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -375,6 +363,7 @@ public class MyGroupFormData extends ALAbstractFormData {
 
       ALEipUtils.reloadMygroup(rundata);
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -384,9 +373,7 @@ public class MyGroupFormData extends ALAbstractFormData {
   private void insertFacilityGroup(EipMFacility facility,
       TurbineGroup turbine_group) {
     try {
-      EipFacilityGroup fg =
-        (EipFacilityGroup) dataContext
-          .createAndRegisterNewObject(EipFacilityGroup.class);
+      EipFacilityGroup fg = Database.create(EipFacilityGroup.class);
       fg.setEipMFacility(facility);
       fg.setTurbineGroup(turbine_group);
     } catch (Exception e) {
@@ -455,16 +442,13 @@ public class MyGroupFormData extends ALAbstractFormData {
         query.andQualifier(exp2);
         List<EipFacilityGroup> flist = query.fetchList();
         if (flist != null && flist.size() > 0) {
-          dataContext.deleteObjects(flist);
+          Database.deleteAll(flist);
         }
       }
 
       // グループに施設を追加する．
       TurbineGroup tgroup =
-        (TurbineGroup) DataObjectUtils.objectForPK(
-          dataContext,
-          TurbineGroup.class,
-          Integer.valueOf(record.getId()));
+        Database.get(TurbineGroup.class, Integer.valueOf(record.getId()));
 
       int f_size = facilityList.size();
       for (int i = 0; i < f_size; i++) {
@@ -529,7 +513,7 @@ public class MyGroupFormData extends ALAbstractFormData {
         Database.query(EipFacilityGroup.class, exp);
       List<EipFacilityGroup> fglist = query.fetchList();
       if (fglist != null && fglist.size() > 0) {
-        dataContext.deleteObjects(fglist);
+        Database.deleteAll(fglist);
       }
 
       // グループからユーザーを削除
@@ -553,6 +537,7 @@ public class MyGroupFormData extends ALAbstractFormData {
       // マイグループの再読み込み（セッションのリフレッシュ）
       ALEipUtils.reloadMygroup(rundata);
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }

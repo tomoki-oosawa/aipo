@@ -48,6 +48,7 @@ import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.msgboard.util.MsgboardUtils;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -219,7 +220,7 @@ public class MsgboardTopicSelectData extends
   private SelectQuery<EipTMsgboardTopic> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<EipTMsgboardTopic> query =
-      new SelectQuery<EipTMsgboardTopic>(EipTMsgboardTopic.class);
+      Database.query(EipTMsgboardTopic.class);
 
     Expression exp1 =
       ExpressionFactory.matchExp(EipTMsgboardTopic.PARENT_ID_PROPERTY, Integer
@@ -435,7 +436,7 @@ public class MsgboardTopicSelectData extends
   private SelectQuery<EipTMsgboardTopic> getSelectQueryForCotopic(
       RunData rundata, Context context, String topicid, String cotopicsort) {
     SelectQuery<EipTMsgboardTopic> query =
-      new SelectQuery<EipTMsgboardTopic>(EipTMsgboardTopic.class);
+      Database.query(EipTMsgboardTopic.class);
     Expression exp =
       ExpressionFactory.matchExp(EipTMsgboardTopic.PARENT_ID_PROPERTY, Integer
         .valueOf(topicid));
@@ -446,7 +447,7 @@ public class MsgboardTopicSelectData extends
 
   private SelectQuery<EipTMsgboardFile> getSelectQueryForFiles(int topicid) {
     SelectQuery<EipTMsgboardFile> query =
-      new SelectQuery<EipTMsgboardFile>(EipTMsgboardFile.class);
+      Database.query(EipTMsgboardFile.class);
     Expression exp =
       ExpressionFactory.matchDbExp(
         EipTMsgboardTopic.TOPIC_ID_PK_COLUMN,

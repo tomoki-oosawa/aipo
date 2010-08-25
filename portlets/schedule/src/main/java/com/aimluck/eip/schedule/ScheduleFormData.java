@@ -569,8 +569,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       try {
         String str[] = rundata.getParameters().getStrings("member_to");
         if (str != null && str.length > 0) {
-          SelectQuery<TurbineUser> query =
-            new SelectQuery<TurbineUser>(TurbineUser.class);
+          SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
           Expression exp =
             ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY, str);
           query.setQualifier(exp);
@@ -582,8 +581,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
         String f_id[] = rundata.getParameters().getStrings("facility_to");
         if (!ScheduleUtils.isZeroLength(f_id)) {
-          SelectQuery<EipMFacility> fquery =
-            new SelectQuery<EipMFacility>(EipMFacility.class);
+          SelectQuery<EipMFacility> fquery = Database.query(EipMFacility.class);
           Expression fexp =
             ExpressionFactory.inDbExp(EipMFacility.FACILITY_ID_PK_COLUMN, f_id);
           fquery.setQualifier(fexp);
@@ -965,7 +963,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
       // このスケジュールを共有しているメンバーを取得
       SelectQuery<EipTScheduleMap> mapquery =
-        new SelectQuery<EipTScheduleMap>(EipTScheduleMap.class);
+        Database.query(EipTScheduleMap.class);
       Expression mapexp =
         ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, record
           .getScheduleId());
@@ -996,8 +994,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       }
 
       if (users.size() > 0) {
-        SelectQuery<TurbineUser> query =
-          new SelectQuery<TurbineUser>(TurbineUser.class);
+        SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
         Expression exp =
           ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, users);
         query.setQualifier(exp);
@@ -1007,8 +1004,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       }
 
       if (facilityIds.size() > 0) {
-        SelectQuery<EipMFacility> fquery =
-          new SelectQuery<EipMFacility>(EipMFacility.class);
+        SelectQuery<EipMFacility> fquery = Database.query(EipMFacility.class);
         Expression fexp =
           ExpressionFactory.inDbExp(
             EipMFacility.FACILITY_ID_PK_COLUMN,
@@ -2077,7 +2073,7 @@ public class ScheduleFormData extends ALAbstractFormData {
             }
             /** 既に登録されているダミースケジュールを検索する */
             SelectQuery<EipTSchedule> dummy_query =
-              new SelectQuery<EipTSchedule>(EipTSchedule.class);
+              Database.query(EipTSchedule.class);
             Expression exp1 =
               ExpressionFactory.matchExp(
                 EipTSchedule.PARENT_ID_PROPERTY,
@@ -2271,8 +2267,7 @@ public class ScheduleFormData extends ALAbstractFormData {
     Integer scheduleId = schedule.getScheduleId();
     Database.delete(schedule);
     // ダミースケジュールの取得
-    SelectQuery<EipTSchedule> query =
-      new SelectQuery<EipTSchedule>(EipTSchedule.class);
+    SelectQuery<EipTSchedule> query = Database.query(EipTSchedule.class);
     Expression exp1 =
       ExpressionFactory.matchExp(EipTSchedule.PARENT_ID_PROPERTY, scheduleId);
     query.setQualifier(exp1);

@@ -332,7 +332,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
       // トピックを削除
       SelectQuery<EipTMsgboardTopic> query =
-        new SelectQuery<EipTMsgboardTopic>(EipTMsgboardTopic.class);
+        Database.query(EipTMsgboardTopic.class);
       Expression exp =
         ExpressionFactory.inDbExp(
           EipTMsgboardTopic.TOPIC_ID_PK_COLUMN,

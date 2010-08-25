@@ -289,7 +289,7 @@ public class MsgboardCategorySelectData extends
         (MsgboardUtils.PUBLIC_FLG_VALUE_PUBLIC).equals(record.getPublicFlag());
 
       SelectQuery<EipTMsgboardCategoryMap> mapquery =
-        new SelectQuery<EipTMsgboardCategoryMap>(EipTMsgboardCategoryMap.class);
+        Database.query(EipTMsgboardCategoryMap.class);
       Expression mapexp =
         ExpressionFactory.matchDbExp(
           EipTMsgboardCategory.CATEGORY_ID_PK_COLUMN,
@@ -314,8 +314,7 @@ public class MsgboardCategorySelectData extends
         }
       }
 
-      SelectQuery<TurbineUser> query =
-        new SelectQuery<TurbineUser>(TurbineUser.class);
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
       Expression exp =
         ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, users);
       query.setQualifier(exp);
