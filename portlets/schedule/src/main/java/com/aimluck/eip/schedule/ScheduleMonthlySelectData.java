@@ -24,11 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SQLTemplate;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -44,14 +41,17 @@ import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -63,7 +63,8 @@ import com.aimluck.eip.util.ALEipUtils;
  * 月間スケジュールの検索結果を管理するクラスです。
  * 
  */
-public class ScheduleMonthlySelectData extends ALAbstractSelectData {
+public class ScheduleMonthlySelectData extends
+    ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> {
   /** <code>TARGET_GROUP_NAME</code> グループによる表示切り替え用変数の識別子 */
   private final String TARGET_GROUP_NAME = "target_group_name";
 
@@ -111,10 +112,10 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
   private String target_user_id;
 
   /** <code>myGroupList</code> グループリスト（My グループと部署） */
-  private List myGroupList = null;
+  private List<ALEipGroup> myGroupList = null;
 
   /** <code>userList</code> 表示切り替え用のユーザリスト */
-  private List userList = null;
+  private List<ALEipUser> userList = null;
 
   /** <code>userid</code> ユーザーID */
   private String userid;
@@ -131,10 +132,8 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
   /** ポートレット ID */
   private String portletId;
 
-  private DataContext dataContext;
-
   /** <code>facilityList</code> 表示切り替え用の施設リスト */
-  private List facilityList;
+  private List<FacilityResultData> facilityList;
 
   /** 閲覧権限の有無 */
   private boolean hasAclviewOther;
@@ -157,8 +156,6 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     // 展開されるパラメータは以下の通りです。
     // ・viewMonth 形式：yyyy-MM
@@ -210,7 +207,7 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
       viewMonth.setValue(cal.getTime());
     } else {
       viewMonth.setValue(tmpViewMonth);
-      if (!viewMonth.validate(new ArrayList())) {
+      if (!viewMonth.validate(new ArrayList<String>())) {
         ALEipUtils.removeTemp(rundata, context, "view_month");
         throw new ALPageNotFoundException();
       }
@@ -272,8 +269,8 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
     userid = Integer.toString(ALEipUtils.getUserId(rundata));
 
     // My グループの一覧を取得する．
-    List myGroups = ALEipUtils.getMyGroups(rundata);
-    myGroupList = new ArrayList();
+    List<ALEipGroup> myGroups = ALEipUtils.getMyGroups(rundata);
+    myGroupList = new ArrayList<ALEipGroup>();
     int length = myGroups.size();
     for (int i = 0; i < length; i++) {
       myGroupList.add(myGroups.get(i));
@@ -310,10 +307,8 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
                 "SELECT LOGIN_NAME FROM TURBINE_USER WHERE USER_ID = '"
                   + paramId
                   + "' AND DISABLED = 'F'";
-              SQLTemplate rawSelect =
-                new SQLTemplate(TurbineUser.class, query, true);
-              rawSelect.setFetchingDataRows(true);
-              List list = dataContext.performQuery(rawSelect);
+              List<TurbineUser> list =
+                Database.sql(TurbineUser.class, query).fetchList();
               if (list != null && list.size() != 0) {
                 // 指定したユーザが存在する場合，セッションに保存する．
                 ALEipUtils
@@ -372,17 +367,17 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
    * .util.RunData, org.apache.velocity.context.Context)
    */
   @Override
-  protected ResultList selectList(RunData rundata, Context context)
-      throws ALPageNotFoundException, ALDBErrorException {
+  protected ResultList<EipTScheduleMap> selectList(RunData rundata,
+      Context context) throws ALPageNotFoundException, ALDBErrorException {
     try {
       // 指定グループや指定ユーザをセッションに設定する．
       setupLists(rundata, context);
 
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTScheduleMap> query = getSelectQuery(rundata, context);
       if (query == null) {
         return null;
       }
-      List list = dataContext.performQuery(query);
+      List<EipTScheduleMap> list = query.fetchList();
 
       if (!target_user_id.startsWith(ScheduleUtils.TARGET_FACILITY_ID)
         && viewTodo == 1) {
@@ -390,7 +385,8 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
         loadTodo(rundata, context);
       }
 
-      return new ResultList(ScheduleUtils.sortByDummySchedule(list));
+      return new ResultList<EipTScheduleMap>(ScheduleUtils
+        .sortByDummySchedule(list));
     } catch (Exception e) {
 
       // TODO: エラー処理
@@ -407,8 +403,9 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTScheduleMap.class);
+  private SelectQuery<EipTScheduleMap> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTScheduleMap> query = Database.query(EipTScheduleMap.class);
 
     // 終了日時
     Expression exp11 =
@@ -470,9 +467,9 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
     }
 
     // 開始日時でソート
-    query.addOrdering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+    query.orderAscending(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
       + "."
-      + EipTSchedule.START_DATE_PROPERTY, true);
+      + EipTSchedule.START_DATE_PROPERTY);
     return query;
   }
 
@@ -481,12 +478,11 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
    * com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
   @Override
-  protected Object getResultData(Object obj) throws ALPageNotFoundException,
-      ALDBErrorException {
+  protected Object getResultData(EipTScheduleMap record)
+      throws ALPageNotFoundException, ALDBErrorException {
     ScheduleResultData rd = new ScheduleResultData();
     rd.initField();
     try {
-      EipTScheduleMap record = (EipTScheduleMap) obj;
       EipTSchedule schedule = record.getEipTSchedule();
       // スケジュールが棄却されている場合は表示しない
       if ("R".equals(record.getStatus())) {
@@ -494,7 +490,8 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
       }
       int userid_int = Integer.parseInt(userid);
 
-      SelectQuery mapquery = new SelectQuery(EipTScheduleMap.class);
+      SelectQuery<EipTScheduleMap> mapquery =
+        Database.query(EipTScheduleMap.class);
       Expression mapexp1 =
         ExpressionFactory.matchExp(
           EipTScheduleMap.SCHEDULE_ID_PROPERTY,
@@ -505,7 +502,7 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
           .valueOf(userid));
       mapquery.andQualifier(mapexp2);
 
-      List schedulemaps = dataContext.performQuery(mapquery);
+      List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
       boolean is_member =
         (schedulemaps != null && schedulemaps.size() > 0) ? true : false;
 
@@ -617,7 +614,7 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
    * .util.RunData, org.apache.velocity.context.Context)
    */
   @Override
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected EipTScheduleMap selectDetail(RunData rundata, Context context) {
     // このメソッドは利用されません。
     return null;
   }
@@ -628,7 +625,7 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
    * .Object)
    */
   @Override
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(EipTScheduleMap record) {
     // このメソッドは利用されません。
     return null;
   }
@@ -644,12 +641,12 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
 
   public void loadTodo(RunData rundata, Context context) {
     try {
-      SelectQuery query = getSelectQueryForTodo(rundata, context);
-      List todos = dataContext.performQuery(query);
+      SelectQuery<EipTTodo> query = getSelectQueryForTodo(rundata, context);
+      List<EipTTodo> todos = query.fetchList();
 
       int todossize = todos.size();
       for (int i = 0; i < todossize; i++) {
-        EipTTodo record = (EipTTodo) todos.get(i);
+        EipTTodo record = todos.get(i);
         ScheduleToDoResultData rd = new ScheduleToDoResultData();
         rd.initField();
 
@@ -723,8 +720,9 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
     }
   }
 
-  private SelectQuery getSelectQueryForTodo(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTTodo.class);
+  private SelectQuery<EipTTodo> getSelectQueryForTodo(RunData rundata,
+      Context context) {
+    SelectQuery<EipTTodo> query = Database.query(EipTTodo.class);
     Expression exp1 =
       ExpressionFactory.noMatchExp(EipTTodo.STATE_PROPERTY, Short
         .valueOf((short) 100));
@@ -782,7 +780,7 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
     query.andQualifier((exp11.andExp(exp12)).orExp(exp21.andExp(exp22)).orExp(
       exp31.andExp(exp32)));
 
-    query.addOrdering(EipTTodo.START_DATE_PROPERTY, true);
+    query.orderAscending(EipTTodo.START_DATE_PROPERTY);
     return query;
   }
 
@@ -894,7 +892,7 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
       userList = ALEipUtils.getUsers("LoginUser");
       facilityList =
         FacilitiesUtils
-          .getFacilitiesFromSelectQuery(new com.aimluck.eip.orm.query.SelectQuery(
+          .getFacilitiesFromSelectQuery(new com.aimluck.eip.orm.query.SelectQuery<EipMFacility>(
             EipMFacility.class));
     }
 
@@ -980,7 +978,7 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
           ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, tmp_user_id);
           target_user_id = tmp_user_id;
         } else {
-          FacilityResultData rd = (FacilityResultData) facilityList.get(0);
+          FacilityResultData rd = facilityList.get(0);
           target_user_id = "f" + rd.getFacilityId().getValue();
           ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, target_user_id);
         }
@@ -1000,7 +998,7 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
           target_user_id = tmp_user_id;
         } else {
           if (facilityList != null && facilityList.size() > 0) {
-            FacilityResultData rd = (FacilityResultData) facilityList.get(0);
+            FacilityResultData rd = facilityList.get(0);
             target_user_id = "f" + rd.getFacilityId().getValue();
             ALEipUtils
               .setTemp(rundata, context, TARGET_USER_ID, target_user_id);
@@ -1021,7 +1019,7 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
             ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, userid);
             target_user_id = userid;
           } else {
-            ALEipUser eipUser = (ALEipUser) userList.get(0);
+            ALEipUser eipUser = userList.get(0);
             String userId = eipUser.getUserId().getValueAsString();
             ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, userId);
             target_user_id = userId;
@@ -1033,7 +1031,7 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
     return target_user_id;
   }
 
-  private boolean containsUserId(List list, String userid) {
+  private boolean containsUserId(List<ALEipUser> list, String userid) {
     if (list == null || list.size() <= 0) {
       return false;
     }
@@ -1041,7 +1039,7 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
     ALEipUser eipUser;
     int size = list.size();
     for (int i = 0; i < size; i++) {
-      eipUser = (ALEipUser) list.get(i);
+      eipUser = list.get(i);
       String eipUserId = eipUser.getUserId().getValueAsString();
       if (userid.equals(eipUserId)) {
         return true;
@@ -1050,7 +1048,8 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
     return false;
   }
 
-  private boolean containsFacilityId(List list, String facility_id) {
+  private boolean containsFacilityId(List<FacilityResultData> list,
+      String facility_id) {
     if (list == null || list.size() <= 0) {
       return false;
     }
@@ -1058,7 +1057,7 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
     FacilityResultData facility;
     int size = list.size();
     for (int i = 0; i < size; i++) {
-      facility = (FacilityResultData) list.get(i);
+      facility = list.get(i);
       String fid = "f" + facility.getFacilityId().toString();
       if (facility_id.equals(fid)) {
         return true;
@@ -1091,12 +1090,12 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
    * @param groupname
    * @return
    */
-  public List getUsers() {
+  public List<ALEipUser> getUsers() {
     if (hasAclviewOther) {
       return userList;
     } else {
       try {
-        List users = new ArrayList();
+        List<ALEipUser> users = new ArrayList<ALEipUser>();
         users.add(ALEipUtils.getALEipUser(Integer.parseInt(userid)));
         return users;
       } catch (Exception e) {
@@ -1110,7 +1109,7 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
    * 
    * @return
    */
-  public Map getPostMap() {
+  public Map<Integer, ALEipPost> getPostMap() {
     if (hasAclviewOther) {
       return ALEipManager.getInstance().getPostMap();
     } else {
@@ -1123,7 +1122,7 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
    * 
    * @return
    */
-  public List getMyGroupList() {
+  public List<ALEipGroup> getMyGroupList() {
     if (hasAclviewOther) {
       return myGroupList;
     } else {
@@ -1163,7 +1162,7 @@ public class ScheduleMonthlySelectData extends ALAbstractSelectData {
     // userid.substring(1);
   }
 
-  public List getFacilityList() {
+  public List<FacilityResultData> getFacilityList() {
     return facilityList;
   }
 

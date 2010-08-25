@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -34,7 +34,7 @@ import com.aimluck.eip.schedule.util.ScheduleUtils;
 public class ScheduleToDoMonthContainer implements ALData {
 
   /** <code>map</code> ToDo マップ．key は「0」から始まる Integer. */
-  private Map map;
+  private Map<Integer, List<ScheduleToDoWeekContainer>> map;
 
   private Calendar viewStartCal;
 
@@ -42,7 +42,7 @@ public class ScheduleToDoMonthContainer implements ALData {
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
-    map = new LinkedHashMap();
+    map = new LinkedHashMap<Integer, List<ScheduleToDoWeekContainer>>();
   }
 
   /**
@@ -51,14 +51,15 @@ public class ScheduleToDoMonthContainer implements ALData {
    * @param cal
    */
   public void setViewMonth(Calendar cal, Calendar vcal) {
-    List weekList;
+    List<ScheduleToDoWeekContainer> weekList;
     viewStartCal = Calendar.getInstance();
     viewStartCal.setTime(cal.getTime());
     for (int i = 1; i <= 6; i++) {
       if ((i == 5 || i == 6)
-          && (cal.get(Calendar.MONTH) != vcal.get(Calendar.MONTH)))
+        && (cal.get(Calendar.MONTH) != vcal.get(Calendar.MONTH))) {
         break;
-      weekList = new ArrayList();
+      }
+      weekList = new ArrayList<ScheduleToDoWeekContainer>();
       map.put(Integer.valueOf(i - 1), weekList);
       // 一週間ずらす
       cal.add(Calendar.DATE, 7);
@@ -74,7 +75,8 @@ public class ScheduleToDoMonthContainer implements ALData {
   public void addToDoResultData(int count, int row, ScheduleToDoResultData rd) {
     int size = map.size();
     if (row < size) {
-      List weekTodoConList = (List) map.get(Integer.valueOf(row));
+      List<ScheduleToDoWeekContainer> weekTodoConList =
+        map.get(Integer.valueOf(row));
 
       viewStartCal.add(Calendar.DATE, 7 * row);
 
@@ -90,8 +92,8 @@ public class ScheduleToDoMonthContainer implements ALData {
    * @param id
    * @return
    */
-  public List getWeekList(int id) {
-    return (List) map.get(Integer.valueOf(id));
+  public List<ScheduleToDoWeekContainer> getWeekList(int id) {
+    return map.get(Integer.valueOf(id));
   }
 
 }

@@ -36,20 +36,21 @@ public class UserFacilityListBox extends ListBox {
 
   public static final String INITIAL_VALUE = "initialvalue";
 
-  private String DEF_INITIAL_VALUE = "（ユーザー／施設の選択）";
+  private final String DEF_INITIAL_VALUE = "（ユーザー／施設の選択）";
 
   /**
    * Initialize options
-   *
+   * 
    * @param data
    */
+  @Override
   protected void init(RunData data) {
 
     // ログインユーザの取得
     List<ALEipUser> list = ALEipUtils.getUsers("LoginUser");
 
-    List<FacilityResultData> facilityList = FacilitiesUtils
-        .getFacilityAllList();
+    List<FacilityResultData> facilityList =
+      FacilitiesUtils.getFacilityAllList();
 
     ALEipUser user = null;
     FacilityResultData facility = null;
@@ -68,7 +69,8 @@ public class UserFacilityListBox extends ListBox {
 
     for (int j = 0; j < f_length; j++) {
       facility = facilityList.get(j);
-      groupKeys[length + 1 + j] = ScheduleUtils.TARGET_FACILITY_ID
+      groupKeys[length + 1 + j] =
+        ScheduleUtils.TARGET_FACILITY_ID
           + facility.getFacilityId().getValueAsString();
       groupValues[length + 1 + j] = facility.getFacilityName().getValue();
     }
@@ -77,8 +79,10 @@ public class UserFacilityListBox extends ListBox {
     this.items = groupKeys;
     this.values = groupValues;
     this.size = Integer.toString(length + f_length + 1);
-    this.multiple = Boolean.valueOf(
-        (String) this.getParm(MULTIPLE_CHOICE, "false")).booleanValue();
+    this.multiple =
+      Boolean
+        .valueOf((String) this.getParm(MULTIPLE_CHOICE, "false"))
+        .booleanValue();
 
   }
 

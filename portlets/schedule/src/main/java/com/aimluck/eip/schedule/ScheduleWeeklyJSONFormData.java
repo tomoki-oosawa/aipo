@@ -25,10 +25,8 @@ import java.util.List;
 
 import net.sf.json.JSONObject;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
@@ -42,12 +40,15 @@ import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.mail.util.ALEipUserAddr;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.beans.ScheduleBean;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -66,9 +67,9 @@ public class ScheduleWeeklyJSONFormData {
 
   // view
 
-  private List userIdMemberAll;
+  private List<Integer> userIdMemberAll;
 
-  private List facilityIdMemberAll;
+  private List<Integer> facilityIdMemberAll;
 
   // update
 
@@ -102,21 +103,21 @@ public class ScheduleWeeklyJSONFormData {
 
   private int edit_repeat_flag;
 
-  private ArrayList memberList;
+  private List<ALEipUser> memberList;
 
-  private List scheduleMaps;
+  private List<EipTScheduleMap> scheduleMaps;
 
   private int ownerId;
 
-  private ArrayList msgList;
+  private ArrayList<String> msgList;
 
   private boolean isViewList;
 
   private boolean ignore_duplicate_facility;
 
   public void initField() {
-    userIdMemberAll = new ArrayList();
-    facilityIdMemberAll = new ArrayList();
+    userIdMemberAll = new ArrayList<Integer>();
+    facilityIdMemberAll = new ArrayList<Integer>();
     aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
   }
 
@@ -130,14 +131,14 @@ public class ScheduleWeeklyJSONFormData {
     // is_span = false;
     // isMember = false;
     isEdit = false;
-    memberList = new ArrayList();
+    memberList = new ArrayList<ALEipUser>();
     scheduleMaps = null;
     ownerId = 0;
     edit_repeat_flag = 0;
     startDate = new ALDateTimeField("yyyy-MM-dd-HH-mm");
     endDate = new ALDateTimeField("yyyy-MM-dd-HH-mm");
     viewDate = new ALDateTimeField("yyyy-MM-dd");
-    msgList = new ArrayList();
+    msgList = new ArrayList<String>();
     isViewList = false;
     org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
 
@@ -148,7 +149,7 @@ public class ScheduleWeeklyJSONFormData {
   }
 
   public String doViewList(ALAction action, RunData rundata, Context context,
-      List msgList) {
+      List<String> msgList) {
     try {
 
       doCheckAclPermission(
@@ -158,13 +159,15 @@ public class ScheduleWeeklyJSONFormData {
 
       AjaxScheduleResultData rd;
       ScheduleBean bean;
-      List termScheduleList = new ArrayList();
-      List _scheduleList = new ArrayList();
-      List scheduleList = new ArrayList();
-      List holidayList = new ArrayList();
-      List dateList = new ArrayList();
-      List dayOfWeekList = new ArrayList();
-      List memberList;
+      List<List<ScheduleBean>> termScheduleList =
+        new ArrayList<List<ScheduleBean>>();
+      List<AjaxScheduleResultData> _scheduleList =
+        new ArrayList<AjaxScheduleResultData>();
+      List<ScheduleBean> scheduleList = new ArrayList<ScheduleBean>();
+      List<String> holidayList = new ArrayList<String>();
+      List<String> dateList = new ArrayList<String>();
+      List<String> dayOfWeekList = new ArrayList<String>();
+      List<UserFacilityLiteBean> memberList;
 
       AjaxScheduleWeeklyGroupSelectData listData =
         new AjaxScheduleWeeklyGroupSelectData();
@@ -181,9 +184,11 @@ public class ScheduleWeeklyJSONFormData {
       json.put("prevMonth", listData.getPrevMonth().toString());
       json.put("nextMonth", listData.getNextMonth().toString());
 
-      List dayList = listData.getContainer().getDayList();
-      List termList = listData.getWeekTermContainerList();
-      List termDayList;
+      List<AjaxScheduleDayContainer> dayList =
+        listData.getContainer().getDayList();
+      List<AjaxTermScheduleWeekContainer> termList =
+        listData.getWeekTermContainerList();
+      List<AjaxTermScheduleDayContainer> termDayList;
 
       int dayListSize = dayList.size();
       int termListSize = termList.size();
@@ -192,14 +197,12 @@ public class ScheduleWeeklyJSONFormData {
       Date containerDate = null;
 
       for (int i = 0; i < termListSize; i++) {
-        AjaxTermScheduleWeekContainer termContainer =
-          (AjaxTermScheduleWeekContainer) termList.get(i);
+        AjaxTermScheduleWeekContainer termContainer = termList.get(i);
         termDayList = termContainer.getDayList();
         termDayListSize = termDayList.size();
-        List _termScheduleList = new ArrayList(); // termSchedule
+        List<ScheduleBean> _termScheduleList = new ArrayList<ScheduleBean>(); // termSchedule
         for (int k = 0; k < termDayListSize; k++) {
-          AjaxTermScheduleDayContainer termDayContainer =
-            (AjaxTermScheduleDayContainer) termDayList.get(k);
+          AjaxTermScheduleDayContainer termDayContainer = termDayList.get(k);
           if (k == 0) {
             containerDate = termDayContainer.getDate().getValue();
           }
@@ -221,7 +224,7 @@ public class ScheduleWeeklyJSONFormData {
             bean.setIndex(k);
             bean.setIndexReal(rindex);
             if (!rd.isHidden() || rd.isMember()) {
-              List mlist = rd.getMemberList();
+              List<String> mlist = rd.getMemberList();
               addMemberAllIdList(mlist);
               _termScheduleList.add(bean);
             }
@@ -231,8 +234,7 @@ public class ScheduleWeeklyJSONFormData {
       }
 
       for (int i = 0; i < dayListSize; i++) {
-        AjaxScheduleDayContainer container =
-          (AjaxScheduleDayContainer) dayList.get(i);
+        AjaxScheduleDayContainer container = dayList.get(i);
         if (i == 0) {
           containerDate = container.getDate().getValue();
         }
@@ -252,7 +254,7 @@ public class ScheduleWeeklyJSONFormData {
         int scheSize = _scheduleList.size();
 
         for (int j = 0; j < scheSize; j++) {
-          rd = (AjaxScheduleResultData) _scheduleList.get(j);
+          rd = _scheduleList.get(j);
           if (rd.isDummy()) {
             continue;
           }
@@ -264,7 +266,7 @@ public class ScheduleWeeklyJSONFormData {
           }
           bean.setIndex(i);
           if (!rd.isHidden() || rd.isMember()) {
-            List mlist = rd.getMemberList();
+            List<String> mlist = rd.getMemberList();
             addMemberAllIdList(mlist);
             scheduleList.add(bean);
           }
@@ -324,7 +326,8 @@ public class ScheduleWeeklyJSONFormData {
     }
   }
 
-  public void loadParameters(RunData rundata, Context context, List msgList) {
+  public void loadParameters(RunData rundata, Context context,
+      List<String> msgList) {
     ALDateTimeField dummy = new ALDateTimeField("yyyy-MM-dd-HH-mm");
     dummy.setNotNull(true);
     if (ALEipUtils.isMatch(rundata, context)) {
@@ -332,7 +335,7 @@ public class ScheduleWeeklyJSONFormData {
         && rundata.getParameters().containsKey("end_date")) {
         start_date = rundata.getParameters().getString("start_date");
         dummy.setValue(start_date);
-        if (!dummy.validate(new ArrayList())) {
+        if (!dummy.validate(new ArrayList<String>())) {
           ALEipUtils.removeTemp(rundata, context, "start_date");
           ALEipUtils.removeTemp(rundata, context, "end_date");
           msgList.add("starDate_irregular");
@@ -340,7 +343,7 @@ public class ScheduleWeeklyJSONFormData {
         }
         end_date = rundata.getParameters().getString("end_date");
         dummy.setValue(end_date);
-        if (!dummy.validate(new ArrayList())) {
+        if (!dummy.validate(new ArrayList<String>())) {
           ALEipUtils.removeTemp(rundata, context, "end_date");
           ALEipUtils.removeTemp(rundata, context, "end_date");
           msgList.add("endDate_irregular");
@@ -349,7 +352,7 @@ public class ScheduleWeeklyJSONFormData {
         if (rundata.getParameters().containsKey("view_date")) {
           view_date = rundata.getParameters().getString("view_date");
           dummy.setValue(view_date);
-          if (!dummy.validate(new ArrayList())) {
+          if (!dummy.validate(new ArrayList<String>())) {
             ALEipUtils.removeTemp(rundata, context, "view_date");
             ALEipUtils.removeTemp(rundata, context, "view_date");
             msgList.add("viewDate_irregular");
@@ -395,7 +398,7 @@ public class ScheduleWeeklyJSONFormData {
 
       int listSize = scheduleMaps.size();
       for (int i = 0; i < listSize; i++) {
-        EipTScheduleMap map = (EipTScheduleMap) scheduleMaps.get(i);
+        EipTScheduleMap map = scheduleMaps.get(i);
         if (ScheduleUtils.SCHEDULEMAP_TYPE_USER.equals(map.getType())) {
           int targetUserId = map.getUserId().intValue();
           // if (userId == targetUserId) {
@@ -426,7 +429,6 @@ public class ScheduleWeeklyJSONFormData {
   public boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res;
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     if (isEdit
       || userId == ownerId
@@ -449,10 +451,10 @@ public class ScheduleWeeklyJSONFormData {
         /* 施設重複判定 */
         {
           int listSize = scheduleMaps.size();
-          List facilityIdList = new ArrayList();
+          List<Integer> facilityIdList = new ArrayList<Integer>();
 
           for (int i = 0; i < listSize; i++) {
-            EipTScheduleMap map = (EipTScheduleMap) scheduleMaps.get(i);
+            EipTScheduleMap map = scheduleMaps.get(i);
             if (ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY.equals(map.getType())) {
               facilityIdList.add(map.getUserId().intValue());
             }
@@ -465,19 +467,19 @@ public class ScheduleWeeklyJSONFormData {
                 null,
                 null)) {
                 msgList.add("duplicate_facility");
-                dataContext.rollbackChanges();
+                Database.rollback();
                 return false;
               }
             }
           }
         }
 
-        dataContext.commitChanges();
+        Database.commit();
         res = true;
         // イベントログに保存
         sendEventLog(rundata, context);
         /* メンバー全員に新着ポートレット登録 */
-        sendWhatsNew(dataContext, schedule);
+        sendWhatsNew(schedule);
 
         try {
           // メール送信
@@ -485,13 +487,13 @@ public class ScheduleWeeklyJSONFormData {
             ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE);
           if (msgType > 0) {
             // パソコンへメールを送信
-            List destMemberList =
+            List<ALEipUserAddr> destMemberList =
               ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
                 .getUserId(rundata), false);
             String subject =
               "[" + DatabaseOrmService.getInstance().getAlias() + "]スケジュール";
             for (int i = 0; i < destMemberList.size(); i++) {
-              List destMember = new ArrayList();
+              List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
               destMember.add(destMemberList.get(i));
               ALMailUtils.sendMailDelegate(
                 org_id,
@@ -504,9 +506,9 @@ public class ScheduleWeeklyJSONFormData {
                   rundata,
                   schedule,
                   memberList,
-                  ((ALEipUserAddr) destMember.get(0)).getUserId()),
+                  destMember.get(0).getUserId()),
                 ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE),
-                new ArrayList());
+                new ArrayList<String>());
             }
           }
         } catch (Exception ex) {
@@ -541,9 +543,7 @@ public class ScheduleWeeklyJSONFormData {
 
         // if(schedule.getStartDate())
 
-        EipTSchedule newSchedule =
-          (EipTSchedule) dataContext
-            .createAndRegisterNewObject(EipTSchedule.class);
+        EipTSchedule newSchedule = Database.create(EipTSchedule.class);
         // 繰り返しの親スケジュール ID
         newSchedule.setParentId(schedule.getScheduleId());
         // 予定
@@ -577,15 +577,13 @@ public class ScheduleWeeklyJSONFormData {
         // 2007.3.28 ToDo連携
 
         int listSize = scheduleMaps.size();
-        List memberIdList = new ArrayList();
-        List facilityIdList = new ArrayList();
+        List<Integer> memberIdList = new ArrayList<Integer>();
+        List<Integer> facilityIdList = new ArrayList<Integer>();
         // List newMaps = new ArrayList();
 
         for (int i = 0; i < listSize; i++) {
-          EipTScheduleMap newMap =
-            (EipTScheduleMap) dataContext
-              .createAndRegisterNewObject(EipTScheduleMap.class);
-          EipTScheduleMap map = (EipTScheduleMap) scheduleMaps.get(i);
+          EipTScheduleMap newMap = Database.create(EipTScheduleMap.class);
+          EipTScheduleMap map = scheduleMaps.get(i);
           newMap.setEipTSchedule(newSchedule);
           newMap.setUserId(map.getUserId());
 
@@ -624,7 +622,7 @@ public class ScheduleWeeklyJSONFormData {
               schedule.getScheduleId(),
               viewDate.getValue())) {
               msgList.add("duplicate_facility");
-              dataContext.rollbackChanges();
+              Database.rollback();
               return false;
             }
           }
@@ -635,13 +633,13 @@ public class ScheduleWeeklyJSONFormData {
             .getValue(), viewDate.getValue(), memberIdList, facilityIdList);
         }
 
-        dataContext.commitChanges();
+        Database.commit();
         res = true;
 
         // イベントログに保存
         sendEventLog(rundata, context);
         /* メンバー全員に新着ポートレット登録 */
-        sendWhatsNew(dataContext, newSchedule);
+        sendWhatsNew(newSchedule);
 
         try {
           // メール送信
@@ -649,13 +647,13 @@ public class ScheduleWeeklyJSONFormData {
             ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE);
           if (msgType > 0) {
             // パソコンへメールを送信
-            List destMemberList =
+            List<ALEipUserAddr> destMemberList =
               ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
                 .getUserId(rundata), false);
             String subject =
               "[" + DatabaseOrmService.getInstance().getAlias() + "]スケジュール";
             for (int i = 0; i < destMemberList.size(); i++) {
-              List destMember = new ArrayList();
+              List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
               destMember.add(destMemberList.get(i));
               ALMailUtils.sendMailDelegate(
                 org_id,
@@ -668,9 +666,9 @@ public class ScheduleWeeklyJSONFormData {
                   rundata,
                   newSchedule,
                   memberList,
-                  ((ALEipUserAddr) destMember.get(0)).getUserId()),
+                  destMember.get(0).getUserId()),
                 ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE),
-                new ArrayList());
+                new ArrayList<String>());
             }
           }
 
@@ -730,12 +728,12 @@ public class ScheduleWeeklyJSONFormData {
       schedule.getName());
   }
 
-  private void sendWhatsNew(DataContext dataContext, EipTSchedule newSchedule) {
+  private void sendWhatsNew(EipTSchedule newSchedule) {
     ALAccessControlFactoryService aclservice =
       (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-    List userIds =
+    List<Integer> userIds =
       aclhandler.getAcceptUserIdsInListExceptLoginUser(
         userId,
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
@@ -743,7 +741,7 @@ public class ScheduleWeeklyJSONFormData {
         memberList);
     int size = userIds.size();
     for (int i = 0; i < size; i++) {
-      Integer _id = (Integer) userIds.get(i);
+      Integer _id = userIds.get(i);
       WhatsNewUtils.insertWhatsNew(
         WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
         newSchedule.getScheduleId().intValue(),
@@ -751,12 +749,12 @@ public class ScheduleWeeklyJSONFormData {
     }
   }
 
-  private void addMemberAllIdList(List list) {
+  private void addMemberAllIdList(List<String> list) {
     String listId;
     int id;
     int size = list.size();
     for (int i = 0; i < size; i++) {
-      listId = (String) list.get(i);
+      listId = list.get(i);
       if (listId.startsWith("f")) {
         id = Integer.parseInt(listId.substring(1));
         if (!facilityIdMemberAll.contains(id)) {
@@ -771,28 +769,26 @@ public class ScheduleWeeklyJSONFormData {
     }
   }
 
-  private List getMemberAllBeanList() {
-    List rList = new ArrayList();
+  private List<UserFacilityLiteBean> getMemberAllBeanList() {
+    List<UserFacilityLiteBean> rList = new ArrayList<UserFacilityLiteBean>();
     UserFacilityLiteBean tmpMbean;
     int i, size;
     try {
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      SelectQuery query = null;
+      SelectQuery<EipMFacility> query = null;
 
       if (facilityIdMemberAll != null && facilityIdMemberAll.size() > 0) {
-        query = new SelectQuery(EipMFacility.class);
+        query = Database.query(EipMFacility.class);
         Expression exp_f =
           ExpressionFactory.inDbExp(
             EipMFacility.FACILITY_ID_PK_COLUMN,
             facilityIdMemberAll);
         query.setQualifier(exp_f);
 
-        List fList = dataContext.performQuery(query);
+        List<EipMFacility> fList = query.fetchList();
         if (fList != null) {
           size = fList.size();
           for (i = 0; i < size; i++) {
-            EipMFacility facility = (EipMFacility) fList.get(i);
+            EipMFacility facility = fList.get(i);
             tmpMbean = new UserFacilityLiteBean();
             tmpMbean.initField();
             tmpMbean.setAliasName(facility.getFacilityName());
@@ -804,18 +800,18 @@ public class ScheduleWeeklyJSONFormData {
         }
       }
       if (userIdMemberAll != null && userIdMemberAll.size() > 0) {
-        query = new SelectQuery(TurbineUser.class);
+        SelectQuery<TurbineUser> query2 = Database.query(TurbineUser.class);
         Expression exp_u =
           ExpressionFactory.inDbExp(
             TurbineUser.USER_ID_PK_COLUMN,
             userIdMemberAll);
-        query.setQualifier(exp_u);
+        query2.setQualifier(exp_u);
 
-        List uList = dataContext.performQuery(query);
+        List<TurbineUser> uList = query2.fetchList();
         if (uList != null) {
           size = uList.size();
           for (i = 0; i < size; i++) {
-            TurbineUser user = (TurbineUser) uList.get(i);
+            TurbineUser user = uList.get(i);
             tmpMbean = new UserFacilityLiteBean();
             tmpMbean.initField();
             tmpMbean.setAliasName(user.getFirstName(), user.getLastName());
@@ -861,12 +857,12 @@ public class ScheduleWeeklyJSONFormData {
     return isViewList;
   }
 
-  private EipTScheduleMap getScheduleMap(List scheduleMaps, int userid,
-      String type) {
+  private EipTScheduleMap getScheduleMap(List<EipTScheduleMap> scheduleMaps,
+      int userid, String type) {
     EipTScheduleMap map = null;
     int size = scheduleMaps.size();
     for (int i = 0; i < size; i++) {
-      map = (EipTScheduleMap) scheduleMaps.get(i);
+      map = scheduleMaps.get(i);
       if (map.getUserId().intValue() == userid && type.equals(map.getType())) {
         return map;
       }

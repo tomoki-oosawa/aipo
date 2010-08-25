@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,13 +33,13 @@ import com.aimluck.eip.schedule.util.ScheduleUtils;
 public class ScheduleTermWeekContainer implements ALData {
 
   /** <code>dayList</code> １日分のリスト */
-  private List dayList;
+  private List<ScheduleTermDayContainer> dayList;
 
   /*
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
-    dayList = new ArrayList();
+    dayList = new ArrayList<ScheduleTermDayContainer>();
   }
 
   /**
@@ -65,12 +65,11 @@ public class ScheduleTermWeekContainer implements ALData {
    */
   public void addTermResultData(int index, ScheduleResultData rd) {
     int span = rd.getRowspan();
-    ScheduleTermDayContainer con = (ScheduleTermDayContainer) dayList
-        .get(index);
+    ScheduleTermDayContainer con = dayList.get(index);
     con.setHasTerm(true);
     con.setTermResultData(rd);
     for (int i = 1; i < span; i++) {
-      con = (ScheduleTermDayContainer) dayList.get(index + i);
+      con = dayList.get(index + i);
       con.setHasTerm(true);
     }
   }
@@ -83,13 +82,13 @@ public class ScheduleTermWeekContainer implements ALData {
     ScheduleTermDayContainer con;
     int size = dayList.size();
     for (int i = 0; i < size; i++) {
-      con = (ScheduleTermDayContainer) dayList.get(i);
+      con = dayList.get(i);
       Date conDate = con.getDate().getValue();
 
       if ((ScheduleUtils.equalsToDate(startDate, conDate, false) || conDate
-          .after(startDate))
-          && (ScheduleUtils.equalsToDate(endDate, conDate, false) || conDate
-              .before(endDate))) {
+        .after(startDate))
+        && (ScheduleUtils.equalsToDate(endDate, conDate, false) || conDate
+          .before(endDate))) {
         if (con.isHasTerm()) {
           canAdd = false;
         }
@@ -105,7 +104,7 @@ public class ScheduleTermWeekContainer implements ALData {
    * 
    * @uml.property name="dayList"
    */
-  public List getDayList() {
+  public List<ScheduleTermDayContainer> getDayList() {
     return dayList;
   }
 

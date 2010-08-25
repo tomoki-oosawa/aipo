@@ -30,15 +30,16 @@ import com.aimluck.eip.schedule.ScheduleWeeklyJSONFormData;
 
 /**
  * カレンダーを処理するクラスです。 <br />
- *
+ * 
  */
 public class ScheduleWeeklyJSONScreen extends ALJSONScreen {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ScheduleWeeklyJSONScreen.class.getName());
+    .getLogger(ScheduleWeeklyJSONScreen.class.getName());
 
+  @Override
   protected String getJSONString(RunData rundata, Context context)
       throws Exception {
     List<String> msgList = new ArrayList<String>();

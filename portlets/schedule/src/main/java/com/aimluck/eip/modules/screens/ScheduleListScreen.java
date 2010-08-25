@@ -24,6 +24,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.schedule.ScheduleMonthlySelectData;
 import com.aimluck.eip.schedule.ScheduleOnedayGroupSelectData;
@@ -35,12 +36,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * スケジュールの一覧を処理するクラスです。 <br />
- *
+ * 
  */
 public class ScheduleListScreen extends ScheduleScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ScheduleListScreen.class.getName());
+    .getLogger(ScheduleListScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
@@ -49,7 +51,7 @@ public class ScheduleListScreen extends ScheduleScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
     VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-    //String tab = rundata.getParameters().getString("tab");
+    // String tab = rundata.getParameters().getString("tab");
     try {
       // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
       if (ALEipUtils.isMatch(rundata, context)) {
@@ -58,43 +60,45 @@ public class ScheduleListScreen extends ScheduleScreen {
         // weekly : 週間表示
         // monthly: 月間表示
         if (rundata.getParameters().containsKey("tab")) {
-          ALEipUtils.setTemp(rundata, context, "tab", rundata.getParameters()
-              .getString("tab"));
+          ALEipUtils.setTemp(rundata, context, "tab", rundata
+            .getParameters()
+            .getString("tab"));
         }
       }
 
-      ALAbstractSelectData listData = null;
+      ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> listData = null;
       // ポートレット ID を取得する．
       String portletId = portlet.getID();
       String currentTab;
       String tmpCurrentTab = ALEipUtils.getTemp(rundata, context, "tab");
       if (tmpCurrentTab == null
-          || !(tmpCurrentTab.equals("oneday") || tmpCurrentTab.equals("weekly")
-              || tmpCurrentTab.equals("monthly")
-              || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-              .equals("weekly-group"))) {
+        || !(tmpCurrentTab.equals("oneday")
+          || tmpCurrentTab.equals("weekly")
+          || tmpCurrentTab.equals("monthly")
+          || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
+          .equals("weekly-group"))) {
         currentTab = "oneday";
       } else {
         currentTab = tmpCurrentTab;
       }
 
       if ("oneday".equals(currentTab)) {
-        //tab = "oneday";
+        // tab = "oneday";
         listData = new ScheduleOnedaySelectData();
         ((ScheduleOnedaySelectData) listData).setPortletId(portletId);
         // ブラウザ名を受け渡す．
         boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
       } else if ("weekly".equals(currentTab)) {
-        //tab = "weekly";
+        // tab = "weekly";
         listData = new ScheduleWeeklySelectData();
         ((ScheduleWeeklySelectData) listData).setPortletId(portletId);
       } else if ("monthly".equals(currentTab)) {
-        //tab = "monthly";
+        // tab = "monthly";
         listData = new ScheduleMonthlySelectData();
         ((ScheduleMonthlySelectData) listData).setPortletId(portletId);
       } else if ("oneday-group".equals(currentTab)) {
-        //tab = "oneday-group";
+        // tab = "oneday-group";
         listData = new ScheduleOnedayGroupSelectData();
         ((ScheduleOnedayGroupSelectData) listData).setPortletId(portletId);
         // ブラウザ名を受け渡す．
@@ -102,7 +106,7 @@ public class ScheduleListScreen extends ScheduleScreen {
         context.put("isMeie", Boolean.valueOf(isMsie));
       } else {
         // if ("weekly-group".equals(currentTab)) の場合
-        //tab = "weekly-group";
+        // tab = "weekly-group";
         listData = new ScheduleWeeklyGroupSelectData();
         ((ScheduleWeeklyGroupSelectData) listData).setPortletId(portletId);
       }

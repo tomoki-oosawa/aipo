@@ -25,7 +25,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -45,12 +44,13 @@ import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.CellScheduleUtils;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
@@ -593,14 +593,12 @@ public class CellScheduleFormDateData extends ALAbstractFormData {
       }
 
       // このスケジュールを共有しているメンバーを取得
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      SelectQuery mapquery = new SelectQuery(EipTScheduleMap.class);
+      SelectQuery<EipTScheduleMap> mapquery =
+        Database.query(EipTScheduleMap.class);
       Expression mapexp =
         ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, record
           .getScheduleId());
       mapquery.setQualifier(mapexp);
-      @SuppressWarnings("unchecked")
       List<EipTScheduleMap> list = mapquery.fetchList();
       List<Integer> users = new ArrayList<Integer>();
       List<Integer> facilityIds = new ArrayList<Integer>();
@@ -614,14 +612,14 @@ public class CellScheduleFormDateData extends ALAbstractFormData {
         }
       }
       if (users.size() > 0) {
-        SelectQuery query = new SelectQuery(TurbineUser.class);
+        SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
         Expression exp =
           ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, users);
         query.setQualifier(exp);
         memberList.addAll(ALEipUtils.getUsersFromSelectQuery(query));
       }
       if (facilityIds.size() > 0) {
-        SelectQuery fquery = new SelectQuery(EipMFacility.class);
+        SelectQuery<EipMFacility> fquery = Database.query(EipMFacility.class);
         Expression fexp =
           ExpressionFactory.inDbExp(
             EipMFacility.FACILITY_ID_PK_COLUMN,
@@ -790,7 +788,7 @@ public class CellScheduleFormDateData extends ALAbstractFormData {
    * @param groupname
    * @return
    */
-  public List getUsers(String groupname) {
+  public List<ALEipUser> getUsers(String groupname) {
     return ALEipUtils.getUsers(groupname);
   }
 
@@ -799,7 +797,7 @@ public class CellScheduleFormDateData extends ALAbstractFormData {
    * 
    * @return
    */
-  public Map getPostMap() {
+  public Map<Integer, ALEipPost> getPostMap() {
     return ALEipManager.getInstance().getPostMap();
   }
 
@@ -1002,7 +1000,7 @@ public class CellScheduleFormDateData extends ALAbstractFormData {
    * 
    * @return
    */
-  public List getMemberList() {
+  public List<ALEipUser> getMemberList() {
     return memberList;
   }
 
@@ -1040,7 +1038,7 @@ public class CellScheduleFormDateData extends ALAbstractFormData {
     return change_tmpreserve_flag;
   }
 
-  public List getFacilityMemberList() {
+  public List<FacilityResultData> getFacilityMemberList() {
     return facilityMemberList;
   }
 

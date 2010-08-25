@@ -67,7 +67,7 @@ public class ScheduleDayContainer implements ALData {
    * 
    * @return
    */
-  public List getScheduleList() {
+  public List<ScheduleResultData> getScheduleList() {
     return scheduleList;
   }
 
@@ -131,21 +131,23 @@ public class ScheduleDayContainer implements ALData {
     boolean repeat_del = false;
     for (int i = 0; i < size; i++) {
       repeat_del = false;
-      ScheduleResultData rd2 = (ScheduleResultData) scheduleList.get(i);
+      ScheduleResultData rd2 = scheduleList.get(i);
       if (rd.isRepeat()
-          && rd2.isDummy()
-          && rd.getScheduleId().getValue() == rd2.getParentId().getValue()
-          && ScheduleUtils.equalsToDate(rd.getStartDate().getValue(), rd2
-              .getStartDate().getValue(), false)) {
+        && rd2.isDummy()
+        && rd.getScheduleId().getValue() == rd2.getParentId().getValue()
+        && ScheduleUtils.equalsToDate(rd.getStartDate().getValue(), rd2
+          .getStartDate()
+          .getValue(), false)) {
         // [繰り返しスケジュール] 親の ID を検索
         canAdd = false;
         break;
       }
       if (rd2.isRepeat()
-          && rd.isDummy()
-          && rd2.getScheduleId().getValue() == rd.getParentId().getValue()
-          && ScheduleUtils.equalsToDate(rd.getStartDate().getValue(), rd2
-              .getStartDate().getValue(), false)) {
+        && rd.isDummy()
+        && rd2.getScheduleId().getValue() == rd.getParentId().getValue()
+        && ScheduleUtils.equalsToDate(rd.getStartDate().getValue(), rd2
+          .getStartDate()
+          .getValue(), false)) {
         // [繰り返しスケジュール] 親の ID を検索
         scheduleList.remove(rd2);
         canAdd = true;
@@ -160,20 +162,33 @@ public class ScheduleDayContainer implements ALData {
           // 重複スケジュールを検出する。
           // 時間が重なっている場合重複スケジュールとする。
           if ((rd.getStartDate().getValue().before(
-              rd2.getStartDate().getValue()) && rd2.getStartDate().getValue()
+            rd2.getStartDate().getValue()) && rd2
+            .getStartDate()
+            .getValue()
+            .before(rd.getEndDate().getValue()))
+            || (rd2.getStartDate().getValue().before(
+              rd.getStartDate().getValue()) && rd
+              .getStartDate()
+              .getValue()
+              .before(rd2.getEndDate().getValue()))
+            || (rd
+              .getStartDate()
+              .getValue()
+              .before(rd2.getEndDate().getValue()) && rd2
+              .getEndDate()
+              .getValue()
               .before(rd.getEndDate().getValue()))
-              || (rd2.getStartDate().getValue().before(
-                  rd.getStartDate().getValue()) && rd.getStartDate().getValue()
-                  .before(rd2.getEndDate().getValue()))
-              || (rd.getStartDate().getValue().before(
-                  rd2.getEndDate().getValue()) && rd2.getEndDate().getValue()
-                  .before(rd.getEndDate().getValue()))
-              || (rd2.getStartDate().getValue().before(
-                  rd.getEndDate().getValue()) && rd.getEndDate().getValue()
-                  .before(rd2.getEndDate().getValue()))
-              || (rd.getEndDate().getValue()
-                  .equals(rd2.getEndDate().getValue()) && rd.getStartDate()
-                  .getValue().equals(rd2.getStartDate().getValue()))) {
+            || (rd2
+              .getStartDate()
+              .getValue()
+              .before(rd.getEndDate().getValue()) && rd
+              .getEndDate()
+              .getValue()
+              .before(rd2.getEndDate().getValue()))
+            || (rd.getEndDate().getValue().equals(rd2.getEndDate().getValue()) && rd
+              .getStartDate()
+              .getValue()
+              .equals(rd2.getStartDate().getValue()))) {
             rd2.setDuplicate(true);
             rd.setDuplicate(true);
           }
@@ -187,18 +202,18 @@ public class ScheduleDayContainer implements ALData {
         return;
       }
       // 並べ替え実施(時間、名前の順)
-      ScheduleResultData[] schedule_array = scheduleList
-          .toArray(new ScheduleResultData[0]);
+      ScheduleResultData[] schedule_array =
+        scheduleList.toArray(new ScheduleResultData[0]);
       Arrays.sort(schedule_array, new Comparator<ScheduleResultData>() {
         public int compare(ScheduleResultData o1, ScheduleResultData o2) {
-          ScheduleResultData sche1 = (ScheduleResultData) o1;
-          ScheduleResultData sche2 = (ScheduleResultData) o2;
+          ScheduleResultData sche1 = o1;
+          ScheduleResultData sche2 = o2;
           if (sche1.getStartDate().getValue().equals(
-              sche2.getStartDate().getValue())) {
+            sche2.getStartDate().getValue())) {
             return sche1.getName().getValue().compareTo(
-                sche2.getName().getValue());
+              sche2.getName().getValue());
           } else if (sche1.getStartDate().getValue().after(
-              sche2.getStartDate().getValue())) {
+            sche2.getStartDate().getValue())) {
             return 1;
           } else {
             return -1;
@@ -207,7 +222,7 @@ public class ScheduleDayContainer implements ALData {
       });
       scheduleList.clear();
       for (int i = 0; i < schedule_array.length; i++) {
-        scheduleList.add((ScheduleResultData) schedule_array[i]);
+        scheduleList.add(schedule_array[i]);
       }
     }
   }

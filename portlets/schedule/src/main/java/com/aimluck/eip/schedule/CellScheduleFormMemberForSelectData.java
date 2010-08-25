@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,6 +33,7 @@ import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
@@ -46,8 +47,9 @@ import com.aimluck.eip.util.ALEipUtils;
 public class CellScheduleFormMemberForSelectData extends ALAbstractFormData {
 
   /** <code>logger</code> logger */
+  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CellScheduleFormMemberForSelectData.class.getName());
+    .getLogger(CellScheduleFormMemberForSelectData.class.getName());
 
   /** <code>login_user</code> ログインユーザー */
   private ALEipUser login_user;
@@ -71,7 +73,7 @@ public class CellScheduleFormMemberForSelectData extends ALAbstractFormData {
   private int current_page = 1;
 
   /** ユーザー名リスト */
-  private List<String> users;
+  private List<ALEipUser> users;
 
   /**
    * フォームを表示します。
@@ -87,7 +89,7 @@ public class CellScheduleFormMemberForSelectData extends ALAbstractFormData {
       init(action, rundata, context);
       action.setMode(ALEipConstants.MODE_NEW_FORM);
       setMode(action.getMode());
-      ArrayList msgList = new ArrayList();
+      List<String> msgList = new ArrayList<String>();
       boolean res = setFormData(rundata, context, msgList);
       action.setResultData(this);
       action.addErrorMessages(msgList);
@@ -103,9 +105,10 @@ public class CellScheduleFormMemberForSelectData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.
+   * actions.common.ALAction, org.apache.turbine.util.RunData,
+   * org.apache.velocity.context.Context)
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -116,18 +119,18 @@ public class CellScheduleFormMemberForSelectData extends ALAbstractFormData {
     if (ALEipUtils.isMatch(rundata, context)) {
       // ページャ用
       if (rundata.getParameters().containsKey(ALEipConstants.LIST_START)) {
-        current_page = rundata.getParameters()
-            .getInt(ALEipConstants.LIST_START);
+        current_page =
+          rundata.getParameters().getInt(ALEipConstants.LIST_START);
       }
     }
 
     String groupname = rundata.getParameters().getString("selectedgroup");
     if (groupname != null && !"".equals(groupname)) {
-      //リクエストパラメータでグループ名が指定された場合
-      users = getUsersByGroupName(rundata.getParameters().getString(
-          "selectedgroup"));
+      // リクエストパラメータでグループ名が指定された場合
+      users =
+        getUsersByGroupName(rundata.getParameters().getString("selectedgroup"));
 
-      // 対象グループをセッションに設定 
+      // 対象グループをセッションに設定
       ALEipUtils.setTemp(rundata, context, "selectedgroup", groupname);
     } else {
       groupname = ALEipUtils.getTemp(rundata, context, "selectedgroup");
@@ -163,7 +166,8 @@ public class CellScheduleFormMemberForSelectData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
   @Override
   protected boolean validate(List<String> msgList) throws ALDBErrorException,
@@ -172,8 +176,9 @@ public class CellScheduleFormMemberForSelectData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
@@ -182,8 +187,9 @@ public class CellScheduleFormMemberForSelectData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
@@ -192,8 +198,9 @@ public class CellScheduleFormMemberForSelectData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
@@ -202,8 +209,9 @@ public class CellScheduleFormMemberForSelectData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,
@@ -212,18 +220,21 @@ public class CellScheduleFormMemberForSelectData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     Field[] fields = this.getClass().getDeclaredFields();
-    boolean res = ScheduleUtils.setFormDataDelegate(rundata, context, this,
-        fields, msgList);
+    boolean res =
+      ScheduleUtils
+        .setFormDataDelegate(rundata, context, this, fields, msgList);
 
-    if (!res)
+    if (!res) {
       return res;
+    }
 
     return true;
   }
@@ -234,16 +245,17 @@ public class CellScheduleFormMemberForSelectData extends ALAbstractFormData {
    * @param groupname
    * @return
    */
-  private List getUsersByGroupName(String groupname) {
-    if (groupname == null || groupname.length() == 0)
-      return new ArrayList();
+  private List<ALEipUser> getUsersByGroupName(String groupname) {
+    if (groupname == null || groupname.length() == 0) {
+      return new ArrayList<ALEipUser>();
+    }
 
     if ("all".equals(groupname)) {
       groupname = "LoginUser";
     }
 
     // return ALEipUtils.getUsers(groupname);
-    List userlist = ALEipUtils.getUsers(groupname);
+    List<ALEipUser> userlist = ALEipUtils.getUsers(groupname);
 
     // リストからログインユーザを削除する
     ScheduleUtils.removeUser(userlist, login_user);
@@ -254,11 +266,12 @@ public class CellScheduleFormMemberForSelectData extends ALAbstractFormData {
     int rowsNum = this.getRowsNum();
 
     int count = -1;
-    ArrayList list = new ArrayList();
+    List<ALEipUser> list = new ArrayList<ALEipUser>();
     for (int i = 0; i < rowsNum; i++) {
       count = i + start;
-      if (count >= size)
+      if (count >= size) {
         break;
+      }
       list.add(userlist.get(count));
     }
 
@@ -270,7 +283,7 @@ public class CellScheduleFormMemberForSelectData extends ALAbstractFormData {
    * 
    * @return
    */
-  public Map getPostMap() {
+  public Map<Integer, ALEipPost> getPostMap() {
     return ALEipManager.getInstance().getPostMap();
   }
 
@@ -354,7 +367,7 @@ public class CellScheduleFormMemberForSelectData extends ALAbstractFormData {
     return start;
   }
 
-  public List<String> getUsers() {
+  public List<ALEipUser> getUsers() {
     return users;
   }
 }

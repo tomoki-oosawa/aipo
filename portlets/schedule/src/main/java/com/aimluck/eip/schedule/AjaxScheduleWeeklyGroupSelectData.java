@@ -24,7 +24,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.om.profile.Entry;
@@ -52,7 +51,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
@@ -64,7 +63,8 @@ import com.aimluck.eip.util.ALEipUtils;
  * カレンダー用週間スケジュールの検索結果を管理するクラスです。
  * 
  */
-public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
+public class AjaxScheduleWeeklyGroupSelectData extends
+    ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> {
 
   /** <code>logger</code> logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -110,29 +110,25 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
   protected Calendar tmpCal;
 
   /** <code>weekTodoConList</code> ToDo リスト（週間スケジュール用） */
-  private List weekTodoConList;
+  private List<ScheduleToDoWeekContainer> weekTodoConList;
 
   /** <code>weekTermConList</code> 期間スケジュール リスト（週間スケジュール用） */
-  private List weekTermConList;
-
-  private List todoList;
+  private List<AjaxTermScheduleWeekContainer> weekTermConList;
 
   /** <code>viewJob</code> ToDo 表示設定 */
   protected int viewTodo;
 
   /** <code>memberList</code> メンバーリスト */
-  private List memberList;
+  private List<Number> memberList;
 
   /** <code>facilityList</code> メンバーリスト */
-  private List facilityList;
+  private List<Long> facilityList;
 
   /** <code>memberList</code> 共有メンバーリスト */
-  private List recordMemberList;
+  private List<String> recordMemberList;
 
   /** ポートレット ID */
   private String portletId;
-
-  protected DataContext dataContext;
 
   /** ログインユーザID */
   private int userid;
@@ -141,7 +137,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
   private boolean show_all;
 
   /** <code>doneList</code> 入力済み期間スケジュールリスト */
-  private List doneTermList;
+  private List<Integer> doneTermList;
 
   private Integer uid;
 
@@ -258,8 +254,8 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
     ALEipUtils.setTemp(rundata, context, "tmpEnd", viewStart.toString()
       + "-00-00");
 
-    weekTodoConList = new ArrayList<String>();
-    weekTermConList = new ArrayList<String>();
+    weekTodoConList = new ArrayList<ScheduleToDoWeekContainer>();
+    weekTermConList = new ArrayList<AjaxTermScheduleWeekContainer>();
 
     if (action != null) {
       // ToDo 表示設定
@@ -269,7 +265,6 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
           .getPortletConfig()
           .getInitParameter("p5a-view"));
     }
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     userid = ALEipUtils.getUserId(rundata);
 
@@ -278,7 +273,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
 
     String tmpstr = rundata.getParameters().getString("s_all");
     show_all = "t".equals(tmpstr);
-    doneTermList = new ArrayList<String>();
+    doneTermList = new ArrayList<Integer>();
 
     acl_feat = ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
     has_acl_other = ScheduleUtils.hasAuthOther(rundata);
@@ -287,7 +282,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
     boolean ex_facility = initFacilityList(rundata);
 
     if (!(ex_user || ex_facility)) {
-      memberList = new ArrayList();
+      memberList = new ArrayList<Number>();
       memberList.add(uid);
     }
 
@@ -300,7 +295,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
     String str[] = rundata.getParameters().getStrings("m_id");
     String s_item;
 
-    ArrayList u_list = new ArrayList();
+    List<Integer> u_list = new ArrayList<Integer>();
     int len = 0;
     if (str == null || str.length == 0) {
       return false;
@@ -317,10 +312,10 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
       return false;
     }
 
-    ArrayList temp_list = new ArrayList();
-    memberList = new ArrayList();
+    List<ALEipUser> temp_list = new ArrayList<ALEipUser>();
+    memberList = new ArrayList<Number>();
 
-    SelectQuery member_query = new SelectQuery(TurbineUser.class);
+    SelectQuery<TurbineUser> member_query = Database.query(TurbineUser.class);
     Expression exp =
       ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, u_list);
     member_query.setQualifier(exp);
@@ -328,7 +323,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
     temp_list.addAll(ALEipUtils.getUsersFromSelectQuery(member_query));
     int tmpsize = temp_list.size();
     for (int i = 0; i < tmpsize; i++) {
-      ALEipUser eipuser = (ALEipUser) temp_list.get(i);
+      ALEipUser eipuser = temp_list.get(i);
       if (!("T".equals(has_acl_other))) {
         if (uid != eipuser.getUserId().getValue()) {
           /**
@@ -352,7 +347,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
     String str[] = rundata.getParameters().getStrings("m_id");
     String s_item;
 
-    ArrayList f_list = new ArrayList();
+    List<Integer> f_list = new ArrayList<Integer>();
 
     int len = 0;
     if (str == null || str.length == 0) {
@@ -370,10 +365,11 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
     if (f_list.size() == 0) {
       return false;
     }
-    List temp_list = new ArrayList();
-    facilityList = new ArrayList();
+    List<FacilityResultData> temp_list = new ArrayList<FacilityResultData>();
+    facilityList = new ArrayList<Long>();
 
-    SelectQuery facility_query = new SelectQuery(EipMFacility.class);
+    SelectQuery<EipMFacility> facility_query =
+      Database.query(EipMFacility.class);
     Expression exp =
       ExpressionFactory.inDbExp(EipMFacility.FACILITY_ID_PK_COLUMN, f_list);
     facility_query.setQualifier(exp);
@@ -381,7 +377,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
       .getFacilitiesFromSelectQuery(facility_query));
     int tmpsize = temp_list.size();
     for (int i = 0; i < tmpsize; i++) {
-      FacilityResultData facility = (FacilityResultData) temp_list.get(i);
+      FacilityResultData facility = temp_list.get(i);
       facilityList.add(facility.getFacilityId().getValue());
     }
 
@@ -403,19 +399,20 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
    * .util.RunData, org.apache.velocity.context.Context)
    */
   @Override
-  protected ResultList selectList(RunData rundata, Context context)
-      throws ALPageNotFoundException, ALDBErrorException {
+  protected ResultList<EipTScheduleMap> selectList(RunData rundata,
+      Context context) throws ALPageNotFoundException, ALDBErrorException {
     try {
 
       savePsmlParameters(rundata, context);
 
-      List list = new ArrayList();
-      SelectQuery uquery = getSelectQuery(rundata, context);
+      List<EipTScheduleMap> list = new ArrayList<EipTScheduleMap>();
+      SelectQuery<EipTScheduleMap> uquery = getSelectQuery(rundata, context);
       if (uquery != null) {
         list.addAll(uquery.fetchList());
       }
 
-      SelectQuery fquery = getSelectQueryForFacility(rundata, context);
+      SelectQuery<EipTScheduleMap> fquery =
+        getSelectQueryForFacility(rundata, context);
       if (fquery != null) {
         list.addAll(fquery.fetchList());
       }
@@ -426,10 +423,11 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
       }
 
       if (show_all) {
-        return new ResultList(ScheduleUtils.sortByDummySchedule(list));
+        return new ResultList<EipTScheduleMap>(ScheduleUtils
+          .sortByDummySchedule(list));
       }
 
-      return new ResultList(sortLoginUserSchedule(list));
+      return new ResultList<EipTScheduleMap>(sortLoginUserSchedule(list));
       // return ScheduleUtils.sortByDummySchedule(list);
     } catch (Exception e) {
 
@@ -446,18 +444,18 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
    * @param list
    * @return
    */
-  private List sortLoginUserSchedule(List list) {
+  private List<EipTScheduleMap> sortLoginUserSchedule(List<EipTScheduleMap> list) {
     // 重複スケジュールの表示調節のために，
     // ダミースケジュールをリストの始めに寄せる．
 
-    List dummyList = new ArrayList();
-    List normalList = new ArrayList();
-    List loginUserList = new ArrayList();
-    List ownerList = new ArrayList();
+    List<EipTScheduleMap> dummyList = new ArrayList<EipTScheduleMap>();
+    List<EipTScheduleMap> normalList = new ArrayList<EipTScheduleMap>();
+    List<EipTScheduleMap> loginUserList = new ArrayList<EipTScheduleMap>();
+    List<EipTScheduleMap> ownerList = new ArrayList<EipTScheduleMap>();
     EipTScheduleMap map = null;
     int size = list.size();
     for (int i = 0; i < size; i++) {
-      map = (EipTScheduleMap) list.get(i);
+      map = list.get(i);
       if ("D".equals(map.getStatus())) {
         dummyList.add(map);
       } else if (userid == map.getUserId().intValue()) {
@@ -583,7 +581,8 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
    * @param context
    * @return
    */
-  protected SelectQuery getSelectQuery(RunData rundata, Context context) {
+  protected SelectQuery<EipTScheduleMap> getSelectQuery(RunData rundata,
+      Context context) {
     if (memberList == null) {
       return null;
     }
@@ -598,7 +597,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
         EipTScheduleMap.TYPE_PROPERTY,
         ScheduleUtils.SCHEDULEMAP_TYPE_USER);
 
-    SelectQuery query = new SelectQuery(EipTScheduleMap.class);
+    SelectQuery<EipTScheduleMap> query = Database.query(EipTScheduleMap.class);
 
     query.setQualifier(exp20);
 
@@ -653,8 +652,8 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
    * @param context
    * @return
    */
-  protected SelectQuery getSelectQueryForFacility(RunData rundata,
-      Context context) {
+  protected SelectQuery<EipTScheduleMap> getSelectQueryForFacility(
+      RunData rundata, Context context) {
     if (facilityList == null) {
       return null;
     }
@@ -669,7 +668,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
         EipTScheduleMap.TYPE_PROPERTY,
         ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY);
 
-    SelectQuery query = new SelectQuery(EipTScheduleMap.class);
+    SelectQuery<EipTScheduleMap> query = Database.query(EipTScheduleMap.class);
 
     query.setQualifier(exp20);
 
@@ -723,12 +722,11 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
    * com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
   @Override
-  protected Object getResultData(Object obj) throws ALPageNotFoundException,
-      ALDBErrorException {
+  protected Object getResultData(EipTScheduleMap record)
+      throws ALPageNotFoundException, ALDBErrorException {
     AjaxScheduleResultData rd = new AjaxScheduleResultData();
     rd.initField();
     try {
-      EipTScheduleMap record = (EipTScheduleMap) obj;
       EipTSchedule schedule = record.getEipTSchedule();
       // スケジュールが棄却されている場合は表示しない
       if ("R".equals(record.getStatus())) {
@@ -736,7 +734,8 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
       }
 
       // is_memberのチェック
-      SelectQuery mapquery = new SelectQuery(EipTScheduleMap.class);
+      SelectQuery<EipTScheduleMap> mapquery =
+        Database.query(EipTScheduleMap.class);
       Expression mapexp1 =
         ExpressionFactory.matchExp(
           EipTScheduleMap.SCHEDULE_ID_PROPERTY,
@@ -744,13 +743,12 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
       mapquery.setQualifier(mapexp1);
 
       try {
-        recordMemberList = new ArrayList();
-        List tmpList = mapquery.fetchList();
+        recordMemberList = new ArrayList<String>();
+        List<EipTScheduleMap> tmpList = mapquery.fetchList();
         int tmpSize = tmpList.size();
-        int tmpUserId = record.getUserId().intValue();
         EipTScheduleMap tmpMap;
         for (int i = 0; i < tmpSize; i++) {
-          tmpMap = (EipTScheduleMap) tmpList.get(i);
+          tmpMap = tmpList.get(i);
           int m = tmpMap.getUserId().intValue();
           if (!("R".equals(tmpMap.getStatus()))) {
             if ("F".equals(tmpMap.getType())) {
@@ -764,7 +762,6 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
           rd.setMemberList(recordMemberList);
         }
       } catch (Exception e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
       }
 
@@ -773,7 +770,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
           .valueOf(userid));
       mapquery.andQualifier(mapexp2);
 
-      List schedulemaps = mapquery.fetchList();
+      List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
       boolean is_member =
         (schedulemaps != null && schedulemaps.size() > 0) ? true : false;
 
@@ -876,7 +873,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
    * .util.RunData, org.apache.velocity.context.Context)
    */
   @Override
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected EipTScheduleMap selectDetail(RunData rundata, Context context) {
     // このメソッドは利用されません。
     return null;
   }
@@ -887,7 +884,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
    * .Object)
    */
   @Override
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(EipTScheduleMap record) {
     // このメソッドは利用されません。
     return null;
   }
@@ -901,6 +898,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
     return null;
   }
 
+  @SuppressWarnings("unused")
   private Portlet getPortletURI(RunData rundata, String portletEntryId) {
     try {
       Portlets portlets =
@@ -924,7 +922,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
         int ent_length = entries.length;
         for (int j = 0; j < ent_length; j++) {
           if (entries[j].getId().equals(portletEntryId)) {
-            Iterator iter = entries[j].getParameterIterator();
+            Iterator<?> iter = entries[j].getParameterIterator();
             while (iter.hasNext()) {
 
             }
@@ -939,14 +937,13 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
   }
 
   public void loadTodo(RunData rundata, Context context) {
-    todoList = new ArrayList();
     try {
-      SelectQuery query = getSelectQueryForTodo(rundata, context);
-      List todos = query.fetchList();
+      SelectQuery<EipTTodo> query = getSelectQueryForTodo(rundata, context);
+      List<EipTTodo> todos = query.fetchList();
 
       int todossize = todos.size();
       for (int i = 0; i < todossize; i++) {
-        EipTTodo record = (EipTTodo) todos.get(i);
+        EipTTodo record = todos.get(i);
         ScheduleToDoResultData rd = new ScheduleToDoResultData();
         rd.initField();
 
@@ -1008,9 +1005,10 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
     }
   }
 
-  private SelectQuery getSelectQueryForTodo(RunData rundata, Context context) {
+  private SelectQuery<EipTTodo> getSelectQueryForTodo(RunData rundata,
+      Context context) {
 
-    SelectQuery query = new SelectQuery(EipTTodo.class);
+    SelectQuery<EipTTodo> query = Database.query(EipTTodo.class);
 
     Expression exp1 =
       ExpressionFactory.noMatchExp(EipTTodo.STATE_PROPERTY, Short
@@ -1191,11 +1189,11 @@ public class AjaxScheduleWeeklyGroupSelectData extends ALAbstractSelectData {
     return weekCon;
   }
 
-  public List getWeekTermContainerList() {
+  public List<AjaxTermScheduleWeekContainer> getWeekTermContainerList() {
     return weekTermConList;
   }
 
-  public List getWeekToDoContainerList() {
+  public List<ScheduleToDoWeekContainer> getWeekToDoContainerList() {
     return weekTodoConList;
   }
 

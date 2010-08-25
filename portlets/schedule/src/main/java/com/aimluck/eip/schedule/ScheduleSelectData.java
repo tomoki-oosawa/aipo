@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -46,7 +45,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
@@ -59,17 +58,18 @@ import com.aimluck.eip.util.ALEipUtils;
  * スケジュール詳細表示の検索結果を管理するクラスです。
  * 
  */
-public class ScheduleSelectData extends ALAbstractSelectData {
+public class ScheduleSelectData extends
+    ALAbstractSelectData<EipTSchedule, EipTSchedule> {
 
   /** <code>logger</code> logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ScheduleSelectData.class.getName());
 
   /** <code>members</code> 共有メンバー */
-  private List members;
+  private List<ALEipUser> members;
 
   /** <code>statusList</code> メンバーの状態 */
-  private Map statusList;
+  private Map<Integer, String> statusList;
 
   /** <code>userid</code> ID（ユーザ or 施設） */
   private int userid;
@@ -84,7 +84,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
   private ALDateTimeField view_date;
 
   /** <code>facilities</code> 共有施設 */
-  private List facilities;
+  private List<FacilityResultData> facilities;
 
   /** <code>hasAuthorityOtherEdit</code> アクセス権限 */
   private boolean hasAuthorityOtherEdit = false;
@@ -120,7 +120,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
       if (rundata.getParameters().containsKey("view_date")) {
         String tmpViewDate = rundata.getParameters().getString("view_date");
         view_date.setValue(tmpViewDate);
-        if (!view_date.validate(new ArrayList())) {
+        if (!view_date.validate(new ArrayList<String>())) {
           logger.debug("[ScheduleSelectData] Parameter cannot validate");
           ALEipUtils.redirectPageNotFound(rundata);
           return;
@@ -129,7 +129,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
     }
 
     loginuserid = ALEipUtils.getUserId(rundata);
-    statusList = new HashMap();
+    statusList = new HashMap<Integer, String>();
 
     if (rundata.getParameters().containsKey("userid")) {
       String tmpid = rundata.getParameters().getString("userid");
@@ -198,7 +198,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
    * .util.RunData, org.apache.velocity.context.Context)
    */
   @Override
-  protected ResultList selectList(RunData rundata, Context context) {
+  protected ResultList<EipTSchedule> selectList(RunData rundata, Context context) {
     // このメソッドは利用されません。
     return null;
   }
@@ -209,7 +209,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
    * .util.RunData, org.apache.velocity.context.Context)
    */
   @Override
-  protected Object selectDetail(RunData rundata, Context context)
+  protected EipTSchedule selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     return ScheduleUtils.getEipTScheduleDetail(
       rundata,
@@ -224,7 +224,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
    * com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
   @Override
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipTSchedule obj) {
     // このメソッドは利用されません。
     return null;
   }
@@ -235,17 +235,15 @@ public class ScheduleSelectData extends ALAbstractSelectData {
    * .Object)
    */
   @Override
-  protected Object getResultDataDetail(Object obj)
+  protected Object getResultDataDetail(EipTSchedule record)
       throws ALPageNotFoundException, ALDBErrorException {
-    EipTSchedule record = (EipTSchedule) obj;
     ScheduleDetailResultData rd = new ScheduleDetailResultData();
     rd.initField();
     try {
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
 
       // 選択した予定に対するダミースケジュールを検索
-      SelectQuery schedulequery = new SelectQuery(EipTSchedule.class);
+      SelectQuery<EipTSchedule> schedulequery =
+        Database.query(EipTSchedule.class);
       Expression exp1 =
         ExpressionFactory.matchExp(EipTSchedule.PARENT_ID_PROPERTY, record
           .getScheduleId());
@@ -254,13 +252,16 @@ public class ScheduleSelectData extends ALAbstractSelectData {
           .getValue());
       schedulequery.setQualifier(exp1);
       schedulequery.andQualifier(exp2);
-      List<Object> scheduleList = new ArrayList<Object>();
-      scheduleList = schedulequery.fetchList();
+      List<Integer> scheduleList = new ArrayList<Integer>();
+      List<EipTSchedule> dummyScheduleList = schedulequery.fetchList();
+      // TODO :
+      // ダミーの ID がセットされていない？
 
       scheduleList.add(record.getScheduleId());
 
       // 元のスケジュール及びダミースケジュールに登録されているマップを検索
-      SelectQuery mapquery = new SelectQuery(EipTScheduleMap.class);
+      SelectQuery<EipTScheduleMap> mapquery =
+        Database.query(EipTScheduleMap.class);
       Expression mapexp1 =
         ExpressionFactory.inExp(
           EipTScheduleMap.SCHEDULE_ID_PROPERTY,
@@ -268,13 +269,13 @@ public class ScheduleSelectData extends ALAbstractSelectData {
       mapquery.setQualifier(mapexp1);
       mapquery.orderAscending(EipTScheduleMap.SCHEDULE_ID_PROPERTY);
 
-      List list = mapquery.fetchList();
+      List<EipTScheduleMap> list = mapquery.fetchList();
 
-      List users = new ArrayList();
-      List facilityIds = new ArrayList();
+      List<Integer> users = new ArrayList<Integer>();
+      List<Integer> facilityIds = new ArrayList<Integer>();
       int size = list.size();
       for (int i = 0; i < size; i++) {
-        EipTScheduleMap map = (EipTScheduleMap) list.get(i);
+        EipTScheduleMap map = list.get(i);
         if (ScheduleUtils.SCHEDULEMAP_TYPE_USER.equals(map.getType())) {
           statusList.put(map.getUserId(), map.getStatus());
           // 表示するユーザーの場合
@@ -299,7 +300,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
           facilityIds.add(map.getUserId());
         }
       }
-      SelectQuery query = new SelectQuery(TurbineUser.class);
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
       Expression exp =
         ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, users);
       query.setQualifier(exp);
@@ -309,7 +310,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
       // TurbineUserConstants.USER_ID, users));
 
       if (facilityIds.size() > 0) {
-        SelectQuery fquery = new SelectQuery(EipMFacility.class);
+        SelectQuery<EipMFacility> fquery = Database.query(EipMFacility.class);
         Expression fexp =
           ExpressionFactory.inDbExp(
             EipMFacility.FACILITY_ID_PK_COLUMN,
@@ -363,7 +364,6 @@ public class ScheduleSelectData extends ALAbstractSelectData {
       int count = 0;
       boolean is_repeat = true;
       rd.setRepeat(true);
-      boolean is_span = false;
       // 毎日
       if (ptn.charAt(0) == 'D') {
         rd.addText("毎日");
@@ -447,11 +447,11 @@ public class ScheduleSelectData extends ALAbstractSelectData {
     return null;
   }
 
-  private String getFacilityName(List list, int id) {
+  private String getFacilityName(List<FacilityResultData> list, int id) {
     FacilityResultData rd = null;
     int size = list.size();
     for (int i = 0; i < size; i++) {
-      rd = (FacilityResultData) list.get(i);
+      rd = list.get(i);
       if (rd.getFacilityId().getValue() == id) {
         return rd.getFacilityName().getValue();
       }
@@ -464,7 +464,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
    * 
    * @return
    */
-  public List getMemberList() {
+  public List<ALEipUser> getMemberList() {
     return members;
   }
 
@@ -475,7 +475,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
    * @return
    */
   public String getStatus(long id) {
-    return (String) statusList.get(Integer.valueOf((int) id));
+    return statusList.get(Integer.valueOf((int) id));
   }
 
   /**
@@ -486,7 +486,7 @@ public class ScheduleSelectData extends ALAbstractSelectData {
     return view_date;
   }
 
-  public List getFacilityList() {
+  public List<FacilityResultData> getFacilityList() {
     return facilities;
   }
 

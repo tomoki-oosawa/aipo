@@ -30,6 +30,7 @@ import org.apache.jetspeed.util.template.JetspeedLinkFactory;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
@@ -48,21 +49,23 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * スケジュールのアクションクラスです。
- *
+ * 
  */
 public class ScheduleAction extends ALBaseAction {
 
   /** <code>logger</code> logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ScheduleAction.class.getName());
+    .getLogger(ScheduleAction.class.getName());
 
   /** ノーマル画面からのスケジュール入力 */
   private static final String AFTER_BEHAVIOR = "afterbehavior";
 
   /*
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
+   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#
+   * buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
+   * org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) {
 
@@ -71,15 +74,18 @@ public class ScheduleAction extends ALBaseAction {
 
     String tab;
     String portletId;
-    ALAbstractSelectData listData;
+    ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> listData;
 
     try {
       // ポートレット ID を取得する．
       portletId = portlet.getID();
 
       // トップ画面からの操作後に，トップ画面に戻すかどうかを判定する．
-      String afterBehavior = ALEipUtils.getPortlet(rundata, context)
-          .getPortletConfig().getInitParameter("p4b-behavior");
+      String afterBehavior =
+        ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p4b-behavior");
       if ("1".equals(afterBehavior)) {
         // ノーマル画面であることを指定．
         context.put(AFTER_BEHAVIOR, "1");
@@ -89,8 +95,8 @@ public class ScheduleAction extends ALBaseAction {
 
       // Velocity テンプレートを読み込む
       String template = "";
-      String _template = portlet.getPortletConfig().getInitParameter(
-          "pba-template");
+      String _template =
+        portlet.getPortletConfig().getInitParameter("pba-template");
       boolean done = false;
 
       // 現在のユーザー名を取得する
@@ -104,8 +110,11 @@ public class ScheduleAction extends ALBaseAction {
       String has_acl_self = ScheduleUtils.hasAuthSelf(rundata);
       String has_acl_other = ScheduleUtils.hasAuthOther(rundata);
 
-      String tab_flg_oneday = ALEipUtils.getPortlet(rundata, context)
-          .getPortletConfig().getInitParameter("p6a-tab");
+      String tab_flg_oneday =
+        ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p6a-tab");
       if ("0".equals(tab_flg_oneday) && ("T".equals(has_acl_self))) {
         tab_count++;
         template = "schedule-oneday";
@@ -113,8 +122,11 @@ public class ScheduleAction extends ALBaseAction {
           done = true;
         }
       }
-      String tab_flg_weekly = ALEipUtils.getPortlet(rundata, context)
-          .getPortletConfig().getInitParameter("p7a-tab");
+      String tab_flg_weekly =
+        ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p7a-tab");
       if ("0".equals(tab_flg_weekly) && ("T".equals(has_acl_self))) {
         tab_count++;
         if (("".equals(template)) || (!done)) {
@@ -124,8 +136,11 @@ public class ScheduleAction extends ALBaseAction {
           }
         }
       }
-      String tab_flg_monthly = ALEipUtils.getPortlet(rundata, context)
-          .getPortletConfig().getInitParameter("p8a-tab");
+      String tab_flg_monthly =
+        ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p8a-tab");
       if ("0".equals(tab_flg_monthly) && ("T".equals(has_acl_self))) {
         tab_count++;
         if (("".equals(template)) || (!done)) {
@@ -135,8 +150,11 @@ public class ScheduleAction extends ALBaseAction {
           }
         }
       }
-      String tab_flg_oneday_group = ALEipUtils.getPortlet(rundata, context)
-          .getPortletConfig().getInitParameter("p9a-tab");
+      String tab_flg_oneday_group =
+        ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p9a-tab");
       if ("0".equals(tab_flg_oneday_group) && ("T".equals(has_acl_other))) {
         tab_count++;
         if (("".equals(template)) || (!done)) {
@@ -146,8 +164,11 @@ public class ScheduleAction extends ALBaseAction {
           }
         }
       }
-      String tab_flg_weekly_group = ALEipUtils.getPortlet(rundata, context)
-          .getPortletConfig().getInitParameter("paa-tab");
+      String tab_flg_weekly_group =
+        ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("paa-tab");
       if ("0".equals(tab_flg_weekly_group) && ("T".equals(has_acl_other))) {
         tab_count++;
         if (("".equals(template)) || (!done)) {
@@ -259,9 +280,11 @@ public class ScheduleAction extends ALBaseAction {
   }
 
   /*
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildMaximizedContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
+   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#
+   * buildMaximizedContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
+   * org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
 
@@ -309,7 +332,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示します。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -326,8 +349,9 @@ public class ScheduleAction extends ALBaseAction {
 
       // トップ画面からのスケジュール入力であるかを判定する．
       String afterBehavior = rundata.getRequest().getParameter(AFTER_BEHAVIOR);
-      if (afterBehavior != null)
+      if (afterBehavior != null) {
         context.put(AFTER_BEHAVIOR, "1");
+      }
 
       setTemplate(rundata, "schedule-form");
     } catch (Exception ex) {
@@ -339,7 +363,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを登録します。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -358,8 +382,9 @@ public class ScheduleAction extends ALBaseAction {
         if ("1".equals(afterBehavior)) {
           JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
           rundata.setRedirectURI(jsLink.getPortletById(
-              ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-              "action", "controls.Restore").toString());
+            ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+            "action",
+            "controls.Restore").toString());
           rundata.getResponse().sendRedirect(rundata.getRedirectURI());
           jsLink = null;
         } else {
@@ -384,7 +409,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを更新します。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -404,8 +429,9 @@ public class ScheduleAction extends ALBaseAction {
         if ("1".equals(afterBehavior)) {
           JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
           rundata.setRedirectURI(jsLink.getPortletById(
-              ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-              "action", "controls.Restore").toString());
+            ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+            "action",
+            "controls.Restore").toString());
           rundata.getResponse().sendRedirect(rundata.getRedirectURI());
           jsLink = null;
         } else {
@@ -430,7 +456,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを削除します。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -445,8 +471,9 @@ public class ScheduleAction extends ALBaseAction {
         if ("1".equals(afterBehavior)) {
           JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
           rundata.setRedirectURI(jsLink.getPortletById(
-              ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-              "action", "controls.Restore").toString());
+            ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+            "action",
+            "controls.Restore").toString());
           rundata.getResponse().sendRedirect(rundata.getRedirectURI());
           jsLink = null;
         } else {
@@ -471,7 +498,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを一覧表示します。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -487,18 +514,20 @@ public class ScheduleAction extends ALBaseAction {
         // weekly : 週間表示
         // monthly: 月間表示
         if (rundata.getParameters().containsKey("tab")) {
-          ALEipUtils.setTemp(rundata, context, "tab", rundata.getParameters()
-              .getString("tab"));
+          ALEipUtils.setTemp(rundata, context, "tab", rundata
+            .getParameters()
+            .getString("tab"));
         }
       }
       String currentTab;
-      ALAbstractSelectData listData;
+      ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> listData;
       String tmpCurrentTab = ALEipUtils.getTemp(rundata, context, "tab");
       if (tmpCurrentTab == null
-          || !(tmpCurrentTab.equals("oneday") || tmpCurrentTab.equals("weekly")
-              || tmpCurrentTab.equals("monthly")
-              || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-              .equals("weekly-group"))) {
+        || !(tmpCurrentTab.equals("oneday")
+          || tmpCurrentTab.equals("weekly")
+          || tmpCurrentTab.equals("monthly")
+          || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
+          .equals("weekly-group"))) {
         currentTab = "oneday";
       } else {
         currentTab = tmpCurrentTab;
@@ -544,7 +573,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを詳細表示します。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -552,8 +581,9 @@ public class ScheduleAction extends ALBaseAction {
     try {
       // トップ画面からのスケジュール入力であるかを判定する．
       String afterBehavior = rundata.getRequest().getParameter(AFTER_BEHAVIOR);
-      if (afterBehavior != null)
+      if (afterBehavior != null) {
         context.put(AFTER_BEHAVIOR, "1");
+      }
 
       ScheduleSelectData detailData = new ScheduleSelectData();
       detailData.initField();
@@ -568,13 +598,14 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールの状態を変更します。
-   *
+   * 
    * @param rundata
    * @param context
    */
   public void doSchedule_change_status(RunData rundata, Context context) {
     try {
-      ScheduleChangeStatusFormData formData = new ScheduleChangeStatusFormData();
+      ScheduleChangeStatusFormData formData =
+        new ScheduleChangeStatusFormData();
       formData.loadParametersViewDate(rundata, context);
       formData.initField();
       if (formData.doUpdate(this, rundata, context)) {
@@ -583,7 +614,7 @@ public class ScheduleAction extends ALBaseAction {
 
         if (viewDate == null || viewDate.equals("")) {
           logger
-              .error("[ScheduleAction] ALPageNotFoundException: View Date is wrong.");
+            .error("[ScheduleAction] ALPageNotFoundException: View Date is wrong.");
           throw new ALPageNotFoundException();
         }
 
@@ -605,7 +636,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * 編集画面でキャンセルを押したときの処理．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -616,8 +647,9 @@ public class ScheduleAction extends ALBaseAction {
       if (afterBehavior != null && "1".equals(afterBehavior)) {
         JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
         rundata.setRedirectURI(jsLink.getPortletById(
-            ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-            "action", "controls.Restore").toString());
+          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+          "action",
+          "controls.Restore").toString());
         rundata.getResponse().sendRedirect(rundata.getRedirectURI());
         jsLink = null;
       } else {

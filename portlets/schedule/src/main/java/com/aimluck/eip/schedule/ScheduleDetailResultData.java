@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -67,6 +67,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
   /*
    * @see com.aimluck.eip.common.ALData#initField()
    */
+  @Override
   public void initField() {
     // スーパークラスのメソッドを呼び出します。
     super.initField();
@@ -256,8 +257,10 @@ public class ScheduleDetailResultData extends ScheduleResultData {
    * @param string
    */
   public void addText(String string) {
-    text.setValue(new StringBuffer().append(text.getValue()).append(string)
-        .toString());
+    text.setValue(new StringBuffer()
+      .append(text.getValue())
+      .append(string)
+      .toString());
   }
 
   /**
@@ -296,14 +299,21 @@ public class ScheduleDetailResultData extends ScheduleResultData {
     if (getStartDate().getValue().equals(getEndDate().getValue())) {
       return getStartDate().toString();
     } else if ((getStartDate().getYear().equals(getEndDate().getYear())
-        && getStartDate().getMonth().equals(getEndDate().getMonth()) && getStartDate()
-        .getDay().equals(getEndDate().getDay()))
-        || isRepeat()) {
-      return new StringBuffer().append(getStartDate().toString()).append('-')
-          .append(getEndDate().toString()).toString();
+      && getStartDate().getMonth().equals(getEndDate().getMonth()) && getStartDate()
+      .getDay()
+      .equals(getEndDate().getDay()))
+      || isRepeat()) {
+      return new StringBuffer()
+        .append(getStartDate().toString())
+        .append('-')
+        .append(getEndDate().toString())
+        .toString();
     } else {
-      return new StringBuffer().append(getStartDate().toString()).append('-')
-          .append("24:00").toString();
+      return new StringBuffer()
+        .append(getStartDate().toString())
+        .append('-')
+        .append("24:00")
+        .toString();
     }
   }
 }

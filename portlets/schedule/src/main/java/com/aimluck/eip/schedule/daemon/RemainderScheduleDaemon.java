@@ -29,17 +29,15 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.TimeZone;
 
 import javax.servlet.ServletConfig;
 
-import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.daemon.Daemon;
 import org.apache.jetspeed.daemon.DaemonConfig;
 import org.apache.jetspeed.daemon.DaemonEntry;
@@ -60,7 +58,9 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.mail.util.ALEipUserAddr;
 import com.aimluck.eip.mail.util.ALMailUtils;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.CellScheduleResultData;
 import com.aimluck.eip.schedule.ScheduleToDoResultData;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
@@ -77,23 +77,23 @@ import com.aimluck.eip.util.ALEipUtils;
  * are remote it will pull them locally into the JetspeedDiskCache class via the
  * bulkdownloader class.
  * </p>
- *
+ * 
  * <p>
  * The major goals of this Daemon are:
- *
+ * 
  * <ul>
  * <li>Parse out OCS feeds</li>
  * <li>Put the new Entry into the PortletRegistry</li>
  * <li>Get the URL from the Internet if it hasn't been placed in the cache.</li>
  * <li>Instantiate the Portlet if it already isn't in the cache.</li>
  * </ul>
- *
+ * 
  * </p>
- *
+ * 
  */
 public class RemainderScheduleDaemon implements Daemon {
 
-  //private static RemainderScheduleDaemon instance = null;
+  // private static RemainderScheduleDaemon instance = null;
 
   private int status = Daemon.STATUS_NOT_PROCESSED;
 
@@ -117,14 +117,15 @@ public class RemainderScheduleDaemon implements Daemon {
   /** <code>viewDate</code> 表示する日付 */
   private ALDateTimeField viewDate;
 
-  private DataContext dataContext;
-
   private String servlet_name = "";
 
+  @SuppressWarnings("unused")
   private String scheme = null;
 
+  @SuppressWarnings("unused")
   private int port = 80;
 
+  @SuppressWarnings("unused")
   private String realpath = "";
 
   private String localurl = "";
@@ -136,7 +137,7 @@ public class RemainderScheduleDaemon implements Daemon {
    * Static initialization of the logger for this class
    */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(RemainderScheduleDaemon.class.getName());
+    .getLogger(RemainderScheduleDaemon.class.getName());
 
   /**
    */
@@ -184,15 +185,16 @@ public class RemainderScheduleDaemon implements Daemon {
 
     long interval = (next_millis - now_millis) / 1000;
 
-    this.entry = new DaemonEntry(entry.getName(), interval, entry
-        .getClassname(), entry.onStartup());
+    this.entry =
+      new DaemonEntry(entry.getName(), interval, entry.getClassname(), entry
+        .onStartup());
 
     return res;
   }
 
   /**
    * 一覧表示します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -202,26 +204,28 @@ public class RemainderScheduleDaemon implements Daemon {
     initList();
 
     Object obj = null;
-    List todolist = null;
+    List<ScheduleToDoResultData> todolist = null;
     ALEipUserAddr useraddr = null;
     String[] to = null;
     String msg = "";
-    List useraddrs = getAllUserAddrList();
+    List<ALEipUserAddr> useraddrs = getAllUserAddrList();
     int useraddrs_size = useraddrs.size();
     for (int j = 0; j < useraddrs_size; j++) {
       try {
-        useraddr = (ALEipUserAddr) useraddrs.get(j);
+        useraddr = useraddrs.get(j);
 
         to = useraddr.getAddrs();
-        if (to == null)
+        if (to == null) {
           continue;
+        }
 
-        List aList = selectList(useraddr.getUserId());
+        List<EipTScheduleMap> aList = selectList(useraddr.getUserId());
 
-        if (aList == null)
+        if (aList == null) {
           continue;
+        }
 
-        List list = new ArrayList();
+        List<Object> list = new ArrayList<Object>();
         int size = aList.size();
         for (int i = 0; i < size; i++) {
           obj = getResultData(aList.get(i));
@@ -235,19 +239,26 @@ public class RemainderScheduleDaemon implements Daemon {
         msg = getSendMessage(useraddr, list, todolist);
 
         // メール送信処理
-        ArrayList destMemberList = new ArrayList();
+        ArrayList<ALEipUserAddr> destMemberList =
+          new ArrayList<ALEipUserAddr>();
         destMemberList.add(useraddr);
 
         // ASP版のときは正しいorgidを設定すること。
         String org_id = DatabaseOrmService.getInstance().getDefaultOrgId();
-        String subject = "[" + DatabaseOrmService.getInstance().getAlias()
-            + "]スケジュール";
+        String subject =
+          "[" + DatabaseOrmService.getInstance().getAlias() + "]スケジュール";
 
         // メール送信
-        ALMailUtils.sendMailDelegate(org_id, 1, destMemberList, subject,
-            subject, msg, msg, ALMailUtils
-                .getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE),
-            new ArrayList());
+        ALMailUtils.sendMailDelegate(
+          org_id,
+          1,
+          destMemberList,
+          subject,
+          subject,
+          msg,
+          msg,
+          ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE),
+          new ArrayList<String>());
 
       } catch (Exception e) {
         logger.error("RemainderScheduleDaemon", e);
@@ -265,41 +276,42 @@ public class RemainderScheduleDaemon implements Daemon {
     viewDate.setValue(cal.getTime());
   }
 
-  private List getAllUserAddrList() {
-    SelectQuery query = new SelectQuery(TurbineUser.class);
-    query.addCustomDbAttribute(TurbineUser.USER_ID_PK_COLUMN);
-    query.addCustomDbAttribute(TurbineUser.EMAIL_COLUMN);
-    query.addCustomDbAttribute(TurbineUser.CELLULAR_MAIL_COLUMN);
-    Expression exp1 = ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY,
-        "F");
-    Expression exp2 = ExpressionFactory.noMatchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(1));
-    Expression exp3 = ExpressionFactory.noMatchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(2));
-    Expression exp4 = ExpressionFactory.noMatchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(3));
+  private List<ALEipUserAddr> getAllUserAddrList() {
+    SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+    query.select(TurbineUser.USER_ID_PK_COLUMN);
+    query.select(TurbineUser.EMAIL_COLUMN);
+    query.select(TurbineUser.CELLULAR_MAIL_COLUMN);
+    Expression exp1 =
+      ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
+    Expression exp2 =
+      ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+        .valueOf(1));
+    Expression exp3 =
+      ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+        .valueOf(2));
+    Expression exp4 =
+      ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+        .valueOf(3));
 
     query.setQualifier(exp1);
     query.andQualifier(exp2);
     query.andQualifier(exp3);
     query.andQualifier(exp4);
 
-    List userids = dataContext.performQuery(query);
-    if (userids.size() == 0)
+    List<TurbineUser> userids = query.fetchList();
+    if (userids.size() == 0) {
       return null;
+    }
 
     ALEipUserAddr useraddr = null;
-    List list = new ArrayList();
+    List<ALEipUserAddr> list = new ArrayList<ALEipUserAddr>();
     int size = userids.size();
     for (int i = 0; i < size; i++) {
-      DataRow dataRow = (DataRow) userids.get(i);
+      TurbineUser record = userids.get(i);
       useraddr = new ALEipUserAddr();
-      useraddr.setUserId((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-          TurbineUser.USER_ID_PK_COLUMN));
-      useraddr.setPcMailAddr((String) ALEipUtils.getObjFromDataRow(dataRow,
-          "EMAIL"));
-      useraddr.setCellMailAddr((String) ALEipUtils.getObjFromDataRow(dataRow,
-          "CELLULAR_MAIL"));
+      useraddr.setUserId(record.getUserId());
+      useraddr.setPcMailAddr(record.getEmail());
+      useraddr.setCellMailAddr(record.getCellularMail());
       list.add(useraddr);
     }
 
@@ -310,35 +322,40 @@ public class RemainderScheduleDaemon implements Daemon {
      * .util.RunData, org.apache.velocity.context.Context)
      */
 
-  private List selectList(Integer userid) {
-    List resultBaseList = dataContext.performQuery(getSelectQuery(userid));
+  private List<EipTScheduleMap> selectList(Integer userid) {
+    List<EipTScheduleMap> resultBaseList = getSelectQuery(userid).fetchList();
 
-    List resultList = ScheduleUtils.sortByDummySchedule(resultBaseList);
+    List<EipTScheduleMap> resultList =
+      ScheduleUtils.sortByDummySchedule(resultBaseList);
 
-    List list = new ArrayList();
-    List delList = new ArrayList();
+    List<EipTScheduleMap> list = new ArrayList<EipTScheduleMap>();
+    List<EipTScheduleMap> delList = new ArrayList<EipTScheduleMap>();
     int delSize = 0;
     int resultSize = resultList.size();
     int size = 0;
     boolean canAdd = true;
     for (int i = 0; i < resultSize; i++) {
-      EipTScheduleMap record = (EipTScheduleMap) resultList.get(i);
-      EipTSchedule schedule = (EipTSchedule) (record.getEipTSchedule());
+      EipTScheduleMap record = resultList.get(i);
+      EipTSchedule schedule = (record.getEipTSchedule());
       delList.clear();
       canAdd = true;
       size = list.size();
       for (int j = 0; j < size; j++) {
-        EipTScheduleMap record2 = (EipTScheduleMap) list.get(j);
-        EipTSchedule schedule2 = (EipTSchedule) (record2.getEipTSchedule());
+        EipTScheduleMap record2 = list.get(j);
+        EipTSchedule schedule2 = (record2.getEipTSchedule());
         if (!schedule.getRepeatPattern().equals("N")
-            && "D".equals(record2.getStatus())
-            && schedule.getScheduleId().intValue() == schedule2.getParentId().intValue()) {
+          && "D".equals(record2.getStatus())
+          && schedule.getScheduleId().intValue() == schedule2
+            .getParentId()
+            .intValue()) {
           canAdd = false;
           break;
         }
         if (!schedule2.getRepeatPattern().equals("N")
-            && "D".equals(record.getStatus())
-            && schedule2.getScheduleId().intValue() == schedule.getParentId().intValue()) {
+          && "D".equals(record.getStatus())
+          && schedule2.getScheduleId().intValue() == schedule
+            .getParentId()
+            .intValue()) {
           // [繰り返しスケジュール] 親の ID を検索
           if (!delList.contains(record2)) {
             delList.add(record2);
@@ -360,7 +377,7 @@ public class RemainderScheduleDaemon implements Daemon {
     delList.clear();
     size = list.size();
     for (int i = 0; i < size; i++) {
-      EipTScheduleMap record = (EipTScheduleMap) list.get(i);
+      EipTScheduleMap record = list.get(i);
       if ("D".equals(record.getStatus())) {
         delList.add(record);
       }
@@ -371,16 +388,16 @@ public class RemainderScheduleDaemon implements Daemon {
     }
 
     // ソート
-    Collections.sort(list, new Comparator() {
+    Collections.sort(list, new Comparator<EipTScheduleMap>() {
 
-      public int compare(Object a, Object b) {
+      public int compare(EipTScheduleMap a, EipTScheduleMap b) {
         Calendar cal = Calendar.getInstance();
         Calendar cal2 = Calendar.getInstance();
         EipTSchedule p1 = null;
         EipTSchedule p2 = null;
         try {
-          p1 = ((EipTScheduleMap) a).getEipTSchedule();
-          p2 = ((EipTScheduleMap) b).getEipTSchedule();
+          p1 = (a).getEipTSchedule();
+          p2 = (b).getEipTSchedule();
 
         } catch (Exception e) {
           logger.error("Exception", e);
@@ -408,25 +425,30 @@ public class RemainderScheduleDaemon implements Daemon {
 
   /**
    * 検索条件を設定した SelectQuery を返します。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    */
-  protected SelectQuery getSelectQuery(Integer userid) {
-    SelectQuery query = new SelectQuery(EipTScheduleMap.class);
+  protected SelectQuery<EipTScheduleMap> getSelectQuery(Integer userid) {
+    SelectQuery<EipTScheduleMap> query = Database.query(EipTScheduleMap.class);
 
-    Expression exp1 = ExpressionFactory.matchExp(
-        EipTScheduleMap.USER_ID_PROPERTY, userid);
+    Expression exp1 =
+      ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, userid);
     query.setQualifier(exp1);
-    Expression exp2 = ExpressionFactory.matchExp(EipTScheduleMap.TYPE_PROPERTY,
+    Expression exp2 =
+      ExpressionFactory.matchExp(
+        EipTScheduleMap.TYPE_PROPERTY,
         ScheduleUtils.SCHEDULEMAP_TYPE_USER);
     query.andQualifier(exp2);
 
     // 終了日時
-    Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.END_DATE_PROPERTY, viewDate.getValue());
+    Expression exp11 =
+      ExpressionFactory.greaterOrEqualExp(
+        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.END_DATE_PROPERTY,
+        viewDate.getValue());
 
     // 日付を1日ずつずらす
     Calendar cal = Calendar.getInstance();
@@ -436,18 +458,21 @@ public class RemainderScheduleDaemon implements Daemon {
     field.setValue(cal.getTime());
     // 開始日時
     // LESS_EQUALからLESS_THANへ修正、期間スケジュールFIXのため(Haruo Kaneko)
-    Expression exp12 = ExpressionFactory.lessExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.START_DATE_PROPERTY, field.getValue());
+    Expression exp12 =
+      ExpressionFactory.lessExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.START_DATE_PROPERTY, field.getValue());
 
     // 通常スケジュール
-    Expression exp13 = ExpressionFactory.matchExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
+    Expression exp13 =
+      ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
     // 期間スケジュール
-    Expression exp14 = ExpressionFactory.matchExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
+    Expression exp14 =
+      ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
 
     // 繰り返しスケジュール（週間）
     Date date = viewDate.getValue();
@@ -464,44 +489,53 @@ public class RemainderScheduleDaemon implements Daemon {
       sb.append(token);
     }
 
-    Expression exp21 = ExpressionFactory.likeExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, (sb.toString() + "L"));
-    Expression exp22 = ExpressionFactory.likeExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, (sb.toString() + "N"));
+    Expression exp21 =
+      ExpressionFactory.likeExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, (sb.toString() + "L"));
+    Expression exp22 =
+      ExpressionFactory.likeExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, (sb.toString() + "N"));
 
     // 繰り返しスケジュール（日）
-    Expression exp23 = ExpressionFactory.matchExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, "DN");
-    Expression exp31 = ExpressionFactory.matchExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, "DL");
+    Expression exp23 =
+      ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "DN");
+    Expression exp31 =
+      ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "DL");
 
     // 繰り返しスケジュール（月）
     SimpleDateFormat sdf = new SimpleDateFormat("dd");
     sdf.setTimeZone(TimeZone.getDefault());
     String dayStr = sdf.format(date);
 
-    Expression exp24 = ExpressionFactory.likeExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, ("M" + dayStr + "L"));
-    Expression exp25 = ExpressionFactory.likeExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, ("M" + dayStr + "N"));
+    Expression exp24 =
+      ExpressionFactory.likeExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, ("M" + dayStr + "L"));
+    Expression exp25 =
+      ExpressionFactory.likeExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, ("M" + dayStr + "N"));
 
     query.andQualifier((exp11.andExp(exp12).andExp(((exp13).orExp(exp14))
-        .orExp(exp21).orExp(exp31).orExp(exp24))).orExp(exp22.orExp(exp23)
-        .orExp(exp25)));
+      .orExp(exp21)
+      .orExp(exp31)
+      .orExp(exp24))).orExp(exp22.orExp(exp23).orExp(exp25)));
 
     // 開始日時でソート
-    List orders = new ArrayList();
-    orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-        + EipTSchedule.START_DATE_PROPERTY, true));
-    orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-        + EipTSchedule.END_DATE_PROPERTY, true));
-    query.addOrderings(orders);
+    List<Ordering> orders = new ArrayList<Ordering>();
+    orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+      + "."
+      + EipTSchedule.START_DATE_PROPERTY, true));
+    orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+      + "."
+      + EipTSchedule.END_DATE_PROPERTY, true));
+    query.getQuery().addOrderings(orders);
 
     return query;
   }
@@ -519,11 +553,12 @@ public class RemainderScheduleDaemon implements Daemon {
     try {
       EipTScheduleMap record = (EipTScheduleMap) obj;
       EipTSchedule schedule = record.getEipTSchedule();
-      if ("R".equals(record.getStatus()))
+      if ("R".equals(record.getStatus())) {
         // return rd;
         return null;
+      }
       if (!ScheduleUtils.isView(viewDate, schedule.getRepeatPattern(), schedule
-          .getStartDate(), schedule.getEndDate())) {
+        .getStartDate(), schedule.getEndDate())) {
         // return rd;
         return null;
       }
@@ -557,8 +592,9 @@ public class RemainderScheduleDaemon implements Daemon {
       // 繰り返しスケジュールの場合
       if (!rd.getPattern().equals("N")) {
 
-        if (!ScheduleUtils.isView(viewDate, rd.getPattern(), rd.getStartDate()
-            .getValue(), rd.getEndDate().getValue())) {
+        if (!ScheduleUtils.isView(viewDate, rd.getPattern(), rd
+          .getStartDate()
+          .getValue(), rd.getEndDate().getValue())) {
           return rd;
         }
         rd.setRepeat(true);
@@ -575,13 +611,21 @@ public class RemainderScheduleDaemon implements Daemon {
     return rd;
   }
 
-  private String getSendMessage(ALEipUserAddr useraddr, List schelist,
-      List todolist) {
+  private String getSendMessage(ALEipUserAddr useraddr, List<Object> schelist,
+      List<ScheduleToDoResultData> todolist) {
     String CR = System.getProperty("line.separator");
     StringBuffer body = new StringBuffer();
-    body.append("--- ").append(viewDate.getYear()).append("年").append(
-        viewDate.getMonth()).append("月").append(viewDate.getDay()).append("日")
-        .append(" ---").append(CR).append(CR);
+    body
+      .append("--- ")
+      .append(viewDate.getYear())
+      .append("年")
+      .append(viewDate.getMonth())
+      .append("月")
+      .append(viewDate.getDay())
+      .append("日")
+      .append(" ---")
+      .append(CR)
+      .append(CR);
     body.append("[予定]").append(CR);
 
     if (schelist != null && schelist.size() > 0) {
@@ -623,15 +667,18 @@ public class RemainderScheduleDaemon implements Daemon {
       ScheduleToDoResultData todord = null;
       int todosize = todolist.size();
       for (int i = 0; i < todosize; i++) {
-        todord = (ScheduleToDoResultData) todolist.get(i);
+        todord = todolist.get(i);
         body.append("・").append(todord.getTodoName()).append(CR);
       }
     } else {
       body.append("ToDoはありません。").append(CR);
     }
     body.append(CR);
-    body.append("[").append(DatabaseOrmService.getInstance().getAlias())
-        .append("へのアクセス]").append(CR);
+    body
+      .append("[")
+      .append(DatabaseOrmService.getInstance().getAlias())
+      .append("へのアクセス]")
+      .append(CR);
 
     String globalurl = getCellularUrl(useraddr);
     if (!(globalurl == null || globalurl.equals(""))) {
@@ -652,13 +699,14 @@ public class RemainderScheduleDaemon implements Daemon {
     try {
       String ipaddress = record.getIpaddressInternal();
       if (null == ipaddress || "".equals(ipaddress)) {
-        java.util.Enumeration enuIfs = NetworkInterface.getNetworkInterfaces();
+        Enumeration<NetworkInterface> enuIfs =
+          NetworkInterface.getNetworkInterfaces();
         if (null != enuIfs) {
           while (enuIfs.hasMoreElements()) {
-            NetworkInterface ni = (NetworkInterface) enuIfs.nextElement();
-            java.util.Enumeration enuAddrs = ni.getInetAddresses();
+            NetworkInterface ni = enuIfs.nextElement();
+            Enumeration<InetAddress> enuAddrs = ni.getInetAddresses();
             while (enuAddrs.hasMoreElements()) {
-              InetAddress in4 = (InetAddress) enuAddrs.nextElement();
+              InetAddress in4 = enuAddrs.nextElement();
               if (!in4.isLoopbackAddress()) {
                 ipaddress = in4.getHostAddress();
               }
@@ -695,13 +743,18 @@ public class RemainderScheduleDaemon implements Daemon {
       return "";
     }
 
-    String key = eipUser.getName().getValue()
+    String key =
+      eipUser.getName().getValue()
         + "_"
-        + ALCellularUtils.getCheckValueForCellLogin(eipUser.getName()
-            .getValue(), eipUser.getUserId().toString());
+        + ALCellularUtils.getCheckValueForCellLogin(eipUser
+          .getName()
+          .getValue(), eipUser.getUserId().toString());
     EipMCompany record = ALEipUtils.getEipMCompany("1");
-    String domain = SystemUtils.getUrl(record.getIpaddress(), record.getPort()
-        .intValue(), servlet_name);
+    String domain =
+      SystemUtils.getUrl(
+        record.getIpaddress(),
+        record.getPort().intValue(),
+        servlet_name);
     if (domain != null && domain.length() > 0) {
       url = domain + "?key=" + key;
     } else {
@@ -710,60 +763,67 @@ public class RemainderScheduleDaemon implements Daemon {
     return url;
   }
 
-  private List getToDoList(Integer userid) {
-    List todoList = new ArrayList();
+  private List<ScheduleToDoResultData> getToDoList(Integer userid) {
+    List<ScheduleToDoResultData> todoList =
+      new ArrayList<ScheduleToDoResultData>();
 
-    SelectQuery query = getSelectQueryForTodo(userid);
-    List todos = dataContext.performQuery(query);
+    SelectQuery<EipTTodo> query = getSelectQueryForTodo(userid);
+    List<EipTTodo> todos = query.fetchList();
 
     int todosize = todos.size();
     for (int i = 0; i < todosize; i++) {
-      DataRow dataRow = (DataRow) todos.get(i);
+      EipTTodo record = todos.get(i);
       ScheduleToDoResultData rd = new ScheduleToDoResultData();
       rd.initField();
-      rd.setTodoName((String) ALEipUtils.getObjFromDataRow(dataRow,
-          EipTTodo.TODO_NAME_COLUMN));
+      rd.setTodoName(record.getTodoName());
       todoList.add(rd);
     }
 
     return todoList;
   }
 
-  private SelectQuery getSelectQueryForTodo(Integer userid) {
-    SelectQuery query = new SelectQuery(EipTTodo.class);
-    query.addCustomDbAttribute(EipTTodo.TODO_NAME_COLUMN);
+  private SelectQuery<EipTTodo> getSelectQueryForTodo(Integer userid) {
+    SelectQuery<EipTTodo> query = Database.query(EipTTodo.class);
+    query.select(EipTTodo.TODO_NAME_COLUMN);
 
-    Expression exp1 = ExpressionFactory.noMatchExp(EipTTodo.STATE_PROPERTY,
-        Short.valueOf((short) 100));
+    Expression exp1 =
+      ExpressionFactory.noMatchExp(EipTTodo.STATE_PROPERTY, Short
+        .valueOf((short) 100));
     query.setQualifier(exp1);
-    Expression exp2 = ExpressionFactory.matchExp(
-        EipTTodo.ADDON_SCHEDULE_FLG_PROPERTY, "T");
+    Expression exp2 =
+      ExpressionFactory.matchExp(EipTTodo.ADDON_SCHEDULE_FLG_PROPERTY, "T");
     query.andQualifier(exp2);
-    Expression exp3 = ExpressionFactory.matchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, userid);
+    Expression exp3 =
+      ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, userid);
     query.andQualifier(exp3);
 
     // 終了日時
-    Expression exp11 = ExpressionFactory.greaterOrEqualExp(
-        EipTTodo.END_DATE_PROPERTY, viewDate.getValue());
+    Expression exp11 =
+      ExpressionFactory.greaterOrEqualExp(EipTTodo.END_DATE_PROPERTY, viewDate
+        .getValue());
     // 開始日時
-    Expression exp12 = ExpressionFactory.lessOrEqualExp(
-        EipTTodo.START_DATE_PROPERTY, viewDate.getValue());
+    Expression exp12 =
+      ExpressionFactory.lessOrEqualExp(EipTTodo.START_DATE_PROPERTY, viewDate
+        .getValue());
 
     // 開始日時のみ指定されている ToDo を検索
-    Expression exp21 = ExpressionFactory.lessOrEqualExp(
-        EipTTodo.START_DATE_PROPERTY, viewDate.getValue());
-    Expression exp22 = ExpressionFactory.matchExp(EipTTodo.END_DATE_PROPERTY,
-        ToDoUtils.getEmptyDate());
+    Expression exp21 =
+      ExpressionFactory.lessOrEqualExp(EipTTodo.START_DATE_PROPERTY, viewDate
+        .getValue());
+    Expression exp22 =
+      ExpressionFactory.matchExp(EipTTodo.END_DATE_PROPERTY, ToDoUtils
+        .getEmptyDate());
 
     // 終了日時のみ指定されている ToDo を検索
-    Expression exp31 = ExpressionFactory.greaterOrEqualExp(
-        EipTTodo.END_DATE_PROPERTY, viewDate.getValue());
-    Expression exp32 = ExpressionFactory.matchExp(EipTTodo.START_DATE_PROPERTY,
-        ToDoUtils.getEmptyDate());
+    Expression exp31 =
+      ExpressionFactory.greaterOrEqualExp(EipTTodo.END_DATE_PROPERTY, viewDate
+        .getValue());
+    Expression exp32 =
+      ExpressionFactory.matchExp(EipTTodo.START_DATE_PROPERTY, ToDoUtils
+        .getEmptyDate());
 
     query.andQualifier((exp11.andExp(exp12)).orExp(exp21.andExp(exp22)).orExp(
-        exp31.andExp(exp32)));
+      exp31.andExp(exp32)));
     return query;
   }
 
@@ -802,11 +862,11 @@ public class RemainderScheduleDaemon implements Daemon {
     }
 
     this.config = config;
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     // get configuration parameters from Jetspeed Resources
-    AipoDaemonFactoryService aipoDaemonService = (AipoDaemonFactoryService) TurbineServices
-        .getInstance().getService(DaemonFactoryService.SERVICE_NAME);
+    AipoDaemonFactoryService aipoDaemonService =
+      (AipoDaemonFactoryService) TurbineServices.getInstance().getService(
+        DaemonFactoryService.SERVICE_NAME);
     ServletConfig servlet_config = aipoDaemonService.getServletConfig();
     servlet_name = servlet_config.getServletName();
 
@@ -819,7 +879,9 @@ public class RemainderScheduleDaemon implements Daemon {
 
     long now_millis = cal.getTimeInMillis();
 
+    @SuppressWarnings("unused")
     int now_hour = cal.get(Calendar.HOUR_OF_DAY);
+    @SuppressWarnings("unused")
     int now_minutes = cal.get(Calendar.MINUTE);
 
     // プロパティファイルから送信時間(this.send_time_hour)の読み込み
@@ -864,8 +926,9 @@ public class RemainderScheduleDaemon implements Daemon {
 
     long interval = (next_millis - now_millis) / 1000;
 
-    this.entry = new DaemonEntry(entry.getName(), interval, entry
-        .getClassname(), entry.onStartup());
+    this.entry =
+      new DaemonEntry(entry.getName(), interval, entry.getClassname(), entry
+        .onStartup());
 
     enable_run = false;
 
@@ -885,7 +948,7 @@ public class RemainderScheduleDaemon implements Daemon {
 
   /**
    * Return the status for this Daemon
-   *
+   * 
    * @see Daemon#STATUS_NOT_PROCESSED
    * @see Daemon#STATUS_PROCESSED
    * @see Daemon#STATUS_PROCESSING
@@ -896,7 +959,7 @@ public class RemainderScheduleDaemon implements Daemon {
 
   /**
    * Set the status for this Daemon
-   *
+   * 
    * @see #STATUS_NOT_PROCESSED
    * @see #STATUS_PROCESSED
    * @see #STATUS_PROCESSING

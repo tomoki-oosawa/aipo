@@ -32,6 +32,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALDateTimeField;
+import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
@@ -58,16 +59,23 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * スケジュールのアクションクラスです。
- *
+ * 
  */
 public class CellScheduleAction extends ALBaseAction {
 
   /** <code>logger</code> logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CellScheduleAction.class.getName());
+    .getLogger(CellScheduleAction.class.getName());
 
-  private String[] weekday_str = { "", "(日)", "(月)", "(火)", "(水)", "(木)",
-      "(金)", "(土)" };
+  private final String[] weekday_str = {
+    "",
+    "(日)",
+    "(月)",
+    "(火)",
+    "(水)",
+    "(木)",
+    "(金)",
+    "(土)" };
 
   /*
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#
@@ -75,6 +83,7 @@ public class CellScheduleAction extends ALBaseAction {
    * org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
 
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) {
     ALEipUtils.removeTemp(rundata, context, "view_date_top");
@@ -85,6 +94,7 @@ public class CellScheduleAction extends ALBaseAction {
    * buildMaximizedContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    * org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
 
@@ -98,8 +108,8 @@ public class CellScheduleAction extends ALBaseAction {
       } else if (ALEipConstants.MODE_LIST.equals(mode)) {
         // modify motegi start
         // doSchedule_list(rundata, context);
-        String uid = ALEipUtils
-            .getTemp(rundata, context, "target_otheruser_id");
+        String uid =
+          ALEipUtils.getTemp(rundata, context, "target_otheruser_id");
         if (uid != null && !"".equals(uid)) {
           // 他メンバーのスケジュール⇒ToDoの後でスケジュールに戻った場合
           doSchedule_list_select_member(rundata, context);
@@ -112,8 +122,7 @@ public class CellScheduleAction extends ALBaseAction {
       if (getMode() == null) {
         // セッション削除
         if (ALEipUtils.getTemp(rundata, context, "view_date_top") != null
-            && !ALEipUtils.getTemp(rundata, context, "view_date_top")
-                .equals("")) {
+          && !ALEipUtils.getTemp(rundata, context, "view_date_top").equals("")) {
           ALEipUtils.removeTemp(rundata, context, "view_date_top");
         }
         doSchedule_menu(rundata, context);
@@ -127,7 +136,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを一覧表示します。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -143,19 +152,21 @@ public class CellScheduleAction extends ALBaseAction {
         // weekly : 週間表示
         // monthly: 月間表示
         if (rundata.getParameters().containsKey("tab")) {
-          ALEipUtils.setTemp(rundata, context, "tab", rundata.getParameters()
-              .getString("tab"));
+          ALEipUtils.setTemp(rundata, context, "tab", rundata
+            .getParameters()
+            .getString("tab"));
         }
       }
 
       String currentTab;
-      ALAbstractSelectData listData;
+      ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> listData;
       String tmpCurrentTab = ALEipUtils.getTemp(rundata, context, "tab");
       if (tmpCurrentTab == null
-          || !(tmpCurrentTab.equals("oneday") || tmpCurrentTab.equals("weekly")
-              || tmpCurrentTab.equals("monthly")
-              || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-              .equals("weekly-group"))) {
+        || !(tmpCurrentTab.equals("oneday")
+          || tmpCurrentTab.equals("weekly")
+          || tmpCurrentTab.equals("monthly")
+          || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
+          .equals("weekly-group"))) {
         currentTab = "oneday";
       } else {
         currentTab = tmpCurrentTab;
@@ -195,7 +206,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * 日付指定用のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -207,10 +218,10 @@ public class CellScheduleAction extends ALBaseAction {
       if (formData.doCheck(this, rundata, context)) {
         String viewdate = formData.getViewDateStr();
         JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-        rundata.setRedirectURI(jsLink
-            .getPortletById(ALEipUtils.getPortlet(rundata, context).getID())
-            .addQueryData("eventSubmit_doSchedule_menu", "1")
-            .addQueryData("start_date", viewdate).toString());
+        rundata.setRedirectURI(jsLink.getPortletById(
+          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+          "eventSubmit_doSchedule_menu",
+          "1").addQueryData("start_date", viewdate).toString());
         rundata.getResponse().sendRedirect(rundata.getRedirectURI());
         jsLink = null;
       }
@@ -223,7 +234,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -233,7 +244,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -243,7 +254,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -253,7 +264,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール編集のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -263,7 +274,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール編集のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -273,7 +284,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール編集のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -282,7 +293,7 @@ public class CellScheduleAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param is_repeat
@@ -309,7 +320,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -333,13 +344,14 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
   public void doSchedule_form_member(RunData rundata, Context context) {
     try {
-      CellScheduleFormMemberData formGroupData = new CellScheduleFormMemberData();
+      CellScheduleFormMemberData formGroupData =
+        new CellScheduleFormMemberData();
       formGroupData.loadParameters(rundata, context);
       formGroupData.initField();
       if (formGroupData.doViewForm(this, rundata, context)) {
@@ -357,13 +369,14 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
   public void doSchedule_form_facility(RunData rundata, Context context) {
     try {
-      CellScheduleFormFacilityData formFacilityData = new CellScheduleFormFacilityData();
+      CellScheduleFormFacilityData formFacilityData =
+        new CellScheduleFormFacilityData();
       formFacilityData.loadParameters(rundata, context);
       formFacilityData.initField();
       if (formFacilityData.doViewForm(this, rundata, context)) {
@@ -381,7 +394,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -391,7 +404,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -401,7 +414,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -411,7 +424,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール編集のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -421,7 +434,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール編集のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -431,7 +444,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール編集のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -441,7 +454,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -463,7 +476,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -487,7 +500,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -511,7 +524,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを登録します。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -522,9 +535,10 @@ public class CellScheduleAction extends ALBaseAction {
       setTemplate(rundata, "schedule-form-note");
       if (formData.doInsert(this, rundata, context)) {
         JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-        rundata.setRedirectURI(jsLink
-            .getPortletById(ALEipUtils.getPortlet(rundata, context).getID())
-            .addQueryData("eventSubmit_doSchedule_menu", "1").toString());
+        rundata.setRedirectURI(jsLink.getPortletById(
+          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+          "eventSubmit_doSchedule_menu",
+          "1").toString());
         rundata.getResponse().sendRedirect(rundata.getRedirectURI());
         jsLink = null;
       } else {
@@ -539,7 +553,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを更新します。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -550,9 +564,10 @@ public class CellScheduleAction extends ALBaseAction {
       setTemplate(rundata, "schedule-form-date");
       if (formData.doUpdate(this, rundata, context)) {
         JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-        rundata.setRedirectURI(jsLink
-            .getPortletById(ALEipUtils.getPortlet(rundata, context).getID())
-            .addQueryData("eventSubmit_doSchedule_menu", "1").toString());
+        rundata.setRedirectURI(jsLink.getPortletById(
+          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+          "eventSubmit_doSchedule_menu",
+          "1").toString());
         rundata.getResponse().sendRedirect(rundata.getRedirectURI());
         jsLink = null;
       }
@@ -565,7 +580,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール削除のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -585,7 +600,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを削除します。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -597,9 +612,10 @@ public class CellScheduleAction extends ALBaseAction {
       setTemplate(rundata, "schedule-menu");
       if (formData.doDelete(this, rundata, context)) {
         JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-        rundata.setRedirectURI(jsLink
-            .getPortletById(ALEipUtils.getPortlet(rundata, context).getID())
-            .addQueryData("eventSubmit_doSchedule_menu", "1").toString());
+        rundata.setRedirectURI(jsLink.getPortletById(
+          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+          "eventSubmit_doSchedule_menu",
+          "1").toString());
         rundata.getResponse().sendRedirect(rundata.getRedirectURI());
         jsLink = null;
       }
@@ -612,7 +628,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを詳細表示します。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -631,13 +647,14 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールの状態を変更します。
-   *
+   * 
    * @param rundata
    * @param context
    */
   public void doSchedule_change_status(RunData rundata, Context context) {
     try {
-      ScheduleChangeStatusFormData formData = new ScheduleChangeStatusFormData();
+      ScheduleChangeStatusFormData formData =
+        new ScheduleChangeStatusFormData();
       formData.loadParametersViewDate(rundata, context);
       formData.initField();
       if (formData.doUpdate(this, rundata, context)) {
@@ -646,14 +663,14 @@ public class CellScheduleAction extends ALBaseAction {
         JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
         if (viewDate == null || viewDate.equals("")) {
           logger
-              .error("[ScheduleAction] ALPageNotFoundException: View Date is wrong.");
+            .error("[ScheduleAction] ALPageNotFoundException: View Date is wrong.");
           throw new ALPageNotFoundException();
         }
 
-        rundata.setRedirectURI(jsLink
-            .getPortletById(ALEipUtils.getPortlet(rundata, context).getID())
-            .addQueryData("eventSubmit_doSchedule_detail", "1")
-            .addQueryData("view_date", viewDate).toString());
+        rundata.setRedirectURI(jsLink.getPortletById(
+          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+          "eventSubmit_doSchedule_detail",
+          "1").addQueryData("view_date", viewDate).toString());
         rundata.getResponse().sendRedirect(rundata.getRedirectURI());
         jsLink = null;
       }
@@ -666,7 +683,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールのメニュー(週間スケジュール)を表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -690,7 +707,7 @@ public class CellScheduleAction extends ALBaseAction {
       cal.setTime(date.getValue());
       cal2.setTime(date.getValue());
     } else if (ALEipUtils.getTemp(rundata, context, "view_date_top") != null
-        && !ALEipUtils.getTemp(rundata, context, "view_date_top").equals("")) {
+      && !ALEipUtils.getTemp(rundata, context, "view_date_top").equals("")) {
       String str;
       str = ALEipUtils.getTemp(rundata, context, "view_date_top");
       date.setValue(str);
@@ -702,17 +719,21 @@ public class CellScheduleAction extends ALBaseAction {
 
     for (int k = 0; k < 7; k++) {
       StringBuffer day = new StringBuffer();
-      day.append(cal.get(Calendar.YEAR)).append("-")
-          .append(cal.get(Calendar.MONDAY) + 1).append("-")
-          .append(cal.get(Calendar.DATE));
+      day
+        .append(cal.get(Calendar.YEAR))
+        .append("-")
+        .append(cal.get(Calendar.MONDAY) + 1)
+        .append("-")
+        .append(cal.get(Calendar.DATE));
       weekly.add(day.toString());
       weekday.add(weekday_str[cal.get(Calendar.DAY_OF_WEEK)]);
 
       cal.add(Calendar.DAY_OF_MONTH, 1);
     }
     cal2.add(Calendar.DAY_OF_MONTH, -7);
-    ALEipUtils.setTemp(rundata, context, "view_date_top", weekly.get(0)
-        .toString());
+    ALEipUtils.setTemp(rundata, context, "view_date_top", weekly
+      .get(0)
+      .toString());
     context.put("daylist", weekly);
     context.put("weekdaylist", weekday);
     date.setValue(cal.getTime());
@@ -728,12 +749,12 @@ public class CellScheduleAction extends ALBaseAction {
     setTemplate(rundata, "schedule-menu");
   }
 
-//  private void clearScheduleSession(RunData rundata, Context context) {
-//    List list = new ArrayList();
-//    list.add("entityid");
-//    list.add("target_user_id");
-//    ALEipUtils.removeTemp(rundata, context, list);
-//  }
+  // private void clearScheduleSession(RunData rundata, Context context) {
+  // List list = new ArrayList();
+  // list.add("entityid");
+  // list.add("target_user_id");
+  // ALEipUtils.removeTemp(rundata, context, list);
+  // }
 
   // ////////////////////////add by motegi start
 
@@ -745,13 +766,14 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールのメニュー(週間スケジュール)を表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
   public void doSchedule_form_selectgroup(RunData rundata, Context context) {
     try {
-      CellScheduleFormGroupForSelectData formGroupData = new CellScheduleFormGroupForSelectData();
+      CellScheduleFormGroupForSelectData formGroupData =
+        new CellScheduleFormGroupForSelectData();
       formGroupData.loadParameters(rundata, context);
       formGroupData.initField();
       formGroupData.doViewForm(this, rundata, context);
@@ -765,13 +787,14 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
   public void doSchedule_form_selectmember(RunData rundata, Context context) {
     try {
-      CellScheduleFormMemberForSelectData formGroupData = new CellScheduleFormMemberForSelectData();
+      CellScheduleFormMemberForSelectData formGroupData =
+        new CellScheduleFormMemberForSelectData();
       formGroupData.loadParameters(rundata, context);
       formGroupData.initField();
       formGroupData.doViewForm(this, rundata, context);
@@ -785,7 +808,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールのメニュー(週間スケジュール)を表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -793,7 +816,7 @@ public class CellScheduleAction extends ALBaseAction {
     Calendar cal = Calendar.getInstance();
     Calendar cal2 = Calendar.getInstance();
     List<String> weekly = new ArrayList<String>();
-    List<String>  weekday = new ArrayList<String>();
+    List<String> weekday = new ArrayList<String>();
 
     ALDateTimeField date = new ALDateTimeField("yyyy-MM-dd");
 
@@ -804,7 +827,7 @@ public class CellScheduleAction extends ALBaseAction {
       cal.setTime(date.getValue());
       cal2.setTime(date.getValue());
     } else if (ALEipUtils.getTemp(rundata, context, "view_date_top") != null
-        && !ALEipUtils.getTemp(rundata, context, "view_date_top").equals("")) {
+      && !ALEipUtils.getTemp(rundata, context, "view_date_top").equals("")) {
       String str;
       str = ALEipUtils.getTemp(rundata, context, "view_date_top");
       date.setValue(str);
@@ -816,17 +839,21 @@ public class CellScheduleAction extends ALBaseAction {
 
     for (int k = 0; k < 7; k++) {
       StringBuffer day = new StringBuffer();
-      day.append(cal.get(Calendar.YEAR)).append("-")
-          .append(cal.get(Calendar.MONDAY) + 1).append("-")
-          .append(cal.get(Calendar.DATE));
+      day
+        .append(cal.get(Calendar.YEAR))
+        .append("-")
+        .append(cal.get(Calendar.MONDAY) + 1)
+        .append("-")
+        .append(cal.get(Calendar.DATE));
       weekly.add(day.toString());
       weekday.add(weekday_str[cal.get(Calendar.DAY_OF_WEEK)]);
 
       cal.add(Calendar.DAY_OF_MONTH, 1);
     }
     cal2.add(Calendar.DAY_OF_MONTH, -7);
-    ALEipUtils.setTemp(rundata, context, "view_date_top", weekly.get(0)
-        .toString());
+    ALEipUtils.setTemp(rundata, context, "view_date_top", weekly
+      .get(0)
+      .toString());
     context.put("daylist", weekly);
     context.put("weekdaylist", weekday);
     date.setValue(cal.getTime());
@@ -834,25 +861,29 @@ public class CellScheduleAction extends ALBaseAction {
     date.setValue(cal2.getTime());
     context.put("prevweek", date.toString());
 
-    CellScheduleWeekSelectByMemberData selectdata = new CellScheduleWeekSelectByMemberData();
+    CellScheduleWeekSelectByMemberData selectdata =
+      new CellScheduleWeekSelectByMemberData();
     selectdata.initField();
     selectdata.doViewList(this, rundata, context);
     context.put("now", selectdata.getNow());
     // 対象ユーザーをセッションに設定
     ALEipUtils.setTemp(rundata, context, "target_otheruser_id", selectdata
-        .getTargerUser().getUserId().getValueAsString());
+      .getTargerUser()
+      .getUserId()
+      .getValueAsString());
     setTemplate(rundata, "schedule-menu-select-member");
   }
 
   /**
    * スケジュールを詳細表示します。
-   *
+   * 
    * @param rundata
    * @param context
    */
   public void doSchedule_detail_select_member(RunData rundata, Context context) {
     try {
-      CellScheduleSelectByMemberData detailData = new CellScheduleSelectByMemberData();
+      CellScheduleSelectByMemberData detailData =
+        new CellScheduleSelectByMemberData();
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
       // setMode(ALEipConstants.MODE_LIST);
@@ -867,7 +898,8 @@ public class CellScheduleAction extends ALBaseAction {
   public void doSchedule_form_selectday_select_member(RunData rundata,
       Context context) {
     try {
-      CellScheduleSelectFormByMemberData formData = new CellScheduleSelectFormByMemberData();
+      CellScheduleSelectFormByMemberData formData =
+        new CellScheduleSelectFormByMemberData();
       formData.initField();
       formData.doViewForm(this, rundata, context);
 
@@ -881,25 +913,28 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * 日付指定用のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
   public void doSchedule_show_selectday_select_member(RunData rundata,
       Context context) {
     try {
-      CellScheduleSelectFormByMemberData formData = new CellScheduleSelectFormByMemberData();
+      CellScheduleSelectFormByMemberData formData =
+        new CellScheduleSelectFormByMemberData();
       formData.initField();
       setTemplate(rundata, "schedule-form-selectday-select-member");
       if (formData.doCheck(this, rundata, context)) {
         String viewdate = formData.getViewDateStr();
         JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
         rundata.setRedirectURI(jsLink
-            .getPortletById(ALEipUtils.getPortlet(rundata, context).getID())
-            .addQueryData("eventSubmit_doSchedule_menu_select_member", "1")
-            .addQueryData("selectedmember",
-                formData.getTargerUser().getUserId().getValueAsString())
-            .addQueryData("start_date", viewdate).toString());
+          .getPortletById(ALEipUtils.getPortlet(rundata, context).getID())
+          .addQueryData("eventSubmit_doSchedule_menu_select_member", "1")
+          .addQueryData(
+            "selectedmember",
+            formData.getTargerUser().getUserId().getValueAsString())
+          .addQueryData("start_date", viewdate)
+          .toString());
         rundata.getResponse().sendRedirect(rundata.getRedirectURI());
         jsLink = null;
       }
@@ -912,7 +947,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを一覧表示します。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -928,19 +963,21 @@ public class CellScheduleAction extends ALBaseAction {
         // weekly : 週間表示
         // monthly: 月間表示
         if (rundata.getParameters().containsKey("tab")) {
-          ALEipUtils.setTemp(rundata, context, "tab", rundata.getParameters()
-              .getString("tab"));
+          ALEipUtils.setTemp(rundata, context, "tab", rundata
+            .getParameters()
+            .getString("tab"));
         }
       }
 
       String currentTab;
-      ALAbstractSelectData listData;
+      ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> listData;
       String tmpCurrentTab = ALEipUtils.getTemp(rundata, context, "tab");
       if (tmpCurrentTab == null
-          || !(tmpCurrentTab.equals("oneday") || tmpCurrentTab.equals("weekly")
-              || tmpCurrentTab.equals("monthly")
-              || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-              .equals("weekly-group"))) {
+        || !(tmpCurrentTab.equals("oneday")
+          || tmpCurrentTab.equals("weekly")
+          || tmpCurrentTab.equals("monthly")
+          || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
+          .equals("weekly-group"))) {
         currentTab = "oneday";
       } else {
         currentTab = tmpCurrentTab;
@@ -951,7 +988,7 @@ public class CellScheduleAction extends ALBaseAction {
       if (currentTab.equals("oneday")) {
         listData = new CellScheduleOnedaySelectByMemberData();
         ((CellScheduleOnedaySelectByMemberData) listData)
-            .setPortletId(portletId);
+          .setPortletId(portletId);
         listData.initField();
         listData.doViewList(this, rundata, context);
         setTemplate(rundata, "schedule-list-select-member");
@@ -966,14 +1003,15 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール削除のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
   public void doSchedule_form_delete_select_member(RunData rundata,
       Context context) {
     try {
-      CellScheduleSelectByMemberData detailData = new CellScheduleSelectByMemberData();
+      CellScheduleSelectByMemberData detailData =
+        new CellScheduleSelectByMemberData();
       detailData.init(this, rundata, context);
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);

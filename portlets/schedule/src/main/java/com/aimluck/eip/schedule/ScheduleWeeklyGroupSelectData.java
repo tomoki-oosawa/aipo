@@ -40,9 +40,12 @@ import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
@@ -75,7 +78,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   private List<ALEipUser> members;
 
   /** <code>groups</code> グループ */
-  private List groups;
+  private List<ALEipGroup> groups;
 
   /** <code>userid</code> ログインユーザーID */
   private Integer userid;
@@ -92,7 +95,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   /** <code>map</code> スケジュールMap（施設） */
   private Map<Integer, ScheduleWeekContainer> facilitymap;
 
-  private List facilityList;
+  private List<FacilityResultData> facilityList;
 
   /** <code>hasAuthoritySelfInsert</code> アクセス権限 */
   private boolean hasAuthoritySelfInsert = false;
@@ -195,7 +198,8 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         loadTodo(rundata, context);
       }
 
-      return new ResultList(ScheduleUtils.sortByDummySchedule(list));
+      return new ResultList<EipTScheduleMap>(ScheduleUtils
+        .sortByDummySchedule(list));
     } catch (Exception e) {
       logger.error("[ScheduleWeeklyGroupSelectData]", e);
       throw new ALDBErrorException();
@@ -213,8 +217,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   @Override
   protected SelectQuery<EipTScheduleMap> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipTScheduleMap> query =
-      new SelectQuery<EipTScheduleMap>(EipTScheduleMap.class);
+    SelectQuery<EipTScheduleMap> query = Database.query(EipTScheduleMap.class);
 
     // 終了日時
     Expression exp11 =
@@ -706,7 +709,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
    * 
    * @return
    */
-  public Map getPostMap() {
+  public Map<Integer, ALEipPost> getPostMap() {
     return ALEipManager.getInstance().getPostMap();
   }
 
@@ -715,7 +718,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
    * 
    * @return
    */
-  public List getGroupList() {
+  public List<ALEipGroup> getGroupList() {
     return groups;
   }
 
@@ -743,7 +746,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
    * @param id
    * @return
    */
-  public List getTermContainer(long id) {
+  public List<ScheduleTermWeekContainer> getTermContainer(long id) {
     return termmap.get(Integer.valueOf((int) id));
   }
 
@@ -753,7 +756,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
    * @param id
    * @return
    */
-  public List getToDoContainer(long id) {
+  public List<ScheduleToDoWeekContainer> getToDoContainer(long id) {
     return todomap.get(Integer.valueOf((int) id));
   }
 
@@ -762,7 +765,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
     portletId = id;
   }
 
-  public List getFacilityList() {
+  public List<FacilityResultData> getFacilityList() {
     return facilityList;
   }
 

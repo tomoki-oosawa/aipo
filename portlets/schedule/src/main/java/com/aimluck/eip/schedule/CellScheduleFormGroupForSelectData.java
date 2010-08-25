@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,7 +28,9 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
@@ -44,7 +46,7 @@ public class CellScheduleFormGroupForSelectData extends ALAbstractFormData {
   private ALEipUser login_user;
 
   /** <code>groups</code> グループ */
-  private List groups;
+  private List<ALEipGroup> groups;
 
   /**
    * フォームを表示します。
@@ -61,7 +63,7 @@ public class CellScheduleFormGroupForSelectData extends ALAbstractFormData {
 
       action.setMode(ALEipConstants.MODE_NEW_FORM);
       setMode(action.getMode());
-      ArrayList msgList = new ArrayList();
+      List<String> msgList = new ArrayList<String>();
       action.setResultData(this);
       action.addErrorMessages(msgList);
       action.putData(rundata, context);
@@ -77,9 +79,10 @@ public class CellScheduleFormGroupForSelectData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.
+   * actions.common.ALAction, org.apache.turbine.util.RunData,
+   * org.apache.velocity.context.Context)
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -108,8 +111,9 @@ public class CellScheduleFormGroupForSelectData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * @see
+   * com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine
+   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
@@ -124,7 +128,7 @@ public class CellScheduleFormGroupForSelectData extends ALAbstractFormData {
    * @param groupname
    * @return
    */
-  public List getUsers(String groupname) {
+  public List<ALEipUser> getUsers(String groupname) {
     return ALEipUtils.getUsers(groupname);
   }
 
@@ -133,7 +137,7 @@ public class CellScheduleFormGroupForSelectData extends ALAbstractFormData {
    * 
    * @return
    */
-  public Map getPostMap() {
+  public Map<Integer, ALEipPost> getPostMap() {
     return ALEipManager.getInstance().getPostMap();
   }
 
@@ -151,7 +155,7 @@ public class CellScheduleFormGroupForSelectData extends ALAbstractFormData {
    * 
    * @return
    */
-  public List getGroupList() {
+  public List<ALEipGroup> getGroupList() {
     return groups;
   }
 
@@ -184,8 +188,8 @@ public class CellScheduleFormGroupForSelectData extends ALAbstractFormData {
   }
 
   @Override
-  protected boolean validate(List<String> msgList) throws ALPageNotFoundException,
-      ALDBErrorException {
+  protected boolean validate(List<String> msgList)
+      throws ALPageNotFoundException, ALDBErrorException {
     // TODO 自動生成されたメソッド・スタブ
     return true;
   }

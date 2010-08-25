@@ -30,7 +30,7 @@ import com.aimluck.eip.schedule.util.ScheduleUtils;
 
 /**
  * カレンダー用スケジュールコンテナです。
- *
+ * 
  */
 public class AjaxScheduleDayContainer implements ALData {
 
@@ -59,7 +59,7 @@ public class AjaxScheduleDayContainer implements ALData {
 
   /**
    * スケジュールリストを取得します。
-   *
+   * 
    * @return
    */
   public List<AjaxScheduleResultData> getScheduleList() {
@@ -68,7 +68,7 @@ public class AjaxScheduleDayContainer implements ALData {
 
   /**
    * 日付を設定します。
-   *
+   * 
    * @param date
    */
   public void setDate(Date date) {
@@ -81,7 +81,7 @@ public class AjaxScheduleDayContainer implements ALData {
 
   /**
    * 日付を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getDate() {
@@ -90,7 +90,7 @@ public class AjaxScheduleDayContainer implements ALData {
 
   /**
    * スケジュールを追加します。
-   *
+   * 
    * @param rd
    */
   public void addResultData(AjaxScheduleResultData rd, boolean show_all) {
@@ -103,20 +103,22 @@ public class AjaxScheduleDayContainer implements ALData {
       repeat_del = false;
       AjaxScheduleResultData rd2 = scheduleList.get(i);
       if (rd.isRepeat()
-          && rd.getUserId() == rd2.getUserId()
-          && rd2.isDummy()
-          && rd.getScheduleId().getValue() == rd2.getParentId().getValue()
-          && ScheduleUtils.equalsToDate(rd.getStartDate().getValue(), rd2
-              .getStartDate().getValue(), false)) {
+        && rd.getUserId() == rd2.getUserId()
+        && rd2.isDummy()
+        && rd.getScheduleId().getValue() == rd2.getParentId().getValue()
+        && ScheduleUtils.equalsToDate(rd.getStartDate().getValue(), rd2
+          .getStartDate()
+          .getValue(), false)) {
         // [繰り返しスケジュール] 親の ID を検索
         canAdd = false;
         break;
       }
       if (rd2.isRepeat()
-          && rd.isDummy()
-          && rd2.getScheduleId().getValue() == rd.getParentId().getValue()
-          && ScheduleUtils.equalsToDate(rd.getStartDate().getValue(), rd2
-              .getStartDate().getValue(), false)) {
+        && rd.isDummy()
+        && rd2.getScheduleId().getValue() == rd.getParentId().getValue()
+        && ScheduleUtils.equalsToDate(rd.getStartDate().getValue(), rd2
+          .getStartDate()
+          .getValue(), false)) {
         // [繰り返しスケジュール] 親の ID を検索
         scheduleList.remove(rd2);
         canAdd = true;
@@ -126,7 +128,7 @@ public class AjaxScheduleDayContainer implements ALData {
       // スケジュールを挿入する位置を捕捉する。
       // 開始日時の昇順
       if (!pos_bool
-          && rd.getStartDate().getValue().before(rd2.getStartDate().getValue())) {
+        && rd.getStartDate().getValue().before(rd2.getStartDate().getValue())) {
         position = i;
         pos_bool = true;
       }
@@ -134,25 +136,40 @@ public class AjaxScheduleDayContainer implements ALData {
       if (!repeat_del) {
         // 繰り返しスケジュールの変更／削除が無い場合
 
-        if (!rd.isDummy() && !rd2.isDummy() &&(rd.getUserId() == rd2.getUserId())) {
+        if (!rd.isDummy()
+          && !rd2.isDummy()
+          && (rd.getUserId() == rd2.getUserId())) {
           // ダミースケジュールではないときに
           // 重複スケジュールを検出する。
           // 時間が重なっている場合重複スケジュールとする。
           if ((rd.getStartDate().getValue().before(
-              rd2.getStartDate().getValue()) && rd2.getStartDate().getValue()
+            rd2.getStartDate().getValue()) && rd2
+            .getStartDate()
+            .getValue()
+            .before(rd.getEndDate().getValue()))
+            || (rd2.getStartDate().getValue().before(
+              rd.getStartDate().getValue()) && rd
+              .getStartDate()
+              .getValue()
+              .before(rd2.getEndDate().getValue()))
+            || (rd
+              .getStartDate()
+              .getValue()
+              .before(rd2.getEndDate().getValue()) && rd2
+              .getEndDate()
+              .getValue()
               .before(rd.getEndDate().getValue()))
-              || (rd2.getStartDate().getValue().before(
-                  rd.getStartDate().getValue()) && rd.getStartDate().getValue()
-                  .before(rd2.getEndDate().getValue()))
-              || (rd.getStartDate().getValue().before(
-                  rd2.getEndDate().getValue()) && rd2.getEndDate().getValue()
-                  .before(rd.getEndDate().getValue()))
-              || (rd2.getStartDate().getValue().before(
-                  rd.getEndDate().getValue()) && rd.getEndDate().getValue()
-                  .before(rd2.getEndDate().getValue()))
-              || (rd.getEndDate().getValue()
-                  .equals(rd2.getEndDate().getValue()) && rd.getStartDate()
-                  .getValue().equals(rd2.getStartDate().getValue()))) {
+            || (rd2
+              .getStartDate()
+              .getValue()
+              .before(rd.getEndDate().getValue()) && rd
+              .getEndDate()
+              .getValue()
+              .before(rd2.getEndDate().getValue()))
+            || (rd.getEndDate().getValue().equals(rd2.getEndDate().getValue()) && rd
+              .getStartDate()
+              .getValue()
+              .equals(rd2.getStartDate().getValue()))) {
             rd2.setDuplicate(true);
             rd.setDuplicate(true);
           }
@@ -176,7 +193,7 @@ public class AjaxScheduleDayContainer implements ALData {
 
   /**
    * 祝日かどうかを検証する． 祝日の場合，true．
-   *
+   * 
    * @return
    */
   public boolean isHoliday() {
@@ -185,7 +202,7 @@ public class AjaxScheduleDayContainer implements ALData {
 
   /**
    * 祝日情報を取得する．
-   *
+   * 
    * @return
    */
   public ALHoliday getHoliday() {

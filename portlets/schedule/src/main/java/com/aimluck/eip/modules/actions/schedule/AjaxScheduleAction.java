@@ -46,14 +46,16 @@ public class AjaxScheduleAction extends ALBaseAction {
 
   /** <code>logger</code> logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AjaxScheduleAction.class.getName());
+    .getLogger(AjaxScheduleAction.class.getName());
 
   private boolean isMax = false;
 
   /*
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
+   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#
+   * buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
+   * org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) {
 
@@ -67,8 +69,8 @@ public class AjaxScheduleAction extends ALBaseAction {
       context.put("theme", pdos.getTheme());
 
       // 表示開始時間を取得する．
-      String time_start = portlet.getPortletConfig().getInitParameter(
-          "p1a-rows");
+      String time_start =
+        portlet.getPortletConfig().getInitParameter("p1a-rows");
       context.put("time_start", time_start);
 
       // 表示終了時間を取得する．
@@ -76,40 +78,41 @@ public class AjaxScheduleAction extends ALBaseAction {
       context.put("time_end", time_end);
 
       // 表示時間間隔を取得する．
-      String time_interval = portlet.getPortletConfig().getInitParameter(
-          "p1c-rows");
+      String time_interval =
+        portlet.getPortletConfig().getInitParameter("p1c-rows");
       context.put("time_interval", time_interval);
 
       // 表示日数を取得する.
-      String weekly_days = portlet.getPortletConfig().getInitParameter(
-          "p2a-days");
+      String weekly_days =
+        portlet.getPortletConfig().getInitParameter("p2a-days");
       context.put("weekly_days", weekly_days);
 
       // 初期選択グループを取得する.
-      String weekly_group = portlet.getPortletConfig().getInitParameter(
-          "p3a-group");
+      String weekly_group =
+        portlet.getPortletConfig().getInitParameter("p3a-group");
       context.put("weekly_group", weekly_group);
 
       // 初期選択ユーザー／施設を取得する
-      String init_user = portlet.getPortletConfig()
-          .getInitParameter("p3a-user");
+      String init_user =
+        portlet.getPortletConfig().getInitParameter("p3a-user");
       context.put("init_user", init_user);
 
       // 初期選択メンバーリストを取得する
-      List<UserFacilityLiteBean> memberList = new ArrayList<UserFacilityLiteBean>();
-      String selected_user = portlet.getPortletConfig().getInitParameter(
-          "p6a-uids");
+      List<UserFacilityLiteBean> memberList =
+        new ArrayList<UserFacilityLiteBean>();
+      String selected_user =
+        portlet.getPortletConfig().getInitParameter("p6a-uids");
       if (selected_user == null || "".equals(selected_user)) {
-        UserFacilityLiteBean login_user = UserFacilityUtils
-            .getUserFacilityLiteBean(rundata);
+        UserFacilityLiteBean login_user =
+          UserFacilityUtils.getUserFacilityLiteBean(rundata);
         memberList.add(login_user);
       } else {
         String selected_users[] = selected_user.split(",");
-        List<UserFacilityLiteBean> ulist = ScheduleUtils.getALEipUserFacility(
-            selected_users, rundata);
+        List<UserFacilityLiteBean> ulist =
+          ScheduleUtils.getALEipUserFacility(selected_users, rundata);
         if (ulist == null || ulist.size() == 0) {
-          UserFacilityLiteBean login_user = UserFacilityUtils
-              .getUserFacilityLiteBean(rundata);
+          UserFacilityLiteBean login_user =
+            UserFacilityUtils.getUserFacilityLiteBean(rundata);
           memberList.add(login_user);
         } else {
           memberList.addAll(ulist);
@@ -167,8 +170,9 @@ public class AjaxScheduleAction extends ALBaseAction {
       ALEipUtils.setTemp(rundata, context, "tab", tab);
 
       // For security
-      context.put(ALEipConstants.SECURE_ID, URLEncoder.encode((String) rundata
-          .getUser().getTemp(ALEipConstants.SECURE_ID),
+      context.put(ALEipConstants.SECURE_ID, URLEncoder
+        .encode(
+          (String) rundata.getUser().getTemp(ALEipConstants.SECURE_ID),
           ALEipConstants.DEF_CONTENT_ENCODING));
 
       // For sanitizing
@@ -182,9 +186,11 @@ public class AjaxScheduleAction extends ALBaseAction {
   }
 
   /*
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildMaximizedContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
+   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#
+   * buildMaximizedContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
+   * org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
     isMax = true;

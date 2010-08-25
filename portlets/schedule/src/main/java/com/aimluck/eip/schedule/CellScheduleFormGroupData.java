@@ -38,10 +38,12 @@ import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.schedule.util.CellScheduleUtils;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
@@ -49,14 +51,14 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * スケジュールのフォームデータを管理するクラスです。
- *
+ * 
  */
 public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /** <code>logger</code> logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CellScheduleFormGroupData.class.getName());
+    .getLogger(CellScheduleFormGroupData.class.getName());
 
   /** <code>FLAG_EDIT_REPEAT_DEF</code> デフォルト値（繰り返し編集範囲） */
   private static final int FLAG_EDIT_REPEAT_DEF = -1;
@@ -125,7 +127,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
   private List<ALEipUser> memberList;
 
   /** <code>memberList</code> 施設メンバーリスト */
-  private List facilityMemberList;
+  private List<FacilityResultData> facilityMemberList;
 
   /** <code>currentYear</code> 現在の年 */
   private int currentYear;
@@ -152,7 +154,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
   private ScheduleOnedayGroupSelectData selectData;
 
   /** <code>groups</code> グループ */
-  private List groups;
+  private List<ALEipGroup> groups;
 
   /** <code>edit_schedule_flag</code> 繰り返しスケジュールの編集フラグ */
   private ALCellNumberField edit_repeat_flag;
@@ -176,28 +178,46 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * フォームを表示します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @return TRUE 成功 FALSE 失敗
    */
+  @Override
   public boolean doViewForm(ALAction action, RunData rundata, Context context) {
     try {
       init(action, rundata, context);
       // action.setMode(ALEipConstants.MODE_NEW_FORM);
-      boolean isedit = (ALEipUtils.getTemp(rundata, context,
-          ALEipConstants.ENTITY_ID) != null);
-      action.setMode(isedit ? ALEipConstants.MODE_EDIT_FORM
-          : ALEipConstants.MODE_NEW_FORM);
+      boolean isedit =
+        (ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID) != null);
+      action.setMode(isedit
+        ? ALEipConstants.MODE_EDIT_FORM
+        : ALEipConstants.MODE_NEW_FORM);
       setMode(action.getMode());
       ArrayList<String> msgList = new ArrayList<String>();
-      boolean res = (setFormData(rundata, context, msgList) && ScheduleUtils
-          .validateDelegate(getStartDate(), getEndDate(), getRepeatType(),
-              isRepeat(), isSpan(), getWeek0(), getWeek1(), getWeek2(),
-              getWeek3(), getWeek4(), getWeek5(), getWeek6(), getLimitFlag(),
-              getLimitStartDate(), getLimitEndDate(), getMonthDay(),
-              getLoginUser(), entityid, msgList));
+      boolean res =
+        (setFormData(rundata, context, msgList) && ScheduleUtils
+          .validateDelegate(
+            getStartDate(),
+            getEndDate(),
+            getRepeatType(),
+            isRepeat(),
+            isSpan(),
+            getWeek0(),
+            getWeek1(),
+            getWeek2(),
+            getWeek3(),
+            getWeek4(),
+            getWeek5(),
+            getWeek6(),
+            getLimitFlag(),
+            getLimitStartDate(),
+            getLimitEndDate(),
+            getMonthDay(),
+            getLoginUser(),
+            entityid,
+            msgList));
       action.setResultData(this);
       action.addErrorMessages(msgList);
       action.putData(rundata, context);
@@ -218,6 +238,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
    * actions.common.ALAction, org.apache.turbine.util.RunData,
    * org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     // is_member = rundata.getParameters().getBoolean("is_member");
@@ -237,13 +258,17 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * パラメータを読み込みます。
-   *
+   * 
    * @param rundata
    * @param context
    */
   public void loadParameters(RunData rundata, Context context) {
-    ScheduleUtils.loadParametersDelegate(rundata, context, tmpStart, tmpEnd,
-        tmpView);
+    ScheduleUtils.loadParametersDelegate(
+      rundata,
+      context,
+      tmpStart,
+      tmpEnd,
+      tmpView);
   }
 
   /*
@@ -376,12 +401,13 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
     // 現在の年（年を選択するリストボックスに利用）
     currentYear = Calendar.getInstance().get(Calendar.YEAR);
 
-    facilityMemberList = new ArrayList();
+    facilityMemberList = new ArrayList<FacilityResultData>();
   }
 
   /*
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     getMonthDay().setNotNull(true);
     getLimitStartDate().setNotNull(true);
@@ -392,13 +418,29 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
    * @see
    * com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) throws ALDBErrorException,
       ALPageNotFoundException {
-    return ScheduleUtils.validateDelegate(getStartDate(), getEndDate(),
-        getRepeatType(), isRepeat(), isSpan(), getWeek0(), getWeek1(),
-        getWeek2(), getWeek3(), getWeek4(), getWeek5(), getWeek6(),
-        getLimitFlag(), getLimitStartDate(), getLimitEndDate(), getMonthDay(),
-        getLoginUser(), entityid, msgList);
+    return ScheduleUtils.validateDelegate(
+      getStartDate(),
+      getEndDate(),
+      getRepeatType(),
+      isRepeat(),
+      isSpan(),
+      getWeek0(),
+      getWeek1(),
+      getWeek2(),
+      getWeek3(),
+      getWeek4(),
+      getWeek5(),
+      getWeek6(),
+      getLimitFlag(),
+      getLimitStartDate(),
+      getLimitEndDate(),
+      getMonthDay(),
+      getLoginUser(),
+      entityid,
+      msgList);
   }
 
   /*
@@ -406,17 +448,21 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
    * com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine
    * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
     // オブジェクトモデルを取得
-    EipTSchedule record = ScheduleUtils
-        .getEipTSchedule(rundata, context, false);
-    if (record == null)
+    EipTSchedule record =
+      ScheduleUtils.getEipTSchedule(rundata, context, false);
+    if (record == null) {
       return false;
+    }
 
-    is_owner = (record.getOwnerId().longValue() == login_user.getUserId()
-        .getValue()) ? true : false;
+    is_owner =
+      (record.getOwnerId().longValue() == login_user.getUserId().getValue())
+        ? true
+        : false;
 
     // DN -> 毎日 (A = N -> 期限なし A = L -> 期限あり)
     // WnnnnnnnN W01111110 -> 毎週(月～金用)
@@ -459,15 +505,15 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
       tmpViewCal.setTime(view_date.getValue());
       Calendar tmpStartCal = Calendar.getInstance();
       tmpStartCal.setTime(record.getStartDate());
-      tmpViewCal.set(Calendar.HOUR_OF_DAY,
-          tmpStartCal.get(Calendar.HOUR_OF_DAY));
+      tmpViewCal.set(Calendar.HOUR_OF_DAY, tmpStartCal
+        .get(Calendar.HOUR_OF_DAY));
       tmpViewCal.set(Calendar.MINUTE, tmpStartCal.get(Calendar.MINUTE));
       start_date.setValue(tmpViewCal.getTime());
       // 終了日時
       Calendar tmpStopCal = Calendar.getInstance();
       tmpStopCal.setTime(record.getEndDate());
       tmpViewCal
-          .set(Calendar.HOUR_OF_DAY, tmpStopCal.get(Calendar.HOUR_OF_DAY));
+        .set(Calendar.HOUR_OF_DAY, tmpStopCal.get(Calendar.HOUR_OF_DAY));
       tmpViewCal.set(Calendar.MINUTE, tmpStopCal.get(Calendar.MINUTE));
       end_date.setValue(tmpViewCal.getTime());
 
@@ -512,6 +558,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
    * com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine
    * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) throws ALDBErrorException {
     return true;
@@ -522,6 +569,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
    * com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine
    * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     return false;
@@ -529,7 +577,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * 入力データを検証する．
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -541,7 +589,8 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
       // action.setMode(ALEipConstants.MODE_INSERT);
       List<String> msgList = new ArrayList<String>();
       setValidator();
-      boolean res = (setFormData(rundata, context, msgList) && validate(msgList));
+      boolean res =
+        (setFormData(rundata, context, msgList) && validate(msgList));
       if (!res) {
         action.setMode(ALEipConstants.MODE_NEW_FORM);
       }
@@ -576,6 +625,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
    * com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine
    * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     return false;
@@ -586,14 +636,17 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
    * com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine
    * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     Field[] fields = this.getClass().getDeclaredFields();
-    boolean res = ScheduleUtils.setFormDataDelegate(rundata, context, this,
-        fields, msgList);
+    boolean res =
+      ScheduleUtils
+        .setFormDataDelegate(rundata, context, this, fields, msgList);
 
-    if (!res)
+    if (!res) {
       return res;
+    }
     memberList = CellScheduleUtils.getShareUserMemberList(rundata);
     if (!is_span) {
       Date date = start_date.getValue();
@@ -605,8 +658,8 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
       date.setMonth(month);
       date.setDate(day);
       end_date.setValue(date);
-      facilityMemberList = CellScheduleUtils
-          .getShareFacilityMemberList(rundata);
+      facilityMemberList =
+        CellScheduleUtils.getShareFacilityMemberList(rundata);
     }
 
     return true;
@@ -624,7 +677,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * 開始日時を取得します。
-   *
+   * 
    * @return
    */
   public ALCellDateTimeField getStartDate() {
@@ -641,7 +694,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * 終了日時を取得します。
-   *
+   * 
    * @return
    */
   public ALCellDateTimeField getEndDate() {
@@ -658,7 +711,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * 指定したグループ名のユーザーを取得します。
-   *
+   * 
    * @param groupname
    * @return
    */
@@ -668,7 +721,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * 部署マップを取得します。
-   *
+   * 
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -677,7 +730,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * 終了日時を取得します。
-   *
+   * 
    * @return
    */
   public int getCurrentYear() {
@@ -685,7 +738,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public boolean isOwner() {
@@ -694,7 +747,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * ログインユーザを取得します。
-   *
+   * 
    * @return
    */
   public ALEipUser getLoginUser() {
@@ -703,7 +756,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * 編集するスケジュールの1日の情報を取得します。
-   *
+   * 
    * @return
    */
   public ScheduleOnedayGroupSelectData getSelectData() {
@@ -712,7 +765,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * 繰り返すかどうか。
-   *
+   * 
    * @return
    */
   public boolean isRepeat() {
@@ -721,7 +774,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * 期間スケジュールかどうか。
-   *
+   * 
    * @return
    */
   public boolean isSpan() {
@@ -730,7 +783,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * 期限を取得します。
-   *
+   * 
    * @return
    */
   public ALCellDateField getLimitStartDate() {
@@ -752,7 +805,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * 期限を取得します。
-   *
+   * 
    * @return
    */
   public ALCellDateField getLimitEndDate() {
@@ -773,7 +826,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * 期限フラグを取得します。
-   *
+   * 
    * @return
    */
   public ALCellStringField getLimitFlag() {
@@ -782,7 +835,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * 毎月繰り返す日を取得します。
-   *
+   * 
    * @return
    */
   public ALCellNumberField getMonthDay() {
@@ -791,7 +844,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * 繰り返しタイプを取得します。
-   *
+   * 
    * @return
    */
   public ALCellStringField getRepeatType() {
@@ -800,7 +853,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * 繰り返し曜日を取得します。
-   *
+   * 
    * @return
    */
   public ALCellStringField getWeek0() {
@@ -809,7 +862,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * 繰り返し曜日を取得します。
-   *
+   * 
    * @return
    */
   public ALCellStringField getWeek1() {
@@ -818,7 +871,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * 繰り返し曜日を取得します。
-   *
+   * 
    * @return
    */
   public ALCellStringField getWeek2() {
@@ -827,7 +880,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * 繰り返し曜日を取得します。
-   *
+   * 
    * @return
    */
   public ALCellStringField getWeek3() {
@@ -836,7 +889,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * 繰り返し曜日を取得します。
-   *
+   * 
    * @return
    */
   public ALCellStringField getWeek4() {
@@ -845,7 +898,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * 繰り返し曜日を取得します。
-   *
+   * 
    * @return
    */
   public ALCellStringField getWeek5() {
@@ -854,7 +907,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * 繰り返し曜日を取得します。
-   *
+   * 
    * @return
    */
   public ALCellStringField getWeek6() {
@@ -863,16 +916,16 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * グループリストを取得します。
-   *
+   * 
    * @return
    */
-  public List getGroupList() {
+  public List<ALEipGroup> getGroupList() {
     return groups;
   }
 
   /**
    * 繰り返しスケジュールの編集フラグ
-   *
+   * 
    * @return
    */
   public ALCellNumberField getEditRepeatFlag() {
@@ -889,7 +942,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * グループメンバーを取得します。
-   *
+   * 
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -898,7 +951,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
 
   /**
    * 共有メンバーによる編集／削除権限フラグ
-   *
+   * 
    * @return
    */
   public ALCellStringField getEditFlag() {
@@ -913,7 +966,7 @@ public class CellScheduleFormGroupData extends ALAbstractFormData {
     return change_tmpreserve_flag;
   }
 
-  public List getFacilityMemberList() {
+  public List<FacilityResultData> getFacilityMemberList() {
     return facilityMemberList;
   }
 

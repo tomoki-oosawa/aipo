@@ -21,19 +21,19 @@ package com.aimluck.eip.schedule;
 import java.util.List;
 
 import com.aimluck.commons.field.ALNumberField;
-import com.aimluck.eip.common.ALEipUser;
 
 /**
  * カレンダー用スケジュールのResultDataです。 <br />
- *
+ * 
  */
 public class AjaxScheduleResultData extends ScheduleResultData {
 
-  private List<ALEipUser> memberlist;
+  private List<String> memberlist;
 
   /** <code>parent_id</code> スケジュールowner ID */
   private ALNumberField user_id;
 
+  @Override
   public void initField() {
     user_id = new ALNumberField();
     super.initField();
@@ -43,7 +43,7 @@ public class AjaxScheduleResultData extends ScheduleResultData {
     this.user_id.setValue(index);
   }
 
-  public List<ALEipUser> getMemberList() {
+  public List<String> getMemberList() {
     return memberlist;
   }
 
@@ -51,7 +51,7 @@ public class AjaxScheduleResultData extends ScheduleResultData {
     return (int) this.user_id.getValue();
   }
 
-  public void setMemberList(List<ALEipUser> list) {
+  public void setMemberList(List<String> list) {
     memberlist = list;
   }
 

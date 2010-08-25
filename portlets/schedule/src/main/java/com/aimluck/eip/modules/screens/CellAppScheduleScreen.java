@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,7 +29,7 @@ public class CellAppScheduleScreen extends ALCSVScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ScheduleScreen.class.getName());
+    .getLogger(ScheduleScreen.class.getName());
 
   /** 無効 */
   private static final String DEF_REMOTE_NONE = "none";
@@ -43,18 +43,22 @@ public class CellAppScheduleScreen extends ALCSVScreen {
    * 
    */
   private static final String TRUST_IP_ADDR = JetspeedResources.getString(
-      "aipo.httpio.trustip_addr", "");
+    "aipo.httpio.trustip_addr",
+    "");
 
+  @Override
   protected void doOutput(RunData rundata) throws Exception {
 
     String remoteAddr = rundata.getRemoteAddr();
-    if (remoteAddr == null || "".equals(remoteAddr) || "".equals(TRUST_IP_ADDR)
-        || DEF_REMOTE_NONE.equals(TRUST_IP_ADDR)) {
+    if (remoteAddr == null
+      || "".equals(remoteAddr)
+      || "".equals(TRUST_IP_ADDR)
+      || DEF_REMOTE_NONE.equals(TRUST_IP_ADDR)) {
       return;
     }
 
     if (!DEF_REMOTE_ALL.equals(TRUST_IP_ADDR)
-        && !remoteAddr.startsWith(TRUST_IP_ADDR)) {
+      && !remoteAddr.startsWith(TRUST_IP_ADDR)) {
       return;
     }
 
@@ -62,13 +66,14 @@ public class CellAppScheduleScreen extends ALCSVScreen {
     super.doOutput(rundata);
   }
 
+  @Override
   protected String getCSVString(RunData rundata) throws Exception {
 
     try {
       CellAppScheduleSelectData listData = new CellAppScheduleSelectData();
       // セッションから情報をセット
       listData.init(rundata);
-      // 
+      //
       if (listData.validate()) {
         // DBから情報を取得し、データを整える
         if (!listData.getViewList(rundata)) {
@@ -87,6 +92,7 @@ public class CellAppScheduleScreen extends ALCSVScreen {
     }
   }
 
+  @Override
   protected String getFileName() {
     return "schedule.csv";
   }

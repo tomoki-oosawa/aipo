@@ -28,7 +28,7 @@ import com.aimluck.eip.schedule.util.ScheduleUtils;
 
 /**
  * カレンダー用週間スケジュールのコンテナです。
- *
+ * 
  */
 public class AjaxScheduleWeekContainer implements ALData {
 
@@ -44,7 +44,7 @@ public class AjaxScheduleWeekContainer implements ALData {
 
   /**
    * 表示開始する日付を設定します。
-   *
+   * 
    * @param cal
    */
   public void setViewStartDate(Calendar cal) {
@@ -60,7 +60,7 @@ public class AjaxScheduleWeekContainer implements ALData {
 
   /**
    * スケジュールをコンテナに格納します。
-   *
+   * 
    * @param rd
    */
   public boolean addResultData(AjaxScheduleResultData rd, boolean show_all) {
@@ -72,20 +72,23 @@ public class AjaxScheduleWeekContainer implements ALData {
       if (!rd.getPattern().equals("N")) {
         // 繰り返しスケジュール
         if (ScheduleUtils.isView(con.getDate(), rd.getPattern(), rd
-            .getStartDate().getValue(), rd.getEndDate().getValue())) {
+          .getStartDate()
+          .getValue(), rd.getEndDate().getValue())) {
           Calendar temp = Calendar.getInstance();
           temp.setTime(field.getValue());
           temp
-              .set(Calendar.HOUR, Integer.parseInt(rd.getStartDate().getHour()));
-          temp.set(Calendar.MINUTE, Integer.parseInt(rd.getStartDate()
-              .getMinute()));
+            .set(Calendar.HOUR, Integer.parseInt(rd.getStartDate().getHour()));
+          temp.set(Calendar.MINUTE, Integer.parseInt(rd
+            .getStartDate()
+            .getMinute()));
           temp.set(Calendar.SECOND, 0);
           temp.set(Calendar.MILLISECOND, 0);
           Calendar temp2 = Calendar.getInstance();
           temp2.setTime(field.getValue());
           temp2.set(Calendar.HOUR, Integer.parseInt(rd.getEndDate().getHour()));
-          temp2.set(Calendar.MINUTE, Integer.parseInt(rd.getEndDate()
-              .getMinute()));
+          temp2.set(Calendar.MINUTE, Integer.parseInt(rd
+            .getEndDate()
+            .getMinute()));
           temp2.set(Calendar.SECOND, 0);
           temp2.set(Calendar.MILLISECOND, 0);
           AjaxScheduleResultData rd3 = new AjaxScheduleResultData();
@@ -114,8 +117,8 @@ public class AjaxScheduleWeekContainer implements ALData {
           con.addResultData(rd3, show_all);
         }
       } else if (field.getYear().equals(rd.getStartDate().getYear())
-          && field.getMonth().equals(rd.getStartDate().getMonth())
-          && field.getDay().equals(rd.getStartDate().getDay())) {
+        && field.getMonth().equals(rd.getStartDate().getMonth())
+        && field.getDay().equals(rd.getStartDate().getDay())) {
         con.addResultData(rd, show_all);
         return true;
       }
@@ -125,7 +128,7 @@ public class AjaxScheduleWeekContainer implements ALData {
 
   /**
    * スケジュールリストを取得します。
-   *
+   * 
    * @return
    */
   public List<AjaxScheduleDayContainer> getDayList() {

@@ -24,10 +24,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -40,8 +38,9 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -55,8 +54,6 @@ public class CellScheduleWeekSelectByMemberData extends
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ScheduleWeeklySelectData.class.getName());
 
-  private DataContext dataContext;
-
   private ALCellStringField user;
 
   /** <code>login_user</code> 表示対象ユーザー */
@@ -66,7 +63,6 @@ public class CellScheduleWeekSelectByMemberData extends
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     user = new ALCellStringField();
     user.setNotNull(true);
@@ -87,18 +83,19 @@ public class CellScheduleWeekSelectByMemberData extends
   }
 
   @Override
-  protected ResultList selectList(RunData rundata, Context context) {
-    ArrayList scheduleMapList = new ArrayList();
+  protected ResultList<List<EipTScheduleMap>> selectList(RunData rundata,
+      Context context) {
+    ArrayList<List<EipTScheduleMap>> scheduleMapList =
+      new ArrayList<List<EipTScheduleMap>>();
     Calendar cal = Calendar.getInstance();
     cal.setTime(getStartDate().getValue());
     // int userid = ALEipUtils.getUserId(rundata);
     int userid = (int) targerUser.getUserId().getValue();
 
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
-
     // 通常、期間スケジュール、または日単位繰り返し
     for (int k = 0; k < 7; k++) {
-      SelectQuery query = new SelectQuery(EipTScheduleMap.class);
+      SelectQuery<EipTScheduleMap> query =
+        Database.query(EipTScheduleMap.class);
       Expression exp =
         ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
           .valueOf(userid));
@@ -149,12 +146,12 @@ public class CellScheduleWeekSelectByMemberData extends
        * EipTSchedule.END_DATE_PROPERTY, true)); query.addOrderings(orders);
        */
 
-      List list = dataContext.performQuery(query);
+      List<EipTScheduleMap> list = query.fetchList();
       scheduleMapList.add(list);
     }
 
     // 週間、または毎月の場合
-    SelectQuery query = new SelectQuery(EipTScheduleMap.class);
+    SelectQuery<EipTScheduleMap> query = Database.query(EipTScheduleMap.class);
     Expression exp =
       ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
         .valueOf(userid));
@@ -170,11 +167,11 @@ public class CellScheduleWeekSelectByMemberData extends
     query.setQualifier(exp);
     query.andQualifier(exp2);
     query.andQualifier(exp3);
-    List list = dataContext.performQuery(query);
+    List<EipTScheduleMap> list = query.fetchList();
 
     EipTSchedule schedule = null;
     for (int k = 0; k < list.size(); k++) {
-      schedule = ((EipTScheduleMap) list.get(k)).getEipTSchedule();
+      schedule = list.get(k).getEipTSchedule();
       String pattern = schedule.getRepeatPattern();
       // 週間
       if (pattern.startsWith("W")) {
@@ -188,13 +185,13 @@ public class CellScheduleWeekSelectByMemberData extends
               if (schedule.getEndDate().compareTo(cal2.getTime()) >= 0) {
                 cal2.add(Calendar.DAY_OF_MONTH, 1);
                 if (schedule.getStartDate().compareTo(cal2.getTime()) < 0) {
-                  List list2 = (List) scheduleMapList.get(index);
+                  List<EipTScheduleMap> list2 = scheduleMapList.get(index);
                   list2.add(list.get(k));
                   scheduleMapList.set(index, list2);
                 }
               }
             } else {
-              List list2 = (List) scheduleMapList.get(index);
+              List<EipTScheduleMap> list2 = scheduleMapList.get(index);
               list2.add(list.get(k));
               scheduleMapList.set(index, list2);
             }
@@ -221,13 +218,13 @@ public class CellScheduleWeekSelectByMemberData extends
             if (schedule.getEndDate().compareTo(cal2.getTime()) >= 0) {
               cal2.add(Calendar.DAY_OF_MONTH, 1);
               if (schedule.getStartDate().compareTo(cal2.getTime()) < 0) {
-                List list2 = (List) scheduleMapList.get(index);
+                List<EipTScheduleMap> list2 = scheduleMapList.get(index);
                 list2.add(list.get(k));
                 scheduleMapList.set(index, list2);
               }
             }
           } else {
-            List list2 = (List) scheduleMapList.get(index);
+            List<EipTScheduleMap> list2 = scheduleMapList.get(index);
             list2.add(list.get(k));
             scheduleMapList.set(index, list2);
           }
@@ -237,7 +234,7 @@ public class CellScheduleWeekSelectByMemberData extends
 
     // ダミースケジュールの処理
 
-    SelectQuery queryD = new SelectQuery(EipTScheduleMap.class);
+    SelectQuery<EipTScheduleMap> queryD = Database.query(EipTScheduleMap.class);
     Expression expD =
       ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
         .valueOf(userid));
@@ -245,7 +242,7 @@ public class CellScheduleWeekSelectByMemberData extends
       ExpressionFactory.matchExp(EipTScheduleMap.STATUS_PROPERTY, "D");
     queryD.setQualifier(expD);
     queryD.andQualifier(expD2);
-    List listD = dataContext.performQuery(queryD);
+    List<EipTScheduleMap> listD = queryD.fetchList();
 
     for (int k = 0; k < 7; k++) {
       Calendar calD = Calendar.getInstance();
@@ -254,14 +251,14 @@ public class CellScheduleWeekSelectByMemberData extends
 
       EipTSchedule scheduleD = null;
       for (int l = 0; l < listD.size(); l++) {
-        scheduleD = ((EipTScheduleMap) listD.get(l)).getEipTSchedule();
+        scheduleD = listD.get(l).getEipTSchedule();
         if (scheduleD.getEndDate().compareTo(calD.getTime()) >= 0) {
           calD.add(Calendar.DAY_OF_MONTH, 1);
           if (scheduleD.getStartDate().compareTo(calD.getTime()) < 0) {
-            List list2 = (List) scheduleMapList.get(k);
+            List<EipTScheduleMap> list2 = scheduleMapList.get(k);
             EipTSchedule scheduleM = null;
             for (int m = 0; m < list2.size(); m++) {
-              scheduleM = ((EipTScheduleMap) list2.get(m)).getEipTSchedule();
+              scheduleM = list2.get(m).getEipTSchedule();
               if (scheduleD.getParentId().intValue() == scheduleM
                 .getScheduleId()
                 .intValue()) {
@@ -278,18 +275,18 @@ public class CellScheduleWeekSelectByMemberData extends
 
     int size = scheduleMapList.size();
     for (int i = 0; i < size; i++) {
-      List slist = (List) scheduleMapList.get(i);
+      List<EipTScheduleMap> slist = scheduleMapList.get(i);
 
       // ソート
-      Collections.sort(slist, new Comparator() {
-        public int compare(Object a, Object b) {
+      Collections.sort(slist, new Comparator<EipTScheduleMap>() {
+        public int compare(EipTScheduleMap a, EipTScheduleMap b) {
           Calendar cal = Calendar.getInstance();
           Calendar cal2 = Calendar.getInstance();
           EipTSchedule p1 = null;
           EipTSchedule p2 = null;
           try {
-            p1 = ((EipTScheduleMap) a).getEipTSchedule();
-            p2 = ((EipTScheduleMap) b).getEipTSchedule();
+            p1 = (a).getEipTSchedule();
+            p2 = (b).getEipTSchedule();
 
           } catch (Exception e) {
             logger.error("Exception", e);
@@ -314,7 +311,7 @@ public class CellScheduleWeekSelectByMemberData extends
       scheduleMapList.set(i, slist);
     }
 
-    return new ResultList(scheduleMapList);
+    return new ResultList<List<EipTScheduleMap>>(scheduleMapList);
   }
 
   public ALEipUser getTargerUser() {

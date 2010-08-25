@@ -24,6 +24,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.schedule.ScheduleMonthlySelectData;
 import com.aimluck.eip.schedule.ScheduleOnedayGroupSelectData;
@@ -35,12 +36,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * スケジュールの一覧を処理するクラスです。 <br />
- *
+ * 
  */
 public class ScheduleScreen extends ALVelocityScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ScheduleScreen.class.getName());
+    .getLogger(ScheduleScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
@@ -58,21 +60,23 @@ public class ScheduleScreen extends ALVelocityScreen {
         // weekly : 週間表示
         // monthly: 月間表示
         if (rundata.getParameters().containsKey("tab")) {
-          ALEipUtils.setTemp(rundata, context, "tab", rundata.getParameters()
-              .getString("tab"));
+          ALEipUtils.setTemp(rundata, context, "tab", rundata
+            .getParameters()
+            .getString("tab"));
         }
       }
 
-      ALAbstractSelectData listData = null;
+      ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> listData = null;
       // ポートレット ID を取得する．
       String portletId = portlet.getID();
       String currentTab;
       String tmpCurrentTab = ALEipUtils.getTemp(rundata, context, "tab");
       if (tmpCurrentTab == null
-          || !(tmpCurrentTab.equals("oneday") || tmpCurrentTab.equals("weekly")
-              || tmpCurrentTab.equals("monthly")
-              || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-              .equals("weekly-group"))) {
+        || !(tmpCurrentTab.equals("oneday")
+          || tmpCurrentTab.equals("weekly")
+          || tmpCurrentTab.equals("monthly")
+          || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
+          .equals("weekly-group"))) {
         currentTab = "oneday";
       } else {
         currentTab = tmpCurrentTab;
@@ -81,16 +85,19 @@ public class ScheduleScreen extends ALVelocityScreen {
       int tab_count = 0;
       // Velocity テンプレートを読み込む
       String template = "";
-      String _template = portlet.getPortletConfig().getInitParameter(
-          "pba-template");
+      String _template =
+        portlet.getPortletConfig().getInitParameter("pba-template");
       boolean done = false;
 
       // アクセスコントロール
       String has_acl_self = ScheduleUtils.hasAuthSelf(rundata);
       String has_acl_other = ScheduleUtils.hasAuthOther(rundata);
 
-      String tab_flg_oneday = ALEipUtils.getPortlet(rundata, context)
-          .getPortletConfig().getInitParameter("p6a-tab");
+      String tab_flg_oneday =
+        ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p6a-tab");
       if ("0".equals(tab_flg_oneday) && ("T".equals(has_acl_self))) {
         tab_count++;
         template = "schedule-oneday";
@@ -98,8 +105,11 @@ public class ScheduleScreen extends ALVelocityScreen {
           done = true;
         }
       }
-      String tab_flg_weekly = ALEipUtils.getPortlet(rundata, context)
-          .getPortletConfig().getInitParameter("p7a-tab");
+      String tab_flg_weekly =
+        ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p7a-tab");
       if ("0".equals(tab_flg_weekly) && ("T".equals(has_acl_self))) {
         tab_count++;
         if (("".equals(template)) || (!done)) {
@@ -109,8 +119,11 @@ public class ScheduleScreen extends ALVelocityScreen {
           }
         }
       }
-      String tab_flg_monthly = ALEipUtils.getPortlet(rundata, context)
-          .getPortletConfig().getInitParameter("p8a-tab");
+      String tab_flg_monthly =
+        ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p8a-tab");
       if ("0".equals(tab_flg_monthly) && ("T".equals(has_acl_self))) {
         tab_count++;
         if (("".equals(template)) || (!done)) {
@@ -120,8 +133,11 @@ public class ScheduleScreen extends ALVelocityScreen {
           }
         }
       }
-      String tab_flg_oneday_group = ALEipUtils.getPortlet(rundata, context)
-          .getPortletConfig().getInitParameter("p9a-tab");
+      String tab_flg_oneday_group =
+        ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p9a-tab");
       if ("0".equals(tab_flg_oneday_group) && ("T".equals(has_acl_other))) {
         tab_count++;
         if (("".equals(template)) || (!done)) {
@@ -131,8 +147,11 @@ public class ScheduleScreen extends ALVelocityScreen {
           }
         }
       }
-      String tab_flg_weekly_group = ALEipUtils.getPortlet(rundata, context)
-          .getPortletConfig().getInitParameter("paa-tab");
+      String tab_flg_weekly_group =
+        ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("paa-tab");
       if ("0".equals(tab_flg_weekly_group) && ("T".equals(has_acl_other))) {
         tab_count++;
         if (("".equals(template)) || (!done)) {

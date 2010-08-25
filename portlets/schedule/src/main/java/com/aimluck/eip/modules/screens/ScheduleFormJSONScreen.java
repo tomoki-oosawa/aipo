@@ -31,13 +31,15 @@ import com.aimluck.eip.schedule.ScheduleFormData;
 
 /**
  * スケジュールをJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class ScheduleFormJSONScreen extends ALJSONScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ScheduleFormJSONScreen.class.getName());
+    .getLogger(ScheduleFormJSONScreen.class.getName());
 
+  @Override
   protected String getJSONString(RunData rundata, Context context)
       throws Exception {
     String result = new JSONArray().toString();
@@ -51,8 +53,9 @@ public class ScheduleFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doInsert(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
 
@@ -63,8 +66,9 @@ public class ScheduleFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doUpdate(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
@@ -74,19 +78,22 @@ public class ScheduleFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doDelete(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if ("change_status".equals(mode)) {
 
-        ScheduleChangeStatusFormData formData = new ScheduleChangeStatusFormData();
+        ScheduleChangeStatusFormData formData =
+          new ScheduleChangeStatusFormData();
         formData.loadParametersViewDate(rundata, context);
         formData.initField();
         if (formData.doUpdate(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
 
         }

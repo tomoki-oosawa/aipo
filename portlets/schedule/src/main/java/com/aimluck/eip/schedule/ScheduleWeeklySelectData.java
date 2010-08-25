@@ -23,7 +23,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -42,7 +41,6 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
@@ -113,8 +111,6 @@ public class ScheduleWeeklySelectData extends
 
   /** ポートレット ID */
   private String portletId;
-
-  protected DataContext dataContext;
 
   /** <code>hasAuthoritySelfInsert</code> アクセス権限 */
   private boolean hasAuthoritySelfInsert = false;
@@ -235,7 +231,6 @@ public class ScheduleWeeklySelectData extends
           .getPortletConfig()
           .getInitParameter("p5a-view"));
     }
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     // スーパークラスのメソッドを呼び出す。
     super.init(action, rundata, context);
@@ -272,7 +267,8 @@ public class ScheduleWeeklySelectData extends
         loadTodo(rundata, context);
       }
 
-      return new ResultList(ScheduleUtils.sortByDummySchedule(list));
+      return new ResultList<EipTScheduleMap>(ScheduleUtils
+        .sortByDummySchedule(list));
     } catch (Exception e) {
       logger.error("[ScheduleWeeklySelectData] TorqueException");
       throw new ALDBErrorException();
@@ -517,7 +513,7 @@ public class ScheduleWeeklySelectData extends
   private SelectQuery<EipTTodo> getSelectQueryForTodo(RunData rundata,
       Context context) {
     Integer uid = Integer.valueOf(ALEipUtils.getUserId(rundata));
-    SelectQuery<EipTTodo> query = new SelectQuery<EipTTodo>(EipTTodo.class);
+    SelectQuery<EipTTodo> query = Database.query(EipTTodo.class);
 
     Expression exp1 =
       ExpressionFactory.noMatchExp(EipTTodo.STATE_PROPERTY, Short

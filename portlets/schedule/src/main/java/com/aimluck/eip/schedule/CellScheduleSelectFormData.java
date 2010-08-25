@@ -42,13 +42,14 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * スケジュールのフォームデータを管理するクラスです。
- *
+ * 
  */
 public class CellScheduleSelectFormData extends ALAbstractFormData {
 
   /** <code>logger</code> logger */
+  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CellScheduleSelectFormData.class.getName());
+    .getLogger(CellScheduleSelectFormData.class.getName());
 
   /** <code>end_date</code> 表示日時 */
   protected ALCellDateField view_date;
@@ -64,6 +65,7 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
   public void initField() {
   }
 
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -90,9 +92,12 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
           view_date_str = "0";
         } else {
           StringBuffer sb = new StringBuffer();
-          sb.append(str.substring(0, 4)).append("-")
-              .append(str.substring(4, 6)).append("-")
-              .append(str.substring(6, 8));
+          sb
+            .append(str.substring(0, 4))
+            .append("-")
+            .append(str.substring(4, 6))
+            .append("-")
+            .append(str.substring(6, 8));
           view_date_str = sb.toString();
         }
       } else {
@@ -108,6 +113,7 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
   /*
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
 
   }
@@ -116,6 +122,7 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
    * @see
    * com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) throws ALDBErrorException,
       ALPageNotFoundException {
     if (view_date_str.length() == 0) {
@@ -124,7 +131,7 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
     }
 
     view_date.setValue(view_date_str);
-    ArrayList msgList2 = new ArrayList();
+    List<String> msgList2 = new ArrayList<String>();
     if (!view_date.validate(msgList2)) {
       msgList.add("『 日付 』を正しく入力してください。");
       return false;
@@ -137,7 +144,7 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
 
   /**
    * 入力データを検証する．
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -148,7 +155,7 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
       init(action, rundata, context);
       action.setMode(ALEipConstants.MODE_NEW_FORM);
       setMode(action.getMode());
-      ArrayList msgList = new ArrayList();
+      List<String> msgList = new ArrayList<String>();
       setValidator();
 
       boolean res = (validate(msgList));
@@ -171,6 +178,7 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
    * com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine
    * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     return false;
@@ -181,17 +189,20 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
    * com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine
    * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) throws ALDBErrorException {
 
     return false;
   }
 
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     return false;
   }
 
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     return false;
@@ -202,19 +213,23 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
    * com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine
    * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     Field[] fields = this.getClass().getDeclaredFields();
-    boolean res = ScheduleUtils.setFormDataDelegate(rundata, context, this,
-        fields, msgList);
+    boolean res =
+      ScheduleUtils
+        .setFormDataDelegate(rundata, context, this, fields, msgList);
     return res;
   }
 
-  private EipTScheduleMap getScheduleMap(List scheduleMaps, int userid) {
+  @SuppressWarnings("unused")
+  private EipTScheduleMap getScheduleMap(List<EipTScheduleMap> scheduleMaps,
+      int userid) {
     EipTScheduleMap map = null;
     int size = scheduleMaps.size();
     for (int i = 0; i < size; i++) {
-      map = (EipTScheduleMap) scheduleMaps.get(i);
+      map = scheduleMaps.get(i);
       if (map.getUserId().intValue() == userid) {
         return map;
       }
@@ -224,8 +239,12 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
 
   public String getViewDateStr() {
     StringBuffer sb = new StringBuffer();
-    sb.append(view_date.getYear()).append("-").append(view_date.getMonth())
-        .append("-").append(view_date.getDay());
+    sb
+      .append(view_date.getYear())
+      .append("-")
+      .append(view_date.getMonth())
+      .append("-")
+      .append(view_date.getDay());
     return sb.toString();
   }
 
@@ -238,8 +257,8 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
   }
 
   /**
-   *
-   *
+   * 
+   * 
    * @return
    */
   public int getCurrentYear() {
@@ -248,8 +267,9 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
 
   public String getViewDateDate() {
     try {
-      return ScheduleUtils.translateDate(view_date.getValue().getDate(),
-          "yyyyMMdd");
+      return ScheduleUtils.translateDate(
+        view_date.getValue().getDate(),
+        "yyyyMMdd");
     } catch (Exception e) {
       return "";
     }

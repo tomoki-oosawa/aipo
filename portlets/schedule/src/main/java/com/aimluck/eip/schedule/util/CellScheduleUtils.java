@@ -33,6 +33,7 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -56,7 +57,7 @@ public class CellScheduleUtils {
     ALEipUser user = null;
     String str[] = rundata.getParameters().getStrings("shareuser");
     if (str != null && str.length > 0) {
-      SelectQuery query = new SelectQuery(TurbineUser.class);
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
       Expression exp =
         ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY, str);
       query.setQualifier(exp);
@@ -84,7 +85,7 @@ public class CellScheduleUtils {
       str = new String[list.size()];
       str = list.toArray(str);
 
-      SelectQuery query = new SelectQuery(TurbineUser.class);
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
       Expression exp =
         ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY, str);
       query.setQualifier(exp);
@@ -111,7 +112,7 @@ public class CellScheduleUtils {
     FacilityResultData f_record = null;
     String facstr[] = rundata.getParameters().getStrings("sharefac");
     if (facstr != null && facstr.length > 0) {
-      SelectQuery fquery = new SelectQuery(EipMFacility.class);
+      SelectQuery<EipMFacility> fquery = Database.query(EipMFacility.class);
       Expression fexp =
         ExpressionFactory.inDbExp(EipMFacility.FACILITY_ID_PK_COLUMN, facstr);
       fquery.setQualifier(fexp);
@@ -140,7 +141,7 @@ public class CellScheduleUtils {
       String[] str = new String[list.size()];
       str = list.toArray(str);
 
-      SelectQuery fquery = new SelectQuery(EipMFacility.class);
+      SelectQuery<EipMFacility> fquery = Database.query(EipMFacility.class);
       Expression fexp =
         ExpressionFactory.inDbExp(EipMFacility.FACILITY_ID_PK_COLUMN, str);
       fquery.setQualifier(fexp);

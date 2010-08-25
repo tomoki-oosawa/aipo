@@ -41,20 +41,21 @@ public class GroupFacilityListBox extends ListBox {
 
   public static final String FACILITY_VALUE = "Facility";
 
-  private String DEF_INITIAL_VALUE = "（全体／施設の選択）";
+  private final String DEF_INITIAL_VALUE = "（全体／施設の選択）";
 
   /**
    * Initialize options
-   *
+   * 
    * @param data
    */
+  @Override
   protected void init(RunData data) {
     // 部署の取得
     Map<Integer, ALEipPost> postMap = ALEipManager.getInstance().getPostMap();
     Collection<ALEipPost> postCollection = postMap.values();
     try {
       // マイグループの取得
-      List<ALEipGroup>  mygroupList = ALEipUtils.getMyGroups(data);
+      List<ALEipGroup> mygroupList = ALEipUtils.getMyGroups(data);
 
       int length = postCollection.size() + mygroupList.size() + 1 + 1;
       String[] groupKeys = new String[length];
@@ -93,8 +94,10 @@ public class GroupFacilityListBox extends ListBox {
       this.items = groupKeys;
       this.values = groupValues;
       this.size = Integer.toString(length);
-      this.multiple = Boolean.valueOf(
-          (String) this.getParm(MULTIPLE_CHOICE, "false")).booleanValue();
+      this.multiple =
+        Boolean
+          .valueOf((String) this.getParm(MULTIPLE_CHOICE, "false"))
+          .booleanValue();
     } catch (ALDBErrorException e) {
       ALEipUtils.redirectPageNotFound(data);
     }

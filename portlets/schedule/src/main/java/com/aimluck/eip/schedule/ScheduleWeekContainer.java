@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,13 +33,13 @@ import com.aimluck.eip.schedule.util.ScheduleUtils;
 public class ScheduleWeekContainer implements ALData {
 
   /** <code>dayList</code> スケジュールリスト */
-  private List dayList;
+  private List<ScheduleDayContainer> dayList;
 
   /*
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
-    dayList = new ArrayList();
+    dayList = new ArrayList<ScheduleDayContainer>();
   }
 
   /**
@@ -67,25 +67,28 @@ public class ScheduleWeekContainer implements ALData {
     int size = dayList.size();
 
     for (int i = 0; i < size; i++) {
-      ScheduleDayContainer con = (ScheduleDayContainer) dayList.get(i);
+      ScheduleDayContainer con = dayList.get(i);
       ALDateTimeField field = con.getDate();
       if (!rd.getPattern().equals("N")) {
         // 繰り返しスケジュール
         if (ScheduleUtils.isView(con.getDate(), rd.getPattern(), rd
-            .getStartDate().getValue(), rd.getEndDate().getValue())) {
+          .getStartDate()
+          .getValue(), rd.getEndDate().getValue())) {
           Calendar temp = Calendar.getInstance();
           temp.setTime(field.getValue());
           temp
-              .set(Calendar.HOUR, Integer.parseInt(rd.getStartDate().getHour()));
-          temp.set(Calendar.MINUTE, Integer.parseInt(rd.getStartDate()
-              .getMinute()));
+            .set(Calendar.HOUR, Integer.parseInt(rd.getStartDate().getHour()));
+          temp.set(Calendar.MINUTE, Integer.parseInt(rd
+            .getStartDate()
+            .getMinute()));
           temp.set(Calendar.SECOND, 0);
           temp.set(Calendar.MILLISECOND, 0);
           Calendar temp2 = Calendar.getInstance();
           temp2.setTime(field.getValue());
           temp2.set(Calendar.HOUR, Integer.parseInt(rd.getEndDate().getHour()));
-          temp2.set(Calendar.MINUTE, Integer.parseInt(rd.getEndDate()
-              .getMinute()));
+          temp2.set(Calendar.MINUTE, Integer.parseInt(rd
+            .getEndDate()
+            .getMinute()));
           temp2.set(Calendar.SECOND, 0);
           temp2.set(Calendar.MILLISECOND, 0);
           ScheduleResultData rd3 = new ScheduleResultData();
@@ -110,8 +113,8 @@ public class ScheduleWeekContainer implements ALData {
           con.addResultData(rd3);
         }
       } else if (field.getYear().equals(rd.getStartDate().getYear())
-          && field.getMonth().equals(rd.getStartDate().getMonth())
-          && field.getDay().equals(rd.getStartDate().getDay())) {
+        && field.getMonth().equals(rd.getStartDate().getMonth())
+        && field.getDay().equals(rd.getStartDate().getDay())) {
         con.addResultData(rd);
         return true;
       }
@@ -124,26 +127,21 @@ public class ScheduleWeekContainer implements ALData {
    * 
    * @param rd
    */
-  
+
   /*
-  public void addSpanResultData(int index, ScheduleResultData rd) {
-    int span = rd.getRowspan();
-    ScheduleDayContainer con = (ScheduleDayContainer) dayList.get(index);
-    con.setHasspan(true);
-    con.setSpanResultData(rd);
-    for (int i = 1; i < span; i++) {
-      con = (ScheduleDayContainer) dayList.get(index + i);
-      con.setHasspan(true);
-    }
-  }
-  */
+   * public void addSpanResultData(int index, ScheduleResultData rd) { int span
+   * = rd.getRowspan(); ScheduleDayContainer con = (ScheduleDayContainer)
+   * dayList.get(index); con.setHasspan(true); con.setSpanResultData(rd); for
+   * (int i = 1; i < span; i++) { con = (ScheduleDayContainer) dayList.get(index
+   * + i); con.setHasspan(true); } }
+   */
 
   /**
    * スケジュールリストを取得します。
    * 
    * @return
    */
-  public List getDayList() {
+  public List<ScheduleDayContainer> getDayList() {
     return dayList;
   }
 

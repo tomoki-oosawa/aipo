@@ -28,12 +28,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
-import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SQLTemplate;
 import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.om.security.UserIdPrincipal;
@@ -138,15 +135,17 @@ public class ScheduleUtils {
       SelectQuery<EipTSchedule> query = Database.query(EipTSchedule.class);
 
       // スケジュールID
-      Expression exp1 = ExpressionFactory.matchDbExp(
-        EipTSchedule.SCHEDULE_ID_PK_COLUMN, Integer.valueOf(scheduleid));
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(
+          EipTSchedule.SCHEDULE_ID_PK_COLUMN,
+          Integer.valueOf(scheduleid));
       query.setQualifier(exp1);
 
       if (isOwner) {
         // ユーザーID
-        Expression exp2 = ExpressionFactory.matchExp(
-          EipTSchedule.OWNER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-            .getUserId(rundata)));
+        Expression exp2 =
+          ExpressionFactory.matchExp(EipTSchedule.OWNER_ID_PROPERTY, Integer
+            .valueOf(ALEipUtils.getUserId(rundata)));
         query.andQualifier(exp2);
       }
 
@@ -161,21 +160,24 @@ public class ScheduleUtils {
       EipTSchedule record = schedules.get(0);
 
       // 条件が足りないかも（by Komori 2006/06/09）
-      SelectQuery<EipTScheduleMap> mapquery = Database
-        .query(EipTScheduleMap.class);
-      Expression mapexp1 = ExpressionFactory.matchExp(
-        EipTScheduleMap.SCHEDULE_ID_PROPERTY, record.getScheduleId());
+      SelectQuery<EipTScheduleMap> mapquery =
+        Database.query(EipTScheduleMap.class);
+      Expression mapexp1 =
+        ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, record
+          .getScheduleId());
       mapquery.setQualifier(mapexp1);
-      Expression mapexp2 = ExpressionFactory.matchExp(
-        EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(userid));
+      Expression mapexp2 =
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+          .valueOf(userid));
       mapquery.andQualifier(mapexp2);
-      Expression mapexp3 = ExpressionFactory.matchExp(
-        EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(userid));
+      Expression mapexp3 =
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+          .valueOf(userid));
       mapquery.andQualifier(mapexp3);
 
       List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
-      boolean is_member = (schedulemaps != null && schedulemaps.size() > 0) ? true
-        : false;
+      boolean is_member =
+        (schedulemaps != null && schedulemaps.size() > 0) ? true : false;
 
       // boolean is_member = orm_map.count(new Criteria().add(
       // EipTScheduleMapConstants.SCHEDULE_ID, record.getScheduleId()).add(
@@ -212,8 +214,8 @@ public class ScheduleUtils {
     // String org_id = OrgORMappingMap.getInstance().getOrgId(rundata);
 
     // スケジュールIDをセッション変数から取得
-    String scheduleid = ALEipUtils.getTemp(rundata, context,
-      ALEipConstants.ENTITY_ID);
+    String scheduleid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
     try {
       // IDが空の場合 || IDがintでない場合
@@ -231,15 +233,17 @@ public class ScheduleUtils {
       SelectQuery<EipTSchedule> query = Database.query(EipTSchedule.class);
 
       // スケジュールID
-      Expression exp1 = ExpressionFactory.matchDbExp(
-        EipTSchedule.SCHEDULE_ID_PK_COLUMN, scheduleid);
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(
+          EipTSchedule.SCHEDULE_ID_PK_COLUMN,
+          scheduleid);
       query.setQualifier(exp1);
 
       if (isOwner) {
         // ユーザーID
-        Expression exp2 = ExpressionFactory.matchExp(
-          EipTSchedule.OWNER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-            .getUserId(rundata)));
+        Expression exp2 =
+          ExpressionFactory.matchExp(EipTSchedule.OWNER_ID_PROPERTY, Integer
+            .valueOf(ALEipUtils.getUserId(rundata)));
         query.andQualifier(exp2);
       }
 
@@ -255,22 +259,25 @@ public class ScheduleUtils {
 
       // Integer.valueOf(userid)
       // 条件が足りないかも（by Komori 2006/06/09）
-      SelectQuery<EipTScheduleMap> mapquery = Database
-        .query(EipTScheduleMap.class);
-      Expression mapexp1 = ExpressionFactory.matchExp(
-        EipTScheduleMap.SCHEDULE_ID_PROPERTY, record.getScheduleId());
+      SelectQuery<EipTScheduleMap> mapquery =
+        Database.query(EipTScheduleMap.class);
+      Expression mapexp1 =
+        ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, record
+          .getScheduleId());
       mapquery.setQualifier(mapexp1);
-      Expression mapexp21 = ExpressionFactory.matchExp(
-        EipTScheduleMap.USER_ID_PROPERTY, ALEipUtils.getUserId(rundata));
-      Expression mapexp22 = ExpressionFactory.matchExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+      Expression mapexp21 =
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, ALEipUtils
+          .getUserId(rundata));
+      Expression mapexp22 =
+        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
           + EipTSchedule.CREATE_USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
           .getUserId(rundata)));
       mapquery.andQualifier(mapexp21.orExp(mapexp22));
 
       List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
-      boolean is_member = (schedulemaps != null && schedulemaps.size() > 0) ? true
-        : false;
+      boolean is_member =
+        (schedulemaps != null && schedulemaps.size() > 0) ? true : false;
 
       // boolean is_member = orm_map.count(new Criteria().add(
       // EipTScheduleMapConstants.SCHEDULE_ID, record.getScheduleId()).add(
@@ -279,8 +286,8 @@ public class ScheduleUtils {
 
       int loginuser_id = ALEipUtils.getUserId(rundata);
       boolean is_owner = record.getOwnerId().intValue() == loginuser_id;
-      boolean is_createuser = loginuser_id == record.getCreateUserId()
-        .intValue();
+      boolean is_createuser =
+        loginuser_id == record.getCreateUserId().intValue();
       boolean is_public = "O".equals(record.getPublicFlag());
 
       // アクセス権限がない場合
@@ -314,8 +321,8 @@ public class ScheduleUtils {
       throws ALPageNotFoundException, ALDBErrorException {
 
     // スケジュールIDをセッション変数から取得
-    String scheduleid = ALEipUtils.getTemp(rundata, context,
-      ALEipConstants.ENTITY_ID);
+    String scheduleid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
     try {
       // IDが空の場合 || IDがintでない場合
@@ -324,7 +331,8 @@ public class ScheduleUtils {
         throw new ALPageNotFoundException();
       }
     } catch (NumberFormatException ex) {
-      logger.error("[ScheduleUtils] NumberFormatException: ENTITYID is wrong.",
+      logger.error(
+        "[ScheduleUtils] NumberFormatException: ENTITYID is wrong.",
         ex);
       throw new ALPageNotFoundException();
 
@@ -335,7 +343,8 @@ public class ScheduleUtils {
      */
     try {
       WhatsNewUtils.shiftWhatsNewReadFlag(
-        WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE, Integer.parseInt(scheduleid),
+        WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
+        Integer.parseInt(scheduleid),
         ALEipUtils.getUserId(rundata));
     } catch (NumberFormatException e) {
       logger.error("[ScheduleUtils]", e);
@@ -346,21 +355,24 @@ public class ScheduleUtils {
       query.getQuery().setRefreshingObjects(true);
 
       // スケジュールID
-      Expression exp1 = ExpressionFactory.matchDbExp(
-        EipTSchedule.SCHEDULE_ID_PK_COLUMN, scheduleid);
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(
+          EipTSchedule.SCHEDULE_ID_PK_COLUMN,
+          scheduleid);
       query.setQualifier(exp1);
 
       if (isOwner) {
         // ユーザーID
-        Expression exp2 = ExpressionFactory.matchExp(
-          EipTSchedule.OWNER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-            .getUserId(rundata)));
+        Expression exp2 =
+          ExpressionFactory.matchExp(EipTSchedule.OWNER_ID_PROPERTY, Integer
+            .valueOf(ALEipUtils.getUserId(rundata)));
         query.andQualifier(exp2);
       }
 
       // ユーザのスケジュール
-      Expression exp3 = ExpressionFactory.matchExp(
-        EipTSchedule.EIP_TSCHEDULE_MAPS_PROPERTY + "."
+      Expression exp3 =
+        ExpressionFactory.matchExp(EipTSchedule.EIP_TSCHEDULE_MAPS_PROPERTY
+          + "."
           + EipTScheduleMap.TYPE_PROPERTY, type);
       query.andQualifier(exp3);
 
@@ -378,26 +390,28 @@ public class ScheduleUtils {
 
       // 条件が足りないかも（by Komori 2006/06/09）
       // Integer.valueOf(id)
-      SelectQuery<EipTScheduleMap> mapquery = Database
-        .query(EipTScheduleMap.class);
-      Expression mapexp1 = ExpressionFactory.matchExp(
-        EipTScheduleMap.SCHEDULE_ID_PROPERTY, record.getScheduleId());
+      SelectQuery<EipTScheduleMap> mapquery =
+        Database.query(EipTScheduleMap.class);
+      Expression mapexp1 =
+        ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, record
+          .getScheduleId());
       mapquery.setQualifier(mapexp1);
-      Expression mapexp21 = ExpressionFactory.matchExp(
-        EipTScheduleMap.USER_ID_PROPERTY, Integer.toString(ALEipUtils
-          .getUserId(rundata)));
-      Expression mapexp22 = ExpressionFactory.matchExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+      Expression mapexp21 =
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+          .toString(ALEipUtils.getUserId(rundata)));
+      Expression mapexp22 =
+        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
           + EipTSchedule.CREATE_USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
           .getUserId(rundata)));
       mapquery.andQualifier(mapexp21.orExp(mapexp22));
-      Expression mapexp3 = ExpressionFactory.matchExp(
-        EipTScheduleMap.TYPE_PROPERTY, type);
+      Expression mapexp3 =
+        ExpressionFactory.matchExp(EipTScheduleMap.TYPE_PROPERTY, type);
       mapquery.andQualifier(mapexp3);
 
       List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
-      boolean is_member = (schedulemaps != null && schedulemaps.size() > 0) ? true
-        : false;
+      boolean is_member =
+        (schedulemaps != null && schedulemaps.size() > 0) ? true : false;
 
       // boolean is_member = orm_map.count(new Criteria().add(
       // EipTScheduleMapConstants.SCHEDULE_ID, record.getScheduleId()).add(
@@ -407,8 +421,8 @@ public class ScheduleUtils {
 
       int loginuser_id = ALEipUtils.getUserId(rundata);
       boolean is_owner = record.getOwnerId().intValue() == loginuser_id;
-      boolean is_createuser = loginuser_id == record.getCreateUserId()
-        .intValue();
+      boolean is_createuser =
+        loginuser_id == record.getCreateUserId().intValue();
       boolean is_public = "O".equals(record.getPublicFlag());
 
       // アクセス権限がない場合
@@ -437,8 +451,8 @@ public class ScheduleUtils {
       Context context) throws ALPageNotFoundException, ALDBErrorException {
 
     // スケジュールIDをセッション変数から取得
-    String scheduleid = ALEipUtils.getTemp(rundata, context,
-      ALEipConstants.ENTITY_ID);
+    String scheduleid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
     try {
       // IDが空の場合 || IDがintでない場合
@@ -447,24 +461,27 @@ public class ScheduleUtils {
         throw new ALPageNotFoundException();
       }
     } catch (NumberFormatException ex) {
-      logger.error("[ScheduleUtils] NumberFormatException: ENTITYID is wrong.",
+      logger.error(
+        "[ScheduleUtils] NumberFormatException: ENTITYID is wrong.",
         ex);
       throw new ALPageNotFoundException();
 
     }
 
     try {
-      SelectQuery<EipTScheduleMap> query = Database
-        .query(EipTScheduleMap.class);
+      SelectQuery<EipTScheduleMap> query =
+        Database.query(EipTScheduleMap.class);
 
       // スケジュールID
-      Expression exp1 = ExpressionFactory.matchExp(
-        EipTScheduleMap.SCHEDULE_ID_PROPERTY, scheduleid);
+      Expression exp1 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.SCHEDULE_ID_PROPERTY,
+          scheduleid);
       query.setQualifier(exp1);
       // ユーザーID
-      Expression exp2 = ExpressionFactory.matchExp(
-        EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-          .getUserId(rundata)));
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+          .valueOf(ALEipUtils.getUserId(rundata)));
       query.andQualifier(exp2);
 
       List<EipTScheduleMap> schedules = query.fetchList();
@@ -494,12 +511,14 @@ public class ScheduleUtils {
     Integer scheduleid = schedule.getScheduleId();
 
     try {
-      SelectQuery<EipTScheduleMap> query = Database
-        .query(EipTScheduleMap.class);
+      SelectQuery<EipTScheduleMap> query =
+        Database.query(EipTScheduleMap.class);
 
       // スケジュールID
-      Expression exp1 = ExpressionFactory.matchExp(
-        EipTScheduleMap.SCHEDULE_ID_PROPERTY, scheduleid);
+      Expression exp1 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.SCHEDULE_ID_PROPERTY,
+          scheduleid);
       query.setQualifier(exp1);
       // // ユーザーID
       // Expression exp2 = ExpressionFactory.matchExp(
@@ -541,8 +560,8 @@ public class ScheduleUtils {
     List<ALEipUser> list = new ArrayList<ALEipUser>();
 
     // スケジュールIDをセッション変数から取得
-    String scheduleid = ALEipUtils.getTemp(rundata, context,
-      ALEipConstants.ENTITY_ID);
+    String scheduleid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
     try {
       // IDが空の場合 || IDがintでない場合
@@ -551,24 +570,28 @@ public class ScheduleUtils {
         throw new ALPageNotFoundException();
       }
     } catch (NumberFormatException ex) {
-      logger.error("[ScheduleUtils] NumberFormatException: ENTITYID is wrong.",
+      logger.error(
+        "[ScheduleUtils] NumberFormatException: ENTITYID is wrong.",
         ex);
       throw new ALPageNotFoundException();
 
     }
 
     try {
-      SelectQuery<EipTScheduleMap> mapquery = Database
-        .query(EipTScheduleMap.class);
+      SelectQuery<EipTScheduleMap> mapquery =
+        Database.query(EipTScheduleMap.class);
 
       // スケジュールID
-      Expression exp1 = ExpressionFactory.matchExp(
-        EipTScheduleMap.SCHEDULE_ID_PROPERTY, Integer.valueOf(scheduleid));
+      Expression exp1 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.SCHEDULE_ID_PROPERTY,
+          Integer.valueOf(scheduleid));
       mapquery.setQualifier(exp1);
       if (!includeLoginUser) {
-        Expression exp2 = ExpressionFactory.noMatchExp(
-          EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-            .getUserId(rundata)));
+        Expression exp2 =
+          ExpressionFactory.noMatchExp(
+            EipTScheduleMap.USER_ID_PROPERTY,
+            Integer.valueOf(ALEipUtils.getUserId(rundata)));
         mapquery.andQualifier(exp2);
       }
       List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
@@ -584,8 +607,8 @@ public class ScheduleUtils {
       }
 
       SelectQuery<TurbineUser> userquery = Database.query(TurbineUser.class);
-      Expression userexp = ExpressionFactory.inDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, uidlist);
+      Expression userexp =
+        ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, uidlist);
       userquery.setQualifier(userexp);
       List<Ordering> orders = new ArrayList<Ordering>();
       orders.add(new Ordering(TurbineUser.LAST_NAME_KANA_PROPERTY, true));
@@ -718,8 +741,10 @@ public class ScheduleUtils {
           result = true;
         } else {
           // 繰り返しの開始日と終了日の間に指定した日が入っているかを検証．
-          result = result && startDate.before(cal.getTime())
-            && limitDate.after(cal.getTime());
+          result =
+            result
+              && startDate.before(cal.getTime())
+              && limitDate.after(cal.getTime());
         }
       }
     }
@@ -738,8 +763,8 @@ public class ScheduleUtils {
   public static String getPortletURIinPersonalConfigPane(RunData rundata,
       String portletEntryName) {
     try {
-      Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-        .getDocument().getPortlets();
+      Portlets portlets =
+        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
       if (portlets == null) {
         return null;
       }
@@ -761,11 +786,21 @@ public class ScheduleUtils {
           if (entries[j].getParent().equals(portletEntryName)) {
             JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
 
-            DynamicURI duri = jsLink.getLink(JetspeedLink.CURRENT, null, null,
-              JetspeedLink.CURRENT, null);
-            duri = duri.addPathInfo(JetspeedResources.PATH_PANEID_KEY,
-              portletList[i].getId() + "," + entries[j].getId()).addQueryData(
-              JetspeedResources.PATH_ACTION_KEY, "controls.Restore");
+            DynamicURI duri =
+              jsLink.getLink(
+                JetspeedLink.CURRENT,
+                null,
+                null,
+                JetspeedLink.CURRENT,
+                null);
+            duri =
+              duri
+                .addPathInfo(
+                  JetspeedResources.PATH_PANEID_KEY,
+                  portletList[i].getId() + "," + entries[j].getId())
+                .addQueryData(
+                  JetspeedResources.PATH_ACTION_KEY,
+                  "controls.Restore");
             return duri.toString();
           }
         }
@@ -779,14 +814,22 @@ public class ScheduleUtils {
 
   public static String getPortletURItoTodoDetailPane(RunData rundata,
       String portletEntryName, long entityid, String schedulePortletId) {
-    return getPortletURItoTodoModePane(rundata, portletEntryName, entityid,
-      schedulePortletId, "detail");
+    return getPortletURItoTodoModePane(
+      rundata,
+      portletEntryName,
+      entityid,
+      schedulePortletId,
+      "detail");
   }
 
   public static String getPortletURItoTodoPublicDetailPane(RunData rundata,
       String portletEntryName, long entityid, String schedulePortletId) {
-    return getPortletURItoTodoModePane(rundata, portletEntryName, entityid,
-      schedulePortletId, "public_detail");
+    return getPortletURItoTodoModePane(
+      rundata,
+      portletEntryName,
+      entityid,
+      schedulePortletId,
+      "public_detail");
   }
 
   public static String getPortletURItoTodoModePane(RunData rundata,
@@ -797,8 +840,8 @@ public class ScheduleUtils {
     }
 
     try {
-      Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-        .getDocument().getPortlets();
+      Portlets portlets =
+        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
       if (portlets == null) {
         return null;
       }
@@ -820,15 +863,27 @@ public class ScheduleUtils {
           if (entries[j].getParent().equals(portletEntryName)) {
             JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
 
-            DynamicURI duri = jsLink.getLink(JetspeedLink.CURRENT, null, null,
-              JetspeedLink.CURRENT, null);
-            duri = duri.addPathInfo(JetspeedResources.PATH_PANEID_KEY,
-              portletList[i].getId()).addPathInfo(
-              JetspeedResources.PATH_PORTLETID_KEY, entries[j].getId())
-              .addQueryData(JetspeedResources.PATH_ACTION_KEY,
-                "controls.Maximize").addQueryData(ALEipConstants.MODE, mode)
-              .addQueryData(ALEipConstants.ENTITY_ID, entityid).addQueryData(
-                "sch", schedulePortletId);
+            DynamicURI duri =
+              jsLink.getLink(
+                JetspeedLink.CURRENT,
+                null,
+                null,
+                JetspeedLink.CURRENT,
+                null);
+            duri =
+              duri
+                .addPathInfo(
+                  JetspeedResources.PATH_PANEID_KEY,
+                  portletList[i].getId())
+                .addPathInfo(
+                  JetspeedResources.PATH_PORTLETID_KEY,
+                  entries[j].getId())
+                .addQueryData(
+                  JetspeedResources.PATH_ACTION_KEY,
+                  "controls.Maximize")
+                .addQueryData(ALEipConstants.MODE, mode)
+                .addQueryData(ALEipConstants.ENTITY_ID, entityid)
+                .addQueryData("sch", schedulePortletId);
             int jmode = ((JetspeedRunData) rundata).getMode();
             if (jmode == JetspeedRunData.MAXIMIZE) {
               duri.addQueryData("prev", JetspeedRunData.MAXIMIZE);
@@ -848,8 +903,12 @@ public class ScheduleUtils {
 
   public static String getPortletURItoTodoDetailPaneForCell(RunData rundata,
       String portletEntryName, long entityid, String schedulePortletId) {
-    return getPortletURItoTodoModePaneForCell(rundata, portletEntryName,
-      entityid, schedulePortletId, "detail");
+    return getPortletURItoTodoModePaneForCell(
+      rundata,
+      portletEntryName,
+      entityid,
+      schedulePortletId,
+      "detail");
   }
 
   public static String getPortletURItoTodoModePaneForCell(RunData rundata,
@@ -860,8 +919,8 @@ public class ScheduleUtils {
     }
 
     try {
-      Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-        .getDocument().getPortlets();
+      Portlets portlets =
+        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
       if (portlets == null) {
         return null;
       }
@@ -876,13 +935,24 @@ public class ScheduleUtils {
         if (entries[j].getParent().equals(portletEntryName)) {
           JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
 
-          DynamicURI duri = jsLink.getLink(JetspeedLink.CURRENT, null, null,
-            JetspeedLink.CURRENT, null);
-          duri = duri.addPathInfo(JetspeedResources.PATH_PORTLETID_KEY,
-            entries[j].getId()).addQueryData(JetspeedResources.PATH_ACTION_KEY,
-            "controls.Maximize").addQueryData(ALEipConstants.MODE, mode)
-            .addQueryData(ALEipConstants.ENTITY_ID, entityid).addQueryData(
-              "sch", schedulePortletId);
+          DynamicURI duri =
+            jsLink.getLink(
+              JetspeedLink.CURRENT,
+              null,
+              null,
+              JetspeedLink.CURRENT,
+              null);
+          duri =
+            duri
+              .addPathInfo(
+                JetspeedResources.PATH_PORTLETID_KEY,
+                entries[j].getId())
+              .addQueryData(
+                JetspeedResources.PATH_ACTION_KEY,
+                "controls.Maximize")
+              .addQueryData(ALEipConstants.MODE, mode)
+              .addQueryData(ALEipConstants.ENTITY_ID, entityid)
+              .addQueryData("sch", schedulePortletId);
           return duri.toString();
         }
       }
@@ -918,13 +988,16 @@ public class ScheduleUtils {
     int date2Hour = cal.get(Calendar.HOUR);
     int date2Minute = cal.get(Calendar.MINUTE);
     if (checkTime) {
-      if (date1Year == date2Year && date1Month == date2Month
-        && date1Day == date2Day && date1Hour == date2Hour
+      if (date1Year == date2Year
+        && date1Month == date2Month
+        && date1Day == date2Day
+        && date1Hour == date2Hour
         && date1Minute == date2Minute) {
         return true;
       }
     } else {
-      if (date1Year == date2Year && date1Month == date2Month
+      if (date1Year == date2Year
+        && date1Month == date2Month
         && date1Day == date2Day) {
         return true;
       }
@@ -950,7 +1023,8 @@ public class ScheduleUtils {
     int date2Month = cal.get(Calendar.MONTH) + 1;
     int date2Day = cal.get(Calendar.DATE);
 
-    if (date1Year == date2Year && date1Month == date2Month
+    if (date1Year == date2Year
+      && date1Month == date2Month
       && date1Day == date2Day) {
       return 0;
     }
@@ -1076,8 +1150,8 @@ public class ScheduleUtils {
     dummySchedule.setStartDate(startDate);
     dummySchedule.setEndDate(endDate);
 
-    EipTCommonCategory category = CommonCategoryUtils
-      .getEipTCommonCategory(Long.valueOf(1));
+    EipTCommonCategory category =
+      CommonCategoryUtils.getEipTCommonCategory(Long.valueOf(1));
 
     // orm.doInsert(dummySchedule);
     int size = memberIdList.length;
@@ -1157,8 +1231,8 @@ public class ScheduleUtils {
     dummySchedule.setStartDate(startDate);
     dummySchedule.setEndDate(endDate);
 
-    EipTCommonCategory category = CommonCategoryUtils
-      .getEipTCommonCategory(Long.valueOf(1));
+    EipTCommonCategory category =
+      CommonCategoryUtils.getEipTCommonCategory(Long.valueOf(1));
 
     // // スケジュールを登録
     // orm.doInsert(dummySchedule);
@@ -1213,8 +1287,8 @@ public class ScheduleUtils {
     dummySchedule.setStartDate(startDate);
     dummySchedule.setEndDate(endDate);
 
-    EipTCommonCategory category = CommonCategoryUtils
-      .getEipTCommonCategory(Long.valueOf(1));
+    EipTCommonCategory category =
+      CommonCategoryUtils.getEipTCommonCategory(Long.valueOf(1));
 
     // orm.doInsert(dummySchedule);
     int size = memberIdList.size();
@@ -1297,14 +1371,16 @@ public class ScheduleUtils {
       // weekly : 週間表示
       // monthly: 月間表示
       if (rundata.getParameters().containsKey("tab")) {
-        ALEipUtils.setTemp(rundata, context, "tab", rundata.getParameters()
+        ALEipUtils.setTemp(rundata, context, "tab", rundata
+          .getParameters()
           .getString("tab"));
       }
     }
     String currentTab;
     String tmpCurrentTab = ALEipUtils.getTemp(rundata, context, "tab");
     if (tmpCurrentTab == null
-      || !(tmpCurrentTab.equals("oneday") || tmpCurrentTab.equals("weekly")
+      || !(tmpCurrentTab.equals("oneday")
+        || tmpCurrentTab.equals("weekly")
         || tmpCurrentTab.equals("monthly")
         || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
         .equals("weekly-group"))) {
@@ -1459,10 +1535,10 @@ public class ScheduleUtils {
         Object obj = fields[i].get(formdata);
         // フィールドが ALCellDateTimeField の場合
         if (obj instanceof ALCellDateTimeField) {
-          String dateString = new StringBuffer().append(name).append("_date")
-            .toString();
-          String timeString = new StringBuffer().append(name).append("_time")
-            .toString();
+          String dateString =
+            new StringBuffer().append(name).append("_date").toString();
+          String timeString =
+            new StringBuffer().append(name).append("_time").toString();
 
           ALCellDateTimeField field = (ALCellDateTimeField) obj;
           String dateStr = null;
@@ -1747,73 +1823,107 @@ public class ScheduleUtils {
     if (is_repeat) {
       try {
         if ("W".equals(repeat_type.getValue())) {
-          if (week_0.getValue() == null && week_1.getValue() == null
-            && week_2.getValue() == null && week_3.getValue() == null
-            && week_4.getValue() == null && week_5.getValue() == null
+          if (week_0.getValue() == null
+            && week_1.getValue() == null
+            && week_2.getValue() == null
+            && week_3.getValue() == null
+            && week_4.getValue() == null
+            && week_5.getValue() == null
             && week_6.getValue() == null) {
             msgList.add("『毎週』は曜日をひとつ以上指定してください。");
           } else {
             // 期間を指定しているか．
             if ("ON".equals(limit_flag.getValue())) {
-              int limitstartyear = limit_start_date.getValue().getDate()
-                .getYear() + 1900;
+              int limitstartyear =
+                limit_start_date.getValue().getDate().getYear() + 1900;
               if (limitstartyear < YEAR_FIRST || limitstartyear > YEAR_END) {
-                msgList.add("『期限の開始日時』は" + YEAR_FIRST + "年から" + YEAR_END
+                msgList.add("『期限の開始日時』は"
+                  + YEAR_FIRST
+                  + "年から"
+                  + YEAR_END
                   + "年の間で指定してください。");
               }
-              int limitendyear = limit_end_date.getValue().getDate().getYear() + 1900;
+              int limitendyear =
+                limit_end_date.getValue().getDate().getYear() + 1900;
               if (limitendyear < YEAR_FIRST || limitendyear > YEAR_END) {
-                msgList.add("『期限の終了日時』は" + YEAR_FIRST + "年から" + YEAR_END
+                msgList.add("『期限の終了日時』は"
+                  + YEAR_FIRST
+                  + "年から"
+                  + YEAR_END
                   + "年の間で指定してください。");
               }
 
               // 指定期間内に指定した曜日が入るか．
-              long deltaDay = (limit_end_date.getValue().getDate().getTime() - limit_start_date
-                .getValue().getDate().getTime()) / 86400000;
+              long deltaDay =
+                (limit_end_date.getValue().getDate().getTime() - limit_start_date
+                  .getValue()
+                  .getDate()
+                  .getTime()) / 86400000;
               if (deltaDay < 6) {
                 // 指定期間内に，月火水木金土日が必ずしも含まれない．
                 Calendar limitStartCal = Calendar.getInstance();
                 limitStartCal.setTime(limit_start_date.getValue().getDate());
                 Calendar limitEndCal = Calendar.getInstance();
                 limitEndCal.setTime(limit_end_date.getValue().getDate());
-                int limitStartDayOfWeek = limitStartCal
-                  .get(Calendar.DAY_OF_WEEK);
+                int limitStartDayOfWeek =
+                  limitStartCal.get(Calendar.DAY_OF_WEEK);
                 int limitEndDayOfWeek = limitEndCal.get(Calendar.DAY_OF_WEEK);
                 boolean hasWeek = true;
                 if (week_0.getValue() != null) {
-                  hasWeek = hasWeek
-                    & includeWeek(Calendar.SUNDAY, limitStartDayOfWeek,
-                      limitEndDayOfWeek);
+                  hasWeek =
+                    hasWeek
+                      & includeWeek(
+                        Calendar.SUNDAY,
+                        limitStartDayOfWeek,
+                        limitEndDayOfWeek);
                 }
                 if (week_1.getValue() != null) {
-                  hasWeek = hasWeek
-                    & includeWeek(Calendar.MONDAY, limitStartDayOfWeek,
-                      limitEndDayOfWeek);
+                  hasWeek =
+                    hasWeek
+                      & includeWeek(
+                        Calendar.MONDAY,
+                        limitStartDayOfWeek,
+                        limitEndDayOfWeek);
                 }
                 if (week_2.getValue() != null) {
-                  hasWeek = hasWeek
-                    & includeWeek(Calendar.TUESDAY, limitStartDayOfWeek,
-                      limitEndDayOfWeek);
+                  hasWeek =
+                    hasWeek
+                      & includeWeek(
+                        Calendar.TUESDAY,
+                        limitStartDayOfWeek,
+                        limitEndDayOfWeek);
                 }
                 if (week_3.getValue() != null) {
-                  hasWeek = hasWeek
-                    & includeWeek(Calendar.WEDNESDAY, limitStartDayOfWeek,
-                      limitEndDayOfWeek);
+                  hasWeek =
+                    hasWeek
+                      & includeWeek(
+                        Calendar.WEDNESDAY,
+                        limitStartDayOfWeek,
+                        limitEndDayOfWeek);
                 }
                 if (week_4.getValue() != null) {
-                  hasWeek = hasWeek
-                    & includeWeek(Calendar.THURSDAY, limitStartDayOfWeek,
-                      limitEndDayOfWeek);
+                  hasWeek =
+                    hasWeek
+                      & includeWeek(
+                        Calendar.THURSDAY,
+                        limitStartDayOfWeek,
+                        limitEndDayOfWeek);
                 }
                 if (week_5.getValue() != null) {
-                  hasWeek = hasWeek
-                    & includeWeek(Calendar.FRIDAY, limitStartDayOfWeek,
-                      limitEndDayOfWeek);
+                  hasWeek =
+                    hasWeek
+                      & includeWeek(
+                        Calendar.FRIDAY,
+                        limitStartDayOfWeek,
+                        limitEndDayOfWeek);
                 }
                 if (week_6.getValue() != null) {
-                  hasWeek = hasWeek
-                    & includeWeek(Calendar.SATURDAY, limitStartDayOfWeek,
-                      limitEndDayOfWeek);
+                  hasWeek =
+                    hasWeek
+                      & includeWeek(
+                        Calendar.SATURDAY,
+                        limitStartDayOfWeek,
+                        limitEndDayOfWeek);
                 }
                 if (!hasWeek) {
                   msgList.add("『毎週』で選択する曜日は、『期限』の範囲内で指定してください。");
@@ -1827,15 +1937,22 @@ public class ScheduleUtils {
           } else {
             month_day.validate(msgList);
             if ("ON".equals(limit_flag.getValue())) {
-              int limitstartyear = limit_start_date.getValue().getDate()
-                .getYear() + 1900;
+              int limitstartyear =
+                limit_start_date.getValue().getDate().getYear() + 1900;
               if (limitstartyear < YEAR_FIRST || limitstartyear > YEAR_END) {
-                msgList.add("『期限の開始日時』は" + YEAR_FIRST + "年から" + YEAR_END
+                msgList.add("『期限の開始日時』は"
+                  + YEAR_FIRST
+                  + "年から"
+                  + YEAR_END
                   + "年の間で指定してください。");
               }
-              int limitendyear = limit_end_date.getValue().getDate().getYear() + 1900;
+              int limitendyear =
+                limit_end_date.getValue().getDate().getYear() + 1900;
               if (limitendyear < YEAR_FIRST || limitendyear > YEAR_END) {
-                msgList.add("『期限の終了日時』は" + YEAR_FIRST + "年から" + YEAR_END
+                msgList.add("『期限の終了日時』は"
+                  + YEAR_FIRST
+                  + "年から"
+                  + YEAR_END
                   + "年の間で指定してください。");
               }
 
@@ -1871,15 +1988,22 @@ public class ScheduleUtils {
         } else {
           // 期間を指定しているか．
           if ("ON".equals(limit_flag.getValue())) {
-            int limitstartyear = limit_start_date.getValue().getDate()
-              .getYear() + 1900;
+            int limitstartyear =
+              limit_start_date.getValue().getDate().getYear() + 1900;
             if (limitstartyear < YEAR_FIRST || limitstartyear > YEAR_END) {
-              msgList.add("『期限の開始日時』は" + YEAR_FIRST + "年から" + YEAR_END
+              msgList.add("『期限の開始日時』は"
+                + YEAR_FIRST
+                + "年から"
+                + YEAR_END
                 + "年の間で指定してください。");
             }
-            int limitendyear = limit_end_date.getValue().getDate().getYear() + 1900;
+            int limitendyear =
+              limit_end_date.getValue().getDate().getYear() + 1900;
             if (limitendyear < YEAR_FIRST || limitendyear > YEAR_END) {
-              msgList.add("『期限の終了日時』は" + YEAR_FIRST + "年から" + YEAR_END
+              msgList.add("『期限の終了日時』は"
+                + YEAR_FIRST
+                + "年から"
+                + YEAR_END
                 + "年の間で指定してください。");
             }
           }
@@ -1888,8 +2012,9 @@ public class ScheduleUtils {
         if ("ON".equals(limit_flag.getValue())) {
           // Date limitEndDate = limit_end_date.getValue().getDate();
           if (!ScheduleUtils.equalsToDate(
-            limit_start_date.getValue().getDate(), limit_end_date.getValue()
-              .getDate(), false)
+            limit_start_date.getValue().getDate(),
+            limit_end_date.getValue().getDate(),
+            false)
             && limit_start_date.getValue().getDate().after(
               limit_end_date.getValue().getDate())) {
             msgList.add("『期限の終了日時』は『期限の開始日時』以降の日付を指定してください。");
@@ -1942,29 +2067,38 @@ public class ScheduleUtils {
           throw new ALPageNotFoundException();
         }
 
-        SelectQuery<EipTScheduleMap> query = Database
-          .query(EipTScheduleMap.class);
+        SelectQuery<EipTScheduleMap> query =
+          Database.query(EipTScheduleMap.class);
 
-        Expression exp1 = ExpressionFactory.matchExp(
-          EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf((int) login_user
-            .getUserId().getValue()));
+        Expression exp1 =
+          ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+            .valueOf((int) login_user.getUserId().getValue()));
         query.setQualifier(exp1);
-        Expression exp2 = ExpressionFactory.greaterOrEqualExp(
-          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.END_DATE_PROPERTY, start_date.getValue());
+        Expression exp2 =
+          ExpressionFactory.greaterOrEqualExp(
+            EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+              + "."
+              + EipTSchedule.END_DATE_PROPERTY,
+            start_date.getValue());
         query.andQualifier(exp2);
-        Expression exp3 = ExpressionFactory.lessOrEqualExp(
-          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-            + EipTSchedule.START_DATE_PROPERTY, end_date.getValue());
+        Expression exp3 =
+          ExpressionFactory.lessOrEqualExp(
+            EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+              + "."
+              + EipTSchedule.START_DATE_PROPERTY,
+            end_date.getValue());
         query.andQualifier(exp3);
-        Expression exp4 = ExpressionFactory.matchExp(
-          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+        Expression exp4 =
+          ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+            + "."
             + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
         query.andQualifier(exp4);
 
         if (is_update) {
-          Expression mapexp = ExpressionFactory.noMatchExp(
-            EipTScheduleMap.SCHEDULE_ID_PROPERTY, Integer.valueOf(id));
+          Expression mapexp =
+            ExpressionFactory.noMatchExp(
+              EipTScheduleMap.SCHEDULE_ID_PROPERTY,
+              Integer.valueOf(id));
           query.andQualifier(mapexp);
         }
       } catch (Exception e) {
@@ -2040,25 +2174,33 @@ public class ScheduleUtils {
       Date end_date, Integer update_id) {
     SelectQuery<EipTScheduleMap> query = Database.query(EipTScheduleMap.class);
 
-    Expression exp1 = ExpressionFactory.matchExp(
-      EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(user_id));
+    Expression exp1 =
+      ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+        .valueOf(user_id));
     query.setQualifier(exp1);
-    Expression exp2 = ExpressionFactory.greaterOrEqualExp(
-      EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-        + EipTSchedule.END_DATE_PROPERTY, start_date);
+    Expression exp2 =
+      ExpressionFactory.greaterOrEqualExp(
+        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.END_DATE_PROPERTY,
+        start_date);
     query.andQualifier(exp2);
-    Expression exp3 = ExpressionFactory.lessOrEqualExp(
-      EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+    Expression exp3 =
+      ExpressionFactory.lessOrEqualExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
         + EipTSchedule.START_DATE_PROPERTY, end_date);
     query.andQualifier(exp3);
-    Expression exp4 = ExpressionFactory.matchExp(
-      EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+    Expression exp4 =
+      ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
         + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
     query.andQualifier(exp4);
 
     if (update_id != null) {
-      Expression mapexp = ExpressionFactory.noMatchExp(
-        EipTScheduleMap.SCHEDULE_ID_PROPERTY, Integer.valueOf(update_id));
+      Expression mapexp =
+        ExpressionFactory.noMatchExp(
+          EipTScheduleMap.SCHEDULE_ID_PROPERTY,
+          Integer.valueOf(update_id));
       query.andQualifier(mapexp);
     }
 
@@ -2083,9 +2225,10 @@ public class ScheduleUtils {
       }
     }
 
-    Expression exp = ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN,
-      tmp_ids);
-    List<TurbineUser> users = Database.query(TurbineUser.class, exp).fetchList();
+    Expression exp =
+      ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, tmp_ids);
+    List<TurbineUser> users =
+      Database.query(TurbineUser.class, exp).fetchList();
     if (users.size() == 0) {
       return null;
     }
@@ -2155,32 +2298,24 @@ public class ScheduleUtils {
       statement.append("LEFT JOIN EIP_M_USER_POSITION as D ");
       statement.append("  on A.USER_ID = D.USER_ID ");
       statement.append("WHERE B.USER_ID > 3 AND B.DISABLED = 'F'");
-      statement.append(" AND B.USER_ID IN (").append(tmp_ids_str.toString())
+      statement
+        .append(" AND B.USER_ID IN (")
+        .append(tmp_ids_str.toString())
         .append(")");
       statement.append("ORDER BY D.POSITION");
       String query = statement.toString();
 
-      DataContext u_dataContext = DatabaseOrmService.getInstance()
-        .getDataContext();
-      @SuppressWarnings("deprecation")
-      SQLTemplate rawSelect = new SQLTemplate(TurbineUser.class, query, true);
-      rawSelect.setFetchingDataRows(true);
-      @SuppressWarnings("unchecked")
-      List<DataRow> users = u_dataContext.performQuery(rawSelect);
+      List<TurbineUser> users =
+        Database.sql(TurbineUser.class, query).fetchList();
 
       int recNum = users.size();
-      DataRow dataRow;
       for (int j = 0; j < recNum; j++) {
-        dataRow = users.get(j);
+        TurbineUser tuser = users.get(j);
         user = new UserFacilityLiteBean();
         user.initField();
-        user.setUserFacilityId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-          TurbineUser.USER_ID_PK_COLUMN)).intValue());
-        user.setName((String) ALEipUtils.getObjFromDataRow(dataRow,
-          TurbineUser.LOGIN_NAME_COLUMN));
-        user.setAliasName((String) ALEipUtils.getObjFromDataRow(dataRow,
-          TurbineUser.FIRST_NAME_COLUMN), (String) ALEipUtils
-          .getObjFromDataRow(dataRow, TurbineUser.LAST_NAME_COLUMN));
+        user.setUserFacilityId(tuser.getUserId());
+        user.setName(tuser.getLoginName());
+        user.setAliasName(tuser.getFirstName(), tuser.getLastName());
         user.setUserFacilityType("U");
         if (Integer.toString(ALEipUtils.getUserId(rundata)).equals(
           user.getUserFacilityId())) {
@@ -2193,10 +2328,10 @@ public class ScheduleUtils {
 
     // facilityIDを元にデータを取得
     if (f_ids != null && f_ids.size() > 0) {
-      Expression f_exp = ExpressionFactory.inDbExp(
-        EipMFacility.FACILITY_ID_PK_COLUMN, f_ids);
-      List<EipMFacility> facilities = Database.query(EipMFacility.class, f_exp)
-        .fetchList();
+      Expression f_exp =
+        ExpressionFactory.inDbExp(EipMFacility.FACILITY_ID_PK_COLUMN, f_ids);
+      List<EipMFacility> facilities =
+        Database.query(EipMFacility.class, f_exp).fetchList();
       if (facilities.size() == 0) {
         return null;
       }
@@ -2244,7 +2379,8 @@ public class ScheduleUtils {
         Calendar cal2 = Calendar.getInstance();
         cal2.setTime(viewStartDate);
         // 週間スケジュールコンテナの初期化
-        AjaxTermScheduleWeekContainer weekCon = new AjaxTermScheduleWeekContainer();
+        AjaxTermScheduleWeekContainer weekCon =
+          new AjaxTermScheduleWeekContainer();
         weekCon.initField();
         weekCon.setViewStartDate(cal2);
         weekCon.addTermResultData(index, rd);
@@ -2308,10 +2444,13 @@ public class ScheduleUtils {
 
   public static String hasAuthOther(RunData rundata) {
     try {
-      ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+      ALAccessControlFactoryService aclservice =
+        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-      if (aclhandler.hasAuthority(ALEipUtils.getUserId(rundata),
+      if (aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
         ALAccessControlConstants.VALUE_ACL_LIST)) {
         return "T";
@@ -2324,10 +2463,13 @@ public class ScheduleUtils {
 
   public static String hasAuthSelf(RunData rundata) {
     try {
-      ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+      ALAccessControlFactoryService aclservice =
+        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-      if (aclhandler.hasAuthority(ALEipUtils.getUserId(rundata),
+      if (aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
         ALAccessControlConstants.VALUE_ACL_LIST)) {
         return "T";
@@ -2340,10 +2482,13 @@ public class ScheduleUtils {
 
   public static String hasAuthOtherUpdate(RunData rundata) {
     try {
-      ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+      ALAccessControlFactoryService aclservice =
+        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-      if (aclhandler.hasAuthority(ALEipUtils.getUserId(rundata),
+      if (aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
         ALAccessControlConstants.VALUE_ACL_UPDATE)) {
         return "T";
@@ -2356,10 +2501,13 @@ public class ScheduleUtils {
 
   public static String hasAuthSelfUpdate(RunData rundata) {
     try {
-      ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+      ALAccessControlFactoryService aclservice =
+        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-      if (aclhandler.hasAuthority(ALEipUtils.getUserId(rundata),
+      if (aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
         ALAccessControlConstants.VALUE_ACL_UPDATE)) {
         return "T";
@@ -2371,14 +2519,16 @@ public class ScheduleUtils {
   }
 
   public static int getOwnerId(RunData rundata) {
-    String scheduleId = rundata.getParameters().getString(
-      ALEipConstants.ENTITY_ID);
+    String scheduleId =
+      rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
     if (scheduleId == null | "".equals(scheduleId)) {
       return ALEipUtils.getUserId(rundata);
     }
-    Expression exp = ExpressionFactory.matchDbExp(
-      EipTSchedule.SCHEDULE_ID_PK_COLUMN, Integer.valueOf(scheduleId));
-    List<EipTSchedule> list = Database.query(EipTSchedule.class, exp).fetchList();
+    Expression exp =
+      ExpressionFactory.matchDbExp(EipTSchedule.SCHEDULE_ID_PK_COLUMN, Integer
+        .valueOf(scheduleId));
+    List<EipTSchedule> list =
+      Database.query(EipTSchedule.class, exp).fetchList();
     if (list.size() == 0) {
       return ALEipUtils.getUserId(rundata);
     } else {
@@ -2387,18 +2537,23 @@ public class ScheduleUtils {
   }
 
   public static boolean hasRelation(RunData rundata) {
-    String scheduleId = rundata.getParameters().getString(
-      ALEipConstants.ENTITY_ID);
+    String scheduleId =
+      rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
     if (scheduleId == null | "".equals(scheduleId)) {
       return false;
     }
     int userId = ALEipUtils.getUserId(rundata);
-    Expression exp11 = ExpressionFactory.matchExp(
-      EipTScheduleMap.SCHEDULE_ID_PROPERTY, Integer.valueOf(scheduleId));
-    Expression exp12 = ExpressionFactory.matchExp(
-      EipTScheduleMap.USER_ID_PROPERTY, Integer.valueOf(userId));
-    List<EipTScheduleMap> list = Database.query(EipTScheduleMap.class, exp11)
-      .andQualifier(exp12).fetchList();
+    Expression exp11 =
+      ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, Integer
+        .valueOf(scheduleId));
+    Expression exp12 =
+      ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+        .valueOf(userId));
+    List<EipTScheduleMap> list =
+      Database
+        .query(EipTScheduleMap.class, exp11)
+        .andQualifier(exp12)
+        .fetchList();
     if (list.size() == 0) {
       return false;
     } else {
@@ -2407,14 +2562,16 @@ public class ScheduleUtils {
   }
 
   public static boolean hasMinimumAuthority(RunData rundata) {
-    ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-      .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-    boolean hasAuthority = aclhandler.hasAuthority(ALEipUtils
-      .getUserId(rundata),
-      ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
-      ALAccessControlConstants.VALUE_ACL_LIST);
+    boolean hasAuthority =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
+        ALAccessControlConstants.VALUE_ACL_LIST);
 
     if (!hasAuthority) {
       ALEipUtils.redirectPermissionError(rundata);
@@ -2437,8 +2594,10 @@ public class ScheduleUtils {
 
     try {
       loginUser = ALEipUtils.getALEipUser(rundata);
-      user = (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(
-        loginUser.getUserId().toString()));
+      user =
+        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(loginUser
+          .getUserId()
+          .toString()));
       date_detail = getMsgDate(schedule);
     } catch (Exception e) {
       return "";
@@ -2450,17 +2609,26 @@ public class ScheduleUtils {
       body.append("(").append(user.getEmail()).append(")");
     }
     body.append("さんが予定を追加しました。").append(CR).append(CR);
-    body.append("[予定]").append(CR).append(schedule.getName().toString())
+    body
+      .append("[予定]")
+      .append(CR)
+      .append(schedule.getName().toString())
       .append(CR);
     body.append("[日時]").append(CR).append(date_detail).append(CR);
 
     if (schedule.getPlace().toString().length() > 0) {
-      body.append("[場所] ").append(CR).append(schedule.getPlace().toString())
+      body
+        .append("[場所] ")
+        .append(CR)
+        .append(schedule.getPlace().toString())
         .append(CR);
     }
 
     if (schedule.getNote().toString().length() > 0) {
-      body.append("[内容]").append(CR).append(schedule.getNote().toString())
+      body
+        .append("[内容]")
+        .append(CR)
+        .append(schedule.getNote().toString())
         .append(CR);
     }
 
@@ -2478,8 +2646,11 @@ public class ScheduleUtils {
       body.append(CR);
     }
     body.append(CR);
-    body.append("[").append(DatabaseOrmService.getInstance().getAlias())
-      .append("へのアクセス]").append(CR);
+    body
+      .append("[")
+      .append(DatabaseOrmService.getInstance().getAlias())
+      .append("へのアクセス]")
+      .append(CR);
     if (enableAsp) {
       body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
     } else {
@@ -2507,8 +2678,10 @@ public class ScheduleUtils {
     String date_detail = "";
     try {
       loginUser = ALEipUtils.getALEipUser(rundata);
-      user = (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(
-        loginUser.getUserId().toString()));
+      user =
+        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(loginUser
+          .getUserId()
+          .toString()));
       date_detail = getMsgDate(schedule);
     } catch (Exception e) {
       return "";
@@ -2520,7 +2693,10 @@ public class ScheduleUtils {
       body.append("(").append(user.getEmail()).append(")");
     }
     body.append("さんが予定を追加しました。").append(CR).append(CR);
-    body.append("[予定]").append(CR).append(schedule.getName().toString())
+    body
+      .append("[予定]")
+      .append(CR)
+      .append(schedule.getName().toString())
       .append(CR);
     body.append("[日時]").append(CR).append(date_detail).append(CR);
 
@@ -2546,8 +2722,11 @@ public class ScheduleUtils {
       logger.error("Exception", ex);
       return "";
     }
-    body.append("[").append(DatabaseOrmService.getInstance().getAlias())
-      .append("へのアクセス]").append(CR);
+    body
+      .append("[")
+      .append(DatabaseOrmService.getInstance().getAlias())
+      .append("へのアクセス]")
+      .append(CR);
     body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
       ALCellularUtils.getCellularKey(destUser)).append(CR);
     body.append("---------------------").append(CR);
@@ -2576,19 +2755,25 @@ public class ScheduleUtils {
       count = 1;
       // 毎週
     } else if (ptn.charAt(0) == 'W') {
-      result.append(new StringBuffer().append("毎週 ").append(
-        ptn.charAt(1) != '0' ? "日" : "")
-        .append(ptn.charAt(2) != '0' ? "月" : "").append(
-          ptn.charAt(3) != '0' ? "火" : "").append(
-          ptn.charAt(4) != '0' ? "水" : "").append(
-          ptn.charAt(5) != '0' ? "木" : "").append(
-          ptn.charAt(6) != '0' ? "金" : "").append(
-          ptn.charAt(7) != '0' ? "土" : "").append(" 曜日").toString());
+      result.append(new StringBuffer()
+        .append("毎週 ")
+        .append(ptn.charAt(1) != '0' ? "日" : "")
+        .append(ptn.charAt(2) != '0' ? "月" : "")
+        .append(ptn.charAt(3) != '0' ? "火" : "")
+        .append(ptn.charAt(4) != '0' ? "水" : "")
+        .append(ptn.charAt(5) != '0' ? "木" : "")
+        .append(ptn.charAt(6) != '0' ? "金" : "")
+        .append(ptn.charAt(7) != '0' ? "土" : "")
+        .append(" 曜日")
+        .toString());
       count = 8;
       // 毎月
     } else if (ptn.charAt(0) == 'M') {
-      result.append("毎月 ").append(Integer.parseInt(ptn.substring(1, 3)))
-        .append("日").toString();
+      result
+        .append("毎月 ")
+        .append(Integer.parseInt(ptn.substring(1, 3)))
+        .append("日")
+        .toString();
       count = 3;
       // 期間
     } else if (ptn.charAt(0) == 'S') {
@@ -2722,15 +2907,16 @@ public class ScheduleUtils {
       // 施設予約状況をチェックする
       if (facilityIdList.size() > 0) {
         List<Integer> fids = facilityIdList;
-        SelectQuery<EipTScheduleMap> fquery = Database
-          .query(EipTScheduleMap.class);
-        Expression fexp1 = ExpressionFactory.inExp(
-          EipTScheduleMap.USER_ID_PROPERTY, fids);
+        SelectQuery<EipTScheduleMap> fquery =
+          Database.query(EipTScheduleMap.class);
+        Expression fexp1 =
+          ExpressionFactory.inExp(EipTScheduleMap.USER_ID_PROPERTY, fids);
         fquery.setQualifier(fexp1);
 
-        Expression fexp2 = ExpressionFactory.matchExp(
-          EipTScheduleMap.TYPE_PROPERTY,
-          ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY);
+        Expression fexp2 =
+          ExpressionFactory.matchExp(
+            EipTScheduleMap.TYPE_PROPERTY,
+            ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY);
         fquery.andQualifier(fexp2);
 
         Expression oneexp = null;
@@ -2740,18 +2926,25 @@ public class ScheduleUtils {
         Expression rmexp = null;
 
         { // １日スケジュールの検索
-          Expression exp100 = ExpressionFactory.matchExp(
-            EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+          Expression exp100 =
+            ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+              + "."
               + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
 
           try {
             if (!unlimited_repeat) {
-              Expression exp101 = ExpressionFactory.lessOrEqualExp(
-                EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-                  + EipTSchedule.START_DATE_PROPERTY, end_date);
-              Expression exp102 = ExpressionFactory.greaterExp(
-                EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-                  + EipTSchedule.END_DATE_PROPERTY, start_date);
+              Expression exp101 =
+                ExpressionFactory.lessOrEqualExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.START_DATE_PROPERTY,
+                  end_date);
+              Expression exp102 =
+                ExpressionFactory.greaterExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.END_DATE_PROPERTY,
+                  start_date);
               oneexp = exp100.andExp(exp101.andExp(exp102));
             } else {
               oneexp = exp100;
@@ -2768,8 +2961,9 @@ public class ScheduleUtils {
           }
 
           { // "D".equals(repeat_type.getValue())
-            Expression dexp01 = ExpressionFactory.likeExp(
-              EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
+            Expression dexp01 =
+              ExpressionFactory.likeExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                + "."
                 + EipTSchedule.REPEAT_PATTERN_PROPERTY, "D_");
             rdexp = dexp01;
           }
@@ -2778,45 +2972,66 @@ public class ScheduleUtils {
             Expression wexp = null;
             List<Expression> wexps = new ArrayList<Expression>();
             if (week_0 == true) {
-              wexp = ExpressionFactory.likeExp(
-                EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-                  + EipTSchedule.REPEAT_PATTERN_PROPERTY, "W1_______");
+              wexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "W1_______");
               wexps.add(wexp);
             }
             if (week_1 == true) {
-              wexp = ExpressionFactory.likeExp(
-                EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-                  + EipTSchedule.REPEAT_PATTERN_PROPERTY, "W_1______");
+              wexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "W_1______");
               wexps.add(wexp);
             }
             if (week_2 == true) {
-              wexp = ExpressionFactory.likeExp(
-                EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-                  + EipTSchedule.REPEAT_PATTERN_PROPERTY, "W__1_____");
+              wexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "W__1_____");
               wexps.add(wexp);
             }
             if (week_3 == true) {
-              wexp = ExpressionFactory.likeExp(
-                EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-                  + EipTSchedule.REPEAT_PATTERN_PROPERTY, "W___1____");
+              wexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "W___1____");
               wexps.add(wexp);
             }
             if (week_4 == true) {
-              wexp = ExpressionFactory.likeExp(
-                EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-                  + EipTSchedule.REPEAT_PATTERN_PROPERTY, "W____1___");
+              wexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "W____1___");
               wexps.add(wexp);
             }
             if (week_5 == true) {
-              wexp = ExpressionFactory.likeExp(
-                EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-                  + EipTSchedule.REPEAT_PATTERN_PROPERTY, "W_____1__");
+              wexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "W_____1__");
               wexps.add(wexp);
             }
             if (week_6 == true) {
-              wexp = ExpressionFactory.likeExp(
-                EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-                  + EipTSchedule.REPEAT_PATTERN_PROPERTY, "W______1_");
+              wexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "W______1_");
               wexps.add(wexp);
             }
             if (wexps.size() > 0) {
@@ -2826,9 +3041,12 @@ public class ScheduleUtils {
                 rwexp = rwexp.orExp(wexps.get(k));
               }
             } else {
-              rwexp = ExpressionFactory.likeExp(
-                EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-                  + EipTSchedule.REPEAT_PATTERN_PROPERTY, "W________");
+              rwexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "W________");
             }
           }
 
@@ -2836,13 +3054,19 @@ public class ScheduleUtils {
             if (month_day > 0) { // 毎月、もしくは単体の場合
               DecimalFormat exF = new DecimalFormat("00");
               String md_str = exF.format(month_day);
-              rmexp = ExpressionFactory.likeExp(
-                EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-                  + EipTSchedule.REPEAT_PATTERN_PROPERTY, "M" + md_str + "_");
+              rmexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "M" + md_str + "_");
             } else {
-              rmexp = ExpressionFactory.likeExp(
-                EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-                  + EipTSchedule.REPEAT_PATTERN_PROPERTY, "M___");
+              rmexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "M___");
             }
           }
 
@@ -2861,9 +3085,12 @@ public class ScheduleUtils {
 
         db_scheduleid = schedule.getScheduleId();
         if (db_scheduleid != null && db_scheduleid >= 0) {
-          Expression exp00 = ExpressionFactory.noMatchDbExp(
-            EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "."
-              + EipTSchedule.SCHEDULE_ID_PK_COLUMN, db_scheduleid);
+          Expression exp00 =
+            ExpressionFactory.noMatchDbExp(
+              EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                + "."
+                + EipTSchedule.SCHEDULE_ID_PK_COLUMN,
+              db_scheduleid);
           fquery.andQualifier(exp00);
         }
 
@@ -2960,7 +3187,8 @@ public class ScheduleUtils {
                   Date _start_date = null;
                   Date _end_date = null;
 
-                  if (!"N".equals(ptn) && ptn.endsWith("N")
+                  if (!"N".equals(ptn)
+                    && ptn.endsWith("N")
                     && !unlimited_repeat) {
                     _start_date = (Date) start_date.clone();
                     _end_date = (Date) end_date.clone();
@@ -2990,15 +3218,21 @@ public class ScheduleUtils {
                   }
 
                   /* 期限内の日付を全て比較 */
-                  Expression dexp1 = ExpressionFactory.matchExp(
-                    EipTSchedule.NAME_PROPERTY, "dummy");
+                  Expression dexp1 =
+                    ExpressionFactory.matchExp(
+                      EipTSchedule.NAME_PROPERTY,
+                      "dummy");
 
-                  Expression dexp2 = ExpressionFactory.matchExp(
-                    EipTSchedule.PARENT_ID_PROPERTY, map.getScheduleId());
+                  Expression dexp2 =
+                    ExpressionFactory.matchExp(
+                      EipTSchedule.PARENT_ID_PROPERTY,
+                      map.getScheduleId());
 
                   if (db_scheduleid != null) {
-                    Expression dexp21 = ExpressionFactory.matchExp(
-                      EipTSchedule.PARENT_ID_PROPERTY, db_scheduleid);
+                    Expression dexp21 =
+                      ExpressionFactory.matchExp(
+                        EipTSchedule.PARENT_ID_PROPERTY,
+                        db_scheduleid);
                     dexp2 = dexp2.orExp(dexp21);
                   }
                   Expression dexp3 = null;
@@ -3014,7 +3248,8 @@ public class ScheduleUtils {
                   if ("N".equals(repeat_pattern)) {
                     /* 繰り返しスケジュールのうちひとつだけを移動した場合の処理 */
                     if ((_old_scheduleid != null) && (_old_viewDate != null)) {
-                      if ((_old_scheduleid.intValue() == map.getScheduleId()
+                      if ((_old_scheduleid.intValue() == map
+                        .getScheduleId()
                         .intValue())
                         && compareToDate(_start_date, _old_viewDate) == 0) {
                         continue;
@@ -3022,10 +3257,14 @@ public class ScheduleUtils {
                     }
 
                     try {
-                      dexp3 = ExpressionFactory.matchExp(
-                        EipTSchedule.START_DATE_PROPERTY, ddate);
-                      temp = Database.query(EipTSchedule.class,
-                        dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
+                      dexp3 =
+                        ExpressionFactory.matchExp(
+                          EipTSchedule.START_DATE_PROPERTY,
+                          ddate);
+                      temp =
+                        Database.query(
+                          EipTSchedule.class,
+                          dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
                       if (temp == null || temp.size() <= 0) {
                         existFacility = true;
                         break;
@@ -3039,10 +3278,14 @@ public class ScheduleUtils {
                     while (!ddate.after(_end_date)) {
                       if (matchDay(cald, ptn)) {
                         try {
-                          dexp3 = ExpressionFactory.matchExp(
-                            EipTSchedule.START_DATE_PROPERTY, ddate);
-                          temp = Database.query(EipTSchedule.class,
-                            dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
+                          dexp3 =
+                            ExpressionFactory.matchExp(
+                              EipTSchedule.START_DATE_PROPERTY,
+                              ddate);
+                          temp =
+                            Database.query(
+                              EipTSchedule.class,
+                              dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
                           if (temp == null || temp.size() <= 0) {
                             existFacility = true;
                             break;
@@ -3067,10 +3310,14 @@ public class ScheduleUtils {
                       k = (cald.get(Calendar.DAY_OF_WEEK) - 1) % wlen;
                       if ((week_array[k] == true) && matchDay(cald, ptn)) {
                         try {
-                          dexp3 = ExpressionFactory.matchExp(
-                            EipTSchedule.START_DATE_PROPERTY, ddate);
-                          temp = Database.query(EipTSchedule.class,
-                            dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
+                          dexp3 =
+                            ExpressionFactory.matchExp(
+                              EipTSchedule.START_DATE_PROPERTY,
+                              ddate);
+                          temp =
+                            Database.query(
+                              EipTSchedule.class,
+                              dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
                           if (temp == null || temp.size() <= 0) {
                             existFacility = true;
                             break;
@@ -3116,10 +3363,14 @@ public class ScheduleUtils {
                     while (!ddate.after(_end_date)) {
                       if (matchDay(cald, ptn)) {
                         try {
-                          dexp3 = ExpressionFactory.matchExp(
-                            EipTSchedule.START_DATE_PROPERTY, ddate);
-                          temp = Database.query(EipTSchedule.class,
-                            dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
+                          dexp3 =
+                            ExpressionFactory.matchExp(
+                              EipTSchedule.START_DATE_PROPERTY,
+                              ddate);
+                          temp =
+                            Database.query(
+                              EipTSchedule.class,
+                              dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
                           if (temp == null || temp.size() <= 0) {
                             existFacility = true;
                             break;

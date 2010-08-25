@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -32,10 +32,10 @@ import com.aimluck.eip.common.ALData;
 public class ScheduleOnedayContainer implements ALData {
 
   /** <code>list</code> スケジュールリスト */
-  private List list;
+  private List<ScheduleOnedayResultData> list;
 
   /** <code>dList</code> 重複スケジュールリスト */
-  private List dList;
+  private List<ScheduleOnedayResultData> dList;
 
   /** <code>rd</code> 期間スケジュール */
   private ScheduleOnedayResultData rd;
@@ -54,9 +54,9 @@ public class ScheduleOnedayContainer implements ALData {
    */
   public void initField() {
     // スケジュールリスト
-    list = new ArrayList();
+    list = new ArrayList<ScheduleOnedayResultData>();
     // 重複スケジュールリスト
-    dList = new ArrayList();
+    dList = new ArrayList<ScheduleOnedayResultData>();
   }
 
   /**
@@ -90,12 +90,18 @@ public class ScheduleOnedayContainer implements ALData {
     boolean dup = false;
     int sta = startHour * 4;
     int eta = endHour * 4;
-    int st = Integer.parseInt(rd.getStartDate().getHour()) * 4
-        + Integer.parseInt(rd.getStartDate().getMinute()) / 15;
-    int ed = Integer.parseInt(rd.getEndDate().getHour()) * 4
-        + Integer.parseInt(rd.getEndDate().getMinute()) / 15;
+    int st =
+      Integer.parseInt(rd.getStartDate().getHour())
+        * 4
+        + Integer.parseInt(rd.getStartDate().getMinute())
+        / 15;
+    int ed =
+      Integer.parseInt(rd.getEndDate().getHour())
+        * 4
+        + Integer.parseInt(rd.getEndDate().getMinute())
+        / 15;
     if (!(rd.getStartDate().getDay().equals(rd.getEndDate().getDay()))
-        && rd.getEndDate().getHour().equals("0")) {
+      && rd.getEndDate().getHour().equals("0")) {
       ed = 4 * 24;
     }
     if ((ed - sta > 0 && eta - st > 0) || (ed - sta == 0 && st == ed)) {
@@ -113,7 +119,7 @@ public class ScheduleOnedayContainer implements ALData {
         rd.setIndex(rows[st - sta]);
         if (rows[st - sta] > 1) {
           rd.setDuplicate(true);
-          ((ScheduleResultData) list.get(list.size() - 1)).setDuplicate(true);
+          list.get(list.size() - 1).setDuplicate(true);
         }
         rows[st - sta]++;
         rowIndex++;
@@ -137,15 +143,16 @@ public class ScheduleOnedayContainer implements ALData {
         cal.add(Calendar.HOUR, hour);
         cal.add(Calendar.MINUTE, min);
         rd2.setEndDate(cal.getTime());
-        rd2.setStartRow(list.size() == 0 ? 0 : ((ScheduleOnedayResultData) list
-            .get(list.size() - 1)).getEndRow());
+        rd2.setStartRow(list.size() == 0 ? 0 : list
+          .get(list.size() - 1)
+          .getEndRow());
         rd2.setEndRow(rd.getStartRow());
         list.add(rd2);
       } else if (st - sta - count != 0) {
         dList.add(rd);
         rd.setDuplicate(true);
         dup = true;
-        ((ScheduleResultData) list.get(list.size() - 1)).setDuplicate(true);
+        list.get(list.size() - 1).setDuplicate(true);
       } else {
 
       }
@@ -184,8 +191,9 @@ public class ScheduleOnedayContainer implements ALData {
       cal.add(Calendar.HOUR, hour);
       cal.add(Calendar.MINUTE, min);
       rd.setEndDate(cal.getTime());
-      rd.setStartRow(list.size() == 0 ? 0 : ((ScheduleOnedayResultData) list
-          .get(list.size() - 1)).getEndRow());
+      rd.setStartRow(list.size() == 0 ? 0 : list
+        .get(list.size() - 1)
+        .getEndRow());
       rd.setEndRow(rows.length - 1);
       list.add(rd);
     }
@@ -223,7 +231,7 @@ public class ScheduleOnedayContainer implements ALData {
    * 
    * @return
    */
-  public List getSchedule() {
+  public List<ScheduleOnedayResultData> getSchedule() {
     return list;
   }
 
@@ -232,7 +240,7 @@ public class ScheduleOnedayContainer implements ALData {
    * 
    * @return
    */
-  public List getDuplicateSchedule() {
+  public List<ScheduleOnedayResultData> getDuplicateSchedule() {
     return dList;
   }
 

@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -34,7 +33,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -42,13 +41,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * スケジュールの状態変更を行うクラスです。
- *
+ * 
  */
 public class ScheduleChangeStatusFormData extends ALAbstractFormData {
 
   /** <code>logger</code> logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ScheduleChangeStatusFormData.class.getName());
+    .getLogger(ScheduleChangeStatusFormData.class.getName());
 
   /** <code>status</code> 状態 */
   private ALCellStringField status;
@@ -66,7 +65,7 @@ public class ScheduleChangeStatusFormData extends ALAbstractFormData {
         tmpView = rundata.getParameters().getString("view_date");
         ALEipUtils.setTemp(rundata, context, "tmpView", tmpView);
         dummy.setValue(tmpView);
-        if (!dummy.validate(new ArrayList())) {
+        if (!dummy.validate(new ArrayList<String>())) {
           ALEipUtils.removeTemp(rundata, context, "tmpView");
           logger.debug("[ScheduleFormData] Parameter cannot validate");
           ALEipUtils.redirectPageNotFound(rundata);
@@ -100,6 +99,7 @@ public class ScheduleChangeStatusFormData extends ALAbstractFormData {
   /*
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // Validateの定義必要なし
   }
@@ -108,14 +108,17 @@ public class ScheduleChangeStatusFormData extends ALAbstractFormData {
    * @see
    * com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     // T: 仮スケジュール
     // C: 確認済みスケジュール
     // R: 棄却されたスケジュール
     // O: 通常スケジュール（オーナー）
     // 以上の文字列以外は入力チェックNGとする。
-    return "T".equals(status.getValue()) || "C".equals(status.getValue())
-        || "R".equals(status.getValue()) || "O".equals(status.getValue());
+    return "T".equals(status.getValue())
+      || "C".equals(status.getValue())
+      || "R".equals(status.getValue())
+      || "O".equals(status.getValue());
   }
 
   /*
@@ -123,6 +126,7 @@ public class ScheduleChangeStatusFormData extends ALAbstractFormData {
    * com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine
    * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     // このメソッドは利用されません。
@@ -134,6 +138,7 @@ public class ScheduleChangeStatusFormData extends ALAbstractFormData {
    * com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine
    * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     // このメソッドは利用されません。
@@ -145,6 +150,7 @@ public class ScheduleChangeStatusFormData extends ALAbstractFormData {
    * com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine
    * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALDBErrorException, ALPageNotFoundException {
     try {
@@ -153,29 +159,25 @@ public class ScheduleChangeStatusFormData extends ALAbstractFormData {
       // .getORMappingEipTScheduleMap(org_id);
       // if (orm_map == null)
       // return false;
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
 
       // オブジェクトモデルを取得
-      EipTScheduleMap schedule = ScheduleUtils.getEipTScheduleMap(rundata,
-          context);
+      EipTScheduleMap schedule =
+        ScheduleUtils.getEipTScheduleMap(rundata, context);
       if (schedule == null) {
         return false;
       }
       schedule.setStatus(status.getValue());
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
-      ALEventlogFactoryService
-          .getInstance()
-          .getEventlogHandler()
-          .log(schedule.getScheduleId(),
-              ALEventlogConstants.PORTLET_TYPE_SCHEDULE,
-              schedule.getEipTSchedule().getName());
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        schedule.getScheduleId(),
+        ALEventlogConstants.PORTLET_TYPE_SCHEDULE,
+        schedule.getEipTSchedule().getName());
 
       // orm_map.doUpdate(schedule);
     } catch (Exception e) {
-
+      Database.rollback();
       logger.error("[ScheduleChangeStatusFormData]", e);
       throw new ALDBErrorException();
 
@@ -188,6 +190,7 @@ public class ScheduleChangeStatusFormData extends ALAbstractFormData {
    * com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine
    * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     // このメソッドは利用されません。

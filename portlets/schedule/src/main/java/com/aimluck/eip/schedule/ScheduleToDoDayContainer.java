@@ -25,7 +25,7 @@ import com.aimluck.eip.common.ALData;
 
 /**
  * スケジュールに表示されるTodo コンテナです。
- *
+ * 
  */
 public class ScheduleToDoDayContainer implements ALData {
 
@@ -53,7 +53,7 @@ public class ScheduleToDoDayContainer implements ALData {
 
   /**
    * 日付を取得します。
-   *
+   * 
    * @return
    */
   public ALDateTimeField getDate() {
@@ -62,7 +62,7 @@ public class ScheduleToDoDayContainer implements ALData {
 
   /**
    * 日付を設定します。
-   *
+   * 
    * @param date
    */
   public void setDate(Date date) {
@@ -71,7 +71,7 @@ public class ScheduleToDoDayContainer implements ALData {
 
   /**
    * 期間スケジュールを追加します。
-   *
+   * 
    * @param rd
    */
   public void setToDoResultData(ScheduleToDoResultData rd) {
@@ -80,7 +80,7 @@ public class ScheduleToDoDayContainer implements ALData {
 
   /**
    * 期間スケジュールを取得します。
-   *
+   * 
    * @return
    */
   public ScheduleToDoResultData getToDoResultData() {
@@ -97,7 +97,7 @@ public class ScheduleToDoDayContainer implements ALData {
 
   /**
    * JobがNULLかどうか。
-   *
+   * 
    * @return
    */
   public boolean isTodoNull() {

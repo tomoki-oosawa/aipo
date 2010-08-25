@@ -113,7 +113,7 @@ public class ScheduleBean implements ALData, Cloneable {
   /** <code>indexReal</code> colspanReal */
   private int indexReal;
 
-  private List<ALEipUser> tmpList;
+  private List<String> tmpList;
 
   /*
    * @see com.aimluck.eip.common.ALData#initField()
@@ -178,11 +178,11 @@ public class ScheduleBean implements ALData, Cloneable {
     this.tmpList = rd.getMemberList();
   }
 
-  public List<ALEipUser> getMemberList() {
+  public List<String> getMemberList() {
     return tmpList;
   }
 
-  public void setMemberList(List<ALEipUser> list) {
+  public void setMemberList(List<String> list) {
     tmpList = list;
   }
 
@@ -574,12 +574,20 @@ public class ScheduleBean implements ALData, Cloneable {
       return start_date.toString();
     } else if ((start_date.getYear().equals(end_date.getYear())
       && start_date.getMonth().equals(end_date.getMonth()) && start_date
-      .getDay().equals(end_date.getDay())) || is_repeat) {
-      return new StringBuffer().append(start_date.toString()).append('-')
-        .append(end_date.toString()).toString();
+      .getDay()
+      .equals(end_date.getDay()))
+      || is_repeat) {
+      return new StringBuffer()
+        .append(start_date.toString())
+        .append('-')
+        .append(end_date.toString())
+        .toString();
     } else {
-      return new StringBuffer().append(start_date.toString()).append('-')
-        .append("24:00").toString();
+      return new StringBuffer()
+        .append(start_date.toString())
+        .append('-')
+        .append("24:00")
+        .toString();
     }
   }
 
@@ -593,12 +601,20 @@ public class ScheduleBean implements ALData, Cloneable {
       return start_date.toString();
     } else if ((start_date.getYear().equals(end_date.getYear())
       && start_date.getMonth().equals(end_date.getMonth()) && start_date
-      .getDay().equals(end_date.getDay())) || is_repeat) {
-      return new StringBuffer().append(start_date.toString()).append('～')
-        .append(end_date.toString()).toString();
+      .getDay()
+      .equals(end_date.getDay()))
+      || is_repeat) {
+      return new StringBuffer()
+        .append(start_date.toString())
+        .append('～')
+        .append(end_date.toString())
+        .toString();
     } else {
-      return new StringBuffer().append(start_date.toString()).append('～')
-        .append("24:00").toString();
+      return new StringBuffer()
+        .append(start_date.toString())
+        .append('～')
+        .append("24:00")
+        .toString();
     }
   }
 
