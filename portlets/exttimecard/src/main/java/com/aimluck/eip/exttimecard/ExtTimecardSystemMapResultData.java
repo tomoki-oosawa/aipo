@@ -24,18 +24,19 @@ import java.util.List;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.user.beans.UserGroupLiteBean;
 
 /**
  * タイムカード集計の設定情報を保持する。
- *
- *
+ * 
+ * 
  */
 public class ExtTimecardSystemMapResultData implements ALData {
 
   private ALNumberField system_map_id;
 
   private ALNumberField user_id;
-  
+
   private ALStringField login_name;
 
   private ALNumberField system_id;
@@ -44,10 +45,10 @@ public class ExtTimecardSystemMapResultData implements ALData {
 
   private ALStringField system_name;
 
-  private List post_name_list;
+  private List<UserGroupLiteBean> post_name_list;
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -57,7 +58,7 @@ public class ExtTimecardSystemMapResultData implements ALData {
     name = new ALStringField();
     login_name = new ALStringField();
     system_name = new ALStringField();
-    post_name_list = new ArrayList();
+    post_name_list = new ArrayList<UserGroupLiteBean>();
   }
 
   public ALNumberField getSystemMapId() {
@@ -80,7 +81,7 @@ public class ExtTimecardSystemMapResultData implements ALData {
     return system_name;
   }
 
-  public List getPostNameList() {
+  public List<UserGroupLiteBean> getPostNameList() {
     return post_name_list;
   }
 
@@ -104,10 +105,10 @@ public class ExtTimecardSystemMapResultData implements ALData {
     system_name.setValue(str);
   }
 
-  public void setPostNameList(List list) {
+  public void setPostNameList(List<UserGroupLiteBean> list) {
     post_name_list.addAll(list);
   }
-  
+
   public ALStringField getLoginName() {
     return login_name;
   }

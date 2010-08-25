@@ -18,8 +18,6 @@
  */
 package com.aimluck.eip.modules.screens;
 
-import java.util.ArrayList;
-
 import net.sf.json.JSONArray;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -33,12 +31,12 @@ import com.aimluck.eip.exttimecard.ExtTimecardSystemMultiDelete;
 
 /**
  * タイムカード集計をJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class ExtTimecardSystemFormJSONScreen extends ALJSONScreen {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ExtTimecardSystemFormJSONScreen.class.getName());
+    .getLogger(ExtTimecardSystemFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -52,9 +50,9 @@ public class ExtTimecardSystemFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doInsert(this, rundata, context)) {
         } else {
-          ArrayList list = (ArrayList) context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST);
-          JSONArray json = JSONArray.fromObject(list);
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_UPDATE.equals(mode)) {
@@ -62,9 +60,9 @@ public class ExtTimecardSystemFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doUpdate(this, rundata, context)) {
         } else {
-          ArrayList list = (ArrayList) context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST);
-          JSONArray json = JSONArray.fromObject(list);
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
@@ -72,18 +70,19 @@ public class ExtTimecardSystemFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doDelete(this, rundata, context)) {
         } else {
-          ArrayList list = (ArrayList) context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST);
-          JSONArray json = JSONArray.fromObject(list);
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_MULTI_DELETE.equals(mode)) {
-        ExtTimecardSystemMultiDelete delete = new ExtTimecardSystemMultiDelete();
+        ExtTimecardSystemMultiDelete delete =
+          new ExtTimecardSystemMultiDelete();
         if (delete.doMultiAction(this, rundata, context)) {
         } else {
-          ArrayList list = (ArrayList) context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST);
-          JSONArray json = JSONArray.fromObject(list);
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       }

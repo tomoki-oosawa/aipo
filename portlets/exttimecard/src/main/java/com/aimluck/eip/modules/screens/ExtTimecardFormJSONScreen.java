@@ -18,9 +18,6 @@
  */
 package com.aimluck.eip.modules.screens;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 import net.sf.json.JSONArray;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -33,12 +30,12 @@ import com.aimluck.eip.exttimecard.ExtTimecardFormData;
 
 /**
  * タイムカードをJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class ExtTimecardFormJSONScreen extends ALJSONScreen {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ExtTimecardFormJSONScreen.class.getName());
+    .getLogger(ExtTimecardFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -55,9 +52,9 @@ public class ExtTimecardFormJSONScreen extends ALJSONScreen {
         formData.setAltMode("alt_insert");
         if (formData.doInsert(this, rundata, context)) {
         } else {
-          ArrayList list = (ArrayList) context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST);
-          JSONArray json = JSONArray.fromObject(list);
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
 
@@ -66,9 +63,9 @@ public class ExtTimecardFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doUpdate(this, rundata, context)) {
         } else {
-          ArrayList list = (ArrayList) context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST);
-          JSONArray json = JSONArray.fromObject(list);
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
@@ -77,21 +74,23 @@ public class ExtTimecardFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doDelete(this, rundata, context)) {
         } else {
-          ArrayList list = (ArrayList) context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST);
-          JSONArray json = JSONArray.fromObject(list);
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
-      } else if ("punchin".equals(mode) || "punchout".equals(mode)
-          || "outgoing".equals(mode) || "comeback".equals(mode)) {
+      } else if ("punchin".equals(mode)
+        || "punchout".equals(mode)
+        || "outgoing".equals(mode)
+        || "comeback".equals(mode)) {
         ExtTimecardFormData formData = new ExtTimecardFormData();
         formData.initField();
 
         if (formData.doPunch(this, rundata, context, mode)) {
         } else {
-          ArrayList list = (ArrayList) context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST);
-          JSONArray json = JSONArray.fromObject(list);
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       }

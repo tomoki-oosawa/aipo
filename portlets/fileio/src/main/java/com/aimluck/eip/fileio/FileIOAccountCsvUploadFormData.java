@@ -39,7 +39,7 @@ public class FileIOAccountCsvUploadFormData extends ALCsvAbstractUploadFormData 
 
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FileIOAccountCsvUploadFormData.class.getName());
+    .getLogger(FileIOAccountCsvUploadFormData.class.getName());
 
   /** 一時フォルダ名(番号のみ) */
   private String temp_folder;
@@ -50,6 +50,7 @@ public class FileIOAccountCsvUploadFormData extends ALCsvAbstractUploadFormData 
   /**
    * 初期化 <BR>
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -60,14 +61,16 @@ public class FileIOAccountCsvUploadFormData extends ALCsvAbstractUploadFormData 
    * 一時フォルダ生成 <BR>
    */
   private void initTempFileName() {
-    File tmpfolderRootFolder = new File(ALCsvTokenizer.CSV_TEMP_FOLDER
-        + File.separator + FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_FOLDER);
+    File tmpfolderRootFolder =
+      new File(ALCsvTokenizer.CSV_TEMP_FOLDER
+        + File.separator
+        + FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_FOLDER);
     if (!tmpfolderRootFolder.exists()) {
       tmpfolderRootFolder.mkdirs();
     }
 
-    temp_folder = FileIOCsvUtils
-        .getNewAttachmentFolderName(tmpfolderRootFolder);
+    temp_folder =
+      FileIOCsvUtils.getNewAttachmentFolderName(tmpfolderRootFolder);
 
     String newfolderpath = tmpfolderRootFolder + File.separator + temp_folder;
     File newfolder = new File(newfolderpath);
@@ -75,20 +78,23 @@ public class FileIOAccountCsvUploadFormData extends ALCsvAbstractUploadFormData 
       newfolder.mkdirs();
     }
 
-    temp_file_path = newfolderpath + File.separator
+    temp_file_path =
+      newfolderpath
+        + File.separator
         + FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_FILENAME;
   }
 
   /**
    * 一時ファイルのフルパスを取得します <BR>
    */
+  @Override
   public String getTempFilePath() {
     return temp_file_path;
   }
 
   /**
    * 一時フォルダ名（番号）を取得します <BR>
-   *
+   * 
    * @return
    */
   public String getTempFolderIndex() {

@@ -23,10 +23,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
@@ -37,7 +35,8 @@ import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecard;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystemMap;
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -48,7 +47,7 @@ public class ExtTimecardUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ExtTimecardUtils.class.getName());
+    .getLogger(ExtTimecardUtils.class.getName());
 
   /** <code>TARGET_GROUP_NAME</code> グループによる表示切り替え用変数の識別子 */
   public static final String TARGET_GROUP_NAME = "target_group_name";
@@ -67,7 +66,7 @@ public class ExtTimecardUtils {
 
   /** タイムカードファイルを一時保管するディレクトリの指定 */
   public static final String FOLDER_TMP_FOR_TIMECARD_FILES = JetspeedResources
-      .getString("aipo.tmp.timecard.directory", "");
+    .getString("aipo.tmp.timecard.directory", "");
 
   /**
    * ExtTimecard オブジェクトモデルを取得します。 <BR>
@@ -80,8 +79,8 @@ public class ExtTimecardUtils {
    */
   public static EipTExtTimecard getEipTExtTimecard(RunData rundata,
       Context context) {
-    String timecardid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String timecardid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (timecardid == null || Integer.valueOf(timecardid) == null) {
         // Todo IDが空の場合
@@ -89,23 +88,24 @@ public class ExtTimecardUtils {
         return null;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTExtTimecard.class);
-      Expression exp11 = ExpressionFactory.matchDbExp(
-          EipTExtTimecard.TIMECARD_ID_PK_COLUMN, timecardid);
+      SelectQuery<EipTExtTimecard> query =
+        Database.query(EipTExtTimecard.class);
+      Expression exp11 =
+        ExpressionFactory.matchDbExp(
+          EipTExtTimecard.TIMECARD_ID_PK_COLUMN,
+          timecardid);
       query.setQualifier(exp11);
-      Expression exp21 = ExpressionFactory.matchExp(
-          EipTExtTimecard.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-              .getUserId(rundata)));
+      Expression exp21 =
+        ExpressionFactory.matchExp(EipTExtTimecard.USER_ID_PROPERTY, Integer
+          .valueOf(ALEipUtils.getUserId(rundata)));
       query.andQualifier(exp21);
-      List timecards = dataContext.performQuery(query);
+      List<EipTExtTimecard> timecards = query.fetchList();
       if (timecards == null || timecards.size() == 0) {
         // 指定したTimecard IDのレコードが見つからない場合
         logger.debug("[Timecard] Not found ID...");
         return null;
       }
-      return ((EipTExtTimecard) timecards.get(0));
+      return timecards.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -135,18 +135,18 @@ public class ExtTimecardUtils {
   public static EipTExtTimecardSystem getEipTExtTimecardSystemByUserId(
       int user_id) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTExtTimecardSystemMap.class);
-      Expression exp1 = ExpressionFactory.matchExp(
-          EipTExtTimecardSystemMap.USER_ID_PROPERTY, Integer.valueOf(user_id));
+      SelectQuery<EipTExtTimecardSystemMap> query =
+        Database.query(EipTExtTimecardSystemMap.class);
+      Expression exp1 =
+        ExpressionFactory.matchExp(
+          EipTExtTimecardSystemMap.USER_ID_PROPERTY,
+          Integer.valueOf(user_id));
       query.setQualifier(exp1);
-      List slist = dataContext.performQuery(query);
+      List<EipTExtTimecardSystemMap> slist = query.fetchList();
       if (slist == null || slist.size() == 0) {
         return getEipTExtTimecardSystemById(1);
       }
-      return ((EipTExtTimecardSystemMap) slist.get(0))
-          .getEipTExtTimecardSystem();
+      return slist.get(0).getEipTExtTimecardSystem();
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -155,17 +155,18 @@ public class ExtTimecardUtils {
 
   public static EipTExtTimecardSystem getEipTExtTimecardSystemById(int system_id) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTExtTimecardSystem.class);
-      Expression exp1 = ExpressionFactory.matchDbExp(
-          EipTExtTimecardSystem.SYSTEM_ID_PK_COLUMN, system_id);
+      SelectQuery<EipTExtTimecardSystem> query =
+        Database.query(EipTExtTimecardSystem.class);
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(
+          EipTExtTimecardSystem.SYSTEM_ID_PK_COLUMN,
+          system_id);
       query.setQualifier(exp1);
-      List slist = dataContext.performQuery(query);
+      List<EipTExtTimecardSystem> slist = query.fetchList();
       if (slist == null || slist.size() == 0) {
         return null;
       }
-      return (EipTExtTimecardSystem) slist.get(0);
+      return slist.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -176,12 +177,11 @@ public class ExtTimecardUtils {
    * 
    * @return
    */
-  public static List getAllEipTExtTimecardSystem() {
+  public static List<EipTExtTimecardSystem> getAllEipTExtTimecardSystem() {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTExtTimecardSystem.class);
-      List slist = dataContext.performQuery(query);
+      SelectQuery<EipTExtTimecardSystem> query =
+        Database.query(EipTExtTimecardSystem.class);
+      List<EipTExtTimecardSystem> slist = query.fetchList();
       if (slist == null || slist.size() == 0) {
         // 指定したSetting IDのレコードが見つからない場合
         logger.debug("[ExtTimecardUtils] Not found ID...");
@@ -200,8 +200,8 @@ public class ExtTimecardUtils {
    */
   public static EipTExtTimecardSystem getEipTExtTimecardSystem(RunData rundata,
       Context context) {
-    String systemid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String systemid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (systemid == null || Integer.valueOf(systemid) == null) {
         // Setting IDが空の場合
@@ -209,21 +209,22 @@ public class ExtTimecardUtils {
         return null;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTExtTimecardSystem.class);
-      Expression exp1 = ExpressionFactory.matchDbExp(
-          EipTExtTimecardSystem.SYSTEM_ID_PK_COLUMN, systemid);
+      SelectQuery<EipTExtTimecardSystem> query =
+        Database.query(EipTExtTimecardSystem.class);
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(
+          EipTExtTimecardSystem.SYSTEM_ID_PK_COLUMN,
+          systemid);
 
       query.setQualifier(exp1);
-      List slist = dataContext.performQuery(query);
+      List<EipTExtTimecardSystem> slist = query.fetchList();
       if (slist == null || slist.size() == 0) {
         // 指定したSetting IDのレコードが見つからない場合
         logger.debug("[ExtTimecardUtils] Not found ID...");
         return null;
       }
 
-      return (EipTExtTimecardSystem) slist.get(0);
+      return slist.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -252,8 +253,9 @@ public class ExtTimecardUtils {
     int date2Month = cal2.get(Calendar.MONTH) + 1;
     int date2Day = cal2.get(Calendar.DATE);
 
-    if (date1Year == date2Year && date1Month == date2Month
-        && date1Day == date2Day) {
+    if (date1Year == date2Year
+      && date1Month == date2Month
+      && date1Day == date2Day) {
       return true;
     }
     return false;
@@ -267,8 +269,13 @@ public class ExtTimecardUtils {
    * @return
    */
   public static File getRootFolder(String org_id, int userId) {
-    String rootPath = ExtTimecardUtils.FOLDER_TMP_FOR_TIMECARD_FILES
-        + File.separator + org_id + File.separator + userId + File.separator;
+    String rootPath =
+      ExtTimecardUtils.FOLDER_TMP_FOR_TIMECARD_FILES
+        + File.separator
+        + org_id
+        + File.separator
+        + userId
+        + File.separator;
     File folder = new File(rootPath);
     if (!folder.exists()) {
       if (!folder.mkdirs()) {
@@ -287,8 +294,8 @@ public class ExtTimecardUtils {
    */
   public static EipTExtTimecard getUpdateEipTExtTimecard(RunData rundata,
       Context context) {
-    EipTExtTimecardSystem system = ExtTimecardUtils
-        .getEipTExtTimecardSystemCurrentUserId(rundata, context);
+    EipTExtTimecardSystem system =
+      ExtTimecardUtils.getEipTExtTimecardSystemCurrentUserId(rundata, context);
 
     Calendar calendar_now = Calendar.getInstance();
     Calendar from_calendar = Calendar.getInstance();
@@ -302,22 +309,23 @@ public class ExtTimecardUtils {
     }
     from_calendar.set(Calendar.HOUR_OF_DAY, 0);
 
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
-    SelectQuery query = new SelectQuery(EipTExtTimecard.class);
-    Expression exp1 = ExpressionFactory.matchExp(
-        EipTExtTimecard.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-            .getUserId(rundata)));
-    Expression exp2 = ExpressionFactory.matchExp(
-        EipTExtTimecard.PUNCH_DATE_PROPERTY, from_calendar.getTime());
+    SelectQuery<EipTExtTimecard> query = Database.query(EipTExtTimecard.class);
+    Expression exp1 =
+      ExpressionFactory.matchExp(EipTExtTimecard.USER_ID_PROPERTY, Integer
+        .valueOf(ALEipUtils.getUserId(rundata)));
+    Expression exp2 =
+      ExpressionFactory.matchExp(
+        EipTExtTimecard.PUNCH_DATE_PROPERTY,
+        from_calendar.getTime());
     query.setQualifier(exp1.andExp(exp2));
-    List slist = dataContext.performQuery(query);
+    List<EipTExtTimecard> slist = query.fetchList();
 
     // データが無かった
     if (slist == null || slist.size() == 0) {
       return null;
     }
 
-    return (EipTExtTimecard) slist.get(0);
+    return slist.get(0);
   }
 
   /**

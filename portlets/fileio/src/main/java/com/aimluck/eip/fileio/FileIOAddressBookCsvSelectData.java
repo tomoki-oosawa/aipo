@@ -58,22 +58,23 @@ public class FileIOAddressBookCsvSelectData extends ALCsvAbstractSelectData {
    * CSVファイルからアドレス帳情報を取得します <BR>
    */
   @Override
-  protected ResultList<?> selectList(RunData rundata, Context context) {
+  protected ResultList<FileIOAddressBookCsvData> selectList(RunData rundata,
+      Context context) {
     String filepath;
     try {
       if (stats == ALCsvTokenizer.CSV_LIST_MODE_READ) {
-        return new ResultList(readAddressBookInfoFromCsv(rundata));
+        return new ResultList<FileIOAddressBookCsvData>(
+          readAddressBookInfoFromCsv(rundata));
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_NO_ERROR) {
         filepath =
           FileIOAddressBookCsvUtils
             .getAddressBookCsvFolderName(getTempFolderIndex())
             + File.separator
             + FileIOAddressBookCsvUtils.CSV_ADDRESSBOOK_TEMP_FILENAME;
-        return new ResultList(readAddressBookInfoFromCsvPage(
-          rundata,
-          filepath,
-          (rundata.getParameters().getInteger("csvpage") - 1),
-          ALCsvTokenizer.CSV_SHOW_SIZE));
+        return new ResultList<FileIOAddressBookCsvData>(
+          readAddressBookInfoFromCsvPage(rundata, filepath, (rundata
+            .getParameters()
+            .getInteger("csvpage") - 1), ALCsvTokenizer.CSV_SHOW_SIZE));
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_ERROR) {
         if (this.error_count > 0) {
           filepath =
@@ -84,11 +85,12 @@ public class FileIOAddressBookCsvSelectData extends ALCsvAbstractSelectData {
         } else {
           return null;
         }
-        return new ResultList(readAddressBookInfoFromCsvPage(
-          rundata,
-          filepath,
-          0,
-          ALCsvTokenizer.CSV_SHOW_ERROR_SIZE));
+        return new ResultList<FileIOAddressBookCsvData>(
+          readAddressBookInfoFromCsvPage(
+            rundata,
+            filepath,
+            0,
+            ALCsvTokenizer.CSV_SHOW_ERROR_SIZE));
       } else {
         return null;
       }

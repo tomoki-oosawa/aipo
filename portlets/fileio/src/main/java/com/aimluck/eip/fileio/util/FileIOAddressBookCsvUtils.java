@@ -26,7 +26,7 @@ import com.aimluck.eip.common.ALCsvTokenizer;
 
 /**
  * AddressbookのCSV読取用ユーティリティクラスです。
- *
+ * 
  */
 public class FileIOAddressBookCsvUtils {
 
@@ -34,14 +34,15 @@ public class FileIOAddressBookCsvUtils {
   public static final String CSV_ADDRESSBOOK_TEMP_FILENAME = "address_book.csv";
 
   /** エラーリスト用CSVファイルを一時保管するファイル名の指定 */
-  public static final String CSV_ADDRESSBOOK_TEMP_ERROR_FILENAME = "address_book_err.csv";
+  public static final String CSV_ADDRESSBOOK_TEMP_ERROR_FILENAME =
+    "address_book_err.csv";
 
   /** CSVファイルを一時保管するディレクトリの指定 */
   public static final String CSV_ADDRESSBOOK_TEMP_FOLDER = "address_book";
 
   /**
    * アクセスしてきたユーザが利用するブラウザ名が Windows の MSIE であるかを判定する．
-   *
+   * 
    * @param rundata
    * @return MSIE の場合は，true．
    */
@@ -50,8 +51,9 @@ public class FileIOAddressBookCsvUtils {
 
     // User-Agent の取得
     String userAgent = rundata.getRequest().getHeader("User-Agent");
-    if (userAgent == null || userAgent.equals(""))
+    if (userAgent == null || userAgent.equals("")) {
       return false;
+    }
 
     if (userAgent.indexOf("Win") < 0) {
       return false;
@@ -65,14 +67,17 @@ public class FileIOAddressBookCsvUtils {
 
   /**
    * 一時ファイルの保存先フォルダを取得
-   *
+   * 
    * @param index
    * @return
    */
   public static String getAddressBookCsvFolderName(String index) {
-    String result = ALCsvTokenizer.CSV_TEMP_FOLDER + File.separator
+    String result =
+      ALCsvTokenizer.CSV_TEMP_FOLDER
+        + File.separator
         + FileIOAddressBookCsvUtils.CSV_ADDRESSBOOK_TEMP_FOLDER
-        + File.separator + index;
+        + File.separator
+        + index;
     return result;
   }
 

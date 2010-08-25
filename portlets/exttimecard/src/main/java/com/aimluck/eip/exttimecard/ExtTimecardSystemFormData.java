@@ -21,10 +21,8 @@ package com.aimluck.eip.exttimecard;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -39,7 +37,8 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
@@ -85,18 +84,14 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
 
   private int entity_id;
 
-  private DataContext dataContext;
-
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   /**
-   * 
+   *
    */
   public void initField() {
     // TODO 自動生成されたメソッド・スタブ
@@ -147,8 +142,8 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     try {
-      EipTExtTimecardSystem record = ExtTimecardUtils.getEipTExtTimecardSystem(
-        rundata, context);
+      EipTExtTimecardSystem record =
+        ExtTimecardUtils.getEipTExtTimecardSystem(rundata, context);
       if (record == null) {
         return false;
       }
@@ -181,8 +176,8 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     try {
-      EipTExtTimecardSystem record = ExtTimecardUtils.getEipTExtTimecardSystem(
-        rundata, context);
+      EipTExtTimecardSystem record =
+        ExtTimecardUtils.getEipTExtTimecardSystem(rundata, context);
       if (record == null) {
         return false;
       }
@@ -209,8 +204,9 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       // 更新日
       record.setUpdateDate(Calendar.getInstance().getTime());
 
-      dataContext.commitChanges();
+      Database.commit();
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -222,10 +218,11 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     try {
       // オブジェクトモデルを取得
-      EipTExtTimecardSystem record = ExtTimecardUtils.getEipTExtTimecardSystem(
-        rundata, context);
-      if (record == null)
+      EipTExtTimecardSystem record =
+        ExtTimecardUtils.getEipTExtTimecardSystem(rundata, context);
+      if (record == null) {
         return false;
+      }
 
       if (record.getSystemId().intValue() == 1) {
         // 勤務形態「通常」は削除不可
@@ -233,8 +230,8 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
         return false;
       }
 
-      dataContext.deleteObject(record);
-      dataContext.commitChanges();
+      Database.delete(record);
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -252,8 +249,8 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     try {
-      EipTExtTimecardSystem record = (EipTExtTimecardSystem) dataContext
-        .createAndRegisterNewObject(EipTExtTimecardSystem.class);
+      EipTExtTimecardSystem record =
+        Database.create(EipTExtTimecardSystem.class);
       record.setSystemName(system_name.getValue());
       record.setUserId((int) user_id.getValue());
       record.setStartHour((int) start_hour.getValue());
@@ -274,7 +271,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       record.setOutgoingAddFlag(tmp);
       record.setCreateDate(Calendar.getInstance().getTime());
       record.setUpdateDate(Calendar.getInstance().getTime());
-      dataContext.commitChanges();
+      Database.commit();
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         record.getSystemId(),
@@ -287,6 +284,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
     return true;
   }
 
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res = super.setFormData(rundata, context, msgList);
@@ -294,15 +292,16 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
     if (res) {
       if (ALEipConstants.MODE_NEW_FORM.equals(this.getMode())) {
         try {
-          DataContext dataContext = DatabaseOrmService.getInstance()
-            .getDataContext();
-          SelectQuery query = new SelectQuery(EipTExtTimecardSystem.class);
-          Expression exp1 = ExpressionFactory.matchDbExp(
-            EipTExtTimecardSystem.SYSTEM_ID_PK_COLUMN, 1);
+          SelectQuery<EipTExtTimecardSystem> query =
+            Database.query(EipTExtTimecardSystem.class);
+          Expression exp1 =
+            ExpressionFactory.matchDbExp(
+              EipTExtTimecardSystem.SYSTEM_ID_PK_COLUMN,
+              1);
           query.setQualifier(exp1);
 
-          List list = dataContext.performQuery(query);
-          EipTExtTimecardSystem record = (EipTExtTimecardSystem) list.get(0);
+          List<EipTExtTimecardSystem> list = query.fetchList();
+          EipTExtTimecardSystem record = list.get(0);
 
           user_id.setValue(String.valueOf(record.getUserId()));
           system_name.setValue("");
@@ -325,8 +324,11 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       }
       if (ALEipConstants.MODE_UPDATE.equals(this.getMode())) {
         if (!(this.entity_id > 0)) {
-          entity_id = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-            ALEipConstants.ENTITY_ID));
+          entity_id =
+            Integer.parseInt(ALEipUtils.getTemp(
+              rundata,
+              context,
+              ALEipConstants.ENTITY_ID));
           system_id.setValue(entity_id);
         }
       }
@@ -353,18 +355,24 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       throws ALPageNotFoundException, ALDBErrorException {
 
     try {
-      SelectQuery query = new SelectQuery(EipTExtTimecardSystem.class);
-      Expression exp1 = ExpressionFactory.matchExp(
-        EipTExtTimecardSystem.SYSTEM_NAME_PROPERTY, system_name.getValue());
+      SelectQuery<EipTExtTimecardSystem> query =
+        Database.query(EipTExtTimecardSystem.class);
+      Expression exp1 =
+        ExpressionFactory.matchExp(
+          EipTExtTimecardSystem.SYSTEM_NAME_PROPERTY,
+          system_name.getValue());
       query.setQualifier(exp1);
       if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
 
-        Expression exp2 = ExpressionFactory.noMatchDbExp(
-          EipTExtTimecardSystem.SYSTEM_ID_PK_COLUMN, system_id.getValue());
+        Expression exp2 =
+          ExpressionFactory.noMatchDbExp(
+            EipTExtTimecardSystem.SYSTEM_ID_PK_COLUMN,
+            system_id.getValue());
         query.andQualifier(exp2);
       }
-      if (dataContext.performQuery(query).size() != 0) {
-        msgList.add("勤務形態『 <span class='em'>" + system_name.toString()
+      if (query.fetchList().size() != 0) {
+        msgList.add("勤務形態『 <span class='em'>"
+          + system_name.toString()
           + "</span> 』は既に登録されています。");
       }
 

@@ -23,20 +23,19 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.account.AccountPasswdFormData;
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.exttimecard.ExtTimecardFormData;
 import com.aimluck.eip.exttimecard.ExtTimecardSystemFormData;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカード集計を処理するクラスです。 <br />
- *
+ * 
  */
 public class ExtTimecardSystemFormScreen extends ALVelocityScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ExtTimecardSystemFormScreen.class.getName());
+    .getLogger(ExtTimecardSystemFormScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
@@ -59,8 +58,10 @@ public class ExtTimecardSystemFormScreen extends ALVelocityScreen {
     ExtTimecardSystemFormData formData = new ExtTimecardSystemFormData();
     formData.initField();
     formData.doViewForm(this, rundata, context);
-    setTemplate(rundata, context,
-        "portlets/html/ja/ajax-exttimecardsystem-form.vm");
+    setTemplate(
+      rundata,
+      context,
+      "portlets/html/ja/ajax-exttimecardsystem-form.vm");
   }
 
 }

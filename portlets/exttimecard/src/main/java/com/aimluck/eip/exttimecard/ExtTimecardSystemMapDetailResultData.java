@@ -18,25 +18,25 @@
  */
 package com.aimluck.eip.exttimecard;
 
-import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
-import com.aimluck.eip.common.ALData;
 
 /**
  * タイムカードの情報を保持する。
- *
- *
+ * 
+ * 
  */
-public class ExtTimecardSystemMapDetailResultData extends ExtTimecardSystemMapResultData {
+public class ExtTimecardSystemMapDetailResultData extends
+    ExtTimecardSystemMapResultData {
 
   private ALStringField create_date;
 
   private ALStringField update_date;
 
   /**
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
+  @Override
   public void initField() {
     create_date = new ALStringField();
     update_date = new ALStringField();

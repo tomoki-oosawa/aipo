@@ -42,7 +42,7 @@ public class FileIOScheduleCsvUploadFormData extends
 
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FileIOScheduleCsvUploadFormData.class.getName());
+    .getLogger(FileIOScheduleCsvUploadFormData.class.getName());
 
   /** 一時フォルダ名(番号のみ) */
   private String temp_folder;
@@ -53,6 +53,7 @@ public class FileIOScheduleCsvUploadFormData extends
   /**
    * 初期化 <BR>
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -64,14 +65,16 @@ public class FileIOScheduleCsvUploadFormData extends
    * 一時フォルダ生成 <BR>
    */
   private void initTempFileName() {
-    File tmpfolderRootFolder = new File(ALCsvTokenizer.CSV_TEMP_FOLDER
-        + File.separator + FileIOScheduleCsvUtils.CSV_SCHEDULE_TEMP_FOLDER);
+    File tmpfolderRootFolder =
+      new File(ALCsvTokenizer.CSV_TEMP_FOLDER
+        + File.separator
+        + FileIOScheduleCsvUtils.CSV_SCHEDULE_TEMP_FOLDER);
     if (!tmpfolderRootFolder.exists()) {
       tmpfolderRootFolder.mkdirs();
     }
 
-    temp_folder = FileIOCsvUtils
-        .getNewAttachmentFolderName(tmpfolderRootFolder);
+    temp_folder =
+      FileIOCsvUtils.getNewAttachmentFolderName(tmpfolderRootFolder);
 
     String newfolderpath = tmpfolderRootFolder + File.separator + temp_folder;
     File newfolder = new File(newfolderpath);
@@ -79,20 +82,23 @@ public class FileIOScheduleCsvUploadFormData extends
       newfolder.mkdirs();
     }
 
-    temp_file_path = newfolderpath + File.separator
+    temp_file_path =
+      newfolderpath
+        + File.separator
         + FileIOScheduleCsvUtils.FOLDER_TMP_FOR_USERINFO_CSV_FILENAME;
   }
 
   /**
    * 一時ファイルのフルパスを取得します <BR>
    */
+  @Override
   public String getTempFilePath() {
     return temp_file_path;
   }
 
   /**
    * 一時フォルダ名（番号）を取得します <BR>
-   *
+   * 
    * @return
    */
   public String getTempFolderIndex() {

@@ -26,23 +26,23 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.exttimecard.ExtTimecardSystemMapSelectData;
 import com.aimluck.eip.exttimecard.ExtTimecardSystemSelectData;
-import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカード集計のアクションクラスです。 <BR>
- *
+ * 
  */
 public class ExtTimecardSystemAction extends ALBaseAction {
 
   /** logger */
+  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ExtTimecardSystemAction.class.getName());
+    .getLogger(ExtTimecardSystemAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
@@ -50,6 +50,7 @@ public class ExtTimecardSystemAction extends ALBaseAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
     if (getMode() == null) {
@@ -59,13 +60,13 @@ public class ExtTimecardSystemAction extends ALBaseAction {
 
   /**
    * 勤務形態を一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
-  public void doExt_timecard_system_list(RunData rundata,
-      Context context) throws Exception {
+  public void doExt_timecard_system_list(RunData rundata, Context context)
+      throws Exception {
     /*
      * this.setMode("list"); ExtTimecardSystemSelectData listData = new
      * ExtTimecardSystemSelectData(); listData.initField();
@@ -78,26 +79,29 @@ public class ExtTimecardSystemAction extends ALBaseAction {
     ExtTimecardSystemSelectData listData = new ExtTimecardSystemSelectData();
     listData.initField();
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1a-rows")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1a-rows")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "exttimecardsystem-list");
   }
 
   /**
    * ユーザーを一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
   public void doExt_timecard_system_user_list(RunData rundata, Context context)
       throws Exception {
-    ExtTimecardSystemMapSelectData listData = new ExtTimecardSystemMapSelectData();
+    ExtTimecardSystemMapSelectData listData =
+      new ExtTimecardSystemMapSelectData();
     listData.initField();
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1a-rows")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1a-rows")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "exttimecardsystem-user-list");
   }

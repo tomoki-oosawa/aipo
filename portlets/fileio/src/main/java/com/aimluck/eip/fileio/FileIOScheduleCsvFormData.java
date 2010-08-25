@@ -25,10 +25,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -47,7 +45,8 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileio.util.FileIOScheduleCsvUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -60,9 +59,6 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(FileIOScheduleCsvFormData.class.getName());
-
-  /** データコンテキスト */
-  private DataContext dataContext;
 
   /** ブラウザに表示するデフォルトのパスワード（ダミーパスワード） */
   public static final String DEFAULT_VIEW_PASSWORD = "*";
@@ -112,7 +108,6 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
     // スーパークラスのメソッドを呼び出す。
     super.init(action, rundata, context);
   }
@@ -171,7 +166,8 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
     end_date.setFieldName("終了日付");
 
     // 開始時刻
-    start_time = new ALDateTimeField(FileIOScheduleCsvUtils.DEFAULT_TIME_FORMAT);
+    start_time =
+      new ALDateTimeField(FileIOScheduleCsvUtils.DEFAULT_TIME_FORMAT);
     start_time.setFieldName("開始時刻");
 
     // 終了時刻
@@ -179,13 +175,13 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
     end_time.setFieldName("終了時刻");
 
     // 開始日時
-    start_date_time = new ALDateTimeField(
-      ALDateTimeField.DEFAULT_DATE_TIME_FORMAT);
+    start_date_time =
+      new ALDateTimeField(ALDateTimeField.DEFAULT_DATE_TIME_FORMAT);
     start_date_time.setFieldName("開始日時");
 
     // 終了日時
-    end_date_time = new ALDateTimeField(
-      ALDateTimeField.DEFAULT_DATE_TIME_FORMAT);
+    end_date_time =
+      new ALDateTimeField(ALDateTimeField.DEFAULT_DATE_TIME_FORMAT);
     end_date_time.setFieldName("終了日時");
 
     start_date_time.setValue("");
@@ -232,8 +228,10 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
   @Override
   protected boolean validate(List<String> msgList) {
     String usernamestr = username.getValue();
-    if ("admin".equals(usernamestr) || "template".equals(usernamestr)
-      || "anon".equals(usernamestr) || !username.validate(msgList)) {
+    if ("admin".equals(usernamestr)
+      || "template".equals(usernamestr)
+      || "anon".equals(usernamestr)
+      || !username.validate(msgList)) {
       username.setValue(null);
     }
     if (!userfullname.validate(msgList)) {
@@ -368,8 +366,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
       end_date_time.setValue(endcal.getTime());
 
       // 新規オブジェクトモデル
-      EipTSchedule schedule = (EipTSchedule) dataContext
-        .createAndRegisterNewObject(EipTSchedule.class);
+      EipTSchedule schedule = Database.create(EipTSchedule.class);
       // 親スケジュール ID
       schedule.setParentId(Integer.valueOf(1));
       // 予定
@@ -400,15 +397,14 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
       schedule.setRepeatPattern("N");
       schedule.setStartDate(start_date_time.getValue());
 
-      EipTCommonCategory category = CommonCategoryUtils
-        .getEipTCommonCategory(Long.valueOf(1));
+      EipTCommonCategory category =
+        CommonCategoryUtils.getEipTCommonCategory(Long.valueOf(1));
 
       // // スケジュールを登録
       // orm.doInsert(schedule);
       int size = memberList.size();
       for (int i = 0; i < size; i++) {
-        EipTScheduleMap map = (EipTScheduleMap) dataContext
-          .createAndRegisterNewObject(EipTScheduleMap.class);
+        EipTScheduleMap map = Database.create(EipTScheduleMap.class);
         ALEipUser user = memberList.get(i);
         int userid = (int) user.getUserId().getValue();
 
@@ -432,12 +428,12 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
         map.setType(FileIOScheduleCsvUtils.SCHEDULEMAP_TYPE_USER);
       }
       // スケジュールを登録
-      dataContext.commitChanges();
+      Database.commit();
       // logger.error("f1");
     } catch (Exception e) {
+      Database.rollback();
       // TODO: エラー処理
       logger.error("[FileIOScheduleCsvFormData]", e);
-      e.printStackTrace();
       // throw new ALDBErrorException();
       return false;
     }
@@ -485,18 +481,18 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
    */
   private TurbineUser getTurbineUser() {
 
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
-    SelectQuery query = new SelectQuery(TurbineUser.class);
-    Expression exp1 = ExpressionFactory.matchExp(
-      TurbineUser.FIRST_NAME_PROPERTY, userfirstname);
-    Expression exp2 = ExpressionFactory.matchExp(
-      TurbineUser.LAST_NAME_PROPERTY, userlastname);
-    Expression exp3 = ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY,
-      "F");
+    SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+    Expression exp1 =
+      ExpressionFactory
+        .matchExp(TurbineUser.FIRST_NAME_PROPERTY, userfirstname);
+    Expression exp2 =
+      ExpressionFactory.matchExp(TurbineUser.LAST_NAME_PROPERTY, userlastname);
+    Expression exp3 =
+      ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
 
     query.setQualifier(exp1.andExp(exp2.andExp(exp3)));
 
-    List<?> users = dataContext.performQuery(query);
+    List<TurbineUser> users = query.fetchList();
 
     if (users == null || users.size() == 0) {
       // 指定したUser IDのレコードが見つからない場合
@@ -504,7 +500,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
       return null;
     }
 
-    TurbineUser tuser = (TurbineUser) users.get(0);
+    TurbineUser tuser = users.get(0);
     return tuser;
 
   }
@@ -895,7 +891,8 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
     int date2Month = cal2.get(Calendar.MONTH) + 1;
     int date2Day = cal2.get(Calendar.DATE);
 
-    if (date1Year == date2Year && date1Month == date2Month
+    if (date1Year == date2Year
+      && date1Month == date2Month
       && date1Day == date2Day) {
       return 0;
     }

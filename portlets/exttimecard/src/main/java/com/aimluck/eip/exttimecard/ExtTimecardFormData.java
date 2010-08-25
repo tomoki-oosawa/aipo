@@ -27,12 +27,10 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -50,7 +48,8 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -58,13 +57,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカードのフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class ExtTimecardFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ExtTimecardFormData.class.getName());
+    .getLogger(ExtTimecardFormData.class.getName());
 
   /** ToDo名 */
 
@@ -114,8 +113,6 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   private int login_uid;
 
-  private DataContext dataContext;
-
   private String edit_mode;
 
   private String alt_mode;
@@ -134,13 +131,14 @@ public class ExtTimecardFormData extends ALAbstractFormData {
   private EipTExtTimecardSystem timecard_system;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -148,24 +146,22 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     login_uid = ALEipUtils.getUserId(rundata);
 
     // 出勤・退勤時間
-    old_clock_in_time_hour = rundata.getParameters().get(
-        "old_clock_in_time_hour");
-    old_clock_in_time_minute = rundata.getParameters().get(
-        "old_clock_in_time_minute");
-    old_clock_out_time_hour = rundata.getParameters().get(
-        "old_clock_out_time_hour");
-    old_clock_out_time_minute = rundata.getParameters().get(
-        "old_clock_out_time_minute");
+    old_clock_in_time_hour =
+      rundata.getParameters().get("old_clock_in_time_hour");
+    old_clock_in_time_minute =
+      rundata.getParameters().get("old_clock_in_time_minute");
+    old_clock_out_time_hour =
+      rundata.getParameters().get("old_clock_out_time_hour");
+    old_clock_out_time_minute =
+      rundata.getParameters().get("old_clock_out_time_minute");
 
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
-
-    timecard_system = ExtTimecardUtils.getEipTExtTimecardSystemCurrentUserId(
-        rundata, context);
+    timecard_system =
+      ExtTimecardUtils.getEipTExtTimecardSystemCurrentUserId(rundata, context);
   }
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -221,9 +217,10 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * タイムカードの各フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // reason.setNotNull(true);
     // reason.limitMaxLength(1000);
@@ -233,23 +230,26 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * タイムカードのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     try {
       if (type.getValue().equals("")) {
         msgList.add("『 <span class='em'>種類</span> 』を選択してください。");
       }
 
-      if (!"punchin".equals(edit_mode) && !"punchout".equals(edit_mode)
-          && !"outgoing".equals(edit_mode) && !"comeback".equals(edit_mode)) {
+      if (!"punchin".equals(edit_mode)
+        && !"punchout".equals(edit_mode)
+        && !"outgoing".equals(edit_mode)
+        && !"comeback".equals(edit_mode)) {
         if ((old_clock_in_time_hour != clock_in_time.getHour())
-            || (old_clock_in_time_minute != clock_in_time.getMinute())
-            || (old_clock_out_time_hour != clock_out_time.getHour())
-            || (old_clock_out_time_minute != clock_out_time.getMinute())) {
+          || (old_clock_in_time_minute != clock_in_time.getMinute())
+          || (old_clock_out_time_hour != clock_out_time.getHour())
+          || (old_clock_out_time_minute != clock_out_time.getMinute())) {
           reason.setNotNull(true);
           reason.validate(msgList);
           remarks.validate(msgList);
@@ -257,15 +257,16 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       }
 
       if (getMode() == ALEipConstants.MODE_INSERT) {
-        SelectQuery workflg_query = new SelectQuery(EipTExtTimecard.class);
-        Expression workflg_exp = ExpressionFactory.matchExp(
-            EipTExtTimecard.USER_ID_PROPERTY, Integer.valueOf(login_uid));
+        SelectQuery<EipTExtTimecard> workflg_query =
+          Database.query(EipTExtTimecard.class);
+        Expression workflg_exp =
+          ExpressionFactory.matchExp(EipTExtTimecard.USER_ID_PROPERTY, Integer
+            .valueOf(login_uid));
         workflg_query.setQualifier(workflg_exp);
-        workflg_query.addOrdering(EipTExtTimecard.PUNCH_DATE_PROPERTY, false);
-        workflg_query.setFetchingDataRows(true);
-        List<?> workflg_list = dataContext.performQuery(workflg_query);
+        workflg_query.orderDesending(EipTExtTimecard.PUNCH_DATE_PROPERTY);
+        List<EipTExtTimecard> workflg_list = workflg_query.fetchList();
         if (workflg_list != null && workflg_list.size() > 0) {
-          //DataRow dataRow = (DataRow) workflg_list.get(0);
+          // DataRow dataRow = (DataRow) workflg_list.get(0);
 
           // if (((String) ALEipUtils.getObjFromDataRow(dataRow,
           // EipTExtTimecard.WORK_FLAG_COLUMN)).equals(work_flag.getValue())) {
@@ -282,16 +283,18 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       if (edit_mode.equals("")) {
         /** 日付を punch_date に合わせる */
         if (ajustDate(clock_in_time, punch_date)
-            && ajustDate(clock_out_time, punch_date)) {
-          if (clock_in_time.getValue().getTime() > clock_out_time.getValue()
-              .getTime()) {
+          && ajustDate(clock_out_time, punch_date)) {
+          if (clock_in_time.getValue().getTime() > clock_out_time
+            .getValue()
+            .getTime()) {
             msgList
-                .add("『 <span class='em'>退勤時刻</span> 』は『 <span class='em'>出勤時刻</span> 』以降の時刻を指定してください。");
+              .add("『 <span class='em'>退勤時刻</span> 』は『 <span class='em'>出勤時刻</span> 』以降の時刻を指定してください。");
           }
         }
 
         /** 外出／復帰時間をリストに代入 */
-        ArrayList<HashMap> list_from_to = new ArrayList<HashMap>();
+        List<Map<String, Long>> list_from_to =
+          new ArrayList<Map<String, Long>>();
         Field field_out, field_come;
         for (int i = 1; i <= EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY; i++) {
           field_out = this.getClass().getDeclaredField("outgoing_time" + i);
@@ -299,33 +302,37 @@ public class ExtTimecardFormData extends ALAbstractFormData {
           ALDateTimeField outgoing = (ALDateTimeField) field_out.get(this);
           ALDateTimeField comeback = (ALDateTimeField) field_come.get(this);
           if (ajustDate(outgoing, punch_date)
-              && ajustDate(comeback, punch_date)) {
+            && ajustDate(comeback, punch_date)) {
             long from = outgoing.getValue().getTime();
             long to = comeback.getValue().getTime();
             if (from <= to) {
               if (from < clock_in_time.getValue().getTime()) {
                 msgList
-                    .add("『 <span class='em'>外出時刻</span> 』は『 <span class='em'>出勤時刻</span> 』以降の時刻を指定してください。（"
-                        + i + "行目）");
+                  .add("『 <span class='em'>外出時刻</span> 』は『 <span class='em'>出勤時刻</span> 』以降の時刻を指定してください。（"
+                    + i
+                    + "行目）");
               }
               if (clock_out_time.isNotNull()
-                  && to > clock_out_time.getValue().getTime()) {
+                && to > clock_out_time.getValue().getTime()) {
                 msgList
-                    .add("『 <span class='em'>復帰時刻</span> 』は『 <span class='em'>退勤時刻</span> 』以前の時刻を指定してください。（"
-                        + i + "行目）");
+                  .add("『 <span class='em'>復帰時刻</span> 』は『 <span class='em'>退勤時刻</span> 』以前の時刻を指定してください。（"
+                    + i
+                    + "行目）");
               }
-              HashMap from_to = new HashMap();
+              HashMap<String, Long> from_to = new HashMap<String, Long>();
               from_to.put("from", outgoing.getValue().getTime());
               from_to.put("to", comeback.getValue().getTime());
               list_from_to.add(from_to);
             } else {
               msgList
-                  .add("『 <span class='em'>復帰時刻</span> 』は『 <span class='em'>外出時刻</span> 』以降の時刻を指定してください。（"
-                      + i + "行目）");
+                .add("『 <span class='em'>復帰時刻</span> 』は『 <span class='em'>外出時刻</span> 』以降の時刻を指定してください。（"
+                  + i
+                  + "行目）");
             }
           } else if (ajustDate(outgoing, punch_date)
-              && !ajustDate(comeback, punch_date) && i == 1) {
-            HashMap from_to = new HashMap();
+            && !ajustDate(comeback, punch_date)
+            && i == 1) {
+            HashMap<String, Long> from_to = new HashMap<String, Long>();
             from_to.put("from", outgoing.getValue().getTime());
             // from_to.put("to", comeback.getValue().getTime());
             list_from_to.add(from_to);
@@ -336,21 +343,22 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         /** 外出時間の重複をチェックする */
         int i = 1;
         if (list_from_to.size() > 0) {
-          ArrayList<HashMap> empty_from_to = new ArrayList<HashMap>();
-          long min_from = (Long) list_from_to.get(0).get("from");
-          long max_to = (Long) list_from_to.get(0).get("to");
+          List<Map<String, Long>> empty_from_to =
+            new ArrayList<Map<String, Long>>();
+          long min_from = list_from_to.get(0).get("from");
+          long max_to = list_from_to.get(0).get("to");
           list_from_to.remove(0);
-          for (HashMap map : list_from_to) {
-            long new_from = (Long) map.get("from");
-            long new_to = (Long) map.get("to");
+          for (Map<String, Long> map : list_from_to) {
+            long new_from = map.get("from");
+            long new_to = map.get("to");
             if (new_to <= min_from) {
-              HashMap empty = new HashMap();
+              Map<String, Long> empty = new HashMap<String, Long>();
               empty.put("from", new_to);
               empty.put("to", min_from);
               empty_from_to.add(empty);
               min_from = new_from;
             } else if (new_from >= max_to) {
-              HashMap empty = new HashMap();
+              Map<String, Long> empty = new HashMap<String, Long>();
               empty.put("from", max_to);
               empty.put("to", new_from);
               empty_from_to.add(empty);
@@ -358,16 +366,18 @@ public class ExtTimecardFormData extends ALAbstractFormData {
             } else {
               /** empty_from_toのリストから入れる場所を探す */
               boolean duplicate_flag = true;
-              for (HashMap empty_map : empty_from_to) {
-                if ((Long) empty_map.get("from") <= new_from
-                    && (Long) empty_map.get("to") >= new_to) {
+              for (Map<String, Long> empty_map : empty_from_to) {
+                if (empty_map.get("from") <= new_from
+                  && empty_map.get("to") >= new_to) {
                   /** 区間を分割し、もとあった空白を削除 */
-                  HashMap empty_left = new HashMap();
+                  HashMap<String, Long> empty_left =
+                    new HashMap<String, Long>();
                   empty_left.put("from", empty_map.get("from"));
                   empty_left.put("to", new_from);
                   empty_from_to.add(empty_left);
 
-                  HashMap empty_right = new HashMap();
+                  HashMap<String, Long> empty_right =
+                    new HashMap<String, Long>();
                   empty_right.put("from", new_to);
                   empty_right.put("to", empty_map.get("to"));
                   empty_from_to.add(empty_right);
@@ -386,20 +396,22 @@ public class ExtTimecardFormData extends ALAbstractFormData {
           }
 
           /** 並べ替える */
-          Collections.sort(empty_from_to, new Comparator() {
-            public int compare(Object o1, Object o2) {
-              HashMap hash1 = (HashMap) o1;
-              HashMap hash2 = (HashMap) o2;
-              long from1 = (Long) hash1.get("from");
-              long from2 = (Long) hash2.get("from");
+          Collections.sort(empty_from_to, new Comparator<Map<String, Long>>() {
+            public int compare(Map<String, Long> o1, Map<String, Long> o2) {
+              Map<String, Long> hash1 = o1;
+              Map<String, Long> hash2 = o2;
+              long from1 = hash1.get("from");
+              long from2 = hash2.get("from");
               if (from1 == from2) {
-                long to1 = (Long) hash1.get("to");
-                long to2 = (Long) hash2.get("to");
+                long to1 = hash1.get("to");
+                long to2 = hash2.get("to");
                 return (int) (to1 - to2);
-              } else
+              } else {
                 return (int) (from1 - from2);
+              }
             }
 
+            @Override
             public boolean equals(Object obj) {
               return super.equals(obj);
             }
@@ -407,8 +419,8 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
           long from = min_from;
           long to;
-          for (HashMap empty : empty_from_to) {
-            to = (Long) empty.get("from");
+          for (Map<String, Long> empty : empty_from_to) {
+            to = empty.get("from");
             field_out = this.getClass().getDeclaredField("outgoing_time" + i);
             field_come = this.getClass().getDeclaredField("comeback_time" + i);
             ALDateTimeField outgoing = (ALDateTimeField) field_out.get(this);
@@ -416,7 +428,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
             outgoing.setValue(new Date(from));
             comeback.setValue(new Date(to));
             i++;
-            from = (Long) empty.get("to");
+            from = empty.get("to");
           }
           to = max_to;
           field_out = this.getClass().getDeclaredField("outgoing_time" + i);
@@ -443,12 +455,14 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     return (msgList.size() == 0);
   }
 
-  private EipTExtTimecard getNearlyAboveRecord(List list, int timecard_id) {
+  @SuppressWarnings("unused")
+  private EipTExtTimecard getNearlyAboveRecord(List<EipTExtTimecard> list,
+      int timecard_id) {
     EipTExtTimecard result = null;
     EipTExtTimecard record = null;
     int size = list.size();
     for (int i = 0; i < size; i++) {
-      record = (EipTExtTimecard) list.get(i);
+      record = list.get(i);
       if (record.getExtTimecardId().intValue() >= timecard_id) {
         return result;
       } else {
@@ -459,11 +473,13 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     return null;
   }
 
-  private EipTExtTimecard getNearlyBelowRecord(List list, int timecard_id) {
+  @SuppressWarnings("unused")
+  private EipTExtTimecard getNearlyBelowRecord(List<EipTExtTimecard> list,
+      int timecard_id) {
     EipTExtTimecard record = null;
     int size = list.size();
     for (int i = 0; i < size; i++) {
-      record = (EipTExtTimecard) list.get(i);
+      record = list.get(i);
       if (record.getExtTimecardId().intValue() > timecard_id) {
         return record;
       }
@@ -472,6 +488,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     return null;
   }
 
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res = super.setFormData(rundata, context, msgList);
@@ -480,7 +497,10 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       if (ALEipConstants.MODE_UPDATE.equals(this.getMode())) {
         try {
           if (!(this.entity_id > 0)) {
-            entity_id = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
+            entity_id =
+              Integer.parseInt(ALEipUtils.getTemp(
+                rundata,
+                context,
                 ALEipConstants.ENTITY_ID));
           }
           if ("".equals(this.type.getValue())) {
@@ -488,14 +508,18 @@ public class ExtTimecardFormData extends ALAbstractFormData {
             this.type.setValue(type);
           }
 
-          String punch_date_year = rundata.getParameters().get(
-              "punch_date_year");
-          String punch_date_month = rundata.getParameters().get(
-              "punch_date_month");
+          String punch_date_year =
+            rundata.getParameters().get("punch_date_year");
+          String punch_date_month =
+            rundata.getParameters().get("punch_date_month");
           String punch_date_day = rundata.getParameters().get("punch_date_day");
           StringBuffer buffer = new StringBuffer(8);
-          buffer.append(punch_date_year).append('/').append(punch_date_month)
-              .append('/').append(punch_date_day);
+          buffer
+            .append(punch_date_year)
+            .append('/')
+            .append(punch_date_month)
+            .append('/')
+            .append(punch_date_day);
 
           this.punch_date.setValue(buffer.toString());
 
@@ -513,12 +537,16 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         StringBuffer buffer = new StringBuffer(8);
         String type = rundata.getParameters().get("type");
         String punch_date_year = rundata.getParameters().get("punch_date_year");
-        String punch_date_month = rundata.getParameters().get(
-            "punch_date_month");
+        String punch_date_month =
+          rundata.getParameters().get("punch_date_month");
         String punch_date_day = rundata.getParameters().get("punch_date_day");
 
-        buffer.append(punch_date_year).append('/').append(punch_date_month)
-            .append('/').append(punch_date_day);
+        buffer
+          .append(punch_date_year)
+          .append('/')
+          .append(punch_date_month)
+          .append('/')
+          .append(punch_date_day);
 
         String reason = rundata.getParameters().get("reason");
         String remarks = rundata.getParameters().get("remarks");
@@ -547,7 +575,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * タイムカードをデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -555,12 +583,13 @@ public class ExtTimecardFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTExtTimecard timecard = ExtTimecardUtils.getEipTExtTimecard(rundata,
-          context);
+      EipTExtTimecard timecard =
+        ExtTimecardUtils.getEipTExtTimecard(rundata, context);
       if (timecard == null) {
         return false;
       }
@@ -600,8 +629,9 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       }
 
       // 日時をセッションに保存
-      ALEipUtils.setTemp(rundata, context, "punch_date", punch_date.getValue()
-          .toString());
+      ALEipUtils.setTemp(rundata, context, "punch_date", punch_date
+        .getValue()
+        .toString());
 
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -612,7 +642,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * タイムカードをデータベースから削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -620,6 +650,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
@@ -644,7 +675,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * タイムカードをデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -652,12 +683,12 @@ public class ExtTimecardFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // 新規オブジェクトモデル
-      EipTExtTimecard timecard = (EipTExtTimecard) dataContext
-          .createAndRegisterNewObject(EipTExtTimecard.class);
+      EipTExtTimecard timecard = Database.create(EipTExtTimecard.class);
 
       // ユーザーID
       timecard.setUserId(Integer.valueOf(ALEipUtils.getUserId(rundata)));
@@ -731,15 +762,16 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       timecard.setUpdateDate(Calendar.getInstance().getTime());
 
       // タイムカードを登録
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          timecard.getExtTimecardId(),
-          ALEventlogConstants.PORTLET_TYPE_TIMECARD, null);
+        timecard.getExtTimecardId(),
+        ALEventlogConstants.PORTLET_TYPE_TIMECARD,
+        null);
 
     } catch (Exception ex) {
-
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -748,7 +780,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているタイムカードを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -756,15 +788,16 @@ public class ExtTimecardFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       if (!edit_mode.equals("")) {
         ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, String
-            .valueOf(entity_id));
+          .valueOf(entity_id));
       }
-      EipTExtTimecard timecard = ExtTimecardUtils.getEipTExtTimecard(rundata,
-          context);
+      EipTExtTimecard timecard =
+        ExtTimecardUtils.getEipTExtTimecard(rundata, context);
       if (timecard == null) {
         return false;
       }
@@ -827,14 +860,16 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       // 更新日
       timecard.setUpdateDate(Calendar.getInstance().getTime());
 
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          timecard.getExtTimecardId(),
-          ALEventlogConstants.PORTLET_TYPE_TIMECARD, null);
+        timecard.getExtTimecardId(),
+        ALEventlogConstants.PORTLET_TYPE_TIMECARD,
+        null);
 
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -844,7 +879,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 各ボタンを押したときの動作 <BR>
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -856,8 +891,8 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       String mode) {
     try {
       edit_mode = mode;
-      EipTExtTimecard timecard = ExtTimecardUtils.getUpdateEipTExtTimecard(
-          rundata, context);
+      EipTExtTimecard timecard =
+        ExtTimecardUtils.getUpdateEipTExtTimecard(rundata, context);
       this.type.setValue("P");
 
       if (timecard != null) {
@@ -879,7 +914,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 日付
-   *
+   * 
    * @return
    */
   public ALDateTimeField getPunchDate() {
@@ -888,7 +923,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 日付を取得します。
-   *
+   * 
    * @return
    */
   public String getDateStr() {
@@ -902,7 +937,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 日付が過去かどうか
-   *
+   * 
    * @return
    */
   public boolean getIsPast() {
@@ -913,7 +948,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 種類
-   *
+   * 
    * @return
    */
   public ALStringField getType() {
@@ -922,7 +957,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 出勤時間
-   *
+   * 
    * @return
    */
   public ALDateTimeField getClockInTime() {
@@ -931,7 +966,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 退勤時間
-   *
+   * 
    * @return
    */
   public ALDateTimeField getClockOutTime() {
@@ -940,46 +975,48 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 外出時間
-   *
+   * 
    * @return
    */
   public ALDateTimeField getOutgoingTime(int n) {
-    if (n > EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY)
+    if (n > EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY) {
       return null;
+    }
     switch (n) {
-    case 1:
-      return outgoing_time1;
-    case 2:
-      return outgoing_time2;
-    case 3:
-      return outgoing_time3;
-    case 4:
-      return outgoing_time4;
-    case 5:
-      return outgoing_time5;
+      case 1:
+        return outgoing_time1;
+      case 2:
+        return outgoing_time2;
+      case 3:
+        return outgoing_time3;
+      case 4:
+        return outgoing_time4;
+      case 5:
+        return outgoing_time5;
     }
     return null;
   }
 
   /**
    * 復帰時間
-   *
+   * 
    * @return
    */
   public ALDateTimeField getComebackTime(int n) {
-    if (n > EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY)
+    if (n > EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY) {
       return null;
+    }
     switch (n) {
-    case 1:
-      return comeback_time1;
-    case 2:
-      return comeback_time2;
-    case 3:
-      return comeback_time3;
-    case 4:
-      return comeback_time4;
-    case 5:
-      return comeback_time5;
+      case 1:
+        return comeback_time1;
+      case 2:
+        return comeback_time2;
+      case 3:
+        return comeback_time3;
+      case 4:
+        return comeback_time4;
+      case 5:
+        return comeback_time5;
     }
     return null;
   }
@@ -990,7 +1027,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 修正理由
-   *
+   * 
    * @return
    */
   public ALStringField getReason() {
@@ -999,7 +1036,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 備考
-   *
+   * 
    * @return
    */
   public ALStringField getRemarks() {
@@ -1008,7 +1045,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * タイムカード設定
-   *
+   * 
    * @return
    */
   public EipTExtTimecardSystem getTimecardSystem() {
@@ -1017,13 +1054,14 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 指定した2つの日付を比較する．
-   *
+   * 
    * @param date1
    * @param date2
    * @param checkTime
-   *            時間まで比較する場合，true．
+   *          時間まで比較する場合，true．
    * @return 等しい場合，0. date1>date2の場合, 1. date1 <date2の場合, 2.
    */
+  @SuppressWarnings("unused")
   private int compareToDate(Date date1, Date date2) {
     Calendar cal1 = Calendar.getInstance();
     Calendar cal2 = Calendar.getInstance();
@@ -1043,9 +1081,12 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     int date2Minute = cal2.get(Calendar.MINUTE);
     int date2Second = cal2.get(Calendar.SECOND);
 
-    if (date1Year == date2Year && date1Month == date2Month
-        && date1Day == date2Day && date1Hour == date2Hour
-        && date1Minute == date2Minute && date1Second == date2Second) {
+    if (date1Year == date2Year
+      && date1Month == date2Month
+      && date1Day == date2Day
+      && date1Hour == date2Hour
+      && date1Minute == date2Minute
+      && date1Second == date2Second) {
       return 0;
     }
     if (cal1.after(cal2)) {
@@ -1057,7 +1098,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 日付がずれていたら、強制的に直します。
-   *
+   * 
    * @param datetime
    * @param ajustto
    * @return
@@ -1073,7 +1114,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
       /** CHANGE_HOUR以下だったら、次の日とみなす */
       if (Integer.parseInt(datetime.getHour()) < timecard_system
-          .getChangeHour()) {
+        .getChangeHour()) {
         cal.add(Calendar.DAY_OF_MONTH, 1);
       }
       datetime.setValue(cal.getTime());
@@ -1085,9 +1126,10 @@ public class ExtTimecardFormData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
   }

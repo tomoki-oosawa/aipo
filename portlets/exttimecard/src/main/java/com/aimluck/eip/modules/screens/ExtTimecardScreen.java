@@ -28,12 +28,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカードの一覧を処理するクラスです。 <br />
- *
+ * 
  */
 public class ExtTimecardScreen extends ALVelocityScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ExtTimecardScreen.class.getName());
+    .getLogger(ExtTimecardScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)

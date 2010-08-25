@@ -21,10 +21,8 @@ package com.aimluck.eip.exttimecard;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -32,20 +30,21 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.common.ALAbstractCheckList;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
  * ワークフローカテゴリの複数削除を行うためのクラスです。 <BR>
- *
+ * 
  */
 public class ExtTimecardSystemMultiDelete extends ALAbstractCheckList {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ExtTimecardSystemMultiDelete.class.getName());
+    .getLogger(ExtTimecardSystemMultiDelete.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param values
@@ -55,33 +54,37 @@ public class ExtTimecardSystemMultiDelete extends ALAbstractCheckList {
    *      org.apache.velocity.context.Context, java.util.ArrayList,
    *      java.util.ArrayList)
    */
-  protected boolean action(RunData rundata, Context context, List<String> values,
-      List<String> msgList) {
+  @Override
+  protected boolean action(RunData rundata, Context context,
+      List<String> values, List<String> msgList) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
 
-      List intValues = new ArrayList();
+      List<Integer> intValues = new ArrayList<Integer>();
       int valuesize = values.size();
       for (int i = 0; i < valuesize; i++) {
-        String value = (String) values.get(i);
+        String value = values.get(i);
         if (!"1".equals(value)) {
           intValues.add(Integer.valueOf(value));
         }
       }
 
-      SelectQuery query = new SelectQuery(EipTExtTimecardSystem.class);
-      Expression exp1 = ExpressionFactory.inDbExp(
-          EipTExtTimecardSystem.SYSTEM_ID_PK_COLUMN, intValues);
+      SelectQuery<EipTExtTimecardSystem> query =
+        Database.query(EipTExtTimecardSystem.class);
+      Expression exp1 =
+        ExpressionFactory.inDbExp(
+          EipTExtTimecardSystem.SYSTEM_ID_PK_COLUMN,
+          intValues);
       query.setQualifier(exp1);
-      List list = dataContext.performQuery(query);
-      if (list == null || list.size() == 0)
+      List<EipTExtTimecardSystem> list = query.fetchList();
+      if (list == null || list.size() == 0) {
         return false;
+      }
 
-      dataContext.deleteObjects(list);
+      Database.deleteAll(list);
 
-      dataContext.commitChanges();
+      Database.commit();
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }

@@ -32,9 +32,10 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class ExtTimecardSystemMapFormScreen extends ALVelocityScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ExtTimecardSystemMapFormScreen.class.getName());
+    .getLogger(ExtTimecardSystemMapFormScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
@@ -44,11 +45,14 @@ public class ExtTimecardSystemMapFormScreen extends ALVelocityScreen {
     try {
       ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, "1");
 
-      ExtTimecardSystemMapFormData formData = new ExtTimecardSystemMapFormData();
+      ExtTimecardSystemMapFormData formData =
+        new ExtTimecardSystemMapFormData();
       formData.initField();
       formData.doViewForm(this, rundata, context);
-      setTemplate(rundata, context,
-          "portlets/html/ja/ajax-exttimecardsystem-map-form.vm");
+      setTemplate(
+        rundata,
+        context,
+        "portlets/html/ja/ajax-exttimecardsystem-map-form.vm");
 
     } catch (Exception ex) {
       logger.error("[ExtTimecardSettingsFormScreen] Exception.", ex);

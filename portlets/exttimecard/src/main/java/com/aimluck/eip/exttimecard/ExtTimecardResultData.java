@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
@@ -78,10 +79,10 @@ public class ExtTimecardResultData implements ALData {
   private ALDateTimeField clock_out_time;
 
   /** 外出時間 */
-  private ArrayList<ALDateTimeField> outgoing_time;
+  private List<ALDateTimeField> outgoing_time;
 
   /** 復帰時間 */
-  private ArrayList<ALDateTimeField> comeback_time;
+  private List<ALDateTimeField> comeback_time;
 
   /** 種類 */
   private ALStringField type;
@@ -167,7 +168,7 @@ public class ExtTimecardResultData implements ALData {
     int length = outgoing_time.size();
     for (int i = 0; i < length; i++) {
       if (!outgoing_time.get(i).isNullHour()
-          && comeback_time.get(i).isNullHour()) {
+        && comeback_time.get(i).isNullHour()) {
         return true;
       }
     }
@@ -301,8 +302,9 @@ public class ExtTimecardResultData implements ALData {
   public ALDateTimeField getOutgoingTime() {
     for (int i = 0; i < EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY; i++) {
       if (outgoing_time.get(i).isNullHour()) {
-        if (i == 0)
+        if (i == 0) {
           return null;
+        }
         return outgoing_time.get(i - 1);
       }
     }
@@ -317,8 +319,9 @@ public class ExtTimecardResultData implements ALData {
   public ALDateTimeField getComebackTime() {
     for (int i = 0; i < EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY; i++) {
       if (!comeback_time.get(i).isNullHour()) {
-        if (i == 0)
+        if (i == 0) {
           return null;
+        }
         return comeback_time.get(i - 1);
       }
     }
@@ -330,7 +333,7 @@ public class ExtTimecardResultData implements ALData {
    * 
    * @return
    */
-  public ArrayList<ALDateTimeField> getAllOutgoingTime() {
+  public List<ALDateTimeField> getAllOutgoingTime() {
     return outgoing_time;
   }
 
@@ -339,7 +342,7 @@ public class ExtTimecardResultData implements ALData {
    * 
    * @return
    */
-  public ArrayList<ALDateTimeField> getAllComebackTime() {
+  public List<ALDateTimeField> getAllComebackTime() {
     return comeback_time;
   }
 
@@ -411,14 +414,18 @@ public class ExtTimecardResultData implements ALData {
     int date2Minute = cal.get(Calendar.MINUTE);
     int date2Second = cal.get(Calendar.SECOND);
     if (checkTime) {
-      if (date1Year == date2Year && date1Month == date2Month
-          && date1Day == date2Day && date1Hour == date2Hour
-          && date1Minute == date2Minute && date1Second == date2Second) {
+      if (date1Year == date2Year
+        && date1Month == date2Month
+        && date1Day == date2Day
+        && date1Hour == date2Hour
+        && date1Minute == date2Minute
+        && date1Second == date2Second) {
         return true;
       }
     } else {
-      if (date1Year == date2Year && date1Month == date2Month
-          && date1Day == date2Day) {
+      if (date1Year == date2Year
+        && date1Month == date2Month
+        && date1Day == date2Day) {
         return true;
       }
     }

@@ -20,14 +20,14 @@ package com.aimluck.eip.modules.screens;
 
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.cayenne.om.portlet.EipMAddressbookCompany;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
  *
@@ -36,11 +36,12 @@ import com.aimluck.eip.orm.DatabaseOrmService;
 public class FileIOAddressBookCompanyCsvFileScreen extends ALCSVScreen {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FileIOAddressBookCompanyCsvFileScreen.class.getName());
+    .getLogger(FileIOAddressBookCompanyCsvFileScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.util.RunData)
    */
+  @Override
   protected String getContentType(RunData rundata) {
     return "application/octet-stream";
   }
@@ -48,6 +49,7 @@ public class FileIOAddressBookCompanyCsvFileScreen extends ALCSVScreen {
   /**
    *
    */
+  @Override
   protected String getCSVString(RunData rundata) throws Exception {
     String LINE_SEPARATOR = System.getProperty("line.separator");
     try {
@@ -55,9 +57,11 @@ public class FileIOAddressBookCompanyCsvFileScreen extends ALCSVScreen {
       sb.append("会社名,部課,フリガナ（会社名）,郵便番号,住所,会社電話番号,会社Fax,URL");
       sb.append(LINE_SEPARATOR);
 
-      sb.append("やまだ商事,営業部,ヤマダショウジ,111-1111,東京都○○,99-9999-9999,99-9999-9999,http://");
+      sb
+        .append("やまだ商事,営業部,ヤマダショウジ,111-1111,東京都○○,99-9999-9999,99-9999-9999,http://");
       sb.append(LINE_SEPARATOR);
-      sb.append("イトウ水産,業務部,イトウスイサン,222-2222,東京都○○,99-9999-9998,99-9999-9998,http://");
+      sb
+        .append("イトウ水産,業務部,イトウスイサン,222-2222,東京都○○,99-9999-9998,99-9999-9998,http://");
       sb.append(LINE_SEPARATOR);
       sb.append("たなか建設,,タナカケンセツ,,,99-9999-9999,99-9999-9999,");
       sb.append(LINE_SEPARATOR);
@@ -78,24 +82,26 @@ public class FileIOAddressBookCompanyCsvFileScreen extends ALCSVScreen {
       StringBuffer sb = new StringBuffer();
       sb.append("会社名,部課,フリガナ（会社名）,郵便番号,住所,会社電話番号,会社Fax,URL");
       sb.append(LINE_SEPARATOR);
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
       EipMAddressbookCompany rec0;
-      SelectQuery query0 = new SelectQuery(EipMAddressbookCompany.class);
-      List<?> list = dataContext.performQuery(query0);
+      SelectQuery<EipMAddressbookCompany> query0 =
+        Database.query(EipMAddressbookCompany.class);
+      List<EipMAddressbookCompany> list = query0.fetchList();
       for (int i = 0; i < list.size(); i++) {
-        rec0 = (EipMAddressbookCompany) list.get(i);
+        rec0 = list.get(i);
         sb.append("\"" + makeOutputItem(rec0.getCompanyName()) + "\"").append(
-            ",");
+          ",");
         sb.append("\"" + makeOutputItem(rec0.getPostName()) + "\"").append(",");
-        sb.append("\"" + makeOutputItem(rec0.getCompanyNameKana()) + "\"")
-            .append(",");
+        sb
+          .append("\"" + makeOutputItem(rec0.getCompanyNameKana()) + "\"")
+          .append(",");
         sb.append("\"" + makeOutputItem(rec0.getZipcode()) + "\"").append(",");
         sb.append("\"" + makeOutputItem(rec0.getAddress()) + "\"").append(",");
-        sb.append("\"" + makeOutputItem(rec0.getTelephone()) + "\"")
-            .append(",");
-        sb.append("\"" + makeOutputItem(rec0.getFaxNumber()) + "\"")
-            .append(",");
+        sb
+          .append("\"" + makeOutputItem(rec0.getTelephone()) + "\"")
+          .append(",");
+        sb
+          .append("\"" + makeOutputItem(rec0.getFaxNumber()) + "\"")
+          .append(",");
         sb.append("\"" + makeOutputItem(rec0.getUrl()) + "\"");
         sb.append(LINE_SEPARATOR);
 
@@ -107,8 +113,9 @@ public class FileIOAddressBookCompanyCsvFileScreen extends ALCSVScreen {
     }
   }
 
+  @Override
   protected String getFileName() {
     return DatabaseOrmService.getInstance().getAlias()
-        + "_addressbook_company.csv";
+      + "_addressbook_company.csv";
   }
 }

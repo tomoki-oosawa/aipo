@@ -33,7 +33,7 @@ public class FileIOScheduleCsvData extends ScheduleDetailResultData {
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FileIOScheduleCsvData.class.getName());
+    .getLogger(FileIOScheduleCsvData.class.getName());
 
   /** データのCSVファイル上での位置(行数) */
   private int line_count;
@@ -45,13 +45,14 @@ public class FileIOScheduleCsvData extends ScheduleDetailResultData {
 
   /**
    * データのCSVファイル上での位置(行数)を取得します <BR>
-   *
+   * 
    * @return
    */
   public int getLineCount() {
     return line_count;
   }
 
+  @Override
   public void initField() {
     super.initField();
     // 内容
@@ -62,7 +63,7 @@ public class FileIOScheduleCsvData extends ScheduleDetailResultData {
 
   /**
    * データのCSVファイル上での位置(行数)を入力します <BR>
-   *
+   * 
    * @param i
    */
   public void setLineCount(int i) {
@@ -71,7 +72,7 @@ public class FileIOScheduleCsvData extends ScheduleDetailResultData {
 
   /**
    * 開始時間より終了時間が早くなっていた場合にはtrue <BR>
-   *
+   * 
    * @return
    */
   public boolean isTimeError() {
@@ -87,7 +88,7 @@ public class FileIOScheduleCsvData extends ScheduleDetailResultData {
 
   /**
    * 日付を跨らない様にする為に終了日と開始日が同じ日付になっているかどうかを示す関数 <BR>
-   *
+   * 
    * @return
    */
   public boolean isDateError() {
@@ -103,7 +104,7 @@ public class FileIOScheduleCsvData extends ScheduleDetailResultData {
 
   /**
    * 内容を取得します。
-   *
+   * 
    * @return
    */
   public ALStringField getNoteField() {
@@ -112,9 +113,10 @@ public class FileIOScheduleCsvData extends ScheduleDetailResultData {
 
   /**
    * 内容を取得します。
-   *
+   * 
    * @param string
    */
+  @Override
   public void setNote(String string) {
     super.setNote(string);
     note.setValue(string);
@@ -122,7 +124,7 @@ public class FileIOScheduleCsvData extends ScheduleDetailResultData {
 
   /**
    * 二つの日付を比較します。 <BR>
-   *
+   * 
    * @param date1
    * @param date2
    * @return
@@ -140,8 +142,9 @@ public class FileIOScheduleCsvData extends ScheduleDetailResultData {
     int date2Month = cal2.get(Calendar.MONTH) + 1;
     int date2Day = cal2.get(Calendar.DATE);
 
-    if (date1Year == date2Year && date1Month == date2Month
-        && date1Day == date2Day) {
+    if (date1Year == date2Year
+      && date1Month == date2Month
+      && date1Day == date2Day) {
       return 0;
     }
     if (cal1.after(cal2)) {
@@ -151,11 +154,11 @@ public class FileIOScheduleCsvData extends ScheduleDetailResultData {
     }
   }
 
-  public boolean getIsError(){
+  public boolean getIsError() {
     return is_error;
   }
 
-  public void setIsError(boolean flg){
+  public void setIsError(boolean flg) {
     is_error = flg;
   }
 }

@@ -25,16 +25,15 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 /**
  * ファイル入出力のユーティリティです
- *
- *
+ * 
+ * 
  */
-
 public class FileIOCsvUtils {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FileIOCsvUtils.class.getName());
+    .getLogger(FileIOCsvUtils.class.getName());
 
   /** 一時ファイルの新規生成 */
   public static String getNewAttachmentFolderName(File folder) {

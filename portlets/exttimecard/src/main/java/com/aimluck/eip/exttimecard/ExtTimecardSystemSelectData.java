@@ -20,7 +20,6 @@ package com.aimluck.eip.exttimecard;
 
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -29,7 +28,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 
@@ -37,7 +36,9 @@ import com.aimluck.eip.orm.query.SelectQuery;
  * タイムカード集計の検索データを管理するためのクラスです。 <br />
  * 
  */
-public class ExtTimecardSystemSelectData extends ALAbstractSelectData {
+public class ExtTimecardSystemSelectData extends
+    ALAbstractSelectData<EipTExtTimecardSystem, EipTExtTimecardSystem> {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ExtTimecardSystemSelectData.class.getName());
@@ -50,16 +51,16 @@ public class ExtTimecardSystemSelectData extends ALAbstractSelectData {
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected ResultList selectList(RunData rundata, Context context) {
+  protected ResultList<EipTExtTimecardSystem> selectList(RunData rundata,
+      Context context) {
     try {
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
 
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTExtTimecardSystem> query =
+        getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      ResultList list = query.getResultList();
+      ResultList<EipTExtTimecardSystem> list = query.getResultList();
       // 件数をセットする．
       systemSum = list.getTotalCount();
       return list;
@@ -76,8 +77,10 @@ public class ExtTimecardSystemSelectData extends ALAbstractSelectData {
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTExtTimecardSystem.class);
+  private SelectQuery<EipTExtTimecardSystem> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTExtTimecardSystem> query =
+      Database.query(EipTExtTimecardSystem.class);
 
     return query;
   }
@@ -87,7 +90,7 @@ public class ExtTimecardSystemSelectData extends ALAbstractSelectData {
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected EipTExtTimecardSystem selectDetail(RunData rundata, Context context) {
     return ExtTimecardUtils.getEipTExtTimecardSystem(rundata, context);
   }
 
@@ -95,9 +98,8 @@ public class ExtTimecardSystemSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
   @Override
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipTExtTimecardSystem record) {
     try {
-      EipTExtTimecardSystem record = (EipTExtTimecardSystem) obj;
       ExtTimecardSystemDetailResultData rd =
         new ExtTimecardSystemDetailResultData();
       rd.initField();
@@ -126,9 +128,8 @@ public class ExtTimecardSystemSelectData extends ALAbstractSelectData {
    * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
   @Override
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(EipTExtTimecardSystem record) {
     try {
-      EipTExtTimecardSystem record = (EipTExtTimecardSystem) obj;
       ExtTimecardSystemDetailResultData rd =
         new ExtTimecardSystemDetailResultData();
       rd.initField();

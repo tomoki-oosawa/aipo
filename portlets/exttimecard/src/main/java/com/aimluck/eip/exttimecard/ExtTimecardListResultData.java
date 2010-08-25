@@ -45,19 +45,13 @@ public class ExtTimecardListResultData implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ExtTimecardListResultData.class.getName());
+    .getLogger(ExtTimecardListResultData.class.getName());
 
   private ALDateField date = null;
 
   private ExtTimecardResultData rd;
 
-  /** 土曜日かどうか */
-  private boolean is_saturday;
-
-  /** 日曜日かどうか */
-  private boolean is_sunday;
-
-  private List list = null;
+  private List<ExtTimecardResultData> list = null;
 
   /** タイムカードの設定 */
   private EipTExtTimecardSystem timecard_system;
@@ -81,7 +75,7 @@ public class ExtTimecardListResultData implements ALData {
   public void initField() {
     date = new ALDateField();
     date.setValue(new Date());
-    list = new ArrayList();
+    list = new ArrayList<ExtTimecardResultData>();
     beforeafter = 0;
   }
 
@@ -157,7 +151,8 @@ public class ExtTimecardListResultData implements ALData {
 
       int change_time = timecard_system.getChangeHour().intValue();
       Date today = new Date();
-      long time = today.getTime()
+      long time =
+        today.getTime()
           - Long.valueOf(Integer.toString(change_time * 60 * 60 * 1000));
       today.setTime(time);
 
@@ -208,10 +203,12 @@ public class ExtTimecardListResultData implements ALData {
    * @return
    */
   public boolean getIsNotNullClockInTime() {
-    if (rd == null)
+    if (rd == null) {
       return false;
-    if (rd.getIsNullClockInTime())
+    }
+    if (rd.getIsNullClockInTime()) {
       return false;
+    }
     return true;
   }
 
@@ -221,10 +218,12 @@ public class ExtTimecardListResultData implements ALData {
    * @return
    */
   public boolean getIsNotNullClockOutTime() {
-    if (rd == null)
+    if (rd == null) {
       return false;
-    if (rd.getIsNullClockOutTime())
+    }
+    if (rd.getIsNullClockOutTime()) {
       return false;
+    }
     return true;
   }
 
@@ -234,10 +233,12 @@ public class ExtTimecardListResultData implements ALData {
    * @return
    */
   public int getOutgoingComebackTimes() {
-    if (rd == null)
+    if (rd == null) {
       return 1;
+    }
     return Math.max(Math.max(rd.getAllOutgoingTime().size(), rd
-        .getAllComebackTime().size()), 1);
+      .getAllComebackTime()
+      .size()), 1);
   }
 
   /**
@@ -245,17 +246,18 @@ public class ExtTimecardListResultData implements ALData {
    * 
    * @return
    */
-  public ArrayList getOutgoingComeback() {
-    ArrayList result_list = new ArrayList();
+  public List<Map<String, String>> getOutgoingComeback() {
+    List<Map<String, String>> result_list =
+      new ArrayList<Map<String, String>>();
 
-    Map dummymap = new HashMap();
+    Map<String, String> dummymap = new HashMap<String, String>();
     dummymap.put("outgoing", "");
     dummymap.put("comeback", "");
     if (rd == null) {
       result_list.add(dummymap);
     } else {
-      ArrayList<ALDateTimeField> out = rd.getAllOutgoingTime();
-      ArrayList<ALDateTimeField> come = rd.getAllComebackTime();
+      List<ALDateTimeField> out = rd.getAllOutgoingTime();
+      List<ALDateTimeField> come = rd.getAllComebackTime();
       // ALDateTimeField out[] = rd.getAllOutgoingTime();
       // ALDateTimeField come[] = rd.getAllComebackTime();
       for (int i = 0; i < EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY; i++) {
@@ -264,11 +266,15 @@ public class ExtTimecardListResultData implements ALData {
         if (isnullout && isnullcome) {
           break;
         }
-        Map map = new HashMap();
-        map.put("outgoing", isnullout ? "" : out.get(i).getHour() + "時"
-            + out.get(i).getMinute() + "分");
-        map.put("comeback", isnullcome ? "" : come.get(i).getHour() + "時"
-            + come.get(i).getMinute() + "分");
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("outgoing", isnullout ? "" : out.get(i).getHour()
+          + "時"
+          + out.get(i).getMinute()
+          + "分");
+        map.put("comeback", isnullcome ? "" : come.get(i).getHour()
+          + "時"
+          + come.get(i).getMinute()
+          + "分");
         result_list.add(map);
       }
       if (result_list.size() == 0) {
@@ -283,17 +289,18 @@ public class ExtTimecardListResultData implements ALData {
    * 
    * @return
    */
-  public ArrayList getOutgoingComeback_xls() {
-    ArrayList result_list = new ArrayList();
+  public List<Map<String, String>> getOutgoingComeback_xls() {
+    List<Map<String, String>> result_list =
+      new ArrayList<Map<String, String>>();
 
-    Map dummymap = new HashMap();
+    Map<String, String> dummymap = new HashMap<String, String>();
     dummymap.put("outgoing", "");
     dummymap.put("comeback", "");
     if (rd == null) {
       result_list.add(dummymap);
     } else {
-      ArrayList<ALDateTimeField> out = rd.getAllOutgoingTime();
-      ArrayList<ALDateTimeField> come = rd.getAllComebackTime();
+      List<ALDateTimeField> out = rd.getAllOutgoingTime();
+      List<ALDateTimeField> come = rd.getAllComebackTime();
       SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
       for (int i = 0; i < EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY; i++) {
         boolean isnullout = out.get(i).isNullHour();
@@ -313,7 +320,7 @@ public class ExtTimecardListResultData implements ALData {
           out_str = "";
           come_str = "";
         }
-        Map map = new HashMap();
+        Map<String, String> map = new HashMap<String, String>();
         map.put("outgoing", out_str);
         map.put("comeback", come_str);
         result_list.add(map);
@@ -325,9 +332,11 @@ public class ExtTimecardListResultData implements ALData {
     return result_list;
   }
 
+  @SuppressWarnings("unused")
   private String changeMinute(String minute) {
-    if (Integer.parseInt(minute) >= 0 && Integer.parseInt(minute) <= 9)
+    if (Integer.parseInt(minute) >= 0 && Integer.parseInt(minute) <= 9) {
       return minute = "0" + minute;
+    }
     return minute;
   }
 
@@ -343,14 +352,17 @@ public class ExtTimecardListResultData implements ALData {
       return calculated_work_hour;
     } else {
       float time = 0f;
-      time += rd.getClockOutTime().getValue().getTime()
+      time +=
+        rd.getClockOutTime().getValue().getTime()
           - rd.getClockInTime().getValue().getTime();
       time /= 1000.0 * 60.0 * 60.0;
 
       /** 外出時間を就業時間に含めない場合 */
       if (timecard_system.getOutgoingAddFlag().equals("F")) {
-        float outgoing_time = getOutgoingTime(rd.getClockInTime().getValue(),
-            rd.getClockOutTime().getValue());
+        float outgoing_time =
+          getOutgoingTime(rd.getClockInTime().getValue(), rd
+            .getClockOutTime()
+            .getValue());
         if (outgoing_time != NO_DATA) {
           time -= outgoing_time;
         } else {
@@ -384,8 +396,11 @@ public class ExtTimecardListResultData implements ALData {
       return -1f;
     } else {
       float time = 0f;
-      time += (rd.getClockOutTime().getValue().getTime() - rd.getClockInTime()
-          .getValue().getTime())
+      time +=
+        (rd.getClockOutTime().getValue().getTime() - rd
+          .getClockInTime()
+          .getValue()
+          .getTime())
           / (1000.0 * 60.0 * 60.0);
 
       /** 外出時間を就業時間に含めない場合 */
@@ -413,10 +428,10 @@ public class ExtTimecardListResultData implements ALData {
       float time = 0f;
       if (getIsSaturdayOrSundayOrHoliday() == 0) {
         long start_time, end_time;
-        int start_hour = timecard_system.getStartHour(), start_minute = timecard_system
-            .getStartMinute();
-        int end_hour = timecard_system.getEndHour(), end_minute = timecard_system
-            .getEndMinute();
+        int start_hour = timecard_system.getStartHour(), start_minute =
+          timecard_system.getStartMinute();
+        int end_hour = timecard_system.getEndHour(), end_minute =
+          timecard_system.getEndMinute();
 
         Calendar cal = Calendar.getInstance();
 
@@ -502,9 +517,9 @@ public class ExtTimecardListResultData implements ALData {
     } else {
       float time = 0f;
       if (getIsSaturdayOrSundayOrHoliday() == 0) {
-        Date start_date = getStartDate(), end_date = getEndDate(), change_date = getChangeDate(), nextchange_date = getNextChangeDate();
-        long start_time = start_date.getTime(), end_time = end_date.getTime(), change_time = change_date
-            .getTime();
+        Date start_date = getStartDate(), end_date = getEndDate(), change_date =
+          getChangeDate(), nextchange_date = getNextChangeDate();
+        long start_time = start_date.getTime(), end_time = end_date.getTime();
         /** 早出残業 */
         if (rd.getClockInTime().getValue().getTime() < start_time) {
           time += start_time - rd.getClockInTime().getValue().getTime();
@@ -541,10 +556,11 @@ public class ExtTimecardListResultData implements ALData {
       float worktimein = (timecard_system.getWorktimeIn() / 60);
       float resttimein = (timecard_system.getResttimeIn() / 60);
       for (float i = time - worktimein; i > 0.0; i -= worktimein + resttimein) {
-        if (i < resttimein)
+        if (i < resttimein) {
           time -= i;// 端数切捨ての場合
-        else
+        } else {
           exrest++;//
+        }
       }
       time -= (timecard_system.getResttimeIn() / 60) * exrest;
       calculated_overtime_hour = time;
@@ -603,32 +619,40 @@ public class ExtTimecardListResultData implements ALData {
       int rest_work_num = 0, rest_overtime_num = 0;
       int rest_work_extra = 0, rest_overtime_extra = 0;
       if (work > 0) {
-        rest_work_num = (int) (work * 60 / (timecard_system.getWorktimeIn() + timecard_system
+        rest_work_num =
+          (int) (work * 60 / (timecard_system.getWorktimeIn() + timecard_system
             .getResttimeIn()));
-        rest_work_extra = (int) (work
+        rest_work_extra =
+          (int) (work
             * 60
             - rest_work_num
             * (timecard_system.getWorktimeIn() + timecard_system
-                .getResttimeIn()) - timecard_system.getWorktimeIn());
+              .getResttimeIn()) - timecard_system.getWorktimeIn());
         if (rest_work_extra < 0) {
           rest_work_extra = 0;
         }
       }
       if (overtime > 0) {
-        rest_overtime_num = (int) (overtime * 60 / (timecard_system
-            .getWorktimeOut() + timecard_system.getResttimeOut()));
-        rest_overtime_extra = (int) (overtime
+        rest_overtime_num =
+          (int) (overtime * 60 / (timecard_system.getWorktimeOut() + timecard_system
+            .getResttimeOut()));
+        rest_overtime_extra =
+          (int) (overtime
             * 60
             - rest_overtime_num
             * (timecard_system.getWorktimeOut() + timecard_system
-                .getResttimeOut()) - timecard_system.getWorktimeOut());
+              .getResttimeOut()) - timecard_system.getWorktimeOut());
         if (rest_overtime_extra < 0) {
           rest_overtime_extra = 0;
         }
       }
-      time = rest_work_num * timecard_system.getResttimeIn()
-          + rest_overtime_num * timecard_system.getResttimeOut()
-          + rest_work_extra + rest_overtime_extra;
+      time =
+        rest_work_num
+          * timecard_system.getResttimeIn()
+          + rest_overtime_num
+          * timecard_system.getResttimeOut()
+          + rest_work_extra
+          + rest_overtime_extra;
       time /= 60;
       return time;
     } else {
@@ -678,8 +702,8 @@ public class ExtTimecardListResultData implements ALData {
   }
 
   /**
-   * 
-   * 
+   *
+   *
    */
   public String getHourToString(float time) {
     if (time == NO_DATA) {
@@ -741,12 +765,13 @@ public class ExtTimecardListResultData implements ALData {
     return rd.getClockInTime().getValue();
   }
 
-  public List getList() {
+  public List<ExtTimecardResultData> getList() {
     return list;
   }
 
-  public List getViewList() {
-    ArrayList viewlist = new ArrayList();
+  public List<ExtTimecardResultData> getViewList() {
+    List<ExtTimecardResultData> viewlist =
+      new ArrayList<ExtTimecardResultData>();
 
     // ExtTimecardResultData rd = null;
     //
@@ -768,40 +793,12 @@ public class ExtTimecardListResultData implements ALData {
   }
 
   public String getSummayTimes() {
-    double millisecond = 0;
-    Date workOnDate = null;
-    Date workOffDate = null;
-    ExtTimecardResultData rd = null;
     int size = list.size();
 
     if (size < 1) {
       return "0";
     }
     return "0";
-
-    /*
-     * if (size == 1) { rd = (ExtTimecardResultData) list.get(size - 1); if
-     * (ExtTimecardUtils.WORK_FLG_ON.equals(rd.getWorkFlag().getValue())) {
-     * workOnDate = rd.getWorkDate().getValue(); Calendar cal =
-     * Calendar.getInstance(); millisecond += cal.getTime().getTime() -
-     * workOnDate.getTime(); } else { workOffDate = rd.getWorkDate().getValue(); //
-     * 退勤から始まる場合 Calendar cal = Calendar.getInstance();
-     * cal.setTime(workOffDate); cal.set(Calendar.HOUR_OF_DAY, 0);
-     * cal.set(Calendar.MINUTE, 0); millisecond += workOffDate.getTime() -
-     * cal.getTime().getTime(); } } else { for (int i = 0; i < size; i++) { rd =
-     * (ExtTimecardResultData) list.get(i); if
-     * (ExtTimecardUtils.WORK_FLG_ON.equals(rd.getWorkFlag().getValue())) {
-     * workOnDate = rd.getWorkDate().getValue(); } else { workOffDate =
-     * rd.getWorkDate().getValue(); if (workOnDate == null) { // 前日の最後が『出勤』の場合
-     * Calendar cal = Calendar.getInstance(); cal.setTime(workOffDate);
-     * cal.set(Calendar.HOUR_OF_DAY, 0); cal.set(Calendar.MINUTE, 0);
-     * millisecond += workOffDate.getTime() - cal.getTime().getTime(); } else {
-     * millisecond += workOffDate.getTime() - workOnDate.getTime(); } } } }
-     * BigDecimal decimal = new BigDecimal(millisecond / 1000 / 60 / 60);
-     * DecimalFormat dformat = new DecimalFormat("##.#"); return
-     * dformat.format(decimal.setScale(1, BigDecimal.ROUND_FLOOR)
-     * .doubleValue());
-     */
   }
 
   /**
@@ -810,8 +807,8 @@ public class ExtTimecardListResultData implements ALData {
    * @return
    */
   private Date getStartDate() {
-    int start_hour = timecard_system.getStartHour(), start_minute = timecard_system
-        .getStartMinute();
+    int start_hour = timecard_system.getStartHour(), start_minute =
+      timecard_system.getStartMinute();
     Calendar cal = Calendar.getInstance();
     try {
       cal.setTime(rd.getPunchDate().getValue());
@@ -834,8 +831,8 @@ public class ExtTimecardListResultData implements ALData {
    * @return
    */
   private Date getEndDate() {
-    int end_hour = timecard_system.getEndHour(), end_minute = timecard_system
-        .getEndMinute();
+    int end_hour = timecard_system.getEndHour(), end_minute =
+      timecard_system.getEndMinute();
     Calendar cal = Calendar.getInstance();
     try {
       cal.setTime(rd.getPunchDate().getValue());
@@ -897,8 +894,9 @@ public class ExtTimecardListResultData implements ALData {
       return 0.0f;
     }
     for (ALDateTimeField field : rd.getAllComebackTime()) {
-      if (field.isNullHour())
+      if (field.isNullHour()) {
         break;
+      }
       comeback_num++;
       /** 勤務時間より前だった場合は無視。はじめて勤務時間より後になった番号を記録する */
       if (field.getValue().getTime() < from_date.getTime()) {
@@ -918,8 +916,9 @@ public class ExtTimecardListResultData implements ALData {
     /** 外出時間がすべて勤務時間より前だった場合は、外出時間は0とする */
     if (from_num != -1) {
       for (ALDateTimeField field : rd.getAllOutgoingTime()) {
-        if (field.isNullHour())
+        if (field.isNullHour()) {
           break;
+        }
         outgoing_num++;
         if (outgoing_num < from_num) {
           continue;
@@ -954,7 +953,8 @@ public class ExtTimecardListResultData implements ALData {
 
       int change_time = timecard_system.getChangeHour().intValue();
       Date today = new Date();
-      long time = today.getTime()
+      long time =
+        today.getTime()
           - Long.valueOf(Integer.toString(change_time * 60 * 60 * 1000));
       today.setTime(time);
 

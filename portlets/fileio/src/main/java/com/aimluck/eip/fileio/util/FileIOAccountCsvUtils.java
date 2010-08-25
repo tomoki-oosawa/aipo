@@ -22,10 +22,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -35,30 +33,34 @@ import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.cayenne.om.account.EipMPost;
 import com.aimluck.eip.common.ALCsvTokenizer;
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザーアカウントのCSV読取用ユーティリティクラスです。
- *
+ * 
  */
 public class FileIOAccountCsvUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FileIOAccountCsvUtils.class.getName());
+    .getLogger(FileIOAccountCsvUtils.class.getName());
 
   /** CSVファイルを一時保管するファイル名の指定 */
   public static final String CSV_ACCOUNT_TEMP_FILENAME = "account.csv";
 
   /** エラーリスト用CSVファイルを一時保管するファイル名の指定 */
-  public static final String CSV_ACCOUNT_TEMP_ERROR_FILENAME = "account_post_err.csv";
+  public static final String CSV_ACCOUNT_TEMP_ERROR_FILENAME =
+    "account_post_err.csv";
 
   /** CSVファイルを一時保管するファイル名の指定 */
-  public static final String CSV_ACCOUNT_POST_TEMP_FILENAME = "account_post.csv";
+  public static final String CSV_ACCOUNT_POST_TEMP_FILENAME =
+    "account_post.csv";
 
   /** エラーリスト用CSVファイルを一時保管するファイル名の指定 */
-  public static final String CSV_ACCOUNT_POST_TEMP_ERROR_FILENAME = "account_post_err.csv";
+  public static final String CSV_ACCOUNT_POST_TEMP_ERROR_FILENAME =
+    "account_post_err.csv";
 
   /** CSVファイルの列数(ユーザー登録時のみ使用) */
   public static final int CSV_FILE_COL_COUNT = 13;
@@ -71,7 +73,7 @@ public class FileIOAccountCsvUtils {
 
   /**
    * アクセスしてきたユーザが利用するブラウザ名が Windows の MSIE であるかを判定する．
-   *
+   * 
    * @param rundata
    * @return MSIE の場合は，true．
    */
@@ -80,8 +82,9 @@ public class FileIOAccountCsvUtils {
 
     // User-Agent の取得
     String userAgent = rundata.getRequest().getHeader("User-Agent");
-    if (userAgent == null || userAgent.equals(""))
+    if (userAgent == null || userAgent.equals("")) {
       return false;
+    }
 
     if (userAgent.indexOf("Win") < 0) {
       return false;
@@ -95,13 +98,14 @@ public class FileIOAccountCsvUtils {
 
   /**
    * CSVファイルを字句毎のリストに変換
-   *
+   * 
    * @param line
    * @return
    */
   public static String[] getCsvSplitStrings(String line) {
-    if (line == null || line.equals(""))
+    if (line == null || line.equals("")) {
       return null;
+    }
 
     try {
       List<String> list = new ArrayList<String>();
@@ -132,7 +136,7 @@ public class FileIOAccountCsvUtils {
       }
 
       String[] strings = new String[list.size()];
-      strings = (String[]) list.toArray(strings);
+      strings = list.toArray(strings);
       return strings;
     } catch (Exception e) {
       return null;
@@ -141,7 +145,7 @@ public class FileIOAccountCsvUtils {
 
   /**
    * 会社名から会社IDを取得 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -155,17 +159,16 @@ public class FileIOAccountCsvUtils {
         return result;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      Expression exp = ExpressionFactory.matchDbExp(
-          EipMCompany.COMPANY_ID_PK_COLUMN, Integer.valueOf(id));
-      SelectQuery query = new SelectQuery(EipMCompany.class, exp);
-      List<?> list = dataContext.performQuery(query);
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipMCompany.COMPANY_ID_PK_COLUMN, Integer
+          .valueOf(id));
+      SelectQuery<EipMCompany> query = Database.query(EipMCompany.class, exp);
+      List<EipMCompany> list = query.fetchList();
       if (list == null || list.size() == 0) {
         logger.debug("Not found ID...");
         return result;
       }
-      result = (EipMCompany) list.get(0);
+      result = list.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
     }
@@ -174,7 +177,7 @@ public class FileIOAccountCsvUtils {
 
   /**
    * 部署名から部署IDを取得 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -188,17 +191,16 @@ public class FileIOAccountCsvUtils {
         return result;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      Expression exp = ExpressionFactory.matchDbExp(EipMPost.POST_ID_PK_COLUMN,
-          Integer.valueOf(id));
-      SelectQuery query = new SelectQuery(EipMPost.class, exp);
-      List<?> list = dataContext.performQuery(query);
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipMPost.POST_ID_PK_COLUMN, Integer
+          .valueOf(id));
+      SelectQuery<EipMPost> query = Database.query(EipMPost.class, exp);
+      List<EipMPost> list = query.fetchList();
       if (list == null || list.size() == 0) {
         logger.debug("Not found ID...");
         return result;
       }
-      result = (EipMPost) list.get(0);
+      result = list.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
     }
@@ -207,26 +209,32 @@ public class FileIOAccountCsvUtils {
 
   /**
    * 一時ファイルの保存先フォルダを取得
-   *
+   * 
    * @param index
    * @return
    */
   public static String getAccountPostCsvFolderName(String index) {
-    String result = ALCsvTokenizer.CSV_TEMP_FOLDER + File.separator
-        + FileIOAccountCsvUtils.CSV_ACCOUNT_POST_TEMP_FOLDER + File.separator
+    String result =
+      ALCsvTokenizer.CSV_TEMP_FOLDER
+        + File.separator
+        + FileIOAccountCsvUtils.CSV_ACCOUNT_POST_TEMP_FOLDER
+        + File.separator
         + index;
     return result;
   }
 
   /**
    * 一時ファイルの保存先フォルダを取得
-   *
+   * 
    * @param index
    * @return
    */
   public static String getAccountCsvFolderName(String index) {
-    String result = ALCsvTokenizer.CSV_TEMP_FOLDER + File.separator
-        + FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_FOLDER + File.separator
+    String result =
+      ALCsvTokenizer.CSV_TEMP_FOLDER
+        + File.separator
+        + FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_FOLDER
+        + File.separator
         + index;
     return result;
   }

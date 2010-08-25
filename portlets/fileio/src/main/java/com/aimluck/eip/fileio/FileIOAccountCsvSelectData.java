@@ -27,8 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -41,8 +39,9 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileio.util.FileIOAccountCsvUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -58,9 +57,6 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
   /** 最大登録可能数を超えているかのフラグ */
   private boolean overMaxUser = false;
 
-  /** データコンテキスト */
-  private DataContext dataContext;
-
   /**
    * 初期化
    */
@@ -68,8 +64,6 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   /**
@@ -82,21 +76,22 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
    *      org.apache.velocity.context.Context)
    */
   @Override
-  protected ResultList<Object> selectList(RunData rundata, Context context) {
+  protected ResultList<FileIOAccountCsvResultData> selectList(RunData rundata,
+      Context context) {
     String filepath;
     try {
       if (stats == ALCsvTokenizer.CSV_LIST_MODE_READ) {
-        return new ResultList(readAccountInfoFromCsv(rundata));
+        return new ResultList<FileIOAccountCsvResultData>(
+          readAccountInfoFromCsv(rundata));
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_NO_ERROR) {
         filepath =
           FileIOAccountCsvUtils.getAccountCsvFolderName(getTempFolderIndex())
             + File.separator
             + FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_FILENAME;
-        return new ResultList(readAccountInfoFromCsvPage(
-          rundata,
-          filepath,
-          (rundata.getParameters().getInteger("csvpage") - 1),
-          ALCsvTokenizer.CSV_SHOW_SIZE));
+        return new ResultList<FileIOAccountCsvResultData>(
+          readAccountInfoFromCsvPage(rundata, filepath, (rundata
+            .getParameters()
+            .getInteger("csvpage") - 1), ALCsvTokenizer.CSV_SHOW_SIZE));
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_ERROR) {
         if (this.error_count > 0) {
           filepath =
@@ -106,11 +101,12 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
         } else {
           return null;
         }
-        return new ResultList(readAccountInfoFromCsvPage(
-          rundata,
-          filepath,
-          0,
-          ALCsvTokenizer.CSV_SHOW_ERROR_SIZE));
+        return new ResultList<FileIOAccountCsvResultData>(
+          readAccountInfoFromCsvPage(
+            rundata,
+            filepath,
+            0,
+            ALCsvTokenizer.CSV_SHOW_ERROR_SIZE));
       } else {
         return null;
       }
@@ -144,7 +140,8 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
    * @return
    * @throws Exception
    */
-  private List<Object> readAccountInfoFromCsv(RunData rundata) throws Exception {
+  private List<FileIOAccountCsvResultData> readAccountInfoFromCsv(
+      RunData rundata) throws Exception {
     String filepath =
       FileIOAccountCsvUtils.getAccountCsvFolderName(getTempFolderIndex())
         + File.separator
@@ -165,7 +162,8 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
       return null;
     }
 
-    List<Object> list = new ArrayList<Object>();
+    List<FileIOAccountCsvResultData> list =
+      new ArrayList<FileIOAccountCsvResultData>();
     Map<String, TurbineUser> existedUserMap = getAllUsersFromDB();
     if (existedUserMap == null) {
       existedUserMap = new LinkedHashMap<String, TurbineUser>();
@@ -362,8 +360,9 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
    * @return
    * @throws Exception
    */
-  private List<Object> readAccountInfoFromCsvPage(RunData rundata,
-      String filepath, int StartLine, int LineLimit) throws Exception {
+  private List<FileIOAccountCsvResultData> readAccountInfoFromCsvPage(
+      RunData rundata, String filepath, int StartLine, int LineLimit)
+      throws Exception {
 
     int line_index = StartLine * ALCsvTokenizer.CSV_SHOW_SIZE;
 
@@ -377,7 +376,8 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
       existedUserMap = new LinkedHashMap<String, TurbineUser>();
     }
 
-    List<Object> list = new ArrayList<Object>();
+    List<FileIOAccountCsvResultData> list =
+      new ArrayList<FileIOAccountCsvResultData>();
 
     String token;
     int i, j;
@@ -506,14 +506,14 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
   private Map<String, TurbineUser> getAllUsersFromDB() {
     Map<String, TurbineUser> map = null;
     try {
-      SelectQuery query = new SelectQuery(TurbineUser.class);
-      List<?> list = dataContext.performQuery(query);
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+      List<TurbineUser> list = query.fetchList();
 
       map = new LinkedHashMap<String, TurbineUser>();
       TurbineUser user = null;
       int size = list.size();
       for (int i = 0; i < size; i++) {
-        user = (TurbineUser) list.get(i);
+        user = list.get(i);
         map.put(user.getLoginName(), user);
       }
     } catch (Exception ex) {

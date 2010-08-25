@@ -28,12 +28,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカードの一覧を処理するクラスです。 <br />
- *
+ * 
  */
 public class ExtTimecardSystemMapListScreen extends ExtTimecardScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ExtTimecardSystemMapListScreen.class.getName());
+    .getLogger(ExtTimecardSystemMapListScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
@@ -42,12 +43,14 @@ public class ExtTimecardSystemMapListScreen extends ExtTimecardScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
     try {
-      ExtTimecardSystemMapSelectData listData = new ExtTimecardSystemMapSelectData();
+      ExtTimecardSystemMapSelectData listData =
+        new ExtTimecardSystemMapSelectData();
       listData.initField();
       listData.setRowsNum(10);
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-exttimecardsystem-user-list.vm";
+      String layout_template =
+        "portlets/html/ja/ajax-exttimecardsystem-user-list.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

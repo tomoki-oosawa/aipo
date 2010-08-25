@@ -41,10 +41,12 @@ import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
@@ -54,6 +56,7 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ExtTimecardSystemMapSelectData.class.getName());
@@ -109,15 +112,14 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
       }
       EipTExtTimecardSystem default_system =
         ExtTimecardUtils.getEipTExtTimecardSystemById(1);
-      ResultList list = query.getResultList();
+      ResultList<TurbineUser> list = query.getResultList();
       List<EipTExtTimecardSystemMap> select_list =
         new ArrayList<EipTExtTimecardSystemMap>();
       mapSum = list.size();
       for (int i = 0; i < mapSum; i++) {
-        TurbineUser user = (TurbineUser) list.get(i);
+        TurbineUser user = list.get(i);
         SelectQuery<EipTExtTimecardSystemMap> map_query =
-          new SelectQuery<EipTExtTimecardSystemMap>(
-            EipTExtTimecardSystemMap.class);
+          Database.query(EipTExtTimecardSystemMap.class);
         Expression exp =
           ExpressionFactory.matchExp(
             EipTExtTimecardSystemMap.USER_ID_PROPERTY,
@@ -152,16 +154,16 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
+  private SelectQuery<EipTExtTimecardSystemMap> getSelectQuery(RunData rundata,
+      Context context) {
     SelectQuery<EipTExtTimecardSystemMap> query =
-      new SelectQuery<EipTExtTimecardSystemMap>(EipTExtTimecardSystemMap.class);
+      Database.query(EipTExtTimecardSystemMap.class);
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
   private SelectQuery<TurbineUser> getSelectQueryForUser(RunData rundata,
       Context context) {
-    SelectQuery<TurbineUser> query =
-      new SelectQuery<TurbineUser>(TurbineUser.class);
+    SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
 
     ObjectId oid =
       new ObjectId("TurbineUser", TurbineUser.USER_ID_PK_COLUMN, 3);
@@ -180,9 +182,8 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
     query.andQualifier(exp3);
 
     String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
-    current_filter = filter;
 
-    Map gMap = ALEipManager.getInstance().getPostMap();
+    Map<Integer, ALEipPost> gMap = ALEipManager.getInstance().getPostMap();
     if (filter == null
       || "".equals(filter)
       || !gMap.containsKey(Integer.valueOf(filter))) {
@@ -286,11 +287,11 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
    * 
    * @return
    */
-  public Map getPostMap() {
+  public Map<Integer, ALEipPost> getPostMap() {
     return ALEipManager.getInstance().getPostMap();
   }
 
-  public List getSystemList() {
+  public List<EipTExtTimecardSystem> getSystemList() {
     return ExtTimecardUtils.getAllEipTExtTimecardSystem();
   }
 }

@@ -20,14 +20,14 @@ package com.aimluck.eip.modules.screens;
 
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.cayenne.om.account.EipMPost;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
  *
@@ -36,11 +36,12 @@ import com.aimluck.eip.orm.DatabaseOrmService;
 public class FileIOAccountPostCsvFileScreen extends ALCSVScreen {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FileIOAccountPostCsvFileScreen.class.getName());
+    .getLogger(FileIOAccountPostCsvFileScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.util.RunData)
    */
+  @Override
   protected String getContentType(RunData rundata) {
     return "application/octet-stream";
   }
@@ -48,6 +49,7 @@ public class FileIOAccountPostCsvFileScreen extends ALCSVScreen {
   /**
    *
    */
+  @Override
   protected String getCSVString(RunData rundata) throws Exception {
     String LINE_SEPARATOR = System.getProperty("line.separator");
     try {
@@ -75,20 +77,18 @@ public class FileIOAccountPostCsvFileScreen extends ALCSVScreen {
       StringBuffer sb = new StringBuffer();
       sb.append("部署名,郵便番号,住所,電話番号,内線番号,Fax番号");
       sb.append(LINE_SEPARATOR);
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
       EipMPost rec0;
-      SelectQuery query0 = new SelectQuery(EipMPost.class);
-      List<?> list = dataContext.performQuery(query0);
+      SelectQuery<EipMPost> query0 = Database.query(EipMPost.class);
+      List<EipMPost> list = query0.fetchList();
       for (int i = 0; i < list.size(); i++) {
-        rec0 = (EipMPost) list.get(i);
+        rec0 = list.get(i);
         sb.append("\"" + makeOutputItem(rec0.getPostName()) + "\"").append(",");
         sb.append("\"" + makeOutputItem(rec0.getZipcode()) + "\"").append(",");
         sb.append("\"" + makeOutputItem(rec0.getAddress()) + "\"").append(",");
         sb.append("\"" + makeOutputItem(rec0.getOutTelephone()) + "\"").append(
-            ",");
+          ",");
         sb.append("\"" + makeOutputItem(rec0.getInTelephone()) + "\"").append(
-            ",");
+          ",");
         sb.append("\"" + makeOutputItem(rec0.getFaxNumber()) + "\"");
         sb.append(LINE_SEPARATOR);
 
@@ -100,6 +100,7 @@ public class FileIOAccountPostCsvFileScreen extends ALCSVScreen {
     }
   }
 
+  @Override
   protected String getFileName() {
     return DatabaseOrmService.getInstance().getAlias() + "_post.csv";
   }

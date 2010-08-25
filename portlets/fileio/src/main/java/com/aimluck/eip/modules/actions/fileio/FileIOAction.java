@@ -50,18 +50,18 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * FileIOのアクションクラスです <BR>
- *
- *
+ * 
+ * 
  */
 public class FileIOAction extends ALBaseAction {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FileIOAction.class.getName());
+    .getLogger(FileIOAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
@@ -69,6 +69,7 @@ public class FileIOAction extends ALBaseAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
     if (getMode() == null) {
@@ -78,13 +79,14 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * アドレス帳の一括入力 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    */
   public void doAddressbook_form(RunData rundata, Context context) {
     try {
-      FileIOAddressBookCsvFormData formData = new FileIOAddressBookCsvFormData();
+      FileIOAddressBookCsvFormData formData =
+        new FileIOAddressBookCsvFormData();
       formData.initField();
       formData.doViewForm(this, rundata, context);
 
@@ -98,14 +100,15 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * アドレス帳の一括入力する際のファイルアップロード <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
   public void doAddressbook_upload_csv(RunData rundata, Context context)
       throws Exception {
-    FileIOAddressBookCsvUploadFormData formData = new FileIOAddressBookCsvUploadFormData();
+    FileIOAddressBookCsvUploadFormData formData =
+      new FileIOAddressBookCsvUploadFormData();
     formData.initField();
     /* ファイルのアップロード */
     ALCSVUtils.csvUpload(rundata, context, this, formData);
@@ -137,7 +140,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 読み込んだ内容をリスト表示 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param folderIndex
@@ -145,7 +148,8 @@ public class FileIOAction extends ALBaseAction {
    */
   public void doAddressbook_list_csv(RunData rundata, Context context,
       String folderIndex) throws Exception {
-    FileIOAddressBookCsvSelectData listData = new FileIOAddressBookCsvSelectData();
+    FileIOAddressBookCsvSelectData listData =
+      new FileIOAddressBookCsvSelectData();
     listData.initField();
     listData.setTempFolderIndex(folderIndex);
     /* リストの作成 */
@@ -155,45 +159,51 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 読み込んだ内容からエラーが発生した件のみリスト表示 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
   public void doAddressbook_list_csv_error(RunData rundata, Context context)
       throws Exception {
-    FileIOAddressBookCsvSelectData listData = new FileIOAddressBookCsvSelectData();
+    FileIOAddressBookCsvSelectData listData =
+      new FileIOAddressBookCsvSelectData();
     listData.initField();
-    listData.setTempFolderIndex(rundata.getParameters()
-        .getString("temp_folder"));
+    listData.setTempFolderIndex(rundata
+      .getParameters()
+      .getString("temp_folder"));
     ALCSVUtils.makeErrorList(rundata, context, this, listData);
-    listData.setNotErrorCount(Integer.parseInt(ALEipUtils.getTemp(rundata,
-        context, "not_error_count")));
+    listData.setNotErrorCount(Integer.parseInt(ALEipUtils.getTemp(
+      rundata,
+      context,
+      "not_error_count")));
     setTemplate(rundata, "fileio-addressbook-csv");
   }
 
   /**
    * データが多数に及んだ際における分割表示 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
   public void doAddressbook_list_csv_page(RunData rundata, Context context)
       throws Exception {
-    FileIOAddressBookCsvSelectData listData = new FileIOAddressBookCsvSelectData();
+    FileIOAddressBookCsvSelectData listData =
+      new FileIOAddressBookCsvSelectData();
     listData.initField();
-    listData.setTempFolderIndex(rundata.getParameters()
-        .getString("temp_folder"));
+    listData.setTempFolderIndex(rundata
+      .getParameters()
+      .getString("temp_folder"));
     context
-        .put("temp_folder", rundata.getParameters().getString("temp_folder"));
+      .put("temp_folder", rundata.getParameters().getString("temp_folder"));
     ALCSVUtils.makeListPage(rundata, context, this, listData);
     setTemplate(rundata, "fileio-addressbook-csv");
   }
 
   /**
    * CSVファイルからデータベースへの登録 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -204,8 +214,8 @@ public class FileIOAction extends ALBaseAction {
     int line = 0;
 
     String temp_folder_index = rundata.getParameters().getString("temp_folder");
-    String filepath = FileIOAddressBookCsvUtils
-        .getAddressBookCsvFolderName(temp_folder_index)
+    String filepath =
+      FileIOAddressBookCsvUtils.getAddressBookCsvFolderName(temp_folder_index)
         + File.separator
         + FileIOAddressBookCsvUtils.CSV_ADDRESSBOOK_TEMP_FILENAME;
 
@@ -218,42 +228,47 @@ public class FileIOAction extends ALBaseAction {
     int i, j;
     while (reader.eof != -1) {
       line++;
-      FileIOAddressBookCsvFormData formData = new FileIOAddressBookCsvFormData();
+      FileIOAddressBookCsvFormData formData =
+        new FileIOAddressBookCsvFormData();
       formData.initField();
       for (j = 0; j < sequency.size(); j++) {
         token = reader.nextToken();
-        i = Integer.parseInt((String) sequency.get(j));
+        i = Integer.parseInt(sequency.get(j));
         formData.addItemToken(token, i);
-        if (reader.eof == -1)
+        if (reader.eof == -1) {
           break;
-        if (reader.line)
+        }
+        if (reader.line) {
           break;
+        }
       }
       while ((!reader.line) && (reader.eof != -1)) {
         reader.nextToken();
       }
-      if (reader.eof == -1 && j == 0)
+      if (reader.eof == -1 && j == 0) {
         break;
+      }
       // カンマ不足対策
       for (j++; j < sequency.size(); j++) {
-        i = Integer.parseInt((String) sequency.get(j));
+        i = Integer.parseInt(sequency.get(j));
         formData.addItemToken("", i);
       }
       /** データベースから読み取る場合 */
       if ((!formData.getFirstName().toString().equals("名前（名）"))
-          && (!formData.getCompanyName().toString().equals("会社名"))) {
+        && (!formData.getCompanyName().toString().equals("会社名"))) {
         if (formData.doInsert(this, rundata, context)) {
           not_error++;
         }
       } else {
-        if (not_error > 0)
+        if (not_error > 0) {
           not_error--;
+        }
       }
     }
-    ALEipUtils.setTemp(rundata, context, "not_error_count",
-        Integer.toString(not_error));
-    int error_count = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-        "error_count"));
+    ALEipUtils.setTemp(rundata, context, "not_error_count", Integer
+      .toString(not_error));
+    int error_count =
+      Integer.parseInt(ALEipUtils.getTemp(rundata, context, "error_count"));
     if (error_count > 0) {
       doAddressbook_list_csv_error(rundata, context);
     } else {
@@ -263,13 +278,14 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * アドレス帳（会社情報）の一括入力 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    */
   public void doAddressbook_company_form(RunData rundata, Context context) {
     try {
-      FileIOAddressBookCsvFormData formData = new FileIOAddressBookCsvFormData();
+      FileIOAddressBookCsvFormData formData =
+        new FileIOAddressBookCsvFormData();
       formData.initField();
       formData.setIsCompanyOnly(true);
       formData.doViewForm(this, rundata, context);
@@ -284,14 +300,15 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * アドレス帳(会社情報)の一括入力する際のファイルアップロード <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
   public void doAddressbook_company_upload_csv(RunData rundata, Context context)
       throws Exception {
-    FileIOAddressBookCsvUploadFormData formData = new FileIOAddressBookCsvUploadFormData();
+    FileIOAddressBookCsvUploadFormData formData =
+      new FileIOAddressBookCsvUploadFormData();
     formData.initField();
     /* ファイルのアップロード */
     ALCSVUtils.csvUpload(rundata, context, this, formData);
@@ -309,13 +326,13 @@ public class FileIOAction extends ALBaseAction {
     ALCSVUtils.setSequency(rundata, context, sequency);
 
     setTemplate(rundata, "fileio-addressbook-company-csv");
-    doAddressbook_company_list_csv(rundata, context,
-        formData.getTempFolderIndex());
+    doAddressbook_company_list_csv(rundata, context, formData
+      .getTempFolderIndex());
   }
 
   /**
    * 読み込んだ内容をリスト表示 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param folderIndex
@@ -324,7 +341,8 @@ public class FileIOAction extends ALBaseAction {
   public void doAddressbook_company_list_csv(RunData rundata, Context context,
       String folderIndex)// 最初に呼び出されたとき
       throws Exception {
-    FileIOAddressBookCsvSelectData listData = new FileIOAddressBookCsvSelectData();
+    FileIOAddressBookCsvSelectData listData =
+      new FileIOAddressBookCsvSelectData();
     listData.initField();
     listData.setIsCompanyOnly(true);
     listData.setTempFolderIndex(folderIndex);
@@ -335,47 +353,53 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 読み込んだ内容からエラーが発生した件のみリスト表示 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
   public void doAddressbook_company_list_csv_error(RunData rundata,
       Context context) throws Exception {
-    FileIOAddressBookCsvSelectData listData = new FileIOAddressBookCsvSelectData();
+    FileIOAddressBookCsvSelectData listData =
+      new FileIOAddressBookCsvSelectData();
     listData.initField();
     listData.setIsCompanyOnly(true);
-    listData.setTempFolderIndex(rundata.getParameters()
-        .getString("temp_folder"));
+    listData.setTempFolderIndex(rundata
+      .getParameters()
+      .getString("temp_folder"));
     ALCSVUtils.makeErrorList(rundata, context, this, listData);
-    listData.setNotErrorCount(Integer.parseInt(ALEipUtils.getTemp(rundata,
-        context, "not_error_count")));
+    listData.setNotErrorCount(Integer.parseInt(ALEipUtils.getTemp(
+      rundata,
+      context,
+      "not_error_count")));
     setTemplate(rundata, "fileio-addressbook-company-csv");
   }
 
   /**
    * データが多数に及んだ際における分割表示 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
   public void doAddressbook_company_list_csv_page(RunData rundata,
       Context context) throws Exception {
-    FileIOAddressBookCsvSelectData listData = new FileIOAddressBookCsvSelectData();
+    FileIOAddressBookCsvSelectData listData =
+      new FileIOAddressBookCsvSelectData();
     listData.initField();
     listData.setIsCompanyOnly(true);
-    listData.setTempFolderIndex(rundata.getParameters()
-        .getString("temp_folder"));
+    listData.setTempFolderIndex(rundata
+      .getParameters()
+      .getString("temp_folder"));
     context
-        .put("temp_folder", rundata.getParameters().getString("temp_folder"));
+      .put("temp_folder", rundata.getParameters().getString("temp_folder"));
     ALCSVUtils.makeListPage(rundata, context, this, listData);
     setTemplate(rundata, "fileio-addressbook-company-csv");
   }
 
   /**
    * CSVファイルからデータベースへの登録 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -384,8 +408,8 @@ public class FileIOAction extends ALBaseAction {
       throws Exception {
     int not_error = 0;
     String temp_folder_index = rundata.getParameters().getString("temp_folder");
-    String filepath = FileIOAddressBookCsvUtils
-        .getAddressBookCsvFolderName(temp_folder_index)
+    String filepath =
+      FileIOAddressBookCsvUtils.getAddressBookCsvFolderName(temp_folder_index)
         + File.separator
         + FileIOAddressBookCsvUtils.CSV_ADDRESSBOOK_TEMP_FILENAME;
     ALCsvTokenizer reader = new ALCsvTokenizer();
@@ -396,43 +420,49 @@ public class FileIOAction extends ALBaseAction {
     String token;
     int i, j;
     while (reader.eof != -1) {
-      FileIOAddressBookCsvFormData formData = new FileIOAddressBookCsvFormData();
+      FileIOAddressBookCsvFormData formData =
+        new FileIOAddressBookCsvFormData();
       formData.initField();
       formData.setIsCompanyOnly(true);
       for (j = 0; j < sequency.size(); j++) {
         token = reader.nextToken();
-        i = Integer.parseInt((String) sequency.get(j));
+        i = Integer.parseInt(sequency.get(j));
         formData.addItemToken(token, i);
-        if (reader.eof == -1)
+        if (reader.eof == -1) {
           break;
-        if (reader.line)
+        }
+        if (reader.line) {
           break;
+        }
       }
       while ((!reader.line) && (reader.eof != -1)) {
         reader.nextToken();
       }
-      if (reader.eof == -1 && j == 0)
+      if (reader.eof == -1 && j == 0) {
         break;
+      }
       // カンマ不足対策
       for (j++; j < sequency.size(); j++) {
-        i = Integer.parseInt((String) sequency.get(j));
+        i = Integer.parseInt(sequency.get(j));
         formData.addItemToken("", i);
       }
 
       if ((!formData.getFirstName().toString().equals("名前（名）"))
-          && (!formData.getCompanyName().toString().equals("会社名"))) {
+        && (!formData.getCompanyName().toString().equals("会社名"))) {
         if ((formData.doInsert(this, rundata, context))
-            && (!formData.getSameCompany()))
+          && (!formData.getSameCompany())) {
           not_error++;
+        }
       } else {
-        if (not_error > 0)
+        if (not_error > 0) {
           not_error--;
+        }
       }
     }
-    ALEipUtils.setTemp(rundata, context, "not_error_count",
-        Integer.toString(not_error));
-    int error_count = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-        "error_count"));
+    ALEipUtils.setTemp(rundata, context, "not_error_count", Integer
+      .toString(not_error));
+    int error_count =
+      Integer.parseInt(ALEipUtils.getTemp(rundata, context, "error_count"));
     if (error_count > 0) {
       doAddressbook_company_list_csv_error(rundata, context);
     } else {
@@ -442,7 +472,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * ユーザーの一括登録 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -457,7 +487,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * CSVファイルからデータベースへの登録 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -466,8 +496,8 @@ public class FileIOAction extends ALBaseAction {
       throws Exception {
     int not_error = 0;
     String temp_folder_index = rundata.getParameters().getString("temp_folder");
-    String filepath = FileIOAccountCsvUtils
-        .getAccountCsvFolderName(temp_folder_index)
+    String filepath =
+      FileIOAccountCsvUtils.getAccountCsvFolderName(temp_folder_index)
         + File.separator
         + FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_FILENAME;
 
@@ -495,21 +525,24 @@ public class FileIOAction extends ALBaseAction {
       formData.initField();
       for (j = 0; j < sequency.size(); j++) {
         token = reader.nextToken();
-        i = Integer.parseInt((String) sequency.get(j));
+        i = Integer.parseInt(sequency.get(j));
         formData.addItemToken(token, i);
-        if (reader.eof == -1)
+        if (reader.eof == -1) {
           break;
-        if (reader.line)
+        }
+        if (reader.line) {
           break;
+        }
       }
       while ((!reader.line) && (reader.eof != -1)) {
         reader.nextToken();
       }
-      if (reader.eof == -1 && j == 0)
+      if (reader.eof == -1 && j == 0) {
         break;
+      }
       // カンマ不足対策
       for (j++; j < sequency.size(); j++) {
-        i = Integer.parseInt((String) sequency.get(j));
+        i = Integer.parseInt(sequency.get(j));
         formData.addItemToken("", i);
       }
 
@@ -532,8 +565,9 @@ public class FileIOAction extends ALBaseAction {
 
         }
       } else {
-        if (not_error > 0)
+        if (not_error > 0) {
           not_error--;
+        }
       }
     }
 
@@ -546,10 +580,10 @@ public class FileIOAction extends ALBaseAction {
      * null;
      */
 
-    ALEipUtils.setTemp(rundata, context, "not_error_count",
-        Integer.toString(not_error));
-    int error_count = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-        "error_count"));
+    ALEipUtils.setTemp(rundata, context, "not_error_count", Integer
+      .toString(not_error));
+    int error_count =
+      Integer.parseInt(ALEipUtils.getTemp(rundata, context, "error_count"));
     if (error_count > 0) {
       doAccount_csv_list_error(rundata, context);
     } else {
@@ -559,14 +593,15 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * ユーザー一括入力する際のファイルアップロード <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
   public void doAccount_upload_csv(RunData rundata, Context context)
       throws Exception {
-    FileIOAccountCsvUploadFormData formData = new FileIOAccountCsvUploadFormData();
+    FileIOAccountCsvUploadFormData formData =
+      new FileIOAccountCsvUploadFormData();
     formData.initField();
 
     /* ファイルのアップロード */
@@ -595,7 +630,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 読み込んだ内容をリスト表示 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param folderIndex
@@ -613,7 +648,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 読み込んだ内容からエラーが発生した件のみリスト表示 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -622,17 +657,20 @@ public class FileIOAction extends ALBaseAction {
       throws Exception {
     FileIOAccountCsvSelectData listData = new FileIOAccountCsvSelectData();
     listData.initField();
-    listData.setTempFolderIndex(rundata.getParameters()
-        .getString("temp_folder"));
+    listData.setTempFolderIndex(rundata
+      .getParameters()
+      .getString("temp_folder"));
     ALCSVUtils.makeErrorList(rundata, context, this, listData);
-    listData.setNotErrorCount(Integer.parseInt(ALEipUtils.getTemp(rundata,
-        context, "not_error_count")));
+    listData.setNotErrorCount(Integer.parseInt(ALEipUtils.getTemp(
+      rundata,
+      context,
+      "not_error_count")));
     setTemplate(rundata, "fileio-account-read-csv");
   }
 
   /**
    * データが多数に及んだ際における分割表示 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -641,32 +679,35 @@ public class FileIOAction extends ALBaseAction {
       throws Exception {
     FileIOAccountCsvSelectData listData = new FileIOAccountCsvSelectData();
     listData.initField();
-    listData.setTempFolderIndex(rundata.getParameters()
-        .getString("temp_folder"));
+    listData.setTempFolderIndex(rundata
+      .getParameters()
+      .getString("temp_folder"));
     context
-        .put("temp_folder", rundata.getParameters().getString("temp_folder"));
+      .put("temp_folder", rundata.getParameters().getString("temp_folder"));
     ALCSVUtils.makeListPage(rundata, context, this, listData);
     setTemplate(rundata, "fileio-account-read-csv");
   }
 
   /**
    * 部署の一括登録
-   *
+   * 
    * @param rundata
    * @param context
    */
   public void doAccount_postcsv_form(RunData rundata, Context context) {
     try {
-      FileIOAccountPostCsvFormData formData = new FileIOAccountPostCsvFormData();
+      FileIOAccountPostCsvFormData formData =
+        new FileIOAccountPostCsvFormData();
       // formData.loadParameters(rundata, context);
       formData.initField();
       formData.doViewForm(this, rundata, context);
 
       // トップ画面からのスケジュール入力であるかを判定する．
-      String afterBehavior = rundata.getRequest().getParameter(
-          ALCSVUtils.AFTER_BEHAVIOR);
-      if (afterBehavior != null)
+      String afterBehavior =
+        rundata.getRequest().getParameter(ALCSVUtils.AFTER_BEHAVIOR);
+      if (afterBehavior != null) {
         context.put(ALCSVUtils.AFTER_BEHAVIOR, "1");
+      }
       setTemplate(rundata, "fileio-account-post-csv");
     } catch (Exception ex) {
       // ここに到達する場合はバグまたは不具合の可能性アリ
@@ -677,14 +718,15 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * アドレス帳(会社情報)の一括入力する際のファイルアップロード <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
   public void doAccount_postcsv_upload(RunData rundata, Context context)
       throws Exception {
-    FileIOAccountPostCsvUploadFormData formData = new FileIOAccountPostCsvUploadFormData();
+    FileIOAccountPostCsvUploadFormData formData =
+      new FileIOAccountPostCsvUploadFormData();
     formData.initField();
     /* ファイルのアップロード */
     ALCSVUtils.csvUpload(rundata, context, this, formData);
@@ -705,7 +747,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 読み込んだ内容をリスト表示 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param folderIndex
@@ -714,7 +756,8 @@ public class FileIOAction extends ALBaseAction {
   private void doAccount_postcsv_list(RunData rundata, Context context,
       String folderIndex)// 最初に呼び出されたとき
       throws Exception {
-    FileIOAccountPostCsvSelectData listData = new FileIOAccountPostCsvSelectData();
+    FileIOAccountPostCsvSelectData listData =
+      new FileIOAccountPostCsvSelectData();
     listData.initField();
     listData.setTempFolderIndex(folderIndex);
     /* リストの作成 */
@@ -724,45 +767,51 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 読み込んだ内容からエラーが発生した件のみリスト表示 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
   public void doAccount_postcsv_list_error(RunData rundata, Context context)
       throws Exception {
-    FileIOAccountPostCsvSelectData listData = new FileIOAccountPostCsvSelectData();
+    FileIOAccountPostCsvSelectData listData =
+      new FileIOAccountPostCsvSelectData();
     listData.initField();
-    listData.setTempFolderIndex(rundata.getParameters()
-        .getString("temp_folder"));
+    listData.setTempFolderIndex(rundata
+      .getParameters()
+      .getString("temp_folder"));
     ALCSVUtils.makeErrorList(rundata, context, this, listData);
-    listData.setNotErrorCount(Integer.parseInt(ALEipUtils.getTemp(rundata,
-        context, "not_error_count")));
+    listData.setNotErrorCount(Integer.parseInt(ALEipUtils.getTemp(
+      rundata,
+      context,
+      "not_error_count")));
     setTemplate(rundata, "fileio-account-post-csv");
   }
 
   /**
    * データが多数に及んだ際における分割表示 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
   public void doAccount_postcsv_list_page(RunData rundata, Context context)
       throws Exception {
-    FileIOAccountPostCsvSelectData listData = new FileIOAccountPostCsvSelectData();
+    FileIOAccountPostCsvSelectData listData =
+      new FileIOAccountPostCsvSelectData();
     listData.initField();
-    listData.setTempFolderIndex(rundata.getParameters()
-        .getString("temp_folder"));
+    listData.setTempFolderIndex(rundata
+      .getParameters()
+      .getString("temp_folder"));
     context
-        .put("temp_folder", rundata.getParameters().getString("temp_folder"));
+      .put("temp_folder", rundata.getParameters().getString("temp_folder"));
     ALCSVUtils.makeListPage(rundata, context, this, listData);
     setTemplate(rundata, "fileio-account-post-csv");
   }
 
   /**
    * CSVファイルからデータベースへの登録 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -771,8 +820,8 @@ public class FileIOAction extends ALBaseAction {
       throws Exception {
     int not_error = 0;
     String temp_folder_index = rundata.getParameters().getString("temp_folder");
-    String filepath = FileIOAccountCsvUtils
-        .getAccountPostCsvFolderName(temp_folder_index)
+    String filepath =
+      FileIOAccountCsvUtils.getAccountPostCsvFolderName(temp_folder_index)
         + File.separator
         + FileIOAccountCsvUtils.CSV_ACCOUNT_POST_TEMP_FILENAME;
 
@@ -784,25 +833,29 @@ public class FileIOAction extends ALBaseAction {
     String token;
     int i, j;
     while (reader.eof != -1) {
-      FileIOAccountPostCsvFormData formData = new FileIOAccountPostCsvFormData();
+      FileIOAccountPostCsvFormData formData =
+        new FileIOAccountPostCsvFormData();
       formData.initField();
       for (j = 0; j < sequency.size(); j++) {
         token = reader.nextToken();
-        i = Integer.parseInt((String) sequency.get(j));
+        i = Integer.parseInt(sequency.get(j));
         formData.addItemToken(token, i);
-        if (reader.eof == -1)
+        if (reader.eof == -1) {
           break;
-        if (reader.line)
+        }
+        if (reader.line) {
           break;
+        }
       }
       while ((!reader.line) && (reader.eof != -1)) {
         reader.nextToken();
       }
-      if (reader.eof == -1 && j == 0)
+      if (reader.eof == -1 && j == 0) {
         break;
+      }
       // カンマ不足対策
       for (j++; j < sequency.size(); j++) {
-        i = Integer.parseInt((String) sequency.get(j));
+        i = Integer.parseInt(sequency.get(j));
         formData.addItemToken("", i);
       }
       /** データベースから読み取る場合 */
@@ -818,14 +871,15 @@ public class FileIOAction extends ALBaseAction {
           not_error++;
         }
       } else {
-        if (not_error > 0)
+        if (not_error > 0) {
           not_error--;
+        }
       }
     }
-    ALEipUtils.setTemp(rundata, context, "not_error_count",
-        Integer.toString(not_error));
-    int error_count = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-        "error_count"));
+    ALEipUtils.setTemp(rundata, context, "not_error_count", Integer
+      .toString(not_error));
+    int error_count =
+      Integer.parseInt(ALEipUtils.getTemp(rundata, context, "error_count"));
     if (error_count > 0) {
       doAccount_postcsv_list_error(rundata, context);
     } else {
@@ -835,7 +889,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 単体スケジュールの一括入力 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -854,14 +908,15 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * スケジュールの一括入力する際のファイルアップロード
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
   public void doSchedule_upload_csv(RunData rundata, Context context)
       throws Exception {
-    FileIOScheduleCsvUploadFormData formData = new FileIOScheduleCsvUploadFormData();
+    FileIOScheduleCsvUploadFormData formData =
+      new FileIOScheduleCsvUploadFormData();
     formData.initField();
     /* ファイルのアップロード */
     ALCSVUtils.csvUpload(rundata, context, this, formData);
@@ -876,14 +931,15 @@ public class FileIOAction extends ALBaseAction {
     sequency.add("3");
     sequency.add("0");
     ALCSVUtils.setSequency(rundata, context, sequency);
-    ALEipUtils.setTemp(rundata, context, "is_autotime", rundata.getParameters()
-        .getString("autotime_flg", "0"));
+    ALEipUtils.setTemp(rundata, context, "is_autotime", rundata
+      .getParameters()
+      .getString("autotime_flg", "0"));
     doSchedule_list_csv(rundata, context, formData.getTempFolderIndex());
   }
 
   /**
    * 読み込んだ内容をリスト表示 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param folderIndex
@@ -902,7 +958,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 読み込んだ内容からエラーが発生した件のみリスト表示 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -911,18 +967,21 @@ public class FileIOAction extends ALBaseAction {
       throws Exception {
     FileIOScheduleCsvSelectData listData = new FileIOScheduleCsvSelectData();
     listData.initField();
-    listData.setTempFolderIndex(rundata.getParameters()
-        .getString("temp_folder"));
+    listData.setTempFolderIndex(rundata
+      .getParameters()
+      .getString("temp_folder"));
     listData.setIsAutoTime(ALEipUtils.getTemp(rundata, context, "is_autotime"));
     ALCSVUtils.makeErrorList(rundata, context, this, listData);
-    listData.setNotErrorCount(Integer.parseInt(ALEipUtils.getTemp(rundata,
-        context, "not_error_count")));
+    listData.setNotErrorCount(Integer.parseInt(ALEipUtils.getTemp(
+      rundata,
+      context,
+      "not_error_count")));
     setTemplate(rundata, "fileio-schedule-csv");
   }
 
   /**
    * 読み込んだ内容をリスト表示 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param folderIndex
@@ -932,10 +991,11 @@ public class FileIOAction extends ALBaseAction {
       throws Exception {
     FileIOScheduleCsvSelectData listData = new FileIOScheduleCsvSelectData();
     listData.initField();
-    listData.setTempFolderIndex(rundata.getParameters()
-        .getString("temp_folder"));
+    listData.setTempFolderIndex(rundata
+      .getParameters()
+      .getString("temp_folder"));
     context
-        .put("temp_folder", rundata.getParameters().getString("temp_folder"));
+      .put("temp_folder", rundata.getParameters().getString("temp_folder"));
     listData.setIsAutoTime(ALEipUtils.getTemp(rundata, context, "is_autotime"));
     ALCSVUtils.makeListPage(rundata, context, this, listData);
     setTemplate(rundata, "fileio-schedule-csv");
@@ -943,7 +1003,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * CSVファイルからデータベースへの登録 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -952,8 +1012,8 @@ public class FileIOAction extends ALBaseAction {
       throws Exception {
     int not_error = 0;
     String temp_folder_index = rundata.getParameters().getString("temp_folder");
-    String filepath = FileIOScheduleCsvUtils
-        .getScheduleCsvFolderName(temp_folder_index)
+    String filepath =
+      FileIOScheduleCsvUtils.getScheduleCsvFolderName(temp_folder_index)
         + File.separator
         + FileIOScheduleCsvUtils.FOLDER_TMP_FOR_USERINFO_CSV_FILENAME;
     ALCsvTokenizer reader = new ALCsvTokenizer();
@@ -967,47 +1027,54 @@ public class FileIOAction extends ALBaseAction {
       FileIOScheduleCsvFormData formData = new FileIOScheduleCsvFormData();
       formData.initField();
       formData.setIsAutoTime(ALEipUtils
-          .getTemp(rundata, context, "is_autotime"));
+        .getTemp(rundata, context, "is_autotime"));
       for (j = 0; j < sequency.size(); j++) {
         token = reader.nextToken();
-        i = Integer.parseInt((String) sequency.get(j));
+        i = Integer.parseInt(sequency.get(j));
         formData.addItemToken(token, i);
-        if (reader.eof == -1)
+        if (reader.eof == -1) {
           break;
-        if (reader.line)
+        }
+        if (reader.line) {
           break;
+        }
       }
       while ((!reader.line) && (reader.eof != -1)) {
         reader.nextToken();
       }
-      if (reader.eof == -1 && j == 0)
+      if (reader.eof == -1 && j == 0) {
         break;
+      }
       // カンマ不足対策
       for (j++; j < sequency.size(); j++) {
-        i = Integer.parseInt((String) sequency.get(j));
+        i = Integer.parseInt(sequency.get(j));
         formData.addItemToken("", i);
       }
       /** データベースから読み取る場合 */
       try {
-        if (formData.getUserName().toString().equals(""))
+        if (formData.getUserName().toString().equals("")) {
           continue;
-        if (formData.getScheduleName().toString().equals(""))
+        }
+        if (formData.getScheduleName().toString().equals("")) {
           continue;
+        }
       } catch (Exception e) {
         continue;
       }
       if (!formData.getUserFullName().toString().equals("名前")) {
-        if (formData.doInsert(this, rundata, context))
+        if (formData.doInsert(this, rundata, context)) {
           not_error++;
+        }
       } else {
-        if (not_error > 0)
+        if (not_error > 0) {
           not_error--;
+        }
       }
     }
-    ALEipUtils.setTemp(rundata, context, "not_error_count",
-        Integer.toString(not_error));
-    int error_count = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-        "error_count"));
+    ALEipUtils.setTemp(rundata, context, "not_error_count", Integer
+      .toString(not_error));
+    int error_count =
+      Integer.parseInt(ALEipUtils.getTemp(rundata, context, "error_count"));
     if (error_count > 0) {
       doSchedule_list_csv_error(rundata, context);
     } else {

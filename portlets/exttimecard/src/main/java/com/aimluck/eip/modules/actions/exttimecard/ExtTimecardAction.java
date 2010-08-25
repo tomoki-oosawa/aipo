@@ -34,17 +34,17 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカードのアクションクラスです。 <BR>
- *
+ * 
  */
 public class ExtTimecardAction extends ALBaseAction {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ExtTimecardAction.class.getName());
+    .getLogger(ExtTimecardAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
@@ -52,13 +52,17 @@ public class ExtTimecardAction extends ALBaseAction {
    * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
    *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
     /** セッション情報をクリアする */
     clearExtTimecardSession(rundata, context);
 
-    ALEipUtils.setTemp(rundata, context, ExtTimecardUtils.TARGET_USER_ID, String
-        .valueOf(ALEipUtils.getUserId(rundata)));
+    ALEipUtils.setTemp(
+      rundata,
+      context,
+      ExtTimecardUtils.TARGET_USER_ID,
+      String.valueOf(ALEipUtils.getUserId(rundata)));
     ExtTimecardSelectData detailData = new ExtTimecardSelectData();
     detailData.initField();
     detailData.doViewDetail(this, rundata, context);
@@ -67,11 +71,12 @@ public class ExtTimecardAction extends ALBaseAction {
 
   /**
    * 最大化表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
 
@@ -92,7 +97,7 @@ public class ExtTimecardAction extends ALBaseAction {
 
   /**
    * タイムカードを一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -108,24 +113,28 @@ public class ExtTimecardAction extends ALBaseAction {
 
   /**
    * タイムカードを月毎に集計表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
   public void doExtTimecard_summary_list(RunData rundata, Context context)
       throws Exception {
-    ExtTimecardSummaryListSelectData listData = new ExtTimecardSummaryListSelectData();
+    ExtTimecardSummaryListSelectData listData =
+      new ExtTimecardSummaryListSelectData();
     listData.initField();
     listData.setRowsNum(100);
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "exttimecard-summary-list");
   }
 
-
+  @SuppressWarnings("unused")
   private void doViewPage(RunData rundata, Context context, String vm_template) {
-    String def_searchengine = ALEipUtils.getPortlet(rundata, context)
-        .getPortletConfig().getInitParameter("p1a-selects", "");
+    String def_searchengine =
+      ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p1a-selects", "");
     if (!"".equals(def_searchengine)) {
       context.put("def_searchengine", def_searchengine);
     }

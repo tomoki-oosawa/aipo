@@ -18,8 +18,6 @@
  */
 package com.aimluck.eip.modules.screens;
 
-import java.util.ArrayList;
-
 import net.sf.json.JSONArray;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -37,9 +35,10 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class ExtTimecardSystemMapFormJSONScreen extends ALJSONScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ExtTimecardSystemMapFormJSONScreen.class.getName());
+    .getLogger(ExtTimecardSystemMapFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -49,22 +48,24 @@ public class ExtTimecardSystemMapFormJSONScreen extends ALJSONScreen {
     try {
       if (ALEipConstants.MODE_UPDATE.equals(mode)) {
         ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, "1");
-        ExtTimecardSystemMapFormData formData = new ExtTimecardSystemMapFormData();
+        ExtTimecardSystemMapFormData formData =
+          new ExtTimecardSystemMapFormData();
         formData.initField();
         if (formData.doUpdate(this, rundata, context)) {
         } else {
-          ArrayList list = (ArrayList) context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST);
-          JSONArray json = JSONArray.fromObject(list);
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if ("multi_change".equals(mode)) {
-        ExtTimecardSystemMapMultiChange change = new ExtTimecardSystemMapMultiChange();
+        ExtTimecardSystemMapMultiChange change =
+          new ExtTimecardSystemMapMultiChange();
         if (change.doMultiAction(this, rundata, context)) {
         } else {
-          ArrayList list = (ArrayList) context
-              .get(ALEipConstants.ERROR_MESSAGE_LIST);
-          JSONArray json = JSONArray.fromObject(list);
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       }

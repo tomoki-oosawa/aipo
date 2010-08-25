@@ -86,27 +86,28 @@ public class FileIOScheduleCsvSelectData extends ALCsvAbstractSelectData {
     String filepath;
     try {
       if (stats == ALCsvTokenizer.CSV_LIST_MODE_READ) {
-        return new ResultList(readScheduleInfoFromCsv(rundata));
+        return new ResultList<FileIOScheduleCsvData>(
+          readScheduleInfoFromCsv(rundata));
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_NO_ERROR) {
         filepath =
           FileIOScheduleCsvUtils.getScheduleCsvFolderName(getTempFolderIndex())
             + File.separator
             + FileIOScheduleCsvUtils.FOLDER_TMP_FOR_USERINFO_CSV_FILENAME;
-        return new ResultList(readScheduleInfoFromCsvPage(
-          rundata,
-          filepath,
-          (rundata.getParameters().getInteger("csvpage") - 1),
-          ALCsvTokenizer.CSV_SHOW_SIZE));
+        return new ResultList<FileIOScheduleCsvData>(
+          readScheduleInfoFromCsvPage(rundata, filepath, (rundata
+            .getParameters()
+            .getInteger("csvpage") - 1), ALCsvTokenizer.CSV_SHOW_SIZE));
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_ERROR) {
         filepath =
           FileIOScheduleCsvUtils.getScheduleCsvFolderName(getTempFolderIndex())
             + File.separator
             + FileIOScheduleCsvUtils.FOLDER_TMP_FOR_USERINFO_CSV_TEMP_FILENAME;
-        return new ResultList(readScheduleInfoFromCsvPage(
-          rundata,
-          filepath,
-          0,
-          ALCsvTokenizer.CSV_SHOW_ERROR_SIZE));
+        return new ResultList<FileIOScheduleCsvData>(
+          readScheduleInfoFromCsvPage(
+            rundata,
+            filepath,
+            0,
+            ALCsvTokenizer.CSV_SHOW_ERROR_SIZE));
       } else {
         return null;
       }

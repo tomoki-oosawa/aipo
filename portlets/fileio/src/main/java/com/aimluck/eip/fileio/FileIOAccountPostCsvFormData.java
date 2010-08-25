@@ -24,10 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -46,18 +44,19 @@ import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 『部署』のフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FileIOAccountPostCsvFormData.class.getName());
+    .getLogger(FileIOAccountPostCsvFormData.class.getName());
 
   /** 部署名 */
   private ALStringField post_name;
@@ -110,19 +109,18 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
   /** FAX番号 */
   private ALStringField fax_number;
 
-  private DataContext dataContext;
-
   private boolean same_post;
 
   /**
    * 初期化します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
    *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -130,11 +128,10 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     // 部署名
     post_name = new ALStringField();
@@ -211,7 +208,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -219,29 +216,35 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res = super.setFormData(rundata, context, msgList);
     if (res) {
       try {
         if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
-          post_id = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
+          post_id =
+            Integer.parseInt(ALEipUtils.getTemp(
+              rundata,
+              context,
               ALEipConstants.ENTITY_ID));
         }
 
         if (is_join_member) {
           String str[] = rundata.getParameters().getStrings("member_to");
-          if (str == null)
+          if (str == null) {
             return res;
+          }
 
-          Expression exp = ExpressionFactory.inExp(
-              TurbineUser.LOGIN_NAME_PROPERTY, str);
-          SelectQuery query = new SelectQuery(TurbineUser.class, exp);
-          List<?> list = dataContext.performQuery(query);
+          Expression exp =
+            ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY, str);
+          SelectQuery<TurbineUser> query =
+            Database.query(TurbineUser.class, exp);
+          List<TurbineUser> list = query.fetchList();
 
           int size = list.size();
           for (int i = 0; i < size; i++) {
-            TurbineUser record = (TurbineUser) list.get(i);
+            TurbineUser record = list.get(i);
             ALEipUser user = new ALEipUser();
             user.initField();
             user.setName(record.getLoginName());
@@ -258,9 +261,10 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     post_name.setNotNull(true);
     post_name.limitMaxLength(50);
@@ -308,11 +312,12 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     List<String> dummy = new ArrayList<String>();
     if (!post_name.validate(msgList)) {
@@ -330,18 +335,18 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
       address.setValue(null);
     }
     if (!post_out_telephone1.getValue().equals("")
-        || !post_out_telephone2.getValue().equals("")
-        || !post_out_telephone3.getValue().equals("")) {
+      || !post_out_telephone2.getValue().equals("")
+      || !post_out_telephone3.getValue().equals("")) {
       if (!post_out_telephone1.validate(dummy)
-          || !post_out_telephone2.validate(dummy)
-          || !post_out_telephone3.validate(dummy)) {
+        || !post_out_telephone2.validate(dummy)
+        || !post_out_telephone3.validate(dummy)) {
         msgList.add("『 <span class='em'>電話番号</span> 』を正しく入力してください。");
         post_out_telephone.setValue(null);
       } else {
-        post_out_telephone.setValue(new StringBuffer()
-            .append(post_out_telephone1.getValue()).append("-")
-            .append(post_out_telephone2.getValue()).append("-")
-            .append(post_out_telephone3.getValue()).toString());
+        post_out_telephone.setValue(new StringBuffer().append(
+          post_out_telephone1.getValue()).append("-").append(
+          post_out_telephone2.getValue()).append("-").append(
+          post_out_telephone3.getValue()).toString());
       }
     }
     if (!post_in_telephone.toString().equals("")) {
@@ -351,16 +356,21 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
       }
     }
     if (!fax_number1.getValue().equals("")
-        || !fax_number2.getValue().equals("")
-        || !fax_number3.getValue().equals("")) {
-      if (!fax_number1.validate(dummy) || !fax_number2.validate(dummy)
-          || !fax_number3.validate(dummy)) {
+      || !fax_number2.getValue().equals("")
+      || !fax_number3.getValue().equals("")) {
+      if (!fax_number1.validate(dummy)
+        || !fax_number2.validate(dummy)
+        || !fax_number3.validate(dummy)) {
         msgList.add("『 <span class='em'>FAX番号</span> 』を正しく入力してください。");
         fax_number.setValue(null);
       } else {
-        fax_number.setValue(new StringBuffer().append(fax_number1.getValue())
-            .append("-").append(fax_number2.getValue()).append("-")
-            .append(fax_number3.getValue()).toString());
+        fax_number.setValue(new StringBuffer()
+          .append(fax_number1.getValue())
+          .append("-")
+          .append(fax_number2.getValue())
+          .append("-")
+          .append(fax_number3.getValue())
+          .toString());
       }
     }
     if (!zipcode1.getValue().equals("") || !zipcode2.getValue().equals("")) {
@@ -368,8 +378,8 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
         msgList.add("『 <span class='em'>郵便番号</span> 』を正しく入力してください。");
         zipcode.setValue(null);
       } else {
-        zipcode.setValue(new StringBuffer().append(zipcode1.getValue())
-            .append("-").append(zipcode2.getValue()).toString());
+        zipcode.setValue(new StringBuffer().append(zipcode1.getValue()).append(
+          "-").append(zipcode2.getValue()).toString());
       }
     }
     return msgList.size() == 0;
@@ -377,7 +387,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 『部署』を読み込みます。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -385,6 +395,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     // try {
@@ -442,7 +453,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 『部署』を追加します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -450,22 +461,21 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
-      if (dataContext == null) {
-        dataContext = DatabaseOrmService.getInstance().getDataContext();
-      }
-      if (getEipMPost() != null)
+      if (getEipMPost() != null) {
         return false;
+      }
 
       // グループオブジェクトモデルを生成
-      TurbineGroup group = (TurbineGroup) dataContext
-          .createAndRegisterNewObject(TurbineGroup.class);
+      TurbineGroup group = Database.create(TurbineGroup.class);
       String name = post_name.getValue();
       // グループ名(時間+ユーザIDで一意となるグループ名を作成)
-      String groupName = new StringBuffer().append(new Date().getTime())
-          .append("_").append(ALEipUtils.getUserId(rundata)).toString();
+      String groupName =
+        new StringBuffer().append(new Date().getTime()).append("_").append(
+          ALEipUtils.getUserId(rundata)).toString();
       group.setGroupName(groupName);
       // オーナIDの設定、作成者がオーナとなるので、自分自身のUID
       group.setOwnerId(Integer.valueOf(ALEipUtils.getUserId(rundata)));
@@ -477,8 +487,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
       JetspeedSecurity.addGroup(group);
 
       // 部署オブジェクトモデルを生成
-      EipMPost record = (EipMPost) dataContext
-          .createAndRegisterNewObject(EipMPost.class);
+      EipMPost record = Database.create(EipMPost.class);
       // 部署名
       record.setPostName(post_name.getValue());
       // 会社ID
@@ -504,11 +513,12 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
       // 更新日
       record.setUpdateDate(now);
       // 部署を追加
-      dataContext.commitChanges();
+      Database.commit();
       // singletonオブジェクトのリフレッシュ
       ALEipManager.getInstance().reloadPost();
       post_id = record.getPostId().intValue();
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -517,7 +527,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 『部署』を更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -525,6 +535,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -533,7 +544,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
   /**
    * 『部署』を削除します。 <BR>
    * このとき部署に関連づけられているグループも削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -541,6 +552,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -548,7 +560,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 部署名を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getPostName() {
@@ -557,7 +569,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 住所を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getAddress() {
@@ -566,7 +578,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFaxNumber1() {
@@ -575,7 +587,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFaxNumber2() {
@@ -584,7 +596,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFaxNumber3() {
@@ -593,7 +605,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（外線）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getOutTelephone1() {
@@ -602,7 +614,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（外線）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getOutTelephone2() {
@@ -611,7 +623,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（外線）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getOutTelephone3() {
@@ -620,7 +632,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（内線）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getInTelephone() {
@@ -629,7 +641,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getZipcode1() {
@@ -638,7 +650,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getZipcode2() {
@@ -647,7 +659,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 所属メンバーを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -655,7 +667,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param groupname
    * @return
    */
@@ -669,7 +681,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -677,7 +689,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param bool
    */
   public void setJoinMember(boolean bool) {
@@ -685,7 +697,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public boolean isJoinMember() {
@@ -694,7 +706,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 部署IDを取得します <BR>
-   *
+   * 
    * @return
    */
   public int getPostId() {
@@ -703,7 +715,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getZipcode() {
@@ -712,7 +724,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getOutTelephone() {
@@ -721,7 +733,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFaxNumber() {
@@ -730,7 +742,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 同じ部署名がデータベースに存在するかどうかを示すフラグを取得します <BR>
-   *
+   * 
    * @return
    */
   public boolean getSamePost() {
@@ -739,7 +751,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 同じ部署名がデータベースに存在するかどうかを示すフラグを入力します <BR>
-   *
+   * 
    * @return
    */
   public void setSamePost(boolean flg) {
@@ -748,84 +760,83 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 部署名から部署IDを取得します <BR>
-   *
+   * 
    * @return
    */
   private EipMPost getEipMPost() {
 
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
-    SelectQuery query = new SelectQuery(EipMPost.class);
-    Expression exp = ExpressionFactory.matchExp(EipMPost.POST_NAME_PROPERTY,
-        post_name);
+    SelectQuery<EipMPost> query = Database.query(EipMPost.class);
+    Expression exp =
+      ExpressionFactory.matchExp(EipMPost.POST_NAME_PROPERTY, post_name);
 
     query.setQualifier(exp);
 
-    List<?> list = dataContext.performQuery(query);
+    List<EipMPost> list = query.fetchList();
 
     if (list == null || list.size() == 0) {
       return null;
     }
 
-    EipMPost post = (EipMPost) list.get(0);
+    EipMPost post = list.get(0);
     return post;
 
   }
 
   /**
    * 読み取った単語を指定されたフィールドに格納します。 <BR>
-   *
+   * 
    * @param token
    * @param i
    */
   public void addItemToken(String token, int i) {
     StringTokenizer st;
     switch (i) {
-    case -1:
-      break;
-    case 0:
-      this.post_name.setValue(token);
-      break;
-    case 1:
-      st = new StringTokenizer(token, "-");
-      if (st.hasMoreTokens()) {
-        zipcode1.setValue(st.nextToken());
-      }
-      if (st.hasMoreTokens()) {
-        zipcode2.setValue(st.nextToken());
-      }
-      break;
-    case 2:
-      this.address.setValue(token);
-      break;
-    case 3:
-      st = new StringTokenizer(token, "-");
-      if (st.hasMoreTokens()) {
-        post_out_telephone1.setValue(st.nextToken());
-      }
-      if (st.hasMoreTokens()) {
-        post_out_telephone2.setValue(st.nextToken());
-      }
-      if (st.hasMoreTokens()) {
-        post_out_telephone3.setValue(st.nextToken());
-      }
-      break;
-    case 4:
-      this.post_in_telephone.setValue(token);
-      break;
-    case 5:
-      st = new StringTokenizer(token, "-");
-      if (st.hasMoreTokens()) {
-        fax_number1.setValue(st.nextToken());
-      }
-      if (st.hasMoreTokens()) {
-        fax_number2.setValue(st.nextToken());
-      }
-      if (st.hasMoreTokens()) {
-        fax_number3.setValue(st.nextToken());
-      }
-      break;
-    default:
-      break;
+      case -1:
+        break;
+      case 0:
+        this.post_name.setValue(token);
+        break;
+      case 1:
+        st = new StringTokenizer(token, "-");
+        if (st.hasMoreTokens()) {
+          zipcode1.setValue(st.nextToken());
+        }
+        if (st.hasMoreTokens()) {
+          zipcode2.setValue(st.nextToken());
+        }
+        break;
+      case 2:
+        this.address.setValue(token);
+        break;
+      case 3:
+        st = new StringTokenizer(token, "-");
+        if (st.hasMoreTokens()) {
+          post_out_telephone1.setValue(st.nextToken());
+        }
+        if (st.hasMoreTokens()) {
+          post_out_telephone2.setValue(st.nextToken());
+        }
+        if (st.hasMoreTokens()) {
+          post_out_telephone3.setValue(st.nextToken());
+        }
+        break;
+      case 4:
+        this.post_in_telephone.setValue(token);
+        break;
+      case 5:
+        st = new StringTokenizer(token, "-");
+        if (st.hasMoreTokens()) {
+          fax_number1.setValue(st.nextToken());
+        }
+        if (st.hasMoreTokens()) {
+          fax_number2.setValue(st.nextToken());
+        }
+        if (st.hasMoreTokens()) {
+          fax_number3.setValue(st.nextToken());
+        }
+        break;
+      default:
+        break;
     }
   }
 

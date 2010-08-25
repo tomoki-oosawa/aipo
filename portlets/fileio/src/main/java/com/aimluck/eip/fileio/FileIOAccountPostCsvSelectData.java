@@ -45,22 +45,23 @@ public class FileIOAccountPostCsvSelectData extends ALCsvAbstractSelectData {
    * CSVファイルから部署情報を取得します <BR>
    */
   @Override
-  protected ResultList<Object> selectList(RunData rundata, Context context) {
+  protected ResultList<FileIOAccountPostCsvData> selectList(RunData rundata,
+      Context context) {
     String filepath;
     try {
       if (stats == ALCsvTokenizer.CSV_LIST_MODE_READ) {
-        return new ResultList(readAccountInfoFromCsv(rundata));
+        return new ResultList<FileIOAccountPostCsvData>(
+          readAccountInfoFromCsv(rundata));
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_NO_ERROR) {
         filepath =
           FileIOAccountCsvUtils
             .getAccountPostCsvFolderName(getTempFolderIndex())
             + File.separator
             + FileIOAccountCsvUtils.CSV_ACCOUNT_POST_TEMP_FILENAME;
-        return new ResultList(readAccountInfoFromCsvPage(
-          rundata,
-          filepath,
-          (rundata.getParameters().getInteger("csvpage") - 1),
-          ALCsvTokenizer.CSV_SHOW_SIZE));
+        return new ResultList<FileIOAccountPostCsvData>(
+          readAccountInfoFromCsvPage(rundata, filepath, (rundata
+            .getParameters()
+            .getInteger("csvpage") - 1), ALCsvTokenizer.CSV_SHOW_SIZE));
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_ERROR) {
         if (this.error_count > 0) {
           filepath =
@@ -71,11 +72,12 @@ public class FileIOAccountPostCsvSelectData extends ALCsvAbstractSelectData {
         } else {
           return null;
         }
-        return new ResultList(readAccountInfoFromCsvPage(
-          rundata,
-          filepath,
-          0,
-          ALCsvTokenizer.CSV_SHOW_ERROR_SIZE));
+        return new ResultList<FileIOAccountPostCsvData>(
+          readAccountInfoFromCsvPage(
+            rundata,
+            filepath,
+            0,
+            ALCsvTokenizer.CSV_SHOW_ERROR_SIZE));
       } else {
         return null;
       }
@@ -92,7 +94,8 @@ public class FileIOAccountPostCsvSelectData extends ALCsvAbstractSelectData {
    * @return
    * @throws Exception
    */
-  private List<Object> readAccountInfoFromCsv(RunData rundata) throws Exception {
+  private List<FileIOAccountPostCsvData> readAccountInfoFromCsv(RunData rundata)
+      throws Exception {
     String filepath =
       FileIOAccountCsvUtils.getAccountPostCsvFolderName(getTempFolderIndex())
         + File.separator
@@ -107,7 +110,8 @@ public class FileIOAccountPostCsvSelectData extends ALCsvAbstractSelectData {
       return null;
     }
 
-    List<Object> list = new ArrayList<Object>();
+    List<FileIOAccountPostCsvData> list =
+      new ArrayList<FileIOAccountPostCsvData>();
     int ErrCount = 0;// エラーが発生した回数
 
     String token;
@@ -256,8 +260,9 @@ public class FileIOAccountPostCsvSelectData extends ALCsvAbstractSelectData {
    * @return
    * @throws Exception
    */
-  private List<Object> readAccountInfoFromCsvPage(RunData rundata,
-      String filepath, int StartLine, int LineLimit) throws Exception {
+  private List<FileIOAccountPostCsvData> readAccountInfoFromCsvPage(
+      RunData rundata, String filepath, int StartLine, int LineLimit)
+      throws Exception {
 
     int line_index = StartLine * ALCsvTokenizer.CSV_SHOW_SIZE;
 
@@ -266,7 +271,8 @@ public class FileIOAccountPostCsvSelectData extends ALCsvAbstractSelectData {
       return null;
     }
 
-    List<Object> list = new ArrayList<Object>();
+    List<FileIOAccountPostCsvData> list =
+      new ArrayList<FileIOAccountPostCsvData>();
 
     String token;
     int i, j;

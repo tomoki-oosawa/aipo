@@ -26,6 +26,7 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALData;
 
 public class FileIOAccountCsvResultData implements ALData {
+
   /** データのCSVファイル上での位置(行数) */
   private int line_count;
 
@@ -77,7 +78,7 @@ public class FileIOAccountCsvResultData implements ALData {
 
   /**
    * データのCSVファイル上での位置(行数)を入力します <BR>
-   *
+   * 
    * @param i
    */
   public void setLineCount(int i) {
@@ -86,7 +87,7 @@ public class FileIOAccountCsvResultData implements ALData {
 
   /**
    * ユーザーオブジェクトモデルを入力します <BR>
-   *
+   * 
    * @param data
    */
   public void setUser(TurbineUser data) {
@@ -95,7 +96,7 @@ public class FileIOAccountCsvResultData implements ALData {
 
   /**
    * データのCSVファイル上での位置(行数)を取得します <BR>
-   *
+   * 
    * @return
    */
   public int getLineCount() {
@@ -104,7 +105,7 @@ public class FileIOAccountCsvResultData implements ALData {
 
   /**
    * ユーザーオブジェクトモデルを取得します <BR>
-   *
+   * 
    * @return
    */
   public TurbineUser getUser() {
@@ -113,7 +114,7 @@ public class FileIOAccountCsvResultData implements ALData {
 
   /**
    * 部署名を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getPostName() {
@@ -126,7 +127,7 @@ public class FileIOAccountCsvResultData implements ALData {
 
   /**
    * 役職名を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getPositionName() {
@@ -135,7 +136,7 @@ public class FileIOAccountCsvResultData implements ALData {
 
   /**
    * 部署がデータベースに存在するかを示すフラグを取得します <BR>
-   *
+   * 
    * @return
    */
   public boolean getPostNotFound() {
@@ -144,7 +145,7 @@ public class FileIOAccountCsvResultData implements ALData {
 
   /**
    * 役職がデータベースに存在するかを示すフラグを取得します <BR>
-   *
+   * 
    * @return
    */
   public boolean getPositionNotFound() {
@@ -153,7 +154,7 @@ public class FileIOAccountCsvResultData implements ALData {
 
   /**
    * 同じログイン名が存在するかを示すフラグを取得します <BR>
-   *
+   * 
    * @return
    */
   public boolean getSameUser() {
@@ -162,7 +163,7 @@ public class FileIOAccountCsvResultData implements ALData {
 
   /**
    * エラーが起きたかどうかを示すフラグを取得します <BR>
-   *
+   * 
    * @return
    */
   public boolean getIsError() {
@@ -171,7 +172,7 @@ public class FileIOAccountCsvResultData implements ALData {
 
   /**
    * 部署名を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setPostName(String str) {
@@ -184,7 +185,7 @@ public class FileIOAccountCsvResultData implements ALData {
 
   /**
    * 役職名を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setPositionName(String str) {
@@ -193,7 +194,7 @@ public class FileIOAccountCsvResultData implements ALData {
 
   /**
    * 部署がデータベースに存在するかを示すフラグを設定します <BR>
-   *
+   * 
    * @param flg
    */
   public void setPostNotFound(boolean flg) {
@@ -202,7 +203,7 @@ public class FileIOAccountCsvResultData implements ALData {
 
   /**
    * 役職がデータベースに存在するかを示すフラグを設定します <BR>
-   *
+   * 
    * @param flg
    */
   public void setPositionNotFound(boolean flg) {
@@ -211,7 +212,7 @@ public class FileIOAccountCsvResultData implements ALData {
 
   /**
    * 同じログイン名が存在するかを示すフラグを設定します <BR>
-   *
+   * 
    * @param flg
    */
   public void setSameUser(boolean flg) {
@@ -220,7 +221,7 @@ public class FileIOAccountCsvResultData implements ALData {
 
   /**
    * エラーが起きたかどうかを示すフラグを設定します <BR>
-   *
+   * 
    * @param flg
    */
   public void setIsError(boolean flg) {

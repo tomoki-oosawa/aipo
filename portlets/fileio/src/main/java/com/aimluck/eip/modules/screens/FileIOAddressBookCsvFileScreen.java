@@ -20,15 +20,15 @@ package com.aimluck.eip.modules.screens;
 
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.cayenne.om.portlet.EipMAddressbook;
 import com.aimluck.eip.cayenne.om.portlet.EipMAddressbookCompany;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
  *
@@ -36,11 +36,12 @@ import com.aimluck.eip.orm.DatabaseOrmService;
 public class FileIOAddressBookCsvFileScreen extends ALCSVScreen {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FileIOAddressBookCsvFileScreen.class.getName());
+    .getLogger(FileIOAddressBookCsvFileScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.util.RunData)
    */
+  @Override
   protected String getContentType(RunData rundata) {
     return "application/octet-stream";
   }
@@ -48,6 +49,7 @@ public class FileIOAddressBookCsvFileScreen extends ALCSVScreen {
   /**
    *
    */
+  @Override
   protected String getCSVString(RunData rundata) throws Exception {
     String LINE_SEPARATOR = System.getProperty("line.separator");
     try {
@@ -84,17 +86,17 @@ public class FileIOAddressBookCsvFileScreen extends ALCSVScreen {
     String LINE_SEPARATOR = System.getProperty("line.separator");
     try {
       StringBuffer sb = new StringBuffer();
-      sb.append("名前（姓）,名前（名）,フリガナ（姓）,フリガナ（名）,役職,電話番号,携帯電話番号,E-mail,E-mail（携帯電話）,会社名,部課,フリガナ（会社名）,郵便番号,住所,会社電話番号,会社Fax,URL");
+      sb
+        .append("名前（姓）,名前（名）,フリガナ（姓）,フリガナ（名）,役職,電話番号,携帯電話番号,E-mail,E-mail（携帯電話）,会社名,部課,フリガナ（会社名）,郵便番号,住所,会社電話番号,会社Fax,URL");
       sb.append(LINE_SEPARATOR);
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query0 = new SelectQuery(EipMAddressbook.class);
-      List<?> list = dataContext.performQuery(query0);
+      SelectQuery<EipMAddressbook> query0 =
+        Database.query(EipMAddressbook.class);
+      List<EipMAddressbook> list = query0.fetchList();
       EipMAddressbook rec0;
       EipMAddressbookCompany rec1;
-      // SelectQuery query1 = new SelectQuery(EipMAddressbookCompany.class);
+      // SelectQuery query1 = Database.query(EipMAddressbookCompany.class);
       for (int i = 0; i < list.size(); i++) {
-        rec0 = (EipMAddressbook) list.get(i);
+        rec0 = list.get(i);
         sb.append(rec0.getLastName()).append(",");
         sb.append(rec0.getFirstName()).append(",");
         sb.append(rec0.getLastNameKana()).append(",");
@@ -125,20 +127,24 @@ public class FileIOAddressBookCsvFileScreen extends ALCSVScreen {
           continue;
         }
         if (rec1 != null) {
-          sb.append("\"" + makeOutputItem(rec1.getCompanyName()) + "\"")
-              .append(",");
+          sb
+            .append("\"" + makeOutputItem(rec1.getCompanyName()) + "\"")
+            .append(",");
           sb.append("\"" + makeOutputItem(rec1.getPostName()) + "\"").append(
-              ",");
-          sb.append("\"" + makeOutputItem(rec1.getCompanyNameKana()) + "\"")
-              .append(",");
-          sb.append("\"" + makeOutputItem(rec1.getZipcode()) + "\"")
-              .append(",");
-          sb.append("\"" + makeOutputItem(rec1.getAddress()) + "\"")
-              .append(",");
+            ",");
+          sb
+            .append("\"" + makeOutputItem(rec1.getCompanyNameKana()) + "\"")
+            .append(",");
+          sb
+            .append("\"" + makeOutputItem(rec1.getZipcode()) + "\"")
+            .append(",");
+          sb
+            .append("\"" + makeOutputItem(rec1.getAddress()) + "\"")
+            .append(",");
           sb.append("\"" + makeOutputItem(rec1.getTelephone()) + "\"").append(
-              ",");
+            ",");
           sb.append("\"" + makeOutputItem(rec1.getFaxNumber()) + "\"").append(
-              ",");
+            ",");
           sb.append("\"" + makeOutputItem(rec1.getUrl()) + "\"");
           sb.append(LINE_SEPARATOR);
         } else {
@@ -153,6 +159,7 @@ public class FileIOAddressBookCsvFileScreen extends ALCSVScreen {
     }
   }
 
+  @Override
   protected String getFileName() {
     return DatabaseOrmService.getInstance().getAlias() + "_addressbook.csv";
   }

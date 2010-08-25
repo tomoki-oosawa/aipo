@@ -21,7 +21,6 @@ package com.aimluck.eip.exttimecard;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -34,18 +33,18 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 
 /**
  * タイムカード集計のフォームデータを管理するためのクラスです。 <br />
- *
+ * 
  */
 
 public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ExtTimecardSystemMapFormData.class.getName());
+    .getLogger(ExtTimecardSystemMapFormData.class.getName());
 
   /** 開始時刻 */
   private ALNumberField start_time_hour;
@@ -73,15 +72,11 @@ public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
 
   private ALNumberField resttime_out;
 
-  private DataContext dataContext;
-
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     // TODO 自動生成されたメソッド・スタブ
     super.init(action, rundata, context);
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   /**
@@ -120,8 +115,8 @@ public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     try {
-      EipTExtTimecardSystem record = ExtTimecardUtils.getEipTExtTimecardSystem(
-          rundata, context);
+      EipTExtTimecardSystem record =
+        ExtTimecardUtils.getEipTExtTimecardSystem(rundata, context);
       if (record == null) {
         return false;
       }
@@ -146,8 +141,8 @@ public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     try {
-      EipTExtTimecardSystem record = ExtTimecardUtils.getEipTExtTimecardSystem(
-          rundata, context);
+      EipTExtTimecardSystem record =
+        ExtTimecardUtils.getEipTExtTimecardSystem(rundata, context);
       if (record == null) {
         return false;
       }
@@ -164,8 +159,9 @@ public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
       // 更新日
       record.setUpdateDate(Calendar.getInstance().getTime());
 
-      dataContext.commitChanges();
+      Database.commit();
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -201,8 +197,8 @@ public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
   }
 
   @Override
-  protected boolean validate(List<String> msgList) throws ALPageNotFoundException,
-      ALDBErrorException {
+  protected boolean validate(List<String> msgList)
+      throws ALPageNotFoundException, ALDBErrorException {
 
     worktime_in.validate(msgList);
     resttime_in.validate(msgList);
@@ -214,7 +210,7 @@ public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
 
   /**
    * 詳細データを取得する抽象メソッドです。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -232,7 +228,7 @@ public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALNumberField getStartTimeHour() {
@@ -240,7 +236,7 @@ public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALNumberField getStartTimeMinute() {
@@ -248,7 +244,7 @@ public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALNumberField getEndTimeHour() {
@@ -256,7 +252,7 @@ public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALNumberField getEndTimeMinute() {
@@ -264,7 +260,7 @@ public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALNumberField getWorktimeIn() {
@@ -272,7 +268,7 @@ public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALNumberField getWorktimeOut() {
@@ -280,7 +276,7 @@ public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALNumberField getResttimeIn() {
@@ -288,7 +284,7 @@ public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALNumberField getResttimeOut() {

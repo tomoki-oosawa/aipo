@@ -28,27 +28,29 @@ import com.aimluck.eip.common.ALCsvTokenizer;
 
 /**
  * スケジュールのCSV読取用ユーティリティクラスです。
- *
+ * 
  */
 public class FileIOScheduleCsvUtils {
 
   /** <code>logger</code> loger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FileIOScheduleCsvUtils.class.getName());
+    .getLogger(FileIOScheduleCsvUtils.class.getName());
 
   /** <code>SCHEDULEMAP_TYPE_USER</code> ユーザ */
   public static final String SCHEDULEMAP_TYPE_USER = "U";
 
   /** アカウントの添付ファイルを一時保管するディレクトリの指定 */
-  public static final String FOLDER_TMP_FOR_ATTACHMENT_FILES = JetspeedResources
-      .getString("aipo.tmp.account.attachment.directory", "");
+  public static final String FOLDER_TMP_FOR_ATTACHMENT_FILES =
+    JetspeedResources.getString("aipo.tmp.account.attachment.directory", "");
 
   /** CSVファイルを一時保管するファイル名の指定 */
-  public static final String FOLDER_TMP_FOR_USERINFO_CSV_FILENAME = "schedule_info.csv";
+  public static final String FOLDER_TMP_FOR_USERINFO_CSV_FILENAME =
+    "schedule_info.csv";
 
   /** エラーリスト用CSVファイルを一時保管するファイル名の指定 */
-  public static final String FOLDER_TMP_FOR_USERINFO_CSV_TEMP_FILENAME = "schedule_info_error.csv";
+  public static final String FOLDER_TMP_FOR_USERINFO_CSV_TEMP_FILENAME =
+    "schedule_info_error.csv";
 
   /** CSVファイルを一時保管するディレクトリの指定 */
   public static final String CSV_SCHEDULE_TEMP_FOLDER = "account_schedule";
@@ -57,13 +59,16 @@ public class FileIOScheduleCsvUtils {
 
   /**
    * 一時ファイルの保存先フォルダを取得
-   *
+   * 
    * @param index
    * @return
    */
   public static String getScheduleCsvFolderName(String index) {
-    String result = ALCsvTokenizer.CSV_TEMP_FOLDER + File.separator
-        + FileIOScheduleCsvUtils.CSV_SCHEDULE_TEMP_FOLDER + File.separator
+    String result =
+      ALCsvTokenizer.CSV_TEMP_FOLDER
+        + File.separator
+        + FileIOScheduleCsvUtils.CSV_SCHEDULE_TEMP_FOLDER
+        + File.separator
         + index;
     return result;
   }

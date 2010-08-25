@@ -29,12 +29,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカード集計の一覧を処理するクラスです。 <br />
- *
+ * 
  */
 public class ExtTimecardSystemScreen extends ALVelocityScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(ExtTimecardSystemScreen.class.getName());
+    .getLogger(ExtTimecardSystemScreen.class.getName());
 
   /**
    * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
@@ -49,8 +50,10 @@ public class ExtTimecardSystemScreen extends ALVelocityScreen {
       listData.initField();
       listData.doViewDetail(this, rundata, context);
 
-      setTemplate(rundata, context,
-          "portlets/html/ja/exttimecardsystem-form.vm");
+      setTemplate(
+        rundata,
+        context,
+        "portlets/html/ja/exttimecardsystem-form.vm");
     } catch (Exception ex) {
       logger.error("[ExtTimecardSystemScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);

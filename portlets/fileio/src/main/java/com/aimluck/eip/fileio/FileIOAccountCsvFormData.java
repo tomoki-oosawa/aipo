@@ -27,10 +27,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -49,7 +47,8 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALBaseUser;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
@@ -58,13 +57,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 『アカウント』のフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FileIOAccountCsvFormData.class.getName());
+    .getLogger(FileIOAccountCsvFormData.class.getName());
 
   /** ブラウザに表示するデフォルトのパスワード（ダミーパスワード） */
   public static final String DEFAULT_VIEW_PASSWORD = "*";
@@ -119,7 +118,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
@@ -187,9 +186,10 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドに対する制約条件を設定します。 <BR>
-   *
+   * 
    * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
+  @Override
   protected void setValidator() {
     // ユーザー名
     username.setNotNull(true);
@@ -240,17 +240,20 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return
    * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     String usernamestr = username.getValue();
-    if (usernamestr == null || "admin".equals(usernamestr)
-        || "template".equals(usernamestr) || "anon".equals(usernamestr)
-        || usernamestr.startsWith(ALEipUtils.dummy_user_head)
-        || !username.validate(msgList)) {
+    if (usernamestr == null
+      || "admin".equals(usernamestr)
+      || "template".equals(usernamestr)
+      || "anon".equals(usernamestr)
+      || usernamestr.startsWith(ALEipUtils.dummy_user_head)
+      || !username.validate(msgList)) {
       username.setValue(null);
     }
     if (usernamestr != null) {
@@ -259,10 +262,10 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
         if (isSymbol(usernamestr.charAt(i1))) {
           // 使用されているのが妥当な記号であるかの確認
           if (!(usernamestr.charAt(i1) == "_".charAt(0)
-              || usernamestr.charAt(i1) == "-".charAt(0) || usernamestr
-              .charAt(i1) == ".".charAt(0))) {
+            || usernamestr.charAt(i1) == "-".charAt(0) || usernamestr
+            .charAt(i1) == ".".charAt(0))) {
             msgList
-                .add("『 <span class='em'>ログイン名</span> 』に使用できる記号は「-」「.」「_」のみです。");
+              .add("『 <span class='em'>ログイン名</span> 』に使用できる記号は「-」「.」「_」のみです。");
             username.setValue(null);
             break;
           }
@@ -278,8 +281,9 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
     // }
 
     Map<String, TurbineUser> existedUserMap = getAllUsersFromDB();
-    if (existedUserMap == null)
+    if (existedUserMap == null) {
       existedUserMap = new LinkedHashMap<String, TurbineUser>();
+    }
     if (existedUserMap.containsKey(usernamestr)) {
       TurbineUser tmpuser2 = existedUserMap.get(usernamestr);
       if (!("F".equals(tmpuser2.getDisabled()))) {
@@ -306,9 +310,9 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
     // フリガナのカタカナへの変換
     first_name_kana.setValue(ALStringUtil.convertHiragana2Katakana(ALStringUtil
-        .convertH2ZKana(first_name_kana.toString())));
+      .convertH2ZKana(first_name_kana.toString())));
     last_name_kana.setValue(ALStringUtil.convertHiragana2Katakana(ALStringUtil
-        .convertH2ZKana(last_name_kana.toString())));
+      .convertH2ZKana(last_name_kana.toString())));
 
     if (!first_name_kana.validate(msgList)) {
       first_name_kana.setValue(null);
@@ -322,8 +326,8 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
     // メールアドレス
     if (email.getValue() != null && !email.getValue().equals("")) {
       if (!email.validate(msgList)
-          || (email.getValue() != null && email.getValue().trim().length() > 0 && !ALStringUtil
-              .isCellPhoneMailAddress(email.getValue()))) {
+        || (email.getValue() != null && email.getValue().trim().length() > 0 && !ALStringUtil
+          .isCellPhoneMailAddress(email.getValue()))) {
         email.setValue(null);
         msgList.add("『 <span class='em'>メールアドレス</span> 』を正しく入力してください。");
       }
@@ -335,15 +339,17 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
     List<String> errmsg = new ArrayList<String>();
     boolean isNumber = true;
     if (out_telephone.getValue() != null
-        && !out_telephone.getValue().equals("")) {
+      && !out_telephone.getValue().equals("")) {
       String[] out_tels = out_telephone.getValue().split("-");
       if (out_tels.length == 3) {
         for (int i = 0; i < 3; i++) {
           tel.setValue(out_tels[i]);
           isNumber = isNumber & tel.validate(errmsg);
         }
-        if (!isNumber || out_tels[0].length() > 5 || out_tels[1].length() > 4
-            || out_tels[2].length() > 4) {
+        if (!isNumber
+          || out_tels[0].length() > 5
+          || out_tels[1].length() > 4
+          || out_tels[2].length() > 4) {
           out_telephone.setValue(null);
           msgList.add("『 <span class='em'>電話番号</span> 』を正しく入力してください。");
         }
@@ -371,15 +377,17 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
     isNumber = true;
 
     if (cellular_phone.getValue() != null
-        && !cellular_phone.getValue().equals("")) {
+      && !cellular_phone.getValue().equals("")) {
       String[] cell_tels = cellular_phone.getValue().split("-");
       if (cell_tels.length == 3) {
         for (int i = 0; i < 3; i++) {
           tel.setValue(cell_tels[i]);
           isNumber = isNumber & tel.validate(errmsg);
         }
-        if (!isNumber || cell_tels[0].length() > 5 || cell_tels[1].length() > 4
-            || cell_tels[2].length() > 4) {
+        if (!isNumber
+          || cell_tels[0].length() > 5
+          || cell_tels[1].length() > 4
+          || cell_tels[2].length() > 4) {
           cellular_phone.setValue(null);
           msgList.add("『 <span class='em'>携帯電話番号</span> 』を正しく入力してください。");
         }
@@ -393,12 +401,12 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
     // 携帯メールアドレス
     if (cellular_mail.getValue() != null
-        && !cellular_mail.getValue().equals("")) {
+      && !cellular_mail.getValue().equals("")) {
       if (!cellular_mail.validate(msgList)) {
         cellular_mail.setValue(null);
         msgList.add("『 <span class='em'>携帯メールアドレス</span> 』を正しく入力してください。");
       } else if (cellular_mail.getValue().trim().length() > 0
-          && !ALStringUtil.isCellPhoneMailAddress(cellular_mail.getValue())) {
+        && !ALStringUtil.isCellPhoneMailAddress(cellular_mail.getValue())) {
         cellular_mail.setValue(null);
         msgList.add("『 <span class='em'>携帯メールアドレス</span> 』を正しく入力してください。");
       }
@@ -431,8 +439,9 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
       if (!post_name.toString().equals("") && post_name.toString() != null) {
         StringBuffer sb = new StringBuffer();
         for (int k = 0; k < postCollection.size(); k++) {
-          if (k != 0)
+          if (k != 0) {
             sb.append("/");
+          }
           sb.append(postCollection.get(k));
         }
         post_name.setValue(sb.toString());
@@ -442,12 +451,12 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
     }
 
     if (position_name.getValue() != null
-        && !position_name.getValue().equals("")) {
+      && !position_name.getValue().equals("")) {
       if (!position_name.validate(msgList)) {
         position_name.setValue(null);
         msgList.add("『 <span class='em'>役職名</span> 』を正しく入力してください。");
       } else if ((!position_name.toString().equals(""))
-          && (getEipMPosition() == null)) {
+        && (getEipMPosition() == null)) {
         setPositionNotFound(true);
         msgList.add("<span class='em'>役職が見つかりませんでした。</span>");
       }
@@ -460,7 +469,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を読み込みます。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -468,6 +477,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -475,7 +485,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を追加します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -483,12 +493,15 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
 
     // WebAPIのDBへ接続できるか確認
-    if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler()
-        .checkConnect()) {
+    if (!ALDataSyncFactoryService
+      .getInstance()
+      .getDataSyncHandler()
+      .checkConnect()) {
       msgList.add("コントロールパネルWebAPIのデータベースの接続に失敗したため、処理は実行されませんでした。");
       return false;
     }
@@ -511,7 +524,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
         rundata.getParameters().setProperties(user);
         // ユーザー名
         user.setUserName(JetspeedSecurity.convertUserName(getUserName()
-            .getValue()));
+          .getValue()));
         // JetspeedSecurity.forcePassword(user, password.getValue());
         user.setPassword(password.getValue());
         isNewUser = true;
@@ -553,35 +566,43 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
       if (!isNewUser) {
         // ユーザーを既にいるグループから削除。
-        DataContext dataContext = DatabaseOrmService.getInstance()
-            .getDataContext();
-        SelectQuery query2 = new SelectQuery(TurbineUserGroupRole.class);
-        Expression exp2 = ExpressionFactory.matchExp(
-            TurbineUserGroupRole.TURBINE_USER_PROPERTY, user.getUserId());
-        Expression exp3 = ExpressionFactory.noMatchExp(
-            TurbineUserGroupRole.TURBINE_GROUP_PROPERTY, Integer.valueOf(1));
-        Expression exp4 = ExpressionFactory.noMatchExp(
-            TurbineUserGroupRole.TURBINE_GROUP_PROPERTY, Integer.valueOf(2));
+        SelectQuery<TurbineUserGroupRole> query2 =
+          Database.query(TurbineUserGroupRole.class);
+        Expression exp2 =
+          ExpressionFactory.matchExp(
+            TurbineUserGroupRole.TURBINE_USER_PROPERTY,
+            user.getUserId());
+        Expression exp3 =
+          ExpressionFactory.noMatchExp(
+            TurbineUserGroupRole.TURBINE_GROUP_PROPERTY,
+            Integer.valueOf(1));
+        Expression exp4 =
+          ExpressionFactory.noMatchExp(
+            TurbineUserGroupRole.TURBINE_GROUP_PROPERTY,
+            Integer.valueOf(2));
         query2.setQualifier(exp2);
         query2.andQualifier(exp3.andExp(exp4));
-        List<?> list = dataContext.performQuery(query2);
+        List<TurbineUserGroupRole> list = query2.fetchList();
         TurbineUserGroupRole ugr = null;
         for (int i = 0; i < list.size(); i++) {
-          ugr = (TurbineUserGroupRole) list.get(i);
-          dataContext.deleteObject(ugr);
+          ugr = list.get(i);
+          Database.delete(ugr);
         }
 
         // ユーザーをグループに追加。
         if (!post_name.toString().equals("") && post_name.toString() != null) {
           String[] postnames = post_name.toString().split("/");
           for (int i = 0; i < postnames.length; i++) {
-            SelectQuery query = new SelectQuery(TurbineGroup.class);
-            Expression exp = ExpressionFactory.matchExp(
-                TurbineGroup.GROUP_ALIAS_NAME_PROPERTY, postnames[i]);
+            SelectQuery<TurbineGroup> query =
+              Database.query(TurbineGroup.class);
+            Expression exp =
+              ExpressionFactory.matchExp(
+                TurbineGroup.GROUP_ALIAS_NAME_PROPERTY,
+                postnames[i]);
             query.setQualifier(exp);
-            List<?> alist = dataContext.performQuery(query);
-            JetspeedSecurity.joinGroup(user.getUserName(),
-                ((TurbineGroup) alist.get(0)).getName());
+            List<TurbineGroup> alist = query.fetchList();
+            JetspeedSecurity.joinGroup(user.getUserName(), (alist.get(0))
+              .getName());
           }
         }
         // ユーザーを更新
@@ -613,16 +634,17 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
         // ユーザーをグループに追加。
         if (!post_name.toString().equals("") && post_name.toString() != null) {
           String[] postnames = post_name.toString().split("/");
-          DataContext dataContext = DatabaseOrmService.getInstance()
-              .getDataContext();
           for (int i = 0; i < postnames.length; i++) {
-            SelectQuery query = new SelectQuery(TurbineGroup.class);
-            Expression exp = ExpressionFactory.matchExp(
-                TurbineGroup.GROUP_ALIAS_NAME_PROPERTY, postnames[i]);
+            SelectQuery<TurbineGroup> query =
+              Database.query(TurbineGroup.class);
+            Expression exp =
+              ExpressionFactory.matchExp(
+                TurbineGroup.GROUP_ALIAS_NAME_PROPERTY,
+                postnames[i]);
             query.setQualifier(exp);
-            List<?> alist = dataContext.performQuery(query);
-            JetspeedSecurity.joinGroup(user.getUserName(),
-                ((TurbineGroup) alist.get(0)).getName());
+            List<TurbineGroup> alist = query.fetchList();
+            JetspeedSecurity.joinGroup(user.getUserName(), (alist.get(0))
+              .getName());
           }
         }
 
@@ -647,31 +669,31 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
         // }
 
         // ACLの登録
-        DataContext dataContext = DatabaseOrmService.getInstance()
-            .getDataContext();
         int userid = Integer.parseInt(user.getUserId());
 
         // アクセス権限
-        ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        ALAccessControlFactoryService aclservice =
+          (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
             .getInstance())
             .getService(ALAccessControlFactoryService.SERVICE_NAME);
-        ALAccessControlHandler aclhandler = aclservice
-            .getAccessControlHandler();
+        ALAccessControlHandler aclhandler =
+          aclservice.getAccessControlHandler();
         aclhandler.insertDefaultRole(userid);
 
-        dataContext.commitChanges();
+        Database.commit();
       }
 
       /** ユーザリストのキャッシュをクリアする */
       UserUtils.clearCache();
 
       // WebAPIとのDB同期
-      if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler()
-          .addUser(user)) {
+      if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler().addUser(
+        user)) {
         return false;
       }
 
     } catch (Exception e) {
+      Database.rollback();
       logger.error("Exception", e);
       res = false;
     }
@@ -681,7 +703,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -689,6 +711,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -696,7 +719,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -704,6 +727,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
    * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
    *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -711,7 +735,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 携帯メールアドレスを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getCellularMail() {
@@ -720,7 +744,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * メールアドレスを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getEmail() {
@@ -729,7 +753,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * フリガナ（名）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFirstNameKana() {
@@ -738,7 +762,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 名前（名）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFirstName() {
@@ -747,7 +771,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（内線）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getInTelephone() {
@@ -756,7 +780,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * フリガナ（姓）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getLastNameKana() {
@@ -765,7 +789,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 名前（姓）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getLastName() {
@@ -774,7 +798,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getCellularPhone() {
@@ -783,7 +807,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getOutTelephone() {
@@ -792,7 +816,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * パスワードを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getPassword() {
@@ -801,7 +825,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * ユーザー名を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getUserName() {
@@ -810,7 +834,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 部署名を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getPostName() {
@@ -823,7 +847,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 役職名を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getPositionName() {
@@ -832,7 +856,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 部署がデータベースに存在するかを示すフラグを取得します <BR>
-   *
+   * 
    * @return
    */
   public boolean getPostNotFound() {
@@ -841,7 +865,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 役職がデータベースに存在するかを示すフラグを取得します <BR>
-   *
+   * 
    * @return
    */
   public boolean getPositionNotFound() {
@@ -850,7 +874,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 携帯メールアドレスを入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setCellularMail(String str) {
@@ -859,7 +883,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * メールアドレスを入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setEmail(String str) {
@@ -868,7 +892,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * フリガナ（名）を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setFirstNameKana(String str) {
@@ -877,7 +901,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 名前（名）を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setFirstName(String str) {
@@ -886,7 +910,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * フリガナ（氏）を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setLastNameKana(String str) {
@@ -895,7 +919,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 名前（氏）を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setLastName(String str) {
@@ -904,7 +928,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setCellularPhone(String str) {
@@ -913,7 +937,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * パスワードを入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setPassword(String str) {
@@ -922,7 +946,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * ログイン名を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setUserName(String str) {
@@ -931,7 +955,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 部署名を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setPostName(String str) {
@@ -944,7 +968,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 役職名を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setPositionName(String str) {
@@ -953,7 +977,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を入力します（部署） <BR>
-   *
+   * 
    * @param str
    */
   public void setOutTelephone(String str) {
@@ -962,7 +986,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 内線番号を入力します（部署） <BR>
-   *
+   * 
    * @param str
    */
   public void setInTelephone(String str) {
@@ -971,7 +995,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 部署がデータベースに存在するかを示すフラグを入力します <BR>
-   *
+   * 
    * @param flg
    */
   public void setPostNotFound(boolean flg) {
@@ -980,7 +1004,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 役職がデータベースに存在するかを示すフラグを入力します <BR>
-   *
+   * 
    * @param flg
    */
   public void setPositionNotFound(boolean flg) {
@@ -989,104 +1013,104 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 部署名から部署IDを取得 <BR>
-   *
+   * 
    * @return
    */
   private EipMPost getEipMPost(ALStringField post_name) {
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
-    SelectQuery query = new SelectQuery(EipMPost.class);
-    Expression exp = ExpressionFactory.matchExp(EipMPost.POST_NAME_PROPERTY,
-        post_name);
+    SelectQuery<EipMPost> query = Database.query(EipMPost.class);
+    Expression exp =
+      ExpressionFactory.matchExp(EipMPost.POST_NAME_PROPERTY, post_name);
     query.setQualifier(exp);
-    List<?> list = dataContext.performQuery(query);
+    List<EipMPost> list = query.fetchList();
     if (list == null || list.size() == 0) {
       return null;
     }
-    EipMPost post = (EipMPost) list.get(0);
+    EipMPost post = list.get(0);
     return post;
   }
 
   /**
    * 役職名から役職IDを取得 <BR>
-   *
+   * 
    * @return
    */
   private EipMPosition getEipMPosition() {
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
-    SelectQuery query = new SelectQuery(EipMPosition.class);
-    Expression exp = ExpressionFactory.matchExp(
-        EipMPosition.POSITION_NAME_PROPERTY, position_name);
+    SelectQuery<EipMPosition> query = Database.query(EipMPosition.class);
+    Expression exp =
+      ExpressionFactory.matchExp(
+        EipMPosition.POSITION_NAME_PROPERTY,
+        position_name);
     query.setQualifier(exp);
-    List<?> list = dataContext.performQuery(query);
+    List<EipMPosition> list = query.fetchList();
     if (list == null || list.size() == 0) {
       return null;
     }
-    EipMPosition position = (EipMPosition) list.get(0);
+    EipMPosition position = list.get(0);
     return position;
   }
 
   /**
    * 読み取った単語を指定されたフィールドに格納します。 <BR>
-   *
+   * 
    * @param token
    * @param i
    */
   public void addItemToken(String token, int i) {
     switch (i) {
-    case -1:
-      break;
-    case 0:
-      try {
-        setUserName(token);
-      } catch (Exception e) {
-        logger.error(e);
-        e.printStackTrace();
-      }
-      break;
-    case 1:
-      setPassword(token);
-      break;
-    case 2:
-      setLastName(token);
-      break;
-    case 3:
-      setFirstName(token);
-      break;
-    case 4:
-      setLastNameKana(token);
-      break;
-    case 5:
-      setFirstNameKana(token);
-      break;
-    case 6:
-      setEmail(token);
-      break;
-    case 7:
-      setOutTelephone(token);
-      break;
-    case 8:
-      setInTelephone(token);
-      break;
-    case 9:
-      setCellularPhone(token);
-      break;
-    case 10:
-      setCellularMail(token);
-      break;
-    case 11:
-      setPostName(token);
-      break;
-    case 12:
-      setPositionName(token);
-      break;
-    default:
-      break;
+      case -1:
+        break;
+      case 0:
+        try {
+          setUserName(token);
+        } catch (Exception e) {
+          logger.error(e);
+          e.printStackTrace();
+        }
+        break;
+      case 1:
+        setPassword(token);
+        break;
+      case 2:
+        setLastName(token);
+        break;
+      case 3:
+        setFirstName(token);
+        break;
+      case 4:
+        setLastNameKana(token);
+        break;
+      case 5:
+        setFirstNameKana(token);
+        break;
+      case 6:
+        setEmail(token);
+        break;
+      case 7:
+        setOutTelephone(token);
+        break;
+      case 8:
+        setInTelephone(token);
+        break;
+      case 9:
+        setCellularPhone(token);
+        break;
+      case 10:
+        setCellularMail(token);
+        break;
+      case 11:
+        setPostName(token);
+        break;
+      case 12:
+        setPositionName(token);
+        break;
+      default:
+        break;
     }
   }
 
   /**
    * 指定したchar型文字が記号であるかを判断します。
-   *
+   * 
    * @param ch
    * @return
    */
@@ -1099,8 +1123,10 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
       return false;
     }
 
-    if (chars == null || chars.length == 2 || Character.isDigit(ch)
-        || Character.isLetter(ch)) {
+    if (chars == null
+      || chars.length == 2
+      || Character.isDigit(ch)
+      || Character.isLetter(ch)) {
       return false;
     } else {
       return true;
@@ -1109,21 +1135,20 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   private Map<String, TurbineUser> getAllUsersFromDB() {
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
     Map<String, TurbineUser> map = null;
     try {
-      SelectQuery query = new SelectQuery(TurbineUser.class);
-      List<?> list = dataContext.performQuery(query);
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+      List<TurbineUser> list = query.fetchList();
 
       map = new LinkedHashMap<String, TurbineUser>();
       TurbineUser user = null;
       int size = list.size();
       for (int i = 0; i < size; i++) {
-        user = (TurbineUser) list.get(i);
+        user = list.get(i);
         map.put(user.getLoginName(), user);
       }
     } catch (Exception ex) {

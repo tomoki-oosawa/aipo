@@ -29,7 +29,7 @@ public class FileIOAddressBookCsvData extends AddressBookResultData {
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(FileIOAddressBookCsvData.class.getName());
+    .getLogger(FileIOAddressBookCsvData.class.getName());
 
   /** データのCSVファイル上での位置(行数) */
   private int line_count;
@@ -70,6 +70,7 @@ public class FileIOAddressBookCsvData extends AddressBookResultData {
   /**
    * フィールドの初期化
    */
+  @Override
   public void initField() {
     line_count = 0;
     same_company = false;
@@ -91,7 +92,7 @@ public class FileIOAddressBookCsvData extends AddressBookResultData {
 
   /**
    * データのCSVファイル上での位置(行数)を取得します <BR>
-   *
+   * 
    * @param i
    */
   public int getLineCount() {
@@ -100,7 +101,7 @@ public class FileIOAddressBookCsvData extends AddressBookResultData {
 
   /**
    * 同じ会社名がデータベースに存在するかどうかを取得します <BR>
-   *
+   * 
    * @return
    */
   public boolean getSameCompany() {
@@ -113,7 +114,7 @@ public class FileIOAddressBookCsvData extends AddressBookResultData {
 
   /**
    * データのCSVファイル上での位置(行数)を入力します <BR>
-   *
+   * 
    * @param i
    */
   public void setLineCount(int i) {
@@ -122,7 +123,7 @@ public class FileIOAddressBookCsvData extends AddressBookResultData {
 
   /**
    * 同じ会社名がデータベースに存在するかどうかを入力します <BR>
-   *
+   * 
    * @param flg
    */
   public void setSameCompany(boolean flg) {
@@ -143,6 +144,7 @@ public class FileIOAddressBookCsvData extends AddressBookResultData {
   /**
    * @return
    */
+  @Override
   public ALStringField getTelephone() {
     return telephone;
   }
@@ -157,6 +159,7 @@ public class FileIOAddressBookCsvData extends AddressBookResultData {
   /**
    * @return
    */
+  @Override
   public ALStringField getCellularPhone() {
     return cellular_phone;
   }
@@ -171,6 +174,7 @@ public class FileIOAddressBookCsvData extends AddressBookResultData {
   /**
    * @return
    */
+  @Override
   public ALStringField getEmail() {
     return email;
   }
@@ -185,6 +189,7 @@ public class FileIOAddressBookCsvData extends AddressBookResultData {
   /**
    * @return
    */
+  @Override
   public ALStringField getCellularMail() {
     return cellular_mail;
   }
@@ -199,6 +204,7 @@ public class FileIOAddressBookCsvData extends AddressBookResultData {
   /**
    * @return
    */
+  @Override
   public ALStringField getZipcode() {
     return zipcode;
   }
@@ -213,6 +219,7 @@ public class FileIOAddressBookCsvData extends AddressBookResultData {
   /**
    * @return
    */
+  @Override
   public ALStringField getCompanyAddress() {
     return company_address;
   }
@@ -227,6 +234,7 @@ public class FileIOAddressBookCsvData extends AddressBookResultData {
   /**
    * @return
    */
+  @Override
   public ALStringField getCompanyTelephone() {
     return company_telephone;
   }
@@ -241,6 +249,7 @@ public class FileIOAddressBookCsvData extends AddressBookResultData {
   /**
    * @return
    */
+  @Override
   public ALStringField getCompanyFaxNumber() {
     return company_fax_number;
   }
@@ -255,6 +264,7 @@ public class FileIOAddressBookCsvData extends AddressBookResultData {
   /**
    * @return
    */
+  @Override
   public FileIOStringField getCompanyUrl() {
     return company_url;
   }
