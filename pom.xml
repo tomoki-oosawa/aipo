@@ -88,7 +88,7 @@
           <configuration>
             <source>1.5</source>
             <target>1.5</target>
-            <failOnError>false</failOnError>
+            <failOnError>true</failOnError>
             <encoding>UTF-8</encoding>
           </configuration>
         </plugin>
