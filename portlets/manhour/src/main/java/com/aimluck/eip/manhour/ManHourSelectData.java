@@ -240,6 +240,7 @@ public class ManHourSelectData extends
         cleanupDummySchedule(scheduleList);
         // scheduleList = (ArrayList) buildPaginatedList(scheduleList);
         scheduleList = getScheduleList();
+        setPageParam(scheduleList.size());
       }
       action.setResultData(this);
       action.putData(rundata, context);
@@ -273,7 +274,11 @@ public class ManHourSelectData extends
    *
    */
   private List<ManHourResultData> getScheduleList() {
-    ManHourResultData[] obj = (ManHourResultData[]) scheduleList.toArray();
+    ManHourResultData[] obj = new ManHourResultData[scheduleList.size()];
+    int size = scheduleList.size();
+    for (int i = 0; i < size; i++) {
+      obj[i] = scheduleList.get(i);
+    }
     Arrays.sort(obj, new Comparator<ManHourResultData>() {
       public int compare(ManHourResultData o1, ManHourResultData o2) {
         String sort = getCurrentSort();
