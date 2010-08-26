@@ -30,7 +30,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <meta-info>
             <title>連続フロー</title>
         </meta-info>
-        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <classname>com.aimluck.eip.portal.controllers.ALVelocityPortletController</classname>
         <parameter name="template" value="flow.vm" hidden="false"/>
         <parameter name="action" value="controllers.RowColumnControllerAction" hidden="false"/>
         <media-type ref="docomo_foma"/>
@@ -52,7 +52,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             <title>一列 (非推奨)</title>
             <description>このコントローラはなくなります。縦一列を使ってください。</description>
         </meta-info>
-        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <classname>com.aimluck.eip.portal.controllers.ALVelocityPortletController</classname>
         <parameter name="template" value="column.vm" hidden="false"/>
         <parameter name="action" value="controllers.RowColumnControllerAction" hidden="false"/>
         <media-type ref="html"/>
@@ -62,7 +62,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <meta-info>
             <title>横一列</title>
         </meta-info>
-        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <classname>com.aimluck.eip.portal.controllers.ALVelocityPortletController</classname>
         <parameter name="template" value="row.vm" hidden="false"/>
         <parameter name="action" value="controllers.RowColumnControllerAction" hidden="false"/>
         <media-type ref="html"/>
@@ -72,9 +72,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <meta-info>
             <title>縦一列</title>
         </meta-info>
-        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <classname>com.aimluck.eip.portal.controllers.ALVelocityPortletController</classname>
         <parameter name="template" value="multicolumn.vm" hidden="false"/>
-        <parameter name="action" value="controllers.MultiColumnControllerAction" hidden="false"/>
+        <parameter name="action" value="controllers.ALMultiColumnControllerAction" hidden="false"/>
         <parameter name="sizes" value="100%" hidden="false"/>
         <parameter name="cols" value="1" hidden="false"/>
         <media-type ref="docomo_foma"/>
@@ -90,9 +90,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <meta-info>
             <title>二列 (50/50)</title>
         </meta-info>
-        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <classname>com.aimluck.eip.portal.controllers.ALVelocityPortletController</classname>
         <parameter name="template" value="multicolumn.vm" hidden="false"/>
-        <parameter name="action" value="controllers.MultiColumnControllerAction" hidden="false"/>
+        <parameter name="action" value="controllers.ALMultiColumnControllerAction" hidden="false"/>
         <parameter name="sizes" value="50%,50%" hidden="false"/>
         <parameter name="cols" value="2" hidden="false"/>
         <media-type ref="html"/>
@@ -101,9 +101,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <meta-info>
             <title>二列 (75/25)</title>
         </meta-info>
-        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <classname>com.aimluck.eip.portal.controllers.ALVelocityPortletController</classname>
         <parameter name="template" value="multicolumn.vm" hidden="false"/>
-        <parameter name="action" value="controllers.MultiColumnControllerAction" hidden="false"/>
+        <parameter name="action" value="controllers.ALMultiColumnControllerAction" hidden="false"/>
         <parameter name="sizes" value="75%,25%" hidden="false"/>
         <parameter name="cols" value="2" hidden="false"/>
         <media-type ref="html"/>
@@ -112,9 +112,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <meta-info>
             <title>二列 (25/75)</title>
         </meta-info>
-        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <classname>com.aimluck.eip.portal.controllers.ALVelocityPortletController</classname>
         <parameter name="template" value="multicolumn.vm" hidden="false"/>
-        <parameter name="action" value="controllers.MultiColumnControllerAction" hidden="false"/>
+        <parameter name="action" value="controllers.ALMultiColumnControllerAction" hidden="false"/>
         <parameter name="sizes" value="25%,75%" hidden="false"/>
         <parameter name="cols" value="2" hidden="false"/>
         <media-type ref="html"/>
@@ -123,9 +123,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <meta-info>
             <title>三列 (25/50/25)</title>
         </meta-info>
-        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <classname>com.aimluck.eip.portal.controllers.ALVelocityPortletController</classname>
         <parameter name="template" value="multicolumn.vm" hidden="false"/>
-        <parameter name="action" value="controllers.MultiColumnControllerAction" hidden="false"/>
+        <parameter name="action" value="controllers.ALMultiColumnControllerAction" hidden="false"/>
         <parameter name="sizes" value="25%,50%,25%" hidden="false"/>
         <parameter name="cols" value="3" hidden="false"/>
         <media-type ref="html"/>
@@ -134,9 +134,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <meta-info>
             <title>三列 (33/33/33)</title>
         </meta-info>
-        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <classname>com.aimluck.eip.portal.controllers.ALVelocityPortletController</classname>
         <parameter name="template" value="multicolumn.vm" hidden="false"/>
-        <parameter name="action" value="controllers.MultiColumnControllerAction" hidden="false"/>
+        <parameter name="action" value="controllers.ALMultiColumnControllerAction" hidden="false"/>
         <parameter name="sizes" value="33%,34%,33%" hidden="false"/>
         <parameter name="cols" value="3" hidden="false"/>
         <media-type ref="html"/>

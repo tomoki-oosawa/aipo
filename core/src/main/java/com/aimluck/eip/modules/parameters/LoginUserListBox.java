@@ -20,7 +20,6 @@ package com.aimluck.eip.modules.parameters;
 
 import java.util.List;
 
-import org.apache.jetspeed.modules.parameters.ListBox;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.common.ALEipUser;

@@ -22,7 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <meta-info>
             <title>クリアポートレットコントロール</title>
         </meta-info>
-        <classname>org.apache.jetspeed.portal.controls.VelocityPortletControl</classname>
+        <classname>com.aimluck.eip.portal.controls.ALVelocityPortletControl</classname>
         <parameter name="theme" value="clear.vm" hidden="false"/>
         <parameter name="simple" value="true" hidden="false"/>
         <media-type ref="docomo_foma"/>
@@ -38,7 +38,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <meta-info>
             <title>フルスクリーンコントロール</title>
         </meta-info>
-        <classname>org.apache.jetspeed.portal.controls.VelocityPortletControl</classname>
+        <classname>com.aimluck.eip.portal.controls.ALVelocityPortletControl</classname>
         <parameter name="theme" value="jetspeed.vm" hidden="false"/>
         <media-type ref="html"/>
         <media-type ref="wml"/>
@@ -47,7 +47,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <meta-info>
             <title>ボックスタイトルコントロール</title>
         </meta-info>
-        <classname>org.apache.jetspeed.portal.controls.VelocityPortletControl</classname>
+        <classname>com.aimluck.eip.portal.controls.ALVelocityPortletControl</classname>
         <parameter name="theme" value="jetspeed-box.vm" hidden="false"/>
         <parameter name="thickness" value="2" hidden="false"/>
         <parameter name="simple" value="true" hidden="false"/>
@@ -57,7 +57,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <meta-info>
             <title>シンプルタイトルコントロール</title>
         </meta-info>
-        <classname>org.apache.jetspeed.portal.controls.VelocityPortletControl</classname>
+        <classname>com.aimluck.eip.portal.controls.ALVelocityPortletControl</classname>
         <parameter name="theme" value="jetspeed.vm" hidden="false"/>
         <parameter name="simple" value="true" hidden="false"/>
         <media-type ref="html"/>
@@ -67,7 +67,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <meta-info>
             <title>区画化ポートレットコントロール</title>
         </meta-info>
-        <classname>org.apache.jetspeed.portal.controls.VelocityPortletSetControl</classname>
+        <classname>com.aimluck.eip.portal.controls.ALVelocityPortletSetControl</classname>
         <parameter name="theme" value="jetspeed-tab.vm" hidden="false"/>
         <media-type ref="html"/>
     </portlet-control-entry>
@@ -75,7 +75,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <meta-info>
             <title>タブコントロール</title>
         </meta-info>
-        <classname>org.apache.jetspeed.portal.controls.VelocityPortletSetControl</classname>
+        <classname>com.aimluck.eip.portal.controls.ALVelocityPortletSetControl</classname>
         <parameter name="theme" value="jetspeed-tab.vm" hidden="false"/>
         <media-type ref="html"/>
     </portlet-control-entry>
@@ -83,7 +83,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <meta-info>
             <title>左メニューコントロール</title>
         </meta-info>
-        <classname>org.apache.jetspeed.portal.controls.VelocityPortletSetControl</classname>
+        <classname>com.aimluck.eip.portal.controls.ALVelocityPortletSetControl</classname>
         <parameter name="tab-width" value="25%" hidden="false"/>
         <parameter name="theme" value="jetspeed-menu.vm" hidden="false"/>
         <media-type ref="html"/>

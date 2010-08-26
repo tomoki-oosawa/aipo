@@ -1,12 +1,12 @@
 /*
  * Copyright 2000-2001,2004 The Apache Software Foundation.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.apache.jetspeed.modules.actions.controls;
+package com.aimluck.eip.modules.actions.controls;
 
 // Turbine stuff
 import org.apache.jetspeed.om.profile.Entry;
@@ -43,12 +43,13 @@ public class Restore extends Action {
    * Static initialization of the logger for this class
    */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(Restore.class.getName());
+    .getLogger(Restore.class.getName());
 
   /**
    * @param rundata
-   *            The RunData object for the current request
+   *          The RunData object for the current request
    */
+  @Override
   public void doPerform(RunData rundata) throws Exception {
     // Only logged in users can Restored
     if (rundata.getUser() == null) {
@@ -69,8 +70,11 @@ public class Restore extends Action {
     JetspeedRunData jdata = (JetspeedRunData) rundata;
     Entry entry = jdata.getProfile().getDocument().getEntryById(peid);
     if (entry == null) {
-      logger.warn("Failed to get PEID (" + peid + ") entry for User ("
-          + rundata.getUser().getName() + ")");
+      logger.warn("Failed to get PEID ("
+        + peid
+        + ") entry for User ("
+        + rundata.getUser().getName()
+        + ")");
       return;
     }
     Portlet portlet = PortletFactory.getPortlet(entry);
@@ -92,12 +96,11 @@ public class Restore extends Action {
     // 対処方法：ログイン画面以外でユーザがログインしていない場合はエラーページへスクリーンを変更
     JetspeedUser user = (JetspeedUser) jdata.getUser();
     if ((user == null || !user.hasLoggedIn())
-        && !JetspeedResources.getBoolean("automatic.logon.enable", false)) {
-      String uri = ((JetspeedRunData) jdata).getRequest().getRequestURI()
-          .trim();
+      && !JetspeedResources.getBoolean("automatic.logon.enable", false)) {
+      String uri = (jdata).getRequest().getRequestURI().trim();
       String servername = jdata.getServletConfig().getServletName();
       if (!uri.equals("/" + servername + "/portal/")
-          && !uri.equals("/" + servername + "/portal")) {
+        && !uri.equals("/" + servername + "/portal")) {
         jdata.setScreenTemplate("Timeout");
         // セッションの削除
         if (jdata.getSession() != null) {

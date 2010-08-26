@@ -22,7 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <security-ref parent="user-only"/>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="customizer-portlet" hidden="true"/>
-        <parameter name="action" value="portlets.CustomizeAction" hidden="true"/>
+        <parameter name="action" value="portlets.ALCustomizeAction" hidden="true"/>
         <parameter name="_security_ref" value="" type="style" hidden="false">
             <security-ref parent="user-only"/>
             <meta-info>
@@ -44,7 +44,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <security-ref parent="user-only"/>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="customizer-portletset" hidden="true"/>
-        <parameter name="action" value="portlets.CustomizeSetAction" hidden="true"/>
+        <parameter name="action" value="portlets.ALCustomizeSetAction" hidden="true"/>
         <parameter name="securityRef" value="" type="style" hidden="false">
             <security-ref parent="user-only"/>
         </parameter>

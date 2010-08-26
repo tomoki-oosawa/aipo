@@ -1,12 +1,12 @@
 /*
  * Copyright 2000-2004 The Apache Software Foundation.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,8 +29,6 @@ import org.apache.jetspeed.util.MimeType;
 import org.apache.turbine.modules.pages.DefaultPage;
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.RunData;
-
-import com.aimluck.eip.common.ALEipConstants;
 
 /**
  * When building sites using templates, Screens need only be defined for
@@ -80,56 +78,67 @@ import com.aimluck.eip.common.ALEipConstants;
  * @author <a href="mailto:paulsp@apache.org">Paul Spencer </a>
  */
 public class JetspeedTemplatePage extends DefaultPage {
-  private static int httpLifetime = JetspeedResources.getInt("http.lifetime",
-      -1);
+  private static int httpLifetime = JetspeedResources.getInt(
+    "http.lifetime",
+    -1);
 
   /**
    * Static initialization of the logger for this class
    */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(JetspeedTemplatePage.class.getName());
+    .getLogger(JetspeedTemplatePage.class.getName());
 
   /**
    * Works with TemplateService to set up default templates and corresponding
    * class modules.
    * 
    * @param data
-   *            Turbine information.
-   * @exception Exception,
-   *                a generic exception.
+   *          Turbine information.
+   * @exception Exception
+   *              , a generic exception.
    */
+  @Override
   protected void doBuildBeforeAction(RunData data) throws Exception {
     switch (httpLifetime) {
-    case -1:
-      break;
-    case 0:
-      data.getResponse().setHeader("Cache-Control", "no-cache");
-      data.getResponse().setHeader("Pragma", "no-cache");
-      data.getResponse().setDateHeader("Expires", 0);
-      data.getResponse().setDateHeader("Last-Modified",
+      case -1:
+        break;
+      case 0:
+        data.getResponse().setHeader("Cache-Control", "no-cache");
+        data.getResponse().setHeader("Pragma", "no-cache");
+        data.getResponse().setDateHeader("Expires", 0);
+        data.getResponse().setDateHeader(
+          "Last-Modified",
           System.currentTimeMillis());
-      break;
-    default:
-      data.getResponse().setHeader("Cache-Control", "max-age=" + httpLifetime);
-      data.getResponse().setDateHeader("Expires",
+        break;
+      default:
+        data
+          .getResponse()
+          .setHeader("Cache-Control", "max-age=" + httpLifetime);
+        data.getResponse().setDateHeader(
+          "Expires",
           System.currentTimeMillis() + (httpLifetime * 1000));
-      data.getResponse().setDateHeader("Last-Modified",
+        data.getResponse().setDateHeader(
+          "Last-Modified",
           System.currentTimeMillis());
-      break;
+        break;
     }
 
     // Set the ContentType of the page
     CapabilityMap cm = ((JetspeedRunData) data).getCapability();
     MimeType mime = cm.getPreferredType();
-    String characterSet = ALEipConstants.DEF_CONTENT_ENCODING;
+    String characterSet =
+      JetspeedResources.getString(
+        JetspeedResources.CONTENT_ENCODING_KEY,
+        "utf-8");
     if (mime != null) {
       data.setContentType(mime.getContentType());
       // 理由等：同じ Content-Type で異なる CharacterSet を指定できるように，
       // MediaTypeEntry の取得キーとして，cm.getPreferredMediaType() を使用した．
       // MediaTypeEntry media = (MediaTypeEntry) Registry.getEntry(
       // Registry.MEDIA_TYPE, mime.getCode());
-      MediaTypeEntry media = (MediaTypeEntry) Registry.getEntry(
-          Registry.MEDIA_TYPE, cm.getPreferredMediaType());
+      MediaTypeEntry media =
+        (MediaTypeEntry) Registry.getEntry(Registry.MEDIA_TYPE, cm
+          .getPreferredMediaType());
       if (media != null && media.getCharacterSet() != null) {
         characterSet = media.getCharacterSet();
       }
@@ -138,8 +147,11 @@ public class JetspeedTemplatePage extends DefaultPage {
 
     if (logger.isDebugEnabled()) {
       logger.debug("JetspeedTemplatePage: Setting type to: "
-          + cm.getPreferredType().getContentType() + "; charset="
-          + ALEipConstants.DEF_CONTENT_ENCODING);
+        + cm.getPreferredType().getContentType()
+        + "; charset="
+        + JetspeedResources.getString(
+          JetspeedResources.CONTENT_ENCODING_KEY,
+          "utf-8"));
     }
   }
 
@@ -148,10 +160,11 @@ public class JetspeedTemplatePage extends DefaultPage {
    * class modules.
    * 
    * @param data
-   *            Turbine information.
-   * @exception Exception,
-   *                a generic exception.
+   *          Turbine information.
+   * @exception Exception
+   *              , a generic exception.
    */
+  @Override
   protected void doBuildAfterAction(RunData data) throws Exception {
     // Either template or screen should be guaranteed by the SessionValidator
     // It is occasionally better to specify the screen instead of template
@@ -184,38 +197,38 @@ public class JetspeedTemplatePage extends DefaultPage {
       // when the TurbineTemplateService can locate resources by NLS and
       // mediatype,
       // then it can be removed
-      String locatedScreen = TemplateLocator.locateScreenTemplate(data,
-          template);
+      String locatedScreen =
+        TemplateLocator.locateScreenTemplate(data, template);
       data.setScreenTemplate(locatedScreen);
       if (logger.isDebugEnabled()) {
         logger.debug("JetspeedTemplatePage: calculated template = "
-            + locatedScreen);
+          + locatedScreen);
       }
 
       // 理由等：レイアウトテンプレートを動的に変更不可であったため，
       // ユーザーからのリクエストで変更可能にした．
-      String layout_template = data.getParameters()
-          .getString("layout_template");
+      String layout_template =
+        data.getParameters().getString("layout_template");
       if (layout_template != null && (!layout_template.equals(""))) {
         layout_template = "/" + layout_template + ".vm";
       } else {
         layout_template = template;
       }
-      String layout = TemplateLocator.locateLayoutTemplate(data,
-          layout_template);
+      String layout =
+        TemplateLocator.locateLayoutTemplate(data, layout_template);
       data.setLayoutTemplate(layout);
 
       if (logger.isDebugEnabled()) {
         logger.debug("JetspeedTemplatePage: layoutTemplate is finally "
-            + layout);
+          + layout);
       }
 
       String screen = TurbineTemplate.getScreenName(template);
       if (screen == null) {
         throw new Exception("Screen could not be determined. \n"
-            + "No matches were found by TemplateService and the \n"
-            + "services.TurbineTemplateService.default.screen \n"
-            + "property was not set.");
+          + "No matches were found by TemplateService and the \n"
+          + "services.TurbineTemplateService.default.screen \n"
+          + "property was not set.");
       }
       data.setScreen(screen);
     }

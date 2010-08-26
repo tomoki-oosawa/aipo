@@ -1,12 +1,12 @@
 /*
  * Copyright 2000-2001,2004 The Apache Software Foundation.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.apache.jetspeed.modules.parameters;
+package com.aimluck.eip.modules.parameters;
 
 // ecs stuff
 import java.util.Arrays;
@@ -23,6 +23,7 @@ import java.util.StringTokenizer;
 
 import org.apache.ecs.html.Option;
 import org.apache.ecs.html.Select;
+import org.apache.jetspeed.modules.parameters.ParameterPresentationStyle;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -31,15 +32,15 @@ import org.apache.turbine.util.RunData;
  * Options:
  * <UL>
  * <LI><code>items</code> - comma-separated list of list box items</LI>
- * <LI><code>layout</code> [<strong>$combo</strong>|$list] - combo box vs
- * list box</LI>
+ * <LI><code>layout</code> [<strong>$combo</strong>|$list] - combo box vs list
+ * box</LI>
  * <LI><code>size</code> - size of the list box for $list style</LI>
- * <LI><code>sort</code> [<strong>false</strong>|true] - return sorted list
- * of items</LI>
+ * <LI><code>sort</code> [<strong>false</strong>|true] - return sorted list of
+ * items</LI>
  * <LI><code>multiplechoice</code> [<strong>false</strong>|true] - allow
  * multiple selections</LI>
- * <LI><code>null-if-empty</code> [<strong>false</strong>|true] - do not
- * return a select control if item list is empty</LI>
+ * <LI><code>null-if-empty</code> [<strong>false</strong>|true] - do not return
+ * a select control if item list is empty</LI>
  * </UL>
  * 
  * @author <a href="mark_orciuch@ngsltd.com">Mark Orciuch</a>
@@ -85,6 +86,8 @@ public class ListBox extends ParameterPresentationStyle {
    * @param parms
    * @return string
    */
+  @SuppressWarnings("rawtypes")
+  @Override
   public String getContent(RunData data, String name, String value, Map parms) {
 
     init(data);
@@ -102,8 +105,8 @@ public class ListBox extends ParameterPresentationStyle {
 
     if (items != null) {
 
-      boolean sort = Boolean.valueOf((String) this.getParm(SORT, "false"))
-          .booleanValue();
+      boolean sort =
+        Boolean.valueOf((String) this.getParm(SORT, "false")).booleanValue();
       if (sort) {
         Arrays.sort(items);
       }
@@ -120,8 +123,10 @@ public class ListBox extends ParameterPresentationStyle {
     }
 
     // If no items to display, do not display empty control
-    boolean nullIfEmpty = Boolean.valueOf(
-        (String) this.getParm(NULL_IF_EMPTY, "false")).booleanValue();
+    boolean nullIfEmpty =
+      Boolean
+        .valueOf((String) this.getParm(NULL_IF_EMPTY, "false"))
+        .booleanValue();
     if (this.items == null || (nullIfEmpty && items.length == 0)) {
       return null;
     }
@@ -141,8 +146,10 @@ public class ListBox extends ParameterPresentationStyle {
     this.items = this.getItems(data);
     this.values = this.getValues(data);
     this.size = (String) this.getParm(LIST_SIZE, "1");
-    this.multiple = Boolean.valueOf(
-        (String) this.getParm(MULTIPLE_CHOICE, "false")).booleanValue();
+    this.multiple =
+      Boolean
+        .valueOf((String) this.getParm(MULTIPLE_CHOICE, "false"))
+        .booleanValue();
 
   }
 
@@ -165,7 +172,7 @@ public class ListBox extends ParameterPresentationStyle {
 
       int i = 0;
       while (it.hasMoreTokens()) {
-        String item = (String) it.nextToken();
+        String item = it.nextToken();
         result[i] = item;
         i++;
       }
@@ -196,7 +203,7 @@ public class ListBox extends ParameterPresentationStyle {
 
       int i = 0;
       while (it.hasMoreTokens()) {
-        String item = (String) it.nextToken();
+        String item = it.nextToken();
         result[i] = item;
         i++;
       }

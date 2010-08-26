@@ -1,12 +1,12 @@
 /*
  * Copyright 2000-2004 The Apache Software Foundation.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,747 +17,347 @@
 package org.apache.jetspeed.portal.controls;
 
 // Turbine stuff
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
-import java.util.Vector;
+import org.apache.turbine.services.velocity.TurbineVelocity;
+import org.apache.turbine.services.pull.TurbinePull;
+import org.apache.turbine.util.RunData;
 
-import org.apache.ecs.ConcreteElement;
-import org.apache.ecs.StringElement;
-import org.apache.jetspeed.om.profile.Portlets;
-import org.apache.jetspeed.om.security.JetspeedUser;
-import org.apache.jetspeed.portal.PanedPortletController;
+// Jetspeed stuff
 import org.apache.jetspeed.portal.Portlet;
-import org.apache.jetspeed.portal.PortletInstance;
-import org.apache.jetspeed.portal.PortletSet;
 import org.apache.jetspeed.portal.PortletState;
 import org.apache.jetspeed.portal.security.portlets.PortletWrapper;
-import org.apache.jetspeed.services.JetspeedSecurity;
-import org.apache.jetspeed.services.PortalToolkit;
 import org.apache.jetspeed.services.TemplateLocator;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.persistence.PersistenceManager;
 import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
-import org.apache.jetspeed.services.security.PortalResource;
-import org.apache.jetspeed.services.statemanager.SessionState;
+import org.apache.jetspeed.util.template.JetspeedTool;
 import org.apache.jetspeed.util.template.JetspeedLink;
 import org.apache.jetspeed.util.template.JetspeedLinkFactory;
-import org.apache.jetspeed.util.template.JetspeedTool;
-import org.apache.turbine.services.pull.TurbinePull;
-import org.apache.turbine.services.velocity.TurbineVelocity;
-import org.apache.turbine.util.DynamicURI;
-import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.TurbineException;
+import org.apache.jetspeed.services.JetspeedSecurity;
+import org.apache.jetspeed.om.security.JetspeedUser;
+
+// Ecs stuff
+import org.apache.ecs.ConcreteElement;
+import org.apache.ecs.StringElement;
+
+// Velocity Stuff
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.common.ALFunction;
-import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
-import com.aimluck.eip.util.ALCommonUtils;
-import com.aimluck.eip.util.ALEipUtils;
+// Java stuff
+import java.util.List;
+import java.util.Vector;
+import java.util.Iterator;
 
 /**
  * A Velocity based portlet control which implements all PortletState action
- * 
- * <p>
- * To use this control you need to define in your registry the following entry
- * or similar:
- * </p>
- * 
+ *
+ * <p>To use this control you need to define in your registry the following
+ * entry or similar:</p>
  * <pre>
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- *              &lt;portlet-control-entry name=&quot;TitlePortletControl&quot;&gt;
- *                &lt;classname&gt;org.apache.jetspeed.portal.controls.VelocityPortletControl&lt;/classname&gt;
- *                &lt;parameter name=&quot;theme&quot; value=&quot;default.vm&quot;/&gt;
- *                &lt;meta-info&gt;
- *                  &lt;title&gt;TitleControl&lt;/title&gt;
- *                  &lt;description&gt;The standard Jetspeed boxed control&lt;/description&gt;
- *                  &lt;image&gt;url of image (icon)&lt;/description&gt;
- *                &lt;/meta-info&gt;
- *                &lt;media-type ref=&quot;html&quot;/&gt;
- *              &lt;/portlet-control-entry&gt;
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
+ *   <portlet-control-entry name="TitlePortletControl">
+ *     <classname>org.apache.jetspeed.portal.controls.VelocityPortletControl</classname>
+ *     <parameter name="theme" value="default.vm"/>
+ *     <meta-info>
+ *       <title>TitleControl</title>
+ *       <description>The standard Jetspeed boxed control</description>
+ *       <image>url of image (icon)</description>
+ *     </meta-info>
+ *     <media-type ref="html"/>
+ *   </portlet-control-entry>
  * </pre>
+ *
  * 
- * 
- * @author <a href="mailto:re_carrasco@bco011.sonda.cl">Roberto Carrasco </a>
- * @author <a href="mailto:raphael@apache.org">Rapha�l Luta </a>
- * @author <a href="mailto:morciuch@apache.org">Mark Orciuch </a>
- * 
- * 
+ * @author <a href="mailto:re_carrasco@bco011.sonda.cl">Roberto Carrasco</a>
+ * @author <a href="mailto:raphael@apache.org">Rapha�l Luta</a>
+ * @author <a href="mailto:morciuch@apache.org">Mark Orciuch</a> 
+ *
+ * @version $Id: VelocityPortletControl.java,v 1.30 2004/03/29 21:38:42 taylor Exp $
+ *
  */
-public class VelocityPortletControl extends AbstractPortletControl {
+public class VelocityPortletControl extends AbstractPortletControl
+{
 
-  /**
-   * Static initialization of the logger for this class
-   */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(VelocityPortletControl.class.getName());
-
-  /** Disable content caching */
-  @Override
-  public boolean isCacheable() {
-    return false;
-  }
-
-  /**
-   * Handles the content generation for this control using Velocity
-   */
-  @Override
-  public ConcreteElement getContent(RunData rundata) {
-    Portlet portlet = getPortlet();
-    JetspeedRunData jdata = (JetspeedRunData) rundata;
-
-    // Check to see if the portlet allows view
-    // If the current security context disallows view,
-    // do not display the portlet OR the control decorator
-    if (portlet instanceof PortletWrapper) {
-      PortletWrapper wrapper = (PortletWrapper) portlet;
-      if (!wrapper.getAllowView(rundata)) {
-        if (JetspeedResources.getBoolean(
-            "defaultportletcontrol.hide.decorator", true)) {
-          return new StringElement("");
+    /**
+     * Static initialization of the logger for this class
+     */    
+    private static final JetspeedLogger logger = JetspeedLogFactoryService.getLogger(VelocityPortletControl.class.getName());    
+    
+    /** Disable content caching */
+    public boolean isCacheable()
+    {
+        return false;
+    }
+    
+    /**
+     * Handles the content generation for this control using Velocity
+     */
+    public ConcreteElement getContent( RunData rundata )
+    {
+        Portlet portlet = getPortlet();
+        JetspeedRunData jdata = (JetspeedRunData)rundata;
+        
+        // Check to see if the portlet allows view
+        // If the current security context disallows view,
+        // do not display the portlet OR the control decorator
+        if (portlet instanceof PortletWrapper)
+        {
+            PortletWrapper wrapper = (PortletWrapper)portlet;
+            if (!wrapper.getAllowView(rundata))
+            {
+                if (JetspeedResources.getBoolean("defaultportletcontrol.hide.decorator", true))
+                {                
+                    return new StringElement("");
+                }
+            }
         }
-      }
+
+        // Create a new Velocity context and load default 
+        // application pull tools
+        Context context = TurbineVelocity.getContext();
+        
+        context.put("data", rundata );
+        context.put("actions", buildActionList( rundata, portlet ) );
+        context.put("conf", getConfig() );
+        context.put("skin", portlet.getPortletConfig().getPortletSkin() );
+
+        // Put the request and session based contexts
+        TurbinePull.populateContext(context, rundata);
+        
+        if ( portlet.getName().equals(jdata.getCustomized())
+             && (!portlet.providesCustomization()) )
+        {            
+            context.put("portlet",JetspeedTool.getCustomizer(portlet));
+            context.put("portlet_instance",JetspeedTool.getCustomizer(portlet));
+        }
+        else
+        {
+            context.put("portlet", portlet );
+            if (PersistenceManager.getInstance(portlet, jdata) == null)
+            {
+              context.put("portlet_instance", portlet );
+            }
+            else
+            {
+              context.put("portlet_instance", PersistenceManager.getInstance(portlet, jdata) );
+            }
+        }
+            
+        // allow subclasses to add elements to the context
+        buildContext( rundata, context );
+        
+        String theme = getConfig().getInitParameter("theme","default.vm");
+
+        String s = "";
+        try 
+        {
+            String template = TemplateLocator.locateControlTemplate(rundata,theme);
+            TurbineVelocity.handleRequest(context, template, rundata.getOut());
+        }
+        catch( Exception e )
+        {
+            logger.error( "Exception while creating content ", e );
+            s = e.toString();
+        }
+
+        TurbineVelocity.requestFinished(context);
+
+        return new StringElement( s );
     }
-
-    // Create a new Velocity context and load default
-    // application pull tools
-    Context context = TurbineVelocity.getContext();
-
-    // 修正 ：ノーマル表示時のポートレットの右上にメニューを配置できるように，
-    // パラメータ functions を追加した．
-    context.put("data", rundata);
-    context.put("actions", buildActionList(rundata, portlet, context));
-    context.put("functions", buildFunctionList(rundata, portlet));
-    context.put("conf", getConfig());
-    context.put("skin", portlet.getPortletConfig().getPortletSkin());
-    context.put("utils", new ALCommonUtils());
-
-    // Put the request and session based contexts
-    TurbinePull.populateContext(context, rundata);
-
-    if ((jdata.getCustomized() != null)
-        && portlet.getName().equals(jdata.getCustomized().getName())
-        && (!portlet.providesCustomization())) {
-      context.put("portlet", JetspeedTool.getCustomizer(portlet));
-      context.put("portlet_instance", JetspeedTool.getCustomizer(portlet));
-    } else {
-      context.put("portlet", portlet);
-      if (PersistenceManager.getInstance(portlet, jdata) == null) {
-        context.put("portlet_instance", portlet);
-      } else {
-        context.put("portlet_instance", PersistenceManager.getInstance(portlet,
-            jdata));
-      }
+    
+    /**
+     * This method allows subclasses of the VelocityPortletControl
+     * to populate the context of this control before rendering by
+     * the template engine.
+     *
+     * @param rundata the RunData object for this request
+     * @param context the Context used by the template
+     */
+    public void buildContext( RunData rundata, Context context )
+    {
+        // empty, used by subclasses to populate the context
     }
+    
+    /** Builds a list of possible window actions for this portlet
+     *  instance. For best results, the portlet should also implement the
+     *  PortletState interface.
+     *
+     * @param rundata the request RunData
+     * @param the portlet instance managed by this control
+     * @return a list of ordered PortletAction objects describing the
+     * the actions available for this portlet
+     */
+    protected List buildActionList( RunData rundata, Portlet portlet )
+    {
+        List actions = new Vector();
+        JetspeedLink jsLink = null;
+        JetspeedRunData jdata = (JetspeedRunData)rundata;
 
-    // allow subclasses to add elements to the context
-    buildContext(rundata, context);
+        // disable actions option
+        if (JetspeedSecurity.areActionsDisabledForAllUsers())
+        {
+            return actions;
+        }
+        JetspeedUser user = jdata.getJetspeedUser();
+        if (JetspeedSecurity.areActionsDisabledForAnon() && false == user.hasLoggedIn())
+        {
+            return actions;
+        }
 
-    // 修正 ：タブの表示／非表示を切り替え可能にした（jetspeed.vm）．
-    String showTab = rundata.getParameters().getString("showTab");
-    if (showTab == null || showTab.equals("") || !showTab.equals("false")) {
-      showTab = "true";
+
+        // list the available actiosn for this portlet
+        if (portlet instanceof PortletState)
+        {            
+            // the portlet is state aware
+            PortletState state = (PortletState)portlet;
+            boolean customized = (jdata.getMode()==JetspeedRunData.CUSTOMIZE);
+            boolean maximized = customized||(jdata.getMode()==JetspeedRunData.MAXIMIZE);
+            boolean infoAdded = false;
+                    
+            if ( state.allowCustomize( rundata ) )
+            {
+                if (! customized )
+                {
+                    actions.add( new PortletAction("customize", "Customize") );
+                }
+            }
+            else
+            {
+                if ( state.allowInfo( rundata ) )
+                {
+                    actions.add( new PortletAction("info", "Information") );
+                    infoAdded = true;
+                }
+            }
+
+            if ( (!customized) &&  state.allowPrintFriendly( rundata ) )
+            {
+                actions.add( new PortletAction("print", "Print Friendly Format") );
+            }
+
+            if ( (!customized) &&  state.allowInfo( rundata ) && (!infoAdded) )
+            {
+                actions.add( new PortletAction("info", "Information") );
+            }
+                       
+            if ( (!customized) && (!maximized) && state.allowClose( rundata ) )
+            {
+                actions.add( new PortletAction("close", "Close") );
+            }
+            
+            if ( state.isMinimized( rundata ) || maximized )
+            {
+                actions.add( new PortletAction("restore", "Restore") );
+            }
+            else
+            {
+                if ( state.allowMinimize( rundata ) )
+                {
+                    actions.add( new PortletAction("minimize", "Minimize") );
+                }
+
+                if ( state.allowMaximize( rundata ) )
+                {
+                    actions.add( new PortletAction("maximize", "Maximize") );
+                }
+            }
+        }
+        else
+        {
+            // the portlet only knows about edit and maximize
+            if ( portlet.getAllowEdit( rundata ) )
+            {
+                actions.add( new PortletAction("info", "Information") );
+            }
+        
+            if ( portlet.getAllowMaximize( rundata ) )
+            {
+                actions.add( new PortletAction("maximize", "Maximize") );
+            }
+        }
+        
+        // Now that we know which actions should be displayed,
+        // build the links and put it in the context
+        Iterator i = actions.iterator();
+                
+        while( i.hasNext() )
+        {
+            PortletAction action = (PortletAction)i.next();
+
+            try
+            {
+                jsLink = JetspeedLinkFactory.getInstance(rundata);
+            }
+            catch( Exception e)
+            {
+               logger.error( "Exception in buildActionList", e );
+            }
+//            action.setLink( jsLink.setPortletById(portlet.getID())
+//                                 .addQueryData("action", getAction( action.getName()))
+//                                 .toString());
+            action.setLink( jsLink.setAction( getAction( action.getName()), portlet).toString());
+            JetspeedLinkFactory.putInstance(jsLink);
+            jsLink=null;
+        }
+        
+        return actions;
     }
-    context.put("showTab", showTab);
-
-    // 修正 ：ポートレットの最大化画面にタブを常に表示するように修正した．
-    try {
-      boolean customized = (jdata.getMode() == JetspeedRunData.CUSTOMIZE);
-      boolean maximized = customized
-          || (jdata.getMode() == JetspeedRunData.MAXIMIZE);
-
-      if (maximized && "true".equals(showTab)) {
-        Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-            .getDocument().getPortlets();
-        context.put("tabs", getTabs(PortalToolkit.getSet(portlets), rundata,
-            context));
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
+    
+    /** Transforms an Action name in Turbine valid action name, by
+     *  adding a controls package prefix and capitalizing the first
+     *  letter of the name.
+     */
+    protected static String getAction( String name )
+    {
+        StringBuffer buffer = new StringBuffer( "controls." );
+        
+        buffer.append( name.substring(0,1).toUpperCase() );
+        buffer.append( name.substring(1, name.length() ) );
+        
+        return buffer.toString();
     }
-
-    String theme = getConfig().getInitParameter("theme", "default.vm");
-
-    String s = "";
-    try {
-      String template = TemplateLocator.locateControlTemplate(rundata, theme);
-      TurbineVelocity.handleRequest(context, template, rundata.getOut());
-    } catch (Exception e) {
-      logger.error("Exception while creating content ", e);
-      s = e.toString();
-    }
-
-    TurbineVelocity.requestFinished(context);
-
-    return new StringElement(s);
-  }
-
-  /**
-   * This method allows subclasses of the VelocityPortletControl to populate the
-   * context of this control before rendering by the template engine.
-   * 
-   * @param rundata
-   *            the RunData object for this request
-   * @param context
-   *            the Context used by the template
-   */
-  public void buildContext(RunData rundata, Context context) {
-    // empty, used by subclasses to populate the context
-  }
-
-  /**
-   * Builds a list of possible window actions for this portlet instance. For
-   * best results, the portlet should also implement the PortletState interface.
-   * 
-   * @param rundata
-   *            the request RunData
-   * @param the
-   *            portlet instance managed by this control
-   * @return a list of ordered PortletAction objects describing the the actions
-   *         available for this portlet
-   */
-  protected List buildActionList(RunData rundata, Portlet portlet,
-      Context context) {
-    List actions = new Vector();
-    JetspeedLink jsLink = null;
-    JetspeedRunData jdata = (JetspeedRunData) rundata;
-
-    // disable actions option
-    if (JetspeedSecurity.areActionsDisabledForAllUsers()) {
-      return actions;
-    }
-    JetspeedUser user = jdata.getJetspeedUser();
-    if (JetspeedSecurity.areActionsDisabledForAnon()
-        && false == user.hasLoggedIn()) {
-      return actions;
-    }
-
-    // list the available actiosn for this portlet
-    if (portlet instanceof PortletState) {
-      // the portlet is state aware
-      PortletState state = (PortletState) portlet;
-      boolean customized = (jdata.getMode() == JetspeedRunData.CUSTOMIZE);
-      boolean maximized = customized
-          || (jdata.getMode() == JetspeedRunData.MAXIMIZE);
-
-      // 修正 ：最大化時とノーマル時のポートレットの表示を切り替えられるように，
-      // 変数 isMaximized を追加した．jetspeed.vm で利用する．
-      context.put("isMaximized", Boolean.valueOf(maximized));
-      boolean infoAdded = false;
-
-      if (state.allowCustomize(rundata)) {
-        // 修正 ：ページのカスタマイズ時にタブにカスタマイズボタンを付ける．
-        actions.add(new PortletAction("customize", "カスタマイズ"));
-        /*
-         * if (!customized) { actions.add(new PortletAction("customize",
-         * "Customize")); }
+    
+    /** This utility class is used to give information about the actions 
+     *  available in a control theme template
+     */
+    public class PortletAction
+    {
+        String name = null;
+        String link = null;
+        String alt = null;
+    
+        /**
+         * Constructor
+         * 
+         * @param name   Name of the action
+         * @param alt    Alternative text description (localized)
          */
-      } else {
-        if (state.allowInfo(rundata)) {
-          actions.add(new PortletAction("info", "Information"));
-          infoAdded = true;
+        protected PortletAction( String name, String alt )
+        {
+            this.name = name;
+            this.alt = alt;
         }
-      }
-
-      if ((!customized) && state.allowPrintFriendly(rundata)) {
-        actions.add(new PortletAction("print", "Print Friendly Format"));
-      }
-
-      if ((!customized) && state.allowInfo(rundata) && (!infoAdded)) {
-        actions.add(new PortletAction("info", "Information"));
-      }
-
-      if ((!customized) && (!maximized) && state.allowClose(rundata)) {
-        actions.add(new PortletAction("close", "Close"));
-      }
-
-      if (state.isMinimized(rundata) || maximized) {
-        // 修正 ：ページのカスタマイズ時にタブに表示されていた最小化ボタンを非表示にした．
-        // actions.add(new PortletAction("restore", "Restore"));
-      } else {
-        if (state.allowMinimize(rundata)) {
-          actions.add(new PortletAction("minimize", "Minimize"));
+        
+        public String getName()
+        {
+            return this.name;
+        }
+        
+        public String getLink()
+        {
+            return this.link;
+        }
+        
+        public void setLink(String link)
+        {
+            this.link = link;
         }
 
-        if (state.allowMaximize(rundata)) {
-          actions.add(new PortletAction("maximize", "Maximize"));
+        public String getAlt()
+        {
+            return this.alt;
         }
-      }
-    } else {
-      // the portlet only knows about edit and maximize
-      if (portlet.getAllowEdit(rundata)) {
-        actions.add(new PortletAction("info", "Information"));
-      }
 
-      if (portlet.getAllowMaximize(rundata)) {
-        actions.add(new PortletAction("maximize", "Maximize"));
-      }
     }
-
-    // Now that we know which actions should be displayed,
-    // build the links and put it in the context
-    Iterator i = actions.iterator();
-
-    while (i.hasNext()) {
-      PortletAction action = (PortletAction) i.next();
-
-      try {
-        jsLink = JetspeedLinkFactory.getInstance(rundata);
-      } catch (Exception e) {
-        logger.error("Exception in buildActionList", e);
-      }
-      // action.setLink( jsLink.setPortletById(portlet.getID())
-      // .addQueryData("action", getAction( action.getName()))
-      // .toString());
-      action.setLink(jsLink.setAction(getAction(action.getName()), portlet)
-          .toString());
-      JetspeedLinkFactory.putInstance(jsLink);
-      jsLink = null;
-    }
-
-    return actions;
-  }
-
-  // 修正 ：ノーマル表示時のポートレットの右上にメニューを配置できるように，
-  // メソッド buildFunctionList を追加した．
-  /**
-   * 
-   * @param rundata
-   * @param portlet
-   * @return
-   */
-  protected List buildFunctionList(RunData rundata, Portlet portlet) {
-    List functions = new ArrayList();
-    try {
-
-      int i = 1;
-      Map map = portlet.getPortletConfig().getInitParameters();
-      while (map.containsKey("function_mode" + i)) {
-        ALFunction function = new ALFunction();
-        function.setMode(portlet.getPortletConfig().getInitParameter(
-            "function_mode" + i));
-        function.setImage(portlet.getPortletConfig().getInitParameter(
-            "function_image" + i));
-        function.setCaption(portlet.getPortletConfig().getInitParameter(
-            "function_caption" + i));
-        if (map.containsKey("function_screen" + i)) {
-          function.setScreen(true);
-        }
-        if (map.containsKey("function_before_function" + i)) {
-          function.setBeforeFunction(portlet.getPortletConfig()
-              .getInitParameter("function_before_function" + i));
-        }
-        if (map.containsKey("function_after_function" + i)) {
-          function.setAfterFunction(portlet.getPortletConfig()
-              .getInitParameter("function_after_function" + i));
-        }
-        functions.add(function);
-        i++;
-      }
-    } catch (Exception e) {
-      logger.error("Exception", e);
-    }
-
-    return functions;
-  }
-
-  /**
-   * Transforms an Action name in Turbine valid action name, by adding a
-   * controls package prefix and capitalizing the first letter of the name.
-   */
-  protected static String getAction(String name) {
-    StringBuffer buffer = new StringBuffer("controls.");
-
-    buffer.append(name.substring(0, 1).toUpperCase());
-    buffer.append(name.substring(1, name.length()));
-
-    return buffer.toString();
-  }
-
-  /**
-   * This utility class is used to give information about the actions available
-   * in a control theme template
-   */
-  public class PortletAction {
-    String name = null;
-
-    String link = null;
-
-    String alt = null;
-
-    /**
-     * Constructor
-     * 
-     * @param name
-     *            Name of the action
-     * @param alt
-     *            Alternative text description (localized)
-     */
-    protected PortletAction(String name, String alt) {
-      this.name = name;
-      this.alt = alt;
-    }
-
-    public String getName() {
-      return this.name;
-    }
-
-    public String getLink() {
-      return this.link;
-    }
-
-    public void setLink(String link) {
-      this.link = link;
-    }
-
-    public String getAlt() {
-      return this.alt;
-    }
-
-  }
-
-  /**
-   * 修正：ポートレットの最大化画面時にタブを表示するために， <br />
-   * クラス org.apache.jetspeed.portal.controls.VelocityPortletSetControl <br />
-   * のメソッドを元に修正を加えた．
-   * 
-   * @param portlets
-   * @param rundata
-   * @param context
-   * @return
-   */
-  private Collection getTabs(PortletSet portlets, RunData rundata,
-      Context context) {
-    TreeSet tabs = new TreeSet(new PortletTabComparator());
-    PanedPortletController controller = null;
-    // if portlet is a PortletSet, try to retrieve the Controller
-    // we need a PanedPortletController to work properly.
-    if (portlets.getController() instanceof PanedPortletController) {
-      controller = (PanedPortletController) portlets.getController();
-    }
-
-    //アクセス権限
-    boolean hasAuthority = ALEipUtils.getHasAuthority(rundata, context, 
-        ALAccessControlConstants.VALUE_ACL_LIST);
-
-    JetspeedRunData jdata = (JetspeedRunData) rundata;
-
-    int count = 0;
-    for (Enumeration en = portlets.getPortlets(); en.hasMoreElements(); count++) {
-      Portlet p = (Portlet) en.nextElement();
-      PortalResource portalResource = new PortalResource(p);
-      // Secure the tabs
-      try {
-        JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-        portalResource.setOwner(jsLink.getUserName());
-        JetspeedLinkFactory.putInstance(jsLink);
-      } catch (Exception e) {
-        logger.warn(e.toString(), e);
-        portalResource.setOwner(null);
-      }
-
-      boolean hasView = JetspeedSecurity.checkPermission((JetspeedUser) jdata
-          .getUser(), portalResource, JetspeedSecurity.PERMISSION_VIEW);
-      if (!hasView) {
-        continue;
-      }
-      // skip any closed portlet
-      if ((p instanceof PortletState) && (((PortletState) p).isClosed(rundata))) {
-        continue;
-      }
-
-      String mstate = p.getAttribute("_menustate", "open", rundata);
-      if (mstate.equals("closed")) {
-        continue;
-      }
-      PortletTab tab = new PortletTab();
-
-      // Handle the portlet title
-      String title = null;
-      PortletInstance pi = PersistenceManager.getInstance(p, rundata);
-      if (pi != null) {
-        title = pi.getTitle();
-        if (title == null) {
-          title = (p.getTitle() != null) ? p.getTitle() : p.getName();
-        }
-      }
-      tab.setTitle(title);
-
-      tab.setPosition(p.getPortletConfig().getPosition());
-      if (tabs.contains(tab)) {
-        PortletTab lastTab = (PortletTab) tabs.last();
-        int nextPos = lastTab.getPosition() + 1;
-        tab.setPosition(nextPos);
-      }
-
-      if (controller != null) {
-        boolean isSelected = false;
-        if (jdata.getMode() == JetspeedRunData.CUSTOMIZE) {
-          PortletSet set = (PortletSet) (jdata).getCustomized();
-
-          if (isTab(rundata, set.getID())) {
-            // 現在選択しているタブかどうかを確認する．
-            if (p.getID().equals(set.getID())) {
-              isSelected = true;
-              // 現在選択中のタブ ID をセッションに保存
-              controller.savePaneID(rundata, p.getID());
-            }
-          } else {
-            isSelected = controller.isSelected(p, rundata);
-          }
-        } else if (jdata.getMode() == JetspeedRunData.MAXIMIZE) {
-          // isSelected = controller.isSelected(p, rundata);
-          isSelected = containsPeid(rundata, (PortletSet) p, (String) jdata
-              .getUser().getTemp("js_peid"));
-        }
-        tab.setSelected(isSelected);
-        // 修正 ：ポートレットの最大化画面でタブを押された場合に，
-        // 最大化の情報をセッションから削除可能にするため，
-        // URL にリストア処理用のクラスを付加した．
-        if (getPortlet() == null) {
-          tab.setLink(controller.getPortletURI(p, rundata).toString()
-              + "?action=controls.Restore");
-        } else {
-          try {
-            JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-            DynamicURI duri = jsLink.getLink(JetspeedLink.CURRENT, null, null,
-                JetspeedLink.CURRENT, null);
-
-            isSelected = containsPeid(rundata, (PortletSet) p, getPortlet()
-                .getID());
-            if (isSelected) {
-              duri = duri.addPathInfo(JetspeedResources.PATH_PANEID_KEY,
-                  getPortlet().getID()).addQueryData(
-                  JetspeedResources.PATH_ACTION_KEY, "controls.Restore");
-              tab.setLink(duri.toString());
-            } else {
-              tab.setLink(controller.getPortletURI(p, rundata).addQueryData(
-                  "action", "controls.Restore").toString());
-            }
-          } catch (TurbineException e) {
-            tab.setLink(controller.getPortletURI(p, rundata).addQueryData(
-                "action", "controls.Restore").toString());
-          }
-          // tab.setLink(controller.getPortletURI(p, rundata).addPathInfo(
-          // "js_pane", getPortlet().getID()).addQueryData("action",
-          // "controls.Restore").toString());
-        }
-      }
-
-      tab.setActions(buildActionList(rundata, p, context));
-      tab.setAuthority(hasAuthority);
-      
-      tabs.add(tab);
-    }
-
-    return tabs;
-  }
-
-  /**
-   * 修正 ：第二引数の PortletSet に第三引数のポートレットが含まれるかを検証する．
-   * 
-   * @param rundata
-   * @param portlets
-   *            タブ内に配置された Portlet 群
-   * @param selectedPeid
-   *            ポートレット ID
-   * @return
-   */
-  private boolean containsPeid(RunData rundata, PortletSet portlets,
-      String selectedPeid) {
-    int count = 0;
-    for (Enumeration en = portlets.getPortlets(); en.hasMoreElements(); count++) {
-      Portlet p = (Portlet) en.nextElement();
-      if (p.getID().equals(selectedPeid)) {
-        PortletSet set = PortalToolkit.getSet(((JetspeedRunData) rundata)
-            .getProfile().getDocument().getPortlets());
-        SessionState state = ((JetspeedRunData) rundata)
-            .getPortletSessionState(portlets.getID());
-        state.setAttribute(JetspeedResources.PATH_PANEID_KEY, portlets.getID());
-        return true;
-      }
-    }
-    return false;
-  }
-
-  /**
-   * 修正 ：第二引数で指定したポートレットの ID がタブの ID かどうかを検証する．
-   * 
-   * @param rundata
-   * @param peid
-   * @return
-   */
-  private boolean isTab(RunData rundata, String peid) {
-    if (peid == null || peid.equals(""))
-      return false;
-    Portlets portlets = ((JetspeedRunData) rundata).getProfile().getDocument()
-        .getPortlets();
-    Portlets[] tabList = portlets.getPortletsArray();
-    int length = tabList.length;
-    for (int i = 0; i < length; i++) {
-      if (tabList[i].getId().equals(peid)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  /**
-   * 修正 ：ポートレットの最大化画面時にタブを表示するために， <br />
-   * クラス org.apache.jetspeed.portal.controls.VelocityPortletSetControl <br />
-   * のメソッドをコピーした．
-   * 
-   * @param rundata
-   * @param portlets
-   * @return
-   */
-  protected String retrievePaneIDFromSession(RunData rundata,
-      PortletSet portlets) {
-
-    // get the state for this portlet (portlet set) in this page in this session
-    SessionState state = ((JetspeedRunData) rundata)
-        .getPortletSessionState(portlets.getID());
-
-    // get the PANE_PARAMETER attribute
-    String pane = (String) state
-        .getAttribute(JetspeedResources.PATH_PANEID_KEY);
-
-    // if not yet defined, select the first portlet set
-    if (pane == null) {
-      // use default
-      if (portlets.size() > 0) {
-        pane = portlets.getPortletAt(0).getID();
-      }
-    }
-
-    return pane;
-  }
-
-  /**
-   * 修正 ：ポートレットの最大化画面時にタブを表示するために， <br />
-   * クラス org.apache.jetspeed.portal.controls.VelocityPortletSetControl <br />
-   * のメソッドをコピーした．
-   */
-  public class PortletTab {
-    private String title = null;
-
-    private boolean selected = false;
-
-    private String link = null;
-
-    private List actions = null;
-
-    private int position = -1;
-
-    private final String paneid = null;
-    
-    private boolean authority = true;
-
-    public String getTitle() {
-      return this.title;
-    }
-
-    public void setTitle(String title) {
-      this.title = title;
-    }
-
-    public boolean isSelected() {
-      return this.selected;
-    }
-
-    public void setSelected(boolean selected) {
-      this.selected = selected;
-    }
-
-    public String getLink() {
-      return this.link;
-    }
-
-    public void setLink(String link) {
-      this.link = link;
-    }
-
-    public List getActions() {
-      return (this.actions == null) ? new Vector() : this.actions;
-    }
-
-    public void setActions(List actions) {
-      this.actions = actions;
-    }
-
-    public int getPosition() {
-      return position;
-    }
-
-    public void setPosition(int pos) {
-      position = pos;
-    }
-    
-    public boolean getAuthority(){
-      return authority;
-    }
-    
-    public void setAuthority(boolean flg){
-      authority = flg;
-    }
-    
-  }
-
-  /**
-   * 修正 ：ポートレットの最大化画面時にタブを表示するために追加した。
-   */
-  public class PortletTabComparator implements Comparator {
-
-    /**
-     * @see Comparator#compare(Object, Object)
-     */
-    public int compare(Object o1, Object o2) {
-      try {
-        PortletTab pt1 = (PortletTab) o1;
-        PortletTab pt2 = (PortletTab) o2;
-        int pos1 = pt1.getPosition();
-        int pos2 = pt2.getPosition();
-
-        if (pos1 < pos2) {
-          return -1;
-        } else if (pos1 > pos2) {
-          return 1;
-        } else {
-          return 0;
-        }
-      } catch (ClassCastException e) {
-        logger.error("Exception in compare", e);
-        return 0;
-      }
-    }
-  }
 }
+

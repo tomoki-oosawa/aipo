@@ -1,12 +1,12 @@
 /*
  * Copyright 2000-2001,2004 The Apache Software Foundation.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,6 +40,7 @@ import org.apache.jetspeed.om.registry.base.BaseRegistry;
 import org.apache.jetspeed.om.registry.base.LocalRegistry;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
@@ -53,10 +54,7 @@ import org.exolab.castor.mapping.Mapping;
 import org.exolab.castor.xml.Marshaller;
 import org.exolab.castor.xml.Unmarshaller;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
-
-import com.aimluck.eip.common.ALEipConstants;
 
 /**
  * <p>
@@ -98,25 +96,26 @@ public class CastorRegistryService extends TurbineBaseService implements
    * Static initialization of the logger for this class
    */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CastorRegistryService.class.getName());
+    .getLogger(CastorRegistryService.class.getName());
 
   public static final int DEFAULT_REFRESH = 300;
 
   public static final String DEFAULT_EXTENSION = ".xreg";
 
-  public static final String DEFAULT_MAPPING = "${webapp}/WEB-INF/conf/mapping.xml";
+  public static final String DEFAULT_MAPPING =
+    "${webapp}/WEB-INF/conf/mapping.xml";
 
   /** regsitry type keyed list of entries */
-  private Hashtable registries = new Hashtable();
+  private final Hashtable registries = new Hashtable();
 
   /** The Castor generated RegsitryFragment objects */
-  private Hashtable fragments = new Hashtable();
+  private final Hashtable fragments = new Hashtable();
 
   /** The list of default fragments stores for newly created objects */
-  private Hashtable defaults = new Hashtable();
+  private final Hashtable defaults = new Hashtable();
 
   /** Associates entries with their fragments name for quick lookup */
-  private Hashtable entryIndex = new Hashtable();
+  private final Hashtable entryIndex = new Hashtable();
 
   /** the Watcher object which monitors the regsitry directory */
   private RegistryWatcher watcher = null;
@@ -137,7 +136,7 @@ public class CastorRegistryService extends TurbineBaseService implements
    * Returns a Registry object for further manipulation
    * 
    * @param regName
-   *            the name of the registry to fetch
+   *          the name of the registry to fetch
    * @return a Registry object if found by the manager or null
    */
   public Registry get(String regName) {
@@ -158,7 +157,7 @@ public class CastorRegistryService extends TurbineBaseService implements
    * instance implementation
    * 
    * @param regName
-   *            the name of the registry to use
+   *          the name of the registry to use
    * @return the newly created RegistryEntry
    */
   public RegistryEntry createEntry(String regName) {
@@ -177,9 +176,9 @@ public class CastorRegistryService extends TurbineBaseService implements
    * wrapper around {@link org.apache.jetspeed.om.registry.Registry#getEntry }
    * 
    * @param regName
-   *            the name of the registry
+   *          the name of the registry
    * @param entryName
-   *            the name of the entry to retrieve from the registry
+   *          the name of the entry to retrieve from the registry
    * @return a RegistryEntry object if the key is found or null
    */
   public RegistryEntry getEntry(String regName, String entryName) {
@@ -187,12 +186,14 @@ public class CastorRegistryService extends TurbineBaseService implements
       return ((Registry) registries.get(regName)).getEntry(entryName);
     } catch (RegistryException e) {
       if (logger.isInfoEnabled()) {
-        logger.info("RegistryService: Failed to retrieve " + entryName
-            + " from " + regName);
+        logger.info("RegistryService: Failed to retrieve "
+          + entryName
+          + " from "
+          + regName);
       }
     } catch (NullPointerException e) {
       logger
-          .error("RegistryService: " + regName + " registry is not known ", e);
+        .error("RegistryService: " + regName + " registry is not known ", e);
     }
 
     return null;
@@ -203,12 +204,12 @@ public class CastorRegistryService extends TurbineBaseService implements
    * wrapper around {@link org.apache.jetspeed.om.registry.Registry#addEntry }
    * 
    * @param regName
-   *            the name of the registry
+   *          the name of the registry
    * @param entry
-   *            the Registry entry to add
+   *          the Registry entry to add
    * @exception Sends
-   *                a RegistryException if the manager can't add the provided
-   *                entry
+   *              a RegistryException if the manager can't add the provided
+   *              entry
    */
   public void addEntry(String regName, RegistryEntry entry)
       throws RegistryException {
@@ -227,8 +228,8 @@ public class CastorRegistryService extends TurbineBaseService implements
         fragmentName = (String) defaults.get(regName);
       }
 
-      RegistryFragment fragment = (RegistryFragment) fragments
-          .get(fragmentName);
+      RegistryFragment fragment =
+        (RegistryFragment) fragments.get(fragmentName);
 
       // Fragment can be (and sometimes is, but should not be) null
       if (fragment == null) {
@@ -261,13 +262,12 @@ public class CastorRegistryService extends TurbineBaseService implements
 
   /**
    * Deletes a RegistryEntry from the named Registry This is a convenience
-   * wrapper around
-   * {@link org.apache.jetspeed.om.registry.Registry#removeEntry }
+   * wrapper around {@link org.apache.jetspeed.om.registry.Registry#removeEntry }
    * 
    * @param regName
-   *            the name of the registry
+   *          the name of the registry
    * @param entryName
-   *            the name of the entry to remove
+   *          the name of the entry to remove
    */
   public void removeEntry(String regName, String entryName) {
     if (entryName == null) {
@@ -280,8 +280,8 @@ public class CastorRegistryService extends TurbineBaseService implements
       String fragmentName = (String) entryIndex.get(entryName);
 
       if (fragmentName != null) {
-        RegistryFragment fragment = (RegistryFragment) fragments
-            .get(fragmentName);
+        RegistryFragment fragment =
+          (RegistryFragment) fragments.get(fragmentName);
 
         synchronized (entryIndex) {
           fragment.removeEntry(regName, entryName);
@@ -302,15 +302,18 @@ public class CastorRegistryService extends TurbineBaseService implements
    * This is the early initialization method called by the Turbine
    * <code>Service</code> framework
    */
+  @Override
   public synchronized void init(ServletConfig conf)
       throws InitializationException {
 
     // Ensure that the servlet service is initialized
-    TurbineServices.getInstance()
-        .initService(ServletService.SERVICE_NAME, conf);
+    TurbineServices
+      .getInstance()
+      .initService(ServletService.SERVICE_NAME, conf);
 
-    ResourceService serviceConf = ((TurbineServices) TurbineServices
-        .getInstance()).getResources(RegistryService.SERVICE_NAME);
+    ResourceService serviceConf =
+      ((TurbineServices) TurbineServices.getInstance())
+        .getResources(RegistryService.SERVICE_NAME);
     String mapFile = null;
     Vector names = new Vector();
     int refreshRate = 0;
@@ -326,7 +329,7 @@ public class CastorRegistryService extends TurbineBaseService implements
       directory = TurbineServlet.getRealPath(directory);
     } catch (Throwable t) {
       throw new InitializationException(
-          "Unable to initialize CastorRegistryService, missing config keys");
+        "Unable to initialize CastorRegistryService, missing config keys");
     }
 
     // build the map of default fragments, eahc registry must be associated
@@ -338,8 +341,8 @@ public class CastorRegistryService extends TurbineBaseService implements
         String name = (String) i.next();
         String fragmentFileName = defaults.getString(name);
 
-        String absFileName = new File(directory, fragmentFileName + extension)
-            .getCanonicalPath();
+        String absFileName =
+          new File(directory, fragmentFileName + extension).getCanonicalPath();
         // add this name in the list of available registries
         names.add(name);
 
@@ -349,7 +352,7 @@ public class CastorRegistryService extends TurbineBaseService implements
     } catch (Exception e) {
       logger.error("RegistryService: Registry init error", e);
       throw new InitializationException(
-          "Unable to initialize CastorRegistryService, invalid registries definition");
+        "Unable to initialize CastorRegistryService, invalid registries definition");
     }
 
     // create the serializer output format
@@ -374,7 +377,7 @@ public class CastorRegistryService extends TurbineBaseService implements
         }
       } else {
         throw new InitializationException(
-            "Mapping not found or not a file or unreadable: " + mapFile);
+          "Mapping not found or not a file or unreadable: " + mapFile);
       }
     }
 
@@ -407,14 +410,15 @@ public class CastorRegistryService extends TurbineBaseService implements
       if (registry == null) {
         String registryClass = null;
         try {
-          registryClass = "org.apache.jetspeed.om.registry.base.Base" + name
-              + "Registry";
+          registryClass =
+            "org.apache.jetspeed.om.registry.base.Base" + name + "Registry";
 
           registry = (Registry) Class.forName(registryClass).newInstance();
         } catch (Exception e) {
           if (logger.isWarnEnabled()) {
-            logger.warn("RegistryService: Class " + registryClass
-                + " not found, reverting to default Registry");
+            logger.warn("RegistryService: Class "
+              + registryClass
+              + " not found, reverting to default Registry");
           }
           registry = new BaseRegistry();
         }
@@ -433,12 +437,13 @@ public class CastorRegistryService extends TurbineBaseService implements
 
     if (logger.isDebugEnabled()) {
       logger.debug("RegistryService: early init()....end!, this.getInit()= "
-          + getInit());
+        + getInit());
     }
 
   }
 
   /** Late init method from Turbine Service model */
+  @Override
   public void init() throws InitializationException {
     if (logger.isDebugEnabled()) {
       logger.debug("RegistryService: Late init called");
@@ -465,6 +470,7 @@ public class CastorRegistryService extends TurbineBaseService implements
    * This is the shutdown method called by the Turbine <code>Service</code>
    * framework
    */
+  @Override
   public void shutdown() {
     this.watcher.setDone();
 
@@ -500,7 +506,7 @@ public class CastorRegistryService extends TurbineBaseService implements
    * Load and unmarshal a RegistryFragment from the file
    * 
    * @param file
-   *            the absolute file path storing this fragment
+   *          the absolute file path storing this fragment
    */
   public void loadFragment(String file) {
     try {
@@ -510,8 +516,7 @@ public class CastorRegistryService extends TurbineBaseService implements
       Document d = builder.parse(new File(file));
 
       Unmarshaller unmarshaller = new Unmarshaller(this.mapping);
-      RegistryFragment fragment = (RegistryFragment) unmarshaller
-          .unmarshal((Node) d);
+      RegistryFragment fragment = (RegistryFragment) unmarshaller.unmarshal(d);
 
       // mark this fragment as changed
       fragment.setChanged(true);
@@ -529,12 +534,11 @@ public class CastorRegistryService extends TurbineBaseService implements
    * Read and unmarshal a fragment in memory
    * 
    * @param name
-   *            the name of this fragment
+   *          the name of this fragment
    * @param reader
-   *            the reader to use for creating this fragment
+   *          the reader to use for creating this fragment
    * @param persistent
-   *            whether this fragment should be persisted on disk in the
-   *            registry
+   *          whether this fragment should be persisted on disk in the registry
    */
   public void createFragment(String name, Reader reader, boolean persistent) {
     String file = null;
@@ -544,8 +548,8 @@ public class CastorRegistryService extends TurbineBaseService implements
         file = new File(directory, name + extension).getCanonicalPath();
 
         Unmarshaller unmarshaller = new Unmarshaller(this.mapping);
-        RegistryFragment fragment = (RegistryFragment) unmarshaller
-            .unmarshal(reader);
+        RegistryFragment fragment =
+          (RegistryFragment) unmarshaller.unmarshal(reader);
 
         fragment.setChanged(true);
 
@@ -570,7 +574,7 @@ public class CastorRegistryService extends TurbineBaseService implements
    * Marshal and save a RegistryFragment to disk
    * 
    * @param file
-   *            the absolute file path storing this fragment
+   *          the absolute file path storing this fragment
    */
   public void saveFragment(String file) {
     OutputStreamWriter writer = null;
@@ -580,9 +584,13 @@ public class CastorRegistryService extends TurbineBaseService implements
     if (fragment != null) {
       try {
         fos = new FileOutputStream(file);
-        writer = new OutputStreamWriter(fos,
-            ALEipConstants.DEF_CONTENT_ENCODING);
-        format.setEncoding(ALEipConstants.DEF_CONTENT_ENCODING);
+        writer =
+          new OutputStreamWriter(fos, JetspeedResources.getString(
+            JetspeedResources.CONTENT_ENCODING_KEY,
+            "utf-8"));
+        format.setEncoding(JetspeedResources.getString(
+          JetspeedResources.CONTENT_ENCODING_KEY,
+          "utf-8"));
         Serializer serializer = new XMLSerializer(writer, format);
         Marshaller marshaller = new Marshaller(serializer.asDocumentHandler());
         marshaller.setMapping(this.mapping);
@@ -609,7 +617,7 @@ public class CastorRegistryService extends TurbineBaseService implements
    * Remove a fragment from storage
    * 
    * @param file
-   *            the absolute file path storing this fragment
+   *          the absolute file path storing this fragment
    */
   public void removeFragment(String file) {
     RegistryFragment fragment = (RegistryFragment) fragments.get(file);
@@ -672,7 +680,7 @@ public class CastorRegistryService extends TurbineBaseService implements
    * and update its definition.
    * 
    * @param regName
-   *            the name of the Registry to refresh
+   *          the name of the Registry to refresh
    */
   protected void refresh(String regName) {
 
@@ -734,13 +742,16 @@ public class CastorRegistryService extends TurbineBaseService implements
               if (registry.getEntry(entry.getName()).equals(entry)) {
                 if (logger.isDebugEnabled()) {
                   logger.debug("RegistryService: No changes to entry "
-                      + entry.getName());
+                    + entry.getName());
                 }
               } else {
                 if (logger.isDebugEnabled()) {
                   logger.debug("RegistryService: Updating entry "
-                      + entry.getName() + " of class " + entry.getClass()
-                      + " to registry " + name);
+                    + entry.getName()
+                    + " of class "
+                    + entry.getClass()
+                    + " to registry "
+                    + name);
                 }
 
                 registry.setLocalEntry(entry);
@@ -755,13 +766,19 @@ public class CastorRegistryService extends TurbineBaseService implements
               ++fragCount;
 
               if (logger.isDebugEnabled()) {
-                logger.debug("RegistryService: Adding entry " + entry.getName()
-                    + " of class " + entry.getClass() + " to registry " + name);
+                logger.debug("RegistryService: Adding entry "
+                  + entry.getName()
+                  + " of class "
+                  + entry.getClass()
+                  + " to registry "
+                  + name);
               }
             }
           } catch (RegistryException e) {
             logger.error("RegistryService: RegistryException while adding "
-                + entry.getName() + "from " + location, e);
+              + entry.getName()
+              + "from "
+              + location, e);
           }
 
           // remove this entry from the delete list
@@ -785,8 +802,12 @@ public class CastorRegistryService extends TurbineBaseService implements
     }
 
     if (logger.isDebugEnabled()) {
-      logger.debug("RegistryService: Merged " + count + " entries and deleted "
-          + toDelete.size() + " in " + name);
+      logger.debug("RegistryService: Merged "
+        + count
+        + " entries and deleted "
+        + toDelete.size()
+        + " in "
+        + name);
     }
   }
 

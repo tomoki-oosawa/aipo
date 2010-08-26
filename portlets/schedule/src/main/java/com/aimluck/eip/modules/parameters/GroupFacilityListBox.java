@@ -23,7 +23,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.jetspeed.modules.parameters.ListBox;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.common.ALDBErrorException;

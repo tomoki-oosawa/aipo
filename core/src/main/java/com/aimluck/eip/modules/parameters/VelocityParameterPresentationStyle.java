@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package org.apache.jetspeed.modules.parameters;
+package com.aimluck.eip.modules.parameters;
 
 // Turbine support
 import java.util.Map;
 
+import org.apache.jetspeed.modules.parameters.ParameterPresentationStyle;
 import org.apache.jetspeed.services.TemplateLocator;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -71,21 +72,23 @@ public class VelocityParameterPresentationStyle extends
    * Static initialization of the logger for this class
    */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(VelocityParameterPresentationStyle.class.getName());
+    .getLogger(VelocityParameterPresentationStyle.class.getName());
 
   /**
    * Returns presentation control
    * 
-   * @param data -
-   *            rundata object
-   * @param name -
-   *            parameter name
-   * @param value -
-   *            current parameter value
-   * @param parms -
-   *            additional style parameters
+   * @param data
+   *          - rundata object
+   * @param name
+   *          - parameter name
+   * @param value
+   *          - current parameter value
+   * @param parms
+   *          - additional style parameters
    * @return string
    */
+  @SuppressWarnings("rawtypes")
+  @Override
   public String getContent(RunData data, String name, String value, Map parms) {
     String result = null;
 
@@ -116,14 +119,14 @@ public class VelocityParameterPresentationStyle extends
 
       // Render the template
       String template = (String) this.getParm("template", className + ".vm");
-      String templatePath = TemplateLocator.locateParameterTemplate(data,
-          template);
+      String templatePath =
+        TemplateLocator.locateParameterTemplate(data, template);
       result = TurbineVelocity.handleRequest(context, templatePath);
     } catch (Exception e) {
       logger.error("Exception", e);
       // Fallback to input text box presentation style
-      result = "<input type=\"text\" name=\"" + name + "\" value=\"" + value
-          + "\"";
+      result =
+        "<input type=\"text\" name=\"" + name + "\" value=\"" + value + "\"";
     }
 
     TurbineVelocity.requestFinished(context);
@@ -141,6 +144,7 @@ public class VelocityParameterPresentationStyle extends
    * @param parms
    * @param context
    */
+  @SuppressWarnings("rawtypes")
   public void buildContext(RunData data, String name, String value, Map parms,
       Context context) {
 

@@ -19,10 +19,10 @@ limitations under the License.
         <meta-info>
             <title>拡張二列 (50/50)</title>
         </meta-info>
-        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <classname>com.aimluck.eip.portal.controllers.ALVelocityPortletController</classname>
         <parameter name="template" value="multicolumn.vm" hidden="false"/>
         <parameter name="action"
-            value="controllers.XMultiColumnControllerAction" hidden="false"/>
+            value="controllers.XALMultiColumnControllerAction" hidden="false"/>
         <parameter name="sizes" value="50%,50%" hidden="false"/>
         <parameter name="cols" value="2" hidden="false"/>
         <media-type ref="html"/>
@@ -31,10 +31,10 @@ limitations under the License.
         <meta-info>
             <title>拡張二列 (25/75)</title>
         </meta-info>
-        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <classname>com.aimluck.eip.portal.controllers.ALVelocityPortletController</classname>
         <parameter name="template" value="multicolumn.vm" hidden="false"/>
         <parameter name="action"
-            value="controllers.XMultiColumnControllerAction" hidden="false"/>
+            value="controllers.XALMultiColumnControllerAction" hidden="false"/>
         <parameter name="sizes" value="25%,75%" hidden="false"/>
         <parameter name="cols" value="2" hidden="false"/>
         <media-type ref="html"/>
@@ -43,10 +43,10 @@ limitations under the License.
         <meta-info>
             <title>拡張二列 (75/25)</title>
         </meta-info>
-        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <classname>com.aimluck.eip.portal.controllers.ALVelocityPortletController</classname>
         <parameter name="template" value="multicolumn.vm" hidden="false"/>
         <parameter name="action"
-            value="controllers.XMultiColumnControllerAction" hidden="false"/>
+            value="controllers.XALMultiColumnControllerAction" hidden="false"/>
         <parameter name="sizes" value="75%,25%" hidden="false"/>
         <parameter name="cols" value="2" hidden="false"/>
         <media-type ref="html"/>
@@ -55,10 +55,10 @@ limitations under the License.
         <meta-info>
             <title>拡張三列 (33/34/33)</title>
         </meta-info>
-        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <classname>com.aimluck.eip.portal.controllers.ALVelocityPortletController</classname>
         <parameter name="template" value="multicolumn.vm" hidden="false"/>
         <parameter name="action"
-            value="controllers.XMultiColumnControllerAction" hidden="false"/>
+            value="controllers.XALMultiColumnControllerAction" hidden="false"/>
         <parameter name="sizes" value="33%,34%,33%" hidden="false"/>
         <parameter name="cols" value="3" hidden="false"/>
         <media-type ref="html"/>
@@ -67,10 +67,10 @@ limitations under the License.
         <meta-info>
             <title>拡張三列 (25/50/25)</title>
         </meta-info>
-        <classname>org.apache.jetspeed.portal.controllers.VelocityPortletController</classname>
+        <classname>com.aimluck.eip.portal.controllers.ALVelocityPortletController</classname>
         <parameter name="template" value="multicolumn.vm" hidden="false"/>
         <parameter name="action"
-            value="controllers.XMultiColumnControllerAction" hidden="false"/>
+            value="controllers.XALMultiColumnControllerAction" hidden="false"/>
         <parameter name="sizes" value="25%,50%,25%" hidden="false"/>
         <parameter name="cols" value="3" hidden="false"/>
         <media-type ref="html"/>
