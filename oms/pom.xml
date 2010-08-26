@@ -48,4 +48,12 @@
     </plugins>
   </build>
 
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>aipo-jetspeed</artifactId>
+      <version>${aipo.version}</version>
+    </dependency>
+  </dependencies>
+
 </project>

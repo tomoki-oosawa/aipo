@@ -2,6 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="commons/src/main/java"/>
 	<classpathentry kind="src" output="target/test-classes" path="commons/src/test/java"/>
+	<classpathentry kind="src" path="jetspeed/src/main/java"/>
+	<classpathentry kind="src" path="jetspeed/src/test/java"/>
 	<classpathentry kind="src" path="core/src/main/java"/>
 	<classpathentry kind="src" output="target/test-classes" path="core/src/test/java"/>
 	<classpathentry excluding="org/apache/jetspeed/om/security/" kind="src" path="oms/src/main/java"/>

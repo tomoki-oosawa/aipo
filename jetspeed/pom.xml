@@ -1,100 +1,46 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <properties>
-    <aipo.version>5.0.3</aipo.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+  <parent>
+    <artifactId>aipo</artifactId>
+    <groupId>com.aimluck.eip</groupId>
+    <version>5.0.3</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
 
-  <groupId>com.aimluck.eip</groupId>
-  <artifactId>aipo</artifactId>
+  <groupId>org.apache.commons</groupId>
+  <artifactId>aipo-jetspeed</artifactId>
   <version>${aipo.version}</version>
-  <packaging>pom</packaging>
+  <packaging>jar</packaging>
 
-  <name>aipo</name>
-  <description>open source groupware aipo.</description>
-  <url>http://aipostyle.com</url>
-  <inceptionYear>2004</inceptionYear>
-  <organization>
-    <name>Aimluck,Inc.</name>
-    <url>http://www.aimluck.com</url>
-  </organization>
-  <licenses>
-    <license>
-      <name>GNU General Public License v3</name>
-      <url>http://www.gnu.org/licenses/gpl.html</url>
-    </license>
-  </licenses>
-  <developers>
-    <developer>
-      <id>nbeppu</id>
-      <name>Nobuhiko Beppu</name>
-      <email>nbeppu_at_gmail.com</email>
-      <organization></organization>
-      <timezone>+9</timezone>
-    </developer>
-  </developers>
-  <contributors>
-  </contributors>
-
-
-  <issueManagement>
-    <system>Goole Code</system>
-    <url><![CDATA[http://code.google.com/p/aipo/issues/list]]></url>
-  </issueManagement>
-  <mailingLists>
-    <mailingList>
-      <name>aipo-dev</name>
-      <subscribe>http://groups.google.com/group/aipo-dev/subscribe</subscribe>
-      <unsubscribe>http://groups.google.com/group/aipo-dev</unsubscribe>
-      <post>aipo-dev@googlegroups.com</post>
-      <archive>http://groups.google.com/group/aipo-dev/topics</archive>
-    </mailingList>
-  </mailingLists>
-  <scm>
-    <connection>scm:svn:https://aipo.googlecode.com/svn/</connection>
-    <developerConnection>scm:svn:https://aipo.googlecode.com/svn/</developerConnection>
-    <url>http://code.google.com/p/aipo/source/browse#svn/trunk</url>
-  </scm>
-  <repositories>
-    <repository>
-      <id>maven.seasar.org</id>
-      <name>The Seasar Foundation Maven2 Repository</name>
-      <url>http://maven.seasar.org/maven2</url>
-    </repository>
-    <repository>
-      <id>aipo.googlecode.com</id>
-      <name>The Aipo Project Maven2 Repository</name>
-      <url>http://aipo.googlecode.com/svn/repository</url>
-    </repository>
-  </repositories>
-
-  <modules>
-    <module>commons</module>
-    <module>jetspeed</module>
-    <module>oms</module>
-    <module>core</module>
-    <module>lib</module>
-    <module>portlets</module>
-    <module>war</module>
-  </modules>
+  <name>jetspeed</name>
 
   <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <source>1.5</source>
-            <target>1.5</target>
-            <failOnError>true</failOnError>
-            <encoding>UTF-8</encoding>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.4</version>
+        <executions>
+          <execution>
+            <id>copy</id>
+            <phase>package</phase>
+            <configuration>
+              <tasks>
+                <copy todir="../war/target/aipo/WEB-INF/lib"
+                  verbose="false" overwrite="true">
+                  <fileset dir="./target" includes="*.jar" />
+                </copy>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
 
   <dependencies>
@@ -330,45 +276,6 @@
       <artifactId>velocity</artifactId>
       <version>1.5</version>
       <type>pom</type>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.cayenne</groupId>
-      <artifactId>cayenne</artifactId>
-      <version>2.0.4</version>
-      <type>jar</type>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>net.sf.json-lib</groupId>
-      <artifactId>json-lib</artifactId>
-      <version>2.3</version>
-      <type>jar</type>
-      <classifier>jdk15</classifier>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>skmail</groupId>
-      <artifactId>skmail</artifactId>
-      <version>0.5</version>
-    </dependency>
-    <dependency>
-      <groupId>skutility</groupId>
-      <artifactId>skutility</artifactId>
-      <version>0.5</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>javamail</groupId>
-      <artifactId>javamail</artifactId>
-      <version>1.4</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>poi</groupId>
-      <artifactId>poi</artifactId>
-      <version>2.5.1-final-20040804</version>
-      <type>jar</type>
       <scope>compile</scope>
     </dependency>
   </dependencies>
