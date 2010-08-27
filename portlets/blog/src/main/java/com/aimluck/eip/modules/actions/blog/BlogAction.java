@@ -49,13 +49,14 @@ public class BlogAction extends ALBaseAction {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(BlogAction.class.getName());
+    .getLogger(BlogAction.class.getName());
 
   /** 返信用キー */
   private final String RESULT_ON_COMMENT_DETAIL = "resultOnCommentDetail";
 
   /** 返信用エラーメッセージキー */
-  private final String ERROR_MESSAGE_LIST_ON_COMMENT_DETAIL = "errmsgsOnCommentDetail";
+  private final String ERROR_MESSAGE_LIST_ON_COMMENT_DETAIL =
+    "errmsgsOnCommentDetail";
 
   /** 返信用 result */
   private Object resultOnCommentDetail;
@@ -70,9 +71,8 @@ public class BlogAction extends ALBaseAction {
    * @param context
    * @param rundata
    * @throws Exception
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
 
@@ -84,10 +84,12 @@ public class BlogAction extends ALBaseAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1a-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-        context).getPortletConfig().getInitParameter("p3a-strlen")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1a-rows")));
+    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
+      context).getPortletConfig().getInitParameter("p3a-strlen")));
 
     // 最低限表示するのに必要な権限のチェック
     if (!BlogUtils.hasMinimumAuthority(rundata)) {
@@ -107,6 +109,7 @@ public class BlogAction extends ALBaseAction {
    * @param context
    * @param rundata
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
 
@@ -261,10 +264,12 @@ public class BlogAction extends ALBaseAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1b-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-        context).getPortletConfig().getInitParameter("p3a-strlen")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1b-rows")));
+    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
+      context).getPortletConfig().getInitParameter("p3a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "blog-entry-list");
   }
@@ -283,10 +288,12 @@ public class BlogAction extends ALBaseAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1b-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-        context).getPortletConfig().getInitParameter("p3a-strlen")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1b-rows")));
+    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
+      context).getPortletConfig().getInitParameter("p3a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "blog-entry-list-latest");
   }
@@ -600,10 +607,12 @@ public class BlogAction extends ALBaseAction {
     listData.initField();
     // PSMLからパラメータをロードする
     // 最大表示件数（通常時）
-    listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
-        .getInitParameter("p1c-rows")));
-    listData.setStrLength(Integer.parseInt(portlet.getPortletConfig()
-        .getInitParameter("p4a-strlen")));
+    listData.setRowsNum(Integer.parseInt(portlet
+      .getPortletConfig()
+      .getInitParameter("p1c-rows")));
+    listData.setStrLength(Integer.parseInt(portlet
+      .getPortletConfig()
+      .getInitParameter("p4a-strlen")));
 
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "blog-thema-list");
@@ -641,8 +650,9 @@ public class BlogAction extends ALBaseAction {
     // listData.setRowsNum(Integer.parseInt(ALEipUtils
     // .getPortlet(rundata, context).getPortletConfig().getInitParameter(
     // "p1a-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-        context).getPortletConfig().getInitParameter("p3a-strlen")));
+    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
+      context).getPortletConfig().getInitParameter("p3a-strlen")));
     listData.setRowsNum(20);
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "blog-search-list");
@@ -662,8 +672,9 @@ public class BlogAction extends ALBaseAction {
    * @param msg
    */
   public void addErrorMessagesOnCommentDetail(ArrayList msgs) {
-    if (errmsgListOnCommentDetail == null)
+    if (errmsgListOnCommentDetail == null) {
       errmsgListOnCommentDetail = new ArrayList();
+    }
     errmsgListOnCommentDetail.addAll(msgs);
   }
 
@@ -674,7 +685,7 @@ public class BlogAction extends ALBaseAction {
   public void putDataOnCommentDetail(RunData rundata, Context context) {
     context.put(RESULT_ON_COMMENT_DETAIL, resultOnCommentDetail);
     context
-        .put(ERROR_MESSAGE_LIST_ON_COMMENT_DETAIL, errmsgListOnCommentDetail);
+      .put(ERROR_MESSAGE_LIST_ON_COMMENT_DETAIL, errmsgListOnCommentDetail);
   }
 
   private void clearBlogSession(RunData rundata, Context context) {

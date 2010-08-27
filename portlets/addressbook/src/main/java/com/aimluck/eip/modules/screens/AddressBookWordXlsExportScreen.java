@@ -159,7 +159,7 @@ public class AddressBookWordXlsExportScreen extends ALXlsScreen {
   }
 
   /**
-   * アクセス権限チェック用メソッド。<br />
+   * アクセス権限チェック用メソッド。
    * アクセス権限の機能名を返します。
    *
    * @return

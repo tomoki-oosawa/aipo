@@ -34,7 +34,7 @@ public class MyGroupResultData implements ALData {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     group_name = new ALStringField();

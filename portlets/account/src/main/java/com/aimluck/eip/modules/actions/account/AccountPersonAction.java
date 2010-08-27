@@ -53,8 +53,6 @@ public class AccountPersonAction extends ALBaseAction {
    * @param context
    * @param rundata
    * @throws java.lang.Exception
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
@@ -143,14 +141,6 @@ public class AccountPersonAction extends ALBaseAction {
     setTemplate(rundata, "account-person-form");
     if (formData.doUpdate(this, rundata, context)) {
       doAccountperson_detail(rundata, context);
-      // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      // rundata.setRedirectURI(jsLink.getPortletById(
-      // ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-      // "eventSubmit_doAccountedit_detail", "1").toString());
-      // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-      // // TODO add by Haruo Kaneko
-      // JetspeedLinkFactory.putInstance(jsLink);
-      // jsLink = null;
     } else {
       formData.loadEmail(rundata);
       setTemplate(rundata, "account-person-form");
@@ -212,16 +202,6 @@ public class AccountPersonAction extends ALBaseAction {
     if (formData.doUpdate(this, rundata, context)) {
       context.put("success", "true");
       doAccount_return_passwd_form(rundata, context);
-      // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      // rundata.setRedirectURI(jsLink.getPortletById(
-      // ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-      // "eventSubmit_doAccount_return_passwd_form", "1").toString()
-      // + "&success=true");
-      // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-      // // TODO add by Haruo Kaneko
-      // JetspeedLinkFactory.putInstance(jsLink);
-      // jsLink = null;
-      // setTemplate(rundata, "account-passwd-form");
     } else {
       setTemplate(rundata, "account-person-passwd-form");
     }
@@ -229,8 +209,6 @@ public class AccountPersonAction extends ALBaseAction {
 
   public void doAccount_return_passwd_form(RunData rundata, Context context)
       throws Exception {
-    // context.put("success", Boolean.toString(success));
-    // context.put("success", rundata.getParameters().getString("success"));
     AccountPasswdFormData formData = new AccountPasswdFormData();
     formData.initField();
     formData.doViewForm(this, rundata, context);
@@ -250,22 +228,6 @@ public class AccountPersonAction extends ALBaseAction {
     formData.doViewForm(this, rundata, context);
     setTemplate(rundata, "account-person-postdetail");
   }
-
-  // /**
-  // * 携帯電話からのアクセス用 URL を表示する.
-  // *
-  // * @param rundata
-  // * @param context
-  // * @throws Exception
-  // */
-  // public void doAccount_info(RunData rundata, Context context) throws
-  // Exception {
-  //
-  // CellAccountEasyLoginFormData formData = new CellAccountEasyLoginFormData();
-  // formData.initField();
-  // formData.doViewForm(this, rundata, context);
-  // setTemplate(rundata, "account-celluid-detail");
-  // }
 
   /**
    * 指定したエントリー名を持つ個人設定ページに含まれるポートレットへの URI を取得する．

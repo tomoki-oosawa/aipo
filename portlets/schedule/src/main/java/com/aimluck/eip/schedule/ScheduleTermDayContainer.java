@@ -48,7 +48,7 @@ public class ScheduleTermDayContainer implements ALData {
   private ALHoliday holiday;
 
   /*
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     today = new ALDateTimeField("yyyy-MM-dd-HH-mm");

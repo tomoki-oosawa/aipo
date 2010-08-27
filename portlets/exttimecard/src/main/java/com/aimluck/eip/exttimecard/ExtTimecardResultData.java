@@ -99,7 +99,7 @@ public class ExtTimecardResultData implements ALData {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     work_flag = new ALStringField();

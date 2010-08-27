@@ -117,8 +117,6 @@ public class ManHourSelectData extends
    * @param action
    * @param rundata
    * @param context
-   * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -345,8 +343,12 @@ public class ManHourSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected ResultList<EipTScheduleMap> selectList(RunData rundata,
@@ -471,19 +473,26 @@ public class ManHourSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected ManHourResultData selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
-    // String js_peid = rundata.getParameters().getString("sch");
 
     return null;
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   * 
+   * @param record
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected Object getResultData(EipTScheduleMap record)
@@ -783,7 +792,11 @@ public class ManHourSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   * 
+   * @param obj
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected Object getResultDataDetail(ManHourResultData obj)
@@ -841,8 +854,8 @@ public class ManHourSelectData extends
   }
 
   /**
-   * 
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   *
+   *
    */
   @Override
   protected Attributes getColumnMap() {

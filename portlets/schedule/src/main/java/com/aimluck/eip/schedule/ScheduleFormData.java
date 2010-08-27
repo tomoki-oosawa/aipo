@@ -234,11 +234,13 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   private boolean ignore_duplicate_facility;
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.
-   * actions.common.ALAction, org.apache.turbine.util.RunData,
-   * org.apache.velocity.context.Context)
+  /**
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -368,7 +370,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     Date now = new Date();
@@ -556,10 +558,14 @@ public class ScheduleFormData extends ALAbstractFormData {
     // common_category_id.setNotNull(true);
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected boolean setFormData(RunData rundata, Context context,
@@ -605,7 +611,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
+   *
    */
   @Override
   protected void setValidator() {
@@ -618,9 +624,12 @@ public class ScheduleFormData extends ALAbstractFormData {
     note.limitMaxLength(1000);
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+  /**
+   * 
+   * @param msgList
+   * @return
+   * @throws ALDBErrorException
+   * @throws ALPageNotFoundException
    */
   @Override
   protected boolean validate(List<String> msgList) throws ALDBErrorException,
@@ -819,10 +828,14 @@ public class ScheduleFormData extends ALAbstractFormData {
     return (msgList.size() == 0);
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
@@ -1014,8 +1027,6 @@ public class ScheduleFormData extends ALAbstractFormData {
           .getFacilitiesFromSelectQuery(fquery));
       }
     } catch (Exception e) {
-
-      // TODO: エラー処理
       logger.error("[ScheduleFormData]", e);
       throw new ALDBErrorException();
 
@@ -1023,10 +1034,13 @@ public class ScheduleFormData extends ALAbstractFormData {
     return true;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @throws ALDBErrorException
    */
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
@@ -1043,7 +1057,6 @@ public class ScheduleFormData extends ALAbstractFormData {
         return false;
       }
 
-      // TODO: DBトランザクション
       // Validate のときに SELECT していることに注意する
 
       if (is_span) {
@@ -1307,10 +1320,14 @@ public class ScheduleFormData extends ALAbstractFormData {
     return true;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
@@ -1330,7 +1347,6 @@ public class ScheduleFormData extends ALAbstractFormData {
         return false;
       }
 
-      // TODO: DBトランザクション
       // Validate のときに SELECT していることに注意する
 
       if (is_span) {
@@ -1856,10 +1872,14 @@ public class ScheduleFormData extends ALAbstractFormData {
     return null;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,
@@ -1926,7 +1946,6 @@ public class ScheduleFormData extends ALAbstractFormData {
       if (!acl_delete_other
         && !isMember
         && (schedule.getCreateUserId().intValue() != loginuserId)) {
-        // TODO: エラー処理
         logger
           .error("[ScheduleFormData] ALPageNotFoundException: The user does not have the auth to delete the schedule.");
         throw new ALPermissionException();
@@ -2129,7 +2148,6 @@ public class ScheduleFormData extends ALAbstractFormData {
 
     } catch (Exception e) {
       Database.rollback();
-      // TODO: エラー処理
       logger.error("[ScheduleFormData]", e);
       throw new ALDBErrorException();
 
@@ -2137,11 +2155,12 @@ public class ScheduleFormData extends ALAbstractFormData {
     return true;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#doViewForm(com.aimluck.eip.modules
-   * .actions.common.ALAction, org.apache.turbine.util.RunData,
-   * org.apache.velocity.context.Context)
+  /**
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   public boolean doViewForm(ALAction action, RunData rundata, Context context) {
@@ -2150,11 +2169,12 @@ public class ScheduleFormData extends ALAbstractFormData {
     return res;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#doInsert(com.aimluck.eip.modules
-   * .actions.common.ALAction, org.apache.turbine.util.RunData,
-   * org.apache.velocity.context.Context)
+  /**
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   public boolean doInsert(ALAction action, RunData rundata, Context context) {
@@ -2163,11 +2183,12 @@ public class ScheduleFormData extends ALAbstractFormData {
     return res;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#doUpdate(com.aimluck.eip.modules
-   * .actions.common.ALAction, org.apache.turbine.util.RunData,
-   * org.apache.velocity.context.Context)
+  /**
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   public boolean doUpdate(ALAction action, RunData rundata, Context context) {

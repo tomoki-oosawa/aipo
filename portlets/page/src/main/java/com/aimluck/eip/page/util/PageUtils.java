@@ -38,7 +38,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 /**
- * ページ設定のユーティリティクラスです <br />
+ * ページ設定のユーティリティクラスです 
  */
 public class PageUtils {
 

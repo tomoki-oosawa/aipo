@@ -54,8 +54,6 @@ public class MyGroupAction extends ALBaseAction {
    * @param context
    * @param rundata
    * @throws java.lang.Exception
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
@@ -219,12 +217,6 @@ public class MyGroupAction extends ALBaseAction {
    */
   public void doMygroup_multi_delete(RunData rundata, Context context)
       throws Exception {
-    // TODO: マイグループ複数削除の処理
-    /**
-     * MyGroupMultiDelete delete = new MyGroupMultiDelete();
-     * delete.doMultiAction(this, rundata, context); doMygroup_list(rundata,
-     * context);
-     */
   }
 
   /**

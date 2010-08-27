@@ -40,7 +40,9 @@ public class FileuploadFacePhotoScreen extends FileuploadThumbnailScreen {
   private static final String KEY_FACE_PHOTO_ID = "uid";
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata) throws Exception {

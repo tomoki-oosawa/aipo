@@ -33,25 +33,41 @@ public class SystemNetworkResultData implements ALData {
   private ALStringField global_url;
 
   /**
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     local_url = new ALStringField();
     global_url = new ALStringField();
   }
 
+  /**
+   * 
+   * @param str
+   */
   public void setLocalUrl(String str) {
     local_url.setValue(str);
   }
 
+  /**
+   * 
+   * @return
+   */
   public ALStringField getLocalUrl() {
     return local_url;
   }
 
+  /**
+   * 
+   * @param str
+   */
   public void setGlobalUrl(String str) {
     global_url.setValue(str);
   }
 
+  /**
+   * 
+   * @return
+   */
   public ALStringField getGlobalUrl() {
     return global_url;
   }

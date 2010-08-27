@@ -63,7 +63,7 @@ import com.aimluck.eip.timecard.util.TimecardUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * タイムカード集計の一覧を処理するクラスです。 <br />
+ * タイムカード集計の一覧を処理するクラスです。
  * 
  * 
  */
@@ -174,13 +174,13 @@ public class TimecardSummaryListSelectData extends
     sotai = new ALNumberField(0);
   }
 
-  /*
-   * (非 Javadoc)
+  /**
    * 
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules
-   * .actions.common.ALAction, org.apache.turbine.util.RunData,
-   * org.apache.velocity.context.Context)
+   * @param action
+   * @param rundata
+   * @param context
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -285,12 +285,13 @@ public class TimecardSummaryListSelectData extends
     setupLists(rundata, context);
   }
 
-  /*
-   * (非 Javadoc)
+  /**
    * 
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context)
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected ResultList<EipTTimecard> selectList(RunData rundata, Context context)
@@ -315,12 +316,13 @@ public class TimecardSummaryListSelectData extends
     }
   }
 
-  /*
-   * (非 Javadoc)
+  /**
    * 
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context)
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected EipTTimecard selectDetail(RunData rundata, Context context)
@@ -328,11 +330,12 @@ public class TimecardSummaryListSelectData extends
     return null;
   }
 
-  /*
-   * (非 Javadoc)
+  /**
    * 
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   * @param record
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected Object getResultData(EipTTimecard record)
@@ -371,12 +374,12 @@ public class TimecardSummaryListSelectData extends
     }
   }
 
-  /*
-   * (非 Javadoc)
+  /**
    * 
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang
-   * .Object)
+   * @param obj
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected Object getResultDataDetail(EipTTimecard obj)
@@ -386,12 +389,9 @@ public class TimecardSummaryListSelectData extends
 
   /*
    * (非 Javadoc)
-   * 
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
   @Override
   protected Attributes getColumnMap() {
-    // TODO 自動生成されたメソッド・スタブ
     return null;
   }
 
@@ -501,7 +501,7 @@ public class TimecardSummaryListSelectData extends
   }
 
   /**
-   * 検索条件を設定した SelectQuery を返します。 <BR>
+   * 検索条件を設定した SelectQuery を返します。
    * 
    * @param rundata
    * @param context
@@ -934,8 +934,7 @@ public class TimecardSummaryListSelectData extends
   }
 
   /**
-   * アクセス権限チェック用メソッド。<br />
-   * アクセス権限の機能名を返します。
+   * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
    * 
    * @return
    */

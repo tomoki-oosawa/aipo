@@ -60,7 +60,7 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
   protected int currentYear;
 
   /*
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
   }
@@ -110,17 +110,20 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
     }
   }
 
-  /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
+  /**
+   *
    */
   @Override
   protected void setValidator() {
 
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+  /**
+   * 
+   * @param msgList
+   * @return
+   * @throws ALDBErrorException
+   * @throws ALPageNotFoundException
    */
   @Override
   protected boolean validate(List<String> msgList) throws ALDBErrorException,
@@ -173,10 +176,14 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
     }
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
@@ -184,10 +191,13 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
     return false;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @throws ALDBErrorException
    */
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
@@ -208,10 +218,14 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
     return false;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected boolean setFormData(RunData rundata, Context context,

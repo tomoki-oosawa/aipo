@@ -62,9 +62,6 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
    * @param values
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractCheckList#action(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList,
-   *      java.util.ArrayList)
    */
   @Override
   protected boolean action(RunData rundata, Context context,
@@ -148,42 +145,6 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
 
         // ワークフロー自動承認
         AccountUtils.acceptWorkflow(record.getUserId());
-
-        /*
-         * SelectQuery workflow_request_map_query =
-         * Database.query(EipTWorkflowRequestMap.class); Expression workflow_exp
-         * = ExpressionFactory.matchExp(
-         * EipTWorkflowRequestMap.USER_ID_PROPERTY, userId); Expression
-         * workflow_exp2 = ExpressionFactory.matchExp(
-         * EipTWorkflowRequestMap.STATUS_PROPERTY, "C");
-         * workflow_request_map_query
-         * .setQualifier(workflow_exp.andExp(workflow_exp2)); List
-         * workflow_request_map_list =
-         * dataContext.performQuery(workflow_request_map_query);
-         * EipTWorkflowRequestMap workflow_request_map = null; for (int j = 0; j
-         * < list4.size(); j++) { workflow_request_map =
-         * (EipTWorkflowRequestMap) workflow_request_map_list.get(j);
-         * 
-         * // 次の人がいるかどうか int request_number =
-         * workflow_request_map.getOrderIndex(); SelectQuery
-         * workflow_request_map_query2 =
-         * Database.query(EipTWorkflowRequestMap.class); Expression
-         * workflow_exp3 = ExpressionFactory.matchExp(
-         * EipTWorkflowRequestMap.EIP_TWORKFLOW_REQUEST_PROPERTY,
-         * workflow_request_map.getEipTWorkflowRequest()); Expression
-         * workflow_exp4 = ExpressionFactory.matchExp(
-         * EipTWorkflowRequestMap.ORDER_INDEX_PROPERTY,
-         * Integer.valueOf(request_number + 1));
-         * workflow_request_map_query2.setQualifier
-         * (workflow_exp3.andExp(workflow_exp4)); List
-         * workflow_request_map_list2 =
-         * dataContext.performQuery(workflow_request_map_query2); if
-         * (workflow_request_map_list2.size() == 1) { // 自動的に承認して次の人に回す
-         * workflow_request_map.setStatus("A"); EipTWorkflowRequestMap
-         * workflow_request_map2 = (EipTWorkflowRequestMap)
-         * workflow_request_map_list2.get(0);
-         * workflow_request_map2.setStatus("C"); } }
-         */
 
         Database.commit();
 

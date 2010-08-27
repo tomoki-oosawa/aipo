@@ -63,10 +63,13 @@ public class CellScheduleOnedaySelectData extends ScheduleOnedaySelectData {
     super.init(action, rundata, context);
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected ResultList<EipTScheduleMap> selectList(RunData rundata,
@@ -191,8 +194,6 @@ public class CellScheduleOnedaySelectData extends ScheduleOnedaySelectData {
 
       return new ResultList<EipTScheduleMap>(reslist);
     } catch (Exception e) {
-
-      // TODO: エラー処理
       logger.error("[ScheduleOnedaySelectData]", e);
       throw new ALDBErrorException();
     }
@@ -318,9 +319,12 @@ public class CellScheduleOnedaySelectData extends ScheduleOnedaySelectData {
     return query;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+  /**
+   * 
+   * @param record
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected Object getResultData(EipTScheduleMap record)
@@ -382,9 +386,6 @@ public class CellScheduleOnedaySelectData extends ScheduleOnedaySelectData {
       }
 
     } catch (Exception e) {
-
-      // TODO: エラー処理
-
       logger.error("Exception", e);
 
       return null;

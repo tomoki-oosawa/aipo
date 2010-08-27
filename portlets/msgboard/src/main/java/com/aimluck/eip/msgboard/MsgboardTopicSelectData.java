@@ -101,8 +101,6 @@ public class MsgboardTopicSelectData extends
    * @param action
    * @param rundata
    * @param context
-   * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -187,8 +185,6 @@ public class MsgboardTopicSelectData extends
    * @param rundata
    * @param context
    * @return
-   * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
   @Override
   public ResultList<EipTMsgboardTopic> selectList(RunData rundata,
@@ -277,7 +273,6 @@ public class MsgboardTopicSelectData extends
    * 
    * @param obj
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
   @Override
   protected Object getResultData(EipTMsgboardTopic record) {
@@ -369,8 +364,6 @@ public class MsgboardTopicSelectData extends
    * @param rundata
    * @param context
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
   public List<EipTMsgboardTopic> selectDetailList(RunData rundata,
       Context context) throws ALPageNotFoundException, ALDBErrorException {
@@ -461,7 +454,6 @@ public class MsgboardTopicSelectData extends
    * 
    * @param obj
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
   @Override
   protected Object getResultDataDetail(EipTMsgboardTopic record)
@@ -573,7 +565,7 @@ public class MsgboardTopicSelectData extends
 
   /**
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   * 
    */
   @Override
   protected Attributes getColumnMap() {
@@ -622,8 +614,7 @@ public class MsgboardTopicSelectData extends
   }
 
   /**
-   * アクセス権限チェック用メソッド。<br />
-   * アクセス権限の機能名を返します。
+   * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
    * 
    * @return
    */

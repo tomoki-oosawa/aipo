@@ -56,7 +56,7 @@ public class WhatsNewBean implements ALData, Comparable<WhatsNewBean> {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     entity_id = new ALNumberField();

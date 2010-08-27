@@ -75,7 +75,7 @@ public class WorkflowResultData implements ALData {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     request_id = new ALNumberField();

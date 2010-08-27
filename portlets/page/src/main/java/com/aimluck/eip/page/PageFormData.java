@@ -48,7 +48,7 @@ import com.aimluck.eip.page.util.PageUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * ページ設定フォームデータを管理するためのクラスです。 <br />
+ * ページ設定フォームデータを管理するためのクラスです。 
  */
 public class PageFormData extends ALAbstractFormData {
   /** logger */
@@ -73,6 +73,14 @@ public class PageFormData extends ALAbstractFormData {
   /** ページを追加可能かどうか */
   private boolean enableAddPage = true;
 
+  /**
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
+   */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -105,7 +113,7 @@ public class PageFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
+   *
    */
   @Override
   protected void setValidator() {
@@ -119,7 +127,9 @@ public class PageFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+   * 
+   * @param msgList
+   * @return
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -135,8 +145,11 @@ public class PageFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
    */
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
@@ -182,8 +195,11 @@ public class PageFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
    */
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
@@ -256,8 +272,11 @@ public class PageFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
    */
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
@@ -306,8 +325,11 @@ public class PageFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
    */
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,
@@ -331,7 +353,7 @@ public class PageFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     // ページ ID

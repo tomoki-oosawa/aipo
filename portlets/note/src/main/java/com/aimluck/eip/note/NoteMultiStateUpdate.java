@@ -47,9 +47,14 @@ public class NoteMultiStateUpdate extends ALAbstractCheckList {
     .getLogger(NoteMultiStateUpdate.class.getName());
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractCheckList#action(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList,
-   *      java.util.ArrayList)
+   * 
+   * @param rundata
+   * @param context
+   * @param values
+   * @param msgList
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected boolean action(RunData rundata, Context context,
@@ -57,14 +62,14 @@ public class NoteMultiStateUpdate extends ALAbstractCheckList {
       throws ALPageNotFoundException, ALDBErrorException {
     try {
 
-      Expression exp1 = ExpressionFactory.matchExp(
-        EipTNoteMap.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-          .getUserId(rundata)));
-      Expression exp2 = ExpressionFactory.inDbExp(EipTNote.NOTE_ID_PK_COLUMN,
-        values);
+      Expression exp1 =
+        ExpressionFactory.matchExp(EipTNoteMap.USER_ID_PROPERTY, Integer
+          .valueOf(ALEipUtils.getUserId(rundata)));
+      Expression exp2 =
+        ExpressionFactory.inDbExp(EipTNote.NOTE_ID_PK_COLUMN, values);
 
-      List<EipTNoteMap> list = Database.query(EipTNoteMap.class, exp1)
-        .andQualifier(exp2).fetchList();
+      List<EipTNoteMap> list =
+        Database.query(EipTNoteMap.class, exp1).andQualifier(exp2).fetchList();
 
       if (list == null || list.size() <= 0) {
         return false;
@@ -75,8 +80,10 @@ public class NoteMultiStateUpdate extends ALAbstractCheckList {
         notemap.setNoteStat(NoteUtils.NOTE_STAT_READ);
 
         // 新着ポートレット既読処理
-        WhatsNewUtils.shiftWhatsNewReadFlag(WhatsNewUtils.WHATS_NEW_TYPE_NOTE,
-          notemap.getNoteId().intValue(), uid);
+        WhatsNewUtils.shiftWhatsNewReadFlag(
+          WhatsNewUtils.WHATS_NEW_TYPE_NOTE,
+          notemap.getNoteId().intValue(),
+          uid);
       }
 
       Database.commit();

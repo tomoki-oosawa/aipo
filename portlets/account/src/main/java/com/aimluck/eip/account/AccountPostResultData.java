@@ -62,7 +62,7 @@ public class AccountPostResultData implements ALData {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     post_id = new ALNumberField();

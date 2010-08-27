@@ -29,7 +29,7 @@ import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 伝言メモのResultDataです。 <br />
+ * 伝言メモのResultDataです。
  */
 public class NoteResultData implements ALData {
 
@@ -100,8 +100,7 @@ public class NoteResultData implements ALData {
   private String note_stat_image_description = null;
 
   /**
-   * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     note_id = new ALNumberField();
@@ -382,34 +381,66 @@ public class NoteResultData implements ALData {
     return note_stat_image_path;
   }
 
+  /**
+   * 
+   * @param noteStatImageDescription
+   */
   public void setNoteStatImageDescription(String noteStatImageDescription) {
     this.note_stat_image_description = noteStatImageDescription;
   }
 
+  /**
+   * 
+   * @return
+   */
   public String getNoteStatImageDescription() {
     return note_stat_image_description;
   }
 
+  /**
+   * 
+   * @return
+   */
   public ALStringField getSrcUserFullName() {
     return src_user_fullname;
   }
 
+  /**
+   * 
+   * @return
+   */
   public ALStringField getDestUserFullName() {
     return dest_user_fullname;
   }
 
+  /**
+   * 
+   * @param field
+   */
   public void setSrcUserFullName(String field) {
     src_user_fullname.setValue(field);
   }
 
+  /**
+   * 
+   * @param field
+   */
   public void setDestUserFullName(String field) {
     dest_user_fullname.setValue(field);
   }
 
+  /**
+   * 
+   * @return
+   */
   public boolean hasMemo() {
     return hasMemo;
   }
 
+  /**
+   * 
+   * @param hasMemo
+   */
   public void setHasMemo(boolean hasMemo) {
     this.hasMemo = hasMemo;
   }

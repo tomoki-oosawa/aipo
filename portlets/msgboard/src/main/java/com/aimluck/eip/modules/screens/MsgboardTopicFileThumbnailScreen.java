@@ -26,7 +26,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardFile;
 import com.aimluck.eip.msgboard.util.MsgboardUtils;
 
 /**
- * 掲示板トピックの添付ファイルのサムネイルを処理するクラスです。 <br />
+ * 掲示板トピックの添付ファイルのサムネイルを処理するクラスです。
  */
 public class MsgboardTopicFileThumbnailScreen extends FileuploadThumbnailScreen {
 
@@ -35,7 +35,9 @@ public class MsgboardTopicFileThumbnailScreen extends FileuploadThumbnailScreen 
     .getLogger(MsgboardTopicFileThumbnailScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata) throws Exception {

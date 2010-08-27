@@ -41,10 +41,11 @@ public class CellWebMailAction extends WebMailAction {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(CellWebMailAction.class.getName());
 
-  /*
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#
-   * buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   * org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
+  /**
+   * 
+   * @param portlet
+   * @param context
+   * @param rundata
    */
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
@@ -52,10 +53,11 @@ public class CellWebMailAction extends WebMailAction {
 
   }
 
-  /*
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#
-   * buildMaximizedContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   * org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
+  /**
+   * 
+   * @param portlet
+   * @param context
+   * @param rundata
    */
   @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
@@ -79,24 +81,6 @@ public class CellWebMailAction extends WebMailAction {
       ALEipUtils.redirectDBError(rundata);
     }
   }
-
-  //
-  // /**
-  // * スケジュールを一覧表示します。
-  // *
-  // * @param rundata
-  // * @param context
-  // */
-  // public void doWebmail_list(RunData rundata, Context context) {
-  // try {
-  // doWebmail_show_received_mails(rundata, context);
-  // } catch (Exception ex) {
-  // // ここに到達する場合はバグまたは不具合の可能性アリ
-  // logger.error("[CellWebMailAction] Exception.", ex);
-  // ALEipUtils.redirectDBError(rundata);
-  // }
-  // }
-  //
 
   /**
    * メールを作成するページを表示する．

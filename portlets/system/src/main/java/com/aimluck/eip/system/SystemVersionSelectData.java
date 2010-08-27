@@ -41,8 +41,10 @@ public class SystemVersionSelectData extends
     .getLogger(SystemVersionSelectData.class.getName());
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected ResultList<String> selectList(RunData rundata, Context context) {
@@ -50,8 +52,10 @@ public class SystemVersionSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected String selectDetail(RunData rundata, Context context) {
@@ -59,7 +63,9 @@ public class SystemVersionSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   * 
+   * @param license
+   * @return
    */
   @Override
   protected Object getResultData(String license) {
@@ -67,7 +73,9 @@ public class SystemVersionSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   * 
+   * @param license
+   * @return
    */
   @Override
   protected Object getResultDataDetail(String license) {
@@ -75,7 +83,8 @@ public class SystemVersionSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   * 
+   * @return
    */
   @Override
   protected Attributes getColumnMap() {

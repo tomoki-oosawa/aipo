@@ -107,11 +107,13 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   protected final String FLAG_CHANGE_TURN_STR = new StringBuffer().append(
     this.getClass().getName()).append("flagchangeturn").toString();
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules
-   * .actions.common.ALAction, org.apache.turbine.util.RunData,
-   * org.apache.velocity.context.Context)
+  /**
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -182,10 +184,13 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
     }
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected ResultList<EipTScheduleMap> selectList(RunData rundata,
@@ -252,9 +257,12 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+  /**
+   * 
+   * @param record
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected Object getResultData(EipTScheduleMap record)
@@ -390,11 +398,12 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
     return rd;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#buildCriteriaForFilter(org.
-   * apache.torque.util.Criteria, org.apache.turbine.util.RunData,
-   * org.apache.velocity.context.Context)
+  /**
+   * 
+   * @param query
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected SelectQuery<EipTScheduleMap> buildSelectQueryForFilter(
@@ -540,7 +549,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   *
    */
   @Override
   protected Attributes getColumnMap() {

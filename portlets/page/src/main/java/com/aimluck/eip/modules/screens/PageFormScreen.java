@@ -27,7 +27,7 @@ import com.aimluck.eip.page.PageFormData;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * ページ設定を処理するクラスです。 <br />
+ * ページ設定を処理するクラスです。 
  * 
  */
 public class PageFormScreen extends ALVelocityScreen {
@@ -37,7 +37,10 @@ public class PageFormScreen extends ALVelocityScreen {
     .getLogger(PageFormScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {

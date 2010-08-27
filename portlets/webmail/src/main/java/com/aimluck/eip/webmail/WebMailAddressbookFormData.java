@@ -146,7 +146,7 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
+   *
    */
   @Override
   protected void setValidator() {
@@ -157,7 +157,7 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -166,8 +166,12 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected boolean setFormData(RunData rundata, Context context,
@@ -202,8 +206,6 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
   /**
    * 返信と転送時にグローバル変数に値をセットする． 返信と転送時には，ENTITY_ID がセッションに既にセットされている状態になっている．
    * 
-   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
@@ -219,10 +221,11 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
   }
 
   /**
-   * 未使用
    * 
-   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
    */
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
@@ -231,10 +234,11 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
   }
 
   /**
-   * 未使用
    * 
-   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
    */
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
@@ -243,10 +247,11 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
   }
 
   /**
-   * 未使用
    * 
-   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
    */
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,
@@ -255,7 +260,7 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     // 社内／社外

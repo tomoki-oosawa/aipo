@@ -33,18 +33,22 @@ import com.aimluck.eip.util.ALEipUtils;
 public class BlogWordListScreen extends ALVelocityScreen {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(BlogWordListScreen.class.getName());
+    .getLogger(BlogWordListScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
       BlogWordSelectData listData = new BlogWordSelectData();
       listData.setRowsNum(20);
-      listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-          context).getPortletConfig().getInitParameter("p3a-strlen")));
+      listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p3a-strlen")));
       listData.doViewList(this, rundata, context);
       String layout_template = "portlets/html/ja/ajax-blog-search-list.vm";
       setTemplate(rundata, context, layout_template);

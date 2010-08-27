@@ -33,20 +33,25 @@ import com.aimluck.eip.util.ALEipUtils;
 public class BlogCommonThemaDetailScreen extends BlogScreen {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(BlogCommonThemaDetailScreen.class.getName());
+    .getLogger(BlogCommonThemaDetailScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
       BlogCommonThemaSelectData detailData = new BlogCommonThemaSelectData();
-      detailData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-          context).getPortletConfig().getInitParameter("p3a-strlen")));
+      detailData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p3a-strlen")));
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
-      String layout_template = "portlets/html/ja/ajax-blog-common-thema-detail.vm";
+      String layout_template =
+        "portlets/html/ja/ajax-blog-common-thema-detail.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

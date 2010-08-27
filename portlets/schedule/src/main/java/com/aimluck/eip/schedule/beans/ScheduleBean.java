@@ -116,7 +116,7 @@ public class ScheduleBean implements ALData, Cloneable {
   private List<String> tmpList;
 
   /*
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     name = new ALStringField();
@@ -498,8 +498,9 @@ public class ScheduleBean implements ALData, Cloneable {
     is_dummy = bool;
   }
 
-  /*
-   * @see java.lang.Object#clone()
+  /**
+   * 
+   * @return
    */
   @Override
   public Object clone() {

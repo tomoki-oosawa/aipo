@@ -113,7 +113,7 @@ public class AddressBookResultData implements ALData {
   private ALStringField index;
 
   /**
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     address_id = new ALNumberField();
@@ -301,7 +301,7 @@ public class AddressBookResultData implements ALData {
 
   /**
    * 公開フラグを設定します。
-   *
+   * 
    * @param string
    */
   public void setPublicFlag(String string) {
@@ -310,7 +310,7 @@ public class AddressBookResultData implements ALData {
 
   /**
    * 公開フラグを取得します。
-   *
+   * 
    * @return
    */
   public ALStringField getPublicFlag() {

@@ -30,7 +30,7 @@ import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 伝言メモの一覧を処理するクラスです。 <br />
+ * 伝言メモの一覧を処理するクラスです。
  * 
  */
 public class NoteListScreen extends NoteScreen {
@@ -40,7 +40,10 @@ public class NoteListScreen extends NoteScreen {
     .getLogger(NoteListScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
@@ -56,11 +59,11 @@ public class NoteListScreen extends NoteScreen {
       ALEipUtils.removeTemp(rundata, context, NoteUtils.TARGET_USER_ID);
       NoteSelectData listData = new NoteSelectData();
       listData.initField();
-      // PSMLからパラメータをロードする
-      // 最大表示件数（最大化時）
-      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(rundata,
+      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
         context).getPortletConfig().getInitParameter("p1b-rows")));
-      listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
+      listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
         context).getPortletConfig().getInitParameter("p3a-strlen")));
       listData.doViewList(this, rundata, context);
       String layout_template = "portlets/html/ja/ajax-note-list.vm";

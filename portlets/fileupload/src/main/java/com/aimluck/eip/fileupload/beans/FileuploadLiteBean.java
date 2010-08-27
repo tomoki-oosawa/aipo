@@ -42,7 +42,7 @@ public class FileuploadLiteBean implements ALData, Cloneable {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     folder_name = new ALStringField();

@@ -50,7 +50,6 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.blog.BlogThemaResultData;
 import com.aimluck.eip.blog.BlogUserResultData;
-import com.aimluck.eip.cayenne.om.portlet.EipMAddressGroup;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlog;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogComment;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
@@ -74,13 +73,13 @@ import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
 
 /**
  * ブログのユーティリティクラスです。 <BR>
- *
+ * 
  */
 public class BlogUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(BlogUtils.class.getName());
+    .getLogger(BlogUtils.class.getName());
 
   public static final String TARGET_GROUP_NAME = "target_group_name";
 
@@ -95,31 +94,33 @@ public class BlogUtils {
 
   /** デフォルトエンコーディングを表わすシステムプロパティのキー */
   public static final String FILE_ENCODING = JetspeedResources.getString(
-      "content.defaultencoding", "UTF-8");
+    "content.defaultencoding",
+    "UTF-8");
 
   /** ブログの添付ファイルを保管するディレクトリの指定 */
   protected static final String FOLDER_FILEDIR_BLOG = JetspeedResources
-      .getString("aipo.filedir", "");
+    .getString("aipo.filedir", "");
 
   /** ブログの添付ファイルを保管するディレクトリのカテゴリキーの指定 */
-  protected static final String CATEGORY_KEY = JetspeedResources
-      .getString("aipo.blog.categorykey","");
+  protected static final String CATEGORY_KEY = JetspeedResources.getString(
+    "aipo.blog.categorykey",
+    "");
 
   /** データベースに登録されたファイルを表す識別子 */
   public static final String PREFIX_DBFILE = "DBF";
 
   /**
    * エントリーオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param isJoin
-   *            テーマテーブルをJOINするかどうか
+   *          テーマテーブルをJOINするかどうか
    * @return
    */
   public static EipTBlogEntry getEipTBlogEntry(RunData rundata, Context context) {
-    String entryid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String entryid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (entryid == null || Integer.valueOf(entryid) == null) {
         // Todo IDが空の場合
@@ -127,11 +128,12 @@ public class BlogUtils {
         return null;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       SelectQuery query = new SelectQuery(EipTBlogEntry.class);
-      Expression exp = ExpressionFactory.matchDbExp(
-          EipTBlogEntry.ENTRY_ID_PK_COLUMN, Integer.valueOf(entryid));
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipTBlogEntry.ENTRY_ID_PK_COLUMN, Integer
+          .valueOf(entryid));
       query.setQualifier(exp);
       List entrys = dataContext.performQuery(query);
       if (entrys == null || entrys.size() == 0) {
@@ -148,14 +150,14 @@ public class BlogUtils {
 
   /**
    * ブログカテゴリ オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    */
   public static EipTBlogThema getEipTBlogThema(RunData rundata, Context context) {
-    String themaid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String themaid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (themaid == null || Integer.valueOf(themaid) == null) {
         // カテゴリIDが空の場合
@@ -163,11 +165,12 @@ public class BlogUtils {
         return null;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       SelectQuery query = new SelectQuery(EipTBlogThema.class);
-      Expression exp = ExpressionFactory.matchDbExp(
-          EipTBlogThema.THEMA_ID_PK_COLUMN, Integer.valueOf(themaid));
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipTBlogThema.THEMA_ID_PK_COLUMN, Integer
+          .valueOf(themaid));
       query.setQualifier(exp);
       List themas = dataContext.performQuery(query);
       if (themas == null || themas.size() == 0) {
@@ -184,7 +187,7 @@ public class BlogUtils {
 
   /**
    * ブログカテゴリ オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -192,8 +195,11 @@ public class BlogUtils {
   public static EipTBlogThema getEipTBlogThema(DataContext dataContext,
       Long thema_id) {
     try {
-      EipTBlogThema thema = (EipTBlogThema) DataObjectUtils.objectForPK(
-          dataContext, EipTBlogThema.class, thema_id);
+      EipTBlogThema thema =
+        (EipTBlogThema) DataObjectUtils.objectForPK(
+          dataContext,
+          EipTBlogThema.class,
+          thema_id);
       return thema;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -204,11 +210,12 @@ public class BlogUtils {
   public static EipTBlog getEipTBlog(RunData rundata, Context context) {
     try {
       int uid = ALEipUtils.getUserId(rundata);
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       SelectQuery query = new SelectQuery(EipTBlog.class);
-      Expression exp = ExpressionFactory.matchExp(EipTBlog.OWNER_ID_PROPERTY,
-          Integer.valueOf(uid));
+      Expression exp =
+        ExpressionFactory.matchExp(EipTBlog.OWNER_ID_PROPERTY, Integer
+          .valueOf(uid));
       query.setQualifier(exp);
       List blogs = dataContext.performQuery(query);
       if (blogs == null || blogs.size() == 0) {
@@ -225,7 +232,7 @@ public class BlogUtils {
 
   /**
    * コメントオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -241,14 +248,17 @@ public class BlogUtils {
       }
 
       int userid = ALEipUtils.getUserId(rundata);
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       SelectQuery query = new SelectQuery(EipTBlogComment.class);
-      Expression exp1 = ExpressionFactory.matchDbExp(
-          EipTBlogComment.COMMENT_ID_PK_COLUMN, Integer.valueOf(commentid));
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(
+          EipTBlogComment.COMMENT_ID_PK_COLUMN,
+          Integer.valueOf(commentid));
       query.setQualifier(exp1);
-      Expression exp2 = ExpressionFactory.matchExp(
-          EipTBlogComment.OWNER_ID_PROPERTY, Integer.valueOf(userid));
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTBlogComment.OWNER_ID_PROPERTY, Integer
+          .valueOf(userid));
       query.andQualifier(exp2);
       List comments = dataContext.performQuery(query);
       if (comments == null || comments.size() == 0) {
@@ -258,8 +268,6 @@ public class BlogUtils {
       }
       return ((EipTBlogComment) comments.get(0));
     } catch (Exception ex) {
-
-      // TODO: エラー処理
       logger.error("[BlogUtils]", ex);
       throw new ALDBErrorException();
 
@@ -268,7 +276,7 @@ public class BlogUtils {
 
   /**
    * ファイルオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -277,8 +285,8 @@ public class BlogUtils {
       throws ALPageNotFoundException, ALDBErrorException {
     try {
       int ownerid = rundata.getParameters().getInt(BlogUtils.OWNER_ID, -1);
-      int entryid = rundata.getParameters()
-          .getInt(ALEipConstants.ENTITY_ID, -1);
+      int entryid =
+        rundata.getParameters().getInt(ALEipConstants.ENTITY_ID, -1);
       int fileid = rundata.getParameters().getInt("attachmentIndex", -1);
       if (ownerid <= 0 || entryid <= 0 || fileid <= 0) {
         // トピック ID が空の場合
@@ -286,17 +294,20 @@ public class BlogUtils {
         throw new ALPageNotFoundException();
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       SelectQuery query = new SelectQuery(EipTBlogFile.class);
-      Expression exp1 = ExpressionFactory.matchDbExp(
-          EipTBlogFile.FILE_ID_PK_COLUMN, Integer.valueOf(fileid));
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(EipTBlogFile.FILE_ID_PK_COLUMN, Integer
+          .valueOf(fileid));
       query.setQualifier(exp1);
-      Expression exp2 = ExpressionFactory.matchExp(
-          EipTBlogFile.OWNER_ID_PROPERTY, Integer.valueOf(ownerid));
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTBlogFile.OWNER_ID_PROPERTY, Integer
+          .valueOf(ownerid));
       query.andQualifier(exp2);
-      Expression exp3 = ExpressionFactory.matchDbExp(
-          EipTBlogEntry.ENTRY_ID_PK_COLUMN, Integer.valueOf(entryid));
+      Expression exp3 =
+        ExpressionFactory.matchDbExp(EipTBlogEntry.ENTRY_ID_PK_COLUMN, Integer
+          .valueOf(entryid));
       query.andQualifier(exp3);
 
       List files = dataContext.performQuery(query);
@@ -308,8 +319,6 @@ public class BlogUtils {
       }
       return ((EipTBlogFile) files.get(0));
     } catch (Exception ex) {
-
-      // TODO: エラー処理
       logger.error("[BlogUtils]", ex);
       throw new ALDBErrorException();
 
@@ -318,17 +327,17 @@ public class BlogUtils {
 
   /**
    * トピックオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param isJoin
-   *            カテゴリテーブルをJOINするかどうか
+   *          カテゴリテーブルをJOINするかどうか
    * @return
    */
   public static EipTBlogEntry getEipTBlogParentEntry(RunData rundata,
       Context context) throws ALPageNotFoundException, ALDBErrorException {
-    String entryid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String entryid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (entryid == null || Integer.valueOf(entryid) == null) {
         // トピック ID が空の場合
@@ -336,11 +345,12 @@ public class BlogUtils {
         throw new ALPageNotFoundException();
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       SelectQuery query = new SelectQuery(EipTBlogEntry.class);
-      Expression exp = ExpressionFactory.matchDbExp(
-          EipTBlogEntry.ENTRY_ID_PK_COLUMN, Integer.valueOf(entryid));
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipTBlogEntry.ENTRY_ID_PK_COLUMN, Integer
+          .valueOf(entryid));
       query.setQualifier(exp);
       List entrys = dataContext.performQuery(query);
       if (entrys == null || entrys.size() == 0) {
@@ -352,8 +362,6 @@ public class BlogUtils {
       EipTBlogEntry entry = ((EipTBlogEntry) entrys.get(0));
       return entry;
     } catch (Exception ex) {
-
-      // TODO: エラー処理
       logger.error("[EntryUtils]", ex);
       throw new ALDBErrorException();
 
@@ -364,8 +372,8 @@ public class BlogUtils {
     // カテゴリ一覧
     ArrayList themaList = new ArrayList();
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       SelectQuery query = new SelectQuery(EipTBlogThema.class);
       query.addOrdering(EipTBlogThema.THEMA_NAME_PROPERTY, Ordering.ASC);
       List aList = dataContext.performQuery(query);
@@ -401,7 +409,7 @@ public class BlogUtils {
 
   /**
    * 顔写真の有無の情報をもつユーザオブジェクトの一覧を取得する．
-   *
+   * 
    * @param org_id
    * @param groupname
    * @return
@@ -413,7 +421,7 @@ public class BlogUtils {
     StringBuffer statement = new StringBuffer();
     statement.append("SELECT DISTINCT ");
     statement
-        .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, B.PHOTO, D.POSITION ");
+      .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, B.PHOTO, D.POSITION ");
     statement.append("FROM TURBINE_USER_GROUP_ROLE as A ");
     statement.append("LEFT JOIN TURBINE_USER as B ");
     statement.append("  on A.USER_ID = B.USER_ID ");
@@ -429,8 +437,8 @@ public class BlogUtils {
     try {
       // List ulist = BasePeer.executeQuery(query, org_id);
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       SQLTemplate rawSelect = new SQLTemplate(TurbineUser.class, query, true);
       rawSelect.setFetchingDataRows(true);
       List ulist = dataContext.performQuery(rawSelect);
@@ -445,14 +453,19 @@ public class BlogUtils {
         dataRow = (DataRow) ulist.get(j);
         user = new BlogUserResultData();
         user.initField();
-        user.setUserId(((Integer) ALEipUtils.getObjFromDataRow(dataRow,
-            TurbineUser.USER_ID_PK_COLUMN)).intValue());
-        user.setName((String) ALEipUtils.getObjFromDataRow(dataRow,
-            TurbineUser.LOGIN_NAME_COLUMN));
-        user.setAliasName((String) ALEipUtils.getObjFromDataRow(dataRow,
-            TurbineUser.FIRST_NAME_COLUMN), (String) ALEipUtils
-            .getObjFromDataRow(dataRow, TurbineUser.LAST_NAME_COLUMN));
-        byte[] photo = (byte[]) ALEipUtils.getObjFromDataRow(dataRow,
+        user.setUserId(((Integer) ALEipUtils.getObjFromDataRow(
+          dataRow,
+          TurbineUser.USER_ID_PK_COLUMN)).intValue());
+        user.setName((String) ALEipUtils.getObjFromDataRow(
+          dataRow,
+          TurbineUser.LOGIN_NAME_COLUMN));
+        user.setAliasName((String) ALEipUtils.getObjFromDataRow(
+          dataRow,
+          TurbineUser.FIRST_NAME_COLUMN), (String) ALEipUtils
+          .getObjFromDataRow(dataRow, TurbineUser.LAST_NAME_COLUMN));
+        byte[] photo =
+          (byte[]) ALEipUtils.getObjFromDataRow(
+            dataRow,
             TurbineUser.PHOTO_COLUMN);
         if (photo != null && photo.length > 0) {
           user.setHasPhoto(true);
@@ -470,9 +483,9 @@ public class BlogUtils {
 
   /**
    * ユーザ情報の取得
-   *
+   * 
    * @param userid
-   *            ユーザID
+   *          ユーザID
    * @return
    */
   public static ALBaseUser getBaseUser(int userid) {
@@ -493,15 +506,17 @@ public class BlogUtils {
     String userName = "";
     ALBaseUser user = getBaseUser(userid);
     if (user != null) {
-      userName = new StringBuffer().append(user.getLastName()).append(" ")
-          .append(user.getFirstName()).toString();
+      userName =
+        new StringBuffer().append(user.getLastName()).append(" ").append(
+          user.getFirstName()).toString();
     }
     return userName;
   }
 
   public static String compressString(String src, int length) {
-    if (src == null || src.length() == 0 || length <= 0)
+    if (src == null || src.length() == 0 || length <= 0) {
       return src;
+    }
 
     String subject;
     if (src.length() > length) {
@@ -514,51 +529,64 @@ public class BlogUtils {
   }
 
   private static int getDBFileId(String str) {
-    if (str == null || !str.startsWith(BlogUtils.PREFIX_DBFILE))
+    if (str == null || !str.startsWith(BlogUtils.PREFIX_DBFILE)) {
       return -1;
+    }
 
-    String token = str
-        .substring(BlogUtils.PREFIX_DBFILE.length(), str.length());
+    String token =
+      str.substring(BlogUtils.PREFIX_DBFILE.length(), str.length());
     return Integer.parseInt(token);
   }
 
   /**
    * 指定したエントリー名を持つ個人設定ページに含まれるポートレットへの URI を取得する．
-   *
+   * 
    * @param rundata
    * @param portletEntryName
-   *            PSML ファイルに記述されているタグ entry の要素 parent
+   *          PSML ファイルに記述されているタグ entry の要素 parent
    * @return
    */
   public static String getPortletURIinPersonalConfigPane(RunData rundata,
       String portletEntryName) {
     try {
-      Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-          .getDocument().getPortlets();
-      if (portlets == null)
+      Portlets portlets =
+        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
+      if (portlets == null) {
         return null;
+      }
 
       Portlets[] portletList = portlets.getPortletsArray();
-      if (portletList == null)
+      if (portletList == null) {
         return null;
+      }
 
       int length = portletList.length;
       for (int i = 0; i < length; i++) {
         Entry[] entries = portletList[i].getEntriesArray();
-        if (entries == null || entries.length <= 0)
+        if (entries == null || entries.length <= 0) {
           continue;
+        }
 
         int ent_length = entries.length;
         for (int j = 0; j < ent_length; j++) {
           if (entries[j].getParent().equals(portletEntryName)) {
             JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
 
-            DynamicURI duri = jsLink.getLink(JetspeedLink.CURRENT, null, null,
-                JetspeedLink.CURRENT, null);
-            duri = duri.addPathInfo(JetspeedResources.PATH_PANEID_KEY,
-                portletList[i].getId() + "," + entries[j].getId())
-                .addQueryData(JetspeedResources.PATH_ACTION_KEY,
-                    "controls.Restore");
+            DynamicURI duri =
+              jsLink.getLink(
+                JetspeedLink.CURRENT,
+                null,
+                null,
+                JetspeedLink.CURRENT,
+                null);
+            duri =
+              duri
+                .addPathInfo(
+                  JetspeedResources.PATH_PANEID_KEY,
+                  portletList[i].getId() + "," + entries[j].getId())
+                .addQueryData(
+                  JetspeedResources.PATH_ACTION_KEY,
+                  "controls.Restore");
             return duri.toString();
           }
         }
@@ -572,16 +600,18 @@ public class BlogUtils {
 
   /**
    * ユーザ毎のルート保存先（絶対パス）を取得します。
-   *
+   * 
    * @param uid
    * @return
    */
   public static String getSaveDirPath(String orgId, int uid) {
-    ALOrgUtilsHandler handler = ALOrgUtilsFactoryService.getInstance()
-        .getOrgUtilsHandler();
-    File path = new File(handler.getDocumentPath(FOLDER_FILEDIR_BLOG, orgId,
-        CATEGORY_KEY)
-        + File.separator + uid);
+    ALOrgUtilsHandler handler =
+      ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
+    File path =
+      new File(handler
+        .getDocumentPath(FOLDER_FILEDIR_BLOG, orgId, CATEGORY_KEY)
+        + File.separator
+        + uid);
     if (!path.exists()) {
       path.mkdirs();
     }
@@ -590,7 +620,7 @@ public class BlogUtils {
 
   /**
    * ユーザ毎の保存先（相対パス）を取得します。
-   *
+   * 
    * @param uid
    * @return
    */
@@ -600,16 +630,19 @@ public class BlogUtils {
 
   /**
    * 添付ファイル保存先（絶対パス）を取得します。
-   *
+   * 
    * @param uid
    * @return
    */
   public static String getAbsolutePath(String orgId, int uid, String fileName) {
-    ALOrgUtilsHandler handler = ALOrgUtilsFactoryService.getInstance()
-        .getOrgUtilsHandler();
-    StringBuffer sb = new StringBuffer().append(
-        handler.getDocumentPath(FOLDER_FILEDIR_BLOG, orgId, CATEGORY_KEY))
-        .append(File.separator).append(uid);
+    ALOrgUtilsHandler handler =
+      ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
+    StringBuffer sb =
+      new StringBuffer()
+        .append(
+          handler.getDocumentPath(FOLDER_FILEDIR_BLOG, orgId, CATEGORY_KEY))
+        .append(File.separator)
+        .append(uid);
     File f = new File(sb.toString());
     if (!f.exists()) {
       f.mkdirs();
@@ -619,15 +652,18 @@ public class BlogUtils {
 
   /**
    * 添付ファイルを取得します。
-   *
+   * 
    * @param uid
    * @return
    */
   public static ArrayList getFileuploadList(RunData rundata) {
-    String[] fileids = rundata.getParameters().getStrings(
-        FileuploadUtils.KEY_FILEUPLOAD_ID_LIST);
-    if (fileids == null)
+    String[] fileids =
+      rundata
+        .getParameters()
+        .getStrings(FileuploadUtils.KEY_FILEUPLOAD_ID_LIST);
+    if (fileids == null) {
       return null;
+    }
 
     ArrayList hadfileids = new ArrayList();
     ArrayList newfileids = new ArrayList();
@@ -646,20 +682,26 @@ public class BlogUtils {
 
     // 新規にアップロードされたファイルの処理
     if (newfileids.size() > 0) {
-      String folderName = rundata.getParameters().getString(
+      String folderName =
+        rundata.getParameters().getString(
           FileuploadUtils.KEY_FILEUPLOAD_FODLER_NAME);
-      if (folderName == null || folderName.equals(""))
+      if (folderName == null || folderName.equals("")) {
         return null;
+      }
 
       String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
-      File folder = FileuploadUtils.getFolder(org_id, ALEipUtils
-          .getUserId(rundata), folderName);
+      File folder =
+        FileuploadUtils.getFolder(
+          org_id,
+          ALEipUtils.getUserId(rundata),
+          folderName);
       String folderpath = folder.getAbsolutePath();
 
       int length = newfileids.size();
       for (int i = 0; i < length; i++) {
-        if (newfileids.get(i) == null || newfileids.get(i).equals(""))
+        if (newfileids.get(i) == null || newfileids.get(i).equals("")) {
           continue;
+        }
 
         try {
           fileid = Integer.parseInt((String) newfileids.get(i));
@@ -676,12 +718,16 @@ public class BlogUtils {
         } else {
           BufferedReader reader = null;
           try {
-            reader = new BufferedReader(new InputStreamReader(
-                new FileInputStream(folderpath + File.separator + fileid
-                    + FileuploadUtils.EXT_FILENAME), FILE_ENCODING));
+            reader =
+              new BufferedReader(new InputStreamReader(new FileInputStream(
+                folderpath
+                  + File.separator
+                  + fileid
+                  + FileuploadUtils.EXT_FILENAME), FILE_ENCODING));
             String line = reader.readLine();
-            if (line == null || line.length() <= 0)
+            if (line == null || line.length() <= 0) {
               continue;
+            }
 
             filebean = new FileuploadLiteBean();
             filebean.initField();
@@ -717,11 +763,13 @@ public class BlogUtils {
 
       try {
         // valueを元にDBを検索
-        DataContext dataContext = DatabaseOrmService.getInstance()
-            .getDataContext();
+        DataContext dataContext =
+          DatabaseOrmService.getInstance().getDataContext();
         SelectQuery reqquery = new SelectQuery(EipTBlogFile.class);
-        Expression reqexp1 = ExpressionFactory.inDbExp(
-            EipTBlogFile.FILE_ID_PK_COLUMN, hadfileidsValue);
+        Expression reqexp1 =
+          ExpressionFactory.inDbExp(
+            EipTBlogFile.FILE_ID_PK_COLUMN,
+            hadfileidsValue);
         reqquery.setQualifier(reqexp1);
         List requests = dataContext.performQuery(reqquery);
         int requestssize = requests.size();
@@ -743,18 +791,20 @@ public class BlogUtils {
 
   /**
    * ファイルオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    */
   public static List getEipTBlogFileList(int entryId) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       SelectQuery query = new SelectQuery(EipTBlogFile.class);
-      Expression exp = ExpressionFactory.matchExp(
-          EipTBlogFile.EIP_TBLOG_ENTRY_PROPERTY, Integer.valueOf(entryId));
+      Expression exp =
+        ExpressionFactory.matchExp(
+          EipTBlogFile.EIP_TBLOG_ENTRY_PROPERTY,
+          Integer.valueOf(entryId));
       query.setQualifier(exp);
       List files = dataContext.performQuery(query);
       if (files == null || files.size() == 0) {
@@ -769,12 +819,14 @@ public class BlogUtils {
   }
 
   public static boolean hasMinimumAuthority(RunData rundata) {
-    ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-    boolean hasAuthority = aclhandler.hasAuthority(ALEipUtils
-        .getUserId(rundata),
+    boolean hasAuthority =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
         ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_SELF,
         ALAccessControlConstants.VALUE_ACL_LIST);
 

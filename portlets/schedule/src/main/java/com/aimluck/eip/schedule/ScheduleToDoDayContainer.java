@@ -42,7 +42,7 @@ public class ScheduleToDoDayContainer implements ALData {
   private boolean is_hastodo = false;
 
   /*
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     // 日付

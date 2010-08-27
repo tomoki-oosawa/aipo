@@ -60,10 +60,11 @@ public class ScheduleAction extends ALBaseAction {
   /** ノーマル画面からのスケジュール入力 */
   private static final String AFTER_BEHAVIOR = "afterbehavior";
 
-  /*
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#
-   * buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   * org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
+  /**
+   * 
+   * @param portlet
+   * @param context
+   * @param rundata
    */
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
@@ -279,10 +280,11 @@ public class ScheduleAction extends ALBaseAction {
     }
   }
 
-  /*
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#
-   * buildMaximizedContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   * org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
+  /**
+   * 
+   * @param portlet
+   * @param context
+   * @param rundata
    */
   @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,

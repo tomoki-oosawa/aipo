@@ -266,7 +266,6 @@ public class MsgboardUtils {
       }
       return files.get(0);
     } catch (Exception ex) {
-      // TODO: エラー処理
       logger.error("[MsgboardUtils]", ex);
       throw new ALDBErrorException();
     }
@@ -411,7 +410,6 @@ public class MsgboardUtils {
 
       return topics;
     } catch (Exception ex) {
-      // TODO: エラー処理
       logger.error("[MsgboardUtils]", ex);
       throw new ALDBErrorException();
 

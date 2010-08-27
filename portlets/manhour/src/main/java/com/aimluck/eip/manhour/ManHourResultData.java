@@ -110,7 +110,7 @@ public class ManHourResultData implements ALData {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     user = new ALStringField();

@@ -71,7 +71,7 @@ public class CabinetFileResultData implements ALData {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     file_id = new ALNumberField();

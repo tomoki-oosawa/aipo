@@ -50,10 +50,11 @@ public class AjaxScheduleAction extends ALBaseAction {
 
   private boolean isMax = false;
 
-  /*
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#
-   * buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   * org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
+  /**
+   * 
+   * @param portlet
+   * @param context
+   * @param rundata
    */
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
@@ -185,10 +186,11 @@ public class AjaxScheduleAction extends ALBaseAction {
     }
   }
 
-  /*
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#
-   * buildMaximizedContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   * org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
+  /**
+   * 
+   * @param portlet
+   * @param context
+   * @param rundata
    */
   @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,

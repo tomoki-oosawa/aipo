@@ -29,7 +29,7 @@ import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.eip.common.ALData;
 
 /**
- * タイムカードのResultDataです。 <BR>
+ * タイムカードのResultDataです。
  * 
  */
 public class TimecardResultData implements ALData {
@@ -62,8 +62,7 @@ public class TimecardResultData implements ALData {
   private ALDateTimeField start_work_date;
 
   /**
-   * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     work_flag = new ALStringField();

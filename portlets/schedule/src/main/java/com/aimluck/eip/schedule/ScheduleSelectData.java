@@ -101,11 +101,13 @@ public class ScheduleSelectData extends
   /** アクセスコントロール用の変数 */
   private String aclPortletFeature;
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules
-   * .actions.common.ALAction, org.apache.turbine.util.RunData,
-   * org.apache.velocity.context.Context)
+  /**
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -192,10 +194,11 @@ public class ScheduleSelectData extends
 
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected ResultList<EipTSchedule> selectList(RunData rundata, Context context) {
@@ -203,10 +206,13 @@ public class ScheduleSelectData extends
     return null;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected EipTSchedule selectDetail(RunData rundata, Context context)
@@ -219,9 +225,10 @@ public class ScheduleSelectData extends
       type);
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+  /**
+   * 
+   * @param obj
+   * @return
    */
   @Override
   protected Object getResultData(EipTSchedule obj) {
@@ -229,10 +236,12 @@ public class ScheduleSelectData extends
     return null;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang
-   * .Object)
+  /**
+   * 
+   * @param record
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected Object getResultDataDetail(EipTSchedule record)
@@ -254,7 +263,6 @@ public class ScheduleSelectData extends
       schedulequery.andQualifier(exp2);
       List<Integer> scheduleList = new ArrayList<Integer>();
       List<EipTSchedule> dummyScheduleList = schedulequery.fetchList();
-      // TODO :
       // ダミーの ID がセットされていない？
 
       scheduleList.add(record.getScheduleId());
@@ -429,8 +437,6 @@ public class ScheduleSelectData extends
       // cal.set(Calendar.MINUTE, 0);
       // view_date.setValue(cal.getTime());
     } catch (Exception e) {
-
-      // TODO: エラー処理
       logger.error("Exception", e);
 
       return null;
@@ -439,7 +445,7 @@ public class ScheduleSelectData extends
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   *
    */
   @Override
   protected Attributes getColumnMap() {

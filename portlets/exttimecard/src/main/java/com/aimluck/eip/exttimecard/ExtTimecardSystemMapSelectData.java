@@ -94,8 +94,10 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected ResultList<EipTExtTimecardSystemMap> selectList(RunData rundata,
@@ -206,8 +208,10 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected Object selectDetail(RunData rundata, Context context) {
@@ -215,7 +219,7 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   *
    */
   @Override
   protected Object getResultData(Object obj) {
@@ -240,7 +244,9 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   * 
+   * @param obj
+   * @return
    */
   @Override
   protected Object getResultDataDetail(Object obj) {
@@ -270,7 +276,7 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
 
   /**
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   * 
    */
   @Override
   protected Attributes getColumnMap() {

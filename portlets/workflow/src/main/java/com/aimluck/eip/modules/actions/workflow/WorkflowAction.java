@@ -50,8 +50,6 @@ public class WorkflowAction extends ALBaseAction {
    * @param context
    * @param rundata
    * @throws Exception
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,

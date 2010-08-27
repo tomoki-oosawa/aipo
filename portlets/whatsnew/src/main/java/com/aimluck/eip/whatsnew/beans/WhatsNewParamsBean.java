@@ -35,7 +35,7 @@ public class WhatsNewParamsBean implements ALData {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     key = new ALStringField();

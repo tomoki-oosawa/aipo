@@ -37,7 +37,7 @@ import com.aimluck.eip.page.util.PageUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * ページ設定の取り扱いに関するアクションクラスです。 <br />
+ * ページ設定の取り扱いに関するアクションクラスです。 
  * org.apache.jetspeed.modules.actions.portlets.CustomizeSetAction から処理を移管した．
  * 
  */
@@ -49,8 +49,11 @@ public class PageAction extends ALBaseAction {
     .getLogger(PageAction.class.getName());
 
   /**
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
+   * 
+   * @param portlet
+   * @param context
+   * @param rundata
+   * @throws Exception
    */
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
@@ -61,7 +64,7 @@ public class PageAction extends ALBaseAction {
   }
 
   /**
-   * ページの一覧を表示する．<BR>
+   * ページの一覧を表示する．
    * 
    * @param rundata
    * @param context
@@ -79,7 +82,7 @@ public class PageAction extends ALBaseAction {
   }
 
   /**
-   * ページを登録するフォームを表示する．<BR>
+   * ページを登録するフォームを表示する．
    * 
    * @param rundata
    * @param context
@@ -96,7 +99,7 @@ public class PageAction extends ALBaseAction {
   }
 
   /**
-   * ページを登録する．<BR>
+   * ページを登録する．
    * 
    * @param rundata
    * @param context
@@ -123,7 +126,7 @@ public class PageAction extends ALBaseAction {
   }
 
   /**
-   * ページを更新する．<BR>
+   * ページを更新する．
    * 
    * @param rundata
    * @param context
@@ -150,7 +153,7 @@ public class PageAction extends ALBaseAction {
   }
 
   /**
-   * ページの詳細を表示する．<BR>
+   * ページの詳細を表示する．
    * 
    * @param rundata
    * @param context
@@ -167,7 +170,7 @@ public class PageAction extends ALBaseAction {
   }
 
   /**
-   * ページを削除する．<BR>
+   * ページを削除する．
    * 
    * @param rundata
    * @param context

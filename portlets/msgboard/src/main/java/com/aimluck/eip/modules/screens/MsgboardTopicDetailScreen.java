@@ -32,7 +32,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 掲示板トピックの詳細画面を処理するクラスです。 <br />
+ * 掲示板トピックの詳細画面を処理するクラスです。
  * 
  */
 
@@ -56,7 +56,10 @@ public class MsgboardTopicDetailScreen extends ALVelocityScreen {
   private List<String> errmsgListOnTopicDetail;
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {

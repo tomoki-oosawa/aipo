@@ -71,13 +71,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * サンプルデータ削除のフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class DeleteSampleFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(DeleteSampleFormData.class.getName());
+    .getLogger(DeleteSampleFormData.class.getName());
 
   private DataContext dataContext;
 
@@ -85,21 +85,24 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /** 掲示板,ブログの添付ファイルを保管するディレクトリの指定 */
   protected static final String FOLDER_FILEDIR = JetspeedResources.getString(
-      "aipo.filedir", "");
+    "aipo.filedir",
+    "");
 
   protected static final String FOLDER_MAILDIR = JetspeedResources.getString(
-      "aipo.mail.home", "");
+    "aipo.mail.home",
+    "");
 
   private String org_id;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
-   * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * 
+   * 
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -109,8 +112,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
+   * 
    */
   public void initField() {
 
@@ -118,34 +121,35 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /**
    * DeleteSampleの各フィールドに対する制約条件を設定します。 <BR>
-   *
-   * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
+   * 
+   * 
    */
+  @Override
   protected void setValidator() {
 
   }
 
   /**
    * DeleteSampleのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+   * 
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     return true;
   }
 
   /**
    * DeleteSampleをデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -153,14 +157,13 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /**
    * DeleteSampleをデータベースから削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -168,14 +171,13 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /**
    * DeleteSampleをデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -183,19 +185,18 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているDeleteSampleを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
 
       // 削除プログラム開始
 
@@ -227,8 +228,11 @@ public class DeleteSampleFormData extends ALAbstractFormData {
       if (ids != null && ids.size() > 0) {
         int size = ids.size();
         for (int i = 0; i < size; i++) {
-          fpaths.add(FOLDER_MAILDIR + File.separator + org_id + File.separator
-              + ((Integer) ids.get(i)).toString());
+          fpaths.add(FOLDER_MAILDIR
+            + File.separator
+            + org_id
+            + File.separator
+            + (ids.get(i)).toString());
         }
       }
 
@@ -323,8 +327,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     // }
 
     SelectQuery blogquery2 = new SelectQuery(EipTBlogFootmarkMap.class);
-    Expression blogexp2 = ExpressionFactory.inExp(
-        EipTBlogFootmarkMap.USER_ID_PROPERTY, ids);
+    Expression blogexp2 =
+      ExpressionFactory.inExp(EipTBlogFootmarkMap.USER_ID_PROPERTY, ids);
     blogquery2.setQualifier(blogexp2);
     List<?> bloglist2 = dataContext.performQuery(blogquery2);
     if (bloglist2 != null && bloglist2.size() > 0) {
@@ -332,8 +336,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     }
 
     SelectQuery blogquery3 = new SelectQuery(EipTBlogFile.class);
-    Expression blogexp3 = ExpressionFactory.inExp(
-        EipTBlogFile.OWNER_ID_PROPERTY, ids);
+    Expression blogexp3 =
+      ExpressionFactory.inExp(EipTBlogFile.OWNER_ID_PROPERTY, ids);
     blogquery3.setQualifier(blogexp3);
     List<?> Bloglist3 = dataContext.performQuery(blogquery3);
 
@@ -341,9 +345,12 @@ public class DeleteSampleFormData extends ALAbstractFormData {
       int size = Bloglist3.size();
       for (int i = 0; i < size; i++) {
         EipTBlogFile file = (EipTBlogFile) Bloglist3.get(i);
-        fpaths.add(getSaveDirPath(org_id, file.getOwnerId().intValue(),
-            FOLDER_FILEDIR, "blog")
-            + ((EipTBlogFile) Bloglist3.get(i)).getFilePath());
+        fpaths.add(getSaveDirPath(
+          org_id,
+          file.getOwnerId().intValue(),
+          FOLDER_FILEDIR,
+          "blog")
+          + ((EipTBlogFile) Bloglist3.get(i)).getFilePath());
       }
     }
 
@@ -352,8 +359,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     }
 
     SelectQuery blogquery4 = new SelectQuery(EipTBlogComment.class);
-    Expression blogexp4 = ExpressionFactory.inExp(
-        EipTBlogComment.OWNER_ID_PROPERTY, ids);
+    Expression blogexp4 =
+      ExpressionFactory.inExp(EipTBlogComment.OWNER_ID_PROPERTY, ids);
     blogquery4.setQualifier(blogexp4);
     List<?> bloglist4 = dataContext.performQuery(blogquery4);
     if (bloglist4 != null && bloglist4.size() > 0) {
@@ -361,8 +368,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     }
 
     SelectQuery Blogquery5 = new SelectQuery(EipTBlogEntry.class);
-    Expression blogexp5 = ExpressionFactory.inExp(
-        EipTBlogEntry.OWNER_ID_PROPERTY, ids);
+    Expression blogexp5 =
+      ExpressionFactory.inExp(EipTBlogEntry.OWNER_ID_PROPERTY, ids);
     Blogquery5.setQualifier(blogexp5);
     List<?> bloglist5 = dataContext.performQuery(Blogquery5);
     if (bloglist5 != null && bloglist5.size() > 0) {
@@ -370,8 +377,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     }
 
     SelectQuery blogquery6 = new SelectQuery(EipTBlog.class);
-    Expression blogexp6 = ExpressionFactory.inExp(EipTBlog.OWNER_ID_PROPERTY,
-        ids);
+    Expression blogexp6 =
+      ExpressionFactory.inExp(EipTBlog.OWNER_ID_PROPERTY, ids);
     blogquery6.setQualifier(blogexp6);
     List<?> bloglist6 = dataContext.performQuery(blogquery6);
     if (bloglist6 != null && bloglist6.size() > 0) {
@@ -382,8 +389,10 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   private void updateAddressbook(DataContext dataContext, List<Integer> ids) {
     SelectQuery addressquery1 = new SelectQuery(EipMAddressbookCompany.class);
-    Expression addressexp1 = ExpressionFactory.inExp(
-        EipMAddressbookCompany.CREATE_USER_ID_PROPERTY, ids);
+    Expression addressexp1 =
+      ExpressionFactory.inExp(
+        EipMAddressbookCompany.CREATE_USER_ID_PROPERTY,
+        ids);
     addressquery1.setQualifier(addressexp1);
     List<?> addresslist1 = dataContext.performQuery(addressquery1);
     if (addresslist1 != null && addresslist1.size() > 0) {
@@ -391,8 +400,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     }
 
     SelectQuery addressquery2 = new SelectQuery(EipMAddressbook.class);
-    Expression addressexp2 = ExpressionFactory.inExp(
-        EipMAddressbook.OWNER_ID_PROPERTY, ids);
+    Expression addressexp2 =
+      ExpressionFactory.inExp(EipMAddressbook.OWNER_ID_PROPERTY, ids);
     addressquery2.setQualifier(addressexp2);
     List<?> addresslist2 = dataContext.performQuery(addressquery2);
     if (addresslist2 != null && addresslist2.size() > 0) {
@@ -402,8 +411,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   private void updateMailaccount(DataContext dataContext, List<Integer> ids) {
     SelectQuery mailquery1 = new SelectQuery(EipMMailAccount.class);
-    Expression mailexp1 = ExpressionFactory.inExp(
-        EipMMailAccount.USER_ID_PROPERTY, ids);
+    Expression mailexp1 =
+      ExpressionFactory.inExp(EipMMailAccount.USER_ID_PROPERTY, ids);
     mailquery1.setQualifier(mailexp1);
     List<?> maillist1 = dataContext.performQuery(mailquery1);
     if (maillist1 != null && maillist1.size() > 0) {
@@ -443,8 +452,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   private void updateMail(DataContext dataContext, List<Integer> ids) {
     SelectQuery mailquery1 = new SelectQuery(EipTMail.class);
-    Expression mailexp1 = ExpressionFactory.inExp(EipTMail.USER_ID_PROPERTY,
-        ids);
+    Expression mailexp1 =
+      ExpressionFactory.inExp(EipTMail.USER_ID_PROPERTY, ids);
     mailquery1.setQualifier(mailexp1);
     List<?> maillist1 = dataContext.performQuery(mailquery1);
     if (maillist1 != null && maillist1.size() > 0) {
@@ -454,8 +463,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   private void updateMemo(DataContext dataContext, List<Integer> ids) {
     SelectQuery memoquery1 = new SelectQuery(EipTMemo.class);
-    Expression memoexp1 = ExpressionFactory.inExp(EipTMemo.OWNER_ID_PROPERTY,
-        ids);
+    Expression memoexp1 =
+      ExpressionFactory.inExp(EipTMemo.OWNER_ID_PROPERTY, ids);
     memoquery1.setQualifier(memoexp1);
     List<?> memolist1 = dataContext.performQuery(memoquery1);
     if (memolist1 != null && memolist1.size() > 0) {
@@ -484,24 +493,27 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     // }
 
     SelectQuery msgquery3 = new SelectQuery(EipTMsgboardFile.class);
-    Expression msgexp3 = ExpressionFactory.inExp(
-        EipTMsgboardFile.OWNER_ID_PROPERTY, ids);
+    Expression msgexp3 =
+      ExpressionFactory.inExp(EipTMsgboardFile.OWNER_ID_PROPERTY, ids);
     msgquery3.setQualifier(msgexp3);
     List<?> msglist3 = dataContext.performQuery(msgquery3);
     if (msglist3 != null && msglist3.size() > 0) {
       int size = msglist3.size();
       for (int i = 0; i < size; i++) {
         EipTMsgboardFile file = (EipTMsgboardFile) msglist3.get(i);
-        fpaths.add(getSaveDirPath(org_id, file.getOwnerId().intValue(),
-            FOLDER_FILEDIR, "msgboard")
-            + ((EipTMsgboardFile) msglist3.get(i)).getFilePath());
+        fpaths.add(getSaveDirPath(
+          org_id,
+          file.getOwnerId().intValue(),
+          FOLDER_FILEDIR,
+          "msgboard")
+          + ((EipTMsgboardFile) msglist3.get(i)).getFilePath());
       }
       dataContext.deleteObjects(msglist3);
     }
 
     SelectQuery msgquery4 = new SelectQuery(EipTMsgboardTopic.class);
-    Expression msgexp4 = ExpressionFactory.inExp(
-        EipTMsgboardTopic.OWNER_ID_PROPERTY, ids);
+    Expression msgexp4 =
+      ExpressionFactory.inExp(EipTMsgboardTopic.OWNER_ID_PROPERTY, ids);
     msgquery4.setQualifier(msgexp4);
     List<?> msglist4 = dataContext.performQuery(msgquery4);
     if (msglist4 != null && msglist4.size() > 0) {
@@ -512,8 +524,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   private void updateNote(DataContext dataContext, List<Integer> ids) {
     SelectQuery notequery1 = new SelectQuery(EipTNote.class);
-    Expression noteexp1 = ExpressionFactory.inExp(EipTNote.OWNER_ID_PROPERTY,
-        ids);
+    Expression noteexp1 =
+      ExpressionFactory.inExp(EipTNote.OWNER_ID_PROPERTY, ids);
     notequery1.setQualifier(noteexp1);
     List<?> notelist1 = dataContext.performQuery(notequery1);
     if (notelist1 != null && notelist1.size() > 0) {
@@ -521,8 +533,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     }
 
     SelectQuery notequery2 = new SelectQuery(EipTNoteMap.class);
-    Expression noteexp2 = ExpressionFactory.inExp(EipTNoteMap.USER_ID_PROPERTY,
-        ids);
+    Expression noteexp2 =
+      ExpressionFactory.inExp(EipTNoteMap.USER_ID_PROPERTY, ids);
     notequery2.setQualifier(noteexp2);
     List<?> notelist2 = dataContext.performQuery(notequery2);
     if (notelist2 != null && notelist2.size() > 0) {
@@ -532,8 +544,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   private void updateTimecard(DataContext dataContext, List<Integer> ids) {
     SelectQuery timecardquery1 = new SelectQuery(EipTTimecard.class);
-    Expression timecardexp1 = ExpressionFactory.inExp(
-        EipTTimecard.USER_ID_PROPERTY, ids);
+    Expression timecardexp1 =
+      ExpressionFactory.inExp(EipTTimecard.USER_ID_PROPERTY, ids);
     timecardquery1.setQualifier(timecardexp1);
     List<?> timecardlist1 = dataContext.performQuery(timecardquery1);
     if (timecardlist1 != null && timecardlist1.size() > 0) {
@@ -543,8 +555,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   private void updateTodo(DataContext dataContext, List<Integer> ids) {
     SelectQuery todoquery1 = new SelectQuery(EipTTodoCategory.class);
-    Expression todoexp1 = ExpressionFactory.inExp(
-        EipTTodoCategory.USER_ID_PROPERTY, ids);
+    Expression todoexp1 =
+      ExpressionFactory.inExp(EipTTodoCategory.USER_ID_PROPERTY, ids);
     todoquery1.setQualifier(todoexp1);
     List<?> todolist1 = dataContext.performQuery(todoquery1);
     if (todolist1 != null && todolist1.size() > 0) {
@@ -552,8 +564,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     }
 
     SelectQuery todoquery2 = new SelectQuery(EipTTodo.class);
-    Expression todoexp2 = ExpressionFactory.inExp(EipTTodo.USER_ID_PROPERTY,
-        ids);
+    Expression todoexp2 =
+      ExpressionFactory.inExp(EipTTodo.USER_ID_PROPERTY, ids);
     todoquery2.setQualifier(todoexp2);
     List<?> todolist2 = dataContext.performQuery(todoquery2);
     if (todolist2 != null && todolist2.size() > 0) {
@@ -563,8 +575,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   private void updateSchedule(DataContext dataContext, List<Integer> ids) {
     SelectQuery schedulequery1 = new SelectQuery(EipTSchedule.class);
-    Expression scheduleexp1 = ExpressionFactory.inExp(
-        EipTSchedule.OWNER_ID_PROPERTY, ids);
+    Expression scheduleexp1 =
+      ExpressionFactory.inExp(EipTSchedule.OWNER_ID_PROPERTY, ids);
     schedulequery1.setQualifier(scheduleexp1);
     List<?> schedulelist1 = dataContext.performQuery(schedulequery1);
     if (schedulelist1 != null && schedulelist1.size() > 0) {
@@ -572,8 +584,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     }
 
     SelectQuery schedulequery2 = new SelectQuery(EipTScheduleMap.class);
-    Expression scheduleexp2 = ExpressionFactory.inExp(
-        EipTScheduleMap.USER_ID_PROPERTY, ids);
+    Expression scheduleexp2 =
+      ExpressionFactory.inExp(EipTScheduleMap.USER_ID_PROPERTY, ids);
     schedulequery2.setQualifier(scheduleexp2);
     List<?> schedulelist2 = dataContext.performQuery(schedulequery2);
     if (schedulelist2 != null && schedulelist2.size() > 0) {
@@ -583,8 +595,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   private void updateWorkflow(DataContext dataContext, List<Integer> ids) {
     SelectQuery workquery1 = new SelectQuery(EipTWorkflowRequestMap.class);
-    Expression workexp1 = ExpressionFactory.inExp(
-        EipTWorkflowRequestMap.USER_ID_PROPERTY, ids);
+    Expression workexp1 =
+      ExpressionFactory.inExp(EipTWorkflowRequestMap.USER_ID_PROPERTY, ids);
     workquery1.setQualifier(workexp1);
     List<?> worklist1 = dataContext.performQuery(workquery1);
     if (worklist1 != null && worklist1.size() > 0) {
@@ -592,8 +604,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     }
 
     SelectQuery workquery2 = new SelectQuery(EipTWorkflowRequest.class);
-    Expression workexp2 = ExpressionFactory.inExp(
-        EipTWorkflowRequest.USER_ID_PROPERTY, ids);
+    Expression workexp2 =
+      ExpressionFactory.inExp(EipTWorkflowRequest.USER_ID_PROPERTY, ids);
     workquery2.setQualifier(workexp2);
     List<?> worklist2 = dataContext.performQuery(workquery2);
     if (worklist2 != null && worklist2.size() > 0) {
@@ -684,7 +696,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
       File file = null;
       int fsize = fpaths.size();
       for (int i = 0; i < fsize; i++) {
-        file = new File((String) fpaths.get(i));
+        file = new File(fpaths.get(i));
         if (file.exists()) {
           ALEipUtils.deleteFolder(file);
         }
@@ -694,15 +706,20 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /**
    * ユーザ毎のルート保存先（絶対パス）を取得します。
-   *
+   * 
    * @param uid
    * @return
    */
   public static String getSaveDirPath(String orgId, int uid, String filter,
       String type) {
     if (uid > 0) {
-      return filter + File.separator + orgId + File.separator + type
-          + File.separator + Integer.toString(uid);
+      return filter
+        + File.separator
+        + orgId
+        + File.separator
+        + type
+        + File.separator
+        + Integer.toString(uid);
     } else {
       return filter + File.separator + orgId + File.separator + type;
     }
@@ -710,8 +727,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   private void updateUserhidden(List<Integer> ids) {
 
-    Expression gexp = ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN,
-        ids);
+    Expression gexp =
+      ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, ids);
     SelectQuery gquery = new SelectQuery(TurbineUserGroupRole.class, gexp);
     List<?> map = dataContext.performQuery(gquery);
     if (map != null && map.size() > 0) {
@@ -719,8 +736,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     }
 
     SelectQuery tquery = new SelectQuery(TurbineUser.class);
-    Expression texp = ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN,
-        ids);
+    Expression texp =
+      ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, ids);
     tquery.setQualifier(texp);
     List<?> tusers = dataContext.performQuery(tquery);
     if (tusers != null && tusers.size() > 0) {

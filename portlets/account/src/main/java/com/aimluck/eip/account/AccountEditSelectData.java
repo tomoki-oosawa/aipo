@@ -47,8 +47,6 @@ public class AccountEditSelectData extends
    * @param rundata
    * @param context
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
   @Override
   protected ResultList<ALBaseUser> selectList(RunData rundata, Context context) {
@@ -59,8 +57,6 @@ public class AccountEditSelectData extends
    * @param rundata
    * @param context
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
   @Override
   protected ALBaseUser selectDetail(RunData rundata, Context context) {
@@ -69,9 +65,9 @@ public class AccountEditSelectData extends
   }
 
   /**
+   * 
    * @param obj
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
   @Override
   protected Object getResultData(ALBaseUser obj) {
@@ -79,9 +75,9 @@ public class AccountEditSelectData extends
   }
 
   /**
-   * @param obj
+   * 
+   * @param record
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
   @Override
   protected Object getResultDataDetail(ALBaseUser record) {
@@ -126,8 +122,8 @@ public class AccountEditSelectData extends
   }
 
   /**
+   * 
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
   @Override
   protected Attributes getColumnMap() {

@@ -57,17 +57,10 @@ public class ToDoAction extends ALBaseAction {
    * @param context
    * @param rundata
    * @throws Exception
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
-    // HttpServletRequest request = rundata.getRequest();
-    // StringBuffer sb = new StringBuffer();
-    // sb.append(request.getScheme()).append("://").append(request.getServerName())
-    // .append(":").append(request.getServerPort()).append("/").append(request.getRequestURI());
-    // String url = sb.toString();
 
     // セッション情報のクリア
     clearToDoSession(rundata, context);

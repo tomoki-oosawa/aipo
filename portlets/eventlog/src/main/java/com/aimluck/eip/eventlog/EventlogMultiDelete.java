@@ -35,39 +35,38 @@ import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
  * イベントログの複数削除を行うためのクラスです。 <BR>
- *
+ * 
  */
 public class EventlogMultiDelete extends ALAbstractCheckList {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(EventlogMultiDelete.class.getName());
+    .getLogger(EventlogMultiDelete.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param values
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractCheckList#action(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList,
-   *      java.util.ArrayList)
    */
+  @Override
   protected boolean action(RunData rundata, Context context,
       List<String> values, List<String> msgList) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
 
       SelectQuery query = new SelectQuery(EipTEventlog.class);
-      Expression exp = ExpressionFactory.inDbExp(
-          EipTEventlog.EVENTLOG_ID_PK_COLUMN, values);
+      Expression exp =
+        ExpressionFactory.inDbExp(EipTEventlog.EVENTLOG_ID_PK_COLUMN, values);
       query.setQualifier(exp);
 
       List<?> logs = dataContext.performQuery(query);
-      if (logs == null || logs.size() == 0)
+      if (logs == null || logs.size() == 0) {
         return false;
+      }
 
       // イベントログを削除
       dataContext.deleteObjects(logs);

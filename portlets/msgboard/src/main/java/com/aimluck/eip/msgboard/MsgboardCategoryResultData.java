@@ -59,7 +59,7 @@ public class MsgboardCategoryResultData implements ALData {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     category_id = new ALNumberField();

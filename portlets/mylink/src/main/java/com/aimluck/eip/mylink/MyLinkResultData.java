@@ -36,7 +36,7 @@ public class MyLinkResultData implements ALData {
   /**
    * フィールドを初期化します。<BR>
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     title = new ALStringField();

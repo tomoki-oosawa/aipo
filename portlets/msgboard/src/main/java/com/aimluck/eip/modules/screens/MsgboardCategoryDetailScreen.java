@@ -28,7 +28,7 @@ import com.aimluck.eip.msgboard.MsgboardCategorySelectData;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 掲示板カテゴリの詳細画面を処理するクラスです。 <br />
+ * 掲示板カテゴリの詳細画面を処理するクラスです。
  * 
  */
 public class MsgboardCategoryDetailScreen extends ALVelocityScreen {
@@ -38,7 +38,10 @@ public class MsgboardCategoryDetailScreen extends ALVelocityScreen {
     .getLogger(MsgboardCategoryDetailScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {

@@ -57,7 +57,8 @@ public class CellBlogAction extends BlogAction {
   private final String RESULT_ON_COMMENT_DETAIL = "resultOnCommentDetail";
 
   /** 返信用エラーメッセージキー */
-  private final String ERROR_MESSAGE_LIST_ON_COMMENT_DETAIL = "errmsgsOnCommentDetail";
+  private final String ERROR_MESSAGE_LIST_ON_COMMENT_DETAIL =
+    "errmsgsOnCommentDetail";
 
   /** 返信用 result */
   private Object resultOnCommentDetail;
@@ -72,8 +73,6 @@ public class CellBlogAction extends BlogAction {
    * @param context
    * @param rundata
    * @throws Exception
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
@@ -240,23 +239,30 @@ public class CellBlogAction extends BlogAction {
     } else {
       userid = Integer.parseInt(rundata.getParameters().getString("view_uid"));
     }
-    context.put("view_uid", ALEipUtils.getALEipUser(userid).getUserId()
+    context.put("view_uid", ALEipUtils
+      .getALEipUser(userid)
+      .getUserId()
       .toString());
-    context.put("view_title", ALEipUtils.getALEipUser(userid).getAliasName()
+    context.put("view_title", ALEipUtils
+      .getALEipUser(userid)
+      .getAliasName()
       .toString()
       + "のﾌﾞﾛｸﾞ");
 
     // ユーザー一覧を得る
     List list = new ArrayList();
     SelectQuery query = new SelectQuery(TurbineUser.class);
-    Expression exp1 = ExpressionFactory.noMatchDbExp(
-      TurbineUser.USER_ID_PK_COLUMN, Integer.toString(1));
-    Expression exp2 = ExpressionFactory.noMatchDbExp(
-      TurbineUser.USER_ID_PK_COLUMN, Integer.toString(2));
-    Expression exp3 = ExpressionFactory.noMatchDbExp(
-      TurbineUser.USER_ID_PK_COLUMN, Integer.toString(3));
-    Expression exp11 = ExpressionFactory.matchExp(
-      TurbineUser.DISABLED_PROPERTY, "F");
+    Expression exp1 =
+      ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+        .toString(1));
+    Expression exp2 =
+      ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+        .toString(2));
+    Expression exp3 =
+      ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+        .toString(3));
+    Expression exp11 =
+      ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
     query.setQualifier(exp1.andExp(exp2.andExp(exp3.andExp(exp11))));
     list = ALEipUtils.getUsersFromSelectQuery(query);
     context.put("users", list);
@@ -268,9 +274,11 @@ public class CellBlogAction extends BlogAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-      .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-        "p1b-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1b-rows")));
+    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
       context).getPortletConfig().getInitParameter("p3a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "blog-entry-list-user");
@@ -291,9 +299,11 @@ public class CellBlogAction extends BlogAction {
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-      .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-        "p1b-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1b-rows")));
+    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
       context).getPortletConfig().getInitParameter("p3a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "blog-entry-list");
@@ -357,7 +367,8 @@ public class CellBlogAction extends BlogAction {
     formData.initField();
     if (formData.doInsert(this, rundata, context)) {
       // データ登録が成功したとき
-      rundata.getParameters().setString("entityid",
+      rundata.getParameters().setString(
+        "entityid",
         rundata.getParameters().get("entryid"));
       doBlog_entry_detail(rundata, context);
 
@@ -565,9 +576,11 @@ public class CellBlogAction extends BlogAction {
     listData.initField();
     // PSMLからパラメータをロードする
     // 最大表示件数（通常時）
-    listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
+    listData.setRowsNum(Integer.parseInt(portlet
+      .getPortletConfig()
       .getInitParameter("p1c-rows")));
-    listData.setStrLength(Integer.parseInt(portlet.getPortletConfig()
+    listData.setStrLength(Integer.parseInt(portlet
+      .getPortletConfig()
       .getInitParameter("p4a-strlen")));
 
     listData.doViewList(this, rundata, context);

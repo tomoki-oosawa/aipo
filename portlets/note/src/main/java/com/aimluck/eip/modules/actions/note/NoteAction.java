@@ -38,7 +38,7 @@ import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 伝言メモの取り扱いに関するアクションクラスです。 <br />
+ * 伝言メモの取り扱いに関するアクションクラスです。 
  */
 public class NoteAction extends ALBaseAction {
 
@@ -47,8 +47,11 @@ public class NoteAction extends ALBaseAction {
     .getLogger(NoteAction.class.getName());
 
   /**
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
+   * 
+   * @param portlet
+   * @param context
+   * @param rundata
+   * @throws Exception
    */
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
@@ -70,7 +73,6 @@ public class NoteAction extends ALBaseAction {
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
 
-    // MODEを取得
     String mode = rundata.getParameters().getString(ALEipConstants.MODE);
 
     try {
@@ -89,23 +91,28 @@ public class NoteAction extends ALBaseAction {
     }
   }
 
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
   public void doNote_normal(RunData rundata, Context context) throws Exception {
-    // ALEipUtils.setTemp(rundata, context, "tab", "received_notes");
     VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
     NoteClientSelectData listData = new NoteClientSelectData();
     listData.initField();
-    // PSMLからパラメータをロードする
-    // 最大表示件数（通常時）
-    listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
+    listData.setRowsNum(Integer.parseInt(portlet
+      .getPortletConfig()
       .getInitParameter("p1a-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
+    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
       context).getPortletConfig().getInitParameter("p3a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "note");
   }
 
   /**
-   * 新規に伝言メモを作成するページを表示する．
+   * 新規に伝言メモを作成するページを表示する。
    * 
    * @param rundata
    * @param context
@@ -121,6 +128,12 @@ public class NoteAction extends ALBaseAction {
     setTemplate(rundata, "note-form");
   }
 
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
   public void doNote_insert(RunData rundata, Context context) throws Exception {
 
     NoteFormData formData = new NoteFormData();
@@ -130,23 +143,13 @@ public class NoteAction extends ALBaseAction {
       context.put("msg_type", "" + msgType);
       ALEipUtils.setTemp(rundata, context, "tab", "sent_notes");
       doNote_list(rundata, context);
-      // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      // rundata.setRedirectURI(
-      // jsLink
-      // .getPortletById(ALEipUtils.getPortlet(rundata, context).getID())
-      // .addQueryData("eventSubmit_doNote_list2", "1")
-      // .addQueryData("tab", "sent_notes")
-      // .addQueryData("msg_type", msgType)
-      // .toString());
-      // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-      // jsLink = null;
     } else {
       setTemplate(rundata, "note-form");
     }
   }
 
   /**
-   * 伝言メモを一覧表示します。 <BR>
+   * 伝言メモを一覧表示します。
    * 
    * @param rundata
    * @param context
@@ -156,19 +159,19 @@ public class NoteAction extends ALBaseAction {
     ALEipUtils.removeTemp(rundata, context, NoteUtils.TARGET_USER_ID);
     NoteSelectData listData = new NoteSelectData();
     listData.initField();
-    // PSMLからパラメータをロードする
-    // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-      .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-        "p1b-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1b-rows")));
+    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
       context).getPortletConfig().getInitParameter("p3a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "note-list");
   }
 
   /**
-   * 伝言メモを一覧表示します。 <BR>
+   * 伝言メモを一覧表示します。
    * 
    * @param rundata
    * @param context
@@ -189,7 +192,7 @@ public class NoteAction extends ALBaseAction {
   }
 
   /**
-   * 伝言メモを削除する（単数）． <BR>
+   * 伝言メモを削除する（単数）。
    * 
    * @param rundata
    * @param context
@@ -200,21 +203,13 @@ public class NoteAction extends ALBaseAction {
     formData.initField();
     if (formData.doDelete(this, rundata, context)) {
       doNote_list(rundata, context);
-      // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      // rundata.setRedirectURI(
-      // jsLink
-      // .getPortletById(ALEipUtils.getPortlet(rundata, context).getID())
-      // .addQueryData("eventSubmit_doNote_list", "1")
-      // .toString());
-      // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-      // jsLink = null;
     } else {
       setTemplate(rundata, "note-detail");
     }
   }
 
   /**
-   * 伝言メモを削除する（複数）． <BR>
+   * 伝言メモを削除する（複数）。
    * 
    * @param rundata
    * @param context
@@ -225,19 +220,13 @@ public class NoteAction extends ALBaseAction {
     NoteMultiDelete delete = new NoteMultiDelete();
     if (delete.doMultiAction(this, rundata, context)) {
       doNote_list(rundata, context);
-      // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      // rundata.setRedirectURI(jsLink.getPortletById(
-      // ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-      // "eventSubmit_doNote_list", "1").toString());
-      // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-      // jsLink = null;
     } else {
       setTemplate(rundata, "note-list");
     }
   }
 
   /**
-   * ノーマル画面の伝言メモを既読にする（複数）． <BR>
+   * ノーマル画面の伝言メモを既読にする（複数）。
    * 
    * @param rundata
    * @param context
@@ -251,7 +240,7 @@ public class NoteAction extends ALBaseAction {
   }
 
   /**
-   * 最大化画面の伝言メモを既読にする（複数）． <BR>
+   * 最大化画面の伝言メモを既読にする（複数）。
    * 
    * @param rundata
    * @param context
@@ -264,6 +253,11 @@ public class NoteAction extends ALBaseAction {
     doNote_list(rundata, context);
   }
 
+  /**
+   * 
+   * @param rundata
+   * @param context
+   */
   private void clearNoteSession(RunData rundata, Context context) {
     List<String> list = new ArrayList<String>();
     list.add("target_user_id");

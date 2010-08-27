@@ -30,7 +30,7 @@ import com.aimluck.eip.msgboard.MsgboardTopicFormData;
 import com.aimluck.eip.msgboard.MsgboardTopicMultiDelete;
 
 /**
- * 掲示板トピックの一覧を処理するクラスです。 <br />
+ * 掲示板トピックの一覧を処理するクラスです。 
  * 
  */
 

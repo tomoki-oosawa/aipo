@@ -45,7 +45,7 @@ public class WebMailFolderResultData implements ALData {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     folder_id = new ALNumberField();

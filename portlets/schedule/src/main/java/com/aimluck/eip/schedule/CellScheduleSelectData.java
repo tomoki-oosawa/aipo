@@ -47,12 +47,13 @@ public class CellScheduleSelectData extends ScheduleSelectData {
 
   protected String entityid;
 
-  // private ALDateTimeField view_date;
-
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected EipTSchedule selectDetail(RunData rundata, Context context)

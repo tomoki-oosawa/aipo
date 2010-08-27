@@ -35,38 +35,37 @@ import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
  * ロールの複数削除を行うためのクラスです。 <BR>
- *
+ * 
  */
 public class AccessControlMultiDelete extends ALAbstractCheckList {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AccessControlMultiDelete.class.getName());
+    .getLogger(AccessControlMultiDelete.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param values
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractCheckList#action(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList,
-   *      java.util.ArrayList)
    */
+  @Override
   protected boolean action(RunData rundata, Context context,
       List<String> values, List<String> msgList) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
 
       SelectQuery query = new SelectQuery(EipTAclRole.class);
-      Expression exp = ExpressionFactory.inDbExp(EipTAclRole.ROLE_ID_PK_COLUMN,
-          values);
+      Expression exp =
+        ExpressionFactory.inDbExp(EipTAclRole.ROLE_ID_PK_COLUMN, values);
       query.setQualifier(exp);
       List<?> roles = dataContext.performQuery(query);
-      if (roles == null || roles.size() == 0)
+      if (roles == null || roles.size() == 0) {
         return false;
+      }
 
       // オブジェクトを削除（Cayenneのカスケード設定でEipTAclUserRoleMapも同時に削除）
       dataContext.deleteObjects(roles);

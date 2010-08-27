@@ -30,25 +30,24 @@ import com.aimluck.eip.modules.actions.common.ALBaseAction;
 
 /**
  * サンプルデータ削除のアクションクラスです。 <BR>
- *
+ * 
  */
 public class DeleteSampleAction extends ALBaseAction {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(DeleteSampleAction.class.getName());
+    .getLogger(DeleteSampleAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
    * @throws Exception
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
 
@@ -60,12 +59,12 @@ public class DeleteSampleAction extends ALBaseAction {
     }
     // For security
     context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(
-        ALEipConstants.SECURE_ID));
+      ALEipConstants.SECURE_ID));
   }
 
   /**
    * DeleteSample登録のフォームを表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception

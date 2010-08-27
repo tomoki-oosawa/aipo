@@ -72,7 +72,6 @@ public class WebmailAccountLiteBean implements ALData, Cloneable {
 
   @Override
   protected Object clone() throws CloneNotSupportedException {
-    // TODO 自動生成されたメソッド・スタブ
     return super.clone();
   }
 

@@ -98,7 +98,7 @@ public class ScheduleResultData implements ALData, Cloneable {
   private ALStringField common_category_name;
 
   /*
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     name = new ALStringField();
@@ -416,8 +416,9 @@ public class ScheduleResultData implements ALData, Cloneable {
     is_dummy = bool;
   }
 
-  /*
-   * @see java.lang.Object#clone()
+  /**
+   * 
+   * @return
    */
   @Override
   public Object clone() {

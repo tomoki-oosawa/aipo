@@ -60,7 +60,7 @@ public class EventlogResultData implements ALData {
 
   /**
    *
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     eventlog_id = new ALNumberField();

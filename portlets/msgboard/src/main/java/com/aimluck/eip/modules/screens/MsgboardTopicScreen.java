@@ -39,7 +39,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 掲示板トピックの一覧を処理するクラスです。 <br />
+ * 掲示板トピックの一覧を処理するクラスです。
  * 
  */
 public class MsgboardTopicScreen extends ALVelocityScreen {
@@ -49,7 +49,10 @@ public class MsgboardTopicScreen extends ALVelocityScreen {
     .getLogger(MsgboardTopicScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
@@ -104,7 +107,6 @@ public class MsgboardTopicScreen extends ALVelocityScreen {
     if (rundata.getParameters().containsKey("entityid")) {
       eid.setValue(rundata.getParameters().getString("entityid"));
     } else {
-      // TODO エラーページへリダイレクト or ページ変更
       return;
     }
 
@@ -114,7 +116,6 @@ public class MsgboardTopicScreen extends ALVelocityScreen {
       (value % 10 == 0 && state.validate(msgList) && eid.validate(msgList));
 
     if (!isValid) {
-      // TODO エラーページへリダイレクト or ページ変更
       return;
     }
 

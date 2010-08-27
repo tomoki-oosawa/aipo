@@ -38,7 +38,7 @@ import com.aimluck.eip.util.ALEipUtils;
 public class SystemManagerAction extends ALBaseAction {
 
   /**
-   * Static initialization of the logger for this class
+   *
    */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -46,8 +46,10 @@ public class SystemManagerAction extends ALBaseAction {
 
   /**
    * 
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
+   * @param portlet
+   * @param context
+   * @param rundata
+   * @throws Exception
    */
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
@@ -58,7 +60,7 @@ public class SystemManagerAction extends ALBaseAction {
   }
 
   /**
-   * ネットワーク情報を表示する． <BR>
+   * ネットワーク情報を表示する
    * 
    * @param rundata
    * @param context
@@ -75,7 +77,7 @@ public class SystemManagerAction extends ALBaseAction {
   }
 
   /**
-   * ネットワーク情報を登録するフォームを表示する． <BR>
+   * ネットワーク情報を登録するフォームを表示する
    * 
    * @param rundata
    * @param context
@@ -94,7 +96,7 @@ public class SystemManagerAction extends ALBaseAction {
   }
 
   /**
-   * ネットワーク情報を更新する． <BR>
+   * ネットワーク情報を更新する
    * 
    * @param rundata
    * @param context
@@ -106,19 +108,13 @@ public class SystemManagerAction extends ALBaseAction {
     formData.initField();
     if (formData.doUpdate(this, rundata, context)) {
       doSystem_info_network(rundata, context);
-      // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      // rundata.setRedirectURI(jsLink.getPortletById(
-      // ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-      // "eventSubmit_doSystem_info_network", "1").toString());
-      // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-      // jsLink = null;
     } else {
       setTemplate(rundata, "system-form-network");
     }
   }
 
   /**
-   * バージョン情報を表示する． <BR>
+   * バージョン情報を表示する
    * 
    * @param rundata
    * @param context

@@ -23,7 +23,7 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
 
 /**
- * 伝言メモの送信先に指定できるグループのResultDataです。 <br />
+ * 伝言メモの送信先に指定できるグループのResultDataです。
  */
 public class NoteGroupResultData implements ALData {
 
@@ -51,7 +51,7 @@ public class NoteGroupResultData implements ALData {
   private String new_note_image_description = null;
 
   /**
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     user_id = new ALNumberField();
@@ -104,26 +104,34 @@ public class NoteGroupResultData implements ALData {
     user_name.setValue(field);
   }
 
+  /**
+   * 
+   * @return
+   */
   public ALNumberField getUnreadReceivedNoteCount() {
     return unreadReceivedNoteCount;
   }
 
+  /**
+   * 
+   * @param field
+   */
   public void setUnreadReceivedNoteCount(int field) {
     unreadReceivedNoteCount.setValue(field);
   }
 
-  // public ALNumberField getUnreadSentNoteCount(){
-  // return unreadSentNoteCount;
-  // }
-  //
-  // public void setUnreadSentNoteCount(int field){
-  // unreadSentNoteCount.setValue(field);
-  // }
-
+  /**
+   * 
+   * @return
+   */
   public ALStringField getNewNoteStat() {
     return new_note_stat;
   }
 
+  /**
+   * 
+   * @param value
+   */
   public void setNewNoteStat(String value) {
     new_note_stat.setValue(value);
   }
@@ -146,10 +154,18 @@ public class NoteGroupResultData implements ALData {
     return new_note_image_path;
   }
 
+  /**
+   * 
+   * @param newNoteImageDescription
+   */
   public void setNewNoteImageDescription(String newNoteImageDescription) {
     this.new_note_image_description = newNoteImageDescription;
   }
 
+  /**
+   * 
+   * @return
+   */
   public String getNewNoteImageDescription() {
     return new_note_image_description;
   }

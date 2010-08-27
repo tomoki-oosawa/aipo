@@ -27,7 +27,7 @@ import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.util.ALCommonUtils;
 
 /**
- * 伝言メモ依頼者のResultDataです。 <br />
+ * 伝言メモ依頼者のResultDataです。
  */
 public class NoteClientResultData {
 
@@ -53,8 +53,7 @@ public class NoteClientResultData {
   private String note_stat_image_description = null;
 
   /**
-   * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     note_id = new ALNumberField();
@@ -123,10 +122,18 @@ public class NoteClientResultData {
     subject.setValue(field);
   }
 
+  /**
+   * 
+   * @return
+   */
   public ALStringField getNoteStat() {
     return note_stat;
   }
 
+  /**
+   * 
+   * @param value
+   */
   public void setNoteStat(String value) {
     note_stat.setValue(value);
   }
@@ -149,10 +156,18 @@ public class NoteClientResultData {
     return note_stat_image_path;
   }
 
+  /**
+   * 
+   * @param noteStatImageDescription
+   */
   public void setNoteStatImageDescription(String noteStatImageDescription) {
     this.note_stat_image_description = noteStatImageDescription;
   }
 
+  /**
+   * 
+   * @return
+   */
   public String getNoteStatImageDescription() {
     return note_stat_image_description;
   }

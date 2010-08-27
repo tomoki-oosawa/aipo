@@ -27,7 +27,7 @@ import com.aimluck.eip.timecard.TimecardSelectData;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * タイムカードの一覧を処理するクラスです。 <br />
+ * タイムカードの一覧を処理するクラスです。
  * 
  */
 public class TimecardListScreen extends TimecardScreen {
@@ -37,7 +37,10 @@ public class TimecardListScreen extends TimecardScreen {
     .getLogger(TimecardListScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {

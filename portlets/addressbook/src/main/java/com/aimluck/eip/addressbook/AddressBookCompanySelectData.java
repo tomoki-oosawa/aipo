@@ -56,8 +56,12 @@ public class AddressBookCompanySelectData extends ALAbstractSelectData {
   private String index;
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -72,8 +76,10 @@ public class AddressBookCompanySelectData extends ALAbstractSelectData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected ResultList<?> selectList(RunData rundata, Context context) {
@@ -90,8 +96,10 @@ public class AddressBookCompanySelectData extends ALAbstractSelectData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected Object selectDetail(RunData rundata, Context context) {
@@ -122,7 +130,9 @@ public class AddressBookCompanySelectData extends ALAbstractSelectData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   * 
+   * @param obj
+   * @return
    */
   @Override
   protected Object getResultData(Object obj) {
@@ -153,7 +163,9 @@ public class AddressBookCompanySelectData extends ALAbstractSelectData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   * 
+   * @param obj
+   * @return
    */
   @Override
   protected Object getResultDataDetail(Object obj) {
@@ -181,7 +193,8 @@ public class AddressBookCompanySelectData extends ALAbstractSelectData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   * 
+   * @return
    */
   @Override
   protected Attributes getColumnMap() {
@@ -193,7 +206,7 @@ public class AddressBookCompanySelectData extends ALAbstractSelectData {
   }
 
   /**
-   * 検索条件を設定した SelectQuery を返します。 <BR>
+   * 検索条件を設定した SelectQuery を返します。
    * 
    * @param rundata
    * @param context
@@ -247,10 +260,6 @@ public class AddressBookCompanySelectData extends ALAbstractSelectData {
   public String getIndex() {
     return index;
   }
-
-  // ***************************************************************************
-  // privateメソッド
-  // ***************************************************************************
 
   /**
    * インデックス検索のためのユニコードマッピングによる条件文の追加。
@@ -344,8 +353,7 @@ public class AddressBookCompanySelectData extends ALAbstractSelectData {
   }
 
   /**
-   * アクセス権限チェック用メソッド。<br />
-   * アクセス権限の機能名を返します。
+   * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
    * 
    * @return
    */

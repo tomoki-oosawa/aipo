@@ -31,7 +31,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.timecard.util.TimecardUtils;
 
 /**
- * タイムカードのResultDataです。 <BR>
+ * タイムカードのResultDataです。
  * 
  */
 public class TimecardListResultData implements ALData {
@@ -41,8 +41,7 @@ public class TimecardListResultData implements ALData {
   private List<TimecardResultData> list = null;
 
   /**
-   * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     date = new ALDateField();

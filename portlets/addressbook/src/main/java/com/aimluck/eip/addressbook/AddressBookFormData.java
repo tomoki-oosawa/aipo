@@ -56,11 +56,11 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレス帳用入力フォームデータです。
- *
+ * 
  */
 public class AddressBookFormData extends ALAbstractFormData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AddressBookFormData.class.getName());
+    .getLogger(AddressBookFormData.class.getName());
 
   // 所有グループのリスト
   private List<AddressBookGroupResultData> groupList;
@@ -147,6 +147,7 @@ public class AddressBookFormData extends ALAbstractFormData {
 
   private DataContext dataContext;
 
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -262,26 +263,26 @@ public class AddressBookFormData extends ALAbstractFormData {
 
   /**
    * 自分がオーナーのグループを取得する。
-   *
+   * 
    * @param rundata
    * @param context
    */
   public void loadGroupList(RunData rundata, Context context) {
     groupList = new ArrayList<AddressBookGroupResultData>();
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       SelectQuery query = new SelectQuery(EipMAddressGroup.class);
-      Expression exp = ExpressionFactory.matchExp(
-          EipMAddressGroup.OWNER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-              .getUserId(rundata)));
+      Expression exp =
+        ExpressionFactory.matchExp(EipMAddressGroup.OWNER_ID_PROPERTY, Integer
+          .valueOf(ALEipUtils.getUserId(rundata)));
       query.setQualifier(exp);
 
       @SuppressWarnings("unchecked")
       List<EipMAddressGroup> aList = dataContext.performQuery(query);
       int size = aList.size();
       for (int i = 0; i < size; i++) {
-        EipMAddressGroup record = (EipMAddressGroup) aList.get(i);
+        EipMAddressGroup record = aList.get(i);
         AddressBookGroupResultData rd = new AddressBookGroupResultData();
         rd.initField();
         rd.setGroupId(record.getGroupId().intValue());
@@ -296,31 +297,34 @@ public class AddressBookFormData extends ALAbstractFormData {
 
   /**
    * 指定アドレスのグループを取得する。
-   *
+   * 
    * @param rundata
    * @param context
    */
   public void loadGroups(RunData rundata, Context context) {
     try {
-      String addressid = ALEipUtils.getTemp(rundata, context,
-          ALEipConstants.ENTITY_ID);
+      String addressid =
+        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
       if (addressid == null || "".equals(addressid)) {
         return;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       SelectQuery query = new SelectQuery(EipTAddressbookGroupMap.class);
-      Expression exp1 = ExpressionFactory.matchExp(
-          EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY + "."
-              + EipMAddressGroup.OWNER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-              .getUserId(rundata)));
+      Expression exp1 =
+        ExpressionFactory.matchExp(
+          EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY
+            + "."
+            + EipMAddressGroup.OWNER_ID_PROPERTY,
+          Integer.valueOf(ALEipUtils.getUserId(rundata)));
       query.setQualifier(exp1);
 
-      Expression exp2 = ExpressionFactory.matchExp(
-          EipTAddressbookGroupMap.ADDRESS_ID_PROPERTY, Integer
-              .valueOf(addressid));
+      Expression exp2 =
+        ExpressionFactory.matchExp(
+          EipTAddressbookGroupMap.ADDRESS_ID_PROPERTY,
+          Integer.valueOf(addressid));
       query.andQualifier(exp2);
 
       query.setDistinct(true);
@@ -344,15 +348,17 @@ public class AddressBookFormData extends ALAbstractFormData {
   public void loadCompanyList(RunData rundata, Context context) {
     companyList = new ArrayList<AddressBookCompanyResultData>();
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       SelectQuery query = new SelectQuery(EipMAddressbookCompany.class);
 
       //
       // Expression exp01 = ExpressionFactory.noMatchExp(
       // EipMAddressbookCompany.CREATE_USER_ID_PROPERTY, Integer.valueOf(1));
-      Expression exp02 = ExpressionFactory.noMatchExp(
-          EipMAddressbookCompany.COMPANY_NAME_PROPERTY, AddressBookUtils.EMPTY_COMPANY_NAME);
+      Expression exp02 =
+        ExpressionFactory.noMatchExp(
+          EipMAddressbookCompany.COMPANY_NAME_PROPERTY,
+          AddressBookUtils.EMPTY_COMPANY_NAME);
       query.setQualifier(exp02);
 
       @SuppressWarnings("unchecked")
@@ -372,6 +378,7 @@ public class AddressBookFormData extends ALAbstractFormData {
     }
   }
 
+  @Override
   protected void setValidator() {
     lastname.setNotNull(true);
     lastname.limitMaxLength(50);
@@ -443,6 +450,7 @@ public class AddressBookFormData extends ALAbstractFormData {
     }
   }
 
+  @Override
   protected boolean validate(List<String> msgList) {
     List<String> dummy = new ArrayList<String>();
     lastname.validate(msgList);
@@ -450,33 +458,36 @@ public class AddressBookFormData extends ALAbstractFormData {
 
     // フリガナのカタカナへの変換
     last_name_kana.setValue(ALStringUtil.convertHiragana2Katakana(ALStringUtil
-        .convertH2ZKana(last_name_kana.toString())));
+      .convertH2ZKana(last_name_kana.toString())));
     first_name_kana.setValue(ALStringUtil.convertHiragana2Katakana(ALStringUtil
-        .convertH2ZKana(first_name_kana.toString())));
+      .convertH2ZKana(first_name_kana.toString())));
     last_name_kana.validate(msgList);
     first_name_kana.validate(msgList);
 
     // メールアドレス
     email.validate(msgList);
     if (email.getValue().trim().length() > 0
-        && !ALStringUtil.isMailAddress(email.getValue())) {
+      && !ALStringUtil.isMailAddress(email.getValue())) {
       msgList.add("『 <span class='em'>メールアドレス</span> 』を正しく入力してください。");
     }
 
     // 電話
-    if (!telephone1.getValue().equals("") || !telephone2.getValue().equals("")
-        || !telephone3.getValue().equals("")) {
-      if (!telephone1.validate(dummy) || !telephone2.validate(dummy)
-          || !telephone3.validate(dummy)) {
+    if (!telephone1.getValue().equals("")
+      || !telephone2.getValue().equals("")
+      || !telephone3.getValue().equals("")) {
+      if (!telephone1.validate(dummy)
+        || !telephone2.validate(dummy)
+        || !telephone3.validate(dummy)) {
         msgList.add("『 <span class='em'>電話番号</span> 』を正しく入力してください。");
       }
     }
     // 携帯電話
     if (!cellular_phone1.getValue().equals("")
-        || !cellular_phone2.getValue().equals("")
-        || !cellular_phone3.getValue().equals("")) {
-      if (!cellular_phone1.validate(dummy) || !cellular_phone2.validate(dummy)
-          || !cellular_phone3.validate(dummy)) {
+      || !cellular_phone2.getValue().equals("")
+      || !cellular_phone3.getValue().equals("")) {
+      if (!cellular_phone1.validate(dummy)
+        || !cellular_phone2.validate(dummy)
+        || !cellular_phone3.validate(dummy)) {
         msgList.add("『 <span class='em'>電話番号（携帯）</span> 』を正しく入力してください。");
       }
     }
@@ -484,7 +495,7 @@ public class AddressBookFormData extends ALAbstractFormData {
     // 携帯メールアドレス
     cellular_mail.validate(msgList);
     if (cellular_mail.getValue().trim().length() > 0
-        && !ALStringUtil.isCellPhoneMailAddress(cellular_mail.getValue())) {
+      && !ALStringUtil.isCellPhoneMailAddress(cellular_mail.getValue())) {
       msgList.add("『 <span class='em'>携帯メールアドレス</span> 』を正しく入力してください。");
     }
 
@@ -495,14 +506,14 @@ public class AddressBookFormData extends ALAbstractFormData {
       company_name.validate(msgList);
       // 会社名フリガナのカタカナへの変換
       company_name_kana.setValue(ALStringUtil
-          .convertHiragana2Katakana(ALStringUtil
-              .convertH2ZKana(company_name_kana.toString())));
+        .convertHiragana2Katakana(ALStringUtil.convertH2ZKana(company_name_kana
+          .toString())));
       company_name_kana.validate(msgList);
 
       post_name.validate(msgList);
       // 会社郵便番号
       if (!comp_zipcode1.getValue().equals("")
-          || !comp_zipcode2.getValue().equals("")) {
+        || !comp_zipcode2.getValue().equals("")) {
         if (!comp_zipcode1.validate(dummy) || !comp_zipcode2.validate(dummy)) {
           msgList.add("『 <span class='em'>郵便番号（会社）</span> 』を正しく入力してください。");
         }
@@ -510,21 +521,21 @@ public class AddressBookFormData extends ALAbstractFormData {
       comp_address.validate(msgList);
       // 会社電話番号
       if (!comp_telephone1.getValue().equals("")
-          || !comp_telephone2.getValue().equals("")
-          || !comp_telephone3.getValue().equals("")) {
+        || !comp_telephone2.getValue().equals("")
+        || !comp_telephone3.getValue().equals("")) {
         if (!comp_telephone1.validate(dummy)
-            || !comp_telephone2.validate(dummy)
-            || !comp_telephone3.validate(dummy)) {
+          || !comp_telephone2.validate(dummy)
+          || !comp_telephone3.validate(dummy)) {
           msgList.add("『 <span class='em'>電話番号（会社）</span> 』を正しく入力してください。");
         }
       }
       // 携帯電話
       if (!comp_fax_number1.getValue().equals("")
-          || !comp_fax_number2.getValue().equals("")
-          || !comp_fax_number3.getValue().equals("")) {
+        || !comp_fax_number2.getValue().equals("")
+        || !comp_fax_number3.getValue().equals("")) {
         if (!comp_fax_number1.validate(dummy)
-            || !comp_fax_number2.validate(dummy)
-            || !comp_fax_number3.validate(dummy)) {
+          || !comp_fax_number2.validate(dummy)
+          || !comp_fax_number3.validate(dummy)) {
           msgList.add("『 <span class='em'>FAX番号（会社）</span> 』を正しく入力してください。");
         }
       }
@@ -534,18 +545,20 @@ public class AddressBookFormData extends ALAbstractFormData {
     return msgList.size() == 0;
   }
 
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipMAddressbook address = AddressBookUtils.getEipMAddressbook(rundata,
-          context);
-      if (address == null)
+      EipMAddressbook address =
+        AddressBookUtils.getEipMAddressbook(rundata, context);
+      if (address == null) {
         return false;
+      }
 
       // 登録ユーザ名の設定
-      ALEipUser createdUser = ALEipUtils.getALEipUser(address.getCreateUserId()
-          .intValue());
+      ALEipUser createdUser =
+        ALEipUtils.getALEipUser(address.getCreateUserId().intValue());
       String createdUserName = createdUser.getAliasName().getValue();
       create_user.setValue(createdUserName);
 
@@ -554,14 +567,16 @@ public class AddressBookFormData extends ALAbstractFormData {
       if (address.getCreateUserId().equals(address.getUpdateUserId())) {
         updatedUserName = createdUserName;
       } else {
-        ALEipUser updatedUser = ALEipUtils.getALEipUser(address
-            .getUpdateUserId().intValue());
+        ALEipUser updatedUser =
+          ALEipUtils.getALEipUser(address.getUpdateUserId().intValue());
         updatedUserName = updatedUser.getAliasName().getValue();
       }
       update_user.setValue(updatedUserName);
 
-      group_names.setValue(AddressBookUtils.getMyGroupNamesAsString(rundata,
-          address.getAddressId().intValue(), ALEipUtils.getUserId(rundata)));
+      group_names.setValue(AddressBookUtils.getMyGroupNamesAsString(
+        rundata,
+        address.getAddressId().intValue(),
+        ALEipUtils.getUserId(rundata)));
 
       EipMAddressbookCompany company = address.getEipMAddressbookCompany();
       if (company.getCompanyId().intValue() > 0) {
@@ -614,10 +629,13 @@ public class AddressBookFormData extends ALAbstractFormData {
 
   /**
    * アドレス情報の登録を行います。
-   *
-   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     // 作業ユーザIDの取得
@@ -626,12 +644,12 @@ public class AddressBookFormData extends ALAbstractFormData {
       if (is_new_company) {
         // 会社情報の登録処理
         if (!insertCompanyData(rundata, context)) {
-          // TODO ロールバック
         }
       }
 
       // アドレス情報の登録処理
-      EipMAddressbook address = (EipMAddressbook) dataContext
+      EipMAddressbook address =
+        (EipMAddressbook) dataContext
           .createAndRegisterNewObject(EipMAddressbook.class);
       // 個人情報の設定
       address.setLastName(lastname.getValue());
@@ -642,23 +660,27 @@ public class AddressBookFormData extends ALAbstractFormData {
 
       // 電話
       if (!telephone1.getValue().equals("")
-          && !telephone2.getValue().equals("")
-          && !telephone3.getValue().equals("")) {
-        address.setTelephone(new StringBuffer().append(telephone1.getValue())
-            .append("-").append(telephone2.getValue()).append("-").append(
-                telephone3.getValue()).toString());
+        && !telephone2.getValue().equals("")
+        && !telephone3.getValue().equals("")) {
+        address.setTelephone(new StringBuffer()
+          .append(telephone1.getValue())
+          .append("-")
+          .append(telephone2.getValue())
+          .append("-")
+          .append(telephone3.getValue())
+          .toString());
       } else {
         address.setTelephone("");
       }
 
       // 携帯電話
       if (!cellular_phone1.getValue().equals("")
-          && !cellular_phone2.getValue().equals("")
-          && !cellular_phone3.getValue().equals("")) {
+        && !cellular_phone2.getValue().equals("")
+        && !cellular_phone3.getValue().equals("")) {
         address.setCellularPhone(new StringBuffer().append(
-            cellular_phone1.getValue()).append("-").append(
-            cellular_phone2.getValue()).append("-").append(
-            cellular_phone3.getValue()).toString());
+          cellular_phone1.getValue()).append("-").append(
+          cellular_phone2.getValue()).append("-").append(
+          cellular_phone3.getValue()).toString());
       } else {
         address.setCellularPhone("");
       }
@@ -669,9 +691,11 @@ public class AddressBookFormData extends ALAbstractFormData {
       // 会社の設定
       boolean hasCompany = false;
       if (company_id.getValue() > 0) {
-        EipMAddressbookCompany company = (EipMAddressbookCompany) DataObjectUtils
-            .objectForPK(dataContext, EipMAddressbookCompany.class, Integer
-                .valueOf((int) company_id.getValue()));
+        EipMAddressbookCompany company =
+          (EipMAddressbookCompany) DataObjectUtils.objectForPK(
+            dataContext,
+            EipMAddressbookCompany.class,
+            Integer.valueOf((int) company_id.getValue()));
         if (company.getCompanyId().intValue() > 0) {
           // CompanyID が存在する場合
           address.setEipMAddressbookCompany(company);
@@ -680,8 +704,8 @@ public class AddressBookFormData extends ALAbstractFormData {
       }
       if (!hasCompany) {
         // 会社名でソートできるように、ダミーの会社情報を設定する。
-        EipMAddressbookCompany company = AddressBookUtils
-            .getDummyEipMAddressbookCompany(rundata, context);
+        EipMAddressbookCompany company =
+          AddressBookUtils.getDummyEipMAddressbookCompany(rundata, context);
         address.setEipMAddressbookCompany(company);
       }
 
@@ -702,22 +726,27 @@ public class AddressBookFormData extends ALAbstractFormData {
       Integer id = address.getAddressId();
 
       for (int i = 0; i < groups.size(); i++) {
-        EipTAddressbookGroupMap map = (EipTAddressbookGroupMap) dataContext
+        EipTAddressbookGroupMap map =
+          (EipTAddressbookGroupMap) dataContext
             .createAndRegisterNewObject(EipTAddressbookGroupMap.class);
         map.setEipMAddressbook((EipMAddressbook) DataObjectUtils.objectForPK(
-            dataContext, EipMAddressbook.class, id));
+          dataContext,
+          EipMAddressbook.class,
+          id));
         map.setEipTAddressGroup((EipMAddressGroup) groups.get(i));
       }
 
       dataContext.commitChanges();
 
-      String name = new StringBuffer().append(lastname.getValue()).append(" ")
-          .append(firstname.getValue()).toString();
+      String name =
+        new StringBuffer().append(lastname.getValue()).append(" ").append(
+          firstname.getValue()).toString();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          address.getAddressId(), ALEventlogConstants.PORTLET_TYPE_ADDRESSBOOK,
-          name);
+        address.getAddressId(),
+        ALEventlogConstants.PORTLET_TYPE_ADDRESSBOOK,
+        name);
 
       return true;
     } catch (Exception ex) {
@@ -726,32 +755,40 @@ public class AddressBookFormData extends ALAbstractFormData {
     }
   }
 
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
-      String addressid = ALEipUtils.getTemp(rundata, context,
-          ALEipConstants.ENTITY_ID);
+      String addressid =
+        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
       if (addressid == null || Integer.valueOf(addressid) == null) {
         logger.debug("[AddressBook] Cannot find Address ID .");
         return false;
       }
 
-      EipMAddressbook addressbook = (EipMAddressbook) DataObjectUtils
-          .objectForPK(dataContext, EipMAddressbook.class, Integer
-              .valueOf(addressid));
+      EipMAddressbook addressbook =
+        (EipMAddressbook) DataObjectUtils.objectForPK(
+          dataContext,
+          EipMAddressbook.class,
+          Integer.valueOf(addressid));
 
       // entityIdの取得
       int entityId = addressbook.getAddressId();
       // 名前の取得
-      String name = new StringBuffer().append(addressbook.getLastName())
-          .append(" ").append(addressbook.getFirstName()).toString();
+      String name =
+        new StringBuffer()
+          .append(addressbook.getLastName())
+          .append(" ")
+          .append(addressbook.getFirstName())
+          .toString();
 
       dataContext.deleteObject(addressbook);
 
       SelectQuery query = new SelectQuery(EipTAddressbookGroupMap.class);
-      Expression exp = ExpressionFactory.matchExp(
-          EipTAddressbookGroupMap.ADDRESS_ID_PROPERTY, Integer
-              .valueOf(addressid));
+      Expression exp =
+        ExpressionFactory.matchExp(
+          EipTAddressbookGroupMap.ADDRESS_ID_PROPERTY,
+          Integer.valueOf(addressid));
       query.setQualifier(exp);
 
       @SuppressWarnings("unchecked")
@@ -761,8 +798,10 @@ public class AddressBookFormData extends ALAbstractFormData {
       dataContext.commitChanges();
 
       // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(entityId,
-          ALEventlogConstants.PORTLET_TYPE_ADDRESSBOOK, name);
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        entityId,
+        ALEventlogConstants.PORTLET_TYPE_ADDRESSBOOK,
+        name);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
@@ -770,6 +809,7 @@ public class AddressBookFormData extends ALAbstractFormData {
     return true;
   }
 
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
@@ -777,16 +817,16 @@ public class AddressBookFormData extends ALAbstractFormData {
       int uid = ALEipUtils.getUserId(rundata);
       if (is_new_company) {
         if (!insertCompanyData(rundata, context)) {
-          // TODO ロールバック
         }
       }
       // 会社情報の登録処理終了
 
       // オブジェクトモデルを取得
-      EipMAddressbook address = AddressBookUtils.getEipMAddressbook(rundata,
-          context);
-      if (address == null)
+      EipMAddressbook address =
+        AddressBookUtils.getEipMAddressbook(rundata, context);
+      if (address == null) {
         return false;
+      }
 
       address.setLastName(lastname.getValue());
       address.setFirstName(firstname.getValue());
@@ -797,23 +837,27 @@ public class AddressBookFormData extends ALAbstractFormData {
 
       // 電話番号(外線)
       if (!telephone1.getValue().equals("")
-          && !telephone2.getValue().equals("")
-          && !telephone3.getValue().equals("")) {
-        address.setTelephone(new StringBuffer().append(telephone1.getValue())
-            .append("-").append(telephone2.getValue()).append("-").append(
-                telephone3.getValue()).toString());
+        && !telephone2.getValue().equals("")
+        && !telephone3.getValue().equals("")) {
+        address.setTelephone(new StringBuffer()
+          .append(telephone1.getValue())
+          .append("-")
+          .append(telephone2.getValue())
+          .append("-")
+          .append(telephone3.getValue())
+          .toString());
       } else {
         address.setTelephone("");
       }
 
       // 携帯電話
       if (!cellular_phone1.getValue().equals("")
-          && !cellular_phone2.getValue().equals("")
-          && !cellular_phone3.getValue().equals("")) {
+        && !cellular_phone2.getValue().equals("")
+        && !cellular_phone3.getValue().equals("")) {
         address.setCellularPhone(new StringBuffer().append(
-            cellular_phone1.getValue()).append("-").append(
-            cellular_phone2.getValue()).append("-").append(
-            cellular_phone3.getValue()).toString());
+          cellular_phone1.getValue()).append("-").append(
+          cellular_phone2.getValue()).append("-").append(
+          cellular_phone3.getValue()).toString());
       } else {
         address.setCellularPhone("");
       }
@@ -823,9 +867,11 @@ public class AddressBookFormData extends ALAbstractFormData {
       // 会社の設定
       boolean hasCompany = false;
       if (company_id.getValue() > 0) {
-        EipMAddressbookCompany company = (EipMAddressbookCompany) DataObjectUtils
-            .objectForPK(dataContext, EipMAddressbookCompany.class, Integer
-                .valueOf((int) company_id.getValue()));
+        EipMAddressbookCompany company =
+          (EipMAddressbookCompany) DataObjectUtils.objectForPK(
+            dataContext,
+            EipMAddressbookCompany.class,
+            Integer.valueOf((int) company_id.getValue()));
         if (company.getCompanyId().intValue() > 0) {
           // CompanyID が存在する場合
           address.setEipMAddressbookCompany(company);
@@ -834,8 +880,8 @@ public class AddressBookFormData extends ALAbstractFormData {
       }
       if (!hasCompany) {
         // 会社名でソートできるように、ダミーの会社情報を設定する。
-        EipMAddressbookCompany company = AddressBookUtils
-            .getDummyEipMAddressbookCompany(rundata, context);
+        EipMAddressbookCompany company =
+          AddressBookUtils.getDummyEipMAddressbookCompany(rundata, context);
         address.setEipMAddressbookCompany(company);
       }
 
@@ -846,13 +892,14 @@ public class AddressBookFormData extends ALAbstractFormData {
 
       // Address-Groupマッピングテーブルへのデータ追加
 
-      String addressid = ALEipUtils.getTemp(rundata, context,
-          ALEipConstants.ENTITY_ID);
+      String addressid =
+        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
       // 所属グループの全取得
       SelectQuery query1 = new SelectQuery(EipMAddressGroup.class);
-      Expression exp1 = ExpressionFactory.matchExp(
-          EipMAddressGroup.OWNER_ID_PROPERTY, Integer.valueOf(uid));
+      Expression exp1 =
+        ExpressionFactory.matchExp(EipMAddressGroup.OWNER_ID_PROPERTY, Integer
+          .valueOf(uid));
       query1.setQualifier(exp1);
 
       @SuppressWarnings("unchecked")
@@ -868,8 +915,10 @@ public class AddressBookFormData extends ALAbstractFormData {
         SelectQuery query2 = new SelectQuery(EipTAddressbookGroupMap.class);
         Expression exp2 = ExpressionFactory.inDbExp("group_id", groupIds);
         query2.setQualifier(exp2);
-        Expression exp3 = ExpressionFactory.matchExp(
-            EipTAddressbookGroupMap.ADDRESS_ID_PROPERTY, addressid);
+        Expression exp3 =
+          ExpressionFactory.matchExp(
+            EipTAddressbookGroupMap.ADDRESS_ID_PROPERTY,
+            addressid);
         query2.setQualifier(exp3);
 
         @SuppressWarnings("unchecked")
@@ -880,22 +929,27 @@ public class AddressBookFormData extends ALAbstractFormData {
       // Address-Group Mapテーブルへ指定された全グループを登録。
       int groupsize = groups.size();
       for (int i = 0; i < groupsize; i++) {
-        EipTAddressbookGroupMap map = (EipTAddressbookGroupMap) dataContext
+        EipTAddressbookGroupMap map =
+          (EipTAddressbookGroupMap) dataContext
             .createAndRegisterNewObject(EipTAddressbookGroupMap.class);
         map.setEipMAddressbook((EipMAddressbook) DataObjectUtils.objectForPK(
-            dataContext, EipMAddressbook.class, Integer.valueOf(addressid)));
+          dataContext,
+          EipMAddressbook.class,
+          Integer.valueOf(addressid)));
         map.setEipTAddressGroup((EipMAddressGroup) groups.get(i));
       }
 
       dataContext.commitChanges();
 
-      String name = new StringBuffer().append(lastname.getValue()).append(" ")
-          .append(firstname.getValue()).toString();
+      String name =
+        new StringBuffer().append(lastname.getValue()).append(" ").append(
+          firstname.getValue()).toString();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          address.getAddressId(), ALEventlogConstants.PORTLET_TYPE_ADDRESSBOOK,
-          name);
+        address.getAddressId(),
+        ALEventlogConstants.PORTLET_TYPE_ADDRESSBOOK,
+        name);
 
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -906,10 +960,15 @@ public class AddressBookFormData extends ALAbstractFormData {
 
   /**
    * フォームへデータをセットします。
-   *
-   * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res = super.setFormData(rundata, context, msgList);
@@ -917,21 +976,23 @@ public class AddressBookFormData extends ALAbstractFormData {
     if (res) {
       try {
         String str[] = rundata.getParameters().getStrings("group_to");
-        if (str == null)
+        if (str == null) {
           return res;
-        if (isEmpty(str))
+        }
+        if (isEmpty(str)) {
           return res;
+        }
 
         SelectQuery query = new SelectQuery(EipMAddressGroup.class);
-        Expression exp = ExpressionFactory.inDbExp(
-            EipMAddressGroup.GROUP_ID_PK_COLUMN, str);
+        Expression exp =
+          ExpressionFactory.inDbExp(EipMAddressGroup.GROUP_ID_PK_COLUMN, str);
         query.setQualifier(exp);
 
         @SuppressWarnings("unchecked")
         List<EipMAddressGroup> list = dataContext.performQuery(query);
         int size = list.size();
         for (int i = 0; i < size; i++) {
-          EipMAddressGroup group =  list.get(i);
+          EipMAddressGroup group = list.get(i);
           groups.add(group);
         }
       } catch (Exception ex) {
@@ -1172,7 +1233,7 @@ public class AddressBookFormData extends ALAbstractFormData {
 
   /**
    * 会社情報一括登録を行うかを示す値を返す。
-   *
+   * 
    * @return
    */
   public boolean isNewCompany() {
@@ -1189,7 +1250,8 @@ public class AddressBookFormData extends ALAbstractFormData {
   private boolean insertCompanyData(RunData rundata, Context context) {
     int uid = ALEipUtils.getUserId(rundata);
     try {
-      EipMAddressbookCompany company = (EipMAddressbookCompany) dataContext
+      EipMAddressbookCompany company =
+        (EipMAddressbookCompany) dataContext
           .createAndRegisterNewObject(EipMAddressbookCompany.class);
       rundata.getParameters().setProperties(company);
       company.setCompanyName(company_name.getValue());
@@ -1198,9 +1260,12 @@ public class AddressBookFormData extends ALAbstractFormData {
 
       // 郵便番号の設定
       if (!comp_zipcode1.getValue().equals("")
-          && !comp_zipcode2.getValue().equals("")) {
-        company.setZipcode(new StringBuffer().append(comp_zipcode1.getValue())
-            .append("-").append(comp_zipcode2.getValue()).toString());
+        && !comp_zipcode2.getValue().equals("")) {
+        company.setZipcode(new StringBuffer()
+          .append(comp_zipcode1.getValue())
+          .append("-")
+          .append(comp_zipcode2.getValue())
+          .toString());
       } else {
         company.setZipcode("");
       }
@@ -1209,24 +1274,24 @@ public class AddressBookFormData extends ALAbstractFormData {
 
       // 電話番号の設定
       if (!comp_telephone1.getValue().equals("")
-          && !comp_telephone2.getValue().equals("")
-          && !comp_telephone3.getValue().equals("")) {
+        && !comp_telephone2.getValue().equals("")
+        && !comp_telephone3.getValue().equals("")) {
         company.setTelephone(new StringBuffer().append(
-            comp_telephone1.getValue()).append("-").append(
-            comp_telephone2.getValue()).append("-").append(
-            comp_telephone3.getValue()).toString());
+          comp_telephone1.getValue()).append("-").append(
+          comp_telephone2.getValue()).append("-").append(
+          comp_telephone3.getValue()).toString());
       } else {
         company.setTelephone("");
       }
 
       // FAX番号の設定
       if (!comp_fax_number1.getValue().equals("")
-          && !comp_fax_number2.getValue().equals("")
-          && !comp_fax_number3.getValue().equals("")) {
+        && !comp_fax_number2.getValue().equals("")
+        && !comp_fax_number3.getValue().equals("")) {
         company.setFaxNumber(new StringBuffer().append(
-            comp_fax_number1.getValue()).append("-").append(
-            comp_fax_number2.getValue()).append("-").append(
-            comp_fax_number3.getValue()).toString());
+          comp_fax_number1.getValue()).append("-").append(
+          comp_fax_number2.getValue()).append("-").append(
+          comp_fax_number3.getValue()).toString());
       } else {
         company.setFaxNumber("");
       }
@@ -1252,11 +1317,11 @@ public class AddressBookFormData extends ALAbstractFormData {
   }
 
   /**
-   * アクセス権限チェック用メソッド。<br />
-   * アクセス権限の機能名を返します。
-   *
+   * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_ADDRESS_OUTSIDE;
   }

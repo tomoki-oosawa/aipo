@@ -36,7 +36,7 @@ public class ScheduleWeekContainer implements ALData {
   private List<ScheduleDayContainer> dayList;
 
   /*
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     dayList = new ArrayList<ScheduleDayContainer>();

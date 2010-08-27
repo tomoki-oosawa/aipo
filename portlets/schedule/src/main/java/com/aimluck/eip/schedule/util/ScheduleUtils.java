@@ -295,12 +295,6 @@ public class ScheduleUtils {
         ALEipUtils.redirectPermissionError(rundata);
       }
 
-      /*
-       * // アクセス権限がない場合 if (!is_member && (!(is_createuser || is_owner) &&
-       * !is_public)) { // TODO: エラー処理 logger.error("[ScheduleUtils] Cannnot
-       * access this record. "); throw new ALPageNotFoundException(); }
-       */
-
       return schedules.get(0);
 
     } catch (Exception ex) {
@@ -380,8 +374,6 @@ public class ScheduleUtils {
 
       // 指定したSchedule IDのレコードが見つからない場合
       if (schedules == null || schedules.size() == 0) {
-
-        // TODO: エラー処理
         logger.error("[ScheduleUtils] Not found record.");
         throw new ALPageNotFoundException();
       }
@@ -488,8 +480,6 @@ public class ScheduleUtils {
 
       // 指定したIDのレコードが見つからない場合
       if (schedules == null || schedules.size() == 0) {
-
-        // TODO: エラー処理
         logger.error("[ScheduleUtils] Not found record.");
         throw new ALPageNotFoundException();
       }
@@ -497,7 +487,6 @@ public class ScheduleUtils {
       return schedules.get(0);
 
     } catch (Exception ex) {
-      // TODO: エラー処理
       logger.error("[ScheduleUtils]", ex);
       throw new ALDBErrorException();
 
@@ -520,18 +509,11 @@ public class ScheduleUtils {
           EipTScheduleMap.SCHEDULE_ID_PROPERTY,
           scheduleid);
       query.setQualifier(exp1);
-      // // ユーザーID
-      // Expression exp2 = ExpressionFactory.matchExp(
-      // EipTScheduleMap.USER_ID_PROPERTY, new Integer(ALEipUtils
-      // .getUserId(rundata)));
-      // query.andQualifier(exp2);
 
       List<EipTScheduleMap> schedules = query.fetchList();
 
       // 指定したIDのレコードが見つからない場合
       if (schedules == null || schedules.size() == 0) {
-
-        // TODO: エラー処理
         logger.error("[ScheduleUtils] Not found record.");
         throw new ALPageNotFoundException();
       }
@@ -2061,7 +2043,6 @@ public class ScheduleUtils {
             id = Integer.valueOf(tmpScheduleId).intValue();
           }
         } catch (NumberFormatException ex) {
-          // TODO: エラー処理
           logger
             .error("[ScheduleFormData] NumberFormatException: ENTITYID is wrong.");
           throw new ALPageNotFoundException();

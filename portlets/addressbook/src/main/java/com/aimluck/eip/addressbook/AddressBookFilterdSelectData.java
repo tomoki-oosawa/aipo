@@ -66,10 +66,12 @@ public class AddressBookFilterdSelectData extends
   private String index;
 
   /**
-   * 初期化します。
    * 
-   * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * @param action
+   * @param rundata
+   * @param context
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -103,8 +105,9 @@ public class AddressBookFilterdSelectData extends
   /**
    * アドレス情報の一覧を、グループ・一覧・社員単位で表示する。
    * 
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected ResultList<EipMAddressbook> selectList(RunData rundata,
@@ -124,8 +127,9 @@ public class AddressBookFilterdSelectData extends
   /**
    * 社外アドレスタブ選択時のアドレス帳の詳細情報を表示します。
    * 
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected EipMAddressbook selectDetail(RunData rundata, Context context) {
@@ -138,7 +142,9 @@ public class AddressBookFilterdSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   * 
+   * @param record
+   * @return
    */
   @Override
   protected Object getResultData(EipMAddressbook record) {
@@ -192,7 +198,8 @@ public class AddressBookFilterdSelectData extends
   /**
    * 詳細情報の返却データ取得。
    * 
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   * @param record
+   * @return
    */
   @Override
   protected Object getResultDataDetail(EipMAddressbook record) {
@@ -262,7 +269,8 @@ public class AddressBookFilterdSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   * 
+   * @return
    */
   @Override
   protected Attributes getColumnMap() {
@@ -282,7 +290,7 @@ public class AddressBookFilterdSelectData extends
   }
 
   /**
-   * 検索条件を設定した SelectQuery を返します。 <BR>
+   * 検索条件を設定した SelectQuery を返します。
    * 
    * @param rundata
    * @param context
@@ -487,8 +495,7 @@ public class AddressBookFilterdSelectData extends
   }
 
   /**
-   * アクセス権限チェック用メソッド。<br />
-   * アクセス権限の機能名を返します。
+   * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
    * 
    * @return
    */

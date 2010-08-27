@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -27,20 +27,24 @@ import com.aimluck.eip.addressbook.AddressBookCompanyFormData;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * アドレス帳の会社情報を処理するクラスです。 <br />
+ * アドレス帳の会社情報を処理するクラスです。
  */
 public class AddressBookCompanyFormScreen extends ALVelocityScreen {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AddressBookCompanyFormScreen.class.getName());
+    .getLogger(AddressBookCompanyFormScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
    */
+  @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
     try {
-      doAddressBook_form(rundata, context);      
+      doAddressBook_form(rundata, context);
     } catch (Exception ex) {
       // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[AddressBookCompanyFormScreen] Exception.", ex);
@@ -53,8 +57,8 @@ public class AddressBookCompanyFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
 
-    
-    String layout_template = "portlets/html/ja/ajax-addressbook-company-form.vm";
+    String layout_template =
+      "portlets/html/ja/ajax-addressbook-company-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 }

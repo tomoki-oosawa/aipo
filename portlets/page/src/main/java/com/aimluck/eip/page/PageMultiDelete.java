@@ -29,7 +29,7 @@ import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.page.util.PageUtils;
 
 /**
- * 複数のページ設定を削除するクラスです。 <br />
+ * 複数のページ設定を削除するクラスです。 
  */
 public class PageMultiDelete extends ALAbstractCheckList {
 
@@ -39,9 +39,12 @@ public class PageMultiDelete extends ALAbstractCheckList {
     .getLogger(PageMultiDelete.class.getName());
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractCheckList#action(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList,
-   *      java.util.ArrayList)
+   * 
+   * @param rundata
+   * @param context
+   * @param values
+   * @param msgList
+   * @return
    */
   @Override
   protected boolean action(RunData rundata, Context context,

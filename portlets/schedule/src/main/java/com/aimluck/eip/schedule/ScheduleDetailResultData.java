@@ -65,7 +65,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
   private boolean is_createuser;
 
   /*
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   @Override
   public void initField() {

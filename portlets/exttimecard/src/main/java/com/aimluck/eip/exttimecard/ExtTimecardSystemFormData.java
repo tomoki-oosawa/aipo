@@ -94,8 +94,6 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
    *
    */
   public void initField() {
-    // TODO 自動生成されたメソッド・スタブ
-
     system_id = new ALNumberField();
     system_id.setNotNull(true);
 

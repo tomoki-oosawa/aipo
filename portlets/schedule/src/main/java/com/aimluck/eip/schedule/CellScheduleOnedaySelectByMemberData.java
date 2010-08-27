@@ -299,9 +299,12 @@ public class CellScheduleOnedaySelectByMemberData extends
     return query;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+  /**
+   * 
+   * @param record
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected Object getResultData(EipTScheduleMap record)
@@ -403,7 +406,6 @@ public class CellScheduleOnedaySelectByMemberData extends
       }
 
     } catch (Exception e) {
-      // TODO: エラー処理
       logger.error("Exception", e);
 
       return null;

@@ -41,43 +41,42 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 
 /**
  * 共有フォルダのファイルの複数削除を行うためのクラスです。 <BR>
- *
+ * 
  */
 public class CabinetFileMultiDelete extends ALAbstractCheckList {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CabinetFileMultiDelete.class.getName());
+    .getLogger(CabinetFileMultiDelete.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param values
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractCheckList#action(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList,
-   *      java.util.ArrayList)
    */
-  protected boolean action(RunData rundata, Context context, List<String> values,
-      List<String> msgList) {
+  @Override
+  protected boolean action(RunData rundata, Context context,
+      List<String> values, List<String> msgList) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
 
       SelectQuery query = new SelectQuery(EipTCabinetFile.class);
-      Expression exp = ExpressionFactory.inDbExp(
-          EipTCabinetFile.FILE_ID_PK_COLUMN, values);
+      Expression exp =
+        ExpressionFactory.inDbExp(EipTCabinetFile.FILE_ID_PK_COLUMN, values);
       query.setQualifier(exp);
 
       List filelist = dataContext.performQuery(query);
-      if (filelist == null || filelist.size() == 0)
+      if (filelist == null || filelist.size() == 0) {
         return false;
+      }
 
       for (int i = 0; i < filelist.size(); i++) {
         if (!CabinetUtils.isEditableFolder(((EipTCabinetFile) filelist.get(i))
-            .getFolderId(), rundata)) {
+          .getFolderId(), rundata)) {
           msgList.add("削除する権限の無いファイルが含まれています。");
           return false;
         }
@@ -104,9 +103,10 @@ public class CabinetFileMultiDelete extends ALAbstractCheckList {
           dataContext.commitChanges();
 
           // ログに保存
-          ALEventlogFactoryService.getInstance().getEventlogHandler()
-              .log(entityId, ALEventlogConstants.PORTLET_TYPE_CABINET_FILE,
-                  fileName);
+          ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+            entityId,
+            ALEventlogConstants.PORTLET_TYPE_CABINET_FILE,
+            fileName);
         }
         int fpathSize = fpaths.size();
         if (fpathSize > 0) {
@@ -114,7 +114,8 @@ public class CabinetFileMultiDelete extends ALAbstractCheckList {
           String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
           File file = null;
           for (i = 0; i < fpathSize; i++) {
-            file = new File(CabinetUtils.getSaveDirPath(org_id)
+            file =
+              new File(CabinetUtils.getSaveDirPath(org_id)
                 + (String) fpaths.get(i));
             if (file.exists()) {
               file.delete();
@@ -132,9 +133,10 @@ public class CabinetFileMultiDelete extends ALAbstractCheckList {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限を返します。
-   *
+   * 
    * @return
    */
+  @Override
   protected int getDefineAclType() {
     return ALAccessControlConstants.VALUE_ACL_DELETE;
   }
@@ -142,9 +144,10 @@ public class CabinetFileMultiDelete extends ALAbstractCheckList {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_CABINET_FILE;
   }

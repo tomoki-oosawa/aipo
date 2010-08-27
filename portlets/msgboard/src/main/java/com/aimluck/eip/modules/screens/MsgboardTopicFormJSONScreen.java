@@ -31,7 +31,7 @@ import com.aimluck.eip.msgboard.MsgboardTopicMultiDelete;
 import com.aimluck.eip.msgboard.MsgboardTopicReplyFormData;
 
 /**
- * 掲示板トピックをJSONデータとして出力するクラスです。 <br />
+ * 掲示板トピックをJSONデータとして出力するクラスです。 
  * 
  */
 public class MsgboardTopicFormJSONScreen extends ALJSONScreen {

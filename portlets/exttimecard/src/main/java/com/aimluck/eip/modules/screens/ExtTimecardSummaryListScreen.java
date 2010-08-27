@@ -37,7 +37,10 @@ public class ExtTimecardSummaryListScreen extends ExtTimecardSystemScreen {
     .getLogger(ExtTimecardSummaryListScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {

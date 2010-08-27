@@ -135,8 +135,8 @@ public class ExtTimecardFormData extends ALAbstractFormData {
    * @param action
    * @param rundata
    * @param context
-   * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * 
+   * 
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -162,7 +162,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
   /**
    * 各フィールドを初期化します。 <BR>
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     timecard_id = new ALNumberField();
@@ -218,7 +218,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
   /**
    * タイムカードの各フィールドに対する制約条件を設定します。 <BR>
    * 
-   * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
+   * 
    */
   @Override
   protected void setValidator() {
@@ -233,7 +233,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
    * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+   * 
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -580,8 +580,6 @@ public class ExtTimecardFormData extends ALAbstractFormData {
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
@@ -647,24 +645,11 @@ public class ExtTimecardFormData extends ALAbstractFormData {
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
-      // // オブジェクトモデルを取得
-      // EipTExtTimecard timecard = ExtTimecardUtils.getEipTExtTimecard(rundata,
-      // context);
-      // if (timecard == null)
-      // return false;
-      // // 打刻情報を削除
-      // dataContext.deleteObject(timecard);
-      // // イベントログに保存
-      // ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-      // timecard.getExtTimecardId(), ALEventlogConstants.PORTLET_TYPE_TIMECARD,
-      // reason.getValue());
 
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -680,8 +665,6 @@ public class ExtTimecardFormData extends ALAbstractFormData {
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
@@ -785,8 +768,6 @@ public class ExtTimecardFormData extends ALAbstractFormData {
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
@@ -884,8 +865,6 @@ public class ExtTimecardFormData extends ALAbstractFormData {
    * @param rundata
    * @param context
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   public boolean doPunch(ALAction action, RunData rundata, Context context,
       String mode) {

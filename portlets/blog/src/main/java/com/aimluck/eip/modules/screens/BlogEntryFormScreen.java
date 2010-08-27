@@ -28,15 +28,18 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ブログエントリーを処理するクラスです。 <br />
- *
+ * 
  */
 public class BlogEntryFormScreen extends ALVelocityScreen {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(BlogEntryFormScreen.class.getName());
+    .getLogger(BlogEntryFormScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
@@ -55,7 +58,7 @@ public class BlogEntryFormScreen extends ALVelocityScreen {
     formData.loadThemaList(rundata, context);
     formData.doViewForm(this, rundata, context);
 
-    if(formData.getThemaId().getValue()==0){
+    if (formData.getThemaId().getValue() == 0) {
       formData.setThemaId(1);
     }
 

@@ -36,7 +36,7 @@ public class MemoLiteResultData implements ALData {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     memo_id = new ALNumberField();

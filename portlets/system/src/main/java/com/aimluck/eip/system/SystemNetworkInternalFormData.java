@@ -60,8 +60,8 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
    * @param action
    * @param rundata
    * @param context
-   * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -70,9 +70,8 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
   }
 
   /**
-   * 各フィールドを初期化する．
+   * 各フィールドを初期化する
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
     // IP アドレス（ローカル）
@@ -87,9 +86,7 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
   }
 
   /**
-   * 各フィールドに対する制約条件を設定する．
-   * 
-   * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
+   * 各フィールドに対する制約条件を設定する
    */
   @Override
   protected void setValidator() {
@@ -101,11 +98,10 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
   }
 
   /**
-   * フォームに入力されたデータの妥当性を検証します．
+   * フォームに入力されたデータの妥当性を検証します
    * 
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -118,13 +114,10 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
 
   /**
    * 
-   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
@@ -138,8 +131,8 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
 
       String ipaddress = record.getIpaddressInternal();
       if (null == ipaddress || "".equals(ipaddress)) {
-        Enumeration<NetworkInterface> enuIfs = NetworkInterface
-          .getNetworkInterfaces();
+        Enumeration<NetworkInterface> enuIfs =
+          NetworkInterface.getNetworkInterfaces();
         if (null != enuIfs) {
           while (enuIfs.hasMoreElements()) {
             NetworkInterface ni = enuIfs.nextElement();
@@ -167,13 +160,10 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
 
   /**
    * 
-   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
@@ -183,13 +173,10 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
 
   /**
    * 
-   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
@@ -222,13 +209,10 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
 
   /**
    * 
-   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,

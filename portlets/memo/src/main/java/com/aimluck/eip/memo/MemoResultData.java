@@ -38,7 +38,7 @@ public class MemoResultData extends MemoLiteResultData {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   @Override
   public void initField() {

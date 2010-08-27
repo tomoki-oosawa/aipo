@@ -32,7 +32,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 掲示板の設定値を処理するクラスです。 <br />
+ * 掲示板の設定値を処理するクラスです。 
  */
 public class MsgboardCategoryListBox extends ListBox {
 

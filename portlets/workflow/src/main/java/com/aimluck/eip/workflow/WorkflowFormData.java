@@ -128,8 +128,8 @@ public class WorkflowFormData extends ALAbstractFormData {
    * @param action
    * @param rundata
    * @param context
-   * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * 
+   * 
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -146,7 +146,7 @@ public class WorkflowFormData extends ALAbstractFormData {
   /**
    * 各フィールドを初期化します。 <BR>
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     // リクエスト名
@@ -207,8 +207,6 @@ public class WorkflowFormData extends ALAbstractFormData {
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean setFormData(RunData rundata, Context context,
@@ -368,7 +366,7 @@ public class WorkflowFormData extends ALAbstractFormData {
   /**
    * リクエストの各フィールドに対する制約条件を設定します。 <BR>
    * 
-   * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
+   * 
    */
   @Override
   protected void setValidator() {
@@ -386,7 +384,7 @@ public class WorkflowFormData extends ALAbstractFormData {
    * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+   * 
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -415,8 +413,6 @@ public class WorkflowFormData extends ALAbstractFormData {
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
@@ -477,8 +473,6 @@ public class WorkflowFormData extends ALAbstractFormData {
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,
@@ -568,8 +562,6 @@ public class WorkflowFormData extends ALAbstractFormData {
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
@@ -723,8 +715,6 @@ public class WorkflowFormData extends ALAbstractFormData {
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean updateFormData(RunData rundata, Context context,

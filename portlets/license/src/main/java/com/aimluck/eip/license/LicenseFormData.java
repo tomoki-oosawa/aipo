@@ -36,7 +36,7 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 
 /**
- * Licenseのフォームデータを管理するクラスです。 <BR>
+ * Licenseのフォームデータを管理するクラスです。
  * 
  */
 public class LicenseFormData extends ALAbstractFormData {
@@ -65,8 +65,6 @@ public class LicenseFormData extends ALAbstractFormData {
    * @param action
    * @param rundata
    * @param context
-   * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -76,9 +74,8 @@ public class LicenseFormData extends ALAbstractFormData {
   }
 
   /**
-   * 各フィールドを初期化します。 <BR>
+   * 各フィールドを初期化します。
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
     // License
@@ -109,9 +106,8 @@ public class LicenseFormData extends ALAbstractFormData {
   }
 
   /**
-   * Licenseの各フィールドに対する制約条件を設定します。 <BR>
+   * Licenseの各フィールドに対する制約条件を設定します。
    * 
-   * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
   @Override
   protected void setValidator() {
@@ -140,11 +136,10 @@ public class LicenseFormData extends ALAbstractFormData {
   }
 
   /**
-   * Licenseのフォームに入力されたデータの妥当性検証を行います。 <BR>
+   * Licenseのフォームに入力されたデータの妥当性検証を行います。
    * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -182,14 +177,12 @@ public class LicenseFormData extends ALAbstractFormData {
   }
 
   /**
-   * Licenseをデータベースから削除します。 <BR>
+   * Licenseをデータベースから削除します。
    * 
    * @param rundata
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,
@@ -198,14 +191,12 @@ public class LicenseFormData extends ALAbstractFormData {
   }
 
   /**
-   * Licenseをデータベースに格納します。 <BR>
+   * Licenseをデータベースに格納します。
    * 
    * @param rundata
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
@@ -214,14 +205,12 @@ public class LicenseFormData extends ALAbstractFormData {
   }
 
   /**
-   * データベースに格納されているToDoを更新します。 <BR>
+   * データベースに格納されているToDoを更新します。
    * 
    * @param rundata
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean updateFormData(RunData rundata, Context context,

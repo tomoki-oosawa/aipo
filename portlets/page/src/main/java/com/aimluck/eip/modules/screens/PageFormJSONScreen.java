@@ -30,7 +30,7 @@ import com.aimluck.eip.page.PageFormData;
 import com.aimluck.eip.page.PageMultiDelete;
 
 /**
- * ページ設定をJSONデータとして出力するクラスです。 <br />
+ * ページ設定をJSONデータとして出力するクラスです。 
  * 
  */
 public class PageFormJSONScreen extends ALJSONScreen {

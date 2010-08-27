@@ -86,7 +86,7 @@ public class ToDoPublicResultData implements ALData {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     todo_id = new ALNumberField();

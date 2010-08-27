@@ -44,8 +44,7 @@ public class TimecardSettingsResultData implements ALData {
   private ALNumberField resttime_out;
 
   /**
-   * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     timecard_settings_id = new ALNumberField();

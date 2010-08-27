@@ -112,8 +112,6 @@ public class WebMailSelectData extends
    * @param action
    * @param rundata
    * @param context
-   * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -296,10 +294,11 @@ public class WebMailSelectData extends
   }
 
   /**
-   * メールの一覧を取得する． <BR>
+   * メールの一覧を取得する．
    * 
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected ResultList<EipTMail> selectList(RunData rundata, Context context) {
@@ -341,8 +340,10 @@ public class WebMailSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected ALMailMessage selectDetail(RunData rundata, Context context) {
@@ -360,7 +361,7 @@ public class WebMailSelectData extends
   /**
    * ResultDataを取得する（メールの一覧） <BR>
    * 
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   * 
    */
   @Override
   protected Object getResultData(EipTMail record) {
@@ -410,7 +411,9 @@ public class WebMailSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   * 
+   * @param obj
+   * @return
    */
   @Override
   protected Object getResultDataDetail(ALMailMessage obj) {
@@ -434,31 +437,6 @@ public class WebMailSelectData extends
       rd.setTo(ALMailUtils.getAddressString(msg
         .getRecipients(Message.RecipientType.TO)));
       rd.setDate(date);
-      // int length = 0;
-      // String[] bodyTexts = null;
-
-      // if (msg.isHtmlMail()) {
-      // if (originalBodyTexts == null) {
-      // length = 2;
-      // bodyTexts = new String[length];
-      // bodyTexts[0] = "このメールは HTML メールです。";
-      // bodyTexts[1] = "本文は、下記の添付ファイル「message番号.html」を参照ください。";
-      // } else {
-      // length = originalBodyTexts.length + 4;
-      // bodyTexts = new String[length];
-      // bodyTexts[0] = "このメールは HTML メールです。";
-      // bodyTexts[1] = "HTML メールの本文は、下記の添付ファイル「message番号.html」を参照ください。";
-      // bodyTexts[2] = "HTML メールに含まれている本文のみを以下に抜き出して表示します。";
-      // bodyTexts[3] = "-----------------------------";
-      // for (int i = 4; i < length; i++) {
-      // bodyTexts[i] = originalBodyTexts[i - 4];
-      // }
-      // }
-      // } else {
-      // bodyTexts = originalBodyTexts;
-      // }
-      //
-      // bodyTexts = originalBodyTexts;
 
       rd.setBody(msg.getBodyText());
       rd.setAttachmentFileNames(msg.getAttachmentFileNameArray());
@@ -488,7 +466,7 @@ public class WebMailSelectData extends
 
   /**
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   * 
    */
   @Override
   protected Attributes getColumnMap() {

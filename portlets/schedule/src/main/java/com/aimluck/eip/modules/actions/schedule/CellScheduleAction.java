@@ -77,22 +77,23 @@ public class CellScheduleAction extends ALBaseAction {
     "(金)",
     "(土)" };
 
-  /*
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#
-   * buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   * org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
+  /**
+   * 
+   * @param portlet
+   * @param context
+   * @param rundata
    */
-
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) {
     ALEipUtils.removeTemp(rundata, context, "view_date_top");
   }
 
-  /*
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#
-   * buildMaximizedContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   * org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
+  /**
+   * 
+   * @param portlet
+   * @param context
+   * @param rundata
    */
   @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,

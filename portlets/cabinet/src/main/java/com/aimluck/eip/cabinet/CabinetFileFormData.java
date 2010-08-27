@@ -54,13 +54,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 共有フォルダのファイルフォームデータを管理するクラス <BR>
- *
+ * 
  */
 public class CabinetFileFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CabinetFileFormData.class.getName());
+    .getLogger(CabinetFileFormData.class.getName());
 
   /** フォルダ ID */
   private ALNumberField folder_id;
@@ -87,7 +87,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
   private String folderName = null;
 
   /** アクセス権限のフォームを表示するか */
-  private boolean show_acl_form = true;
+  private final boolean show_acl_form = true;
 
   private String fileid = null;
 
@@ -104,13 +104,14 @@ public class CabinetFileFormData extends ALAbstractFormData {
   private RunData rundata;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
-   * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * 
+   * 
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -119,8 +120,11 @@ public class CabinetFileFormData extends ALAbstractFormData {
     if (ALEipUtils.isMatch(rundata, context)) {
       // ENTITY ID
       if (rundata.getParameters().containsKey(CabinetUtils.KEY_FOLDER_ID)) {
-        ALEipUtils.setTemp(rundata, context, CabinetUtils.KEY_FOLDER_ID,
-            rundata.getParameters().getString(CabinetUtils.KEY_FOLDER_ID));
+        ALEipUtils.setTemp(
+          rundata,
+          context,
+          CabinetUtils.KEY_FOLDER_ID,
+          rundata.getParameters().getString(CabinetUtils.KEY_FOLDER_ID));
       }
     }
 
@@ -128,8 +132,8 @@ public class CabinetFileFormData extends ALAbstractFormData {
     dataContext = DatabaseOrmService.getInstance().getDataContext();
     this.rundata = rundata;
 
-    String tmpfid = ALEipUtils.getTemp(rundata, context,
-        CabinetUtils.KEY_FOLDER_ID);
+    String tmpfid =
+      ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_FOLDER_ID);
     int fid = CabinetUtils.ROOT_FODLER_ID;
     if (tmpfid != null && !"".equals(tmpfid)) {
       try {
@@ -157,8 +161,8 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
+   * 
    */
   public void initField() {
     // フォルダ ID
@@ -185,10 +189,16 @@ public class CabinetFileFormData extends ALAbstractFormData {
     fileuploadList = new ArrayList();
   }
 
-  /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
@@ -225,9 +235,10 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイルの各フィールドに対する制約条件を設定します。 <BR>
-   *
-   * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
+   * 
+   * 
    */
+  @Override
   protected void setValidator() {
     // ファイルタイトル必須項目
     file_title.setNotNull(true);
@@ -243,11 +254,12 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイルのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+   * 
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     // ファイルタイトル
     file_title.validate(msgList);
@@ -275,31 +287,37 @@ public class CabinetFileFormData extends ALAbstractFormData {
     }
 
     /** 編集アクセス制限 */
-    if (!CabinetUtils.isEditableFolder((int) folder_id.getValue(), rundata))
+    if (!CabinetUtils.isEditableFolder((int) folder_id.getValue(), rundata)) {
       msgList.add("このフォルダを編集する権限がありません。");
+    }
     return (msgList.size() == 0);
   }
 
   private boolean existsFileName() {
     String fname = file_name.getValue();
-    if (fname == null || "".equals(fname))
+    if (fname == null || "".equals(fname)) {
       return false;
+    }
 
     try {
       SelectQuery query = new SelectQuery(EipTCabinetFile.class);
       query.addCustomDbAttribute(EipTCabinetFile.FILE_NAME_COLUMN);
       if (ALEipConstants.MODE_INSERT.equals(getMode())) {
-        Expression exp = ExpressionFactory.matchDbExp(
-            EipTCabinetFolder.FOLDER_ID_PK_COLUMN, Integer
-                .valueOf((int) folder_id.getValue()));
+        Expression exp =
+          ExpressionFactory.matchDbExp(
+            EipTCabinetFolder.FOLDER_ID_PK_COLUMN,
+            Integer.valueOf((int) folder_id.getValue()));
         query.setQualifier(exp);
       } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
-        Expression exp1 = ExpressionFactory.matchDbExp(
-            EipTCabinetFolder.FOLDER_ID_PK_COLUMN, Integer
-                .valueOf((int) folder_id.getValue()));
+        Expression exp1 =
+          ExpressionFactory.matchDbExp(
+            EipTCabinetFolder.FOLDER_ID_PK_COLUMN,
+            Integer.valueOf((int) folder_id.getValue()));
         query.setQualifier(exp1);
-        Expression exp2 = ExpressionFactory.noMatchDbExp(
-            EipTCabinetFile.FILE_ID_PK_COLUMN, Integer.valueOf(fileid));
+        Expression exp2 =
+          ExpressionFactory.noMatchDbExp(
+            EipTCabinetFile.FILE_ID_PK_COLUMN,
+            Integer.valueOf(fileid));
         query.andQualifier(exp2);
       }
 
@@ -309,8 +327,9 @@ public class CabinetFileFormData extends ALAbstractFormData {
         int size = list.size();
         for (int i = 0; i < size; i++) {
           dataRow = (DataRow) list.get(i);
-          if (fname.equals((String) ALEipUtils.getObjFromDataRow(dataRow,
-              EipTCabinetFile.FILE_NAME_COLUMN))) {
+          if (fname.equals(ALEipUtils.getObjFromDataRow(
+            dataRow,
+            EipTCabinetFile.FILE_NAME_COLUMN))) {
             return true;
           }
         }
@@ -324,21 +343,21 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイルをデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTCabinetFile file = CabinetUtils.getEipTCabinetFile(rundata, context);
-      if (file == null)
+      if (file == null) {
         return false;
+      }
 
       // 親フォルダ
       folder_id.setValue(file.getFolderId().intValue());
@@ -362,21 +381,21 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイルをデータベースとファイルシステムから削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTCabinetFile file = CabinetUtils.getEipTCabinetFile(rundata, context);
-      if (file == null)
+      if (file == null) {
         return false;
+      }
 
       // ファイルのパス
       String local_file_pass = file.getFilePath();
@@ -391,14 +410,16 @@ public class CabinetFileFormData extends ALAbstractFormData {
       dataContext.commitChanges();
 
       // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(entityId,
-          ALEventlogConstants.PORTLET_TYPE_CABINET_FILE, fileName);
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        entityId,
+        ALEventlogConstants.PORTLET_TYPE_CABINET_FILE,
+        fileName);
 
       if (local_file_pass != null && !"".equals(local_file_pass)) {
         // ローカルファイルに保存されているファイルを削除する．
         File local_file = null;
-        local_file = new File(CabinetUtils.getSaveDirPath(org_id)
-            + local_file_pass);
+        local_file =
+          new File(CabinetUtils.getSaveDirPath(org_id) + local_file_pass);
         if (local_file.exists()) {
           local_file.delete();
         }
@@ -413,14 +434,13 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイルをデータベースとファイルシステムに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     boolean res = false;
@@ -428,27 +448,31 @@ public class CabinetFileFormData extends ALAbstractFormData {
       int uid = ALEipUtils.getUserId(rundata);
       FileuploadLiteBean filebean = (FileuploadLiteBean) fileuploadList.get(0);
       // ファイルの移動先
-      String filename = FileuploadUtils.getNewFileName(CabinetUtils
-          .getSaveDirPath(org_id));
+      String filename =
+        FileuploadUtils.getNewFileName(CabinetUtils.getSaveDirPath(org_id));
 
       // ファイルの移動先
       File destFile = new File(CabinetUtils.getAbsolutePath(org_id, filename));
 
       // 一時保存の添付ファイル
-      File srcFile = FileuploadUtils.getAbsolutePath(org_id, uid, folderName,
-          filebean.getFileId());
+      File srcFile =
+        FileuploadUtils.getAbsolutePath(org_id, uid, folderName, filebean
+          .getFileId());
 
       // ファイルの移動
       FileuploadUtils.copyFile(srcFile, destFile);
 
       double fileSize = Math.ceil(destFile.length() / 1024.0);
 
-      EipTCabinetFolder folder = (EipTCabinetFolder) DataObjectUtils
-          .objectForPK(dataContext, EipTCabinetFolder.class, Integer
-              .valueOf((int) folder_id.getValue()));
+      EipTCabinetFolder folder =
+        (EipTCabinetFolder) DataObjectUtils.objectForPK(
+          dataContext,
+          EipTCabinetFolder.class,
+          Integer.valueOf((int) folder_id.getValue()));
 
       // 新規オブジェクトモデル
-      EipTCabinetFile file = (EipTCabinetFile) dataContext
+      EipTCabinetFile file =
+        (EipTCabinetFile) dataContext
           .createAndRegisterNewObject(EipTCabinetFile.class);
       // 親フォルダ
       file.setEipTCabinetFolder(folder);
@@ -477,8 +501,9 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          file.getFileId(), ALEventlogConstants.PORTLET_TYPE_CABINET_FILE,
-          file_title.getValue());
+        file.getFileId(),
+        ALEventlogConstants.PORTLET_TYPE_CABINET_FILE,
+        file_title.getValue());
 
       File folder_tmp = FileuploadUtils.getFolder(org_id, uid, folderName);
       // 添付ファイル保存先のフォルダを削除
@@ -494,14 +519,13 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * データベースとファイルシステムに格納されているファイルを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
@@ -509,8 +533,9 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
       // オブジェクトモデルを取得
       EipTCabinetFile file = CabinetUtils.getEipTCabinetFile(rundata, context);
-      if (file == null)
+      if (file == null) {
         return false;
+      }
 
       // アップロードしたファイルは存在するか
       boolean is_upload = true;
@@ -519,16 +544,18 @@ public class CabinetFileFormData extends ALAbstractFormData {
       }
       if (is_upload) {
         // アップロードが確認できた場合
-        FileuploadLiteBean filebean = (FileuploadLiteBean) fileuploadList
-            .get(0);
-        String filename = FileuploadUtils.getNewFileName(CabinetUtils
-            .getSaveDirPath(org_id));
+        FileuploadLiteBean filebean =
+          (FileuploadLiteBean) fileuploadList.get(0);
+        String filename =
+          FileuploadUtils.getNewFileName(CabinetUtils.getSaveDirPath(org_id));
         // ファイルの移動先
-        File destFile = new File(CabinetUtils.getAbsolutePath(org_id, filename));
+        File destFile =
+          new File(CabinetUtils.getAbsolutePath(org_id, filename));
 
         // 一時保存の添付ファイル
-        File srcFile = FileuploadUtils.getAbsolutePath(org_id, uid, folderName,
-            filebean.getFileId());
+        File srcFile =
+          FileuploadUtils.getAbsolutePath(org_id, uid, folderName, filebean
+            .getFileId());
 
         // ファイルの移動
         FileuploadUtils.copyFile(srcFile, destFile);
@@ -549,9 +576,11 @@ public class CabinetFileFormData extends ALAbstractFormData {
       }
 
       // 親フォルダ
-      EipTCabinetFolder folder = (EipTCabinetFolder) DataObjectUtils
-          .objectForPK(dataContext, EipTCabinetFolder.class, Integer
-              .valueOf((int) folder_id.getValue()));
+      EipTCabinetFolder folder =
+        (EipTCabinetFolder) DataObjectUtils.objectForPK(
+          dataContext,
+          EipTCabinetFolder.class,
+          Integer.valueOf((int) folder_id.getValue()));
       file.setEipTCabinetFolder(folder);
 
       // ファイルタイトル
@@ -567,8 +596,9 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          file.getFileId(), ALEventlogConstants.PORTLET_TYPE_CABINET_FILE,
-          file_title.getValue());
+        file.getFileId(),
+        ALEventlogConstants.PORTLET_TYPE_CABINET_FILE,
+        file_title.getValue());
 
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -582,8 +612,8 @@ public class CabinetFileFormData extends ALAbstractFormData {
   }
 
   /**
-   *
-   *
+   * 
+   * 
    * @return
    */
   public ALNumberField getFolderId() {
@@ -592,7 +622,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイルタイトルを取得する． <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFileTitle() {
@@ -601,7 +631,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイル名を取得する． <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFileName() {
@@ -610,7 +640,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイルサイズを取得する． <BR>
-   *
+   * 
    * @return
    */
   public ALNumberField getFileSize() {
@@ -619,7 +649,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * メモを取得する． <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getNote() {
@@ -635,7 +665,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param id
    * @return
    */
@@ -647,16 +677,15 @@ public class CabinetFileFormData extends ALAbstractFormData {
     return fileuploadList;
   }
 
-
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_CABINET_FILE;
   }
-
 
 }

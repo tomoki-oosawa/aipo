@@ -39,7 +39,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * タイムカードのユーティリティクラスです。 <BR>
+ * タイムカードのユーティリティクラスです。 
  * 
  */
 public class TimecardUtils {
@@ -68,7 +68,7 @@ public class TimecardUtils {
     .getString("aipo.tmp.timecard.directory", "");
 
   /**
-   * Todo オブジェクトモデルを取得します。 <BR>
+   * Todo オブジェクトモデルを取得します。 
    * 
    * @param rundata
    * @param context

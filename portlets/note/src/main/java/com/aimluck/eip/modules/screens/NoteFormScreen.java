@@ -28,7 +28,7 @@ import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 伝言メモを処理するクラスです。 <br />
+ * 伝言メモを処理するクラスです。
  * 
  */
 public class NoteFormScreen extends ALVelocityScreen {
@@ -38,7 +38,10 @@ public class NoteFormScreen extends ALVelocityScreen {
     .getLogger(NoteFormScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
@@ -51,6 +54,11 @@ public class NoteFormScreen extends ALVelocityScreen {
     }
   }
 
+  /**
+   * 
+   * @param rundata
+   * @param context
+   */
   protected void doNote_form(RunData rundata, Context context) {
     context.put(NoteUtils.NOTE_VIEW_TYPE, NoteUtils.NOTE_VIEW_TYPE_LIST);
     NoteFormData formData = new NoteFormData();

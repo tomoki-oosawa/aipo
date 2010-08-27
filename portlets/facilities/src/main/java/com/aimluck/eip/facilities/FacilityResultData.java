@@ -46,7 +46,7 @@ public class FacilityResultData implements ALData {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     facility_id = new ALNumberField();

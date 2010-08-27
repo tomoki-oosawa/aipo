@@ -67,7 +67,7 @@ public class AccessControlResultData implements ALData {
 
   /**
    *
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     acl_role_id = new ALNumberField();

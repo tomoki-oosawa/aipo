@@ -41,38 +41,36 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレスグループの複数削除を行うためのクラスです。
- *
+ * 
  */
 public class AddressBookGroupMultiDelete extends ALAbstractCheckList {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AddressBookGroupMultiDelete.class.getName());
+    .getLogger(AddressBookGroupMultiDelete.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param values
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractCheckList#action(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList,
-   *      java.util.ArrayList)
    */
+  @Override
   protected boolean action(RunData rundata, Context context,
       List<String> values, List<String> msgList) {
     try {
       // address-groupテーブルのデータを削除
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       SelectQuery query = new SelectQuery(EipMAddressGroup.class);
-      Expression exp1 = ExpressionFactory.matchExp(
-          EipMAddressGroup.OWNER_ID_PROPERTY,
-          Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      Expression exp1 =
+        ExpressionFactory.matchExp(EipMAddressGroup.OWNER_ID_PROPERTY, Integer
+          .valueOf(ALEipUtils.getUserId(rundata)));
       query.setQualifier(exp1);
-      Expression exp2 = ExpressionFactory.inDbExp(
-          EipMAddressGroup.GROUP_ID_PK_COLUMN, values);
+      Expression exp2 =
+        ExpressionFactory.inDbExp(EipMAddressGroup.GROUP_ID_PK_COLUMN, values);
       query.andQualifier(exp2);
 
       @SuppressWarnings("unchecked")
@@ -82,7 +80,7 @@ public class AddressBookGroupMultiDelete extends ALAbstractCheckList {
 
       // 会社情報を削除
       for (int i = 0; i < grouplistsize; i++) {
-        EipMAddressGroup group = (EipMAddressGroup) groups.get(i);
+        EipMAddressGroup group = groups.get(i);
 
         // entityIdを取得
         Integer entityId = group.getGroupId();
@@ -94,16 +92,16 @@ public class AddressBookGroupMultiDelete extends ALAbstractCheckList {
         dataContext.commitChanges();
 
         // ログに保存
-        ALEventlogFactoryService
-            .getInstance()
-            .getEventlogHandler()
-            .log(entityId, ALEventlogConstants.PORTLET_TYPE_ADDRESSBOOK_GROUP,
-                groupName);
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          entityId,
+          ALEventlogConstants.PORTLET_TYPE_ADDRESSBOOK_GROUP,
+          groupName);
       }
 
       // Address group Mapテーブルデータの削除
       SelectQuery mapquery = new SelectQuery(EipTAddressbookGroupMap.class);
-      Expression mapexp = ExpressionFactory.matchDbExp(
+      Expression mapexp =
+        ExpressionFactory.matchDbExp(
           EipMAddressGroup.GROUP_ID_PK_COLUMN,
           Integer.valueOf(ALEipUtils.getUserId(rundata)));
       mapquery.setQualifier(mapexp);
@@ -115,7 +113,8 @@ public class AddressBookGroupMultiDelete extends ALAbstractCheckList {
       dataContext.commitChanges();
 
       // 検索画面用フィルタにて設定されているグループフィルタをセッションから削除する。
-      String filtername = AddressBookFilterdSelectData.class.getName()
+      String filtername =
+        AddressBookFilterdSelectData.class.getName()
           + ALEipConstants.LIST_FILTER;
       ALEipUtils.removeTemp(rundata, context, filtername);
     } catch (Exception ex) {
@@ -126,21 +125,21 @@ public class AddressBookGroupMultiDelete extends ALAbstractCheckList {
   }
 
   /**
-   * アクセス権限チェック用メソッド。<br />
-   * アクセス権限を返します。
-   *
+   * アクセス権限チェック用メソッド。 アクセス権限を返します。
+   * 
    * @return
    */
+  @Override
   protected int getDefineAclType() {
     return ALAccessControlConstants.VALUE_ACL_DELETE;
   }
 
   /**
-   * アクセス権限チェック用メソッド。<br />
-   * アクセス権限の機能名を返します。
-   *
+   * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_COMPANY_GROUP;
   }

@@ -149,11 +149,8 @@ public class AjaxScheduleWeeklyGroupSelectData extends
   //
   // protected ORMappingEipTTodo orm_todo;
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules
-   * .actions.common.ALAction, org.apache.turbine.util.RunData,
-   * org.apache.velocity.context.Context)
+  /**
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -393,10 +390,13 @@ public class AjaxScheduleWeeklyGroupSelectData extends
     return true;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected ResultList<EipTScheduleMap> selectList(RunData rundata,
@@ -430,8 +430,6 @@ public class AjaxScheduleWeeklyGroupSelectData extends
       return new ResultList<EipTScheduleMap>(sortLoginUserSchedule(list));
       // return ScheduleUtils.sortByDummySchedule(list);
     } catch (Exception e) {
-
-      // TODO: エラー処理
       logger.error("[AjaxScheduleWeeklyGroupSelectData] TorqueException", e);
       throw new ALDBErrorException();
 
@@ -717,9 +715,12 @@ public class AjaxScheduleWeeklyGroupSelectData extends
     return query;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+  /**
+   * 
+   * @param record
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected Object getResultData(EipTScheduleMap record)
@@ -858,8 +859,6 @@ public class AjaxScheduleWeeklyGroupSelectData extends
       weekCon.addResultData(rd, show_all);
 
     } catch (Exception e) {
-
-      // TODO: エラー処理
       logger.error("Exception", e);
 
       return null;
@@ -867,30 +866,29 @@ public class AjaxScheduleWeeklyGroupSelectData extends
     return rd;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected EipTScheduleMap selectDetail(RunData rundata, Context context) {
-    // このメソッドは利用されません。
     return null;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang
-   * .Object)
+  /**
+   * 
+   * @param record
+   * @return
    */
   @Override
   protected Object getResultDataDetail(EipTScheduleMap record) {
-    // このメソッドは利用されません。
     return null;
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   *
    */
   @Override
   protected Attributes getColumnMap() {

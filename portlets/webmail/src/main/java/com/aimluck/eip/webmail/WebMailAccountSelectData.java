@@ -50,9 +50,8 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
 public class WebMailAccountSelectData extends
     ALAbstractSelectData<EipMMailAccount, EipMMailAccount> {
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(WebMailAccountSelectData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WebMailAccountSelectData.class.getName());
 
   private String org_id;
 
@@ -61,8 +60,8 @@ public class WebMailAccountSelectData extends
    * @param action
    * @param rundata
    * @param context
-   * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -82,8 +81,10 @@ public class WebMailAccountSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected ResultList<EipMMailAccount> selectList(RunData rundata,
@@ -108,7 +109,8 @@ public class WebMailAccountSelectData extends
    * @param context
    * @return
    */
-  private SelectQuery<EipMMailAccount> getSelectQuery(RunData rundata, Context context) {
+  private SelectQuery<EipMMailAccount> getSelectQuery(RunData rundata,
+      Context context) {
     SelectQuery<EipMMailAccount> query = Database.query(EipMMailAccount.class);
 
     Expression exp1 =
@@ -123,8 +125,10 @@ public class WebMailAccountSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected EipMMailAccount selectDetail(RunData rundata, Context context) {
@@ -143,7 +147,7 @@ public class WebMailAccountSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   *
    */
   @Override
   protected Object getResultData(EipMMailAccount record) {
@@ -173,7 +177,9 @@ public class WebMailAccountSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   * 
+   * @param record
+   * @return
    */
   @Override
   protected Object getResultDataDetail(EipMMailAccount record) {
@@ -205,7 +211,7 @@ public class WebMailAccountSelectData extends
 
   /**
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   * 
    */
   @Override
   protected Attributes getColumnMap() {

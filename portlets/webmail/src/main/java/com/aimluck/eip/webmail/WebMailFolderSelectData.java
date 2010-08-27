@@ -60,8 +60,6 @@ public class WebMailFolderSelectData extends
    * @param action
    * @param rundata
    * @param context
-   * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -108,8 +106,12 @@ public class WebMailFolderSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected ResultList<EipTMailFolder> selectList(RunData rundata,
@@ -118,8 +120,12 @@ public class WebMailFolderSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected EipTMailFolder selectDetail(RunData rundata, Context context)
@@ -133,7 +139,7 @@ public class WebMailFolderSelectData extends
   /**
    * フォルダのデータを取得します。
    * 
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   * 
    */
   @Override
   protected Object getResultData(EipTMailFolder obj)
@@ -144,7 +150,10 @@ public class WebMailFolderSelectData extends
   /**
    * フォルダの詳細データを取得します。
    * 
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   * @param record
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected Object getResultDataDetail(EipTMailFolder record)
@@ -174,7 +183,7 @@ public class WebMailFolderSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   *
    */
   @Override
   protected Attributes getColumnMap() {

@@ -54,8 +54,6 @@ public class AccountAction extends ALSecureBaseAction {
    * @param context
    * @param rundata
    * @throws java.lang.Exception
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
@@ -170,7 +168,6 @@ public class AccountAction extends ALSecureBaseAction {
         "eventSubmit_doAccount_list",
         "1").toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-      // TODO add by Haruo Kaneko
       JetspeedLinkFactory.putInstance(jsLink);
       jsLink = null;
     } else {

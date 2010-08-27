@@ -131,7 +131,7 @@ public class FileuploadFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
+   *
    */
   @Override
   protected void setValidator() {
@@ -141,7 +141,7 @@ public class FileuploadFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -175,8 +175,11 @@ public class FileuploadFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
    */
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
@@ -185,8 +188,11 @@ public class FileuploadFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
    */
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
@@ -195,8 +201,11 @@ public class FileuploadFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
    */
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
@@ -243,8 +252,11 @@ public class FileuploadFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
    */
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,
@@ -253,7 +265,7 @@ public class FileuploadFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     attachmentName = new ALStringField();

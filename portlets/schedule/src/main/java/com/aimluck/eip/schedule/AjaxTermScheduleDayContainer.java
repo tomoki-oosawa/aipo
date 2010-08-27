@@ -42,7 +42,7 @@ public class AjaxTermScheduleDayContainer implements ALData {
   private boolean is_hasterm = false;
 
   /*
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     // 日付

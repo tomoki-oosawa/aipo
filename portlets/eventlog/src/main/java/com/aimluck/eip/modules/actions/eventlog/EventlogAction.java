@@ -30,25 +30,24 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * イベントログのアクションクラスです。 <BR>
- *
+ * 
  */
 public class EventlogAction extends ALBaseAction {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(EventlogAction.class.getName());
+    .getLogger(EventlogAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
    * @throws Exception
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
 
@@ -59,7 +58,7 @@ public class EventlogAction extends ALBaseAction {
 
   /**
    * イベントログを一覧表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -69,8 +68,9 @@ public class EventlogAction extends ALBaseAction {
     EventlogSelectData listData = new EventlogSelectData();
     listData.initField();
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1a-rows")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1a-rows")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "eventlog");
   }

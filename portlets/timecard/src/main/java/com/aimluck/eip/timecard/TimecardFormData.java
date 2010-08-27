@@ -48,7 +48,7 @@ import com.aimluck.eip.timecard.util.TimecardUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * タイムカードのフォームデータを管理するクラスです。 <BR>
+ * タイムカードのフォームデータを管理するクラスです。
  * 
  */
 public class TimecardFormData extends ALAbstractFormData {
@@ -82,8 +82,8 @@ public class TimecardFormData extends ALAbstractFormData {
    * @param action
    * @param rundata
    * @param context
-   * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -94,9 +94,8 @@ public class TimecardFormData extends ALAbstractFormData {
   }
 
   /**
-   * 各フィールドを初期化します。 <BR>
+   * 各フィールドを初期化します。
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
     timecard_id = new ALNumberField();
@@ -121,9 +120,8 @@ public class TimecardFormData extends ALAbstractFormData {
   }
 
   /**
-   * タイムカードの各フィールドに対する制約条件を設定します。 <BR>
+   * タイムカードの各フィールドに対する制約条件を設定します。
    * 
-   * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
    */
   @Override
   protected void setValidator() {
@@ -134,11 +132,10 @@ public class TimecardFormData extends ALAbstractFormData {
   }
 
   /**
-   * タイムカードのフォームに入力されたデータの妥当性検証を行います。 <BR>
+   * タイムカードのフォームに入力されたデータの妥当性検証を行います。
    * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -305,14 +302,12 @@ public class TimecardFormData extends ALAbstractFormData {
   }
 
   /**
-   * タイムカードをデータベースから読み出します。 <BR>
+   * タイムカードをデータベースから読み出します。
    * 
    * @param rundata
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
@@ -341,14 +336,12 @@ public class TimecardFormData extends ALAbstractFormData {
   }
 
   /**
-   * タイムカードをデータベースから削除します。 <BR>
+   * タイムカードをデータベースから削除します。
    * 
    * @param rundata
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,
@@ -376,14 +369,12 @@ public class TimecardFormData extends ALAbstractFormData {
   }
 
   /**
-   * タイムカードをデータベースに格納します。 <BR>
+   * タイムカードをデータベースに格納します。
    * 
    * @param rundata
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
@@ -421,14 +412,12 @@ public class TimecardFormData extends ALAbstractFormData {
   }
 
   /**
-   * データベースに格納されているタイムカードを更新します。 <BR>
+   * データベースに格納されているタイムカードを更新します。
    * 
    * @param rundata
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
@@ -523,8 +512,7 @@ public class TimecardFormData extends ALAbstractFormData {
   }
 
   /**
-   * アクセス権限チェック用メソッド。<br />
-   * アクセス権限の機能名を返します。
+   * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
    * 
    * @return
    */

@@ -32,14 +32,22 @@ import com.aimluck.eip.note.NoteMultiStateUpdate;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 伝言メモをJSONデータとして出力するクラスです。 <br />
+ * 伝言メモをJSONデータとして出力するクラスです。 
  * 
  */
 public class NoteFormJSONScreen extends ALJSONScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(NoteFormJSONScreen.class.getName());
 
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   * @throws Exception
+   */
   @Override
   protected String getJSONString(RunData rundata, Context context)
       throws Exception {
@@ -56,8 +64,9 @@ public class NoteFormJSONScreen extends ALJSONScreen {
           context.put("msg_type", "" + msgType);
           ALEipUtils.setTemp(rundata, context, "tab", "sent_notes");
         } else {
-          JSONArray json = JSONArray.fromObject(context
-            .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
 
@@ -66,8 +75,9 @@ public class NoteFormJSONScreen extends ALJSONScreen {
         NoteMultiStateUpdate data = new NoteMultiStateUpdate();
         if (data.doMultiAction(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-            .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
@@ -76,8 +86,9 @@ public class NoteFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doDelete(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-            .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if ("multi_delete".equals(mode)) {
@@ -85,8 +96,9 @@ public class NoteFormJSONScreen extends ALJSONScreen {
         NoteMultiDelete delete = new NoteMultiDelete();
         if (delete.doMultiAction(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-            .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
 
@@ -95,8 +107,9 @@ public class NoteFormJSONScreen extends ALJSONScreen {
         NoteMultiStateUpdate update = new NoteMultiStateUpdate();
         if (update.doMultiAction(this, rundata, context)) {
         } else {
-          JSONArray json = JSONArray.fromObject(context
-            .get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else {

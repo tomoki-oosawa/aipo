@@ -74,8 +74,8 @@ public class ScheduleToDoResultData implements ALData, Cloneable {
   private final String format = "H:mm";
 
   /**
-   * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
+   *
    */
   public void initField() {
     todo_id = new ALNumberField();
@@ -215,8 +215,9 @@ public class ScheduleToDoResultData implements ALData, Cloneable {
     addon_schedule_flg = bool;
   }
 
-  /*
-   * @see java.lang.Object#clone()
+  /**
+   * 
+   * @return
    */
   @Override
   public Object clone() {

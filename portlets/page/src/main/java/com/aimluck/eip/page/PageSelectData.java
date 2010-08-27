@@ -38,7 +38,7 @@ import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.page.util.PageUtils;
 
 /**
- * ページ設定の検索データを管理するためのクラスです。 <br />
+ * ページ設定の検索データを管理するためのクラスです。 
  */
 public class PageSelectData extends ALAbstractSelectData<Portlets, Portlets> {
 
@@ -48,8 +48,10 @@ public class PageSelectData extends ALAbstractSelectData<Portlets, Portlets> {
     .getLogger(PageSelectData.class.getName());
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected ResultList<Portlets> selectList(RunData rundata, Context context) {
@@ -110,8 +112,10 @@ public class PageSelectData extends ALAbstractSelectData<Portlets, Portlets> {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected Portlets selectDetail(RunData rundata, Context context) {
@@ -125,7 +129,9 @@ public class PageSelectData extends ALAbstractSelectData<Portlets, Portlets> {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   * 
+   * @param obj
+   * @return
    */
   @Override
   protected Object getResultData(Portlets obj) {
@@ -133,7 +139,9 @@ public class PageSelectData extends ALAbstractSelectData<Portlets, Portlets> {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   * 
+   * @param record
+   * @return
    */
   @Override
   protected Object getResultDataDetail(Portlets record) {
@@ -147,7 +155,8 @@ public class PageSelectData extends ALAbstractSelectData<Portlets, Portlets> {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   * 
+   * @return
    */
   @Override
   protected Attributes getColumnMap() {

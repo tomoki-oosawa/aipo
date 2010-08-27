@@ -50,8 +50,10 @@ public class SystemNetworkSelectData extends
   private String endword;
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected ResultList<EipMCompany> selectList(RunData rundata, Context context) {
@@ -59,8 +61,10 @@ public class SystemNetworkSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected EipMCompany selectDetail(RunData rundata, Context context) {
@@ -77,7 +81,9 @@ public class SystemNetworkSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   * 
+   * @param record
+   * @return
    */
   @Override
   protected Object getResultData(EipMCompany record) {
@@ -85,7 +91,9 @@ public class SystemNetworkSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   * 
+   * @param record
+   * @return
    */
   @Override
   protected Object getResultDataDetail(EipMCompany record) {
@@ -144,7 +152,8 @@ public class SystemNetworkSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   * 
+   * @return
    */
   @Override
   protected Attributes getColumnMap() {

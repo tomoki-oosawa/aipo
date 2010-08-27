@@ -83,7 +83,7 @@ public class MsgboardTopicResultData implements ALData {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     topic_id = new ALNumberField();

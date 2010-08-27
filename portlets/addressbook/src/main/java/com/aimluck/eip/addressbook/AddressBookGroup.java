@@ -32,17 +32,17 @@ public class AddressBookGroup implements ALData {
 
   /** logger */
   @SuppressWarnings("unused")
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AddressBookGroup.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AddressBookGroup.class.getName());
 
   // グループID
   private ALNumberField group_id;
+
   // グループ名
   private ALStringField group_name;
 
   /**
    * 初期化処理。
-   * @see com.aimluck.eip.common.ALData#initField()
    */
   public void initField() {
     group_id = new ALNumberField();

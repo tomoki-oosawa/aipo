@@ -50,7 +50,7 @@ public class ScheduleOnedayContainer implements ALData {
   private int rowIndex;
 
   /*
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     // スケジュールリスト

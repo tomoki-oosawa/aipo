@@ -429,7 +429,6 @@ public class WhatsNewUtils {
                 sb.append(",").append(tmpowner.getAliasName().getValue());
                 tmpb.setOwnerName(sb.toString());
               } catch (Exception e) {
-                // TODO: handle exception
               }
               is_contain = true;
               break;

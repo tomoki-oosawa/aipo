@@ -58,7 +58,7 @@ public class BlogCommentResultData implements ALData {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     comment_id = new ALNumberField();

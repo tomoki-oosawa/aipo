@@ -45,7 +45,7 @@ public class CellScheduleSelectFormByMemberData extends
   private ALEipUser targerUser;
 
   /*
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   @Override
   public void initField() {

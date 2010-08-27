@@ -48,7 +48,7 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
   /**
    * フィールドを初期化します。 <BR>
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     // 状態
@@ -59,7 +59,7 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
   /**
    * 状態フィールドに対する制約条件を設定します。 <BR>
    * 
-   * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
+   * 
    */
   @Override
   protected void setValidator() {
@@ -74,7 +74,7 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
    * 
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+   * 
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -89,8 +89,6 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
@@ -104,8 +102,6 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
@@ -120,8 +116,6 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
@@ -149,8 +143,6 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,

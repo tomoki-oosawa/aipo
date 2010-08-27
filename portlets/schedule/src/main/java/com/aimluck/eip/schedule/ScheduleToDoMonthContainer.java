@@ -39,7 +39,7 @@ public class ScheduleToDoMonthContainer implements ALData {
   private Calendar viewStartCal;
 
   /*
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     map = new LinkedHashMap<Integer, List<ScheduleToDoWeekContainer>>();

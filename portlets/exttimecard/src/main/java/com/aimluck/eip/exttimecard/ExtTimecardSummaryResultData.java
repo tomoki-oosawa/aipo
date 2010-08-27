@@ -90,7 +90,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     work_day = new ALNumberField(0);

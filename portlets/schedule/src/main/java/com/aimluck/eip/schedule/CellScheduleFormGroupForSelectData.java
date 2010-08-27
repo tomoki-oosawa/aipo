@@ -78,11 +78,13 @@ public class CellScheduleFormGroupForSelectData extends ALAbstractFormData {
 
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.
-   * actions.common.ALAction, org.apache.turbine.util.RunData,
-   * org.apache.velocity.context.Context)
+  /**
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -104,16 +106,20 @@ public class CellScheduleFormGroupForSelectData extends ALAbstractFormData {
   public void loadParameters(RunData rundata, Context context) {
   }
 
-  /*
-   * @see com.aimluck.eip.common.ALData#initField()
+  /**
+   *
    */
   public void initField() {
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
@@ -162,35 +168,30 @@ public class CellScheduleFormGroupForSelectData extends ALAbstractFormData {
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-    // TODO 自動生成されたメソッド・スタブ
     return false;
   }
 
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-    // TODO 自動生成されたメソッド・スタブ
     return false;
   }
 
   @Override
   protected void setValidator() throws ALPageNotFoundException,
       ALDBErrorException {
-    // TODO 自動生成されたメソッド・スタブ
 
   }
 
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-    // TODO 自動生成されたメソッド・スタブ
     return false;
   }
 
   @Override
   protected boolean validate(List<String> msgList)
       throws ALPageNotFoundException, ALDBErrorException {
-    // TODO 自動生成されたメソッド・スタブ
     return true;
   }
 }

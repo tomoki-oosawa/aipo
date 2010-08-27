@@ -35,6 +35,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
+ *
  */
 public class SystemUtils {
 
@@ -44,12 +45,12 @@ public class SystemUtils {
 
   /** Webアプリケーションサーバのポート番号 */
   private static final int WEBAPPSERVER_PORT = JetspeedResources.getInt(
-    "aipo.webappserver.port", 80);
+    "aipo.webappserver.port",
+    80);
 
   /**
    * 
-   * @param rundata
-   * @param context
+   * @param company_id
    * @return
    */
   public static EipMMybox getEipMMybox(String company_id) {
@@ -60,8 +61,9 @@ public class SystemUtils {
         return result;
       }
 
-      Expression exp = ExpressionFactory.matchDbExp(
-        EipMMybox.EIP_MCOMPANY_PROPERTY + "."
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipMMybox.EIP_MCOMPANY_PROPERTY
+          + "."
           + EipMCompany.COMPANY_ID_PK_COLUMN, Integer.valueOf(company_id));
 
       List<EipMMybox> list = Database.query(EipMMybox.class, exp).fetchList();
@@ -91,10 +93,12 @@ public class SystemUtils {
         return result;
       }
 
-      Expression exp = ExpressionFactory.matchDbExp(
-        EipMCompany.COMPANY_ID_PK_COLUMN, Integer.valueOf(id));
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipMCompany.COMPANY_ID_PK_COLUMN, Integer
+          .valueOf(id));
 
-      List<EipMCompany> list = Database.query(EipMCompany.class, exp).fetchList();
+      List<EipMCompany> list =
+        Database.query(EipMCompany.class, exp).fetchList();
       if (list == null || list.size() == 0) {
         logger.debug("Not found ID...");
         return result;
@@ -120,7 +124,6 @@ public class SystemUtils {
    * @param ip
    * @param port
    * @param servername
-   *          Webアプリケーション名
    * @return
    */
   public static String getUrl(String ip, int port, String servername) {
@@ -128,8 +131,8 @@ public class SystemUtils {
       return "";
     }
 
-    String protocol = JetspeedResources
-      .getString("access.url.protocol", "http");
+    String protocol =
+      JetspeedResources.getString("access.url.protocol", "http");
 
     StringBuffer url = new StringBuffer();
 
@@ -137,8 +140,15 @@ public class SystemUtils {
       url.append(protocol).append("://").append(ip).append("/").append(
         servername).append("/");
     } else {
-      url.append(protocol).append("://").append(ip).append(":").append(port)
-        .append("/").append(servername).append("/");
+      url
+        .append(protocol)
+        .append("://")
+        .append(ip)
+        .append(":")
+        .append(port)
+        .append("/")
+        .append(servername)
+        .append("/");
     }
 
     return url.toString();

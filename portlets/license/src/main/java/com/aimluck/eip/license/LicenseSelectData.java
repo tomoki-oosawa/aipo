@@ -41,8 +41,10 @@ public class LicenseSelectData extends
     .getLogger(LicenseSelectData.class.getName());
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected ResultList<AipoLicense> selectList(RunData rundata, Context context) {
@@ -50,8 +52,10 @@ public class LicenseSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected AipoLicense selectDetail(RunData rundata, Context context) {
@@ -59,7 +63,9 @@ public class LicenseSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   * 
+   * @param obj
+   * @return
    */
   @Override
   protected Object getResultData(AipoLicense obj) {
@@ -67,7 +73,9 @@ public class LicenseSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   * 
+   * @param license
+   * @return
    */
   @Override
   protected Object getResultDataDetail(AipoLicense license) {
@@ -76,7 +84,8 @@ public class LicenseSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   * 
+   * @return
    */
   @Override
   protected Attributes getColumnMap() {

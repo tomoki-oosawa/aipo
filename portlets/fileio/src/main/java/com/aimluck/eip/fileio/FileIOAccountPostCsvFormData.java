@@ -117,8 +117,8 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
    * @param action
    * @param rundata
    * @param context
-   * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * 
+   * 
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -129,7 +129,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
   /**
    * 各フィールドを初期化します。 <BR>
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
 
@@ -213,8 +213,6 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean setFormData(RunData rundata, Context context,
@@ -262,7 +260,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
   /**
    * 各フィールドに対する制約条件を設定します。 <BR>
    * 
-   * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
+   * 
    */
   @Override
   protected void setValidator() {
@@ -315,7 +313,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
    * 
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+   * 
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -392,62 +390,10 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
-    // try {
-    // // オブジェクトモデルを取得
-    // EipMPost record = FileIOAccountCsvUtils.getEipMPost(rundata, context);
-    // if (record == null)
-    // return false;
-    // // 部署名
-    // post_name.setValue(record.getPostName());
-    // // 郵便番号
-    // StringTokenizer token;
-    // if (record.getZipcode() != null) {
-    // token = new StringTokenizer(record.getZipcode(), "-");
-    // if (token.countTokens() == 2) {
-    // zipcode1.setValue(token.nextToken());
-    // zipcode2.setValue(token.nextToken());
-    // }
-    // }
-    // // 住所
-    // address.setValue(record.getAddress());
-    // // 電話番号（外線）
-    // if (record.getOutTelephone() != null) {
-    // token = new StringTokenizer(record.getOutTelephone(), "-");
-    // if (token.countTokens() == 3) {
-    // post_out_telephone1.setValue(token.nextToken());
-    // post_out_telephone2.setValue(token.nextToken());
-    // post_out_telephone3.setValue(token.nextToken());
-    // }
-    // }
-    //
-    // post_in_telephone.setValue(record.getInTelephone());
-    //
-    // // FAX番号
-    // if (record.getFaxNumber() != null) {
-    // token = new StringTokenizer(record.getFaxNumber(), "-");
-    // if (token.countTokens() == 3) {
-    // fax_number1.setValue(token.nextToken());
-    // fax_number2.setValue(token.nextToken());
-    // fax_number3.setValue(token.nextToken());
-    // }
-    // }
-    // if (is_join_member)
-    // memberList.addAll(ALEipUtils.getUsersFromPost(record.getPostId()
-    // .intValue()));
-    //
-    // post_id = record.getPostId().intValue();
-    //
-    // } catch (Exception ex) {
-    // logger.error("Exception", ex);
-    // return false;
-    // }
-    // return true;
     return false;
   }
 
@@ -458,8 +404,6 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
@@ -532,8 +476,6 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
@@ -549,8 +491,6 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,

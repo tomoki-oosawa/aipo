@@ -71,7 +71,7 @@ public class AccountResultData implements ALData {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     user_id = new ALNumberField();

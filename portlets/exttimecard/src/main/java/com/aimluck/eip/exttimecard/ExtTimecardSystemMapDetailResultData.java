@@ -34,7 +34,7 @@ public class ExtTimecardSystemMapDetailResultData extends
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   @Override
   public void initField() {

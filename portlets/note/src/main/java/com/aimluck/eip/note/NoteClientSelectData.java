@@ -40,7 +40,7 @@ import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 伝言メモ依頼者検索データを管理するためのクラスです。 <br />
+ * 伝言メモ依頼者検索データを管理するためのクラスです。
  */
 public class NoteClientSelectData extends
     ALAbstractSelectData<EipTNoteMap, EipTNoteMap> implements ALData {
@@ -63,8 +63,8 @@ public class NoteClientSelectData extends
    * @param action
    * @param rundata
    * @param context
-   * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -87,8 +87,10 @@ public class NoteClientSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected ResultList<EipTNoteMap> selectList(RunData rundata, Context context) {
@@ -111,8 +113,10 @@ public class NoteClientSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected EipTNoteMap selectDetail(RunData rundata, Context context) {
@@ -120,7 +124,9 @@ public class NoteClientSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   * 
+   * @param map
+   * @return
    */
   @Override
   protected Object getResultData(EipTNoteMap map) {
@@ -176,7 +182,9 @@ public class NoteClientSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   * 
+   * @param obj
+   * @return
    */
   @Override
   protected Object getResultDataDetail(EipTNoteMap obj) {
@@ -184,7 +192,8 @@ public class NoteClientSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   * 
+   * @return
    */
   @Override
   protected Attributes getColumnMap() {
@@ -202,32 +211,8 @@ public class NoteClientSelectData extends
     return map;
   }
 
-  // /**
-  // * ソート用の <code>Criteria</code> を構築する．
-  // *
-  // * @param crt
-  // * @return
-  // */
-  // protected Criteria buildCriteriaForListViewSort(Criteria crt,
-  // RunData rundata, Context context) {
-  // Criteria criteria = super.buildCriteriaForListViewSort(crt, rundata,
-  // context);
-  //
-  // // [第二ソート]
-  // String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
-  // if (sort == null)
-  // return criteria;
-  // Attributes map = getColumnMap();
-  // String crt_key = map.getValue(sort);
-  // if (!EipTNoteConstants.ACCEPT_DATE.equals(crt_key)) {
-  // // 受付時間でソートする．
-  // criteria.addDescendingOrderByColumn(EipTNoteConstants.ACCEPT_DATE);
-  // }
-  // return criteria;
-  // }
-
   /**
-   * 検索条件を設定した Criteria を返す． <BR>
+   * 検索条件を設定した Criteria を返す． 
    * 
    * @param rundata
    * @return
@@ -237,14 +222,28 @@ public class NoteClientSelectData extends
     return NoteUtils.getSelectQueryNoteList(rundata, context);
   }
 
+  /**
+   * 
+   * @return
+   */
   public String getUserId() {
     return userId;
   }
 
+  /**
+   * 
+   * @param userId
+   * @return
+   */
   public String getUserName(String userId) {
     return NoteUtils.getUserName(userId);
   }
 
+  /**
+   * 
+   * @param userId
+   * @return
+   */
   public String getUserFullName(String userId) {
     try {
       ALEipUser user =
@@ -255,14 +254,27 @@ public class NoteClientSelectData extends
     }
   }
 
+  /**
+   * 
+   * @param userName
+   * @return
+   */
   public String getUserId(String userName) {
     return NoteUtils.getUserId(userName);
   }
 
+  /**
+   * 
+   * @return
+   */
   public int getNewNoteAllSum() {
     return newNoteAllSum;
   }
 
+  /**
+   * 
+   * @return
+   */
   public int getUnreadReceivedNotesAllSum() {
     return unreadReceivedNotesAllSum;
   }

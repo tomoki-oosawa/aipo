@@ -84,7 +84,7 @@ public class BlogEntryResultData implements ALData {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     entry_id = new ALNumberField();

@@ -28,7 +28,7 @@ import com.aimluck.eip.note.NoteSelectData;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 伝言メモの詳細画面を処理するクラスです。 <br />
+ * 伝言メモの詳細画面を処理するクラスです。 
  * 
  */
 public class NoteDetailScreen extends ALVelocityScreen {
@@ -38,7 +38,10 @@ public class NoteDetailScreen extends ALVelocityScreen {
     .getLogger(NoteDetailScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
@@ -47,8 +50,8 @@ public class NoteDetailScreen extends ALVelocityScreen {
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
 
-      String entityid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+      String entityid =
+        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
       context.put(ALEipConstants.ENTITY_ID, entityid);
 
       String layout_template = "portlets/html/ja/ajax-note-detail.vm";

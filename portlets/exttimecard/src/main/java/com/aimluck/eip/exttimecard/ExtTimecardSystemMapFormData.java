@@ -56,14 +56,6 @@ public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
 
   private ALNumberField end_time_minute;
 
-  // private ALNumberField kinmu1;
-  //
-  // private ALNumberField kyukei1;
-  //
-  // private ALNumberField kinmu2;
-  //
-  // private ALNumberField kyukei2;
-
   private ALNumberField worktime_in;
 
   private ALNumberField resttime_in;
@@ -75,7 +67,6 @@ public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
-    // TODO 自動生成されたメソッド・スタブ
     super.init(action, rundata, context);
   }
 
@@ -83,7 +74,6 @@ public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
    *
    */
   public void initField() {
-    // TODO 自動生成されたメソッド・スタブ
 
     start_time_hour = new ALNumberField();
     start_time_minute = new ALNumberField();
@@ -171,14 +161,12 @@ public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-    // TODO 自動生成されたメソッド・スタブ
     return false;
   }
 
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-    // TODO 自動生成されたメソッド・スタブ
     return false;
   }
 

@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -49,7 +49,7 @@ public class BlogThemaMultiDelete extends ALAbstractCheckList {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(BlogThemaMultiDelete.class.getName());
+    .getLogger(BlogThemaMultiDelete.class.getName());
 
   /**
    * 
@@ -58,30 +58,29 @@ public class BlogThemaMultiDelete extends ALAbstractCheckList {
    * @param values
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractCheckList#action(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList,
-   *      java.util.ArrayList)
    */
-  protected boolean action(RunData rundata, Context context, List<String> values,
-      List<String> msgList) {
+  @Override
+  protected boolean action(RunData rundata, Context context,
+      List<String> values, List<String> msgList) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
 
       List intValues = new ArrayList();
       int valuesize = values.size();
       for (int i = 0; i < valuesize; i++) {
-        intValues.add(Integer.valueOf((String) values.get(i)));
+        intValues.add(Integer.valueOf(values.get(i)));
       }
 
       SelectQuery query = new SelectQuery(EipTBlogThema.class);
-      Expression exp2 = ExpressionFactory.inDbExp(
-          EipTBlogThema.THEMA_ID_PK_COLUMN, values);
+      Expression exp2 =
+        ExpressionFactory.inDbExp(EipTBlogThema.THEMA_ID_PK_COLUMN, values);
       query.setQualifier(exp2);
 
       List themalist = dataContext.performQuery(query);
-      if (themalist == null || themalist.size() == 0)
+      if (themalist == null || themalist.size() == 0) {
         return false;
+      }
 
       // これらテーマに含まれる記事を「未分類」に移す
       List themaIds = new ArrayList();
@@ -93,15 +92,16 @@ public class BlogThemaMultiDelete extends ALAbstractCheckList {
       }
 
       SelectQuery reqquery = new SelectQuery(EipTBlogEntry.class);
-      Expression reqexp1 = ExpressionFactory.inDbExp(
-          EipTBlogEntry.EIP_TBLOG_THEMA_PROPERTY + "."
-              + EipTBlogThema.THEMA_ID_PK_COLUMN, values);
+      Expression reqexp1 =
+        ExpressionFactory.inDbExp(EipTBlogEntry.EIP_TBLOG_THEMA_PROPERTY
+          + "."
+          + EipTBlogThema.THEMA_ID_PK_COLUMN, values);
       reqquery.setQualifier(reqexp1);
       List requests = dataContext.performQuery(reqquery);
       if (requests != null && requests.size() > 0) {
         EipTBlogEntry request = null;
-        EipTBlogThema defaultThema = BlogUtils.getEipTBlogThema(dataContext,
-            Long.valueOf(1));
+        EipTBlogThema defaultThema =
+          BlogUtils.getEipTBlogThema(dataContext, Long.valueOf(1));
         int size = requests.size();
         for (int i = 0; i < size; i++) {
           request = (EipTBlogEntry) requests.get(i);
@@ -127,11 +127,13 @@ public class BlogThemaMultiDelete extends ALAbstractCheckList {
 
         // ログに保存
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-            entityId, ALEventlogConstants.PORTLET_TYPE_BLOG_THEMA, themaName);
+          entityId,
+          ALEventlogConstants.PORTLET_TYPE_BLOG_THEMA,
+          themaName);
       }
       // 一覧表示画面のフィルタに設定されているカテゴリのセッション情報を削除
-      String filtername = BlogEntrySelectData.class.getName()
-          + ALEipConstants.LIST_FILTER;
+      String filtername =
+        BlogEntrySelectData.class.getName() + ALEipConstants.LIST_FILTER;
       ALEipUtils.removeTemp(rundata, context, filtername);
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -146,6 +148,7 @@ public class BlogThemaMultiDelete extends ALAbstractCheckList {
    * 
    * @return
    */
+  @Override
   protected int getDefineAclType() {
     return ALAccessControlConstants.VALUE_ACL_DELETE;
   }
@@ -156,6 +159,7 @@ public class BlogThemaMultiDelete extends ALAbstractCheckList {
    * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_BLOG_THEME;
   }

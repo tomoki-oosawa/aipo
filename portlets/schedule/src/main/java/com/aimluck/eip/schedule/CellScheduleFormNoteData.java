@@ -419,11 +419,13 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
 
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.
-   * actions.common.ALAction, org.apache.turbine.util.RunData,
-   * org.apache.velocity.context.Context)
+  /**
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -489,7 +491,7 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     // Date now = new Date();
@@ -653,10 +655,14 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
     common_category_id.setValue(1);
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected boolean setFormData(RunData rundata, Context context,
@@ -687,7 +693,7 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
   }
 
   /*
-   * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
+   *
    */
   @Override
   protected void setValidator() {
@@ -704,9 +710,12 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
     getNote().limitMaxLength(1000);
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+  /**
+   * 
+   * @param msgList
+   * @return
+   * @throws ALDBErrorException
+   * @throws ALPageNotFoundException
    */
   @Override
   protected boolean validate(List<String> msgList) throws ALDBErrorException,
@@ -741,10 +750,14 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
     return (msgList.size() == 0);
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
@@ -777,10 +790,13 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
     return true;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @throws ALDBErrorException
    */
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
@@ -788,7 +804,6 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
     EipTSchedule schedule = null;
     try {
 
-      // TODO: DBトランザクション
       // Validate のときに SELECT していることに注意する
 
       if (isSpan()) {
@@ -981,7 +996,6 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
 
     } catch (Exception e) {
       Database.rollback();
-      // TODO: エラー処理
       logger.error("[CellScheduleFormData]", e);
       throw new ALDBErrorException();
     }
@@ -1029,195 +1043,21 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
 
   }
 
-  /*
-   * private boolean sendMail(RunData rundata, List memberList, int
-   * add_dest_type_int, List<String> msgList) throws Exception {
-   * 
-   * if (add_dest_type_int < 0 || add_dest_type_int > 3) { return false; }
-   * 
-   * if (memberList == null || memberList.size() == 0) return true; // メールの送信 //
-   * EipMMailAccount srcMailAccount = WebMailUtils.getDefaultEipMMailAccount( //
-   * rundata, srcUserId); EipMMailAccount srcMailAccount = WebMailUtils
-   * .getEipMMailAccountForAdmin(rundata); if (srcMailAccount == null) { //
-   * 伝言メモの登録を完了させるため，true を返す． //
-   * msgList.add("メールアカウントが未設定のため，メールを送信できませんでした。"); msg_type =
-   * MSG_TYPE_NON_MAILACCOUNT; return true; }
-   * 
-   * ArrayList destEmailAddrs = new ArrayList(); ArrayList
-   * destCellularEMailAddrs = new ArrayList(); int size = memberList.size(); for
-   * (int i = 0; i < size; i++) { ALEipUser eipuser = (ALEipUser)
-   * memberList.get(i); ALBaseUser user = (ALBaseUser)
-   * JetspeedSecurity.getUser(eipuser.getName() .getValue()); String emailAddr =
-   * user.getEmail(); if (emailAddr != null && !emailAddr.equals("")) {
-   * destEmailAddrs.add(emailAddr); } String cellularEmailAddr =
-   * user.getCellularMail(); if (cellularEmailAddr != null &&
-   * !cellularEmailAddr.equals("")) {
-   * destCellularEMailAddrs.add(cellularEmailAddr); } } // 送信先の情報の有無を検証する
-   * boolean validUserEmail = false; boolean validCellularMail = false;
-   * 
-   * int destEmailAddrsSize = destEmailAddrs.size(); int
-   * destCellularEMailAddrsSize = destCellularEMailAddrs.size(); if
-   * (add_dest_type_int == 0) { msg_type = this.MSG_TYPE_NON_ADDR_PC_CELL;
-   * return true; } else if (add_dest_type_int == 1) { if (destEmailAddrsSize ==
-   * 0) { msg_type = MSG_TYPE_NON_ADDR_PC; return true; } validUserEmail = true;
-   * } else if (add_dest_type_int == 2) { if (destCellularEMailAddrsSize == 0) {
-   * msg_type = MSG_TYPE_NON_ADDR_CELL; return true; } validCellularMail = true;
-   * } else if (add_dest_type_int == 3) { if ((destEmailAddrsSize == 0) &&
-   * (destCellularEMailAddrsSize == 0)) { msg_type = MSG_TYPE_NON_ADDR_PC_CELL;
-   * return true; } else { if (destEmailAddrsSize == 0) { msg_type =
-   * MSG_TYPE_NON_ADDR_PC; } else { validUserEmail = true; } if
-   * (destCellularEMailAddrsSize == 0) { msg_type = MSG_TYPE_NON_ADDR_CELL; }
-   * else { validCellularMail = true; } } }
-   * 
-   * String subject = "[Aipo]スケジュール追加"; // String[] to; boolean success = true;
-   * ALDBMailHandler mailhandler = WebMailUtils.getMailHandler(org_id, (int)
-   * loginUser.getUserId().getValue(), srcMailAccount.getAccountId()
-   * .intValue()); int successSendToPc = -1; int successSendToCell = -1; //
-   * パソコンへメールを送信 if (validUserEmail) { String[] tos = new
-   * String[destEmailAddrsSize]; tos = (String[]) destEmailAddrs.toArray(tos);
-   * successSendToPc = mailhandler.send(srcMailAccount.getUserId().toString(),
-   * srcMailAccount.getAccountId().toString(), srcMailAccount
-   * .getSmtpserverName(), srcMailAccount.getSmtpPort(), tos, null, null,
-   * srcMailAccount.getMailAddress(), srcMailAccount .getMailUserName(),
-   * subject, createMsgForPc(), null, WebMailUtils
-   * .stringAsInt(srcMailAccount.getBeforeSmtpFlg()), null, null); } //
-   * 携帯電話へメールを送信 if (validCellularMail) { String[] tos = new
-   * String[destCellularEMailAddrsSize]; tos = (String[])
-   * destCellularEMailAddrs.toArray(tos);
-   * 
-   * successSendToCell = mailhandler.send(srcMailAccount.getUserId()
-   * .toString(), srcMailAccount.getAccountId().toString(), srcMailAccount
-   * .getSmtpserverName(), srcMailAccount.getSmtpPort(), tos, null, null,
-   * srcMailAccount.getMailAddress(), srcMailAccount.getMailUserName(), subject,
-   * createMsgForCellPhone(), null, (int) WebMailUtils
-   * .stringAsInt(srcMailAccount.getBeforeSmtpFlg()), null, null); }
-   * 
-   * if (successSendToPc == ALSmtpMailSender.SEND_MSG_SUCCESS &&
-   * successSendToCell == ALSmtpMailSender.SEND_MSG_SUCCESS) { success = true; }
-   * else { success = false; }
-   * 
-   * return success; }
-   * 
-   * private String getMsgDate(EipTSchedule schedule) { String CR =
-   * System.getProperty("line.separator"); Calendar start_cal =
-   * Calendar.getInstance(); start_cal.setTime(schedule.getStartDate());
-   * Calendar end_cal = Calendar.getInstance();
-   * end_cal.setTime(schedule.getEndDate());
-   * 
-   * StringBuffer result = new StringBuffer(); // DN -> 毎日 (A = N -> 期限なし A = L
-   * -> 期限あり) // WnnnnnnnN W01111110 -> 毎週(月～金用) // MnnN M25 -> 毎月25日 // S ->
-   * 期間での指定 String ptn = schedule.getRepeatPattern(); int count = 0; boolean
-   * is_repeat = true; boolean is_span = false; // 毎日 if (ptn.charAt(0) == 'D')
-   * { result.append("毎日"); count = 1; // 毎週 } else if (ptn.charAt(0) == 'W') {
-   * result.append(new StringBuffer().append("毎週 ").append( ptn.charAt(1) != '0'
-   * ? "日" : "").append( ptn.charAt(2) != '0' ? "月" : "").append( ptn.charAt(3)
-   * != '0' ? "火" : "").append( ptn.charAt(4) != '0' ? "水" : "").append(
-   * ptn.charAt(5) != '0' ? "木" : "").append( ptn.charAt(6) != '0' ? "金" :
-   * "").append( ptn.charAt(7) != '0' ? "土" : "").append(" 曜日").toString());
-   * count = 8; // 毎月 } else if (ptn.charAt(0) == 'M') { result.append("毎月
-   * ").append(Integer.parseInt(ptn.substring(1, 3))) .append("日").toString();
-   * count = 3; // 期間 } else if (ptn.charAt(0) == 'S') { is_span = true;
-   * is_repeat = false; } else { is_repeat = false; }
-   * 
-   * ALDateTimeField date_field = new ALDateTimeField("yyyy/MM/dd");
-   * ALDateTimeField time_field = new ALDateTimeField("HH:mm");
-   * 
-   * if (!is_span) { if (!is_repeat) {
-   * date_field.setValue(schedule.getStartDate());
-   * result.append(date_field.toString()); }
-   * time_field.setValue(schedule.getStartDate()); result.append("
-   * ").append(time_field.toString()).append("～");
-   * time_field.setValue(schedule.getEndDate());
-   * result.append(time_field.toString()).append(" "); }
-   * 
-   * if (is_repeat) { if (ptn.charAt(count) == 'N') { //
-   * schedule.setLimit(false); } else { // schedule.setLimit(true); // 期限
-   * date_field.setValue(schedule.getStartDate()); result.append("
-   * （").append(date_field.toString()).append("～");
-   * date_field.setValue(schedule.getEndDate());
-   * result.append(date_field.toString()).append("）").toString(); } }
-   * 
-   * return result.toString(); }
-   */
-
   /**
-   * パソコンへ送信するメールの内容を作成する．
    * 
+   * @param rundata
+   * @param context
+   * @param msgList
    * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
-  /*
-   * private String createMsgForPc() { ALBaseUser user = null; try { user =
-   * (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(
-   * loginUser.getUserId().toString())); } catch (Exception e) { return ""; }
-   * String CR = System.getProperty("line.separator"); StringBuffer body = new
-   * StringBuffer(""); body.append(loginUser.getAliasName().toString()); if
-   * (!user.getEmail().toString().equals("")) {
-   * body.append("(").append(user.getEmail().toString()).append(")"); }
-   * body.append("さんが予定を追加しました。").append(CR).append(CR);
-   * body.append("[予定]").append(CR).append(getName().toString()).append(CR);
-   * body.append("[日時]").append(CR).append(date_detail).append(CR);
-   * 
-   * if (getPlace().toString().length() > 0) { body.append("[場所]
-   * ").append(CR).append(getPlace().toString()).append(CR); }
-   * 
-   * if (getNote().toString().length() > 0) {
-   * body.append("[内容]").append(CR).append(getNote().toString()).append(CR); }
-   * 
-   * if (memberList != null) { int size = memberList.size(); int i;
-   * body.append("[参加者]").append(CR); for (i = 0; i < size; i++) { if (i != 0) {
-   * body.append(", "); } ALEipUser member = (ALEipUser) memberList.get(i);
-   * body.append(member.getAliasName()); } body.append(CR); }
-   * 
-   * body.append(CR); body.append("---------------------").append(CR);
-   * body.append("Aipo").append(CR);
-   * 
-   * return body.toString(); }
-   */
-  /**
-   * 携帯電話へ送信するメールの内容を作成する．
-   * 
-   * @return
-   */
-  /*
-   * private String createMsgForCellPhone() { ALBaseUser user = null; try { user
-   * = (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(
-   * loginUser.getUserId().toString())); } catch (Exception e) { return ""; }
-   * String CR = System.getProperty("line.separator"); StringBuffer body = new
-   * StringBuffer(""); body.append(loginUser.getAliasName().toString()); if
-   * (!user.getEmail().toString().equals("")) {
-   * body.append("(").append(user.getEmail().toString()).append(")"); }
-   * body.append("さんが予定を追加しました。").append(CR).append(CR);
-   * body.append("[予定]").append(CR).append(getName().toString()).append(CR);
-   * body.append("[日時]").append(CR).append(date_detail).append(CR); /*
-   * if(getPlace().toString().length() > 0){ body.append("[場所]
-   * ").append(CR).append(getPlace().toString()).append(CR); }
-   * 
-   * if(getNote().toString().length() > 0){
-   * body.append("[内容]").append(CR).append(getNote().toString()).append(CR); }
-   */
-  /*
-   * if (memberList != null) { int size = memberList.size(); int i;
-   * body.append("[参加者]").append(CR); for (i = 0; i < size; i++) { if (i != 0) {
-   * body.append(", "); } ALEipUser member = (ALEipUser) memberList.get(i);
-   * body.append(member.getAliasName()); } body.append(CR); }
-   * 
-   * body.append(CR); body.append("---------------------").append(CR);
-   * body.append("Aipo").append(CR); return body.toString(); }
-   */
-
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
-   */
-
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     EipTSchedule schedule = null;
     try {
 
-      // TODO: DBトランザクション
       // Validate のときに SELECT していることに注意する
 
       if (isSpan()) {
@@ -1606,7 +1446,6 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
 
     } catch (Exception e) {
       Database.rollback();
-      // TODO: エラー処理
       logger.error("[ScheduleFormData]", e);
       throw new ALDBErrorException();
     }
@@ -1666,10 +1505,14 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
     return null;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context, java.util.ArrayList)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,

@@ -27,7 +27,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.note.NoteGroupSelectData;
 
 /**
- * 伝言メモの送信先に指定できるグループの取り扱いに関するアクションクラスです。 <br />
+ * 伝言メモの送信先に指定できるグループの取り扱いに関するアクションクラスです。 
  */
 public class NoteGroupAction extends NoteAction {
 
@@ -37,8 +37,11 @@ public class NoteGroupAction extends NoteAction {
     .getLogger(NoteGroupAction.class.getName());
 
   /**
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
+   * 
+   * @param portlet
+   * @param context
+   * @param rundata
+   * @throws Exception
    */
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
@@ -47,7 +50,8 @@ public class NoteGroupAction extends NoteAction {
     listData.initField();
     // PSMLからパラメータをロードする
     // 最大表示件数（通常時）
-    listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
+    listData.setRowsNum(Integer.parseInt(portlet
+      .getPortletConfig()
       .getInitParameter("p1a-rows")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "notegroup");

@@ -33,7 +33,7 @@ import com.aimluck.eip.timecard.util.TimecardUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * タイムカードのアクションクラスです。 <BR>
+ * タイムカードのアクションクラスです。
  * 
  */
 public class TimecardAction extends ALBaseAction {
@@ -43,14 +43,12 @@ public class TimecardAction extends ALBaseAction {
     .getLogger(TimecardAction.class.getName());
 
   /**
-   * 通常表示の際の処理を記述します。 <BR>
+   * 通常表示の際の処理を記述します。
    * 
    * @param portlet
    * @param context
    * @param rundata
    * @throws Exception
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
@@ -68,7 +66,7 @@ public class TimecardAction extends ALBaseAction {
   }
 
   /**
-   * 最大化表示の際の処理を記述します。 <BR>
+   * 最大化表示の際の処理を記述します。
    * 
    * @param portlet
    * @param context
@@ -93,7 +91,7 @@ public class TimecardAction extends ALBaseAction {
   }
 
   /**
-   * タイムカードを一覧表示します。 <BR>
+   * タイムカードを一覧表示します。
    * 
    * @param rundata
    * @param context
@@ -109,7 +107,7 @@ public class TimecardAction extends ALBaseAction {
   }
 
   /**
-   * 勤務時間集計を表示します。 <BR>
+   * 勤務時間集計を表示します。
    * 
    * @param rundata
    * @param context

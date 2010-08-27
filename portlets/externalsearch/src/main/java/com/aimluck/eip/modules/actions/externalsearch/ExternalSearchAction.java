@@ -28,7 +28,7 @@ import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 検索窓のアクションクラスです。 <BR>
+ * 検索窓のアクションクラスです。 
  * 
  */
 public class ExternalSearchAction extends ALBaseAction {
@@ -39,14 +39,12 @@ public class ExternalSearchAction extends ALBaseAction {
     .getLogger(ExternalSearchAction.class.getName());
 
   /**
-   * 通常表示の際の処理を記述します。 <BR>
+   * 通常表示の際の処理を記述します。 
    * 
    * @param portlet
    * @param context
    * @param rundata
    * @throws Exception
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
@@ -55,7 +53,7 @@ public class ExternalSearchAction extends ALBaseAction {
   }
 
   /**
-   * 最大化表示の際の処理を記述します。 <BR>
+   * 最大化表示の際の処理を記述します。 
    * 
    * @param portlet
    * @param context
@@ -68,7 +66,7 @@ public class ExternalSearchAction extends ALBaseAction {
   }
 
   /**
-   * 検索窓を表示します。 <BR>
+   * 検索窓を表示します。 
    * 
    * @param rundata
    * @param context

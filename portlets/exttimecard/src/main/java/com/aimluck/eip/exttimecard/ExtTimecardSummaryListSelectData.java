@@ -150,18 +150,17 @@ public class ExtTimecardSummaryListSelectData extends
   public void initField() {
   }
 
-  /*
-   * (非 Javadoc)
+  /**
    * 
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules
-   * .actions.common.ALAction, org.apache.turbine.util.RunData,
-   * org.apache.velocity.context.Context)
+   * @param action
+   * @param rundata
+   * @param context
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
-    // TODO 自動生成されたメソッド・スタブ
     super.init(action, rundata, context);
 
     this.initField();
@@ -388,12 +387,14 @@ public class ExtTimecardSummaryListSelectData extends
 
   }
 
-  /*
-   * (非 Javadoc)
+  /**
    * 
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context)
+   * @param rundata
+   * @param context
+   * @param target_user_id
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   protected List<EipTExtTimecard> selectList(RunData rundata, Context context,
       String target_user_id) throws ALPageNotFoundException, ALDBErrorException {
@@ -418,12 +419,13 @@ public class ExtTimecardSummaryListSelectData extends
     }
   }
 
-  /*
-   * (非 Javadoc)
+  /**
    * 
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context)
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected ResultList<EipTExtTimecard> selectList(RunData rundata,
@@ -449,33 +451,25 @@ public class ExtTimecardSummaryListSelectData extends
     }
   }
 
-  /*
-   * (非 Javadoc)
+  /**
    * 
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context)
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected EipTExtTimecard selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
-    // TODO 自動生成されたメソッド・スタブ
     return null;
   }
-
-  /*
-   * (非 Javadoc)
-   * 
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
-   */
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
    * 
    * @param obj
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
   @Override
   protected Object getResultData(EipTExtTimecard record)
@@ -512,28 +506,24 @@ public class ExtTimecardSummaryListSelectData extends
     return null;
   }
 
-  /*
-   * (非 Javadoc)
+  /**
    * 
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang
-   * .Object)
+   * @param obj
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected Object getResultDataDetail(EipTExtTimecard obj)
       throws ALPageNotFoundException, ALDBErrorException {
-    // TODO 自動生成されたメソッド・スタブ
     return null;
   }
 
   /*
    * (非 Javadoc)
-   * 
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
   @Override
   protected Attributes getColumnMap() {
-    // TODO 自動生成されたメソッド・スタブ
     return null;
   }
 
@@ -548,10 +538,8 @@ public class ExtTimecardSummaryListSelectData extends
     try {
       user = ALEipUtils.getALEipUser(userid);
     } catch (NumberFormatException e1) {
-      // TODO 自動生成された catch ブロック
       e1.printStackTrace();
     } catch (ALDBErrorException e1) {
-      // TODO 自動生成された catch ブロック
       e1.printStackTrace();
     }
     list.add(user);

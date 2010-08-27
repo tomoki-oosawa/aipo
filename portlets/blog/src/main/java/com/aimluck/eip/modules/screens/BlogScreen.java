@@ -33,20 +33,25 @@ import com.aimluck.eip.util.ALEipUtils;
 public class BlogScreen extends ALVelocityScreen {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(BlogScreen.class.getName());
+    .getLogger(BlogScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
       BlogEntryLatestSelectData listData = new BlogEntryLatestSelectData();
       listData.initField();
-      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-          context).getPortletConfig().getInitParameter("p1a-rows")));
-      listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(rundata,
-          context).getPortletConfig().getInitParameter("p3a-strlen")));
+      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p1a-rows")));
+      listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p3a-strlen")));
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-blog.vm";

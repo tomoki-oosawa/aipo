@@ -91,8 +91,8 @@ public class WorkflowAllSelectData extends
    * @param action
    * @param rundata
    * @param context
-   * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -182,8 +182,6 @@ public class WorkflowAllSelectData extends
    * @param rundata
    * @param context
    * @return
-   * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
   @Override
   public ResultList<EipTWorkflowRequest> selectList(RunData rundata,
@@ -238,7 +236,6 @@ public class WorkflowAllSelectData extends
    * 
    * @param obj
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getListData(java.lang.Object)
    */
   @Override
   protected Object getResultData(EipTWorkflowRequest record) {
@@ -327,8 +324,6 @@ public class WorkflowAllSelectData extends
    * @param rundata
    * @param context
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
   @Override
   public EipTWorkflowRequest selectDetail(RunData rundata, Context context) {
@@ -340,7 +335,6 @@ public class WorkflowAllSelectData extends
    * 
    * @param obj
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
   @Override
   protected Object getResultDataDetail(EipTWorkflowRequest obj) {
@@ -379,7 +373,7 @@ public class WorkflowAllSelectData extends
 
   /**
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   * 
    */
   @Override
   protected Attributes getColumnMap() {

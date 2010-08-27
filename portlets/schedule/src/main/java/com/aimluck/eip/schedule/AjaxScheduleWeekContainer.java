@@ -36,7 +36,7 @@ public class AjaxScheduleWeekContainer implements ALData {
   private List<AjaxScheduleDayContainer> dayList;
 
   /*
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     dayList = new ArrayList<AjaxScheduleDayContainer>();

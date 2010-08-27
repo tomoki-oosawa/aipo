@@ -27,7 +27,7 @@ import com.aimluck.eip.cayenne.om.account.AipoLicense;
 import com.aimluck.eip.orm.Database;
 
 /**
- * ライセンス情報のユーティリティクラスです <br />
+ * ライセンス情報のユーティリティクラスです 
  */
 public class LicenseUtils {
 
@@ -36,7 +36,7 @@ public class LicenseUtils {
     .getLogger(LicenseUtils.class.getName());
 
   /**
-   * AipoLicense オブジェクトモデルを取得します。 <BR>
+   * AipoLicense オブジェクトモデルを取得します。 
    * 
    * @param rundata
    * @param context

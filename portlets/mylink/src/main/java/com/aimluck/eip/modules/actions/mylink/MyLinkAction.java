@@ -55,8 +55,6 @@ public class MyLinkAction extends ALBaseAction {
    * @param context
    * @param rundata
    * @throws java.lang.Exception
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
@@ -73,8 +71,6 @@ public class MyLinkAction extends ALBaseAction {
    * @param portlet
    * @param context
    * @param rundata
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildMaximizedContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
   @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,

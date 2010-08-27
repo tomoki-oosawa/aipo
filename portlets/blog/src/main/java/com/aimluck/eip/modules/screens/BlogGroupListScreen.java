@@ -33,10 +33,13 @@ import com.aimluck.eip.util.ALEipUtils;
 public class BlogGroupListScreen extends BlogScreen {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(BlogGroupListScreen.class.getName());
+    .getLogger(BlogGroupListScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {

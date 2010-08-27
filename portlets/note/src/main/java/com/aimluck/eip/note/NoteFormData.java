@@ -64,7 +64,7 @@ import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
- * 伝言メモフォームデータを管理するためのクラスです。 <br />
+ * 伝言メモフォームデータを管理するためのクラスです。
  */
 public class NoteFormData extends ALAbstractFormData {
 
@@ -175,6 +175,14 @@ public class NoteFormData extends ALAbstractFormData {
 
   private String org_id;
 
+  /**
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
+   */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -203,7 +211,7 @@ public class NoteFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
+   *
    */
   @Override
   protected void setValidator() {
@@ -266,7 +274,9 @@ public class NoteFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+   * 
+   * @param msgList
+   * @return
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -275,7 +285,8 @@ public class NoteFormData extends ALAbstractFormData {
     dest_post_id.validate(msgList);
     dest_user_id.validate(msgList);
 
-    if (dest_user_id.getValue() == null || dest_user_id.getValue().equals("")
+    if (dest_user_id.getValue() == null
+      || dest_user_id.getValue().equals("")
       || dest_user_id.getValue().equals("all")) {
       // 選択されたグループにログインユーザ以外のユーザが登録されていない場合，エラーを表示する．
       if (memberList == null || memberList.size() <= 1) {
@@ -293,9 +304,11 @@ public class NoteFormData extends ALAbstractFormData {
     // 依頼者所属
     company_name.validate(msgList);
     // 依頼者電話番号
-    if (!telephone1.getValue().equals("") || !telephone2.getValue().equals("")
+    if (!telephone1.getValue().equals("")
+      || !telephone2.getValue().equals("")
       || !telephone3.getValue().equals("")) {
-      if (!telephone1.validate(dummy) || !telephone2.validate(dummy)
+      if (!telephone1.validate(dummy)
+        || !telephone2.validate(dummy)
         || !telephone3.validate(dummy)) {
         msgList.add("『 <span class='em'> 依頼者電話番号 </span> 』を正しく入力してください。");
       }
@@ -326,8 +339,11 @@ public class NoteFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
    */
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
@@ -336,8 +352,11 @@ public class NoteFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
    */
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
@@ -361,9 +380,13 @@ public class NoteFormData extends ALAbstractFormData {
       if (!telephone1.getValue().equals("")
         && !telephone2.getValue().equals("")
         && !telephone3.getValue().equals("")) {
-        note.setTelephone(new StringBuffer().append(telephone1.getValue())
-          .append("-").append(telephone2.getValue()).append("-").append(
-            telephone3.getValue()).toString());
+        note.setTelephone(new StringBuffer()
+          .append(telephone1.getValue())
+          .append("-")
+          .append(telephone2.getValue())
+          .append("-")
+          .append(telephone3.getValue())
+          .toString());
       } else {
         note.setTelephone("");
       }
@@ -400,7 +423,10 @@ public class NoteFormData extends ALAbstractFormData {
       // MAP の登録
       if (memberList != null) {
         for (ALEipUser user : memberList) {
-          saveNoteMap(rundata, note, user.getUserId().toString(),
+          saveNoteMap(
+            rundata,
+            note,
+            user.getUserId().toString(),
             NoteUtils.NOTE_STAT_NEW);
         }
       }
@@ -409,15 +435,18 @@ public class NoteFormData extends ALAbstractFormData {
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        note.getNoteId(), ALEventlogConstants.PORTLET_TYPE_NOTE,
+        note.getNoteId(),
+        ALEventlogConstants.PORTLET_TYPE_NOTE,
         NoteUtils.getNoteSubject(note));
 
       /* 送信先に新着ポートレット登録 */
       if (memberList != null) {
         for (ALEipUser user : memberList) {
           if (user.getUserId().getValue() != loginUser.getUserId().getValue()) {
-            WhatsNewUtils.insertWhatsNew(WhatsNewUtils.WHATS_NEW_TYPE_NOTE,
-              note.getNoteId().intValue(), (int) user.getUserId().getValue());
+            WhatsNewUtils.insertWhatsNew(
+              WhatsNewUtils.WHATS_NEW_TYPE_NOTE,
+              note.getNoteId().intValue(),
+              (int) user.getUserId().getValue());
           }
         }
       }
@@ -430,18 +459,26 @@ public class NoteFormData extends ALAbstractFormData {
     if (add_dest_type_int > 0) {
       // 携帯電話やパソコンに伝言メモをメールで送信する場合の処理
       try {
-        String subject = "[" + DatabaseOrmService.getInstance().getAlias()
-          + "]伝言メモ";
-        List<ALEipUserAddr> destMemberList = ALMailUtils.getALEipUserAddrs(
-          memberList, (int) loginUser.getUserId().getValue(), false);
+        String subject =
+          "[" + DatabaseOrmService.getInstance().getAlias() + "]伝言メモ";
+        List<ALEipUserAddr> destMemberList =
+          ALMailUtils.getALEipUserAddrs(memberList, (int) loginUser
+            .getUserId()
+            .getValue(), false);
 
         for (ALEipUserAddr member : destMemberList) {
           List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
           destMember.add(member);
-          ALMailUtils.sendMailDelegate(org_id, ALEipUtils.getUserId(rundata),
-            destMember, subject, subject, createMsgForPc(),
+          ALMailUtils.sendMailDelegate(
+            org_id,
+            ALEipUtils.getUserId(rundata),
+            destMember,
+            subject,
+            subject,
+            createMsgForPc(),
             createMsgForCellPhone(destMember.get(0).getUserId()),
-            add_dest_type_int, msgList);
+            add_dest_type_int,
+            msgList);
         }
 
         // 重複するメッセージを削除する
@@ -461,8 +498,11 @@ public class NoteFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
    */
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
@@ -471,8 +511,11 @@ public class NoteFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
    */
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,
@@ -480,8 +523,10 @@ public class NoteFormData extends ALAbstractFormData {
 
     try {
       // オブジェクトモデルを取得
-      EipTNoteMap map = NoteUtils.getEipTNoteMap(rundata, context,
-        getSelectQueryForDelete(rundata, context));
+      EipTNoteMap map =
+        NoteUtils.getEipTNoteMap(rundata, context, getSelectQueryForDelete(
+          rundata,
+          context));
 
       if (map == null) {
         return false;
@@ -505,17 +550,19 @@ public class NoteFormData extends ALAbstractFormData {
     SelectQuery<EipTNoteMap> query = Database.query(EipTNoteMap.class);
 
     if ("received_notes".equals(NoteUtils.getCurrentTab(rundata, context))) {
-      Expression exp1 = ExpressionFactory.matchExp(
-        EipTNoteMap.USER_ID_PROPERTY, userId);
+      Expression exp1 =
+        ExpressionFactory.matchExp(EipTNoteMap.USER_ID_PROPERTY, userId);
       query.setQualifier(exp1);
-      Expression exp2 = ExpressionFactory.noMatchExp(
-        EipTNoteMap.EIP_TNOTE_PROPERTY + "." + EipTNote.OWNER_ID_PROPERTY,
-        userId);
+      Expression exp2 =
+        ExpressionFactory.noMatchExp(EipTNoteMap.EIP_TNOTE_PROPERTY
+          + "."
+          + EipTNote.OWNER_ID_PROPERTY, userId);
       query.setQualifier(exp2);
     } else {
-      Expression exp = ExpressionFactory.matchExp(
-        EipTNoteMap.EIP_TNOTE_PROPERTY + "." + EipTNote.OWNER_ID_PROPERTY,
-        userId);
+      Expression exp =
+        ExpressionFactory.matchExp(EipTNoteMap.EIP_TNOTE_PROPERTY
+          + "."
+          + EipTNote.OWNER_ID_PROPERTY, userId);
       query.setQualifier(exp);
 
     }
@@ -523,7 +570,7 @@ public class NoteFormData extends ALAbstractFormData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     note_id = new ALNumberField();
@@ -611,7 +658,7 @@ public class NoteFormData extends ALAbstractFormData {
   }
 
   /**
-   * データに値をセットする． <BR>
+   * データに値をセットする． 
    * 
    * @param rundata
    * @param context
@@ -636,9 +683,11 @@ public class NoteFormData extends ALAbstractFormData {
       subject_type.setValue("3");
     }
 
-    if (dest_user_id.getValue() == null || dest_user_id.getValue().equals("")
+    if (dest_user_id.getValue() == null
+      || dest_user_id.getValue().equals("")
       || dest_user_id.getValue().equals("all")) {
-      if (target_group_name == null || target_group_name.equals("")
+      if (target_group_name == null
+        || target_group_name.equals("")
         || target_group_name.equals("all")) {
         memberList = getUsers("LoginUser");
       } else {
@@ -678,9 +727,16 @@ public class NoteFormData extends ALAbstractFormData {
     body.append(client_name).append("様から伝言があります。").append(CR).append(CR);
 
     body.append("[受付時間]").append(CR);
-    body.append(accept_date.getMonth()).append("月")
-      .append(accept_date.getDay()).append("日").append(accept_date.getHour())
-      .append("時").append(accept_date.getMinute()).append("分").append(CR);
+    body
+      .append(accept_date.getMonth())
+      .append("月")
+      .append(accept_date.getDay())
+      .append("日")
+      .append(accept_date.getHour())
+      .append("時")
+      .append(accept_date.getMinute())
+      .append("分")
+      .append(CR);
     body.append("[用件]").append(CR);
     if ("0".equals(subject_type.getValue())) {
       body.append(custom_subject.getValue()).append(CR);
@@ -699,11 +755,21 @@ public class NoteFormData extends ALAbstractFormData {
       && (!company_name.getValue().equals(""))) {
       body.append(CR).append("所属：").append(company_name);
     }
-    if (telephone1 != null && telephone2 != null && telephone3 != null
-      && !telephone1.getValue().equals("") && !telephone2.getValue().equals("")
+    if (telephone1 != null
+      && telephone2 != null
+      && telephone3 != null
+      && !telephone1.getValue().equals("")
+      && !telephone2.getValue().equals("")
       && !telephone3.getValue().equals("")) {
-      body.append(CR).append("[電話番号]").append(CR).append(telephone1)
-        .append("-").append(telephone2).append("-").append(telephone3);
+      body
+        .append(CR)
+        .append("[電話番号]")
+        .append(CR)
+        .append(telephone1)
+        .append("-")
+        .append(telephone2)
+        .append("-")
+        .append(telephone3);
     }
     if (email_address.getValue() != null
       && (!email_address.getValue().equals(""))) {
@@ -716,13 +782,15 @@ public class NoteFormData extends ALAbstractFormData {
 
     ALBaseUser user = null;
     try {
-      user = (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(
-        src_user_id.getValue()));
+      user =
+        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(src_user_id
+          .getValue()));
     } catch (Exception e) {
       return "";
     }
-    String username = new StringBuffer().append(user.getLastName()).append(" ")
-      .append(user.getFirstName()).toString();
+    String username =
+      new StringBuffer().append(user.getLastName()).append(" ").append(
+        user.getFirstName()).toString();
     body.append(CR).append("[送信者]").append(CR).append(username);
     String e_mail_addr = user.getEmail();
     if (!e_mail_addr.equals("")) {
@@ -730,8 +798,11 @@ public class NoteFormData extends ALAbstractFormData {
     }
     body.append(CR);
     body.append(CR);
-    body.append("[").append(DatabaseOrmService.getInstance().getAlias())
-      .append("へのアクセス]").append(CR);
+    body
+      .append("[")
+      .append(DatabaseOrmService.getInstance().getAlias())
+      .append("へのアクセス]")
+      .append(CR);
     if (enableAsp) {
       body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
     } else {
@@ -762,9 +833,16 @@ public class NoteFormData extends ALAbstractFormData {
     body.append(client_name).append("様から伝言があります。").append(CR).append(CR);
 
     body.append("[受付時間]").append(CR);
-    body.append(accept_date.getMonth()).append("月")
-      .append(accept_date.getDay()).append("日").append(accept_date.getHour())
-      .append("時").append(accept_date.getMinute()).append("分").append(CR);
+    body
+      .append(accept_date.getMonth())
+      .append("月")
+      .append(accept_date.getDay())
+      .append("日")
+      .append(accept_date.getHour())
+      .append("時")
+      .append(accept_date.getMinute())
+      .append("分")
+      .append(CR);
     body.append("[用件]").append(CR);
     if ("0".equals(subject_type.getValue())) {
       body.append(custom_subject.getValue()).append(CR);
@@ -783,11 +861,21 @@ public class NoteFormData extends ALAbstractFormData {
       && (!company_name.getValue().equals(""))) {
       body.append(CR).append("所属：").append(company_name);
     }
-    if (telephone1 != null && telephone2 != null && telephone3 != null
-      && !telephone1.getValue().equals("") && !telephone2.getValue().equals("")
+    if (telephone1 != null
+      && telephone2 != null
+      && telephone3 != null
+      && !telephone1.getValue().equals("")
+      && !telephone2.getValue().equals("")
       && !telephone3.getValue().equals("")) {
-      body.append(CR).append("[電話番号]").append(CR).append(telephone1)
-        .append("-").append(telephone2).append("-").append(telephone3);
+      body
+        .append(CR)
+        .append("[電話番号]")
+        .append(CR)
+        .append(telephone1)
+        .append("-")
+        .append(telephone2)
+        .append("-")
+        .append(telephone3);
     }
     if (email_address.getValue() != null
       && (!email_address.getValue().equals(""))) {
@@ -800,14 +888,16 @@ public class NoteFormData extends ALAbstractFormData {
 
     ALBaseUser user = null;
     try {
-      user = (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(
-        src_user_id.getValue()));
+      user =
+        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(src_user_id
+          .getValue()));
     } catch (Exception e) {
       return "";
     }
 
-    String username = new StringBuffer().append(user.getLastName()).append(" ")
-      .append(user.getFirstName()).toString();
+    String username =
+      new StringBuffer().append(user.getLastName()).append(" ").append(
+        user.getFirstName()).toString();
     body.append(CR).append("[送信者]").append(CR).append(username);
     String e_mail_addr = user.getEmail();
     if (e_mail_addr != null && !e_mail_addr.equals("")) {
@@ -824,8 +914,11 @@ public class NoteFormData extends ALAbstractFormData {
 
     body.append(CR);
     body.append(CR);
-    body.append("[").append(DatabaseOrmService.getInstance().getAlias())
-      .append("へのアクセス]").append(CR);
+    body
+      .append("[")
+      .append(DatabaseOrmService.getInstance().getAlias())
+      .append("へのアクセス]")
+      .append(CR);
     body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
       ALCellularUtils.getCellularKey(destUser)).append(CR);
     body.append("---------------------").append(CR);
@@ -833,6 +926,14 @@ public class NoteFormData extends ALAbstractFormData {
     return body.toString();
   }
 
+  /**
+   * 
+   * @param rundata
+   * @param note
+   * @param userId
+   * @param stat
+   * @throws ALDBErrorException
+   */
   private void saveNoteMap(RunData rundata, EipTNote note, String userId,
       String stat) throws ALDBErrorException {
     EipTNoteMap map = Database.create(EipTNoteMap.class);
@@ -844,6 +945,12 @@ public class NoteFormData extends ALAbstractFormData {
     map.setNoteStat(stat);
   }
 
+  /**
+   * 
+   * @param list
+   * @param user
+   * @return
+   */
   private boolean containtsUser(List<ALEipUser> list, ALEipUser user) {
     if (user == null || list == null || list.size() <= 0) {
       return false;
@@ -860,6 +967,9 @@ public class NoteFormData extends ALAbstractFormData {
     return false;
   }
 
+  /**
+   *
+   */
   public void enableAddDestTypes() {
     // 追加送信先タイプ（パソコンのメールアドレスに送信）
     add_dest_type_pc.setValue("1");
@@ -1044,14 +1154,27 @@ public class NoteFormData extends ALAbstractFormData {
     return dest_user_name;
   }
 
+  /**
+   * 
+   * @return
+   */
   public ALNumberField getDestPostId() {
     return dest_post_id;
   }
 
+  /**
+   * 
+   * @param userName
+   * @return
+   */
   public String getUserId(String userName) {
     return NoteUtils.getUserId(userName);
   }
 
+  /**
+   * 
+   * @return
+   */
   public String getTargetGroupName() {
     return target_group_name;
   }
@@ -1064,6 +1187,10 @@ public class NoteFormData extends ALAbstractFormData {
     return myGroupList;
   }
 
+  /**
+   * 
+   * @return
+   */
   public int getMsgType() {
     return msg_type;
   }

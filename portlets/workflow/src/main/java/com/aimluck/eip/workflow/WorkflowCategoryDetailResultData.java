@@ -51,7 +51,7 @@ public class WorkflowCategoryDetailResultData extends
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   @Override
   public void initField() {

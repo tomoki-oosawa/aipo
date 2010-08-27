@@ -48,7 +48,10 @@ public class WhatsNewScreen extends ALVelocityScreen {
     .getLogger(WhatsNewScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
@@ -96,7 +99,6 @@ public class WhatsNewScreen extends ALVelocityScreen {
     if (rundata.getParameters().containsKey("state")) {
       state.setValue(rundata.getParameters().getString("state"));
     } else {
-      // TODO エラーページへリダイレクト
       return;
     }
 
@@ -106,7 +108,6 @@ public class WhatsNewScreen extends ALVelocityScreen {
     if (rundata.getParameters().containsKey("entityid")) {
       eid.setValue(rundata.getParameters().getString("entityid"));
     } else {
-      // TODO エラーページへリダイレクト or ページ変更
       return;
     }
 
@@ -116,7 +117,6 @@ public class WhatsNewScreen extends ALVelocityScreen {
       (value % 10 == 0 && state.validate(msgList) && eid.validate(msgList));
 
     if (!isValid) {
-      // TODO エラーページへリダイレクト or ページ変更
       return;
     }
 

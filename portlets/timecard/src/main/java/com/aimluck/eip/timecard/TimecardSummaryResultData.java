@@ -36,8 +36,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.timecard.util.TimecardUtils;
 
 /**
- * 一日分のタイムカード(出勤・退勤の履歴)を保持する。<br>
- * 一日ごとの勤務時間・残業時間などを計算し、その結果を保持する。
+ * 一日分のタイムカード(出勤・退勤の履歴)を保持する。 一日ごとの勤務時間・残業時間などを計算し、その結果を保持する。
  * 
  * 
  */
@@ -68,8 +67,7 @@ public class TimecardSummaryResultData implements ALData {
   private ALStringField sotai = null;
 
   /**
-   * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     date = new ALDateField();

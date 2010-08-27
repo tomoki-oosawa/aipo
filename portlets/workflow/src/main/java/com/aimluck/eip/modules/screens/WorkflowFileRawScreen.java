@@ -36,7 +36,9 @@ public class WorkflowFileRawScreen extends FileuploadRawScreen {
     .getLogger(WorkflowFileRawScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata) throws Exception {

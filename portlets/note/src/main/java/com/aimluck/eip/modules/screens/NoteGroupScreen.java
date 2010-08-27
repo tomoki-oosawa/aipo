@@ -38,7 +38,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 伝言メモの送信先に指定できるグループの一覧を処理するクラスです。 <br />
+ * 伝言メモの送信先に指定できるグループの一覧を処理するクラスです。
  * 
  */
 public class NoteGroupScreen extends ALVelocityScreen {
@@ -48,7 +48,10 @@ public class NoteGroupScreen extends ALVelocityScreen {
     .getLogger(NoteGroupScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
@@ -63,9 +66,8 @@ public class NoteGroupScreen extends ALVelocityScreen {
 
       NoteGroupSelectData listData = new NoteGroupSelectData();
       listData.initField();
-      // PSMLからパラメータをロードする
-      // 最大表示件数（最大化時）
-      listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
+      listData.setRowsNum(Integer.parseInt(portlet
+        .getPortletConfig()
         .getInitParameter("p1a-rows")));
       listData.doViewList(this, rundata, context);
       String layout_template = "portlets/html/ja/ajax-notegroup.vm";
@@ -77,6 +79,12 @@ public class NoteGroupScreen extends ALVelocityScreen {
     }
   }
 
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param portlet
+   */
   protected void updateState(RunData rundata, Context context,
       VelocityPortlet portlet) {
     // エラーメッセージ
@@ -104,8 +112,8 @@ public class NoteGroupScreen extends ALVelocityScreen {
 
     int value = (int) state.getValue();
     // 0以上100以下で、10の倍数
-    boolean isValid = (value % 10 == 0 && state.validate(msgList) && eid
-      .validate(msgList));
+    boolean isValid =
+      (value % 10 == 0 && state.validate(msgList) && eid.validate(msgList));
 
     if (!isValid) {
       return;
@@ -113,14 +121,15 @@ public class NoteGroupScreen extends ALVelocityScreen {
 
     try {
 
-      Expression exp1 = ExpressionFactory.matchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(ALEipUtils
-          .getUserId(rundata)));
-      Expression exp2 = ExpressionFactory.matchDbExp(
-        EipTTodo.TODO_ID_PK_COLUMN, Integer.valueOf((int) eid.getValue()));
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+          .valueOf(ALEipUtils.getUserId(rundata)));
+      Expression exp2 =
+        ExpressionFactory.matchDbExp(EipTTodo.TODO_ID_PK_COLUMN, Integer
+          .valueOf((int) eid.getValue()));
 
-      List<EipTTodo> list = Database.query(EipTTodo.class, exp1).andQualifier(
-        exp2).fetchList();
+      List<EipTTodo> list =
+        Database.query(EipTTodo.class, exp1).andQualifier(exp2).fetchList();
 
       if (list == null || list.size() == 0) {
         return;

@@ -49,7 +49,9 @@ public class FileIOAccountCsvFileScreen extends ALCSVScreen {
   public static final String DEFAULT_VIEW_PASSWORD = "*";
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @return
    */
   @Override
   protected String getContentType(RunData rundata) {
@@ -91,7 +93,10 @@ public class FileIOAccountCsvFileScreen extends ALCSVScreen {
   }
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @return
+   * @throws Exception
    */
   protected String getCSVStringDB(RunData rundata) throws Exception {
     String LINE_SEPARATOR = System.getProperty("line.separator");

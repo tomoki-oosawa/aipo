@@ -47,13 +47,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ブログテーマのフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class BlogThemaFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(BlogThemaFormData.class.getName());
+    .getLogger(BlogThemaFormData.class.getName());
 
   /** カテゴリ名 */
   private ALStringField thema_name;
@@ -66,13 +66,14 @@ public class BlogThemaFormData extends ALAbstractFormData {
   private DataContext dataContext;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
-   * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * 
+   * 
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -80,7 +81,7 @@ public class BlogThemaFormData extends ALAbstractFormData {
 
   /**
    *
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     dataContext = DatabaseOrmService.getInstance().getDataContext();
@@ -97,9 +98,10 @@ public class BlogThemaFormData extends ALAbstractFormData {
 
   /**
    * ブログカテゴリの各フィールドに対する制約条件を設定します。 <BR>
-   *
-   * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
+   * 
+   * 
    */
+  @Override
   protected void setValidator() {
     // カテゴリ名必須項目
     thema_name.setNotNull(true);
@@ -110,20 +112,22 @@ public class BlogThemaFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res = super.setFormData(rundata, context, msgList);
     if (res) {
       if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
-        thema_id = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
+        thema_id =
+          Integer.parseInt(ALEipUtils.getTemp(
+            rundata,
+            context,
             ALEipConstants.ENTITY_ID));
       }
     }
@@ -131,33 +135,41 @@ public class BlogThemaFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * /** ブログカテゴリのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+   * 
    */
+  @Override
   protected boolean validate(List<String> msgList) {
 
     try {
       SelectQuery query = new SelectQuery(EipTBlogThema.class);
       if (ALEipConstants.MODE_INSERT.equals(getMode())) {
-        Expression exp = ExpressionFactory.matchExp(
-            EipTBlogThema.THEMA_NAME_PROPERTY, thema_name.getValue());
+        Expression exp =
+          ExpressionFactory.matchExp(
+            EipTBlogThema.THEMA_NAME_PROPERTY,
+            thema_name.getValue());
         query.setQualifier(exp);
       } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
-        Expression exp1 = ExpressionFactory.matchExp(
-            EipTBlogThema.THEMA_NAME_PROPERTY, thema_name.getValue());
+        Expression exp1 =
+          ExpressionFactory.matchExp(
+            EipTBlogThema.THEMA_NAME_PROPERTY,
+            thema_name.getValue());
         query.setQualifier(exp1);
-        Expression exp2 = ExpressionFactory.noMatchDbExp(
-            EipTBlogThema.THEMA_ID_PK_COLUMN, Integer.valueOf(thema_id));
+        Expression exp2 =
+          ExpressionFactory.noMatchDbExp(
+            EipTBlogThema.THEMA_ID_PK_COLUMN,
+            Integer.valueOf(thema_id));
         query.andQualifier(exp2);
       }
 
       if (dataContext.performQuery(query).size() != 0) {
-        msgList.add("テーマ名『 <span class='em'>" + thema_name
-            + "</span> 』は既に登録されています。");
+        msgList.add("テーマ名『 <span class='em'>"
+          + thema_name
+          + "</span> 』は既に登録されています。");
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -173,21 +185,21 @@ public class BlogThemaFormData extends ALAbstractFormData {
 
   /**
    * ブログカテゴリをデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTBlogThema thema = BlogUtils.getEipTBlogThema(rundata, context);
-      if (thema == null)
+      if (thema == null) {
         return false;
+      }
       // カテゴリ名
       thema_name.setValue(thema.getThemaName());
       // メモ
@@ -201,24 +213,26 @@ public class BlogThemaFormData extends ALAbstractFormData {
 
   /**
    * ブログカテゴリをデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
 
-      doCheckAclPermission(rundata, context,
-          ALAccessControlConstants.VALUE_ACL_INSERT);
+      doCheckAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_INSERT);
 
       int uid = ALEipUtils.getUserId(rundata);
       // 新規オブジェクトモデル
-      EipTBlogThema thema = (EipTBlogThema) dataContext
+      EipTBlogThema thema =
+        (EipTBlogThema) dataContext
           .createAndRegisterNewObject(EipTBlogThema.class);
       // カテゴリ名
       thema.setThemaName(thema_name.getValue());
@@ -238,8 +252,10 @@ public class BlogThemaFormData extends ALAbstractFormData {
       thema_id = thema.getThemaId().intValue();
 
       // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(thema_id,
-          ALEventlogConstants.PORTLET_TYPE_BLOG_THEMA, thema_name.getValue());
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        thema_id,
+        ALEventlogConstants.PORTLET_TYPE_BLOG_THEMA,
+        thema_name.getValue());
     } catch (ALPermissionException e) {
       ALEipUtils.redirectPermissionError(rundata);
       return false;
@@ -252,21 +268,21 @@ public class BlogThemaFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているToDoカテゴリを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTBlogThema thema = BlogUtils.getEipTBlogThema(rundata, context);
-      if (thema == null)
+      if (thema == null) {
         return false;
+      }
       // カテゴリ名
       thema.setThemaName(thema_name.getValue());
       // メモ
@@ -281,8 +297,9 @@ public class BlogThemaFormData extends ALAbstractFormData {
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          thema.getThemaId().intValue(),
-          ALEventlogConstants.PORTLET_TYPE_BLOG_THEMA, thema_name.getValue());
+        thema.getThemaId().intValue(),
+        ALEventlogConstants.PORTLET_TYPE_BLOG_THEMA,
+        thema_name.getValue());
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
@@ -292,21 +309,21 @@ public class BlogThemaFormData extends ALAbstractFormData {
 
   /**
    * ブログカテゴリを削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTBlogThema thema = BlogUtils.getEipTBlogThema(rundata, context);
-      if (thema == null)
+      if (thema == null) {
         return false;
+      }
 
       // entityIdを取得
       Integer entityId = thema.getThemaId();
@@ -318,8 +335,10 @@ public class BlogThemaFormData extends ALAbstractFormData {
       dataContext.commitChanges();
 
       // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(entityId,
-          ALEventlogConstants.PORTLET_TYPE_BLOG_THEMA, thema_name.getValue());
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        entityId,
+        ALEventlogConstants.PORTLET_TYPE_BLOG_THEMA,
+        thema_name.getValue());
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
@@ -333,7 +352,7 @@ public class BlogThemaFormData extends ALAbstractFormData {
 
   /**
    * テーマ名を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getThemaName() {
@@ -342,7 +361,7 @@ public class BlogThemaFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getDescription() {
@@ -352,9 +371,10 @@ public class BlogThemaFormData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_BLOG_THEME;
   }

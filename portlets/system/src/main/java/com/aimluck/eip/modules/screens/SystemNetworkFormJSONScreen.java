@@ -29,15 +29,23 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.system.SystemNetworkFormData;
 
 /**
- * SystemNetworkFormJSONScreen
- * 
+ *
  */
 public class SystemNetworkFormJSONScreen extends ALJSONScreen {
 
-  /** logger */
+  /**
+   *
+   */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(SystemNetworkFormJSONScreen.class.getName());
 
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   * @throws Exception
+   */
   @Override
   protected String getJSONString(RunData rundata, Context context)
       throws Exception {
@@ -49,8 +57,8 @@ public class SystemNetworkFormJSONScreen extends ALJSONScreen {
       formData.initField();
       if (formData.doUpdate(this, rundata, context)) {
       } else {
-        JSONArray json = JSONArray.fromObject(context
-          .get(ALEipConstants.ERROR_MESSAGE_LIST));
+        JSONArray json =
+          JSONArray.fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
         result = json.toString();
       }
 

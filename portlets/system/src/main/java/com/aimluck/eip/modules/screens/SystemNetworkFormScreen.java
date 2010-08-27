@@ -29,17 +29,21 @@ import com.aimluck.eip.system.SystemNetworkInternalFormData;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * SystemNetworkFormScreen
- * 
+ *
  */
 public class SystemNetworkFormScreen extends ALVelocityScreen {
 
-  /** logger */
+  /**
+   *
+   */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(SystemNetworkFormScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
@@ -53,7 +57,7 @@ public class SystemNetworkFormScreen extends ALVelocityScreen {
   }
 
   /**
-   * ネットワーク情報を登録するフォームを表示する． <BR>
+   * ネットワーク情報を登録するフォームを表示する
    * 
    * @param rundata
    * @param context
@@ -67,14 +71,19 @@ public class SystemNetworkFormScreen extends ALVelocityScreen {
       SystemNetworkFormData formData = new SystemNetworkFormData();
       formData.initField();
       formData.doViewForm(this, rundata, context);
-      setTemplate(rundata, context,
+      setTemplate(
+        rundata,
+        context,
         "portlets/html/ja/ajax-system-form-network.vm");
     }
     if ("local".equals(mode)) {
-      SystemNetworkInternalFormData formData = new SystemNetworkInternalFormData();
+      SystemNetworkInternalFormData formData =
+        new SystemNetworkInternalFormData();
       formData.initField();
       formData.doViewForm(this, rundata, context);
-      setTemplate(rundata, context,
+      setTemplate(
+        rundata,
+        context,
         "portlets/html/ja/ajax-system-form-network-internal.vm");
     }
   }

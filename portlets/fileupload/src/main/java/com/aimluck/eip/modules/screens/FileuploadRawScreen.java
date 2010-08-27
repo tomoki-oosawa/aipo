@@ -48,7 +48,9 @@ public class FileuploadRawScreen extends RawScreen {
   private String filepath = null;
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @return
    */
   @Override
   protected String getContentType(RunData rundata) {
@@ -82,7 +84,9 @@ public class FileuploadRawScreen extends RawScreen {
   }
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata) throws Exception {

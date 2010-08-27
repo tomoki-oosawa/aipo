@@ -30,7 +30,7 @@ import com.aimluck.eip.addressbook.AddressBookCompanyMultiDelete;
 import com.aimluck.eip.common.ALEipConstants;
 
 /**
- * アドレス帳の会社情報をJSONデータとして出力するクラスです。 <br />
+ * アドレス帳の会社情報をJSONデータとして出力するクラスです。 
  *
  */
 public class AddressBookCompanyFormJSONScreen extends ALJSONScreen {

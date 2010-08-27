@@ -77,8 +77,6 @@ public class FileIOScheduleCsvSelectData extends ALCsvAbstractSelectData {
    * @param rundata
    * @param context
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
   @Override
   protected ResultList<FileIOScheduleCsvData> selectList(RunData rundata,
@@ -121,8 +119,6 @@ public class FileIOScheduleCsvSelectData extends ALCsvAbstractSelectData {
    * @param rundata
    * @param context
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
   @Override
   protected Object selectDetail(RunData rundata, Context context) {

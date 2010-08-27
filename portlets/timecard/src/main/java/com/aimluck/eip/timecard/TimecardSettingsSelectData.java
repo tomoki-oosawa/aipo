@@ -31,7 +31,7 @@ import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.timecard.util.TimecardUtils;
 
 /**
- * タイムカード集計の検索データを管理するためのクラスです。 <br />
+ * タイムカード集計の検索データを管理するためのクラスです。
  * 
  */
 public class TimecardSettingsSelectData extends
@@ -42,8 +42,10 @@ public class TimecardSettingsSelectData extends
     .getLogger(TimecardSettingsSelectData.class.getName());
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected ResultList<EipTTimecardSettings> selectList(RunData rundata,
@@ -52,8 +54,10 @@ public class TimecardSettingsSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected EipTTimecardSettings selectDetail(RunData rundata, Context context) {
@@ -61,7 +65,9 @@ public class TimecardSettingsSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   * 
+   * @param obj
+   * @return
    */
   @Override
   protected Object getResultData(EipTTimecardSettings obj) {
@@ -69,7 +75,9 @@ public class TimecardSettingsSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   * 
+   * @param record
+   * @return
    */
   @Override
   protected Object getResultDataDetail(EipTTimecardSettings record) {
@@ -95,8 +103,7 @@ public class TimecardSettingsSelectData extends
   }
 
   /**
-   * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   *
    */
   @Override
   protected Attributes getColumnMap() {

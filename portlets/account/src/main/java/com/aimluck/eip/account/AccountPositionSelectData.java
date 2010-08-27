@@ -52,8 +52,6 @@ public class AccountPositionSelectData extends
    * @param action
    * @param rundata
    * @param context
-   * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -73,8 +71,6 @@ public class AccountPositionSelectData extends
    * @param rundata
    * @param context
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
   @Override
   protected ResultList<EipMPosition> selectList(RunData rundata, Context context) {
@@ -107,8 +103,6 @@ public class AccountPositionSelectData extends
    * @param rundata
    * @param context
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
   @Override
   protected EipMPosition selectDetail(RunData rundata, Context context) {
@@ -118,7 +112,6 @@ public class AccountPositionSelectData extends
   /**
    * @param obj
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
    */
   @Override
   protected Object getResultData(EipMPosition record) {
@@ -132,7 +125,6 @@ public class AccountPositionSelectData extends
   /**
    * @param obj
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
    */
   @Override
   protected Object getResultDataDetail(EipMPosition record) {
@@ -145,7 +137,6 @@ public class AccountPositionSelectData extends
 
   /**
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
   @Override
   protected Attributes getColumnMap() {

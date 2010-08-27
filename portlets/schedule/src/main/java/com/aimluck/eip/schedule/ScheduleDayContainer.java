@@ -52,7 +52,7 @@ public class ScheduleDayContainer implements ALData {
   private ALHoliday holiday;
 
   /*
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     // 日付

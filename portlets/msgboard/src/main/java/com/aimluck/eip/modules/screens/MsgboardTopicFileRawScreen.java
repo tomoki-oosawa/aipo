@@ -27,7 +27,7 @@ import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
- * 掲示板トピックの添付ファイルの一覧を処理するクラスです。 <br />
+ * 掲示板トピックの添付ファイルの一覧を処理するクラスです。
  */
 public class MsgboardTopicFileRawScreen extends FileuploadRawScreen {
 
@@ -36,7 +36,9 @@ public class MsgboardTopicFileRawScreen extends FileuploadRawScreen {
     .getLogger(MsgboardTopicFileRawScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata) throws Exception {

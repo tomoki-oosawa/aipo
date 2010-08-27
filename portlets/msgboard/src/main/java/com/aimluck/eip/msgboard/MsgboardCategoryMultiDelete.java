@@ -54,9 +54,6 @@ public class MsgboardCategoryMultiDelete extends ALAbstractCheckList {
    * @param values
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractCheckList#action(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList,
-   *      java.util.ArrayList)
    */
   @Override
   protected boolean action(RunData rundata, Context context,
@@ -118,8 +115,7 @@ public class MsgboardCategoryMultiDelete extends ALAbstractCheckList {
   }
 
   /**
-   * アクセス権限チェック用メソッド。<br />
-   * アクセス権限を返します。
+   * アクセス権限チェック用メソッド。 アクセス権限を返します。
    * 
    * @return
    */
@@ -129,8 +125,7 @@ public class MsgboardCategoryMultiDelete extends ALAbstractCheckList {
   }
 
   /**
-   * アクセス権限チェック用メソッド。<br />
-   * アクセス権限の機能名を返します。
+   * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
    * 
    * @return
    */

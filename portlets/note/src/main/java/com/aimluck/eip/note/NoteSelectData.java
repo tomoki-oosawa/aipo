@@ -53,7 +53,7 @@ import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 伝言メモの検索データを管理するためのクラスです。 <br />
+ * 伝言メモの検索データを管理するためのクラスです。
  */
 public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> {
 
@@ -98,8 +98,8 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
    * @param action
    * @param rundata
    * @param context
-   * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -161,8 +161,10 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected ResultList<EipTNoteMap> selectList(RunData rundata, Context context) {
@@ -190,8 +192,11 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALPageNotFoundException
    */
   @Override
   protected EipTNote selectDetail(RunData rundata, Context context)
@@ -226,7 +231,9 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   * 
+   * @param map
+   * @return
    */
   @Override
   protected Object getResultData(EipTNoteMap map) {
@@ -320,7 +327,9 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   * 
+   * @param record
+   * @return
    */
   @Override
   protected Object getResultDataDetail(EipTNote record) {
@@ -432,7 +441,8 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   * 
+   * @return
    */
   @Override
   protected Attributes getColumnMap() {
@@ -460,7 +470,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 検索条件を設定した SelectQuery を返します。 <BR>
+   * 検索条件を設定した SelectQuery を返します。 
    * 
    * @param rundata
    * @param context
@@ -496,7 +506,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 検索条件を設定した SelectQuery を返します。 <BR>
+   * 検索条件を設定した SelectQuery を返します。 
    * 
    * @param rundata
    * @param context
@@ -553,7 +563,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 現在選択されているタブを取得します。 <BR>
+   * 現在選択されているタブを取得します。 
    * 
    * @return
    */
@@ -561,22 +571,44 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
     return currentTab;
   }
 
+  /**
+   * 
+   * @return
+   */
   public String getUserId() {
     return userId;
   }
 
+  /**
+   * 
+   * @return
+   */
   public String getTargetGroupName() {
     return target_group_name;
   }
 
+  /**
+   * 
+   * @return
+   */
   public String getTargetUserId() {
     return target_user_id;
   }
 
+  /**
+   * 
+   * @param userId
+   * @return
+   */
   public String getUserName(String userId) {
     return NoteUtils.getUserName(userId);
   }
 
+  /**
+   * 
+   * @param userId
+   * @return
+   */
   public String getUserFullName(String userId) {
     try {
       ALEipUser user =
@@ -588,6 +620,11 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
     }
   }
 
+  /**
+   * 
+   * @param userName
+   * @return
+   */
   public String getUserId(String userName) {
     return NoteUtils.getUserId(userName);
   }
@@ -605,6 +642,10 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
     return newNoteAllSum;
   }
 
+  /**
+   * 
+   * @return
+   */
   public int getUnreadNotesAllSum() {
     return unreadNotesAllSum;
   }
@@ -644,10 +685,18 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
     return members;
   }
 
+  /**
+   * 
+   * @return
+   */
   public String getMailAccountURI() {
     return mailAccountURI;
   }
 
+  /**
+   * 
+   * @return
+   */
   public String getUserAccountURI() {
     return userAccountURI;
   }

@@ -476,8 +476,12 @@ public class FileuploadUtils {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
+   * 
+   * @param org_id
+   * @param userId
+   * @param folderName
+   * @param attachmentFileNameList
+   * @return
    */
   public static boolean deleteAttachments(String org_id, int userId,
       String folderName, List<FileuploadLiteBean> attachmentFileNameList) {

@@ -30,7 +30,7 @@ import com.aimluck.eip.addressbook.AddressBookGroupMultiDelete;
 import com.aimluck.eip.common.ALEipConstants;
 
 /**
- * アドレス帳グループをJSONデータとして出力するクラスです。 <br />
+ * アドレス帳グループをJSONデータとして出力するクラスです。 
  *
  */
 public class AddressBookGroupFormJSONScreen extends ALJSONScreen {

@@ -41,33 +41,42 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 
 /**
  * アドレス帳会社情報の複数データ削除クラスです。
- *
+ * 
  */
 public class AddressBookCompanyMultiDelete extends ALAbstractCheckList {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AddressBookCompanyMultiDelete.class.getName());
+    .getLogger(AddressBookCompanyMultiDelete.class.getName());
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractCheckList#action(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList,
-   *      java.util.ArrayList)
+   * 
+   * @param rundata
+   * @param context
+   * @param values
+   * @param msgList
+   * @return
    */
+  @Override
   protected boolean action(RunData rundata, Context context,
       List<String> values, List<String> msgList) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
 
       // アドレス情報の中で削除対象会社に所属しているものの会社IDを（未分類）のものとする
-      int empty_id = AddressBookUtils
-          .getDummyEipMAddressbookCompany(rundata, context).getCompanyId()
+      int empty_id =
+        AddressBookUtils
+          .getDummyEipMAddressbookCompany(rundata, context)
+          .getCompanyId()
           .intValue();
 
       SelectQuery addrquery = new SelectQuery(EipMAddressbook.class);
-      Expression addrexp = ExpressionFactory.inDbExp(
-          EipMAddressbook.EIP_MADDRESSBOOK_COMPANY_PROPERTY + "."
-              + EipMAddressbookCompany.COMPANY_ID_PK_COLUMN, values);
+      Expression addrexp =
+        ExpressionFactory.inDbExp(
+          EipMAddressbook.EIP_MADDRESSBOOK_COMPANY_PROPERTY
+            + "."
+            + EipMAddressbookCompany.COMPANY_ID_PK_COLUMN,
+          values);
       addrquery.setQualifier(addrexp);
 
       @SuppressWarnings("unchecked")
@@ -76,21 +85,25 @@ public class AddressBookCompanyMultiDelete extends ALAbstractCheckList {
       if (addresses != null && addresses.size() > 0) {
         EipMAddressbook addressbook = null;
 
-        EipMAddressbookCompany company = (EipMAddressbookCompany) DataObjectUtils
-            .objectForPK(dataContext, EipMAddressbookCompany.class,
-                Integer.valueOf(empty_id));
+        EipMAddressbookCompany company =
+          (EipMAddressbookCompany) DataObjectUtils.objectForPK(
+            dataContext,
+            EipMAddressbookCompany.class,
+            Integer.valueOf(empty_id));
 
         int addrsize = addresses.size();
         for (int i = 0; i < addrsize; i++) {
-          addressbook = (EipMAddressbook) addresses.get(i);
+          addressbook = addresses.get(i);
           addressbook.setEipMAddressbookCompany(company);
         }
       }
 
       // address-groupテーブルのデータを削除
       SelectQuery query = new SelectQuery(EipMAddressbookCompany.class);
-      Expression exp = ExpressionFactory.inDbExp(
-          EipMAddressbookCompany.COMPANY_ID_PK_COLUMN, values);
+      Expression exp =
+        ExpressionFactory.inDbExp(
+          EipMAddressbookCompany.COMPANY_ID_PK_COLUMN,
+          values);
       query.setQualifier(exp);
 
       @SuppressWarnings("unchecked")
@@ -111,11 +124,10 @@ public class AddressBookCompanyMultiDelete extends ALAbstractCheckList {
         dataContext.deleteObject(group);
 
         // ログに保存
-        ALEventlogFactoryService
-            .getInstance()
-            .getEventlogHandler()
-            .log(entityId,
-                ALEventlogConstants.PORTLET_TYPE_ADDRESSBOOK_COMPANY, groupName);
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          entityId,
+          ALEventlogConstants.PORTLET_TYPE_ADDRESSBOOK_COMPANY,
+          groupName);
       }
 
       dataContext.commitChanges();
@@ -127,21 +139,21 @@ public class AddressBookCompanyMultiDelete extends ALAbstractCheckList {
   }
 
   /**
-   * アクセス権限チェック用メソッド。<br />
-   * アクセス権限を返します。
-   *
+   * アクセス権限チェック用メソッド。 アクセス権限を返します。
+   * 
    * @return
    */
+  @Override
   protected int getDefineAclType() {
     return ALAccessControlConstants.VALUE_ACL_DELETE;
   }
 
   /**
-   * アクセス権限チェック用メソッド。<br />
-   * アクセス権限の機能名を返します。
-   *
+   * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_COMPANY;
   }

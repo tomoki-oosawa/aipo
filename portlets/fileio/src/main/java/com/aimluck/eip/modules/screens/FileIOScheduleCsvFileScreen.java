@@ -42,7 +42,9 @@ public class FileIOScheduleCsvFileScreen extends ALCSVScreen {
     .getLogger(FileIOScheduleCsvFileScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @return
    */
   @Override
   protected String getContentType(RunData rundata) {
@@ -50,7 +52,10 @@ public class FileIOScheduleCsvFileScreen extends ALCSVScreen {
   }
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @return
+   * @throws Exception
    */
   @Override
   protected String getCSVString(RunData rundata) throws Exception {
@@ -77,7 +82,10 @@ public class FileIOScheduleCsvFileScreen extends ALCSVScreen {
   }
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @return
+   * @throws Exception
    */
   protected String getCSVStringDB(RunData rundata) throws Exception {
     String LINE_SEPARATOR = System.getProperty("line.separator");

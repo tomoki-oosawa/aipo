@@ -50,7 +50,7 @@ public class WorkflowRouteResultData implements ALData {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     route_id = new ALNumberField();

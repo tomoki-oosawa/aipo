@@ -23,7 +23,7 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
 
 /**
- * ページ設定のResultDataです。 <br />
+ * ページ設定のResultDataです。 
  */
 public class PageResultData implements ALData {
 
@@ -40,7 +40,7 @@ public class PageResultData implements ALData {
   private ALNumberField portlet_num;
 
   /**
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     page_id = new ALStringField();

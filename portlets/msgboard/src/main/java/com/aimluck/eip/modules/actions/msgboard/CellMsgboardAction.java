@@ -35,7 +35,7 @@ import com.aimluck.eip.msgboard.MsgboardTopicSelectData;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 掲示板のアクションクラス <BR>
+ * 掲示板のアクションクラス
  * 
  */
 public class CellMsgboardAction extends MsgboardAction {
@@ -58,14 +58,12 @@ public class CellMsgboardAction extends MsgboardAction {
   private List<String> errmsgListOnTopicDetail;
 
   /**
-   * 通常表示の際の処理を記述します。 <BR>
+   * 通常表示の際の処理を記述します。
    * 
    * @param portlet
    * @param context
    * @param rundata
    * @throws Exception
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
@@ -74,7 +72,7 @@ public class CellMsgboardAction extends MsgboardAction {
   }
 
   /**
-   * 最大化表示の際の処理を記述します。 <BR>
+   * 最大化表示の際の処理を記述します。
    * 
    * @param portlet
    * @param context
@@ -103,7 +101,7 @@ public class CellMsgboardAction extends MsgboardAction {
   }
 
   /**
-   * トピック登録のフォームを表示する. <BR>
+   * トピック登録のフォームを表示する.
    * 
    * @param rundata
    * @param context
@@ -120,7 +118,7 @@ public class CellMsgboardAction extends MsgboardAction {
   }
 
   /**
-   * トピックを登録します。 <BR>
+   * トピックを登録します。
    * 
    * @param rundata
    * @param context
@@ -148,7 +146,7 @@ public class CellMsgboardAction extends MsgboardAction {
   }
 
   /**
-   * トピックを削除します。 <BR>
+   * トピックを削除します。
    * 
    * @param rundata
    * @param context
@@ -173,7 +171,7 @@ public class CellMsgboardAction extends MsgboardAction {
   }
 
   /**
-   * 返信記事を削除します。 <BR>
+   * 返信記事を削除します。
    * 
    * @param rundata
    * @param context
@@ -197,7 +195,7 @@ public class CellMsgboardAction extends MsgboardAction {
   }
 
   /**
-   * トピックを削除します。（複数） <BR>
+   * トピックを削除します。（複数）
    * 
    * @param rundata
    * @param context
@@ -218,7 +216,7 @@ public class CellMsgboardAction extends MsgboardAction {
   }
 
   /**
-   * トピックを一覧表示します。 <BR>
+   * トピックを一覧表示します。
    * 
    * @param rundata
    * @param context
@@ -244,7 +242,7 @@ public class CellMsgboardAction extends MsgboardAction {
   }
 
   /**
-   * トピックを詳細表示します。 <BR>
+   * トピックを詳細表示します。
    * 
    * @param rundata
    * @param context
@@ -287,7 +285,7 @@ public class CellMsgboardAction extends MsgboardAction {
   }
 
   /**
-   * 返信フォームを表示する. <BR>
+   * 返信フォームを表示する.
    * 
    * @param rundata
    * @param context
@@ -303,7 +301,7 @@ public class CellMsgboardAction extends MsgboardAction {
   }
 
   /**
-   * トピックに返信します。 <BR>
+   * トピックに返信します。
    * 
    * @param rundata
    * @param context

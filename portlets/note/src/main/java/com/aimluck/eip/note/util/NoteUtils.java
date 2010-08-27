@@ -49,7 +49,7 @@ import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
- * 伝言メモのユーティリティクラスです <br />
+ * 伝言メモのユーティリティクラスです
  */
 public class NoteUtils {
 
@@ -57,9 +57,11 @@ public class NoteUtils {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(NoteUtils.class.getName());
 
-  public static final String DATE_TIME_FORMAT = ALDateTimeField.DEFAULT_DATE_TIME_FORMAT;
+  public static final String DATE_TIME_FORMAT =
+    ALDateTimeField.DEFAULT_DATE_TIME_FORMAT;
 
-  public static final String CREATED_DATE_FORMAT = ALDateTimeField.DEFAULT_DATE_FORMAT;
+  public static final String CREATED_DATE_FORMAT =
+    ALDateTimeField.DEFAULT_DATE_FORMAT;
 
   public static final String TARGET_GROUP_NAME = "target_group_name";
 
@@ -88,27 +90,30 @@ public class NoteUtils {
    */
   public static EipTNote getEipTNoteDetail(RunData rundata, Context context,
       SelectQuery<EipTNote> query) {
-    String noteId = ALEipUtils.getTemp(rundata, context,
-      ALEipConstants.ENTITY_ID);
+    String noteId =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
     int uid = ALEipUtils.getUserId(rundata);
 
     try {
       // 新着ポートレット既読処理
-      WhatsNewUtils.shiftWhatsNewReadFlag(WhatsNewUtils.WHATS_NEW_TYPE_NOTE,
-        Integer.parseInt(noteId), uid);
+      WhatsNewUtils.shiftWhatsNewReadFlag(
+        WhatsNewUtils.WHATS_NEW_TYPE_NOTE,
+        Integer.parseInt(noteId),
+        uid);
     } catch (NumberFormatException e) {
       logger.error(e);
     }
 
     // アクセス権の判定
-    Expression exp1 = ExpressionFactory.matchExp(EipTNoteMap.NOTE_ID_PROPERTY,
-      Integer.valueOf(noteId));
-    Expression exp2 = ExpressionFactory.matchExp(EipTNoteMap.USER_ID_PROPERTY,
-      uid);
+    Expression exp1 =
+      ExpressionFactory.matchExp(EipTNoteMap.NOTE_ID_PROPERTY, Integer
+        .valueOf(noteId));
+    Expression exp2 =
+      ExpressionFactory.matchExp(EipTNoteMap.USER_ID_PROPERTY, uid);
 
-    List<EipTNoteMap> maps = Database.query(EipTNoteMap.class,
-      exp1.andExp(exp2)).fetchList();
+    List<EipTNoteMap> maps =
+      Database.query(EipTNoteMap.class, exp1.andExp(exp2)).fetchList();
     if (maps == null || maps.size() == 0) {
       // 指定したアカウントIDのレコードが見つからない場合
       logger.debug("[Note] Invalid user access...");
@@ -116,15 +121,17 @@ public class NoteUtils {
     }
 
     try {
-      if (noteId == null || noteId.equals("")
+      if (noteId == null
+        || noteId.equals("")
         || Integer.valueOf(noteId) == null) {
         // アカウントIDが空の場合
         logger.debug("[Note] Empty NoteID...");
         return null;
       }
 
-      Expression exp = ExpressionFactory.matchDbExp(EipTNote.NOTE_ID_PK_COLUMN,
-        Integer.valueOf(noteId));
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipTNote.NOTE_ID_PK_COLUMN, Integer
+          .valueOf(noteId));
 
       List<EipTNote> notes = query.andQualifier(exp).fetchList();
       if (notes == null || notes.size() == 0) {
@@ -140,7 +147,7 @@ public class NoteUtils {
   }
 
   /**
-   * EipTNote オブジェクトモデルを取得する． <BR>
+   * EipTNote オブジェクトモデルを取得する． 
    * 
    * @param rundata
    * @param context
@@ -151,24 +158,25 @@ public class NoteUtils {
   public static EipTNoteMap getEipTNoteMap(RunData rundata, Context context,
       SelectQuery<EipTNoteMap> query) {
 
-    String noteId = ALEipUtils.getTemp(rundata, context,
-      ALEipConstants.ENTITY_ID);
+    String noteId =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
     try {
-      if (noteId == null || noteId.equals("")
+      if (noteId == null
+        || noteId.equals("")
         || Integer.valueOf(noteId) == null) {
         // アカウントIDが空の場合
         logger.debug("[Note] Empty NoteID...");
         return null;
       }
 
-      Expression exp1 = ExpressionFactory.matchDbExp(
-        EipTNote.NOTE_ID_PK_COLUMN, noteId);
-      Expression exp2 = ExpressionFactory.matchExp(
-        EipTNoteMap.DEL_FLG_PROPERTY, "F");
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(EipTNote.NOTE_ID_PK_COLUMN, noteId);
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTNoteMap.DEL_FLG_PROPERTY, "F");
 
-      List<EipTNoteMap> maps = query.andQualifier(exp1).andQualifier(exp2)
-        .fetchList();
+      List<EipTNoteMap> maps =
+        query.andQualifier(exp1).andQualifier(exp2).fetchList();
       if (maps == null || maps.size() == 0) {
         // 指定したアカウントIDのレコードが見つからない場合
         logger.debug("[Note] Not found NoteID...");
@@ -181,6 +189,14 @@ public class NoteUtils {
     }
   }
 
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param tabReceive
+   * @param nodeIds
+   * @return
+   */
   public static List<EipTNoteMap> getEipTNoteMapList(RunData rundata,
       Context context, boolean tabReceive, String[] nodeIds) {
 
@@ -192,25 +208,27 @@ public class NoteUtils {
       Integer userid = Integer.valueOf(ALEipUtils.getUserId(rundata));
       SelectQuery<EipTNoteMap> query = Database.query(EipTNoteMap.class);
 
-      Expression exp1 = ExpressionFactory.inDbExp(EipTNote.NOTE_ID_PK_COLUMN,
-        nodeIds);
+      Expression exp1 =
+        ExpressionFactory.inDbExp(EipTNote.NOTE_ID_PK_COLUMN, nodeIds);
       query.setQualifier(exp1);
 
       if (tabReceive) {
-        Expression exp2 = ExpressionFactory.matchExp(
-          EipTNoteMap.USER_ID_PROPERTY, userid);
+        Expression exp2 =
+          ExpressionFactory.matchExp(EipTNoteMap.USER_ID_PROPERTY, userid);
         query.andQualifier(exp2);
-        Expression exp3 = ExpressionFactory.noMatchExp(
-          EipTNoteMap.EIP_TNOTE_PROPERTY + "." + EipTNote.OWNER_ID_PROPERTY,
-          userid);
+        Expression exp3 =
+          ExpressionFactory.noMatchExp(EipTNoteMap.EIP_TNOTE_PROPERTY
+            + "."
+            + EipTNote.OWNER_ID_PROPERTY, userid);
         query.andQualifier(exp3);
       } else {
-        Expression exp2 = ExpressionFactory.matchExp(
-          EipTNoteMap.USER_ID_PROPERTY, userid);
+        Expression exp2 =
+          ExpressionFactory.matchExp(EipTNoteMap.USER_ID_PROPERTY, userid);
         query.andQualifier(exp2);
-        Expression exp3 = ExpressionFactory.matchExp(
-          EipTNoteMap.EIP_TNOTE_PROPERTY + "." + EipTNote.OWNER_ID_PROPERTY,
-          userid);
+        Expression exp3 =
+          ExpressionFactory.matchExp(EipTNoteMap.EIP_TNOTE_PROPERTY
+            + "."
+            + EipTNote.OWNER_ID_PROPERTY, userid);
         query.andQualifier(exp3);
       }
 
@@ -242,11 +260,13 @@ public class NoteUtils {
     String userId = null;
 
     try {
-      Expression exp = ExpressionFactory.matchExp(
-        TurbineUser.LOGIN_NAME_PROPERTY, userLoginName);
+      Expression exp =
+        ExpressionFactory.matchExp(
+          TurbineUser.LOGIN_NAME_PROPERTY,
+          userLoginName);
 
-      List<TurbineUser> destUserList = Database.query(TurbineUser.class)
-        .setQualifier(exp).fetchList();
+      List<TurbineUser> destUserList =
+        Database.query(TurbineUser.class).setQualifier(exp).fetchList();
       if (destUserList == null || destUserList.size() <= 0) {
         return null;
       }
@@ -272,11 +292,12 @@ public class NoteUtils {
     String userName = null;
 
     try {
-      Expression exp = ExpressionFactory.matchDbExp(
-        TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(userId));
+      Expression exp =
+        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+          .valueOf(userId));
 
-      List<TurbineUser> destUserList = Database.query(TurbineUser.class)
-        .setQualifier(exp).fetchList();
+      List<TurbineUser> destUserList =
+        Database.query(TurbineUser.class).setQualifier(exp).fetchList();
       if (destUserList == null || destUserList.size() <= 0) {
         return null;
       }
@@ -311,6 +332,11 @@ public class NoteUtils {
     }
   }
 
+  /**
+   * 
+   * @param str
+   * @return
+   */
   public static Integer string2integer(String str) {
     Integer integ = null;
     try {
@@ -321,6 +347,12 @@ public class NoteUtils {
     return integ;
   }
 
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
   public static String getTargetGroupName(RunData rundata, Context context) {
     String target_group_name = null;
     String idParam = rundata.getParameters().getString(TARGET_GROUP_NAME);
@@ -335,6 +367,12 @@ public class NoteUtils {
     return target_group_name;
   }
 
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
   public static String getTargetUserId(RunData rundata, Context context) {
     String target_user_id = null;
     String idParam = rundata.getParameters().getString(TARGET_USER_ID);
@@ -350,6 +388,14 @@ public class NoteUtils {
     return target_user_id;
   }
 
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param values
+   * @param msgList
+   * @return
+   */
   public static boolean deleteNotes(RunData rundata, Context context,
       List<String> values, List<String> msgList) {
 
@@ -371,8 +417,8 @@ public class NoteUtils {
       String[] noteIds = new String[values.size()];
       noteIds = values.toArray(noteIds);
 
-      List<EipTNoteMap> eipTNoteMaps = NoteUtils.getEipTNoteMapList(rundata,
-        context, tabReceive, noteIds);
+      List<EipTNoteMap> eipTNoteMaps =
+        NoteUtils.getEipTNoteMapList(rundata, context, tabReceive, noteIds);
 
       if (eipTNoteMaps == null) {
         return false;
@@ -381,11 +427,12 @@ public class NoteUtils {
       for (EipTNoteMap noteMap : eipTNoteMaps) {
         EipTNote tmpnote = noteMap.getEipTNote();
 
-        Expression mapexp = ExpressionFactory.matchExp(
-          EipTNoteMap.NOTE_ID_PROPERTY, tmpnote.getNoteId());
+        Expression mapexp =
+          ExpressionFactory.matchExp(EipTNoteMap.NOTE_ID_PROPERTY, tmpnote
+            .getNoteId());
 
-        List<EipTNoteMap> maplist = Database.query(EipTNoteMap.class, mapexp)
-          .fetchList();
+        List<EipTNoteMap> maplist =
+          Database.query(EipTNoteMap.class, mapexp).fetchList();
 
         if (maplist != null && maplist.size() > 0) {
           int count = 0;
@@ -421,6 +468,11 @@ public class NoteUtils {
     return true;
   }
 
+  /**
+   * 
+   * @param note
+   * @return
+   */
   public static String getNoteSubject(EipTNote note) {
     String subject = "";
     if (note.getSubjectType().equals("0")) {
@@ -437,6 +489,12 @@ public class NoteUtils {
     return subject + " (" + note.getClientName() + ")";
   }
 
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
   public static String getCurrentTab(RunData rundata, Context context) {
     String tabParam = rundata.getParameters().getString("tab");
     String currentTab = ALEipUtils.getTemp(rundata, context, "tab");
@@ -450,26 +508,38 @@ public class NoteUtils {
     return currentTab;
   }
 
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
   public static SelectQuery<EipTNoteMap> getSelectQueryNoteList(
       RunData rundata, Context context) {
     String userId = Integer.toString(ALEipUtils.getUserId(rundata));
 
     SelectQuery<EipTNoteMap> query = Database.query(EipTNoteMap.class);
-    Expression exp01 = ExpressionFactory.matchExp(
-      EipTNoteMap.NOTE_STAT_PROPERTY, NoteUtils.NOTE_STAT_NEW);
-    Expression exp02 = ExpressionFactory.matchExp(
-      EipTNoteMap.NOTE_STAT_PROPERTY, NoteUtils.NOTE_STAT_UNREAD);
+    Expression exp01 =
+      ExpressionFactory.matchExp(
+        EipTNoteMap.NOTE_STAT_PROPERTY,
+        NoteUtils.NOTE_STAT_NEW);
+    Expression exp02 =
+      ExpressionFactory.matchExp(
+        EipTNoteMap.NOTE_STAT_PROPERTY,
+        NoteUtils.NOTE_STAT_UNREAD);
     query.setQualifier(exp01.orExp(exp02));
 
-    Expression exp1 = ExpressionFactory.matchExp(EipTNoteMap.USER_ID_PROPERTY,
-      Integer.valueOf(userId));
+    Expression exp1 =
+      ExpressionFactory.matchExp(EipTNoteMap.USER_ID_PROPERTY, Integer
+        .valueOf(userId));
     query.andQualifier(exp1);
-    Expression exp2 = ExpressionFactory.matchExp(EipTNoteMap.DEL_FLG_PROPERTY,
-      "F");
+    Expression exp2 =
+      ExpressionFactory.matchExp(EipTNoteMap.DEL_FLG_PROPERTY, "F");
     query.andQualifier(exp2);
-    Expression exp3 = ExpressionFactory.noMatchExp(
-      EipTNoteMap.EIP_TNOTE_PROPERTY + "." + EipTNote.OWNER_ID_PROPERTY,
-      Integer.valueOf(userId));
+    Expression exp3 =
+      ExpressionFactory.noMatchExp(EipTNoteMap.EIP_TNOTE_PROPERTY
+        + "."
+        + EipTNote.OWNER_ID_PROPERTY, Integer.valueOf(userId));
     query.andQualifier(exp3);
 
     return query;
@@ -484,7 +554,8 @@ public class NoteUtils {
   public static int getNewReceivedNoteAllSum(RunData rundata, String userId) {
     int newNoteAllSum = 0;
     try {
-      SelectQuery<EipTNote> query = getSelectQueryForNewReceivedNoteCount(userId);
+      SelectQuery<EipTNote> query =
+        getSelectQueryForNewReceivedNoteCount(userId);
       List<EipTNote> list = query.fetchList();
       newNoteAllSum = (list != null && list.size() > 0) ? list.size() : 0;
     } catch (Exception ex) {
@@ -494,23 +565,32 @@ public class NoteUtils {
     return newNoteAllSum;
   }
 
+  /**
+   * 
+   * @param srcUserId
+   * @return
+   */
   private static SelectQuery<EipTNote> getSelectQueryForNewReceivedNoteCount(
       String srcUserId) {
     try {
       SelectQuery<EipTNote> query = Database.query(EipTNote.class);
-      Expression exp1 = ExpressionFactory.noMatchExp(
-        EipTNote.OWNER_ID_PROPERTY, Integer.valueOf(srcUserId));
+      Expression exp1 =
+        ExpressionFactory.noMatchExp(EipTNote.OWNER_ID_PROPERTY, Integer
+          .valueOf(srcUserId));
       query.setQualifier(exp1);
-      Expression exp2 = ExpressionFactory.matchExp(
-        EipTNote.EIP_TNOTE_MAPS_PROPERTY + "." + EipTNoteMap.USER_ID_PROPERTY,
-        Integer.valueOf(srcUserId));
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTNote.EIP_TNOTE_MAPS_PROPERTY
+          + "."
+          + EipTNoteMap.USER_ID_PROPERTY, Integer.valueOf(srcUserId));
       query.andQualifier(exp2);
-      Expression exp3 = ExpressionFactory.matchExp(
-        EipTNote.EIP_TNOTE_MAPS_PROPERTY + "." + EipTNoteMap.DEL_FLG_PROPERTY,
-        "F");
+      Expression exp3 =
+        ExpressionFactory.matchExp(EipTNote.EIP_TNOTE_MAPS_PROPERTY
+          + "."
+          + EipTNoteMap.DEL_FLG_PROPERTY, "F");
       query.andQualifier(exp3);
-      Expression exp4 = ExpressionFactory
-        .matchExp(EipTNote.EIP_TNOTE_MAPS_PROPERTY + "."
+      Expression exp4 =
+        ExpressionFactory.matchExp(EipTNote.EIP_TNOTE_MAPS_PROPERTY
+          + "."
           + EipTNoteMap.NOTE_STAT_PROPERTY, NoteUtils.NOTE_STAT_NEW);
       query.andQualifier(exp4);
       return query;
@@ -530,7 +610,8 @@ public class NoteUtils {
     int unreadNotesAllSum = 0;
     try {
       // 未読数をセットする．
-      SelectQuery<EipTNote> query = getSelectQueryForUnreadReceivedNoteCount(userId);
+      SelectQuery<EipTNote> query =
+        getSelectQueryForUnreadReceivedNoteCount(userId);
       List<EipTNote> list = query.fetchList();
       unreadNotesAllSum = (list != null && list.size() > 0) ? list.size() : 0;
     } catch (Exception ex) {
@@ -540,23 +621,32 @@ public class NoteUtils {
     return unreadNotesAllSum;
   }
 
+  /**
+   * 
+   * @param srcUserId
+   * @return
+   */
   private static SelectQuery<EipTNote> getSelectQueryForUnreadReceivedNoteCount(
       String srcUserId) {
     try {
       SelectQuery<EipTNote> query = Database.query(EipTNote.class);
-      Expression exp1 = ExpressionFactory.noMatchExp(
-        EipTNote.OWNER_ID_PROPERTY, Integer.valueOf(srcUserId));
+      Expression exp1 =
+        ExpressionFactory.noMatchExp(EipTNote.OWNER_ID_PROPERTY, Integer
+          .valueOf(srcUserId));
       query.setQualifier(exp1);
-      Expression exp2 = ExpressionFactory.matchExp(
-        EipTNote.EIP_TNOTE_MAPS_PROPERTY + "." + EipTNoteMap.USER_ID_PROPERTY,
-        Integer.valueOf(srcUserId));
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTNote.EIP_TNOTE_MAPS_PROPERTY
+          + "."
+          + EipTNoteMap.USER_ID_PROPERTY, Integer.valueOf(srcUserId));
       query.andQualifier(exp2);
-      Expression exp3 = ExpressionFactory.matchExp(
-        EipTNote.EIP_TNOTE_MAPS_PROPERTY + "." + EipTNoteMap.DEL_FLG_PROPERTY,
-        "F");
+      Expression exp3 =
+        ExpressionFactory.matchExp(EipTNote.EIP_TNOTE_MAPS_PROPERTY
+          + "."
+          + EipTNoteMap.DEL_FLG_PROPERTY, "F");
       query.andQualifier(exp3);
-      Expression exp4 = ExpressionFactory
-        .matchExp(EipTNote.EIP_TNOTE_MAPS_PROPERTY + "."
+      Expression exp4 =
+        ExpressionFactory.matchExp(EipTNote.EIP_TNOTE_MAPS_PROPERTY
+          + "."
           + EipTNoteMap.NOTE_STAT_PROPERTY, NoteUtils.NOTE_STAT_UNREAD);
       query.andQualifier(exp4);
       return query;
@@ -577,8 +667,8 @@ public class NoteUtils {
   public static String getPortletURIinPersonalConfigPane(RunData rundata,
       String portletEntryName) {
     try {
-      Portlets portlets = ((JetspeedRunData) rundata).getProfile()
-        .getDocument().getPortlets();
+      Portlets portlets =
+        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
       if (portlets == null) {
         return null;
       }
@@ -600,11 +690,21 @@ public class NoteUtils {
           if (entries[j].getParent().equals(portletEntryName)) {
             JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
 
-            DynamicURI duri = jsLink.getLink(JetspeedLink.CURRENT, null, null,
-              JetspeedLink.CURRENT, null);
-            duri = duri.addPathInfo(JetspeedResources.PATH_PANEID_KEY,
-              portletList[i].getId() + "," + entries[j].getId()).addQueryData(
-              JetspeedResources.PATH_ACTION_KEY, "controls.Restore");
+            DynamicURI duri =
+              jsLink.getLink(
+                JetspeedLink.CURRENT,
+                null,
+                null,
+                JetspeedLink.CURRENT,
+                null);
+            duri =
+              duri
+                .addPathInfo(
+                  JetspeedResources.PATH_PANEID_KEY,
+                  portletList[i].getId() + "," + entries[j].getId())
+                .addQueryData(
+                  JetspeedResources.PATH_ACTION_KEY,
+                  "controls.Restore");
             return duri.toString();
           }
         }

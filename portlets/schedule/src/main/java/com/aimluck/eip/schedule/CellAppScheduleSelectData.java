@@ -228,8 +228,6 @@ public class CellAppScheduleSelectData {
 
       return ScheduleUtils.sortByDummySchedule(list);
     } catch (Exception e) {
-
-      // TODO: エラー処理
       logger.error("[CellAppScheduleSelectData]", e);
       throw new ALDBErrorException();
     }
@@ -393,8 +391,6 @@ public class CellAppScheduleSelectData {
       addResultData(rd);
 
     } catch (Exception e) {
-
-      // TODO: エラー処理
       logger.error("Exception", e);
 
       return null;

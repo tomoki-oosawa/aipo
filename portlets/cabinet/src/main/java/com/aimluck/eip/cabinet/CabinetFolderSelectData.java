@@ -75,8 +75,8 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
    * @param action
    * @param rundata
    * @param context
-   * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -116,8 +116,12 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected ResultList selectList(RunData rundata, Context context)
@@ -126,8 +130,12 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected Object selectDetail(RunData rundata, Context context)
@@ -137,7 +145,7 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   *
    */
   @Override
   protected Object getResultData(Object obj) throws ALPageNotFoundException,
@@ -146,7 +154,11 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   * 
+   * @param obj
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected Object getResultDataDetail(Object obj)
@@ -234,7 +246,7 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   *
    */
   @Override
   protected Attributes getColumnMap() {

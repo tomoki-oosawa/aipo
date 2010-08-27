@@ -36,24 +36,25 @@ import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
  * イベントログのフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class EventlogFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(EventlogFormData.class.getName());
+    .getLogger(EventlogFormData.class.getName());
 
   private DataContext dataContext;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
-   * @see com.aimluck.eip.common.ALAbstractFormData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * 
+   * 
    */
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -63,41 +64,42 @@ public class EventlogFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
+   * 
    */
   public void initField() {
   }
 
   /**
    * イベントログの各フィールドに対する制約条件を設定します。 <BR>
-   *
-   * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
+   * 
+   * 
    */
+  @Override
   protected void setValidator() {
   }
 
   /**
    * イベントログのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+   * 
    */
+  @Override
   protected boolean validate(List<String> msgList) {
     return false;
   }
 
   /**
    * イベントログをデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -105,21 +107,21 @@ public class EventlogFormData extends ALAbstractFormData {
 
   /**
    * イベントログをデータベースから削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
       EipTEventlog eventlog = EventlogUtils.getEipTEventlog(rundata, context);
-      if (eventlog == null)
+      if (eventlog == null) {
         return false;
+      }
 
       // イベントログを削除
       dataContext.deleteObject(eventlog);
@@ -133,14 +135,13 @@ public class EventlogFormData extends ALAbstractFormData {
 
   /**
    * イベントログをデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -148,14 +149,13 @@ public class EventlogFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているイベントログを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;

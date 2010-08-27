@@ -27,7 +27,7 @@ import com.aimluck.eip.msgboard.MsgboardTopicFormData;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 掲示板トピックを処理するクラスです。 <br />
+ * 掲示板トピックを処理するクラスです。
  * 
  */
 
@@ -38,7 +38,10 @@ public class MsgboardTopicFormScreen extends ALVelocityScreen {
     .getLogger(MsgboardTopicFormScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {

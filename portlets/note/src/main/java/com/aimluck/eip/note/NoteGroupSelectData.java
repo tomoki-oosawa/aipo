@@ -51,7 +51,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 伝言メモの送信先に指定できるグループの検索データを管理するためのクラスです。 <br />
+ * 伝言メモの送信先に指定できるグループの検索データを管理するためのクラスです。
  */
 public class NoteGroupSelectData extends
     ALAbstractSelectData<TurbineUser, TurbineUser> implements ALData {
@@ -75,7 +75,7 @@ public class NoteGroupSelectData extends
   private int newNoteAllSum = 0;
 
   /**
-   * 初期化処理を行います。 <BR>
+   * 初期化処理を行います。 
    * 
    * @param action
    * @param rundata
@@ -107,8 +107,10 @@ public class NoteGroupSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected ResultList<TurbineUser> selectList(RunData rundata, Context context) {
@@ -161,8 +163,10 @@ public class NoteGroupSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected TurbineUser selectDetail(RunData rundata, Context context) {
@@ -171,7 +175,9 @@ public class NoteGroupSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   * 
+   * @param user
+   * @return
    */
   @Override
   protected Object getResultData(TurbineUser user) {
@@ -188,7 +194,9 @@ public class NoteGroupSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   * 
+   * @param obj
+   * @return
    */
   @Override
   protected Object getResultDataDetail(TurbineUser obj) {
@@ -196,7 +204,8 @@ public class NoteGroupSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   * 
+   * @return
    */
   @Override
   protected Attributes getColumnMap() {
@@ -214,7 +223,7 @@ public class NoteGroupSelectData extends
   }
 
   /**
-   * 検索条件を設定した SelectQuery を返します。 <BR>
+   * 検索条件を設定した SelectQuery を返します。 
    * 
    * @param rundata
    * @param context
@@ -277,6 +286,11 @@ public class NoteGroupSelectData extends
     return query;
   }
 
+  /**
+   * 
+   * @param rundata
+   * @param context
+   */
   private void setCurrentTab(RunData rundata, Context context) {
     String tabParam = rundata.getParameters().getString("tab");
     currentTab = ALEipUtils.getTemp(rundata, context, "tab");
@@ -290,7 +304,7 @@ public class NoteGroupSelectData extends
   }
 
   /**
-   * 現在選択されているタブを取得します。 <BR>
+   * 現在選択されているタブを取得します。 
    * 
    * @return
    */
@@ -298,18 +312,34 @@ public class NoteGroupSelectData extends
     return currentTab;
   }
 
+  /**
+   * 
+   * @return
+   */
   public String getUserId() {
     return userId;
   }
 
+  /**
+   * 
+   * @return
+   */
   public String getUserAliasName() {
     return userAliasName;
   }
 
+  /**
+   * 
+   * @return
+   */
   public int getNewNoteAllSum() {
     return newNoteAllSum;
   }
 
+  /**
+   * 
+   * @return
+   */
   public int getUnreadReceivedNotesAllSum() {
     return unreadReceivedNotesAllSum;
   }

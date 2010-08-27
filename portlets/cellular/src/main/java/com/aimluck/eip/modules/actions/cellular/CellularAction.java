@@ -31,25 +31,24 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アクションクラスです。 <BR>
- *
+ * 
  */
 public class CellularAction extends ALBaseAction {
 
   /** logger */
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CellularAction.class.getName());
+    .getLogger(CellularAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
    * @throws java.lang.Exception
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
 
@@ -60,7 +59,7 @@ public class CellularAction extends ALBaseAction {
 
   /**
    * 携帯電話用の情報を表示します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -77,7 +76,7 @@ public class CellularAction extends ALBaseAction {
 
   /**
    * 簡易アクセス用 URL を携帯電話にメールする．
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception

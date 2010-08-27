@@ -28,7 +28,7 @@ import com.aimluck.eip.common.ALData;
 
 /**
  * 共有フォルダのフォルダ階層データを管理するクラスです。
- *
+ * 
  */
 public class CabinetBean implements ALData, Cloneable {
 
@@ -49,7 +49,7 @@ public class CabinetBean implements ALData, Cloneable {
   /** items フォルダに属するファイル */
   // private ArrayList<CabinetBean> items;
   /*
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     cabinet_id = new ALNumberField();
@@ -82,7 +82,7 @@ public class CabinetBean implements ALData, Cloneable {
   /*
    * public int getCabinetNumberofitems() { return (int)
    * cabinet_numberofitems.getValue(); }
-   *
+   * 
    * public void setCabinetNumberofitems(int number) {
    * cabinet_numberofitems.setValue(number); }
    */
@@ -96,7 +96,7 @@ public class CabinetBean implements ALData, Cloneable {
 
   /*
    * public ArrayList<CabinetBean> getItems() { return items; }
-   *
+   * 
    * public void setItems(ArrayList<CabinetBean> list) { items = list; }
    */
 
@@ -107,9 +107,9 @@ public class CabinetBean implements ALData, Cloneable {
   public void settype(int i) {
     type.setValue(i);
   }
+
   @Override
   protected Object clone() throws CloneNotSupportedException {
-    // TODO 自動生成されたメソッド・スタブ
     return super.clone();
   }
 }

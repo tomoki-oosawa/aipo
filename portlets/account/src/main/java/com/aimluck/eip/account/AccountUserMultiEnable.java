@@ -50,9 +50,6 @@ public class AccountUserMultiEnable extends ALAbstractCheckList {
    * @param values
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractCheckList#action(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList,
-   *      java.util.ArrayList)
    */
   @Override
   protected boolean action(RunData rundata, Context context,

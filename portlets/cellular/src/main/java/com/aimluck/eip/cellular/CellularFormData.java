@@ -46,13 +46,13 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * フォームデータを管理するクラス
- *
+ * 
  */
 public class CellularFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CellularFormData.class.getName());
+    .getLogger(CellularFormData.class.getName());
 
   /** 簡易アクセス用 URL */
   private ALStringField cellular_url;
@@ -67,6 +67,7 @@ public class CellularFormData extends ALAbstractFormData {
 
   private String org_id;
 
+  @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
@@ -78,8 +79,10 @@ public class CellularFormData extends ALAbstractFormData {
     JetspeedRunData jdata = (JetspeedRunData) rundata;
     try {
       // 最新のユーザ情報を取得する．
-      baseUser = (ALBaseUser) JetspeedUserManagement
-          .getUser(new UserNamePrincipal(jdata.getJetspeedUser().getUserName()));
+      baseUser =
+        (ALBaseUser) JetspeedUserManagement.getUser(new UserNamePrincipal(jdata
+          .getJetspeedUser()
+          .getUserName()));
     } catch (JetspeedSecurityException e) {
       e.printStackTrace();
       baseUser = (ALBaseUser) rundata.getUser();
@@ -90,46 +93,46 @@ public class CellularFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化する．
-   *
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
+   * 
    */
   public void initField() {
     cellular_url = new ALStringField();
     cellular_url.setFieldName(DatabaseOrmService.getInstance().getAlias()
-        + "サイトのアドレス");
+      + "サイトのアドレス");
     cellular_url.setTrim(true);
   }
 
   /**
    * 各フィールドに対する制約条件を設定します。 <BR>
-   *
-   * @see com.aimluck.eip.common.ALAbstractFormData#setValidator()
+   * 
+   * 
    */
+  @Override
   protected void setValidator() {
   }
 
   /**
    * フォームに入力されたデータの妥当性を検証する．
-   *
+   * 
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#validate(java.util.ArrayList)
+   * 
    */
+  @Override
   protected boolean validate(List<String> msgList) {
 
     return (msgList.size() == 0);
   }
 
   /**
-   *
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#loadFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     String uid = baseUser.getCelluarUId();
@@ -142,14 +145,13 @@ public class CellularFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     boolean res = false;
@@ -159,11 +161,11 @@ public class CellularFormData extends ALAbstractFormData {
     try {
       if (url == null || url.length() == 0) {
         msgList.add(DatabaseOrmService.getInstance().getAlias()
-            + "サイトのアドレスが未設定のため、メールを送信できませんでした。"
-            + DatabaseOrmService.getInstance().getAlias()
-            + "の管理担当者にお問い合わせください。"
-            + DatabaseOrmService.getInstance().getAlias()
-            + "サイトのアドレスは、管理画面で設定できます。");
+          + "サイトのアドレスが未設定のため、メールを送信できませんでした。"
+          + DatabaseOrmService.getInstance().getAlias()
+          + "の管理担当者にお問い合わせください。"
+          + DatabaseOrmService.getInstance().getAlias()
+          + "サイトのアドレスは、管理画面で設定できます。");
         return false;
       }
 
@@ -171,28 +173,39 @@ public class CellularFormData extends ALAbstractFormData {
 
       List<ALEipUser> memberList = new ArrayList<ALEipUser>();
       memberList.add(ALEipUtils.getALEipUser(rundata));
-      List<ALEipUserAddr> destMemberList = ALMailUtils.getALEipUserAddrs(memberList,
-          ALEipUtils.getUserId(rundata), true);
+      List<ALEipUserAddr> destMemberList =
+        ALMailUtils.getALEipUserAddrs(
+          memberList,
+          ALEipUtils.getUserId(rundata),
+          true);
 
       ALEipUserAddr addr = null;
-      addr = (ALEipUserAddr) destMemberList.get(0);
+      addr = destMemberList.get(0);
       if (addr.getCellMailAddr() == null || addr.getCellMailAddr().equals("")) {
         msgList
-            .add("ユーザーの携帯電話のメールアドレスが設定されていないため、メールを送信できませんでした。携帯電話のメールアドレスは、個人設定のユーザー情報から変更できます。");
+          .add("ユーザーの携帯電話のメールアドレスが設定されていないため、メールを送信できませんでした。携帯電話のメールアドレスは、個人設定のユーザー情報から変更できます。");
         return false;
       }
 
-      String subject = "[" + DatabaseOrmService.getInstance().getAlias()
-          + "] 携帯電話用ログインURL";
+      String subject =
+        "[" + DatabaseOrmService.getInstance().getAlias() + "] 携帯電話用ログインURL";
       String body = createMsgForCellPhone(url);
 
-      res = ALMailUtils.sendMailDelegate(org_id, (int) user.getUserId()
-          .getValue(), destMemberList, null, subject, null, body,
-          ALMailUtils.VALUE_MSGTYPE_DEST_CELLULAR, msgList);
+      res =
+        ALMailUtils.sendMailDelegate(
+          org_id,
+          (int) user.getUserId().getValue(),
+          destMemberList,
+          null,
+          subject,
+          null,
+          body,
+          ALMailUtils.VALUE_MSGTYPE_DEST_CELLULAR,
+          msgList);
       if (!res) {
         msgList.add("メールアカウントが正しく設定されていないため、メールを送信できませんでした。"
-            + DatabaseOrmService.getInstance().getAlias()
-            + "の管理担当者にお問い合わせください。メールアカウントは、管理画面で設定できます。");
+          + DatabaseOrmService.getInstance().getAlias()
+          + "の管理担当者にお問い合わせください。メールアカウントは、管理画面で設定できます。");
       }
 
     } catch (Exception ex) {
@@ -203,28 +216,26 @@ public class CellularFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#updateFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return
-   * @see com.aimluck.eip.common.ALAbstractFormData#deleteFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
+  @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
@@ -232,13 +243,13 @@ public class CellularFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話へ送信するメールの内容を作成する．
-   *
+   * 
    * @return
    */
   private String createMsgForCellPhone(String url) {
     String CR = System.getProperty("line.separator");
-    StringBuffer body = new StringBuffer(JetspeedResources
-        .getString("aipo.alias"));
+    StringBuffer body =
+      new StringBuffer(JetspeedResources.getString("aipo.alias"));
     body.append("からのお知らせです。以下に記載されたURLから");
     body.append(DatabaseOrmService.getInstance().getAlias());
     body.append("にログインしてください。");

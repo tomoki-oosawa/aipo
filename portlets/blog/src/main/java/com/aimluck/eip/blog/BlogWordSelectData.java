@@ -64,8 +64,12 @@ public class BlogWordSelectData extends ALAbstractSelectData {
   private DataContext dataContext;
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -84,8 +88,9 @@ public class BlogWordSelectData extends ALAbstractSelectData {
   /**
    * 自分がオーナーのアドレスを取得
    * 
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected ResultList selectList(RunData rundata, Context context) {
@@ -119,10 +124,10 @@ public class BlogWordSelectData extends ALAbstractSelectData {
   }
 
   /**
-   * 未使用。
    * 
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected Object selectDetail(RunData rundata, Context context) {
@@ -130,7 +135,7 @@ public class BlogWordSelectData extends ALAbstractSelectData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   *
    */
   @Override
   protected Object getResultData(Object obj) {
@@ -183,9 +188,9 @@ public class BlogWordSelectData extends ALAbstractSelectData {
   }
 
   /**
-   * 未使用。
    * 
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   * @param obj
+   * @return
    */
   @Override
   protected Object getResultDataDetail(Object obj) {
@@ -193,7 +198,7 @@ public class BlogWordSelectData extends ALAbstractSelectData {
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   *
    */
   @Override
   protected Attributes getColumnMap() {

@@ -71,8 +71,6 @@ public class WebMailFilterSelectData extends
    * @param action
    * @param rundata
    * @param context
-   * @see com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules.actions.common.ALAction,
-   *      org.apache.turbine.util.RunData, org.apache.velocity.context.Context)
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -188,8 +186,6 @@ public class WebMailFilterSelectData extends
    * @param rundata
    * @param context
    * @return
-   * @see com.aimluck.eip.common.ALAbstractListData#selectData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
    */
   @Override
   protected ResultList<EipTMailFilter> selectList(RunData rundata,
@@ -227,8 +223,12 @@ public class WebMailFilterSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context)
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected EipTMailFilter selectDetail(RunData rundata, Context context)
@@ -242,7 +242,7 @@ public class WebMailFilterSelectData extends
   /**
    * フィルタのデータを取得します。
    * 
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+   * 
    */
   @Override
   protected Object getResultData(EipTMailFilter record)
@@ -271,7 +271,10 @@ public class WebMailFilterSelectData extends
   /**
    * フィルタの詳細データを取得します。
    * 
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang.Object)
+   * @param record
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected Object getResultDataDetail(EipTMailFilter record)
@@ -299,7 +302,7 @@ public class WebMailFilterSelectData extends
   }
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+   *
    */
   @Override
   protected Attributes getColumnMap() {

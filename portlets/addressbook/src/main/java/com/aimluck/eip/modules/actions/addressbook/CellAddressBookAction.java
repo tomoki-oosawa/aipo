@@ -35,32 +35,36 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレス帳のアクションクラスです。
- *
+ * 
  */
 public class CellAddressBookAction extends ALBaseAction {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(CellAddressBookAction.class.getName());
+    .getLogger(CellAddressBookAction.class.getName());
 
   private static final String MODE_SEARCH = "search";
 
   /**
-   *
-   * @see org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction#buildNormalContext(org.apache.jetspeed.portal.portlets.VelocityPortlet,
-   *      org.apache.velocity.context.Context, org.apache.turbine.util.RunData)
+   * 
+   * @param portlet
+   * @param context
+   * @param rundata
+   * @throws Exception
    */
+  @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
   }
 
   /**
-   * 最大化表示の際の処理を記述します。 <BR>
-   *
+   * 最大化表示の際の処理を記述します。
+   * 
    * @param portlet
    * @param context
    * @param rundata
    */
+  @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
     // MODEを取得
@@ -72,8 +76,9 @@ public class CellAddressBookAction extends ALBaseAction {
       } else if ("search".equals(mode)) {
       } else if (ALEipConstants.MODE_LIST.equals(mode)) {
         String currentTab = ALEipUtils.getTemp(rundata, context, "tab");
-        if (currentTab == null || currentTab.trim().length() == 0
-            || "syagai".equals(currentTab)) {
+        if (currentTab == null
+          || currentTab.trim().length() == 0
+          || "syagai".equals(currentTab)) {
           doAddressbook_list(rundata, context);
         } else {
           doAddressbook_corp_list(rundata, context);
@@ -89,8 +94,8 @@ public class CellAddressBookAction extends ALBaseAction {
   }
 
   /**
-   * アドレス帳のメニューを表示する． <BR>
-   *
+   * アドレス帳のメニューを表示する．
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -103,7 +108,7 @@ public class CellAddressBookAction extends ALBaseAction {
 
   /**
    * アドレス情報の表示を行います。(社外アドレス、一覧表示)
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -112,8 +117,9 @@ public class CellAddressBookAction extends ALBaseAction {
     ALEipUtils.setTemp(rundata, context, "tab", "syagai");
     AddressBookFilterdSelectData listData = new AddressBookFilterdSelectData();
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1a-rows")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1a-rows")));
     listData.doViewList(this, rundata, context);
     listData.loadGroups(rundata, context);
     setTemplate(rundata, "addressbook-list");
@@ -121,24 +127,27 @@ public class CellAddressBookAction extends ALBaseAction {
 
   /**
    * アドレス情報の表示を行います。（社内アドレス、一覧表示）
-   *
+   * 
    * @param rundata
    * @param context
    */
   public void doAddressbook_corp_list(RunData rundata, Context context) {
     ALEipUtils.setTemp(rundata, context, "tab", "corp");
-    AddressBookCorpFilterdSelectData listData = new AddressBookCorpFilterdSelectData();
+    AddressBookCorpFilterdSelectData listData =
+      new AddressBookCorpFilterdSelectData();
     listData.loadMygroupList(rundata, context);
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1a-rows")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1a-rows")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "addressbook-corplist");
   }
 
   public void doAddressbook_detail(RunData rundata, Context context)
       throws Exception {
-    AddressBookFilterdSelectData detailData = new AddressBookFilterdSelectData();
+    AddressBookFilterdSelectData detailData =
+      new AddressBookFilterdSelectData();
     detailData.initField();
     if (detailData.doViewDetail(this, rundata, context)) {
       setTemplate(rundata, "addressbook-detail");
@@ -149,7 +158,8 @@ public class CellAddressBookAction extends ALBaseAction {
 
   public void doAddressbook_corp_detail(RunData rundata, Context context)
       throws Exception {
-    AddressBookCorpFilterdSelectData detailData = new AddressBookCorpFilterdSelectData();
+    AddressBookCorpFilterdSelectData detailData =
+      new AddressBookCorpFilterdSelectData();
     detailData.initField();
     if (detailData.doViewDetail(this, rundata, context)) {
       setTemplate(rundata, "addressbook-corpdetail");
@@ -162,22 +172,24 @@ public class CellAddressBookAction extends ALBaseAction {
       throws Exception {
     AddressBookCompanySelectData listData = new AddressBookCompanySelectData();
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1a-rows")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1a-rows")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "addressbook-company-list");
   }
 
   /**
    * 会社情報の詳細を表示します。
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
   public void doAddressbook_company_detail(RunData rundata, Context context)
       throws Exception {
-    AddressBookCompanySelectData detailData = new AddressBookCompanySelectData();
+    AddressBookCompanySelectData detailData =
+      new AddressBookCompanySelectData();
     detailData.initField();
     if (detailData.doViewDetail(this, rundata, context)) {
       setTemplate(rundata, "addressbook-company-detail");
@@ -190,8 +202,11 @@ public class CellAddressBookAction extends ALBaseAction {
       throws Exception {
     this.setMode(MODE_SEARCH);
 
-    String address_type = ALEipUtils.getPortlet(rundata, context)
-        .getPortletConfig().getInitParameter("p2a-type");
+    String address_type =
+      ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p2a-type");
     context.put("address_type", address_type);
     putData(rundata, context);
     setTemplate(rundata, "addressbook-addr-search");
@@ -199,7 +214,7 @@ public class CellAddressBookAction extends ALBaseAction {
 
   /**
    * 検索ワードによる検索処理を行います。
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -208,8 +223,9 @@ public class CellAddressBookAction extends ALBaseAction {
       throws Exception {
     AddressBookWordSelectData listData = new AddressBookWordSelectData();
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1a-rows")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1a-rows")));
     listData.doViewList(this, rundata, context);
     listData.loadGroups(rundata, context);
 
@@ -217,8 +233,9 @@ public class CellAddressBookAction extends ALBaseAction {
 
     // 現在のタブによって処理を分岐
     String currentTab = ALEipUtils.getTemp(rundata, context, "tab");
-    if (currentTab == null || currentTab.trim().length() == 0
-        || "syagai".equals(currentTab)) {
+    if (currentTab == null
+      || currentTab.trim().length() == 0
+      || "syagai".equals(currentTab)) {
       setTemplate(rundata, "addressbook-list");
     } else {
       setTemplate(rundata, "addressbook-corplist");
@@ -234,17 +251,19 @@ public class CellAddressBookAction extends ALBaseAction {
 
   /**
    * 会社情報を検索ワードで検索する．
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
    */
   public void doAddressbook_company_search_list(RunData rundata, Context context)
       throws Exception {
-    AddressBookCompanyWordSelectData listData = new AddressBookCompanyWordSelectData();
+    AddressBookCompanyWordSelectData listData =
+      new AddressBookCompanyWordSelectData();
     listData.setRowsNum(Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-            "p1a-rows")));
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1a-rows")));
     listData.doViewList(this, rundata, context);
 
     context.put("isSerchRes", Boolean.valueOf(true));

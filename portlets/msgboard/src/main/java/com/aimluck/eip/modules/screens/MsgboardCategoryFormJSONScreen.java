@@ -30,7 +30,7 @@ import com.aimluck.eip.msgboard.MsgboardCategoryFormData;
 import com.aimluck.eip.msgboard.MsgboardCategoryMultiDelete;
 
 /**
- * 掲示板カテゴリをJSONデータとして出力するクラスです。 <br />
+ * 掲示板カテゴリをJSONデータとして出力するクラスです。 
  * 
  */
 public class MsgboardCategoryFormJSONScreen extends ALJSONScreen {

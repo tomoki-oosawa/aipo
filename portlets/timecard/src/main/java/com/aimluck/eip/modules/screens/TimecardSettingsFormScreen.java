@@ -28,7 +28,7 @@ import com.aimluck.eip.timecard.TimecardSettingsFormData;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * タイムカード集計を処理するクラスです。 <br />
+ * タイムカード集計を処理するクラスです。
  * 
  */
 public class TimecardSettingsFormScreen extends ALVelocityScreen {
@@ -38,7 +38,10 @@ public class TimecardSettingsFormScreen extends ALVelocityScreen {
     .getLogger(TimecardSettingsFormScreen.class.getName());
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {

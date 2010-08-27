@@ -49,7 +49,7 @@ public class ExtTimecardSystemMapResultData implements ALData {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     system_map_id = new ALNumberField();

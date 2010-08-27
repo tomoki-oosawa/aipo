@@ -30,7 +30,7 @@ import com.aimluck.eip.timecard.TimecardFormData;
 import com.aimluck.eip.timecard.util.TimecardUtils;
 
 /**
- * タイムカードをJSONデータとして出力するクラスです。 <br />
+ * タイムカードをJSONデータとして出力するクラスです。 
  * 
  */
 public class TimecardFormJSONScreen extends ALJSONScreen {

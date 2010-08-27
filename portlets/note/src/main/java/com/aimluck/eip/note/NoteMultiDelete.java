@@ -29,7 +29,7 @@ import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.note.util.NoteUtils;
 
 /**
- * 複数の伝言メモを削除するクラスです。 <br />
+ * 複数の伝言メモを削除するクラスです。
  */
 public class NoteMultiDelete extends ALAbstractCheckList {
 
@@ -39,9 +39,12 @@ public class NoteMultiDelete extends ALAbstractCheckList {
     .getLogger(NoteMultiDelete.class.getName());
 
   /**
-   * @see com.aimluck.eip.common.ALAbstractCheckList#action(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList,
-   *      java.util.ArrayList)
+   * 
+   * @param rundata
+   * @param context
+   * @param values
+   * @param msgList
+   * @return
    */
   @Override
   protected boolean action(RunData rundata, Context context,

@@ -810,8 +810,6 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
   /**
    * アドレス情報の登録を行います。
    * 
-   * @see com.aimluck.eip.common.ALAbstractFormData#insertFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
@@ -842,7 +840,6 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
         ecompany = getEipMCompany();
         if (ecompany == null) {
           if (!insertCompanyData(rundata, context)) {
-            // TODO ロールバック
           }
         } else {
           if (!company_name_kana.toString().equals("")) {
@@ -963,112 +960,13 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
-    // try {
-    // // 作業ユーザIDの取得
-    // int uid = ALEipUtils.getUserId(rundata);
-    // if (is_new_company) {
-    // if (!insertCompanyData(rundata, context)) {
-    // // TODO ロールバック
-    // }
-    // }
-    // // 会社情報の登録処理終了
-    //
-    // // オブジェクトモデルを取得
-    // EipMAddressbook address = AddressbookUtils.getEipMAddressbook(rundata,
-    // context);
-    // if (address == null)
-    // return false;
-    //
-    // address.setLastName(lastname.getValue());
-    // address.setFirstName(firstname.getValue());
-    // address.setLastNameKana(last_name_kana.getValue());
-    // address.setFirstNameKana(first_name_kana.getValue());
-    // address.setEmail(email.getValue());
-    // // address.setTelephone(telephone.getValue());
-    //
-    // // 電話番号(外線)
-    // if (!telephone1.getValue().equals("")
-    // && !telephone2.getValue().equals("")
-    // && !telephone3.getValue().equals("")) {
-    // address.setTelephone(new StringBuffer().append(telephone1.getValue())
-    // .append("-").append(telephone2.getValue()).append("-").append(
-    // telephone3.getValue()).toString());
-    // } else {
-    // address.setTelephone("");
-    // }
-    //
-    // // 携帯電話
-    // if (!cellular_phone1.getValue().equals("")
-    // && !cellular_phone2.getValue().equals("")
-    // && !cellular_phone3.getValue().equals("")) {
-    // address.setCellularPhone(new StringBuffer().append(
-    // cellular_phone1.getValue()).append("-").append(
-    // cellular_phone2.getValue()).append("-").append(
-    // cellular_phone3.getValue()).toString());
-    // } else {
-    // address.setCellularPhone("");
-    // }
-    //
-    // address.setCellularMail(cellular_mail.getValue());
-    // address.setCompanyId(new Integer((int) company_id.getValue()));
-    // address.setPositionName(position_name.getValue());
-    // address.setPublicFlag(public_flag.getValue());
-    // address.setUpdateUserId(new Integer(uid));
-    // address.setUpdateDate(new Date());
-    //
-    // // Address-Groupマッピングテーブルへのデータ追加
-    //
-    // String addressid = ALEipUtils.getTemp(rundata, context,
-    // ALEipConstants.ENTITY_ID);
-    //
-    // // 所属グループの全取得
-    // SelectQuery query1 = Database.query(EipMAddressGroup.class);
-    // Expression exp1 = ExpressionFactory.matchExp(
-    // EipMAddressGroup.OWNER_ID_PROPERTY, new Integer(uid));
-    // query1.setQualifier(exp1);
-    // List list = dataContext.performQuery(query1);
-    // int listsize = list.size();
-    // Integer[] groupIds = new Integer[listsize];
-    // for (int i = 0; i < listsize; i++) {
-    // groupIds[i] = ((EipMAddressGroup) list.get(i)).getGroupId();
-    // }
-    //
-    // // Address-Group Mapテーブル情報を一旦削除
-    // if (listsize != 0) {
-    // SelectQuery query2 = Database.query(EipTAddressbookGroupMap.class);
-    // Expression exp2 = ExpressionFactory.inDbExp("group_id", groupIds);
-    // query2.setQualifier(exp2);
-    // Expression exp3 = ExpressionFactory.matchExp(
-    // EipTAddressbookGroupMap.ADDRESS_ID_PROPERTY, addressid);
-    // query2.setQualifier(exp3);
-    //
-    // List maps = query2.fetchList();
-    // dataContext.deleteObjects(maps);
-    // }
-    //
-    // // Address-Group Mapテーブルへ指定された全グループを登録。
-    // int groupsize = groups.size();
-    // for (int i = 0; i < groupsize; i++) {
-    // EipTAddressbookGroupMap map = (EipTAddressbookGroupMap) dataContext
-    // .createAndRegisterNewObject(EipTAddressbookGroupMap.class);
-    // map.setAddressId(new Integer(addressid));
-    // map.setEipTAddressGroup((EipMAddressGroup) groups.get(i));
-    // }
-    //
-    // dataContext.commitChanges();
-    // } catch (Exception ex) {
-    // logger.error("Exception", ex);
-    // return false;
-    // }
-    // return true;
+
     return false;
   }
 
   /**
    * フォームへデータをセットします。
    * 
-   * @see com.aimluck.eip.common.ALAbstractFormData#setFormData(org.apache.turbine.util.RunData,
-   *      org.apache.velocity.context.Context, java.util.ArrayList)
    */
   @Override
   protected boolean setFormData(RunData rundata, Context context,
@@ -1582,9 +1480,6 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
         uid = 1;
       }
     } catch (ALDBErrorException e) {
-      // TODO 自動生成された catch ブロック
-      // e.printStackTrace();
-      // return false;
       uid = 1;
       user = null;
     }

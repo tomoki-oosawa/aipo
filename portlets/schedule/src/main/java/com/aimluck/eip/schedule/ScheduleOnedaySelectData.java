@@ -129,11 +129,13 @@ public class ScheduleOnedaySelectData extends
   /** <code>hasAuthoritySelfInsert</code> アクセス権限 */
   private boolean hasAuthoritySelfInsert = false;
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#init(com.aimluck.eip.modules
-   * .actions.common.ALAction, org.apache.turbine.util.RunData,
-   * org.apache.velocity.context.Context)
+  /**
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -241,10 +243,13 @@ public class ScheduleOnedaySelectData extends
         ALAccessControlConstants.VALUE_ACL_INSERT);
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected ResultList<EipTScheduleMap> selectList(RunData rundata,
@@ -353,8 +358,6 @@ public class ScheduleOnedaySelectData extends
 
       return new ResultList<EipTScheduleMap>(list);
     } catch (Exception e) {
-
-      // TODO: エラー処理
       logger.error("[ScheduleOnedaySelectData]", e);
       throw new ALDBErrorException();
     }
@@ -425,10 +428,11 @@ public class ScheduleOnedaySelectData extends
     return query;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#selectDetail(org.apache.turbine
-   * .util.RunData, org.apache.velocity.context.Context)
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   protected EipTScheduleMap selectDetail(RunData rundata, Context context) {
@@ -436,9 +440,12 @@ public class ScheduleOnedaySelectData extends
     return null;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+  /**
+   * 
+   * @param record
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
    */
   @Override
   protected Object getResultData(EipTScheduleMap record)
@@ -569,9 +576,6 @@ public class ScheduleOnedaySelectData extends
         }
       }
     } catch (Exception e) {
-
-      // TODO: エラー処理
-
       logger.error("Exception", e);
 
       return null;
@@ -579,31 +583,31 @@ public class ScheduleOnedaySelectData extends
     return rd;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#getResultDataDetail(java.lang
-   * .Object)
+  /**
+   * 
+   * @param record
+   * @return
    */
   @Override
   protected Object getResultDataDetail(EipTScheduleMap record) {
-    // このメソッドは利用されません。
     return null;
   }
 
-  /*
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
+  /**
+   * 
+   * @return
    */
   @Override
   protected Attributes getColumnMap() {
-    // このメソッドは利用されません。
     return null;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#doViewList(com.aimluck.eip.
-   * modules.actions.common.ALAction, org.apache.turbine.util.RunData,
-   * org.apache.velocity.context.Context)
+  /**
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   public boolean doViewList(ALAction action, RunData rundata, Context context) {
@@ -615,11 +619,12 @@ public class ScheduleOnedaySelectData extends
     return res;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#doSelectList(com.aimluck.eip
-   * .modules.actions.common.ALAction, org.apache.turbine.util.RunData,
-   * org.apache.velocity.context.Context)
+  /**
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * @return
    */
   @Override
   public boolean doSelectList(ALAction action, RunData rundata, Context context) {

@@ -29,7 +29,7 @@ import com.aimluck.eip.addressbook.AddressBookFormData;
 import com.aimluck.eip.common.ALEipConstants;
 
 /**
- * アドレス帳をJSONデータとして出力するクラスです。 <br />
+ * アドレス帳をJSONデータとして出力するクラスです。 
  *
  */
 public class AddressBookFormJSONScreen extends ALJSONScreen {

@@ -316,12 +316,13 @@ public class RemainderScheduleDaemon implements Daemon {
     }
 
     return list;
-  } /*
-     * @see
-     * com.aimluck.eip.common.ALAbstractSelectData#selectList(org.apache.turbine
-     * .util.RunData, org.apache.velocity.context.Context)
-     */
+  }
 
+  /**
+   * 
+   * @param userid
+   * @return
+   */
   private List<EipTScheduleMap> selectList(Integer userid) {
     List<EipTScheduleMap> resultBaseList = getSelectQuery(userid).fetchList();
 
@@ -540,9 +541,10 @@ public class RemainderScheduleDaemon implements Daemon {
     return query;
   }
 
-  /*
-   * @see
-   * com.aimluck.eip.common.ALAbstractSelectData#getResultData(java.lang.Object)
+  /**
+   * 
+   * @param obj
+   * @return
    */
   protected Object getResultData(Object obj) {
     CellScheduleResultData rd = new CellScheduleResultData();
@@ -601,9 +603,6 @@ public class RemainderScheduleDaemon implements Daemon {
       }
 
     } catch (Exception e) {
-
-      // TODO: エラー処理
-
       logger.error("Exception", e);
 
       return null;
@@ -948,10 +947,6 @@ public class RemainderScheduleDaemon implements Daemon {
 
   /**
    * Return the status for this Daemon
-   * 
-   * @see Daemon#STATUS_NOT_PROCESSED
-   * @see Daemon#STATUS_PROCESSED
-   * @see Daemon#STATUS_PROCESSING
    */
   public int getStatus() {
     return this.status;
@@ -959,31 +954,27 @@ public class RemainderScheduleDaemon implements Daemon {
 
   /**
    * Set the status for this Daemon
-   * 
-   * @see #STATUS_NOT_PROCESSED
-   * @see #STATUS_PROCESSED
-   * @see #STATUS_PROCESSING
    */
   public void setStatus(int status) {
     this.status = status;
   }
 
   /**
-   * @see Daemon#getResult()
+   *
    */
   public int getResult() {
     return this.result;
   }
 
   /**
-   * @see Daemon#setResult(int result)
+   *
    */
   public void setResult(int result) {
     this.result = result;
   }
 
   /**
-   * @see Daemon#getMessage()
+   *
    */
   public String getMessage() {
     return null;
