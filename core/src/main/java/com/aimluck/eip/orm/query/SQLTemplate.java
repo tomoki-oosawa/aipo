@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.cayenne.DataRow;
 import org.apache.cayenne.access.DataContext;
 
 import com.aimluck.eip.orm.DatabaseOrmService;
@@ -62,13 +61,27 @@ public class SQLTemplate<M> extends AbstractQuery<M> {
   public List<M> fetchList() {
     delegate.setParameters(parameters);
     @SuppressWarnings("unchecked")
-    List<DataRow> dataRows = dataContext.performQuery(delegate);
+    List<org.apache.cayenne.DataRow> dataRows =
+      dataContext.performQuery(delegate);
     List<M> results = new ArrayList<M>(dataRows.size());
-    for (DataRow dataRow : dataRows) {
+    for (org.apache.cayenne.DataRow dataRow : dataRows) {
       M model = newInstanceFromRowData(dataRow, rootClass);
       if (model != null) {
         results.add(model);
       }
+    }
+    return results;
+  }
+
+  @SuppressWarnings("unchecked")
+  public List<DataRow> fetchListAsDataRow() {
+    delegate.setParameters(parameters);
+    List<org.apache.cayenne.DataRow> dataRows =
+      dataContext.performQuery(delegate);
+    List<DataRow> results = new ArrayList<DataRow>(dataRows.size());
+    for (org.apache.cayenne.DataRow dataRow : dataRows) {
+      DataRow newDataRow = new DataRow(dataRow);
+      results.add(newDataRow);
     }
     return results;
   }

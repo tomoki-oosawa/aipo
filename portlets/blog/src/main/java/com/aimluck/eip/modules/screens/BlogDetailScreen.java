@@ -19,6 +19,7 @@
 package com.aimluck.eip.modules.screens;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -51,7 +52,7 @@ public class BlogDetailScreen extends ALVelocityScreen {
   private Object resultOnCommentDetail;
 
   /** 返信用異常系のメッセージを格納するリスト */
-  private ArrayList errmsgListOnCommentDetail;
+  private List<String> errmsgListOnCommentDetail;
 
   /**
    * 
@@ -95,9 +96,9 @@ public class BlogDetailScreen extends ALVelocityScreen {
    * 
    * @param msg
    */
-  public void addErrorMessagesOnCommentDetail(ArrayList msgs) {
+  public void addErrorMessagesOnCommentDetail(List<String> msgs) {
     if (errmsgListOnCommentDetail == null) {
-      errmsgListOnCommentDetail = new ArrayList();
+      errmsgListOnCommentDetail = new ArrayList<String>();
     }
     errmsgListOnCommentDetail.addAll(msgs);
   }

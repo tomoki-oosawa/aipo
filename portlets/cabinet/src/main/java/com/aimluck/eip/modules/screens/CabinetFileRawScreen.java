@@ -18,8 +18,6 @@
  */
 package com.aimluck.eip.modules.screens;
 
-import org.apache.cayenne.DataObjectUtils;
-import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -27,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import com.aimluck.eip.cabinet.util.CabinetUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
@@ -34,6 +33,7 @@ import com.aimluck.eip.orm.DatabaseOrmService;
  * 
  */
 public class CabinetFileRawScreen extends FileuploadRawScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(CabinetFileRawScreen.class.getName());
@@ -59,13 +59,8 @@ public class CabinetFileRawScreen extends FileuploadRawScreen {
     try {
       int fileindex = rundata.getParameters().getInt(ALEipConstants.ENTITY_ID);
 
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
       EipTCabinetFile cabinetfile =
-        (EipTCabinetFile) DataObjectUtils.objectForPK(
-          dataContext,
-          EipTCabinetFile.class,
-          Integer.valueOf(fileindex));
+        Database.get(EipTCabinetFile.class, Integer.valueOf(fileindex));
 
       super.setFilePath(CabinetUtils.getSaveDirPath(DatabaseOrmService
         .getInstance()

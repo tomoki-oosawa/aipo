@@ -30,6 +30,7 @@ import com.aimluck.eip.orm.DatabaseOrmService;
  * ブログエントリーの添付ファイルの一覧を処理するクラスです。 <br />
  */
 public class BlogFileRawScreen extends FileuploadRawScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(BlogFileRawScreen.class.getName());

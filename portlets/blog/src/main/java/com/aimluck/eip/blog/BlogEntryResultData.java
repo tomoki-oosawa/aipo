@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,11 +20,13 @@ package com.aimluck.eip.blog;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -66,7 +68,7 @@ public class BlogEntryResultData implements ALData {
 
   /** 登録日 */
   private ALStringField create_date;
-  
+
   /** 登録日(DATA型) */
   private ALDateTimeField create_date_alternative;
 
@@ -74,17 +76,17 @@ public class BlogEntryResultData implements ALData {
   private ALDateTimeField update_date;
 
   /** 添付ファイルリスト */
-  private ArrayList attachmentFileList = null;
+  private List<FileuploadBean> attachmentFileList = null;
 
   /** コメント数 */
   private int comments_num;
-  
+
   /** 日付（アンカーリンク用） */
   private int day;
 
   /**
-   * 
-   * 
+   *
+   *
    */
   public void initField() {
     entry_id = new ALNumberField();
@@ -100,7 +102,7 @@ public class BlogEntryResultData implements ALData {
     create_date = new ALStringField();
     create_date_alternative = new ALDateTimeField();
     update_date = new ALDateTimeField();
-    attachmentFileList = new ArrayList();
+    attachmentFileList = new ArrayList<FileuploadBean>();
 
     day = 0;
     comments_num = 0;
@@ -212,7 +214,7 @@ public class BlogEntryResultData implements ALData {
   public ALStringField getCreateDate() {
     return create_date;
   }
-  
+
   /**
    * @return
    */
@@ -233,7 +235,7 @@ public class BlogEntryResultData implements ALData {
   public void setCreateDate(String string) {
     create_date.setValue(string);
   }
-  
+
   /**
    * @param string
    */
@@ -290,11 +292,11 @@ public class BlogEntryResultData implements ALData {
     blog_id.setValue(i);
   }
 
-  public ArrayList getAttachmentFileList() {
+  public List<FileuploadBean> getAttachmentFileList() {
     return attachmentFileList;
   }
 
-  public void setAttachmentFiles(ArrayList list) {
+  public void setAttachmentFiles(List<FileuploadBean> list) {
     attachmentFileList = list;
   }
 
@@ -309,14 +311,13 @@ public class BlogEntryResultData implements ALData {
       comments_num = i;
     }
   }
-  
+
   public int getDay() {
     return day;
   }
-  
+
   public void setDay(int i) {
     day = i;
   }
-
 
 }

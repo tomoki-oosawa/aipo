@@ -25,7 +25,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -55,7 +54,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -75,12 +74,12 @@ public class BlogEntrySelectData extends
     .getLogger(BlogEntrySelectData.class.getName());
 
   /** カテゴリ一覧 */
-  private ArrayList themaList;
+  private List<BlogThemaResultData> themaList;
 
   /** エントリーの総数 */
   private int entrySum;
 
-  private List commentList;
+  private List<BlogCommentResultData> commentList;
 
   private List<BlogFootmarkResultData> footmarkList;
 
@@ -112,8 +111,6 @@ public class BlogEntrySelectData extends
 
   private boolean has_photo;
 
-  private DataContext dataContext;
-
   private String userAccountURI;
 
   /** アクセス権限の機能名 */
@@ -128,7 +125,6 @@ public class BlogEntrySelectData extends
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
     uid = ALEipUtils.getUserId(rundata);
 
     ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
@@ -158,23 +154,7 @@ public class BlogEntrySelectData extends
           .getString("view_day"));
       }
 
-      // if (rundata.getParameters().containsKey("view_uid")) {
-      // ALEipUtils.setTemp(rundata, context, "view_uid", rundata
-      // .getParameters().getString("view_uid"));
-      // }
-
     }
-
-    // String tmpViewUid = ALEipUtils.getTemp(rundata, context, "view_uid");
-    // if (tmpViewUid == null || tmpViewUid.equals("")) {
-    // view_uid = uid;
-    // } else {
-    // try {
-    // view_uid = Integer.parseInt(tmpViewUid);
-    // } catch (Exception e) {
-    // view_uid = uid;
-    // }
-    // }
 
     // POST/GET から yyyy-MM の形式で受け渡される。
     // 現在の月
@@ -289,7 +269,7 @@ public class BlogEntrySelectData extends
     footmarkList = new ArrayList<BlogFootmarkResultData>();
 
     SelectQuery<EipTBlogFootmarkMap> query =
-      new SelectQuery<EipTBlogFootmarkMap>(EipTBlogFootmarkMap.class);
+      Database.query(EipTBlogFootmarkMap.class);
     Expression exp =
       ExpressionFactory.matchExp(EipTBlogFootmarkMap.BLOG_ID_PROPERTY, blog
         .getBlogId());
@@ -370,8 +350,7 @@ public class BlogEntrySelectData extends
    */
   private SelectQuery<EipTBlogEntry> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipTBlogEntry> query =
-      new SelectQuery<EipTBlogEntry>(EipTBlogEntry.class);
+    SelectQuery<EipTBlogEntry> query = Database.query(EipTBlogEntry.class);
 
     Expression exp1 =
       ExpressionFactory.matchExp(EipTBlogEntry.OWNER_ID_PROPERTY, Integer
@@ -430,8 +409,8 @@ public class BlogEntrySelectData extends
   private SelectQuery<EipTBlogEntry> getSelectQueryForCalendar(RunData rundata,
       Context context) {
     SelectQuery<EipTBlogEntry> query =
-      new SelectQuery<EipTBlogEntry>(EipTBlogEntry.class)
-        .select(EipTBlogEntry.CREATE_DATE_COLUMN);
+      Database.query(EipTBlogEntry.class).select(
+        EipTBlogEntry.CREATE_DATE_COLUMN);
 
     Expression exp1 =
       ExpressionFactory.matchExp(EipTBlogEntry.OWNER_ID_PROPERTY, Integer
@@ -485,7 +464,7 @@ public class BlogEntrySelectData extends
       rd.setDay(Integer.parseInt((sdf2.format(record.getCreateDate()))));
 
       SelectQuery<EipTBlogComment> query =
-        new SelectQuery<EipTBlogComment>(EipTBlogComment.class);
+        Database.query(EipTBlogComment.class);
       Expression exp =
         ExpressionFactory.matchDbExp(EipTBlogComment.EIP_TBLOG_ENTRY_PROPERTY
           + "."
@@ -539,7 +518,7 @@ public class BlogEntrySelectData extends
    * @param view_uid
    */
   private EipTBlog getBlog(int view_uid) throws Exception {
-    SelectQuery<EipTBlog> query = new SelectQuery<EipTBlog>(EipTBlog.class);
+    SelectQuery<EipTBlog> query = Database.query(EipTBlog.class);
     Expression exp =
       ExpressionFactory.matchExp(EipTBlog.OWNER_ID_PROPERTY, Integer
         .valueOf(view_uid));
@@ -547,8 +526,7 @@ public class BlogEntrySelectData extends
     List<EipTBlog> list = query.fetchList();
     if (list == null || list.size() <= 0) {
       // 新規オブジェクトモデル
-      EipTBlog blog =
-        (EipTBlog) dataContext.createAndRegisterNewObject(EipTBlog.class);
+      EipTBlog blog = Database.create(EipTBlog.class);
       // ユーザーID
       blog.setOwnerId(Integer.valueOf(view_uid));
       // 作成日
@@ -556,7 +534,7 @@ public class BlogEntrySelectData extends
       // 更新日
       blog.setUpdateDate(Calendar.getInstance().getTime());
       // ブログを登録
-      dataContext.commitChanges();
+      Database.commit();
       return blog;
     } else {
       EipTBlog blog = list.get(0);
@@ -581,7 +559,7 @@ public class BlogEntrySelectData extends
     today.setValue(cal.getTime());
 
     SelectQuery<EipTBlogFootmarkMap> query =
-      new SelectQuery<EipTBlogFootmarkMap>(EipTBlogFootmarkMap.class);
+      Database.query(EipTBlogFootmarkMap.class);
     Expression exp1 =
       ExpressionFactory.matchExp(EipTBlogFootmarkMap.BLOG_ID_PROPERTY, blog
         .getBlogId());
@@ -599,19 +577,17 @@ public class BlogEntrySelectData extends
     List<EipTBlogFootmarkMap> list = query.fetchList();
     if (list == null || list.size() <= 0) {
       // あしあとを登録する
-      EipTBlogFootmarkMap footmark =
-        (EipTBlogFootmarkMap) dataContext
-          .createAndRegisterNewObject(EipTBlogFootmarkMap.class);
+      EipTBlogFootmarkMap footmark = Database.create(EipTBlogFootmarkMap.class);
       footmark.setEipTBlog(blog);
       footmark.setUserId(Integer.valueOf(uid));
       footmark.setCreateDate(Calendar.getInstance().getTime());
       footmark.setUpdateDate(Calendar.getInstance().getTime());
-      dataContext.commitChanges();
+      Database.commit();
     } else {
       // あしあとを更新する
       EipTBlogFootmarkMap footmark = list.get(0);
       footmark.setUpdateDate(Calendar.getInstance().getTime());
-      dataContext.commitChanges();
+      Database.commit();
     }
   }
 
@@ -711,22 +687,22 @@ public class BlogEntrySelectData extends
       rd.setCreateDateAlternative(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());
 
-      commentList = new ArrayList();
+      commentList = new ArrayList<BlogCommentResultData>();
 
       SelectQuery<EipTBlogComment> query =
-        new SelectQuery<EipTBlogComment>(EipTBlogComment.class);
+        Database.query(EipTBlogComment.class);
       Expression exp =
         ExpressionFactory.matchDbExp(EipTBlogComment.EIP_TBLOG_ENTRY_PROPERTY
           + "."
           + EipTBlogEntry.ENTRY_ID_PK_COLUMN, record.getEntryId());
       query.orderAscending(EipTBlogComment.UPDATE_DATE_PROPERTY);
       query.setQualifier(exp);
-      List comments = query.fetchList();
+      List<EipTBlogComment> comments = query.fetchList();
 
       if (comments != null && comments.size() > 0) {
         int size = comments.size();
         for (int i = 0; i < size; i++) {
-          EipTBlogComment blogcomment = (EipTBlogComment) comments.get(i);
+          EipTBlogComment blogcomment = comments.get(i);
           BlogCommentResultData comment = new BlogCommentResultData();
           comment.initField();
           comment.setCommentId(blogcomment.getCommentId().longValue());
@@ -754,8 +730,7 @@ public class BlogEntrySelectData extends
         }
       }
 
-      SelectQuery<EipTBlogFile> filequery =
-        new SelectQuery<EipTBlogFile>(EipTBlogFile.class);
+      SelectQuery<EipTBlogFile> filequery = Database.query(EipTBlogFile.class);
       Expression fileexp =
         ExpressionFactory.matchDbExp(EipTBlogFile.EIP_TBLOG_ENTRY_PROPERTY
           + "."
@@ -764,7 +739,8 @@ public class BlogEntrySelectData extends
       List<EipTBlogFile> files = filequery.fetchList();
 
       if (files != null && files.size() > 0) {
-        ArrayList attachmentFileList = new ArrayList();
+        List<FileuploadBean> attachmentFileList =
+          new ArrayList<FileuploadBean>();
         FileuploadBean filebean = null;
         int size = files.size();
         for (int i = 0; i < size; i++) {
@@ -789,10 +765,11 @@ public class BlogEntrySelectData extends
 
       if (record.getOwnerId().intValue() == uid) {
         record.setUpdateDate(Calendar.getInstance().getTime());
-        dataContext.commitChanges();
+        Database.commit();
       }
       return rd;
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return null;
     }
@@ -802,7 +779,7 @@ public class BlogEntrySelectData extends
    * 
    * @return
    */
-  public ArrayList getThemaList() {
+  public List<BlogThemaResultData> getThemaList() {
     return themaList;
   }
 
@@ -838,11 +815,11 @@ public class BlogEntrySelectData extends
     return map;
   }
 
-  public List getCommentList() {
+  public List<BlogCommentResultData> getCommentList() {
     return commentList;
   }
 
-  public List getFootmarkList() {
+  public List<BlogFootmarkResultData> getFootmarkList() {
     return footmarkList;
   }
 

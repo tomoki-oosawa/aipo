@@ -20,10 +20,8 @@ package com.aimluck.eip.eventlog;
 
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -31,7 +29,8 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTEventlog;
 import com.aimluck.eip.common.ALAbstractCheckList;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
  * イベントログの複数削除を行うためのクラスです。 <BR>
@@ -55,23 +54,22 @@ public class EventlogMultiDelete extends ALAbstractCheckList {
   protected boolean action(RunData rundata, Context context,
       List<String> values, List<String> msgList) {
     try {
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
 
-      SelectQuery query = new SelectQuery(EipTEventlog.class);
+      SelectQuery<EipTEventlog> query = Database.query(EipTEventlog.class);
       Expression exp =
         ExpressionFactory.inDbExp(EipTEventlog.EVENTLOG_ID_PK_COLUMN, values);
       query.setQualifier(exp);
 
-      List<?> logs = dataContext.performQuery(query);
+      List<EipTEventlog> logs = query.fetchList();
       if (logs == null || logs.size() == 0) {
         return false;
       }
 
       // イベントログを削除
-      dataContext.deleteObjects(logs);
-      dataContext.commitChanges();
+      Database.deleteAll(logs);
+      Database.commit();
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }

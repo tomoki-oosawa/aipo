@@ -18,8 +18,8 @@
  */
 package com.aimluck.eip.modules.parameters;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.turbine.util.RunData;
 
@@ -42,7 +42,7 @@ public class CabinetFolderListBox extends ListBox {
   @Override
   protected void init(RunData data) {
     // カテゴリ一覧を取得
-    ArrayList folder_hierarchy_list = CabinetUtils.getFolderList();
+    List<FolderInfo> folder_hierarchy_list = CabinetUtils.getFolderList();
 
     int length = folder_hierarchy_list.size();
     String[] folderKeys = new String[length];
@@ -52,9 +52,9 @@ public class CabinetFolderListBox extends ListBox {
 
     // カテゴリの登録
     FolderInfo folderinfo = null;
-    Iterator iter = folder_hierarchy_list.iterator();
+    Iterator<FolderInfo> iter = folder_hierarchy_list.iterator();
     while (iter.hasNext()) {
-      folderinfo = (FolderInfo) iter.next();
+      folderinfo = iter.next();
 
       StringBuffer nbsps = new StringBuffer();
       int len = folderinfo.getHierarchyIndex();

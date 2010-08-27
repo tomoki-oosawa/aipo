@@ -186,7 +186,10 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
         }
         list = new ArrayList<Object>();
         for (M1 model : resultList) {
-          list.add(getResultData(model));
+          Object object = getResultData(model);
+          if (object != null) {
+            list.add(object);
+          }
         }
       }
       action.setResultData(this);
@@ -228,7 +231,10 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
         }
         list = new ArrayList<Object>();
         for (M1 model : resultList) {
-          list.add(getResultData(model));
+          Object object = getResultData(model);
+          if (object != null) {
+            list.add(object);
+          }
         }
       }
       return (list != null);

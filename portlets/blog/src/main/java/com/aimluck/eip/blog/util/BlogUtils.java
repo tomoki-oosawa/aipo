@@ -25,14 +25,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.cayenne.DataObjectUtils;
-import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.Ordering;
-import org.apache.cayenne.query.SQLTemplate;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.om.security.UserIdPrincipal;
@@ -63,7 +57,10 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.DataRow;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
@@ -128,20 +125,18 @@ public class BlogUtils {
         return null;
       }
 
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      SelectQuery query = new SelectQuery(EipTBlogEntry.class);
+      SelectQuery<EipTBlogEntry> query = Database.query(EipTBlogEntry.class);
       Expression exp =
         ExpressionFactory.matchDbExp(EipTBlogEntry.ENTRY_ID_PK_COLUMN, Integer
           .valueOf(entryid));
       query.setQualifier(exp);
-      List entrys = dataContext.performQuery(query);
+      List<EipTBlogEntry> entrys = query.fetchList();
       if (entrys == null || entrys.size() == 0) {
         // 指定したエントリーIDのレコードが見つからない場合
         logger.debug("[Blog Entry] Not found ID...");
         return null;
       }
-      return ((EipTBlogEntry) entrys.get(0));
+      return entrys.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -165,20 +160,18 @@ public class BlogUtils {
         return null;
       }
 
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      SelectQuery query = new SelectQuery(EipTBlogThema.class);
+      SelectQuery<EipTBlogThema> query = Database.query(EipTBlogThema.class);
       Expression exp =
         ExpressionFactory.matchDbExp(EipTBlogThema.THEMA_ID_PK_COLUMN, Integer
           .valueOf(themaid));
       query.setQualifier(exp);
-      List themas = dataContext.performQuery(query);
+      List<EipTBlogThema> themas = query.fetchList();
       if (themas == null || themas.size() == 0) {
         // 指定したテーマIDのレコードが見つからない場合
         logger.debug("[Blog] Not found ID...");
         return null;
       }
-      return ((EipTBlogThema) themas.get(0));
+      return themas.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -192,14 +185,9 @@ public class BlogUtils {
    * @param context
    * @return
    */
-  public static EipTBlogThema getEipTBlogThema(DataContext dataContext,
-      Long thema_id) {
+  public static EipTBlogThema getEipTBlogThema(Long thema_id) {
     try {
-      EipTBlogThema thema =
-        (EipTBlogThema) DataObjectUtils.objectForPK(
-          dataContext,
-          EipTBlogThema.class,
-          thema_id);
+      EipTBlogThema thema = Database.get(EipTBlogThema.class, thema_id);
       return thema;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -210,20 +198,18 @@ public class BlogUtils {
   public static EipTBlog getEipTBlog(RunData rundata, Context context) {
     try {
       int uid = ALEipUtils.getUserId(rundata);
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      SelectQuery query = new SelectQuery(EipTBlog.class);
+      SelectQuery<EipTBlog> query = Database.query(EipTBlog.class);
       Expression exp =
         ExpressionFactory.matchExp(EipTBlog.OWNER_ID_PROPERTY, Integer
           .valueOf(uid));
       query.setQualifier(exp);
-      List blogs = dataContext.performQuery(query);
+      List<EipTBlog> blogs = query.fetchList();
       if (blogs == null || blogs.size() == 0) {
         // 指定したブログIDのレコードが見つからない場合
         logger.debug("[Blog Entry] Not found ID...");
         return null;
       }
-      return ((EipTBlog) blogs.get(0));
+      return blogs.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -248,9 +234,8 @@ public class BlogUtils {
       }
 
       int userid = ALEipUtils.getUserId(rundata);
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      SelectQuery query = new SelectQuery(EipTBlogComment.class);
+      SelectQuery<EipTBlogComment> query =
+        Database.query(EipTBlogComment.class);
       Expression exp1 =
         ExpressionFactory.matchDbExp(
           EipTBlogComment.COMMENT_ID_PK_COLUMN,
@@ -260,13 +245,13 @@ public class BlogUtils {
         ExpressionFactory.matchExp(EipTBlogComment.OWNER_ID_PROPERTY, Integer
           .valueOf(userid));
       query.andQualifier(exp2);
-      List comments = dataContext.performQuery(query);
+      List<EipTBlogComment> comments = query.fetchList();
       if (comments == null || comments.size() == 0) {
         // 指定した トピック ID のレコードが見つからない場合
         logger.debug("[BlogUtils] Not found ID...");
         throw new ALPageNotFoundException();
       }
-      return ((EipTBlogComment) comments.get(0));
+      return comments.get(0);
     } catch (Exception ex) {
       logger.error("[BlogUtils]", ex);
       throw new ALDBErrorException();
@@ -294,9 +279,7 @@ public class BlogUtils {
         throw new ALPageNotFoundException();
       }
 
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      SelectQuery query = new SelectQuery(EipTBlogFile.class);
+      SelectQuery<EipTBlogFile> query = Database.query(EipTBlogFile.class);
       Expression exp1 =
         ExpressionFactory.matchDbExp(EipTBlogFile.FILE_ID_PK_COLUMN, Integer
           .valueOf(fileid));
@@ -310,14 +293,14 @@ public class BlogUtils {
           .valueOf(entryid));
       query.andQualifier(exp3);
 
-      List files = dataContext.performQuery(query);
+      List<EipTBlogFile> files = query.fetchList();
 
       if (files == null || files.size() == 0) {
         // 指定した トピック ID のレコードが見つからない場合
         logger.debug("[BlogUtils] Not found ID...");
         throw new ALPageNotFoundException();
       }
-      return ((EipTBlogFile) files.get(0));
+      return files.get(0);
     } catch (Exception ex) {
       logger.error("[BlogUtils]", ex);
       throw new ALDBErrorException();
@@ -345,21 +328,19 @@ public class BlogUtils {
         throw new ALPageNotFoundException();
       }
 
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      SelectQuery query = new SelectQuery(EipTBlogEntry.class);
+      SelectQuery<EipTBlogEntry> query = Database.query(EipTBlogEntry.class);
       Expression exp =
         ExpressionFactory.matchDbExp(EipTBlogEntry.ENTRY_ID_PK_COLUMN, Integer
           .valueOf(entryid));
       query.setQualifier(exp);
-      List entrys = dataContext.performQuery(query);
+      List<EipTBlogEntry> entrys = query.fetchList();
       if (entrys == null || entrys.size() == 0) {
         // 指定した トピック ID のレコードが見つからない場合
         logger.debug("[BlogUtils] Not found ID...");
         throw new ALPageNotFoundException();
       }
 
-      EipTBlogEntry entry = ((EipTBlogEntry) entrys.get(0));
+      EipTBlogEntry entry = entrys.get(0);
       return entry;
     } catch (Exception ex) {
       logger.error("[EntryUtils]", ex);
@@ -368,18 +349,18 @@ public class BlogUtils {
     }
   }
 
-  public static ArrayList getThemaList(RunData rundata, Context context) {
+  public static List<BlogThemaResultData> getThemaList(RunData rundata,
+      Context context) {
     // カテゴリ一覧
-    ArrayList themaList = new ArrayList();
+    ArrayList<BlogThemaResultData> themaList =
+      new ArrayList<BlogThemaResultData>();
     try {
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      SelectQuery query = new SelectQuery(EipTBlogThema.class);
-      query.addOrdering(EipTBlogThema.THEMA_NAME_PROPERTY, Ordering.ASC);
-      List aList = dataContext.performQuery(query);
+      SelectQuery<EipTBlogThema> query = Database.query(EipTBlogThema.class);
+      query.orderAscending(EipTBlogThema.THEMA_NAME_PROPERTY);
+      List<EipTBlogThema> aList = query.fetchList();
       int size = aList.size();
       for (int i = 0; i < size; i++) {
-        EipTBlogThema record = (EipTBlogThema) aList.get(i);
+        EipTBlogThema record = aList.get(i);
         BlogThemaResultData rd = new BlogThemaResultData();
         rd.initField();
         rd.setThemaId(record.getThemaId().longValue());
@@ -414,8 +395,9 @@ public class BlogUtils {
    * @param groupname
    * @return
    */
-  public static List getBlogUserResultDataList(String groupname) {
-    List list = new ArrayList();
+  public static List<BlogUserResultData> getBlogUserResultDataList(
+      String groupname) {
+    List<BlogUserResultData> list = new ArrayList<BlogUserResultData>();
 
     // SQLの作成
     StringBuffer statement = new StringBuffer();
@@ -437,11 +419,8 @@ public class BlogUtils {
     try {
       // List ulist = BasePeer.executeQuery(query, org_id);
 
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      SQLTemplate rawSelect = new SQLTemplate(TurbineUser.class, query, true);
-      rawSelect.setFetchingDataRows(true);
-      List ulist = dataContext.performQuery(rawSelect);
+      List<DataRow> ulist =
+        Database.sql(TurbineUser.class, query).fetchListAsDataRow();
 
       int recNum = ulist.size();
 
@@ -450,23 +429,17 @@ public class BlogUtils {
 
       // ユーザデータを作成し、返却リストへ格納
       for (int j = 0; j < recNum; j++) {
-        dataRow = (DataRow) ulist.get(j);
+        dataRow = ulist.get(j);
         user = new BlogUserResultData();
         user.initField();
-        user.setUserId(((Integer) ALEipUtils.getObjFromDataRow(
-          dataRow,
-          TurbineUser.USER_ID_PK_COLUMN)).intValue());
-        user.setName((String) ALEipUtils.getObjFromDataRow(
-          dataRow,
-          TurbineUser.LOGIN_NAME_COLUMN));
+        user.setUserId(((Integer) dataRow
+          .getValue(TurbineUser.USER_ID_PK_COLUMN)));
+        user.setName((String) dataRow.getValue(TurbineUser.LOGIN_NAME_COLUMN));
         user.setAliasName((String) ALEipUtils.getObjFromDataRow(
           dataRow,
-          TurbineUser.FIRST_NAME_COLUMN), (String) ALEipUtils
-          .getObjFromDataRow(dataRow, TurbineUser.LAST_NAME_COLUMN));
-        byte[] photo =
-          (byte[]) ALEipUtils.getObjFromDataRow(
-            dataRow,
-            TurbineUser.PHOTO_COLUMN);
+          TurbineUser.FIRST_NAME_COLUMN), (String) dataRow
+          .get(TurbineUser.LAST_NAME_COLUMN));
+        byte[] photo = (byte[]) dataRow.get(TurbineUser.PHOTO_COLUMN);
         if (photo != null && photo.length > 0) {
           user.setHasPhoto(true);
         } else {
@@ -526,16 +499,6 @@ public class BlogUtils {
       subject = src;
     }
     return subject;
-  }
-
-  private static int getDBFileId(String str) {
-    if (str == null || !str.startsWith(BlogUtils.PREFIX_DBFILE)) {
-      return -1;
-    }
-
-    String token =
-      str.substring(BlogUtils.PREFIX_DBFILE.length(), str.length());
-    return Integer.parseInt(token);
   }
 
   /**
@@ -656,7 +619,7 @@ public class BlogUtils {
    * @param uid
    * @return
    */
-  public static ArrayList getFileuploadList(RunData rundata) {
+  public static ArrayList<FileuploadLiteBean> getFileuploadList(RunData rundata) {
     String[] fileids =
       rundata
         .getParameters()
@@ -665,8 +628,8 @@ public class BlogUtils {
       return null;
     }
 
-    ArrayList hadfileids = new ArrayList();
-    ArrayList newfileids = new ArrayList();
+    ArrayList<String> hadfileids = new ArrayList<String>();
+    ArrayList<String> newfileids = new ArrayList<String>();
 
     for (int j = 0; j < fileids.length; j++) {
       if (fileids[j].trim().startsWith("s")) {
@@ -676,7 +639,8 @@ public class BlogUtils {
       }
     }
 
-    ArrayList fileNameList = new ArrayList();
+    ArrayList<FileuploadLiteBean> fileNameList =
+      new ArrayList<FileuploadLiteBean>();
     FileuploadLiteBean filebean = null;
     int fileid = 0;
 
@@ -704,7 +668,7 @@ public class BlogUtils {
         }
 
         try {
-          fileid = Integer.parseInt((String) newfileids.get(i));
+          fileid = Integer.parseInt(newfileids.get(i));
         } catch (Exception e) {
           continue;
         }
@@ -751,10 +715,10 @@ public class BlogUtils {
 
     if (hadfileids.size() > 0) {
       // すでにあるファイルの処理
-      ArrayList hadfileidsValue = new ArrayList();
+      ArrayList<Integer> hadfileidsValue = new ArrayList<Integer>();
       for (int k = 0; k < hadfileids.size(); k++) {
         try {
-          fileid = Integer.parseInt((String) hadfileids.get(k));
+          fileid = Integer.parseInt(hadfileids.get(k));
           hadfileidsValue.add(fileid);
         } catch (Exception e) {
           continue;
@@ -762,19 +726,16 @@ public class BlogUtils {
       }
 
       try {
-        // valueを元にDBを検索
-        DataContext dataContext =
-          DatabaseOrmService.getInstance().getDataContext();
-        SelectQuery reqquery = new SelectQuery(EipTBlogFile.class);
+        SelectQuery<EipTBlogFile> reqquery = Database.query(EipTBlogFile.class);
         Expression reqexp1 =
           ExpressionFactory.inDbExp(
             EipTBlogFile.FILE_ID_PK_COLUMN,
             hadfileidsValue);
         reqquery.setQualifier(reqexp1);
-        List requests = dataContext.performQuery(reqquery);
+        List<EipTBlogFile> requests = reqquery.fetchList();
         int requestssize = requests.size();
         for (int i = 0; i < requestssize; i++) {
-          EipTBlogFile file = (EipTBlogFile) requests.get(i);
+          EipTBlogFile file = requests.get(i);
           filebean = new FileuploadBean();
           filebean.initField();
           filebean.setFileId(file.getFileId());
@@ -796,17 +757,15 @@ public class BlogUtils {
    * @param context
    * @return
    */
-  public static List getEipTBlogFileList(int entryId) {
+  public static List<EipTBlogFile> getEipTBlogFileList(int entryId) {
     try {
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      SelectQuery query = new SelectQuery(EipTBlogFile.class);
+      SelectQuery<EipTBlogFile> query = Database.query(EipTBlogFile.class);
       Expression exp =
         ExpressionFactory.matchExp(
           EipTBlogFile.EIP_TBLOG_ENTRY_PROPERTY,
           Integer.valueOf(entryId));
       query.setQualifier(exp);
-      List files = dataContext.performQuery(query);
+      List<EipTBlogFile> files = query.fetchList();
       if (files == null || files.size() == 0) {
         return null;
       }

@@ -29,7 +29,6 @@ import java.util.jar.Attributes;
 
 import javax.imageio.ImageIO;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -46,7 +45,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -57,8 +56,8 @@ import com.aimluck.eip.util.ALEipUtils;
  * ブログエントリー検索データを管理するクラスです。 <BR>
  * 
  */
-public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
-    ALData {
+public class BlogEntryLatestSelectData extends
+    ALAbstractSelectData<EipTBlogEntry, EipTBlogEntry> implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -67,7 +66,7 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
   /** エントリーの総数 */
   private int entrySum;
 
-  private List photoList;
+  private List<BlogFileResultData> photoList;
 
   private int uid;
 
@@ -75,12 +74,10 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
   private int newEntryId;
 
   /** ユーザーがコメントした記事の一覧 */
-  private List commentHistoryList;
+  private List<BlogEntryResultData> commentHistoryList;
 
   /** コメントした記事が一覧に表示される日数 */
   private final int DELETE_DATE = 7;
-
-  private DataContext dataContext;
 
   /**
    * 
@@ -96,19 +93,16 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
 
     uid = ALEipUtils.getUserId(rundata);
 
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
-
     super.init(action, rundata, context);
   }
 
   private void loadPhotos() throws Exception {
-    photoList = new ArrayList();
+    photoList = new ArrayList<BlogFileResultData>();
 
     // String[] ext = { ".jpg", ".jpeg", ".JPG", ".JPEG" };
     String[] ext = ImageIO.getWriterFormatNames();
 
-    SelectQuery<EipTBlogFile> query =
-      new SelectQuery<EipTBlogFile>(EipTBlogFile.class);
+    SelectQuery<EipTBlogFile> query = Database.query(EipTBlogFile.class);
     Expression exp01 =
       ExpressionFactory.likeExp(EipTBlogFile.TITLE_PROPERTY, "%" + ext[0]);
     query.setQualifier(exp01);
@@ -120,11 +114,11 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
 
     query.orderDesending(EipTBlogFile.UPDATE_DATE_PROPERTY);
     query.limit(5);
-    List list = query.fetchList();
+    List<EipTBlogFile> list = query.fetchList();
     if (list != null && list.size() > 0) {
       int size = list.size();
       for (int i = 0; i < size; i++) {
-        EipTBlogFile record = (EipTBlogFile) list.get(i);
+        EipTBlogFile record = list.get(i);
         BlogFileResultData file = new BlogFileResultData();
         file.initField();
         file.setFileId(record.getFileId().longValue());
@@ -137,12 +131,13 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
   }
 
   private void loadCommentHistoryList(RunData rundata) throws Exception {
-    commentHistoryList = new ArrayList();
+    commentHistoryList = new ArrayList<BlogEntryResultData>();
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日（EE）");
     Integer thisUserId = Integer.valueOf(uid);
     Object beforeEntryId = null;
 
-    SelectQuery comment_query = new SelectQuery(EipTBlogComment.class);
+    SelectQuery<EipTBlogComment> comment_query =
+      Database.query(EipTBlogComment.class);
     // ユーザーがコメントした記事のリストをEntryId順に作成
     Expression exp1 =
       ExpressionFactory.matchExp(EipTBlogComment.OWNER_ID_PROPERTY, thisUserId);
@@ -153,12 +148,12 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
         reduceDate(Calendar.getInstance().getTime(), DELETE_DATE));
     comment_query.andQualifier(exp2);
     comment_query.orderAscending("eipTBlogEntry");
-    List aList = comment_query.fetchList();
+    List<EipTBlogComment> aList = comment_query.fetchList();
 
     // リストからcommentHistoryListを作成する
     int size = aList.size();
     for (int i = 0; i < size; i++) {
-      EipTBlogComment record = (EipTBlogComment) aList.get(i);
+      EipTBlogComment record = aList.get(i);
       EipTBlogEntry entry = record.getEipTBlogEntry();
       if (entry.getOwnerId().equals(thisUserId)) {
         continue;
@@ -178,8 +173,8 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
       rd.setTitleDate(sdf.format(record.getUpdateDate()));
 
       SelectQuery<EipTBlogComment> cquery =
-        new SelectQuery<EipTBlogComment>(EipTBlogComment.class)
-          .select(EipTBlogComment.COMMENT_ID_PK_COLUMN);
+        Database.query(EipTBlogComment.class).select(
+          EipTBlogComment.COMMENT_ID_PK_COLUMN);
       Expression cexp =
         ExpressionFactory.matchDbExp(EipTBlogComment.EIP_TBLOG_ENTRY_PROPERTY
           + "."
@@ -203,15 +198,15 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
    * @return
    */
   @Override
-  public ResultList selectList(RunData rundata, Context context) {
+  public ResultList<EipTBlogEntry> selectList(RunData rundata, Context context) {
     try {
       loadPhotos();
       loadCommentHistoryList(rundata);
 
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTBlogEntry> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       query.orderDesending(EipTBlogEntry.CREATE_DATE_PROPERTY);
-      ResultList list = query.getResultList();
+      ResultList<EipTBlogEntry> list = query.getResultList();
       // エントリーの総数をセットする．
       entrySum = list.getTotalCount();
       return list;
@@ -228,8 +223,9 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTBlogEntry.class);
+  private SelectQuery<EipTBlogEntry> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTBlogEntry> query = Database.query(EipTBlogEntry.class);
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
@@ -240,9 +236,8 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
    * @return
    */
   @Override
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipTBlogEntry record) {
     try {
-      EipTBlogEntry record = (EipTBlogEntry) obj;
 
       BlogEntryResultData rd = new BlogEntryResultData();
       rd.initField();
@@ -261,7 +256,7 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日（EE）");
       rd.setTitleDate(sdf.format(record.getCreateDate()));
 
-      List list = record.getEipTBlogComments();
+      List<?> list = record.getEipTBlogComments();
       if (list != null && list.size() > 0) {
         rd.setCommentsNum(list.size());
       }
@@ -281,7 +276,7 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
    * @return
    */
   @Override
-  public Object selectDetail(RunData rundata, Context context) {
+  public EipTBlogEntry selectDetail(RunData rundata, Context context) {
     return null;
   }
 
@@ -292,11 +287,11 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
    * @return
    */
   @Override
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(EipTBlogEntry obj) {
     return null;
   }
 
-  public List getPhotoList() {
+  public List<BlogFileResultData> getPhotoList() {
     return photoList;
   }
 
@@ -340,7 +335,7 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
   /**
    * ユーザーがコメントした記事の一覧を返す。
    */
-  public List getCommentHistoryList() {
+  public List<BlogEntryResultData> getCommentHistoryList() {
     return commentHistoryList;
   }
 
@@ -351,12 +346,12 @@ public class BlogEntryLatestSelectData extends ALAbstractSelectData implements
    * @param name
    * @return
    */
-  public static Comparator getDateComparator() {
-    Comparator com = null;
-    com = new Comparator() {
-      public int compare(Object obj0, Object obj1) {
-        String date0 = ((BlogEntryResultData) obj0).getTitleDate().toString();
-        String date1 = ((BlogEntryResultData) obj1).getTitleDate().toString();
+  public static Comparator<BlogEntryResultData> getDateComparator() {
+    Comparator<BlogEntryResultData> com = null;
+    com = new Comparator<BlogEntryResultData>() {
+      public int compare(BlogEntryResultData obj0, BlogEntryResultData obj1) {
+        String date0 = (obj0).getTitleDate().toString();
+        String date1 = (obj1).getTitleDate().toString();
         if (date0.compareTo(date1) < 0) {
           return 1;
         } else if (date0.equals(date1)) {

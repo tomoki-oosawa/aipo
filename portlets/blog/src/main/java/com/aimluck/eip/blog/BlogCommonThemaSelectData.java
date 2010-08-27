@@ -40,6 +40,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -50,8 +51,8 @@ import com.aimluck.eip.util.ALEipUtils;
  * ブログテーマ検索データを管理するクラスです。 <BR>
  * 
  */
-public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
-    ALData {
+public class BlogCommonThemaSelectData extends
+    ALAbstractSelectData<EipTBlogThema, EipTBlogThema> implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -82,19 +83,20 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
    * @return
    */
   @Override
-  protected ResultList selectList(RunData rundata, Context context) {
+  protected ResultList<EipTBlogThema> selectList(RunData rundata,
+      Context context) {
     try {
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTBlogThema> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      ResultList list = query.getResultList();
+      ResultList<EipTBlogThema> list = query.getResultList();
 
       if (list != null && list.size() > 0) {
         EipTBlogThema[] themas = new EipTBlogThema[list.size()];
-        themas = (EipTBlogThema[]) list.toArray(themas);
+        themas = list.toArray(themas);
 
-        Comparator comp = getCommonThemaComparator();
+        Comparator<EipTBlogThema> comp = getCommonThemaComparator();
         if (comp != null) {
           Arrays.sort(themas, comp);
         }
@@ -113,16 +115,16 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
     }
   }
 
-  public static Comparator getCommonThemaComparator() {
-    Comparator com = null;
+  public static Comparator<EipTBlogThema> getCommonThemaComparator() {
+    Comparator<EipTBlogThema> com = null;
 
     // テーマの昇順
-    com = new Comparator() {
-      public int compare(Object obj0, Object obj1) {
+    com = new Comparator<EipTBlogThema>() {
+      public int compare(EipTBlogThema obj0, EipTBlogThema obj1) {
         int ret = 0;
         try {
-          int themaSize0 = ((EipTBlogThema) obj0).getEipTBlogEntrys().size();
-          int themaSize1 = ((EipTBlogThema) obj1).getEipTBlogEntrys().size();
+          int themaSize0 = (obj0).getEipTBlogEntrys().size();
+          int themaSize1 = (obj1).getEipTBlogEntrys().size();
           ret = themaSize1 - themaSize0;
         } catch (Exception e) {
           ret = -1;
@@ -134,16 +136,16 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
     return com;
   }
 
-  public static Comparator getCommonEntryComparator() {
-    Comparator com = null;
+  public static Comparator<EipTBlogEntry> getCommonEntryComparator() {
+    Comparator<EipTBlogEntry> com = null;
 
     // テーマの昇順
-    com = new Comparator() {
-      public int compare(Object obj0, Object obj1) {
+    com = new Comparator<EipTBlogEntry>() {
+      public int compare(EipTBlogEntry obj0, EipTBlogEntry obj1) {
         int ret = 0;
         try {
-          Date createDate0 = ((EipTBlogEntry) obj0).getCreateDate();
-          Date createDate1 = ((EipTBlogEntry) obj1).getCreateDate();
+          Date createDate0 = (obj0).getCreateDate();
+          Date createDate1 = (obj1).getCreateDate();
           if (createDate1.after(createDate0)) {
             ret = 1;
           } else if (createDate1.before(createDate0)) {
@@ -170,8 +172,7 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
    */
   private SelectQuery<EipTBlogThema> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipTBlogThema> query =
-      new SelectQuery<EipTBlogThema>(EipTBlogThema.class);
+    SelectQuery<EipTBlogThema> query = Database.query(EipTBlogThema.class);
     query.prefetch(EipTBlogThema.EIP_TBLOG_ENTRYS_PROPERTY);
     return query;
   }
@@ -184,7 +185,7 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
    * @return
    */
   @Override
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected EipTBlogThema selectDetail(RunData rundata, Context context) {
     // オブジェクトモデルを取得
     return BlogUtils.getEipTBlogThema(rundata, context);
   }
@@ -196,9 +197,8 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
    * @return
    */
   @Override
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipTBlogThema record) {
     try {
-      EipTBlogThema record = (EipTBlogThema) obj;
       BlogThemaResultData rd = new BlogThemaResultData();
       rd.initField();
       rd.setThemaId(record.getThemaId().longValue());
@@ -218,24 +218,24 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
    * @return
    */
   @Override
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(EipTBlogThema record) {
     try {
-      EipTBlogThema record = (EipTBlogThema) obj;
       BlogThemaResultData rd = new BlogThemaResultData();
       rd.initField();
       rd.setThemaId(record.getThemaId().longValue());
       rd.setThemaName(record.getThemaName());
       rd.setDescription(record.getDescription());
 
-      List entryList = new ArrayList();
+      List<BlogEntryResultData> entryList =
+        new ArrayList<BlogEntryResultData>();
       EipTBlogEntry entry = null;
       BlogEntryResultData entryrd = null;
-      List list = record.getEipTBlogEntrys();
+      List<?> list = record.getEipTBlogEntrys();
 
       EipTBlogEntry[] entrys = new EipTBlogEntry[list.size()];
-      entrys = (EipTBlogEntry[]) list.toArray(entrys);
+      entrys = list.toArray(entrys);
 
-      Comparator comp = getCommonEntryComparator();
+      Comparator<EipTBlogEntry> comp = getCommonEntryComparator();
       if (comp != null) {
         Arrays.sort(entrys, comp);
       }
@@ -259,7 +259,7 @@ public class BlogCommonThemaSelectData extends ALAbstractSelectData implements
           .getOwnerId()
           .intValue()));
 
-        List comments = entry.getEipTBlogComments();
+        List<?> comments = entry.getEipTBlogComments();
         if (comments != null) {
           entryrd.setCommentsNum(comments.size());
         }

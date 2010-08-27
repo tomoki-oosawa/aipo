@@ -24,10 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -39,11 +37,14 @@ import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -51,7 +52,9 @@ import com.aimluck.eip.util.ALEipUtils;
  * ブログ画面のユーザー情報の検索データを管理するクラスです。 <BR>
  * 
  */
-public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
+public class BlogUserSelectData extends
+    ALAbstractSelectData<BlogUserResultData, BlogUserResultData> implements
+    ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -60,13 +63,11 @@ public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
   /** 表示対象の部署名 */
   private String target_group_name;
 
-  private List myGroupList = null;
+  private List<ALEipGroup> myGroupList = null;
 
   private int login_uid = -1;
 
-  private List latestBlogerIds = null;
-
-  private DataContext dataContext;
+  private List<Integer> latestBlogerIds = null;
 
   /**
    * 
@@ -82,14 +83,12 @@ public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
 
     login_uid = ALEipUtils.getUserId(rundata);
 
-    List myGroups = ALEipUtils.getMyGroups(rundata);
-    myGroupList = new ArrayList();
+    List<ALEipGroup> myGroups = ALEipUtils.getMyGroups(rundata);
+    myGroupList = new ArrayList<ALEipGroup>();
     int length = myGroups.size();
     for (int i = 0; i < length; i++) {
       myGroupList.add(myGroups.get(i));
     }
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     super.init(action, rundata, context);
   }
@@ -102,7 +101,8 @@ public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
    * @return
    */
   @Override
-  public ResultList selectList(RunData rundata, Context context) {
+  public ResultList<BlogUserResultData> selectList(RunData rundata,
+      Context context) {
     try {
       latestBlogerIds = getLatestBlogerIds();
 
@@ -115,7 +115,8 @@ public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
         groupname = "LoginUser";
       }
 
-      return new ResultList(BlogUtils.getBlogUserResultDataList(groupname));
+      return new ResultList<BlogUserResultData>(BlogUtils
+        .getBlogUserResultDataList(groupname));
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -129,8 +130,7 @@ public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
    * @return
    */
   @Override
-  protected Object getResultData(Object obj) {
-    BlogUserResultData rd = (BlogUserResultData) obj;
+  protected Object getResultData(BlogUserResultData rd) {
 
     if (latestBlogerIds != null
       && latestBlogerIds.contains(Integer.valueOf((int) rd
@@ -143,7 +143,7 @@ public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
     return rd;
   }
 
-  private List getLatestBlogerIds() {
+  private List<Integer> getLatestBlogerIds() {
     try {
       // 表示開始日時
       ALDateTimeField field = new ALDateTimeField("yyyy-MM-dd");
@@ -151,23 +151,23 @@ public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
       cal.add(Calendar.DAY_OF_MONTH, -1);
       field.setValue(cal.getTime());
 
-      SelectQuery query = new SelectQuery(EipTBlogEntry.class);
+      SelectQuery<EipTBlogEntry> query = Database.query(EipTBlogEntry.class);
       Expression exp =
         ExpressionFactory.greaterOrEqualExp(
           EipTBlogEntry.CREATE_DATE_PROPERTY,
           field.getValue());
       query.setQualifier(exp);
-      List list = dataContext.performQuery(query);
+      List<EipTBlogEntry> list = query.fetchList();
       if (list == null || list.size() <= 0) {
         return null;
       }
 
-      List blogerids = new ArrayList();
+      List<Integer> blogerids = new ArrayList<Integer>();
       Integer id = null;
       EipTBlogEntry entry = null;
       int size = list.size();
       for (int i = 0; i < size; i++) {
-        entry = (EipTBlogEntry) list.get(i);
+        entry = list.get(i);
         id = entry.getOwnerId();
         if (!blogerids.contains(id)) {
           blogerids.add(id);
@@ -188,7 +188,7 @@ public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
    * @return
    */
   @Override
-  public Object selectDetail(RunData rundata, Context context) {
+  public BlogUserResultData selectDetail(RunData rundata, Context context) {
     return null;
   }
 
@@ -199,7 +199,7 @@ public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
    * @return
    */
   @Override
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(BlogUserResultData obj) {
     return null;
   }
 
@@ -221,7 +221,7 @@ public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
    * 
    * @return
    */
-  public Map getPostMap() {
+  public Map<Integer, ALEipPost> getPostMap() {
     return ALEipManager.getInstance().getPostMap();
   }
 
@@ -229,7 +229,7 @@ public class BlogUserSelectData extends ALAbstractSelectData implements ALData {
    * 
    * @return
    */
-  public List getMyGroupList() {
+  public List<ALEipGroup> getMyGroupList() {
     return myGroupList;
   }
 

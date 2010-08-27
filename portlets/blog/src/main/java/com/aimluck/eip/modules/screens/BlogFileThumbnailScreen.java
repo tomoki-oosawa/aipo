@@ -32,6 +32,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
  * 
  */
 public class BlogFileThumbnailScreen extends FileuploadThumbnailScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(BlogFileThumbnailScreen.class.getName());

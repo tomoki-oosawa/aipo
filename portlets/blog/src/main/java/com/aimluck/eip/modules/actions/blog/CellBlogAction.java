@@ -40,6 +40,8 @@ import com.aimluck.eip.blog.BlogUserSelectData;
 import com.aimluck.eip.blog.BlogWordSelectData;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -64,7 +66,7 @@ public class CellBlogAction extends BlogAction {
   private Object resultOnCommentDetail;
 
   /** 返信用異常系のメッセージを格納するリスト */
-  private ArrayList errmsgListOnCommentDetail;
+  private List<String> errmsgListOnCommentDetail;
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
@@ -250,8 +252,8 @@ public class CellBlogAction extends BlogAction {
       + "のﾌﾞﾛｸﾞ");
 
     // ユーザー一覧を得る
-    List list = new ArrayList();
-    SelectQuery query = new SelectQuery(TurbineUser.class);
+    List<ALEipUser> list = new ArrayList<ALEipUser>();
+    SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
     Expression exp1 =
       ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
         .toString(1));
@@ -641,9 +643,9 @@ public class CellBlogAction extends BlogAction {
    * @param msg
    */
   @Override
-  public void addErrorMessagesOnCommentDetail(ArrayList msgs) {
+  public void addErrorMessagesOnCommentDetail(List<String> msgs) {
     if (errmsgListOnCommentDetail == null) {
-      errmsgListOnCommentDetail = new ArrayList();
+      errmsgListOnCommentDetail = new ArrayList<String>();
     }
     errmsgListOnCommentDetail.addAll(msgs);
   }
@@ -669,8 +671,9 @@ public class CellBlogAction extends BlogAction {
 
   }
 
+  @SuppressWarnings("unused")
   private void clearBlogSession(RunData rundata, Context context) {
-    List list = new ArrayList();
+    List<String> list = new ArrayList<String>();
     list.add("entityid");
     list.add("view_uid");
     list.add("target_group_name");

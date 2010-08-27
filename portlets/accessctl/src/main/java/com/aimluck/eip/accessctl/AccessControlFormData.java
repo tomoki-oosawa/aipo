@@ -23,8 +23,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.cayenne.DataObjectUtils;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -47,7 +45,6 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
@@ -94,8 +91,6 @@ public class AccessControlFormData extends ALAbstractFormData {
   /** 機能一覧 */
   private List<AccessControlFeatureBean> portletFeatureList;
 
-  private DataContext dataContext;
-
   /**
    * 
    * @param rundata
@@ -117,8 +112,6 @@ public class AccessControlFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   /**
@@ -349,7 +342,7 @@ public class AccessControlFormData extends ALAbstractFormData {
       // ロール名
       acl_role_name.setValue(aclrole.getRoleName());
 
-      List<?> aclUserRoleMaps =
+      List<EipTAclUserRoleMap> aclUserRoleMaps =
         AccessControlUtils.getEipTAclUserRoleMaps(aclrole
           .getRoleId()
           .intValue());
@@ -358,7 +351,7 @@ public class AccessControlFormData extends ALAbstractFormData {
         TurbineUser tuser = null;
         int size = aclUserRoleMaps.size();
         for (int i = 0; i < size; i++) {
-          rolemap = (EipTAclUserRoleMap) aclUserRoleMaps.get(i);
+          rolemap = aclUserRoleMaps.get(i);
           tuser = rolemap.getTurbineUser();
           ALEipUser user = new ALEipUser();
           user.initField();
@@ -442,10 +435,11 @@ public class AccessControlFormData extends ALAbstractFormData {
       }
 
       // オブジェクトを削除（Cayenneのカスケード設定でEipTAclUserRoleMapも同時に削除）
-      dataContext.deleteObject(aclroles.get(0));
+      Database.delete(aclroles.get(0));
 
-      dataContext.commitChanges();
+      Database.commit();
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -467,8 +461,7 @@ public class AccessControlFormData extends ALAbstractFormData {
       Date now = Calendar.getInstance().getTime();
 
       // 新規オブジェクトモデル
-      EipTAclRole aclrole =
-        (EipTAclRole) dataContext.createAndRegisterNewObject(EipTAclRole.class);
+      EipTAclRole aclrole = Database.create(EipTAclRole.class);
       aclrole.setRoleName(acl_role_name.getValue());
       aclrole.setNote(note.getValue());
 
@@ -476,10 +469,8 @@ public class AccessControlFormData extends ALAbstractFormData {
       aclrole.setAclType(Integer.valueOf((int) aclType));
 
       EipTAclPortletFeature feature =
-        (EipTAclPortletFeature) DataObjectUtils.objectForPK(
-          dataContext,
-          EipTAclPortletFeature.class,
-          Integer.valueOf((int) feature_id.getValue()));
+        Database.get(EipTAclPortletFeature.class, Integer
+          .valueOf((int) feature_id.getValue()));
       aclrole.setEipTAclPortletFeature(feature);
 
       // 登録日
@@ -497,8 +488,9 @@ public class AccessControlFormData extends ALAbstractFormData {
       }
 
       // ロールを登録
-      dataContext.commitChanges();
+      Database.commit();
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -532,10 +524,8 @@ public class AccessControlFormData extends ALAbstractFormData {
       aclrole.setAclType(Integer.valueOf((int) aclType));
 
       EipTAclPortletFeature feature =
-        (EipTAclPortletFeature) DataObjectUtils.objectForPK(
-          dataContext,
-          EipTAclPortletFeature.class,
-          Integer.valueOf((int) feature_id.getValue()));
+        Database.get(EipTAclPortletFeature.class, Integer
+          .valueOf((int) feature_id.getValue()));
       aclrole.setEipTAclPortletFeature(feature);
 
       // userMapの登録
@@ -548,8 +538,9 @@ public class AccessControlFormData extends ALAbstractFormData {
       deleteEipTAclUserRoleMap(rundata, context);
 
       // ロールを更新
-      dataContext.commitChanges();
+      Database.commit();
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -557,16 +548,11 @@ public class AccessControlFormData extends ALAbstractFormData {
   }
 
   private void insertEipTAclUserRoleMap(EipTAclRole aclrole, ALEipUser user) {
-    EipTAclUserRoleMap map =
-      (EipTAclUserRoleMap) dataContext
-        .createAndRegisterNewObject(EipTAclUserRoleMap.class);
+    EipTAclUserRoleMap map = Database.create(EipTAclUserRoleMap.class);
     int userid = (int) user.getUserId().getValue();
     // ユーザーID
     TurbineUser tuser =
-      (TurbineUser) DataObjectUtils.objectForPK(
-        dataContext,
-        TurbineUser.class,
-        Integer.valueOf(userid));
+      Database.get(TurbineUser.class, Integer.valueOf(userid));
     map.setEipTAclRole(aclrole);
     map.setTurbineUser(tuser);
   }
@@ -587,12 +573,12 @@ public class AccessControlFormData extends ALAbstractFormData {
         + "."
         + EipTAclRole.ROLE_ID_PK_COLUMN, aclroleid);
     query.setQualifier(exp);
-    List<?> maps = query.fetchList();
+    List<EipTAclUserRoleMap> maps = query.fetchList();
     if (maps == null || maps.size() == 0) {
       return true;
     }
 
-    dataContext.deleteObjects(maps);
+    Database.deleteAll(maps);
     return true;
   }
 

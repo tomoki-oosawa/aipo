@@ -113,17 +113,6 @@ public class FileIOAddressBookCsvFileScreen extends ALCSVScreen {
         sb.append(rec0.getCellularMail()).append(",");
 
         try {
-          // exp = ExpressionFactory.matchDbExp(
-          // EipMAddressbookCompany.COMPANY_ID_PK_COLUMN, rec0.getCompanyId()
-          // .toString());
-          // query1.setQualifier(exp);
-          // comp = dataContext.performQuery(query1);
-          // if (comp.size() > 0) {
-          // rec1 = (EipMAddressbookCompany) comp.get(0);
-          // } else {
-          // rec1 = null;
-          // }
-
           rec1 = rec0.getEipMAddressbookCompany();
         } catch (Exception e) {
           sb.append(",,,,,,,");

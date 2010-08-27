@@ -23,8 +23,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.cayenne.DataObjectUtils;
-import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.om.security.UserIdPrincipal;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -45,11 +43,13 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
+import com.aimluck.eip.mail.util.ALEipUserAddr;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.blog.BlogAction;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.modules.screens.BlogDetailScreen;
 import com.aimluck.eip.modules.screens.BlogEntryFormJSONScreen;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -70,8 +70,6 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /** コメント */
   private ALStringField comment;
-
-  private DataContext dataContext;
 
   private boolean sendEmailToPC = false;
 
@@ -94,8 +92,6 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     sendEmailToPC =
       "true".equals(ALEipUtils
@@ -197,10 +193,11 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
         throw new ALPageNotFoundException();
       }
 
-      dataContext.deleteObject(comment);
-      dataContext.commitChanges();
+      Database.delete(comment);
+      Database.commit();
 
     } catch (Exception e) {
+      Database.rollback();
       logger.error("[BlogEntryCommentFormData]", e);
       throw new ALDBErrorException();
     }
@@ -232,15 +229,12 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
       Date updateDate = Calendar.getInstance().getTime();
 
       EipTBlogEntry entry =
-        (EipTBlogEntry) DataObjectUtils.objectForPK(
-          dataContext,
-          EipTBlogEntry.class,
-          Integer.valueOf(parententry.getEntryId().intValue()));
+        Database.get(EipTBlogEntry.class, Integer.valueOf(parententry
+          .getEntryId()
+          .intValue()));
 
       // 新規オブジェクトモデル
-      EipTBlogComment blogcomment =
-        (EipTBlogComment) dataContext
-          .createAndRegisterNewObject(EipTBlogComment.class);
+      EipTBlogComment blogcomment = Database.create(EipTBlogComment.class);
       // ユーザーID
       blogcomment.setOwnerId(Integer.valueOf(uid));
       // コメント
@@ -253,7 +247,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
       blogcomment.setUpdateDate(updateDate);
 
       // トピックを登録
-      dataContext.commitChanges();
+      Database.commit();
 
       /* 記事の持ち主に新着ポートレット登録 */
 
@@ -275,9 +269,9 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
       // メール送信
       if (sendEmailToPC) {
-        ArrayList memberList = new ArrayList();
+        List<ALEipUser> memberList = new ArrayList<ALEipUser>();
         memberList.add(ALEipUtils.getALEipUser(entry.getOwnerId().intValue()));
-        List destMemberList =
+        List<ALEipUserAddr> destMemberList =
           ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
             .getUserId(rundata), false);
 
@@ -298,6 +292,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
           msgList);
       }
     } catch (Exception e) {
+      Database.rollback();
       logger.error("[BlogEntryCommentFormData]", e);
       throw new ALDBErrorException();
     }
@@ -447,7 +442,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
         ALAccessControlConstants.VALUE_ACL_INSERT);
       action.setMode(ALEipConstants.MODE_INSERT);
 
-      ArrayList msgList = new ArrayList();
+      ArrayList<String> msgList = new ArrayList<String>();
       setValidator();
       boolean res =
         (setFormData(rundata, context, msgList) && validate(msgList) && insertFormData(
@@ -498,7 +493,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
       // mode = action.getMode();
       // doCheckAclPermission(rundata, context,
       // ALAccessControlConstants.VALUE_ACL_DETAIL);
-      ArrayList msgList = new ArrayList();
+      ArrayList<String> msgList = new ArrayList<String>();
       boolean res = setFormData(rundata, context, msgList);
       if (action instanceof BlogDetailScreen) {
         BlogDetailScreen blogAction = (BlogDetailScreen) action;

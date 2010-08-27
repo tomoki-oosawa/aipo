@@ -20,7 +20,6 @@ package com.aimluck.eip.eventlog;
 
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -32,7 +31,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.eventlog.util.EventlogUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 
 /**
  * イベントログのフォームデータを管理するクラスです。 <BR>
@@ -43,8 +42,6 @@ public class EventlogFormData extends ALAbstractFormData {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(EventlogFormData.class.getName());
-
-  private DataContext dataContext;
 
   /**
    * 
@@ -58,8 +55,6 @@ public class EventlogFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   /**
@@ -124,9 +119,10 @@ public class EventlogFormData extends ALAbstractFormData {
       }
 
       // イベントログを削除
-      dataContext.deleteObject(eventlog);
-      dataContext.commitChanges();
+      Database.delete(eventlog);
+      Database.commit();
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }

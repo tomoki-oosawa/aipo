@@ -25,11 +25,11 @@ import com.aimluck.commons.field.ALStringField;
 
 /**
  * 共有フォルダのフォルダ階層の情報（一行）を表すクラス．
- *
+ * 
  */
 public class FolderInfo implements Cloneable {
 
-  private ArrayList colist = null;
+  private ArrayList<FolderInfo> colist = null;
 
   /** フォルダ階層のインデックス番号 */
   private int index = -1;
@@ -55,7 +55,7 @@ public class FolderInfo implements Cloneable {
 
   /**
    * コンストラクタ
-   *
+   * 
    * @param index
    * @param isRead
    * @param subject
@@ -66,14 +66,14 @@ public class FolderInfo implements Cloneable {
    */
   public FolderInfo() {
     folder_name = new ALStringField();
-    colist = new ArrayList();
+    colist = new ArrayList<FolderInfo>();
   }
 
-  public void setList(List list) {
+  public void setList(List<FolderInfo> list) {
     colist.addAll(list);
   }
 
-  public List getList() {
+  public List<FolderInfo> getList() {
     return colist;
   }
 
@@ -166,6 +166,7 @@ public class FolderInfo implements Cloneable {
     can_update = bool;
   }
 
+  @Override
   public Object clone() {
     try {
       return (super.clone());

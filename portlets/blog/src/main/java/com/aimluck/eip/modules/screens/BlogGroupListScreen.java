@@ -31,6 +31,7 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class BlogGroupListScreen extends BlogScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(BlogGroupListScreen.class.getName());

@@ -31,6 +31,7 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class BlogEntryFormScreen extends ALVelocityScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(BlogEntryFormScreen.class.getName());

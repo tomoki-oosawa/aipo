@@ -62,7 +62,7 @@ public class BlogAction extends ALBaseAction {
   private Object resultOnCommentDetail;
 
   /** 返信用異常系のメッセージを格納するリスト */
-  private ArrayList errmsgListOnCommentDetail;
+  private List<String> errmsgListOnCommentDetail;
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
@@ -671,9 +671,9 @@ public class BlogAction extends ALBaseAction {
    * 
    * @param msg
    */
-  public void addErrorMessagesOnCommentDetail(ArrayList msgs) {
+  public void addErrorMessagesOnCommentDetail(List<String> msgs) {
     if (errmsgListOnCommentDetail == null) {
-      errmsgListOnCommentDetail = new ArrayList();
+      errmsgListOnCommentDetail = new ArrayList<String>();
     }
     errmsgListOnCommentDetail.addAll(msgs);
   }
@@ -689,7 +689,7 @@ public class BlogAction extends ALBaseAction {
   }
 
   private void clearBlogSession(RunData rundata, Context context) {
-    List list = new ArrayList();
+    List<String> list = new ArrayList<String>();
     list.add("entityid");
     list.add("view_uid");
     list.add("target_group_name");

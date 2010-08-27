@@ -24,7 +24,7 @@ import com.aimluck.eip.common.ALData;
 
 /**
  * イベントログのResultDataです。 <BR>
- *
+ * 
  */
 public class EventlogResultData implements ALData {
 
@@ -60,7 +60,7 @@ public class EventlogResultData implements ALData {
 
   /**
    *
-   * 
+   *
    */
   public void initField() {
     eventlog_id = new ALNumberField();

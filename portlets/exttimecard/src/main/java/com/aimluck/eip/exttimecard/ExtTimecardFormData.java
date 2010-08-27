@@ -266,16 +266,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         workflg_query.orderDesending(EipTExtTimecard.PUNCH_DATE_PROPERTY);
         List<EipTExtTimecard> workflg_list = workflg_query.fetchList();
         if (workflg_list != null && workflg_list.size() > 0) {
-          // DataRow dataRow = (DataRow) workflg_list.get(0);
-
-          // if (((String) ALEipUtils.getObjFromDataRow(dataRow,
-          // EipTExtTimecard.WORK_FLAG_COLUMN)).equals(work_flag.getValue())) {
-          // return false;
-          // } else {
-          // return true;
-          // }
         } else {
-          // return true;
         }
       }
 

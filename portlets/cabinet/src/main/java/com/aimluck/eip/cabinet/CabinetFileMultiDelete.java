@@ -22,10 +22,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -34,7 +32,9 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.cabinet.util.CabinetUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile;
 import com.aimluck.eip.common.ALAbstractCheckList;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -61,29 +61,29 @@ public class CabinetFileMultiDelete extends ALAbstractCheckList {
   protected boolean action(RunData rundata, Context context,
       List<String> values, List<String> msgList) {
     try {
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
 
-      SelectQuery query = new SelectQuery(EipTCabinetFile.class);
+      SelectQuery<EipTCabinetFile> query =
+        Database.query(EipTCabinetFile.class);
       Expression exp =
         ExpressionFactory.inDbExp(EipTCabinetFile.FILE_ID_PK_COLUMN, values);
       query.setQualifier(exp);
 
-      List filelist = dataContext.performQuery(query);
+      List<EipTCabinetFile> filelist = query.fetchList();
       if (filelist == null || filelist.size() == 0) {
         return false;
       }
 
       for (int i = 0; i < filelist.size(); i++) {
-        if (!CabinetUtils.isEditableFolder(((EipTCabinetFile) filelist.get(i))
-          .getFolderId(), rundata)) {
+        if (!CabinetUtils.isEditableFolder(
+          filelist.get(i).getFolderId(),
+          rundata)) {
           msgList.add("削除する権限の無いファイルが含まれています。");
           return false;
         }
 
-        ArrayList fpaths = new ArrayList();
+        List<String> fpaths = new ArrayList<String>();
         for (i = 0; i < filelist.size(); i++) {
-          EipTCabinetFile cabinetfile = (EipTCabinetFile) filelist.get(i);
+          EipTCabinetFile cabinetfile = filelist.get(i);
           fpaths.add(cabinetfile.getFilePath());
         }
 
@@ -91,7 +91,7 @@ public class CabinetFileMultiDelete extends ALAbstractCheckList {
 
         int filelistsize = filelist.size();
         for (i = 0; i < filelistsize; i++) {
-          EipTCabinetFile file = (EipTCabinetFile) filelist.get(i);
+          EipTCabinetFile file = filelist.get(i);
 
           // entityIdを取得
           Integer entityId = file.getFileId();
@@ -99,8 +99,8 @@ public class CabinetFileMultiDelete extends ALAbstractCheckList {
           String fileName = file.getFileTitle();
 
           // fileを削除
-          dataContext.deleteObject(file);
-          dataContext.commitChanges();
+          Database.delete(file);
+          Database.commit();
 
           // ログに保存
           ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -115,8 +115,7 @@ public class CabinetFileMultiDelete extends ALAbstractCheckList {
           File file = null;
           for (i = 0; i < fpathSize; i++) {
             file =
-              new File(CabinetUtils.getSaveDirPath(org_id)
-                + (String) fpaths.get(i));
+              new File(CabinetUtils.getSaveDirPath(org_id) + fpaths.get(i));
             if (file.exists()) {
               file.delete();
             }
@@ -124,6 +123,7 @@ public class CabinetFileMultiDelete extends ALAbstractCheckList {
         }
       }
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }

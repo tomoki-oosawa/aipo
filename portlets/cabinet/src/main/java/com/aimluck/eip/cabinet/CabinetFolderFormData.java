@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -41,9 +40,11 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -71,7 +72,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
   private ALStringField note;
 
   /** フォルダ情報一覧 */
-  private ArrayList folder_hierarchy_list;
+  private List<FolderInfo> folder_hierarchy_list;
 
   /** 選択されたフォルダ情報 */
   private FolderInfo selected_folderinfo = null;
@@ -83,10 +84,10 @@ public class CabinetFolderFormData extends ALAbstractFormData {
   private boolean is_member;
 
   /** <code>memberList</code> メンバーリスト */
-  private ArrayList memberList;
+  private List<ALEipUser> memberList;
 
   /** <code>groups</code> グループ */
-  private List groups;
+  private List<ALEipGroup> groups;
 
   /** アクセス権限フラグ */
   private ALNumberField access_flag;
@@ -95,8 +96,6 @@ public class CabinetFolderFormData extends ALAbstractFormData {
   private ALEipUser login_user;
 
   private String folderid = null;
-
-  private DataContext dataContext;
 
   private String org_id;
 
@@ -128,7 +127,6 @@ public class CabinetFolderFormData extends ALAbstractFormData {
     }
 
     org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     login_user = ALEipUtils.getALEipUser(rundata);
 
@@ -149,7 +147,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
     if (folder_hierarchy_list != null && folder_hierarchy_list.size() > 0) {
       int size = folder_hierarchy_list.size();
       for (int i = 0; i < size; i++) {
-        FolderInfo info = (FolderInfo) folder_hierarchy_list.get(i);
+        FolderInfo info = folder_hierarchy_list.get(i);
         info.setVisible(true);
         if (info.getFolderId() == CabinetUtils.ROOT_FODLER_ID) {
           rootFolderInfo = info;
@@ -201,7 +199,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
       if (tmp_access_flag == CabinetUtils.ACCESS_PUBLIC_MEMBER
         || tmp_access_flag == CabinetUtils.ACCESS_SECRET_MEMBER) {
         String member[] = rundata.getParameters().getStrings("member_to");
-        SelectQuery query = new SelectQuery(TurbineUser.class);
+        SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
         Expression exp =
           ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY, member);
         query.setQualifier(exp);
@@ -248,7 +246,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
     access_flag.setFieldName("アクセス権限");
     access_flag.setValue(0);
     // メンバーリスト
-    memberList = new ArrayList();
+    memberList = new ArrayList<ALEipUser>();
   }
 
   /**
@@ -309,7 +307,8 @@ public class CabinetFolderFormData extends ALAbstractFormData {
     }
 
     try {
-      SelectQuery query = new SelectQuery(EipTCabinetFolder.class);
+      SelectQuery<EipTCabinetFolder> query =
+        Database.query(EipTCabinetFolder.class);
       if (ALEipConstants.MODE_INSERT.equals(getMode())) {
         Expression exp =
           ExpressionFactory.matchExp(
@@ -329,12 +328,12 @@ public class CabinetFolderFormData extends ALAbstractFormData {
         query.andQualifier(exp2);
       }
 
-      List list = query.fetchList();
+      List<EipTCabinetFolder> list = query.fetchList();
       if (list != null && list.size() > 0) {
         EipTCabinetFolder tmpfolder = null;
         int size = list.size();
         for (int i = 0; i < size; i++) {
-          tmpfolder = (EipTCabinetFolder) list.get(i);
+          tmpfolder = list.get(i);
           if (fname.equals(tmpfolder.getFolderName())) {
             return true;
           }
@@ -378,21 +377,22 @@ public class CabinetFolderFormData extends ALAbstractFormData {
         || int_flag == CabinetUtils.ACCESS_SECRET_MEMBER) {
         is_member = true;
         // メンバーのリストを取得
-        SelectQuery mapquery = new SelectQuery(EipTCabinetFolderMap.class);
+        SelectQuery<EipTCabinetFolderMap> mapquery =
+          Database.query(EipTCabinetFolderMap.class);
         Expression mapexp =
           ExpressionFactory.matchDbExp(
             EipTCabinetFolderMap.EIP_TCABINET_FOLDER_PROPERTY,
             folder.getFolderId());
         mapquery.setQualifier(mapexp);
-        List list = mapquery.fetchList();
+        List<EipTCabinetFolderMap> list = mapquery.fetchList();
 
-        List users = new ArrayList();
+        List<Integer> users = new ArrayList<Integer>();
         int size = list.size();
         for (int i = 0; i < size; i++) {
-          EipTCabinetFolderMap map = (EipTCabinetFolderMap) list.get(i);
+          EipTCabinetFolderMap map = list.get(i);
           users.add(map.getUserId());
         }
-        SelectQuery query = new SelectQuery(TurbineUser.class);
+        SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
         Expression exp =
           ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, users);
         query.setQualifier(exp);
@@ -403,15 +403,15 @@ public class CabinetFolderFormData extends ALAbstractFormData {
 
       // フォルダ階層の表示切替
       int folder_id = selected_folderinfo.getFolderId();
-      ArrayList disable_list = new ArrayList();
+      ArrayList<Integer> disable_list = new ArrayList<Integer>();
       disable_list.add(Integer.valueOf(folder_id));
       int size = folder_hierarchy_list.size();
       for (int i = 0; i < size; i++) {
-        FolderInfo info = (FolderInfo) folder_hierarchy_list.get(i);
+        FolderInfo info = folder_hierarchy_list.get(i);
         boolean flg = false;
         int len = disable_list.size();
         for (int j = 0; j < len; j++) {
-          Integer id = (Integer) disable_list.get(j);
+          Integer id = disable_list.get(j);
           if (info.getFolderId() == id.intValue()
             || info.getParentFolderId() == id.intValue()) {
             flg = true;
@@ -429,7 +429,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
       CabinetUtils.setFolderVisibleForForm(folder_hierarchy_list, rundata);
 
       for (int i = 0; i < size; i++) {
-        FolderInfo info = (FolderInfo) folder_hierarchy_list.get(i);
+        FolderInfo info = folder_hierarchy_list.get(i);
         if (info.getFolderId() == selected_folderinfo.getParentFolderId()) {
           // 現在編集中のフォルダの親フォルダを選択させる．
           selected_folderinfo = info;
@@ -481,7 +481,8 @@ public class CabinetFolderFormData extends ALAbstractFormData {
       int delete_parent_id = 0;
 
       // フォルダ情報を取得する．
-      SelectQuery query = new SelectQuery(EipTCabinetFolder.class);
+      SelectQuery<EipTCabinetFolder> query =
+        Database.query(EipTCabinetFolder.class);
       Expression exp1 =
         ExpressionFactory.matchDbExp(
           EipTCabinetFolder.FOLDER_ID_PK_COLUMN,
@@ -491,16 +492,16 @@ public class CabinetFolderFormData extends ALAbstractFormData {
           EipTCabinetFolder.PARENT_ID_PROPERTY,
           Integer.valueOf(folderid));
       query.setQualifier(exp1.orExp(exp2));
-      List list = query.fetchList();
+      List<EipTCabinetFolder> list = query.fetchList();
       if (list == null || list.size() <= 0) {
         return false;
       }
 
-      ArrayList folderids = new ArrayList();
+      ArrayList<Integer> folderids = new ArrayList<Integer>();
       EipTCabinetFolder folder = null;
       int size = list.size();
       for (int i = 0; i < size; i++) {
-        folder = (EipTCabinetFolder) list.get(i);
+        folder = list.get(i);
         folderids.add(folder.getFolderId());
         if (folder.getFolderId().intValue() == delete_id) {
           delete_parent_id = folder.getParentId().intValue();
@@ -508,19 +509,20 @@ public class CabinetFolderFormData extends ALAbstractFormData {
       }
 
       // データベースのフォルダ情報を削除する．
-      SelectQuery delfolderquery = new SelectQuery(EipTCabinetFolder.class);
+      SelectQuery<EipTCabinetFolder> delfolderquery =
+        Database.query(EipTCabinetFolder.class);
       Expression delfolderexp =
         ExpressionFactory.inDbExp(
           EipTCabinetFolder.FOLDER_ID_PK_COLUMN,
           folderids);
       delfolderquery.setQualifier(delfolderexp);
-      List delFolderList = delfolderquery.fetchList();
+      List<EipTCabinetFolder> delFolderList = delfolderquery.fetchList();
 
       int delFolderListsize = delFolderList.size();
 
       // フォルダ情報を削除
       for (int i = 0; i < delFolderListsize; i++) {
-        EipTCabinetFolder delfolder = (EipTCabinetFolder) delFolderList.get(i);
+        EipTCabinetFolder delfolder = delFolderList.get(i);
 
         // entityIdを取得
         Integer entityId = delfolder.getFolderId();
@@ -528,21 +530,21 @@ public class CabinetFolderFormData extends ALAbstractFormData {
         String folderName = delfolder.getFolderName();
 
         // List cabinetfiles = delfolder.getEipTCabinetFiles();
-        List cabinetfiles =
+        List<EipTCabinetFile> cabinetfiles =
           CabinetUtils.getEipTCabinetFileList(delfolder
             .getFolderId()
             .intValue());
-        ArrayList fpaths = new ArrayList();
+        List<String> fpaths = new ArrayList<String>();
         if ((cabinetfiles != null) && (cabinetfiles.size() > 0)) {
           int tsize = cabinetfiles.size();
           for (int k = 0; k < tsize; k++) {
-            fpaths.add(((EipTCabinetFile) cabinetfiles.get(k)).getFilePath());
+            fpaths.add((cabinetfiles.get(k)).getFilePath());
           }
         }
 
         // フォルダ情報を削除
-        dataContext.deleteObject(delfolder);
-        dataContext.commitChanges();
+        Database.delete(delfolder);
+        Database.commit();
 
         // ログに保存
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -556,8 +558,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
           int fsize = fpaths.size();
           for (int k = 0; k < fsize; k++) {
             file =
-              new File(CabinetUtils.getSaveDirPath(org_id)
-                + (String) fpaths.get(k));
+              new File(CabinetUtils.getSaveDirPath(org_id) + fpaths.get(k));
             if (file.exists()) {
               file.delete();
             }
@@ -595,9 +596,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
       int uid = ALEipUtils.getUserId(rundata);
 
       // 新規オブジェクトモデル
-      EipTCabinetFolder folder =
-        (EipTCabinetFolder) dataContext
-          .createAndRegisterNewObject(EipTCabinetFolder.class);
+      EipTCabinetFolder folder = Database.create(EipTCabinetFolder.class);
       // 親フォルダ ID
       folder.setParentId(Integer.valueOf((int) parent_id.getValue()));
       // フォルダ名
@@ -618,10 +617,8 @@ public class CabinetFolderFormData extends ALAbstractFormData {
       folder.setPublicFlag(String.valueOf(accessFlag));
 
       for (int i = 0; i < memberList.size(); i++) {
-        EipTCabinetFolderMap map =
-          (EipTCabinetFolderMap) dataContext
-            .createAndRegisterNewObject(EipTCabinetFolderMap.class);
-        ALEipUser user = (ALEipUser) memberList.get(i);
+        EipTCabinetFolderMap map = Database.create(EipTCabinetFolderMap.class);
+        ALEipUser user = memberList.get(i);
         int user_id = (int) user.getUserId().getValue();
 
         map.setEipTCabinetFolder(folder);
@@ -629,7 +626,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
       }
 
       // フォルダを登録
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -639,7 +636,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
 
       int size = folder_hierarchy_list.size();
       for (int i = 0; i < size; i++) {
-        FolderInfo info = (FolderInfo) folder_hierarchy_list.get(i);
+        FolderInfo info = folder_hierarchy_list.get(i);
         if (info.getFolderId() == parent_id.getValue()) {
           parent_folderinfo = info;
           break;
@@ -694,23 +691,22 @@ public class CabinetFolderFormData extends ALAbstractFormData {
 
       // アクセス権限
       // 一度、既存のマップを全て削除する
-      SelectQuery mapquery = new SelectQuery(EipTCabinetFolderMap.class);
+      SelectQuery<EipTCabinetFolderMap> mapquery =
+        Database.query(EipTCabinetFolderMap.class);
       Expression mapexp =
         ExpressionFactory.matchExp(
           EipTCabinetFolderMap.EIP_TCABINET_FOLDER_PROPERTY,
           folder.getFolderId());
       mapquery.setQualifier(mapexp);
-      List maplist = mapquery.fetchList();
-      dataContext.deleteObjects(maplist);
+      List<EipTCabinetFolderMap> maplist = mapquery.fetchList();
+      Database.deleteAll(maplist);
 
       // マップを登録しなおす
       int accessFlag = (int) access_flag.getValue();
       folder.setPublicFlag(String.valueOf(accessFlag));
       for (int i = 0; i < memberList.size(); i++) {
-        EipTCabinetFolderMap map =
-          (EipTCabinetFolderMap) dataContext
-            .createAndRegisterNewObject(EipTCabinetFolderMap.class);
-        ALEipUser user = (ALEipUser) memberList.get(i);
+        EipTCabinetFolderMap map = Database.create(EipTCabinetFolderMap.class);
+        ALEipUser user = memberList.get(i);
         int user_id = (int) user.getUserId().getValue();
 
         map.setEipTCabinetFolder(folder);
@@ -719,15 +715,15 @@ public class CabinetFolderFormData extends ALAbstractFormData {
 
       if (accessFlag != CabinetUtils.ACCESS_PUBLIC_ALL) {
         /** 子フォルダのアクセス権限を全てACCESS_PUBLIC_ALLに設定 */
-        List children = CabinetUtils.getChildFolders(folder);
+        List<EipTCabinetFolder> children = CabinetUtils.getChildFolders(folder);
         for (int i = 0; i < children.size(); i++) {
-          EipTCabinetFolder child = (EipTCabinetFolder) children.get(i);
+          EipTCabinetFolder child = children.get(i);
           child.setPublicFlag(String.valueOf(CabinetUtils.ACCESS_PUBLIC_ALL));
         }
       }
 
       // フォルダを更新
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -735,6 +731,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_CABINET_FOLDER,
         folder_name.getValue());
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -758,7 +755,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
     return access_flag;
   }
 
-  public List getGroupList() {
+  public List<ALEipGroup> getGroupList() {
     return groups;
   }
 
@@ -771,7 +768,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
    * 
    * @return
    */
-  public List getMemberList() {
+  public List<ALEipUser> getMemberList() {
     return memberList;
   }
 
@@ -784,7 +781,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
     return note;
   }
 
-  public ArrayList getFolderHierarchyList() {
+  public List<FolderInfo> getFolderHierarchyList() {
     return folder_hierarchy_list;
   }
 

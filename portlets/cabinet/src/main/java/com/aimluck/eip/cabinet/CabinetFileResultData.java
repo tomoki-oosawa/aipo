@@ -70,8 +70,8 @@ public class CabinetFileResultData implements ALData {
   private boolean is_editable;
 
   /**
-   * 
-   * 
+   *
+   *
    */
   public void initField() {
     file_id = new ALNumberField();

@@ -24,12 +24,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SQLTemplate;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -44,8 +40,10 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.DataRow;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -53,15 +51,13 @@ import com.aimluck.eip.util.ALEipUtils;
  * ブログエントリー検索ボックス用データです。
  * 
  */
-public class BlogWordSelectData extends ALAbstractSelectData {
+public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(BlogWordSelectData.class.getName());
 
   /** 検索ワード */
   private ALStringField searchWord;
-
-  private DataContext dataContext;
 
   /**
    * 
@@ -80,8 +76,6 @@ public class BlogWordSelectData extends ALAbstractSelectData {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, "name_kana");
     }
 
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
-
     super.init(action, rundata, context);
   }
 
@@ -93,8 +87,8 @@ public class BlogWordSelectData extends ALAbstractSelectData {
    * @return
    */
   @Override
-  protected ResultList selectList(RunData rundata, Context context) {
-    List list;
+  protected ResultList<DataRow> selectList(RunData rundata, Context context) {
+    List<DataRow> list;
 
     // ページャからきた場合に検索ワードをセッションへ格納する
     if (!rundata.getParameters().containsKey(ALEipConstants.LIST_START)
@@ -114,13 +108,14 @@ public class BlogWordSelectData extends ALAbstractSelectData {
     try {
       list = searchList(rundata, context);
       if (list == null) {
-        list = new ArrayList();
+        list = new ArrayList<DataRow>();
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
     }
-    return new ResultList(buildPaginatedList(list));
+    setPageParam(list.size());
+    return new ResultList<DataRow>(list);
   }
 
   /**
@@ -130,7 +125,7 @@ public class BlogWordSelectData extends ALAbstractSelectData {
    * @return
    */
   @Override
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected DataRow selectDetail(RunData rundata, Context context) {
     return null;
   }
 
@@ -138,18 +133,12 @@ public class BlogWordSelectData extends ALAbstractSelectData {
    *
    */
   @Override
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(DataRow obj) {
     try {
-      DataRow dataRow = (DataRow) obj;
+      DataRow dataRow = obj;
 
-      Integer entry_id =
-        (Integer) ALEipUtils.getObjFromDataRow(
-          dataRow,
-          EipTBlogEntry.ENTRY_ID_PK_COLUMN);
-      long ower_id =
-        ((Integer) ALEipUtils.getObjFromDataRow(
-          dataRow,
-          EipTBlogEntry.OWNER_ID_COLUMN)).longValue();
+      Integer entry_id = dataRow.getValue(EipTBlogEntry.ENTRY_ID_PK_COLUMN);
+      long ower_id = dataRow.getValue(EipTBlogEntry.OWNER_ID_COLUMN);
 
       BlogEntryResultData rd = new BlogEntryResultData();
       rd.initField();
@@ -157,25 +146,24 @@ public class BlogWordSelectData extends ALAbstractSelectData {
       rd.setOwnerId(ower_id);
       rd.setOwnerName(BlogUtils.getUserFullName((int) ower_id));
 
-      rd.setTitle(ALCommonUtils
-        .compressString((String) ALEipUtils.getObjFromDataRow(
-          dataRow,
-          EipTBlogEntry.TITLE_COLUMN), getStrLength()));
-      rd.setNote(BlogUtils.compressString((String) ALEipUtils
-        .getObjFromDataRow(dataRow, EipTBlogEntry.NOTE_COLUMN), 100));
+      rd.setTitle(ALCommonUtils.compressString((String) dataRow
+        .get(EipTBlogEntry.TITLE_COLUMN), getStrLength()));
+      rd.setNote(BlogUtils.compressString((String) dataRow
+        .get(EipTBlogEntry.NOTE_COLUMN), 100));
 
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日（EE）");
       rd.setTitleDate(sdf.format((Date) ALEipUtils.getObjFromDataRow(
         dataRow,
         EipTBlogEntry.CREATE_DATE_COLUMN)));
 
-      SelectQuery query = new SelectQuery(EipTBlogComment.class);
+      SelectQuery<EipTBlogComment> query =
+        Database.query(EipTBlogComment.class);
       Expression exp =
         ExpressionFactory.matchDbExp(EipTBlogComment.EIP_TBLOG_ENTRY_PROPERTY
           + "."
           + EipTBlogEntry.ENTRY_ID_PK_COLUMN, entry_id);
       query.setQualifier(exp);
-      List list = dataContext.performQuery(query);
+      List<EipTBlogComment> list = query.fetchList();
       if (list != null && list.size() > 0) {
         rd.setCommentsNum(list.size());
       }
@@ -193,7 +181,7 @@ public class BlogWordSelectData extends ALAbstractSelectData {
    * @return
    */
   @Override
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(DataRow obj) {
     return null;
   }
 
@@ -207,13 +195,13 @@ public class BlogWordSelectData extends ALAbstractSelectData {
     return map;
   }
 
-  private List searchList(RunData rundata, Context context) {
-    List list = null;
+  private List<DataRow> searchList(RunData rundata, Context context) {
+    List<DataRow> list = null;
     try {
       String word = searchWord.getValue();
 
       if (word == null || word.length() == 0) {
-        return new ArrayList();
+        return new ArrayList<DataRow>();
       }
 
       // SQLの作成
@@ -232,13 +220,11 @@ public class BlogWordSelectData extends ALAbstractSelectData {
         + "%')) ORDER BY t0.create_date DESC");
       String query = statement.toString();
 
-      SQLTemplate rawSelect = new SQLTemplate(EipTBlogEntry.class, query, true);
-      rawSelect.setFetchingDataRows(true);
-      list = dataContext.performQuery(rawSelect);
+      list = Database.sql(EipTBlogEntry.class, query).fetchListAsDataRow();
 
     } catch (Exception e) {
       e.printStackTrace();
-      return new ArrayList();
+      return new ArrayList<DataRow>();
     }
     return list;
   }

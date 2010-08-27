@@ -29,7 +29,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アクセスコントロールのResultDataです。 <BR>
- *
+ * 
  */
 public class AccessControlResultData implements ALData {
 
@@ -67,7 +67,7 @@ public class AccessControlResultData implements ALData {
 
   /**
    *
-   * 
+   *
    */
   public void initField() {
     acl_role_id = new ALNumberField();

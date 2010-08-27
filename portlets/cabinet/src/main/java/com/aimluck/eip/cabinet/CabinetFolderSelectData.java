@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -40,7 +39,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -49,21 +48,20 @@ import com.aimluck.eip.util.ALEipUtils;
 /**
  * 共有フォルダのフォルダ検索データを管理するためのクラスです。 <br />
  */
-public class CabinetFolderSelectData extends ALAbstractSelectData {
+public class CabinetFolderSelectData extends
+    ALAbstractSelectData<EipTCabinetFolder, EipTCabinetFolder> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(CabinetFolderSelectData.class.getName());
 
   /** フォルダ情報一覧 */
-  private ArrayList folder_hierarchy_list;
+  private List<FolderInfo> folder_hierarchy_list;
 
   /** <code>members</code> 共有メンバー */
-  private List members;
+  private List<ALEipUser> members;
 
   int folder_id = 0;
-
-  private DataContext dataContext;
 
   private RunData rundata;
 
@@ -92,11 +90,10 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
           .getPortlet(rundata, context)
           .getPortletConfig()
           .getInitParameter("p3c-sort"));
-      dataContext = DatabaseOrmService.getInstance().getDataContext();
     }
 
     folder_hierarchy_list = CabinetUtils.getFolderList();
-    members = new ArrayList();
+    members = new ArrayList<ALEipUser>();
     this.rundata = rundata;
 
     // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
@@ -124,8 +121,8 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
    * @throws ALDBErrorException
    */
   @Override
-  protected ResultList selectList(RunData rundata, Context context)
-      throws ALPageNotFoundException, ALDBErrorException {
+  protected ResultList<EipTCabinetFolder> selectList(RunData rundata,
+      Context context) throws ALPageNotFoundException, ALDBErrorException {
     return null;
   }
 
@@ -138,7 +135,7 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
    * @throws ALDBErrorException
    */
   @Override
-  protected Object selectDetail(RunData rundata, Context context)
+  protected EipTCabinetFolder selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     // オブジェクトモデルを取得
     return CabinetUtils.getEipTCabinetFolder(rundata, context);
@@ -148,8 +145,8 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
    *
    */
   @Override
-  protected Object getResultData(Object obj) throws ALPageNotFoundException,
-      ALDBErrorException {
+  protected Object getResultData(EipTCabinetFolder obj)
+      throws ALPageNotFoundException, ALDBErrorException {
     return null;
   }
 
@@ -161,11 +158,10 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
    * @throws ALDBErrorException
    */
   @Override
-  protected Object getResultDataDetail(Object obj)
+  protected Object getResultDataDetail(EipTCabinetFolder record)
       throws ALPageNotFoundException, ALDBErrorException {
 
     try {
-      EipTCabinetFolder record = (EipTCabinetFolder) obj;
 
       folder_id = record.getFolderId().intValue();
 
@@ -206,20 +202,21 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
       }
 
       // メンバーのリストを取得
-      SelectQuery mapquery = new SelectQuery(EipTCabinetFolderMap.class);
+      SelectQuery<EipTCabinetFolderMap> mapquery =
+        Database.query(EipTCabinetFolderMap.class);
       Expression mapexp =
         ExpressionFactory.matchDbExp(
           EipTCabinetFolderMap.EIP_TCABINET_FOLDER_PROPERTY,
           access_control_folder_id);
       mapquery.setQualifier(mapexp);
-      List list = mapquery.fetchList();
+      List<EipTCabinetFolderMap> list = mapquery.fetchList();
 
-      List users = new ArrayList();
+      List<Integer> users = new ArrayList<Integer>();
       for (int i = 0; i < list.size(); i++) {
-        EipTCabinetFolderMap map = (EipTCabinetFolderMap) list.get(i);
+        EipTCabinetFolderMap map = list.get(i);
         users.add(map.getUserId());
       }
-      SelectQuery query = new SelectQuery(TurbineUser.class);
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
       Expression exp =
         ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, users);
       query.setQualifier(exp);
@@ -230,7 +227,7 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
 
       int size = folder_hierarchy_list.size();
       for (int i = 0; i < size; i++) {
-        FolderInfo info = (FolderInfo) folder_hierarchy_list.get(i);
+        FolderInfo info = folder_hierarchy_list.get(i);
         if (info.getFolderId() == record.getFolderId().intValue()) {
           rd.setCanUpdate(info.canUpdate());
           break;
@@ -258,7 +255,7 @@ public class CabinetFolderSelectData extends ALAbstractSelectData {
     return folder_id;
   }
 
-  public List getMemberList() {
+  public List<ALEipUser> getMemberList() {
     return members;
   }
 

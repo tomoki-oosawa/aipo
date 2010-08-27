@@ -2,17 +2,17 @@
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -57,11 +57,11 @@ public class BlogThemaResultData implements ALData {
   private ALNumberField entry_num;
 
   /** テーマに含まれる記事リスト */
-  private List entryList;
+  private List<BlogEntryResultData> entryList;
 
   /**
-   * 
-   * 
+   *
+   *
    */
   public void initField() {
     thema_id = new ALNumberField();
@@ -73,7 +73,7 @@ public class BlogThemaResultData implements ALData {
     update_date = new ALStringField();
     entry_num = new ALNumberField();
 
-    entryList = new ArrayList();
+    entryList = new ArrayList<BlogEntryResultData>();
   }
 
   /**
@@ -182,11 +182,11 @@ public class BlogThemaResultData implements ALData {
     entry_num.setValue(i);
   }
 
-  public void setEntryList(List list) {
+  public void setEntryList(List<BlogEntryResultData> list) {
     entryList.addAll(list);
   }
 
-  public List getEntryList() {
+  public List<BlogEntryResultData> getEntryList() {
     return entryList;
   }
 }

@@ -37,6 +37,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.eventlog.util.ALEventlogUtils;
 import com.aimluck.eip.eventlog.util.EventlogUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
@@ -118,8 +119,7 @@ public class EventlogSelectData extends
    */
   private SelectQuery<EipTEventlog> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipTEventlog> query =
-      new SelectQuery<EipTEventlog>(EipTEventlog.class);
+    SelectQuery<EipTEventlog> query = Database.query(EipTEventlog.class);
     return buildSelectQueryForFilter(query, rundata, context);
   }
 

@@ -20,11 +20,8 @@ package com.aimluck.eip.eventlog.util;
 
 import java.util.List;
 
-import org.apache.cayenne.DataObjectUtils;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -52,30 +49,31 @@ import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequest;
 import com.aimluck.eip.cayenne.om.security.TurbineGroup;
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * イベントログのユーティリティクラスです。 <BR>
- *
+ * 
  */
 public class EventlogUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(EventlogUtils.class.getName());
+    .getLogger(EventlogUtils.class.getName());
 
   /**
    * イベントログオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
    */
   public static EipTEventlog getEipTEventlog(RunData rundata, Context context) {
-    String logid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String logid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (logid == null || Integer.valueOf(logid) == null) {
         // eventlog IDが空の場合
@@ -83,18 +81,16 @@ public class EventlogUtils {
         return null;
       }
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      Expression exp = ExpressionFactory.matchDbExp(
-          EipTEventlog.EVENTLOG_ID_PK_COLUMN, logid);
-      SelectQuery query = new SelectQuery(EipTEventlog.class, exp);
-      List<?> logs = dataContext.performQuery(query);
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipTEventlog.EVENTLOG_ID_PK_COLUMN, logid);
+      SelectQuery<EipTEventlog> query = Database.query(EipTEventlog.class, exp);
+      List<EipTEventlog> logs = query.fetchList();
       if (logs == null || logs.size() == 0) {
         // 指定した Eventlog ID のレコードが見つからない場合
         logger.debug("[EventlogUtils] Not found ID...");
         return null;
       }
-      return ((EipTEventlog) logs.get(0));
+      return logs.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -104,7 +100,7 @@ public class EventlogUtils {
   /**
    * ポートレットタイプを元に、それぞれのデータ名を取得します。 <BR>
    * 返すデータがない操作では、nullを返します
-   *
+   * 
    * @param portletType
    * @param entityId
    * @return dataName
@@ -184,16 +180,14 @@ public class EventlogUtils {
 
   /**
    * 社外グループ名を取得します。 <BR>
-   *
+   * 
    * @param entityId
    * @return dataName
    */
   private static String getAddressBookGroupName(int entityId) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      EipMAddressGroup group = (EipMAddressGroup) DataObjectUtils.objectForPK(
-          dataContext, EipMAddressGroup.class, (long) entityId);
+      EipMAddressGroup group =
+        Database.get(EipMAddressGroup.class, (long) entityId);
       if (group == null) {
         return null;
       }
@@ -208,17 +202,14 @@ public class EventlogUtils {
 
   /**
    * 会社名を取得します。 <BR>
-   *
+   * 
    * @param entityId
    * @return dataName
    */
   private static String getAddressBookCompanyName(int entityId) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      EipMAddressbookCompany company = (EipMAddressbookCompany) DataObjectUtils
-          .objectForPK(dataContext, EipMAddressbookCompany.class,
-              (long) entityId);
+      EipMAddressbookCompany company =
+        Database.get(EipMAddressbookCompany.class, (long) entityId);
       if (company == null) {
         return null;
       }
@@ -233,22 +224,21 @@ public class EventlogUtils {
 
   /**
    * アドレス帳に登録した名前を取得します。 <BR>
-   *
+   * 
    * @param entityId
    * @return dataName
    */
   private static String getAddressBookName(int entityId) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      EipMAddressbook address = (EipMAddressbook) DataObjectUtils.objectForPK(
-          dataContext, EipMAddressbook.class, (long) entityId);
+      EipMAddressbook address =
+        Database.get(EipMAddressbook.class, (long) entityId);
       if (address == null) {
         return null;
       }
 
-      String dataName = new StringBuffer().append(address.getLastName())
-          .append(" ").append(address.getLastName()).toString();
+      String dataName =
+        new StringBuffer().append(address.getLastName()).append(" ").append(
+          address.getLastName()).toString();
       return dataName;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -258,16 +248,13 @@ public class EventlogUtils {
 
   /**
    * ブログテーマ名を取得します。 <BR>
-   *
+   * 
    * @param entityId
    * @return dataName
    */
   private static String getBlogEntryThema(int entityId) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      EipTBlogThema thema = (EipTBlogThema) DataObjectUtils.objectForPK(
-          dataContext, EipTBlogThema.class, (long) entityId);
+      EipTBlogThema thema = Database.get(EipTBlogThema.class, (long) entityId);
       if (thema == null) {
         return null;
       }
@@ -282,16 +269,13 @@ public class EventlogUtils {
 
   /**
    * ToDoデータ名を取得します。 <BR>
-   *
+   * 
    * @param entityId
    * @return dataName
    */
   private static String getTodoName(int entityId) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      EipTTodo todo = (EipTTodo) DataObjectUtils.objectForPK(dataContext,
-          EipTTodo.class, (long) entityId);
+      EipTTodo todo = Database.get(EipTTodo.class, (long) entityId);
       if (todo == null) {
         return null;
       }
@@ -306,16 +290,14 @@ public class EventlogUtils {
 
   /**
    * ToDoカテゴリのデータ名を取得します。 <BR>
-   *
+   * 
    * @param entityId
    * @return dataName
    */
   private static String getTodoCategoryName(int category_id) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      EipTTodoCategory category = (EipTTodoCategory) DataObjectUtils
-          .objectForPK(dataContext, EipTTodoCategory.class, (long) category_id);
+      EipTTodoCategory category =
+        Database.get(EipTTodoCategory.class, (long) category_id);
       if (category == null) {
         return null;
       }
@@ -330,16 +312,13 @@ public class EventlogUtils {
 
   /**
    * ブログのエントリ名を取得します。 <BR>
-   *
+   * 
    * @param entityId
    * @return dataName
    */
   private static String getBlogEntryName(int entityId) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      EipTBlogEntry blog = (EipTBlogEntry) DataObjectUtils.objectForPK(
-          dataContext, EipTBlogEntry.class, (long) entityId);
+      EipTBlogEntry blog = Database.get(EipTBlogEntry.class, (long) entityId);
       if (blog == null) {
         return null;
       }
@@ -354,22 +333,22 @@ public class EventlogUtils {
 
   /**
    * ワークフローを取得します。 <BR>
-   *
+   * 
    * @param entityId
    * @return dataName
    */
   private static String getWorkFlowRequestName(int entityId) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      EipTWorkflowRequest request = (EipTWorkflowRequest) DataObjectUtils
-          .objectForPK(dataContext, EipTWorkflowRequest.class, (long) entityId);
+      EipTWorkflowRequest request =
+        Database.get(EipTWorkflowRequest.class, (long) entityId);
       if (request == null) {
         return null;
       }
 
-      String dataName = request.getEipTWorkflowCategory().getCategoryName()
-          + " " + request.getRequestName();
+      String dataName =
+        request.getEipTWorkflowCategory().getCategoryName()
+          + " "
+          + request.getRequestName();
       return dataName;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -379,17 +358,14 @@ public class EventlogUtils {
 
   /**
    * ワークフローカテゴリのデータ名を取得します。 <BR>
-   *
+   * 
    * @param entityId
    * @return dataName
    */
   private static String getWorkFlowCategoryName(int category_id) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      EipTWorkflowCategory category = (EipTWorkflowCategory) DataObjectUtils
-          .objectForPK(dataContext, EipTWorkflowCategory.class,
-              (long) category_id);
+      EipTWorkflowCategory category =
+        Database.get(EipTWorkflowCategory.class, (long) category_id);
       if (category == null) {
         return null;
       }
@@ -404,16 +380,14 @@ public class EventlogUtils {
 
   /**
    * メールアカウントのデータ名を取得します。 <BR>
-   *
+   * 
    * @param entityId
    * @return dataName
    */
   private static String getWebMailAccountName(int entityId) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      EipMMailAccount account = (EipMMailAccount) DataObjectUtils.objectForPK(
-          dataContext, EipMMailAccount.class, (long) entityId);
+      EipMMailAccount account =
+        Database.get(EipMMailAccount.class, (long) entityId);
       if (account == null) {
         return null;
       }
@@ -428,16 +402,13 @@ public class EventlogUtils {
 
   /**
    * タイムカードのデータ名を取得します。 <BR>
-   *
+   * 
    * @param entityId
    * @return dataName
    */
   private static String getTimecardName(int entityId) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      EipTTimecard timecard = (EipTTimecard) DataObjectUtils.objectForPK(
-          dataContext, EipTTimecard.class, (long) entityId);
+      EipTTimecard timecard = Database.get(EipTTimecard.class, (long) entityId);
       if (timecard == null) {
         return null;
       }
@@ -452,16 +423,13 @@ public class EventlogUtils {
 
   /**
    * スケジュールのデータ名を取得します。 <BR>
-   *
+   * 
    * @param entityId
    * @return dataName
    */
   private static String getScheduleName(int entityId) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      EipTSchedule schedule = (EipTSchedule) DataObjectUtils.objectForPK(
-          dataContext, EipTSchedule.class, (long) entityId);
+      EipTSchedule schedule = Database.get(EipTSchedule.class, (long) entityId);
       if (schedule == null) {
         return null;
       }
@@ -476,16 +444,13 @@ public class EventlogUtils {
 
   /**
    * 伝言メモのデータ名を取得します。 <BR>
-   *
+   * 
    * @param entityId
    * @return dataName
    */
   private static String getNoteName(int entityId) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      EipTNote note = (EipTNote) DataObjectUtils.objectForPK(dataContext,
-          EipTNote.class, (long) entityId);
+      EipTNote note = Database.get(EipTNote.class, (long) entityId);
       if (note == null) {
         return null;
       }
@@ -512,16 +477,13 @@ public class EventlogUtils {
 
   /**
    * マイグループのデータ名を取得します。 <BR>
-   *
+   * 
    * @param entityId
    * @return dataName
    */
   private static String getMyGroupName(int entityId) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      TurbineGroup group = (TurbineGroup) DataObjectUtils.objectForPK(
-          dataContext, TurbineGroup.class, (long) entityId);
+      TurbineGroup group = Database.get(TurbineGroup.class, (long) entityId);
       if (group == null) {
         return null;
       }
@@ -536,16 +498,14 @@ public class EventlogUtils {
 
   /**
    * Msgboardデータ名を取得します。 <BR>
-   *
+   * 
    * @param entityId
    * @return dataName
    */
   private static String getMsgboardTopicName(int entityId) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      EipTMsgboardTopic topic = (EipTMsgboardTopic) DataObjectUtils
-          .objectForPK(dataContext, EipTMsgboardTopic.class, (long) entityId);
+      EipTMsgboardTopic topic =
+        Database.get(EipTMsgboardTopic.class, (long) entityId);
       if (topic == null) {
         return null;
       }
@@ -560,17 +520,14 @@ public class EventlogUtils {
 
   /**
    * Msgboardカテゴリのデータ名を取得します。 <BR>
-   *
+   * 
    * @param entityId
    * @return dataName
    */
   private static String getMsgboardCategoryName(int category_id) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      EipTMsgboardCategory category = (EipTMsgboardCategory) DataObjectUtils
-          .objectForPK(dataContext, EipTMsgboardCategory.class,
-              (long) category_id);
+      EipTMsgboardCategory category =
+        Database.get(EipTMsgboardCategory.class, (long) category_id);
       if (category == null) {
         return null;
       }
@@ -585,16 +542,14 @@ public class EventlogUtils {
 
   /**
    * 共有フォルダのファイル名を取得します。 <BR>
-   *
+   * 
    * @param entityId
    * @return dataName
    */
   private static String getCabinetFileName(int entityId) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      EipTCabinetFile file = (EipTCabinetFile) DataObjectUtils.objectForPK(
-          dataContext, EipTCabinetFile.class, (long) entityId);
+      EipTCabinetFile file =
+        Database.get(EipTCabinetFile.class, (long) entityId);
       if (file == null) {
         return null;
       }
@@ -609,16 +564,14 @@ public class EventlogUtils {
 
   /**
    * 共有フォルダのフォルダ名を取得します。 <BR>
-   *
+   * 
    * @param entityId
    * @return dataName
    */
   private static String getCabinetFolderName(int entityId) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      EipTCabinetFolder file = (EipTCabinetFolder) DataObjectUtils.objectForPK(
-          dataContext, EipTCabinetFolder.class, (long) entityId);
+      EipTCabinetFolder file =
+        Database.get(EipTCabinetFolder.class, (long) entityId);
       if (file == null) {
         return null;
       }
@@ -633,16 +586,14 @@ public class EventlogUtils {
 
   /**
    * 共有カテゴリのカテゴリ名を取得します。 <BR>
-   *
+   * 
    * @param entityId
    * @return dataName
    */
   private static String getCommonCategoryName(int entityId) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      EipTCommonCategory category = (EipTCommonCategory) DataObjectUtils
-          .objectForPK(dataContext, EipTCommonCategory.class, (long) entityId);
+      EipTCommonCategory category =
+        Database.get(EipTCommonCategory.class, (long) entityId);
       if (category == null) {
         return null;
       }
@@ -657,16 +608,13 @@ public class EventlogUtils {
 
   /**
    * memoのデータ名を取得します。 <BR>
-   *
+   * 
    * @param entityId
    * @return dataName
    */
   private static String getMemoName(int memo_id) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      EipTMemo memo = (EipTMemo) DataObjectUtils.objectForPK(dataContext,
-          EipTMemo.class, (long) memo_id);
+      EipTMemo memo = Database.get(EipTMemo.class, (long) memo_id);
       if (memo == null) {
         return null;
       }

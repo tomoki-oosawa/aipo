@@ -21,10 +21,8 @@ package com.aimluck.eip.blog;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -39,7 +37,8 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -63,8 +62,6 @@ public class BlogThemaFormData extends ALAbstractFormData {
 
   private int thema_id;
 
-  private DataContext dataContext;
-
   /**
    * 
    * @param action
@@ -84,7 +81,6 @@ public class BlogThemaFormData extends ALAbstractFormData {
    *
    */
   public void initField() {
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     // カテゴリ名
     thema_name = new ALStringField();
@@ -146,7 +142,7 @@ public class BlogThemaFormData extends ALAbstractFormData {
   protected boolean validate(List<String> msgList) {
 
     try {
-      SelectQuery query = new SelectQuery(EipTBlogThema.class);
+      SelectQuery<EipTBlogThema> query = Database.query(EipTBlogThema.class);
       if (ALEipConstants.MODE_INSERT.equals(getMode())) {
         Expression exp =
           ExpressionFactory.matchExp(
@@ -166,7 +162,7 @@ public class BlogThemaFormData extends ALAbstractFormData {
         query.andQualifier(exp2);
       }
 
-      if (dataContext.performQuery(query).size() != 0) {
+      if (query.fetchList().size() != 0) {
         msgList.add("テーマ名『 <span class='em'>"
           + thema_name
           + "</span> 』は既に登録されています。");
@@ -231,9 +227,7 @@ public class BlogThemaFormData extends ALAbstractFormData {
 
       int uid = ALEipUtils.getUserId(rundata);
       // 新規オブジェクトモデル
-      EipTBlogThema thema =
-        (EipTBlogThema) dataContext
-          .createAndRegisterNewObject(EipTBlogThema.class);
+      EipTBlogThema thema = Database.create(EipTBlogThema.class);
       // カテゴリ名
       thema.setThemaName(thema_name.getValue());
       // メモ
@@ -247,7 +241,7 @@ public class BlogThemaFormData extends ALAbstractFormData {
       // 更新日
       thema.setUpdateDate(Calendar.getInstance().getTime());
       // ブログカテゴリを登録
-      dataContext.commitChanges();
+      Database.commit();
 
       thema_id = thema.getThemaId().intValue();
 
@@ -260,6 +254,7 @@ public class BlogThemaFormData extends ALAbstractFormData {
       ALEipUtils.redirectPermissionError(rundata);
       return false;
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -293,7 +288,7 @@ public class BlogThemaFormData extends ALAbstractFormData {
       thema.setUpdateDate(Calendar.getInstance().getTime());
 
       // ブログカテゴリを更新
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -301,6 +296,7 @@ public class BlogThemaFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_BLOG_THEMA,
         thema_name.getValue());
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -331,8 +327,8 @@ public class BlogThemaFormData extends ALAbstractFormData {
       // String themaName = thema.getThemaName();
 
       // ブログカテゴリを削除
-      dataContext.deleteObject(thema);
-      dataContext.commitChanges();
+      Database.delete(thema);
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -340,6 +336,7 @@ public class BlogThemaFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_BLOG_THEMA,
         thema_name.getValue());
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }

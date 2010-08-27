@@ -38,6 +38,7 @@ import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -122,8 +123,7 @@ public class AccessControlSelectData extends
    */
   protected SelectQuery<EipTAclRole> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipTAclRole> query =
-      new SelectQuery<EipTAclRole>(EipTAclRole.class);
+    SelectQuery<EipTAclRole> query = Database.query(EipTAclRole.class);
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
@@ -230,13 +230,13 @@ public class AccessControlSelectData extends
       EipTAclUserRoleMap map = null;
       TurbineUser tuser = null;
 
-      List<?> maps =
+      List<EipTAclUserRoleMap> maps =
         AccessControlUtils
           .getEipTAclUserRoleMaps(record.getRoleId().intValue());
       if (maps != null && maps.size() > 0) {
         int size = maps.size();
         for (int i = 0; i < size; i++) {
-          map = (EipTAclUserRoleMap) maps.get(i);
+          map = maps.get(i);
           tuser = map.getTurbineUser();
           unamelist.add(new StringBuffer().append(tuser.getLastName()).append(
             " ").append(tuser.getFirstName()).toString());

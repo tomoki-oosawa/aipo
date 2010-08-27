@@ -23,12 +23,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.cayenne.DataObjectUtils;
-import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -46,7 +42,9 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -78,7 +76,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
   private ALStringField note;
 
   /** フォルダ情報一覧 */
-  private ArrayList folder_hierarchy_list;
+  private List<FolderInfo> folder_hierarchy_list;
 
   /** 選択されたフォルダ情報 */
   private FolderInfo selected_folderinfo = null;
@@ -86,17 +84,12 @@ public class CabinetFileFormData extends ALAbstractFormData {
   /** 添付フォルダ名 */
   private String folderName = null;
 
-  /** アクセス権限のフォームを表示するか */
-  private final boolean show_acl_form = true;
-
   private String fileid = null;
 
   private String org_id = null;
 
-  private DataContext dataContext;
-
   /** 添付ファイルリスト */
-  private List fileuploadList = null;
+  private List<FileuploadLiteBean> fileuploadList = null;
 
   /** Validate用(添付ファイルID) */
   private String[] fileids;
@@ -129,7 +122,6 @@ public class CabinetFileFormData extends ALAbstractFormData {
     }
 
     org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
     this.rundata = rundata;
 
     String tmpfid =
@@ -148,7 +140,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
     int size = folder_hierarchy_list.size();
     for (int i = 0; i < size; i++) {
-      FolderInfo info = (FolderInfo) folder_hierarchy_list.get(i);
+      FolderInfo info = folder_hierarchy_list.get(i);
       if (info.getFolderId() == fid) {
         selected_folderinfo = info;
       }
@@ -186,7 +178,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
     note.setFieldName("メモ");
     note.setTrim(true);
 
-    fileuploadList = new ArrayList();
+    fileuploadList = new ArrayList<FileuploadLiteBean>();
   }
 
   /**
@@ -223,7 +215,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
       FileuploadLiteBean filebean = null;
       if (fileuploadList != null) {
         // 新規にアップロードしたデータをつめる
-        filebean = (FileuploadLiteBean) fileuploadList.get(0);
+        filebean = fileuploadList.get(0);
         file_name.setValue(filebean.getFileName());
       }
     } catch (Exception ex) {
@@ -300,8 +292,9 @@ public class CabinetFileFormData extends ALAbstractFormData {
     }
 
     try {
-      SelectQuery query = new SelectQuery(EipTCabinetFile.class);
-      query.addCustomDbAttribute(EipTCabinetFile.FILE_NAME_COLUMN);
+      SelectQuery<EipTCabinetFile> query =
+        Database.query(EipTCabinetFile.class);
+      query.select(EipTCabinetFile.FILE_NAME_COLUMN);
       if (ALEipConstants.MODE_INSERT.equals(getMode())) {
         Expression exp =
           ExpressionFactory.matchDbExp(
@@ -321,15 +314,10 @@ public class CabinetFileFormData extends ALAbstractFormData {
         query.andQualifier(exp2);
       }
 
-      List list = dataContext.performQuery(query);
+      List<EipTCabinetFile> list = query.fetchList();
       if (list != null && list.size() > 0) {
-        DataRow dataRow = null;
-        int size = list.size();
-        for (int i = 0; i < size; i++) {
-          dataRow = (DataRow) list.get(i);
-          if (fname.equals(ALEipUtils.getObjFromDataRow(
-            dataRow,
-            EipTCabinetFile.FILE_NAME_COLUMN))) {
+        for (EipTCabinetFile record : list) {
+          if (fname.equals(record.getFileName())) {
             return true;
           }
         }
@@ -406,8 +394,8 @@ public class CabinetFileFormData extends ALAbstractFormData {
       String fileName = file.getFileTitle();
 
       // ファイルを削除
-      dataContext.deleteObject(file);
-      dataContext.commitChanges();
+      Database.delete(file);
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -426,6 +414,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
       }
 
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -446,7 +435,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
     boolean res = false;
     try {
       int uid = ALEipUtils.getUserId(rundata);
-      FileuploadLiteBean filebean = (FileuploadLiteBean) fileuploadList.get(0);
+      FileuploadLiteBean filebean = fileuploadList.get(0);
       // ファイルの移動先
       String filename =
         FileuploadUtils.getNewFileName(CabinetUtils.getSaveDirPath(org_id));
@@ -465,15 +454,11 @@ public class CabinetFileFormData extends ALAbstractFormData {
       double fileSize = Math.ceil(destFile.length() / 1024.0);
 
       EipTCabinetFolder folder =
-        (EipTCabinetFolder) DataObjectUtils.objectForPK(
-          dataContext,
-          EipTCabinetFolder.class,
-          Integer.valueOf((int) folder_id.getValue()));
+        Database.get(EipTCabinetFolder.class, Integer.valueOf((int) folder_id
+          .getValue()));
 
       // 新規オブジェクトモデル
-      EipTCabinetFile file =
-        (EipTCabinetFile) dataContext
-          .createAndRegisterNewObject(EipTCabinetFile.class);
+      EipTCabinetFile file = Database.create(EipTCabinetFile.class);
       // 親フォルダ
       file.setEipTCabinetFolder(folder);
       // ファイルタイトル
@@ -497,7 +482,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
       // 更新日
       file.setUpdateDate(Calendar.getInstance().getTime());
       // フォルダを登録
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -511,6 +496,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
       res = true;
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -544,8 +530,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
       }
       if (is_upload) {
         // アップロードが確認できた場合
-        FileuploadLiteBean filebean =
-          (FileuploadLiteBean) fileuploadList.get(0);
+        FileuploadLiteBean filebean = fileuploadList.get(0);
         String filename =
           FileuploadUtils.getNewFileName(CabinetUtils.getSaveDirPath(org_id));
         // ファイルの移動先
@@ -577,10 +562,8 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
       // 親フォルダ
       EipTCabinetFolder folder =
-        (EipTCabinetFolder) DataObjectUtils.objectForPK(
-          dataContext,
-          EipTCabinetFolder.class,
-          Integer.valueOf((int) folder_id.getValue()));
+        Database.get(EipTCabinetFolder.class, Integer.valueOf((int) folder_id
+          .getValue()));
       file.setEipTCabinetFolder(folder);
 
       // ファイルタイトル
@@ -592,7 +575,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
       // 更新日
       file.setUpdateDate(Calendar.getInstance().getTime());
       // フォルダを更新
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -656,7 +639,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
     return note;
   }
 
-  public ArrayList getFolderHierarchyList() {
+  public List<FolderInfo> getFolderHierarchyList() {
     return folder_hierarchy_list;
   }
 
@@ -673,7 +656,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
     return id1 == (int) id2;
   }
 
-  public List getAttachmentFileNameList() {
+  public List<FileuploadLiteBean> getAttachmentFileNameList() {
     return fileuploadList;
   }
 

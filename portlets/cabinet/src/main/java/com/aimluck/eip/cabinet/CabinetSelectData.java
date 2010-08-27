@@ -19,6 +19,7 @@
 package com.aimluck.eip.cabinet;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
@@ -56,7 +57,7 @@ public class CabinetSelectData extends
   /** 選択されたフォルダ情報 */
   private FolderInfo selected_folderinfo = null;
 
-  private ArrayList folder_hierarchy_list;
+  private List<FolderInfo> folder_hierarchy_list;
 
   /** ファイル総数 */
   private int fileSum;
@@ -138,14 +139,14 @@ public class CabinetSelectData extends
     if (folder_hierarchy_list != null && folder_hierarchy_list.size() > 0) {
       int size = folder_hierarchy_list.size();
       for (int i = 0; i < size; i++) {
-        FolderInfo info = (FolderInfo) folder_hierarchy_list.get(i);
+        FolderInfo info = folder_hierarchy_list.get(i);
         if (info.getFolderId() == fid) {
           selected_folderinfo = info;
           break;
         }
       }
       if (selected_folderinfo == null) {
-        selected_folderinfo = (FolderInfo) folder_hierarchy_list.get(0);
+        selected_folderinfo = folder_hierarchy_list.get(0);
       }
     }
 
@@ -178,7 +179,7 @@ public class CabinetSelectData extends
       ResultList<EipTCabinetFile> list = query.getResultList();
       // ファイル総数をセットする．
       if (list == null) {
-        return new ResultList<EipTCabinetFile>(new ArrayList());
+        return new ResultList<EipTCabinetFile>(new ArrayList<EipTCabinetFile>());
       } else {
         fileSum = list.size();
       }
@@ -313,7 +314,7 @@ public class CabinetSelectData extends
     }
   }
 
-  public ArrayList getFolderHierarchyList() {
+  public List<FolderInfo> getFolderHierarchyList() {
     return folder_hierarchy_list;
   }
 

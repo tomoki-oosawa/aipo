@@ -25,11 +25,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import org.apache.cayenne.DataObjectUtils;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -50,7 +47,9 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -82,16 +81,13 @@ public class BlogEntryFormData extends ALAbstractFormData {
   /** コメント付加フラグ */
   private ALStringField allow_comments;
 
-  private ArrayList themaList;
+  private List<BlogThemaResultData> themaList;
 
   /** */
   private boolean is_new_thema;
 
-  /** 添付ファイル */
-  private final FileuploadLiteBean filebean = null;
-
   /** 添付ファイルリスト */
-  private List fileuploadList = null;
+  private List<FileuploadLiteBean> fileuploadList = null;
 
   /** 添付フォルダ名 */
   private String folderName = null;
@@ -110,8 +106,6 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   private String org_id;
 
-  private DataContext dataContext;
-
   /**
    * 
    * @param action
@@ -127,7 +121,6 @@ public class BlogEntryFormData extends ALAbstractFormData {
     is_new_thema = rundata.getParameters().getBoolean("is_new_thema");
 
     uid = ALEipUtils.getUserId(rundata);
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
     org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
 
     folderName = rundata.getParameters().getString("folderName");
@@ -168,7 +161,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
     allow_comments.setValue("T");
     allow_comments.setTrim(true);
 
-    fileuploadList = new ArrayList();
+    fileuploadList = new ArrayList<FileuploadLiteBean>();
 
     blogthema = new BlogThemaFormData();
     blogthema.initField();
@@ -249,17 +242,17 @@ public class BlogEntryFormData extends ALAbstractFormData {
       // 状態
       allow_comments.setValue(entry.getAllowComments());
 
-      SelectQuery filequery = new SelectQuery(EipTBlogFile.class);
+      SelectQuery<EipTBlogFile> filequery = Database.query(EipTBlogFile.class);
       Expression fileexp =
         ExpressionFactory.matchDbExp(EipTBlogFile.EIP_TBLOG_ENTRY_PROPERTY
           + "."
           + EipTBlogEntry.ENTRY_ID_PK_COLUMN, entry.getEntryId());
       filequery.setQualifier(fileexp);
-      List files = dataContext.performQuery(filequery);
+      List<EipTBlogFile> files = filequery.fetchList();
       FileuploadLiteBean filebean = null;
       int size = files.size();
       for (int i = 0; i < size; i++) {
-        EipTBlogFile file = (EipTBlogFile) files.get(i);
+        EipTBlogFile file = files.get(i);
         filebean = new FileuploadLiteBean();
         filebean.initField();
         filebean.setFolderName(BlogUtils.PREFIX_DBFILE
@@ -299,8 +292,8 @@ public class BlogEntryFormData extends ALAbstractFormData {
       // タイトルの取得
       String todoName = entry.getTitle();
 
-      ArrayList fpaths = new ArrayList();
-      List files = entry.getEipTBlogFiles();
+      List<String> fpaths = new ArrayList<String>();
+      List<?> files = entry.getEipTBlogFiles();
       if (files != null && files.size() > 0) {
         int size = files.size();
         for (int i = 0; i < size; i++) {
@@ -309,8 +302,8 @@ public class BlogEntryFormData extends ALAbstractFormData {
       }
 
       // エントリーを削除
-      dataContext.deleteObject(entry);
-      dataContext.commitChanges();
+      Database.delete(entry);
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -324,14 +317,14 @@ public class BlogEntryFormData extends ALAbstractFormData {
         int fsize = fpaths.size();
         for (int i = 0; i < fsize; i++) {
           file =
-            new File(BlogUtils.getSaveDirPath(org_id, uid)
-              + (String) fpaths.get(i));
+            new File(BlogUtils.getSaveDirPath(org_id, uid) + fpaths.get(i));
           if (file.exists()) {
             file.delete();
           }
         }
       }
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -361,10 +354,8 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
       if (res) {
         thema =
-          (EipTBlogThema) DataObjectUtils.objectForPK(
-            dataContext,
-            EipTBlogThema.class,
-            Integer.valueOf((int) thema_id.getValue()));
+          Database.get(EipTBlogThema.class, Integer.valueOf((int) thema_id
+            .getValue()));
 
         blog = BlogUtils.getEipTBlog(rundata, context);
         if (blog == null) {
@@ -375,9 +366,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
         }
 
         // 新規オブジェクトモデル
-        EipTBlogEntry entry =
-          (EipTBlogEntry) dataContext
-            .createAndRegisterNewObject(EipTBlogEntry.class);
+        EipTBlogEntry entry = Database.create(EipTBlogEntry.class);
         // Owner ID
         entry.setOwnerId(Integer.valueOf(uid));
         // Title
@@ -398,7 +387,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
         // 添付ファイルを登録する．
         insertAttachmentFiles(fileuploadList, folderName, uid, entry, msgList);
 
-        dataContext.commitChanges();
+        Database.commit();
 
         /* 自分以外の全員に新着ポートレット登録 */
         WhatsNewUtils.insertWhatsNewPublic(
@@ -414,21 +403,23 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
       }
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
     return res;
   }
 
-  private List getRequestedHasFileIdList(List attachmentFileNameList) {
-    List idlist = new ArrayList();
+  private List<Integer> getRequestedHasFileIdList(
+      List<FileuploadLiteBean> attachmentFileNameList) {
+    List<Integer> idlist = new ArrayList<Integer>();
     FileuploadLiteBean filebean = null;
     // if (attachmentFileNameList != null && !"".equals(attachmentFileNameList))
     // {
     if (attachmentFileNameList != null) {
       int size = attachmentFileNameList.size();
       for (int i = 0; i < size; i++) {
-        filebean = (FileuploadLiteBean) attachmentFileNameList.get(i);
+        filebean = attachmentFileNameList.get(i);
         if (!filebean.isNewFile()) {
           int index = filebean.getFileId();
           idlist.add(Integer.valueOf(index));
@@ -438,30 +429,9 @@ public class BlogEntryFormData extends ALAbstractFormData {
     return idlist;
   }
 
-  private List getRequestedFileIdList(List attachmentFileNameList) {
-    List idlist = new ArrayList();
-    FileuploadLiteBean filebean = null;
-    // if (attachmentFileNameList != null && !"".equals(attachmentFileNameList))
-    // {
-    if (attachmentFileNameList != null) {
-      int size = attachmentFileNameList.size();
-      for (int i = 0; i < size; i++) {
-        filebean = (FileuploadLiteBean) attachmentFileNameList.get(i);
-        String foldername = filebean.getFolderName();
-        if (foldername != null
-          && foldername.startsWith(BlogUtils.PREFIX_DBFILE)) {
-          String index =
-            foldername.substring(BlogUtils.PREFIX_DBFILE.length(), foldername
-              .length());
-          idlist.add(Integer.valueOf(index));
-        }
-      }
-    }
-    return idlist;
-  }
-
-  private boolean insertAttachmentFiles(List fileuploadList, String folderName,
-      int uid, EipTBlogEntry entry, List<String> msgList) {
+  private boolean insertAttachmentFiles(
+      List<FileuploadLiteBean> fileuploadList, String folderName, int uid,
+      EipTBlogEntry entry, List<String> msgList) {
 
     if (fileuploadList == null || fileuploadList.size() <= 0) {
       return true;
@@ -469,10 +439,11 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
     try {
       int length = fileuploadList.size();
-      ArrayList newfilebeans = new ArrayList();
+      ArrayList<FileuploadLiteBean> newfilebeans =
+        new ArrayList<FileuploadLiteBean>();
       FileuploadLiteBean filebean = null;
       for (int i = 0; i < length; i++) {
-        filebean = (FileuploadLiteBean) fileuploadList.get(i);
+        filebean = fileuploadList.get(i);
         if (filebean.isNewFile()) {
           newfilebeans.add(filebean);
         }
@@ -481,7 +452,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
       if (newfilebeansSize > 0) {
         FileuploadLiteBean newfilebean = null;
         for (int j = 0; j < length; j++) {
-          newfilebean = (FileuploadLiteBean) newfilebeans.get(j);
+          newfilebean = newfilebeans.get(j);
           // サムネイル処理
           String[] acceptExts = ImageIO.getWriterFormatNames();
           byte[] fileThumbnail =
@@ -500,9 +471,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
               .getSaveDirPath(org_id, uid));
 
           // 新規オブジェクトモデル
-          EipTBlogFile file =
-            (EipTBlogFile) dataContext
-              .createAndRegisterNewObject(EipTBlogFile.class);
+          EipTBlogFile file = Database.create(EipTBlogFile.class);
           file.setOwnerId(Integer.valueOf(uid));
           file.setTitle(newfilebean.getFileName());
           file.setFilePath(BlogUtils.getRelativePath(filename));
@@ -542,7 +511,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
   private boolean insertBlogData(RunData rundata, Context context) {
     try {
       // 新規オブジェクトモデル
-      blog = (EipTBlog) dataContext.createAndRegisterNewObject(EipTBlog.class);
+      blog = Database.create(EipTBlog.class);
       // ユーザーID
       blog.setOwnerId(Integer.valueOf(uid));
       // 作成日
@@ -550,10 +519,11 @@ public class BlogEntryFormData extends ALAbstractFormData {
       // 更新日
       blog.setUpdateDate(Calendar.getInstance().getTime());
       // ブログを登録
-      dataContext.commitChanges();
+      Database.commit();
       // ブログIDの設定
       blog_id.setValue(blog.getBlogId().longValue());
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -584,17 +554,13 @@ public class BlogEntryFormData extends ALAbstractFormData {
         res = blogthema.insertFormData(rundata, context, msgList);
 
         if (res) {
-          thema =
-            BlogUtils.getEipTBlogThema(dataContext, (long) blogthema
-              .getThemaId());
+          thema = BlogUtils.getEipTBlogThema((long) blogthema.getThemaId());
           thema_id.setValue(thema.getThemaId().longValue());
         }
       } else {
         thema =
-          (EipTBlogThema) DataObjectUtils.objectForPK(
-            dataContext,
-            EipTBlogThema.class,
-            Integer.valueOf((int) thema_id.getValue()));
+          Database.get(EipTBlogThema.class, Integer.valueOf((int) thema_id
+            .getValue()));
         res = true;
       }
 
@@ -612,25 +578,15 @@ public class BlogEntryFormData extends ALAbstractFormData {
         // 更新日
         entry.setUpdateDate(Calendar.getInstance().getTime());
 
-        // List attIdList = getRequestedFileIdList(fileuploadList);
-        // List files = entry.getEipTBlogFiles();
-        // int size = files.size();
-        // for (int i = 0; i < size; i++) {
-        // EipTBlogFile file = (EipTBlogFile) files.get(i);
-        // if (!attIdList.contains(file.getFileId())) {
-        // // orm_file.doDelete(file);
-        // dataContext.deleteObject(file);
-        // }
-        // }
-
         // サーバーに残すファイルのID
-        List attIdList = getRequestedHasFileIdList(fileuploadList);
+        List<Integer> attIdList = getRequestedHasFileIdList(fileuploadList);
         // 現在選択しているエントリが持っているファイル
-        List files = BlogUtils.getEipTBlogFileList(entry.getEntryId());
+        List<EipTBlogFile> files =
+          BlogUtils.getEipTBlogFileList(entry.getEntryId());
         if (files != null) {
           int size = files.size();
           for (int i = 0; i < size; i++) {
-            EipTBlogFile file = (EipTBlogFile) files.get(i);
+            EipTBlogFile file = files.get(i);
             if (!attIdList.contains(file.getFileId())) {
               // ファイルシステムから削除
               File fileonsysytem =
@@ -640,7 +596,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
                 fileonsysytem.delete();
               }
               // DBから削除
-              dataContext.deleteObject(file);
+              Database.delete(file);
 
             }
           }
@@ -649,7 +605,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
         // 添付ファイルを登録する．
         insertAttachmentFiles(fileuploadList, folderName, uid, entry, msgList);
 
-        dataContext.commitChanges();
+        Database.commit();
 
         // イベントログに保存
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -658,6 +614,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
           title.getValue());
       }
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -705,7 +662,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
     try {
       init(action, rundata, context);
       action.setMode(ALEipConstants.MODE_DELETE);
-      ArrayList msgList = new ArrayList();
+      List<String> msgList = new ArrayList<String>();
       setValidator();
       boolean res =
         (setFormData(rundata, context, msgList) && deleteAttachments(
@@ -778,7 +735,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
    * 
    * @return
    */
-  public ArrayList getThemaList() {
+  public List<BlogThemaResultData> getThemaList() {
     return themaList;
   }
 
@@ -798,7 +755,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
     return blogthema;
   }
 
-  public List getAttachmentFileNameList() {
+  public List<FileuploadLiteBean> getAttachmentFileNameList() {
     return fileuploadList;
   }
 

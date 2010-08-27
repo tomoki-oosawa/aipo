@@ -18,10 +18,9 @@
  */
 package com.aimluck.eip.cabinet;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -40,7 +39,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -50,7 +49,9 @@ import com.aimluck.eip.util.ALEipUtils;
  * 共有フォルダのファイル検索用データ．
  * 
  */
-public class CabinetFileWordSelectData extends ALAbstractSelectData {
+public class CabinetFileWordSelectData extends
+    ALAbstractSelectData<EipTCabinetFile, EipTCabinetFile> {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(CabinetFileWordSelectData.class.getName());
@@ -64,7 +65,7 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
   /** 選択されたフォルダ情報 */
   private FolderInfo selected_folderinfo = null;
 
-  private ArrayList folder_hierarchy_list;
+  private List<FolderInfo> folder_hierarchy_list;
 
   private RunData rundata;
 
@@ -99,14 +100,14 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
     if (folder_hierarchy_list != null && folder_hierarchy_list.size() > 0) {
       int size = folder_hierarchy_list.size();
       for (int i = 0; i < size; i++) {
-        FolderInfo info = (FolderInfo) folder_hierarchy_list.get(i);
+        FolderInfo info = folder_hierarchy_list.get(i);
         if (info.getFolderId() == fid) {
           selected_folderinfo = info;
           break;
         }
       }
       if (selected_folderinfo == null) {
-        selected_folderinfo = (FolderInfo) folder_hierarchy_list.get(0);
+        selected_folderinfo = folder_hierarchy_list.get(0);
       }
     }
     this.rundata = rundata;
@@ -121,7 +122,8 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
    * @return
    */
   @Override
-  protected ResultList selectList(RunData rundata, Context context) {
+  protected ResultList<EipTCabinetFile> selectList(RunData rundata,
+      Context context) {
     // ページャからきた場合に検索ワードをセッションへ格納する
     if (!rundata.getParameters().containsKey(ALEipConstants.LIST_START)
       && !rundata.getParameters().containsKey(ALEipConstants.LIST_SORT)
@@ -145,21 +147,18 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
         selected_folderinfo,
         rundata);
 
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipTCabinetFile> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      ResultList list = query.getResultList();
+      ResultList<EipTCabinetFile> list = query.getResultList();
       // 総数をセットする．
       if (list != null) {
         searchSum = list.getTotalCount();
         return list;
       } else {
         logger.info("cabinetFile search > result is null");
-        return new ResultList(new ArrayList());
+        return new ResultList<EipTCabinetFile>();
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -174,7 +173,7 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
    * @return
    */
   @Override
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected EipTCabinetFile selectDetail(RunData rundata, Context context) {
     return null;
   }
 
@@ -182,9 +181,8 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
    *
    */
   @Override
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipTCabinetFile record) {
     try {
-      EipTCabinetFile record = (EipTCabinetFile) obj;
 
       CabinetFileResultData rd = new CabinetFileResultData();
       rd.initField();
@@ -221,7 +219,7 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
    * @return
    */
   @Override
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(EipTCabinetFile obj) {
     return null;
   }
 
@@ -249,8 +247,9 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipTCabinetFile.class);
+  private SelectQuery<EipTCabinetFile> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTCabinetFile> query = Database.query(EipTCabinetFile.class);
 
     String word = searchWord.getValue();
 
@@ -288,7 +287,7 @@ public class CabinetFileWordSelectData extends ALAbstractSelectData {
     return searchSum;
   }
 
-  public ArrayList getFolderHierarchyList() {
+  public List<FolderInfo> getFolderHierarchyList() {
     return folder_hierarchy_list;
   }
 

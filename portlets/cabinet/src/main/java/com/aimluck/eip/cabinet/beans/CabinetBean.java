@@ -20,6 +20,7 @@ package com.aimluck.eip.cabinet.beans;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
@@ -44,18 +45,18 @@ public class CabinetBean implements ALData, Cloneable {
   /** <code>cabinet_numberofitems</code> フォルダまたはファイル名が持つ要素の数 */
   // private ALNumberField cabinet_numberofitems;
   /** <code>cabinet_child</code> フォルダの中の要素 */
-  private ArrayList<Hashtable> cabinet_child;
+  private List<Hashtable<String, String>> cabinet_child;
 
   /** items フォルダに属するファイル */
   // private ArrayList<CabinetBean> items;
   /*
-   * 
+   *
    */
   public void initField() {
     cabinet_id = new ALNumberField();
     cabinet_name = new ALStringField();
     // cabinet_numberofitems = new ALNumberField();
-    cabinet_child = new ArrayList();
+    cabinet_child = new ArrayList<Hashtable<String, String>>();
     // items = new ArrayList();
     type = new ALNumberField();
   }
@@ -79,27 +80,22 @@ public class CabinetBean implements ALData, Cloneable {
     cabinet_name.setValue(str);
   }
 
-  /*
-   * public int getCabinetNumberofitems() { return (int)
-   * cabinet_numberofitems.getValue(); }
+  /**
    * 
-   * public void setCabinetNumberofitems(int number) {
-   * cabinet_numberofitems.setValue(number); }
+   * @return
    */
-  public ArrayList<Hashtable> getchildren() {
+  public List<Hashtable<String, String>> getchildren() {
     return cabinet_child;
   }
 
-  public void setCabinetChild(ArrayList<Hashtable> list) {
+  public void setCabinetChild(List<Hashtable<String, String>> list) {
     cabinet_child = list;
   }
 
-  /*
-   * public ArrayList<CabinetBean> getItems() { return items; }
+  /**
    * 
-   * public void setItems(ArrayList<CabinetBean> list) { items = list; }
+   * @return
    */
-
   public String gettype() {
     return type.toString();
   }

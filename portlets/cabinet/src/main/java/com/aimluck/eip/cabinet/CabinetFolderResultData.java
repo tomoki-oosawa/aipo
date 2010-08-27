@@ -25,7 +25,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 共有フォルダのフォルダのResultDataです。 <BR>
- *
+ * 
  */
 public class CabinetFolderResultData implements ALData {
 
@@ -65,7 +65,7 @@ public class CabinetFolderResultData implements ALData {
 
   /**
    *
-   * 
+   *
    */
   public void initField() {
     folder_id = new ALNumberField();

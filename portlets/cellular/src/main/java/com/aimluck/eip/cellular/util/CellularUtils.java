@@ -20,10 +20,8 @@ package com.aimluck.eip.cellular.util;
 
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.om.security.UserNamePrincipal;
 import org.apache.jetspeed.services.JetspeedUserManagement;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -36,15 +34,17 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.common.ALBaseUser;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCellularUtils;
 
 /**
  */
 public class CellularUtils {
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(CellularUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(CellularUtils.class.getName());
 
   /**
    * 
@@ -62,19 +62,17 @@ public class CellularUtils {
         return result;
       }
 
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      SelectQuery query = new SelectQuery(EipMCompany.class);
+      SelectQuery<EipMCompany> query = Database.query(EipMCompany.class);
       Expression exp =
         ExpressionFactory.matchDbExp(EipMCompany.COMPANY_ID_PK_COLUMN, Integer
           .valueOf(id));
       query.setQualifier(exp);
-      List<?> list = dataContext.performQuery(query);
+      List<EipMCompany> list = query.fetchList();
       if (list == null || list.size() == 0) {
         logger.debug("Not found ID...");
         return result;
       }
-      result = (EipMCompany) list.get(0);
+      result = list.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
     }

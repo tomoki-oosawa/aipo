@@ -20,10 +20,8 @@ package com.aimluck.eip.accessctl;
 
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -31,7 +29,8 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.account.EipTAclRole;
 import com.aimluck.eip.common.ALAbstractCheckList;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
  * ロールの複数削除を行うためのクラスです。 <BR>
@@ -55,23 +54,21 @@ public class AccessControlMultiDelete extends ALAbstractCheckList {
   protected boolean action(RunData rundata, Context context,
       List<String> values, List<String> msgList) {
     try {
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
 
-      SelectQuery query = new SelectQuery(EipTAclRole.class);
+      SelectQuery<EipTAclRole> query = Database.query(EipTAclRole.class);
       Expression exp =
         ExpressionFactory.inDbExp(EipTAclRole.ROLE_ID_PK_COLUMN, values);
       query.setQualifier(exp);
-      List<?> roles = dataContext.performQuery(query);
+      List<EipTAclRole> roles = query.fetchList();
       if (roles == null || roles.size() == 0) {
         return false;
       }
 
-      // オブジェクトを削除（Cayenneのカスケード設定でEipTAclUserRoleMapも同時に削除）
-      dataContext.deleteObjects(roles);
+      Database.deleteAll(roles);
 
-      dataContext.commitChanges();
+      Database.commit();
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }

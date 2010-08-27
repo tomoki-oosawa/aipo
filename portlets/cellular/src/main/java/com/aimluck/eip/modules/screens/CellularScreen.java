@@ -32,6 +32,7 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class CellularScreen extends ALVelocityScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(CellularScreen.class.getName());

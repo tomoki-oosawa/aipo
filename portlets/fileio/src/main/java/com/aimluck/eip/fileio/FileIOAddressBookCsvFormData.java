@@ -928,32 +928,6 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
-    // try {
-    // String addressid = ALEipUtils.getTemp(rundata, context,
-    // ALEipConstants.ENTITY_ID);
-    // if (addressid == null || Integer.valueOf(addressid) == null) {
-    // logger.debug("[AddressBook] Cannot find Address ID .");
-    // return false;
-    // }
-    //
-    // EipMAddressbook addressbook = (EipMAddressbook) dataContext
-    // .registeredObject(new ObjectId(EipMAddressbook.class,
-    // EipMAddressbook.ADDRESS_ID_PK_COLUMN, new Integer(addressid)));
-    // dataContext.deleteObject(addressbook);
-    //
-    // SelectQuery query = Database.query(EipTAddressbookGroupMap.class);
-    // Expression exp = ExpressionFactory.matchExp(
-    // EipTAddressbookGroupMap.ADDRESS_ID_PROPERTY, new Integer(addressid));
-    // query.setQualifier(exp);
-    // List maps = query.fetchList();
-    // dataContext.deleteObjects(maps);
-    //
-    // dataContext.commitChanges();
-    // } catch (Exception ex) {
-    // logger.error("Exception", ex);
-    // return false;
-    // }
-    // return true;
     return false;
   }
 
