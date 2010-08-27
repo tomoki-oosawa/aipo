@@ -6,7 +6,7 @@
 	<classpathentry kind="src" path="jetspeed/src/test/java"/>
 	<classpathentry kind="src" path="core/src/main/java"/>
 	<classpathentry kind="src" output="target/test-classes" path="core/src/test/java"/>
-	<classpathentry excluding="org/apache/jetspeed/om/security/" kind="src" path="oms/src/main/java"/>
+	<classpathentry kind="src" path="oms/src/main/java"/>
 	<classpathentry kind="src" output="target/test-classes" path="oms/src/test/java"/>
 	<classpathentry kind="src" path="lib/accessctl/src/main/java"/>
 	<classpathentry kind="src" output="target/test-classes" path="lib/accessctl/src/test/java"/>
@@ -122,5 +122,5 @@
 	<classpathentry kind="var" path="M2_REPO/skmail/skmail/0.5/skmail-0.5.jar"/>
 	<classpathentry kind="var" path="M2_REPO/skutility/skutility/0.5/skutility-0.5.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-codec/commons-codec/1.3/commons-codec-1.3.jar"/>
-	<classpathentry kind="output" path="target/classes"/>
+	<classpathentry kind="output" path="war/target/aipo/WEB-INF/classes"/>
 </classpath>
