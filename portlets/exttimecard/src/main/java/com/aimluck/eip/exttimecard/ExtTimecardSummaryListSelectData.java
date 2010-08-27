@@ -538,9 +538,7 @@ public class ExtTimecardSummaryListSelectData extends
     try {
       user = ALEipUtils.getALEipUser(userid);
     } catch (NumberFormatException e1) {
-      e1.printStackTrace();
     } catch (ALDBErrorException e1) {
-      e1.printStackTrace();
     }
     list.add(user);
     return list;
@@ -957,7 +955,7 @@ public class ExtTimecardSummaryListSelectData extends
       }
       return list;
     } catch (Exception e) {
-      e.printStackTrace();
+     logger.error(e);
       return null;
     }
   }

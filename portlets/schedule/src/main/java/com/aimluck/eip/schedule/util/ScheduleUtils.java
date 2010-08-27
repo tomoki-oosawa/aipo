@@ -2437,7 +2437,7 @@ public class ScheduleUtils {
         return "T";
       }
     } catch (Exception e) {
-      e.printStackTrace();
+     logger.error(e);
     }
     return "F";
   }
@@ -2456,7 +2456,7 @@ public class ScheduleUtils {
         return "T";
       }
     } catch (Exception e) {
-      e.printStackTrace();
+     logger.error(e);
     }
     return "F";
   }
@@ -2475,7 +2475,7 @@ public class ScheduleUtils {
         return "T";
       }
     } catch (Exception e) {
-      e.printStackTrace();
+     logger.error(e);
     }
     return "F";
   }
@@ -2494,7 +2494,7 @@ public class ScheduleUtils {
         return "T";
       }
     } catch (Exception e) {
-      e.printStackTrace();
+     logger.error(e);
     }
     return "F";
   }

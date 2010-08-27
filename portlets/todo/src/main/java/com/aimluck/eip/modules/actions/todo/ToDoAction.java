@@ -453,7 +453,7 @@ public class ToDoAction extends ALBaseAction {
       listData.doViewList(this, rundata, context);
       setTemplate(rundata, "todo-category-list");
     } catch (Exception e) {
-      e.printStackTrace();
+     logger.error(e);
     }
   }
 

@@ -503,7 +503,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
       }
 
     } catch (Exception e) {
-      e.printStackTrace();
+      logger.error(e);
     }
     return true;
   }

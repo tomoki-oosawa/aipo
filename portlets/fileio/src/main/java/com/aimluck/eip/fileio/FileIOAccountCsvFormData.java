@@ -1056,7 +1056,6 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
           setUserName(token);
         } catch (Exception e) {
           logger.error(e);
-          e.printStackTrace();
         }
         break;
       case 1:

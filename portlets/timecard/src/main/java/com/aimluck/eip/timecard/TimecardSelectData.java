@@ -668,7 +668,7 @@ public class TimecardSelectData extends
       }
       return list;
     } catch (Exception e) {
-      e.printStackTrace();
+     logger.error(e);
       return null;
     }
   }

@@ -48,6 +48,7 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -58,7 +59,9 @@ import com.aimluck.eip.util.ALEipUtils;
  * アドレス帳での検索BOX用データです。
  * 
  */
-public class AddressBookWordSelectData extends ALAbstractSelectData {
+public class AddressBookWordSelectData extends
+    ALAbstractSelectData<Object, Object> {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(AddressBookWordSelectData.class.getName());
@@ -142,26 +145,26 @@ public class AddressBookWordSelectData extends ALAbstractSelectData {
    * @return
    */
   @Override
-  protected ResultList<?> selectList(RunData rundata, Context context) {
-    ResultList<?> list;
+  protected ResultList<Object> selectList(RunData rundata, Context context) {
+    ResultList<Object> list;
 
     try {
 
       if ("syagai".equals(currentTab)) {
         // 社外アドレス検索時
-        SelectQuery query = getSelectQuery(rundata, context);
+        SelectQuery<Object> query = getSelectQuery(rundata, context);
         buildSelectQueryForListView(query);
         buildSelectQueryForListViewSort(query, rundata, context);
         list = query.getResultList();
       } else if ("corp".equals(currentTab)) {
         // 社内アドレス検索時
-        SelectQuery query = getSelectQuery(rundata, context);
+        SelectQuery<Object> query = getSelectQuery(rundata, context);
         buildSelectQueryForListView(query);
         buildSelectQueryForListViewSort(query, rundata, context);
         list = query.getResultList();
       } else {
         logger.info("unknown_addressTab_selected");
-        return new ResultList<Object>(new ArrayList());
+        return new ResultList<Object>();
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -317,15 +320,16 @@ public class AddressBookWordSelectData extends ALAbstractSelectData {
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = null;
+  @SuppressWarnings({ "unchecked" })
+  private SelectQuery<Object> getSelectQuery(RunData rundata, Context context) {
+    SelectQuery<?> query = null;
     String word = searchWord.getValue();
     String transWord =
       ALStringUtil.convertHiragana2Katakana(ALStringUtil
         .convertH2ZKana(searchWord.getValue()));
 
     if ("syagai".equals(currentTab)) {
-      query = new SelectQuery(EipMAddressbook.class);
+      query = Database.query(EipMAddressbook.class);
 
       Expression exp01 =
         ExpressionFactory.matchExp(EipMAddressbook.PUBLIC_FLAG_PROPERTY, "T");
@@ -432,7 +436,7 @@ public class AddressBookWordSelectData extends ALAbstractSelectData {
         .orExp(exp36));
 
     } else if ("corp".equals(currentTab)) {
-      query = new SelectQuery(TurbineUser.class);
+      query = Database.query(TurbineUser.class);
 
       Expression exp01 =
         ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
@@ -526,7 +530,7 @@ public class AddressBookWordSelectData extends ALAbstractSelectData {
         .orExp(exp35));
     }
 
-    return query;
+    return (SelectQuery<Object>) query;
   }
 
   /**
@@ -539,7 +543,8 @@ public class AddressBookWordSelectData extends ALAbstractSelectData {
     try {
       if ("syagai".equals(currentTab)) {
         // 自分がオーナのグループ指定
-        SelectQuery query = new SelectQuery(EipMAddressGroup.class);
+        SelectQuery<EipMAddressGroup> query =
+          Database.query(EipMAddressGroup.class);
         Expression exp =
           ExpressionFactory.matchExp(
             EipMAddressGroup.OWNER_ID_PROPERTY,

@@ -823,7 +823,7 @@ public class ScheduleWeeklyJSONFormData {
         }
       }
     } catch (Exception e) {
-      e.printStackTrace();
+     logger.error(e);
     }
     return rList;
   }

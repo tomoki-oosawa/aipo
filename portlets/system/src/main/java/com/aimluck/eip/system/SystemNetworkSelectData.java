@@ -143,8 +143,6 @@ public class SystemNetworkSelectData extends
       rd.setLocalUrl(localurl);
       rd.setGlobalUrl(globalurl);
 
-      // } catch (UnknownHostException e) {
-      // logger.error(e);
     } catch (SocketException e) {
       logger.error(e);
     }

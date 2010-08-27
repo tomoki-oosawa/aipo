@@ -23,11 +23,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.apache.cayenne.DataObjectUtils;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -43,7 +40,8 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -83,8 +81,6 @@ public class AddressBookCompanyFormData extends ALAbstractFormData {
 
   private ALStringField url;
 
-  private DataContext dataContext;
-
   /**
    * 
    * @param action
@@ -97,8 +93,6 @@ public class AddressBookCompanyFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   /**
@@ -327,8 +321,7 @@ public class AddressBookCompanyFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       EipMAddressbookCompany company =
-        (EipMAddressbookCompany) dataContext
-          .createAndRegisterNewObject(EipMAddressbookCompany.class);
+        Database.create(EipMAddressbookCompany.class);
       rundata.getParameters().setProperties(company);
       company.setCompanyName(company_name.getValue());
       company.setCompanyNameKana(company_name_kana.getValue());
@@ -388,7 +381,7 @@ public class AddressBookCompanyFormData extends ALAbstractFormData {
       company.setCreateDate(now);
       company.setUpdateDate(now);
       // orm_company.doInsert(company);
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -398,6 +391,7 @@ public class AddressBookCompanyFormData extends ALAbstractFormData {
 
       return true;
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -472,7 +466,7 @@ public class AddressBookCompanyFormData extends ALAbstractFormData {
       company.setUpdateUserId(Integer.valueOf(ALEipUtils.getUserId(rundata)));
       company.setUpdateDate(new Date());
       // 取引先情報を更新
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -481,6 +475,7 @@ public class AddressBookCompanyFormData extends ALAbstractFormData {
         company_name.getValue());
 
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -508,16 +503,13 @@ public class AddressBookCompanyFormData extends ALAbstractFormData {
 
       // 会社情報の削除
       EipMAddressbookCompany company =
-        (EipMAddressbookCompany) DataObjectUtils.objectForPK(
-          dataContext,
-          EipMAddressbookCompany.class,
-          Integer.valueOf(companyid));
+        Database.get(EipMAddressbookCompany.class, Integer.valueOf(companyid));
       // entityIdの取得
       int entityId = company.getCompanyId();
       // 会社名の取得
       String companyName = company.getCompanyName();
 
-      dataContext.deleteObject(company);
+      Database.delete(company);
 
       // アドレス情報の中で削除対象会社に所属しているものの会社IDを（未分類）のものとする
       int empty_id =
@@ -526,7 +518,8 @@ public class AddressBookCompanyFormData extends ALAbstractFormData {
           .getCompanyId()
           .intValue();
 
-      SelectQuery addrquery = new SelectQuery(EipMAddressbook.class);
+      SelectQuery<EipMAddressbook> addrquery =
+        Database.query(EipMAddressbook.class);
       Expression addrexp =
         ExpressionFactory.matchDbExp(
           EipMAddressbook.EIP_MADDRESSBOOK_COMPANY_PROPERTY
@@ -535,17 +528,13 @@ public class AddressBookCompanyFormData extends ALAbstractFormData {
           companyid);
       addrquery.setQualifier(addrexp);
 
-      @SuppressWarnings("unchecked")
-      List<EipMAddressbook> addresses = dataContext.performQuery(addrquery);
+      List<EipMAddressbook> addresses = addrquery.fetchList();
 
       if (addresses != null && addresses.size() > 0) {
         EipMAddressbook addressbook = null;
 
         EipMAddressbookCompany dummycompany =
-          (EipMAddressbookCompany) DataObjectUtils.objectForPK(
-            dataContext,
-            EipMAddressbookCompany.class,
-            Integer.valueOf(empty_id));
+          Database.get(EipMAddressbookCompany.class, Integer.valueOf(empty_id));
 
         int addrsize = addresses.size();
         for (int i = 0; i < addrsize; i++) {
@@ -554,7 +543,7 @@ public class AddressBookCompanyFormData extends ALAbstractFormData {
         }
       }
 
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -563,6 +552,7 @@ public class AddressBookCompanyFormData extends ALAbstractFormData {
         companyName);
 
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }

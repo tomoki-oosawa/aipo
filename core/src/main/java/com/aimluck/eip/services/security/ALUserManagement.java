@@ -146,7 +146,7 @@ public class ALUserManagement extends TurbineBaseService implements
         .intValue() : 0);
       return baseuser;
     } catch (Exception e) {
-      e.printStackTrace();
+     logger.error(e);
       return null;
     }
   }

@@ -20,10 +20,8 @@ package com.aimluck.eip.addressbook;
 
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -33,7 +31,8 @@ import com.aimluck.eip.cayenne.om.portlet.EipMAddressGroup;
 import com.aimluck.eip.cayenne.om.portlet.EipTAddressbookGroupMap;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -62,9 +61,8 @@ public class AddressBookGroupMultiDelete extends ALAbstractCheckList {
       List<String> values, List<String> msgList) {
     try {
       // address-groupテーブルのデータを削除
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      SelectQuery query = new SelectQuery(EipMAddressGroup.class);
+      SelectQuery<EipMAddressGroup> query =
+        Database.query(EipMAddressGroup.class);
       Expression exp1 =
         ExpressionFactory.matchExp(EipMAddressGroup.OWNER_ID_PROPERTY, Integer
           .valueOf(ALEipUtils.getUserId(rundata)));
@@ -73,8 +71,7 @@ public class AddressBookGroupMultiDelete extends ALAbstractCheckList {
         ExpressionFactory.inDbExp(EipMAddressGroup.GROUP_ID_PK_COLUMN, values);
       query.andQualifier(exp2);
 
-      @SuppressWarnings("unchecked")
-      List<EipMAddressGroup> groups = dataContext.performQuery(query);
+      List<EipMAddressGroup> groups = query.fetchList();
 
       int grouplistsize = groups.size();
 
@@ -88,8 +85,8 @@ public class AddressBookGroupMultiDelete extends ALAbstractCheckList {
         String groupName = group.getGroupName();
 
         // グループ情報を削除
-        dataContext.deleteObject(group);
-        dataContext.commitChanges();
+        Database.delete(group);
+        Database.commit();
 
         // ログに保存
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -99,18 +96,18 @@ public class AddressBookGroupMultiDelete extends ALAbstractCheckList {
       }
 
       // Address group Mapテーブルデータの削除
-      SelectQuery mapquery = new SelectQuery(EipTAddressbookGroupMap.class);
+      SelectQuery<EipTAddressbookGroupMap> mapquery =
+        Database.query(EipTAddressbookGroupMap.class);
       Expression mapexp =
         ExpressionFactory.matchDbExp(
           EipMAddressGroup.GROUP_ID_PK_COLUMN,
           Integer.valueOf(ALEipUtils.getUserId(rundata)));
       mapquery.setQualifier(mapexp);
 
-      @SuppressWarnings("unchecked")
-      List<EipTAddressbookGroupMap> maps = dataContext.performQuery(mapquery);
-      dataContext.deleteObjects(maps);
+      List<EipTAddressbookGroupMap> maps = mapquery.fetchList();
+      Database.deleteAll(maps);
 
-      dataContext.commitChanges();
+      Database.commit();
 
       // 検索画面用フィルタにて設定されているグループフィルタをセッションから削除する。
       String filtername =
@@ -118,6 +115,7 @@ public class AddressBookGroupMultiDelete extends ALAbstractCheckList {
           + ALEipConstants.LIST_FILTER;
       ALEipUtils.removeTemp(rundata, context, filtername);
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }

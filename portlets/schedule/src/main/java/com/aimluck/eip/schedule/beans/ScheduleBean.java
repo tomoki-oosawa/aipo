@@ -148,7 +148,6 @@ public class ScheduleBean implements ALData, Cloneable {
     try {
       ALEipUser user = ALEipUtils.getALEipUser(rd.getUserId());
       if (user == null) {
-        System.out.println(rd.getScheduleId());
         this.owner_name.setValue("");
         this.owner_id.setValue("");
       } else {
@@ -156,7 +155,7 @@ public class ScheduleBean implements ALData, Cloneable {
         this.owner_id.setValue(user.getUserId().toString());
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      //
     }
     this.start_date = rd.getStartDate();
     this.end_date = rd.getEndDate();

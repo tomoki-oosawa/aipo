@@ -20,11 +20,8 @@ package com.aimluck.eip.addressbook;
 
 import java.util.List;
 
-import org.apache.cayenne.DataObjectUtils;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -34,7 +31,8 @@ import com.aimluck.eip.addressbook.util.AddressBookUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipMAddressbook;
 import com.aimluck.eip.cayenne.om.portlet.EipMAddressbookCompany;
 import com.aimluck.eip.common.ALAbstractCheckList;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -44,6 +42,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
  * 
  */
 public class AddressBookCompanyMultiDelete extends ALAbstractCheckList {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(AddressBookCompanyMultiDelete.class.getName());
@@ -60,8 +59,6 @@ public class AddressBookCompanyMultiDelete extends ALAbstractCheckList {
   protected boolean action(RunData rundata, Context context,
       List<String> values, List<String> msgList) {
     try {
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
 
       // アドレス情報の中で削除対象会社に所属しているものの会社IDを（未分類）のものとする
       int empty_id =
@@ -70,7 +67,8 @@ public class AddressBookCompanyMultiDelete extends ALAbstractCheckList {
           .getCompanyId()
           .intValue();
 
-      SelectQuery addrquery = new SelectQuery(EipMAddressbook.class);
+      SelectQuery<EipMAddressbook> addrquery =
+        Database.query(EipMAddressbook.class);
       Expression addrexp =
         ExpressionFactory.inDbExp(
           EipMAddressbook.EIP_MADDRESSBOOK_COMPANY_PROPERTY
@@ -79,17 +77,13 @@ public class AddressBookCompanyMultiDelete extends ALAbstractCheckList {
           values);
       addrquery.setQualifier(addrexp);
 
-      @SuppressWarnings("unchecked")
-      List<EipMAddressbook> addresses = dataContext.performQuery(addrquery);
+      List<EipMAddressbook> addresses = addrquery.fetchList();
 
       if (addresses != null && addresses.size() > 0) {
         EipMAddressbook addressbook = null;
 
         EipMAddressbookCompany company =
-          (EipMAddressbookCompany) DataObjectUtils.objectForPK(
-            dataContext,
-            EipMAddressbookCompany.class,
-            Integer.valueOf(empty_id));
+          Database.get(EipMAddressbookCompany.class, Integer.valueOf(empty_id));
 
         int addrsize = addresses.size();
         for (int i = 0; i < addrsize; i++) {
@@ -99,15 +93,15 @@ public class AddressBookCompanyMultiDelete extends ALAbstractCheckList {
       }
 
       // address-groupテーブルのデータを削除
-      SelectQuery query = new SelectQuery(EipMAddressbookCompany.class);
+      SelectQuery<EipMAddressbookCompany> query =
+        Database.query(EipMAddressbookCompany.class);
       Expression exp =
         ExpressionFactory.inDbExp(
           EipMAddressbookCompany.COMPANY_ID_PK_COLUMN,
           values);
       query.setQualifier(exp);
 
-      @SuppressWarnings("unchecked")
-      List<EipMAddressbookCompany> groups = dataContext.performQuery(query);
+      List<EipMAddressbookCompany> groups = query.fetchList();
 
       int grouplistsize = groups.size();
 
@@ -121,7 +115,7 @@ public class AddressBookCompanyMultiDelete extends ALAbstractCheckList {
         String groupName = group.getCompanyName();
 
         // 会社情報を削除
-        dataContext.deleteObject(group);
+        Database.delete(group);
 
         // ログに保存
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -130,8 +124,9 @@ public class AddressBookCompanyMultiDelete extends ALAbstractCheckList {
           groupName);
       }
 
-      dataContext.commitChanges();
+      Database.commit();
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }

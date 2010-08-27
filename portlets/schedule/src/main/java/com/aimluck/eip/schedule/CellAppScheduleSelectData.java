@@ -177,8 +177,6 @@ public class CellAppScheduleSelectData {
       if (!(startDate.getValue().getTime() <= endDate.getValue().getTime())) {
         msgList.add(dateillegal);
       }
-      // debug
-      System.out.println(msgList);
       return false;
     } else {
       return true;

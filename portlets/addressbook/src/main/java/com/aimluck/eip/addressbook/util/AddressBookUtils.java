@@ -24,12 +24,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SQLTemplate;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
@@ -46,55 +42,56 @@ import com.aimluck.eip.cayenne.om.portlet.EipTAddressbookGroupMap;
 import com.aimluck.eip.cayenne.om.security.TurbineGroup;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.DataRow;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * Addressbookのユーティリティクラスです。
- *
+ * 
  */
 public class AddressBookUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AddressBookUtils.class.getName());
+    .getLogger(AddressBookUtils.class.getName());
 
   /** アドレスブックファイルを一時保管するディレクトリの指定 */
-  public static final String FOLDER_TMP_FOR_ADDRESSBOOK_FILES = JetspeedResources
-      .getString("aipo.tmp.addressbook.directory", "");
+  public static final String FOLDER_TMP_FOR_ADDRESSBOOK_FILES =
+    JetspeedResources.getString("aipo.tmp.addressbook.directory", "");
 
   public static final String EMPTY_COMPANY_NAME = "未分類";
 
   public static EipMAddressGroup getEipMAddressGroup(RunData rundata,
       Context context) {
-    String groupid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String groupid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (groupid == null || Integer.valueOf(groupid) == null) {
         // グループIDが空の場合
         logger.debug("[AddressBook] Group ID...");
         return null;
       }
-
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipMAddressGroup.class);
-      Expression exp1 = ExpressionFactory.matchDbExp(
-          EipMAddressGroup.GROUP_ID_PK_COLUMN, Integer.valueOf(groupid));
+      SelectQuery<EipMAddressGroup> query =
+        Database.query(EipMAddressGroup.class);
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(
+          EipMAddressGroup.GROUP_ID_PK_COLUMN,
+          Integer.valueOf(groupid));
       query.setQualifier(exp1);
-      Expression exp2 = ExpressionFactory.matchExp(
-          EipMAddressGroup.OWNER_ID_PROPERTY,
-          Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipMAddressGroup.OWNER_ID_PROPERTY, Integer
+          .valueOf(ALEipUtils.getUserId(rundata)));
       query.andQualifier(exp2);
 
-      @SuppressWarnings("unchecked")
-      List<EipMAddressGroup> groups = dataContext.performQuery(query);
+      List<EipMAddressGroup> groups = query.fetchList();
       if (groups == null || groups.size() == 0) {
         // 指定したカテゴリIDのレコードが見つからない場合
         logger.debug("[AddressBook] Not found Group ID...");
         return null;
       }
-      return ((EipMAddressGroup) groups.get(0));
+      return groups.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -103,7 +100,7 @@ public class AddressBookUtils {
 
   /**
    * 指定した取引先情報の取得
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -111,30 +108,28 @@ public class AddressBookUtils {
   public static EipMAddressbookCompany getEipMAddressbookCompany(
       RunData rundata, Context context) {
     // セッションから指定された 取引先ID を取得
-    String companyid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String companyid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (companyid == null || Integer.valueOf(companyid) == null) {
         logger.debug("[AddressBook] Company ID...");
         return null;
       }
 
-      // 取引先情報をDBから取得
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipMAddressbookCompany.class);
-      Expression exp = ExpressionFactory.matchDbExp(
+      SelectQuery<EipMAddressbookCompany> query =
+        Database.query(EipMAddressbookCompany.class);
+      Expression exp =
+        ExpressionFactory.matchDbExp(
           EipMAddressbookCompany.COMPANY_ID_PK_COLUMN,
           Integer.valueOf(companyid));
       query.setQualifier(exp);
 
-      @SuppressWarnings("unchecked")
-      List<EipMAddressbookCompany> companys = dataContext.performQuery(query);
+      List<EipMAddressbookCompany> companys = query.fetchList();
       if (companys == null || companys.size() == 0) {
         logger.debug("[AddressBook] Not found Company ID...");
         return null;
       }
-      return ((EipMAddressbookCompany) companys.get(0));
+      return companys.get(0);
     } catch (Exception ex) {
       logger.error("Exception ", ex);
       return null;
@@ -148,20 +143,22 @@ public class AddressBookUtils {
   public static List<String> getMyGroupNames(RunData rundata, int addressid,
       int userid) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipTAddressbookGroupMap.class);
-      Expression exp1 = ExpressionFactory.matchExp(
+      SelectQuery<EipTAddressbookGroupMap> query =
+        Database.query(EipTAddressbookGroupMap.class);
+      Expression exp1 =
+        ExpressionFactory.matchExp(
           EipTAddressbookGroupMap.ADDRESS_ID_PROPERTY,
           Integer.valueOf(addressid));
       query.setQualifier(exp1);
-      Expression exp2 = ExpressionFactory.matchExp(
-          EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY + "."
-              + EipMAddressGroup.OWNER_ID_PROPERTY, Integer.valueOf(userid));
+      Expression exp2 =
+        ExpressionFactory.matchExp(
+          EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY
+            + "."
+            + EipMAddressGroup.OWNER_ID_PROPERTY,
+          Integer.valueOf(userid));
       query.andQualifier(exp2);
 
-      @SuppressWarnings("unchecked")
-      List<EipTAddressbookGroupMap> groups = dataContext.performQuery(query);
+      List<EipTAddressbookGroupMap> groups = query.fetchList();
 
       List<String> aList = new ArrayList<String>();
       int size = groups.size();
@@ -192,7 +189,7 @@ public class AddressBookUtils {
 
   /**
    * セッションで指定されたアドレスIDを持つアドレス情報を取得する。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -200,32 +197,33 @@ public class AddressBookUtils {
   public static EipMAddressbook getEipMAddressbook(RunData rundata,
       Context context) {
     // セッションから指定された アドレスID を取得
-    String addressid = ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID);
+    String addressid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (addressid == null || Integer.valueOf(addressid) == null) {
         logger.debug("[AddressBook] Address ID...");
         return null;
       }
 
-      // アドレス情報をDBから取得
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipMAddressbook.class);
-      Expression exp11 = ExpressionFactory.matchDbExp(
-          EipMAddressbook.ADDRESS_ID_PK_COLUMN, Integer.valueOf(addressid));
+      SelectQuery<EipMAddressbook> query =
+        Database.query(EipMAddressbook.class);
+      Expression exp11 =
+        ExpressionFactory.matchDbExp(
+          EipMAddressbook.ADDRESS_ID_PK_COLUMN,
+          Integer.valueOf(addressid));
       query.setQualifier(exp11);
 
-      Expression exp21 = ExpressionFactory.matchExp(
-          EipMAddressbook.PUBLIC_FLAG_PROPERTY, "T");
-      Expression exp22 = ExpressionFactory.matchExp(
-          EipMAddressbook.OWNER_ID_PROPERTY, ALEipUtils.getUserId(rundata));
-      Expression exp23 = ExpressionFactory.matchExp(
-          EipMAddressbook.PUBLIC_FLAG_PROPERTY, "F");
+      Expression exp21 =
+        ExpressionFactory.matchExp(EipMAddressbook.PUBLIC_FLAG_PROPERTY, "T");
+      Expression exp22 =
+        ExpressionFactory.matchExp(
+          EipMAddressbook.OWNER_ID_PROPERTY,
+          ALEipUtils.getUserId(rundata));
+      Expression exp23 =
+        ExpressionFactory.matchExp(EipMAddressbook.PUBLIC_FLAG_PROPERTY, "F");
       query.andQualifier(exp21.orExp(exp22.andExp(exp23)));
 
-      @SuppressWarnings("unchecked")
-      List<EipMAddressbook> addresses = dataContext.performQuery(query);
+      List<EipMAddressbook> addresses = query.fetchList();
 
       if (addresses == null || addresses.size() == 0) {
         logger.debug("[AddressBook] Not found Address ID...");
@@ -240,7 +238,7 @@ public class AddressBookUtils {
 
   /**
    * 未分類の会社情報を取得する。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -248,19 +246,19 @@ public class AddressBookUtils {
   public static EipMAddressbookCompany getDummyEipMAddressbookCompany(
       RunData rundata, Context context) {
     try {
-      // アドレス情報をDBから取得
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipMAddressbookCompany.class);
-      Expression exp11 = ExpressionFactory.matchExp(
-          EipMAddressbookCompany.CREATE_USER_ID_PROPERTY, Integer.valueOf(1));
-      Expression exp12 = ExpressionFactory.matchExp(
+      SelectQuery<EipMAddressbookCompany> query =
+        Database.query(EipMAddressbookCompany.class);
+      Expression exp11 =
+        ExpressionFactory.matchExp(
+          EipMAddressbookCompany.CREATE_USER_ID_PROPERTY,
+          Integer.valueOf(1));
+      Expression exp12 =
+        ExpressionFactory.matchExp(
           EipMAddressbookCompany.COMPANY_NAME_PROPERTY,
           AddressBookUtils.EMPTY_COMPANY_NAME);
       query.setQualifier(exp11.andExp(exp12));
 
-      @SuppressWarnings("unchecked")
-      List<EipMAddressbookCompany> list = dataContext.performQuery(query);
+      List<EipMAddressbookCompany> list = query.fetchList();
 
       if (list == null || list.size() == 0) {
         logger.debug("[AddressBook] Not found AddressbookCompany ID...");
@@ -275,7 +273,7 @@ public class AddressBookUtils {
 
   /**
    * 自分がオーナのグループを取得しID/Objectのマップを返却する。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -283,18 +281,17 @@ public class AddressBookUtils {
   public static Map<Integer, AddressBookGroup> getGroupMap(RunData rundata,
       Context context) {
     try {
-      Map<Integer, AddressBookGroup> groupMap = new LinkedHashMap<Integer, AddressBookGroup>();
+      Map<Integer, AddressBookGroup> groupMap =
+        new LinkedHashMap<Integer, AddressBookGroup>();
 
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipMAddressGroup.class);
-      Expression exp = ExpressionFactory.matchExp(
-          EipMAddressGroup.OWNER_ID_PROPERTY,
-          Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      SelectQuery<EipMAddressGroup> query =
+        Database.query(EipMAddressGroup.class);
+      Expression exp =
+        ExpressionFactory.matchExp(EipMAddressGroup.OWNER_ID_PROPERTY, Integer
+          .valueOf(ALEipUtils.getUserId(rundata)));
       query.setQualifier(exp);
 
-      @SuppressWarnings("unchecked")
-      List<EipMAddressGroup> list = dataContext.performQuery(query);
+      List<EipMAddressGroup> list = query.fetchList();
       int size = list.size();
       for (int i = 0; i < size; i++) {
         EipMAddressGroup record = list.get(i);
@@ -314,16 +311,14 @@ public class AddressBookUtils {
   public static List<EipMAddressGroup> getGroups(int uid) {
     logger.debug("AddressbookUtils getGroups in");
     try {
-      // グループ情報をDBから取得
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      SelectQuery query = new SelectQuery(EipMAddressGroup.class);
-      Expression exp = ExpressionFactory.matchExp(
-          EipMAddressGroup.OWNER_ID_PROPERTY, Integer.valueOf(uid));
+      SelectQuery<EipMAddressGroup> query =
+        Database.query(EipMAddressGroup.class);
+      Expression exp =
+        ExpressionFactory.matchExp(EipMAddressGroup.OWNER_ID_PROPERTY, Integer
+          .valueOf(uid));
       query.setQualifier(exp);
 
-      @SuppressWarnings("unchecked")
-      List<EipMAddressGroup> groups = dataContext.performQuery(query);
+      List<EipMAddressGroup> groups = query.fetchList();
 
       if (groups == null || groups.size() == 0) {
         logger.debug("[AddressBook] Not found group ID...");
@@ -351,32 +346,23 @@ public class AddressBookUtils {
     statement.append(" on B.COMPANY_ID = C.COMPANY_ID ");
     statement.append("WHERE A.GROUP_ID = '").append(gid).append("' ");
     statement
-        .append("ORDER BY C.company_name_kana, C.company_name, B.last_name_kana");
+      .append("ORDER BY C.company_name_kana, C.company_name, B.last_name_kana");
     String query = statement.toString();
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
-      @SuppressWarnings("deprecation")
-      SQLTemplate rawSelect = new SQLTemplate(EipMAddressbook.class, query,
-          true);
-      rawSelect.setFetchingDataRows(true);
-
-      @SuppressWarnings("unchecked")
-      List<DataRow> list = dataContext.performQuery(rawSelect);
+      List<DataRow> list =
+        Database.sql(EipMAddressbook.class, query).fetchListAsDataRow();
 
       int recordNum = list.size();
       DataRow dataRow;
       for (int i = 0; i < recordNum; i++) {
         dataRow = list.get(i);
         StringBuffer strBuf = new StringBuffer();
-        strBuf.append(
-            (String) ALEipUtils.getObjFromDataRow(dataRow,
-                EipMAddressbook.LAST_NAME_COLUMN)).append(
-            (String) ALEipUtils.getObjFromDataRow(dataRow,
-                EipMAddressbook.FIRST_NAME_COLUMN));
-        String companyName = (String) ALEipUtils.getObjFromDataRow(dataRow,
-            EipMAddressbookCompany.COMPANY_NAME_COLUMN);
+        strBuf
+          .append(dataRow.getValue(EipMAddressbook.LAST_NAME_COLUMN))
+          .append(dataRow.getValue(EipMAddressbook.FIRST_NAME_COLUMN));
+        String companyName =
+          dataRow.getValue(EipMAddressbookCompany.COMPANY_NAME_COLUMN);
         if (companyName != null && companyName.trim().length() > 0) {
           strBuf.append(" (").append(companyName).append(")");
         }
@@ -390,33 +376,38 @@ public class AddressBookUtils {
 
   /**
    * ユーザーの所属する部署の一覧を取得します。
-   *
+   * 
    * @param uid
    *          ユーザーID
    * @return 所属する部署リスト
    */
   public static List<AddressBookUserGroupLiteBean> getPostBeanList(int uid) {
-    SelectQuery query = new SelectQuery(TurbineUserGroupRole.class);
-    Expression exp1 = ExpressionFactory.matchExp(
-        TurbineUserGroupRole.TURBINE_USER_PROPERTY, Integer.valueOf(uid));
-    Expression exp2 = ExpressionFactory.greaterExp(
-        TurbineUserGroupRole.TURBINE_GROUP_PROPERTY, Integer.valueOf(3));
-    Expression exp3 = ExpressionFactory.matchExp(
-        TurbineUserGroupRole.TURBINE_GROUP_PROPERTY + "."
-            + TurbineGroup.OWNER_ID_PROPERTY, Integer.valueOf(1));
+    SelectQuery<TurbineUserGroupRole> query =
+      Database.query(TurbineUserGroupRole.class);
+    Expression exp1 =
+      ExpressionFactory.matchExp(
+        TurbineUserGroupRole.TURBINE_USER_PROPERTY,
+        Integer.valueOf(uid));
+    Expression exp2 =
+      ExpressionFactory.greaterExp(
+        TurbineUserGroupRole.TURBINE_GROUP_PROPERTY,
+        Integer.valueOf(3));
+    Expression exp3 =
+      ExpressionFactory.matchExp(TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
+        + "."
+        + TurbineGroup.OWNER_ID_PROPERTY, Integer.valueOf(1));
     query.setQualifier(exp1);
     query.andQualifier(exp2);
     query.andQualifier(exp3);
-    DataContext dataContext = DatabaseOrmService.getInstance().getDataContext();
 
-    @SuppressWarnings("unchecked")
-    List<TurbineUserGroupRole> list = dataContext.performQuery(query);
+    List<TurbineUserGroupRole> list = query.fetchList();
 
     if (list == null || list.size() < 0) {
       return null;
     }
 
-    List<AddressBookUserGroupLiteBean> resultList = new ArrayList<AddressBookUserGroupLiteBean>();
+    List<AddressBookUserGroupLiteBean> resultList =
+      new ArrayList<AddressBookUserGroupLiteBean>();
 
     TurbineUserGroupRole ugr = null;
     TurbineGroup group = null;
@@ -438,14 +429,19 @@ public class AddressBookUtils {
 
   /**
    * 一時ファイル保存先のユーザのルートフォルダ
-   *
+   * 
    * @param org_id
    * @param userId
    * @return
    */
   public static File getRootFolder(String org_id, int userId) {
-    String rootPath = AddressBookUtils.FOLDER_TMP_FOR_ADDRESSBOOK_FILES
-        + File.separator + org_id + File.separator + userId + File.separator;
+    String rootPath =
+      AddressBookUtils.FOLDER_TMP_FOR_ADDRESSBOOK_FILES
+        + File.separator
+        + org_id
+        + File.separator
+        + userId
+        + File.separator;
     File folder = new File(rootPath);
     if (!folder.exists()) {
       if (!folder.mkdirs()) {

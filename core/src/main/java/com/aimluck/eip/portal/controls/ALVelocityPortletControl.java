@@ -209,7 +209,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
           context));
       }
     } catch (Exception e) {
-      e.printStackTrace();
+     logger.error(e);
     }
 
     String theme = getConfig().getInitParameter("theme", "default.vm");

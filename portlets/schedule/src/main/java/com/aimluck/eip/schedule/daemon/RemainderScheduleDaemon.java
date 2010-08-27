@@ -721,6 +721,7 @@ public class RemainderScheduleDaemon implements Daemon {
     } catch (SocketException e) {
       logger.error(e);
     }
+
     // // Aipoサイト情報の取得
     // localurl = "";
     // try {

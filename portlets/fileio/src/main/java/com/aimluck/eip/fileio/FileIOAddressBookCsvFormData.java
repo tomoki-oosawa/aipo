@@ -826,7 +826,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
         uid = 1;
       }
     } catch (ALDBErrorException e) {
-      // e.printStackTrace();
+      //logger.error(e);
       // return false;
       uid = 1;
       user = null;

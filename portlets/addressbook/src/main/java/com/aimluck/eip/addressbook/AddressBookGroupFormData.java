@@ -22,13 +22,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.cayenne.DataObjectUtils;
-import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SQLTemplate;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -45,7 +40,9 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.DataRow;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -79,8 +76,6 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
 
   private ALDateField update_date;
 
-  private DataContext dataContext;
-
   private Integer uid;
 
   private Integer gid;
@@ -89,8 +84,6 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
 
     uid = Integer.valueOf(ALEipUtils.getUserId(rundata));
   }
@@ -138,7 +131,8 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
   @Override
   protected boolean validate(List<String> msgList) {
     try {
-      SelectQuery query = new SelectQuery(EipMAddressGroup.class);
+      SelectQuery<EipMAddressGroup> query =
+        Database.query(EipMAddressGroup.class);
       if (ALEipConstants.MODE_INSERT.equals(getMode())) {
         Expression exp1 =
           ExpressionFactory.matchExp(
@@ -164,7 +158,7 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
             gid);
         query.andQualifier(exp3);
       }
-      if (dataContext.performQuery(query).size() != 0) {
+      if (query.fetchList().size() != 0) {
         msgList.add("社外グループ名『 <span class='em'>"
           + group_name
           + "</span> 』は既に登録されています。");
@@ -211,13 +205,13 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
           return res;
         }
 
-        SelectQuery query = new SelectQuery(EipMAddressbook.class);
+        SelectQuery<EipMAddressbook> query =
+          Database.query(EipMAddressbook.class);
         Expression exp =
           ExpressionFactory.inDbExp(EipMAddressbook.ADDRESS_ID_PK_COLUMN, str);
         query.setQualifier(exp);
 
-        @SuppressWarnings("unchecked")
-        List<EipMAddressbook> list = dataContext.performQuery(query);
+        List<EipMAddressbook> list = query.fetchList();
         int size = list.size();
         for (int i = 0; i < size; i++) {
           EipMAddressbook address = list.get(i);
@@ -292,7 +286,8 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
         ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
       if (gid != null) {
         // この社外グループの所有者が現ユーザと異なる場合はエラー
-        SelectQuery query = new SelectQuery(EipMAddressGroup.class);
+        SelectQuery<EipMAddressGroup> query =
+          Database.query(EipMAddressGroup.class);
         Expression exp1 =
           ExpressionFactory.matchDbExp(
             EipMAddressGroup.GROUP_ID_PK_COLUMN,
@@ -304,8 +299,7 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
             Integer.valueOf(ALEipUtils.getUserId(rundata)));
         query.andQualifier(exp2);
 
-        @SuppressWarnings("unchecked")
-        List<EipMAddressGroup> list = dataContext.performQuery(query);
+        List<EipMAddressGroup> list = query.fetchList();
         if (list.size() == 0) {
           return false;
         }
@@ -314,7 +308,8 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
       }
 
       // 指定社外グループに属するアドレスのリストを取得
-      SelectQuery mapquery = new SelectQuery(EipTAddressbookGroupMap.class);
+      SelectQuery<EipTAddressbookGroupMap> mapquery =
+        Database.query(EipTAddressbookGroupMap.class);
       Expression mapexp =
         ExpressionFactory.matchDbExp(
           EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY
@@ -323,17 +318,13 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
           Integer.valueOf(gid));
       mapquery.setQualifier(mapexp);
 
-      @SuppressWarnings("unchecked")
-      List<EipTAddressbookGroupMap> aList = dataContext.performQuery(mapquery);
+      List<EipTAddressbookGroupMap> aList = mapquery.fetchList();
 
       int size = aList.size();
       for (int i = 0; i < size; i++) {
         EipTAddressbookGroupMap record = aList.get(i);
         EipMAddressbook addressbook =
-          (EipMAddressbook) DataObjectUtils.objectForPK(
-            dataContext,
-            EipMAddressbook.class,
-            record.getAddressId());
+          Database.get(EipMAddressbook.class, record.getAddressId());
 
         AddressBookResultData rd = new AddressBookResultData();
         rd.initField();
@@ -361,9 +352,7 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
-      EipMAddressGroup address =
-        (EipMAddressGroup) dataContext
-          .createAndRegisterNewObject(EipMAddressGroup.class);
+      EipMAddressGroup address = Database.create(EipMAddressGroup.class);
       rundata.getParameters().setProperties(address);
       address.setGroupName(group_name.getValue());
       address.setPublicFlag(public_flag.getValue());
@@ -378,19 +367,16 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
       // Address-Groupマッピングテーブルへのデータ追加
       for (int i = 0; i < addresses.size(); i++) {
         EipTAddressbookGroupMap map =
-          (EipTAddressbookGroupMap) dataContext
-            .createAndRegisterNewObject(EipTAddressbookGroupMap.class);
+          Database.create(EipTAddressbookGroupMap.class);
 
         int addressid =
           Integer.valueOf((int) (addresses.get(i).getAddressId().getValue()));
-        map.setEipMAddressbook((EipMAddressbook) DataObjectUtils.objectForPK(
-          dataContext,
-          EipMAddressbook.class,
-          Integer.valueOf(addressid)));
+        map.setEipMAddressbook(Database.get(EipMAddressbook.class, Integer
+          .valueOf(addressid)));
         map.setEipTAddressGroup(address);
       }
 
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -400,6 +386,7 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
 
       return true;
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -433,7 +420,8 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
         ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
       // Address-Group Mapテーブル情報を一旦削除
-      SelectQuery query1 = new SelectQuery(EipTAddressbookGroupMap.class);
+      SelectQuery<EipTAddressbookGroupMap> query1 =
+        Database.query(EipTAddressbookGroupMap.class);
       Expression exp1 =
         ExpressionFactory.matchDbExp(
           EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY
@@ -442,25 +430,21 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
           gid);
       query1.setQualifier(exp1);
 
-      @SuppressWarnings("unchecked")
-      List<EipTAddressbookGroupMap> maps = dataContext.performQuery(query1);
-      dataContext.deleteObjects(maps);
+      List<EipTAddressbookGroupMap> maps = query1.fetchList();
+      Database.deleteAll(maps);
 
       // Address-Group Mapテーブルへ指定されたアドレスを追加
       for (int i = 0; i < addresses.size(); i++) {
         EipTAddressbookGroupMap map =
-          (EipTAddressbookGroupMap) dataContext
-            .createAndRegisterNewObject(EipTAddressbookGroupMap.class);
+          Database.create(EipTAddressbookGroupMap.class);
         int addressid =
           Integer.valueOf((int) (addresses.get(i).getAddressId().getValue()));
-        map.setEipMAddressbook((EipMAddressbook) DataObjectUtils.objectForPK(
-          dataContext,
-          EipMAddressbook.class,
-          Integer.valueOf(addressid)));
+        map.setEipMAddressbook(Database.get(EipMAddressbook.class, Integer
+          .valueOf(addressid)));
         map.setEipTAddressGroup(group);
       }
 
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -469,6 +453,7 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
         group_name.getValue());
 
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -495,7 +480,8 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
       }
 
       // Eip_t_addressbook_group_Mapテーブルから削除
-      SelectQuery query1 = new SelectQuery(EipTAddressbookGroupMap.class);
+      SelectQuery<EipTAddressbookGroupMap> query1 =
+        Database.query(EipTAddressbookGroupMap.class);
       Expression exp1 =
         ExpressionFactory.matchDbExp(
           EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY
@@ -504,26 +490,25 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
           Integer.valueOf(groupid));
       query1.setQualifier(exp1);
 
-      @SuppressWarnings("unchecked")
-      List<EipTAddressbookGroupMap> maps = dataContext.performQuery(query1);
-      dataContext.deleteObjects(maps);
+      List<EipTAddressbookGroupMap> maps = query1.fetchList();
+      Database.deleteAll(maps);
 
       // Eip_m_address_groupテーブルから削除
-      SelectQuery query2 = new SelectQuery(EipMAddressGroup.class);
+      SelectQuery<EipMAddressGroup> query2 =
+        Database.query(EipMAddressGroup.class);
       Expression exp2 =
         ExpressionFactory.matchDbExp(
           EipMAddressGroup.GROUP_ID_PK_COLUMN,
           Integer.valueOf(groupid));
       query2.setQualifier(exp2);
 
-      @SuppressWarnings("unchecked")
-      List<EipMAddressGroup> groups = dataContext.performQuery(query2);
+      List<EipMAddressGroup> groups = query2.fetchList();
       EipMAddressGroup delete_group = groups.get(0);
       int entityId = delete_group.getGroupId();
       String groupName = delete_group.getGroupName();
-      dataContext.deleteObjects(groups);
+      Database.deleteAll(groups);
 
-      dataContext.commitChanges();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -537,6 +522,7 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
           + ALEipConstants.LIST_FILTER;
       ALEipUtils.removeTemp(rundata, context, filtername);
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -586,14 +572,14 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
   public void loadFilter(RunData rundata, Context context) {
     try {
       // 自分がオーナのグループを取得
-      SelectQuery query1 = new SelectQuery(EipMAddressGroup.class);
+      SelectQuery<EipMAddressGroup> query1 =
+        Database.query(EipMAddressGroup.class);
       Expression exp1 =
         ExpressionFactory.matchExp(EipMAddressGroup.OWNER_ID_PROPERTY, Integer
           .valueOf(ALEipUtils.getUserId(rundata)));
       query1.setQualifier(exp1);
 
-      @SuppressWarnings("unchecked")
-      List<EipMAddressGroup> glist = dataContext.performQuery(query1);
+      List<EipMAddressGroup> glist = query1.fetchList();
 
       // Mapへ値をセット
       for (int i = 0; i < glist.size(); i++) {
@@ -602,7 +588,8 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
       }
 
       // アドレス一覧を取得(全体用)
-      SelectQuery query2 = new SelectQuery(EipMAddressbook.class);
+      SelectQuery<EipMAddressbook> query2 =
+        Database.query(EipMAddressbook.class);
       Expression exp21 =
         ExpressionFactory.matchExp(EipMAddressbook.PUBLIC_FLAG_PROPERTY, "T");
       Expression exp22 =
@@ -610,8 +597,7 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
           .valueOf(ALEipUtils.getUserId(rundata)));
       query2.setQualifier(exp21.orExp(exp22));
 
-      @SuppressWarnings("unchecked")
-      List<EipMAddressbook> list = dataContext.performQuery(query2);
+      List<EipMAddressbook> list = query2.fetchList();
 
       int addressNum = list.size();
       AddressBookFilterData address;
@@ -630,13 +616,8 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
           + " OR EIP_M_ADDRESSBOOK.OWNER_ID="
           + ALEipUtils.getUserId(rundata)
           + " ORDER BY EIP_T_ADDRESSBOOK_GROUP_MAP.GROUP_ID ASC";
-      @SuppressWarnings("deprecation")
-      SQLTemplate rawSelect =
-        new SQLTemplate(EipTAddressbookGroupMap.class, sql, true);
-      rawSelect.setFetchingDataRows(true);
-
-      @SuppressWarnings("unchecked")
-      List<DataRow> list2 = dataContext.performQuery(rawSelect);
+      List<DataRow> list2 =
+        Database.sql(EipTAddressbookGroupMap.class, sql).fetchListAsDataRow();
 
       DataRow dataRow = null;
       addressNum = list2.size();
@@ -644,13 +625,11 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
         dataRow = list2.get(i);
         address = new AddressBookFilterData();
         address.initField();
-        address.setAddressId(((Integer) ALEipUtils.getObjFromDataRow(
-          dataRow,
-          EipMAddressbook.ADDRESS_ID_PK_COLUMN)).intValue());
-        address.setFullName((String) ALEipUtils.getObjFromDataRow(
-          dataRow,
-          EipMAddressbook.LAST_NAME_COLUMN), (String) ALEipUtils
-          .getObjFromDataRow(dataRow, EipMAddressbook.FIRST_NAME_COLUMN));
+        address.setAddressId((Integer) dataRow
+          .getValue(EipMAddressbook.ADDRESS_ID_PK_COLUMN));
+        address.setFullName((String) dataRow
+          .getValue(EipMAddressbook.LAST_NAME_COLUMN), (String) dataRow
+          .getValue(EipMAddressbook.FIRST_NAME_COLUMN));
         addressList.add(address);
       }
     } catch (Exception ex) {

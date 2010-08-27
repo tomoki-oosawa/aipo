@@ -44,13 +44,14 @@ import com.aimluck.eip.util.ALEipUtils;
  * アドレスブック・会社情報のファイル出力を取り扱うクラスです
  */
 public class AddressBookCompanyXlsExportScreen extends ALXlsScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(AddressBookXlsExportScreen.class.getName());
+    .getLogger(AddressBookXlsExportScreen.class.getName());
 
   /** アドレスブックファイルを一時保管するディレクトリの指定 */
-  public static final String FOLDER_TMP_FOR_ADDRESSBOOK_FILES = JetspeedResources
-      .getString("aipo.tmp.addressbook.directory", "");
+  public static final String FOLDER_TMP_FOR_ADDRESSBOOK_FILES =
+    JetspeedResources.getString("aipo.tmp.addressbook.directory", "");
 
   public static final String FILE_NAME = "addressbookcompany.xls";
 
@@ -65,27 +66,33 @@ public class AddressBookCompanyXlsExportScreen extends ALXlsScreen {
 
   /**
    * 初期化処理を行います。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
    */
+  @Override
   public void init(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
-    String target_user_id = rundata.getParameters()
-        .getString("target_user_id"/* AddressBookUtils.TARGET_USER_ID */);
+    String target_user_id =
+      rundata.getParameters().getString("target_user_id"/*
+                                                         * AddressBookUtils.
+                                                         * TARGET_USER_ID
+                                                         */);
     userid = Integer.toString(ALEipUtils.getUserId(rundata));
 
-    rootFolder = AddressBookUtils.getRootFolder(DatabaseOrmService
-        .getInstance().getOrgId(rundata), ALEipUtils.getUserId(rundata));
+    rootFolder =
+      AddressBookUtils.getRootFolder(DatabaseOrmService.getInstance().getOrgId(
+        rundata), ALEipUtils.getUserId(rundata));
 
     // アクセス権
     if (
     // target_user_id == null || "".equals(target_user_id)
     // ||
     userid.equals(target_user_id)) {
-      aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_ADDRESS_OUTSIDE;
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_ADDRESS_OUTSIDE;
     }
     // else {
     // aclPortletFeature =
@@ -95,6 +102,7 @@ public class AddressBookCompanyXlsExportScreen extends ALXlsScreen {
     super.init(rundata, context);
   }
 
+  @Override
   protected boolean createHSSFWorkbook(RunData rundata, Context context,
       HSSFWorkbook wb) {
     try {
@@ -117,13 +125,18 @@ public class AddressBookCompanyXlsExportScreen extends ALXlsScreen {
 
     String sheet_name = "アドレスブック(会社情報)";
     // ヘッダ部作成
-    String[] headers = { "会社名", "会社名（フリガナ）", "部署名", "郵便番号", "住所", "電話番号",
-        "FAX", "URL" };
+    String[] headers =
+      { "会社名", "会社名（フリガナ）", "部署名", "郵便番号", "住所", "電話番号", "FAX", "URL" };
     // 0：日本語，1：英数字
-    short[] cell_enc_types = { HSSFCell.ENCODING_UTF_16,
-        HSSFCell.ENCODING_UTF_16, HSSFCell.ENCODING_UTF_16,
-        HSSFCell.ENCODING_UTF_16, HSSFCell.ENCODING_UTF_16,
-        HSSFCell.ENCODING_UTF_16, HSSFCell.ENCODING_UTF_16,
+    short[] cell_enc_types =
+      {
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
         HSSFCell.ENCODING_UTF_16 };
     HSSFSheet sheet = createHSSFSheet(wb, sheet_name, headers, cell_enc_types);
 
@@ -138,10 +151,15 @@ public class AddressBookCompanyXlsExportScreen extends ALXlsScreen {
     AddressBookCompanyResultData rd;
     for (int j = 0; j < listsize; j++) {
       rd = (AddressBookCompanyResultData) listData.getList().get(j);
-      String[] rows = { rd.getCompanyName().getValue(),
-          rd.getCompanyNameKana().getValue(), rd.getPostName().getValue(),
-          rd.getZipcode().getValue(), rd.getAddress().getValue(),
-          rd.getTelephone().getValue(), rd.getFaxNumber().getValue(),
+      String[] rows =
+        {
+          rd.getCompanyName().getValue(),
+          rd.getCompanyNameKana().getValue(),
+          rd.getPostName().getValue(),
+          rd.getZipcode().getValue(),
+          rd.getAddress().getValue(),
+          rd.getTelephone().getValue(),
+          rd.getFaxNumber().getValue(),
           rd.getUrl().getValue() };
 
       rowcount = rowcount + 1;
@@ -149,26 +167,28 @@ public class AddressBookCompanyXlsExportScreen extends ALXlsScreen {
     }
 
     int uid = ALEipUtils.getUserId(rundata);
-    ALEventlogFactoryService
-        .getInstance()
-        .getEventlogHandler()
-        .logXlsScreen(uid, "アドレスブック(会社情報)出力", 163/* ALEventlogConstants.PORTLET_TYPE_ADDRESSBOOK_XLS_SCREEN */);
+    ALEventlogFactoryService.getInstance().getEventlogHandler().logXlsScreen(
+      uid,
+      "アドレスブック(会社情報)出力",
+      163/* ALEventlogConstants.PORTLET_TYPE_ADDRESSBOOK_XLS_SCREEN */);
   }
 
+  @Override
   protected String getFolderPath() {
     return rootFolder.getAbsolutePath();
   }
 
+  @Override
   protected String getFileName() {
     return FILE_NAME;
   }
 
   /**
-   * アクセス権限チェック用メソッド。
-   * アクセス権限の機能名を返します。
-   *
+   * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
+   * 
    * @return
    */
+  @Override
   public String getAclPortletFeature() {
     return aclPortletFeature;
   }

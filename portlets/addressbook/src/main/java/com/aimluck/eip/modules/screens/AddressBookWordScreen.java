@@ -33,6 +33,7 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class AddressBookWordScreen extends ALVelocityScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(AddressBookWordScreen.class.getName());
@@ -104,14 +105,6 @@ public class AddressBookWordScreen extends ALVelocityScreen {
     } else {
       layout_template = "portlets/html/ja/ajax-addressbook-corplist.vm";
     }
-    // } else {
-    // if (currentTab == null || currentTab.trim().length() == 0
-    // || "syagai".equals(currentTab)) {
-    // layout_template = "portlets/html/ja/ajax-addressbook-list.vm";
-    // } else {
-    // layout_template = "portlets/html/ja/ajax-addressbook-corplist.vm";
-    // }
-    // }
 
     return layout_template;
   }

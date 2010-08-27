@@ -52,7 +52,7 @@ public class FileIOCsvUtils {
             maxNum = tmpInt + 1;
           }
         } catch (NumberFormatException e) {
-          e.printStackTrace();
+         logger.error(e);
         }
       }
     }

@@ -40,6 +40,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -298,8 +299,7 @@ public class AddressBookFilterdSelectData extends
    */
   private SelectQuery<EipMAddressbook> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipMAddressbook> query =
-      new SelectQuery<EipMAddressbook>(EipMAddressbook.class);
+    SelectQuery<EipMAddressbook> query = Database.query(EipMAddressbook.class);
 
     Expression exp21 =
       ExpressionFactory.matchExp(EipMAddressbook.PUBLIC_FLAG_PROPERTY, "T");
@@ -333,14 +333,6 @@ public class AddressBookFilterdSelectData extends
         Integer.parseInt(index_session));
       context.put("idx", index);
     }
-
-    /*
-     * // インデックス指定時の条件文作成 if (rundata.getParameters().getString("idx") != null)
-     * { // 索引の保存 index = rundata.getParameters().getString("idx");
-     * 
-     * buildSelectQueryForAddressbookIndex(query,
-     * EipMAddressbook.LAST_NAME_KANA_PROPERTY, Integer.parseInt(index)); }
-     */
 
     return buildSelectQueryForFilter(query, rundata, context);
   }
@@ -376,7 +368,7 @@ public class AddressBookFilterdSelectData extends
     groupList = new ArrayList<AddressBookGroupResultData>();
     try {
       SelectQuery<EipMAddressGroup> query =
-        new SelectQuery<EipMAddressGroup>(EipMAddressGroup.class);
+        Database.query(EipMAddressGroup.class);
       Expression exp =
         ExpressionFactory.matchExp(EipMAddressGroup.OWNER_ID_PROPERTY, Integer
           .valueOf(ALEipUtils.getUserId(rundata)));
@@ -398,10 +390,6 @@ public class AddressBookFilterdSelectData extends
       logger.error("Exception", ex);
     }
   }
-
-  // ***************************************************************************
-  // privateメソッド
-  // ***************************************************************************
 
   /**
    * インデックス検索のためのユニコードマッピングによる条件文の追加。

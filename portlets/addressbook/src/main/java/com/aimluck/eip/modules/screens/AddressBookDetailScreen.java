@@ -48,7 +48,7 @@ public class AddressBookDetailScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
-      ALAbstractSelectData detailData = null;
+      ALAbstractSelectData<?, ?> detailData = null;
       String selectedTab = rundata.getParameters().getString("tab");
       if ("corp".equals(selectedTab)) {
         detailData = new AddressBookCorpFilterdSelectData();

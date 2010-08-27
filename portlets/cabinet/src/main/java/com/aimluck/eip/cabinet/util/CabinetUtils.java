@@ -207,7 +207,7 @@ public class CabinetUtils {
 
       return result;
     } catch (Exception e) {
-      e.printStackTrace();
+      logger.error(e);
       return null;
     }
   }

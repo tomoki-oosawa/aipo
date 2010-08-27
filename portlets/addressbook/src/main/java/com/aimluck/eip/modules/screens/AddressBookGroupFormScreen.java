@@ -30,6 +30,7 @@ import com.aimluck.eip.util.ALEipUtils;
  * アドレス帳グループを処理するクラスです。
  */
 public class AddressBookGroupFormScreen extends ALVelocityScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(AddressBookGroupFormScreen.class.getName());
@@ -46,7 +47,6 @@ public class AddressBookGroupFormScreen extends ALVelocityScreen {
     try {
       doAddressBook_form(rundata, context);
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[AddressBookGroupFormScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }

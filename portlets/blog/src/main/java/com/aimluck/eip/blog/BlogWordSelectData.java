@@ -223,7 +223,7 @@ public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
       list = Database.sql(EipTBlogEntry.class, query).fetchListAsDataRow();
 
     } catch (Exception e) {
-      e.printStackTrace();
+      logger.error(e);
       return new ArrayList<DataRow>();
     }
     return list;

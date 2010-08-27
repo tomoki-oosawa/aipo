@@ -371,11 +371,6 @@ public class CellScheduleOnedaySelectByMemberData extends
         (schedulemaps != null && schedulemaps.size() > 0) ? true : false;
       rd.setMember(is_member);
 
-      // if( schedulemaps!=null ) {
-      // System.out.println("名前=" + rd.getName() + " レコード数=" +
-      // schedulemaps.size());
-      // }
-
       // 非公開／完全に隠す　に対応
       boolean publicable = schedule.getPublicFlag().equals("O");
       if (!publicable && !is_member) {

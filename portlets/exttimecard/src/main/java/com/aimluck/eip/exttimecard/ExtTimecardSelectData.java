@@ -850,7 +850,7 @@ public class ExtTimecardSelectData extends
 
       return list;
     } catch (Exception e) {
-      e.printStackTrace();
+     logger.error(e);
       return null;
     }
   }

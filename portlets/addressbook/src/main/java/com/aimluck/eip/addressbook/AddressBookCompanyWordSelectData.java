@@ -36,6 +36,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -194,7 +195,7 @@ public class AddressBookCompanyWordSelectData extends
   private SelectQuery<EipMAddressbookCompany> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<EipMAddressbookCompany> query =
-      new SelectQuery<EipMAddressbookCompany>(EipMAddressbookCompany.class);
+      Database.query(EipMAddressbookCompany.class);
 
     //
     // Expression exp01 = ExpressionFactory.noMatchExp(

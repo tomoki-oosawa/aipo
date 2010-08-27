@@ -189,7 +189,7 @@ public class NewsFormData extends ALAbstractFormData {
     } catch (SocketException e) {
       logger.error(e);
     } catch (IOException e) {
-      e.printStackTrace();
+     logger.error(e);
     }
   }
 

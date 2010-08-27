@@ -708,7 +708,7 @@ public class ALMailUtils {
         }
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.error(e);
       return false;
     }
     return true;

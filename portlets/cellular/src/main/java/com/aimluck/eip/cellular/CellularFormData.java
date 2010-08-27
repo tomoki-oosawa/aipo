@@ -84,7 +84,6 @@ public class CellularFormData extends ALAbstractFormData {
           .getJetspeedUser()
           .getUserName()));
     } catch (JetspeedSecurityException e) {
-      e.printStackTrace();
       baseUser = (ALBaseUser) rundata.getUser();
     }
 

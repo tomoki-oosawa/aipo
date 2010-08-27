@@ -143,7 +143,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
       output.flush();
       output.close();
     } catch (Exception e) {
-      e.printStackTrace();
+     logger.error(e);
       return false;
     }
     return true;

@@ -33,6 +33,7 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class AddressBookCompanyListScreen extends AddressBookScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(AddressBookCompanyListScreen.class.getName());

@@ -117,7 +117,6 @@ public class CellularUtils {
           .getJetspeedUser()
           .getUserName()));
     } catch (JetspeedSecurityException e) {
-      e.printStackTrace();
       baseUser = (ALBaseUser) rundata.getUser();
     }
 

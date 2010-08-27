@@ -44,6 +44,7 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -54,7 +55,9 @@ import com.aimluck.eip.util.ALEipUtils;
  * アドレス帳ワード検索用データクラスです。(社内アドレス検索用)
  * 
  */
-public class AddressBookCorpFilterdSelectData extends ALAbstractSelectData {
+public class AddressBookCorpFilterdSelectData extends
+    ALAbstractSelectData<TurbineUser, ALBaseUser> {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(AddressBookFilterdSelectData.class.getName());
@@ -127,14 +130,13 @@ public class AddressBookCorpFilterdSelectData extends ALAbstractSelectData {
    * @return
    */
   @Override
-  protected ResultList<?> selectList(RunData rundata, Context context) {
+  protected ResultList<TurbineUser> selectList(RunData rundata, Context context) {
 
     try {
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<TurbineUser> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      List<TurbineUser> list = query.fetchList();
       return query.getResultList();
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -150,7 +152,7 @@ public class AddressBookCorpFilterdSelectData extends ALAbstractSelectData {
    * @return
    */
   @Override
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected ALBaseUser selectDetail(RunData rundata, Context context) {
     try {
       // 指定された ユーザIDを取得
       String userId =
@@ -172,9 +174,8 @@ public class AddressBookCorpFilterdSelectData extends ALAbstractSelectData {
    * @return
    */
   @Override
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(TurbineUser record) {
     try {
-      TurbineUser record = (TurbineUser) obj;
 
       AddressBookResultData rd = new AddressBookResultData();
       rd.initField();
@@ -219,9 +220,8 @@ public class AddressBookCorpFilterdSelectData extends ALAbstractSelectData {
    * @return
    */
   @Override
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(ALBaseUser record) {
     try {
-      ALBaseUser record = (ALBaseUser) obj;
       AddressBookResultData rd = new AddressBookResultData();
       rd.initField();
       // アドレスID の設定
@@ -280,8 +280,9 @@ public class AddressBookCorpFilterdSelectData extends ALAbstractSelectData {
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(TurbineUser.class);
+  private SelectQuery<TurbineUser> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
 
     Expression exp11 =
       ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
@@ -353,8 +354,8 @@ public class AddressBookCorpFilterdSelectData extends ALAbstractSelectData {
    * @param crt
    * @param idx
    */
-  private void buildSelectQueryForAddressbookUserIndex(SelectQuery query,
-      String lastNameKana, int idx) {
+  private void buildSelectQueryForAddressbookUserIndex(
+      SelectQuery<TurbineUser> query, String lastNameKana, int idx) {
 
     // インデックスによる検索
     switch (idx) {

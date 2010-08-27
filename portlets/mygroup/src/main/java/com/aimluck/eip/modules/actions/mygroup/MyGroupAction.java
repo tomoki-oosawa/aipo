@@ -155,7 +155,7 @@ public class MyGroupAction extends ALBaseAction {
         setTemplate(rundata, "mygroup-form");
       }
     } catch (Exception e) {
-      e.printStackTrace();
+     logger.error(e);
     }
   }
 

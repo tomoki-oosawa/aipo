@@ -367,7 +367,7 @@ public class ALJLoginUser extends ActionEvent {
       }
 
     } catch (Exception e) {
-      e.printStackTrace();
+      logger.error(e);
     }
 
   }

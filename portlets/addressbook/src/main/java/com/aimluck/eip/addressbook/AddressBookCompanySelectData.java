@@ -20,8 +20,6 @@ package com.aimluck.eip.addressbook;
 
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.DataObjectUtils;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -36,7 +34,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -47,7 +45,9 @@ import com.aimluck.eip.util.ALEipUtils;
  * アドレス帳会社情報の検索用データクラスです。
  * 
  */
-public class AddressBookCompanySelectData extends ALAbstractSelectData {
+public class AddressBookCompanySelectData extends
+    ALAbstractSelectData<EipMAddressbookCompany, EipMAddressbookCompany> {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(AddressBookCompanySelectData.class.getName());
@@ -82,9 +82,11 @@ public class AddressBookCompanySelectData extends ALAbstractSelectData {
    * @return
    */
   @Override
-  protected ResultList<?> selectList(RunData rundata, Context context) {
+  protected ResultList<EipMAddressbookCompany> selectList(RunData rundata,
+      Context context) {
     try {
-      SelectQuery query = getSelectQuery(rundata, context);
+      SelectQuery<EipMAddressbookCompany> query =
+        getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
@@ -102,7 +104,7 @@ public class AddressBookCompanySelectData extends ALAbstractSelectData {
    * @return
    */
   @Override
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected EipMAddressbookCompany selectDetail(RunData rundata, Context context) {
     try {
       EipMAddressbookCompany record;
 
@@ -115,13 +117,8 @@ public class AddressBookCompanySelectData extends ALAbstractSelectData {
       AddressBookCompanyResultData rd = new AddressBookCompanyResultData();
       rd.initField();
 
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
       record =
-        (EipMAddressbookCompany) DataObjectUtils.objectForPK(
-          dataContext,
-          EipMAddressbookCompany.class,
-          Integer.valueOf(companyId));
+        Database.get(EipMAddressbookCompany.class, Integer.valueOf(companyId));
       return record;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -135,9 +132,8 @@ public class AddressBookCompanySelectData extends ALAbstractSelectData {
    * @return
    */
   @Override
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipMAddressbookCompany record) {
     try {
-      EipMAddressbookCompany record = (EipMAddressbookCompany) obj;
       AddressBookCompanyResultData rd = new AddressBookCompanyResultData();
       rd.initField();
       rd.setCompanyId(record.getCompanyId().intValue());
@@ -168,9 +164,8 @@ public class AddressBookCompanySelectData extends ALAbstractSelectData {
    * @return
    */
   @Override
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(EipMAddressbookCompany record) {
     try {
-      EipMAddressbookCompany record = (EipMAddressbookCompany) obj;
       AddressBookCompanyResultData rd = new AddressBookCompanyResultData();
       rd.initField();
 
@@ -212,8 +207,10 @@ public class AddressBookCompanySelectData extends ALAbstractSelectData {
    * @param context
    * @return
    */
-  private SelectQuery getSelectQuery(RunData rundata, Context context) {
-    SelectQuery query = new SelectQuery(EipMAddressbookCompany.class);
+  private SelectQuery<EipMAddressbookCompany> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipMAddressbookCompany> query =
+      Database.query(EipMAddressbookCompany.class);
 
     // インポートした会社情報も表示させる
     // Expression exp11 = ExpressionFactory.noMatchExp(
@@ -267,8 +264,8 @@ public class AddressBookCompanySelectData extends ALAbstractSelectData {
    * @param crt
    * @param idx
    */
-  private void buildSelectQueryForAddressbookIndex(SelectQuery query,
-      String companyNameKana, int idx) {
+  private void buildSelectQueryForAddressbookIndex(
+      SelectQuery<EipMAddressbookCompany> query, String companyNameKana, int idx) {
     // インデックスによる検索
     switch (idx) {
       // ア行

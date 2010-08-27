@@ -34,6 +34,7 @@ import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -155,7 +156,7 @@ public class AddressBookGroupSelectData extends
   private SelectQuery<EipMAddressGroup> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<EipMAddressGroup> query =
-      new SelectQuery<EipMAddressGroup>(EipMAddressGroup.class);
+      Database.query(EipMAddressGroup.class);
 
     Expression exp =
       ExpressionFactory.matchExp(EipMAddressGroup.OWNER_ID_PROPERTY, Integer

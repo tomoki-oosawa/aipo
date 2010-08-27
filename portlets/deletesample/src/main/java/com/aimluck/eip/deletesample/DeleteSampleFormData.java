@@ -22,10 +22,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.SelectQuery;
 import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Parameter;
 import org.apache.jetspeed.om.profile.Portlets;
@@ -66,7 +64,9 @@ import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -79,9 +79,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(DeleteSampleFormData.class.getName());
 
-  private DataContext dataContext;
-
-  ArrayList<String> fpaths = null;
+  protected List<String> fpaths = null;
 
   /** 掲示板,ブログの添付ファイルを保管するディレクトリの指定 */
   protected static final String FOLDER_FILEDIR = JetspeedResources.getString(
@@ -106,7 +104,6 @@ public class DeleteSampleFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
     org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
   }
 
@@ -195,8 +192,6 @@ public class DeleteSampleFormData extends ALAbstractFormData {
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
 
       // 削除プログラム開始
 
@@ -211,19 +206,19 @@ public class DeleteSampleFormData extends ALAbstractFormData {
       // update(ids);
 
       // ブログ処理
-      updateBlog(dataContext, ids);
+      updateBlog(ids);
 
       // アドレス帳処理
-      updateAddressbook(dataContext, ids);
+      updateAddressbook(ids);
 
       // メールアカウント処理
-      updateMailaccount(dataContext, ids);
+      updateMailaccount(ids);
 
       // 共有フォルダ処理
-      // updateCabinet(dataContext, ids);
+      // updateCabinet(ids);
 
       // メール処理
-      updateMail(dataContext, ids);
+      updateMail(ids);
 
       if (ids != null && ids.size() > 0) {
         int size = ids.size();
@@ -237,27 +232,27 @@ public class DeleteSampleFormData extends ALAbstractFormData {
       }
 
       // メモ処理
-      updateMemo(dataContext, ids);
+      updateMemo(ids);
 
       // メッセージ板処理
-      updateMsgboard(dataContext, ids);
+      updateMsgboard(ids);
 
       // ノート処理
-      updateNote(dataContext, ids);
+      updateNote(ids);
 
       // タイムカード処理
-      updateTimecard(dataContext, ids);
+      updateTimecard(ids);
 
       // ToDo処理
-      updateTodo(dataContext, ids);
+      updateTodo(ids);
 
       // スケジュール処理
-      updateSchedule(dataContext, ids);
+      updateSchedule(ids);
 
       // ワークフロー処理
-      updateWorkflow(dataContext, ids);
+      updateWorkflow(ids);
 
-      dataContext.commitChanges();
+      Database.commit();
 
       // ファイル削除
       deleteFiles(fpaths);
@@ -316,378 +311,260 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     profile.store();
   }
 
-  private void updateBlog(DataContext dataContext, List<Integer> ids) {
-    // SelectQuery blogquery1 = new SelectQuery(EipTBlogThema.class);
-    // Expression blogexp1 = ExpressionFactory.inExp(
-    // EipTBlogThema.CREATE_USER_ID_PROPERTY, ids);
-    // blogquery1.setQualifier(blogexp1);
-    // List bloglist1 = dataContext.performQuery(blogquery1);
-    // if (bloglist1 != null && bloglist1.size() > 0) {
-    // dataContext.deleteObjects(bloglist1);
-    // }
+  private void updateBlog(List<Integer> ids) {
 
-    SelectQuery blogquery2 = new SelectQuery(EipTBlogFootmarkMap.class);
+    SelectQuery<EipTBlogFootmarkMap> blogquery2 =
+      Database.query(EipTBlogFootmarkMap.class);
     Expression blogexp2 =
       ExpressionFactory.inExp(EipTBlogFootmarkMap.USER_ID_PROPERTY, ids);
     blogquery2.setQualifier(blogexp2);
-    List<?> bloglist2 = dataContext.performQuery(blogquery2);
+    List<EipTBlogFootmarkMap> bloglist2 = blogquery2.fetchList();
     if (bloglist2 != null && bloglist2.size() > 0) {
-      dataContext.deleteObjects(bloglist2);
+      Database.deleteAll(bloglist2);
     }
 
-    SelectQuery blogquery3 = new SelectQuery(EipTBlogFile.class);
+    SelectQuery<EipTBlogFile> blogquery3 = Database.query(EipTBlogFile.class);
     Expression blogexp3 =
       ExpressionFactory.inExp(EipTBlogFile.OWNER_ID_PROPERTY, ids);
     blogquery3.setQualifier(blogexp3);
-    List<?> Bloglist3 = dataContext.performQuery(blogquery3);
+    List<EipTBlogFile> Bloglist3 = blogquery3.fetchList();
 
     if (Bloglist3 != null && Bloglist3.size() > 0) {
       int size = Bloglist3.size();
       for (int i = 0; i < size; i++) {
-        EipTBlogFile file = (EipTBlogFile) Bloglist3.get(i);
+        EipTBlogFile file = Bloglist3.get(i);
         fpaths.add(getSaveDirPath(
           org_id,
           file.getOwnerId().intValue(),
           FOLDER_FILEDIR,
           "blog")
-          + ((EipTBlogFile) Bloglist3.get(i)).getFilePath());
+          + (Bloglist3.get(i)).getFilePath());
       }
     }
 
     if (Bloglist3 != null && Bloglist3.size() > 0) {
-      dataContext.deleteObjects(Bloglist3);
+      Database.deleteAll(Bloglist3);
     }
 
-    SelectQuery blogquery4 = new SelectQuery(EipTBlogComment.class);
+    SelectQuery<EipTBlogComment> blogquery4 =
+      Database.query(EipTBlogComment.class);
     Expression blogexp4 =
       ExpressionFactory.inExp(EipTBlogComment.OWNER_ID_PROPERTY, ids);
     blogquery4.setQualifier(blogexp4);
-    List<?> bloglist4 = dataContext.performQuery(blogquery4);
+    List<EipTBlogComment> bloglist4 = blogquery4.fetchList();
     if (bloglist4 != null && bloglist4.size() > 0) {
-      dataContext.deleteObjects(bloglist4);
+      Database.deleteAll(bloglist4);
     }
 
-    SelectQuery Blogquery5 = new SelectQuery(EipTBlogEntry.class);
+    SelectQuery<EipTBlogEntry> Blogquery5 = Database.query(EipTBlogEntry.class);
     Expression blogexp5 =
       ExpressionFactory.inExp(EipTBlogEntry.OWNER_ID_PROPERTY, ids);
     Blogquery5.setQualifier(blogexp5);
-    List<?> bloglist5 = dataContext.performQuery(Blogquery5);
+    List<EipTBlogEntry> bloglist5 = Blogquery5.fetchList();
     if (bloglist5 != null && bloglist5.size() > 0) {
-      dataContext.deleteObjects(bloglist5);
+      Database.deleteAll(bloglist5);
     }
 
-    SelectQuery blogquery6 = new SelectQuery(EipTBlog.class);
+    SelectQuery<EipTBlog> blogquery6 = Database.query(EipTBlog.class);
     Expression blogexp6 =
       ExpressionFactory.inExp(EipTBlog.OWNER_ID_PROPERTY, ids);
     blogquery6.setQualifier(blogexp6);
-    List<?> bloglist6 = dataContext.performQuery(blogquery6);
+    List<EipTBlog> bloglist6 = blogquery6.fetchList();
     if (bloglist6 != null && bloglist6.size() > 0) {
-      dataContext.deleteObjects(bloglist6);
+      Database.deleteAll(bloglist6);
     }
 
   }
 
-  private void updateAddressbook(DataContext dataContext, List<Integer> ids) {
-    SelectQuery addressquery1 = new SelectQuery(EipMAddressbookCompany.class);
+  private void updateAddressbook(List<Integer> ids) {
+    SelectQuery<EipMAddressbookCompany> addressquery1 =
+      Database.query(EipMAddressbookCompany.class);
     Expression addressexp1 =
       ExpressionFactory.inExp(
         EipMAddressbookCompany.CREATE_USER_ID_PROPERTY,
         ids);
     addressquery1.setQualifier(addressexp1);
-    List<?> addresslist1 = dataContext.performQuery(addressquery1);
+    List<EipMAddressbookCompany> addresslist1 = addressquery1.fetchList();
     if (addresslist1 != null && addresslist1.size() > 0) {
-      dataContext.deleteObjects(addresslist1);
+      Database.deleteAll(addresslist1);
     }
 
-    SelectQuery addressquery2 = new SelectQuery(EipMAddressbook.class);
+    SelectQuery<EipMAddressbook> addressquery2 =
+      Database.query(EipMAddressbook.class);
     Expression addressexp2 =
       ExpressionFactory.inExp(EipMAddressbook.OWNER_ID_PROPERTY, ids);
     addressquery2.setQualifier(addressexp2);
-    List<?> addresslist2 = dataContext.performQuery(addressquery2);
+    List<EipMAddressbook> addresslist2 = addressquery2.fetchList();
     if (addresslist2 != null && addresslist2.size() > 0) {
-      dataContext.deleteObjects(addresslist2);
+      Database.deleteAll(addresslist2);
     }
   }
 
-  private void updateMailaccount(DataContext dataContext, List<Integer> ids) {
-    SelectQuery mailquery1 = new SelectQuery(EipMMailAccount.class);
+  private void updateMailaccount(List<Integer> ids) {
+    SelectQuery<EipMMailAccount> mailquery1 =
+      Database.query(EipMMailAccount.class);
     Expression mailexp1 =
       ExpressionFactory.inExp(EipMMailAccount.USER_ID_PROPERTY, ids);
     mailquery1.setQualifier(mailexp1);
-    List<?> maillist1 = dataContext.performQuery(mailquery1);
+    List<EipMMailAccount> maillist1 = mailquery1.fetchList();
     if (maillist1 != null && maillist1.size() > 0) {
-      dataContext.deleteObjects(maillist1);
+      Database.deleteAll(maillist1);
     }
   }
 
-  // private void updateCabinet(DataContext dataContext, List ids) {
-  // SelectQuery cabinetquery1 = new SelectQuery(EipTCabinetFile.class);
-  // Expression cabinetexp1 = ExpressionFactory.inExp(
-  // EipTCabinetFile.CREATE_USER_ID_PROPERTY, ids);
-  // cabinetquery1.setQualifier(cabinetexp1);
-  // List cabinetlist1 = dataContext.performQuery(cabinetquery1);
-  // if (cabinetlist1 != null && cabinetlist1.size() > 0) {
-  // int size = cabinetlist1.size();
-  // for (int i = 0; i < size; i++) {
-  // EipTCabinetFile file = (EipTCabinetFile) cabinetlist1.get(i);
-  // fpaths
-  // .add(getSaveDirPath(org_id, -1, FOLDER_FILEDIR, "cabinet")
-  // + ((EipTCabinetFile) cabinetlist1.get(i)).getFilePath());
-  // }
-  // }
-  // if (cabinetlist1 != null && cabinetlist1.size() > 0) {
-  // dataContext.deleteObjects(cabinetlist1);
-  // }
-  //
-  // SelectQuery cabinetquery2 = new SelectQuery(EipTCabinetFolder.class);
-  // Expression cabinetexp2 = ExpressionFactory.inExp(
-  // EipTCabinetFolder.CREATE_USER_ID_PROPERTY, ids);
-  // cabinetquery2.setQualifier(cabinetexp2);
-  // List cabinetlist2 = dataContext.performQuery(cabinetquery2);
-  // if (cabinetlist2 != null && cabinetlist2.size() > 0) {
-  // dataContext.deleteObjects(cabinetlist2);
-  // }
-  //
-  // }
-
-  private void updateMail(DataContext dataContext, List<Integer> ids) {
-    SelectQuery mailquery1 = new SelectQuery(EipTMail.class);
+  private void updateMail(List<Integer> ids) {
+    SelectQuery<EipTMail> mailquery1 = Database.query(EipTMail.class);
     Expression mailexp1 =
       ExpressionFactory.inExp(EipTMail.USER_ID_PROPERTY, ids);
     mailquery1.setQualifier(mailexp1);
-    List<?> maillist1 = dataContext.performQuery(mailquery1);
+    List<EipTMail> maillist1 = mailquery1.fetchList();
     if (maillist1 != null && maillist1.size() > 0) {
-      dataContext.deleteObjects(maillist1);
+      Database.deleteAll(maillist1);
     }
   }
 
-  private void updateMemo(DataContext dataContext, List<Integer> ids) {
-    SelectQuery memoquery1 = new SelectQuery(EipTMemo.class);
+  private void updateMemo(List<Integer> ids) {
+    SelectQuery<EipTMemo> memoquery1 = Database.query(EipTMemo.class);
     Expression memoexp1 =
       ExpressionFactory.inExp(EipTMemo.OWNER_ID_PROPERTY, ids);
     memoquery1.setQualifier(memoexp1);
-    List<?> memolist1 = dataContext.performQuery(memoquery1);
+    List<EipTMemo> memolist1 = memoquery1.fetchList();
     if (memolist1 != null && memolist1.size() > 0) {
-      dataContext.deleteObjects(memolist1);
+      Database.deleteAll(memolist1);
     }
   }
 
-  private void updateMsgboard(DataContext dataContext, List<Integer> ids) {
-    // SelectQuery msgquery1 = new SelectQuery(EipTMsgboardCategory.class);
-    // Expression msgexp1 = ExpressionFactory.inDbExp(
-    // EipTMsgboardCategory.TURBINE_USER_PROPERTY + "."
-    // + TurbineUser.USER_ID_PK_COLUMN, ids);
-    // msgquery1.setQualifier(msgexp1);
-    // List msglist1 = dataContext.performQuery(msgquery1);
-    // if (msglist1 != null && msglist1.size() > 0) {
-    // dataContext.deleteObjects(msglist1);
-    // }
-
-    // SelectQuery msgquery2 = new SelectQuery(EipTMsgboardCategoryMap.class);
-    // Expression msgexp2 = ExpressionFactory.inExp(
-    // EipTMsgboardCategoryMap.USER_ID_PROPERTY, ids);
-    // msgquery2.setQualifier(msgexp2);
-    // List msglist2 = dataContext.performQuery(msgquery2);
-    // if (msglist2 != null && msglist2.size() > 0) {
-    // dataContext.deleteObjects(msglist2);
-    // }
-
-    SelectQuery msgquery3 = new SelectQuery(EipTMsgboardFile.class);
+  private void updateMsgboard(List<Integer> ids) {
+    SelectQuery<EipTMsgboardFile> msgquery3 =
+      Database.query(EipTMsgboardFile.class);
     Expression msgexp3 =
       ExpressionFactory.inExp(EipTMsgboardFile.OWNER_ID_PROPERTY, ids);
     msgquery3.setQualifier(msgexp3);
-    List<?> msglist3 = dataContext.performQuery(msgquery3);
+    List<EipTMsgboardFile> msglist3 = msgquery3.fetchList();
     if (msglist3 != null && msglist3.size() > 0) {
       int size = msglist3.size();
       for (int i = 0; i < size; i++) {
-        EipTMsgboardFile file = (EipTMsgboardFile) msglist3.get(i);
+        EipTMsgboardFile file = msglist3.get(i);
         fpaths.add(getSaveDirPath(
           org_id,
           file.getOwnerId().intValue(),
           FOLDER_FILEDIR,
           "msgboard")
-          + ((EipTMsgboardFile) msglist3.get(i)).getFilePath());
+          + msglist3.get(i).getFilePath());
       }
-      dataContext.deleteObjects(msglist3);
+      Database.deleteAll(msglist3);
     }
 
-    SelectQuery msgquery4 = new SelectQuery(EipTMsgboardTopic.class);
+    SelectQuery<EipTMsgboardTopic> msgquery4 =
+      Database.query(EipTMsgboardTopic.class);
     Expression msgexp4 =
       ExpressionFactory.inExp(EipTMsgboardTopic.OWNER_ID_PROPERTY, ids);
     msgquery4.setQualifier(msgexp4);
-    List<?> msglist4 = dataContext.performQuery(msgquery4);
+    List<EipTMsgboardTopic> msglist4 = msgquery4.fetchList();
     if (msglist4 != null && msglist4.size() > 0) {
-      dataContext.deleteObjects(msglist4);
+      Database.deleteAll(msglist4);
     }
 
   }
 
-  private void updateNote(DataContext dataContext, List<Integer> ids) {
-    SelectQuery notequery1 = new SelectQuery(EipTNote.class);
+  private void updateNote(List<Integer> ids) {
+    SelectQuery<EipTNote> notequery1 = Database.query(EipTNote.class);
     Expression noteexp1 =
       ExpressionFactory.inExp(EipTNote.OWNER_ID_PROPERTY, ids);
     notequery1.setQualifier(noteexp1);
-    List<?> notelist1 = dataContext.performQuery(notequery1);
+    List<EipTNote> notelist1 = notequery1.fetchList();
     if (notelist1 != null && notelist1.size() > 0) {
-      dataContext.deleteObjects(notelist1);
+      Database.deleteAll(notelist1);
     }
 
-    SelectQuery notequery2 = new SelectQuery(EipTNoteMap.class);
+    SelectQuery<EipTNoteMap> notequery2 = Database.query(EipTNoteMap.class);
     Expression noteexp2 =
       ExpressionFactory.inExp(EipTNoteMap.USER_ID_PROPERTY, ids);
     notequery2.setQualifier(noteexp2);
-    List<?> notelist2 = dataContext.performQuery(notequery2);
+    List<EipTNoteMap> notelist2 = notequery2.fetchList();
     if (notelist2 != null && notelist2.size() > 0) {
-      dataContext.deleteObjects(notelist2);
+      Database.deleteAll(notelist2);
     }
   }
 
-  private void updateTimecard(DataContext dataContext, List<Integer> ids) {
-    SelectQuery timecardquery1 = new SelectQuery(EipTTimecard.class);
+  private void updateTimecard(List<Integer> ids) {
+    SelectQuery<EipTTimecard> timecardquery1 =
+      Database.query(EipTTimecard.class);
     Expression timecardexp1 =
       ExpressionFactory.inExp(EipTTimecard.USER_ID_PROPERTY, ids);
     timecardquery1.setQualifier(timecardexp1);
-    List<?> timecardlist1 = dataContext.performQuery(timecardquery1);
+    List<EipTTimecard> timecardlist1 = timecardquery1.fetchList();
     if (timecardlist1 != null && timecardlist1.size() > 0) {
-      dataContext.deleteObjects(timecardlist1);
+      Database.deleteAll(timecardlist1);
     }
   }
 
-  private void updateTodo(DataContext dataContext, List<Integer> ids) {
-    SelectQuery todoquery1 = new SelectQuery(EipTTodoCategory.class);
+  private void updateTodo(List<Integer> ids) {
+    SelectQuery<EipTTodoCategory> todoquery1 =
+      Database.query(EipTTodoCategory.class);
     Expression todoexp1 =
       ExpressionFactory.inExp(EipTTodoCategory.USER_ID_PROPERTY, ids);
     todoquery1.setQualifier(todoexp1);
-    List<?> todolist1 = dataContext.performQuery(todoquery1);
+    List<EipTTodoCategory> todolist1 = todoquery1.fetchList();
     if (todolist1 != null && todolist1.size() > 0) {
-      dataContext.deleteObjects(todolist1);
+      Database.deleteAll(todolist1);
     }
 
-    SelectQuery todoquery2 = new SelectQuery(EipTTodo.class);
+    SelectQuery<EipTTodo> todoquery2 = Database.query(EipTTodo.class);
     Expression todoexp2 =
       ExpressionFactory.inExp(EipTTodo.USER_ID_PROPERTY, ids);
     todoquery2.setQualifier(todoexp2);
-    List<?> todolist2 = dataContext.performQuery(todoquery2);
+    List<EipTTodo> todolist2 = todoquery2.fetchList();
     if (todolist2 != null && todolist2.size() > 0) {
-      dataContext.deleteObjects(todolist2);
+      Database.deleteAll(todolist2);
     }
   }
 
-  private void updateSchedule(DataContext dataContext, List<Integer> ids) {
-    SelectQuery schedulequery1 = new SelectQuery(EipTSchedule.class);
+  private void updateSchedule(List<Integer> ids) {
+    SelectQuery<EipTSchedule> schedulequery1 =
+      Database.query(EipTSchedule.class);
     Expression scheduleexp1 =
       ExpressionFactory.inExp(EipTSchedule.OWNER_ID_PROPERTY, ids);
     schedulequery1.setQualifier(scheduleexp1);
-    List<?> schedulelist1 = dataContext.performQuery(schedulequery1);
+    List<EipTSchedule> schedulelist1 = schedulequery1.fetchList();
     if (schedulelist1 != null && schedulelist1.size() > 0) {
-      dataContext.deleteObjects(schedulelist1);
+      Database.deleteAll(schedulelist1);
     }
 
-    SelectQuery schedulequery2 = new SelectQuery(EipTScheduleMap.class);
+    SelectQuery<EipTScheduleMap> schedulequery2 =
+      Database.query(EipTScheduleMap.class);
     Expression scheduleexp2 =
       ExpressionFactory.inExp(EipTScheduleMap.USER_ID_PROPERTY, ids);
     schedulequery2.setQualifier(scheduleexp2);
-    List<?> schedulelist2 = dataContext.performQuery(schedulequery2);
+    List<EipTScheduleMap> schedulelist2 = schedulequery2.fetchList();
     if (schedulelist2 != null && schedulelist2.size() > 0) {
-      dataContext.deleteObjects(schedulelist2);
+      Database.deleteAll(schedulelist2);
     }
   }
 
-  private void updateWorkflow(DataContext dataContext, List<Integer> ids) {
-    SelectQuery workquery1 = new SelectQuery(EipTWorkflowRequestMap.class);
+  private void updateWorkflow(List<Integer> ids) {
+    SelectQuery<EipTWorkflowRequestMap> workquery1 =
+      Database.query(EipTWorkflowRequestMap.class);
     Expression workexp1 =
       ExpressionFactory.inExp(EipTWorkflowRequestMap.USER_ID_PROPERTY, ids);
     workquery1.setQualifier(workexp1);
-    List<?> worklist1 = dataContext.performQuery(workquery1);
+    List<EipTWorkflowRequestMap> worklist1 = workquery1.fetchList();
     if (worklist1 != null && worklist1.size() > 0) {
-      dataContext.deleteObjects(worklist1);
+      Database.deleteAll(worklist1);
     }
 
-    SelectQuery workquery2 = new SelectQuery(EipTWorkflowRequest.class);
+    SelectQuery<EipTWorkflowRequest> workquery2 =
+      Database.query(EipTWorkflowRequest.class);
     Expression workexp2 =
       ExpressionFactory.inExp(EipTWorkflowRequest.USER_ID_PROPERTY, ids);
     workquery2.setQualifier(workexp2);
-    List<?> worklist2 = dataContext.performQuery(workquery2);
+    List<EipTWorkflowRequest> worklist2 = workquery2.fetchList();
     if (worklist2 != null && worklist2.size() > 0) {
-      dataContext.deleteObjects(worklist2);
+      Database.deleteAll(worklist2);
     }
   }
 
-  // private void update(List ids) {
-  // // ブログのテーマIDを1に変更する。
-  // EipTBlogThema blogthema = (EipTBlogThema) DataObjectUtils.objectForPK(
-  // dataContext, EipTBlogThema.class, Integer.valueOf(1));
-  //
-  // SelectQuery updatequery1 = new SelectQuery(EipTBlogEntry.class);
-  // Expression updateexp1 = ExpressionFactory.inExp(
-  // EipTBlogEntry.OWNER_ID_PROPERTY, ids);
-  // updatequery1.setQualifier(updateexp1);
-  // List updateentrys1 = dataContext.performQuery(updatequery1);
-  // if (updateentrys1 != null && updateentrys1.size() > 0) {
-  // int size = updateentrys1.size();
-  // for (int i = 0; i < size; i++) {
-  // EipTBlogEntry entry = (EipTBlogEntry) updateentrys1.get(i);
-  // entry.setEipTBlogThema(blogthema);
-  // }
-  // dataContext.commitChanges();
-  // }
-  //
-  // // キャビネットファイルのフォルダIDを1に変更する。
-  // EipTCabinetFolder cabinetfolder = (EipTCabinetFolder) DataObjectUtils
-  // .objectForPK(dataContext, EipTCabinetFile.class, Integer.valueOf(1));
-  //
-  // SelectQuery updatequery2 = new SelectQuery(EipTCabinetFile.class);
-  // Expression updateexp2 = ExpressionFactory.inExp(
-  // EipTCabinetFile.FOLDER_ID_PROPERTY, ids);
-  // updatequery2.setQualifier(updateexp2);
-  // List updateentrys2 = dataContext.performQuery(updatequery2);
-  // if (updateentrys2 != null && updateentrys2.size() > 0) {
-  // int size = updateentrys2.size();
-  // for (int i = 0; i < size; i++) {
-  // EipTCabinetFile entry = (EipTCabinetFile) updateentrys2.get(i);
-  // entry.setEipTCabinetFolder(cabinetfolder);
-  // }
-  // dataContext.commitChanges();
-  // }
-  //
-  // // キャビネットフォルダの親IDを1に変更する。
-  //
-  // SelectQuery updatequery3 = new SelectQuery(EipTCabinetFolder.class);
-  // Expression updateexp3 = ExpressionFactory.inExp(
-  // EipTCabinetFolder.PARENT_ID_PROPERTY, ids);
-  // updatequery3.setQualifier(updateexp3);
-  // List updateentrys3 = dataContext.performQuery(updatequery3);
-  // if (updateentrys3 != null && updateentrys3.size() > 0) {
-  // int size = updateentrys3.size();
-  // for (int i = 0; i < size; i++) {
-  // EipTCabinetFolder entry = (EipTCabinetFolder) updateentrys3.get(i);
-  // entry.setParentId(cabinetfolder.getFolderId());
-  // }
-  // dataContext.commitChanges();
-  // }
-  //
-  // // メッセージボードのカテゴリーIDを１に変更する
-  //
-  // EipTMsgboardTopic msgboardtopic = (EipTMsgboardTopic) DataObjectUtils
-  // .objectForPK(dataContext, EipTMsgboardTopic.class, Integer.valueOf(1));
-  //
-  // SelectQuery updatequery4 = new SelectQuery(EipTMsgboardTopic.class);
-  // Expression updateexp4 = ExpressionFactory.inExp(
-  // EipTMsgboardTopic.OWNER_ID_PROPERTY, ids);
-  // updatequery4.setQualifier(updateexp4);
-  // List updateentrys4 = dataContext.performQuery(updatequery4);
-  // if (updateentrys4 != null && updateentrys4.size() > 0) {
-  // int size = updateentrys4.size();
-  // for (int i = 0; i < size; i++) {
-  // EipTMsgboardTopic entry = (EipTMsgboardTopic) updateentrys4.get(i);
-  // entry.setParentId(msgboardtopic.getTopicId());
-  // }
-  // dataContext.commitChanges();
-  // }
-  //
-  // }
-
-  private void deleteFiles(ArrayList<String> fpaths) {
+  private void deleteFiles(List<String> fpaths) {
     if (fpaths == null) {
       return;
     }
@@ -729,24 +606,25 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
     Expression gexp =
       ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, ids);
-    SelectQuery gquery = new SelectQuery(TurbineUserGroupRole.class, gexp);
-    List<?> map = dataContext.performQuery(gquery);
+    SelectQuery<TurbineUserGroupRole> gquery =
+      Database.query(TurbineUserGroupRole.class, gexp);
+    List<TurbineUserGroupRole> map = gquery.fetchList();
     if (map != null && map.size() > 0) {
-      dataContext.deleteObjects(map);
+      Database.deleteAll(map);
     }
 
-    SelectQuery tquery = new SelectQuery(TurbineUser.class);
+    SelectQuery<TurbineUser> tquery = Database.query(TurbineUser.class);
     Expression texp =
       ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, ids);
     tquery.setQualifier(texp);
-    List<?> tusers = dataContext.performQuery(tquery);
+    List<TurbineUser> tusers = tquery.fetchList();
     if (tusers != null && tusers.size() > 0) {
       int size = tusers.size();
       for (int i = 0; i < size; i++) {
-        TurbineUser tuser = (TurbineUser) tusers.get(i);
+        TurbineUser tuser = tusers.get(i);
         tuser.setDisabled("T");
       }
-      dataContext.commitChanges();
+      Database.commit();
     }
 
   }

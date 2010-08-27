@@ -763,7 +763,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
           rd.setMemberList(recordMemberList);
         }
       } catch (Exception e) {
-        e.printStackTrace();
+       logger.error(e);
       }
 
       Expression mapexp2 =

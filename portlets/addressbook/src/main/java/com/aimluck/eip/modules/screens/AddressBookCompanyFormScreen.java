@@ -30,6 +30,7 @@ import com.aimluck.eip.util.ALEipUtils;
  * アドレス帳の会社情報を処理するクラスです。
  */
 public class AddressBookCompanyFormScreen extends ALVelocityScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(AddressBookCompanyFormScreen.class.getName());

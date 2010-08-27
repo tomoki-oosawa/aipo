@@ -482,7 +482,7 @@ public class WebMailUtils {
       res = handler.getNewMailSum(rcontext);
     } catch (Exception e) {
       res = -1;
-      e.printStackTrace();
+     logger.error(e);
     }
     return (res > 0 ? true : false);
   }
