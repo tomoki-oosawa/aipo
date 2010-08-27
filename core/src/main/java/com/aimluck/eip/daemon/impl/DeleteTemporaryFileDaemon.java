@@ -100,21 +100,24 @@ public class DeleteTemporaryFileDaemon implements Daemon {
   }
 
   /**
-   * @see Daemon#getResult()
+   * 
+   * @return
    */
   public int getResult() {
     return this.result;
   }
 
   /**
-   * @see Daemon#setResult(int result)
+   * 
+   * @param result
    */
   public void setResult(int result) {
     this.result = result;
   }
 
   /**
-   * @see Daemon#getMessage()
+   * 
+   * @return
    */
   public String getMessage() {
     return null;

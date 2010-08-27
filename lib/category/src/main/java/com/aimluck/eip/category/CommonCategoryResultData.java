@@ -47,8 +47,7 @@ public class CommonCategoryResultData implements ALData {
   private ALStringField update_date;
 
   /**
-   * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     category_id = new ALNumberField();

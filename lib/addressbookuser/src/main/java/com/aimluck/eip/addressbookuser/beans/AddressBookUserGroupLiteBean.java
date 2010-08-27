@@ -35,8 +35,7 @@ public class AddressBookUserGroupLiteBean implements ALData, Cloneable {
   private ALStringField name;
 
   /**
-   * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     group_id = new ALNumberField();

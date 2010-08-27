@@ -225,7 +225,9 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
   }
 
   /**
-   * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.util.RunData)
+   * 
+   * @param rundata
+   * @return
    */
   @Override
   protected String getContentType(RunData rundata) {

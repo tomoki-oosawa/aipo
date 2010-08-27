@@ -35,8 +35,7 @@ public class AccessControlPortletBean implements ALData {
   private ALStringField portlet_name;
 
   /**
-   * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     portlet_type = new ALNumberField();

@@ -57,7 +57,8 @@ public class ALSessionValidator extends JetspeedSessionValidator {
 
   /**
    * 
-   * @see org.apache.turbine.modules.Action#doPerform(org.apache.turbine.util.RunData)
+   * @param data
+   * @throws Exception
    */
   @Override
   public void doPerform(RunData data) throws Exception {

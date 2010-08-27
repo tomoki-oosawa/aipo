@@ -34,8 +34,7 @@ public class ALEipCompany implements ALData {
   private ALStringField company_name;
 
   /**
-   * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     company_id = new ALNumberField();

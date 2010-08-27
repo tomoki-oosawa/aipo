@@ -249,7 +249,10 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
   public class PortletTabComparator implements Comparator<PortletTab> {
 
     /**
-     * @see Comparator#compare(Object, Object)
+     * 
+     * @param o1
+     * @param o2
+     * @return
      */
     public int compare(PortletTab o1, PortletTab o2) {
       try {

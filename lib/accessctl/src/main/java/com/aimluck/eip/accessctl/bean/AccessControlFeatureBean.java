@@ -38,8 +38,7 @@ public class AccessControlFeatureBean implements ALData {
   private ALStringField feature_alias_name;
 
   /**
-   * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     feature_id = new ALNumberField();

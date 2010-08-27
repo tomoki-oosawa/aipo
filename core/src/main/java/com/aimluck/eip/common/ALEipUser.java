@@ -37,8 +37,7 @@ public class ALEipUser implements ALData {
   private ALStringField alias_name;
 
   /**
-   * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     user_id = new ALNumberField();

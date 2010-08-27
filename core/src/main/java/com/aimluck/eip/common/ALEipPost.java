@@ -37,8 +37,7 @@ public class ALEipPost implements ALData {
   private ALStringField group_name;
 
   /**
-   * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     post_id = new ALNumberField();

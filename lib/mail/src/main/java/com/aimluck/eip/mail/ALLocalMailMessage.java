@@ -153,7 +153,8 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
   /**
    * メールヘッダを追加する．
    * 
-   * @see javax.mail.internet.MimePart#addHeaderLine(java.lang.String)
+   * @param line
+   * @throws MessagingException
    */
   @Override
   public void addHeaderLine(String line) throws MessagingException {
@@ -309,7 +310,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
   /**
    * メッセージ ID を独自形式にするためのオーバーライドメソッド．
    * 
-   * @see javax.mail.internet.MimeMessage#updateHeaders()
+   * @throws MessagingException
    */
   @Override
   protected void updateHeaders() throws MessagingException {
@@ -349,7 +350,8 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
   /**
    * 件名を取得する．
    * 
-   * @see javax.mail.Message#getSubject()
+   * @return
+   * @throws MessagingException
    */
   @Override
   public String getSubject() throws MessagingException {
@@ -469,19 +471,14 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
     return b.length;
   }
 
-  // public Object getContent()
-  // throws java.io.IOException, MessagingException {
-  // return MultipartUtility.getContent(this, "ISO-2022-JP");
-  // }
-
   /**
    * メールの送信日時を取得する．
    * 
-   * @see javax.mail.Message#getSentDate()
+   * @return
+   * @throws MessagingException
    */
   @Override
   public Date getSentDate() throws MessagingException {
-    // Date ヘッダの不正なタイムゾーンへの対応
     return MailUtility.parseDate(getHeader(DATE, null));
   }
 
@@ -490,7 +487,9 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
    * <user@domain」や「user@domain>」のように片方のカッコのみ見つかった場合の処理 ・「 < <user@domain>」や「
    * <user@domain>>」のようにカッコの対が揃っていない場合の処理
    * 
-   * @see javax.mail.Message#getRecipients(javax.mail.Message.RecipientType)
+   * @param recipienttype
+   * @return
+   * @throws MessagingException
    */
   @Override
   public Address[] getRecipients(javax.mail.Message.RecipientType recipienttype)

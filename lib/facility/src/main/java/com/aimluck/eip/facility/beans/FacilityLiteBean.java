@@ -35,8 +35,7 @@ public class FacilityLiteBean implements ALData, Cloneable {
   private ALStringField facility_name;
 
   /**
-   * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     facility_id = new ALNumberField();

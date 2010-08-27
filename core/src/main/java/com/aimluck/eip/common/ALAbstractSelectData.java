@@ -109,9 +109,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
     this.getClass().getName()).append(ALEipConstants.LIST_INDEX).toString();;
 
   /**
-   * 
-   * 
-   * @see com.aimluck.eip.common.Object#initField()
+   *
    */
   public void initField() {
 

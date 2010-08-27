@@ -41,8 +41,7 @@ public class UserEmailLiteBean implements ALData, Cloneable {
   private ALStringField email;
 
   /**
-   * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     user_id = new ALNumberField();

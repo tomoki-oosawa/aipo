@@ -357,8 +357,8 @@ public class ALFileLocalFolder extends ALAbstractFolder {
   }
 
   /**
+   * 
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
   @Override
   protected Attributes getColumnMap() {

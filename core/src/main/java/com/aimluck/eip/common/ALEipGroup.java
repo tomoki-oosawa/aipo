@@ -45,8 +45,7 @@ public class ALEipGroup implements ALData, Serializable {
   }
 
   /**
-   * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     name = new ALStringField();

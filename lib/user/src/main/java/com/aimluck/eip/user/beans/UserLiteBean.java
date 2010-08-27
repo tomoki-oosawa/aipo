@@ -39,7 +39,7 @@ public class UserLiteBean implements ALData, Cloneable {
 
   /**
    * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   * 
    */
   public void initField() {
     user_id = new ALNumberField();

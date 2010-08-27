@@ -49,7 +49,8 @@ public abstract class ALCSVScreen extends RawScreen {
 
   /**
    * 
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * @param rundata
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata) throws Exception {
@@ -101,7 +102,8 @@ public abstract class ALCSVScreen extends RawScreen {
 
   /**
    * 
-   * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.util.RunData)
+   * @param rundata
+   * @return
    */
   @Override
   protected String getContentType(RunData rundata) {

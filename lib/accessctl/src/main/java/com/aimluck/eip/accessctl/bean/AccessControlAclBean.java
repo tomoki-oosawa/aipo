@@ -37,8 +37,7 @@ public class AccessControlAclBean implements ALData {
   private ALStringField checked;
 
   /**
-   * 
-   * @see com.aimluck.eip.common.ALData#initField()
+   *
    */
   public void initField() {
     acl_id = new ALStringField();

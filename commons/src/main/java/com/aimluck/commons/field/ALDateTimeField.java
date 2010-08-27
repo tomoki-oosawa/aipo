@@ -91,7 +91,6 @@ public class ALDateTimeField extends ALAbstractField {
   /**
    * 入力フィールド値（日付の文字列）を設定します。
    * 
-   * @see com.aimluck.commons.field.ALAbstractField#setValue(java.lang.String)
    */
   @Override
   public void setValue(String str) {

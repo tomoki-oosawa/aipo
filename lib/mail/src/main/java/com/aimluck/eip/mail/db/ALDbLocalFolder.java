@@ -216,8 +216,8 @@ public class ALDbLocalFolder extends ALAbstractFolder {
   }
 
   /**
+   * 
    * @return
-   * @see com.aimluck.eip.common.ALAbstractSelectData#getColumnMap()
    */
   @Override
   protected Attributes getColumnMap() {

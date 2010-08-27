@@ -940,7 +940,6 @@ public class ALEipUtils {
             "PermissionError");
           rundata.setRedirectURI(duri.toString());
           rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-          // TODO add by Haruo Kaneko
           JetspeedLinkFactory.putInstance(jsLink);
 
           jsLink = null;
@@ -989,7 +988,6 @@ public class ALEipUtils {
           .addPathInfo(JetspeedResources.PATH_TEMPLATE_KEY, "PermissionError");
         rundata.setRedirectURI(duri.toString());
         rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-        // TODO add by Haruo Kaneko
         JetspeedLinkFactory.putInstance(jsLink);
 
         jsLink = null;

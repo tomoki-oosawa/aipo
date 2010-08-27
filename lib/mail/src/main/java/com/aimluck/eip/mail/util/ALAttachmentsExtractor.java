@@ -62,8 +62,11 @@ public class ALAttachmentsExtractor extends AttachmentsExtractor {
   /**
    * MultipartUtility#process() から呼びだされるメソッド．
    * 
-   * @see com.sk_jp.mail.PartHandler#processPart(javax.mail.Part,
-   *      javax.mail.internet.ContentType)
+   * @param part
+   * @param context
+   * @return
+   * @throws MessagingException
+   * @throws IOException
    */
   @Override
   public boolean processPart(Part part, ContentType context)
@@ -94,7 +97,9 @@ public class ALAttachmentsExtractor extends AttachmentsExtractor {
   /**
    * 指定添付ファイルのファイル名を取得する．
    * 
-   * @see com.sk_jp.mail.AttachmentsExtractor#getFileName(int)
+   * @param index
+   * @return
+   * @throws MessagingException
    */
   @Override
   public String getFileName(int index) throws MessagingException {
@@ -136,7 +141,9 @@ public class ALAttachmentsExtractor extends AttachmentsExtractor {
   /**
    * 指定添付ファイルのサイズを取得する．
    * 
-   * @see com.sk_jp.mail.AttachmentsExtractor#getSize(int)
+   * @param index
+   * @return
+   * @throws MessagingException
    */
   @Override
   public int getSize(int index) throws MessagingException {
@@ -146,7 +153,10 @@ public class ALAttachmentsExtractor extends AttachmentsExtractor {
   /**
    * 指定添付ファイルを読み込むストリームを取得する．
    * 
-   * @see com.sk_jp.mail.AttachmentsExtractor#getInputStream(int)
+   * @param index
+   * @return
+   * @throws MessagingException
+   * @throws IOException
    */
   @Override
   public InputStream getInputStream(int index) throws MessagingException,

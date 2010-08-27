@@ -77,7 +77,6 @@ public class ALPop3Message extends POP3Message implements ALMailMessage {
   /**
    * 件名を取得する．
    * 
-   * @see javax.mail.Message#getSubject()
    */
   @Override
   public String getSubject() throws MessagingException {

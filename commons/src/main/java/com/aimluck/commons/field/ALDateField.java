@@ -153,7 +153,6 @@ public class ALDateField extends ALAbstractField {
    * 入力フィールド値（文字列）を設定します。<br />
    * 入力書式：YYYY-mm-DD 例) 2004-5-01
    * 
-   * @see com.aimluck.commons.field.ALAbstractField#setValue(java.lang.String)
    */
   @Override
   public void setValue(String str) {

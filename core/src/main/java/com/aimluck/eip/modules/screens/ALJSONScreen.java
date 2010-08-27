@@ -66,7 +66,8 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
 
   /**
    * 
-   * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
+   * @param rundata
+   * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata) throws Exception {
@@ -90,8 +91,8 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
           .append("/* ")
           .append(getJSONString(rundata, context))
           .append(" */");
-      byte[] byteResult = result.toString().getBytes(
-          ALEipConstants.DEF_CONTENT_ENCODING);
+      byte[] byteResult =
+        result.toString().getBytes(ALEipConstants.DEF_CONTENT_ENCODING);
 
       HttpServletResponse response = rundata.getResponse();
       out = response.getOutputStream();
@@ -106,7 +107,8 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
 
   /**
    * 
-   * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.util.RunData)
+   * @param rundata
+   * @return
    */
   @Override
   protected String getContentType(RunData rundata) {
