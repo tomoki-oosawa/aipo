@@ -31,7 +31,6 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 public class FileIOCsvUtils {
 
   /** logger */
-  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(FileIOCsvUtils.class.getName());
 
@@ -52,7 +51,7 @@ public class FileIOCsvUtils {
             maxNum = tmpInt + 1;
           }
         } catch (NumberFormatException e) {
-         logger.error(e);
+          logger.error(e);
         }
       }
     }
