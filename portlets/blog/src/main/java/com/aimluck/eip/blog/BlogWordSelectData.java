@@ -138,13 +138,13 @@ public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
       DataRow dataRow = obj;
 
       Integer entry_id = dataRow.getValue(EipTBlogEntry.ENTRY_ID_PK_COLUMN);
-      long ower_id = dataRow.getValue(EipTBlogEntry.OWNER_ID_COLUMN);
+      Integer ower_id = dataRow.getValue(EipTBlogEntry.OWNER_ID_COLUMN);
 
       BlogEntryResultData rd = new BlogEntryResultData();
       rd.initField();
       rd.setEntryId(entry_id.longValue());
       rd.setOwnerId(ower_id);
-      rd.setOwnerName(BlogUtils.getUserFullName((int) ower_id));
+      rd.setOwnerName(BlogUtils.getUserFullName(ower_id));
 
       rd.setTitle(ALCommonUtils.compressString((String) dataRow
         .get(EipTBlogEntry.TITLE_COLUMN), getStrLength()));
