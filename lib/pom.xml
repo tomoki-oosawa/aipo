@@ -12,7 +12,7 @@
 
   <groupId>com.aimluck.eip</groupId>
   <artifactId>lib</artifactId>
-  <version>${aipo.version}</version>
+  <version>5.0.3</version>
   <packaging>pom</packaging>
 
   <name>lib</name>
