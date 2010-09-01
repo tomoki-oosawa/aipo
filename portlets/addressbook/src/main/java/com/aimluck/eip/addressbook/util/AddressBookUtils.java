@@ -24,6 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.cayenne.DataRow;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -43,7 +44,6 @@ import com.aimluck.eip.cayenne.om.security.TurbineGroup;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.DataRow;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -359,10 +359,14 @@ public class AddressBookUtils {
         dataRow = list.get(i);
         StringBuffer strBuf = new StringBuffer();
         strBuf
-          .append(dataRow.getValue(EipMAddressbook.LAST_NAME_COLUMN))
-          .append(dataRow.getValue(EipMAddressbook.FIRST_NAME_COLUMN));
+          .append(
+            Database.getFromDataRow(dataRow, EipMAddressbook.LAST_NAME_COLUMN))
+          .append(
+            Database.getFromDataRow(dataRow, EipMAddressbook.FIRST_NAME_COLUMN));
         String companyName =
-          dataRow.getValue(EipMAddressbookCompany.COMPANY_NAME_COLUMN);
+          (String) Database.getFromDataRow(
+            dataRow,
+            EipMAddressbookCompany.COMPANY_NAME_COLUMN);
         if (companyName != null && companyName.trim().length() > 0) {
           strBuf.append(" (").append(companyName).append(")");
         }

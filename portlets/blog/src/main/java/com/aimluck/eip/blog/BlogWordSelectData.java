@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.jar.Attributes;
 
+import org.apache.cayenne.DataRow;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -41,7 +42,6 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.DataRow;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -137,8 +137,14 @@ public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
     try {
       DataRow dataRow = obj;
 
-      Integer entry_id = dataRow.getValue(EipTBlogEntry.ENTRY_ID_PK_COLUMN);
-      Integer ower_id = dataRow.getValue(EipTBlogEntry.OWNER_ID_COLUMN);
+      Integer entry_id =
+        (Integer) Database.getFromDataRow(
+          dataRow,
+          EipTBlogEntry.ENTRY_ID_PK_COLUMN);
+      Integer ower_id =
+        (Integer) Database.getFromDataRow(
+          dataRow,
+          EipTBlogEntry.OWNER_ID_COLUMN);
 
       BlogEntryResultData rd = new BlogEntryResultData();
       rd.initField();

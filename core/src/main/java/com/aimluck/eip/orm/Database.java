@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.apache.cayenne.DataObject;
 import org.apache.cayenne.DataObjectUtils;
+import org.apache.cayenne.DataRow;
 import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.access.DataContext;
@@ -298,6 +299,22 @@ public class Database {
       dataContext.rollbackChanges();
     } catch (Throwable t) {
       logger.warn(t);
+    }
+  }
+
+  /**
+   * DataRow から指定したキーの値を取得します。
+   * 
+   * @param dataRow
+   * @param key
+   * @return
+   */
+  public static Object getFromDataRow(DataRow dataRow, Object key) {
+    String lowerKey = ((String) key).toLowerCase();
+    if (dataRow.containsKey(lowerKey)) {
+      return dataRow.get(lowerKey);
+    } else {
+      return dataRow.get(((String) key).toUpperCase());
     }
   }
 

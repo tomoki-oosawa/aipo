@@ -125,6 +125,29 @@ public class SelectQuery<M> extends AbstractQuery<M> {
     }
   }
 
+  public List<DataRow> fetchListAsDataRow() {
+    delegate.setFetchingDataRows(true);
+    @SuppressWarnings("unchecked")
+    List<DataRow> dataRows = dataContext.performQuery(delegate);
+    totalCount = dataRows.size();
+    List<DataRow> results = new ArrayList<DataRow>();
+    int pageSize = delegate.getPageSize();
+    if (pageSize > 0) {
+      int num = ((int) (Math.ceil(totalCount / (double) pageSize)));
+      if ((num > 0) && (num < page)) {
+        page = num;
+      }
+      int start = pageSize * (page - 1);
+      int end =
+        (start + pageSize <= totalCount) ? start + pageSize : totalCount;
+      for (int i = start; i < end; i++) {
+        results.add(dataRows.get(i));
+      }
+    }
+
+    return results;
+  }
+
   public ResultList<M> getResultList() {
     List<M> fetchList = fetchList();
     return new ResultList<M>(

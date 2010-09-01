@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.cayenne.DataRow;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -41,7 +42,6 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.DataRow;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
@@ -625,11 +625,14 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
         dataRow = list2.get(i);
         address = new AddressBookFilterData();
         address.initField();
-        address.setAddressId((Integer) dataRow
-          .getValue(EipMAddressbook.ADDRESS_ID_PK_COLUMN));
-        address.setFullName((String) dataRow
-          .getValue(EipMAddressbook.LAST_NAME_COLUMN), (String) dataRow
-          .getValue(EipMAddressbook.FIRST_NAME_COLUMN));
+        address.setAddressId((Integer) Database.getFromDataRow(
+          dataRow,
+          EipMAddressbook.ADDRESS_ID_PK_COLUMN));
+        address.setFullName((String) Database.getFromDataRow(
+          dataRow,
+          EipMAddressbook.LAST_NAME_COLUMN), (String) Database.getFromDataRow(
+          dataRow,
+          EipMAddressbook.FIRST_NAME_COLUMN));
         addressList.add(address);
       }
     } catch (Exception ex) {

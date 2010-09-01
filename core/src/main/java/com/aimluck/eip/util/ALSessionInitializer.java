@@ -35,18 +35,6 @@ public class ALSessionInitializer {
 
   public void initializeSession(JetspeedRunData jdata, String peid) {
 
-    // for debug
-    // Hashtable ht = jdata.getUser().getTempStorage();
-    // Enumeration keys = ht.keys();
-    // System.out.println("===========================================");
-    // for (; keys.hasMoreElements();) {
-    // System.out.println("--------------------------------------------");
-    // Object obj = keys.nextElement();
-    // System.out.println("[key ] " + obj);
-    // System.out.println("[Valeu] " + ht.get(obj));
-    // }
-    // end for debug
-
     String portletName =
       jdata.getProfile().getDocument().getEntryById(peid).getParent();
 

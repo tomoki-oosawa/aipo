@@ -144,7 +144,6 @@ public class ALCustomizeAction extends VelocityPortletAction {
     // save the entry in the session
     List<Parameter> params = new ArrayList<Parameter>();
     Iterator<?> i = entry.getParameterNames();
-    // System.out.println("==========================================");
     while (i.hasNext()) {
       String name = (String) i.next();
       Parameter param = entry.getParameter(name);
@@ -163,16 +162,10 @@ public class ALCustomizeAction extends VelocityPortletAction {
           clone.setType(param.getType());
           if (instance.getAttribute(name, null) != null) {
             clone.setValue(instance.getAttribute(name));
-            // System.out.println("Adding value from instance [" + name + "] =
-            // [" + clone.getValue() + "]");
           } else if (p.getPortletConfig().getInitParameter(name) != null) {
             clone.setValue(p.getPortletConfig().getInitParameter(name));
-            // System.out.println("Adding value from init [" + name + "] = [" +
-            // clone.getValue() + "]");
           } else {
             clone.setValue(param.getValue());
-            // System.out.println("Adding value from registry [" + name + "] =
-            // [" + clone.getValue() + "]");
           }
           params.add(clone);
         }
@@ -440,7 +433,6 @@ public class ALCustomizeAction extends VelocityPortletAction {
 
       Iterator<?> i = params.iterator();
 
-      // System.out.println("==========================================");
       while (i.hasNext()) {
         Parameter param = (Parameter) i.next();
         String name = param.getName();
@@ -456,27 +448,18 @@ public class ALCustomizeAction extends VelocityPortletAction {
           }
         }
         String regValue = regEntry.getParameter(name).getValue();
-        // param.getValue();
         String psmlValue = instance.getAttribute(name);
-
-        // System.out.println(name + "= [" + psmlValue + "] in psml");
-        // System.out.println(name + "= [" + regValue + "] in registry");
 
         // New value for this parameter exists
         if (newValue != null) {
-          // System.out.println(name + "= [" + newValue + "] in request");
-          // New value differs from registry - record it in psml
           if (!regValue.equals(newValue) || !psmlValue.equals(newValue)) {
             instance.setAttribute(name, newValue);
             psmlValue = newValue;
-            // System.out.println("setting attribute for [" + name + "] to [" +
-            // newValue + "]");
           }
           madePsChange = true;
         }
         // Remove duplicate parameters from psml
         if (psmlValue != null && psmlValue.equals(regValue)) {
-          // System.out.println("removing attribute for [" + name + "]");
           instance.removeAttribute(name);
           madePsChange = true;
         }

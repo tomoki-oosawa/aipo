@@ -267,7 +267,6 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
 
       int start = rundata.getParameters().getInt("start", -1);
       if (start < 0) {
-        // System.out.println("Clearing session variables");
         start = 0;
         PortletSessionState.clearAttribute(rundata, USER_SELECTIONS);
         PortletSessionState.clearAttribute(rundata, PORTLET_LIST);
@@ -540,8 +539,6 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
     }
 
     String[] pnames = rundata.getParameters().getStrings("pname");
-    // System.out.println("start = "+start+" size = "+size);
-    // System.out.println("pnames = "+rundata.getParameters());
     Map<String, PortletEntry> userSelections = getUserSelections(rundata);
     List<?> portlets =
       (List<?>) PortletSessionState.getAttribute(rundata, PORTLET_LIST, null);
@@ -565,11 +562,6 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
       }
       PortletSessionState
         .setAttribute(rundata, USER_SELECTIONS, userSelections);
-      /*
-       * Iterator it = userSelections.keySet().iterator();
-       * System.out.print("User Selections: "); while (it.hasNext()) {
-       * System.out.print(", "+it.next()); } System.out.println("\n");
-       */
     } else {
       throw new Exception("Master Portlet List is null!");
     }

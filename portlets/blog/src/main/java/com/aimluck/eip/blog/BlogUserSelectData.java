@@ -114,9 +114,10 @@ public class BlogUserSelectData extends
       } else {
         groupname = "LoginUser";
       }
-
-      return new ResultList<BlogUserResultData>(BlogUtils
-        .getBlogUserResultDataList(groupname));
+      List<BlogUserResultData> list2 =
+        BlogUtils.getBlogUserResultDataList(groupname);
+      return new ResultList<BlogUserResultData>(list2, getCurrentPage(), list2
+        .size(), list2.size());
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;

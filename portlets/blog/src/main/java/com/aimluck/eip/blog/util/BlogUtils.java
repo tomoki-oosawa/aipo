@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.cayenne.DataRow;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.om.profile.Entry;
@@ -59,7 +60,6 @@ import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
-import com.aimluck.eip.orm.query.DataRow;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -432,14 +432,20 @@ public class BlogUtils {
         dataRow = ulist.get(j);
         user = new BlogUserResultData();
         user.initField();
-        user.setUserId(((Integer) dataRow
-          .getValue(TurbineUser.USER_ID_PK_COLUMN)));
-        user.setName((String) dataRow.getValue(TurbineUser.LOGIN_NAME_COLUMN));
-        user.setAliasName((String) ALEipUtils.getObjFromDataRow(
+        user.setUserId((Integer) Database.getFromDataRow(
           dataRow,
-          TurbineUser.FIRST_NAME_COLUMN), (String) dataRow
-          .get(TurbineUser.LAST_NAME_COLUMN));
-        byte[] photo = (byte[]) dataRow.get(TurbineUser.PHOTO_COLUMN);
+          TurbineUser.USER_ID_PK_COLUMN));
+        user.setName((String) Database.getFromDataRow(
+          dataRow,
+          TurbineUser.LOGIN_NAME_COLUMN));
+        user.setAliasName((String) Database.getFromDataRow(
+          dataRow,
+          TurbineUser.FIRST_NAME_COLUMN), (String) Database.getFromDataRow(
+          dataRow,
+          TurbineUser.LAST_NAME_COLUMN));
+        byte[] photo =
+          (byte[]) Database.getFromDataRow(dataRow, TurbineUser.PHOTO_COLUMN);
+
         if (photo != null && photo.length > 0) {
           user.setHasPhoto(true);
         } else {
@@ -449,7 +455,6 @@ public class BlogUtils {
       }
     } catch (Exception ex) {
       logger.error("[BlogUtils]", ex);
-      // throw new ALDBErrorException();
     }
     return list;
   }

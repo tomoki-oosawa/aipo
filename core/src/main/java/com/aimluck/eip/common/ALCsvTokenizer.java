@@ -105,7 +105,6 @@ public class ALCsvTokenizer {
       in = new InputStreamReader(is, "Shift_JIS");
       return true;
     } catch (IOException ie) {
-      // System.out.println("File Not Found!! - "+fname);
       eof = -1;
       logger.error("[ERROR]", ie);
       return false;
