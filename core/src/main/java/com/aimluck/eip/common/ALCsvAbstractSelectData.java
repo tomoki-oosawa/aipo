@@ -36,8 +36,8 @@ import com.aimluck.eip.modules.actions.common.ALAction;
  * CSVファイルの内容を管理するための抽象クラスです。 <br />
  * 
  */
-@SuppressWarnings("rawtypes")
-public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
+public abstract class ALCsvAbstractSelectData<M1, M2> extends
+    ALAbstractSelectData<M1, M2> {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ALCsvAbstractSelectData.class.getName());
@@ -78,7 +78,7 @@ public abstract class ALCsvAbstractSelectData extends ALAbstractSelectData {
   }
 
   @Override
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected M2 selectDetail(RunData rundata, Context context) {
     return null;
   }
 
