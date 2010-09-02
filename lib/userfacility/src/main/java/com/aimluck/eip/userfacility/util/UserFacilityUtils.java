@@ -27,8 +27,6 @@ import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
-import com.aimluck.eip.facility.beans.FacilityLiteBean;
-import com.aimluck.eip.facility.util.FacilityUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.user.beans.UserLiteBean;
 import com.aimluck.eip.user.util.UserUtils;
@@ -41,8 +39,8 @@ import com.aimluck.eip.userfacility.beans.UserFacilityLiteBean;
 public class UserFacilityUtils {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(UserFacilityUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(UserFacilityUtils.class.getName());
 
   /**
    * 
@@ -110,51 +108,6 @@ public class UserFacilityUtils {
       }
     }
 
-    return list;
-  }
-
-  /**
-   * 
-   * @param rundata
-   * @return
-   */
-  public static List<UserFacilityLiteBean> getUserFacilityLiteBeans(
-      RunData rundata, boolean isMygroup, boolean isPost) {
-    UserFacilityLiteBean user;
-    List<UserFacilityLiteBean> list = new ArrayList<UserFacilityLiteBean>();
-    try {
-      List tmp_u_list =
-        UserUtils.getUserGroupLiteBeans(rundata, isMygroup, isPost);
-      int t_size = tmp_u_list.size();
-      UserLiteBean t_user;
-      for (int i = 0; i < t_size; i++) {
-        t_user = (UserLiteBean) tmp_u_list.get(i);
-        user = new UserFacilityLiteBean();
-        user.initField();
-        user.setUserFacilityId(Integer.parseInt(t_user.getUserId()));
-        user.setName(t_user.getName());
-        user.setAliasName(t_user.getAliasName());
-        user.setUserFacilityType("U");
-        list.add(user);
-      }
-
-      List<FacilityLiteBean> tmp_f_list = FacilityUtils.getFacilityLiteBeans();
-      int f_size = tmp_f_list.size();
-      FacilityLiteBean f_user;
-      for (int i = 0; i < f_size; i++) {
-        f_user = tmp_f_list.get(i);
-        user = new UserFacilityLiteBean();
-        user.initField();
-        user.setUserFacilityId(Integer.parseInt(f_user.getFacilityId()));
-        user.setName("f" + user.getUserFacilityId());
-        user.setAliasName(f_user.getFacilityName());
-        user.setUserFacilityType("F");
-        list.add(user);
-      }
-
-    } catch (Exception e) {
-      logger.error("[UserUtils]", e);
-    }
     return list;
   }
 

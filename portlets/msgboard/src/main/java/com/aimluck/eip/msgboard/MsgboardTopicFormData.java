@@ -65,8 +65,8 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 public class MsgboardTopicFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(MsgboardTopicFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(MsgboardTopicFormData.class.getName());
 
   /** トピック名 */
   private ALStringField topic_name;
@@ -259,11 +259,19 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
       // 内容
       note.setValue(topic.getNote());
       // ファイル
-      SelectQuery query = Database.query(EipTMsgboardFile.class);
+      SelectQuery<EipTMsgboardFile> query =
+        Database.query(EipTMsgboardFile.class);
       query.andQualifier(ExpressionFactory.matchDbExp(
         EipTMsgboardFile.EIP_TMSGBOARD_TOPIC_PROPERTY,
         topic.getTopicId()));
-      fileuploadList = query.fetchList();
+      List<EipTMsgboardFile> msgboardFileList = query.fetchList();
+      for (EipTMsgboardFile file : msgboardFileList) {
+        FileuploadLiteBean fbean = new FileuploadLiteBean();
+        fbean.initField();
+        fbean.setFileId(file.getFileId());
+        fbean.setFileName(file.getFileName());
+        fileuploadList.add(fbean);
+      }
 
     } catch (Exception ex) {
       logger.error("Exception", ex);

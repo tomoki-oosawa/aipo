@@ -62,8 +62,8 @@ public class ScheduleSelectData extends
     ALAbstractSelectData<EipTSchedule, EipTSchedule> {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ScheduleSelectData.class.getName());
 
   /** <code>members</code> 共有メンバー */
   private List<ALEipUser> members;
@@ -263,9 +263,11 @@ public class ScheduleSelectData extends
       schedulequery.andQualifier(exp2);
       List<Integer> scheduleList = new ArrayList<Integer>();
       List<EipTSchedule> dummyScheduleList = schedulequery.fetchList();
-      // ダミーの ID がセットされていない？
 
       scheduleList.add(record.getScheduleId());
+      for (EipTSchedule dummy : dummyScheduleList) {
+        scheduleList.add(dummy.getScheduleId());
+      }
 
       // 元のスケジュール及びダミースケジュールに登録されているマップを検索
       SelectQuery<EipTScheduleMap> mapquery =
@@ -445,7 +447,7 @@ public class ScheduleSelectData extends
   }
 
   /*
-   *
+   * 
    */
   @Override
   protected Attributes getColumnMap() {
