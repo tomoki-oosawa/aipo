@@ -37,7 +37,9 @@ import com.aimluck.eip.orm.query.ResultList;
  * 
  * 
  */
-public class FileIOAddressBookCsvSelectData extends ALCsvAbstractSelectData {
+public class FileIOAddressBookCsvSelectData extends
+    ALCsvAbstractSelectData<FileIOAddressBookCsvData, FileIOAddressBookCsvData> {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(FileIOAddressBookCsvSelectData.class.getName());

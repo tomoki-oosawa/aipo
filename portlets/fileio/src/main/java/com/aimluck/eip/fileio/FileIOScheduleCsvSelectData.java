@@ -44,7 +44,8 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  * 
  */
-public class FileIOScheduleCsvSelectData extends ALCsvAbstractSelectData {
+public class FileIOScheduleCsvSelectData extends
+    ALCsvAbstractSelectData<FileIOScheduleCsvData, FileIOScheduleCsvData> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -121,7 +122,7 @@ public class FileIOScheduleCsvSelectData extends ALCsvAbstractSelectData {
    * @return
    */
   @Override
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected FileIOScheduleCsvData selectDetail(RunData rundata, Context context) {
     return null;
   }
 

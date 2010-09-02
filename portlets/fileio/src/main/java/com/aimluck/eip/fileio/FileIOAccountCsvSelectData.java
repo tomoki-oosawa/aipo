@@ -48,7 +48,9 @@ import com.aimluck.eip.util.ALEipUtils;
  * CSV ファイルから読み込んだアカウント情報を表示するクラス．
  * 
  */
-public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
+public class FileIOAccountCsvSelectData
+    extends
+    ALCsvAbstractSelectData<FileIOAccountCsvResultData, FileIOAccountCsvResultData> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -120,7 +122,8 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
    * @return
    */
   @Override
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected FileIOAccountCsvResultData selectDetail(RunData rundata,
+      Context context) {
     return null;
   }
 
@@ -520,7 +523,7 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
    * 
    */
   @Override
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(FileIOAccountCsvResultData obj) {
     return obj;
   }
 
@@ -529,7 +532,7 @@ public class FileIOAccountCsvSelectData extends ALCsvAbstractSelectData {
    * @return
    */
   @Override
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(FileIOAccountCsvResultData obj) {
     return null;
   }
 

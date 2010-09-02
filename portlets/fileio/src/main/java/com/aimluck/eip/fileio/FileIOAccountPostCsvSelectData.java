@@ -36,7 +36,8 @@ import com.aimluck.eip.orm.query.ResultList;
  * CSV ファイルから読み込んだ部署情報を表示するクラス．
  * 
  */
-public class FileIOAccountPostCsvSelectData extends ALCsvAbstractSelectData {
+public class FileIOAccountPostCsvSelectData extends
+    ALCsvAbstractSelectData<FileIOAccountPostCsvData, FileIOAccountPostCsvData> {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(FileIOAccountPostCsvSelectData.class.getName());

@@ -63,7 +63,7 @@ public class ALCSVUtils {
 
   /** テンプレートに出力する際のリスト作成* */
   public static void makeList(RunData rundata, Context context,
-      ALAction action, ALCsvAbstractSelectData listData)// 最初に呼び出されたとき
+      ALAction action, ALCsvAbstractSelectData<?, ?> listData)// 最初に呼び出されたとき
       throws Exception {
     listData.setState(ALCsvTokenizer.CSV_LIST_MODE_READ);
     List<String> sequency =
@@ -86,7 +86,7 @@ public class ALCSVUtils {
 
   /** テンプレートに出力する際のエラーリスト作成* */
   public static void makeErrorList(RunData rundata, Context context,
-      ALAction action, ALCsvAbstractSelectData listData) throws Exception {
+      ALAction action, ALCsvAbstractSelectData<?, ?> listData) throws Exception {
     listData.setState(ALCsvTokenizer.CSV_LIST_MODE_ERROR);
 
     List<String> sequency =
@@ -110,7 +110,7 @@ public class ALCSVUtils {
 
   /** テンプレートに出力する際のリスト作成（複数ページに分割される場合）* */
   public static void makeListPage(RunData rundata, Context context,
-      ALAction action, ALCsvAbstractSelectData listData) throws Exception {
+      ALAction action, ALCsvAbstractSelectData<?, ?> listData) throws Exception {
 
     List<String> sequency =
       stringToArray(ALEipUtils.getTemp(rundata, context, "sequency"));
