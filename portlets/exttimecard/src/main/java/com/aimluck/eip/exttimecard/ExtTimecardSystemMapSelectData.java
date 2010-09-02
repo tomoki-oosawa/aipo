@@ -55,7 +55,8 @@ import com.aimluck.eip.util.ALEipUtils;
  * タイムカード集計の検索データを管理するためのクラスです。 <br />
  * 
  */
-public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
+public class ExtTimecardSystemMapSelectData extends
+    ALAbstractSelectData<EipTExtTimecardSystemMap, EipTExtTimecardSystem> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -105,12 +106,29 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
     try {
 
       String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
+      String sort_type =
+        ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
       SelectQuery<TurbineUser> query = getSelectQueryForUser(rundata, context);
-      buildSelectQueryForListView(query);
+      query.pageSize(getRowsNum());
+      query.page(getCurrentPage());
       /** パラメータにソート文字列が指定されていなければソートを行わない */
       if (sort == null || "".equals(sort)) {
       } else {
-        buildSelectQueryForListViewSort(query, rundata, context);
+        String crt_key = null;
+
+        Attributes map = getColumnMap();
+        crt_key = map.getValue(sort);
+        if (crt_key != null) {
+          if (sort_type != null
+            && ALEipConstants.LIST_SORT_TYPE_DESC.equals(sort_type)) {
+            query.orderDesending(crt_key);
+          } else {
+            query.orderAscending(crt_key);
+            sort_type = ALEipConstants.LIST_SORT_TYPE_ASC;
+          }
+          current_sort = sort;
+          current_sort_type = sort_type;
+        }
       }
       EipTExtTimecardSystem default_system =
         ExtTimecardUtils.getEipTExtTimecardSystemById(1);
@@ -147,20 +165,6 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
       logger.error("Exception", ex);
       return null;
     }
-  }
-
-  /**
-   * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
-   * @param rundata
-   * @param context
-   * @return
-   */
-  private SelectQuery<EipTExtTimecardSystemMap> getSelectQuery(RunData rundata,
-      Context context) {
-    SelectQuery<EipTExtTimecardSystemMap> query =
-      Database.query(EipTExtTimecardSystemMap.class);
-    return buildSelectQueryForFilter(query, rundata, context);
   }
 
   private SelectQuery<TurbineUser> getSelectQueryForUser(RunData rundata,
@@ -214,7 +218,7 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
    * @return
    */
   @Override
-  protected Object selectDetail(RunData rundata, Context context) {
+  protected EipTExtTimecardSystem selectDetail(RunData rundata, Context context) {
     return ExtTimecardUtils.getEipTExtTimecardSystem(rundata, context);
   }
 
@@ -222,9 +226,8 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
    *
    */
   @Override
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(EipTExtTimecardSystemMap record) {
     try {
-      EipTExtTimecardSystemMap record = (EipTExtTimecardSystemMap) obj;
       ExtTimecardSystemMapResultData rd = new ExtTimecardSystemMapResultData();
       rd.initField();
       int userid = record.getUserId();
@@ -245,33 +248,12 @@ public class ExtTimecardSystemMapSelectData extends ALAbstractSelectData {
 
   /**
    * 
-   * @param obj
+   * @param record
    * @return
    */
   @Override
-  protected Object getResultDataDetail(Object obj) {
-    try {
-      EipTExtTimecardSystemMap record = (EipTExtTimecardSystemMap) obj;
-      ExtTimecardSystemMapDetailResultData rd =
-        new ExtTimecardSystemMapDetailResultData();
-      rd.initField();
-      rd.setSystemMapId(record.getSystemMapId());
-      int userid = record.getUserId();
-      ALEipUser user = ALEipUtils.getALEipUser(userid);
-      rd.setUserId(userid);
-      rd.setName(user.getAliasName().getValue());
-      rd.setLoginName(user.getName().toString());
-      rd.setSystemId(record.getEipTExtTimecardSystem().getSystemId());
-      rd.setSystemName(record.getEipTExtTimecardSystem().getSystemName());
-      rd.setPostNameList(AccountUtils.getPostBeanList(userid));
-      rd.setCreateDate(record.getCreateDate().toString());
-      rd.setUpdateDate(record.getUpdateDate().toString());
-
-      return rd;
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
-      return null;
-    }
+  protected Object getResultDataDetail(EipTExtTimecardSystem record) {
+    return null;
   }
 
   /**

@@ -64,23 +64,23 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
   /** 総件数 */
   private int count;
 
-  /** 総ページ数 */
-  private int pages_num = 1;
-
-  /** 現在のページ */
-  private int current_page = 1;
-
   /** 一覧データ */
   private List<Object> list;
 
   /** 詳細データ */
   private Object data;
 
+  /** 総ページ数 */
+  protected int pages_num = 1;
+
+  /** 現在のページ */
+  protected int current_page = 1;
+
   /** 現在のソート */
-  private String current_sort;
+  protected String current_sort;
 
   /** 現在のソートタイプ （asc:昇順、desc:降順） */
-  private String current_sort_type;
+  protected String current_sort_type;
 
   /** 現在のフィルタ */
   protected String current_filter;
