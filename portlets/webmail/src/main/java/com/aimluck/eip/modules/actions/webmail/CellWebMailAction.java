@@ -76,7 +76,6 @@ public class CellWebMailAction extends WebMailAction {
         doWebmail_menu(rundata, context);
       }
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }

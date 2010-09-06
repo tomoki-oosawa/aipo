@@ -112,7 +112,6 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
       this.doOutput(rundata, context);
 
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ALVelocityScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }

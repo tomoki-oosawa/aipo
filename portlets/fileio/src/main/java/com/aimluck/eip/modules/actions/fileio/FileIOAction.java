@@ -90,7 +90,6 @@ public class FileIOAction extends ALBaseAction {
 
       setTemplate(rundata, "fileio-addressbook-csv");
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[AccountAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -290,7 +289,6 @@ public class FileIOAction extends ALBaseAction {
 
       setTemplate(rundata, "fileio-addressbook-company-csv");
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[AccountAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -708,7 +706,6 @@ public class FileIOAction extends ALBaseAction {
       }
       setTemplate(rundata, "fileio-account-post-csv");
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[AccountAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -898,7 +895,6 @@ public class FileIOAction extends ALBaseAction {
       formData.doViewForm(this, rundata, context);
       setTemplate(rundata, "fileio-schedule-csv");
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }

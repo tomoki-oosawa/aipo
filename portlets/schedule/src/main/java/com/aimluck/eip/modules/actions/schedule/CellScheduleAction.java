@@ -129,7 +129,6 @@ public class CellScheduleAction extends ALBaseAction {
         doSchedule_menu(rundata, context);
       }
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -184,7 +183,6 @@ public class CellScheduleAction extends ALBaseAction {
       }
 
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[CellScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -199,7 +197,6 @@ public class CellScheduleAction extends ALBaseAction {
 
       setTemplate(rundata, "schedule-form-selectday");
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[CellScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -227,7 +224,6 @@ public class CellScheduleAction extends ALBaseAction {
         jsLink = null;
       }
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[CellScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -313,7 +309,6 @@ public class CellScheduleAction extends ALBaseAction {
 
       setTemplate(rundata, "schedule-form-date");
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[CellScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -337,7 +332,6 @@ public class CellScheduleAction extends ALBaseAction {
       }
 
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[CellScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -362,7 +356,6 @@ public class CellScheduleAction extends ALBaseAction {
       }
 
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[CellScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -387,7 +380,6 @@ public class CellScheduleAction extends ALBaseAction {
       }
 
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[CellScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -469,7 +461,6 @@ public class CellScheduleAction extends ALBaseAction {
       formNoteData.doViewForm(this, rundata, context, enable_entityid);
       setTemplate(rundata, "schedule-form-note");
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[CellScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -493,7 +484,6 @@ public class CellScheduleAction extends ALBaseAction {
         setTemplate(rundata, "schedule-form-date");
       }
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[CellScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -517,7 +507,6 @@ public class CellScheduleAction extends ALBaseAction {
         setTemplate(rundata, "schedule-form-date");
       }
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[CellScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -546,7 +535,6 @@ public class CellScheduleAction extends ALBaseAction {
         setTemplate(rundata, "schedule-form-note");
       }
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -573,7 +561,6 @@ public class CellScheduleAction extends ALBaseAction {
         jsLink = null;
       }
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -593,7 +580,6 @@ public class CellScheduleAction extends ALBaseAction {
       detailData.doViewDetail(this, rundata, context);
       setTemplate(rundata, "schedule-form-delete");
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -621,7 +607,6 @@ public class CellScheduleAction extends ALBaseAction {
         jsLink = null;
       }
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -640,7 +625,6 @@ public class CellScheduleAction extends ALBaseAction {
       detailData.doViewDetail(this, rundata, context);
       setTemplate(rundata, "schedule-detail");
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -676,7 +660,6 @@ public class CellScheduleAction extends ALBaseAction {
         jsLink = null;
       }
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -780,7 +763,6 @@ public class CellScheduleAction extends ALBaseAction {
       formGroupData.doViewForm(this, rundata, context);
       setTemplate(rundata, "schedule-form-select-group");
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[CellScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -801,7 +783,6 @@ public class CellScheduleAction extends ALBaseAction {
       formGroupData.doViewForm(this, rundata, context);
       setTemplate(rundata, "schedule-form-select-member");
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[CellScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -890,7 +871,6 @@ public class CellScheduleAction extends ALBaseAction {
       // setMode(ALEipConstants.MODE_LIST);
       setTemplate(rundata, "schedule-detail-select-member");
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -906,7 +886,6 @@ public class CellScheduleAction extends ALBaseAction {
 
       setTemplate(rundata, "schedule-form-selectday-select-member");
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[CellScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -940,7 +919,6 @@ public class CellScheduleAction extends ALBaseAction {
         jsLink = null;
       }
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[CellScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -996,7 +974,6 @@ public class CellScheduleAction extends ALBaseAction {
       }
 
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[CellScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -1018,7 +995,6 @@ public class CellScheduleAction extends ALBaseAction {
       detailData.doViewDetail(this, rundata, context);
       setTemplate(rundata, "schedule-form-delete-select-member");
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }

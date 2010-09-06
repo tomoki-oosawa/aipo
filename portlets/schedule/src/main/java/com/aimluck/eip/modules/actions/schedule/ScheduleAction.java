@@ -273,8 +273,6 @@ public class ScheduleAction extends ALBaseAction {
         }
       }
     } catch (Exception ex) {
-      // ex.printStackTrace();
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -325,7 +323,6 @@ public class ScheduleAction extends ALBaseAction {
         doSchedule_list(rundata, context);
       }
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -357,7 +354,6 @@ public class ScheduleAction extends ALBaseAction {
 
       setTemplate(rundata, "schedule-form");
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -403,7 +399,6 @@ public class ScheduleAction extends ALBaseAction {
         }
       }
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -450,7 +445,6 @@ public class ScheduleAction extends ALBaseAction {
         }
       }
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -492,7 +486,6 @@ public class ScheduleAction extends ALBaseAction {
         }
       }
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -567,7 +560,6 @@ public class ScheduleAction extends ALBaseAction {
         setTemplate(rundata, "schedule-list");
       }
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -592,7 +584,6 @@ public class ScheduleAction extends ALBaseAction {
       detailData.doViewDetail(this, rundata, context);
       setTemplate(rundata, "schedule-detail");
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -630,7 +621,6 @@ public class ScheduleAction extends ALBaseAction {
         // jsLink = null;
       }
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
@@ -658,7 +648,6 @@ public class ScheduleAction extends ALBaseAction {
         doSchedule_list(rundata, context);
       }
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ScheduleAction] Exception.", ex);
     }
   }

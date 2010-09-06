@@ -180,7 +180,6 @@ public class AjaxScheduleAction extends ALBaseAction {
       context.put("utils", new ALCommonUtils());
 
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[AjaxScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }

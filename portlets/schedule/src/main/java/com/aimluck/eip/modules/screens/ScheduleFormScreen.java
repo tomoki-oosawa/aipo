@@ -50,7 +50,6 @@ public class ScheduleFormScreen extends ALVelocityScreen {
       doSchedule_form(rundata, context);
 
     } catch (Exception ex) {
-      // ここに到達する場合はバグまたは不具合の可能性アリ
       logger.error("[ScheduleFormScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
