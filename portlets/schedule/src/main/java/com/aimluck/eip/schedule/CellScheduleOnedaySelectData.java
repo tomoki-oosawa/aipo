@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -254,8 +253,9 @@ public class CellScheduleOnedaySelectData extends ScheduleOnedaySelectData {
         + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
 
     // 繰り返しスケジュール（週間）
-    Date date = getViewDate().getValue();
-    int weekindex = date.getDay();
+    Calendar date = Calendar.getInstance();
+    date.setTime(getViewDate().getValue());
+    int weekindex = date.get(Calendar.DAY_OF_WEEK);
     String token = null;
     StringBuffer sb = new StringBuffer();
     sb.append("W");

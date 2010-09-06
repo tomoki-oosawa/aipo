@@ -498,11 +498,13 @@ public class BlogEntrySelectData extends
 
   private void setBlogEntryToMonthCalendar(Date date) {
     CalendarElement element = null;
-    if ((date.getMonth() + 1) != month.getMonth()) {
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(date);
+    if ((cal.get(Calendar.MONTH) + 1) != month.getMonth()) {
       return;
     }
 
-    String d_day = "" + date.getDate();
+    String d_day = "" + cal.get(Calendar.DATE);
     int size = month.size();
     for (int i = 0; i < size; i++) {
       element = month.get(i);

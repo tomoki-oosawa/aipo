@@ -39,8 +39,9 @@ import com.aimluck.eip.userfacility.beans.UserFacilityLiteBean;
 public class UserFacilityUtils {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(UserFacilityUtils.class.getName());
+  @SuppressWarnings("unused")
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(UserFacilityUtils.class.getName());
 
   /**
    * 

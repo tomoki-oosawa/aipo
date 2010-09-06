@@ -1600,10 +1600,13 @@ public class ScheduleUtils {
             continue;
           }
 
-          date.setHours(time.getHours());
-          date.setMinutes(time.getMinutes());
+          Calendar cal2 = Calendar.getInstance();
+          cal2.setTime(time);
+
           cal.setLenient(false);
           cal.setTime(date);
+          cal.set(Calendar.HOUR_OF_DAY, cal2.get(Calendar.HOUR_OF_DAY));
+          cal.set(Calendar.MINUTE, cal2.get(Calendar.MINUTE));
           cal.set(Calendar.SECOND, 0);
           cal.set(Calendar.MILLISECOND, 0);
 
@@ -1653,11 +1656,11 @@ public class ScheduleUtils {
             continue;
           }
 
-          date.setHours(0);
-          date.setMinutes(0);
           Calendar cal = Calendar.getInstance();
           cal.setLenient(false);
           cal.setTime(date);
+          cal.set(Calendar.HOUR_OF_DAY, 0);
+          cal.set(Calendar.MINUTE, 0);
           cal.set(Calendar.SECOND, 0);
           cal.set(Calendar.MILLISECOND, 0);
 
@@ -1779,20 +1782,25 @@ public class ScheduleUtils {
     int YEAR_FIRST = 2004;
     int YEAR_END = 2016;
 
+    Calendar startDate = Calendar.getInstance();
+    startDate.setTime(start_date.getValue());
+    Calendar endDate = Calendar.getInstance();
+    endDate.setTime(end_date.getValue());
+
     if (!is_repeat && !is_span) {
       // 開始日時
       start_date.validate(msgList);
-      int startyear = start_date.getValue().getYear() + 1900;
+      int startyear = startDate.get(Calendar.YEAR);
       if (startyear < YEAR_FIRST || startyear > YEAR_END) {
         msgList.add("『日付』は" + YEAR_FIRST + "年から" + YEAR_END + "年の間で指定してください。");
       }
-      if (start_date.getValue().getMinutes() % 15.0 != 0) {
+      if (startDate.get(Calendar.MINUTE) % 15.0 != 0) {
         msgList.add("『時間』は15分単位で指定してください。");
       }
 
       // 終了日時
       end_date.validate(msgList);
-      if (end_date.getValue().getMinutes() % 15.0 != 0) {
+      if (endDate.get(Calendar.MINUTE) % 15.0 != 0) {
         msgList.add("『時間』は15分単位で指定してください。");
       }
     }
@@ -1816,8 +1824,9 @@ public class ScheduleUtils {
           } else {
             // 期間を指定しているか．
             if ("ON".equals(limit_flag.getValue())) {
-              int limitstartyear =
-                limit_start_date.getValue().getDate().getYear() + 1900;
+              Calendar limitStartDate = Calendar.getInstance();
+              limitStartDate.setTime(limit_start_date.getValue().getDate());
+              int limitstartyear = limitStartDate.get(Calendar.YEAR);
               if (limitstartyear < YEAR_FIRST || limitstartyear > YEAR_END) {
                 msgList.add("『期限の開始日時』は"
                   + YEAR_FIRST
@@ -1825,8 +1834,9 @@ public class ScheduleUtils {
                   + YEAR_END
                   + "年の間で指定してください。");
               }
-              int limitendyear =
-                limit_end_date.getValue().getDate().getYear() + 1900;
+              Calendar limitEndDate = Calendar.getInstance();
+              limitEndDate.setTime(limit_end_date.getValue().getDate());
+              int limitendyear = limitEndDate.get(Calendar.YEAR);
               if (limitendyear < YEAR_FIRST || limitendyear > YEAR_END) {
                 msgList.add("『期限の終了日時』は"
                   + YEAR_FIRST
@@ -1919,8 +1929,9 @@ public class ScheduleUtils {
           } else {
             month_day.validate(msgList);
             if ("ON".equals(limit_flag.getValue())) {
-              int limitstartyear =
-                limit_start_date.getValue().getDate().getYear() + 1900;
+              Calendar limitStartDate = Calendar.getInstance();
+              limitStartDate.setTime(limit_start_date.getValue().getDate());
+              int limitstartyear = limitStartDate.get(Calendar.YEAR);
               if (limitstartyear < YEAR_FIRST || limitstartyear > YEAR_END) {
                 msgList.add("『期限の開始日時』は"
                   + YEAR_FIRST
@@ -1928,8 +1939,9 @@ public class ScheduleUtils {
                   + YEAR_END
                   + "年の間で指定してください。");
               }
-              int limitendyear =
-                limit_end_date.getValue().getDate().getYear() + 1900;
+              Calendar limitEndDate = Calendar.getInstance();
+              limitEndDate.setTime(limit_end_date.getValue().getDate());
+              int limitendyear = limitEndDate.get(Calendar.YEAR);
               if (limitendyear < YEAR_FIRST || limitendyear > YEAR_END) {
                 msgList.add("『期限の終了日時』は"
                   + YEAR_FIRST
@@ -1970,8 +1982,9 @@ public class ScheduleUtils {
         } else {
           // 期間を指定しているか．
           if ("ON".equals(limit_flag.getValue())) {
-            int limitstartyear =
-              limit_start_date.getValue().getDate().getYear() + 1900;
+            Calendar limitStartDate = Calendar.getInstance();
+            limitStartDate.setTime(limit_start_date.getValue().getDate());
+            int limitstartyear = limitStartDate.get(Calendar.YEAR);
             if (limitstartyear < YEAR_FIRST || limitstartyear > YEAR_END) {
               msgList.add("『期限の開始日時』は"
                 + YEAR_FIRST
@@ -1979,8 +1992,9 @@ public class ScheduleUtils {
                 + YEAR_END
                 + "年の間で指定してください。");
             }
-            int limitendyear =
-              limit_end_date.getValue().getDate().getYear() + 1900;
+            Calendar limitEndDate = Calendar.getInstance();
+            limitEndDate.setTime(limit_end_date.getValue().getDate());
+            int limitendyear = limitEndDate.get(Calendar.YEAR);
             if (limitendyear < YEAR_FIRST || limitendyear > YEAR_END) {
               msgList.add("『期限の終了日時』は"
                 + YEAR_FIRST
@@ -2016,7 +2030,7 @@ public class ScheduleUtils {
     if (is_span) {
       // 開始日時
       start_date.validate(msgList);
-      int startyear = start_date.getValue().getYear() + 1900;
+      int startyear = startDate.get(Calendar.YEAR);
       if (startyear < YEAR_FIRST || startyear > YEAR_END) {
         msgList
           .add("『開始日時』は" + YEAR_FIRST + "年から" + YEAR_END + "年の間で指定してください。");
@@ -2024,7 +2038,7 @@ public class ScheduleUtils {
 
       // 終了日時
       end_date.validate(msgList);
-      int endyear = end_date.getValue().getYear() + 1900;
+      int endyear = endDate.get(Calendar.YEAR);
       if (endyear < YEAR_FIRST || endyear > YEAR_END) {
         msgList
           .add("『終了日時』は" + YEAR_FIRST + "年から" + YEAR_END + "年の間で指定してください。");
@@ -2437,7 +2451,7 @@ public class ScheduleUtils {
         return "T";
       }
     } catch (Exception e) {
-     logger.error(e);
+      logger.error(e);
     }
     return "F";
   }
@@ -2456,7 +2470,7 @@ public class ScheduleUtils {
         return "T";
       }
     } catch (Exception e) {
-     logger.error(e);
+      logger.error(e);
     }
     return "F";
   }
@@ -2475,7 +2489,7 @@ public class ScheduleUtils {
         return "T";
       }
     } catch (Exception e) {
-     logger.error(e);
+      logger.error(e);
     }
     return "F";
   }
@@ -2494,7 +2508,7 @@ public class ScheduleUtils {
         return "T";
       }
     } catch (Exception e) {
-     logger.error(e);
+      logger.error(e);
     }
     return "F";
   }

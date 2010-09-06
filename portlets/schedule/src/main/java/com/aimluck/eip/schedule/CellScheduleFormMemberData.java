@@ -689,15 +689,15 @@ public class CellScheduleFormMemberData extends ALAbstractFormData {
     }
     memberList = CellScheduleUtils.getShareUserMemberList(rundata);
     if (!is_span) {
-      Date date = start_date.getValue();
-      int year = date.getYear();
-      int month = date.getMonth();
-      int day = date.getDate();
-      date = end_date.getValue();
-      date.setYear(year);
-      date.setMonth(month);
-      date.setDate(day);
-      end_date.setValue(date);
+      Calendar startDate = Calendar.getInstance();
+      startDate.setTime(start_date.getValue());
+
+      Calendar endDate = Calendar.getInstance();
+      endDate.setTime(end_date.getValue());
+      endDate.set(Calendar.YEAR, startDate.get(Calendar.YEAR));
+      endDate.set(Calendar.MONTH, startDate.get(Calendar.MONTH));
+      endDate.set(Calendar.DATE, startDate.get(Calendar.DATE));
+      end_date.setValue(endDate.getTime());
       facilityMemberList =
         CellScheduleUtils.getShareFacilityMemberList(rundata);
     }

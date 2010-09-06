@@ -215,7 +215,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   private boolean is_facility;
 
   /** 施設リスト */
-  private List facilityList;
+  private List<Object> facilityList;
 
   /** 全施設リスト */
   private List<FacilityResultData> facilityAllList;
@@ -1060,14 +1060,18 @@ public class ScheduleFormData extends ALAbstractFormData {
       // Validate のときに SELECT していることに注意する
 
       if (is_span) {
-        Date startdate = start_date.getValue();
-        startdate.setHours(0);
-        startdate.setMinutes(0);
-        start_date.setValue(startdate);
-        Date enddate = end_date.getValue();
-        enddate.setHours(0);
-        enddate.setMinutes(0);
-        end_date.setValue(enddate);
+        Calendar startDate = Calendar.getInstance();
+        startDate.setTime(start_date.getValue());
+        startDate.set(Calendar.HOUR_OF_DAY, 0);
+        startDate.set(Calendar.MINUTE, 0);
+
+        Calendar endDate = Calendar.getInstance();
+        endDate.setTime(end_date.getValue());
+        endDate.set(Calendar.HOUR_OF_DAY, 0);
+        endDate.set(Calendar.MINUTE, 0);
+
+        start_date.setValue(startDate.getTime());
+        end_date.setValue(endDate.getTime());
       } else {
         Calendar startcal = new GregorianCalendar();
         startcal.setTime(start_date.getValue());
@@ -1350,14 +1354,18 @@ public class ScheduleFormData extends ALAbstractFormData {
       // Validate のときに SELECT していることに注意する
 
       if (is_span) {
-        Date startdate = start_date.getValue();
-        startdate.setHours(0);
-        startdate.setMinutes(0);
-        start_date.setValue(startdate);
-        Date enddate = end_date.getValue();
-        enddate.setHours(0);
-        enddate.setMinutes(0);
-        end_date.setValue(enddate);
+        Calendar startDate = Calendar.getInstance();
+        startDate.setTime(start_date.getValue());
+        startDate.set(Calendar.HOUR_OF_DAY, 0);
+        startDate.set(Calendar.MINUTE, 0);
+
+        Calendar endDate = Calendar.getInstance();
+        endDate.setTime(end_date.getValue());
+        endDate.set(Calendar.HOUR_OF_DAY, 0);
+        endDate.set(Calendar.MINUTE, 0);
+
+        start_date.setValue(startDate.getTime());
+        end_date.setValue(endDate.getTime());
       } else {
         Calendar startcal = new GregorianCalendar();
         startcal.setTime(start_date.getValue());

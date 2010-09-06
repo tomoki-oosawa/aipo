@@ -677,15 +677,16 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
     }
     memberList = CellScheduleUtils.getShareUserMemberList(rundata);
     if (!is_span) {
-      Date date = start_date.getValue();
-      int year = date.getYear();
-      int month = date.getMonth();
-      int day = date.getDate();
-      date = end_date.getValue();
-      date.setYear(year);
-      date.setMonth(month);
-      date.setDate(day);
-      end_date.setValue(date);
+      Calendar startDate = Calendar.getInstance();
+      startDate.setTime(start_date.getValue());
+
+      Calendar endDate = Calendar.getInstance();
+      endDate.setTime(end_date.getValue());
+      endDate.set(Calendar.YEAR, startDate.get(Calendar.YEAR));
+      endDate.set(Calendar.MONTH, startDate.get(Calendar.MONTH));
+      endDate.set(Calendar.DATE, startDate.get(Calendar.DATE));
+      end_date.setValue(endDate.getTime());
+
       facilityMemberList =
         CellScheduleUtils.getShareFacilityMemberList(rundata);
     }
@@ -807,14 +808,18 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
       // Validate のときに SELECT していることに注意する
 
       if (isSpan()) {
-        Date startdate = getStartDate().getValue();
-        startdate.setHours(0);
-        startdate.setMinutes(0);
-        getStartDate().setValue(startdate);
-        Date enddate = getEndDate().getValue();
-        enddate.setHours(0);
-        enddate.setMinutes(0);
-        getEndDate().setValue(enddate);
+        Calendar startDate = Calendar.getInstance();
+        startDate.setTime(start_date.getValue());
+        startDate.set(Calendar.HOUR_OF_DAY, 0);
+        startDate.set(Calendar.MINUTE, 0);
+
+        Calendar endDate = Calendar.getInstance();
+        endDate.setTime(end_date.getValue());
+        endDate.set(Calendar.HOUR_OF_DAY, 0);
+        endDate.set(Calendar.MINUTE, 0);
+
+        start_date.setValue(startDate.getTime());
+        end_date.setValue(endDate.getTime());
       } else {
         Calendar startcal = new GregorianCalendar();
         startcal.setTime(getStartDate().getValue());
@@ -1061,14 +1066,18 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
       // Validate のときに SELECT していることに注意する
 
       if (isSpan()) {
-        Date startdate = start_date.getValue();
-        startdate.setHours(0);
-        startdate.setMinutes(0);
-        start_date.setValue(startdate);
-        Date enddate = end_date.getValue();
-        enddate.setHours(0);
-        enddate.setMinutes(0);
-        end_date.setValue(enddate);
+        Calendar startDate = Calendar.getInstance();
+        startDate.setTime(start_date.getValue());
+        startDate.set(Calendar.HOUR_OF_DAY, 0);
+        startDate.set(Calendar.MINUTE, 0);
+
+        Calendar endDate = Calendar.getInstance();
+        endDate.setTime(end_date.getValue());
+        endDate.set(Calendar.HOUR_OF_DAY, 0);
+        endDate.set(Calendar.MINUTE, 0);
+
+        start_date.setValue(startDate.getTime());
+        end_date.setValue(endDate.getTime());
       } else {
         Calendar startcal = new GregorianCalendar();
         startcal.setTime(start_date.getValue());
