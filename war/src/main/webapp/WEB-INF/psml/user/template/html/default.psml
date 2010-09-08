@@ -1,22 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-Aipo is a groupware program developed by Aimluck,Inc.
-Copyright (C) 2004-2008 Aimluck,Inc.
-http://aipostyle.com/
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.
--->
 <portlets>
     <metainfo>
         <title>Aipo</title>
@@ -36,7 +18,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                 <property name="column" value="1"/>
                 <property name="row" value="0"/>
             </layout>
-            <parameter name="p1b-rows" value="18"/>
         </entry>
         <entry parent="Workflow">
             <layout position="-1" size="-1">
@@ -53,7 +34,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <entry parent="Note">
             <layout position="-1" size="-1">
                 <property name="column" value="0"/>
-                <property name="row" value="2"/>
+                <property name="row" value="3"/>
             </layout>
         </entry>
         <entry parent="ExtTimecard">
@@ -65,19 +46,19 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <entry parent="AddressBook">
             <layout position="-1" size="-1">
                 <property name="column" value="0"/>
-                <property name="row" value="3"/>
+                <property name="row" value="4"/>
             </layout>
         </entry>
         <entry parent="Memo">
             <layout position="-1" size="-1">
                 <property name="column" value="0"/>
-                <property name="row" value="4"/>
+                <property name="row" value="5"/>
             </layout>
         </entry>
         <entry parent="ExternalSearch">
             <layout position="-1" size="-1">
                 <property name="column" value="0"/>
-                <property name="row" value="5"/>
+                <property name="row" value="7"/>
             </layout>
         </entry>
         <entry parent="WebPage">
@@ -97,6 +78,29 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                 <property name="column" value="1"/>
                 <property name="row" value="3"/>
             </layout>
+        </entry>
+        <entry parent="WhatsNew">
+            <layout position="-1" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="2"/>
+            </layout>
+        </entry>
+        <entry parent="MyLink">
+            <metainfo>
+                <title>アイポリンク集</title>
+            </metainfo>
+            <layout position="-1" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="6"/>
+            </layout>
+            <parameter name="p1a-title1" value="無料グループウェア「アイポ」"/>
+            <parameter name="p1b-link1" value="http://aipostyle.com"/>
+            <parameter name="p2a-title2" value="グループウェアASP「アイポプラス」"/>
+            <parameter name="p2b-link2" value="http://plus.aipostyle.com"/>
+            <parameter name="p3a-title3" value="アイポユーザーコミュニティ"/>
+            <parameter name="p3b-link3" value="http://user.aipostyle.com"/>
+            <parameter name="p4a-title4" value="アイポプロジェクト"/>
+            <parameter name="p4b-link4" value="http://code.google.com/p/aipo"/>
         </entry>
     </portlets>
     <portlets>
@@ -122,31 +126,42 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     </portlets>
     <portlets>
         <metainfo>
-            <title>スケジュール</title>
             <description></description>
+            <title>個人予定</title>
         </metainfo>
         <security-ref parent="owner-only"/>
         <layout position="1" size="-1"/>
-        <controller name="OneColumn"/>
+        <controller name="TwoColumnsLeft"/>
         <entry parent="Schedule">
+            <metainfo>
+                <title>スケジュール・個人1日</title>
+            </metainfo>
             <layout position="-1" size="-1">
-                <property name="column" value="0"/>
-                <property name="row" value="1"/>
+                <property name="column" value="1"/>
+                <property name="row" value="0"/>
             </layout>
-            <parameter name="pba-template" value="schedule-weekly-group"/>
+            <parameter name="p7a-tab" value="1"/>
+            <parameter name="p8a-tab" value="1"/>
+            <parameter name="p9a-tab" value="1"/>
+            <parameter name="paa-tab" value="1"/>
         </entry>
         <entry parent="Schedule">
+            <metainfo>
+                <title>スケジュール・個人</title>
+            </metainfo>
             <layout position="-1" size="-1">
                 <property name="column" value="0"/>
                 <property name="row" value="0"/>
             </layout>
             <parameter name="pba-template" value="schedule-monthly"/>
+            <parameter name="p9a-tab" value="1"/>
+            <parameter name="paa-tab" value="1"/>
         </entry>
     </portlets>
     <portlets>
         <metainfo>
-            <title>グループ</title>
             <description></description>
+            <title>グループ・施設</title>
         </metainfo>
         <security-ref parent="owner-only"/>
         <layout position="2" size="-1"/>
@@ -164,42 +179,56 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             </layout>
         </entry>
         <entry parent="Schedule">
+            <metainfo>
+                <title>スケジュール・施設</title>
+            </metainfo>
             <layout position="-1" size="-1">
                 <property name="column" value="1"/>
                 <property name="row" value="0"/>
             </layout>
-            <parameter name="pba-template" value="schedule-oneday-group"/>
+            <parameter name="pba-template" value="schedule-weekly-group"/>
+            <parameter name="p3a-group" value="Facility"/>
+            <parameter name="p6a-tab" value="1"/>
+            <parameter name="p7a-tab" value="1"/>
+            <parameter name="p8a-tab" value="1"/>
         </entry>
-        <entry parent="Workflow">
+        <entry parent="Schedule">
+            <metainfo>
+                <title>スケジュール・グループ</title>
+            </metainfo>
             <layout position="-1" size="-1">
                 <property name="column" value="1"/>
                 <property name="row" value="1"/>
             </layout>
+            <parameter name="p6a-tab" value="1"/>
+            <parameter name="p7a-tab" value="1"/>
+            <parameter name="p8a-tab" value="1"/>
+            <parameter name="pba-template" value="schedule-weekly-group"/>
         </entry>
     </portlets>
     <portlets>
         <metainfo>
-            <title>コミュニケーション</title>
             <description></description>
+            <title>情報共有</title>
         </metainfo>
         <security-ref parent="owner-only"/>
         <layout position="3" size="-1"/>
-        <controller name="TwoColumnsRight"/>
-        <entry parent="WhatsNew">
-            <layout position="-1" size="-1">
-                <property name="column" value="0"/>
-                <property name="row" value="0"/>
-            </layout>
-        </entry>
+        <controller name="TwoColumns"/>
         <entry parent="Msgboard">
             <layout position="-1" size="-1">
-                <property name="column" value="1"/>
+                <property name="column" value="0"/>
                 <property name="row" value="0"/>
             </layout>
         </entry>
         <entry parent="Blog">
             <layout position="-1" size="-1">
                 <property name="column" value="1"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+        <entry parent="Cabinet">
+            <layout position="-1" size="-1">
+                <property name="column" value="0"/>
                 <property name="row" value="1"/>
             </layout>
         </entry>
