@@ -95,7 +95,7 @@
             </layout>
             <parameter name="p1a-title1" value="無料グループウェア「アイポ」"/>
             <parameter name="p1b-link1" value="http://aipostyle.com"/>
-            <parameter name="p2a-title2" value="グループウェアASP「アイポプラス」"/>
+            <parameter name="p2a-title2" value="グループウェアSaaS「アイポプラス」"/>
             <parameter name="p2b-link2" value="http://plus.aipostyle.com"/>
             <parameter name="p3a-title3" value="アイポユーザーコミュニティ"/>
             <parameter name="p3b-link3" value="http://user.aipostyle.com"/>
