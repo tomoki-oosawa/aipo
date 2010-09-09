@@ -66,7 +66,7 @@
 $!{record.FilterType}が$!{record.FilterString}を含む
 #ALtdcellfooter()
 #ALtdcell("$!record.DstFolderName")
-#ALtdcellAtt("#ALajaxbuttonLink('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormScreen').addQueryData('mode','form').addQueryData('entityid',$record.FilterId) 'themes/$!theme/images/icon/icon_edit.gif')" 'nowrap')
+#ALtdcellAtt("#ALajaxbuttonLink('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormScreen').addQueryData('mode','form').addQueryData('entityid',$record.FilterId) 'images/icon/icon_edit.gif')" 'nowrap')
 </tr>
 #end
 #ALtablefooter()

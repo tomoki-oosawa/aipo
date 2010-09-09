@@ -36,12 +36,12 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
+import java.util.TreeMap;
 
 import javax.activation.DataHandler;
 import javax.crypto.Cipher;
@@ -188,11 +188,17 @@ public class ALMailUtils {
   private static final String seacretPassword = "1t's a s3@cr3t k3y";
 
   /** フィルタタイプ */
+  /** 送信元メールアドレス */
   public final static String FILTER_TYPE_MAILADDRESS = "M";
 
+  /** 送信元ドメイン */
   public final static String FILTER_TYPE_DOMAIN = "D";
 
+  /** 件名 */
   public final static String FILTER_TYPE_SUBJECT = "S";
+
+  /** 送信先メールアドレス */
+  public final static String FILTER_TYPE_TO = "T";
 
   /** セッションの識別子 */
   public static final String FOLDER_ID = "folderid";
@@ -2020,15 +2026,16 @@ public class ALMailUtils {
   }
 
   /**
-   * メールがフィルタの条件(件名、送信元ドメイン、送信元メールアドレス)に合致するかどうか調べます。
+   * メールがフィルタの条件(件名、送信元メールアドレス、送信先メールアドレス)に合致するかどうか調べます。
    * 
    * @param mailFilter
    * @param subject
-   * @param person
+   * @param from
+   * @param receivers
    * @return boolean
    */
   public static boolean isMatchFilter(EipTMailFilter mailFilter,
-      String subject, String person) {
+      String subject, String from, Address[] receivers) {
     String filterType = mailFilter.getFilterType();
     String filterString = mailFilter.getFilterString();
     // int dstFolderId = mailFilter.getEipTMailFolder().getFolderId();
@@ -2036,7 +2043,7 @@ public class ALMailUtils {
     if (FILTER_TYPE_DOMAIN.equals(filterType)) {
       // ドメインを含む
       try {
-        String[] domainArray = person.split("@");
+        String[] domainArray = from.split("@");
         String domain = domainArray[domainArray.length - 1];
         return domain.toLowerCase().contains(filterString.toLowerCase());
       } catch (Exception e) {
@@ -2044,7 +2051,7 @@ public class ALMailUtils {
       }
     } else if (FILTER_TYPE_MAILADDRESS.equals(filterType)) {
       // メールアドレスを含む
-      String[] mailAddrArray = person.split("<");
+      String[] mailAddrArray = from.split("<");
       String mailAddr = mailAddrArray[mailAddrArray.length - 1];
       return mailAddr.toLowerCase().contains(filterString.toLowerCase());
 
@@ -2052,6 +2059,18 @@ public class ALMailUtils {
       // 件名を含む
       return MailUtility.decodeText(subject).toLowerCase().contains(
         filterString.toLowerCase());
+    } else if (FILTER_TYPE_TO.equals(filterType)) {
+      for (Address address : receivers) {
+        String addressStr = address.toString();
+        String[] mailAddrArray = addressStr.split("<");
+        String mailAddr = mailAddrArray[mailAddrArray.length - 1];
+        boolean result =
+          mailAddr.toLowerCase().contains(filterString.toLowerCase());
+        if (result) {
+          return true;
+        }
+      }
+      return false;
     }
 
     return false;
@@ -2065,9 +2084,11 @@ public class ALMailUtils {
    * @return
    */
   public static Map<String, String> getMailFilterTypeMap() {
-    Map<String, String> typeMap = new HashMap<String, String>();
-    typeMap.put(FILTER_TYPE_MAILADDRESS, "メールアドレス");
-    typeMap.put(FILTER_TYPE_DOMAIN, "ドメイン");
+    Map<String, String> typeMap = new TreeMap<String, String>();
+    typeMap.put(FILTER_TYPE_MAILADDRESS, "送信元（From）");
+    typeMap.put(FILTER_TYPE_TO, "送信先（To）");
+    // ドメインは送信元に包括されるのでコメントアウト
+    // typeMap.put(FILTER_TYPE_DOMAIN, "ドメイン");
     typeMap.put(FILTER_TYPE_SUBJECT, "件名");
 
     return typeMap;

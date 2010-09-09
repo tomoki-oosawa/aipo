@@ -52,7 +52,7 @@
 #else
 #ALtdcellAtt("なし" 'align="center"')
 #end
-#ALtdcellAtt("#ALajaxbuttonLink('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('mode','form').addQueryData('entityid',$record.AccountId) 'themes/$!theme/images/icon/icon_edit.gif')" 'nowrap')
+#ALtdcellAtt("#ALajaxbuttonLink('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('mode','form').addQueryData('entityid',$record.AccountId) 'images/icon/icon_edit.gif')" 'nowrap')
 </tr>
 #end
 #ALtablefooter()

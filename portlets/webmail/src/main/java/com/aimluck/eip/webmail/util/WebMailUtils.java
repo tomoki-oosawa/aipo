@@ -94,6 +94,8 @@ public class WebMailUtils {
   public final static String FILTER_TYPE_SUBJECT =
     ALMailUtils.FILTER_TYPE_SUBJECT;
 
+  public final static String FILTER_TYPE_TO = ALMailUtils.FILTER_TYPE_TO;
+
   public static final List<EipMMailAccount> getMailAccountNameList(int userId) {
     SelectQuery<EipMMailAccount> query = Database.query(EipMMailAccount.class);
 
@@ -482,7 +484,7 @@ public class WebMailUtils {
       res = handler.getNewMailSum(rcontext);
     } catch (Exception e) {
       res = -1;
-     logger.error(e);
+      logger.error(e);
     }
     return (res > 0 ? true : false);
   }

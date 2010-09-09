@@ -180,6 +180,7 @@ public abstract class ALAbstractFolder implements ALFolder {
 
       String subject;
       Address[] presonAddress;
+      Address[] receiveAddress;
       String preson;
       Date sentDate = null;
 
@@ -207,6 +208,12 @@ public abstract class ALAbstractFolder implements ALFolder {
         } catch (MessagingException ex) {
           presonAddress = null;
         }
+      }
+
+      try {
+        receiveAddress = mimeMessage.getAllRecipients();
+      } catch (MessagingException ex) {
+        receiveAddress = null;
       }
 
       if (presonAddress != null && presonAddress.length > 0) {
@@ -270,7 +277,11 @@ public abstract class ALAbstractFolder implements ALFolder {
       List<EipTMailFilter> filters = ALMailUtils.getEipTMailFilters(account);
       if (filters != null) {
         for (EipTMailFilter mailFilter : filters) {
-          if (ALMailUtils.isMatchFilter(mailFilter, subject, preson)) {
+          if (ALMailUtils.isMatchFilter(
+            mailFilter,
+            subject,
+            preson,
+            receiveAddress)) {
             folder_id = mailFilter.getEipTMailFolder().getFolderId();
             break;
           }
