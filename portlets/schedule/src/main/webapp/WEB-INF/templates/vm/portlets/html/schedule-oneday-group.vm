@@ -45,12 +45,12 @@
 <table border="0" cellspacing="0" cellpadding="2"><tbody>
 <tr valign="middle"><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevDate.toString()}))', '$!portlet.ID');" title="前の日へ">
-<img src="images/schedule/arrow_left.gif" border="0" alt="前の日へ" /></a>&nbsp;
+<img src="themes/$!result.Theme/images/icon/arrow_left.gif" border="0" alt="前の日へ" /></a>&nbsp;
 </td><td nowrap="nowrap"><span style="font-weight:bold">
 $!{result.ViewDate.Year} 年 $!{result.ViewDate.Month} 月 $!{result.ViewDate.Day} 日 $!{result.ViewDate.DayOfWeek}
 </span></td><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextDate.toString()}))', '$!portlet.ID');" title="次の日へ">
-<img src="images/schedule/arrow_right.gif" border="0" alt="次の日へ" /></a>&nbsp;
+<img src="themes/$!result.Theme/images/icon/arrow_right.gif" border="0" alt="次の日へ" /></a>&nbsp;
 </td><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.Today.toString()}))', '$!portlet.ID');" title="今日へ">
 <img src="images/schedule/schedule_today.gif" border="0" alt="今日へ" /></a>&nbsp;
@@ -102,9 +102,6 @@ $!{result.ViewDate.Year} 年 $!{result.ViewDate.Month} 月 $!{result.ViewDate.Da
 #if($!result.isDuplicate())
 #ALtdhead("重複")
 #end
-</tr>
-<tr>
-#ALtdcellAtt("" "height='1' colspan='$colspanmax'")
 </tr>
 #foreach($record3 in $result.MemberList)
 <tr>

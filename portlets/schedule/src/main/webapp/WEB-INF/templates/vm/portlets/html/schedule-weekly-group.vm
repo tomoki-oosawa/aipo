@@ -40,18 +40,18 @@
 <tbody>
 <tr valign="middle"><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.PrevWeek.toString()}))', '$!portlet.ID');" title="前の週へ">
-<img src="images/schedule/arrow_left_w.gif" border="0"  alt="前の週へ" /></a>&nbsp;
+<img src="themes/$!result.Theme/images/icon/arrow_left_w.gif" border="0"  alt="前の週へ" /></a>&nbsp;
 </td><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.PrevDate.toString()}))', '$!portlet.ID');" title="前の日へ">
-<img src="images/schedule/arrow_left.gif" border="0"  alt="前の日へ" /></a>&nbsp;
+<img src="themes/$!result.Theme/images/icon/arrow_left.gif" border="0"  alt="前の日へ" /></a>&nbsp;
 </td><td nowrap="nowrap"><span style="font-weight:bold">
 $!{result.ViewStart.Year} 年 $!{result.ViewStart.Month} 月 $!{result.ViewStart.Day} 日 $!{result.ViewStart.DayOfWeek} ～ $!{result.ViewEnd.Month} 月 $!{result.ViewEnd.Day} 日 $!{result.ViewEnd.DayOfWeek}
 </span></td><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextDate.toString()}))', '$!portlet.ID');" title="次の日へ">
-<img src="images/schedule/arrow_right.gif" border="0"  alt="次の日へ" /></a>&nbsp;
+<img src="themes/$!result.Theme/images/icon/arrow_right.gif" border="0"  alt="次の日へ" /></a>&nbsp;
 </td><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextWeek.toString()}))', '$!portlet.ID');" title="次の週へ">
-<img src="images/schedule/arrow_right_w.gif" border="0"  alt="次の週へ" /></a>&nbsp;
+<img src="themes/$!result.Theme/images/icon/arrow_right_w.gif" border="0"  alt="次の週へ" /></a>&nbsp;
 </td><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.Today.toString()}))', '$!portlet.ID');" title="今日へ">
 <img src="images/schedule/schedule_today.gif" border="0"  alt="今日へ" /></a>&nbsp;
@@ -282,11 +282,11 @@ $!{record.ToDoResultData.TodoName}
 #end
 ### 施設スケジュール（ここから） ###
 #if ($roop > 0)
-<tr>
-#foreach ( $num in [1..8] )
-<td class="calendarHeader"><img src="images/common/dot.gif" height="1" alt="" /></td>
-#end
-</tr>
+##<tr>
+##foreach ( $num in [1..8] )
+##<td class="calendarHeader"><img src="images/common/dot.gif" height="1" alt="" /></td>
+##end
+##</tr>
 #end
 #foreach($record3 in $result.FacilityList)
 ### 日付（曜日）の表示(施設用)（ここから）

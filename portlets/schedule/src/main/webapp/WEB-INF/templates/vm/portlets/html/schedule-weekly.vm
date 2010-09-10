@@ -20,18 +20,18 @@
 <table border="0" cellspacing="0" cellpadding="2"><tbody>
 <tr valign="middle"><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.PrevWeek.toString()}))', '$!portlet.ID');" title="前の週へ">
-<img src="images/schedule/arrow_left_w.gif" border="0" alt="前の週へ" /></a>&nbsp;
+<img src="themes/$!result.Theme/images/icon/arrow_left_w.gif" border="0" alt="前の週へ" /></a>&nbsp;
 </td><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.PrevDate.toString()}))', '$!portlet.ID');" title="前の日へ">
-<img src="images/schedule/arrow_left.gif" border="0" alt="前の日へ" /></a>&nbsp;
+<img src="themes/$!result.Theme/images/icon/arrow_left.gif" border="0" alt="前の日へ" /></a>&nbsp;
 </td><td nowrap="nowrap"><span style="font-weight:bold">
 $!{result.ViewStart.Year} 年 $!{result.ViewStart.Month} 月 $!{result.ViewStart.Day} 日 $!{result.ViewStart.DayOfWeek} ～ $!{result.ViewEnd.Month} 月 $!{result.ViewEnd.Day} 日 $!{result.ViewEnd.DayOfWeek}
 </span></td><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextDate.toString()}))', '$!portlet.ID');" title="次の日へ">
-<img src="images/schedule/arrow_right.gif" border="0" alt="次の日へ" /></a>&nbsp;
+<img src="themes/$!result.Theme/images/icon/arrow_right.gif" border="0" alt="次の日へ" /></a>&nbsp;
 </td><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextWeek.toString()}))', '$!portlet.ID');" title="次の週へ">
-<img src="images/schedule/arrow_right_w.gif" border="0" alt="次の週へ" /></a>&nbsp;
+<img src="themes/$!result.Theme/images/icon/arrow_right_w.gif" border="0" alt="次の週へ" /></a>&nbsp;
 </td><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.Today.toString()}))', '$!portlet.ID');" title="今日へ">
 <img src="images/schedule/schedule_today.gif" border="0" alt="今日へ" /></a>&nbsp;
@@ -65,6 +65,9 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #set ($sunday = $velocityCount )
 #ALtdheadheaderAtt("class='saturday' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
+#elseif($!{result.Today.Value} == $!{record.Date.Value})
+#ALtdheadheaderAtt("class='today' nowrap='nowrap'")
+$!{record.Date.Day} $!{record.Date.DayOfWeek}
 #else
 #ALtdheadheaderAtt("nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
@@ -72,7 +75,7 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #ALtdheadfooter()
 #end
 </tr>
-<tr><td></td></tr>
+##<tr><td></td></tr>
 #foreach($termcontainer in $result.TermContainer)
 <tr>
 #set($nottermcount = 0)
@@ -114,7 +117,9 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #set ($color_style_holiday = "")
 #set ($color_style_othermonth = "")
 #set ($holiday_name = "")
-#if($!{record.Date.Value.Day} == 0)
+#if($!{result.Today.Value} == $!{record.Date.Value})
+#set ($color_style = " today")
+#elseif($!{record.Date.Value.Day} == 0)
 #set ($color_style = " sunday")
 #elseif($!{record.Date.Value.Day} == 6)
 #set ($color_style = " saturday")
@@ -172,6 +177,8 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #end
 #end
 <div class="calendarFooter"></div> 
+
+
 </td> 
 #end
 </tr>

@@ -282,11 +282,11 @@ $!{record.ToDoResultData.TodoName}
 #end
 ### 施設スケジュール（ここから） ###
 #if ($roop > 0)
-<tr>
-#foreach ( $num in [1..8] )
-<td class="calendarHeader"><img src="images/common/dot.gif" height="1" alt="" /></td>
-#end
-</tr>
+##<tr>
+##foreach ( $num in [1..8] )
+##<td class="calendarHeader"><img src="images/common/dot.gif" height="1" alt="" /></td>
+##end
+##</tr>
 #end
 #foreach($record3 in $result.FacilityList)
 ### 日付（曜日）の表示(施設用)（ここから）

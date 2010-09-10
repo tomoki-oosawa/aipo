@@ -103,9 +103,6 @@ $!{result.ViewDate.Year} 年 $!{result.ViewDate.Month} 月 $!{result.ViewDate.Da
 #ALtdhead("重複")
 #end
 </tr>
-<tr>
-#ALtdcellAtt("" "height='1' colspan='$colspanmax'")
-</tr>
 #foreach($record3 in $result.MemberList)
 <tr>
 #ALtdheadAtt("$record3.AliasName" "")

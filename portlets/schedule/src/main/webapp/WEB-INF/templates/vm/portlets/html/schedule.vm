@@ -29,4 +29,8 @@
     aipo.schedule.login_aliasname = "$current_user";
 //]]>
 </script>
+#if($!hasMinimumAuthority)
 #parse("/portlets/html/ja/ajax-schedule.vm")
+#else
+#parse("/portlets/html/PermissionError.vm")
+#end

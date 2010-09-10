@@ -51,12 +51,12 @@
 <table border="0" cellspacing="0" cellpadding="2">
 <tr valign="middle"><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="前月へ">
-<img src="images/schedule/arrow_left.gif" border="0" alt="前月へ" /></a>&nbsp;
+<img src="themes/$!result.Theme/images/icon/arrow_left.gif" border="0" alt="前月へ" /></a>&nbsp;
 </td><td nowrap="nowrap"><span style="font-weight:bold">
 $!{result.ViewMonth.Year} 年 $!{result.ViewMonth.Month} 月
 </span></td><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="翌月へ">
-<img src="images/schedule/arrow_right.gif" border="0" alt="翌月へ" /></a>&nbsp;
+<img src="themes/$!result.Theme/images/icon/arrow_right.gif" border="0" alt="翌月へ" /></a>&nbsp;
 </td><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.CurrentMonth.toString()}))', '$!portlet.ID');" title="今月へ">
 <img src="images/schedule/schedule_currentmonth.gif" border="0" alt="今月へ" /></a>&nbsp;
@@ -125,7 +125,9 @@ $!{result.ViewMonth.Year} 年 $!{result.ViewMonth.Month} 月
 #set ($color_style = "")
 #set ($color_style_holiday = "")
 #set ($color_style_othermonth = "")
-#if($!{record.Date.Value.Day} == 0)
+#if($!{result.Today.Value} == $!{record.Date.Value})
+#set ($color_style = " today")
+#elseif($!{record.Date.Value.Day} == 0)
 #set ($color_style = " sunday")
 #elseif($!{record.Date.Value.Day} == 6)
 #set ($color_style = " saturday")
@@ -175,7 +177,9 @@ $!{record.TermResultData.Name}
 #set ($color_style_holiday = "")
 #set ($color_style_othermonth = "")
 #set ($holiday_name = "")
-#if($!{record.Date.Value.Day} == 0)
+#if($!{result.Today.Value} == $!{record.Date.Value})
+#set ($color_style = " today")
+#elseif($!{record.Date.Value.Day} == 0)
 #set ($color_style = " sunday")
 #elseif($!{record.Date.Value.Day} == 6)
 #set ($color_style = " saturday")
@@ -264,12 +268,12 @@ $!{record.TermResultData.Name}
 #end
 #ALtdcellheaderAtt("colspan='$!{record.ToDoResultData.Rowspan}' align='center'")
 <div class="calerndarTodoDiv small">
-#if($result.TargetUserId == $result.UserId)
-<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.ToDoResultData.TodoId}))');">
-#else
-<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoPublicDetailScreen").addQueryData("entityid",$!{record.ToDoResultData.TodoId}))');">
-#end    
-##<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.ToDoResultData.TodoId}))');">	
+#if($result.TargetUserId == $result.UserId) 
+<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.ToDoResultData.TodoId}))');"> 
+#else 
+<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoPublicDetailScreen").addQueryData("entityid",$!{record.ToDoResultData.TodoId}))');"> 
+#end     
+##<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.ToDoResultData.TodoId}))');">  
 $!{record.ToDoResultData.TodoName}
 #if(! ${record.ToDoResultData.isPublic()})
 <img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
