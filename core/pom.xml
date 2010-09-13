@@ -57,7 +57,7 @@
       <version>${aipo.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.commons</groupId>
+      <groupId>org.apache.jetspeed</groupId>
       <artifactId>aipo-jetspeed</artifactId>
       <version>${aipo.version}</version>
     </dependency>
