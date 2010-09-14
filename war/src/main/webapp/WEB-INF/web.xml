@@ -22,7 +22,7 @@
     "http://java.sun.com/j2ee/dtds/web-app_2.2.dtd">
 
 <web-app>
-    <display-name>Aimluck Information Portal</display-name>
+    <display-name>Aipo</display-name>
     <servlet>
         <servlet-name>
            aipo
@@ -48,6 +48,11 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+    <filter>
+      <filter-name>baseFilter</filter-name>	
+      <filter-class>com.aimluck.eip.filter.ALBaseFilter</filter-class>
+    </filter>
+      
     <servlet-mapping>
        <servlet-name>
           aipo
@@ -56,15 +61,13 @@
          /portal/*
        </url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-       <servlet-name>
-          aipo
-       </servlet-name>
-       <url-pattern>
-         /aipo/*
-       </url-pattern>
-    </servlet-mapping>
 
+   <filter-mapping>
+     <filter-name>baseFilter</filter-name>
+     <url-pattern>/*</url-pattern>
+     <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+    
     <mime-mapping>
       <extension>wbmp</extension>
       <mime-type>image/vnd.wap.wbmp</mime-type>

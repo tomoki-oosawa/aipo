@@ -394,8 +394,6 @@ public class BlogEntrySelectData extends
       query.andQualifier(exp21.andExp(exp22));
     }
 
-    query.distinct();
-
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
@@ -427,8 +425,6 @@ public class BlogEntrySelectData extends
         EipTBlogEntry.CREATE_DATE_PROPERTY,
         viewEndCrt.getValue());
     query.andQualifier(exp11.andExp(exp12));
-
-    query.distinct(true);
 
     return query;
   }

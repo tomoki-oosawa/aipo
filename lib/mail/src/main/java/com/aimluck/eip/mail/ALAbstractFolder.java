@@ -557,7 +557,7 @@ public abstract class ALAbstractFolder implements ALFolder {
    *          検索結果
    */
   protected void buildSelectQueryForListView(SelectQuery<EipTMail> query) {
-    query.pageSize(getRowsNum());
+    query.limit(getRowsNum());
   }
 
   /**

@@ -292,7 +292,8 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
    *          検索結果
    */
   protected void buildSelectQueryForListView(SelectQuery<M1> query) {
-    query.pageSize(getRowsNum());
+    // query.pageSize(getRowsNum());
+    query.limit(getRowsNum());
     query.page(current_page);
   }
 

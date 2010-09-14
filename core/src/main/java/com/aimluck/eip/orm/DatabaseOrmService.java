@@ -31,7 +31,6 @@ import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.access.DataDomain;
 import org.apache.cayenne.access.DataNode;
 import org.apache.cayenne.conf.Configuration;
-import org.apache.cayenne.conf.ServletUtil;
 import org.apache.cayenne.dba.AutoAdapter;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -125,44 +124,26 @@ abstract public class DatabaseOrmService extends TurbineBaseService {
    * @return
    */
   public static DataContext getDefaultContext(HttpSession session) {
-    synchronized (session) {
-      try {
-        DataContext ctxt =
-          (DataContext) session.getAttribute(ServletUtil.DATA_CONTEXT_KEY);
 
-        if (ctxt == null) {
-          JetspeedRunData rundata = getInstance().getRunData();
-          if (rundata != null
-            && rundata.getParameters().containsKey(DatabaseOrmService.ORG_PRE)
-            && !"".equals(rundata.getParameters().getString(
-              DatabaseOrmService.ORG_PRE))) {
-            ctxt =
-              DataContext.createDataContext(rundata.getParameters().getString(
-                DatabaseOrmService.ORG_PRE));
-          } else {
-            String org_id = DatabaseOrmService.getInstance().getOrgId(session);
-            ctxt = DataContext.createDataContext(org_id);
-          }
-          session.setAttribute(ServletUtil.DATA_CONTEXT_KEY, ctxt);
-        }
-        return ctxt;
-      } catch (IllegalStateException e) {
-        DataContext ctxt = null;
-        JetspeedRunData rundata = getInstance().getRunData();
-        if (rundata != null
-          && rundata.getParameters().containsKey(DatabaseOrmService.ORG_PRE)
-          && !"".equals(rundata.getParameters().getString(
-            DatabaseOrmService.ORG_PRE))) {
-          ctxt =
-            DataContext.createDataContext(rundata.getParameters().getString(
-              DatabaseOrmService.ORG_PRE));
-        } else {
-          ctxt = DataContext.createDataContext(getInstance().getDefaultOrgId());
-        }
+    DataContext ctxt = DataContextLocator.get();
 
-        return ctxt;
+    if (ctxt == null) {
+      JetspeedRunData rundata = getInstance().getRunData();
+      if (rundata != null
+        && rundata.getParameters().containsKey(DatabaseOrmService.ORG_PRE)
+        && !"".equals(rundata.getParameters().getString(
+          DatabaseOrmService.ORG_PRE))) {
+        ctxt =
+          DataContext.createDataContext(rundata.getParameters().getString(
+            DatabaseOrmService.ORG_PRE));
+      } else {
+        String org_id =
+          DatabaseOrmService.getInstance().getOrgId(rundata.getSession());
+        ctxt = DataContext.createDataContext(org_id);
       }
+      DataContextLocator.set(ctxt);
     }
+    return ctxt;
   }
 
   public DataContext getDataContext() {

@@ -157,7 +157,7 @@ public abstract class ALMailHandler {
       SelectQuery<EipTMail> query = getUnReadMailQuery(rcontext);
 
       query.select(EipTMail.MAIL_ID_PK_COLUMN);
-      query.pageSize(1);
+      query.limit(1);
 
       List<EipTMail> mails = query.fetchList();
 

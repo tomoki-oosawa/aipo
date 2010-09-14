@@ -1,5 +1,4 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
  *
@@ -18,15 +17,18 @@
  */
 package com.aimluck.eip.orm;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.cayenne.CayenneException;
 import org.apache.cayenne.DataObject;
 import org.apache.cayenne.DataObjectUtils;
 import org.apache.cayenne.DataRow;
 import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.access.Transaction;
 import org.apache.cayenne.exp.Expression;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -279,6 +281,21 @@ public class Database {
    */
   public static void commit(DataContext dataContext) {
     dataContext.commitChanges();
+    Transaction threadTransaction = Transaction.getThreadTransaction();
+    if (threadTransaction != null) {
+      try {
+        threadTransaction.commit();
+      } catch (IllegalStateException e) {
+        logger.error(e.getMessage(), e);
+        e.printStackTrace();
+      } catch (SQLException e) {
+        logger.error(e.getMessage(), e);
+      } catch (CayenneException e) {
+        logger.error(e.getMessage(), e);
+      } finally {
+        Transaction.bindThreadTransaction(null);
+      }
+    }
   }
 
   /**

@@ -109,7 +109,7 @@ public class ExtTimecardSystemMapSelectData extends
       String sort_type =
         ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
       SelectQuery<TurbineUser> query = getSelectQueryForUser(rundata, context);
-      query.pageSize(getRowsNum());
+      query.limit(getRowsNum());
       query.page(getCurrentPage());
       /** パラメータにソート文字列が指定されていなければソートを行わない */
       if (sort == null || "".equals(sort)) {

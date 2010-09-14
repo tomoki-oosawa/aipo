@@ -37,6 +37,7 @@ import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.util.RunData;
 
+import com.aimluck.eip.orm.DataContextLocator;
 import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
@@ -100,12 +101,16 @@ public class PkgDatabaseOrmService extends DatabaseOrmService {
     RunData rundata = getRunData();
     try {
       if (rundata == null) {
-        return DataContext.createDataContext(ORG_PKG);
+        DataContext ctxt = DataContext.createDataContext(ORG_PKG);
+        DataContextLocator.set(ctxt);
+        return ctxt;
       }
       return getDefaultContext(rundata.getSession());
     } catch (IllegalStateException e) {
       rundata.setScreenTemplate("Timeout");
-      return DataContext.createDataContext(ORG_PKG);
+      DataContext ctxt = DataContext.createDataContext(ORG_PKG);
+      DataContextLocator.set(ctxt);
+      return ctxt;
     }
   }
 

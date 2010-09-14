@@ -25,7 +25,8 @@ import java.util.List;
 import org.apache.cayenne.DataRow;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.map.DbAttribute;
+import org.apache.cayenne.map.ObjEntity;
 
 import com.aimluck.eip.orm.DatabaseOrmService;
 
@@ -33,7 +34,9 @@ public class SelectQuery<M> extends AbstractQuery<M> {
 
   private static final long serialVersionUID = 5404111688862773398L;
 
-  protected org.apache.cayenne.query.SelectQuery delegate;
+  protected CustomSelectQuery delegate;
+
+  protected CountQuery countQuery;
 
   protected int page = 1;
 
@@ -41,20 +44,25 @@ public class SelectQuery<M> extends AbstractQuery<M> {
 
   public SelectQuery(Class<M> rootClass) {
     super(rootClass);
-    delegate = new org.apache.cayenne.query.SelectQuery(rootClass);
+    delegate = new CustomSelectQuery(rootClass);
+    countQuery = new CountQuery(rootClass);
+    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   public SelectQuery(DataContext dataContext, Class<M> rootClass) {
     super(dataContext, rootClass);
     this.rootClass = rootClass;
-    delegate = new org.apache.cayenne.query.SelectQuery(rootClass);
+    delegate = new CustomSelectQuery(rootClass);
+    countQuery = new CountQuery(rootClass);
     this.dataContext = dataContext;
   }
 
   public SelectQuery(Class<M> rootClass, Expression qualifier) {
     super(rootClass);
+
     this.rootClass = rootClass;
-    delegate = new org.apache.cayenne.query.SelectQuery(rootClass, qualifier);
+    delegate = new CustomSelectQuery(rootClass, qualifier);
+    countQuery = new CountQuery(rootClass);
     dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
@@ -62,7 +70,8 @@ public class SelectQuery<M> extends AbstractQuery<M> {
       Expression qualifier) {
     super(dataContext, rootClass);
     this.rootClass = rootClass;
-    delegate = new org.apache.cayenne.query.SelectQuery(rootClass, qualifier);
+    delegate = new CustomSelectQuery(rootClass, qualifier);
+    countQuery = new CountQuery(rootClass);
     this.dataContext = dataContext;
   }
 
@@ -70,85 +79,34 @@ public class SelectQuery<M> extends AbstractQuery<M> {
   public List<M> fetchList() {
     if (delegate.isFetchingDataRows()) {
       List<DataRow> dataRows = dataContext.performQuery(delegate);
-      totalCount = dataRows.size();
       List<M> results = new ArrayList<M>();
-      int pageSize = delegate.getPageSize();
-      if (pageSize > 0) {
-        int num = ((int) (Math.ceil(totalCount / (double) pageSize)));
-        if ((num > 0) && (num < page)) {
-          page = num;
-        }
-        int start = pageSize * (page - 1);
-        int end =
-          (start + pageSize <= totalCount) ? start + pageSize : totalCount;
-        for (int i = start; i < end; i++) {
-          M model = newInstanceFromRowData(dataRows.get(i), rootClass);
-          if (model != null) {
-            results.add(model);
-          }
-        }
-      } else {
-        page = 1;
-        for (DataRow dataRow : dataRows) {
-          M model = newInstanceFromRowData(dataRow, rootClass);
-          if (model != null) {
-            results.add(model);
-          }
+
+      for (DataRow dataRow : dataRows) {
+        M model = newInstanceFromRowData(dataRow, rootClass);
+        if (model != null) {
+          results.add(model);
         }
       }
-
       return results;
     } else {
-      List<M> list = dataContext.performQuery(delegate);
-      totalCount = list.size();
-      List<M> results = new ArrayList<M>();
-      int pageSize = delegate.getPageSize();
-      if (pageSize > 0) {
-        int num = ((int) (Math.ceil(totalCount / (double) pageSize)));
-        if ((num > 0) && (num < page)) {
-          page = num;
-        }
-        int start = pageSize * (page - 1);
-        int end =
-          (start + pageSize <= totalCount) ? start + pageSize : totalCount;
-        for (int i = start; i < end; i++) {
-          M model = list.get(i);
-          if (model != null) {
-            results.add(model);
-          }
-        }
-        return results;
-      } else {
-        page = 1;
-        return list;
-      }
+      return dataContext.performQuery(delegate);
     }
   }
 
-  public List<DataRow> fetchListAsDataRow() {
-    delegate.setFetchingDataRows(true);
-    @SuppressWarnings("unchecked")
-    List<DataRow> dataRows = dataContext.performQuery(delegate);
-    totalCount = dataRows.size();
-    List<DataRow> results = new ArrayList<DataRow>();
-    int pageSize = delegate.getPageSize();
+  public ResultList<M> getResultList() {
+    countQuery.setCustomColumns(getPrimaryKey());
+    int totalCount = countQuery.count(dataContext, delegate.isDistinct());
+    int pageSize = delegate.getFetchLimit();
     if (pageSize > 0) {
       int num = ((int) (Math.ceil(totalCount / (double) pageSize)));
       if ((num > 0) && (num < page)) {
         page = num;
       }
-      int start = pageSize * (page - 1);
-      int end =
-        (start + pageSize <= totalCount) ? start + pageSize : totalCount;
-      for (int i = start; i < end; i++) {
-        results.add(dataRows.get(i));
-      }
+      int offset = pageSize * (page - 1);
+      offset(offset);
+    } else {
+      page = 1;
     }
-
-    return results;
-  }
-
-  public ResultList<M> getResultList() {
     List<M> fetchList = fetchList();
     return new ResultList<M>(
       fetchList,
@@ -159,6 +117,7 @@ public class SelectQuery<M> extends AbstractQuery<M> {
 
   public SelectQuery<M> where(Where where) {
     delegate.andQualifier(where.exp);
+    countQuery.andQualifier(where.exp);
     return this;
   }
 
@@ -166,42 +125,48 @@ public class SelectQuery<M> extends AbstractQuery<M> {
     List<Where> list = Arrays.asList(where);
     for (Where w : list) {
       delegate.andQualifier(w.exp);
+      countQuery.andQualifier(w.exp);
     }
     return this;
   }
 
   public SelectQuery<M> setQualifier(Expression qualifier) {
     delegate.setQualifier(qualifier);
+    countQuery.setQualifier(qualifier);
     return this;
   }
 
   public SelectQuery<M> andQualifier(Expression qualifier) {
     delegate.andQualifier(qualifier);
+    countQuery.andQualifier(qualifier);
     return this;
   }
 
   public SelectQuery<M> andQualifier(String qualifier) {
     delegate.andQualifier(Expression.fromString(qualifier));
+    countQuery.andQualifier(Expression.fromString(qualifier));
     return this;
   }
 
   public SelectQuery<M> orQualifier(Expression qualifier) {
     delegate.orQualifier(qualifier);
+    countQuery.orQualifier(qualifier);
     return this;
   }
 
   public SelectQuery<M> orQualifier(String qualifier) {
     delegate.orQualifier(Expression.fromString(qualifier));
+    countQuery.orQualifier(Expression.fromString(qualifier));
     return this;
   }
 
   public SelectQuery<M> orderAscending(String ordering) {
-    delegate.addOrdering(ordering, Ordering.ASC);
+    delegate.addOrdering(ordering, true);
     return this;
   }
 
   public SelectQuery<M> orderDesending(String ordering) {
-    delegate.addOrdering(ordering, Ordering.DESC);
+    delegate.addOrdering(ordering, false);
     return this;
   }
 
@@ -210,33 +175,39 @@ public class SelectQuery<M> extends AbstractQuery<M> {
     return this;
   }
 
-  public SelectQuery<M> pageSize(int pageSize) {
-    delegate.setPageSize(pageSize);
-    return this;
-  }
-
   public SelectQuery<M> limit(int limit) {
     delegate.setFetchLimit(limit);
     return this;
   }
 
+  public SelectQuery<M> offset(int offset) {
+    delegate.setFetchOffset(offset);
+    return this;
+  }
+
   public SelectQuery<M> select(String column) {
-    delegate.addCustomDbAttribute(column);
+    delegate.addCustomColumn(column);
+    delegate.setFetchingDataRows(true);
+    // delegate.addCustomDbAttribute(column);
     return this;
   }
 
   public SelectQuery<M> select(String... columns) {
-    delegate.addCustomDbAttributes(Arrays.asList(columns));
+    delegate.addCustomColumns(columns);
+    delegate.setFetchingDataRows(true);
+    // delegate.addCustomDbAttributes(Arrays.asList(columns));
     return this;
   }
 
   public SelectQuery<M> distinct() {
     delegate.setDistinct(true);
+    countQuery.setDistinct(true);
     return this;
   }
 
   public SelectQuery<M> distinct(boolean isDistinct) {
     delegate.setDistinct(isDistinct);
+    countQuery.setDistinct(isDistinct);
     return this;
   }
 
@@ -249,4 +220,12 @@ public class SelectQuery<M> extends AbstractQuery<M> {
     return delegate;
   }
 
+  protected String getPrimaryKey() {
+    ObjEntity objEntity =
+      dataContext.getEntityResolver().lookupObjEntity(rootClass);
+    @SuppressWarnings("unchecked")
+    List<DbAttribute> primaryKey = objEntity.getDbEntity().getPrimaryKey();
+    DbAttribute dbAttribute = primaryKey.get(0);
+    return dbAttribute.getName();
+  }
 }

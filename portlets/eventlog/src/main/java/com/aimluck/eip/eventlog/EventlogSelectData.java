@@ -137,10 +137,12 @@ public class EventlogSelectData extends
       EventlogResultData rd = new EventlogResultData();
       rd.initField();
       rd.setEventlogId(record.getEventlogId().longValue());
-      rd.setUserFullName(ALEipUtils.getUserFullName(record
-        .getTurbineUser()
-        .getUserId()
-        .intValue()));
+
+      TurbineUser user = record.getTurbineUser();
+
+      rd.setUserFullName(user == null ? "" : new StringBuffer().append(
+        user.getLastName()).append(" ").append(user.getFirstName()).toString());
+
       rd.setEventDate(df.format(record.getUpdateDate()));
       rd.setPortletName(ALEventlogUtils.getPortletAliasName(record
         .getPortletType()));
