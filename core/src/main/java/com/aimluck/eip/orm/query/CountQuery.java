@@ -25,6 +25,8 @@ import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.access.ResultIterator;
 import org.apache.cayenne.access.jdbc.ColumnDescriptor;
 import org.apache.cayenne.dba.TypesMapping;
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 /**
  * 
@@ -32,6 +34,9 @@ import org.apache.cayenne.dba.TypesMapping;
 public class CountQuery extends AbstractCustomQuery {
 
   private static final long serialVersionUID = 7286490109199978350L;
+
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(CountQuery.class.getName());
 
   private boolean isDistinct = false;
 
@@ -63,7 +68,7 @@ public class CountQuery extends AbstractCustomQuery {
         ret = row.get("C");
       }
     } catch (CayenneException e) {
-      //
+      logger.error(e.getMessage(), e);
     }
     return ret;
   }
