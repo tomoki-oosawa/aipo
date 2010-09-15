@@ -19,7 +19,7 @@
 ## ---------------------------------------------------------------------------
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["勤務形態一覧", ""]])
 ## ---------------------------------------------------------------------------
-#ALjavascript("javascript/aimluck/io/form.js")
+
 #ALjavascript("javascript/aipo/exttimecardsystem/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[

@@ -17,9 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
-#ALjavascript("javascript/aimluck/utils/utils.js")
 #ALjavascript("javascript/aipo/schedule/form.js")
-#ALjavascript("javascript/aimluck/io/form.js")
+
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 

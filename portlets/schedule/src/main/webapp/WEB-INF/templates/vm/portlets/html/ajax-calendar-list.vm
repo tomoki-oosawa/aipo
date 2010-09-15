@@ -20,7 +20,7 @@
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["スケジュール一覧", ""]])
 #set ($tabs = [["スケジュール", "",""]])
 ## ---------------------------------------------------------------------------
-#ALjavascript("javascript/aimluck/io/form.js")
+
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
      ptConfig['$!portlet.ID'] = { group:"schedule", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreen"))', reloadFunction:aipo.reloadPage };

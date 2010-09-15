@@ -19,7 +19,7 @@
 ## ---------------------------------------------------------------------------
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["最新記事一覧", ""]])
 ## ---------------------------------------------------------------------------
-#ALjavascript("javascript/aimluck/io/form.js")
+
 #ALjavascript("javascript/aipo/blog/form.js")
 #ALjavascript("javascript/aipo/fileupload/form.js")
 <script language="JavaScript" type="text/javascript">

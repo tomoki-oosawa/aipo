@@ -19,8 +19,7 @@
 ## ---------------------------------------------------------------------------
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["メール一覧", ""]])
 ## ---------------------------------------------------------------------------
-#ALjavascript("javascript/aimluck/io/form.js")
-#ALjavascript("javascript/aimluck/utils/form.js")
+
 #ALjavascript("javascript/aipo/webmail/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[

@@ -19,7 +19,7 @@
 ## ---------------------------------------------------------------------------
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["社外グループ一覧", ""]])
 ## ---------------------------------------------------------------------------
-#ALjavascript("javascript/aimluck/io/form.js")
+
 #ALjavascript("javascript/aipo/addressbook/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[

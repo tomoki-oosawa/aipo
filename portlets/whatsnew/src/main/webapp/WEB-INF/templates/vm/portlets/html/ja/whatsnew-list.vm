@@ -20,7 +20,7 @@
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["新着情報一覧", ""]])
 #set ($tabs = [["新着情報","",""]])
 ## ---------------------------------------------------------------------------
-#ALjavascript("javascript/aimluck/io/form.js")
+
 #ALjavascript("javascript/aipo/whatsnew/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[

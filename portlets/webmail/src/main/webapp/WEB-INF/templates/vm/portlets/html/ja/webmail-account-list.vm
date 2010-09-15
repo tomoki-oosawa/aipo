@@ -19,7 +19,7 @@
 ## ---------------------------------------------------------------------------
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["メールアカウント一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_account_list_max','1')"]])
 ## ---------------------------------------------------------------------------
-#ALjavascript("javascript/aimluck/io/form.js")
+
 #ALjavascript("javascript/aipo/fileupload/form.js")
 #ALjavascript("javascript/aipo/webmail/form.js")
 <script language="JavaScript" type="text/javascript">

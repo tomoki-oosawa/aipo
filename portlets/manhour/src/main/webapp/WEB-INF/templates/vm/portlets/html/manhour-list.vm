@@ -19,8 +19,6 @@
 ## ---------------------------------------------------------------------------
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["工数集計一覧", ""]])
 ## ---------------------------------------------------------------------------
-#ALjavascript("javascript/aimluck/io/form.js")
-#ALjavascript("javascript/aimluck/utils/form.js")
 #ALjavascript("javascript/aipo/manhour/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
