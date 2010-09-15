@@ -38,8 +38,6 @@
 #ALheadScripts()
 </head>
 <body>
-<script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/dojo/dojo.js"></script>
-<script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/dijit/dijit.js"></script>
 <!-- WRAPPER -->
 <div id="wrapper">
   <table class="tableWrapper">
@@ -93,7 +91,5 @@ dojo.addOnLoad(function() {
 
 //]]>
 </script>
-<script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/aimluck/io/form.js"></script>
-<script language="JavaScript" type="text/javascript"  src="/${data.getServletConfig().getServletName()}/javascript/aipo/common/dialog.js"></script>
 </body>
 </html>

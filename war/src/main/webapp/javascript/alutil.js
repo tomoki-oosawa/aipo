@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
  * http://aipostyle.com/
@@ -31,7 +31,7 @@ function ew(button) {
 }
 
 function dw(button) {
-  if(confirm('この'+button.form.name+'を削除してよろしいですか？')) {
+  if(confirm('\u3053\u306e'+button.form.name+'\u3092\u524a\u9664\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f')) {
     disableButton(button.form);
     button.form.action = button.form.action + '?' + button.name + '=1';
     button.form.submit();
@@ -45,7 +45,7 @@ function ews(button) {
 }
 
 function dws(button) {
-  if(confirm('選択した'+button.form.name+'をすべて削除してよろしいですか？')) {
+  if(confirm('\u9078\u629e\u3057\u305f'+button.form.name+'\u3092\u3059\u3079\u3066\u524a\u9664\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f')) {
     disableButton(button.form);
     button.form.action = button.form.action + '?' + button.name + '=1';
     button.form.submit();
@@ -96,7 +96,7 @@ function verifyCheckBox(form, action, button) {
     if(form.elements[i].checked) cnt++;
   }
   if(cnt == 0){
-    alert("チェックボックスを１つ以上選択してください。");
+    alert("\u30c1\u30a7\u30c3\u30af\u30dc\u30c3\u30af\u30b9\u3092\uff11\u3064\u4ee5\u4e0a\u9078\u629e\u3057\u3066\u304f\u3060\u3055\u3044\u3002");
    	return false;
   }else{
     return action(button);
@@ -208,7 +208,7 @@ function remove_member(select) {
   }
 
   if(t_o.length == 0){
-		add_option(select, '', '　', false)
+		add_option(select, '', '\u3000', false)
   }
 }
 

@@ -25,9 +25,11 @@
 ## ---------------------------------------------------------------------------
 
 #macro(ALheadScripts)
-<script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/alutil.js"></script>
-<script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/aimluck/aimluck.js"></script>
-<script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/aipo/aipo.js"></script>
+<script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/dojo/dojo.js"></script>
+<script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/dojo/dojo-aipo.ycomp.js"></script>
+<script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/dijit/dijit-aipo.js"></script>
+<script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/aimluck/aimluck-all.ycomp.js"></script>
+<script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/aipo/aipo-all.ycomp.js"></script>
 #end
 
 #* G L O B A L *#

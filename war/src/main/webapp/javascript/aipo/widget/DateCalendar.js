@@ -37,7 +37,7 @@ dojo.declare("aipo.widget.DateCalendar", [dijit._Calendar], {
        var tday = dayNames[date.getDay()];
     
        var viewvalue = dojo.byId(this.dateId+'_view');
-       viewvalue.innerHTML = tyear+"年"+tmonth+"月"+tdate+"日（"+tday+"）&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";  
+       viewvalue.innerHTML = tyear+"\u5e74"+tmonth+"\u6708"+tdate+"\u65e5\uff08"+tday+"\uff09&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";  
        var hiddendate = dojo.byId(this.dateId);
        hiddendate.value = tyear+"/"+tmonth+"/"+tdate;
        var hiddendate_year = dojo.byId(this.dateId+'_year');
@@ -49,10 +49,10 @@ dojo.declare("aipo.widget.DateCalendar", [dijit._Calendar], {
        
        dojo.byId(this.dateId+'_flag').checked = false;
     },
-    disabledCalendar: function(/*boolean*/bool){
+    disabledCalendar: function(/*boolean*/bool) {
         if(bool){
            var viewvalue = dojo.byId(this.dateId+'_view');
-           viewvalue.innerHTML = "---- 年 -- 月 -- 日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+           viewvalue.innerHTML = "---- \u5e74 -- \u6708 -- \u65e5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
            var hiddendate_year = dojo.byId(this.dateId+'_year');
            hiddendate_year.value = "";
@@ -62,12 +62,13 @@ dojo.declare("aipo.widget.DateCalendar", [dijit._Calendar], {
            hiddendate_day.value = "";
            
            this.value = "";
-           if(! dojo.byId(this.dateId+'_flag').checked) dojo.byId(this.dateId+'_flag').checked = true;
+           if(! dojo.byId(this.dateId+'_flag').checked) {
+        	   dojo.byId(this.dateId+'_flag').checked = true;
+           }
         }else{
            var hiddendate = dojo.byId(this.dateId);
-           if(! hiddendate.value ||　hiddendate.value　== ""){
-
-               this.setValue(new Date());
+           if( (!hiddendate.value) || (hiddendate.value=="") ) {
+        	   this.setValue(new Date());
            }else{
 	           var tmpdate = hiddendate.value.split("/");
 	           if(tmpdate.length == 3){

@@ -24,7 +24,6 @@
 #set ($navilist = [["トップ", "$!jslink.Template.addQueryData($jslink.ActionKey, $action).addQueryData('js_peid', $data.getJs_peid()).addQueryData('eventSubmit_doCancel', '1')"], ["表示カスタマイズ", ""]])
 #set ($tabs = [["表示カスタマイズ", "",""]])
 ## ---------------------------------------------------------------------------
-#ALjavascript("/${data.getServletConfig().getServletName()}/javascript/aimluck/io/form.js")
 #ALcontentheader($!{portlet.Title} $navilist)
 #ALtabheader($tabs "")
 #ALspacebothheader()

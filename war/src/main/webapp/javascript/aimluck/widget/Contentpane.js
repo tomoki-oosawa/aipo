@@ -25,7 +25,7 @@ dojo.declare(
 	"aimluck.widget.Contentpane",
 	[dijit.layout.ContentPane],
 	{
-        loadingMessage:"<div class='indicator'>読み込み中...</div>",
+        loadingMessage:"<div class='indicator'>\u8aad\u307f\u8fbc\u307f\u4e2d...</div>",
         errorMessage:"",
         extractContent: false,
         parseOnLoad: true,

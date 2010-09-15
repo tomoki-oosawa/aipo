@@ -156,7 +156,7 @@ aimluck.io.actionSubmitReturn = function(button, rtn) {
 }
 
 aimluck.io.deleteSubmit = function(button) {
-  if(confirm('この'+button.form._name.value+'を削除してよろしいですか？')) {
+  if(confirm('\u3053\u306e'+button.form._name.value+'\u3092\u524a\u9664\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f')) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
     button.form.action = button.form.action + '?' + button.name + '=1';
@@ -165,7 +165,7 @@ aimluck.io.deleteSubmit = function(button) {
 }
 
 aimluck.io.ajaxDeleteSubmit = function(button, url, indicator_id, portlet_id, receive) {
-  if(confirm('この'+button.form._name.value+'を削除してよろしいですか？')) {
+  if(confirm('\u3053\u306e'+button.form._name.value+'\u3092\u524a\u9664\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f')) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
     button.form.action = url;
@@ -174,7 +174,7 @@ aimluck.io.ajaxDeleteSubmit = function(button, url, indicator_id, portlet_id, re
 }
 
 aimluck.io.ajaxEnableSubmit = function(button, url, indicator_id, portlet_id, receive) {
-  if(confirm('この'+button.form._name.value+'を有効化してよろしいですか？')) {
+  if(confirm('\u3053\u306e'+button.form._name.value+'\u3092\u6709\u52b9\u5316\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f')) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
     button.form.action = url;
@@ -183,7 +183,7 @@ aimluck.io.ajaxEnableSubmit = function(button, url, indicator_id, portlet_id, re
 }
 
 aimluck.io.ajaxDisableSubmit = function(button, url, indicator_id, portlet_id, receive) {
-  if(confirm('この'+button.form._name.value+'を無効化してよろしいですか？')) {
+  if(confirm('\u3053\u306e'+button.form._name.value+'\u3092\u7121\u52b9\u5316\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f')) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
     button.form.action = url;
@@ -192,7 +192,7 @@ aimluck.io.ajaxDisableSubmit = function(button, url, indicator_id, portlet_id, r
 }
 
 aimluck.io.deleteSubmitReturn = function(button, rtn) {
-  if(confirm('この'+button.form._name.value+'を削除してよろしいですか？')) {
+  if(confirm('\u3053\u306e'+button.form._name.value+'\u3092\u524a\u9664\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f')) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
     button.form.action = button.form.action + '?' + button.name + '=1&action=' + rtn;
@@ -201,7 +201,7 @@ aimluck.io.deleteSubmitReturn = function(button, rtn) {
 }
 
 aimluck.io.multiDeleteSubmit = function(button) {
-  if(confirm('選択した'+button.form._name.value+'を削除してよろしいですか？')) {
+  if(confirm('\u9078\u629e\u3057\u305f'+button.form._name.value+'\u3092\u524a\u9664\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f')) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
     button.form.action = button.form.action + '?' + button.name + '=1';
@@ -210,7 +210,7 @@ aimluck.io.multiDeleteSubmit = function(button) {
 }
 
 aimluck.io.ajaxMultiDeleteSubmit = function(button, url, indicator_id, portlet_id, receive) {
-  if(confirm('選択した'+button.form._name.value+'を削除してよろしいですか？')) {
+  if(confirm('\u9078\u629e\u3057\u305f'+button.form._name.value+'\u3092\u524a\u9664\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f')) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
     button.form.action = url;
@@ -219,7 +219,7 @@ aimluck.io.ajaxMultiDeleteSubmit = function(button, url, indicator_id, portlet_i
 }
 
 aimluck.io.ajaxMultiEnableSubmit = function(button, url, indicator_id, portlet_id, receive) {
-  if(confirm('選択した'+button.form._name.value+'を有効化してよろしいですか？')) {
+  if(confirm('\u9078\u629e\u3057\u305f'+button.form._name.value+'\u3092\u6709\u52b9\u5316\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f')) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
     button.form.action = url;
@@ -228,7 +228,7 @@ aimluck.io.ajaxMultiEnableSubmit = function(button, url, indicator_id, portlet_i
 }
 
 aimluck.io.ajaxMultiDisableSubmit = function(button, url, indicator_id, portlet_id, receive) {
-  if(confirm('選択した'+button.form._name.value+'を無効化してよろしいですか？')) {
+  if(confirm('\u9078\u629e\u3057\u305f'+button.form._name.value+'\u3092\u7121\u52b9\u5316\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f')) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
     button.form.action = url;
@@ -282,7 +282,7 @@ aimluck.io.verifyCheckbox = function(form, action, button) {
     if(form.elements[i].checked) cnt++;
   }
   if(cnt == 0){
-    alert("チェックボックスを１つ以上選択してください。");
+    alert("\u30c1\u30a7\u30c3\u30af\u30dc\u30c3\u30af\u30b9\u3092\uff11\u3064\u4ee5\u4e0a\u9078\u629e\u3057\u3066\u304f\u3060\u3055\u3044\u3002");
     return false;
   }else{
     return action(button);
@@ -296,7 +296,7 @@ aimluck.io.ajaxVerifyCheckbox = function(form, action, button, url, indicator_id
     if(form.elements[i].checked) cnt++;
   }
   if(cnt == 0){
-    alert("チェックボックスを１つ以上選択してください。");
+    alert("\u30c1\u30a7\u30c3\u30af\u30dc\u30c3\u30af\u30b9\u3092\uff11\u3064\u4ee5\u4e0a\u9078\u629e\u3057\u3066\u304f\u3060\u3055\u3044\u3002");
     return false;
   }else{
     return action(button, url, indicator_id, portlet_id, receive );
@@ -410,7 +410,7 @@ aimluck.io.removeOptions = function(select){
   }
 
   if(t_o.length == 0){
-        add_option(select, '', '　', false)
+        add_option(select, '', '\u3000', false)
   }
 }
 
@@ -438,7 +438,7 @@ aimluck.io.removeAllOptions = function(select){
   }
 
   if(t_o.length == 0){
-        add_option(select, '', '　', false)
+        add_option(select, '', '\u3000', false);
   }
 }
 

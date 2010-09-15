@@ -22,7 +22,6 @@
 #set($enable_userlist = false)
 #end
 ## ---------------------------------------------------------------------------
-#ALjavascript("javascript/aimluck/io/form.js")
 <script language="JavaScript" type="text/JavaScript">
 //<![CDATA[
 

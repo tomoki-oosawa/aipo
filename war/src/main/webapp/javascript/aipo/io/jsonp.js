@@ -34,12 +34,12 @@ aipo.io.loadHtml = function(url, params, portletId){
             dojo.html.setDisplay(dojo.byId('indicator-'+portletId), false);
         },
         error: function(type, data, event, args) {
-            dojo.byId('content-'+portletId).innerHTML = "[エラー] 読み込みができませんでした。";
+            dojo.byId('content-'+portletId).innerHTML = "\u005b\u30a8\u30e9\u30fc\u005d\u0020\u8aad\u307f\u8fbc\u307f\u304c\u3067\u304d\u307e\u305b\u3093\u3067\u3057\u305f\u3002";
             dojo.html.setVisibility(dojo.byId('content-'+portletId), true);
             dojo.html.setDisplay(dojo.byId('indicator-'+portletId), false);
         },
         timeout: function(type, data, event, args) {
-            dojo.byId('content-'+portletId).innerHTML = "[エラー] タイムアウトしました。";
+            dojo.byId('content-'+portletId).innerHTML = "\u005b\u30a8\u30e9\u30fc\u005d\u0020\u30bf\u30a4\u30e0\u30a2\u30a6\u30c8\u3057\u307e\u3057\u305f\u3002";
             dojo.html.setVisibility(dojo.byId('content-'+portletId), true);
             dojo.html.setDisplay(dojo.byId('indicator-'+portletId), false);
         },
