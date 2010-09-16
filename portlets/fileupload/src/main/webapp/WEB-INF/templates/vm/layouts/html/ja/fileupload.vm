@@ -20,7 +20,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
-<base href="$clink.External" ></base>
+<base href="$clink.External"/>
 <meta http-equiv="Content-Language" content="ja" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 #if($config.getString("portal.title"))#set($titlePrefix = $config.getString("portal.title"))#else#set($titlePrefix = "")#end
@@ -35,10 +35,7 @@
 <link rel="stylesheet" type="text/css" href="/${data.getServletConfig().getServletName()}/themes/${theme}/css/common.css" media="screen,tv,print" />
 <link rel="stylesheet" type="text/css" href="/${data.getServletConfig().getServletName()}/themes/${theme}/css/print.css" media="print" />
 <script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/dojo/dojo.js"></script>
-<script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/dojo/dojo-aipo.js"></script>
-<script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/dijit/dijit-aipo.js"></script>
-<script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/aimluck/aimluck-all.ycomp.js"></script>
-<script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/aipo/aipo-all.ycomp.js"></script>
+<script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/aipo.ycomp.js"></script>
 #ALheadScripts()
 </head>
 <body class="portlet_background" onLoad="get_data()">

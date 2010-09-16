@@ -3,7 +3,7 @@
 */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/alutil.js
+ * START OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/aimluck.js
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -23,7 +23,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-<!--
+
+window.aimluck = window.aimluck || {};
+
+aimluck.namespace = function(ns) {
+
+    if (!ns || !ns.length) {
+        return null;
+    }
+
+    var levels = ns.split(".");
+    var nsobj = aimluck;
+
+
+    for (var i=(levels[0] == "aimluck") ? 1 : 0; i<levels.length; ++i) {
+        nsobj[levels[i]] = nsobj[levels[i]] || {};
+        nsobj = nsobj[levels[i]];
+    }
+
+    return nsobj;
+};
+
+djConfig = { isDebug: false };
 
 function getObjectById(id) {
     if(document.getElementById) return document.getElementById(id) //e5,e6,n6,m1,o6
@@ -314,55 +335,6 @@ function change_turn_option(select, index, delta) {
     s_o[delta].selected = true;
   }
 }
-//-->
-
-/*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/alutil.js
- */
-
-/*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/aimluck.js
- */
-/*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2008 Aimluck,Inc.
- * http://aipostyle.com/
- * 
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
-
-window.aimluck = window.aimluck || {};
-
-aimluck.namespace = function(ns) {
-
-    if (!ns || !ns.length) {
-        return null;
-    }
-
-    var levels = ns.split(".");
-    var nsobj = aimluck;
-
-
-    for (var i=(levels[0] == "aimluck") ? 1 : 0; i<levels.length; ++i) {
-        nsobj[levels[i]] = nsobj[levels[i]] || {};
-        nsobj = nsobj[levels[i]];
-    }
-
-    return nsobj;
-};
-
-djConfig = { isDebug: false };
 
 /*
  * END OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/aimluck.js
@@ -1050,6 +1022,584 @@ aimluck.utils.createCSS = function(url) {
 
 /*
  * END OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/utils/utils.js
+ */
+
+/*
+ * START OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/widget/Contentpane.js
+ */
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+dojo.provide("aimluck.widget.Contentpane");
+
+dojo.require("dijit.layout.ContentPane");
+
+dojo.declare(
+	"aimluck.widget.Contentpane",
+	[dijit.layout.ContentPane],
+	{
+        loadingMessage:"<div class='indicator'>\u8aad\u307f\u8fbc\u307f\u4e2d...</div>",
+        errorMessage:"",
+        extractContent: false,
+        parseOnLoad: true,
+        refreshOnShow: true,
+        params: new Array(),
+        reloadIds: new Array(),
+		viewPage: function(href){
+			this.href = href;
+		    return this._prepareLoad(true);
+		},
+        setParam: function(key, value) {
+            this.params[key] = value;
+        },
+        setReloadIds: function(values) {
+            this.reloadIds = values;
+        },
+        clearParams: function() {
+            this.params = new Array();
+        },
+        clearReloadIds: function() {
+            this.reloadIds = new Array();
+        },
+		_downloadExternalContent: function(){
+			this._onUnloadHandler();
+	
+			// display loading message
+			// TODO: maybe we should just set a css class with a loading image as background?
+			/*
+			this._setContent(
+				this.onDownloadStart.call(this)
+			);
+	        */
+			var self = this;
+			var getArgs = {
+				preventCache: (this.preventCache || this.refreshOnShow),
+				url: this.href,
+				handleAs: "text",
+                content: this.params,
+			    headers: { X_REQUESTED_WITH: "XMLHttpRequest" }
+			};
+	
+			if(dojo.isObject(this.ioArgs)){
+				dojo.mixin(getArgs, this.ioArgs);
+			}
+	
+			var hand = this._xhrDfd = (this.ioMethod || dojo.xhrPost)(getArgs);
+
+			hand.addCallback(function(html){
+                self.clearParams();
+                self.clearReloadIds();
+				try{
+					self.onDownloadEnd.call(self);
+					self._isDownloaded = true;
+					self.setContent.call(self, html); // onload event is called from here
+				}catch(err){
+					self._onError.call(self, 'Content', err); // onContentError
+				}
+				delete self._xhrDfd;
+				return html;
+			});
+	
+			hand.addErrback(function(err){
+				if(!hand.cancelled){
+					// show error message in the pane
+					self._onError.call(self, 'Download', err); // onDownloadError
+				}
+				delete self._xhrDfd;
+				return err;
+			});
+		}
+    }	
+);
+
+/*
+ * END OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/widget/Contentpane.js
+ */
+
+/*
+ * START OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/widget/Dialog.js
+ */
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+dojo.provide("aimluck.widget.Dialog");
+dojo.provide("aimluck.widget.DialogUnderlay");
+
+dojo.require("dijit.Dialog");
+
+dojo.declare(
+    "aimluck.widget.DialogUnderlay",
+    [dijit.DialogUnderlay],
+    {
+       templateString: "<div class=modalDialogUnderlayWrapper id='${id}_underlay'><div class=modalDialogUnderlay dojoAttachPoint='node'></div></div>"
+    }
+
+);
+
+dojo.declare( "aimluck.widget.Timeout",  [dijit._Widget, dijit._Templated] , {
+       templateString: "<div class=modalDialogUnderlayWrapper id='${id}_underlay'><div class=modalDialogUnderlay dojoAttachPoint='node' redirecturl=\"${redirectUrl}\"></div></div>",
+       redirectUrl:"about:blank",
+       postCreate: function(){
+    window.location.href = this.redirectUrl;
+      }
+});
+
+dojo.declare(
+    "aimluck.widget.Dialog",
+    [dijit.Dialog],
+    {
+        widgetId: null,
+        loadingMessage:"<div class='indicatorDialog'><div class='indicator'>\u8aad\u307f\u8fbc\u307f\u4e2d...</div></div>",
+        templateString:null,
+        templateString:"<div id='modalDialog' class='modalDialog' dojoattachpoint='wrapper'><span dojoattachpoint='tabStartOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap'tabindex='0'></span><span dojoattachpoint='tabStart' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><div dojoattachpoint='containerNode' style='position: relative; z-index: 2;'></div><span dojoattachpoint='tabEnd' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><span dojoattachpoint='tabEndOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span></div>",//<div dojoAttachPoint=\"titleBar\" class=\"modalDialogTitleBar\" tabindex=\"0\" waiRole=\"dialog\">&nbsp;</div>
+        duration: 10,
+        extractContent: false,
+        parseOnLoad: true,
+        refreshOnShow: true,
+        isPositionLock: false,
+        params: new Array(),
+        reloadIds: new Array(),
+        _portlet_id: null,
+        _callback:null,
+        _setup: function(){
+            // summary:
+            //      stuff we need to do before showing the Dialog for the first
+            //      time (but we defer it until right beforehand, for
+            //      performance reasons)
+
+            this._modalconnects = [];
+            
+            if(this.titleBar){
+                this._moveable = new dojo.dnd.Moveable(this.domNode, { handle: this.titleBar });
+                var _tmpnode = this.domNode;
+                dojo.connect(this._moveable, "onMoving", function(/* dojo.dnd.Mover */ mover, /* Object */ leftTop){
+                        
+                        var viewport = dijit.getViewport();
+                        var w1 = parseInt(dojo.getComputedStyle(_tmpnode).width);
+			            var w2 = parseInt(viewport.w);
+
+	                    if(leftTop.l < 0){
+	                       leftTop.l = 0; 
+	                    }
+	                    
+	                    if(leftTop.l + w1 > w2){
+	                       leftTop.l = w2 - w1;
+	                    }
+	                   
+	                    if(leftTop.t < 0){
+	                       leftTop.t = 0
+	                    }
+                });
+            }
+
+            this._underlay = new aimluck.widget.DialogUnderlay();
+
+            var node = this.domNode;
+            this._fadeIn = dojo.fx.combine(
+                [dojo.fadeIn({
+                    node: node,
+                    duration: this.duration
+                 }),
+                 dojo.fadeIn({
+                    node: this._underlay.domNode,
+                    duration: this.duration,
+                    onBegin: dojo.hitch(this._underlay, "show")
+                 })
+                ]
+            );
+
+            this._fadeOut = dojo.fx.combine(
+                [dojo.fadeOut({
+                    node: node,
+                    dialog: this,
+                    duration: this.duration,
+                    onEnd: function(){
+                        node.style.display="none";
+                        //** FIXME IEで追加ダイアログを閉じるとスクロールバーのｙ座標が強制的に０になってしまう現象
+                        if (document.all) { // for IE
+                            this.dialog.fixTmpScroll();
+                        }
+                        //**//
+                    }
+                 }),
+                 dojo.fadeOut({
+                    node: this._underlay.domNode,
+                    duration: this.duration,
+                    onEnd: dojo.hitch(this._underlay, "hide")
+                 })
+                ]
+            );
+        },
+        fixTmpScroll: function(){
+            //** FIXME IEで追加ダイアログを閉じるとスクロールバーのｙ座標が強制的に０になってしまう現象
+            var _tmpNode = dojo.byId('weeklyScrollPane_'+this._portlet_id);
+            if(_tmpNode){
+                if (aipo.schedule.tmpScroll == "undefined") {
+                    dojo.byId('weeklyScrollPane_'+this._portlet_id).scrollTop = ptConfig[this._portlet_id].contentScrollTop;
+                } else {
+                    dojo.byId('weeklyScrollPane_'+this._portlet_id).scrollTop = aipo.schedule.tmpScroll;
+                }
+            }
+            //**//
+        },
+        onLoad: function(){
+            // when href is specified we need to reposition
+            // the dialog after the data is loaded
+            this._position();
+            dijit.Dialog.superclass.onLoad.call(this);
+            this.isPositionLock = false;
+            
+            var focusNode = dojo.byId( this.widgetId );
+            if ( focusNode ) {
+                focusNode.focus();
+                
+                if (this._callback != null) {
+                    this._callback.call(this._callback, this._portlet_id);
+                }
+            } 
+        },
+        setCallback: function(portlet_id, callback) {
+            this._portlet_id = portlet_id;
+            this._callback = callback;
+        },
+        setParam: function(key, value) {
+            this.params[key] = value;
+        },
+        setReloadIds: function(values) {
+            this.reloadIds = values;
+        },
+        clearParams: function() {
+            this.params = new Array();
+        },
+        clearReloadIds: function() {
+            this.reloadIds = new Array();
+        },
+        reload: function (url) {
+            this.href = url;
+            this.isPositionLock = true;
+            this.refresh();
+        },
+        _position: function(){
+            // summary: position modal dialog in center of screen
+            
+            if(dojo.hasClass(dojo.body(),"dojoMove")){ return; }
+            var viewport = dijit.getViewport();
+            var mb = dojo.marginBox(this.domNode);
+
+            var style = this.domNode.style;
+            style.left = Math.floor((viewport.l + (viewport.w - mb.w)/2)) + "px";
+            if(Math.floor((viewport.t + (viewport.h - mb.h)/2)) > 0){
+                style.top = Math.floor((viewport.t + (viewport.h - mb.h)/2)) + "px";
+            } else {
+                style.top = 0 + "px";
+            }
+        },
+        layout: function() {
+            if(this.domNode.style.display == "block"){
+                this._underlay.layout();
+                //this._position();
+            }
+        },
+        _downloadExternalContent: function(){
+            this._onUnloadHandler();
+    
+            // display loading message
+            // TODO: maybe we should just set a css class with a loading image as background?
+            
+            this._setContent(
+                this.onDownloadStart.call(this)
+            );
+            
+            var self = this;
+            var getArgs = {
+                preventCache: (this.preventCache || this.refreshOnShow),
+                url: this.href,
+                handleAs: "text",
+                content: this.params,
+                headers: { X_REQUESTED_WITH: "XMLHttpRequest" }
+            };
+            if(dojo.isObject(this.ioArgs)){
+                dojo.mixin(getArgs, this.ioArgs);
+            }
+    
+            var hand = this._xhrDfd = (this.ioMethod || dojo.xhrPost)(getArgs);
+    
+            hand.addCallback(function(html){
+                self.clearParams();
+                self.clearReloadIds();
+                try{
+                    self.onDownloadEnd.call(self);
+                    self._isDownloaded = true;
+                    self.setContent.call(self, html); // onload event is called from here
+                }catch(err){
+                    self._onError.call(self, 'Content', err); // onContentError
+                }
+                delete self._xhrDfd;
+                return html;
+            });
+    
+            hand.addErrback(function(err){
+                if(!hand.cancelled){
+                    // show error message in the pane
+                    self._onError.call(self, 'Download', err); // onDownloadError
+                }
+                delete self._xhrDfd;
+                return err;
+            });
+        }    
+    }
+);
+
+/*
+ * END OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/widget/Dialog.js
+ */
+
+/*
+ * START OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/widget/Dropdown.js
+ */
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+dojo.provide("aimluck.widget.Dropdown");
+
+dojo.require("dijit.form.Button");
+
+dojo.declare("aimluck.widget.Dropdown", [dijit.form.DropDownButton], {
+    inputWidth: "250px",
+    hiddenId: "",
+    hiddenValue: "",
+    inputId: "",
+    inputValue: "",
+    selectId: "",
+    iconURL: "",
+    iconAlt: "",
+    templateString:"<div class=\"dijit dijitLeft dijitInline\"\n\tdojoAttachEvent=\"onmouseenter:_onMouse,onmouseleave:_onMouse,onmousedown:_onMouse,onclick:_onDropDownClick,onkeydown:_onDropDownKeydown,onblur:_onDropDownBlur,onkeypress:_onKey\"\n\t><div class='dijitRight'>\n\t<span class=\"\" type=\"${type}\"\n\t\tdojoAttachPoint=\"focusNode,titleNode\" waiRole=\"button\" waiState=\"haspopup-true,labelledby-${id}_label\"\n\t\t><span class=\"\" \tdojoAttachPoint=\"containerNode,popupStateNode\"\n\t\tid=\"${id}_label\"><img src=\"${iconURL}\" alt=\"${iconAlt}\" style=\"cursor:pointer;cursor:hand;padding-right:2px\" align=\"top\" />\n\t</span><select name=\"${selectId}\" id=\"${selectId}\" size=\"10\" multiple=\"multiple\" style=\"display:none\" dojoAttachPoint=\"selectNode\"></select><input type=\"hidden\" id=\"${hiddenId}\" name=\"${hiddenId}\" value=\"${hiddenValue}\" dojoAttachPoint=\"valueNode\" /><span name=\"${inputId}\" id=\"${inputId}\" dojoAttachPoint=\"inputNode\">${inputValue}</span>\n</div></div>\n",
+
+    _openDropDown: function(){
+        this.inherited(arguments);
+        //For google chrome and Firefox/3.6
+        var userAgent = window.navigator.userAgent.toLowerCase();
+        if (userAgent.indexOf("chrome") > -1 || userAgent.indexOf("firefox/3.6") > -1) {
+            var pNode = this.dropDown.domNode.parentNode;
+            var top = pNode.style.top.replace("px","");
+            top_new = parseInt(top) + window.scrollY;
+            pNode.style.top = top_new + "px";
+        }
+    }
+});
+
+/*
+ * END OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/widget/Dropdown.js
+ */
+
+/*
+ * START OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/widget/Menu.js
+ */
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2008 Aimluck,Inc.
+ * http://aipostyle.com/
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+dojo.provide("aimluck.widget.Menu");
+dojo.provide("aimluck.widget.Menuitem");
+dojo.provide("aimluck.widget.Menuseparator");
+dojo.provide("aimluck.widget.Menubar");
+dojo.provide("aimluck.widget.DropDownButton");
+
+dojo.require("dijit.layout.ContentPane");
+dojo.require("dijit.Menu");
+dojo.require("dijit.Toolbar");
+dojo.require("dijit.form.Button");
+
+dojo.declare("aimluck.widget.Menuitem", [dijit.MenuItem], {
+    label: "",
+    iconSrc: "",
+    iconClass: "",
+    url: "",
+        templateString:
+         '<tr class="dijitReset dijitMenuItem"'
+        +'dojoAttachEvent="onmouseenter:_onHover,onmouseleave:_onUnhover,ondijitclick:_onClick">'
+        +'<td class="dijitReset"><div class="dijitMenuItemIcon ${iconClass} menuItemIcon" dojoAttachPoint="iconNode" ></div></td>'
+        +'<td tabIndex="-1" class="dijitReset dijitMenuItemLabel" dojoAttachPoint="containerNode" waiRole="menuitem" nowrap="nowrap"></td>'
+        +'<td class="dijitReset" dojoAttachPoint="arrowCell">'
+            +'<div class="dijitMenuExpand" dojoAttachPoint="expand" style="display:none">'
+            +'<span class="dijitInline moz-inline-box dijitArrowNode dijitMenuExpandInner">+</span>'
+            +'</div>'
+        +'</td>'
+        +'</tr>',
+    onClick: function() {
+        location.href = this.url;
+    }
+});
+
+dojo.declare("aimluck.widget.MenuButton", [dijit.form.Button], {
+    label: "",
+    iconSrc: "",
+    iconClass: "",
+    url: "",
+    itemClass:"",
+    templateString:"<div class=\"dijit dijitLeft dijitInline moz-inline-box dijitButton\"\n\tdojoAttachEvent=\"onclick:_onButtonClick,onmouseenter:_onMouse,onmouseleave:_onMouse,onmousedown:_onMouse\"><div class='dijitRight'><button class=\"dijitStretch dijitButtonNode dijitButtonContents  ${itemClass}\" dojoAttachPoint=\"focusNode,titleNode\"\n\t\t\ttype=\"${type}\" waiRole=\"button\" waiState=\"labelledby-${id}_label\"><div class=\"dijitInline ${iconClass} menuItemIcon \" dojoAttachPoint=\"iconNode\"></div><span class=\"dijitButtonText\" id=\"${id}_label\" dojoAttachPoint=\"containerNode\">${label}</span></button></div></div>\n",
+    onClick: function() {
+        location.href = this.url;
+    }
+});
+
+dojo.declare("aimluck.widget.Menu", [dijit.Menu], {
+//    submenuOverlap: 2,
+//    submenuDelay: 0,
+    templateString:
+            '<table class="popupMenu dijitMenuTable" waiRole="menu" dojoAttachEvent="onkeypress:_onKeyPress">' +
+                '<tbody class="dijitReset" dojoAttachPoint="containerNode"></tbody>'+
+            '</table>'
+});
+
+
+dojo.declare("aimluck.widget.Menuseparator", [dijit.MenuSeparator], {
+    templateString: "<tr class=\"menuSeparator\"><td colspan=4>" + "<div class=\"menuSeparatorTop\"></div>" + "<div class=\"menuSeparatorBottom\"></div>" + "</td></tr>"
+});
+
+dojo.declare(
+    "aimluck.widget.ToolbarSeparator",
+    [ dijit.ToolbarSeparator ],
+{
+    // summary
+    //  A line between two menu items
+    templateString: '<div class="dijitInline moz-inline-box">&nbsp;｜&nbsp;</div>',
+    postCreate: function(){ dojo.setSelectable(this.domNode, false); },
+    isFocusable: function(){ return false; }
+});
+
+dojo.declare("aimluck.widget.DropDownButton", [dijit.form.DropDownButton], {
+    label: "",
+    iconSrc: "",
+    iconClass: "",
+    templateString:"<div class=\"dijit dijitLeft dijitInline moz-inline-box\"\n\tdojoAttachEvent=\"onmouseenter:_onMouse,onmouseleave:_onMouse,onmousedown:_onMouse,onclick:_onDropDownClick,onkeydown:_onDropDownKeydown,onblur:_onDropDownBlur,onkeypress:_onKey\"\n\t><div class='dijitRight'>\n\t<button class=\"dijitStretch dijitButtonNode dijitButtonContents\" type=\"${type}\"\n\t\tdojoAttachPoint=\"focusNode,titleNode\" waiRole=\"button\" waiState=\"haspopup-true,labelledby-${id}_label\"\n\t\t><div class=\"dijitInline ${iconClass} menuItemIcon\" dojoAttachPoint=\"iconNode\"></div><span class=\"dijitButtonText\" \tdojoAttachPoint=\"containerNode,popupStateNode\"\n\t\tid=\"${id}_label\">${label}</span\n\t\t><span class='dijitA11yDownArrow'>&#9660;</span>\n\t</button>\n</div></div>\n"
+});
+
+dojo.declare("aimluck.widget.ComboButton", [dijit.form.ComboButton], {
+    // summary
+    //      left side is normal button, right side displays menu
+    url: "",
+    itemClass:"",
+    templateString:"<table class='dijit dijitReset dijitInline dijitLeft moz-inline-box ${itemClass} '\n\tcellspacing='0' cellpadding='0'\n\tdojoAttachEvent=\"onmouseenter:_onMouse,onmouseleave:_onMouse,onmousedown:_onMouse\">\n\t<tr>\n\t\t<td\tclass=\"dijitStretch dijitButtonContents dijitButtonNode\"\n\t\t\ttabIndex=\"${tabIndex}\"\n\t\t\tdojoAttachEvent=\"ondijitclick:_onButtonClick\"  dojoAttachPoint=\"titleNode\"\n\t\t\twaiRole=\"button\" waiState=\"labelledby-${id}_label\">\n\t\t\t<div class=\"dijitMenuItemIcon ${iconClass} menuItemIcon\" dojoAttachPoint=\"iconNode\"></div>\n\t\t\t<span class=\"dijitButtonText\" id=\"${id}_label\" dojoAttachPoint=\"containerNode\">${label}</span>\n\t\t</td>\n\t\t<td class='dijitReset dijitRight dijitButtonNode dijitDownArrowButton'\n\t\t\tdojoAttachPoint=\"popupStateNode,focusNode\"\n\t\t\tdojoAttachEvent=\"ondijitclick:_onArrowClick, onkeypress:_onKey\"\n\t\t\tstateModifier=\"DownArrow\"\n\t\t\ttitle=\"${optionsTitle}\" name=\"${name}\"\n\t\t\twaiRole=\"button\" waiState=\"haspopup-true\"\n\t\t><div waiRole=\"presentation\">&#9660;</div>\n\t</td></tr>\n</table>\n",
+    onClick: function() {
+        location.href = this.url;
+    }
+});
+
+dojo.declare("aimluck.widget.Menubar", [dijit.Toolbar], {
+    selectedIndex: -1,
+    templateString:
+        '<div class="tundra"><div class="dijit dijitToolbar" waiRole="toolbar" tabIndex="${tabIndex}" dojoAttachPoint="containerNode">' +
+        '</div></div>',
+    postCreate:function () {
+        dijit.Toolbar.superclass.postCreate.apply(this, arguments);
+        this.makeMenu(this.items);
+        this.isShowingNow = true;
+    },
+    makeMenu:function(items) {
+        var _this = this;
+        var _count = 0;
+        dojo.forEach(items, function(itemJson){
+                if(itemJson.submenu){ 
+                    var menu = new aimluck.widget.Menu({id: itemJson.caption, style: "display: none;" });
+                    dojo.forEach(itemJson.submenu, function(itemJson2){
+                        if(itemJson2 != null){
+                            if (itemJson2.caption) {
+                                menu.addChild( new aimluck.widget.Menuitem({label: itemJson2.caption, url: itemJson2.url, iconClass: itemJson2.iconClass}) );
+                            } else {
+                                menu.addChild( new aimluck.widget.Menuseparator() );
+                            }
+                        }
+                    });
+                    var _itemClass = "";
+                    if(_this.selectedIndex == parseInt(_count) ){
+                        _itemClass += "menuBarItemSelected";
+                    }  
+                    var ddb = new aimluck.widget.ComboButton({ label: itemJson.caption, iconClass: itemJson.iconClass, dropDown: menu, url: itemJson.url, itemClass:_itemClass});
+                    ddb.addChild(menu);
+                    _this.addChild(ddb);
+                } else if(itemJson.url) {
+                    var _itemClass = "";
+                    if(_this.selectedIndex == _count){
+                        _itemClass += "menuBarItemSelected";
+                    }
+                    var ddb = new aimluck.widget.MenuButton({id: itemJson.caption + "_Button" + _count, label: itemJson.caption , url: itemJson.url, iconClass: itemJson.iconClass,  itemClass:_itemClass });
+                    _this.addChild(ddb);
+                } else {
+                    _this.addChild(new aimluck.widget.ToolbarSeparator());
+                }
+                _count++;
+               
+        }); 
+
+    }
+});
+
+/*
+ * END OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/widget/Menu.js
  */
 
 /*
