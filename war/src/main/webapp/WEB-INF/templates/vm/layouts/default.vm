@@ -31,9 +31,9 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta name="copyright" content="${copyright}" />
 <link rel="shortcut icon" href="/${data.getServletConfig().getServletName()}/images/favicon.ico" />
-<link rel="stylesheet" type="text/css" href="/${data.getServletConfig().getServletName()}/themes/orange/css/extend.css" media="screen,tv,print" />
-<link rel="stylesheet" type="text/css" href="/${data.getServletConfig().getServletName()}/themes/orange/css/common.css" media="screen,tv,print" />
-<link rel="stylesheet" type="text/css" href="/${data.getServletConfig().getServletName()}/themes/orange/css/print.css" media="print" />
+<link rel="stylesheet" type="text/css" href="/${data.getServletConfig().getServletName()}/themes/orange/css/extend.min.css" media="screen,tv,print" />
+<link rel="stylesheet" type="text/css" href="/${data.getServletConfig().getServletName()}/themes/orange/css/common.min.css" media="screen,tv,print" />
+<link rel="stylesheet" type="text/css" href="/${data.getServletConfig().getServletName()}/themes/orange/css/print.min.css" media="print" />
 #ALheadScripts()
 </head>
 <body>

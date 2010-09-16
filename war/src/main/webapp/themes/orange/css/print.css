@@ -19,10 +19,3 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
  
-/*
- * Print用CSS(import用)
- *
- */
-
-/* IE4除去 */
-@import "print/base.css";
