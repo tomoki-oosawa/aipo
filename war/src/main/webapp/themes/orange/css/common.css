@@ -61,6 +61,12 @@
 	letter-spacing:0px;
 
 font-size:100%;
+/*
+font-style:normal;
+font-weight:normal;
+line-height:130%;
+text-decoration:none;
+*/
 }
 
 /******************************
@@ -72,7 +78,7 @@ body {
 	padding:0;
 	background-color:#FFFFFF;
 	line-height:1.4;
-font-size:0.75em;
+    font-size:0.75em;
 }
 
 div,
@@ -106,15 +112,15 @@ textarea {
 }
 
 textarea.wide {
-width:100%;
+    width:100%;
 }
 
 .dj_ie textarea.wide {
-width:98%;
+    width:98%;
 }
 
 .dj_ie7 textarea.wide {
-width:97%;
+    width:97%;
 }
 
 select {
@@ -263,11 +269,11 @@ padding:5px !important;
 }
 
 .spaceTop {
-padding-top:5px;
+    padding-top:5px;
 }
 
 .spaceBottom {
-padding-bottom:5px;
+    padding-bottom:5px;
 }
 
 .spaceBoth {
@@ -276,7 +282,7 @@ padding-bottom:5px;
 }
 
 .spaceAll {
-padding:5px;
+    padding:5px;
 }
 
 .p {
@@ -368,17 +374,27 @@ padding:5px;
 }
 
 input.button {
+/*
+	margin:0px 2px;
+	padding:1px 4px 1px;
+	border-top:1px solid #CCCCCC;
+	border-left:1px solid #CCCCCC;
+	border-right:1px solid #BBBBBB;
+	border-bottom:1px solid #BBBBBB;
+	color:#FFFFFF;
+	background:#FFB000 url(../images/common/bg_submenu_a.gif) repeat-x left top;
+*/
 }
 
 .item {
-background-color:#FFFFFF;
+    background-color:#FFFFFF;
 }
 
 .img_icon {
-border:none;
-vertical-align: middle;
-width: 16px;
-height: 16px;
+    border:none;
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
 }
 
 /***************************************************
@@ -423,9 +439,10 @@ overflow:hidden;
 }
 
 #btnLogout{
-margin-left:5px;
-padding-right:2px;
+    margin-left:5px;
+    padding-right:2px;
 	height:30px;
+	background:url(../images/common/btn_logout_rt.gif) no-repeat left bottom;
 }
 
 #btnLogout input{
@@ -491,7 +508,7 @@ margin:0;
  ******************************/
 
 .roundMainWrapper {
-padding:8px;
+    padding:8px;
 }
 
 .roundTopMain{
@@ -570,7 +587,7 @@ table.roundBlockWrapperTop {
 }
 
 .roundBlockWrapperBottom {
-padding:0px 18px 20px 18px;
+    padding:0px 18px 20px 18px;
 }
 
 table.roundBlockWrapperTop td.roundBlockTitle {
@@ -685,7 +702,7 @@ white-space:nowrap;
 
 .tabContainer li{
 height:28px;
-background:url(../images/layout_01.png) right -90px no-repeat;
+	background:transparent url(../images/common/bg_menu.gif) no-repeat scroll right top;
 	float:left;
 	display:block;
 	padding:0px;
@@ -694,7 +711,7 @@ background:url(../images/layout_01.png) right -90px no-repeat;
 
 .tabContainer li .menuTitle {
 height:22px;
-background:url(../images/layout_01.png) left -60px no-repeat;
+	background:transparent url(../images/common/bg_menu_l.gif) no-repeat scroll left top;
 	float:left;
 	padding:6px 10px 0 20px;
 }
@@ -707,11 +724,11 @@ background:url(../images/layout_01.png) left -60px no-repeat;
 }
 
 .tabContainer li.selectedMenu {
-background:url(../images/layout_01.png) right -30px no-repeat;
+	background:transparent url(../images/common/bg_menu_a.gif) no-repeat scroll right top;
 }
 
 .tabContainer li.selectedMenu .menuTitle {
-background:url(../images/layout_01.png) left 0px no-repeat;
+	background:transparent url(../images/common/bg_menu_a_l.gif) no-repeat scroll left top;
 	color:#FFFFFF;
 	padding:6px 10px 0 20px;
 	line-height:160%;
@@ -726,7 +743,7 @@ background:url(../images/layout_01.png) left 0px no-repeat;
 }
 
 .tabContainer li.selectedMenu a.menuList {
-white-space:nowrap;
+    white-space:nowrap;
 	color:#FFFFFF;
 }
 
@@ -752,7 +769,7 @@ white-space:nowrap;
 
 .subTab .tabContainer li{
 height:25px;
-background:url(../images/layout_01.png) right -90px no-repeat;
+	background:transparent url(../images/common/bg_menu.gif) no-repeat scroll right top;
 	float:left;
 	display:block;
 	padding:0px;
@@ -761,7 +778,7 @@ background:url(../images/layout_01.png) right -90px no-repeat;
 
 .subTab .tabContainer li .menuTitle {
 height:21px;
-background:url(../images/layout_01.png) left -60px no-repeat;
+	background:transparent url(../images/common/bg_menu_l.gif) no-repeat scroll left top;
 	float:left;
 	padding:4px 10px 0 20px;
 }
@@ -774,11 +791,11 @@ background:url(../images/layout_01.png) left -60px no-repeat;
 }
 
 .subTab .tabContainer li.selectedMenu {
-background:url(../images/layout_01.png) right -145px no-repeat;
+	background:transparent url(../images/common/bg_menu_s_a.gif) no-repeat scroll right top;
 }
 
 .subTab .tabContainer li.selectedMenu .menuTitle {
-background:url(../images/layout_01.png) 0px -120px no-repeat;
+	background:transparent url(../images/common/bg_menu_s_a_l.gif) no-repeat scroll left top;
 	color:#FFFFFF;
 	padding:4px 10px 0 20px;
 	line-height:160%;
@@ -793,7 +810,7 @@ line-height:normal;
 }
 
 .subTab .tabContainer li.selectedMenu a.menuList {
-white-space:nowrap;
+    white-space:nowrap;
 	color:#FFFFFF;
 }
 
@@ -839,6 +856,9 @@ color:#666666;
 text-decoration:underline;
 }
 
+
+
+
 div.endcap {
 	background:#FFFFFF url(../images/common/bg_submenu_b.gif) no-repeat scroll center top;
 	height:20px;
@@ -876,6 +896,7 @@ a.button:hover {
 	border:1px solid #FF9900;
 	margin:0px;
 	background-color:#FFF5D8;
+/*	background-position:left 1px; */
 	background-repeat:no-repeat;
 }
 
@@ -916,29 +937,29 @@ a.button:hover {
  ******************************/
  
 .fieldMiddle{
-background:url(../images/layout_01.png) 0px -170px no-repeat;
+	background:url(../images/common/bg_name_m.gif) repeat-x right top;
 }
 
 .fieldRight{
-background:url(../images/layout_01.png) right -216px no-repeat;
+	background:url(../images/common/bg_name_r.gif) no-repeat right top;
 }
 
 .fieldLeft{
 	padding-left:10px;
 	padding-right:10px;
 	line-height:23px;
-background:url(../images/layout_01.png) left -193px no-repeat;
+	background:url(../images/common/bg_name_l.gif) no-repeat left top;
 }
 * html .fieldMiddle,
 * html .fieldRight,
 * html .fieldLeft {
-display:inline;
+    display:inline;
 }
 
 *+html .fieldMiddle,
 *+html .fieldRight,
 *+html .fieldLeft {
-display:inline;
+    display:inline;
 }
 
 /******************************
@@ -1010,28 +1031,28 @@ table.barContainer td a:hover {
  * Table
  ******************************/
 table.outer {
-color:#5D6A70;
-background-color:#FF9900;
+    color:#5D6A70;
+    background-color:#FF9900;
 }
 
 td.item {
-padding:2px;
-color:#5D6A70;
-line-height:14pt;
-background-color:#FFFFFF;
+    padding:2px;
+    color:#5D6A70;
+    line-height:14pt;
+    background-color:#FFFFFF;
 }
 
 td.f08 {
-padding:4px;
-color:#5D6A70;
-background-color:#FFF5D8;
-vertical-align:middle;
+    padding:4px;
+    color:#5D6A70;
+    background-color:#FFF5D8;
+    vertical-align:middle;
 }
 
 
 table.listTable {
-margin-top:5px;
-margin-bottom:5px;
+    margin-top:5px;
+    margin-bottom:5px;
 	border-spacing:0;
 	border-collapse:collapse;
 	border-top:3px solid #ff9900;
@@ -1039,9 +1060,11 @@ margin-bottom:5px;
 }
 
 table.subTable {
-margin-top:2px;
+    margin-top:2px;
 	border-collapse:collapse;
 	border-spacing:0;
+	/*border-top:4px solid #ff9900;
+	border-bottom:4px solid #ff9900;*/
 }
 
 table.listTable td,
@@ -1063,7 +1086,6 @@ table.subTable thead td {
 }
 
 table.listTable th a,
-
 table.listTable thead td a,
 table.subTable th a,
 table.subTable thead td a {
@@ -1077,7 +1099,7 @@ table.listTable thead td.headDown a,
 table.subTable th a.headDown,
 table.subTable thead td.headDown a {
 	background:transparent url(../images/common/icon_desc.gif) no-repeat right 3px;
-
+    
 }
 
 table.listTable th a.headUp,
@@ -1085,7 +1107,7 @@ table.listTable thead td.headUp a,
 table.subTable th a.headUp,
 table.subTable thead td.headUp a {
 	background:transparent url(../images/common/icon_asc.gif) no-repeat right 3px;
-
+    
 }
 
 table.listTable td.caption,
@@ -1105,7 +1127,7 @@ table.subTable .selected {
 }
 
 table.none {
-margin:0px;
+    margin:0px;
 	border-collapse:collapse;
 	border-spacing:0;
 	border:none;
@@ -1117,7 +1139,7 @@ table.none td {
 }
 
 table.tableWrapper {
-margin:0px;
+    margin:0px;
 	border-collapse:collapse;
 	border-spacing:0;
 	border:none;
@@ -1155,8 +1177,8 @@ table.rowTable tr.even {
 }
 
 table.simpleTable {
-margin-top:5px;
-margin-bottom:5px;
+    margin-top:5px;
+    margin-bottom:5px;
 	border-spacing:0;
 	border-collapse:collapse;
 }
@@ -1281,10 +1303,10 @@ table.simpleTable td.caption {
 }
 
 .pagination li.abbr {
-display:block;
-float:left;
-margin-right:0.1em;
-padding:0.2em 0.4em 0em 0.2em;
+    display:block;
+    float:left;
+    margin-right:0.1em;
+    padding:0.2em 0.4em 0em 0.2em;
 }
 
 /******************************
@@ -1329,8 +1351,9 @@ padding:0.2em 0.4em 0em 0.2em;
 .modalDialog {
 	background-color:#ffffff;
 	width:550px;
-z-index: 997;
+    z-index: 997;
 	position: absolute;
+	/*display:none;*/
 }
 
 .modalDialogTitleBar{
@@ -1347,40 +1370,40 @@ z-index: 997;
 }
 
 .modalDialogUnderlayWrapper {
-position: absolute;
-left: 0px;
-top: 0px;
-z-index: 996;
-display: none;
-background: transparent;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 996;
+    display: none;
+    background: transparent;
 }
 
 .modalDialogUnderlay {
-background: #eeeeee;
-opacity: 0.5;
+    background: #eeeeee;
+    opacity: 0.5;
 }
 
 .dj_ie .modalDialogUnderlay {
-filter: alpha(opacity=50);
+    filter: alpha(opacity=50);
 }
 
 .dj_gecko .modalDialogUnderlay {
--moz-opacity: 0.5;
+    -moz-opacity: 0.5;
 }
 
 /* images off, high-contrast mode styles */
 .dijit_a11y .modalDialog {
-opacity: 1 !important;
-background-color: white !important;
+    opacity: 1 !important;
+    background-color: white !important;
 }
 
 .modalDialog .closeText {
-display:none;
-position:absolute;
+    display:none;
+    position:absolute;
 }
 
 .dijit_a11y .modalDialog .closeText { 
-display:inline;
+    display:inline;
 }
 
 
@@ -1389,48 +1412,48 @@ display:inline;
  ******************************/
 
 .fileuploadDialog {
-border:5px solid #dddddd;
-background-color:#ffffff;
-width:300px;
-z-index: 999;
-position: absolute;
+    border:5px solid #dddddd;
+    background-color:#ffffff;
+    width:300px;
+    z-index: 999;
+    position: absolute;
 }
 
 .fileuploadDialogUnderlayWrapper {
-position: absolute;
-left: 0px;
-top: 0px;
-z-index: 998;
-display: none;
-background: transparent;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 998;
+    display: none;
+    background: transparent;
 }
 
 .fileuploadDialogUnderlay {
-background: #eeeeee;
-opacity: 0.5;
+    background: #eeeeee;
+    opacity: 0.5;
 }
 
 .dj_ie .fileuploadDialogUnderlay {
-filter: alpha(opacity=50);
+    filter: alpha(opacity=50);
 }
 
 .dj_gecko .fileuploadDialogUnderlay {
--moz-opacity: 0.5;
+    -moz-opacity: 0.5;
 }
 
 /* images off, high-contrast mode styles */
 .dijit_a11y .fileuploadDialog {
-opacity: 1 !important;
-background-color: white !important;
+    opacity: 1 !important;
+    background-color: white !important;
 }
 
 .fileuploadDialog .closeText {
-display:none;
-position:absolute;
+    display:none;
+    position:absolute;
 }
 
 .dijit_a11y .fileuploadDialog .closeText { 
-display:inline;
+    display:inline;
 }
 
 /******************************
@@ -1438,48 +1461,48 @@ display:inline;
  ******************************/
 
 .addressbookDialog {
-border:5px solid #dddddd;
-background-color:#ffffff;
-width:600px;
-z-index: 999;
-position: absolute;
+    border:5px solid #dddddd;
+    background-color:#ffffff;
+    width:600px;
+    z-index: 999;
+    position: absolute;
 }
 
 .addressbookDialogUnderlayWrapper {
-position: absolute;
-left: 0px;
-top: 0px;
-z-index: 998;
-display: none;
-background: transparent;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 998;
+    display: none;
+    background: transparent;
 }
 
 .addressbookDialogUnderlay {
-background: #eeeeee;
-opacity: 0.5;
+    background: #eeeeee;
+    opacity: 0.5;
 }
 
 .dj_ie .addressbookDialogUnderlay {
-filter: alpha(opacity=50);
+    filter: alpha(opacity=50);
 }
 
 .dj_gecko .addressbookDialogUnderlay {
--moz-opacity: 0.5;
+    -moz-opacity: 0.5;
 }
 
 /* images off, high-contrast mode styles */
 .dijit_a11y .addressbookDialog {
-opacity: 1 !important;
-background-color: white !important;
+    opacity: 1 !important;
+    background-color: white !important;
 }
 
 .addressbookDialog .closeText {
-display:none;
-position:absolute;
+    display:none;
+    position:absolute;
 }
 
 .dijit_a11y .addressbookDialog .closeText { 
-display:inline;
+    display:inline;
 }
 
 
@@ -1493,13 +1516,15 @@ display:inline;
 	border-left:1px solid #eeeeee;
 	border-bottom:1px solid #cccccc;
 	border-right:1px solid #cccccc;
+	/*background:#f5f5f5 url(../images/common/bg_slash.gif) repeat left top;*/
 	background:#f5f5f5;
 	padding: 1px;
 	margin-top: 5px;
 	margin-bottom: 1px;
+	
 	line-height:normal;
-border-collapse:collapse;
-border-width:0px;
+    border-collapse:collapse;
+    border-width:0px;
 }
 
 * html .popupMenu {
@@ -1517,7 +1542,7 @@ border-width:0px;
 }
 
 .menuItemHover {
-padding:0px;
+    padding:0px;
 	border:1px solid #FF9900;
 	background:#fff5d8;
 	cursor:pointer;
@@ -1573,7 +1598,7 @@ padding:0px;
 }
 
 .menuBarSeparator {
-width:3px;
+    width:3px;
 	height:16px;
 	white-space: nowrap;
 	margin: 0;
@@ -1614,6 +1639,8 @@ width:3px;
 }
 
 .menuBar {
+	/*background:#85aeec url(images/soriaBarBg.gif) repeat-x top left;*/
+	/*border-bottom:1px solid #6b9fec;*/
 	padding: 0px;
 	margin: 0px;
 }
@@ -1639,8 +1666,10 @@ width:3px;
 }
 
 .menuBar .menuBarItemHover .menuItem {
+	/*background-color:#d2e4fd;*/
 	padding: 1px;
 	border:1px solid #FF9900;
+	/*background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;*/
 	background:#fff5d8;
 	cursor:pointer;
 	cursor:hand;
@@ -1676,8 +1705,8 @@ width:3px;
  ******************************/
 
 .datePickerContainer {
-text-align:center;
-width:140px;
+    text-align:center;
+    width:140px;
 	padding:5px;
 	border: 3px solid #dddddd;
 	background:#f7f7f7 url(../images/common/bg_slash.gif) repeat left top;
@@ -1705,6 +1734,14 @@ width:140px;
 .datePickerContainer {
 	display:block;
 }
+
+/* End hides from IE-mac */
+/*
+.datePickerContainer {
+	width:164px; /* needed for proper user styling */
+
+}
+*/
 
 .calendarContainer {
 }
@@ -1810,6 +1847,7 @@ width:140px;
 }
 
 .calendarBodyContainer tbody tr td.selectedDate {
+	/*background:#ffffe5 url(../images/common/bg_slash.gif) repeat left top;*/
 	background:#ff9900;
 	color:#FFFFFF;
 	font-weight:bold;
@@ -1833,8 +1871,8 @@ width:140px;
  ******************************/
 
 .timePickerContainer {
-text-align:center;
-width:115px;
+    text-align:center;
+    width:115px;
 	padding:5px;
 	border: 3px solid #dddddd;
 	background:#f7f7f7 url(../images/common/bg_slash.gif) repeat left top;
@@ -1882,15 +1920,15 @@ width:115px;
 }
 
 * html .timeContainer .timeLabelContainer {
-font-size:0.7em;
-border-bottom:1px solid #ff9900;
+    font-size:0.7em;
+    border-bottom:1px solid #ff9900;
 	padding:0.2em 0.25em 0.2em 0.25em;
 	font-family:Verdana, Arial, Helvetica, “ヒラギノ角ゴPro W3″, “Hiragino Kaku Gothic Pro”, “メイリオ”, Meiryo, “ＭＳ Ｐゴシック”, sans-serif;
 }
 
 *+html .timeContainer .timeLabelContainer {
-font-size:0.7em;
-border-bottom:1px solid #ff9900;
+    font-size:0.7em;
+    border-bottom:1px solid #ff9900;
 	padding:0.2em 0.25em 0.2em 0.25em;
 	font-family:Verdana, Arial, Helvetica, “ヒラギノ角ゴPro W3″, “Hiragino Kaku Gothic Pro”, “メイリオ”, Meiryo, “ＭＳ Ｐゴシック”, sans-serif;
 }
@@ -1915,20 +1953,21 @@ border-bottom:1px solid #ff9900;
 
 * html .timeContainer .timeHoursContainer td,
 * html .timeContainer .timeMnituesContainer td {
-font-size:0.7em;
+    font-size:0.7em;
 	padding:0.2em 0.25em 0.2em 0.25em;
 	font-family:Verdana, Arial, Helvetica, “ヒラギノ角ゴPro W3″, “Hiragino Kaku Gothic Pro”, “メイリオ”, Meiryo, “ＭＳ Ｐゴシック”, sans-serif;
 }
 
 *+html .timeContainer .timeHoursContainer td,
 *+html .timeContainer .timeMnituesContainer td {
-font-size:0.7em;
+    font-size:0.7em;
 	padding:0.2em 0.25em 0.2em 0.25em;
 	font-family:Verdana, Arial, Helvetica, “ヒラギノ角ゴPro W3″, “Hiragino Kaku Gothic Pro”, “メイリオ”, Meiryo, “ＭＳ Ｐゴシック”, sans-serif;
 }
 
 .timeContainer .timeHoursContainer td.selectedItem,
 .timeContainer .timeMnituesContainer td.selectedItem {
+	/*background:#ff9900 url(../images/common/bg_slash.gif) repeat left top;*/
 	background:#ff9900;
 	color:#FFFFFF;
 	font-weight:bold;
@@ -1993,13 +2032,13 @@ font-size:0.7em;
  ******************************/
  
 .indicator {
-background:url(../images/common/indicator.gif) no-repeat left;
-padding:2px 0px 2px 18px;
-margin-left:2px;
+    background:url(../images/common/indicator.gif) no-repeat left;
+    padding:2px 0px 2px 18px;
+    margin-left:2px;
 }
 
 .indicatorDialog {
-border:5px solid #dddddd;
+    border:5px solid #dddddd;
 }
 
 /******************************
@@ -2009,6 +2048,7 @@ border:5px solid #dddddd;
 ul.imageView {
 display:block;
 margin:0 0;
+	/*white-space:nowrap;*/
 }
 
 ul.imageView li {
@@ -2030,12 +2070,12 @@ ul.imageView div.image {
 
 .headItem li {
 	padding:0px;
-padding-right:2px;
+    padding-right:2px;
 	float:left;
 	background:none;
 }
 img.icon {
-padding-left:2px;
+    padding-left:2px;
 }
 
 /******************************
@@ -2052,18 +2092,18 @@ span.indidiv{
 }
 
 div.weeklyScrollPane {
-width:100%;
-position:relative;
-overflow:scroll;
-overflow-x:hidden;
+    width:100%;
+    position:relative;
+    overflow:scroll;
+    overflow-x:hidden;
 }
 
 * html .scroll_width {
-width:18px;
+    width:18px;
 }
 
 *+html .scroll_width {
-width:18px;
+    width:18px;
 }
 
 div.weeklyHeadLeft{
@@ -2086,14 +2126,14 @@ div.weeklyHeadLeft div.weeklyHeadLeftBottom{
 }
 
 div.weeklyHeadRights{
-position:relative;
-width:100%;
+    position:relative;
+    width:100%;
 	height:100%;
 	float:left;
 }
 
 div.weeklyHeadRights div.weeklyHeadRight{
-position:absolute;
+    position:absolute;
 	width:14.2857%;
 	text-align:center;
 	background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
@@ -2103,7 +2143,7 @@ position:absolute;
 }
 
 div.weeklyHeadRights div.weeklyHeadRightR{
-position:absolute;
+    position:absolute;
 	width:14.2857%;
 	text-align:center;
 	background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
@@ -2142,8 +2182,8 @@ div.weeklyTermLeft div.weeklyTermLeftBottom{
 }
 
 div.weeklyTermRights{
-position:relative;
-width:100%;
+    position:relative;
+    width:100%;
 	height:100%;
 	float:left;
 }
@@ -2154,15 +2194,15 @@ div.weeklyTermRights div.weeklyTermRightL{
 }
 
 div.weeklyTermRights div.weeklyTermRight{
-position:absolute;
-width:14.2857%;
-border:solid #ff9900;
-border-left:solid #dddddd;
-border-width:1px 0px 0px 1px;
+    position:absolute;
+    width:14.2857%;
+    border:solid #ff9900;
+    border-left:solid #dddddd;
+    border-width:1px 0px 0px 1px;
 }
 
 div.weeklyTermRights div.weeklyTermRightR{
-border-width:1px 1px 0px 1px !important;
+    border-width:1px 1px 0px 1px !important;
 }
 
 
@@ -2200,7 +2240,7 @@ div.weeklyLeft div.leftMinute{
 	padding:0px 3px 0px 0px;
 	text-align:right;
 	color:#be6d00;
-line-height:1;
+    line-height:1;
 }
 
 div.weeklyLeft div.leftMinuteBottom{
@@ -2209,26 +2249,28 @@ div.weeklyLeft div.leftMinuteBottom{
 	border-width:0px 0px 1px 0px;
 	background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
 	font-size:1px;
-line-height:1;
+    line-height:1;
 }
 
 div.weeklyRights{
-position:relative;
-width:100%;
+    position:relative;
+    width:100%;
 	height:100%;
 	float:left;
 }
 
 div.weeklyRights div.weeklyRight{
-position:absolute;
+    position:absolute;
 	width:14.2857%;
+	/*background-color:#ffffff;*/
 	border:solid #dddddd;
 	border-width:1px 0px 0px 1px;
 }
 
 div.weeklyRights div.weeklyRightR{
-position:absolute;
+    position:absolute;
 	width:14.2857%;
+	/*background-color:#ffffff;*/
 	border:solid #dddddd;
 	border-width:1px 1px 0px 1px;
 }
@@ -2252,16 +2294,19 @@ div.weeklyRights div.weeklyRightR div.rightMinuteBottom{
 
 div.scheduleDiv{
 	position:absolute;
+	/*width:14.1857%;*/
 	width:14.2857143%;
 	overflow:hidden;
 	border:solid #cc3333;
 	border-width:1px;
 	background-color:#FFFFE5;
 	cursor:pointer;
+	/*box-sizing:border-box;
+	-moz-box-sizing:border-box;*/
 }
 
 div.scheduleDivFirstLine{
-line-height:1px;
+    line-height:1px;
 	height:13px;
 	color:#ffffff;
 	background-color:#cc3333;
@@ -2274,7 +2319,7 @@ line-height:1px;
 
 div.scheduleDivFirstLine span.scheduleDivTime,
 div.scheduleDivFirstLine span.scheduleDivSepalater{
-line-height:1.2;
+    line-height:1.2;
 	color:#ffffff;
 	margin:0px;
 	padding:0px;
@@ -2283,14 +2328,14 @@ line-height:1.2;
 
 * html div.scheduleDivFirstLine span.scheduleDivTime,
 * html div.scheduleDivFirstLine span.scheduleDivSepalater {
-font-size:0.8em;
+    font-size:0.8em;
 	font-family:Verdana, Arial, Helvetica, “ヒラギノ角ゴPro W3″, “Hiragino Kaku Gothic Pro”, “メイリオ”, Meiryo, “ＭＳ Ｐゴシック”, sans-serif;
 	line-height:1.3;
 }
 
 *+html div.scheduleDivFirstLine span.scheduleDivTime,
 *+html div.scheduleDivFirstLine span.scheduleDivSepalater {
-font-size:0.8em;
+    font-size:0.8em;
 	font-family:Verdana, Arial, Helvetica, “ヒラギノ角ゴPro W3″, “Hiragino Kaku Gothic Pro”, “メイリオ”, Meiryo, “ＭＳ Ｐゴシック”, sans-serif;
 	line-height:1.3;
 }
@@ -2403,7 +2448,7 @@ div.termScheduleDivTgt{
 }
 
 table.weeklyTableHead {
-border-right:solid 1px #ff9900;
+    border-right:solid 1px #ff9900;
 }
 
 div.weeklyBorder {
@@ -2653,8 +2698,8 @@ span.color9 {
 }
 
 table.calendar {
-margin-top:5px;
-margin-bottom:5px;
+    margin-top:5px;
+    margin-bottom:5px;
 	border-collapse:collapse;
 	border-spacing:0;
 	border-top:2px solid #ff9900;
@@ -2662,7 +2707,7 @@ margin-bottom:5px;
 }
 
 table.calendar td.calendarHeader {
-background:#ff9900;
+    background:#ff9900;
 }
 
 table.calendar td {
@@ -2691,12 +2736,12 @@ table.calendar th.saturday {
 }
 
 table.calendar th.holiday {
-background:#FFEFE5 url(../images/common/bg_slash.gif) repeat left top;
+    background:#FFEFE5 url(../images/common/bg_slash.gif) repeat left top;
 
 }
 
 table.calendar th.today {
-background:#FFF5D8 url(../images/common/bg_slash.gif) repeat left top;
+    background:#FFF5D8 url(../images/common/bg_slash.gif) repeat left top;
 
 }
 
@@ -2715,7 +2760,7 @@ table.calendar td.day {
 }
 
 table.calendar td.sunday2 {
-background-color:#FFDFD5;
+    background-color:#FFDFD5;
 }
 
 table.calendar td.saturday2 {
@@ -2741,7 +2786,7 @@ table.calendar div.calendarFooter {
 div.calendarScheduleDiv {
 	padding-right:1px;
 	padding-left:1px;
-padding:2px;
+    padding:2px;
 }
 
 div.calendarScheduleDiv div.time {
@@ -2751,13 +2796,13 @@ div.calendarScheduleDiv div.time {
 
 div.calendarScheduleDiv a:link,
 div.calendarScheduleDiv a:visited {
-display:block;
+    display:block;
 	text-decoration:none;
 	padding:1px;
 }
 
 div.calendarScheduleDiv a:hover {
-background-color:#FFFFE5;
+    background-color:#FFFFE5;
 	border:1px solid #FF9900;
 	text-decoration:none;
 	padding:0px;
@@ -2770,14 +2815,14 @@ div.calendarScheduleDiv .calendarTime {
 
 
 table.calendar td.term {
-border-top:none;
+    border-top:none;
 	border-bottom:none;
 }
 
 table.calendar div.calerndarTermScheduleDiv {
-padding:0px;
-font-weight:normal;
-text-align:center;
+    padding:0px;
+    font-weight:normal;
+    text-align:center;
 	border:1px solid #99cc99;
 	background-color:#DDFFDD;
 	overflow:hidden;
@@ -2789,37 +2834,37 @@ table.calendar td.topNone {
 
 div.calerndarTermScheduleDiv a:link,
 div.calerndarTermScheduleDiv a:visited {
-display:block;
-text-decoration:none;
-padding:1px;
+    display:block;
+    text-decoration:none;
+    padding:1px;
 }
 
 div.calerndarTermScheduleDiv a:hover {
-background-color:#FFFFE5;
-border:1px solid #FF9900;
-text-decoration:none;
-padding:0px;
+    background-color:#FFFFE5;
+    border:1px solid #FF9900;
+    text-decoration:none;
+    padding:0px;
 }
 
 table.calendar div.calerndarTodoDiv {
-padding:0px;
-font-weight:normal;
-text-align:center;
-background-color:#FFE5E5;
+    padding:0px;
+    font-weight:normal;
+    text-align:center;
+    background-color:#FFE5E5;
 }
 
 div.calerndarTodoDiv a:link,
 div.calerndarTodoDiv a:visited {
-display:block;
-text-decoration:none;
-padding:1px;
+    display:block;
+    text-decoration:none;
+    padding:1px;
 }
 
 div.calerndarTodoDiv a:hover {
-background-color:#FFFFE5;
-border:1px solid #FF9900;
-text-decoration:none;
-padding:0px;
+    background-color:#FFFFE5;
+    border:1px solid #FF9900;
+    text-decoration:none;
+    padding:0px;
 }
 
 div.color0 {
@@ -3025,8 +3070,8 @@ color:#FFFFFF;
 
 
 div.dummy_div {
-cursor:pointer;
-cursor:hand;
+    cursor:pointer;
+    cursor:hand;
 }
 
 /******************************
@@ -3043,26 +3088,26 @@ cursor:hand;
  * Schedule
  ******************************/
 .icon_schedule {
-border:none;
-vertical-align: middle;
-width: 16px;
-height: 16px;
+    border:none;
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
 }
 
 .dot_schedule {
-border:none;
-vertical-align: middle;
-width: 1px;
-height: 16px;
+    border:none;
+    vertical-align: middle;
+    width: 1px;
+    height: 16px;
 }
 
 /******************************
  * Blog
  ******************************/
 div.userBlock {
-float:left;
-display:block;
-width:100px;
+    float:left;
+    display:block;
+    width:100px;
 	margin-top:4px;
 	margin-right:2px;
 	margin-bottom:4px;
@@ -3089,124 +3134,124 @@ div.userInfo {
  * MenuBar
  ******************************/
 .menuBarIconAdd{
-background: url(../../../images/icon/icon_add.gif) no-repeat;
+    background: url(../images/icon/icon_add.gif) no-repeat;
 }
 
 .menuBarIconCustimize{
-background: url(../../../images/icon_customize.gif) no-repeat;
+    background: url(../images/icon_customize.gif) no-repeat;
 }
 
 .menuBarIconDate{
-background: url(../../../images/icon_date.gif) no-repeat;
+    background: url(../images/icon_date.gif) no-repeat;
 }
 
 .menuBarIconDelete{
-background: url(../../../images/icon/icon_delete.gif) no-repeat;
+    background: url(../images/icon/icon_delete.gif) no-repeat;
 }
 
 .menuBarIconEdit{
-background: url(../../../images/icon/icon_edit.gif) no-repeat;
+    background: url(../images/icon/icon_edit.gif) no-repeat;
 }
 
 .menuBarIconList{
-background: url(../../../images/icon/icon_list.gif) no-repeat;
+    background: url(../images/icon/icon_list.gif) no-repeat;
 }
 
 .menuBarIconMember{
-background: url(../../../images/icon/icon_member.gif) no-repeat;
+    background: url(../images/icon/icon_member.gif) no-repeat;
 }
 
 .menuBarIconCompanyInfo{
-background: url(../../../images/account/company_info.gif) no-repeat;
+    background: url(../images/account/company_info.gif) no-repeat;
 }
 
 .menuBarIconAccountUser{
-background: url(../../../images/account/account_user.gif) no-repeat;
+    background: url(../images/account/account_user.gif) no-repeat;
 }
 
 .menuBarIconAccountUserAdd{
-background: url(../../../images/account/account_user_add.gif) no-repeat;
+    background: url(../images/account/account_user_add.gif) no-repeat;
 }
 
 .menuBarIconAccountChangeTurn{
-background: url(../../../images/account/account_change_turn.gif) no-repeat;
+    background: url(../images/account/account_change_turn.gif) no-repeat;
 }
 
 .menuBarIconAccountPasswd{
-background: url(../../../images/account/passwd.gif) no-repeat;
+    background: url(../images/account/passwd.gif) no-repeat;
 }
 .menuBarIconPortletAdd{
-background: url(../../../images/layout/portlet_add.gif) no-repeat;
+    background: url(../images/layout/portlet_add.gif) no-repeat;
 }
 .menuBarIconLayoutConf{
-background: url(../../../images/layout/layout_conf.gif) no-repeat;
+    background: url(../images/layout/layout_conf.gif) no-repeat;
 }
 
 .menuBarIconCellular{
-background: url(../../../images/cellular/cellular.gif) no-repeat;
+    background: url(../images/cellular/cellular.gif) no-repeat;
 }
 
 .menuBarIconNetworkInfo{
-background: url(../../../images/system/network_info.gif) no-repeat;
+    background: url(../images/system/network_info.gif) no-repeat;
 }
 
 .menuBarIconLicense{
-background: url(../../../images/system/license.gif) no-repeat;
+    background: url(../images/system/license.gif) no-repeat;
 }
 
 .menuBarIconWebmailCreateMail{
-background: url(../../../images/webmail/webmail_create_mail.gif) no-repeat;
+    background: url(../images/webmail/webmail_create_mail.gif) no-repeat;
 }
 
 .menuBarIconWebmailCheckNewMails{
-background: url(../../../images/webmail/webmail_check_newmails.gif) no-repeat;
+    background: url(../images/webmail/webmail_check_newmails.gif) no-repeat;
 }
 
 .menuBarIconWebmailReceiveMail{
-background: url(../../../images/webmail/webmail_receive_mail.gif) no-repeat;
+    background: url(../images/webmail/webmail_receive_mail.gif) no-repeat;
 }
 
 .menuBarIconWebmailAccountConfig{
-background: url(../../../images/webmail/webmail_account_config.gif) no-repeat;
+    background: url(../images/webmail/webmail_account_config.gif) no-repeat;
 }
 
 .menuBarIconFileAdd{
-background: url(../../../images/cabinet/file_add.gif) no-repeat;
+    background: url(../images/cabinet/file_add.gif) no-repeat;
 }
 
 .menuBarIconFolderAdd{
-background: url(../../../images/cabinet/folder_add.gif) no-repeat;
+    background: url(../images/cabinet/folder_add.gif) no-repeat;
 }
 
 .menuBarIconSeparator{
-width: 7px !important;
-height: 20px !important;
-background: url(../../../images/icon/icon_separator.gif) no-repeat;
+    width: 7px !important;
+    height: 20px !important;
+    background: url(../images/icon/icon_separator.gif) no-repeat;
 }
 .menuBarIconNone{
-width: 0px !important;
+    width: 0px !important;
 }
 
 .menuBarItemSelected{
-background-color:#FFF5D8 !important;
-border:1px solid #FF9900 !important;
+    background-color:#FFF5D8 !important;
+    border:1px solid #FF9900 !important;
 }
 
 .subMenuBarItem{
-border:1px solid #FFFFFF;
-color:#5D6A70;
-display:block;
-margin:0px;
-padding:0px;
-text-decoration:none !important;
+    border:1px solid #FFFFFF;
+    color:#5D6A70;
+    display:block;
+    margin:0px;
+    padding:0px;
+    text-decoration:none !important;
 }
 
 .subMenuBarItem:hover {
-background-color:#FFF5D8;
-border:1px solid #FF9900;
-color:#5D6A70;
-display:block;
-margin:0px;
-padding:0px !important;
-text-decoration:none;
+    background-color:#FFF5D8;
+    border:1px solid #FF9900;
+    color:#5D6A70;
+    display:block;
+    margin:0px;
+    padding:0px !important;
+    text-decoration:none;
 }
