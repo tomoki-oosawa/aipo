@@ -14,7 +14,7 @@
   <packaging>pom</packaging>
 
   <name>aipo</name>
-  <description>open source groupware aipo.</description>
+  <description>Groupware Aipo</description>
   <url>http://aipostyle.com</url>
   <inceptionYear>2004</inceptionYear>
   <organization>
@@ -23,8 +23,8 @@
   </organization>
   <licenses>
     <license>
-      <name>GNU General Public License v3</name>
-      <url>http://www.gnu.org/licenses/gpl.html</url>
+      <name>GNU Affero General Public License v3</name>
+      <url>http://www.gnu.org/licenses/agpl-3.0.html</url>
     </license>
   </licenses>
   <developers>
@@ -39,18 +39,24 @@
   <contributors>
   </contributors>
 
-
   <issueManagement>
     <system>Goole Code</system>
     <url><![CDATA[http://code.google.com/p/aipo/issues/list]]></url>
   </issueManagement>
   <mailingLists>
     <mailingList>
-      <name>aipo-dev</name>
+      <name>Aipo Developer Group</name>
       <subscribe>http://groups.google.com/group/aipo-dev/subscribe</subscribe>
       <unsubscribe>http://groups.google.com/group/aipo-dev</unsubscribe>
       <post>aipo-dev@googlegroups.com</post>
       <archive>http://groups.google.com/group/aipo-dev/topics</archive>
+    </mailingList>
+    <mailingList>
+      <name>Aipo Security Group</name>
+      <subscribe>http://groups.google.com/group/aipo-security/subscribe</subscribe>
+      <unsubscribe>http://groups.google.com/group/aipo-security</unsubscribe>
+      <post>aipo-security@googlegroups.com</post>
+      <archive>http://groups.google.com/group/aipo-security/topics</archive>
     </mailingList>
   </mailingLists>
   <scm>
@@ -70,6 +76,30 @@
       <url>http://aipo.googlecode.com/svn/repository</url>
     </repository>
   </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>mc-release</id>
+      <name>Local Maven repository of releases</name>
+      <url>http://mc-repo.googlecode.com/svn/maven2/releases</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </pluginRepository>
+    <pluginRepository>
+      <id>mc-release</id>
+      <name>Local Maven repository of releases</name>
+      <url>http://mc-repo.googlecode.com/svn/maven2/snapshots</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
 
   <modules>
     <module>commons</module>
@@ -82,7 +112,6 @@
   </modules>
 
   <build>
-    <pluginManagement>
       <plugins>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
@@ -93,8 +122,56 @@
             <encoding>UTF-8</encoding>
           </configuration>
         </plugin>
-      </plugins>
-    </pluginManagement>
+      <plugin>
+        <groupId>com.mycila.maven-license-plugin</groupId>
+        <artifactId>maven-license-plugin</artifactId>
+        <configuration>
+          <header>header.txt</header>
+          <mapping>
+            <xreg>XML_STYLE</xreg>
+            <psml>XML_STYLE</psml>
+          </mapping>
+          <includes>
+            <include>**/src/**/*.java</include>
+            <include>**/src/**/*.vm</include>
+            <include>**/src/**/*.html</include>
+            <include>**/src/**/*.xml</include>
+            <include>**/src/**/*.xreg</include>
+            <include>**/src/**/*.psml</include>
+            <include>**/src/**/*.js</include>
+            <include>**/src/**/*.css</include>
+            <include>**/src/**/*.css</include>
+            <include>**/src/**/*.jsp</include>
+            <include>**/src/**/*.xsl</include>
+            <include>**/src/**/*.properties</include>
+            <include>**/*.sql</include>
+          </includes>
+          <excludes>
+            <exclude>**/src/main/java/org/apache/**/*.*</exclude>
+            <exclude>**/src/main/resources/org/apache/**/*.*</exclude>
+            <exclude>**/src/test/java/org/apache/**/*.*</exclude>
+            <exclude>**/src/test/resources/org/apache/**/*.*</exclude>
+            <exclude>**/src/main/webapp/javascript/dijit/*.*</exclude>
+            <exclude>**/src/main/webapp/javascript/dojo/*.*</exclude>
+            <exclude>**/src/main/webapp/javascript/dojox/*.*</exclude>
+            <exclude>**/src/main/webapp/javascript/aipo.js</exclude>
+            <exclude>**/*.min.js</exclude>
+            <exclude>**/*.ycomp.js</exclude>
+            <exclude>**/*-all.js</exclude>
+            <exclude>**/*.min.css</exclude>
+          </excludes>
+          <encoding>UTF-8</encoding>
+          <strictCheck>true</strictCheck>
+          <skipExistingHeaders>false</skipExistingHeaders>
+          <properties>
+            <year>2010</year>
+          </properties>
+          <headerDefinitions>
+            <headerDefinition>header-definition.xml</headerDefinition>
+          </headerDefinitions>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 
   <dependencies>
