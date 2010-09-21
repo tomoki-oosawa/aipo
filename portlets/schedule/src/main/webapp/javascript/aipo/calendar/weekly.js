@@ -796,11 +796,15 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         this.node.style.zIndex = 999;
         this.startY = this._pageY;
         this.startAbsoluteY = dojo._abs(dojo.byId(this.node), true).y;
-        // WebKitレンダリングエンジンのブラウザではdojo._absの挙動が異なるので、AbsoluteYの座標修正
+
+        //Google Chrome及びSafari、Firefox/3.6ではdojo._absの挙動が異なるので、AbsoluteYを修正する
         var userAgent = window.navigator.userAgent.toLowerCase();
-        if(userAgent.indexOf("webkit") > -1){
-            this.startAbsoluteY += document.body.scrollTop;
+        if (userAgent.indexOf("chrome") > -1 || userAgent.indexOf("firefox/3.6") > -1) {
+            this.startAbsoluteY += window.scrollY;     // ページスクロール分を修正
+        } else if(userAgent.indexOf("safari") > -1) {
+            this.startAbsoluteY -= dojo.byId('weeklyScrollPane_'+this.portletId).scrollTop;     // DIVタグスクロール分を修正
         }
+        
         this.startHeight = parseInt(dojo.getComputedStyle(this.node).height);
         this.startTop = parseInt(dojo.getComputedStyle(this.node).top);
         if(this.startHeight - 6 < this.startY-this.startAbsoluteY) {
