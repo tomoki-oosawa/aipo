@@ -333,7 +333,7 @@ public class WebMailSelectData extends
       ALEipUtils.setTemp(rundata, context, "unreadmailsummap", unreadMailSumMap
         .toString());
 
-      return new ResultList<EipTMail>(folder.getIndexRows(rundata, context));
+      return folder.getIndexRows(rundata, context);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
