@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTMail;
+import com.aimluck.eip.orm.query.ResultList;
 
 /**
  * 送受信したメールを保持するローカルフォルダを表すインターフェイスです。 <br />
@@ -46,8 +47,8 @@ public interface ALFolder {
    * 
    * @return
    */
-  abstract public List<EipTMail> getIndexRows(RunData rundata, Context context)
-      throws Exception;
+  abstract public ResultList<EipTMail> getIndexRows(RunData rundata,
+      Context context) throws Exception;
 
   // /**
   // * インデックス情報を変更する。

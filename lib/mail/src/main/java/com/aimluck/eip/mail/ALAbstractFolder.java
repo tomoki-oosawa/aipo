@@ -57,6 +57,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.mail.util.ALAttachmentsExtractor;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.orgutils.ALOrgUtilsFactoryService;
@@ -323,7 +324,7 @@ public abstract class ALAbstractFolder implements ALFolder {
    * @param context
    * @return
    */
-  public List<EipTMail> getIndexRows(RunData rundata, Context context)
+  public ResultList<EipTMail> getIndexRows(RunData rundata, Context context)
       throws Exception {
     try {
       // // 未読メール総数をセットする．
@@ -358,7 +359,9 @@ public abstract class ALAbstractFolder implements ALFolder {
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      return query.getResultList();
+      ResultList<EipTMail> resultList = query.getResultList();
+      setPageParam(resultList.getTotalCount());
+      return resultList;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -559,6 +562,7 @@ public abstract class ALAbstractFolder implements ALFolder {
    */
   protected void buildSelectQueryForListView(SelectQuery<EipTMail> query) {
     query.limit(getRowsNum());
+    query.page(current_page);
   }
 
   /**
@@ -566,7 +570,9 @@ public abstract class ALAbstractFolder implements ALFolder {
    * 
    * @param records
    *          検索結果
+   * @deprecated
    */
+  @Deprecated
   protected List<EipTMail> buildPaginatedList(List<EipTMail> records) {
     List<EipTMail> list = new ArrayList<EipTMail>();
 
