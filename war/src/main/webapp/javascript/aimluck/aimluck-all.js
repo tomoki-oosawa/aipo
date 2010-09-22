@@ -1425,9 +1425,9 @@ dojo.declare("aimluck.widget.Dropdown", [dijit.form.DropDownButton], {
 
     _openDropDown: function(){
         this.inherited(arguments);
-        //For google chrome and Firefox/3.6
+        //For google chrome and Firefox 3.6 or higher
         var userAgent = window.navigator.userAgent.toLowerCase();
-        if (userAgent.indexOf("chrome") > -1 || userAgent.indexOf("firefox/3.6") > -1) {
+        if (userAgent.indexOf("chrome") > -1 || (dojo.isFF && (dojo.isFF >= 3.6))) {
             var pNode = this.dropDown.domNode.parentNode;
             var top = pNode.style.top.replace("px","");
             top_new = parseInt(top) + window.scrollY;

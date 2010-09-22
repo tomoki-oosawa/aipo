@@ -797,9 +797,9 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         this.startY = this._pageY;
         this.startAbsoluteY = dojo._abs(dojo.byId(this.node), true).y;
 
-        //Google Chrome及びSafari、Firefox/3.6ではdojo._absの挙動が異なるので、AbsoluteYを修正する
+        //Google Chrome及びSafari、Firefox3.6以降ではdojo._absの挙動が異なるので、AbsoluteYを修正する
         var userAgent = window.navigator.userAgent.toLowerCase();
-        if (userAgent.indexOf("chrome") > -1 || userAgent.indexOf("firefox/3.6") > -1) {
+        if (userAgent.indexOf("chrome") > -1 || (dojo.isFF && (dojo.isFF >= 3.6))) {
             this.startAbsoluteY += window.scrollY;     // ページスクロール分を修正
         } else if(userAgent.indexOf("safari") > -1) {
             this.startAbsoluteY -= dojo.byId('weeklyScrollPane_'+this.portletId).scrollTop;     // DIVタグスクロール分を修正
@@ -1223,7 +1223,7 @@ dojo.declare("aipo.calendar.WeeklyScheduleAddDragMoveObject", [aimluck.dnd.DragM
 
         //Google Chrome及びSafari、Firefox/3.6ではdojo._absの挙動が異なるので、AbsoluteYを修正する
         var userAgent = window.navigator.userAgent.toLowerCase();
-        if (userAgent.indexOf("chrome") > -1 || userAgent.indexOf("firefox/3.6") > -1) {
+        if (userAgent.indexOf("chrome") > -1 || (dojo.isFF && (dojo.isFF >= 3.6))) {
             this.startAbsoluteY += window.scrollY;     // ページスクロール分を修正
         } else if(userAgent.indexOf("safari") > -1) {
             this.startAbsoluteY -= dojo.byId('weeklyScrollPane_'+this.portletId).scrollTop;     // DIVタグスクロール分を修正
