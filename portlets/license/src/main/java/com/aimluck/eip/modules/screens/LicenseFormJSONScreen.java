@@ -19,8 +19,6 @@
 
 package com.aimluck.eip.modules.screens;
 
-import java.util.ArrayList;
-
 import net.sf.json.JSONArray;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -38,8 +36,8 @@ import com.aimluck.eip.license.LicenseFormData;
 public class LicenseFormJSONScreen extends ALJSONScreen {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(LicenseFormJSONScreen.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(LicenseFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -52,10 +50,8 @@ public class LicenseFormJSONScreen extends ALJSONScreen {
       formData.initField();
       if (formData.doUpdate(this, rundata, context)) {
       } else {
-        @SuppressWarnings("rawtypes")
-        ArrayList list =
-          (ArrayList) context.get(ALEipConstants.ERROR_MESSAGE_LIST);
-        JSONArray json = JSONArray.fromObject(list);
+        JSONArray json =
+          JSONArray.fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
         result = json.toString();
       }
 

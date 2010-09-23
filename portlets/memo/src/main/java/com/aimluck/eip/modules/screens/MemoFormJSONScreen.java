@@ -19,8 +19,6 @@
 
 package com.aimluck.eip.modules.screens;
 
-import java.util.ArrayList;
-
 import net.sf.json.JSONArray;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -39,8 +37,8 @@ import com.aimluck.eip.memo.MemoMultiDelete;
 public class MemoFormJSONScreen extends ALJSONScreen {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(MemoFormJSONScreen.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(MemoFormJSONScreen.class.getName());
 
   /**
    *
@@ -57,10 +55,9 @@ public class MemoFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doInsert(this, rundata, context)) {
         } else {
-          @SuppressWarnings("rawtypes")
-          ArrayList list =
-            (ArrayList) context.get(ALEipConstants.ERROR_MESSAGE_LIST);
-          JSONArray json = JSONArray.fromObject(list);
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_UPDATE.equals(mode)) {

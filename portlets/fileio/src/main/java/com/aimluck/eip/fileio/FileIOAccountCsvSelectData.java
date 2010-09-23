@@ -54,8 +54,9 @@ public class FileIOAccountCsvSelectData
     ALCsvAbstractSelectData<FileIOAccountCsvResultData, FileIOAccountCsvResultData> {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(FileIOAccountCsvSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(FileIOAccountCsvSelectData.class
+      .getName());
 
   /** 最大登録可能数を超えているかのフラグ */
   private boolean overMaxUser = false;
@@ -523,7 +524,6 @@ public class FileIOAccountCsvSelectData
    * @return
    * 
    */
-  @Override
   protected Object getResultData(FileIOAccountCsvResultData obj) {
     return obj;
   }
@@ -532,7 +532,6 @@ public class FileIOAccountCsvSelectData
    * @param obj
    * @return
    */
-  @Override
   protected Object getResultDataDetail(FileIOAccountCsvResultData obj) {
     return null;
   }
