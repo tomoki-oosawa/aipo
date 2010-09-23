@@ -20,6 +20,7 @@
 package com.aimluck.eip.filter;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -28,17 +29,24 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import org.apache.cayenne.CayenneException;
 import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.access.Transaction;
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 import com.aimluck.eip.orm.DataContextLocator;
 
 /**
- * 
+ *
  */
 public class ALBaseFilter implements Filter {
 
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ALBaseFilter.class.getName());
+
   /**
-   * 
+   *
    */
   public void destroy() {
   }
@@ -57,6 +65,20 @@ public class ALBaseFilter implements Filter {
       previousDataContext = DataContextLocator.get();
       filterChain.doFilter(request, response);
     } finally {
+      Transaction threadTransaction = Transaction.getThreadTransaction();
+      if (threadTransaction != null) {
+        try {
+          threadTransaction.rollback();
+        } catch (IllegalStateException e) {
+          logger.error(e.getMessage(), e);
+        } catch (SQLException e) {
+          logger.error(e.getMessage(), e);
+        } catch (CayenneException e) {
+          logger.error(e.getMessage(), e);
+        } finally {
+          Transaction.bindThreadTransaction(null);
+        }
+      }
       DataContextLocator.set(previousDataContext);
     }
   }
