@@ -128,15 +128,13 @@ public abstract class ALMailHandler {
     try {
       SelectQuery<EipTMail> query = Database.query(EipTMail.class);
 
-      Expression exp1 =
-        ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY, Integer
-          .valueOf(rcontext.getUserId()));
-      Expression exp2 =
-        ExpressionFactory.matchExp(EipTMail.ACCOUNT_ID_PROPERTY, Integer
-          .valueOf(rcontext.getAccountId()));
+      Expression exp1 = ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY,
+        Integer.valueOf(rcontext.getUserId()));
+      Expression exp2 = ExpressionFactory.matchExp(
+        EipTMail.ACCOUNT_ID_PROPERTY, Integer.valueOf(rcontext.getAccountId()));
       Expression exp3 = ExpressionFactory.matchExp(EipTMail.TYPE_PROPERTY, "R");
-      Expression exp4 =
-        ExpressionFactory.matchExp(EipTMail.READ_FLG_PROPERTY, "F");
+      Expression exp4 = ExpressionFactory.matchExp(EipTMail.READ_FLG_PROPERTY,
+        "F");
 
       return query.setQualifier(exp1.andExp(exp2).andExp(exp3).andExp(exp4));
     } catch (Exception e) {
@@ -158,7 +156,6 @@ public abstract class ALMailHandler {
       SelectQuery<EipTMail> query = getUnReadMailQuery(rcontext);
 
       query.select(EipTMail.MAIL_ID_PK_COLUMN);
-      query.limit(1);
 
       List<EipTMail> mails = query.fetchList();
 
@@ -182,11 +179,8 @@ public abstract class ALMailHandler {
 
     try {
       // アカウントのフォルダ一覧を取得する
-      EipMMailAccount account =
-        ALMailUtils.getMailAccount(
-          rcontext.getOrgId(),
-          rcontext.getUserId(),
-          rcontext.getAccountId());
+      EipMMailAccount account = ALMailUtils.getMailAccount(rcontext.getOrgId(),
+        rcontext.getUserId(), rcontext.getAccountId());
       List<EipTMailFolder> folders = ALMailUtils.getEipTMailFolderAll(account);
       List<Integer> folder_ids = new ArrayList<Integer>();
 
@@ -201,8 +195,8 @@ public abstract class ALMailHandler {
       // 未読メールをフォルダIDでソートして取得する
       SelectQuery<EipTMail> query = getUnReadMailQuery(rcontext);
 
-      List<EipTMail> mail_list =
-        query.orderAscending(EipTMail.FOLDER_ID_PROPERTY).fetchList();
+      List<EipTMail> mail_list = query.orderAscending(
+        EipTMail.FOLDER_ID_PROPERTY).fetchList();
 
       // 取得したメールの数をフォルダごとに数え、mailSumMap に代入する。
       int counting_folder_id = (mail_list.get(0)).getFolderId(), count = 0;

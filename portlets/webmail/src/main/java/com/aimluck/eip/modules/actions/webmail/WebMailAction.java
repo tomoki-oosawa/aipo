@@ -57,19 +57,15 @@ public class WebMailAction extends ALBaseAction {
     clearWebMailSession(rundata, context);
 
     ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, ALEipUtils
-      .getPortlet(rundata, context)
-      .getPortletConfig()
-      .getInitParameter("p3a-accounts")
-      .trim());
+      .getPortlet(rundata, context).getPortletConfig().getInitParameter(
+        "p3a-accounts").trim());
 
     WebMailSelectData listData = new WebMailSelectData();
     listData.initField();
     listData.loadMailAccountList(rundata, context);
-    listData.setRowsNum(Integer.parseInt(portlet
-      .getPortletConfig()
+    listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
       .getInitParameter("p1a-rows")));
-    listData.setStrLength(Integer.parseInt(portlet
-      .getPortletConfig()
+    listData.setStrLength(Integer.parseInt(portlet.getPortletConfig()
       .getInitParameter("p4a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "webmail");
@@ -113,11 +109,9 @@ public class WebMailAction extends ALBaseAction {
     WebMailSelectData listData = new WebMailSelectData();
     listData.initField();
     listData.loadMailAccountList(rundata, context);
-    listData.setRowsNum(Integer.parseInt(portlet
-      .getPortletConfig()
+    listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
       .getInitParameter("p1b-rows")));
-    listData.setStrLength(Integer.parseInt(portlet
-      .getPortletConfig()
+    listData.setStrLength(Integer.parseInt(portlet.getPortletConfig()
       .getInitParameter("p4a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "webmail-list");
@@ -155,11 +149,9 @@ public class WebMailAction extends ALBaseAction {
 
     WebMailAccountSelectData listData = new WebMailAccountSelectData();
     listData.initField();
-    listData.setRowsNum(Integer.parseInt(portlet
-      .getPortletConfig()
+    listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
       .getInitParameter("p1c-rows")));
-    listData.setStrLength(Integer.parseInt(portlet
-      .getPortletConfig()
+    listData.setStrLength(Integer.parseInt(portlet.getPortletConfig()
       .getInitParameter("p4a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "webmail-account-list");
@@ -181,11 +173,9 @@ public class WebMailAction extends ALBaseAction {
     WebMailFilterSelectData listData = new WebMailFilterSelectData();
     listData.initField();
     listData.loadMailAccountList(rundata, context);
-    listData.setRowsNum(Integer.parseInt(portlet
-      .getPortletConfig()
+    listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
       .getInitParameter("p1c-rows")));
-    listData.setStrLength(Integer.parseInt(portlet
-      .getPortletConfig()
+    listData.setStrLength(Integer.parseInt(portlet.getPortletConfig()
       .getInitParameter("p4a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "webmail-filter-list");
@@ -194,6 +184,9 @@ public class WebMailAction extends ALBaseAction {
   private void clearWebMailSession(RunData rundata, Context context) {
     JetspeedRunData jdata = (JetspeedRunData) rundata;
     VelocityPortlet portlet = ((VelocityPortlet) context.get("portlet"));
+
+    jdata.getUser().removeTemp(WebMailUtils.ACCOUNT_ID);
+    jdata.getUser().removeTemp(WebMailUtils.FOLDER_ID);
 
     jdata.getUser().removeTemp("tr_pop3mail_recieve");
     jdata.getUser().removeTemp(

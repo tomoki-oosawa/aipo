@@ -22,6 +22,7 @@
 ## ---------------------------------------------------------------------------
 
 #ALjavascript("javascript/aipo/webmail/form.js")
+#ALjavascript("javascript/aipo/fileupload/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 

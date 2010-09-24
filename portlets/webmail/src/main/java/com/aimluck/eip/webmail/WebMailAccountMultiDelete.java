@@ -64,27 +64,29 @@ public class WebMailAccountMultiDelete extends ALAbstractCheckList {
       int uid = ALEipUtils.getUserId(rundata);
 
       // アカウントを削除する．
-      SelectQuery<EipMMailAccount> query =
-        Database.query(EipMMailAccount.class);
-      Expression exp1 =
-        ExpressionFactory.matchExp(EipMMailAccount.USER_ID_PROPERTY, Integer
-          .valueOf(uid));
-      Expression exp2 =
-        ExpressionFactory.inDbExp(EipMMailAccount.ACCOUNT_ID_PK_COLUMN, values);
+      SelectQuery<EipMMailAccount> query = Database
+        .query(EipMMailAccount.class);
+      Expression exp1 = ExpressionFactory.matchExp(
+        EipMMailAccount.USER_ID_PROPERTY, Integer.valueOf(uid));
+      Expression exp2 = ExpressionFactory.inDbExp(
+        EipMMailAccount.ACCOUNT_ID_PK_COLUMN, values);
 
-      List<EipMMailAccount> accounts =
-        query.setQualifier(exp1.andExp(exp2)).fetchList();
+      List<EipMMailAccount> accounts = query.setQualifier(exp1.andExp(exp2))
+        .fetchList();
       Database.deleteAll(accounts);
 
       // ローカルフォルダを削除する．
-      String accountId =
-        ALEipUtils.getTemp(rundata, context, WebMailUtils.ACCOUNT_ID);
+      String accountId = ALEipUtils.getTemp(rundata, context,
+        WebMailUtils.ACCOUNT_ID);
       if (accountId == null) {
         return false;
       }
 
-      ALMailHandler handler =
-        ALMailFactoryService.getInstance().getMailHandler();
+      // セッション変数を削除する
+      WebMailUtils.clearWebMailAccountSession(rundata, context);
+
+      ALMailHandler handler = ALMailFactoryService.getInstance()
+        .getMailHandler();
       handler.removeAccount(org_id, ALEipUtils.getUserId(rundata), Integer
         .parseInt(accountId));
 
