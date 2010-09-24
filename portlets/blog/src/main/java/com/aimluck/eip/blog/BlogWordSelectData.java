@@ -108,6 +108,7 @@ public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
 
     try {
       list = searchList(rundata, context);
+
       if (list == null) {
         list = new ArrayList<DataRow>();
       }
@@ -115,8 +116,9 @@ public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
       logger.error("Exception", ex);
       return null;
     }
-    setPageParam(list.size());
-    return new ResultList<DataRow>(list);
+    int totalSize = list.size();
+    list = buildPaginatedList(list);
+    return new ResultList<DataRow>(list, current_page, getRowsNum(), totalSize);
   }
 
   /**

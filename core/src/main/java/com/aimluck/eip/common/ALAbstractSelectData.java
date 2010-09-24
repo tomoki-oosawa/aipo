@@ -303,9 +303,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
    * 
    * @param records
    *          検索結果
-   * @deprecated
    */
-  @Deprecated
   protected List<M1> buildPaginatedList(List<M1> records) {
     List<M1> list = new ArrayList<M1>();
 
