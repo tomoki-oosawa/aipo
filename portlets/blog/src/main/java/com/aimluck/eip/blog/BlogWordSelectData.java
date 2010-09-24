@@ -153,13 +153,14 @@ public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
       rd.setOwnerId(ower_id);
       rd.setOwnerName(BlogUtils.getUserFullName(ower_id));
 
-      rd.setTitle(ALCommonUtils.compressString((String) dataRow
-        .get(EipTBlogEntry.TITLE_COLUMN), getStrLength()));
-      rd.setNote(BlogUtils.compressString((String) dataRow
-        .get(EipTBlogEntry.NOTE_COLUMN), 100));
+      rd.setTitle(ALCommonUtils.compressString((String) Database
+        .getFromDataRow(dataRow, EipTBlogEntry.TITLE_COLUMN), getStrLength()));
+      rd.setNote(BlogUtils.compressString((String) Database.getFromDataRow(
+        dataRow,
+        EipTBlogEntry.NOTE_COLUMN), 100));
 
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日（EE）");
-      rd.setTitleDate(sdf.format((Date) ALEipUtils.getObjFromDataRow(
+      rd.setTitleDate(sdf.format((Date) Database.getFromDataRow(
         dataRow,
         EipTBlogEntry.CREATE_DATE_COLUMN)));
 
