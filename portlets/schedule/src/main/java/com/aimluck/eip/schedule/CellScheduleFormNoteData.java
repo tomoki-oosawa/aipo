@@ -1480,7 +1480,7 @@ public class CellScheduleFormNoteData extends ALAbstractFormData {
           ALMailUtils.sendMailDelegate(
             org_id,
             ALEipUtils.getUserId(rundata),
-            destMemberList,
+            destMember,
             subject,
             subject,
             ScheduleUtils.createMsgForPc(rundata, schedule, memberList),
