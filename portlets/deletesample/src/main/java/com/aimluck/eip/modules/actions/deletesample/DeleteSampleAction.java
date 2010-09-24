@@ -28,6 +28,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.deletesample.DeleteSampleFormData;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
+import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
  * サンプルデータ削除のアクションクラスです。 <BR>
@@ -61,6 +62,8 @@ public class DeleteSampleAction extends ALBaseAction {
     // For security
     context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(
       ALEipConstants.SECURE_ID));
+
+    context.put("alias", DatabaseOrmService.getInstance().getAlias());
   }
 
   /**
