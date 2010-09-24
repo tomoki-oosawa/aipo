@@ -291,7 +291,7 @@ public class CellScheduleOnedaySelectData extends ScheduleOnedaySelectData {
     // 繰り返しスケジュール（月）
     SimpleDateFormat sdf = new SimpleDateFormat("dd");
     sdf.setTimeZone(TimeZone.getDefault());
-    String dayStr = sdf.format(date);
+    String dayStr = sdf.format(date.getTime());
 
     Expression exp24 =
       ExpressionFactory.likeExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
