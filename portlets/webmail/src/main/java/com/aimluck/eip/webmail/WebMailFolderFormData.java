@@ -87,6 +87,8 @@ public class WebMailFolderFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
+    super.init(action, rundata, context);
+
     int mailAccountId = 0;
 
     // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
@@ -104,10 +106,16 @@ public class WebMailFolderFormData extends ALAbstractFormData {
       }
 
       if (rundata.getParameters().containsKey(ALEipConstants.ENTITY_ID)) {
-        ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, rundata
-          .getParameters()
-          .getString(ALEipConstants.ENTITY_ID));
-        folderId = rundata.getParameters().get(ALEipConstants.ENTITY_ID);
+        String entityId =
+          rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
+        if (!"new".equals(entityId)) {
+          ALEipUtils.setTemp(
+            rundata,
+            context,
+            ALEipConstants.ENTITY_ID,
+            entityId);
+          folderId = entityId;
+        }
       }
     }
 
@@ -124,15 +132,16 @@ public class WebMailFolderFormData extends ALAbstractFormData {
       return;
     }
 
-    // 指定されたフォルダがアカウントのものかどうかチェックする
-    EipTMailFolder folder =
-      WebMailUtils.getEipTMailFolder(mailAccount, folderId);
-    if (folder == null) {
-      logger.error("[WebMail Folder] mail folder was not found.");
-      return;
+    if (folderId != null) {
+      // 指定されたフォルダがアカウントのものかどうかチェックする
+      EipTMailFolder folder =
+        WebMailUtils.getEipTMailFolder(mailAccount, folderId);
+      if (folder == null) {
+        logger.error("[WebMail Folder] mail folder was not found.");
+        return;
+      }
     }
 
-    super.init(action, rundata, context);
   }
 
   /**
