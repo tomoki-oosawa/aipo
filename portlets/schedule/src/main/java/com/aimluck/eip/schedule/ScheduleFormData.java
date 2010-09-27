@@ -669,7 +669,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       tmp_end_date.set(Calendar.HOUR_OF_DAY, 0);
       tmp_end_date.set(Calendar.MINUTE, 0);
       tmp_end_date.set(Calendar.SECOND, 0);
-      end_date.setValue(tmp_start_date.getTime());
+      end_date.setValue(tmp_end_date.getTime());
     }
 
     // 開始日時＆終了日時
