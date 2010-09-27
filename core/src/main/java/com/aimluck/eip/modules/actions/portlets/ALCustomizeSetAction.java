@@ -209,7 +209,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
     context.put("panename", customizedPaneName);
     context.put("skin", set.getPortletConfig().getPortletSkin());
     context.put("set", set);
-    context.put("action", "portlets.CustomizeSetAction");
+    context.put("action", "portlets.ALCustomizeSetAction");
     context.put("controllers", buildInfoList(
       rundata,
       Registry.PORTLET_CONTROLLER,
