@@ -34,8 +34,9 @@ import com.aimluck.eip.webmail.WebMailFilterSelectData;
 public class WebMailFilterListScreen extends ALVelocityScreen {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WebMailFilterListScreen.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService
+      .getLogger(WebMailFilterListScreen.class.getName());
 
   /**
    * 
@@ -50,10 +51,13 @@ public class WebMailFilterListScreen extends ALVelocityScreen {
       WebMailFilterSelectData listData = new WebMailFilterSelectData();
       listData.initField();
       listData.loadMailAccountList(rundata, context);
-      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(rundata,
+      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
         context).getPortletConfig().getInitParameter("p1d-rows")));
       listData.doViewList(this, rundata, context);
-      setTemplate(rundata, context,
+      setTemplate(
+        rundata,
+        context,
         "portlets/html/ja/ajax-webmail-filter-list.vm");
     } catch (Exception ex) {
       logger.error("[WebMailAccountListScreen] Exception.", ex);

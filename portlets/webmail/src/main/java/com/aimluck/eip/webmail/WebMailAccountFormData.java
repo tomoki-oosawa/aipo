@@ -57,8 +57,8 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
  */
 public class WebMailAccountFormData extends ALAbstractFormData {
 
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WebMailAccountFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(WebMailAccountFormData.class.getName());
 
   private final int DEF_SMTP_PORT = 25;
 
@@ -432,12 +432,15 @@ public class WebMailAccountFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       int userId = ALEipUtils.getUserId(rundata);
-      int accountId = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID));
+      int accountId =
+        Integer.parseInt(ALEipUtils.getTemp(
+          rundata,
+          context,
+          ALEipConstants.ENTITY_ID));
 
       // オブジェクトモデルを取得
-      EipMMailAccount account = ALMailUtils.getMailAccount(null, userId,
-        accountId);
+      EipMMailAccount account =
+        ALMailUtils.getMailAccount(null, userId, accountId);
       if (account == null) {
         return false;
       }
@@ -469,7 +472,8 @@ public class WebMailAccountFormData extends ALAbstractFormData {
       auth_receive_flag.setValue(account.getAuthReceiveFlg().longValue());
       del_at_pop3_flg.setValue(account.getDelAtPop3Flg());
       del_at_pop3_before_days_flg.setValue(account.getDelAtPop3BeforeDaysFlg());
-      del_at_pop3_before_days.setValue(account.getDelAtPop3BeforeDays()
+      del_at_pop3_before_days.setValue(account
+        .getDelAtPop3BeforeDays()
         .longValue());
       non_received_flg.setValue(account.getNonReceivedFlg());
       create_date.setValue(account.getCreateDate());
@@ -491,20 +495,31 @@ public class WebMailAccountFormData extends ALAbstractFormData {
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
-    return ALMailUtils.insertMailAccountData(rundata, msgList, ALEipUtils
-      .getUserId(rundata), getAccountName().getValue(),
-      ALMailUtils.ACCOUNT_TYPE_NON, getMailAddress().getValue(),
-      getMailUserName().getValue(), getSmtpserverName().getValue(),
-      (int) getSmtpPort().getValue(), getPop3serverName().getValue(),
-      (int) getPop3Port().getValue(), getPop3userName().getValue(),
-      getPop3Password().getValue(), (int) getAuthSendFlg().getValue(),
-      getAuthSendUserId().getValue(), this.getAuthSendUserPasswd().getValue(),
-      (int) getAuthReceiveFlg().getValue(), (int) getDelAtPop3Flg().getValue(),
+    return ALMailUtils.insertMailAccountData(
+      rundata,
+      msgList,
+      ALEipUtils.getUserId(rundata),
+      getAccountName().getValue(),
+      ALMailUtils.ACCOUNT_TYPE_NON,
+      getMailAddress().getValue(),
+      getMailUserName().getValue(),
+      getSmtpserverName().getValue(),
+      (int) getSmtpPort().getValue(),
+      getPop3serverName().getValue(),
+      (int) getPop3Port().getValue(),
+      getPop3userName().getValue(),
+      getPop3Password().getValue(),
+      (int) getAuthSendFlg().getValue(),
+      getAuthSendUserId().getValue(),
+      this.getAuthSendUserPasswd().getValue(),
+      (int) getAuthReceiveFlg().getValue(),
+      (int) getDelAtPop3Flg().getValue(),
       (int) getDelAtPop3BeforeDaysFlg().getValue(),
       (int) getDelAtPop3BeforeDays().getValue(),
-      getNonReceivedFlg().toString(), getSignature().toString(),
-      (int) getSmtpEncryptionFlag().getValue(), (int) getPop3EncryptionFlag()
-        .getValue());
+      getNonReceivedFlg().toString(),
+      getSignature().toString(),
+      (int) getSmtpEncryptionFlag().getValue(),
+      (int) getPop3EncryptionFlag().getValue());
   }
 
   /**
@@ -520,12 +535,15 @@ public class WebMailAccountFormData extends ALAbstractFormData {
 
     try {
       int userId = ALEipUtils.getUserId(rundata);
-      int accountId = Integer.parseInt(ALEipUtils.getTemp(rundata, context,
-        ALEipConstants.ENTITY_ID));
+      int accountId =
+        Integer.parseInt(ALEipUtils.getTemp(
+          rundata,
+          context,
+          ALEipConstants.ENTITY_ID));
 
       // オブジェクトモデルを取得
-      EipMMailAccount mailAccount = ALMailUtils.getMailAccount(null, userId,
-        accountId);
+      EipMMailAccount mailAccount =
+        ALMailUtils.getMailAccount(null, userId, accountId);
       if (mailAccount == null) {
         return false;
       }
@@ -538,7 +556,8 @@ public class WebMailAccountFormData extends ALAbstractFormData {
       mailAccount.setPop3userName(getPop3userName().getValue());
       mailAccount
         .setPop3password(ALMailUtils
-          .getEncryptedMailAccountPasswd(getPop3Password().getValue()
+          .getEncryptedMailAccountPasswd(getPop3Password()
+            .getValue()
             .getBytes()));
       mailAccount.setMailUserName(getMailUserName().getValue());
       mailAccount.setMailAddress(getMailAddress().getValue());
@@ -552,7 +571,8 @@ public class WebMailAccountFormData extends ALAbstractFormData {
       if (getAuthSendFlg().getValue() == ALSmtpMailSender.AUTH_SEND_SMTP_AUTH) {
         mailAccount.setAuthSendUserId(getAuthSendUserId().getValue());
         mailAccount.setAuthSendUserPasswd(ALMailUtils
-          .getEncryptedMailAccountPasswd(getAuthSendUserPasswd().getValue()
+          .getEncryptedMailAccountPasswd(getAuthSendUserPasswd()
+            .getValue()
             .getBytes()));
       }
       mailAccount.setAuthReceiveFlg(Short.valueOf((short) getAuthReceiveFlg()
@@ -601,24 +621,27 @@ public class WebMailAccountFormData extends ALAbstractFormData {
       int uid = ALEipUtils.getUserId(rundata);
       int accountId = rundata.getParameters().getInt(WebMailUtils.ACCOUNT_ID);
 
-      SelectQuery<EipMMailAccount> query = Database
-        .query(EipMMailAccount.class);
+      SelectQuery<EipMMailAccount> query =
+        Database.query(EipMMailAccount.class);
 
-      Expression exp1 = ExpressionFactory.matchExp(
-        EipMMailAccount.USER_ID_PROPERTY, Integer.valueOf(uid));
-      Expression exp2 = ExpressionFactory.matchDbExp(
-        EipMMailAccount.ACCOUNT_ID_PK_COLUMN, Integer.valueOf(accountId));
+      Expression exp1 =
+        ExpressionFactory.matchExp(EipMMailAccount.USER_ID_PROPERTY, Integer
+          .valueOf(uid));
+      Expression exp2 =
+        ExpressionFactory.matchDbExp(
+          EipMMailAccount.ACCOUNT_ID_PK_COLUMN,
+          Integer.valueOf(accountId));
 
-      EipMMailAccount account = query.setQualifier(exp1.andExp(exp2))
-        .fetchSingle();
+      EipMMailAccount account =
+        query.setQualifier(exp1.andExp(exp2)).fetchSingle();
       if (account == null) {
         msgList.add("指定したメールアカウントがデータベースに存在しません。");
         return false;
       }
 
       // ローカルフォルダを削除する．
-      ALMailHandler handler = ALMailFactoryService.getInstance()
-        .getMailHandler();
+      ALMailHandler handler =
+        ALMailFactoryService.getInstance().getMailHandler();
       handler.removeAccount(org_id, ALEipUtils.getUserId(rundata), accountId);
 
       Database.delete(account);
@@ -646,17 +669,18 @@ public class WebMailAccountFormData extends ALAbstractFormData {
     try {
       if ("new".equals(rundata.getParameters().getString(
         ALEipConstants.ENTITY_ID))) {
-        SelectQuery<EipMMailAccount> query = Database
-          .query(EipMMailAccount.class);
+        SelectQuery<EipMMailAccount> query =
+          Database.query(EipMMailAccount.class);
 
-        Expression exp1 = ExpressionFactory.matchExp(
-          EipMMailAccount.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-            .getUserId(rundata)));
-        Expression exp2 = ExpressionFactory.matchExp(
-          EipMMailAccount.ACCOUNT_TYPE_PROPERTY, Integer
-            .valueOf(ALMailUtils.ACCOUNT_TYPE_INIT));
-        EipMMailAccount account = query.setQualifier(exp1.andExp(exp2))
-          .fetchSingle();
+        Expression exp1 =
+          ExpressionFactory.matchExp(EipMMailAccount.USER_ID_PROPERTY, Integer
+            .valueOf(ALEipUtils.getUserId(rundata)));
+        Expression exp2 =
+          ExpressionFactory.matchExp(
+            EipMMailAccount.ACCOUNT_TYPE_PROPERTY,
+            Integer.valueOf(ALMailUtils.ACCOUNT_TYPE_INIT));
+        EipMMailAccount account =
+          query.setQualifier(exp1.andExp(exp2)).fetchSingle();
 
         if (account != null) {
           mail_address.setValue(account.getMailAddress());
