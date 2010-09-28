@@ -50,13 +50,10 @@ public class WebMailFilterListScreen extends ALVelocityScreen {
       WebMailFilterSelectData listData = new WebMailFilterSelectData();
       listData.initField();
       listData.loadMailAccountList(rundata, context);
-      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
-        rundata,
-        context).getPortletConfig().getInitParameter("p1c-rows")));
+      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(rundata,
+        context).getPortletConfig().getInitParameter("p1d-rows")));
       listData.doViewList(this, rundata, context);
-      setTemplate(
-        rundata,
-        context,
+      setTemplate(rundata, context,
         "portlets/html/ja/ajax-webmail-filter-list.vm");
     } catch (Exception ex) {
       logger.error("[WebMailAccountListScreen] Exception.", ex);

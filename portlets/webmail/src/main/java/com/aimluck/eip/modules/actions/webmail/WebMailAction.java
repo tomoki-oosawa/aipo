@@ -174,7 +174,7 @@ public class WebMailAction extends ALBaseAction {
     listData.initField();
     listData.loadMailAccountList(rundata, context);
     listData.setRowsNum(Integer.parseInt(portlet.getPortletConfig()
-      .getInitParameter("p1c-rows")));
+      .getInitParameter("p1d-rows")));
     listData.setStrLength(Integer.parseInt(portlet.getPortletConfig()
       .getInitParameter("p4a-strlen")));
     listData.doViewList(this, rundata, context);
