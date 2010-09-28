@@ -419,22 +419,12 @@ public class AddressBookWordSelectData extends
             + EipMAddressbookCompany.COMPANY_NAME_KANA_PROPERTY,
           "%" + transWord + "%");
 
-      query.andQualifier(exp11
-        .orExp(exp12)
-        .orExp(exp13)
-        .orExp(exp14)
-        .orExp(exp15)
-        .orExp(exp16)
-        .orExp(exp17)
-        .orExp(exp21)
-        .orExp(exp22)
-        .orExp(exp23)
-        .orExp(exp31)
-        .orExp(exp32)
-        .orExp(exp33)
-        .orExp(exp34)
-        .orExp(exp35)
-        .orExp(exp36));
+      if (word != null && !"".equals(word)) {
+        query.andQualifier(exp11.orExp(exp12).orExp(exp13).orExp(exp14).orExp(
+          exp15).orExp(exp16).orExp(exp17).orExp(exp21).orExp(exp22).orExp(
+          exp23).orExp(exp31).orExp(exp32).orExp(exp33).orExp(exp34).orExp(
+          exp35).orExp(exp36));
+      }
 
     } else if ("corp".equals(currentTab)) {
       query = Database.query(TurbineUser.class);
@@ -515,20 +505,11 @@ public class AddressBookWordSelectData extends
           + "."
           + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY, "%" + transWord + "%");
 
-      query.andQualifier(exp11
-        .orExp(exp12)
-        .orExp(exp13)
-        .orExp(exp14)
-        .orExp(exp15)
-        .orExp(exp16)
-        .orExp(exp21)
-        .orExp(exp22)
-        .orExp(exp23)
-        .orExp(exp31)
-        .orExp(exp32)
-        .orExp(exp33)
-        .orExp(exp34)
-        .orExp(exp35));
+      if (word != null && !"".equals(word)) {
+        query.andQualifier(exp11.orExp(exp12).orExp(exp13).orExp(exp14).orExp(
+          exp15).orExp(exp16).orExp(exp21).orExp(exp22).orExp(exp23).orExp(
+          exp31).orExp(exp32).orExp(exp33).orExp(exp34).orExp(exp35));
+      }
     }
 
     return (SelectQuery<Object>) query;
