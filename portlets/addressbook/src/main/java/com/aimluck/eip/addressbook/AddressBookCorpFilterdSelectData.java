@@ -297,10 +297,7 @@ public class AddressBookCorpFilterdSelectData extends
     Expression exp23 =
       ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
         .valueOf(3));
-    Expression exp24 =
-      ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
-        .valueOf(4));
-    query.andQualifier(exp21.andExp(exp22).andExp(exp23).andExp(exp24));
+    query.andQualifier(exp21.andExp(exp22).andExp(exp23));
 
     // インデックス指定時の条件文作成
     if (rundata.getParameters().getString("idx") != null) {
