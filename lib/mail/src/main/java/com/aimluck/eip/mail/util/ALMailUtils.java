@@ -111,8 +111,8 @@ import com.sk_jp.mail.MailUtility;
  */
 public class ALMailUtils {
 
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ALMailUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ALMailUtils.class.getName());
 
   /** 改行文字 */
   public static final String CR = System.getProperty("line.separator");
@@ -173,17 +173,14 @@ public class ALMailUtils {
 
   public static final String DATE_FORMAT = "yyyy/MM/dd HH:mm";
 
-  public static final String storePath = JetspeedResources.getString(
-    "aipo.home",
-    "");
+  public static final String storePath =
+    JetspeedResources.getString("aipo.home", "");
 
-  public static final String rootFolderPath = JetspeedResources.getString(
-    "aipo.mail.home",
-    "");
+  public static final String rootFolderPath =
+    JetspeedResources.getString("aipo.mail.home", "");
 
-  public static final String categoryKey = JetspeedResources.getString(
-    "aipo.mail.key",
-    "");
+  public static final String categoryKey =
+    JetspeedResources.getString("aipo.mail.key", "");
 
   /** メールアカウントのパスワードを暗号化する時の共通鍵 */
   private static final String seacretPassword = "1t's a s3@cr3t k3y";
@@ -2058,7 +2055,7 @@ public class ALMailUtils {
 
     } else if (FILTER_TYPE_SUBJECT.equals(filterType)) {
       // 件名を含む
-      return MailUtility.decodeText(subject).toLowerCase().contains(
+      return decodeSubject(subject).toLowerCase().contains(
         filterString.toLowerCase());
     } else if (FILTER_TYPE_TO.equals(filterType)) {
       for (Address address : receivers) {
@@ -2093,5 +2090,20 @@ public class ALMailUtils {
     typeMap.put(FILTER_TYPE_SUBJECT, "件名");
 
     return typeMap;
+  }
+
+  /**
+   * 件名のデコードを行ないます。
+   * 
+   * @param subject
+   * @return
+   */
+  public static String decodeSubject(String subject) {
+    try {
+      subject = MimeUtility.decodeText(MimeUtility.unfold(subject));
+      return UnicodeCorrecter.correctToCP932(MailUtility.decodeText(subject));
+    } catch (UnsupportedEncodingException e) {
+      return MailUtility.decodeText(subject);
+    }
   }
 }

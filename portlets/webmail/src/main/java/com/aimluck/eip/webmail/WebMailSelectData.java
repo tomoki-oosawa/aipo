@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.webmail;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -28,7 +27,6 @@ import java.util.Map;
 import java.util.jar.Attributes;
 
 import javax.mail.Message;
-import javax.mail.internet.MimeUtility;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -53,7 +51,6 @@ import com.aimluck.eip.mail.ALMailHandler;
 import com.aimluck.eip.mail.ALMailMessage;
 import com.aimluck.eip.mail.ALPop3MailReceiveThread;
 import com.aimluck.eip.mail.util.ALMailUtils;
-import com.aimluck.eip.mail.util.UnicodeCorrecter;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
@@ -71,8 +68,8 @@ import com.sk_jp.mail.MailUtility;
 public class WebMailSelectData extends
     ALAbstractSelectData<EipTMail, ALMailMessage> {
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WebMailSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(WebMailSelectData.class.getName());
 
   /** 現在選択されているタブ (＝受信メール or 送信メール) */
   private String currentTab = null;
@@ -385,15 +382,8 @@ public class WebMailSelectData extends
       rd.setReadImageDescription("未読");
     }
 
-    String s = record.getSubject();
-    try {
-      s = MimeUtility.decodeText(MimeUtility.unfold(s));
-      s = UnicodeCorrecter.correctToCP932(MailUtility.decodeText(s));
-      rd.setSubject(ALCommonUtils.compressString(s, getStrLength()));
-    } catch (UnsupportedEncodingException unsupportedencodingexception) {
-      rd.setSubject(ALCommonUtils.compressString(MailUtility.decodeText(record
-        .getSubject()), getStrLength()));
-    }
+    String subject = ALMailUtils.decodeSubject(record.getSubject());
+    rd.setSubject(ALCommonUtils.compressString(subject, getStrLength()));
 
     rd.setPerson(MailUtility.decodeText(record.getPerson()));
 
