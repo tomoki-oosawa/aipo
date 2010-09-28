@@ -555,6 +555,9 @@ public class WebMailFormData extends ALAbstractFormData {
 
     boolean res = super.setFormData(rundata, context, msgList);
 
+    if (accountId <= 0 || userId <= 0) {
+      return res;
+    }
     try {
       fileuploadList = FileuploadUtils.getFileuploadList(rundata);
       // Body

@@ -71,6 +71,8 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
+    super.init(action, rundata, context);
+
     int mailAccountId = 0;
 
     // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
@@ -90,7 +92,6 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
               WebMailUtils.ACCOUNT_ID));
         }
       } catch (Exception e) {
-        logger.error("[WebMail Filter] mail account was not found.");
         return;
       }
     }
@@ -105,13 +106,10 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
         mailAccountId);
 
     if (mailAccount == null) {
-      logger.error("[WebMail Filter] mail account was not found.");
       return;
     }
 
     filterList = new ArrayList<WebMailFilterResultData>();
-
-    super.init(action, rundata, context);
   }
 
   /**
@@ -137,6 +135,9 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res = true;
+    if (mailAccount == null) {
+      return res;
+    }
     try {
       res = super.setFormData(rundata, context, msgList);
       if (res) {

@@ -91,7 +91,6 @@ public class WebMailFolderSelectData extends
         (int) login_user.getUserId().getValue(),
         mailAccountId);
     if (mail_account == null) {
-      logger.error("[WebMail Folder] mail account was not found.");
       return;
     }
 

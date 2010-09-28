@@ -133,7 +133,6 @@ public class WebMailFilterSelectData extends
         if (account != null) {
           mailAccount = account;
         } else {
-          logger.error("[WebMail Filter] mail account was not found.");
           return;
         }
       } catch (Exception e) {

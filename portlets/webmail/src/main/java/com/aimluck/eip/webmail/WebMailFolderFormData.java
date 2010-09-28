@@ -101,7 +101,6 @@ public class WebMailFolderFormData extends ALAbstractFormData {
             context,
             WebMailUtils.ACCOUNT_ID));
       } catch (Exception e) {
-        logger.error("[WebMail Folder] mail account was not found.");
         return;
       }
 
@@ -128,7 +127,6 @@ public class WebMailFolderFormData extends ALAbstractFormData {
         (int) login_user.getUserId().getValue(),
         mailAccountId);
     if (mailAccount == null) {
-      logger.error("[WebMail Folder] mail account was not found.");
       return;
     }
 
