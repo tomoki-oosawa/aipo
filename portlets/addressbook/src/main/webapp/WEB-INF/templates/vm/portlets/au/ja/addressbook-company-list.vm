@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set($career = 'docomo_foma')
+#set($career = 'au')
 #if($isSerchRes)
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_company_search_list','1')")
 #else

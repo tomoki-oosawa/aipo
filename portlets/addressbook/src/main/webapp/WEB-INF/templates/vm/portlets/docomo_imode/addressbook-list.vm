@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set($career = 'docomo_foma')
+#set($career = 'docomo_imode')
 #if($isSerchRes)
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_addr_search_list','1')")
 #else
