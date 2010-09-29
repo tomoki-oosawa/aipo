@@ -35,12 +35,12 @@
 #foreach($record in $!result.FolderHierarchyList)
 #if($record.visible() && $record.isAuthorizedVisible())
 #if($record.HierarchyIndex <= 0)
-<nobr>#if($record.isOpened()) <img src="images/cabinet/folder_open.gif"> #else <img src="images/cabinet/folder_close.gif"> #end #if($result.SelectedFolderInfo.FolderId == $record.FolderId) <b>${record.FolderName}</b> #else
+<nobr>#if($record.isOpened()) <img src="themes/$!theme/images/icon/folder_open.gif"> #else <img src="themes/$!theme/images/icon/folder_close.gif"> #end #if($result.SelectedFolderInfo.FolderId == $record.FolderId) <b>${record.FolderName}</b> #else
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,"$record.FolderId"))', '$!portlet.ID');" >${record.FolderName}</a>
 #end</nobr><br>
 #else
 #set($imgwidth = 16 * $record.HierarchyIndex)
-<nobr><img src="images/blank.gif" height="10" width="$imgwidth">#if($record.isOpened())  <img src="images/cabinet/folder_open.gif"> #else <img src="images/cabinet/folder_close.gif"> #end #if($result.SelectedFolderInfo.FolderId == $record.FolderId) <b>${record.FolderName}</b> #else
+<nobr><img src="images/blank.gif" height="10" width="$imgwidth">#if($record.isOpened())  <img src="themes/$!theme/images/icon/folder_open.gif"> #else <img src="themes/$!theme/images/icon/folder_close.gif"> #end #if($result.SelectedFolderInfo.FolderId == $record.FolderId) <b>${record.FolderName}</b> #else
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,"$record.FolderId"))', '$!portlet.ID');" >${record.FolderName}</a>
 #end</nobr><br>
 #end
@@ -99,7 +99,7 @@
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFolderDetailScreen").addQueryData("mode","folder_detail").addQueryData("folder_id","${record.FolderId}"))');">${record.FolderName}</a>
 #ALtdcellfooter()
 #if($record.isEditable())
-<td class="item" nowrap="nowrap">#ALajaxbuttonLink('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormScreen').addQueryData('entityid', ${record.FileId}) 'images/icon/icon_edit.gif')</td>
+<td class="item" nowrap="nowrap">#ALajaxbuttonLink('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormScreen').addQueryData('entityid', ${record.FileId}) "themes/$!theme/images/icon/icon_edit.gif")</td>
 #else
 <td class="item" nowrap="nowrap">&nbsp;</td>
 #end

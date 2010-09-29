@@ -99,7 +99,7 @@
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFolderDetailScreen").addQueryData("mode","folder_detail").addQueryData("folder_id","${record.FolderId}"))');">${record.FolderName}</a>
 #ALtdcellfooter()
 #if($record.isEditable())
-<td class="item" nowrap="nowrap">#ALajaxbuttonLink('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormScreen').addQueryData('entityid', ${record.FileId}) 'themes/$!theme/images/icon/icon_edit.gif')</td>
+<td class="item" nowrap="nowrap">#ALajaxbuttonLink('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormScreen').addQueryData('entityid', ${record.FileId}) "themes/$!theme/images/icon/icon_edit.gif")</td>
 #else
 <td class="item" nowrap="nowrap">&nbsp;</td>
 #end
