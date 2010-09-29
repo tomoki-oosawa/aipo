@@ -84,7 +84,7 @@ public class CountQuery extends AbstractCustomQuery {
       return "COUNT(*) AS C";
     }
     if (isDistinct) {
-      return "COUNT(DISTINCT " + customColumns + ") AS C";
+      return "COUNT(DISTINCT t0." + customColumns + ") AS C";
     } else {
       return "COUNT(*) AS C";
     }

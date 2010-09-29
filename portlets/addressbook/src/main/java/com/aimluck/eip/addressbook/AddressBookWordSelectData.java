@@ -512,6 +512,8 @@ public class AddressBookWordSelectData extends
       }
     }
 
+    query.distinct();
+
     return (SelectQuery<Object>) query;
   }
 
