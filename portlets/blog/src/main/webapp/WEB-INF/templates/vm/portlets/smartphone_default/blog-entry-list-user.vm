@@ -21,7 +21,7 @@
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1').addQueryData('view_uid', $view_uid)")
 #set($link_alt = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1')")
 ##set($methodlist = [["記事追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_form','1').addQueryData('entityid','new')"], ["テーマ追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_thema_form','1').addQueryData('entityid','new')"], ["ブログを見る", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1')"],["記事を検索する", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_search_list','1')"]])
-#set($methodlist = [["記事一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_latest','1')"],["記事追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_form','1').addQueryData('entityid','new')"],["記事検索", "$!jslink.getPortletById(みんなの$!portlet.ID).addQueryData('eventSubmit_doBlog_search_list','1')"]])
+#set($methodlist = [["記事一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_latest','1')"],["記事追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_form','1').addQueryData('entityid','new')"],["記事検索", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_search_list','1')"]])
 #set($linklist = [["記事一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_latest','1')"]])
 #ALcell_pagetitle_iphone($career "みんなのブログ")
 #ALcell_linklist_iphone($career $methodlist)
