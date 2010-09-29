@@ -38,6 +38,8 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -107,6 +109,18 @@ public class CommonCategoryMultiDelete extends ALAbstractCheckList {
       // カテゴリを削除
       Database.deleteAll(commoncategory_list);
       Database.commit();
+
+      rundata.getParameters().add(
+        ALEipConstants.MODE,
+        ALEipConstants.MODE_MULTI_DELETE);
+
+      for (EipTCommonCategory record : commoncategory_list) {
+        // イベントログに保存
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          record.getCommonCategoryId(),
+          ALEventlogConstants.PORTLET_TYPE_COMMON_CATEGORY,
+          record.getName());
+      }
 
       // 一覧表示画面のフィルタに設定されているカテゴリのセッション情報を削除
       String filtername =
