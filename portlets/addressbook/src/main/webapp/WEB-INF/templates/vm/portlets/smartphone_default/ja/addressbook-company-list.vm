@@ -18,7 +18,11 @@
  *#
 
 ## ---------------------------------------------------------------------------
+#if($isSerchRes)
+#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_company_search_list','1')")
+#else
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_company_list','1')")
+#end
 #set($linklist = [["アドレス帳", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_menu','1')"],["アドレス検索", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_addr_search','1')"],["会社検索", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_company_search','1')"]])
 #ALcell_pagetitle_iphone($career "会社情報一覧")
 #ALcell_linklist_iphone($career $linklist)

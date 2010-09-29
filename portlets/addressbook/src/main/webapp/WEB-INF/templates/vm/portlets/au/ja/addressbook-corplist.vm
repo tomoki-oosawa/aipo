@@ -19,7 +19,11 @@
 
 ## ---------------------------------------------------------------------------
 #set($career = 'au')
+#if($isSerchRes)
+#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_addr_search_list','1').addQueryData('tab','corp')")
+#else
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_corp_list','1').addQueryData('tab','corp')")
+#end
 #set($linklist = [["ｱﾄﾞﾚｽ帳へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_menu','1')"]])
 #ALcell_pagetitle($career "社内ｱﾄﾞﾚｽ一覧")
 #if($isSerchRes)

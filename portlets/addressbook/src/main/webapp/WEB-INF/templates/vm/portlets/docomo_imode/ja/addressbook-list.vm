@@ -19,7 +19,11 @@
 
 ## ---------------------------------------------------------------------------
 #set($career = 'docomo_imode')
+#if($isSerchRes)
+#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_addr_search_list','1')")
+#else
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_list','1')")
+#end
 #set($linklist = [["ｱﾄﾞﾚｽ帳へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_menu','1')"]])
 #ALcell_pagetitle($career "社外ｱﾄﾞﾚｽ一覧")
 #if($isSerchRes)

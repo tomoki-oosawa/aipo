@@ -19,8 +19,12 @@
 
 ## ---------------------------------------------------------------------------
 #set($career = 'vodafone')
+#if($isSerchRes)
+#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_addr_search_list','1')")
+#else
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_list','1')")
-#set($linklist = [["ｱﾄﾞﾚｽ帳へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_menu','1')"], ["TOPへ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["ﾛｸﾞｱｳﾄ", "$jslink.setAction($config.getString('action.logout'))"]])
+#end
+#set($linklist = [["ｱﾄﾞﾚｽ帳へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_menu','1')"]])
 #ALcell_pagetitle($career "社外ｱﾄﾞﾚｽ一覧")
 #if($isSerchRes)
 #ALcell_center_header($career)検索結果#ALcell_center_footer($career)
