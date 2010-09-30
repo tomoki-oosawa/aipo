@@ -32,6 +32,62 @@
       <id>nbeppu</id>
       <name>Nobuhiko Beppu</name>
       <email>nbeppu_at_gmail.com</email>
+      <organization>Aimluck,Inc.</organization>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>dercll1020</id>
+      <name>Dai Hamada</name>
+      <email>dercll1020_at_gmail.com</email>
+      <organization></organization>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>rio.carbon</id>
+      <name>Tomoharu Ono</name>
+      <email>rio.carbon_at_gmail.com</email>
+      <organization></organization>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>atsushi.shi</id>
+      <name>Atsushi Shibata</name>
+      <email>atsushi.shi_at_gmail.com</email>
+      <organization></organization>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>yoshiteru.i</id>
+      <name>Yoshiteru Iwasaki</name>
+      <email>yoshiteru.i_at_gmail.com</email>
+      <organization>Aimluck,Inc.</organization>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>ges.jonieet</id>
+      <name>Yuji Koshikawa</name>
+      <email>ges.jonieet_at_gmail.com</email>
+      <organization>Aimluck,Inc.</organization>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>yusuke.takase.al</id>
+      <name>Yusuke Takase</name>
+      <email>yusuke.takase.al_at_gmail.com</email>
+      <organization>Aimluck,Inc.</organization>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>keisuke.takada</id>
+      <name>Keisuke Takada</name>
+      <email>keisuke.takada_at_gmail.com</email>
+      <organization></organization>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>nagatanoadoless</id>
+      <name>Takashi Nagata</name>
+      <email>nagatanoadoless_at_gmail.com</email>
       <organization></organization>
       <timezone>+9</timezone>
     </developer>
@@ -44,6 +100,13 @@
     <url><![CDATA[http://code.google.com/p/aipo/issues/list]]></url>
   </issueManagement>
   <mailingLists>
+    <mailingList>
+      <name>Aipo User Group</name>
+      <subscribe>http://groups.google.com/group/aipo-user/subscribe</subscribe>
+      <unsubscribe>http://groups.google.com/group/aipo-user</unsubscribe>
+      <post>aipo-user@googlegroups.com</post>
+      <archive>http://groups.google.com/group/aipo-user/topics</archive>
+    </mailingList>
     <mailingList>
       <name>Aipo Developer Group</name>
       <subscribe>http://groups.google.com/group/aipo-dev/subscribe</subscribe>
