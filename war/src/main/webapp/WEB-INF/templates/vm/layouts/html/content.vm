@@ -40,8 +40,8 @@ limitations under the License.
 
 <html>
   <head>
-    <base href="$clink.External" />
-    <link href="$clink.setURI($config.getString("site.stylesheet")).Absolute" type="text/css" rel="stylesheet" /> 
+    <base href="$clink.External"></base>
+    <link href="$clink.setURI($config.getString("site.stylesheet")).Absolute" type="text/css" rel="stylesheet" />
 ## include site defined scripts for the html head (see the definition in templates/vm/GlobalMacros.vm)
     #headScripts()
   </head>

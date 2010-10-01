@@ -40,13 +40,13 @@ limitations under the License.
 
 <html>
   <head>
-    <base href="$clink.External" />
-    <link href="$clink.setURI($config.getString("site.stylesheet")).Absolute" type="text/css" rel="stylesheet" /> 
+    <base href="$clink.External"></base>
+    <link href="$clink.setURI($config.getString("site.stylesheet")).Absolute" type="text/css" rel="stylesheet" />
   </head>
   <body bgcolor="#ffffff">
     $screen_placeholder
     <br><br>
-    <a href="javascript:void(0)" onClick="self.close()">${l10n.PREVIEW_CLOSE_WINDOW_VM}</a>    
+    <a href="javascript:void(0)" onClick="self.close()">${l10n.PREVIEW_CLOSE_WINDOW_VM}</a>
   </body>
 </html>
 
