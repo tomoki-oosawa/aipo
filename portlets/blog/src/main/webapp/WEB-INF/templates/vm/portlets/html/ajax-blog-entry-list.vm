@@ -276,7 +276,7 @@
 <td class="item">
 #end
 #if($record.hasBlogEntry())
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML("${link}&template=BlogEntryListScreen&view_uid=$!{result.ViewUid}&view_day=${record.Label}&filter=null&filtertype=thema")','$!portlet.ID');">$record.Label</a>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML("${link}&template=BlogEntryListScreen&view_uid=$!{result.ViewUid}&view_day=${record.Label}&view_month=${month.MonthLiteral}&filter=null&filtertype=thema")','$!portlet.ID');">$record.Label</a>
 ##<a href="#day$record.Label">$record.Label</a>
 #else
 $record.Label

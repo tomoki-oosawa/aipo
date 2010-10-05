@@ -80,4 +80,7 @@ public class Month {
     year = i;
   }
 
+  public String getMonthLiteral() {
+    return String.format("%04d-%02d", year, month);
+  }
 }
