@@ -20,12 +20,12 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#if($!result.currentTab == "received_mailbox") 
+#if($!result.currentTab == "received_mailbox")
 #set ($event_cancel = "eventSubmit_doWebmail_show_received_mails")
-#else 
+#else
 #set ($event_cancel = "eventSubmit_doWebmail_show_sent_mails")
 #end
-#ALdialogheader("メール詳細")
+#ALdialogheaderCloseJS("メール詳細" "aipo.webmail.hideDialog()")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALajaxdetailformheader("メール")
 #ALtableheaderWide()
@@ -58,7 +58,7 @@ $!result.Detail.Body
 #ALtdcaption('添付ファイル')
 #ALtditemheader()
 #set($count = 0)
-#foreach( $attachmentFileName in $!result.Detail.AttachmentFileNames ) 
+#foreach( $attachmentFileName in $!result.Detail.AttachmentFileNames )
 <a href="$jslink.getTemplate("WebMailFileScreen").addQueryData("accountid", $accountid).addQueryData("tab", $!result.currentTab).addQueryData("entityid", $entityid).addQueryData("attachmentIndex", $count)">$result.getStringCR($attachmentFileName)</a><br>
 #set( $count = $count + 1 )
 #end

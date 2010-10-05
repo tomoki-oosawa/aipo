@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#if($!result.currentTab == "received_notes") 
+#if($!result.currentTab == "received_notes")
 #set($person_key = "送信者")
 #set($person_value = $!result.Detail.SrcUserFullName)
 #else
@@ -29,7 +29,7 @@
 #set ($tabs = [["伝言メモ詳細", "",""]])
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheader("伝言メモ詳細")
+#ALdialogheaderCloseJS("伝言メモ詳細" "aipo.note.hideDialog()")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALajaxdetailformheader("伝言メモ")
 #ALtableheaderWide()
@@ -37,12 +37,12 @@
 #ALtditem("$!{result.Detail.AcceptDate.Year}年$!{result.Detail.AcceptDate.Month}月$!{result.Detail.AcceptDate.Day}日 $!{result.Detail.AcceptDate.Hour}時$!{result.Detail.AcceptDate.Minute}分")
 #ALtdcaption($person_key)
 #ALtditemheader()
-#if($!result.currentTab == "received_notes") 
+#if($!result.currentTab == "received_notes")
 $person_value
 #else
 #foreach($record in $!result.MemberList)
 #if(!($!{record.UserId.toString()} == $!{result.Detail.SrcUserId.toString()}))
-$!record.AliasName 
+$!record.AliasName
 #if($result.getStatus($record.UserId.Value) == "1")
 <img src="images/note/note_new_message.gif" alt="新着" title="新着"/>
 #elseif($result.getStatus($record.UserId.Value) == "2")
@@ -69,14 +69,14 @@ $!record.AliasName
 #if ($!result.Detail.AddDestTypePc.toString() == "1") #set ($dest_type_pc_dist = "パソコン") #set($count = $count+1) #end
 #if ($!result.Detail.AddDestTypeCellphone.toString() == "1") #set ($dest_type_cellphone_dist = "携帯電話") #set($count = $count+1) #end
 #ALtdcaption('追加送信先')
-#if($count == 0) 
+#if($count == 0)
 #ALtditem("-----")
 #else
 #ALtditemheader()
 $!dest_type_pc_dist #if($count == 2) と #end $!dest_type_cellphone_dist
-#ALtditemfooter()  
-#end  
-#if ($!result.Detail.SubjectType.toString() == "0") #set ($subject = $!result.Detail.CustomSubject.toString()) #end   
+#ALtditemfooter()
+#end
+#if ($!result.Detail.SubjectType.toString() == "0") #set ($subject = $!result.Detail.CustomSubject.toString()) #end
 #if ($!result.Detail.SubjectType.toString() == "1") #set ($subject = "再度電話します。") #end
 #if ($!result.Detail.SubjectType.toString() == "2") #set ($subject = "折返しお電話ください。") #end
 #if ($!result.Detail.SubjectType.toString() == "3") #set ($subject = "連絡があったことをお伝えください。") #end
