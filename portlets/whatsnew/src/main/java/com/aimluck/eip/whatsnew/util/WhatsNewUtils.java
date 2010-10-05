@@ -640,6 +640,7 @@ public class WhatsNewUtils {
           EipTSchedule.SCHEDULE_ID_PK_COLUMN,
           EipTSchedule.START_DATE_COLUMN,
           EipTSchedule.NAME_COLUMN,
+          EipTSchedule.OWNER_ID_COLUMN,
           EipTSchedule.UPDATE_USER_ID_COLUMN).fetchList();
       if (entries == null || entries.size() <= 0) {
         return null;
