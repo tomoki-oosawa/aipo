@@ -52,7 +52,6 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /** <code>date</code> 日付 */
   // private ALStringField date;
-
   /** <code>ptn</code> 繰り返しパターン */
   private String ptn;
 
@@ -99,7 +98,7 @@ public class ScheduleResultData implements ALData, Cloneable {
   private ALStringField common_category_name;
 
   /*
-   *
+   * 
    */
   public void initField() {
     name = new ALStringField();
@@ -342,7 +341,7 @@ public class ScheduleResultData implements ALData, Cloneable {
    * 
    */
   public boolean isPrivate() {
-    return !is_public && !is_hidden;
+    return !is_public && is_hidden;
   }
 
   /**

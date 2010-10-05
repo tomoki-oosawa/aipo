@@ -142,4 +142,20 @@ public class AjaxTermScheduleWeekContainer implements ALData {
     return dayList;
   }
 
+  /**
+   * 表示すべき期間スケジュールが存在するかどうかを返します
+   * 
+   * @return
+   */
+  public boolean hasVisibleTerm() {
+    for (AjaxTermScheduleDayContainer dayContainer : dayList) {
+      if (dayContainer.isHasTerm()) {
+        AjaxScheduleResultData rd = dayContainer.getTermResultData();
+        if (rd != null && !(rd.isPrivate() && !rd.isLoginuser())) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 }
