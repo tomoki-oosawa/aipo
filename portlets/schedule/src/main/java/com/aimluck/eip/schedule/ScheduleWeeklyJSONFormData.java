@@ -63,9 +63,8 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 public class ScheduleWeeklyJSONFormData {
 
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleWeeklyJSONFormData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleWeeklyJSONFormData.class.getName());
 
   // view
 
@@ -202,7 +201,8 @@ public class ScheduleWeeklyJSONFormData {
         }
         termDayList = termContainer.getDayList();
         List<ScheduleBean> _termScheduleList = new ArrayList<ScheduleBean>(); // termSchedule
-        for (int k = 0; k < termDayList.size(); k++) {
+        int termDayListSize = termDayList.size();
+        for (int k = 0; k < termDayListSize; k++) {
           AjaxTermScheduleDayContainer termDayContainer = termDayList.get(k);
           if (k == 0) {
             containerDate = termDayContainer.getDate().getValue();
