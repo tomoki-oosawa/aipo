@@ -83,14 +83,6 @@ public class WorkflowCategoryMultiDelete extends ALAbstractCheckList {
         return false;
       }
 
-      for (EipTWorkflowCategory category : categorylist) {
-        // イベントログに保存
-        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          category.getCategoryId(),
-          ALEventlogConstants.PORTLET_TYPE_WORKFLOW_CATEGORY,
-          category.getCategoryName());
-      }
-
       // カテゴリを削除
       Database.deleteAll(categorylist);
 
@@ -118,6 +110,15 @@ public class WorkflowCategoryMultiDelete extends ALAbstractCheckList {
       }
 
       Database.commit();
+
+      for (EipTWorkflowCategory category : categorylist) {
+        // イベントログに保存
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          category.getCategoryId(),
+          ALEventlogConstants.PORTLET_TYPE_WORKFLOW_CATEGORY,
+          category.getCategoryName());
+      }
+
     } catch (Exception ex) {
       Database.rollback();
       logger.error("Exception", ex);
