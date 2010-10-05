@@ -20,36 +20,31 @@
 dojo.provide("aipo.fileupload");
 
 aipo.fileupload.getFolderName = function() {
-
     var obj = dojo.byId("folderName");
-//    if(obj){
-//        obj.focus();
-//    }
-
 }
 
 aipo.fileupload.onAddFileInfo = function(foldername, fileid, filename) {
     var select = dojo.byId('attachments');
     var value = fileid;
     var text = filename;
-    aimluck.io.addOption(select, value, text, false); 
-    
+    aimluck.io.addOption(select, value, text, false);
+
     dojo.byId('folderName').value =  foldername;
 }
-                  
+
 aipo.fileupload.openAttachment = function(url){
     var wx = 430;
     var wy = 175;
     var x = (screen.width  - wx) / 2;
     var y = (screen.height - wy) / 2;
-    
+
     var select = dojo.byId('attachments');
     var select_len = select.options.length;
     if(select_len == 1 && select.options[0].value == ''){
         select_len = 0;
     }
-
-    var attachment_subwin = window.open(url+'&nsize='+select_len,"attachment_window","left="+x+",top="+y+",width="+wx+",height="+wy+",resizable=yes,status=yes");
+    var folderName = dojo.byId('folderName').value;
+    var attachment_subwin = window.open(url+'&nsize='+select_len+'&folderName='+folderName,"attachment_window","left="+x+",top="+y+",width="+wx+",height="+wy+",resizable=yes,status=yes");
     attachment_subwin.focus();
 }
 

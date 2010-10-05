@@ -49,8 +49,8 @@ import com.aimluck.eip.util.ALEipUtils;
  */
 public class FileuploadFormData extends ALAbstractFormData {
 
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(FileuploadFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(FileuploadFormData.class.getName());
 
   public static final String ATTACHMENT_INIT = "attachmentinit";
 
@@ -107,7 +107,7 @@ public class FileuploadFormData extends ALAbstractFormData {
    * @param rundata
    * @param context
    * @param msgList
-   *          エラーメッセージのリスト
+   *            エラーメッセージのリスト
    * @return TRUE 成功 FALSE 失敗
    */
   @Override
@@ -132,7 +132,7 @@ public class FileuploadFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    */
   @Override
   protected void setValidator() {
@@ -142,7 +142,7 @@ public class FileuploadFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -266,7 +266,7 @@ public class FileuploadFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    */
   public void initField() {
     attachmentName = new ALStringField();
@@ -319,6 +319,10 @@ public class FileuploadFormData extends ALAbstractFormData {
 
   public FileuploadBean getNewAttachmentFile() {
     return filebean;
+  }
+
+  public String getFolderName() {
+    return folderName;
   }
 
 }

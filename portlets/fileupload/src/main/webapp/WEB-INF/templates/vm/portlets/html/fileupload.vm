@@ -29,8 +29,6 @@ function get_data(){
     #if($!receiveFile && $!receiveFile == "true")
     window.opener.aipo.fileupload.onAddFileInfo('$!result.NewAttachmentFile.FolderName','$!result.NewAttachmentFile.FileId','$!result.NewAttachmentFile.FileName');
     window.parent.close();
-	#else
-    dojo.byId('folderName').value = window.opener.aipo.fileupload.getFolderName();
     #end
 }
 
@@ -38,7 +36,7 @@ function getFileName(){
     var filepath = dojo.byId('attachment').value;
     if(filepath == "") return "";
 
-    var filefolder_list = filepath.split("\\"); 
+    var filefolder_list = filepath.split("\\");
     var filename = filefolder_list[filefolder_list.length-1];
     return filename;
 }
@@ -52,7 +50,7 @@ function checkFile(){
     }
     return true;
 }
-  
+
 //-->
 </script>
 <div class="spaceAll">
@@ -63,7 +61,7 @@ function checkFile(){
 <h3>添付ファイルの追加</h3>
 <form name="fileuploadForm$!portlet.ID" id="fileuploadForm$!portlet.ID" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','update'))" method="post" enctype="multipart/form-data" onsubmit="return checkFile();">
 <input type="hidden" name="mode" value="update" />
-<input type="hidden" name="folderName" id="folderName" value="" />
+<input type="hidden" name="folderName" id="folderName" value="$result.folderName" />
 <input type="hidden" name="msize" id="msize" value="$msize" />
 <input type="hidden" name="nsize" id="nsize" value="$nsize" />
 <input type="hidden" name="secid" value="$secid" />
