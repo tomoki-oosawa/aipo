@@ -45,8 +45,9 @@ import com.aimluck.eip.workflow.util.WorkflowUtils;
 public class WorkflowCategoryMultiDelete extends ALAbstractCheckList {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WorkflowCategoryMultiDelete.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(WorkflowCategoryMultiDelete.class
+      .getName());
 
   /**
    * 
@@ -82,18 +83,22 @@ public class WorkflowCategoryMultiDelete extends ALAbstractCheckList {
         return false;
       }
 
+      for (EipTWorkflowCategory category : categorylist) {
+        // イベントログに保存
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          category.getCategoryId(),
+          ALEventlogConstants.PORTLET_TYPE_WORKFLOW_CATEGORY,
+          category.getCategoryName());
+      }
+
       // カテゴリを削除
       Database.deleteAll(categorylist);
 
       // これらカテゴリに含まれる依頼をカテゴリ「未分類」に移す。
       List<Integer> categoryIds = new ArrayList<Integer>();
-      EipTWorkflowCategory category = null;
-      int catesize = categorylist.size();
-      for (int i = 0; i < catesize; i++) {
-        category = categorylist.get(i);
+      for (EipTWorkflowCategory category : categorylist) {
         categoryIds.add(category.getCategoryId());
       }
-
       SelectQuery<EipTWorkflowRequest> reqquery =
         Database.query(EipTWorkflowRequest.class);
       Expression reqexp1 =
@@ -105,22 +110,10 @@ public class WorkflowCategoryMultiDelete extends ALAbstractCheckList {
       reqquery.setQualifier(reqexp1);
       List<EipTWorkflowRequest> requests = reqquery.fetchList();
       if (requests != null && requests.size() > 0) {
-        EipTWorkflowRequest request = null;
         EipTWorkflowCategory defaultCategory =
           WorkflowUtils.getEipTWorkflowCategory(Long.valueOf(1));
-        int size = requests.size();
-        for (int i = 0; i < size; i++) {
-          request = requests.get(i);
+        for (EipTWorkflowRequest request : requests) {
           request.setEipTWorkflowCategory(defaultCategory);
-
-          // イベントログに保存
-          ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-            category.getCategoryId(),
-            ALEventlogConstants.PORTLET_TYPE_WORKFLOW_CATEGORY,
-            category.getCategoryName());
-
-          // ワークフローカテゴリを削除
-          Database.delete(category);
         }
       }
 
