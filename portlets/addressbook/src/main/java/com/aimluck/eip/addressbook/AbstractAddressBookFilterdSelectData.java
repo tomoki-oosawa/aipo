@@ -41,8 +41,8 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
     ALAbstractSelectData<M1, M2> {
   /** logger */
   private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AddressBookFilterdSelectData.class
-      .getName());
+    JetspeedLogFactoryService
+      .getLogger(AbstractAddressBookFilterdSelectData.class.getName());
 
   /** 「全て」を意味する検索用インデックス */
   private static final String INDEX_STR_ALL = "-1";
