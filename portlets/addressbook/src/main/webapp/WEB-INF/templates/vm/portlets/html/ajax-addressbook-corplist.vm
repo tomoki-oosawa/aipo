@@ -22,6 +22,7 @@
 #set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookGroupFormScreen").addQueryData("entityid","new")))
 #set ($newUrl3 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookCompanyFormScreen").addQueryData("entityid","new")))
 #set ($submenulist = [["アドレスを追加する","javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.addressbook.onLoadAddressbookDialog);","images/icon/icon_add.gif"],["会社情報を追加する","javascript:aipo.common.showDialog('$newUrl3','$!portlet.ID',aipo.addressbook.onLoadAddressbookCompanyDialog);","images/icon/icon_add.gif"],["グループを追加する","javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);","images/icon/icon_add.gif"]])
+#set ($idx = $!result.Index)
 ## ---------------------------------------------------------------------------
 
 #macro(ALajaxsortaddressbook $key $name $result $screen)
@@ -80,7 +81,7 @@
 </div>
 <div style="padding-top: 3px;">
 さらに索引で絞る ⇒
-[<a #if($idx.equals("-1") || $idx.equals("")) style="color:darkorange;" #end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen'))', '$!portlet.ID')"> 全て </a>]
+[<a #if($idx.equals("-1") || $idx.equals("")) style="color:darkorange;" #end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen').addQueryData('idx', "-1"))', '$!portlet.ID')"> 全て </a>]
 [<a #if($idx.equals("1")) style="color:darkorange;" #end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen').addQueryData('idx', "1"))', '$!portlet.ID')"> あ </a>]
 [<a #if($idx.equals("6")) style="color:darkorange;" #end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen').addQueryData('idx', "6"))', '$!portlet.ID')"> か </a>]
 [<a #if($idx.equals("11")) style="color:darkorange;" #end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen').addQueryData('idx', "11"))', '$!portlet.ID')"> さ </a>]

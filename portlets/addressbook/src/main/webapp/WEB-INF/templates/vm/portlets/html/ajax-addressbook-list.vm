@@ -22,6 +22,7 @@
 #set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookGroupFormScreen").addQueryData("entityid","new")))
 #set ($newUrl3 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookCompanyFormScreen").addQueryData("entityid","new")))
 #set ($submenulist = [["アドレスを追加する","javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.addressbook.onLoadAddressbookDialog);","images/icon/icon_add.gif"],["会社情報を追加する","javascript:aipo.common.showDialog('$newUrl3','$!portlet.ID',aipo.addressbook.onLoadAddressbookCompanyDialog);","images/icon/icon_add.gif"],["グループを追加する","javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);","images/icon/icon_add.gif"]])
+#set ($idx = $!result.Index)
 ## ---------------------------------------------------------------------------
 #ALsubmenubar($submenulist "")
 
@@ -33,7 +34,7 @@
 #if($!result.Index && $result.Index.toString() != "")
 <a#if($!result.CurrentSort && $!result.CurrentSort == "$key") class="$sortHead"#end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template",$screen).addQueryData("start","$result.CurrentPage").addQueryData("sort","$key").addQueryData("sorttype","$sorttype").addQueryData("idx","$result.Index"))', '$!portlet.ID');">$name</a>
 #else
-<a#if($!result.CurrentSort && $!result.CurrentSort == "$key") class="$sortHead"#end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template",$screen).addQueryData("start","$result.CurrentPage").addQueryData("sort","$key").addQueryData("sorttype","$sorttype"))', '$!portlet.ID');">$name</a>	
+<a#if($!result.CurrentSort && $!result.CurrentSort == "$key") class="$sortHead"#end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template",$screen).addQueryData("start","$result.CurrentPage").addQueryData("sort","$key").addQueryData("sorttype","$sorttype"))', '$!portlet.ID');">$name</a> 
 #end
 #end
 #end
@@ -61,6 +62,22 @@
 #ALspacebothheader()
 #ALajaxlistformheader('AddressBook')
 #if($result.SearchWord && $result.SearchWord.toString() != "")
+#ALformfooter()
+##if($!result.hasAclXlsExport())
+#if($result.List.size() != 0)
+<form name="AdressBook" action="$jslink.getTemplate('AddressBookWordXlsExportScreen')" method="post">
+#ALtableheaderSimpleWide()
+#ALtdcaption('エクスポート')
+#ALtditemheader() 現在表示している一覧を
+#ALsubmit('eventSubmit_doAdressBook_download' 'ダウンロードする')
+#ALtditemfooter()
+#ALtablefooter()
+<input type="hidden" name="mode" value="ajaxsearch"/>
+<input type="hidden" name="sword" value="$!result.searchWord"/>
+<input type="hidden" name="tab", value="$!result.currentTab"/>
+</form>
+#end
+##end
 <div style="padding-bottom: 5px;"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen'))', '$!portlet.ID')">[一覧へ戻る]</a></div>
 #else
 #ALtableheaderSimpleWide()
@@ -99,12 +116,29 @@
 </div>
 #ALtditemfooter()
 #ALtablefooter()
+#ALformfooter()
+
+##if($!result.hasAclXlsExport())
+#if($result.List.size() != 0)
+<form name="AdressBook" action="$jslink.getTemplate('AddressBookXlsExportScreen')" method="post">
+#ALtableheaderSimpleWide()
+#ALtdcaption('エクスポート')
+#ALtditemheader() 現在表示している一覧を
+#ALsubmit('eventSubmit_doAdressBook_download' 'ダウンロードする')
+#ALtditemfooter()
+#ALtablefooter()
+<input type="hidden" name="filtertype" value="group"/>
+<input type="hidden" name="filter" value="$!result.CurrentFilter"/>
+<input type="hidden" name="idx" value="$!result.Index"/>
+</form>
+##end
+#end
 #end
 
 #if($result.List.size() == 0)
 指定された条件に該当するアドレスはありません。<br />
 #else
-##ALajaxpageviewAB('AddressBookListScreen' $result)	
+##ALajaxpageviewAB('AddressBookListScreen' $result) 
 #ALajaxpageview(${pageviewscreen} $result)
 #ALtableheaderWide()
 <tr>
@@ -139,6 +173,5 @@
 #end
 ##ALajaxpageviewFooter('AddressBookListScreen' $result)
 
-#ALformfooter()
 #ALspacebothfooter()
 #ALajaxtabfooter()

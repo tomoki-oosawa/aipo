@@ -36,7 +36,6 @@ import com.aimluck.eip.cayenne.om.portlet.EipMAddressGroup;
 import com.aimluck.eip.cayenne.om.portlet.EipMAddressbook;
 import com.aimluck.eip.cayenne.om.portlet.EipMAddressbookCompany;
 import com.aimluck.eip.cayenne.om.portlet.EipTAddressbookGroupMap;
-import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
@@ -53,21 +52,17 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class AddressBookFilterdSelectData extends
-    ALAbstractSelectData<EipMAddressbook, EipMAddressbook> {
+    AbstractAddressBookFilterdSelectData<EipMAddressbook, EipMAddressbook> {
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AddressBookFilterdSelectData.class.getName());
-
-  /** 現在選択されているタブ */
-  private String currentTab;
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(AddressBookFilterdSelectData.class
+      .getName());
 
   /** フィルタに利用するグループリスト */
   private List<AddressBookGroupResultData> groupList;
 
-  /** 現在選択されているインデックス */
-  private String index;
-
   /**
+   * 初期化処理を行います。
    * 
    * @param action
    * @param rundata
@@ -83,23 +78,6 @@ public class AddressBookFilterdSelectData extends
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, "name_kana");
     }
-
-    String tabParam = rundata.getParameters().getString("tab");
-    currentTab = ALEipUtils.getTemp(rundata, context, "tab");
-    if (tabParam == null && currentTab == null) {
-      ALEipUtils.setTemp(rundata, context, "tab", "syagai");
-      currentTab = "syagai";
-    } else if (tabParam != null) {
-      ALEipUtils.setTemp(rundata, context, "tab", tabParam);
-      currentTab = tabParam;
-    }
-
-    // 検索ワードがセッションに保存されている場合は，セッションから削除する．
-    /*
-     * String searchWord = ALEipUtils .getTemp(rundata, context,
-     * "AddressBooksword"); if (searchWord != null && !searchWord.equals("")) {
-     * ALEipUtils.removeTemp(rundata, context, "AddressBooksword"); }
-     */
 
     super.init(action, rundata, context);
   }
@@ -168,10 +146,8 @@ public class AddressBookFilterdSelectData extends
 
       EipMAddressbookCompany company = record.getEipMAddressbookCompany();
 
-      if (!AddressBookUtils.EMPTY_COMPANY_NAME.equals(company.getCompanyName())
-      /* && company.getCreateUserId().intValue() != 1 */) {
+      if (!AddressBookUtils.EMPTY_COMPANY_NAME.equals(company.getCompanyName())) {
         // 「未分類」の会社情報ではない場合
-
         rd.setCompanyName(ALCommonUtils.compressString(
           company.getCompanyName(),
           getStrLength()));
@@ -188,7 +164,6 @@ public class AddressBookFilterdSelectData extends
       rd.setCellularPhone(record.getCellularPhone());
       rd.setCellularMail(record.getCellularMail());
       rd.setPublicFlag(record.getPublicFlag());
-      rd.setIndex(index);
 
       return rd;
     } catch (Exception ex) {
@@ -248,8 +223,7 @@ public class AddressBookFilterdSelectData extends
       rd.setPublicFlag(record.getPublicFlag());
 
       EipMAddressbookCompany company = record.getEipMAddressbookCompany();
-      if (!AddressBookUtils.EMPTY_COMPANY_NAME.equals(company.getCompanyName())
-      /* && company.getCreateUserId().intValue() != 1 */) {
+      if (!AddressBookUtils.EMPTY_COMPANY_NAME.equals(company.getCompanyName())) {
         // 「未分類」の会社情報ではない場合、会社情報を設定する
         rd.setCompanyName(company.getCompanyName());
         rd.setCompanyNameKana(company.getCompanyNameKana());
@@ -294,11 +268,12 @@ public class AddressBookFilterdSelectData extends
   /**
    * 検索条件を設定した SelectQuery を返します。
    * 
+   * @param query
    * @param rundata
    * @param context
    * @return
    */
-  private SelectQuery<EipMAddressbook> getSelectQuery(RunData rundata,
+  protected SelectQuery<EipMAddressbook> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<EipMAddressbook> query = Database.query(EipMAddressbook.class);
 
@@ -311,53 +286,21 @@ public class AddressBookFilterdSelectData extends
       ExpressionFactory.matchExp(EipMAddressbook.PUBLIC_FLAG_PROPERTY, "F");
     query.setQualifier(exp21.orExp(exp22.andExp(exp23)));
 
-    // インデックス指定時の条件文作成
-    String index_session = ALEipUtils.getTemp(rundata, context, LIST_INDEX_STR);
-    String index_rundata = rundata.getParameters().getString("idx");
-    if (index_rundata != null) {
-      if ("-1".equals(index_rundata) || "".equals(index_rundata)) {
-        ALEipUtils.setTemp(rundata, context, LIST_INDEX_STR, "-1");
-        context.put("idx", "-1");
-      } else {
-        index = index_rundata;
-        ALEipUtils.setTemp(rundata, context, LIST_INDEX_STR, index);
-        buildSelectQueryForAddressbookIndex(
-          query,
-          EipMAddressbook.LAST_NAME_KANA_PROPERTY,
-          Integer.parseInt(index));
-        context.put("idx", index);
-      }
-    } else if (index_session != null) {
-      buildSelectQueryForAddressbookIndex(
-        query,
-        EipMAddressbook.LAST_NAME_KANA_PROPERTY,
-        Integer.parseInt(index_session));
-      context.put("idx", index);
-    }
-
-    return buildSelectQueryForFilter(query, rundata, context);
+    return getSelectQueryForIndex(query, rundata, context);
   }
 
   /**
-   * 現在選択されているタブを取得します。
+   * インデックス検索のためのカラムを返します。
    * 
    * @return
    */
-  public String getCurrentTab() {
-    return currentTab;
+  @Override
+  protected String getColumnForIndex() {
+    return EipMAddressbook.LAST_NAME_KANA_PROPERTY;
   }
 
   public List<AddressBookGroupResultData> getGroupList() {
     return groupList;
-  }
-
-  /**
-   * 現在選択されているインデックスを取得します。
-   * 
-   * @return
-   */
-  public String getIndex() {
-    return index;
   }
 
   /**
@@ -389,97 +332,6 @@ public class AddressBookFilterdSelectData extends
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
-    }
-  }
-
-  /**
-   * インデックス検索のためのユニコードマッピングによる条件文の追加。
-   * 
-   * @param crt
-   * @param idx
-   */
-  private void buildSelectQueryForAddressbookIndex(
-      SelectQuery<EipMAddressbook> query, String lastNameKana, int idx) {
-
-    // インデックスによる検索
-    switch (idx) {
-      // ア行
-      case 1:
-        Expression exp01 =
-          ExpressionFactory.greaterOrEqualExp(lastNameKana, "ア");
-        Expression exp02 = ExpressionFactory.lessExp(lastNameKana, "カ");
-        query.andQualifier(exp01.andExp(exp02));
-        break;
-      // カ行
-      case 6:
-        Expression exp11 =
-          ExpressionFactory.greaterOrEqualExp(lastNameKana, "カ");
-        Expression exp12 = ExpressionFactory.lessExp(lastNameKana, "サ");
-        query.andQualifier(exp11.andExp(exp12));
-        break;
-      // サ行
-      case 11:
-        Expression exp21 =
-          ExpressionFactory.greaterOrEqualExp(lastNameKana, "サ");
-        Expression exp22 = ExpressionFactory.lessExp(lastNameKana, "タ");
-        query.andQualifier(exp21.andExp(exp22));
-        break;
-      // タ行
-      case 16:
-        Expression exp31 =
-          ExpressionFactory.greaterOrEqualExp(lastNameKana, "タ");
-        Expression exp32 = ExpressionFactory.lessExp(lastNameKana, "ナ");
-        query.andQualifier(exp31.andExp(exp32));
-        break;
-      // ナ行
-      case 21:
-        Expression exp41 =
-          ExpressionFactory.greaterOrEqualExp(lastNameKana, "ナ");
-        Expression exp42 = ExpressionFactory.lessExp(lastNameKana, "ハ");
-        query.andQualifier(exp41.andExp(exp42));
-        break;
-      // ハ行
-      case 26:
-        Expression exp51 =
-          ExpressionFactory.greaterOrEqualExp(lastNameKana, "ハ");
-        Expression exp52 = ExpressionFactory.lessExp(lastNameKana, "マ");
-        query.andQualifier(exp51.andExp(exp52));
-        break;
-      // マ行
-      case 31:
-        Expression exp61 =
-          ExpressionFactory.greaterOrEqualExp(lastNameKana, "マ");
-        Expression exp62 = ExpressionFactory.lessExp(lastNameKana, "ヤ");
-        query.andQualifier(exp61.andExp(exp62));
-        break;
-      // ヤ行
-      case 36:
-        Expression exp71 =
-          ExpressionFactory.greaterOrEqualExp(lastNameKana, "ヤ");
-        Expression exp72 = ExpressionFactory.lessExp(lastNameKana, "ラ");
-        query.andQualifier(exp71.andExp(exp72));
-        break;
-      // ラ行
-      case 41:
-        Expression exp81 =
-          ExpressionFactory.greaterOrEqualExp(lastNameKana, "ラ");
-        Expression exp82 = ExpressionFactory.lessExp(lastNameKana, "ワ");
-        query.andQualifier(exp81.andExp(exp82));
-        break;
-      // ワ行
-      case 46:
-        Expression exp91 =
-          ExpressionFactory.greaterOrEqualExp(lastNameKana, "ワ");
-        Expression exp92 = ExpressionFactory.lessOrEqualExp(lastNameKana, "ヴ");
-        query.andQualifier(exp91.andExp(exp92));
-        break;
-      // 英数(上記以外)
-      case 52:
-        Expression exp100 = ExpressionFactory.lessExp(lastNameKana, "ア");
-        Expression exp101 =
-          ExpressionFactory.greaterOrEqualExp(lastNameKana, "ヴ");
-        query.andQualifier(exp100.orExp(exp101));
-        break;
     }
   }
 
