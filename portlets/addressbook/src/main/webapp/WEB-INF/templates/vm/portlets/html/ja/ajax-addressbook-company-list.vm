@@ -29,7 +29,7 @@
 #macro(ALajaxsortaddressbook $key $name $result $screen)
 #if($!result.getCurrentSort() && $!result.CurrentSort == "$key" && $!result.CurrentSortType && $!result.CurrentSortType == "asc")
 	#set($sorttype ="desc")
-	#set($sortHead ="headDown") 
+	#set($sortHead ="headDown")
 #else
 	#set($sorttype ="asc")
 	#set($sortHead ="headUp")
@@ -85,42 +85,63 @@
 #end
 #end
 #end
+#set($isSearch = ($result.SearchWord && $result.SearchWord.toString() != ""))
 <div class="clearfix">
   <div class="alignleft small">
 #if ($pages > 1)
     <div class="pagination">
       <ul>
 #if($currentPage > 1) #set($pre = $currentPage - 1)
-        <li class="prev"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre).addQueryData("sword","$result.SearchWord"))', '$!portlet.ID');" class="small">前へ</a></li>
+    #if($isSearch)
+        <li class="prev"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre).addQueryData("sword","$result.SearchWord").addQueryData('mode','ajaxsearch'))', '$!portlet.ID');" class="small">前へ</a></li>
+    #else
+        <li class="prev"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre).addQueryData("idx","$!result.Index"))', '$!portlet.ID');" class="small">前へ</a></li>
+    #end
 #else
         <li class="prev disabled"><a href="javascript:void(0);" class="small">前へ</a></li>
 #end
 #if($pages > $currentPage) #set($next = $currentPage + 1)
-        <li class="next"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next).addQueryData("sword","$result.SearchWord"))', '$!portlet.ID');" class="small">次へ</a></li>
+    #if($isSearch)
+        <li class="next"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next).addQueryData("sword","$result.SearchWord").addQueryData("mode","ajaxsearch"))', '$!portlet.ID');" class="small">次へ</a></li>
+    #else
+        <li class="next"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next).addQueryData("idx","$!result.Index"))', '$!portlet.ID');" class="small">次へ</a></li>
+    #end
 #else
         <li class="next disabled"><a href="javascript:void(0);" class="small">次へ</a></li>
 #end
 #if($showLeftRest && $currentPage > ${pageRange})
 #foreach($page in [1..${pageTrimRange}])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData("sword","$result.SearchWord"))', '$!portlet.ID');" class="small">$page</a></li>
+    #if($isSearch)
+        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData("sword","$result.SearchWord").addQueryData('mode','ajaxsearch'))', '$!portlet.ID');" class="small">$page</a></li>
+    #else
+        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData("idx","$!result.Index"))', '$!portlet.ID');" class="small">$page</a></li>
+    #end
 #end
         <li class="abbr">....</li>
 #end
 #foreach($page in [${nextLeftPage}..$nextRightPage])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData("sword","$result.SearchWord"))', '$!portlet.ID');" class="small">$page</a></li>
+    #if($isSearch)
+        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData("sword","$result.SearchWord").addQueryData('mode','ajaxsearch'))', '$!portlet.ID');" class="small">$page</a></li>
+    #else
+        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData("idx","$!result.Index"))', '$!portlet.ID');" class="small">$page</a></li>
+    #end
 #end
 #if($showRightRest &&  (${currentPage} + ${pageRange} - 1) < ${pages})
 #set($restRightPages = $pages - $pageTrimRange + 1)
         <li class="abbr">....</li>
 #foreach($page in [${restRightPages}..${pages}])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData("sword","$result.SearchWord"))', '$!portlet.ID');" class="small">$page</a></li>
+    #if($isSearch)
+        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData("sword","$result.SearchWord").addQueryData('mode','ajaxsearch'))', '$!portlet.ID');" class="small">$page</a></li>
+    #else
+        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData("idx","$!result.Index"))', '$!portlet.ID');" class="small">$page</a></li>
+    #end
 #end
 #end
       </ul>
     </div>
 #end
   </div>
-  <div class="alignright small" style="margin-top:5px;">$from 件 ～ $to 件表示 [ 計 $count 件 ]</div> 
+  <div class="alignright small" style="margin-top:5px;">$from 件 ～ $to 件表示 [ 計 $count 件 ]</div>
 </div>
 #end
 
@@ -232,7 +253,7 @@
 #ALtdhead('部署名')
 #ALtdhead('住所')
 #ALtdhead('電話番号')
-#ALtdheadThin(' ')
+#ALtdheadThin('')
 #ALtdheadThin(' ')
 </tr>
 #foreach ($record in $result.List)
