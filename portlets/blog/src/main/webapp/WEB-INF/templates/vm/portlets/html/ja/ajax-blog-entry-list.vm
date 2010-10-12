@@ -347,9 +347,9 @@ $content
 #ALtdcaption('テーマ')
 #ALtditemheader()
 <select name="thema" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("eventSubmit_doBlog_entry_list_user","1").addQueryData("filter","").addQueryData("filtertype","thema").addQueryData("view_uid", $!{result.ViewUid}))">（全体）</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("eventSubmit_doBlog_entry_list_user","1").addQueryData("filter","").addQueryData("filtertype","thema").addQueryData("view_uid", $!{result.ViewUid}).addQueryData("view_month", $!{result.Month.MonthLiteral}))">（全体）</option>
 #foreach( $record in $result.ThemaList )
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("eventSubmit_doBlog_entry_list_user","1").addQueryData("filter",$!record.ThemaId).addQueryData("filtertype","thema").addQueryData("view_uid", $!{result.ViewUid}))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.ThemaId.toString()) selected #end>$!record.ThemaName</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("eventSubmit_doBlog_entry_list_user","1").addQueryData("filter",$!record.ThemaId).addQueryData("filtertype","thema").addQueryData("view_uid", $!{result.ViewUid}).addQueryData("view_month", $!{result.Month.MonthLiteral}))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.ThemaId.toString()) selected #end>$!record.ThemaName</option>
 #end
 </select>
 #ALtditemfooter()
