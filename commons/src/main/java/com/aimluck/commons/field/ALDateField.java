@@ -35,7 +35,7 @@ import com.aimluck.commons.utils.ALStringUtil;
 public class ALDateField extends ALAbstractField {
 
   /**
-   *
+   * 
    */
   private static final long serialVersionUID = 5926176023655878545L;
 
@@ -95,6 +95,16 @@ public class ALDateField extends ALAbstractField {
     } else {
       try {
         value.getDate();
+
+        // 1582年以前の年の指定を弾く
+        // (理由:Javaでは1582年より前の年にユリウス暦を採用しているのに対して、
+        // PostgreSQLは暦として常にグレゴリオ暦が採用されているため)
+        int year = value.getYear();
+        if (year <= 1582) {
+          msgList.add("『 " + fieldName + " 』には1583年以降の日付を入力してください。");
+          return false;
+        }
+
       } catch (NumberFormatException ex) {
 
         msgList.add("『 <span class='em'>"

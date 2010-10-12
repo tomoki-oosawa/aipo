@@ -49,8 +49,9 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
 
   /** <code>logger</code> logger */
   @SuppressWarnings("unused")
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(CellScheduleSelectFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(CellScheduleSelectFormData.class
+      .getName());
 
   /** <code>end_date</code> 表示日時 */
   protected ALCellDateField view_date;
@@ -61,7 +62,7 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
   protected int currentYear;
 
   /*
-   *
+   * 
    */
   public void initField() {
   }
@@ -112,7 +113,7 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    */
   @Override
   protected void setValidator() {
@@ -137,7 +138,7 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
     view_date.setValue(view_date_str);
     List<String> msgList2 = new ArrayList<String>();
     if (!view_date.validate(msgList2)) {
-      msgList.add("『 日付 』を正しく入力してください。");
+      msgList.addAll(msgList2);
       return false;
     }
 
