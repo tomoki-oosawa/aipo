@@ -39,7 +39,6 @@ import com.aimluck.eip.cayenne.om.portlet.EipTNoteMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
-import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
@@ -59,8 +58,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(NoteSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(NoteSelectData.class.getName());
 
   /** 現在選択しているタブ */
   private String currentTab;
@@ -122,26 +121,28 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
           .getPortletConfig()
           .getInitParameter(sortkey);
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, sort);
-      logger.debug("Init Parameter (Note) : "
-        + ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter(sortkey));
     } else {
       if ("received_notes".equals(getCurrentTab())) {
+        // 受信一覧
         if ("create_date".equals(sort)) {
-          sort = "note_stat";
+          // 受信一覧に無いソートが指定されている場合、デフォルトを読み込む
+          sort =
+            ALEipUtils
+              .getPortlet(rundata, context)
+              .getPortletConfig()
+              .getInitParameter("p2a-sort");
           ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, sort);
         }
       } else {
+        // 送信一覧
         if ("accept_date".equals(sort) || "note_stat".equals(sort)) {
-          sort = "create_date";
+          // 送信一覧に無いソートが指定されている場合、デフォルトを読み込む
+          sort =
+            ALEipUtils
+              .getPortlet(rundata, context)
+              .getPortletConfig()
+              .getInitParameter("p2b-sort");
           ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, sort);
-          ALEipUtils.setTemp(
-            rundata,
-            context,
-            LIST_SORT_TYPE_STR,
-            ALEipConstants.LIST_SORT_TYPE_DESC);
         }
       }
     }
@@ -471,7 +472,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 検索条件を設定した SelectQuery を返します。 
+   * 検索条件を設定した SelectQuery を返します。
    * 
    * @param rundata
    * @param context
@@ -507,7 +508,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 検索条件を設定した SelectQuery を返します。 
+   * 検索条件を設定した SelectQuery を返します。
    * 
    * @param rundata
    * @param context
@@ -564,7 +565,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 現在選択されているタブを取得します。 
+   * 現在選択されているタブを取得します。
    * 
    * @return
    */
