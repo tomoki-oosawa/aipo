@@ -806,67 +806,70 @@ public class ScheduleFormData extends ALAbstractFormData {
           msgList.add("『 <span class='em'>期限</span> 』は今日以降の日付を指定してください。");
         }
 
-        // リピートパターン文字列作成
-        char lim = 'N';
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(end_date.getValue());
-        if ("ON".equals(limit_flag.getValue())) {
-          lim = 'L';
-        }
-        String repeat_pattern;
-        if ("D".equals(repeat_type.getValue())) {
-          repeat_pattern =
-            new StringBuffer().append('D').append(lim).toString();
-        } else if ("W".equals(repeat_type.getValue())) {
-          repeat_pattern =
-            new StringBuffer().append('W').append(
-              week_0.getValue() != null ? 1 : 0).append(
-              week_1.getValue() != null ? 1 : 0).append(
-              week_2.getValue() != null ? 1 : 0).append(
-              week_3.getValue() != null ? 1 : 0).append(
-              week_4.getValue() != null ? 1 : 0).append(
-              week_5.getValue() != null ? 1 : 0).append(
-              week_6.getValue() != null ? 1 : 0).append(lim).toString();
-        } else {
-          DecimalFormat format = new DecimalFormat("00");
-          repeat_pattern =
-            new StringBuffer().append('M').append(
-              format.format(month_day.getValue())).append(lim).toString();
-        }
+        if (getLimitFlag().getValue().equals("ON")) {
+          // 繰り返し期間の正当性を調べる
 
-        // 開始時刻(期間初日)
-        Calendar sDate = new GregorianCalendar();
-        sDate
-          .set(Calendar.YEAR, Integer.valueOf(getLimitStartDate().getYear()));
-        sDate.set(Calendar.MONTH, Integer.valueOf(getLimitStartDate()
-          .getMonth()) - 1);
-        sDate.set(Calendar.DATE, Integer.valueOf(getLimitStartDate().getDay()));
-        sDate.set(Calendar.HOUR_OF_DAY, 0);
-        sDate.set(Calendar.MINUTE, 0);
-        sDate.set(Calendar.SECOND, 0);
-
-        // 繰り返し最終日の終了時刻
-        Calendar finalDate = new GregorianCalendar();
-        finalDate.set(Calendar.YEAR, Integer.valueOf(getLimitEndDate()
-          .getYear()));
-        finalDate.set(Calendar.MONTH, Integer.valueOf(getLimitEndDate()
-          .getMonth()) - 1);
-        finalDate.set(Calendar.DATE, Integer
-          .valueOf(getLimitEndDate().getDay()));
-        sDate.set(Calendar.HOUR_OF_DAY, 23);
-        sDate.set(Calendar.MINUTE, 59);
-        sDate.set(Calendar.SECOND, 59);
-        boolean hasAvailableDate = false;
-        while (sDate.before(finalDate) || sDate.equals(finalDate)) {
-          if (ScheduleUtils.matchDay(sDate, repeat_pattern)) {
-            hasAvailableDate = true;
-            break;
+          // リピートパターン文字列作成
+          char lim = 'N';
+          Calendar cal = Calendar.getInstance();
+          cal.setTime(end_date.getValue());
+          if ("ON".equals(limit_flag.getValue())) {
+            lim = 'L';
           }
-          sDate.add(Calendar.DATE, 1);
-        }
-        if (!hasAvailableDate) {
-          msgList
-            .add("予定の入る日を含む様に『 <span class='em'>繰り返し期間</span> 』を指定してください。");
+          String repeat_pattern;
+          if ("D".equals(repeat_type.getValue())) {
+            repeat_pattern =
+              new StringBuffer().append('D').append(lim).toString();
+          } else if ("W".equals(repeat_type.getValue())) {
+            repeat_pattern =
+              new StringBuffer().append('W').append(
+                week_0.getValue() != null ? 1 : 0).append(
+                week_1.getValue() != null ? 1 : 0).append(
+                week_2.getValue() != null ? 1 : 0).append(
+                week_3.getValue() != null ? 1 : 0).append(
+                week_4.getValue() != null ? 1 : 0).append(
+                week_5.getValue() != null ? 1 : 0).append(
+                week_6.getValue() != null ? 1 : 0).append(lim).toString();
+          } else {
+            DecimalFormat format = new DecimalFormat("00");
+            repeat_pattern =
+              new StringBuffer().append('M').append(
+                format.format(month_day.getValue())).append(lim).toString();
+          }
+          // 開始時刻(期間初日)
+          Calendar sDate = new GregorianCalendar();
+          sDate.set(Calendar.YEAR, Integer.valueOf(getLimitStartDate()
+            .getYear()));
+          sDate.set(Calendar.MONTH, Integer.valueOf(getLimitStartDate()
+            .getMonth()) - 1);
+          sDate.set(Calendar.DATE, Integer
+            .valueOf(getLimitStartDate().getDay()));
+          sDate.set(Calendar.HOUR_OF_DAY, 0);
+          sDate.set(Calendar.MINUTE, 0);
+          sDate.set(Calendar.SECOND, 0);
+          // 繰り返し最終日の終了時刻
+          Calendar finalDate = new GregorianCalendar();
+          finalDate.set(Calendar.YEAR, Integer.valueOf(getLimitEndDate()
+            .getYear()));
+          finalDate.set(Calendar.MONTH, Integer.valueOf(getLimitEndDate()
+            .getMonth()) - 1);
+          finalDate.set(Calendar.DATE, Integer.valueOf(getLimitEndDate()
+            .getDay()));
+          sDate.set(Calendar.HOUR_OF_DAY, 23);
+          sDate.set(Calendar.MINUTE, 59);
+          sDate.set(Calendar.SECOND, 59);
+          boolean hasAvailableDate = false;
+          while (sDate.before(finalDate) || sDate.equals(finalDate)) {
+            if (ScheduleUtils.matchDay(sDate, repeat_pattern)) {
+              hasAvailableDate = true;
+              break;
+            }
+            sDate.add(Calendar.DATE, 1);
+          }
+          if (!hasAvailableDate) {
+            msgList
+              .add("予定の入る日を含む様に『 <span class='em'>繰り返し期間</span> 』を指定してください。");
+          }
         }
 
       } catch (NumberFormatException nfe) {
