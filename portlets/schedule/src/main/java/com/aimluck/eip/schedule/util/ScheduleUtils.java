@@ -90,13 +90,13 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
  * スケジュールのユーティリティクラスです。
- * 
+ *
  */
 public class ScheduleUtils {
 
   /** <code>logger</code> loger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ScheduleUtils.class.getName());
 
   /** <code>SCHEDULEMAP_TYPE_USER</code> ユーザ */
   public static final String SCHEDULEMAP_TYPE_USER = "U";
@@ -109,7 +109,7 @@ public class ScheduleUtils {
 
   /**
    * Scheudle オブジェクトモデルを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -123,7 +123,7 @@ public class ScheduleUtils {
 
   /**
    * Scheudle オブジェクトモデルを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -203,7 +203,7 @@ public class ScheduleUtils {
 
   /**
    * Scheudle オブジェクトモデルを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -306,7 +306,7 @@ public class ScheduleUtils {
 
   /**
    * 詳細表示用の Scheudle オブジェクトモデルを取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -435,7 +435,7 @@ public class ScheduleUtils {
 
   /**
    * ScheudleMap オブジェクトモデルを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -530,11 +530,11 @@ public class ScheduleUtils {
 
   /**
    * 共有メンバーを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @param includeLoginUser
-   *          ログインユーザーを共有メンバーとして取り扱う場合，true．
+   *            ログインユーザーを共有メンバーとして取り扱う場合，true．
    * @return
    */
   public static List<ALEipUser> getUsers(RunData rundata, Context context,
@@ -622,7 +622,7 @@ public class ScheduleUtils {
 
   /**
    * 施設メンバーを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -651,7 +651,7 @@ public class ScheduleUtils {
 
   /**
    * 指定した繰り返しパターンにマッチするかどうかを返します。
-   * 
+   *
    * @param date
    * @param ptn
    * @param startDate
@@ -737,10 +737,10 @@ public class ScheduleUtils {
 
   /**
    * 指定したエントリー名を持つ個人設定ページに含まれるポートレットへの URI を取得する．
-   * 
+   *
    * @param rundata
    * @param portletEntryName
-   *          PSML ファイルに記述されているタグ entry の要素 parent
+   *            PSML ファイルに記述されているタグ entry の要素 parent
    * @return
    */
   public static String getPortletURIinPersonalConfigPane(RunData rundata,
@@ -949,11 +949,11 @@ public class ScheduleUtils {
 
   /**
    * 指定した2つの日付を比較する．
-   * 
+   *
    * @param date1
    * @param date2
    * @param checkTime
-   *          時間まで比較する場合，true．
+   *            時間まで比較する場合，true．
    * @return 等しい場合，true．
    */
   public static boolean equalsToDate(Date date1, Date date2, boolean checkTime) {
@@ -990,7 +990,7 @@ public class ScheduleUtils {
 
   /**
    * 指定した2つの日付を比較する．
-   * 
+   *
    * @param date1
    * @param date2
    * @return
@@ -1033,7 +1033,7 @@ public class ScheduleUtils {
 
   /**
    * 指定した2つの時刻のみを比較する．
-   * 
+   *
    * @param date1
    * @param date2
    * @return
@@ -1067,7 +1067,7 @@ public class ScheduleUtils {
 
   /**
    * アクセスしてきたユーザが利用するブラウザ名が Windows の MSIE であるかを判定する．
-   * 
+   *
    * @param rundata
    * @return MSIE の場合は，true．
    */
@@ -1093,7 +1093,7 @@ public class ScheduleUtils {
 
   /**
    * ダミースケジュールを登録する．
-   * 
+   *
    * @param schedule
    * @param ownerid
    * @param startDate
@@ -1175,7 +1175,7 @@ public class ScheduleUtils {
 
   /**
    * ダミースケジュールを登録する（携帯電話対応時には上記のメソッドに変更する）．
-   * 
+   *
    * @param schedule
    * @param ownerid
    * @param startDate
@@ -1312,7 +1312,7 @@ public class ScheduleUtils {
 
   /**
    * ダミースケジュールが上にくるようにソートする．
-   * 
+   *
    * @param list
    * @return
    */
@@ -1341,7 +1341,7 @@ public class ScheduleUtils {
 
   /**
    * 現在選択しているタブ名を取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -1376,7 +1376,7 @@ public class ScheduleUtils {
 
   /**
    * Date のオブジェクトを指定した形式の文字列に変換する．
-   * 
+   *
    * @param date
    * @param dateFormat
    * @return
@@ -1394,13 +1394,13 @@ public class ScheduleUtils {
 
   /**
    * 指定した曜日が，選択範囲に入っているかを検証する．
-   * 
+   *
    * @param selectedWeek
-   *          指定曜日
+   *            指定曜日
    * @param startWeek
-   *          期間開始曜日
+   *            期間開始曜日
    * @param endWeek
-   *          期間終了曜日
+   *            期間終了曜日
    * @return 選択範囲に入っている場合，true．
    */
   public static boolean includeWeek(int selectedWeek, int startWeek, int endWeek) {
@@ -1421,7 +1421,7 @@ public class ScheduleUtils {
 
   /**
    * 第一引数のリストに，第二引数で指定したユーザ ID が含まれているかを検証する．
-   * 
+   *
    * @param memberIdList
    * @param memberId
    * @return
@@ -1440,7 +1440,7 @@ public class ScheduleUtils {
 
   /**
    * 第一引数のリストに，第二引数で指定したユーザ ID が含まれているかを検証する．
-   * 
+   *
    * @param memberIdList
    * @param memberId
    * @return
@@ -1689,7 +1689,7 @@ public class ScheduleUtils {
 
   /**
    * パラメータを読み込みます。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -2109,15 +2109,15 @@ public class ScheduleUtils {
 
   /**
    * 同一期間内に複数の ToDo を追加する. 第一引数の List を排他制御しないで処理するので注意.
-   * 
+   *
    * @param weekSpanConList
-   *          複数の期間スケジュールを保持するリスト
+   *            複数の期間スケジュールを保持するリスト
    * @param viewStartDate
-   *          表示開始の年月日
+   *            表示開始の年月日
    * @param index
-   *          期間スケジュールの追加位置
+   *            期間スケジュールの追加位置
    * @param rd
-   *          期間スケジュール
+   *            期間スケジュール
    */
   public static void addToDo(List<ScheduleToDoWeekContainer> weekConList,
       Date viewStartDate, int index, ScheduleToDoResultData rd) {
@@ -2349,9 +2349,9 @@ public class ScheduleUtils {
 
   /*
    * 同一期間内に複数の 期間スケジュール を追加する. 第一引数の List を排他制御しないで処理するので注意.
-   * 
+   *
    * @param weekSpanConList 複数の期間スケジュールを保持するリスト @param viewStartDate 表示開始の年月日
-   * 
+   *
    * @param index 期間スケジュールの追加位置 @param rd 期間スケジュール
    */
   public static void addTerm(List<AjaxTermScheduleWeekContainer> weekConList,
@@ -2390,7 +2390,7 @@ public class ScheduleUtils {
 
   /*
    * 同一期間内に複数の 期間スケジュール を追加する. 第一引数の List を排他制御しないで処理するので注意.
-   * 
+   *
    * @param weekConList 複数の期間スケジュールを保持するリスト @param viewStartDate 表示開始の年月日 @param
    * index 期間スケジュールの追加位置 @param rd 期間スケジュール
    */
@@ -2429,7 +2429,7 @@ public class ScheduleUtils {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public static Date getEmptyDate() {
@@ -2578,7 +2578,7 @@ public class ScheduleUtils {
 
   /**
    * パソコンへ送信するメールの内容を作成する．
-   * 
+   *
    * @return
    */
   public static String createMsgForPc(RunData rundata, EipTSchedule schedule,
@@ -2664,7 +2664,7 @@ public class ScheduleUtils {
 
   /**
    * 携帯電話へ送信するメールの内容を作成する．
-   * 
+   *
    * @return
    */
   public static String createMsgForCellPhone(RunData rundata,
@@ -3409,7 +3409,7 @@ public class ScheduleUtils {
     return result;
   }
 
-  private static boolean matchDay(Calendar cal, String repeat_ptn) { // カレンダーの日付が繰り返しパターンと重なっているか判定
+  public static boolean matchDay(Calendar cal, String repeat_ptn) { // カレンダーの日付が繰り返しパターンと重なっているか判定
     if (repeat_ptn == null || "".equals(repeat_ptn)) {
       return false;
     }
