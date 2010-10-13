@@ -1625,7 +1625,7 @@ public class ScheduleFormData extends ALAbstractFormData {
           facilityIds[i] = facilityIdList.get(i).intValue();
         }
 
-        /* 施設重複判定 */
+        // 施設重複判定
         if (!ignore_duplicate_facility) {
           if (facilityIdList.size() > 0) {
             if (ScheduleUtils.isDuplicateFacilitySchedule(
@@ -1642,7 +1642,8 @@ public class ScheduleFormData extends ALAbstractFormData {
           }
         }
 
-        // ダミーのスケジュールを登録する．
+        // ダミーのスケジュールを登録する。
+        // 内部でDatabase.commit()が呼び出されることに注意
         ScheduleUtils.insertDummySchedule(schedule, ownerid, view_date
           .getValue(), view_date.getValue(), memberIds, facilityIds);
         entity_id = newSchedule.getScheduleId().intValue();
@@ -1810,29 +1811,30 @@ public class ScheduleFormData extends ALAbstractFormData {
             map.setCommonCategoryId(Integer.valueOf(1));
           }
         }
-      }
 
-      /* 施設重複判定 */
-      if (!ignore_duplicate_facility) {
-        if (facilityList.size() > 0) {
-          ArrayList<Integer> fids = new ArrayList<Integer>();
-          FacilityResultData facility = null;
-          int fsize = facilityList.size();
-          for (int i = 0; i < fsize; i++) {
-            facility = (FacilityResultData) facilityList.get(i);
-            fids
-              .add(Integer.valueOf((int) facility.getFacilityId().getValue()));
-          }
-          if (ScheduleUtils.isDuplicateFacilitySchedule(
-            schedule,
-            fids,
-            null,
-            null)) {
-            if (msgList.size() == 0) {
-              msgList.add("duplicate_facility");
+        // 施設重複判定
+        if (!ignore_duplicate_facility) {
+          if (facilityList.size() > 0) {
+            ArrayList<Integer> fids = new ArrayList<Integer>();
+            FacilityResultData facility = null;
+            int fsize = facilityList.size();
+            for (int i = 0; i < fsize; i++) {
+              facility = (FacilityResultData) facilityList.get(i);
+              fids.add(Integer.valueOf((int) facility
+                .getFacilityId()
+                .getValue()));
             }
-            Database.rollback();
-            return false;
+            if (ScheduleUtils.isDuplicateFacilitySchedule(
+              schedule,
+              fids,
+              null,
+              null)) {
+              if (msgList.size() == 0) {
+                msgList.add("duplicate_facility");
+              }
+              Database.rollback();
+              return false;
+            }
           }
         }
       }
