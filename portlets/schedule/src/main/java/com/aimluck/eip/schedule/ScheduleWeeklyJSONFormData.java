@@ -63,8 +63,9 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 public class ScheduleWeeklyJSONFormData {
 
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleWeeklyJSONFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ScheduleWeeklyJSONFormData.class
+      .getName());
 
   // view
 
@@ -525,9 +526,9 @@ public class ScheduleWeeklyJSONFormData {
          * 保存されている開始時刻と終了時刻がendDateとstartDateと一致。 viewDateの日付がstartDateの物と一致。
          */
         Calendar saved_startdate = Calendar.getInstance();
-        saved_startdate.setTime(startDate.getValue());
+        saved_startdate.setTime(schedule.getStartDate());
         Calendar saved_enddate = Calendar.getInstance();
-        saved_enddate.setTime(endDate.getValue());
+        saved_enddate.setTime(schedule.getEndDate());
         if (Integer.valueOf(startDate.getHour()) == saved_startdate
           .get(Calendar.HOUR_OF_DAY)
           && Integer.valueOf(startDate.getMinute()) == saved_startdate
