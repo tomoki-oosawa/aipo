@@ -48,7 +48,7 @@
 ###if($schedule.Repeat)期間：#else $schedule.StartDate&nbsp;-&nbsp;$schedule.EndDate #end
 <a href="$!jslink.getAction('controls.Maximize',$!portlet.ID).addQueryData('mode','detail').addQueryData('entityid', $!{schedule.ScheduleId}).addQueryData('view_date', $!daylist.get($daycount))">
 #if(! $!{schedule.isSpan()})
-$!{schedule.Date}#ALcell_br($career)
+$!{schedule.StartDate} - $!{schedule.EndDate}#ALcell_br($career)
 #else
 期間：
 #end

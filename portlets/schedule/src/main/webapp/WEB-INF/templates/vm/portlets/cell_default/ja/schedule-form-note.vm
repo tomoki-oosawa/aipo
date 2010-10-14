@@ -18,36 +18,35 @@
  *#
 
 ## ---------------------------------------------------------------------------
+#parse("/portlets/cell_default/ja/schedule-form-title.vm")
+
 #set($linklist = [["ｽｹｼﾞｭｰﾙへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
 #if($mode=="new_form")
 #set ($action_str = "追加する")
 #set ($event_submit = "eventSubmit_doSchedule_insert")
-#set ($title = "ｽｹｼﾞｭｰﾙ(1日)登録")
 #else
 #set ($action_str = "更新する")
 #set ($event_submit = "eventSubmit_doSchedule_update")
-#set ($title = "ｽｹｼﾞｭｰﾙ(1日)編集")
 #end
-#ALcell_pagetitle($career $title)
 #ALcell_errmsg($career $errmsgs)
 
 #if ($!{result.isRepeat()})
 繰り返し：#ALcell_br($career)
 <BLOCKQUOTE>
-#if ($!{result.RepeatType.toString()} == "D") 毎日#end
-#if ($!{result.RepeatType.toString()} == "W") 毎週#ALcell_br($career)#if ($!{result.Week0.toString()} == "TRUE")日#end#if ($!{result.Week1.toString()} == "TRUE")月#end#if ($!{result.Week2.toString()} == "TRUE")火#end#if ($!{result.Week3.toString()} == "TRUE")水#end#if ($!{result.Week4.toString()} == "TRUE")木#end#if ($!{result.Week5.toString()} == "TRUE")金#end#if ($!{result.Week6.toString()} == "TRUE")土#end 曜日#end
-#if ($!{result.RepeatType.toString()} == "M") 毎月 $!{result.MonthDay}日#end
+#if ($!{result.FormData.RepeatType.toString()} == "D") 毎日#end
+#if ($!{result.FormData.RepeatType.toString()} == "W") 毎週#ALcell_br($career)#if ($!{result.FormData.Week0.toString()} == "TRUE")日#end#if ($!{result.FormData.Week1.toString()} == "TRUE")月#end#if ($!{result.FormData.Week2.toString()} == "TRUE")火#end#if ($!{result.FormData.Week3.toString()} == "TRUE")水#end#if ($!{result.FormData.Week4.toString()} == "TRUE")木#end#if ($!{result.FormData.Week5.toString()} == "TRUE")金#end#if ($!{result.FormData.Week6.toString()} == "TRUE")土#end 曜日#end
+#if ($!{result.FormData.RepeatType.toString()} == "M") 毎月 $!{result.FormData.MonthDay}日#end
 </BLOCKQUOTE>
-#if ($!{result.LimitFlag.toString()} == "ON")
+#if ($!{result.FormData.LimitFlag.toString()} == "ON")
 期間：
 <BLOCKQUOTE>
-$!{result.LimitStartDateDate2}から#ALcell_br($career)
-$!{result.LimitEndDateDate2}
+$!{result.FormData.LimitStartDateDate2}から#ALcell_br($career)
+$!{result.FormData.LimitEndDateDate2}
 </BLOCKQUOTE>
 #end
 時間:
 <BLOCKQUOTE>
-$!{result.StartDateTime2}から$!{result.EndDateTime2}
+$!{result.FormData.StartDateTime2}から$!{result.FormData.EndDateTime2}
 </BLOCKQUOTE>
 #if($isDuplicateFacility=="true")
 <BLOCKQUOTE>
@@ -56,13 +55,13 @@ $!{result.StartDateTime2}から$!{result.EndDateTime2}
 #end
 #elseif($!{result.isSpan()})
 期間：#ALcell_br($career)
-$!{result.StartDateDate2}から#ALcell_br($career)
-$!{result.EndDateDate2}
+$!{result.FormData.StartDateDate2}から#ALcell_br($career)
+$!{result.FormData.EndDateDate2}
 #else
 時間:
 <BLOCKQUOTE>
-$!{result.StartDateDate2}#ALcell_br($career)
-$!{result.StartDateTime2}から$!{result.EndDateTime2}
+$!{result.FormData.StartDateDate2}#ALcell_br($career)
+$!{result.FormData.StartDateTime2}から$!{result.FormData.EndDateTime2}
 </BLOCKQUOTE>
 #if($isDuplicateFacility=="true")
 <BLOCKQUOTE>
@@ -74,43 +73,43 @@ $!{result.StartDateTime2}から$!{result.EndDateTime2}
 #ALcell_formheader($career $jslink $portlet)
 #if($!{result.EntityId} && $!{result.EntityId} != 'new')
 <input type="hidden" name="entityid" value="$!{result.EntityId}">
-<input type="hidden" name="edit_repeat_flag" value="$!{result.EditRepeatFlag.toString()}">
+<input type="hidden" name="edit_repeat_flag" value="$!{result.FormData.EditRepeatFlag.toString()}">
 #end
-<input type="hidden" name="view_date" value="$!{result.ViewDate.toString()}">
-<input type="hidden" #if (! $!{result.isRepeat()}) value="FALSE" #else value="TRUE" #end name="is_repeat">
-<input type="hidden" #if (! $!{result.isSpan()}) value="FALSE" #else value="TRUE" #end name="is_span">
-#if ($!{result.isRepeat()})
-<input type="hidden" name="repeat_type" value="$!{result.RepeatType}">
-#if ($!{result.RepeatType.toString()} == "W")
-#if ($!{result.Week0.toString()} == "TRUE") <input type="hidden" name="week_0" value="TRUE"> #end
-#if ($!{result.Week1.toString()} == "TRUE") <input type="hidden" name="week_1" value="TRUE"> #end
-#if ($!{result.Week2.toString()} == "TRUE") <input type="hidden" name="week_2" value="TRUE"> #end
-#if ($!{result.Week3.toString()} == "TRUE") <input type="hidden" name="week_3" value="TRUE"> #end
-#if ($!{result.Week4.toString()} == "TRUE") <input type="hidden" name="week_4" value="TRUE"> #end
-#if ($!{result.Week5.toString()} == "TRUE") <input type="hidden" name="week_5" value="TRUE"> #end
-#if ($!{result.Week6.toString()} == "TRUE") <input type="hidden" name="week_6" value="TRUE"> #end
-#elseif ($!{result.RepeatType.toString()} == "M")
-<input type="hidden" name="month_day" value="$!{result.MonthDay}">
-#end
-<input type="hidden" name="limit_flag" value="$!{result.LimitFlag.toString()}">
-#if($!{result.LimitFlag.toString()} == "ON")
-<input type="hidden" name="limit_start_date" value="$!{result.LimitStartDateDate}">
-<input type="hidden" name="limit_end_date" value="$!{result.LimitEndDateDate}">
-#end
-#end
-<input type="hidden" name="start_date_date" value="$!{result.StartDateDate}">
-<input type="hidden" name="start_date_time" value="$!{result.StartDateTime}">
-<input type="hidden" name="end_date_date" value="$!{result.EndDateDate}">
-<input type="hidden" name="end_date_time" value="$!{result.EndDateTime}">
-#set($usercount = 1)
-#set($membersize = $!{result.MemberList.size()})
-<input type="hidden" name="shareusers" value="#foreach($record in $!{result.MemberList})$!{record.Name}#if($usercount<$membersize),#set($usercount = $usercount + 1)#end#end">
-#set($facilitycount = 1)
-#set($fmembersize = $!{result.FacilityMemberList.size()})
-<input type="hidden" name="sharefacs" value="#foreach($record in $!{result.FacilityMemberList})$!{record.FacilityId}#if($facilitycount<$fmembersize),#set($facilitycount = $facilitycount + 1)#end#end">
+<input type="hidden" name="view_date" value="$!{result.FormData.ViewDate.toString()}">
+<input type="hidden" value="$!{result.ScheduleType}" name="schedule_type">
 
-<input type="hidden" name="edit_flag" value="$!{result.EditFlag.toString()}">
-<input type="hidden" name="change_tmpreserve_flag" value="$!{result.ChangeTmpreserveFlag.toString()}">
+#if ($!{result.isRepeat()})
+<input type="hidden" name="repeat_type" value="$!{result.FormData.RepeatType}">
+#if ($!{result.FormData.RepeatType.toString()} == "W")
+#if ($!{result.FormData.Week0.toString()} == "TRUE") <input type="hidden" name="week_0" value="TRUE"> #end
+#if ($!{result.FormData.Week1.toString()} == "TRUE") <input type="hidden" name="week_1" value="TRUE"> #end
+#if ($!{result.FormData.Week2.toString()} == "TRUE") <input type="hidden" name="week_2" value="TRUE"> #end
+#if ($!{result.FormData.Week3.toString()} == "TRUE") <input type="hidden" name="week_3" value="TRUE"> #end
+#if ($!{result.FormData.Week4.toString()} == "TRUE") <input type="hidden" name="week_4" value="TRUE"> #end
+#if ($!{result.FormData.Week5.toString()} == "TRUE") <input type="hidden" name="week_5" value="TRUE"> #end
+#if ($!{result.FormData.Week6.toString()} == "TRUE") <input type="hidden" name="week_6" value="TRUE"> #end
+#elseif ($!{result.FormData.RepeatType.toString()} == "M")
+<input type="hidden" name="month_day" value="$!{result.FormData.MonthDay}">
+#end
+<input type="hidden" name="limit_flag" value="$!{result.FormData.LimitFlag.toString()}">
+#if($!{result.FormData.LimitFlag.toString()} == "ON")
+<input type="hidden" name="limit_start_date" value="$!{result.FormData.LimitStartDateDate}">
+<input type="hidden" name="limit_end_date" value="$!{result.FormData.LimitEndDateDate}">
+#end
+#end
+<input type="hidden" name="start_date_date" value="$!{result.FormData.StartDateDate}">
+<input type="hidden" name="start_date_time" value="$!{result.FormData.StartDateTime}">
+<input type="hidden" name="end_date_date" value="$!{result.FormData.EndDateDate}">
+<input type="hidden" name="end_date_time" value="$!{result.FormData.EndDateTime}">
+#set($usercount = 1)
+#set($membersize = $!{result.FormData.MemberList.size()})
+<input type="hidden" name="shareusers" value="#foreach($record in $!{result.FormData.MemberList})$!{record.Name}#if($usercount<$membersize),#set($usercount = $usercount + 1)#end#end">
+#set($facilitycount = 1)
+#set($fmembersize = $!{result.FormData.FacilityMemberList.size()})
+<input type="hidden" name="sharefacs" value="#foreach($record in $!{result.FormData.FacilityMemberList})$!{record.FacilityId}#if($facilitycount<$fmembersize),#set($facilitycount = $facilitycount + 1)#end#end">
+
+<input type="hidden" name="edit_flag" value="$!{result.FormData.EditFlag.toString()}">
+<input type="hidden" name="change_tmpreserve_flag" value="$!{result.FormData.ChangeTmpreserveFlag.toString()}">
 
 $!result.getFieldName('name')#ALcell_must()#ALcell_br($career)
 #ALcell_textfield($career 'name' $!result.Name 14 50 '' 'h')

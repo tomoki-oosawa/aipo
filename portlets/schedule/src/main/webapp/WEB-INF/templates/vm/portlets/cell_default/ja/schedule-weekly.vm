@@ -19,7 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')")
-#set($methodlist = [["登録(1日)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_oneday','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()})"], ["登録(繰り返し)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_repeat','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()})"], ["登録(期間)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_span','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()})"]])
+#set($methodlist = [["登録(1日)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()}).addQueryData('schedule_type', 'O')"], ["登録(繰り返し)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_repeat','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()}).addQueryData('schedule_type', 'R')"], ["登録(期間)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_span','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()}).addQueryData('schedule_type', 'S')"]])
 #set($linklist = [["ｽｹｼﾞｭｰﾙへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
 #ALcell_pagetitle($career "ｽｹｼﾞｭｰﾙ(1日)一覧")
 

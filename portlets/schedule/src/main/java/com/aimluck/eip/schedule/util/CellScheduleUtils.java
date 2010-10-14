@@ -30,6 +30,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
+import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.facilities.FacilityResultData;
@@ -44,10 +45,53 @@ import com.aimluck.eip.util.ALEipUtils;
  */
 public class CellScheduleUtils {
 
+  /** <code>FLAG_EDIT_REPEAT_DEF</code> デフォルト値（繰り返し編集範囲） */
+  public static final int FLAG_EDIT_REPEAT_DEF = -1;
+
+  /** <code>FLAG_EDIT_REPEAT_ALL</code> 個別日程を編集（繰り返し編集範囲） */
+  public static final int FLAG_EDIT_REPEAT_ALL = 0;
+
+  /** <code>FLAG_EDIT_SCHEDULE_ONE</code> 全日程を編集（繰り返し編集範囲） */
+  public static final int FLAG_EDIT_REPEAT_ONE = 1;
+
+  /** <code>FLAG_DEL_MEMBER_ALL</code> [削除フラグ] すべての共有メンバーからこのスケジュールを削除する */
+  public static final int FLAG_DEL_MEMBER_ALL = 0;
+
+  /** <code>FLAG_DEL_MEMBER_ONE</code> [削除フラグ] このスケジュールからログインユーザーだけを削除する */
+  public static final int FLAG_DEL_MEMBER_ONE = 1;
+
+  /** <code>FLAG_DEL_RANGE_ALL</code> [削除フラグ] この繰り返しスケジュールを削除する */
+  public static final int FLAG_DEL_RANGE_ALL = 0;
+
+  /** <code>FLAG_DEL_RANGE_ONE</code> [削除フラグ] この繰り返しスケジュールの特定スケジュールのみを削除する */
+  public static final int FLAG_DEL_RANGE_ONE = 1;
+
+  /** スケジュールタイプ（一日） */
+  public static final String SCHEDULE_TYPE_ONEDAY = "O";
+
+  /** スケジュールタイプ（繰り返し） */
+  public static final String SCHEDULE_TYPE_REPEAT = "R";
+
+  /** スケジュールタイプ（期間） */
+  public static final String SCHEDULE_TYPE_SPAN = "S";
+
   /** <code>logger</code> loger */
   @SuppressWarnings("unused")
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(CellScheduleUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(CellScheduleUtils.class.getName());
+
+  public static String getScheduleType(EipTSchedule schedule) {
+    String ptn = schedule.getRepeatPattern();
+
+    if (ptn.charAt(0) == 'S') {
+      return SCHEDULE_TYPE_SPAN;
+    } else if (ptn.charAt(0) == 'D'
+      || ptn.charAt(0) == 'M'
+      || ptn.charAt(0) == 'W') {
+      return SCHEDULE_TYPE_REPEAT;
+    }
+    return SCHEDULE_TYPE_ONEDAY;
+  }
 
   public static List<ALEipUser> getShareUserMemberList(RunData rundata) {
     List<ALEipUser> memberList = new ArrayList<ALEipUser>();

@@ -64,9 +64,9 @@ import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
-import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
@@ -1497,7 +1497,7 @@ public class ScheduleUtils {
   }
 
   public static boolean setFormDataDelegate(RunData rundata, Context context,
-      ALAbstractFormData formdata, Field[] fields, List<String> msgList)
+      ALData formdata, Field[] fields, List<String> msgList)
       throws ALPageNotFoundException, ALDBErrorException {
     if (fields == null || fields.length == 0) {
       return false;

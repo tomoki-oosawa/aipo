@@ -26,7 +26,7 @@
 #end
 #ALcell_formheader($career $jslink $portlet)
 日付：#ALcell_br($career)
-#ALcell_textfield($career 'view_date' "$!{result.ViewDateDate}" 8 8 'istyle="4"')
+#ALcell_textfield($career 'view_date' "$!{result.ViewDateDate}" 8 8 'istyle="4"' 'n')
 #ALcell_br($career)(例)#ALcell_br($career)2005/1/1→20050101
 #ALcell_br($career)
 #ALcell_hr($career '1')

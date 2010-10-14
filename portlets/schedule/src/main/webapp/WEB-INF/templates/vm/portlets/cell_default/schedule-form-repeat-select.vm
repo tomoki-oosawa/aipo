@@ -24,13 +24,13 @@
 #ALcell_pagetitle($career "繰り返しｽｹｼﾞｭｰﾙ編集")
 #ALcell_formheader($career $jslink $portlet)
 編集範囲：#ALcell_br($career)
-<input name="edit_repeat_flag" type="radio" value="0" #if ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 0) checked="checked" #end>
+<input name="edit_repeat_flag" type="radio" value="0" #if ($!{result.getInt($!{result.FormData.EditRepeatFlag.getValue()})} == 0) checked="checked" #end>
 すべての予定#ALcell_br($career)
-<input name="edit_repeat_flag" type="radio" value="1" #if ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1) checked="checked" #end>
-$!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日の予定のみ
+<input name="edit_repeat_flag" type="radio" value="1" #if ($!{result.getInt($!{result.FormData.EditRepeatFlag.getValue()})} == 1) checked="checked" #end>
+$!{result.FormData.ViewDate.Year}年$!{result.FormData.ViewDate.Month}月$!{result.FormData.ViewDate.Day}日の予定のみ
 #ALcell_br($career)#ALcell_br($career)
 <input type="hidden" name="entityid" value="$!{result.EntityId}">
-<input type="hidden" name="view_date" value="$!{result.ViewDate.toString()}">
+<input type="hidden" name="view_date" value="$!{result.FormData.ViewDate.toString()}">
 #ALcell_hr($career '1')
 #ALcell_submit($career 'eventSubmit_doSchedule_form_repeat' '次へ')
 #ALcell_formfooter()

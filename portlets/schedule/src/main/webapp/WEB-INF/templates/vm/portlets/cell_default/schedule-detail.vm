@@ -18,15 +18,9 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#if ($!{result.Detail.isRepeat()})
-#set ($event_submit = "eventSubmit_doSchedule_form_repeat")
-#elseif($!{result.Detail.isSpan()})
-#set ($event_submit = "eventSubmit_doSchedule_form_span")
-#else
-#set ($event_submit = "eventSubmit_doSchedule_form_oneday")
-#end
+#set ($event_submit = "eventSubmit_doSchedule_form")
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')")
-#set($methodlist = [["登録(1日)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_oneday','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()})"], ["登録(繰り返し)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_repeat','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()})"], ["登録(期間)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_span','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()})"]])
+#set($methodlist = [["登録(1日)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()}).addQueryData('schedule_type','O')"], ["登録(繰り返し)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()}).addQueryData('schedule_type','R')"], ["登録(期間)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()}).addQueryData('schedule_type','S')"]])
 #set($linklist = [["ｽｹｼﾞｭｰﾙ(1日)一覧へ", "$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')"], ["ｽｹｼﾞｭｰﾙへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
 #set ($hasMember = false)
 #ALcell_pagetitle($career "ｽｹｼﾞｭｰﾙ詳細")
@@ -109,6 +103,16 @@ ${record.FacilityName}
 #ALcell_formheader($career $jslink $portlet)
 <input type="hidden" name="entityid" value="$!{result.EntityId}">
 <input type="hidden" name="view_date" value="$!{result.ViewDate.toString()}">
+
+#if ($!{result.Detail.isRepeat()})
+<input type="hidden" name="schedule_type" value="R">
+#elseif($!{result.Detail.isSpan()})
+<input type="hidden" name="schedule_type" value="S">
+#else
+<input type="hidden" name="schedule_type" value="O">
+#end
+<input type="hidden" name="is_first" value="true">
+
 #if($!{result.Detail.isOwner()})
 #ALcell_submit($career "$event_submit" '編集する')
 #ALcell_submit($career 'eventSubmit_doSchedule_form_delete' '削除する')

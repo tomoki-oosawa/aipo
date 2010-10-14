@@ -65,18 +65,11 @@ import com.aimluck.eip.util.ALEipUtils;
 public class CellScheduleAction extends ALBaseAction {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(CellScheduleAction.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(CellScheduleAction.class.getName());
 
-  private final String[] weekday_str = {
-    "",
-    "(日)",
-    "(月)",
-    "(火)",
-    "(水)",
-    "(木)",
-    "(金)",
-    "(土)" };
+  private final String[] weekday_str =
+    { "", "(日)", "(月)", "(火)", "(水)", "(木)", "(金)", "(土)" };
 
   /**
    * 
@@ -104,7 +97,7 @@ public class CellScheduleAction extends ALBaseAction {
     String mode = rundata.getParameters().getString(ALEipConstants.MODE);
     try {
       if (ALEipConstants.MODE_FORM.equals(mode)) {
-        doSchedule_form_oneday(rundata, context);
+        doSchedule_form(rundata, context);
       } else if (ALEipConstants.MODE_DETAIL.equals(mode)) {
         doSchedule_detail(rundata, context);
       } else if (ALEipConstants.MODE_LIST.equals(mode)) {
@@ -231,66 +224,6 @@ public class CellScheduleAction extends ALBaseAction {
   }
 
   /**
-   * スケジュール登録のフォームを表示する．
-   * 
-   * @param rundata
-   * @param context
-   */
-  public void doSchedule_form_oneday(RunData rundata, Context context) {
-    doSchedule_form(rundata, context, false, false, true);
-  }
-
-  /**
-   * スケジュール登録のフォームを表示する．
-   * 
-   * @param rundata
-   * @param context
-   */
-  public void doSchedule_form_repeat(RunData rundata, Context context) {
-    doSchedule_form(rundata, context, true, false, true);
-  }
-
-  /**
-   * スケジュール登録のフォームを表示する．
-   * 
-   * @param rundata
-   * @param context
-   */
-  public void doSchedule_form_span(RunData rundata, Context context) {
-    doSchedule_form(rundata, context, false, true, true);
-  }
-
-  /**
-   * スケジュール編集のフォームを表示する．
-   * 
-   * @param rundata
-   * @param context
-   */
-  public void doSchedule_form_oneday_edit(RunData rundata, Context context) {
-    doSchedule_form(rundata, context, false, false, false);
-  }
-
-  /**
-   * スケジュール編集のフォームを表示する．
-   * 
-   * @param rundata
-   * @param context
-   */
-  public void doSchedule_form_repeat_edit(RunData rundata, Context context) {
-    doSchedule_form(rundata, context, true, false, false);
-  }
-
-  /**
-   * スケジュール編集のフォームを表示する．
-   * 
-   * @param rundata
-   * @param context
-   */
-  public void doSchedule_form_span_edit(RunData rundata, Context context) {
-    doSchedule_form(rundata, context, false, true, false);
-  }
-
-  /**
    * 
    * @param rundata
    * @param context
@@ -299,14 +232,12 @@ public class CellScheduleAction extends ALBaseAction {
    * @param enable_entityid
    *          データベースから情報を取得する場合は，true．
    */
-  private void doSchedule_form(RunData rundata, Context context,
-      boolean is_repeat, boolean is_span, boolean enable_entityid) {
+  public void doSchedule_form(RunData rundata, Context context) {
     try {
       CellScheduleFormDateData formData = new CellScheduleFormDateData();
-      formData.setScheduleType(is_repeat, is_span);
       formData.loadParameters(rundata, context);
       formData.initField();
-      formData.doViewForm(this, rundata, context, enable_entityid);
+      formData.doViewForm(this, rundata, context);
 
       setTemplate(rundata, "schedule-form-date");
     } catch (Exception ex) {
@@ -392,117 +323,12 @@ public class CellScheduleAction extends ALBaseAction {
    * @param rundata
    * @param context
    */
-  public void doSchedule_form_note_oneday(RunData rundata, Context context) {
-    doSchedule_form_note(rundata, context, false, false, true);
-  }
-
-  /**
-   * スケジュール登録のフォームを表示する．
-   * 
-   * @param rundata
-   * @param context
-   */
-  public void doSchedule_form_note_repeat(RunData rundata, Context context) {
-    doSchedule_form_note(rundata, context, true, false, true);
-  }
-
-  /**
-   * スケジュール登録のフォームを表示する．
-   * 
-   * @param rundata
-   * @param context
-   */
-  public void doSchedule_form_note_span(RunData rundata, Context context) {
-    doSchedule_form_note(rundata, context, false, true, true);
-  }
-
-  /**
-   * スケジュール編集のフォームを表示する．
-   * 
-   * @param rundata
-   * @param context
-   */
-  public void doSchedule_form_note_oneday_edit(RunData rundata, Context context) {
-    doSchedule_form_note(rundata, context, false, false, false);
-  }
-
-  /**
-   * スケジュール編集のフォームを表示する．
-   * 
-   * @param rundata
-   * @param context
-   */
-  public void doSchedule_form_note_repeat_edit(RunData rundata, Context context) {
-    doSchedule_form_note(rundata, context, true, false, false);
-  }
-
-  /**
-   * スケジュール編集のフォームを表示する．
-   * 
-   * @param rundata
-   * @param context
-   */
-  public void doSchedule_form_note_span_edit(RunData rundata, Context context) {
-    doSchedule_form_note(rundata, context, false, true, false);
-  }
-
-  /**
-   * スケジュール登録のフォームを表示する．
-   * 
-   * @param rundata
-   * @param context
-   */
-  public void doSchedule_form_note(RunData rundata, Context context,
-      boolean is_repeat, boolean is_span, boolean enable_entityid) {
-    try {
-      CellScheduleFormNoteData formNoteData = new CellScheduleFormNoteData();
-      formNoteData.setScheduleType(is_repeat, is_span);
-      formNoteData.loadParameters(rundata, context);
-      formNoteData.initField();
-      formNoteData.doViewForm(this, rundata, context, enable_entityid);
-      setTemplate(rundata, "schedule-form-note");
-    } catch (Exception ex) {
-      logger.error("[CellScheduleAction] Exception.", ex);
-      ALEipUtils.redirectDBError(rundata);
-    }
-  }
-
-  /**
-   * スケジュール登録のフォームを表示する．
-   * 
-   * @param rundata
-   * @param context
-   */
   public void doSchedule_form_note(RunData rundata, Context context) {
     try {
       CellScheduleFormNoteData formNoteData = new CellScheduleFormNoteData();
-      formNoteData.setScheduleType(rundata);
       formNoteData.loadParameters(rundata, context);
       formNoteData.initField();
-      if (formNoteData.doViewForm(this, rundata, context, false)) {
-        setTemplate(rundata, "schedule-form-note");
-      } else {
-        setTemplate(rundata, "schedule-form-date");
-      }
-    } catch (Exception ex) {
-      logger.error("[CellScheduleAction] Exception.", ex);
-      ALEipUtils.redirectDBError(rundata);
-    }
-  }
-
-  /**
-   * スケジュール登録のフォームを表示する．
-   * 
-   * @param rundata
-   * @param context
-   */
-  public void doSchedule_form_note_edit(RunData rundata, Context context) {
-    try {
-      CellScheduleFormNoteData formNoteData = new CellScheduleFormNoteData();
-      formNoteData.setScheduleType(rundata);
-      formNoteData.loadParameters(rundata, context);
-      formNoteData.initField();
-      if (formNoteData.doViewForm(this, rundata, context, true)) {
+      if (formNoteData.doViewForm(this, rundata, context)) {
         setTemplate(rundata, "schedule-form-note");
       } else {
         setTemplate(rundata, "schedule-form-date");
@@ -595,7 +421,7 @@ public class CellScheduleAction extends ALBaseAction {
   public void doSchedule_delete(RunData rundata, Context context) {
     try {
       CellScheduleFormNoteData formData = new CellScheduleFormNoteData();
-      formData.setTempView(rundata, context);
+      formData.loadParameters(rundata, context);
       formData.initField();
       setTemplate(rundata, "schedule-menu");
       if (formData.doDelete(this, rundata, context)) {

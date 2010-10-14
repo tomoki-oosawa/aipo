@@ -18,13 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#if ($!{result.Detail.isRepeat()})
-#set ($event_submit = "eventSubmit_doSchedule_form_repeat")
-#elseif($!{result.Detail.isSpan()})
-#set ($event_submit = "eventSubmit_doSchedule_form_span")
-#else
-#set ($event_submit = "eventSubmit_doSchedule_form_oneday")
-#end
+#set ($event_submit = "eventSubmit_doSchedule_form")
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')")
 ###set($methodlist = [["登録(1日)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_oneday','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()})"], ["登録(繰り返し)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_repeat','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()})"], ["登録(期間)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_span','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()})"]])
 #set($linklist = [["$result.TargerUser.AliasName さんのスケジュール(1日)一覧へ", "$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list_select_member','1').addQueryData('selectedmember', $result.TargerUser.UserId)"], ["$result.TargerUser.AliasName さんのスケジュールへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu_select_member','1').addQueryData('selectedmember', $result.TargerUser.UserId)"]])
