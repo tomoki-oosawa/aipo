@@ -57,8 +57,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class FileIOAction extends ALBaseAction {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(FileIOAction.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(FileIOAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
@@ -925,6 +925,7 @@ public class FileIOAction extends ALBaseAction {
     sequency.add("1");
     sequency.add("3");
     sequency.add("0");
+    sequency.add("8");
     ALCSVUtils.setSequency(rundata, context, sequency);
     ALEipUtils.setTemp(rundata, context, "is_autotime", rundata
       .getParameters()

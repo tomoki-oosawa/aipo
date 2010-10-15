@@ -58,8 +58,9 @@ import com.aimluck.eip.util.ALEipUtils;
 public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(FileIOScheduleCsvFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(FileIOScheduleCsvFormData.class
+      .getName());
 
   /** ブラウザに表示するデフォルトのパスワード（ダミーパスワード） */
   public static final String DEFAULT_VIEW_PASSWORD = "*";
@@ -484,17 +485,14 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
     query.setQualifier(exp1.andExp(exp2.andExp(exp3)));
 
-    List<TurbineUser> users = query.fetchList();
+    TurbineUser user = query.fetchSingle();
 
-    if (users == null || users.size() == 0) {
+    if (user == null) {
       // 指定したUser IDのレコードが見つからない場合
       logger.debug("[FileIOScheduleCsvFormData] Not found ID...");
       return null;
     }
-
-    TurbineUser tuser = users.get(0);
-    return tuser;
-
+    return user;
   }
 
   /**
