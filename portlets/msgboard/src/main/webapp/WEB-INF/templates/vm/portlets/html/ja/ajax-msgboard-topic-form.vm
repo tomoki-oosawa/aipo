@@ -82,7 +82,7 @@
 #ALtditemheader()
 <select id="attachments" name="attachments" type="select" size="3" multiple="multiple" style="width: 325px">
 #foreach( $record in $!result.AttachmentFileNameList )
-<option value="$record.FileId">$record.FileName</option>
+<option value="s$record.FileId">$record.FileName</option>
 #end
 </select>
 #set($att_url = $!jslink.getPortletById($!portlet.ID).addQueryData("template","FileuploadFormScreen").addQueryData("mode","form"))

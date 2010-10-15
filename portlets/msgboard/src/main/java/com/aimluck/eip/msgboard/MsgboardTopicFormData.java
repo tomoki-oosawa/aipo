@@ -653,7 +653,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
     boolean res = super.setFormData(rundata, context, msgList);
 
     try {
-      fileuploadList = FileuploadUtils.getFileuploadList(rundata);
+      fileuploadList = MsgboardUtils.getFileuploadList(rundata);
     } catch (Exception ex) {
       logger.error("Exception", ex);
     }

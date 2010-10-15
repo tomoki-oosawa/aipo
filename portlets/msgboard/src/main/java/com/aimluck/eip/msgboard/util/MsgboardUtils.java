@@ -19,7 +19,10 @@
 
 package com.aimluck.eip.msgboard.util;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -44,6 +47,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.msgboard.MsgboardCategoryResultData;
@@ -65,20 +69,23 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 public class MsgboardUtils {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(MsgboardUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(MsgboardUtils.class.getName());
 
   /** 所有者の識別子 */
   public static final String OWNER_ID = "ownerid";
 
   /** 掲示板の添付ファイルを保管するディレクトリの指定 */
-  private static final String FOLDER_FILEDIR_MSGBOARD = JetspeedResources
-    .getString("aipo.filedir", "");
+  private static final String FOLDER_FILEDIR_MSGBOARD =
+    JetspeedResources.getString("aipo.filedir", "");
 
   /** 掲示板の添付ファイルを保管するディレクトリのカテゴリキーの指定 */
-  protected static final String CATEGORY_KEY = JetspeedResources.getString(
-    "aipo.msgboard.categorykey",
-    "");
+  protected static final String CATEGORY_KEY =
+    JetspeedResources.getString("aipo.msgboard.categorykey", "");
+
+  /** デフォルトエンコーディングを表わすシステムプロパティのキー */
+  public static final String FILE_ENCODING =
+    JetspeedResources.getString("content.defaultencoding", "UTF-8");
 
   /** 全てのユーザーが閲覧／返信可 */
   public static final int ACCESS_PUBLIC_ALL = 0;
@@ -693,64 +700,172 @@ public class MsgboardUtils {
     return categoryList;
   }
 
+  /**
+   * 添付ファイルを取得します。
+   * 
+   * @param uid
+   * @return
+   */
+  public static ArrayList<FileuploadLiteBean> getFileuploadList(RunData rundata) {
+    String[] fileids =
+      rundata
+        .getParameters()
+        .getStrings(FileuploadUtils.KEY_FILEUPLOAD_ID_LIST);
+    if (fileids == null) {
+      return null;
+    }
+
+    ArrayList<String> hadfileids = new ArrayList<String>();
+    ArrayList<String> newfileids = new ArrayList<String>();
+
+    for (int j = 0; j < fileids.length; j++) {
+      if (fileids[j].trim().startsWith("s")) {
+        hadfileids.add(fileids[j].trim().substring(1));
+      } else {
+        newfileids.add(fileids[j].trim());
+      }
+    }
+
+    ArrayList<FileuploadLiteBean> fileNameList =
+      new ArrayList<FileuploadLiteBean>();
+    FileuploadLiteBean filebean = null;
+
+    // 新規にアップロードされたファイルの処理
+    if (newfileids.size() > 0) {
+      String folderName =
+        rundata.getParameters().getString(
+          FileuploadUtils.KEY_FILEUPLOAD_FODLER_NAME);
+      if (folderName == null || folderName.equals("")) {
+        return null;
+      }
+
+      String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+      File folder =
+        FileuploadUtils.getFolder(
+          org_id,
+          ALEipUtils.getUserId(rundata),
+          folderName);
+      String folderpath = folder.getAbsolutePath();
+
+      for (String newfileid : newfileids) {
+        if ("".equals(newfileid)) {
+          continue;
+        }
+        int fileid = 0;
+        try {
+          fileid = Integer.parseInt(newfileid);
+        } catch (Exception e) {
+          continue;
+        }
+
+        if (fileid == 0) {
+          filebean = new FileuploadLiteBean();
+          filebean.initField();
+          filebean.setFolderName("photo");
+          filebean.setFileName("以前の写真ファイル");
+          fileNameList.add(filebean);
+        } else {
+          BufferedReader reader = null;
+          try {
+            reader =
+              new BufferedReader(new InputStreamReader(new FileInputStream(
+                folderpath
+                  + File.separator
+                  + fileid
+                  + FileuploadUtils.EXT_FILENAME), FILE_ENCODING));
+            String line = reader.readLine();
+            if (line == null || line.length() <= 0) {
+              continue;
+            }
+            filebean = new FileuploadLiteBean();
+            filebean.initField();
+            filebean.setFolderName(newfileid);
+            filebean.setFileId(fileid);
+            filebean.setFileName(line);
+            fileNameList.add(filebean);
+          } catch (Exception e) {
+            logger.error("Exception", e);
+          } finally {
+            try {
+              reader.close();
+            } catch (Exception e) {
+              logger.error("Exception", e);
+            }
+          }
+        }
+      }
+    }
+
+    // すでにあるファイルの処理
+    if (hadfileids.size() > 0) {
+      ArrayList<Integer> hadfileidsValue = new ArrayList<Integer>();
+      for (String hadfileid : hadfileids) {
+        int fileid = 0;
+        try {
+          fileid = Integer.parseInt(hadfileid);
+          hadfileidsValue.add(fileid);
+        } catch (Exception e) {
+          continue;
+        }
+      }
+
+      try {
+        SelectQuery<EipTMsgboardFile> reqquery =
+          Database.query(EipTMsgboardFile.class);
+        Expression reqexp1 =
+          ExpressionFactory.inDbExp(
+            EipTMsgboardFile.FILE_ID_PK_COLUMN,
+            hadfileidsValue);
+        reqquery.setQualifier(reqexp1);
+        List<EipTMsgboardFile> requests = reqquery.fetchList();
+        for (EipTMsgboardFile file : requests) {
+          filebean = new FileuploadBean();
+          filebean.initField();
+          filebean.setFileId(file.getFileId());
+          filebean.setFileName(file.getFileName());
+          filebean.setFlagNewFile(false);
+          fileNameList.add(filebean);
+        }
+      } catch (Exception ex) {
+        logger.error("[BlogUtils] Exception.", ex);
+      }
+    }
+    return fileNameList;
+  }
+
   public static boolean insertFileDataDelegate(RunData rundata,
       Context context, EipTMsgboardTopic topic,
       List<FileuploadLiteBean> fileuploadList, String folderName,
       List<String> msgList) {
+    if (fileuploadList == null || fileuploadList.size() <= 0) {
+      fileuploadList = new ArrayList<FileuploadLiteBean>();
+    }
 
     int uid = ALEipUtils.getUserId(rundata);
     String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
-    String[] fileids = rundata.getParameters().getStrings("attachments");
 
-    // fileidsがnullなら、ファイルがアップロードされていないので、trueを返して終了
-    if (fileids == null) {
-      return true;
+    List<Integer> hadfileids = new ArrayList<Integer>();
+    for (FileuploadLiteBean file : fileuploadList) {
+      if (!file.isNewFile()) {
+        hadfileids.add(file.getFileId());
+      }
     }
 
-    int fileIDsize;
-    if (fileids[0].equals("")) {
-      fileIDsize = 0;
-    } else {
-      fileIDsize = fileids.length;
-    }
-    // 送られてきたFileIDの個数とDB上の当該TopicID中の添付ファイル検索を行った結果の個数が一致したら、
-    // 変更が無かったとみなし、trueを返して終了。
     SelectQuery<EipTMsgboardFile> dbquery =
       Database.query(EipTMsgboardFile.class);
     dbquery.andQualifier(ExpressionFactory.matchDbExp(
       EipTMsgboardFile.EIP_TMSGBOARD_TOPIC_PROPERTY,
       topic.getTopicId()));
-    for (int i = 0; i < fileIDsize; i++) {
-      dbquery.orQualifier(ExpressionFactory.matchDbExp(
-        EipTMsgboardFile.FILE_ID_PK_COLUMN,
-        fileids[i]));
+    List<EipTMsgboardFile> existsFiles = dbquery.fetchList();
+    List<EipTMsgboardFile> delFiles = new ArrayList<EipTMsgboardFile>();
+    for (EipTMsgboardFile file : existsFiles) {
+      if (!hadfileids.contains(file.getFileId())) {
+        delFiles.add(file);
+      }
     }
 
-    List<EipTMsgboardFile> files = dbquery.fetchList();
-
-    if (files.size() == fileIDsize
-      && (fileuploadList == null || fileuploadList.size() <= 0)) {
-      return true;
-    }
-
-    SelectQuery<EipTMsgboardFile> query =
-      Database.query(EipTMsgboardFile.class);
-    query.andQualifier(ExpressionFactory.matchDbExp(
-      EipTMsgboardFile.EIP_TMSGBOARD_TOPIC_PROPERTY,
-      topic.getTopicId()));
-    for (int i = 0; i < fileIDsize; i++) {
-      Expression exp =
-        ExpressionFactory.matchDbExp(
-          EipTMsgboardFile.FILE_ID_PK_COLUMN,
-          Integer.parseInt(fileids[i]));
-      query.andQualifier(exp.notExp());
-    }
-    // DB上でトピックに属すが、送られてきたFileIDにIDが含まれていないファイルのリスト(削除されたファイルのリスト)
-
-    List<EipTMsgboardFile> delFiles = query.fetchList();
-
+    // ローカルファイルに保存されているファイルを削除する．
     if (delFiles.size() > 0) {
-      // ローカルファイルに保存されているファイルを削除する．
       File file = null;
       int delsize = delFiles.size();
       for (int i = 0; i < delsize; i++) {
@@ -765,17 +880,12 @@ public class MsgboardUtils {
       Database.deleteAll(delFiles);
     }
 
-    // 追加ファイルが無ければtrueを返して終了
-    if (fileuploadList == null || fileuploadList.size() <= 0) {
-      return true;
-    }
-
     // ファイル追加処理
     try {
-      FileuploadLiteBean filebean = null;
-      int size = fileuploadList.size();
-      for (int i = 0; i < size; i++) {
-        filebean = fileuploadList.get(i);
+      for (FileuploadLiteBean filebean : fileuploadList) {
+        if (!filebean.isNewFile()) {
+          continue;
+        }
 
         // サムネイル処理
         String[] acceptExts = ImageIO.getWriterFormatNames();
@@ -821,9 +931,6 @@ public class MsgboardUtils {
         File destFile =
           new File(MsgboardUtils.getAbsolutePath(org_id, uid, filename));
         FileuploadUtils.copyFile(srcFile, destFile);
-
-        srcFile = null;
-        destFile = null;
       }
 
       // 添付ファイル保存先のフォルダを削除
