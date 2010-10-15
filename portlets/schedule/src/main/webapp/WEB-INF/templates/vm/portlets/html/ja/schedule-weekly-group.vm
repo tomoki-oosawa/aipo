@@ -166,6 +166,7 @@ $!{record4.TermResultData.Name}
 #if($show_tr > 0)
 <tr>
 #end
+#set($show_tr = 0 )
 #foreach($record in ${result.getContainer($record3.UserId.Value).DayList})
 #set ($color_style = "")
 #set ($color_style_holiday = "")
@@ -240,8 +241,9 @@ $!{record4.TermResultData.Name}
 #end
 <div class="calendarFooter"></div>
 </td>
+#set($show_tr = $show_tr + 1 )
 #end
-#if($show_tr == 0)
+#if($show_tr > 0)
 </tr>
 #end
 #set($show_tr = $show_tr + 1 )
