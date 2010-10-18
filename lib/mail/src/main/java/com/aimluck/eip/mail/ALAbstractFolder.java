@@ -411,8 +411,6 @@ public abstract class ALAbstractFolder implements ALFolder {
       query.andQualifier(exp4);
     }
 
-    query.distinct(true);
-
     return query;
   }
 

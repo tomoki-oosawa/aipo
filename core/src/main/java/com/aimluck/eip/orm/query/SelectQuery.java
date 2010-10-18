@@ -116,6 +116,11 @@ public class SelectQuery<M> extends AbstractQuery<M> {
       totalCount);
   }
 
+  public int getCount() {
+    countQuery.setCustomColumns(getPrimaryKey());
+    return countQuery.count(dataContext, delegate.isDistinct());
+  }
+
   public SelectQuery<M> where(Where where) {
     delegate.andQualifier(where.exp);
     countQuery.andQualifier(where.exp);

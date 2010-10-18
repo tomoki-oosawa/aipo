@@ -103,6 +103,9 @@
 #else
 <div class="message">送信メールはありません。</div>
 #end
+</td>
+</tr>
+</table>
 #else
 <div class="clearfix"><div class="alignright small">未読数： $!{result.getUnReadMailSumByFolderId($result.FolderId)} 件</div></div>
 #ALajaxpageview('WebMailListScreen' $result)

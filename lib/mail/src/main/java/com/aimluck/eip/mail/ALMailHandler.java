@@ -42,8 +42,8 @@ import com.aimluck.eip.orm.query.SelectQuery;
  */
 public abstract class ALMailHandler {
 
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALMailHandler.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALMailHandler.class.getName());
 
   /**
    * コンストラクタ
@@ -124,7 +124,7 @@ public abstract class ALMailHandler {
       int user_id, int account_id);
 
   private SelectQuery<EipTMail> getUnReadMailQuery(
-      ALMailReceiverContext rcontext) {
+      ALMailReceiverContext rcontext, List<Integer> foler_ids) {
     try {
       SelectQuery<EipTMail> query = Database.query(EipTMail.class);
 
@@ -138,7 +138,15 @@ public abstract class ALMailHandler {
       Expression exp4 =
         ExpressionFactory.matchExp(EipTMail.READ_FLG_PROPERTY, "F");
 
-      return query.setQualifier(exp1.andExp(exp2).andExp(exp3).andExp(exp4));
+      query.setQualifier(exp1.andExp(exp2).andExp(exp3).andExp(exp4));
+
+      if (foler_ids != null && foler_ids.size() > 0) {
+        Expression exp5 =
+          ExpressionFactory.inExp(EipTMail.FOLDER_ID_PROPERTY, foler_ids);
+        query.andQualifier(exp5);
+      }
+
+      return query;
     } catch (Exception e) {
       logger.error("error", e);
       return null;
@@ -155,13 +163,11 @@ public abstract class ALMailHandler {
    */
   public int getUnReadMailSum(ALMailReceiverContext rcontext) {
     try {
-      SelectQuery<EipTMail> query = getUnReadMailQuery(rcontext);
+      SelectQuery<EipTMail> query = getUnReadMailQuery(rcontext, null);
 
       query.select(EipTMail.MAIL_ID_PK_COLUMN);
 
-      List<?> mails = query.fetchList();
-
-      return (mails != null) ? mails.size() : 0;
+      return query.getCount();
     } catch (Exception e) {
       return 0;
     }
@@ -193,30 +199,21 @@ public abstract class ALMailHandler {
       int folder_id;
       for (EipTMailFolder folder : folders) {
         folder_id = folder.getFolderId();
-        folder_ids.add(folder_id);
+        folder_ids.add(Integer.valueOf(folder_id));
         mailSumMap.put(folder_id, 0);
       }
 
-      // 未読メールをフォルダIDでソートして取得する
-      SelectQuery<EipTMail> query = getUnReadMailQuery(rcontext);
-
-      List<EipTMail> mail_list =
-        query.orderAscending(EipTMail.FOLDER_ID_PROPERTY).fetchList();
-
-      // 取得したメールの数をフォルダごとに数え、mailSumMap に代入する。
-      int counting_folder_id = (mail_list.get(0)).getFolderId(), count = 0;
-      folder_id = 0;
-
-      for (EipTMail mail : mail_list) {
-        folder_id = mail.getFolderId();
-        if (folder_id != counting_folder_id) {
-          mailSumMap.put(counting_folder_id, count);
-          count = 0;
-          counting_folder_id = folder_id;
-        }
-        count++;
+      // フォルダーごとに未読メールの数を取得する
+      int count;
+      for (int _foler_id : folder_ids) {
+        List<Integer> list = new ArrayList<Integer>();
+        list.add(_foler_id);
+        SelectQuery<EipTMail> countquery = getUnReadMailQuery(rcontext, list);
+        count =
+          countquery.orderAscending(EipTMail.FOLDER_ID_PROPERTY).getCount();
+        mailSumMap.put(_foler_id, count);
       }
-      mailSumMap.put(folder_id, count);
+
     } catch (Exception e) {
     }
     return mailSumMap;
