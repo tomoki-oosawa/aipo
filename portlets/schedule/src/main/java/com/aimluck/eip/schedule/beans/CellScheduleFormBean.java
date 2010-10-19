@@ -370,7 +370,8 @@ public class CellScheduleFormBean implements ALData, Cloneable {
       getMonthDay(),
       loginUser,
       entityId,
-      msgList);
+      msgList,
+      true);
   }
 
   /**

@@ -57,7 +57,6 @@ import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALIllegalDateException;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
-import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.category.util.CommonCategoryUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
@@ -90,7 +89,7 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
  * スケジュールのユーティリティクラスです。
- *
+ * 
  */
 public class ScheduleUtils {
 
@@ -109,7 +108,7 @@ public class ScheduleUtils {
 
   /**
    * Scheudle オブジェクトモデルを取得します。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -123,7 +122,7 @@ public class ScheduleUtils {
 
   /**
    * Scheudle オブジェクトモデルを取得します。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -203,7 +202,7 @@ public class ScheduleUtils {
 
   /**
    * Scheudle オブジェクトモデルを取得します。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -306,7 +305,7 @@ public class ScheduleUtils {
 
   /**
    * 詳細表示用の Scheudle オブジェクトモデルを取得する．
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -435,7 +434,7 @@ public class ScheduleUtils {
 
   /**
    * ScheudleMap オブジェクトモデルを取得します。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -530,7 +529,7 @@ public class ScheduleUtils {
 
   /**
    * 共有メンバーを取得します。
-   *
+   * 
    * @param rundata
    * @param context
    * @param includeLoginUser
@@ -622,7 +621,7 @@ public class ScheduleUtils {
 
   /**
    * 施設メンバーを取得します。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -651,7 +650,7 @@ public class ScheduleUtils {
 
   /**
    * 指定した繰り返しパターンにマッチするかどうかを返します。
-   *
+   * 
    * @param date
    * @param ptn
    * @param startDate
@@ -737,7 +736,7 @@ public class ScheduleUtils {
 
   /**
    * 指定したエントリー名を持つ個人設定ページに含まれるポートレットへの URI を取得する．
-   *
+   * 
    * @param rundata
    * @param portletEntryName
    *            PSML ファイルに記述されているタグ entry の要素 parent
@@ -949,7 +948,7 @@ public class ScheduleUtils {
 
   /**
    * 指定した2つの日付を比較する．
-   *
+   * 
    * @param date1
    * @param date2
    * @param checkTime
@@ -990,7 +989,7 @@ public class ScheduleUtils {
 
   /**
    * 指定した2つの日付を比較する．
-   *
+   * 
    * @param date1
    * @param date2
    * @return
@@ -1033,7 +1032,7 @@ public class ScheduleUtils {
 
   /**
    * 指定した2つの時刻のみを比較する．
-   *
+   * 
    * @param date1
    * @param date2
    * @return
@@ -1067,7 +1066,7 @@ public class ScheduleUtils {
 
   /**
    * アクセスしてきたユーザが利用するブラウザ名が Windows の MSIE であるかを判定する．
-   *
+   * 
    * @param rundata
    * @return MSIE の場合は，true．
    */
@@ -1093,7 +1092,7 @@ public class ScheduleUtils {
 
   /**
    * ダミースケジュールを登録する．
-   *
+   * 
    * @param schedule
    * @param ownerid
    * @param startDate
@@ -1175,7 +1174,7 @@ public class ScheduleUtils {
 
   /**
    * ダミースケジュールを登録する（携帯電話対応時には上記のメソッドに変更する）．
-   *
+   * 
    * @param schedule
    * @param ownerid
    * @param startDate
@@ -1312,7 +1311,7 @@ public class ScheduleUtils {
 
   /**
    * ダミースケジュールが上にくるようにソートする．
-   *
+   * 
    * @param list
    * @return
    */
@@ -1341,7 +1340,7 @@ public class ScheduleUtils {
 
   /**
    * 現在選択しているタブ名を取得する．
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -1376,7 +1375,7 @@ public class ScheduleUtils {
 
   /**
    * Date のオブジェクトを指定した形式の文字列に変換する．
-   *
+   * 
    * @param date
    * @param dateFormat
    * @return
@@ -1394,7 +1393,7 @@ public class ScheduleUtils {
 
   /**
    * 指定した曜日が，選択範囲に入っているかを検証する．
-   *
+   * 
    * @param selectedWeek
    *            指定曜日
    * @param startWeek
@@ -1421,7 +1420,7 @@ public class ScheduleUtils {
 
   /**
    * 第一引数のリストに，第二引数で指定したユーザ ID が含まれているかを検証する．
-   *
+   * 
    * @param memberIdList
    * @param memberId
    * @return
@@ -1440,7 +1439,7 @@ public class ScheduleUtils {
 
   /**
    * 第一引数のリストに，第二引数で指定したユーザ ID が含まれているかを検証する．
-   *
+   * 
    * @param memberIdList
    * @param memberId
    * @return
@@ -1689,7 +1688,7 @@ public class ScheduleUtils {
 
   /**
    * パラメータを読み込みます。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -1772,6 +1771,35 @@ public class ScheduleUtils {
     }
   }
 
+  /**
+   * スケジュールの時刻系要素バリデーション処理移譲メソッド
+   * 
+   * @param start_date
+   * @param end_date
+   * @param repeat_type
+   * @param is_repeat
+   * @param is_span
+   * @param week_0
+   * @param week_1
+   * @param week_2
+   * @param week_3
+   * @param week_4
+   * @param week_5
+   * @param week_6
+   * @param limit_flag
+   * @param limit_start_date
+   * @param limit_end_date
+   * @param month_day
+   * @param login_user
+   * @param entityid
+   * @param msgList
+   *            エラーメッセージリスト
+   * @param isCellPhone
+   *            携帯電話かどうか
+   * @return
+   * @throws ALDBErrorException
+   * @throws ALPageNotFoundException
+   */
   public static boolean validateDelegate(ALDateTimeField start_date,
       ALDateTimeField end_date, ALStringField repeat_type, boolean is_repeat,
       boolean is_span, ALStringField week_0, ALStringField week_1,
@@ -1779,7 +1807,9 @@ public class ScheduleUtils {
       ALStringField week_5, ALStringField week_6, ALStringField limit_flag,
       ALDateField limit_start_date, ALDateField limit_end_date,
       ALNumberField month_day, ALEipUser login_user, String entityid,
-      List<String> msgList) throws ALDBErrorException, ALPageNotFoundException {
+      List<String> msgList, boolean isCellPhone) throws ALDBErrorException,
+      ALPageNotFoundException {
+
     int YEAR_FIRST = 2004;
     int YEAR_END = 2016;
 
@@ -1788,27 +1818,63 @@ public class ScheduleUtils {
     Calendar endDate = Calendar.getInstance();
     endDate.setTime(end_date.getValue());
 
+    if (is_repeat) {
+      // 開始日時 と 終了日時 の日付を、開始日時 の日付に一致させる
+      Calendar tmp_end_date = Calendar.getInstance();
+      tmp_end_date.set(Calendar.YEAR, Integer.valueOf(start_date.getYear()));
+      tmp_end_date.set(
+        Calendar.MONTH,
+        Integer.valueOf(start_date.getMonth()) - 1);
+      tmp_end_date.set(Calendar.DATE, Integer.valueOf(start_date.getDay()));
+      tmp_end_date.set(Calendar.HOUR_OF_DAY, Integer
+        .valueOf(end_date.getHour()));
+      tmp_end_date.set(Calendar.MINUTE, Integer.valueOf(end_date.getMinute()));
+      tmp_end_date.set(Calendar.SECOND, 0);
+      end_date.setValue(tmp_end_date.getTime());
+    }
+
+    if (is_span) {
+      // 開始日時 と 終了日時 の時間を 0時0分0秒 に設定する
+      Calendar tmp_start_date = Calendar.getInstance();
+      tmp_start_date.setTime(start_date.getValue());
+      tmp_start_date.set(Calendar.HOUR_OF_DAY, 0);
+      tmp_start_date.set(Calendar.MINUTE, 0);
+      tmp_start_date.set(Calendar.SECOND, 0);
+      start_date.setValue(tmp_start_date.getTime());
+
+      Calendar tmp_end_date = Calendar.getInstance();
+      tmp_end_date.setTime(end_date.getValue());
+      tmp_end_date.set(Calendar.HOUR_OF_DAY, 0);
+      tmp_end_date.set(Calendar.MINUTE, 0);
+      tmp_end_date.set(Calendar.SECOND, 0);
+      end_date.setValue(tmp_end_date.getTime());
+    }
+
     if (!is_repeat && !is_span) {
       // 開始日時
       start_date.validate(msgList);
       int startyear = startDate.get(Calendar.YEAR);
-      if (startyear < YEAR_FIRST || startyear > YEAR_END) {
+      if ((startyear < YEAR_FIRST || startyear > YEAR_END) && isCellPhone) {
+        // 携帯画面用条件
         msgList.add("『日付』は" + YEAR_FIRST + "年から" + YEAR_END + "年の間で指定してください。");
       }
-      if (startDate.get(Calendar.MINUTE) % 15.0 != 0) {
+      if (startDate.get(Calendar.MINUTE) % 15.0 != 0 && isCellPhone) {
+        // 携帯画面用条件
         msgList.add("『時間』は15分単位で指定してください。");
       }
 
       // 終了日時
       end_date.validate(msgList);
-      if (endDate.get(Calendar.MINUTE) % 15.0 != 0) {
+      if (endDate.get(Calendar.MINUTE) % 15.0 != 0 && isCellPhone) {
+        // 携帯画面用条件
         msgList.add("『時間』は15分単位で指定してください。");
       }
     }
 
     // 開始日時＆終了日時
     if (end_date.getValue().before(start_date.getValue())) {
-      msgList.add("『終了日時』は『開始日時』以降の日付を指定してください。");
+      msgList
+        .add("『 <span class='em'>終了日時</span> 』は『 <span class='em'>開始日時</span> 』以降の日付を指定してください。");
     }
 
     if (is_repeat) {
@@ -1821,14 +1887,16 @@ public class ScheduleUtils {
             && week_4.getValue() == null
             && week_5.getValue() == null
             && week_6.getValue() == null) {
-            msgList.add("『毎週』は曜日をひとつ以上指定してください。");
+            msgList.add("『 <span class='em'>毎週</span> 』は曜日をひとつ以上指定してください。");
           } else {
             // 期間を指定しているか．
             if ("ON".equals(limit_flag.getValue())) {
               Calendar limitStartDate = Calendar.getInstance();
               limitStartDate.setTime(limit_start_date.getValue().getDate());
               int limitstartyear = limitStartDate.get(Calendar.YEAR);
-              if (limitstartyear < YEAR_FIRST || limitstartyear > YEAR_END) {
+              if ((limitstartyear < YEAR_FIRST || limitstartyear > YEAR_END)
+                && isCellPhone) {
+                // 携帯画面用条件
                 msgList.add("『期限の開始日時』は"
                   + YEAR_FIRST
                   + "年から"
@@ -1838,94 +1906,20 @@ public class ScheduleUtils {
               Calendar limitEndDate = Calendar.getInstance();
               limitEndDate.setTime(limit_end_date.getValue().getDate());
               int limitendyear = limitEndDate.get(Calendar.YEAR);
-              if (limitendyear < YEAR_FIRST || limitendyear > YEAR_END) {
+              if ((limitendyear < YEAR_FIRST || limitendyear > YEAR_END)
+                && isCellPhone) {
+                // 携帯画面用条件
                 msgList.add("『期限の終了日時』は"
                   + YEAR_FIRST
                   + "年から"
                   + YEAR_END
                   + "年の間で指定してください。");
               }
-
-              // 指定期間内に指定した曜日が入るか．
-              long deltaDay =
-                (limit_end_date.getValue().getDate().getTime() - limit_start_date
-                  .getValue()
-                  .getDate()
-                  .getTime()) / 86400000;
-              if (deltaDay < 6) {
-                // 指定期間内に，月火水木金土日が必ずしも含まれない．
-                Calendar limitStartCal = Calendar.getInstance();
-                limitStartCal.setTime(limit_start_date.getValue().getDate());
-                Calendar limitEndCal = Calendar.getInstance();
-                limitEndCal.setTime(limit_end_date.getValue().getDate());
-                int limitStartDayOfWeek =
-                  limitStartCal.get(Calendar.DAY_OF_WEEK);
-                int limitEndDayOfWeek = limitEndCal.get(Calendar.DAY_OF_WEEK);
-                boolean hasWeek = true;
-                if (week_0.getValue() != null) {
-                  hasWeek =
-                    hasWeek
-                      & includeWeek(
-                        Calendar.SUNDAY,
-                        limitStartDayOfWeek,
-                        limitEndDayOfWeek);
-                }
-                if (week_1.getValue() != null) {
-                  hasWeek =
-                    hasWeek
-                      & includeWeek(
-                        Calendar.MONDAY,
-                        limitStartDayOfWeek,
-                        limitEndDayOfWeek);
-                }
-                if (week_2.getValue() != null) {
-                  hasWeek =
-                    hasWeek
-                      & includeWeek(
-                        Calendar.TUESDAY,
-                        limitStartDayOfWeek,
-                        limitEndDayOfWeek);
-                }
-                if (week_3.getValue() != null) {
-                  hasWeek =
-                    hasWeek
-                      & includeWeek(
-                        Calendar.WEDNESDAY,
-                        limitStartDayOfWeek,
-                        limitEndDayOfWeek);
-                }
-                if (week_4.getValue() != null) {
-                  hasWeek =
-                    hasWeek
-                      & includeWeek(
-                        Calendar.THURSDAY,
-                        limitStartDayOfWeek,
-                        limitEndDayOfWeek);
-                }
-                if (week_5.getValue() != null) {
-                  hasWeek =
-                    hasWeek
-                      & includeWeek(
-                        Calendar.FRIDAY,
-                        limitStartDayOfWeek,
-                        limitEndDayOfWeek);
-                }
-                if (week_6.getValue() != null) {
-                  hasWeek =
-                    hasWeek
-                      & includeWeek(
-                        Calendar.SATURDAY,
-                        limitStartDayOfWeek,
-                        limitEndDayOfWeek);
-                }
-                if (!hasWeek) {
-                  msgList.add("『毎週』で選択する曜日は、『期限』の範囲内で指定してください。");
-                }
-              }
             }
           }
         } else if ("M".equals(repeat_type.getValue())) {
-          if (month_day.getValue() == 0) {
+          if (month_day.getValue() == 0 && isCellPhone) {
+            // 携帯画面用条件
             msgList.add("『毎月』は日にちを指定してください。");
           } else {
             month_day.validate(msgList);
@@ -1933,7 +1927,9 @@ public class ScheduleUtils {
               Calendar limitStartDate = Calendar.getInstance();
               limitStartDate.setTime(limit_start_date.getValue().getDate());
               int limitstartyear = limitStartDate.get(Calendar.YEAR);
-              if (limitstartyear < YEAR_FIRST || limitstartyear > YEAR_END) {
+              if ((limitstartyear < YEAR_FIRST || limitstartyear > YEAR_END)
+                && isCellPhone) {
+                // 携帯画面用条件
                 msgList.add("『期限の開始日時』は"
                   + YEAR_FIRST
                   + "年から"
@@ -1943,40 +1939,14 @@ public class ScheduleUtils {
               Calendar limitEndDate = Calendar.getInstance();
               limitEndDate.setTime(limit_end_date.getValue().getDate());
               int limitendyear = limitEndDate.get(Calendar.YEAR);
-              if (limitendyear < YEAR_FIRST || limitendyear > YEAR_END) {
+              if ((limitendyear < YEAR_FIRST || limitendyear > YEAR_END)
+                && isCellPhone) {
+                // 携帯画面用条件
                 msgList.add("『期限の終了日時』は"
                   + YEAR_FIRST
                   + "年から"
                   + YEAR_END
                   + "年の間で指定してください。");
-              }
-
-              // 毎月の日付指定
-              Calendar limitStartCal = Calendar.getInstance();
-              limitStartCal.setTime(limit_start_date.getValue().getDate());
-              Calendar limitEndCal = Calendar.getInstance();
-              limitEndCal.setTime(limit_end_date.getValue().getDate());
-              int limitStartYear = limitStartCal.get(Calendar.YEAR);
-              int limitEndYear = limitEndCal.get(Calendar.YEAR);
-              int limitStartMonth = limitStartCal.get(Calendar.MONTH);
-              int limitEndMonth = limitEndCal.get(Calendar.MONTH);
-              if (limitStartYear >= limitEndYear) {
-                if (limitStartMonth >= limitEndMonth) {
-                  // 同じ月
-                  if (limit_start_date.getValue().getDay() > month_day
-                    .getValue()
-                    || limit_end_date.getValue().getDay() < month_day
-                      .getValue()) {
-                    msgList.add("『毎月』は『期限』の範囲内の日付を指定してください。");
-                  }
-                } else {
-                  if (limit_start_date.getValue().getDay() > month_day
-                    .getValue()
-                    && limit_end_date.getValue().getDay() < month_day
-                      .getValue()) {
-                    msgList.add("『毎月』は『期限』の範囲内の日付を指定してください。");
-                  }
-                }
               }
             }
           }
@@ -1986,7 +1956,9 @@ public class ScheduleUtils {
             Calendar limitStartDate = Calendar.getInstance();
             limitStartDate.setTime(limit_start_date.getValue().getDate());
             int limitstartyear = limitStartDate.get(Calendar.YEAR);
-            if (limitstartyear < YEAR_FIRST || limitstartyear > YEAR_END) {
+            if ((limitstartyear < YEAR_FIRST || limitstartyear > YEAR_END)
+              && isCellPhone) {
+              // 携帯画面用条件
               msgList.add("『期限の開始日時』は"
                 + YEAR_FIRST
                 + "年から"
@@ -1996,7 +1968,9 @@ public class ScheduleUtils {
             Calendar limitEndDate = Calendar.getInstance();
             limitEndDate.setTime(limit_end_date.getValue().getDate());
             int limitendyear = limitEndDate.get(Calendar.YEAR);
-            if (limitendyear < YEAR_FIRST || limitendyear > YEAR_END) {
+            if ((limitendyear < YEAR_FIRST || limitendyear > YEAR_END)
+              && isCellPhone) {
+              // 携帯画面用条件
               msgList.add("『期限の終了日時』は"
                 + YEAR_FIRST
                 + "年から"
@@ -2006,17 +1980,75 @@ public class ScheduleUtils {
           }
         }
 
-        if ("ON".equals(limit_flag.getValue())) {
-          // Date limitEndDate = limit_end_date.getValue().getDate();
-          if (!ScheduleUtils.equalsToDate(
-            limit_start_date.getValue().getDate(),
-            limit_end_date.getValue().getDate(),
-            false)
-            && limit_start_date.getValue().getDate().after(
-              limit_end_date.getValue().getDate())) {
-            msgList.add("『期限の終了日時』は『期限の開始日時』以降の日付を指定してください。");
-          }
+        if (!ScheduleUtils.equalsToDate(
+          limit_start_date.getValue().getDate(),
+          limit_end_date.getValue().getDate(),
+          false)
+          && limit_start_date.getValue().getDate().after(
+            limit_end_date.getValue().getDate())) {
+          msgList.add("『 <span class='em'>期限</span> 』は今日以降の日付を指定してください。");
         }
+
+        // 繰り返し期間の正当性を調べる
+        // リピートパターン文字列作成
+        char lim = 'N';
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(end_date.getValue());
+        if ("ON".equals(limit_flag.getValue())) {
+          lim = 'L';
+        }
+        String repeat_pattern;
+        if ("D".equals(repeat_type.getValue())) {
+          repeat_pattern =
+            new StringBuffer().append('D').append(lim).toString();
+        } else if ("W".equals(repeat_type.getValue())) {
+          repeat_pattern =
+            new StringBuffer().append('W').append(
+              week_0.getValue() != null ? 1 : 0).append(
+              week_1.getValue() != null ? 1 : 0).append(
+              week_2.getValue() != null ? 1 : 0).append(
+              week_3.getValue() != null ? 1 : 0).append(
+              week_4.getValue() != null ? 1 : 0).append(
+              week_5.getValue() != null ? 1 : 0).append(
+              week_6.getValue() != null ? 1 : 0).append(lim).toString();
+        } else {
+          DecimalFormat format = new DecimalFormat("00");
+          repeat_pattern =
+            new StringBuffer().append('M').append(
+              format.format(month_day.getValue())).append(lim).toString();
+        }
+        // 開始時刻(期間初日)
+        Calendar sDate = new GregorianCalendar();
+        sDate.set(Calendar.YEAR, Integer.valueOf(limit_start_date.getYear()));
+        sDate.set(
+          Calendar.MONTH,
+          Integer.valueOf(limit_start_date.getMonth()) - 1);
+        sDate.set(Calendar.DATE, Integer.valueOf(limit_start_date.getDay()));
+        sDate.set(Calendar.HOUR_OF_DAY, 0);
+        sDate.set(Calendar.MINUTE, 0);
+        sDate.set(Calendar.SECOND, 0);
+        // 繰り返し最終日の終了時刻
+        Calendar finalDate = new GregorianCalendar();
+        finalDate.set(Calendar.YEAR, Integer.valueOf(limit_end_date.getYear()));
+        finalDate.set(Calendar.MONTH, Integer
+          .valueOf(limit_end_date.getMonth()) - 1);
+        finalDate.set(Calendar.DATE, Integer.valueOf(limit_end_date.getDay()));
+        sDate.set(Calendar.HOUR_OF_DAY, 23);
+        sDate.set(Calendar.MINUTE, 59);
+        sDate.set(Calendar.SECOND, 59);
+        boolean hasAvailableDate = false;
+        while (sDate.before(finalDate) || sDate.equals(finalDate)) {
+          if (ScheduleUtils.matchDay(sDate, repeat_pattern)) {
+            hasAvailableDate = true;
+            break;
+          }
+          sDate.add(Calendar.DATE, 1);
+        }
+        if (!hasAvailableDate) {
+          msgList
+            .add("予定の入る日が含まれる様に『 <span class='em'>繰り返し期間</span> 』を指定してください。");
+        }
+
       } catch (NumberFormatException nfe) {
         logger
           .error("[ScheduleFormData] NumberFormatException: Limit Date is wrong.");
@@ -2032,7 +2064,7 @@ public class ScheduleUtils {
       // 開始日時
       start_date.validate(msgList);
       int startyear = startDate.get(Calendar.YEAR);
-      if (startyear < YEAR_FIRST || startyear > YEAR_END) {
+      if ((startyear < YEAR_FIRST || startyear > YEAR_END) && isCellPhone) {
         msgList
           .add("『開始日時』は" + YEAR_FIRST + "年から" + YEAR_END + "年の間で指定してください。");
       }
@@ -2040,76 +2072,17 @@ public class ScheduleUtils {
       // 終了日時
       end_date.validate(msgList);
       int endyear = endDate.get(Calendar.YEAR);
-      if (endyear < YEAR_FIRST || endyear > YEAR_END) {
+      if ((endyear < YEAR_FIRST || endyear > YEAR_END) && isCellPhone) {
         msgList
           .add("『終了日時』は" + YEAR_FIRST + "年から" + YEAR_END + "年の間で指定してください。");
       }
-
-      try {
-        String tmpScheduleId = entityid;
-        boolean is_update = true;
-        int id = 0;
-        try {
-          // IDが空の場合 || IDがintでない場合
-          if (tmpScheduleId == null || !ALStringUtil.isNumber(tmpScheduleId)) {
-            is_update = false;
-          } else {
-            is_update = true;
-            id = Integer.valueOf(tmpScheduleId).intValue();
-          }
-        } catch (NumberFormatException ex) {
-          logger
-            .error("[ScheduleFormData] NumberFormatException: ENTITYID is wrong.");
-          throw new ALPageNotFoundException();
-        }
-
-        SelectQuery<EipTScheduleMap> query =
-          Database.query(EipTScheduleMap.class);
-
-        Expression exp1 =
-          ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
-            .valueOf((int) login_user.getUserId().getValue()));
-        query.setQualifier(exp1);
-        Expression exp2 =
-          ExpressionFactory.greaterOrEqualExp(
-            EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-              + "."
-              + EipTSchedule.END_DATE_PROPERTY,
-            start_date.getValue());
-        query.andQualifier(exp2);
-        Expression exp3 =
-          ExpressionFactory.lessOrEqualExp(
-            EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-              + "."
-              + EipTSchedule.START_DATE_PROPERTY,
-            end_date.getValue());
-        query.andQualifier(exp3);
-        Expression exp4 =
-          ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-            + "."
-            + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
-        query.andQualifier(exp4);
-
-        if (is_update) {
-          Expression mapexp =
-            ExpressionFactory.noMatchExp(
-              EipTScheduleMap.SCHEDULE_ID_PROPERTY,
-              Integer.valueOf(id));
-          query.andQualifier(mapexp);
-        }
-      } catch (Exception e) {
-        logger.error("[ScheduleFormData]", e);
-        throw new ALDBErrorException();
-
-      }
     }
-
     return (msgList.size() == 0);
   }
 
   /**
    * 同一期間内に複数の ToDo を追加する. 第一引数の List を排他制御しないで処理するので注意.
-   *
+   * 
    * @param weekSpanConList
    *            複数の期間スケジュールを保持するリスト
    * @param viewStartDate
@@ -2349,9 +2322,9 @@ public class ScheduleUtils {
 
   /*
    * 同一期間内に複数の 期間スケジュール を追加する. 第一引数の List を排他制御しないで処理するので注意.
-   *
+   * 
    * @param weekSpanConList 複数の期間スケジュールを保持するリスト @param viewStartDate 表示開始の年月日
-   *
+   * 
    * @param index 期間スケジュールの追加位置 @param rd 期間スケジュール
    */
   public static void addTerm(List<AjaxTermScheduleWeekContainer> weekConList,
@@ -2390,7 +2363,7 @@ public class ScheduleUtils {
 
   /*
    * 同一期間内に複数の 期間スケジュール を追加する. 第一引数の List を排他制御しないで処理するので注意.
-   *
+   * 
    * @param weekConList 複数の期間スケジュールを保持するリスト @param viewStartDate 表示開始の年月日 @param
    * index 期間スケジュールの追加位置 @param rd 期間スケジュール
    */
@@ -2429,7 +2402,7 @@ public class ScheduleUtils {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public static Date getEmptyDate() {
@@ -2578,7 +2551,7 @@ public class ScheduleUtils {
 
   /**
    * パソコンへ送信するメールの内容を作成する．
-   *
+   * 
    * @return
    */
   public static String createMsgForPc(RunData rundata, EipTSchedule schedule,
@@ -2664,7 +2637,7 @@ public class ScheduleUtils {
 
   /**
    * 携帯電話へ送信するメールの内容を作成する．
-   *
+   * 
    * @return
    */
   public static String createMsgForCellPhone(RunData rundata,

@@ -38,7 +38,6 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALDateContainer;
 import com.aimluck.commons.field.ALDateField;
 import com.aimluck.commons.field.ALDateTimeField;
-import com.aimluck.commons.field.ALIllegalDateException;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.category.util.CommonCategoryUtils;
@@ -635,252 +634,33 @@ public class ScheduleFormData extends ALAbstractFormData {
   @Override
   protected boolean validate(List<String> msgList) throws ALDBErrorException,
       ALPageNotFoundException {
-    // 開始日時
-    start_date.validate(msgList);
-    // 終了日時
-    end_date.validate(msgList);
 
-    if (is_repeat) {
-      // 開始日時 と 終了日時 の日付を、開始日時 の日付に一致させる
-      Calendar tmp_end_date = Calendar.getInstance();
-      tmp_end_date.set(Calendar.YEAR, Integer.valueOf(start_date.getYear()));
-      tmp_end_date.set(
-        Calendar.MONTH,
-        Integer.valueOf(start_date.getMonth()) - 1);
-      tmp_end_date.set(Calendar.DATE, Integer.valueOf(start_date.getDay()));
-      tmp_end_date.set(Calendar.HOUR_OF_DAY, Integer
-        .valueOf(end_date.getHour()));
-      tmp_end_date.set(Calendar.MINUTE, Integer.valueOf(end_date.getMinute()));
-      tmp_end_date.set(Calendar.SECOND, 0);
-      end_date.setValue(tmp_end_date.getTime());
-    }
-
-    if (is_span) {
-      // 開始日時 と 終了日時 の時間を 0時0分0秒 に設定する
-      Calendar tmp_start_date = Calendar.getInstance();
-      tmp_start_date.setTime(start_date.getValue());
-      tmp_start_date.set(Calendar.HOUR_OF_DAY, 0);
-      tmp_start_date.set(Calendar.MINUTE, 0);
-      tmp_start_date.set(Calendar.SECOND, 0);
-      start_date.setValue(tmp_start_date.getTime());
-
-      Calendar tmp_end_date = Calendar.getInstance();
-      tmp_end_date.setTime(end_date.getValue());
-      tmp_end_date.set(Calendar.HOUR_OF_DAY, 0);
-      tmp_end_date.set(Calendar.MINUTE, 0);
-      tmp_end_date.set(Calendar.SECOND, 0);
-      end_date.setValue(tmp_end_date.getTime());
-    }
-
-    // 開始日時＆終了日時
-    if (end_date.getValue().before(start_date.getValue())) {
-      msgList
-        .add("『 <span class='em'>終了日時</span> 』は『 <span class='em'>開始日時</span> 』以降の日付を指定してください。");
-    }
-
-    if (is_repeat) {
-      try {
-        if ("W".equals(repeat_type.getValue())) {
-          if (week_0.getValue() == null
-            && week_1.getValue() == null
-            && week_2.getValue() == null
-            && week_3.getValue() == null
-            && week_4.getValue() == null
-            && week_5.getValue() == null
-            && week_6.getValue() == null) {
-            msgList.add("『 <span class='em'>毎週</span> 』は曜日をひとつ以上指定してください。");
-          } else {
-            // 期間を指定しているか．
-            if ("ON".equals(limit_flag.toString())) {
-              // 指定期間内に指定した曜日が入るか．
-              long deltaDay =
-                (limit_end_date.getValue().getDate().getTime() - limit_start_date
-                  .getValue()
-                  .getDate()
-                  .getTime()) / 86400000;
-              if (deltaDay < 6) {
-                // 指定期間内に，月火水木金土日が必ずしも含まれない．
-                Calendar limitStartCal = Calendar.getInstance();
-                limitStartCal.setTime(limit_start_date.getValue().getDate());
-                Calendar limitEndCal = Calendar.getInstance();
-                limitEndCal.setTime(limit_end_date.getValue().getDate());
-                int limitStartDayOfWeek =
-                  limitStartCal.get(Calendar.DAY_OF_WEEK);
-                int limitEndDayOfWeek = limitEndCal.get(Calendar.DAY_OF_WEEK);
-                boolean hasWeek = true;
-                if (week_0.getValue() != null) {
-                  hasWeek =
-                    hasWeek
-                      & includeWeek(
-                        Calendar.SUNDAY,
-                        limitStartDayOfWeek,
-                        limitEndDayOfWeek);
-                }
-                if (week_1.getValue() != null) {
-                  hasWeek =
-                    hasWeek
-                      & includeWeek(
-                        Calendar.MONDAY,
-                        limitStartDayOfWeek,
-                        limitEndDayOfWeek);
-                }
-                if (week_2.getValue() != null) {
-                  hasWeek =
-                    hasWeek
-                      & includeWeek(
-                        Calendar.TUESDAY,
-                        limitStartDayOfWeek,
-                        limitEndDayOfWeek);
-                }
-                if (week_3.getValue() != null) {
-                  hasWeek =
-                    hasWeek
-                      & includeWeek(
-                        Calendar.WEDNESDAY,
-                        limitStartDayOfWeek,
-                        limitEndDayOfWeek);
-                }
-                if (week_4.getValue() != null) {
-                  hasWeek =
-                    hasWeek
-                      & includeWeek(
-                        Calendar.THURSDAY,
-                        limitStartDayOfWeek,
-                        limitEndDayOfWeek);
-                }
-                if (week_5.getValue() != null) {
-                  hasWeek =
-                    hasWeek
-                      & includeWeek(
-                        Calendar.FRIDAY,
-                        limitStartDayOfWeek,
-                        limitEndDayOfWeek);
-                }
-                if (week_6.getValue() != null) {
-                  hasWeek =
-                    hasWeek
-                      & includeWeek(
-                        Calendar.SATURDAY,
-                        limitStartDayOfWeek,
-                        limitEndDayOfWeek);
-                }
-                if (!hasWeek) {
-                  msgList
-                    .add("『 <span class='em'>毎週</span> 』で選択する曜日は、『 <span class='em'>期限</span> 』の範囲内で指定してください。");
-                }
-              }
-            }
-          }
-        } else if ("M".equals(repeat_type.getValue())) {
-          if ("ON".equals(limit_flag.toString())) {
-            // 毎月の日付指定
-            Calendar limitStartCal = Calendar.getInstance();
-            limitStartCal.setTime(limit_start_date.getValue().getDate());
-            Calendar limitEndCal = Calendar.getInstance();
-            limitEndCal.setTime(limit_end_date.getValue().getDate());
-            int limitStartMonth = limitStartCal.get(Calendar.MONTH);
-            int limitEndMonth = limitEndCal.get(Calendar.MONTH);
-            if (limitStartMonth >= limitEndMonth) {
-              // 同じ月
-              if (limit_start_date.getValue().getDay() > month_day.getValue()
-                || limit_end_date.getValue().getDay() < month_day.getValue()) {
-                msgList
-                  .add("『 <span class='em'>毎月</span> 』は『 <span class='em'>期限</span> 』の範囲内の日付を指定してください。");
-              }
-            } else {
-              if (limit_start_date.getValue().getDay() > month_day.getValue()
-                && limit_end_date.getValue().getDay() < month_day.getValue()) {
-                msgList
-                  .add("『 <span class='em'>毎月</span> 』は『 <span class='em'>期限</span> 』の範囲内の日付を指定してください。");
-              }
-            }
-          }
-        }
-
-        if (!ScheduleUtils.equalsToDate(
-          limit_start_date.getValue().getDate(),
-          limit_end_date.getValue().getDate(),
-          false)
-          && limit_start_date.getValue().getDate().after(
-            limit_end_date.getValue().getDate())) {
-          msgList.add("『 <span class='em'>期限</span> 』は今日以降の日付を指定してください。");
-        }
-
-        if (getLimitFlag().getValue().equals("ON")) {
-          // 繰り返し期間の正当性を調べる
-
-          // リピートパターン文字列作成
-          char lim = 'N';
-          Calendar cal = Calendar.getInstance();
-          cal.setTime(end_date.getValue());
-          if ("ON".equals(limit_flag.getValue())) {
-            lim = 'L';
-          }
-          String repeat_pattern;
-          if ("D".equals(repeat_type.getValue())) {
-            repeat_pattern =
-              new StringBuffer().append('D').append(lim).toString();
-          } else if ("W".equals(repeat_type.getValue())) {
-            repeat_pattern =
-              new StringBuffer().append('W').append(
-                week_0.getValue() != null ? 1 : 0).append(
-                week_1.getValue() != null ? 1 : 0).append(
-                week_2.getValue() != null ? 1 : 0).append(
-                week_3.getValue() != null ? 1 : 0).append(
-                week_4.getValue() != null ? 1 : 0).append(
-                week_5.getValue() != null ? 1 : 0).append(
-                week_6.getValue() != null ? 1 : 0).append(lim).toString();
-          } else {
-            DecimalFormat format = new DecimalFormat("00");
-            repeat_pattern =
-              new StringBuffer().append('M').append(
-                format.format(month_day.getValue())).append(lim).toString();
-          }
-          // 開始時刻(期間初日)
-          Calendar sDate = new GregorianCalendar();
-          sDate.set(Calendar.YEAR, Integer.valueOf(getLimitStartDate()
-            .getYear()));
-          sDate.set(Calendar.MONTH, Integer.valueOf(getLimitStartDate()
-            .getMonth()) - 1);
-          sDate.set(Calendar.DATE, Integer
-            .valueOf(getLimitStartDate().getDay()));
-          sDate.set(Calendar.HOUR_OF_DAY, 0);
-          sDate.set(Calendar.MINUTE, 0);
-          sDate.set(Calendar.SECOND, 0);
-          // 繰り返し最終日の終了時刻
-          Calendar finalDate = new GregorianCalendar();
-          finalDate.set(Calendar.YEAR, Integer.valueOf(getLimitEndDate()
-            .getYear()));
-          finalDate.set(Calendar.MONTH, Integer.valueOf(getLimitEndDate()
-            .getMonth()) - 1);
-          finalDate.set(Calendar.DATE, Integer.valueOf(getLimitEndDate()
-            .getDay()));
-          sDate.set(Calendar.HOUR_OF_DAY, 23);
-          sDate.set(Calendar.MINUTE, 59);
-          sDate.set(Calendar.SECOND, 59);
-          boolean hasAvailableDate = false;
-          while (sDate.before(finalDate) || sDate.equals(finalDate)) {
-            if (ScheduleUtils.matchDay(sDate, repeat_pattern)) {
-              hasAvailableDate = true;
-              break;
-            }
-            sDate.add(Calendar.DATE, 1);
-          }
-          if (!hasAvailableDate) {
-            msgList
-              .add("予定の入る日を含む様に『 <span class='em'>繰り返し期間</span> 』を指定してください。");
-          }
-        }
-
-      } catch (NumberFormatException nfe) {
-        logger
-          .error("[ScheduleFormData] NumberFormatException: Limit Date is wrong.");
-        throw new ALPageNotFoundException();
-      } catch (ALIllegalDateException ad) {
-        logger
-          .error("[ScheduleFormData] ALIllegalDateException: Limit Date is wrong.");
-        throw new ALPageNotFoundException();
-      }
+    try {
+      ScheduleUtils.validateDelegate(
+        getStartDate(),
+        getEndDate(),
+        getRepeatType(),
+        is_repeat,
+        is_span,
+        getWeek0(),
+        getWeek1(),
+        getWeek2(),
+        getWeek3(),
+        getWeek4(),
+        getWeek5(),
+        getWeek6(),
+        getLimitFlag(),
+        getLimitStartDate(),
+        getLimitEndDate(),
+        getMonthDay(),
+        loginUser,
+        null,
+        msgList,
+        false);
+    } catch (NumberFormatException nfe) {
+      logger
+        .error("[ScheduleFormData] NumberFormatException: Limit Date is wrong.");
+      throw new ALPageNotFoundException();
     }
 
     // 予定
