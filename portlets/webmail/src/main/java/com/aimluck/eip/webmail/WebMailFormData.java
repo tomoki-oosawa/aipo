@@ -68,8 +68,8 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
  */
 public class WebMailFormData extends ALAbstractFormData {
 
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WebMailFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(WebMailFormData.class.getName());
 
   /** 件名の最大文字数 */
   private final int FIELD_SUBJECT_MAX_LEN = 256;
@@ -91,6 +91,9 @@ public class WebMailFormData extends ALAbstractFormData {
 
   /** タイプ：転送メール */
   public static final int TYPE_FORWARD_MAIL = 2;
+
+  /** タイプ：全員に返信メール */
+  public static final int TYPE_REPLY_ALL_MAIL = 3;
 
   /** メール作成のタイプ */
   private ALNumberField mailType = null;
@@ -145,7 +148,7 @@ public class WebMailFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    */
   public void initField() {
     // メール作成のタイプ
@@ -207,7 +210,7 @@ public class WebMailFormData extends ALAbstractFormData {
    * フォームデータの妥当性を検証する．
    * 
    * @param msgList
-   *          エラーメッセージのリスト
+   *            エラーメッセージのリスト
    */
   @Override
   public boolean validate(List<String> msgList) {
@@ -311,7 +314,8 @@ public class WebMailFormData extends ALAbstractFormData {
 
       // 返信メールの場合は，ヘッダを追加する．
       Map<String, String> map = null;
-      if (getMailType().getValue() == TYPE_REPLY_MAIL) {
+      if (getMailType().getValue() == TYPE_REPLY_MAIL
+        || getMailType().getValue() == TYPE_REPLY_ALL_MAIL) {
         ALLocalMailMessage msg = null;
         try {
           msg =
@@ -435,7 +439,8 @@ public class WebMailFormData extends ALAbstractFormData {
         this.setCc(ALMailUtils.getAddressString(bccs));
 
         tmpSubject = msg.getSubject();
-      } else if (getMailType().getValue() == TYPE_REPLY_MAIL) {
+      } else if (getMailType().getValue() == TYPE_REPLY_MAIL
+        || getMailType().getValue() == TYPE_REPLY_ALL_MAIL) {
         // TO
         Address[] tos = msg.getFrom();
         this.setTo(ALMailUtils.getAddressString(tos));
@@ -443,6 +448,16 @@ public class WebMailFormData extends ALAbstractFormData {
         tmpSubject = "Re: " + msg.getSubject();
       } else if (getMailType().getValue() == TYPE_FORWARD_MAIL) {
         tmpSubject = "Fwd: " + msg.getSubject();
+      }
+
+      if (getMailType().getValue() == TYPE_REPLY_ALL_MAIL) {
+        // CC
+        Address[] ccs = msg.getRecipients(Message.RecipientType.CC);
+        this.setCc(ALMailUtils.getAddressString(ccs));
+
+        // BCC
+        Address[] bccs = msg.getRecipients(Message.RecipientType.BCC);
+        this.setCc(ALMailUtils.getAddressString(bccs));
       }
 
       // Subject
