@@ -69,29 +69,29 @@
     <div class="pagination">
       <ul>
 #if($currentPage > 1) #set($pre = $currentPage - 1)
-	    <li class="prev"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre).addQueryData('view_uid',$!{result.ViewUid}))', '$!portlet.ID');" class="small">前へ</a></li>
+	    <li class="prev"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre).addQueryData('view_uid',$!{result.ViewUid}).addQueryData('view_month', ${result.Month.MonthLiteral}))', '$!portlet.ID');" class="small">前へ</a></li>
 #else
 	    <li class="prev disabled"><a href="javascript:void(0);" class="small">前へ</a></li>
 #end
 #if($pages > $currentPage) #set($next = $currentPage + 1)
-        <li class="next"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next).addQueryData('view_uid',$!{result.ViewUid}))', '$!portlet.ID');" class="small">次へ</a></li>
+        <li class="next"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next).addQueryData('view_uid',$!{result.ViewUid}).addQueryData('view_month', ${result.Month.MonthLiteral}))', '$!portlet.ID');" class="small">次へ</a></li>
 #else
         <li class="next disabled"><a href="javascript:void(0);" class="small">次へ</a></li>
 #end
 #if($showLeftRest && $currentPage > ${pageRange})
 #foreach($page in [1..${pageTrimRange}])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData('view_uid',$!{result.ViewUid}))', '$!portlet.ID');" class="small">$page</a></li>
+        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData('view_uid',$!{result.ViewUid}).addQueryData('view_month', ${result.Month.MonthLiteral}))', '$!portlet.ID');" class="small">$page</a></li>
 #end
 		<li class="abbr">....</li>
 #end
 #foreach($page in [${nextLeftPage}..$nextRightPage])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData('view_uid',$!{result.ViewUid}))', '$!portlet.ID');" class="small">$page</a></li>
+        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData('view_uid',$!{result.ViewUid}).addQueryData('view_month', ${result.Month.MonthLiteral}))', '$!portlet.ID');" class="small">$page</a></li>
 #end
 #if($showRightRest &&  (${currentPage} + ${pageRange} - 1) < ${pages})
 #set($restRightPages = $pages - $pageTrimRange + 1)
 		<li class="abbr">....</li>
 #foreach($page in [${restRightPages}..${pages}])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData('view_uid',$!{result.ViewUid}))', '$!portlet.ID');" class="small">$page</a></li>
+        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData('view_uid',$!{result.ViewUid}).addQueryData('view_month', ${result.Month.MonthLiteral}))', '$!portlet.ID');" class="small">$page</a></li>
 #end
 #end
       </ul>
@@ -148,29 +148,29 @@
     <div class="pagination">
       <ul>
 #if($currentPage > 1) #set($pre = $currentPage - 1)
-	    <li class="prev"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre).addQueryData('view_uid',$!{result.ViewUid}))', '$!portlet.ID');" class="small">前へ</a></li>
+	    <li class="prev"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre).addQueryData('view_uid',$!{result.ViewUid}).addQueryData('view_month', ${result.Month.MonthLiteral}))', '$!portlet.ID');" class="small">前へ</a></li>
 #else
 	    <li class="prev disabled"><a href="javascript:void(0);" class="small">前へ</a></li>
 #end
 #if($pages > $currentPage) #set($next = $currentPage + 1)
-        <li class="next"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next).addQueryData('view_uid',$!{result.ViewUid}))', '$!portlet.ID');" class="small">次へ</a></li>
+        <li class="next"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next).addQueryData('view_uid',$!{result.ViewUid}).addQueryData('view_month', ${result.Month.MonthLiteral}))', '$!portlet.ID');" class="small">次へ</a></li>
 #else
         <li class="next disabled"><a href="javascript:void(0);" class="small">次へ</a></li>
 #end
 #if($showLeftRest && $currentPage > ${pageRange})
 #foreach($page in [1..${pageTrimRange}])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData('view_uid',$!{result.ViewUid}))', '$!portlet.ID');" class="small">$page</a></li>
+        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData('view_uid',$!{result.ViewUid}).addQueryData('view_month', ${result.Month.MonthLiteral}))', '$!portlet.ID');" class="small">$page</a></li>
 #end
         <li class="abbr">....</li>
 #end
 #foreach($page in [${nextLeftPage}..$nextRightPage])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData('view_uid',$!{result.ViewUid}))', '$!portlet.ID');" class="small">$page</a></li>
+        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData('view_uid',$!{result.ViewUid}).addQueryData('view_month', ${result.Month.MonthLiteral}))', '$!portlet.ID');" class="small">$page</a></li>
 #end
 #if($showRightRest &&  (${currentPage} + ${pageRange} - 1) < ${pages})
 #set($restRightPages = $pages - $pageTrimRange + 1)
         <li class="abbr">....</li>
 #foreach($page in [${restRightPages}..${pages}])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData('view_uid',$!{result.ViewUid}))', '$!portlet.ID');" class="small">$page</a></li>
+        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData('view_uid',$!{result.ViewUid}).addQueryData('view_month', ${result.Month.MonthLiteral}))', '$!portlet.ID');" class="small">$page</a></li>
 #end
 #end
       </ul>
