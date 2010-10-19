@@ -45,6 +45,9 @@
 #else
 <table border="0" cellspacing="0" cellpadding="2"><tbody>
 <tr valign="middle"><td>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevWeek.toString()}))', '$!portlet.ID');" title="前の週へ">
+<img src="themes/$!result.Theme/images/icon/arrow_left_w.gif" border="0" alt="前の週へ" /></a>&nbsp;
+</td><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevDate.toString()}))', '$!portlet.ID');" title="前の日へ">
 <img src="themes/$!result.Theme/images/icon/arrow_left.gif" border="0" alt="前の日へ" /></a>&nbsp;
 </td><td nowrap="nowrap"><span style="font-weight:bold">
@@ -53,9 +56,19 @@ $!{result.ViewDate.Year} 年 $!{result.ViewDate.Month} 月 $!{result.ViewDate.Da
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextDate.toString()}))', '$!portlet.ID');" title="次の日へ">
 <img src="themes/$!result.Theme/images/icon/arrow_right.gif" border="0" alt="次の日へ" /></a>&nbsp;
 </td><td>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextWeek.toString()}))', '$!portlet.ID');" title="次の週へ">
+<img src="themes/$!result.Theme/images/icon/arrow_right_w.gif" border="0" alt="次の週へ" /></a>&nbsp;
+</td><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.Today.toString()}))', '$!portlet.ID');" title="今日へ">
 <img src="images/schedule/schedule_today.gif" border="0" alt="今日へ" /></a>&nbsp;
-</td></tr></tbody></table>
+</td><td>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="前月へ">
+<img src="images/schedule/schedule_prevmonth.gif" border="0" alt="前月へ" /></a>&nbsp;
+</td><td>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="翌月へ">
+<img src="images/schedule/schedule_nextmonth.gif" border="0" alt="翌月へ" /></a>&nbsp;
+</td>
+</tr></tbody></table>
 
 #set($termcolcount = 0)
 #set($todocolcount = 0)
@@ -81,9 +94,9 @@ $!{result.ViewDate.Year} 年 $!{result.ViewDate.Month} 月 $!{result.ViewDate.Da
 #end
 #set($endHour = $!{result.EndHour} - 1)
 #ALtableheaderCalendar("100%")
-<tr> 
+<tr>
 #foreach ( $num in [1..$colspanmax] )
-<td class="calendarHeader"><img src="images/common/dot.gif" width="1" height="1" alt="" /></td> 
+<td class="calendarHeader"><img src="images/common/dot.gif" width="1" height="1" alt="" /></td>
 #end
 </tr>
 <tr>
@@ -109,7 +122,7 @@ $!{result.ViewDate.Year} 年 $!{result.ViewDate.Month} 月 $!{result.ViewDate.Da
 #ALtdheadAtt("$record3.AliasName" "")
 #set($userTodoCount = $result.getToDoResultDataList($record3.UserId.Value).size())
 #if($userTodoCount > 0)
-#foreach($record in ${result.getToDoResultDataList($record3.UserId.Value)})	
+#foreach($record in ${result.getToDoResultDataList($record3.UserId.Value)})
 #ALtdcellheaderAtt("style='background-color:#FFE5E5;'")
 <div class="calendarScheduleDiv">
 <div class="small">
@@ -117,7 +130,7 @@ $!{result.ViewDate.Year} 年 $!{result.ViewDate.Month} 月 $!{result.ViewDate.Da
 <a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.TodoId}))');">
 #else
 <a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoPublicDetailScreen").addQueryData("entityid",$!{record.TodoId}))');">
-#end	
+#end
 ##<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.TodoId}))');">
 ${record.TodoName}
 #if(! ${record.isPublic()})
@@ -136,7 +149,7 @@ ${record.TodoName}
 ### 期間スケジュール（ここから） ###
 #set($userTermCount = $result.getTermResultDataList($record3.UserId.Value).size())
 #if($userTermCount > 0)
-#foreach($record in ${result.getTermResultDataList($record3.UserId.Value)}) 
+#foreach($record in ${result.getTermResultDataList($record3.UserId.Value)})
 #ALtdcellheader()
 <div class="calerndarTermScheduleDiv small">
 #if(${record.isShowDetail()})
@@ -289,7 +302,7 @@ $record.Name
 #end
 #ALtdcellfooter()
 #else
-#if($!{result.hasAuthorityFacilityInsert()})	
+#if($!{result.hasAuthorityFacilityInsert()})
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.StartDate.toString()}).addQueryData('form_end', $!{record.EndDate.toString()}).addQueryData('facility_to', $!{record3.FacilityId.Value})")
 #ALtdcellheaderAtt("colspan='$colspan'")
 <div class="calendarScheduleDiv"><div class="small">

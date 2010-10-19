@@ -64,17 +64,30 @@ public class ScheduleOnedaySelectData extends
     ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleOnedaySelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ScheduleOnedaySelectData.class
+      .getName());
 
   /** <code>viewDate</code> 表示する日付 */
   private ALDateTimeField viewDate;
 
-  /** <code>prevDate</code> 表示する日付 */
+  /** <code>prevDate</code> 前の日付 */
   private ALDateTimeField prevDate;
 
   /** <code>nextDate</code> 次の日付 */
   private ALDateTimeField nextDate;
+
+  /** <code>prevWeek</code> 前の週 */
+  private ALDateTimeField prevWeek;
+
+  /** <code>nextWeek</code> 次の週 */
+  private ALDateTimeField nextWeek;
+
+  /** <code>prevWeek</code> 前の月 */
+  private ALDateTimeField prevMonth;
+
+  /** <code>nextWeek</code> 次の月 */
+  private ALDateTimeField nextMonth;
 
   /** <code>today</code> 今日 */
   private ALDateTimeField today;
@@ -149,6 +162,10 @@ public class ScheduleOnedaySelectData extends
     viewDate.setNotNull(true);
     nextDate = new ALDateTimeField("yyyy-MM-dd");
     prevDate = new ALDateTimeField("yyyy-MM-dd");
+    nextWeek = new ALDateTimeField("yyyy-MM-dd");
+    prevWeek = new ALDateTimeField("yyyy-MM-dd");
+    nextMonth = new ALDateTimeField("yyyy-MM-dd");
+    prevMonth = new ALDateTimeField("yyyy-MM-dd");
     today = new ALDateTimeField("yyyy-MM-dd");
     Calendar to = Calendar.getInstance();
     to.set(Calendar.HOUR_OF_DAY, 0);
@@ -204,6 +221,20 @@ public class ScheduleOnedaySelectData extends
 
       }
     }
+    Calendar viewDateCal = Calendar.getInstance();
+    viewDateCal.setTime(viewDate.getValue());
+    viewDateCal.add(Calendar.DATE, 7);
+    nextWeek.setValue(viewDateCal.getTime());
+    viewDateCal.setTime(viewDate.getValue());
+    viewDateCal.add(Calendar.DATE, -7);
+    prevWeek.setValue(viewDateCal.getTime());
+    viewDateCal.setTime(viewDate.getValue());
+    viewDateCal.add(Calendar.MONTH, 1);
+    nextMonth.setValue(viewDateCal.getTime());
+    viewDateCal.setTime(viewDate.getValue());
+    viewDateCal.add(Calendar.MONTH, -1);
+    prevMonth.setValue(viewDateCal.getTime());
+
     resultData = new ScheduleResultData[(endHour - startHour) * 4 * 2];
     dlist = new ArrayList<ScheduleResultData>();
     Calendar cal2 = Calendar.getInstance();
@@ -783,12 +814,48 @@ public class ScheduleOnedaySelectData extends
   }
 
   /**
+   * 前の週を取得します。
+   * 
+   * @return
+   */
+  public ALDateTimeField getPrevWeek() {
+    return prevWeek;
+  }
+
+  /**
+   * 次の週を取得します。
+   * 
+   * @return
+   */
+  public ALDateTimeField getNextWeek() {
+    return nextWeek;
+  }
+
+  /**
    * 今日を取得します。
    * 
    * @return
    */
   public ALDateTimeField getToday() {
     return today;
+  }
+
+  /**
+   * 先月を取得します。
+   * 
+   * @return
+   */
+  public ALDateTimeField getPrevMonth() {
+    return prevMonth;
+  }
+
+  /**
+   * 来月を取得します。
+   * 
+   * @return
+   */
+  public ALDateTimeField getNextMonth() {
+    return nextMonth;
   }
 
   /**

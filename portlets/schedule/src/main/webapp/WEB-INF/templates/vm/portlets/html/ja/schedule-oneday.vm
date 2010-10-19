@@ -18,32 +18,43 @@
  *#
 
 ## ---------------------------------------------------------------------------
-<table border="0" cellspacing="0" cellpadding="5"><tbody>
+<table border="0" cellspacing="0" cellpadding="2"><tbody>
 <tr valign="middle"><td>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevWeek.toString()}))', '$!portlet.ID');" title="前の週へ">
+<img src="themes/$!result.Theme/images/icon/arrow_left_w.gif" border="0" alt="前の週へ" /></a>&nbsp;
+</td><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevDate.toString()}))', '$!portlet.ID');" title="前の日へ">
 <img src="themes/$!result.Theme/images/icon/arrow_left.gif" border="0" alt="前の日へ" /></a>&nbsp;
-</td><td nowrap="nowrap">
-<span style="font-weight:bold">
+</td><td nowrap="nowrap"><span style="font-weight:bold">
 $!{result.ViewDate.Year} 年 $!{result.ViewDate.Month} 月 $!{result.ViewDate.Day} 日 $!{result.ViewDate.DayOfWeek}
-</span>
-</td><td>
+</span></td><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextDate.toString()}))', '$!portlet.ID');" title="次の日へ">
 <img src="themes/$!result.Theme/images/icon/arrow_right.gif" border="0" alt="次の日へ" /></a>&nbsp;
 </td><td>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextWeek.toString()}))', '$!portlet.ID');" title="次の週へ">
+<img src="themes/$!result.Theme/images/icon/arrow_right_w.gif" border="0" alt="次の週へ" /></a>&nbsp;
+</td><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.Today.toString()}))', '$!portlet.ID');" title="今日へ">
 <img src="images/schedule/schedule_today.gif" border="0" alt="今日へ" /></a>&nbsp;
-</td></tr></tbody></table>
+</td><td>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="前月へ">
+<img src="images/schedule/schedule_prevmonth.gif" border="0" alt="前月へ" /></a>&nbsp;
+</td><td>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="翌月へ">
+<img src="images/schedule/schedule_nextmonth.gif" border="0" alt="翌月へ" /></a>&nbsp;
+</td>
+</tr></tbody></table>
 #ALformheader('スケジュール' $jslink $portlet)
 #ALtableheaderCalendar("100%")
 <tr>
 #foreach ( $num in [1..2] )
-<td class="calendarHeader"><img src="images/common/dot.gif" height="1" alt="" /></td> 
+<td class="calendarHeader"><img src="images/common/dot.gif" height="1" alt="" /></td>
 #end
 </tr>
 #set($todoListSize = $result.ToDoResultDataList.size())
 #if($todoListSize > 0)
 <tr>
-#ALtdheadAtt("" "rowspan='$todoListSize' width='25'")	
+#ALtdheadAtt("" "rowspan='$todoListSize' width='25'")
 #set($todoCount = 1)
 #foreach($record in $result.ToDoResultDataList)
 #if($todoCount > 1) <tr> #end
@@ -65,7 +76,7 @@ ${record.TodoName}
 #set($termListSize = $result.TermResultDataList.size())
 #if($termListSize > 0)
 <tr>
-#ALtdheadAtt("" "rowspan='$termListSize' width='25'")   
+#ALtdheadAtt("" "rowspan='$termListSize' width='25'")
 #set($termCount = 1)
 #foreach($record in $result.TermResultDataList)
 #if($termCount > 1) <tr> #end
