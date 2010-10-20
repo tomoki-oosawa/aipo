@@ -113,7 +113,7 @@ function get_cookie(strName) {
 function set_cookie(strName, strValue) {
   var dtExpire = new Date();
   dtExpire.setTime(dtExpire.getTime() + 10*24*60*60*1000);
-  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString();
+  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString() + "; path=/${data.getServletConfig().getServletName()}/";
 }
 
 function remove_cookie(strName) {
@@ -121,7 +121,7 @@ function remove_cookie(strName) {
   var dtExpire = new Date();
   dtExpire.setTime(dtExpire.getTime() - 1);
   strValue = get_cookie(strName);
-  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString();
+  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString() + "; path=/${data.getServletConfig().getServletName()}/";
 }
 
 function change_login_type(form) {
@@ -145,9 +145,10 @@ $!data.Message
 <h3 class="mb5">パスワード</h3>
 <input class="text" name="password" value="" type="password" size="30" maxlength="50" style="ime-mode:disabled" />
 <br />
-<input name="save_password" type="checkbox" class="checkbox" value="save" id="save_password" />
-<label for="save_password">パスワードを保存する</label>
-#ALcell_submit($career 'login_submit' 'ログイン')
+<input name="save_password" type="checkbox" class="checkbox" value="save" id="pass" />
+<label for="pass">パスワードを保存する</label>
+<br />
+#ALcell_submit_JS($career 'login_submit' 'ログイン' 'setHiddenValue(this)')
 </form>
 #ALcell_contents_footer($career)
 <script language="JavaScript" type="text/JavaScript">

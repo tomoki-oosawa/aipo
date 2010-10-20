@@ -42,13 +42,13 @@ function set_username(form){
 
 function submit2(form) {
   set_username(form);
-  
+
   set_cookie("username", form.username.value);
 #if($enable_userlist)
   set_cookie("login_type", form.login_type.checked);
 #end
   if (form.save_password.checked) {
-    set_cookie("password", form.password.value);  
+    set_cookie("password", form.password.value);
   } else {
     remove_cookie("password");
   }
@@ -104,7 +104,7 @@ function set_input_value(form) {
 #else
   form.member_username.value = usernameStr;
 #end
-  
+
   if (form.save_password.checked) {
     form.password.value = get_cookie("password");
   }
@@ -159,7 +159,7 @@ function get_cookie(strName) {
 function set_cookie(strName, strValue) {
   var dtExpire = new Date();
   dtExpire.setTime(dtExpire.getTime() + 10*24*60*60*1000);
-  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString();
+  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString() + "; path=/${data.getServletConfig().getServletName()}/";
 }
 
 function remove_cookie(strName) {
@@ -167,7 +167,7 @@ function remove_cookie(strName) {
   var dtExpire = new Date();
   dtExpire.setTime(dtExpire.getTime() - 1);
   strValue = get_cookie(strName);
-  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString();
+  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString() + "; path=/${data.getServletConfig().getServletName()}/";
 }
 
 #if($enable_userlist)
@@ -176,7 +176,7 @@ function change_login_type(form, check) {
   getObjectById('login_username_list_field').style.display = "";
   getObjectById('login_username_field').style.display = "none";
   if (form.username.value != "") {
-    tmpUsername = form.username.value; 
+    tmpUsername = form.username.value;
   }
   set_select_value(form);
   } else {
@@ -208,7 +208,7 @@ function change_group(form, value) {
   add_option(f, '', '（選択してください）', false);
   #foreach($record2 in $!result.getUsers('LoginUser') )
     add_option(f, '$!{record2.Name}', '$!{record2.AliasName}', false);
-  #end	  
+  #end
   }
   #foreach($record in $!result.PostMap)
   if (value == $!record.PostId) {
@@ -233,7 +233,7 @@ $!data.Message
 #ALtdcaptionAtt("ユーザー名" 'align="left" width="150" nowrap')
 <td class="item" align="left">
 <span id="login_username_field">
-<input class='text' name='member_username' value='' type='text' size='30' maxlength='50' style='ime-mode:disabled' /> 
+<input class='text' name='member_username' value='' type='text' size='30' maxlength='50' style='ime-mode:disabled' />
 </span>
 #if($enable_userlist)
 <span id="login_username_list_field" style="display:none">
@@ -268,13 +268,13 @@ $!data.Message
 <label for="pass">パスワードを保存する</label>
 </td>
 <tr>
-#ALtdcellAtt("#ALsubmitJS('login_submit' 'ログイン' 'setHiddenValue(this)')" 'colspan="2" align="center"') 
+#ALtdcellAtt("#ALsubmitJS('login_submit' 'ログイン' 'setHiddenValue(this)')" 'colspan="2" align="center"')
 </tr>
 #ALtablefooter()
 </form>
 </div>
 <script language="JavaScript" type="text/JavaScript">
-<!-- 
+<!--
 init();
 //-->
 </script>
