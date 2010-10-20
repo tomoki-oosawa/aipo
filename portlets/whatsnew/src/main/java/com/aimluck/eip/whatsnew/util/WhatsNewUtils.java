@@ -54,8 +54,8 @@ import com.aimluck.eip.whatsnew.beans.WhatsNewBean;
 public class WhatsNewUtils {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WhatsNewUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(WhatsNewUtils.class.getName());
 
   /** table識別用 */
   public static final int WHATS_NEW_TYPE_BLOG_ENTRY = 1;
@@ -601,7 +601,8 @@ public class WhatsNewUtils {
         bean.setJsFunctionName("aipo.note.onLoadDetail");
         bean.setPortletName("[ 伝言メモ ] ");
         try {
-          ALEipUser owner = ALEipUtils.getALEipUser(note.getOwnerId());
+          ALEipUser owner =
+            ALEipUtils.getALEipUser(Integer.valueOf(note.getOwnerId()));
           bean.setOwnerName(owner.getAliasName().getValue());
         } catch (Exception e) {
           bean.setOwnerName("");
@@ -736,7 +737,7 @@ public class WhatsNewUtils {
   }
 
   /**
-   *
+   * 
    */
   public static void removeMonthOverWhatsNew() {
     try {
