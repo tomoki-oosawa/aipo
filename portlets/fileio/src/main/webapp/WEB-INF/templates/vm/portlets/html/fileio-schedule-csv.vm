@@ -113,6 +113,7 @@ function onChg2(obj){
 #end
 
 <form name="io_select" action="" method="post" enctype="multipart/form-data">
+<input type="hidden" name="secid" value="$secid" />
 <select name="post$!{portlet.ID}" onChange="location.href=this.options[this.selectedIndex].value">
 <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_form_csv','1')">ユーザーアカウント</option>
 <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_postcsv_form','1')">部署</option>
@@ -126,10 +127,12 @@ function onChg2(obj){
 <div style="margin:0px 0px 5px 0px">
 スケジュールをファイルから一括して登録できます。
 <a href="$jslink.getTemplate('FileIOScheduleCsvFileScreen')">こちらのテンプレート</a>の形式で作成したファイルをボタン [参照...] で指定し、
-ボタン [読み込む] を押してください。
-確認画面が表示された後に、ボタン [登録] を押すことで、登録が完了します。
+ボタン [読み込む] を押してください。<br />
+確認画面が表示された後に、ボタン [登録] を押すことで、登録が完了します。<br />
+ユーザー名 と 名前 の両方が指定されている場合は、ユーザー名を優先してユーザーを検索し、登録します。
 </div>
 <form name="readcsv" action="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_upload_csv','1')" method="post" enctype="multipart/form-data">
+<input type="hidden" name="secid" value="$secid" />
 <input type="hidden" name="temp_folder" value="$temp_folder">
 #ALtableheaderWide()
 <tr>
@@ -207,7 +210,7 @@ function onChg2(obj){
 <li><span class="caution">（※1）&nbsp;ユーザー名が入力されてません</span></li>
 #end
 #if($showErrmsg2)
-<li><span class="caution">（※2）&nbsp;名前に対応するログインIDが見つかりません。ユーザー管理画面より、該当するユーザーが存在しておりますかご確認ください。</span></li>
+<li><span class="caution">（※2）&nbsp;名前にもしくはユーザー名に対応するユーザーが見つかりません。ユーザー管理画面より、該当するユーザーが存在しておりますかご確認ください。</span></li>
 #end
 #if($showErrmsg3)
 <li><span class="caution">（※3）&nbsp;スケジュール名が空白です</span></li>
