@@ -533,7 +533,7 @@ public class ScheduleUtils {
    * @param rundata
    * @param context
    * @param includeLoginUser
-   *            ログインユーザーを共有メンバーとして取り扱う場合，true．
+   *          ログインユーザーを共有メンバーとして取り扱う場合，true．
    * @return
    */
   public static List<ALEipUser> getUsers(RunData rundata, Context context,
@@ -739,7 +739,7 @@ public class ScheduleUtils {
    * 
    * @param rundata
    * @param portletEntryName
-   *            PSML ファイルに記述されているタグ entry の要素 parent
+   *          PSML ファイルに記述されているタグ entry の要素 parent
    * @return
    */
   public static String getPortletURIinPersonalConfigPane(RunData rundata,
@@ -952,7 +952,7 @@ public class ScheduleUtils {
    * @param date1
    * @param date2
    * @param checkTime
-   *            時間まで比較する場合，true．
+   *          時間まで比較する場合，true．
    * @return 等しい場合，true．
    */
   public static boolean equalsToDate(Date date1, Date date2, boolean checkTime) {
@@ -1395,11 +1395,11 @@ public class ScheduleUtils {
    * 指定した曜日が，選択範囲に入っているかを検証する．
    * 
    * @param selectedWeek
-   *            指定曜日
+   *          指定曜日
    * @param startWeek
-   *            期間開始曜日
+   *          期間開始曜日
    * @param endWeek
-   *            期間終了曜日
+   *          期間終了曜日
    * @return 選択範囲に入っている場合，true．
    */
   public static boolean includeWeek(int selectedWeek, int startWeek, int endWeek) {
@@ -1793,9 +1793,9 @@ public class ScheduleUtils {
    * @param login_user
    * @param entityid
    * @param msgList
-   *            エラーメッセージリスト
+   *          エラーメッセージリスト
    * @param isCellPhone
-   *            携帯電話かどうか
+   *          携帯電話かどうか
    * @return
    * @throws ALDBErrorException
    * @throws ALPageNotFoundException
@@ -2033,9 +2033,9 @@ public class ScheduleUtils {
         finalDate.set(Calendar.MONTH, Integer
           .valueOf(limit_end_date.getMonth()) - 1);
         finalDate.set(Calendar.DATE, Integer.valueOf(limit_end_date.getDay()));
-        sDate.set(Calendar.HOUR_OF_DAY, 23);
-        sDate.set(Calendar.MINUTE, 59);
-        sDate.set(Calendar.SECOND, 59);
+        finalDate.set(Calendar.HOUR_OF_DAY, 23);
+        finalDate.set(Calendar.MINUTE, 59);
+        finalDate.set(Calendar.SECOND, 59);
         boolean hasAvailableDate = false;
         while (sDate.before(finalDate) || sDate.equals(finalDate)) {
           if (ScheduleUtils.matchDay(sDate, repeat_pattern)) {
@@ -2084,13 +2084,13 @@ public class ScheduleUtils {
    * 同一期間内に複数の ToDo を追加する. 第一引数の List を排他制御しないで処理するので注意.
    * 
    * @param weekSpanConList
-   *            複数の期間スケジュールを保持するリスト
+   *          複数の期間スケジュールを保持するリスト
    * @param viewStartDate
-   *            表示開始の年月日
+   *          表示開始の年月日
    * @param index
-   *            期間スケジュールの追加位置
+   *          期間スケジュールの追加位置
    * @param rd
-   *            期間スケジュール
+   *          期間スケジュール
    */
   public static void addToDo(List<ScheduleToDoWeekContainer> weekConList,
       Date viewStartDate, int index, ScheduleToDoResultData rd) {
