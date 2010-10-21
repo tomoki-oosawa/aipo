@@ -40,20 +40,12 @@ ${alias}全体で利用するメールアカウントの設定です。
 #ALtditem("$!result.Detail.AccountName")
 #ALtdcaption('送信メールサーバ名（SMTP）')
 #ALtditem("$!result.Detail.SmtpserverName")
-#ALtdcaption('受信メールサーバ名（POP3）')
-#ALtditem("$!result.Detail.Pop3serverName")
-#ALtdcaption('受信用ユーザーID')
-#ALtditem("$!result.Detail.Pop3userName")
-#ALtdcaption('受信用ユーザーパスワード')
-#ALtditem("**********")
 #ALtdcaption('名前')
 #ALtditem("$!result.Detail.MailUserName")
 #ALtdcaption('メールアドレス')
 #ALtditem("$!result.Detail.MailAddress")
 #ALtdcaption('送信ポート番号（SMTP）')
 #ALtditem("$!result.Detail.SmtpPort")
-#ALtdcaption('受信ポート番号（POP3）')
-#ALtditem("$!result.Detail.Pop3Port")
 #ALtdcaption('送信時の認証方式')
 #ALtditemheader()
 #if ($!result.Detail.AuthSendFlg.toString() == "1")
@@ -72,6 +64,26 @@ SSL暗号化
 暗号化なし
 #end
 #ALtditemfooter()
+#ALtablefooter()
+#if ($!result.Detail.AuthSendFlg.toString() == "1")
+<h4 class="spaceTop">POP before SMTP情報</h4>
+#ALtableheaderWide()
+#ALtdcaption('受信メールサーバ名（POP3）')
+#ALtditem("$!result.Detail.Pop3serverName")
+#ALtdcaption('受信用ユーザーID')
+#ALtditem("$!result.Detail.Pop3userName")
+#ALtdcaption('受信用ユーザーパスワード')
+#ALtditem("**********")
+#ALtdcaption('受信ポート番号（POP3）')
+#ALtditem("$!result.Detail.Pop3Port")
+#ALtdcaption('受信時の暗号化方式')
+#ALtditemheader()
+#if ($!result.Detail.Pop3EncryptionFlag.toString() == "1")
+SSL暗号化
+#else
+暗号化なし
+#end
+#ALtditemfooter()
 #ALtdcaption('受信時の暗号化方式')
 #ALtditemheader()
 #if ($!result.Detail.Pop3EncryptionFlag.toString() == "1")
@@ -81,6 +93,7 @@ SSL暗号化
 #end
 #ALtditemfooter()
 #ALtablefooter()
+#end
 #ALbuttonheader()
 #ALajaxbuttonEdit("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAdminFormScreen').addQueryData('entityid',$!{result.Detail.AccountId})")
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAdminFormJSONScreen').addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onDeleteAdminAccount")

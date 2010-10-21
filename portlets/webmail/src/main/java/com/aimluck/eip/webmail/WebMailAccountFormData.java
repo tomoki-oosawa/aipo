@@ -37,6 +37,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipMMailAccount;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.mail.ALMailFactoryService;
 import com.aimluck.eip.mail.ALMailHandler;
@@ -141,10 +142,19 @@ public class WebMailAccountFormData extends ALAbstractFormData {
 
   private String org_id;
 
+  private boolean isAdmin = false;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
+
+    ALEipUser user = ALEipUtils.getALEipUser(rundata);
+    if (user != null && user.getUserId().getValue() == 1) {
+      isAdmin = true;
+    } else {
+      isAdmin = false;
+    }
 
     org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
   }
@@ -249,7 +259,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    */
   @Override
   protected void setValidator() {
@@ -351,7 +361,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -359,12 +369,22 @@ public class WebMailAccountFormData extends ALAbstractFormData {
     account_name.validate(msgList);
     // SMTPサーバ名
     smtpserver_name.validate(msgList);
-    // POP3サーバ名
-    pop3server_name.validate(msgList);
-    // POP3用ユーザID
-    pop3user_name.validate(msgList);
-    // POP3用ユーザパスワード
-    pop3_password.validate(msgList);
+
+    if (!isAdmin
+      || (isAdmin && auth_send_flg.getValue() == ALSmtpMailSender.AUTH_SEND_POP_BEFORE_SMTP)) {
+      // POP3サーバ名
+      pop3server_name.validate(msgList);
+      // POP3用ユーザID
+      pop3user_name.validate(msgList);
+      // POP3用ユーザパスワード
+      pop3_password.validate(msgList);
+      // POP3ポート番号
+      pop3_port.validate(msgList);
+      // 受信時の暗号化
+      pop3_encryption_flag.validate(msgList);
+      // 受信時の認証方式
+      auth_receive_flag.validate(msgList);
+    }
     // メールユーザ名
     mail_user_name.validate(msgList);
     // メールアドレス
@@ -375,8 +395,6 @@ public class WebMailAccountFormData extends ALAbstractFormData {
 
     // SMTPポート番号
     smtp_port.validate(msgList);
-    // POP3ポート番号
-    pop3_port.validate(msgList);
 
     // 送信時の認証方式
     auth_send_flg.validate(msgList);
@@ -391,12 +409,6 @@ public class WebMailAccountFormData extends ALAbstractFormData {
 
     // 送信時の暗号化
     smtp_encryption_flag.validate(msgList);
-
-    // 受信時の認証方式
-    auth_receive_flag.validate(msgList);
-
-    // 受信時の暗号化
-    pop3_encryption_flag.validate(msgList);
 
     // 受信後、サーバからメールを削除する
     del_at_pop3_flg.validate(msgList);
