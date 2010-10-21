@@ -436,7 +436,7 @@ public class WebMailFormData extends ALAbstractFormData {
         this.setCc(ALMailUtils.getAddressString(ccs));
         // BCC
         Address[] bccs = msg.getRecipients(Message.RecipientType.BCC);
-        this.setCc(ALMailUtils.getAddressString(bccs));
+        this.setBcc(ALMailUtils.getAddressString(bccs));
 
         tmpSubject = msg.getSubject();
       } else if (getMailType().getValue() == TYPE_REPLY_MAIL
@@ -457,7 +457,7 @@ public class WebMailFormData extends ALAbstractFormData {
 
         // BCC
         Address[] bccs = msg.getRecipients(Message.RecipientType.BCC);
-        this.setCc(ALMailUtils.getAddressString(bccs));
+        this.setBcc(ALMailUtils.getAddressString(bccs));
       }
 
       // Subject
