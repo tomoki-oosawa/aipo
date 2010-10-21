@@ -30,7 +30,7 @@
 #ALtditem($!result.detail.UserFullName)
 #if($!result.detail.DataNameFlag)
 #ALtdcaption('件名')
-#ALtditem($!result.detail.DataName)
+#ALtditem($!result.detail.Note)
 #end
 #ALtdcaption('機能名')
 #ALtditem($!result.detail.PortletName)
