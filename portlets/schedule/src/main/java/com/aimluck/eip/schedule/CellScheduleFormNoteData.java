@@ -123,7 +123,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
       if (enable_entityid) {
         EipTSchedule schedule =
-          ScheduleUtils.getEipTSchedule(rundata, context, true);
+          ScheduleUtils.getEipTSchedule(rundata, context, false);
         List<FacilityResultData> facilityList =
           CellScheduleUtils.getShareFacilityMemberList(rundata);
         context.put("isDuplicateFacility", "false");
@@ -251,12 +251,11 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         }
 
         boolean res =
-          (setFormData(rundata, context, msgList) && form_data
-            .validateDelegate(
-              msgList,
-              getLoginUser(),
-              getEntityId(),
-              getScheduleType().getValue()));
+          (form_data.validateDelegate(
+            msgList,
+            getLoginUser(),
+            getEntityId(),
+            getScheduleType().getValue()));
         action.setResultData(this);
         action.addErrorMessages(msgList);
         action.putData(rundata, context);

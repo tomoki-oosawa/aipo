@@ -283,8 +283,8 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
         fields,
         msgList);
 
-    if (!res) {
-      return res;
+    if (msgList.size() >= 1) {
+      return false;
     }
 
     if (!is_first) {
