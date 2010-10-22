@@ -84,14 +84,6 @@ SSL暗号化
 暗号化なし
 #end
 #ALtditemfooter()
-#ALtdcaption('受信時の暗号化方式')
-#ALtditemheader()
-#if ($!result.Detail.Pop3EncryptionFlag.toString() == "1")
-SSL暗号化
-#else
-暗号化なし
-#end
-#ALtditemfooter()
 #ALtablefooter()
 #end
 #ALbuttonheader()
