@@ -137,18 +137,20 @@ function change_login_type(form) {
 #ALcell_pagetitle_iphone($career "ログインフォーム")
 #ALcell_contents_header($career)
 $!data.Message
-<form action="${clink.setURI($uri)}" method="post">
+<form action="${clink.setURI($uri)}" method="post" onSubmit="submit2(this)">
 <input name="$jslink.ActionKey" type="hidden" value="$config.getString("action.login")" />
-##<input name="org" type="hidden" value="$!result.OrgId" />
 <h3 class="mb5">ユーザー名</h3>
 <input class='text' name='username' value='' type='text' size='30' maxlength='50' style='ime-mode:disabled' />
 <h3 class="mb5">パスワード</h3>
 <input class="text" name="password" value="" type="password" size="30" maxlength="50" style="ime-mode:disabled" />
 <br />
-<input name="save_password" type="checkbox" class="checkbox" value="save" id="pass" />
+<input name="save_password" type="checkbox" class="checkbox" value="save" id="save_password" />
 <label for="pass">パスワードを保存する</label>
 <br />
-#ALcell_submit_JS($career 'login_submit' 'ログイン' 'setHiddenValue(this)')
+<p class="center">
+  <input name="login_submit" class="button" type="submit" value="ログイン" />
+</p>
+</p>
 </form>
 #ALcell_contents_footer($career)
 <script language="JavaScript" type="text/JavaScript">

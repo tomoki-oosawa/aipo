@@ -1301,14 +1301,6 @@ $link.get(0)
 #end
 #end
 
-#macro(ALcell_submit_JS $career $name $value $js)
-#if($career == "iphone")
-<p class="center"><input name="$name" class="button" type="submit" value="$value" onclick="$js" /></p>
-#else
-<input name="$name" class="button" type="submit" value="$value" onclick="$js" />
-#end
-#end
-
 #macro(ALcell_hidden $career $name $value)
 <input name="$name" type="hidden" value="$value">
 #end
