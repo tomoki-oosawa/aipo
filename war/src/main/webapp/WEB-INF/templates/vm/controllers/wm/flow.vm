@@ -20,7 +20,7 @@
 ## ---------------------------------------------------------------------------
 #set($career = 'iphone')
 #if($data.User.hasLoggedIn())
-<h2>Aipoホーム</h2>
+<h2>${alias}ホーム</h2>
 <div id="contents">
 #set($tmp="")
 <div id="mainMenu">
