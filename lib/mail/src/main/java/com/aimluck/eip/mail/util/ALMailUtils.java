@@ -37,6 +37,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -461,14 +462,21 @@ public class ALMailUtils {
    * @return
    */
   public static String getAddressString(Address[] addresses) {
-    if (addresses == null) {
+    if (addresses == null || addresses.length <= 0) {
       return "";
     }
+    HashSet<String> foundAddress = new HashSet<String>();
+
     StringBuffer sb = new StringBuffer();
     InternetAddress addr = null;
-    int length = addresses.length - 1;
+    int length = addresses.length;
     for (int i = 0; i < length; i++) {
       addr = (InternetAddress) addresses[i];
+      if (foundAddress.contains(addr.getAddress())) {
+        continue;
+      }
+      foundAddress.add(addr.getAddress());
+
       if (addr.getPersonal() != null) {
         String personaladdr =
           getOneString(getTokens(addr.getPersonal(), "\r\n"), "");
@@ -478,16 +486,8 @@ public class ALMailUtils {
         sb.append(addr.getAddress()).append(", ");
       }
     }
-    addr = (InternetAddress) addresses[length];
-    if (addr.getPersonal() != null) {
-      String personaladdr =
-        getOneString(getTokens(addr.getPersonal(), "\r\n"), "");
-      sb.append(MailUtility.decodeText(personaladdr)).append(" <").append(
-        addr.getAddress()).append(">");
-    } else {
-      sb.append(addr.getAddress());
-    }
-    return sb.toString();
+    String addressStr = sb.toString();
+    return addressStr.substring(0, addressStr.length() - 2);
   }
 
   /**

@@ -210,7 +210,7 @@ public class WebMailFormData extends ALAbstractFormData {
    * フォームデータの妥当性を検証する．
    * 
    * @param msgList
-   *            エラーメッセージのリスト
+   *          エラーメッセージのリスト
    */
   @Override
   public boolean validate(List<String> msgList) {
@@ -439,8 +439,7 @@ public class WebMailFormData extends ALAbstractFormData {
         this.setBcc(ALMailUtils.getAddressString(bccs));
 
         tmpSubject = msg.getSubject();
-      } else if (getMailType().getValue() == TYPE_REPLY_MAIL
-        || getMailType().getValue() == TYPE_REPLY_ALL_MAIL) {
+      } else if (getMailType().getValue() == TYPE_REPLY_MAIL) {
         // TO
         Address[] tos = msg.getFrom();
         this.setTo(ALMailUtils.getAddressString(tos));
@@ -448,9 +447,21 @@ public class WebMailFormData extends ALAbstractFormData {
         tmpSubject = "Re: " + msg.getSubject();
       } else if (getMailType().getValue() == TYPE_FORWARD_MAIL) {
         tmpSubject = "Fwd: " + msg.getSubject();
-      }
+      } else if (getMailType().getValue() == TYPE_REPLY_ALL_MAIL) {
+        // TO
+        Address[] from = msg.getFrom();
+        Address[] to = msg.getRecipients(Message.RecipientType.TO);
+        int from_length = from.length;
+        int to_length = to.length;
+        Address[] tos = new Address[from_length + to_length];
+        for (int i = 0; i < from_length; i++) {
+          tos[i] = from[i];
+        }
+        for (int i = 0; i < to_length; i++) {
+          tos[i + from_length] = to[i];
+        }
+        this.setTo(ALMailUtils.getAddressString(tos));
 
-      if (getMailType().getValue() == TYPE_REPLY_ALL_MAIL) {
         // CC
         Address[] ccs = msg.getRecipients(Message.RecipientType.CC);
         this.setCc(ALMailUtils.getAddressString(ccs));
@@ -458,6 +469,8 @@ public class WebMailFormData extends ALAbstractFormData {
         // BCC
         Address[] bccs = msg.getRecipients(Message.RecipientType.BCC);
         this.setBcc(ALMailUtils.getAddressString(bccs));
+
+        tmpSubject = "Re: " + msg.getSubject();
       }
 
       // Subject
