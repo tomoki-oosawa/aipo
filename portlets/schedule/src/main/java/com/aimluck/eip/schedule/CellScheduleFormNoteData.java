@@ -287,7 +287,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
   }
 
   /*
-   *
+   * 
    */
   @Override
   public void initField() {
@@ -328,7 +328,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
   }
 
   /*
-   *
+   * 
    */
   @Override
   protected void setValidator() {
@@ -1247,32 +1247,27 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
       } else if (delFlag == 2) {
         List<EipTScheduleMap> scheduleMaps =
           ScheduleUtils.getEipTScheduleMaps(schedule);
-        schedule.getScheduleId();
-
         if (scheduleMaps != null && scheduleMaps.size() > 0) {
-          int countRejectSchedule = 0;
-          List<EipTScheduleMap> tmpScheduleMap =
+          int rejectedScheduleCount = 0;
+          List<EipTScheduleMap> userScheduleMap =
             new ArrayList<EipTScheduleMap>();
-          for (int i = 0; i < scheduleMaps.size(); i++) {
-            EipTScheduleMap scheduleMap = scheduleMaps.get(i);
+          for (EipTScheduleMap scheduleMap : scheduleMaps) {
             if (ScheduleUtils.SCHEDULEMAP_TYPE_USER.equals(scheduleMap
               .getType())) {
-              tmpScheduleMap.add(scheduleMap);
+              userScheduleMap.add(scheduleMap);
               if ("R".equals(scheduleMap.getStatus())) {
-                countRejectSchedule += 1;
+                rejectedScheduleCount++;
               }
             }
           }
-          int scheduleMapsSize = tmpScheduleMap.size();
+          int scheduleUserCount = userScheduleMap.size();
 
-          if (countRejectSchedule >= scheduleMapsSize - 1) {
-            // この schedule ID に関係するスケジュールがすべて reject されたため，
-            // すべて削除する．
+          if (rejectedScheduleCount >= scheduleUserCount - 1) {
+            // この schedule ID のスケジュールを, ユーザが全員予定を削除したため，
+            // 親スケジュールごと削除する．
             deleteSchedule(schedule);
           } else {
-            for (int i = 0; i < scheduleMapsSize; i++) {
-              EipTScheduleMap scheduleMap = scheduleMaps.get(i);
-
+            for (EipTScheduleMap scheduleMap : userScheduleMap) {
               if (scheduleMap.getUserId().intValue() == getLoginUser()
                 .getUserId()
                 .getValue()) {
@@ -1291,7 +1286,6 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
                       schedule.setEditFlag("T");
                     }
                   }
-
                   scheduleMap.setStatus("R");
                 }
               }
@@ -1317,7 +1311,6 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
             .getValue(), form_data.getViewDate().getValue(), memberIdList);
         }
       } else {
-        // orm_schedule.doDelete(schedule);
         Database.delete(schedule);
       }
 
