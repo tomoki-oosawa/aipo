@@ -136,8 +136,9 @@ public class RemainderScheduleDaemon implements Daemon {
   /**
    * Static initialization of the logger for this class
    */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(RemainderScheduleDaemon.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService
+      .getLogger(RemainderScheduleDaemon.class.getName());
 
   /**
    */
@@ -399,10 +400,21 @@ public class RemainderScheduleDaemon implements Daemon {
         try {
           p1 = (a).getEipTSchedule();
           p2 = (b).getEipTSchedule();
-
         } catch (Exception e) {
           logger.error("Exception", e);
         }
+
+        // 期間スケジュールを先頭に表示
+        if (p1.getRepeatPattern().equals("S")) {
+          if (!p2.getRepeatPattern().equals("S")) {
+            return -1;
+          }
+        } else {
+          if (p2.getRepeatPattern().equals("S")) {
+            return 1;
+          }
+        }
+
         cal.setTime(p1.getStartDate());
         cal.set(0, 0, 0);
         cal2.setTime(p2.getStartDate());
@@ -963,21 +975,21 @@ public class RemainderScheduleDaemon implements Daemon {
   }
 
   /**
-   *
+   * 
    */
   public int getResult() {
     return this.result;
   }
 
   /**
-   *
+   * 
    */
   public void setResult(int result) {
     this.result = result;
   }
 
   /**
-   *
+   * 
    */
   public String getMessage() {
     return null;

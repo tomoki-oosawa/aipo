@@ -54,8 +54,9 @@ import com.aimluck.eip.util.ALEipUtils;
 public class CellScheduleOnedaySelectData extends ScheduleOnedaySelectData {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(CellScheduleOnedaySelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(CellScheduleOnedaySelectData.class
+      .getName());
 
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -120,8 +121,7 @@ public class CellScheduleOnedaySelectData extends ScheduleOnedaySelectData {
          * if (!schedule2.getRepeatPattern().equals("N") &&
          * "D".equals(record.getStatus()) && schedule2.getScheduleId() ==
          * schedule.getParentId()) { // [繰り返しスケジュール] 親の ID を検索 if
-         * (!delList.contains(record2)) { delList.add(record2); } canAdd = true;
-         * } }
+         * (!delList.contains(record2)) { delList.add(record2); } canAdd = true; } }
          * 
          * delSize = delList.size(); for (int k = 0; k < delSize; k++) {
          * list.remove(delList.get(k)); }
@@ -152,10 +152,21 @@ public class CellScheduleOnedaySelectData extends ScheduleOnedaySelectData {
           try {
             p1 = (a).getEipTSchedule();
             p2 = (b).getEipTSchedule();
-
           } catch (Exception e) {
             logger.error("Exception", e);
           }
+
+          // 期間スケジュールを先頭に表示
+          if (p1.getRepeatPattern().equals("S")) {
+            if (!p2.getRepeatPattern().equals("S")) {
+              return -1;
+            }
+          } else {
+            if (p2.getRepeatPattern().equals("S")) {
+              return 1;
+            }
+          }
+
           cal.setTime(p1.getStartDate());
           cal.set(0, 0, 0);
           cal2.setTime(p2.getStartDate());
