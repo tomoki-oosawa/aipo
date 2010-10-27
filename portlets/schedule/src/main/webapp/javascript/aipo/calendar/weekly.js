@@ -804,7 +804,7 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         } else if(userAgent.indexOf("safari") > -1) {
             this.startAbsoluteY -= dojo.byId('weeklyScrollPane_'+this.portletId).scrollTop;     // DIVタグスクロール分を修正
         }
-        
+
         this.startHeight = parseInt(dojo.getComputedStyle(this.node).height);
         this.startTop = parseInt(dojo.getComputedStyle(this.node).top);
         if(this.startHeight - 6 < this.startY-this.startAbsoluteY) {
@@ -1266,6 +1266,11 @@ dojo.declare("aipo.calendar.WeeklyScheduleAddDragMoveObject", [aimluck.dnd.DragM
         dojo.style(this.node, "opacity", 0.5);
     },
     onMouseUp: function(e) {
+        if(!this._isDragging){
+            /** ドラッグでなく、クリックされた場合 */
+            this.onFirstMove(e);
+            this.onMouseMove(e);
+        }
         var hour = Math.floor(this.positionFrom/2);
         hour = (hour > 9) ? hour : "0" + hour;
         var minute = Math.floor(this.positionFrom%2)*30;
@@ -1285,7 +1290,6 @@ dojo.declare("aipo.calendar.WeeklyScheduleAddDragMoveObject", [aimluck.dnd.DragM
         }
         //** FIXME IEで追加ダイアログを閉じるとスクロールバーのｙ座標が強制的に０になってしまう現象
         aipo.schedule.tmpScroll = parseInt(dojo.byId('weeklyScrollPane_'+this.portletId)["scrollTop"]);
-        //**//
 
        this._isDragging = false;
        aimluck.dnd.DragMoveObject.prototype.onMouseUp.apply(this, arguments);
@@ -1351,7 +1355,11 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleAddDragMoveObject", [aimluck.dnd.D
         }
     },
     onMouseUp: function (e) {
-
+        if(!this._isDragging){
+            /** ドラッグでなく、クリックされた場合 */
+            this.onFirstMove(e);
+            this.onMouseMove(e);
+        }
         var left1, left2;
         if (this.positionTo != -1 && this.positionFrom != -1) {
             if(this.positionTo > this.positionFrom) {
@@ -1368,7 +1376,6 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleAddDragMoveObject", [aimluck.dnd.D
             }
             //** FIXME IEで追加ダイアログを閉じるとスクロールバーのｙ座標が強制的に０になってしまう現象
             aipo.schedule.tmpScroll = parseInt(dojo.byId('weeklyScrollPane_'+this.portletId)["scrollTop"]);
-            //**//
         }
         this.positionFrom = -1;
         this.positionTo = -1;
