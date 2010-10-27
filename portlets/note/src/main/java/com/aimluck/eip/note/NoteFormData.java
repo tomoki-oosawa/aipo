@@ -69,8 +69,8 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
  */
 public class NoteFormData extends ALAbstractFormData {
 
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(NoteFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(NoteFormData.class.getName());
 
   /**
    * MSG_TYPE 1 : "伝言メモを送信しました。宛先ユーザーのパソコン用メールアドレスが未設定のため，メールを送信できませんでした。"
@@ -212,7 +212,7 @@ public class NoteFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    */
   @Override
   protected void setValidator() {
@@ -286,9 +286,8 @@ public class NoteFormData extends ALAbstractFormData {
     dest_post_id.validate(msgList);
     dest_user_id.validate(msgList);
 
-    if (dest_user_id.getValue() == null
-      || dest_user_id.getValue().equals("")
-      || dest_user_id.getValue().equals("all")) {
+    if (dest_user_id.getValue() != null
+      && dest_user_id.getValue().equals("all")) {
       // 選択されたグループにログインユーザ以外のユーザが登録されていない場合，エラーを表示する．
       if (memberList == null || memberList.size() <= 1) {
         msgList
@@ -571,7 +570,7 @@ public class NoteFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    */
   public void initField() {
     note_id = new ALNumberField();
@@ -659,12 +658,12 @@ public class NoteFormData extends ALAbstractFormData {
   }
 
   /**
-   * データに値をセットする． 
+   * データに値をセットする．
    * 
    * @param rundata
    * @param context
    * @param msgList
-   *          エラーメッセージのリスト
+   *            エラーメッセージのリスト
    * @return TRUE 成功 FALSE 失敗
    */
   @Override
@@ -969,7 +968,7 @@ public class NoteFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    */
   public void enableAddDestTypes() {
     // 追加送信先タイプ（パソコンのメールアドレスに送信）

@@ -39,12 +39,12 @@
 <select name="accept_date_hour" size="1">
 #foreach ( $num in [0..23] )
 <option value="$num" #if ($!result.AcceptDate.Hour == "$num") selected #end>$num時</option>
-#end              
+#end
 </select>
 <select name="accept_date_minute" size="1">
 #foreach ( $num in [0..59] )
 <option value="$num" #if ($!result.AcceptDate.Minute == "$num") selected #end>$num分</option>
-#end              
+#end
 </select>
 #ALtditemfooter()
 #ALtdcaption("#ALrequired($!result.getFieldName('dest_user_id'))")
@@ -63,7 +63,7 @@
 #end
 </select>
 <div id="destuserDiv"></div>
-<div class="message small">グループだけを選択した場合、グループに属する全ユーザーに送信します。ユーザーを選択した場合、選択したユーザーだけに送信します。</div>
+<div class="message small">ユーザー全員を選択した場合、グループに属する全ユーザーに送信します。ユーザーを選択した場合、選択したユーザーだけに送信します。</div>
 #ALtditemfooter()
 #ALtdcaption("#ALrequired($!result.getFieldName('client_name'))")
 #ALtditem("#ALtextfield('client_name' $!result.ClientName '90%' 50 'active')")
@@ -77,8 +77,8 @@
 #ALtditem("#ALtextfield('email_address' $!result.EmailAddress '90%' 50 'disabled')")
 #ALtdcaption($!result.getFieldName('add_dest_type_pc'))
 #ALtditemheader()
-<input name="add_dest_type_pc" type="checkbox" value="1" id="$!{portlet.ID}add_dest_type_pc_id" #if($!result.AddDestTypePc.toString() == "1") checked="checked" #end/><label for="$!{portlet.ID}add_dest_type_pc_id">パソコン</label> 
-<input name="add_dest_type_cellphone" type="checkbox" value="1" id="$!{portlet.ID}add_dest_type_cellphone_id" #if($!result.AddDestTypeCellphone.toString() == "1") checked="checked" #end/><label for="$!{portlet.ID}add_dest_type_cellphone_id">携帯電話</label> 
+<input name="add_dest_type_pc" type="checkbox" value="1" id="$!{portlet.ID}add_dest_type_pc_id" #if($!result.AddDestTypePc.toString() == "1") checked="checked" #end/><label for="$!{portlet.ID}add_dest_type_pc_id">パソコン</label>
+<input name="add_dest_type_cellphone" type="checkbox" value="1" id="$!{portlet.ID}add_dest_type_cellphone_id" #if($!result.AddDestTypeCellphone.toString() == "1") checked="checked" #end/><label for="$!{portlet.ID}add_dest_type_cellphone_id">携帯電話</label>
 <div class="message small">この伝言メモをパソコンや携帯電話に送れます。<br/>ただし、宛先ユーザーのメールアドレスが未設定の場合、もしくは${alias}の管理者画面でメールアカウントを登録されていない場合には、伝言メモは送信できますが、そのメールアドレスには通知されません。</div>
 #ALtditemfooter()
 #ALtdcaption("#ALrequired($!result.getFieldName('subject_type'))")
@@ -91,7 +91,7 @@
 <label for="subject_type1$!portlet.ID">再度電話します。</label><br/>
 <input name="subject_type" id="subject_type2$!portlet.ID" type="radio" value="2" #if ($!result.SubjectType.toString() == "2") checked="checked" #end/>
 <label for="subject_type2$!portlet.ID">折返しお電話ください。</label><br/>
-<input name="subject_type" id="subject_type0$!portlet.ID" type="radio" value="0" #if ($!result.SubjectType.toString() == "0") checked="checked" #end/> 
+<input name="subject_type" id="subject_type0$!portlet.ID" type="radio" value="0" #if ($!result.SubjectType.toString() == "0") checked="checked" #end/>
 <label onclick='aipo.note.oncheck0("subject_type0$!portlet.ID")' >
 #ALtextfield('custom_subject' $!result.CustomSubject.toString() '50%' 50 'active')
 <div style="padding-left:15px;">&nbsp;（用件を自由に入力できます）</div>

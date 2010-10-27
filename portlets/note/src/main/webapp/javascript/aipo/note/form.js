@@ -33,8 +33,8 @@ aipo.note.onLoadNoteDialog = function(portlet_id){
     var url_userlist = dojo.byId('urlUserlist'+portlet_id).value;
     var dst_user_id = dojo.byId('urlDstUser'+portlet_id).value;
     if(url_userlist){
-        aipo.note.changeGroup(url_userlist, 'LoginUser', dst_user_id);   
-    }    
+        aipo.note.changeGroup(url_userlist, 'LoginUser', dst_user_id);
+    }
 }
 
 aipo.note.formSwitchCategoryInput = function(button) {
@@ -57,12 +57,12 @@ aipo.note.formCategoryInputOn = function(form) {
 aipo.note.formCategoryInputOff = function(form) {
     dojo.byId('noteCategoryInputField').style.display = "none";
     dojo.byId('noteCategorySelectField').style.display = "";
-    
+
     form.is_new_category.value = 'FALSE';
 }
 
 aipo.note.changeGroup = function(link, group, sel) {
-    aimluck.utils.form.createSelect("dest_user_id", "destuserDiv", link + "?mode=group&groupname=" + group + "&inc_luser=false", "userId", "aliasName", sel, '<option value="all">（ユーザー全員）<\/option>');
+    aimluck.utils.form.createSelect("dest_user_id", "destuserDiv", link + "?mode=group&groupname=" + group + "&inc_luser=false", "userId", "aliasName", sel, '<option value="">（選択してください）<\/option><option value="all">（ユーザー全員）<\/option>');
 }
 
 aipo.note.onReceiveMessage = function(msg){
