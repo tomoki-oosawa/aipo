@@ -108,25 +108,26 @@ public class ALActionEventlogConstants {
   /**
    * EVENT_ALIAS_NAME
    */
-  public static final String[] EVENT_ALIAS_NAME = {
-    "その他のイベント",
-    "更新",
-    "削除",
-    "削除",
-    "追加",
-    "フォーム",
-    "新規フォーム",
-    "編集フォーム",
-    "一覧",
-    "詳細",
-    "ログイン",
-    "ログアウト",
-    "承認",
-    "差し戻し",
-    "出勤",
-    "退勤",
-    "参加・キャンセル",
-    "Excelファイルとしてダウンロード" };
+  public static final String[] EVENT_ALIAS_NAME =
+    {
+      "その他のイベント",
+      "更新",
+      "削除",
+      "削除",
+      "追加",
+      "フォーム",
+      "新規フォーム",
+      "編集フォーム",
+      "一覧",
+      "詳細",
+      "ログイン",
+      "ログアウト",
+      "承認",
+      "差し戻し",
+      "出勤",
+      "退勤",
+      "参加・キャンセル",
+      "Excelファイルとしてダウンロード" };
 
   public static final String PORTLET_TYPE_STR_STR_NONE = "その他の機能";
 
@@ -143,6 +144,10 @@ public class ALActionEventlogConstants {
   public static final String PORTLET_TYPE_STR_BLOG_THEMA = "ブログテーマ";
 
   public static final String PORTLET_TYPE_STR_WORKFLOW = "ワークフロー";
+
+  public static final String PORTLET_TYPE_STR_WORKFLOW_CATEGORY = "ワークフロー分類";
+
+  public static final String PORTLET_TYPE_STR_WORKFLOW_ROUTE = "ワークフロー申請経路";
 
   public static final String PORTLET_TYPE_STR_TODO = "ToDo";
 

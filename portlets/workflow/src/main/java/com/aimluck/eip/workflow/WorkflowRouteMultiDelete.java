@@ -33,6 +33,8 @@ import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRoute;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 
 /**
  * ワークフローカテゴリの複数削除を行うためのクラスです。 <BR>
@@ -41,8 +43,9 @@ import com.aimluck.eip.orm.query.SelectQuery;
 public class WorkflowRouteMultiDelete extends ALAbstractCheckList {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WorkflowRouteMultiDelete.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(WorkflowRouteMultiDelete.class
+      .getName());
 
   /**
    * 
@@ -80,8 +83,15 @@ public class WorkflowRouteMultiDelete extends ALAbstractCheckList {
 
       // 申請経路を削除
       Database.deleteAll(routelist);
-
       Database.commit();
+
+      // イベントログに保存
+      for (EipTWorkflowRoute route : routelist) {
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          route.getRouteId(),
+          ALEventlogConstants.PORTLET_TYPE_WORKFLOW_ROUTE,
+          route.getRouteName());
+      }
     } catch (Exception ex) {
       Database.rollback();
       logger.error("Exception", ex);

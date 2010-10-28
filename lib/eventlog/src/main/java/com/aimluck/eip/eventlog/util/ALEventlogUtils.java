@@ -34,8 +34,8 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
  */
 public class ALEventlogUtils {
 
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ALEventlogUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ALEventlogUtils.class.getName());
 
   /**
    * mode を DB に保存するための数値に変換します。
@@ -119,9 +119,12 @@ public class ALEventlogUtils {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_BLOG_ENTRY;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_BLOG_THEMA) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_BLOG_THEMA;
-    } else if (portletType == ALEventlogConstants.PORTLET_TYPE_WORKFLOW
-      || portletType == ALEventlogConstants.PORTLET_TYPE_WORKFLOW_CATEGORY) {
+    } else if (portletType == ALEventlogConstants.PORTLET_TYPE_WORKFLOW) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_WORKFLOW;
+    } else if (portletType == ALEventlogConstants.PORTLET_TYPE_WORKFLOW_CATEGORY) {
+      return ALActionEventlogConstants.PORTLET_TYPE_STR_WORKFLOW_CATEGORY;
+    } else if (portletType == ALEventlogConstants.PORTLET_TYPE_WORKFLOW_ROUTE) {
+      return ALActionEventlogConstants.PORTLET_TYPE_STR_WORKFLOW_ROUTE;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_TODO) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_TODO;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_TODO_CATEGORY) {
