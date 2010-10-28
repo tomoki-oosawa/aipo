@@ -121,7 +121,8 @@ public class CellScheduleOnedaySelectData extends ScheduleOnedaySelectData {
          * if (!schedule2.getRepeatPattern().equals("N") &&
          * "D".equals(record.getStatus()) && schedule2.getScheduleId() ==
          * schedule.getParentId()) { // [繰り返しスケジュール] 親の ID を検索 if
-         * (!delList.contains(record2)) { delList.add(record2); } canAdd = true; } }
+         * (!delList.contains(record2)) { delList.add(record2); } canAdd = true;
+         * } }
          * 
          * delSize = delList.size(); for (int k = 0; k < delSize; k++) {
          * list.remove(delList.get(k)); }
@@ -267,7 +268,7 @@ public class CellScheduleOnedaySelectData extends ScheduleOnedaySelectData {
     // 繰り返しスケジュール（週間）
     Calendar date = Calendar.getInstance();
     date.setTime(getViewDate().getValue());
-    int weekindex = date.get(Calendar.DAY_OF_WEEK);
+    int weekindex = date.get(Calendar.DAY_OF_WEEK) - 1;
     String token = null;
     StringBuffer sb = new StringBuffer();
     sb.append("W");

@@ -58,8 +58,9 @@ public class CellScheduleOnedaySelectByMemberData extends
     CellScheduleOnedaySelectData {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(CellScheduleOnedaySelectByMemberData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService
+      .getLogger(CellScheduleOnedaySelectByMemberData.class.getName());
 
   /** <code>login_user</code> 表示対象ユーザー */
   private ALEipUser targerUser;
@@ -149,7 +150,7 @@ public class CellScheduleOnedaySelectByMemberData extends
     // 繰り返しスケジュール（週間）
     Calendar date = Calendar.getInstance();
     date.setTime(getViewDate().getValue());
-    int weekindex = date.get(Calendar.DAY_OF_WEEK);
+    int weekindex = date.get(Calendar.DAY_OF_WEEK - 1);
     String token = null;
     StringBuffer sb = new StringBuffer();
     sb.append("W");

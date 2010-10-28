@@ -490,7 +490,7 @@ public class RemainderScheduleDaemon implements Daemon {
     // 繰り返しスケジュール（週間）
     Calendar date = Calendar.getInstance();
     date.setTime(viewDate.getValue());
-    int weekindex = date.get(Calendar.DAY_OF_WEEK);
+    int weekindex = date.get(Calendar.DAY_OF_WEEK - 1);
     String token = null;
     StringBuffer sb = new StringBuffer();
     sb.append("W");
