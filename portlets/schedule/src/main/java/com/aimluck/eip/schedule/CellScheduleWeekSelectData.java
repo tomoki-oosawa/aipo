@@ -236,6 +236,9 @@ public class CellScheduleWeekSelectData extends
     Expression exp =
       ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
         .valueOf(userid));
+    Expression exp00 =
+      ExpressionFactory.noMatchExp(EipTScheduleMap.STATUS_PROPERTY, "R");
+
     Expression exp2 =
       ExpressionFactory.noMatchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
         + "."
@@ -246,6 +249,7 @@ public class CellScheduleWeekSelectData extends
         + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
 
     query.setQualifier(exp);
+    query.andQualifier(exp00);
     query.andQualifier(exp2);
     query.andQualifier(exp3);
     List<EipTScheduleMap> list = query.fetchList();

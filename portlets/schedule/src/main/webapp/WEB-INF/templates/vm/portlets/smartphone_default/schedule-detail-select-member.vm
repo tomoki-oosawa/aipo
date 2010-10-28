@@ -93,7 +93,7 @@ $!{result.Detail.DateForCell}
 $!record.AliasName
 #if($result.getStatus($record.UserId.Value) == "T")
 (仮)
-#elseif($result.getStatus($record.UserId.Value) == "R")
+#elseif($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
 #set($counter = $counter + 1)
 (削除)
 #end
