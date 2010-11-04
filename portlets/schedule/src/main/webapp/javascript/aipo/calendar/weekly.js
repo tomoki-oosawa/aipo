@@ -67,7 +67,6 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
          aipo.calendar.dummyDivObj = null;
     }
 
-
     dojo.xhrGet({
         portletId: _portletId,
         url: ptConfig[_portletId].jsonUrl + _params,
@@ -314,9 +313,15 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                     if(mbfhtml != ""){
                        mbfhtml = "<span style=\"font-size: 0.90em;\">施設</span><br/><ul>" + mbfhtml + "</ul>";
                     }
+
+                    var placehtml = "";
+                    if(item.place != ""){
+                       placehtml = "<span style=\"font-size: 0.90em;\">場所</span><br/><ul>" + item.place + "</ul>";
+                    }
                 }
                 tmpDraggable._mbhtml = mbhtml;
                 tmpDraggable._mbfhtml = mbfhtml;
+                tmpDraggable._placehtml = placehtml;
                 count++;
             });
 
@@ -495,8 +500,14 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                             mbfhtml = "<span style=\"font-size: 0.90em;\">施設</span><br/><ul>" + mbfhtml + "</ul>";
                         }
 
+                        var placehtml = "";
+                        if(item.place != ""){
+                           placehtml = "<span style=\"font-size: 0.90em;\">場所</span><br/><ul>" + item.place + "</ul>";
+                        }
+
                         tmpDraggable._mbhtml = mbhtml;
                         tmpDraggable._mbfhtml = mbfhtml;
+                        tmpDraggable._placehtml = placehtml;
                         count++;
                     }
                 l_count++;
@@ -794,11 +805,16 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         var tmpDraggable = dojo.clone(this.node);
         tmpDraggable.id = 'schedule-dummy-' + this.portletId;
         tmpDraggable.style.zIndex = 998;
-        dojo.style(tmpDraggable, "opacity", 0.3);
-
+        dojo.style(tmpDraggable, "opacity", 0.0);
         var garage = dojo.byId('scheduleGarage-' + this.portletId);
         garage.appendChild(tmpDraggable);
-        
+
+        this.tmpDraggable = tmpDraggable;
+
+        dojo.connect(this.node, "onmousedown", this, "onMouseDown");
+        dojo.connect(null, "onkeydown", this, "onKeyPress");
+        dojo.connect(null, "onkeyup", this, "onKeyPress");
+
         aimluck.dnd.DragMoveObject.prototype.onFirstMove.apply(this, arguments);
         dojo.style(this.node, "opacity", 0.5);
         this.node.style.zIndex = 999;
@@ -821,9 +837,22 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         aipo.calendar.setGridArray(this.portletId, parseInt(ptConfig[this.portletId].scheduleDivDaySum));
         lastScroll = dojo.byId('weeklyScrollPane_'+this.portletId).scrollTop;
     },
+    onKeyPress: function(e){
+        if(e.ctrlKey) {
+            dojo.style(this.tmpDraggable, "opacity", 0.3);
+        } else {
+            dojo.style(this.tmpDraggable, "opacity", 0.0);
+        }
+    },
     onMouseMove: function(e){
 
         if(this.dragSource.isDraggable == false) return;
+
+        if(e.ctrlKey) {
+            dojo.style(this.tmpDraggable, "opacity", 0.3);
+        } else {
+            dojo.style(this.tmpDraggable, "opacity", 0.0);
+        }
 
         aimluck.dnd.DragMoveObject.prototype.onMouseMove.apply(this, arguments);
         this.dragSource.schedule.isDrag = true;
@@ -940,6 +969,7 @@ dojo.declare("aipo.calendar.WeeklyScheduleDraggable", [aimluck.dnd.Draggable], {
     isDraggable: false,
     _mbhtml: "",
     _mbfhtml: "",
+    _placehtml: "",
     scheduleObjId: null,
     constructor: function(node, params){
         this.scheduleObjId = params.sid;
@@ -989,7 +1019,7 @@ dojo.declare("aipo.calendar.WeeklyScheduleDraggable", [aimluck.dnd.Draggable], {
             aipo.calendar.dummyDivObj.TooltipObject.destroyRecursive();
             aipo.calendar.dummyDivObj.TooltipObject = null;
         }
-        aipo.calendar.dummyDivObj.TooltipObject = new aipo.widget.ToolTip({label:"<h4>" + this.schedule.name + "</h4>" + "<span style=\"font-size: 0.90em;\">" + startDate +"～" + endDate + "</span>" + "<br/>" + this._mbhtml + this._mbfhtml  , connectId:["dummy_div_" + this.portletId]} ,this.portletId );
+        aipo.calendar.dummyDivObj.TooltipObject = new aipo.widget.ToolTip({label:"<h4>" + this.schedule.name + "</h4>" + "<span style=\"font-size: 0.90em;\">" + startDate +"～" + endDate + "</span>" + "<br/>" + this._mbhtml + this._mbfhtml + this._placehtml  , connectId:["dummy_div_" + this.portletId]} ,this.portletId );
 
     },
     setDraggable: function(flag){
@@ -1016,13 +1046,32 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
        var tmpDraggable = dojo.clone(this.node);
        tmpDraggable.id = 'schedule-dummy-' + this.portletId;
        tmpDraggable.style.zIndex = 998;
-       dojo.style(tmpDraggable, "opacity", 0.3);
-
-       var garage = dojo.byId('termScheduleItemGarage-1-' + this.portletId);
+       dojo.style(tmpDraggable, "opacity", 0.0);
+       
+       var garage = dojo.byId(this.node.parentNode.id);
        garage.appendChild(tmpDraggable);
+       
+       this.tmpDraggable = tmpDraggable;
+
+       dojo.connect(null, "onkeydown", this, "onKeyPress");
+       dojo.connect(null, "onkeyup", this, "onKeyPress");
+    },
+    onKeyPress: function(e){
+        if(e.ctrlKey) {
+            dojo.style(this.tmpDraggable, "opacity", 0.3);
+        } else {
+            dojo.style(this.tmpDraggable, "opacity", 0.0);
+        }
     },
     onMouseMove: function(e){
         if(this.dragSource.isDraggable == false) return;
+
+        if(e.ctrlKey) {
+            dojo.style(this.tmpDraggable, "opacity", 0.3);
+        } else {
+            dojo.style(this.tmpDraggable, "opacity", 0.0);
+        }
+
         aimluck.dnd.DragMoveObject.prototype.onMouseMove.apply(this, arguments);
         this.dragSource.schedule.isDrag = true;
         var distance = ptConfig[this.portletId].distance;
@@ -1164,6 +1213,7 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDraggable", [aimluck.dnd.Draggable
     isDraggable: false,
     _mbhtml: "",
     _mbfhtml: "",
+    _placehtml: "",
     TooltipObject: null,
     scheduleObjId: null,
     isDraggable: false,
@@ -1218,7 +1268,7 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDraggable", [aimluck.dnd.Draggable
             aipo.calendar.dummyDivObj.TooltipObject = null;
         }
         */
-         if(!this.TooltipObject)this.TooltipObject = new aipo.widget.ToolTip({label:"<h4>" + this.schedule.name + "</h4>" + this._mbhtml + this._mbfhtml  , connectId:[this.node.id]} ,this.portletId );
+         if(!this.TooltipObject)this.TooltipObject = new aipo.widget.ToolTip({label:"<h4>" + this.schedule.name + "</h4>" + this._mbhtml + this._mbfhtml + this._placehtml  , connectId:[this.node.id]} ,this.portletId );
          aipo.calendar.objectlist.push(this.TooltipObject);
     },
     setDraggable: function(flag){
