@@ -224,6 +224,9 @@ ${record.FacilityName}<br/>
     #end
     #end
 #end
+
+#ALajaxbuttonNameEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()}).addQueryData('is_copy','true')" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog" "コピーして登録する")
+
 #ALajaxbuttonClose()
 </tr>
 #else

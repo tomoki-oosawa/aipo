@@ -791,6 +791,14 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
            this.dragSource.TooltipObject.uninitialize();
         }
 
+        var tmpDraggable = dojo.clone(this.node);
+        tmpDraggable.id = 'schedule-dummy-' + this.portletId;
+        tmpDraggable.style.zIndex = 998;
+        dojo.style(tmpDraggable, "opacity", 0.3);
+
+        var garage = dojo.byId('scheduleGarage-' + this.portletId);
+        garage.appendChild(tmpDraggable);
+        
         aimluck.dnd.DragMoveObject.prototype.onFirstMove.apply(this, arguments);
         dojo.style(this.node, "opacity", 0.5);
         this.node.style.zIndex = 999;
@@ -902,7 +910,11 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         }
 
         var params = "";
-        params += "&mode=update";
+        if(e.ctrlKey) {
+            params += "&mode=insert";
+        } else {
+            params += "&mode=update";
+        }
         params += "&entityid="+ this.dragSource.schedule.scheduleId;
         params += "&view_start=" + ptConfig[this.portletId].jsonData.date[0].substring(0, 10);
 
@@ -1000,6 +1012,14 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
        aimluck.dnd.DragMoveObject.prototype.onFirstMove.apply(this, arguments);
        dojo.style(this.node, "opacity", 0.5);
        aipo.calendar.setGridArray(this.portletId, parseInt(ptConfig[this.portletId].scheduleDivDaySum));
+
+       var tmpDraggable = dojo.clone(this.node);
+       tmpDraggable.id = 'schedule-dummy-' + this.portletId;
+       tmpDraggable.style.zIndex = 998;
+       dojo.style(tmpDraggable, "opacity", 0.3);
+
+       var garage = dojo.byId('termScheduleItemGarage-1-' + this.portletId);
+       garage.appendChild(tmpDraggable);
     },
     onMouseMove: function(e){
         if(this.dragSource.isDraggable == false) return;
@@ -1120,7 +1140,11 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
         this.tmpIndex = 0;
 
         var params = "";
-        params += "&mode=update";
+        if(e.ctrlKey) {
+            params += "&mode=insert";
+        } else {
+            params += "&mode=update";
+        }
         params += "&is_span=TRUE";
         params += "&entityid="+ this.dragSource.schedule.scheduleId;
         params += "&view_start=" + viewStart;

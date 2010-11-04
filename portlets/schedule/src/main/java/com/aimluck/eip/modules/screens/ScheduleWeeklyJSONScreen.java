@@ -27,6 +27,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.schedule.ScheduleWeeklyJSONFormData;
 
 /**
@@ -37,22 +38,41 @@ public class ScheduleWeeklyJSONScreen extends ALJSONScreen {
 
   /** logger */
   @SuppressWarnings("unused")
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleWeeklyJSONScreen.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ScheduleWeeklyJSONScreen.class
+      .getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
       throws Exception {
     List<String> msgList = new ArrayList<String>();
+    String mode = this.getMode();
+
     ScheduleWeeklyJSONFormData formData = new ScheduleWeeklyJSONFormData();
-    formData.init(this, rundata, context);
-    formData.loadParameters(rundata, context, msgList);
-    if (!(msgList.size() > 0) && !formData.getIsViewList()) {
-      if (formData.doUpdate(this, rundata, context)) {
-      } else {
-        msgList = formData.getMsgList();
+    try {
+      if (ALEipConstants.MODE_INSERT.equals(mode)) {
+        formData.init(this, rundata, context);
+        formData.loadParameters(rundata, context, msgList);
+        if (!(msgList.size() > 0) && !formData.getIsViewList()) {
+          if (formData.doInsert(this, rundata, context)) {
+          } else {
+            msgList = formData.getMsgList();
+          }
+        }
+      } else if (ALEipConstants.MODE_UPDATE.equals(mode)) {
+        formData.init(this, rundata, context);
+        formData.loadParameters(rundata, context, msgList);
+        if (!(msgList.size() > 0) && !formData.getIsViewList()) {
+          if (formData.doUpdate(this, rundata, context)) {
+          } else {
+            msgList = formData.getMsgList();
+          }
+        }
       }
+    } catch (Exception e) {
+      logger.error("[ScheduleWeeklyJSONScreen]", e);
     }
+
     formData.initField();
     return formData.doViewList(this, rundata, context, msgList);
   }

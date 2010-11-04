@@ -328,6 +328,37 @@ public class ScheduleWeeklyJSONFormData {
     }
   }
 
+  public boolean doInsert(ALAction action, RunData rundata, Context context) {
+    if (!ScheduleUtils.hasRelation(rundata)) {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
+    }
+    try {
+      if (!doCheckSecurity(rundata, context)) {
+        return false;
+      }
+      doCheckAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_INSERT);
+      boolean res =
+        (setFormData(rundata, context, msgList) && validate(msgList) && insertFormData(
+          rundata,
+          context,
+          msgList));
+
+      return res;
+
+    } catch (ALPermissionException e) {
+      msgList.add("PermissionError");
+      msgList.add(ALAccessControlConstants.DEF_PERMISSION_ERROR_STR);
+      return false;
+    } catch (Exception e) {
+      logger.error("Exception", e);
+      return false;
+    }
+  }
+
   public void loadParameters(RunData rundata, Context context,
       List<String> msgList) {
     ALDateTimeField dummy = new ALDateTimeField("yyyy-MM-dd-HH-mm");
@@ -437,7 +468,7 @@ public class ScheduleWeeklyJSONFormData {
       || aclPortletFeature == ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER) {
 
       if (edit_repeat_flag == 0) {
-        /** 繰り返しでないスケジュールを変更しようとした場合 */
+        /** 繰り返しでないスケジュールをコピーしようとした場合 */
         /** スケジュールに変更が加わっていない場合は、更新処理をスキップする */
         if (schedule.getStartDate().equals(startDate.getValue())
           && schedule.getEndDate().equals(endDate.getValue())) {
@@ -458,7 +489,7 @@ public class ScheduleWeeklyJSONFormData {
           for (int i = 0; i < listSize; i++) {
             EipTScheduleMap map = scheduleMaps.get(i);
             if (ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY.equals(map.getType())) {
-              facilityIdList.add(map.getUserId().intValue());
+              facilityIdList.add(map.getUserId());
             }
           }
           if (!ignore_duplicate_facility) {
@@ -680,6 +711,324 @@ public class ScheduleWeeklyJSONFormData {
           return false;
         }
 
+      }
+    } else {
+      msgList.add("そのスケジュールは編集することができません");
+      res = false;
+    }
+    return res;
+  }
+
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @throws ALDBErrorException
+   */
+  protected boolean insertFormData(RunData rundata, Context context,
+      List<String> msgList) throws ALDBErrorException {
+    boolean res;
+
+    if (isEdit
+      || userId == ownerId
+      || aclPortletFeature == ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER) {
+
+      // 繰り返しでないスケジュールを変更しようとした場合
+      if (edit_repeat_flag == 0) {
+
+        // スケジュールをコピーする
+        EipTSchedule newSchedule = Database.create(EipTSchedule.class);
+
+        newSchedule.setStartDate(startDate.getValue());
+        newSchedule.setEndDate(endDate.getValue());
+
+        Date now = new Date();
+
+        newSchedule.setCreateDate(now);
+
+        newSchedule.setUpdateDate(now);
+
+        newSchedule.setUpdateUserId(userId);
+
+        newSchedule.setName(schedule.getName());
+
+        newSchedule.setNote(schedule.getNote());
+
+        newSchedule.setPlace(schedule.getPlace());
+
+        newSchedule.setEditFlag(schedule.getEditFlag());
+
+        newSchedule.setPublicFlag(schedule.getPublicFlag());
+
+        newSchedule.setRepeatPattern(schedule.getRepeatPattern());
+
+        newSchedule.setCreateUserId(schedule.getCreateUserId());
+
+        newSchedule.setOwnerId(schedule.getOwnerId());
+
+        newSchedule.setParentId(schedule.getParentId());
+
+        List<EipTScheduleMap> newScheduleMaps =
+          new ArrayList<EipTScheduleMap>();
+
+        for (EipTScheduleMap scheduleMap : scheduleMaps) {
+          EipTScheduleMap newScheduleMap =
+            Database.create(EipTScheduleMap.class);
+          newScheduleMap.setEipTSchedule(newSchedule);
+
+          newScheduleMap.setEipTCommonCategory(scheduleMap
+            .getEipTCommonCategory());
+
+          newScheduleMap.setStatus(scheduleMap.getStatus());
+
+          newScheduleMap.setType(scheduleMap.getType());
+
+          newScheduleMap.setUserId(scheduleMap.getUserId());
+
+          newScheduleMaps.add(newScheduleMap);
+        }
+
+        /* 施設重複判定 */
+        List<Integer> facilityIdList = new ArrayList<Integer>();
+        for (EipTScheduleMap newScheduleMap : newScheduleMaps) {
+          if (ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY.equals(newScheduleMap
+            .getType())) {
+            facilityIdList.add(newScheduleMap.getUserId());
+          }
+        }
+
+        if (!ignore_duplicate_facility) {
+          if (facilityIdList.size() > 0) {
+            if (ScheduleUtils.isDuplicateFacilitySchedule(
+              newSchedule,
+              facilityIdList,
+              null,
+              null)) {
+              msgList.add("duplicate_facility");
+              Database.rollback();
+              return false;
+            }
+          }
+        }
+
+        Database.commit();
+        res = true;
+        // イベントログに保存
+        sendEventLog(rundata, context);
+        /* メンバー全員に新着ポートレット登録 */
+        sendWhatsNew(newSchedule);
+
+        try {
+          // メール送信
+          int msgType =
+            ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE);
+          if (msgType > 0) {
+            // パソコンへメールを送信
+            List<ALEipUserAddr> destMemberList =
+              ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
+                .getUserId(rundata), false);
+            String subject =
+              "[" + DatabaseOrmService.getInstance().getAlias() + "]スケジュール";
+            for (int i = 0; i < destMemberList.size(); i++) {
+              List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
+              destMember.add(destMemberList.get(i));
+              ALMailUtils.sendMailDelegate(
+                org_id,
+                ALEipUtils.getUserId(rundata),
+                destMember,
+                subject,
+                subject,
+                ScheduleUtils.createMsgForPc(rundata, schedule, memberList),
+                ScheduleUtils.createMsgForCellPhone(
+                  rundata,
+                  schedule,
+                  memberList,
+                  destMember.get(0).getUserId()),
+                ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE),
+                new ArrayList<String>());
+            }
+          }
+        } catch (Exception ex) {
+          msgList.add("メールを送信できませんでした。");
+          logger.error("Exception", ex);
+          return false;
+        }
+
+      } else {
+        /** 繰り返しスケジュールを変更しようとした場合 */
+        /**
+         * 以下の場合は変更が加わっていないとみなし、更新をスキップする。
+         * 保存されている開始時刻と終了時刻がendDateとstartDateと一致。 viewDateの日付がstartDateの物と一致。
+         */
+        Calendar saved_startdate = Calendar.getInstance();
+        saved_startdate.setTime(schedule.getStartDate());
+        Calendar saved_enddate = Calendar.getInstance();
+        saved_enddate.setTime(schedule.getEndDate());
+        if (Integer.valueOf(startDate.getHour()) == saved_startdate
+          .get(Calendar.HOUR_OF_DAY)
+          && Integer.valueOf(startDate.getMinute()) == saved_startdate
+            .get(Calendar.MINUTE)
+          && Integer.valueOf(endDate.getHour()) == saved_enddate
+            .get(Calendar.HOUR_OF_DAY)
+          && Integer.valueOf(endDate.getMinute()) == saved_enddate
+            .get(Calendar.MINUTE)
+          && viewDate.getMonth().equals(startDate.getMonth())
+          && viewDate.getDay().equals(startDate.getDay())
+          && viewDate.getYear().equals(startDate.getYear())) {
+          return true;
+        }
+
+        // if(schedule.getStartDate())
+
+        // スケジュールをコピーする
+        EipTSchedule newSchedule = Database.create(EipTSchedule.class);
+
+        newSchedule.setStartDate(startDate.getValue());
+        newSchedule.setEndDate(endDate.getValue());
+
+        Date now = new Date();
+
+        newSchedule.setCreateDate(now);
+
+        newSchedule.setUpdateDate(now);
+
+        newSchedule.setUpdateUserId(userId);
+
+        newSchedule.setParentId(schedule.getScheduleId());
+
+        newSchedule.setName(schedule.getName());
+
+        newSchedule.setNote(schedule.getNote());
+
+        newSchedule.setPlace(schedule.getPlace());
+
+        newSchedule.setEditFlag(schedule.getEditFlag());
+
+        newSchedule.setPublicFlag(schedule.getPublicFlag());
+
+        newSchedule.setRepeatPattern(schedule.getRepeatPattern());
+
+        newSchedule.setCreateUserId(schedule.getCreateUserId());
+
+        newSchedule.setOwnerId(schedule.getOwnerId());
+
+        newSchedule.setParentId(schedule.getParentId());
+
+        // 2007.3.28 ToDo連携
+        List<Integer> memberIdList = new ArrayList<Integer>();
+        List<Integer> facilityIdList = new ArrayList<Integer>();
+
+        for (EipTScheduleMap map : scheduleMaps) {
+          EipTScheduleMap newMap = Database.create(EipTScheduleMap.class);
+          newMap.setEipTSchedule(newSchedule);
+          newMap.setUserId(map.getUserId());
+
+          if (map.getUserId() == ownerId) {
+            // if (map.getUserId() == userId) {
+            newMap.setStatus("O");
+          } else {
+            EipTScheduleMap tmpMap =
+              getScheduleMap(
+                scheduleMaps,
+                map.getUserId().intValue(),
+                ScheduleUtils.SCHEDULEMAP_TYPE_USER);
+            if (tmpMap != null) {
+              newMap.setStatus(tmpMap.getStatus());
+            } else {
+              newMap.setStatus("T");
+            }
+          }
+          newMap.setType(map.getType());
+          newMap.setCommonCategoryId(map.getCommonCategoryId());
+          newMap.setEipTCommonCategory(map.getEipTCommonCategory());
+
+          if (ScheduleUtils.SCHEDULEMAP_TYPE_USER.equals(map.getType())) {
+            memberIdList.add(map.getUserId().intValue());
+          } else {
+            facilityIdList.add(map.getUserId().intValue());
+          }
+        }
+
+        // 施設重複判定
+        if (!ignore_duplicate_facility) {
+          if (facilityIdList.size() > 0) {
+            if (ScheduleUtils.isDuplicateFacilitySchedule(
+              newSchedule,
+              facilityIdList,
+              schedule.getScheduleId(),
+              viewDate.getValue())) {
+              msgList.add("duplicate_facility");
+              Database.rollback();
+              return false;
+            }
+          }
+        }
+
+        Database.commit();
+        res = true;
+
+        // イベントログに保存
+        sendEventLog(rundata, context);
+        // メンバー全員に新着ポートレット登録
+        sendWhatsNew(newSchedule);
+
+        try {
+          // メール送信
+          int msgType =
+            ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE);
+          if (msgType > 0) {
+            // パソコンへメールを送信
+            List<ALEipUserAddr> destMemberList =
+              ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
+                .getUserId(rundata), false);
+            String subject =
+              "[" + DatabaseOrmService.getInstance().getAlias() + "]スケジュール";
+            for (ALEipUserAddr destMember : destMemberList) {
+              List<ALEipUserAddr> destMembers = new ArrayList<ALEipUserAddr>();
+              destMembers.add(destMember);
+              ALMailUtils.sendMailDelegate(
+                org_id,
+                ALEipUtils.getUserId(rundata),
+                destMembers,
+                subject,
+                subject,
+                ScheduleUtils.createMsgForPc(rundata, newSchedule, memberList),
+                ScheduleUtils.createMsgForCellPhone(
+                  rundata,
+                  newSchedule,
+                  memberList,
+                  destMember.getUserId()),
+                ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE),
+                new ArrayList<String>());
+            }
+
+            for (int i = 0; i < destMemberList.size(); i++) {
+              List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
+              destMember.add(destMemberList.get(i));
+              ALMailUtils.sendMailDelegate(
+                org_id,
+                ALEipUtils.getUserId(rundata),
+                destMember,
+                subject,
+                subject,
+                ScheduleUtils.createMsgForPc(rundata, newSchedule, memberList),
+                ScheduleUtils.createMsgForCellPhone(
+                  rundata,
+                  newSchedule,
+                  memberList,
+                  destMember.get(0).getUserId()),
+                ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE),
+                new ArrayList<String>());
+            }
+          }
+
+        } catch (Exception ex) {
+          msgList.add("メールを送信できませんでした。");
+          logger.error("Exception", ex);
+          return false;
+        }
       }
     } else {
       msgList.add("そのスケジュールは編集することができません");

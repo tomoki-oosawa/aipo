@@ -23,6 +23,11 @@
 #set ($action_str = "追加する")
 #set ($event_submit = "eventSubmit_doSchedule_insert")
 #set ($subtitle = "スケジュール追加")
+#elseif($!result.isCopy())
+#set ($indicator_str = "データを送信")
+#set ($action_str = "追加する")
+#set ($event_submit = "eventSubmit_doSchedule_insert")
+#set ($subtitle = "スケジュール追加(コピー)")
 #else
 #set ($indicator_str = "データを送信")
 #set ($action_str = "更新する")
@@ -50,7 +55,7 @@
 <form id = "_scheduleForm" name="scheduleForm" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen')" method="post" onsubmit="aimluck.io.selectAllOptions(this.member_to);aimluck.io.selectAllOptions(this.facility_to);aipo.schedule.onSubmit(this); aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.schedule.onReceiveMessage);return false;">
 <input type="hidden" name="ignore_duplicate_facility" value="false" />
 <input type="hidden" name="secid" value="$secid" />
-#if($mode=="new_form")
+#if($mode=="new_form" || $!result.isCopy())
 <input type="hidden" name="mode" value="insert" />
 #else
 <input type="hidden" name="mode" value="update" />

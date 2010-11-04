@@ -229,10 +229,12 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   private ALEipUser loginUser;
 
+  private boolean ignore_duplicate_facility;
+
+  private boolean is_copy;
+
   /** アクセス権限の機能名 */
   private String aclPortletFeature = null;
-
-  private boolean ignore_duplicate_facility;
 
   /**
    * 
@@ -249,6 +251,8 @@ public class ScheduleFormData extends ALAbstractFormData {
     is_member = rundata.getParameters().getBoolean("is_member");
     is_repeat = rundata.getParameters().getBoolean("is_repeat");
     is_span = rundata.getParameters().getBoolean("is_span");
+    is_copy = rundata.getParameters().getBoolean("is_copy");
+
     ignore_duplicate_facility =
       rundata.getParameters().getBoolean("ignore_duplicate_facility", false);
     login_user = ALEipUtils.getALEipUser(rundata);
@@ -2113,11 +2117,11 @@ public class ScheduleFormData extends ALAbstractFormData {
    * 指定した曜日が，選択範囲に入っているかを検証する．
    * 
    * @param selectedWeek
-   *            指定曜日
+   *          指定曜日
    * @param startWeek
-   *            期間開始曜日
+   *          期間開始曜日
    * @param endWeek
-   *            期間終了曜日
+   *          期間終了曜日
    * @return 選択範囲に入っている場合，true．
    */
   private boolean includeWeek(int selectedWeek, int startWeek, int endWeek) {
@@ -2365,6 +2369,15 @@ public class ScheduleFormData extends ALAbstractFormData {
    */
   public boolean isSpan() {
     return is_span;
+  }
+
+  /**
+   * コピーを作るかどうか。
+   * 
+   * @return
+   */
+  public boolean isCopy() {
+    return is_copy;
   }
 
   /**
