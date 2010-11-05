@@ -812,8 +812,18 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         this.tmpDraggable = tmpDraggable;
 
         dojo.connect(this.node, "onmousedown", this, "onMouseDown");
-        dojo.connect(null, "onkeydown", this, "onKeyPress");
-        dojo.connect(null, "onkeyup", this, "onKeyPress");
+        
+        if (dojo.isIE) {
+            document.onkeydown = function(e) {
+                dojo.style(tmpDraggable, "opacity", 0.3);
+            };
+            document.onkeyup = function(e) {
+                dojo.style(tmpDraggable, "opacity", 0.0);
+            };
+        } else {
+            dojo.connect(null, "onkeydown", this, "onKeyPress");
+            dojo.connect(null, "onkeyup", this, "onKeyPress");
+        }
 
         aimluck.dnd.DragMoveObject.prototype.onFirstMove.apply(this, arguments);
         dojo.style(this.node, "opacity", 0.5);
@@ -845,14 +855,7 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         }
     },
     onMouseMove: function(e){
-
         if(this.dragSource.isDraggable == false) return;
-
-        if(e.ctrlKey) {
-            dojo.style(this.tmpDraggable, "opacity", 0.3);
-        } else {
-            dojo.style(this.tmpDraggable, "opacity", 0.0);
-        }
 
         aimluck.dnd.DragMoveObject.prototype.onMouseMove.apply(this, arguments);
         this.dragSource.schedule.isDrag = true;
@@ -923,6 +926,12 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
     },
     onMouseUp: function (e) {
         ptConfig[this.portletId].isTooltipEnable = true;
+
+        if (dojo.isIE) {
+            document.onkeydown = "";
+            document.onkeyup = "";
+        }
+
         if(this.dragSource.schedule.isDrag != true){
             dojo.style(this.node, "opacity", 1.0 );
             aimluck.dnd.DragMoveObject.prototype.onMouseUp.apply(this, arguments);
@@ -1047,14 +1056,23 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
        tmpDraggable.id = 'schedule-dummy-' + this.portletId;
        tmpDraggable.style.zIndex = 998;
        dojo.style(tmpDraggable, "opacity", 0.0);
-       
+
        var garage = dojo.byId(this.node.parentNode.id);
        garage.appendChild(tmpDraggable);
-       
+
        this.tmpDraggable = tmpDraggable;
 
-       dojo.connect(null, "onkeydown", this, "onKeyPress");
-       dojo.connect(null, "onkeyup", this, "onKeyPress");
+       if (dojo.isIE) {
+           document.onkeydown = function(e) {
+               dojo.style(tmpDraggable, "opacity", 0.3);
+           };
+           document.onkeyup = function(e) {
+               dojo.style(tmpDraggable, "opacity", 0.0);
+           };
+       } else {
+           dojo.connect(null, "onkeydown", this, "onKeyPress");
+           dojo.connect(null, "onkeyup", this, "onKeyPress");
+       }
     },
     onKeyPress: function(e){
         if(e.ctrlKey) {
@@ -1065,12 +1083,6 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
     },
     onMouseMove: function(e){
         if(this.dragSource.isDraggable == false) return;
-
-        if(e.ctrlKey) {
-            dojo.style(this.tmpDraggable, "opacity", 0.3);
-        } else {
-            dojo.style(this.tmpDraggable, "opacity", 0.0);
-        }
 
         aimluck.dnd.DragMoveObject.prototype.onMouseMove.apply(this, arguments);
         this.dragSource.schedule.isDrag = true;
@@ -1151,6 +1163,12 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
     },
     onMouseUp: function (e) {
         ptConfig[this.portletId].isTooltipEnable = true;
+
+        if (dojo.isIE) {
+            document.onkeydown = "";
+            document.onkeyup = "";
+        }
+
         if(this.dragSource.schedule.isDrag != true){
             dojo.style(this.node, "opacity", 1.0 );
             aimluck.dnd.DragMoveObject.prototype.onMouseUp.apply(this, arguments);
