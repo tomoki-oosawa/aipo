@@ -57,8 +57,8 @@ public class ScheduleBean implements ALData, Cloneable {
   /** <code>name</code> 予定 */
   private ALStringField name;
 
-  /** <code>date</code> 日付 */
-  // private ALStringField date;
+  /** <code>date</code> 場所 */
+  private ALStringField place;
 
   /** <code>ptn</code> 繰り返しパターン */
   private String ptn;
@@ -122,6 +122,7 @@ public class ScheduleBean implements ALData, Cloneable {
   public void initField() {
     name = new ALStringField();
     type = new ALStringField();
+    place = new ALStringField();
     schedule_id = new ALNumberField();
     parent_id = new ALNumberField();
     owner_name = new ALStringField();
@@ -145,6 +146,7 @@ public class ScheduleBean implements ALData, Cloneable {
     this.name = rd.getName();
     this.schedule_id = rd.getScheduleId();
     this.parent_id = rd.getParentId();
+    this.place = rd.getPlace();
 
     try {
       ALEipUser user = ALEipUtils.getALEipUser(rd.getUserId());
@@ -245,6 +247,15 @@ public class ScheduleBean implements ALData, Cloneable {
    */
   public String getName() {
     return name.toString();
+  }
+
+  /**
+   * 場所を取得します。
+   * 
+   * @return
+   */
+  public String getPlace() {
+    return place.toString();
   }
 
   /**

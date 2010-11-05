@@ -97,6 +97,7 @@ public class AjaxScheduleWeekContainer implements ALData {
           rd3.setScheduleId((int) rd.getScheduleId().getValue());
           rd3.setParentId((int) rd.getParentId().getValue());
           rd3.setName(rd.getName().getValue());
+          rd3.setPlace(rd.getPlace().getValue());
           // 開始日を設定し直す
           rd3.setStartDate(temp.getTime());
           // 終了日を設定し直す

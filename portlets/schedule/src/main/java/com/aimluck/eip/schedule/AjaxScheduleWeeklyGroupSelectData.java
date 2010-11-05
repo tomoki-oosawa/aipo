@@ -68,8 +68,9 @@ public class AjaxScheduleWeeklyGroupSelectData extends
     ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AjaxScheduleWeeklyGroupSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(AjaxScheduleWeeklyGroupSelectData.class
+      .getName());
 
   /** <code>prevDate</code> 前の日 */
   private ALDateTimeField prevDate;
@@ -764,7 +765,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
           rd.setMemberList(recordMemberList);
         }
       } catch (Exception e) {
-       logger.error(e);
+        logger.error(e);
       }
 
       Expression mapexp2 =
@@ -784,6 +785,8 @@ public class AjaxScheduleWeeklyGroupSelectData extends
       rd.setUserId(record.getUserId());
       // 名前
       rd.setName(schedule.getName());
+      // 場所
+      rd.setPlace(schedule.getPlace());
       // 開始日時
       rd.setStartDate(schedule.getStartDate());
       // 終了日時

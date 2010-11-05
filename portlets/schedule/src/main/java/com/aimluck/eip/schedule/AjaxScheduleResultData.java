@@ -22,6 +22,7 @@ package com.aimluck.eip.schedule;
 import java.util.List;
 
 import com.aimluck.commons.field.ALNumberField;
+import com.aimluck.commons.field.ALStringField;
 
 /**
  * カレンダー用スケジュールのResultDataです。 <br />
@@ -31,12 +32,15 @@ public class AjaxScheduleResultData extends ScheduleResultData {
 
   private List<String> memberlist;
 
+  private ALStringField place;
+
   /** <code>parent_id</code> スケジュールowner ID */
   private ALNumberField user_id;
 
   @Override
   public void initField() {
     user_id = new ALNumberField();
+    place = new ALStringField();
     super.initField();
   }
 
@@ -48,6 +52,10 @@ public class AjaxScheduleResultData extends ScheduleResultData {
     return memberlist;
   }
 
+  public ALStringField getPlace() {
+    return place;
+  }
+
   public int getUserId() {
     return (int) this.user_id.getValue();
   }
@@ -56,4 +64,7 @@ public class AjaxScheduleResultData extends ScheduleResultData {
     memberlist = list;
   }
 
+  public void setPlace(String str) {
+    place.setValue(str);
+  }
 }
