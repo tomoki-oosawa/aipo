@@ -397,6 +397,8 @@ CREATE TABLE EIP_T_MAIL
     PRIMARY KEY (MAIL_ID)
 );
 
+CREATE INDEX eip_t_mail_user_id_index ON EIP_T_MAIL (USER_ID);
+
 -----------------------------------------------------------------------------
 -- EIP_T_MAIL_FOLDER
 -----------------------------------------------------------------------------
