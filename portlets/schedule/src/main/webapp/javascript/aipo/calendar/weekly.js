@@ -316,7 +316,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 
                     var placehtml = "";
                     if(item.place != ""){
-                       placehtml = "<span style=\"font-size: 0.90em;\">場所</span><br/><ul>" + item.place + "</ul>";
+                       placehtml = "<span style=\"font-size: 0.90em;\">場所</span><br/><ul><li>" + item.place + "</li></ul>";
                     }
                 }
                 tmpDraggable._mbhtml = mbhtml;
@@ -502,7 +502,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 
                         var placehtml = "";
                         if(item.place != ""){
-                           placehtml = "<span style=\"font-size: 0.90em;\">場所</span><br/><ul>" + item.place + "</ul>";
+                           placehtml = "<span style=\"font-size: 0.90em;\">場所</span><br/><ul><li>" + item.place + "</li></ul>";
                         }
 
                         tmpDraggable._mbhtml = mbhtml;
