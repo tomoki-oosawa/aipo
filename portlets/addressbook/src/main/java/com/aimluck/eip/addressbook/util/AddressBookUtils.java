@@ -55,8 +55,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AddressBookUtils {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AddressBookUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(AddressBookUtils.class.getName());
 
   /** アドレスブックファイルを一時保管するディレクトリの指定 */
   public static final String FOLDER_TMP_FOR_ADDRESSBOOK_FILES =
@@ -345,14 +345,17 @@ public class AddressBookUtils {
     statement.append(" on A.ADDRESS_ID = B.ADDRESS_ID ");
     statement.append("LEFT JOIN EIP_M_ADDRESSBOOK_COMPANY AS C ");
     statement.append(" on B.COMPANY_ID = C.COMPANY_ID ");
-    statement.append("WHERE A.GROUP_ID = '").append(gid).append("' ");
+    statement.append("WHERE A.GROUP_ID = #bind($gid) ");
     statement
       .append("ORDER BY C.company_name_kana, C.company_name, B.last_name_kana");
     String query = statement.toString();
 
     try {
       List<DataRow> list =
-        Database.sql(EipMAddressbook.class, query).fetchListAsDataRow();
+        Database
+          .sql(EipMAddressbook.class, query)
+          .param("gid", gid)
+          .fetchListAsDataRow();
 
       int recordNum = list.size();
       DataRow dataRow;

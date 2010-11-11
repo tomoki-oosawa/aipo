@@ -39,8 +39,9 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 public class ALEmptyAccessControlHandler extends ALAccessControlHandler {
 
   @SuppressWarnings("unused")
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ALEmptyAccessControlHandler.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ALEmptyAccessControlHandler.class
+      .getName());
 
   @Override
   public boolean hasAuthority(int userId, String featerName, int aclType) {
@@ -138,10 +139,12 @@ public class ALEmptyAccessControlHandler extends ALAccessControlHandler {
     statement.append("LEFT JOIN EIP_M_USER_POSITION as D ");
     statement.append("on A.USER_ID = D.USER_ID ");
     statement.append("WHERE B.DISABLED = 'F'");
-    statement.append(" AND C.GROUP_NAME = '").append(groupname).append("' ");
+    statement.append(" AND C.GROUP_NAME = #bind($groupname) ");
     statement.append("ORDER BY D.POSITION");
 
-    return Database.sql(TurbineUser.class, statement.toString()).fetchList();
+    return Database.sql(TurbineUser.class, statement.toString()).param(
+      "groupname",
+      groupname).fetchList();
   }
 
   @Override

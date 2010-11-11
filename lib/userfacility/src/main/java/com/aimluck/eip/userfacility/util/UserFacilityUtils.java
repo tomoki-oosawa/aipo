@@ -41,8 +41,8 @@ public class UserFacilityUtils {
 
   /** logger */
   @SuppressWarnings("unused")
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(UserFacilityUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(UserFacilityUtils.class.getName());
 
   /**
    * 
@@ -80,12 +80,15 @@ public class UserFacilityUtils {
       statement.append("  on A.FACILITY_ID = B.FACILITY_ID ");
       statement.append("LEFT JOIN TURBINE_GROUP as C ");
       statement.append("  on A.GROUP_ID = C.GROUP_ID ");
-      statement.append("WHERE C.GROUP_NAME = '").append(groupname).append("'");
+      statement.append("WHERE C.GROUP_NAME = #bind($groupname)");
 
       String query = statement.toString();
 
       List<EipMFacility> list2 =
-        Database.sql(EipMFacility.class, query).fetchList();
+        Database
+          .sql(EipMFacility.class, query)
+          .param("groupname", groupname)
+          .fetchList();
 
       // ユーザデータを作成し、返却リストへ格納
       for (EipMFacility record : list2) {

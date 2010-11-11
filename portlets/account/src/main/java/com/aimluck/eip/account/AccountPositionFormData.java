@@ -50,8 +50,9 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AccountPositionFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AccountPositionFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService
+      .getLogger(AccountPositionFormData.class.getName());
 
   /** 役職名 */
   private ALStringField position_name;
@@ -272,15 +273,17 @@ public class AccountPositionFormData extends ALAbstractFormData {
         return false;
       }
 
+      // 役職IDを取得
+      int positionId = record.getPositionId();
+
       // 役職を削除
       Database.delete(record);
       Database.commit();
 
       // この役職に設定されているユーザーの役職IDを0とする
-      String id =
-        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
       String sql =
-        "UPDATE TURBINE_USER set POSITION_ID = 0 where POSITION_ID = " + id;
+        "UPDATE TURBINE_USER set POSITION_ID = 0 where POSITION_ID = "
+          + positionId;
       Database.sql(TurbineUser.class, sql).execute();
 
       ALEipManager.getInstance().reloadPosition();

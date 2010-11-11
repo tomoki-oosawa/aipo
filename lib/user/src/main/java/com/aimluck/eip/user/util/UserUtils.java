@@ -47,8 +47,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class UserUtils {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(UserUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(UserUtils.class.getName());
 
   /** userLiteBeanキャッシュ用の変数 */
   private static Hashtable<String, ArrayList<UserLiteBean>> userLiteBeans =
@@ -102,12 +102,15 @@ public class UserUtils {
       statement.append("LEFT JOIN EIP_M_USER_POSITION as D ");
       statement.append("  on A.USER_ID = D.USER_ID ");
       statement.append("WHERE B.USER_ID > 3 AND B.DISABLED = 'F'");
-      statement.append(" AND C.GROUP_NAME = '").append(groupname).append("' ");
+      statement.append(" AND C.GROUP_NAME = #bind($groupname) ");
       statement.append("ORDER BY D.POSITION");
       String query = statement.toString();
 
       List<TurbineUser> list2 =
-        Database.sql(TurbineUser.class, query).fetchList();
+        Database
+          .sql(TurbineUser.class, query)
+          .param("groupname", groupname)
+          .fetchList();
 
       UserLiteBean user;
       // ユーザデータを作成し、返却リストへ格納
@@ -183,12 +186,15 @@ public class UserUtils {
       statement.append("LEFT JOIN EIP_M_USER_POSITION as D ");
       statement.append("  on A.USER_ID = D.USER_ID ");
       statement.append("WHERE B.USER_ID > 3 AND B.DISABLED = 'F'");
-      statement.append(" AND C.GROUP_NAME = '").append(groupname).append("' ");
+      statement.append(" AND C.GROUP_NAME = #bind($groupname) ");
       statement.append("ORDER BY D.POSITION");
       String query = statement.toString();
 
       List<TurbineUser> list2 =
-        Database.sql(TurbineUser.class, query).fetchList();
+        Database
+          .sql(TurbineUser.class, query)
+          .param("groupname", groupname)
+          .fetchList();
 
       UserEmailLiteBean user;
       // ユーザデータを作成し、返却リストへ格納

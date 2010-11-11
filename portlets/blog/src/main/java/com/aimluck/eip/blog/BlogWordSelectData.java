@@ -54,8 +54,8 @@ import com.aimluck.eip.util.ALEipUtils;
  */
 public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(BlogWordSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(BlogWordSelectData.class.getName());
 
   /** 検索ワード */
   private ALStringField searchWord;
@@ -214,6 +214,8 @@ public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
         return new ArrayList<DataRow>();
       }
 
+      word = '%' + word + '%';
+
       // SQLの作成
       StringBuffer statement = new StringBuffer();
       statement
@@ -221,16 +223,18 @@ public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
       statement.append("t0.thema_id, t0.update_date, t0.create_date ");
       statement
         .append("FROM eip_t_blog_entry as t0 left join eip_t_blog_comment as t1 on t1.entry_id = t0.entry_id ");
-      statement.append("WHERE  (t0.title LIKE '%"
-        + word
-        + "%') OR (t0.note LIKE '%"
-        + word
-        + "%')  OR (t0.entry_id = t1.entry_id AND (t1.comment LIKE '%"
-        + word
-        + "%')) ORDER BY t0.create_date DESC");
+      statement.append("WHERE (t0.title LIKE #bind($word))");
+      statement.append(" OR (t0.note LIKE #bind($word))");
+      statement
+        .append(" OR (t0.entry_id = t1.entry_id AND (t1.comment LIKE #bind($word))) ");
+      statement.append("ORDER BY t0.create_date DESC");
       String query = statement.toString();
 
-      list = Database.sql(EipTBlogEntry.class, query).fetchListAsDataRow();
+      list =
+        Database
+          .sql(EipTBlogEntry.class, query)
+          .param("word", word)
+          .fetchListAsDataRow();
 
     } catch (Exception e) {
       logger.error(e);

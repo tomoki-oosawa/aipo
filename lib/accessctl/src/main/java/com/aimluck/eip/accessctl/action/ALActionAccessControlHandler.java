@@ -41,8 +41,9 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 public class ALActionAccessControlHandler extends ALAccessControlHandler {
 
   @SuppressWarnings("unused")
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ALActionAccessControlHandler.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ALActionAccessControlHandler.class
+      .getName());
 
   @Override
   public boolean hasAuthority(int userId, String featerName, int aclType) {
@@ -227,11 +228,13 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
     statement.append("WHERE B.USER_ID IN ");
     statement.append(sb);
     statement.append(" AND B.DISABLED = 'F'");
-    statement.append(" AND C.GROUP_NAME = '").append(groupname).append("' ");
+    statement.append(" AND C.GROUP_NAME = #bind($groupname) ");
     statement.append("ORDER BY D.POSITION");
 
     List<TurbineUser> list =
-      Database.sql(TurbineUser.class, statement.toString()).fetchList();
+      Database.sql(TurbineUser.class, statement.toString()).param(
+        "groupname",
+        groupname).fetchList();
     return list;
   }
 

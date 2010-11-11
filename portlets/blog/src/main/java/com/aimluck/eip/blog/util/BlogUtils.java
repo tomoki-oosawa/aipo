@@ -76,8 +76,8 @@ import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
 public class BlogUtils {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(BlogUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(BlogUtils.class.getName());
 
   public static final String TARGET_GROUP_NAME = "target_group_name";
 
@@ -91,18 +91,16 @@ public class BlogUtils {
   public static final String ATTACHMENT_TEMP_FILENAME_REMAIND = "file.txt";
 
   /** デフォルトエンコーディングを表わすシステムプロパティのキー */
-  public static final String FILE_ENCODING = JetspeedResources.getString(
-    "content.defaultencoding",
-    "UTF-8");
+  public static final String FILE_ENCODING =
+    JetspeedResources.getString("content.defaultencoding", "UTF-8");
 
   /** ブログの添付ファイルを保管するディレクトリの指定 */
-  protected static final String FOLDER_FILEDIR_BLOG = JetspeedResources
-    .getString("aipo.filedir", "");
+  protected static final String FOLDER_FILEDIR_BLOG =
+    JetspeedResources.getString("aipo.filedir", "");
 
   /** ブログの添付ファイルを保管するディレクトリのカテゴリキーの指定 */
-  protected static final String CATEGORY_KEY = JetspeedResources.getString(
-    "aipo.blog.categorykey",
-    "");
+  protected static final String CATEGORY_KEY =
+    JetspeedResources.getString("aipo.blog.categorykey", "");
 
   /** データベースに登録されたファイルを表す識別子 */
   public static final String PREFIX_DBFILE = "DBF";
@@ -413,7 +411,7 @@ public class BlogUtils {
     statement.append("LEFT JOIN EIP_M_USER_POSITION as D ");
     statement.append("  on A.USER_ID = D.USER_ID ");
     statement.append("WHERE B.USER_ID > 3 AND B.DISABLED = 'F'");
-    statement.append(" AND C.GROUP_NAME = '").append(groupname).append("' ");
+    statement.append(" AND C.GROUP_NAME = #bind($groupname) ");
     statement.append("ORDER BY D.POSITION");
     String query = statement.toString();
 
@@ -421,7 +419,10 @@ public class BlogUtils {
       // List ulist = BasePeer.executeQuery(query, org_id);
 
       List<DataRow> ulist =
-        Database.sql(TurbineUser.class, query).fetchListAsDataRow();
+        Database
+          .sql(TurbineUser.class, query)
+          .param("groupname", groupname)
+          .fetchListAsDataRow();
 
       int recNum = ulist.size();
 
