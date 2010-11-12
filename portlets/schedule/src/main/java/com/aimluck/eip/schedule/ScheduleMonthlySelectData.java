@@ -73,8 +73,9 @@ public class ScheduleMonthlySelectData extends
   private final String TARGET_USER_ID = "target_user_id";
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleMonthlySelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ScheduleMonthlySelectData.class
+      .getName());
 
   /** <code>viewMonth</code> 現在の月 */
   private ALDateTimeField viewMonth;
@@ -540,6 +541,8 @@ public class ScheduleMonthlySelectData extends
         // 仮スケジュールかどうか
         rd.setTmpreserve("T".equals(record.getStatus()));
       }
+      // 場所
+      rd.setPlace(schedule.getPlace());
       // ID
       rd.setScheduleId(schedule.getScheduleId().intValue());
       // 親スケジュール ID

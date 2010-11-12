@@ -50,8 +50,9 @@ public class ScheduleResultData implements ALData, Cloneable {
   /** <code>name</code> 予定 */
   private ALStringField name;
 
-  /** <code>date</code> 日付 */
-  // private ALStringField date;
+  /** 場所 */
+  private ALStringField place;
+
   /** <code>ptn</code> 繰り返しパターン */
   private String ptn;
 
@@ -103,6 +104,7 @@ public class ScheduleResultData implements ALData, Cloneable {
   public void initField() {
     name = new ALStringField();
     type = new ALStringField();
+    place = new ALStringField();
     schedule_id = new ALNumberField();
     parent_id = new ALNumberField();
     start_date = new ALDateTimeField(format);
@@ -166,6 +168,15 @@ public class ScheduleResultData implements ALData, Cloneable {
   }
 
   /**
+   * 予定を取得します。
+   * 
+   * @return
+   */
+  public ALStringField getPlace() {
+    return place;
+  }
+
+  /**
    * 詳細を表示するかどうか
    * 
    * @return
@@ -181,6 +192,15 @@ public class ScheduleResultData implements ALData, Cloneable {
    */
   public void setName(String string) {
     name.setValue(string);
+  }
+
+  /**
+   * 場所を設定します。
+   * 
+   * @param string
+   */
+  public void setPlace(String string) {
+    place.setValue(string);
   }
 
   /**

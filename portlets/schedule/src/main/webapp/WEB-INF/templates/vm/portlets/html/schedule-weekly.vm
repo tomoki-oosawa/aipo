@@ -51,8 +51,10 @@ $!{result.ViewStart.Year} 年 $!{result.ViewStart.Month} 月 $!{result.ViewStart
 <td class="calendarHeader"><img src="images/common/dot.gif" height="1" alt="" /></td> 
 #end
 </tr>
+#set($entityids = "")
 <tr>
 #foreach($record in $result.Container.DayList)
+#set($getScheduleDetailLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailJSONScreen').addQueryData('view_date', $!{record.Date.toString()}))
 #if($!{record.isHoliday()})
 #set ($stday = $velocityCount )
 #ALtdheadheaderAtt("class='holiday' nowrap='nowrap'")
@@ -82,13 +84,14 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #set($nottermcount = 0)
 #foreach($record in $termcontainer.DayList)
 #if( ! $record.isTermNull() )
+#set($entityids = "$!{entityids}$!{record.TermResultData.ScheduleId}, ")
 #if($record.TermResultData.isShowDetail())
 #if($nottermcount > 0)
 #ALtdcellAtt("" "colspan='$nottermcount'")
 #end
 #set($addScheduleLink = "")
 #ALtdcellheaderAtt("colspan='$!{record.TermResultData.Rowspan}'")
-<div class="calerndarTermScheduleDiv small">
+<div id="$!{portlet.ID}-$!{record.TermResultData.ScheduleId}" class="calerndarTermScheduleDiv small">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid",$!{record.TermResultData.ScheduleId}).addQueryData('view_date', $!{record.Date.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);" class="small">$!{record.TermResultData.Name}
 #if(! ${record.TermResultData.isPublic()})
 &nbsp;<img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開" />
@@ -142,15 +145,16 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #else
 #foreach($record2 in $record.ScheduleList)
 #if(! ${record2.isDummy()})
+#set($entityids = "$!{entityids}$!{record2.ScheduleId}, ")
 <div> 
 #if($record2.isShowDetail())
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record2.ScheduleId}).addQueryData('view_date', $!{record.Date.toString()})")
-<div class="calendarScheduleDiv"> 
+<div id="$!{portlet.ID}-$!{record2.ScheduleId}" class="calendarScheduleDiv"> 
 <div class="small time">$!{record2.Date}</div> 
 <div class="small"><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)" class="small">$!{record2.Name}</a></div> 
 </div> 
 #else
-<div class="calendarScheduleDiv"> 
+<div id="$!{portlet.ID}-$!{record2.ScheduleId}" class="calendarScheduleDiv"> 
 <div class="small time">$!{record2.Date}</div> 
 <div class="small">$!{record2.Name}</div> 
 </div> 
@@ -219,3 +223,5 @@ $!{record.ToDoResultData.TodoName}
 #end
 #ALtablefooter()
 #ALformfooter()
+
+<img src="images/common/dot.gif" width="1" height="1" onload="aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');" />

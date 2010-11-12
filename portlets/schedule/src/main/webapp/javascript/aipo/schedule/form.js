@@ -19,9 +19,136 @@
 
 dojo.provide("aipo.schedule");
 
+dojo.require("aipo.widget.ToolTip");
 dojo.require("aipo.widget.DropdownDatepicker");
 dojo.require("aipo.widget.MemberNormalSelectList");
 dojo.require("aipo.widget.GroupNormalSelectList");
+
+aipo.schedule.setupTooltip = function(url, entityids, portlet_id) {
+    ptConfig[portlet_id].isTooltipEnable = true;
+
+    url += '&entityids=' + entityids;
+    dojo.xhrGet({
+        portletId: portlet_id,
+        url: url,
+        encoding: "utf-8",
+        handleAs: "json-comment-filtered",
+        load: function(data, event) {
+            var namnam = "";
+            for (var id in data) {
+                var schedule = data[id];
+                var datehtml = "";
+                var mbhtml = "";
+                var mbfhtml = "";
+                var placehtml = "";
+
+
+                if (!schedule.isSpan) {
+                    datehtml = "<span style=\"font-size: 0.90em;\">" + schedule.date + "</span><br/>";
+                }
+
+                if (schedule.memberList) {
+                    var memberSize = schedule.memberList.length;
+                    for (var i = 0 ; i < memberSize ; i++) {
+                        mbhtml += "<li>" + schedule.memberList[i].aliasName.value + "</li>";
+                    }
+                }
+
+                if (schedule.facilityList) {
+                    var facilitySize = schedule.facilityList.length;
+                    for (var i = 0 ; i < facilitySize ; i++) {
+                        mbfhtml += "<li>" + schedule.facilityList[i].facilityName.value + "</li>";
+                    }
+                }
+
+                if(schedule.place != ""){
+                    placehtml = "<span style=\"font-size: 0.90em;\">場所</span><br/><ul><li>" + schedule.place + "</li></ul>";
+                }
+
+                if(mbhtml != ""){
+                    mbhtml = "<span style=\"font-size: 0.90em;\">参加者</span><br/><ul>" + mbhtml + "</ul>";
+                }
+
+                if(mbfhtml != ""){
+                    mbfhtml = "<span style=\"font-size: 0.90em;\">施設</span><br/><ul>" + mbfhtml + "</ul>";
+                }
+
+                dojo.query('.schedule-' + portlet_id + '-' + schedule.id).forEach(function(node, index, arr){
+                    var tooltipObject = new aipo.widget.ToolTip({
+                        label: "<h4>" + schedule.name + "</h4>" + datehtml + mbhtml + mbfhtml + placehtml,
+                        connectId: [node]
+                    }, portlet_id);
+                });
+                
+                var obj = dojo.byId(portlet_id + '-' + schedule.id);
+                if (obj) {
+                    var tooltipObject = new aipo.widget.ToolTip({
+                        label: "<h4>" + schedule.name + "</h4>" + datehtml + mbhtml + mbfhtml + placehtml,
+                        connectId: [obj]
+                    }, portlet_id);
+                }
+            }
+        }
+    });
+}
+
+aipo.schedule.showTooltip = function(obj, url, entityid, name, date, place, ispublic, portlet_id) {
+    var tooltipObject;
+    
+    var datehtml = "";
+    var mbhtml = "";
+    var mbfhtml = "";
+    var placehtml = "";
+    
+    datehtml = "<span style=\"font-size: 0.90em;\">" + date + "</span>";
+
+    if(ispublic){
+        dojo.xhrGet({
+            portletId: portlet_id,
+            url: url,
+            encoding: "utf-8",
+            handleAs: "json-comment-filtered",
+            load: function(data, event) {
+                if (data.memberList) {
+                    var memberSize = data.memberList.length;
+                    for (var i = 0 ; i < memberSize ; i++) {
+                        mbhtml += "<li>" + data.memberList[i].aliasName.value + "</li>";
+                    }
+                }
+
+                if (data.facilityList) {
+                    var facilitySize = data.facilityList.length;
+                    for (var i = 0 ; i < facilitySize ; i++) {
+                        mbfhtml += "<li>" + data.facilityList[i].facilityName.value + "</li>";
+                    }
+                }
+
+                if(place != ""){
+                    placehtml = "<span style=\"font-size: 0.90em;\">場所</span><br/><ul><li>" + place + "</li></ul>";
+                }
+
+                if(mbhtml != ""){
+                    mbhtml = "<span style=\"font-size: 0.90em;\">参加者</span><br/><ul>" + mbhtml + "</ul>";
+                }
+
+                if(mbfhtml != ""){
+                    mbfhtml = "<span style=\"font-size: 0.90em;\">施設</span><br/><ul>" + mbfhtml + "</ul>";
+                }
+
+                tooltipObject = new aipo.widget.ToolTip({
+                    label: "<h4>" + name + "</h4>" + datehtml + "<br/>" + mbhtml + mbfhtml + placehtml,
+                    connectId: [obj.id]
+                }, portlet_id);
+            }
+        });
+    } else {
+        tooltipObject = new aipo.widget.ToolTip({
+            label: "<h4>" + name + "</h4>" + datehtml + "<br/>" + mbhtml + mbfhtml + placehtml,
+            connectId: [obj.id]
+        }, portlet_id);
+    }
+}
+
 
 aipo.schedule.hideDialog = function() {
     var arrDialog = dijit.byId("modalDialog");

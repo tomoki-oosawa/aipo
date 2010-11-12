@@ -44,6 +44,7 @@ $!{result.ViewDate.Year} 年 $!{result.ViewDate.Month} 月 $!{result.ViewDate.Da
 <img src="images/schedule/schedule_nextmonth.gif" border="0" alt="翌月へ" /></a>&nbsp;
 </td>
 </tr></tbody></table>
+#set($getScheduleDetailLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailJSONScreen').addQueryData('view_date', $!{result.ViewDate.toString()}))
 #ALformheader('スケジュール' $jslink $portlet)
 #ALtableheaderCalendar("100%")
 <tr>
@@ -51,6 +52,7 @@ $!{result.ViewDate.Year} 年 $!{result.ViewDate.Month} 月 $!{result.ViewDate.Da
 <td class="calendarHeader"><img src="images/common/dot.gif" height="1" alt="" /></td>
 #end
 </tr>
+#set($entityids = "")
 #set($todoListSize = $result.ToDoResultDataList.size())
 #if($todoListSize > 0)
 <tr>
@@ -81,8 +83,9 @@ ${record.TodoName}
 #foreach($record in $result.TermResultDataList)
 #if($termCount > 1) <tr> #end
 #set($addScheduleLink = "")
+#set($entityids = "$!{entityids}$!{record.ScheduleId}, ")
 <td class="head" style="background-color:#FFE5E5;line-height:8pt;">
-<div class="calerndarTermScheduleDiv small">
+<div id="$!{portlet.ID}-$!{record.ScheduleId}" class="calerndarTermScheduleDiv small">
 <a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid", $!{record.ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);">$record.Name
 #if(! ${record.isPublic()})
 <img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
@@ -108,10 +111,11 @@ ${record.TodoName}
 #ALtdheadAtt("$hour" "rowspan='$rowspan' width='25'")
 #if ($!{result.getResult($count)})
 #if (($!{result.getResult($count).Name.Value}))
+#set($entityids = "$!{entityids}$!{result.getResult($count).ScheduleId}, ")
 #ALtdcellheaderAtt("rowspan='$!{result.getResult($count).Rowspan}' style='background-color:#EDF1F2'")
 <div class="calendarScheduleDiv">
 <div class="small time">$!{result.getResult($count).Date}</div>
-<div class="small">
+<div id="$!{portlet.ID}-$!{result.getResult($count).ScheduleId}" class="small">
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{result.getResult($count).ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
 <a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);">$!{result.getResult($count).Name} </a>
 #if(! ${result.getResult($count).isPublic()})
@@ -151,8 +155,9 @@ ${record.TodoName}
 #ALtdcellheaderAtt("rowspan='$!{result.getResult($count).Rowspan}' style='background-color:#EDF1F2'")
 <div class="calendarScheduleDiv">
 <div class="small time">$!{result.getResult($count).Date}</div>
-<div class="small">
+<div id="$!{portlet.ID}-$!{result.getResult($count).ScheduleId}" class="small">
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{result.getResult($count).ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
+#set($entityids = "$!{entityids}$!{result.getResult($count).ScheduleId}, ")
 <a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$!{result.getResult($count).Name}</a>
 #if(! ${result.getResult($count).isPublic()})
 <img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
@@ -190,7 +195,8 @@ ${record.TodoName}
 #ALtdheadAtt("重複" "width='25'")
 #ALtditemheader()
 #foreach($record in $result.DuplicateScheduleList)
-<div class="calendarScheduleDiv">
+#set($entityids = "$!{entityids}$!{record.ScheduleId}, ")
+<div id="$!{portlet.ID}-$!{record.ScheduleId}" class="calendarScheduleDiv">
 <div class="small time">${record.Date}</div>
 <div class="small">
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
@@ -207,8 +213,11 @@ ${record.TodoName}
 #end
 </div>
 </div>
+
 #end
 #ALtditemfooter()
 #end
 #ALtablefooter()
 #ALformfooter()
+
+<img src="images/common/dot.gif" width="1" height="1" onload="aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');" />
