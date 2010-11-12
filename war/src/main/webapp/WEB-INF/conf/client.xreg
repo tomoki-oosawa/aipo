@@ -46,7 +46,7 @@
         </capability-map>
     </client-entry>
     <client-entry name="iphone" hidden="false">
-        <user-agent-pattern>.*Android.*|Mozilla/5.0 \(iP.*</user-agent-pattern>
+        <user-agent-pattern>.*Android.*|Mozilla/5.0 \(iPh.*|Mozilla/5.0 \(iPo.*</user-agent-pattern>
         <manufacturer>IPHONE</manufacturer>
         <model></model>
         <version></version>
