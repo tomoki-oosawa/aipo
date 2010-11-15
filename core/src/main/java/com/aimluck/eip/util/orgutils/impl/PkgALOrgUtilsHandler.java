@@ -21,6 +21,7 @@ package com.aimluck.eip.util.orgutils.impl;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -78,7 +79,7 @@ public class PkgALOrgUtilsHandler extends ALOrgUtilsHandler {
   }
 
   @Override
-  public HashMap<String, String> getParameters(String org_name) {
+  public Map<String, String> getParameters(String org_name) {
     HashMap<String, String> hash = new HashMap<String, String>();
 
     hash.put("theme", JetspeedResources.getString("aipo.theme"));
