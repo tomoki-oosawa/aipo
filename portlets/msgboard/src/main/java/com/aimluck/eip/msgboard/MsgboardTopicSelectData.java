@@ -405,7 +405,8 @@ public class MsgboardTopicSelectData extends
 
       SelectQuery<EipTMsgboardTopic> query =
         getSelectQueryForCotopic(rundata, context, topicid, cotopicsort);
-      buildSelectQueryForListView(query);
+      /** 詳細画面は全件表示する */
+      // buildSelectQueryForListView(query);
 
       if ("response_new".equals(cotopicsort)) {
         query.orderDesending(EipTMsgboardTopic.CREATE_DATE_PROPERTY);
