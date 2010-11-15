@@ -22,7 +22,6 @@ package com.aimluck.eip.modules.screens;
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -217,7 +216,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
 
     ALOrgUtilsHandler handler =
       ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
-    HashMap<String, String> attribute =
+    Map<String, String> attribute =
       handler.getParameters(DatabaseOrmService.getInstance().getOrgId(rundata));
     for (Map.Entry<String, String> e : attribute.entrySet()) {
       context.put(e.getKey(), e.getValue());

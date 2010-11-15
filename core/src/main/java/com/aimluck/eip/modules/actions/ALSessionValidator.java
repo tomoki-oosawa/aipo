@@ -20,7 +20,6 @@
 package com.aimluck.eip.modules.actions;
 
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -83,7 +82,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       org.apache.turbine.services.velocity.TurbineVelocity.getContext(data);
     ALOrgUtilsHandler handler =
       ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
-    HashMap<String, String> attribute =
+    Map<String, String> attribute =
       handler.getParameters(DatabaseOrmService.getInstance().getOrgId(data));
     for (Map.Entry<String, String> e : attribute.entrySet()) {
       context.put(e.getKey(), e.getValue());
