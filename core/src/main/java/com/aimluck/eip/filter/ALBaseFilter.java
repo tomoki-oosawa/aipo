@@ -42,8 +42,8 @@ import com.aimluck.eip.orm.DataContextLocator;
  */
 public class ALBaseFilter implements Filter {
 
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALBaseFilter.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALBaseFilter.class.getName());
 
   /**
    *
@@ -69,6 +69,7 @@ public class ALBaseFilter implements Filter {
       if (threadTransaction != null) {
         try {
           threadTransaction.rollback();
+          logger.info("transaction rollback by filter");
         } catch (IllegalStateException e) {
           logger.error(e.getMessage(), e);
         } catch (SQLException e) {

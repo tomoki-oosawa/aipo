@@ -194,7 +194,7 @@ abstract public class DatabaseOrmService extends TurbineBaseService {
     }
   }
 
-  public void remomveDomain(String domainName) {
+  public void removeDomain(String domainName) {
     try {
       DataDomain domain =
         Configuration.getSharedConfiguration().getDomain(domainName);

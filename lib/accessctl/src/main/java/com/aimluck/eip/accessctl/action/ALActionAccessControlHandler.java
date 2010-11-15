@@ -20,7 +20,9 @@
 package com.aimluck.eip.accessctl.action;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -34,35 +36,64 @@ import com.aimluck.eip.cayenne.om.account.EipTAclUserRoleMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.util.ALUserContextLocator;
 
 public class ALActionAccessControlHandler extends ALAccessControlHandler {
 
-  @SuppressWarnings("unused")
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALActionAccessControlHandler.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALActionAccessControlHandler.class.getName());
 
+  @SuppressWarnings("unchecked")
   @Override
-  public boolean hasAuthority(int userId, String featerName, int aclType) {
+  public boolean hasAuthority(int userId, String featureName, int aclType) {
 
-    SelectQuery<EipTAclRole> query = Database.query(EipTAclRole.class);
-    Expression exp11 =
-      ExpressionFactory.matchDbExp(EipTAclRole.EIP_TACL_USER_ROLE_MAPS_PROPERTY
-        + "."
-        + EipTAclUserRoleMap.TURBINE_USER_PROPERTY
-        + "."
-        + TurbineUser.USER_ID_PK_COLUMN, userId);
-    Expression exp12 =
-      ExpressionFactory.matchExp(EipTAclRole.EIP_TACL_PORTLET_FEATURE_PROPERTY
-        + "."
-        + EipTAclPortletFeature.FEATURE_NAME_PROPERTY, featerName);
-    query.setQualifier(exp11.andExp(exp12));
-    query.distinct(true);
+    Object acl_obj =
+      ALUserContextLocator.getAttribute(ALUserContextLocator.KEY_ACL);
 
-    EipTAclRole role = query.fetchSingle();
+    EipTAclRole role = null;
+
+    Map<String, EipTAclRole> roleMap;
+
+    if (acl_obj == null) {
+
+      Expression exp =
+        ExpressionFactory.matchDbExp(
+          EipTAclRole.EIP_TACL_USER_ROLE_MAPS_PROPERTY
+            + "."
+            + EipTAclUserRoleMap.TURBINE_USER_PROPERTY
+            + "."
+            + TurbineUser.USER_ID_PK_COLUMN,
+          userId);
+
+      List<EipTAclRole> roleList =
+        Database.query(EipTAclRole.class, exp).fetchList();
+
+      List<EipTAclPortletFeature> featureList =
+        Database.query(EipTAclPortletFeature.class).fetchList();
+
+      Map<Integer, String> _map = new HashMap<Integer, String>();
+
+      for (EipTAclPortletFeature feature : featureList) {
+        _map.put(feature.getFeatureId(), feature.getFeatureName());
+      }
+
+      roleMap = new HashMap<String, EipTAclRole>();
+      String _featureName;
+      for (EipTAclRole _role : roleList) {
+        _featureName = _map.get(_role.getFeatureId().intValue());
+        if (_featureName.equals(featureName)) {
+          role = _role;
+        }
+        roleMap.put(_featureName, _role);
+      }
+      ALUserContextLocator.setAttribute(ALUserContextLocator.KEY_ACL, roleMap);
+    } else {
+      roleMap = (HashMap<String, EipTAclRole>) acl_obj;
+      role = roleMap.get(featureName);
+    }
+
     if (role == null) {
       return false;
     }

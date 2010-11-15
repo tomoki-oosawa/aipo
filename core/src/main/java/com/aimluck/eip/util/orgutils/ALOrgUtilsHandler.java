@@ -20,7 +20,7 @@
 package com.aimluck.eip.util.orgutils;
 
 import java.io.File;
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -33,5 +33,6 @@ public abstract class ALOrgUtilsHandler {
 
   public abstract String getThemeName(String org_name);
 
-  public abstract HashMap<String, String> getParameters(String org_name);
+  public abstract Map<String, String> getParameters(String org_name);
+
 }

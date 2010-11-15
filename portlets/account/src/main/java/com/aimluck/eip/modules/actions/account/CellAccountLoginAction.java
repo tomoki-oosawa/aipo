@@ -21,7 +21,6 @@ package com.aimluck.eip.modules.actions.account;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,7 +75,7 @@ public class CellAccountLoginAction extends ALBaseAction {
 
     ALOrgUtilsHandler handler =
       ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
-    HashMap<String, String> attribute = handler.getParameters(org_id);
+    Map<String, String> attribute = handler.getParameters(org_id);
     for (Map.Entry<String, String> e : attribute.entrySet()) {
       context.put(e.getKey(), e.getValue());
     }

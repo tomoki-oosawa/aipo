@@ -174,11 +174,14 @@
 	<obj-entity name="EipTAclRole" className="com.aimluck.eip.cayenne.om.account.EipTAclRole" dbEntityName="EIP_T_ACL_ROLE">
 		<obj-attribute name="aclType" type="java.lang.Integer" db-attribute-path="ACL_TYPE"/>
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="featureId" type="java.lang.Integer" db-attribute-path="FEATURE_ID"/>
 		<obj-attribute name="note" type="java.lang.String" db-attribute-path="NOTE"/>
 		<obj-attribute name="roleName" type="java.lang.String" db-attribute-path="ROLE_NAME"/>
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 	</obj-entity>
 	<obj-entity name="EipTAclUserRoleMap" className="com.aimluck.eip.cayenne.om.account.EipTAclUserRoleMap" dbEntityName="EIP_T_ACL_USER_ROLE_MAP">
+		<obj-attribute name="roleId" type="java.lang.Integer" db-attribute-path="ROLE_ID"/>
+		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
 	</obj-entity>
 	<db-relationship name="eipMMybox" source="EIP_M_COMPANY" target="eip_m_mybox" toMany="true">
 		<db-attribute-pair source="COMPANY_ID" target="COMPANY_ID"/>

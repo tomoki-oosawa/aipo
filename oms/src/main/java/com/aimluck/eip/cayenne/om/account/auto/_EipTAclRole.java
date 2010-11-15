@@ -30,6 +30,7 @@ public class _EipTAclRole extends org.apache.cayenne.CayenneDataObject {
 
     public static final String ACL_TYPE_PROPERTY = "aclType";
     public static final String CREATE_DATE_PROPERTY = "createDate";
+    public static final String FEATURE_ID_PROPERTY = "featureId";
     public static final String NOTE_PROPERTY = "note";
     public static final String ROLE_NAME_PROPERTY = "roleName";
     public static final String UPDATE_DATE_PROPERTY = "updateDate";
@@ -51,6 +52,14 @@ public class _EipTAclRole extends org.apache.cayenne.CayenneDataObject {
     }
     public java.util.Date getCreateDate() {
         return (java.util.Date)readProperty("createDate");
+    }
+    
+    
+    public void setFeatureId(Integer featureId) {
+        writeProperty("featureId", featureId);
+    }
+    public Integer getFeatureId() {
+        return (Integer)readProperty("featureId");
     }
     
     
