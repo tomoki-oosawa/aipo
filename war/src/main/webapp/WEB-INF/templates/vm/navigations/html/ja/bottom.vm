@@ -20,6 +20,6 @@
 ## ---------------------------------------------------------------------------
                             <!-- FOOTER -->
                             <div id="footer" class="clearfix">
-                              <div class="copyright small">#if(${product_url} != "")<a href="${product_url}">$!{alias_copyright}</a> #else $!{alias_copyright} #end $!{version} $!{copyright}</div>
+                              <div class="copyright small">$!{alias_copyright} $!{version} $!{copyright}</div>
                             </div>
                             <!-- /FOOTER -->

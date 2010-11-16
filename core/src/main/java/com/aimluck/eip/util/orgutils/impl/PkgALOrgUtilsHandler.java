@@ -91,7 +91,6 @@ public class PkgALOrgUtilsHandler extends ALOrgUtilsHandler {
     hash.put("alias_copyright", JetspeedResources
       .getString("aipo.aliascopyright"));
     hash.put("version", JetspeedResources.getString("aipo.version", ""));
-    hash.put("product_url", JetspeedResources.getString("aipo.producturl", ""));
 
     return hash;
   }
