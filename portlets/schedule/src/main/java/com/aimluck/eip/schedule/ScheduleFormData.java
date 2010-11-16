@@ -172,6 +172,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>is_span</code> 期間指定かどうか */
   private boolean is_span;
 
+  /** <code>all_day_flag</code> 終日予定フラグ */
+  private ALStringField all_day_flag;
+
   /** <code>login_user</code> ログインユーザー */
   private ALEipUser login_user;
 
@@ -264,10 +267,19 @@ public class ScheduleFormData extends ALAbstractFormData {
     org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
     loginUser = ALEipUtils.getALEipUser(rundata);
 
-    //
-
     facilityAllList = new ArrayList<FacilityResultData>();
     facilityAllList.addAll(FacilitiesUtils.getFacilityAllList());
+
+    // 終日設定
+    if (tmpEnd != null
+      && !tmpEnd.equals("")
+      && tmpStart != null
+      && !tmpStart.equals("")
+      && is_span
+      && tmpStart.equals(tmpEnd)) {
+      // 新しい予定追加で終日の場合
+      all_day_flag.setValue("ON");
+    }
 
     String scheduleId =
       rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
@@ -380,42 +392,13 @@ public class ScheduleFormData extends ALAbstractFormData {
     Date now = new Date();
     Calendar cal = Calendar.getInstance();
     int min = cal.get(Calendar.MINUTE);
-    // if (min <= 15) {
-    // cal.set(Calendar.MINUTE, 15);
-    // } else if (min <= 30) {
-    // cal.set(Calendar.MINUTE, 30);
-    // } else if (min <= 45) {
-    // cal.set(Calendar.MINUTE, 45);
-    // } else {
-    // cal.set(Calendar.MINUTE, 60);
-    // }
 
-    if (min <= 5) {
-      cal.set(Calendar.MINUTE, 5);
-    } else if (min <= 10) {
-      cal.set(Calendar.MINUTE, 10);
-    } else if (min <= 15) {
-      cal.set(Calendar.MINUTE, 15);
-    } else if (min <= 20) {
-      cal.set(Calendar.MINUTE, 20);
-    } else if (min <= 25) {
-      cal.set(Calendar.MINUTE, 25);
-    } else if (min <= 30) {
-      cal.set(Calendar.MINUTE, 30);
-    } else if (min <= 35) {
-      cal.set(Calendar.MINUTE, 35);
-    } else if (min <= 40) {
-      cal.set(Calendar.MINUTE, 40);
-    } else if (min <= 45) {
-      cal.set(Calendar.MINUTE, 45);
-    } else if (min <= 50) {
-      cal.set(Calendar.MINUTE, 50);
-    } else if (min <= 55) {
-      cal.set(Calendar.MINUTE, 55);
-    } else {
-      cal.set(Calendar.MINUTE, 60);
+    for (int _min = 5; _min <= 60; _min += 5) {
+      if (_min - 5 <= min && min <= _min) {
+        cal.set(Calendar.MINUTE, _min);
+        break;
+      }
     }
-
     // 開始日時
     start_date = new ALDateTimeField("yyyy-MM-dd-HH-mm");
     if (tmpStart == null || tmpStart.equals("")) {
@@ -496,6 +479,11 @@ public class ScheduleFormData extends ALAbstractFormData {
       tmp_date.setValue(tmpEnd);
       limit_end_date.setValue(tmp_date.getValue());
     }
+    // 終日フラグ
+    all_day_flag = new ALStringField();
+    all_day_flag.setFieldName("終日");
+    all_day_flag.setTrim(true);
+    all_day_flag.setValue("OFF");
     // 予定
     name = new ALStringField();
     name.setFieldName("予定");
@@ -558,8 +546,6 @@ public class ScheduleFormData extends ALAbstractFormData {
     common_category_id = new ALNumberField();
     common_category_id.setFieldName("カテゴリ");
     common_category_id.setValue(1);
-
-    // common_category_id.setNotNull(true);
   }
 
   /**
@@ -577,6 +563,11 @@ public class ScheduleFormData extends ALAbstractFormData {
     boolean res = super.setFormData(rundata, context, msgList);
     if (res) {
       try {
+        // 終日
+        if (all_day_flag.getValue().equals("ON") && is_span) {
+          end_date.setValue(start_date.getValue());
+        }
+
         String str[] = rundata.getParameters().getStrings("member_to");
         if (str != null && str.length > 0) {
           SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
@@ -813,6 +804,11 @@ public class ScheduleFormData extends ALAbstractFormData {
 
         limit_start_date.setValue(record.getStartDate());
         limit_end_date.setValue(record.getEndDate());
+
+        if (record.getStartDate().equals(record.getEndDate())) {
+          // 終日予定
+          all_day_flag.setValue("ON");
+        }
       }
 
       if (!is_repeat && !is_span) {
@@ -2117,11 +2113,11 @@ public class ScheduleFormData extends ALAbstractFormData {
    * 指定した曜日が，選択範囲に入っているかを検証する．
    * 
    * @param selectedWeek
-   *          指定曜日
+   *            指定曜日
    * @param startWeek
-   *          期間開始曜日
+   *            期間開始曜日
    * @param endWeek
-   *          期間終了曜日
+   *            期間終了曜日
    * @return 選択範囲に入っている場合，true．
    */
   private boolean includeWeek(int selectedWeek, int startWeek, int endWeek) {
@@ -2437,6 +2433,15 @@ public class ScheduleFormData extends ALAbstractFormData {
    */
   public ALStringField getLimitFlag() {
     return limit_flag;
+  }
+
+  /**
+   * 終日フラグを取得します。
+   * 
+   * @return
+   */
+  public ALStringField getAllDayFlag() {
+    return all_day_flag;
   }
 
   /**

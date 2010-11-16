@@ -288,6 +288,14 @@ aipo.schedule.formSwitchRepeat = function(button) {
     }
 }
 
+aipo.schedule.formSwitchAllDay = function(checkbox) {
+    if(checkbox.checked) {
+        aipo.schedule.formAllDayOn(checkbox);
+    } else {
+        aipo.schedule.formAllDayOff(checkbox);
+    }
+}
+
 aipo.schedule.formSwitchSpan = function(button) {
     if(button.form.is_span.value == 'TRUE' || button.form.is_span.value == 'true') {
         button.value = '期間で指定する';
@@ -392,6 +400,37 @@ aipo.schedule.formRepeatOn = function(form) {
 
     form.is_repeat.value = 'TRUE';
     form.is_span.value = 'FALSE';
+}
+
+aipo.schedule.formAllDayOn = function(checkbox) {
+    dojo.byId('spanField').style.display = "none";
+    dojo.byId('repeatField').style.display = "none";
+    dojo.byId('timeLabelField').style.display = "none";
+    dojo.byId('repeatButtonField').style.display = "none";
+    dojo.byId('normalField').style.display = "";
+    dojo.byId('timeField').style.display = "none";
+    dojo.byId('spanButtonField').style.display = "none";
+
+    dojo.byId('facilityFieldButton').style.display = "none";
+    aipo.schedule.shrinkFacility();
+
+    checkbox.form.is_repeat.value = 'FALSE';
+    checkbox.form.is_span.value = 'TRUE';
+}
+
+aipo.schedule.formAllDayOff = function(checkbox) {
+    dojo.byId('spanField').style.display = "none";
+    dojo.byId('repeatField').style.display = "none";
+    dojo.byId('timeLabelField').style.display = "none";
+    dojo.byId('repeatButtonField').style.display = "";
+    dojo.byId('normalField').style.display = "";
+    dojo.byId('timeField').style.display = "";
+    dojo.byId('spanButtonField').style.display = "";
+
+    dojo.byId('facilityFieldButton').style.display = "block";
+
+    checkbox.form.is_repeat.value = 'FALSE';
+    checkbox.form.is_span.value = 'FALSE';
 }
 
 aipo.schedule.formPublicOn = function(form) {
