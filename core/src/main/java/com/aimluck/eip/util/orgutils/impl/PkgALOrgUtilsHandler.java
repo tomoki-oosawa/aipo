@@ -30,14 +30,14 @@ import org.apache.jetspeed.services.resources.JetspeedResources;
 import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
 
 /**
- *
- *
+ * 
+ * 
  */
 public class PkgALOrgUtilsHandler extends ALOrgUtilsHandler {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(PkgALOrgUtilsHandler.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(PkgALOrgUtilsHandler.class.getName());
 
   @Override
   public File getDocumentPath(String rootPath, String org_name,
@@ -80,7 +80,7 @@ public class PkgALOrgUtilsHandler extends ALOrgUtilsHandler {
 
   @Override
   public Map<String, String> getParameters(String org_name) {
-    HashMap<String, String> hash = new HashMap<String, String>();
+    Map<String, String> hash = new HashMap<String, String>();
 
     hash.put("theme", JetspeedResources.getString("aipo.theme"));
     hash.put("alias", JetspeedResources.getString("aipo.alias"));
@@ -88,7 +88,11 @@ public class PkgALOrgUtilsHandler extends ALOrgUtilsHandler {
     hash.put("copyright", JetspeedResources.getString("aipo.copyright"));
     hash.put("copyright_short", JetspeedResources
       .getString("aipo.copyright_short"));
+    hash.put("alias_copyright", JetspeedResources
+      .getString("aipo.aliascopyright"));
+    hash.put("version", JetspeedResources.getString("aipo.version", ""));
+    hash.put("product_url", JetspeedResources.getString("aipo.producturl", ""));
+
     return hash;
   }
-
 }
