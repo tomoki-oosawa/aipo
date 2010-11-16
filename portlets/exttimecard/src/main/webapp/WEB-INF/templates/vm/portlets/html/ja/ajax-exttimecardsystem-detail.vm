@@ -20,7 +20,7 @@
 ## ---------------------------------------------------------------------------
 #set($tabs = [["勤務時間設定", "",""]])
 ## ---------------------------------------------------------------------------
-#ALdialogheaderCloseJS("勤務形態詳細" "aipo.exttimecard.hideDialog()")
+#ALdialogheaderCloseJS("勤務形態詳細" "aipo.exttimecardsystem.hideDialog()")
 #ALspacebothheader()
 #ALformheader('ExtTimecardSettings' $jslink $portlet)
 #ALtableheaderWide()
