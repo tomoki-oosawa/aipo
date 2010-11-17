@@ -87,10 +87,13 @@
     <div class="p">
         <span dojoType="aipo.widget.DropdownDatepicker" id="startDateSpan" widgetId="startDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="開始日" hiddenId="start_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.StartDateSub}"checked="checked" #end inputId="start_date_input" dateId="start_date" displayCheck="none"></span>
         <span id="spanField" style="display:#if(!$!{result.Span} || $!{result.AllDayFlag.toString()} == "ON" )none#end">～
-        <span dojoType="aipo.widget.DropdownDatepicker" id="endDateSpan" widgetId="endDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="終了日" hiddenId="end_date" #if ($!result.EndDateCheck.toString()  && ($!result.EndDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.EndDateSub}"checked="checked" #end inputId="end_date_input" dateId="end_date" displayCheck="none"></span>
+          <span dojoType="aipo.widget.DropdownDatepicker" id="endDateSpan" widgetId="endDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="終了日" hiddenId="end_date" #if ($!result.EndDateCheck.toString()  && ($!result.EndDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.EndDateSub}"checked="checked" #end inputId="end_date_input" dateId="end_date" displayCheck="none"></span>
+          <input id="all_day_flag" type="hidden" value="OFF" name="all_day_flag" />
         </span>
-      <input id="all_day_flag" type="checkbox"  #if ($!{result.AllDayFlag.toString()} == "ON") checked="checked" #end value="ON" name="all_day_flag" onchange="aipo.schedule.formSwitchAllDay(this)"/>
-      <label for="all_day_flag">終日</label>
+      <span id="allDayField" style="display:#if($!{result.Span} && $!{result.AllDayFlag.toString()} != "ON")none#end">
+        <input id="all_day_flag" type="checkbox"  #if ($!{result.AllDayFlag.toString()} == "ON") checked="checked" #end value="ON" name="all_day_flag" onclick="aipo.schedule.formSwitchAllDay(this)"/>
+        <label for="all_day_flag">終日</label>
+      </span>
     </div>
   </div>
   <div id="repeatField" style="display:#if(!$!{result.Repeat} || ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1))none#end">
@@ -211,7 +214,7 @@
         </span></div>
   </div>
   <span id="repeatButtonField" style="display:#if($!{result.Span})none#end"><input name="repeat_button" type="button" class="button" value=" #if(!$!{result.Repeat} || ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1))繰り返す#else繰り返さない#end " onclick="aipo.schedule.formSwitchRepeat(this)" /></span>
-  <span id="spanButtonField" style="display:#if($!{result.Repeat} || $!{result.AllDayFlag.toString()} == "ON" )none#end"><input name="span_button" type="button" class="button" value="#if($!{result.Span})時間で指定する#else期間で指定する#end" onclick="aipo.schedule.formSwitchSpan(this)" /></span>
+  <span id="spanButtonField" style="display:#if($!{result.Repeat} || $!{result.AllDayFlag.toString()} == "ON" )none#end"><input name="span_button" type="button" class="button" value="#if($!{result.Span} && $!{result.AllDayFlag.toString()} != "ON")時間で指定する#else期間で指定する#end" onclick="aipo.schedule.formSwitchSpan(this)" /></span>
 #ALtditemfooter()
 #ALtdcaption("#ALrequired($!result.getFieldName('name'))")
 #ALtditem("#ALtextfield('name' $!result.Name '95%' 50 'active')")

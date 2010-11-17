@@ -320,6 +320,7 @@ aipo.schedule.formSpanOn = function(form) {
     dojo.byId('repeatButtonField').style.display = "none";
     dojo.byId('normalField').style.display = "";
     dojo.byId('spanField').style.display = "";
+    dojo.byId('allDayField').style.display = "none";
 
     dojo.byId('facilityField').style.display = "none";
     dojo.byId('facilityFieldButton').style.display = "none";
@@ -334,6 +335,7 @@ aipo.schedule.formSpanOff = function(form) {
     dojo.byId('repeatButtonField').style.display = "";
     dojo.byId('normalField').style.display = "";
     dojo.byId('timeField').style.display = "";
+    dojo.byId('allDayField').style.display = "";
 
     dojo.byId('facilityFieldButton').style.display = "block";
     aipo.schedule.shrinkFacility();
@@ -364,6 +366,7 @@ aipo.schedule.formEditRepeatOne = function(form) {
     dojo.byId('spanField').style.display = "none";
     dojo.byId('spanButtonField').style.display = "none";
     dojo.byId('repeatButtonField').style.display = "none";
+    dojo.byId('allDayField').style.display = "none";
 
     dojo.byId('normalField').style.display = "";
     dojo.byId('timeField').style.display = "";
@@ -379,6 +382,7 @@ aipo.schedule.formEditRepeatAll = function(form) {
     dojo.byId('repeatField').style.display = "";
     dojo.byId('repeatField').text = '繰り返さない';
     dojo.byId('repeatButtonField').style.display = "";
+    dojo.byId('allDayField').style.display = "none";
 
     dojo.byId('timeLabelField').style.display = "";
     dojo.byId('timeField').style.display = "";
