@@ -196,33 +196,6 @@ public class ScheduleDayContainer implements ALData {
     }
     if (canAdd) {
       scheduleList.add(rd);
-      if (scheduleList.size() <= 1) {
-        // 並べ替え不要
-        return;
-      }
-      // 並べ替え実施(時間、名前の順)
-      // ScheduleResultData[] schedule_array =
-      // scheduleList.toArray(new ScheduleResultData[0]);
-      // Arrays.sort(schedule_array, new Comparator<ScheduleResultData>() {
-      // public int compare(ScheduleResultData o1, ScheduleResultData o2) {
-      // ScheduleResultData sche1 = o1;
-      // ScheduleResultData sche2 = o2;
-      // if (sche1.getStartDate().getValue().equals(
-      // sche2.getStartDate().getValue())) {
-      // return sche1.getName().getValue().compareTo(
-      // sche2.getName().getValue());
-      // } else if (sche1.getStartDate().getValue().after(
-      // sche2.getStartDate().getValue())) {
-      // return 1;
-      // } else {
-      // return -1;
-      // }
-      // }
-      // });
-      // scheduleList.clear();
-      // for (int i = 0; i < schedule_array.length; i++) {
-      // scheduleList.add(schedule_array[i]);
-      // }
     }
   }
 
