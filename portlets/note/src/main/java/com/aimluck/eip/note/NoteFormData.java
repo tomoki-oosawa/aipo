@@ -303,13 +303,18 @@ public class NoteFormData extends ALAbstractFormData {
     client_name.validate(msgList);
     // 依頼者所属
     company_name.validate(msgList);
+
     // 依頼者電話番号
-    if (!telephone1.getValue().equals("")
-      || !telephone2.getValue().equals("")
-      || !telephone3.getValue().equals("")) {
+    boolean emptyTelephone1 = telephone1.getValue().equals("");
+    boolean emptyTelephone2 = telephone2.getValue().equals("");
+    boolean emptyTelephone3 = telephone3.getValue().equals("");
+    if (!emptyTelephone1 || !emptyTelephone2 || !emptyTelephone3) {
       if (!telephone1.validate(dummy)
         || !telephone2.validate(dummy)
-        || !telephone3.validate(dummy)) {
+        || !telephone3.validate(dummy)
+        || emptyTelephone1
+        || emptyTelephone2
+        || emptyTelephone3) {
         msgList.add("『 <span class='em'> 依頼者電話番号 </span> 』を正しく入力してください。");
       }
     }
@@ -663,7 +668,7 @@ public class NoteFormData extends ALAbstractFormData {
    * @param rundata
    * @param context
    * @param msgList
-   *            エラーメッセージのリスト
+   *          エラーメッセージのリスト
    * @return TRUE 成功 FALSE 失敗
    */
   @Override
