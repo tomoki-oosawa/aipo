@@ -27,6 +27,7 @@ import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.Ordering;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -472,9 +473,15 @@ public class ScheduleMonthlySelectData extends
     }
 
     // 開始日時でソート
-    query.orderAscending(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+    List<Ordering> orders = new ArrayList<Ordering>();
+    orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
       + "."
-      + EipTSchedule.START_DATE_PROPERTY);
+      + EipTSchedule.START_DATE_PROPERTY, true));
+    orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+      + "."
+      + EipTSchedule.END_DATE_PROPERTY, true));
+    query.getQuery().addOrderings(orders);
+
     return query;
   }
 

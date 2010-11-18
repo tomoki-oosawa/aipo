@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.Ordering;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -140,13 +141,14 @@ public class CellScheduleWeekSelectByMemberData extends
       query.setQualifier((exp10.orExp(exp20)).andExp(exp).andExp(exp0).andExp(
         exp00));
 
-      /*
-       * List orders = new ArrayList(); orders.add(new
-       * Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "." +
-       * EipTSchedule.START_DATE_PROPERTY, true)); orders.add(new
-       * Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY + "." +
-       * EipTSchedule.END_DATE_PROPERTY, true)); query.addOrderings(orders);
-       */
+      List orders = new ArrayList();
+      orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.START_DATE_PROPERTY, true));
+      orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.END_DATE_PROPERTY, true));
+      query.getQuery().addOrderings(orders);
 
       List<EipTScheduleMap> list = query.fetchList();
       scheduleMapList.add(list);
