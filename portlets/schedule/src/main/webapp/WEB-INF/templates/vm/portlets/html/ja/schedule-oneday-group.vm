@@ -153,7 +153,7 @@ ${record.TodoName}
 #foreach($record in ${result.getTermResultDataList($record3.UserId.Value)})
 #ALtdcellheader()
 #set($entityids = "$!{entityids}$!{record.ScheduleId}, ")
-<div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarTermScheduleDiv small">
+<div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calerndarTermScheduleDiv small">
 #if(${record.isShowDetail()})
 <a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid", $!{record.ScheduleId}).addQueryData("userid", $!{record3.UserId}).addQueryData('view_date', $!{result.ViewDate.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$record.Name
 #if(! ${record.isPublic()})
