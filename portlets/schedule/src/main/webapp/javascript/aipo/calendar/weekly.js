@@ -294,6 +294,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 
                 var mbhtml = "";
                 var mbfhtml = "";
+                var placehtml = "";
                 if(item.public || item.member){
                     dojo.forEach(data.memberAllList, function(mitem) {
                         for (j = 0 ; j < item.memberList.length ; j ++){
@@ -314,7 +315,6 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                        mbfhtml = "<span style=\"font-size: 0.90em;\">施設</span><br/><ul>" + mbfhtml + "</ul>";
                     }
 
-                    var placehtml = "";
                     if(item.place != ""){
                        placehtml = "<span style=\"font-size: 0.90em;\">場所</span><br/><ul><li>" + item.place + "</li></ul>";
                     }
@@ -479,6 +479,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 
                         var mbhtml = "";
                         var mbfhtml = "";
+                        var placehtml = "";
                         if(item.public || item.member){
                             dojo.forEach(data.memberAllList, function(mitem) {
                                 for (j = 0 ; j < item.memberList.length ; j ++){
@@ -500,7 +501,6 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                             mbfhtml = "<span style=\"font-size: 0.90em;\">施設</span><br/><ul>" + mbfhtml + "</ul>";
                         }
 
-                        var placehtml = "";
                         if(item.place != ""){
                            placehtml = "<span style=\"font-size: 0.90em;\">場所</span><br/><ul><li>" + item.place + "</li></ul>";
                         }
@@ -812,7 +812,7 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         this.tmpDraggable = tmpDraggable;
 
         dojo.connect(this.node, "onmousedown", this, "onMouseDown");
-        
+
         if (dojo.isIE) {
             document.onkeydown = function(e) {
                 dojo.style(tmpDraggable, "opacity", 0.3);
