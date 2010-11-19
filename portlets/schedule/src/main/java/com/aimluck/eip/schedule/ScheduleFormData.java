@@ -79,8 +79,8 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 public class ScheduleFormData extends ALAbstractFormData {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleFormData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleFormData.class.getName());
 
   /** <code>FLAG_EDIT_REPEAT_DEF</code> デフォルト値（繰り返し編集範囲） */
   private static final int FLAG_EDIT_REPEAT_DEF = -1;
@@ -2113,13 +2113,14 @@ public class ScheduleFormData extends ALAbstractFormData {
    * 指定した曜日が，選択範囲に入っているかを検証する．
    * 
    * @param selectedWeek
-   *            指定曜日
+   *          指定曜日
    * @param startWeek
-   *            期間開始曜日
+   *          期間開始曜日
    * @param endWeek
-   *            期間終了曜日
+   *          期間終了曜日
    * @return 選択範囲に入っている場合，true．
    */
+  @SuppressWarnings("unused")
   private boolean includeWeek(int selectedWeek, int startWeek, int endWeek) {
     if (startWeek <= endWeek) {
       if (startWeek <= selectedWeek && selectedWeek <= endWeek) {

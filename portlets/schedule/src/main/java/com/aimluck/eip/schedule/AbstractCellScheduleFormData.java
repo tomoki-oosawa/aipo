@@ -54,9 +54,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AbstractCellScheduleFormData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AbstractCellScheduleFormData.class.getName());
 
   /** <code>FLAG_EDIT_REPEAT_DEF</code> デフォルト値（繰り返し編集範囲） */
   public static final int FLAG_EDIT_REPEAT_DEF = -1;
@@ -275,6 +274,7 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
     }
 
     Field[] fields = form_data.getClass().getDeclaredFields();
+    @SuppressWarnings("unused")
     boolean res =
       ScheduleUtils.setFormDataDelegate(
         rundata,

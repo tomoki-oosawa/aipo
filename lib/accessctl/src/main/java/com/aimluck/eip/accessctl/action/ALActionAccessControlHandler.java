@@ -42,6 +42,7 @@ import com.aimluck.eip.util.ALUserContextLocator;
 
 public class ALActionAccessControlHandler extends ALAccessControlHandler {
 
+  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ALActionAccessControlHandler.class.getName());
 

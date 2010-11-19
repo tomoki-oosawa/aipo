@@ -267,6 +267,7 @@ public class CellScheduleFormBean implements ALData, Cloneable {
 
     // 毎日
     boolean is_repeat = true;
+    @SuppressWarnings("unused")
     boolean is_span = false;
 
     if (ptn.charAt(0) == 'D') {

@@ -37,10 +37,8 @@ import com.aimluck.eip.schedule.ScheduleWeeklyJSONFormData;
 public class ScheduleWeeklyJSONScreen extends ALJSONScreen {
 
   /** logger */
-  @SuppressWarnings("unused")
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleWeeklyJSONScreen.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleWeeklyJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)

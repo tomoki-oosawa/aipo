@@ -141,7 +141,7 @@ public class CellScheduleWeekSelectByMemberData extends
       query.setQualifier((exp10.orExp(exp20)).andExp(exp).andExp(exp0).andExp(
         exp00));
 
-      List orders = new ArrayList();
+      List<Ordering> orders = new ArrayList<Ordering>();
       orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
         + "."
         + EipTSchedule.START_DATE_PROPERTY, true));
