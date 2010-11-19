@@ -185,26 +185,12 @@ public class CellScheduleOnedaySelectData extends ScheduleOnedaySelectData {
         }
       });
 
-      int listsize = list.size();
-      setPageParam(listsize);
-      int start = getStart();
-      int rowsNum = this.getRowsNum();
-      int count = -1;
-      ArrayList<EipTScheduleMap> reslist = new ArrayList<EipTScheduleMap>();
-      for (int i = 0; i < rowsNum; i++) {
-        count = i + start;
-        if (count >= listsize) {
-          break;
-        }
-        reslist.add(list.get(count));
-      }
-
       if (viewToDo == 1) {
         // ToDo の読み込み
         loadToDo(rundata, context);
       }
 
-      return new ResultList<EipTScheduleMap>(reslist);
+      return new ResultList<EipTScheduleMap>(list);
     } catch (Exception e) {
       logger.error("[ScheduleOnedaySelectData]", e);
       throw new ALDBErrorException();
