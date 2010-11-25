@@ -31,4 +31,4 @@
 #else
 #set ($title = $title.concat("編集"))
 #end
-#ALcell_pagetitle($career $title)
+#ALcell_pagetitle_iphone($career $title)
