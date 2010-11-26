@@ -27,7 +27,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.schedule.ScheduleDetailResultData;
-import com.aimluck.eip.schedule.ScheduleSelectData;
+import com.aimluck.eip.schedule.ScheduleTooltipSelectData;
 
 /**
  * カレンダーを処理するクラスです。 <br />
@@ -54,7 +54,7 @@ public class ScheduleDetailJSONScreen extends ALJSONScreen {
         rundata.getParameters().remove("entityid");
         rundata.getParameters().add("entityid", id);
 
-        ScheduleSelectData detailData = new ScheduleSelectData();
+        ScheduleTooltipSelectData detailData = new ScheduleTooltipSelectData();
         detailData.initField();
 
         JSONObject scheduleJson = new JSONObject();

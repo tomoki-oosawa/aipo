@@ -59,12 +59,13 @@ import com.aimluck.eip.util.ALEipUtils;
  * スケジュール詳細表示の検索結果を管理するクラスです。
  * 
  */
-public class ScheduleSelectData extends
+public class ScheduleTooltipSelectData extends
     ALAbstractSelectData<EipTSchedule, EipTSchedule> {
 
   /** <code>logger</code> logger */
   private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleSelectData.class.getName());
+    JetspeedLogFactoryService.getLogger(ScheduleTooltipSelectData.class
+      .getName());
 
   /** <code>members</code> 共有メンバー */
   private List<ALEipUser> members;
@@ -218,7 +219,8 @@ public class ScheduleSelectData extends
   @Override
   protected EipTSchedule selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
-    return ScheduleUtils.getEipTScheduleDetail(rundata, context, type);
+    return ScheduleUtils
+      .getEipTScheduleDetailForTooltip(rundata, context, type);
   }
 
   /**

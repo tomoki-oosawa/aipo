@@ -304,6 +304,110 @@ public class ScheduleUtils {
   }
 
   /**
+   * スケジュールへのアクセス権限があるかどうかを調べます。
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static boolean hasAuthorityForScheduleDetail(RunData rundata,
+      Context context, EipTSchedule record, String type)
+      throws ALPageNotFoundException, ALDBErrorException {
+    try {
+      int userId = ALEipUtils.getUserId(rundata);
+
+      SelectQuery<EipTScheduleMap> mapquery =
+        Database.query(EipTScheduleMap.class);
+      Expression mapexp1 =
+        ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, record
+          .getScheduleId());
+      mapquery.setQualifier(mapexp1);
+      Expression mapexp21 =
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+          .toString(userId));
+      Expression mapexp22 =
+        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.CREATE_USER_ID_PROPERTY, Integer.valueOf(userId));
+      mapquery.andQualifier(mapexp21.orExp(mapexp22));
+      Expression mapexp3 =
+        ExpressionFactory.matchExp(EipTScheduleMap.TYPE_PROPERTY, type);
+      mapquery.andQualifier(mapexp3);
+
+      List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
+      boolean is_member =
+        (schedulemaps != null && schedulemaps.size() > 0) ? true : false;
+
+      boolean is_owner = record.getOwnerId().intValue() == userId;
+      boolean is_createuser = record.getCreateUserId().intValue() == userId;
+      boolean is_public = "O".equals(record.getPublicFlag());
+
+      // アクセス権限がない場合
+      if (type.equals("F") || is_public) {
+      } else if (!is_member && (!(is_createuser || is_owner))) {
+        return false;
+      }
+      return true;
+    } catch (Exception ex) {
+      logger.error("[ScheduleUtils]", ex);
+      throw new ALDBErrorException();
+    }
+  }
+
+  /**
+   * ツールチップ表示用の Scheudle オブジェクトモデルを取得する．
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static EipTSchedule getEipTScheduleDetailForTooltip(RunData rundata,
+      Context context, String type) throws ALPageNotFoundException,
+      ALDBErrorException {
+
+    String scheduleid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+
+    try {
+      if (scheduleid == null || Integer.valueOf(scheduleid) == null) {
+        logger.error("[ScheduleUtils] ENTITYID is empty.");
+        return null;
+      }
+
+      SelectQuery<EipTSchedule> query = Database.query(EipTSchedule.class);
+      query.getQuery().setRefreshingObjects(true);
+
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(
+          EipTSchedule.SCHEDULE_ID_PK_COLUMN,
+          scheduleid);
+      query.setQualifier(exp1);
+
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTSchedule.EIP_TSCHEDULE_MAPS_PROPERTY
+          + "."
+          + EipTScheduleMap.TYPE_PROPERTY, type);
+      query.andQualifier(exp2);
+
+      List<EipTSchedule> schedules = query.fetchList();
+
+      if (schedules == null || schedules.size() == 0) {
+        logger.error("[ScheduleUtils] Not found record.");
+        return null;
+      }
+
+      EipTSchedule record = schedules.get(0);
+      if (!hasAuthorityForScheduleDetail(rundata, context, record, type)) {
+        return null;
+      }
+      return record;
+    } catch (Exception ex) {
+      logger.error("[ScheduleUtils]", ex);
+      throw new ALDBErrorException();
+    }
+  }
+
+  /**
    * 詳細表示用の Scheudle オブジェクトモデルを取得する．
    * 
    * @param rundata
@@ -311,8 +415,8 @@ public class ScheduleUtils {
    * @return
    */
   public static EipTSchedule getEipTScheduleDetail(RunData rundata,
-      Context context, boolean isOwner, int id, String type)
-      throws ALPageNotFoundException, ALDBErrorException {
+      Context context, String type) throws ALPageNotFoundException,
+      ALDBErrorException {
 
     // スケジュールIDをセッション変数から取得
     String scheduleid =
@@ -355,20 +459,12 @@ public class ScheduleUtils {
           scheduleid);
       query.setQualifier(exp1);
 
-      if (isOwner) {
-        // ユーザーID
-        Expression exp2 =
-          ExpressionFactory.matchExp(EipTSchedule.OWNER_ID_PROPERTY, Integer
-            .valueOf(ALEipUtils.getUserId(rundata)));
-        query.andQualifier(exp2);
-      }
-
       // ユーザのスケジュール
-      Expression exp3 =
+      Expression exp2 =
         ExpressionFactory.matchExp(EipTSchedule.EIP_TSCHEDULE_MAPS_PROPERTY
           + "."
           + EipTScheduleMap.TYPE_PROPERTY, type);
-      query.andQualifier(exp3);
+      query.andQualifier(exp2);
 
       List<EipTSchedule> schedules = query.fetchList();
 
@@ -379,57 +475,14 @@ public class ScheduleUtils {
       }
 
       EipTSchedule record = schedules.get(0);
-
-      // 条件が足りないかも（by Komori 2006/06/09）
-      // Integer.valueOf(id)
-      SelectQuery<EipTScheduleMap> mapquery =
-        Database.query(EipTScheduleMap.class);
-      Expression mapexp1 =
-        ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, record
-          .getScheduleId());
-      mapquery.setQualifier(mapexp1);
-      Expression mapexp21 =
-        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
-          .toString(ALEipUtils.getUserId(rundata)));
-      Expression mapexp22 =
-        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-          + "."
-          + EipTSchedule.CREATE_USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-          .getUserId(rundata)));
-      mapquery.andQualifier(mapexp21.orExp(mapexp22));
-      Expression mapexp3 =
-        ExpressionFactory.matchExp(EipTScheduleMap.TYPE_PROPERTY, type);
-      mapquery.andQualifier(mapexp3);
-
-      List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
-      boolean is_member =
-        (schedulemaps != null && schedulemaps.size() > 0) ? true : false;
-
-      // boolean is_member = orm_map.count(new Criteria().add(
-      // EipTScheduleMapConstants.SCHEDULE_ID, record.getScheduleId()).add(
-      // EipTScheduleMapConstants.USER_ID, id).add(
-      // EipTScheduleMapConstants.TYPE, type).add(
-      // EipTScheduleMapConstants.USER_ID, ALEipUtils.getUserId(rundata))) != 0;
-
-      int loginuser_id = ALEipUtils.getUserId(rundata);
-      boolean is_owner = record.getOwnerId().intValue() == loginuser_id;
-      boolean is_createuser =
-        loginuser_id == record.getCreateUserId().intValue();
-      boolean is_public = "O".equals(record.getPublicFlag());
-
-      // アクセス権限がない場合
-      if (type.equals("F") || is_public) {
-      } else if (!is_member && (!(is_createuser || is_owner))) {
+      if (!hasAuthorityForScheduleDetail(rundata, context, record, type)) {
         ALEipUtils.redirectPermissionError(rundata);
       }
-
-      return schedules.get(0);
-
+      return record;
     } catch (Exception ex) {
       logger.error("[ScheduleUtils]", ex);
       throw new ALDBErrorException();
     }
-
   }
 
   /**
