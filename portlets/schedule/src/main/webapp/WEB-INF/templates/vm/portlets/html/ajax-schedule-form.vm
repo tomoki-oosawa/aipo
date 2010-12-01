@@ -284,7 +284,7 @@
 #ALtditemfooter()
 #ALtdcaption('施設')
 #ALtditemheader()
-<div id="facilityFieldButton" style="display:#if($!{result.Span})none#end"></div>
+<div id="facilityFieldButton" style="display:#if($!{result.Span} || $!{result.PublicFlag.toString()} != "O")none#end"></div>
 <div id="facilityField" style="none">
     <div class="spaceTop spaceLeft small">左側に施設を追加してください。</div>
     <div dojoType="aipo.widget.GroupNormalSelectList"

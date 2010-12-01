@@ -288,6 +288,17 @@ aipo.schedule.formSwitchRepeat = function(button) {
     }
 }
 
+
+aipo.schedule.isShowFacility = function(scheduleform) {
+    var public_flag = scheduleform.public_flag;
+    for(var i = 0 ; i < public_flag.length; i++) { 
+        if (public_flag[i].checked && public_flag[i].value == 'O') {
+            return true;
+        }
+    }
+    return false;
+}
+
 aipo.schedule.formSwitchAllDay = function(checkbox) {
     if(checkbox.checked) {
         aipo.schedule.formAllDayOn(checkbox);
@@ -337,8 +348,10 @@ aipo.schedule.formSpanOff = function(form) {
     dojo.byId('timeField').style.display = "";
     dojo.byId('allDayField').style.display = "";
 
-    dojo.byId('facilityFieldButton').style.display = "block";
-    aipo.schedule.shrinkFacility();
+    if (aipo.schedule.isShowFacility(form)) {
+        dojo.byId('facilityFieldButton').style.display = "block";
+        aipo.schedule.shrinkFacility();
+    }
 
     form.is_repeat.value = 'FALSE';
     form.is_span.value = 'FALSE';
@@ -431,7 +444,9 @@ aipo.schedule.formAllDayOff = function(checkbox) {
     dojo.byId('timeField').style.display = "";
     dojo.byId('spanButtonField').style.display = "";
 
-    dojo.byId('facilityFieldButton').style.display = "block";
+    if (aipo.schedule.isShowFacility(checkbox.form)) {
+        dojo.byId('facilityFieldButton').style.display = "block";
+    }
 
     checkbox.form.is_repeat.value = 'FALSE';
     checkbox.form.is_span.value = 'FALSE';
