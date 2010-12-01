@@ -63,8 +63,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ExtTimecardFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ExtTimecardFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ExtTimecardFormData.class.getName());
 
   /** ToDo名 */
 
@@ -251,8 +251,10 @@ public class ExtTimecardFormData extends ALAbstractFormData {
           || (old_clock_in_time_minute != clock_in_time.getMinute())
           || (old_clock_out_time_hour != clock_out_time.getHour())
           || (old_clock_out_time_minute != clock_out_time.getMinute())) {
-          reason.setNotNull(true);
-          reason.validate(msgList);
+          if (Calendar.getInstance().getTime().after(punch_date.getValue())) {
+            reason.setNotNull(true);
+            reason.validate(msgList);
+          }
           remarks.validate(msgList);
         }
       }
