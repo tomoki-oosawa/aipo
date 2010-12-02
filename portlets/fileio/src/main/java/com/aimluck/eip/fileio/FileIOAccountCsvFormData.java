@@ -63,8 +63,9 @@ import com.aimluck.eip.util.ALEipUtils;
 public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(FileIOAccountCsvFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(FileIOAccountCsvFormData.class
+      .getName());
 
   /** ブラウザに表示するデフォルトのパスワード（ダミーパスワード） */
   public static final String DEFAULT_VIEW_PASSWORD = "*";
@@ -215,7 +216,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
     last_name_kana.limitMaxLength(20);
 
     // 内線
-    in_telephone.setCharacterType(ALStringField.TYPE_ALPHABET_NUMBER);
+    in_telephone.setCharacterType(ALStringField.TYPE_ASCII);
     in_telephone.limitMaxLength(15);
     // メールアドレス
     email.setCharacterType(ALStringField.TYPE_ASCII);
@@ -255,6 +256,8 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
       || "anon".equals(usernamestr)
       || usernamestr.startsWith(ALEipUtils.dummy_user_head)
       || !username.validate(msgList)) {
+      msgList
+        .add("『 <span class='em'>ログイン名</span> 』は 16 文字以下の英数字と記号で入力してください。『 <span class='em'>ログイン名</span> 』として、「admin」「template」「anon」「先頭に dummy_ がつくログイン名」は登録することができません。");
       username.setValue(null);
     }
     if (usernamestr != null) {
@@ -362,8 +365,10 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
       out_telephone.setValue("");
     }
 
-    if (in_telephone.getValue() != null && !in_telephone.getValue().equals("")) {
-
+    if (!in_telephone.validate(msgList)) {
+      in_telephone.setValue(null);
+    } else if (in_telephone.getValue() != null
+      && !in_telephone.getValue().equals("")) {
       Pattern ptn = Pattern.compile("[-0-9]+");/* 半角数字とハイフンのみの文字列ならマッチ */
       Matcher mc = ptn.matcher(in_telephone.getValue().toString());
 
