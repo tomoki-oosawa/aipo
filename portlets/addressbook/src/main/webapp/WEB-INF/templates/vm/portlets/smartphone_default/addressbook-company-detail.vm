@@ -35,7 +35,7 @@
 #end
 #end
 #ALthtd('Fax番号' "$!{result.Detail.FaxNumber}")
-#ALthtd('URL' "<a href='$!{result.Detail.Url}'>$!{result.Detail.Url}</a>")
+#ALthtd('URL' "<a href='$!utils.normalizeURL($result.Detail.getUrl().toString())'>$!{result.Detail.Url}</a>")
 #ALtablefooterBorder()
 #ALcell_contents_footer($career)
 #ALcell_linklist_iphone($career $linklist)

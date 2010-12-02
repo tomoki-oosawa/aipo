@@ -34,8 +34,8 @@ import org.apache.turbine.util.DynamicURI;
 public class ALCommonUtils {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ALCommonUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ALCommonUtils.class.getName());
 
   /** 乱数生成用アルゴリズム（SHA1） */
   public static final String DEF_RANDOM_ALGORITHM = "SHA1PRNG";
@@ -59,8 +59,9 @@ public class ALCommonUtils {
    * 
    * @subpackage helper
    * @param string
-   *          $text
-   * @param int $step
+   *            $text
+   * @param int
+   *            $step
    * @return string
    */
   public static String replaceToAutoCRString(String str) {
@@ -87,8 +88,9 @@ public class ALCommonUtils {
    * 
    * @subpackage helper
    * @param string
-   *          $text
-   * @param int $step
+   *            $text
+   * @param int
+   *            $step
    * @return string
    */
   public static String replaceToAutoCRChild(String str) {
@@ -138,8 +140,9 @@ public class ALCommonUtils {
    * 
    * @subpackage helper
    * @param string
-   *          $text
-   * @param int $step
+   *            $text
+   * @param int
+   *            $step
    * @return string
    */
   public static String replaceToAutoCR(String str) {
@@ -188,9 +191,9 @@ public class ALCommonUtils {
    * 第二引数で指定した長さで、第一引数の文字列を丸める。
    * 
    * @param src
-   *          元の文字列
+   *            元の文字列
    * @param length
-   *          丸めの長さ
+   *            丸めの長さ
    * @return ●処理後の文字列
    */
   public static String compressString(String src, int length) {
@@ -248,5 +251,19 @@ public class ALCommonUtils {
     }
 
     return random;
+  }
+
+  /**
+   * URL文字列にスキーマ部分が含まれていなかった場合、先頭に付加した物を返します
+   * 
+   * @param url
+   * @return
+   */
+  public static String normalizeURL(String url) {
+    String res = url;
+    if (!res.contains("://")) {
+      res = "http://" + res;
+    }
+    return res;
   }
 }

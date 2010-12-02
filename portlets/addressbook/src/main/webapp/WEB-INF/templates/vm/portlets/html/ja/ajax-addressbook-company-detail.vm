@@ -42,7 +42,7 @@
 #ALtdcaption('FAX番号')
 #ALtditem("$!result.Detail.FaxNumber")
 #ALtdcaption('URL')
-#ALtditem("<a href='$!result.Detail.Url' target='_blank'>$result.getStringCR($!result.Detail.Url)</a>")
+#ALtditem("<a href='$!utils.normalizeURL($result.Detail.getUrl().toString())' target='_blank'>$result.getStringCR($!result.Detail.Url)</a>")
 #ALtablefooter()
 #ALbuttonheader()
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.addressbook.onLoadAddressbookCompanyDialog")#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.addressbook.onReceiveMessage")#ALajaxbuttonClose()

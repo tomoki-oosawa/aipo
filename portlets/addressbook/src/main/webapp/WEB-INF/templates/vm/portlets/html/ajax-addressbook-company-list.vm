@@ -269,7 +269,7 @@
 #ALtdcell($result.getStringCR($!record.Address))
 #ALtdcell($!record.Telephone)
 #if ($!record.getUrl() && $!record.getUrl().toString().length() > 0)
-#ALtdcellAtt("<a href='$!record.Url' target='_blank'>HPへ</a>" "nowrap='nowrap'")
+#ALtdcellAtt("<a href='$!utils.normalizeURL($record.getUrl().toString())' target='_blank'>HPへ</a>" "nowrap='nowrap'")
 #else
 #ALtdcell("")
 #end
