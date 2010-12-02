@@ -52,7 +52,7 @@
 #ALtextfield('post_out_telephone1' $!result.OutTelephone1 '20%' 5 'disabled')-#ALtextfield('post_out_telephone2' $!result.OutTelephone2 '20%' 4 'disabled')-#ALtextfield('post_out_telephone3' $!result.OutTelephone3 '20%' 4 'disabled')#ALcaution('（半角数字）')
 #ALtditemfooter()
 #ALtdcaption($!result.getFieldName("post_in_telephone"))
-#ALtditem("#ALtextfield('post_in_telephone' $!result.InTelephone '90%' 50 'disabled')")
+#ALtditem("#ALtextfield('post_in_telephone' $!result.InTelephone '30%' 13 'disabled')#ALcaution('（ハイフン（-）または半角数字）')")
 #ALtdcaption($!result.getFieldName("fax_number1"))
 #ALtditemheader()
 #ALtextfield('fax_number1' $!result.FaxNumber1 '20%' 5 'disabled')-#ALtextfield('fax_number2' $!result.FaxNumber2 '20%' 4 'disabled')-#ALtextfield('fax_number3' $!result.FaxNumber3 '20%' 4 'disabled')#ALcaution('（半角数字）')

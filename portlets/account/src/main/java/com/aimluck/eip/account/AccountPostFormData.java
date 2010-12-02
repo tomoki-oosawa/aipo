@@ -24,6 +24,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -57,8 +59,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AccountPostFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AccountPostFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(AccountPostFormData.class.getName());
 
   /** 部署名 */
   private ALStringField post_name;
@@ -246,7 +248,7 @@ public class AccountPostFormData extends ALAbstractFormData {
     post_out_telephone2.limitMaxLength(4);
     post_out_telephone3.setCharacterType(ALStringField.TYPE_NUMBER);
     post_out_telephone3.limitMaxLength(4);
-    post_in_telephone.setCharacterType(ALStringField.TYPE_ALPHABET_NUMBER);
+    post_in_telephone.setCharacterType(ALStringField.TYPE_ASCII);
     post_in_telephone.limitMaxLength(13);
     fax_number1.setCharacterType(ALStringField.TYPE_NUMBER);
     fax_number1.limitMaxLength(5);
@@ -317,6 +319,14 @@ public class AccountPostFormData extends ALAbstractFormData {
     }
 
     post_in_telephone.validate(msgList);
+    // ハイフン以外の記号とアルファベットの入力をはじきます
+    Pattern pattern = Pattern.compile(".*[^-0-9]+.*");
+    Matcher matcher = pattern.matcher(post_in_telephone.getValue());
+    Boolean ext_validater = matcher.matches();
+    if (ext_validater) {
+      msgList.add("電話番号（内線）は 13 文字以下でハイフン（-）または半角数字で入力してください。");
+    }
+    // post_in_telephone.validate(msgList);
 
     if (!fax_number1.getValue().equals("")
       || !fax_number2.getValue().equals("")

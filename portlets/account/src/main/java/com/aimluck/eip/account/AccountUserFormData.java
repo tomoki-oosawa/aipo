@@ -83,8 +83,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AccountUserFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AccountUserFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(AccountUserFormData.class.getName());
 
   /** ブラウザに表示するデフォルトのパスワード（ダミーパスワード） */
   private static final String DEFAULT_VIEW_PASSWORD = "******";
@@ -546,7 +546,7 @@ public class AccountUserFormData extends ALAbstractFormData {
     Matcher matcher = pattern.matcher(in_telephone.getValue());
     Boolean ext_validater = matcher.matches();
     if (ext_validater) {
-      msgList.add("電話番号（内線）は 15 文字以下でハイフン（-）または半角数字で入力してください。");
+      msgList.add("電話番号（内線）は 13 文字以下でハイフン（-）または半角数字で入力してください。");
     }
 
     if (!cellular_phone1.getValue().equals("")
