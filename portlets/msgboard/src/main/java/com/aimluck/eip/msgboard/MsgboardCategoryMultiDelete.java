@@ -45,8 +45,9 @@ import com.aimluck.eip.util.ALEipUtils;
 public class MsgboardCategoryMultiDelete extends ALAbstractCheckList {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(MsgboardCategoryMultiDelete.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(MsgboardCategoryMultiDelete.class
+      .getName());
 
   /**
    * 
@@ -66,14 +67,12 @@ public class MsgboardCategoryMultiDelete extends ALAbstractCheckList {
       SelectQuery<EipTMsgboardCategory> query = getSelectQuery(rundata, values);
       List<EipTMsgboardCategory> list = query.fetchList();
       if (list == null || list.size() == 0) {
-        // トピックリストが空の場合
-        logger.debug("[MsgboardMultiDelete] Empty TopicIDs...");
+        // カテゴリリストが空の場合
+        logger.debug("[MsgboardMultiDelete] Empty CategoryIDs...");
         return false;
       }
 
-      int size = list.size();
-      for (int i = 0; i < size; i++) {
-        EipTMsgboardCategory category = list.get(i);
+      for (EipTMsgboardCategory category : list) {
         Database.delete(category);
 
         // イベントログに保存

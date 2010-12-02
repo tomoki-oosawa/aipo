@@ -33,6 +33,8 @@ import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 
 /**
  * ワークフローカテゴリの複数削除を行うためのクラスです。 <BR>
@@ -41,8 +43,9 @@ import com.aimluck.eip.orm.query.SelectQuery;
 public class ExtTimecardSystemMultiDelete extends ALAbstractCheckList {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ExtTimecardSystemMultiDelete.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ExtTimecardSystemMultiDelete.class
+      .getName());
 
   /**
    * 
@@ -58,9 +61,7 @@ public class ExtTimecardSystemMultiDelete extends ALAbstractCheckList {
     try {
 
       List<Integer> intValues = new ArrayList<Integer>();
-      int valuesize = values.size();
-      for (int i = 0; i < valuesize; i++) {
-        String value = values.get(i);
+      for (String value : values) {
         if (!"1".equals(value)) {
           intValues.add(Integer.valueOf(value));
         }
@@ -78,8 +79,15 @@ public class ExtTimecardSystemMultiDelete extends ALAbstractCheckList {
         return false;
       }
 
-      Database.deleteAll(list);
+      for (EipTExtTimecardSystem record : list) {
+        Database.delete(record);
 
+        // イベントログに保存
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          record.getSystemId(),
+          ALEventlogConstants.PORTLET_TYPE_EXTTIMECARD_SYSTEM,
+          record.getSystemName());
+      }
       Database.commit();
     } catch (Exception ex) {
       Database.rollback();

@@ -141,9 +141,10 @@ public class ALEventlogUtils {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_ADDRESSBOOK_GROUP;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_MEMO) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_MEMO;
-    } else if (portletType == ALEventlogConstants.PORTLET_TYPE_MSGBOARD_TOPIC
-      || portletType == ALEventlogConstants.PORTLET_TYPE_MSGBOARD_CATEGORY) {
+    } else if (portletType == ALEventlogConstants.PORTLET_TYPE_MSGBOARD_TOPIC) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_MSGBOARD;
+    } else if (portletType == ALEventlogConstants.PORTLET_TYPE_MSGBOARD_CATEGORY) {
+      return ALActionEventlogConstants.PORTLET_TYPE_STR_MSGBOARD_CATEGORY;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_EXTERNALSEARCH) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_EXTERNALSEARCH;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_MYLINK) {

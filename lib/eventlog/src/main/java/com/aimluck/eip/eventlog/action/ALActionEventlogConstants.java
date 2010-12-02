@@ -171,6 +171,8 @@ public class ALActionEventlogConstants {
 
   public static final String PORTLET_TYPE_STR_MSGBOARD = "掲示板";
 
+  public static final String PORTLET_TYPE_STR_MSGBOARD_CATEGORY = "掲示板カテゴリ";
+
   public static final String PORTLET_TYPE_STR_EXTERNALSEARCH = "検索窓";
 
   public static final String PORTLET_TYPE_STR_MYLINK = "Myリンク";

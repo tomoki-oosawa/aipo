@@ -52,8 +52,9 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ExtTimecardSystemFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ExtTimecardSystemFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ExtTimecardSystemFormData.class
+      .getName());
 
   private ALNumberField system_id;
 
@@ -203,6 +204,12 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       // 更新日
       record.setUpdateDate(Calendar.getInstance().getTime());
 
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        record.getSystemId(),
+        ALEventlogConstants.PORTLET_TYPE_EXTTIMECARD_SYSTEM,
+        record.getSystemName());
+
       Database.commit();
     } catch (Exception ex) {
       Database.rollback();
@@ -230,13 +237,14 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       }
 
       Database.delete(record);
-      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         record.getSystemId(),
         ALEventlogConstants.PORTLET_TYPE_EXTTIMECARD_SYSTEM,
         record.getSystemName());
+
+      Database.commit();
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
@@ -271,6 +279,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       record.setCreateDate(Calendar.getInstance().getTime());
       record.setUpdateDate(Calendar.getInstance().getTime());
       Database.commit();
+
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         record.getSystemId(),
