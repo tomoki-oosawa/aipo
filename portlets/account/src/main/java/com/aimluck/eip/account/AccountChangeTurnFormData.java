@@ -21,10 +21,8 @@ package com.aimluck.eip.account;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.cayenne.ObjectId;
@@ -53,8 +51,9 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AccountChangeTurnFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AccountChangeTurnFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(AccountChangeTurnFormData.class
+      .getName());
 
   // ユーザ名のリスト
   private ALStringField positions;
@@ -256,40 +255,24 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
       Expression exp1 =
         ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY, userNames);
       SelectQuery<TurbineUser> query = Database.query(TurbineUser.class, exp1);
-      // Expression exp2 = ExpressionFactory.matchExp(
-      // TurbineUser.DISABLED_PROPERTY, "F");
       query.orderAscending(TurbineUser.EIP_MUSER_POSITION_PROPERTY
         + "."
         + EipMUserPosition.POSITION_PROPERTY);
-      // query.andQualifier(exp2);
       List<TurbineUser> list = query.fetchList();
 
-      // 場所を入れ替えたユーザの ID と移動先のインデックスを保持する．
-      // (ユーザ ID，移動先インデックス)
-      LinkedHashMap<TurbineUser, Integer> map =
-        new LinkedHashMap<TurbineUser, Integer>();
-      TurbineUser currentUser = null;
-      int length = userNames.length;
-      for (int i = 0; i < length; i++) {
-        currentUser = list.get(i);
-
-        if (!currentUser.getLoginName().equals(userNames[i])) {
-          map.put(getEipUserRecord(list, userNames[i]), Integer.valueOf(i + 1));
-        }
+      LinkedHashMap<String, TurbineUser> loginnameUserMap =
+        new LinkedHashMap<String, TurbineUser>();
+      for (TurbineUser user : list) {
+        loginnameUserMap.put(user.getLoginName(), user);
       }
 
-      TurbineUser key = null;
-      Integer value = null;
-      Map.Entry<TurbineUser, Integer> entry = null;
-      for (Iterator<Map.Entry<TurbineUser, Integer>> i =
-        map.entrySet().iterator(); i.hasNext();) {
-        entry = i.next();
-        key = entry.getKey();
-        value = entry.getValue();
-        EipMUserPosition userPosition = key.getEipMUserPosition();
-        userPosition.setPosition(value);
+      int newPosition = 1;
+      for (String name : userNames) {
+        TurbineUser user = loginnameUserMap.get(name);
+        EipMUserPosition userPosition = user.getEipMUserPosition();
+        userPosition.setPosition(newPosition);
+        newPosition++;
       }
-
       Database.commit();
     } catch (Exception e) {
       Database.rollback();
