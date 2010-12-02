@@ -22,7 +22,6 @@ package com.aimluck.eip.schedule;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,8 +68,9 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleOnedayGroupSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ScheduleOnedayGroupSelectData.class
+      .getName());
 
   /** <code>termmap</code> 期間スケジュールマップ */
   private Map<Integer, List<ScheduleOnedayResultData>> termmap;
@@ -106,8 +106,9 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
   private String portletId;
 
   /** ログインユーザのスケジュールの上位表示フラグ名 */
-  protected final String FLAG_CHANGE_TURN_STR = new StringBuffer().append(
-    this.getClass().getName()).append("flagchangeturn").toString();
+  protected final String FLAG_CHANGE_TURN_STR =
+    new StringBuffer().append(this.getClass().getName()).append(
+      "flagchangeturn").toString();
 
   /** <code>map</code> スケジュールMap（施設） */
   private Map<Integer, ScheduleOnedayContainer> facilitymap;
@@ -567,51 +568,44 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
   }
 
   /**
+   * スケジュールの一日コンテナの各rows値の中で、最大値を取得します。
+   * 
+   * @param list
+   */
+  private int[] getMaxRowsFromContainer(Collection<ScheduleOnedayContainer> list) {
+
+    int nowRows[] = new int[rows.length];
+    for (ScheduleOnedayContainer container : list) {
+      container.last(startHour, endHour, getViewDate());
+      if (container.isDuplicate()) {
+        is_duplicate = true;
+      }
+
+      int size = rows.length;
+      int[] tmpRows = container.getRows();
+      for (int i = 0; i < size; i++) {
+        if (tmpRows[i] > nowRows[i]) {
+          nowRows[i] = tmpRows[i];
+        }
+      }
+    }
+    return nowRows;
+  }
+
+  /**
    * 検索後の処理を行います。
    * 
    */
   private void postDoList() {
-    Collection<ScheduleOnedayContainer> col = map.values();
-    Iterator<ScheduleOnedayContainer> it = col.iterator();
-    while (it.hasNext()) {
-      ScheduleOnedayContainer con = it.next();
-      con.last(startHour, endHour, getViewDate());
-      if (con.isDuplicate()) {
-        is_duplicate = true;
-      }
-      int size = rows.length;
-      int[] tmpRows = con.getRows();
-      for (int i = 0; i < size; i++) {
-        if (tmpRows[i] > rows[i]) {
-          rows[i] = tmpRows[i];
-        }
-      }
-    }
+    int userRows[] = getMaxRowsFromContainer(map.values());
+
+    int facilityRows[] = getMaxRowsFromContainer(facilitymap.values());
+
     int size = rows.length;
     for (int i = 0; i < size; i++) {
+      rows[i] = Math.max(rows[i], Math.max(userRows[i], facilityRows[i]));
       max += rows[i];
     }
-
-    Collection<ScheduleOnedayContainer> fcol = facilitymap.values();
-    Iterator<ScheduleOnedayContainer> fit = fcol.iterator();
-    while (fit.hasNext()) {
-      ScheduleOnedayContainer con = fit.next();
-      con.last(startHour, endHour, getViewDate());
-      if (con.isDuplicate()) {
-        is_duplicate = true;
-      }
-      // int size = rows.length;
-      // int[] tmpRows = con.getRows();
-      // for (int i = 0; i < size; i++) {
-      // if (tmpRows[i] > rows[i]) {
-      // rows[i] = tmpRows[i];
-      // }
-      // }
-    }
-    // int size = rows.length;
-    // for (int i = 0; i < size; i++) {
-    // max += rows[i];
-    // }
   }
 
   @Override
