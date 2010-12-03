@@ -68,7 +68,7 @@ $!result.Detail.Name
 #ALtdcaption('FAX番号')
 #ALtditem($!result.Detail.CompanyFaxNumber)
 #ALtdcaption('URL')
-#ALtditem("<a href='$!result.Detail.CompanyUrl' target='_blank'>$result.getStringCR($!result.Detail.CompanyUrl)</a>")
+#ALtditem("<a href='$utils.normalizeURL($result.Detail.CompanyUrl.toString())' target='_blank'>$result.getStringCR($!result.Detail.CompanyUrl)</a>")
 #ALtablefooter()
 #ALtditemfooter()
 #else
