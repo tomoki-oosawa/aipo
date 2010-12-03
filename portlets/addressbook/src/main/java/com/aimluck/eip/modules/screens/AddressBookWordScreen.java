@@ -36,8 +36,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AddressBookWordScreen extends ALVelocityScreen {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AddressBookWordScreen.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(AddressBookWordScreen.class.getName());
 
   private String mode = null;
 
@@ -65,17 +65,11 @@ public class AddressBookWordScreen extends ALVelocityScreen {
           context).getPortletConfig().getInitParameter("p3a-strlen")));
         listData.doViewList(this, rundata, context);
         listData.loadGroups(rundata, context);
+
         // 現在のタブによって処理を分岐
         currentTab = ALEipUtils.getTemp(rundata, context, "tab");
-        if (currentTab == null
-          || currentTab.trim().length() == 0
-          || "syagai".equals(currentTab)) {
-          setTemplate(rundata, context, getLayoutTemplate());
-        } else {
-          setTemplate(rundata, context, getLayoutTemplate());
-        }
+        setTemplate(rundata, context, getLayoutTemplate());
       } else {
-
         // mode指定がないとき
         AddressBookWordSelectData listData = new AddressBookWordSelectData();
         listData.setRowsNum(Integer.parseInt(portlet
@@ -86,8 +80,8 @@ public class AddressBookWordScreen extends ALVelocityScreen {
           context).getPortletConfig().getInitParameter("p3a-strlen")));
         listData.doViewList(this, rundata, context);
 
-        String layout_template = getLayoutTemplate();
-        setTemplate(rundata, context, layout_template);
+        currentTab = ALEipUtils.getTemp(rundata, context, "tab");
+        setTemplate(rundata, context, getLayoutTemplate());
       }
 
     } catch (Exception ex) {

@@ -169,7 +169,7 @@
 </tr>
 #end
 #ALtablefooter()
-#ALajaxpageviewFooter('AddressBookListScreen' $result)
+#ALajaxpageviewFooter(${pageviewscreen} $result)
 #end
 ##ALajaxpageviewFooter('AddressBookListScreen' $result)
 

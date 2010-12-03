@@ -40,6 +40,8 @@ public class CustomSelectTranslator extends SelectTranslator {
 
   private int limit;
 
+  private boolean isDistinct;
+
   @Override
   public String createSqlString() throws Exception {
     String ret = null;
@@ -52,6 +54,9 @@ public class CustomSelectTranslator extends SelectTranslator {
       postStr += " OFFSET " + offset;
     }
     if (customScript == null) {
+      if (isDistinct) {
+        ret = ret.replaceFirst("SELECT ", "SELECT DISTINCT ");
+      }
       return ret + postStr;
     }
     int fromIndex = ret.indexOf(" FROM ");
@@ -100,5 +105,9 @@ public class CustomSelectTranslator extends SelectTranslator {
 
   public void setFetchLimit(int limit) {
     this.limit = limit;
+  }
+
+  public void setIsDistinct(boolean isDistinct) {
+    this.isDistinct = isDistinct;
   }
 }

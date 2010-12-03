@@ -34,7 +34,7 @@
 #if($!result.Index && $result.Index.toString() != "")
 <a#if($!result.CurrentSort && $!result.CurrentSort == "$key") class="$sortHead"#end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template",$screen).addQueryData("start","$result.CurrentPage").addQueryData("sort","$key").addQueryData("sorttype","$sorttype").addQueryData("idx","$result.Index"))', '$!portlet.ID');">$name</a>
 #else
-<a#if($!result.CurrentSort && $!result.CurrentSort == "$key") class="$sortHead"#end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template",$screen).addQueryData("start","$result.CurrentPage").addQueryData("sort","$key").addQueryData("sorttype","$sorttype"))', '$!portlet.ID');">$name</a> 
+<a#if($!result.CurrentSort && $!result.CurrentSort == "$key") class="$sortHead"#end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template",$screen).addQueryData("start","$result.CurrentPage").addQueryData("sort","$key").addQueryData("sorttype","$sorttype"))', '$!portlet.ID');">$name</a>	
 #end
 #end
 #end
@@ -138,7 +138,7 @@
 #if($result.List.size() == 0)
 指定された条件に該当するアドレスはありません。<br />
 #else
-##ALajaxpageviewAB('AddressBookListScreen' $result) 
+##ALajaxpageviewAB('AddressBookListScreen' $result)	
 #ALajaxpageview(${pageviewscreen} $result)
 #ALtableheaderWide()
 <tr>
@@ -169,7 +169,7 @@
 </tr>
 #end
 #ALtablefooter()
-#ALajaxpageviewFooter('AddressBookListScreen' $result)
+#ALajaxpageviewFooter(${pageviewscreen} $result)
 #end
 ##ALajaxpageviewFooter('AddressBookListScreen' $result)
 

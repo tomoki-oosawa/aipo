@@ -60,6 +60,7 @@ public abstract class AbstractCustomQuery extends
       String[] columnNames = getCustomColumnNames();
       int limit = getFetchLimit();
       int offset = getFetchOffset();
+      boolean isDistinct = isDistinct();
       if (customScript != null || offset > 0 || limit > 0) {
         return new CustomSelectAction(
           this,
@@ -69,7 +70,8 @@ public abstract class AbstractCustomQuery extends
           columns,
           columnNames,
           limit,
-          offset);
+          offset,
+          isDistinct);
       }
     }
     return super.createSQLAction(visitor);

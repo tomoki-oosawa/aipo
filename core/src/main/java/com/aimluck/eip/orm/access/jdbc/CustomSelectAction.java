@@ -45,15 +45,18 @@ public class CustomSelectAction extends SelectAction {
 
   private final int limit;
 
+  private final boolean isDistinct;
+
   public CustomSelectAction(AbstractCustomQuery arg0, DbAdapter arg1,
       EntityResolver arg2, String customScript, ColumnDescriptor[] columns,
-      String[] columnNames, int limit, int offset) {
+      String[] columnNames, int limit, int offset, boolean isDistinct) {
     super(arg0, arg1, arg2);
     this.customScript = customScript;
     this.columns = columns;
     this.columnNames = columnNames;
     this.offset = offset;
     this.limit = limit;
+    this.isDistinct = isDistinct;
   }
 
   @Override
@@ -68,6 +71,7 @@ public class CustomSelectAction extends SelectAction {
     translator.setCustomColumnNames(columnNames);
     translator.setFetchOffset(offset);
     translator.setFetchLimit(limit);
+    translator.setIsDistinct(isDistinct);
     return translator;
   }
 }

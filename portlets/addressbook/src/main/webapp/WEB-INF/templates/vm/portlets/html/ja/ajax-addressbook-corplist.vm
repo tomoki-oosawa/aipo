@@ -24,6 +24,7 @@
 #set ($submenulist = [["アドレスを追加する","javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.addressbook.onLoadAddressbookDialog);","images/icon/icon_add.gif"],["会社情報を追加する","javascript:aipo.common.showDialog('$newUrl3','$!portlet.ID',aipo.addressbook.onLoadAddressbookCompanyDialog);","images/icon/icon_add.gif"],["グループを追加する","javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);","images/icon/icon_add.gif"]])
 #set ($idx = $!result.Index)
 ## ---------------------------------------------------------------------------
+#ALsubmenubar($submenulist "")
 
 #macro(ALajaxsortaddressbook $key $name $result $screen)
 #if($!result.CurrentSort && $!result.CurrentSort == "$key" && $!result.CurrentSortType && $!result.CurrentSortType == "asc")#set($sorttype ="desc")#set($sortHead ="headDown") #else #set($sorttype ="asc")#set($sortHead ="headUp")#end
@@ -34,8 +35,6 @@
 #end
 #end
 
-#ALsubmenubar($submenulist "")
-
 #if($result.SearchWord && $result.SearchWord.toString() != "")
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_search_list','1')")
 #set($pageviewscreen = "AddressBookWordScreen")
@@ -44,7 +43,7 @@
 #set($pageviewscreen = "AddressBookListScreen")
 #end
 #set($tabs = [["社外アドレス", "syagai", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen').addQueryData('tab','syagai')"], ["社内アドレス", "corp", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen').addQueryData('tab','corp')"]])
-<form name="$name" id="ABList"  method="post" onsubmit="aipo.addressbook.onSubmitSerchButton(this,'$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen').addQueryData('mode','ajaxsearch')','$!portlet.ID','$!result.currentTab'); return false;">
+<form name="addressbook$!portlet.ID" id="addressbook$!portlet.ID"  method="post" onsubmit="aipo.addressbook.onSubmitSerchButton(this,'$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen').addQueryData('mode','ajaxsearch')','$!portlet.ID','$!result.currentTab'); return false;">
 #ALtableheaderSimpleWide()
 #ALtdcaption('検索')
 #ALtditemheader()
@@ -105,7 +104,7 @@
 #ALajaxpageview(${pageviewscreen} $result)
 #ALtableheaderWide()
 <tr>
-#ALtdheadW25("#ALajaxsortaddressbook('name_kana' '名前' $result 'AddressBookListScreen')")
+#ALtdheadW25("#ALajaxsortaddressbook('name_kana' '名前' $result 'AddressBookWordScreen')")
 #ALtdhead('部署名')
 #ALtdhead('役職')
 #ALtdheadW25('メールアドレス')
@@ -135,7 +134,7 @@
 </tr>
 #end
 #ALtablefooter()
-#ALajaxpageviewFooter('AddressBookListScreen' $result)
+#ALajaxpageviewFooter(${pageviewscreen} $result)
 #end
 #ALformfooter()
 #ALspacebothfooter()
