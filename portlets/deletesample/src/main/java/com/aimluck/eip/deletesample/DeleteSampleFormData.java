@@ -31,23 +31,36 @@ import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.om.profile.Profile;
 import org.apache.jetspeed.om.profile.ProfileException;
 import org.apache.jetspeed.om.profile.psml.PsmlParameter;
+import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
+import org.apache.jetspeed.services.security.JetspeedSecurityException;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.blog.util.BlogUtils;
+import com.aimluck.eip.cabinet.util.CabinetUtils;
+import com.aimluck.eip.category.util.CommonCategoryUtils;
+import com.aimluck.eip.cayenne.om.account.EipMPosition;
+import com.aimluck.eip.cayenne.om.account.EipMPost;
 import com.aimluck.eip.cayenne.om.portlet.EipMAddressbook;
 import com.aimluck.eip.cayenne.om.portlet.EipMAddressbookCompany;
+import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipMMailAccount;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlog;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogComment;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFootmarkMap;
+import com.aimluck.eip.cayenne.om.portlet.EipTBlogThema;
+import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile;
+import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolder;
+import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTMail;
 import com.aimluck.eip.cayenne.om.portlet.EipTMemo;
+import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardTopic;
 import com.aimluck.eip.cayenne.om.portlet.EipTNote;
@@ -63,43 +76,44 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.query.Query;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * サンプルデータ削除のフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class DeleteSampleFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(DeleteSampleFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(DeleteSampleFormData.class.getName());
 
   protected List<String> fpaths = null;
 
   /** 掲示板,ブログの添付ファイルを保管するディレクトリの指定 */
-  protected static final String FOLDER_FILEDIR = JetspeedResources.getString(
-    "aipo.filedir",
-    "");
+  protected static final String FOLDER_FILEDIR =
+    JetspeedResources.getString("aipo.filedir", "");
 
-  protected static final String FOLDER_MAILDIR = JetspeedResources.getString(
-    "aipo.mail.home",
-    "");
+  protected static final String FOLDER_MAILDIR =
+    JetspeedResources.getString("aipo.mail.home", "");
 
   private String org_id;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -110,8 +124,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   public void initField() {
 
@@ -119,8 +133,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /**
    * DeleteSampleの各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -129,10 +143,10 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /**
    * DeleteSampleのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -141,7 +155,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /**
    * DeleteSampleをデータベースから読み出します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -155,7 +169,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /**
    * DeleteSampleをデータベースから削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -169,7 +183,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /**
    * DeleteSampleをデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -183,7 +197,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているDeleteSampleを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -216,7 +230,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
       updateMailaccount(ids);
 
       // 共有フォルダ処理
-      // updateCabinet(ids);
+      updateCabinet(ids);
 
       // メール処理
       updateMail(ids);
@@ -260,6 +274,13 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
       // サンプルユーザーを非表示にする
       updateUserhidden(ids);
+
+      // singletonオブジェクトのリフレッシュ
+      ALEipManager.getInstance().reloadPost();
+      ALEipManager.getInstance().reloadCompany();
+      ALEipManager.getInstance().reloadPosition();
+
+      // debug
       updateFlag(rundata);
 
     } catch (Exception ex) {
@@ -268,6 +289,68 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     }
 
     return true;
+  }
+
+  /**
+   * @param ids
+   */
+  private void updateCabinet(List<Integer> ids) {
+
+    SelectQuery<EipTCabinetFolder> query =
+      Database.query(EipTCabinetFolder.class);
+    Expression exp1 =
+      ExpressionFactory.inExp(EipTCabinetFolder.CREATE_USER_ID_PROPERTY, ids);
+    query.setQualifier(exp1);
+
+    List<EipTCabinetFolder> list = query.fetchList();
+
+    for (EipTCabinetFolder folder : list) {
+      Integer folderId = folder.getFolderId();
+      SelectQuery<EipTCabinetFolder> query1 =
+        Database.query(EipTCabinetFolder.class);
+      exp1 =
+        ExpressionFactory.matchDbExp(
+          EipTCabinetFolder.FOLDER_ID_PK_COLUMN,
+          Integer.valueOf(folderId));
+      Expression exp2 =
+        ExpressionFactory.matchExp(
+          EipTCabinetFolder.PARENT_ID_PROPERTY,
+          Integer.valueOf(folderId));
+      query1.setQualifier(exp1.orExp(exp2));
+      List<EipTCabinetFolder> list1 = query1.fetchList();
+
+      ArrayList<Integer> folderids = new ArrayList<Integer>();
+      for (EipTCabinetFolder folder2 : list1) {
+        folderids.add(folder2.getFolderId());
+      }
+
+      // データベースのフォルダ情報を削除する．
+      SelectQuery<EipTCabinetFolder> delfolderquery =
+        Database.query(EipTCabinetFolder.class);
+      Expression delfolderexp =
+        ExpressionFactory.inDbExp(
+          EipTCabinetFolder.FOLDER_ID_PK_COLUMN,
+          folderids);
+      delfolderquery.setQualifier(delfolderexp);
+      List<EipTCabinetFolder> delFolderList = delfolderquery.fetchList();
+
+      // フォルダ情報を削除
+      for (EipTCabinetFolder delfolder : delFolderList) {
+        List<EipTCabinetFile> cabinetfiles =
+          CabinetUtils.getEipTCabinetFileList(delfolder
+            .getFolderId()
+            .intValue());
+        if ((cabinetfiles != null) && (cabinetfiles.size() > 0)) {
+          int tsize = cabinetfiles.size();
+          for (int k = 0; k < tsize; k++) {
+            fpaths.add((cabinetfiles.get(k)).getFilePath());
+          }
+        }
+        // フォルダ情報を削除
+        Database.delete(delfolder);
+        Database.commit();
+      }
+    }
   }
 
   private void updateFlag(RunData rundata) throws ProfileException {
@@ -331,15 +414,13 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     List<EipTBlogFile> Bloglist3 = blogquery3.fetchList();
 
     if (Bloglist3 != null && Bloglist3.size() > 0) {
-      int size = Bloglist3.size();
-      for (int i = 0; i < size; i++) {
-        EipTBlogFile file = Bloglist3.get(i);
+      for (EipTBlogFile file : Bloglist3) {
         fpaths.add(getSaveDirPath(
           org_id,
           file.getOwnerId().intValue(),
           FOLDER_FILEDIR,
           "blog")
-          + (Bloglist3.get(i)).getFilePath());
+          + file.getFilePath());
       }
     }
 
@@ -357,13 +438,42 @@ public class DeleteSampleFormData extends ALAbstractFormData {
       Database.deleteAll(bloglist4);
     }
 
+    List<EipTBlogThema> deleteThemeList = new ArrayList<EipTBlogThema>();
+
     SelectQuery<EipTBlogEntry> Blogquery5 = Database.query(EipTBlogEntry.class);
     Expression blogexp5 =
       ExpressionFactory.inExp(EipTBlogEntry.OWNER_ID_PROPERTY, ids);
     Blogquery5.setQualifier(blogexp5);
     List<EipTBlogEntry> bloglist5 = Blogquery5.fetchList();
     if (bloglist5 != null && bloglist5.size() > 0) {
+      for (EipTBlogEntry entry : bloglist5) {
+        EipTBlogThema theme = entry.getEipTBlogThema();
+        if (!theme.getThemaId().equals(1)) {
+          deleteThemeList.add(theme);
+        }
+      }
       Database.deleteAll(bloglist5);
+      Database.commit();
+
+      if (deleteThemeList.size() > 0) {
+        List<Integer> themeIds = new ArrayList<Integer>();
+        for (EipTBlogThema theme : deleteThemeList) {
+          themeIds.add(theme.getThemaId());
+        }
+        Expression themaExp =
+          ExpressionFactory.inExp(
+            EipTBlogEntry.EIP_TBLOG_THEMA_PROPERTY,
+            themeIds);
+        Query<EipTBlogEntry> themaQuery =
+          Database.query(EipTBlogEntry.class, themaExp);
+        List<EipTBlogEntry> themaEntry = themaQuery.fetchList();
+        EipTBlogThema defaultThema = BlogUtils.getEipTBlogThema(1L);
+        for (EipTBlogEntry entry : themaEntry) {
+          entry.setEipTBlogThema(defaultThema);
+        }
+        Database.commit();
+        Database.deleteAll(deleteThemeList);
+      }
     }
 
     SelectQuery<EipTBlog> blogquery6 = Database.query(EipTBlog.class);
@@ -443,18 +553,18 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     msgquery3.setQualifier(msgexp3);
     List<EipTMsgboardFile> msglist3 = msgquery3.fetchList();
     if (msglist3 != null && msglist3.size() > 0) {
-      int size = msglist3.size();
-      for (int i = 0; i < size; i++) {
-        EipTMsgboardFile file = msglist3.get(i);
+      for (EipTMsgboardFile file : msglist3) {
         fpaths.add(getSaveDirPath(
           org_id,
           file.getOwnerId().intValue(),
           FOLDER_FILEDIR,
           "msgboard")
-          + msglist3.get(i).getFilePath());
+          + file.getFilePath());
       }
       Database.deleteAll(msglist3);
     }
+
+    List<EipTMsgboardCategory> catList = new ArrayList<EipTMsgboardCategory>();
 
     SelectQuery<EipTMsgboardTopic> msgquery4 =
       Database.query(EipTMsgboardTopic.class);
@@ -463,7 +573,42 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     msgquery4.setQualifier(msgexp4);
     List<EipTMsgboardTopic> msglist4 = msgquery4.fetchList();
     if (msglist4 != null && msglist4.size() > 0) {
+      for (EipTMsgboardTopic topic : msglist4) {
+        catList.add(topic.getEipTMsgboardCategory());
+      }
       Database.deleteAll(msglist4);
+
+      if (catList.size() > 0) {
+        List<Integer> catIds = new ArrayList<Integer>();
+        for (EipTMsgboardCategory category : catList) {
+          catIds.add(category.getCategoryId());
+        }
+        SelectQuery<EipTMsgboardTopic> msgquery5 =
+          Database.query(EipTMsgboardTopic.class);
+        Expression msgexp5 =
+          ExpressionFactory.inExp(
+            EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY,
+            catIds);
+        msgquery5.setQualifier(msgexp5);
+        List<EipTMsgboardTopic> msglist5 = msgquery5.fetchList();
+
+        SelectQuery<EipTMsgboardCategory> query =
+          Database.query(EipTMsgboardCategory.class);
+        Expression exp1 =
+          ExpressionFactory.matchDbExp(
+            EipTMsgboardCategory.CATEGORY_ID_PK_COLUMN,
+            Integer.valueOf(1));
+        query.setQualifier(exp1);
+        List<EipTMsgboardCategory> categories = query.fetchList();
+        EipTMsgboardCategory defaultCategory = categories.get(0);
+
+        for (EipTMsgboardTopic topic : msglist5) {
+          topic.setEipTMsgboardCategory(defaultCategory);
+        }
+        Database.commit();
+        Database.deleteAll(catList);
+      }
+
     }
 
   }
@@ -521,7 +666,10 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     }
   }
 
+  @SuppressWarnings("unchecked")
   private void updateSchedule(List<Integer> ids) {
+    List<Integer> deleteFacilityId = new ArrayList<Integer>();
+
     SelectQuery<EipTSchedule> schedulequery1 =
       Database.query(EipTSchedule.class);
     Expression scheduleexp1 =
@@ -529,6 +677,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     schedulequery1.setQualifier(scheduleexp1);
     List<EipTSchedule> schedulelist1 = schedulequery1.fetchList();
     if (schedulelist1 != null && schedulelist1.size() > 0) {
+
       Database.deleteAll(schedulelist1);
     }
 
@@ -539,7 +688,46 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     schedulequery2.setQualifier(scheduleexp2);
     List<EipTScheduleMap> schedulelist2 = schedulequery2.fetchList();
     if (schedulelist2 != null && schedulelist2.size() > 0) {
+      for (EipTScheduleMap map : schedulelist2) {
+        List<EipTScheduleMap> maps =
+          map.getEipTSchedule().getEipTScheduleMaps();
+        for (EipTScheduleMap map2 : maps) {
+          if (map2.getType().equals("F")) {
+            deleteFacilityId.add(map2.getUserId());
+          }
+        }
+        // 共有カテゴリの削除
+        EipTCommonCategory commonCat = map.getEipTCommonCategory();
+        if (!commonCat.getCommonCategoryId().equals(1)) {
+          CommonCategoryUtils.setDefaultCommonCategoryToSchedule(commonCat);
+          Database.delete(commonCat);
+        }
+      }
       Database.deleteAll(schedulelist2);
+
+      // 施設の削除
+      if (deleteFacilityId.size() > 0) {
+        Expression fexp =
+          ExpressionFactory.inDbExp(
+            EipMFacility.FACILITY_ID_PK_COLUMN,
+            deleteFacilityId);
+        SelectQuery<EipMFacility> query =
+          Database.query(EipMFacility.class, fexp);
+        List<EipMFacility> flist = query.fetchList();
+        if (flist.size() > 0) {
+          SelectQuery<EipTScheduleMap> query1 =
+            Database.query(EipTScheduleMap.class);
+          Expression exp1 =
+            ExpressionFactory.inExp(
+              EipTScheduleMap.USER_ID_PROPERTY,
+              deleteFacilityId);
+          Expression exp2 =
+            ExpressionFactory.matchExp(EipTScheduleMap.TYPE_PROPERTY, "F");
+          query1.setQualifier(exp1.andExp(exp2));
+          query1.deleteAll();
+          Database.deleteAll(flist);
+        }
+      }
     }
   }
 
@@ -572,9 +760,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     if (fpaths.size() > 0) {
       // ローカルファイルに保存されているファイルを削除する．
       File file = null;
-      int fsize = fpaths.size();
-      for (int i = 0; i < fsize; i++) {
-        file = new File(fpaths.get(i));
+      for (String path : fpaths) {
+        file = new File(path);
         if (file.exists()) {
           ALEipUtils.deleteFolder(file);
         }
@@ -584,7 +771,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /**
    * ユーザ毎のルート保存先（絶対パス）を取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -603,15 +790,38 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     }
   }
 
-  private void updateUserhidden(List<Integer> ids) {
+  private void updateUserhidden(List<Integer> ids)
+      throws JetspeedSecurityException {
+
+    List<EipMPost> delpost = new ArrayList<EipMPost>();
+    List<Integer> delpositionId = new ArrayList<Integer>();
 
     Expression gexp =
       ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, ids);
     SelectQuery<TurbineUserGroupRole> gquery =
       Database.query(TurbineUserGroupRole.class, gexp);
     List<TurbineUserGroupRole> map = gquery.fetchList();
+
     if (map != null && map.size() > 0) {
+      for (TurbineUserGroupRole tugr : map) {
+        EipMPost post = tugr.getTurbineGroup().getEipMPost();
+        if (post != null && !delpost.contains(post)) {
+          delpost.add(post);
+        }
+      }
       Database.deleteAll(map);
+      if (delpost.size() > 0) {
+        for (EipMPost post : delpost) {
+          // グループからユーザーを削除
+          List<ALEipUser> users = ALEipUtils.getUsers(post.getGroupName());
+          for (ALEipUser user : users) {
+            JetspeedSecurity.unjoinGroup(user.getName().getValue(), post
+              .getGroupName());
+          }
+          JetspeedSecurity.removeGroup(post.getGroupName());
+        }
+        Database.deleteAll(delpost);
+      }
     }
 
     SelectQuery<TurbineUser> tquery = Database.query(TurbineUser.class);
@@ -620,13 +830,42 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     tquery.setQualifier(texp);
     List<TurbineUser> tusers = tquery.fetchList();
     if (tusers != null && tusers.size() > 0) {
-      int size = tusers.size();
-      for (int i = 0; i < size; i++) {
-        TurbineUser tuser = tusers.get(i);
+      Integer positionId;
+      for (TurbineUser tuser : tusers) {
         tuser.setDisabled("T");
+        positionId = tuser.getPositionId();
+        if (positionId != null && positionId > 0) {
+          delpositionId.add(positionId);
+        }
       }
       Database.commit();
     }
 
+    // 役職削除
+    if (delpositionId.size() > 0) {
+      Expression exp =
+        ExpressionFactory.inDbExp(
+          EipMPosition.POSITION_ID_PK_COLUMN,
+          delpositionId);
+      SelectQuery<EipMPosition> postQuery =
+        new SelectQuery<EipMPosition>(EipMPosition.class, exp);
+      List<EipMPosition> list = postQuery.fetchList();
+      if (list.size() > 0) {
+        for (EipMPosition record : list) {
+          // 役職IDを取得
+          int positionId = record.getPositionId();
+
+          // 役職を削除
+          Database.delete(record);
+          Database.commit();
+
+          // この役職に設定されているユーザーの役職IDを0とする
+          String sql =
+            "UPDATE TURBINE_USER set POSITION_ID = 0 where POSITION_ID = "
+              + positionId;
+          Database.sql(TurbineUser.class, sql).execute();
+        }
+      }
+    }
   }
 }
