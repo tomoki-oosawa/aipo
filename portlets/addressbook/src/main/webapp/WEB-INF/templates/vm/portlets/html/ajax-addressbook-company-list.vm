@@ -253,7 +253,7 @@
 #ALtdhead('部署名')
 #ALtdhead('住所')
 #ALtdhead('電話番号')
-#ALtdheadThin('')
+#ALtdheadThin('URL')
 #ALtdheadThin(' ')
 </tr>
 #foreach ($record in $result.List)
