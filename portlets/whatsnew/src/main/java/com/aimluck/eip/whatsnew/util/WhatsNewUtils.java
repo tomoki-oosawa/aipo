@@ -176,8 +176,26 @@ public class WhatsNewUtils {
 
   /**
    * 既読フラグを追加(個別新着用)
+   * 
+   * @param type
+   * @param entityid
+   * @param uid
    */
   public static void shiftWhatsNewReadFlag(int type, int entityid, int uid) {
+    shiftWhatsNewReadFlag(type, entityid, uid, true);
+  }
+
+  /**
+   * 既読フラグを追加(個別新着用)
+   * 
+   * @param type
+   * @param entityid
+   * @param uid
+   * @param call
+   *            全体向け新着の処理を呼び出すかどうか
+   */
+  private static void shiftWhatsNewReadFlag(int type, int entityid, int uid,
+      boolean call) {
     try {
       SelectQuery<EipTWhatsNew> query = Database.query(EipTWhatsNew.class);
       Expression exp =
@@ -201,9 +219,9 @@ public class WhatsNewUtils {
       if (entries != null && entries.size() > 0) {
         Database.deleteAll(entries);
       } else {
-        if (type == WHATS_NEW_TYPE_MSGBOARD_TOPIC) {
+        if (type == WHATS_NEW_TYPE_MSGBOARD_TOPIC && call) {
           // 掲示板カテゴリのアクセス権限変更が行われたレコードに関する処理
-          shiftWhatsNewReadFlagPublic(type, entityid, uid);
+          shiftWhatsNewReadFlagPublic(type, entityid, uid, false);
         }
       }
       Database.commit();
@@ -215,8 +233,27 @@ public class WhatsNewUtils {
 
   /**
    * 既読フラグを追加(全体向け新着用)
+   * 
+   * @param type
+   * @param entityid
+   * @param uid
+   * @param call
    */
   public static void shiftWhatsNewReadFlagPublic(int type, int entityid, int uid) {
+    shiftWhatsNewReadFlagPublic(type, entityid, uid, true);
+  }
+
+  /**
+   * 既読フラグを追加(全体向け新着用)
+   * 
+   * @param type
+   * @param entityid
+   * @param uid
+   * @param call
+   *            個別向け新着の処理の呼び出しを行うかどうか
+   */
+  private static void shiftWhatsNewReadFlagPublic(int type, int entityid,
+      int uid, boolean call) {
     try {
       SelectQuery<EipTWhatsNew> query = Database.query(EipTWhatsNew.class);
 
@@ -273,8 +310,10 @@ public class WhatsNewUtils {
           }
         }
       } else {
-        // アップデートされてきた全体向けWhatsNew用の処理
-        WhatsNewUtils.shiftWhatsNewReadFlag(type, entityid, uid);
+        if (call) {
+          // アップデートされてきた全体向けWhatsNew用の処理
+          WhatsNewUtils.shiftWhatsNewReadFlag(type, entityid, uid, false);
+        }
       }
 
       // 1ヶ月以上前のWhatsNewを消す
