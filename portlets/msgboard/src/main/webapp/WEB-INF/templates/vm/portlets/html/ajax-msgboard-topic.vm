@@ -20,7 +20,7 @@
 ## ---------------------------------------------------------------------------
 #ALtableheaderSimpleWide()
 #ALtdcaption('カテゴリ')
-#ALtditemheaderAtt("style='width: 80%;'")   
+#ALtditemheaderAtt("style='width: 80%;'")
 #ALselectpdheader("topic" "99%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicScreen").addQueryData("filter","").addQueryData("filtertype","category"))">（全体）</option>
 #foreach( $record in $result.CategoryList )
@@ -42,7 +42,7 @@
 #foreach ($record in $result.List)
 <tr>
 #ALtdcellheader()
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicDetailScreen").addQueryData("entityid",$record.TopicId))', '$!portlet.ID', aipo.msgboard.onLoadMsgboardDetail);">$!record.TopicName</a>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicDetailScreen").addQueryData("entityid",$record.TopicId))', '$!portlet.ID', aipo.msgboard.onLoadMsgboardDetail);">$!record.TopicName #if($record.ReplyCount.toString() != "0")（$record.ReplyCount）#end</a>
 #if($record.isNew()) &nbsp;&nbsp;<img src="images/msgboard/msgboard_new_topic.gif" alt="新着" title="新着" /> #end
 #ALtdcellfooter()
 #ALtdcellAtt("$!{record.UpdateDate.Month}月$!{record.UpdateDate.Day}日$!{record.UpdateDate.Hour}時$!{record.UpdateDate.Minute}分" 'nowrap')

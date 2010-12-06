@@ -31,7 +31,7 @@
 #ALajaxlistformheader('トピック')
 #ALtableheaderSimpleWide()
 #ALtdcaption('カテゴリ')
-#ALtditemheaderAtt("style='width: 80%;'")   
+#ALtditemheaderAtt("style='width: 80%;'")
 #ALselectpdheader("topic" "99%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen").addQueryData("filter","").addQueryData("filtertype","category"))">（全体）</option>
 #foreach( $record in $result.CategoryList )
@@ -63,11 +63,11 @@
 #end
 #ALtdcellfooter()
 #ALtdcellheader()
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicDetailScreen").addQueryData("entityid",$record.TopicId))','$!portlet.ID',aipo.msgboard.onLoadMsgboardDialog);">$!record.TopicName</a>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicDetailScreen").addQueryData("entityid",$record.TopicId))','$!portlet.ID',aipo.msgboard.onLoadMsgboardDialog);">$!record.TopicName  #if($record.ReplyCount.toString() != "0")（$record.ReplyCount）#end</a>
 #if($record.isNew()) &nbsp;&nbsp;<img src="images/msgboard/msgboard_new_topic.gif" alt="新着" title="新着"> #end
 #ALtdcellfooter()
 #ALtdcellheader()
-#if ($!record.CategoryId.toString() != "1") 
+#if ($!record.CategoryId.toString() != "1")
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardCategoryDetailScreen").addQueryData("entityid",$!record.CategoryId))');">$!record.CategoryName</a>
 #if(! ${record.isPublic()})
 <img class="img_icon" src="images/msgboard/msgboard_secret.gif" alt="非公開" title="非公開" />
@@ -84,7 +84,7 @@ $!record.CategoryName
 #ALtablefooter()
 #ALbuttonheaderRight()
 選択した トピックを #ALajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.msgboard.onReceiveMessage")
-#end 
+#end
 #ALbuttonfooterRight()
 #ALajaxpageviewFooter('MsgboardTopicListScreen' $result)
 #ALformfooter()

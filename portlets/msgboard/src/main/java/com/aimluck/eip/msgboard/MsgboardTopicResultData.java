@@ -67,6 +67,9 @@ public class MsgboardTopicResultData implements ALData {
   /** メモ */
   private ALStringField note;
 
+  /** 返信数 */
+  private ALNumberField reply_count;
+
   /** 登録者名 */
   private ALStringField create_user;
 
@@ -97,6 +100,7 @@ public class MsgboardTopicResultData implements ALData {
 
     note = new ALStringField();
     note.setTrim(false);
+    reply_count = new ALNumberField();
     create_user = new ALStringField();
     update_user = new ALStringField();
     create_date = new ALDateTimeField();
@@ -288,6 +292,14 @@ public class MsgboardTopicResultData implements ALData {
 
   public void setNewTopicFlag(boolean bool) {
     new_topic = bool;
+  }
+
+  public void setReplyCount(long count) {
+    reply_count.setValue(count);
+  }
+
+  public ALNumberField getReplyCount() {
+    return reply_count;
   }
 
 }

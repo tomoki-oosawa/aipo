@@ -34,7 +34,7 @@
 #foreach ($record in $result.List)
 #ALcell_li_header($career)
 <a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_detail','1').addQueryData('mode','view').addQueryData("entityid",$record.TopicId)">
-<strong>${record.TopicName}&nbsp;</strong><br/>
+<strong>${record.TopicName}&nbsp;#if($record.ReplyCount.toString() != "0")（$record.ReplyCount）#end</strong><br/>
 <small>
 ${record.OwnerName}&nbsp;
 ($!{record.UpdateDate.Month}月$!{record.UpdateDate.Day}日$!{record.UpdateDate.Hour}時$!{record.UpdateDate.Minute}分)

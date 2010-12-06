@@ -1091,4 +1091,24 @@ public class MsgboardUtils {
 
     return hasAuthority;
   }
+
+  /**
+   * トピックに対する返信数を返します
+   * 
+   * @param topic_id
+   * @return
+   */
+  public static Integer countReply(Integer topic_id) {
+    SelectQuery<EipTMsgboardTopic> query =
+      Database.query(EipTMsgboardTopic.class);
+
+    Expression exp1 =
+      ExpressionFactory
+        .matchDbExp(EipTMsgboardTopic.PARENT_ID_COLUMN, topic_id);
+    query.setQualifier(exp1);
+
+    query.fetchList();
+
+    return query.getCount();
+  }
 }

@@ -67,8 +67,9 @@ public class MsgboardTopicSelectData extends
     ALData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(MsgboardTopicSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService
+      .getLogger(MsgboardTopicSelectData.class.getName());
 
   /** カテゴリ一覧 */
   private List<MsgboardCategoryResultData> categoryList;
@@ -309,6 +310,7 @@ public class MsgboardTopicSelectData extends
       Calendar now = Calendar.getInstance();
       now.add(Calendar.DATE, -1);
       rd.setNewTopicFlag(date.after(now.getTime()));
+      rd.setReplyCount(MsgboardUtils.countReply(record.getTopicId()));
 
       return rd;
     } catch (Exception ex) {
@@ -377,7 +379,7 @@ public class MsgboardTopicSelectData extends
        */
       MsgboardUtils.shiftWhatsNewReadFlag(rundata, Integer.parseInt(topicid));
       /**
-       *
+       * 
        */
 
     } catch (Exception e) {
@@ -407,7 +409,6 @@ public class MsgboardTopicSelectData extends
         getSelectQueryForCotopic(rundata, context, topicid, cotopicsort);
       /** 詳細画面は全件表示する */
       // buildSelectQueryForListView(query);
-
       if ("response_new".equals(cotopicsort)) {
         query.orderDesending(EipTMsgboardTopic.CREATE_DATE_PROPERTY);
       } else {
