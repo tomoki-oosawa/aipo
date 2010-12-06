@@ -1107,8 +1107,6 @@ public class MsgboardUtils {
         .matchDbExp(EipTMsgboardTopic.PARENT_ID_COLUMN, topic_id);
     query.setQualifier(exp1);
 
-    query.fetchList();
-
     return query.getCount();
   }
 }
