@@ -200,6 +200,11 @@ public class WhatsNewUtils {
       List<EipTWhatsNew> entries = query.fetchList();
       if (entries != null && entries.size() > 0) {
         Database.deleteAll(entries);
+      } else {
+        if (type == WHATS_NEW_TYPE_MSGBOARD_TOPIC) {
+          // 掲示板カテゴリのアクセス権限変更が行われたレコードに関する処理
+          shiftWhatsNewReadFlagPublic(type, entityid, uid);
+        }
       }
       Database.commit();
     } catch (Throwable t) {

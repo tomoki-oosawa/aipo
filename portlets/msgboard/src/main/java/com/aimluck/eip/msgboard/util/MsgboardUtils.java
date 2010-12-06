@@ -120,9 +120,10 @@ public class MsgboardUtils {
    * @param rundata
    * @param context
    * @param isJoin
-   *          カテゴリテーブルをJOINするかどうか
+   *            カテゴリテーブルをJOINするかどうか
    * @return
    */
+  @SuppressWarnings("unchecked")
   public static EipTMsgboardTopic getEipTMsgboardParentTopic(RunData rundata,
       Context context, boolean isJoin) throws ALPageNotFoundException,
       ALDBErrorException {
@@ -149,29 +150,6 @@ public class MsgboardUtils {
           EipTMsgboardTopic.PARENT_ID_PROPERTY,
           Integer.valueOf(0));
       query.andQualifier(exp2);
-
-      // アクセス制御
-      Expression exp11 =
-        ExpressionFactory.matchExp(
-          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
-            + "."
-            + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
-          "T");
-      Expression exp12 =
-        ExpressionFactory.matchExp(
-          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
-            + "."
-            + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
-          "F");
-      Expression exp13 =
-        ExpressionFactory.matchExp(
-          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
-            + "."
-            + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
-            + "."
-            + EipTMsgboardCategoryMap.USER_ID_PROPERTY,
-          Integer.valueOf(userid));
-      query.andQualifier(exp11.orExp(exp12.andExp(exp13)));
       query.distinct(true);
 
       List<EipTMsgboardTopic> topics = query.fetchList();
@@ -182,6 +160,26 @@ public class MsgboardUtils {
       }
 
       EipTMsgboardTopic topic = topics.get(0);
+
+      // アクセス権限チェック
+      EipTMsgboardCategory category = topic.getEipTMsgboardCategory();
+      boolean accessible = false;
+      if (category.getPublicFlag().equals("T")) {
+        accessible = true;
+      } else {
+        List<EipTMsgboardCategoryMap> maps =
+          category.getEipTMsgboardCategoryMaps();
+        for (EipTMsgboardCategoryMap map : maps) {
+          if (map.getUserId().equals(Integer.valueOf(userid))) {
+            accessible = true;
+            break;
+          }
+        }
+      }
+      if (!accessible) {
+        ALEipUtils.redirectPermissionError(rundata);
+      }
+
       return topic;
     } catch (Exception ex) {
       logger.error("[MsgboardUtils]", ex);
@@ -196,7 +194,7 @@ public class MsgboardUtils {
    * @param rundata
    * @param context
    * @param isSuperUser
-   *          カテゴリテーブルをJOINするかどうか
+   *            カテゴリテーブルをJOINするかどうか
    * @return
    */
   public static EipTMsgboardTopic getEipTMsgboardTopicReply(RunData rundata,
@@ -285,7 +283,7 @@ public class MsgboardUtils {
    * @param rundata
    * @param context
    * @param isJoin
-   *          カテゴリテーブルをJOINするかどうか
+   *            カテゴリテーブルをJOINするかどうか
    * @return
    */
   public static List<EipTMsgboardTopic> getEipTMsgboardTopicList(
@@ -356,7 +354,7 @@ public class MsgboardUtils {
    * @param rundata
    * @param context
    * @param isSuperUser
-   *          カテゴリテーブルをJOINするかどうか
+   *            カテゴリテーブルをJOINするかどうか
    * @return
    */
   public static List<EipTMsgboardTopic> getEipTMsgboardTopicListToDeleteTopic(
