@@ -42,7 +42,7 @@
 #foreach ($record in $result.List)
 <tr>
 <td>${record.TitleDate}</td>
-<td><a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_detail','1').addQueryData('mode','view').addQueryData("entityid",$record.EntryId).addQueryData('view_uid',${record.OwnerId}))');">${record.Title}</a> &nbsp;</td>
+<td><a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_detail','1').addQueryData('mode','view').addQueryData("entityid",$record.EntryId).addQueryData('view_uid',${record.OwnerId}))');">${record.Title} #if($record.CommentsNum > 0)（$record.CommentsNum）#end</a> &nbsp;</td>
 <td>${record.OwnerName}</td>
 </tr>
 #end
