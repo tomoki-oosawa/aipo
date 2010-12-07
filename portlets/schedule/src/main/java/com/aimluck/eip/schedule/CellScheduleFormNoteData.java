@@ -71,8 +71,9 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(CellScheduleFormNoteData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(CellScheduleFormNoteData.class
+      .getName());
 
   /** <code>name</code> 予定 */
   private ALCellStringField name;
@@ -120,146 +121,110 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
       setMode(action.getMode());
       List<String> msgList = new ArrayList<String>();
 
+      EipTSchedule schedule;
+      boolean res = true;
       if (enable_entityid) {
-        EipTSchedule schedule =
-          ScheduleUtils.getEipTSchedule(rundata, context, false);
-        List<FacilityResultData> facilityList =
-          CellScheduleUtils.getShareFacilityMemberList(rundata);
-        context.put("isDuplicateFacility", "false");
-        if (facilityList.size() > 0) {
-          List<Integer> fids = new ArrayList<Integer>();
-          FacilityResultData facility = null;
-          int fsize = facilityList.size();
-          for (int i = 0; i < fsize; i++) {
-            facility = facilityList.get(i);
-            fids
-              .add(Integer.valueOf((int) facility.getFacilityId().getValue()));
-          }
-          if (ScheduleUtils.isDuplicateFacilitySchedule(
-            schedule,
-            fids,
-            null,
-            null)) {
-            context.put("isDuplicateFacility", "true");
-          }
-        }
-
-        boolean res =
-          (loadFormData(rundata, context, msgList) && form_data
-            .validateDelegate(
-              msgList,
-              getLoginUser(),
-              getEntityId(),
-              getScheduleType().getValue()));
-        action.setResultData(this);
-        action.addErrorMessages(msgList);
-        action.putData(rundata, context);
-
-        return res;
+        schedule = ScheduleUtils.getEipTSchedule(rundata, context, false);
+        res = loadFormData(rundata, context, msgList);
       } else {
         setFormData(rundata, context, msgList);
+        schedule = Database.create(EipTSchedule.class);
+      }
 
-        EipTSchedule schedule = Database.create(EipTSchedule.class);
+      String schedule_type = getScheduleType().getValue();
+      if (CellScheduleUtils.SCHEDULE_TYPE_SPAN.equals(schedule_type)) {
+        schedule.setStartDate(form_data.getStartDate().getValue());
+        schedule.setEndDate(form_data.getEndDate().getValue());
+        schedule.setRepeatPattern("S");
+      } else if (CellScheduleUtils.SCHEDULE_TYPE_ONEDAY.equals(schedule_type)) {
+        schedule.setStartDate(form_data.getStartDate().getValue());
+        schedule.setEndDate(form_data.getEndDate().getValue());
+        schedule.setRepeatPattern("N");
+      } else {
+        // 繰り返しスケジュール設定の場合
+        char lim = 'N';
+        Calendar cal = Calendar.getInstance();
+        // 繰り返しの期間が設定されている場合
+        if ("ON".equals(form_data.getLimitFlag().getValue())) {
+          lim = 'L';
 
-        String schedule_type = getScheduleType().getValue();
-        if (CellScheduleUtils.SCHEDULE_TYPE_SPAN.equals(schedule_type)) {
-          schedule.setStartDate(form_data.getStartDate().getValue());
-          schedule.setEndDate(form_data.getEndDate().getValue());
-          schedule.setRepeatPattern("S");
-        } else if (CellScheduleUtils.SCHEDULE_TYPE_ONEDAY.equals(schedule_type)) {
-          schedule.setStartDate(form_data.getStartDate().getValue());
-          schedule.setEndDate(form_data.getEndDate().getValue());
-          schedule.setRepeatPattern("N");
+          int year = Integer.parseInt(form_data.getLimitEndDate().getYear());
+          int month =
+            Integer.parseInt(form_data.getLimitEndDate().getMonth()) - 1;
+          int day = Integer.parseInt(form_data.getLimitEndDate().getDay());
+          cal.set(year, month, day);
+
+          Calendar limitStartCal = Calendar.getInstance();
+          limitStartCal.setTime(form_data.getStartDate().getValue());
+          limitStartCal.set(Calendar.YEAR, Integer.parseInt(form_data
+            .getLimitStartDate()
+            .getYear()));
+          limitStartCal.set(Calendar.MONTH, Integer.parseInt(form_data
+            .getLimitStartDate()
+            .getMonth()) - 1);
+          limitStartCal.set(Calendar.DATE, Integer.parseInt(form_data
+            .getLimitStartDate()
+            .getDay()));
+          schedule.setStartDate(limitStartCal.getTime());
+          schedule.setEndDate(cal.getTime());
         } else {
-          // 繰り返しスケジュール設定の場合
-          char lim = 'N';
-          Calendar cal = Calendar.getInstance();
-          // 繰り返しの期間が設定されている場合
-          if ("ON".equals(form_data.getLimitFlag().getValue())) {
-            lim = 'L';
-
-            int year = Integer.parseInt(form_data.getLimitEndDate().getYear());
-            int month =
-              Integer.parseInt(form_data.getLimitEndDate().getMonth()) - 1;
-            int day = Integer.parseInt(form_data.getLimitEndDate().getDay());
-            cal.set(year, month, day);
-
-            Calendar limitStartCal = Calendar.getInstance();
-            limitStartCal.setTime(form_data.getStartDate().getValue());
-            limitStartCal.set(Calendar.YEAR, Integer.parseInt(form_data
-              .getLimitStartDate()
-              .getYear()));
-            limitStartCal.set(Calendar.MONTH, Integer.parseInt(form_data
-              .getLimitStartDate()
-              .getMonth()) - 1);
-            limitStartCal.set(Calendar.DATE, Integer.parseInt(form_data
-              .getLimitStartDate()
-              .getDay()));
-            schedule.setStartDate(limitStartCal.getTime());
-            schedule.setEndDate(cal.getTime());
-          } else {
-            schedule.setStartDate(form_data.getStartDate().getValue());
-            schedule.setEndDate(form_data.getEndDate().getValue());
-          }
-          if ("D".equals(form_data.getRepeatType().getValue())) {
-            schedule.setRepeatPattern(new StringBuffer()
-              .append('D')
-              .append(lim)
-              .toString());
-          } else if ("W".equals(form_data.getRepeatType().getValue())) {
-            schedule.setRepeatPattern(new StringBuffer()
-              .append('W')
-              .append(form_data.getWeek0().getValue() != null ? 1 : 0)
-              .append(form_data.getWeek1().getValue() != null ? 1 : 0)
-              .append(form_data.getWeek2().getValue() != null ? 1 : 0)
-              .append(form_data.getWeek3().getValue() != null ? 1 : 0)
-              .append(form_data.getWeek4().getValue() != null ? 1 : 0)
-              .append(form_data.getWeek5().getValue() != null ? 1 : 0)
-              .append(form_data.getWeek6().getValue() != null ? 1 : 0)
-              .append(lim)
-              .toString());
-          } else {
-            DecimalFormat format = new DecimalFormat("00");
-            schedule.setRepeatPattern(new StringBuffer()
-              .append('M')
-              .append(format.format(form_data.getMonthDay().getValue()))
-              .append(lim)
-              .toString());
-          }
+          schedule.setStartDate(form_data.getStartDate().getValue());
+          schedule.setEndDate(form_data.getEndDate().getValue());
         }
-
-        context.put("isDuplicateFacility", "false");
-        List<FacilityResultData> facilityList =
-          CellScheduleUtils.getShareFacilityMemberList(rundata);
-        if (facilityList.size() > 0) {
-          List<Integer> fids = new ArrayList<Integer>();
-          FacilityResultData facility = null;
-          int fsize = facilityList.size();
-          for (int i = 0; i < fsize; i++) {
-            facility = facilityList.get(i);
-            fids
-              .add(Integer.valueOf((int) facility.getFacilityId().getValue()));
-          }
-          if (ScheduleUtils.isDuplicateFacilitySchedule(
-            schedule,
-            fids,
-            null,
-            null)) {
-            context.put("isDuplicateFacility", "true");
-          }
+        if ("D".equals(form_data.getRepeatType().getValue())) {
+          schedule.setRepeatPattern(new StringBuffer()
+            .append('D')
+            .append(lim)
+            .toString());
+        } else if ("W".equals(form_data.getRepeatType().getValue())) {
+          schedule.setRepeatPattern(new StringBuffer()
+            .append('W')
+            .append(form_data.getWeek0().getValue() != null ? 1 : 0)
+            .append(form_data.getWeek1().getValue() != null ? 1 : 0)
+            .append(form_data.getWeek2().getValue() != null ? 1 : 0)
+            .append(form_data.getWeek3().getValue() != null ? 1 : 0)
+            .append(form_data.getWeek4().getValue() != null ? 1 : 0)
+            .append(form_data.getWeek5().getValue() != null ? 1 : 0)
+            .append(form_data.getWeek6().getValue() != null ? 1 : 0)
+            .append(lim)
+            .toString());
+        } else {
+          DecimalFormat format = new DecimalFormat("00");
+          schedule.setRepeatPattern(new StringBuffer()
+            .append('M')
+            .append(format.format(form_data.getMonthDay().getValue()))
+            .append(lim)
+            .toString());
         }
+      }
 
-        boolean res =
-          (form_data.validateDelegate(
+      context.put("isDuplicateFacility", "false");
+      List<FacilityResultData> facilityList =
+        CellScheduleUtils.getShareFacilityMemberList(rundata);
+      if (facilityList.size() > 0) {
+        List<Integer> fids = new ArrayList<Integer>();
+        for (FacilityResultData facility : facilityList) {
+          fids.add(Integer.valueOf((int) facility.getFacilityId().getValue()));
+        }
+        if (ScheduleUtils.isDuplicateFacilitySchedule(
+          schedule,
+          fids,
+          null,
+          null)) {
+          context.put("isDuplicateFacility", "true");
+        }
+      }
+      res =
+        res
+          && (form_data.validateDelegate(
             msgList,
             getLoginUser(),
             getEntityId(),
             getScheduleType().getValue()));
-        action.setResultData(this);
-        action.addErrorMessages(msgList);
-        action.putData(rundata, context);
-        return res;
-      }
+      action.setResultData(this);
+      action.addErrorMessages(msgList);
+      action.putData(rundata, context);
+      return res;
     } catch (ALPageNotFoundException e) {
       ALEipUtils.redirectPageNotFound(rundata);
       return false;
@@ -620,9 +585,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           ALAccessControlConstants.VALUE_ACL_DETAIL,
           form_data.getMemberList());
 
-      int u_size = userIds.size();
-      for (int i = 0; i < u_size; i++) {
-        Integer _id = userIds.get(i);
+      for (Integer _id : userIds) {
         WhatsNewUtils.insertWhatsNew(
           WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
           schedule.getScheduleId().intValue(),
@@ -648,9 +611,9 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           "[" + DatabaseOrmService.getInstance().getAlias() + "]スケジュール";
         String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
 
-        for (int i = 0; i < destMemberList.size(); i++) {
+        for (ALEipUserAddr dest : destMemberList) {
           List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
-          destMember.add(destMemberList.get(i));
+          destMember.add(dest);
 
           ALMailUtils.sendMailDelegate(
             org_id,
@@ -685,6 +648,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
    * @throws ALPageNotFoundException
    * @throws ALDBErrorException
    */
+  @SuppressWarnings("unchecked")
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
@@ -756,8 +720,6 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
       EipTCommonCategory category1 =
         CommonCategoryUtils.getEipTCommonCategory(Long.valueOf(1));
 
-      // if (is_repeat && edit_repeat_flag.getValue() ==
-      // FLAG_EDIT_REPEAT_ONE) {
       if (form_data.getEditRepeatFlag().getValue() == CellScheduleUtils.FLAG_EDIT_REPEAT_ONE) {
         // 繰り返しスケジュールの個別日程を変更する．
         // 新規オブジェクトモデル
@@ -787,9 +749,6 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         newSchedule.setEndDate(form_data.getEndDate().getValue());
         newSchedule.setRepeatPattern("N");
         newSchedule.setStartDate(form_data.getStartDate().getValue());
-
-        // スケジュールを登録
-        // orm_schedule.doInsert(newSchedule);
 
         int allsize =
           form_data.getMemberList().size()
@@ -849,11 +808,10 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         }
 
         // 登録されていたメンバーと今回追加されたメンバーのユーザー ID を取得する．
-        List<?> scheduleMaps = schedule.getEipTScheduleMaps();
-        int scheduleMapsSize = scheduleMaps.size();
+        List<EipTScheduleMap> scheduleMaps = schedule.getEipTScheduleMaps();
         List<Integer> memberIdList = new ArrayList<Integer>();
-        for (int i = 0; i < scheduleMapsSize; i++) {
-          memberIdList.add(((EipTScheduleMap) scheduleMaps.get(i)).getUserId());
+        for (EipTScheduleMap map : scheduleMaps) {
+          memberIdList.add(map.getUserId());
         }
         int memberListSize = form_data.getMemberList().size();
         for (int i = 0; i < memberListSize; i++) {
@@ -890,9 +848,8 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         // スケジュールの所有ユーザがすでにメンバーから抜けているかを検証する．
         int ownerUserId = schedule.getOwnerId().intValue();
         boolean rejectOwnerUser = false;
-        List<?> tmpScheduleMaps = schedule.getEipTScheduleMaps();
-        for (int i = 0; i < tmpScheduleMaps.size(); i++) {
-          EipTScheduleMap map = (EipTScheduleMap) tmpScheduleMaps.get(i);
+        List<EipTScheduleMap> tmpScheduleMaps = schedule.getEipTScheduleMaps();
+        for (EipTScheduleMap map : tmpScheduleMaps) {
           if (ownerUserId == map.getUserId().intValue()
             && "R".equals(map.getStatus())) {
             rejectOwnerUser = true;
@@ -902,10 +859,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
         // 今回のアップデートでスケジュールの所有者がメンバーから抜けているかを検証する．
         boolean includeOwnerUser = false;
-        int membersSize = form_data.getMemberList().size();
-        ALEipUser eipUser = null;
-        for (int i = 0; i < membersSize; i++) {
-          eipUser = form_data.getMemberList().get(i);
+        for (ALEipUser eipUser : form_data.getMemberList()) {
           if (ownerUserId == eipUser.getUserId().getValue()) {
             includeOwnerUser = true;
             break;
@@ -1071,9 +1025,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           ALAccessControlConstants.VALUE_ACL_DETAIL,
           form_data.getMemberList());
 
-      int u_size = userIds.size();
-      for (int i = 0; i < u_size; i++) {
-        Integer _id = userIds.get(i);
+      for (Integer _id : userIds) {
         WhatsNewUtils.insertWhatsNew(
           WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
           schedule.getScheduleId().intValue(),
@@ -1099,9 +1051,9 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           "[" + DatabaseOrmService.getInstance().getAlias() + "]スケジュール";
         String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
 
-        for (int i = 0; i < destMemberList.size(); i++) {
+        for (ALEipUserAddr dest : destMemberList) {
           List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
-          destMember.add(destMemberList.get(i));
+          destMember.add(dest);
 
           ALMailUtils.sendMailDelegate(
             org_id,
@@ -1128,10 +1080,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
   private EipTScheduleMap getScheduleMap(List<EipTScheduleMap> scheduleMaps,
       int userid) {
-    EipTScheduleMap map = null;
-    int size = scheduleMaps.size();
-    for (int i = 0; i < size; i++) {
-      map = scheduleMaps.get(i);
+    for (EipTScheduleMap map : scheduleMaps) {
       if (map.getUserId().intValue() == userid) {
         return map;
       }
