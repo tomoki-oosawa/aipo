@@ -64,8 +64,9 @@ public class AddressBookWordSelectData extends
     ALAbstractSelectData<Object, Object> {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AddressBookWordSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(AddressBookWordSelectData.class
+      .getName());
 
   /** 検索ワード */
   private ALStringField searchWord;
@@ -321,7 +322,7 @@ public class AddressBookWordSelectData extends
    * @param context
    * @return
    */
-  @SuppressWarnings({ "unchecked" })
+  @SuppressWarnings( { "unchecked" })
   private SelectQuery<Object> getSelectQuery(RunData rundata, Context context) {
     SelectQuery<?> query = null;
     String word = searchWord.getValue();
@@ -510,9 +511,8 @@ public class AddressBookWordSelectData extends
           exp15).orExp(exp16).orExp(exp21).orExp(exp22).orExp(exp23).orExp(
           exp31).orExp(exp32).orExp(exp33).orExp(exp34).orExp(exp35));
       }
+      query.distinct();
     }
-
-    query.distinct();
 
     return (SelectQuery<Object>) query;
   }

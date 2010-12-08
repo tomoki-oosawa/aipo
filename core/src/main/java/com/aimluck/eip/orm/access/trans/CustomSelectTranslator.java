@@ -55,7 +55,9 @@ public class CustomSelectTranslator extends SelectTranslator {
     }
     if (customScript == null) {
       if (isDistinct) {
-        ret = ret.replaceFirst("SELECT ", "SELECT DISTINCT ");
+        if (!ret.startsWith("SELECT DISTINCT ")) {
+          ret = ret.replaceFirst("SELECT ", "SELECT DISTINCT ");
+        }
       }
       return ret + postStr;
     }
