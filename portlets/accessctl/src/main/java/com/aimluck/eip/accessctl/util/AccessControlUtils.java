@@ -21,6 +21,7 @@ package com.aimluck.eip.accessctl.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -42,7 +43,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーティリティクラスです。 <BR>
- * 
+ *
  */
 public class AccessControlUtils {
 
@@ -52,7 +53,7 @@ public class AccessControlUtils {
 
   /**
    * ロールオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -116,6 +117,8 @@ public class AccessControlUtils {
   public static List<AccessControlFeatureBean> getPortletFeatureList() {
     SelectQuery<EipTAclPortletFeature> query =
       Database.query(EipTAclPortletFeature.class);
+    query.orderAscending(EipTAclPortletFeature.FEATURE_ALIAS_NAME_PROPERTY);
+
     List<EipTAclPortletFeature> features = query.fetchList();
     if (features == null || features.size() == 0) {
       // 指定したIDのレコードが見つからない場合
