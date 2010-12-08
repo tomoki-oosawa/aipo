@@ -25,9 +25,10 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.addressbook.AbstractAddressBookWordSelectData;
 import com.aimluck.eip.addressbook.AddressBookCorpFilterdSelectData;
 import com.aimluck.eip.addressbook.AddressBookFilterdSelectData;
-import com.aimluck.eip.addressbook.AddressBookWordSelectData;
+import com.aimluck.eip.addressbook.util.AddressBookUtils;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -38,8 +39,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AddressBookListScreen extends AddressBookScreen {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AddressBookListScreen.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(AddressBookListScreen.class.getName());
 
   /**
    * 
@@ -53,9 +54,12 @@ public class AddressBookListScreen extends AddressBookScreen {
     VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
     String mode = rundata.getParameters().getString(ALEipConstants.MODE);
     try {
-
       if ("ajaxsearch".equals(mode)) {
-        AddressBookWordSelectData listData = new AddressBookWordSelectData();
+        AbstractAddressBookWordSelectData listData =
+          AbstractAddressBookWordSelectData.createAddressBookWordSelectData(
+            rundata,
+            context);
+
         listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
           rundata,
           context).getPortletConfig().getInitParameter("p1a-rows")));
@@ -64,28 +68,10 @@ public class AddressBookListScreen extends AddressBookScreen {
           context).getPortletConfig().getInitParameter("p3a-strlen")));
         listData.doViewList(this, rundata, context);
         listData.loadGroups(rundata, context);
-        // 現在のタブによって処理を分岐
-        String currentTab = ALEipUtils.getTemp(rundata, context, "tab");
-        if (currentTab == null
-          || currentTab.trim().length() == 0
-          || "syagai".equals(currentTab)) {
-          setTemplate(
-            rundata,
-            context,
-            "portlets/html/ja/ajax-addressbook-list.vm");
-        } else {
-          setTemplate(
-            rundata,
-            context,
-            "portlets/html/ja/ajax-addressbook-corplist.vm");
-        }
-      } else {
 
-        // mode指定がないとき
-        String currentTab = ALEipUtils.getParameter(rundata, context, "tab");
-        if (currentTab == null
-          || currentTab.trim().length() == 0
-          || "syagai".equals(currentTab)) {
+        setTemplate(rundata, context, listData.getTemplateFilePath());
+      } else {
+        if (AddressBookUtils.isSyagai(rundata, context)) {
           AddressBookFilterdSelectData listData =
             new AddressBookFilterdSelectData();
           listData.setRowsNum(Integer.parseInt(portlet
@@ -96,8 +82,11 @@ public class AddressBookListScreen extends AddressBookScreen {
             context).getPortletConfig().getInitParameter("p3a-strlen")));
           listData.doViewList(this, rundata, context);
           listData.loadGroups(rundata, context);
-          String layout_template = "portlets/html/ja/ajax-addressbook-list.vm";
-          setTemplate(rundata, context, layout_template);
+
+          setTemplate(
+            rundata,
+            context,
+            "portlets/html/ja/ajax-addressbook-list.vm");
         } else {
           AddressBookCorpFilterdSelectData listData =
             new AddressBookCorpFilterdSelectData();
@@ -109,13 +98,13 @@ public class AddressBookListScreen extends AddressBookScreen {
             rundata,
             context).getPortletConfig().getInitParameter("p3a-strlen")));
           listData.doViewList(this, rundata, context);
-          // listData.doViewList(this, rundata, context);
-          String layout_template =
-            "portlets/html/ja/ajax-addressbook-corplist.vm";
-          setTemplate(rundata, context, layout_template);
+
+          setTemplate(
+            rundata,
+            context,
+            "portlets/html/ja/ajax-addressbook-corplist.vm");
         }
       }
-
     } catch (Exception ex) {
       logger.error("[AddressBookListScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);

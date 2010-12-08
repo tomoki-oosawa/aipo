@@ -25,7 +25,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.addressbook.AddressBookWordSelectData;
+import com.aimluck.eip.addressbook.AbstractAddressBookWordSelectData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -41,8 +41,6 @@ public class AddressBookWordScreen extends ALVelocityScreen {
 
   private String mode = null;
 
-  private String currentTab = null;
-
   /**
    * 
    * @param rundata
@@ -56,7 +54,11 @@ public class AddressBookWordScreen extends ALVelocityScreen {
     mode = rundata.getParameters().getString(ALEipConstants.MODE);
     try {
       if ("ajaxsearch".equals(mode)) {
-        AddressBookWordSelectData listData = new AddressBookWordSelectData();
+        AbstractAddressBookWordSelectData listData =
+          AbstractAddressBookWordSelectData.createAddressBookWordSelectData(
+            rundata,
+            context);
+
         listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
           rundata,
           context).getPortletConfig().getInitParameter("p1a-rows")));
@@ -66,12 +68,13 @@ public class AddressBookWordScreen extends ALVelocityScreen {
         listData.doViewList(this, rundata, context);
         listData.loadGroups(rundata, context);
 
-        // 現在のタブによって処理を分岐
-        currentTab = ALEipUtils.getTemp(rundata, context, "tab");
-        setTemplate(rundata, context, getLayoutTemplate());
+        setTemplate(rundata, context, listData.getTemplateFilePath());
       } else {
-        // mode指定がないとき
-        AddressBookWordSelectData listData = new AddressBookWordSelectData();
+        AbstractAddressBookWordSelectData listData =
+          AbstractAddressBookWordSelectData.createAddressBookWordSelectData(
+            rundata,
+            context);
+
         listData.setRowsNum(Integer.parseInt(portlet
           .getPortletConfig()
           .getInitParameter("p1a-rows")));
@@ -80,27 +83,11 @@ public class AddressBookWordScreen extends ALVelocityScreen {
           context).getPortletConfig().getInitParameter("p3a-strlen")));
         listData.doViewList(this, rundata, context);
 
-        currentTab = ALEipUtils.getTemp(rundata, context, "tab");
-        setTemplate(rundata, context, getLayoutTemplate());
+        setTemplate(rundata, context, listData.getTemplateFilePath());
       }
-
     } catch (Exception ex) {
       logger.error("[AddressBookWordScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
-  }
-
-  protected String getLayoutTemplate() {
-    String layout_template = null;
-    // if ("ajaxsearch".equals(mode)) {
-    if (currentTab == null
-      || currentTab.trim().length() == 0
-      || "syagai".equals(currentTab)) {
-      layout_template = "portlets/html/ja/ajax-addressbook-list.vm";
-    } else {
-      layout_template = "portlets/html/ja/ajax-addressbook-corplist.vm";
-    }
-
-    return layout_template;
   }
 }

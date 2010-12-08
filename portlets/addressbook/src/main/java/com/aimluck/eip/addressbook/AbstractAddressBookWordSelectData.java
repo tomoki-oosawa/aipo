@@ -1,0 +1,165 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2010 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package com.aimluck.eip.addressbook;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
+
+import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.addressbook.util.AddressBookUtils;
+import com.aimluck.eip.common.ALAbstractSelectData;
+import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipGroup;
+import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
+import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.util.ALEipUtils;
+
+/**
+ * アドレス帳での検索BOX用データです。(社内アドレス検索用)
+ * 
+ */
+public abstract class AbstractAddressBookWordSelectData<M1, M2> extends
+    ALAbstractSelectData<M1, M2> {
+
+  /** logger */
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(AddressBookWordSelectData.class
+      .getName());
+
+  /** 検索ワード */
+  protected ALStringField searchWord;
+
+  /** 現在選択されているタブ */
+  protected String currentTab;
+
+  public static AbstractAddressBookWordSelectData createAddressBookWordSelectData(
+      RunData rundata, Context context) {
+    if (AddressBookUtils.isSyagai(rundata, context)) {
+      return new AddressBookWordSelectData();
+    } else {
+      return new AddressBookCorpWordSelectData();
+    }
+  }
+
+  /**
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
+   */
+  @Override
+  public void init(ALAction action, RunData rundata, Context context)
+      throws ALPageNotFoundException, ALDBErrorException {
+
+    String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
+    if (sort == null || sort.equals("")) {
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, "name_kana");
+    }
+
+    // ページャからきた場合に検索ワードをセッションへ格納する
+    if (!rundata.getParameters().containsKey(ALEipConstants.LIST_START)
+      && !rundata.getParameters().containsKey(ALEipConstants.LIST_SORT)) {
+      ALEipUtils.setTemp(rundata, context, "AddressBooksword", rundata
+        .getParameters()
+        .getString("sword"));
+    }
+
+    // 検索ワードの設定
+    searchWord = new ALStringField();
+    searchWord.setTrim(true);
+    searchWord.setValue(ALEipUtils
+      .getTemp(rundata, context, "AddressBooksword"));
+
+    String tabParam = rundata.getParameters().getString("tab");
+    currentTab = ALEipUtils.getTemp(rundata, context, "tab");
+    if (tabParam == null && currentTab == null) {
+      ALEipUtils.setTemp(rundata, context, "tab", "syagai");
+      currentTab = "syagai";
+    } else if (tabParam != null) {
+      ALEipUtils.setTemp(rundata, context, "tab", tabParam);
+      currentTab = tabParam;
+    }
+    super.init(action, rundata, context);
+  }
+
+  /**
+   * 
+   * @param rundata
+   * @param context
+   */
+  public abstract void loadGroups(RunData rundata, Context context);
+
+  /**
+   * 検索結果画面のテンプレートのパスを得ます。
+   * 
+   * @return
+   */
+  public abstract String getTemplateFilePath();
+
+  /**
+   * 現在選択されているタブを取得します。
+   * 
+   * @return
+   */
+  public String getCurrentTab() {
+    return currentTab;
+  }
+
+  /**
+   * 検索ワードを取得します。
+   * 
+   * @return
+   */
+  public ALStringField getSearchWord() {
+    return searchWord;
+  }
+
+  /**
+   * グループリストを取得します。
+   * 
+   * @return
+   */
+  public abstract List<AddressBookGroupResultData> getGroupList();
+
+  /**
+   * 
+   * @return
+   */
+  public Map<Integer, ALEipPost> getPostMap() {
+    return ALEipManager.getInstance().getPostMap();
+  }
+
+  /**
+   * 
+   * @return
+   */
+  public abstract List<ALEipGroup> getMyGroupList();
+
+}

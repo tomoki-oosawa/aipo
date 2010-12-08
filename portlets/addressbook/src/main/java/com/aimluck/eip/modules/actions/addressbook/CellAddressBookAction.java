@@ -25,11 +25,11 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.addressbook.AbstractAddressBookWordSelectData;
 import com.aimluck.eip.addressbook.AddressBookCompanySelectData;
 import com.aimluck.eip.addressbook.AddressBookCompanyWordSelectData;
 import com.aimluck.eip.addressbook.AddressBookCorpFilterdSelectData;
 import com.aimluck.eip.addressbook.AddressBookFilterdSelectData;
-import com.aimluck.eip.addressbook.AddressBookWordSelectData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.util.ALEipUtils;
@@ -41,8 +41,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class CellAddressBookAction extends ALBaseAction {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(CellAddressBookAction.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(CellAddressBookAction.class.getName());
 
   private static final String MODE_SEARCH = "search";
 
@@ -222,7 +222,13 @@ public class CellAddressBookAction extends ALBaseAction {
    */
   public void doAddressbook_addr_search_list(RunData rundata, Context context)
       throws Exception {
-    AddressBookWordSelectData listData = new AddressBookWordSelectData();
+    context.put("isSerchRes", Boolean.valueOf(true));
+
+    AbstractAddressBookWordSelectData listData =
+      AbstractAddressBookWordSelectData.createAddressBookWordSelectData(
+        rundata,
+        context);
+
     listData.setRowsNum(Integer.parseInt(ALEipUtils
       .getPortlet(rundata, context)
       .getPortletConfig()
@@ -230,17 +236,7 @@ public class CellAddressBookAction extends ALBaseAction {
     listData.doViewList(this, rundata, context);
     listData.loadGroups(rundata, context);
 
-    context.put("isSerchRes", Boolean.valueOf(true));
-
-    // 現在のタブによって処理を分岐
-    String currentTab = ALEipUtils.getTemp(rundata, context, "tab");
-    if (currentTab == null
-      || currentTab.trim().length() == 0
-      || "syagai".equals(currentTab)) {
-      setTemplate(rundata, "addressbook-list");
-    } else {
-      setTemplate(rundata, "addressbook-corplist");
-    }
+    setTemplate(rundata, listData.getTemplateFilePath());
   }
 
   public void doAddressbook_company_search(RunData rundata, Context context)

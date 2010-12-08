@@ -28,6 +28,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.addressbook.AbstractAddressBookWordSelectData;
 import com.aimluck.eip.addressbook.AddressBookCompanyFormData;
 import com.aimluck.eip.addressbook.AddressBookCompanyMultiDelete;
 import com.aimluck.eip.addressbook.AddressBookCompanySelectData;
@@ -38,7 +39,6 @@ import com.aimluck.eip.addressbook.AddressBookFormData;
 import com.aimluck.eip.addressbook.AddressBookGroupFormData;
 import com.aimluck.eip.addressbook.AddressBookGroupMultiDelete;
 import com.aimluck.eip.addressbook.AddressBookGroupSelectData;
-import com.aimluck.eip.addressbook.AddressBookWordSelectData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.util.ALEipUtils;
@@ -50,8 +50,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AddressBookAction extends ALBaseAction {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AddressBookAction.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(AddressBookAction.class.getName());
 
   /**
    * 
@@ -360,14 +360,7 @@ public class AddressBookAction extends ALBaseAction {
     AddressBookGroupFormData formData = new AddressBookGroupFormData();
     formData.initField();
     if (formData.doDelete(this, rundata, context)) {
-      // データ削除に成功したとき
       doAddressbook_group_list(rundata, context);
-      // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      // rundata.setRedirectURI(jsLink.getPortletById(
-      // ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-      // "eventSubmit_doAddressbook_group_list", "1").toString());
-      // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-      // jsLink = null;
     }
   }
 
@@ -383,14 +376,7 @@ public class AddressBookAction extends ALBaseAction {
     AddressBookGroupFormData formData = new AddressBookGroupFormData();
     formData.initField();
     if (formData.doUpdate(this, rundata, context)) {
-      // データ更新に成功したとき
       doAddressbook_group_list(rundata, context);
-      // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      // rundata.setRedirectURI(jsLink.getPortletById(
-      // ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-      // "eventSubmit_doAddressbook_group_list", "1").toString());
-      // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-      // jsLink = null;
     } else {
       formData.loadFilter(rundata, context);
       setTemplate(rundata, "addressbook-group-form");
@@ -402,12 +388,6 @@ public class AddressBookAction extends ALBaseAction {
     AddressBookGroupMultiDelete delete = new AddressBookGroupMultiDelete();
     delete.doMultiAction(this, rundata, context);
     doAddressbook_group_list(rundata, context);
-    // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-    // rundata.setRedirectURI(jsLink.getPortletById(
-    // ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-    // "eventSubmit_doAddressbook_group_list", "1").toString());
-    // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-    // jsLink = null;
   }
 
   public void doAddressbook_company_list(RunData rundata, Context context)
@@ -457,14 +437,7 @@ public class AddressBookAction extends ALBaseAction {
     formData.initField();
     formData.doViewForm(this, rundata, context);
     if (formData.doInsert(this, rundata, context)) {
-      // データの登録に成功したとき
       doAddressbook_company_list(rundata, context);
-      // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      // rundata.setRedirectURI(jsLink.getPortletById(
-      // ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-      // "eventSubmit_doAddressbook_company_list", "1").toString());
-      // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-      // jsLink = null;
     } else {
       setTemplate(rundata, "addressbook-company-form");
     }
@@ -482,14 +455,7 @@ public class AddressBookAction extends ALBaseAction {
     AddressBookCompanyFormData formData = new AddressBookCompanyFormData();
     formData.initField();
     if (formData.doDelete(this, rundata, context)) {
-      // データ削除に成功したとき
       doAddressbook_company_list(rundata, context);
-      // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      // rundata.setRedirectURI(jsLink.getPortletById(
-      // ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-      // "eventSubmit_doAddressbook_company_list", "1").toString());
-      // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-      // jsLink = null;
     }
   }
 
@@ -505,14 +471,7 @@ public class AddressBookAction extends ALBaseAction {
     AddressBookCompanyFormData formData = new AddressBookCompanyFormData();
     formData.initField();
     if (formData.doUpdate(this, rundata, context)) {
-      // データの更新に成功したとき
       doAddressbook_company_list(rundata, context);
-      // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      // rundata.setRedirectURI(jsLink.getPortletById(
-      // ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-      // "eventSubmit_doAddressbook_company_list", "1").toString());
-      // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-      // jsLink = null;
     } else {
       setTemplate(rundata, "addressbook-company-form");
     }
@@ -530,13 +489,6 @@ public class AddressBookAction extends ALBaseAction {
     AddressBookCompanyMultiDelete delete = new AddressBookCompanyMultiDelete();
     delete.doMultiAction(this, rundata, context);
     doAddressbook_company_list(rundata, context);
-
-    // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-    // rundata.setRedirectURI(jsLink.getPortletById(
-    // ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-    // "eventSubmit_doAddressbook_company_list", "1").toString());
-    // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-    // jsLink = null;
   }
 
   /**
@@ -548,7 +500,11 @@ public class AddressBookAction extends ALBaseAction {
    */
   public void doAddressbook_search_list(RunData rundata, Context context)
       throws Exception {
-    AddressBookWordSelectData listData = new AddressBookWordSelectData();
+    AbstractAddressBookWordSelectData listData =
+      AbstractAddressBookWordSelectData.createAddressBookWordSelectData(
+        rundata,
+        context);
+
     listData.setRowsNum(Integer.parseInt(ALEipUtils
       .getPortlet(rundata, context)
       .getPortletConfig()
@@ -558,15 +514,11 @@ public class AddressBookAction extends ALBaseAction {
       context).getPortletConfig().getInitParameter("p3a-strlen")));
     listData.doViewList(this, rundata, context);
     listData.loadGroups(rundata, context);
-    // 現在のタブによって処理を分岐
-    String currentTab = ALEipUtils.getTemp(rundata, context, "tab");
-    if (currentTab == null
-      || currentTab.trim().length() == 0
-      || "syagai".equals(currentTab)) {
-      setTemplate(rundata, "addressbook-list");
-    } else {
-      setTemplate(rundata, "addressbook-corplist");
-    }
+
+    setTemplate(rundata, listData.getTemplateFilePath());
+
+    // setTemplate(rundata, "addressbook-list");
+    // setTemplate(rundata, "addressbook-corplist");
   }
 
   /**
@@ -610,5 +562,4 @@ public class AddressBookAction extends ALBaseAction {
       .add("com.aimluck.eip.addressbook.AddressBookCompanyWordSelectDatasort");
     ALEipUtils.removeTemp(rundata, context, list);
   }
-
 }

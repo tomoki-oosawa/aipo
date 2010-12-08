@@ -458,4 +458,29 @@ public class AddressBookUtils {
     }
     return folder;
   }
+
+  /**
+   * 現在表示させているタブが「社外」であるかどうか調べます。
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static boolean isSyagai(RunData rundata, Context context) {
+    String tabParam = rundata.getParameters().getString("tab");
+    String currentTab = ALEipUtils.getTemp(rundata, context, "tab");
+    if (tabParam == null) {
+      if (currentTab == null
+        || currentTab.trim().length() == 0
+        || "syagai".equals(currentTab)) {
+        return true;
+      }
+      return false;
+    } else {
+      if ("syagai".equals(tabParam)) {
+        return true;
+      }
+      return false;
+    }
+  }
 }

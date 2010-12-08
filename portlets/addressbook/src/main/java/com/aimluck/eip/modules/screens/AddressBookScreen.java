@@ -25,7 +25,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.addressbook.AddressBookWordSelectData;
+import com.aimluck.eip.addressbook.AbstractAddressBookWordSelectData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -36,8 +36,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AddressBookScreen extends ALVelocityScreen {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AddressBookScreen.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(AddressBookScreen.class.getName());
 
   /**
    * 
@@ -52,7 +52,11 @@ public class AddressBookScreen extends ALVelocityScreen {
     String mode = rundata.getParameters().getString(ALEipConstants.MODE);
     try {
       if ("ajaxsearch".equals(mode)) {
-        AddressBookWordSelectData listData = new AddressBookWordSelectData();
+        AbstractAddressBookWordSelectData listData =
+          AbstractAddressBookWordSelectData.createAddressBookWordSelectData(
+            rundata,
+            context);
+
         listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
           rundata,
           context).getPortletConfig().getInitParameter("p1a-rows")));
@@ -61,19 +65,14 @@ public class AddressBookScreen extends ALVelocityScreen {
           context).getPortletConfig().getInitParameter("p3a-strlen")));
         listData.doViewList(this, rundata, context);
         listData.loadGroups(rundata, context);
-        // 現在のタブによって処理を分岐
-        String currentTab = ALEipUtils.getTemp(rundata, context, "tab");
-        if (currentTab == null
-          || currentTab.trim().length() == 0
-          || "syagai".equals(currentTab)) {
-          setTemplate(rundata, context, "portlets/html/ja/ajax-addressbook.vm");
-        } else {
-          setTemplate(rundata, context, "portlets/html/ja/ajax-addressbook.vm");
-        }
-      } else {
 
-        // mode指定がないとき
-        AddressBookWordSelectData listData = new AddressBookWordSelectData();
+        setTemplate(rundata, context, "portlets/html/ja/ajax-addressbook.vm");
+      } else {
+        AbstractAddressBookWordSelectData listData =
+          AbstractAddressBookWordSelectData.createAddressBookWordSelectData(
+            rundata,
+            context);
+
         listData.setRowsNum(Integer.parseInt(portlet
           .getPortletConfig()
           .getInitParameter("p1a-rows")));
@@ -82,8 +81,7 @@ public class AddressBookScreen extends ALVelocityScreen {
           context).getPortletConfig().getInitParameter("p3a-strlen")));
         listData.doViewList(this, rundata, context);
 
-        String layout_template = "portlets/html/ja/ajax-addressbook.vm";
-        setTemplate(rundata, context, layout_template);
+        setTemplate(rundata, context, "portlets/html/ja/ajax-addressbook.vm");
       }
 
     } catch (Exception ex) {

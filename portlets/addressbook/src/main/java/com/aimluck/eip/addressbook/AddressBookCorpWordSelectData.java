@@ -32,10 +32,9 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.addressbook.util.AddressBookUtils;
-import com.aimluck.eip.cayenne.om.portlet.EipMAddressGroup;
-import com.aimluck.eip.cayenne.om.portlet.EipMAddressbook;
-import com.aimluck.eip.cayenne.om.portlet.EipMAddressbookCompany;
-import com.aimluck.eip.cayenne.om.portlet.EipTAddressbookGroupMap;
+import com.aimluck.eip.cayenne.om.security.TurbineGroup;
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALPageNotFoundException;
@@ -48,22 +47,22 @@ import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * アドレス帳での検索BOX用データです。(社外アドレス検索用)
+ * アドレス帳での検索BOX用データです。(社内アドレス検索用)
  * 
  */
-public class AddressBookWordSelectData extends
-    AbstractAddressBookWordSelectData<EipMAddressbook, EipMAddressbook> {
-
-  /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AddressBookWordSelectData.class
-      .getName());
+public class AddressBookCorpWordSelectData extends
+    AbstractAddressBookWordSelectData<TurbineUser, TurbineUser> {
 
   /** フィルタに利用するグループリスト */
   private List<AddressBookGroupResultData> groupList;
 
   /** マイグループリスト */
-  private final List<ALEipGroup> myGroupList = null;
+  private List<ALEipGroup> myGroupList = null;
+
+  /** logger */
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(AddressBookWordSelectData.class
+      .getName());
 
   /**
    * 
@@ -87,12 +86,10 @@ public class AddressBookWordSelectData extends
    * @return
    */
   @Override
-  protected ResultList<EipMAddressbook> selectList(RunData rundata,
-      Context context) {
-    ResultList<EipMAddressbook> list;
-
+  protected ResultList<TurbineUser> selectList(RunData rundata, Context context) {
+    ResultList<TurbineUser> list;
     try {
-      SelectQuery<EipMAddressbook> query = getSelectQuery(rundata, context);
+      SelectQuery<TurbineUser> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
       list = query.getResultList();
@@ -110,7 +107,7 @@ public class AddressBookWordSelectData extends
    * @return
    */
   @Override
-  protected EipMAddressbook selectDetail(RunData rundata, Context context) {
+  protected TurbineUser selectDetail(RunData rundata, Context context) {
     return null;
   }
 
@@ -120,46 +117,37 @@ public class AddressBookWordSelectData extends
    * @return
    */
   @Override
-  protected Object getResultData(EipMAddressbook obj) {
+  protected Object getResultData(TurbineUser obj) {
     try {
       AddressBookResultData rd = new AddressBookResultData();
 
-      EipMAddressbook record = obj;
+      TurbineUser record = obj;
       rd.initField();
-      rd.setAddressId(record.getAddressId().intValue());
+      rd.setAddressId(record.getUserId().intValue());
       rd.setName(new StringBuffer()
         .append(record.getLastName())
         .append(" ")
         .append(record.getFirstName())
         .toString());
-      rd.setNameKana(new StringBuffer()
-        .append(record.getLastNameKana())
-        .append(' ')
-        .append(record.getFirstNameKana())
-        .toString());
-
-      EipMAddressbookCompany company = record.getEipMAddressbookCompany();
-      // TODO: 「未分類」の会社情報ではない場合
-      if (!AddressBookUtils.EMPTY_COMPANY_NAME.equals(company.getCompanyName())) {
-        rd.setCompanyId(company.getCompanyId().toString());
-        rd.setCompanyName(ALCommonUtils.compressString(
-          company.getCompanyName(),
-          getStrLength()));
-        rd.setPostName(ALCommonUtils.compressString(
-          company.getPostName(),
-          getStrLength()));
+      if (record.getCompanyId().intValue() > 0) {
+        rd.setCompanyName(ALCommonUtils.compressString(ALEipUtils
+          .getCompanyName(record.getCompanyId().intValue()), getStrLength()));
       }
 
-      rd.setPositionName(ALCommonUtils.compressString(
-        record.getPositionName(),
-        getStrLength()));
+      rd.setPostList(AddressBookUtils.getPostBeanList(record
+        .getUserId()
+        .intValue()));
+
+      if (record.getPositionId().intValue() > 0) {
+        rd.setPositionName(ALCommonUtils.compressString(ALEipUtils
+          .getPositionName(record.getPositionId()), getStrLength()));
+      }
       rd.setEmail(ALCommonUtils.compressString(
         record.getEmail(),
         getStrLength()));
-      rd.setTelephone(record.getTelephone());
+      rd.setTelephone(record.getOutTelephone());
       rd.setCellularPhone(record.getCellularPhone());
       rd.setCellularMail(record.getCellularMail());
-      rd.setPublicFlag(record.getPublicFlag());
 
       return rd;
     } catch (Exception ex) {
@@ -174,7 +162,7 @@ public class AddressBookWordSelectData extends
    * @return
    */
   @Override
-  protected Object getResultDataDetail(EipMAddressbook obj) {
+  protected Object getResultDataDetail(TurbineUser obj) {
     return null;
   }
 
@@ -186,17 +174,12 @@ public class AddressBookWordSelectData extends
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
 
-    map.putValue("group", EipMAddressbook.EIP_TADDRESSBOOK_GROUP_MAP_PROPERTY
+    map.putValue("corp_group", TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
       + "."
-      + EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY
+      + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
       + "."
-      + EipMAddressGroup.GROUP_ID_PK_COLUMN);
-    map.putValue("name_kana", EipMAddressbook.LAST_NAME_KANA_PROPERTY);
-    map.putValue(
-      "company_name_kana",
-      EipMAddressbook.EIP_MADDRESSBOOK_COMPANY_PROPERTY
-        + "."
-        + EipMAddressbookCompany.COMPANY_NAME_KANA_PROPERTY);
+      + TurbineGroup.GROUP_NAME_COLUMN);
+    map.putValue("name_kana", TurbineUser.LAST_NAME_KANA_PROPERTY);
 
     return map;
   }
@@ -208,101 +191,91 @@ public class AddressBookWordSelectData extends
    * @return
    */
   @SuppressWarnings( { "unchecked" })
-  private SelectQuery<EipMAddressbook> getSelectQuery(RunData rundata,
+  private SelectQuery<TurbineUser> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipMAddressbook> query = null;
+    SelectQuery<TurbineUser> query = null;
     String word = searchWord.getValue();
     String transWord =
       ALStringUtil.convertHiragana2Katakana(ALStringUtil
         .convertH2ZKana(searchWord.getValue()));
 
-    query = Database.query(EipMAddressbook.class);
+    query = Database.query(TurbineUser.class);
 
     Expression exp01 =
-      ExpressionFactory.matchExp(EipMAddressbook.PUBLIC_FLAG_PROPERTY, "T");
+      ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
+    query.setQualifier(exp01);
+
     Expression exp02 =
-      ExpressionFactory.matchExp(EipMAddressbook.OWNER_ID_PROPERTY, ALEipUtils
-        .getUserId(rundata));
+      ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+        .valueOf(1));
     Expression exp03 =
-      ExpressionFactory.matchExp(EipMAddressbook.PUBLIC_FLAG_PROPERTY, "F");
-    query.setQualifier(exp01.orExp(exp02.andExp(exp03)));
+      ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+        .valueOf(2));
+    Expression exp04 =
+      ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+        .valueOf(3));
+    query.andQualifier(exp02.andExp(exp03).andExp(exp04));
 
     Expression exp11 =
-      ExpressionFactory.likeExp(EipMAddressbook.FIRST_NAME_PROPERTY, "%"
+      ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_PROPERTY, "%"
         + word
         + "%");
     Expression exp12 =
-      ExpressionFactory.likeExp(EipMAddressbook.LAST_NAME_PROPERTY, "%"
+      ExpressionFactory.likeExp(TurbineUser.LAST_NAME_PROPERTY, "%"
         + word
         + "%");
     Expression exp13 =
-      ExpressionFactory.likeExp(EipMAddressbook.FIRST_NAME_KANA_PROPERTY, "%"
+      ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_KANA_PROPERTY, "%"
         + word
         + "%");
     Expression exp14 =
-      ExpressionFactory.likeExp(EipMAddressbook.LAST_NAME_KANA_PROPERTY, "%"
+      ExpressionFactory.likeExp(TurbineUser.LAST_NAME_KANA_PROPERTY, "%"
         + word
         + "%");
     Expression exp15 =
-      ExpressionFactory.likeExp(EipMAddressbook.EMAIL_PROPERTY, "%"
-        + word
-        + "%");
+      ExpressionFactory.likeExp(TurbineUser.EMAIL_PROPERTY, "%" + word + "%");
     Expression exp16 =
-      ExpressionFactory.likeExp(EipMAddressbook.TELEPHONE_PROPERTY, "%"
-        + word
-        + "%");
-    Expression exp17 =
-      ExpressionFactory.likeExp(EipMAddressbook.CELLULAR_PHONE_PROPERTY, "%"
-        + word
-        + "%");
+      ExpressionFactory.likeExp(TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
+        + "."
+        + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
+        + "."
+        + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY, "%" + word + "%");
 
     Expression exp21 =
-      ExpressionFactory.likeExp(
-        EipMAddressbook.EIP_MADDRESSBOOK_COMPANY_PROPERTY
-          + "."
-          + EipMAddressbookCompany.COMPANY_NAME_PROPERTY,
-        "%" + word + "%");
+      ExpressionFactory.likeExp(TurbineUser.OUT_TELEPHONE_PROPERTY, "%"
+        + word
+        + "%");
     Expression exp22 =
-      ExpressionFactory.likeExp(
-        EipMAddressbook.EIP_MADDRESSBOOK_COMPANY_PROPERTY
-          + "."
-          + EipMAddressbookCompany.COMPANY_NAME_KANA_PROPERTY,
-        "%" + word + "%");
+      ExpressionFactory.likeExp(TurbineUser.IN_TELEPHONE_PROPERTY, "%"
+        + word
+        + "%");
     Expression exp23 =
-      ExpressionFactory.likeExp(
-        EipMAddressbook.EIP_MADDRESSBOOK_COMPANY_PROPERTY
-          + "."
-          + EipMAddressbookCompany.TELEPHONE_PROPERTY,
-        "%" + word + "%");
+      ExpressionFactory.likeExp(TurbineUser.CELLULAR_PHONE_PROPERTY, "%"
+        + word
+        + "%");
 
     Expression exp31 =
-      ExpressionFactory.likeExp(EipMAddressbook.FIRST_NAME_PROPERTY, "%"
+      ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_PROPERTY, "%"
         + transWord
         + "%");
     Expression exp32 =
-      ExpressionFactory.likeExp(EipMAddressbook.LAST_NAME_PROPERTY, "%"
+      ExpressionFactory.likeExp(TurbineUser.LAST_NAME_PROPERTY, "%"
         + transWord
         + "%");
     Expression exp33 =
-      ExpressionFactory.likeExp(EipMAddressbook.FIRST_NAME_KANA_PROPERTY, "%"
+      ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_KANA_PROPERTY, "%"
         + transWord
         + "%");
     Expression exp34 =
-      ExpressionFactory.likeExp(EipMAddressbook.LAST_NAME_KANA_PROPERTY, "%"
+      ExpressionFactory.likeExp(TurbineUser.LAST_NAME_KANA_PROPERTY, "%"
         + transWord
         + "%");
     Expression exp35 =
-      ExpressionFactory.likeExp(
-        EipMAddressbook.EIP_MADDRESSBOOK_COMPANY_PROPERTY
-          + "."
-          + EipMAddressbookCompany.COMPANY_NAME_PROPERTY,
-        "%" + transWord + "%");
-    Expression exp36 =
-      ExpressionFactory.likeExp(
-        EipMAddressbook.EIP_MADDRESSBOOK_COMPANY_PROPERTY
-          + "."
-          + EipMAddressbookCompany.COMPANY_NAME_KANA_PROPERTY,
-        "%" + transWord + "%");
+      ExpressionFactory.likeExp(TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
+        + "."
+        + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
+        + "."
+        + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY, "%" + transWord + "%");
 
     if (word != null && !"".equals(word)) {
       query.andQualifier(exp11
@@ -311,7 +284,6 @@ public class AddressBookWordSelectData extends
         .orExp(exp14)
         .orExp(exp15)
         .orExp(exp16)
-        .orExp(exp17)
         .orExp(exp21)
         .orExp(exp22)
         .orExp(exp23)
@@ -319,9 +291,9 @@ public class AddressBookWordSelectData extends
         .orExp(exp32)
         .orExp(exp33)
         .orExp(exp34)
-        .orExp(exp35)
-        .orExp(exp36));
+        .orExp(exp35));
     }
+    query.distinct();
 
     return query;
   }
@@ -335,23 +307,13 @@ public class AddressBookWordSelectData extends
   public void loadGroups(RunData rundata, Context context) {
     groupList = new ArrayList<AddressBookGroupResultData>();
     try {
-      // 自分がオーナのグループ指定
-      SelectQuery<EipMAddressGroup> query =
-        Database.query(EipMAddressGroup.class);
-      Expression exp =
-        ExpressionFactory.matchExp(EipMAddressGroup.OWNER_ID_PROPERTY, Integer
-          .valueOf(ALEipUtils.getUserId(rundata)));
-      query.setQualifier(exp);
+      // マイグループリストの作成
+      List<ALEipGroup> myGroups = ALEipUtils.getMyGroups(rundata);
 
-      List<EipMAddressGroup> aList = query.fetchList();
-      int size = aList.size();
-      for (int i = 0; i < size; i++) {
-        EipMAddressGroup record = aList.get(i);
-        AddressBookGroupResultData rd = new AddressBookGroupResultData();
-        rd.initField();
-        rd.setGroupId(record.getGroupId().longValue());
-        rd.setGroupName(record.getGroupName());
-        groupList.add(rd);
+      myGroupList = new ArrayList<ALEipGroup>();
+      int length = myGroups.size();
+      for (int i = 0; i < length; i++) {
+        myGroupList.add(myGroups.get(i));
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -385,7 +347,7 @@ public class AddressBookWordSelectData extends
    */
   @Override
   public String getAclPortletFeature() {
-    return ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_ADDRESS_OUTSIDE;
+    return ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_ADDRESS_INSIDE;
   }
 
   /**
@@ -393,6 +355,6 @@ public class AddressBookWordSelectData extends
    */
   @Override
   public String getTemplateFilePath() {
-    return "portlets/html/ja/ajax-addressbook-list.vm";
+    return "portlets/html/ja/ajax-addressbook-corplist.vm";
   }
 }
