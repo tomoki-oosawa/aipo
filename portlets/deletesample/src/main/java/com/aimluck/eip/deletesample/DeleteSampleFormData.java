@@ -543,14 +543,13 @@ public class DeleteSampleFormData extends ALAbstractFormData {
   }
 
   private void updateMsgboard(List<Integer> ids) {
-    SelectQuery<EipTMsgboardFile> msgquery3 =
-      Database.query(EipTMsgboardFile.class);
-    Expression msgexp3 =
+    Expression fileExp =
       ExpressionFactory.inExp(EipTMsgboardFile.OWNER_ID_PROPERTY, ids);
-    msgquery3.setQualifier(msgexp3);
-    List<EipTMsgboardFile> msglist3 = msgquery3.fetchList();
-    if (msglist3 != null && msglist3.size() > 0) {
-      for (EipTMsgboardFile file : msglist3) {
+    SelectQuery<EipTMsgboardFile> fileQuery =
+      Database.query(EipTMsgboardFile.class, fileExp);
+    List<EipTMsgboardFile> fileList = fileQuery.fetchList();
+    if (fileList != null && fileList.size() > 0) {
+      for (EipTMsgboardFile file : fileList) {
         fpaths.add(getSaveDirPath(
           org_id,
           file.getOwnerId().intValue(),
@@ -558,55 +557,58 @@ public class DeleteSampleFormData extends ALAbstractFormData {
           "msgboard")
           + file.getFilePath());
       }
-      Database.deleteAll(msglist3);
+      Database.deleteAll(fileList);
     }
 
-    List<EipTMsgboardCategory> catList = new ArrayList<EipTMsgboardCategory>();
-
-    SelectQuery<EipTMsgboardTopic> msgquery4 =
-      Database.query(EipTMsgboardTopic.class);
-    Expression msgexp4 =
+    Expression topicExp =
       ExpressionFactory.inExp(EipTMsgboardTopic.OWNER_ID_PROPERTY, ids);
-    msgquery4.setQualifier(msgexp4);
-    List<EipTMsgboardTopic> msglist4 = msgquery4.fetchList();
-    if (msglist4 != null && msglist4.size() > 0) {
-      for (EipTMsgboardTopic topic : msglist4) {
-        catList.add(topic.getEipTMsgboardCategory());
-      }
-      Database.deleteAll(msglist4);
-
-      if (catList.size() > 0) {
-        List<Integer> catIds = new ArrayList<Integer>();
-        for (EipTMsgboardCategory category : catList) {
-          catIds.add(category.getCategoryId());
-        }
-        SelectQuery<EipTMsgboardTopic> msgquery5 =
-          Database.query(EipTMsgboardTopic.class);
-        Expression msgexp5 =
-          ExpressionFactory.inExp(
-            EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY,
-            catIds);
-        msgquery5.setQualifier(msgexp5);
-        List<EipTMsgboardTopic> msglist5 = msgquery5.fetchList();
-
-        SelectQuery<EipTMsgboardCategory> query =
-          Database.query(EipTMsgboardCategory.class);
-        Expression exp1 =
-          ExpressionFactory.matchDbExp(
-            EipTMsgboardCategory.CATEGORY_ID_PK_COLUMN,
-            Integer.valueOf(1));
-        query.setQualifier(exp1);
-        List<EipTMsgboardCategory> categories = query.fetchList();
-        EipTMsgboardCategory defaultCategory = categories.get(0);
-
-        for (EipTMsgboardTopic topic : msglist5) {
-          topic.setEipTMsgboardCategory(defaultCategory);
-        }
-        Database.deleteAll(catList);
-      }
-
+    SelectQuery<EipTMsgboardTopic> topicQuery =
+      Database.query(EipTMsgboardTopic.class, topicExp);
+    List<EipTMsgboardTopic> topicList = topicQuery.fetchList();
+    if (topicList != null && topicList.size() > 0) {
+      Database.deleteAll(topicList);
     }
 
+    Expression defaultCategoryExp =
+      ExpressionFactory.matchDbExp(
+        EipTMsgboardCategory.CATEGORY_ID_PK_COLUMN,
+        Integer.valueOf(1));
+    SelectQuery<EipTMsgboardCategory> defaultCategoryQuery =
+      Database.query(EipTMsgboardCategory.class, defaultCategoryExp);
+    EipTMsgboardCategory defaultCategory = defaultCategoryQuery.fetchSingle();
+
+    SelectQuery<EipTMsgboardCategory> categoryQuery =
+      Database.query(EipTMsgboardCategory.class);
+    List<EipTMsgboardCategory> categoryList = categoryQuery.fetchList();
+
+    List<Integer> categoryIdList = new ArrayList<Integer>();
+    List<EipTMsgboardCategory> deleteCategoryList =
+      new ArrayList<EipTMsgboardCategory>();
+    if (categoryList != null && categoryList.size() > 0) {
+      for (EipTMsgboardCategory category : categoryList) {
+        if (ids.contains(category.getTurbineUser().getUserId())) {
+          if (!categoryIdList.contains(category.getCategoryId())) {
+            categoryIdList.add(category.getCategoryId());
+            deleteCategoryList.add(category);
+          }
+        }
+      }
+    }
+
+    if (categoryIdList.size() > 0) {
+      Expression deletedCategoryTopicExp =
+        ExpressionFactory.inExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY,
+          categoryIdList);
+      SelectQuery<EipTMsgboardTopic> deletedCategoryTopicQuery =
+        Database.query(EipTMsgboardTopic.class, deletedCategoryTopicExp);
+      List<EipTMsgboardTopic> deletedCategoryTopicList =
+        deletedCategoryTopicQuery.fetchList();
+      for (EipTMsgboardTopic topic : deletedCategoryTopicList) {
+        topic.setEipTMsgboardCategory(defaultCategory);
+      }
+      Database.deleteAll(deleteCategoryList);
+    }
   }
 
   private void updateNote(List<Integer> ids) {
