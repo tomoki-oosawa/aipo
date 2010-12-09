@@ -88,7 +88,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * サンプルデータ削除のフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class DeleteSampleFormData extends ALAbstractFormData {
 
@@ -108,12 +108,12 @@ public class DeleteSampleFormData extends ALAbstractFormData {
   private String org_id;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
-   *
-   *
+   * 
+   * 
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -124,8 +124,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
-   *
+   * 
+   * 
    */
   public void initField() {
 
@@ -133,8 +133,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /**
    * DeleteSampleの各フィールドに対する制約条件を設定します。 <BR>
-   *
-   *
+   * 
+   * 
    */
   @Override
   protected void setValidator() {
@@ -143,10 +143,10 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /**
    * DeleteSampleのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   *
+   * 
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -155,7 +155,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /**
    * DeleteSampleをデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -169,7 +169,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /**
    * DeleteSampleをデータベースから削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -183,7 +183,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /**
    * DeleteSampleをデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -197,7 +197,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているDeleteSampleを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -282,8 +282,8 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
       // debug
       updateFlag(rundata);
-
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       return false;
     }
@@ -348,7 +348,6 @@ public class DeleteSampleFormData extends ALAbstractFormData {
         }
         // フォルダ情報を削除
         Database.delete(delfolder);
-        Database.commit();
       }
     }
   }
@@ -453,7 +452,6 @@ public class DeleteSampleFormData extends ALAbstractFormData {
         }
       }
       Database.deleteAll(bloglist5);
-      Database.commit();
 
       if (deleteThemeList.size() > 0) {
         List<Integer> themeIds = new ArrayList<Integer>();
@@ -471,7 +469,6 @@ public class DeleteSampleFormData extends ALAbstractFormData {
         for (EipTBlogEntry entry : themaEntry) {
           entry.setEipTBlogThema(defaultThema);
         }
-        Database.commit();
         Database.deleteAll(deleteThemeList);
       }
     }
@@ -605,7 +602,6 @@ public class DeleteSampleFormData extends ALAbstractFormData {
         for (EipTMsgboardTopic topic : msglist5) {
           topic.setEipTMsgboardCategory(defaultCategory);
         }
-        Database.commit();
         Database.deleteAll(catList);
       }
 
@@ -771,7 +767,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
   /**
    * ユーザ毎のルート保存先（絶対パス）を取得します。
-   *
+   * 
    * @param uid
    * @return
    */
@@ -857,7 +853,6 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
           // 役職を削除
           Database.delete(record);
-          Database.commit();
 
           // この役職に設定されているユーザーの役職IDを0とする
           String sql =
