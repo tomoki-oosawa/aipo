@@ -37,7 +37,7 @@
 <ul>
 #foreach ($record in $result.List)
 #ALcell_li_header($career)
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_detail','1').addQueryData('mode','view').addQueryData("entityid",$record.EntryId).addQueryData('view_uid',${record.OwnerId})">${record.Title}</a>&nbsp;
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_detail','1').addQueryData('mode','view').addQueryData("entityid",$record.EntryId).addQueryData('view_uid',${record.OwnerId})">${record.Title} #if($record.CommentsNum > 0)（$record.CommentsNum）#end</a>&nbsp;
 ${record.OwnerName}&nbsp;
 (${record.TitleDate})
 #ALcell_li_footer($career)
@@ -55,7 +55,7 @@ ${record.OwnerName}&nbsp;
 #if (!($result.CommentHistoryList) || $!result.CommentHistoryList.size() <= 0)
  &nbsp;ｺﾒﾝﾄした記事はありません
 #else
-<table> 
+<table>
 #foreach ($record2 in $result.CommentHistoryList)
 <tr>
 <td>${record2.TitleDate}</td>

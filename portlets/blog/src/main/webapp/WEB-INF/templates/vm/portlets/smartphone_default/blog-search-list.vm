@@ -41,7 +41,7 @@
 #foreach ($record in $result.List)
 #ALcell_li_header($career)
 <a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_detail','1').addQueryData('mode','view').addQueryData("entityid",$record.EntryId).addQueryData('view_uid',${record.OwnerId}))');">
-<strong>${record.Title}&nbsp;</strong><br />
+<strong>${record.Title}&nbsp;#if($record.CommentsNum > 0)（$record.CommentsNum）#end</strong><br />
 <small>
 ${record.OwnerName}&nbsp;
 (${record.TitleDate})
