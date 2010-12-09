@@ -104,7 +104,7 @@
 #ALajaxpageview(${pageviewscreen} $result)
 #ALtableheaderWide()
 <tr>
-#ALtdheadW25("#ALajaxsortaddressbook('name_kana' '名前' $result 'AddressBookWordScreen')")
+#ALtdheadW25("#ALajaxsortaddressbook('name_kana' '名前' $result 'AddressBookListScreen')")
 #ALtdhead('部署名')
 #ALtdhead('役職')
 #ALtdheadW25('メールアドレス')
