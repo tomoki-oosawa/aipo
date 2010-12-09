@@ -79,7 +79,7 @@ aipo.schedule.setupTooltip = function(url, entityids, portlet_id) {
                         connectId: [node]
                     }, portlet_id);
                 });
-                
+
                 var obj = dojo.byId(portlet_id + '-' + schedule.id);
                 if (obj) {
                     var tooltipObject = new aipo.widget.ToolTip({
@@ -94,12 +94,12 @@ aipo.schedule.setupTooltip = function(url, entityids, portlet_id) {
 
 aipo.schedule.showTooltip = function(obj, url, entityid, name, date, place, ispublic, portlet_id) {
     var tooltipObject;
-    
+
     var datehtml = "";
     var mbhtml = "";
     var mbfhtml = "";
     var placehtml = "";
-    
+
     datehtml = "<span style=\"font-size: 0.90em;\">" + date + "</span>";
 
     if(ispublic){
@@ -248,6 +248,16 @@ aipo.schedule.onLoadScheduleDialog = function(portlet_id){
 
         aipo.schedule.shrinkMember();
         aipo.schedule.shrinkFacility();
+
+        var spanStart = dijit.byId('startDateSpan');
+        var spanEnd = dijit.byId('endDateSpan');
+        if (spanStart != null && spanEnd != null) {
+            var sDate = spanStart.dropDown.value;
+            var eDate = spanEnd.dropDown.value;
+            aipo.schedule.spanLength = (eDate - sDate)/86400000;
+        } else {
+            aipo.schedule.spanLength = 0;
+        }
     }
 }
 
@@ -291,7 +301,7 @@ aipo.schedule.formSwitchRepeat = function(button) {
 
 aipo.schedule.isShowFacility = function(scheduleform) {
     var public_flag = scheduleform.public_flag;
-    for(var i = 0 ; i < public_flag.length; i++) { 
+    for(var i = 0 ; i < public_flag.length; i++) {
         if (public_flag[i].checked && public_flag[i].value == 'O') {
             return true;
         }
@@ -679,4 +689,30 @@ aipo.schedule.expandFacility = function(){
    if(_node){
        dojo.style(_node, "display" , "block");
    }
+}
+
+aipo.schedule.onSpanStartChange = function(){
+    var spanStart = dijit.byId('startDateSpan');
+    var spanEnd = dijit.byId('endDateSpan');
+    if (spanStart != null && spanEnd != null) {
+        var newDateMillis = spanStart.dropDown.value.getTime() + 86400000 * aipo.schedule.spanLength;
+        var newDate = new Date();
+        newDate.setTime(newDateMillis);
+        spanEnd.dropDown.onChangeNoCallback(newDate);
+    }
+}
+
+aipo.schedule.onSpanEndChange = function(){
+    var spanStart = dijit.byId('startDateSpan');
+    var spanEnd = dijit.byId('endDateSpan');
+    if (spanStart != null && spanEnd != null && spanStart.dropDown != null && spanEnd.dropDown != null) {
+        var spanStartDate = spanStart.dropDown.value;
+        var spanEndDate = spanEnd.dropDown.value;
+        if(spanStartDate >= spanEndDate) {
+            aipo.schedule.spanLength = 0;
+            spanStart.dropDown.onChangeNoCallback(spanEndDate);
+        } else {
+            aipo.schedule.spanLength = (spanEndDate - spanStartDate) / 86400000;
+        }
+    }
 }

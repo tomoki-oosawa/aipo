@@ -247,31 +247,35 @@ dojo.require("dijit._Calendar");
 
 dojo.declare("aipo.widget.DateCalendar", [dijit._Calendar], {
     dateId: "",
+    callback: function(){},
     templateString:"<table cellspacing=\"0\" cellpadding=\"0\" class=\"dijitCalendarContainer\">\n\t<thead>\n\t\t<tr class=\"dijitReset dijitCalendarMonthContainer\" valign=\"top\">\n\t\t\t<th class='dijitReset' dojoAttachPoint=\"decrementMonth\">\n\t\t\t\t<span class=\"dijitInline dijitCalendarIncrementControl dijitCalendarDecrease\"><span dojoAttachPoint=\"decreaseArrowNode\" class=\"dijitA11ySideArrow dijitCalendarIncrementControl dijitCalendarDecreaseInner\">-</span></span>\n\t\t\t</th>\n\t\t\t<th class='dijitReset' colspan=\"5\">\n\t\t\t\t<div dojoAttachPoint=\"monthLabelSpacer\" class=\"dijitCalendarMonthLabelSpacer\"></div>\n\t\t\t\t<div dojoAttachPoint=\"monthLabelNode\" class=\"dijitCalendarMonth\"></div>\n\t\t\t</th>\n\t\t\t<th class='dijitReset' dojoAttachPoint=\"incrementMonth\">\n\t\t\t\t<div class=\"dijitInline dijitCalendarIncrementControl dijitCalendarIncrease\"><span dojoAttachPoint=\"increaseArrowNode\" class=\"dijitA11ySideArrow dijitCalendarIncrementControl dijitCalendarIncreaseInner\">+</span></div>\n\t\t\t</th>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<th class=\"dijitReset dijitCalendarDayLabelTemplate\"><span class=\"dijitCalendarDayLabel\"></span></th>\n\t\t</tr>\n\t</thead>\n\t<tbody dojoAttachEvent=\"onclick: _onDayClick\" class=\"dijitReset dijitCalendarBodyContainer\">\n\t\t<tr class=\"dijitReset dijitCalendarWeekTemplate\">\n\t\t\t<td class=\"dijitReset dijitCalendarDateTemplate\"><span class=\"dijitCalendarDateLabel\"></span></td>\n\t\t</tr>\n\t</tbody>\n\t<tfoot class=\"dijitReset dijitCalendarYearContainer\">\n\t\t<tr>\n\t\t\t<td class='dijitReset' valign=\"top\" colspan=\"7\">\n\t\t\t\t<h3 class=\"dijitCalendarYearLabel\">\n\t\t\t\t\t<span dojoAttachPoint=\"previousYearLabelNode\" class=\"dijitInline dijitCalendarPreviousYear\"></span>\n\t\t\t\t\t<span dojoAttachPoint=\"currentYearLabelNode\" class=\"dijitInline dijitCalendarSelectedYear\"></span>\n\t\t\t\t\t<span dojoAttachPoint=\"nextYearLabelNode\" class=\"dijitInline dijitCalendarNextYear\"></span>\n\t\t\t\t</h3>\n\t\t\t</td>\n\t\t</tr>\n\t</tfoot>\n</table>\t\n",
     //templateString:"<table cellspacing=\"0\" cellpadding=\"0\" class=\"calendarBodyContainer\">\n\t<thead>\n\t\t<tr class=\"dijitReset monthLabelContainer\" valign=\"top\">\n\t\t\t<th class='dijitReset' dojoAttachPoint=\"decrementMonth\">\n\t\t\t\t<span class=\"dijitInline dijitCalendarIncrementControl dijitCalendarDecrease\"><span dojoAttachPoint=\"decreaseArrowNode\" class=\"dijitA11ySideArrow dijitCalendarIncrementControl dijitCalendarDecreaseInner\">-</span></span>\n\t\t\t</th>\n\t\t\t<th class='dijitReset' colspan=\"5\">\n\t\t\t\t<div dojoAttachPoint=\"monthLabelSpacer\" class=\"dijitCalendarMonthLabelSpacer\"></div>\n\t\t\t\t<div dojoAttachPoint=\"monthLabelNode\" class=\"dijitCalendarMonth\"></div>\n\t\t\t</th>\n\t\t\t<th class='dijitReset' dojoAttachPoint=\"incrementMonth\">\n\t\t\t\t<div class=\"dijitInline dijitCalendarIncrementControl dijitCalendarIncrease\"><span dojoAttachPoint=\"increaseArrowNode\" class=\"dijitA11ySideArrow dijitCalendarIncrementControl dijitCalendarIncreaseInner\">+</span></div>\n\t\t\t</th>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<th class=\"dijitReset dijitCalendarDayLabelTemplate\"><span class=\"dijitCalendarDayLabel\"></span></th>\n\t\t</tr>\n\t</thead>\n\t<tbody dojoAttachEvent=\"onclick: _onDayClick\" class=\"dijitReset dijitCalendarBodyContainer\">\n\t\t<tr class=\"dijitReset dijitCalendarWeekTemplate\">\n\t\t\t<td class=\"dijitReset dijitCalendarDateTemplate\"><span class=\"dijitCalendarDateLabel\"></span></td>\n\t\t</tr>\n\t</tbody>\n\t<tfoot class=\"dijitReset dijitCalendarYearContainer\">\n\t\t<tr>\n\t\t\t<td class='dijitReset' valign=\"top\" colspan=\"7\">\n\t\t\t\t<h3 class=\"dijitCalendarYearLabel\">\n\t\t\t\t\t<span dojoAttachPoint=\"previousYearLabelNode\" class=\"dijitInline dijitCalendarPreviousYear\"></span>\n\t\t\t\t\t<span dojoAttachPoint=\"currentYearLabelNode\" class=\"dijitInline dijitCalendarSelectedYear\"></span>\n\t\t\t\t\t<span dojoAttachPoint=\"nextYearLabelNode\" class=\"dijitInline dijitCalendarNextYear\"></span>\n\t\t\t\t</h3>\n\t\t\t</td>\n\t\t</tr>\n\t</tfoot>\n</table>\t\n",
     postCreate: function(){
       this.inherited(arguments);
-
     },
     onChange: function(/*date*/date){
-       var tyear = date.getFullYear();
-       var tmonth = 1+date.getMonth();
-       var tdate = date.getDate();
-       var dayNames = dojo.date.locale.getNames('days', this.dayWidth, 'standAlone', this.lang);
-       var tday = dayNames[date.getDay()];
-    
-       var viewvalue = dojo.byId(this.dateId+'_view');
-       viewvalue.innerHTML = tyear+"\u5e74"+tmonth+"\u6708"+tdate+"\u65e5\uff08"+tday+"\uff09&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";  
-       var hiddendate = dojo.byId(this.dateId);
-       hiddendate.value = tyear+"/"+tmonth+"/"+tdate;
-       var hiddendate_year = dojo.byId(this.dateId+'_year');
-       hiddendate_year.value = tyear;
-       var hiddendate_month = dojo.byId(this.dateId+'_month');
-       hiddendate_month.value = tmonth;
-       var hiddendate_day = dojo.byId(this.dateId+'_day');
-       hiddendate_day.value = tdate;
-       
-       dojo.byId(this.dateId+'_flag').checked = false;
+       this.onChangeNoCallback(date);
+       this.callback(date);
+    },
+    onChangeNoCallback: function(date){
+        var tyear = date.getFullYear();
+        var tmonth = 1+date.getMonth();
+        var tdate = date.getDate();
+        var dayNames = dojo.date.locale.getNames('days', this.dayWidth, 'standAlone', this.lang);
+        var tday = dayNames[date.getDay()];
+
+        var viewvalue = dojo.byId(this.dateId+'_view');
+        viewvalue.innerHTML = tyear+"\u5e74"+tmonth+"\u6708"+tdate+"\u65e5\uff08"+tday+"\uff09&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+        var hiddendate = dojo.byId(this.dateId);
+        hiddendate.value = tyear+"/"+tmonth+"/"+tdate;
+        var hiddendate_year = dojo.byId(this.dateId+'_year');
+        hiddendate_year.value = tyear;
+        var hiddendate_month = dojo.byId(this.dateId+'_month');
+        hiddendate_month.value = tmonth;
+        var hiddendate_day = dojo.byId(this.dateId+'_day');
+        hiddendate_day.value = tdate;
+
+        dojo.byId(this.dateId+'_flag').checked = false;
     },
     disabledCalendar: function(/*boolean*/bool) {
         if(bool){
@@ -284,22 +288,22 @@ dojo.declare("aipo.widget.DateCalendar", [dijit._Calendar], {
            hiddendate_month.value = "";
            var hiddendate_day = dojo.byId(this.dateId+'_day');
            hiddendate_day.value = "";
-           
+
            this.value = "";
            if(! dojo.byId(this.dateId+'_flag').checked) {
-        	   dojo.byId(this.dateId+'_flag').checked = true;
+              dojo.byId(this.dateId+'_flag').checked = true;
            }
         }else{
            var hiddendate = dojo.byId(this.dateId);
            if( (!hiddendate.value) || (hiddendate.value=="") ) {
-        	   this.setValue(new Date());
+              this.setValue(new Date());
            }else{
 	           var tmpdate = hiddendate.value.split("/");
 	           if(tmpdate.length == 3){
 	               var tyear = tmpdate[0];
 	               var tmonth = tmpdate[1]-1;
 	               var tday = tmpdate[2];
-	   
+
 	               var tdate = new Date(tyear, tmonth, tday);
 	               this.setValue(tdate);
 	           }
@@ -887,14 +891,15 @@ dojo.declare("aipo.widget.DropdownDatepicker", [aimluck.widget.Dropdown], {
     displayCheck: "",
     iconURL: "",
     iconAlt: "",
+    callback: function(){},
     listWidgetId:"datewidget",
     templateString:"<div class=\"dijit dijitLeft dijitInline\"><div dojoAttachEvent=\"onmouseenter:_onMouse,onmouseleave:_onMouse,onmousedown:_onMouse,onclick:_onDropDownClick,onkeydown:_onDropDownKeydown,onblur:_onDropDownBlur,onkeypress:_onKey\"\n\t style=\"float:left;\"><div class='dijitRight'>\n\t<span class=\"\" type=\"${type}\"\n\t\tdojoAttachPoint=\"focusNode,titleNode\" waiRole=\"button\" waiState=\"haspopup-true,labelledby-${id}_label\"\n\t\t><span class=\"\" \tdojoAttachPoint=\"containerNode,popupStateNode\"\n\t\tid=\"${id}_label\"><img src=\"${iconURL}\" alt=\"${iconAlt}\" style=\"cursor:pointer;cursor:hand;padding-right:2px\" align=\"top\" />\n\t</span></div></div><div class=\"alignleft\"><span name=\"${dateId}_view\" id=\"${dateId}_view\" dojoAttachPoint=\"inputNode\" style=\"vertical-align:middle;background:#ffffff ;border:0px;\" autocomplete=\"off\" readonly=\"readonly\"></span><span style=\"display:${displayCheck}\"><input name=\"${dateId}_check\" type=\"checkbox\" value=\"TRUE\" id=\"${dateId}_flag\" dojoAttachEvent=\"onclick:onCheckBlank\" /><label for=\"${dateId}_flag\">\u0020\u6307\u5b9a\u3057\u306a\u3044</label></span><input type=\"hidden\" id=\"${dateId}\" name=\"${dateId}\" value=\"${dateValue}\" dojoAttachPoint=\"valueNode\" /><input type=\"hidden\" id=\"${dateId}_year\" name=\"${dateId}_year\" value=\"\" dojoAttachPoint=\"valueYearNode\" /><input type=\"hidden\" id=\"${dateId}_month\" name=\"${dateId}_month\" value=\"\" dojoAttachPoint=\"valueMonthNode\" /><input type=\"hidden\" id=\"${dateId}_day\" name=\"${dateId}_day\" value=\"\" dojoAttachPoint=\"valueDayNode\" /></div></div>\n",
     postCreate: function(){
         this.inherited(arguments);
-
         var params = {
           widgetId:this.listWidgetId,
-          dateId:this.dateId
+          dateId:this.dateId,
+          callback:this.callback
         };
         this.dropDown = new aipo.widget.DateCalendar(params, this.listWidgetId);
 
@@ -905,12 +910,12 @@ dojo.declare("aipo.widget.DropdownDatepicker", [aimluck.widget.Dropdown], {
                 var tmonth = tmpdate[1]-1;
                 var tday = tmpdate[2];
 
-	            var datevalue = dojo.byId(this.dateId);
-	            datevalue.value = this.initValue;
+                var datevalue = dojo.byId(this.dateId);
+                datevalue.value = this.initValue;
 
                 this.dropDown.clearDate();
                 this.dropDown.setValue(new Date(tyear, tmonth, tday));
-	        }
+            }
         }else{
           this.dropDown.disabledCalendar(true);
         }

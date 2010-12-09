@@ -85,9 +85,9 @@
 #ALtditemheader()
   <div id="normalField" style="display:#if($!{result.Repeat} && ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} != 1))none#end">
     <div class="p">
-        <span dojoType="aipo.widget.DropdownDatepicker" id="startDateSpan" widgetId="startDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="開始日" hiddenId="start_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.StartDateSub}"checked="checked" #end inputId="start_date_input" dateId="start_date" displayCheck="none"></span>
+        <span dojoType="aipo.widget.DropdownDatepicker" id="startDateSpan" widgetId="startDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="開始日" hiddenId="start_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.StartDateSub}"checked="checked" #end inputId="start_date_input" dateId="start_date" displayCheck="none" callback="aipo.schedule.onSpanStartChange"></span>
         <span id="spanField" style="display:#if(!$!{result.Span} || $!{result.AllDayFlag.toString()} == "ON" )none#end">～
-          <span dojoType="aipo.widget.DropdownDatepicker" id="endDateSpan" widgetId="endDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="終了日" hiddenId="end_date" #if ($!result.EndDateCheck.toString()  && ($!result.EndDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.EndDateSub}"checked="checked" #end inputId="end_date_input" dateId="end_date" displayCheck="none"></span>
+          <span dojoType="aipo.widget.DropdownDatepicker" id="endDateSpan" widgetId="endDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="終了日" hiddenId="end_date" #if ($!result.EndDateCheck.toString()  && ($!result.EndDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.EndDateSub}"checked="checked" #end inputId="end_date_input" dateId="end_date" displayCheck="none"  callback="aipo.schedule.onSpanEndChange"></span>
           <input id="all_day_flag" type="hidden" value="OFF" name="all_day_flag" />
         </span>
       <span id="allDayField" style="display:#if($!{result.Span} && $!{result.AllDayFlag.toString()} != "ON")none#end">
