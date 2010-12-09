@@ -21,7 +21,6 @@ package com.aimluck.eip.accessctl.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -43,17 +42,17 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーティリティクラスです。 <BR>
- *
+ * 
  */
 public class AccessControlUtils {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AccessControlUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(AccessControlUtils.class.getName());
 
   /**
    * ロールオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -129,19 +128,14 @@ public class AccessControlUtils {
     List<AccessControlFeatureBean> list =
       new ArrayList<AccessControlFeatureBean>();
 
-    EipTAclPortletFeature feature = null;
-    AccessControlFeatureBean finfo = null;
-    int size = features.size();
-    for (int i = 0; i < size; i++) {
-      feature = features.get(i);
-      finfo = new AccessControlFeatureBean();
-      finfo.initField();
-      finfo.setFeatureId(feature.getFeatureId().longValue());
-      finfo.setFeatureName(feature.getFeatureName());
-      finfo.setFeatureAliasName(feature.getFeatureAliasName());
-      list.add(finfo);
+    for (EipTAclPortletFeature feature : features) {
+      AccessControlFeatureBean featureInfo = new AccessControlFeatureBean();
+      featureInfo.initField();
+      featureInfo.setFeatureId(feature.getFeatureId().longValue());
+      featureInfo.setFeatureName(feature.getFeatureName());
+      featureInfo.setFeatureAliasName(feature.getFeatureAliasName());
+      list.add(featureInfo);
     }
-
     return list;
   }
 
