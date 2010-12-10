@@ -932,7 +932,7 @@ public class WorkflowUtils {
    * メール送信
    */
   public static boolean sendMail(RunData rundata, EipTWorkflowRequest request,
-      ALEipUser destUser, List<String> msgList) throws Exception {
+      List<ALEipUser> destUsers, List<String> msgList) throws Exception {
 
     String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
     String subject =
@@ -940,25 +940,26 @@ public class WorkflowUtils {
 
     try {
       List<ALEipUser> memberList = new ArrayList<ALEipUser>();
-      memberList.add(destUser);
+      memberList.addAll(destUsers);
       List<ALEipUserAddr> destMemberList =
         ALMailUtils.getALEipUserAddrs(
           memberList,
           ALEipUtils.getUserId(rundata),
           false);
-      for (int i = 0; i < destMemberList.size(); i++) {
+      for (ALEipUserAddr member : destMemberList) {
         List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
-        destMember.add(destMemberList.get(i));
-        ALMailUtils.sendMailDelegate(org_id, (int) destUser
-          .getUserId()
-          .getValue(), destMember, subject, subject, WorkflowUtils
-          .createMsgForPc(rundata, request), WorkflowUtils
-          .createMsgForCellPhone(
-            rundata,
-            request,
-            destUser,
-            (destMember.get(0)).getUserId()), ALMailUtils
-          .getSendDestType(ALMailUtils.KEY_MSGTYPE_WORKFLOW), msgList);
+        destMember.add(member);
+        ALMailUtils.sendMailDelegate(
+          org_id,
+          ALEipUtils.getUserId(rundata),
+          destMember,
+          subject,
+          subject,
+          WorkflowUtils.createMsgForPc(rundata, request),
+          WorkflowUtils.createMsgForCellPhone(rundata, request, (destMember
+            .get(0)).getUserId()),
+          ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_WORKFLOW),
+          msgList);
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -1068,7 +1069,7 @@ public class WorkflowUtils {
    * @return
    */
   public static String createMsgForCellPhone(RunData rundata,
-      EipTWorkflowRequest request, ALEipUser login_user, int destUserID) {
+      EipTWorkflowRequest request, int destUserID) {
     String CR = System.getProperty("line.separator");
 
     ALBaseUser user = null;

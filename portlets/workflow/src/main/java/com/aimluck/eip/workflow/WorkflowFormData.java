@@ -691,10 +691,12 @@ public class WorkflowFormData extends ALAbstractFormData {
           (int) nextUser.getUserId().getValue());
       }
       // 次の申請先にメール送信
+      List<ALEipUser> destUsers = new ArrayList<ALEipUser>();
+      destUsers.add(nextUser);
       WorkflowUtils.sendMail(
         rundata,
         request,
-        nextUser,
+        destUsers,
         new ArrayList<String>());
 
       File folder = FileuploadUtils.getFolder(org_id, uid, folderName);
@@ -861,10 +863,12 @@ public class WorkflowFormData extends ALAbstractFormData {
           (int) nextUser.getUserId().getValue());
       }
       // 次の申請先にメール送信
+      List<ALEipUser> destUsers = new ArrayList<ALEipUser>();
+      destUsers.add(nextUser);
       WorkflowUtils.sendMail(
         rundata,
         request,
-        nextUser,
+        destUsers,
         new ArrayList<String>());
 
       File folder = FileuploadUtils.getFolder(org_id, uid, folderName);

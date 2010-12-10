@@ -213,6 +213,8 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
       EipTWorkflowRequestMap sendMailMap = null;
 
       Date now = Calendar.getInstance().getTime();
+
+      boolean accept_all = false;
       if (accept_flg) {
         // 現在の申請者は承認
         map.setStatus(WorkflowUtils.DB_STATUS_ACCEPT);
@@ -241,6 +243,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
           request.setProgress(WorkflowUtils.DB_PROGRESS_ACCEPT);
           // 申請者のMapを取得
           map = getEipTWorkflowRequestMapWithRequester(maps);
+          accept_all = true;
         }
         sendMailMap = map;
       } else {
@@ -320,34 +323,64 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
           + " "
           + request.getRequestName());
 
-      if (sendMailMap != null) {
-        /* 次の申請先に新着ポートレット登録 */
-        ALEipUser nextUser =
-          ALEipUtils.getALEipUser(sendMailMap.getUserId().intValue());
-
-        ALAccessControlFactoryService aclservice =
-          (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-            .getInstance())
-            .getService(ALAccessControlFactoryService.SERVICE_NAME);
-        ALAccessControlHandler aclhandler =
-          aclservice.getAccessControlHandler();
-
-        if (aclhandler.hasAuthority(
-          (int) nextUser.getUserId().getValue(),
-          ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_SELF,
-          ALAccessControlConstants.VALUE_ACL_DETAIL)) {
-          WhatsNewUtils.insertWhatsNew(
-            WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST,
-            request.getRequestId().intValue(),
-            (int) nextUser.getUserId().getValue());
+      List<ALEipUser> destUsers = new ArrayList<ALEipUser>();
+      if (accept_all) {
+        // 全員に承認された場合、最後に承認した人以外の全員と申請者にメール送信
+        int uid = (int) ALEipUtils.getALEipUser(rundata).getUserId().getValue();
+        for (EipTWorkflowRequestMap _map : maps) {
+          if (_map.getUserId() != uid) {
+            ALEipUser user = ALEipUtils.getALEipUser(_map.getUserId());
+            if (!destUsers.contains(user)) {
+              destUsers.add(user);
+            }
+          }
         }
-
-        // 次の申請先にメール送信
+        // メール送信
         WorkflowUtils.sendMail(
           rundata,
           request,
-          ALEipUtils.getALEipUser(sendMailMap.getUserId().intValue()),
+          destUsers,
           new ArrayList<String>());
+      } else if (!accept_flg) {
+        // 差し戻す前に承認した人全員と申請者にメール送信
+        for (EipTWorkflowRequestMap _map : maps) {
+          if (_map.getStatus().equals(WorkflowUtils.DB_PROGRESS_ACCEPT)
+            || _map.getStatus().equals(WorkflowUtils.DB_STATUS_REQUEST)) {
+            ALEipUser user = ALEipUtils.getALEipUser(_map.getUserId());
+            if (!destUsers.contains(user)) {
+              destUsers.add(user);
+            }
+          }
+        }
+        // メール送信
+        WorkflowUtils.sendMail(
+          rundata,
+          request,
+          destUsers,
+          new ArrayList<String>());
+      } else {
+        if (sendMailMap != null) {
+          // 次の申請先/差し戻し先に新着ポートレット登録
+          ALEipUser nextUser =
+            ALEipUtils.getALEipUser(sendMailMap.getUserId().intValue());
+
+          ALAccessControlFactoryService aclservice =
+            (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+              .getInstance())
+              .getService(ALAccessControlFactoryService.SERVICE_NAME);
+          ALAccessControlHandler aclhandler =
+            aclservice.getAccessControlHandler();
+
+          if (aclhandler.hasAuthority(
+            (int) nextUser.getUserId().getValue(),
+            ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_SELF,
+            ALAccessControlConstants.VALUE_ACL_DETAIL)) {
+            WhatsNewUtils.insertWhatsNew(
+              WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST,
+              request.getRequestId().intValue(),
+              (int) nextUser.getUserId().getValue());
+          }
+        }
       }
     } catch (Exception ex) {
       Database.rollback();
@@ -360,15 +393,12 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
   private EipTWorkflowRequestMap getEipTWorkflowRequestMapWithRequester(
       List<EipTWorkflowRequestMap> maps) {
     // 申請者のMapを取得
-    EipTWorkflowRequestMap map = null;
-    int size = maps.size();
-    for (int i = 0; i < size; i++) {
-      map = maps.get(i);
+    for (EipTWorkflowRequestMap map : maps) {
       if (WorkflowUtils.DB_STATUS_REQUEST.equals(map.getStatus())) {
-        break;
+        return map;
       }
     }
-    return map;
+    return null;
   }
 
   public void setAcceptFlg(boolean bool) {
