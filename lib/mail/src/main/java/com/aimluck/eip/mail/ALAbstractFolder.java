@@ -160,11 +160,11 @@ public abstract class ALAbstractFolder implements ALFolder {
     try {
       EipTMail email = Database.create(dataContext, EipTMail.class);
 
-      String mail = "";
+      // String mail = "";
       if (saveContents) {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         mimeMessage.writeTo(output);
-        mail = output.toString();
+        // mail = output.toString();
       } else {
         Session session = Session.getDefaultInstance(new Properties());
         Message newMsg = new MimeMessage(session);
@@ -177,7 +177,7 @@ public abstract class ALAbstractFolder implements ALFolder {
           .setText("メールのサイズが7MBを超えていたため、このメールを受信できませんでした。\r\n 誠に恐れ入りますが、別のメーラーで受信してください。");
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         newMsg.writeTo(output);
-        mail = output.toString();
+        // mail = output.toString();
       }
 
       String subject;
@@ -300,7 +300,7 @@ public abstract class ALAbstractFolder implements ALFolder {
       email.setFileVolume(Integer.valueOf(fileVolume));
       email.setHasFiles(hasAttachments);
       email.setFilePath(filePath);
-      email.setMail(mail.getBytes());
+      // email.setMail(mail.getBytes());
       email.setFolderId(Integer.valueOf(folder_id));
 
       // 作成日
