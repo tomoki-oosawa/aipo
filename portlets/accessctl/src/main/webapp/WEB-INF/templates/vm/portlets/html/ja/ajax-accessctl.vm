@@ -44,7 +44,7 @@
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
 #ALtdheadW33("#ALajaxsort('acl_role_name' 'ロール名' $result 'AccessControlScreen')")
-#ALtdheadW25("#ALajaxsort('feature_name' '機能名' $result 'AccessControlScreen')")
+#ALtdheadW25("#ALajaxsort('feature_alias_name' '機能名' $result 'AccessControlScreen')")
 #ALtdheadW25("権限")
 #ALtdheadThin(' ')
 </tr>
