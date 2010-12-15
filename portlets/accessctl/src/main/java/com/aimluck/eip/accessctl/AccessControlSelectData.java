@@ -52,8 +52,9 @@ public class AccessControlSelectData extends
     ALAbstractSelectData<EipTAclRole, EipTAclRole> {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AccessControlSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService
+      .getLogger(AccessControlSelectData.class.getName());
 
   /** アクセスロールの総数 */
   private int aclRoleSum;
@@ -62,7 +63,7 @@ public class AccessControlSelectData extends
   private List<AccessControlFeatureBean> portletFeatureList;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -82,7 +83,7 @@ public class AccessControlSelectData extends
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -92,7 +93,7 @@ public class AccessControlSelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -117,7 +118,7 @@ public class AccessControlSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -130,7 +131,7 @@ public class AccessControlSelectData extends
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    */
@@ -178,7 +179,7 @@ public class AccessControlSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -190,7 +191,7 @@ public class AccessControlSelectData extends
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    */
@@ -259,27 +260,23 @@ public class AccessControlSelectData extends
   }
 
   /**
-   *
+   * 
    * @return
    */
   @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("acl_role_name", EipTAclRole.ROLE_NAME_PROPERTY);
-    map.putValue("feature_name", EipTAclRole.EIP_TACL_PORTLET_FEATURE_PROPERTY
-      + "."
-      + EipTAclPortletFeature.FEATURE_NAME_PROPERTY);
-    map.putValue("feature_alias_name", EipTAclRole.EIP_TACL_PORTLET_FEATURE_PROPERTY
+    map.putValue(
+      "feature_alias_name",
+      EipTAclRole.EIP_TACL_PORTLET_FEATURE_PROPERTY
         + "."
         + EipTAclPortletFeature.FEATURE_ALIAS_NAME_PROPERTY);
-    map.putValue("feature", EipTAclRole.EIP_TACL_PORTLET_FEATURE_PROPERTY
-      + "."
-      + EipTAclPortletFeature.FEATURE_ID_PK_COLUMN);
     return map;
   }
 
   /**
-   *
+   * 
    * @return
    */
   public List<AccessControlFeatureBean> getPortletFeatureList() {
@@ -288,7 +285,7 @@ public class AccessControlSelectData extends
 
   /**
    * ロールの総数を返す． <BR>
-   *
+   * 
    * @return
    */
   public int getAclRoleSum() {
