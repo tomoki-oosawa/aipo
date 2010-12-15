@@ -72,8 +72,8 @@ import com.sk_jp.mail.MultipartUtility;
 public abstract class ALAbstractFolder implements ALFolder {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ALAbstractFolder.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ALAbstractFolder.class.getName());
 
   /** 受信 or 送信 */
   protected int type_mail = -1;
@@ -114,11 +114,13 @@ public abstract class ALAbstractFolder implements ALFolder {
   /** 現在のソートタイプ （asc:昇順、desc:降順） */
   private String current_sort_type;
 
-  protected final String LIST_SORT_STR = new StringBuffer().append(
-    this.getClass().getName()).append(ALEipConstants.LIST_SORT).toString();
+  protected final String LIST_SORT_STR =
+    new StringBuffer().append(this.getClass().getName()).append(
+      ALEipConstants.LIST_SORT).toString();
 
-  protected final String LIST_SORT_TYPE_STR = new StringBuffer().append(
-    this.getClass().getName()).append(ALEipConstants.LIST_SORT_TYPE).toString();
+  protected final String LIST_SORT_TYPE_STR =
+    new StringBuffer().append(this.getClass().getName()).append(
+      ALEipConstants.LIST_SORT_TYPE).toString();
 
   /**
    * コンストラクタ
@@ -160,11 +162,9 @@ public abstract class ALAbstractFolder implements ALFolder {
     try {
       EipTMail email = Database.create(dataContext, EipTMail.class);
 
-      // String mail = "";
       if (saveContents) {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         mimeMessage.writeTo(output);
-        // mail = output.toString();
       } else {
         Session session = Session.getDefaultInstance(new Properties());
         Message newMsg = new MimeMessage(session);
@@ -177,7 +177,6 @@ public abstract class ALAbstractFolder implements ALFolder {
           .setText("メールのサイズが7MBを超えていたため、このメールを受信できませんでした。\r\n 誠に恐れ入りますが、別のメーラーで受信してください。");
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         newMsg.writeTo(output);
-        // mail = output.toString();
       }
 
       String subject;
@@ -300,7 +299,6 @@ public abstract class ALAbstractFolder implements ALFolder {
       email.setFileVolume(Integer.valueOf(fileVolume));
       email.setHasFiles(hasAttachments);
       email.setFilePath(filePath);
-      // email.setMail(mail.getBytes());
       email.setFolderId(Integer.valueOf(folder_id));
 
       // 作成日
