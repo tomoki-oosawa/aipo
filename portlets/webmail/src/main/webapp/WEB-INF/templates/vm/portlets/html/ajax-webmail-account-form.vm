@@ -77,10 +77,10 @@
 <label for="$!{portlet.ID}auth_send_id2">SMTP認証</label>
 <span id="smtp_auth_field" style="display:#if (! ($!result.AuthSendFlg.toString() == "2"))none#end">
 <div class="spaceTop">
-<h3>SMTP認証情報</h3>
-<div style="padding:3px;width:70px;float:left;clear:both;">ユーザー</div>#ALtextfield('auth_send_user_id' $!{result.AuthSendUserId} '30%' 50 'disabled')#ALcaution('（半角英数字）')
+<h3>SMTP認証情報#ALcaution('（半角英数字）')</h3>
+<div style="padding:3px;width:70px;float:left;clear:both;">ユーザー</div>#ALtextfield('auth_send_user_id' $!{result.AuthSendUserId} '60%' 50 'disabled')
 <br/>
-<div style="padding:3px;width:70px;float:left;clear:both;">パスワード</div>#ALpasswdfield('auth_send_user_password' $!{result.AuthSendUserPasswd} '30%' 50 'disabled')#ALcaution('（半角英数字）')
+<div style="padding:3px;width:70px;float:left;clear:both;">パスワード</div>#ALpasswdfield('auth_send_user_password' $!{result.AuthSendUserPasswd} '60%' 50 'disabled')
 </div>
 </span>
 #ALtditemfooter()
