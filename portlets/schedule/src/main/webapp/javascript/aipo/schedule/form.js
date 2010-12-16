@@ -699,6 +699,7 @@ aipo.schedule.onSpanStartChange = function(){
         var newDate = new Date();
         newDate.setTime(newDateMillis);
         spanEnd.dropDown.onChangeNoCallback(newDate);
+        spanEnd.dropDown.setValue(newDate);
     }
 }
 
@@ -711,6 +712,7 @@ aipo.schedule.onSpanEndChange = function(){
         if(spanStartDate >= spanEndDate) {
             aipo.schedule.spanLength = 0;
             spanStart.dropDown.onChangeNoCallback(spanEndDate);
+            spanStart.dropDown.setValue(spanEndDate);
         } else {
             aipo.schedule.spanLength = (spanEndDate - spanStartDate) / 86400000;
         }
