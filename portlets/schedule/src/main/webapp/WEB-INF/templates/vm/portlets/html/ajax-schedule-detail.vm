@@ -132,10 +132,10 @@ ${record.FacilityName}<br/>
 #ALtditem("$!{result.Detail.UpdateUser.AliasName} （$!{result.Detail.UpdateDate}）")
 <tr>
 #ALtdcellheaderAtt("colspan='2' align='center'")
-#if($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} || ($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()})|| ($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()}) || (!$!{result.Detail.isOwner()} && $!{result.hasAuthorityOtherDelete()}) || (!$!{result.Detail.isLoginuser()} && $!{result.hasAuthorityOtherEdit()}))
+#if($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} || ($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()}) || ($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()}) || (!$!{result.Detail.isOwner()} && $!{result.hasAuthorityOtherDelete()}) || (!$!{result.Detail.isLoginuser()} && $!{result.hasAuthorityOtherEdit()}))
 <div align="left" style="padding:0px 0px 2px 0px">
 #if($viewDateEnable == "true")
-#if($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} || $!{result.Detail.isEditable()} || (!$!{result.Detail.isLoginuser()} && $!{result.hasAuthorityOtherDelete()}))
+#if($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} || ($!{result.Detail.isLoginuser()} && $!{result.Detail.isEditable()}) || (!$!{result.Detail.isLoginuser()} && $!{result.hasAuthorityOtherDelete()}))
 <h3>削除する場合の条件</h3>
 #set($prestr = "$!{result.Detail.User.AliasName} の")
 
@@ -207,11 +207,18 @@ ${record.FacilityName}<br/>
     #ALbutton('eventSubmit_doSchedule_change_status' '確定する' "aipo.schedule.buttonChangeStatus(this.form, this.form.change_status_url.value, 'C', '$indicator_id', '$!portlet.ID')")
     #if($!{result.Detail.isEditable()})
         #if($!{result.hasAuthoritySelfEdit()} && ($viewDateEnable == "true"))
-        #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()})" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog")
-    #end
-    #if($!{result.hasAuthoritySelfDelete()} && ($viewDateEnable == "true"))
-        #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.schedule.onReceiveMessage")
-    #end
+            #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()})" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog")
+        #end
+        #if($!{result.hasAuthoritySelfDelete()} && ($viewDateEnable == "true"))
+            #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.schedule.onReceiveMessage")
+        #end
+    #else
+        #if($!{result.hasAuthorityOtherEdit()} && ($viewDateEnable == "true"))
+            #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()})" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog")
+        #end
+        #if($!{result.hasAuthorityOtherDelete()} && ($viewDateEnable == "true"))
+            #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.schedule.onReceiveMessage")
+        #end
     #end
 #elseif($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()})
     #ALbutton('eventSubmit_doSchedule_change_status' '仮スケジュールに戻す' "aipo.schedule.buttonChangeStatus(this.form, this.form.change_status_url.value, 'T', '$indicator_id', '$!portlet.ID')")

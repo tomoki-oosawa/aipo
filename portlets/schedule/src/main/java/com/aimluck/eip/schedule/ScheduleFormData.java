@@ -79,8 +79,8 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 public class ScheduleFormData extends ALAbstractFormData {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ScheduleFormData.class.getName());
 
   /** <code>FLAG_EDIT_REPEAT_DEF</code> デフォルト値（繰り返し編集範囲） */
   private static final int FLAG_EDIT_REPEAT_DEF = -1;
@@ -1730,6 +1730,237 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /**
+   * 他人のスケジュールを削除する権限があるかどうかを調べます。
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  private boolean hasAuthorityDeleteOther(RunData rundata, Context context) {
+    boolean acl_delete_other = false;
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+    if (aclhandler.hasAuthority(
+      ALEipUtils.getUserId(rundata),
+      ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+      ALAccessControlConstants.VALUE_ACL_DELETE)) {
+      acl_delete_other = true;
+    }
+
+    return acl_delete_other;
+  }
+
+  /**
+   * 参加メンバー全員の予定を完全に削除します。
+   * 
+   * @param schedule
+   * @param members
+   */
+  private void deleteMemberAllRangeAll(EipTSchedule schedule,
+      List<ALEipUser> members) throws ALDBErrorException,
+      ALPageNotFoundException {
+    deleteSchedule(schedule);
+  }
+
+  /**
+   * 参加メンバー全員の一日分の予定を削除します。
+   * 
+   * @param schedule
+   * @param members
+   * @throws ALDBErrorException
+   * @throws ALPageNotFoundException
+   */
+  private void deleteMemberAllRangeOneday(EipTSchedule schedule,
+      List<ALEipUser> members) throws ALDBErrorException,
+      ALPageNotFoundException {
+    if (!"N".equals(schedule.getRepeatPattern())) {
+      int ownerid = (int) loginUser.getUserId().getValue();
+
+      // ダミーのスケジュールを登録する．
+      int memberIdListSize = memberList.size();
+      int[] memberIdList = new int[memberIdListSize];
+      for (int i = 0; i < memberIdListSize; i++) {
+        memberIdList[i] = (int) memberList.get(i).getUserId().getValue();
+      }
+
+      // 同時に削除する施設ID一覧を取得する。
+      int[] facilityIdList = ScheduleUtils.getFacilityIds(schedule);
+
+      ScheduleUtils.insertDummySchedule(
+        schedule,
+        ownerid,
+        view_date.getValue(),
+        view_date.getValue(),
+        memberIdList,
+        facilityIdList);
+    }
+  }
+
+  /**
+   * 特定のメンバーの予定を完全に削除します。
+   * 
+   * @param schedule
+   * @param members
+   * @throws ALDBErrorException
+   * @throws ALPageNotFoundException
+   */
+  private void deleteMemberOneRangeAll(EipTSchedule schedule,
+      List<ALEipUser> members, boolean isFacility, int deleteUserId,
+      boolean acl_delete_other) throws ALPageNotFoundException,
+      ALDBErrorException {
+
+    List<?> scheduleMaps = ScheduleUtils.getEipTScheduleMaps(schedule);
+    if (scheduleMaps != null && scheduleMaps.size() > 0) {
+      if (isFacility) {
+        // 施設を削除する場合
+        for (int i = 0; i < scheduleMaps.size(); i++) {
+          EipTScheduleMap scheduleMap = (EipTScheduleMap) scheduleMaps.get(i);
+          if (ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY.equals(scheduleMap
+            .getType())) {
+            if (scheduleMap.getUserId().intValue() == deleteUserId) {
+              Database.delete(scheduleMap);
+            }
+          }
+        }
+      } else {
+        // ユーザを削除する場合
+        List<EipTScheduleMap> tmpScheduleMaps =
+          new ArrayList<EipTScheduleMap>();
+        int countRejectSchedule = 0;
+        for (int i = 0; i < scheduleMaps.size(); i++) {
+          EipTScheduleMap scheduleMap = (EipTScheduleMap) scheduleMaps.get(i);
+          if (ScheduleUtils.SCHEDULEMAP_TYPE_USER.equals(scheduleMap.getType())) {
+            tmpScheduleMaps.add(scheduleMap);
+            if ("R".equals(scheduleMap.getStatus())) {
+              countRejectSchedule += 1;
+            }
+          }
+        }
+        int scheduleMapsSize = tmpScheduleMaps.size();
+
+        if (countRejectSchedule >= scheduleMapsSize - 1) {
+          // この schedule ID に関係するスケジュールがすべて reject されたため，
+          // すべて削除する．
+          deleteSchedule(schedule);
+        } else {
+          for (int i = 0; i < scheduleMapsSize; i++) {
+            EipTScheduleMap scheduleMap = tmpScheduleMaps.get(i);
+            if (scheduleMap.getUserId().intValue() == deleteUserId) {
+              int loginUserId = (int) login_user.getUserId().getValue();
+              if ((scheduleMap.getUserId().intValue() == loginUserId)
+                || (schedule.getCreateUserId().intValue() == loginUserId)
+                || acl_delete_other) {
+                if ("O".equals(scheduleMap.getStatus())) {
+                  schedule.setOwnerId(Integer.valueOf(0));
+                  if ("F".equals(schedule.getEditFlag())) {
+                    // 削除するユーザーが，スケジュールの登録者であり，
+                    // かつ，そのスケジュールの編集権限が他の共有メンバーに与えられていないときには，
+                    // そのスケジュールの編集権限を 'T' に設定する．
+                    schedule.setEditFlag("T");
+                  }
+                }
+                scheduleMap.setStatus("R");
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * 特定のメンバーの一日分の予定を削除します。
+   * 
+   * @param schedule
+   * @param members
+   * @throws ALDBErrorException
+   * @throws ALPageNotFoundException
+   */
+  private void deleteMemberOneRangeOneday(EipTSchedule schedule,
+      List<ALEipUser> members, boolean isFacility, int deleteUserId,
+      boolean acl_delete_other, RunData rundata, Context context)
+      throws ALDBErrorException, ALPageNotFoundException {
+    if (!"N".equals(schedule.getRepeatPattern())) {
+      int loginUserId = (int) loginUser.getUserId().getValue();
+
+      if (isFacility) {
+        memberList = new ArrayList<ALEipUser>();
+        this.loadFormData(rundata, context, new ArrayList<String>());
+        for (int i = 0; facilityList.size() > i; i++) {
+          if (((FacilityResultData) facilityList.get(i))
+            .getFacilityId()
+            .getValue() == deleteUserId) {
+            facilityList.remove(i);
+            break;
+          }
+        }
+        edit_repeat_flag.setValue(ScheduleFormData.FLAG_EDIT_REPEAT_ONE);
+        this.updateFormData(rundata, context, new ArrayList<String>());
+      } else {
+        // 参加ユーザー数を調べる
+        EipTScheduleMap map;
+        int user_count = 0;
+        List<?> maps = schedule.getEipTScheduleMaps();
+        for (int i = 0; i < maps.size(); i++) {
+          map = (EipTScheduleMap) maps.get(i);
+          if (map.getType().equals(ScheduleUtils.SCHEDULEMAP_TYPE_USER)) {
+            user_count++;
+          }
+        }
+
+        // 既に登録されているダミースケジュールを検索する
+        SelectQuery<EipTSchedule> dummy_query =
+          Database.query(EipTSchedule.class);
+        Expression exp1 =
+          ExpressionFactory.matchExp(EipTSchedule.PARENT_ID_PROPERTY, schedule
+            .getScheduleId());
+        Expression exp2 =
+          ExpressionFactory.matchExp(
+            EipTSchedule.START_DATE_PROPERTY,
+            view_date.getValue());
+        Expression exp3 =
+          ExpressionFactory.matchExp(EipTSchedule.END_DATE_PROPERTY, view_date
+            .getValue());
+        dummy_query.setQualifier(exp1);
+        dummy_query.andQualifier(exp2);
+        dummy_query.andQualifier(exp3);
+        List<EipTSchedule> list = dummy_query.fetchList();
+        EipTSchedule dummy;
+        EipTScheduleMap dummymap;
+
+        // ダミー登録されている人数をカウントする
+        int dummy_count = 0;
+        for (int i = 0; i < list.size(); i++) {
+          dummy = list.get(i);
+          List<?> dummymaps = dummy.getEipTScheduleMaps();
+          for (int j = 0; j < dummymaps.size(); j++) {
+            dummymap = (EipTScheduleMap) dummymaps.get(j);
+            if (dummymap.getType().equals(ScheduleUtils.SCHEDULEMAP_TYPE_USER)) {
+              dummy_count++;
+            }
+          }
+        }
+
+        int[] facilityIdList = null;
+        if (dummy_count >= user_count - 1) {
+          // if( 登録済みダミースケジュール数合計 >= スケジュール参加者数 - 今回予定を消す人 )
+          // 全員の予定が消されているので、同時に削除する施設ID一覧を取得する。
+          facilityIdList = ScheduleUtils.getFacilityIds(schedule);
+        }
+        ScheduleUtils.insertDummySchedule(
+          schedule,
+          loginUserId,
+          view_date.getValue(),
+          view_date.getValue(),
+          new int[] { deleteUserId },
+          facilityIdList);
+      }
+    }
+  }
+
+  /**
    * 
    * @param rundata
    * @param context
@@ -1775,19 +2006,8 @@ public class ScheduleFormData extends ALAbstractFormData {
       if (members != null && members.size() > 0) {
         memberList.addAll(members);
       }
-      // 削除権限を検証する．
-      boolean acl_delete_other = false;
-      ALAccessControlFactoryService aclservice =
-        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-          .getInstance())
-          .getService(ALAccessControlFactoryService.SERVICE_NAME);
-      ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-      if (aclhandler.hasAuthority(
-        ALEipUtils.getUserId(rundata),
-        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
-        ALAccessControlConstants.VALUE_ACL_DELETE)) {
-        acl_delete_other = true;
-      }
+
+      boolean acl_delete_other = hasAuthorityDeleteOther(rundata, context);
 
       boolean isMember = false;
       int loginuserId = (int) login_user.getUserId().getValue();
@@ -1808,192 +2028,39 @@ public class ScheduleFormData extends ALAbstractFormData {
         throw new ALPermissionException();
       }
 
-      if (loginuserId != schedule.getOwnerId().intValue()
+      if (!acl_delete_other
+        && loginuserId != schedule.getOwnerId().intValue()
         && "F".equals(schedule.getEditFlag())
         && FLAG_DEL_MEMBER_ONE != del_member_flag.getValue()) {
-        // del_member_flag.setValue(FLAG_DEL_MEMBER_ONE);
-        return true;
+        logger
+          .error("[ScheduleFormData] ALPageNotFoundException: The user does not have the auth to delete the schedule.");
+        throw new ALPermissionException();
       }
 
-      int delFlag = -1;
       if (del_member_flag.getValue() == FLAG_DEL_MEMBER_ALL) {
         if (del_range_flag.getValue() == FLAG_DEL_RANGE_ALL) {
-          /** 全員の全期間予定削除 */
-          delFlag = 0;
+          deleteMemberAllRangeAll(schedule, members);
         } else {
-          /** 全員の一日分予定削除 */
-          delFlag = 1;
+          deleteMemberAllRangeOneday(schedule, members);
         }
       } else {
         if (del_range_flag.getValue() == FLAG_DEL_RANGE_ALL) {
-          /** 1ユーザの全期間予定削除 */
-          // EIP_M_SCHEDULE_MAP の STATUS のみ変更する．
-          delFlag = 2;
+          deleteMemberOneRangeAll(
+            schedule,
+            members,
+            is_facility,
+            userid,
+            acl_delete_other);
         } else {
-          /** 1ユーザの一日分予定削除 */
-          delFlag = 3;
+          deleteMemberOneRangeOneday(
+            schedule,
+            members,
+            is_facility,
+            userid,
+            acl_delete_other,
+            rundata,
+            context);
         }
-      }
-      if (delFlag == 0) {
-        deleteSchedule(schedule);
-      } else if (delFlag == 1) {
-        if (!"N".equals(schedule.getRepeatPattern())) {
-          int ownerid = ALEipUtils.getUserId(rundata);
-          // ダミーのスケジュールを登録する．
-          int memberIdListSize = memberList.size();
-          int[] memberIdList = new int[memberIdListSize];
-          for (int i = 0; i < memberIdListSize; i++) {
-            memberIdList[i] = (int) memberList.get(i).getUserId().getValue();
-          }
-
-          // 同時に削除する施設ID一覧を取得する。
-          int[] facilityIdList = ScheduleUtils.getFacilityIds(schedule);
-
-          ScheduleUtils.insertDummySchedule(schedule, ownerid, view_date
-            .getValue(), view_date.getValue(), memberIdList, facilityIdList);
-        }
-      } else if (delFlag == 2) {
-        List<?> scheduleMaps = ScheduleUtils.getEipTScheduleMaps(schedule);
-        if (scheduleMaps != null && scheduleMaps.size() > 0) {
-          if (is_facility) {
-            // 施設を削除する場合
-            for (int i = 0; i < scheduleMaps.size(); i++) {
-              EipTScheduleMap scheduleMap =
-                (EipTScheduleMap) scheduleMaps.get(i);
-              if (ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY.equals(scheduleMap
-                .getType())) {
-                if (scheduleMap.getUserId().intValue() == userid) {
-                  Database.delete(scheduleMap);
-                }
-              }
-            }
-          } else {
-            // ユーザを削除する場合
-            List<EipTScheduleMap> tmpScheduleMaps =
-              new ArrayList<EipTScheduleMap>();
-            int countRejectSchedule = 0;
-            for (int i = 0; i < scheduleMaps.size(); i++) {
-              EipTScheduleMap scheduleMap =
-                (EipTScheduleMap) scheduleMaps.get(i);
-              if (ScheduleUtils.SCHEDULEMAP_TYPE_USER.equals(scheduleMap
-                .getType())) {
-                tmpScheduleMaps.add(scheduleMap);
-                if ("R".equals(scheduleMap.getStatus())) {
-                  countRejectSchedule += 1;
-                }
-              }
-            }
-            int scheduleMapsSize = tmpScheduleMaps.size();
-
-            if (countRejectSchedule >= scheduleMapsSize - 1) {
-              // この schedule ID に関係するスケジュールがすべて reject されたため，
-              // すべて削除する．
-              deleteSchedule(schedule);
-            } else {
-              for (int i = 0; i < scheduleMapsSize; i++) {
-                EipTScheduleMap scheduleMap = tmpScheduleMaps.get(i);
-                if (scheduleMap.getUserId().intValue() == userid) {
-                  if ((scheduleMap.getUserId().intValue() == login_user
-                    .getUserId()
-                    .getValue())
-                    || (schedule.getCreateUserId().intValue() == login_user
-                      .getUserId()
-                      .getValue())) {
-                    if ("O".equals(scheduleMap.getStatus())) {
-                      schedule.setOwnerId(Integer.valueOf(0));
-                      if ("F".equals(schedule.getEditFlag())) {
-                        // 削除するユーザーが，スケジュールの登録者であり，
-                        // かつ，そのスケジュールの編集権限が他の共有メンバーに与えられていないときには，
-                        // そのスケジュールの編集権限を 'T' に設定する．
-                        schedule.setEditFlag("T");
-                      }
-                    }
-                    scheduleMap.setStatus("R");
-                  }
-                }
-              }
-            }
-          }
-        }
-      } else if (delFlag == 3) {
-        if (!"N".equals(schedule.getRepeatPattern())) {
-          int ownerid = ALEipUtils.getUserId(rundata);
-          if (is_facility) {
-            // 施設を削除する場合
-            memberList = new ArrayList<ALEipUser>();
-            this.loadFormData(rundata, context, msgList);
-            for (int i = 0; facilityList.size() > i; i++) {
-              if (((FacilityResultData) facilityList.get(i))
-                .getFacilityId()
-                .getValue() == userid) {
-                facilityList.remove(i);
-                break;
-              }
-            }
-            edit_repeat_flag.setValue(ScheduleFormData.FLAG_EDIT_REPEAT_ONE);
-            this.updateFormData(rundata, context, msgList);
-          } else {
-            // ユーザを削除する場合
-            int[] memberIdList = new int[1];
-            memberIdList[0] = userid;
-            // ひとりでも他の人の予定が残っていれば、施設予約を削除しない。
-            // 参加ユーザー数を調べる
-            EipTScheduleMap map;
-            int user_count = 0;
-            List<?> maps = schedule.getEipTScheduleMaps();
-            for (int i = 0; i < maps.size(); i++) {
-              map = (EipTScheduleMap) maps.get(i);
-              if (map.getType().equals(ScheduleUtils.SCHEDULEMAP_TYPE_USER)) {
-                user_count++;
-              }
-            }
-            /** 既に登録されているダミースケジュールを検索する */
-            SelectQuery<EipTSchedule> dummy_query =
-              Database.query(EipTSchedule.class);
-            Expression exp1 =
-              ExpressionFactory.matchExp(
-                EipTSchedule.PARENT_ID_PROPERTY,
-                schedule.getScheduleId());
-            Expression exp2 =
-              ExpressionFactory.matchExp(
-                EipTSchedule.START_DATE_PROPERTY,
-                view_date.getValue());
-            Expression exp3 =
-              ExpressionFactory.matchExp(
-                EipTSchedule.END_DATE_PROPERTY,
-                view_date.getValue());
-            dummy_query.setQualifier(exp1);
-            dummy_query.andQualifier(exp2);
-            dummy_query.andQualifier(exp3);
-            List<EipTSchedule> list = dummy_query.fetchList();
-            EipTSchedule dummy;
-            EipTScheduleMap dummymap;
-            /** ダミー登録されている人数をカウントする */
-            int dummy_count = 0;
-            for (int i = 0; i < list.size(); i++) {
-              dummy = list.get(i);
-              List<?> dummymaps = dummy.getEipTScheduleMaps();
-              for (int j = 0; j < dummymaps.size(); j++) {
-                dummymap = (EipTScheduleMap) dummymaps.get(j);
-                if (dummymap.getType().equals(
-                  ScheduleUtils.SCHEDULEMAP_TYPE_USER)) {
-                  dummy_count++;
-                }
-              }
-            }
-            int[] facilityIdList = null;
-            if (dummy_count >= user_count - 1) {
-              // if( 登録済みダミースケジュール数合計 >= スケジュール参加者数 - 今回予定を消す人 )
-              // 全員の予定が消されているので、同時に削除する施設ID一覧を取得する。
-              facilityIdList = ScheduleUtils.getFacilityIds(schedule);
-            }
-            ScheduleUtils.insertDummySchedule(schedule, ownerid, view_date
-              .getValue(), view_date.getValue(), memberIdList, facilityIdList);
-          }
-        }
-      } else {
-        // orm.doDelete(schedule);
-        Database.delete(schedule);
       }
       Database.commit();
 
