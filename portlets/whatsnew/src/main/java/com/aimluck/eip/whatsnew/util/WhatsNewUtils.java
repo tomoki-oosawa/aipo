@@ -54,8 +54,8 @@ import com.aimluck.eip.whatsnew.beans.WhatsNewBean;
 public class WhatsNewUtils {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(WhatsNewUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WhatsNewUtils.class.getName());
 
   /** table識別用 */
   public static final int WHATS_NEW_TYPE_BLOG_ENTRY = 1;
@@ -145,8 +145,18 @@ public class WhatsNewUtils {
           .valueOf(entityid));
       query.andQualifier(exp2);
       List<EipTWhatsNew> entries = query.fetchList();
-      if (!(entries == null || entries.size() < 1)) {
+      if (entries != null && entries.size() > 0) {
         // 更新である場合、今までの新着情報は削除する
+        List<Integer> parentIds = new ArrayList<Integer>();
+        for (EipTWhatsNew _entry : entries) {
+          parentIds.add(_entry.getWhatsNewId());
+        }
+        SelectQuery<EipTWhatsNew> childQuery =
+          Database.query(EipTWhatsNew.class);
+        Expression childExp =
+          ExpressionFactory.inExp(EipTWhatsNew.PARENT_ID_PROPERTY, parentIds);
+        childQuery.setQualifier(childExp);
+        childQuery.deleteAll();
         Database.deleteAll(entries);
       }
       // 新規オブジェクトモデル
@@ -192,7 +202,7 @@ public class WhatsNewUtils {
    * @param entityid
    * @param uid
    * @param call
-   *            全体向け新着の処理を呼び出すかどうか
+   *          全体向け新着の処理を呼び出すかどうか
    */
   private static void shiftWhatsNewReadFlag(int type, int entityid, int uid,
       boolean call) {
@@ -250,7 +260,7 @@ public class WhatsNewUtils {
    * @param entityid
    * @param uid
    * @param call
-   *            個別向け新着の処理の呼び出しを行うかどうか
+   *          個別向け新着の処理の呼び出しを行うかどうか
    */
   private static void shiftWhatsNewReadFlagPublic(int type, int entityid,
       int uid, boolean call) {
@@ -781,7 +791,7 @@ public class WhatsNewUtils {
   }
 
   /**
-   * 
+   *
    */
   public static void removeMonthOverWhatsNew() {
     try {
