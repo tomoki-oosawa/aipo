@@ -217,7 +217,7 @@ aipo.webmail.switchDelAtPop3 = function(check) {
   }
 }
 
-aipo.webmail.switchAuthSend = function(check) {
+aipo.webmail.switchAuthSendAdmin = function(check) {
   if(check.value == 2) {
     dojo.byId('smtp_auth_field').style.display = "";
     dojo.byId('pop_auth_field').style.display  = "none";
@@ -227,6 +227,14 @@ aipo.webmail.switchAuthSend = function(check) {
   } else {
     dojo.byId('smtp_auth_field').style.display = "none";
     dojo.byId('pop_auth_field').style.display  = "none";
+  }
+}
+
+aipo.webmail.switchAuthSend = function(check) {
+  if(check.value == 2) {
+    dojo.byId('smtp_auth_field').style.display = "";
+  } else {
+    dojo.byId('smtp_auth_field').style.display = "none";
   }
 }
 

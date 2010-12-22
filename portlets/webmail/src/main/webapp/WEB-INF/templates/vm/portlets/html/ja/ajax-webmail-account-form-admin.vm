@@ -62,11 +62,11 @@
 #ALtditemfooter()
 #ALtdcaptionAtt("#ALrequired($!result.getFieldName('auth_send_flg'))" "style='width:210px;'")
 #ALtditemheader()
-<input name="auth_send_flg" type="radio" value="0" id="$!{portlet.ID}auth_send_id0" #if ($!result.AuthSendFlg.toString() == "0") checked="checked" #end onclick="aipo.webmail.switchAuthSend(this)" />
+<input name="auth_send_flg" type="radio" value="0" id="$!{portlet.ID}auth_send_id0" #if ($!result.AuthSendFlg.toString() == "0") checked="checked" #end onclick="aipo.webmail.switchAuthSendAdmin(this)" />
 <label for="$!{portlet.ID}auth_send_id0">認証なし</label>
-<input name="auth_send_flg" type="radio" value="1" id="$!{portlet.ID}auth_send_id1" #if ($!result.AuthSendFlg.toString() == "1") checked="checked" #end onclick="aipo.webmail.switchAuthSend(this)" />
+<input name="auth_send_flg" type="radio" value="1" id="$!{portlet.ID}auth_send_id1" #if ($!result.AuthSendFlg.toString() == "1") checked="checked" #end onclick="aipo.webmail.switchAuthSendAdmin(this)" />
 <label for="$!{portlet.ID}auth_send_id1">POP before SMTP</label>
-<input name="auth_send_flg" type="radio" value="2" id="$!{portlet.ID}auth_send_id2" #if ($!result.AuthSendFlg.toString() == "2") checked="checked" #end onclick="aipo.webmail.switchAuthSend(this)" />
+<input name="auth_send_flg" type="radio" value="2" id="$!{portlet.ID}auth_send_id2" #if ($!result.AuthSendFlg.toString() == "2") checked="checked" #end onclick="aipo.webmail.switchAuthSendAdmin(this)" />
 <label for="$!{portlet.ID}auth_send_id2">SMTP認証</label>
 #ALtditemfooter()
 #ALtablefooter()
