@@ -284,13 +284,14 @@ public class ScheduleFormData extends ALAbstractFormData {
     String scheduleId =
       rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
     if (scheduleId == null || scheduleId.equals("new")) {
-      String str[] = rundata.getParameters().getStrings("member_to");
-      if (str != null && str.length > 0) {
+      String members[] = rundata.getParameters().getStrings("member_to");
+      if (members != null && members.length > 0) {
         aclPortletFeature =
           ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
+
         String user_name = login_user.getName().toString();
-        for (int i = 0; i < str.length; i++) {
-          if (user_name.equals(str[i])) {
+        for (String member : members) {
+          if (user_name.equals(member)) {
             aclPortletFeature =
               ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
             break;
@@ -386,7 +387,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /*
-   * 
+   *
    */
   public void initField() {
     Date now = new Date();
@@ -568,11 +569,13 @@ public class ScheduleFormData extends ALAbstractFormData {
           end_date.setValue(start_date.getValue());
         }
 
-        String str[] = rundata.getParameters().getStrings("member_to");
-        if (str != null && str.length > 0) {
+        String memberNames[] = rundata.getParameters().getStrings("member_to");
+        if (memberNames != null && memberNames.length > 0) {
           SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
           Expression exp =
-            ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY, str);
+            ExpressionFactory.inExp(
+              TurbineUser.LOGIN_NAME_PROPERTY,
+              memberNames);
           query.setQualifier(exp);
           memberList.addAll(ALEipUtils.getUsersFromSelectQuery(query));
         }
@@ -580,21 +583,21 @@ public class ScheduleFormData extends ALAbstractFormData {
           memberList.add(login_user);
         }
 
-        String f_id[] = rundata.getParameters().getStrings("facility_to");
-        if (!ScheduleUtils.isZeroLength(f_id)) {
+        String facilityIds[] =
+          rundata.getParameters().getStrings("facility_to");
+        if (!ScheduleUtils.isZeroLength(facilityIds)) {
           SelectQuery<EipMFacility> fquery = Database.query(EipMFacility.class);
           Expression fexp =
-            ExpressionFactory.inDbExp(EipMFacility.FACILITY_ID_PK_COLUMN, f_id);
+            ExpressionFactory.inDbExp(
+              EipMFacility.FACILITY_ID_PK_COLUMN,
+              facilityIds);
           fquery.setQualifier(fexp);
-          List<EipMFacility> f_list = fquery.fetchList();
-
-          int f_size = f_list.size();
-          for (int i = 0; i < f_size; i++) {
-            EipMFacility f_record = f_list.get(i);
+          List<EipMFacility> facilities = fquery.fetchList();
+          for (EipMFacility facility : facilities) {
             FacilityResultData rd = new FacilityResultData();
             rd.initField();
-            rd.setFacilityId(f_record.getFacilityId().longValue());
-            rd.setFacilityName(f_record.getFacilityName());
+            rd.setFacilityId(facility.getFacilityId().longValue());
+            rd.setFacilityName(facility.getFacilityName());
             facilityList.add(rd);
           }
         }
@@ -606,7 +609,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /*
-   * 
+   *
    */
   @Override
   protected void setValidator() {
@@ -679,6 +682,7 @@ public class ScheduleFormData extends ALAbstractFormData {
    * @throws ALPageNotFoundException
    * @throws ALDBErrorException
    */
+  @SuppressWarnings("unchecked")
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
@@ -711,9 +715,9 @@ public class ScheduleFormData extends ALAbstractFormData {
           // スケジュールの登録ユーザがすでにメンバーから抜けているかを検証する．
           int createUserId = record.getOwnerId().intValue();
           boolean inculudeCreateUser = false;
-          List<?> scheduleMaps = record.getEipTScheduleMaps();
-          for (int i = 0; i < scheduleMaps.size(); i++) {
-            EipTScheduleMap map = (EipTScheduleMap) scheduleMaps.get(i);
+          List<EipTScheduleMap> scheduleMaps = record.getEipTScheduleMaps();
+
+          for (EipTScheduleMap map : scheduleMaps) {
             if (createUserId == map.getUserId().intValue()
               && !"R".equals(map.getStatus())) {
               inculudeCreateUser = true;
@@ -828,17 +832,13 @@ public class ScheduleFormData extends ALAbstractFormData {
         ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, record
           .getScheduleId());
       mapquery.setQualifier(mapexp);
-      List<EipTScheduleMap> list = mapquery.fetchList();
+      List<EipTScheduleMap> scheduleMaps = mapquery.fetchList();
 
-      List<Integer> users = new ArrayList<Integer>();
+      List<Integer> userIds = new ArrayList<Integer>();
       List<Integer> facilityIds = new ArrayList<Integer>();
-      int size = list.size();
-      for (int i = 0; i < size; i++) {
-        EipTScheduleMap map = list.get(i);
+      for (EipTScheduleMap map : scheduleMaps) {
         if (ScheduleUtils.SCHEDULEMAP_TYPE_USER.equals(map.getType())) {
-          users.add(map.getUserId());
-          // if (ALEipUtils.getALEipUser(rundata).getUserId().getValue() == map
-          // .getUserId().longValue()) {
+          userIds.add(map.getUserId());
           EipTCommonCategory category = map.getEipTCommonCategory();
           if (category == null) {
             common_category_id.setValue(1);
@@ -847,16 +847,15 @@ public class ScheduleFormData extends ALAbstractFormData {
               .getCommonCategoryId()
               .longValue());
           }
-          // }
         } else {
           facilityIds.add(map.getUserId());
         }
       }
 
-      if (users.size() > 0) {
+      if (userIds.size() > 0) {
         SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
         Expression exp =
-          ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, users);
+          ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, userIds);
         query.setQualifier(exp);
         memberList.addAll(ALEipUtils.getUsersFromSelectQuery(query));
       } else {
@@ -1021,12 +1020,10 @@ public class ScheduleFormData extends ALAbstractFormData {
       // 2007.3.28 ToDo連携
       // // スケジュールを登録
       // orm.doInsert(schedule);
-      int size = memberList.size();
-      for (int i = 0; i < size; i++) {
+      for (ALEipUser user : memberList) {
         EipTScheduleMap map = Database.create(EipTScheduleMap.class);
-        ALEipUser user = memberList.get(i);
         int userid = (int) user.getUserId().getValue();
-        // map.setPrimaryKey(schedule.getScheduleId(), userid);
+
         map.setEipTSchedule(schedule);
         map.setUserId(Integer.valueOf(userid));
         // O: 自スケジュール T: 仮スケジュール C: 確定スケジュール
@@ -1052,7 +1049,6 @@ public class ScheduleFormData extends ALAbstractFormData {
       }
 
       // グループに施設を追加する．（公開スケジュールのみ）
-
       if ("O".equals(public_flag.toString()) && !(is_span)) {
         for (int i = 0; i < f_size; i++) {
           EipTScheduleMap map = Database.create(EipTScheduleMap.class);
@@ -1730,29 +1726,6 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /**
-   * 他人のスケジュールを削除する権限があるかどうかを調べます。
-   * 
-   * @param rundata
-   * @param context
-   * @return
-   */
-  private boolean hasAuthorityDeleteOther(RunData rundata, Context context) {
-    boolean acl_delete_other = false;
-    ALAccessControlFactoryService aclservice =
-      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
-    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-    if (aclhandler.hasAuthority(
-      ALEipUtils.getUserId(rundata),
-      ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
-      ALAccessControlConstants.VALUE_ACL_DELETE)) {
-      acl_delete_other = true;
-    }
-
-    return acl_delete_other;
-  }
-
-  /**
    * 参加メンバー全員の予定を完全に削除します。
    * 
    * @param schedule
@@ -2007,7 +1980,10 @@ public class ScheduleFormData extends ALAbstractFormData {
         memberList.addAll(members);
       }
 
-      boolean acl_delete_other = hasAuthorityDeleteOther(rundata, context);
+      boolean acl_delete_other =
+        ScheduleUtils.hasAuthorityForOtherSchedule(
+          rundata,
+          ALAccessControlConstants.VALUE_ACL_DELETE);
 
       boolean isMember = false;
       int loginuserId = (int) login_user.getUserId().getValue();

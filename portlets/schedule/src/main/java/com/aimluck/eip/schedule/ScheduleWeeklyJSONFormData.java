@@ -463,9 +463,14 @@ public class ScheduleWeeklyJSONFormData {
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res;
 
+    boolean authorityForOtherSchedule =
+      ScheduleUtils.hasAuthorityForOtherSchedule(
+        rundata,
+        ALAccessControlConstants.VALUE_ACL_UPDATE);
     if (isEdit
       || userId == ownerId
-      || aclPortletFeature == ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER) {
+      || aclPortletFeature == ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER
+      || authorityForOtherSchedule) {
 
       if (edit_repeat_flag == 0) {
         /** 繰り返しでないスケジュールをコピーしようとした場合 */
@@ -731,9 +736,14 @@ public class ScheduleWeeklyJSONFormData {
       List<String> msgList) throws ALDBErrorException {
     boolean res;
 
+    boolean authorityForOtherSchedule =
+      ScheduleUtils.hasAuthorityForOtherSchedule(
+        rundata,
+        ALAccessControlConstants.VALUE_ACL_INSERT);
     if (isEdit
       || userId == ownerId
-      || aclPortletFeature == ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER) {
+      || aclPortletFeature == ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER
+      || authorityForOtherSchedule) {
 
       // 繰り返しでないスケジュールを変更しようとした場合
       if (edit_repeat_flag == 0) {

@@ -3415,4 +3415,26 @@ public class ScheduleUtils {
     }
   }
 
+  /**
+   * 他人のスケジュールに対する権限があるかどうかを調べます。
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static boolean hasAuthorityForOtherSchedule(RunData rundata, int type) {
+    boolean acl_delete_other = false;
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+    if (aclhandler.hasAuthority(
+      ALEipUtils.getUserId(rundata),
+      ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+      type)) {
+      acl_delete_other = true;
+    }
+
+    return acl_delete_other;
+  }
 }
