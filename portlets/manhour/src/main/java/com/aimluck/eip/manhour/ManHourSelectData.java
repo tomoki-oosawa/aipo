@@ -71,8 +71,8 @@ public class ManHourSelectData extends
     ALAbstractSelectData<EipTScheduleMap, ManHourResultData> {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ManHourSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ManHourSelectData.class.getName());
 
   private String target_group_name;
 
@@ -921,6 +921,16 @@ public class ManHourSelectData extends
    */
   public double getTotalManHourPlan() {
     return ((int) (totalManHourMinPlan * 100 / 60)) / 100.0;
+  }
+
+  /**
+   * 表示する年の最大値を返します。
+   * 
+   * @return
+   */
+  public int getEndYear() {
+    Calendar calendar = Calendar.getInstance();
+    return calendar.get(Calendar.YEAR) + 1;
   }
 
   /**

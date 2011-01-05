@@ -66,8 +66,8 @@ public class TimecardSelectData extends
     ALAbstractSelectData<EipTTimecard, EipTTimecard> implements ALData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(TimecardSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(TimecardSelectData.class.getName());
 
   /** <code>target_group_name</code> 表示対象の部署名 */
   private String target_group_name;
@@ -622,6 +622,16 @@ public class TimecardSelectData extends
     return nowtime;
   }
 
+  /**
+   * 表示する年の最大値を返します。
+   * 
+   * @return
+   */
+  public int getEndYear() {
+    Calendar calendar = Calendar.getInstance();
+    return calendar.get(Calendar.YEAR) + 1;
+  }
+
   public List<String> getDateListKeys() {
     try {
       List<String> list = new ArrayList<String>();
@@ -669,7 +679,7 @@ public class TimecardSelectData extends
       }
       return list;
     } catch (Exception e) {
-     logger.error(e);
+      logger.error(e);
       return null;
     }
   }

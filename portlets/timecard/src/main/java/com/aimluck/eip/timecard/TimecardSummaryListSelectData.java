@@ -73,8 +73,9 @@ public class TimecardSummaryListSelectData extends
     ALAbstractSelectData<EipTTimecard, EipTTimecard> implements ALData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(TimecardSummaryListSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(TimecardSummaryListSelectData.class
+      .getName());
 
   /** <code>target_group_name</code> 表示対象の部署名 */
   private String target_group_name;
@@ -588,7 +589,7 @@ public class TimecardSummaryListSelectData extends
       }
       return list;
     } catch (Exception e) {
-     logger.error(e);
+      logger.error(e);
       return null;
     }
   }
@@ -932,6 +933,16 @@ public class TimecardSummaryListSelectData extends
     String str =
       dformat.format(decimal.setScale(1, BigDecimal.ROUND_FLOOR).doubleValue());
     return str;
+  }
+
+  /**
+   * 表示する年の最大値を返します。
+   * 
+   * @return
+   */
+  public int getEndYear() {
+    Calendar calendar = Calendar.getInstance();
+    return calendar.get(Calendar.YEAR) + 1;
   }
 
   /**

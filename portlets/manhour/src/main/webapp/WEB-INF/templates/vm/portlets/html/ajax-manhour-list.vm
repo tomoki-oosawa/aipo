@@ -64,8 +64,7 @@
 <div class="clearfix">
 <div style="padding-top:5px; width:80px;float:left;">日付</div>
 <select id="view_date_year" name="view_date_year" size="1" onchange="aipo.manhour.onChangeDate('$baselink', '$!portlet.ID')" >
-#set($end_year = 2010)
-#foreach ( $num in [2006..$!{end_year}] )
+#foreach ( $num in [2006..$!result.EndYear] )
 <option value="$num" #if ($!result.ViewDate.Year == "$num") selected="selected" #end>$num年</option>
 #end
 </select>

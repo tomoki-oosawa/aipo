@@ -23,8 +23,7 @@
 #ALtdcaption('期間')
 #ALtditemheader()
 <select name="view_date_year" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
-#set($end_year = 2010)
-#foreach ( $num in [2006..$!{end_year}] )
+#foreach ( $num in [2006..$!result.EndYear] )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ManHourScreen").addQueryData("view_date_year","$num").addQueryData("view_date_month","$!result.ViewDate.Month"))" #if ($!result.ViewDate.Year == "$num") selected="selected" #end>$num年</option>
 #end
 </select>
