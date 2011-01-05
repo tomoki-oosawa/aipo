@@ -100,8 +100,8 @@ public class ALEipUtils {
   public static final String dummy_user_head = "dummy_";
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ALEipUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ALEipUtils.class.getName());
 
   /**
    * セッション変数に値を格納します。 <br />
@@ -593,6 +593,31 @@ public class ALEipUtils {
       logger.error("Exception", ex);
       return null;
     }
+  }
+
+  /**
+   * 指定したユーザーIDのオブジェクトを取得します。
+   * 
+   * @param id
+   * @return
+   */
+  public static TurbineUser getTurbineUser(int id) throws ALDBErrorException {
+    TurbineUser tuser = Database.get(TurbineUser.class, id);
+    return tuser;
+  }
+
+  /**
+   * 指定したユーザーIDが有効か（無効化、削除されていないか）どうか調べます。
+   * 
+   * @param id
+   * @return
+   */
+  public static boolean isEnabledUser(int id) throws ALDBErrorException {
+    TurbineUser tuser = getTurbineUser(id);
+    if (tuser == null) {
+      return false;
+    }
+    return "F".equals(tuser.getDisabled());
   }
 
   /**

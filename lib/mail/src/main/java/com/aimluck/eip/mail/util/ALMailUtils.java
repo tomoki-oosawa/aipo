@@ -1374,16 +1374,17 @@ public class ALMailUtils {
     } else {
       List<String> destEmailAddrs = new ArrayList<String>();
       List<String> destCellularEMailAddrs = new ArrayList<String>();
-      int size = destMemberList.size();
-      for (int i = 0; i < size; i++) {
-        ALEipUserAddr user = destMemberList.get(i);
-        String emailAddr = user.getPcMailAddr();
-        if (emailAddr != null && !emailAddr.equals("")) {
-          destEmailAddrs.add(emailAddr);
-        }
-        String cellularEmailAddr = user.getCellMailAddr();
-        if (cellularEmailAddr != null && !cellularEmailAddr.equals("")) {
-          destCellularEMailAddrs.add(cellularEmailAddr);
+
+      for (ALEipUserAddr userAddr : destMemberList) {
+        if (ALEipUtils.isEnabledUser(userAddr.getUserId())) {
+          String emailAddr = userAddr.getPcMailAddr();
+          if (emailAddr != null && !emailAddr.equals("")) {
+            destEmailAddrs.add(emailAddr);
+          }
+          String cellularEmailAddr = userAddr.getCellMailAddr();
+          if (cellularEmailAddr != null && !cellularEmailAddr.equals("")) {
+            destCellularEMailAddrs.add(cellularEmailAddr);
+          }
         }
       }
 
@@ -1507,16 +1508,17 @@ public class ALMailUtils {
     } else {
       List<String> destEmailAddrs = new ArrayList<String>();
       List<String> destCellularEmailAddrs = new ArrayList<String>();
-      int size = destMemberList.size();
-      for (int i = 0; i < size; i++) {
-        ALEipUserAddr user = destMemberList.get(i);
-        String emailAddr = user.getPcMailAddr();
-        if (emailAddr != null && !emailAddr.equals("")) {
-          destEmailAddrs.add(emailAddr);
-        }
-        String cellularEmailAddr = user.getCellMailAddr();
-        if (cellularEmailAddr != null && !cellularEmailAddr.equals("")) {
-          destCellularEmailAddrs.add(cellularEmailAddr);
+
+      for (ALEipUserAddr userAddr : destMemberList) {
+        if (ALEipUtils.isEnabledUser(userAddr.getUserId())) {
+          String emailAddr = userAddr.getPcMailAddr();
+          if (emailAddr != null && !emailAddr.equals("")) {
+            destEmailAddrs.add(emailAddr);
+          }
+          String cellularEmailAddr = userAddr.getCellMailAddr();
+          if (cellularEmailAddr != null && !cellularEmailAddr.equals("")) {
+            destCellularEmailAddrs.add(cellularEmailAddr);
+          }
         }
       }
 
