@@ -41,8 +41,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class CellAddressBookAction extends ALBaseAction {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(CellAddressBookAction.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(CellAddressBookAction.class.getName());
 
   private static final String MODE_SEARCH = "search";
 
@@ -236,7 +236,11 @@ public class CellAddressBookAction extends ALBaseAction {
     listData.doViewList(this, rundata, context);
     listData.loadGroups(rundata, context);
 
-    setTemplate(rundata, listData.getTemplateFilePath());
+    if (listData.getCurrentTab().equals("syagai")) {
+      setTemplate(rundata, "addressbook-list");
+    } else {
+      setTemplate(rundata, "addressbook-corplist");
+    }
   }
 
   public void doAddressbook_company_search(RunData rundata, Context context)

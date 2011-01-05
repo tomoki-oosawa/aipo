@@ -47,9 +47,8 @@ public abstract class AbstractAddressBookWordSelectData<M1, M2> extends
     ALAbstractSelectData<M1, M2> {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AddressBookWordSelectData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AddressBookWordSelectData.class.getName());
 
   /** 検索ワード */
   protected ALStringField searchWord;
@@ -117,7 +116,7 @@ public abstract class AbstractAddressBookWordSelectData<M1, M2> extends
   public abstract void loadGroups(RunData rundata, Context context);
 
   /**
-   * 検索結果画面のテンプレートのパスを得ます。
+   * PC用の検索結果画面のテンプレートのパスを得ます。
    * 
    * @return
    */
