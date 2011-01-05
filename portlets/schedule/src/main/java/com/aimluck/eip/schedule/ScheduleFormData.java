@@ -1050,11 +1050,12 @@ public class ScheduleFormData extends ALAbstractFormData {
 
       // グループに施設を追加する．（公開スケジュールのみ）
       if ("O".equals(public_flag.toString()) && !(is_span)) {
-        for (int i = 0; i < f_size; i++) {
+        for (Object record : facilityList) {
+          FacilityResultData frd = (FacilityResultData) record;
+
           EipTScheduleMap map = Database.create(EipTScheduleMap.class);
-          FacilityResultData frd = (FacilityResultData) facilityList.get(i);
           int facilityid = (int) frd.getFacilityId().getValue();
-          // map.setPrimaryKey(schedule.getScheduleId(), facilityid);
+
           map.setEipTSchedule(schedule);
           map.setUserId(Integer.valueOf(facilityid));
           // O: 自スケジュール T: 仮スケジュール C: 確定スケジュール
@@ -1068,17 +1069,18 @@ public class ScheduleFormData extends ALAbstractFormData {
       /* 施設重複判定 */
       if (!ignore_duplicate_facility) {
         if (facilityList.size() > 0) {
-          ArrayList<Integer> fids = new ArrayList<Integer>();
-          FacilityResultData facility = null;
-          int fsize = facilityList.size();
-          for (int i = 0; i < fsize; i++) {
-            facility = (FacilityResultData) facilityList.get(i);
-            fids
-              .add(Integer.valueOf((int) facility.getFacilityId().getValue()));
+          ArrayList<Integer> facilityIds = new ArrayList<Integer>();
+
+          for (Object record : facilityList) {
+            FacilityResultData frd = (FacilityResultData) record;
+            facilityIds.add(Integer.valueOf((int) frd
+              .getFacilityId()
+              .getValue()));
           }
+
           if (ScheduleUtils.isDuplicateFacilitySchedule(
             schedule,
-            fids,
+            facilityIds,
             null,
             null)) {
             if (msgList.size() == 0) {
@@ -1112,15 +1114,12 @@ public class ScheduleFormData extends ALAbstractFormData {
           ALAccessControlConstants.VALUE_ACL_DETAIL,
           memberList);
 
-      int u_size = userIds.size();
-      for (int i = 0; i < u_size; i++) {
-        Integer _id = userIds.get(i);
+      for (int userId : userIds) {
         WhatsNewUtils.insertWhatsNew(
           WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
           schedule.getScheduleId().intValue(),
-          _id.intValue());
+          userId);
       }
-
     } catch (Exception e) {
       Database.rollback();
       logger.error("[ScheduleFormData]", e);
@@ -1139,9 +1138,10 @@ public class ScheduleFormData extends ALAbstractFormData {
         String subject =
           "[" + DatabaseOrmService.getInstance().getAlias() + "]スケジュール";
         String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
-        for (int i = 0; i < destMemberList.size(); i++) {
+
+        for (ALEipUserAddr userAddr : destMemberList) {
           List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
-          destMember.add(destMemberList.get(i));
+          destMember.add(userAddr);
           ALMailUtils.sendMailDelegate(
             org_id,
             ALEipUtils.getUserId(rundata),
@@ -1238,17 +1238,15 @@ public class ScheduleFormData extends ALAbstractFormData {
 
       // 新たに追加されたメンバーのリストを取得
       List<?> scheduleMapList = schedule.getEipTScheduleMaps();
-      int scheduleMapListSize = scheduleMapList.size();
       List<Integer> oldmemberIdList = new ArrayList<Integer>();
-      for (int i = 0; i < scheduleMapListSize; i++) {
-        EipTScheduleMap map = (EipTScheduleMap) scheduleMapList.get(i);
+      for (Object record : scheduleMapList) {
+        EipTScheduleMap map = (EipTScheduleMap) record;
         if (ScheduleUtils.SCHEDULEMAP_TYPE_USER.equals(map.getType())) {
           oldmemberIdList.add(map.getUserId());
         }
       }
-      int allmemberListSize = memberList.size();
-      for (int i = 0; i < allmemberListSize; i++) {
-        int memberId = (int) memberList.get(i).getUserId().getValue();
+      for (ALEipUser user : memberList) {
+        int memberId = (int) user.getUserId().getValue();
         if (!isContains(oldmemberIdList, memberId)) {
           newmemberList.add(ALEipUtils.getALEipUser(memberId));
         }
@@ -1257,8 +1255,6 @@ public class ScheduleFormData extends ALAbstractFormData {
       EipTCommonCategory category1 =
         CommonCategoryUtils.getEipTCommonCategory(Long.valueOf(1));
 
-      // if (is_repeat && edit_repeat_flag.getValue() ==
-      // FLAG_EDIT_REPEAT_ONE) {
       if (edit_repeat_flag.getValue() == FLAG_EDIT_REPEAT_ONE) {
         // 繰り返しスケジュールの個別日程を変更する．
         // 新規オブジェクトモデル
@@ -1296,17 +1292,13 @@ public class ScheduleFormData extends ALAbstractFormData {
         int allsize = memberList.size() + facilityList.size();
         if (allsize > 0) {
           List<?> scheduleMaps = schedule.getEipTScheduleMaps();
-          int size = memberList.size();
-          for (int i = 0; i < size; i++) {
+          for (ALEipUser user : memberList) {
             EipTScheduleMap map = Database.create(EipTScheduleMap.class);
-            ALEipUser user = memberList.get(i);
             int userid = (int) user.getUserId().getValue();
-            // map.setPrimaryKey(newSchedule.getScheduleId(),
-            // userid);
+
             map.setEipTSchedule(newSchedule);
             map.setUserId(Integer.valueOf(userid));
-            // O: 自スケジュール T: 仮スケジュール C: 確定スケジュール
-            // if (userid == ALEipUtils.getUserId(rundata)) {
+
             if (userid == ownerid) {
               map.setStatus("O");
             } else {
@@ -1341,15 +1333,13 @@ public class ScheduleFormData extends ALAbstractFormData {
 
           // グループに施設を追加する．（公開スケジュールのみ）
           if ("O".equals(public_flag.toString()) && !(is_span)) {
-            for (int i = 0; i < f_size; i++) {
-              EipTScheduleMap map = Database.create(EipTScheduleMap.class);
-              FacilityResultData frd = (FacilityResultData) facilityList.get(i);
+            for (Object record : facilityList) {
+              FacilityResultData frd = (FacilityResultData) record;
               int facilityid = (int) frd.getFacilityId().getValue();
-              // map.setPrimaryKey(newSchedule.getScheduleId(),
-              // facilityid);
+
+              EipTScheduleMap map = Database.create(EipTScheduleMap.class);
               map.setEipTSchedule(newSchedule);
               map.setUserId(Integer.valueOf(facilityid));
-              // O: 自スケジュール T: 仮スケジュール C: 確定スケジュール
               map.setStatus("O");
               map.setType(ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY);
               map.setEipTCommonCategory(category1);
@@ -1360,20 +1350,19 @@ public class ScheduleFormData extends ALAbstractFormData {
 
         // 登録されていたメンバーと今回追加されたメンバーのユーザー ID を取得する．
         List<?> scheduleMaps = schedule.getEipTScheduleMaps();
-        int scheduleMapsSize = scheduleMaps.size();
         List<Integer> memberIdList = new ArrayList<Integer>();
         List<Integer> facilityIdList = new ArrayList<Integer>();
-        for (int i = 0; i < scheduleMapsSize; i++) {
-          EipTScheduleMap map = (EipTScheduleMap) scheduleMaps.get(i);
+        for (Object record : scheduleMaps) {
+          EipTScheduleMap map = (EipTScheduleMap) record;
           if (ScheduleUtils.SCHEDULEMAP_TYPE_USER.equals(map.getType())) {
             memberIdList.add(map.getUserId());
           } else {
             facilityIdList.add(map.getUserId());
           }
         }
-        int memberListSize = memberList.size();
-        for (int i = 0; i < memberListSize; i++) {
-          int memberId = (int) memberList.get(i).getUserId().getValue();
+
+        for (ALEipUser user : memberList) {
+          int memberId = (int) user.getUserId().getValue();
           if (!isContains(memberIdList, memberId)) {
             memberIdList.add(Integer.valueOf(memberId));
           }
@@ -1384,17 +1373,13 @@ public class ScheduleFormData extends ALAbstractFormData {
           memberIds[i] = memberIdList.get(i).intValue();
         }
 
-        int facilityListSize = facilityList.size();
-        for (int i = 0; i < facilityListSize; i++) {
+        for (Object record : facilityList) {
           int facilityId =
-            (int) ((FacilityResultData) facilityList.get(i))
-              .getFacilityId()
-              .getValue();
+            (int) ((FacilityResultData) record).getFacilityId().getValue();
           if (!isContains(facilityIdList, facilityId)) {
             facilityList.add(Integer.valueOf(facilityId));
           }
         }
-
         int facilityIdListSize = facilityIdList.size();
         int[] facilityIds = new int[facilityIdListSize];
         for (int i = 0; i < facilityIdListSize; i++) {
@@ -1442,16 +1427,16 @@ public class ScheduleFormData extends ALAbstractFormData {
         int ownerUserId = schedule.getOwnerId().intValue();
         boolean rejectOwnerUser = false;
         List<?> tmpScheduleMaps = schedule.getEipTScheduleMaps();
-        for (int i = 0; i < tmpScheduleMaps.size(); i++) {
-          EipTScheduleMap map = (EipTScheduleMap) tmpScheduleMaps.get(i);
+        for (Object record : tmpScheduleMaps) {
+          EipTScheduleMap map = (EipTScheduleMap) record;
           if (ownerUserId == map.getUserId().intValue()
             && "R".equals(map.getStatus())) {
             rejectOwnerUser = true;
             break;
           }
         }
+
         if (rejectOwnerUser) {
-          // if (rejectOwnerUser || !includeOwnerUser) {
           // スケジュールの登録ユーザがすでにメンバーから抜けている場合、
           // 最後に更新した人のユーザ ID をオーナ ID に設定する．
           schedule.setOwnerId(Integer.valueOf(ALEipUtils.getUserId(rundata)));
@@ -1525,10 +1510,8 @@ public class ScheduleFormData extends ALAbstractFormData {
         // スケジュールを登録
         // Database.commit();
 
-        int size = memberList.size();
-        for (int i = 0; i < size; i++) {
+        for (ALEipUser user : memberList) {
           EipTScheduleMap map = Database.create(EipTScheduleMap.class);
-          ALEipUser user = memberList.get(i);
           int userid = (int) user.getUserId().getValue();
           map.setScheduleId(schedule.getScheduleId());
           map.setEipTSchedule(schedule);
@@ -1574,10 +1557,11 @@ public class ScheduleFormData extends ALAbstractFormData {
 
         // グループに施設を追加する．（公開スケジュールのみ）
         if ("O".equals(public_flag.toString()) && !(is_span)) {
-          for (int i = 0; i < f_size; i++) {
-            EipTScheduleMap map = Database.create(EipTScheduleMap.class);
-            FacilityResultData frd = (FacilityResultData) facilityList.get(i);
+          for (Object record : facilityList) {
+            FacilityResultData frd = (FacilityResultData) record;
             int facilityid = (int) frd.getFacilityId().getValue();
+
+            EipTScheduleMap map = Database.create(EipTScheduleMap.class);
             map.setEipTSchedule(schedule);
             map.setUserId(Integer.valueOf(facilityid));
             // O: 自スケジュール T: 仮スケジュール C: 確定スケジュール
@@ -1593,9 +1577,8 @@ public class ScheduleFormData extends ALAbstractFormData {
           if (facilityList.size() > 0) {
             ArrayList<Integer> fids = new ArrayList<Integer>();
             FacilityResultData facility = null;
-            int fsize = facilityList.size();
-            for (int i = 0; i < fsize; i++) {
-              facility = (FacilityResultData) facilityList.get(i);
+            for (Object record : facilityList) {
+              facility = (FacilityResultData) record;
               fids.add(Integer.valueOf((int) facility
                 .getFacilityId()
                 .getValue()));
@@ -1637,15 +1620,12 @@ public class ScheduleFormData extends ALAbstractFormData {
           ALAccessControlConstants.VALUE_ACL_DETAIL,
           memberList);
 
-      int size = userIds.size();
-      for (int i = 0; i < size; i++) {
-        Integer _id = userIds.get(i);
+      for (int userId : userIds) {
         WhatsNewUtils.insertWhatsNew(
           WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
           entity_id,
-          _id.intValue());
+          userId);
       }
-
     } catch (Exception e) {
       Database.rollback();
       logger.error("[ScheduleFormData]", e);
@@ -1665,9 +1645,9 @@ public class ScheduleFormData extends ALAbstractFormData {
           "[" + DatabaseOrmService.getInstance().getAlias() + "]スケジュール";
 
         if (edit_repeat_flag.getValue() == FLAG_EDIT_REPEAT_ONE) {
-          for (int i = 0; i < destMemberList.size(); i++) {
+          for (ALEipUserAddr userAddr : destMemberList) {
             List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
-            destMember.add(destMemberList.get(i));
+            destMember.add(userAddr);
             ALMailUtils.sendMailDelegate(
               org_id,
               ALEipUtils.getUserId(rundata),
@@ -1684,9 +1664,9 @@ public class ScheduleFormData extends ALAbstractFormData {
               new ArrayList<String>());
           }
         } else {
-          for (int i = 0; i < destMemberList.size(); i++) {
+          for (ALEipUserAddr userAddr : destMemberList) {
             List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
-            destMember.add(destMemberList.get(i));
+            destMember.add(userAddr);
             ALMailUtils.sendMailDelegate(
               org_id,
               ALEipUtils.getUserId(rundata),
@@ -1714,10 +1694,8 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   private EipTScheduleMap getScheduleMap(List<?> scheduleMaps, int userid,
       String type) {
-    EipTScheduleMap map = null;
-    int size = scheduleMaps.size();
-    for (int i = 0; i < size; i++) {
-      map = (EipTScheduleMap) scheduleMaps.get(i);
+    for (Object record : scheduleMaps) {
+      EipTScheduleMap map = (EipTScheduleMap) record;
       if (map.getUserId().intValue() == userid && type.equals(map.getType())) {
         return map;
       }
@@ -1788,8 +1766,8 @@ public class ScheduleFormData extends ALAbstractFormData {
     if (scheduleMaps != null && scheduleMaps.size() > 0) {
       if (isFacility) {
         // 施設を削除する場合
-        for (int i = 0; i < scheduleMaps.size(); i++) {
-          EipTScheduleMap scheduleMap = (EipTScheduleMap) scheduleMaps.get(i);
+        for (Object reocrd : scheduleMaps) {
+          EipTScheduleMap scheduleMap = (EipTScheduleMap) reocrd;
           if (ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY.equals(scheduleMap
             .getType())) {
             if (scheduleMap.getUserId().intValue() == deleteUserId) {
@@ -1802,8 +1780,8 @@ public class ScheduleFormData extends ALAbstractFormData {
         List<EipTScheduleMap> tmpScheduleMaps =
           new ArrayList<EipTScheduleMap>();
         int countRejectSchedule = 0;
-        for (int i = 0; i < scheduleMaps.size(); i++) {
-          EipTScheduleMap scheduleMap = (EipTScheduleMap) scheduleMaps.get(i);
+        for (Object reocrd : scheduleMaps) {
+          EipTScheduleMap scheduleMap = (EipTScheduleMap) reocrd;
           if (ScheduleUtils.SCHEDULEMAP_TYPE_USER.equals(scheduleMap.getType())) {
             tmpScheduleMaps.add(scheduleMap);
             if ("R".equals(scheduleMap.getStatus())) {
@@ -1811,6 +1789,7 @@ public class ScheduleFormData extends ALAbstractFormData {
             }
           }
         }
+
         int scheduleMapsSize = tmpScheduleMaps.size();
 
         if (countRejectSchedule >= scheduleMapsSize - 1) {
@@ -1876,8 +1855,8 @@ public class ScheduleFormData extends ALAbstractFormData {
         EipTScheduleMap map;
         int user_count = 0;
         List<?> maps = schedule.getEipTScheduleMaps();
-        for (int i = 0; i < maps.size(); i++) {
-          map = (EipTScheduleMap) maps.get(i);
+        for (Object record : maps) {
+          map = (EipTScheduleMap) record;
           if (map.getType().equals(ScheduleUtils.SCHEDULEMAP_TYPE_USER)) {
             user_count++;
           }
@@ -1900,16 +1879,13 @@ public class ScheduleFormData extends ALAbstractFormData {
         dummy_query.andQualifier(exp2);
         dummy_query.andQualifier(exp3);
         List<EipTSchedule> list = dummy_query.fetchList();
-        EipTSchedule dummy;
-        EipTScheduleMap dummymap;
 
         // ダミー登録されている人数をカウントする
         int dummy_count = 0;
-        for (int i = 0; i < list.size(); i++) {
-          dummy = list.get(i);
+        for (EipTSchedule dummy : list) {
           List<?> dummymaps = dummy.getEipTScheduleMaps();
-          for (int j = 0; j < dummymaps.size(); j++) {
-            dummymap = (EipTScheduleMap) dummymaps.get(j);
+          for (Object record : dummymaps) {
+            EipTScheduleMap dummymap = (EipTScheduleMap) record;
             if (dummymap.getType().equals(ScheduleUtils.SCHEDULEMAP_TYPE_USER)) {
               dummy_count++;
             }
@@ -1987,11 +1963,8 @@ public class ScheduleFormData extends ALAbstractFormData {
 
       boolean isMember = false;
       int loginuserId = (int) login_user.getUserId().getValue();
-      int membersSize = memberList.size();
-      ALEipUser eipUser = null;
-      for (int i = 0; i < membersSize; i++) {
-        eipUser = memberList.get(i);
-        if (loginuserId == eipUser.getUserId().getValue()) {
+      for (ALEipUser user : memberList) {
+        if (loginuserId == user.getUserId().getValue()) {
           isMember = true;
           break;
         }
