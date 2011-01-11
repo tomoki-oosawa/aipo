@@ -3,7 +3,7 @@
 */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/modules.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/modules.js
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -30,11 +30,11 @@ dojo.registerModulePath("dojox","../dojox");
 dojo.registerModulePath("aimluck","../aimluck");
 dojo.registerModulePath("aipo","../aipo");
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/modules.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/modules.js
  */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/dojo/dojo-aipo.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/dojo/dojo-aipo.js
  */
 /*
 	Copyright (c) 2004-2007, The Dojo Foundation
@@ -5737,11 +5737,11 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/dojo/dojo-aipo.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/dojo/dojo-aipo.js
  */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/dijit/dijit-aipo.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/dijit/dijit-aipo.js
  */
 /*
 	Copyright (c) 2004-2007, The Dojo Foundation
@@ -14025,11 +14025,11 @@ if(!dojo._hasResource["dijit.form.ComboBox"]){ //_hasResource checks added by bu
 dojo.i18n._preloadLocalizations("dijit.nls.dijit-all", ["es-es", "es", "hu", "it-it", "de", "pt-br", "pl", "fr-fr", "zh-cn", "pt", "en-us", "zh", "ru", "xx", "fr", "zh-tw", "it", "cs", "en-gb", "de-de", "ja-jp", "ko-kr", "ko", "en", "ROOT", "ja"]);
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/dijit/dijit-aipo.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/dijit/dijit-aipo.js
  */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/aimluck-all.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/aimluck/aimluck-all.js
  */
 /*
  * JavaScript file created by Rockstarapps Concatenation
@@ -15640,11 +15640,11 @@ dojo.declare("aimluck.widget.Menubar", [dijit.Toolbar], {
 */
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/aimluck-all.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/aimluck/aimluck-all.js
  */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aipo/aipo-all.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/aipo-all.js
  */
 /*
  * JavaScript file created by Rockstarapps Concatenation
@@ -15730,16 +15730,16 @@ aipo.viewPage = function(url, portletId, params) {
      if(! portlet){
        portlet = new aimluck.widget.Contentpane({},'portlet_' + portletId);
      }
-
+     
      if(portlet){
        ptConfig[portletId].reloadUrl= url;
-
+       
        if(params){
        	 for(i = 0 ; i < params.length; i++ ) {
        		portlet.setParam(params[i][0], params[i][1]);
        	 }
        }
-
+       
        portlet.viewPage(url);
      }
 };
@@ -15787,13 +15787,13 @@ dojo.provide("aipo.common");
 
 aipo.common.showDialog = function(url, portlet_id, callback) {
     var arrDialog = dijit.byId("modalDialog");
-
+    
     if(! arrDialog){
        arrDialog = new aimluck.widget.Dialog({widgetId:'modalDialog', _portlet_id: portlet_id, _callback:callback}, "modalDialog");
     }else{
        arrDialog.setCallback(portlet_id, callback);
     }
-
+     
     if(arrDialog){
       arrDialog.setHref(url);
       arrDialog.show();
@@ -15841,7 +15841,7 @@ aipo.io.loadHtml = function(url, params, portletId){
         transport: "ScriptSrcTransport",
         jsonParamName: "callback",
         content: params,
-        method: "get",
+        method: "get", 
         mimetype: "application/json",
         encoding: "utf-8",
         load: function(type, data, event, args) {
@@ -15939,12 +15939,12 @@ dojo.declare("aipo.widget.DateCalendar", [dijit._Calendar], {
 
            this.value = "";
            if(! dojo.byId(this.dateId+'_flag').checked) {
-        	   dojo.byId(this.dateId+'_flag').checked = true;
+              dojo.byId(this.dateId+'_flag').checked = true;
            }
         }else{
            var hiddendate = dojo.byId(this.dateId);
            if( (!hiddendate.value) || (hiddendate.value=="") ) {
-        	   this.setValue(new Date());
+              this.setValue(new Date());
            }else{
 	           var tmpdate = hiddendate.value.split("/");
 	           if(tmpdate.length == 3){
@@ -16018,11 +16018,11 @@ dojo.declare("aipo.widget.GroupSelectList", [dijit._Widget, dijit._Templated], {
     memberFromUrl:"",
     memberFromOptionKey:"",
     memberFromOptionValue:"",
-    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><table class=\"none\"><tr><td><div id=\"groupPopupDiv\"><div class=\"outer\"><div class=\"popup\" style=\"width:300px\"><div class=\"clearfix\"><div class=\"memberlistToTop\">${memberToTitle}</div><div class=\"memberlistFromTop\">${memberFromTitle}</div></div><div class=\"clearfix\"><div class=\"memberlistToBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div><div class=\"memberlistFromBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberFromId}\" id=\"${memberFromId}\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBottom\"><div class=\"alignright\"><input id=\"${buttonRemoveId}\" name=\"${buttonRemoveId}\" type=\"button\" class=\"button\" value=\"\u3000\u524a\u9664\u3000\" dojoAttachEvent=\"onclick:onMemberRemoveClick\"/></div></div><div class=\"memberlistFromBottom\"><div class=\"alignright\"><input id=\"${buttonAddId}\" name=\"${buttonAddId}\" type=\"button\" class=\"button\" value=\"\u3000\uff1c\u0020\u8ffd\u52a0\u3000\" dojoAttachEvent=\"onclick:onMemberAddClick\"/></div></div></div></div></div></div></td></tr></table></div>\n",
-//    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><table class=\"none\"><tr><td><div id=\"facilityPopupDiv\"><div class=\"outer\"><div class=\"popup\" style=\"width:300px\"><div class=\"clearfix\"><div class=\"memberlistToTop\">所属施設一覧</div><div class=\"memberlistFromTop\">施設一覧</div></div><div class=\"clearfix\"><div class=\"memberlistToBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"tmp_facility_to\" id=\"tmp_facility_to\"></select></div><div class=\"memberlistFromBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"tmp_facility_from\" id=\"tmp_facility_from\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBottom\"><div class=\"alignright\"><input id=\"button_facility_remove\" name=\"button_facility_remove\" type=\"button\" class=\"button\" value=\"　削除　\" dojoAttachEvent=\"onclick:onMemberRemoveClick\"/></div></div><div class=\"memberlistFromBottom\"><div class=\"alignright\"><input id=\"button_facility_add\" name=\"button_facility_add\" type=\"button\" class=\"button\" value=\"　＜ 追加　\" dojoAttachEvent=\"onclick:onMemberAddClick\"/></div></div></div></div></div></div></td></tr></table></div>\n",
+    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><table class=\"none\"><tr><td><div id=\"groupPopupDiv\"><div class=\"outer\"><div class=\"popup\" style=\"width:300px\"><div class=\"clearfix\"><div class=\"memberlistToTop\">${memberToTitle}</div><div class=\"memberlistFromTop\">${memberFromTitle}</div></div><div class=\"clearfix\"><div class=\"memberlistToBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div><div class=\"memberlistFromBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberFromId}\" id=\"${memberFromId}\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBottom\"><div class=\"alignright\"><input id=\"${buttonRemoveId}\" name=\"${buttonRemoveId}\" type=\"button\" class=\"button\" value=\"\u3000\u524a\u9664\u3000\" dojoAttachEvent=\"onclick:onMemberRemoveClick\"/></div></div><div class=\"memberlistFromBottom\"><div class=\"alignright\"><input id=\"${buttonAddId}\" name=\"${buttonAddId}\" type=\"button\" class=\"button\" value=\"\u3000\uff1c\u0020\u8ffd\u52a0\u3000\" dojoAttachEvent=\"onclick:onMemberAddClick\"/></div></div></div></div></div></div></td></tr></table></div>\n",  
+//    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><table class=\"none\"><tr><td><div id=\"facilityPopupDiv\"><div class=\"outer\"><div class=\"popup\" style=\"width:300px\"><div class=\"clearfix\"><div class=\"memberlistToTop\">所属施設一覧</div><div class=\"memberlistFromTop\">施設一覧</div></div><div class=\"clearfix\"><div class=\"memberlistToBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"tmp_facility_to\" id=\"tmp_facility_to\"></select></div><div class=\"memberlistFromBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"tmp_facility_from\" id=\"tmp_facility_from\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBottom\"><div class=\"alignright\"><input id=\"button_facility_remove\" name=\"button_facility_remove\" type=\"button\" class=\"button\" value=\"　削除　\" dojoAttachEvent=\"onclick:onMemberRemoveClick\"/></div></div><div class=\"memberlistFromBottom\"><div class=\"alignright\"><input id=\"button_facility_add\" name=\"button_facility_add\" type=\"button\" class=\"button\" value=\"　＜ 追加　\" dojoAttachEvent=\"onclick:onMemberAddClick\"/></div></div></div></div></div></div></td></tr></table></div>\n",    
     postCreate: function(){
         this.id = this.widgetId;
-
+        
         params = {
           url: this.memberFromUrl,
           key: this.memberFromOptionKey,
@@ -16280,25 +16280,25 @@ dojo.declare("aipo.widget.MemberSelectList", [dijit._Widget, dijit._Templated], 
     groupSelectOptionValue: "",
     memberGroupUrl: "",
     changeGroupUrl: "",
-    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><table class=\"none\"><tr><td><div id=\"memberPopupDiv\"><div class=\"outer\"><div class=\"popup\" style=\"width:300px\"><div class=\"clearfix\"><div class=\"memberlistToTop\" >${memberToTitle}</div><div class=\"memberlistFromTop\"><select size=\"1\" style=\"width:100%\" name=\"${groupSelectId}\" id=\"${groupSelectId}\" dojoAttachEvent=\"onchange:changeGroup\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div><div class=\"memberlistFromBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberFromId}\" id=\"${memberFromId}\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBottom\"><div class=\"alignright\"><input id=\"${buttonRemoveId}\" name=\"${buttonRemoveId}\" type=\"button\" class=\"button\" value=\"\u3000\u524a\u9664\u3000\"/ dojoAttachEvent=\"onclick:onMemberRemoveClick\"></div></div><div class=\"memberlistFromBottom\"><div class=\"alignright\"><input id=\"${buttonAddId}\" name=\"${buttonAddId}\" type=\"button\" class=\"button\" value=\"\u3000\uff1c\u0020\u8ffd\u52a0\u3000\"/ dojoAttachEvent=\"onclick:onMemberAddClick\"></div></div></div></div></div></div></td></tr></table></div>\n",
-    //templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><table class=\"none\"><tr><td><div id=\"memberPopupDiv\"><div class=\"outer\"><div class=\"popup\" style=\"width:300px\"><div class=\"clearfix\"><div class=\"memberlistToTop\" >参加メンバー一覧</div><div class=\"memberlistFromTop\"><select size=\"1\" style=\"width:100%\" name=\"${groupSelectId}\" id=\"${groupSelectId}\" dojoAttachEvent=\"onchange:changeGroup\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div><div class=\"memberlistFromBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberFromId}\" id=\"${memberFromId}\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBottom\"><div class=\"alignright\"><input id=\"${buttonRemoveId}\" name=\"${buttonRemoveId}\" type=\"button\" class=\"button\" value=\"　削除　\"/ dojoAttachEvent=\"onclick:onMemberRemoveClick\"></div></div><div class=\"memberlistFromBottom\"><div class=\"alignright\"><input id=\"${buttonAddId}\" name=\"${buttonAddId}\" type=\"button\" class=\"button\" value=\"　＜ 追加　\"/ dojoAttachEvent=\"onclick:onMemberAddClick\"></div></div></div></div></div></div></td></tr></table></div>\n",
+    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><table class=\"none\"><tr><td><div id=\"memberPopupDiv\"><div class=\"outer\"><div class=\"popup\" style=\"width:300px\"><div class=\"clearfix\"><div class=\"memberlistToTop\" >${memberToTitle}</div><div class=\"memberlistFromTop\"><select size=\"1\" style=\"width:100%\" name=\"${groupSelectId}\" id=\"${groupSelectId}\" dojoAttachEvent=\"onchange:changeGroup\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div><div class=\"memberlistFromBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberFromId}\" id=\"${memberFromId}\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBottom\"><div class=\"alignright\"><input id=\"${buttonRemoveId}\" name=\"${buttonRemoveId}\" type=\"button\" class=\"button\" value=\"\u3000\u524a\u9664\u3000\"/ dojoAttachEvent=\"onclick:onMemberRemoveClick\"></div></div><div class=\"memberlistFromBottom\"><div class=\"alignright\"><input id=\"${buttonAddId}\" name=\"${buttonAddId}\" type=\"button\" class=\"button\" value=\"\u3000\uff1c\u0020\u8ffd\u52a0\u3000\"/ dojoAttachEvent=\"onclick:onMemberAddClick\"></div></div></div></div></div></div></td></tr></table></div>\n",    
+    //templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><table class=\"none\"><tr><td><div id=\"memberPopupDiv\"><div class=\"outer\"><div class=\"popup\" style=\"width:300px\"><div class=\"clearfix\"><div class=\"memberlistToTop\" >参加メンバー一覧</div><div class=\"memberlistFromTop\"><select size=\"1\" style=\"width:100%\" name=\"${groupSelectId}\" id=\"${groupSelectId}\" dojoAttachEvent=\"onchange:changeGroup\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div><div class=\"memberlistFromBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberFromId}\" id=\"${memberFromId}\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBottom\"><div class=\"alignright\"><input id=\"${buttonRemoveId}\" name=\"${buttonRemoveId}\" type=\"button\" class=\"button\" value=\"　削除　\"/ dojoAttachEvent=\"onclick:onMemberRemoveClick\"></div></div><div class=\"memberlistFromBottom\"><div class=\"alignright\"><input id=\"${buttonAddId}\" name=\"${buttonAddId}\" type=\"button\" class=\"button\" value=\"　＜ 追加　\"/ dojoAttachEvent=\"onclick:onMemberAddClick\"></div></div></div></div></div></div></td></tr></table></div>\n",    
     postCreate: function(){
         this.id = this.widgetId;
-
+    
         params = {
           url: this.memberFromUrl,
           key: this.memberFromOptionKey,
           value: this.memberFromOptionValue
         };
         aimluck.io.createOptions(this.memberFromId, params);
-
+        
         params = {
           url: this.memberGroupUrl,
           key: this.groupSelectOptionKey,
           value: this.groupSelectOptionValue,
           preOptions: { key:this.groupSelectPreOptionKey, value:this.groupSelectPreOptionValue }
         };
-        aimluck.io.createOptions(this.groupSelectId, params);
+        aimluck.io.createOptions(this.groupSelectId, params); 
     },
     addOption:function(select, value, text, is_selected) {
       aimluck.io.addOption(select, value, text, is_selected);
@@ -16558,12 +16558,12 @@ dojo.declare("aipo.widget.DropdownDatepicker", [aimluck.widget.Dropdown], {
                 var tmonth = tmpdate[1]-1;
                 var tday = tmpdate[2];
 
-	            var datevalue = dojo.byId(this.dateId);
-	            datevalue.value = this.initValue;
+                var datevalue = dojo.byId(this.dateId);
+                datevalue.value = this.initValue;
 
                 this.dropDown.clearDate();
                 this.dropDown.setValue(new Date(tyear, tmonth, tday));
-	        }
+            }
         }else{
           this.dropDown.disabledCalendar(true);
         }
@@ -16646,7 +16646,7 @@ dojo.declare("aipo.widget.DropdownGrouppicker", [aimluck.widget.Dropdown], {
     changeGroupUrl:"",
     listWidgetId:"",
     templateString:"<div class=\"dijit dijitLeft dijitInline\"\n\tdojoAttachEvent=\"onmouseenter:_onMouse,onmouseleave:_onMouse,onmousedown:_onMouse,onclick:_onDropDownClick,onkeydown:_onDropDownKeydown,onblur:_onDropDownBlur,onkeypress:_onKey\"\n\t><div class='dijitRight'>\n\t<span class=\"\" type=\"${type}\"\n\t\tdojoAttachPoint=\"focusNode,titleNode\" waiRole=\"button\" waiState=\"haspopup-true,labelledby-${id}_label\"\n\t\t><span class=\"\" \tdojoAttachPoint=\"containerNode,popupStateNode\"\n\t\tid=\"${id}_label\"><img src=\"${iconURL}\" alt=\"${iconAlt}\" style=\"cursor:pointer;cursor:hand;padding-right:2px\" align=\"top\" />\n\t</span><select name=\"${selectId}\" id=\"${selectId}\" size=\"10\" multiple=\"multiple\" style=\"display:none\" dojoAttachPoint=\"selectNode\"></select><input type=\"hidden\" id=\"${hiddenId}\" name=\"${hiddenId}\" value=\"${hiddenValue}\" dojoAttachPoint=\"valueNode\" /><span name=\"${inputId}\" id=\"${inputId}\" dojoAttachPoint=\"inputNode\">${inputValue}</span>\n</div></div>\n",
-    postCreate: function(){
+    postCreate: function(){      
 
       var fparams = {
           widgetId:this.listWidgetId,
@@ -16673,7 +16673,7 @@ dojo.declare("aipo.widget.DropdownGrouppicker", [aimluck.widget.Dropdown], {
       }else{
         this.dropDown = new aipo.widget.GroupSelectList(fparams, this.listWidgetId);
       }
-
+      
       this.inherited(arguments);
     },
 	removeAllOptions:function(select){
@@ -16688,7 +16688,7 @@ dojo.declare("aipo.widget.DropdownGrouppicker", [aimluck.widget.Dropdown], {
 	    var t_o = select.options;
 	    for(i = 0 ;i < t_o.length; i ++ ) {
 	      select.removeChild(t_o[i]);
-	      i -= 1;
+	      i -= 1; 
 	    }
 	  }
 	},
@@ -16824,7 +16824,7 @@ dojo.declare("aipo.widget.DropdownMemberpicker", [aimluck.widget.Dropdown], {
     changeGroupUrl:"",
     listWidgetId:"memberlistwidget",
     templateString:"<div class=\"dijit dijitLeft dijitInline\"\n\tdojoAttachEvent=\"onmouseenter:_onMouse,onmouseleave:_onMouse,onmousedown:_onMouse,onclick:_onDropDownClick,onkeydown:_onDropDownKeydown,onblur:_onDropDownBlur,onkeypress:_onKey\"\n\t><div class='dijitRight'>\n\t<span class=\"\" type=\"${type}\"\n\t\tdojoAttachPoint=\"focusNode,titleNode\" waiRole=\"button\" waiState=\"haspopup-true,labelledby-${id}_label\"\n\t\t><span class=\"\" \tdojoAttachPoint=\"containerNode,popupStateNode\"\n\t\tid=\"${id}_label\"><img src=\"${iconURL}\" alt=\"${iconAlt}\" style=\"cursor:pointer;cursor:hand;padding-right:2px\" align=\"top\" />\n\t</span><select name=\"${selectId}\" id=\"${selectId}\" size=\"10\" multiple=\"multiple\" style=\"display:none\" dojoAttachPoint=\"selectNode\"></select><input type=\"hidden\" id=\"${hiddenId}\" name=\"${hiddenId}\" value=\"${hiddenValue}\" dojoAttachPoint=\"valueNode\" /><span name=\"${inputId}\" id=\"${inputId}\" dojoAttachPoint=\"inputNode\">${inputValue}</span>\n</div></div>\n",
-    postCreate: function(){
+    postCreate: function(){      
       var userparams = {
           widgetId:this.listWidgetId,
           selectId:this.selectId,
@@ -16845,7 +16845,7 @@ dojo.declare("aipo.widget.DropdownMemberpicker", [aimluck.widget.Dropdown], {
           memberGroupUrl:this.memberGroupUrl,
           changeGroupUrl:this.changeGroupUrl
       };
-
+     
       var listWidget = dijit.byId(this.listWidgetId);
       if(listWidget){
         this.dropDown = listWidget;
@@ -16871,7 +16871,7 @@ dojo.declare("aipo.widget.DropdownMemberpicker", [aimluck.widget.Dropdown], {
 	    var t_o = select.options;
 	    for(i = 0 ;i < t_o.length; i ++ ) {
 	      select.removeChild(t_o[i]);
-	      i -= 1;
+	      i -= 1; 
 	    }
 	  }
 	},
@@ -16981,7 +16981,7 @@ dojo.declare("aipo.widget.GroupNormalSelectList", [dijit._Widget, dijit._Templat
     templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><table class=\"none\"><tr><td><div id=\"groupPopupDiv\"><div class=\"outer\"><div class=\"popup\" style=\"width:335px\"><div class=\"clearfix\"><div class=\"memberlistToTop\">${memberToTitle}</div><div class=\"memberlistFromTop\">${memberFromTitle}</div></div><div class=\"clearfix\"><div class=\"memberlistToBody\"><select size=\"5\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div><div class=\"memberlistFromBody\"><select size=\"5\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberFromId}\" id=\"${memberFromId}\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBottom\"><div class=\"alignright\"><input id=\"${buttonRemoveId}\" name=\"${buttonRemoveId}\" type=\"button\" class=\"button\" value=\"\u3000\u524a\u9664\u3000\" dojoAttachEvent=\"onclick:onMemberRemoveClick\"/></div></div><div class=\"memberlistFromBottom\"><div class=\"alignright\"><input id=\"${buttonAddId}\" name=\"${buttonAddId}\" type=\"button\" class=\"button\" value=\"\u3000\uff1c \u8ffd\u52a0\u3000\" dojoAttachEvent=\"onclick:onMemberAddClick\"/></div></div></div></div></div></div></td></tr></table></div>\n",
     postCreate: function(){
         this.id = this.widgetId;
-
+        
         params = {
           url: this.memberFromUrl,
           key: this.memberFromOptionKey,
@@ -17003,7 +17003,7 @@ dojo.declare("aipo.widget.GroupNormalSelectList", [dijit._Widget, dijit._Templat
         if (select.options.length == 1 && select.options[0].value == ""){
           select.options.remove(0);
         }
-        select.add(option, select.options.length);
+        select.add(option, select.options.length);  
       } else {
         var option = document.createElement("OPTION");
         option.value = value;
@@ -17144,7 +17144,7 @@ dojo.declare("aipo.widget.GroupNormalSelectList", [dijit._Widget, dijit._Templat
     onMemberRemoveClick: function(/*Event*/ evt){
        this.removeMemberSync();
     }
-
+  
 });
 
 /*
@@ -17381,7 +17381,7 @@ dojo.declare("aipo.widget.MemberNormalSelectList", [dijit._Widget, dijit._Templa
 */
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/aipo/aipo-all.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/aipo-all.js
  */
 
 /*
