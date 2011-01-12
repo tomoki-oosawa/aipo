@@ -59,8 +59,9 @@ public class ScheduleWeeklySelectData extends
     ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleWeeklySelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ScheduleWeeklySelectData.class
+      .getName());
 
   /** <code>prevDate</code> 前の日 */
   private ALDateTimeField prevDate;
@@ -273,8 +274,8 @@ public class ScheduleWeeklySelectData extends
         loadTodo(rundata, context);
       }
 
-      // 開始時刻でソート
-      ScheduleUtils.sortBySchedule(list);
+      // 時刻でソート
+      ScheduleUtils.sortByTime(list);
 
       return new ResultList<EipTScheduleMap>(ScheduleUtils
         .sortByDummySchedule(list));

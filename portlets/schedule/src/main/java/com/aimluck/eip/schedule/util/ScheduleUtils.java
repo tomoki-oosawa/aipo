@@ -96,8 +96,8 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 public class ScheduleUtils {
 
   /** <code>logger</code> loger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ScheduleUtils.class.getName());
 
   /** <code>SCHEDULEMAP_TYPE_USER</code> ユーザ */
   public static final String SCHEDULEMAP_TYPE_USER = "U";
@@ -1365,12 +1365,12 @@ public class ScheduleUtils {
   }
 
   /**
-   * スケジュールを開始時刻でソートする．
+   * スケジュールを時刻でソートする．
    * 
    * @param list
    * @return
    */
-  public static List<EipTScheduleMap> sortBySchedule(List<EipTScheduleMap> list) {
+  public static void sortByTime(List<EipTScheduleMap> list) {
     Collections.sort(list, new Comparator<EipTScheduleMap>() {
       private final Calendar cal = Calendar.getInstance();
 
@@ -1412,8 +1412,6 @@ public class ScheduleUtils {
         return 0;
       }
     });
-
-    return list;
   }
 
   /**

@@ -66,8 +66,9 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleWeeklyGroupSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ScheduleWeeklyGroupSelectData.class
+      .getName());
 
   /** <code>termmap</code> 期間スケジュールマップ */
   private Map<Integer, List<ScheduleTermWeekContainer>> termmap;
@@ -105,8 +106,9 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   private boolean hasAuthorityFacilityInsert = false;
 
   /** ログインユーザのスケジュールの上位表示フラグ名 */
-  protected final String FLAG_CHANGE_TURN_STR = new StringBuffer().append(
-    this.getClass().getName()).append("flagchangeturn").toString();
+  protected final String FLAG_CHANGE_TURN_STR =
+    new StringBuffer().append(this.getClass().getName()).append(
+      "flagchangeturn").toString();
 
   /**
    * 
@@ -204,8 +206,8 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         loadTodo(rundata, context);
       }
 
-      // 開始時刻でソート
-      ScheduleUtils.sortBySchedule(list);
+      // 時刻でソート
+      ScheduleUtils.sortByTime(list);
 
       return new ResultList<EipTScheduleMap>(ScheduleUtils
         .sortByDummySchedule(list));
