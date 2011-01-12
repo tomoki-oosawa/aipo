@@ -24,6 +24,8 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -94,8 +96,8 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 public class ScheduleUtils {
 
   /** <code>logger</code> loger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleUtils.class.getName());
 
   /** <code>SCHEDULEMAP_TYPE_USER</code> ユーザ */
   public static final String SCHEDULEMAP_TYPE_USER = "U";
@@ -1360,6 +1362,58 @@ public class ScheduleUtils {
 
     // スケジュールを登録
     Database.commit();
+  }
+
+  /**
+   * スケジュールを開始時刻でソートする．
+   * 
+   * @param list
+   * @return
+   */
+  public static List<EipTScheduleMap> sortBySchedule(List<EipTScheduleMap> list) {
+    Collections.sort(list, new Comparator<EipTScheduleMap>() {
+      private final Calendar cal = Calendar.getInstance();
+
+      public int compare(EipTScheduleMap o1, EipTScheduleMap o2) {
+        // 開始時刻を取得
+        EipTSchedule s1 = o1.getEipTSchedule();
+        cal.setTime(s1.getStartDate());
+        int hour1 = cal.get(Calendar.HOUR_OF_DAY);
+        int minute1 = cal.get(Calendar.MINUTE);
+
+        EipTSchedule s2 = o2.getEipTSchedule();
+        cal.setTime(s2.getStartDate());
+        int hour2 = cal.get(Calendar.HOUR_OF_DAY);
+        int minute2 = cal.get(Calendar.MINUTE);
+
+        // 開始時刻で比較
+        if (hour1 != hour2) {
+          return hour1 - hour2;
+        } else if (minute1 != minute2) {
+          return minute1 - minute2;
+        } else {
+          // 終了時刻を取得
+          cal.setTime(s1.getEndDate());
+          hour1 = cal.get(Calendar.HOUR_OF_DAY);
+          minute1 = cal.get(Calendar.MINUTE);
+
+          cal.setTime(s2.getEndDate());
+          hour2 = cal.get(Calendar.HOUR_OF_DAY);
+          minute2 = cal.get(Calendar.MINUTE);
+
+          // 終了時刻で比較
+          if (hour1 != hour2) {
+            return hour1 - hour2;
+          } else if (minute1 != minute2) {
+            return minute1 - minute2;
+          }
+        }
+
+        return 0;
+      }
+    });
+
+    return list;
   }
 
   /**

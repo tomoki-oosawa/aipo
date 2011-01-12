@@ -28,7 +28,6 @@ import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.Ordering;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -67,9 +66,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleWeeklyGroupSelectData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleWeeklyGroupSelectData.class.getName());
 
   /** <code>termmap</code> 期間スケジュールマップ */
   private Map<Integer, List<ScheduleTermWeekContainer>> termmap;
@@ -107,9 +105,8 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   private boolean hasAuthorityFacilityInsert = false;
 
   /** ログインユーザのスケジュールの上位表示フラグ名 */
-  protected final String FLAG_CHANGE_TURN_STR =
-    new StringBuffer().append(this.getClass().getName()).append(
-      "flagchangeturn").toString();
+  protected final String FLAG_CHANGE_TURN_STR = new StringBuffer().append(
+    this.getClass().getName()).append("flagchangeturn").toString();
 
   /**
    * 
@@ -207,6 +204,9 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         loadTodo(rundata, context);
       }
 
+      // 開始時刻でソート
+      ScheduleUtils.sortBySchedule(list);
+
       return new ResultList<EipTScheduleMap>(ScheduleUtils
         .sortByDummySchedule(list));
     } catch (Exception e) {
@@ -252,11 +252,6 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
 
     query.setQualifier((exp11.andExp(exp12)).orExp(exp13.andExp(exp14)));
-
-    // 開始日時でソート
-    query.orderAscending(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-      + "."
-      + EipTSchedule.START_DATE_PROPERTY);
 
     return buildSelectQueryForFilter(query, rundata, context);
   }
@@ -526,16 +521,6 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         }
       }
     }
-
-    // 開始日時でソート
-    List<Ordering> orders = new ArrayList<Ordering>();
-    orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-      + "."
-      + EipTSchedule.START_DATE_PROPERTY, true));
-    orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-      + "."
-      + EipTSchedule.END_DATE_PROPERTY, true));
-    query.getQuery().addOrderings(orders);
 
     facilityList = FacilitiesUtils.getFacilityList(filter);
 
