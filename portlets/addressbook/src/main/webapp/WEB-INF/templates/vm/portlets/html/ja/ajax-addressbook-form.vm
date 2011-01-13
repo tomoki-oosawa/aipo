@@ -103,6 +103,7 @@
 #ALtditemfooter()
 #ALtdcaption($!result.getFieldName("position_name"))
 #ALtditem("#ALtextfield('position_name' $!result.PositionName '70%' 50 'active')")
+#if($mode=="new_form" || $!result.OwnerId == $!result.UserId)
 #ALtdcaption($!result.getFieldName("public_flag"))
 #ALtditemheader()
 <input name="public_flag" type="radio" value="T" id="$!{portlet.ID}public" #if ($!result.PublicFlag.toString() != "F") checked="checked" #end />
@@ -110,6 +111,7 @@
 <input name="public_flag" type="radio" value="F" id="$!{portlet.ID}secret" #if ($!result.PublicFlag.toString() == "F") checked="checked" #end />
 <label for="$!{portlet.ID}secret">非公開</label>
 #ALtditemfooter()
+#end
 #ALtdcaption("所属社外グループ")
 #ALtditemheader()
 <div class="spaceTop spaceLeft small">左側に所属社外グループを追加してください。</div>

@@ -58,8 +58,8 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class AddressBookFormData extends ALAbstractFormData {
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AddressBookFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(AddressBookFormData.class.getName());
 
   // 所有グループのリスト
   private List<AddressBookGroupResultData> groupList;
@@ -141,14 +141,19 @@ public class AddressBookFormData extends ALAbstractFormData {
 
   private ALStringField comp_url;
 
-  /** */
   private boolean is_new_company;
+
+  private int user_id;
+
+  private int owner_id;
 
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
     is_new_company = rundata.getParameters().getBoolean("is_new_company");
+
+    user_id = ALEipUtils.getUserId(rundata);
   }
 
   public void initField() {
@@ -606,6 +611,7 @@ public class AddressBookFormData extends ALAbstractFormData {
       // create_user.setValue(address.getCreateUserId()e)
       update_date.setValue(address.getUpdateDate());
 
+      owner_id = address.getOwnerId();
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
@@ -861,7 +867,11 @@ public class AddressBookFormData extends ALAbstractFormData {
       }
 
       address.setPositionName(position_name.getValue());
-      address.setPublicFlag(public_flag.getValue());
+
+      if (user_id == address.getOwnerId()) {
+        address.setPublicFlag(public_flag.getValue());
+      }
+
       address.setUpdateUserId(Integer.valueOf(uid));
       address.setUpdateDate(new Date());
 
@@ -1211,6 +1221,24 @@ public class AddressBookFormData extends ALAbstractFormData {
    */
   public boolean isNewCompany() {
     return is_new_company;
+  }
+
+  /**
+   * 現在ログイン中のユーザIDを返します。
+   * 
+   * @return
+   */
+  public int getUserId() {
+    return user_id;
+  }
+
+  /**
+   * オーナーIDを返します。
+   * 
+   * @return
+   */
+  public int getOwnerId() {
+    return owner_id;
   }
 
   // ***************************************************************************
