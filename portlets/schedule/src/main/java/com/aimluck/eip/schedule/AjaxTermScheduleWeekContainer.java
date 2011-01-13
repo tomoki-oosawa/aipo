@@ -151,7 +151,8 @@ public class AjaxTermScheduleWeekContainer implements ALData {
     for (AjaxTermScheduleDayContainer dayContainer : dayList) {
       if (dayContainer.isHasTerm()) {
         AjaxScheduleResultData rd = dayContainer.getTermResultData();
-        if (rd != null && !(rd.isPrivate() && !rd.isLoginuser())) {
+        if (rd != null
+          && (!rd.isPrivate() || rd.isLoginuser() || rd.isMember())) {
           return true;
         }
       }
