@@ -83,8 +83,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AccountUserFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AccountUserFormData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AccountUserFormData.class.getName());
 
   /** ブラウザに表示するデフォルトのパスワード（ダミーパスワード） */
   private static final String DEFAULT_VIEW_PASSWORD = "******";
@@ -1040,6 +1040,9 @@ public class AccountUserFormData extends ALAbstractFormData {
 
       Database.commit();
 
+      /** ユーザリストのキャッシュをクリアする */
+      UserUtils.clearCache();
+
       // WebAPIとのDB同期
       String[] user_name_list = { user_name };
       if (!ALDataSyncFactoryService
@@ -1099,6 +1102,9 @@ public class AccountUserFormData extends ALAbstractFormData {
 
       (list.get(0)).setDisabled("F");
       Database.commit();
+
+      /** ユーザリストのキャッシュをクリアする */
+      UserUtils.clearCache();
 
       // WebAPIとのDB同期
       String[] user_name_list = { user_name };
@@ -1247,6 +1253,9 @@ public class AccountUserFormData extends ALAbstractFormData {
       user.setLoginName(dummy_user_name);
 
       Database.commit();
+
+      /** ユーザリストのキャッシュをクリアする */
+      UserUtils.clearCache();
 
       // WebAPIとのDB同期
       if (!ALDataSyncFactoryService

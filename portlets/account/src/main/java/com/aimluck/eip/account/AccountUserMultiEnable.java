@@ -33,6 +33,7 @@ import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
+import com.aimluck.eip.user.util.UserUtils;
 
 /**
  * ユーザアカウントを複数有効化するためのクラス． <BR>
@@ -98,6 +99,9 @@ public class AccountUserMultiEnable extends ALAbstractCheckList {
       }
 
       Database.commit();
+
+      /** ユーザリストのキャッシュをクリアする */
+      UserUtils.clearCache();
 
       // WebAPIとのDB同期
       if (!ALDataSyncFactoryService
