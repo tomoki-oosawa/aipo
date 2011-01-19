@@ -84,12 +84,14 @@
 #set($rowsNum = $result.RowsNum)
 #if ($pages > 1)
 #ALcell_center_header($career)
-#if($currentPage > 1) #set($pre = $currentPage - 1) #ALcell_submit($career "eventSubmit_doSchedule_form_member" "&lt;前")
-<input type="hidden" name="start" value="$pre">
+#if($currentPage > 1)
+#set($pre = $currentPage - 1) #ALcell_submit($career "eventSubmit_doSchedule_form_member_prev" "&lt;前")
+<input type="hidden" name="prev" value="$pre">
 #end
 $currentPage/$pages
-#if($pages > $currentPage) #set($next = $currentPage + 1) #ALcell_submit($career "eventSubmit_doSchedule_form_member" "次&gt;")
-<input type="hidden" name="start" value="$next">
+#if($pages > $currentPage)
+#set($next = $currentPage + 1) #ALcell_submit($career "eventSubmit_doSchedule_form_member_next" "次&gt;")
+<input type="hidden" name="next" value="$next">
 #end
 #ALcell_center_footer($career)
 #end
@@ -111,12 +113,12 @@ $currentPage/$pages
 #if ($pages > 1)
 #ALcell_hr($career '1')
 #ALcell_center_header($career)
-#if($currentPage > 1) #set($pre = $currentPage - 1) #ALcell_submit($career "eventSubmit_doSchedule_form_member" "&lt;前")
-<input type="hidden" name="start" value="$pre">
+#if($currentPage > 1)
+#set($pre = $currentPage - 1) #ALcell_submit($career "eventSubmit_doSchedule_form_member_prev" "&lt;前")
 #end
 $currentPage/$pages
-#if($pages > $currentPage) #set($next = $currentPage + 1) #ALcell_submit($career "eventSubmit_doSchedule_form_member" "次&gt;")
-<input type="hidden" name="start" value="$next">
+#if($pages > $currentPage)
+#set($next = $currentPage + 1) #ALcell_submit($career "eventSubmit_doSchedule_form_member_next" "次&gt;")
 #end
 #ALcell_center_footer($career)
 #end

@@ -60,7 +60,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * スケジュールのアクションクラスです。
- *
+ * 
  */
 public class CellScheduleAction extends ALBaseAction {
 
@@ -72,7 +72,7 @@ public class CellScheduleAction extends ALBaseAction {
     { "", "(日)", "(月)", "(火)", "(水)", "(木)", "(金)", "(土)" };
 
   /**
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
@@ -84,7 +84,7 @@ public class CellScheduleAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * @param portlet
    * @param context
    * @param rundata
@@ -130,7 +130,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを一覧表示します。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -198,7 +198,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * 日付指定用のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -224,7 +224,7 @@ public class CellScheduleAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param is_repeat
@@ -248,7 +248,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -271,7 +271,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -295,7 +295,33 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   *
+   * 
+   * @param rundata
+   * @param context
+   */
+  public void doSchedule_form_member_prev(RunData rundata, Context context) {
+    String prev = rundata.getParameters().getString("prev");
+    rundata.getParameters().setString("start", prev);
+
+    doSchedule_form_member(rundata, context);
+  }
+
+  /**
+   * スケジュール登録のフォームを表示する．
+   * 
+   * @param rundata
+   * @param context
+   */
+  public void doSchedule_form_member_next(RunData rundata, Context context) {
+    String next = rundata.getParameters().getString("next");
+    rundata.getParameters().setString("start", next);
+
+    doSchedule_form_member(rundata, context);
+  }
+
+  /**
+   * スケジュール登録のフォームを表示する．
+   * 
    * @param rundata
    * @param context
    */
@@ -319,7 +345,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -341,7 +367,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを登録します。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -369,7 +395,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを更新します。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -397,7 +423,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール削除のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -416,7 +442,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを削除します。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -443,7 +469,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを詳細表示します。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -461,7 +487,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールの状態を変更します。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -496,7 +522,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールのメニュー(週間スケジュール)を表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -579,7 +605,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールのメニュー(週間スケジュール)を表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -599,7 +625,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -619,7 +645,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールのメニュー(週間スケジュール)を表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -687,7 +713,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを詳細表示します。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -722,7 +748,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * 日付指定用のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -755,7 +781,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを一覧表示します。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -810,7 +836,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール削除のフォームを表示する．
-   *
+   * 
    * @param rundata
    * @param context
    */

@@ -28,7 +28,6 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.common.ALDBErrorException;
-import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 
@@ -43,9 +42,6 @@ public class CellScheduleFormGroupData extends AbstractCellScheduleFormData {
   private static final JetspeedLogger logger =
     JetspeedLogFactoryService.getLogger(CellScheduleFormGroupData.class
       .getName());
-
-  /** <code>groups</code> グループ */
-  private List<ALEipGroup> groups;
 
   /**
    * 
@@ -107,15 +103,5 @@ public class CellScheduleFormGroupData extends AbstractCellScheduleFormData {
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     return false;
-  }
-
-  /**
-   * グループリストを取得します。
-   * 
-   * @return
-   */
-  @Override
-  public List<ALEipGroup> getGroupList() {
-    return groups;
   }
 }
