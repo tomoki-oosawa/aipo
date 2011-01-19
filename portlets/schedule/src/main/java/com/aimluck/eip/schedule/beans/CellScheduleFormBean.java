@@ -352,6 +352,28 @@ public class CellScheduleFormBean implements ALData, Cloneable {
       is_span = true;
     }
 
+    if ("".equals(week_0.getValue())) {
+      week_0.setValue(null);
+    }
+    if ("".equals(week_1.getValue())) {
+      week_1.setValue(null);
+    }
+    if ("".equals(week_2.getValue())) {
+      week_2.setValue(null);
+    }
+    if ("".equals(week_3.getValue())) {
+      week_3.setValue(null);
+    }
+    if ("".equals(week_4.getValue())) {
+      week_4.setValue(null);
+    }
+    if ("".equals(week_5.getValue())) {
+      week_5.setValue(null);
+    }
+    if ("".equals(week_6.getValue())) {
+      week_6.setValue(null);
+    }
+
     return ScheduleUtils.validateDelegate(
       getStartDate(),
       getEndDate(),
