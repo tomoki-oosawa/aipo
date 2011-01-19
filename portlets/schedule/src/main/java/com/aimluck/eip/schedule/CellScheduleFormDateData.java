@@ -34,6 +34,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
@@ -65,6 +66,11 @@ public class CellScheduleFormDateData extends AbstractCellScheduleFormData {
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
+    String entityId = ALEipUtils.getParameter(rundata, context, "entityid");
+    if (entityId == null) {
+      ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
+    }
+
     super.init(action, rundata, context);
   }
 
