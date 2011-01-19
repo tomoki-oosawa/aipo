@@ -1952,31 +1952,49 @@ public class ScheduleUtils {
       end_date.setValue(tmp_end_date.getTime());
     }
 
-    if (!(is_repeat || is_span)) {
-      // 開始日時
-      start_date.validate(msgList);
-      int startyear = startDate.get(Calendar.YEAR);
-      if ((startyear < YEAR_FIRST || startyear > YEAR_END) && isCellPhone) {
-        // 携帯画面用条件
-        msgList.add("『日付』は" + YEAR_FIRST + "年から" + YEAR_END + "年の間で指定してください。");
-      }
-      if (startDate.get(Calendar.MINUTE) % 15.0 != 0 && isCellPhone) {
-        // 携帯画面用条件
-        msgList.add("『時間』は15分単位で指定してください。");
-      }
+    // 開始日時
+    start_date.validate(msgList);
+    int startyear = startDate.get(Calendar.YEAR);
+    if ((startyear < YEAR_FIRST || startyear > YEAR_END) && isCellPhone) {
+      // 携帯画面用条件
+      msgList.add("『 <span class='em'>開始日時</span> 』は"
+        + YEAR_FIRST
+        + "年から"
+        + YEAR_END
+        + "年の間で指定してください。");
+    }
+    if (startDate.get(Calendar.MINUTE) % 15.0 != 0 && isCellPhone) {
+      // 携帯画面用条件
+      msgList.add("『 <span class='em'>開始時間</span> 』は15分単位で指定してください。");
+    }
 
-      // 終了日時
-      end_date.validate(msgList);
-      if (endDate.get(Calendar.MINUTE) % 15.0 != 0 && isCellPhone) {
-        // 携帯画面用条件
-        msgList.add("『時間』は15分単位で指定してください。");
-      }
+    // 終了日時
+    end_date.validate(msgList);
+    int endyear = startDate.get(Calendar.YEAR);
+    if ((endyear < YEAR_FIRST || endyear > YEAR_END) && isCellPhone) {
+      // 携帯画面用条件
+      msgList.add("『 <span class='em'>終了日時</span> 』は"
+        + YEAR_FIRST
+        + "年から"
+        + YEAR_END
+        + "年の間で指定してください。");
+    }
+    if (endDate.get(Calendar.MINUTE) % 15.0 != 0 && isCellPhone) {
+      // 携帯画面用条件
+      msgList.add("『 <span class='em'>終了時間</span> 』は15分単位で指定してください。");
     }
 
     // 開始日時＆終了日時
-    if (end_date.getValue().before(start_date.getValue())) {
-      msgList
-        .add("『 <span class='em'>終了日時</span> 』は『 <span class='em'>開始日時</span> 』以降の日付を指定してください。");
+    if (is_span) {
+      if (end_date.getValue().before(start_date.getValue())) {
+        msgList
+          .add("『 <span class='em'>終了日時</span> 』は『 <span class='em'>開始日時</span> 』以降の日付を指定してください。");
+      }
+    } else {
+      if (end_date.getValue().before(start_date.getValue())) {
+        msgList
+          .add("『 <span class='em'>終了日時</span> 』は『 <span class='em'>開始日時</span> 』以降の時間を指定してください。");
+      }
     }
 
     if (is_repeat) {
@@ -1996,7 +2014,7 @@ public class ScheduleUtils {
           // 毎月の繰り返し
           if (month_day.getValue() == 0 && isCellPhone) {
             // 携帯画面用条件
-            msgList.add("『毎月』は日にちを指定してください。");
+            msgList.add("『 <span class='em'>毎月</span> 』は日にちを指定してください。");
           } else {
             month_day.validate(msgList);
           }
@@ -2007,7 +2025,8 @@ public class ScheduleUtils {
           false)
           && limit_start_date.getValue().getDate().after(
             limit_end_date.getValue().getDate())) {
-          msgList.add("『 <span class='em'>期限</span> 』は今日以降の日付を指定してください。");
+          msgList
+            .add("『 <span class='em'>繰り返し期間終了日</span> 』は『 <span class='em'>繰り返し期間開始日</span> 』以降の日付を指定してください。");
         }
 
         if ("ON".equals(limit_flag.getValue())) {
@@ -2017,7 +2036,7 @@ public class ScheduleUtils {
             limitStartDate.setTime(limit_start_date.getValue().getDate());
             int limitstartyear = limitStartDate.get(Calendar.YEAR);
             if ((limitstartyear < YEAR_FIRST || limitstartyear > YEAR_END)) {
-              msgList.add("『期限の開始日時』は"
+              msgList.add("『 <span class='em'>期限の開始日時</span> 』は"
                 + YEAR_FIRST
                 + "年から"
                 + YEAR_END
@@ -2027,7 +2046,7 @@ public class ScheduleUtils {
             limitEndDate.setTime(limit_end_date.getValue().getDate());
             int limitendyear = limitEndDate.get(Calendar.YEAR);
             if ((limitendyear < YEAR_FIRST || limitendyear > YEAR_END)) {
-              msgList.add("『期限の終了日時』は"
+              msgList.add("『 <span class='em'>期限の終了日時</span> 』は"
                 + YEAR_FIRST
                 + "年から"
                 + YEAR_END
@@ -2108,23 +2127,6 @@ public class ScheduleUtils {
       }
     }
 
-    if (is_span) {
-      // 開始日時
-      start_date.validate(msgList);
-      int startyear = startDate.get(Calendar.YEAR);
-      if ((startyear < YEAR_FIRST || startyear > YEAR_END) && isCellPhone) {
-        msgList
-          .add("『開始日時』は" + YEAR_FIRST + "年から" + YEAR_END + "年の間で指定してください。");
-      }
-
-      // 終了日時
-      end_date.validate(msgList);
-      int endyear = endDate.get(Calendar.YEAR);
-      if ((endyear < YEAR_FIRST || endyear > YEAR_END) && isCellPhone) {
-        msgList
-          .add("『終了日時』は" + YEAR_FIRST + "年から" + YEAR_END + "年の間で指定してください。");
-      }
-    }
     return (msgList.size() == 0);
   }
 
