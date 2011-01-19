@@ -121,15 +121,15 @@ ${record.FacilityName}
 #ALcell_submit($career 'eventSubmit_doSchedule_change_status' '確定する')
 #if($!{result.Detail.isEditable()})
 #ALcell_submit($career "$event_submit" '編集する')
-#end
 #ALcell_submit($career 'eventSubmit_doSchedule_form_delete' '削除する')
+#end
 #elseif($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()})
 <input type="hidden" name="status" value="T">
 #ALcell_submit($career 'eventSubmit_doSchedule_change_status' '仮の予定にする')
 #if($!{result.Detail.isEditable()})
 #ALcell_submit($career "$event_submit" '編集する')
-#end
 #ALcell_submit($career 'eventSubmit_doSchedule_form_delete' '削除する')
+#end
 #end
 #ALcell_formfooter()
 #ALcell_hr($career '1')

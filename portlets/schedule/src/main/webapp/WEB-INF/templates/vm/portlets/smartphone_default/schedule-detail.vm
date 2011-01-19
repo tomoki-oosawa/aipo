@@ -155,9 +155,9 @@ ${record.FacilityName}<br />
 #if($!{result.Detail.isEditable()})
 <input class="submit" name="$event_submit" type="submit" value="編集する" />
 ##ALcell_submit($career "$event_submit" '編集する')
-#end
 <input class="submit" name="eventSubmit_doSchedule_form_delete" type="submit" value="削除する" />
 ##ALcell_submit($career 'eventSubmit_doSchedule_form_delete' '削除する')
+#end
 #elseif($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()})
 <input type="hidden" name="status" value="T">
 <input class="submit" name="eventSubmit_doSchedule_change_status" type="submit" value="仮の予定にする" />
@@ -165,9 +165,9 @@ ${record.FacilityName}<br />
 #if($!{result.Detail.isEditable()})
 <input class="submit" name="$event_submit" type="submit" value="編集する" />
 ##ALcell_submit($career "$event_submit" '編集する')
-#end
 <input class="submit" name="eventSubmit_doSchedule_form_delete" type="submit" value="削除する" />
 ##ALcell_submit($career 'eventSubmit_doSchedule_form_delete' '削除する')
+#end
 #end
 </p>
 #ALcell_formfooter()
