@@ -51,9 +51,8 @@ public class CellScheduleFormDateData extends AbstractCellScheduleFormData {
 
   /** <code>logger</code> logger */
   @SuppressWarnings("unused")
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(CellScheduleFormDateData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(CellScheduleFormDateData.class.getName());
 
   /**
    * 
@@ -66,7 +65,8 @@ public class CellScheduleFormDateData extends AbstractCellScheduleFormData {
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
-    String entityId = ALEipUtils.getParameter(rundata, context, "entityid");
+    String entityId =
+      ALEipUtils.getParameter(rundata, context, ALEipConstants.ENTITY_ID);
     if (entityId == null) {
       ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
     }
