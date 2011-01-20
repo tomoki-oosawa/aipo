@@ -38,6 +38,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALCellNumberField;
 import com.aimluck.commons.field.ALCellStringField;
 import com.aimluck.commons.field.ALDateContainer;
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.category.util.CommonCategoryUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
@@ -76,16 +77,16 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
       .getName());
 
   /** <code>name</code> 予定 */
-  private ALCellStringField name;
+  private ALStringField name;
 
   /** <code>place</code> 場所 */
-  private ALCellStringField place;
+  private ALStringField place;
 
   /** <code>note</code> 内容 */
-  private ALCellStringField note;
+  private ALStringField note;
 
   /** <code>public_flag</code> 公開/非公開フラグ */
-  private ALCellStringField public_flag;
+  private ALStringField public_flag;
 
   /** <code>todo_id</code> ToDo ID */
   private ALCellNumberField common_category_id;
@@ -256,19 +257,19 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
   @Override
   public void initField() {
     // 予定
-    name = new ALCellStringField();
+    name = new ALStringField();
     name.setFieldName("予定");
     name.setTrim(true);
     // 場所
-    place = new ALCellStringField();
+    place = new ALStringField();
     place.setFieldName("場所");
     place.setTrim(true);
     // 内容
-    note = new ALCellStringField();
+    note = new ALStringField();
     note.setFieldName("内容");
     note.setTrim(false);
     // 公開区分
-    public_flag = new ALCellStringField();
+    public_flag = new ALStringField();
     public_flag.setFieldName("公開区分");
     public_flag.setTrim(true);
     public_flag.setValue("O");
@@ -1318,7 +1319,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
    * 
    * @return
    */
-  public ALCellStringField getName() {
+  public ALStringField getName() {
     return name;
   }
 
@@ -1327,7 +1328,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
    * 
    * @return
    */
-  public ALCellStringField getNote() {
+  public ALStringField getNote() {
     return note;
   }
 
@@ -1336,7 +1337,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
    * 
    * @return
    */
-  public ALCellStringField getPlace() {
+  public ALStringField getPlace() {
     return place;
   }
 
@@ -1345,7 +1346,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
    * 
    * @return
    */
-  public ALCellStringField getPublicFlag() {
+  public ALStringField getPublicFlag() {
     return public_flag;
   }
 
