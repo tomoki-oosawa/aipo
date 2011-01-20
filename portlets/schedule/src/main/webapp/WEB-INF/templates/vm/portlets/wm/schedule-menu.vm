@@ -43,9 +43,16 @@
 </p>
 #foreach($schedule in $!record)
 <p><a href="$!jslink.getAction('controls.Maximize',$!portlet.ID).addQueryData('mode','detail').addQueryData('entityid', $!{schedule.ScheduleId}).addQueryData('view_date', $!daylist.get($daycount))">
-$schedule.StartDate&nbsp;-&nbsp;$schedule.EndDate #ALcell_br($career)$schedule.Name
+#if(! $!{schedule.isSpan()})
+$!{schedule.StartDate} - $!{schedule.EndDate}#ALcell_br($career)
+#else
+期間：
+#end
+$schedule.Name
 #if(!$schedule.Public)#ALcell_br($career) &nbsp;(非公開)#end
-#if(!$schedule.Repeat && $schedule.Pattern != 'N') #ALcell_br($career) &nbsp;(繰り返し)#end</a></p>
+#if(!$schedule.Repeat && $schedule.Pattern != 'N')#ALcell_br($career) &nbsp;(繰り返し)#end
+</a>
+</p>
 #end
 </div>
 #set($daycount = $daycount + 1)

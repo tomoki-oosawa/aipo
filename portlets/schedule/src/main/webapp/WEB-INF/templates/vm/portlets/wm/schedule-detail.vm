@@ -19,13 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 #set($career = 'wm')
-#if ($!{result.Detail.isRepeat()})
-#set ($event_submit = "eventSubmit_doSchedule_form_repeat")
-#elseif($!{result.Detail.isSpan()})
-#set ($event_submit = "eventSubmit_doSchedule_form_span")
-#else
-#set ($event_submit = "eventSubmit_doSchedule_form_oneday")
-#end
+#set ($event_submit = "eventSubmit_doSchedule_form")
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')")
 #set($methodlist = [["登録(1日)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_oneday','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()})"], ["登録(繰り返し)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_repeat','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()})"], ["登録(期間)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_span','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()})"]])
 #set($linklist = [["別ユーザーのスケジュールを見る", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_selectgroup','1')"], ["スケジュールへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
@@ -77,9 +71,9 @@ $!{result.Detail.DateForCell}
 <dd>
 #if($!result.Detail.isPublic())
 公開
-#elseif($!result.Detail.isPrivate())
+#elseif(!$!result.Detail.isHidden())
 非公開
-#elseif($!result.Detail.isHidden())
+#else
 完全に隠す
 #end
 </dd>
@@ -93,7 +87,7 @@ $!{result.Detail.DateForCell}
 $!record.AliasName
 #if($result.getStatus($record.UserId.Value) == "T")
 (仮)
-#elseif($result.getStatus($record.UserId.Value) == "R")
+#elseif($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
 #set($counter = $counter + 1)
 (削除)
 #end
@@ -115,15 +109,15 @@ $!record.AliasName
 ${record.FacilityName}<br />
 #end
 </dd>
-
 <dt>登録者名</dt>
 <dd>
 $!{result.Detail.CreateUser.AliasName}<br />($!{result.Detail.CreateDate})
 </dd>
 
 <dt>更新者名</dt>
-<dd>$!{result.Detail.UpdateUser.AliasName}<br />($!{result.Detail.UpdateDate})</dd>
-
+<dd>
+$!{result.Detail.UpdateUser.AliasName}<br />($!{result.Detail.UpdateDate})
+</dd>
 </dl>
 
 
@@ -131,6 +125,15 @@ $!{result.Detail.CreateUser.AliasName}<br />($!{result.Detail.CreateDate})
 <p class="center">
 <input type="hidden" name="entityid" value="$!{result.EntityId}">
 <input type="hidden" name="view_date" value="$!{result.ViewDate.toString()}">
+#if ($!{result.Detail.isRepeat()})
+<input type="hidden" name="schedule_type" value="R">
+#elseif($!{result.Detail.isSpan()})
+<input type="hidden" name="schedule_type" value="S">
+#else
+<input type="hidden" name="schedule_type" value="O">
+#end
+<input type="hidden" name="is_first" value="true">
+
 #if($!{result.Detail.isOwner()})
 <input class="submit" name="$event_submit" type="submit" value="編集する" />
 ##ALcell_submit($career "$event_submit" '編集する')
@@ -143,9 +146,9 @@ $!{result.Detail.CreateUser.AliasName}<br />($!{result.Detail.CreateDate})
 #if($!{result.Detail.isEditable()})
 <input class="submit" name="$event_submit" type="submit" value="編集する" />
 ##ALcell_submit($career "$event_submit" '編集する')
-#end
 <input class="submit" name="eventSubmit_doSchedule_form_delete" type="submit" value="削除する" />
 ##ALcell_submit($career 'eventSubmit_doSchedule_form_delete' '削除する')
+#end
 #elseif($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()})
 <input type="hidden" name="status" value="T">
 <input class="submit" name="eventSubmit_doSchedule_change_status" type="submit" value="仮の予定にする" />
@@ -153,9 +156,9 @@ $!{result.Detail.CreateUser.AliasName}<br />($!{result.Detail.CreateDate})
 #if($!{result.Detail.isEditable()})
 <input class="submit" name="$event_submit" type="submit" value="編集する" />
 ##ALcell_submit($career "$event_submit" '編集する')
-#end
 <input class="submit" name="eventSubmit_doSchedule_form_delete" type="submit" value="削除する" />
 ##ALcell_submit($career 'eventSubmit_doSchedule_form_delete' '削除する')
+#end
 #end
 </p>
 #ALcell_formfooter()
