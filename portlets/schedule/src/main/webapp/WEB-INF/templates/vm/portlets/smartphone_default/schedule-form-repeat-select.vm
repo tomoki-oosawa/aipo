@@ -39,7 +39,7 @@
 <input name="selectedgroup" type="radio" value="all" checked>（全体）#ALcell_br($career)
 #if($result.GroupList.size() > 0)
 #ALcell_hr($career '1')
-マイグループ#ALcell_br($career)
+Myグループ#ALcell_br($career)
 #foreach( $record in $result.GroupList )
 <input name="selectedgroup" type="radio" value="$!{record.Name}">$!record.AliasName#ALcell_br($career)
 #end

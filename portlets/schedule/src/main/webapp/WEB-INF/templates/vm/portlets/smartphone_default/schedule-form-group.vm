@@ -88,7 +88,7 @@ function formSubmit(value) {
 #ALcell_radius_footer($career)
 
 #if($result.GroupList.size() > 0)
-<h3>マイグループ</h3>
+<h3>Myグループ</h3>
 #ALcell_radius_header($career)
 #foreach( $record in $result.GroupList )
 #ALcell_li_header($career)
