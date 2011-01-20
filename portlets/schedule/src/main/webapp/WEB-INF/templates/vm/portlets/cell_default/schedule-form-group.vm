@@ -35,7 +35,7 @@
 
 #if ($!{result.isRepeat()})
 <input type="hidden" name="repeat_type" value="$!{result.FormData.RepeatType}">
-#if ($!{result.FormData.RepeatType.toString()} == "W") 
+#if ($!{result.FormData.RepeatType.toString()} == "W")
 #if ($!{result.FormData.Week0.toString()} == "TRUE") <input type="hidden" name="week_0" value="TRUE"> #end
 #if ($!{result.FormData.Week1.toString()} == "TRUE") <input type="hidden" name="week_1" value="TRUE"> #end
 #if ($!{result.FormData.Week2.toString()} == "TRUE") <input type="hidden" name="week_2" value="TRUE"> #end
@@ -65,8 +65,8 @@
 <input type="hidden" name="sharefacs" value="#foreach($record in $!{result.FormData.FacilityMemberList})$!{record.FacilityId}#if($facilitycount<$fmembersize),#set($facilitycount = $facilitycount + 1)#end#end">
 
 <input type="hidden" name="edit_flag" value="$!{result.FormData.EditFlag.toString()}">
-<input type="hidden" name="change_tmpreserve_flag" value="$!{result.FormData.ChangeTmpreserveFlag.toString()}"> 
-	
+<input type="hidden" name="change_tmpreserve_flag" value="$!{result.FormData.ChangeTmpreserveFlag.toString()}">
+
 #ALcell_center_header($career)参加ﾕｰｻﾞｰ選択#ALcell_center_footer($career)
 #ALcell_hr($career '1')
 ﾕｰｻﾞｰの所属するｸﾞﾙｰﾌﾟを選択してください。
@@ -74,7 +74,7 @@
 <input name="selectedgroup" type="radio" value="all" checked>（全体）#ALcell_br($career)
 #if($result.GroupList.size() > 0)
 #ALcell_hr($career '1')
-ﾏｲｸﾞﾙｰﾌﾟ#ALcell_br($career)
+Myｸﾞﾙｰﾌﾟ#ALcell_br($career)
 #foreach( $record in $result.GroupList )
 <input name="selectedgroup" type="radio" value="$!{record.Name}">$!record.AliasName#ALcell_br($career)
 #end
