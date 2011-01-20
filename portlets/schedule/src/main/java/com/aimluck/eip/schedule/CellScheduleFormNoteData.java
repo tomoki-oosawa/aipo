@@ -36,7 +36,6 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALCellNumberField;
-import com.aimluck.commons.field.ALCellStringField;
 import com.aimluck.commons.field.ALDateContainer;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.category.util.CommonCategoryUtils;
@@ -546,18 +545,20 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         map.setType(ScheduleUtils.SCHEDULEMAP_TYPE_USER);
       }
 
-      // グループに施設を追加する
-      for (FacilityResultData frd : form_data.getFacilityMemberList()) {
-        int facilityid = (int) frd.getFacilityId().getValue();
+      // 公開スケジュールの場合は、グループに施設を追加する
+      if ("O".equals(public_flag.getValue())) {
+        for (FacilityResultData frd : form_data.getFacilityMemberList()) {
+          int facilityid = (int) frd.getFacilityId().getValue();
 
-        EipTScheduleMap map = Database.create(EipTScheduleMap.class);
-        map.setEipTSchedule(schedule);
-        map.setUserId(Integer.valueOf(facilityid));
-        // O: 自スケジュール T: 仮スケジュール C: 確定スケジュール
-        map.setStatus("O");
-        map.setType(ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY);
-        map.setEipTCommonCategory(category1);
-        map.setCommonCategoryId(Integer.valueOf(1));
+          EipTScheduleMap map = Database.create(EipTScheduleMap.class);
+          map.setEipTSchedule(schedule);
+          map.setUserId(Integer.valueOf(facilityid));
+          // O: 自スケジュール T: 仮スケジュール C: 確定スケジュール
+          map.setStatus("O");
+          map.setType(ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY);
+          map.setEipTCommonCategory(category1);
+          map.setCommonCategoryId(Integer.valueOf(1));
+        }
       }
 
       Database.commit();
@@ -794,17 +795,19 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           }
 
           // グループに施設を追加する．
-          for (FacilityResultData frd : form_data.getFacilityMemberList()) {
-            int facilityid = (int) frd.getFacilityId().getValue();
+          if ("O".equals(public_flag.getValue())) {
+            for (FacilityResultData frd : form_data.getFacilityMemberList()) {
+              int facilityid = (int) frd.getFacilityId().getValue();
 
-            EipTScheduleMap map = Database.create(EipTScheduleMap.class);
-            map.setEipTSchedule(newSchedule);
-            map.setUserId(Integer.valueOf(facilityid));
-            // O: 自スケジュール T: 仮スケジュール C: 確定スケジュール
-            map.setStatus("O");
-            map.setType(ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY);
-            map.setEipTCommonCategory(category1);
-            map.setCommonCategoryId(Integer.valueOf(1));
+              EipTScheduleMap map = Database.create(EipTScheduleMap.class);
+              map.setEipTSchedule(newSchedule);
+              map.setUserId(Integer.valueOf(facilityid));
+              // O: 自スケジュール T: 仮スケジュール C: 確定スケジュール
+              map.setStatus("O");
+              map.setType(ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY);
+              map.setEipTCommonCategory(category1);
+              map.setCommonCategoryId(Integer.valueOf(1));
+            }
           }
         }
 
@@ -987,16 +990,18 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           map.setType(ScheduleUtils.SCHEDULEMAP_TYPE_USER);
         }
 
-        for (FacilityResultData frd : form_data.getFacilityMemberList()) {
-          int facilityid = (int) frd.getFacilityId().getValue();
+        if ("O".equals(public_flag.getValue())) {
+          for (FacilityResultData frd : form_data.getFacilityMemberList()) {
+            int facilityid = (int) frd.getFacilityId().getValue();
 
-          EipTScheduleMap map = Database.create(EipTScheduleMap.class);
-          map.setEipTSchedule(schedule);
-          map.setUserId(Integer.valueOf(facilityid));
-          map.setStatus("O");
-          map.setType(ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY);
-          map.setEipTCommonCategory(category1);
-          map.setCommonCategoryId(Integer.valueOf(1));
+            EipTScheduleMap map = Database.create(EipTScheduleMap.class);
+            map.setEipTSchedule(schedule);
+            map.setUserId(Integer.valueOf(facilityid));
+            map.setStatus("O");
+            map.setType(ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY);
+            map.setEipTCommonCategory(category1);
+            map.setCommonCategoryId(Integer.valueOf(1));
+          }
         }
       }
 
