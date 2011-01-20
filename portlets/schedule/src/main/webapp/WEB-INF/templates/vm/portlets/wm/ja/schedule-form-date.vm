@@ -69,7 +69,7 @@ function onChangeRepeat(form) {
 </select>
 <span id="repeatMonthlySpan" #if ($!{result.FormData.RepeatType.toString()} != "M") style="display:none;" #end><input type="text" name="month_day" size="2" maxlength="2" value="$!{result.FormData.MonthDay}"/>日</span>
 
-<div class="weaklycheck" id="repeatWeeklySpan" #if ($!{result.RepeatType.toString()} != "W") style="display:none;" #end>
+<div class="weaklycheck" id="repeatWeeklySpan" #if ($!{result.FormData.RepeatType.toString()} != "W") style="display:none;" #end>
 <p class="sun">日<br /><input name="week_0" type="checkbox" class="checkbox" #if ($!{result.FormData.Week0.toString()} == "TRUE") checked="checked" #end value="TRUE"/></p>
 <p>月<br /><input name="week_1" type="checkbox" class="checkbox" #if ($!{result.FormData.Week1.toString()} == "TRUE") checked="checked" #end value="TRUE"/></p>
 <p>火<br /><input name="week_2" type="checkbox" class="checkbox" #if ($!{result.FormData.Week2.toString()} == "TRUE") checked="checked" #end value="TRUE" /></p>
