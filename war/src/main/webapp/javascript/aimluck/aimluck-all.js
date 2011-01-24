@@ -7,8 +7,8 @@
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2010 Aimluck,Inc.
- * http://aipostyle.com/
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -345,8 +345,8 @@ function change_turn_option(select, index, delta) {
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2010 Aimluck,Inc.
- * http://aipostyle.com/
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -437,8 +437,8 @@ dojo.declare("aimluck.dnd.Draggable", dojo.dnd.Moveable , {
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2010 Aimluck,Inc.
- * http://aipostyle.com/
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -918,8 +918,8 @@ aimluck.io.switchCheckbox = function(checkbox) {
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2010 Aimluck,Inc.
- * http://aipostyle.com/
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -986,8 +986,8 @@ aimluck.utils.form.switchDisplay = function (viewId, hideId) {
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2010 Aimluck,Inc.
- * http://aipostyle.com/
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -1029,8 +1029,8 @@ aimluck.utils.createCSS = function(url) {
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2010 Aimluck,Inc.
- * http://aipostyle.com/
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -1137,8 +1137,8 @@ dojo.declare(
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2010 Aimluck,Inc.
- * http://aipostyle.com/
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -1391,8 +1391,8 @@ dojo.declare(
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2010 Aimluck,Inc.
- * http://aipostyle.com/
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -1445,8 +1445,8 @@ dojo.declare("aimluck.widget.Dropdown", [dijit.form.DropDownButton], {
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2010 Aimluck,Inc.
- * http://aipostyle.com/
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as

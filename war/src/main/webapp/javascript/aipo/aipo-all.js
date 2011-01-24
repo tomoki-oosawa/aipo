@@ -7,8 +7,8 @@
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2010 Aimluck,Inc.
- * http://aipostyle.com/
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -118,8 +118,8 @@ aipo.errorTreatment = function(jsondata, url) {
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2010 Aimluck,Inc.
- * http://aipostyle.com/
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -168,8 +168,8 @@ aipo.common.hideDialog = function() {
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2010 Aimluck,Inc.
- * http://aipostyle.com/
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -224,8 +224,8 @@ aipo.io.loadHtml = function(url, params, portletId){
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2010 Aimluck,Inc.
- * http://aipostyle.com/
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -324,8 +324,8 @@ dojo.declare("aipo.widget.DateCalendar", [dijit._Calendar], {
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2010 Aimluck,Inc.
- * http://aipostyle.com/
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -586,8 +586,8 @@ dojo.declare("aipo.widget.GroupSelectList", [dijit._Widget, dijit._Templated], {
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2010 Aimluck,Inc.
- * http://aipostyle.com/
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -855,8 +855,8 @@ dojo.declare("aipo.widget.MemberSelectList", [dijit._Widget, dijit._Templated], 
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2010 Aimluck,Inc.
- * http://aipostyle.com/
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -934,8 +934,8 @@ dojo.declare("aipo.widget.DropdownDatepicker", [aimluck.widget.Dropdown], {
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2010 Aimluck,Inc.
- * http://aipostyle.com/
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -1111,8 +1111,8 @@ dojo.declare("aipo.widget.DropdownGrouppicker", [aimluck.widget.Dropdown], {
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2010 Aimluck,Inc.
- * http://aipostyle.com/
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -1294,8 +1294,8 @@ dojo.declare("aipo.widget.DropdownMemberpicker", [aimluck.widget.Dropdown], {
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2010 Aimluck,Inc.
- * http://aipostyle.com/
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -1508,8 +1508,8 @@ dojo.declare("aipo.widget.GroupNormalSelectList", [dijit._Widget, dijit._Templat
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2010 Aimluck,Inc.
- * http://aipostyle.com/
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
