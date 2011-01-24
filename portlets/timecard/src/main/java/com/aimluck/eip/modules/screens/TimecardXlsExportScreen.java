@@ -35,7 +35,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -81,8 +81,8 @@ public class TimecardXlsExportScreen extends ALXlsScreen {
     userid = Integer.toString(ALEipUtils.getUserId(rundata));
 
     rootFolder =
-      TimecardUtils.getRootFolder(DatabaseOrmService.getInstance().getOrgId(
-        rundata), ALEipUtils.getUserId(rundata));
+      TimecardUtils.getRootFolder(Database.getDomainName(), ALEipUtils
+        .getUserId(rundata));
 
     // アクセス権
     if (target_user_id == null
@@ -202,8 +202,7 @@ public class TimecardXlsExportScreen extends ALXlsScreen {
   }
 
   /**
-   * アクセス権限チェック用メソッド。
-   * アクセス権限の機能名を返します。
+   * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
    * 
    * @return
    */
