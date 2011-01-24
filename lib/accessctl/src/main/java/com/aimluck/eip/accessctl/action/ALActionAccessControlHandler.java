@@ -110,15 +110,15 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
     StringBuffer sb = new StringBuffer();
     sb.append("SELECT ");
     sb.append(TurbineUser.USER_ID_PK_COLUMN);
-    sb.append(" FROM TURBINE_USER WHERE (");
+    sb.append(" FROM turbine_user WHERE (");
     sb.append(TurbineUser.USER_ID_PK_COLUMN);
     sb.append(" IN (SELECT ");
     sb.append(TurbineUser.USER_ID_PK_COLUMN);
-    sb.append(" FROM EIP_T_ACL_USER_ROLE_MAP WHERE ");
+    sb.append(" FROM turbine_user_group_role WHERE ");
     sb.append(EipTAclUserRoleMap.ROLE_ID_COLUMN);
     sb.append(" IN (SELECT ");
     sb.append(EipTAclUserRoleMap.ROLE_ID_COLUMN);
-    sb.append(" FROM EIP_T_ACL_ROLE WHERE ((");
+    sb.append(" FROM eip_t_acl_role WHERE ((");
     sb.append(EipTAclRole.ACL_TYPE_COLUMN);
     sb.append(" & ");
     sb.append(Integer.toString(acl_type));
@@ -128,7 +128,7 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
     sb.append(EipTAclPortletFeature.FEATURE_ID_PK_COLUMN);
     sb.append(" IN (SELECT ");
     sb.append(EipTAclPortletFeature.FEATURE_ID_PK_COLUMN);
-    sb.append(" FROM EIP_T_ACL_PORTLET_FEATURE WHERE ");
+    sb.append(" FROM eip_t_acl_portlet_feature WHERE ");
     sb.append(EipTAclPortletFeature.FEATURE_NAME_COLUMN);
     sb.append("='");
     sb.append(feat.trim());
@@ -162,15 +162,15 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
     StringBuffer sb = new StringBuffer();
     sb.append("SELECT ");
     sb.append(TurbineUser.USER_ID_PK_COLUMN);
-    sb.append(" FROM TURBINE_USER WHERE (");
+    sb.append(" FROM turbine_user WHERE (");
     sb.append(TurbineUser.USER_ID_PK_COLUMN);
     sb.append(" IN (SELECT ");
     sb.append(TurbineUser.USER_ID_PK_COLUMN);
-    sb.append(" FROM EIP_T_ACL_USER_ROLE_MAP WHERE ");
+    sb.append(" FROM turbine_user_group_role WHERE ");
     sb.append(EipTAclUserRoleMap.ROLE_ID_COLUMN);
     sb.append(" IN (SELECT ");
     sb.append(EipTAclUserRoleMap.ROLE_ID_COLUMN);
-    sb.append(" FROM EIP_T_ACL_ROLE WHERE ((");
+    sb.append(" FROM eip_t_acl_role WHERE ((");
     sb.append(EipTAclRole.ACL_TYPE_COLUMN);
     sb.append(" & ");
     sb.append(Integer.toString(acl_type));
@@ -180,7 +180,7 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
     sb.append(EipTAclPortletFeature.FEATURE_ID_PK_COLUMN);
     sb.append(" IN (SELECT ");
     sb.append(EipTAclPortletFeature.FEATURE_ID_PK_COLUMN);
-    sb.append(" FROM EIP_T_ACL_PORTLET_FEATURE WHERE ");
+    sb.append(" FROM eip_t_acl_portlet_feature WHERE ");
     sb.append(EipTAclPortletFeature.FEATURE_NAME_COLUMN);
     sb.append("='");
     sb.append(feat.trim());
@@ -225,11 +225,11 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
 
     sb.append("(SELECT ");
     sb.append(TurbineUser.USER_ID_PK_COLUMN);
-    sb.append(" FROM EIP_T_ACL_USER_ROLE_MAP WHERE ");
+    sb.append(" FROM turbine_user_group_role WHERE ");
     sb.append(EipTAclUserRoleMap.ROLE_ID_COLUMN);
     sb.append(" IN (SELECT ");
     sb.append(EipTAclUserRoleMap.ROLE_ID_COLUMN);
-    sb.append(" FROM EIP_T_ACL_ROLE WHERE ((");
+    sb.append(" FROM eip_t_acl_role WHERE ((");
     sb.append(EipTAclRole.ACL_TYPE_COLUMN);
     sb.append(" & ");
     sb.append(Integer.toString(aclNumber));
@@ -239,7 +239,7 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
     sb.append(EipTAclPortletFeature.FEATURE_ID_PK_COLUMN);
     sb.append(" IN (SELECT ");
     sb.append(EipTAclPortletFeature.FEATURE_ID_PK_COLUMN);
-    sb.append(" FROM EIP_T_ACL_PORTLET_FEATURE WHERE ");
+    sb.append(" FROM eip_t_acl_portlet_feature WHERE ");
     sb.append(EipTAclPortletFeature.FEATURE_NAME_COLUMN);
     sb.append("='");
     sb.append(feat.trim());
@@ -250,12 +250,12 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
     statement.append("SELECT DISTINCT ");
     statement
       .append("B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, D.POSITION ");
-    statement.append("FROM TURBINE_USER_GROUP_ROLE as A ");
-    statement.append("LEFT JOIN TURBINE_USER as B ");
+    statement.append("FROM turbine_user_group_role as A ");
+    statement.append("LEFT JOIN turbine_user as B ");
     statement.append("on A.USER_ID = B.USER_ID ");
-    statement.append("LEFT JOIN TURBINE_GROUP as C ");
+    statement.append("LEFT JOIN turbine_group as C ");
     statement.append("on A.GROUP_ID = C.GROUP_ID ");
-    statement.append("LEFT JOIN EIP_M_USER_POSITION as D ");
+    statement.append("LEFT JOIN eip_m_user_position as D ");
     statement.append("on A.USER_ID = D.USER_ID ");
     statement.append("WHERE B.USER_ID IN ");
     statement.append(sb);

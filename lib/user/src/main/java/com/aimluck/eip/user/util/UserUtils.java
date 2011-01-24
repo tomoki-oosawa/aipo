@@ -34,7 +34,6 @@ import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.user.beans.UserEmailLiteBean;
 import com.aimluck.eip.user.beans.UserGroupLiteBean;
 import com.aimluck.eip.user.beans.UserLiteBean;
@@ -47,8 +46,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class UserUtils {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(UserUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(UserUtils.class.getName());
 
   /** userLiteBeanキャッシュ用の変数 */
   private static Hashtable<String, ArrayList<UserLiteBean>> userLiteBeans =
@@ -66,14 +65,12 @@ public class UserUtils {
   public static synchronized List<UserLiteBean> getUserLiteBeansFromGroup(
       RunData rundata, String groupname, boolean includeLoginuser) {
     int login_user_id = null != rundata ? ALEipUtils.getUserId(rundata) : 0;
-    String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
-    if (userLiteBeans.containsKey(org_id + "_" + groupname)) {
+    String orgId = Database.getDomainName();
+    if (userLiteBeans.containsKey(orgId + "_" + groupname)) {
       /** キャッシュを出力する */
       @SuppressWarnings("unchecked")
       List<UserLiteBean> res =
-        (List<UserLiteBean>) userLiteBeans
-          .get(org_id + "_" + groupname)
-          .clone();
+        (List<UserLiteBean>) userLiteBeans.get(orgId + "_" + groupname).clone();
       if (!includeLoginuser && login_user_id > 3) {
         /** ログインユーザを返り値から除く */
         UserLiteBean user;
@@ -94,12 +91,12 @@ public class UserUtils {
       statement.append("SELECT DISTINCT ");
       statement
         .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, D.POSITION ");
-      statement.append("FROM TURBINE_USER_GROUP_ROLE as A ");
-      statement.append("LEFT JOIN TURBINE_USER as B ");
+      statement.append("FROM turbine_user_group_role as A ");
+      statement.append("LEFT JOIN turbine_user as B ");
       statement.append("  on A.USER_ID = B.USER_ID ");
-      statement.append("LEFT JOIN TURBINE_GROUP as C ");
+      statement.append("LEFT JOIN turbine_group as C ");
       statement.append("  on A.GROUP_ID = C.GROUP_ID ");
-      statement.append("LEFT JOIN EIP_M_USER_POSITION as D ");
+      statement.append("LEFT JOIN eip_m_user_position as D ");
       statement.append("  on A.USER_ID = D.USER_ID ");
       statement.append("WHERE B.USER_ID > 3 AND B.DISABLED = 'F'");
       statement.append(" AND C.GROUP_NAME = #bind($groupname) ");
@@ -125,7 +122,7 @@ public class UserUtils {
       }
 
       /** リストをキャッシュする */
-      userLiteBeans.put(org_id + "_" + groupname, cache_list);
+      userLiteBeans.put(orgId + "_" + groupname, cache_list);
 
       if (!includeLoginuser && login_user_id > 3) {
         /** 返り値からログインユーザを除く */
@@ -149,15 +146,15 @@ public class UserUtils {
   public static synchronized List<UserEmailLiteBean> getUserEmailLiteBeansFromGroup(
       RunData rundata, String groupname, boolean includeLoginuser) {
     int login_user_id = null != rundata ? ALEipUtils.getUserId(rundata) : 0;
-    String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    String orgId = Database.getDomainName();
     ArrayList<UserEmailLiteBean> list = new ArrayList<UserEmailLiteBean>();
     ArrayList<UserEmailLiteBean> cache_list =
       new ArrayList<UserEmailLiteBean>();// キャッシュに保存する用のリスト(返り値用のリストは値が変更される可能性があるので使えない)
-    if (userEmailLiteBeans.containsKey(org_id + "_" + groupname)) {
+    if (userEmailLiteBeans.containsKey(orgId + "_" + groupname)) {
       /** キャッシュを出力する */
       @SuppressWarnings("unchecked")
       List<UserEmailLiteBean> res =
-        (ArrayList<UserEmailLiteBean>) (userEmailLiteBeans.get(org_id
+        (ArrayList<UserEmailLiteBean>) (userEmailLiteBeans.get(orgId
           + "_"
           + groupname)).clone();
       if (!includeLoginuser && login_user_id > 3) {
@@ -178,12 +175,12 @@ public class UserUtils {
       statement.append("SELECT DISTINCT ");
       statement
         .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, B.EMAIL, D.POSITION ");
-      statement.append("FROM TURBINE_USER_GROUP_ROLE as A ");
-      statement.append("LEFT JOIN TURBINE_USER as B ");
+      statement.append("FROM turbine_user_group_role as A ");
+      statement.append("LEFT JOIN turbine_user as B ");
       statement.append("  on A.USER_ID = B.USER_ID ");
-      statement.append("LEFT JOIN TURBINE_GROUP as C ");
+      statement.append("LEFT JOIN turbine_group as C ");
       statement.append("  on A.GROUP_ID = C.GROUP_ID ");
-      statement.append("LEFT JOIN EIP_M_USER_POSITION as D ");
+      statement.append("LEFT JOIN eip_m_user_position as D ");
       statement.append("  on A.USER_ID = D.USER_ID ");
       statement.append("WHERE B.USER_ID > 3 AND B.DISABLED = 'F'");
       statement.append(" AND C.GROUP_NAME = #bind($groupname) ");
@@ -210,7 +207,7 @@ public class UserUtils {
       }
 
       /** リストをキャッシュする */
-      userEmailLiteBeans.put(org_id + "_" + groupname, cache_list);
+      userEmailLiteBeans.put(orgId + "_" + groupname, cache_list);
 
       if (!includeLoginuser && login_user_id > 3) {
         /** 返り値からログインユーザを除く */

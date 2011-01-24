@@ -72,8 +72,8 @@ import com.sk_jp.mail.MultipartUtility;
 public abstract class ALAbstractFolder implements ALFolder {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALAbstractFolder.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALAbstractFolder.class.getName());
 
   /** 受信 or 送信 */
   protected int type_mail = -1;
@@ -114,13 +114,11 @@ public abstract class ALAbstractFolder implements ALFolder {
   /** 現在のソートタイプ （asc:昇順、desc:降順） */
   private String current_sort_type;
 
-  protected final String LIST_SORT_STR =
-    new StringBuffer().append(this.getClass().getName()).append(
-      ALEipConstants.LIST_SORT).toString();
+  protected final String LIST_SORT_STR = new StringBuffer().append(
+    this.getClass().getName()).append(ALEipConstants.LIST_SORT).toString();
 
-  protected final String LIST_SORT_TYPE_STR =
-    new StringBuffer().append(this.getClass().getName()).append(
-      ALEipConstants.LIST_SORT_TYPE).toString();
+  protected final String LIST_SORT_TYPE_STR = new StringBuffer().append(
+    this.getClass().getName()).append(ALEipConstants.LIST_SORT_TYPE).toString();
 
   /**
    * コンストラクタ

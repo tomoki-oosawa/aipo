@@ -49,7 +49,6 @@ import com.aimluck.eip.mail.ALAbstractFolder;
 import com.aimluck.eip.mail.ALLocalMailMessage;
 import com.aimluck.eip.mail.ALMailMessage;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
@@ -155,10 +154,13 @@ public class ALFileLocalFolder extends ALAbstractFolder {
       if (res) {
         DataContext dataContext = null;
         if (orgId == null || "".equals(orgId)) {
-          dataContext = DatabaseOrmService.getInstance().getDataContext();
+          dataContext = Database.createDataContext(Database.DEFAULT_ORG);
         } else {
-          dataContext = DataContext.createDataContext(orgId);
+          dataContext = Database.createDataContext(orgId);
         }
+
+        DataContext.bindThreadDataContext(dataContext);
+
         res =
           insertMailToDB(
             dataContext,
@@ -190,7 +192,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
       if (res) {
         DataContext dataContext = null;
         if (orgId == null || "".equals(orgId)) {
-          dataContext = DatabaseOrmService.getInstance().getDataContext();
+          dataContext = DataContext.getThreadDataContext();
         } else {
           dataContext = DataContext.createDataContext(orgId);
         }

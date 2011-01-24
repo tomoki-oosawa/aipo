@@ -87,9 +87,8 @@ public class ALPop3MailReceiveThread implements Runnable {
   private int processType = PROCESS_TYPE_RECEIVEMAIL;
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService
-      .getLogger(ALPop3MailReceiveThread.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALPop3MailReceiveThread.class.getName());
 
   /**
    * コンストラクタ
@@ -158,6 +157,7 @@ public class ALPop3MailReceiveThread implements Runnable {
     } catch (Exception e) {
       logger.error("[ALFilePop3MailReceiveThread]", e);
     } finally {
+      DataContext.bindThreadDataContext(null);
       ob.updateAccountStat(
         mailAccountId,
         KEY_RECEIVE_STAT,

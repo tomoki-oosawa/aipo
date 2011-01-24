@@ -69,10 +69,7 @@ import org.apache.jetspeed.services.daemonfactory.DaemonFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
-import org.apache.jetspeed.services.rundata.JetspeedRunData;
-import org.apache.jetspeed.services.rundata.JetspeedRunDataService;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.commons.utils.ALStringUtil;
@@ -97,7 +94,6 @@ import com.aimluck.eip.mail.ALSmtpMailContext;
 import com.aimluck.eip.mail.ALSmtpMailSender;
 import com.aimluck.eip.mail.ALSmtpMailSenderContext;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.daemonfactory.AipoDaemonFactoryService;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
@@ -112,8 +108,8 @@ import com.sk_jp.mail.MailUtility;
  */
 public class ALMailUtils {
 
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALMailUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALMailUtils.class.getName());
 
   /** 改行文字 */
   public static final String CR = System.getProperty("line.separator");
@@ -174,14 +170,17 @@ public class ALMailUtils {
 
   public static final String DATE_FORMAT = "yyyy/MM/dd HH:mm";
 
-  public static final String storePath =
-    JetspeedResources.getString("aipo.home", "");
+  public static final String storePath = JetspeedResources.getString(
+    "aipo.home",
+    "");
 
-  public static final String rootFolderPath =
-    JetspeedResources.getString("aipo.mail.home", "");
+  public static final String rootFolderPath = JetspeedResources.getString(
+    "aipo.mail.home",
+    "");
 
-  public static final String categoryKey =
-    JetspeedResources.getString("aipo.mail.key", "");
+  public static final String categoryKey = JetspeedResources.getString(
+    "aipo.mail.key",
+    "");
 
   /** メールアカウントのパスワードを暗号化する時の共通鍵 */
   private static final String seacretPassword = "1t's a s3@cr3t k3y";
@@ -218,10 +217,12 @@ public class ALMailUtils {
     try {
       DataContext dataContext = null;
       if (orgId == null || "".equals(orgId)) {
-        dataContext = DatabaseOrmService.getInstance().getDataContext();
+        dataContext = Database.createDataContext(Database.DEFAULT_ORG);
       } else {
-        dataContext = DataContext.createDataContext(orgId);
+        dataContext = Database.createDataContext(orgId);
       }
+
+      DataContext.bindThreadDataContext(dataContext);
 
       SelectQuery<EipMMailAccount> query =
         Database.query(dataContext, EipMMailAccount.class);
@@ -1740,19 +1741,9 @@ public class ALMailUtils {
         record.getPort().intValue(),
         getServletName());
 
-    JetspeedRunDataService runDataService =
-      (JetspeedRunDataService) TurbineServices.getInstance().getService(
-        RunDataService.SERVICE_NAME);
-
-    JetspeedRunData rundata = null;
-    if (runDataService != null) {
-      rundata = runDataService.getCurrentRunData();
-    }
-
     if (domain != null && domain.length() > 0) {
       String endword;
-      String company_id =
-        rundata.getParameters().getString(DatabaseOrmService.ORG_PRE, "");
+      String company_id = Database.getDomainName();
       if (company_id == null || "".equals(company_id)) {
         endword = "";
       } else {

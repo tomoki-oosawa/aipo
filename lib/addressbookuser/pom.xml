@@ -7,7 +7,7 @@
   <parent>
     <artifactId>lib</artifactId>
     <groupId>com.aimluck.eip</groupId>
-    <version>5.1.2</version>
+    <version>6.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -16,7 +16,7 @@
   <version>${aipo.version}</version>
   <packaging>jar</packaging>
 
-  <name>addressbookuser</name>
+  <name>Aipo Addressbook User Library</name>
 
   <build>
     <plugins>
@@ -32,7 +32,7 @@
               <tasks>
                 <copy todir="../../war/target/aipo/WEB-INF/lib"
                   verbose="false" overwrite="true">
-                  <fileset dir="./target" includes="*.jar" />
+                  <fileset dir="./target" includes="*-${aipo.version}.jar" />
                 </copy>
               </tasks>
             </configuration>
