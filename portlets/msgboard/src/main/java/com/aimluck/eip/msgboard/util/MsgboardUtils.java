@@ -52,7 +52,6 @@ import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.msgboard.MsgboardCategoryResultData;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -69,23 +68,25 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 public class MsgboardUtils {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(MsgboardUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(MsgboardUtils.class.getName());
 
   /** 所有者の識別子 */
   public static final String OWNER_ID = "ownerid";
 
   /** 掲示板の添付ファイルを保管するディレクトリの指定 */
-  private static final String FOLDER_FILEDIR_MSGBOARD =
-    JetspeedResources.getString("aipo.filedir", "");
+  private static final String FOLDER_FILEDIR_MSGBOARD = JetspeedResources
+    .getString("aipo.filedir", "");
 
   /** 掲示板の添付ファイルを保管するディレクトリのカテゴリキーの指定 */
-  protected static final String CATEGORY_KEY =
-    JetspeedResources.getString("aipo.msgboard.categorykey", "");
+  protected static final String CATEGORY_KEY = JetspeedResources.getString(
+    "aipo.msgboard.categorykey",
+    "");
 
   /** デフォルトエンコーディングを表わすシステムプロパティのキー */
-  public static final String FILE_ENCODING =
-    JetspeedResources.getString("content.defaultencoding", "UTF-8");
+  public static final String FILE_ENCODING = JetspeedResources.getString(
+    "content.defaultencoding",
+    "UTF-8");
 
   /** 全てのユーザーが閲覧／返信可 */
   public static final int ACCESS_PUBLIC_ALL = 0;
@@ -120,10 +121,9 @@ public class MsgboardUtils {
    * @param rundata
    * @param context
    * @param isJoin
-   *            カテゴリテーブルをJOINするかどうか
+   *          カテゴリテーブルをJOINするかどうか
    * @return
    */
-  @SuppressWarnings("unchecked")
   public static EipTMsgboardTopic getEipTMsgboardParentTopic(RunData rundata,
       Context context, boolean isJoin) throws ALPageNotFoundException,
       ALDBErrorException {
@@ -167,6 +167,7 @@ public class MsgboardUtils {
       if (category.getPublicFlag().equals("T")) {
         accessible = true;
       } else {
+        @SuppressWarnings("unchecked")
         List<EipTMsgboardCategoryMap> maps =
           category.getEipTMsgboardCategoryMaps();
         for (EipTMsgboardCategoryMap map : maps) {
@@ -194,7 +195,7 @@ public class MsgboardUtils {
    * @param rundata
    * @param context
    * @param isSuperUser
-   *            カテゴリテーブルをJOINするかどうか
+   *          カテゴリテーブルをJOINするかどうか
    * @return
    */
   public static EipTMsgboardTopic getEipTMsgboardTopicReply(RunData rundata,
@@ -283,7 +284,7 @@ public class MsgboardUtils {
    * @param rundata
    * @param context
    * @param isJoin
-   *            カテゴリテーブルをJOINするかどうか
+   *          カテゴリテーブルをJOINするかどうか
    * @return
    */
   public static List<EipTMsgboardTopic> getEipTMsgboardTopicList(
@@ -354,7 +355,7 @@ public class MsgboardUtils {
    * @param rundata
    * @param context
    * @param isSuperUser
-   *            カテゴリテーブルをJOINするかどうか
+   *          カテゴリテーブルをJOINするかどうか
    * @return
    */
   public static List<EipTMsgboardTopic> getEipTMsgboardTopicListToDeleteTopic(
@@ -737,10 +738,10 @@ public class MsgboardUtils {
         return null;
       }
 
-      String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+      String orgId = Database.getDomainName();
       File folder =
         FileuploadUtils.getFolder(
-          org_id,
+          orgId,
           ALEipUtils.getUserId(rundata),
           folderName);
       String folderpath = folder.getAbsolutePath();
@@ -840,7 +841,7 @@ public class MsgboardUtils {
     }
 
     int uid = ALEipUtils.getUserId(rundata);
-    String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    String orgId = Database.getDomainName();
 
     List<Integer> hadfileids = new ArrayList<Integer>();
     for (FileuploadLiteBean file : fileuploadList) {
@@ -868,7 +869,7 @@ public class MsgboardUtils {
       int delsize = delFiles.size();
       for (int i = 0; i < delsize; i++) {
         file =
-          new File(MsgboardUtils.getSaveDirPath(org_id, uid)
+          new File(MsgboardUtils.getSaveDirPath(orgId, uid)
             + (delFiles.get(i)).getFilePath());
         if (file.exists()) {
           file.delete();
@@ -889,7 +890,7 @@ public class MsgboardUtils {
         String[] acceptExts = ImageIO.getWriterFormatNames();
         byte[] fileThumbnail =
           FileuploadUtils.getBytesShrinkFilebean(
-            org_id,
+            orgId,
             folderName,
             uid,
             filebean,
@@ -900,7 +901,7 @@ public class MsgboardUtils {
 
         String filename =
           FileuploadUtils.getNewFileName(MsgboardUtils.getSaveDirPath(
-            org_id,
+            orgId,
             uid));
 
         // 新規オブジェクトモデル
@@ -924,15 +925,15 @@ public class MsgboardUtils {
 
         // ファイルの移動
         File srcFile =
-          FileuploadUtils.getAbsolutePath(org_id, uid, folderName, filebean
+          FileuploadUtils.getAbsolutePath(orgId, uid, folderName, filebean
             .getFileId());
         File destFile =
-          new File(MsgboardUtils.getAbsolutePath(org_id, uid, filename));
+          new File(MsgboardUtils.getAbsolutePath(orgId, uid, filename));
         FileuploadUtils.copyFile(srcFile, destFile);
       }
 
       // 添付ファイル保存先のフォルダを削除
-      File folder = FileuploadUtils.getFolder(org_id, uid, folderName);
+      File folder = FileuploadUtils.getFolder(orgId, uid, folderName);
       FileuploadUtils.deleteFolder(folder);
     } catch (Exception e) {
       Database.rollback();

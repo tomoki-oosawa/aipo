@@ -25,7 +25,7 @@ import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardFile;
 import com.aimluck.eip.msgboard.util.MsgboardUtils;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 
 /**
  * 掲示板トピックの添付ファイルの一覧を処理するクラスです。
@@ -47,9 +47,9 @@ public class MsgboardTopicFileRawScreen extends FileuploadRawScreen {
       EipTMsgboardFile msgboardfile =
         MsgboardUtils.getEipTMsgboardFile(rundata);
 
-      super.setFilePath(MsgboardUtils.getSaveDirPath(DatabaseOrmService
-        .getInstance()
-        .getOrgId(rundata), msgboardfile.getOwnerId().intValue())
+      super.setFilePath(MsgboardUtils.getSaveDirPath(
+        Database.getDomainName(),
+        msgboardfile.getOwnerId().intValue())
         + msgboardfile.getFilePath());
       super.setFileName(msgboardfile.getFileName());
       super.doOutput(rundata);

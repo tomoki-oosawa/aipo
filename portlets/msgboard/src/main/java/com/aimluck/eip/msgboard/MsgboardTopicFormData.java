@@ -49,7 +49,6 @@ import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -66,8 +65,8 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 public class MsgboardTopicFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(MsgboardTopicFormData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(MsgboardTopicFormData.class.getName());
 
   /** トピック名 */
   private ALStringField topic_name;
@@ -97,7 +96,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
   private EipTMsgboardCategory category;
 
-  private String org_id;
+  private String orgId;
 
   private String aclPortletFeature = null;
 
@@ -126,7 +125,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
     is_new_category = rundata.getParameters().getBoolean("is_new_category");
 
     uid = ALEipUtils.getUserId(rundata);
-    org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    orgId = Database.getDomainName();
 
     folderName = rundata.getParameters().getString("folderName");
 
@@ -369,7 +368,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
         int fsize = fpaths.size();
         for (int i = 0; i < fsize; i++) {
           file =
-            new File(MsgboardUtils.getSaveDirPath(org_id, uid) + fpaths.get(i));
+            new File(MsgboardUtils.getSaveDirPath(orgId, uid) + fpaths.get(i));
           if (file.exists()) {
             file.delete();
           }
@@ -474,7 +473,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
         }
       }
 
-      File folder = FileuploadUtils.getFolder(org_id, uid, folderName);
+      File folder = FileuploadUtils.getFolder(orgId, uid, folderName);
       // 添付ファイル保存先のフォルダを削除
       FileuploadUtils.deleteFolder(folder);
     } catch (Exception ex) {
@@ -626,7 +625,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
         }
       }
 
-      File folder = FileuploadUtils.getFolder(org_id, uid, folderName);
+      File folder = FileuploadUtils.getFolder(orgId, uid, folderName);
       // 添付ファイル保存先のフォルダを削除
       FileuploadUtils.deleteFolder(folder);
     } catch (Exception ex) {

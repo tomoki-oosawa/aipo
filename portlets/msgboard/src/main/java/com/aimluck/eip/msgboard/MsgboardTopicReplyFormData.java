@@ -47,7 +47,6 @@ import com.aimluck.eip.modules.screens.MsgboardTopicDetailScreen;
 import com.aimluck.eip.modules.screens.MsgboardTopicFormJSONScreen;
 import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
@@ -83,7 +82,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
 
   private int uid;
 
-  private String org_id;
+  private String orgId;
 
   /** アクセス権限の機能名 */
   private String aclPortletFeature = null;
@@ -112,7 +111,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
     super.init(action, rundata, context);
 
     uid = ALEipUtils.getUserId(rundata);
-    org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    orgId = Database.getDomainName();
 
     folderName = rundata.getParameters().getString("folderName");
 
@@ -273,7 +272,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
         int fsize = fpaths.size();
         for (int i = 0; i < fsize; i++) {
           file =
-            new File(MsgboardUtils.getSaveDirPath(org_id, uid) + fpaths.get(i));
+            new File(MsgboardUtils.getSaveDirPath(orgId, uid) + fpaths.get(i));
           if (file.exists()) {
             file.delete();
           }
@@ -376,7 +375,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
             _id.intValue());
         }
       }
-      File folder = FileuploadUtils.getFolder(org_id, uid, folderName);
+      File folder = FileuploadUtils.getFolder(orgId, uid, folderName);
       // 添付ファイル保存先のフォルダを削除
       FileuploadUtils.deleteFolder(folder);
     } catch (Exception e) {
