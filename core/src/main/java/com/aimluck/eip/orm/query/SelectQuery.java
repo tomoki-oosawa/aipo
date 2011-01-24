@@ -29,8 +29,6 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.map.DbAttribute;
 import org.apache.cayenne.map.ObjEntity;
 
-import com.aimluck.eip.orm.DatabaseOrmService;
-
 public class SelectQuery<M> extends AbstractQuery<M> {
 
   private static final long serialVersionUID = 5404111688862773398L;
@@ -47,7 +45,7 @@ public class SelectQuery<M> extends AbstractQuery<M> {
     super(rootClass);
     delegate = new CustomSelectQuery(rootClass);
     countQuery = new CountQuery(rootClass);
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
+    dataContext = DataContext.getThreadDataContext();
   }
 
   public SelectQuery(DataContext dataContext, Class<M> rootClass) {
@@ -64,7 +62,7 @@ public class SelectQuery<M> extends AbstractQuery<M> {
     this.rootClass = rootClass;
     delegate = new CustomSelectQuery(rootClass, qualifier);
     countQuery = new CountQuery(rootClass);
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
+    dataContext = DataContext.getThreadDataContext();
   }
 
   public SelectQuery(DataContext dataContext, Class<M> rootClass,

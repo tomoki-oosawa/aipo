@@ -53,7 +53,6 @@ import com.aimluck.eip.cayenne.om.security.TurbineRole;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
@@ -171,7 +170,7 @@ public class ALGroupManagement extends TurbineBaseService implements
    */
   protected void addDefaultGroupPSML(Group group) throws GroupException {
     try {
-      String org_id = DatabaseOrmService.getInstance().getOrgId(getRunData());
+      String orgId = Database.getDomainName();
 
       JetspeedRunDataService runDataService =
         (JetspeedRunDataService) TurbineServices.getInstance().getService(
@@ -180,7 +179,7 @@ public class ALGroupManagement extends TurbineBaseService implements
       Profile profile = Profiler.createProfile();
       profile.setGroup(group);
       profile.setMediaType("html");
-      profile.setOrgName(org_id);
+      profile.setOrgName(orgId);
       Profiler.createProfile(rundata, profile);
     } catch (ProfileException e) {
       try {

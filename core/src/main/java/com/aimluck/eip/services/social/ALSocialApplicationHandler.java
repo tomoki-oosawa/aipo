@@ -1,0 +1,221 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package com.aimluck.eip.services.social;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
+
+import com.aimluck.eip.common.ALApplication;
+import com.aimluck.eip.common.ALOAuthConsumer;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.services.social.gadgets.ALGadgetSpec;
+import com.aimluck.eip.services.social.gadgets.ALOAuthService;
+import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
+import com.aimluck.eip.services.social.model.ALApplicationPutRequest;
+import com.aimluck.eip.services.social.model.ALOAuthConsumerPutRequest;
+
+/**
+ * 
+ */
+public abstract class ALSocialApplicationHandler {
+
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALSocialApplicationHandler.class.getName());
+
+  public abstract ResultList<ALApplication> getApplicationList(
+      ALApplicationGetRequest request);
+
+  public abstract ALApplication getApplication(ALApplicationGetRequest request);
+
+  public abstract void createApplication(ALApplicationPutRequest request);
+
+  public abstract void updateApplication(String appId,
+      ALApplicationPutRequest request);
+
+  public abstract void deleteApplication(String... appIdList);
+
+  public abstract void deleteApplication(List<String> appIdList);
+
+  public abstract void enableApplication(String... appIdList);
+
+  public abstract void enableApplication(List<String> appIdList);
+
+  public abstract void disableApplication(String... appIdList);
+
+  public abstract void disableApplication(List<String> appIdList);
+
+  public abstract boolean checkApplicationAvailability(String appId);
+
+  public abstract List<ALOAuthConsumer> getOAuthConsumer(String appId);
+
+  public abstract void putOAuthConsumer(ALOAuthConsumerPutRequest request);
+
+  public abstract String getContainerConfig(Property property);
+
+  public abstract void putContainerConfig(Property property, String value);
+
+  public static enum Property {
+
+    LOCKED_DOMAIN_REQUIRED("lockedDomainRequired") {
+
+      @Override
+      public String defaultValue() {
+        return "false";
+      }
+    },
+
+    LOCKED_DOMAIN_SUFFIX("lockedDomainSuffix") {
+      @Override
+      public String defaultValue() {
+        return ".example.com";
+      }
+    },
+
+    UNLOCKED_DOMAIN("unLockedDomain") {
+      @Override
+      public String defaultValue() {
+        return "www.example.com";
+      }
+    };
+
+    private final String property;
+
+    private Property(String property) {
+      this.property = property;
+    }
+
+    @Override
+    public String toString() {
+      return this.property;
+    }
+
+    public abstract String defaultValue();
+  }
+
+  protected String generateConsumerKey(String url) {
+    return new StringBuilder(Database.getDomainName()).append(":").append(
+      new String(Base64.encodeBase64(DigestUtils.sha(new StringBuilder()
+        .append(System.nanoTime())
+        .append("::")
+        .append(url)
+        .toString()
+        .getBytes()))).replace("=", "")).toString();
+  }
+
+  protected String generateConsumerSecret() {
+    return DigestUtils.shaHex(new StringBuilder(UUID.randomUUID().toString())
+      .append(System.nanoTime())
+      .toString());
+  }
+
+  public ALGadgetSpec getMetaData(String specUrl) {
+    return getMetaData(specUrl, false);
+  }
+
+  public ALGadgetSpec getMetaData(String specUrl, boolean isDetail) {
+    List<String> specUrls = new ArrayList<String>();
+    specUrls.add(specUrl);
+    Map<String, ALGadgetSpec> metaData = getMetaData(specUrls, isDetail);
+    return metaData.get(specUrl);
+  }
+
+  public Map<String, ALGadgetSpec> getMetaData(List<String> specUrls) {
+    return getMetaData(specUrls, false);
+  }
+
+  public Map<String, ALGadgetSpec> getMetaData(List<String> specUrls,
+      boolean isDetail) {
+    Map<String, ALGadgetSpec> maps = new HashMap<String, ALGadgetSpec>();
+    try {
+      HttpClient httpClient = new HttpClient();
+      PostMethod postMethod =
+        new PostMethod("http://localhost:8080/gadgets/metadata");
+      postMethod.addRequestHeader("Content-Type", "application/javascript");
+      postMethod.addParameter("st", "default:st");
+      postMethod.addParameter("req", "1");
+      postMethod.addParameter("callback", "1");
+      JSONObject jsonObject = new JSONObject();
+      JSONObject context = new JSONObject();
+      context.put("country", "JP");
+      context.put("language", "ja");
+      context.put("view", "home");
+      context.put("container", "default");
+      if (isDetail) {
+        context.put("withDescription", "1");
+        context.put("withOAuthService", "1");
+      }
+      JSONArray gadgets = new JSONArray();
+      for (String specUrl : specUrls) {
+        JSONObject gadget = new JSONObject();
+        gadget.put("url", specUrl);
+        gadget.put("moduleId", 1);
+        gadgets.add(gadget);
+      }
+      jsonObject.put("context", context);
+      jsonObject.put("gadgets", gadgets);
+      postMethod.setRequestEntity(new StringRequestEntity(
+        jsonObject.toString(),
+        "application/javascript",
+        "UTF-8"));
+      httpClient.executeMethod(postMethod);
+      String result = postMethod.getResponseBodyAsString();
+      JSONObject fromObject = JSONObject.fromObject(result);
+      JSONArray jsonArray = (JSONArray) fromObject.get("gadgets");
+      Map<String, Class<?>> classMap = new HashMap<String, Class<?>>();
+      classMap.put("oauthService", ALOAuthService.class);
+      int size = jsonArray.size();
+      for (int i = 0; i < size; i++) {
+        try {
+          JSONObject object = jsonArray.getJSONObject(i);
+          Object e = object.get("errors");
+          if (e == null) {
+            ALGadgetSpec spec =
+              (ALGadgetSpec) JSONObject.toBean(
+                object,
+                ALGadgetSpec.class,
+                classMap);
+            maps.put(spec.getUrl(), spec);
+          }
+        } catch (Throwable t) {
+          logger.warn(t);
+        }
+      }
+    } catch (Throwable t) {
+      logger.warn(t);
+    }
+    return maps;
+  }
+
+}

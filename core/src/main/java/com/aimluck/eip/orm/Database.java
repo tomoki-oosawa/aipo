@@ -23,6 +23,8 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.apache.cayenne.CayenneException;
 import org.apache.cayenne.DataObject;
 import org.apache.cayenne.DataObjectUtils;
@@ -30,7 +32,13 @@ import org.apache.cayenne.DataRow;
 import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.Persistent;
 import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.access.DataDomain;
+import org.apache.cayenne.access.DataNode;
 import org.apache.cayenne.access.Transaction;
+import org.apache.cayenne.conf.Configuration;
+import org.apache.cayenne.conf.CustomDBCPDataSourceFactory;
+import org.apache.cayenne.conf.DBCPDataSourceFactory;
+import org.apache.cayenne.dba.AutoAdapter;
 import org.apache.cayenne.exp.Expression;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -46,6 +54,10 @@ public class Database {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(Database.class.getName());
+
+  public static final String DEFAULT_ORG = "org001";
+
+  protected static final String SHARED_DOMAIN = "SharedDomain";
 
   /**
    * 検索用クエリを作成します。
@@ -132,10 +144,7 @@ public class Database {
    * @return
    */
   public static <M> M get(Class<M> modelClass, Object primaryKey) {
-    return get(
-      DatabaseOrmService.getInstance().getDataContext(),
-      modelClass,
-      primaryKey);
+    return get(DataContext.getThreadDataContext(), modelClass, primaryKey);
   }
 
   /**
@@ -162,11 +171,7 @@ public class Database {
    * @return
    */
   public static <M> M get(Class<M> modelClass, String key, Object value) {
-    return get(
-      DatabaseOrmService.getInstance().getDataContext(),
-      modelClass,
-      key,
-      value);
+    return get(DataContext.getThreadDataContext(), modelClass, key, value);
   }
 
   /**
@@ -193,7 +198,7 @@ public class Database {
    * @return
    */
   public static <M> M create(Class<M> modelClass) {
-    return create(DatabaseOrmService.getInstance().getDataContext(), modelClass);
+    return create(DataContext.getThreadDataContext(), modelClass);
   }
 
   /**
@@ -216,7 +221,7 @@ public class Database {
    * @param target
    */
   public static void delete(Persistent target) {
-    delete(DatabaseOrmService.getInstance().getDataContext(), target);
+    delete(DataContext.getThreadDataContext(), target);
   }
 
   /**
@@ -235,7 +240,7 @@ public class Database {
    * @param target
    */
   public static void deleteAll(List<?> target) {
-    deleteAll(DatabaseOrmService.getInstance().getDataContext(), target);
+    deleteAll(DataContext.getThreadDataContext(), target);
   }
 
   /**
@@ -255,7 +260,7 @@ public class Database {
    * @param target
    */
   public static void deleteAll(DataObject... target) {
-    deleteAll(DatabaseOrmService.getInstance().getDataContext(), target);
+    deleteAll(DataContext.getThreadDataContext(), target);
   }
 
   /**
@@ -273,7 +278,7 @@ public class Database {
    * 
    */
   public static void commit() {
-    commit(DatabaseOrmService.getInstance().getDataContext());
+    commit(DataContext.getThreadDataContext());
   }
 
   /**
@@ -289,7 +294,6 @@ public class Database {
         threadTransaction.commit();
       } catch (IllegalStateException e) {
         logger.error(e.getMessage(), e);
-        e.printStackTrace();
       } catch (SQLException e) {
         logger.error(e.getMessage(), e);
       } catch (CayenneException e) {
@@ -305,7 +309,7 @@ public class Database {
    * 
    */
   public static void rollback() {
-    rollback(DatabaseOrmService.getInstance().getDataContext());
+    rollback(DataContext.getThreadDataContext());
   }
 
   /**
@@ -335,6 +339,46 @@ public class Database {
     } else {
       return dataRow.get(((String) key).toUpperCase());
     }
+  }
+
+  public static String getDomainName() {
+    try {
+      return DataContext.getThreadDataContext().getParentDataDomain().getName();
+    } catch (Throwable ignore) {
+      return null;
+    }
+  }
+
+  public synchronized static DataContext createDataContext(String orgId)
+      throws Exception {
+
+    DataDomain domain = Configuration.getSharedConfiguration().getDomain(orgId);
+    if (domain == null) {
+      DataDomain dataDomain =
+        Configuration.getSharedConfiguration().getDomain(SHARED_DOMAIN);
+
+      DataDomain destDataDomain =
+        new DataDomain(orgId, dataDomain.getProperties());
+      destDataDomain.setEntityResolver(dataDomain.getEntityResolver());
+      destDataDomain.setEventManager(dataDomain.getEventManager());
+      destDataDomain
+        .setTransactionDelegate(dataDomain.getTransactionDelegate());
+      DataNode dataNode = new DataNode(orgId + "domainNode");
+      dataNode.setDataMaps(dataDomain.getDataMaps());
+      DBCPDataSourceFactory factory = new CustomDBCPDataSourceFactory();
+      factory.initializeWithParentConfiguration(Configuration
+        .getSharedConfiguration());
+      DataSource dataSource =
+        factory.getDataSource("datasource/dbcp-" + orgId + ".properties");
+
+      dataNode.setDataSource(dataSource);
+      dataNode.setAdapter(new AutoAdapter(dataSource));
+      destDataDomain.addNode(dataNode);
+      Configuration.getSharedConfiguration().addDomain(destDataDomain);
+    }
+
+    return DataContext.createDataContext(orgId);
+
   }
 
   private Database() {

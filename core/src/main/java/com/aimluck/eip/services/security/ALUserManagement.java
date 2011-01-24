@@ -73,7 +73,6 @@ import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
@@ -147,7 +146,7 @@ public class ALUserManagement extends TurbineBaseService implements
         .intValue() : 0);
       return baseuser;
     } catch (Exception e) {
-     logger.error(e);
+      logger.error(e);
       return null;
     }
   }
@@ -454,7 +453,7 @@ public class ALUserManagement extends TurbineBaseService implements
    */
   public void addDefaultPSML(JetspeedUser user)
       throws JetspeedSecurityException {
-    String org_id = DatabaseOrmService.getInstance().getOrgId(getRunData());
+    String orgId = Database.getDomainName();
     for (int ix = 0; ix < roles.length; ix++) {
       try {
         JetspeedSecurity.grantRole(user.getUserName(), JetspeedSecurity
@@ -473,7 +472,7 @@ public class ALUserManagement extends TurbineBaseService implements
         Profile profile = Profiler.createProfile();
         profile.setUser(user);
         profile.setMediaType("html");
-        profile.setOrgName(org_id);
+        profile.setOrgName(orgId);
         Profiler.createProfile(getRunData(), profile);
       }
     } catch (Exception e) {

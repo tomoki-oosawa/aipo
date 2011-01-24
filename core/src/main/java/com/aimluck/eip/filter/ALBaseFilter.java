@@ -28,14 +28,18 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.cayenne.CayenneException;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.access.Transaction;
+import org.apache.cayenne.conf.ServletUtil;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 import com.aimluck.eip.orm.DataContextLocator;
+import com.aimluck.eip.orm.Database;
 
 /**
  *
@@ -63,8 +67,19 @@ public class ALBaseFilter implements Filter {
     DataContext previousDataContext = null;
     try {
       previousDataContext = DataContextLocator.get();
+      DataContext dataContext = null;
+      try {
+        dataContext =
+          Database.createDataContext(getCurrentOrgId(
+            (HttpServletRequest) request,
+            (HttpServletResponse) response));
+      } catch (Exception e) {
+        logger.error(e, e);
+      }
+      DataContext.bindThreadDataContext(dataContext);
       filterChain.doFilter(request, response);
     } finally {
+      DataContext.bindThreadDataContext(null);
       Transaction threadTransaction = Transaction.getThreadTransaction();
       if (threadTransaction != null) {
         try {
@@ -89,6 +104,11 @@ public class ALBaseFilter implements Filter {
    * @throws ServletException
    */
   public void init(FilterConfig filterConfig) throws ServletException {
+    ServletUtil.initializeSharedConfiguration(filterConfig.getServletContext());
   }
 
+  protected String getCurrentOrgId(HttpServletRequest request,
+      HttpServletResponse response) {
+    return Database.DEFAULT_ORG;
+  }
 }

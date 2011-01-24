@@ -33,8 +33,6 @@ import org.apache.cayenne.map.DbEntity;
 import org.apache.cayenne.map.ObjAttribute;
 import org.apache.cayenne.map.ObjEntity;
 
-import com.aimluck.eip.orm.DatabaseOrmService;
-
 public abstract class AbstractQuery<M> implements Query<M> {
 
   protected DataContext dataContext;
@@ -43,13 +41,12 @@ public abstract class AbstractQuery<M> implements Query<M> {
 
   public AbstractQuery(Class<M> rootClass) {
     this.rootClass = rootClass;
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
+    dataContext = DataContext.getThreadDataContext();
   }
 
   public AbstractQuery(DataContext dataContext, Class<M> rootClass) {
     this.rootClass = rootClass;
     this.dataContext = dataContext;
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
   }
 
   public M fetchSingle() {

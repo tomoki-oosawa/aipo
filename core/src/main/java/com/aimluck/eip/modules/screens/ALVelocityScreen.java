@@ -40,7 +40,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.orgutils.ALOrgUtilsFactoryService;
@@ -217,7 +217,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
     ALOrgUtilsHandler handler =
       ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
     Map<String, String> attribute =
-      handler.getParameters(DatabaseOrmService.getInstance().getOrgId(rundata));
+      handler.getParameters(Database.getDomainName());
     for (Map.Entry<String, String> e : attribute.entrySet()) {
       context.put(e.getKey(), e.getValue());
     }

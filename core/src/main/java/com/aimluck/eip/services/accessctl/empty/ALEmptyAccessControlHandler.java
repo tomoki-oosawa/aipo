@@ -39,9 +39,8 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 public class ALEmptyAccessControlHandler extends ALAccessControlHandler {
 
   @SuppressWarnings("unused")
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALEmptyAccessControlHandler.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALEmptyAccessControlHandler.class.getName());
 
   @Override
   public boolean hasAuthority(int userId, String featerName, int aclType) {
@@ -62,7 +61,7 @@ public class ALEmptyAccessControlHandler extends ALAccessControlHandler {
     StringBuffer sb = new StringBuffer();
     sb.append("SELECT ");
     sb.append(TurbineUser.USER_ID_PK_COLUMN);
-    sb.append(" FROM TURBINE_USER WHERE ");
+    sb.append(" FROM turbine_user WHERE ");
     sb.append(TurbineUser.USER_ID_PK_COLUMN);
     sb.append(" != ");
     sb.append(Integer.toString(uid));
@@ -92,7 +91,7 @@ public class ALEmptyAccessControlHandler extends ALAccessControlHandler {
     StringBuffer sb = new StringBuffer();
     sb.append("SELECT ");
     sb.append(TurbineUser.USER_ID_PK_COLUMN);
-    sb.append(" FROM TURBINE_USER WHERE (");
+    sb.append(" FROM turbine_user WHERE (");
     sb.append(TurbineUser.USER_ID_PK_COLUMN);
     sb.append(" in (");
     for (int i = 0; i < u_size; i++) {
@@ -131,12 +130,12 @@ public class ALEmptyAccessControlHandler extends ALAccessControlHandler {
     statement.append("SELECT DISTINCT ");
     statement
       .append("B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, D.POSITION ");
-    statement.append("FROM TURBINE_USER_GROUP_ROLE as A ");
-    statement.append("LEFT JOIN TURBINE_USER as B ");
+    statement.append("FROM turbine_user_group_role as A ");
+    statement.append("LEFT JOIN turbine_user as B ");
     statement.append("on A.USER_ID = B.USER_ID ");
-    statement.append("LEFT JOIN TURBINE_GROUP as C ");
+    statement.append("LEFT JOIN turbine_group as C ");
     statement.append("on A.GROUP_ID = C.GROUP_ID ");
-    statement.append("LEFT JOIN EIP_M_USER_POSITION as D ");
+    statement.append("LEFT JOIN eip_m_user_position as D ");
     statement.append("on A.USER_ID = D.USER_ID ");
     statement.append("WHERE B.DISABLED = 'F'");
     statement.append(" AND C.GROUP_NAME = #bind($groupname) ");

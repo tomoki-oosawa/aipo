@@ -21,24 +21,17 @@ package com.aimluck.eip.common;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.jetspeed.services.rundata.JetspeedRunData;
-import org.apache.jetspeed.services.rundata.JetspeedRunDataService;
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.rundata.RunDataService;
 
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.cayenne.om.account.EipMPosition;
 import com.aimluck.eip.cayenne.om.account.EipMPost;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
  * 会社情報、部署情報、役職情報をメモリ上に保持するクラスです。 <br />
@@ -52,9 +45,6 @@ public class ALEipManager {
 
   /** Singleton */
   private static ALEipManager manager = new ALEipManager();
-
-  /** The JetspeedRunData Service. */
-  private JetspeedRunDataService runDataService = null;
 
   /** 会社リスト */
   private final Map<String, Map<Integer, ALEipCompany>> companysMap =
@@ -73,9 +63,6 @@ public class ALEipManager {
    *
    */
   private ALEipManager() {
-    this.runDataService =
-      (JetspeedRunDataService) TurbineServices.getInstance().getService(
-        RunDataService.SERVICE_NAME);
     initCompany();
     initPost();
     initPosition();
@@ -94,32 +81,6 @@ public class ALEipManager {
    */
   private void initCompany() {
     companysMap.clear();
-
-    String org_id = null;
-    List<String> org_list = DatabaseOrmService.getInstance().getOrgKeys();
-    Iterator<String> iter = org_list.iterator();
-    while (iter.hasNext()) {
-      try {
-        /** 会社リスト */
-        Map<Integer, ALEipCompany> companyMap =
-          new LinkedHashMap<Integer, ALEipCompany>();
-
-        org_id = iter.next();
-        DataContext dataContext = DataContext.createDataContext(org_id);
-        List<EipMCompany> list =
-          Database.query(dataContext, EipMCompany.class).fetchList();
-        for (EipMCompany record : list) {
-          ALEipCompany company = new ALEipCompany();
-          company.initField();
-          company.setCompanyId(record.getCompanyId().intValue());
-          company.setCompanyName(record.getCompanyName());
-          companyMap.put(record.getCompanyId(), company);
-        }
-        companysMap.put(org_id, companyMap);
-      } catch (Exception e) {
-        logger.error("[" + org_id + ":ALEipManager]", e);
-      }
-    }
   }
 
   /**
@@ -128,39 +89,6 @@ public class ALEipManager {
    */
   private void initPost() {
     postsMap.clear();
-
-    String org_id = null;
-    List<String> org_list = DatabaseOrmService.getInstance().getOrgKeys();
-    Iterator<String> iter = org_list.iterator();
-    while (iter.hasNext()) {
-      try {
-        /** 部署リスト */
-        Map<Integer, ALEipPost> postMap =
-          new LinkedHashMap<Integer, ALEipPost>();
-
-        org_id = iter.next();
-        DataContext dataContext = DataContext.createDataContext(org_id);
-        List<EipMPost> list =
-          Database.query(dataContext, EipMPost.class).fetchList();
-        Collections.sort(list, new Comparator<EipMPost>() {
-          public int compare(EipMPost l1, EipMPost l2) {
-            return (l1).getPostName().compareTo((l2).getPostName());
-          }
-        });
-        for (EipMPost record : list) {
-          ALEipPost post = new ALEipPost();
-          post.initField();
-          post.setPostId(record.getPostId().intValue());
-          post.setPostName(record.getPostName());
-          post.setGroupName(record.getGroupName());
-          postMap.put(record.getPostId(), post);
-        }
-
-        postsMap.put(org_id, postMap);
-      } catch (Exception e) {
-        logger.error("[" + org_id + ":ALEipManager]", e);
-      }
-    }
   }
 
   /**
@@ -169,44 +97,17 @@ public class ALEipManager {
    */
   private void initPosition() {
     positionsMap.clear();
-
-    String org_id = null;
-    List<String> org_list = DatabaseOrmService.getInstance().getOrgKeys();
-    Iterator<String> iter = org_list.iterator();
-    while (iter.hasNext()) {
-      try {
-        /** 役職リスト */
-        Map<Integer, ALEipPosition> positionMap =
-          new LinkedHashMap<Integer, ALEipPosition>();
-
-        org_id = iter.next();
-        DataContext dataContext = DataContext.createDataContext(org_id);
-        List<EipMPosition> list =
-          Database.query(dataContext, EipMPosition.class).fetchList();
-        for (EipMPosition record : list) {
-          ALEipPosition position = new ALEipPosition();
-          position.initField();
-          position.setPositionId(record.getPositionId().intValue());
-          position.setPositionName(record.getPositionName());
-          positionMap.put(record.getPositionId(), position);
-        }
-        positionsMap.put(org_id, positionMap);
-      } catch (Exception e) {
-        logger.error("[" + org_id + ":ALEipManager]", e);
-      }
-    }
   }
 
   /**
    *
    */
   public void reloadCompany() {
-    String org_id = "";
+    String orgId = Database.getDomainName();
     synchronized (companysMap) {
       try {
-        org_id = DatabaseOrmService.getInstance().getOrgId(getRunData());
         List<EipMCompany> list = Database.query(EipMCompany.class).fetchList();
-        Map<Integer, ALEipCompany> companyMap = companysMap.remove(org_id);
+        Map<Integer, ALEipCompany> companyMap = companysMap.remove(orgId);
         if (companyMap == null) {
           companyMap = new LinkedHashMap<Integer, ALEipCompany>();
         } else {
@@ -220,29 +121,29 @@ public class ALEipManager {
           companyMap.put(record.getCompanyId(), company);
         }
 
-        companysMap.put(org_id, companyMap);
+        companysMap.put(orgId, companyMap);
       } catch (Exception e) {
-        logger.error("[" + org_id + ":ALEipManager]", e);
+        logger.error("[" + orgId + ":ALEipManager]", e);
       }
     }
   }
 
   /**
-   *
-   *
+   * @param orgId
+   * 
+   * 
    */
   public void reloadPost() {
-    String org_id = "";
+    String orgId = Database.getDomainName();
     synchronized (postsMap) {
       try {
-        org_id = DatabaseOrmService.getInstance().getOrgId(getRunData());
         List<EipMPost> list = Database.query(EipMPost.class).fetchList();
         Collections.sort(list, new Comparator<EipMPost>() {
           public int compare(EipMPost l1, EipMPost l2) {
             return (l1).getPostName().compareTo((l2).getPostName());
           }
         });
-        Map<Integer, ALEipPost> postMap = postsMap.remove(org_id);
+        Map<Integer, ALEipPost> postMap = postsMap.remove(orgId);
         if (postMap == null) {
           postMap = new LinkedHashMap<Integer, ALEipPost>();
         } else {
@@ -257,26 +158,26 @@ public class ALEipManager {
           postMap.put(record.getPostId(), post);
         }
 
-        postsMap.put(org_id, postMap);
+        postsMap.put(orgId, postMap);
       } catch (Exception e) {
-        logger.error("[" + org_id + ":ALEipManager]", e);
+        logger.error("[" + orgId + ":ALEipManager]", e);
       }
     }
   }
 
   /**
-   *
-   *
+   * @param orgId
+   * 
+   * 
    */
   public void reloadPosition() {
-    String org_id = "";
+    String orgId = Database.getDomainName();
     synchronized (positionsMap) {
       try {
-        org_id = DatabaseOrmService.getInstance().getOrgId(getRunData());
         List<EipMPosition> list =
           Database.query(EipMPosition.class).fetchList();
 
-        Map<Integer, ALEipPosition> positionMap = positionsMap.remove(org_id);
+        Map<Integer, ALEipPosition> positionMap = positionsMap.remove(orgId);
         if (positionMap == null) {
           positionMap = new LinkedHashMap<Integer, ALEipPosition>();
         } else {
@@ -290,9 +191,9 @@ public class ALEipManager {
           positionMap.put(record.getPositionId(), position);
         }
 
-        positionsMap.put(org_id, positionMap);
+        positionsMap.put(orgId, positionMap);
       } catch (Exception e) {
-        logger.error("[" + org_id + ":ALEipManager]", e);
+        logger.error("[" + orgId + ":ALEipManager]", e);
       }
     }
   }
@@ -303,16 +204,16 @@ public class ALEipManager {
    */
   public Map<Integer, ALEipCompany> getCompanyMap() {
     synchronized (companysMap) {
-      String org_id = DatabaseOrmService.getInstance().getOrgId(getRunData());
-      if (!companysMap.containsKey(org_id)) {
+      String orgId = Database.getDomainName();
+      if (!companysMap.containsKey(orgId)) {
         reloadCompany();
-        if (!companysMap.containsKey(org_id)) {
+        if (!companysMap.containsKey(orgId)) {
           return null;
         } else {
-          return companysMap.get(org_id);
+          return companysMap.get(orgId);
         }
       }
-      return companysMap.get(org_id);
+      return companysMap.get(orgId);
     }
   }
 
@@ -322,16 +223,16 @@ public class ALEipManager {
    */
   public Map<Integer, ALEipPost> getPostMap() {
     synchronized (postsMap) {
-      String org_id = DatabaseOrmService.getInstance().getOrgId(getRunData());
-      if (!postsMap.containsKey(org_id)) {
+      String orgId = Database.getDomainName();
+      if (!postsMap.containsKey(orgId)) {
         reloadPost();
-        if (!postsMap.containsKey(org_id)) {
+        if (!postsMap.containsKey(orgId)) {
           return null;
         } else {
-          return postsMap.get(org_id);
+          return postsMap.get(orgId);
         }
       }
-      return postsMap.get(org_id);
+      return postsMap.get(orgId);
     }
   }
 
@@ -341,24 +242,17 @@ public class ALEipManager {
    */
   public Map<Integer, ALEipPosition> getPositionMap() {
     synchronized (positionsMap) {
-      String org_id = DatabaseOrmService.getInstance().getOrgId(getRunData());
-      if (!positionsMap.containsKey(org_id)) {
+      String orgId = Database.getDomainName();
+      if (!positionsMap.containsKey(orgId)) {
         reloadPosition();
-        if (!positionsMap.containsKey(org_id)) {
+        if (!positionsMap.containsKey(orgId)) {
           return null;
         } else {
-          return positionsMap.get(org_id);
+          return positionsMap.get(orgId);
         }
       }
-      return positionsMap.get(org_id);
+      return positionsMap.get(orgId);
     }
   }
 
-  protected JetspeedRunData getRunData() {
-    JetspeedRunData rundata = null;
-    if (this.runDataService != null) {
-      rundata = this.runDataService.getCurrentRunData();
-    }
-    return rundata;
-  }
 }

@@ -100,8 +100,8 @@ public class ALEipUtils {
   public static final String dummy_user_head = "dummy_";
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALEipUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALEipUtils.class.getName());
 
   /**
    * セッション変数に値を格納します。 <br />
@@ -351,12 +351,12 @@ public class ALEipUtils {
     statement.append("SELECT DISTINCT ");
     statement
       .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, D.POSITION ");
-    statement.append("FROM TURBINE_USER_GROUP_ROLE as A ");
-    statement.append("LEFT JOIN TURBINE_USER as B ");
+    statement.append("FROM turbine_user_group_role as A ");
+    statement.append("LEFT JOIN turbine_user as B ");
     statement.append("  on A.USER_ID = B.USER_ID ");
-    statement.append("LEFT JOIN TURBINE_GROUP as C ");
+    statement.append("LEFT JOIN turbine_group as C ");
     statement.append("  on A.GROUP_ID = C.GROUP_ID ");
-    statement.append("LEFT JOIN EIP_M_USER_POSITION as D ");
+    statement.append("LEFT JOIN eip_m_user_position as D ");
     statement.append("  on A.USER_ID = D.USER_ID ");
     statement.append("WHERE B.USER_ID > 3 AND B.DISABLED = 'F'");
     statement.append(" AND C.GROUP_NAME = #bind($groupName) ");
@@ -401,12 +401,12 @@ public class ALEipUtils {
     StringBuffer statement = new StringBuffer();
     statement.append("SELECT DISTINCT ");
     statement.append("  B.USER_ID, D.POSITION ");
-    statement.append("FROM TURBINE_USER_GROUP_ROLE as A ");
-    statement.append("LEFT JOIN TURBINE_USER as B ");
+    statement.append("FROM turbine_user_group_role as A ");
+    statement.append("LEFT JOIN turbine_user as B ");
     statement.append("  on A.USER_ID = B.USER_ID ");
-    statement.append("LEFT JOIN TURBINE_GROUP as C ");
+    statement.append("LEFT JOIN turbine_group as C ");
     statement.append("  on A.GROUP_ID = C.GROUP_ID ");
-    statement.append("LEFT JOIN EIP_M_USER_POSITION as D ");
+    statement.append("LEFT JOIN eip_m_user_position as D ");
     statement.append("  on A.USER_ID = D.USER_ID ");
     statement.append("WHERE B.USER_ID > 3 AND B.DISABLED = 'F'");
     statement.append(" AND C.GROUP_NAME = #bind($groupName) ");
@@ -444,12 +444,12 @@ public class ALEipUtils {
     statement.append("SELECT DISTINCT ");
     statement
       .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, D.POSITION ");
-    statement.append("FROM TURBINE_USER_GROUP_ROLE as A ");
-    statement.append("LEFT JOIN TURBINE_USER as B ");
+    statement.append("FROM turbine_user_group_role as A ");
+    statement.append("LEFT JOIN turbine_user as B ");
     statement.append("  on A.USER_ID = B.USER_ID ");
-    statement.append("LEFT JOIN TURBINE_GROUP as C ");
+    statement.append("LEFT JOIN turbine_group as C ");
     statement.append("  on A.GROUP_ID = C.GROUP_ID ");
-    statement.append("LEFT JOIN EIP_M_USER_POSITION as D ");
+    statement.append("LEFT JOIN eip_m_user_position as D ");
     statement.append("  on A.USER_ID = D.USER_ID ");
     statement.append("WHERE B.USER_ID > 3 AND B.DISABLED = 'F'");
     statement.append(" AND B.POST_ID = #bind($postId) ");

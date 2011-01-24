@@ -64,6 +64,7 @@ import org.apache.jetspeed.om.registry.PortletEntry;
 import org.apache.jetspeed.om.registry.PortletInfoEntry;
 import org.apache.jetspeed.om.registry.RegistryEntry;
 import org.apache.jetspeed.om.registry.base.BaseCategory;
+import org.apache.jetspeed.om.registry.base.BasePortletEntry;
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.portal.PortletController;
 import org.apache.jetspeed.portal.PortletSet;
@@ -92,7 +93,12 @@ import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.common.ALApplication;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.social.ALSocialApplicationFactoryService;
+import com.aimluck.eip.services.social.ALSocialApplicationHandler;
+import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -154,7 +160,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
     // make the list of already used panes/portlets available through the 'runs'
     // reference
     context.put("runs", AutoProfile.getPortletList(rundata));
-
+    ;
     // we should first retrieve the portlet to customize
     PortletSet set = (PortletSet) (jdata).getCustomized();
 
@@ -543,24 +549,26 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
 
     String[] pnames = rundata.getParameters().getStrings("pname");
     Map<String, PortletEntry> userSelections = getUserSelections(rundata);
-    List<?> portlets =
-      (List<?>) PortletSessionState.getAttribute(rundata, PORTLET_LIST, null);
+    @SuppressWarnings("unchecked")
+    List<PortletEntry> portlets =
+      (List<PortletEntry>) PortletSessionState.getAttribute(
+        rundata,
+        PORTLET_LIST,
+        null);
     if (portlets != null) {
-      int end = Math.min(start + size, portlets.size());
-      int pnamesIndex = 0;
+      // int end = Math.min(start + size, portlets.size());
+      // int pnamesIndex = 0;
       // Go through all the portlets on this page and figure out which ones have
       // been
       // checked and which ones unchecked and accordingly update the
       // userSelectionMap
-      for (int portletIndex = start; portletIndex < end; portletIndex++) {
-        PortletEntry entry = (PortletEntry) portlets.get(portletIndex);
-        if (pnames != null
-          && pnamesIndex < pnames.length
-          && pnames[pnamesIndex].equals(entry.getName())) {
-          userSelections.put(entry.getName(), entry);
-          pnamesIndex++;
-        } else {
-          userSelections.remove(entry.getName());
+      for (String pname : pnames) {
+        for (PortletEntry entry : portlets) {
+          String name = entry.getName();
+          if (name.equals(pname)) {
+            userSelections.put(pname, userSelections.get(pname));
+            break;
+          }
         }
       }
       PortletSessionState
@@ -588,6 +596,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
     Map<String, PortletEntry> userSelections = getUserSelections(rundata);
     String[] pnames = new String[userSelections.size()];
     userSelections.keySet().toArray(pnames);
+
     // String[] pnames = rundata.getParameters().getStrings("pname");
 
     // Create a ClearPortletControl
@@ -606,9 +615,29 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
       // int cc;
       // Entry usedEntry;
 
+      ALSocialApplicationHandler applicationHanlder =
+        ALSocialApplicationFactoryService
+          .getInstance()
+          .getSocialApplicationHandler();
       for (int i = 0; i < pnames.length; i++) {
-        PortletEntry entry =
-          (PortletEntry) Registry.getEntry(Registry.PORTLET, pnames[i]);
+        String pname = pnames[i];
+        PortletEntry entry = null;
+        boolean isGadgets = false;
+        ALApplication app = null;
+        if (pname.startsWith("GadgetsTemplate::")) {
+          String[] split = pname.split("::");
+          String appId = split[1];
+          app =
+            applicationHanlder.getApplication(new ALApplicationGetRequest()
+              .withAppId(appId));
+          entry =
+            (PortletEntry) Registry.getEntry(
+              Registry.PORTLET,
+              "GadgetsTemplate");
+          isGadgets = true;
+        } else {
+          entry = (PortletEntry) Registry.getEntry(Registry.PORTLET, pnames[i]);
+        }
 
         // add only new portlets!
         if ((entry != null) && (portlets != null)) {
@@ -626,7 +655,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
             // if (isWML)
             // p.setControl (ctrl);
 
-            p.setParent(pnames[i]);
+            p.setParent(isGadgets ? "GadgetsTemplate" : pnames[i]);
             p.setId(JetspeedIdGenerator.getNextPeid());
             // SecurityReference defaultRef =
             // PortalToolkit.getDefaultSecurityRef(
@@ -640,6 +669,17 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
             // }
             // p.setSecurityRef(defaultRef);
             // }
+            if (isGadgets) {
+              p.setTitle(app.getTitle().getValue());
+              Parameter p1 = new PsmlParameter();
+              p1.setName("aid");
+              p1.setValue(app.getAppId().getValue());
+              p.addParameter(p1);
+              Parameter p2 = new PsmlParameter();
+              p2.setName("url");
+              p2.setValue(app.getAppId().getValue());
+              p.addParameter(p2);
+            }
             portlets.addEntry(p);
           }
         }
@@ -1004,6 +1044,26 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
           .hasMediaType(mediaType))) {
         list.add(entry);
       }
+    }
+
+    ALSocialApplicationHandler applicationHanlder =
+      ALSocialApplicationFactoryService
+        .getInstance()
+        .getSocialApplicationHandler();
+
+    ResultList<ALApplication> resultList =
+      applicationHanlder.getApplicationList(new ALApplicationGetRequest()
+        .withStatus(ALApplicationGetRequest.Status.ACTIVE));
+
+    for (ALApplication app : resultList) {
+      BasePortletEntry entry = new BasePortletEntry();
+      entry.setTitle(app.getTitle().getValue());
+      entry.setDescription(app.getDescription().getValue());
+      entry.setName("GadgetsTemplate::" + app.getAppId().getValue());
+      entry.setParent("GadgetsTemplate");
+      entry.addParameter("aid", app.getAppId().getValue());
+      entry.addParameter("url", app.getUrl().getValue());
+      list.add(entry);
     }
 
     String[] filterFields =

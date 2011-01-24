@@ -27,8 +27,6 @@ import java.util.Map;
 import org.apache.cayenne.DataRow;
 import org.apache.cayenne.access.DataContext;
 
-import com.aimluck.eip.orm.DatabaseOrmService;
-
 public class SQLTemplate<M> extends AbstractQuery<M> {
 
   private static final long serialVersionUID = 5404111688862773398L;
@@ -45,7 +43,7 @@ public class SQLTemplate<M> extends AbstractQuery<M> {
     super(rootClass);
     delegate = new org.apache.cayenne.query.SQLTemplate(rootClass, sql);
     delegate.setFetchingDataRows(true);
-    dataContext = DatabaseOrmService.getInstance().getDataContext();
+    dataContext = DataContext.getThreadDataContext();
   }
 
   public SQLTemplate(DataContext dataContext, Class<M> rootClass, String sql) {
