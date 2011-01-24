@@ -69,8 +69,8 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
  */
 public class NoteFormData extends ALAbstractFormData {
 
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(NoteFormData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(NoteFormData.class.getName());
 
   /**
    * MSG_TYPE 1 : "伝言メモを送信しました。宛先ユーザーのパソコン用メールアドレスが未設定のため，メールを送信できませんでした。"
@@ -174,7 +174,7 @@ public class NoteFormData extends ALAbstractFormData {
 
   private ALEipUser loginUser;
 
-  private String org_id;
+  private String orgId;
 
   /**
    * 
@@ -200,7 +200,7 @@ public class NoteFormData extends ALAbstractFormData {
 
     }
 
-    org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    orgId = Database.getDomainName();
 
     ParameterParser parser = rundata.getParameters();
     String dest_user_id_string = parser.getString("dest_user_id");
@@ -475,7 +475,7 @@ public class NoteFormData extends ALAbstractFormData {
           List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
           destMember.add(member);
           ALMailUtils.sendMailDelegate(
-            org_id,
+            orgId,
             ALEipUtils.getUserId(rundata),
             destMember,
             subject,
