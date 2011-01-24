@@ -14036,7 +14036,7 @@ dojo.i18n._preloadLocalizations("dijit.nls.dijit-all", ["es-es", "es", "hu", "it
 */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/aimluck.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/aimluck/aimluck.js
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -14370,11 +14370,11 @@ function change_turn_option(select, index, delta) {
 }
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/aimluck.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/aimluck/aimluck.js
  */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/dnd/Draggable.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/aimluck/dnd/Draggable.js
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -14462,11 +14462,11 @@ dojo.declare("aimluck.dnd.Draggable", dojo.dnd.Moveable , {
 });
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/dnd/Draggable.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/aimluck/dnd/Draggable.js
  */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/io/form.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/aimluck/io/form.js
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -14943,11 +14943,11 @@ aimluck.io.switchCheckbox = function(checkbox) {
 
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/io/form.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/aimluck/io/form.js
  */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/utils/form.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/aimluck/utils/form.js
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -15011,11 +15011,11 @@ aimluck.utils.form.switchDisplay = function (viewId, hideId) {
 }
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/utils/form.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/aimluck/utils/form.js
  */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/utils/utils.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/aimluck/utils/utils.js
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -15054,11 +15054,11 @@ aimluck.utils.createCSS = function(url) {
 };
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/utils/utils.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/aimluck/utils/utils.js
  */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/widget/Contentpane.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/aimluck/widget/Contentpane.js
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -15162,11 +15162,11 @@ dojo.declare(
 );
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/widget/Contentpane.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/aimluck/widget/Contentpane.js
  */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/widget/Dialog.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/aimluck/widget/Dialog.js
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -15416,11 +15416,11 @@ dojo.declare(
 );
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/widget/Dialog.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/aimluck/widget/Dialog.js
  */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/widget/Dropdown.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/aimluck/widget/Dropdown.js
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -15470,11 +15470,11 @@ dojo.declare("aimluck.widget.Dropdown", [dijit.form.DropDownButton], {
 });
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/widget/Dropdown.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/aimluck/widget/Dropdown.js
  */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/widget/Menu.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/aimluck/widget/Menu.js
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -15632,7 +15632,7 @@ dojo.declare("aimluck.widget.Menubar", [dijit.Toolbar], {
 });
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/aimluck/widget/Menu.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/aimluck/widget/Menu.js
  */
 
 /*
@@ -15651,7 +15651,7 @@ dojo.declare("aimluck.widget.Menubar", [dijit.Toolbar], {
 */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aipo/aipo.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/aipo.js
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -15758,11 +15758,11 @@ aipo.errorTreatment = function(jsondata, url) {
 };
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/aipo/aipo.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/aipo.js
  */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aipo/common/dialog.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/common/dialog.js
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -15808,11 +15808,11 @@ aipo.common.hideDialog = function() {
 };
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/aipo/common/dialog.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/common/dialog.js
  */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aipo/io/jsonp.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/io/jsonp.js
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -15864,11 +15864,11 @@ aipo.io.loadHtml = function(url, params, portletId){
 }
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/aipo/io/jsonp.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/io/jsonp.js
  */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aipo/widget/DateCalendar.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/widget/DateCalendar.js
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -15964,11 +15964,11 @@ dojo.declare("aipo.widget.DateCalendar", [dijit._Calendar], {
 });
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/aipo/widget/DateCalendar.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/widget/DateCalendar.js
  */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aipo/widget/GroupSelectList.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/widget/GroupSelectList.js
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -16226,11 +16226,11 @@ dojo.declare("aipo.widget.GroupSelectList", [dijit._Widget, dijit._Templated], {
 });
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/aipo/widget/GroupSelectList.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/widget/GroupSelectList.js
  */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aipo/widget/MemberSelectList.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/widget/MemberSelectList.js
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -16495,11 +16495,11 @@ dojo.declare("aipo.widget.MemberSelectList", [dijit._Widget, dijit._Templated], 
 });
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/aipo/widget/MemberSelectList.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/widget/MemberSelectList.js
  */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aipo/widget/DropdownDatepicker.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/widget/DropdownDatepicker.js
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -16574,11 +16574,11 @@ dojo.declare("aipo.widget.DropdownDatepicker", [aimluck.widget.Dropdown], {
 });
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/aipo/widget/DropdownDatepicker.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/widget/DropdownDatepicker.js
  */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aipo/widget/DropdownGrouppicker.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/widget/DropdownGrouppicker.js
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -16751,11 +16751,11 @@ dojo.declare("aipo.widget.DropdownGrouppicker", [aimluck.widget.Dropdown], {
 });
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/aipo/widget/DropdownGrouppicker.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/widget/DropdownGrouppicker.js
  */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aipo/widget/DropdownMemberpicker.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/widget/DropdownMemberpicker.js
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -16934,11 +16934,11 @@ dojo.declare("aipo.widget.DropdownMemberpicker", [aimluck.widget.Dropdown], {
 });
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/aipo/widget/DropdownMemberpicker.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/widget/DropdownMemberpicker.js
  */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aipo/widget/GroupNormalSelectList.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/widget/GroupNormalSelectList.js
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -17148,11 +17148,11 @@ dojo.declare("aipo.widget.GroupNormalSelectList", [dijit._Widget, dijit._Templat
 });
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/aipo/widget/GroupNormalSelectList.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/widget/GroupNormalSelectList.js
  */
 
 /*
- * START OF FILE - /aipo/war/src/main/webapp/javascript/aipo/widget/MemberNormalSelectList.js
+ * START OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/widget/MemberNormalSelectList.js
  */
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -17373,7 +17373,7 @@ dojo.declare("aipo.widget.MemberNormalSelectList", [dijit._Widget, dijit._Templa
 });
 
 /*
- * END OF FILE - /aipo/war/src/main/webapp/javascript/aipo/widget/MemberNormalSelectList.js
+ * END OF FILE - /aipo5/war/src/main/webapp/javascript/aipo/widget/MemberNormalSelectList.js
  */
 
 /*
