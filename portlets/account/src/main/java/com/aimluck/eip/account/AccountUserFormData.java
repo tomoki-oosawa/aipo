@@ -67,7 +67,6 @@ import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
@@ -179,7 +178,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   /** パスワード変更の可否．変更する場合は，false． */
   private boolean dontUpdatePasswd = false;
 
-  private String org_id;
+  private String orgId;
 
   /** 顔写真データ */
   private byte[] facePhoto;
@@ -203,7 +202,7 @@ public class AccountUserFormData extends ALAbstractFormData {
     is_new_post = rundata.getParameters().getBoolean("is_new_post");
     is_new_position = rundata.getParameters().getBoolean("is_new_position");
 
-    org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    orgId = Database.getDomainName();
   }
 
   /**
@@ -325,7 +324,7 @@ public class AccountUserFormData extends ALAbstractFormData {
             String[] acceptExts = ImageIO.getWriterFormatNames();
             facePhoto =
               FileuploadUtils.getBytesShrinkFilebean(
-                org_id,
+                orgId,
                 folderName,
                 ALEipUtils.getUserId(rundata),
                 filebean,
@@ -803,7 +802,7 @@ public class AccountUserFormData extends ALAbstractFormData {
       // 一時的な添付ファイルの削除
       File folder =
         FileuploadUtils.getFolder(
-          org_id,
+          orgId,
           ALEipUtils.getUserId(rundata),
           folderName);
       FileuploadUtils.deleteFolder(folder);
@@ -981,7 +980,7 @@ public class AccountUserFormData extends ALAbstractFormData {
       // 一時的な添付ファイルの削除
       File folder =
         FileuploadUtils.getFolder(
-          org_id,
+          orgId,
           ALEipUtils.getUserId(rundata),
           folderName);
       FileuploadUtils.deleteFolder(folder);
@@ -1195,20 +1194,20 @@ public class AccountUserFormData extends ALAbstractFormData {
       }
 
       // ToDoを削除する
-      String sql4 = "DELETE FROM EIP_T_TODO WHERE USER_ID = '" + userId + "'";
+      String sql4 = "DELETE FROM eip_t_todo WHERE USER_ID = '" + userId + "'";
       Database.sql(EipTTodo.class, sql4).execute();
 
       String sql5 =
-        "DELETE FROM EIP_T_TODO_CATEGORY WHERE USER_ID = '" + userId + "'";
+        "DELETE FROM eip_t_todo_category WHERE USER_ID = '" + userId + "'";
       Database.sql(EipTTodoCategory.class, sql5).execute();
 
       // ブログを削除する
-      String sql6 = "DELETE FROM EIP_T_BLOG WHERE OWNER_ID = '" + userId + "'";
+      String sql6 = "DELETE FROM eip_t_blog WHERE OWNER_ID = '" + userId + "'";
       Database.sql(EipTBlog.class, sql6).execute();
 
       // ブログの足跡を削除する
       String sql7 =
-        "DELETE FROM EIP_T_BLOG_FOOTMARK_MAP WHERE USER_ID = '" + userId + "'";
+        "DELETE FROM eip_t_blog_footmark_map WHERE USER_ID = '" + userId + "'";
       Database.sql(EipTBlogFootmarkMap.class, sql7).execute();
 
       // ワークフロー自動承認
@@ -1326,7 +1325,7 @@ public class AccountUserFormData extends ALAbstractFormData {
       new ArrayList<FileuploadLiteBean>();
     fileBeanList.add(filebean);
     return FileuploadUtils.deleteAttachments(
-      org_id,
+      orgId,
       userId,
       folderName,
       fileBeanList);

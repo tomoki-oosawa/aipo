@@ -613,10 +613,10 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
 
       // アドレス一覧をグループID付で取得(特定グループ用)
       String sql =
-        "SELECT EIP_T_ADDRESSBOOK_GROUP_MAP.GROUP_ID, EIP_M_ADDRESSBOOK.ADDRESS_ID, EIP_M_ADDRESSBOOK.LAST_NAME, EIP_M_ADDRESSBOOK.FIRST_NAME FROM EIP_M_ADDRESSBOOK LEFT JOIN EIP_T_ADDRESSBOOK_GROUP_MAP ON EIP_M_ADDRESSBOOK.address_id = EIP_T_ADDRESSBOOK_GROUP_MAP.address_id LEFT JOIN EIP_M_ADDRESS_GROUP ON EIP_T_ADDRESSBOOK_GROUP_MAP.group_id = EIP_M_ADDRESS_GROUP.group_id WHERE EIP_M_ADDRESSBOOK.PUBLIC_FLAG='T' "
-          + " OR EIP_M_ADDRESSBOOK.OWNER_ID="
+        "SELECT eip_t_addressbook_group_map.GROUP_ID, eip_m_addressbook.ADDRESS_ID, eip_m_addressbook.LAST_NAME, eip_m_addressbook.FIRST_NAME FROM eip_m_addressbook LEFT JOIN eip_t_addressbook_group_map ON eip_m_addressbook.address_id = eip_t_addressbook_group_map.address_id LEFT JOIN eip_t_addressbook_group ON eip_t_addressbook_group_map.group_id = eip_t_addressbook_group.group_id WHERE eip_t_addressbook.PUBLIC_FLAG='T' "
+          + " OR eip_t_addressbook.OWNER_ID="
           + ALEipUtils.getUserId(rundata)
-          + " ORDER BY EIP_T_ADDRESSBOOK_GROUP_MAP.GROUP_ID ASC";
+          + " ORDER BY eip_t_addressbook_group_map.GROUP_ID ASC";
       List<DataRow> list2 =
         Database.sql(EipTAddressbookGroupMap.class, sql).fetchListAsDataRow();
 

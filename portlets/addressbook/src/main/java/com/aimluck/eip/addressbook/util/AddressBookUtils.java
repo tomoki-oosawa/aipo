@@ -340,10 +340,10 @@ public class AddressBookUtils {
     statement.append("SELECT ");
     statement.append(" B.last_name, B.first_name, ");
     statement.append(" C.company_name ");
-    statement.append("FROM EIP_T_ADDRESSBOOK_GROUP_MAP as A ");
-    statement.append("LEFT JOIN EIP_M_ADDRESSBOOK as B ");
+    statement.append("FROM eip_t_addressbook_group_map as A ");
+    statement.append("LEFT JOIN eip_t_addressbook as B ");
     statement.append(" on A.ADDRESS_ID = B.ADDRESS_ID ");
-    statement.append("LEFT JOIN EIP_M_ADDRESSBOOK_COMPANY AS C ");
+    statement.append("LEFT JOIN eip_m_addressbook_company AS C ");
     statement.append(" on B.COMPANY_ID = C.COMPANY_ID ");
     statement.append("WHERE A.GROUP_ID = #bind($gid) ");
     statement

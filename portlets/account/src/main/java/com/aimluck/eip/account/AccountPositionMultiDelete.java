@@ -88,7 +88,7 @@ public class AccountPositionMultiDelete extends ALAbstractCheckList {
       int idssize = ids.size();
       for (int i = 0; i < idssize; i++) {
         String sql =
-          "UPDATE TURBINE_USER set POSITION_ID = 0 where POSITION_ID = "
+          "UPDATE turbine_user set POSITION_ID = 0 where POSITION_ID = "
             + (ids.get(i)).intValue();
         Database.sql(TurbineUser.class, sql).execute();
       }

@@ -282,7 +282,7 @@ public class AccountPositionFormData extends ALAbstractFormData {
 
       // この役職に設定されているユーザーの役職IDを0とする
       String sql =
-        "UPDATE TURBINE_USER set POSITION_ID = 0 where POSITION_ID = "
+        "UPDATE turbine_user set POSITION_ID = 0 where POSITION_ID = "
           + positionId;
       Database.sql(TurbineUser.class, sql).execute();
 

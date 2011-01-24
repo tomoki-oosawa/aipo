@@ -44,7 +44,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -107,7 +107,7 @@ public class AccountEditFormData extends ALAbstractFormData {
   /** 添付フォルダ名 */
   private String folderName = null;
 
-  private String org_id;
+  private String orgId;
 
   /** 顔写真データ */
   private byte[] facePhoto;
@@ -132,7 +132,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
     folderName = rundata.getParameters().getString("folderName");
 
-    org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    orgId = Database.getDomainName();
   }
 
   /**
@@ -219,7 +219,7 @@ public class AccountEditFormData extends ALAbstractFormData {
             String[] acceptExts = ImageIO.getWriterFormatNames();
             facePhoto =
               FileuploadUtils.getBytesShrinkFilebean(
-                org_id,
+                orgId,
                 folderName,
                 ALEipUtils.getUserId(rundata),
                 filebean,
@@ -535,7 +535,7 @@ public class AccountEditFormData extends ALAbstractFormData {
       // 一時的な添付ファイルの削除
       File folder =
         FileuploadUtils.getFolder(
-          org_id,
+          orgId,
           ALEipUtils.getUserId(rundata),
           folderName);
       FileuploadUtils.deleteFolder(folder);
@@ -611,7 +611,7 @@ public class AccountEditFormData extends ALAbstractFormData {
     List<FileuploadLiteBean> fileBeanList = new ArrayList<FileuploadLiteBean>();
     fileBeanList.add(filebean);
     return FileuploadUtils.deleteAttachments(
-      org_id,
+      orgId,
       userId,
       folderName,
       fileBeanList);

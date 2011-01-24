@@ -34,7 +34,7 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -46,8 +46,6 @@ public class AccountLoginAction extends ALBaseAction {
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(AccountLoginAction.class.getName());
-
-  private String org_id;
 
   /**
    * @param portlet
@@ -68,14 +66,12 @@ public class AccountLoginAction extends ALBaseAction {
       }
     }
 
-    org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
-
     setResultData(this);
     putData(rundata, context);
   }
 
   public String getOrgId() {
-    return DatabaseOrmService.getInstance().getCompanyId(org_id);
+    return Database.getDomainName();
   }
 
   /**

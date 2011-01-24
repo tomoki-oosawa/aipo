@@ -37,7 +37,6 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.orgutils.ALOrgUtilsFactoryService;
@@ -53,7 +52,7 @@ public class CellAccountLoginAction extends ALBaseAction {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(CellAccountLoginAction.class.getName());
 
-  private String org_id;
+  private String orgId;
 
   /**
    * @param portlet
@@ -71,11 +70,11 @@ public class CellAccountLoginAction extends ALBaseAction {
       setTemplate(rundata, "accountlogout-info");
     }
 
-    org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    orgId = Database.getDomainName();
 
     ALOrgUtilsHandler handler =
       ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
-    Map<String, String> attribute = handler.getParameters(org_id);
+    Map<String, String> attribute = handler.getParameters(orgId);
     for (Map.Entry<String, String> e : attribute.entrySet()) {
       context.put(e.getKey(), e.getValue());
     }
@@ -120,7 +119,7 @@ public class CellAccountLoginAction extends ALBaseAction {
       if (valid) {
         // ALEipUser eipuser = ALEipUtils.getALEipUser(username);
 
-        DataContext dataContext = DataContext.createDataContext(org_id);
+        DataContext dataContext = DataContext.getThreadDataContext();
         Expression exp =
           ExpressionFactory.matchExp(TurbineUser.LOGIN_NAME_PROPERTY, username);
         SelectQuery<TurbineUser> query =
@@ -163,7 +162,7 @@ public class CellAccountLoginAction extends ALBaseAction {
   }
 
   public String getCompanyId() {
-    return DatabaseOrmService.getInstance().getCompanyId(org_id);
+    return Database.getDomainName();
   }
 
   /**

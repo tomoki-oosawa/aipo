@@ -60,9 +60,8 @@ public class AddressBookCorpWordSelectData extends
   private List<ALEipGroup> myGroupList = null;
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AddressBookWordSelectData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AddressBookWordSelectData.class.getName());
 
   /**
    * 
@@ -190,7 +189,6 @@ public class AddressBookCorpWordSelectData extends
    * @param context
    * @return
    */
-  @SuppressWarnings( { "unchecked" })
   private SelectQuery<TurbineUser> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<TurbineUser> query = null;

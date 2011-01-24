@@ -126,21 +126,21 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
         }
 
         // ToDoを削除する
-        String sql4 = "DELETE FROM EIP_T_TODO WHERE USER_ID = '" + userId + "'";
+        String sql4 = "DELETE FROM eip_t_todo WHERE USER_ID = '" + userId + "'";
         Database.sql(EipTTodo.class, sql4);
 
         String sql5 =
-          "DELETE FROM EIP_T_TODO_CATEGORY WHERE USER_ID = '" + userId + "'";
+          "DELETE FROM eip_t_todo_category WHERE USER_ID = '" + userId + "'";
         Database.sql(EipTTodoCategory.class, sql5);
 
         // ブログを削除する
         String sql6 =
-          "DELETE FROM EIP_T_BLOG WHERE OWNER_ID = '" + userId + "'";
+          "DELETE FROM eip_t_blog WHERE OWNER_ID = '" + userId + "'";
         Database.sql(EipTBlog.class, sql6);
 
         // ブログの足跡を削除する
         String sql7 =
-          "DELETE FROM EIP_T_BLOG_FOOTMARK_MAP WHERE USER_ID = '"
+          "DELETE FROM eip_t_blog_footmark_map WHERE USER_ID = '"
             + userId
             + "'";
         Database.sql(EipTBlogFootmarkMap.class, sql7);

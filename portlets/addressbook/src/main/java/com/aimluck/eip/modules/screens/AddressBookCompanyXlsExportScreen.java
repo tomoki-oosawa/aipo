@@ -36,7 +36,7 @@ import com.aimluck.eip.addressbook.AddressBookCompanySelectData;
 import com.aimluck.eip.addressbook.util.AddressBookUtils;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
@@ -84,8 +84,8 @@ public class AddressBookCompanyXlsExportScreen extends ALXlsScreen {
     userid = Integer.toString(ALEipUtils.getUserId(rundata));
 
     rootFolder =
-      AddressBookUtils.getRootFolder(DatabaseOrmService.getInstance().getOrgId(
-        rundata), ALEipUtils.getUserId(rundata));
+      AddressBookUtils.getRootFolder(Database.getDomainName(), ALEipUtils
+        .getUserId(rundata));
 
     // アクセス権
     if (
