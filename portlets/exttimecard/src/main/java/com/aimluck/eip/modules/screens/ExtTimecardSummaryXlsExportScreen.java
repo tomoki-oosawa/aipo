@@ -36,7 +36,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.exttimecard.ExtTimecardSummaryListSelectData;
 import com.aimluck.eip.exttimecard.ExtTimecardSummaryResultData;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -89,8 +89,8 @@ public class ExtTimecardSummaryXlsExportScreen extends ALXlsScreen {
     userid = Integer.toString(ALEipUtils.getUserId(rundata));
 
     rootFolder =
-      ExtTimecardUtils.getRootFolder(DatabaseOrmService.getInstance().getOrgId(
-        rundata), ALEipUtils.getUserId(rundata));
+      ExtTimecardUtils.getRootFolder(Database.getDomainName(), ALEipUtils
+        .getUserId(rundata));
 
     // アクセス権
     if (target_user_id == null

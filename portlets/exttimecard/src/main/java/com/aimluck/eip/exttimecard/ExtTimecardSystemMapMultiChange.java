@@ -22,6 +22,7 @@ package com.aimluck.eip.exttimecard;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -34,7 +35,6 @@ import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystemMap;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
@@ -60,8 +60,8 @@ public class ExtTimecardSystemMapMultiChange extends ALAbstractCheckList {
       List<String> values, List<String> msgList) {
 
     try {
-      DatabaseOrmService.getInstance().getDataContext().unregisterObjects(
-        DatabaseOrmService.getInstance().getDataContext().uncommittedObjects());
+      DataContext.getThreadDataContext().unregisterObjects(
+        DataContext.getThreadDataContext().uncommittedObjects());
 
       Expression exp =
         ExpressionFactory.inExp(
