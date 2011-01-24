@@ -53,7 +53,6 @@ import com.aimluck.eip.mail.ALPop3MailReceiveThread;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -68,8 +67,8 @@ import com.sk_jp.mail.MailUtility;
 public class WebMailSelectData extends
     ALAbstractSelectData<EipTMail, ALMailMessage> {
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(WebMailSelectData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WebMailSelectData.class.getName());
 
   /** 現在選択されているタブ (＝受信メール or 送信メール) */
   private String currentTab = null;
@@ -91,7 +90,7 @@ public class WebMailSelectData extends
   /** 最終受信日 */
   private final String finalAccessDateStr = null;
 
-  private String org_id;
+  private String orgId;
 
   /** 受信トレイと送信トレイ */
   private ALFolder folder;
@@ -122,7 +121,7 @@ public class WebMailSelectData extends
         .getInitParameter("p2a-sort"));
     }
 
-    org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    orgId = Database.getDomainName();
     userId = ALEipUtils.getUserId(rundata);
     user = (JetspeedUser) ((JetspeedRunData) rundata).getUser();
 
@@ -207,7 +206,7 @@ public class WebMailSelectData extends
 
     // アカウントを取得
     EipMMailAccount account =
-      ALMailUtils.getMailAccount(org_id, userId, accountId);
+      ALMailUtils.getMailAccount(orgId, userId, accountId);
 
     // 現在選択中のフォルダを取得
     selectedFolder =
@@ -238,7 +237,7 @@ public class WebMailSelectData extends
       ALMailHandler handler =
         ALMailFactoryService.getInstance().getMailHandler();
       folder =
-        handler.getALFolder(type_mail, org_id, userId, Integer
+        handler.getALFolder(type_mail, orgId, userId, Integer
           .valueOf(accountId));
       folder.setRowsNum(super.getRowsNum());
     }
@@ -501,7 +500,7 @@ public class WebMailSelectData extends
 
   public int getNewMailSum() {
     try {
-      return WebMailUtils.getNewMailNumThread(org_id, user, accountId);
+      return WebMailUtils.getNewMailNumThread(orgId, user, accountId);
     } catch (Exception ex) {
       return 0;
     }

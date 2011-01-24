@@ -55,7 +55,6 @@ import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -114,7 +113,7 @@ public class WorkflowFormData extends ALAbstractFormData {
   /** 添付フォルダ名 */
   private String folderName = null;
 
-  private String org_id;
+  private String orgId;
 
   private int uid;
 
@@ -140,7 +139,7 @@ public class WorkflowFormData extends ALAbstractFormData {
     login_user = ALEipUtils.getALEipUser(rundata);
 
     uid = ALEipUtils.getUserId(rundata);
-    org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    orgId = Database.getDomainName();
     folderName = rundata.getParameters().getString("folderName");
   }
 
@@ -531,7 +530,7 @@ public class WorkflowFormData extends ALAbstractFormData {
         int fsize = fpaths.size();
         for (int i = 0; i < fsize; i++) {
           file =
-            new File(WorkflowUtils.getSaveDirPath(org_id, uid) + fpaths.get(i));
+            new File(WorkflowUtils.getSaveDirPath(orgId, uid) + fpaths.get(i));
           if (file.exists()) {
             file.delete();
           }
@@ -699,7 +698,7 @@ public class WorkflowFormData extends ALAbstractFormData {
         destUsers,
         new ArrayList<String>());
 
-      File folder = FileuploadUtils.getFolder(org_id, uid, folderName);
+      File folder = FileuploadUtils.getFolder(orgId, uid, folderName);
       // 添付ファイル保存先のフォルダを削除
       FileuploadUtils.deleteFolder(folder);
 
@@ -871,7 +870,7 @@ public class WorkflowFormData extends ALAbstractFormData {
         destUsers,
         new ArrayList<String>());
 
-      File folder = FileuploadUtils.getFolder(org_id, uid, folderName);
+      File folder = FileuploadUtils.getFolder(orgId, uid, folderName);
       // 添付ファイル保存先のフォルダを削除
       FileuploadUtils.deleteFolder(folder);
 

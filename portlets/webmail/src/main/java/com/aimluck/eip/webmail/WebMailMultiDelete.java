@@ -30,7 +30,7 @@ import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.mail.ALFolder;
 import com.aimluck.eip.mail.ALMailFactoryService;
 import com.aimluck.eip.mail.ALMailHandler;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.util.WebMailUtils;
 
@@ -80,12 +80,12 @@ public class WebMailMultiDelete extends ALAbstractCheckList {
           : ALFolder.TYPE_SEND;
       int userId = ALEipUtils.getUserId(rundata);
 
-      String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+      String orgId = Database.getDomainName();
 
       ALMailHandler handler =
         ALMailFactoryService.getInstance().getMailHandler();
       ALFolder folder =
-        handler.getALFolder(type_mail, org_id, userId, Integer
+        handler.getALFolder(type_mail, orgId, userId, Integer
           .valueOf(accountId));
       folder.deleteMails(values);
     } catch (Exception ex) {

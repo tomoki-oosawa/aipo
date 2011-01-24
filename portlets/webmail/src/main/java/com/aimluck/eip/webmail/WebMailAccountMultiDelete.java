@@ -33,7 +33,6 @@ import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.mail.ALMailFactoryService;
 import com.aimluck.eip.mail.ALMailHandler;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.util.WebMailUtils;
@@ -44,9 +43,8 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
 public class WebMailAccountMultiDelete extends ALAbstractCheckList {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(WebMailAccountMultiDelete.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WebMailAccountMultiDelete.class.getName());
 
   /**
    * 
@@ -61,7 +59,7 @@ public class WebMailAccountMultiDelete extends ALAbstractCheckList {
       List<String> values, List<String> msgList) {
 
     try {
-      String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+      String orgId = Database.getDomainName();
       int uid = ALEipUtils.getUserId(rundata);
 
       // アカウントを削除する．
@@ -89,7 +87,7 @@ public class WebMailAccountMultiDelete extends ALAbstractCheckList {
 
       ALMailHandler handler =
         ALMailFactoryService.getInstance().getMailHandler();
-      handler.removeAccount(org_id, ALEipUtils.getUserId(rundata), Integer
+      handler.removeAccount(orgId, ALEipUtils.getUserId(rundata), Integer
         .parseInt(accountId));
 
     } catch (Exception ex) {

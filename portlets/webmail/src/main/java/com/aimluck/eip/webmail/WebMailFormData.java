@@ -59,7 +59,7 @@ import com.aimluck.eip.mail.ALSmtpMailContext;
 import com.aimluck.eip.mail.ALSmtpMailSender;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.util.WebMailUtils;
 
@@ -68,8 +68,8 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
  */
 public class WebMailFormData extends ALAbstractFormData {
 
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(WebMailFormData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WebMailFormData.class.getName());
 
   /** 件名の最大文字数 */
   private final int FIELD_SUBJECT_MAX_LEN = 256;
@@ -124,7 +124,7 @@ public class WebMailFormData extends ALAbstractFormData {
   /**  */
   private int accountId = -1;
 
-  private String org_id;
+  private String orgId;
 
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -144,7 +144,7 @@ public class WebMailFormData extends ALAbstractFormData {
 
     folderName = rundata.getParameters().getString("folderName");
 
-    org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    orgId = Database.getDomainName();
   }
 
   /**
@@ -264,7 +264,7 @@ public class WebMailFormData extends ALAbstractFormData {
       ALMailHandler handler =
         ALMailFactoryService.getInstance().getMailHandler();
       ALFolder folder =
-        handler.getALFolder(type_mail, org_id, userId, Integer
+        handler.getALFolder(type_mail, orgId, userId, Integer
           .valueOf(accountId));
       folder.deleteMail(index);
 
@@ -298,11 +298,8 @@ public class WebMailFormData extends ALAbstractFormData {
         for (int i = 0; i < size; i++) {
           filebean = fileuploadList.get(i);
           file =
-            FileuploadUtils.getAbsolutePath(
-              org_id,
-              userId,
-              folderName,
-              filebean.getFileId());
+            FileuploadUtils.getAbsolutePath(orgId, userId, folderName, filebean
+              .getFileId());
           attachmentFilepaths[i] = file.getAbsolutePath();
         }
       }
@@ -360,7 +357,7 @@ public class WebMailFormData extends ALAbstractFormData {
         ALMailFactoryService.getInstance().getMailHandler();
       // 送信サーバ情報
       ALMailSenderContext scontext =
-        ALMailUtils.getALSmtpMailSenderContext(org_id, account);
+        ALMailUtils.getALSmtpMailSenderContext(orgId, account);
 
       // 送信メッセージのコンテキスト
       ALSmtpMailContext mailcontext =
@@ -377,7 +374,7 @@ public class WebMailFormData extends ALAbstractFormData {
 
       if (success_send == ALSmtpMailSender.SEND_MSG_SUCCESS) {
         if (hasAttachments) {
-          File folder = FileuploadUtils.getFolder(org_id, userId, folderName);
+          File folder = FileuploadUtils.getFolder(orgId, userId, folderName);
           // 添付ファイル保存先のフォルダを削除
           FileuploadUtils.deleteFolder(folder);
         }
@@ -509,7 +506,7 @@ public class WebMailFormData extends ALAbstractFormData {
             folderName = "undefined";
           }
 
-          File rootFolder = FileuploadUtils.getRootFolder(org_id, userId);
+          File rootFolder = FileuploadUtils.getRootFolder(orgId, userId);
           File saveFolder = new File(rootFolder + File.separator + folderName);
           if (!saveFolder.exists()) {
             saveFolder.mkdirs();

@@ -24,7 +24,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowFile;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
@@ -47,9 +47,9 @@ public class WorkflowFileRawScreen extends FileuploadRawScreen {
       EipTWorkflowFile workflowfile =
         WorkflowUtils.getEipTWorkflowFile(rundata);
 
-      super.setFilePath(WorkflowUtils.getSaveDirPath(DatabaseOrmService
-        .getInstance()
-        .getOrgId(rundata), workflowfile.getOwnerId().intValue())
+      super.setFilePath(WorkflowUtils.getSaveDirPath(
+        Database.getDomainName(),
+        workflowfile.getOwnerId().intValue())
         + workflowfile.getFilePath());
       super.setFileName(workflowfile.getFileName());
       super.doOutput(rundata);

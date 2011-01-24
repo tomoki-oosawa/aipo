@@ -47,7 +47,6 @@ import com.aimluck.eip.mail.ALMailReceiverContext;
 import com.aimluck.eip.mail.ALPop3MailReceiveThread;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.WebMailFormData;
@@ -57,8 +56,8 @@ import com.aimluck.eip.webmail.WebMailFormData;
 public class WebMailUtils {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(WebMailUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WebMailUtils.class.getName());
 
   /** セッションの識別子 */
   public static final String FOLDER_ID = ALMailUtils.FOLDER_ID;
@@ -119,7 +118,7 @@ public class WebMailUtils {
    */
   public static final ALMailMessage getSelectedLocalMailMessage(
       RunData rundata, Context context, int mailType) throws Exception {
-    String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    String orgId = Database.getDomainName();
     int uid = ALEipUtils.getUserId(rundata);
     int accountId =
       Integer.parseInt(ALEipUtils.getTemp(rundata, context, ACCOUNT_ID));
@@ -138,7 +137,7 @@ public class WebMailUtils {
         ? ALFolder.TYPE_RECEIVE
         : ALFolder.TYPE_SEND;
     ALMailHandler handler = ALMailFactoryService.getInstance().getMailHandler();
-    ALFolder folder = handler.getALFolder(type_mail, org_id, uid, accountId);
+    ALFolder folder = handler.getALFolder(type_mail, orgId, uid, accountId);
     ALMailMessage msg = folder.getMail(Integer.valueOf(mailid));
 
     if (WebMailFormData.TYPE_REPLY_MAIL == mailType) {
@@ -336,7 +335,7 @@ public class WebMailUtils {
 
       if (!ALPop3MailReceiveThread.isProcessing(user, accountId)) {
         // メールと接続してなければ新規にスレッドを生成
-        String orgId = DatabaseOrmService.getInstance().getOrgId(rundata);
+        String orgId = Database.getDomainName();
         Runnable receiver =
           new ALPop3MailReceiveThread(
             orgId,
@@ -436,7 +435,7 @@ public class WebMailUtils {
    */
   public static int getUnreadMailNumber(RunData rundata, int userId,
       int accountId) {
-    String orgId = DatabaseOrmService.getInstance().getOrgId(rundata);
+    String orgId = Database.getDomainName();
     EipMMailAccount account =
       ALMailUtils.getMailAccount(orgId, userId, accountId);
     ALMailHandler handler = ALMailFactoryService.getInstance().getMailHandler();
@@ -456,7 +455,7 @@ public class WebMailUtils {
    */
   public static Map<Integer, Integer> getUnreadMailNumberMap(RunData rundata,
       int userId, int accountId) {
-    String orgId = DatabaseOrmService.getInstance().getOrgId(rundata);
+    String orgId = Database.getDomainName();
     EipMMailAccount account =
       ALMailUtils.getMailAccount(orgId, userId, accountId);
     ALMailHandler handler = ALMailFactoryService.getInstance().getMailHandler();
@@ -475,7 +474,7 @@ public class WebMailUtils {
     EipMMailAccount account =
       ALMailUtils.getMailAccount(null, ALEipUtils.getUserId(rundata), Integer
         .parseInt(accountId));
-    String orgId = DatabaseOrmService.getInstance().getOrgId(rundata);
+    String orgId = Database.getDomainName();
 
     ALMailHandler handler = ALMailFactoryService.getInstance().getMailHandler();
     ALMailReceiverContext rcontext =

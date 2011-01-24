@@ -934,7 +934,7 @@ public class WorkflowUtils {
   public static boolean sendMail(RunData rundata, EipTWorkflowRequest request,
       List<ALEipUser> destUsers, List<String> msgList) throws Exception {
 
-    String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    String orgId = Database.getDomainName();
     String subject =
       "[" + DatabaseOrmService.getInstance().getAlias() + "]ワークフロー";
 
@@ -950,7 +950,7 @@ public class WorkflowUtils {
         List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
         destMember.add(member);
         ALMailUtils.sendMailDelegate(
-          org_id,
+          orgId,
           ALEipUtils.getUserId(rundata),
           destMember,
           subject,
@@ -1176,7 +1176,7 @@ public class WorkflowUtils {
       String folderName, List<String> msgList) {
 
     int uid = ALEipUtils.getUserId(rundata);
-    String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    String orgId = Database.getDomainName();
     String[] fileids = rundata.getParameters().getStrings("attachments");
 
     // fileidsがnullなら、ファイルがアップロードされていないので、trueを返して終了
@@ -1231,7 +1231,7 @@ public class WorkflowUtils {
       int delsize = delFiles.size();
       for (int i = 0; i < delsize; i++) {
         file =
-          new File(WorkflowUtils.getSaveDirPath(org_id, uid)
+          new File(WorkflowUtils.getSaveDirPath(orgId, uid)
             + (delFiles.get(i)).getFilePath());
         if (file.exists()) {
           file.delete();
@@ -1257,7 +1257,7 @@ public class WorkflowUtils {
         String[] acceptExts = ImageIO.getWriterFormatNames();
         byte[] fileThumbnail =
           FileuploadUtils.getBytesShrinkFilebean(
-            org_id,
+            orgId,
             folderName,
             uid,
             filebean,
@@ -1268,7 +1268,7 @@ public class WorkflowUtils {
 
         String filename =
           FileuploadUtils.getNewFileName(WorkflowUtils.getSaveDirPath(
-            org_id,
+            orgId,
             uid));
 
         // 新規オブジェクトモデル
@@ -1292,10 +1292,10 @@ public class WorkflowUtils {
 
         // ファイルの移動
         File srcFile =
-          FileuploadUtils.getAbsolutePath(org_id, uid, folderName, filebean
+          FileuploadUtils.getAbsolutePath(orgId, uid, folderName, filebean
             .getFileId());
         File destFile =
-          new File(WorkflowUtils.getAbsolutePath(org_id, uid, filename));
+          new File(WorkflowUtils.getAbsolutePath(orgId, uid, filename));
         FileuploadUtils.copyFile(srcFile, destFile);
 
         srcFile = null;
@@ -1303,7 +1303,7 @@ public class WorkflowUtils {
       }
 
       // 添付ファイル保存先のフォルダを削除
-      File folder = FileuploadUtils.getFolder(org_id, uid, folderName);
+      File folder = FileuploadUtils.getFolder(orgId, uid, folderName);
       FileuploadUtils.deleteFolder(folder);
     } catch (Exception e) {
       logger.error("Exception", e);

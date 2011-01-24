@@ -46,7 +46,6 @@ import com.aimluck.eip.mail.ALSmtpMailSender;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -58,8 +57,8 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
  */
 public class WebMailAccountFormData extends ALAbstractFormData {
 
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(WebMailAccountFormData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WebMailAccountFormData.class.getName());
 
   private final int DEF_SMTP_PORT = 25;
 
@@ -140,7 +139,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
   /** The value for the pop3EncryptionFlag field */
   private ALNumberField pop3_encryption_flag;
 
-  private String org_id;
+  private String orgId;
 
   private boolean isAdmin = false;
 
@@ -156,7 +155,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
       isAdmin = false;
     }
 
-    org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    orgId = Database.getDomainName();
   }
 
   public void initField() {
@@ -654,7 +653,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
       // ローカルフォルダを削除する．
       ALMailHandler handler =
         ALMailFactoryService.getInstance().getMailHandler();
-      handler.removeAccount(org_id, ALEipUtils.getUserId(rundata), accountId);
+      handler.removeAccount(orgId, ALEipUtils.getUserId(rundata), accountId);
 
       Database.delete(account);
       Database.commit();

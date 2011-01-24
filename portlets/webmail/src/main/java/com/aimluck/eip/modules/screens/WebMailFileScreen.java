@@ -34,7 +34,7 @@ import com.aimluck.eip.mail.ALFolder;
 import com.aimluck.eip.mail.ALLocalMailMessage;
 import com.aimluck.eip.mail.ALMailFactoryService;
 import com.aimluck.eip.mail.ALMailHandler;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.util.WebMailUtils;
 
@@ -67,7 +67,7 @@ public class WebMailFileScreen extends RawScreen {
     ServletOutputStream out = null;
 
     try {
-      String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+      String orgId = Database.getDomainName();
       int uid = ALEipUtils.getUserId(rundata);
       int accountid =
         Integer.parseInt(rundata.getParameters().getString(
@@ -85,7 +85,7 @@ public class WebMailFileScreen extends RawScreen {
           : ALFolder.TYPE_SEND;
       ALMailHandler handler =
         ALMailFactoryService.getInstance().getMailHandler();
-      ALFolder folder = handler.getALFolder(type_mail, org_id, uid, accountid);
+      ALFolder folder = handler.getALFolder(type_mail, orgId, uid, accountid);
       ALLocalMailMessage msg = (ALLocalMailMessage) folder.getMail(mailindex);
 
       String fileName =

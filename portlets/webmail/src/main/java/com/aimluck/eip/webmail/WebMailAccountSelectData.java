@@ -39,7 +39,6 @@ import com.aimluck.eip.mail.ALMailReceiverContext;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
@@ -54,7 +53,7 @@ public class WebMailAccountSelectData extends
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(WebMailAccountSelectData.class.getName());
 
-  private String org_id;
+  private String orgId;
 
   /**
    * 
@@ -76,7 +75,7 @@ public class WebMailAccountSelectData extends
         .getInitParameter("p2b-sort"));
     }
 
-    org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    orgId = Database.getDomainName();
 
     super.init(action, rundata, context);
   }
@@ -163,7 +162,7 @@ public class WebMailAccountSelectData extends
       ALMailHandler handler =
         ALMailFactoryService.getInstance().getMailHandler();
       ALMailReceiverContext rcontext =
-        ALMailUtils.getALPop3MailReceiverContext(org_id, record);
+        ALMailUtils.getALPop3MailReceiverContext(orgId, record);
       rd.setCountUnRead(handler.getUnReadMailSum(rcontext));
 
       // 最終更新日を取得し，セットする．
