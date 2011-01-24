@@ -79,8 +79,8 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 public class ScheduleFormData extends ALAbstractFormData {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleFormData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleFormData.class.getName());
 
   /** <code>FLAG_EDIT_REPEAT_DEF</code> デフォルト値（繰り返し編集範囲） */
   private static final int FLAG_EDIT_REPEAT_DEF = -1;
@@ -228,7 +228,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   private final int msg_type = 0;
 
-  private String org_id;
+  private String orgId;
 
   private ALEipUser loginUser;
 
@@ -264,7 +264,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
     is_owner = true;
 
-    org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    orgId = Database.getDomainName();
     loginUser = ALEipUtils.getALEipUser(rundata);
 
     facilityAllList = new ArrayList<FacilityResultData>();
@@ -1137,13 +1137,13 @@ public class ScheduleFormData extends ALAbstractFormData {
             .getUserId(rundata), false);
         String subject =
           "[" + DatabaseOrmService.getInstance().getAlias() + "]スケジュール";
-        String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+        String orgId = Database.getDomainName();
 
         for (ALEipUserAddr userAddr : destMemberList) {
           List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
           destMember.add(userAddr);
           ALMailUtils.sendMailDelegate(
-            org_id,
+            orgId,
             ALEipUtils.getUserId(rundata),
             destMember,
             subject,
@@ -1649,7 +1649,7 @@ public class ScheduleFormData extends ALAbstractFormData {
             List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
             destMember.add(userAddr);
             ALMailUtils.sendMailDelegate(
-              org_id,
+              orgId,
               ALEipUtils.getUserId(rundata),
               destMember,
               subject,
@@ -1668,7 +1668,7 @@ public class ScheduleFormData extends ALAbstractFormData {
             List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
             destMember.add(userAddr);
             ALMailUtils.sendMailDelegate(
-              org_id,
+              orgId,
               ALEipUtils.getUserId(rundata),
               destMember,
               subject,

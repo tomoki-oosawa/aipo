@@ -308,7 +308,7 @@ public class ScheduleMonthlySelectData extends
             if (paramId > 3) {
               // ユーザーIDを取得する
               String query =
-                "SELECT LOGIN_NAME FROM TURBINE_USER WHERE USER_ID = '"
+                "SELECT LOGIN_NAME FROM turbine_user WHERE USER_ID = '"
                   + paramId
                   + "' AND DISABLED = 'F'";
               List<TurbineUser> list =

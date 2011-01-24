@@ -71,9 +71,8 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(CellScheduleFormNoteData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(CellScheduleFormNoteData.class.getName());
 
   /** <code>name</code> 予定 */
   private ALStringField name;
@@ -756,7 +755,6 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           form_data.getMemberList().size()
             + form_data.getFacilityMemberList().size();
         if (allsize > 0) {
-          @SuppressWarnings("unchecked")
           List<EipTScheduleMap> scheduleMaps = schedule.getEipTScheduleMaps();
           for (ALEipUser user : form_data.getMemberList()) {
             int userid = (int) user.getUserId().getValue();

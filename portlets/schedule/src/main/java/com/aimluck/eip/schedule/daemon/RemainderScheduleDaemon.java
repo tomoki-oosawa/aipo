@@ -245,13 +245,13 @@ public class RemainderScheduleDaemon implements Daemon {
         destMemberList.add(useraddr);
 
         // ASP版のときは正しいorgidを設定すること。
-        String org_id = DatabaseOrmService.getInstance().getDefaultOrgId();
+        String orgId = Database.getDomainName();
         String subject =
           "[" + DatabaseOrmService.getInstance().getAlias() + "]スケジュール";
 
         // メール送信
         ALMailUtils.sendMailDelegate(
-          org_id,
+          orgId,
           1,
           destMemberList,
           subject,

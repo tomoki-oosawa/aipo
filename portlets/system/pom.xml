@@ -7,7 +7,7 @@
   <parent>
     <artifactId>portlets</artifactId>
     <groupId>com.aimluck.eip</groupId>
-    <version>5.1.2</version>
+    <version>6.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -16,7 +16,7 @@
   <version>${aipo.version}</version>
   <packaging>jar</packaging>
 
-  <name>system</name>
+  <name>Aipo System Portlet</name>
 
   <build>
     <plugins>
@@ -36,7 +36,7 @@
                 </copy>
                 <copy todir="../../war/target/aipo/WEB-INF/lib"
                   verbose="false" overwrite="true">
-                  <fileset dir="./target" includes="*.jar" />
+                  <fileset dir="./target" includes="*-${aipo.version}.jar" />
                 </copy>
               </tasks>
             </configuration>

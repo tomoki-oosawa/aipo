@@ -63,9 +63,8 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 public class ScheduleWeeklyJSONFormData {
 
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleWeeklyJSONFormData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleWeeklyJSONFormData.class.getName());
 
   // view
 
@@ -97,7 +96,7 @@ public class ScheduleWeeklyJSONFormData {
 
   private boolean isEdit;
 
-  private String org_id;
+  private String orgId;
 
   // private boolean is_span; // 期間スケジュールかどうか
   //
@@ -142,7 +141,7 @@ public class ScheduleWeeklyJSONFormData {
     viewDate = new ALDateTimeField("yyyy-MM-dd");
     msgList = new ArrayList<String>();
     isViewList = false;
-    org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    orgId = Database.getDomainName();
 
     aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
 
@@ -534,7 +533,7 @@ public class ScheduleWeeklyJSONFormData {
               List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
               destMember.add(destMemberList.get(i));
               ALMailUtils.sendMailDelegate(
-                org_id,
+                orgId,
                 ALEipUtils.getUserId(rundata),
                 destMember,
                 subject,
@@ -694,7 +693,7 @@ public class ScheduleWeeklyJSONFormData {
               List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
               destMember.add(destMemberList.get(i));
               ALMailUtils.sendMailDelegate(
-                org_id,
+                orgId,
                 ALEipUtils.getUserId(rundata),
                 destMember,
                 subject,
@@ -845,7 +844,7 @@ public class ScheduleWeeklyJSONFormData {
               List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
               destMember.add(destMemberList.get(i));
               ALMailUtils.sendMailDelegate(
-                org_id,
+                orgId,
                 ALEipUtils.getUserId(rundata),
                 destMember,
                 subject,
@@ -999,7 +998,7 @@ public class ScheduleWeeklyJSONFormData {
               List<ALEipUserAddr> destMembers = new ArrayList<ALEipUserAddr>();
               destMembers.add(destMember);
               ALMailUtils.sendMailDelegate(
-                org_id,
+                orgId,
                 ALEipUtils.getUserId(rundata),
                 destMembers,
                 subject,
@@ -1018,7 +1017,7 @@ public class ScheduleWeeklyJSONFormData {
               List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
               destMember.add(destMemberList.get(i));
               ALMailUtils.sendMailDelegate(
-                org_id,
+                orgId,
                 ALEipUtils.getUserId(rundata),
                 destMember,
                 subject,

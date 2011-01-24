@@ -68,9 +68,8 @@ public class AjaxScheduleWeeklyGroupSelectData extends
     ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AjaxScheduleWeeklyGroupSelectData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AjaxScheduleWeeklyGroupSelectData.class.getName());
 
   /** <code>prevDate</code> 前の日 */
   private ALDateTimeField prevDate;
@@ -266,9 +265,6 @@ public class AjaxScheduleWeeklyGroupSelectData extends
     }
 
     userid = ALEipUtils.getUserId(rundata);
-
-    // org_id = OrgORMappingMap.getInstance().getOrgId(rundata);
-    // orm_todo = TodoOrmUtils.getORMappingEipTTodo(rundata);
 
     String tmpstr = rundata.getParameters().getString("s_all");
     show_all = "t".equals(tmpstr);
