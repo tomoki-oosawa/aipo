@@ -34,7 +34,6 @@ import com.aimluck.eip.cabinet.util.CabinetUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
@@ -112,11 +111,10 @@ public class CabinetFileMultiDelete extends ALAbstractCheckList {
         int fpathSize = fpaths.size();
         if (fpathSize > 0) {
           // ローカルファイルに保存されているファイルを削除する．
-          String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+          String orgId = Database.getDomainName();
           File file = null;
           for (i = 0; i < fpathSize; i++) {
-            file =
-              new File(CabinetUtils.getSaveDirPath(org_id) + fpaths.get(i));
+            file = new File(CabinetUtils.getSaveDirPath(orgId) + fpaths.get(i));
             if (file.exists()) {
               file.delete();
             }

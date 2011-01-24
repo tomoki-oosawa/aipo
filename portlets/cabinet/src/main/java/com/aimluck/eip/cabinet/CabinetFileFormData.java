@@ -44,7 +44,6 @@ import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
@@ -87,7 +86,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   private String fileid = null;
 
-  private String org_id = null;
+  private String orgId = null;
 
   /** 添付ファイルリスト */
   private List<FileuploadLiteBean> fileuploadList = null;
@@ -122,7 +121,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
       }
     }
 
-    org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    orgId = Database.getDomainName();
     this.rundata = rundata;
 
     String tmpfid =
@@ -408,7 +407,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
         // ローカルファイルに保存されているファイルを削除する．
         File local_file = null;
         local_file =
-          new File(CabinetUtils.getSaveDirPath(org_id) + local_file_pass);
+          new File(CabinetUtils.getSaveDirPath(orgId) + local_file_pass);
         if (local_file.exists()) {
           local_file.delete();
         }
@@ -439,14 +438,14 @@ public class CabinetFileFormData extends ALAbstractFormData {
       FileuploadLiteBean filebean = fileuploadList.get(0);
       // ファイルの移動先
       String filename =
-        FileuploadUtils.getNewFileName(CabinetUtils.getSaveDirPath(org_id));
+        FileuploadUtils.getNewFileName(CabinetUtils.getSaveDirPath(orgId));
 
       // ファイルの移動先
-      File destFile = new File(CabinetUtils.getAbsolutePath(org_id, filename));
+      File destFile = new File(CabinetUtils.getAbsolutePath(orgId, filename));
 
       // 一時保存の添付ファイル
       File srcFile =
-        FileuploadUtils.getAbsolutePath(org_id, uid, folderName, filebean
+        FileuploadUtils.getAbsolutePath(orgId, uid, folderName, filebean
           .getFileId());
 
       // ファイルの移動
@@ -491,7 +490,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_CABINET_FILE,
         file_title.getValue());
 
-      File folder_tmp = FileuploadUtils.getFolder(org_id, uid, folderName);
+      File folder_tmp = FileuploadUtils.getFolder(orgId, uid, folderName);
       // 添付ファイル保存先のフォルダを削除
       FileuploadUtils.deleteFolder(folder_tmp);
 
@@ -533,14 +532,13 @@ public class CabinetFileFormData extends ALAbstractFormData {
         // アップロードが確認できた場合
         FileuploadLiteBean filebean = fileuploadList.get(0);
         String filename =
-          FileuploadUtils.getNewFileName(CabinetUtils.getSaveDirPath(org_id));
+          FileuploadUtils.getNewFileName(CabinetUtils.getSaveDirPath(orgId));
         // ファイルの移動先
-        File destFile =
-          new File(CabinetUtils.getAbsolutePath(org_id, filename));
+        File destFile = new File(CabinetUtils.getAbsolutePath(orgId, filename));
 
         // 一時保存の添付ファイル
         File srcFile =
-          FileuploadUtils.getAbsolutePath(org_id, uid, folderName, filebean
+          FileuploadUtils.getAbsolutePath(orgId, uid, folderName, filebean
             .getFileId());
 
         // ファイルの移動

@@ -42,6 +42,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.mail.util.ALEipUserAddr;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -66,7 +67,7 @@ public class CellularFormData extends ALAbstractFormData {
 
   private String url;
 
-  private String org_id;
+  private String orgId;
 
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -75,7 +76,7 @@ public class CellularFormData extends ALAbstractFormData {
 
     enableEasyLogin = false;
 
-    org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    orgId = Database.getDomainName();
 
     JetspeedRunData jdata = (JetspeedRunData) rundata;
     try {
@@ -193,7 +194,7 @@ public class CellularFormData extends ALAbstractFormData {
 
       res =
         ALMailUtils.sendMailDelegate(
-          org_id,
+          orgId,
           (int) user.getUserId().getValue(),
           destMemberList,
           null,

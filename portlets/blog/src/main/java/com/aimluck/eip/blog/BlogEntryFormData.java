@@ -49,7 +49,6 @@ import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
@@ -105,7 +104,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   private BlogThemaFormData blogthema;
 
-  private String org_id;
+  private String orgId;
 
   /**
    * 
@@ -122,7 +121,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
     is_new_thema = rundata.getParameters().getBoolean("is_new_thema");
 
     uid = ALEipUtils.getUserId(rundata);
-    org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    orgId = Database.getDomainName();
 
     folderName = rundata.getParameters().getString("folderName");
 
@@ -317,8 +316,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
         File file = null;
         int fsize = fpaths.size();
         for (int i = 0; i < fsize; i++) {
-          file =
-            new File(BlogUtils.getSaveDirPath(org_id, uid) + fpaths.get(i));
+          file = new File(BlogUtils.getSaveDirPath(orgId, uid) + fpaths.get(i));
           if (file.exists()) {
             file.delete();
           }
@@ -458,7 +456,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
           String[] acceptExts = ImageIO.getWriterFormatNames();
           byte[] fileThumbnail =
             FileuploadUtils.getBytesShrinkFilebean(
-              org_id,
+              orgId,
               folderName,
               uid,
               newfilebean,
@@ -468,8 +466,8 @@ public class BlogEntryFormData extends ALAbstractFormData {
               msgList);
 
           String filename =
-            FileuploadUtils.getNewFileName(BlogUtils
-              .getSaveDirPath(org_id, uid));
+            FileuploadUtils
+              .getNewFileName(BlogUtils.getSaveDirPath(orgId, uid));
 
           // 新規オブジェクトモデル
           EipTBlogFile file = Database.create(EipTBlogFile.class);
@@ -485,13 +483,10 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
           // ファイルの移動
           File srcFile =
-            FileuploadUtils.getAbsolutePath(
-              org_id,
-              uid,
-              folderName,
-              newfilebean.getFileId());
+            FileuploadUtils.getAbsolutePath(orgId, uid, folderName, newfilebean
+              .getFileId());
           File destFile =
-            new File(BlogUtils.getAbsolutePath(org_id, uid, filename));
+            new File(BlogUtils.getAbsolutePath(orgId, uid, filename));
           FileuploadUtils.copyFile(srcFile, destFile);
 
           srcFile = null;
@@ -499,7 +494,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
         }
 
         // 添付ファイル保存先のフォルダを削除
-        File folder = FileuploadUtils.getFolder(org_id, uid, folderName);
+        File folder = FileuploadUtils.getFolder(orgId, uid, folderName);
         FileuploadUtils.deleteFolder(folder);
       }
 
@@ -591,7 +586,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
             if (!attIdList.contains(file.getFileId())) {
               // ファイルシステムから削除
               File fileonsysytem =
-                new File(BlogUtils.getSaveDirPath(org_id, uid)
+                new File(BlogUtils.getSaveDirPath(orgId, uid)
                   + file.getFilePath());
               if (fileonsysytem.exists()) {
                 fileonsysytem.delete();
@@ -698,7 +693,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
     }
 
     return FileuploadUtils.deleteAttachments(
-      org_id,
+      orgId,
       uid,
       folderName,
       fileuploadList);

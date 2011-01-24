@@ -60,7 +60,6 @@ import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -76,8 +75,8 @@ import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
 public class BlogUtils {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(BlogUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(BlogUtils.class.getName());
 
   public static final String TARGET_GROUP_NAME = "target_group_name";
 
@@ -91,16 +90,18 @@ public class BlogUtils {
   public static final String ATTACHMENT_TEMP_FILENAME_REMAIND = "file.txt";
 
   /** デフォルトエンコーディングを表わすシステムプロパティのキー */
-  public static final String FILE_ENCODING =
-    JetspeedResources.getString("content.defaultencoding", "UTF-8");
+  public static final String FILE_ENCODING = JetspeedResources.getString(
+    "content.defaultencoding",
+    "UTF-8");
 
   /** ブログの添付ファイルを保管するディレクトリの指定 */
-  protected static final String FOLDER_FILEDIR_BLOG =
-    JetspeedResources.getString("aipo.filedir", "");
+  protected static final String FOLDER_FILEDIR_BLOG = JetspeedResources
+    .getString("aipo.filedir", "");
 
   /** ブログの添付ファイルを保管するディレクトリのカテゴリキーの指定 */
-  protected static final String CATEGORY_KEY =
-    JetspeedResources.getString("aipo.blog.categorykey", "");
+  protected static final String CATEGORY_KEY = JetspeedResources.getString(
+    "aipo.blog.categorykey",
+    "");
 
   /** データベースに登録されたファイルを表す識別子 */
   public static final String PREFIX_DBFILE = "DBF";
@@ -403,12 +404,12 @@ public class BlogUtils {
     statement.append("SELECT DISTINCT ");
     statement
       .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, B.PHOTO, D.POSITION ");
-    statement.append("FROM TURBINE_USER_GROUP_ROLE as A ");
-    statement.append("LEFT JOIN TURBINE_USER as B ");
+    statement.append("FROM turbine_user_group_role as A ");
+    statement.append("LEFT JOIN turbine_user as B ");
     statement.append("  on A.USER_ID = B.USER_ID ");
-    statement.append("LEFT JOIN TURBINE_GROUP as C ");
+    statement.append("LEFT JOIN turbine_group as C ");
     statement.append("  on A.GROUP_ID = C.GROUP_ID ");
-    statement.append("LEFT JOIN EIP_M_USER_POSITION as D ");
+    statement.append("LEFT JOIN eip_m_user_position as D ");
     statement.append("  on A.USER_ID = D.USER_ID ");
     statement.append("WHERE B.USER_ID > 3 AND B.DISABLED = 'F'");
     statement.append(" AND C.GROUP_NAME = #bind($groupname) ");
@@ -660,10 +661,10 @@ public class BlogUtils {
         return null;
       }
 
-      String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+      String orgId = Database.getDomainName();
       File folder =
         FileuploadUtils.getFolder(
-          org_id,
+          orgId,
           ALEipUtils.getUserId(rundata),
           folderName);
       String folderpath = folder.getAbsolutePath();

@@ -46,7 +46,6 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
@@ -98,7 +97,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
 
   private String folderid = null;
 
-  private String org_id;
+  private String orgId;
 
   /** アクセス制御のフォームを表示するか */
   private boolean show_acl_form = true;
@@ -127,7 +126,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
       }
     }
 
-    org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    orgId = Database.getDomainName();
 
     login_user = ALEipUtils.getALEipUser(rundata);
 
@@ -558,8 +557,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
           File file = null;
           int fsize = fpaths.size();
           for (int k = 0; k < fsize; k++) {
-            file =
-              new File(CabinetUtils.getSaveDirPath(org_id) + fpaths.get(k));
+            file = new File(CabinetUtils.getSaveDirPath(orgId) + fpaths.get(k));
             if (file.exists()) {
               file.delete();
             }

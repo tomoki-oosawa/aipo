@@ -81,7 +81,6 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.Query;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
@@ -93,19 +92,21 @@ import com.aimluck.eip.util.ALEipUtils;
 public class DeleteSampleFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(DeleteSampleFormData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(DeleteSampleFormData.class.getName());
 
   protected List<String> fpaths = null;
 
   /** 掲示板,ブログの添付ファイルを保管するディレクトリの指定 */
-  protected static final String FOLDER_FILEDIR =
-    JetspeedResources.getString("aipo.filedir", "");
+  protected static final String FOLDER_FILEDIR = JetspeedResources.getString(
+    "aipo.filedir",
+    "");
 
-  protected static final String FOLDER_MAILDIR =
-    JetspeedResources.getString("aipo.mail.home", "");
+  protected static final String FOLDER_MAILDIR = JetspeedResources.getString(
+    "aipo.mail.home",
+    "");
 
-  private String org_id;
+  private String orgId;
 
   /**
    * 
@@ -119,7 +120,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-    org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+    orgId = Database.getDomainName();
   }
 
   /**
@@ -240,7 +241,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
         for (int i = 0; i < size; i++) {
           fpaths.add(FOLDER_MAILDIR
             + File.separator
-            + org_id
+            + orgId
             + File.separator
             + (ids.get(i)).toString());
         }
@@ -415,7 +416,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     if (Bloglist3 != null && Bloglist3.size() > 0) {
       for (EipTBlogFile file : Bloglist3) {
         fpaths.add(getSaveDirPath(
-          org_id,
+          orgId,
           file.getOwnerId().intValue(),
           FOLDER_FILEDIR,
           "blog")
@@ -551,7 +552,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
     if (fileList != null && fileList.size() > 0) {
       for (EipTMsgboardFile file : fileList) {
         fpaths.add(getSaveDirPath(
-          org_id,
+          orgId,
           file.getOwnerId().intValue(),
           FOLDER_FILEDIR,
           "msgboard")
@@ -858,7 +859,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
 
           // この役職に設定されているユーザーの役職IDを0とする
           String sql =
-            "UPDATE TURBINE_USER set POSITION_ID = 0 where POSITION_ID = "
+            "UPDATE turbine_user set POSITION_ID = 0 where POSITION_ID = "
               + positionId;
           Database.sql(TurbineUser.class, sql).execute();
         }

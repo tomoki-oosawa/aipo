@@ -27,7 +27,6 @@ import com.aimluck.eip.cabinet.util.CabinetUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
  * 共有フォルダのファイルの一覧を処理するクラスです。 <br />
@@ -63,9 +62,7 @@ public class CabinetFileRawScreen extends FileuploadRawScreen {
       EipTCabinetFile cabinetfile =
         Database.get(EipTCabinetFile.class, Integer.valueOf(fileindex));
 
-      super.setFilePath(CabinetUtils.getSaveDirPath(DatabaseOrmService
-        .getInstance()
-        .getOrgId(rundata))
+      super.setFilePath(CabinetUtils.getSaveDirPath(Database.getDomainName())
         + cabinetfile.getFilePath());
       super.setFileName(cabinetfile.getFileName());
       super.doOutput(rundata);

@@ -276,13 +276,13 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
           ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
             .getUserId(rundata), false);
 
-        String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+        String orgId = Database.getDomainName();
         String subject =
           "[" + JetspeedResources.getString("aipo.alias") + "]ブログコメント";
 
         // パソコン、携帯電話へメールを送信
         ALMailUtils.sendMailDelegate(
-          org_id,
+          orgId,
           (int) login_user.getUserId().getValue(),
           destMemberList,
           subject,

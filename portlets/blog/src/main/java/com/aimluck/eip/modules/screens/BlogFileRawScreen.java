@@ -25,7 +25,7 @@ import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.blog.util.BlogUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 
 /**
  * ブログエントリーの添付ファイルの一覧を処理するクラスです。 <br />
@@ -46,9 +46,9 @@ public class BlogFileRawScreen extends FileuploadRawScreen {
     try {
       EipTBlogFile blogfile = BlogUtils.getEipTBlogFile(rundata);
 
-      super.setFilePath(BlogUtils.getSaveDirPath(DatabaseOrmService
-        .getInstance()
-        .getOrgId(rundata), blogfile.getOwnerId().intValue())
+      super.setFilePath(BlogUtils.getSaveDirPath(
+        Database.getDomainName(),
+        blogfile.getOwnerId().intValue())
         + blogfile.getFilePath());
       super.setFileName(blogfile.getTitle());
       super.doOutput(rundata);
