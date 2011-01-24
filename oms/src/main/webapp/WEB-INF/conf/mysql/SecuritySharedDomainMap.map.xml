@@ -3,36 +3,21 @@
 	<property name="defaultPackage" value="com.aimluck.eip.cayenne.om.security"/>
 	<db-entity name="turbine_group">
 		<db-attribute name="GROUP_ALIAS_NAME" type="VARCHAR" length="99"/>
-		<db-attribute name="GROUP_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="GROUP_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="GROUP_NAME" type="VARCHAR" isMandatory="true" length="99"/>
 		<db-attribute name="OBJECTDATA" type="BINARY"/>
 		<db-attribute name="OWNER_ID" type="INTEGER"/>
 		<db-attribute name="PUBLIC_FLAG" type="CHAR" length="1"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>turbine_group_group_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="turbine_permission">
 		<db-attribute name="OBJECTDATA" type="BINARY"/>
-		<db-attribute name="PERMISSION_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="PERMISSION_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="PERMISSION_NAME" type="VARCHAR" isMandatory="true" length="99"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>turbine_permission_permission_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="turbine_role">
 		<db-attribute name="OBJECTDATA" type="BINARY"/>
-		<db-attribute name="ROLE_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="ROLE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="ROLE_NAME" type="VARCHAR" isMandatory="true" length="99"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>turbine_role_role_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="turbine_role_permission">
 		<db-attribute name="PERMISSION_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
@@ -63,23 +48,13 @@
 		<db-attribute name="PHOTO" type="LONGVARBINARY"/>
 		<db-attribute name="POSITION_ID" type="INTEGER"/>
 		<db-attribute name="UPDATED_USER_ID" type="INTEGER"/>
-		<db-attribute name="USER_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>turbine_user_user_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
+		<db-attribute name="USER_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="turbine_user_group_role">
 		<db-attribute name="GROUP_ID" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="ROLE_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>turbine_user_group_role_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<obj-entity name="TurbineGroup" className="com.aimluck.eip.cayenne.om.security.TurbineGroup" dbEntityName="turbine_group">
 		<obj-attribute name="groupAliasName" type="java.lang.String" db-attribute-path="GROUP_ALIAS_NAME"/>

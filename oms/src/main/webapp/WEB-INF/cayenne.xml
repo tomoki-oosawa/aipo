@@ -22,18 +22,12 @@
 
 <domains project-version="2.0">
 <domain name="SharedDomain">
-    <property name="cayenne.DataDomain.dataContextFactory" value="com.aimluck.eip.cayenne.access.IsolatedDataContextFactory"/>
-    <property name="cayenne.DataRowStore.snapshot.size" value="50000"/>
+	<property name="cayenne.DataDomain.dataContextFactory" value="com.aimluck.eip.cayenne.access.IsolatedDataContextFactory"/>
+	<property name="cayenne.DataRowStore.snapshot.size" value="50000"/>
+
 	<map name="AccountSharedDomainMap" location="conf/postgres/AccountSharedDomainMap.map.xml"/>
 	<map name="SecuritySharedDomainMap" location="conf/postgres/SecuritySharedDomainMap.map.xml"/>
+	<map name="SocialSharedDomainMap" location="conf/postgres/SocialSharedDomainMap.map.xml"/>
 	<map name="SharedDomainMap" location="conf/postgres/SharedDomainMap.map.xml"/>
-</domain>
-<domain name="org001">
-    <property name="cayenne.DataDomain.dataContextFactory" value="com.aimluck.eip.cayenne.access.IsolatedDataContextFactory"/>
-    <property name="cayenne.DataRowStore.snapshot.size" value="50000"/>
-	<node name="Org001DomainNode"
-		 datasource="conf/postgres/Org001DomainNode.driver.xml"
-		 factory="org.apache.cayenne.conf.DriverDataSourceFactory">
-	</node>
 </domain>
 </domains>

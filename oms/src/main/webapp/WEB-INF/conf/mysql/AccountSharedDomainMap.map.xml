@@ -1,40 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-
-    Aipo is a groupware program developed by Aimluck,Inc.
-    Copyright (C) 2004-2010 Aimluck,Inc.
-    http://aipostyle.com/
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
--->
-
 <data-map project-version="2.0">
 	<property name="defaultPackage" value="com.aimluck.eip.cayenne.om.account"/>
 	<db-entity name="aipo_license">
 		<db-attribute name="LICENSE" type="VARCHAR" isMandatory="true" length="99"/>
-		<db-attribute name="LICENSE_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="LICENSE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="LIMIT_USERS" type="INTEGER"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>aipo_license_license_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_m_company">
 		<db-attribute name="ADDRESS" type="VARCHAR" length="64"/>
-		<db-attribute name="COMPANY_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="COMPANY_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="COMPANY_NAME" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="COMPANY_NAME_KANA" type="VARCHAR" length="64"/>
 		<db-attribute name="CREATE_DATE" type="DATE"/>
@@ -47,22 +21,12 @@
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
 		<db-attribute name="URL" type="VARCHAR" length="99"/>
 		<db-attribute name="ZIPCODE" type="VARCHAR" length="8"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_m_company_company_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_m_position">
 		<db-attribute name="CREATE_DATE" type="DATE"/>
-		<db-attribute name="POSITION_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="POSITION_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="POSITION_NAME" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_m_position_position_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_m_post">
 		<db-attribute name="ADDRESS" type="VARCHAR" length="64"/>
@@ -72,60 +36,35 @@
 		<db-attribute name="GROUP_NAME" type="VARCHAR" length="99"/>
 		<db-attribute name="IN_TELEPHONE" type="VARCHAR" length="15"/>
 		<db-attribute name="OUT_TELEPHONE" type="VARCHAR" length="15"/>
-		<db-attribute name="POST_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="POST_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="POST_NAME" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
 		<db-attribute name="ZIPCODE" type="VARCHAR" length="8"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_m_post_post_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_m_user_position">
-		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="POSITION" type="INTEGER"/>
 		<db-attribute name="USER_ID" type="INTEGER"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_m_user_position_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_acl_portlet_feature">
 		<db-attribute name="ACL_TYPE" type="INTEGER"/>
 		<db-attribute name="FEATURE_ALIAS_NAME" type="VARCHAR" length="99"/>
-		<db-attribute name="FEATURE_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="FEATURE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="FEATURE_NAME" type="VARCHAR" length="99"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_acl_portlet_feature_feature_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_acl_role">
 		<db-attribute name="ACL_TYPE" type="INTEGER"/>
 		<db-attribute name="CREATE_DATE" type="DATE"/>
 		<db-attribute name="FEATURE_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="NOTE" type="CLOB"/>
-		<db-attribute name="ROLE_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="ROLE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="ROLE_NAME" type="VARCHAR" isMandatory="true" length="99"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_acl_role_role_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_acl_user_role_map">
-		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="ROLE_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_acl_user_role_map_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<obj-entity name="AipoLicense" className="com.aimluck.eip.cayenne.om.account.AipoLicense" dbEntityName="aipo_license">
 		<obj-attribute name="license" type="java.lang.String" db-attribute-path="LICENSE"/>

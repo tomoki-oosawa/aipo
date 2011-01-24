@@ -1,52 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-
-    Aipo is a groupware program developed by Aimluck,Inc.
-    Copyright (C) 2004-2010 Aimluck,Inc.
-    http://aipostyle.com/
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
--->
-
 <data-map project-version="2.0">
 	<property name="defaultPackage" value="com.aimluck.eip.cayenne.om.portlet"/>
 	<db-entity name="eip_facility_group">
 		<db-attribute name="FACILITY_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="GROUP_ID" type="INTEGER" isMandatory="true" length="4"/>
-		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_facility_group_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="eip_m_address_group">
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
-		<db-attribute name="GROUP_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="GROUP_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="GROUP_NAME" type="VARCHAR" isMandatory="true" length="99"/>
 		<db-attribute name="OWNER_ID" type="INTEGER" length="4"/>
 		<db-attribute name="PUBLIC_FLAG" type="VARCHAR" length="1"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_m_address_group_group_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_m_addressbook">
-		<db-attribute name="ADDRESS_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="ADDRESS_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="CELLULAR_MAIL" type="VARCHAR" length="99"/>
 		<db-attribute name="CELLULAR_PHONE" type="VARCHAR" length="15"/>
 		<db-attribute name="COMPANY_ID" type="INTEGER" length="4"/>
@@ -64,15 +33,10 @@
 		<db-attribute name="TELEPHONE" type="VARCHAR" length="15"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="UPDATE_USER_ID" type="INTEGER" length="4"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_m_addressbook_address_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_m_addressbook_company">
 		<db-attribute name="ADDRESS" type="VARCHAR" length="64"/>
-		<db-attribute name="COMPANY_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="COMPANY_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="COMPANY_NAME" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="COMPANY_NAME_KANA" type="VARCHAR" length="64"/>
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
@@ -84,27 +48,17 @@
 		<db-attribute name="UPDATE_USER_ID" type="INTEGER" length="4"/>
 		<db-attribute name="URL" type="VARCHAR" length="99"/>
 		<db-attribute name="ZIPCODE" type="VARCHAR" length="8"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_m_addressbook_company_company_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_m_facility">
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
-		<db-attribute name="FACILITY_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="FACILITY_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="FACILITY_NAME" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="NOTE" type="CLOB"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_m_facility_facility_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_m_mail_account">
-		<db-attribute name="ACCOUNT_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="ACCOUNT_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="ACCOUNT_NAME" type="VARCHAR" isMandatory="true" length="20"/>
 		<db-attribute name="ACCOUNT_TYPE" type="VARCHAR" length="1"/>
 		<db-attribute name="AUTH_RECEIVE_FLG" type="SMALLINT" length="2"/>
@@ -131,134 +85,84 @@
 		<db-attribute name="SMTP_PORT" type="VARCHAR" isMandatory="true" length="5"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_m_mail_account_account_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_m_mail_notify_conf">
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
 		<db-attribute name="NOTIFY_FLG" type="INTEGER" isMandatory="true" length="4"/>
-		<db-attribute name="NOTIFY_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="NOTIFY_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="NOTIFY_TIME" type="TIME" length="4"/>
 		<db-attribute name="NOTIFY_TYPE" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_m_mail_notify_conf_notify_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_m_mybox">
 		<db-attribute name="AIPO_ID" type="VARCHAR" length="99"/>
 		<db-attribute name="AIPO_PASSWD" type="VARCHAR" length="99"/>
 		<db-attribute name="COMPANY_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="CREATE_DATE" type="DATE"/>
-		<db-attribute name="MYBOX_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="MYBOX_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_m_mybox_mybox_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_addressbook_group_map">
 		<db-attribute name="ADDRESS_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="GROUP_ID" type="INTEGER" isMandatory="true" length="4"/>
-		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_addressbook_group_map_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="eip_t_blog">
-		<db-attribute name="BLOG_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="BLOG_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
 		<db-attribute name="OWNER_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_blog_blog_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_blog_comment">
 		<db-attribute name="COMMENT" type="CLOB"/>
-		<db-attribute name="COMMENT_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="COMMENT_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
 		<db-attribute name="ENTRY_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="OWNER_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_blog_comment_comment_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_blog_entry">
 		<db-attribute name="ALLOW_COMMENTS" type="VARCHAR" length="1"/>
 		<db-attribute name="BLOG_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="CREATE_DATE" type="TIMESTAMP" length="8"/>
-		<db-attribute name="ENTRY_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="ENTRY_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="NOTE" type="CLOB"/>
 		<db-attribute name="OWNER_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="THEMA_ID" type="INTEGER" length="4"/>
 		<db-attribute name="TITLE" type="VARCHAR" isMandatory="true" length="99"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_blog_entry_entry_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_blog_file">
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
 		<db-attribute name="ENTRY_ID" type="INTEGER" isMandatory="true" length="4"/>
-		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="FILE_PATH" type="CLOB" isMandatory="true"/>
 		<db-attribute name="FILE_THUMBNAIL" type="LONGVARBINARY"/>
 		<db-attribute name="OWNER_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="TITLE" type="VARCHAR" isMandatory="true" length="99"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_blog_file_file_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_blog_footmark_map">
 		<db-attribute name="BLOG_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="CREATE_DATE" type="DATE" isMandatory="true" length="4"/>
-		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_blog_footmark_map_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_blog_thema">
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
 		<db-attribute name="CREATE_USER_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="DESCRIPTION" type="CLOB"/>
-		<db-attribute name="THEMA_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="THEMA_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="THEMA_NAME" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="UPDATE_USER_ID" type="INTEGER" isMandatory="true" length="4"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_blog_thema_thema_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_cabinet_file">
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
 		<db-attribute name="CREATE_USER_ID" type="INTEGER" length="4"/>
-		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="FILE_NAME" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="FILE_PATH" type="CLOB" isMandatory="true"/>
 		<db-attribute name="FILE_SIZE" type="BIGINT" length="8"/>
@@ -267,57 +171,37 @@
 		<db-attribute name="NOTE" type="CLOB"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="UPDATE_USER_ID" type="INTEGER" length="4"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_cabinet_file_file_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_cabinet_folder">
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
 		<db-attribute name="CREATE_USER_ID" type="INTEGER" length="4"/>
-		<db-attribute name="FOLDER_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="FOLDER_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="FOLDER_NAME" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="NOTE" type="CLOB"/>
 		<db-attribute name="PARENT_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="PUBLIC_FLAG" type="VARCHAR" length="1"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="UPDATE_USER_ID" type="INTEGER" length="4"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_cabinet_folder_folder_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_cabinet_folder_map">
 		<db-attribute name="FOLDER_ID" type="INTEGER"/>
-		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="STATUS" type="VARCHAR" length="1"/>
 		<db-attribute name="USER_ID" type="INTEGER"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_cabinet_folder_map_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_common_category">
-		<db-attribute name="COMMON_CATEGORY_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="COMMON_CATEGORY_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
 		<db-attribute name="CREATE_USER_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="NAME" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="NOTE" type="CLOB"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="UPDATE_USER_ID" type="INTEGER" isMandatory="true" length="4"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_common_category_common_category_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_eventlog">
 		<db-attribute name="CREATE_DATE" type="TIMESTAMP"/>
 		<db-attribute name="ENTITY_ID" type="INTEGER" length="4"/>
-		<db-attribute name="EVENTLOG_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="EVENTLOG_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="EVENT_DATE" type="TIMESTAMP"/>
 		<db-attribute name="EVENT_TYPE" type="INTEGER" length="4"/>
 		<db-attribute name="IP_ADDR" type="CLOB"/>
@@ -325,11 +209,6 @@
 		<db-attribute name="PORTLET_TYPE" type="INTEGER" length="4"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
 		<db-attribute name="USER_ID" type="INTEGER" length="4"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_eventlog_eventlog_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_ext_timecard">
 		<db-attribute name="CLOCK_IN_TIME" type="TIMESTAMP" length="8"/>
@@ -348,15 +227,10 @@
 		<db-attribute name="PUNCH_DATE" type="DATE" length="4"/>
 		<db-attribute name="REASON" type="CLOB"/>
 		<db-attribute name="REMARKS" type="CLOB"/>
-		<db-attribute name="TIMECARD_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="TIMECARD_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="TYPE" type="VARCHAR" length="1"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="4"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_ext_timecard_timecard_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_ext_timecard_system">
 		<db-attribute name="CHANGE_HOUR" type="INTEGER"/>
@@ -368,29 +242,19 @@
 		<db-attribute name="RESTTIME_OUT" type="INTEGER" length="4"/>
 		<db-attribute name="START_HOUR" type="INTEGER" length="2"/>
 		<db-attribute name="START_MINUTE" type="INTEGER" length="2"/>
-		<db-attribute name="SYSTEM_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="SYSTEM_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="SYSTEM_NAME" type="VARCHAR" length="64"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="WORKTIME_IN" type="INTEGER" length="4"/>
 		<db-attribute name="WORKTIME_OUT" type="INTEGER" length="4"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_ext_timecard_system_system_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_ext_timecard_system_map">
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
 		<db-attribute name="SYSTEM_ID" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="SYSTEM_MAP_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="SYSTEM_MAP_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_ext_timecard_system_map_system_map_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_mail">
 		<db-attribute name="ACCOUNT_ID" type="INTEGER" isMandatory="true" length="4"/>
@@ -401,97 +265,62 @@
 		<db-attribute name="FOLDER_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="HAS_FILES" type="CHAR" length="1"/>
 		<db-attribute name="MAIL" type="LONGVARBINARY"/>
-		<db-attribute name="MAIL_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="MAIL_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="PERSON" type="CLOB"/>
 		<db-attribute name="READ_FLG" type="CHAR" length="1"/>
 		<db-attribute name="SUBJECT" type="CLOB"/>
 		<db-attribute name="TYPE" type="CHAR" length="1"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_mail_mail_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_mail_filter">
 		<db-attribute name="ACCOUNT_ID" type="INTEGER" length="4"/>
 		<db-attribute name="DST_FOLDER_ID" type="INTEGER" length="4"/>
-		<db-attribute name="FILTER_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="FILTER_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="FILTER_NAME" type="VARCHAR" length="255"/>
 		<db-attribute name="FILTER_STRING" type="VARCHAR" length="255"/>
 		<db-attribute name="FILTER_TYPE" type="CHAR" length="1"/>
 		<db-attribute name="SORT_ORDER" type="INTEGER" length="4"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_mail_filter_filter_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_mail_folder">
 		<db-attribute name="ACCOUNT_ID" type="INTEGER" length="4"/>
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
-		<db-attribute name="FOLDER_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="FOLDER_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="FOLDER_NAME" type="CLOB" length="128"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_mail_folder_folder_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_memo">
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
-		<db-attribute name="MEMO_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="MEMO_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="MEMO_NAME" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="NOTE" type="CLOB"/>
 		<db-attribute name="OWNER_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_memo_memo_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_msgboard_category">
-		<db-attribute name="CATEGORY_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="CATEGORY_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="CATEGORY_NAME" type="VARCHAR" length="99"/>
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
 		<db-attribute name="NOTE" type="CLOB"/>
 		<db-attribute name="OWNER_ID" type="INTEGER" length="4"/>
 		<db-attribute name="PUBLIC_FLAG" type="VARCHAR" length="1"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_msgboard_category_category_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_msgboard_category_map">
 		<db-attribute name="CATEGORY_ID" type="INTEGER" length="4"/>
-		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="STATUS" type="VARCHAR" length="1"/>
 		<db-attribute name="USER_ID" type="INTEGER" length="4"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_msgboard_category_map_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_msgboard_file">
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
-		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="FILE_NAME" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="FILE_PATH" type="CLOB" isMandatory="true"/>
 		<db-attribute name="FILE_THUMBNAIL" type="LONGVARBINARY"/>
 		<db-attribute name="OWNER_ID" type="INTEGER" length="4"/>
 		<db-attribute name="TOPIC_ID" type="INTEGER" length="4"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_msgboard_file_file_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_msgboard_topic">
 		<db-attribute name="CATEGORY_ID" type="INTEGER" length="4"/>
@@ -500,15 +329,10 @@
 		<db-attribute name="NOTE" type="CLOB"/>
 		<db-attribute name="OWNER_ID" type="INTEGER" length="4"/>
 		<db-attribute name="PARENT_ID" type="INTEGER" length="4"/>
-		<db-attribute name="TOPIC_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="TOPIC_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="TOPIC_NAME" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="UPDATE_USER_ID" type="INTEGER" length="4"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_msgboard_topic_topic_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_note">
 		<db-attribute name="ACCEPT_DATE" type="TIMESTAMP" length="8"/>
@@ -519,29 +343,19 @@
 		<db-attribute name="CUSTOM_SUBJECT" type="VARCHAR" length="99"/>
 		<db-attribute name="EMAIL_ADDRESS" type="VARCHAR" length="99"/>
 		<db-attribute name="MESSAGE" type="CLOB"/>
-		<db-attribute name="NOTE_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="NOTE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="OWNER_ID" type="VARCHAR" length="99"/>
 		<db-attribute name="SUBJECT_TYPE" type="VARCHAR" length="1"/>
 		<db-attribute name="TELEPHONE" type="VARCHAR" length="24"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_note_note_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_note_map">
 		<db-attribute name="CONFIRM_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="DEL_FLG" type="VARCHAR" length="1"/>
-		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="NOTE_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="NOTE_STAT" type="VARCHAR" length="1"/>
 		<db-attribute name="USER_ID" type="VARCHAR" isMandatory="true" length="99"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_note_map_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_schedule">
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
@@ -555,42 +369,27 @@
 		<db-attribute name="PLACE" type="VARCHAR" length="99"/>
 		<db-attribute name="PUBLIC_FLAG" type="VARCHAR" length="1"/>
 		<db-attribute name="REPEAT_PATTERN" type="VARCHAR" length="10"/>
-		<db-attribute name="SCHEDULE_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="SCHEDULE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="START_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="UPDATE_USER_ID" type="INTEGER" length="4"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_schedule_schedule_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_schedule_map">
 		<db-attribute name="COMMON_CATEGORY_ID" type="INTEGER" isMandatory="true" length="4"/>
-		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="SCHEDULE_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="STATUS" type="VARCHAR" length="1"/>
 		<db-attribute name="TYPE" type="VARCHAR" length="1"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_schedule_map_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_timecard">
 		<db-attribute name="CREATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="REASON" type="CLOB"/>
-		<db-attribute name="TIMECARD_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="TIMECARD_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="WORK_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="WORK_FLAG" type="VARCHAR" isMandatory="true" length="1"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_timecard_timecard_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_timecard_settings">
 		<db-attribute name="CREATE_DATE" type="TIMESTAMP"/>
@@ -600,16 +399,11 @@
 		<db-attribute name="RESTTIME_OUT" type="INTEGER"/>
 		<db-attribute name="START_HOUR" type="INTEGER"/>
 		<db-attribute name="START_MINUTE" type="INTEGER"/>
-		<db-attribute name="TIMECARD_SETTINGS_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="TIMECARD_SETTINGS_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="WORKTIME_IN" type="INTEGER"/>
 		<db-attribute name="WORKTIME_OUT" type="INTEGER"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_timecard_settings_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_todo">
 		<db-attribute name="ADDON_SCHEDULE_FLG" type="VARCHAR" isMandatory="true" length="1"/>
@@ -621,28 +415,18 @@
 		<db-attribute name="PUBLIC_FLAG" type="VARCHAR" isMandatory="true" length="1"/>
 		<db-attribute name="START_DATE" type="DATE" length="4"/>
 		<db-attribute name="STATE" type="SMALLINT" length="2"/>
-		<db-attribute name="TODO_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="TODO_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="TODO_NAME" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_todo_todo_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_todo_category">
-		<db-attribute name="CATEGORY_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="CATEGORY_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="CATEGORY_NAME" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
 		<db-attribute name="NOTE" type="CLOB"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_todo_category_category_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_whatsnew">
 		<db-attribute name="CREATE_DATE" type="TIMESTAMP" length="8"/>
@@ -651,15 +435,10 @@
 		<db-attribute name="PORTLET_TYPE" type="INTEGER" length="4"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="USER_ID" type="INTEGER" length="4"/>
-		<db-attribute name="WHATSNEW_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_whatsnew_whatsnew_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
+		<db-attribute name="WHATSNEW_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 	</db-entity>
 	<db-entity name="eip_t_workflow_category">
-		<db-attribute name="CATEGORY_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="CATEGORY_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="CATEGORY_NAME" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="CREATE_DATE" type="DATE"/>
 		<db-attribute name="NOTE" type="CLOB"/>
@@ -667,26 +446,16 @@
 		<db-attribute name="TEMPLATE" type="CLOB"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_workflow_category_category_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_workflow_file">
 		<db-attribute name="CREATE_DATE" type="DATE"/>
-		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="FILE_NAME" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="FILE_PATH" type="CLOB" isMandatory="true"/>
 		<db-attribute name="FILE_THUMBNAIL" type="LONGVARBINARY"/>
 		<db-attribute name="OWNER_ID" type="INTEGER"/>
 		<db-attribute name="REQUEST_ID" type="INTEGER"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_workflow_file_file_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_workflow_request">
 		<db-attribute name="CATEGORY_ID" type="INTEGER"/>
@@ -696,44 +465,29 @@
 		<db-attribute name="PRICE" type="BIGINT"/>
 		<db-attribute name="PRIORITY" type="SMALLINT" length="1"/>
 		<db-attribute name="PROGRESS" type="VARCHAR" length="1"/>
-		<db-attribute name="REQUEST_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="REQUEST_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="REQUEST_NAME" type="VARCHAR" length="64"/>
 		<db-attribute name="ROUTE_ID" type="INTEGER"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_workflow_request_request_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_workflow_request_map">
 		<db-attribute name="CREATE_DATE" type="DATE"/>
-		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="NOTE" type="CLOB"/>
 		<db-attribute name="ORDER_INDEX" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="REQUEST_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="STATUS" type="VARCHAR" length="1"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_workflow_request_map_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_workflow_route">
 		<db-attribute name="CREATE_DATE" type="DATE"/>
 		<db-attribute name="NOTE" type="CLOB"/>
 		<db-attribute name="ROUTE" type="CLOB"/>
-		<db-attribute name="ROUTE_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="ROUTE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="ROUTE_NAME" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-			<db-generator-name>eip_t_workflow_route_route_id_seq</db-generator-name>
-			<db-key-cache-size>1</db-key-cache-size>
-		</db-key-generator>
 	</db-entity>
 	<obj-entity name="EipFacilityGroup" className="com.aimluck.eip.cayenne.om.portlet.EipFacilityGroup" dbEntityName="eip_facility_group">
 	</obj-entity>
