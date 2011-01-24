@@ -6,16 +6,16 @@
   <parent>
     <artifactId>aipo</artifactId>
     <groupId>com.aimluck.eip</groupId>
-    <version>5.1.2</version>
+    <version>6.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <groupId>com.aimluck.eip</groupId>
   <artifactId>portlets</artifactId>
-  <version>5.1.2</version>
+  <version>6.0</version>
   <packaging>pom</packaging>
 
-  <name>portlets</name>
+  <name>Aipo Portlets</name>
 
   <modules>
     <module>accessctl</module>
@@ -48,6 +48,7 @@
     <module>webpage</module>
     <module>whatsnew</module>
     <module>workflow</module>
+    <module>gadgets</module>
   </modules>
 
   <dependencies>
@@ -100,6 +101,11 @@
     <dependency>
       <groupId>com.aimluck.eip</groupId>
       <artifactId>aipo-lib-userfacility</artifactId>
+      <version>${aipo.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.aimluck.eip</groupId>
+      <artifactId>aipo-lib-social</artifactId>
       <version>${aipo.version}</version>
     </dependency>
   </dependencies>
