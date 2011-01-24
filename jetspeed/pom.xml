@@ -5,7 +5,7 @@
   <parent>
     <artifactId>aipo</artifactId>
     <groupId>com.aimluck.eip</groupId>
-    <version>5.1.2</version>
+    <version>6.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -14,10 +14,19 @@
   <version>${aipo.version}</version>
   <packaging>jar</packaging>
 
-  <name>jetspeed</name>
+  <name>Jetspeed for Aipo</name>
 
   <build>
     <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+          <failOnError>true</failOnError>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
@@ -30,7 +39,7 @@
               <tasks>
                 <copy todir="../war/target/aipo/WEB-INF/lib"
                   verbose="false" overwrite="true">
-                  <fileset dir="./target" includes="*.jar" />
+                  <fileset dir="./target" includes="*-${aipo.version}.jar" />
                 </copy>
               </tasks>
             </configuration>
@@ -44,26 +53,6 @@
   </build>
 
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.7</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <version>2.3</version>
-      <type>jar</type>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>ant</groupId>
-      <artifactId>ant</artifactId>
-      <version>1.5</version>
-      <type>jar</type>
-      <scope>provided</scope>
-    </dependency>
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
@@ -148,13 +137,6 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>commons-httpclient</groupId>
-      <artifactId>commons-httpclient</artifactId>
-      <version>1.0</version>
-      <type>jar</type>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
       <version>2.3</version>
@@ -178,7 +160,7 @@
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
-      <version>1.3</version>
+      <version>1.4</version>
     </dependency>
     <dependency>
       <groupId>ecs</groupId>
