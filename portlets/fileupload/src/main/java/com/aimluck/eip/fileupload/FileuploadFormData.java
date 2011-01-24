@@ -40,7 +40,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -49,8 +49,8 @@ import com.aimluck.eip.util.ALEipUtils;
  */
 public class FileuploadFormData extends ALAbstractFormData {
 
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(FileuploadFormData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(FileuploadFormData.class.getName());
 
   public static final String ATTACHMENT_INIT = "attachmentinit";
 
@@ -80,7 +80,7 @@ public class FileuploadFormData extends ALAbstractFormData {
   /** ログインユーザ ID */
   private int userId = -1;
 
-  private String org_id = null;
+  private String orgId = null;
 
   File rootFolder = null;
 
@@ -90,8 +90,8 @@ public class FileuploadFormData extends ALAbstractFormData {
     super.init(action, rundata, context);
 
     userId = ALEipUtils.getUserId(rundata);
-    org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
-    rootFolder = FileuploadUtils.getRootFolder(org_id, userId);
+    orgId = Database.getDomainName();
+    rootFolder = FileuploadUtils.getRootFolder(orgId, userId);
 
     folderName =
       rundata.getParameters().getString(
@@ -107,7 +107,7 @@ public class FileuploadFormData extends ALAbstractFormData {
    * @param rundata
    * @param context
    * @param msgList
-   *            エラーメッセージのリスト
+   *          エラーメッセージのリスト
    * @return TRUE 成功 FALSE 失敗
    */
   @Override

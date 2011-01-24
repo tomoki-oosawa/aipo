@@ -652,7 +652,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
         // // ユーザの順番を登録する．
         // StringBuffer statement = new StringBuffer();
-        // statement.append("INSERT INTO EIP_M_USER_POSITION ");
+        // statement.append("INSERT INTO eip_m_user_position ");
         // statement.append("(USER_ID, POSITION) VALUES (");
         // statement.append(user.getUserId());
         // statement

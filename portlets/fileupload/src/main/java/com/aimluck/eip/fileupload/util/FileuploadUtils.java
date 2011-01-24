@@ -48,7 +48,7 @@ import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -216,7 +216,7 @@ public class FileuploadUtils {
             maxNum = tmpInt + 1;
           }
         } catch (NumberFormatException e) {
-         logger.error(e);
+          logger.error(e);
         }
       }
     }
@@ -273,8 +273,8 @@ public class FileuploadUtils {
       return null;
     }
 
-    String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
-    File folder = getFolder(org_id, ALEipUtils.getUserId(rundata), folderName);
+    String orgId = Database.getDomainName();
+    File folder = getFolder(orgId, ALEipUtils.getUserId(rundata), folderName);
     String folderpath = folder.getAbsolutePath();
 
     for (int i = 0; i < length; i++) {

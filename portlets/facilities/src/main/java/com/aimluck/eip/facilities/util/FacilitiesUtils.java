@@ -115,10 +115,10 @@ public class FacilitiesUtils {
     StringBuffer statement = new StringBuffer();
     statement.append("SELECT DISTINCT ");
     statement.append("  B.FACILITY_ID, B.FACILITY_NAME ");
-    statement.append("FROM EIP_FACILITY_GROUP as A ");
-    statement.append("LEFT JOIN EIP_M_FACILITY as B ");
+    statement.append("FROM eip_facility_group as A ");
+    statement.append("LEFT JOIN eip_m_facility as B ");
     statement.append("  on A.FACILITY_ID = B.FACILITY_ID ");
-    statement.append("LEFT JOIN TURBINE_GROUP as C ");
+    statement.append("LEFT JOIN turbine_group as C ");
     statement.append("  on A.GROUP_ID = C.GROUP_ID ");
     statement.append("WHERE C.GROUP_NAME = #bind($groupname) ");
     statement.append("ORDER BY B.FACILITY_NAME");
@@ -154,10 +154,10 @@ public class FacilitiesUtils {
     StringBuffer statement = new StringBuffer();
     statement.append("SELECT DISTINCT ");
     statement.append("  B.FACILITY_ID ");
-    statement.append("FROM EIP_FACILITY_GROUP as A ");
-    statement.append("LEFT JOIN EIP_M_FACILITY as B ");
+    statement.append("FROM eip_facility_group as A ");
+    statement.append("LEFT JOIN eip_m_facility as B ");
     statement.append("  on A.FACILITY_ID = B.FACILITY_ID ");
-    statement.append("LEFT JOIN TURBINE_GROUP as C ");
+    statement.append("LEFT JOIN turbine_group as C ");
     statement.append("  on A.GROUP_ID = C.GROUP_ID ");
     statement.append("WHERE C.GROUP_NAME = #bind($groupname)");
     String query = statement.toString();
