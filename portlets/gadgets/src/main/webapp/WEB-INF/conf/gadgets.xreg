@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Aipo is a groupware program developed by Aimluck,Inc.
+    Copyright (C) 2004-2010 Aimluck,Inc.
+    http://aipostyle.com/
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<registry>
+    <portlet-entry name="GadgetsAdmin" hidden="false" type="ref" parent="Velocity" application="false">
+        <security-ref parent="admin-view"/>
+        <meta-info>
+            <title>アプリケーション管理</title>
+            <description>アプリケーションを管理します。</description>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
+        <parameter name="template" value="gadgets-admin-list" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="action" value="gadgets.GadgetsAdminAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="_showtitlebar" value="false" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1a-rows" value="10" type="style" hidden="false" cachedOnName="true" cachedOnValue="true" />
+        <media-type ref="html"/>
+        <url cachedOnURL="true"/>
+    </portlet-entry>
+    <portlet-entry name="Gadgets" hidden="true" type="ref" parent="Velocity" application="false">
+        <security-ref parent="user-view"/>
+        <meta-info>
+            <title>OpenSocial ガジェット</title>
+            <description>OpenSocial ガジェット</description>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
+        <parameter name="template" value="gadgets" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="action" value="gadgets.GadgetsAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="aid" value="" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="url" value="" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1a-url" value="" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>URL</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p1b-normalheight" value="300" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>ページの高さ（通常表示時）</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p1c-maximizedheight" value="800" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>ページの高さ（最大化表示時）</title>
+            </meta-info>
+        </parameter>
+        <media-type ref="html"/>
+        <url cachedOnURL="true"/>
+    </portlet-entry>
+    <portlet-entry name="GadgetsTemplate" hidden="true" type="ref" parent="Velocity" application="false">
+        <security-ref parent="user-view"/>
+        <meta-info>
+            <title></title>
+            <description></description>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
+        <parameter name="template" value="gadgets" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="action" value="gadgets.GadgetsAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="aid" value="" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="url" value="" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1b-normalheight" value="300" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>ページの高さ（通常表示時）</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p1c-maximizedheight" value="800" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>ページの高さ（最大化表示時）</title>
+            </meta-info>
+        </parameter>
+        <media-type ref="html"/>
+        <url cachedOnURL="true"/>
+    </portlet-entry>
+</registry>

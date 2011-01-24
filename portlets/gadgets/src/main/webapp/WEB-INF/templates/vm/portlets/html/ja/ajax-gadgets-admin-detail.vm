@@ -1,0 +1,82 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2010 Aimluck,Inc.
+ * http://aipostyle.com/
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-dlg-")
+## ---------------------------------------------------------------------------
+#ALdialogheader("アプリ詳細")
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+#ALajaxdetailformheader("アプリ")
+#ALtableheaderWide()
+#ALtdcaption('アプリID')
+#ALtditem($!result.Detail.AppId)
+#ALtdcaption('タイトル')
+#ALtditem($!result.Detail.Title)
+#ALtdcaption('アプリの説明')
+#ALtditem($!result.Detail.Description)
+#ALtdcaption('consumer key')
+#ALtditem($!result.Detail.ConsumerKey)
+#ALtdcaption('consumer secret')
+#ALtditem($!result.Detail.ConsumerSecret)
+#foreach ($service in $!result.Detail.OAuthConsumers)
+#ALtdcaption("OAuth@$!{service.Name}")	
+#ALtditemheader()
+<h4>Request</h4>
+$!service.RequestUrl<br/>
+<br/>
+<h4>Authorization</h4>
+$!service.AuthorizationUrl<br/>
+<br/>
+<h4>Access</h4>
+$!service.AccessUrl<br/>
+<br/>
+<h4>Type</h4>
+#if($!service.Type.Value && $!service.Type.Value != "")
+$!service.Type<br/>
+<br/>
+#else
+（未設定）<br/>
+<br/>
+#end
+<h4>consumer key</h4>
+#if($!service.ConsumerKey.Value && $!service.ConsumerKey.Value != "")
+$!service.ConsumerKey<br/>
+<br/>
+#else
+（未設定）<br/>
+<br/>
+#end
+<h4>consumer secret</h4>
+#if($!service.ConsumerSecret.Value && $!service.ConsumerSecret.Value != "")
+$!service.ConsumerSecret<br/>
+<br/>
+#else
+（未設定）<br/>
+<br/>
+#end
+#ALtditemfooter()
+#end
+#ALtablefooter()
+#ALbuttonheader()
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.gadgets_admin.onLoadDialog")
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
+#ALajaxbuttonClose()
+#ALbuttonfooter()
+#ALformfooter()
+#ALdialogfooter()
