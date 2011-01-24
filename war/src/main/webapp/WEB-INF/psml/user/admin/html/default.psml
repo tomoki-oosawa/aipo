@@ -110,6 +110,12 @@
                 <property name="row" value="0"/>
             </layout>
         </entry>
+        <entry id="138" parent="GadgetsAdmin">
+            <layout position="12" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
         <entry id="131" parent="SysInfo">
             <layout position="12" size="-1">
                 <property name="column" value="0"/>

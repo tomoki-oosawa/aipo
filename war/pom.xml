@@ -7,7 +7,7 @@
   <parent>
     <artifactId>aipo</artifactId>
     <groupId>com.aimluck.eip</groupId>
-    <version>5.1.2</version>
+    <version>6.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -16,7 +16,7 @@
   <version>${aipo.version}</version>
   <packaging>war</packaging>
 
-  <name>war</name>
+  <name>Aipo Webapp</name>
 
   <build>
     <finalName>aipo</finalName>
@@ -37,6 +37,24 @@
       <artifactId>portlets</artifactId>
       <version>${aipo.version}</version>
       <type>pom</type>
+    </dependency>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.4</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>el-api</artifactId>
+      <version>${tomcat.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>jasper-el</artifactId>
+      <version>${tomcat.version}</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 

@@ -35,6 +35,12 @@
 #foreach ($portlet in $browser)
 #set ($portletCount=0)
 #foreach ($entry in $runs)
+#if ($entry.parent == "GadgetsTemplate")
+  #set ($pname = "GadgetsTemplate::$entry.getParameterValue('aid')")
+  #if($pname == $portlet.Name)
+  #set ($portletCount=$portletCount+1)
+  #end
+#end
 #if ($entry.parent == $portlet.Name)
 #set ($portletCount=$portletCount+1)
 #end

@@ -37,8 +37,10 @@
 <link rel="stylesheet" type="text/css" href="/${data.getServletConfig().getServletName()}/themes/${theme}/css/common.min.css" media="screen,tv,print" />
 <link rel="stylesheet" type="text/css" href="/${data.getServletConfig().getServletName()}/themes/${theme}/css/print.min.css" media="print" />
 #ALheadScripts()
+<script type="text/javascript" src="/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
+<script type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/aipo/container.js"></script>
 </head>
-<body>
+<body onload="aipo.container.renderGadgets()">
 <!-- WRAPPER -->
 <div id="wrapper">
   <table class="tableWrapper">
