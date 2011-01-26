@@ -2019,17 +2019,18 @@ public class ScheduleUtils {
             month_day.validate(msgList);
           }
         }
-        if (!ScheduleUtils.equalsToDate(
-          limit_start_date.getValue().getDate(),
-          limit_end_date.getValue().getDate(),
-          false)
-          && limit_start_date.getValue().getDate().after(
-            limit_end_date.getValue().getDate())) {
-          msgList
-            .add("『 <span class='em'>繰り返し期間終了日</span> 』は『 <span class='em'>繰り返し期間開始日</span> 』以降の日付を指定してください。");
-        }
 
         if ("ON".equals(limit_flag.getValue())) {
+          if (!ScheduleUtils.equalsToDate(
+            limit_start_date.getValue().getDate(),
+            limit_end_date.getValue().getDate(),
+            false)
+            && limit_start_date.getValue().getDate().after(
+              limit_end_date.getValue().getDate())) {
+            msgList
+              .add("『 <span class='em'>繰り返し期間終了日</span> 』は『 <span class='em'>繰り返し期間開始日</span> 』以降の日付を指定してください。");
+          }
+
           if (isCellPhone) {
             // 携帯画面用条件
             Calendar limitStartDate = Calendar.getInstance();
