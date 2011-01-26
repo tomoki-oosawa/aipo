@@ -39,8 +39,8 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
 public class CellWebMailAction extends WebMailAction {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(CellWebMailAction.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(CellWebMailAction.class.getName());
 
   /**
    * 
@@ -280,8 +280,11 @@ public class CellWebMailAction extends WebMailAction {
       throws Exception {
     WebMailFormData formData = new WebMailFormData();
     formData.initField();
-    formData.doInsert(this, rundata, context);
-    doWebmail_list(rundata, context);
+    if (formData.doInsert(this, rundata, context)) {
+      doWebmail_list(rundata, context);
+    } else {
+      setTemplate(rundata, "webmail-form");
+    }
   }
 
 }
