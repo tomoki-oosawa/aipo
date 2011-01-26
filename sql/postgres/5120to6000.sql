@@ -209,3 +209,42 @@ CREATE TABLE oauth_token
     TOKEN_EXPIRE_MILIS integer NULL,
     PRIMARY KEY (KEY)
 );
+
+CREATE TABLE activity 
+(
+    ID serial, 
+    USER_ID integer NULL, 
+    APP_ID varchar(255) NULL, 
+    EXTERNAL_ID varchar(99) NULL, 
+    TITLE varchar(99) NULL, 
+    BODY TEXT NULL, 
+    PORTLET_PARAMS varchar(99) NULL, 
+    PRIORITY integer NULL, 
+    UPDATE_DATE TIMESTAMP,
+    PRIMARY KEY (ID)
+);
+
+SELECT setval('activity_id_seq',1);
+
+CREATE TABLE activity_map 
+(
+    ID serial, 
+    ACTIVITY_ID integer NULL, 
+    USER_ID integer NULL, 
+    IS_READ integer NULL, 
+    PRIMARY KEY (ID)
+);
+
+SELECT setval('activity_map_id_seq',1);
+
+CREATE TABLE app_data 
+(
+    ID serial, 
+    APP_ID varchar(255) NULL, 
+    USER_ID integer NULL, 
+    KEY varchar(99) NULL, 
+    VALUE TEXT NULL, 
+    PRIMARY KEY (ID)
+);
+
+SELECT setval('app_data_id_seq',1);
