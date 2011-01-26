@@ -130,7 +130,8 @@ public class SystemNetworkSelectData extends
       }
 
       localurl =
-        SystemUtils.getUrl(ipaddress, port_internal, servername) + endword;
+        SystemUtils.getUrl(ipaddress, port_internal, servername, false)
+          + endword;
       // InetAddress.getLocalHost().getHostAddress(), SystemUtils
       // .getServerPort(), servername) + endword;
 
@@ -138,7 +139,8 @@ public class SystemNetworkSelectData extends
         SystemUtils.getUrl(
           record.getIpaddress(),
           record.getPort().intValue(),
-          servername)
+          servername,
+          true)
           + endword;
 
       rd.setLocalUrl(localurl);

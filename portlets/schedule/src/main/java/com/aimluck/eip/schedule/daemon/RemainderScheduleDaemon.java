@@ -136,9 +136,8 @@ public class RemainderScheduleDaemon implements Daemon {
   /**
    * Static initialization of the logger for this class
    */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService
-      .getLogger(RemainderScheduleDaemon.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(RemainderScheduleDaemon.class.getName());
 
   /**
    */
@@ -730,7 +729,8 @@ public class RemainderScheduleDaemon implements Daemon {
       if (null == port_internal) {
         port_internal = 80;
       }
-      localurl = SystemUtils.getUrl(ipaddress, port_internal, servlet_name);
+      localurl =
+        SystemUtils.getUrl(ipaddress, port_internal, servlet_name, false);
     } catch (SocketException e) {
       logger.error(e);
     }
@@ -767,7 +767,8 @@ public class RemainderScheduleDaemon implements Daemon {
       SystemUtils.getUrl(
         record.getIpaddress(),
         record.getPort().intValue(),
-        servlet_name);
+        servlet_name,
+        true);
     if (domain != null && domain.length() > 0) {
       url = domain + "?key=" + key;
     } else {

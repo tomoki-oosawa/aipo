@@ -35,6 +35,9 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.services.config.ALConfigFactoryService;
+import com.aimluck.eip.services.config.ALConfigHandler;
+import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.system.util.SystemUtils;
 
 /**
@@ -47,11 +50,15 @@ public class SystemNetworkFormData extends ALAbstractFormData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(SystemNetworkFormData.class.getName());
 
+  private ALStringField protocol;
+
   /** IP アドレス（グローバル） */
   private ALStringField ipaddress;
 
   /** ポート番号 */
   private ALNumberField port;
+
+  private ALConfigHandler configHandler;
 
   /**
    * 
@@ -72,6 +79,11 @@ public class SystemNetworkFormData extends ALAbstractFormData {
    * 
    */
   public void initField() {
+
+    protocol = new ALStringField();
+    protocol.setFieldName("プロトコル");
+    protocol.setTrim(true);
+
     // IP アドレス（グローバル）
     ipaddress = new ALStringField();
     ipaddress.setFieldName("IPアドレス");
@@ -82,6 +94,7 @@ public class SystemNetworkFormData extends ALAbstractFormData {
     port.setFieldName("ポート番号");
     port.setValue(80);
 
+    configHandler = ALConfigFactoryService.getInstance().getConfigHandler();
   }
 
   /**
@@ -89,6 +102,7 @@ public class SystemNetworkFormData extends ALAbstractFormData {
    */
   @Override
   protected void setValidator() {
+    protocol.setNotNull(true);
     // IP アドレス（グローバル）
     ipaddress.setNotNull(true);
     // ポート番号
@@ -105,6 +119,7 @@ public class SystemNetworkFormData extends ALAbstractFormData {
   @Override
   protected boolean validate(List<String> msgList) {
 
+    protocol.validate(msgList);
     ipaddress.validate(msgList);
     port.validate(msgList);
 
@@ -127,6 +142,8 @@ public class SystemNetworkFormData extends ALAbstractFormData {
       if (record == null) {
         return false;
       }
+
+      protocol.setValue(configHandler.get(Property.ACCESS_GLOBAL_URL_PROTOCOL));
 
       // IP アドレス（グローバル）
       ipaddress.setValue(record.getIpaddress());
@@ -170,6 +187,9 @@ public class SystemNetworkFormData extends ALAbstractFormData {
         return false;
       }
 
+      configHandler.put(Property.ACCESS_GLOBAL_URL_PROTOCOL, protocol
+        .getValue());
+
       // IP アドレス（グローバル）
       record.setIpaddress(ipaddress.getValue());
       // ポート番号
@@ -200,6 +220,14 @@ public class SystemNetworkFormData extends ALAbstractFormData {
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     return false;
+  }
+
+  /**
+   * 
+   * @return
+   */
+  public ALStringField getProtocol() {
+    return protocol;
   }
 
   /**

@@ -95,6 +95,9 @@ import com.aimluck.eip.mail.ALSmtpMailSender;
 import com.aimluck.eip.mail.ALSmtpMailSenderContext;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.config.ALConfigFactoryService;
+import com.aimluck.eip.services.config.ALConfigHandler;
+import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.daemonfactory.AipoDaemonFactoryService;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -1739,7 +1742,8 @@ public class ALMailUtils {
       getUrl(
         record.getIpaddress(),
         record.getPort().intValue(),
-        getServletName());
+        getServletName(),
+        true);
 
     if (domain != null && domain.length() > 0) {
       String endword;
@@ -1783,7 +1787,7 @@ public class ALMailUtils {
       if (null == port_internal) {
         port_internal = 80;
       }
-      localurl = getUrl(ipaddress, port_internal, getServletName());
+      localurl = getUrl(ipaddress, port_internal, getServletName(), false);
     } catch (SocketException e) {
       logger.error(e);
     }
@@ -1798,17 +1802,23 @@ public class ALMailUtils {
     return servlet_config.getServletName();
   }
 
-  private static String getUrl(String ip, int port, String servername) {
+  private static String getUrl(String ip, int port, String servername,
+      boolean isGlobal) {
     if (ip == null || ip.length() == 0 || port == -1) {
       return "";
     }
 
+    ALConfigHandler configHandler =
+      ALConfigFactoryService.getInstance().getConfigHandler();
+
     String protocol =
-      JetspeedResources.getString("access.url.protocol", "http");
+      isGlobal
+        ? configHandler.get(Property.ACCESS_GLOBAL_URL_PROTOCOL)
+        : configHandler.get(Property.ACCESS_LOCAL_URL_PROTOCOL);
 
     StringBuffer url = new StringBuffer();
 
-    if (port == 80) {
+    if (port == 80 || port == 443) {
       url.append(protocol).append("://").append(ip).append("/").append(
         servername).append("/");
     } else {

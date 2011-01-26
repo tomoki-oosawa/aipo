@@ -33,6 +33,9 @@ import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.cayenne.om.portlet.EipMMybox;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.services.config.ALConfigFactoryService;
+import com.aimluck.eip.services.config.ALConfigHandler;
+import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -127,17 +130,23 @@ public class SystemUtils {
    * @param servername
    * @return
    */
-  public static String getUrl(String ip, int port, String servername) {
+  public static String getUrl(String ip, int port, String servername,
+      boolean isGlobal) {
     if (ip == null || ip.length() == 0 || port == -1) {
       return "";
     }
 
+    ALConfigHandler configHandler =
+      ALConfigFactoryService.getInstance().getConfigHandler();
+
     String protocol =
-      JetspeedResources.getString("access.url.protocol", "http");
+      isGlobal
+        ? configHandler.get(Property.ACCESS_GLOBAL_URL_PROTOCOL)
+        : configHandler.get(Property.ACCESS_LOCAL_URL_PROTOCOL);
 
     StringBuffer url = new StringBuffer();
 
-    if (port == 80) {
+    if (port == 80 || port == 443) {
       url.append(protocol).append("://").append(ip).append("/").append(
         servername).append("/");
     } else {

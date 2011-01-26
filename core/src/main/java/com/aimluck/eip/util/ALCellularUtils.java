@@ -215,7 +215,8 @@ public class ALCellularUtils {
       ALEipUtils.getUrl(
         record.getIpaddress(),
         record.getPort().intValue(),
-        servlet_name);
+        servlet_name,
+        true);
     if (domain != null && domain.length() > 0) {
       url = domain + "?key=" + key;
     } else {

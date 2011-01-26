@@ -18,6 +18,7 @@
   <name>Aipo Libraries</name>
 
   <modules>
+    <module>config</module>
     <module>accessctl</module>
     <module>addressbookuser</module>
     <module>category</module>

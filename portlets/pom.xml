@@ -65,6 +65,11 @@
     </dependency>
     <dependency>
       <groupId>com.aimluck.eip</groupId>
+      <artifactId>aipo-lib-config</artifactId>
+      <version>${aipo.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.aimluck.eip</groupId>
       <artifactId>aipo-lib-accessctl</artifactId>
       <version>${aipo.version}</version>
     </dependency>

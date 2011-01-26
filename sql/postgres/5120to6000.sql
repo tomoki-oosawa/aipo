@@ -146,6 +146,16 @@ ALTER TABLE EIP_T_ACL_ROLE ALTER NOTE TYPE TEXT
 ALTER TABLE EIP_T_ACL_ROLE ALTER NOTE TYPE TEXT
 ;
 
+CREATE TABLE eip_m_config 
+(
+    ID serial, 
+    KEY varchar(64) NULL, 
+    VALUE varchar(255) NULL, 
+    PRIMARY KEY (ID)
+);
+
+SELECT setval('eip_m_config_id_seq',1);
+
 CREATE TABLE application 
 (
     ID serial, 

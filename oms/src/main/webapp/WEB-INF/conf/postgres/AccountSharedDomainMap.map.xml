@@ -53,6 +53,16 @@
 			<db-key-cache-size>1</db-key-cache-size>
 		</db-key-generator>
 	</db-entity>
+	<db-entity name="eip_m_config">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="KEY" type="VARCHAR" length="64"/>
+		<db-attribute name="VALUE" type="VARCHAR" length="255"/>
+		<db-key-generator>
+			<db-generator-type>ORACLE</db-generator-type>
+			<db-generator-name>eip_m_config_id_seq</db-generator-name>
+			<db-key-cache-size>1</db-key-cache-size>
+		</db-key-generator>
+	</db-entity>
 	<db-entity name="eip_m_position">
 		<db-attribute name="CREATE_DATE" type="DATE"/>
 		<db-attribute name="POSITION_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
@@ -145,6 +155,10 @@
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 		<obj-attribute name="url" type="java.lang.String" db-attribute-path="URL"/>
 		<obj-attribute name="zipcode" type="java.lang.String" db-attribute-path="ZIPCODE"/>
+	</obj-entity>
+	<obj-entity name="EipMConfig" className="com.aimluck.eip.cayenne.om.account.EipMConfig" dbEntityName="eip_m_config">
+		<obj-attribute name="key" type="java.lang.String" db-attribute-path="KEY"/>
+		<obj-attribute name="value" type="java.lang.String" db-attribute-path="VALUE"/>
 	</obj-entity>
 	<obj-entity name="EipMPosition" className="com.aimluck.eip.cayenne.om.account.EipMPosition" dbEntityName="eip_m_position">
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>

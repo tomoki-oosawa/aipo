@@ -32,6 +32,13 @@
 </div>
 #ALajaxscreenformheader("systemForm" $jslink $portlet "SystemNetworkFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.system.onReceiveMessage)")
 #ALtableheaderWide()
+#ALtdcaption("#ALrequired($!result.getFieldName('protocol'))")
+#ALtdcellheader()
+<select name="protocol">
+  <option value="http" #if($!result.Protocol.Value == "http")selected="selected"#end>http</option>	
+  <option value="https" #if($!result.Protocol.Value == "https")selected="selected"#end>https</option>	
+</select>
+#ALtdcellfooter()
 #ALtdcaption("#ALrequired($!result.getFieldName('ipaddress'))")
 #ALtditem("#ALtextfield('ipaddress' $!result.Ipaddress '90%' 50 'disabled')")
 #ALtdcaption("#ALrequired($!result.getFieldName('port'))")
