@@ -31,11 +31,11 @@ public class _Activity extends org.apache.cayenne.CayenneDataObject {
     public static final String APP_ID_PROPERTY = "appId";
     public static final String BODY_PROPERTY = "body";
     public static final String EXTERNAL_ID_PROPERTY = "externalId";
+    public static final String LOGIN_NAME_PROPERTY = "loginName";
     public static final String PORTLET_PARAMS_PROPERTY = "portletParams";
     public static final String PRIORITY_PROPERTY = "priority";
     public static final String TITLE_PROPERTY = "title";
     public static final String UPDATE_DATE_PROPERTY = "updateDate";
-    public static final String USER_ID_PROPERTY = "userId";
     public static final String ACTIVITY_MAPS_PROPERTY = "activityMaps";
 
     public static final String ID_PK_COLUMN = "ID";
@@ -61,6 +61,14 @@ public class _Activity extends org.apache.cayenne.CayenneDataObject {
     }
     public String getExternalId() {
         return (String)readProperty("externalId");
+    }
+    
+    
+    public void setLoginName(String loginName) {
+        writeProperty("loginName", loginName);
+    }
+    public String getLoginName() {
+        return (String)readProperty("loginName");
     }
     
     
@@ -93,14 +101,6 @@ public class _Activity extends org.apache.cayenne.CayenneDataObject {
     }
     public java.util.Date getUpdateDate() {
         return (java.util.Date)readProperty("updateDate");
-    }
-    
-    
-    public void setUserId(Integer userId) {
-        writeProperty("userId", userId);
-    }
-    public Integer getUserId() {
-        return (Integer)readProperty("userId");
     }
     
     

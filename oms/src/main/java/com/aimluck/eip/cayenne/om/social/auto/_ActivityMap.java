@@ -27,7 +27,7 @@ package com.aimluck.eip.cayenne.om.social.auto;
 public class _ActivityMap extends org.apache.cayenne.CayenneDataObject {
 
     public static final String IS_READ_PROPERTY = "isRead";
-    public static final String USER_ID_PROPERTY = "userId";
+    public static final String LOGIN_NAME_PROPERTY = "loginName";
     public static final String ACTIVITY_PROPERTY = "activity";
 
     public static final String ID_PK_COLUMN = "ID";
@@ -40,11 +40,11 @@ public class _ActivityMap extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void setUserId(Integer userId) {
-        writeProperty("userId", userId);
+    public void setLoginName(String loginName) {
+        writeProperty("loginName", loginName);
     }
-    public Integer getUserId() {
-        return (Integer)readProperty("userId");
+    public String getLoginName() {
+        return (String)readProperty("loginName");
     }
     
     

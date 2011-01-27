@@ -28,7 +28,7 @@ public class _AppData extends org.apache.cayenne.CayenneDataObject {
 
     public static final String APP_ID_PROPERTY = "appId";
     public static final String KEY_PROPERTY = "key";
-    public static final String USER_ID_PROPERTY = "userId";
+    public static final String LOGIN_NAME_PROPERTY = "loginName";
     public static final String VALUE_PROPERTY = "value";
 
     public static final String ID_PK_COLUMN = "ID";
@@ -49,11 +49,11 @@ public class _AppData extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void setUserId(Integer userId) {
-        writeProperty("userId", userId);
+    public void setLoginName(String loginName) {
+        writeProperty("loginName", loginName);
     }
-    public Integer getUserId() {
-        return (Integer)readProperty("userId");
+    public String getLoginName() {
+        return (String)readProperty("loginName");
     }
     
     

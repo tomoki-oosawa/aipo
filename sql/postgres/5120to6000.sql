@@ -149,7 +149,7 @@ ALTER TABLE EIP_T_ACL_ROLE ALTER NOTE TYPE TEXT
 CREATE TABLE eip_m_config 
 (
     ID serial, 
-    KEY varchar(64) NULL, 
+    KEY varchar(64) NOT NULL, 
     VALUE varchar(255) NULL, 
     PRIMARY KEY (ID)
 );
@@ -159,12 +159,12 @@ SELECT setval('eip_m_config_id_seq',1);
 CREATE TABLE application 
 (
     ID serial, 
-    APP_ID varchar(255) NULL, 
+    APP_ID varchar(255) NOT NULL, 
     CONSUMER_KEY varchar(99) NULL, 
     CONSUMER_SECRET varchar(99) NULL, 
     STATUS integer NULL, 
     TITLE varchar(99) NULL, 
-    URL varchar(255) NULL, 
+    URL varchar(255) NOT NULL, 
     SUMMARY varchar(255) NULL, 
     DESCRIPTION TEXT NULL, 
     CREATE_DATE DATE,
@@ -193,7 +193,7 @@ SELECT setval('oauth_consumer_id_seq',1);
 CREATE TABLE container_config 
 (
     ID serial, 
-    KEY varchar(64) NULL, 
+    KEY varchar(64) NOT NULL, 
     VALUE varchar(255) NULL, 
     PRIMARY KEY (ID)
 );
@@ -213,10 +213,10 @@ CREATE TABLE oauth_token
 CREATE TABLE activity 
 (
     ID serial, 
-    USER_ID integer NULL, 
-    APP_ID varchar(255) NULL, 
+    LOGIN_NAME varchar(32) NOT NULL, 
+    APP_ID varchar(255) NOT NULL, 
     EXTERNAL_ID varchar(99) NULL, 
-    TITLE varchar(99) NULL, 
+    TITLE varchar(99) NOT NULL, 
     BODY TEXT NULL, 
     PORTLET_PARAMS varchar(99) NULL, 
     PRIORITY integer NULL, 
@@ -230,7 +230,7 @@ CREATE TABLE activity_map
 (
     ID serial, 
     ACTIVITY_ID integer NULL, 
-    USER_ID integer NULL, 
+    LOGIN_NAME varchar(32) NOT NULL, 
     IS_READ integer NULL, 
     PRIMARY KEY (ID)
 );
@@ -240,9 +240,9 @@ SELECT setval('activity_map_id_seq',1);
 CREATE TABLE app_data 
 (
     ID serial, 
-    APP_ID varchar(255) NULL, 
-    USER_ID integer NULL, 
-    KEY varchar(99) NULL, 
+    APP_ID varchar(255) NOT NULL, 
+    LOGIN_NAME varchar(32) NOT NULL, 
+    KEY varchar(99) NOT NULL, 
     VALUE TEXT NULL, 
     PRIMARY KEY (ID)
 );
