@@ -80,11 +80,11 @@ public class _Activity extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void setPriority(Integer priority) {
+    public void setPriority(Float priority) {
         writeProperty("priority", priority);
     }
-    public Integer getPriority() {
-        return (Integer)readProperty("priority");
+    public Float getPriority() {
+        return (Float)readProperty("priority");
     }
     
     

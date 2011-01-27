@@ -154,8 +154,6 @@ CREATE TABLE eip_m_config
     PRIMARY KEY (ID)
 );
 
-SELECT setval('eip_m_config_id_seq',1);
-
 CREATE TABLE application 
 (
     ID serial, 
@@ -172,8 +170,6 @@ CREATE TABLE application
     PRIMARY KEY (ID)
 );
 
-SELECT setval('application_id_seq',1);
-
 CREATE TABLE oauth_consumer 
 (
     ID serial, 
@@ -188,8 +184,6 @@ CREATE TABLE oauth_consumer
     PRIMARY KEY (ID)
 );
 
-SELECT setval('oauth_consumer_id_seq',1);
-
 CREATE TABLE container_config 
 (
     ID serial, 
@@ -197,8 +191,6 @@ CREATE TABLE container_config
     VALUE varchar(255) NULL, 
     PRIMARY KEY (ID)
 );
-
-SELECT setval('container_config_id_seq',1);
 
 CREATE TABLE oauth_token 
 (
@@ -219,12 +211,10 @@ CREATE TABLE activity
     TITLE varchar(99) NOT NULL, 
     BODY TEXT NULL, 
     PORTLET_PARAMS varchar(99) NULL, 
-    PRIORITY integer NULL, 
+    PRIORITY float NULL, 
     UPDATE_DATE TIMESTAMP,
     PRIMARY KEY (ID)
 );
-
-SELECT setval('activity_id_seq',1);
 
 CREATE TABLE activity_map 
 (
@@ -235,8 +225,6 @@ CREATE TABLE activity_map
     PRIMARY KEY (ID)
 );
 
-SELECT setval('activity_map_id_seq',1);
-
 CREATE TABLE app_data 
 (
     ID serial, 
@@ -246,5 +234,3 @@ CREATE TABLE app_data
     VALUE TEXT NULL, 
     PRIMARY KEY (ID)
 );
-
-SELECT setval('app_data_id_seq',1);
