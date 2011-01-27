@@ -1,3 +1,22 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.aimluck.eip.modules.screens;
 
 import java.io.File;
@@ -9,7 +28,6 @@ import java.util.Vector;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.jetspeed.modules.actions.portlets.PsmlManagerAction;
 import org.apache.jetspeed.om.profile.BasePSMLDocument;
 import org.apache.jetspeed.om.profile.PSMLDocument;
 import org.apache.jetspeed.om.profile.Portlets;
@@ -31,8 +49,9 @@ import org.xml.sax.InputSource;
 import com.aimluck.eip.common.ALEipConstants;
 
 public class PsmlImportScreen extends RawScreen {
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(PsmlManagerAction.class.getName());
+
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(PsmlImportScreen.class.getName());
 
   /**
    * This method recursively collect all .psml documents starting at the given
@@ -130,20 +149,20 @@ public class PsmlImportScreen extends RawScreen {
         portlets = (Portlets) unmarshaller.unmarshal(reader);
         doc.setPortlets(portlets);
       } catch (IOException e) {
-        logger.error("PsmlManagerAction: Could not load the file "
+        logger.error("PsmlImportScreen: Could not load the file "
           + f.getAbsolutePath(), e);
       } catch (MarshalException e) {
-        logger.error("PsmlManagerAction: Could not unmarshal the file "
+        logger.error("PsmlImportScreen: Could not unmarshal the file "
           + f.getAbsolutePath(), e);
       } catch (MappingException e) {
-        logger.error("PsmlManagerAction: Could not unmarshal the file "
+        logger.error("PsmlImportScreen: Could not unmarshal the file "
           + f.getAbsolutePath(), e);
       } catch (ValidationException e) {
-        logger.error("PsmlManagerAction: document "
+        logger.error("PsmlImportScreen: document "
           + f.getAbsolutePath()
           + " is not valid", e);
       } catch (Exception e) {
-        logger.error("PsmlManagerAction: Error while loading  "
+        logger.error("PsmlImportScreen: Error while loading  "
           + f.getAbsolutePath(), e);
       } finally {
         try {
@@ -257,7 +276,6 @@ public class PsmlImportScreen extends RawScreen {
 
   @Override
   protected String getContentType(RunData rundata) {
-    // TODO 自動生成されたメソッド・スタブ
     return null;
   }
 

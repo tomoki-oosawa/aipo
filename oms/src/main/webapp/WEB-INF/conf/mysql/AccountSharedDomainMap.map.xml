@@ -92,6 +92,33 @@
 		<db-attribute name="ROLE_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true"/>
 	</db-entity>
+	<db-entity name="jetspeed_group_profile">
+		<db-attribute name="COUNTRY" type="VARCHAR" length="2"/>
+		<db-attribute name="GROUP_NAME" type="VARCHAR" length="99"/>
+		<db-attribute name="LANGUAGE" type="VARCHAR" length="2"/>
+		<db-attribute name="MEDIA_TYPE" type="VARCHAR" length="99"/>
+		<db-attribute name="PAGE" type="VARCHAR" length="99"/>
+		<db-attribute name="PROFILE" type="LONGVARBINARY" length="2147483647"/>
+		<db-attribute name="PSML_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
+	</db-entity>
+	<db-entity name="jetspeed_role_profile">
+		<db-attribute name="COUNTRY" type="VARCHAR" length="2"/>
+		<db-attribute name="LANGUAGE" type="VARCHAR" length="2"/>
+		<db-attribute name="MEDIA_TYPE" type="VARCHAR" length="99"/>
+		<db-attribute name="PAGE" type="VARCHAR" length="99"/>
+		<db-attribute name="PROFILE" type="LONGVARBINARY" length="2147483647"/>
+		<db-attribute name="PSML_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
+		<db-attribute name="ROLE_NAME" type="VARCHAR" length="99"/>
+	</db-entity>
+	<db-entity name="jetspeed_user_profile">
+		<db-attribute name="COUNTRY" type="VARCHAR" length="2"/>
+		<db-attribute name="LANGUAGE" type="VARCHAR" length="2"/>
+		<db-attribute name="MEDIA_TYPE" type="VARCHAR" length="99"/>
+		<db-attribute name="PAGE" type="VARCHAR" length="99"/>
+		<db-attribute name="PROFILE" type="LONGVARBINARY" length="2147483647"/>
+		<db-attribute name="PSML_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" isGenerated="true" length="10"/>
+		<db-attribute name="USER_NAME" type="VARCHAR" length="32"/>
+	</db-entity>
 	<obj-entity name="AipoLicense" className="com.aimluck.eip.cayenne.om.account.AipoLicense" dbEntityName="aipo_license">
 		<obj-attribute name="license" type="java.lang.String" db-attribute-path="LICENSE"/>
 		<obj-attribute name="limitUsers" type="java.lang.Integer" db-attribute-path="LIMIT_USERS"/>
@@ -151,6 +178,30 @@
 	<obj-entity name="EipTAclUserRoleMap" className="com.aimluck.eip.cayenne.om.account.EipTAclUserRoleMap" dbEntityName="eip_t_acl_user_role_map">
 		<obj-attribute name="roleId" type="java.lang.Integer" db-attribute-path="ROLE_ID"/>
 		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
+	</obj-entity>
+	<obj-entity name="JetspeedGroupProfile" className="com.aimluck.eip.cayenne.om.account.JetspeedGroupProfile" dbEntityName="JETSPEED_GROUP_PROFILE">
+		<obj-attribute name="country" type="java.lang.String" db-attribute-path="COUNTRY"/>
+		<obj-attribute name="groupName" type="java.lang.String" db-attribute-path="GROUP_NAME"/>
+		<obj-attribute name="language" type="java.lang.String" db-attribute-path="LANGUAGE"/>
+		<obj-attribute name="mediaType" type="java.lang.String" db-attribute-path="MEDIA_TYPE"/>
+		<obj-attribute name="page" type="java.lang.String" db-attribute-path="PAGE"/>
+		<obj-attribute name="profile" type="byte[]" db-attribute-path="PROFILE"/>
+	</obj-entity>
+	<obj-entity name="JetspeedRoleProfile" className="com.aimluck.eip.cayenne.om.account.JetspeedRoleProfile" dbEntityName="JETSPEED_ROLE_PROFILE">
+		<obj-attribute name="country" type="java.lang.String" db-attribute-path="COUNTRY"/>
+		<obj-attribute name="language" type="java.lang.String" db-attribute-path="LANGUAGE"/>
+		<obj-attribute name="mediaType" type="java.lang.String" db-attribute-path="MEDIA_TYPE"/>
+		<obj-attribute name="page" type="java.lang.String" db-attribute-path="PAGE"/>
+		<obj-attribute name="profile" type="byte[]" db-attribute-path="PROFILE"/>
+		<obj-attribute name="roleName" type="java.lang.String" db-attribute-path="ROLE_NAME"/>
+	</obj-entity>
+	<obj-entity name="JetspeedUserProfile" className="com.aimluck.eip.cayenne.om.account.JetspeedUserProfile" dbEntityName="JETSPEED_USER_PROFILE">
+		<obj-attribute name="country" type="java.lang.String" db-attribute-path="COUNTRY"/>
+		<obj-attribute name="language" type="java.lang.String" db-attribute-path="LANGUAGE"/>
+		<obj-attribute name="mediaType" type="java.lang.String" db-attribute-path="MEDIA_TYPE"/>
+		<obj-attribute name="page" type="java.lang.String" db-attribute-path="PAGE"/>
+		<obj-attribute name="profile" type="byte[]" db-attribute-path="PROFILE"/>
+		<obj-attribute name="userName" type="java.lang.String" db-attribute-path="USER_NAME"/>
 	</obj-entity>
 	<db-relationship name="eipMMybox" source="eip_m_company" target="eip_m_mybox" toMany="true">
 		<db-attribute-pair source="COMPANY_ID" target="COMPANY_ID"/>
