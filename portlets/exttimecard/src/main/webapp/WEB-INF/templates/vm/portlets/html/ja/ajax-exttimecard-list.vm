@@ -84,7 +84,7 @@ $!{result.ViewMonth.Year} 年 $!{result.ViewMonth.Month} 月
 <img src="images/schedule/schedule_currentmonth.gif" border="0" alt="今月へ" /></a>&nbsp;
 </td></tr></table>
 
-
+#if($!result.TargetUserId != "")
 #if($!result.TargetUserId == $!result.UserId) #set($col_count = 6) #else #set($col_count = 5) #end
 
 #ALtableheaderWide()
@@ -289,6 +289,9 @@ $!{result.ViewMonth.Year} 年 $!{result.ViewMonth.Month} 月
 
 #end
 #ALtablefooter()
+#else
+<div class="message">指定されたグループにはユーザーが所属していません。</div>
+#end
 #end
 #ALspacebothfooter()
 #ALajaxtabfooter()

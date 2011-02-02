@@ -60,7 +60,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカード検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class ExtTimecardSelectData extends
     ALAbstractSelectData<EipTExtTimecard, EipTExtTimecard> implements ALData {
@@ -137,7 +137,7 @@ public class ExtTimecardSelectData extends
   protected int viewTodo;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -307,7 +307,7 @@ public class ExtTimecardSelectData extends
       timecard_system =
         ExtTimecardUtils
           .getEipTExtTimecardSystemCurrentUserId(rundata, context);
-    } else {
+    } else if(!"".equals(target_user_id)) {
       timecard_system =
         ExtTimecardUtils.getEipTExtTimecardSystemByUserId(Integer
           .valueOf(target_user_id));
@@ -318,7 +318,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -355,7 +355,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -382,7 +382,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -460,7 +460,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 指定した2つの日付を比較する．
-   * 
+   *
    * @param date1
    * @param date2
    * @param checkTime
@@ -491,7 +491,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 検索条件を設定した Criteria を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -527,7 +527,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -556,7 +556,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -582,7 +582,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 指定グループや指定ユーザをセッションに設定する．
-   * 
+   *
    * @param rundata
    * @param context
    * @throws ALDBErrorException
@@ -597,18 +597,12 @@ public class ExtTimecardSelectData extends
       userList = ALEipUtils.getUsers("LoginUser");
     }
 
-    if (userList == null || userList.size() == 0) {
-      target_user_id = "";
-      ALEipUtils.removeTemp(rundata, context, ExtTimecardUtils.TARGET_USER_ID);
-      return;
-    }
-
     target_user_id = getTargetUserId(rundata, context);
   }
 
   /**
    * 表示切り替えで指定したグループ ID を取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -644,7 +638,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 表示切り替えで指定したユーザ ID を取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -676,6 +670,10 @@ public class ExtTimecardSelectData extends
         ALEipUser eipUser = null;
         boolean found = false;
         int length = userList.size();
+        if(length == 0){
+          ALEipUtils.removeTemp(rundata, context, ExtTimecardUtils.TARGET_USER_ID);
+          return "";
+        }
         for (int i = 0; i < length; i++) {
           eipUser = userList.get(i);
           String eipUserId = eipUser.getUserId().getValueAsString();
@@ -715,7 +713,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 表示切り替え時に指定するグループ名
-   * 
+   *
    * @return
    */
   public String getTargetGroupName() {
@@ -724,7 +722,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 表示切り替え時に指定するユーザ ID
-   * 
+   *
    * @return
    */
   public String getTargetUserId() {
@@ -733,7 +731,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 指定グループに属するユーザの一覧を取得する．
-   * 
+   *
    * @param groupname
    * @return
    */
@@ -753,7 +751,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 部署の一覧を取得する．
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -766,7 +764,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * My グループの一覧を取得する．
-   * 
+   *
    * @return
    */
   public List<ALEipGroup> getMyGroupList() {
@@ -779,7 +777,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * ログインユーザの ID を取得する．
-   * 
+   *
    * @return
    */
   public String getUserId() {
@@ -788,7 +786,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -797,7 +795,7 @@ public class ExtTimecardSelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -818,7 +816,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * タイムカード一覧画面で、表示すべきデータをリストにして返します。
-   * 
+   *
    * @return
    */
   public List<ExtTimecardListResultData> getDateListKeys() {
@@ -863,7 +861,7 @@ public class ExtTimecardSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -877,7 +875,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 表示開始日時を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getViewStart() {
@@ -886,7 +884,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 表示終了日時を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getViewEnd() {
@@ -895,7 +893,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 表示終了日時 (Criteria) を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getViewEndCrt() {
@@ -904,7 +902,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 前の月を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getPrevMonth() {
@@ -913,7 +911,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 次の月を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getNextMonth() {
@@ -922,7 +920,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 今月を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getCurrentMonth() {
@@ -931,7 +929,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 現在の月を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getViewMonth() {
@@ -940,7 +938,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 今日を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getToday() {
@@ -949,7 +947,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 勤務形態を返します。
-   * 
+   *
    * @return
    */
   public EipTExtTimecardSystem getTimecardSystem() {
