@@ -179,7 +179,7 @@
 		<obj-attribute name="roleId" type="java.lang.Integer" db-attribute-path="ROLE_ID"/>
 		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
 	</obj-entity>
-	<obj-entity name="JetspeedGroupProfile" className="com.aimluck.eip.cayenne.om.account.JetspeedGroupProfile" dbEntityName="JETSPEED_GROUP_PROFILE">
+	<obj-entity name="JetspeedGroupProfile" className="com.aimluck.eip.cayenne.om.account.JetspeedGroupProfile" dbEntityName="jetspeed_group_profile">
 		<obj-attribute name="country" type="java.lang.String" db-attribute-path="COUNTRY"/>
 		<obj-attribute name="groupName" type="java.lang.String" db-attribute-path="GROUP_NAME"/>
 		<obj-attribute name="language" type="java.lang.String" db-attribute-path="LANGUAGE"/>
@@ -187,7 +187,7 @@
 		<obj-attribute name="page" type="java.lang.String" db-attribute-path="PAGE"/>
 		<obj-attribute name="profile" type="byte[]" db-attribute-path="PROFILE"/>
 	</obj-entity>
-	<obj-entity name="JetspeedRoleProfile" className="com.aimluck.eip.cayenne.om.account.JetspeedRoleProfile" dbEntityName="JETSPEED_ROLE_PROFILE">
+	<obj-entity name="JetspeedRoleProfile" className="com.aimluck.eip.cayenne.om.account.JetspeedRoleProfile" dbEntityName="jetspeed_role_profile">
 		<obj-attribute name="country" type="java.lang.String" db-attribute-path="COUNTRY"/>
 		<obj-attribute name="language" type="java.lang.String" db-attribute-path="LANGUAGE"/>
 		<obj-attribute name="mediaType" type="java.lang.String" db-attribute-path="MEDIA_TYPE"/>
@@ -195,7 +195,7 @@
 		<obj-attribute name="profile" type="byte[]" db-attribute-path="PROFILE"/>
 		<obj-attribute name="roleName" type="java.lang.String" db-attribute-path="ROLE_NAME"/>
 	</obj-entity>
-	<obj-entity name="JetspeedUserProfile" className="com.aimluck.eip.cayenne.om.account.JetspeedUserProfile" dbEntityName="JETSPEED_USER_PROFILE">
+	<obj-entity name="JetspeedUserProfile" className="com.aimluck.eip.cayenne.om.account.JetspeedUserProfile" dbEntityName="jetspeed_user_profile">
 		<obj-attribute name="country" type="java.lang.String" db-attribute-path="COUNTRY"/>
 		<obj-attribute name="language" type="java.lang.String" db-attribute-path="LANGUAGE"/>
 		<obj-attribute name="mediaType" type="java.lang.String" db-attribute-path="MEDIA_TYPE"/>

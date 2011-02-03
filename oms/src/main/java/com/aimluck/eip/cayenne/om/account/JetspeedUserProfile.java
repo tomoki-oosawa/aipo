@@ -19,11 +19,26 @@
 
 package com.aimluck.eip.cayenne.om.account;
 
+import org.apache.cayenne.ObjectId;
+
 import com.aimluck.eip.cayenne.om.account.auto._JetspeedUserProfile;
 
 public class JetspeedUserProfile extends _JetspeedUserProfile {
+  public Integer getPsmlId() {
+    if (getObjectId() != null && !getObjectId().isTemporary()) {
+      Object obj = getObjectId().getIdSnapshot().get(PSML_ID_PK_COLUMN);
+      if (obj instanceof Long) {
+        Long value = (Long) obj;
+        return Integer.valueOf(value.intValue());
+      } else {
+        return (Integer) obj;
+      }
+    } else {
+      return null;
+    }
+  }
 
+  public void setPsmlId(int id) {
+    setObjectId(new ObjectId("JetspeedUserProfile", PSML_ID_PK_COLUMN, id));
+  }
 }
-
-
-

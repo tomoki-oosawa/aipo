@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.servlet.ServletOutputStream;
@@ -31,6 +32,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.jetspeed.om.profile.BasePSMLDocument;
 import org.apache.jetspeed.om.profile.PSMLDocument;
 import org.apache.jetspeed.om.profile.Portlets;
+import org.apache.jetspeed.om.profile.Profile;
+import org.apache.jetspeed.om.profile.ProfileLocator;
+import org.apache.jetspeed.services.JetspeedSecurity;
+import org.apache.jetspeed.services.Profiler;
+import org.apache.jetspeed.services.PsmlManager;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.psmlmanager.PsmlManagerService;
@@ -50,8 +56,8 @@ import com.aimluck.eip.common.ALEipConstants;
 
 public class PsmlImportScreen extends RawScreen {
 
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(PsmlImportScreen.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(PsmlImportScreen.class.getName());
 
   /**
    * This method recursively collect all .psml documents starting at the given
@@ -175,6 +181,67 @@ public class PsmlImportScreen extends RawScreen {
     return doc;
   }
 
+  private ProfileLocator mapFileToLocator(String path) throws Exception {
+    if (logger.isDebugEnabled()) {
+      logger
+        .debug("PsmlUpdateAction.createFromPath: processing path = " + path);
+    }
+    ProfileLocator result = Profiler.createLocator();
+
+    // Tokenize the file path into elements
+    StringTokenizer tok = new StringTokenizer(path, File.separator);
+
+    // Load path elements into a vector for random access
+    Vector tokens = new Vector();
+    while (tok.hasMoreTokens()) {
+      tokens.add(tok.nextToken());
+    }
+
+    // Assume that 1st element is the profile type (user|role|group) and 2nd is
+    // the name
+    if (tokens.size() > 1) {
+      String type = (String) tokens.elementAt(0);
+      String name = (String) tokens.elementAt(1);
+      if (type.equals(Profiler.PARAM_USER)) {
+        result.setUser(JetspeedSecurity.getUser(name));
+      } else if (type.equals(Profiler.PARAM_GROUP)) {
+        result.setGroup(JetspeedSecurity.getGroup(name));
+      } else if (type.equals(Profiler.PARAM_ROLE)) {
+        result.setRole(JetspeedSecurity.getRole(name));
+      }
+    }
+
+    // Assume that the last element is the page name
+    if (tokens.size() > 0) {
+      result.setName((String) tokens.lastElement());
+    }
+
+    // Based on the number of path elements set the other profile attributes
+    switch (tokens.size()) {
+      case 3: // user|role|group/name/page.psml
+        break;
+      case 4: // user|role|group/name/media-type/page.psml
+        result.setMediaType((String) tokens.elementAt(2));
+        break;
+      case 5: // user|role|group/name/media-type/language/page.psml
+        result.setMediaType((String) tokens.elementAt(2));
+        result.setLanguage((String) tokens.elementAt(3));
+        break;
+      case 6: // user|role|group/name/media-type/language/country/page.psml
+        result.setMediaType((String) tokens.elementAt(2));
+        result.setLanguage((String) tokens.elementAt(3));
+        result.setCountry((String) tokens.elementAt(4));
+        break;
+      default:
+        throw new Exception("Path must contain 3 to 6 elements: ["
+          + path
+          + "], and the size was: "
+          + tokens.size());
+    }
+
+    return result;
+  }
+
   /**
    * File Import All Action for Psml.
    * 
@@ -186,6 +253,13 @@ public class PsmlImportScreen extends RawScreen {
    */
   private boolean doImportall(RunData rundata) throws Exception {
     String copyFrom = null;
+    PsmlManagerService exporterService = null;
+    PsmlManagerService importerService = null;
+
+    exporterService =
+      (PsmlManagerService) TurbineServices.getInstance().getService(
+        "PsmlImportManager");
+    importerService = PsmlManager.getService();
 
     try {
       copyFrom =
@@ -207,14 +281,17 @@ public class PsmlImportScreen extends RawScreen {
         try {
           String psml = ((File) it.next()).getPath();
           path = psml.substring(copyFrom.length() + 1);
-          // ProfileLocator locator = this.mapFileToLocator(path);
-          PSMLDocument doc = this.loadDocument(psml);
+          ProfileLocator locator = mapFileToLocator(path);
+          PSMLDocument doc = loadDocument(psml);
 
           //
           // create a new profile
           //
           if (doc != null) {
-            Portlets portlets = doc.getPortlets();
+            // Portlets portlets = doc.getPortlets();
+            Profile profile = Profiler.getProfile(locator);
+
+            exporterService.createDocument(profile);
 
             // org.apache.jetspeed.util.PortletUtils.regenerateIds(clonedPortlets);
             // Profiler.createProfile(locator, clonedPortlets);

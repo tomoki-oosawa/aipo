@@ -70,6 +70,7 @@ import org.xml.sax.InputSource;
 import com.aimluck.eip.cayenne.om.account.JetspeedGroupProfile;
 import com.aimluck.eip.cayenne.om.account.JetspeedRoleProfile;
 import com.aimluck.eip.cayenne.om.account.JetspeedUserProfile;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
@@ -87,10 +88,11 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
   /**
    * Static initialization of the logger for this class
    */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-      .getLogger(DatabasePsmlManagerService.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(DatabasePsmlManagerService.class
+      .getName());
 
-  private Map psmlCache = new HashMap();
+  private final Map psmlCache = new HashMap();
 
   /** The watcher for the document locations */
   private CacheRefresher refresher = null;
@@ -115,7 +117,8 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
   private PsmlManagerService consumer = null;
 
   // castor mapping
-  public static final String DEFAULT_MAPPING = "${webappRoot}/WEB-INF/conf/psml-mapping.xml";
+  public static final String DEFAULT_MAPPING =
+    "${webappRoot}/WEB-INF/conf/psml-mapping.xml";
 
   String mapFile = null;
 
@@ -129,6 +132,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
    * This is the early initialization method called by the Turbine
    * <code>Service</code> framework
    */
+  @Override
   public void init(ServletConfig conf) throws InitializationException {
     if (getInit()) {
       return;
@@ -152,11 +156,13 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       throws InitializationException {
 
     // Ensure that the servlet service is initialized
-    TurbineServices.getInstance()
-        .initService(ServletService.SERVICE_NAME, conf);
+    TurbineServices
+      .getInstance()
+      .initService(ServletService.SERVICE_NAME, conf);
 
-    ResourceService serviceConf = ((TurbineServices) TurbineServices
-        .getInstance()).getResources(PsmlManagerService.SERVICE_NAME);
+    ResourceService serviceConf =
+      ((TurbineServices) TurbineServices.getInstance())
+        .getResources(PsmlManagerService.SERVICE_NAME);
     try {
       // get configuration parameters from Turbine Resources
       // we'll use only string accessors so the values can be multiply
@@ -167,7 +173,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
         refreshRate = Long.parseLong(value);
       } catch (Exception e) {
         logger
-            .warn("DatabasePsmlManagerService: error in refresh-rate configuration: using default");
+          .warn("DatabasePsmlManagerService: error in refresh-rate configuration: using default");
       }
 
       // get the name of the torque database pool to use
@@ -180,7 +186,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
         cachingOn = value.equals("true");
       } catch (Exception e) {
         logger
-            .warn("DatabasePsmlManagerService: error in caching-on configuration: using default");
+          .warn("DatabasePsmlManagerService: error in caching-on configuration: using default");
       }
 
       // psml castor mapping file
@@ -190,7 +196,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     } catch (Throwable t) {
       logger.error(this + ".init:", t);
       throw new InitializationException(
-          "Exception initializing DatabasePsmlManagerService" + t);
+        "Exception initializing DatabasePsmlManagerService" + t);
     }
 
     if (cachingOn) {
@@ -200,6 +206,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
   }
 
   /** Late init method from Turbine Service model */
+  @Override
   public void init() throws InitializationException {
     // Mark that we are done
     setInit(true);
@@ -216,8 +223,9 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
 
     if (mapFile != null) {
       File map = new File(mapFile);
-      if (logger.isDebugEnabled())
+      if (logger.isDebugEnabled()) {
         logger.debug("Loading psml mapping file " + mapFile);
+      }
       if (map.exists() && map.isFile() && map.canRead()) {
         try {
           mapping = new Mapping();
@@ -230,7 +238,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
         }
       } else {
         throw new InitializationException(
-            "PSML Mapping not found or not a file or unreadable: " + mapFile);
+          "PSML Mapping not found or not a file or unreadable: " + mapFile);
       }
     }
   }
@@ -239,6 +247,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
    * This is the shutdown method called by the Turbine <code>Service</code>
    * framework
    */
+  @Override
   public void shutdown() {
     if (this.refresher != null) {
       this.refresher.setDone(true);
@@ -273,14 +282,17 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     /**
      * Method as needed for a Thread to run
      */
+    @Override
     public void run() {
       try {
         while (!done) {
-          if (logger.isDebugEnabled())
+          if (logger.isDebugEnabled()) {
             logger.debug("Cache Refresher thread sleeping now!");
+          }
           sleep(refreshRate);
-          if (logger.isDebugEnabled())
+          if (logger.isDebugEnabled()) {
             logger.debug("Cache Refresher thread working now!");
+          }
 
           try {
             synchronized (this) {
@@ -298,15 +310,16 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
             }
           } catch (Exception e) {
             logger
-                .warn(
-                    "DatabasePsmlManagerService.CacheRefresher: Error in cache refresher...",
-                    e);
+              .warn(
+                "DatabasePsmlManagerService.CacheRefresher: Error in cache refresher...",
+                e);
           }
         }
       } catch (InterruptedException e) {
-        if (logger.isDebugEnabled())
+        if (logger.isDebugEnabled()) {
           logger
-              .debug("DatabasePsmlManagerService.CacheRefresher: recieved interruption, aborting.");
+            .debug("DatabasePsmlManagerService.CacheRefresher: recieved interruption, aborting.");
+        }
       }
     }
   }
@@ -348,9 +361,10 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
         keybuf.append('$').append("Language:").append(language);
       }
     }
-    if (logger.isDebugEnabled())
+    if (logger.isDebugEnabled()) {
       logger.debug("DatabasePsmlManagerService: Returning locator string: "
-          + keybuf.toString());
+        + keybuf.toString());
+    }
 
     return keybuf.toString();
   }
@@ -359,9 +373,10 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     ProfileLocator locator = Profiler.createLocator();
     String entity = null;
 
-    if (logger.isDebugEnabled())
+    if (logger.isDebugEnabled()) {
       logger.debug("DatabasePsmlManagerService: Creating locator for string: "
-          + locstr);
+        + locstr);
+    }
 
     StringTokenizer dollarTokens = new StringTokenizer(locstr, "$");
     while (dollarTokens.hasMoreTokens()) {
@@ -392,9 +407,10 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
         locator.setLanguage(entity);
       }
     }
-    if (logger.isDebugEnabled())
+    if (logger.isDebugEnabled()) {
       logger.debug("DatabasePsmlManagerService: Returning locator for string: "
-          + locatorToString(locator));
+        + locatorToString(locator));
+    }
 
     return locator;
 
@@ -498,7 +514,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     if (profile == null) {
       String message = "PSMLManager: Must specify a profile";
       logger
-          .warn("DatabasePsmlManagerService.createOrSaveDocument: " + message);
+        .warn("DatabasePsmlManagerService.createOrSaveDocument: " + message);
       throw new IllegalArgumentException(message);
     }
 
@@ -508,8 +524,8 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     String tableName = null;
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       if (user != null) {
         tableName = "JETSPEED_USER_PROFILE";
         if (operation == INSERT) {
@@ -536,10 +552,11 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       if (cachingOn) {
         // insert successful
         synchronized (psmlCache) {
-          if (logger.isDebugEnabled())
+          if (logger.isDebugEnabled()) {
             logger
-                .debug("DatabasePsmlManagerService.createOrSaveDocument: caching document: profile: "
-                    + locatorToString(profile));
+              .debug("DatabasePsmlManagerService.createOrSaveDocument: caching document: profile: "
+                + locatorToString(profile));
+          }
           psmlCache.put(locatorToString(profile), profile.getDocument());
         }
       }
@@ -548,7 +565,9 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     } catch (Exception e) // insert failed
     {
       logger.warn("DatabasePsmlManagerService.createOrSaveDocument: profile: "
-          + profile + " tableName: " + tableName, e);
+        + profile
+        + " tableName: "
+        + tableName, e);
       throw new RuntimeException("Could not create new profile in DB");
     } finally {
 
@@ -575,8 +594,8 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     String tableName = null;
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       if (user != null) {
         deleteJetspeedUserProfilePeer(dataContext, locator);
         tableName = "JETSPEED_USER_PROFILE";
@@ -597,9 +616,11 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     } catch (Exception e) // insert failed
     {
       logger.warn("DatabasePsmlManagerService.removeDocument: profile: "
-          + locatorToString(locator) + " tableName: " + tableName, e);
+        + locatorToString(locator)
+        + " tableName: "
+        + tableName, e);
       throw new RuntimeException(
-          "Could not delete profile for given locator from DB");
+        "Could not delete profile for given locator from DB");
     } finally {
       // make sure to release the database connection
     }
@@ -621,8 +642,8 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     }
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       List userData = null;
       List groupData = null;
       List roleData = null;
@@ -632,44 +653,46 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       List list = new ArrayList();
 
       switch (queryMode) {
-      case QueryLocator.QUERY_USER:
-        userData = selectJetspeedUserProfilePeer(dataContext, locator, true);
-        if (userData != null) {
-          list = getProfiles(userData);
-        }
-        break;
+        case QueryLocator.QUERY_USER:
+          userData = selectJetspeedUserProfilePeer(dataContext, locator, true);
+          if (userData != null) {
+            list = getProfiles(userData);
+          }
+          break;
 
-      case QueryLocator.QUERY_GROUP:
-        groupData = selectJetspeedGroupProfilePeer(dataContext, locator, true);
-        if (groupData != null) {
-          list = getProfiles(groupData);
-        }
-        break;
+        case QueryLocator.QUERY_GROUP:
+          groupData =
+            selectJetspeedGroupProfilePeer(dataContext, locator, true);
+          if (groupData != null) {
+            list = getProfiles(groupData);
+          }
+          break;
 
-      case QueryLocator.QUERY_ROLE:
-        roleData = selectJetspeedRoleProfilePeer(dataContext, locator, true);
-        if (roleData != null) {
-          list = getProfiles(roleData);
-        }
-        break;
+        case QueryLocator.QUERY_ROLE:
+          roleData = selectJetspeedRoleProfilePeer(dataContext, locator, true);
+          if (roleData != null) {
+            list = getProfiles(roleData);
+          }
+          break;
 
-      default: // QUERY_ALL
-        userData = selectJetspeedUserProfilePeer(dataContext, locator, true);
-        if (userData != null) {
-          list.addAll(getProfiles(userData));
-        }
+        default: // QUERY_ALL
+          userData = selectJetspeedUserProfilePeer(dataContext, locator, true);
+          if (userData != null) {
+            list.addAll(getProfiles(userData));
+          }
 
-        groupData = selectJetspeedGroupProfilePeer(dataContext, locator, true);
-        if (groupData != null) {
-          list.addAll(getProfiles(groupData));
-        }
+          groupData =
+            selectJetspeedGroupProfilePeer(dataContext, locator, true);
+          if (groupData != null) {
+            list.addAll(getProfiles(groupData));
+          }
 
-        roleData = selectJetspeedRoleProfilePeer(dataContext, locator, true);
-        if (roleData != null) {
-          list.addAll(getProfiles(roleData));
-        }
+          roleData = selectJetspeedRoleProfilePeer(dataContext, locator, true);
+          if (roleData != null) {
+            list.addAll(getProfiles(roleData));
+          }
 
-        break;
+          break;
       }
 
       return list.iterator();
@@ -699,16 +722,22 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       Portlets portlets = null;
 
       if (obj instanceof JetspeedUserProfile) {
-        portlets = DBUtils.bytesToPortlets(((JetspeedUserProfile) obj)
-            .getProfile(), this.mapping);
+        portlets =
+          DBUtils.bytesToPortlets(
+            ((JetspeedUserProfile) obj).getProfile(),
+            this.mapping);
         list.add(createUserProfile((JetspeedUserProfile) obj, portlets));
       } else if (obj instanceof JetspeedGroupProfile) {
-        portlets = DBUtils.bytesToPortlets(((JetspeedGroupProfile) obj)
-            .getProfile(), this.mapping);
+        portlets =
+          DBUtils.bytesToPortlets(
+            ((JetspeedGroupProfile) obj).getProfile(),
+            this.mapping);
         list.add(createGroupProfile((JetspeedGroupProfile) obj, portlets));
       } else if (obj instanceof JetspeedRoleProfile) {
-        portlets = DBUtils.bytesToPortlets(((JetspeedRoleProfile) obj)
-            .getProfile(), this.mapping);
+        portlets =
+          DBUtils.bytesToPortlets(
+            ((JetspeedRoleProfile) obj).getProfile(),
+            this.mapping);
         list.add(createRoleProfile((JetspeedRoleProfile) obj, portlets));
       }
 
@@ -785,8 +814,8 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     String page = null;
 
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       if (user != null) {
         tableName = "JETSPEED_USER_PROFILE";
         records = selectJetspeedUserProfilePeer(dataContext, locator, false);
@@ -794,8 +823,8 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
         while (iterator.hasNext()) {
           JetspeedUserProfile uprofile = (JetspeedUserProfile) iterator.next();
           page = uprofile.getPage();
-          portlets = DBUtils.bytesToPortlets(uprofile.getProfile(),
-              this.mapping);
+          portlets =
+            DBUtils.bytesToPortlets(uprofile.getProfile(), this.mapping);
         }
       } else if (role != null) {
         tableName = "JETSPEED_ROLE_PROFILE";
@@ -804,19 +833,19 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
         while (iterator.hasNext()) {
           JetspeedRoleProfile rprofile = (JetspeedRoleProfile) iterator.next();
           page = rprofile.getPage();
-          portlets = DBUtils.bytesToPortlets(rprofile.getProfile(),
-              this.mapping);
+          portlets =
+            DBUtils.bytesToPortlets(rprofile.getProfile(), this.mapping);
         }
       } else if (group != null) {
         tableName = "JETSPEED_GROUP_PROFILE";
         records = selectJetspeedGroupProfilePeer(dataContext, locator, false);
         Iterator iterator = records.iterator();
         while (iterator.hasNext()) {
-          JetspeedGroupProfile gprofile = (JetspeedGroupProfile) iterator
-              .next();
+          JetspeedGroupProfile gprofile =
+            (JetspeedGroupProfile) iterator.next();
           page = gprofile.getPage();
-          portlets = DBUtils.bytesToPortlets(gprofile.getProfile(),
-              this.mapping);
+          portlets =
+            DBUtils.bytesToPortlets(gprofile.getProfile(), this.mapping);
         }
       }
 
@@ -824,10 +853,11 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
         psmldoc = getPSMLDocument(page, portlets);
         if (cachingOn) {
           synchronized (psmlCache) {
-            if (logger.isDebugEnabled())
+            if (logger.isDebugEnabled()) {
               logger
-                  .debug("DatabasePsmlManagerService.refresh: caching document: profile: "
-                      + locatorToString(locator));
+                .debug("DatabasePsmlManagerService.refresh: caching document: profile: "
+                  + locatorToString(locator));
+            }
             psmlCache.put(locatorToString(locator), psmldoc);
           }
         }
@@ -836,24 +866,28 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
         if (cachingOn) {
           // cache the fact that there is NO document matching this profile
           psmlCache.put(locatorToString(locator), null);
-          if (logger.isDebugEnabled())
+          if (logger.isDebugEnabled()) {
             logger
-                .debug("DatabasePsmlManagerService.refresh: caching 'document not found': profile: "
-                    + locatorToString(locator));
+              .debug("DatabasePsmlManagerService.refresh: caching 'document not found': profile: "
+                + locatorToString(locator));
+          }
         }
       }
     } catch (Exception e) {
       logger.warn("DatabasePsmlManagerService.refresh: profile: "
-          + locatorToString(locator) + " tableName: " + tableName, e);
+        + locatorToString(locator)
+        + " tableName: "
+        + tableName, e);
       throw new RuntimeException("Could not refresh profile from DB");
     } finally {
       // make sure to release the database connection
     }
 
-    if (logger.isDebugEnabled())
+    if (logger.isDebugEnabled()) {
       logger
-          .debug("DatabasePsmlManagerService.refresh: no document found: profile: "
-              + locatorToString(locator));
+        .debug("DatabasePsmlManagerService.refresh: no document found: profile: "
+          + locatorToString(locator));
+    }
     return null;
   }
 
@@ -865,17 +899,18 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
    */
   public void removeUserDocuments(JetspeedUser user) {
     try {
-      DataContext dataContext = DatabaseOrmService.getInstance()
-          .getDataContext();
+      DataContext dataContext =
+        DatabaseOrmService.getInstance().getDataContext();
       if (user != null) {
         deleteJetspeedUserProfilePeer(dataContext, user);
       }
     } catch (Exception e) // delete failed
     {
-      logger.warn("DatabasePsmlManagerService.removeUserDocuments: exception:",
-          e);
+      logger.warn(
+        "DatabasePsmlManagerService.removeUserDocuments: exception:",
+        e);
       throw new RuntimeException(
-          "Could not delete documents for given user from DB");
+        "Could not delete documents for given user from DB");
     } finally {
       // make sure to release the database connection
     }
@@ -891,16 +926,17 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
   public void removeRoleDocuments(Role role) {
     try {
       if (role != null) {
-        DataContext dataContext = DatabaseOrmService.getInstance()
-            .getDataContext();
+        DataContext dataContext =
+          DatabaseOrmService.getInstance().getDataContext();
         deleteJetspeedRoleProfilePeer(dataContext, role);
       }
     } catch (Exception e) // delete failed
     {
-      logger.warn("DatabasePsmlManagerService.removeRoleDocuments: exception:",
-          e);
+      logger.warn(
+        "DatabasePsmlManagerService.removeRoleDocuments: exception:",
+        e);
       throw new RuntimeException(
-          "Could not delete documents for given role from DB");
+        "Could not delete documents for given role from DB");
     } finally {
       // make sure to release the database connection
     }
@@ -915,16 +951,17 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
   public void removeGroupDocuments(Group group) {
     try {
       if (group != null) {
-        DataContext dataContext = DatabaseOrmService.getInstance()
-            .getDataContext();
+        DataContext dataContext =
+          DatabaseOrmService.getInstance().getDataContext();
         deleteJetspeedGroupProfilePeer(dataContext, group);
       }
     } catch (Exception e) // delete failed
     {
       logger.warn(
-          "DatabasePsmlManagerService.removeGroupDocuments: exception:", e);
+        "DatabasePsmlManagerService.removeGroupDocuments: exception:",
+        e);
       throw new RuntimeException(
-          "Could not delete documents for given group from DB");
+        "Could not delete documents for given group from DB");
     } finally {
       // make sure to release the database connection
     }
@@ -958,7 +995,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
             count++;
           } catch (Exception e) {
             logger.warn("DatabasePsmlManagerService.export: profile: "
-                + profile, ex);
+              + profile, ex);
           }
         }
       }
@@ -1062,8 +1099,8 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
 
   private void updateJetspeedGroupProfilePeer(DataContext dataContext,
       Profile profile) throws CayenneRuntimeException {
-    JetspeedGroupProfile groupProfile = this.selectJetspeedGroupProfilePeer(
-        dataContext, profile, false).get(0);
+    JetspeedGroupProfile groupProfile =
+      this.selectJetspeedGroupProfilePeer(dataContext, profile, false).get(0);
 
     groupProfile.setGroupName(profile.getGroup().getName());
     groupProfile.setMediaType(profile.getMediaType());
@@ -1088,15 +1125,17 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       profile.setName(name + Profiler.DEFAULT_EXTENSION);
     }
     groupProfile.setPage(profile.getName());
-    groupProfile.setProfile(DBUtils.portletsToBytes(profile.getDocument()
-        .getPortlets(), this.getMapping()));
+    groupProfile.setProfile(DBUtils.portletsToBytes(profile
+      .getDocument()
+      .getPortlets(), this.getMapping()));
 
-    dataContext.commitChanges();
+    Database.commit();
   }
 
   private void insertJetspeedGroupProfilePeer(DataContext dataContext,
       Profile profile) throws CayenneRuntimeException {
-    JetspeedGroupProfile groupProfile = (JetspeedGroupProfile) dataContext
+    JetspeedGroupProfile groupProfile =
+      (JetspeedGroupProfile) dataContext
         .createAndRegisterNewObject(JetspeedGroupProfile.class);
 
     groupProfile.setGroupName(profile.getGroup().getName());
@@ -1122,16 +1161,17 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       profile.setName(name + Profiler.DEFAULT_EXTENSION);
     }
     groupProfile.setPage(profile.getName());
-    groupProfile.setProfile(DBUtils.portletsToBytes(profile.getDocument()
-        .getPortlets(), this.getMapping()));
+    groupProfile.setProfile(DBUtils.portletsToBytes(profile
+      .getDocument()
+      .getPortlets(), this.getMapping()));
 
-    dataContext.commitChanges();
+    Database.commit();
   }
 
   private void updateJetspeedRoleProfilePeer(DataContext dataContext,
       Profile profile) throws CayenneRuntimeException {
-    JetspeedRoleProfile roleProfile = selectJetspeedRoleProfilePeer(
-        dataContext, profile, false).get(0);
+    JetspeedRoleProfile roleProfile =
+      selectJetspeedRoleProfilePeer(dataContext, profile, false).get(0);
     roleProfile.setRoleName(profile.getRole().getName());
     roleProfile.setMediaType(profile.getMediaType());
     String language = profile.getLanguage();
@@ -1153,14 +1193,17 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       profile.setName(name + Profiler.DEFAULT_EXTENSION);
     }
     roleProfile.setPage(profile.getName());
-    roleProfile.setProfile(DBUtils.portletsToBytes(profile.getDocument()
-        .getPortlets(), this.getMapping()));
-    dataContext.commitChanges();
+    roleProfile.setProfile(DBUtils.portletsToBytes(profile
+      .getDocument()
+      .getPortlets(), this.getMapping()));
+
+    Database.commit();
   }
 
   private void insertJetspeedRoleProfilePeer(DataContext dataContext,
       Profile profile) throws CayenneRuntimeException {
-    JetspeedRoleProfile roleProfile = (JetspeedRoleProfile) dataContext
+    JetspeedRoleProfile roleProfile =
+      (JetspeedRoleProfile) dataContext
         .createAndRegisterNewObject(JetspeedRoleProfile.class);
 
     roleProfile.setRoleName(profile.getRole().getName());
@@ -1187,17 +1230,18 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       profile.setName(name + Profiler.DEFAULT_EXTENSION);
     }
     roleProfile.setPage(profile.getName());
-    roleProfile.setProfile(DBUtils.portletsToBytes(profile.getDocument()
-        .getPortlets(), this.getMapping()));
+    roleProfile.setProfile(DBUtils.portletsToBytes(profile
+      .getDocument()
+      .getPortlets(), this.getMapping()));
 
-    dataContext.commitChanges();
+    Database.commit();
   }
 
   private void updateJetspeedUserProfilePeer(DataContext dataContext,
       Profile profile) throws CayenneRuntimeException {
 
-    JetspeedUserProfile userProfile = this.selectJetspeedUserProfilePeer(
-        dataContext, profile, false).get(0);
+    JetspeedUserProfile userProfile =
+      this.selectJetspeedUserProfilePeer(dataContext, profile, false).get(0);
     userProfile.setUserName(profile.getUser().getUserName());
     userProfile.setMediaType(profile.getMediaType());
 
@@ -1222,16 +1266,17 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       profile.setName(name + Profiler.DEFAULT_EXTENSION);
     }
     userProfile.setPage(profile.getName());
-    userProfile.setProfile(DBUtils.portletsToBytes(profile.getDocument()
-        .getPortlets(), this.getMapping()));
+    userProfile.setProfile(DBUtils.portletsToBytes(profile
+      .getDocument()
+      .getPortlets(), this.getMapping()));
 
-    dataContext.commitChanges();
+    Database.commit();
   }
 
   private void insertJetspeedUserProfilePeer(DataContext dataContext,
       Profile profile) throws CayenneRuntimeException {
-    JetspeedUserProfile userProfile = (JetspeedUserProfile) dataContext
-        .createAndRegisterNewObject(JetspeedUserProfile.class);
+    JetspeedUserProfile userProfile =
+      Database.create(dataContext, JetspeedUserProfile.class);
 
     userProfile.setUserName(profile.getUser().getUserName());
     userProfile.setMediaType(profile.getMediaType());
@@ -1257,10 +1302,11 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       profile.setName(name + Profiler.DEFAULT_EXTENSION);
     }
     userProfile.setPage(profile.getName());
-    userProfile.setProfile(DBUtils.portletsToBytes(profile.getDocument()
-        .getPortlets(), this.getMapping()));
+    userProfile.setProfile(DBUtils.portletsToBytes(profile
+      .getDocument()
+      .getPortlets(), this.getMapping()));
 
-    dataContext.commitChanges();
+    Database.commit(dataContext);
   }
 
   private void deleteJetspeedGroupProfilePeer(DataContext dataContext,
@@ -1298,8 +1344,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     }
 
     @SuppressWarnings("unchecked")
-    List<JetspeedGroupProfile> list = (List<JetspeedGroupProfile>) dataContext
-        .performQuery(query);
+    List<JetspeedGroupProfile> list = dataContext.performQuery(query);
     return list;
   }
 
@@ -1317,8 +1362,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     }
 
     @SuppressWarnings("unchecked")
-    List<JetspeedRoleProfile> list = (List<JetspeedRoleProfile>) dataContext
-        .performQuery(query);
+    List<JetspeedRoleProfile> list = dataContext.performQuery(query);
     return list;
   }
 
@@ -1336,16 +1380,16 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     }
 
     @SuppressWarnings("unchecked")
-    List<JetspeedUserProfile> list = (List<JetspeedUserProfile>) dataContext
-        .performQuery(query);
+    List<JetspeedUserProfile> list = dataContext.performQuery(query);
     return list;
   }
 
   private void deleteJetspeedUserProfilePeer(DataContext dataContext,
       JetspeedUser user) throws CayenneRuntimeException {
     DeleteQuery deleteQuery = new DeleteQuery(JetspeedUserProfile.class);
-    Expression exp = ExpressionFactory.matchExp(
-        JetspeedUserProfile.USER_NAME_PROPERTY, user.getName());
+    Expression exp =
+      ExpressionFactory.matchExp(JetspeedUserProfile.USER_NAME_PROPERTY, user
+        .getName());
     deleteQuery.andQualifier(exp);
     dataContext.performQuery(deleteQuery);
   }
@@ -1353,8 +1397,9 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
   private void deleteJetspeedRoleProfilePeer(DataContext dataContext, Role role)
       throws CayenneRuntimeException {
     DeleteQuery deleteQuery = new DeleteQuery(JetspeedRoleProfile.class);
-    Expression exp = ExpressionFactory.matchExp(
-        JetspeedRoleProfile.ROLE_NAME_PROPERTY, role.getName());
+    Expression exp =
+      ExpressionFactory.matchExp(JetspeedRoleProfile.ROLE_NAME_PROPERTY, role
+        .getName());
     deleteQuery.andQualifier(exp);
     dataContext.performQuery(deleteQuery);
   }
@@ -1362,8 +1407,10 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
   private void deleteJetspeedGroupProfilePeer(DataContext dataContext,
       Group group) throws CayenneRuntimeException {
     DeleteQuery deleteQuery = new DeleteQuery(JetspeedGroupProfile.class);
-    Expression exp = ExpressionFactory.matchExp(
-        JetspeedGroupProfile.GROUP_NAME_PROPERTY, group.getName());
+    Expression exp =
+      ExpressionFactory.matchExp(
+        JetspeedGroupProfile.GROUP_NAME_PROPERTY,
+        group.getName());
     deleteQuery.andQualifier(exp);
     dataContext.performQuery(deleteQuery);
   }
@@ -1382,40 +1429,48 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     }
 
     if (userName != null && userName.length() > 0) {
-      Expression exp = ExpressionFactory.matchExp(
-          JetspeedUserProfile.USER_NAME_PROPERTY, userName);
+      Expression exp =
+        ExpressionFactory.matchExp(
+          JetspeedUserProfile.USER_NAME_PROPERTY,
+          userName);
       query.andQualifier(exp);
     }
 
     if (pageName != null && pageName.length() > 0) {
-      Expression exp = ExpressionFactory.matchExp(
-          JetspeedUserProfile.PAGE_PROPERTY, pageName);
+      Expression exp =
+        ExpressionFactory.matchExp(JetspeedUserProfile.PAGE_PROPERTY, pageName);
       query.andQualifier(exp);
     }
 
     if (mediaType != null && mediaType.length() > 0) {
-      Expression exp = ExpressionFactory.matchExp(
-          JetspeedUserProfile.MEDIA_TYPE_PROPERTY, mediaType);
+      Expression exp =
+        ExpressionFactory.matchExp(
+          JetspeedUserProfile.MEDIA_TYPE_PROPERTY,
+          mediaType);
       query.andQualifier(exp);
     }
 
     if (language != null && language.length() > 0 && (!language.equals("-1"))) {
-      Expression exp = ExpressionFactory.matchExp(
-          JetspeedUserProfile.LANGUAGE_PROPERTY, language);
+      Expression exp =
+        ExpressionFactory.matchExp(
+          JetspeedUserProfile.LANGUAGE_PROPERTY,
+          language);
       query.andQualifier(exp);
     } else if (language != null && language.equals("-1")) {
-      Expression exp = ExpressionFactory.matchExp(
-          JetspeedUserProfile.LANGUAGE_PROPERTY, null);
+      Expression exp =
+        ExpressionFactory.matchExp(JetspeedUserProfile.LANGUAGE_PROPERTY, null);
       query.andQualifier(exp);
     }
 
     if (country != null && country.length() > 0 && (!country.equals("-1"))) {
-      Expression exp = ExpressionFactory.matchExp(
-          JetspeedUserProfile.COUNTRY_PROPERTY, country);
+      Expression exp =
+        ExpressionFactory.matchExp(
+          JetspeedUserProfile.COUNTRY_PROPERTY,
+          country);
       query.andQualifier(exp);
     } else if (country != null && country.equals("-1")) {
-      Expression exp = ExpressionFactory.matchExp(
-          JetspeedUserProfile.COUNTRY_PROPERTY, null);
+      Expression exp =
+        ExpressionFactory.matchExp(JetspeedUserProfile.COUNTRY_PROPERTY, null);
       query.andQualifier(exp);
     }
 
@@ -1435,40 +1490,48 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       roleName = role.getName();
     }
     if (roleName != null && roleName.length() > 0) {
-      Expression exp = ExpressionFactory.matchExp(
-          JetspeedRoleProfile.ROLE_NAME_PROPERTY, roleName);
+      Expression exp =
+        ExpressionFactory.matchExp(
+          JetspeedRoleProfile.ROLE_NAME_PROPERTY,
+          roleName);
       query.andQualifier(exp);
     }
 
     if (pageName != null && pageName.length() > 0) {
-      Expression exp = ExpressionFactory.matchExp(
-          JetspeedRoleProfile.PAGE_PROPERTY, pageName);
+      Expression exp =
+        ExpressionFactory.matchExp(JetspeedRoleProfile.PAGE_PROPERTY, pageName);
       query.andQualifier(exp);
     }
 
     if (mediaType != null && mediaType.length() > 0) {
-      Expression exp = ExpressionFactory.matchExp(
-          JetspeedRoleProfile.MEDIA_TYPE_PROPERTY, mediaType);
+      Expression exp =
+        ExpressionFactory.matchExp(
+          JetspeedRoleProfile.MEDIA_TYPE_PROPERTY,
+          mediaType);
       query.andQualifier(exp);
     }
 
     if (language != null && language.length() > 0 && (!language.equals("-1"))) {
-      Expression exp = ExpressionFactory.matchExp(
-          JetspeedRoleProfile.LANGUAGE_PROPERTY, language);
+      Expression exp =
+        ExpressionFactory.matchExp(
+          JetspeedRoleProfile.LANGUAGE_PROPERTY,
+          language);
       query.andQualifier(exp);
     } else if (language != null && language.equals("-1")) {
-      Expression exp = ExpressionFactory.matchExp(
-          JetspeedRoleProfile.LANGUAGE_PROPERTY, null);
+      Expression exp =
+        ExpressionFactory.matchExp(JetspeedRoleProfile.LANGUAGE_PROPERTY, null);
       query.andQualifier(exp);
     }
 
     if (country != null && country.length() > 0 && (!country.equals("-1"))) {
-      Expression exp = ExpressionFactory.matchExp(
-          JetspeedRoleProfile.COUNTRY_PROPERTY, country);
+      Expression exp =
+        ExpressionFactory.matchExp(
+          JetspeedRoleProfile.COUNTRY_PROPERTY,
+          country);
       query.andQualifier(exp);
     } else if (country != null && country.equals("-1")) {
-      Expression exp = ExpressionFactory.matchExp(
-          JetspeedRoleProfile.COUNTRY_PROPERTY, null);
+      Expression exp =
+        ExpressionFactory.matchExp(JetspeedRoleProfile.COUNTRY_PROPERTY, null);
       query.andQualifier(exp);
     }
 
@@ -1488,40 +1551,50 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       groupName = group.getName();
     }
     if (groupName != null && groupName.length() > 0) {
-      Expression exp = ExpressionFactory.matchExp(
-          JetspeedGroupProfile.GROUP_NAME_PROPERTY, groupName);
+      Expression exp =
+        ExpressionFactory.matchExp(
+          JetspeedGroupProfile.GROUP_NAME_PROPERTY,
+          groupName);
       query.andQualifier(exp);
     }
 
     if (pageName != null && pageName.length() > 0) {
-      Expression exp = ExpressionFactory.matchExp(
-          JetspeedGroupProfile.PAGE_PROPERTY, pageName);
+      Expression exp =
+        ExpressionFactory
+          .matchExp(JetspeedGroupProfile.PAGE_PROPERTY, pageName);
       query.andQualifier(exp);
     }
 
     if (mediaType != null && mediaType.length() > 0) {
-      Expression exp = ExpressionFactory.matchExp(
-          JetspeedGroupProfile.MEDIA_TYPE_PROPERTY, mediaType);
+      Expression exp =
+        ExpressionFactory.matchExp(
+          JetspeedGroupProfile.MEDIA_TYPE_PROPERTY,
+          mediaType);
       query.andQualifier(exp);
     }
 
     if (language != null && language.length() > 0 && (!language.equals("-1"))) {
-      Expression exp = ExpressionFactory.matchExp(
-          JetspeedGroupProfile.LANGUAGE_PROPERTY, language);
+      Expression exp =
+        ExpressionFactory.matchExp(
+          JetspeedGroupProfile.LANGUAGE_PROPERTY,
+          language);
       query.andQualifier(exp);
     } else if (language != null && language.equals("-1")) {
-      Expression exp = ExpressionFactory.matchExp(
-          JetspeedGroupProfile.LANGUAGE_PROPERTY, null);
+      Expression exp =
+        ExpressionFactory
+          .matchExp(JetspeedGroupProfile.LANGUAGE_PROPERTY, null);
       query.andQualifier(exp);
     }
 
     if (country != null && country.length() > 0 && (!country.equals("-1"))) {
-      Expression exp = ExpressionFactory.matchExp(
-          JetspeedGroupProfile.COUNTRY_PROPERTY, country);
+      Expression exp =
+        ExpressionFactory.matchExp(
+          JetspeedGroupProfile.COUNTRY_PROPERTY,
+          country);
       query.andQualifier(exp);
     } else if (country != null && country.equals("-1")) {
-      Expression exp = ExpressionFactory.matchExp(
-          JetspeedGroupProfile.COUNTRY_PROPERTY, null);
+      Expression exp =
+        ExpressionFactory.matchExp(JetspeedGroupProfile.COUNTRY_PROPERTY, null);
       query.andQualifier(exp);
     }
 
