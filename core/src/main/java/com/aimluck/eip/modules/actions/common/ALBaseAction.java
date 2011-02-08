@@ -175,6 +175,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
 
   @Override
   public void doPerform(RunData rundata, Context context) throws Exception {
+    super.doPerform(rundata, context);
 
     GenericMVCPortlet portlet = null;
     JetspeedRunData jdata = (JetspeedRunData) rundata;
@@ -183,44 +184,17 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
     if (context != null) {
       portlet = (GenericMVCPortlet) context.get("portlet");
     }
+    
+    /*
+     * ポートレットタイトルを取るためにPortletInstanceを取得
+     */
+    PortletInstance portletInstance =
+      PersistenceManager.getInstance(portlet, jdata);
 
-    logger.debug("ALBaseAction: retrieved portlet: " + portlet);
-
-    if (portlet != null) {
-
-      // System.out.println("class = " + this.getClass().getName());
-      // rundata.getUser().setTemp(this.getClass().getName(), portlet.getID());
-      // we're bein configured
-      if ((jdata.getMode() == JetspeedRunData.CUSTOMIZE)
-        && (portlet.getName().equals(jdata.getCustomized().getName()))) {
-        logger.debug("ALBaseAction: building customize");
-        buildConfigureContext(portlet, context, rundata);
-
-        return;
-      }
-
-      // we're maximized
-      if (jdata.getMode() == JetspeedRunData.MAXIMIZE) {
-        logger.debug("ALBaseAction: building maximize");
-
-        /*
-         * ポートレットタイトルを取るためにPortletInstanceを取得
-         */
-        PortletInstance portletInstance =
-          PersistenceManager.getInstance(portlet, jdata);
-
-        if (portletInstance == null) {
-          context.put("portletInstanceTitle", portlet.getTitle());
-        } else {
-          context.put("portletInstanceTitle", portletInstance.getTitle());
-        }
-
-        buildMaximizedContext(portlet, context, rundata);
-        return;
-      }
-
-      logger.debug("GenericMVCAction: building normal");
-      buildNormalContext(portlet, context, rundata);
+    if (portletInstance == null) {
+      context.put("portletInstanceTitle", portlet.getTitle());
+    } else {
+      context.put("portletInstanceTitle", portletInstance.getTitle());
     }
   }
 }
