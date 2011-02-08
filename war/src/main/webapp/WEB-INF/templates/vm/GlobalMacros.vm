@@ -1219,7 +1219,7 @@ $menu.get(0)
 #macro(ALcell_pagetitle $career $title)
 <div style="background:$config.getString("aipo.color.cell.vm.logo"); color:#ffffff; text-align:center;">${alias}</div>
 <div style="background:$config.getString("aipo.color.cell.vm.title"); text-align:center;">$title</div>
-<div style="background:$config.getString("aipo.color.cell.vm.logo");"><img src="/${data.getServletConfig().getServletName()}/images/dot.gif" width="1" height="1" /></div>
+<div style="background:$config.getString("aipo.color.cell.vm.logo");"><img src="${dislink}/images/dot.gif" width="1" height="1" /></div>
 <hr style="border:solid 1px #ffffff; color:#ffffff" />
 #end
 

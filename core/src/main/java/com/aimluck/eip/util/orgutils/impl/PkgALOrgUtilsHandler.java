@@ -23,21 +23,29 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletConfig;
+
+import org.apache.jetspeed.services.daemonfactory.DaemonFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
+import org.apache.turbine.services.TurbineServices;
 
+import com.aimluck.eip.services.config.ALConfigFactoryService;
+import com.aimluck.eip.services.config.ALConfigHandler;
+import com.aimluck.eip.services.config.ALConfigHandler.Property;
+import com.aimluck.eip.services.daemonfactory.AipoDaemonFactoryService;
 import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
 
 /**
- * 
- * 
+ *
+ *
  */
 public class PkgALOrgUtilsHandler extends ALOrgUtilsHandler {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(PkgALOrgUtilsHandler.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(PkgALOrgUtilsHandler.class.getName());
 
   @Override
   public File getDocumentPath(String rootPath, String org_name,
@@ -91,7 +99,38 @@ public class PkgALOrgUtilsHandler extends ALOrgUtilsHandler {
     hash.put("alias_copyright", JetspeedResources
       .getString("aipo.aliascopyright"));
     hash.put("version", JetspeedResources.getString("aipo.version", ""));
+    hash.put("dislink", getDistributionServer());
 
     return hash;
+  }
+
+  /**
+   * JavaScript,CSS,画像を外部サーバーから取得する
+   * 
+   * @param rundata
+   * @return
+   */
+  public static String getDistributionServer() {
+
+    StringBuffer url = new StringBuffer();
+
+    ALConfigHandler configHandler =
+      ALConfigFactoryService.getInstance().getConfigHandler();
+
+    String protocol = configHandler.get(Property.EXTERNAL_RESOURES_URL);
+
+    if (protocol.isEmpty()) {
+      // get configuration parameters from Jetspeed Resources
+      AipoDaemonFactoryService aipoDaemonService =
+        (AipoDaemonFactoryService) TurbineServices.getInstance().getService(
+          DaemonFactoryService.SERVICE_NAME);
+      ServletConfig servlet_config = aipoDaemonService.getServletConfig();
+      String servlet_name = servlet_config.getServletName();
+      url.append("/").append(servlet_name);
+    } else {
+      url.append(protocol);
+    }
+
+    return url.toString();
   }
 }

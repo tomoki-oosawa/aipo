@@ -31,10 +31,10 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta name="copyright" content="${copyright}" />
-<link rel="shortcut icon" href="/${data.getServletConfig().getServletName()}/images/favicon.ico" />
-<link rel="stylesheet" type="text/css" href="/${data.getServletConfig().getServletName()}/themes/${theme}/css/extend.min.css" media="screen,tv,print" />
-<link rel="stylesheet" type="text/css" href="/${data.getServletConfig().getServletName()}/themes/${theme}/css/common.min.css" media="screen,tv,print" />
-<link rel="stylesheet" type="text/css" href="/${data.getServletConfig().getServletName()}/themes/${theme}/css/print.min.css" media="print" />
+<link rel="shortcut icon" href="${dislink}/images/favicon.ico" />
+<link rel="stylesheet" type="text/css" href="${dislink}/themes/${theme}/css/extend.min.css" media="screen,tv,print" />
+<link rel="stylesheet" type="text/css" href="${dislink}/themes/${theme}/css/common.min.css" media="screen,tv,print" />
+<link rel="stylesheet" type="text/css" href="${dislink}/themes/${theme}/css/print.min.css" media="print" />
 #ALheadScripts()
 </head>
 <body class="portlet_background" onLoad="get_data()">
