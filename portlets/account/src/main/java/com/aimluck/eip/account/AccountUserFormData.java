@@ -33,7 +33,9 @@ import javax.imageio.ImageIO;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.jetspeed.om.security.Group;
 import org.apache.jetspeed.om.security.JetspeedUser;
+import org.apache.jetspeed.om.security.Role;
 import org.apache.jetspeed.om.security.UserNamePrincipal;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.PsmlManager;
@@ -67,9 +69,13 @@ import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.config.ALConfigFactoryService;
+import com.aimluck.eip.services.config.ALConfigHandler;
+import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
 import com.aimluck.eip.user.beans.UserGroupLiteBean;
 import com.aimluck.eip.user.util.UserUtils;
@@ -186,6 +192,9 @@ public class AccountUserFormData extends ALAbstractFormData {
   /** 顔写真データ */
   private byte[] facePhoto;
 
+  /** ログインしている人のユーザーID */
+  private int login_uid;
+
   /**
    * 初期化します。
    *
@@ -206,6 +215,8 @@ public class AccountUserFormData extends ALAbstractFormData {
     is_new_position = rundata.getParameters().getBoolean("is_new_position");
 
     orgId = Database.getDomainName();
+
+    login_uid = ALEipUtils.getUserId(rundata);
   }
 
   /**
@@ -587,6 +598,51 @@ public class AccountUserFormData extends ALAbstractFormData {
       position.validate(msgList);
     }
 
+    // 管理者権限
+    if (!is_new_post && is_admin.getValue().equals("false")) {
+      try {
+        TurbineUser tuser = ALEipUtils.getTurbineUser(username.getValue());
+        if (login_uid == tuser.getUserId()) {
+          msgList
+            .add("ログインしているユーザーの『 <span class='em'>管理者権限</span> 』を無くすことは出来ません。");
+        }
+
+        boolean wasAdmin = ALEipUtils.isAdmin(tuser.getUserId());
+        if (wasAdmin) {
+          // 更新で管理者権限を無くす場合
+          ALConfigHandler configHandler =
+            ALConfigFactoryService.getInstance().getConfigHandler();
+          int minimum_admin =
+            Integer.valueOf(configHandler
+              .get(Property.MINIMUM_ADMINISTRATOR_USER_COUNT));
+          Group group = JetspeedSecurity.getGroup("LoginUser");
+          Role adminrole = JetspeedSecurity.getRole("admin");
+          int current_admin_count =
+            Database
+              .query(TurbineUserGroupRole.class)
+              .where(
+                Operations.eq(
+                  TurbineUserGroupRole.TURBINE_ROLE_PROPERTY,
+                  adminrole.getId()),
+                Operations.eq(
+                  TurbineUserGroupRole.TURBINE_GROUP_PROPERTY,
+                  group.getId()),
+                Operations.ne(TurbineUserGroupRole.TURBINE_USER_PROPERTY, 1))
+              .distinct(true)
+              .getCount();
+          if (minimum_admin >= current_admin_count) {
+            msgList
+              .add("このユーザーの『 <span class='em'>管理者権限</span> 』を削除できません。最低でも "
+                + minimum_admin
+                + " 人の管理者権限を持ったユーザーが必要です。");
+          }
+        }
+      } catch (Exception e) {
+        logger.error("Exception", e);
+        return false;
+      }
+    }
+
     return (msgList.size() == 0);
   }
 
@@ -649,9 +705,9 @@ public class AccountUserFormData extends ALAbstractFormData {
       last_name_kana.setValue(user.getLastNameKana());
 
       // 管理者権限
-      if(ALEipUtils.isAdmin(Integer.valueOf(user.getUserId()))){
+      if (ALEipUtils.isAdmin(Integer.valueOf(user.getUserId()))) {
         is_admin.setValue("true");
-      }else{
+      } else {
         is_admin.setValue("false");
       }
 

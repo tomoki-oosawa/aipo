@@ -601,13 +601,27 @@ public class ALEipUtils {
   }
 
   /**
-   * 指定したユーザーIDのオブジェクトを取得します。
+   * 指定したユーザーIDのユーザーオブジェクトを取得します。
    *
    * @param id
    * @return
    */
   public static TurbineUser getTurbineUser(int id) throws ALDBErrorException {
     TurbineUser tuser = Database.get(TurbineUser.class, id);
+    return tuser;
+  }
+
+  /**
+   * 指定したログイン名のユーザーオブジェクトを取得します。
+   *
+   * @param login_name
+   * @return
+   */
+  public static TurbineUser getTurbineUser(String login_name)
+      throws ALDBErrorException {
+    TurbineUser tuser =
+      Database.query(TurbineUser.class).where(
+        Operations.eq(TurbineUser.LOGIN_NAME_PROPERTY, login_name)).fetchSingle();
     return tuser;
   }
 

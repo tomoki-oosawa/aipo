@@ -24,7 +24,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
 
 /**
- * 
+ *
  */
 public abstract class ALConfigHandler {
 
@@ -51,6 +51,14 @@ public abstract class ALConfigHandler {
       @Override
       public String defaultValue() {
         return JetspeedResources.getString("access.url.protocol", "http");
+      }
+    },
+
+    MINIMUM_ADMINISTRATOR_USER_COUNT("minimum.administrator.user.count") {
+
+      @Override
+      public String defaultValue() {
+        return "0";
       }
     };
 
