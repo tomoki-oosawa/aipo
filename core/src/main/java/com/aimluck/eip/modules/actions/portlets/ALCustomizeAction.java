@@ -280,7 +280,7 @@ public class ALCustomizeAction extends VelocityPortletAction {
             .withAppId(appId));
         isGadgets = true;
         ALStringField title = app.getTitle();
-        defTitle = title.toString();
+        defTitle = title.getValue();
       }
 
       md.setTitle(defTitle);
