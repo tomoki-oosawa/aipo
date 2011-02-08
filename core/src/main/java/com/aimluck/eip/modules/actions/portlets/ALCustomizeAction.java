@@ -57,6 +57,11 @@ import org.apache.turbine.modules.ActionLoader;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.common.ALApplication;
+import com.aimluck.eip.services.social.ALSocialApplicationFactoryService;
+import com.aimluck.eip.services.social.ALSocialApplicationHandler;
+import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
 import com.aimluck.eip.util.ALCommonUtils;
 
 /**
@@ -259,12 +264,35 @@ public class ALCustomizeAction extends VelocityPortletAction {
         md = new MetaData();
         pc.setMetainfo(md);
       }
+
+      boolean isGadgets = false;
+      String appId = null;
+      String url = null;
+      if ("GadgetsTemplate".equals(pc.getName())) {
+        appId = pc.getInitParameter("aid");
+        url = pc.getInitParameter("url");
+        ALSocialApplicationHandler applicationHanlder =
+          ALSocialApplicationFactoryService
+            .getInstance()
+            .getSocialApplicationHandler();
+        ALApplication app =
+          applicationHanlder.getApplication(new ALApplicationGetRequest()
+            .withAppId(appId));
+        isGadgets = true;
+        ALStringField title = app.getTitle();
+        defTitle = title.toString();
+      }
+
       md.setTitle(defTitle);
       entry.setTitle(defTitle);
 
       PortletInstance instance = PersistenceManager.getInstance(p, rundata);
       instance.removeAllAttributes();
 
+      if (isGadgets) {
+        instance.setAttribute("aid", appId);
+        instance.setAttribute("url", url);
+      }
       // add by Haruo Kaneko
       profile.store();
       p.init();
