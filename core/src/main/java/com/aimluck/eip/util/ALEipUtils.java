@@ -43,6 +43,7 @@ import org.apache.jetspeed.capability.CapabilityMapFactory;
 import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.om.registry.MediaTypeEntry;
+import org.apache.jetspeed.om.security.Role;
 import org.apache.jetspeed.om.security.UserIdPrincipal;
 import org.apache.jetspeed.portal.Portlet;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
@@ -86,6 +87,7 @@ import com.aimluck.eip.common.ALMyGroups;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.modules.actions.controls.Restore;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -96,7 +98,7 @@ import com.aimluck.eip.services.config.ALConfigHandler.Property;
 
 /**
  * Aimluck EIP のユーティリティクラスです。 <br />
- * 
+ *
  */
 public class ALEipUtils {
 
@@ -109,7 +111,7 @@ public class ALEipUtils {
   /**
    * セッション変数に値を格納します。 <br />
    * セッション変数は各ポートレット毎に管理されます。
-   * 
+   *
    * @param rundata
    * @param context
    * @param key
@@ -142,7 +144,7 @@ public class ALEipUtils {
   /**
    * セッション変数を削除します。 <br />
    * セッション変数は各ポートレット毎に管理されます。
-   * 
+   *
    * @param rundata
    * @param context
    * @param key
@@ -198,7 +200,7 @@ public class ALEipUtils {
   /**
    * セッション変数の値を取得します。 <br />
    * セッション変数は各ポートレット毎に管理されます。
-   * 
+   *
    * @param rundata
    * @param context
    * @param key
@@ -228,7 +230,7 @@ public class ALEipUtils {
 
   /**
    * セッションに保存されているエンティティIDを整数値として返します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -247,7 +249,7 @@ public class ALEipUtils {
 
   /**
    * ユーザーIDを返します。
-   * 
+   *
    * @param rundata
    * @return ユーザーID
    */
@@ -259,7 +261,7 @@ public class ALEipUtils {
 
   /**
    * ポートレットを返します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return 自ポートレット
@@ -270,7 +272,7 @@ public class ALEipUtils {
 
   /**
    * 指定したポートレット ID を持つポートレットのオブジェクトを取得します。
-   * 
+   *
    * @param rundata
    * @param portletId
    * @return 自ポートレット
@@ -318,7 +320,7 @@ public class ALEipUtils {
   /**
    * リクエストが自ポートレットに対するものであるかを返します。 <br />
    * true となる場合、そのポートレットに対するフォーム送信となります。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -341,7 +343,7 @@ public class ALEipUtils {
 
   /**
    * 指定されたグループに所属するユーザーを取得します。
-   * 
+   *
    * @param groupname
    *          グループ名
    * @return ALEipUser の List
@@ -392,7 +394,7 @@ public class ALEipUtils {
 
   /**
    * 指定されたグループに所属するユーザーのIDを取得します。
-   * 
+   *
    * @param groupname
    *          グループ名
    * @return Integer の List
@@ -434,7 +436,7 @@ public class ALEipUtils {
 
   /**
    * 指定された部署に所属するユーザーを取得します。
-   * 
+   *
    * @param postid
    *          部署ID
    * @return ALEipUser の List
@@ -484,7 +486,7 @@ public class ALEipUtils {
 
   /**
    * <code>SelectQuery</code> の条件に従ってユーザーを取得します。
-   * 
+   *
    * @param crt
    * @return ALEipUser の List
    */
@@ -514,7 +516,7 @@ public class ALEipUtils {
 
   /**
    * 自ユーザーの簡易オブジェクトを取得します。
-   * 
+   *
    * @param crt
    * @return ALEipUser
    */
@@ -532,7 +534,7 @@ public class ALEipUtils {
 
   /**
    * 指定したユーザーIDの簡易オブジェクトを取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -553,7 +555,7 @@ public class ALEipUtils {
 
   /**
    * 指定したユーザーIDの簡易オブジェクトを取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -579,7 +581,7 @@ public class ALEipUtils {
 
   /**
    * 指定したユーザーIDのオブジェクトを取得します。
-   * 
+   *
    * @param userid
    *          ユーザID
    * @return
@@ -600,7 +602,7 @@ public class ALEipUtils {
 
   /**
    * 指定したユーザーIDのオブジェクトを取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -611,7 +613,7 @@ public class ALEipUtils {
 
   /**
    * 指定したユーザーIDが有効か（無効化、削除されていないか）どうか調べます。
-   * 
+   *
    * @param id
    * @return
    */
@@ -625,7 +627,7 @@ public class ALEipUtils {
 
   /**
    * ユーザーのフルネームを取得します。
-   * 
+   *
    * @param userid
    *          ユーザID
    * @return
@@ -644,7 +646,7 @@ public class ALEipUtils {
   /**
    * 部署の変更を行います。 <br>
    * 部署に関連付けされているグループの更新も同時に行います。
-   * 
+   *
    * @param rundata
    * @param username
    *          ユーザー名
@@ -685,7 +687,7 @@ public class ALEipUtils {
    * 自ユーザーのマイグループを再読み込みします。 <br>
    * 読み込まれたマイグループはセッションに保存されます。 <br>
    * マイグループの更新が行われた場合はこのメソッドを呼び出してください。
-   * 
+   *
    * @param rundata
    */
   public static void reloadMygroup(RunData rundata) throws ALDBErrorException {
@@ -719,7 +721,7 @@ public class ALEipUtils {
 
   /**
    * 自ユーザーのマイグループを取得します。
-   * 
+   *
    * @param rundata
    * @return ALEipGroup の List
    */
@@ -739,7 +741,7 @@ public class ALEipUtils {
 
   /**
    * 会社名を取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -772,7 +774,7 @@ public class ALEipUtils {
 
   /**
    * 部署名を取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -790,7 +792,7 @@ public class ALEipUtils {
 
   /**
    * 役職名を取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -805,7 +807,7 @@ public class ALEipUtils {
 
   /**
    * ページが見つからない場合に、リダイレクト処理します。
-   * 
+   *
    * @return
    */
   public static boolean redirectPageNotFound(RunData rundata) {
@@ -832,7 +834,7 @@ public class ALEipUtils {
 
   /**
    * データベースエラーの場合に、リダイレクト処理します。
-   * 
+   *
    * @return
    */
   public static boolean redirectDBError(RunData rundata) {
@@ -884,7 +886,7 @@ public class ALEipUtils {
 
   /**
    * パーミッションエラーの場合に、リダイレクト処理します。
-   * 
+   *
    * @return
    */
   public static boolean redirectPermissionError(RunData rundata) {
@@ -1041,7 +1043,7 @@ public class ALEipUtils {
 
   /**
    * 改行コードを含む文字列を、複数行に分割します。
-   * 
+   *
    * @return
    */
   public static String getMessageList(String msgline) {
@@ -1090,7 +1092,7 @@ public class ALEipUtils {
 
   /**
    * 左端の半角空文字を「&nbsp;」に変換する。
-   * 
+   *
    * @param str
    * @return
    */
@@ -1117,7 +1119,7 @@ public class ALEipUtils {
 
   /**
    * アクセス元の端末が携帯電話であるかを判定します。
-   * 
+   *
    * @param data
    * @return
    */
@@ -1144,7 +1146,7 @@ public class ALEipUtils {
 
   /**
    * アクセス元の端末がスマートフォンであるかを判定します。
-   * 
+   *
    * @param data
    * @return
    */
@@ -1168,7 +1170,7 @@ public class ALEipUtils {
 
   /**
    * 指定した2つの日付を比較します。
-   * 
+   *
    * @param date1
    * @param date2
    * @return 等しい場合、0。date1>date2の場合、1。date1 < date2の場合、2。
@@ -1209,7 +1211,7 @@ public class ALEipUtils {
 
   /**
    * データベースの検索結果から、指定したキーに対応する値を取得します。
-   * 
+   *
    * @param dataRow
    * @param key
    * @return
@@ -1225,7 +1227,7 @@ public class ALEipUtils {
 
   /**
    * 会社情報のオブジェクトを取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -1242,7 +1244,7 @@ public class ALEipUtils {
   }
 
   /**
-   * 
+   *
    * @param ip
    * @param port
    * @param servername
@@ -1284,7 +1286,7 @@ public class ALEipUtils {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -1304,7 +1306,7 @@ public class ALEipUtils {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param key
@@ -1326,7 +1328,7 @@ public class ALEipUtils {
 
   /**
    * 指定したエントリー名のポートレットへの URI を取得します。
-   * 
+   *
    * @param rundata
    * @param portletEntryName
    *          PSML ファイルに記述されているタグ entry の要素 parent
@@ -1383,7 +1385,7 @@ public class ALEipUtils {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param portletEntryId
    * @return
@@ -1439,7 +1441,7 @@ public class ALEipUtils {
 
   /**
    * 文字列内のリンクにタグAを追加します。
-   * 
+   *
    * @param msg
    * @return
    */
@@ -1460,7 +1462,7 @@ public class ALEipUtils {
 
   /**
    * 古いファイル(parent_folder下のファイル)を消します。
-   * 
+   *
    * @param parent_folder
    *          親フォルダ
    * @param cal
@@ -1517,11 +1519,11 @@ public class ALEipUtils {
 
   /**
    * フォルダを再帰的に消します。
-   * 
+   *
    * @param parent_folder
    *          親フォルダ
    * @param cal
-   * 
+   *
    * @return フォルダの中身が全て消去されたときのみtrueを返します
    */
   public static boolean deleteFolder(File parent_folder) {
@@ -1567,7 +1569,7 @@ public class ALEipUtils {
 
   /**
    * ユーザーの所属する部署を取得します。
-   * 
+   *
    * @param id
    *          ユーザーID
    * @return 所属する部署リスト
@@ -1602,7 +1604,7 @@ public class ALEipUtils {
 
   /**
    * アクセス権限をチェックします（ポートレットカスタマイズ）
-   * 
+   *
    * @return
    */
   public static boolean CheckAclPermissionForCustomize(RunData rundata,
@@ -1664,7 +1666,7 @@ public class ALEipUtils {
 
   /**
    * 現在登録されている有効なユーザー数(システムユーザ、論理削除は除く)を取得します。
-   * 
+   *
    * @return
    */
   public static int getCurrentUserNumEnabledOnly(RunData rundata) {
@@ -1696,7 +1698,7 @@ public class ALEipUtils {
 
   /**
    * 現在登録されている有効なユーザー数(システムユーザ、論理削除、無効化は除く)を取得します。
-   * 
+   *
    * @return
    */
   public static int getCurrentUserNum(RunData rundata) {
@@ -1726,4 +1728,40 @@ public class ALEipUtils {
     return registeredUserNum;
   }
 
+  /**
+   * 指定されたユーザが管理者権限を持っているかを返します。
+   *
+   * @param uid
+   * @return
+   */
+  public static boolean isAdmin(int uid) {
+    boolean res = false;
+    try {
+      Role adminrole = JetspeedSecurity.getRole("admin");
+      TurbineUserGroupRole role =
+        Database
+          .query(TurbineUserGroupRole.class)
+          .where(
+            Operations.eq(TurbineUserGroupRole.TURBINE_ROLE_PROPERTY, adminrole
+              .getId()),
+            Operations.eq(TurbineUserGroupRole.TURBINE_USER_PROPERTY, uid))
+          .fetchSingle();
+      res = role != null;
+    } catch (JetspeedSecurityException e) {
+      logger.error("管理者ロールが存在しません。");
+      logger.error(e);
+    }
+    return res;
+  }
+
+  /**
+   * ログインユーザが管理者権限を持っているかを返します。
+   *
+   * @param rundata
+   * @return
+   */
+  public static boolean isAdmin(RunData rundata) {
+    JetspeedRunData jdata = (JetspeedRunData) rundata;
+    return isAdmin(Integer.valueOf(jdata.getUserId()));
+  }
 }

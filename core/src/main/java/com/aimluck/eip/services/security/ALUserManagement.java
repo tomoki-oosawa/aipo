@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -34,7 +35,11 @@ import javax.servlet.ServletConfig;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.jetspeed.om.profile.Layout;
+import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.om.profile.Profile;
+import org.apache.jetspeed.om.profile.ProfileLocator;
+import org.apache.jetspeed.om.profile.psml.PsmlLayout;
 import org.apache.jetspeed.om.security.BaseJetspeedUser;
 import org.apache.jetspeed.om.security.Group;
 import org.apache.jetspeed.om.security.JetspeedUser;
@@ -57,6 +62,7 @@ import org.apache.jetspeed.services.security.NotUniqueUserException;
 import org.apache.jetspeed.services.security.UnknownUserException;
 import org.apache.jetspeed.services.security.UserException;
 import org.apache.jetspeed.services.security.UserManagement;
+import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
@@ -77,7 +83,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
  * ユーザーを管理するクラスです。 <br />
- * 
+ *
  */
 public class ALUserManagement extends TurbineBaseService implements
     UserManagement, CredentialsManagement {
@@ -100,9 +106,17 @@ public class ALUserManagement extends TurbineBaseService implements
 
   private final static String CONFIG_NEWUSER_ROLES = "newuser.roles";
 
+  private final static String CONFIG_NEW_ADMINUSER_ROLES = "newadminuser.roles";
+
   private final static String[] DEFAULT_CONFIG_NEWUSER_ROLES = { "user" };
 
+  private final static String[] DEFAULT_CONFIG_NEW_ADMINUSER_ROLES = {
+    "user",
+    "admin" };
+
   String roles[] = null;
+
+  String admin_roles[] = null;
 
   private JetspeedRunDataService runDataService = null;
 
@@ -296,6 +310,8 @@ public class ALUserManagement extends TurbineBaseService implements
 
     try {
 
+      Boolean hasAdminCredential = (Boolean) user.getPerm("isAdmin", null);
+
       Expression exp =
         ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
           .valueOf(user.getUserId()));
@@ -338,6 +354,17 @@ public class ALUserManagement extends TurbineBaseService implements
       tuser.setCreatedUserId(Integer.valueOf(baseuser.getCreatedUserId()));
       tuser.setUpdatedUserId(Integer.valueOf(baseuser.getUpdatedUserId()));
 
+      if (hasAdminCredential != null) {
+        if (hasAdminCredential) {
+          setAdminRole(tuser);
+          addAdminPage(tuser.getLoginName());
+        } else {
+          removeAdminRole(tuser);
+          removeAdminPage(tuser.getLoginName());
+        }
+        grantRoles(user, hasAdminCredential);
+      }
+
       // ユーザを更新する．
       Database.commit();
     } catch (Exception e) {
@@ -356,6 +383,9 @@ public class ALUserManagement extends TurbineBaseService implements
         + user.getUserName()
         + "' already exists");
     }
+
+    boolean hasAdminCredential = (Boolean) user.getPerm("isAdmin", false);
+
     String initialPassword = user.getPassword();
     String encrypted = JetspeedSecurity.encryptPassword(initialPassword);
     user.setPassword(encrypted);
@@ -391,25 +421,7 @@ public class ALUserManagement extends TurbineBaseService implements
 
     Database.commit();
 
-    // 部署Mapを取得
-    // Map map = ALEipManager.getInstance().getPostMap();
-
-    /*
-     * if (map != null && map.size() != 0 && postid >= 1) { int size =
-     * map.size(); // グループへユーザを登録 Group group =
-     * JetspeedSecurity.getGroup(((ALEipPost) ALEipManager
-     * .getInstance().getPostMap().get(Integer.valueOf(postid)))
-     * .getGroupName().getValue()); Role role =
-     * JetspeedSecurity.getRole("user"); // 新規オブジェクトモデル TurbineUserGroupRole
-     * user_group_role = (TurbineUserGroupRole) dataContext
-     * .createAndRegisterNewObject(TurbineUserGroupRole.class);
-     * user_group_role.setTurbineUser(tuser);
-     * user_group_role.setTurbineGroup((TurbineGroup) group);
-     * user_group_role.setTurbineRole((TurbineRole) role); }
-     */
-
     // ログインユーザーにはグループ LoginUser に所属させる
-    // JetspeedSecurity.joinGroup(user.getUserName(), "LoginUser");
     Group group = JetspeedSecurity.getGroup("LoginUser");
     Role role = JetspeedSecurity.getRole("user");
     // 新規オブジェクトモデル
@@ -418,6 +430,11 @@ public class ALUserManagement extends TurbineBaseService implements
     user_group_role.setTurbineUser(tuser);
     user_group_role.setTurbineGroup((TurbineGroup) group);
     user_group_role.setTurbineRole((TurbineRole) role);
+
+    if (hasAdminCredential) {
+      // 管理者ロール付与
+      setAdminRole(tuser);
+    }
 
     // 役職に登録
     List<EipMUserPosition> userposlist =
@@ -443,29 +460,21 @@ public class ALUserManagement extends TurbineBaseService implements
       throw new UserException(message, e);
     }
 
-    addDefaultPSML(user);
+    addDefaultPSML(user, hasAdminCredential);
   }
 
   /**
-   * 
+   * 指定したユーザーにデフォルトのPSMLを設定します。
+   *
    * @param user
    * @throws JetspeedSecurityException
    */
-  public void addDefaultPSML(JetspeedUser user)
+  private void addDefaultPSML(JetspeedUser user, boolean hasAdminCredential)
       throws JetspeedSecurityException {
     String orgId = Database.getDomainName();
-    for (int ix = 0; ix < roles.length; ix++) {
-      try {
-        JetspeedSecurity.grantRole(user.getUserName(), JetspeedSecurity
-          .getRole(roles[ix])
-          .getName());
-      } catch (Exception e) {
-        logger.error("Could not grant role: "
-          + roles[ix]
-          + " to user "
-          + user.getUserName(), e);
-      }
-    }
+
+    grantRoles(user, hasAdminCredential);
+
     try {
       JetspeedRunData rundata = getRunData();
       if (rundata != null && Profiler.useRoleProfileMerging() == false) {
@@ -474,12 +483,154 @@ public class ALUserManagement extends TurbineBaseService implements
         profile.setMediaType("html");
         profile.setOrgName(orgId);
         Profiler.createProfile(getRunData(), profile);
+
+        if (hasAdminCredential) {
+          addAdminPage(user);
+        }
       }
     } catch (Exception e) {
       logger.error("Failed to create profile for new user ", e);
       removeUser(new UserNamePrincipal(user.getUserName()));
       throw new UserException("Failed to create profile for new user ", e);
     }
+  }
+
+  /**
+   * ユーザーのロールを承認します
+   *
+   * @param user
+   * @param hasAdminCredential
+   */
+  private void grantRoles(JetspeedUser user, boolean hasAdminCredential) {
+    String _roles[] = null;
+    if (hasAdminCredential) {
+      _roles = admin_roles;
+    } else {
+      _roles = roles;
+    }
+
+    for (int i = 0; i < _roles.length; i++) {
+      try {
+        JetspeedSecurity.grantRole(user.getUserName(), JetspeedSecurity
+          .getRole(_roles[i])
+          .getName());
+      } catch (Exception e) {
+        logger.error("Could not grant role: "
+          + _roles[i]
+          + " to user "
+          + user.getUserName(), e);
+      }
+    }
+  }
+
+  /**
+   * 指定したユーザのPSMLにシステム管理のページを追加します。
+   *
+   * @param user_name
+   * @throws Exception
+   */
+  private void addAdminPage(String user_name) throws Exception {
+    ProfileLocator locator = Profiler.createLocator();
+    locator.createFromPath(String.format("user/%s/media-type/html", user_name));
+    Portlets portlets =
+      Profiler.getProfile(locator).getDocument().getPortlets();
+
+    if (portlets != null) {
+      // 既に配置されているかどうかを確認
+      int portlet_size = portlets.getPortletsCount();
+      for (int i = 0; i < portlet_size; i++) {
+        Portlets p = portlets.getPortlets(i);
+        if (p.getSecurityRef().getParent().equals("admin-view")) {
+          return;
+        }
+      }
+
+      // レイアウトの作成
+      Layout newLayout = new PsmlLayout();
+      newLayout.setPosition(portlet_size);
+      newLayout.setSize(-1);
+
+      ProfileLocator admin_locator = Profiler.createLocator();
+      admin_locator.createFromPath("user/admin/media-type/html");
+      Portlets admin_portlets =
+        Profiler.createProfile(admin_locator).getDocument().getPortlets();
+      admin_portlets = admin_portlets.getPortlets(0);
+      admin_portlets.setLayout(newLayout);
+      portlets.addPortlets(admin_portlets);
+    }
+  }
+
+  /**
+   * 指定したユーザのPSMLにシステム管理のページを追加します。
+   *
+   * @param user
+   * @throws Exception
+   */
+  private void addAdminPage(User user) throws Exception {
+    addAdminPage(user.getUserName());
+  }
+
+  /**
+   * 指定したユーザのPSMLからシステム管理のページを取り除きます。
+   *
+   * @param user
+   * @throws Exception
+   */
+  private void removeAdminPage(String user_name) throws Exception {
+    ProfileLocator locator = Profiler.createLocator();
+    locator.createFromPath(String.format("user/%s/media-type/html", user_name));
+    Portlets portlets =
+      Profiler.getProfile(locator).getDocument().getPortlets();
+    List<Integer> remove_index = new ArrayList<Integer>();
+    if (portlets != null) {
+      int portlet_size = portlets.getPortletsCount();
+      for (int i = 0; i < portlet_size; i++) {
+        Portlets p = portlets.getPortlets(i);
+        if (p.getSecurityRef().getParent().equals("admin-view")) {
+          portlets.removePortlets(i);
+        }
+      }
+      Collections.reverse(remove_index);
+      for (Integer index : remove_index) {
+        portlets.removePortlets(index);
+      }
+    }
+  }
+
+  /**
+   * 指定したユーザに管理者権限を付与します。
+   *
+   * @param tuser
+   * @throws JetspeedSecurityException
+   */
+  private void setAdminRole(TurbineUser tuser) throws JetspeedSecurityException {
+    Role adminrole = JetspeedSecurity.getRole("admin");
+    Group group = JetspeedSecurity.getGroup("LoginUser");
+    // 新規オブジェクトモデル
+    TurbineUserGroupRole admin_group_role =
+      Database.create(TurbineUserGroupRole.class);
+    admin_group_role.setTurbineUser(tuser);
+    admin_group_role.setTurbineGroup((TurbineGroup) group);
+    admin_group_role.setTurbineRole((TurbineRole) adminrole);
+  }
+
+  /**
+   * 指定したユーザの管理者権限を取り除きます。
+   *
+   * @param tuser
+   * @throws JetspeedSecurityException
+   */
+  @SuppressWarnings("unchecked")
+  private void removeAdminRole(TurbineUser tuser)
+      throws JetspeedSecurityException {
+    String admin_role_id = JetspeedSecurity.getRole("admin").getId();
+    List<TurbineUserGroupRole> user_roles = tuser.getTurbineUserGroupRole();
+    for (TurbineUserGroupRole role : user_roles) {
+      if (role.getTurbineRole().getId().equals(admin_role_id)) {
+        Database.delete(role);
+      }
+    }
+    Database.commit();
   }
 
   /**
@@ -636,11 +787,16 @@ public class ALUserManagement extends TurbineBaseService implements
 
     try {
       roles = serviceConf.getStringArray(CONFIG_NEWUSER_ROLES);
+      admin_roles = serviceConf.getStringArray(CONFIG_NEW_ADMINUSER_ROLES);
     } catch (Exception e) {
     }
 
     if (null == roles || roles.length == 0) {
       roles = DEFAULT_CONFIG_NEWUSER_ROLES;
+    }
+
+    if (null == admin_roles || admin_roles.length == 0) {
+      admin_roles = DEFAULT_CONFIG_NEW_ADMINUSER_ROLES;
     }
 
     this.runDataService =
@@ -651,7 +807,7 @@ public class ALUserManagement extends TurbineBaseService implements
   }
 
   /**
-   * 
+   *
    * @param user
    * @return
    * @throws UserException

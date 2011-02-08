@@ -92,15 +92,15 @@
 #ALtdcaption("部署")
 #ALtditemheader()
 <div class="spaceTop spaceLeft small">左側に所属部署を追加してください。</div>
-<div dojoType="aipo.widget.GroupNormalSelectList" 
-    id="groupnormalselect" 
-    widgetId="groupnormalselect" 
-    buttonAddId="button_group_add" 
-    buttonRemoveId="button_group_remove" 
+<div dojoType="aipo.widget.GroupNormalSelectList"
+    id="groupnormalselect"
+    widgetId="groupnormalselect"
+    buttonAddId="button_group_add"
+    buttonRemoveId="button_group_remove"
     memberFromTitle="部署一覧"
-    memberFromId="tmp_group_from" 
+    memberFromId="tmp_group_from"
     memberToTitle="所属部署"
-    memberToId="group_to" 
+    memberToId="group_to"
     memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen').addQueryData('mode','post')"
     memberFromOptionKey="groupId"
     memberFromOptionValue="name">
@@ -113,15 +113,20 @@
 <div id="positionInputField" #if(!$!{result.NewPosition})style="display:none"#end>
 #ALtextfield('position_name' $!result.Position.PositionName '90%' 50 'active')
 </div>
-<div id="positionSelectField" #if($!{result.NewPosition})style="display:none"#end>	
+<div id="positionSelectField" #if($!{result.NewPosition})style="display:none"#end>
 <select name="position_id">
 <option value="">（指定しない）</option>
 #foreach( $record in $result.PositionMap )
 <option value="$!record.PositionId" #if ($!result.PositionId.toString() == $!record.PositionId.toString()) selected #end>$!record.PositionName</option>
 #end
-</select>	
+</select>
 </div>
 <input name="position_input_button" type="button" class="button" value=" #if(!$!{result.NewPosition})新しく入力する#else一覧から選択する#end " onclick="aipo.account_user.formSwitchPositionInput(this)" />
+#ALtditemfooter()
+#ALtdcaption("管理者権限")
+#ALtditemheader()
+<input name="is_admin_checkbox" type="checkbox" value="" id="$!{portlet.ID}is_admin_id" #if($!result.IsAdmin.toString() == "true") checked="checked" #end onchange="aipo.account_user.formAdminToggle(this);"/><label for="$!{portlet.ID}is_admin_id">$!result.getFieldName("is_admin")</label>
+<input name="is_admin" type="hidden" id="is_admin" value="$!result.IsAdmin.toString()" />
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()

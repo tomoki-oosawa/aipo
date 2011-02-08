@@ -32,8 +32,8 @@ aipo.account_user.onLoadUserDialog = function(portlet_id){
         for(i = 0 ; i < s_o.length; i ++ ) {
             fpicker.addOptionSync(s_o[i].value,s_o[i].text,true);
         }
-    }      
-   
+    }
+
     var username = dojo.byId("username");
     if(username && username.type == 'text'){
       username.focus();
@@ -60,7 +60,7 @@ aipo.account_user.formPostInputOn = function(form) {
 aipo.account_user.formPostInputOff = function(form) {
     dojo.byId('postInputField').style.display = "none";
     dojo.byId('postSelectField').style.display = "";
-    
+
     form.is_new_post.value = 'FALSE';
 }
 
@@ -85,9 +85,14 @@ aipo.account_user.formPositionInputOn = function(form) {
 aipo.account_user.formPositionInputOff = function(form) {
     dojo.byId('positionInputField').style.display = "none";
     dojo.byId('positionSelectField').style.display = "";
-    
+
     form.is_new_position.value = 'FALSE';
 }
+
+aipo.account_user.formAdminToggle = function(chkbox) {
+    dojo.byId('is_admin').value = chkbox.checked ? 'true' : 'false';
+}
+
 
 
 aipo.account_user.onReceiveMessage = function(msg){
