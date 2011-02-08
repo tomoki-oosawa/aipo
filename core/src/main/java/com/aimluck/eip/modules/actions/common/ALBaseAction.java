@@ -24,8 +24,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction;
+import org.apache.jetspeed.portal.PortletInstance;
+import org.apache.jetspeed.portal.portlets.GenericMVCPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.persistence.PersistenceManager;
+import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -64,6 +68,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
    * 
    * @param obj
    */
+  @Override
   public void setResultData(Object obj) {
     result = obj;
   }
@@ -72,6 +77,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
    * 
    * @param obj
    */
+  @Override
   public void addResultData(Object obj) {
     if (resultList == null) {
       resultList = new ArrayList<Object>();
@@ -83,6 +89,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
    * 
    * @param objList
    */
+  @Override
   public void setResultDataList(List<Object> objList) {
     resultList = objList;
   }
@@ -91,6 +98,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
    * 
    * @param msg
    */
+  @Override
   public void addErrorMessage(String msg) {
     if (errmsgList == null) {
       errmsgList = new ArrayList<String>();
@@ -102,6 +110,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
    * 
    * @param msg
    */
+  @Override
   public void addErrorMessages(List<String> msgs) {
     if (errmsgList == null) {
       errmsgList = new ArrayList<String>();
@@ -113,6 +122,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
    * 
    * @param msgs
    */
+  @Override
   public void setErrorMessages(List<String> msgs) {
     errmsgList = msgs;
   }
@@ -121,6 +131,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
    * 
    * @param mode
    */
+  @Override
   public void setMode(String mode) {
     this.mode = mode;
   }
@@ -129,6 +140,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
    * 
    * @return
    */
+  @Override
   public String getMode() {
     return mode;
   }
@@ -137,6 +149,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
    * 
    * @param context
    */
+  @Override
   public void putData(RunData rundata, Context context) {
     context.put(ALEipConstants.MODE, mode);
     context.put(ALEipConstants.RESULT, result);
@@ -160,4 +173,54 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
       ALEipConstants.SECURE_ID));
   }
 
+  @Override
+  public void doPerform(RunData rundata, Context context) throws Exception {
+
+    GenericMVCPortlet portlet = null;
+    JetspeedRunData jdata = (JetspeedRunData) rundata;
+    logger.debug("ALBaseAction: retrieved context: " + context);
+
+    if (context != null) {
+      portlet = (GenericMVCPortlet) context.get("portlet");
+    }
+
+    logger.debug("ALBaseAction: retrieved portlet: " + portlet);
+
+    if (portlet != null) {
+
+      // System.out.println("class = " + this.getClass().getName());
+      // rundata.getUser().setTemp(this.getClass().getName(), portlet.getID());
+      // we're bein configured
+      if ((jdata.getMode() == JetspeedRunData.CUSTOMIZE)
+        && (portlet.getName().equals(jdata.getCustomized().getName()))) {
+        logger.debug("ALBaseAction: building customize");
+        buildConfigureContext(portlet, context, rundata);
+
+        return;
+      }
+
+      // we're maximized
+      if (jdata.getMode() == JetspeedRunData.MAXIMIZE) {
+        logger.debug("ALBaseAction: building maximize");
+
+        /*
+         * ポートレットタイトルを取るためにPortletInstanceを取得
+         */
+        PortletInstance portletInstance =
+          PersistenceManager.getInstance(portlet, jdata);
+
+        if (portletInstance == null) {
+          context.put("portletInstanceTitle", portlet.getTitle());
+        } else {
+          context.put("portletInstanceTitle", portletInstance.getTitle());
+        }
+
+        buildMaximizedContext(portlet, context, rundata);
+        return;
+      }
+
+      logger.debug("GenericMVCAction: building normal");
+      buildNormalContext(portlet, context, rundata);
+    }
+  }
 }
