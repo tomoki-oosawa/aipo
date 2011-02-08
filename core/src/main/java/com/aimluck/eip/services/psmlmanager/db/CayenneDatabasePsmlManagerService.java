@@ -53,10 +53,10 @@ import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.Profiler;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.psmlmanager.PsmlImporter;
 import org.apache.jetspeed.services.psmlmanager.PsmlManagerService;
 import org.apache.jetspeed.services.psmlmanager.db.DBUtils;
 import org.apache.jetspeed.services.psmlmanager.db.DatabasePsmlManager;
-import org.apache.jetspeed.services.psmlmanager.db.DatabasePsmlManagerService;
 import org.apache.jetspeed.services.security.JetspeedSecurityException;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
@@ -71,7 +71,6 @@ import com.aimluck.eip.cayenne.om.account.JetspeedGroupProfile;
 import com.aimluck.eip.cayenne.om.account.JetspeedRoleProfile;
 import com.aimluck.eip.cayenne.om.account.JetspeedUserProfile;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 
 /**
  * This service is responsible for loading and saving PSML documents. It uses
@@ -80,19 +79,19 @@ import com.aimluck.eip.orm.DatabaseOrmService;
  * @author <a href="mailto:adambalk@cisco.com">Atul Dambalkar</a>
  * @author <a href="mailto:mvaidya@cisco.com">Medha Vaidya</a>
  * @author <a href="mailto:taylor@apache.org">David Sean Taylor</a>
- * @version $Id: DatabasePsmlManagerService.java,v 1.35 2004/02/23 03:32:19
- *          jford Exp $
+ * @version $Id: CayenneDatabasePsmlManagerService.java,v 1.35 2004/02/23
+ *          03:32:19 jford Exp $
  */
 public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     implements DatabasePsmlManager {
   /**
    * Static initialization of the logger for this class
    */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(DatabasePsmlManagerService.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(CayenneDatabasePsmlManagerService.class.getName());
 
-  private final Map psmlCache = new HashMap();
+  private final Map<String, PSMLDocument> psmlCache =
+    new HashMap<String, PSMLDocument>();
 
   /** The watcher for the document locations */
   private CacheRefresher refresher = null;
@@ -113,9 +112,6 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
 
   private final static String POOL_NAME = "database";
 
-  /** the import/export consumer service **/
-  private PsmlManagerService consumer = null;
-
   // castor mapping
   public static final String DEFAULT_MAPPING =
     "${webappRoot}/WEB-INF/conf/psml-mapping.xml";
@@ -126,6 +122,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
   private Mapping mapping = null;
 
   /** The pool name to use for database requests. */
+  @SuppressWarnings("unused")
   private String poolName = null;
 
   /**
@@ -138,10 +135,10 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       return;
     }
 
-    logger.info("Initializing DatabasePsmlManagerService...");
+    logger.info("Initializing CayenneDatabasePsmlManagerService...");
     initConfiguration(conf);
 
-    logger.info("Done initializing DatabasePsmlManagerService.");
+    logger.info("Done initializing CayenneDatabasePsmlManagerService.");
 
   }
 
@@ -173,7 +170,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
         refreshRate = Long.parseLong(value);
       } catch (Exception e) {
         logger
-          .warn("DatabasePsmlManagerService: error in refresh-rate configuration: using default");
+          .warn("CayenneDatabasePsmlManagerService: error in refresh-rate configuration: using default");
       }
 
       // get the name of the torque database pool to use
@@ -186,7 +183,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
         cachingOn = value.equals("true");
       } catch (Exception e) {
         logger
-          .warn("DatabasePsmlManagerService: error in caching-on configuration: using default");
+          .warn("CayenneDatabasePsmlManagerService: error in caching-on configuration: using default");
       }
 
       // psml castor mapping file
@@ -196,13 +193,14 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     } catch (Throwable t) {
       logger.error(this + ".init:", t);
       throw new InitializationException(
-        "Exception initializing DatabasePsmlManagerService" + t);
+        "Exception initializing CayenneDatabasePsmlManagerService" + t);
     }
 
     if (cachingOn) {
       this.refresher = new CacheRefresher();
       refresher.start();
     }
+
   }
 
   /** Late init method from Turbine Service model */
@@ -210,12 +208,23 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
   public void init() throws InitializationException {
     // Mark that we are done
     setInit(true);
-    /*
-     * try { PsmlImporter importer = new PsmlImporter(); importer.run(null); }
-     * catch (Exception e) {
-     * logger.warn("DatabasePsmlManagerService.init: exception while importing:"
-     * , e); }
-     */
+
+    try {
+
+      PsmlManagerService exporterService =
+        (PsmlManagerService) TurbineServices.getInstance().getService(
+          "PsmlImportManager");
+
+      PsmlImporter importer = new PsmlImporter();
+      if (!importer.run(exporterService, this)) {
+        throw new Exception("Psml import failed.");
+      }
+    } catch (Exception e) {
+      logger.warn(
+        "CayenneDatabasePsmlManagerService.init: exception while importing:",
+        e);
+    }
+
   }
 
   protected void loadMapping() throws InitializationException {
@@ -296,10 +305,10 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
 
           try {
             synchronized (this) {
-              Iterator i = psmlCache.keySet().iterator();
+              Iterator<String> i = psmlCache.keySet().iterator();
 
               while (i.hasNext()) {
-                String locator = (String) i.next();
+                String locator = i.next();
 
                 // do refresh for the locator
                 PSMLDocument doc = refresh(stringToLocator(locator));
@@ -311,14 +320,14 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
           } catch (Exception e) {
             logger
               .warn(
-                "DatabasePsmlManagerService.CacheRefresher: Error in cache refresher...",
+                "CayenneDatabasePsmlManagerService.CacheRefresher: Error in cache refresher...",
                 e);
           }
         }
       } catch (InterruptedException e) {
         if (logger.isDebugEnabled()) {
           logger
-            .debug("DatabasePsmlManagerService.CacheRefresher: recieved interruption, aborting.");
+            .debug("CayenneDatabasePsmlManagerService.CacheRefresher: recieved interruption, aborting.");
         }
       }
     }
@@ -362,8 +371,9 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       }
     }
     if (logger.isDebugEnabled()) {
-      logger.debug("DatabasePsmlManagerService: Returning locator string: "
-        + keybuf.toString());
+      logger
+        .debug("CayenneDatabasePsmlManagerService: Returning locator string: "
+          + keybuf.toString());
     }
 
     return keybuf.toString();
@@ -374,8 +384,9 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     String entity = null;
 
     if (logger.isDebugEnabled()) {
-      logger.debug("DatabasePsmlManagerService: Creating locator for string: "
-        + locstr);
+      logger
+        .debug("CayenneDatabasePsmlManagerService: Creating locator for string: "
+          + locstr);
     }
 
     StringTokenizer dollarTokens = new StringTokenizer(locstr, "$");
@@ -408,26 +419,30 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       }
     }
     if (logger.isDebugEnabled()) {
-      logger.debug("DatabasePsmlManagerService: Returning locator for string: "
-        + locatorToString(locator));
+      logger
+        .debug("CayenneDatabasePsmlManagerService: Returning locator for string: "
+          + locatorToString(locator));
     }
 
     return locator;
 
   }
 
+  @Override
   public PSMLDocument getDocument(String name) {
     // do nothing, deprecated
     logger.warn("*** NOT SUPPORTED: GETDOC FROM DATABASE PSML MANAGER!!!");
     return null;
   }
 
+  @Override
   public boolean saveDocument(String fileOrUrl, PSMLDocument doc) {
     // do nothing, deprecated
     logger.warn("*** NOT SUPPORTED: SAVING DOC FROM DATABASE PSML MANAGER!!!");
     return false;
   }
 
+  @Override
   public boolean saveDocument(PSMLDocument doc) {
     // do nothing, will be deprecated
     logger.warn("*** NOT SUPPORTED: SAVING DOC FROM DATABASE PSML MANAGER!!!");
@@ -442,13 +457,14 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
    *          be retrieved.
    * @return psmldoc The PSMLDocument object
    */
+  @Override
   public PSMLDocument getDocument(ProfileLocator locator) {
     // check the cache for the req'e document if not available in cache
     // get the document from database
 
     if (locator == null) {
       String message = "PSMLManager: Must specify a locator";
-      logger.warn("DatabasePsmlManagerService.getDocument: " + message);
+      logger.warn("CayenneDatabasePsmlManagerService.getDocument: " + message);
       throw new IllegalArgumentException(message);
     }
 
@@ -463,11 +479,12 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
         // so check to see if the key is there
         inCache = psmlCache.containsKey(locStr);
         if (inCache) {
-          psmldoc = (PSMLDocument) psmlCache.get(locStr);
+          psmldoc = psmlCache.get(locStr);
         }
       }
       // if (Log.getLogger().isDebugEnabled())
-      // Log.info("DatabasePsmlManagerService.getDocument(): psmlcache: " +
+      // Log.info("CayenneDatabasePsmlManagerService.getDocument(): psmlcache: "
+      // +
       // (inCache ? ((psmldoc == null) ? "null present" : "doc present") :
       // "not in cache") + " : " + locStr);
 
@@ -480,7 +497,9 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     try {
       return refresh(locator);
     } catch (Exception e) {
-      logger.warn("DatabasePSMLManagerService.getDocument: exception:", e);
+      logger.warn(
+        "CayenneDatabasePsmlManagerService.getDocument: exception:",
+        e);
       throw new RuntimeException("Could not get profile from DB");
     }
   }
@@ -492,6 +511,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
    *          The profile that holds the PSMLDocument.
    * @return PSMLDocument The PSMLDocument that got created in DB.
    */
+  @Override
   public PSMLDocument createDocument(Profile profile) {
     return createOrSaveDocument(profile, INSERT);
   }
@@ -503,6 +523,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
    *          The profile that holds the PSMLDocument.
    * @return PSMLDocument The PSMLDocument that got created in DB.
    */
+  @Override
   public boolean store(Profile profile) {
     return createOrSaveDocument(profile, UPDATE) != null;
   }
@@ -513,8 +534,8 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     // object and then put it in database, update the cache
     if (profile == null) {
       String message = "PSMLManager: Must specify a profile";
-      logger
-        .warn("DatabasePsmlManagerService.createOrSaveDocument: " + message);
+      logger.warn("CayenneDatabasePsmlManagerService.createOrSaveDocument: "
+        + message);
       throw new IllegalArgumentException(message);
     }
 
@@ -524,8 +545,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     String tableName = null;
 
     try {
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
+      DataContext dataContext = DataContext.getThreadDataContext();
       if (user != null) {
         tableName = "JETSPEED_USER_PROFILE";
         if (operation == INSERT) {
@@ -554,7 +574,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
         synchronized (psmlCache) {
           if (logger.isDebugEnabled()) {
             logger
-              .debug("DatabasePsmlManagerService.createOrSaveDocument: caching document: profile: "
+              .debug("CayenneDatabasePsmlManagerService.createOrSaveDocument: caching document: profile: "
                 + locatorToString(profile));
           }
           psmlCache.put(locatorToString(profile), profile.getDocument());
@@ -564,13 +584,14 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       return profile.getDocument();
     } catch (Exception e) // insert failed
     {
-      logger.warn("DatabasePsmlManagerService.createOrSaveDocument: profile: "
-        + profile
-        + " tableName: "
-        + tableName, e);
+      logger.warn(
+        "CayenneDatabasePsmlManagerService.createOrSaveDocument: profile: "
+          + profile
+          + " tableName: "
+          + tableName,
+        e);
       throw new RuntimeException("Could not create new profile in DB");
     } finally {
-
     }
 
   }
@@ -581,10 +602,12 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
    * @param locator
    *          The profile locator criteria for profile to be removed.
    */
+  @Override
   public void removeDocument(ProfileLocator locator) {
     if (locator == null) {
       String message = "PSMLManager: Must specify a locator";
-      logger.warn("DatabasePsmlManagerService.removeDocument: " + message);
+      logger.warn("CayenneDatabasePsmlManagerService.removeDocument: "
+        + message);
       throw new IllegalArgumentException(message);
     }
 
@@ -594,8 +617,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     String tableName = null;
 
     try {
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
+      DataContext dataContext = DataContext.getThreadDataContext();
       if (user != null) {
         deleteJetspeedUserProfilePeer(dataContext, locator);
         tableName = "JETSPEED_USER_PROFILE";
@@ -615,7 +637,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       }
     } catch (Exception e) // insert failed
     {
-      logger.warn("DatabasePsmlManagerService.removeDocument: profile: "
+      logger.warn("CayenneDatabasePsmlManagerService.removeDocument: profile: "
         + locatorToString(locator)
         + " tableName: "
         + tableName, e);
@@ -634,23 +656,23 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
    *          The profile locator criteria.
    * @return Iterator object with the PSMLDocuments satisfying query
    */
-  public Iterator query(QueryLocator locator) {
+  @Override
+  public Iterator<Profile> query(QueryLocator locator) {
     if (locator == null) {
       String message = "PSMLManager: Must specify a locator";
-      logger.warn("DatabasePsmlManagerService.query: " + message);
+      logger.warn("CayenneDatabasePsmlManagerService.query: " + message);
       throw new IllegalArgumentException(message);
     }
 
     try {
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
-      List userData = null;
-      List groupData = null;
-      List roleData = null;
+      DataContext dataContext = DataContext.getThreadDataContext();
+      List<?> userData = null;
+      List<?> groupData = null;
+      List<?> roleData = null;
 
       int queryMode = locator.getQueryMode();
 
-      List list = new ArrayList();
+      List<Profile> list = new ArrayList<Profile>();
 
       switch (queryMode) {
         case QueryLocator.QUERY_USER:
@@ -697,13 +719,14 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
 
       return list.iterator();
     } catch (Exception e) {
-      logger.warn("DatabasePsmlManagerService.query: exception", e);
+      logger.warn("CayenneDatabasePsmlManagerService.query: exception", e);
     } finally {
       // make sure to release the databased connection
 
     }
 
-    return new ArrayList().iterator(); // return empty non-null iterator
+    return new ArrayList<Profile>().iterator(); // return empty non-null
+                                                // iterator
   }
 
   /**
@@ -714,8 +737,8 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
    *          JetspeedRoleProfile, objects
    * @return List of profiles
    */
-  private List getProfiles(List data) {
-    List list = new ArrayList();
+  private List<Profile> getProfiles(List<?> data) {
+    List<Profile> list = new ArrayList<Profile>();
 
     for (int i = 0; i < data.size(); i++) {
       Object obj = data.get(i);
@@ -769,10 +792,12 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
    *          The ordered list of profile locators.
    * @return PSMLDocument object for the first document matching a locator
    */
+  @Override
+  @SuppressWarnings("rawtypes")
   public PSMLDocument getDocument(List locators) {
     if (locators == null) {
       String message = "PSMLManager: Must specify a list of locators";
-      logger.warn("DatabasePsmlManagerService.getDocument: " + message);
+      logger.warn("CayenneDatabasePsmlManagerService.getDocument: " + message);
       throw new IllegalArgumentException(message);
     }
 
@@ -795,12 +820,13 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
    *          be retrieved.
    * @return psmldoc The PSMLDocument object
    */
+  @Override
   public PSMLDocument refresh(ProfileLocator locator) {
     // go to database and get the blob, and marshal the Portlets
 
     if (locator == null) {
       String message = "PSMLManager: Must specify a locator";
-      logger.warn("DatabasePsmlManagerService.refresh: " + message);
+      logger.warn("CayenneDatabasePsmlManagerService.refresh: " + message);
       throw new IllegalArgumentException(message);
     }
 
@@ -808,18 +834,17 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     Role role = locator.getRole();
     Group group = locator.getGroup();
     String tableName = null;
-    List records = null;
+    List<?> records = null;
     Portlets portlets = null;
     PSMLDocument psmldoc = null;
     String page = null;
 
     try {
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
+      DataContext dataContext = DataContext.getThreadDataContext();
       if (user != null) {
         tableName = "JETSPEED_USER_PROFILE";
         records = selectJetspeedUserProfilePeer(dataContext, locator, false);
-        Iterator iterator = records.iterator();
+        Iterator<?> iterator = records.iterator();
         while (iterator.hasNext()) {
           JetspeedUserProfile uprofile = (JetspeedUserProfile) iterator.next();
           page = uprofile.getPage();
@@ -829,7 +854,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       } else if (role != null) {
         tableName = "JETSPEED_ROLE_PROFILE";
         records = selectJetspeedRoleProfilePeer(dataContext, locator, false);
-        Iterator iterator = records.iterator();
+        Iterator<?> iterator = records.iterator();
         while (iterator.hasNext()) {
           JetspeedRoleProfile rprofile = (JetspeedRoleProfile) iterator.next();
           page = rprofile.getPage();
@@ -839,7 +864,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       } else if (group != null) {
         tableName = "JETSPEED_GROUP_PROFILE";
         records = selectJetspeedGroupProfilePeer(dataContext, locator, false);
-        Iterator iterator = records.iterator();
+        Iterator<?> iterator = records.iterator();
         while (iterator.hasNext()) {
           JetspeedGroupProfile gprofile =
             (JetspeedGroupProfile) iterator.next();
@@ -855,7 +880,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
           synchronized (psmlCache) {
             if (logger.isDebugEnabled()) {
               logger
-                .debug("DatabasePsmlManagerService.refresh: caching document: profile: "
+                .debug("CayenneDatabasePsmlManagerService.refresh: caching document: profile: "
                   + locatorToString(locator));
             }
             psmlCache.put(locatorToString(locator), psmldoc);
@@ -868,13 +893,13 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
           psmlCache.put(locatorToString(locator), null);
           if (logger.isDebugEnabled()) {
             logger
-              .debug("DatabasePsmlManagerService.refresh: caching 'document not found': profile: "
+              .debug("CayenneDatabasePsmlManagerService.refresh: caching 'document not found': profile: "
                 + locatorToString(locator));
           }
         }
       }
     } catch (Exception e) {
-      logger.warn("DatabasePsmlManagerService.refresh: profile: "
+      logger.warn("CayenneDatabasePsmlManagerService.refresh: profile: "
         + locatorToString(locator)
         + " tableName: "
         + tableName, e);
@@ -885,7 +910,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
 
     if (logger.isDebugEnabled()) {
       logger
-        .debug("DatabasePsmlManagerService.refresh: no document found: profile: "
+        .debug("CayenneDatabasePsmlManagerService.refresh: no document found: profile: "
           + locatorToString(locator));
     }
     return null;
@@ -897,17 +922,17 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
    * @param user
    *          The user object.
    */
+  @Override
   public void removeUserDocuments(JetspeedUser user) {
     try {
-      DataContext dataContext =
-        DatabaseOrmService.getInstance().getDataContext();
+      DataContext dataContext = DataContext.getThreadDataContext();
       if (user != null) {
         deleteJetspeedUserProfilePeer(dataContext, user);
       }
     } catch (Exception e) // delete failed
     {
       logger.warn(
-        "DatabasePsmlManagerService.removeUserDocuments: exception:",
+        "CayenneDatabasePsmlManagerService.removeUserDocuments: exception:",
         e);
       throw new RuntimeException(
         "Could not delete documents for given user from DB");
@@ -923,17 +948,17 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
    * @param role
    *          The role object.
    */
+  @Override
   public void removeRoleDocuments(Role role) {
     try {
       if (role != null) {
-        DataContext dataContext =
-          DatabaseOrmService.getInstance().getDataContext();
+        DataContext dataContext = DataContext.getThreadDataContext();
         deleteJetspeedRoleProfilePeer(dataContext, role);
       }
     } catch (Exception e) // delete failed
     {
       logger.warn(
-        "DatabasePsmlManagerService.removeRoleDocuments: exception:",
+        "CayenneDatabasePsmlManagerService.removeRoleDocuments: exception:",
         e);
       throw new RuntimeException(
         "Could not delete documents for given role from DB");
@@ -948,17 +973,17 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
    * @param group
    *          The group object.
    */
+  @Override
   public void removeGroupDocuments(Group group) {
     try {
       if (group != null) {
-        DataContext dataContext =
-          DatabaseOrmService.getInstance().getDataContext();
+        DataContext dataContext = DataContext.getThreadDataContext();
         deleteJetspeedGroupProfilePeer(dataContext, group);
       }
     } catch (Exception e) // delete failed
     {
       logger.warn(
-        "DatabasePsmlManagerService.removeGroupDocuments: exception:",
+        "CayenneDatabasePsmlManagerService.removeGroupDocuments: exception:",
         e);
       throw new RuntimeException(
         "Could not delete documents for given group from DB");
@@ -976,15 +1001,15 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
    *          The profile locator criteria.
    * @return The count of profiles exported.
    */
+  @Override
   public int export(PsmlManagerService consumer, QueryLocator locator) {
-    Iterator profiles = null;
+    Iterator<Profile> profiles = null;
     int count = 0;
     try {
-      this.consumer = consumer;
       profiles = query(locator);
 
       while (profiles.hasNext()) {
-        Profile profile = (Profile) profiles.next();
+        Profile profile = profiles.next();
         // dumpProfile(profile);
         try {
           consumer.createDocument(profile);
@@ -994,19 +1019,20 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
             consumer.store(profile);
             count++;
           } catch (Exception e) {
-            logger.warn("DatabasePsmlManagerService.export: profile: "
+            logger.warn("CayenneDatabasePsmlManagerService.export: profile: "
               + profile, ex);
           }
         }
       }
     } catch (Exception e) {
-      logger.warn("DatabasePsmlManagerService.export: exception:", e);
+      logger.warn("CayenneDatabasePsmlManagerService.export: exception:", e);
 
     } finally {
     }
     return count;
   }
 
+  @Override
   public Mapping getMapping() {
     return this.mapping;
   }
@@ -1129,7 +1155,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       .getDocument()
       .getPortlets(), this.getMapping()));
 
-    Database.commit();
+    Database.commit(dataContext);
   }
 
   private void insertJetspeedGroupProfilePeer(DataContext dataContext,
@@ -1165,7 +1191,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       .getDocument()
       .getPortlets(), this.getMapping()));
 
-    Database.commit();
+    Database.commit(dataContext);
   }
 
   private void updateJetspeedRoleProfilePeer(DataContext dataContext,
@@ -1197,7 +1223,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       .getDocument()
       .getPortlets(), this.getMapping()));
 
-    Database.commit();
+    Database.commit(dataContext);
   }
 
   private void insertJetspeedRoleProfilePeer(DataContext dataContext,
@@ -1234,7 +1260,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       .getDocument()
       .getPortlets(), this.getMapping()));
 
-    Database.commit();
+    Database.commit(dataContext);
   }
 
   private void updateJetspeedUserProfilePeer(DataContext dataContext,
@@ -1270,7 +1296,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       .getDocument()
       .getPortlets(), this.getMapping()));
 
-    Database.commit();
+    Database.commit(dataContext);
   }
 
   private void insertJetspeedUserProfilePeer(DataContext dataContext,

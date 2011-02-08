@@ -48,7 +48,6 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
     ALAction {
 
   /** logger */
-  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ALBaseAction.class.getName());
 
@@ -184,7 +183,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
     if (context != null) {
       portlet = (GenericMVCPortlet) context.get("portlet");
     }
-    
+
     /*
      * ポートレットタイトルを取るためにPortletInstanceを取得
      */

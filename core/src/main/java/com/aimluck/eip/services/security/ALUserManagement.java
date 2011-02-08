@@ -83,7 +83,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
  * ユーザーを管理するクラスです。 <br />
- *
+ * 
  */
 public class ALUserManagement extends TurbineBaseService implements
     UserManagement, CredentialsManagement {
@@ -168,6 +168,7 @@ public class ALUserManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public JetspeedUser getUser(Principal principal)
       throws JetspeedSecurityException {
 
@@ -216,6 +217,7 @@ public class ALUserManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public JetspeedUser getUser(RunData rundata, Principal principal)
       throws JetspeedSecurityException {
 
@@ -264,6 +266,7 @@ public class ALUserManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public Iterator<JetspeedUser> getUsers() throws JetspeedSecurityException {
     List<JetspeedUser> users = new ArrayList<JetspeedUser>();
     try {
@@ -282,6 +285,7 @@ public class ALUserManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public Iterator<JetspeedUser> getUsers(String filter)
       throws JetspeedSecurityException {
 
@@ -301,6 +305,7 @@ public class ALUserManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public void saveUser(JetspeedUser user) throws JetspeedSecurityException {
     if (!accountExists(user, true)) {
       throw new UnknownUserException("Cannot save user '"
@@ -368,6 +373,7 @@ public class ALUserManagement extends TurbineBaseService implements
       // ユーザを更新する．
       Database.commit();
     } catch (Exception e) {
+      e.printStackTrace();
       logger.error("Failed to save user object ", e);
       throw new UserException("Failed to save user object ", e);
     }
@@ -377,6 +383,7 @@ public class ALUserManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public void addUser(JetspeedUser user) throws JetspeedSecurityException {
     if (accountExists(user)) {
       throw new NotUniqueUserException("The account '"
@@ -465,7 +472,7 @@ public class ALUserManagement extends TurbineBaseService implements
 
   /**
    * 指定したユーザーにデフォルトのPSMLを設定します。
-   *
+   * 
    * @param user
    * @throws JetspeedSecurityException
    */
@@ -497,7 +504,7 @@ public class ALUserManagement extends TurbineBaseService implements
 
   /**
    * ユーザーのロールを承認します
-   *
+   * 
    * @param user
    * @param hasAdminCredential
    */
@@ -525,15 +532,15 @@ public class ALUserManagement extends TurbineBaseService implements
 
   /**
    * 指定したユーザのPSMLにシステム管理のページを追加します。
-   *
+   * 
    * @param user_name
    * @throws Exception
    */
   private void addAdminPage(String user_name) throws Exception {
     ProfileLocator locator = Profiler.createLocator();
     locator.createFromPath(String.format("user/%s/media-type/html", user_name));
-    Portlets portlets =
-      Profiler.getProfile(locator).getDocument().getPortlets();
+    Profile profile = Profiler.getProfile(locator);
+    Portlets portlets = profile.getDocument().getPortlets();
 
     if (portlets != null) {
       // 既に配置されているかどうかを確認
@@ -557,12 +564,14 @@ public class ALUserManagement extends TurbineBaseService implements
       admin_portlets = admin_portlets.getPortlets(0);
       admin_portlets.setLayout(newLayout);
       portlets.addPortlets(admin_portlets);
+
+      PsmlManager.store(profile);
     }
   }
 
   /**
    * 指定したユーザのPSMLにシステム管理のページを追加します。
-   *
+   * 
    * @param user
    * @throws Exception
    */
@@ -572,15 +581,15 @@ public class ALUserManagement extends TurbineBaseService implements
 
   /**
    * 指定したユーザのPSMLからシステム管理のページを取り除きます。
-   *
+   * 
    * @param user
    * @throws Exception
    */
   private void removeAdminPage(String user_name) throws Exception {
     ProfileLocator locator = Profiler.createLocator();
     locator.createFromPath(String.format("user/%s/media-type/html", user_name));
-    Portlets portlets =
-      Profiler.getProfile(locator).getDocument().getPortlets();
+    Profile profile = Profiler.getProfile(locator);
+    Portlets portlets = profile.getDocument().getPortlets();
     List<Integer> remove_index = new ArrayList<Integer>();
     if (portlets != null) {
       int portlet_size = portlets.getPortletsCount();
@@ -595,11 +604,12 @@ public class ALUserManagement extends TurbineBaseService implements
         portlets.removePortlets(index);
       }
     }
+    PsmlManager.store(profile);
   }
 
   /**
    * 指定したユーザに管理者権限を付与します。
-   *
+   * 
    * @param tuser
    * @throws JetspeedSecurityException
    */
@@ -616,7 +626,7 @@ public class ALUserManagement extends TurbineBaseService implements
 
   /**
    * 指定したユーザの管理者権限を取り除きます。
-   *
+   * 
    * @param tuser
    * @throws JetspeedSecurityException
    */
@@ -636,6 +646,7 @@ public class ALUserManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public void removeUser(Principal principal) throws JetspeedSecurityException {
     if (systemUsers.contains(principal.getName())) {
       throw new UserException("["
@@ -675,6 +686,7 @@ public class ALUserManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public void changePassword(JetspeedUser user, String oldPassword,
       String newPassword) throws JetspeedSecurityException {
     oldPassword = JetspeedSecurity.convertPassword(oldPassword);
@@ -699,6 +711,7 @@ public class ALUserManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public void forcePassword(JetspeedUser user, String password)
       throws JetspeedSecurityException {
     if (!accountExists(user)) {
@@ -713,6 +726,7 @@ public class ALUserManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public String encryptPassword(String password)
       throws JetspeedSecurityException {
     if (securePasswords == false) {
@@ -807,7 +821,7 @@ public class ALUserManagement extends TurbineBaseService implements
   }
 
   /**
-   *
+   * 
    * @param user
    * @return
    * @throws UserException
