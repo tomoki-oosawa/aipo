@@ -117,7 +117,7 @@ public class PkgALOrgUtilsHandler extends ALOrgUtilsHandler {
     ALConfigHandler configHandler =
       ALConfigFactoryService.getInstance().getConfigHandler();
 
-    String protocol = configHandler.get(Property.EXTERNAL_RESOURES_URL);
+    String protocol = configHandler.get(Property.EXTERNAL_RESOURCES_URL);
 
     if (protocol.isEmpty()) {
       // get configuration parameters from Jetspeed Resources

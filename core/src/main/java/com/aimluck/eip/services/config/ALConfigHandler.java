@@ -62,11 +62,11 @@ public abstract class ALConfigHandler {
       }
     },
 
-    EXTERNAL_RESOURES_URL("external.resoures.url") {
+    EXTERNAL_RESOURCES_URL("external.resources.url") {
 
       @Override
       public String defaultValue() {
-        return JetspeedResources.getString("external.resoures.url", "");
+        return JetspeedResources.getString("external.resources.url", "");
       }
     };
 
