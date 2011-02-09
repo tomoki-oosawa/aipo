@@ -56,6 +56,9 @@ import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.mail.ALAdminMailContext;
+import com.aimluck.eip.mail.ALAdminMailMessage;
+import com.aimluck.eip.mail.ALMailService;
 import com.aimluck.eip.mail.util.ALEipUserAddr;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
@@ -141,6 +144,7 @@ public class RemainderScheduleDaemon implements Daemon {
 
   /**
    */
+  @Override
   public void run() {
     if (!enable_run) {
       // Aipo起動時のみ実行しないようにする．
@@ -249,16 +253,22 @@ public class RemainderScheduleDaemon implements Daemon {
           "[" + DatabaseOrmService.getInstance().getAlias() + "]スケジュール";
 
         // メール送信
-        ALMailUtils.sendMailDelegate(
+        List<ALAdminMailMessage> messageList =
+          new ArrayList<ALAdminMailMessage>();
+        for (ALEipUserAddr destMember : destMemberList) {
+          ALAdminMailMessage message = new ALAdminMailMessage(destMember);
+          message.setPcSubject(subject);
+          message.setCellularSubject(subject);
+          message.setPcBody(msg);
+          message.setCellularBody(msg);
+          messageList.add(message);
+        }
+
+        ALMailService.sendAdminMail(new ALAdminMailContext(
           orgId,
           1,
-          destMemberList,
-          subject,
-          subject,
-          msg,
-          msg,
-          ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE),
-          new ArrayList<String>());
+          messageList,
+          ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
 
       } catch (Exception e) {
         logger.error("RemainderScheduleDaemon", e);
@@ -391,6 +401,7 @@ public class RemainderScheduleDaemon implements Daemon {
     // ソート
     Collections.sort(list, new Comparator<EipTScheduleMap>() {
 
+      @Override
       public int compare(EipTScheduleMap a, EipTScheduleMap b) {
         Calendar cal = Calendar.getInstance();
         Calendar cal2 = Calendar.getInstance();
@@ -862,6 +873,7 @@ public class RemainderScheduleDaemon implements Daemon {
   /**
    * Init this Daemon from the DaemonFactory
    */
+  @Override
   public void init(DaemonConfig config, DaemonEntry entry) {
 
     enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
@@ -951,12 +963,14 @@ public class RemainderScheduleDaemon implements Daemon {
 
   /**
    */
+  @Override
   public DaemonConfig getDaemonConfig() {
     return this.config;
   }
 
   /**
    */
+  @Override
   public DaemonEntry getDaemonEntry() {
     return this.entry;
   }
@@ -964,6 +978,7 @@ public class RemainderScheduleDaemon implements Daemon {
   /**
    * Return the status for this Daemon
    */
+  @Override
   public int getStatus() {
     return this.status;
   }
@@ -971,6 +986,7 @@ public class RemainderScheduleDaemon implements Daemon {
   /**
    * Set the status for this Daemon
    */
+  @Override
   public void setStatus(int status) {
     this.status = status;
   }
@@ -978,6 +994,7 @@ public class RemainderScheduleDaemon implements Daemon {
   /**
    * 
    */
+  @Override
   public int getResult() {
     return this.result;
   }
@@ -985,6 +1002,7 @@ public class RemainderScheduleDaemon implements Daemon {
   /**
    * 
    */
+  @Override
   public void setResult(int result) {
     this.result = result;
   }
@@ -992,6 +1010,7 @@ public class RemainderScheduleDaemon implements Daemon {
   /**
    * 
    */
+  @Override
   public String getMessage() {
     return null;
   }

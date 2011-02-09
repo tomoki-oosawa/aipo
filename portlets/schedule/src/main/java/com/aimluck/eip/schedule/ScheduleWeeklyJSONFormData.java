@@ -44,6 +44,9 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
+import com.aimluck.eip.mail.ALAdminMailContext;
+import com.aimluck.eip.mail.ALAdminMailMessage;
+import com.aimluck.eip.mail.ALMailService;
 import com.aimluck.eip.mail.util.ALEipUserAddr;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
@@ -529,24 +532,31 @@ public class ScheduleWeeklyJSONFormData {
                 .getUserId(rundata), false);
             String subject =
               "[" + DatabaseOrmService.getInstance().getAlias() + "]スケジュール";
-            for (int i = 0; i < destMemberList.size(); i++) {
-              List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
-              destMember.add(destMemberList.get(i));
-              ALMailUtils.sendMailDelegate(
-                orgId,
-                ALEipUtils.getUserId(rundata),
-                destMember,
-                subject,
-                subject,
-                ScheduleUtils.createMsgForPc(rundata, schedule, memberList),
-                ScheduleUtils.createMsgForCellPhone(
-                  rundata,
-                  schedule,
-                  memberList,
-                  destMember.get(0).getUserId()),
-                ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE),
-                new ArrayList<String>());
+
+            List<ALAdminMailMessage> messageList =
+              new ArrayList<ALAdminMailMessage>();
+            for (ALEipUserAddr destMember : destMemberList) {
+              ALAdminMailMessage message = new ALAdminMailMessage(destMember);
+              message.setPcSubject(subject);
+              message.setCellularSubject(subject);
+              message.setPcBody(ScheduleUtils.createMsgForPc(
+                rundata,
+                schedule,
+                memberList));
+              message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+                rundata,
+                schedule,
+                memberList,
+                destMember.getUserId()));
+              messageList.add(message);
             }
+
+            ALMailService.sendAdminMail(new ALAdminMailContext(
+              orgId,
+              ALEipUtils.getUserId(rundata),
+              messageList,
+              ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
+
           }
         } catch (Exception ex) {
           msgList.add("メールを送信できませんでした。");
@@ -689,24 +699,30 @@ public class ScheduleWeeklyJSONFormData {
                 .getUserId(rundata), false);
             String subject =
               "[" + DatabaseOrmService.getInstance().getAlias() + "]スケジュール";
-            for (int i = 0; i < destMemberList.size(); i++) {
-              List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
-              destMember.add(destMemberList.get(i));
-              ALMailUtils.sendMailDelegate(
-                orgId,
-                ALEipUtils.getUserId(rundata),
-                destMember,
-                subject,
-                subject,
-                ScheduleUtils.createMsgForPc(rundata, newSchedule, memberList),
-                ScheduleUtils.createMsgForCellPhone(
-                  rundata,
-                  newSchedule,
-                  memberList,
-                  destMember.get(0).getUserId()),
-                ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE),
-                new ArrayList<String>());
+
+            List<ALAdminMailMessage> messageList =
+              new ArrayList<ALAdminMailMessage>();
+            for (ALEipUserAddr destMember : destMemberList) {
+              ALAdminMailMessage message = new ALAdminMailMessage(destMember);
+              message.setPcSubject(subject);
+              message.setCellularSubject(subject);
+              message.setPcBody(ScheduleUtils.createMsgForPc(
+                rundata,
+                newSchedule,
+                memberList));
+              message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+                rundata,
+                newSchedule,
+                memberList,
+                destMember.getUserId()));
             }
+
+            ALMailService.sendAdminMail(new ALAdminMailContext(
+              orgId,
+              ALEipUtils.getUserId(rundata),
+              messageList,
+              ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
+
           }
 
         } catch (Exception ex) {
@@ -840,24 +856,31 @@ public class ScheduleWeeklyJSONFormData {
                 .getUserId(rundata), false);
             String subject =
               "[" + DatabaseOrmService.getInstance().getAlias() + "]スケジュール";
-            for (int i = 0; i < destMemberList.size(); i++) {
-              List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
-              destMember.add(destMemberList.get(i));
-              ALMailUtils.sendMailDelegate(
-                orgId,
-                ALEipUtils.getUserId(rundata),
-                destMember,
-                subject,
-                subject,
-                ScheduleUtils.createMsgForPc(rundata, schedule, memberList),
-                ScheduleUtils.createMsgForCellPhone(
-                  rundata,
-                  schedule,
-                  memberList,
-                  destMember.get(0).getUserId()),
-                ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE),
-                new ArrayList<String>());
+
+            List<ALAdminMailMessage> messageList =
+              new ArrayList<ALAdminMailMessage>();
+            for (ALEipUserAddr destMember : destMemberList) {
+              ALAdminMailMessage message = new ALAdminMailMessage(destMember);
+              message.setPcSubject(subject);
+              message.setCellularSubject(subject);
+              message.setPcBody(ScheduleUtils.createMsgForPc(
+                rundata,
+                schedule,
+                memberList));
+              message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+                rundata,
+                schedule,
+                memberList,
+                destMember.getUserId()));
+              messageList.add(message);
             }
+
+            ALMailService.sendAdminMail(new ALAdminMailContext(
+              orgId,
+              ALEipUtils.getUserId(rundata),
+              messageList,
+              ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
+
           }
         } catch (Exception ex) {
           msgList.add("メールを送信できませんでした。");
@@ -994,43 +1017,37 @@ public class ScheduleWeeklyJSONFormData {
                 .getUserId(rundata), false);
             String subject =
               "[" + DatabaseOrmService.getInstance().getAlias() + "]スケジュール";
+
+            List<ALAdminMailMessage> messageList =
+              new ArrayList<ALAdminMailMessage>();
+            for (ALEipUserAddr destMember : destMemberList) {
+              ALAdminMailMessage message = new ALAdminMailMessage(destMember);
+              message.setPcSubject(subject);
+              message.setCellularSubject(subject);
+              message.setPcBody(ScheduleUtils.createMsgForPc(
+                rundata,
+                newSchedule,
+                memberList));
+              message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+                rundata,
+                newSchedule,
+                memberList,
+                destMember.getUserId()));
+              messageList.add(message);
+            }
+
             for (ALEipUserAddr destMember : destMemberList) {
               List<ALEipUserAddr> destMembers = new ArrayList<ALEipUserAddr>();
               destMembers.add(destMember);
-              ALMailUtils.sendMailDelegate(
+
+              ALMailService.sendAdminMail(new ALAdminMailContext(
                 orgId,
                 ALEipUtils.getUserId(rundata),
-                destMembers,
-                subject,
-                subject,
-                ScheduleUtils.createMsgForPc(rundata, newSchedule, memberList),
-                ScheduleUtils.createMsgForCellPhone(
-                  rundata,
-                  newSchedule,
-                  memberList,
-                  destMember.getUserId()),
-                ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE),
-                new ArrayList<String>());
+                messageList,
+                ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
+
             }
 
-            for (int i = 0; i < destMemberList.size(); i++) {
-              List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
-              destMember.add(destMemberList.get(i));
-              ALMailUtils.sendMailDelegate(
-                orgId,
-                ALEipUtils.getUserId(rundata),
-                destMember,
-                subject,
-                subject,
-                ScheduleUtils.createMsgForPc(rundata, newSchedule, memberList),
-                ScheduleUtils.createMsgForCellPhone(
-                  rundata,
-                  newSchedule,
-                  memberList,
-                  destMember.get(0).getUserId()),
-                ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE),
-                new ArrayList<String>());
-            }
           }
 
         } catch (Exception ex) {

@@ -48,6 +48,9 @@ import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.FacilityResultData;
+import com.aimluck.eip.mail.ALAdminMailContext;
+import com.aimluck.eip.mail.ALAdminMailMessage;
+import com.aimluck.eip.mail.ALMailService;
 import com.aimluck.eip.mail.util.ALEipUserAddr;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
@@ -612,23 +615,29 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           "[" + DatabaseOrmService.getInstance().getAlias() + "]スケジュール";
         String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
 
-        for (ALEipUserAddr dest : destMemberList) {
-          List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
-          destMember.add(dest);
-
-          ALMailUtils.sendMailDelegate(
-            org_id,
-            ALEipUtils.getUserId(rundata),
-            destMember,
-            subject,
-            subject,
-            ScheduleUtils.createMsgForPc(rundata, schedule, form_data
-              .getMemberList()),
-            ScheduleUtils.createMsgForCellPhone(rundata, schedule, form_data
-              .getMemberList(), destMember.get(0).getUserId()),
-            ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE),
-            new ArrayList<String>());
+        // メール送信
+        List<ALAdminMailMessage> messageList =
+          new ArrayList<ALAdminMailMessage>();
+        for (ALEipUserAddr destMember : destMemberList) {
+          ALAdminMailMessage message = new ALAdminMailMessage(destMember);
+          message.setPcSubject(subject);
+          message.setCellularSubject(subject);
+          message.setPcBody(ScheduleUtils.createMsgForPc(
+            rundata,
+            schedule,
+            form_data.getMemberList()));
+          message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+            rundata,
+            schedule,
+            form_data.getMemberList(),
+            destMember.getUserId()));
         }
+
+        ALMailService.sendAdminMail(new ALAdminMailContext(org_id, ALEipUtils
+          .getUserId(rundata), messageList, ALMailUtils
+          .getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
+        // msgList.addAll(errors);
+
       }
     } catch (Exception ex) {
       msgList.add("メールを送信できませんでした。");
@@ -1055,23 +1064,29 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           "[" + DatabaseOrmService.getInstance().getAlias() + "]スケジュール";
         String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
 
-        for (ALEipUserAddr dest : destMemberList) {
-          List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
-          destMember.add(dest);
-
-          ALMailUtils.sendMailDelegate(
-            org_id,
-            ALEipUtils.getUserId(rundata),
-            destMember,
-            subject,
-            subject,
-            ScheduleUtils.createMsgForPc(rundata, schedule, form_data
-              .getMemberList()),
-            ScheduleUtils.createMsgForCellPhone(rundata, schedule, form_data
-              .getMemberList(), destMember.get(0).getUserId()),
-            ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE),
-            new ArrayList<String>());
+        List<ALAdminMailMessage> messageList =
+          new ArrayList<ALAdminMailMessage>();
+        for (ALEipUserAddr destMember : destMemberList) {
+          ALAdminMailMessage message = new ALAdminMailMessage(destMember);
+          message.setPcSubject(subject);
+          message.setCellularSubject(subject);
+          message.setPcBody(ScheduleUtils.createMsgForPc(
+            rundata,
+            schedule,
+            form_data.getMemberList()));
+          message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+            rundata,
+            schedule,
+            form_data.getMemberList(),
+            destMember.getUserId()));
+          messageList.add(message);
         }
+
+        ALMailService.sendAdminMail(new ALAdminMailContext(org_id, ALEipUtils
+          .getUserId(rundata), messageList, ALMailUtils
+          .getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
+        // msgList.addAll(errors);
+
       }
     } catch (Exception ex) {
       msgList.add("メールを送信できませんでした。");

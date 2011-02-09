@@ -51,6 +51,9 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.mail.ALAdminMailContext;
+import com.aimluck.eip.mail.ALAdminMailMessage;
+import com.aimluck.eip.mail.ALMailService;
 import com.aimluck.eip.mail.util.ALEipUserAddr;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
@@ -471,20 +474,22 @@ public class NoteFormData extends ALAbstractFormData {
             .getUserId()
             .getValue(), false);
 
-        for (ALEipUserAddr member : destMemberList) {
-          List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
-          destMember.add(member);
-          ALMailUtils.sendMailDelegate(
-            orgId,
-            ALEipUtils.getUserId(rundata),
-            destMember,
-            subject,
-            subject,
-            createMsgForPc(),
-            createMsgForCellPhone(destMember.get(0).getUserId()),
-            add_dest_type_int,
-            msgList);
+        List<ALAdminMailMessage> messageList =
+          new ArrayList<ALAdminMailMessage>();
+        for (ALEipUserAddr destMember : destMemberList) {
+          ALAdminMailMessage message = new ALAdminMailMessage(destMember);
+          message.setPcSubject(subject);
+          message.setCellularSubject(subject);
+          message.setPcBody(createMsgForPc());
+          message
+            .setCellularBody(createMsgForCellPhone(destMember.getUserId()));
+          messageList.add(message);
         }
+        List<String> errors =
+          ALMailService.sendAdminMail(new ALAdminMailContext(orgId, ALEipUtils
+            .getUserId(rundata), messageList, add_dest_type_int));
+
+        msgList.addAll(errors);
 
         // 重複するメッセージを削除する
         HashSet<String> tempMsgList = new HashSet<String>();
@@ -577,6 +582,7 @@ public class NoteFormData extends ALAbstractFormData {
   /**
    * 
    */
+  @Override
   public void initField() {
     note_id = new ALNumberField();
     note_id.setFieldName("伝言メモID");

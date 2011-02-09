@@ -60,6 +60,11 @@ public class ALDbMailHandler extends ALMailHandler {
   }
 
   @Override
+  public ALMailSender getALAdminMailSender(ALMailSenderContext scontext) {
+    return new ALDbSmtpMailSender(scontext);
+  }
+
+  @Override
   public ALFolder getALFolder(int type_mail, String org_id, int user_id,
       int account_id) {
     return new ALDbLocalFolder(type_mail, org_id, user_id, account_id);

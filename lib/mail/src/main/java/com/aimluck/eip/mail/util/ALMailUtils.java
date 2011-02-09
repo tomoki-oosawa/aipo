@@ -89,6 +89,7 @@ import com.aimluck.eip.mail.ALMailMessage;
 import com.aimluck.eip.mail.ALMailReceiver;
 import com.aimluck.eip.mail.ALMailReceiverContext;
 import com.aimluck.eip.mail.ALMailSenderContext;
+import com.aimluck.eip.mail.ALMailService;
 import com.aimluck.eip.mail.ALPop3MailReceiverContext;
 import com.aimluck.eip.mail.ALSmtpMailContext;
 import com.aimluck.eip.mail.ALSmtpMailSender;
@@ -1346,6 +1347,23 @@ public class ALMailUtils {
     return true;
   }
 
+  /**
+   * 
+   * @param org_id
+   * @param srcUserId
+   * @param destMemberList
+   * @param pcSubject
+   * @param cellularSubject
+   * @param pcBody
+   * @param cellularBody
+   * @param destType
+   * @param msgList
+   * @return
+   * @throws Exception
+   * 
+   * @deprecated {@link ALMailService#sendAdminMail}
+   */
+  @Deprecated
   public static boolean sendMailDelegate(String org_id, int srcUserId,
       List<ALEipUserAddr> destMemberList, String pcSubject,
       String cellularSubject, String pcBody, String cellularBody, int destType,
@@ -1480,6 +1498,21 @@ public class ALMailUtils {
     return (successSendToPc == ALSmtpMailSender.SEND_MSG_SUCCESS && successSendToCell == ALSmtpMailSender.SEND_MSG_SUCCESS);
   }
 
+  /**
+   * 
+   * @param org_id
+   * @param srcUserId
+   * @param destMemberList
+   * @param pcSubject
+   * @param cellularSubject
+   * @param pcBody
+   * @param cellularBody
+   * @param destType
+   * @param msgList
+   * @return
+   * @throws Exception
+   */
+  @Deprecated
   public static boolean sendMailDelegate_note(String org_id, int srcUserId,
       List<ALEipUserAddr> destMemberList, String pcSubject,
       String cellularSubject, String pcBody, String cellularBody, int destType,

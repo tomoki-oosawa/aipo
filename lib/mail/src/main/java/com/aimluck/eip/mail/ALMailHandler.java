@@ -29,12 +29,14 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
+import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipMMailAccount;
 import com.aimluck.eip.cayenne.om.portlet.EipTMail;
 import com.aimluck.eip.cayenne.om.portlet.EipTMailFolder;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * メールの送受信を操作するインターフェイスです。 <br />
@@ -118,7 +120,27 @@ public abstract class ALMailHandler {
     // }
   }
 
+  protected int sendAdmin(ALMailSenderContext scontext, ALMailContext mcontext)
+      throws Exception {
+    // synchronized (LOCK_SEND) {
+    int result = ALMailSender.SEND_MSG_SUCCESS;
+
+    try {
+      ALMailSender sender = getALAdminMailSender(scontext);
+      // sender.setAuthType(authSendFlag, authSendUserId, authSendUserPassword);
+      result = sender.send(mcontext);
+    } catch (Exception e) {
+      logger.error("Exception", e);
+      result = ALMailSender.SEND_MSG_FAIL;
+    }
+    return result;
+    // }
+  }
+
   abstract protected ALMailSender getALMailSender(ALMailSenderContext scontext);
+
+  abstract protected ALMailSender getALAdminMailSender(
+      ALMailSenderContext scontext);
 
   abstract public ALFolder getALFolder(int type_mail, String org_id,
       int user_id, int account_id);
@@ -264,4 +286,130 @@ public abstract class ALMailHandler {
   abstract public boolean removeAccount(String org_id, int user_id,
       int account_id);
 
+  public List<String> sendAdminMail(ALAdminMailContext adminMailContext)
+      throws Exception {
+    List<String> msgList = new ArrayList<String>();
+    int destType = adminMailContext.getDestType();
+
+    List<ALAdminMailMessage> messageList = adminMailContext.getMessageList();
+    String org_id = adminMailContext.getOrgId();
+    if (destType < ALMailUtils.VALUE_MSGTYPE_DEST_NONE
+      || destType > ALMailUtils.VALUE_MSGTYPE_DEST_PC_CELLULAR) {
+      return msgList;
+    }
+
+    if (messageList == null || messageList.size() == 0) {
+      return msgList;
+    }
+
+    // メールの送信
+    EipMMailAccount account = ALMailUtils.getEipMMailAccountForAdmin();
+    int successSendToPc = ALSmtpMailSender.SEND_MSG_SUCCESS;
+    int successSendToCell = ALSmtpMailSender.SEND_MSG_SUCCESS;
+
+    if (account == null) {
+      // メールアカウントがない場合
+      if (destType == ALMailUtils.VALUE_MSGTYPE_DEST_PC) {
+        successSendToPc = ALSmtpMailSender.SEND_MSG_FAIL_NO_ACCOUNT;
+      } else if (destType == ALMailUtils.VALUE_MSGTYPE_DEST_CELLULAR) {
+        successSendToCell = ALSmtpMailSender.SEND_MSG_FAIL_NO_ACCOUNT;
+      } else {
+        successSendToPc = ALSmtpMailSender.SEND_MSG_FAIL_NO_ACCOUNT;
+        successSendToCell = ALSmtpMailSender.SEND_MSG_FAIL_NO_ACCOUNT;
+      }
+    } else {
+
+      ALMailHandler mailhandler =
+        ALMailFactoryService.getInstance().getMailHandler();
+      // 送信サーバ情報
+      ALMailSenderContext scontext =
+        ALMailUtils.getALSmtpMailSenderContext(org_id, account);
+
+      // パソコンへメールを送信
+      if ((destType == ALMailUtils.VALUE_MSGTYPE_DEST_PC || destType == ALMailUtils.VALUE_MSGTYPE_DEST_PC_CELLULAR)) {
+        for (ALAdminMailMessage message : messageList) {
+          if (!ALEipUtils.isEnabledUser(message.getUserId())) {
+            continue;
+          }
+          String emailAddr = message.getPcMailAddr();
+          if (emailAddr == null || emailAddr.equals("")) {
+            continue;
+          }
+          String[] tos = new String[] { emailAddr };
+
+          // 送信メッセージのコンテキスト
+          ALSmtpMailContext mailcontext =
+            ALMailUtils.getALSmtpMailContext(
+              tos,
+              null,
+              null,
+              account.getMailAddress(),
+              ALStringUtil.unsanitizing(account.getMailUserName()),
+              ALStringUtil.unsanitizing(message.getPcSubject()),
+              ALStringUtil.unsanitizing(message.getPcBody()),
+              null,
+              null);
+
+          successSendToPc = mailhandler.sendAdmin(scontext, mailcontext);
+        }
+      }
+
+      // 携帯電話へメールを送信
+      if ((destType == ALMailUtils.VALUE_MSGTYPE_DEST_CELLULAR || destType == ALMailUtils.VALUE_MSGTYPE_DEST_PC_CELLULAR)) {
+        for (ALAdminMailMessage message : messageList) {
+          if (!ALEipUtils.isEnabledUser(message.getUserId())) {
+            continue;
+          }
+          String emailAddr = message.getCellMailAddr();
+          if (emailAddr == null || emailAddr.equals("")) {
+            continue;
+          }
+          String[] tos = new String[] { emailAddr };
+
+          ALSmtpMailContext mailcontext =
+            ALMailUtils.getALSmtpMailContext(tos, null, null, account
+              .getMailAddress(), ALStringUtil.unsanitizing(account
+              .getMailUserName()), ALStringUtil.unsanitizing(message
+              .getCellularSubject()), ALStringUtil.unsanitizing(message
+              .getCellularBody()), null, null);
+
+          successSendToCell = mailhandler.sendAdmin(scontext, mailcontext);
+        }
+      }
+    }
+
+    if (successSendToPc != ALSmtpMailSender.SEND_MSG_SUCCESS) {
+      if (successSendToPc == ALSmtpMailSender.SEND_MSG_OVER_MAIL_MAX_SIZE) {
+        msgList.add("メールサイズが送信可能サイズよりも大きいため、パソコンのメールアドレスにメールを送信できませんでした。");
+      } else if (successSendToPc == ALSmtpMailSender.SEND_MSG_LOCK) {
+        msgList.add("ロックがかかっていて、パソコンのメールアドレスにメールを送信できませんでした。");
+      } else if (successSendToPc == ALSmtpMailSender.SEND_MSG_FAIL_POP_BEFORE_SMTP_AUTH) {
+        msgList.add("Pop before SMTPの認証に失敗したため、パソコンのメールアドレスにメールを送信できませんでした。");
+      } else if (successSendToPc == ALSmtpMailSender.SEND_MSG_FAIL_SMTP_AUTH) {
+        msgList.add("SMTP認証の認証に失敗したため、パソコンのメールアドレスにメールを送信できませんでした。");
+      } else if (successSendToPc == ALSmtpMailSender.SEND_MSG_FAIL_NO_ACCOUNT) {
+        msgList.add("管理者のメールアカウントが設定されていないため、パソコンのメールアドレスにメールを送信できませんでした。");
+      } else {
+        msgList.add("送信メールサーバに接続できなかったため、パソコンのメールアドレスにメールを送信できませんでした。");
+      }
+    }
+
+    if (successSendToCell != ALSmtpMailSender.SEND_MSG_SUCCESS) {
+      if (successSendToCell == ALSmtpMailSender.SEND_MSG_OVER_MAIL_MAX_SIZE) {
+        msgList.add("メールサイズが送信可能サイズよりも大きいため、携帯のメールアドレスにメールを送信できませんでした。");
+      } else if (successSendToCell == ALSmtpMailSender.SEND_MSG_LOCK) {
+        msgList.add("ロックがかかっていて、携帯のメールアドレスにメールを送信できませんでした。");
+      } else if (successSendToCell == ALSmtpMailSender.SEND_MSG_FAIL_POP_BEFORE_SMTP_AUTH) {
+        msgList.add("Pop before SMTPの認証に失敗したため、携帯のメールアドレスにメールを送信できませんでした。");
+      } else if (successSendToCell == ALSmtpMailSender.SEND_MSG_FAIL_SMTP_AUTH) {
+        msgList.add("SMTP認証の認証に失敗したため、携帯のメールアドレスにメールを送信できませんでした。");
+      } else if (successSendToCell == ALSmtpMailSender.SEND_MSG_FAIL_NO_ACCOUNT) {
+        msgList.add("管理者のメールアカウントが設定されていないため、携帯のメールアドレスにメールを送信できませんでした。");
+      } else {
+        msgList.add("送信メールサーバに接続できなかったため、携帯のメールアドレスにメールを送信できませんでした。");
+      }
+    }
+
+    return msgList;
+  }
 }

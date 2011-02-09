@@ -68,6 +68,11 @@ public class ALFileMailHandler extends ALMailHandler {
   }
 
   @Override
+  public ALMailSender getALAdminMailSender(ALMailSenderContext scontext) {
+    return new ALFileSmtpMailSender(scontext);
+  }
+
+  @Override
   public ALFolder getALFolder(int type_mail, String org_id, int user_id,
       int account_id) {
     return new ALFileLocalFolder(type_mail, org_id, user_id, account_id);

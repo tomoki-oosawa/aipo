@@ -57,6 +57,9 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
+import com.aimluck.eip.mail.ALAdminMailContext;
+import com.aimluck.eip.mail.ALAdminMailMessage;
+import com.aimluck.eip.mail.ALMailService;
 import com.aimluck.eip.mail.util.ALEipUserAddr;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
@@ -946,21 +949,27 @@ public class WorkflowUtils {
           memberList,
           ALEipUtils.getUserId(rundata),
           false);
-      for (ALEipUserAddr member : destMemberList) {
-        List<ALEipUserAddr> destMember = new ArrayList<ALEipUserAddr>();
-        destMember.add(member);
-        ALMailUtils.sendMailDelegate(
-          orgId,
-          ALEipUtils.getUserId(rundata),
-          destMember,
-          subject,
-          subject,
-          WorkflowUtils.createMsgForPc(rundata, request),
-          WorkflowUtils.createMsgForCellPhone(rundata, request, (destMember
-            .get(0)).getUserId()),
-          ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_WORKFLOW),
-          msgList);
+
+      List<ALAdminMailMessage> messageList =
+        new ArrayList<ALAdminMailMessage>();
+      for (ALEipUserAddr destMember : destMemberList) {
+        ALAdminMailMessage message = new ALAdminMailMessage(destMember);
+        message.setPcSubject(subject);
+        message.setCellularSubject(subject);
+        message.setPcBody(WorkflowUtils.createMsgForPc(rundata, request));
+        message.setCellularBody(WorkflowUtils.createMsgForCellPhone(
+          rundata,
+          request,
+          destMember.getUserId()));
+        messageList.add(message);
       }
+
+      List<String> errors =
+        ALMailService.sendAdminMail(new ALAdminMailContext(orgId, ALEipUtils
+          .getUserId(rundata), messageList, ALMailUtils
+          .getSendDestType(ALMailUtils.KEY_MSGTYPE_WORKFLOW)));
+      msgList.addAll(errors);
+
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;

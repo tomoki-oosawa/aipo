@@ -44,6 +44,9 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
+import com.aimluck.eip.mail.ALAdminMailContext;
+import com.aimluck.eip.mail.ALAdminMailMessage;
+import com.aimluck.eip.mail.ALMailService;
 import com.aimluck.eip.mail.util.ALEipUserAddr;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.blog.BlogAction;
@@ -122,6 +125,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
     // コメント
     comment = new ALStringField();
@@ -281,16 +285,26 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
           "[" + JetspeedResources.getString("aipo.alias") + "]ブログコメント";
 
         // パソコン、携帯電話へメールを送信
-        ALMailUtils.sendMailDelegate(
-          orgId,
-          (int) login_user.getUserId().getValue(),
-          destMemberList,
-          subject,
-          subject,
-          createMsgForPc(rundata),
-          createMsgForCellPhone(rundata, entry.getOwnerId()),
-          ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_BLOG),
-          msgList);
+        List<ALAdminMailMessage> messageList =
+          new ArrayList<ALAdminMailMessage>();
+        for (ALEipUserAddr destMember : destMemberList) {
+          ALAdminMailMessage message = new ALAdminMailMessage(destMember);
+          message.setPcSubject(subject);
+          message.setCellularSubject(subject);
+          message.setPcBody(createMsgForPc(rundata));
+          message.setCellularBody(createMsgForCellPhone(rundata, destMember
+            .getUserId()));
+
+          messageList.add(message);
+        }
+        List<String> errors =
+          ALMailService.sendAdminMail(new ALAdminMailContext(
+            orgId,
+            (int) login_user.getUserId().getValue(),
+            messageList,
+            ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_BLOG)));
+        msgList.addAll(errors);
+
       }
     } catch (Exception e) {
       Database.rollback();

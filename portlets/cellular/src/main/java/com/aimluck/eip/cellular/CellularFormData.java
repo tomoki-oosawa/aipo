@@ -39,6 +39,9 @@ import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.mail.ALAdminMailContext;
+import com.aimluck.eip.mail.ALAdminMailMessage;
+import com.aimluck.eip.mail.ALMailService;
 import com.aimluck.eip.mail.util.ALEipUserAddr;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
@@ -97,6 +100,7 @@ public class CellularFormData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
     cellular_url = new ALStringField();
     cellular_url.setFieldName(DatabaseOrmService.getInstance().getAlias()
@@ -192,18 +196,24 @@ public class CellularFormData extends ALAbstractFormData {
         "[" + DatabaseOrmService.getInstance().getAlias() + "] 携帯電話用ログインURL";
       String body = createMsgForCellPhone(url);
 
-      res =
-        ALMailUtils.sendMailDelegate(
-          orgId,
-          (int) user.getUserId().getValue(),
-          destMemberList,
-          null,
-          subject,
-          null,
-          body,
-          ALMailUtils.VALUE_MSGTYPE_DEST_CELLULAR,
-          msgList);
-      if (!res) {
+      List<ALAdminMailMessage> messageList =
+        new ArrayList<ALAdminMailMessage>();
+      for (ALEipUserAddr destMember : destMemberList) {
+        ALAdminMailMessage message = new ALAdminMailMessage(destMember);
+        message.setPcSubject(null);
+        message.setCellularSubject(subject);
+        message.setPcBody(null);
+        message.setCellularBody(body);
+        messageList.add(message);
+      }
+
+      List<String> errors =
+        ALMailService.sendAdminMail(new ALAdminMailContext(orgId, (int) user
+          .getUserId()
+          .getValue(), messageList, ALMailUtils.VALUE_MSGTYPE_DEST_CELLULAR));
+      msgList.addAll(errors);
+
+      if (errors.size() > 0) {
         msgList.add("メールアカウントが正しく設定されていないため、メールを送信できませんでした。"
           + DatabaseOrmService.getInstance().getAlias()
           + "の管理担当者にお問い合わせください。メールアカウントは、管理画面で設定できます。");
