@@ -96,8 +96,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
-import com.aimluck.eip.services.social.ALSocialApplicationFactoryService;
-import com.aimluck.eip.services.social.ALSocialApplicationHandler;
+import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -617,10 +616,6 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
       // int cc;
       // Entry usedEntry;
 
-      ALSocialApplicationHandler applicationHanlder =
-        ALSocialApplicationFactoryService
-          .getInstance()
-          .getSocialApplicationHandler();
       for (int i = 0; i < pnames.length; i++) {
         String pname = pnames[i];
         PortletEntry entry = null;
@@ -630,7 +625,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
           String[] split = pname.split("::");
           String appId = split[1];
           app =
-            applicationHanlder.getApplication(new ALApplicationGetRequest()
+            ALApplicationService.get(new ALApplicationGetRequest()
               .withAppId(appId));
           entry =
             (PortletEntry) Registry.getEntry(
@@ -1048,13 +1043,8 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
       }
     }
 
-    ALSocialApplicationHandler applicationHanlder =
-      ALSocialApplicationFactoryService
-        .getInstance()
-        .getSocialApplicationHandler();
-
     ResultList<ALApplication> resultList =
-      applicationHanlder.getApplicationList(new ALApplicationGetRequest()
+      ALApplicationService.getList(new ALApplicationGetRequest()
         .withStatus(ALApplicationGetRequest.Status.ACTIVE));
 
     for (ALApplication app : resultList) {

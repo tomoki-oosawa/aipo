@@ -29,8 +29,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
-import com.aimluck.eip.services.social.ALSocialApplicationFactoryService;
-import com.aimluck.eip.services.social.ALSocialApplicationHandler;
+import com.aimluck.eip.services.social.ALApplicationService;
 
 /**
  * 
@@ -56,12 +55,9 @@ public class GagetsAdminMultiEnable extends ALAbstractCheckList {
       throws ALPageNotFoundException, ALDBErrorException {
 
     try {
-      ALSocialApplicationHandler appHandler =
-        ALSocialApplicationFactoryService
-          .getInstance()
-          .getSocialApplicationHandler();
 
-      appHandler.enableApplication(values);
+      ALApplicationService.enable(values);
+
     } catch (Throwable t) {
       logger.error(t);
       return false;

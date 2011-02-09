@@ -33,9 +33,8 @@ import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.cayenne.om.portlet.EipMMybox;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.services.config.ALConfigFactoryService;
-import com.aimluck.eip.services.config.ALConfigHandler;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -136,13 +135,10 @@ public class SystemUtils {
       return "";
     }
 
-    ALConfigHandler configHandler =
-      ALConfigFactoryService.getInstance().getConfigHandler();
-
     String protocol =
       isGlobal
-        ? configHandler.get(Property.ACCESS_GLOBAL_URL_PROTOCOL)
-        : configHandler.get(Property.ACCESS_LOCAL_URL_PROTOCOL);
+        ? ALConfigService.get(Property.ACCESS_GLOBAL_URL_PROTOCOL)
+        : ALConfigService.get(Property.ACCESS_LOCAL_URL_PROTOCOL);
 
     StringBuffer url = new StringBuffer();
 

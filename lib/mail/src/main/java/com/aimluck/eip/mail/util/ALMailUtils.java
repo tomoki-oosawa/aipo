@@ -96,9 +96,8 @@ import com.aimluck.eip.mail.ALSmtpMailSender;
 import com.aimluck.eip.mail.ALSmtpMailSenderContext;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
-import com.aimluck.eip.services.config.ALConfigFactoryService;
-import com.aimluck.eip.services.config.ALConfigHandler;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.daemonfactory.AipoDaemonFactoryService;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -1841,13 +1840,10 @@ public class ALMailUtils {
       return "";
     }
 
-    ALConfigHandler configHandler =
-      ALConfigFactoryService.getInstance().getConfigHandler();
-
     String protocol =
       isGlobal
-        ? configHandler.get(Property.ACCESS_GLOBAL_URL_PROTOCOL)
-        : configHandler.get(Property.ACCESS_LOCAL_URL_PROTOCOL);
+        ? ALConfigService.get(Property.ACCESS_GLOBAL_URL_PROTOCOL)
+        : ALConfigService.get(Property.ACCESS_LOCAL_URL_PROTOCOL);
 
     StringBuffer url = new StringBuffer();
 

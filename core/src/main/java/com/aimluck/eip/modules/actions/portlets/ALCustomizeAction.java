@@ -60,8 +60,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.common.ALApplication;
-import com.aimluck.eip.services.social.ALSocialApplicationFactoryService;
-import com.aimluck.eip.services.social.ALSocialApplicationHandler;
+import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
 import com.aimluck.eip.util.ALCommonUtils;
 
@@ -276,12 +275,8 @@ public class ALCustomizeAction extends VelocityPortletAction {
       if ("GadgetsTemplate".equals(pc.getName())) {
         appId = pc.getInitParameter("aid");
         url = pc.getInitParameter("url");
-        ALSocialApplicationHandler applicationHanlder =
-          ALSocialApplicationFactoryService
-            .getInstance()
-            .getSocialApplicationHandler();
         ALApplication app =
-          applicationHanlder.getApplication(new ALApplicationGetRequest()
+          ALApplicationService.get(new ALApplicationGetRequest()
             .withAppId(appId));
         isGadgets = true;
         ALStringField title = app.getTitle();

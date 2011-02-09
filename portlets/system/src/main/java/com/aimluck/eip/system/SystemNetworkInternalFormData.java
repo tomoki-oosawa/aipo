@@ -38,9 +38,8 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.services.config.ALConfigFactoryService;
-import com.aimluck.eip.services.config.ALConfigHandler;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.system.util.SystemUtils;
 
 /**
@@ -61,8 +60,6 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
   /** ポート番号（ローカル） */
   private ALNumberField port_internal;
 
-  private ALConfigHandler configHandler;
-
   /**
    * 
    * @param action
@@ -81,6 +78,7 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
    * 各フィールドを初期化する
    * 
    */
+  @Override
   public void initField() {
 
     protocol = new ALStringField();
@@ -97,7 +95,6 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
     port_internal.setFieldName("ポート番号");
     port_internal.setValue(80);
 
-    configHandler = ALConfigFactoryService.getInstance().getConfigHandler();
   }
 
   /**
@@ -164,7 +161,8 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
         }
       }
 
-      protocol.setValue(configHandler.get(Property.ACCESS_LOCAL_URL_PROTOCOL));
+      protocol
+        .setValue(ALConfigService.get(Property.ACCESS_LOCAL_URL_PROTOCOL));
       // IP アドレス（ローカル）
       ipaddress_internal.setValue(ipaddress);
       // ポート番号（ローカル）
@@ -207,8 +205,8 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
         return false;
       }
 
-      configHandler
-        .put(Property.ACCESS_LOCAL_URL_PROTOCOL, protocol.getValue());
+      ALConfigService.put(Property.ACCESS_LOCAL_URL_PROTOCOL, protocol
+        .getValue());
 
       // IP アドレス（ローカル）
       record.setIpaddressInternal(ipaddress_internal.getValue());

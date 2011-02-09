@@ -38,8 +38,7 @@ import org.apache.shindig.common.util.Base32;
 import org.apache.shindig.common.util.CharsetUtil;
 import org.apache.turbine.util.RunData;
 
-import com.aimluck.eip.services.social.ALSocialApplicationFactoryService;
-import com.aimluck.eip.services.social.ALSocialApplicationHandler;
+import com.aimluck.eip.services.social.ALContainerConfigService;
 import com.aimluck.eip.services.social.ALSocialApplicationHandler.Property;
 import com.google.common.base.Charsets;
 
@@ -64,8 +63,6 @@ public class GadgetContext {
 
   private long moduleId = 0;
 
-  private final ALSocialApplicationHandler appHandler;
-
   private final RunData runData;
 
   /**
@@ -75,10 +72,6 @@ public class GadgetContext {
     this.runData = runData;
     this.viewer = viewer;
     this.appUrl = appUrl;
-    appHandler =
-      ALSocialApplicationFactoryService
-        .getInstance()
-        .getSocialApplicationHandler();
   }
 
   public String getSecureToken() {
@@ -126,13 +119,12 @@ public class GadgetContext {
 
   protected boolean isLockedDomainRequired() {
     String config =
-      appHandler.getContainerConfig(Property.LOCKED_DOMAIN_REQUIRED);
+      ALContainerConfigService.get(Property.LOCKED_DOMAIN_REQUIRED);
     return "true".equalsIgnoreCase(config);
   }
 
   protected String getLockedDomainSuffix() {
-    String config =
-      appHandler.getContainerConfig(Property.LOCKED_DOMAIN_SUFFIX);
+    String config = ALContainerConfigService.get(Property.LOCKED_DOMAIN_SUFFIX);
     return config;
   }
 

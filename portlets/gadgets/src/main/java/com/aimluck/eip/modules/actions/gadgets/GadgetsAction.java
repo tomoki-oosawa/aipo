@@ -29,8 +29,7 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.gadgets.GadgetContext;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.services.social.ALSocialApplicationFactoryService;
-import com.aimluck.eip.services.social.ALSocialApplicationHandler;
+import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -100,11 +99,6 @@ public class GadgetsAction extends ALBaseAction {
   }
 
   protected boolean checkApplicationAvailability(String appId) {
-    ALSocialApplicationHandler appHandler =
-      ALSocialApplicationFactoryService
-        .getInstance()
-        .getSocialApplicationHandler();
-
-    return appHandler.checkApplicationAvailability(appId);
+    return ALApplicationService.checkAvailability(appId);
   }
 }

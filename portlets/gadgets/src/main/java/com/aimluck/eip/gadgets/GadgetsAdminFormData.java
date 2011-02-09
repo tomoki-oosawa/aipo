@@ -35,8 +35,8 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALOAuthConsumer;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.services.social.ALSocialApplicationFactoryService;
-import com.aimluck.eip.services.social.ALSocialApplicationHandler;
+import com.aimluck.eip.services.social.ALApplicationService;
+import com.aimluck.eip.services.social.ALOAuthConsumerService;
 import com.aimluck.eip.services.social.gadgets.ALGadgetSpec;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest.Status;
@@ -57,22 +57,16 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
 
   private List<ALOAuthConsumer> oAuthConsumers;
 
-  private ALSocialApplicationHandler appHandler;
-
   /**
    * 
    */
+  @Override
   public void initField() {
     url = new ALStringField();
     url.setFieldName("ガジェットXML URL");
     url.setTrim(true);
 
     oAuthConsumers = new ArrayList<ALOAuthConsumer>();
-
-    appHandler =
-      ALSocialApplicationFactoryService
-        .getInstance()
-        .getSocialApplicationHandler();
 
   }
 
@@ -84,7 +78,7 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
       String appId =
         ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
       ALApplication app =
-        appHandler.getApplication(new ALApplicationGetRequest()
+        ALApplicationService.get(new ALApplicationGetRequest()
           .withAppId(appId)
           .withStatus(Status.ALL)
           .withIsDetail(true));
@@ -139,12 +133,13 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
     if (msgList.size() == 0) {
       if (!ALEipConstants.MODE_UPDATE.equals(getMode())) {
         ALApplication app =
-          appHandler.getApplication(new ALApplicationGetRequest().withAppId(
+          ALApplicationService.get(new ALApplicationGetRequest().withAppId(
             url.getValue()).withStatus(Status.ALL));
         if (app != null) {
           msgList.add("既に登録済みの 『 ガジェットXML URL 』 です。");
         } else {
-          ALGadgetSpec metaData = appHandler.getMetaData(url.getValue());
+          ALGadgetSpec metaData =
+            ALApplicationService.getMetaData(url.getValue());
           if (metaData == null) {
             msgList.add("正しい  『 ガジェットXML URL 』 を指定してください。");
           }
@@ -168,7 +163,7 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
     String appId =
       ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     ALApplication app =
-      appHandler.getApplication(new ALApplicationGetRequest()
+      ALApplicationService.get(new ALApplicationGetRequest()
         .withAppId(appId)
         .withStatus(Status.ALL)
         .withIsDetail(true));
@@ -194,7 +189,7 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
 
     try {
 
-      appHandler.createApplication(new ALApplicationPutRequest().withUrl(url
+      ALApplicationService.create(new ALApplicationPutRequest().withUrl(url
         .getValue()));
 
     } catch (Throwable t) {
@@ -221,10 +216,10 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
 
     try {
 
-      appHandler.updateApplication(appId, new ALApplicationPutRequest());
+      ALApplicationService.update(appId, new ALApplicationPutRequest());
 
       for (ALOAuthConsumer service : oAuthConsumers) {
-        appHandler.putOAuthConsumer(new ALOAuthConsumerPutRequest().withAppId(
+        ALOAuthConsumerService.put(new ALOAuthConsumerPutRequest().withAppId(
           appId).withName(service.getName().getValue()).withConsumerKey(
           service.getConsumerKey().getValue()).withConsumerSecret(
           service.getConsumerSecret().getValue()).withType(
@@ -258,7 +253,7 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
 
     try {
 
-      appHandler.deleteApplication(appId);
+      ALApplicationService.delete(appId);
 
     } catch (Throwable t) {
       logger.error(t, t);
@@ -287,7 +282,7 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
         return false;
       }
 
-      appHandler.enableApplication(appId);
+      ALApplicationService.enable(appId);
 
     } catch (Exception e) {
       Database.rollback();
@@ -316,7 +311,7 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
         return false;
       }
 
-      appHandler.disableApplication(appId);
+      ALApplicationService.disable(appId);
 
     } catch (Exception e) {
       logger.error("Exception", e);

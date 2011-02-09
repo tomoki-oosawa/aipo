@@ -35,9 +35,8 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.services.config.ALConfigFactoryService;
-import com.aimluck.eip.services.config.ALConfigHandler;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.system.util.SystemUtils;
 
 /**
@@ -58,8 +57,6 @@ public class SystemNetworkFormData extends ALAbstractFormData {
   /** ポート番号 */
   private ALNumberField port;
 
-  private ALConfigHandler configHandler;
-
   /**
    * 
    * @param action
@@ -78,6 +75,7 @@ public class SystemNetworkFormData extends ALAbstractFormData {
    * 各フィールドを初期化する
    * 
    */
+  @Override
   public void initField() {
 
     protocol = new ALStringField();
@@ -94,7 +92,6 @@ public class SystemNetworkFormData extends ALAbstractFormData {
     port.setFieldName("ポート番号");
     port.setValue(80);
 
-    configHandler = ALConfigFactoryService.getInstance().getConfigHandler();
   }
 
   /**
@@ -143,7 +140,8 @@ public class SystemNetworkFormData extends ALAbstractFormData {
         return false;
       }
 
-      protocol.setValue(configHandler.get(Property.ACCESS_GLOBAL_URL_PROTOCOL));
+      protocol.setValue(ALConfigService
+        .get(Property.ACCESS_GLOBAL_URL_PROTOCOL));
 
       // IP アドレス（グローバル）
       ipaddress.setValue(record.getIpaddress());
@@ -187,7 +185,7 @@ public class SystemNetworkFormData extends ALAbstractFormData {
         return false;
       }
 
-      configHandler.put(Property.ACCESS_GLOBAL_URL_PROTOCOL, protocol
+      ALConfigService.put(Property.ACCESS_GLOBAL_URL_PROTOCOL, protocol
         .getValue());
 
       // IP アドレス（グローバル）

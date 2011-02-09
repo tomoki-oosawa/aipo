@@ -31,8 +31,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
-import com.aimluck.eip.services.social.ALSocialApplicationFactoryService;
-import com.aimluck.eip.services.social.ALSocialApplicationHandler;
+import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest.Status;
 import com.aimluck.eip.util.ALEipUtils;
@@ -43,17 +42,11 @@ import com.aimluck.eip.util.ALEipUtils;
 public class GadgetsAdminSelectData extends
     ALAbstractSelectData<ALApplication, ALApplication> {
 
-  private ALSocialApplicationHandler appHandler = null;
-
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
-    appHandler =
-      ALSocialApplicationFactoryService
-        .getInstance()
-        .getSocialApplicationHandler();
   }
 
   /**
@@ -78,7 +71,7 @@ public class GadgetsAdminSelectData extends
       status = Status.ALL;
       current_filter = filter;
     }
-    return appHandler.getApplicationList(new ALApplicationGetRequest()
+    return ALApplicationService.getList(new ALApplicationGetRequest()
       .withLimit(getRowsNum())
       .withPage(current_page)
       .withStatus(status));
@@ -98,7 +91,7 @@ public class GadgetsAdminSelectData extends
     String appId =
       ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
-    return appHandler.getApplication(new ALApplicationGetRequest().withAppId(
+    return ALApplicationService.get(new ALApplicationGetRequest().withAppId(
       appId).withStatus(Status.ALL).withIsDetail(true));
   }
 
