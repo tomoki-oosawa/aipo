@@ -51,7 +51,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 『部署』のフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
@@ -114,12 +114,12 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 初期化します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -129,9 +129,10 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
 
     // 部署名
@@ -209,7 +210,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -260,8 +261,8 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -311,10 +312,10 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -386,7 +387,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 『部署』を読み込みます。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -400,7 +401,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 『部署』を追加します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -422,8 +423,8 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
         new StringBuffer().append(new Date().getTime()).append("_").append(
           ALEipUtils.getUserId(rundata)).toString();
       group.setGroupName(groupName);
-      // オーナIDの設定、作成者がオーナとなるので、自分自身のUID
-      group.setOwnerId(Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      // オーナID（部署の場合、作成者に依らずuid=1）
+      group.setOwnerId(Integer.valueOf(1));
       // グループ名(アプリケーションレベルで付ける名前)
       group.setGroupAliasName(name);
       // 公開フラグ
@@ -472,7 +473,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 『部署』を更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -487,7 +488,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
   /**
    * 『部署』を削除します。 <BR>
    * このとき部署に関連づけられているグループも削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -501,7 +502,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 部署名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getPostName() {
@@ -510,7 +511,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 住所を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getAddress() {
@@ -519,7 +520,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFaxNumber1() {
@@ -528,7 +529,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFaxNumber2() {
@@ -537,7 +538,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFaxNumber3() {
@@ -546,7 +547,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（外線）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone1() {
@@ -555,7 +556,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（外線）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone2() {
@@ -564,7 +565,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（外線）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone3() {
@@ -573,7 +574,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（内線）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getInTelephone() {
@@ -582,7 +583,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getZipcode1() {
@@ -591,7 +592,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getZipcode2() {
@@ -600,7 +601,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 所属メンバーを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -608,7 +609,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param groupname
    * @return
    */
@@ -622,7 +623,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -630,7 +631,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param bool
    */
   public void setJoinMember(boolean bool) {
@@ -638,7 +639,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public boolean isJoinMember() {
@@ -647,7 +648,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 部署IDを取得します <BR>
-   * 
+   *
    * @return
    */
   public int getPostId() {
@@ -656,7 +657,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getZipcode() {
@@ -665,7 +666,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone() {
@@ -674,7 +675,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFaxNumber() {
@@ -683,7 +684,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 同じ部署名がデータベースに存在するかどうかを示すフラグを取得します <BR>
-   * 
+   *
    * @return
    */
   public boolean getSamePost() {
@@ -692,7 +693,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 同じ部署名がデータベースに存在するかどうかを示すフラグを入力します <BR>
-   * 
+   *
    * @return
    */
   public void setSamePost(boolean flg) {
@@ -701,7 +702,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 部署名から部署IDを取得します <BR>
-   * 
+   *
    * @return
    */
   private EipMPost getEipMPost() {
@@ -725,7 +726,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
 
   /**
    * 読み取った単語を指定されたフィールドに格納します。 <BR>
-   * 
+   *
    * @param token
    * @param i
    */

@@ -37,7 +37,6 @@ import com.aimluck.eip.cayenne.om.portlet.EipMMailAccount;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.mail.ALMailFactoryService;
 import com.aimluck.eip.mail.ALMailHandler;
@@ -45,6 +44,8 @@ import com.aimluck.eip.mail.ALPop3MailReceiver;
 import com.aimluck.eip.mail.ALSmtpMailSender;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.modules.screens.WebMailAdminFormJSONScreen;
+import com.aimluck.eip.modules.screens.WebMailAdminFormScreen;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
@@ -141,23 +142,20 @@ public class WebMailAccountFormData extends ALAbstractFormData {
 
   private String orgId;
 
-  private boolean isAdmin = false;
+  private boolean isAdmin;
 
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    ALEipUser user = ALEipUtils.getALEipUser(rundata);
-    if (user != null && user.getUserId().getValue() == 1) {
-      isAdmin = true;
-    } else {
-      isAdmin = false;
-    }
-
     orgId = Database.getDomainName();
+    isAdmin =
+      rundata.getScreen().equals(WebMailAdminFormScreen.class.getSimpleName())
+        || rundata.getScreen().equals(
+          WebMailAdminFormJSONScreen.class.getSimpleName());
   }
 
+  @Override
   public void initField() {
     account_id = new ALNumberField();
     account_id.setFieldName("アカウントID");
@@ -254,11 +252,10 @@ public class WebMailAccountFormData extends ALAbstractFormData {
     signature = new ALStringField();
     signature.setFieldName("署名");
     signature.setTrim(true);
-
   }
 
   /**
-   * 
+   *
    */
   @Override
   protected void setValidator() {
@@ -360,7 +357,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -432,7 +429,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -442,7 +439,8 @@ public class WebMailAccountFormData extends ALAbstractFormData {
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
-      int userId = ALEipUtils.getUserId(rundata);
+      // 全体で使うメールアカウントのオーナーは常にuid=1
+      int userId = isAdmin ? 1 : ALEipUtils.getUserId(rundata);
       int accountId =
         Integer.parseInt(ALEipUtils.getTemp(
           rundata,
@@ -497,7 +495,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -506,10 +504,13 @@ public class WebMailAccountFormData extends ALAbstractFormData {
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
+
+    // 全体で使うメールアカウントのオーナーは常にuid=1
+    int uid = isAdmin ? 1 : ALEipUtils.getUserId(rundata);
     return ALMailUtils.insertMailAccountData(
       rundata,
       msgList,
-      ALEipUtils.getUserId(rundata),
+      uid,
       getAccountName().getValue(),
       ALMailUtils.ACCOUNT_TYPE_NON,
       getMailAddress().getValue(),
@@ -534,7 +535,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -545,7 +546,10 @@ public class WebMailAccountFormData extends ALAbstractFormData {
       List<String> msgList) {
 
     try {
-      int userId = ALEipUtils.getUserId(rundata);
+      // 全体で使うメールアカウントのオーナーは常にuid=1
+
+      int userId = isAdmin ? 1 : ALEipUtils.getUserId(rundata);
+
       int accountId =
         Integer.parseInt(ALEipUtils.getTemp(
           rundata,
@@ -619,7 +623,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList

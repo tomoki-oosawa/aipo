@@ -38,6 +38,8 @@ import com.aimluck.eip.mail.ALMailHandler;
 import com.aimluck.eip.mail.ALMailReceiverContext;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.modules.actions.webmail.WebMailAdminAction;
+import com.aimluck.eip.modules.screens.WebMailAdminDetailScreen;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
@@ -55,8 +57,10 @@ public class WebMailAccountSelectData extends
 
   private String orgId;
 
+  private boolean isAdmin;
+
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -77,11 +81,18 @@ public class WebMailAccountSelectData extends
 
     orgId = Database.getDomainName();
 
+    isAdmin =
+      rundata
+        .getScreen()
+        .equals(WebMailAdminDetailScreen.class.getSimpleName())
+        || action.getClass().getName().equals(
+          WebMailAdminAction.class.getName());
+
     super.init(action, rundata, context);
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -104,7 +115,7 @@ public class WebMailAccountSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -125,7 +136,7 @@ public class WebMailAccountSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -135,7 +146,7 @@ public class WebMailAccountSelectData extends
     int userId = ALEipUtils.getUserId(rundata);
 
     EipMMailAccount account = null;
-    if (userId == 1) {
+    if (isAdmin) {
       // 管理者用のメールアカウントを表示する場合
       account = ALMailUtils.getEipMMailAccountForAdmin();
     } else {
@@ -177,7 +188,7 @@ public class WebMailAccountSelectData extends
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    */
@@ -211,7 +222,7 @@ public class WebMailAccountSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {

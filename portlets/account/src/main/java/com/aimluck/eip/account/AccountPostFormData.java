@@ -54,7 +54,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 部署のフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class AccountPostFormData extends ALAbstractFormData {
 
@@ -108,7 +108,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 初期化します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -121,9 +121,10 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
 
     // 部署名
@@ -179,7 +180,7 @@ public class AccountPostFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -230,8 +231,8 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -260,10 +261,10 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -342,7 +343,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 『部署』を読み込みます。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -416,7 +417,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 『部署』を追加します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -435,8 +436,8 @@ public class AccountPostFormData extends ALAbstractFormData {
         new StringBuffer().append(new Date().getTime()).append("_").append(
           ALEipUtils.getUserId(rundata)).toString();
       group.setGroupName(groupName);
-      // オーナIDの設定、作成者がオーナとなるので、自分自身のUID
-      group.setOwnerId(Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      // オーナID（部署の場合、作成者に依らずuid=1）
+      group.setOwnerId(Integer.valueOf(1));
       // グループ名(アプリケーションレベルで付ける名前)
       group.setGroupAliasName(name);
       // 公開フラグ
@@ -521,7 +522,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 『部署』を更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -631,7 +632,7 @@ public class AccountPostFormData extends ALAbstractFormData {
   /**
    * 『部署』を削除します。 <BR>
    * このとき部署に関連づけられているグループも削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -676,7 +677,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 部署名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getPostName() {
@@ -685,7 +686,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 住所を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getAddress() {
@@ -694,7 +695,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFaxNumber1() {
@@ -703,7 +704,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFaxNumber2() {
@@ -712,7 +713,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFaxNumber3() {
@@ -721,7 +722,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（外線）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone1() {
@@ -730,7 +731,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（外線）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone2() {
@@ -739,7 +740,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（外線）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone3() {
@@ -748,7 +749,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（内線）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getInTelephone() {
@@ -757,7 +758,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getZipcode1() {
@@ -766,7 +767,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getZipcode2() {
@@ -775,7 +776,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 所属メンバーを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -787,7 +788,7 @@ public class AccountPostFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param groupname
    * @return
    */
@@ -802,7 +803,7 @@ public class AccountPostFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -810,7 +811,7 @@ public class AccountPostFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param bool
    */
   public void setJoinMember(boolean bool) {
@@ -818,7 +819,7 @@ public class AccountPostFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public boolean isJoinMember() {
@@ -826,7 +827,7 @@ public class AccountPostFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public int getPostId() {

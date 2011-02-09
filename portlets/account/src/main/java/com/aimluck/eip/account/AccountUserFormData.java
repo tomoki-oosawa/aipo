@@ -224,6 +224,7 @@ public class AccountUserFormData extends ALAbstractFormData {
    *
    *
    */
+  @Override
   public void initField() {
     // ログイン名
     username = new ALStringField();
@@ -1007,11 +1008,8 @@ public class AccountUserFormData extends ALAbstractFormData {
         List<UserGroupLiteBean> postList_old =
           AccountUtils.getPostBeanList(Integer.parseInt(user.getUserId()));
         if (postList_old != null && postList_old.size() > 0) {
-          UserGroupLiteBean uglb = null;
-          int old_size = postList_old.size();
           // グループからユーザーを削除
-          for (int i = 0; i < old_size; i++) {
-            uglb = postList_old.get(i);
+          for (UserGroupLiteBean uglb : postList_old) {
             JetspeedSecurity.unjoinGroup(user.getUserName(), uglb.getGroupId());
           }
         }
@@ -1028,9 +1026,7 @@ public class AccountUserFormData extends ALAbstractFormData {
         ALBaseUser currentUser = (ALBaseUser) rundata.getUser();
 
         // もし編集者自身が自分の情報を修正していた場合には
-        // セッション情報も書き換える。現状は以下のため、ifは常にfalse
-        // CurrentUser ： 管理者のみ
-        // User : 一般ユーザーのみ
+        // セッション情報も書き換える。
         if (currentUser.getUserName().equals(user.getUserName())) {
           currentUser.setPassword(user.getPassword());
           currentUser.setFirstName(user.getFirstName());
@@ -1040,9 +1036,11 @@ public class AccountUserFormData extends ALAbstractFormData {
           currentUser.setOutTelephone(user.getOutTelephone());
           currentUser.setCellularPhone(user.getCellularPhone());
           currentUser.setCellularMail(user.getCellularMail());
-          // user.setCompanyId((int)company_id.getValue());
           currentUser.setPositionId(user.getPositionId());
-          currentUser.setPostId(user.getPostId());
+          try {
+            currentUser.setPostId(user.getPostId());
+          } catch (NullPointerException e) {
+          }
           currentUser.setFirstNameKana(user.getFirstNameKana());
           currentUser.setLastNameKana(user.getLastNameKana());
         }

@@ -67,7 +67,7 @@ public class AccountUtils {
 
   /**
    * セッション中のエンティティIDで示されるユーザ情報を取得する。 論理削除されたユーザを取得した場合はnullを返す。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -98,7 +98,7 @@ public class AccountUtils {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -130,7 +130,7 @@ public class AccountUtils {
 
   /**
    * セッションに格納されているIDを用いて、部署情報を取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -160,7 +160,7 @@ public class AccountUtils {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -234,7 +234,7 @@ public class AccountUtils {
 
   /**
    * ユーザーの所属する部署の一覧を取得します。
-   * 
+   *
    * @param uid
    *          ユーザーID
    * @return 所属する部署リスト
@@ -251,9 +251,9 @@ public class AccountUtils {
         TurbineUserGroupRole.TURBINE_GROUP_PROPERTY,
         Integer.valueOf(3));
     Expression exp3 =
-      ExpressionFactory.matchExp(TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
+      ExpressionFactory.noMatchExp(TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
         + "."
-        + TurbineGroup.OWNER_ID_PROPERTY, Integer.valueOf(1));
+        + TurbineGroup.OWNER_ID_PROPERTY, null);
     query.setQualifier(exp1);
     query.andQualifier(exp2);
     query.andQualifier(exp3);
@@ -281,7 +281,7 @@ public class AccountUtils {
 
   /**
    * 指定した ID のユーザが削除済みかどうかを調べる。
-   * 
+   *
    * @param userId
    * @return
    */
@@ -310,7 +310,7 @@ public class AccountUtils {
 
   /**
    * 指定されたユーザーが削除／無効化されたとき、申請が来ているワークフローを全て承認します。
-   * 
+   *
    * @param uid
    */
   public static boolean acceptWorkflow(int uid) {
