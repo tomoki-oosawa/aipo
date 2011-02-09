@@ -55,7 +55,6 @@ import com.aimluck.eip.mail.util.ALEipUserAddr;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.CellScheduleUtils;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
@@ -64,6 +63,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
@@ -612,8 +612,10 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           ALMailUtils.getALEipUserAddrs(form_data.getMemberList(), ALEipUtils
             .getUserId(rundata), false);
         String subject =
-          "[" + DatabaseOrmService.getInstance().getAlias() + "]スケジュール";
-        String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+          "["
+            + ALOrgUtilsService.getAlias()
+            + "]スケジュール";
+        String org_id = ALOrgUtilsService.getAlias();
 
         // メール送信
         List<ALAdminMailMessage> messageList =
@@ -1061,8 +1063,10 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           ALMailUtils.getALEipUserAddrs(form_data.getMemberList(), ALEipUtils
             .getUserId(rundata), false);
         String subject =
-          "[" + DatabaseOrmService.getInstance().getAlias() + "]スケジュール";
-        String org_id = DatabaseOrmService.getInstance().getOrgId(rundata);
+          "["
+            + ALOrgUtilsService.getAlias()
+            + "]スケジュール";
+        String org_id = ALOrgUtilsService.getAlias();
 
         List<ALAdminMailMessage> messageList =
           new ArrayList<ALAdminMailMessage>();

@@ -37,7 +37,7 @@
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/common.min.css" media="screen,tv,print" />
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/print.min.css" media="print" />
 #ALheadScripts()
-<script type="text/javascript" src="${external_resources_url}/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
+<script type="text/javascript" src="/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
 <script type="text/javascript" src="${external_resources_url}/javascript/aipo/container.js"></script>
 </head>
 <body onload="aipo.container.renderGadgets()">

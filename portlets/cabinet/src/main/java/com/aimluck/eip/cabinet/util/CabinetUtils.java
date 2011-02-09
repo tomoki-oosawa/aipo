@@ -38,9 +38,10 @@ import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolderMap;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsFactoryService;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsHandler;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.util.orgutils.ALOrgUtilsFactoryService;
-import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
 
 /**
  * キャビネットのユーティリティクラスです。 <BR>
@@ -413,10 +414,8 @@ public class CabinetUtils {
    * @return
    */
   public static String getSaveDirPath(String orgId) {
-    ALOrgUtilsHandler handler =
-      ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
     File path =
-      handler.getDocumentPath(FOLDER_FILEDIR_CABINET, orgId, CATEGORY_KEY);
+      ALOrgUtilsService.getDocumentPath(FOLDER_FILEDIR_CABINET, CATEGORY_KEY);
     if (!path.exists()) {
       path.mkdirs();
     }

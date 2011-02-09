@@ -73,7 +73,6 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.AjaxScheduleResultData;
 import com.aimluck.eip.schedule.AjaxTermScheduleWeekContainer;
@@ -84,6 +83,7 @@ import com.aimluck.eip.schedule.ScheduleToDoWeekContainer;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.userfacility.beans.UserFacilityLiteBean;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -96,8 +96,8 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 public class ScheduleUtils {
 
   /** <code>logger</code> loger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleUtils.class.getName());
 
   /** <code>SCHEDULEMAP_TYPE_USER</code> ユーザ */
   public static final String SCHEDULEMAP_TYPE_USER = "U";
@@ -1374,6 +1374,7 @@ public class ScheduleUtils {
     Collections.sort(list, new Comparator<EipTScheduleMap>() {
       private final Calendar cal = Calendar.getInstance();
 
+      @Override
       public int compare(EipTScheduleMap o1, EipTScheduleMap o2) {
         // 開始時刻を取得
         EipTSchedule s1 = o1.getEipTSchedule();
@@ -2668,7 +2669,7 @@ public class ScheduleUtils {
     body.append(CR);
     body
       .append("[")
-      .append(DatabaseOrmService.getInstance().getAlias())
+      .append(ALOrgUtilsService.getAlias())
       .append("へのアクセス]")
       .append(CR);
     if (enableAsp) {
@@ -2681,7 +2682,9 @@ public class ScheduleUtils {
     }
 
     body.append("---------------------").append(CR);
-    body.append(DatabaseOrmService.getInstance().getAlias()).append(CR);
+    body
+      .append(ALOrgUtilsService.getAlias())
+      .append(CR);
 
     return body.toString();
   }
@@ -2744,13 +2747,15 @@ public class ScheduleUtils {
     }
     body
       .append("[")
-      .append(DatabaseOrmService.getInstance().getAlias())
+      .append(ALOrgUtilsService.getAlias())
       .append("へのアクセス]")
       .append(CR);
     body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
       ALCellularUtils.getCellularKey(destUser)).append(CR);
     body.append("---------------------").append(CR);
-    body.append(DatabaseOrmService.getInstance().getAlias()).append(CR);
+    body
+      .append(ALOrgUtilsService.getAlias())
+      .append(CR);
     return body.toString();
   }
 

@@ -33,8 +33,8 @@ import com.aimluck.eip.cayenne.om.account.EipMPost;
 import com.aimluck.eip.cayenne.om.account.EipMUserPosition;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -182,7 +182,7 @@ public class FileIOAccountCsvFileScreen extends ALCSVScreen {
 
   @Override
   protected String getFileName() {
-    return DatabaseOrmService.getInstance().getAlias() + "_users.csv";
+    return ALOrgUtilsService.getAlias() + "_users.csv";
   }
 
   /**

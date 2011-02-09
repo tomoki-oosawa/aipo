@@ -20,6 +20,8 @@
 package com.aimluck.eip.portal.controllers;
 
 // Turbine stuff
+import java.util.Map;
+
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
 import org.apache.jetspeed.portal.controllers.AbstractPortletController;
@@ -32,8 +34,7 @@ import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.orm.DatabaseOrmService;
-import com.aimluck.eip.util.orgutils.impl.PkgALOrgUtilsHandler;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 
 /**
  * A Velocity based portlet controller implementation
@@ -66,9 +67,11 @@ public class ALVelocityPortletController extends AbstractPortletController {
     context.put("config", this.getConfig());
     context.put("skin", this.getPortlets().getPortletConfig().getPortletSkin());
     context.put("template", getConfig().getInitParameter("template"));
-    context.put("alias", DatabaseOrmService.getInstance().getAlias());
-    context.put("external_resources_url", PkgALOrgUtilsHandler
-      .getExternalResourcesUrl());
+
+    Map<String, String> attribute = ALOrgUtilsService.getParameters();
+    for (Map.Entry<String, String> e : attribute.entrySet()) {
+      context.put(e.getKey(), e.getValue());
+    }
 
     // Put the request and session based contexts
     TurbinePull.populateContext(context, rundata);

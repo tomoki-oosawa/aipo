@@ -34,11 +34,9 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.util.orgutils.ALOrgUtilsFactoryService;
-import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
 
 /**
  * Velocity Portlet を扱う際の抽象クラスです。 <br />
@@ -159,10 +157,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
       ALEipConstants.ENTITY_ID));
     context.put("utils", new ALCommonUtils());
 
-    ALOrgUtilsHandler handler =
-      ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
-    Map<String, String> attribute =
-      handler.getParameters(Database.getDomainName());
+    Map<String, String> attribute = ALOrgUtilsService.getParameters();
     for (Map.Entry<String, String> e : attribute.entrySet()) {
       context.put(e.getKey(), e.getValue());
     }

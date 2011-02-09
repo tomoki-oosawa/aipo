@@ -46,7 +46,7 @@ import com.aimluck.eip.mail.util.ALEipUserAddr;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -103,8 +103,7 @@ public class CellularFormData extends ALAbstractFormData {
   @Override
   public void initField() {
     cellular_url = new ALStringField();
-    cellular_url.setFieldName(DatabaseOrmService.getInstance().getAlias()
-      + "サイトのアドレス");
+    cellular_url.setFieldName(ALOrgUtilsService.getAlias() + "サイトのアドレス");
     cellular_url.setTrim(true);
   }
 
@@ -165,11 +164,11 @@ public class CellularFormData extends ALAbstractFormData {
 
     try {
       if (url == null || url.length() == 0) {
-        msgList.add(DatabaseOrmService.getInstance().getAlias()
+        msgList.add(ALOrgUtilsService.getAlias()
           + "サイトのアドレスが未設定のため、メールを送信できませんでした。"
-          + DatabaseOrmService.getInstance().getAlias()
+          + ALOrgUtilsService.getAlias()
           + "の管理担当者にお問い合わせください。"
-          + DatabaseOrmService.getInstance().getAlias()
+          + ALOrgUtilsService.getAlias()
           + "サイトのアドレスは、管理画面で設定できます。");
         return false;
       }
@@ -192,8 +191,7 @@ public class CellularFormData extends ALAbstractFormData {
         return false;
       }
 
-      String subject =
-        "[" + DatabaseOrmService.getInstance().getAlias() + "] 携帯電話用ログインURL";
+      String subject = "[" + ALOrgUtilsService.getAlias() + "] 携帯電話用ログインURL";
       String body = createMsgForCellPhone(url);
 
       List<ALAdminMailMessage> messageList =
@@ -215,7 +213,7 @@ public class CellularFormData extends ALAbstractFormData {
 
       if (errors.size() > 0) {
         msgList.add("メールアカウントが正しく設定されていないため、メールを送信できませんでした。"
-          + DatabaseOrmService.getInstance().getAlias()
+          + ALOrgUtilsService.getAlias()
           + "の管理担当者にお問い合わせください。メールアカウントは、管理画面で設定できます。");
       }
 
@@ -262,7 +260,7 @@ public class CellularFormData extends ALAbstractFormData {
     StringBuffer body =
       new StringBuffer(JetspeedResources.getString("aipo.alias"));
     body.append("からのお知らせです。以下に記載されたURLから");
-    body.append(DatabaseOrmService.getInstance().getAlias());
+    body.append(ALOrgUtilsService.getAlias());
     body.append("にログインしてください。");
     body.append("ログインするときには通常使用しているログインパスワードを入力してください。").append(CR).append(CR);
 

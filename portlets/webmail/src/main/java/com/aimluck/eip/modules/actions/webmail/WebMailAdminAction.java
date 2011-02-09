@@ -26,7 +26,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.webmail.WebMailAccountFormData;
 import com.aimluck.eip.webmail.WebMailAccountSelectData;
 import com.aimluck.eip.webmail.WebMailAdminSettingsFormData;
@@ -94,7 +94,7 @@ public class WebMailAdminAction extends ALBaseAction {
     WebMailAccountFormData formData = new WebMailAccountFormData();
     rundata.getRequest().setAttribute(
       "account_name",
-      DatabaseOrmService.getInstance().getAlias() + "システムメールアカウント");
+      ALOrgUtilsService.getAlias() + "システムメールアカウント");
     formData.initField();
     if (formData.doInsert(this, rundata, context)) {
       // データ登録が成功したとき

@@ -62,12 +62,12 @@ import com.aimluck.eip.mail.ALMailService;
 import com.aimluck.eip.mail.util.ALEipUserAddr;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.CellScheduleResultData;
 import com.aimluck.eip.schedule.ScheduleToDoResultData;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.daemonfactory.AipoDaemonFactoryService;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.system.util.SystemUtils;
 import com.aimluck.eip.todo.util.ToDoUtils;
 import com.aimluck.eip.util.ALCellularUtils;
@@ -250,7 +250,9 @@ public class RemainderScheduleDaemon implements Daemon {
         // ASP版のときは正しいorgidを設定すること。
         String orgId = Database.getDomainName();
         String subject =
-          "[" + DatabaseOrmService.getInstance().getAlias() + "]スケジュール";
+          "["
+            + ALOrgUtilsService.getAlias()
+            + "]スケジュール";
 
         // メール送信
         List<ALAdminMailMessage> messageList =
@@ -698,7 +700,7 @@ public class RemainderScheduleDaemon implements Daemon {
     body.append(CR);
     body
       .append("[")
-      .append(DatabaseOrmService.getInstance().getAlias())
+      .append(ALOrgUtilsService.getAlias())
       .append("へのアクセス]")
       .append(CR);
 

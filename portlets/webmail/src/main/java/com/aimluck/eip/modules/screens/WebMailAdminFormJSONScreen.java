@@ -27,7 +27,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.webmail.WebMailAccountFormData;
 
 /**
@@ -51,7 +51,7 @@ public class WebMailAdminFormJSONScreen extends ALJSONScreen {
         WebMailAccountFormData formData = new WebMailAccountFormData();
         rundata.getRequest().setAttribute(
           "account_name",
-          DatabaseOrmService.getInstance().getAlias() + "システムメールアカウント");
+          ALOrgUtilsService.getAlias() + "システムメールアカウント");
         formData.initField();
         if (formData.doInsert(this, rundata, context)) {
         } else {

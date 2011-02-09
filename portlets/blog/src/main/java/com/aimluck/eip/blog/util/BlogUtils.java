@@ -64,9 +64,10 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsFactoryService;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsHandler;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.util.orgutils.ALOrgUtilsFactoryService;
-import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
 
 /**
  * ブログのユーティリティクラスです。 <BR>
@@ -576,11 +577,10 @@ public class BlogUtils {
    * @return
    */
   public static String getSaveDirPath(String orgId, int uid) {
-    ALOrgUtilsHandler handler =
-      ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
     File path =
-      new File(handler
-        .getDocumentPath(FOLDER_FILEDIR_BLOG, orgId, CATEGORY_KEY)
+      new File(ALOrgUtilsService.getDocumentPath(
+        FOLDER_FILEDIR_BLOG,
+        CATEGORY_KEY)
         + File.separator
         + uid);
     if (!path.exists()) {

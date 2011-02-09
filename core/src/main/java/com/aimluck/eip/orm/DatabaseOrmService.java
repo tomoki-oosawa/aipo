@@ -49,6 +49,7 @@ import com.aimluck.eip.common.ALDBErrorException;
  * データベースマッピングクラスです。 <br />
  * 
  */
+@Deprecated
 abstract public class DatabaseOrmService extends TurbineBaseService {
 
   /** logger */

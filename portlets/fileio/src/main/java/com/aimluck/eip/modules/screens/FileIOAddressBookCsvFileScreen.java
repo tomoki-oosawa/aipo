@@ -28,8 +28,8 @@ import org.apache.turbine.util.RunData;
 import com.aimluck.eip.cayenne.om.portlet.EipMAddressbook;
 import com.aimluck.eip.cayenne.om.portlet.EipMAddressbookCompany;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 
 /**
  *
@@ -156,6 +156,7 @@ public class FileIOAddressBookCsvFileScreen extends ALCSVScreen {
 
   @Override
   protected String getFileName() {
-    return DatabaseOrmService.getInstance().getAlias() + "_addressbook.csv";
+    return ALOrgUtilsService.getAlias()
+      + "_addressbook.csv";
   }
 }

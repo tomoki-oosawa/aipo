@@ -29,8 +29,8 @@ import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -39,9 +39,8 @@ import com.aimluck.eip.util.ALEipUtils;
  */
 public class FileIOScheduleCsvFileScreen extends ALCSVScreen {
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(FileIOScheduleCsvFileScreen.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(FileIOScheduleCsvFileScreen.class.getName());
 
   /**
    * 
@@ -149,6 +148,7 @@ public class FileIOScheduleCsvFileScreen extends ALCSVScreen {
 
   @Override
   protected String getFileName() {
-    return DatabaseOrmService.getInstance().getAlias() + "_schedules.csv";
+    return ALOrgUtilsService.getAlias()
+      + "_schedules.csv";
   }
 }

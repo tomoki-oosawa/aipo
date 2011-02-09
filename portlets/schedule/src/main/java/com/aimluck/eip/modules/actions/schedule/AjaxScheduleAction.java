@@ -32,8 +32,8 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
-import com.aimluck.eip.orm.impl.PkgDatabaseOrmService;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.userfacility.beans.UserFacilityLiteBean;
 import com.aimluck.eip.userfacility.util.UserFacilityUtils;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -67,8 +67,7 @@ public class AjaxScheduleAction extends ALBaseAction {
     String tab;
 
     try {
-      PkgDatabaseOrmService pdos = new PkgDatabaseOrmService();
-      context.put("theme", pdos.getTheme());
+      context.put("theme", ALOrgUtilsService.getTheme());
 
       // 表示開始時間を取得する．
       String time_start =

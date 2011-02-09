@@ -45,6 +45,7 @@ import com.aimluck.eip.orm.DatabaseOrmService;
  * データベースマッピングクラスです。 <br />
  * 
  */
+@Deprecated
 public class PkgDatabaseOrmService extends DatabaseOrmService {
 
   /** logger */

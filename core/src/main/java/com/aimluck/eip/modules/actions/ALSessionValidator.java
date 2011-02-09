@@ -40,11 +40,9 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipManager;
-import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.util.orgutils.ALOrgUtilsFactoryService;
-import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
 
 /**
  * セッションを制御するクラスです。 <br />
@@ -80,10 +78,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     // for switching theme org by org
     Context context =
       org.apache.turbine.services.velocity.TurbineVelocity.getContext(data);
-    ALOrgUtilsHandler handler =
-      ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
-    Map<String, String> attribute =
-      handler.getParameters(Database.getDomainName());
+    Map<String, String> attribute = ALOrgUtilsService.getParameters();
     for (Map.Entry<String, String> e : attribute.entrySet()) {
       context.put(e.getKey(), e.getValue());
     }

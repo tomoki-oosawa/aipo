@@ -32,7 +32,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.common.ALAbstractSelectData;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.system.util.SystemUtils;
 
@@ -71,8 +71,7 @@ public class SystemNetworkSelectData extends
   protected EipMCompany selectDetail(RunData rundata, Context context) {
     servername = rundata.getServletConfig().getServletName();
 
-    String company_id =
-      rundata.getParameters().getString(DatabaseOrmService.ORG_PRE, "");
+    String company_id = Database.getDomainName();
     if (company_id == null || "".equals(company_id)) {
       endword = "";
     } else {

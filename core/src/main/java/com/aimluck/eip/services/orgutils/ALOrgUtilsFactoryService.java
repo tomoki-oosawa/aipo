@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.aimluck.eip.util.orgutils;
+package com.aimluck.eip.services.orgutils;
 
 import javax.servlet.ServletConfig;
 

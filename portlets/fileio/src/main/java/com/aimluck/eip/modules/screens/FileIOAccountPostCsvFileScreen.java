@@ -27,8 +27,8 @@ import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.cayenne.om.account.EipMPost;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 
 /**
  *
@@ -108,6 +108,6 @@ public class FileIOAccountPostCsvFileScreen extends ALCSVScreen {
 
   @Override
   protected String getFileName() {
-    return DatabaseOrmService.getInstance().getAlias() + "_post.csv";
+    return ALOrgUtilsService.getAlias() + "_post.csv";
   }
 }

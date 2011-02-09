@@ -59,10 +59,10 @@ import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
@@ -468,7 +468,7 @@ public class NoteFormData extends ALAbstractFormData {
       // 携帯電話やパソコンに伝言メモをメールで送信する場合の処理
       try {
         String subject =
-          "[" + DatabaseOrmService.getInstance().getAlias() + "]伝言メモ";
+          "[" + ALOrgUtilsService.getAlias() + "]伝言メモ";
         List<ALEipUserAddr> destMemberList =
           ALMailUtils.getALEipUserAddrs(memberList, (int) loginUser
             .getUserId()
@@ -811,7 +811,7 @@ public class NoteFormData extends ALAbstractFormData {
     body.append(CR);
     body
       .append("[")
-      .append(DatabaseOrmService.getInstance().getAlias())
+      .append(ALOrgUtilsService.getAlias())
       .append("へのアクセス]")
       .append(CR);
     if (enableAsp) {
@@ -823,7 +823,9 @@ public class NoteFormData extends ALAbstractFormData {
       body.append("　").append(ALMailUtils.getLocalurl()).append(CR).append(CR);
     }
     body.append("---------------------").append(CR);
-    body.append(DatabaseOrmService.getInstance().getAlias()).append(CR);
+    body
+      .append(ALOrgUtilsService.getAlias())
+      .append(CR);
 
     return body.toString();
   }
@@ -927,13 +929,15 @@ public class NoteFormData extends ALAbstractFormData {
     body.append(CR);
     body
       .append("[")
-      .append(DatabaseOrmService.getInstance().getAlias())
+      .append(ALOrgUtilsService.getAlias())
       .append("へのアクセス]")
       .append(CR);
     body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
       ALCellularUtils.getCellularKey(destUser)).append(CR);
     body.append("---------------------").append(CR);
-    body.append(DatabaseOrmService.getInstance().getAlias()).append(CR);
+    body
+      .append(ALOrgUtilsService.getAlias())
+      .append(CR);
     return body.toString();
   }
 

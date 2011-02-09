@@ -17,19 +17,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.aimluck.eip.util.orgutils.impl;
+package com.aimluck.eip.services.orgutils.impl;
 
-import com.aimluck.eip.util.orgutils.ALOrgUtilsFactoryService;
-import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsFactoryService;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsHandler;
 
 /**
  * 同期サービス用ファクトリクラスです。 <BR>
  * 
  * 
  */
-public class PkgALOrgUtilsFactoryService extends ALOrgUtilsFactoryService {
+public class ALDefaultOrgUtilsFactoryService extends ALOrgUtilsFactoryService {
 
-  private final ALOrgUtilsHandler handler = new PkgALOrgUtilsHandler();
+  private final ALOrgUtilsHandler handler = new ALDefaultOrgUtilsHandler();
 
   @Override
   public ALOrgUtilsHandler getOrgUtilsHandler() {

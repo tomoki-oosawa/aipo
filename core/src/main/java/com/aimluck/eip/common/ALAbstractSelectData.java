@@ -33,12 +33,12 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.impl.PkgDatabaseOrmService;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -112,6 +112,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
   /**
    *
    */
+  @Override
   public void initField() {
 
   }
@@ -630,8 +631,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
    * @return
    */
   public String getTheme() {
-    PkgDatabaseOrmService pdos = new PkgDatabaseOrmService();
-    return pdos.getTheme();
+    return ALOrgUtilsService.getTheme();
   }
 
 }

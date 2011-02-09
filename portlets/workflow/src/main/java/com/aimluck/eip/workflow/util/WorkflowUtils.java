@@ -63,16 +63,16 @@ import com.aimluck.eip.mail.ALMailService;
 import com.aimluck.eip.mail.util.ALEipUserAddr;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsFactoryService;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsHandler;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.user.beans.UserLiteBean;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.util.orgutils.ALOrgUtilsFactoryService;
-import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
 import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 import com.aimluck.eip.workflow.WorkflowCategoryResultData;
 import com.aimluck.eip.workflow.WorkflowDecisionRecordData;
@@ -938,8 +938,7 @@ public class WorkflowUtils {
       List<ALEipUser> destUsers, List<String> msgList) throws Exception {
 
     String orgId = Database.getDomainName();
-    String subject =
-      "[" + DatabaseOrmService.getInstance().getAlias() + "]ワークフロー";
+    String subject = "[" + ALOrgUtilsService.getAlias() + "]ワークフロー";
 
     try {
       List<ALEipUser> memberList = new ArrayList<ALEipUser>();
@@ -1054,7 +1053,7 @@ public class WorkflowUtils {
     body.append(CR);
     body
       .append("[")
-      .append(DatabaseOrmService.getInstance().getAlias())
+      .append(ALOrgUtilsService.getAlias())
       .append("へのアクセス]")
       .append(CR);
     if (enableAsp) {
@@ -1067,7 +1066,7 @@ public class WorkflowUtils {
     }
 
     body.append("---------------------").append(CR);
-    body.append(DatabaseOrmService.getInstance().getAlias()).append(CR);
+    body.append(ALOrgUtilsService.getAlias()).append(CR);
 
     return body.toString();
   }
@@ -1158,13 +1157,13 @@ public class WorkflowUtils {
     body.append(CR);
     body
       .append("[")
-      .append(DatabaseOrmService.getInstance().getAlias())
+      .append(ALOrgUtilsService.getAlias())
       .append("へのアクセス]")
       .append(CR);
     body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
       ALCellularUtils.getCellularKey(destUser)).append(CR);
     body.append("---------------------").append(CR);
-    body.append(DatabaseOrmService.getInstance().getAlias()).append(CR);
+    body.append(ALOrgUtilsService.getAlias()).append(CR);
 
     return body.toString();
   }
@@ -1360,14 +1359,11 @@ public class WorkflowUtils {
    * @return
    */
   public static String getAbsolutePath(String orgId, int uid, String fileName) {
-    ALOrgUtilsHandler handler =
-      ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
     StringBuffer sb =
-      new StringBuffer()
-        .append(
-          handler.getDocumentPath(FOLDER_FILEDIR_WORKFLOW, orgId, CATEGORY_KEY))
-        .append(File.separator)
-        .append(uid);
+      new StringBuffer().append(
+        ALOrgUtilsService
+          .getDocumentPath(FOLDER_FILEDIR_WORKFLOW, CATEGORY_KEY)).append(
+        File.separator).append(uid);
     File f = new File(sb.toString());
     if (!f.exists()) {
       f.mkdirs();

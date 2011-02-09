@@ -38,9 +38,8 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALCellularUtils;
-import com.aimluck.eip.util.orgutils.ALOrgUtilsFactoryService;
-import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
 
 /**
  * ログイン画面を表示するアクションクラスです。
@@ -51,8 +50,6 @@ public class CellAccountLoginAction extends ALBaseAction {
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(CellAccountLoginAction.class.getName());
-
-  private String orgId;
 
   /**
    * @param portlet
@@ -70,11 +67,7 @@ public class CellAccountLoginAction extends ALBaseAction {
       setTemplate(rundata, "accountlogout-info");
     }
 
-    orgId = Database.getDomainName();
-
-    ALOrgUtilsHandler handler =
-      ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
-    Map<String, String> attribute = handler.getParameters(orgId);
+    Map<String, String> attribute = ALOrgUtilsService.getParameters();
     for (Map.Entry<String, String> e : attribute.entrySet()) {
       context.put(e.getKey(), e.getValue());
     }

@@ -31,7 +31,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 import com.aimluck.eip.mail.util.UnicodeCorrecter;
-import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.sk_jp.mail.MailUtility;
 import com.sun.mail.pop3.POP3Message;
 
@@ -71,6 +71,7 @@ public class ALPop3Message extends POP3Message implements ALMailMessage {
    * コンテンツを削除する．
    * 
    */
+  @Override
   public void clearContents() {
     this.content = null;
   }
@@ -119,9 +120,7 @@ public class ALPop3Message extends POP3Message implements ALMailMessage {
       }
       writer.println();
 
-      writer.println("【重要】『"
-        + DatabaseOrmService.getInstance().getAlias()
-        + "』 からのお知らせです。");
+      writer.println("【重要】『" + ALOrgUtilsService.getAlias() + "』 からのお知らせです。");
       writer.println("メールのサイズが大きすぎたため、このメールの本文を受信できませんでした。");
       writer.println("受信可能なメールサイズは、7MB までです。");
 
@@ -131,5 +130,4 @@ public class ALPop3Message extends POP3Message implements ALMailMessage {
       logger.error("Exception", e);
     }
   }
-
 }

@@ -59,9 +59,8 @@ import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.util.orgutils.ALOrgUtilsFactoryService;
-import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
 import com.sk_jp.mail.MailUtility;
 import com.sk_jp.mail.MultipartUtility;
 
@@ -320,6 +319,7 @@ public abstract class ALAbstractFolder implements ALFolder {
    * @param context
    * @return
    */
+  @Override
   public ResultList<EipTMail> getIndexRows(RunData rundata, Context context)
       throws Exception {
     try {
@@ -415,6 +415,7 @@ public abstract class ALAbstractFolder implements ALFolder {
    * 
    * @return
    */
+  @Override
   public List<String> loadUID() {
     List<String> oldUIDL = new ArrayList<String>();
 
@@ -455,6 +456,7 @@ public abstract class ALAbstractFolder implements ALFolder {
    * 
    * @param oldUIDL
    */
+  @Override
   public void saveUID(List<String> oldUIDL) {
     PrintWriter writer = null;
     try {
@@ -479,6 +481,7 @@ public abstract class ALAbstractFolder implements ALFolder {
     }
   }
 
+  @Override
   public void setRootFolderPath(String str) {
     rootFolderPath = str;
   }
@@ -500,15 +503,14 @@ public abstract class ALAbstractFolder implements ALFolder {
    * 
    * @return
    */
+  @Override
   public String getFullName() {
     StringBuffer fullName = null;
     String categoryKeytmp = getCategoryKey();
 
     if (categoryKeytmp != null && !"".equals(categoryKeytmp)) {
-      ALOrgUtilsHandler handler =
-        ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
       File docPath =
-        handler.getDocumentPath(getRootFolderPath(), org_id, categoryKeytmp);
+        ALOrgUtilsService.getDocumentPath(getRootFolderPath(), categoryKeytmp);
       String pathStr = null;
       try {
         pathStr = docPath.getCanonicalPath();
@@ -628,6 +630,7 @@ public abstract class ALAbstractFolder implements ALFolder {
    * 
    * @param num
    */
+  @Override
   public void setRowsNum(int num) {
     if (num >= 1) {
       rows_num = num;
@@ -650,6 +653,7 @@ public abstract class ALAbstractFolder implements ALFolder {
    * 
    * @return
    */
+  @Override
   public int getStrLength() {
     return strlen;
   }
@@ -659,6 +663,7 @@ public abstract class ALAbstractFolder implements ALFolder {
    * 
    * @return
    */
+  @Override
   public int getRowsNum() {
     return rows_num;
   }
@@ -668,6 +673,7 @@ public abstract class ALAbstractFolder implements ALFolder {
    * 
    * @return
    */
+  @Override
   public int getCount() {
     return count;
   }
@@ -677,6 +683,7 @@ public abstract class ALAbstractFolder implements ALFolder {
    * 
    * @return
    */
+  @Override
   public int getPagesNum() {
     return pages_num;
   }
@@ -686,6 +693,7 @@ public abstract class ALAbstractFolder implements ALFolder {
    * 
    * @return
    */
+  @Override
   public int getCurrentPage() {
     return current_page;
   }
@@ -694,6 +702,7 @@ public abstract class ALAbstractFolder implements ALFolder {
    * 
    * @return
    */
+  @Override
   public String getCurrentSort() {
     return current_sort;
   }
@@ -702,6 +711,7 @@ public abstract class ALAbstractFolder implements ALFolder {
    * 
    * @return
    */
+  @Override
   public String getCurrentSortType() {
     return current_sort_type;
   }
@@ -715,6 +725,7 @@ public abstract class ALAbstractFolder implements ALFolder {
   /**
    * @return
    */
+  @Override
   public int getStart() {
     return start;
   }

@@ -40,11 +40,9 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.util.orgutils.ALOrgUtilsFactoryService;
-import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
 
 /**
  * ブラウザにHTML（Velocity）を返すクラスです。 <br />
@@ -124,6 +122,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
    * 
    * @param obj
    */
+  @Override
   public void setResultData(Object obj) {
     result = obj;
   }
@@ -132,6 +131,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
    * 
    * @param obj
    */
+  @Override
   public void addResultData(Object obj) {
     if (resultList == null) {
       resultList = new ArrayList<Object>();
@@ -143,6 +143,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
    * 
    * @param objList
    */
+  @Override
   public void setResultDataList(List<Object> objList) {
     resultList = objList;
   }
@@ -151,6 +152,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
    * 
    * @param msg
    */
+  @Override
   public void addErrorMessage(String msg) {
     if (errmsgList == null) {
       errmsgList = new ArrayList<String>();
@@ -162,6 +164,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
    * 
    * @param msg
    */
+  @Override
   public void addErrorMessages(List<String> msgs) {
     if (errmsgList == null) {
       errmsgList = new ArrayList<String>();
@@ -173,6 +176,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
    * 
    * @param msgs
    */
+  @Override
   public void setErrorMessages(List<String> msgs) {
     errmsgList = msgs;
   }
@@ -181,6 +185,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
    * 
    * @param mode
    */
+  @Override
   public void setMode(String mode) {
     this.mode = mode;
   }
@@ -189,6 +194,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
    * 
    * @return
    */
+  @Override
   public String getMode() {
     return mode;
   }
@@ -197,6 +203,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
    * 
    * @param context
    */
+  @Override
   public void putData(RunData rundata, Context context) {
     context.put(ALEipConstants.MODE, mode);
     context.put(ALEipConstants.RESULT, result);
@@ -214,10 +221,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
     context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(
       ALEipConstants.SECURE_ID));
 
-    ALOrgUtilsHandler handler =
-      ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
-    Map<String, String> attribute =
-      handler.getParameters(Database.getDomainName());
+    Map<String, String> attribute = ALOrgUtilsService.getParameters();
     for (Map.Entry<String, String> e : attribute.entrySet()) {
       context.put(e.getKey(), e.getValue());
     }

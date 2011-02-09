@@ -32,8 +32,7 @@ import com.aimluck.eip.mail.ALMailReceiverContext;
 import com.aimluck.eip.mail.ALMailSender;
 import com.aimluck.eip.mail.ALMailSenderContext;
 import com.aimluck.eip.mail.util.ALMailUtils;
-import com.aimluck.eip.util.orgutils.ALOrgUtilsFactoryService;
-import com.aimluck.eip.util.orgutils.ALOrgUtilsHandler;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 
 /**
  * ローカルのファイルシステムを利用し、メールの送受信を操作するクラスです。 <br />
@@ -97,12 +96,9 @@ public class ALFileMailHandler extends ALMailHandler {
     String categoryKeytmp = getCategoryKey();
 
     if (categoryKeytmp != null && !"".equals(categoryKeytmp)) {
-      ALOrgUtilsHandler handler =
-        ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
       File docPath =
-        handler.getDocumentPath(
+        ALOrgUtilsService.getDocumentPath(
           ALMailUtils.rootFolderPath,
-          org_id,
           categoryKeytmp);
       String pathStr = null;
       try {

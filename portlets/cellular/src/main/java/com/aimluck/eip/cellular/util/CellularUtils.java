@@ -36,7 +36,6 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCellularUtils;
 
@@ -136,8 +135,7 @@ public class CellularUtils {
         servername);
     if (domain != null && domain.length() > 0) {
       String endword;
-      String company_id =
-        rundata.getParameters().getString(DatabaseOrmService.ORG_PRE, "");
+      String company_id = Database.getDomainName();
       if (company_id == null || "".equals(company_id)) {
         endword = "";
       } else {

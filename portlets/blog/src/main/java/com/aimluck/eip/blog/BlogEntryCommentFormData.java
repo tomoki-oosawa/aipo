@@ -54,10 +54,10 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.modules.screens.BlogDetailScreen;
 import com.aimluck.eip.modules.screens.BlogEntryFormJSONScreen;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.DatabaseOrmService;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
@@ -352,7 +352,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
     body.append(CR);
     body
       .append("[")
-      .append(DatabaseOrmService.getInstance().getAlias())
+      .append(ALOrgUtilsService.getAlias())
       .append("へのアクセス]")
       .append(CR);
     if (enableAsp) {
@@ -364,7 +364,9 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
       body.append("　").append(ALMailUtils.getLocalurl()).append(CR).append(CR);
     }
     body.append("---------------------").append(CR);
-    body.append(DatabaseOrmService.getInstance().getAlias()).append(CR);
+    body
+      .append(ALOrgUtilsService.getAlias())
+      .append(CR);
 
     return body.toString();
   }
@@ -412,13 +414,15 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
     body
       .append("[")
-      .append(DatabaseOrmService.getInstance().getAlias())
+      .append(ALOrgUtilsService.getAlias())
       .append("へのアクセス]")
       .append(CR);
     body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
       ALCellularUtils.getCellularKey(destUser)).append(CR);
     body.append("---------------------").append(CR);
-    body.append(DatabaseOrmService.getInstance().getAlias()).append(CR);
+    body
+      .append(ALOrgUtilsService.getAlias())
+      .append(CR);
     return body.toString();
   }
 
