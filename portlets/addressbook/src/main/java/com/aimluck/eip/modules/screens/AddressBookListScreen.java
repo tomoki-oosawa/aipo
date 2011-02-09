@@ -39,8 +39,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AddressBookListScreen extends AddressBookScreen {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AddressBookListScreen.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AddressBookListScreen.class.getName());
 
   /**
    * 
@@ -55,7 +55,7 @@ public class AddressBookListScreen extends AddressBookScreen {
     String mode = rundata.getParameters().getString(ALEipConstants.MODE);
     try {
       if ("ajaxsearch".equals(mode)) {
-        AbstractAddressBookWordSelectData listData =
+        AbstractAddressBookWordSelectData<?, ?> listData =
           AbstractAddressBookWordSelectData.createAddressBookWordSelectData(
             rundata,
             context);

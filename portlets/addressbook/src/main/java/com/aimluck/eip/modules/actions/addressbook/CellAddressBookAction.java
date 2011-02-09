@@ -224,7 +224,7 @@ public class CellAddressBookAction extends ALBaseAction {
       throws Exception {
     context.put("isSerchRes", Boolean.valueOf(true));
 
-    AbstractAddressBookWordSelectData listData =
+    AbstractAddressBookWordSelectData<?, ?> listData =
       AbstractAddressBookWordSelectData.createAddressBookWordSelectData(
         rundata,
         context);

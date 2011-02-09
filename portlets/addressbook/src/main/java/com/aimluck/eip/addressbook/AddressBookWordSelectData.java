@@ -55,9 +55,8 @@ public class AddressBookWordSelectData extends
     AbstractAddressBookWordSelectData<EipMAddressbook, EipMAddressbook> {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AddressBookWordSelectData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AddressBookWordSelectData.class.getName());
 
   /** フィルタに利用するグループリスト */
   private List<AddressBookGroupResultData> groupList;
@@ -207,7 +206,6 @@ public class AddressBookWordSelectData extends
    * @param context
    * @return
    */
-  @SuppressWarnings( { "unchecked" })
   private SelectQuery<EipMAddressbook> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<EipMAddressbook> query = null;

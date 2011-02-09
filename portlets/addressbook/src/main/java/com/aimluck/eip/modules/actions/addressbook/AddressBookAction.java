@@ -50,8 +50,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AddressBookAction extends ALBaseAction {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AddressBookAction.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AddressBookAction.class.getName());
 
   /**
    * 
@@ -500,7 +500,7 @@ public class AddressBookAction extends ALBaseAction {
    */
   public void doAddressbook_search_list(RunData rundata, Context context)
       throws Exception {
-    AbstractAddressBookWordSelectData listData =
+    AbstractAddressBookWordSelectData<?, ?> listData =
       AbstractAddressBookWordSelectData.createAddressBookWordSelectData(
         rundata,
         context);

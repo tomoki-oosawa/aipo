@@ -36,8 +36,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AddressBookWordScreen extends ALVelocityScreen {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AddressBookWordScreen.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AddressBookWordScreen.class.getName());
 
   private String mode = null;
 
@@ -54,7 +54,7 @@ public class AddressBookWordScreen extends ALVelocityScreen {
     mode = rundata.getParameters().getString(ALEipConstants.MODE);
     try {
       if ("ajaxsearch".equals(mode)) {
-        AbstractAddressBookWordSelectData listData =
+        AbstractAddressBookWordSelectData<?, ?> listData =
           AbstractAddressBookWordSelectData.createAddressBookWordSelectData(
             rundata,
             context);
@@ -70,7 +70,7 @@ public class AddressBookWordScreen extends ALVelocityScreen {
 
         setTemplate(rundata, context, listData.getTemplateFilePath());
       } else {
-        AbstractAddressBookWordSelectData listData =
+        AbstractAddressBookWordSelectData<?, ?> listData =
           AbstractAddressBookWordSelectData.createAddressBookWordSelectData(
             rundata,
             context);

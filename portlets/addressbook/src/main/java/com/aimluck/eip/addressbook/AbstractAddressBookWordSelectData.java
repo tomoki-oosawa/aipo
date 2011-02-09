@@ -47,6 +47,7 @@ public abstract class AbstractAddressBookWordSelectData<M1, M2> extends
     ALAbstractSelectData<M1, M2> {
 
   /** logger */
+  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(AddressBookWordSelectData.class.getName());
 
@@ -56,7 +57,7 @@ public abstract class AbstractAddressBookWordSelectData<M1, M2> extends
   /** 現在選択されているタブ */
   protected String currentTab;
 
-  public static AbstractAddressBookWordSelectData createAddressBookWordSelectData(
+  public static AbstractAddressBookWordSelectData<?, ?> createAddressBookWordSelectData(
       RunData rundata, Context context) {
     if (AddressBookUtils.isSyagai(rundata, context)) {
       return new AddressBookWordSelectData();
