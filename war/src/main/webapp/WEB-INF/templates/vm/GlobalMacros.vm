@@ -27,7 +27,7 @@
 
 #macro(ALheadScripts)
 <script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/dojo/dojo.js"></script>
-<script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/aipo.ycomp.js"></script>
+<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/aipo.ycomp.js"></script>
 #end
 
 #* G L O B A L *#
@@ -1219,7 +1219,7 @@ $menu.get(0)
 #macro(ALcell_pagetitle $career $title)
 <div style="background:$config.getString("aipo.color.cell.vm.logo"); color:#ffffff; text-align:center;">${alias}</div>
 <div style="background:$config.getString("aipo.color.cell.vm.title"); text-align:center;">$title</div>
-<div style="background:$config.getString("aipo.color.cell.vm.logo");"><img src="${dislink}/images/dot.gif" width="1" height="1" /></div>
+<div style="background:$config.getString("aipo.color.cell.vm.logo");"><img src="${external_resources_url}/images/dot.gif" width="1" height="1" /></div>
 <hr style="border:solid 1px #ffffff; color:#ffffff" />
 #end
 

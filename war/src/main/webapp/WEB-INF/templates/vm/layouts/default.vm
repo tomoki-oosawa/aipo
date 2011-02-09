@@ -31,13 +31,13 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta name="copyright" content="${copyright}" />
-<link rel="shortcut icon" href="${dislink}/images/favicon.ico" />
-<link rel="stylesheet" type="text/css" href="${dislink}/themes/orange/css/extend.min.css" media="screen,tv,print" />
-<link rel="stylesheet" type="text/css" href="${dislink}/themes/orange/css/common.min.css" media="screen,tv,print" />
-<link rel="stylesheet" type="text/css" href="${dislink}/themes/orange/css/print.min.css" media="print" />
+<link rel="shortcut icon" href="${external_resources_url}/images/favicon.ico" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/orange/css/extend.min.css" media="screen,tv,print" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/orange/css/common.min.css" media="screen,tv,print" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/orange/css/print.min.css" media="print" />
 #ALheadScripts()
-<script type="text/javascript" src="/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
-<script type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/aipo/container.js"></script>
+<script type="text/javascript" src="${external_resources_url}/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
+<script type="text/javascript" src="${external_resources_url}/javascript/aipo/container.js"></script>
 </head>
 <body onload="aipo.container.renderGadgets()">
 <!-- WRAPPER -->

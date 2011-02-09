@@ -20,7 +20,7 @@
 ## ---------------------------------------------------------------------------
                             <!-- MAIN TAB -->
 #foreach ( $c in $css )
-<link rel="stylesheet" type="text/css" href="${dislink}/css/$c.Path" media="$c.Media" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/css/$c.Path" media="$c.Media" />
 #end
 #if (!$tabs )
 #parse ("jetspeed.vm")

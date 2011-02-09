@@ -32,13 +32,13 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta name="copyright" content="${copyright}" />
 <meta http-equiv="X-UA-Compatible" content="IE=emulateIE7" />
-<link rel="shortcut icon" href="${dislink}/images/favicon.ico" />
-<link rel="stylesheet" type="text/css" href="${dislink}/themes/${theme}/css/extend.min.css" media="screen,tv,print" />
-<link rel="stylesheet" type="text/css" href="${dislink}/themes/${theme}/css/common.min.css" media="screen,tv,print" />
-<link rel="stylesheet" type="text/css" href="${dislink}/themes/${theme}/css/print.min.css" media="print" />
+<link rel="shortcut icon" href="${external_resources_url}/images/favicon.ico" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/extend.min.css" media="screen,tv,print" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/common.min.css" media="screen,tv,print" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/print.min.css" media="print" />
 #ALheadScripts()
-<script type="text/javascript" src="/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
-<script type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/aipo/container.js"></script>
+<script type="text/javascript" src="${external_resources_url}/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
+<script type="text/javascript" src="${external_resources_url}/javascript/aipo/container.js"></script>
 </head>
 <body onload="aipo.container.renderGadgets()">
 <!-- WRAPPER -->
