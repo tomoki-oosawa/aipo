@@ -87,8 +87,9 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
   /**
    * Static initialization of the logger for this class
    */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(CayenneDatabasePsmlManagerService.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(CayenneDatabasePsmlManagerService.class
+      .getName());
 
   private final Map<String, PSMLDocument> psmlCache =
     new HashMap<String, PSMLDocument>();
@@ -726,7 +727,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     }
 
     return new ArrayList<Profile>().iterator(); // return empty non-null
-                                                // iterator
+    // iterator
   }
 
   /**
@@ -1415,7 +1416,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     DeleteQuery deleteQuery = new DeleteQuery(JetspeedUserProfile.class);
     Expression exp =
       ExpressionFactory.matchExp(JetspeedUserProfile.USER_NAME_PROPERTY, user
-        .getName());
+        .getUserName());
     deleteQuery.andQualifier(exp);
     dataContext.performQuery(deleteQuery);
   }

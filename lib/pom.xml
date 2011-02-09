@@ -28,7 +28,6 @@
     <module>user</module>
     <module>userfacility</module>
     <module>social</module>
-    <module>psmlimport</module>
   </modules>
 
   <dependencies>
