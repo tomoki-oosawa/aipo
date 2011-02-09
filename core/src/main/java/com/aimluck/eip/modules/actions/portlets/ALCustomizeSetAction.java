@@ -542,6 +542,8 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
   protected void maintainUserSelections(RunData rundata) throws Exception {
     int size = rundata.getParameters().getInt("size", 0);
     int previous = rundata.getParameters().getInt("previous", -1);
+
+    @SuppressWarnings("unused")
     int start = 0;
     if (previous >= 0) {
       start = previous + size;
@@ -1073,6 +1075,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
     list = PortletFilter.filterPortlets(list, filterFields, filterValues);
 
     Collections.sort(list, new Comparator<PortletEntry>() {
+      @Override
       public int compare(PortletEntry o1, PortletEntry o2) {
         String t1 =
           ((o1).getTitle() != null) ? (o1).getTitle().toLowerCase() : (o1)
@@ -1148,6 +1151,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
     }
 
     Collections.sort(list, new Comparator<RegistryEntry>() {
+      @Override
       public int compare(RegistryEntry o1, RegistryEntry o2) {
         String t1 =
           ((o1).getTitle() != null) ? (o1).getTitle() : (o1).getName();
@@ -1178,6 +1182,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
     }
 
     Collections.sort(list, new Comparator<RegistryEntry>() {
+      @Override
       public int compare(RegistryEntry o1, RegistryEntry o2) {
         String t1 =
           ((o1).getTitle() != null) ? (o1).getTitle() : (o1).getName();
