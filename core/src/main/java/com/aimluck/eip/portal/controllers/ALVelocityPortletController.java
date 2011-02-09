@@ -33,6 +33,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.orm.DatabaseOrmService;
+import com.aimluck.eip.util.orgutils.impl.PkgALOrgUtilsHandler;
 
 /**
  * A Velocity based portlet controller implementation
@@ -66,6 +67,8 @@ public class ALVelocityPortletController extends AbstractPortletController {
     context.put("skin", this.getPortlets().getPortletConfig().getPortletSkin());
     context.put("template", getConfig().getInitParameter("template"));
     context.put("alias", DatabaseOrmService.getInstance().getAlias());
+    context.put("external_resources_url", PkgALOrgUtilsHandler
+      .getExternalResourcesUrl());
 
     // Put the request and session based contexts
     TurbinePull.populateContext(context, rundata);

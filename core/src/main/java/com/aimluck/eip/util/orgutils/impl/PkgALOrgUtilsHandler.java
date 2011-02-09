@@ -99,7 +99,7 @@ public class PkgALOrgUtilsHandler extends ALOrgUtilsHandler {
     hash.put("alias_copyright", JetspeedResources
       .getString("aipo.aliascopyright"));
     hash.put("version", JetspeedResources.getString("aipo.version", ""));
-    hash.put("dislink", getDistributionServer());
+    hash.put("external_resources_url", getExternalResourcesUrl());
 
     return hash;
   }
@@ -110,16 +110,17 @@ public class PkgALOrgUtilsHandler extends ALOrgUtilsHandler {
    * @param rundata
    * @return
    */
-  public static String getDistributionServer() {
+  public static String getExternalResourcesUrl() {
 
     StringBuffer url = new StringBuffer();
 
     ALConfigHandler configHandler =
       ALConfigFactoryService.getInstance().getConfigHandler();
 
-    String protocol = configHandler.get(Property.EXTERNAL_RESOURCES_URL);
+    String external_resources_url =
+      configHandler.get(Property.EXTERNAL_RESOURCES_URL);
 
-    if (protocol.isEmpty()) {
+    if (external_resources_url.isEmpty()) {
       // get configuration parameters from Jetspeed Resources
       AipoDaemonFactoryService aipoDaemonService =
         (AipoDaemonFactoryService) TurbineServices.getInstance().getService(
@@ -128,7 +129,7 @@ public class PkgALOrgUtilsHandler extends ALOrgUtilsHandler {
       String servlet_name = servlet_config.getServletName();
       url.append("/").append(servlet_name);
     } else {
-      url.append(protocol);
+      url.append(external_resources_url);
     }
 
     return url.toString();
