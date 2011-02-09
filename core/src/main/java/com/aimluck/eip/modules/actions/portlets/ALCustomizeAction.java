@@ -58,6 +58,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.services.social.ALSocialApplicationFactoryService;
 import com.aimluck.eip.services.social.ALSocialApplicationHandler;
@@ -168,13 +169,15 @@ public class ALCustomizeAction extends VelocityPortletAction {
           clone.setTitle(param.getTitle());
           clone.setDescription(param.getDescription());
           clone.setType(param.getType());
+          String value;
           if (instance.getAttribute(name, null) != null) {
-            clone.setValue(instance.getAttribute(name));
+            value = instance.getAttribute(name);
           } else if (p.getPortletConfig().getInitParameter(name) != null) {
-            clone.setValue(p.getPortletConfig().getInitParameter(name));
+            value = p.getPortletConfig().getInitParameter(name);
           } else {
-            clone.setValue(param.getValue());
+            value = param.getValue();
           }
+          clone.setValue(ALStringUtil.sanitizing(value));
           params.add(clone);
         }
       }
@@ -183,6 +186,7 @@ public class ALCustomizeAction extends VelocityPortletAction {
     // 理由等 ：XREG からパラメータを読み込む際に順不同になっていた
     // 対処方法：パラメータ名でソートするように変更した。
     Collections.sort(params, new Comparator<Parameter>() {
+      @Override
       public int compare(Parameter a, Parameter b) {
         Parameter p1 = a;
         Parameter p2 = b;
@@ -222,7 +226,8 @@ public class ALCustomizeAction extends VelocityPortletAction {
     if (currentTitle == null && p.getPortletConfig().getMetainfo() != null) {
       currentTitle = p.getPortletConfig().getMetainfo().getTitle();
     }
-    context.put("current_title", currentTitle);
+
+    context.put("current_title", new ALStringField(currentTitle));
 
   }
 
