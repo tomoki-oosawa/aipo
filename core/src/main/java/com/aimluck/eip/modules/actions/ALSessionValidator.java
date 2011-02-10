@@ -23,6 +23,8 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.jetspeed.modules.actions.JetspeedSessionValidator;
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.services.JetspeedSecurity;
@@ -41,6 +43,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.services.config.ALConfigHandler;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -106,7 +109,9 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     }
 
     JetspeedUser user = (JetspeedUser) data.getUser();
-
+    boolean isScreenTimeout = false;
+    String externalLoginUrl =
+      ALConfigHandler.Property.EXTERNAL_LOGIN_URL.defaultValue();
     if ((user == null || !user.hasLoggedIn())
       && JetspeedResources.getBoolean("automatic.logon.enable", false)) {
 
@@ -164,6 +169,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
         }
       }
       if (newTemplate != null) {
+        isScreenTimeout = true;
         data.setScreenTemplate(newTemplate);
         // セッションの削除
         if (data.getSession() != null) {
@@ -178,6 +184,11 @@ public class ALSessionValidator extends JetspeedSessionValidator {
         if (!uri.equals("/" + servername + "/portal/")
           && !uri.equals("/" + servername + "/portal")) {
           data.setScreenTemplate("Timeout");
+
+          if (!"".equals(externalLoginUrl)) {
+            // ログイン画面へリダイレクト
+            data.setRedirectURI(externalLoginUrl);
+          }
 
           StringBuffer sb = new StringBuffer(uri);
           int count = 0;
@@ -250,6 +261,31 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       jdata.setJs_peid(paramPortlet);
     }
 
+    // Ajaxリクエストでセッションタイムアウトした場合はリダイレクトしない
+    if (!isScreenTimeout && !"".equals(externalLoginUrl)) {
+      HttpServletRequest request = data.getRequest();
+      if (data.getUser() == null
+        || (data.getUser() != null && !data.getUser().hasLoggedIn())) {
+        StringBuilder buf = new StringBuilder();
+        buf.append(request.getScheme()).append("://").append(
+          request.getServerName());
+        if (request.getServerPort() == 80 || request.getServerPort() == 443) {
+          //
+        } else {
+          buf.append(":").append(request.getServerPort());
+        }
+
+        buf.append(request.getRequestURI());
+        String queryString = request.getQueryString();
+        if (queryString != null && !"".equals(queryString)) {
+          buf.append("?").append(queryString);
+        }
+        String url = buf.toString();
+        if (!url.equals(externalLoginUrl)) {
+          data.setRedirectURI(externalLoginUrl);
+        }
+      }
+    }
   }
 
 }

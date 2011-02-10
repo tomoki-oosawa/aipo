@@ -19,10 +19,14 @@
 
 package com.aimluck.eip.modules.screens;
 
+import org.apache.jetspeed.portal.Portlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.util.template.BaseJetspeedLink;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
+
+import com.aimluck.eip.services.config.ALConfigHandler;
 
 /**
  * 通信中にタイムアウトした場合の処理クラスです。 <br />
@@ -39,6 +43,17 @@ public class ALVelocityTimeoutScreen extends ALVelocityScreen implements
   @Override
   protected void doOutput(RunData rundata, Context context) {
     String layout_template = "screens/html/AjaxTimeout.vm";
+    String externalLoginUrl =
+      ALConfigHandler.Property.EXTERNAL_LOGIN_URL.defaultValue();
+    if ("".equals(externalLoginUrl)) {
+      BaseJetspeedLink jslink = (BaseJetspeedLink) context.get("jslink");
+      Portlet portlet = (Portlet) context.get("portlet");
+      context.put("redirectUrl", jslink
+        .getPortletById(portlet.getID())
+        .toString());
+    } else {
+      context.put("redirectUrl", externalLoginUrl);
+    }
     setTemplate(rundata, context, layout_template);
   }
 }

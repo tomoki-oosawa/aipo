@@ -21,7 +21,7 @@
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
-window.location.href = '$!jslink.getPortletById($!portlet.ID)';
+window.location.href = '$!{redirectUrl}';
 
 //]]>
 </script>

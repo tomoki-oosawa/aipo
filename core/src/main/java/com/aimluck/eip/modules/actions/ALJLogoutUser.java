@@ -33,6 +33,7 @@ import org.apache.turbine.modules.ActionEvent;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.services.config.ALConfigHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -114,14 +115,21 @@ public class ALJLogoutUser extends ActionEvent {
       logger.error("Error getting jsLink", e);
     }
 
-    if (ALEipUtils.isCellularPhone(data)) {
-      data.setRedirectURI(jsLink
-        .getHomePage()
-        .addQueryData("logout", "T")
-        .toString());
+    String externalLoginUrl =
+      ALConfigHandler.Property.EXTERNAL_LOGIN_URL.defaultValue();
+    if ("".equals(externalLoginUrl)) {
+      if (ALEipUtils.isCellularPhone(data)) {
+        data.setRedirectURI(jsLink
+          .getHomePage()
+          .addQueryData("logout", "T")
+          .toString());
+      } else {
+        data.setRedirectURI(jsLink.getHomePage().toString());
+      }
     } else {
-      data.setRedirectURI(jsLink.getHomePage().toString());
+      data.setRedirectURI(externalLoginUrl);
     }
+
     JetspeedLinkFactory.putInstance(jsLink);
     jsLink = null;
     // セッションの削除
