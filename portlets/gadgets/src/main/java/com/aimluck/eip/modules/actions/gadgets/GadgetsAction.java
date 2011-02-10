@@ -19,6 +19,12 @@
 
 package com.aimluck.eip.modules.actions.gadgets;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import net.sf.json.JSONObject;
+
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -73,7 +79,6 @@ public class GadgetsAction extends ALBaseAction {
 
     String appId = portlet.getPortletConfig().getInitParameter("aid");
     String url = portlet.getPortletConfig().getInitParameter("url");
-
     boolean isActive = true;
     if (url == null || url == "") {
       url = portlet.getPortletConfig().getInitParameter("p1a-url");
@@ -95,6 +100,28 @@ public class GadgetsAction extends ALBaseAction {
     context.put("gadgetContext", gadgetContext);
     context.put("isActive", isActive);
 
+    @SuppressWarnings("unchecked")
+    Iterator<String> names = portlet.getPortletConfig().getInitParameterNames();
+    Map<String, Object> maps = new HashMap<String, Object>();
+    while (names.hasNext()) {
+      String next = names.next();
+      if (next != null && next.startsWith("pref-")) {
+        String value = portlet.getPortletConfig().getInitParameter(next);
+        String key = next.substring(5);
+        Map<String, String> maps2 = new HashMap<String, String>();
+        maps2.put("value", value);
+        maps.put(key, maps2);
+      }
+    }
+    JSONObject jsonObject = new JSONObject();
+    jsonObject.put("portletId", portlet.getID());
+    jsonObject.put("specUrl", gadgetContext.getAppUrl());
+    jsonObject.put("secureToken", gadgetContext.getSecureToken());
+    jsonObject.put("serverBase", gadgetContext.getServerBase());
+    jsonObject.put("width", "100%");
+    jsonObject.put("rpcRelay", "files/container/rpc_relay.html");
+    jsonObject.put("userPrefs", JSONObject.fromObject(maps));
+    context.put("assignData", jsonObject.toString());
     setTemplate(rundata, isMaximized ? "gadgets-list" : "gadgets");
   }
 
