@@ -294,6 +294,7 @@ public class AccountUserSelectData extends
         .getPositionId()
         .intValue()));
       rd.setDisabled(record.getDisabled());
+
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -332,6 +333,7 @@ public class AccountUserSelectData extends
       rd.setPostNameList(ALEipUtils.getPostNameList(id.intValue()));
       rd.setPositionName(ALEipUtils.getPositionName(record.getPositionId()));
       rd.setDisabled(record.getDisabled());
+      rd.setIsAdmin(ALEipUtils.isAdmin(Integer.valueOf(record.getUserId())));
       if (record.getPhoto() != null) {
         rd.setHasPhoto(true);
       } else {

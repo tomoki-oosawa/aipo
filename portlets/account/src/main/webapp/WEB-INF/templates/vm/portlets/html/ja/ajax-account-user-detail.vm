@@ -71,6 +71,12 @@ $!record <br />
 #elseif("$disabled_flg" == "F")
 #ALtdcell("有効")
 #end
+#ALtdcaption('管理者権限')
+#if($!result.Detail.Admin)
+#ALtdcell("管理者権限あり")
+#else
+#ALtdcell("管理者権限なし")
+#end
 #ALtablefooter()
 #ALbuttonheader()
 #if(!$!{noedit})

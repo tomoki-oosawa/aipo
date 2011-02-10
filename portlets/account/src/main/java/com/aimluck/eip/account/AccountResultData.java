@@ -28,7 +28,7 @@ import com.aimluck.eip.common.ALData;
 
 /**
  * ユーザーアカウントのResultDataです。 <BR>
- * 
+ *
  */
 public class AccountResultData implements ALData {
 
@@ -70,10 +70,13 @@ public class AccountResultData implements ALData {
 
   private boolean has_photo;
 
+  private boolean is_admin;
+
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
     user_id = new ALNumberField();
     user_name = new ALStringField();
@@ -89,6 +92,7 @@ public class AccountResultData implements ALData {
     disabled = new ALStringField();
 
     has_photo = false;
+    is_admin = false;
   }
 
   /**
@@ -265,6 +269,20 @@ public class AccountResultData implements ALData {
 
   public void setHasPhoto(boolean bool) {
     has_photo = bool;
+  }
+
+  /**
+   * @return is_admin
+   */
+  public boolean isAdmin() {
+    return is_admin;
+  }
+
+  /**
+   * @param is_admin
+   */
+  public void setIsAdmin(boolean is_admin) {
+    this.is_admin = is_admin;
   }
 
 }
