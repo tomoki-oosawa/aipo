@@ -41,6 +41,7 @@
 #ALtableheaderWide()
 #ALtdcaption("ポートレット名")
 #ALtditem("#ALtextfield('current_title' $!current_title '90%' 50 'active')")
+#set ($counter=0)
 #foreach ( $param in $parameters )
 #if ($param.Type && $param.Type == "invisible")
 <input type="hidden" name="$param.Name" value="$param.Value" />
@@ -54,6 +55,13 @@ $jetspeed.getPortletParameter($data, $portlet, $param.Name, $param.Value)
 <option #if ($param.Type && $param.Value == "false") selected="selected" #end>${l10n.CUSTOMIZER_PORTLET_FALSE_VM}</option>
 <option #if ($param.Type && $param.Value == "true") selected="selected" #end>${l10n.CUSTOMIZER_PORTLET_TRUE_VM}</option>
 </select>
+#elseif ($param.Type && $param.Type == "enum")
+<select name="$param.Name">
+#foreach ($item in $enums.get($counter))
+<option value="$item.Key" #if ($param.Value == $item.Key) selected="selected" #end>$item.Value</option>
+#end
+</select>
+#set ($counter=$counter+1)
 #else
 <input type="text" name="$param.Name" value="$param.Value" size="50" />
 #end

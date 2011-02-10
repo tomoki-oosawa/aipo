@@ -20,8 +20,14 @@
 package com.aimluck.eip.services.social.gadgets;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import net.sf.ezmorph.bean.MorphDynaBean;
 
 /**
  * 
@@ -44,7 +50,38 @@ public class ALGadgetSpec extends HashMap<String, Object> implements
   }
 
   @SuppressWarnings("unchecked")
+  public List<ALUserPref> getUserPrefs() {
+    List<ALUserPref> result = new ArrayList<ALUserPref>();
+    Map<String, MorphDynaBean> userPrefs =
+      (Map<String, MorphDynaBean>) get("userPrefs");
+    if (userPrefs != null) {
+      Iterator<Entry<String, MorphDynaBean>> iterator =
+        userPrefs.entrySet().iterator();
+      while (iterator.hasNext()) {
+        ALUserPref userPref = new ALUserPref();
+        Entry<String, MorphDynaBean> next = iterator.next();
+        String key = next.getKey();
+        userPref.put("name", key);
+        MorphDynaBean value = next.getValue();
+
+        // displayName
+        userPref.put("displayName", value.get("displayName"));
+        // default
+        userPref.put("default", value.get("default"));
+        // orderedEnumValues
+        userPref.put("orderedEnumValues", value.get("orderedEnumValues"));
+        // type
+        userPref.put("type", value.get("type"));
+
+        result.add(userPref);
+      }
+    }
+    return result;
+  }
+
+  @SuppressWarnings("unchecked")
   public List<ALOAuthService> getOAuthServices() {
     return (List<ALOAuthService>) get("oauthService");
   }
+
 }

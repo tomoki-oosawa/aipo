@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction;
 import org.apache.jetspeed.om.BaseSecurityReference;
@@ -61,6 +62,7 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.services.social.ALApplicationService;
+import com.aimluck.eip.services.social.gadgets.ALUserPref;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
 import com.aimluck.eip.util.ALCommonUtils;
 
@@ -182,6 +184,46 @@ public class ALCustomizeAction extends VelocityPortletAction {
       }
     }
 
+    PortletConfig pc = p.getPortletConfig();
+    if ("GadgetsTemplate".equals(pc.getName())) {
+      String appId = pc.getInitParameter("aid");
+      ALApplication app =
+        ALApplicationService
+          .get(new ALApplicationGetRequest().withAppId(appId));
+      List<List<Map.Entry<String, String>>> enumsList =
+        new ArrayList<List<Map.Entry<String, String>>>();
+      List<ALUserPref> userPrefs = app.getUserPrefs();
+      for (ALUserPref userPref : userPrefs) {
+        String name = "pref-" + userPref.getName();
+        Parameter clone = new BaseParameter();
+        clone.setName(name);
+        clone.setTitle(userPref.getDisplayName());
+        clone.setDescription(null);
+        switch (userPref.getType()) {
+          case ENUM:
+            List<Map.Entry<String, String>> enums = userPref.getEnums();
+            enumsList.add(enums);
+            clone.setType("enum");
+            break;
+          case BOOL:
+            clone.setType("boolean");
+            break;
+          default:
+            clone.setType(null);
+        }
+        String value;
+        if (instance.getAttribute(name, null) != null) {
+          value = instance.getAttribute(name);
+        } else if (p.getPortletConfig().getInitParameter(name) != null) {
+          value = p.getPortletConfig().getInitParameter(name);
+        } else {
+          value = userPref.getDefault();
+        }
+        clone.setValue(ALStringUtil.sanitizing(value));
+        params.add(clone);
+      }
+      context.put("enums", enumsList);
+    }
     // 理由等 ：XREG からパラメータを読み込む際に順不同になっていた
     // 対処方法：パラメータ名でソートするように変更した。
     Collections.sort(params, new Comparator<Parameter>() {
@@ -478,7 +520,11 @@ public class ALCustomizeAction extends VelocityPortletAction {
             newValue = "";
           }
         }
-        String regValue = regEntry.getParameter(name).getValue();
+
+        String regValue =
+          name.startsWith("pref-") ? "" : regEntry
+            .getParameter(name)
+            .getValue();
         String psmlValue = instance.getAttribute(name);
 
         // New value for this parameter exists

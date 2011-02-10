@@ -195,6 +195,7 @@ public abstract class ALSocialApplicationHandler {
       JSONArray jsonArray = (JSONArray) fromObject.get("gadgets");
       Map<String, Class<?>> classMap = new HashMap<String, Class<?>>();
       classMap.put("oauthService", ALOAuthService.class);
+      classMap.put("userPrefs", HashMap.class);
       int size = jsonArray.size();
       for (int i = 0; i < size; i++) {
         try {

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.services.social.gadgets.ALUserPref;
 
 /**
  * 
@@ -46,6 +47,8 @@ public class ALApplication implements ALData, Serializable {
 
   private List<ALOAuthConsumer> OAuthConsumers;
 
+  private List<ALUserPref> userPrefs;
+
   private int status;
 
   public ALApplication() {
@@ -55,6 +58,7 @@ public class ALApplication implements ALData, Serializable {
   /**
    * 
    */
+  @Override
   public void initField() {
     appId = new ALStringField();
     title = new ALStringField();
@@ -63,6 +67,7 @@ public class ALApplication implements ALData, Serializable {
     consumerKey = new ALStringField();
     consumerSecret = new ALStringField();
     OAuthConsumers = new ArrayList<ALOAuthConsumer>();
+    userPrefs = new ArrayList<ALUserPref>();
     status = 0;
   }
 
@@ -190,6 +195,25 @@ public class ALApplication implements ALData, Serializable {
    */
   public List<ALOAuthConsumer> getOAuthConsumers() {
     return OAuthConsumers;
+  }
+
+  /**
+   * @param userPrefs
+   *          セットする userPrefs
+   */
+  public void setUserPrefs(List<ALUserPref> userPrefs) {
+    this.userPrefs = userPrefs;
+  }
+
+  public void addUserPref(ALUserPref userPref) {
+    userPrefs.add(userPref);
+  }
+
+  /**
+   * @return userPrefs
+   */
+  public List<ALUserPref> getUserPrefs() {
+    return userPrefs;
   }
 
 }

@@ -90,6 +90,7 @@ public class ALDefaultSocialApplicationHanlder extends
       model.setConsumerSecret(app.getConsumerSecret());
       model.setUrl(app.getUrl());
       model.setStatus(app.getStatus());
+      model.setUserPrefs(gadgetSpec.getUserPrefs());
       if (request.isDetail()) {
         model.setDescription(gadgetSpec.getDescription());
       }
@@ -121,6 +122,9 @@ public class ALDefaultSocialApplicationHanlder extends
     model.setConsumerSecret(app.getConsumerSecret());
     model.setUrl(app.getUrl());
     model.setStatus(app.getStatus());
+    if (gadgetSpec != null) {
+      model.setUserPrefs(gadgetSpec.getUserPrefs());
+    }
     if (gadgetSpec != null && request.isDetail()) {
       model.setDescription(gadgetSpec.getDescription());
       List<ALOAuthConsumer> consumers = new ArrayList<ALOAuthConsumer>();
