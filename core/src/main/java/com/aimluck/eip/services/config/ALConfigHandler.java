@@ -74,7 +74,7 @@ public abstract class ALConfigHandler {
 
       @Override
       public String defaultValue() {
-        return JetspeedResources.getString("access.url.protocol", "http");
+        return JetspeedResources.getString("external.login.url", "");
       }
     };
 
