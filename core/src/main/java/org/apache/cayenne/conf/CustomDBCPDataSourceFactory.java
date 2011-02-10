@@ -32,22 +32,24 @@ public class CustomDBCPDataSourceFactory extends DBCPDataSourceFactory {
 
   @Override
   public DataSource getDataSource(String location) throws Exception {
-    String baseLocation =
-      new StringBuilder(System.getProperty("catalina.home")).append(
-        File.separator).append(location).toString();
-    FileInputStream in = null;
     DBCPDataSourceProperties properties = null;
-    try {
-      in = new FileInputStream(baseLocation);
-      Properties p = new Properties();
-      p.load(in);
-      properties = new DBCPDataSourceProperties(p);
-    } catch (Throwable t) {
-      if (in != null) {
-        try {
-          in.close();
-        } catch (Throwable ignore) {
-          // ignore
+    if (System.getProperty("catalina.home") != null) {
+      String baseLocation =
+        new StringBuilder(System.getProperty("catalina.home")).append(
+          File.separator).append(location).toString();
+      FileInputStream in = null;
+      try {
+        in = new FileInputStream(baseLocation);
+        Properties p = new Properties();
+        p.load(in);
+        properties = new DBCPDataSourceProperties(p);
+      } catch (Throwable t) {
+        if (in != null) {
+          try {
+            in.close();
+          } catch (Throwable ignore) {
+            // ignore
+          }
         }
       }
     }
