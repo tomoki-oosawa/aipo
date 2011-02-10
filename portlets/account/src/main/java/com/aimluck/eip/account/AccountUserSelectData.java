@@ -20,12 +20,17 @@
 package com.aimluck.eip.account;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.jetspeed.om.security.Group;
+import org.apache.jetspeed.om.security.Role;
+import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -44,13 +49,14 @@ import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザーアカウントの検索データを管理するためのクラスです。 <br />
- * 
+ *
  */
 public class AccountUserSelectData extends
     ALAbstractSelectData<TurbineUser, ALBaseUser> {
@@ -64,9 +70,11 @@ public class AccountUserSelectData extends
 
   private int registeredUserNum = 0;
 
+  private boolean adminFilter;
+
   /**
    * 初期化します。
-   * 
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -80,7 +88,7 @@ public class AccountUserSelectData extends
 
   /**
    * アカウント一覧を取得します。 ただし、論理削除されているアカウントは取得しません。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -105,7 +113,7 @@ public class AccountUserSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -119,18 +127,40 @@ public class AccountUserSelectData extends
       ExpressionFactory.matchAllDbExp(
         oid.getIdSnapshot(),
         Expression.GREATER_THAN);
-    Expression exp2 =
-      ExpressionFactory.matchExp(TurbineUser.COMPANY_ID_PROPERTY, Integer
-        .valueOf(1));
-    // Expression exp3 =
-    // ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY,
-    // "F");
-    Expression exp3 =
-      ExpressionFactory.noMatchExp(TurbineUser.DISABLED_PROPERTY, "T");
 
     SelectQuery<TurbineUser> query =
-      Database.query(TurbineUser.class, exp1).andQualifier(exp2).andQualifier(
-        exp3);
+      Database.query(TurbineUser.class, exp1).where(
+        Operations.eq(TurbineUser.COMPANY_ID_PROPERTY, Integer.valueOf(1)),
+        Operations.ne(TurbineUser.DISABLED_PROPERTY, "T"));
+
+    adminFilter = rundata.getParameters().getBoolean("adminfiltered");
+    if (adminFilter) {
+      try {
+        Group group = JetspeedSecurity.getGroup("LoginUser");
+        Role adminrole = JetspeedSecurity.getRole("admin");
+        List<TurbineUserGroupRole> admins =
+          Database
+            .query(TurbineUserGroupRole.class)
+            .where(
+              Operations.eq(
+                TurbineUserGroupRole.TURBINE_ROLE_PROPERTY,
+                adminrole.getId()),
+              Operations.eq(TurbineUserGroupRole.TURBINE_GROUP_PROPERTY, group
+                .getId()),
+              Operations.ne(TurbineUserGroupRole.TURBINE_USER_PROPERTY, 1))
+            .distinct(true)
+            .fetchList();
+        List<Integer> admin_ids = new ArrayList<Integer>();
+        for (TurbineUserGroupRole tugr : admins) {
+          admin_ids.add(tugr.getTurbineUser().getUserId());
+        }
+        query.andQualifier(ExpressionFactory.inDbExp(
+          TurbineUser.USER_ID_PK_COLUMN,
+          admin_ids));
+      } catch (Exception ex) {
+        logger.error("Exception", ex);
+      }
+    }
 
     String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
     current_filter = filter;
@@ -141,26 +171,24 @@ public class AccountUserSelectData extends
       || !gMap.containsKey(Integer.valueOf(filter))) {
       return query;
     }
+
     String groupName =
       (ALEipManager.getInstance().getPostMap().get(Integer.valueOf(filter)))
         .getGroupName()
         .getValue();
 
-    Expression exp4 =
-      ExpressionFactory.matchExp(TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
-        + "."
-        + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
-        + "."
-        + TurbineGroup.GROUP_NAME_PROPERTY, groupName);
-    query.andQualifier(exp4);
+    query.where(Operations.eq(TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
+      + "."
+      + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
+      + "."
+      + TurbineGroup.GROUP_NAME_PROPERTY, groupName));
 
     return query;
-    // return buildSelectQueryForFilter(query, rundata, context);
   }
 
   /**
    * フィルタ用の <code>Criteria</code> を構築します。
-   * 
+   *
    * @param crt
    * @param rundata
    * @param context
@@ -200,7 +228,7 @@ public class AccountUserSelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -218,7 +246,7 @@ public class AccountUserSelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -245,7 +273,7 @@ public class AccountUserSelectData extends
   /**
    * @param obj
    * @return
-   * 
+   *
    */
   @Override
   protected Object getResultData(TurbineUser record) {
@@ -318,7 +346,7 @@ public class AccountUserSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -333,7 +361,7 @@ public class AccountUserSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getCurrentPost() {
@@ -341,7 +369,7 @@ public class AccountUserSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -350,7 +378,7 @@ public class AccountUserSelectData extends
 
   /**
    * 登録ユーザー数を取得する．
-   * 
+   *
    * @return
    */
   public int getRegisteredUserNum() {
@@ -360,5 +388,9 @@ public class AccountUserSelectData extends
   public int getRandomNum() {
     SecureRandom random = new SecureRandom();
     return (random.nextInt() * 100);
+  }
+
+  public boolean isAdminFiltered() {
+    return adminFilter;
   }
 }

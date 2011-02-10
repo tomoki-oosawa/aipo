@@ -27,6 +27,15 @@
 #macro(ALajaxbuttonCheckboxDisable $name $url $indicator_id $portlet_id $rt)
 <input name="ajaxbuttonCheckboxDisable" class="button" type="button" value="$name" onclick="aimluck.io.ajaxCheckboxDisableSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $rt);" />
 #end
+
+#if($!result.AdminFiltered)
+#set($adminfiltered  = 1)
+#set($adminfiltered2 = 0)
+#else
+#set($adminfiltered  = 0)
+#set($adminfiltered2 = 1)
+#end
+
 ## ---------------------------------------------------------------------------
 #ALtabheader($tabs "")
 #ALspacebothheader()
@@ -38,9 +47,11 @@
 <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListScreen").addQueryData("filter","").addQueryData("filtertype","post"))">（全体）</option>
 #foreach( $record in $result.PostMap )
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListScreen").addQueryData("filter",$!record.PostId).addQueryData("filtertype","post"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.PostId.toString()) selected="selected" #end>$!record.PostName</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListScreen").addQueryData("filter",$!record.PostId).addQueryData("filtertype","post").addQueryData("adminfiltered",$adminfiltered ))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.PostId.toString()) selected="selected" #end>$!record.PostName</option>
 #end
 </select>
+<input type="checkbox" onchange="aipo.viewPage(this.value, '$!portlet.ID')" id="adminfiltercheckbox"
+value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListScreen").addQueryData("filtertype","$!result.CurrentFilter").addQueryData("adminfiltered", $adminfiltered2 ))" #if($!result.AdminFiltered) checked="checked" #end /><label for="adminfiltercheckbox">管理者権限を持つユーザーだけを表示する</label>
 #ALtditemfooter()
 #ALtablefooter()
 #if($result.List.size() == 0)
@@ -84,7 +95,7 @@ $!postname
 #end
 #ALtablefooter()
 #ALbuttonheaderRight()
-選択したユーザーを 
+選択したユーザーを
 #ALajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onReceiveMessage")
 #ALajaxbuttonCheckboxEnable('有効にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onReceiveMessage")
 #ALajaxbuttonCheckboxDisable('無効にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onReceiveMessage")
