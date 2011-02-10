@@ -225,7 +225,7 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
 
     sb.append("(SELECT ");
     sb.append(TurbineUser.USER_ID_PK_COLUMN);
-    sb.append(" FROM turbine_user_group_role WHERE ");
+    sb.append(" FROM eip_t_acl_user_role_map WHERE ");
     sb.append(EipTAclUserRoleMap.ROLE_ID_COLUMN);
     sb.append(" IN (SELECT ");
     sb.append(EipTAclUserRoleMap.ROLE_ID_COLUMN);
