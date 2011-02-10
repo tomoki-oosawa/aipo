@@ -151,6 +151,7 @@ public class AccountUserSelectData extends
             .distinct(true)
             .fetchList();
         List<Integer> admin_ids = new ArrayList<Integer>();
+        admin_ids.add(Integer.valueOf(1));
         for (TurbineUserGroupRole tugr : admins) {
           admin_ids.add(tugr.getTurbineUser().getUserId());
         }
