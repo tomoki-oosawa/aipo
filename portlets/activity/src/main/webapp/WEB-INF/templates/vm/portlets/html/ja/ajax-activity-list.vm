@@ -1,0 +1,116 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+## ---------------------------------------------------------------------------
+
+<h4>あなた宛のお知らせ</h4>
+<div style="background:#ffffff;padding:2px;">
+#if($result.List.size() == 0)
+<div class="message">あなた宛のお知らせはありません。</div>
+#else
+<table class="rowTable wide">
+<tbody>
+#foreach ($record in $result.List)
+<tr>
+<td class="thin" nowrap="nowrap">$!record.UpdateDate</td>
+<td class="thin"><img src="images/icon/icon_add.gif" width="16" height="16"></td>
+<td>
+<a href="javascript:void(0);" onclick="dijit.byId('activitychecker')._closeDropDown();aipo.common.showDialog('$!record.PopupUrl', 'P-00000000000-10000-Activity', aipo.container.onPopupGadgets );">$!record.TitleText</a>
+</td>
+<td class="thin" nowrap="nowrap">$!record.DisplayName</td>
+</tr>
+#end
+</tbody></table>
+#set($pageRange = 5)
+#set($pageTrimRange = 2)
+#set($pages = $result.PagesNum)
+#set($currentPage = $result.CurrentPage)
+#set($rowsNum = $result.RowsNum)
+#set($count = $result.Count)
+#set($from = ($currentPage - 1 ) * $rowsNum + 1)
+#if ( $currentPage * $rowsNum > $result.Count)
+#set($to = $result.Count )
+#else
+#set($to = $currentPage * $rowsNum )
+#end
+
+#set($nextLeftPage = 1 )
+#set($nextRightPage = $pages)
+#if($pages < ${pageRange} + ${pageTrimRange} + ${pageTrimRange} + 1)
+#set($showLeftRest = false)
+#set($showRightRest = false)
+#else
+## show left and right
+#set($showLeftRest = true)
+#set($showRightRest = true)
+#if($currentPage > ${pageRange})
+#set($nextLeftPage = $currentPage - $pageTrimRange )
+#if((${currentPage} + ${pageRange}) > ${pages})
+#if(${currentPage} - ${pageTrimRange} > ${pages} - ${pageRange}) #set($nextLeftPage = ${pages} - ${pageRange} + 1) #else #set($nextLeftPage = ${currentPage} - ${pageTrimRange}) #end
+#set($nextRightPage = ${pages})
+#else
+#set($nextRightPage = $currentPage + ($pageTrimRange / 2) + 1)
+#end
+#else
+#if(($currentPage + ${pageTrimRange}) < ${pageRange})
+#set($nextRightPage = $pageRange )
+#else
+#if(${currentPage} + ${pageRange} > ${pages}) #set($nextRightPage = ${pages}) #else #set($nextRightPage = $currentPage + ${pageTrimRange}) #end
+#end
+#end
+#end
+#if ($pages > 1)
+<div class="clearfix">
+  <div class="alignleft small">
+
+    <div class="pagination">
+      <ul>
+#if($currentPage > 1) #set($pre = $currentPage - 1)
+	    <li class="prev"><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$pre');" class="small">前へ</a></li>
+#else
+	    <li class="prev disabled"><a href="javascript:void(0);" class="small">前へ</a></li>
+#end
+#if($pages > $currentPage) #set($next = $currentPage + 1)
+        <li class="next"><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$next');" class="small">次へ</a></li>
+#else
+        <li class="next disabled"><a href="javascript:void(0);" class="small">次へ</a></li>
+#end
+#if($showLeftRest && $currentPage > ${pageRange})
+#foreach($page in [1..${pageTrimRange}])
+        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$page');" class="small">$page</a></li>
+#end
+        <li class="abbr">....</li>
+#end
+#foreach($page in [${nextLeftPage}..$nextRightPage])
+        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$page');" class="small">$page</a></li>
+#end
+#if($showRightRest &&  (${currentPage} + ${pageRange} - 1) < ${pages})
+#set($restRightPages = $pages - $pageTrimRange + 1)
+        <li class="abbr">....</li>
+#foreach($page in [${restRightPages}..${pages}])
+        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$page');" class="small">$page</a></li>
+#end
+#end
+      </ul>
+    </div>
+  </div>
+</div>
+#end
+#end
+</div>
