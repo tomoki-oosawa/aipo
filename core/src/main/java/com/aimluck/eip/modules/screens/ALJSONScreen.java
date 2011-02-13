@@ -43,12 +43,12 @@ import com.aimluck.eip.util.ALEipUtils;
 public abstract class ALJSONScreen extends RawScreen implements ALAction {
 
   /** <code>logger</code> loger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ALJSONScreen.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ALJSONScreen.class.getName());
 
   /** コンテントタイプ */
-  private static final String CONTENT_TYPE = "text/json;charset="
-    + ALEipConstants.DEF_CONTENT_ENCODING;
+  private static final String CONTENT_TYPE =
+    "text/json;charset=" + ALEipConstants.DEF_CONTENT_ENCODING;
 
   /** 表示モード */
   private String mode = "";
@@ -88,10 +88,8 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
       ALEipUtils.setupContext(rundata, context);
 
       StringBuffer result =
-        new StringBuffer()
-          .append("/* ")
-          .append(getJSONString(rundata, context))
-          .append(" */");
+        new StringBuffer().append(getPrefix()).append(
+          getJSONString(rundata, context)).append(getSuffix());
       byte[] byteResult =
         result.toString().getBytes(ALEipConstants.DEF_CONTENT_ENCODING);
 
@@ -206,6 +204,14 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
       rundata,
       context,
       ALEipConstants.ENTITY_ID));
+  }
+
+  protected String getPrefix() {
+    return "/*";
+  }
+
+  protected String getSuffix() {
+    return "*/";
   }
 
 }

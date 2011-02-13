@@ -36,23 +36,26 @@ import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
+import com.aimluck.eip.common.ALActivity;
 import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.common.ALOAuthConsumer;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.social.gadgets.ALGadgetSpec;
 import com.aimluck.eip.services.social.gadgets.ALOAuthService;
+import com.aimluck.eip.services.social.model.ALActivityGetRequest;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
 import com.aimluck.eip.services.social.model.ALApplicationPutRequest;
 import com.aimluck.eip.services.social.model.ALOAuthConsumerPutRequest;
 
 /**
- * 
+ *
  */
 public abstract class ALSocialApplicationHandler {
 
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ALSocialApplicationHandler.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ALSocialApplicationHandler.class
+      .getName());
 
   public abstract ResultList<ALApplication> getApplicationList(
       ALApplicationGetRequest request);
@@ -85,6 +88,13 @@ public abstract class ALSocialApplicationHandler {
   public abstract String getContainerConfig(Property property);
 
   public abstract void putContainerConfig(Property property, String value);
+
+  public abstract ResultList<ALActivity> getActivityList(
+      ALActivityGetRequest request);
+
+  public abstract ALActivity getActivity(ALActivityGetRequest request);
+
+  public abstract int getActivityCount(ALActivityGetRequest request);
 
   public static enum Property {
 

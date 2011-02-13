@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.modules.actions;
 
+import java.net.URLEncoder;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
@@ -42,8 +43,13 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipManager;
-import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.config.ALConfigHandler;
+import com.aimluck.eip.services.config.ALConfigService;
+import com.aimluck.eip.services.config.ALConfigHandler.Property;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.services.social.gadgets.ALGadgetContext;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -53,8 +59,8 @@ import com.aimluck.eip.util.ALEipUtils;
  */
 public class ALSessionValidator extends JetspeedSessionValidator {
 
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ALSessionValidator.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ALSessionValidator.class.getName());
 
   /**
    * 
@@ -286,6 +292,38 @@ public class ALSessionValidator extends JetspeedSessionValidator {
         }
       }
     }
-  }
 
+    if (loginuser != null && loginuser.hasLoggedIn()) {
+      HttpServletRequest request = ((JetspeedRunData) data).getRequest();
+      String requestUrl = request.getRequestURL().toString();
+
+      String checkActivityUrl =
+        ALConfigService.get(Property.CHECK_ACTIVITY_URL);
+      String interval = ALConfigService.get(Property.CHECK_ACTIVITY_INTERVAL);
+
+      ALEipUser eipUser = ALEipUtils.getALEipUser(data);
+      String orgId = Database.getDomainName();
+      String viewer =
+        new StringBuilder(orgId).append(":").append(
+          eipUser.getName().getValue()).toString();
+
+      ALGadgetContext gadgetContext = new ALGadgetContext(data, viewer, "/");
+
+      String relayUrl =
+        checkActivityUrl + "/gadgets/files/container/rpc_relay.html";
+      String rpctoken = String.valueOf(System.nanoTime());
+      String checkUrl =
+        new StringBuilder("".equals(checkActivityUrl)
+          ? "check.html"
+          : checkActivityUrl).append("?").append("st=").append(
+          gadgetContext.getSecureToken()).append("&parent=").append(
+          URLEncoder.encode(requestUrl, "utf-8")).append("&interval=").append(
+          interval).append("#rpctoken=").append(rpctoken).toString();
+
+      context.put("requestUrl", requestUrl);
+      context.put("relayUrl", relayUrl);
+      context.put("rpctoken", rpctoken);
+      context.put("checkUrl", checkUrl);
+    }
+  }
 }
