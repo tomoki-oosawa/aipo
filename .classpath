@@ -28,6 +28,8 @@
 	<classpathentry kind="src" output="target/test-classes" path="lib/social/src/test/java"/>
 	<classpathentry kind="src" path="lib/config/src/main/java"/>
 	<classpathentry kind="src" output="target/test-classes" path="lib/config/src/test/java"/>
+	<classpathentry kind="src" path="portlets/activity/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/activity/src/test/java"/>
 	<classpathentry kind="src" path="portlets/accessctl/src/main/java"/>
 	<classpathentry kind="src" output="target/test-classes" path="portlets/accessctl/src/test/java"/>
 	<classpathentry kind="src" path="portlets/account/src/main/java"/>

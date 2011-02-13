@@ -1,34 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <rockstarapps>
+
     
-    <file name="war/src/main/webapp/javascript/aipo/aipo-all.js">
-        <min>false</min>
-        <comp>false</comp>
-        <closureCompiler>false</closureCompiler>
-        <gZip>false</gZip>
-        <resolveImports>false</resolveImports>
-        <urlRewriting>false</urlRewriting>
-        <autoBuild>true</autoBuild>
-        <lineLength>-1</lineLength>
-        <autoTimestamps>false</autoTimestamps>
-        <removeLogs>true</removeLogs>
-        <oldFileNames>false</oldFileNames>
-        <dependencies>
-            <file>war/src/main/webapp/javascript/aipo/aipo.js</file>
-            <file>war/src/main/webapp/javascript/aipo/common/dialog.js</file>
-            <file>war/src/main/webapp/javascript/aipo/io/jsonp.js</file>
-            <file>war/src/main/webapp/javascript/aipo/widget/DateCalendar.js</file>
-            <file>war/src/main/webapp/javascript/aipo/widget/GroupSelectList.js</file>
-            <file>war/src/main/webapp/javascript/aipo/widget/MemberSelectList.js</file>
-            <file>war/src/main/webapp/javascript/aipo/widget/DropdownDatepicker.js</file>
-            <file>war/src/main/webapp/javascript/aipo/widget/DropdownGrouppicker.js</file>
-            <file>war/src/main/webapp/javascript/aipo/widget/DropdownMemberpicker.js</file>
-            <file>war/src/main/webapp/javascript/aipo/widget/GroupNormalSelectList.js</file>
-            <file>war/src/main/webapp/javascript/aipo/widget/MemberNormalSelectList.js</file>
-        </dependencies>
-        <properties/>
-    </file>
-    
+
 
 
 
@@ -65,6 +39,40 @@
 
 
 
+
+
+
+
+
+<file name="war/src/main/webapp/javascript/aipo/aipo-all.js">
+        <min>false</min>
+        <comp>false</comp>
+        <closureCompiler>false</closureCompiler>
+        <gZip>false</gZip>
+        <resolveImports>false</resolveImports>
+        <urlRewriting>false</urlRewriting>
+        <autoBuild>true</autoBuild>
+        <lineLength>-1</lineLength>
+        <autoTimestamps>false</autoTimestamps>
+        <removeLogs>true</removeLogs>
+        <oldFileNames>false</oldFileNames>
+        <dependencies>
+            <file>war/src/main/webapp/javascript/aipo/aipo.js</file>
+            <file>war/src/main/webapp/javascript/aipo/common/dialog.js</file>
+            <file>war/src/main/webapp/javascript/aipo/io/jsonp.js</file>
+            <file>war/src/main/webapp/javascript/aipo/widget/DateCalendar.js</file>
+            <file>war/src/main/webapp/javascript/aipo/widget/GroupSelectList.js</file>
+            <file>war/src/main/webapp/javascript/aipo/widget/MemberSelectList.js</file>
+            <file>war/src/main/webapp/javascript/aipo/widget/DropdownDatepicker.js</file>
+            <file>war/src/main/webapp/javascript/aipo/widget/DropdownGrouppicker.js</file>
+            <file>war/src/main/webapp/javascript/aipo/widget/DropdownMemberpicker.js</file>
+            <file>war/src/main/webapp/javascript/aipo/widget/GroupNormalSelectList.js</file>
+            <file>war/src/main/webapp/javascript/aipo/widget/MemberNormalSelectList.js</file>
+            <file>war/src/main/webapp/javascript/aipo/widget/DropdownActivityChecker.js</file>
+            <file>war/src/main/webapp/javascript/aipo/widget/ActivityList.js</file>
+        </dependencies>
+        <properties/>
+    </file>
 
 
 <file name="war/src/main/webapp/javascript/aipo.js">
