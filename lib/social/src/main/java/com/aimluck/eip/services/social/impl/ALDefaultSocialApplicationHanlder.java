@@ -27,10 +27,15 @@ import java.util.Map;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
+import com.aimluck.eip.cayenne.om.social.Activity;
+import com.aimluck.eip.cayenne.om.social.ActivityMap;
 import com.aimluck.eip.cayenne.om.social.Application;
 import com.aimluck.eip.cayenne.om.social.ContainerConfig;
 import com.aimluck.eip.cayenne.om.social.OAuthConsumer;
+import com.aimluck.eip.common.ALActivity;
 import com.aimluck.eip.common.ALApplication;
+import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALOAuthConsumer;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.Operations;
@@ -40,19 +45,22 @@ import com.aimluck.eip.services.social.ALSocialApplicationConstants;
 import com.aimluck.eip.services.social.ALSocialApplicationHandler;
 import com.aimluck.eip.services.social.gadgets.ALGadgetSpec;
 import com.aimluck.eip.services.social.gadgets.ALOAuthService;
+import com.aimluck.eip.services.social.model.ALActivityGetRequest;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
-import com.aimluck.eip.services.social.model.ALApplicationGetRequest.Status;
 import com.aimluck.eip.services.social.model.ALApplicationPutRequest;
 import com.aimluck.eip.services.social.model.ALOAuthConsumerPutRequest;
+import com.aimluck.eip.services.social.model.ALApplicationGetRequest.Status;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 
+ *
  */
 public class ALDefaultSocialApplicationHanlder extends
     ALSocialApplicationHandler {
 
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ALDefaultSocialApplicationHanlder.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ALDefaultSocialApplicationHanlder.class
+      .getName());
 
   private static ALSocialApplicationHandler instance;
 
@@ -425,5 +433,101 @@ public class ALDefaultSocialApplicationHanlder extends
       Database.rollback();
       throw new RuntimeException(t);
     }
+  }
+
+  @Override
+  public ResultList<ALActivity> getActivityList(ALActivityGetRequest request) {
+
+    SelectQuery<Activity> query = buildActivityQuery(request);
+    ResultList<Activity> resultList = query.getResultList();
+    List<ALActivity> list = new ArrayList<ALActivity>(resultList.size());
+    for (Activity model : resultList) {
+      ALActivity activity = new ALActivity();
+      activity.setId(model.getId());
+      activity.setAppId(model.getAppId());
+      activity.setTitle(model.getTitle());
+      activity.setUpdateDate(model.getUpdateDate());
+      activity.setExternalId(model.getExternalId());
+      activity.setPortletParams(model.getPortletParams());
+      try {
+        ALEipUser user = ALEipUtils.getALEipUser(model.getLoginName());
+        activity.setDisplayName(user.getAliasName().getValue());
+      } catch (ALDBErrorException e) {
+        //
+      }
+      list.add(activity);
+    }
+    ResultList<ALActivity> result =
+      new ResultList<ALActivity>(list, resultList.getLimit(), resultList
+        .getPage(), resultList.getTotalCount());
+    return result;
+  }
+
+  @Override
+  public ALActivity getActivity(ALActivityGetRequest request) {
+    SelectQuery<Activity> query = buildActivityQuery(request);
+    Activity model = query.fetchSingle();
+    if (model == null) {
+      return null;
+    }
+    ALActivity activity = new ALActivity();
+    activity.setId(model.getId());
+    activity.setAppId(model.getAppId());
+    activity.setTitle(model.getTitle());
+    activity.setUpdateDate(model.getUpdateDate());
+    activity.setExternalId(model.getExternalId());
+    activity.setPortletParams(model.getPortletParams());
+    try {
+      ALEipUser user = ALEipUtils.getALEipUser(model.getLoginName());
+      activity.setDisplayName(user.getAliasName().getValue());
+    } catch (ALDBErrorException e) {
+      //
+    }
+    return activity;
+  }
+
+  @Override
+  public int getActivityCount(ALActivityGetRequest request) {
+    SelectQuery<Activity> query = buildActivityQuery(request);
+    return query.getCount();
+  }
+
+  public void setReadActivity(int activityId, String loginName) {
+    // FIXME:
+  }
+
+  protected SelectQuery<Activity> buildActivityQuery(
+      ALActivityGetRequest request) {
+    SelectQuery<Activity> query = Database.query(Activity.class);
+    int limit = request.getLimit();
+    if (limit > 0) {
+      query.limit(limit);
+    }
+    int page = request.getPage();
+    if (page > 0) {
+      query.page(page);
+    }
+    int isRead = request.isRead();
+    if (isRead > 0) {
+      query.where(Operations.eq(Activity.ACTIVITY_MAPS_PROPERTY
+        + "."
+        + ActivityMap.IS_READ_PROPERTY, isRead));
+    }
+    String loginName = request.getLoginName();
+    if (loginName != null && loginName.length() > 0) {
+      query.where(Operations.eq(Activity.LOGIN_NAME_PROPERTY, loginName));
+    }
+    String targetLoginName = request.getTargetLoginName();
+    if (targetLoginName != null && targetLoginName.length() > 0) {
+      query.where(Operations.eq(Activity.ACTIVITY_MAPS_PROPERTY
+        + "."
+        + ActivityMap.LOGIN_NAME_PROPERTY, targetLoginName));
+    }
+    String appId = request.getAppId();
+    if (appId != null && appId.length() > 0) {
+      query.where(Operations.eq(Activity.APP_ID_PROPERTY, appId));
+    }
+    query.orderDesending(Activity.UPDATE_DATE_PROPERTY);
+    return query;
   }
 }
