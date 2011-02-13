@@ -28,6 +28,19 @@ aipo.PortletLayoutManager.prototype.getGadgetChrome = function(gadget) {
     return chromeId ? document.getElementById(chromeId) : null;
 };
 
+aipo.PsmlUserPrefStore = function() {
+	shindig.UserPrefStore.call(this);
+};
+
+aipo.PsmlUserPrefStore.inherits(shindig.UserPrefStore);
+
+aipo.PsmlUserPrefStore.prototype.getPrefs = function(gadget) { };
+
+aipo.PsmlUserPrefStore.prototype.savePrefs = function(gadget) {
+
+};
+
+
 aipo.IfrGadget = {
 		getMainContent: function(continuation) {
 			var iframeId = this.getIframeId();
@@ -70,10 +83,27 @@ aipo.IfrGadget = {
 
 aipo.IfrGadgetService = function() {
 	shindig.IfrGadgetService.call(this);
+	gadgets.rpc.register('set_pref', this.setUserPref);
+	gadgets.rpc.register('set_title', this.setTitle);
 	gadgets.rpc.register('requestNavigateTo', this.requestNavigateTo);
+	gadgets.rpc.register('requestCheckActivity', this.requestCheckActivity);
+	//gadgets.rpc.register('requestSendMessage', this.requestSendMessage);
 };
 
 aipo.IfrGadgetService.inherits(shindig.IfrGadgetService);
+
+aipo.IfrGadgetService.prototype.setUserPref = function(editToken, name,
+	    value) {
+	var portletId = this.f.replace("remote_iframe_","");
+	for (var i = 1, j = arguments.length; i < j; i += 2) {
+		//
+	}
+
+};
+
+aipo.IfrGadgetService.prototype.setTitle = function(title) {
+	// not supported
+};
 
 aipo.IfrGadgetService.prototype.requestNavigateTo = function(view, opt_params) {
 	var portletId = this.f.replace("remote_iframe_","");
@@ -90,6 +120,37 @@ aipo.IfrGadgetService.prototype.requestNavigateTo = function(view, opt_params) {
 		}
 	}
 	document.location.href = url;
+};
+
+aipo.IfrGadgetService.prototype.requestCheckActivity = function() {
+	var request = {
+
+	};
+
+	var makeRequestParams = {
+			"CONTENT_TYPE" : "JSON",
+			"METHOD" : "POST",
+			"POST_DATA" : gadgets.json.stringify(request)
+	};
+
+	var url = "?template=CheckActivityJSONScreen";
+
+	gadgets.io.makeNonProxiedRequest(url,
+			handleJSONResponse,
+			makeRequestParams,
+			"application/javascript"
+	);
+
+	function handleJSONResponse(obj) {
+		if(obj.rc == 200) {
+			var data = obj.data;
+			var unreadCount = data.unreadCount;
+			var ac = dijit.byId("activitychecker");
+			if(ac) {
+				ac.onCheckActivity(unreadCount);
+			}
+		}
+	}
 };
 
 aipo.IfrContainer = function() {
@@ -132,13 +193,20 @@ aipo.IfrContainer.prototype.renderGadgets = function() {
 		gadget.setServerBase(c.serverBase);
 		this.addGadget(gadget);
 		this.renderGadget(gadget);
-	}	
+	}
+};
+
+aipo.IfrContainer.prototype.renderGadgetFromContext = function(context) {
+	var gadget = this.createGadget(context);
+	gadget.setServerBase(context.serverBase);
+	gadget.id = this.getNextGadgetInstanceId();
+	this.renderGadget(gadget);
 };
 
 shindig.BaseIfrGadget.prototype.getIframeId = function() {
 	return this.GADGET_IFRAME_PREFIX_ + this.portletId;
 };
-	
+
 shindig.BaseIfrGadget.prototype.queryIfrGadgetType_ = function() {
 	// Get the gadget metadata and check if the gadget requires the 'pubsub-2'
 	// feature.  If so, then we use OpenAjax Hub in order to create and manage
@@ -196,3 +264,12 @@ shindig.Gadget.prototype.getContent = function(continuation) {
 
 aipo.container = new aipo.IfrContainer();
 aipo.container.layoutManager = new aipo.PortletLayoutManager();
+aipo.container.userPrefStore = new aipo.PsmlUserPrefStore();
+
+aipo.container.onPopupGadgets = function(){
+	var action = document.getElementById('gadgets-popup-action');
+	if(action) {
+		location.href = action.href;
+	}
+}
+

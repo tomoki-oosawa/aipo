@@ -28,7 +28,7 @@
                               <div id="topNavi" class="alignleft caution">『${alias}}』をご試用いただき誠にありがとうございます。<br />$!{limitday}24時までご利用可能となっております。</div>
 #end
                               <div class="alignright">
-                                <div id="topField">$!data.User.LastAccessTime</div>
+                                <div id="topField"><span id="activitychecker" widgetId="activitychecker"></span>$!data.User.LastAccessTime</div>
                                 <div id="nameField">
                                   <div class="fieldMiddle">
                                     <div class="fieldRight">
@@ -53,3 +53,21 @@
                             </div>
 #end
                             <!-- /HEADER -->
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
+
+dojo.require("aipo.widget.DropdownActivityChecker");
+dojo.addOnLoad(function () {
+    var acHtml = document.getElementById("activitychecker");
+    if(acHtml){
+       var params = {
+            widgetId: "activitychecker",
+            iconURL: "themes/$!theme/images/icon/icon_message.gif",
+            iconAlt: "あなた宛のお知らせ"
+       };
+       var ac = new aipo.widget.DropdownActivityChecker(params , acHtml);
+   }
+});
+
+//]]>
+</script>

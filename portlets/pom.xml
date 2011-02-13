@@ -18,6 +18,7 @@
   <name>Aipo Portlets</name>
 
   <modules>
+    <module>activity</module>
     <module>accessctl</module>
     <module>account</module>
     <module>addressbook</module>

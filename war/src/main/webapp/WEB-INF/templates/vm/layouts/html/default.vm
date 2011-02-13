@@ -90,9 +90,15 @@ dojo.addOnLoad(function() {
     };
     new aimluck.widget.Dialog(params, "modalDialog");
     //dojo.disconnect(dojo, "loaded", "_dialog");
+#if ($data.User.hasLoggedIn())
+    gadgets.rpc.setRelayUrl("sharedStateIframe", "$relayUrl");
+    gadgets.rpc.setAuthToken("sharedStateIframe", "$rpctoken");
+    dojo.byId('sharedStateIframe').src='$checkUrl';
+#end
 });
 
 //]]>
 </script>
+<iframe id="sharedStateIframe" name="sharedStateIframe" src="about:blank" frameborder="no" scrolling="no" width="0" height="0"></iframe>
 </body>
 </html>
