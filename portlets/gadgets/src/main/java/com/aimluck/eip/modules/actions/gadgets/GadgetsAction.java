@@ -32,10 +32,10 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipUser;
-import com.aimluck.eip.gadgets.GadgetContext;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.social.ALApplicationService;
+import com.aimluck.eip.services.social.gadgets.ALGadgetContext;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -46,8 +46,8 @@ public class GadgetsAction extends ALBaseAction {
 
   /** logger */
   @SuppressWarnings("unused")
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(GadgetsAction.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(GadgetsAction.class.getName());
 
   /**
    * 
@@ -60,6 +60,12 @@ public class GadgetsAction extends ALBaseAction {
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
     buildCommonContext(portlet, context, rundata, false);
+    String view = rundata.getParameters().getString("view");
+    if ("popup".equals(view)) {
+      context.put("view", "popup");
+    } else {
+      context.put("view", "home");
+    }
   }
 
   /**
@@ -77,7 +83,10 @@ public class GadgetsAction extends ALBaseAction {
   protected void buildCommonContext(VelocityPortlet portlet, Context context,
       RunData rundata, boolean isMaximized) {
 
-    String appId = portlet.getPortletConfig().getInitParameter("aid");
+    String appId = rundata.getParameters().getString("aid");
+    if (appId == null || appId.length() == 0) {
+      appId = portlet.getPortletConfig().getInitParameter("aid");
+    }
     String url = portlet.getPortletConfig().getInitParameter("url");
     boolean isActive = true;
     if (url == null || url == "") {
@@ -95,7 +104,7 @@ public class GadgetsAction extends ALBaseAction {
         .append(user.getName().getValue())
         .toString();
 
-    GadgetContext gadgetContext = new GadgetContext(rundata, viewer, url);
+    ALGadgetContext gadgetContext = new ALGadgetContext(rundata, viewer, url);
 
     context.put("gadgetContext", gadgetContext);
     context.put("isActive", isActive);
