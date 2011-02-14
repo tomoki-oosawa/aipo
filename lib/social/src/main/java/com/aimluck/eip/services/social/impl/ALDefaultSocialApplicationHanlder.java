@@ -46,10 +46,11 @@ import com.aimluck.eip.services.social.ALSocialApplicationHandler;
 import com.aimluck.eip.services.social.gadgets.ALGadgetSpec;
 import com.aimluck.eip.services.social.gadgets.ALOAuthService;
 import com.aimluck.eip.services.social.model.ALActivityGetRequest;
+import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
+import com.aimluck.eip.services.social.model.ALApplicationGetRequest.Status;
 import com.aimluck.eip.services.social.model.ALApplicationPutRequest;
 import com.aimluck.eip.services.social.model.ALOAuthConsumerPutRequest;
-import com.aimluck.eip.services.social.model.ALApplicationGetRequest.Status;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -58,9 +59,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ALDefaultSocialApplicationHanlder extends
     ALSocialApplicationHandler {
 
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALDefaultSocialApplicationHanlder.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALDefaultSocialApplicationHanlder.class.getName());
 
   private static ALSocialApplicationHandler instance;
 
@@ -455,6 +455,12 @@ public class ALDefaultSocialApplicationHanlder extends
       } catch (ALDBErrorException e) {
         //
       }
+      String loginName = request.getTargetLoginName();
+      if (loginName != null && loginName.length() > 0) {
+        activity.setRead(isReadActivity(model.getId(), loginName));
+      } else {
+        activity.setRead(true);
+      }
       list.add(activity);
     }
     ResultList<ALActivity> result =
@@ -477,6 +483,12 @@ public class ALDefaultSocialApplicationHanlder extends
     activity.setUpdateDate(model.getUpdateDate());
     activity.setExternalId(model.getExternalId());
     activity.setPortletParams(model.getPortletParams());
+    String loginName = request.getTargetLoginName();
+    if (loginName != null && loginName.length() > 0) {
+      activity.setRead(isReadActivity(model.getId(), loginName));
+    } else {
+      activity.setRead(false);
+    }
     try {
       ALEipUser user = ALEipUtils.getALEipUser(model.getLoginName());
       activity.setDisplayName(user.getAliasName().getValue());
@@ -492,8 +504,49 @@ public class ALDefaultSocialApplicationHanlder extends
     return query.getCount();
   }
 
+  @Override
   public void setReadActivity(int activityId, String loginName) {
-    // FIXME:
+    StringBuilder b = new StringBuilder("update activity_map set is_read = 1 ");
+    b.append(" from activity where activity_map.activity_id = activity.id ");
+    b.append(" and activity.id = #bind($activityId) ");
+    b.append(" and activity_map.login_name = #bind($loginName) ");
+    String sql = b.toString();
+
+    try {
+      Database
+        .sql(ActivityMap.class, sql)
+        .param("activityId", activityId)
+        .param("loginName", loginName)
+        .execute();
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.warn(t);
+    }
+  }
+
+  public boolean isReadActivity(int activityId, String loginName) {
+    StringBuilder b =
+      new StringBuilder(
+        "select activity_map.is_read from activity_map inner join activity on activity_map.activity_id = activity.id ");
+    b.append(" and activity.id = #bind($activityId) ");
+    b.append(" and activity_map.login_name = #bind($loginName) ");
+    String sql = b.toString();
+
+    try {
+      ActivityMap activityMap =
+        Database
+          .sql(ActivityMap.class, sql)
+          .param("activityId", activityId)
+          .param("loginName", loginName)
+          .fetchSingle();
+      if (activityMap != null) {
+        return activityMap.getIsRead().intValue() == 1;
+      }
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.warn(t);
+    }
+    return false;
   }
 
   protected SelectQuery<Activity> buildActivityQuery(
@@ -508,10 +561,14 @@ public class ALDefaultSocialApplicationHanlder extends
       query.page(page);
     }
     int isRead = request.isRead();
-    if (isRead > 0) {
+    if (isRead >= 0) {
       query.where(Operations.eq(Activity.ACTIVITY_MAPS_PROPERTY
         + "."
         + ActivityMap.IS_READ_PROPERTY, isRead));
+    }
+    float priority = request.getPriority();
+    if (priority >= 0f) {
+      query.where(Operations.eq(Activity.PRIORITY_PROPERTY, priority));
     }
     String loginName = request.getLoginName();
     if (loginName != null && loginName.length() > 0) {
@@ -529,5 +586,48 @@ public class ALDefaultSocialApplicationHanlder extends
     }
     query.orderDesending(Activity.UPDATE_DATE_PROPERTY);
     return query;
+  }
+
+  /**
+   * @param request
+   */
+  @Override
+  public void createActivity(ALActivityPutRequest request) {
+    try {
+      Activity activity = Database.create(Activity.class);
+      activity.setAppId(request.getAppId());
+      activity.setLoginName(request.getLoginName());
+      activity.setBody(request.getBody());
+      activity.setExternalId(request.getExternalId());
+      // priority は 0 <= 1 の間
+      Float priority = request.getPriority();
+      if (priority == null) {
+        priority = 0f;
+      }
+      if (priority < 0) {
+        priority = 0f;
+      }
+      if (priority > 1) {
+        priority = 1f;
+      }
+      activity.setPriority(priority);
+      activity.setTitle(request.getTitle());
+      activity.setPortletParams(request.getPortletParams());
+      activity.setUpdateDate(new Date());
+
+      List<String> recipients = request.getRecipients();
+      if (recipients != null && recipients.size() > 0) {
+        for (String recipient : recipients) {
+          ActivityMap activityMap = Database.create(ActivityMap.class);
+          activityMap.setLoginName(recipient);
+          activityMap.setActivity(activity);
+          activityMap.setIsRead(0);
+        }
+      }
+      Database.commit();
+    } catch (Throwable t) {
+      Database.rollback();
+      throw new RuntimeException(t);
+    }
   }
 }

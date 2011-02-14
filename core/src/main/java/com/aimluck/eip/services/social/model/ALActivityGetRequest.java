@@ -36,6 +36,8 @@ public class ALActivityGetRequest {
 
   private String targetLoginName;
 
+  private float priority = -1f;
+
   /**
    * @return limit
    */
@@ -137,5 +139,25 @@ public class ALActivityGetRequest {
   public ALActivityGetRequest withTargetLoginName(String targetLoginName) {
     setTargetLoginName(targetLoginName);
     return this;
+  }
+
+  /**
+   * @param priority
+   *          セットする priority
+   */
+  public void setPriority(float priority) {
+    this.priority = priority;
+  }
+
+  public ALActivityGetRequest withPriority(float priority) {
+    setPriority(priority);
+    return this;
+  }
+
+  /**
+   * @return priority
+   */
+  public float getPriority() {
+    return priority;
   }
 }

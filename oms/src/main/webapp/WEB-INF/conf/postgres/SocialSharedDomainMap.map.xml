@@ -41,7 +41,7 @@
 	<db-entity name="activity_map">
 		<db-attribute name="ACTIVITY_ID" type="INTEGER"/>
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
-		<db-attribute name="IS_READ" type="SMALLINT"/>
+		<db-attribute name="IS_READ" type="INTEGER"/>
 		<db-attribute name="LOGIN_NAME" type="VARCHAR" isMandatory="true" length="32"/>
 		<db-key-generator>
 			<db-generator-type>ORACLE</db-generator-type>
@@ -122,7 +122,7 @@
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 	</obj-entity>
 	<obj-entity name="ActivityMap" className="com.aimluck.eip.cayenne.om.social.ActivityMap" dbEntityName="activity_map">
-		<obj-attribute name="isRead" type="java.lang.Short" db-attribute-path="IS_READ"/>
+		<obj-attribute name="isRead" type="java.lang.Integer" db-attribute-path="IS_READ"/>
 		<obj-attribute name="loginName" type="java.lang.String" db-attribute-path="LOGIN_NAME"/>
 	</obj-entity>
 	<obj-entity name="AppData" className="com.aimluck.eip.cayenne.om.social.AppData" dbEntityName="app_data">

@@ -28,6 +28,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletOutputStream;
@@ -282,6 +283,19 @@ public class ALEipUtils {
         ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
       if (portlets == null) {
         return null;
+      }
+
+      @SuppressWarnings("unchecked")
+      Iterator<Entry> iterator = portlets.getEntriesIterator();
+      while (iterator.hasNext()) {
+        Entry next = iterator.next();
+        if (portletId.equals(next.getId())) {
+          PortletWrapper activityWrapper =
+            (PortletWrapper) PortletFactory.getPortlet(next);
+          if (activityWrapper != null) {
+            return activityWrapper.getPortlet();
+          }
+        }
       }
 
       Portlets[] portletList = portlets.getPortletsArray();

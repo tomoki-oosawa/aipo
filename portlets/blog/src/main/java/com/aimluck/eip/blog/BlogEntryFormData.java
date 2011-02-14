@@ -140,6 +140,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
     // Title
     title = new ALStringField();
@@ -400,6 +401,9 @@ public class BlogEntryFormData extends ALAbstractFormData {
           ALEventlogConstants.PORTLET_TYPE_BLOG_ENTRY,
           title.getValue());
 
+        // アクティビティ
+        String loginName = ALEipUtils.getALEipUser(uid).getName().getValue();
+        BlogUtils.createNewBlogActivity(entry, loginName);
       }
     } catch (Exception ex) {
       Database.rollback();

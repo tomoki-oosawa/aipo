@@ -97,11 +97,18 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
-    sendEmailToPC =
-      "true".equals(ALEipUtils
-        .getPortlet(rundata, context)
-        .getPortletConfig()
-        .getInitParameter("p2a-email"));
+    // FIXME:
+    // ポートレットの表示に関する設定以外は、PSML設定で定義してはいけない。
+    // 新着情報など、Screen で呼び出す際に NULL になってしまう。
+    try {
+      sendEmailToPC =
+        "true".equals(ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p2a-email"));
+    } catch (Throwable t) {
+      sendEmailToPC = false;
+    }
 
     login_user = ALEipUtils.getALEipUser(rundata);
 
@@ -272,6 +279,12 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
           entry.getOwnerId().intValue());
       }
 
+      // アクティビティ
+      String loginName = ALEipUtils.getALEipUser(uid).getName().getValue();
+      String targetLoginName =
+        ALEipUtils.getALEipUser(entry.getOwnerId()).getName().getValue();
+      BlogUtils.createNewCommentActivity(entry, loginName, targetLoginName);
+
       // メール送信
       if (sendEmailToPC) {
         List<ALEipUser> memberList = new ArrayList<ALEipUser>();
@@ -364,9 +377,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
       body.append("　").append(ALMailUtils.getLocalurl()).append(CR).append(CR);
     }
     body.append("---------------------").append(CR);
-    body
-      .append(ALOrgUtilsService.getAlias())
-      .append(CR);
+    body.append(ALOrgUtilsService.getAlias()).append(CR);
 
     return body.toString();
   }
@@ -420,9 +431,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
     body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
       ALCellularUtils.getCellularKey(destUser)).append(CR);
     body.append("---------------------").append(CR);
-    body
-      .append(ALOrgUtilsService.getAlias())
-      .append(CR);
+    body.append(ALOrgUtilsService.getAlias()).append(CR);
     return body.toString();
   }
 

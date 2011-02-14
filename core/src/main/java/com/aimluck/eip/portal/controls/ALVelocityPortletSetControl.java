@@ -111,6 +111,9 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
     for (Enumeration<?> en = portlets.getPortlets(); en.hasMoreElements(); count++) {
       Portlet p = (Portlet) en.nextElement();
       PortalResource portalResource = new PortalResource(p);
+      if ("Activity".equals(p.getName())) {
+        continue;
+      }
 
       // Secure the tabs
       try {
@@ -257,6 +260,7 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
      * @param o2
      * @return
      */
+    @Override
     public int compare(PortletTab o1, PortletTab o2) {
       try {
         PortletTab pt1 = o1;

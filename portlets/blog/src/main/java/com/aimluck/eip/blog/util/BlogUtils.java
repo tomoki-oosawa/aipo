@@ -67,6 +67,8 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsHandler;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.services.social.ALActivityService;
+import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -804,4 +806,50 @@ public class BlogUtils {
     return true;
   }
 
+  public static void createNewBlogActivity(EipTBlogEntry blog, String loginName) {
+    String title =
+      new StringBuilder("ブログ「")
+        .append(blog.getTitle())
+        .append("」を書きました。")
+        .toString();
+    String portletParams =
+      new StringBuilder("?template=BlogDetailScreen")
+        .append("&entityid=")
+        .append(blog.getEntryId())
+        .toString();
+    ALActivityService.create(new ALActivityPutRequest()
+      .withAppId("blog")
+      .withLoginName(loginName)
+      .withPortletParams(portletParams)
+      .withTile(title)
+      .witchPriority(1f)
+      .withExternalId(String.valueOf(blog.getEntryId())));
+  }
+
+  public static void createNewCommentActivity(EipTBlogEntry blog,
+      String loginName, String targetLoginName) {
+    if (loginName.equals(targetLoginName)) {
+      return;
+    }
+    List<String> recipients = new ArrayList<String>();
+    recipients.add(targetLoginName);
+    String title =
+      new StringBuilder("ブログ「")
+        .append(blog.getTitle())
+        .append("」にコメントしました。")
+        .toString();
+    String portletParams =
+      new StringBuilder("?template=BlogDetailScreen")
+        .append("&entityid=")
+        .append(blog.getEntryId())
+        .toString();
+    ALActivityService.create(new ALActivityPutRequest()
+      .withAppId("Blog")
+      .withLoginName(loginName)
+      .withPortletParams(portletParams)
+      .withRecipients(recipients)
+      .withTile(title)
+      .witchPriority(0f)
+      .withExternalId(String.valueOf(blog.getEntryId())));
+  }
 }

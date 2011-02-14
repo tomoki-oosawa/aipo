@@ -31,6 +31,7 @@ import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.services.social.gadgets.ALGadgetContext;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
@@ -83,10 +84,22 @@ public class GadgetsPopupScreen extends ALVelocityScreen {
     jsonObject.put("width", "100%");
     jsonObject.put("rpcRelay", "files/container/rpc_relay.html");
     jsonObject.put("userPrefs", JSONObject.fromObject(maps));
+
+    String externalId = rundata.getParameters().getString("eid");
+    if (externalId != null && externalId.length() > 0) {
+      JSONObject externalJson = new JSONObject();
+      externalJson.put("externalId", externalId);
+      jsonObject.put("viewParams", externalJson);
+    }
     context.put("assignData", jsonObject.toString());
 
     String template = "portlets/html/ja/gadgets-popup.vm";
     setTemplate(rundata, context, template);
+
+    Integer activityId = rundata.getParameters().getInteger("activityId");
+    if (activityId != null && activityId > 0) {
+      ALActivityService.setRead(activityId, user.getName().getValue());
+    }
   }
 
 }

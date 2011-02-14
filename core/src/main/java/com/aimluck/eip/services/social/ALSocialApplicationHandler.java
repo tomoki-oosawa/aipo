@@ -44,6 +44,7 @@ import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.social.gadgets.ALGadgetSpec;
 import com.aimluck.eip.services.social.gadgets.ALOAuthService;
 import com.aimluck.eip.services.social.model.ALActivityGetRequest;
+import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
 import com.aimluck.eip.services.social.model.ALApplicationPutRequest;
 import com.aimluck.eip.services.social.model.ALOAuthConsumerPutRequest;
@@ -53,9 +54,8 @@ import com.aimluck.eip.services.social.model.ALOAuthConsumerPutRequest;
  */
 public abstract class ALSocialApplicationHandler {
 
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALSocialApplicationHandler.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALSocialApplicationHandler.class.getName());
 
   public abstract ResultList<ALApplication> getApplicationList(
       ALApplicationGetRequest request);
@@ -95,6 +95,10 @@ public abstract class ALSocialApplicationHandler {
   public abstract ALActivity getActivity(ALActivityGetRequest request);
 
   public abstract int getActivityCount(ALActivityGetRequest request);
+
+  public abstract void setReadActivity(int activityId, String loginName);
+
+  public abstract void createActivity(ALActivityPutRequest request);
 
   public static enum Property {
 

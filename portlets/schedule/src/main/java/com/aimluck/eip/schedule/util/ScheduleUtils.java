@@ -59,6 +59,7 @@ import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALIllegalDateException;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.eip.category.util.CommonCategoryUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
@@ -84,6 +85,8 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.services.social.ALActivityService;
+import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.userfacility.beans.UserFacilityLiteBean;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -2682,9 +2685,7 @@ public class ScheduleUtils {
     }
 
     body.append("---------------------").append(CR);
-    body
-      .append(ALOrgUtilsService.getAlias())
-      .append(CR);
+    body.append(ALOrgUtilsService.getAlias()).append(CR);
 
     return body.toString();
   }
@@ -2753,9 +2754,7 @@ public class ScheduleUtils {
     body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
       ALCellularUtils.getCellularKey(destUser)).append(CR);
     body.append("---------------------").append(CR);
-    body
-      .append(ALOrgUtilsService.getAlias())
-      .append(CR);
+    body.append(ALOrgUtilsService.getAlias()).append(CR);
     return body.toString();
   }
 
@@ -3496,5 +3495,30 @@ public class ScheduleUtils {
     }
 
     return acl_delete_other;
+  }
+
+  public static void createShareScheduleActivity(EipTSchedule schedule,
+      String loginName, List<String> recipients, boolean isNew) {
+    if (recipients != null && recipients.size() > 0) {
+      String title =
+        new StringBuilder("予定「").append(schedule.getName()).append(
+          isNew ? "」を追加しました。" : "」を編集しました。").toString();
+      String portletParams =
+        new StringBuilder("?template=ScheduleDetailScreen")
+          .append("&entityid=")
+          .append(schedule.getScheduleId())
+          .append("&view_date=")
+          .append(
+            ALDateUtil.format(schedule.getStartDate(), "yyyy-MM-dd-00-00"))
+          .toString();
+      ALActivityService.create(new ALActivityPutRequest()
+        .withAppId("schedule")
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withRecipients(recipients)
+        .withTile(title)
+        .witchPriority(0f)
+        .withExternalId(String.valueOf(schedule.getScheduleId())));
+    }
   }
 }

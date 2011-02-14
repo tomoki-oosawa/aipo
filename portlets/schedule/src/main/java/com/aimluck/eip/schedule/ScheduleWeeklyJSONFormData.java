@@ -519,7 +519,7 @@ public class ScheduleWeeklyJSONFormData {
         // イベントログに保存
         sendEventLog(rundata, context);
         /* メンバー全員に新着ポートレット登録 */
-        sendWhatsNew(schedule);
+        sendWhatsNew(schedule, false);
 
         try {
           // メール送信
@@ -530,10 +530,7 @@ public class ScheduleWeeklyJSONFormData {
             List<ALEipUserAddr> destMemberList =
               ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
                 .getUserId(rundata), false);
-            String subject =
-              "["
-                + ALOrgUtilsService.getAlias()
-                + "]スケジュール";
+            String subject = "[" + ALOrgUtilsService.getAlias() + "]スケジュール";
 
             List<ALAdminMailMessage> messageList =
               new ArrayList<ALAdminMailMessage>();
@@ -688,7 +685,7 @@ public class ScheduleWeeklyJSONFormData {
         // イベントログに保存
         sendEventLog(rundata, context);
         /* メンバー全員に新着ポートレット登録 */
-        sendWhatsNew(newSchedule);
+        sendWhatsNew(newSchedule, false);
 
         try {
           // メール送信
@@ -699,10 +696,7 @@ public class ScheduleWeeklyJSONFormData {
             List<ALEipUserAddr> destMemberList =
               ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
                 .getUserId(rundata), false);
-            String subject =
-              "["
-                + ALOrgUtilsService.getAlias()
-                + "]スケジュール";
+            String subject = "[" + ALOrgUtilsService.getAlias() + "]スケジュール";
 
             List<ALAdminMailMessage> messageList =
               new ArrayList<ALAdminMailMessage>();
@@ -847,7 +841,7 @@ public class ScheduleWeeklyJSONFormData {
         // イベントログに保存
         sendEventLog(rundata, context);
         /* メンバー全員に新着ポートレット登録 */
-        sendWhatsNew(newSchedule);
+        sendWhatsNew(newSchedule, true);
 
         try {
           // メール送信
@@ -858,10 +852,7 @@ public class ScheduleWeeklyJSONFormData {
             List<ALEipUserAddr> destMemberList =
               ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
                 .getUserId(rundata), false);
-            String subject =
-              "["
-                + ALOrgUtilsService.getAlias()
-                + "]スケジュール";
+            String subject = "[" + ALOrgUtilsService.getAlias() + "]スケジュール";
 
             List<ALAdminMailMessage> messageList =
               new ArrayList<ALAdminMailMessage>();
@@ -1010,7 +1001,7 @@ public class ScheduleWeeklyJSONFormData {
         // イベントログに保存
         sendEventLog(rundata, context);
         // メンバー全員に新着ポートレット登録
-        sendWhatsNew(newSchedule);
+        sendWhatsNew(newSchedule, true);
 
         try {
           // メール送信
@@ -1021,10 +1012,7 @@ public class ScheduleWeeklyJSONFormData {
             List<ALEipUserAddr> destMemberList =
               ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
                 .getUserId(rundata), false);
-            String subject =
-              "["
-                + ALOrgUtilsService.getAlias()
-                + "]スケジュール";
+            String subject = "[" + ALOrgUtilsService.getAlias() + "]スケジュール";
 
             List<ALAdminMailMessage> messageList =
               new ArrayList<ALAdminMailMessage>();
@@ -1113,7 +1101,7 @@ public class ScheduleWeeklyJSONFormData {
       schedule.getName());
   }
 
-  private void sendWhatsNew(EipTSchedule newSchedule) {
+  private void sendWhatsNew(EipTSchedule newSchedule, boolean isNew) {
     ALAccessControlFactoryService aclservice =
       (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
@@ -1131,6 +1119,28 @@ public class ScheduleWeeklyJSONFormData {
         WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
         newSchedule.getScheduleId().intValue(),
         _id.intValue());
+    }
+
+    // アクティビティ
+    ALEipUser loginUser = null;
+    try {
+      loginUser = ALEipUtils.getALEipUser(userId);
+    } catch (ALDBErrorException e) {
+      //
+    }
+    if (loginUser != null) {
+      String loginName = loginUser.getName().getValue();
+      List<String> recipients = new ArrayList<String>();
+      for (ALEipUser user : memberList) {
+        if (loginUser.getUserId().getValue() != user.getUserId().getValue()) {
+          recipients.add(user.getName().getValue());
+        }
+      }
+      ScheduleUtils.createShareScheduleActivity(
+        schedule,
+        loginName,
+        recipients,
+        isNew);
     }
   }
 

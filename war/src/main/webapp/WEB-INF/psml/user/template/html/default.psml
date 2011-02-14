@@ -27,6 +27,7 @@
     <security-ref parent="owner-view"/>
     <control name="TabControl"/>
     <controller name="TabController"/>
+    <entry parent="Activity"/>
     <portlets>
         <metainfo>
             <title>マイページ</title>

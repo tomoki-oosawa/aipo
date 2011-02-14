@@ -33,9 +33,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class CheckActivityJSONScreen extends ALJSONScreen {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService
-      .getLogger(CheckActivityJSONScreen.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(CheckActivityJSONScreen.class.getName());
 
   @Override
   protected String getPrefix() {
@@ -54,8 +53,16 @@ public class CheckActivityJSONScreen extends ALJSONScreen {
     JSONObject json;
 
     try {
-
       String loginName = ALEipUtils.getALEipUser(rundata).getName().getValue();
+      Integer isRead = null;
+      try {
+        isRead = rundata.getParameters().getInteger("isRead");
+      } catch (Throwable t) {
+
+      }
+      if (isRead != null & isRead.intValue() > 0) {
+        ALActivityService.setRead(isRead, loginName);
+      }
       int count =
         ALActivityService.count(new ALActivityGetRequest().withTargetLoginName(
           loginName).withRead(0));

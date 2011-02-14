@@ -22,6 +22,7 @@ package com.aimluck.eip.services.social;
 import com.aimluck.eip.common.ALActivity;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.social.model.ALActivityGetRequest;
+import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 
 /**
  *
@@ -50,4 +51,11 @@ public class ALActivityService {
     return getService().getActivityCount(request);
   }
 
+  public static void setRead(int activityId, String loginName) {
+    getService().setReadActivity(activityId, loginName);
+  }
+
+  public static void create(ALActivityPutRequest request) {
+    getService().createActivity(request);
+  }
 }

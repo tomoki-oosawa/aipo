@@ -27,13 +27,12 @@
 <table class="rowTable wide">
 <tbody>
 #foreach ($record in $result.List)
-<tr>
-<td class="thin" nowrap="nowrap">$!record.UpdateDate</td>
+<tr #if(!$record.isRead()) style="background-color:#FFE5E5;" #end>
 <td class="thin"><img src="images/icon/icon_add.gif" width="16" height="16"></td>
 <td>
-<a href="javascript:void(0);" onclick="dijit.byId('activitychecker')._closeDropDown();aipo.common.showDialog('$!record.PopupUrl', 'P-00000000000-10000-Activity', aipo.container.onPopupGadgets );">$!record.TitleText</a>
+<span class="small">$!{record.DisplayName}&nbsp;$!{record.UpdateDate}</span><br/>
+<a href="javascript:void(0);" onclick="dijit.byId('activitychecker')._closeDropDown();aipo.common.showDialog('$!{record.PopupUrl}&js_peid=$!{portletId}', '$!{portletId}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">$!record.TitleText</a>
 </td>
-<td class="thin" nowrap="nowrap">$!record.DisplayName</td>
 </tr>
 #end
 </tbody></table>

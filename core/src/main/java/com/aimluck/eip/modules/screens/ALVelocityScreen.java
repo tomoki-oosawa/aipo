@@ -106,7 +106,6 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
     mode = rundata.getParameters().getString(ALEipConstants.MODE);
     try {
       ALEipUtils.setupContext(rundata, context);
-
       this.doOutput(rundata, context);
 
     } catch (Exception ex) {

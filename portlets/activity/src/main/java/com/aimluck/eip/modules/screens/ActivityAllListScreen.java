@@ -24,17 +24,16 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.activity.ActivitySelectData;
-import com.aimluck.eip.activity.util.ActivityUtils;
+import com.aimluck.eip.activity.ActivityAllSelectData;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  *
  */
-public class ActivityListScreen extends ALVelocityScreen {
+public class ActivityAllListScreen extends ALVelocityScreen {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ActivityListScreen.class.getName());
+    .getLogger(ActivityAllListScreen.class.getName());
 
   /**
    * @param rundata
@@ -45,17 +44,19 @@ public class ActivityListScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
     try {
-      context.put("portletId", ActivityUtils.getGlobalPortletId(rundata));
 
-      ActivitySelectData listData = new ActivitySelectData();
+      ActivityAllSelectData listData = new ActivityAllSelectData();
       listData.initField();
-      listData.setRowsNum(5);
+      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p1b-rows")));
       listData.doViewList(this, rundata, context);
-      String layout_template = "portlets/html/ja/ajax-activity-list.vm";
+      String layout_template = "portlets/html/ja/ajax-activity-all-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
-      logger.error("[ActivityListScreen] Exception.", ex);
+      logger.error("[ActivityAllListScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }
+
 }

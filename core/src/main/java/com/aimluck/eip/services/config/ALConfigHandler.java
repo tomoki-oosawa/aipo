@@ -29,8 +29,8 @@ import org.apache.jetspeed.services.resources.JetspeedResources;
 public abstract class ALConfigHandler {
 
   @SuppressWarnings("unused")
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALConfigHandler.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALConfigHandler.class.getName());
 
   public abstract String get(Property property);
 
@@ -88,7 +88,7 @@ public abstract class ALConfigHandler {
     CHECK_ACTIVITY_INTERVAL("check.activity.interval") {
       @Override
       public String defaultValue() {
-        return JetspeedResources.getString("check.activity.interval", "30");
+        return JetspeedResources.getString("check.activity.interval", "300");
       }
     };
 

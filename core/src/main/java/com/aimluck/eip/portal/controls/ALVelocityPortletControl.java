@@ -212,7 +212,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
           context));
       }
     } catch (Exception e) {
-     logger.error(e);
+      logger.error(e);
     }
 
     String theme = getConfig().getInitParameter("theme", "default.vm");
@@ -493,6 +493,9 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
     for (Enumeration<?> en = portlets.getPortlets(); en.hasMoreElements(); count++) {
       Portlet p = (Portlet) en.nextElement();
       PortalResource portalResource = new PortalResource(p);
+      if ("Activity".equals(p.getName())) {
+        continue;
+      }
       // Secure the tabs
       try {
         JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
@@ -782,6 +785,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
      * @param o2
      * @return
      */
+    @Override
     public int compare(PortletTab o1, PortletTab o2) {
       try {
         PortletTab pt1 = o1;

@@ -51,6 +51,8 @@ public class ALActivity implements ALData, Serializable {
 
   private ALStringField portletParams;
 
+  private boolean isRead;
+
   public ALActivity() {
     initField();
   }
@@ -68,6 +70,7 @@ public class ALActivity implements ALData, Serializable {
     portletParams = new ALStringField();
     updateDate = new ALDateTimeField("M月d日");
     updateDateTime = new ALDateTimeField("H:mm");
+    isRead = true;
   }
 
   public int getId() {
@@ -178,5 +181,20 @@ public class ALActivity implements ALData, Serializable {
       }
       return "";
     }
+  }
+
+  /**
+   * @param isRead
+   *          セットする isRead
+   */
+  public void setRead(boolean isRead) {
+    this.isRead = isRead;
+  }
+
+  /**
+   * @return isRead
+   */
+  public boolean isRead() {
+    return isRead;
   }
 }

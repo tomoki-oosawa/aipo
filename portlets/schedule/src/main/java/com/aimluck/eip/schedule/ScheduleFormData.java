@@ -1124,6 +1124,21 @@ public class ScheduleFormData extends ALAbstractFormData {
           schedule.getScheduleId().intValue(),
           userId);
       }
+
+      // アクティビティ
+      String loginName = loginUser.getName().getValue();
+      List<String> recipients = new ArrayList<String>();
+      for (ALEipUser user : memberList) {
+        if (loginUser.getUserId().getValue() != user.getUserId().getValue()) {
+          recipients.add(user.getName().getValue());
+        }
+      }
+      ScheduleUtils.createShareScheduleActivity(
+        schedule,
+        loginName,
+        recipients,
+        true);
+
     } catch (Exception e) {
       Database.rollback();
       logger.error("[ScheduleFormData]", e);
@@ -1139,10 +1154,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         List<ALEipUserAddr> destMemberList =
           ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
             .getUserId(rundata), false);
-        String subject =
-          "["
-            + ALOrgUtilsService.getAlias()
-            + "]スケジュール";
+        String subject = "[" + ALOrgUtilsService.getAlias() + "]スケジュール";
         String orgId = Database.getDomainName();
 
         List<ALAdminMailMessage> messageList =
@@ -1193,6 +1205,7 @@ public class ScheduleFormData extends ALAbstractFormData {
     ArrayList<ALEipUser> newmemberList = new ArrayList<ALEipUser>();
     EipTSchedule schedule = null;
     EipTSchedule newSchedule = null;
+    EipTSchedule tmpSchedule = null;
     try {
       int entity_id;
       int f_size = facilityList.size();
@@ -1237,6 +1250,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         return false;
       }
       entity_id = schedule.getScheduleId().intValue();
+      tmpSchedule = schedule;
       // int ownerid = ALEipUtils.getUserId(rundata);
       int ownerid = schedule.getOwnerId();
 
@@ -1419,6 +1433,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         ScheduleUtils.insertDummySchedule(schedule, ownerid, view_date
           .getValue(), view_date.getValue(), memberIds, facilityIds);
         entity_id = newSchedule.getScheduleId().intValue();
+        tmpSchedule = newSchedule;
       } else {
         // 予定
         schedule.setName(name.getValue());
@@ -1637,6 +1652,21 @@ public class ScheduleFormData extends ALAbstractFormData {
           entity_id,
           userId);
       }
+
+      // アクティビティ
+      String loginName = loginUser.getName().getValue();
+      List<String> recipients = new ArrayList<String>();
+      for (ALEipUser user : memberList) {
+        if (loginUser.getUserId().getValue() != user.getUserId().getValue()) {
+          recipients.add(user.getName().getValue());
+        }
+      }
+      ScheduleUtils.createShareScheduleActivity(
+        tmpSchedule,
+        loginName,
+        recipients,
+        false);
+
     } catch (Exception e) {
       Database.rollback();
       logger.error("[ScheduleFormData]", e);
@@ -1652,10 +1682,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         List<ALEipUserAddr> destMemberList =
           ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
             .getUserId(rundata), false);
-        String subject =
-          "["
-            + ALOrgUtilsService.getAlias()
-            + "]スケジュール";
+        String subject = "[" + ALOrgUtilsService.getAlias() + "]スケジュール";
 
         if (edit_repeat_flag.getValue() == FLAG_EDIT_REPEAT_ONE) {
           List<ALAdminMailMessage> messageList =

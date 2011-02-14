@@ -32,11 +32,11 @@ public class _ActivityMap extends org.apache.cayenne.CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "ID";
 
-    public void setIsRead(Short isRead) {
+    public void setIsRead(Integer isRead) {
         writeProperty("isRead", isRead);
     }
-    public Short getIsRead() {
-        return (Short)readProperty("isRead");
+    public Integer getIsRead() {
+        return (Integer)readProperty("isRead");
     }
     
     

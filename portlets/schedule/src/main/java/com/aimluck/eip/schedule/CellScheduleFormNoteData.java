@@ -596,6 +596,24 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           _id.intValue());
       }
 
+      // アクティビティ
+      ALEipUser loginUser = getLoginUser();
+      List<ALEipUser> memberList = form_data.getMemberList();
+      if (loginUser != null) {
+        String loginName = loginUser.getName().getValue();
+        List<String> recipients = new ArrayList<String>();
+        for (ALEipUser user : memberList) {
+          if (loginUser.getUserId().getValue() != user.getUserId().getValue()) {
+            recipients.add(user.getName().getValue());
+          }
+        }
+        ScheduleUtils.createShareScheduleActivity(
+          schedule,
+          loginName,
+          recipients,
+          true);
+      }
+
     } catch (Exception e) {
       Database.rollback();
       logger.error("[CellScheduleFormData]", e);
@@ -611,10 +629,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         List<ALEipUserAddr> destMemberList =
           ALMailUtils.getALEipUserAddrs(form_data.getMemberList(), ALEipUtils
             .getUserId(rundata), false);
-        String subject =
-          "["
-            + ALOrgUtilsService.getAlias()
-            + "]スケジュール";
+        String subject = "[" + ALOrgUtilsService.getAlias() + "]スケジュール";
         String org_id = ALOrgUtilsService.getAlias();
 
         // メール送信
@@ -1047,6 +1062,24 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           _id.intValue());
       }
 
+      // アクティビティ
+      ALEipUser loginUser = getLoginUser();
+      List<ALEipUser> memberList = form_data.getMemberList();
+      if (loginUser != null) {
+        String loginName = loginUser.getName().getValue();
+        List<String> recipients = new ArrayList<String>();
+        for (ALEipUser user : memberList) {
+          if (loginUser.getUserId().getValue() != user.getUserId().getValue()) {
+            recipients.add(user.getName().getValue());
+          }
+        }
+        ScheduleUtils.createShareScheduleActivity(
+          schedule,
+          loginName,
+          recipients,
+          false);
+      }
+
     } catch (Exception e) {
       Database.rollback();
       logger.error("[ScheduleFormData]", e);
@@ -1062,10 +1095,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         List<ALEipUserAddr> destMemberList =
           ALMailUtils.getALEipUserAddrs(form_data.getMemberList(), ALEipUtils
             .getUserId(rundata), false);
-        String subject =
-          "["
-            + ALOrgUtilsService.getAlias()
-            + "]スケジュール";
+        String subject = "[" + ALOrgUtilsService.getAlias() + "]スケジュール";
         String org_id = ALOrgUtilsService.getAlias();
 
         List<ALAdminMailMessage> messageList =
