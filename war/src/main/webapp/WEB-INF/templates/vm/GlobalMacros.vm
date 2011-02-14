@@ -26,13 +26,13 @@
 ## ---------------------------------------------------------------------------
 
 #macro(ALheadScripts)
-<script language="JavaScript" type="text/javascript" src="/${data.getServletConfig().getServletName()}/javascript/dojo/dojo.js"></script>
+<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.js"></script>
 <script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/aipo.ycomp.js"></script>
 #end
 
 #* G L O B A L *#
 #macro(ALjavascript $file)
-<script language="JavaScript" type="text/javascript" src="$file"></script>
+<script language="JavaScript" type="text/javascript" src="${external_resources_url}/$file"></script>
 #end
 
 #macro(ALbuttonLink $title $url $image)
