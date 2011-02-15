@@ -115,11 +115,12 @@ public class ActivityAllSelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
     int page = getCurrentPage();
     int limit = getRowsNum();
+    String loginName = ALEipUtils.getALEipUser(rundata).getName().getValue();
     ResultList<ALActivity> list =
       ALActivityService.getList(new ALActivityGetRequest()
         .withLimit(limit)
         .withPage(page)
-        .withPriority(1f));
+        .withTargetLoginName(loginName));
     setPageParam(list.getTotalCount());
     return list;
   }

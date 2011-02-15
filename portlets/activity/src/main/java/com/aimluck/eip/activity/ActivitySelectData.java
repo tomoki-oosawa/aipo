@@ -99,7 +99,7 @@ public class ActivitySelectData extends
     String loginName = ALEipUtils.getALEipUser(rundata).getName().getValue();
     ResultList<ALActivity> list =
       ALActivityService.getList(new ALActivityGetRequest().withTargetLoginName(
-        loginName).withLimit(limit).withPage(page));
+        loginName).withPriority(1f).withLimit(limit).withPage(page));
     setPageParam(list.getTotalCount());
     return list;
   }

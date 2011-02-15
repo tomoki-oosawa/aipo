@@ -546,7 +546,7 @@ public class ALDefaultSocialApplicationHanlder extends
       Database.rollback();
       logger.warn(t);
     }
-    return false;
+    return true;
   }
 
   protected SelectQuery<Activity> buildActivityQuery(
@@ -576,9 +576,10 @@ public class ALDefaultSocialApplicationHanlder extends
     }
     String targetLoginName = request.getTargetLoginName();
     if (targetLoginName != null && targetLoginName.length() > 0) {
-      query.where(Operations.eq(Activity.ACTIVITY_MAPS_PROPERTY
+
+      query.where(Operations.in(Activity.ACTIVITY_MAPS_PROPERTY
         + "."
-        + ActivityMap.LOGIN_NAME_PROPERTY, targetLoginName));
+        + ActivityMap.LOGIN_NAME_PROPERTY, targetLoginName, "-1"));
     }
     String appId = request.getAppId();
     if (appId != null && appId.length() > 0) {
@@ -623,6 +624,11 @@ public class ALDefaultSocialApplicationHanlder extends
           activityMap.setActivity(activity);
           activityMap.setIsRead(0);
         }
+      } else {
+        ActivityMap activityMap = Database.create(ActivityMap.class);
+        activityMap.setLoginName("-1");
+        activityMap.setActivity(activity);
+        activityMap.setIsRead(1);
       }
       Database.commit();
     } catch (Throwable t) {

@@ -65,7 +65,7 @@ public class CheckActivityJSONScreen extends ALJSONScreen {
       }
       int count =
         ALActivityService.count(new ALActivityGetRequest().withTargetLoginName(
-          loginName).withRead(0));
+          loginName).withRead(0).withPriority(1f));
       json = new JSONObject();
       json.put("unreadCount", count);
 

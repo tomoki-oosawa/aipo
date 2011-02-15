@@ -822,7 +822,7 @@ public class BlogUtils {
       .withLoginName(loginName)
       .withPortletParams(portletParams)
       .withTile(title)
-      .witchPriority(1f)
+      .witchPriority(0f)
       .withExternalId(String.valueOf(blog.getEntryId())));
   }
 
@@ -849,7 +849,7 @@ public class BlogUtils {
       .withPortletParams(portletParams)
       .withRecipients(recipients)
       .withTile(title)
-      .witchPriority(0f)
+      .witchPriority(1f)
       .withExternalId(String.valueOf(blog.getEntryId())));
   }
 }
