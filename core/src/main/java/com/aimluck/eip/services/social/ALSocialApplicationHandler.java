@@ -96,6 +96,8 @@ public abstract class ALSocialApplicationHandler {
 
   public abstract int getActivityCount(ALActivityGetRequest request);
 
+  public abstract void setAllReadActivity(String loginName);
+
   public abstract void setReadActivity(int activityId, String loginName);
 
   public abstract void createActivity(ALActivityPutRequest request);

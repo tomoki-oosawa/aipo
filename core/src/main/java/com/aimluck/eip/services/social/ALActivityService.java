@@ -51,6 +51,10 @@ public class ALActivityService {
     return getService().getActivityCount(request);
   }
 
+  public static void setAllRead(String loginName) {
+    getService().setAllReadActivity(loginName);
+  }
+
   public static void setRead(int activityId, String loginName) {
     getService().setReadActivity(activityId, loginName);
   }
