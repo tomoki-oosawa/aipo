@@ -59,6 +59,9 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsHandler;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.services.social.ALActivityService;
+import com.aimluck.eip.services.social.model.ALActivityPutRequest;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
@@ -585,7 +588,7 @@ public class MsgboardUtils {
         query.distinct(true);
 
         List<EipTMsgboardCategoryMap> uids = query.fetchList();
-
+        List<Integer> userIds = new ArrayList<Integer>();
         if (uids != null && uids.size() != 0) {
           int size = uids.size();
           for (int i = 0; i < size; i++) {
@@ -593,11 +596,14 @@ public class MsgboardUtils {
             Integer id = uid.getUserId();
             if (id.intValue() != userid) {
               result.add(ALEipUtils.getALEipUser(id.intValue()));
+              userIds.add(id.intValue());
             }
           }
         }
+        return userIds;
 
         /* メンバー全員に新着ポートレット登録 */
+        /*-
         ALAccessControlFactoryService aclservice =
           (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
             .getInstance())
@@ -612,6 +618,7 @@ public class MsgboardUtils {
             result);
 
         return userIds;
+         */
       } catch (Exception ex) {
         logger.error("[MsgboardUtils]", ex);
         throw new ALDBErrorException();
@@ -1107,5 +1114,79 @@ public class MsgboardUtils {
     query.setQualifier(exp1);
 
     return query.getCount();
+  }
+
+  public static void createTopicActivity(EipTMsgboardTopic topic,
+      String loginName, boolean isNew) {
+    createTopicActivity(topic, loginName, null, isNew);
+  }
+
+  public static void createTopicActivity(EipTMsgboardTopic topic,
+      String loginName, List<String> recipients, boolean isNew) {
+    String title =
+      new StringBuilder("トピック「")
+        .append(ALCommonUtils.compressString(topic.getTopicName(), 30))
+        .append("」を")
+        .append(isNew ? "投稿しました。" : "編集しました。")
+        .toString();
+    String portletParams =
+      new StringBuilder("?template=MsgboardTopicDetailScreen").append(
+        "&entityid=").append(topic.getTopicId()).toString();
+
+    if (recipients != null && recipients.size() > 0) {
+      ALActivityService.create(new ALActivityPutRequest()
+        .withAppId("Msgboard")
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withRecipients(recipients)
+        .withTile(title)
+        .witchPriority(0f)
+        .withExternalId(String.valueOf(topic.getTopicId())));
+    } else {
+      ALActivityService.create(new ALActivityPutRequest()
+        .withAppId("Msgboard")
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withTile(title)
+        .witchPriority(0f)
+        .withExternalId(String.valueOf(topic.getTopicId())));
+    }
+  }
+
+  public static void createNewCommentActivity(EipTMsgboardTopic topic,
+      String loginName) {
+    createNewCommentActivity(topic, loginName, null);
+  }
+
+  public static void createNewCommentActivity(EipTMsgboardTopic topic,
+      String loginName, List<String> recipients) {
+    String title =
+      new StringBuilder("トピック「")
+        .append(ALCommonUtils.compressString(topic.getTopicName(), 30))
+        .append("」に")
+        .append("書き込みました。")
+        .toString();
+    String portletParams =
+      new StringBuilder("?template=MsgboardTopicDetailScreen").append(
+        "&entityid=").append(topic.getTopicId()).toString();
+
+    if (recipients != null && recipients.size() > 0) {
+      ALActivityService.create(new ALActivityPutRequest()
+        .withAppId("Msgboard")
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withRecipients(recipients)
+        .withTile(title)
+        .witchPriority(0f)
+        .withExternalId(String.valueOf(topic.getTopicId())));
+    } else {
+      ALActivityService.create(new ALActivityPutRequest()
+        .withAppId("Msgboard")
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withTile(title)
+        .witchPriority(0f)
+        .withExternalId(String.valueOf(topic.getTopicId())));
+    }
   }
 }

@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["アクティビティ一覧", ""]])
+#set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["更新情報一覧", ""]])
 ## ---------------------------------------------------------------------------
 
 <script language="JavaScript" type="text/javascript">

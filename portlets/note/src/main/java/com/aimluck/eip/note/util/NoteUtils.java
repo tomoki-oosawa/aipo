@@ -46,6 +46,9 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.services.social.ALActivityService;
+import com.aimluck.eip.services.social.model.ALActivityPutRequest;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
@@ -148,7 +151,7 @@ public class NoteUtils {
   }
 
   /**
-   * EipTNote オブジェクトモデルを取得する． 
+   * EipTNote オブジェクトモデルを取得する．
    * 
    * @param rundata
    * @param context
@@ -715,5 +718,44 @@ public class NoteUtils {
       return null;
     }
     return null;
+  }
+
+  public static void sendNoteActivity(EipTNote note, String loginName,
+      List<String> recipients) {
+    if (recipients != null && recipients.size() > 0) {
+      String subjectType = note.getSubjectType();
+      String subject = "";
+      if ("0".equals(subjectType)) {
+        subject = note.getCustomSubject();
+      } else if ("1".equals(subjectType)) {
+        subject = "再度電話します。";
+      } else if ("2".equals(subjectType)) {
+        subject = "折返しお電話ください。";
+      } else if ("3".equals(subjectType)) {
+        subject = "連絡があったことをお伝えください。";
+      } else if ("4".equals(subjectType)) {
+        subject = "伝言をお願いします。";
+      }
+      String title =
+        new StringBuilder(ALCommonUtils
+          .compressString(note.getClientName(), 15))
+          .append("様より伝言「")
+          .append(ALCommonUtils.compressString(subject, 15))
+          .append("」がありました。")
+          .toString();
+      String portletParams =
+        new StringBuilder("?template=NoteDetailScreen")
+          .append("&entityid=")
+          .append(note.getNoteId())
+          .toString();
+      ALActivityService.create(new ALActivityPutRequest()
+        .withAppId("Note")
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withRecipients(recipients)
+        .withTile(title)
+        .witchPriority(1f)
+        .withExternalId(String.valueOf(note.getNoteId())));
+    }
   }
 }

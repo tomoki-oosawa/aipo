@@ -448,6 +448,7 @@ public class NoteFormData extends ALAbstractFormData {
         NoteUtils.getNoteSubject(note));
 
       /* 送信先に新着ポートレット登録 */
+      List<String> recipients = new ArrayList<String>();
       if (memberList != null) {
         for (ALEipUser user : memberList) {
           if (user.getUserId().getValue() != loginUser.getUserId().getValue()) {
@@ -455,9 +456,13 @@ public class NoteFormData extends ALAbstractFormData {
               WhatsNewUtils.WHATS_NEW_TYPE_NOTE,
               note.getNoteId().intValue(),
               (int) user.getUserId().getValue());
+            recipients.add(user.getName().getValue());
           }
         }
       }
+      // アクティビティ
+      ALEipUser user = ALEipUtils.getALEipUser(rundata);
+      NoteUtils.sendNoteActivity(note, user.getName().getValue(), recipients);
 
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -467,8 +472,7 @@ public class NoteFormData extends ALAbstractFormData {
     if (add_dest_type_int > 0) {
       // 携帯電話やパソコンに伝言メモをメールで送信する場合の処理
       try {
-        String subject =
-          "[" + ALOrgUtilsService.getAlias() + "]伝言メモ";
+        String subject = "[" + ALOrgUtilsService.getAlias() + "]伝言メモ";
         List<ALEipUserAddr> destMemberList =
           ALMailUtils.getALEipUserAddrs(memberList, (int) loginUser
             .getUserId()
@@ -823,9 +827,7 @@ public class NoteFormData extends ALAbstractFormData {
       body.append("　").append(ALMailUtils.getLocalurl()).append(CR).append(CR);
     }
     body.append("---------------------").append(CR);
-    body
-      .append(ALOrgUtilsService.getAlias())
-      .append(CR);
+    body.append(ALOrgUtilsService.getAlias()).append(CR);
 
     return body.toString();
   }
@@ -935,9 +937,7 @@ public class NoteFormData extends ALAbstractFormData {
     body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
       ALCellularUtils.getCellularKey(destUser)).append(CR);
     body.append("---------------------").append(CR);
-    body
-      .append(ALOrgUtilsService.getAlias())
-      .append(CR);
+    body.append(ALOrgUtilsService.getAlias()).append(CR);
     return body.toString();
   }
 

@@ -70,8 +70,11 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsHandler;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.services.social.ALActivityService;
+import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.user.beans.UserLiteBean;
 import com.aimluck.eip.util.ALCellularUtils;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 import com.aimluck.eip.workflow.WorkflowCategoryResultData;
@@ -136,6 +139,10 @@ public class WorkflowUtils {
   protected static final String CATEGORY_KEY = JetspeedResources.getString(
     "aipo.workflow.categorykey",
     "");
+
+  public enum Type {
+    REQUEST, DENAIL, ACCEPT
+  }
 
   /**
    * Request オブジェクトモデルを取得します。 <BR>
@@ -1559,5 +1566,51 @@ public class WorkflowUtils {
     String disabled;
     disabled = user.getDisabled();
     return ("T".equals(disabled) || "N".equals(disabled));
+  }
+
+  public static void createWorkflowRequestActivity(EipTWorkflowRequest request,
+      String loginName, List<String> recipients, Type type) {
+    if (recipients != null && recipients.size() > 0) {
+      EipTWorkflowCategory category = request.getEipTWorkflowCategory();
+      String name = request.getRequestName();
+
+      StringBuilder b = new StringBuilder("申請「");
+      if (category != null) {
+        b.append(ALCommonUtils.compressString(category.getCategoryName(), 10));
+        if (name != null && name.length() > 0) {
+          b.append("：");
+        }
+      }
+
+      b
+        .append(ALCommonUtils.compressString(request.getRequestName(), 20))
+        .append("」");
+      switch (type) {
+        case REQUEST:
+          b.append("の確認依頼をだしました。");
+          break;
+        case DENAIL:
+          b.append("を差し戻しました。");
+          break;
+        case ACCEPT:
+          b.append("を承認しました。");
+          break;
+        default:
+
+      }
+      String portletParams =
+        new StringBuilder("?template=WorkflowDetailScreen")
+          .append("&entityid=")
+          .append(request.getRequestId())
+          .toString();
+      ALActivityService.create(new ALActivityPutRequest()
+        .withAppId("Workflow")
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withRecipients(recipients)
+        .withTile(b.toString())
+        .witchPriority(1f)
+        .withExternalId(String.valueOf(request.getRequestId())));
+    }
   }
 }

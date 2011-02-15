@@ -37,6 +37,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardTopic;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
@@ -144,6 +145,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
     // トピック名
     topic_name = new ALStringField();
@@ -359,6 +361,12 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
           WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
           topic.getTopicId(),
           uid);
+
+        // アクティビティ
+        ALEipUser user = ALEipUtils.getALEipUser(uid);
+        MsgboardUtils.createNewCommentActivity(parenttopic, user
+          .getName()
+          .getValue());
       } else {
         List<Integer> userIds =
           MsgboardUtils.getWhatsNewInsertList(rundata, topic
@@ -366,13 +374,26 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
             .getCategoryId()
             .intValue(), topic.getEipTMsgboardCategory().getPublicFlag());
 
+        List<String> recipients = new ArrayList<String>();
         int u_size = userIds.size();
         for (int i = 0; i < u_size; i++) {
           Integer _id = userIds.get(i);
+          ALEipUser user = ALEipUtils.getALEipUser(_id);
+          if (user != null) {
+            recipients.add(user.getName().getValue());
+          }
           WhatsNewUtils.insertWhatsNew(
             WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
             topic.getTopicId().intValue(),
             _id.intValue());
+        }
+
+        // アクティビティ
+        if (recipients.size() > 0) {
+          ALEipUser user = ALEipUtils.getALEipUser(uid);
+          MsgboardUtils.createNewCommentActivity(parenttopic, user
+            .getName()
+            .getValue(), recipients);
         }
       }
       File folder = FileuploadUtils.getFolder(orgId, uid, folderName);

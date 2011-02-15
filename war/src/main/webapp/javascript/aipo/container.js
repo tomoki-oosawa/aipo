@@ -122,7 +122,7 @@ aipo.IfrGadgetService.prototype.requestNavigateTo = function(view, opt_params) {
 	document.location.href = url;
 };
 
-aipo.IfrGadgetService.prototype.requestCheckActivity = function() {
+aipo.IfrGadgetService.prototype.requestCheckActivity = function(activityId) {
 	var request = {
 
 	};
@@ -133,7 +133,7 @@ aipo.IfrGadgetService.prototype.requestCheckActivity = function() {
 			"POST_DATA" : gadgets.json.stringify(request)
 	};
 
-	var url = "?template=CheckActivityJSONScreen";
+	var url = "?template=CheckActivityJSONScreen&isRead=" + activityId;
 
 	gadgets.io.makeNonProxiedRequest(url,
 			handleJSONResponse,

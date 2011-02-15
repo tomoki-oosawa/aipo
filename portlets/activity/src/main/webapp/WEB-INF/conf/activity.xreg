@@ -24,8 +24,8 @@
     <portlet-entry name="Activity" hidden="false" type="ref" parent="Velocity" application="false">
         <security-ref parent="user-view"/>
         <meta-info>
-            <title>アクティビティ</title>
-            <description>アクティビティを表示します。</description>
+            <title>更新情報</title>
+            <description>更新情報を表示します。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="action" value="activity.ActivityAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>

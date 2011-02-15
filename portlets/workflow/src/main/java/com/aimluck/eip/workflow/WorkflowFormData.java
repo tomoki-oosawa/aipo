@@ -64,6 +64,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
+import com.aimluck.eip.workflow.util.WorkflowUtils.Type;
 
 /**
  * ワークフローのフォームデータを管理するクラスです。 <BR>
@@ -148,6 +149,7 @@ public class WorkflowFormData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
     // リクエスト名
     request_name = new ALStringField();
@@ -689,6 +691,14 @@ public class WorkflowFormData extends ALAbstractFormData {
           request.getRequestId().intValue(),
           (int) nextUser.getUserId().getValue());
       }
+
+      // アクティビティ
+      List<String> recipients = new ArrayList<String>();
+      recipients.add(nextUser.getName().getValue());
+      WorkflowUtils.createWorkflowRequestActivity(request, login_user
+        .getName()
+        .getValue(), recipients, Type.REQUEST);
+
       // 次の申請先にメール送信
       List<ALEipUser> destUsers = new ArrayList<ALEipUser>();
       destUsers.add(nextUser);
@@ -861,6 +871,14 @@ public class WorkflowFormData extends ALAbstractFormData {
           request.getRequestId().intValue(),
           (int) nextUser.getUserId().getValue());
       }
+
+      // アクティビティ
+      List<String> recipients = new ArrayList<String>();
+      recipients.add(nextUser.getName().getValue());
+      WorkflowUtils.createWorkflowRequestActivity(request, login_user
+        .getName()
+        .getValue(), recipients, Type.REQUEST);
+
       // 次の申請先にメール送信
       List<ALEipUser> destUsers = new ArrayList<ALEipUser>();
       destUsers.add(nextUser);

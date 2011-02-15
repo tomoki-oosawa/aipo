@@ -48,6 +48,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
+import com.aimluck.eip.workflow.util.WorkflowUtils.Type;
 
 /**
  * ワークフローの承認／否認のフォームデータを管理するクラスです。 <BR>
@@ -87,6 +88,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
     // コメント
     comment = new ALStringField();
@@ -326,12 +328,14 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
       List<ALEipUser> destUsers = new ArrayList<ALEipUser>();
       if (accept_all) {
         // 全員に承認された場合、最後に承認した人以外の全員と申請者にメール送信
+        List<String> recipients = new ArrayList<String>();
         int uid = (int) ALEipUtils.getALEipUser(rundata).getUserId().getValue();
         for (EipTWorkflowRequestMap _map : maps) {
           if (_map.getUserId() != uid) {
             ALEipUser user = ALEipUtils.getALEipUser(_map.getUserId());
             if (!destUsers.contains(user)) {
               destUsers.add(user);
+              recipients.add(user.getName().getValue());
             }
           }
         }
@@ -341,6 +345,13 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
           request,
           destUsers,
           new ArrayList<String>());
+
+        // アクティビティ
+        ALEipUser user = ALEipUtils.getALEipUser(rundata);
+        WorkflowUtils.createWorkflowRequestActivity(request, user
+          .getName()
+          .getValue(), recipients, Type.ACCEPT);
+
       } else if (!accept_flg) {
         // 差し戻す前に承認した人全員と申請者にメール送信
         for (EipTWorkflowRequestMap _map : maps) {
@@ -358,6 +369,20 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
           request,
           destUsers,
           new ArrayList<String>());
+
+        // アクティビティ
+        // 承認した人全員と申請者に通知することもできますが、
+        // 通常、ポートレット上では関連しない申請は表示されないので、
+        // 差し戻された人のみに通知します。
+        List<String> recipients = new ArrayList<String>();
+        ALEipUser nextUser =
+          ALEipUtils.getALEipUser(sendMailMap.getUserId().intValue());
+        recipients.add(nextUser.getName().getValue());
+        ALEipUser user = ALEipUtils.getALEipUser(rundata);
+        WorkflowUtils.createWorkflowRequestActivity(request, user
+          .getName()
+          .getValue(), recipients, Type.DENAIL);
+
       } else {
         if (sendMailMap != null) {
           // 次の申請先/差し戻し先に新着ポートレット登録
@@ -380,6 +405,14 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
               request.getRequestId().intValue(),
               (int) nextUser.getUserId().getValue());
           }
+
+          // アクティビティ
+          ALEipUser user = ALEipUtils.getALEipUser(rundata);
+          List<String> recipients = new ArrayList<String>();
+          recipients.add(nextUser.getName().getValue());
+          WorkflowUtils.createWorkflowRequestActivity(request, user
+            .getName()
+            .getValue(), recipients, Type.REQUEST);
         }
       }
     } catch (Exception ex) {

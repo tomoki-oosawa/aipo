@@ -505,6 +505,24 @@ public class ALDefaultSocialApplicationHanlder extends
   }
 
   @Override
+  public void setAllReadActivity(String loginName) {
+    StringBuilder b = new StringBuilder("update activity_map set is_read = 1 ");
+    b.append(" from activity where activity_map.activity_id = activity.id ");
+    b.append(" and activity_map.login_name = #bind($loginName) ");
+    String sql = b.toString();
+
+    try {
+      Database
+        .sql(ActivityMap.class, sql)
+        .param("loginName", loginName)
+        .execute();
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.warn(t);
+    }
+  }
+
+  @Override
   public void setReadActivity(int activityId, String loginName) {
     StringBuilder b = new StringBuilder("update activity_map set is_read = 1 ");
     b.append(" from activity where activity_map.activity_id = activity.id ");
@@ -572,7 +590,7 @@ public class ALDefaultSocialApplicationHanlder extends
     }
     String loginName = request.getLoginName();
     if (loginName != null && loginName.length() > 0) {
-      query.where(Operations.eq(Activity.LOGIN_NAME_PROPERTY, loginName));
+      query.where(Operations.ne(Activity.LOGIN_NAME_PROPERTY, loginName));
     }
     String targetLoginName = request.getTargetLoginName();
     if (targetLoginName != null && targetLoginName.length() > 0) {
@@ -622,7 +640,7 @@ public class ALDefaultSocialApplicationHanlder extends
           ActivityMap activityMap = Database.create(ActivityMap.class);
           activityMap.setLoginName(recipient);
           activityMap.setActivity(activity);
-          activityMap.setIsRead(0);
+          activityMap.setIsRead(priority == 1f ? 0 : 1);
         }
       } else {
         ActivityMap activityMap = Database.create(ActivityMap.class);

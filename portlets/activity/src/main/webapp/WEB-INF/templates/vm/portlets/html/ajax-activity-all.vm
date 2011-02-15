@@ -19,7 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 #if ($result.List.size() == 0)
-<div class="message">アクティビティはありません。</div>
+<div class="message">更新情報はありません。</div>
 #else
 #ALformheader('Activity' $jslink $portlet)
 <table class="rowTable wide">

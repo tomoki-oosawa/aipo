@@ -24,7 +24,7 @@
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 #ALajaxlistformheader('Activity')
 #if($result.List.size() == 0)
-<div class="message">指定された条件に該当するアクティビティはありません。</div>
+<div class="message">指定された条件に該当する更新情報はありません。</div>
 #else
 #ALajaxpageview('ActivityAllListScreen' $result)
 <table class="rowTable wide">

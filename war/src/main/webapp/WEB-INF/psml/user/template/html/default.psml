@@ -101,7 +101,7 @@
                 <property name="row" value="3"/>
             </layout>
         </entry>
-        <entry parent="WhatsNew">
+        <entry parent="Activity">
             <layout position="-1" size="-1">
                 <property name="column" value="0"/>
                 <property name="row" value="2"/>

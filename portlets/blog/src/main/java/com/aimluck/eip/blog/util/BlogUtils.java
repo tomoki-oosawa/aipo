@@ -69,6 +69,7 @@ import com.aimluck.eip.services.orgutils.ALOrgUtilsHandler;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -809,7 +810,7 @@ public class BlogUtils {
   public static void createNewBlogActivity(EipTBlogEntry blog, String loginName) {
     String title =
       new StringBuilder("ブログ「")
-        .append(blog.getTitle())
+        .append(ALCommonUtils.compressString(blog.getTitle(), 30))
         .append("」を書きました。")
         .toString();
     String portletParams =
@@ -835,7 +836,7 @@ public class BlogUtils {
     recipients.add(targetLoginName);
     String title =
       new StringBuilder("ブログ「")
-        .append(blog.getTitle())
+        .append(ALCommonUtils.compressString(blog.getTitle(), 30))
         .append("」にコメントしました。")
         .toString();
     String portletParams =

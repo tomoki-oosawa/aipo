@@ -111,5 +111,10 @@
   </div>
 </div>
 #end
+
+<div class="center">
+<input type="button" name="allread" value="すべて既読にする" onclick="dijit.byId('activitychecker')._closeDropDown();aipo.container.gadgetService.requestCheckActivity('*')" />
+</div>
+
 #end
 </div>

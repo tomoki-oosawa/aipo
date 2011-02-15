@@ -119,6 +119,8 @@ public class ActivityAllSelectData extends
     ResultList<ALActivity> list =
       ALActivityService.getList(new ALActivityGetRequest()
         .withLimit(limit)
+        .withLoginName(loginName)
+        .withPriority(0f)
         .withPage(page)
         .withTargetLoginName(loginName));
     setPageParam(list.getTotalCount());

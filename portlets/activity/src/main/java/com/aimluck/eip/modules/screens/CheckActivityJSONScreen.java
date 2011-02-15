@@ -54,14 +54,23 @@ public class CheckActivityJSONScreen extends ALJSONScreen {
 
     try {
       String loginName = ALEipUtils.getALEipUser(rundata).getName().getValue();
-      Integer isRead = null;
+      String isRead = null;
+      Integer isReadCount = null;
+      boolean all = false;
       try {
-        isRead = rundata.getParameters().getInteger("isRead");
+        isRead = rundata.getParameters().getString("isRead");
+        if ("*".equals(isRead)) {
+          all = true;
+        } else {
+          isReadCount = Integer.valueOf(isRead);
+        }
       } catch (Throwable t) {
 
       }
-      if (isRead != null & isRead.intValue() > 0) {
-        ALActivityService.setRead(isRead, loginName);
+      if (all) {
+        ALActivityService.setAllRead(loginName);
+      } else if (isReadCount != null && isReadCount.intValue() > 0) {
+        ALActivityService.setRead(isReadCount, loginName);
       }
       int count =
         ALActivityService.count(new ALActivityGetRequest().withTargetLoginName(
