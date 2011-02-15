@@ -35,7 +35,7 @@ public class ALUserPref extends HashMap<String, Object> implements Serializable 
   private static final long serialVersionUID = 5863053713116484726L;
 
   public enum Type {
-    STRING("string"), BOOL("bool"), ENUM("enum");
+    STRING("string"), BOOL("bool"), ENUM("enum"), LIST("list"), HIDDEN("hidden");
 
     private final String type;
 

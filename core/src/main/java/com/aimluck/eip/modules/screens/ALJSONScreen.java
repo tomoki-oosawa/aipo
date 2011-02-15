@@ -19,9 +19,13 @@
 
 package com.aimluck.eip.modules.screens;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
@@ -43,12 +47,12 @@ import com.aimluck.eip.util.ALEipUtils;
 public abstract class ALJSONScreen extends RawScreen implements ALAction {
 
   /** <code>logger</code> loger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALJSONScreen.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALJSONScreen.class.getName());
 
   /** コンテントタイプ */
-  private static final String CONTENT_TYPE =
-    "text/json;charset=" + ALEipConstants.DEF_CONTENT_ENCODING;
+  private static final String CONTENT_TYPE = "text/json;charset="
+    + ALEipConstants.DEF_CONTENT_ENCODING;
 
   /** 表示モード */
   private String mode = "";
@@ -121,6 +125,7 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
    * 
    * @param obj
    */
+  @Override
   public void setResultData(Object obj) {
     result = obj;
   }
@@ -129,6 +134,7 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
    * 
    * @param obj
    */
+  @Override
   public void addResultData(Object obj) {
     if (resultList == null) {
       resultList = new ArrayList<Object>();
@@ -140,6 +146,7 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
    * 
    * @param objList
    */
+  @Override
   public void setResultDataList(List<Object> objList) {
     resultList = objList;
   }
@@ -148,6 +155,7 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
    * 
    * @param msg
    */
+  @Override
   public void addErrorMessage(String msg) {
     if (errmsgList == null) {
       errmsgList = new ArrayList<String>();
@@ -159,6 +167,7 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
    * 
    * @param msg
    */
+  @Override
   public void addErrorMessages(List<String> msgs) {
     if (errmsgList == null) {
       errmsgList = new ArrayList<String>();
@@ -170,6 +179,7 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
    * 
    * @param msgs
    */
+  @Override
   public void setErrorMessages(List<String> msgs) {
     errmsgList = msgs;
   }
@@ -178,6 +188,7 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
    * 
    * @param mode
    */
+  @Override
   public void setMode(String mode) {
     this.mode = mode;
   }
@@ -186,6 +197,7 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
    * 
    * @return
    */
+  @Override
   public String getMode() {
     return mode;
   }
@@ -194,6 +206,7 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
    * 
    * @param context
    */
+  @Override
   public void putData(RunData rundata, Context context) {
     context.put(ALEipConstants.MODE, mode);
     context.put(ALEipConstants.RESULT, result);
@@ -212,6 +225,30 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
 
   protected String getSuffix() {
     return "*/";
+  }
+
+  protected String getPayload(RunData rundata) {
+    StringBuilder str = new StringBuilder();
+    ServletInputStream in = null;
+    try {
+      in = rundata.getRequest().getInputStream();
+      BufferedReader r = new BufferedReader(new InputStreamReader(in));
+      String sLine;
+      while ((sLine = r.readLine()) != null) {
+        str.append(sLine);
+      }
+    } catch (IOException e) {
+      logger.warn("[ALJSONScreen]", e);
+    } finally {
+      if (in != null) {
+        try {
+          in.close();
+        } catch (IOException e) {
+          // ignore
+        }
+      }
+    }
+    return str.toString();
   }
 
 }

@@ -95,8 +95,29 @@ aipo.IfrGadgetService.inherits(shindig.IfrGadgetService);
 aipo.IfrGadgetService.prototype.setUserPref = function(editToken, name,
 	    value) {
 	var portletId = this.f.replace("remote_iframe_","");
+	var request = {};
 	for (var i = 1, j = arguments.length; i < j; i += 2) {
-		//
+		request[arguments[i]] = arguments[i+1];
+	}
+
+	var makeRequestParams = {
+			"CONTENT_TYPE" : "JSON",
+			"METHOD" : "POST",
+			"POST_DATA" : gadgets.json.stringify(request)
+	};
+
+	var url = "?template=UserPrefUpdateJSONScreen&js_peid=" + encodeURIComponent(portletId);
+
+	gadgets.io.makeNonProxiedRequest(url,
+			handleJSONResponse,
+			makeRequestParams,
+			"application/javascript"
+	);
+
+	function handleJSONResponse(obj) {
+		if(obj.rc == 200) {
+			// success
+		}
 	}
 
 };
@@ -124,7 +145,6 @@ aipo.IfrGadgetService.prototype.requestNavigateTo = function(view, opt_params) {
 
 aipo.IfrGadgetService.prototype.requestCheckActivity = function(activityId) {
 	var request = {
-
 	};
 
 	var makeRequestParams = {

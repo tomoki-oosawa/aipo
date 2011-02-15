@@ -199,15 +199,24 @@ public class ALCustomizeAction extends VelocityPortletAction {
         clone.setName(name);
         clone.setTitle(userPref.getDisplayName());
         clone.setDescription(null);
+        boolean hidden = false;
+        boolean list = false;
         switch (userPref.getType()) {
           case ENUM:
             List<Map.Entry<String, String>> enums = userPref.getEnums();
             enumsList.add(enums);
             clone.setType("enum");
             break;
+          case LIST:
+            clone.setType("list");
+            list = true;
+            break;
           case BOOL:
             clone.setType("boolean");
             break;
+          case HIDDEN:
+            clone.setType("hidden");
+            hidden = true;
           default:
             clone.setType(null);
         }
@@ -218,9 +227,14 @@ public class ALCustomizeAction extends VelocityPortletAction {
           value = p.getPortletConfig().getInitParameter(name);
         } else {
           value = userPref.getDefault();
+          if (list) {
+            value = value.replace("|", ",");
+          }
         }
         clone.setValue(ALStringUtil.sanitizing(value));
-        params.add(clone);
+        if (!hidden) {
+          params.add(clone);
+        }
       }
       context.put("enums", enumsList);
     }
