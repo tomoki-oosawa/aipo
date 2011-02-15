@@ -21,6 +21,7 @@ package com.aimluck.eip.modules.actions.common;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.jetspeed.modules.actions.portlets.SecureVelocityPortletAction;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -29,6 +30,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -60,6 +62,7 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
    * 
    * @param obj
    */
+  @Override
   public void setResultData(Object obj) {
     result = obj;
   }
@@ -68,6 +71,7 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
    * 
    * @param obj
    */
+  @Override
   public void addResultData(Object obj) {
     if (resultList == null) {
       resultList = new ArrayList<Object>();
@@ -79,6 +83,7 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
    * 
    * @param objList
    */
+  @Override
   public void setResultDataList(List<Object> objList) {
     resultList = objList;
   }
@@ -87,6 +92,7 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
    * 
    * @param msg
    */
+  @Override
   public void addErrorMessages(List<String> msgs) {
     if (errmsgList == null) {
       errmsgList = new ArrayList<String>();
@@ -98,6 +104,7 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
    * 
    * @param msg
    */
+  @Override
   public void addErrorMessage(String msg) {
     if (errmsgList == null) {
       errmsgList = new ArrayList<String>();
@@ -109,6 +116,7 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
    * 
    * @param msgs
    */
+  @Override
   public void setErrorMessages(List<String> msgs) {
     errmsgList = msgs;
   }
@@ -117,6 +125,7 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
    * 
    * @param mode
    */
+  @Override
   public void setMode(String mode) {
     this.mode = mode;
   }
@@ -125,6 +134,7 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
    * 
    * @return
    */
+  @Override
   public String getMode() {
     return mode;
   }
@@ -133,6 +143,7 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
    * 
    * @param context
    */
+  @Override
   public void putData(RunData rundata, Context context) {
     context.put(ALEipConstants.MODE, mode);
     context.put(ALEipConstants.RESULT, result);
@@ -142,6 +153,11 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
       context,
       ALEipConstants.ENTITY_ID));
     context.put("utils", new ALCommonUtils());
+
+    Map<String, String> attribute = ALOrgUtilsService.getParameters();
+    for (Map.Entry<String, String> e : attribute.entrySet()) {
+      context.put(e.getKey(), e.getValue());
+    }
 
     // For security
     context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(

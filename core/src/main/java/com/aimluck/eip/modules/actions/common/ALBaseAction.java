@@ -190,5 +190,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
     } else {
       context.put("portletInstanceTitle", portletInstance.getTitle());
     }
+
+    putData(rundata, context);
   }
 }
