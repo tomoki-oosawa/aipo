@@ -48,6 +48,7 @@ import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
 import com.aimluck.eip.services.social.model.ALApplicationPutRequest;
 import com.aimluck.eip.services.social.model.ALOAuthConsumerPutRequest;
+import com.aimluck.eip.util.ALServletUtils;
 
 /**
  *
@@ -175,9 +176,12 @@ public abstract class ALSocialApplicationHandler {
       boolean isDetail) {
     Map<String, ALGadgetSpec> maps = new HashMap<String, ALGadgetSpec>();
     try {
+
+      // TODO: Timeout の処理
+
+      String baseUrl = ALServletUtils.getRequestBaseUrl();
       HttpClient httpClient = new HttpClient();
-      PostMethod postMethod =
-        new PostMethod("http://localhost:8080/gadgets/metadata");
+      PostMethod postMethod = new PostMethod(baseUrl + "/gadgets/metadata");
       postMethod.addRequestHeader("Content-Type", "application/javascript");
       postMethod.addParameter("st", "default:st");
       postMethod.addParameter("req", "1");

@@ -25,6 +25,7 @@ import java.sql.SQLException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -38,6 +39,9 @@ import org.apache.cayenne.conf.ServletUtil;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
+import com.aimluck.eip.http.HttpServletRequestLocator;
+import com.aimluck.eip.http.HttpServletResponseLocator;
+import com.aimluck.eip.http.ServletContextLocator;
 import com.aimluck.eip.orm.DataContextLocator;
 import com.aimluck.eip.orm.Database;
 
@@ -49,9 +53,12 @@ public class ALBaseFilter implements Filter {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ALBaseFilter.class.getName());
 
+  private FilterConfig filterConfig;
+
   /**
    *
    */
+  @Override
   public void destroy() {
   }
 
@@ -62,9 +69,14 @@ public class ALBaseFilter implements Filter {
    * @throws IOException
    * @throws ServletException
    */
+  @Override
   public void doFilter(ServletRequest request, ServletResponse response,
       FilterChain filterChain) throws IOException, ServletException {
     DataContext previousDataContext = null;
+    ServletContext prevServletContext = ServletContextLocator.get();
+    HttpServletRequest prevHttpServletRequest = HttpServletRequestLocator.get();
+    HttpServletResponse prevHttpServletResponse =
+      HttpServletResponseLocator.get();
     try {
       previousDataContext = DataContextLocator.get();
       DataContext dataContext = null;
@@ -76,9 +88,15 @@ public class ALBaseFilter implements Filter {
       } catch (Exception e) {
         logger.error(e, e);
       }
+      ServletContextLocator.set(filterConfig.getServletContext());
+      HttpServletRequestLocator.set((HttpServletRequest) request);
+      HttpServletResponseLocator.set((HttpServletResponse) response);
       DataContext.bindThreadDataContext(dataContext);
       filterChain.doFilter(request, response);
     } finally {
+      ServletContextLocator.set(prevServletContext);
+      HttpServletRequestLocator.set(prevHttpServletRequest);
+      HttpServletResponseLocator.set(prevHttpServletResponse);
       DataContext.bindThreadDataContext(null);
       Transaction threadTransaction = Transaction.getThreadTransaction();
       if (threadTransaction != null) {
@@ -103,7 +121,9 @@ public class ALBaseFilter implements Filter {
    * @param filterConfig
    * @throws ServletException
    */
+  @Override
   public void init(FilterConfig filterConfig) throws ServletException {
+    this.filterConfig = filterConfig;
     ServletUtil.initializeSharedConfiguration(filterConfig.getServletContext());
   }
 
