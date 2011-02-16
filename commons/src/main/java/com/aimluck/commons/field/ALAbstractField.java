@@ -49,17 +49,17 @@ public abstract class ALAbstractField implements Serializable {
   }
 
   /**
-   * Nullフラグを設定します。
+   * notNull(必須入力)フラグを設定します。
    * 
    * @param bool
-   *          Nullフラグ
+   *          notNullフラグ
    */
   public void setNotNull(boolean bool) {
     notNull = bool;
   }
 
   /**
-   * 入力フィールドがNullかどうかを取得します。
+   * notNull(必須入力)フラグを取得します。
    * 
    * @return
    */

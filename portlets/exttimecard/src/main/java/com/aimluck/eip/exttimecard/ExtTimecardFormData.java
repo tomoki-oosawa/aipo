@@ -300,13 +300,14 @@ public class ExtTimecardFormData extends ALAbstractFormData {
             long from = outgoing.getValue().getTime();
             long to = comeback.getValue().getTime();
             if (from <= to) {
-              if (from < clock_in_time.getValue().getTime()) {
+              if (clock_in_time.isNotNullValue()
+                  && from < clock_in_time.getValue().getTime()) {
                 msgList
                   .add("『 <span class='em'>外出時刻</span> 』は『 <span class='em'>出勤時刻</span> 』以降の時刻を指定してください。（"
                     + i
                     + "行目）");
               }
-              if (clock_out_time.isNotNull()
+              if (clock_out_time.isNotNullValue()
                 && to > clock_out_time.getValue().getTime()) {
                 msgList
                   .add("『 <span class='em'>復帰時刻</span> 』は『 <span class='em'>退勤時刻</span> 』以前の時刻を指定してください。（"
