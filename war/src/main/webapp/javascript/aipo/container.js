@@ -292,7 +292,7 @@ shindig.BaseIfrGadget.prototype.queryIfrGadgetType_ = function() {
 	    	gadget['height'] = preferredHeight;
 	    }
 	    var scrolling = obj.data.gadgets[0].scrolling;
-	    gadget['scrolling'] = scrolling == "true" ? 'true' : 'no';
+	    gadget['scrolling'] = scrolling ? 'true' : 'no';
 	}
 };
 
