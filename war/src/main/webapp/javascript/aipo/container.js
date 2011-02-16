@@ -201,6 +201,10 @@ aipo.IfrContainer.prototype.getContext = function() {
 	return this.context;
 };
 
+aipo.IfrContainer.prototype.addGadget = function(gadget) {
+	this.gadgets_[this.getGadgetKey_(gadget.id)] = gadget;
+};
+
 aipo.IfrContainer.prototype.renderGadget = function(gadget) {
 	var chrome = this.layoutManager.getGadgetChrome(gadget);
 	gadget.render(chrome);

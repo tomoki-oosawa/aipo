@@ -95,4 +95,8 @@ public class ALApplicationService {
   public static ALGadgetSpec getMetaData(String specUrl, boolean isDetail) {
     return getService().getMetaData(specUrl, isDetail);
   }
+
+  public static long getNextModuleId() {
+    return getService().getNextModuleId();
+  }
 }

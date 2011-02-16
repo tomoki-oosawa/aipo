@@ -47,8 +47,8 @@ import com.google.common.base.Charsets;
  */
 public class ALGadgetContext {
 
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALGadgetContext.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALGadgetContext.class.getName());
 
   private final String SECURITY_TOKEN_KEY =
     "/WEB-INF/conf/securityTokenKey.txt";
@@ -68,10 +68,12 @@ public class ALGadgetContext {
   /**
    *
    */
-  public ALGadgetContext(RunData runData, String viewer, String appUrl) {
+  public ALGadgetContext(RunData runData, String viewer, String appUrl,
+      long moduleId) {
     this.runData = runData;
     this.viewer = viewer;
     this.appUrl = appUrl;
+    this.moduleId = moduleId;
   }
 
   public String getSecureToken() {

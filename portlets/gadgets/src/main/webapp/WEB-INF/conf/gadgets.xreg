@@ -34,20 +34,6 @@
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
     </portlet-entry>
-    <portlet-entry name="Gadgets" hidden="true" type="ref" parent="Velocity" application="false">
-        <security-ref parent="user-view"/>
-        <meta-info>
-            <title>OpenSocial ガジェット</title>
-            <description>OpenSocial ガジェット</description>
-        </meta-info>
-        <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
-        <parameter name="template" value="gadgets" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="action" value="gadgets.GadgetsAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="aid" value="" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="url" value="" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <media-type ref="html"/>
-        <url cachedOnURL="true"/>
-    </portlet-entry>
     <portlet-entry name="GadgetsTemplate" hidden="true" type="ref" parent="Velocity" application="false">
         <security-ref parent="user-view"/>
         <meta-info>
@@ -59,6 +45,7 @@
         <parameter name="action" value="gadgets.GadgetsAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="aid" value="" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="url" value="" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="mid" value="" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
     </portlet-entry>

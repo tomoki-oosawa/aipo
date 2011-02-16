@@ -103,6 +103,8 @@ public abstract class ALSocialApplicationHandler {
 
   public abstract void createActivity(ALActivityPutRequest request);
 
+  public abstract long getNextModuleId();
+
   public static enum Property {
 
     LOCKED_DOMAIN_REQUIRED("lockedDomainRequired") {

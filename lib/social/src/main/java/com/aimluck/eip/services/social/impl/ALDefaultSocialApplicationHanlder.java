@@ -31,6 +31,7 @@ import com.aimluck.eip.cayenne.om.social.Activity;
 import com.aimluck.eip.cayenne.om.social.ActivityMap;
 import com.aimluck.eip.cayenne.om.social.Application;
 import com.aimluck.eip.cayenne.om.social.ContainerConfig;
+import com.aimluck.eip.cayenne.om.social.ModuleId;
 import com.aimluck.eip.cayenne.om.social.OAuthConsumer;
 import com.aimluck.eip.common.ALActivity;
 import com.aimluck.eip.common.ALApplication;
@@ -653,5 +654,30 @@ public class ALDefaultSocialApplicationHanlder extends
       Database.rollback();
       throw new RuntimeException(t);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  public long getNextModuleId() {
+    ModuleId moduleId = null;
+    try {
+      moduleId = Database.create(ModuleId.class);
+      Database.commit();
+    } catch (Throwable t) {
+      Database.rollback();
+      throw new RuntimeException(t);
+
+    }
+    long next = moduleId.getId().longValue();
+    try {
+      String sql = "delete from module_id";
+      Database.sql(ModuleId.class, sql).execute();
+    } catch (Throwable t) {
+      Database.rollback();
+      // ignore
+    }
+    return next;
   }
 }

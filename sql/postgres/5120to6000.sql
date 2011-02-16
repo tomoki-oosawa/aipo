@@ -235,6 +235,12 @@ CREATE TABLE app_data
     PRIMARY KEY (ID)
 );
 
+CREATE TABLE module_id
+(
+    ID serial,
+    PRIMARY KEY (ID)
+);
+
 CREATE TABLE JETSPEED_USER_PROFILE (
     PSML_ID serial,
     USER_NAME VARCHAR(32) NULL,

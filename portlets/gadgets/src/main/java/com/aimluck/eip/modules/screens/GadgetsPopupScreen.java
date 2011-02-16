@@ -66,7 +66,8 @@ public class GadgetsPopupScreen extends ALVelocityScreen {
         .append(user.getName().getValue())
         .toString();
 
-    ALGadgetContext gadgetContext = new ALGadgetContext(rundata, viewer, url);
+    ALGadgetContext gadgetContext =
+      new ALGadgetContext(rundata, viewer, url, 0);
 
     context.put("gadgetContext", gadgetContext);
     context.put("isActive", isActive);

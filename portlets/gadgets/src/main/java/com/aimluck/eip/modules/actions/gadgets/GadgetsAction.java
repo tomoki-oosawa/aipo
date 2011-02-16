@@ -78,15 +78,20 @@ public class GadgetsAction extends ALBaseAction {
   protected void buildCommonContext(VelocityPortlet portlet, Context context,
       RunData rundata, boolean isMaximized) {
 
-    String appId = rundata.getParameters().getString("aid");
-    if (appId == null || appId.length() == 0) {
-      appId = portlet.getPortletConfig().getInitParameter("aid");
-    }
+    String appId = portlet.getPortletConfig().getInitParameter("aid");
     String url = portlet.getPortletConfig().getInitParameter("url");
-    boolean isActive = true;
-    if (url == null || url == "") {
-      url = portlet.getPortletConfig().getInitParameter("p1a-url");
-      appId = url;
+    Long mid = null;
+    try {
+      mid = Long.valueOf(portlet.getPortletConfig().getInitParameter("mid"));
+    } catch (Throwable ignore) {
+      //
+    }
+    boolean isActive = false;
+    if (appId == null || url == null || mid == null) {
+      isActive = false;
+      context.put("isActive", isActive);
+      setTemplate(rundata, isMaximized ? "gadgets-list" : "gadgets");
+      return;
     } else {
       isActive = checkApplicationAvailability(appId);
     }
@@ -99,7 +104,8 @@ public class GadgetsAction extends ALBaseAction {
         .append(user.getName().getValue())
         .toString();
 
-    ALGadgetContext gadgetContext = new ALGadgetContext(rundata, viewer, url);
+    ALGadgetContext gadgetContext =
+      new ALGadgetContext(rundata, viewer, url, mid);
 
     context.put("gadgetContext", gadgetContext);
     context.put("isActive", isActive);
@@ -118,6 +124,7 @@ public class GadgetsAction extends ALBaseAction {
       }
     }
     JSONObject jsonObject = new JSONObject();
+    jsonObject.put("id", mid);
     jsonObject.put("portletId", portlet.getID());
     jsonObject.put("specUrl", gadgetContext.getAppUrl());
     jsonObject.put("secureToken", gadgetContext.getSecureToken());

@@ -89,6 +89,14 @@
 			<db-key-cache-size>1</db-key-cache-size>
 		</db-key-generator>
 	</db-entity>
+	<db-entity name="module_id">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-key-generator>
+			<db-generator-type>ORACLE</db-generator-type>
+			<db-generator-name>module_id_id_seq</db-generator-name>
+			<db-key-cache-size>1</db-key-cache-size>
+		</db-key-generator>
+	</db-entity>
 	<db-entity name="oauth_consumer">
 		<db-attribute name="APP_ID" type="INTEGER"/>
 		<db-attribute name="CONSUMER_KEY" type="VARCHAR" length="255"/>
@@ -146,6 +154,8 @@
 	<obj-entity name="ContainerConfig" className="com.aimluck.eip.cayenne.om.social.ContainerConfig" dbEntityName="container_config">
 		<obj-attribute name="key" type="java.lang.String" db-attribute-path="KEY"/>
 		<obj-attribute name="value" type="java.lang.String" db-attribute-path="VALUE"/>
+	</obj-entity>
+	<obj-entity name="ModuleId" className="com.aimluck.eip.cayenne.om.social.ModuleId" dbEntityName="module_id">
 	</obj-entity>
 	<obj-entity name="OAuthConsumer" className="com.aimluck.eip.cayenne.om.social.OAuthConsumer" dbEntityName="oauth_consumer">
 		<obj-attribute name="consumerKey" type="java.lang.String" db-attribute-path="CONSUMER_KEY"/>

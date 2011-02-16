@@ -46,8 +46,8 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.config.ALConfigHandler;
-import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.social.gadgets.ALGadgetContext;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -59,8 +59,8 @@ import com.aimluck.eip.util.ALEipUtils;
  */
 public class ALSessionValidator extends JetspeedSessionValidator {
 
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALSessionValidator.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALSessionValidator.class.getName());
 
   /**
    * 
@@ -307,7 +307,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
         new StringBuilder(orgId).append(":").append(
           eipUser.getName().getValue()).toString();
 
-      ALGadgetContext gadgetContext = new ALGadgetContext(data, viewer, "/");
+      ALGadgetContext gadgetContext = new ALGadgetContext(data, viewer, "/", 0);
 
       String relayUrl =
         checkActivityUrl + "/gadgets/files/container/rpc_relay.html";

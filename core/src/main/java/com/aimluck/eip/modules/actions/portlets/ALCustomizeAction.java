@@ -328,9 +328,11 @@ public class ALCustomizeAction extends VelocityPortletAction {
       boolean isGadgets = false;
       String appId = null;
       String url = null;
+      String moduleId = null;
       if ("GadgetsTemplate".equals(pc.getName())) {
         appId = pc.getInitParameter("aid");
         url = pc.getInitParameter("url");
+        moduleId = pc.getInitParameter("mid");
         ALApplication app =
           ALApplicationService.get(new ALApplicationGetRequest()
             .withAppId(appId));
@@ -348,6 +350,7 @@ public class ALCustomizeAction extends VelocityPortletAction {
       if (isGadgets) {
         instance.setAttribute("aid", appId);
         instance.setAttribute("url", url);
+        instance.setAttribute("mid", moduleId);
       }
       // add by Haruo Kaneko
       profile.store();
