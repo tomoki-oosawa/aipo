@@ -17,30 +17,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-dojo.provide("aipo.gadgets_admin");
+package com.aimluck.eip.modules.screens;
 
-aipo.gadgets_admin.onLoadDialog = function(portlet_id){
+import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
 
-    
+import com.aimluck.eip.gadgets.GadgetsContainerAdminSelectData;
+
+/**
+ * 
+ */
+public class GadgetsContainerAdminDetailScreen extends ALVelocityScreen {
+
+  /**
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
+  @Override
+  protected void doOutput(RunData rundata, Context context) throws Exception {
+    GadgetsContainerAdminSelectData detailData =
+      new GadgetsContainerAdminSelectData();
+    detailData.initField();
+    detailData.doViewDetail(this, rundata, context);
+
+    String template = "portlets/html/ja/ajax-gadgets-container-admin.vm";
+    setTemplate(rundata, context, template);
+  }
+
 }
-
-aipo.gadgets_admin.onReceiveMessage = function(msg){
-    if(!msg) {
-        var arrDialog = dijit.byId("modalDialog");
-        if(arrDialog){
-            arrDialog.hide();
-        }
-        aipo.portletReload('gadgets_admin');
-    }
-    if (dojo.byId('messageDiv')) {
-        dojo.byId('messageDiv').innerHTML = msg;
-    }
-}
-
-aipo.gadgets_admin.hideDialog = function() {
-    var arrDialog = dijit.byId("modalDialog");
-    if(arrDialog){
-       arrDialog.hide();
-    }
-    aipo.portletReload('gadgets_admin');
-};

@@ -24,13 +24,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.jetspeed.services.daemonfactory.DaemonFactoryService;
 import org.apache.turbine.services.TurbineServices;
 
+import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.daemonfactory.AipoDaemonFactoryService;
+import com.aimluck.eip.services.social.ALContainerConfigService;
+import com.aimluck.eip.services.social.ALSocialApplicationHandler;
 
 /**
  *
@@ -66,6 +70,7 @@ public abstract class ALOrgUtilsHandler {
     hash.put("alias_copyright", getAliasCopyright(orgId));
     hash.put("version", getVersion(orgId));
     hash.put("external_resources_url", getExternalResourcesUrl(orgId));
+    hash.put("unlockeddomain_url", getUnlockedDomainBaseUrl(orgId));
 
     return hash;
   }
@@ -93,6 +98,25 @@ public abstract class ALOrgUtilsHandler {
     } else {
       url.append(external_resources_url);
     }
+
+    return url.toString();
+  }
+
+  public String getUnlockedDomainBaseUrl(String orgId) {
+
+    String unlockedDomain =
+      ALContainerConfigService
+        .get(ALSocialApplicationHandler.Property.UNLOCKED_DOMAIN);
+
+    if (unlockedDomain.isEmpty()) {
+      return "";
+    }
+
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    String scheme = request.getScheme();
+    StringBuffer url = new StringBuffer(scheme);
+    url.append("://");
+    url.append(unlockedDomain);
 
     return url.toString();
   }

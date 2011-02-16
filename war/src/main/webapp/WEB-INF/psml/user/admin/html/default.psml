@@ -116,14 +116,20 @@
                 <property name="row" value="0"/>
             </layout>
         </entry>
+        <entry id="139" parent="GadgetsContainerAdmin">
+            <layout position="13" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
         <entry id="131" parent="SysInfo">
-            <layout position="12" size="-1">
+            <layout position="14" size="-1">
                 <property name="column" value="0"/>
                 <property name="row" value="0"/>
             </layout>
         </entry>
         <entry id="132" parent="DeleteSample">
-            <layout position="12" size="-1">
+            <layout position="15" size="-1">
                 <property name="column" value="0"/>
                 <property name="row" value="0"/>
             </layout>

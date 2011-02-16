@@ -118,14 +118,14 @@ public abstract class ALSocialApplicationHandler {
     LOCKED_DOMAIN_SUFFIX("lockedDomainSuffix") {
       @Override
       public String defaultValue() {
-        return ".example.com";
+        return "";
       }
     },
 
     UNLOCKED_DOMAIN("unLockedDomain") {
       @Override
       public String defaultValue() {
-        return "www.example.com";
+        return "";
       }
     };
 

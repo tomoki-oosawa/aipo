@@ -1,4 +1,4 @@
-/*
+#*
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2011 Aimluck,Inc.
  * http://www.aipo.com
@@ -15,32 +15,14 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+ *#
 
-dojo.provide("aipo.gadgets_admin");
+#ALjavascript("javascript/aipo/gadgets_admin/form.js")
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 
-aipo.gadgets_admin.onLoadDialog = function(portlet_id){
+    ptConfig['$!portlet.ID'] = { group:"gadgets_admin", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsContainerAdminDetailScreen"))', reloadFunction:aipo.reloadPage };
 
-    
-}
-
-aipo.gadgets_admin.onReceiveMessage = function(msg){
-    if(!msg) {
-        var arrDialog = dijit.byId("modalDialog");
-        if(arrDialog){
-            arrDialog.hide();
-        }
-        aipo.portletReload('gadgets_admin');
-    }
-    if (dojo.byId('messageDiv')) {
-        dojo.byId('messageDiv').innerHTML = msg;
-    }
-}
-
-aipo.gadgets_admin.hideDialog = function() {
-    var arrDialog = dijit.byId("modalDialog");
-    if(arrDialog){
-       arrDialog.hide();
-    }
-    aipo.portletReload('gadgets_admin');
-};
+//]]>
+</script>
+#parse("/portlets/html/ja/ajax-gadgets-container-admin.vm")

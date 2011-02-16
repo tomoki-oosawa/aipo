@@ -34,6 +34,19 @@
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
     </portlet-entry>
+    <portlet-entry name="GadgetsContainerAdmin" hidden="false" type="ref" parent="Velocity" application="false">
+        <security-ref parent="admin-view"/>
+        <meta-info>
+            <title>コンテナ管理</title>
+            <description>コンテナを管理します。</description>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
+        <parameter name="template" value="gadgets-admin-list" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="action" value="gadgets.GadgetsContainerAdminAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="_showtitlebar" value="false" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <media-type ref="html"/>
+        <url cachedOnURL="true"/>
+    </portlet-entry>
     <portlet-entry name="GadgetsTemplate" hidden="true" type="ref" parent="Velocity" application="false">
         <security-ref parent="user-view"/>
         <meta-info>
