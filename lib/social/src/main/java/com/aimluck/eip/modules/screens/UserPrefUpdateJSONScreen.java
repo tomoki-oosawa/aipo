@@ -67,7 +67,8 @@ public class UserPrefUpdateJSONScreen extends ALJSONScreen {
 
       if (jsonObject != null) {
         Portlet p = ALEipUtils.getPortlet(rundata, context);
-        Profile profile = ((JetspeedRunData) rundata).getCustomizedProfile();
+        Profile profile = ((JetspeedRunData) rundata).getProfile();
+
         PortletInstance instance = PersistenceManager.getInstance(p, rundata);
         PortletEntry regEntry =
           (PortletEntry) Registry.getEntry(Registry.PORTLET, p.getName());
@@ -126,6 +127,7 @@ public class UserPrefUpdateJSONScreen extends ALJSONScreen {
         // save all the changes
         if ((madePsChange == true) || (madePcChange == true)) {
           try {
+            profile.setDocument(instance.getDocument());
             profile.store();
             p.init();
             org.apache.jetspeed.util.PortletSessionState

@@ -46,8 +46,8 @@ public class GadgetsAction extends ALBaseAction {
 
   /** logger */
   @SuppressWarnings("unused")
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(GadgetsAction.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(GadgetsAction.class.getName());
 
   /**
    * 
@@ -60,12 +60,7 @@ public class GadgetsAction extends ALBaseAction {
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
     buildCommonContext(portlet, context, rundata, false);
-    String view = rundata.getParameters().getString("view");
-    if ("popup".equals(view)) {
-      context.put("view", "popup");
-    } else {
-      context.put("view", "home");
-    }
+    context.put("view", "home");
   }
 
   /**
@@ -127,6 +122,7 @@ public class GadgetsAction extends ALBaseAction {
     jsonObject.put("specUrl", gadgetContext.getAppUrl());
     jsonObject.put("secureToken", gadgetContext.getSecureToken());
     jsonObject.put("serverBase", gadgetContext.getServerBase());
+    jsonObject.put("height", "200");
     jsonObject.put("width", "100%");
     jsonObject.put("rpcRelay", "files/container/rpc_relay.html");
     jsonObject.put("userPrefs", JSONObject.fromObject(maps));
