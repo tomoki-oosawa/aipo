@@ -49,7 +49,8 @@ aipo.IfrGadget = {
 			continuation('<div class="' + this.cssClassGadgetContent + '"><iframe id="' +
 					iframeId + '" name="' + iframeId + '" class="' + this.cssClassGadget +
 					'" src="about:blank' +
-					'" frameborder="no" scrolling="no"' +
+					'" frameborder="no"' +
+					(this.scrolling ? ' scrolling="' + this.scrolling + '"' : 'no') +
 					(this.height ? ' height="' + this.height + '"' : '') +
 					(this.width ? ' width="' + this.width + '"' : '') +
 			'></iframe></div>');
@@ -273,6 +274,25 @@ shindig.BaseIfrGadget.prototype.queryIfrGadgetType_ = function() {
 		for (var name in subClass) if (subClass.hasOwnProperty(name)) {
 			gadget[name] = subClass[name];
 		}
+		var height = obj.data.gadgets[0].height;
+		var view = obj.data.gadgets[0].views[aipo.container.view_];
+		var preferredHeight = 0;
+		if (view) {
+		    preferredHeight = view.preferredHeight;
+		} else {
+			var defaultView  = obj.data.gadgets[0].views['default'];
+			if (defaultView) {
+			    preferredHeight = defaultView.preferredHeight;
+			}
+		}
+	    if(height > 0) {
+	    	gadget['height'] = height;
+	    }
+	    if(preferredHeight > 0) {
+	    	gadget['height'] = preferredHeight;
+	    }
+	    var scrolling = obj.data.gadgets[0].scrolling;
+	    gadget['scrolling'] = scrolling == "true" ? 'true' : 'no';
 	}
 };
 
