@@ -49,15 +49,15 @@ import com.aimluck.eip.page.util.PageUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * ページ設定フォームデータを管理するためのクラスです。 
+ * ページ設定フォームデータを管理するためのクラスです。
  */
 public class PageFormData extends ALAbstractFormData {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(PageFormData.class.getName());
 
-  /** 追加可能なページ（タブ）数。タブ [個人設定] を数に含める */
-  private static final int MAX_PAGE_NUM = 6;
+  /** 追加可能なページ（タブ）数。タブ [個人設定],[システム管理] を数に含める */
+  private static final int MAX_PAGE_NUM = 7;
 
   /** 現在のページ数 */
   private int currentPageNum = 1;
@@ -75,7 +75,7 @@ public class PageFormData extends ALAbstractFormData {
   private boolean enableAddPage = true;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -128,7 +128,7 @@ public class PageFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param msgList
    * @return
    */
@@ -146,7 +146,7 @@ public class PageFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -196,7 +196,7 @@ public class PageFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -273,7 +273,7 @@ public class PageFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -326,7 +326,7 @@ public class PageFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -356,6 +356,7 @@ public class PageFormData extends ALAbstractFormData {
   /**
    *
    */
+  @Override
   public void initField() {
     // ページ ID
     page_id = new ALStringField();
