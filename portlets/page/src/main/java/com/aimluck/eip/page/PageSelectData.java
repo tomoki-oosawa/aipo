@@ -39,7 +39,7 @@ import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.page.util.PageUtils;
 
 /**
- * ページ設定の検索データを管理するためのクラスです。 
+ * ページ設定の検索データを管理するためのクラスです。
  */
 public class PageSelectData extends ALAbstractSelectData<Portlets, Portlets> {
 
@@ -49,7 +49,7 @@ public class PageSelectData extends ALAbstractSelectData<Portlets, Portlets> {
     .getLogger(PageSelectData.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -78,12 +78,15 @@ public class PageSelectData extends ALAbstractSelectData<Portlets, Portlets> {
     int portletsLen = portlets.getPortletsCount();
     for (int i = 0; i < portletsLen; i++) {
       pane = portlets.getPortlets(i);
-      if (selectedPageId.equals(pane.getId())) {
+      if (selectedPageId.equals(pane.getId())
+        || pane.getSecurityRef().getParent().equals("admin-view")) {
+        // [個人設定]と[システム管理]は表示しない
         continue;
       }
       portletList.add(pane);
     }
     Collections.sort(portletList, new Comparator<Portlets>() {
+      @Override
       public int compare(Portlets pane1, Portlets pane2) {
         Long pos1 = Long.valueOf(pane1.getLayout().getPosition());
         Long pos2 = Long.valueOf(pane2.getLayout().getPosition());
@@ -113,7 +116,7 @@ public class PageSelectData extends ALAbstractSelectData<Portlets, Portlets> {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -130,7 +133,7 @@ public class PageSelectData extends ALAbstractSelectData<Portlets, Portlets> {
   }
 
   /**
-   * 
+   *
    * @param obj
    * @return
    */
@@ -140,7 +143,7 @@ public class PageSelectData extends ALAbstractSelectData<Portlets, Portlets> {
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    */
@@ -156,7 +159,7 @@ public class PageSelectData extends ALAbstractSelectData<Portlets, Portlets> {
   }
 
   /**
-   * 
+   *
    * @return
    */
   @Override

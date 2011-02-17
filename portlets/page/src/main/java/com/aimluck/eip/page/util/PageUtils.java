@@ -39,7 +39,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 /**
- * ページ設定のユーティリティクラスです 
+ * ページ設定のユーティリティクラスです
  */
 public class PageUtils {
 
@@ -98,8 +98,9 @@ public class PageUtils {
         for (int j = 0; j < valuesLength; j++) {
           p = portlets.getPortlets(i);
 
-          // 個人設定のページは削除不可にする．
-          if (p.getId().equals(pageId)) {
+          // 個人設定とシステム管理のページは削除不可にする．
+          if (p.getId().equals(pageId)
+            || p.getSecurityRef().getParent().equals("admin-view")) {
             continue;
           }
 
@@ -130,7 +131,7 @@ public class PageUtils {
    * Updates the layout position based on physical order within the resorted
    * portlet list. Assures that layout position is always consecutive and within
    * bounds.
-   * 
+   *
    * @param set
    */
   public static void updateLayoutPositions(Portlets set) {
@@ -147,6 +148,7 @@ public class PageUtils {
 
     // Sort list using the current layout position
     Collections.sort(list, new Comparator<Portlets>() {
+      @Override
       public int compare(Portlets pane1, Portlets pane2) {
         Long pos1 = Long.valueOf(pane1.getLayout().getPosition());
         Long pos2 = Long.valueOf(pane2.getLayout().getPosition());
@@ -185,7 +187,7 @@ public class PageUtils {
 
   /**
    * 指定したポートレット ID を含むページの ID を取得する．
-   * 
+   *
    * @param rundata
    * @param portletId
    * @return
@@ -226,7 +228,7 @@ public class PageUtils {
 
   /**
    * 指定したポートレット ID を持つポートレットのオブジェクトを取得する．
-   * 
+   *
    * @param rundata
    * @param portletId
    * @return

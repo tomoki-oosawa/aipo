@@ -20,6 +20,9 @@
 package com.aimluck.eip.page;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.jetspeed.om.SecurityReference;
@@ -215,31 +218,47 @@ public class PageFormData extends ALAbstractFormData {
       }
 
       if (portlets != null) {
-        // 最後に配置しているタブポートレットの位置を 1 つ後にずらす
-        Portlets[] portletList = portlets.getPortletsArray();
+        // 個人設定 と システム管理の位置を一つ後ろにずらす
+        List<Portlets> portletList = Arrays.asList(portlets.getPortletsArray());
         if (portletList == null) {
           return false;
         }
 
-        int length = portletList.length;
+        int length = portletList.size();
         if (length >= MAX_PAGE_NUM) {
           enableAddPage = false;
           msgList.add("これ以上ページを追加できません。");
           return false;
         }
-        long position = 0;
-        long tmpPosition = 0;
-        int index = 0;
-        for (int i = 0; i < length; i++) {
-          tmpPosition = portletList[i].getLayout().getPosition();
-          if (position < tmpPosition) {
-            position = tmpPosition;
-            index = i;
+
+        long move_pages = 1;
+        Collections.sort(portletList, new Comparator<Portlets>() {
+          @Override
+          public int compare(Portlets o1, Portlets o2) {
+            return (int) (o1.getLayout().getPosition() - o2
+              .getLayout()
+              .getPosition());
           }
+        });
+
+        if (ALEipUtils.isAdmin(rundata)) {
+          // システム管理の移動分
+          move_pages++;
         }
-        portletList[index].getLayout().setPosition(position + 1);
+
+        int portletSize = portletList.size();
+        long position = Long.MAX_VALUE;
+        for (; move_pages > 0; move_pages--) {
+          Layout layout =
+            portletList.get((int) (portletSize - move_pages)).getLayout();
+          long newPosition = layout.getPosition() + 1;
+          layout.setPosition(newPosition);
+          position = position > newPosition ? newPosition : position;
+        }
+
         // レイアウトの作成
         Layout newLayout = new PsmlLayout();
+        position--;
         newLayout.setPosition(position);
         newLayout.setSize(-1);
 
