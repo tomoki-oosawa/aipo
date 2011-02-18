@@ -46,12 +46,6 @@ public class ALFileMailHandler extends ALMailHandler {
   /** カテゴリキー（mail） */
   protected String categoryKey = null;
 
-  /**
-   * コンストラクタ
-   */
-  private ALFileMailHandler() {
-  }
-
   public static ALMailHandler getInstance() {
     return new ALFileMailHandler();
   }
