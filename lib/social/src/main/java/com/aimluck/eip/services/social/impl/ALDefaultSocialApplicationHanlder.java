@@ -65,9 +65,6 @@ public class ALDefaultSocialApplicationHanlder extends
 
   private static ALSocialApplicationHandler instance;
 
-  private ALDefaultSocialApplicationHanlder() {
-  }
-
   public static ALSocialApplicationHandler getInstance() {
     if (instance == null) {
       instance = new ALDefaultSocialApplicationHanlder();
