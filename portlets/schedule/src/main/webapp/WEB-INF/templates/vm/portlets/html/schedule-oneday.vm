@@ -47,11 +47,6 @@ $!{result.ViewDate.Year} 年 $!{result.ViewDate.Month} 月 $!{result.ViewDate.Da
 #set($getScheduleDetailLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailJSONScreen').addQueryData('view_date', $!{result.ViewDate.toString()}))
 #ALformheader('スケジュール' $jslink $portlet)
 #ALtableheaderCalendar("100%")
-<tr>
-#foreach ( $num in [1..2] )
-<td class="calendarHeader"><img src="images/common/dot.gif" height="1" alt="" /></td>
-#end
-</tr>
 #set($entityids = "")
 #set($todoListSize = $result.ToDoResultDataList.size())
 #if($todoListSize > 0)

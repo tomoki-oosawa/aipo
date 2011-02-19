@@ -46,11 +46,6 @@ $!{result.ViewStart.Year} 年 $!{result.ViewStart.Month} 月 $!{result.ViewStart
 
 #ALformheader('スケジュール' $jslink $portlet)
 #ALtableheaderCalendar("100%")
-<tr>
-#foreach ( $num in [1..7] )
-<td class="calendarHeader"><img src="images/common/dot.gif" height="1" alt="" /></td>
-#end
-</tr>
 #set($entityids = "")
 <tr>
 #foreach($record in $result.Container.DayList)
@@ -75,6 +70,7 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #ALtdheadheaderAtt("nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #end
+<br/><img src="images/common/dot.gif" width="50" height="1" alt="" />
 #ALtdheadfooter()
 #end
 </tr>

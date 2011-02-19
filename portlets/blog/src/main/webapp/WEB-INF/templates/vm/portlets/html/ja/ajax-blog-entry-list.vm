@@ -181,13 +181,10 @@
 #end
 
 #macro(user_photo $photolink $username $photo_edit_link)
-<table width="185" border="0" cellpadding="3" cellspacing="1" class="outer">
+<table width="185" border="0" cellpadding="0" cellspacing="0" class="listTable">
 <tbody>
 <tr>
-<td style="padding:0px"><img src="images/common/dot.gif" height="1" width="1" alt="" /></td>
-</tr>
-<tr class="item">
-<td style="padding:1px 2px 1px 2px;">$username</td>
+<th>$username</th>
 </tr>
 <tr class="item">
 <td style="padding:10px" align="center">
@@ -201,21 +198,15 @@
 #end
 </td>
 </tr>
-<tr>
-<td style="padding:0px"><img src="images/common/dot.gif" height="1" width="1" alt="" /></td>
-</tr>
 </tbody>
 </table>
 #end
 
 #macro(blogfootmark $footmarks $link)
-<table width="185" border="0" cellpadding="3" cellspacing="1" class="outer">
+<table width="185" border="0" cellpadding="0" cellspacing="0" class="listTable">
 <tbody>
 <tr>
-<td style="padding:0px"><img src="images/common/dot.gif" height="1" width="1" alt="" /></td>
-</tr>
-<tr>
-<td align="center" class="item">あしあと</td>
+<th>あしあと</th>
 </tr>
 #foreach( $footmark in $footmarks )
 <tr>
@@ -223,19 +214,13 @@
 ##<a href="$!utils.escapeXML("${link}&view_uid=${footmark.UserId}")">$footmark.UserName</a></td>
 </tr>
 #end
-<tr>
-<td style="padding:0px"><img src="images/common/dot.gif" height="1" width="1" alt="" /></td>
-</tr>
 </tbody>
 </table>
 #end
 
 #macro(blogcalendar $month $link $prevlink $nextlink)
-<table width="185" border="0" cellpadding="3" cellspacing="1" class="outer">
+<table width="185" border="0" cellpadding="0" cellspacing="0" class="outer">
 <tbody>
-<tr>
-<td colspan="7" style="padding:0px"><img src="images/common/dot.gif" height="1" width="1" alt="" /></td>
-</tr>
 <tr align="center">
 <td colspan="7" class="item">
 <table cellspacing="0" cellpadding="0"><tbody>
@@ -287,9 +272,6 @@ $record.Label
 <tr class="item" align="right">
 #end
 #end
-</tr>
-<tr>
-<td colspan="7" style="padding:0px"><img src="images/common/dot.gif" height="1" width="1" alt="" /></td>
 </tr>
 </tbody>
 </table>

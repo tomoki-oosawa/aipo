@@ -19,61 +19,143 @@
 
 @charset "utf-8";
 
-/******************************
- * Index
- *
- * Universal:共通スタイル
- * Global:htmlタグスタイル
- * Common:共通スタイル
- * Round:
- * RoundMain:
- * RoundBlock:
- * Wrapper:ラッパー
- * Header:ヘッダー
- * Menu:メニュー
- * Content:コンテンツ
- * Portlet:ポートレット
- * Unit150:150px;
- * Unit165:165px;
- * SubsubMenu:
- * Col2575:left-25% center-75%
- * Col100:center-100%
- * Col5050:left-50% center-50%
- * Col7525:left-75% center-25%
- * Col333333:left-33% center-33% right-33%
- * Col255025:left-25% center-50% right-25%
- * Footer:
- ******************************/
+/***************************************************
+スタイル初期化：編集不要
+***************************************************/
 
-/******************************
- * Universal
- ******************************/
-
-* {
-	color:#666666;
-	font-family: Arial, Helvetica,  Verdana, “ヒラギノ角ゴPro W3″, “Hiragino Kaku Gothic Pro”, “メイリオ”, Meiryo, “ＭＳ Ｐゴシック”, sans-serif;
-
-	letter-spacing:0px;
-
-font-size:100%;
-/*
-font-style:normal;
-font-weight:normal;
-line-height:130%;
-text-decoration:none;
-*/
+/* content */
+html, body {
+	margin:0px;
+	padding:0px;
+	font-size:100%;
 }
 
-/******************************
- * Global
- ******************************/
+/* Text */
+h1,h2,h3,h4,h5,h6,
+p,pre,address,cite {
+	margin:0.5em auto;
+	line-height:1.4;
+	font-size:100%;
+}
+blockquote {
+	margin:2em;
+	padding:10px;
+	border:solid 3px #e0e0e0;
+	background:#ffffff;
+}
+blockquote h1,
+blockquote h2,
+blockquote h3,
+blockquote h4,
+blockquote h5,
+blockquote h6,
+blockquote p {
+	margin-left:0.5em;
+}
+address {
+	font-style:normal;
+}
+
+/* List */
+ul,ol {
+	margin:1em 2em;
+	padding:1px 0;
+}
+li ul, li ol {
+	margin:0px 10px;
+}
+dd {
+	margin-left:0px;
+}
+
+/* table */
+table {
+}
+
+/* Form */
+form {
+	margin:0px;
+	padding:0px;
+}
+fieldset {
+	padding:0 0.5em 0.5em 0.5em;
+	border:solid 1px #ccc;
+}
+legend {
+	padding:0 7px;
+}
+input,textarea {
+	font-size:100%;
+}
+label {
+	cursor:pointer;
+}
+
+
+/* Table */
+table {
+}
+th,td {
+}
+th {
+}
+td {
+}
+
+/* Image */
+a img {
+	border:none;
+}
+
+hr{
+border:1px solid #DCDCDC;
+}
+
+hr.bold{
+border:1px solid #999999;
+}
+
+/***************************************************
+	HTML
+--------------------------------------------------*/
+* {
+	color:#666666;
+	font-family: 'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
+}
 
 body {
-	margin:0;
-	padding:0;
-	background-color:#FFFFFF;
+	width:100%;
+	font-family: 'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
+	padding:0px;
+	margin:0px;
+	font-size:0.75em;
+	background:#FFFFFF;
+	color:#666666;
 	line-height:1.4;
-    font-size:0.75em;
+}
+
+* html body {
+	font-size:0.8em;
+}
+
+*+html body{
+	font-size:0.75em;
+}
+
+th label {
+	display:block;
+	width:100%;
+}
+
+a {
+	color:#666666;
+	text-decoration:underline;
+}
+
+a:hover,
+a:hover strong,
+a:hover span {
+	color:#FF9900;
 }
 
 div,
@@ -86,10 +168,13 @@ pre,form,fieldset,textarea,p,blockquote,th,td {
 }
 
 ul li {
-	list-style-type:none;
-	background:transparent url(../images/common/icon_p1.gif) no-repeat 0px 5px;
-	padding-left:13px;
-	margin:0 0 5px;
+	list-style:none;
+	line-height:150%;
+	text-align:left;
+	display:block;
+	background:url(../images/common/li_icon.gif) 0px 0.5em no-repeat;
+	padding:0px 0px 0px 1em;
+	/*margin:0px 3px 3px;*/
 }
 
 strong {
@@ -98,6 +183,7 @@ strong {
 
 input {
 	line-height:1.2;
+	font-family: Arial,Helvetica,Verdana,'ヒラギノ角ゴPro W3','Hiragino Kaku Gothic Pro','メイリオ',Meiryo,'ＭＳ Ｐゴシック',sans-serif;
 }
 
 textarea {
@@ -121,28 +207,8 @@ textarea.wide {
 select {
 	line-height:normal;
 	margin:1px;
+	font-family: Arial,Helvetica,Verdana,'ヒラギノ角ゴPro W3','Hiragino Kaku Gothic Pro','メイリオ',Meiryo,'ＭＳ Ｐゴシック',sans-serif;
 }
-
-a:link {
-	text-decoration:underline;
-	color:#666666;
-}
-
-a:visited {
-	text-decoration:underline;
-	color:#666666;
-}
-
-a:active {
-	text-decoration:underline;
-	color:#666666;
-}
-
-a:hover {
-	text-decoration:underline;
-	color:#FF9900;
-}
-
 
 
 img {
@@ -164,19 +230,19 @@ h2 {
 
 
 h3 {
-background:#eeeeee url(../images/common/bg_slash.gif) repeat scroll left bottom;
-line-height:150%;
-padding:3px 5px;
-margin:0px 0px 10px;
-border-bottom:1px solid #ddd;
-border-right:1px solid #ddd;
+	background:#eeeeee url(../images/common/bg_slash.gif) repeat scroll left bottom;
+	line-height:150%;
+	padding:3px 5px;
+	margin:0px 0px 10px;
+	border-bottom:1px solid #ddd;
+	border-right:1px solid #ddd;
 }
 
 h4 {
 	background:transparent url(../images/common/bg_line.gif) repeat-x left bottom;
-line-height:150%;
-padding:0px 0px 3px;
-margin:0px 0px 10px;
+	line-height:150%;
+	padding:0px 0px 3px;
+	margin:0px 0px 10px;
 }
 
 blockquote {
@@ -188,15 +254,10 @@ blockquote {
 div.outer {
 	border-top:1px solid #eeeeee;
 	border-left:1px solid #eeeeee;
-	border-bottom:1px solid #cccccc;
-	border-right:1px solid #cccccc;
+	border-bottom:1px solid #B5B5B5;
+	border-right:1px solid #B5B5B5;
 	margin-bottom:2px;
 	margin-top:2px;
-}
-
-.listTable td,
-.rowTable td{
-padding:5px !important;
 }
 
 /******************************
@@ -289,9 +350,13 @@ padding:5px !important;
 	cursor:hand;
 }
 
+
 .text {
 	box-sizing:border-box;
 	-moz-box-sizing:border-box;
+	background-color:#FFFFFF;
+	border:1px solid #B5B5B5;
+	padding:2px;
 }
 
 .small {
@@ -300,12 +365,12 @@ padding:5px !important;
 }
 * html .small {
 	font-size:0.95em;
-	font-family:Verdana, Arial, Helvetica, “ヒラギノ角ゴPro W3″, “Hiragino Kaku Gothic Pro”, “メイリオ”, Meiryo, “ＭＳ Ｐゴシック”, sans-serif;
+	font-family: 'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
 	line-height:1.3;
 }
 *+html .small {
 	font-size:0.95em;
-	font-family:Verdana, Arial, Helvetica, “ヒラギノ角ゴPro W3″, “Hiragino Kaku Gothic Pro”, “メイリオ”, Meiryo, “ＭＳ Ｐゴシック”, sans-serif;
+	font-family: 'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
 	line-height:1.3;
 }
 
@@ -347,33 +412,30 @@ padding:5px !important;
 	margin-bottom:5px;
 }
 
-.caution,
-.caution .em  {
+.caution {
 	color:#DC0033;
 	font-weight:bold;
 	font-size:0.96em;
-	line-height:1.2;
 }
 
-* html .caution,
-* html .caution .em {
+* html .caution {
 	font-size:0.88em;
-	font-family:Verdana, Arial, Helvetica, “ヒラギノ角ゴPro W3″, “Hiragino Kaku Gothic Pro”, “メイリオ”, Meiryo, “ＭＳ Ｐゴシック”, sans-serif;
-	line-height:1.3;
 }
-*+html .caution,
-*+html .caution .em {
+*+html .caution {
 	font-size:0.88em;
-	font-family:Verdana, Arial, Helvetica, “ヒラギノ角ゴPro W3″, “Hiragino Kaku Gothic Pro”, “メイリオ”, Meiryo, “ＭＳ Ｐゴシック”, sans-serif;
-	line-height:1.3;
+}
+
+.caution .em {
+	color:#DC0033;
+	font-weight:bold;
 }
 
 input.button {
 /*
 	margin:0px 2px;
 	padding:1px 4px 1px;
-	border-top:1px solid #CCCCCC;
-	border-left:1px solid #CCCCCC;
+	border-top:1px solid #B5B5B5;
+	border-left:1px solid #B5B5B5;
 	border-right:1px solid #BBBBBB;
 	border-bottom:1px solid #BBBBBB;
 	color:#FFFFFF;
@@ -404,11 +466,11 @@ input.button {
 --------------------------------------------------*/
 
 #header{
-height:55px;
-padding:10px 7px 10px 10px;
-margin:0;
-white-space:nowrap;
-overflow:hidden;
+	height:55px;
+	padding:10px 7px 10px 10px;
+	margin:0;
+	white-space:nowrap;
+	overflow:hidden;
 }
 
 #logo{
@@ -451,8 +513,8 @@ overflow:hidden;
  ******************************/
 
 #footer{
-padding:15px 15px 10px;
-margin:0;
+	padding:15px 15px 10px;
+	margin:0;
 }
 
 .copyright{
@@ -748,7 +810,7 @@ height:22px;
 	subTab
 --------------------------------------------------*/
 .subTab{
- white-space:nowrap;
+	white-space:nowrap;
 	height:25px;
 	padding:0;
 	margin:0;
@@ -756,14 +818,14 @@ height:22px;
 }
 
 .subTab .tabContainer {
-padding:0 10px;
-margin:0;
-white-space:nowrap;
+	padding:0 10px;
+	margin:0;
+	white-space:nowrap;
 
 }
 
 .subTab .tabContainer li{
-height:25px;
+	height:25px;
 	background:transparent url(../images/common/bg_menu.gif) no-repeat scroll right top;
 	float:left;
 	display:block;
@@ -772,7 +834,7 @@ height:25px;
 }
 
 .subTab .tabContainer li .menuTitle {
-height:21px;
+	height:21px;
 	background:transparent url(../images/common/bg_menu_l.gif) no-repeat scroll left top;
 	float:left;
 	padding:4px 10px 0 20px;
@@ -797,7 +859,7 @@ height:21px;
 }
 
 .subTab .tabContainer li.selectedMenu .menuTitle a{
-line-height:normal;
+	line-height:normal;
 }
 
 .subTab .tabContainer li a.menuList {
@@ -813,23 +875,23 @@ line-height:normal;
 /******************************
  * Submenu
  ******************************/
- 
+
 .submenu {
-width:200px;
+	width:200px;
 	background:transparent url(../images/common/bg_submenu_t.gif) no-repeat scroll center top;
 	padding:20px 0px 0px;
 }
 
 .submenu ul {
-background:transparent url(../images/common/bg_submenu.gif) repeat-y scroll center top;
+	background:transparent url(../images/common/bg_submenu.gif) repeat-y scroll center top;
 }
 
 .submenu ul li {
-display:block;
-width:186px;
-background:transparent url(../images/common/line_01.gif) repeat-x scroll left bottom;
-margin:0 7px 0;
-padding:0 0 1px;
+	display:block;
+	width:186px;
+	background:transparent url(../images/common/line_01.gif) repeat-x scroll left bottom;
+	margin:0 7px 0;
+	padding:0 0 1px;
 }
 
 .submenu ul li a{
@@ -862,7 +924,7 @@ div.endcap {
 /******************************
  * Navigation
  ******************************/
- 
+
 .navigation {
 	padding-left:10px;
 }
@@ -930,7 +992,7 @@ a.button:hover {
 /******************************
  * Field
  ******************************/
- 
+
 .fieldMiddle{
 	background:url(../images/common/bg_name_m.gif) repeat-x right top;
 }
@@ -1026,58 +1088,55 @@ table.barContainer td a:hover {
  * Table
  ******************************/
 table.outer {
-    color:#5D6A70;
-    background-color:#FF9900;
+    border:solid #B5B5B5 1px;
+	border-spacing:0;
+	border-collapse:collapse;
 }
 
 td.item {
-    padding:2px;
-    color:#5D6A70;
-    line-height:14pt;
-    background-color:#FFFFFF;
+	border:1px solid #B5B5B5;
+	padding:5px;
 }
 
-td.f08 {
-    padding:4px;
-    color:#5D6A70;
+table.outer td.f08 {
+    border:solid #B5B5B5 1px;
+    padding:5px;
     background-color:#FFF5D8;
     vertical-align:middle;
 }
 
 
 table.listTable {
-    margin-top:5px;
-    margin-bottom:5px;
+	border:1px solid #B5B5B5;
+	margin-bottom:10px;
+	margin-top:5px;
 	border-spacing:0;
 	border-collapse:collapse;
-	border-top:3px solid #ff9900;
-	border-bottom:3px solid #ff9900;
+	padding: 0;
 }
 
 table.subTable {
     margin-top:2px;
-	border-collapse:collapse;
 	border-spacing:0;
-	/*border-top:4px solid #ff9900;
-	border-bottom:4px solid #ff9900;*/
+	border-collapse:collapse;
 }
 
 table.listTable td,
 table.subTable td {
-	border:1px solid #ff9900;
-	padding:2px 3px 2px 3px;
+	border:1px solid #B5B5B5;
+	padding:5px;
 }
 
 table.listTable th,
 table.listTable thead td,
 table.subTable th,
 table.subTable thead td {
-	border:1px solid #ff9900;
-	padding:2px 3px 2px 3px;
-	background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
+	border:1px solid #B5B5B5;
+	padding:5px;
+	background:#EEEEEE url(../images/common/bg_slash.gif) repeat left top;
 	white-space:nowrap;
 	text-align:center;
-	font-weight:bold;
+	font-weight:normal;
 }
 
 table.listTable th a,
@@ -1093,26 +1152,28 @@ table.listTable th a.headDown,
 table.listTable thead td.headDown a,
 table.subTable th a.headDown,
 table.subTable thead td.headDown a {
-	background:transparent url(../images/common/icon_desc.gif) no-repeat right 3px;
-    
+	padding:3px 20px 1px 0px;
+	background:transparent url(../images/common/btn_up.gif) no-repeat right center;
+
 }
 
 table.listTable th a.headUp,
 table.listTable thead td.headUp a,
 table.subTable th a.headUp,
 table.subTable thead td.headUp a {
-	background:transparent url(../images/common/icon_asc.gif) no-repeat right 3px;
-    
+	padding:3px 20px 1px 0px;
+	background:transparent url(../images/common/btn_down.gif) no-repeat right center;
+
 }
 
 table.listTable td.caption,
 table.subTable td.caption {
-	background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
-	min-width:130px
+	background:#EEEEEE url(../images/common/bg_slash.gif) repeat left top;
+	min-width:135px;
 	min-width:-moz-intrinsic; /*need in Firefox3*/
-	width:130px;
+	width:135px;
 	white-space:nowrap;
-	font-weight:bold;
+	font-weight:normal;
 }
 
 table.listTable .selected,
@@ -1163,7 +1224,7 @@ table.rowTable {
 }
 
 table.rowTable td {
-	padding:1px 3px 1px 3px;
+	padding:5px;
 }
 
 table.rowTable tr.even {
@@ -1179,23 +1240,23 @@ table.simpleTable {
 }
 
 table.simpleTable td {
-	border:1px solid #DDDDDD;
-	padding:1px 2px 1px 2px;
+	border:1px solid #B5B5B5;
+	padding:5px;
 }
 
 table.simpleTable th,
 table.simpleTable thead td {
-	border:1px solid #DDDDDD;
+	border:1px solid #B5B5B5;
 	padding:1px 2px 1px 2px;
-	background:#f2f2f2 url(../images/common/bg_slash.gif) repeat left top;
+	background:#EEEEEE url(../images/common/bg_slash.gif) repeat left top;
 	white-space:nowrap;
 	text-align:center;
 	font-weight:normal;
 }
 
 table.simpleTable td.caption {
-	background:#f2f2f2 url(../images/common/bg_slash.gif) repeat left top;
-	min-width:130px
+	background:#EEEEEE url(../images/common/bg_slash.gif) repeat left top;
+	min-width:130px;
 	min-width:-moz-intrinsic;  /*need in Firefox3*/
 	width:130px;
 	white-space:nowrap;
@@ -1255,7 +1316,7 @@ table.simpleTable td.caption {
 
 .pagination li.selected a:link,
 .pagination li.selected a:visited,
-.pagination li.selected a:active,	
+.pagination li.selected a:active,
 .pagination li.selected a:hover {
 	background-color:#fff5d8;
 	border:1px solid #ff9900;
@@ -1282,7 +1343,7 @@ table.simpleTable td.caption {
 
 .pagination li.disabled a:link,
 .pagination li.disabled a:visited,
-.pagination li.disabled a:active, 
+.pagination li.disabled a:active,
 .pagination li.disabled a:hover {
 	background-color:#FFFFFF;
 	border:1px solid #E6E6E6;
@@ -1352,14 +1413,14 @@ table.simpleTable td.caption {
 }
 
 .modalDialogTitleBar{
-   overflow:hidden; 
+   overflow:hidden;
    cursor:move;
    outline-color:invert;
    outline-style:none;
    outline-width:0pt;
-   z-index:997; 
-   position: absolute; 
-   width:510px; 
+   z-index:997;
+   position: absolute;
+   width:510px;
    height:28px;
    padding:-5px;
 }
@@ -1397,7 +1458,7 @@ table.simpleTable td.caption {
     position:absolute;
 }
 
-.dijit_a11y .modalDialog .closeText { 
+.dijit_a11y .modalDialog .closeText {
     display:inline;
 }
 
@@ -1447,7 +1508,7 @@ table.simpleTable td.caption {
     position:absolute;
 }
 
-.dijit_a11y .fileuploadDialog .closeText { 
+.dijit_a11y .fileuploadDialog .closeText {
     display:inline;
 }
 
@@ -1496,7 +1557,7 @@ table.simpleTable td.caption {
     position:absolute;
 }
 
-.dijit_a11y .addressbookDialog .closeText { 
+.dijit_a11y .addressbookDialog .closeText {
     display:inline;
 }
 
@@ -1504,19 +1565,19 @@ table.simpleTable td.caption {
 /******************************
  * DatePicker
  ******************************/
- 
+
 .popupMenu {
 	position: absolute;
 	border-top:1px solid #eeeeee;
 	border-left:1px solid #eeeeee;
-	border-bottom:1px solid #cccccc;
-	border-right:1px solid #cccccc;
+	border-bottom:1px solid #B5B5B5;
+	border-right:1px solid #B5B5B5;
 	/*background:#f5f5f5 url(../images/common/bg_slash.gif) repeat left top;*/
 	background:#f5f5f5;
 	padding: 1px;
 	margin-top: 5px;
 	margin-bottom: 1px;
-	
+
 	line-height:normal;
     border-collapse:collapse;
     border-width:0px;
@@ -1621,7 +1682,7 @@ table.simpleTable td.caption {
 
 .menuSeparatorTop {
 	height: 50%;
-	border-bottom: 1px solid #cccccc;
+	border-bottom: 1px solid #B5B5B5;
 	margin: 0px 2px;
 	font-size: 1px;
 }
@@ -1774,7 +1835,7 @@ table.simpleTable td.caption {
 * html .calendarBodyContainer tbody tr td {
 	font-size:0.7em;
 	padding:0.2em 0.25em 0.2em 0.25em;
-	font-family:Verdana, Arial, Helvetica, “ヒラギノ角ゴPro W3″, “Hiragino Kaku Gothic Pro”, “メイリオ”, Meiryo, “ＭＳ Ｐゴシック”, sans-serif;
+	font-family: 'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
 
 }
 
@@ -1782,8 +1843,7 @@ table.simpleTable td.caption {
 *+html .calendarBodyContainer tbody tr td {
 	font-size:0.7em;
 	padding:0.2em 0.25em 0.2em 0.25em;
-	font-family:Verdana, Arial, Helvetica, “ヒラギノ角ゴPro W3″, “Hiragino Kaku Gothic Pro”, “メイリオ”, Meiryo, “ＭＳ Ｐゴシック”, sans-serif;
-
+	font-family: 'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
 }
 
 .calendarContainer .monthLabelContainer {
@@ -1801,13 +1861,13 @@ table.simpleTable td.caption {
 * html .calendarContainer  .monthLabelContainer .incrementControl {
 	padding:4px;
 	font-size:0.6em;
-	font-family:Verdana, Arial, Helvetica, “ヒラギノ角ゴPro W3″, “Hiragino Kaku Gothic Pro”, “メイリオ”, Meiryo, “ＭＳ Ｐゴシック”, sans-serif;
+	font-family: 'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
 }
 
 *+html .calendarContainer  .monthLabelContainer .incrementControl {
 	padding:4px;
 	font-size:0.6em;
-	font-family:Verdana, Arial, Helvetica, “ヒラギノ角ゴPro W3″, “Hiragino Kaku Gothic Pro”, “メイリオ”, Meiryo, “ＭＳ Ｐゴシック”, sans-serif;
+	font-family: 'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
 }
 
 .calendarBodyContainer tbody tr td.previousMonth {
@@ -1918,14 +1978,14 @@ table.simpleTable td.caption {
     font-size:0.7em;
     border-bottom:1px solid #ff9900;
 	padding:0.2em 0.25em 0.2em 0.25em;
-	font-family:Verdana, Arial, Helvetica, “ヒラギノ角ゴPro W3″, “Hiragino Kaku Gothic Pro”, “メイリオ”, Meiryo, “ＭＳ Ｐゴシック”, sans-serif;
+	font-family: 'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
 }
 
 *+html .timeContainer .timeLabelContainer {
     font-size:0.7em;
     border-bottom:1px solid #ff9900;
 	padding:0.2em 0.25em 0.2em 0.25em;
-	font-family:Verdana, Arial, Helvetica, “ヒラギノ角ゴPro W3″, “Hiragino Kaku Gothic Pro”, “メイリオ”, Meiryo, “ＭＳ Ｐゴシック”, sans-serif;
+	font-family: 'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
 }
 
 .timeContainer .timeHoursContainer,
@@ -1950,14 +2010,14 @@ table.simpleTable td.caption {
 * html .timeContainer .timeMnituesContainer td {
     font-size:0.7em;
 	padding:0.2em 0.25em 0.2em 0.25em;
-	font-family:Verdana, Arial, Helvetica, “ヒラギノ角ゴPro W3″, “Hiragino Kaku Gothic Pro”, “メイリオ”, Meiryo, “ＭＳ Ｐゴシック”, sans-serif;
+	font-family: 'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
 }
 
 *+html .timeContainer .timeHoursContainer td,
 *+html .timeContainer .timeMnituesContainer td {
     font-size:0.7em;
 	padding:0.2em 0.25em 0.2em 0.25em;
-	font-family:Verdana, Arial, Helvetica, “ヒラギノ角ゴPro W3″, “Hiragino Kaku Gothic Pro”, “メイリオ”, Meiryo, “ＭＳ Ｐゴシック”, sans-serif;
+	font-family: 'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
 }
 
 .timeContainer .timeHoursContainer td.selectedItem,
@@ -2025,7 +2085,7 @@ table.simpleTable td.caption {
 /******************************
  * Indicator
  ******************************/
- 
+
 .indicator {
     background:url(../images/common/indicator.gif) no-repeat left;
     padding:2px 0px 2px 18px;
@@ -2091,6 +2151,7 @@ div.weeklyScrollPane {
     position:relative;
     overflow:scroll;
     overflow-x:hidden;
+    border-bottom: solid #B5B5B5 1px;
 }
 
 * html .scroll_width {
@@ -2103,7 +2164,7 @@ div.weeklyScrollPane {
 
 div.weeklyHeadLeft{
 	width:50px;
-	border:solid #ff9900;
+	border:solid #B5B5B5;
 	border-width:0px 0px 0px 1px;
 	float:left;
 }
@@ -2111,13 +2172,13 @@ div.weeklyHeadLeft{
 div.weeklyHeadLeft div.weeklyHeadLeftTop{
 	width:100%;
 	height:17px;
-	background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
+	background:#EEEEEE url(../images/common/bg_slash.gif) repeat left top;
 }
 
 div.weeklyHeadLeft div.weeklyHeadLeftBottom{
 	width:100%;
 	height:17px;
-	background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
+	background:#EEEEEE url(../images/common/bg_slash.gif) repeat left top;
 }
 
 div.weeklyHeadRights{
@@ -2131,8 +2192,8 @@ div.weeklyHeadRights div.weeklyHeadRight{
     position:absolute;
 	width:14.2857%;
 	text-align:center;
-	background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
-	border:solid #ff9900;
+	background:#EEEEEE url(../images/common/bg_slash.gif) repeat left top;
+	border:solid #B5B5B5;
 	border-width:0px 0px 0px 1px;
 	overflow:hidden;
 }
@@ -2141,8 +2202,8 @@ div.weeklyHeadRights div.weeklyHeadRightR{
     position:absolute;
 	width:14.2857%;
 	text-align:center;
-	background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
-	border:solid #ff9900;
+	background:#EEEEEE url(../images/common/bg_slash.gif) repeat left top;
+	border:solid #B5B5B5;
 	border-width:0px 1px 0px 1px;
 	overflow:hidden;
 }
@@ -2159,7 +2220,7 @@ div.weeklyHeadRights div.weeklyHeadRightR div.weeklyHeadRightBottom{
 
 div.weeklyTermLeft{
 	width:50px;
-	border:solid #ff9900;
+	border:solid #B5B5B5;
 	border-width:0px 0px 0px 1px;
 	float:left;
 }
@@ -2167,13 +2228,13 @@ div.weeklyTermLeft{
 div.weeklyTermLeft div.weeklyTermLeftTop{
 	width:100%;
 	height:18px;
-	background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
+	background:#EEEEEE url(../images/common/bg_slash.gif) repeat left top;
 }
 
 div.weeklyTermLeft div.weeklyTermLeftBottom{
 	width:100%;
 	height:18px;
-	background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
+	background:#EEEEEE url(../images/common/bg_slash.gif) repeat left top;
 }
 
 div.weeklyTermRights{
@@ -2184,15 +2245,15 @@ div.weeklyTermRights{
 }
 
 div.weeklyTermRights div.weeklyTermRightL{
-	border-left:solid #ff9900 !important;
+	border-left:solid #B5B5B5 !important;
    border-width:1px 0px 0px 1px !important;
 }
 
 div.weeklyTermRights div.weeklyTermRight{
     position:absolute;
     width:14.2857%;
-    border:solid #ff9900;
-    border-left:solid #dddddd;
+    border:solid #B5B5B5;
+    border-left:solid #B5B5B5;
     border-width:1px 0px 0px 1px;
 }
 
@@ -2216,22 +2277,22 @@ div.weeklyTermRights div.weeklyTermRightR div.weeklyTermRightBottom{
 div.weeklyTermTail {
   width:18px;
   height:17px;
-  background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
+  background:#EEEEEE url(../images/common/bg_slash.gif) repeat left top;
 }
 
 div.weeklyLeft{
 	width:50px;
-	border-top:solid #dddddd;
-	border-left:solid #ff9900;
+	border-top:solid #B5B5B5;
+	border-left:solid #B5B5B5;
 	border-width:1px 0px 0px 1px;
 	float:left;
 }
 
 div.weeklyLeft div.leftMinute{
 	height:17px;
-	border:solid #fff5d8;
+	border:solid #EEEEEE;
 	border-width:0px 0px 1px 0px;
-	background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
+	background:#EEEEEE url(../images/common/bg_slash.gif) repeat left top;
 	padding:0px 3px 0px 0px;
 	text-align:right;
 	color:#be6d00;
@@ -2240,9 +2301,9 @@ div.weeklyLeft div.leftMinute{
 
 div.weeklyLeft div.leftMinuteBottom{
 	height:17px;
-	border:solid #dddddd;
+	border:solid #B5B5B5;
 	border-width:0px 0px 1px 0px;
-	background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
+	background:#EEEEEE url(../images/common/bg_slash.gif) repeat left top;
 	font-size:1px;
     line-height:1;
 }
@@ -2257,23 +2318,21 @@ div.weeklyRights{
 div.weeklyRights div.weeklyRight{
     position:absolute;
 	width:14.2857%;
-	/*background-color:#ffffff;*/
-	border:solid #dddddd;
+	border:solid #B5B5B5;
 	border-width:1px 0px 0px 1px;
 }
 
 div.weeklyRights div.weeklyRightR{
     position:absolute;
 	width:14.2857%;
-	/*background-color:#ffffff;*/
-	border:solid #dddddd;
+	border:solid #B5B5B5;
 	border-width:1px 1px 0px 1px;
 }
 
 div.weeklyRights div.weeklyRight div.rightMinute,
 div.weeklyRights div.weeklyRightR div.rightMinute{
 	height:17px;
-	border:dotted #dddddd;
+	border:dotted #B5B5B5;
 	border-width:0px 0px 1px 0px;
 	font-size:1px;
 }
@@ -2281,7 +2340,7 @@ div.weeklyRights div.weeklyRightR div.rightMinute{
 div.weeklyRights div.weeklyRight div.rightMinuteBottom,
 div.weeklyRights div.weeklyRightR div.rightMinuteBottom{
 	height:17px;
-	border:solid #dddddd;
+	border:solid #B5B5B5;
 	border-width:0px 0px 1px 0px;
 	font-size:1px;
 }
@@ -2324,14 +2383,14 @@ div.scheduleDivFirstLine span.scheduleDivSepalater{
 * html div.scheduleDivFirstLine span.scheduleDivTime,
 * html div.scheduleDivFirstLine span.scheduleDivSepalater {
     font-size:0.8em;
-	font-family:Verdana, Arial, Helvetica, “ヒラギノ角ゴPro W3″, “Hiragino Kaku Gothic Pro”, “メイリオ”, Meiryo, “ＭＳ Ｐゴシック”, sans-serif;
+	font-family: 'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
 	line-height:1.3;
 }
 
 *+html div.scheduleDivFirstLine span.scheduleDivTime,
 *+html div.scheduleDivFirstLine span.scheduleDivSepalater {
     font-size:0.8em;
-	font-family:Verdana, Arial, Helvetica, “ヒラギノ角ゴPro W3″, “Hiragino Kaku Gothic Pro”, “メイリオ”, Meiryo, “ＭＳ Ｐゴシック”, sans-serif;
+	font-family: 'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
 	line-height:1.3;
 }
 
@@ -2443,14 +2502,16 @@ div.termScheduleDivTgt{
 }
 
 table.weeklyTableHead {
-    border-right:solid 1px #ff9900;
+	margin-top: 5px;
+	border-top: solid 1px #B5B5B5;
+    border-right:solid 1px #B5B5B5;
 }
 
 div.weeklyBorder {
   width:100%;
   height:2px;
-  border-right:solid #ff9900 2px;
-  background-color:#ff9900;
+  border-right:solid #B5B5B5 1px;
+  background-color:#B5B5B5;
   font-size:1px;
   line-height:1px;
 }
@@ -2458,7 +2519,7 @@ div.weeklyBorder {
 div.weeklySpan {
   width:18px;
   height:17px;
-  background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
+  background:#EEEEEE url(../images/common/bg_slash.gif) repeat left top;
 }
 
 div.tableBorder {
@@ -2470,7 +2531,7 @@ div.tableBorder {
 }
 
 div.tableBorderM {
-  background-color:#ff9900;
+  background-color:#B5B5B5;
   width:100%;
   height:2px;
   font-size:1px;
@@ -2697,8 +2758,7 @@ table.calendar {
     margin-bottom:5px;
 	border-collapse:collapse;
 	border-spacing:0;
-	border-top:2px solid #ff9900;
-	border-bottom:4px solid #ff9900;
+	border:1px solid #B5B5B5;
 }
 
 table.calendar td.calendarHeader {
@@ -2706,17 +2766,17 @@ table.calendar td.calendarHeader {
 }
 
 table.calendar td {
-	border:1px solid #ff9900;
+	border:1px solid #B5B5B5;
 	padding:0px;
 	vertical-align:top;
 }
 
 table.calendar th {
-	border:1px solid #ff9900;
+	border:1px solid #B5B5B5;
 	padding:0px;
 	font-weight:normal;
 	text-align:center;
-	background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
+	background:#EEEEEE url(../images/common/bg_slash.gif) repeat left top;
 	width:14.2857143%;
 }
 
@@ -3072,10 +3132,10 @@ div.dummy_div {
 /******************************
  * Photo
  ******************************/
-.width_thumbs { 
-	width: 86px; 
+.width_thumbs {
+	width: 86px;
 }
-.width_auto { 
+.width_auto {
 	width: 490px;
 }
 
@@ -3108,7 +3168,7 @@ div.userBlock {
 	margin-bottom:4px;
 	margin-left:2px;
 	text-align: center;
-	border:1px solid #CCCCCC;
+	border:1px solid #B5B5B5;
 }
 
 div.userPhoto {
@@ -3121,7 +3181,7 @@ div.userPhoto {
 }
 
 div.userInfo {
-	border-top:1px solid #CCCCCC;
+	border-top:1px solid #B5B5B5;
 }
 
 
@@ -3157,71 +3217,71 @@ div.userInfo {
 }
 
 .menuBarIconCompanyInfo{
-    background: url(../images/account/company_info.gif) no-repeat;
+    background: url(../../../images/account/company_info.gif) no-repeat;
 }
 
 .menuBarIconAccountUser{
-    background: url(../images/account/account_user.gif) no-repeat;
+    background: url(../../../images/account/account_user.gif) no-repeat;
 }
 
 .menuBarIconAccountUserAdd{
-    background: url(../images/account/account_user_add.gif) no-repeat;
+    background: url(../../../images/account/account_user_add.gif) no-repeat;
 }
 
 .menuBarIconAccountChangeTurn{
-    background: url(../images/account/account_change_turn.gif) no-repeat;
+    background: url(../../../images/account/account_change_turn.gif) no-repeat;
 }
 
 .menuBarIconAccountPasswd{
-    background: url(../images/account/passwd.gif) no-repeat;
+    background: url(../../../images/account/passwd.gif) no-repeat;
 }
 .menuBarIconPortletAdd{
-    background: url(../images/layout/portlet_add.gif) no-repeat;
+    background: url(../../../images/layout/portlet_add.gif) no-repeat;
 }
 .menuBarIconLayoutConf{
-    background: url(../images/layout/layout_conf.gif) no-repeat;
+    background: url(../../../images/layout/layout_conf.gif) no-repeat;
 }
 
 .menuBarIconCellular{
-    background: url(../images/cellular/cellular.gif) no-repeat;
+    background: url(../../../images/cellular/cellular.gif) no-repeat;
 }
 
 .menuBarIconNetworkInfo{
-    background: url(../images/system/network_info.gif) no-repeat;
+    background: url(../../../images/system/network_info.gif) no-repeat;
 }
 
 .menuBarIconLicense{
-    background: url(../images/system/license.gif) no-repeat;
+    background: url(../../../images/system/license.gif) no-repeat;
 }
 
 .menuBarIconWebmailCreateMail{
-    background: url(../images/webmail/webmail_create_mail.gif) no-repeat;
+    background: url(../../../images/webmail/webmail_create_mail.gif) no-repeat;
 }
 
 .menuBarIconWebmailCheckNewMails{
-    background: url(../images/webmail/webmail_check_newmails.gif) no-repeat;
+    background: url(../../../images/webmail/webmail_check_newmails.gif) no-repeat;
 }
 
 .menuBarIconWebmailReceiveMail{
-    background: url(../images/webmail/webmail_receive_mail.gif) no-repeat;
+    background: url(../../../images/webmail/webmail_receive_mail.gif) no-repeat;
 }
 
 .menuBarIconWebmailAccountConfig{
-    background: url(../images/webmail/webmail_account_config.gif) no-repeat;
+    background: url(../../../images/webmail/webmail_account_config.gif) no-repeat;
 }
 
 .menuBarIconFileAdd{
-    background: url(../images/cabinet/file_add.gif) no-repeat;
+    background: url(../../../images/cabinet/file_add.gif) no-repeat;
 }
 
 .menuBarIconFolderAdd{
-    background: url(../images/cabinet/folder_add.gif) no-repeat;
+    background: url(../../../images/cabinet/folder_add.gif) no-repeat;
 }
 
 .menuBarIconSeparator{
     width: 7px !important;
     height: 20px !important;
-    background: url(../images/icon/icon_separator.gif) no-repeat;
+    background: url(../../../images/icon/icon_separator.gif) no-repeat;
 }
 .menuBarIconNone{
     width: 0px !important;

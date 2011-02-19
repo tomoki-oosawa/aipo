@@ -61,7 +61,6 @@
 					<span style="padding-left: 10px;" title="選択された共有メンバーのスケジュールも表示するかどうかを設定します" ><input type="checkbox" id="showAll-$!portlet.ID" onclick='onCheckShowAll(this)' value='$!init_s_all' #if($init_s_all == "t") checked="checked" #end /><label for="showAll-$!portlet.ID">共有スケジュールを表示する</label></span>
 				    #end
                     </div>
-                    <div class="tableBorder">&nbsp;</div>
                     <table class="weeklyTableHead" cellspacing="0" cellpadding="0" border="0" width="100%">
                       <tbody>
                         <tr>
@@ -581,7 +580,6 @@
                         </tbody>
                       </table>
                     </div>
-                    <div class="tableBorder">&nbsp;</div>
                     </div>
                 </td>
             </tr>

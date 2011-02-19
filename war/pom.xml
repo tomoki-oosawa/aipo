@@ -29,8 +29,43 @@
        </plugin>
      </plugins>
     </pluginManagement-->
+        <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>net.sf.alchim</groupId>
+          <artifactId>yuicompressor-maven-plugin</artifactId>
+          <version>0.7.1</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>net.sf.alchim</groupId>
+        <artifactId>yuicompressor-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compress</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <suffix>.min</suffix>
+          <includes>
+            <inclulde>**/*.css</inclulde>
+          </includes>
+          <excludes>
+            <exclude>**/*.xml</exclude>
+            <exclude>**/*.properties</exclude>
+            <exclude>**/*.js</exclude>
+          </excludes>
+          <jswarn>false</jswarn>
+          <statistics>false</statistics>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
-  
+
   <dependencies>
     <dependency>
       <groupId>com.aimluck.eip</groupId>

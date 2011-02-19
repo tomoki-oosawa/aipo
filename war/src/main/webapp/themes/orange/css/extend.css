@@ -18,11 +18,11 @@
  */
 
 @charset"utf-8";
- 
+
 .dijitReset {
     /* Use this style to null out padding, margin, border in your template elements
         so that page specific styles don't break them.
-        - Use in all TABLE, TR and TD tags. 
+        - Use in all TABLE, TR and TD tags.
         - If there is more than one class on the tag, place this first so other classes override.
     */
     margin:0px;
@@ -33,7 +33,7 @@
 
 .dijitInline {
     /*  To inline block elements.
-        Similar to InlineBox below, but this has fewer side-effects in Moz.  
+        Similar to InlineBox below, but this has fewer side-effects in Moz.
         Also, apparently works on a DIV as well as a FIELDSET.
     */
 /*  display:-moz-inline-box;        /* FF2 */
@@ -47,7 +47,7 @@
     display:-moz-inline-box;        /* FF2 */
 }
 
-.dj_ie .dijitInline { 
+.dj_ie .dijitInline {
     zoom: 1; /* set hasLayout:true to mimic inline-block */
     #display:inline;
 }
@@ -73,8 +73,8 @@
     filter: none;
 }
 
-/**** 
-        A11Y 
+/****
+        A11Y
  ****/
 .dijit_a11y * {
     background-image:none !important;
@@ -93,7 +93,7 @@
 
 
 /****
-        3-element borders:  ( dijitLeft + dijitStretch + dijitRight ) 
+        3-element borders:  ( dijitLeft + dijitStretch + dijitRight )
  ****/
 .dijitLeft {
     /* Left part of a 3-element border */
@@ -132,7 +132,7 @@
     font-size:inherit;
     color: inherit;
     cursor:pointer;
-    vertical-align:middle;  
+    vertical-align:middle;
     text-align:center;
     white-space: nowrap;
 }
@@ -216,9 +216,9 @@
     border: 1px #fff dotted !important;
 }
 
-.dijit_a11y .dijitMenuExpandInner { 
+.dijit_a11y .dijitMenuExpandInner {
     display:block !important;
-} 
+}
 
 /*
  * Control opacity of popups
@@ -303,13 +303,12 @@
 
 .dijitCalendarContainer {
     font-size: 100%;
-    border-collapse: collapse; 
-    border-spacing: 0; 
-    border: 1px solid #ccc; 
+    border-collapse: collapse;
+    border-spacing: 0;
     margin: 0 7px 0 5px;
-    border: 3px solid #dddddd;
+    border: 3px solid #b5b5b5;
     background:#f7f7f7 url(../../images/common/bg_slash.gif) repeat left top;
-    width: 353px;
+    width: 200px;
 }
 
 .dijitCalendarIncrementControl {
@@ -319,51 +318,52 @@
     cursor:pointer;
 }
 .dj_ie6 .dijitCalendarIncrementControl {
-    padding:.1em; 
+    padding:.1em;
 }
 
 .dijitCalendarIncreaseInner,
 .dijitCalendarDecreaseInner {
-    visibility:hidden; 
+    visibility:hidden;
 }
 
 .dijitCalendarDecrease {
-    background:url("../images/common/icon_desc.gif") no-repeat center center; 
+    background:url("../images/common/btn_left.gif") no-repeat center center;
 }
 .dj_ie6 .dijitCalendarDecrease {
-    background-image:url("../images/common/icon_desc.gif"); 
+    background-image:url("../images/common/btn_left.gif");
 }
 
 .dijitCalendarIncrease {
-    background:url("../images/common/icon_asc.gif") no-repeat center center; 
+    background:url("../images/common/btn_right.gif") no-repeat center center;
 }
 .dj_ie6 .dijitCalendarIncrease {
-    background-image:url("../images/common/icon_asc.gif"); 
+    background-image:url("../images/common/btn_right.gif");
 }
 
 
 
 .dijitCalendarMonthContainer th {
     /* month header cell */
-    background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
+    /*background:#EEEEEE url(../images/common/bg_btn.gif) repeat left top;*/
     padding-top:.3em;
-    padding-bottom:.1em; 
-    text-align:center; 
+    padding-bottom:.1em;
+    text-align:center;
 }
 .dj_ie6 .dijitCalendarMonthContainer th {
-    padding-top:.1em; 
-    padding-bottom:0em; 
+    padding-top:.1em;
+    padding-bottom:0em;
 }
 
 .dijitCalendarDayLabelTemplate {
     /* day of week labels */
-    background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
+    background:#EEEEEE url(../images/common/bg_slash.gif) repeat left top;
     font-weight:normal;
     padding-top:.15em;
     padding-bottom:0em;
-    border-top: 1px solid #eeeeee;
+    /*border-top: 1px solid #eeeeee;*/
     color:#293a4b;
     text-align:center;
+    /*border:1px solid #b5b5b5;*/
 }
 
 .dijitCalendarMonthLabel {
@@ -372,7 +372,7 @@
     font-size: 0.75em;
     font-weight: bold;
     text-align:center;
-    background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
+    background:#EEEEEE url(../images/common/bg_slash.gif) repeat left top;
 }
 
 .dj_ie7 .dijitCalendarDateTemplate,
@@ -383,7 +383,7 @@
 .dijitCalendarDateTemplate {
     /* style for each day cell */
     font-size: 0.9em;
-    font-weight: bold;
+    font-weight: normal;
     text-align: center;
     padding: 0.3em 0.3em 0.05em 0.3em;
     letter-spacing: 1px;
@@ -410,14 +410,14 @@
 }
 
 .dijitCalendarCurrentMonthDisabled {
-    /* days that are part of this month - disabled */   
-    background-color:#bbbbbc !important; 
+    /* days that are part of this month - disabled */
+    background-color:#b5b5b5 !important;
 }
 
 .dijitCalendarDisabledDate {
-    /* one or the other? */ 
-    text-decoration:line-through !important; 
-    cursor:default !important;  
+    /* one or the other? */
+    text-decoration:line-through !important;
+    cursor:default !important;
 }
 
 .dijitCalendarCurrentDate {
@@ -454,7 +454,7 @@
     background-color:#bbc4d0 !important;
 }
 
-.dijitCalendarNextYear, 
+.dijitCalendarNextYear,
 .dijitCalendarPreviousYear {
     /* label for next/prev years */
     color:black !important;

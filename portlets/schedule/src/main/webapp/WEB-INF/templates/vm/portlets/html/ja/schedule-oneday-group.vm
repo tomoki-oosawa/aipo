@@ -96,11 +96,6 @@ $!{result.ViewDate.Year} 年 $!{result.ViewDate.Month} 月 $!{result.ViewDate.Da
 #set($endHour = $!{result.EndHour} - 1)
 #ALtableheaderCalendar("100%")
 <tr>
-#foreach ( $num in [1..$colspanmax] )
-<td class="calendarHeader"><img src="images/common/dot.gif" width="1" height="1" alt="" /></td>
-#end
-</tr>
-<tr>
 #ALtdheadheader()
 <img src="images/common/dot.gif" width="1" height="1" alt="" />
 #ALtdheadfooter()
@@ -112,7 +107,8 @@ $!{result.ViewDate.Year} 年 $!{result.ViewDate.Month} 月 $!{result.ViewDate.Da
 #end
 #foreach($hour in [$!{result.StartHour}..$endHour])
 #set($colspan = $result.getColspan($hour) )
-#ALtdheadAtt("$hour" "colspan='$colspan'")
+<th colspan='$colspan'>$hour<br/>
+<img src="images/common/dot.gif" width="40" height="1" alt="" /></th>
 #end
 #if($!result.isDuplicate())
 #ALtdhead("重複")

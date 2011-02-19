@@ -70,11 +70,6 @@ $!{result.ViewStart.Year} 年 $!{result.ViewStart.Month} 月 $!{result.ViewStart
 <div class="message">選択したグループには、ユーザーおよび施設が登録されていません。</div>
 #else
 #ALtableheaderCalendar("100%")
-<tr>
-#foreach ( $num in [1..8] )
-<td class="calendarHeader"><img src="images/common/dot.gif" height="1" alt="" /></td>
-#end
-</tr>
 #set($entityids = "")
 #set($roop = 0)
 #foreach($record3 in $result.MemberList)
@@ -109,6 +104,7 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #ALtdheadheaderAtt("nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #end
+<br/><img src="images/common/dot.gif" width="50" height="1" alt="" />
 #ALtdheadfooter()
 #end
 </tr>
