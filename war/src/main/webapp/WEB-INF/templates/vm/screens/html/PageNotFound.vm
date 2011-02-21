@@ -52,7 +52,7 @@
  <br />
  <br />
 #end
-<a href="/${data.getServletConfig().getServletName()}/portal">戻る</a>
+<a href="${context_path}/portal">戻る</a>
 </td>
 </tr>
 </tbody></table>

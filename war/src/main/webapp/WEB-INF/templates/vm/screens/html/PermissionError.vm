@@ -33,7 +33,7 @@
 [e-mail : <A Href="mailto:$config.getString("support.mail")">$config.getString("support.mail")</A> ]
 #end
 
-<a href="/${data.getServletConfig().getServletName()}/portal">戻る</a>
+<a href="${context_path}/portal">戻る</a>
 </div>
 </div>
 </center>

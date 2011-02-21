@@ -19,12 +19,16 @@
 
 package com.aimluck.eip.util;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 import com.aimluck.eip.http.HttpServletRequestLocator;
+import com.aimluck.eip.http.ServletContextLocator;
+import com.aimluck.eip.services.config.ALConfigHandler.Property;
+import com.aimluck.eip.services.config.ALConfigService;
 
 public class ALServletUtils {
 
@@ -46,6 +50,25 @@ public class ALServletUtils {
       b.append(":").append(port);
     }
 
+    return b.toString();
+
+  }
+
+  public static String getAccessUrl(String host, int port, boolean isGlobal) {
+
+    String scheme =
+      isGlobal
+        ? ALConfigService.get(Property.ACCESS_GLOBAL_URL_PROTOCOL)
+        : ALConfigService.get(Property.ACCESS_LOCAL_URL_PROTOCOL);
+    StringBuilder b = new StringBuilder(scheme);
+    b.append("://").append(host);
+    if (!("http".equals(scheme) && port == 80)
+      && !("https".equals(scheme) && port == 443)) {
+      b.append(":").append(port);
+    }
+    ServletContext context = ServletContextLocator.get();
+    b.append(context.getContextPath());
+    b.append("/");
     return b.toString();
 
   }

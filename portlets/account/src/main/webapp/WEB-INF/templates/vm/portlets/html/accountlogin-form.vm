@@ -159,7 +159,7 @@ function get_cookie(strName) {
 function set_cookie(strName, strValue) {
   var dtExpire = new Date();
   dtExpire.setTime(dtExpire.getTime() + 10*24*60*60*1000);
-  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString() + "; path=/${data.getServletConfig().getServletName()}/";
+  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString() + "; path=${context_path}/";
 }
 
 function remove_cookie(strName) {
@@ -167,7 +167,7 @@ function remove_cookie(strName) {
   var dtExpire = new Date();
   dtExpire.setTime(dtExpire.getTime() - 1);
   strValue = get_cookie(strName);
-  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString() + "; path=/${data.getServletConfig().getServletName()}/";
+  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString() + "; path=${context_path}/";
 }
 
 #if($enable_userlist)

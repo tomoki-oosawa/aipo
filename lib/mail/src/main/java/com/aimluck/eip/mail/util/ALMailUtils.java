@@ -58,18 +58,15 @@ import javax.mail.Part;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
-import javax.servlet.ServletConfig;
 
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.jetspeed.services.JetspeedSecurity;
-import org.apache.jetspeed.services.daemonfactory.DaemonFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
-import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.commons.utils.ALStringUtil;
@@ -96,12 +93,10 @@ import com.aimluck.eip.mail.ALSmtpMailSender;
 import com.aimluck.eip.mail.ALSmtpMailSenderContext;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
-import com.aimluck.eip.services.config.ALConfigHandler.Property;
-import com.aimluck.eip.services.config.ALConfigService;
-import com.aimluck.eip.services.daemonfactory.AipoDaemonFactoryService;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALServletUtils;
 import com.sk_jp.mail.JISDataSource;
 import com.sk_jp.mail.MailUtility;
 
@@ -1767,30 +1762,10 @@ public class ALMailUtils {
   }
 
   public static String getGlobalurl() {
-    String url;
-
     EipMCompany record = ALEipUtils.getEipMCompany("1");
-    String domain =
-      getUrl(
-        record.getIpaddress(),
-        record.getPort().intValue(),
-        getServletName(),
-        true);
-
-    if (domain != null && domain.length() > 0) {
-      String endword;
-      String company_id = Database.getDomainName();
-      if (company_id == null || "".equals(company_id)) {
-        endword = "";
-      } else {
-        endword = "portal/org/" + company_id + "/";
-      }
-
-      url = domain + endword;
-    } else {
-      url = "";
-    }
-    return url;
+    return ALServletUtils.getAccessUrl(record.getIpaddress(), record
+      .getPort()
+      .intValue(), true);
   }
 
   public static String getLocalurl() {
@@ -1819,49 +1794,11 @@ public class ALMailUtils {
       if (null == port_internal) {
         port_internal = 80;
       }
-      localurl = getUrl(ipaddress, port_internal, getServletName(), false);
+      localurl = ALServletUtils.getAccessUrl(ipaddress, port_internal, false);
     } catch (SocketException e) {
       logger.error(e);
     }
     return localurl;
-  }
-
-  private static String getServletName() {
-    AipoDaemonFactoryService aipoDaemonService =
-      (AipoDaemonFactoryService) TurbineServices.getInstance().getService(
-        DaemonFactoryService.SERVICE_NAME);
-    ServletConfig servlet_config = aipoDaemonService.getServletConfig();
-    return servlet_config.getServletName();
-  }
-
-  private static String getUrl(String ip, int port, String servername,
-      boolean isGlobal) {
-    if (ip == null || ip.length() == 0 || port == -1) {
-      return "";
-    }
-
-    String protocol =
-      isGlobal
-        ? ALConfigService.get(Property.ACCESS_GLOBAL_URL_PROTOCOL)
-        : ALConfigService.get(Property.ACCESS_LOCAL_URL_PROTOCOL);
-
-    StringBuffer url = new StringBuffer();
-
-    if (port == 80 || port == 443) {
-      url.append(protocol).append("://").append(ip).append("/").append(
-        servername).append("/");
-    } else {
-      url
-        .append(protocol)
-        .append("://")
-        .append(ip)
-        .append(":")
-        .append(port)
-        .append("/")
-        .append(servername)
-        .append("/");
-    }
-    return url.toString();
   }
 
   /**

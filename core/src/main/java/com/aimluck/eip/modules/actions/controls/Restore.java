@@ -32,6 +32,7 @@ import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.util.RunData;
 
+import com.aimluck.eip.http.ServletContextLocator;
 import com.aimluck.eip.util.ALSessionInitializer;
 
 /**
@@ -101,9 +102,9 @@ public class Restore extends Action {
     if ((user == null || !user.hasLoggedIn())
       && !JetspeedResources.getBoolean("automatic.logon.enable", false)) {
       String uri = (jdata).getRequest().getRequestURI().trim();
-      String servername = jdata.getServletConfig().getServletName();
-      if (!uri.equals("/" + servername + "/portal/")
-        && !uri.equals("/" + servername + "/portal")) {
+      String contextPath = ServletContextLocator.get().getContextPath();
+      String portalPath = contextPath + "/portal";
+      if (!uri.equals(portalPath + "/") && !uri.equals(portalPath)) {
         jdata.setScreenTemplate("Timeout");
         // セッションの削除
         if (jdata.getSession() != null) {

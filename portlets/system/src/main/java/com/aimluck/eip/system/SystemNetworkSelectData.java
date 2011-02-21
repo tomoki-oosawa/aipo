@@ -32,9 +32,9 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.common.ALAbstractSelectData;
-import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.system.util.SystemUtils;
+import com.aimluck.eip.util.ALServletUtils;
 
 /**
  *
@@ -45,10 +45,6 @@ public class SystemNetworkSelectData extends
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(SystemNetworkSelectData.class.getName());
-
-  private String servername;
-
-  private String endword;
 
   /**
    * 
@@ -69,14 +65,6 @@ public class SystemNetworkSelectData extends
    */
   @Override
   protected EipMCompany selectDetail(RunData rundata, Context context) {
-    servername = rundata.getServletConfig().getServletName();
-
-    String company_id = Database.getDomainName();
-    if (company_id == null || "".equals(company_id)) {
-      endword = "";
-    } else {
-      endword = "portal/org/" + company_id + "/";
-    }
     return SystemUtils.getEipMCompany(rundata, context);
   }
 
@@ -99,7 +87,6 @@ public class SystemNetworkSelectData extends
   protected Object getResultDataDetail(EipMCompany record) {
 
     // Aipoサイト情報の取得
-    String localurl = "";
     SystemNetworkResultData rd = new SystemNetworkResultData();
     rd.initField();
 
@@ -124,23 +111,16 @@ public class SystemNetworkSelectData extends
 
       Integer port_internal = record.getPortInternal();
       if (null == port_internal) {
-        // port_internal = SystemUtils.getServerPort();
         port_internal = 80;
       }
 
-      localurl =
-        SystemUtils.getUrl(ipaddress, port_internal, servername, false)
-          + endword;
-      // InetAddress.getLocalHost().getHostAddress(), SystemUtils
-      // .getServerPort(), servername) + endword;
+      String localurl =
+        ALServletUtils.getAccessUrl(ipaddress, port_internal, false);
 
       String globalurl =
-        SystemUtils.getUrl(
-          record.getIpaddress(),
-          record.getPort().intValue(),
-          servername,
-          true)
-          + endword;
+        ALServletUtils.getAccessUrl(record.getIpaddress(), record
+          .getPort()
+          .intValue(), true);
 
       rd.setLocalUrl(localurl);
       rd.setGlobalUrl(globalurl);

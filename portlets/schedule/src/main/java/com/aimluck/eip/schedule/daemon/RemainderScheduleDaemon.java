@@ -68,10 +68,10 @@ import com.aimluck.eip.schedule.ScheduleToDoResultData;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.daemonfactory.AipoDaemonFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
-import com.aimluck.eip.system.util.SystemUtils;
 import com.aimluck.eip.todo.util.ToDoUtils;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALServletUtils;
 
 /**
  * <p>
@@ -119,8 +119,6 @@ public class RemainderScheduleDaemon implements Daemon {
 
   /** <code>viewDate</code> 表示する日付 */
   private ALDateTimeField viewDate;
-
-  private String servlet_name = "";
 
   @SuppressWarnings("unused")
   private String scheme = null;
@@ -249,10 +247,7 @@ public class RemainderScheduleDaemon implements Daemon {
 
         // ASP版のときは正しいorgidを設定すること。
         String orgId = Database.getDomainName();
-        String subject =
-          "["
-            + ALOrgUtilsService.getAlias()
-            + "]スケジュール";
+        String subject = "[" + ALOrgUtilsService.getAlias() + "]スケジュール";
 
         // メール送信
         List<ALAdminMailMessage> messageList =
@@ -742,8 +737,7 @@ public class RemainderScheduleDaemon implements Daemon {
       if (null == port_internal) {
         port_internal = 80;
       }
-      localurl =
-        SystemUtils.getUrl(ipaddress, port_internal, servlet_name, false);
+      localurl = ALServletUtils.getAccessUrl(ipaddress, port_internal, false);
     } catch (SocketException e) {
       logger.error(e);
     }
@@ -777,11 +771,9 @@ public class RemainderScheduleDaemon implements Daemon {
           .getValue(), eipUser.getUserId().toString());
     EipMCompany record = ALEipUtils.getEipMCompany("1");
     String domain =
-      SystemUtils.getUrl(
-        record.getIpaddress(),
-        record.getPort().intValue(),
-        servlet_name,
-        true);
+      ALServletUtils.getAccessUrl(record.getIpaddress(), record
+        .getPort()
+        .intValue(), true);
     if (domain != null && domain.length() > 0) {
       url = domain + "?key=" + key;
     } else {
@@ -897,7 +889,6 @@ public class RemainderScheduleDaemon implements Daemon {
       (AipoDaemonFactoryService) TurbineServices.getInstance().getService(
         DaemonFactoryService.SERVICE_NAME);
     ServletConfig servlet_config = aipoDaemonService.getServletConfig();
-    servlet_name = servlet_config.getServletName();
 
     scheme = TurbineServlet.getServerScheme();
 

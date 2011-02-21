@@ -43,6 +43,6 @@
 
 #end
 
-<a class="btn" href="/${data.getServletConfig().getServletName()}/portal">戻る</a>
+<a class="btn" href="${context_path}/portal">戻る</a>
 
 #ALcell_contents_footer($career)

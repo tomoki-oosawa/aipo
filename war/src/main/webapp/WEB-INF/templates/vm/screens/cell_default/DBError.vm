@@ -32,4 +32,4 @@
 #ALcell_br($career)
 ログアウト後、再度処理を行ってください。#ALcell_br($career)
 #ALcell_hr($career '1')
-<a href="/${data.getServletConfig().getServletName()}/portal">戻る</a>
+<a href="${context_path}/portal">戻る</a>

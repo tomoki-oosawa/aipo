@@ -30,7 +30,7 @@ ${alias}からのお知らせ
 再度ﾛｸﾞｲﾝしてください。#ALcell_br($career)
 #ALcell_hr($career '1')
 #if($!data.getUser().getTemp("company_id"))
-<a href="/${data.getServletConfig().getServletName()}/portal/org/${data.getUser().getTemp("company_id")}">ﾛｸﾞｲﾝ画面へ</a>
+<a href="${context_path}/portal/org/${data.getUser().getTemp("company_id")}">ﾛｸﾞｲﾝ画面へ</a>
 #else
-<a href="/${data.getServletConfig().getServletName()}/">ﾛｸﾞｲﾝ画面へ</a>
+<a href="${context_path}/">ﾛｸﾞｲﾝ画面へ</a>
 #end

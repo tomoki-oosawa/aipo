@@ -36,6 +36,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALServletUtils;
 
 /**
  *
@@ -123,12 +124,15 @@ public class SystemUtils {
   }
 
   /**
-   * 
+   * @see ALServletUtils#getAccessUrl(String, int, boolean)
    * @param ip
    * @param port
    * @param servername
+   * @param isGlobal
    * @return
+   * @deprecated
    */
+  @Deprecated
   public static String getUrl(String ip, int port, String servername,
       boolean isGlobal) {
     if (ip == null || ip.length() == 0 || port == -1) {

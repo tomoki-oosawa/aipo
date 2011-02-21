@@ -19,4 +19,4 @@
 
 ## ---------------------------------------------------------------------------
 <ul>#ALcell_li_header($career)アクセス権限がありません。システム管理者にお問い合わせください。</ul>
-<a href="/${data.getServletConfig().getServletName()}/portal">戻る</a>
+<a href="${context_path}/portal">戻る</a>

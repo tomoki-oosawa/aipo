@@ -46,7 +46,6 @@ public class WebMailFormScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
-      context.put("servlet_name", rundata.getServletConfig().getServletName());
       WebMailFormData formData = new WebMailFormData();
       formData.initField();
       formData.doViewForm(this, rundata, context);

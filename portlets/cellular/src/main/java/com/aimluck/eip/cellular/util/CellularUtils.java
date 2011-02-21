@@ -27,7 +27,6 @@ import org.apache.jetspeed.om.security.UserNamePrincipal;
 import org.apache.jetspeed.services.JetspeedUserManagement;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.jetspeed.services.security.JetspeedSecurityException;
 import org.apache.turbine.util.RunData;
@@ -38,6 +37,7 @@ import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCellularUtils;
+import com.aimluck.eip.util.ALServletUtils;
 
 /**
  */
@@ -79,32 +79,6 @@ public class CellularUtils {
     return result;
   }
 
-  public static String getUrl(String ip, int port, String servername) {
-    if (ip == null || ip.length() == 0 || port == -1) {
-      return "";
-    }
-
-    String protocol =
-      JetspeedResources.getString("access.url.protocol", "http");
-    StringBuffer url = new StringBuffer();
-    if (port == 80) {
-      url.append(protocol).append("://").append(ip).append("/").append(
-        servername).append("/");
-    } else {
-      url
-        .append(protocol)
-        .append("://")
-        .append(ip)
-        .append(":")
-        .append(port)
-        .append("/")
-        .append(servername)
-        .append("/");
-    }
-
-    return url.toString();
-  }
-
   public static String getCellularUrl(RunData rundata, Context context) {
     String url;
 
@@ -120,7 +94,6 @@ public class CellularUtils {
       baseUser = (ALBaseUser) rundata.getUser();
     }
 
-    String servername = rundata.getServletConfig().getServletName();
     String key =
       baseUser.getUserName()
         + "_"
@@ -128,28 +101,12 @@ public class CellularUtils {
           baseUser.getUserName(),
           baseUser.getUserId());
     EipMCompany record = CellularUtils.getEipMCompany(rundata, context);
-    String domain =
-      CellularUtils.getUrl(
-        record.getIpaddress(),
-        record.getPort().intValue(),
-        servername);
-    if (domain != null && domain.length() > 0) {
-      String endword;
-      String company_id = Database.getDomainName();
-      if (company_id == null || "".equals(company_id)) {
-        endword = "";
-      } else {
-        endword = "portal/org/" + company_id + "/";
-      }
-
-      url =
-        CellularUtils.getUrl(
-          record.getIpaddress(),
-          record.getPort().intValue(),
-          servername)
-          + endword
-          + "?key="
-          + key;
+    String accessUrl =
+      ALServletUtils.getAccessUrl(record.getIpaddress(), record
+        .getPort()
+        .intValue(), true);
+    if (accessUrl != null && accessUrl.length() > 0) {
+      url = new StringBuilder(accessUrl).append("?key=").append(key).toString();
     } else {
       url = "";
     }

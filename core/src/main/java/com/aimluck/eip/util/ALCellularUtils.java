@@ -203,7 +203,6 @@ public class ALCellularUtils {
   public static String getCellularUrl(RunData rundata, ALEipUser eipUser) {
     String url;
 
-    String servlet_name = rundata.getServletConfig().getServletName();
     String key =
       eipUser.getName().getValue()
         + "_"
@@ -212,11 +211,9 @@ public class ALCellularUtils {
           .toString());
     EipMCompany record = ALEipUtils.getEipMCompany("1");
     String domain =
-      ALEipUtils.getUrl(
-        record.getIpaddress(),
-        record.getPort().intValue(),
-        servlet_name,
-        true);
+      ALServletUtils.getAccessUrl(record.getIpaddress(), record
+        .getPort()
+        .intValue(), true);
     if (domain != null && domain.length() > 0) {
       url = domain + "?key=" + key;
     } else {

@@ -63,9 +63,9 @@
 #end
 #end
 <hr style="border:solid 1px #ffffff; color:#ffffff" />
-<div style="background:$config.getString("aipo.color.cell.vm.logo"); color:#ffffff; text-align:center;"><img src="/${data.getServletConfig().getServletName()}/images/dot.gif" width="1" height="1" /></div>
+<div style="background:$config.getString("aipo.color.cell.vm.logo"); color:#ffffff; text-align:center;"><img src="${context_path}/images/dot.gif" width="1" height="1" /></div>
 <div style="background:$config.getString("aipo.color.cell.vm.title"); text-align:center;">決済履歴</div>
-<div style="background:$config.getString("aipo.color.cell.vm.logo");"><img src="/${data.getServletConfig().getServletName()}/images/dot.gif" width="1" height="1" /></div>
+<div style="background:$config.getString("aipo.color.cell.vm.logo");"><img src="${context_path}/images/dot.gif" width="1" height="1" /></div>
 <hr style="border:solid 1px #ffffff; color:#ffffff" />
 [決済]/[ユーザー名]/[日時]/[コメント]
 #set ($confirm_view_flg = true)

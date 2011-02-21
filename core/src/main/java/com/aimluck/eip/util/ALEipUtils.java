@@ -1273,13 +1273,15 @@ public class ALEipUtils {
   }
 
   /**
-   * 
+   * @see ALServletUtils#getAccessUrl(String, int, boolean)
    * @param ip
    * @param port
    * @param servername
-   *          Webアプリケーション名
+   * @param isGlobal
    * @return
+   * @deprecated
    */
+  @Deprecated
   public static String getUrl(String ip, int port, String servername,
       boolean isGlobal) {
     if (ip == null || ip.length() == 0 || port == -1) {
@@ -1295,7 +1297,7 @@ public class ALEipUtils {
 
     if (port == 80 || port == 443) {
       url.append(protocol).append("://").append(ip).append("/").append(
-        servername).append("/");
+        servername).append(servername.isEmpty() ? "" : "/");
     } else {
       url
         .append(protocol)
@@ -1305,7 +1307,7 @@ public class ALEipUtils {
         .append(port)
         .append("/")
         .append(servername)
-        .append("/");
+        .append(servername.isEmpty() ? "" : "/");
     }
 
     return url.toString();

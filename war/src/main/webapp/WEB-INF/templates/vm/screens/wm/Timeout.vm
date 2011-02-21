@@ -26,8 +26,8 @@
 下のログインフォームから再度ログインしてください。<br />
 <br />
 #if($!data.getUser().getTemp("company_id"))
-<a href="/${data.getServletConfig().getServletName()}/portal/org/${data.getUser().getTemp("company_id")}" class="btn">ログイン画面へ</a>
+<a href="${context_path}/portal/org/${data.getUser().getTemp("company_id")}" class="btn">ログイン画面へ</a>
 #else
-<a href="/${data.getServletConfig().getServletName()}/" class="btn">ログイン画面へ</a>
+<a href="${context_path}/" class="btn">ログイン画面へ</a>
 #end
 #ALcell_contents_footer($career)

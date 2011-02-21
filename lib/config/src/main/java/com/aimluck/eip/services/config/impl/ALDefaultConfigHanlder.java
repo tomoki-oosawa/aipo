@@ -38,9 +38,6 @@ public class ALDefaultConfigHanlder extends ALConfigHandler {
 
   private static ALConfigHandler instance;
 
-  private ALDefaultConfigHanlder() {
-  }
-
   public static ALConfigHandler getInstance() {
     if (instance == null) {
       instance = new ALDefaultConfigHanlder();
@@ -55,12 +52,16 @@ public class ALDefaultConfigHanlder extends ALConfigHandler {
    */
   @Override
   public String get(Property property) {
-    EipMConfig config =
-      Database
-        .query(EipMConfig.class)
-        .where(Operations.eq(EipMConfig.KEY_PROPERTY, property.toString()))
-        .fetchSingle();
-
+    EipMConfig config = null;
+    try {
+      config =
+        Database
+          .query(EipMConfig.class)
+          .where(Operations.eq(EipMConfig.KEY_PROPERTY, property.toString()))
+          .fetchSingle();
+    } catch (Throwable t) {
+      // ignore
+    }
     if (config == null) {
       return property.defaultValue();
     }

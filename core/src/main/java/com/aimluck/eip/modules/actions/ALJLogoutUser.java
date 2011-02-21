@@ -33,7 +33,8 @@ import org.apache.turbine.modules.ActionEvent;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.common.ALEipUser;
-import com.aimluck.eip.services.config.ALConfigHandler;
+import com.aimluck.eip.services.config.ALConfigHandler.Property;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -115,8 +116,7 @@ public class ALJLogoutUser extends ActionEvent {
       logger.error("Error getting jsLink", e);
     }
 
-    String externalLoginUrl =
-      ALConfigHandler.Property.EXTERNAL_LOGIN_URL.defaultValue();
+    String externalLoginUrl = ALConfigService.get(Property.EXTERNAL_LOGIN_URL);
     if ("".equals(externalLoginUrl)) {
       if (ALEipUtils.isCellularPhone(data)) {
         data.setRedirectURI(jsLink

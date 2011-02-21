@@ -28,7 +28,7 @@ $screen_placeholder
 #end
 
 <div style="text-align:center">
-    <img src="/${data.getServletConfig().getServletName()}/themes/${theme}/images/common/logo.gif" alt="${alias}" />
+    <img src="${context_path}/themes/${theme}/images/common/logo.gif" alt="${alias}" />
     <hr style="border:solid 1px #ffffff; color:#ffffff" />
 #if($enableEasyLogin)
     <form method="post" utn="utn" action="${clink.setURI($uri)}?${jslink.ActionKey}=${config.getString("action.login")}&key=${key}">

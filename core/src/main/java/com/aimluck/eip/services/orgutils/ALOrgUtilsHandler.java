@@ -23,16 +23,13 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.jetspeed.services.daemonfactory.DaemonFactoryService;
-import org.apache.turbine.services.TurbineServices;
-
 import com.aimluck.eip.http.HttpServletRequestLocator;
+import com.aimluck.eip.http.ServletContextLocator;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
-import com.aimluck.eip.services.daemonfactory.AipoDaemonFactoryService;
 import com.aimluck.eip.services.social.ALContainerConfigService;
 import com.aimluck.eip.services.social.ALSocialApplicationHandler;
 
@@ -71,6 +68,7 @@ public abstract class ALOrgUtilsHandler {
     hash.put("version", getVersion(orgId));
     hash.put("external_resources_url", getExternalResourcesUrl(orgId));
     hash.put("unlockeddomain_url", getUnlockedDomainBaseUrl(orgId));
+    hash.put("context_path", getContextPath(orgId));
 
     return hash;
   }
@@ -85,16 +83,17 @@ public abstract class ALOrgUtilsHandler {
 
     StringBuffer url = new StringBuffer();
 
-    String external_resources_url =
-      ALConfigService.get(Property.EXTERNAL_RESOURCES_URL);
+    String external_resources_url = "";
+    try {
+      external_resources_url =
+        ALConfigService.get(Property.EXTERNAL_RESOURCES_URL);
 
+    } catch (IllegalStateException ignore) {
+      // ignore
+    }
     if (external_resources_url.isEmpty()) {
-      AipoDaemonFactoryService aipoDaemonService =
-        (AipoDaemonFactoryService) TurbineServices.getInstance().getService(
-          DaemonFactoryService.SERVICE_NAME);
-      ServletConfig servlet_config = aipoDaemonService.getServletConfig();
-      String servlet_name = servlet_config.getServletName();
-      url.append("/").append(servlet_name);
+      ServletContext servletContext = ServletContextLocator.get();
+      url.append(servletContext.getContextPath());
     } else {
       url.append(external_resources_url);
     }
@@ -104,9 +103,15 @@ public abstract class ALOrgUtilsHandler {
 
   public String getUnlockedDomainBaseUrl(String orgId) {
 
-    String unlockedDomain =
-      ALContainerConfigService
-        .get(ALSocialApplicationHandler.Property.UNLOCKED_DOMAIN);
+    String unlockedDomain = "";
+    try {
+      unlockedDomain =
+        ALContainerConfigService
+          .get(ALSocialApplicationHandler.Property.UNLOCKED_DOMAIN);
+
+    } catch (IllegalStateException ignore) {
+      // ignore
+    }
 
     if (unlockedDomain.isEmpty()) {
       return "";
@@ -119,5 +124,9 @@ public abstract class ALOrgUtilsHandler {
     url.append(unlockedDomain);
 
     return url.toString();
+  }
+
+  public String getContextPath(String orgId) {
+    return ServletContextLocator.get().getContextPath();
   }
 }

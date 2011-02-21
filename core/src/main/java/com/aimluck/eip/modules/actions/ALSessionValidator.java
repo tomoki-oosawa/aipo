@@ -44,8 +44,8 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.http.ServletContextLocator;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.services.config.ALConfigHandler;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
@@ -114,10 +114,9 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       }
     }
 
+    String externalLoginUrl = ALConfigService.get(Property.EXTERNAL_LOGIN_URL);
     JetspeedUser user = (JetspeedUser) data.getUser();
     boolean isScreenTimeout = false;
-    String externalLoginUrl =
-      ALConfigHandler.Property.EXTERNAL_LOGIN_URL.defaultValue();
     if ((user == null || !user.hasLoggedIn())
       && JetspeedResources.getBoolean("automatic.logon.enable", false)) {
 
@@ -150,7 +149,6 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       // 理由等 ：セッションが切れた時に、エラーメッセージの表示に不具合あり
       // 対処方法：ログイン画面以外でユーザがログインしていない場合はエラーページへスクリーンを変更
       String uri = data.getRequest().getRequestURI().trim();
-      String servername = data.getServletConfig().getServletName();
 
       String template = data.getScreenTemplate();
 
@@ -187,8 +185,9 @@ public class ALSessionValidator extends JetspeedSessionValidator {
         }
 
       } else {
-        if (!uri.equals("/" + servername + "/portal/")
-          && !uri.equals("/" + servername + "/portal")) {
+        String contextPath = ServletContextLocator.get().getContextPath();
+        String portalPath = contextPath + "/portal";
+        if (!uri.equals(portalPath + "/") && !uri.equals(portalPath)) {
           data.setScreenTemplate("Timeout");
 
           if (!"".equals(externalLoginUrl)) {
@@ -213,10 +212,11 @@ public class ALSessionValidator extends JetspeedSessionValidator {
             count = count + 1;
           }
 
-          data.getUser().setTemp("redirect", sb.toString());
-
-          data.getUser().setTemp("alEipUtils", new ALEipUtils());
-          data.getUser().setTemp("alEipManager", ALEipManager.getInstance());
+          if (data.getUser() != null) {
+            data.getUser().setTemp("redirect", sb.toString());
+            data.getUser().setTemp("alEipUtils", new ALEipUtils());
+            data.getUser().setTemp("alEipManager", ALEipManager.getInstance());
+          }
 
           // セッションの削除
           if (data.getSession() != null) {
