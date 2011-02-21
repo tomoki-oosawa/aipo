@@ -186,6 +186,9 @@ public class ALSessionValidator extends JetspeedSessionValidator {
 
       } else {
         String contextPath = ServletContextLocator.get().getContextPath();
+        if ("/".equals(contextPath)) {
+          contextPath = "";
+        }
         String portalPath = contextPath + "/portal";
         if (!uri.equals(portalPath + "/") && !uri.equals(portalPath)) {
           data.setScreenTemplate("Timeout");

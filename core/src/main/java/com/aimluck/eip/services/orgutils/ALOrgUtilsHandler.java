@@ -93,7 +93,11 @@ public abstract class ALOrgUtilsHandler {
     }
     if (external_resources_url.isEmpty()) {
       ServletContext servletContext = ServletContextLocator.get();
-      url.append(servletContext.getContextPath());
+      String contextPath = servletContext.getContextPath();
+      if ("/".equals(contextPath)) {
+        contextPath = "";
+      }
+      url.append(contextPath);
     } else {
       url.append(external_resources_url);
     }
@@ -127,6 +131,10 @@ public abstract class ALOrgUtilsHandler {
   }
 
   public String getContextPath(String orgId) {
-    return ServletContextLocator.get().getContextPath();
+    String contextPath = ServletContextLocator.get().getContextPath();
+    if ("/".equals(contextPath)) {
+      contextPath = "";
+    }
+    return contextPath;
   }
 }

@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.util;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -66,8 +65,11 @@ public class ALServletUtils {
       && !("https".equals(scheme) && port == 443)) {
       b.append(":").append(port);
     }
-    ServletContext context = ServletContextLocator.get();
-    b.append(context.getContextPath());
+    String contextPath = ServletContextLocator.get().getContextPath();
+    if (contextPath.equals("/")) {
+      contextPath = "";
+    }
+    b.append(contextPath);
     b.append("/");
     return b.toString();
 

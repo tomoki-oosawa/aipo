@@ -103,6 +103,9 @@ public class Restore extends Action {
       && !JetspeedResources.getBoolean("automatic.logon.enable", false)) {
       String uri = (jdata).getRequest().getRequestURI().trim();
       String contextPath = ServletContextLocator.get().getContextPath();
+      if ("/".equals(contextPath)) {
+        contextPath = "";
+      }
       String portalPath = contextPath + "/portal";
       if (!uri.equals(portalPath + "/") && !uri.equals(portalPath)) {
         jdata.setScreenTemplate("Timeout");
