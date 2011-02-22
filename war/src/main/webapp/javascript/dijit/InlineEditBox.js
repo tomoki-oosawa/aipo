@@ -9,7 +9,7 @@ dojo.require("dijit._Container");
 dojo.require("dijit.form.Button");
 dojo.require("dijit.form.TextBox");
 
-dojo.requireLocalization("dijit", "common", null, "ko,zh,ja,zh-tw,ru,it,hu,fr,pt,ROOT,pl,es,de,cs");
+dojo.requireLocalization("dijit", "common", null, "ROOT,cs,de,es,fr,hu,it,ja,ko,pl,pt,ru,zh,zh-tw");
 
 dojo.declare("dijit.InlineEditBox",
 	dijit._Widget,
@@ -239,7 +239,7 @@ dojo.declare(
 	// value: String
 	//		Value as an HTML string or plain text string, depending on renderAsHTML flag
 
-	templateString:"<fieldset dojoAttachPoint=\"editNode\" waiRole=\"presentation\" style=\"position: absolute; visibility:hidden\" class=\"dijitReset dijitInline\"\n\tdojoAttachEvent=\"onkeypress: _onKeyPress\" \n\t><input dojoAttachPoint=\"editorPlaceholder\"\n\t/><span dojoAttachPoint=\"buttonContainer\"\n\t\t><button class='saveButton' dojoAttachPoint=\"saveButton\" dojoType=\"dijit.form.Button\" dojoAttachEvent=\"onClick:save\">${buttonSave}</button\n\t\t><button class='cancelButton' dojoAttachPoint=\"cancelButton\" dojoType=\"dijit.form.Button\" dojoAttachEvent=\"onClick:cancel\">${buttonCancel}</button\n\t></span\n></fieldset>\n",
+	templateString:"<fieldset dojoAttachPoint=\"editNode\" waiRole=\"presentation\" style=\"position: absolute; visibility:hidden\" class=\"dijitReset dijitInline\"\r\n\tdojoAttachEvent=\"onkeypress: _onKeyPress\" \r\n\t><input dojoAttachPoint=\"editorPlaceholder\"\r\n\t/><span dojoAttachPoint=\"buttonContainer\"\r\n\t\t><button class='saveButton' dojoAttachPoint=\"saveButton\" dojoType=\"dijit.form.Button\" dojoAttachEvent=\"onClick:save\">${buttonSave}</button\r\n\t\t><button class='cancelButton' dojoAttachPoint=\"cancelButton\" dojoType=\"dijit.form.Button\" dojoAttachEvent=\"onClick:cancel\">${buttonCancel}</button\r\n\t></span\r\n></fieldset>\r\n",
 	widgetsInTemplate: true,
 
 	postMixInProperties: function(){

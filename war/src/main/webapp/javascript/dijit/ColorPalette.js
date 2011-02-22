@@ -6,7 +6,7 @@ dojo.require("dijit._Widget");
 dojo.require("dijit._Templated");
 dojo.require("dojo.colors");
 dojo.require("dojo.i18n");
-dojo.requireLocalization("dojo", "colors", null, "ko,zh,ja,zh-tw,ru,it,hu,ROOT,fr,pt,pl,es,de,cs");
+dojo.requireLocalization("dojo", "colors", null, "ROOT,cs,de,es,fr,hu,it,ja,ko,pl,pt,ru,zh,zh-tw");
 
 dojo.declare(
 		"dijit.ColorPalette",
@@ -83,7 +83,7 @@ dojo.declare(
 
 	// templatePath: String
 	//		Path to the template of this widget.
-	templateString:"<div class=\"dijitInline dijitColorPalette\">\n\t<div class=\"dijitColorPaletteInner\" dojoAttachPoint=\"divNode\" waiRole=\"grid\" tabIndex=\"-1\">\n\t\t<img class=\"dijitColorPaletteUnder\" dojoAttachPoint=\"imageNode\" waiRole=\"presentation\">\n\t</div>\t\n</div>\n",
+	templateString:"<div class=\"dijitInline dijitColorPalette\">\r\n\t<div class=\"dijitColorPaletteInner\" dojoAttachPoint=\"divNode\" waiRole=\"grid\" tabIndex=\"-1\">\r\n\t\t<img class=\"dijitColorPaletteUnder\" dojoAttachPoint=\"imageNode\" waiRole=\"presentation\">\r\n\t</div>\t\r\n</div>\r\n",
 
 	// _paletteDims: Object
 	//		Size of the supported palettes for alignment purposes.

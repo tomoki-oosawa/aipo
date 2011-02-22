@@ -8,7 +8,7 @@ dojo.require("dijit.form._FormWidget");
 dojo.require("dijit._Container");
 dojo.require("dijit.form.Button");
 
-dojo.requireLocalization("dijit", "common", null, "ko,zh,ja,zh-tw,ru,it,hu,fr,pt,ROOT,pl,es,de,cs");
+dojo.requireLocalization("dijit", "common", null, "ROOT,cs,de,es,fr,hu,it,ja,ko,pl,pt,ru,zh,zh-tw");
 
 dojo.deprecated("dijit.form.InlineEditBox is deprecated, use dijit.InlineEditBox instead", "", "1.1");
 
@@ -31,7 +31,7 @@ dojo.declare(
 	//		void focus()
 	//		It must also be able to initialize with style="display:none;" set.
 {
-	templateString:"<span\n\t><fieldset dojoAttachPoint=\"editNode\" style=\"display:none;\" waiRole=\"presentation\"\n\t\t><div dojoAttachPoint=\"containerNode\" dojoAttachEvent=\"onkeypress:_onEditWidgetKeyPress\"></div\n\t\t><div dojoAttachPoint=\"buttonContainer\"\n\t\t\t><button class='saveButton' dojoAttachPoint=\"saveButton\" dojoType=\"dijit.form.Button\" dojoAttachEvent=\"onClick:save\">${buttonSave}</button\n\t\t\t><button class='cancelButton' dojoAttachPoint=\"cancelButton\" dojoType=\"dijit.form.Button\" dojoAttachEvent=\"onClick:cancel\">${buttonCancel}</button\n\t\t></div\n\t></fieldset\n\t><span tabIndex=\"0\" dojoAttachPoint=\"textNode,focusNode\" waiRole=\"button\" style=\"display:none;\"\n\t\tdojoAttachEvent=\"onkeypress:_onKeyPress,onclick:_onClick,onmouseout:_onMouseOut,onmouseover:_onMouseOver,onfocus:_onMouseOver,onblur:_onMouseOut\"\n\t></span\n></span>\n",
+	templateString:"<span\r\n\t><fieldset dojoAttachPoint=\"editNode\" style=\"display:none;\" waiRole=\"presentation\"\r\n\t\t><div dojoAttachPoint=\"containerNode\" dojoAttachEvent=\"onkeypress:_onEditWidgetKeyPress\"></div\r\n\t\t><div dojoAttachPoint=\"buttonContainer\"\r\n\t\t\t><button class='saveButton' dojoAttachPoint=\"saveButton\" dojoType=\"dijit.form.Button\" dojoAttachEvent=\"onClick:save\">${buttonSave}</button\r\n\t\t\t><button class='cancelButton' dojoAttachPoint=\"cancelButton\" dojoType=\"dijit.form.Button\" dojoAttachEvent=\"onClick:cancel\">${buttonCancel}</button\r\n\t\t></div\r\n\t></fieldset\r\n\t><span tabIndex=\"0\" dojoAttachPoint=\"textNode,focusNode\" waiRole=\"button\" style=\"display:none;\"\r\n\t\tdojoAttachEvent=\"onkeypress:_onKeyPress,onclick:_onClick,onmouseout:_onMouseOut,onmouseover:_onMouseOver,onfocus:_onMouseOver,onblur:_onMouseOut\"\r\n\t></span\r\n></span>\r\n",
 
 	// editing: Boolean
 	//		Is the node currently in edit mode?

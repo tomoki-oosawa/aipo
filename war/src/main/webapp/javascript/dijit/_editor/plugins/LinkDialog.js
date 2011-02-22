@@ -10,7 +10,7 @@ dojo.require("dijit.form.Button");
 dojo.require("dijit.form.ValidationTextBox");
 dojo.require("dojo.i18n");
 dojo.require("dojo.string");
-dojo.requireLocalization("dijit._editor", "LinkDialog", null, "ko,zh,ja,zh-tw,ru,it,ROOT,hu,fr,pt,pl,es,de,cs");
+dojo.requireLocalization("dijit._editor", "LinkDialog", null, "cs,de,es,fr,hu,it,ja,ko,ROOT,pl,pt,ru,zh,zh-tw");
 
 dojo.declare("dijit._editor.plugins.DualStateDropDownButton",
 	dijit.form.DropDownButton,
