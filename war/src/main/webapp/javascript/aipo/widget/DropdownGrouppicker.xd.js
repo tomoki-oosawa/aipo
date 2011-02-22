@@ -1,5 +1,9 @@
-if(!dojo._hasResource["aipo.widget.DropdownMemberpicker"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
-dojo._hasResource["aipo.widget.DropdownMemberpicker"] = true;
+dojo._xdResourceLoaded({
+depends: [["provide", "aipo.widget.DropdownGrouppicker"],
+["require", "aimluck.widget.Dropdown"],
+["require", "aipo.widget.GroupSelectList"]],
+defineResource: function(dojo){if(!dojo._hasResource["aipo.widget.DropdownGrouppicker"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+dojo._hasResource["aipo.widget.DropdownGrouppicker"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2011 Aimluck,Inc.
@@ -19,10 +23,10 @@ dojo._hasResource["aipo.widget.DropdownMemberpicker"] = true;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-dojo.provide("aipo.widget.DropdownMemberpicker");
+dojo.provide("aipo.widget.DropdownGrouppicker");
 
 dojo.require("aimluck.widget.Dropdown");
-dojo.require("aipo.widget.MemberSelectList");
+dojo.require("aipo.widget.GroupSelectList");
 
 /**
  * ex)
@@ -41,7 +45,7 @@ dojo.require("aipo.widget.MemberSelectList");
  * memberGroupUrl:this.memberGroupUrl,
  * changeGroupUrl:this.changeGroupUrl
  */
-dojo.declare("aipo.widget.DropdownMemberpicker", [aimluck.widget.Dropdown], {
+dojo.declare("aipo.widget.DropdownGrouppicker", [aimluck.widget.Dropdown], {
     inputWidth: "250px",
     hiddenId: "",
     hiddenValue: "",
@@ -52,43 +56,37 @@ dojo.declare("aipo.widget.DropdownMemberpicker", [aimluck.widget.Dropdown], {
     inputValue: "",
     buttonAddId:"",
     buttonRemoveId:"",
+    memberFromTitle:"",
     memberFromId:"",
-    memberToTitle: "",
+    memberToTitle:"",
     memberToId:"",
     memberFromUrl:"",
     memberFromOptionKey:"",
     memberFromOptionValue:"",
     groupSelectId:"",
-    groupSelectPreOptionKey: "",
-    groupSelectPreOptionValue: "",
     groupSelectOptionKey:"",
     groupSelectOptionValue:"",
     memberGroupUrl:"",
     changeGroupUrl:"",
-    listWidgetId:"memberlistwidget",
+    listWidgetId:"",
     templateString:"<div class=\"dijit dijitLeft dijitInline\"\n\tdojoAttachEvent=\"onmouseenter:_onMouse,onmouseleave:_onMouse,onmousedown:_onMouse,onclick:_onDropDownClick,onkeydown:_onDropDownKeydown,onblur:_onDropDownBlur,onkeypress:_onKey\"\n\t><div class='dijitRight'>\n\t<span class=\"\" type=\"${type}\"\n\t\tdojoAttachPoint=\"focusNode,titleNode\" waiRole=\"button\" waiState=\"haspopup-true,labelledby-${id}_label\"\n\t\t><span class=\"\" \tdojoAttachPoint=\"containerNode,popupStateNode\"\n\t\tid=\"${id}_label\"><img src=\"${iconURL}\" alt=\"${iconAlt}\" style=\"cursor:pointer;cursor:hand;padding-right:2px\" align=\"top\" />\n\t</span><select name=\"${selectId}\" id=\"${selectId}\" size=\"10\" multiple=\"multiple\" style=\"display:none\" dojoAttachPoint=\"selectNode\"></select><input type=\"hidden\" id=\"${hiddenId}\" name=\"${hiddenId}\" value=\"${hiddenValue}\" dojoAttachPoint=\"valueNode\" /><span name=\"${inputId}\" id=\"${inputId}\" dojoAttachPoint=\"inputNode\">${inputValue}</span>\n</div></div>\n",
     postCreate: function(){      
-      var userparams = {
+
+      var fparams = {
           widgetId:this.listWidgetId,
           selectId:this.selectId,
           inputId:this.inputId,
           buttonAddId:this.buttonAddId,
           buttonRemoveId:this.buttonRemoveId,
+          memberFromTitle:this.memberFromTitle,
           memberFromId:this.memberFromId,
           memberToTitle:this.memberToTitle,
           memberToId:this.memberToId,
           memberFromUrl:this.memberFromUrl,
           memberFromOptionKey:this.memberFromOptionKey,
-          memberFromOptionValue:this.memberFromOptionValue,
-          groupSelectId:this.groupSelectId,
-          groupSelectPreOptionKey:this.groupSelectPreOptionKey,
-          groupSelectPreOptionValue:this.groupSelectPreOptionValue,
-          groupSelectOptionKey:this.groupSelectOptionKey,
-          groupSelectOptionValue:this.groupSelectOptionValue,
-          memberGroupUrl:this.memberGroupUrl,
-          changeGroupUrl:this.changeGroupUrl
+          memberFromOptionValue:this.memberFromOptionValue
       };
-     
+
       var listWidget = dijit.byId(this.listWidgetId);
       if(listWidget){
         this.dropDown = listWidget;
@@ -97,9 +95,9 @@ dojo.declare("aipo.widget.DropdownMemberpicker", [aimluck.widget.Dropdown], {
         select = dojo.byId(listWidget.memberToId);
         this.removeAllOptions(select);
       }else{
-        this.dropDown = new aipo.widget.MemberSelectList(userparams, this.listWidgetId);
+        this.dropDown = new aipo.widget.GroupSelectList(fparams, this.listWidgetId);
       }
-
+      
       this.inherited(arguments);
     },
 	removeAllOptions:function(select){
@@ -177,3 +175,5 @@ dojo.declare("aipo.widget.DropdownMemberpicker", [aimluck.widget.Dropdown], {
 });
 
 }
+
+}});

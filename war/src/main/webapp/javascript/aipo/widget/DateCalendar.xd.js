@@ -1,4 +1,7 @@
-if(!dojo._hasResource["aipo.widget.DateCalendar"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+dojo._xdResourceLoaded({
+depends: [["provide", "aipo.widget.DateCalendar"],
+["require", "dijit._Calendar"]],
+defineResource: function(dojo){if(!dojo._hasResource["aipo.widget.DateCalendar"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
 dojo._hasResource["aipo.widget.DateCalendar"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -94,3 +97,5 @@ dojo.declare("aipo.widget.DateCalendar", [dijit._Calendar], {
 });
 
 }
+
+}});

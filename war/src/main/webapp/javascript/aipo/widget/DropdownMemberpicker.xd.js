@@ -1,4 +1,8 @@
-if(!dojo._hasResource["aipo.widget.DropdownMemberpicker"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+dojo._xdResourceLoaded({
+depends: [["provide", "aipo.widget.DropdownMemberpicker"],
+["require", "aimluck.widget.Dropdown"],
+["require", "aipo.widget.MemberSelectList"]],
+defineResource: function(dojo){if(!dojo._hasResource["aipo.widget.DropdownMemberpicker"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
 dojo._hasResource["aipo.widget.DropdownMemberpicker"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -177,3 +181,5 @@ dojo.declare("aipo.widget.DropdownMemberpicker", [aimluck.widget.Dropdown], {
 });
 
 }
+
+}});

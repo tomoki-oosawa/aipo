@@ -1,3 +1,5 @@
+if(!dojo._hasResource["aipo.widget.MemberNormalSelectList"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+dojo._hasResource["aipo.widget.MemberNormalSelectList"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2011 Aimluck,Inc.
@@ -215,3 +217,5 @@ dojo.declare("aipo.widget.MemberNormalSelectList", [dijit._Widget, dijit._Templa
        this.removeMemberSync();
     }
 });
+
+}

@@ -1,5 +1,9 @@
-if(!dojo._hasResource["aipo.widget.MemberSelectList"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
-dojo._hasResource["aipo.widget.MemberSelectList"] = true;
+dojo._xdResourceLoaded({
+depends: [["provide", "aipo.widget.GroupSelectList"],
+["require", "dijit._Widget"],
+["require", "dijit._Templated"]],
+defineResource: function(dojo){if(!dojo._hasResource["aipo.widget.GroupSelectList"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+dojo._hasResource["aipo.widget.GroupSelectList"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2011 Aimluck,Inc.
@@ -19,54 +23,46 @@ dojo._hasResource["aipo.widget.MemberSelectList"] = true;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-dojo.provide("aipo.widget.MemberSelectList");
+dojo.provide("aipo.widget.GroupSelectList");
 
 dojo.require("dijit._Widget");
 dojo.require("dijit._Templated");
 
-dojo.declare("aipo.widget.MemberSelectList", [dijit._Widget, dijit._Templated], {
-    widgetId:"",
+dojo.declare("aipo.widget.GroupSelectList", [dijit._Widget, dijit._Templated], {
     inputWidth: "95%",
     hiddenId: "",
     hiddenValue: "",
     inputId: "",
     inputValue: "",
-    selectId: "",
-    memberFromId: "",
-    memberFromUrl: "",
-    memberFromOptionKey: "",
-    memberFromOptionValue: "",
-    memberToTitle: "",
-    memberToId: "",
-    buttonAddId: "",
-    buttonRemoveId: "",
     memberLimit: 0,
     groupSelectId: "",
-    groupSelectPreOptionKey: "",
-    groupSelectPreOptionValue: "",
     groupSelectOptionKey: "",
     groupSelectOptionValue: "",
     memberGroupUrl: "",
     changeGroupUrl: "",
-    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><table class=\"none\"><tr><td><div id=\"memberPopupDiv\"><div class=\"outer\"><div class=\"popup\" style=\"width:300px\"><div class=\"clearfix\"><div class=\"memberlistToTop\" >${memberToTitle}</div><div class=\"memberlistFromTop\"><select size=\"1\" style=\"width:100%\" name=\"${groupSelectId}\" id=\"${groupSelectId}\" dojoAttachEvent=\"onchange:changeGroup\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div><div class=\"memberlistFromBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberFromId}\" id=\"${memberFromId}\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBottom\"><div class=\"alignright\"><input id=\"${buttonRemoveId}\" name=\"${buttonRemoveId}\" type=\"button\" class=\"button\" value=\"\u3000\u524a\u9664\u3000\"/ dojoAttachEvent=\"onclick:onMemberRemoveClick\"></div></div><div class=\"memberlistFromBottom\"><div class=\"alignright\"><input id=\"${buttonAddId}\" name=\"${buttonAddId}\" type=\"button\" class=\"button\" value=\"\u3000\uff1c\u0020\u8ffd\u52a0\u3000\"/ dojoAttachEvent=\"onclick:onMemberAddClick\"></div></div></div></div></div></div></td></tr></table></div>\n",    
-    //templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><table class=\"none\"><tr><td><div id=\"memberPopupDiv\"><div class=\"outer\"><div class=\"popup\" style=\"width:300px\"><div class=\"clearfix\"><div class=\"memberlistToTop\" >参加メンバー一覧</div><div class=\"memberlistFromTop\"><select size=\"1\" style=\"width:100%\" name=\"${groupSelectId}\" id=\"${groupSelectId}\" dojoAttachEvent=\"onchange:changeGroup\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div><div class=\"memberlistFromBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberFromId}\" id=\"${memberFromId}\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBottom\"><div class=\"alignright\"><input id=\"${buttonRemoveId}\" name=\"${buttonRemoveId}\" type=\"button\" class=\"button\" value=\"　削除　\"/ dojoAttachEvent=\"onclick:onMemberRemoveClick\"></div></div><div class=\"memberlistFromBottom\"><div class=\"alignright\"><input id=\"${buttonAddId}\" name=\"${buttonAddId}\" type=\"button\" class=\"button\" value=\"　＜ 追加　\"/ dojoAttachEvent=\"onclick:onMemberAddClick\"></div></div></div></div></div></div></td></tr></table></div>\n",    
+    widgetId:"",
+    selectId:"",
+    inputId:"",
+    buttonAddId:"",
+    buttonRemoveId:"",
+    memberFromTitle:"",
+    memberFromId:"",
+    memberToTitle:"",
+    memberToId:"",
+    memberFromUrl:"",
+    memberFromOptionKey:"",
+    memberFromOptionValue:"",
+    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><table class=\"none\"><tr><td><div id=\"groupPopupDiv\"><div class=\"outer\"><div class=\"popup\" style=\"width:300px\"><div class=\"clearfix\"><div class=\"memberlistToTop\">${memberToTitle}</div><div class=\"memberlistFromTop\">${memberFromTitle}</div></div><div class=\"clearfix\"><div class=\"memberlistToBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div><div class=\"memberlistFromBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberFromId}\" id=\"${memberFromId}\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBottom\"><div class=\"alignright\"><input id=\"${buttonRemoveId}\" name=\"${buttonRemoveId}\" type=\"button\" class=\"button\" value=\"\u3000\u524a\u9664\u3000\" dojoAttachEvent=\"onclick:onMemberRemoveClick\"/></div></div><div class=\"memberlistFromBottom\"><div class=\"alignright\"><input id=\"${buttonAddId}\" name=\"${buttonAddId}\" type=\"button\" class=\"button\" value=\"\u3000\uff1c\u0020\u8ffd\u52a0\u3000\" dojoAttachEvent=\"onclick:onMemberAddClick\"/></div></div></div></div></div></div></td></tr></table></div>\n",  
+//    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><table class=\"none\"><tr><td><div id=\"facilityPopupDiv\"><div class=\"outer\"><div class=\"popup\" style=\"width:300px\"><div class=\"clearfix\"><div class=\"memberlistToTop\">所属施設一覧</div><div class=\"memberlistFromTop\">施設一覧</div></div><div class=\"clearfix\"><div class=\"memberlistToBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"tmp_facility_to\" id=\"tmp_facility_to\"></select></div><div class=\"memberlistFromBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"tmp_facility_from\" id=\"tmp_facility_from\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBottom\"><div class=\"alignright\"><input id=\"button_facility_remove\" name=\"button_facility_remove\" type=\"button\" class=\"button\" value=\"　削除　\" dojoAttachEvent=\"onclick:onMemberRemoveClick\"/></div></div><div class=\"memberlistFromBottom\"><div class=\"alignright\"><input id=\"button_facility_add\" name=\"button_facility_add\" type=\"button\" class=\"button\" value=\"　＜ 追加　\" dojoAttachEvent=\"onclick:onMemberAddClick\"/></div></div></div></div></div></div></td></tr></table></div>\n",    
     postCreate: function(){
         this.id = this.widgetId;
-    
+        
         params = {
           url: this.memberFromUrl,
           key: this.memberFromOptionKey,
           value: this.memberFromOptionValue
         };
         aimluck.io.createOptions(this.memberFromId, params);
-        
-        params = {
-          url: this.memberGroupUrl,
-          key: this.groupSelectOptionKey,
-          value: this.groupSelectOptionValue,
-          preOptions: { key:this.groupSelectPreOptionKey, value:this.groupSelectPreOptionValue }
-        };
-        aimluck.io.createOptions(this.groupSelectId, params); 
     },
     addOption:function(select, value, text, is_selected) {
       aimluck.io.addOption(select, value, text, is_selected);
@@ -260,6 +256,9 @@ dojo.declare("aipo.widget.MemberSelectList", [dijit._Widget, dijit._Templated], 
        this.removeMemberSync();
        this.inputMemberSync();
     }
+
 });
 
 }
+
+}});

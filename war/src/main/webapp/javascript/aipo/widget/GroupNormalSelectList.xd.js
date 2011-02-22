@@ -1,4 +1,8 @@
-if(!dojo._hasResource["aipo.widget.GroupNormalSelectList"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+dojo._xdResourceLoaded({
+depends: [["provide", "aipo.widget.GroupNormalSelectList"],
+["require", "dijit._Widget"],
+["require", "dijit._Templated"]],
+defineResource: function(dojo){if(!dojo._hasResource["aipo.widget.GroupNormalSelectList"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
 dojo._hasResource["aipo.widget.GroupNormalSelectList"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -208,3 +212,5 @@ dojo.declare("aipo.widget.GroupNormalSelectList", [dijit._Widget, dijit._Templat
 });
 
 }
+
+}});
