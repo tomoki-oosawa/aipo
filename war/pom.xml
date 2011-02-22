@@ -51,7 +51,6 @@
         </executions>
         <configuration>
           <nosuffix>true</nosuffix>
-          <disableOptimizations>false</disableOptimizations>
           <encoding>UTF-8</encoding>
           <gzip>true</gzip>
           <aggregations>
@@ -104,6 +103,10 @@
               </includes>
             </aggregation>
           </aggregations>
+          <includes>
+            <include>**/*.js</include>
+            <include>**/*.css</include>
+          </includes>
           <excludes>
             <exclude>**/*.xml</exclude>
             <exclude>**/*.html</exclude>
