@@ -61,8 +61,9 @@
                 <include>dojo/dojo-aipo.js</include>
                 <include>dijit/dijit-aipo.js</include>
                 <include>aimluck/aimluck.js</include>
+                <include>aimluck/utils/utils.js</include>
+                <include>aimluck/utils/form.js</include>
                 <include>aimluck/io/*.js</include>
-                <include>aimluck/utils/*.js</include>
                 <include>aipo/aipo.js</include>
                 <include>aipo/common/*.js</include>
                 <include>aipo/io/*.js</include>
@@ -87,8 +88,9 @@
                 <include>dojo/dojo-aipo.xd.js</include>
                 <include>dijit/dijit-aipo.xd.js</include>
                 <include>aimluck/aimluck.js</include>
+                <include>aimluck/utils/utils.js</include>
+                <include>aimluck/utils/form.js</include>
                 <include>aimluck/io/*.xd.js</include>
-                <include>aimluck/utils/*.xd.js</include>
                 <include>aipo/aipo.js</include>
                 <include>aipo/common/*.xd.js</include>
                 <include>aipo/io/*.xd.js</include>
