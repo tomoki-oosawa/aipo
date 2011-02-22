@@ -4,7 +4,7 @@ dojo.provide("dojo.currency");
 
 dojo.require("dojo.number");
 dojo.require("dojo.i18n");
-dojo.requireLocalization("dojo.cldr", "currency", null, "ko,zh,ja,en,en-ca,en-au,ROOT,en-us,it,fr,pt,es,de");
+dojo.requireLocalization("dojo.cldr", "currency", null, "ROOT,de,en,en-au,en-ca,en-us,es,fr,it,ja,ko,pt,zh");
 dojo.require("dojo.cldr.monetary");
 
 dojo.currency._mixInDefaults = function(options){
