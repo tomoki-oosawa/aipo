@@ -1,4 +1,14 @@
-if(!dojo._hasResource["aimluck.widget.Menu"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+dojo._xdResourceLoaded({
+depends: [["provide", "aimluck.widget.Menu"],
+["provide", "aimluck.widget.Menuitem"],
+["provide", "aimluck.widget.Menuseparator"],
+["provide", "aimluck.widget.Menubar"],
+["provide", "aimluck.widget.DropDownButton"],
+["require", "dijit.layout.ContentPane"],
+["require", "dijit.Menu"],
+["require", "dijit.Toolbar"],
+["require", "dijit.form.Button"]],
+defineResource: function(dojo){if(!dojo._hasResource["aimluck.widget.Menu"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
 dojo._hasResource["aimluck.widget.Menu"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -156,3 +166,5 @@ dojo.declare("aimluck.widget.Menubar", [dijit.Toolbar], {
 });
 
 }
+
+}});

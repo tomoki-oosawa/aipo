@@ -1,4 +1,11 @@
-if(!dojo._hasResource["aimluck.dnd.DragMoveObject"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+dojo._xdResourceLoaded({
+depends: [["provide", "aimluck.dnd.DragMoveObject"],
+["provide", "aimluck.dnd.Draggable"],
+["require", "dojo.dnd.Mover"],
+["require", "dojo.dnd.Moveable"],
+["require", "dojo.parser"],
+["require", "dojo.dnd.Source"]],
+defineResource: function(dojo){if(!dojo._hasResource["aimluck.dnd.DragMoveObject"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
 dojo._hasResource["aimluck.dnd.DragMoveObject"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -87,3 +94,5 @@ dojo.declare("aimluck.dnd.Draggable", dojo.dnd.Moveable , {
 });
 
 }
+
+}});

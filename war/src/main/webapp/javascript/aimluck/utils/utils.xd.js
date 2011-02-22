@@ -1,4 +1,6 @@
-/*
+dojo._xdResourceLoaded({
+
+defineResource: function(dojo){/*
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2011 Aimluck,Inc.
  * http://www.aipo.com
@@ -17,13 +19,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-dojo.provide("aimluck.manifest");
-dojo.require("dojo.string.extras");
+aimluck.namespace("utils");
 
-dojo.registerNamespaceManifest("aimluck", "../aimluck", "aimluck", "aimluck.widget",
-	function(name){
-		var module = "aimluck.widget."+dojo.string.capitalize(name);
-		dojo.debug("resolver returning '"+module+"' for '"+name+"'");
-		return module;
-	}
-);
+aimluck.utils.createCSS = function(url) {
+    if(document.createStyleSheet){ //IE
+        document.createStyleSheet(url);
+    } else { //other browser
+        var head = document.getElementsByTagName("head")[0];
+        var stylesheet = document.createElement("link");
+        with(stylesheet){
+            rel="stylesheet";
+            type="text/css";
+            href=url;
+        }
+        head.appendChild(stylesheet);
+    }
+};
+
+}});
