@@ -1,4 +1,10 @@
-if(!dojo._hasResource["aipo.calendar.weekly"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+dojo._xdResourceLoaded({
+depends: [["provide", "aipo.calendar.weekly"],
+["require", "aimluck.dnd.Draggable"],
+["require", "aipo.widget.ToolTip"],
+["require", "aipo.widget.MemberNormalSelectList"],
+["require", "aipo.widget.GroupNormalSelectList"]],
+defineResource: function(dojo){if(!dojo._hasResource["aipo.calendar.weekly"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
 dojo._hasResource["aipo.calendar.weekly"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -1490,3 +1496,5 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleAddDraggable", [aimluck.dnd.Dragga
 });
 
 }
+
+}});

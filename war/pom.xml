@@ -50,17 +50,68 @@
           </execution>
         </executions>
         <configuration>
-          <suffix>.min</suffix>
-          <includes>
-            <inclulde>**/*.css</inclulde>
-          </includes>
+          <nosuffix>true</nosuffix>
+          <disableOptimizations>false</disableOptimizations>
+          <encoding>UTF-8</encoding>
+          <gzip>true</gzip>
+          <aggregations>
+            <aggregation>
+              <insertNewLine>true</insertNewLine>
+              <output>target/aipo/javascript/aipo.js</output>
+              <includes>
+                <include>dojo/dojo-aipo.js</include>
+                <include>dijit/dijit-aipo.js</include>
+                <include>aimluck/aimluck.js</include>
+                <include>aimluck/io/*.js</include>
+                <include>aimluck/utils/*.js</include>
+                <include>aipo/aipo.js</include>
+                <include>aipo/common/*.js</include>
+                <include>aipo/io/*.js</include>
+                <include>aimluck/dnd/*.js</include>
+                <include>aimluck/widget/*.js</include>
+                <include>aipo/widget/DropdownActivityChecker.js</include>
+                <include>aipo/widget/DropdownDatepicker.js</include>
+                <include>aipo/widget/DropdownGrouppicker.js</include>
+                <include>aipo/widget/DropdownMemberpicker.js</include>
+                <include>aipo/widget/GroupNormalSelectList.js</include>
+                <include>aipo/widget/MemberNormalSelectList.js</include>
+              </includes>
+              <excludes>
+                <exclude>**/*.xd.js</exclude>
+              </excludes>
+            </aggregation>
+            <aggregation>
+              <insertNewLine>true</insertNewLine>
+              <output>target/aipo/javascript/aipo.xd.js</output>
+              <includes>
+                <include>modules.js</include>
+                <include>dojo/dojo-aipo.xd.js</include>
+                <include>dijit/dijit-aipo.xd.js</include>
+                <include>aimluck/aimluck.js</include>
+                <include>aimluck/io/*.xd.js</include>
+                <include>aimluck/utils/*.xd.js</include>
+                <include>aipo/aipo.js</include>
+                <include>aipo/common/*.xd.js</include>
+                <include>aipo/io/*.xd.js</include>
+                <include>aimluck/dnd/*.xd.js</include>
+                <include>aimluck/widget/*.xd.js</include>
+                <include>aipo/widget/DropdownActivityChecker.xd.js</include>
+                <include>aipo/widget/DropdownDatepicker.xd.js</include>
+                <include>aipo/widget/DropdownGrouppicker.xd.js</include>
+                <include>aipo/widget/DropdownMemberpicker.xd.js</include>
+                <include>aipo/widget/GroupNormalSelectList.xd.js</include>
+                <include>aipo/widget/MemberNormalSelectList.xd.js</include>
+              </includes>
+            </aggregation>
+          </aggregations>
           <excludes>
             <exclude>**/*.xml</exclude>
+            <exclude>**/*.html</exclude>
             <exclude>**/*.properties</exclude>
-            <exclude>**/*.js</exclude>
           </excludes>
           <jswarn>false</jswarn>
           <statistics>false</statistics>
+          <force>true</force>
         </configuration>
       </plugin>
     </plugins>

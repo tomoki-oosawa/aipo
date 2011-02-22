@@ -20,9 +20,12 @@
 ## ---------------------------------------------------------------------------
 
 #ALjavascript("javascript/aipo/webmail/form.js")
+
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
+    dojo.require("aipo.widget.AddressbookDialog");
+    
     ptConfig['$!portlet.ID'] = { group:"webmailadmin", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAdminDetailScreen"))', reloadFunction:aipo.reloadPage };
 
 //]]>

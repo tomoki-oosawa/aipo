@@ -19,8 +19,6 @@
 
 dojo.provide("aipo.webmail");
 
-dojo.require("aipo.webmail.widget.AddressbookDialog");
-
 aipo.webmail.onLoadMailDialog = function(portlet_id){
 
 	var obj = dojo.byId("to");

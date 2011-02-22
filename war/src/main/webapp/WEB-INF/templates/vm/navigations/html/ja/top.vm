@@ -57,6 +57,7 @@
 //<![CDATA[
 
 dojo.require("aipo.widget.DropdownActivityChecker");
+
 dojo.addOnLoad(function () {
     var acHtml = document.getElementById("activitychecker");
     if(acHtml){

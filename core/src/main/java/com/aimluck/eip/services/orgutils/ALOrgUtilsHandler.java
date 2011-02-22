@@ -32,6 +32,7 @@ import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.social.ALContainerConfigService;
 import com.aimluck.eip.services.social.ALSocialApplicationHandler;
+import com.aimluck.eip.util.ALServletUtils;
 
 /**
  *
@@ -66,9 +67,11 @@ public abstract class ALOrgUtilsHandler {
     hash.put("copyright_short", getCopyrightShort(orgId));
     hash.put("alias_copyright", getAliasCopyright(orgId));
     hash.put("version", getVersion(orgId));
-    hash.put("external_resources_url", getExternalResourcesUrl(orgId));
+    String url = getExternalResourcesUrl(orgId);
+    hash.put("external_resources_url", url);
     hash.put("unlockeddomain_url", getUnlockedDomainBaseUrl(orgId));
     hash.put("context_path", getContextPath(orgId));
+    hash.put("isXDomain", String.valueOf(url.startsWith("http")));
 
     return hash;
   }
@@ -103,6 +106,17 @@ public abstract class ALOrgUtilsHandler {
     }
 
     return url.toString();
+  }
+
+  public String getXDomainBasePath(String orgId) {
+    String url = getExternalResourcesUrl(orgId);
+    if (url.startsWith("http")) {
+      return url;
+    } else {
+      return new StringBuilder(ALServletUtils.getRequestBaseUrl())
+        .append(url)
+        .toString();
+    }
   }
 
   public String getUnlockedDomainBaseUrl(String orgId) {

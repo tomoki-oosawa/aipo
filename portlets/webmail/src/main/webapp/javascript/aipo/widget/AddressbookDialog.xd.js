@@ -1,3 +1,9 @@
+dojo._xdResourceLoaded({
+depends: [["provide", "aipo.widget.AddressbookDialog"],
+["provide", "aipo.widget.AddressbookDialogUnderlay"],
+["require", "aimluck.widget.Dialog"]],
+defineResource: function(dojo){if(!dojo._hasResource["aipo.widget.AddressbookDialog"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+dojo._hasResource["aipo.widget.AddressbookDialog"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2011 Aimluck,Inc.
@@ -17,8 +23,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-dojo.provide("aipo.webmail.widget.AddressbookDialog");
-dojo.provide("aipo.webmail.widget.AddressbookDialogUnderlay");
+dojo.provide("aipo.widget.AddressbookDialog");
+dojo.provide("aipo.widget.AddressbookDialogUnderlay");
 
 dojo.require("aimluck.widget.Dialog");
 
@@ -80,3 +86,7 @@ dojo.declare(
         }
     }
 );
+
+}
+
+}});

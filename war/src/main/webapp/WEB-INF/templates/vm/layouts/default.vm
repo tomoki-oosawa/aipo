@@ -32,10 +32,21 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta name="copyright" content="${copyright}" />
 <link rel="shortcut icon" href="${external_resources_url}/images/favicon.ico" />
-<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/orange/css/extend.min.css" media="screen,tv,print" />
-<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/orange/css/common.min.css" media="screen,tv,print" />
-<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/orange/css/print.min.css" media="print" />
-#ALheadScripts()
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/orange/css/extend.css" media="screen,tv,print" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/orange/css/common.css" media="screen,tv,print" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/orange/css/print.css" media="print" />
+#if($isXDomain == "true")
+<script type="text/javascript">
+  djConifg = {
+    xDomainBasePath: '${external_resources_url}/javascript'
+  };
+</script>
+<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.xd.js"></script>
+<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/aipo.xd.js"></script>
+#else
+<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.js"></script>
+<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/aipo.js"></script>
+#end
 <script type="text/javascript" src="${unlockeddomain_url}/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
 <script type="text/javascript" src="${external_resources_url}/javascript/aipo/container.js"></script>
 </head>
@@ -82,7 +93,7 @@ $!jnavigation.setTemplate($config.getString("bottomnav.vm"))
 //<![CDATA[
 
 dojo.require("aimluck.widget.Dialog");
-dojo.require("aimluck.widget.Contentpane");
+
 dojo.addOnLoad(function() {
     var params = {
         widgetId:'modalDialog'
