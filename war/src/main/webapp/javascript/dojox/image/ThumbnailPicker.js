@@ -91,7 +91,7 @@ dojo.declare("dojox.image.ThumbnailPicker",
 	// The attribute name for accessing the title from the data store
 	titleAttr: "title",
 	
-	templateString:"<div dojoAttachPoint=\"outerNode\" class=\"thumbOuter\">\n\t<div dojoAttachPoint=\"navPrev\" class=\"thumbNav thumbClickable\">\n\t  <img src=\"\" dojoAttachPoint=\"navPrevImg\"/>    \n\t</div>\n\t<div dojoAttachPoint=\"thumbScroller\" class=\"thumbScroller\">\n\t  <div dojoAttachPoint=\"thumbsNode\" class=\"thumbWrapper\"></div>\n\t</div>\n\t<div dojoAttachPoint=\"navNext\" class=\"thumbNav thumbClickable\">\n\t  <img src=\"\" dojoAttachPoint=\"navNextImg\"/>  \n\t</div>\n</div>\n", 
+	templateString:"<div dojoAttachPoint=\"outerNode\" class=\"thumbOuter\">\r\n\t<div dojoAttachPoint=\"navPrev\" class=\"thumbNav thumbClickable\">\r\n\t  <img src=\"\" dojoAttachPoint=\"navPrevImg\"/>    \r\n\t</div>\r\n\t<div dojoAttachPoint=\"thumbScroller\" class=\"thumbScroller\">\r\n\t  <div dojoAttachPoint=\"thumbsNode\" class=\"thumbWrapper\"></div>\r\n\t</div>\r\n\t<div dojoAttachPoint=\"navNext\" class=\"thumbNav thumbClickable\">\r\n\t  <img src=\"\" dojoAttachPoint=\"navNextImg\"/>  \r\n\t</div>\r\n</div>\r\n", 
 	tempImgPath: dojo.moduleUrl("dojox.image", "resources/images/1pixel.gif"),
 	
 	// thumbs: Array

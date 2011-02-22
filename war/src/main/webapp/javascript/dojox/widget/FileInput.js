@@ -27,7 +27,7 @@ dojo.declare("dojox.widget.FileInput",
 	//	ugh, this should be pulled from this.domNode
 	name: "uploadFile",
 
-	templateString:"<div class=\"dijitFileInput\">\n\t<input id=\"${id}\" class=\"dijitFileInputReal\" type=\"file\" dojoAttachPoint=\"fileInput\" name=\"${name}\" />\n\t<div class=\"dijitFakeInput\">\n\t\t<input class=\"dijitFileInputVisible\" type=\"text\" dojoAttachPoint=\"focusNode, inputNode\" />\n\t\t<span class=\"dijitFileInputText\" dojoAttachPoint=\"titleNode\">${label}</span>\n\t\t<span class=\"dijitFileInputButton\" dojoAttachPoint=\"cancelNode\" \n\t\t\tdojoAttachEvent=\"onclick:_onClick\">${cancelText}</span>\n\t</div>\n</div>\n",
+	templateString:"<div class=\"dijitFileInput\">\r\n\t<input id=\"${id}\" class=\"dijitFileInputReal\" type=\"file\" dojoAttachPoint=\"fileInput\" name=\"${name}\" />\r\n\t<div class=\"dijitFakeInput\">\r\n\t\t<input class=\"dijitFileInputVisible\" type=\"text\" dojoAttachPoint=\"focusNode, inputNode\" />\r\n\t\t<span class=\"dijitFileInputText\" dojoAttachPoint=\"titleNode\">${label}</span>\r\n\t\t<span class=\"dijitFileInputButton\" dojoAttachPoint=\"cancelNode\" \r\n\t\t\tdojoAttachEvent=\"onclick:_onClick\">${cancelText}</span>\r\n\t</div>\r\n</div>\r\n",
 	
 	startup: function(){
 		// summary: listen for changes on our real file input

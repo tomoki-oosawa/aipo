@@ -49,7 +49,7 @@ dojo.declare("dojox.presentation.Deck", [ dijit.layout.StackContainer, dijit._Te
 
 	// just to over-ride:
 	templateString: null,
-	templateString:"<div class=\"dojoShow\" dojoAttachPoint=\"showHolder\">\n\t<div class=\"dojoShowNav\" dojoAttachPoint=\"showNav\" dojoAttachEvent=\"onmouseover: _showNav, onmouseout: _hideNav\">\n\t<div class=\"dojoShowNavToggler\" dojoAttachPoint=\"showToggler\">\n\t\t<img dojoAttachPoint=\"prevNode\" src=\"${prevIcon}\" dojoAttachEvent=\"onclick:previousSlide\">\n\t\t<select dojoAttachEvent=\"onchange:_onEvent\" dojoAttachPoint=\"select\">\n\t\t\t<option dojoAttachPoint=\"_option\">Title</option>\n\t\t</select>\n\t\t<img dojoAttachPoint=\"nextNode\" src=\"${nextIcon}\" dojoAttachEvent=\"onclick:nextSlide\">\n\t</div>\n\t</div>\n\t<div dojoAttachPoint=\"containerNode\"></div>\n</div>\n",
+	templateString:"<div class=\"dojoShow\" dojoAttachPoint=\"showHolder\">\r\n\t<div class=\"dojoShowNav\" dojoAttachPoint=\"showNav\" dojoAttachEvent=\"onmouseover: _showNav, onmouseout: _hideNav\">\r\n\t<div class=\"dojoShowNavToggler\" dojoAttachPoint=\"showToggler\">\r\n\t\t<img dojoAttachPoint=\"prevNode\" src=\"${prevIcon}\" dojoAttachEvent=\"onclick:previousSlide\">\r\n\t\t<select dojoAttachEvent=\"onchange:_onEvent\" dojoAttachPoint=\"select\">\r\n\t\t\t<option dojoAttachPoint=\"_option\">Title</option>\r\n\t\t</select>\r\n\t\t<img dojoAttachPoint=\"nextNode\" src=\"${nextIcon}\" dojoAttachEvent=\"onclick:nextSlide\">\r\n\t</div>\r\n\t</div>\r\n\t<div dojoAttachPoint=\"containerNode\"></div>\r\n</div>\r\n",
 
 	// nextIcon: String
 	//	icon for navigation "next" button
@@ -338,7 +338,7 @@ dojo.declare(
 
 	// templatPath: String
 	//	make a ContentPane templated, and style the 'titleNode'
-	templateString:"<div dojoAttachPoint=\"showSlide\" class=\"dojoShowPrint dojoShowSlide\">\n\t<h1 class=\"showTitle\" dojoAttachPoint=\"slideTitle\"><span class=\"dojoShowSlideTitle\" dojoAttachPoint=\"slideTitleText\">${title}</span></h1>\n\t<div class=\"dojoShowBody\" dojoAttachPoint=\"containerNode\"></div>\n</div>\n",
+	templateString:"<div dojoAttachPoint=\"showSlide\" class=\"dojoShowPrint dojoShowSlide\">\r\n\t<h1 class=\"showTitle\" dojoAttachPoint=\"slideTitle\"><span class=\"dojoShowSlideTitle\" dojoAttachPoint=\"slideTitleText\">${title}</span></h1>\r\n\t<div class=\"dojoShowBody\" dojoAttachPoint=\"containerNode\"></div>\r\n</div>\r\n",
 
 	// title: String
 	//	string to insert into titleNode, title of Slide

@@ -40,7 +40,7 @@ dojo.declare("dojox.widget.SortList",
 	store: "",
 	key: "name",
 
-	templateString:"<div class=\"sortList\" id=\"${id}\">\n\t\t<div class=\"sortListTitle\" dojoAttachPoint=\"titleNode\">\n\t\t<div class=\"sortListIcon\"></div>\n\t\t<span dojoAttachPoint=\"focusNode\">${title}</span>\n\t\t</div>\n\t\t<div class=\"sortListBodyWrapper\" dojoAttachEvent=\"onmouseover: _set, onmouseout: _unset, onclick:_handleClick\" dojoAttachPoint=\"bodyWrapper\">\n\t\t<ul dojoAttachPoint=\"containerNode\" class=\"sortListBody\"></ul>\n\t</div>\n</div>\n",
+	templateString:"<div class=\"sortList\" id=\"${id}\">\r\n\t\t<div class=\"sortListTitle\" dojoAttachPoint=\"titleNode\">\r\n\t\t<div class=\"sortListIcon\"></div>\r\n\t\t<span dojoAttachPoint=\"focusNode\">${title}</span>\r\n\t\t</div>\r\n\t\t<div class=\"sortListBodyWrapper\" dojoAttachEvent=\"onmouseover: _set, onmouseout: _unset, onclick:_handleClick\" dojoAttachPoint=\"bodyWrapper\">\r\n\t\t<ul dojoAttachPoint=\"containerNode\" class=\"sortListBody\"></ul>\r\n\t</div>\r\n</div>\r\n",
 
 	_addItem: function(item){
 		var node = document.createElement("li");

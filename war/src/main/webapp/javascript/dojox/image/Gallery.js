@@ -64,7 +64,7 @@ dojo.declare("dojox.image.Gallery",
 	//	time in seconds, between image changes in the slide show.
 	slideshowInterval: 3,
 	
-	templateString:"<div dojoAttachPoint=\"outerNode\" class=\"imageGalleryWrapper\">\n\t<div dojoAttachPoint=\"thumbPickerNode\"></div>\n\t<div dojoAttachPoint=\"slideShowNode\"></div>\n</div>\n", 
+	templateString:"<div dojoAttachPoint=\"outerNode\" class=\"imageGalleryWrapper\">\r\n\t<div dojoAttachPoint=\"thumbPickerNode\"></div>\r\n\t<div dojoAttachPoint=\"slideShowNode\"></div>\r\n</div>\r\n", 
 
 	postCreate: function(){
 		// summary: Initializes the widget, creates the ThumbnailPicker and SlideShow widgets
