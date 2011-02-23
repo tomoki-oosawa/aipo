@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.cayenne.CayenneException;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.access.Transaction;
+import org.apache.cayenne.conf.Configuration;
 import org.apache.cayenne.conf.ServletUtil;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -124,6 +125,7 @@ public class ALBaseFilter implements Filter {
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {
     this.filterConfig = filterConfig;
+    Configuration.configureCommonLogging(null);
     ServletUtil.initializeSharedConfiguration(filterConfig.getServletContext());
   }
 
