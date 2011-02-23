@@ -120,7 +120,7 @@ public abstract class ALMailHandler {
     // }
   }
 
-  protected int sendAdmin(ALMailSenderContext scontext, ALMailContext mcontext)
+  public int sendAdmin(ALMailSenderContext scontext, ALMailContext mcontext)
       throws Exception {
     // synchronized (LOCK_SEND) {
     int result = ALMailSender.SEND_MSG_SUCCESS;
