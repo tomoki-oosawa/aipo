@@ -33,9 +33,7 @@ import javax.imageio.ImageIO;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.jetspeed.om.security.Group;
 import org.apache.jetspeed.om.security.JetspeedUser;
-import org.apache.jetspeed.om.security.Role;
 import org.apache.jetspeed.om.security.UserNamePrincipal;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.PsmlManager;
@@ -69,7 +67,6 @@ import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
@@ -82,7 +79,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザーアカウントのフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class AccountUserFormData extends ALAbstractFormData {
 
@@ -196,12 +193,12 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 初期化します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -220,8 +217,8 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
@@ -319,7 +316,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -365,8 +362,8 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -428,10 +425,10 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -445,15 +442,9 @@ public class AccountUserFormData extends ALAbstractFormData {
         SelectQuery<TurbineUser> query = Database.query(TurbineUser.class, exp);
         List<TurbineUser> ulist = query.fetchList();
         if (ulist.size() > 0) {
-          // TurbineUser user = (TurbineUser) ulist.get(0);
-          // if ("F".equals(user.getDisabled())) {
           msgList.add("ログイン名『 <span class='em'>"
             + username
             + "</span> 』はすでに登録されています。別のログイン名で登録してください。");
-          // } else {
-          // msgList.add("ログイン名『 <span class='em'>" + username
-          // + "</span> 』はすでに削除されています。一旦削除したログイン名では登録できません。");
-          // }
         }
       } catch (Exception ex) {
         logger.error("Exception", ex);
@@ -599,46 +590,30 @@ public class AccountUserFormData extends ALAbstractFormData {
     }
 
     // 管理者権限
-    if (!is_new_post && is_admin.getValue().equals("false")) {
-      try {
-        TurbineUser tuser = ALEipUtils.getTurbineUser(username.getValue());
+    try {
+      TurbineUser tuser = ALEipUtils.getTurbineUser(username.getValue());
+      if (tuser != null
+        && ALEipUtils.isEnabledUser(tuser.getUserId())
+        && is_admin.getValue().equals("false")) {
         if (login_uid == tuser.getUserId()) {
           msgList
             .add("ログインしているユーザーの『 <span class='em'>管理者権限</span> 』を無くすことは出来ません。");
         }
-
         boolean wasAdmin = ALEipUtils.isAdmin(tuser.getUserId());
         if (wasAdmin) {
-          // 更新で管理者権限を無くす場合
-          int minimum_admin =
-            Integer.valueOf(ALConfigService
-              .get(Property.MINIMUM_ADMINISTRATOR_USER_COUNT));
-          Group group = JetspeedSecurity.getGroup("LoginUser");
-          Role adminrole = JetspeedSecurity.getRole("admin");
-          int current_admin_count =
-            Database
-              .query(TurbineUserGroupRole.class)
-              .where(
-                Operations.eq(
-                  TurbineUserGroupRole.TURBINE_ROLE_PROPERTY,
-                  adminrole.getId()),
-                Operations.eq(
-                  TurbineUserGroupRole.TURBINE_GROUP_PROPERTY,
-                  group.getId()),
-                Operations.ne(TurbineUserGroupRole.TURBINE_USER_PROPERTY, 1))
-              .distinct(true)
-              .getCount();
-          if (minimum_admin >= current_admin_count) {
+          // 更新で、有効なユーザーの管理者権限を無くす場合
+          if (!AccountUtils.isAdminDeletable()) {
             msgList
               .add("このユーザーの『 <span class='em'>管理者権限</span> 』を削除できません。最低でも "
-                + minimum_admin
+                + Integer.valueOf(ALConfigService
+                  .get(Property.MINIMUM_ADMINISTRATOR_USER_COUNT))
                 + " 人の管理者権限を持ったユーザーが必要です。");
           }
         }
-      } catch (Exception e) {
-        logger.error("Exception", e);
-        return false;
       }
+    } catch (Exception e) {
+      logger.error("Exception", e);
+      return false;
     }
 
     return (msgList.size() == 0);
@@ -646,7 +621,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を読み込みます。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -729,7 +704,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を追加します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -885,7 +860,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -1069,12 +1044,12 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を無効化します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
    * @return
-   * 
+   *
    */
   public boolean disableFormData(RunData rundata, Context context,
       List<String> msgList) {
@@ -1108,6 +1083,23 @@ public class AccountUserFormData extends ALAbstractFormData {
       }
 
       TurbineUser target_user = list.get(0);
+
+      if (target_user.getLoginName().equals(rundata.getUser().getUserName())) {
+        msgList.add("ログイン中のユーザを無効にすることは出来ません。");
+        return false;
+      }
+
+      if (ALEipUtils.isAdmin(target_user.getUserId())
+        && !AccountUtils.isAdminDeletable()) {
+        msgList.add("ユーザー『 <span class='em'>"
+          + target_user.getLoginName()
+          + "</span> 』は管理者権限を持っているため、無効にできません。<br />最低でも"
+          + Integer.valueOf(ALConfigService
+            .get(Property.MINIMUM_ADMINISTRATOR_USER_COUNT))
+          + " 人の管理者権限を持ったユーザーが必要です。");
+        return false;
+      }
+
       target_user.setDisabled("N");
 
       // ワークフロー自動承認
@@ -1137,12 +1129,12 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を有効化します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
    * @return
-   * 
+   *
    */
   public boolean enableFormData(RunData rundata, Context context,
       List<String> msgList) {
@@ -1200,7 +1192,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -1234,6 +1226,22 @@ public class AccountUserFormData extends ALAbstractFormData {
           TurbineUser.class,
           TurbineUser.LOGIN_NAME_COLUMN,
           user_name);
+
+      if (user.getLoginName().equals(rundata.getUser().getUserName())) {
+        msgList.add("ログイン中のユーザを削除することは出来ません。");
+        return false;
+      }
+
+      if (ALEipUtils.isAdmin(user.getUserId())
+        && !AccountUtils.isAdminDeletable()) {
+        msgList.add("ユーザー『 <span class='em'>"
+          + user.getLoginName()
+          + "</span> 』は管理者権限を持っているため、削除できません。<br />最低でも"
+          + Integer.valueOf(ALConfigService
+            .get(Property.MINIMUM_ADMINISTRATOR_USER_COUNT))
+          + " 人の管理者権限を持ったユーザーが必要です。");
+        return false;
+      }
 
       user.setPositionId(Integer.valueOf(0));
       user.setDisabled("T");
@@ -1350,7 +1358,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 添付ファイルを削除する．
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -1383,7 +1391,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -1409,7 +1417,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 指定したchar型文字が記号であるかを判断します。
-   * 
+   *
    * @param ch
    * @return
    */
@@ -1435,7 +1443,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 携帯メールアドレスを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCellularMail() {
@@ -1444,7 +1452,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 会社IDを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALNumberField getCompanyId() {
@@ -1453,7 +1461,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * アカウント有効/無効フラグを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getDisabled() {
@@ -1462,7 +1470,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * メールアドレスを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getEmail() {
@@ -1471,7 +1479,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * フリガナ（名）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFirstNameKana() {
@@ -1480,7 +1488,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 名前（名）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFirstName() {
@@ -1489,7 +1497,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（内線）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getInTelephone() {
@@ -1498,7 +1506,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * フリガナ（姓）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getLastNameKana() {
@@ -1507,7 +1515,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 名前（姓）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getLastName() {
@@ -1516,7 +1524,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCellularPhone1() {
@@ -1525,7 +1533,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCellularPhone2() {
@@ -1534,7 +1542,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCellularPhone3() {
@@ -1543,7 +1551,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone1() {
@@ -1552,7 +1560,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone2() {
@@ -1561,7 +1569,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone3() {
@@ -1570,7 +1578,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * パスワードを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getPassword() {
@@ -1579,7 +1587,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * パスワード2を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getPassword2() {
@@ -1588,7 +1596,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 役職IDを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALNumberField getPositionId() {
@@ -1597,7 +1605,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 部署IDを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALNumberField getPostId() {
@@ -1606,7 +1614,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * ユーザー名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getUserName() {
@@ -1615,7 +1623,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 役職リストを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public List<ALEipPosition> getPositionList() {
@@ -1623,7 +1631,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public List<UserGroupLiteBean> getPostList() {
@@ -1631,7 +1639,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -1639,7 +1647,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPosition> getPositionMap() {
@@ -1647,7 +1655,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public AccountPostFormData getPost() {
@@ -1655,7 +1663,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public AccountPositionFormData getPosition() {
@@ -1663,7 +1671,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public boolean isNewPost() {
@@ -1671,7 +1679,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public boolean isNewPosition() {

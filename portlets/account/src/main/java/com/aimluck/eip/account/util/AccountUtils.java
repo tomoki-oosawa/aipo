@@ -24,10 +24,13 @@ import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.jetspeed.om.security.Group;
+import org.apache.jetspeed.om.security.Role;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
+import org.apache.jetspeed.services.security.JetspeedSecurityException;
 import org.apache.jetspeed.services.security.UnknownUserException;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -42,7 +45,10 @@ import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.config.ALConfigHandler.Property;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.user.beans.UserGroupLiteBean;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -382,6 +388,51 @@ public class AccountUtils {
       }
       return true;
     } catch (Exception e) {
+      logger.error("Exception", e);
+      return false;
+    }
+  }
+
+  /**
+   * 管理者権限を持ったユーザを一人、管理者権限剥奪・無効化・削除しても<br/>
+   * 最低限必要な管理者権限を持ったユーザ数を割らないかどうかを返します。
+   *
+   * @return
+   */
+  public static boolean isAdminDeletable() {
+    return isAdminDeletable(1);
+  }
+
+  /**
+   * 管理者権限を持ったユーザを指定人数、管理者権限剥奪・無効化・削除しても<br/>
+   * 最低限必要な管理者権限を持ったユーザ数を割らないかどうかを返します。
+   *
+   * @param admin_count
+   * @return
+   */
+  public static boolean isAdminDeletable(int admin_count) {
+    try {
+      int minimum_admin =
+        Integer.valueOf(ALConfigService
+          .get(Property.MINIMUM_ADMINISTRATOR_USER_COUNT));
+      Group group = JetspeedSecurity.getGroup("LoginUser");
+      Role adminrole = JetspeedSecurity.getRole("admin");
+      int current_admin_count =
+        Database.query(TurbineUserGroupRole.class).where(
+          Operations.eq(TurbineUserGroupRole.TURBINE_ROLE_PROPERTY, adminrole
+            .getId()),
+          Operations.eq(TurbineUserGroupRole.TURBINE_GROUP_PROPERTY, group
+            .getId()),
+          Operations.ne(TurbineUserGroupRole.TURBINE_USER_PROPERTY, 1),
+          Operations.eq(TurbineUserGroupRole.TURBINE_USER_PROPERTY
+            + "."
+            + TurbineUser.DISABLED_PROPERTY, "F")).distinct(true).getCount();
+      int admin_count_will = current_admin_count - admin_count;
+      if (admin_count_will < 0) {
+        admin_count_will = 0;
+      }
+      return minimum_admin <= admin_count_will;
+    } catch (JetspeedSecurityException e) {
       logger.error("Exception", e);
       return false;
     }

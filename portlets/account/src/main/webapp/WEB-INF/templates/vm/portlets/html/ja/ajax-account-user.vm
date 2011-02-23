@@ -54,6 +54,7 @@
 value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListScreen").addQueryData("filtertype","$!result.CurrentFilter").addQueryData("adminfiltered", $adminfiltered2 ))" #if($!result.AdminFiltered) checked="checked" #end /><label for="adminfiltercheckbox">管理者権限を持つユーザーだけを表示する</label>
 #ALtditemfooter()
 #ALtablefooter()
+<div id="listMessageDiv"></div>
 #if($result.List.size() == 0)
 <div class="message">指定された条件に該当するユーザーはありません。</div>
 #else
@@ -96,9 +97,9 @@ $!postname
 #ALtablefooter()
 #ALbuttonheaderRight()
 選択したユーザーを
-#ALajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onReceiveMessage")
-#ALajaxbuttonCheckboxEnable('有効にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onReceiveMessage")
-#ALajaxbuttonCheckboxDisable('無効にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onReceiveMessage")
+#ALajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
+#ALajaxbuttonCheckboxEnable('有効にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
+#ALajaxbuttonCheckboxDisable('無効にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 #ALbuttonfooterRight()
 #ALajaxpageviewFooter('AccountUserListScreen' $result)
 #end

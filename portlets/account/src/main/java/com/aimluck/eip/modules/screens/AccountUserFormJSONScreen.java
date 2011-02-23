@@ -19,6 +19,9 @@
 
 package com.aimluck.eip.modules.screens;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.sf.json.JSONArray;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -35,7 +38,7 @@ import com.aimluck.eip.common.ALEipConstants;
 
 /**
  * ユーザーアカウントをJSONデータとして出力するクラスです。 <br />
- * 
+ *
  */
 public class AccountUserFormJSONScreen extends ALJSONScreen {
 
@@ -89,7 +92,12 @@ public class AccountUserFormJSONScreen extends ALJSONScreen {
         AccountUserFormData formData = new AccountUserFormData();
         formData.initField();
         formData.init(this, rundata, context);
-        formData.disableFormData(rundata, context, null);
+        List<String> msgList = new ArrayList<String>();
+        formData.disableFormData(rundata, context, msgList);
+        if (!msgList.isEmpty()) {
+          JSONArray json = JSONArray.fromObject(msgList);
+          result = json.toString();
+        }
 
       } else if ("enable".equals(mode)) {
         AccountUserFormData formData = new AccountUserFormData();

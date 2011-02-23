@@ -108,6 +108,19 @@ aipo.account_user.onReceiveMessage = function(msg){
     }
 }
 
+aipo.account_user.onListReceiveMessage = function(msg){
+    if(!msg) {
+        var arrDialog = dijit.byId("modalDialog");
+        if(arrDialog){
+            arrDialog.hide();
+        }
+        aipo.portletReload('account_user');
+    }
+    if (dojo.byId('listMessageDiv')) {
+        dojo.byId('listMessageDiv').innerHTML = msg;
+    }
+}
+
 aipo.account_user.submit2 = function(form) {
   var s_o = form.member_so.options;
   var tmp = '';

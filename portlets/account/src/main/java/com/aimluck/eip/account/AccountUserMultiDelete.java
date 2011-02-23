@@ -43,13 +43,15 @@ import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.config.ALConfigHandler.Property;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
 import com.aimluck.eip.user.util.UserUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザアカウントを複数削除するためのクラス． <BR>
- * 
+ *
  */
 public class AccountUserMultiDelete extends ALAbstractCheckList {
 
@@ -58,7 +60,7 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
     .getLogger(AccountUserMultiDelete.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param values
@@ -90,6 +92,25 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
       int size = ulist.size();
       String[] user_name_list = new String[size];
 
+      // 予めバリデーション
+      int admin_count = 0;
+      for (TurbineUser user : ulist) {
+        if (user.getLoginName().equals(rundata.getUser().getUserName())) {
+          msgList.add("ログイン中のユーザを削除することは出来ません。");
+          return false;
+        }
+        if (ALEipUtils.isAdmin(user.getUserId())) {
+          admin_count++;
+        }
+      }
+      if (!AccountUtils.isAdminDeletable(admin_count)) {
+        msgList.add("最低でも"
+          + Integer.valueOf(ALConfigService
+            .get(Property.MINIMUM_ADMINISTRATOR_USER_COUNT))
+          + " 人の管理者権限を持ったログイン可能なユーザーが必要です。");
+        return false;
+      }
+
       for (int i = 0; i < size; i++) {
         TurbineUser record = ulist.get(i);
         String user_name = record.getLoginName();
@@ -98,12 +119,13 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
           return false;
         }
 
-        // ユーザーを論理削除
         TurbineUser user =
           Database.get(
             TurbineUser.class,
             TurbineUser.LOGIN_NAME_COLUMN,
             user_name);
+
+        // ユーザーを論理削除
         user.setPositionId(Integer.valueOf(0));
         user.setDisabled("T");
 
@@ -190,7 +212,7 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
         return false;
       }
 
-      return true;
+      return msgList.size() == 0;
     } catch (Exception e) {
       Database.rollback();
       logger.error("Exception", e);
