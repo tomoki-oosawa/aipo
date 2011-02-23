@@ -268,6 +268,7 @@ public class FileuploadFormData extends ALAbstractFormData {
   /**
    * 
    */
+  @Override
   public void initField() {
     attachmentName = new ALStringField();
     attachmentName.setFieldName("添付ファイル名");
@@ -279,16 +280,19 @@ public class FileuploadFormData extends ALAbstractFormData {
     String[] filenames = folder.list();
     File file = null;
     int tmpInt = 1;
-    int length = filenames.length;
-    for (int i = 0; i < length; i++) {
-      file = new File(folder.getAbsolutePath() + File.separator + filenames[i]);
-      if (file.isDirectory()) {
-        try {
-          tmpInt = Integer.parseInt(file.getName());
-          if (maxNum <= tmpInt) {
-            maxNum = tmpInt + 1;
+    if (filenames != null) {
+      int length = filenames.length;
+      for (int i = 0; i < length; i++) {
+        file =
+          new File(folder.getAbsolutePath() + File.separator + filenames[i]);
+        if (file.isDirectory()) {
+          try {
+            tmpInt = Integer.parseInt(file.getName());
+            if (maxNum <= tmpInt) {
+              maxNum = tmpInt + 1;
+            }
+          } catch (NumberFormatException e) {
           }
-        } catch (NumberFormatException e) {
         }
       }
     }

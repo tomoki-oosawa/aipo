@@ -67,6 +67,16 @@ public class ALDefaultOrgUtilsHandler extends ALOrgUtilsHandler {
         + File.separator
         + categoryKey);
 
+    if (!base.exists()) {
+      try {
+        base.mkdirs();
+      } catch (Exception e) {
+        logger.error("[ALDefaultOrgUtilsHandler] Can't create directory...:"
+          + base);
+        return base;
+      }
+    }
+
     return base;
   }
 

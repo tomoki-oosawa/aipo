@@ -49,6 +49,7 @@ import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -110,20 +111,9 @@ public class FileuploadUtils {
    * @return
    */
   public static File getRootFolder(String org_id, int userId) {
-    String rootPath =
-      FileuploadUtils.FOLDER_TMP_FOR_ATTACHMENT_FILES
-        + File.separator
-        + org_id
-        + File.separator
-        + userId
-        + File.separator;
-    File folder = new File(rootPath);
-    if (!folder.exists()) {
-      if (!folder.mkdirs()) {
-        return null;
-      }
-    }
-    return folder;
+    return ALOrgUtilsService.getDocumentPath(
+      FileuploadUtils.FOLDER_TMP_FOR_ATTACHMENT_FILES,
+      String.valueOf(userId));
   }
 
   /**
@@ -134,19 +124,9 @@ public class FileuploadUtils {
    * @return
    */
   public static File getFolder(String org_id, int userId, String folderName) {
-    String path =
-      FileuploadUtils.FOLDER_TMP_FOR_ATTACHMENT_FILES
-        + File.separator
-        + org_id
-        + File.separator
-        + userId
-        + File.separator
-        + folderName;
-    File folder = new File(path);
-    if (!folder.exists()) {
-      folder.mkdirs();
-    }
-    return folder;
+    return ALOrgUtilsService.getDocumentPath(
+      FileuploadUtils.FOLDER_TMP_FOR_ATTACHMENT_FILES,
+      userId + File.separator + folderName);
   }
 
   /**
@@ -488,15 +468,11 @@ public class FileuploadUtils {
       String folderName, List<FileuploadLiteBean> attachmentFileNameList) {
     File folder = null;
     try {
-      String folderpath =
-        FileuploadUtils.FOLDER_TMP_FOR_ATTACHMENT_FILES
-          + File.separator
-          + org_id
-          + File.separator
-          + userId
-          + File.separator
-          + folderName;
-      folder = new File(folderpath);
+      folder =
+        ALOrgUtilsService.getDocumentPath(
+          FileuploadUtils.FOLDER_TMP_FOR_ATTACHMENT_FILES,
+          userId + File.separator + folderName);
+
       if (!folder.exists()) {
         return true;
       }
@@ -510,7 +486,9 @@ public class FileuploadUtils {
       for (int i = 0; i < uploadedfolders_length; i++) {
         isDelete = true;
         uploadedFolder =
-          new File(folderpath + File.separator + uploadedFolders[i]);
+          new File(folder.getAbsolutePath()
+            + File.separator
+            + uploadedFolders[i]);
         if (uploadedFolder.isDirectory()) {
           uploadedFolderName = uploadedFolder.getName();
           for (int j = 0; j < length; j++) {
