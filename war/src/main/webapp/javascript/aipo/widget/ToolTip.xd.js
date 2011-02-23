@@ -31,7 +31,7 @@ dojo.declare( "aipo.widget._MasterToolTip", [dijit._MasterTooltip], {
             dojo.body().appendChild(this.domNode);
             this.bgIframe = new dijit.BackgroundIframe(this.domNode);
    },
-   show: function(/*String*/ innerHTML, /*DomNode*/ aroundNode){
+   show: function(/*String*/ innerHTML, /*DomNode*/ aroundNode, callback, targetNode){
             // summary:
             //  Display tooltip w/specified contents to right specified node
             //  (To left if there's no space on the right, or if LTR==right)
@@ -73,6 +73,10 @@ dojo.declare( "aipo.widget._MasterToolTip", [dijit._MasterTooltip], {
             //this.fadeIn.play();
             this.isShowingNow = true;
             this.aroundNode = aroundNode;
+            
+            if (callback) {
+                callback(this.containerNode, targetNode);
+            }
         },
         hide: function(aroundNode){
             // summary: hide the tooltip
@@ -97,12 +101,12 @@ dojo.declare( "aipo.widget._MasterToolTip", [dijit._MasterTooltip], {
 
 aipo.widget._masterTT = null;
 
-aipo.widget.showTooltip = function(/*String*/ innerHTML, /*DomNode*/ aroundNode){
+aipo.widget.showTooltip = function(/*String*/ innerHTML, /*DomNode*/ aroundNode, callback, targetNode){
     // summary:
     //  Display tooltip w/specified contents to right specified node
     //  (To left if there's no space on the right, or if LTR==right)
     if(!aipo.widget._masterTT){ aipo.widget._masterTT = new aipo.widget._MasterToolTip(); }
-    return aipo.widget._masterTT.show(innerHTML, aroundNode);
+    return aipo.widget._masterTT.show(innerHTML, aroundNode, callback, targetNode);
 };
 
 aipo.widget.hideTooltip = function(aroundNode){
@@ -115,8 +119,10 @@ aipo.widget.hideTooltip = function(aroundNode){
 dojo.declare( "aipo.widget.ToolTip", [dijit.Tooltip], {
         origZIndex: 0,
         _portletId: null,
-        constructor: function(params, pid){
+        _callback: null,
+        constructor: function(params, pid, callback){
             this._portletId = pid;
+            this._callback = callback;
         },
         open: function(/*DomNode*/ target){
             // summary: display the tooltip; usually not called directly.   
@@ -126,7 +132,7 @@ dojo.declare( "aipo.widget.ToolTip", [dijit.Tooltip], {
                 clearTimeout(this._showTimer);
                 delete this._showTimer;
             }
-             aipo.widget.showTooltip(this.label || this.domNode.innerHTML, target);
+             aipo.widget.showTooltip(this.label || this.domNode.innerHTML, target, this._callback, this._connectNodes[0]);
              this._connectNode = target;
         },
         close: function(){

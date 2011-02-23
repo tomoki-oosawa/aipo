@@ -78,9 +78,9 @@ ${record.TodoName}
 #foreach($record in $result.TermResultDataList)
 #if($termCount > 1) <tr> #end
 #set($addScheduleLink = "")
-#set($entityids = "$!{entityids}$!{record.ScheduleId}, ")
+#set($entityids = "$!{entityids}$!{record.ScheduleId},")
 <td class="head" style="background-color:#FFE5E5;line-height:8pt;">
-<div id="$!{portlet.ID}-$!{record.ScheduleId}" class="calerndarTermScheduleDiv small">
+<div id="$!{portlet.ID}-$!{record.ScheduleId}" class="calerndarTermScheduleDiv small schedule-$!{portlet.ID}-$!{record.ScheduleId}">
 <a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid", $!{record.ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);">$record.Name
 #if(! ${record.isPublic()})
 <img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
@@ -106,11 +106,11 @@ ${record.TodoName}
 #ALtdheadAtt("$hour" "rowspan='$rowspan' width='25'")
 #if ($!{result.getResult($count)})
 #if (($!{result.getResult($count).Name.Value}))
-#set($entityids = "$!{entityids}$!{result.getResult($count).ScheduleId}, ")
+#set($entityids = "$!{entityids}$!{result.getResult($count).ScheduleId},")
 #ALtdcellheaderAtt("rowspan='$!{result.getResult($count).Rowspan}' style='background-color:#EDF1F2'")
 <div class="calendarScheduleDiv">
 <div class="small time">$!{result.getResult($count).Date}</div>
-<div id="$!{portlet.ID}-$!{result.getResult($count).ScheduleId}" class="small">
+<div id="$!{portlet.ID}-$!{result.getResult($count).ScheduleId}" class="small schedule-$!{portlet.ID}-$!{result.getResult($count).ScheduleId}">
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{result.getResult($count).ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
 <a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);">$!{result.getResult($count).Name} </a>
 #if(! ${result.getResult($count).isPublic()})
@@ -150,9 +150,9 @@ ${record.TodoName}
 #ALtdcellheaderAtt("rowspan='$!{result.getResult($count).Rowspan}' style='background-color:#EDF1F2'")
 <div class="calendarScheduleDiv">
 <div class="small time">$!{result.getResult($count).Date}</div>
-<div id="$!{portlet.ID}-$!{result.getResult($count).ScheduleId}" class="small">
+<div id="$!{portlet.ID}-$!{result.getResult($count).ScheduleId}" class="small schedule-$!{portlet.ID}-$!{result.getResult($count).ScheduleId}">
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{result.getResult($count).ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
-#set($entityids = "$!{entityids}$!{result.getResult($count).ScheduleId}, ")
+#set($entityids = "$!{entityids}$!{result.getResult($count).ScheduleId},")
 <a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$!{result.getResult($count).Name}</a>
 #if(! ${result.getResult($count).isPublic()})
 <img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
@@ -190,8 +190,8 @@ ${record.TodoName}
 #ALtdheadAtt("重複" "width='25'")
 #ALtditemheader()
 #foreach($record in $result.DuplicateScheduleList)
-#set($entityids = "$!{entityids}$!{record.ScheduleId}, ")
-<div id="$!{portlet.ID}-$!{record.ScheduleId}" class="calendarScheduleDiv">
+#set($entityids = "$!{entityids}$!{record.ScheduleId},")
+<div id="$!{portlet.ID}-$!{record.ScheduleId}" class="calendarScheduleDiv schedule-$!{portlet.ID}-$!{record.ScheduleId}">
 <div class="small time">${record.Date}</div>
 <div class="small">
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()})")

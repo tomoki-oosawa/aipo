@@ -46,32 +46,26 @@ public class ScheduleDetailJSONScreen extends ALJSONScreen {
       throws Exception {
     JSONObject json = new JSONObject();
 
-    String[] entityids = rundata.getParameters().get("entityids").split(",");
-    if (entityids.length >= 1) {
-      for (String entityid : entityids) {
-        int id = Integer.valueOf(entityid.trim());
-
-        rundata.getParameters().remove("entityid");
-        rundata.getParameters().add("entityid", id);
-
-        ScheduleTooltipSelectData detailData = new ScheduleTooltipSelectData();
-        detailData.initField();
-
-        JSONObject scheduleJson = new JSONObject();
-        if (detailData.doViewDetail(this, rundata, context)) {
-          ScheduleDetailResultData schedule =
-            (ScheduleDetailResultData) detailData.getDetail();
-          scheduleJson.put("id", schedule.getScheduleId().getValue());
-          scheduleJson.put("name", schedule.getName().getValue());
-          scheduleJson.put("date", schedule.getDate2());
-          scheduleJson.put("place", schedule.getPlace().getValue());
-          scheduleJson.put("isSpan", schedule.isSpan());
-          scheduleJson.put("memberList", detailData.getMemberList());
-          scheduleJson.put("facilityList", detailData.getFacilityList());
-        }
-        json.put(id, scheduleJson);
-      }
+    String entityid = rundata.getParameters().get("scheduleid");
+    if (entityid == null || "".equals(entityid)) {
+      return json.toString();
     }
-    return json.toString();
+
+    ScheduleTooltipSelectData detailData = new ScheduleTooltipSelectData();
+    detailData.initField();
+
+    JSONObject scheduleJson = new JSONObject();
+    if (detailData.doViewDetail(this, rundata, context)) {
+      ScheduleDetailResultData schedule =
+        (ScheduleDetailResultData) detailData.getDetail();
+      scheduleJson.put("id", schedule.getScheduleId().getValue());
+      scheduleJson.put("name", schedule.getName().getValue());
+      scheduleJson.put("date", schedule.getDate2());
+      scheduleJson.put("place", schedule.getPlace().getValue());
+      scheduleJson.put("isSpan", schedule.isSpan());
+      scheduleJson.put("memberList", detailData.getMemberList());
+      scheduleJson.put("facilityList", detailData.getFacilityList());
+    }
+    return scheduleJson.toString();
   }
 }

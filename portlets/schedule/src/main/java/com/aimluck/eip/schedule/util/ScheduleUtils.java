@@ -100,8 +100,8 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 public class ScheduleUtils {
 
   /** <code>logger</code> loger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ScheduleUtils.class.getName());
 
   /** <code>SCHEDULEMAP_TYPE_USER</code> ユーザ */
   public static final String SCHEDULEMAP_TYPE_USER = "U";
@@ -371,8 +371,7 @@ public class ScheduleUtils {
       Context context, String type) throws ALPageNotFoundException,
       ALDBErrorException {
 
-    String scheduleid =
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+    String scheduleid = rundata.getParameters().getString("scheduleid");
 
     try {
       if (scheduleid == null || Integer.valueOf(scheduleid) == null) {

@@ -27,72 +27,46 @@ dojo.require("aipo.widget.GroupNormalSelectList");
 aipo.schedule.setupTooltip = function(url, entityids, portlet_id) {
     ptConfig[portlet_id].isTooltipEnable = true;
 
-    url += '&entityids=' + entityids;
-    dojo.xhrGet({
-        portletId: portlet_id,
-        url: url,
-        encoding: "utf-8",
-        handleAs: "json-comment-filtered",
-        load: function(data, event) {
-            var namnam = "";
-            for (var id in data) {
-                var schedule = data[id];
-                var datehtml = "";
-                var mbhtml = "";
-                var mbfhtml = "";
-                var placehtml = "";
-
-
-                if (!schedule.isSpan) {
-                    datehtml = "<span style=\"font-size: 0.90em;\">" + schedule.date + "</span><br/>";
-                }
-
-                if (schedule.memberList) {
-                    var memberSize = schedule.memberList.length;
-                    for (var i = 0 ; i < memberSize ; i++) {
-                        mbhtml += "<li>" + schedule.memberList[i].aliasName.value + "</li>";
-                    }
-                }
-
-                if (schedule.facilityList) {
-                    var facilitySize = schedule.facilityList.length;
-                    for (var i = 0 ; i < facilitySize ; i++) {
-                        mbfhtml += "<li>" + schedule.facilityList[i].facilityName.value + "</li>";
-                    }
-                }
-
-                if(schedule.place != ""){
-                    placehtml = "<span style=\"font-size: 0.90em;\">場所</span><br/><ul><li>" + schedule.place + "</li></ul>";
-                }
-
-                if(mbhtml != ""){
-                    mbhtml = "<span style=\"font-size: 0.90em;\">参加者</span><br/><ul>" + mbhtml + "</ul>";
-                }
-
-                if(mbfhtml != ""){
-                    mbfhtml = "<span style=\"font-size: 0.90em;\">施設</span><br/><ul>" + mbfhtml + "</ul>";
-                }
-
-                dojo.query('.schedule-' + portlet_id + '-' + schedule.id).forEach(function(node, index, arr){
-                    var tooltipObject = new aipo.widget.ToolTip({
-                        label: "<h4>" + schedule.name + "</h4>" + datehtml + mbhtml + mbfhtml + placehtml,
-                        connectId: [node]
-                    }, portlet_id);
-                });
-
-                var obj = dojo.byId(portlet_id + '-' + schedule.id);
-                if (obj) {
-                    var tooltipObject = new aipo.widget.ToolTip({
-                        label: "<h4>" + schedule.name + "</h4>" + datehtml + mbhtml + mbfhtml + placehtml,
-                        connectId: [obj]
-                    }, portlet_id);
-                }
-            }
+    if (entityids.length <= 0) {
+        return;
+    }
+    
+    var entity_ids = entityids.split(",");
+    var processed_ids = new Array();
+    entity_ids.pop();
+    
+    for (var i in entity_ids) {
+        entity_ids[i] = dojo.trim(entity_ids[i]);
+        if (processed_ids[entity_ids[i]]) {
+            continue;
         }
-    });
+        processed_ids[entity_ids[i]] = true;
+        
+        
+
+        var nodeList = new Array();
+        dojo.query('.schedule-' + portlet_id + '-' + entity_ids[i]).forEach(function(node, index, arr){
+            nodeList.push(node);
+        });
+
+        var tooltipObject = new aipo.widget.ToolTip({
+            label: "<div class='indicator'>読み込み中...</div>",
+            connectId: nodeList
+        }, portlet_id, function(containerNode, node){
+            var regExp = new RegExp("schedule-" + portlet_id + "-([0-9]+)");
+            var className = node.className.match(regExp);
+            if (className) {
+                var request_url = url + '&scheduleid=' + className[1];
+                aipo.schedule.showTooltip(node, request_url, className[1], portlet_id, containerNode);
+            }
+        });
+        dojo.query('.schedule-' + portlet_id + '-' + entity_ids[i]).forEach(function(node, index, arr){
+            node.setAttribute('widget_id', tooltipObject.id);
+        });
+    }
 }
 
-aipo.schedule.showTooltip = function(obj, url, entityid, name, date, place, ispublic, portlet_id) {
+aipo.schedule.showTooltip = function(obj, url, entityid, portlet_id, containerNode) {
     var tooltipObject;
 
     var datehtml = "";
@@ -100,53 +74,57 @@ aipo.schedule.showTooltip = function(obj, url, entityid, name, date, place, ispu
     var mbfhtml = "";
     var placehtml = "";
 
-    datehtml = "<span style=\"font-size: 0.90em;\">" + date + "</span>";
-
-    if(ispublic){
-        dojo.xhrGet({
-            portletId: portlet_id,
-            url: url,
-            encoding: "utf-8",
-            handleAs: "json-comment-filtered",
-            load: function(data, event) {
-                if (data.memberList) {
-                    var memberSize = data.memberList.length;
-                    for (var i = 0 ; i < memberSize ; i++) {
-                        mbhtml += "<li>" + data.memberList[i].aliasName.value + "</li>";
-                    }
-                }
-
-                if (data.facilityList) {
-                    var facilitySize = data.facilityList.length;
-                    for (var i = 0 ; i < facilitySize ; i++) {
-                        mbfhtml += "<li>" + data.facilityList[i].facilityName.value + "</li>";
-                    }
-                }
-
-                if(place != ""){
-                    placehtml = "<span style=\"font-size: 0.90em;\">場所</span><br/><ul><li>" + place + "</li></ul>";
-                }
-
-                if(mbhtml != ""){
-                    mbhtml = "<span style=\"font-size: 0.90em;\">参加者</span><br/><ul>" + mbhtml + "</ul>";
-                }
-
-                if(mbfhtml != ""){
-                    mbfhtml = "<span style=\"font-size: 0.90em;\">施設</span><br/><ul>" + mbfhtml + "</ul>";
-                }
-
-                tooltipObject = new aipo.widget.ToolTip({
-                    label: "<h4>" + name + "</h4>" + datehtml + "<br/>" + mbhtml + mbfhtml + placehtml,
-                    connectId: [obj.id]
-                }, portlet_id);
-            }
-        });
-    } else {
-        tooltipObject = new aipo.widget.ToolTip({
-            label: "<h4>" + name + "</h4>" + datehtml + "<br/>" + mbhtml + mbfhtml + placehtml,
-            connectId: [obj.id]
-        }, portlet_id);
+    var widget = dijit.byId(obj.getAttribute('widget_id'))
+    if (widget.processed) {
+        return;
     }
+
+    dojo.xhrGet({
+        portletId: portlet_id,
+        url: url,
+        encoding: "utf-8",
+        handleAs: "json-comment-filtered",
+        load: function(schedule, event) {
+            if (schedule.length <= 0) {
+                return;
+            }
+
+            if (!schedule.isSpan) {
+                datehtml = "<span style=\"font-size: 0.90em;\">" + schedule.date + "</span><br/>";
+            }
+
+            if (schedule.memberList) {
+                var memberSize = schedule.memberList.length;
+                for (var i = 0 ; i < memberSize ; i++) {
+                    mbhtml += "<li>" + schedule.memberList[i].aliasName.value + "</li>";
+                }
+            }
+
+            if (schedule.facilityList) {
+                var facilitySize = schedule.facilityList.length;
+                for (var i = 0 ; i < facilitySize ; i++) {
+                    mbfhtml += "<li>" + schedule.facilityList[i].facilityName.value + "</li>";
+                }
+            }
+
+            if(schedule.place != ""){
+                placehtml = "<span style=\"font-size: 0.90em;\">場所</span><br/><ul><li>" + schedule.place + "</li></ul>";
+            }
+
+            if(mbhtml != ""){
+                mbhtml = "<span style=\"font-size: 0.90em;\">参加者</span><br/><ul>" + mbhtml + "</ul>";
+            }
+
+            if(mbfhtml != ""){
+                mbfhtml = "<span style=\"font-size: 0.90em;\">施設</span><br/><ul>" + mbfhtml + "</ul>";
+            }
+
+            var tooltiphtml = "<h4>" + schedule.name + "</h4>" + datehtml + mbhtml + mbfhtml + placehtml;
+            widget.label = tooltiphtml;
+            widget.processed = true;
+            containerNode.innerHTML = tooltiphtml;
+        }
+    });
 }
 
 
