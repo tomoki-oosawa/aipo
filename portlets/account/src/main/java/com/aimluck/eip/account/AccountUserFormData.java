@@ -520,7 +520,7 @@ public class AccountUserFormData extends ALAbstractFormData {
     email.validate(msgList);
     if (email.getValue() != null
       && email.getValue().trim().length() > 0
-      && !ALStringUtil.isCellPhoneMailAddress(email.getValue())) {
+      && !ALStringUtil.isMailAddress(email.getValue())) {
       msgList.add("『 <span class='em'> メールアドレス </span>』を正しく入力してください。");
     }
 
