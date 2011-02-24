@@ -239,6 +239,8 @@ public class ScheduleScreen extends ALVelocityScreen {
 
       context.put("widthALL", Integer.toString(tab_count * 120 + 40) + "px");
 
+      context.put("ajax_onloadimage", "true");
+
       listData.initField();
       listData.doViewList(this, rundata, context);
 
