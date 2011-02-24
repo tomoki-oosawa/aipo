@@ -317,4 +317,14 @@ $!{record.ToDoResultData.TodoName}
 #ALtablefooter()
 #end
 
-<img src="images/common/dot.gif" width="1" height="1" onload="aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');" />
+#if($!ajax_onloadimage)
+  <img src="images/common/dot.gif" width="1" height="1" onload="aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');" />
+#else
+  <script type="text/javascript" language="JavaScript">
+    //<![CDATA[
+    dojo.addOnLoad(function(){
+      aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');
+    });
+    //]]>
+  </script>
+#end

@@ -42,8 +42,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ScheduleListScreen extends ScheduleScreen {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleListScreen.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ScheduleListScreen.class.getName());
 
   /**
    * 
@@ -125,6 +125,8 @@ public class ScheduleListScreen extends ScheduleScreen {
         context.put("tab-weekly-group", "0");
       }
       context.put("widthALL", Integer.toString(5 * 120 + 40) + "px");
+
+      context.put("ajax_onloadimage", "true");
 
       listData.initField();
       listData.doViewList(this, rundata, context);
