@@ -52,7 +52,7 @@
         <configuration>
           <nosuffix>true</nosuffix>
           <encoding>UTF-8</encoding>
-          <gzip>true</gzip>
+          <gzip>false</gzip>
           <aggregations>
             <aggregation>
               <insertNewLine>true</insertNewLine>
@@ -75,6 +75,7 @@
                 <include>aipo/widget/DropdownMemberpicker.js</include>
                 <include>aipo/widget/GroupNormalSelectList.js</include>
                 <include>aipo/widget/MemberNormalSelectList.js</include>
+                <include>aipo/widget/ToolTip.js</include>
               </includes>
               <excludes>
                 <exclude>**/*.xd.js</exclude>
@@ -102,6 +103,7 @@
                 <include>aipo/widget/DropdownMemberpicker.xd.js</include>
                 <include>aipo/widget/GroupNormalSelectList.xd.js</include>
                 <include>aipo/widget/MemberNormalSelectList.xd.js</include>
+                <include>aipo/widget/ToolTip.xd.js</include>
               </includes>
             </aggregation>
           </aggregations>
