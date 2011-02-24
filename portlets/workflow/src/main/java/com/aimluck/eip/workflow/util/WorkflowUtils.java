@@ -82,6 +82,7 @@ import com.aimluck.eip.workflow.WorkflowDecisionRecordData;
 import com.aimluck.eip.workflow.WorkflowDetailResultData;
 import com.aimluck.eip.workflow.WorkflowOldRequestResultData;
 import com.aimluck.eip.workflow.WorkflowRouteResultData;
+import com.aimluck.eip.workflow.beans.WorkflowMailBean;
 
 /**
  * ワークフローのユーティリティクラスです。 <BR>
@@ -122,6 +123,15 @@ public class WorkflowUtils {
 
   /** 再申請済み */
   public static final String DB_PROGRESS_REAPPLY = "R";
+
+  /** 申請フロー完了 **/
+  public static final String KEY_COMPLETE = "COMPLETE";
+
+  /** 次のユーザーへ */
+  public static final String KEY_APPROVE = "APPROVE";
+
+  /** 差し戻し */
+  public static final String KEY_PASSBACK = "PASSBACK";
 
   /** データベースに登録されたファイルを表す識別子 */
   public static final String PREFIX_DBFILE = "DBF";
@@ -650,7 +660,7 @@ public class WorkflowUtils {
         drList.add(drd);
 
         // 無効化、もしくは削除されているユーザーは差し戻し先として選べないようにする
-        if (is_past && !getUserIsDisabledOrDeleted(map.getUserId().toString())) {
+        if (is_past && !isDisabledOrDeleted(map.getUserId().toString())) {
           remandList.add(drd);
         } else {
           // 申請者に差し戻し不可能
@@ -983,6 +993,223 @@ public class WorkflowUtils {
     return true;
   }
 
+  public static boolean sendMailForUpdate(RunData rundata,
+      List<EipTWorkflowRequestMap> sendMailMaps, EipTWorkflowRequest request,
+      String flowStatus) {
+
+    WorkflowMailBean mailBean = new WorkflowMailBean();
+    mailBean.setOrgId(Database.getDomainName());
+    mailBean.setSubject("[" + ALOrgUtilsService.getAlias() + "]ワークフロー");
+    mailBean.setLoginUserId(ALEipUtils.getUserId(rundata));
+    mailBean.setAipoAlias(ALOrgUtilsService.getAlias());
+    mailBean.setGlobalUrl(ALMailUtils.getGlobalurl());
+    mailBean.setLocalUrl(ALMailUtils.getLocalurl());
+
+    return sendMailForUpdateCore(sendMailMaps, request, flowStatus, mailBean);
+  }
+
+  public static boolean sendMailForUpdateCore(
+      List<EipTWorkflowRequestMap> sendMailMaps, EipTWorkflowRequest request,
+      String flowStatus, WorkflowMailBean mailBean) {
+
+    List<String> msgList = new ArrayList<String>();
+
+    List<ALEipUserAddr> userAddressList = new ArrayList<ALEipUserAddr>();
+
+    String msgForPcPrefix =
+      createMsgForPcAtUpdatePrefix(request, flowStatus, mailBean);
+    String msgForCellPrefix =
+      createMsgForCellAtUpdatePrefix(request, flowStatus, mailBean);
+
+    if ("".equals(msgForPcPrefix) || "".equals(msgForCellPrefix)) {
+      return false;
+    }
+
+    for (EipTWorkflowRequestMap requestMap : sendMailMaps) {
+      userAddressList.add(ALMailUtils.getALEipUserAddrByUserId(requestMap
+        .getUserId()));
+    }
+
+    try {
+      for (ALEipUserAddr userAddr : userAddressList) {
+
+        ALEipUser rcptUser = ALEipUtils.getALEipUser(userAddr.getUserId());
+
+        String msgForPc =
+          msgForPcPrefix + createMsgAtUpdateSuffix(rcptUser, false, mailBean);
+
+        String msgForCell =
+          msgForCellPrefix + createMsgAtUpdateSuffix(rcptUser, true, mailBean);
+
+        ALMailUtils.sendMailDelegateOne(mailBean.getOrgId(), mailBean
+          .getLoginUserId(), userAddr, mailBean.getSubject(), mailBean
+          .getSubject(), msgForPc, msgForCell, ALMailUtils
+          .getSendDestType(ALMailUtils.KEY_MSGTYPE_WORKFLOW), msgList);
+      }
+    } catch (Exception e) {
+      logger.error(e);
+      return false;
+    }
+
+    return true;
+  }
+
+  public static String createMsgForPcAtUpdatePrefix(
+      EipTWorkflowRequest request, String flowStatus, WorkflowMailBean mailBean) {
+
+    ALEipUser user;
+    try {
+      user = ALEipUtils.getALEipUser(request.getUserId());
+    } catch (ALDBErrorException e) {
+      logger.error(e);
+      user = new ALEipUser();
+    }
+
+    try {
+      StringBuilder body = new StringBuilder("");
+      body.append(user.getAliasName().toString());
+      body.append(getMessageHead(flowStatus, ALMailUtils.CR));
+      body.append(getMessageContent(request, ALMailUtils.CR, false, mailBean));
+      return body.toString();
+    } catch (Exception e) {
+      logger.error(e);
+      return "";
+    }
+
+  }
+
+  public static String createMsgForCellAtUpdatePrefix(
+      EipTWorkflowRequest request, String flowStatus, WorkflowMailBean mailBean) {
+
+    ALEipUser user;
+    try {
+      user = ALEipUtils.getALEipUser(request.getUserId());
+    } catch (ALDBErrorException e) {
+      logger.error(e);
+      user = new ALEipUser();
+    }
+
+    try {
+      StringBuilder body = new StringBuilder("");
+      body.append(user.getAliasName().toString());
+      body.append(getMessageHead(flowStatus, ALMailUtils.CR));
+      body.append(getMessageContent(request, ALMailUtils.CR, true, mailBean));
+      return body.toString();
+    } catch (Exception e) {
+      logger.error(e);
+      return "";
+    }
+  }
+
+  public static String createMsgAtUpdateSuffix(ALEipUser user, boolean isCell,
+      WorkflowMailBean mailBean) {
+    return getMessageAipoUri(user, isCell, ALMailUtils.CR, mailBean)
+      + getMessageSignature(ALMailUtils.CR, mailBean);
+  }
+
+  public static String getMessageHead(String flowStatus, String CR)
+      throws Exception {
+    StringBuilder body = new StringBuilder("");
+
+    if (KEY_COMPLETE.equals(flowStatus)) {
+      body.append("さんの申請は承認されました。").append(CR).append(CR);
+      body.append("[決裁状況]").append(CR);
+      body.append("承認済み").append(CR);
+    } else if (KEY_APPROVE.equals(flowStatus)) {
+      body.append("さんからの承認依頼です。").append(CR).append(CR);
+      body.append("[決裁状況]").append(CR);
+      body.append("決裁待ち").append(CR);
+    } else if (KEY_PASSBACK.equals(flowStatus)) {
+      body.append("さんの申請は差し戻されました。").append(CR).append(CR);
+      body.append("[決裁状況]").append(CR);
+      body.append("差戻要確認").append(CR);
+    } else {
+      throw new Exception("unreachable flow exception");
+    }
+
+    return body.toString();
+  }
+
+  public static String getMessageContent(EipTWorkflowRequest request,
+      String CR, boolean isCell, WorkflowMailBean mailBean) {
+    StringBuilder body = new StringBuilder("");
+
+    body.append("[表題]").append(CR);
+    body.append(request.getEipTWorkflowCategory().getCategoryName()).append(CR);
+
+    if (request.getRequestName() != null
+      && (!"".equals(request.getRequestName()))) {
+      body.append(request.getRequestName()).append(CR);
+    }
+
+    body
+      .append("[申請日]")
+      .append(CR)
+      .append(
+        WorkflowUtils.translateDate(request.getCreateDate(), "yyyy年M月d日H時m分"))
+      .append(CR);
+
+    body
+      .append("[重要度]")
+      .append(CR)
+      .append(WorkflowUtils.getPriorityString(request.getPriority().intValue()))
+      .append(CR);
+
+    if (!isCell) {
+      body.append("[申請内容]").append(CR).append(request.getNote()).append(CR);
+    }
+
+    if (request.getPrice() != null && (request.getPrice().intValue() > 0)) {
+      body
+        .append("[金額]")
+        .append(CR)
+        .append(request.getPrice())
+        .append(" 円")
+        .append(CR);
+    }
+
+    body.append(CR);
+    body.append("[").append(mailBean.getAipoAlias()).append("へのアクセス]").append(
+      CR);
+
+    return body.toString();
+  }
+
+  public static String getMessageAipoUri(ALEipUser user, boolean isCell,
+      String CR, WorkflowMailBean mailBean) {
+    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
+
+    StringBuilder body = new StringBuilder("");
+
+    if (isCell) {
+      body.append(CR);
+      body
+        .append("[")
+        .append(mailBean.getAipoAlias())
+        .append("へのアクセス]")
+        .append(CR);
+      body.append("　").append(mailBean.getGlobalUrl()).append("?key=").append(
+        ALCellularUtils.getCellularKey(user)).append(CR);
+    } else {
+      if (enableAsp) {
+        body.append("　").append(mailBean.getGlobalUrl()).append(CR);
+      } else {
+        body.append("・社外").append(CR);
+        body.append("　").append(mailBean.getGlobalUrl()).append(CR);
+        body.append("・社内").append(CR);
+        body.append("　").append(mailBean.getLocalUrl()).append(CR).append(CR);
+      }
+    }
+    return body.toString();
+  }
+
+  public static String getMessageSignature(String CR, WorkflowMailBean mailBean) {
+    StringBuilder body = new StringBuilder("");
+    body.append("---------------------").append(CR);
+    body.append(mailBean.getAipoAlias()).append(CR);
+    return body.toString();
+  }
+
   /**
    * パソコンへ送信するメールの内容を作成する．
    * 
@@ -990,9 +1217,15 @@ public class WorkflowUtils {
    */
   public static String createMsgForPc(RunData rundata,
       EipTWorkflowRequest request) {
-    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
+    String CR = ALMailUtils.CR;
 
-    String CR = System.getProperty("line.separator");
+    WorkflowMailBean mailBean = new WorkflowMailBean();
+    mailBean.setOrgId(Database.getDomainName());
+    mailBean.setSubject("[" + ALOrgUtilsService.getAlias() + "]ワークフロー");
+    mailBean.setLoginUserId(ALEipUtils.getUserId(rundata));
+    mailBean.setAipoAlias(ALOrgUtilsService.getAlias());
+    mailBean.setGlobalUrl(ALMailUtils.getGlobalurl());
+    mailBean.setLocalUrl(ALMailUtils.getLocalurl());
 
     ALBaseUser user = null;
     ALEipUser user2 = null;
@@ -1026,54 +1259,8 @@ public class WorkflowUtils {
       body.append("決裁待ち").append(CR);
     }
 
-    body.append("[表題]").append(CR);
-    body.append(request.getEipTWorkflowCategory().getCategoryName()).append(CR);
-
-    if (request.getRequestName() != null
-      && (!"".equals(request.getRequestName()))) {
-      body.append(request.getRequestName()).append(CR);
-    }
-
-    body
-      .append("[申請日]")
-      .append(CR)
-      .append(
-        WorkflowUtils.translateDate(request.getCreateDate(), "yyyy年M月d日H時m分"))
-      .append(CR);
-
-    body
-      .append("[重要度]")
-      .append(CR)
-      .append(WorkflowUtils.getPriorityString(request.getPriority().intValue()))
-      .append(CR);
-    body.append("[申請内容]").append(CR).append(request.getNote()).append(CR);
-
-    if (request.getPrice() != null && (request.getPrice().intValue() > 0)) {
-      body
-        .append("[金額]")
-        .append(CR)
-        .append(request.getPrice())
-        .append(" 円")
-        .append(CR);
-    }
-
-    body.append(CR);
-    body
-      .append("[")
-      .append(ALOrgUtilsService.getAlias())
-      .append("へのアクセス]")
-      .append(CR);
-    if (enableAsp) {
-      body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
-    } else {
-      body.append("・社外").append(CR);
-      body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
-      body.append("・社内").append(CR);
-      body.append("　").append(ALMailUtils.getLocalurl()).append(CR).append(CR);
-    }
-
-    body.append("---------------------").append(CR);
-    body.append(ALOrgUtilsService.getAlias()).append(CR);
+    body.append(getMessageContent(request, CR, false, mailBean));
+    body.append(createMsgAtUpdateSuffix(user2, false, mailBean));
 
     return body.toString();
   }
@@ -1085,7 +1272,16 @@ public class WorkflowUtils {
    */
   public static String createMsgForCellPhone(RunData rundata,
       EipTWorkflowRequest request, int destUserID) {
-    String CR = System.getProperty("line.separator");
+
+    String CR = ALMailUtils.CR;
+
+    WorkflowMailBean mailBean = new WorkflowMailBean();
+    mailBean.setOrgId(Database.getDomainName());
+    mailBean.setSubject("[" + ALOrgUtilsService.getAlias() + "]ワークフロー");
+    mailBean.setLoginUserId(ALEipUtils.getUserId(rundata));
+    mailBean.setAipoAlias(ALOrgUtilsService.getAlias());
+    mailBean.setGlobalUrl(ALMailUtils.getGlobalurl());
+    mailBean.setLocalUrl(ALMailUtils.getLocalurl());
 
     ALBaseUser user = null;
     ALEipUser user2 = null;
@@ -1122,55 +1318,8 @@ public class WorkflowUtils {
       body.append("決裁待ち").append(CR);
     }
 
-    body.append("[表題]").append(CR);
-    body.append(request.getEipTWorkflowCategory().getCategoryName()).append(CR);
-
-    if (request.getRequestName() != null
-      && (!"".equals(request.getRequestName()))) {
-      body.append(request.getRequestName()).append(CR);
-    }
-
-    body
-      .append("[申請日]")
-      .append(CR)
-      .append(
-        WorkflowUtils.translateDate(request.getCreateDate(), "yyyy年M月d日H時m分"))
-      .append(CR);
-
-    body
-      .append("[重要度]")
-      .append(CR)
-      .append(WorkflowUtils.getPriorityString(request.getPriority().intValue()))
-      .append(CR);
-    // body.append("[申請内容]").append(CR).append(request.getNote()).append(CR);
-
-    if (request.getPrice() != null && (request.getPrice().intValue() > 0)) {
-      body
-        .append("[金額]")
-        .append(CR)
-        .append(request.getPrice())
-        .append(" 円")
-        .append(CR);
-    }
-
-    ALEipUser destUser;
-    try {
-      destUser = ALEipUtils.getALEipUser(destUserID);
-    } catch (ALDBErrorException ex) {
-      logger.error("Exception", ex);
-      return "";
-    }
-
-    body.append(CR);
-    body
-      .append("[")
-      .append(ALOrgUtilsService.getAlias())
-      .append("へのアクセス]")
-      .append(CR);
-    body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
-      ALCellularUtils.getCellularKey(destUser)).append(CR);
-    body.append("---------------------").append(CR);
-    body.append(ALOrgUtilsService.getAlias()).append(CR);
+    body.append(getMessageContent(request, CR, true, mailBean));
+    body.append(createMsgAtUpdateSuffix(user2, true, mailBean));
 
     return body.toString();
   }
@@ -1558,14 +1707,30 @@ public class WorkflowUtils {
    * @param userId
    * @return
    */
-  public static boolean getUserIsDisabledOrDeleted(String userId) {
-    TurbineUser user = getTurbineUser(userId);
-    if (user == null) {
+  public static boolean isDisabledOrDeleted(String userId) {
+    if (null == userId || "".equals(userId)) {
       return true;
     }
-    String disabled;
-    disabled = user.getDisabled();
-    return ("T".equals(disabled) || "N".equals(disabled));
+    int _userId = Integer.parseInt(userId);
+    return isDisabledOrDeleted(_userId);
+  }
+
+  public static boolean isDisabledOrDeleted(int userId) {
+    try {
+      TurbineUser user = ALEipUtils.getTurbineUser(userId);
+
+      if (user == null) {
+        return true;
+      }
+
+      String disabled = user.getDisabled();
+      return ("T".equals(disabled) || "N".equals(disabled));
+
+    } catch (ALDBErrorException e) {
+      logger.error("Exception", e);
+      return true;
+    }
+
   }
 
   public static void createWorkflowRequestActivity(EipTWorkflowRequest request,

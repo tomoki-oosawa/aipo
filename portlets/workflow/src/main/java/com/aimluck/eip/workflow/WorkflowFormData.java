@@ -620,7 +620,7 @@ public class WorkflowFormData extends ALAbstractFormData {
       int i;
       for (i = 0; i < size; i++) {
         toUser = memberList.get(i);
-        if (WorkflowUtils.getUserIsDisabledOrDeleted(toUser
+        if (WorkflowUtils.isDisabledOrDeleted(toUser
           .getUserId()
           .getValueAsString())) {
           insertEipTWorkflowRequestMap(
@@ -794,7 +794,7 @@ public class WorkflowFormData extends ALAbstractFormData {
       int i;
       for (i = 0; i < size; i++) {
         toUser = memberList.get(i);
-        if (WorkflowUtils.getUserIsDisabledOrDeleted(toUser
+        if (WorkflowUtils.isDisabledOrDeleted(toUser
           .getUserId()
           .getValueAsString())) {
           insertEipTWorkflowRequestMap(

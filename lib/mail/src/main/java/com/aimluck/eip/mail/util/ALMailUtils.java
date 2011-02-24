@@ -76,7 +76,9 @@ import com.aimluck.eip.cayenne.om.portlet.EipMMailNotifyConf;
 import com.aimluck.eip.cayenne.om.portlet.EipTMail;
 import com.aimluck.eip.cayenne.om.portlet.EipTMailFilter;
 import com.aimluck.eip.cayenne.om.portlet.EipTMailFolder;
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALBaseUser;
+import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.mail.ALLocalMailMessage;
@@ -1341,6 +1343,26 @@ public class ALMailUtils {
     return true;
   }
 
+  public static boolean sendMailDelegateOne(String org_id, int srcUserId,
+      ALEipUserAddr userAddr, String pcSubject, String cellularSubject,
+      String pcBody, String cellularBody, int destType, List<String> msgList)
+      throws Exception {
+
+    List<ALEipUserAddr> rcptUsers = new ArrayList<ALEipUserAddr>();
+    rcptUsers.add(userAddr);
+
+    return sendMailDelegate(
+      org_id,
+      srcUserId,
+      rcptUsers,
+      pcSubject,
+      cellularSubject,
+      pcBody,
+      cellularBody,
+      destType,
+      msgList);
+  }
+
   /**
    * 
    * @param org_id
@@ -1654,6 +1676,23 @@ public class ALMailUtils {
     }
 
     return (successSendToPc == ALSmtpMailSender.SEND_MSG_SUCCESS && successSendToCell == ALSmtpMailSender.SEND_MSG_SUCCESS);
+  }
+
+  public static ALEipUserAddr getALEipUserAddrByUserId(int userId) {
+    try {
+      ALEipUserAddr userAddress = new ALEipUserAddr();
+      TurbineUser user = ALEipUtils.getTurbineUser(userId);
+
+      userAddress.setUserId(user.getUserId());
+      userAddress.setPcMailAddr(user.getEmail());
+      userAddress.setCellMailAddr(user.getCellularMail());
+
+      return userAddress;
+    } catch (ALDBErrorException e) {
+      logger.error(e);
+      return null;
+    }
+
   }
 
   /**
