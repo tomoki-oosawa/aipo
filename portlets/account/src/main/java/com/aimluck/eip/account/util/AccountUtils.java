@@ -20,6 +20,7 @@
 package com.aimluck.eip.account.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
@@ -35,6 +36,7 @@ import org.apache.jetspeed.services.security.UnknownUserException;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.cayenne.om.account.EipMPosition;
 import com.aimluck.eip.cayenne.om.account.EipMPost;
@@ -70,6 +72,9 @@ public class AccountUtils {
     "user_info.csv";
 
   public static final int CSV_FILE_COL_COUNT = 11;
+
+  /** ユーザー名として使用可能な記号群 */
+  public static final String[] USER_NAME_SYMBOLS = { ".", "-", "_" };
 
   /**
    * セッション中のエンティティIDで示されるユーザ情報を取得する。 論理削除されたユーザを取得した場合はnullを返す。
@@ -436,5 +441,20 @@ public class AccountUtils {
       logger.error("Exception", e);
       return false;
     }
+  }
+
+  /**
+   * 与えられたユーザー名に使われている記号が、使用できるものかを確認します。
+   *
+   * @return
+   */
+  public static boolean isValidSymbolUserName(String name) {
+    List<String> symbols = Arrays.asList(USER_NAME_SYMBOLS);
+    for (char c : name.toCharArray()) {
+      if (ALStringUtil.isSymbol(c) && !symbols.contains(String.valueOf(c))) {
+        return false;
+      }
+    }
+    return true;
   }
 }
