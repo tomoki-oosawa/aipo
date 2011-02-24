@@ -55,6 +55,12 @@ public class ALServletUtils {
 
   public static String getAccessUrl(String host, int port, boolean isGlobal) {
 
+    String loginUrl = ALConfigService.get(Property.EXTERNAL_LOGIN_URL);
+
+    if (loginUrl != null && loginUrl.length() > 0) {
+      return loginUrl;
+    }
+
     String scheme =
       isGlobal
         ? ALConfigService.get(Property.ACCESS_GLOBAL_URL_PROTOCOL)
