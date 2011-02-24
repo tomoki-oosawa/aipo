@@ -450,7 +450,7 @@ public class ALDefaultSocialApplicationHanlder extends
       try {
         ALEipUser user = ALEipUtils.getALEipUser(model.getLoginName());
         activity.setDisplayName(user.getAliasName().getValue());
-      } catch (ALDBErrorException e) {
+      } catch (Throwable t) {
         //
       }
       String loginName = request.getTargetLoginName();
