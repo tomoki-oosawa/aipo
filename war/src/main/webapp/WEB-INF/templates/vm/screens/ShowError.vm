@@ -27,6 +27,11 @@
 <table border="0" cellspacing="0" cellpadding="0"><tbody>
 <tr>
 <td nowrap="nowrap">
+#if(!$alias)
+<strong>セッションがタイムアウトしました。</strong><br /><br />
+ブラウザが切り替わらない場合は、再読み込みをお願いいたします。
+<div dojoType="aimluck.widget.Timeout" redirecturl="$!jslink.getPortletById($!portlet.ID)" >timeout</div>
+#else
 <strong>ページを表示できません。</strong><br /><br />
 指定されたページは現在、利用できません。以下の原因が考えられます。<br /><br />
 ・URLの指定が間違えている<br />
@@ -42,13 +47,14 @@
  <br />
  <br />
 #end
+#end
+</td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+</tbody></table>
 
-</td>
-</tr>
-</tbody></table>
-</td>
-</tr>
-</tbody></table>
-</td>
-</tr>
-</tbody></table>

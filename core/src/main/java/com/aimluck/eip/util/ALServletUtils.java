@@ -38,7 +38,6 @@ public class ALServletUtils {
 
   public static String getRequestBaseUrl() {
     HttpServletRequest request = HttpServletRequestLocator.get();
-
     String scheme = request.getScheme();
     int port = request.getServerPort();
     String serverName = request.getServerName();

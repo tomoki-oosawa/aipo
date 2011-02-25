@@ -102,6 +102,7 @@ public class ALEipAuthentication extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public JetspeedUser login(String username, String password)
       throws LoginException {
 
@@ -206,6 +207,7 @@ public class ALEipAuthentication extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public JetspeedUser getAnonymousUser() throws LoginException {
     JetspeedUser user = null;
     try {
@@ -226,16 +228,12 @@ public class ALEipAuthentication extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public void logout() throws LoginException {
     try {
-      // if (cachingEnable)
-      // {
-      // JetspeedSecurityCache.unload(getUserFromContext().getUserName());
-      // }
       getAnonymousUser();
-    } catch (Exception e) {
-      logger.error("Exception logging user out ", e);
-      throw new LoginException("Exception logging user out ", e);
+    } catch (Throwable ignore) {
+      // ignore
     }
   }
 
