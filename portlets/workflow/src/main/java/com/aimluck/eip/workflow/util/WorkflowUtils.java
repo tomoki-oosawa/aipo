@@ -124,15 +124,6 @@ public class WorkflowUtils {
   /** 再申請済み */
   public static final String DB_PROGRESS_REAPPLY = "R";
 
-  /** 申請フロー完了 **/
-  public static final String KEY_COMPLETE = "COMPLETE";
-
-  /** 次のユーザーへ */
-  public static final String KEY_APPROVE = "APPROVE";
-
-  /** 差し戻し */
-  public static final String KEY_PASSBACK = "PASSBACK";
-
   /** データベースに登録されたファイルを表す識別子 */
   public static final String PREFIX_DBFILE = "DBF";
 
@@ -995,7 +986,7 @@ public class WorkflowUtils {
 
   public static boolean sendMailForUpdate(RunData rundata,
       List<EipTWorkflowRequestMap> sendMailMaps, EipTWorkflowRequest request,
-      String flowStatus) {
+      Type flowStatus) {
 
     WorkflowMailBean mailBean = new WorkflowMailBean();
     mailBean.setOrgId(Database.getDomainName());
@@ -1010,7 +1001,7 @@ public class WorkflowUtils {
 
   public static boolean sendMailForUpdateCore(
       List<EipTWorkflowRequestMap> sendMailMaps, EipTWorkflowRequest request,
-      String flowStatus, WorkflowMailBean mailBean) {
+      Type flowStatus, WorkflowMailBean mailBean) {
 
     List<String> msgList = new ArrayList<String>();
 
@@ -1055,7 +1046,7 @@ public class WorkflowUtils {
   }
 
   public static String createMsgForPcAtUpdatePrefix(
-      EipTWorkflowRequest request, String flowStatus, WorkflowMailBean mailBean) {
+      EipTWorkflowRequest request, Type flowStatus, WorkflowMailBean mailBean) {
 
     ALEipUser user;
     try {
@@ -1079,7 +1070,7 @@ public class WorkflowUtils {
   }
 
   public static String createMsgForCellAtUpdatePrefix(
-      EipTWorkflowRequest request, String flowStatus, WorkflowMailBean mailBean) {
+      EipTWorkflowRequest request, Type flowStatus, WorkflowMailBean mailBean) {
 
     ALEipUser user;
     try {
@@ -1107,24 +1098,28 @@ public class WorkflowUtils {
       + getMessageSignature(ALMailUtils.CR, mailBean);
   }
 
-  public static String getMessageHead(String flowStatus, String CR)
+  public static String getMessageHead(Type flowStatus, String CR)
       throws Exception {
     StringBuilder body = new StringBuilder("");
 
-    if (KEY_COMPLETE.equals(flowStatus)) {
-      body.append("さんの申請は承認されました。").append(CR).append(CR);
-      body.append("[決裁状況]").append(CR);
-      body.append("承認済み").append(CR);
-    } else if (KEY_APPROVE.equals(flowStatus)) {
-      body.append("さんからの承認依頼です。").append(CR).append(CR);
-      body.append("[決裁状況]").append(CR);
-      body.append("決裁待ち").append(CR);
-    } else if (KEY_PASSBACK.equals(flowStatus)) {
-      body.append("さんの申請は差し戻されました。").append(CR).append(CR);
-      body.append("[決裁状況]").append(CR);
-      body.append("差戻要確認").append(CR);
-    } else {
-      throw new Exception("unreachable flow exception");
+    switch (flowStatus) {
+      case REQUEST:
+        body.append("さんからの承認依頼です。").append(CR).append(CR);
+        body.append("[決裁状況]").append(CR);
+        body.append("決裁待ち").append(CR);
+        break;
+      case DENAIL:
+        body.append("さんの申請は差し戻されました。").append(CR).append(CR);
+        body.append("[決裁状況]").append(CR);
+        body.append("差戻要確認").append(CR);
+        break;
+      case ACCEPT:
+        body.append("さんの申請は承認されました。").append(CR).append(CR);
+        body.append("[決裁状況]").append(CR);
+        body.append("承認済み").append(CR);
+        break;
+      default:
+
     }
 
     return body.toString();

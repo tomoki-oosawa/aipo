@@ -216,17 +216,21 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
         if (mapHandler.isApprovalForAll()) {
           // all accept case
           request.setProgress(WorkflowUtils.DB_PROGRESS_ACCEPT);
-          mapHandler.setAcceptAll(true);
-          // mail to all user , but login user is exclude
+          mapHandler.setFlowStatus(Type.ACCEPT);
+
           List<Integer> excludeUserList = new ArrayList<Integer>();
           excludeUserList.add(login_user_id);
+
+          // mail,activity to all users except last approver
           mapHandler.setSendMailMapsForAll(excludeUserList);
-          mapHandler.setFlowStatus(WorkflowUtils.KEY_COMPLETE);
+          mapHandler.setRecipientsForAll(excludeUserList);
         } else {
-          // mail to next user
-          mapHandler
-            .addSendMailMaps(maps.get(mapHandler.getLatestOrderIndex()));
-          mapHandler.setFlowStatus(WorkflowUtils.KEY_APPROVE);
+          mapHandler.setFlowStatus(Type.REQUEST);
+          // mail,activity to next user
+          EipTWorkflowRequestMap nextRequestMap =
+            maps.get(mapHandler.getLatestOrderIndex());
+          mapHandler.addSendMailMaps(nextRequestMap);
+          mapHandler.addRecipients(nextRequestMap);
         }
 
       } else {
@@ -243,9 +247,12 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
             .getApplicantUserMap()
             .getUserId())) {
           request.setProgress(WorkflowUtils.DB_PROGRESS_DENAIL);
+          mapHandler.setFlowStatus(Type.DENAIL);
+
           // mail to applicant user and approver
           mapHandler.addSendMailMapsForApplicantAndApprover(login_user_id);
-          mapHandler.setFlowStatus(WorkflowUtils.KEY_PASSBACK);
+          // activity to applicant user only
+          mapHandler.addRecipientsApplicantOnly();
         } else {
           // pass back user is approver or unable user
           boolean result =
@@ -255,10 +262,12 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
             // passback user and next users all unable case
             // all accept
             request.setProgress(WorkflowUtils.DB_PROGRESS_ACCEPT);
-            List<Integer> excludeUserList = new ArrayList<Integer>();
-            excludeUserList.add(login_user_id);
-            mapHandler.setSendMailMapsForAll(excludeUserList);
-            mapHandler.setFlowStatus(WorkflowUtils.KEY_COMPLETE);
+            mapHandler.setFlowStatus(Type.ACCEPT);
+
+            List<Integer> noList = new ArrayList<Integer>();
+            // mail, activity to all user
+            mapHandler.setSendMailMapsForAll(noList);
+            mapHandler.setRecipientsForAll(noList);
           }
         }
       }
@@ -275,31 +284,11 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
           + request.getRequestName());
 
       // activity
-      if (mapHandler.isSendMailMapsNotEmpty()) {
-
+      if (mapHandler.isRecipientsNotEmpty()) {
         ALEipUser user = ALEipUtils.getALEipUser(login_user_id);
-
-        if (WorkflowUtils.KEY_COMPLETE.equals(mapHandler.getFlowStatus())) {
-          // for all users except last approver
-          WorkflowUtils.createWorkflowRequestActivity(request, user
-            .getName()
-            .getValue(), mapHandler.getAllRecipients(), Type.ACCEPT);
-        } else if (WorkflowUtils.KEY_APPROVE.equals(mapHandler.getFlowStatus())) {
-          // for one
-          WorkflowUtils.createWorkflowRequestActivity(request, user
-            .getName()
-            .getValue(), mapHandler.getOneRecipient(), Type.REQUEST);
-        } else if (WorkflowUtils.KEY_PASSBACK
-          .equals(mapHandler.getFlowStatus())) {
-          // for one
-          WorkflowUtils.createWorkflowRequestActivity(request, user
-            .getName()
-            .getValue(), mapHandler.getOneRecipient(), Type.DENAIL);
-        } else {
-          // unreachable flow
-          logger.error("unreachable flow Exception");
-        }
-
+        WorkflowUtils.createWorkflowRequestActivity(request, user
+          .getName()
+          .getValue(), mapHandler.getRecipients(), mapHandler.getFlowStatus());
       }
 
       // send mail
@@ -315,17 +304,6 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
       return false;
     }
     return true;
-  }
-
-  private EipTWorkflowRequestMap getEipTWorkflowRequestMapWithRequester(
-      List<EipTWorkflowRequestMap> maps) {
-    // 申請者のMapを取得
-    for (EipTWorkflowRequestMap map : maps) {
-      if (WorkflowUtils.DB_STATUS_REQUEST.equals(map.getStatus())) {
-        return map;
-      }
-    }
-    return null;
   }
 
   public void setAcceptFlg(boolean bool) {
@@ -357,9 +335,9 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
 
     int requestMapSize;
 
-    boolean acceptAll;
+    Type flowStatus;
 
-    String flowStatus;
+    List<String> recipients;
 
     public WorkflowRequestMapHandler(List<EipTWorkflowRequestMap> requestMaps) {
       this.requestMaps = requestMaps;
@@ -367,8 +345,8 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
       this.orderIndex = 0;
       this.sendMailMaps = new ArrayList<EipTWorkflowRequestMap>();
       this.requestMapSize = requestMaps.size();
-      this.acceptAll = false;
-      this.flowStatus = "";
+      this.flowStatus = null;
+      this.recipients = new ArrayList<String>();
       this.init();
     }
 
@@ -405,20 +383,16 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
       return latestOrderIndex;
     }
 
-    public boolean getAcceptAll() {
-      return acceptAll;
+    public Type getFlowStatus() {
+      return flowStatus;
     }
 
-    public void setAcceptAll(boolean bool) {
-      this.acceptAll = bool;
-    }
-
-    public String getFlowStatus() {
-      return this.flowStatus;
-    }
-
-    public void setFlowStatus(String str) {
+    public void setFlowStatus(Type str) {
       this.flowStatus = str;
+    }
+
+    public List<String> getRecipients() {
+      return recipients;
     }
 
     public void changeStatusForNextUser() {
@@ -527,8 +501,11 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
       if (passbackUserId == loginUserId) {
         // status change to C and process done .
         currentMap.setStatus(WorkflowUtils.DB_STATUS_CONFIRM);
+        setFlowStatus(Type.DENAIL);
+
+        // mail,activity to myself
         addSendMailMaps(passbackMap);
-        setFlowStatus(WorkflowUtils.KEY_PASSBACK);
+        addRecipients(passbackMap);
         return true;
       }
 
@@ -540,8 +517,13 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
       } else {
         // status change to C and process done .
         passbackMap.setStatus(WorkflowUtils.DB_STATUS_CONFIRM);
-        this.addSendMailMapsForApprover(passbackUserId, loginUserId);
-        setFlowStatus(WorkflowUtils.KEY_PASSBACK);
+        setFlowStatus(Type.DENAIL);
+
+        // mail to passback user and approver
+        addSendMailMapsForApprover(passbackUserId, loginUserId);
+        // activity to passback user only
+        addRecipients(passbackMap);
+
         return true;
       }
 
@@ -560,44 +542,47 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
       return (null != sendMailMaps) && (sendMailMaps.size() > 0);
     }
 
-    public List<String> getAllRecipients() {
-      List<String> recipients = new ArrayList<String>();
+    public void setRecipientsForAll(List<Integer> excludeUserList) {
 
-      if (!isSendMailMapsNotEmpty()) {
-        return recipients;
-      }
+      for (EipTWorkflowRequestMap requestMap : requestMaps) {
+        int userId = requestMap.getUserId();
+        boolean isExclude = false;
 
-      try {
-        for (EipTWorkflowRequestMap requestMap : sendMailMaps) {
-          ALEipUser user = ALEipUtils.getALEipUser(requestMap.getUserId());
-          recipients.add(user.getName().getValue());
+        for (Integer excluedUserId : excludeUserList) {
+          if (userId == excluedUserId) {
+            isExclude = true;
+            break;
+          }
         }
-      } catch (ALDBErrorException e) {
-        logger.error(e);
-        return new ArrayList<String>();
-      }
 
-      return recipients;
+        if (!isExclude) {
+          try {
+            ALEipUser user = ALEipUtils.getALEipUser(requestMap.getUserId());
+            recipients.add(user.getName().getValue());
+          } catch (ALDBErrorException e) {
+            logger.error(e);
+          }
+        }
+      }
     }
 
-    public List<String> getOneRecipient() {
-      List<String> recipients = new ArrayList<String>();
-
-      if (!isSendMailMapsNotEmpty()) {
-        return recipients;
-      }
-
+    public void addRecipients(EipTWorkflowRequestMap requestMap) {
       try {
-        EipTWorkflowRequestMap requestMap = sendMailMaps.get(0);
         ALEipUser user = ALEipUtils.getALEipUser(requestMap.getUserId());
         recipients.add(user.getName().getValue());
       } catch (ALDBErrorException e) {
         logger.error(e);
-        return new ArrayList<String>();
       }
-
-      return recipients;
     }
+
+    public void addRecipientsApplicantOnly() {
+      addRecipients(requestMaps.get(0));
+    }
+
+    public boolean isRecipientsNotEmpty() {
+      return (null != recipients) && (recipients.size() > 0);
+    }
+
   }
 
 }
