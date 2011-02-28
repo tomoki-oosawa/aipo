@@ -21,11 +21,7 @@
 #if ($data.User.hasLoggedIn())
 $screen_placeholder
 #else
-#if ($!{result.CompanyId})
-#set($uri = "portal/org/$!{result.CompanyId}/")
-#else
 #set($uri = "portal/")
-#end
 
 <div style="text-align:center">
     <img src="${context_path}/themes/${theme}/images/common/logo.gif" alt="${alias}" />

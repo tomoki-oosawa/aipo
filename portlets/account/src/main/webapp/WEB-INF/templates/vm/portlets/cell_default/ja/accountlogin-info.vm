@@ -18,11 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#if ($!{result.CompanyId})
-#set($uri = "portal/org/$!{result.CompanyId}/")
-#else
 #set($uri = "portal/")
-#end
 #ALcell_pagetitle($career "簡易ﾛｸﾞｲﾝとは？")
 簡易ﾛｸﾞｲﾝとは？#ALcell_br($career)
 簡易ﾛｸﾞｲﾝ設定をすると、次回からﾊﾟｽﾜｰﾄﾞの入力なしで${alias}にﾛｸﾞｲﾝできます。

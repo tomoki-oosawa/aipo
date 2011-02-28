@@ -28,11 +28,11 @@
 #ALtableheaderBorder("1")
 #ALthtd('ユーザ名' "$!{result.Detail.UserName}")
 #ALthtd('名前' "$!{result.Detail.Name}")
-#ALthtd('メール' "$!{result.Detail.Email}")
+#ALthtd_iphone('メール' "$!{result.Detail.Email}")
 #ALthtd('電話番号(外線)' "$!{result.Detail.OutTelephone}")
 #ALthtd('電話番号(内線)' "$!{result.Detail.InTelephone}")
 #ALthtd('電話番号(携帯)' "$!{result.Detail.CellularPhone}")
-#ALthtd('携帯メール' "$!{result.Detail.CellularMail}")
+#ALthtd_iphone('携帯メール' "$!{result.Detail.CellularMail}")
 <tr>
 #ALtdhead('部署')
 #ALtditemheader()

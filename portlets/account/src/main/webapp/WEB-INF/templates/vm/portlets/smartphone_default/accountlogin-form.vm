@@ -22,11 +22,7 @@
 #if($config.getString("action.login.enable.select.userlist") != "true")
 #set($enable_userlist = false)
 #end
-#if ($!{result.CompanyId})
-#set($uri = "portal/org/$!{result.CompanyId}/")
-#else
 #set($uri = "portal/")
-#end
 <script language="JavaScript" type="text/JavaScript">
 <!--
 

@@ -18,11 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#if ($!{result.CompanyId})
-#set($uri = "portal/org/$!{result.CompanyId}/")
-#else
 #set($uri = "portal/")
-#end
 #ALcell_pagetitle($career "${alias}ﾛｸﾞｱｳﾄ")
 ${alias}ｻｲﾄからﾛｸﾞｱｳﾄしました。
 #ALcell_hr($career '1')
