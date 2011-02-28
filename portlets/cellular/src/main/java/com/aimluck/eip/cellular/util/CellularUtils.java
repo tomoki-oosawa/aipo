@@ -36,6 +36,8 @@ import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.config.ALConfigHandler.Property;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALServletUtils;
 
@@ -80,6 +82,13 @@ public class CellularUtils {
   }
 
   public static String getCellularUrl(RunData rundata, Context context) {
+
+    String loginUrl = ALConfigService.get(Property.EXTERNAL_LOGIN_URL);
+
+    if (loginUrl != null && loginUrl.length() > 0) {
+      return loginUrl;
+    }
+
     String url;
 
     ALBaseUser baseUser;

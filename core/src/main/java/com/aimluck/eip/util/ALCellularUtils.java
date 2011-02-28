@@ -47,6 +47,8 @@ import org.apache.turbine.util.RunData;
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.services.config.ALConfigHandler.Property;
+import com.aimluck.eip.services.config.ALConfigService;
 
 /**
  * Aimluck EIP のユーティリティクラスです。
@@ -202,6 +204,12 @@ public class ALCellularUtils {
    */
   public static String getCellularUrl(RunData rundata, ALEipUser eipUser) {
     String url;
+
+    String loginUrl = ALConfigService.get(Property.EXTERNAL_LOGIN_URL);
+
+    if (loginUrl != null && loginUrl.length() > 0) {
+      return loginUrl;
+    }
 
     String key =
       eipUser.getName().getValue()
