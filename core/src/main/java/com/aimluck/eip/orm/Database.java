@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 
 import org.apache.cayenne.CayenneException;
@@ -365,11 +366,12 @@ public class Database {
         .setTransactionDelegate(dataDomain.getTransactionDelegate());
       DataNode dataNode = new DataNode(orgId + "domainNode");
       dataNode.setDataMaps(dataDomain.getDataMaps());
-      DBCPDataSourceFactory factory = new CustomDBCPDataSourceFactory();
-      factory.initializeWithParentConfiguration(Configuration
+      dataSourceFactory.initializeWithParentConfiguration(Configuration
         .getSharedConfiguration());
       DataSource dataSource =
-        factory.getDataSource("datasource/dbcp-" + orgId + ".properties");
+        dataSourceFactory.getDataSource("datasource/dbcp-"
+          + orgId
+          + ".properties");
 
       dataNode.setDataSource(dataSource);
       dataNode.setAdapter(new AutoAdapter(dataSource));
@@ -381,7 +383,49 @@ public class Database {
 
   }
 
-  private Database() {
-
+  protected static DBCPDataSourceFactory createDataSourceFactory() {
+    String property =
+      System.getProperty("com.aimluck.eip.orm.DataSourceFactory");
+    if (property == null || property.isEmpty()) {
+      return new CustomDBCPDataSourceFactory();
+    } else {
+      try {
+        Class<?> forName = Class.forName(property);
+        DBCPDataSourceFactory instance =
+          (DBCPDataSourceFactory) forName.newInstance();
+        return instance;
+      } catch (ClassNotFoundException e) {
+        throw new RuntimeException(e);
+      } catch (InstantiationException e) {
+        throw new RuntimeException(e);
+      } catch (IllegalAccessException e) {
+        throw new RuntimeException(e);
+      }
+    }
   }
+
+  private static DBCPDataSourceFactory dataSourceFactory = null;
+
+  public static void initialize(ServletContext servletContext) {
+    String property =
+      servletContext.getInitParameter("com.aimluck.eip.orm.DataSourceFactory");
+    if (property == null || property.isEmpty()) {
+      dataSourceFactory = new CustomDBCPDataSourceFactory();
+    } else {
+      try {
+        Class<?> forName = Class.forName(property);
+        dataSourceFactory = (DBCPDataSourceFactory) forName.newInstance();
+      } catch (ClassNotFoundException e) {
+        throw new RuntimeException(e);
+      } catch (InstantiationException e) {
+        throw new RuntimeException(e);
+      } catch (IllegalAccessException e) {
+        throw new RuntimeException(e);
+      }
+    }
+  }
+
+  private Database() {
+  }
+
 }

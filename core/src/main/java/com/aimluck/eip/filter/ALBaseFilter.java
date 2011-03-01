@@ -127,6 +127,7 @@ public class ALBaseFilter implements Filter {
     this.filterConfig = filterConfig;
     Configuration.configureCommonLogging(null);
     ServletUtil.initializeSharedConfiguration(filterConfig.getServletContext());
+    Database.initialize(filterConfig.getServletContext());
   }
 
   protected String getCurrentOrgId(HttpServletRequest request,
