@@ -25,4 +25,17 @@ public class Application extends _Application {
 
   private static final long serialVersionUID = 7174186077917915035L;
 
+  public Integer getId() {
+    if (getObjectId() != null && !getObjectId().isTemporary()) {
+      Object obj = getObjectId().getIdSnapshot().get(ID_PK_COLUMN);
+      if (obj instanceof Long) {
+        Long value = (Long) obj;
+        return Integer.valueOf(value.intValue());
+      } else {
+        return (Integer) obj;
+      }
+    } else {
+      return null;
+    }
+  }
 }

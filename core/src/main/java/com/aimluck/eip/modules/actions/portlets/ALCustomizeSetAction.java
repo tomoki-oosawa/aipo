@@ -674,7 +674,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
               p.addParameter(p1);
               Parameter p2 = new PsmlParameter();
               p2.setName("url");
-              p2.setValue(app.getAppId().getValue());
+              p2.setValue(app.getUrl().getValue());
               p.addParameter(p2);
               Parameter p3 = new PsmlParameter();
               p3.setName("mid");

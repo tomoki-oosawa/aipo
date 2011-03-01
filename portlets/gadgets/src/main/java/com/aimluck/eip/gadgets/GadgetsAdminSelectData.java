@@ -92,7 +92,7 @@ public class GadgetsAdminSelectData extends
       ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
     return ALApplicationService.get(new ALApplicationGetRequest().withAppId(
-      appId).withStatus(Status.ALL).withIsDetail(true));
+      appId).withStatus(Status.ALL).withIsDetail(true).withIsFetchXml(true));
   }
 
   /**

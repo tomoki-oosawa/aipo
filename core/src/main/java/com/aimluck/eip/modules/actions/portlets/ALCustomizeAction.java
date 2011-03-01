@@ -188,8 +188,9 @@ public class ALCustomizeAction extends VelocityPortletAction {
     if ("GadgetsTemplate".equals(pc.getName())) {
       String appId = pc.getInitParameter("aid");
       ALApplication app =
-        ALApplicationService
-          .get(new ALApplicationGetRequest().withAppId(appId));
+        ALApplicationService.get(new ALApplicationGetRequest()
+          .withAppId(appId)
+          .withIsFetchXml(true));
       List<List<Map.Entry<String, String>>> enumsList =
         new ArrayList<List<Map.Entry<String, String>>>();
       List<ALUserPref> userPrefs = app.getUserPrefs();

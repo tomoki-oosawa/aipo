@@ -57,6 +57,8 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
 
   private List<ALOAuthConsumer> oAuthConsumers;
 
+  private ALGadgetSpec metaData;
+
   /**
    * 
    */
@@ -81,7 +83,8 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
         ALApplicationService.get(new ALApplicationGetRequest()
           .withAppId(appId)
           .withStatus(Status.ALL)
-          .withIsDetail(true));
+          .withIsDetail(true)
+          .withIsFetchXml(true));
       if (app == null) {
         return false;
       }
@@ -132,17 +135,9 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
     }
     if (msgList.size() == 0) {
       if (!ALEipConstants.MODE_UPDATE.equals(getMode())) {
-        ALApplication app =
-          ALApplicationService.get(new ALApplicationGetRequest().withAppId(
-            url.getValue()).withStatus(Status.ALL));
-        if (app != null) {
-          msgList.add("既に登録済みの 『 ガジェットXML URL 』 です。");
-        } else {
-          ALGadgetSpec metaData =
-            ALApplicationService.getMetaData(url.getValue());
-          if (metaData == null) {
-            msgList.add("正しい  『 ガジェットXML URL 』 を指定してください。");
-          }
+        metaData = ALApplicationService.getMetaData(url.getValue(), true);
+        if (metaData == null) {
+          msgList.add("正しい  『 ガジェットXML URL 』 を指定してください。");
         }
       }
     }
@@ -166,7 +161,8 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
       ALApplicationService.get(new ALApplicationGetRequest()
         .withAppId(appId)
         .withStatus(Status.ALL)
-        .withIsDetail(true));
+        .withIsDetail(true)
+        .withIsFetchXml(true));
     if (app == null) {
       return false;
     }
@@ -189,8 +185,9 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
 
     try {
 
-      ALApplicationService.create(new ALApplicationPutRequest().withUrl(url
-        .getValue()));
+      ALApplicationService.create(new ALApplicationPutRequest().withUrl(
+        url.getValue()).withTitle(metaData.getTitle()).withDescription(
+        metaData.getDescription()));
 
     } catch (Throwable t) {
       logger.error(t, t);

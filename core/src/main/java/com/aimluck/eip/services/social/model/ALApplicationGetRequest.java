@@ -56,6 +56,8 @@ public class ALApplicationGetRequest {
 
   private boolean isDetail = false;
 
+  private boolean isFetchXml = false;
+
   /**
    * @return limit
    */
@@ -154,6 +156,26 @@ public class ALApplicationGetRequest {
    */
   public boolean isDetail() {
     return isDetail;
+  }
+
+  /**
+   * @param isFetchXml
+   *          セットする isFetchXml
+   */
+  public void setFetchXml(boolean isFetchXml) {
+    this.isFetchXml = isFetchXml;
+  }
+
+  public ALApplicationGetRequest withIsFetchXml(boolean isFetchXml) {
+    setFetchXml(isFetchXml);
+    return this;
+  }
+
+  /**
+   * @return isFetchXml
+   */
+  public boolean isFetchXml() {
+    return isFetchXml;
   }
 
 }

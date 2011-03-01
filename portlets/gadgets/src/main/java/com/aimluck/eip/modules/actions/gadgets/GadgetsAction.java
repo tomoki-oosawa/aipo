@@ -105,7 +105,7 @@ public class GadgetsAction extends ALBaseAction {
         .toString();
 
     ALGadgetContext gadgetContext =
-      new ALGadgetContext(rundata, viewer, url, mid);
+      new ALGadgetContext(rundata, viewer, appId, url, mid);
 
     context.put("gadgetContext", gadgetContext);
     context.put("isActive", isActive);

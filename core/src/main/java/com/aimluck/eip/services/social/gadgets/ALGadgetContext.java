@@ -31,7 +31,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
-import org.apache.shindig.auth.BlobCrypterSecurityToken;
 import org.apache.shindig.common.crypto.BasicBlobCrypter;
 import org.apache.shindig.common.crypto.BlobCrypter;
 import org.apache.shindig.common.util.Base32;
@@ -55,6 +54,8 @@ public class ALGadgetContext {
 
   private final String viewer;
 
+  private final String appId;
+
   private String appUrl;
 
   private String container = "default";
@@ -68,10 +69,11 @@ public class ALGadgetContext {
   /**
    *
    */
-  public ALGadgetContext(RunData runData, String viewer, String appUrl,
-      long moduleId) {
+  public ALGadgetContext(RunData runData, String viewer, String appId,
+      String appUrl, long moduleId) {
     this.runData = runData;
     this.viewer = viewer;
+    this.appId = appId;
     this.appUrl = appUrl;
     this.moduleId = moduleId;
   }
@@ -80,14 +82,15 @@ public class ALGadgetContext {
     HttpServletRequest request = ((JetspeedRunData) runData).getRequest();
     String activeUrl = request.getRequestURL().toString();
     try {
-      BlobCrypterSecurityToken token =
-        new BlobCrypterSecurityToken(
+      AipoBlobCrypterSecurityToken token =
+        new AipoBlobCrypterSecurityToken(
           loadCrypterFromFile(runData),
           container,
           domain);
       token.setOwnerId(viewer);
       token.setViewerId(viewer);
       token.setAppUrl(appUrl);
+      token.setAppId(appId);
       token.setModuleId(moduleId);
       token.setActiveUrl(activeUrl);
       return token.encrypt();

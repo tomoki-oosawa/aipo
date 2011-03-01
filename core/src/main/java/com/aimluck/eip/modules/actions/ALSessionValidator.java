@@ -310,7 +310,8 @@ public class ALSessionValidator extends JetspeedSessionValidator {
         new StringBuilder(orgId).append(":").append(
           eipUser.getName().getValue()).toString();
 
-      ALGadgetContext gadgetContext = new ALGadgetContext(data, viewer, "/", 0);
+      ALGadgetContext gadgetContext =
+        new ALGadgetContext(data, viewer, "1", "/", 0);
 
       String relayUrl =
         checkActivityUrl + "/gadgets/files/container/rpc_relay.html";

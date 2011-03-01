@@ -82,23 +82,26 @@ public class ALDefaultSocialApplicationHanlder extends
     ResultList<Application> resultList = query.getResultList();
     List<ALApplication> list = new ArrayList<ALApplication>(resultList.size());
     List<String> specUrls = new ArrayList<String>(list.size());
+    boolean fetchXml = request.isFetchXml();
     for (Application app : resultList) {
       specUrls.add(app.getUrl());
     }
-    Map<String, ALGadgetSpec> metaData =
-      getMetaData(specUrls, request.isDetail());
+    Map<String, ALGadgetSpec> metaData = null;
+    if (fetchXml) {
+      metaData = getMetaData(specUrls, request.isDetail());
+    }
     for (Application app : resultList) {
-      ALGadgetSpec gadgetSpec = metaData.get(app.getUrl());
       ALApplication model = new ALApplication();
-      model.setAppId(app.getAppId());
-      model.setTitle(gadgetSpec == null ? "現在利用できません" : gadgetSpec.getTitle());
+      model.setAppId(String.valueOf(app.getId()));
+      model.setTitle(app.getTitle());
       model.setConsumerKey(app.getConsumerKey());
       model.setConsumerSecret(app.getConsumerSecret());
       model.setUrl(app.getUrl());
       model.setStatus(app.getStatus());
-      model.setUserPrefs(gadgetSpec.getUserPrefs());
-      if (request.isDetail()) {
-        model.setDescription(gadgetSpec.getDescription());
+      model.setDescription(app.getDescription());
+      if (fetchXml) {
+        ALGadgetSpec gadgetSpec = metaData.get(app.getUrl());
+        model.setUserPrefs(gadgetSpec.getUserPrefs());
       }
       list.add(model);
     }
@@ -120,19 +123,24 @@ public class ALDefaultSocialApplicationHanlder extends
       return null;
     }
 
-    ALGadgetSpec gadgetSpec = getMetaData(app.getUrl(), request.isDetail());
     ALApplication model = new ALApplication();
-    model.setAppId(app.getAppId());
-    model.setTitle(gadgetSpec == null ? "現在利用できません" : gadgetSpec.getTitle());
+    model.setAppId(String.valueOf(app.getId()));
+    model.setTitle(app.getTitle());
     model.setConsumerKey(app.getConsumerKey());
     model.setConsumerSecret(app.getConsumerSecret());
     model.setUrl(app.getUrl());
     model.setStatus(app.getStatus());
+    model.setDescription(app.getDescription());
+
+    boolean fetchXml = request.isFetchXml();
+    ALGadgetSpec gadgetSpec = null;
+    if (fetchXml) {
+      gadgetSpec = getMetaData(app.getUrl(), request.isDetail());
+    }
     if (gadgetSpec != null) {
       model.setUserPrefs(gadgetSpec.getUserPrefs());
     }
     if (gadgetSpec != null && request.isDetail()) {
-      model.setDescription(gadgetSpec.getDescription());
       List<ALOAuthConsumer> consumers = new ArrayList<ALOAuthConsumer>();
       List<ALOAuthService> services = gadgetSpec.getOAuthServices();
       @SuppressWarnings("unchecked")
@@ -219,7 +227,6 @@ public class ALDefaultSocialApplicationHanlder extends
     Date date = new Date();
     try {
       Application app = Database.create(Application.class);
-      app.setAppId(url);
       app.setUrl(url);
       app.setTitle(request.getTitle());
       app.setConsumerKey(generateConsumerKey(url));
