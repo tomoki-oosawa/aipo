@@ -42,7 +42,6 @@ import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -153,11 +152,10 @@ public abstract class ALAbstractFolder implements ALFolder {
     }
   }
 
-  protected boolean insertMailToDB(DataContext dataContext,
-      MimeMessage mimeMessage, String filePath, boolean saveContents,
-      boolean isRead) {
+  protected boolean insertMailToDB(MimeMessage mimeMessage, String filePath,
+      boolean saveContents, boolean isRead) {
     try {
-      EipTMail email = Database.create(dataContext, EipTMail.class);
+      EipTMail email = Database.create(EipTMail.class);
 
       if (saveContents) {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -267,8 +265,7 @@ public abstract class ALAbstractFolder implements ALFolder {
       String read_flg = isRead ? "T" : "F";
 
       // アカウントのフォルダに代入
-      EipMMailAccount account =
-        ALMailUtils.getMailAccount(org_id, user_id, account_id);
+      EipMMailAccount account = ALMailUtils.getMailAccount(user_id, account_id);
       int folder_id = account.getDefaultFolderId();
 
       // フォルダ振り分け処理
@@ -303,7 +300,7 @@ public abstract class ALAbstractFolder implements ALFolder {
       // 更新日
       email.setUpdateDate(Calendar.getInstance().getTime());
 
-      Database.commit(dataContext);
+      Database.commit();
     } catch (Throwable t) {
       Database.rollback();
       logger.error(t);

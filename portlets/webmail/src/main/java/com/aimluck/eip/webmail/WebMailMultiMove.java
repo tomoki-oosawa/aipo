@@ -78,7 +78,7 @@ public class WebMailMultiMove extends ALAbstractCheckList {
           context,
           WebMailUtils.ACCOUNT_ID));
       toFolderId = Integer.valueOf(rundata.getParameters().get("move_folder"));
-      account = ALMailUtils.getMailAccount(null, userId, accountId);
+      account = ALMailUtils.getMailAccount( userId, accountId);
 
       if (accountId < 0 || toFolderId < 0 || account == null) {
         return false;

@@ -429,7 +429,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -448,8 +448,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
           ALEipConstants.ENTITY_ID));
 
       // オブジェクトモデルを取得
-      EipMMailAccount account =
-        ALMailUtils.getMailAccount(null, userId, accountId);
+      EipMMailAccount account = ALMailUtils.getMailAccount(userId, accountId);
       if (account == null) {
         return false;
       }
@@ -495,7 +494,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -535,7 +534,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -558,7 +557,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
 
       // オブジェクトモデルを取得
       EipMMailAccount mailAccount =
-        ALMailUtils.getMailAccount(null, userId, accountId);
+        ALMailUtils.getMailAccount( userId, accountId);
       if (mailAccount == null) {
         return false;
       }
@@ -623,7 +622,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList

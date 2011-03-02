@@ -101,7 +101,6 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
     // メールアカウントを取得する
     mailAccount =
       ALMailUtils.getMailAccount(
-        null,
         (int) login_user.getUserId().getValue(),
         mailAccountId);
 
@@ -117,6 +116,7 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
     // ユーザ名のリスト
     positions = new ALStringField();

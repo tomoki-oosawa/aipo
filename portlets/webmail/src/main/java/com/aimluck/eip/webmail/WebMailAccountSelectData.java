@@ -152,7 +152,7 @@ public class WebMailAccountSelectData extends
     } else {
       int accountId =
         rundata.getParameters().getInt(WebMailUtils.ACCOUNT_ID, -1);
-      account = ALMailUtils.getMailAccount(null, userId, accountId);
+      account = ALMailUtils.getMailAccount( userId, accountId);
     }
     return account;
   }

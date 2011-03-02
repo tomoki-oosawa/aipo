@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.om.security.JetspeedUser;
@@ -326,7 +327,6 @@ public class WebMailUtils {
       // アカウントがユーザーのものであるかどうかチェックする
       EipMMailAccount account =
         ALMailUtils.getMailAccount(
-          null,
           Integer.parseInt(user.getUserId()),
           accountId);
       if (account == null) {
@@ -335,10 +335,9 @@ public class WebMailUtils {
 
       if (!ALPop3MailReceiveThread.isProcessing(user, accountId)) {
         // メールと接続してなければ新規にスレッドを生成
-        String orgId = Database.getDomainName();
         Runnable receiver =
           new ALPop3MailReceiveThread(
-            orgId,
+            DataContext.getThreadDataContext(),
             user,
             accountId,
             ALPop3MailReceiveThread.PROCESS_TYPE_RECEIVEMAIL);
@@ -366,7 +365,7 @@ public class WebMailUtils {
         // メールと接続してなければ新規にスレッドを生成
         Thread mailthread =
           new Thread(new ALPop3MailReceiveThread(
-            orgId,
+            DataContext.getThreadDataContext(),
             user,
             accountId,
             ALPop3MailReceiveThread.PROCESS_TYPE_GET_NEWMAILNUM));
@@ -436,8 +435,7 @@ public class WebMailUtils {
   public static int getUnreadMailNumber(RunData rundata, int userId,
       int accountId) {
     String orgId = Database.getDomainName();
-    EipMMailAccount account =
-      ALMailUtils.getMailAccount(orgId, userId, accountId);
+    EipMMailAccount account = ALMailUtils.getMailAccount(userId, accountId);
     ALMailHandler handler = ALMailFactoryService.getInstance().getMailHandler();
     ALMailReceiverContext rcontext =
       ALMailUtils.getALPop3MailReceiverContext(orgId, account);
@@ -456,8 +454,7 @@ public class WebMailUtils {
   public static Map<Integer, Integer> getUnreadMailNumberMap(RunData rundata,
       int userId, int accountId) {
     String orgId = Database.getDomainName();
-    EipMMailAccount account =
-      ALMailUtils.getMailAccount(orgId, userId, accountId);
+    EipMMailAccount account = ALMailUtils.getMailAccount(userId, accountId);
     ALMailHandler handler = ALMailFactoryService.getInstance().getMailHandler();
     ALMailReceiverContext rcontext =
       ALMailUtils.getALPop3MailReceiverContext(orgId, account);
@@ -472,7 +469,7 @@ public class WebMailUtils {
       return true;
     }
     EipMMailAccount account =
-      ALMailUtils.getMailAccount(null, ALEipUtils.getUserId(rundata), Integer
+      ALMailUtils.getMailAccount(ALEipUtils.getUserId(rundata), Integer
         .parseInt(accountId));
     String orgId = Database.getDomainName();
 

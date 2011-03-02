@@ -205,8 +205,7 @@ public class WebMailSelectData extends
     }
 
     // アカウントを取得
-    EipMMailAccount account =
-      ALMailUtils.getMailAccount(orgId, userId, accountId);
+    EipMMailAccount account = ALMailUtils.getMailAccount(userId, accountId);
 
     // 現在選択中のフォルダを取得
     selectedFolder =

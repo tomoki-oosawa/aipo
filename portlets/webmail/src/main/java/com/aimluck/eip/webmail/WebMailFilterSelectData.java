@@ -114,7 +114,6 @@ public class WebMailFilterSelectData extends
     // 現在操作中のメールアカウントを取得する
     mailAccount =
       ALMailUtils.getMailAccount(
-        null,
         (int) login_user.getUserId().getValue(),
         mailAccountId);
 

@@ -210,10 +210,8 @@ public abstract class ALMailHandler {
     try {
       // アカウントのフォルダ一覧を取得する
       EipMMailAccount account =
-        ALMailUtils.getMailAccount(
-          rcontext.getOrgId(),
-          rcontext.getUserId(),
-          rcontext.getAccountId());
+        ALMailUtils.getMailAccount(rcontext.getUserId(), rcontext
+          .getAccountId());
       List<EipTMailFolder> folders = ALMailUtils.getEipTMailFolderAll(account);
       List<Integer> folder_ids = new ArrayList<Integer>();
 

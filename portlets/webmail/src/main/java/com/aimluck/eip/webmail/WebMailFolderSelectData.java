@@ -87,7 +87,6 @@ public class WebMailFolderSelectData extends
     // 現在操作中のメールアカウントを取得する
     mail_account =
       ALMailUtils.getMailAccount(
-        "",
         (int) login_user.getUserId().getValue(),
         mailAccountId);
     if (mail_account == null) {

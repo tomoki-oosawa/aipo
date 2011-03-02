@@ -130,7 +130,6 @@ public class WebMailFilterFormData extends ALAbstractFormData {
     // メールアカウントを取得する
     mailAccount =
       ALMailUtils.getMailAccount(
-        null,
         (int) login_user.getUserId().getValue(),
         mailAccountId);
 
@@ -163,6 +162,7 @@ public class WebMailFilterFormData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
     // フィルタ名
     filter_name = new ALStringField();

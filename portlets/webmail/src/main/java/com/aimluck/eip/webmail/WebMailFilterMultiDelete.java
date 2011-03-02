@@ -75,7 +75,7 @@ public class WebMailFilterMultiDelete extends ALAbstractCheckList {
       // 現在操作中のメールアカウントを取得する
       int userId = ALEipUtils.getUserId(rundata);
       EipMMailAccount mailAccount =
-        ALMailUtils.getMailAccount(null, userId, accountId);
+        ALMailUtils.getMailAccount( userId, accountId);
 
       // フィルタを削除
       SelectQuery<EipTMailFilter> query = Database.query(EipTMailFilter.class);

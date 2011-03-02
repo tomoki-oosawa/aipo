@@ -59,7 +59,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.commons.codec.binary.Base64;
@@ -208,24 +207,15 @@ public class ALMailUtils {
    * @param accountId
    * @return
    */
-  public static EipMMailAccount getMailAccount(String orgId, int userId,
-      int accountId) {
+  public static EipMMailAccount getMailAccount(int userId, int accountId) {
     if (userId < 0 || accountId < 0) {
       return null;
     }
 
     try {
-      DataContext dataContext = null;
-      if (orgId == null || "".equals(orgId)) {
-        dataContext = Database.createDataContext(Database.DEFAULT_ORG);
-      } else {
-        dataContext = Database.createDataContext(orgId);
-      }
-
-      DataContext.bindThreadDataContext(dataContext);
 
       SelectQuery<EipMMailAccount> query =
-        Database.query(dataContext, EipMMailAccount.class);
+        Database.query(EipMMailAccount.class);
       Expression exp1 =
         ExpressionFactory.matchExp(EipMMailAccount.USER_ID_PROPERTY, Integer
           .valueOf(userId));
@@ -261,7 +251,7 @@ public class ALMailUtils {
 
     String accountName = null;
     try {
-      EipMMailAccount mailAccount = getMailAccount(null, userId, accountId);
+      EipMMailAccount mailAccount = getMailAccount(userId, accountId);
       if (mailAccount == null) {
         return null;
       }

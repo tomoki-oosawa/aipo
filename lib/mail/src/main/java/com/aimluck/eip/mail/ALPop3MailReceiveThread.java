@@ -75,7 +75,7 @@ public class ALPop3MailReceiveThread implements Runnable {
   public static final int PROCESS_STAT_NONPROCESSING = -101;
 
   /** データベース ID */
-  private String orgId = null;
+  private DataContext dataContext = null;
 
   /** ユーザー ID */
   private String userId = null;
@@ -97,9 +97,9 @@ public class ALPop3MailReceiveThread implements Runnable {
    * @param userId
    * @param mailAccountId
    */
-  public ALPop3MailReceiveThread(String orgId, JetspeedUser user,
+  public ALPop3MailReceiveThread(DataContext dataContext, JetspeedUser user,
       int mailAccountId, int processType) {
-    this.orgId = orgId;
+    this.dataContext = dataContext;
     this.mailAccountId = mailAccountId;
     this.processType = processType;
 
@@ -110,20 +110,22 @@ public class ALPop3MailReceiveThread implements Runnable {
    * メール受信処理
    * 
    */
+  @Override
   public void run() {
     ALStaticObject ob = ALStaticObject.getInstance();
     ob.addAccountId(mailAccountId);
 
     try {
+
+      DataContext.bindThreadDataContext(dataContext);
+      String orgId = Database.getDomainName();
+
       EipMMailAccount account =
-        ALMailUtils.getMailAccount(
-          orgId,
-          Integer.parseInt(userId),
-          mailAccountId);
+        ALMailUtils.getMailAccount(Integer.parseInt(userId), mailAccountId);
       if (processType == PROCESS_TYPE_RECEIVEMAIL) {
         logger
           .info("[ALFilePop3MailReceiveThread] start receivemail (orgId, userId, mailAccountId)=("
-            + orgId
+            + Database.getDomainName()
             + ","
             + userId
             + ","

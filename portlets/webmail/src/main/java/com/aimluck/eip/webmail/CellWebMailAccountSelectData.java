@@ -140,7 +140,7 @@ public class CellWebMailAccountSelectData extends
    */
   @Override
   protected EipMMailAccount selectDetail(RunData rundata, Context context) {
-    return ALMailUtils.getMailAccount(null, userId, accountId);
+    return ALMailUtils.getMailAccount(userId, accountId);
   }
 
   /**

@@ -123,7 +123,6 @@ public class WebMailFolderFormData extends ALAbstractFormData {
     // メールアカウントを取得する
     mailAccount =
       ALMailUtils.getMailAccount(
-        "",
         (int) login_user.getUserId().getValue(),
         mailAccountId);
     if (mailAccount == null) {
@@ -170,6 +169,7 @@ public class WebMailFolderFormData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
     // フォルダ名
     folder_name = new ALStringField();

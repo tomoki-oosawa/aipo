@@ -351,7 +351,7 @@ public class WebMailFormData extends ALAbstractFormData {
 
       // オブジェクトモデルを取得
       EipMMailAccount account =
-        ALMailUtils.getMailAccount(null, userId, accountId);
+        ALMailUtils.getMailAccount( userId, accountId);
 
       ALMailHandler handler =
         ALMailFactoryService.getInstance().getMailHandler();
@@ -486,7 +486,7 @@ public class WebMailFormData extends ALAbstractFormData {
       try {
         // オブジェクトモデルを取得
         EipMMailAccount account =
-          ALMailUtils.getMailAccount(null, userId, accountId);
+          ALMailUtils.getMailAccount( userId, accountId);
         // 署名と返信とを本文に追加
         if (account.getSignature() != null
           && !"".equals(account.getSignature())) {
@@ -588,7 +588,7 @@ public class WebMailFormData extends ALAbstractFormData {
       // Body
       // オブジェクトモデルを取得
       EipMMailAccount account =
-        ALMailUtils.getMailAccount(null, userId, accountId);
+        ALMailUtils.getMailAccount( userId, accountId);
       // 署名を本文に追加
       if (!ALEipConstants.MODE_INSERT.equals(rundata.getParameters().get(
         ALEipConstants.MODE))

@@ -27,7 +27,6 @@ import java.util.jar.Attributes;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -69,6 +68,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
    * @param index
    * @return
    */
+  @Override
   public ALLocalMailMessage getMail(int mailid) {
     try {
       SelectQuery<EipTMail> query = Database.query(EipTMail.class);
@@ -130,18 +130,11 @@ public class ALDbLocalFolder extends ALAbstractFolder {
    * @param messages
    * @return
    */
+  @Override
   public boolean saveMail(ALMailMessage mail, String orgId) {
     try {
-      DataContext dataContext = null;
-      if (orgId == null || "".equals(orgId)) {
-        dataContext = Database.createDataContext(Database.DEFAULT_ORG);
-      } else {
-        dataContext = Database.createDataContext(orgId);
-      }
 
-      DataContext.bindThreadDataContext(dataContext);
-
-      insertMailToDB(dataContext, (MimeMessage) mail, null, true, true);
+      insertMailToDB((MimeMessage) mail, null, true, true);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
@@ -156,15 +149,10 @@ public class ALDbLocalFolder extends ALAbstractFolder {
    * @param localMailMessage
    * @return
    */
+  @Override
   public boolean saveDefectiveMail(ALMailMessage mail, String orgId) {
     try {
-      DataContext dataContext = null;
-      if (orgId == null || "".equals(orgId)) {
-        dataContext = DataContext.getThreadDataContext();
-      } else {
-        dataContext = DataContext.createDataContext(orgId);
-      }
-      insertMailToDB(dataContext, (MimeMessage) mail, null, false, false);
+      insertMailToDB((MimeMessage) mail, null, false, false);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
@@ -178,6 +166,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
    * @param mailid
    * @return
    */
+  @Override
   public boolean deleteMail(int mailid) {
     try {
       SelectQuery<EipTMail> query = Database.query(EipTMail.class);
@@ -214,6 +203,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
    * @param msgIndexes
    * @return
    */
+  @Override
   public boolean deleteMails(List<String> msgIndexes) {
     return false;
   }
@@ -237,6 +227,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
    * 
    * @return
    */
+  @Override
   public int getNewMailNum() {
     return 0;
   }
@@ -246,6 +237,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
    * 
    * @param num
    */
+  @Override
   public void setNewMailNum(int num) {
 
   }
@@ -266,6 +258,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
    * 
    * @return
    */
+  @Override
   public int getUnreadMailNum() {
     return 0;
   }
@@ -273,6 +266,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
   /**
    * ローカルフォルダを閉じる．
    */
+  @Override
   public void close() {
   }
 
