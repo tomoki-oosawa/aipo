@@ -149,134 +149,359 @@ ALTER TABLE EIP_T_ACL_ROLE ALTER NOTE TYPE TEXT
 ALTER TABLE EIP_T_ACL_ROLE ALTER NOTE TYPE TEXT
 ;
 
-CREATE TABLE eip_m_config 
-(
-    ID serial, 
-    KEY varchar(64) NOT NULL, 
-    VALUE varchar(255) NULL, 
-    PRIMARY KEY (ID)
-);
+ALTER SEQUENCE aipo_license_license_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_facility_group_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_m_address_group_group_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_m_addressbook_address_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_m_addressbook_company_company_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_m_company_company_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_m_facility_facility_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_m_mail_account_account_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_m_mail_notify_conf_notify_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_m_mybox_mybox_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_m_position_position_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_m_post_post_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_m_user_position_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_acl_portlet_feature_feature_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_acl_role_role_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_acl_user_role_map_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_addressbook_group_map_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_blog_blog_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_blog_comment_comment_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_blog_entry_entry_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_blog_file_file_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_blog_footmark_map_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_blog_thema_thema_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_cabinet_file_file_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_cabinet_folder_folder_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_cabinet_folder_map_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_common_category_common_category_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_eventlog_eventlog_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_ext_timecard_timecard_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_ext_timecard_system_system_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_ext_timecard_system_map_system_map_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_mail_mail_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_mail_filter_filter_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_mail_folder_folder_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_memo_memo_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_msgboard_category_category_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_msgboard_category_map_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_msgboard_file_file_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_msgboard_topic_topic_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_note_note_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_note_map_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_schedule_schedule_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_schedule_map_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_timecard_timecard_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_timecard_settings_timecard_settings_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_todo_todo_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_todo_category_category_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_whatsnew_whatsnew_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_workflow_category_category_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_workflow_file_file_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_workflow_request_request_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_workflow_request_map_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_workflow_route_route_id_seq INCREMENT BY 20;
+ALTER SEQUENCE turbine_group_group_id_seq INCREMENT BY 20;
+ALTER SEQUENCE turbine_permission_permission_id_seq INCREMENT BY 20;
+ALTER SEQUENCE turbine_role_role_id_seq INCREMENT BY 20;
+ALTER SEQUENCE turbine_user_group_role_id_seq INCREMENT BY 20;
+ALTER SEQUENCE turbine_user_user_id_seq INCREMENT BY 20;
 
-CREATE TABLE application 
-(
-    ID serial, 
-    APP_ID varchar(255) NOT NULL, 
-    CONSUMER_KEY varchar(99) NULL, 
-    CONSUMER_SECRET varchar(99) NULL, 
-    STATUS integer NULL, 
-    TITLE varchar(99) NULL, 
-    URL varchar(255) NOT NULL, 
-    SUMMARY varchar(255) NULL, 
-    DESCRIPTION TEXT NULL, 
-    CREATE_DATE DATE,
-    UPDATE_DATE TIMESTAMP,
-    PRIMARY KEY (ID)
-);
+ALTER SEQUENCE aipo_license_license_id_seq RENAME TO pk_aipo_license ;
+ALTER SEQUENCE eip_facility_group_id_seq RENAME TO pk_eip_facility_group ;
+ALTER SEQUENCE eip_m_address_group_group_id_seq RENAME TO pk_eip_m_address_group ;
+ALTER SEQUENCE eip_m_addressbook_address_id_seq RENAME TO pk_eip_m_addressbook ;
+ALTER SEQUENCE eip_m_addressbook_company_company_id_seq RENAME TO pk_eip_m_addressbook_company ;
+ALTER SEQUENCE eip_m_company_company_id_seq RENAME TO pk_eip_m_company ;
+ALTER SEQUENCE eip_m_facility_facility_id_seq RENAME TO pk_eip_m_facility ;
+ALTER SEQUENCE eip_m_mail_account_account_id_seq RENAME TO pk_eip_m_mail_account ;
+ALTER SEQUENCE eip_m_mail_notify_conf_notify_id_seq RENAME TO pk_eip_m_mail_notify_conf ;
+ALTER SEQUENCE eip_m_mybox_mybox_id_seq RENAME TO pk_eip_m_mybox ;
+ALTER SEQUENCE eip_m_position_position_id_seq RENAME TO pk_eip_m_position ;
+ALTER SEQUENCE eip_m_post_post_id_seq RENAME TO pk_eip_m_post ;
+ALTER SEQUENCE eip_m_user_position_id_seq RENAME TO pk_eip_m_user_position ;
+ALTER SEQUENCE eip_t_acl_portlet_feature_feature_id_seq RENAME TO pk_eip_t_acl_portlet_feature ;
+ALTER SEQUENCE eip_t_acl_role_role_id_seq RENAME TO pk_eip_t_acl_role ;
+ALTER SEQUENCE eip_t_acl_user_role_map_id_seq RENAME TO pk_eip_t_acl_user_role_map ;
+ALTER SEQUENCE eip_t_addressbook_group_map_id_seq RENAME TO pk_eip_t_addressbook_group_map ;
+ALTER SEQUENCE eip_t_blog_blog_id_seq RENAME TO pk_eip_t_blog ;
+ALTER SEQUENCE eip_t_blog_comment_comment_id_seq RENAME TO pk_eip_t_blog_comment ;
+ALTER SEQUENCE eip_t_blog_entry_entry_id_seq RENAME TO pk_eip_t_blog_entry ;
+ALTER SEQUENCE eip_t_blog_file_file_id_seq RENAME TO pk_eip_t_blog_file ;
+ALTER SEQUENCE eip_t_blog_footmark_map_id_seq RENAME TO pk_eip_t_blog_footmark_map ;
+ALTER SEQUENCE eip_t_blog_thema_thema_id_seq RENAME TO pk_eip_t_blog_thema ;
+ALTER SEQUENCE eip_t_cabinet_file_file_id_seq RENAME TO pk_eip_t_cabinet_file ;
+ALTER SEQUENCE eip_t_cabinet_folder_folder_id_seq RENAME TO pk_eip_t_cabinet_folder ;
+ALTER SEQUENCE eip_t_cabinet_folder_map_id_seq RENAME TO pk_eip_t_cabinet_folder_map ;
+ALTER SEQUENCE eip_t_common_category_common_category_id_seq RENAME TO pk_eip_t_common_category ;
+ALTER SEQUENCE eip_t_eventlog_eventlog_id_seq RENAME TO pk_eip_t_eventlog ;
+ALTER SEQUENCE eip_t_ext_timecard_timecard_id_seq RENAME TO pk_eip_t_ext_timecard ;
+ALTER SEQUENCE eip_t_ext_timecard_system_system_id_seq RENAME TO pk_eip_t_ext_timecard_system ;
+ALTER SEQUENCE eip_t_ext_timecard_system_map_system_map_id_seq RENAME TO pk_eip_t_ext_timecard_system_map ;
+ALTER SEQUENCE eip_t_mail_mail_id_seq RENAME TO pk_eip_t_mail ;
+ALTER SEQUENCE eip_t_mail_filter_filter_id_seq RENAME TO pk_eip_t_mail_filter ;
+ALTER SEQUENCE eip_t_mail_folder_folder_id_seq RENAME TO pk_eip_t_mail_folder ;
+ALTER SEQUENCE eip_t_memo_memo_id_seq RENAME TO pk_eip_t_memo ;
+ALTER SEQUENCE eip_t_msgboard_category_category_id_seq RENAME TO pk_eip_t_msgboard_category ;
+ALTER SEQUENCE eip_t_msgboard_category_map_id_seq RENAME TO pk_eip_t_msgboard_category_map ;
+ALTER SEQUENCE eip_t_msgboard_file_file_id_seq RENAME TO pk_eip_t_msgboard_file ;
+ALTER SEQUENCE eip_t_msgboard_topic_topic_id_seq RENAME TO pk_eip_t_msgboard_topic ;
+ALTER SEQUENCE eip_t_note_note_id_seq RENAME TO pk_eip_t_note ;
+ALTER SEQUENCE eip_t_note_map_id_seq RENAME TO pk_eip_t_note_map ;
+ALTER SEQUENCE eip_t_schedule_schedule_id_seq RENAME TO pk_eip_t_schedule ;
+ALTER SEQUENCE eip_t_schedule_map_id_seq RENAME TO pk_eip_t_schedule_map ;
+ALTER SEQUENCE eip_t_timecard_timecard_id_seq RENAME TO pk_eip_t_timecard ;
+ALTER SEQUENCE eip_t_timecard_settings_timecard_settings_id_seq RENAME TO pk_eip_t_timecard_settings ;
+ALTER SEQUENCE eip_t_todo_todo_id_seq RENAME TO pk_eip_t_todo ;
+ALTER SEQUENCE eip_t_todo_category_category_id_seq RENAME TO pk_eip_t_todo_category ;
+ALTER SEQUENCE eip_t_whatsnew_whatsnew_id_seq RENAME TO pk_eip_t_whatsnew ;
+ALTER SEQUENCE eip_t_workflow_category_category_id_seq RENAME TO pk_eip_t_workflow_category ;
+ALTER SEQUENCE eip_t_workflow_file_file_id_seq RENAME TO pk_eip_t_workflow_file ;
+ALTER SEQUENCE eip_t_workflow_request_request_id_seq RENAME TO pk_eip_t_workflow_request ;
+ALTER SEQUENCE eip_t_workflow_request_map_id_seq RENAME TO pk_eip_t_workflow_request_map ;
+ALTER SEQUENCE eip_t_workflow_route_route_id_seq RENAME TO pk_eip_t_workflow_route ;
+ALTER SEQUENCE turbine_group_group_id_seq RENAME TO pk_turbine_group ;
+ALTER SEQUENCE turbine_permission_permission_id_seq RENAME TO pk_turbine_permission ;
+ALTER SEQUENCE turbine_role_role_id_seq RENAME TO pk_turbine_role ;
+ALTER SEQUENCE turbine_user_group_role_id_seq RENAME TO pk_turbine_user_group_role ;
+ALTER SEQUENCE turbine_user_user_id_seq RENAME TO pk_turbine_user ;
 
-CREATE TABLE oauth_consumer 
-(
-    ID serial, 
-    APP_ID integer NULL,
-    CONSUMER_KEY varchar(255) NULL, 
-    CONSUMER_SECRET varchar(255) NULL, 
-    NAME varchar(99) NULL, 
-    TYPE varchar(99) NULL, 
-    CREATE_DATE DATE,
-    UPDATE_DATE TIMESTAMP,
-    FOREIGN KEY (APP_ID) REFERENCES application (ID) ON DELETE CASCADE,
-    PRIMARY KEY (ID)
-);
+ALTER TABLE aipo_license ALTER license_id DROP DEFAULT;
+ALTER TABLE eip_m_address_group ALTER group_id DROP DEFAULT;
+ALTER TABLE eip_m_addressbook_company ALTER company_id DROP DEFAULT;
+ALTER TABLE eip_m_company ALTER company_id DROP DEFAULT;
+ALTER TABLE eip_m_mail_account ALTER account_id DROP DEFAULT;
+ALTER TABLE eip_m_mail_notify_conf ALTER notify_id DROP DEFAULT;
+ALTER TABLE eip_m_mybox ALTER mybox_id DROP DEFAULT;
+ALTER TABLE eip_m_position ALTER position_id DROP DEFAULT;
+ALTER TABLE eip_m_post ALTER post_id DROP DEFAULT;
+ALTER TABLE eip_m_user_position ALTER id DROP DEFAULT;
+ALTER TABLE eip_m_addressbook ALTER address_id DROP DEFAULT;
+ALTER TABLE eip_t_acl_user_role_map ALTER id DROP DEFAULT;
+ALTER TABLE eip_t_addressbook_group_map ALTER id DROP DEFAULT;
+ALTER TABLE eip_t_acl_portlet_feature ALTER feature_id DROP DEFAULT;
+ALTER TABLE eip_t_acl_role ALTER role_id DROP DEFAULT;
+ALTER TABLE eip_t_mail_filter ALTER filter_id DROP DEFAULT;
+ALTER TABLE eip_t_mail_folder ALTER folder_id DROP DEFAULT;
+ALTER TABLE eip_t_mail ALTER mail_id DROP DEFAULT;
+ALTER TABLE eip_t_ext_timecard ALTER timecard_id DROP DEFAULT;
+ALTER TABLE eip_t_memo ALTER memo_id DROP DEFAULT;
+ALTER TABLE eip_t_timecard_settings ALTER timecard_settings_id DROP DEFAULT;
+ALTER TABLE eip_t_timecard ALTER timecard_id DROP DEFAULT;
+ALTER TABLE eip_t_whatsnew ALTER whatsnew_id DROP DEFAULT;
+ALTER TABLE eip_facility_group ALTER id DROP DEFAULT;
+ALTER TABLE eip_t_blog_thema ALTER thema_id DROP DEFAULT;
+ALTER TABLE eip_t_blog_comment ALTER comment_id DROP DEFAULT;
+ALTER TABLE eip_t_blog_file ALTER file_id DROP DEFAULT;
+ALTER TABLE eip_m_facility ALTER facility_id DROP DEFAULT;
+ALTER TABLE eip_t_blog_footmark_map ALTER id DROP DEFAULT;
+ALTER TABLE eip_t_blog ALTER blog_id DROP DEFAULT;
+ALTER TABLE eip_t_common_category ALTER common_category_id DROP DEFAULT;
+ALTER TABLE eip_t_cabinet_folder_map ALTER id DROP DEFAULT;
+ALTER TABLE eip_t_schedule ALTER schedule_id DROP DEFAULT;
+ALTER TABLE eip_t_ext_timecard_system_map ALTER system_map_id DROP DEFAULT;
+ALTER TABLE eip_t_ext_timecard_system ALTER system_id DROP DEFAULT;
+ALTER TABLE eip_t_msgboard_category_map ALTER id DROP DEFAULT;
+ALTER TABLE eip_t_todo_category ALTER category_id DROP DEFAULT;
+ALTER TABLE eip_t_todo ALTER todo_id DROP DEFAULT;
+ALTER TABLE eip_t_note ALTER note_id DROP DEFAULT;
+ALTER TABLE eip_t_msgboard_category ALTER category_id DROP DEFAULT;
+ALTER TABLE eip_t_note_map ALTER id DROP DEFAULT;
+ALTER TABLE eip_t_msgboard_topic ALTER topic_id DROP DEFAULT;
+ALTER TABLE eip_t_msgboard_file ALTER file_id DROP DEFAULT;
+ALTER TABLE eip_t_schedule_map ALTER id DROP DEFAULT;
+ALTER TABLE eip_t_blog_entry ALTER entry_id DROP DEFAULT;
+ALTER TABLE eip_t_cabinet_folder ALTER folder_id DROP DEFAULT;
+ALTER TABLE eip_t_cabinet_file ALTER file_id DROP DEFAULT;
+ALTER TABLE eip_t_workflow_file ALTER file_id DROP DEFAULT;
+ALTER TABLE turbine_permission ALTER permission_id DROP DEFAULT;
+ALTER TABLE turbine_role_permission ALTER permission_id DROP DEFAULT;
+ALTER TABLE turbine_role_permission ALTER role_id DROP DEFAULT;
+ALTER TABLE turbine_group ALTER group_id DROP DEFAULT;
+ALTER TABLE turbine_role ALTER role_id DROP DEFAULT;
+ALTER TABLE turbine_user_group_role ALTER id DROP DEFAULT;
+ALTER TABLE turbine_user ALTER user_id DROP DEFAULT;
+ALTER TABLE eip_t_workflow_route ALTER route_id DROP DEFAULT;
+ALTER TABLE eip_t_workflow_category ALTER category_id DROP DEFAULT;
+ALTER TABLE eip_t_workflow_request ALTER request_id DROP DEFAULT;
+ALTER TABLE eip_t_workflow_request_map ALTER id DROP DEFAULT;
+ALTER TABLE eip_t_eventlog ALTER eventlog_id DROP DEFAULT;
 
-CREATE TABLE container_config 
-(
-    ID serial, 
-    KEY varchar(64) NOT NULL, 
-    VALUE varchar(255) NULL, 
-    PRIMARY KEY (ID)
-);
+-- Additional schema
 
-CREATE TABLE oauth_token 
-(
-    KEY integer NOT NULL, 
-    ACCESS_TOKEN varchar(255) NULL, 
-    TOKEN_SECRET varchar(255) NULL, 
-    SESSION_HANDLE varchar(255) NULL, 
+CREATE TABLE jetspeed_group_profile (
+    COUNTRY varchar(2) NULL,
+    GROUP_NAME varchar(99) NULL,
+    LANGUAGE varchar(2) NULL,
+    MEDIA_TYPE varchar(99) NULL,
+    PAGE varchar(99) NULL,
+    PROFILE bytea NULL,
+    PSML_ID integer NOT NULL,
+    PRIMARY KEY (PSML_ID)
+)
+;
+
+CREATE TABLE jetspeed_user_profile (
+    COUNTRY varchar(2) NULL,
+    LANGUAGE varchar(2) NULL,
+    MEDIA_TYPE varchar(99) NULL,
+    PAGE varchar(99) NULL,
+    PROFILE bytea NULL,
+    PSML_ID integer NOT NULL,
+    USER_NAME varchar(32) NULL,
+    PRIMARY KEY (PSML_ID)
+)
+;
+
+CREATE TABLE jetspeed_role_profile (
+    COUNTRY varchar(2) NULL,
+    LANGUAGE varchar(2) NULL,
+    MEDIA_TYPE varchar(99) NULL,
+    PAGE varchar(99) NULL,
+    PROFILE bytea NULL,
+    PSML_ID integer NOT NULL,
+    ROLE_NAME varchar(99) NULL,
+    PRIMARY KEY (PSML_ID)
+)
+;
+
+CREATE TABLE eip_m_config (
+    ID integer NOT NULL,
+    KEY varchar(64) NULL,
+    VALUE varchar(255) NULL,
+    PRIMARY KEY (ID)
+)
+;
+
+CREATE SEQUENCE pk_eip_m_config INCREMENT 20 START 200
+;
+
+CREATE SEQUENCE pk_jetspeed_group_profile INCREMENT 20 START 200
+;
+
+CREATE SEQUENCE pk_jetspeed_role_profile INCREMENT 20 START 200
+;
+
+CREATE SEQUENCE pk_jetspeed_user_profile INCREMENT 20 START 200
+;
+
+
+
+CREATE TABLE application (
+    APP_ID varchar(255) NOT NULL,
+    CONSUMER_KEY varchar(99) NULL,
+    CONSUMER_SECRET varchar(99) NULL,
+    CREATE_DATE date NULL,
+    DESCRIPTION text NULL,
+    ID integer NOT NULL,
+    STATUS integer NULL,
+    SUMMARY varchar(255) NULL,
+    TITLE varchar(99) NULL,
+    UPDATE_DATE timestamp with time zone NULL,
+    URL varchar(255) NOT NULL,
+    PRIMARY KEY (ID)
+)
+;
+
+CREATE TABLE activity (
+    APP_ID varchar(255) NOT NULL,
+    BODY text NULL,
+    EXTERNAL_ID varchar(99) NULL,
+    ID integer NOT NULL,
+    LOGIN_NAME varchar(32) NOT NULL,
+    PORTLET_PARAMS varchar(99) NULL,
+    PRIORITY float NULL,
+    TITLE varchar(99) NOT NULL,
+    UPDATE_DATE timestamp with time zone NULL,
+    PRIMARY KEY (ID)
+)
+;
+
+CREATE TABLE oauth_token (
+    ACCESS_TOKEN varchar(255) NULL,
+    KEY integer NOT NULL,
+    SESSION_HANDLE varchar(255) NULL,
     TOKEN_EXPIRE_MILIS integer NULL,
+    TOKEN_SECRET varchar(255) NULL,
     PRIMARY KEY (KEY)
-);
+)
+;
 
-CREATE TABLE activity 
-(
-    ID serial, 
-    LOGIN_NAME varchar(32) NOT NULL, 
-    APP_ID varchar(255) NOT NULL, 
-    EXTERNAL_ID varchar(99) NULL, 
-    TITLE varchar(99) NOT NULL, 
-    BODY TEXT NULL, 
-    PORTLET_PARAMS varchar(99) NULL, 
-    PRIORITY float NULL, 
-    UPDATE_DATE TIMESTAMP,
+CREATE TABLE oauth_consumer (
+    APP_ID integer NULL,
+    CONSUMER_KEY varchar(255) NULL,
+    CONSUMER_SECRET varchar(255) NULL,
+    CREATE_DATE date NULL,
+    ID integer NOT NULL,
+    NAME varchar(99) NULL,
+    TYPE varchar(99) NULL,
+    UPDATE_DATE timestamp with time zone NULL,
     PRIMARY KEY (ID)
-);
+)
+;
 
-CREATE TABLE activity_map 
-(
-    ID serial, 
-    ACTIVITY_ID integer NULL, 
-    LOGIN_NAME varchar(32) NOT NULL, 
-    IS_READ integer NULL, 
+CREATE TABLE container_config (
+    ID integer NOT NULL,
+    KEY varchar(64) NOT NULL,
+    VALUE varchar(255) NULL,
     PRIMARY KEY (ID)
-);
+)
+;
 
-CREATE TABLE app_data 
-(
-    ID serial, 
-    APP_ID varchar(255) NOT NULL, 
-    LOGIN_NAME varchar(32) NOT NULL, 
-    KEY varchar(99) NOT NULL, 
-    VALUE TEXT NULL, 
+CREATE TABLE activity_map (
+    ACTIVITY_ID integer NULL,
+    ID integer NOT NULL,
+    IS_READ smallint NULL,
+    LOGIN_NAME varchar(32) NOT NULL,
     PRIMARY KEY (ID)
-);
+)
+;
 
-CREATE TABLE module_id
-(
-    ID serial,
+CREATE TABLE app_data (
+    APP_ID varchar(255) NOT NULL,
+    ID integer NOT NULL,
+    KEY varchar(99) NOT NULL,
+    LOGIN_NAME varchar(32) NOT NULL,
+    VALUE text NULL,
     PRIMARY KEY (ID)
-);
+)
+;
 
-CREATE TABLE JETSPEED_USER_PROFILE (
-    PSML_ID serial,
-    USER_NAME VARCHAR(32) NULL,
-    COUNTRY VARCHAR(2) NULL,
-    LANGUAGE VARCHAR(2) NULL,
-    MEDIA_TYPE VARCHAR(99) NULL,
-    PAGE VARCHAR(99) NULL,
-    PROFILE bytea NULL,
-    PRIMARY KEY (PSML_ID),
-    UNIQUE (USER_NAME, MEDIA_TYPE, LANGUAGE, COUNTRY, PAGE)
-);
+CREATE TABLE module_id (
+    ID integer NOT NULL,
+    PRIMARY KEY (ID)
+)
+;
 
-CREATE TABLE JETSPEED_GROUP_PROFILE (
-    PSML_ID serial,
-    GROUP_NAME VARCHAR(99) NULL,
-    COUNTRY VARCHAR(2) NULL,
-    LANGUAGE VARCHAR(2) NULL,
-    MEDIA_TYPE VARCHAR(99) NULL,
-    PAGE VARCHAR(99) NULL,
-    PROFILE bytea NULL,
-    PRIMARY KEY (PSML_ID),
-    UNIQUE (GROUP_NAME, MEDIA_TYPE, LANGUAGE, COUNTRY, PAGE)
-);
+ALTER TABLE oauth_consumer ADD FOREIGN KEY (APP_ID) REFERENCES application (ID)
+;
 
-CREATE TABLE JETSPEED_ROLE_PROFILE (
-    PSML_ID serial,
-    ROLE_NAME VARCHAR(99) NULL,
-    COUNTRY VARCHAR(2) NULL,
-    LANGUAGE VARCHAR(2) NULL,
-    MEDIA_TYPE VARCHAR(99) NULL,
-    PAGE VARCHAR(99) NULL,
-    PROFILE bytea NULL,
-    PRIMARY KEY (PSML_ID),
-    UNIQUE (ROLE_NAME, MEDIA_TYPE, LANGUAGE, COUNTRY, PAGE)
-);
+ALTER TABLE activity_map ADD FOREIGN KEY (ACTIVITY_ID) REFERENCES activity (ID)
+;
+
+CREATE SEQUENCE pk_activity INCREMENT 20 START 200
+;
+
+CREATE SEQUENCE pk_activity_map INCREMENT 20 START 200
+;
+
+CREATE SEQUENCE pk_app_data INCREMENT 20 START 200
+;
+
+CREATE SEQUENCE pk_application INCREMENT 20 START 200
+;
+
+CREATE SEQUENCE pk_container_config INCREMENT 20 START 200
+;
+
+CREATE SEQUENCE pk_module_id INCREMENT 20 START 200
+;
+
+CREATE SEQUENCE pk_oauth_consumer INCREMENT 20 START 200
+;
+
+CREATE SEQUENCE pk_oauth_token INCREMENT 20 START 200
+;
+
 
