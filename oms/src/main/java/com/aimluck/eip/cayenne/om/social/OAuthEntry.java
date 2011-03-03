@@ -16,26 +16,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.cayenne.om.social;
 
-import com.aimluck.eip.cayenne.om.social.auto._ModuleId;
+import com.aimluck.eip.cayenne.om.social.auto._OAuthEntry;
 
-public class ModuleId extends _ModuleId {
+public class OAuthEntry extends _OAuthEntry {
 
-  private static final long serialVersionUID = -993697590942134786L;
+  private static final long serialVersionUID = -1091115443410897654L;
 
-  public Integer getId() {
-    if (getObjectId() != null && !getObjectId().isTemporary()) {
-      Object obj = getObjectId().getIdSnapshot().get(ID_PK_COLUMN);
-      if (obj instanceof Long) {
-        Long value = (Long) obj;
-        return Integer.valueOf(value.intValue());
-      } else {
-        return (Integer) obj;
-      }
-    } else {
-      return null;
-    }
-  }
 }

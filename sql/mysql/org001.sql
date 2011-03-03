@@ -48,7 +48,7 @@ CREATE TABLE `aipo_license` (
 CREATE TABLE `app_data` (
   `app_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `key` varchar(99) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(99) COLLATE utf8_unicode_ci NOT NULL,
   `login_name` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `value` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
@@ -71,7 +71,7 @@ CREATE TABLE `application` (
 
 CREATE TABLE `container_config` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `key` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `value` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -152,9 +152,11 @@ CREATE TABLE `eip_m_company` (
   PRIMARY KEY (`company_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+INSERT INTO `eip_m_company` VALUES (1, '', '', '', '', '', '', '', '', 80, '', 80, now(), now());
+
 CREATE TABLE `eip_m_config` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `key` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `name` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
   `value` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -817,12 +819,33 @@ CREATE TABLE `oauth_consumer` (
 
 CREATE TABLE `oauth_token` (
   `access_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `key` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `session_handle` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `token_expire_milis` int(11) DEFAULT NULL,
   `token_secret` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`key`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `oauth_entry` (
+  `app_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `authorized` int(11) NULL,
+  `callback_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `callback_token_attempts` int(11) DEFAULT NULL,
+  `callback_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `callback_url_signed` int(11) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `consumer_key` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `container` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `domain` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `issue_time` datetime DEFAULT NULL,
+  `oauth_version` varchar(16) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `token_secret` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `type` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `user_id` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+;
 
 CREATE TABLE `turbine_group` (
   `group_id` int(11) NOT NULL AUTO_INCREMENT,

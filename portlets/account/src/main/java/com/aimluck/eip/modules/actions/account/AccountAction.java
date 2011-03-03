@@ -19,9 +19,6 @@
 
 package com.aimluck.eip.modules.actions.account;
 
-import java.io.File;
-import java.util.Calendar;
-
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -34,7 +31,6 @@ import com.aimluck.eip.account.AccountChangeTurnFormData;
 import com.aimluck.eip.account.AccountUserFormData;
 import com.aimluck.eip.account.AccountUserMultiDelete;
 import com.aimluck.eip.account.AccountUserSelectData;
-import com.aimluck.eip.common.ALCsvTokenizer;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.modules.actions.common.ALSecureBaseAction;
 import com.aimluck.eip.util.ALEipUtils;
@@ -63,21 +59,6 @@ public class AccountAction extends ALSecureBaseAction {
     if (getMode() == null) {
       doAccount_list(rundata, context);
     }
-  }
-
-  /**
-   * 古くなった一時ファイルを消します
-   * 
-   * @param rundata
-   * @param context
-   * @throws Exception
-   */
-  @SuppressWarnings("unused")
-  private void deleteTempFiles() throws Exception {
-    String tmp_path = ALCsvTokenizer.CSV_TEMP_FOLDER;
-    Calendar cal = Calendar.getInstance();
-    cal.add(Calendar.MINUTE, -90); // ここで設定された時間より前のファイルを削除
-    ALEipUtils.deleteOldFolder(new File(tmp_path), cal);
   }
 
   /**

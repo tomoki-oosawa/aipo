@@ -1,25 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-
-    Aipo is a groupware program developed by Aimluck,Inc.
-    Copyright (C) 2004-2011 Aimluck,Inc.
-    http://www.aipo.com
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
--->
-
 <data-map project-version="2.0">
 	<property name="defaultPackage" value="com.aimluck.eip.cayenne.om.account"/>
 	<db-entity name="aipo_license">
@@ -45,7 +24,7 @@
 	</db-entity>
 	<db-entity name="eip_m_config">
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="KEY" type="VARCHAR" length="64"/>
+		<db-attribute name="NAME" type="VARCHAR" length="64"/>
 		<db-attribute name="VALUE" type="VARCHAR" length="255"/>
 	</db-entity>
 	<db-entity name="eip_m_position">
@@ -116,7 +95,7 @@
 		<db-attribute name="MEDIA_TYPE" type="VARCHAR" length="99"/>
 		<db-attribute name="PAGE" type="VARCHAR" length="99"/>
 		<db-attribute name="PROFILE" type="LONGVARBINARY" length="2147483647"/>
-		<db-attribute name="PSML_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" isGenerated="true" length="10"/>
+		<db-attribute name="PSML_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
 		<db-attribute name="USER_NAME" type="VARCHAR" length="32"/>
 	</db-entity>
 	<obj-entity name="AipoLicense" className="com.aimluck.eip.cayenne.om.account.AipoLicense" dbEntityName="aipo_license">
@@ -139,7 +118,7 @@
 		<obj-attribute name="zipcode" type="java.lang.String" db-attribute-path="ZIPCODE"/>
 	</obj-entity>
 	<obj-entity name="EipMConfig" className="com.aimluck.eip.cayenne.om.account.EipMConfig" dbEntityName="eip_m_config">
-		<obj-attribute name="key" type="java.lang.String" db-attribute-path="KEY"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="NAME"/>
 		<obj-attribute name="value" type="java.lang.String" db-attribute-path="VALUE"/>
 	</obj-entity>
 	<obj-entity name="EipMPosition" className="com.aimluck.eip.cayenne.om.account.EipMPosition" dbEntityName="eip_m_position">

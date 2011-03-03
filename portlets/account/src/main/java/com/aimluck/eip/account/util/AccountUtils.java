@@ -30,7 +30,6 @@ import org.apache.jetspeed.om.security.Role;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.services.security.JetspeedSecurityException;
 import org.apache.jetspeed.services.security.UnknownUserException;
 import org.apache.turbine.util.RunData;
@@ -63,10 +62,6 @@ public class AccountUtils {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(AccountUtils.class.getName());
 
-  /** CSVファイルを一時保管するディレクトリの指定 */
-  public static final String FOLDER_TMP_FOR_CSV_FILES = JetspeedResources
-    .getString("aipo.tmp.directory", "");
-
   /** CSVファイル名 */
   public static final String FOLDER_TMP_FOR_USERINFO_CSV_FILENAME =
     "user_info.csv";
@@ -78,7 +73,7 @@ public class AccountUtils {
 
   /**
    * セッション中のエンティティIDで示されるユーザ情報を取得する。 論理削除されたユーザを取得した場合はnullを返す。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -109,7 +104,7 @@ public class AccountUtils {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -141,7 +136,7 @@ public class AccountUtils {
 
   /**
    * セッションに格納されているIDを用いて、部署情報を取得します。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -171,7 +166,7 @@ public class AccountUtils {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -245,7 +240,7 @@ public class AccountUtils {
 
   /**
    * ユーザーの所属する部署の一覧を取得します。
-   *
+   * 
    * @param uid
    *          ユーザーID
    * @return 所属する部署リスト
@@ -292,7 +287,7 @@ public class AccountUtils {
 
   /**
    * 指定した ID のユーザが削除済みかどうかを調べる。
-   *
+   * 
    * @param userId
    * @return
    */
@@ -321,7 +316,7 @@ public class AccountUtils {
 
   /**
    * 指定されたユーザーが削除／無効化されたとき、申請が来ているワークフローを全て承認します。
-   *
+   * 
    * @param uid
    */
   public static boolean acceptWorkflow(int uid) {
@@ -401,7 +396,7 @@ public class AccountUtils {
   /**
    * 管理者権限を持ったユーザを一人、管理者権限剥奪・無効化・削除しても<br/>
    * 最低限必要な管理者権限を持ったユーザ数を割らないかどうかを返します。
-   *
+   * 
    * @return
    */
   public static boolean isAdminDeletable() {
@@ -411,7 +406,7 @@ public class AccountUtils {
   /**
    * 管理者権限を持ったユーザを指定人数、管理者権限剥奪・無効化・削除しても<br/>
    * 最低限必要な管理者権限を持ったユーザ数を割らないかどうかを返します。
-   *
+   * 
    * @param admin_count
    * @return
    */
@@ -445,7 +440,7 @@ public class AccountUtils {
 
   /**
    * 与えられたユーザー名に使われている記号が、使用できるものかを確認します。
-   *
+   * 
    * @return
    */
   public static boolean isValidSymbolUserName(String name) {

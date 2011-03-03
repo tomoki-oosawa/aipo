@@ -33,6 +33,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileio.util.FileIOAccountCsvUtils;
 import com.aimluck.eip.fileio.util.FileIOCsvUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 
 public class FileIOAccountPostCsvUploadFormData extends
     ALCsvAbstractUploadFormData {
@@ -63,9 +64,9 @@ public class FileIOAccountPostCsvUploadFormData extends
    */
   private void initTempFileName() {
     File tmpfolderRootFolder =
-      new File(ALCsvTokenizer.CSV_TEMP_FOLDER
-        + File.separator
-        + FileIOAccountCsvUtils.CSV_ACCOUNT_POST_TEMP_FOLDER);
+      ALOrgUtilsService.getDocumentPath(
+        ALCsvTokenizer.CSV_TEMP_FOLDER,
+        FileIOAccountCsvUtils.CSV_ACCOUNT_POST_TEMP_FOLDER);
     if (!tmpfolderRootFolder.exists()) {
       tmpfolderRootFolder.mkdirs();
     }

@@ -423,7 +423,7 @@ CREATE TABLE jetspeed_role_profile (
 
 CREATE TABLE eip_m_config (
     ID integer NOT NULL,
-    KEY varchar(64) NULL,
+    NAME varchar(64) NULL,
     VALUE varchar(255) NULL,
     PRIMARY KEY (ID)
 )
@@ -475,13 +475,36 @@ CREATE TABLE activity (
 
 CREATE TABLE oauth_token (
     ACCESS_TOKEN varchar(255) NULL,
-    KEY integer NOT NULL,
+    ID integer NOT NULL,
     SESSION_HANDLE varchar(255) NULL,
     TOKEN_EXPIRE_MILIS integer NULL,
     TOKEN_SECRET varchar(255) NULL,
-    PRIMARY KEY (KEY)
+    PRIMARY KEY (ID)
 )
 ;
+
+CREATE TABLE oauth_entry (
+    APP_ID varchar(255) NULL,
+    AUTHORIZED integer NULL,
+    CALLBACK_TOKEN varchar(255) NULL,
+    CALLBACK_TOKEN_ATTEMPTS integer NULL,
+    CALLBACK_URL varchar(255) NULL,
+    CALLBACK_URL_SIGNED integer NULL,
+    CONSUMER_KEY varchar(255) NULL,
+    CONTAINER varchar(32) NULL,
+    DOMAIN varchar(255) NULL,
+    ID integer NOT NULL,
+    ISSUE_TIME timestamp with time zone NULL,
+    OAUTH_VERSION varchar(16) NULL,
+    TOKEN varchar(255) NULL,
+    TOKEN_SECRET varchar(255) NULL,
+    TYPE varchar(32) NULL,
+    USER_ID varchar(64) NULL,
+    PRIMARY KEY (ID)
+)
+;
+
+
 
 CREATE TABLE oauth_consumer (
     APP_ID integer NULL,
@@ -498,7 +521,7 @@ CREATE TABLE oauth_consumer (
 
 CREATE TABLE container_config (
     ID integer NOT NULL,
-    KEY varchar(64) NOT NULL,
+    NAME varchar(64) NOT NULL,
     VALUE varchar(255) NULL,
     PRIMARY KEY (ID)
 )
@@ -507,7 +530,7 @@ CREATE TABLE container_config (
 CREATE TABLE activity_map (
     ACTIVITY_ID integer NULL,
     ID integer NOT NULL,
-    IS_READ smallint NULL,
+    IS_READ integer NULL,
     LOGIN_NAME varchar(32) NOT NULL,
     PRIMARY KEY (ID)
 )
@@ -516,7 +539,7 @@ CREATE TABLE activity_map (
 CREATE TABLE app_data (
     APP_ID varchar(255) NOT NULL,
     ID integer NOT NULL,
-    KEY varchar(99) NOT NULL,
+    NAME varchar(99) NOT NULL,
     LOGIN_NAME varchar(32) NOT NULL,
     VALUE text NULL,
     PRIMARY KEY (ID)
@@ -559,4 +582,5 @@ CREATE SEQUENCE pk_oauth_consumer INCREMENT 20 START 200
 CREATE SEQUENCE pk_oauth_token INCREMENT 20 START 200
 ;
 
-
+CREATE SEQUENCE pk_oauth_entry INCREMENT 20 START 200
+;

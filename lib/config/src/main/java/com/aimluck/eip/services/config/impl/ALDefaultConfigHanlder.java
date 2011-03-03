@@ -57,7 +57,7 @@ public class ALDefaultConfigHanlder extends ALConfigHandler {
       config =
         Database
           .query(EipMConfig.class)
-          .where(Operations.eq(EipMConfig.KEY_PROPERTY, property.toString()))
+          .where(Operations.eq(EipMConfig.NAME_PROPERTY, property.toString()))
           .fetchSingle();
     } catch (Throwable t) {
       // ignore
@@ -80,11 +80,11 @@ public class ALDefaultConfigHanlder extends ALConfigHandler {
       EipMConfig config =
         Database
           .query(EipMConfig.class)
-          .where(Operations.eq(EipMConfig.KEY_PROPERTY, property.toString()))
+          .where(Operations.eq(EipMConfig.NAME_PROPERTY, property.toString()))
           .fetchSingle();
       if (config == null) {
         config = Database.create(EipMConfig.class);
-        config.setKey(property.toString());
+        config.setName(property.toString());
       }
       config.setValue(value);
       Database.commit();

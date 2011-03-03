@@ -1,5 +1,5 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
+] * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2011 Aimluck,Inc.
  * http://www.aipo.com
  *
@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
@@ -404,7 +405,8 @@ public class ALDefaultSocialApplicationHanlder extends
     ContainerConfig config =
       Database
         .query(ContainerConfig.class)
-        .where(Operations.eq(ContainerConfig.KEY_PROPERTY, property.toString()))
+        .where(
+          Operations.eq(ContainerConfig.NAME_PROPERTY, property.toString()))
         .fetchSingle();
 
     if (config == null) {
@@ -426,11 +428,11 @@ public class ALDefaultSocialApplicationHanlder extends
         Database
           .query(ContainerConfig.class)
           .where(
-            Operations.eq(ContainerConfig.KEY_PROPERTY, property.toString()))
+            Operations.eq(ContainerConfig.NAME_PROPERTY, property.toString()))
           .fetchSingle();
       if (config == null) {
         config = Database.create(ContainerConfig.class);
-        config.setKey(property.toString());
+        config.setName(property.toString());
       }
       config.setValue(value);
       Database.commit();
@@ -511,12 +513,34 @@ public class ALDefaultSocialApplicationHanlder extends
 
   @Override
   public void setAllReadActivity(String loginName) {
-    StringBuilder b = new StringBuilder("update activity_map set is_read = 1 ");
-    b.append(" from activity where activity_map.activity_id = activity.id ");
-    b.append(" and activity_map.login_name = #bind($loginName) ");
-    String sql = b.toString();
 
     try {
+      DataContext dataContext = DataContext.getThreadDataContext();
+      String url =
+        dataContext
+          .getParentDataDomain()
+          .getNode(Database.getDomainName() + "domainNode")
+          .getDataSource()
+          .getConnection()
+          .getMetaData()
+          .getURL();
+
+      String sql = "";
+      if (url != null && url.startsWith("jdbc:postgresql")) {
+        StringBuilder b =
+          new StringBuilder("update activity_map set is_read = 1 ");
+        b
+          .append(" from activity where activity_map.activity_id = activity.id ");
+        b.append(" and activity_map.login_name = #bind($loginName) ");
+        sql = b.toString();
+      } else {
+        StringBuilder b =
+          new StringBuilder("update activity_map, activity set is_read = 1 ");
+        b.append(" where activity_map.activity_id = activity.id ");
+        b.append(" and activity_map.login_name = #bind($loginName) ");
+        sql = b.toString();
+      }
+
       Database
         .sql(ActivityMap.class, sql)
         .param("loginName", loginName)
@@ -529,13 +553,37 @@ public class ALDefaultSocialApplicationHanlder extends
 
   @Override
   public void setReadActivity(int activityId, String loginName) {
-    StringBuilder b = new StringBuilder("update activity_map set is_read = 1 ");
-    b.append(" from activity where activity_map.activity_id = activity.id ");
-    b.append(" and activity.id = #bind($activityId) ");
-    b.append(" and activity_map.login_name = #bind($loginName) ");
-    String sql = b.toString();
 
     try {
+
+      DataContext dataContext = DataContext.getThreadDataContext();
+      String url =
+        dataContext
+          .getParentDataDomain()
+          .getNode(Database.getDomainName() + "domainNode")
+          .getDataSource()
+          .getConnection()
+          .getMetaData()
+          .getURL();
+
+      String sql = "";
+      if (url != null && url.startsWith("jdbc:postgresql")) {
+        StringBuilder b =
+          new StringBuilder("update activity_map set is_read = 1 ");
+        b
+          .append(" from activity where activity_map.activity_id = activity.id ");
+        b.append(" and activity.id = #bind($activityId) ");
+        b.append(" and activity_map.login_name = #bind($loginName) ");
+        sql = b.toString();
+      } else {
+        StringBuilder b =
+          new StringBuilder("update activity_map, activity set is_read = 1 ");
+        b.append(" where activity_map.activity_id = activity.id ");
+        b.append(" and activity.id = #bind($activityId) ");
+        b.append(" and activity_map.login_name = #bind($loginName) ");
+        sql = b.toString();
+      }
+
       Database
         .sql(ActivityMap.class, sql)
         .param("activityId", activityId)

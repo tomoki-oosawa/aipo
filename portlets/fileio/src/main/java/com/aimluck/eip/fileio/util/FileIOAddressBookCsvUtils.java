@@ -24,6 +24,7 @@ import java.io.File;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.common.ALCsvTokenizer;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 
 /**
  * AddressbookのCSV読取用ユーティリティクラスです。
@@ -72,14 +73,12 @@ public class FileIOAddressBookCsvUtils {
    * @param index
    * @return
    */
-  public static String getAddressBookCsvFolderName(String index) {
-    String result =
-      ALCsvTokenizer.CSV_TEMP_FOLDER
+  public static File getAddressBookCsvFolderName(String index) {
+    return ALOrgUtilsService.getDocumentPath(
+      ALCsvTokenizer.CSV_TEMP_FOLDER,
+      FileIOAddressBookCsvUtils.CSV_ADDRESSBOOK_TEMP_FOLDER
         + File.separator
-        + FileIOAddressBookCsvUtils.CSV_ADDRESSBOOK_TEMP_FOLDER
-        + File.separator
-        + index;
-    return result;
+        + index);
   }
 
 }

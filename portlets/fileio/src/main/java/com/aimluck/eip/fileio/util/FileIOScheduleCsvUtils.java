@@ -26,6 +26,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
 
 import com.aimluck.eip.common.ALCsvTokenizer;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 
 /**
  * スケジュールのCSV読取用ユーティリティクラスです。
@@ -64,14 +65,10 @@ public class FileIOScheduleCsvUtils {
    * @param index
    * @return
    */
-  public static String getScheduleCsvFolderName(String index) {
-    String result =
-      ALCsvTokenizer.CSV_TEMP_FOLDER
-        + File.separator
-        + FileIOScheduleCsvUtils.CSV_SCHEDULE_TEMP_FOLDER
-        + File.separator
-        + index;
-    return result;
+  public static File getScheduleCsvFolderName(String index) {
+    return ALOrgUtilsService.getDocumentPath(
+      ALCsvTokenizer.CSV_TEMP_FOLDER,
+      FileIOScheduleCsvUtils.CSV_SCHEDULE_TEMP_FOLDER + File.separator + index);
   }
 
 }
