@@ -20,7 +20,6 @@
 package com.aimluck.eip.user.util;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -49,14 +48,6 @@ public class UserUtils {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(UserUtils.class.getName());
 
-  /** userLiteBeanキャッシュ用の変数 */
-  private static Hashtable<String, ArrayList<UserLiteBean>> userLiteBeans =
-    new Hashtable<String, ArrayList<UserLiteBean>>();
-
-  /** userEmailLiteBeanキャッシュ用の変数 */
-  private static Hashtable<String, ArrayList<UserEmailLiteBean>> userEmailLiteBeans =
-    new Hashtable<String, ArrayList<UserEmailLiteBean>>();
-
   /**
    * 
    * @param rundata
@@ -65,77 +56,53 @@ public class UserUtils {
   public static synchronized List<UserLiteBean> getUserLiteBeansFromGroup(
       RunData rundata, String groupname, boolean includeLoginuser) {
     int login_user_id = null != rundata ? ALEipUtils.getUserId(rundata) : 0;
-    String orgId = Database.getDomainName();
-    if (userLiteBeans.containsKey(orgId + "_" + groupname)) {
-      /** キャッシュを出力する */
-      @SuppressWarnings("unchecked")
-      List<UserLiteBean> res =
-        (List<UserLiteBean>) userLiteBeans.get(orgId + "_" + groupname).clone();
-      if (!includeLoginuser && login_user_id > 3) {
-        /** ログインユーザを返り値から除く */
-        UserLiteBean user;
-        for (int i = 0; i < res.size(); i++) {
-          user = res.get(i);
-          if (Integer.valueOf(user.getUserId()) == login_user_id) {
-            res.remove(i);
-            break;
-          }
-        }
-      }
-      return res;
-    } else {
-      /** SQLを構築してデータベース検索 */
-      ArrayList<UserLiteBean> list = new ArrayList<UserLiteBean>();
-      ArrayList<UserLiteBean> cache_list = new ArrayList<UserLiteBean>();// キャッシュに保存する用のリスト(返り値用のリストは値が変更される可能性があるので使えない)
-      StringBuffer statement = new StringBuffer();
-      statement.append("SELECT DISTINCT ");
-      statement
-        .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, D.POSITION ");
-      statement.append("FROM turbine_user_group_role as A ");
-      statement.append("LEFT JOIN turbine_user as B ");
-      statement.append("  on A.USER_ID = B.USER_ID ");
-      statement.append("LEFT JOIN turbine_group as C ");
-      statement.append("  on A.GROUP_ID = C.GROUP_ID ");
-      statement.append("LEFT JOIN eip_m_user_position as D ");
-      statement.append("  on A.USER_ID = D.USER_ID ");
-      statement.append("WHERE B.USER_ID > 3 AND B.DISABLED = 'F'");
-      statement.append(" AND C.GROUP_NAME = #bind($groupname) ");
-      statement.append("ORDER BY D.POSITION");
-      String query = statement.toString();
+    /** SQLを構築してデータベース検索 */
+    ArrayList<UserLiteBean> list = new ArrayList<UserLiteBean>();
+    StringBuffer statement = new StringBuffer();
+    statement.append("SELECT DISTINCT ");
+    statement
+      .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, D.POSITION ");
+    statement.append("FROM turbine_user_group_role as A ");
+    statement.append("LEFT JOIN turbine_user as B ");
+    statement.append("  on A.USER_ID = B.USER_ID ");
+    statement.append("LEFT JOIN turbine_group as C ");
+    statement.append("  on A.GROUP_ID = C.GROUP_ID ");
+    statement.append("LEFT JOIN eip_m_user_position as D ");
+    statement.append("  on A.USER_ID = D.USER_ID ");
+    statement.append("WHERE B.USER_ID > 3 AND B.DISABLED = 'F'");
+    statement.append(" AND C.GROUP_NAME = #bind($groupname) ");
+    statement.append("ORDER BY D.POSITION");
 
-      List<TurbineUser> list2 =
-        Database
-          .sql(TurbineUser.class, query)
-          .param("groupname", groupname)
-          .fetchList();
+    String query = statement.toString();
 
-      UserLiteBean user;
-      // ユーザデータを作成し、返却リストへ格納
-      for (TurbineUser tuser : list2) {
-        user = new UserLiteBean();
-        user.initField();
-        user.setUserId(tuser.getUserId());
-        user.setName(tuser.getLoginName());
-        user.setAliasName(tuser.getFirstName(), tuser.getLastName());
-        list.add(user);
-        cache_list.add(user);
-      }
+    List<TurbineUser> list2 =
+      Database
+        .sql(TurbineUser.class, query)
+        .param("groupname", groupname)
+        .fetchList();
 
-      /** リストをキャッシュする */
-      userLiteBeans.put(orgId + "_" + groupname, cache_list);
-
-      if (!includeLoginuser && login_user_id > 3) {
-        /** 返り値からログインユーザを除く */
-        for (int i = 0; i < list.size(); i++) {
-          user = list.get(i);
-          if (Integer.valueOf(user.getUserId()) == login_user_id) {
-            list.remove(i);
-            break;
-          }
-        }
-      }
-      return list;
+    UserLiteBean user;
+    // ユーザデータを作成し、返却リストへ格納
+    for (TurbineUser tuser : list2) {
+      user = new UserLiteBean();
+      user.initField();
+      user.setUserId(tuser.getUserId());
+      user.setName(tuser.getLoginName());
+      user.setAliasName(tuser.getFirstName(), tuser.getLastName());
+      list.add(user);
     }
+
+    if (!includeLoginuser && login_user_id > 3) {
+      /** 返り値からログインユーザを除く */
+      for (int i = 0; i < list.size(); i++) {
+        user = list.get(i);
+        if (Integer.valueOf(user.getUserId()) == login_user_id) {
+          list.remove(i);
+          break;
+        }
+      }
+    }
+    return list;
   }
 
   /**
@@ -146,81 +113,53 @@ public class UserUtils {
   public static synchronized List<UserEmailLiteBean> getUserEmailLiteBeansFromGroup(
       RunData rundata, String groupname, boolean includeLoginuser) {
     int login_user_id = null != rundata ? ALEipUtils.getUserId(rundata) : 0;
-    String orgId = Database.getDomainName();
     ArrayList<UserEmailLiteBean> list = new ArrayList<UserEmailLiteBean>();
-    ArrayList<UserEmailLiteBean> cache_list =
-      new ArrayList<UserEmailLiteBean>();// キャッシュに保存する用のリスト(返り値用のリストは値が変更される可能性があるので使えない)
-    if (userEmailLiteBeans.containsKey(orgId + "_" + groupname)) {
-      /** キャッシュを出力する */
-      @SuppressWarnings("unchecked")
-      List<UserEmailLiteBean> res =
-        (ArrayList<UserEmailLiteBean>) (userEmailLiteBeans.get(orgId
-          + "_"
-          + groupname)).clone();
-      if (!includeLoginuser && login_user_id > 3) {
-        /** ログインユーザを返り値から除く */
-        UserEmailLiteBean user;
-        for (int i = 0; i < res.size(); i++) {
-          user = res.get(i);
-          if (Integer.valueOf(user.getUserId()) == login_user_id) {
-            res.remove(i);
-            break;
-          }
-        }
-      }
-      return res;
-    } else {
-      // SQLの作成
-      StringBuffer statement = new StringBuffer();
-      statement.append("SELECT DISTINCT ");
-      statement
-        .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, B.EMAIL, D.POSITION ");
-      statement.append("FROM turbine_user_group_role as A ");
-      statement.append("LEFT JOIN turbine_user as B ");
-      statement.append("  on A.USER_ID = B.USER_ID ");
-      statement.append("LEFT JOIN turbine_group as C ");
-      statement.append("  on A.GROUP_ID = C.GROUP_ID ");
-      statement.append("LEFT JOIN eip_m_user_position as D ");
-      statement.append("  on A.USER_ID = D.USER_ID ");
-      statement.append("WHERE B.USER_ID > 3 AND B.DISABLED = 'F'");
-      statement.append(" AND C.GROUP_NAME = #bind($groupname) ");
-      statement.append("ORDER BY D.POSITION");
-      String query = statement.toString();
+    // SQLの作成
+    StringBuffer statement = new StringBuffer();
+    statement.append("SELECT DISTINCT ");
+    statement
+      .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, B.EMAIL, D.POSITION ");
+    statement.append("FROM turbine_user_group_role as A ");
+    statement.append("LEFT JOIN turbine_user as B ");
+    statement.append("  on A.USER_ID = B.USER_ID ");
+    statement.append("LEFT JOIN turbine_group as C ");
+    statement.append("  on A.GROUP_ID = C.GROUP_ID ");
+    statement.append("LEFT JOIN eip_m_user_position as D ");
+    statement.append("  on A.USER_ID = D.USER_ID ");
+    statement.append("WHERE B.USER_ID > 3 AND B.DISABLED = 'F'");
+    statement.append(" AND C.GROUP_NAME = #bind($groupname) ");
+    statement.append("ORDER BY D.POSITION");
+    String query = statement.toString();
 
-      List<TurbineUser> list2 =
-        Database
-          .sql(TurbineUser.class, query)
-          .param("groupname", groupname)
-          .fetchList();
+    List<TurbineUser> list2 =
+      Database
+        .sql(TurbineUser.class, query)
+        .param("groupname", groupname)
+        .fetchList();
 
-      UserEmailLiteBean user;
-      // ユーザデータを作成し、返却リストへ格納
-      for (TurbineUser tuser : list2) {
-        user = new UserEmailLiteBean();
-        user.initField();
-        user.setUserId(tuser.getUserId());
-        user.setName(tuser.getLoginName());
-        user.setAliasName(tuser.getFirstName(), tuser.getLastName());
-        user.setEmail(tuser.getEmail());
-        list.add(user);
-        cache_list.add(user);
-      }
-
-      /** リストをキャッシュする */
-      userEmailLiteBeans.put(orgId + "_" + groupname, cache_list);
-
-      if (!includeLoginuser && login_user_id > 3) {
-        /** 返り値からログインユーザを除く */
-        for (int i = 0; i < list.size(); i++) {
-          user = list.get(i);
-          if (Integer.valueOf(user.getUserId()) == login_user_id) {
-            list.remove(i);
-            break;
-          }
-        }
-      }
-      return list;
+    UserEmailLiteBean user;
+    // ユーザデータを作成し、返却リストへ格納
+    for (TurbineUser tuser : list2) {
+      user = new UserEmailLiteBean();
+      user.initField();
+      user.setUserId(tuser.getUserId());
+      user.setName(tuser.getLoginName());
+      user.setAliasName(tuser.getFirstName(), tuser.getLastName());
+      user.setEmail(tuser.getEmail());
+      list.add(user);
     }
+
+    if (!includeLoginuser && login_user_id > 3) {
+      /** 返り値からログインユーザを除く */
+      for (int i = 0; i < list.size(); i++) {
+        user = list.get(i);
+        if (Integer.valueOf(user.getUserId()) == login_user_id) {
+          list.remove(i);
+          break;
+        }
+      }
+    }
+    return list;
   }
 
   /**
@@ -261,13 +200,5 @@ public class UserUtils {
       logger.error("[UserUtils]", e);
     }
     return list;
-  }
-
-  /**
-   * キャッシュしたリストをクリアします。
-   */
-  public static void clearCache() {
-    userLiteBeans = new Hashtable<String, ArrayList<UserLiteBean>>();
-    userEmailLiteBeans = new Hashtable<String, ArrayList<UserEmailLiteBean>>();
   }
 }

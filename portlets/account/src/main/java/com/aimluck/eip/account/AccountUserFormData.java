@@ -74,7 +74,6 @@ import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
 import com.aimluck.eip.user.beans.UserGroupLiteBean;
-import com.aimluck.eip.user.util.UserUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -831,9 +830,6 @@ public class AccountUserFormData extends ALAbstractFormData {
 
         Database.commit();
 
-        /** ユーザリストのキャッシュをクリアする */
-        UserUtils.clearCache();
-
         // WebAPIとのDB同期
         if (!ALDataSyncFactoryService
           .getInstance()
@@ -1026,9 +1022,6 @@ public class AccountUserFormData extends ALAbstractFormData {
         }
       }
 
-      /** ユーザリストのキャッシュをクリアする */
-      UserUtils.clearCache();
-
       // 一時的な添付ファイルの削除
       File folder =
         FileuploadUtils.getFolder(
@@ -1108,9 +1101,6 @@ public class AccountUserFormData extends ALAbstractFormData {
 
       Database.commit();
 
-      /** ユーザリストのキャッシュをクリアする */
-      UserUtils.clearCache();
-
       // WebAPIとのDB同期
       String[] user_name_list = { user_name };
       if (!ALDataSyncFactoryService
@@ -1170,9 +1160,6 @@ public class AccountUserFormData extends ALAbstractFormData {
 
       (list.get(0)).setDisabled("F");
       Database.commit();
-
-      /** ユーザリストのキャッシュをクリアする */
-      UserUtils.clearCache();
 
       // WebAPIとのDB同期
       String[] user_name_list = { user_name };
@@ -1337,9 +1324,6 @@ public class AccountUserFormData extends ALAbstractFormData {
       user.setLoginName(dummy_user_name);
 
       Database.commit();
-
-      /** ユーザリストのキャッシュをクリアする */
-      UserUtils.clearCache();
 
       // WebAPIとのDB同期
       if (!ALDataSyncFactoryService

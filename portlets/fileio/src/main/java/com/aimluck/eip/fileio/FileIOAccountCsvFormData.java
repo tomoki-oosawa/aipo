@@ -54,7 +54,6 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
-import com.aimluck.eip.user.util.UserUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -681,9 +680,6 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
         Database.commit();
       }
-
-      /** ユーザリストのキャッシュをクリアする */
-      UserUtils.clearCache();
 
       // WebAPIとのDB同期
       if (!ALDataSyncFactoryService.getInstance().getDataSyncHandler().addUser(
