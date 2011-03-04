@@ -33,7 +33,11 @@ $portlet.getContent($data)
 #foreach ( $tab in $tabs )
                                <li#if ($tab.Link && ($tab.isSelected() == true)) class="selectedMenu" #end>
                                   <div class="menuTitle"><a class="menuList" title="$tab.Title" href="$tab.Link">$tab.Title</a></div>
-                                   <div class="menuIcon">#if ($!tab.Authority)#foreach ($action in $tab.Actions)<a href="${action.Link}"><img border="0" align="top" title="${action.Alt}" alt="${action.Alt}" src="${skin.getImage($action.Name,"images/${action.Name}.gif")}"/></a>#end#end</div>
+                                  <div class="menuIcon">
+                                  #if ($!tab.Authority)#foreach ($action in $tab.Actions)
+                                        <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!{tab.Link}&template=CustomizeFormScreen')"><img class="img_icon" title="${action.Alt}" alt="${action.Alt}" src="${skin.getImage($action.Name,"images/${action.Name}.gif")}"/></a>
+                                  #end#end
+                                  </div>
                                 </li>
 #end
                               </ul>

@@ -50,6 +50,7 @@
 #end
 <script type="text/javascript" src="${unlockeddomain_url}/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
 <script type="text/javascript" src="${external_resources_url}/javascript/aipo/container.js"></script>
+<script type="text/javascript" src="${external_resources_url}/javascript/aipo/customize/form.js"></script>
 </head>
 <body onload="aipo.container.renderGadgets()">
 <!-- WRAPPER -->
@@ -107,6 +108,54 @@ dojo.addOnLoad(function() {
     dojo.byId('sharedStateIframe').src='$checkUrl';
 #end
 });
+
+
+dojo.require("dojo.dnd.Source");
+
+dojo.addOnLoad(function() {
+    var containers = dojo.query('.container');
+    var containerSources = [];
+    for(var c = 0; c < containers.length ; c++){
+        var container = new dojo.dnd.Source(containers[c], {
+            withHandles: true,
+            copyOnly: false
+            
+        });
+        containerSources.push(container);
+    }
+
+    for(var c = 0; c < containers.length ; c++){
+        dojo.connect(containerSources[c], "onDndStart", containers[c], function(){
+            dojo.addClass(this, 'dojoDndContainerItemOver');
+        });
+
+        dojo.connect(containerSources[c], "onDndCancel", containers[c], function(){
+            dojo.removeClass(this, 'dojoDndContainerItemOver');
+        });
+
+        dojo.connect(container, "onDndDrop", containerSources[c], function(source, nodes, copy, target){
+            if (this == target) {
+                var params = '';
+                var cols = dojo.query('.container');
+                for(var c = 0; c < cols.length ; c++){
+                    var rows = dojo.query('.dojoDndItem .roundBlockContent > div', cols[c]);
+                    for (var r = 0 ; r < rows.length ; r++) {
+                        var pid = rows[r].id.split("portlet_")[1];
+                        params = params + '&' + pid + '_row=' + r;
+                        params = params + '&' + pid + '_col=' + c;
+                    }
+                }
+                
+                url = "$!jslink.getPage().addQueryData('template', 'CustomizeFormJSONScreen').addQueryData('mode', 'layout')" + params;
+                aipo.customize.submit(url, '$!portlet.ID', function(){
+                });
+                
+                dojo.removeClass(this.node, 'dojoDndContainerItemOver');
+            }
+        });
+    }
+});
+
 
 //]]>
 </script>

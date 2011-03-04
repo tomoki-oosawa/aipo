@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-													  <!-- LAYOUT -->
+                                                      <!-- LAYOUT -->
                                                       <table class="tableWrapper">
                                                         <tbody>
                                                           <tr>
@@ -27,7 +27,7 @@
 #set ($idx = $velocityCount - 1 )
 #set ($width = $!sizes.elementAt($idx))
 #end
-                                                            <td #if ($width) width="$width" #end class="top">
+                                                            <td #if ($width) width="$width" #end class="top container" dojoType="dojo.dnd.Source" withHandles="true">
 #foreach ( $portlet in $column )
 $!portlet.getContent($data)
 #end
