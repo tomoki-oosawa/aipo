@@ -28,6 +28,7 @@
     <module>user</module>
     <module>userfacility</module>
     <module>social</module>
+    <module>storage</module>
   </modules>
 
   <dependencies>
