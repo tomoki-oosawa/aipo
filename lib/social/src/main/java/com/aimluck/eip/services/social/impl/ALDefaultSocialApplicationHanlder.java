@@ -228,6 +228,7 @@ public class ALDefaultSocialApplicationHanlder extends
     Date date = new Date();
     try {
       Application app = Database.create(Application.class);
+      app.setAppId("");
       app.setUrl(url);
       app.setTitle(request.getTitle());
       app.setConsumerKey(generateConsumerKey(url));
@@ -238,6 +239,11 @@ public class ALDefaultSocialApplicationHanlder extends
       app.setUpdateDate(date);
 
       Database.commit();
+
+      app.setAppId(String.valueOf(app.getId()));
+
+      Database.commit();
+
     } catch (Throwable t) {
       Database.rollback();
       throw new RuntimeException(t);

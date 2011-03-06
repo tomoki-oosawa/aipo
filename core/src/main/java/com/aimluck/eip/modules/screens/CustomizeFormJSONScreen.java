@@ -72,9 +72,8 @@ import com.aimluck.eip.util.CustomizeUtils;
 public class CustomizeFormJSONScreen extends ALJSONScreen {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService
-      .getLogger(CustomizeFormJSONScreen.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(CustomizeFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -156,7 +155,7 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
               p.addParameter(p1);
               Parameter p2 = new PsmlParameter();
               p2.setName("url");
-              p2.setValue(app.getAppId().getValue());
+              p2.setValue(app.getUrl().getValue());
               p.addParameter(p2);
               Parameter p3 = new PsmlParameter();
               p3.setName("mid");
