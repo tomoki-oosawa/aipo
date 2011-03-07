@@ -63,10 +63,9 @@ public abstract class ALStorageHandler {
 
   public InputStream getTmpFile(int uid, String folderName, String finename)
       throws FileNotFoundException {
-    return getFile(
-      FOLDER_TMP_FOR_ATTACHMENT_FILES,
-      uid + File.separator,
-      finename);
+    return getFile(FOLDER_TMP_FOR_ATTACHMENT_FILES, uid
+      + File.separator
+      + folderName, finename);
   }
 
   public abstract boolean copyFile(String srcRootPath, String srcDir,
@@ -74,6 +73,8 @@ public abstract class ALStorageHandler {
       String destFileName);
 
   public abstract long getFolderSize(String rootPath, String dir);
+
+  public abstract long getFileSize(String rootPath, String dir, String filename);
 
   public abstract boolean deleteFolder(String rootPath, String dir);
 

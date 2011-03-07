@@ -53,6 +53,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
@@ -396,9 +397,8 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
             .getValue(), recipients);
         }
       }
-      File folder = FileuploadUtils.getFolder(orgId, uid, folderName);
       // 添付ファイル保存先のフォルダを削除
-      FileuploadUtils.deleteFolder(folder);
+      ALStorageService.deleteTmpFolder(uid, folderName);
     } catch (Exception e) {
       logger.error("[MsgboardTopicReplyFormData]", e);
       throw new ALDBErrorException();

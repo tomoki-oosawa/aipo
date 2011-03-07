@@ -46,7 +46,6 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
-import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.orm.Database;
@@ -56,6 +55,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
@@ -498,9 +498,8 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
         }
       }
 
-      File folder = FileuploadUtils.getFolder(orgId, uid, folderName);
       // 添付ファイル保存先のフォルダを削除
-      FileuploadUtils.deleteFolder(folder);
+      ALStorageService.deleteTmpFolder(uid, folderName);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
@@ -673,9 +672,8 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
         }
       }
 
-      File folder = FileuploadUtils.getFolder(orgId, uid, folderName);
       // 添付ファイル保存先のフォルダを削除
-      FileuploadUtils.deleteFolder(folder);
+      ALStorageService.deleteTmpFolder(uid, folderName);
     } catch (Exception ex) {
       Database.rollback();
       logger.error("Exception", ex);

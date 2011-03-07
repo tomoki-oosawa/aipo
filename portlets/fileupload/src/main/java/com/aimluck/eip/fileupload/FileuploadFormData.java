@@ -20,9 +20,6 @@
 package com.aimluck.eip.fileupload;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -40,7 +37,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -80,24 +77,18 @@ public class FileuploadFormData extends ALAbstractFormData {
   /** ログインユーザ ID */
   private int userId = -1;
 
-  private String orgId = null;
-
-  File rootFolder = null;
-
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
     userId = ALEipUtils.getUserId(rundata);
-    orgId = Database.getDomainName();
-    rootFolder = FileuploadUtils.getRootFolder(orgId, userId);
 
     folderName =
       rundata.getParameters().getString(
         FileuploadUtils.KEY_FILEUPLOAD_FODLER_NAME);
     if (folderName == null || "".equals(folderName)) {
-      folderName = getNewAttachmentFolderName(rootFolder);
+      folderName = "0_" + String.valueOf(System.nanoTime());
     }
   }
 
@@ -149,9 +140,8 @@ public class FileuploadFormData extends ALAbstractFormData {
 
     if (attachmentItem != null) {
       if (attachmentItem.getSize() > 0) {
-        String folderpath = rootFolder + File.separator + folderName;
-
-        long fileSizeSum = FileuploadUtils.getFolderSize(folderpath);
+        long fileSizeSum =
+          ALStorageService.getTmpFolderSize(userId, folderName);
         fileSizeSum += attachmentItem.getSize();
         if (fileSizeSum > TurbineUpload.getSizeMax()) {
           msgList.add("追加したファイルの全容量が 7MB よりも大きくなりました。これ以上、ファイルを追加することはできません。");
@@ -213,33 +203,18 @@ public class FileuploadFormData extends ALAbstractFormData {
       List<String> msgList) {
 
     try {
-      File saveFolder = new File(rootFolder + File.separator + folderName);
-      if (!saveFolder.exists()) {
-        saveFolder.mkdirs();
-      }
-      String newAttachmentFileName = getNewAttachmentFileName(saveFolder);
-      int fileId = Integer.parseInt(newAttachmentFileName);
+      int fileId = Long.valueOf(System.nanoTime()).intValue();
+      String newAttachmentFileName = String.valueOf(fileId);
 
       String realfilename =
         FileuploadUtils.getRealFileName(attachmentItem.getName());
 
-      String filepath =
-        rootFolder
-          + File.separator
-          + folderName
-          + File.separator
-          + newAttachmentFileName;
-      File file = new File(filepath);
-      file.createNewFile();
-      attachmentItem.write(file.getAbsolutePath());
-
-      // 一時添付ファイル名の保存
-      PrintWriter writer =
-        new PrintWriter(new OutputStreamWriter(new FileOutputStream(filepath
-          + FileuploadUtils.EXT_FILENAME), FileuploadUtils.FILE_ENCODING));
-      writer.println(realfilename);
-      writer.flush();
-      writer.close();
+      ALStorageService.createNewTmpFile(
+        attachmentItem.getInputStream(),
+        userId,
+        folderName,
+        newAttachmentFileName,
+        realfilename);
 
       filebean = new FileuploadBean();
       filebean.setFolderName(folderName);
@@ -275,6 +250,7 @@ public class FileuploadFormData extends ALAbstractFormData {
     attachmentName.setTrim(true);
   }
 
+  @SuppressWarnings("unused")
   private String getNewAttachmentFolderName(File folder) {
     int maxNum = 1;
     String[] filenames = folder.list();
@@ -299,6 +275,7 @@ public class FileuploadFormData extends ALAbstractFormData {
     return Integer.toString(maxNum);
   }
 
+  @SuppressWarnings("unused")
   private String getNewAttachmentFileName(File folder) {
     int maxNum = 1;
     String[] filenames = folder.list();

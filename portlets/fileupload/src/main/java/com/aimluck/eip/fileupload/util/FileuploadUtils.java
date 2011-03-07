@@ -147,6 +147,7 @@ public class FileuploadUtils {
    * 
    * @return
    */
+  @Deprecated
   public static String getNewFileName(String folderPath) {
     int count = 0;
 
@@ -307,8 +308,10 @@ public class FileuploadUtils {
    * from "c:\\abc.txt"<br />
    * to "c:\\tmp\\abc.txt"
    * 
+   * @deprecated ALStorageService#copyFile
    * @return
    */
+  @Deprecated
   public static boolean copyFile(File from, File to) {
     boolean res = true;
     FileChannel srcChannel = null;
@@ -348,7 +351,9 @@ public class FileuploadUtils {
    * 
    * @param folderPath
    * @return
+   * @deprecated ALStorageService#getFolderSize
    */
+  @Deprecated
   public static long getFolderSize(String folderPath) {
     if (folderPath == null || folderPath.equals("")) {
       return 0;
@@ -381,7 +386,9 @@ public class FileuploadUtils {
    * 
    * @param file
    * @return
+   * @deprecated ALStorageService#getFileSize
    */
+  @Deprecated
   public static int getFileSize(File file) {
     if (file == null) {
       return -1;
@@ -421,7 +428,9 @@ public class FileuploadUtils {
    * 指定したフォルダ以下を全て削除する．
    * 
    * @return
+   * @deprecated ALStorageService#deleteFolder
    */
+  @Deprecated
   public static boolean deleteFolder(File folder) {
     if (folder == null) {
       return true;

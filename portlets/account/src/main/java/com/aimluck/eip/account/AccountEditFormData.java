@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.account;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -48,6 +47,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -139,6 +139,7 @@ public class AccountEditFormData extends ALAbstractFormData {
    *
    *
    */
+  @Override
   public void initField() {
     // 名
     firstname = new ALStringField();
@@ -533,12 +534,9 @@ public class AccountEditFormData extends ALAbstractFormData {
         null);
 
       // 一時的な添付ファイルの削除
-      File folder =
-        FileuploadUtils.getFolder(
-          orgId,
-          ALEipUtils.getUserId(rundata),
-          folderName);
-      FileuploadUtils.deleteFolder(folder);
+      ALStorageService.deleteTmpFolder(
+        ALEipUtils.getUserId(rundata),
+        folderName);
 
       return true;
     } catch (Exception e) {

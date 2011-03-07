@@ -61,6 +61,7 @@ import com.aimluck.eip.services.orgutils.ALOrgUtilsHandler;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
@@ -907,10 +908,7 @@ public class MsgboardUtils {
             FileuploadUtils.DEF_THUMBNAIL_HEIGTH,
             msgList);
 
-        String filename =
-          FileuploadUtils.getNewFileName(MsgboardUtils.getSaveDirPath(
-            orgId,
-            uid));
+        String filename = "0_" + String.valueOf(System.nanoTime());
 
         // 新規オブジェクトモデル
         EipTMsgboardFile file = Database.create(EipTMsgboardFile.class);
@@ -932,17 +930,14 @@ public class MsgboardUtils {
         file.setUpdateDate(Calendar.getInstance().getTime());
 
         // ファイルの移動
-        File srcFile =
-          FileuploadUtils.getAbsolutePath(orgId, uid, folderName, filebean
-            .getFileId());
-        File destFile =
-          new File(MsgboardUtils.getAbsolutePath(orgId, uid, filename));
-        FileuploadUtils.copyFile(srcFile, destFile);
+        ALStorageService.copyTmpFile(uid, folderName, String.valueOf(filebean
+          .getFileId()), FOLDER_FILEDIR_MSGBOARD, CATEGORY_KEY
+          + File.separator
+          + uid, filename);
       }
 
       // 添付ファイル保存先のフォルダを削除
-      File folder = FileuploadUtils.getFolder(orgId, uid, folderName);
-      FileuploadUtils.deleteFolder(folder);
+      ALStorageService.deleteTmpFolder(uid, folderName);
     } catch (Exception e) {
       Database.rollback();
       logger.error("Exception", e);

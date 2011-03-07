@@ -60,6 +60,7 @@ import com.aimluck.eip.mail.ALSmtpMailSender;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.util.WebMailUtils;
 
@@ -150,6 +151,7 @@ public class WebMailFormData extends ALAbstractFormData {
   /**
    * 
    */
+  @Override
   public void initField() {
     // メール作成のタイプ
     mailType = new ALNumberField();
@@ -350,8 +352,7 @@ public class WebMailFormData extends ALAbstractFormData {
       String delim = ",";
 
       // オブジェクトモデルを取得
-      EipMMailAccount account =
-        ALMailUtils.getMailAccount( userId, accountId);
+      EipMMailAccount account = ALMailUtils.getMailAccount(userId, accountId);
 
       ALMailHandler handler =
         ALMailFactoryService.getInstance().getMailHandler();
@@ -374,9 +375,8 @@ public class WebMailFormData extends ALAbstractFormData {
 
       if (success_send == ALSmtpMailSender.SEND_MSG_SUCCESS) {
         if (hasAttachments) {
-          File folder = FileuploadUtils.getFolder(orgId, userId, folderName);
           // 添付ファイル保存先のフォルダを削除
-          FileuploadUtils.deleteFolder(folder);
+          ALStorageService.deleteTmpFolder(userId, folderName);
         }
       } else {
         if (success_send == ALSmtpMailSender.SEND_MSG_FAIL) {
@@ -485,8 +485,7 @@ public class WebMailFormData extends ALAbstractFormData {
       // Body
       try {
         // オブジェクトモデルを取得
-        EipMMailAccount account =
-          ALMailUtils.getMailAccount( userId, accountId);
+        EipMMailAccount account = ALMailUtils.getMailAccount(userId, accountId);
         // 署名と返信とを本文に追加
         if (account.getSignature() != null
           && !"".equals(account.getSignature())) {
@@ -587,8 +586,7 @@ public class WebMailFormData extends ALAbstractFormData {
       fileuploadList = FileuploadUtils.getFileuploadList(rundata);
       // Body
       // オブジェクトモデルを取得
-      EipMMailAccount account =
-        ALMailUtils.getMailAccount( userId, accountId);
+      EipMMailAccount account = ALMailUtils.getMailAccount(userId, accountId);
       // 署名を本文に追加
       if (!ALEipConstants.MODE_INSERT.equals(rundata.getParameters().get(
         ALEipConstants.MODE))

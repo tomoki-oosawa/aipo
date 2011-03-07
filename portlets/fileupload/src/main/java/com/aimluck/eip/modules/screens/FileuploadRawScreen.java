@@ -20,7 +20,6 @@
 package com.aimluck.eip.modules.screens;
 
 import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -31,6 +30,8 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.modules.screens.RawScreen;
 import org.apache.turbine.util.RunData;
+
+import com.aimluck.eip.services.storage.ALStorageService;
 
 /**
  * ファイルを出力するクラスです。 <br />
@@ -113,7 +114,7 @@ public class FileuploadRawScreen extends RawScreen {
         throw new FileNotFoundException();
       }
 
-      input = new BufferedInputStream(new FileInputStream(filepath));
+      input = new BufferedInputStream(ALStorageService.getFile(filepath));
 
       byte[] buffer = new byte[1024];
       int len;

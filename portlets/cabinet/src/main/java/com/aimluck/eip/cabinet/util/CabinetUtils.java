@@ -60,12 +60,12 @@ public class CabinetUtils {
   public static final String KEY_FOLDER_ID = "folder_id";
 
   /** 共有ファイルを保管するディレクトリのカテゴリキーの指定 */
-  protected static final String CATEGORY_KEY = JetspeedResources.getString(
+  public static final String CATEGORY_KEY = JetspeedResources.getString(
     "aipo.cabinet.categorykey",
     "");
 
   /** 共有ファイルを保管するディレクトリの指定 */
-  private static final String FOLDER_FILEDIR_CABINET = JetspeedResources
+  public static final String FOLDER_FILEDIR_CABINET = JetspeedResources
     .getString("aipo.filedir", "");
 
   /** 全てのユーザーが閲覧／追加／編集／削除可 */

@@ -70,6 +70,8 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
         + File.separator
         + Database.getDomainName()
         + File.separator
+        + uid
+        + File.separator
         + dir);
 
     if (!path.exists()) {
@@ -239,6 +241,17 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
       }
     }
     return fileSizeSum;
+  }
+
+  @Override
+  public long getFileSize(String rootPath, String dir, String filename) {
+    return getFileSize(new File(rootPath
+      + File.separator
+      + Database.getDomainName()
+      + File.separator
+      + dir
+      + File.separator
+      + filename));
   }
 
   protected int getFileSize(File file) {

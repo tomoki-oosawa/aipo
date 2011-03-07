@@ -48,6 +48,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -156,6 +157,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
     // フォルダ ID
     folder_id = new ALNumberField();
@@ -437,21 +439,22 @@ public class CabinetFileFormData extends ALAbstractFormData {
       int uid = ALEipUtils.getUserId(rundata);
       FileuploadLiteBean filebean = fileuploadList.get(0);
       // ファイルの移動先
-      String filename =
-        FileuploadUtils.getNewFileName(CabinetUtils.getSaveDirPath(orgId));
-
-      // ファイルの移動先
-      File destFile = new File(CabinetUtils.getAbsolutePath(orgId, filename));
-
-      // 一時保存の添付ファイル
-      File srcFile =
-        FileuploadUtils.getAbsolutePath(orgId, uid, folderName, filebean
-          .getFileId());
+      String filename = "0_" + String.valueOf(System.nanoTime());
 
       // ファイルの移動
-      FileuploadUtils.copyFile(srcFile, destFile);
+      ALStorageService.copyTmpFile(
+        uid,
+        folderName,
+        String.valueOf(filebean.getFileId()),
+        CabinetUtils.FOLDER_FILEDIR_CABINET,
+        CabinetUtils.CATEGORY_KEY + File.separator + uid,
+        filename);
 
-      double fileSize = Math.ceil(destFile.length() / 1024.0);
+      double fileSize =
+        ALStorageService.getFileSize(
+          CabinetUtils.FOLDER_FILEDIR_CABINET,
+          CabinetUtils.CATEGORY_KEY + File.separator + uid,
+          filename);
 
       EipTCabinetFolder folder =
         Database.get(EipTCabinetFolder.class, Integer.valueOf((int) folder_id
@@ -490,9 +493,8 @@ public class CabinetFileFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_CABINET_FILE,
         file_title.getValue());
 
-      File folder_tmp = FileuploadUtils.getFolder(orgId, uid, folderName);
       // 添付ファイル保存先のフォルダを削除
-      FileuploadUtils.deleteFolder(folder_tmp);
+      ALStorageService.deleteTmpFolder(uid, folderName);
 
       res = true;
     } catch (Exception ex) {
@@ -531,24 +533,27 @@ public class CabinetFileFormData extends ALAbstractFormData {
       if (is_upload) {
         // アップロードが確認できた場合
         FileuploadLiteBean filebean = fileuploadList.get(0);
-        String filename =
-          FileuploadUtils.getNewFileName(CabinetUtils.getSaveDirPath(orgId));
-        // ファイルの移動先
-        File destFile = new File(CabinetUtils.getAbsolutePath(orgId, filename));
-
-        // 一時保存の添付ファイル
-        File srcFile =
-          FileuploadUtils.getAbsolutePath(orgId, uid, folderName, filebean
-            .getFileId());
+        String filename = "0_" + String.valueOf(System.nanoTime());
 
         // ファイルの移動
-        FileuploadUtils.copyFile(srcFile, destFile);
+        ALStorageService.copyTmpFile(
+          uid,
+          folderName,
+          String.valueOf(filebean.getFileId()),
+          CabinetUtils.FOLDER_FILEDIR_CABINET,
+          CabinetUtils.CATEGORY_KEY + File.separator + uid,
+          filename);
 
         // ファイル名
         file.setFileName(file_name.getValue());
 
         // ファイルサイズ
-        double fileSize = Math.ceil(destFile.length() / 1024.0);
+        double fileSize =
+          ALStorageService.getFileSize(
+            CabinetUtils.FOLDER_FILEDIR_CABINET,
+            CabinetUtils.CATEGORY_KEY + File.separator + uid,
+            filename);
+        // double fileSize = Math.ceil(destFile.length() / 1024.0);
         file.setFileSize(Long.valueOf((long) fileSize));
 
         // ファイルパス

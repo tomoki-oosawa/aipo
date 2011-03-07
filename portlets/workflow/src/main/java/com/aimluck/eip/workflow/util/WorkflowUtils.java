@@ -72,6 +72,7 @@ import com.aimluck.eip.services.orgutils.ALOrgUtilsHandler;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.user.beans.UserLiteBean;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -1425,10 +1426,7 @@ public class WorkflowUtils {
             FileuploadUtils.DEF_THUMBNAIL_HEIGTH,
             msgList);
 
-        String filename =
-          FileuploadUtils.getNewFileName(WorkflowUtils.getSaveDirPath(
-            orgId,
-            uid));
+        String filename = i + "_" + String.valueOf(System.nanoTime());
 
         // 新規オブジェクトモデル
         EipTWorkflowFile file = Database.create(EipTWorkflowFile.class);
@@ -1450,20 +1448,14 @@ public class WorkflowUtils {
         file.setUpdateDate(Calendar.getInstance().getTime());
 
         // ファイルの移動
-        File srcFile =
-          FileuploadUtils.getAbsolutePath(orgId, uid, folderName, filebean
-            .getFileId());
-        File destFile =
-          new File(WorkflowUtils.getAbsolutePath(orgId, uid, filename));
-        FileuploadUtils.copyFile(srcFile, destFile);
-
-        srcFile = null;
-        destFile = null;
+        ALStorageService.copyTmpFile(uid, folderName, String.valueOf(filebean
+          .getFileId()), FOLDER_FILEDIR_WORKFLOW, CATEGORY_KEY
+          + File.separator
+          + uid, filename);
       }
 
       // 添付ファイル保存先のフォルダを削除
-      File folder = FileuploadUtils.getFolder(orgId, uid, folderName);
-      FileuploadUtils.deleteFolder(folder);
+      ALStorageService.deleteTmpFolder(uid, folderName);
     } catch (Exception e) {
       logger.error("Exception", e);
       return false;

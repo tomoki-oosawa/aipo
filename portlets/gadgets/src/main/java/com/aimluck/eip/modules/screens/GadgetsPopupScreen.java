@@ -74,6 +74,7 @@ public class GadgetsPopupScreen extends ALVelocityScreen {
 
     Map<String, Object> maps = new HashMap<String, Object>();
 
+    // FIXME: 負の場合の挙動
     String id = String.valueOf(System.nanoTime());
     context.put("portletId", id);
     JSONObject jsonObject = new JSONObject();

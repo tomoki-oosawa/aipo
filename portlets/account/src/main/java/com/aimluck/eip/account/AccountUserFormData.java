@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.account;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -73,12 +72,13 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.user.beans.UserGroupLiteBean;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザーアカウントのフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class AccountUserFormData extends ALAbstractFormData {
 
@@ -194,12 +194,12 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 初期化します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
-   *
-   *
+   * 
+   * 
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -218,8 +218,8 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
-   *
+   * 
+   * 
    */
   @Override
   public void initField() {
@@ -317,7 +317,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -363,8 +363,8 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドに対する制約条件を設定します。 <BR>
-   *
-   *
+   * 
+   * 
    */
   @Override
   protected void setValidator() {
@@ -426,10 +426,10 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return
-   *
+   * 
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -621,7 +621,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を読み込みます。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -704,7 +704,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を追加します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -841,12 +841,9 @@ public class AccountUserFormData extends ALAbstractFormData {
       }
 
       // 一時的な添付ファイルの削除
-      File folder =
-        FileuploadUtils.getFolder(
-          orgId,
-          ALEipUtils.getUserId(rundata),
-          folderName);
-      FileuploadUtils.deleteFolder(folder);
+      ALStorageService.deleteTmpFolder(
+        ALEipUtils.getUserId(rundata),
+        folderName);
     } catch (Exception e) {
       Database.rollback();
       logger.error("Exception", e);
@@ -857,7 +854,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -1023,12 +1020,9 @@ public class AccountUserFormData extends ALAbstractFormData {
       }
 
       // 一時的な添付ファイルの削除
-      File folder =
-        FileuploadUtils.getFolder(
-          orgId,
-          ALEipUtils.getUserId(rundata),
-          folderName);
-      FileuploadUtils.deleteFolder(folder);
+      ALStorageService.deleteTmpFolder(
+        ALEipUtils.getUserId(rundata),
+        folderName);
     } catch (Exception e) {
       logger.error("Exception", e);
       res = false;
@@ -1038,12 +1032,12 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を無効化します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return
-   *
+   * 
    */
   public boolean disableFormData(RunData rundata, Context context,
       List<String> msgList) {
@@ -1120,12 +1114,12 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を有効化します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
    * @return
-   *
+   * 
    */
   public boolean enableFormData(RunData rundata, Context context,
       List<String> msgList) {
@@ -1180,7 +1174,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -1343,7 +1337,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 添付ファイルを削除する．
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -1376,7 +1370,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -1402,7 +1396,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 携帯メールアドレスを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getCellularMail() {
@@ -1411,7 +1405,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 会社IDを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALNumberField getCompanyId() {
@@ -1420,7 +1414,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * アカウント有効/無効フラグを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getDisabled() {
@@ -1429,7 +1423,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * メールアドレスを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getEmail() {
@@ -1438,7 +1432,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * フリガナ（名）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFirstNameKana() {
@@ -1447,7 +1441,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 名前（名）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFirstName() {
@@ -1456,7 +1450,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（内線）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getInTelephone() {
@@ -1465,7 +1459,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * フリガナ（姓）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getLastNameKana() {
@@ -1474,7 +1468,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 名前（姓）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getLastName() {
@@ -1483,7 +1477,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getCellularPhone1() {
@@ -1492,7 +1486,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getCellularPhone2() {
@@ -1501,7 +1495,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getCellularPhone3() {
@@ -1510,7 +1504,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getOutTelephone1() {
@@ -1519,7 +1513,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getOutTelephone2() {
@@ -1528,7 +1522,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getOutTelephone3() {
@@ -1537,7 +1531,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * パスワードを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getPassword() {
@@ -1546,7 +1540,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * パスワード2を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getPassword2() {
@@ -1555,7 +1549,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 役職IDを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALNumberField getPositionId() {
@@ -1564,7 +1558,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 部署IDを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALNumberField getPostId() {
@@ -1573,7 +1567,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * ユーザー名を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getUserName() {
@@ -1582,7 +1576,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 役職リストを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public List<ALEipPosition> getPositionList() {
@@ -1590,7 +1584,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public List<UserGroupLiteBean> getPostList() {
@@ -1598,7 +1592,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -1606,7 +1600,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public Map<Integer, ALEipPosition> getPositionMap() {
@@ -1614,7 +1608,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public AccountPostFormData getPost() {
@@ -1622,7 +1616,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public AccountPositionFormData getPosition() {
@@ -1630,7 +1624,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public boolean isNewPost() {
@@ -1638,7 +1632,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public boolean isNewPosition() {

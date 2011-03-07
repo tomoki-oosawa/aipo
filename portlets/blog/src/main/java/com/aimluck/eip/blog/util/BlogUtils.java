@@ -21,7 +21,6 @@ package com.aimluck.eip.blog.util;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,9 +65,9 @@ import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsHandler;
-import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -99,11 +98,12 @@ public class BlogUtils {
     "UTF-8");
 
   /** ブログの添付ファイルを保管するディレクトリの指定 */
-  protected static final String FOLDER_FILEDIR_BLOG = JetspeedResources
-    .getString("aipo.filedir", "");
+  public static final String FOLDER_FILEDIR_BLOG = JetspeedResources.getString(
+    "aipo.filedir",
+    "");
 
   /** ブログの添付ファイルを保管するディレクトリのカテゴリキーの指定 */
-  protected static final String CATEGORY_KEY = JetspeedResources.getString(
+  public static final String CATEGORY_KEY = JetspeedResources.getString(
     "aipo.blog.categorykey",
     "");
 
@@ -581,7 +581,7 @@ public class BlogUtils {
    */
   public static String getSaveDirPath(String orgId, int uid) {
     File path =
-      new File(ALOrgUtilsService.getDocumentPath(
+      new File(ALStorageService.getDocumentPath(
         FOLDER_FILEDIR_BLOG,
         CATEGORY_KEY)
         + File.separator
@@ -664,14 +664,6 @@ public class BlogUtils {
         return null;
       }
 
-      String orgId = Database.getDomainName();
-      File folder =
-        FileuploadUtils.getFolder(
-          orgId,
-          ALEipUtils.getUserId(rundata),
-          folderName);
-      String folderpath = folder.getAbsolutePath();
-
       int length = newfileids.size();
       for (int i = 0; i < length; i++) {
         if (newfileids.get(i) == null || newfileids.get(i).equals("")) {
@@ -694,10 +686,8 @@ public class BlogUtils {
           BufferedReader reader = null;
           try {
             reader =
-              new BufferedReader(new InputStreamReader(new FileInputStream(
-                folderpath
-                  + File.separator
-                  + fileid
+              new BufferedReader(new InputStreamReader(ALStorageService
+                .getTmpFile(ALEipUtils.getUserId(rundata), folderName, fileid
                   + FileuploadUtils.EXT_FILENAME), FILE_ENCODING));
             String line = reader.readLine();
             if (line == null || line.length() <= 0) {

@@ -53,6 +53,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
@@ -469,9 +470,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
               FileuploadUtils.DEF_THUMBNAIL_HEIGTH,
               msgList);
 
-          String filename =
-            FileuploadUtils
-              .getNewFileName(BlogUtils.getSaveDirPath(orgId, uid));
+          String filename = j + "_" + String.valueOf(System.nanoTime());
 
           // 新規オブジェクトモデル
           EipTBlogFile file = Database.create(EipTBlogFile.class);
@@ -486,20 +485,17 @@ public class BlogEntryFormData extends ALAbstractFormData {
           file.setUpdateDate(Calendar.getInstance().getTime());
 
           // ファイルの移動
-          File srcFile =
-            FileuploadUtils.getAbsolutePath(orgId, uid, folderName, newfilebean
-              .getFileId());
-          File destFile =
-            new File(BlogUtils.getAbsolutePath(orgId, uid, filename));
-          FileuploadUtils.copyFile(srcFile, destFile);
-
-          srcFile = null;
-          destFile = null;
+          ALStorageService.copyTmpFile(
+            uid,
+            folderName,
+            String.valueOf(newfilebean.getFileId()),
+            BlogUtils.FOLDER_FILEDIR_BLOG,
+            BlogUtils.CATEGORY_KEY + File.separator + uid,
+            filename);
         }
 
         // 添付ファイル保存先のフォルダを削除
-        File folder = FileuploadUtils.getFolder(orgId, uid, folderName);
-        FileuploadUtils.deleteFolder(folder);
+        ALStorageService.deleteTmpFolder(uid, folderName);
       }
 
     } catch (Exception e) {
@@ -639,8 +635,6 @@ public class BlogEntryFormData extends ALAbstractFormData {
     if (res) {
       try {
         blogthema.setFormData(rundata, context, msgList);
-
-        // fileuploadList = FileuploadUtils.getFileuploadList(rundata);
         fileuploadList = BlogUtils.getFileuploadList(rundata);
       } catch (Exception ex) {
         logger.error("Exception", ex);
