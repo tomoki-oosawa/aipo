@@ -29,6 +29,7 @@ import org.apache.turbine.util.RunData;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 
@@ -63,13 +64,14 @@ public class ALEmptyAccessControlHandler extends ALAccessControlHandler {
     sb.append(TurbineUser.USER_ID_PK_COLUMN);
     sb.append(" FROM turbine_user WHERE ");
     sb.append(TurbineUser.USER_ID_PK_COLUMN);
-    sb.append(" != ");
-    sb.append(Integer.toString(uid));
+    sb.append(" != #bind($uid)");
 
     String sqlString = sb.toString();
 
     List<TurbineUser> list =
-      Database.sql(TurbineUser.class, sqlString).fetchList();
+      Database.sql(TurbineUser.class, sqlString).param(
+        "uid",
+        Integer.valueOf(uid)).fetchList();
     List<Integer> userIds = new ArrayList<Integer>();
     if ((list == null) || ((list.size()) < 1)) {
       return userIds;
@@ -94,23 +96,34 @@ public class ALEmptyAccessControlHandler extends ALAccessControlHandler {
     sb.append(" FROM turbine_user WHERE (");
     sb.append(TurbineUser.USER_ID_PK_COLUMN);
     sb.append(" in (");
+
     for (int i = 0; i < u_size; i++) {
-      ALEipUser member = ulist.get(i);
-      sb.append(Long.toString(member.getUserId().getValue()));
+      sb.append("#bind($").append(Integer.toString(i)).append(")");
       if (i + 1 < u_size) {
         sb.append(",");
       }
     }
+
     sb.append(")) AND (");
     sb.append(TurbineUser.USER_ID_PK_COLUMN);
-    sb.append(" != ");
-    sb.append(Integer.toString(uid));
+    sb.append(" != #bind($uid)");
     sb.append(")");
 
     String sqlString = sb.toString();
 
-    List<TurbineUser> list =
-      Database.sql(TurbineUser.class, sqlString).fetchList();
+    SQLTemplate<TurbineUser> template =
+      Database.sql(TurbineUser.class, sqlString);
+    template.param("uid", Integer.valueOf(uid));
+
+    for (int i = 0; i < u_size; i++) {
+      ALEipUser member = ulist.get(i);
+      template.param(Integer.toString(i), Integer.valueOf((int) member
+        .getUserId()
+        .getValue()));
+    }
+
+    List<TurbineUser> list = template.fetchList();
+
     if ((list == null) || ((list.size()) < 1)) {
       return userIds;
     }

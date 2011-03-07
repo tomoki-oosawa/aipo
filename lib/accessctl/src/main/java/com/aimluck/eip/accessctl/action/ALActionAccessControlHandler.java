@@ -36,6 +36,7 @@ import com.aimluck.eip.cayenne.om.account.EipTAclUserRoleMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.util.ALUserContextLocator;
@@ -173,37 +174,50 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
     sb.append(" FROM eip_t_acl_role WHERE ((");
     sb.append(EipTAclRole.ACL_TYPE_COLUMN);
     sb.append(" & ");
-    sb.append(Integer.toString(acl_type));
+    sb.append("#bind($aclType)");
     sb.append(") = ");
-    sb.append(Integer.toString(acl_type));
+    sb.append("#bind($aclType)");
     sb.append(") AND (");
     sb.append(EipTAclPortletFeature.FEATURE_ID_PK_COLUMN);
     sb.append(" IN (SELECT ");
     sb.append(EipTAclPortletFeature.FEATURE_ID_PK_COLUMN);
     sb.append(" FROM eip_t_acl_portlet_feature WHERE ");
     sb.append(EipTAclPortletFeature.FEATURE_NAME_COLUMN);
-    sb.append("='");
-    sb.append(feat.trim());
-    sb.append("'))))) AND (");
+    sb.append("= ");
+    sb.append("#bind($feat)");
+    sb.append("))))) AND (");
     sb.append(TurbineUser.USER_ID_PK_COLUMN);
     sb.append(" in (");
+
     for (int i = 0; i < u_size; i++) {
-      ALEipUser member = ulist.get(i);
-      sb.append(Long.toString(member.getUserId().getValue()));
+      sb.append("#bind($").append(Integer.toString(i)).append(")");
       if (i + 1 < u_size) {
         sb.append(",");
       }
     }
+
     sb.append(")) AND (");
     sb.append(TurbineUser.USER_ID_PK_COLUMN);
     sb.append(" != ");
-    sb.append(Integer.toString(uid));
+    sb.append("#bind($uid)");
     sb.append(")");
 
     String sqlString = sb.toString();
 
-    List<TurbineUser> list =
-      Database.sql(TurbineUser.class, sqlString).fetchList();
+    SQLTemplate<TurbineUser> template =
+      Database.sql(TurbineUser.class, sqlString);
+    template.param("aclType", Integer.valueOf(acl_type));
+    template.param("feat", feat.trim());
+    template.param("uid", Integer.valueOf(uid));
+
+    for (int i = 0; i < u_size; i++) {
+      ALEipUser member = ulist.get(i);
+      template.param(Integer.toString(i), Integer.valueOf((int) member
+        .getUserId()
+        .getValue()));
+    }
+
+    List<TurbineUser> list = template.fetchList();
 
     for (TurbineUser tuser : list) {
       userIds.add(tuser.getUserId());
@@ -232,18 +246,18 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
     sb.append(" FROM eip_t_acl_role WHERE ((");
     sb.append(EipTAclRole.ACL_TYPE_COLUMN);
     sb.append(" & ");
-    sb.append(Integer.toString(aclNumber));
+    sb.append("#bind($aclNumber)");
     sb.append(") = ");
-    sb.append(Integer.toString(aclNumber));
+    sb.append("#bind($aclNumber)");
     sb.append(") AND (");
     sb.append(EipTAclPortletFeature.FEATURE_ID_PK_COLUMN);
     sb.append(" IN (SELECT ");
     sb.append(EipTAclPortletFeature.FEATURE_ID_PK_COLUMN);
     sb.append(" FROM eip_t_acl_portlet_feature WHERE ");
     sb.append(EipTAclPortletFeature.FEATURE_NAME_COLUMN);
-    sb.append("='");
-    sb.append(feat.trim());
-    sb.append("'))))");
+    sb.append("= ");
+    sb.append("#bind($feat)");
+    sb.append("))))");
 
     StringBuffer statement = new StringBuffer();
 
@@ -263,10 +277,13 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
     statement.append(" AND C.GROUP_NAME = #bind($groupname) ");
     statement.append("ORDER BY D.POSITION");
 
-    List<TurbineUser> list =
-      Database.sql(TurbineUser.class, statement.toString()).param(
-        "groupname",
-        groupname).fetchList();
+    SQLTemplate<TurbineUser> template =
+      Database.sql(TurbineUser.class, statement.toString());
+    template.param("aclNumber", Integer.valueOf(aclNumber));
+    template.param("feat", feat.trim());
+    template.param("groupname", groupname);
+
+    List<TurbineUser> list = template.fetchList();
     return list;
   }
 
