@@ -20,7 +20,6 @@
 package com.aimluck.eip.blog.util;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,8 +62,6 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
-import com.aimluck.eip.services.orgutils.ALOrgUtilsFactoryService;
-import com.aimluck.eip.services.orgutils.ALOrgUtilsHandler;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.services.storage.ALStorageService;
@@ -580,16 +577,9 @@ public class BlogUtils {
    * @return
    */
   public static String getSaveDirPath(String orgId, int uid) {
-    File path =
-      new File(ALStorageService.getDocumentPath(
-        FOLDER_FILEDIR_BLOG,
-        CATEGORY_KEY)
-        + File.separator
-        + uid);
-    if (!path.exists()) {
-      path.mkdirs();
-    }
-    return path.getAbsolutePath();
+    return ALStorageService.getDocumentPath(FOLDER_FILEDIR_BLOG, CATEGORY_KEY
+      + ALStorageService.separator()
+      + uid);
   }
 
   /**
@@ -600,28 +590,6 @@ public class BlogUtils {
    */
   public static String getRelativePath(String fileName) {
     return new StringBuffer().append("/").append(fileName).toString();
-  }
-
-  /**
-   * 添付ファイル保存先（絶対パス）を取得します。
-   * 
-   * @param uid
-   * @return
-   */
-  public static String getAbsolutePath(String orgId, int uid, String fileName) {
-    ALOrgUtilsHandler handler =
-      ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
-    StringBuffer sb =
-      new StringBuffer()
-        .append(
-          handler.getDocumentPath(FOLDER_FILEDIR_BLOG, orgId, CATEGORY_KEY))
-        .append(File.separator)
-        .append(uid);
-    File f = new File(sb.toString());
-    if (!f.exists()) {
-      f.mkdirs();
-    }
-    return sb.append(File.separator).append(fileName).toString();
   }
 
   /**

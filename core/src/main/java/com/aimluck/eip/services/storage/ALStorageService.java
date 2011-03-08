@@ -21,6 +21,7 @@ package com.aimluck.eip.services.storage;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Calendar;
 
 /**
  * 
@@ -33,6 +34,15 @@ public class ALStorageService {
 
   public static ALStorageHandler getService() {
     return ALStorageFactoryService.getInstance().getStorageHandler();
+  }
+
+  public static void saveFile(InputStream is, String folderPath, String fileName) {
+    getService().saveFile(is, folderPath, fileName);
+  }
+
+  public static void createNewFile(InputStream is, String folderPath,
+      String fileName) {
+    getService().createNewFile(is, folderPath, fileName);
   }
 
   public static void createNewTmpFile(InputStream is, int uid, String dir,
@@ -88,6 +98,14 @@ public class ALStorageService {
     return getService().deleteFolder(rootPath, dir);
   }
 
+  public static boolean deleteFile(String rootPath, String dir, String filename) {
+    return getService().deleteFile(rootPath, dir, filename);
+  }
+
+  public static boolean deleteFile(String filePath) {
+    return getService().deleteFile(filePath);
+  }
+
   public static InputStream getFile(String rootPath, String dir, String fineName)
       throws FileNotFoundException {
     return getService().getFile(rootPath, dir, fineName);
@@ -100,5 +118,21 @@ public class ALStorageService {
 
   public static String getDocumentPath(String rootPath, String categoryKey) {
     return getService().getDocumentPath(rootPath, categoryKey);
+  }
+
+  public static boolean deleteOldFolder(String folderPath, Calendar cal) {
+    return getService().deleteOldFolder(folderPath, cal);
+  }
+
+  public static String separator() {
+    return getService().separator();
+  }
+
+  /**
+   * @param inputStream
+   * @param filepath
+   */
+  public static void createNewFile(InputStream inputStream, String filepath) {
+    getService().createNewFile(inputStream, filepath);
   }
 }

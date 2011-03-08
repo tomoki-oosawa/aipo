@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.fileio;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +31,7 @@ import com.aimluck.eip.common.ALCsvAbstractSelectData;
 import com.aimluck.eip.common.ALCsvTokenizer;
 import com.aimluck.eip.fileio.util.FileIOAddressBookCsvUtils;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.services.storage.ALStorageService;
 
 /**
  * CSV ファイルから読み込んだアドレス帳情報を表示するクラス．
@@ -72,7 +72,7 @@ public class FileIOAddressBookCsvSelectData extends
         filepath =
           FileIOAddressBookCsvUtils
             .getAddressBookCsvFolderName(getTempFolderIndex())
-            + File.separator
+            + ALStorageService.separator()
             + FileIOAddressBookCsvUtils.CSV_ADDRESSBOOK_TEMP_FILENAME;
         return new ResultList<FileIOAddressBookCsvData>(
           readAddressBookInfoFromCsvPage(rundata, filepath, (rundata
@@ -83,7 +83,7 @@ public class FileIOAddressBookCsvSelectData extends
           filepath =
             FileIOAddressBookCsvUtils
               .getAddressBookCsvFolderName(getTempFolderIndex())
-              + File.separator
+              + ALStorageService.separator()
               + FileIOAddressBookCsvUtils.CSV_ADDRESSBOOK_TEMP_ERROR_FILENAME;
         } else {
           return null;
@@ -115,13 +115,13 @@ public class FileIOAddressBookCsvSelectData extends
     String filepath =
       FileIOAddressBookCsvUtils
         .getAddressBookCsvFolderName(getTempFolderIndex())
-        + File.separator
+        + ALStorageService.separator()
         + FileIOAddressBookCsvUtils.CSV_ADDRESSBOOK_TEMP_FILENAME;
 
     String filepath_err =
       FileIOAddressBookCsvUtils
         .getAddressBookCsvFolderName(getTempFolderIndex())
-        + File.separator
+        + ALStorageService.separator()
         + FileIOAddressBookCsvUtils.CSV_ADDRESSBOOK_TEMP_ERROR_FILENAME;
 
     ALCsvTokenizer reader = new ALCsvTokenizer();

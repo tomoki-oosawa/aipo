@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.fileio;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -43,6 +42,7 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -54,9 +54,8 @@ public class FileIOAccountCsvSelectData
     ALCsvAbstractSelectData<FileIOAccountCsvResultData, FileIOAccountCsvResultData> {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(FileIOAccountCsvSelectData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(FileIOAccountCsvSelectData.class.getName());
 
   /** 最大登録可能数を超えているかのフラグ */
   private boolean overMaxUser = false;
@@ -88,7 +87,7 @@ public class FileIOAccountCsvSelectData
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_NO_ERROR) {
         filepath =
           FileIOAccountCsvUtils.getAccountCsvFolderName(getTempFolderIndex())
-            + File.separator
+            + ALStorageService.separator()
             + FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_FILENAME;
         return new ResultList<FileIOAccountCsvResultData>(
           readAccountInfoFromCsvPage(rundata, filepath, (rundata
@@ -98,7 +97,7 @@ public class FileIOAccountCsvSelectData
         if (this.error_count > 0) {
           filepath =
             FileIOAccountCsvUtils.getAccountCsvFolderName(getTempFolderIndex())
-              + File.separator
+              + ALStorageService.separator()
               + FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_ERROR_FILENAME;
         } else {
           return null;
@@ -140,18 +139,13 @@ public class FileIOAccountCsvSelectData
       RunData rundata) throws Exception {
     String filepath =
       FileIOAccountCsvUtils.getAccountCsvFolderName(getTempFolderIndex())
-        + File.separator
+        + ALStorageService.separator()
         + FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_FILENAME;
 
     String filepath_err =
       FileIOAccountCsvUtils.getAccountCsvFolderName(getTempFolderIndex())
-        + File.separator
+        + ALStorageService.separator()
         + FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_ERROR_FILENAME;
-
-    File file = new File(filepath);
-    if (!file.exists()) {
-      return null;
-    }
 
     ALCsvTokenizer reader = new ALCsvTokenizer();
     if (!reader.init(filepath)) {
@@ -524,6 +518,7 @@ public class FileIOAccountCsvSelectData
    * @return
    * 
    */
+  @Override
   protected Object getResultData(FileIOAccountCsvResultData obj) {
     return obj;
   }
@@ -532,6 +527,7 @@ public class FileIOAccountCsvSelectData
    * @param obj
    * @return
    */
+  @Override
   protected Object getResultDataDetail(FileIOAccountCsvResultData obj) {
     return null;
   }

@@ -228,8 +228,7 @@ public abstract class ALSmtpMailSender implements ALMailSender {
         // メールの本文をセット
         ALMailUtils.setTextContent(msg, mcontext.getMsgText());
       } else {
-        String[] checkedFilePaths =
-          ALMailUtils.checkFilesExistance(mcontext.getFilePaths());
+        String[] checkedFilePaths = mcontext.getFilePaths();
         int checkedFilePathsLength = checkedFilePaths.length;
         if (checkedFilePathsLength <= 0) {
           // MultiPart にせず，メールの本文をセット
@@ -284,6 +283,7 @@ public abstract class ALSmtpMailSender implements ALMailSender {
    * @param filePaths
    * @return
    */
+  @Override
   public int send(ALMailContext context) {
     try {
       ALSmtpMailContext mcontext = (ALSmtpMailContext) context;

@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.fileio;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +31,7 @@ import com.aimluck.eip.common.ALCsvAbstractSelectData;
 import com.aimluck.eip.common.ALCsvTokenizer;
 import com.aimluck.eip.fileio.util.FileIOAccountCsvUtils;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.services.storage.ALStorageService;
 
 /**
  * CSV ファイルから読み込んだ部署情報を表示するクラス．
@@ -58,7 +58,7 @@ public class FileIOAccountPostCsvSelectData extends
         filepath =
           FileIOAccountCsvUtils
             .getAccountPostCsvFolderName(getTempFolderIndex())
-            + File.separator
+            + ALStorageService.separator()
             + FileIOAccountCsvUtils.CSV_ACCOUNT_POST_TEMP_FILENAME;
         return new ResultList<FileIOAccountPostCsvData>(
           readAccountInfoFromCsvPage(rundata, filepath, (rundata
@@ -69,7 +69,7 @@ public class FileIOAccountPostCsvSelectData extends
           filepath =
             FileIOAccountCsvUtils
               .getAccountPostCsvFolderName(getTempFolderIndex())
-              + File.separator
+              + ALStorageService.separator()
               + FileIOAccountCsvUtils.CSV_ACCOUNT_POST_TEMP_ERROR_FILENAME;
         } else {
           return null;
@@ -100,12 +100,12 @@ public class FileIOAccountPostCsvSelectData extends
       throws Exception {
     String filepath =
       FileIOAccountCsvUtils.getAccountPostCsvFolderName(getTempFolderIndex())
-        + File.separator
+        + ALStorageService.separator()
         + FileIOAccountCsvUtils.CSV_ACCOUNT_POST_TEMP_FILENAME;
 
     String filepath_err =
       FileIOAccountCsvUtils.getAccountPostCsvFolderName(getTempFolderIndex())
-        + File.separator
+        + ALStorageService.separator()
         + FileIOAccountCsvUtils.CSV_ACCOUNT_POST_TEMP_ERROR_FILENAME;
     ALCsvTokenizer reader = new ALCsvTokenizer();
     if (!reader.init(filepath)) {

@@ -178,7 +178,6 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
     customizationState.setAttribute("customize-mode", "layout");
   }
 
-  @SuppressWarnings("rawtypes")
   public void doDelete(RunData rundata, Context context) {
     JetspeedRunData jdata = (JetspeedRunData) rundata;
 

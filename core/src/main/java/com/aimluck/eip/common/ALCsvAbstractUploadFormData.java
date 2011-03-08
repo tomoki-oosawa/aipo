@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.common;
 
-import java.io.File;
 import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -31,6 +30,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.services.storage.ALStorageService;
 
 /**
  * CSVデータを管理するための抽象クラスです。 <br />
@@ -89,8 +89,7 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
     attachmentItem = parser.getFileItem("attachment");
     if (attachmentItem != null) {
       if (attachmentItem.getSize() > 0) {
-        File file = new File(attachmentItem.getName());
-        attachmentName.setValue(file.getName());
+        attachmentName.setValue(attachmentItem.getName());
         return true;
       } else {
         msgList.add("サイズが 0KB のファイルを追加することはできません。");
@@ -164,13 +163,7 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
 
     try {
       String filepath = getTempFilePath();
-      File file = new File(filepath);
-      if (file.exists()) {
-        file.delete();
-      }
-      file.createNewFile();
-      attachmentItem.write(file.getAbsolutePath());
-
+      ALStorageService.createNewFile(attachmentItem.getInputStream(), filepath);
       ALCsvTokenizer reader = new ALCsvTokenizer();
       if (!reader.init(filepath)) {
         return false;
@@ -220,10 +213,7 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
-      File file = new File(getTempFilePath());
-      if (file.exists()) {
-        file.delete();
-      }
+      ALStorageService.deleteFile(getTempFilePath());
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
@@ -235,6 +225,7 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
   /**
    *
    */
+  @Override
   public void initField() {
     attachmentName = new ALStringField();
     attachmentName.setFieldName("CSVファイル名");

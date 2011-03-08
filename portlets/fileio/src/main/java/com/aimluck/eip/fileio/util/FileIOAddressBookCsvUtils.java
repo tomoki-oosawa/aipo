@@ -19,12 +19,10 @@
 
 package com.aimluck.eip.fileio.util;
 
-import java.io.File;
-
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.common.ALCsvTokenizer;
-import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.services.storage.ALStorageService;
 
 /**
  * AddressbookのCSV読取用ユーティリティクラスです。
@@ -73,11 +71,11 @@ public class FileIOAddressBookCsvUtils {
    * @param index
    * @return
    */
-  public static File getAddressBookCsvFolderName(String index) {
-    return ALOrgUtilsService.getDocumentPath(
+  public static String getAddressBookCsvFolderName(String index) {
+    return ALStorageService.getDocumentPath(
       ALCsvTokenizer.CSV_TEMP_FOLDER,
       FileIOAddressBookCsvUtils.CSV_ADDRESSBOOK_TEMP_FOLDER
-        + File.separator
+        + ALStorageService.separator()
         + index);
   }
 

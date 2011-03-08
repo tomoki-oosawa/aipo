@@ -19,14 +19,12 @@
 
 package com.aimluck.eip.fileio.util;
 
-import java.io.File;
-
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
 
 import com.aimluck.eip.common.ALCsvTokenizer;
-import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.services.storage.ALStorageService;
 
 /**
  * スケジュールのCSV読取用ユーティリティクラスです。
@@ -65,10 +63,12 @@ public class FileIOScheduleCsvUtils {
    * @param index
    * @return
    */
-  public static File getScheduleCsvFolderName(String index) {
-    return ALOrgUtilsService.getDocumentPath(
+  public static String getScheduleCsvFolderName(String index) {
+    return ALStorageService.getDocumentPath(
       ALCsvTokenizer.CSV_TEMP_FOLDER,
-      FileIOScheduleCsvUtils.CSV_SCHEDULE_TEMP_FOLDER + File.separator + index);
+      FileIOScheduleCsvUtils.CSV_SCHEDULE_TEMP_FOLDER
+        + ALStorageService.separator()
+        + index);
   }
 
 }

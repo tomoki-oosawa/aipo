@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.fileio;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,6 +37,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileio.util.FileIOScheduleCsvUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -91,7 +91,7 @@ public class FileIOScheduleCsvSelectData extends
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_NO_ERROR) {
         filepath =
           FileIOScheduleCsvUtils.getScheduleCsvFolderName(getTempFolderIndex())
-            + File.separator
+            + ALStorageService.separator()
             + FileIOScheduleCsvUtils.FOLDER_TMP_FOR_USERINFO_CSV_FILENAME;
         return new ResultList<FileIOScheduleCsvData>(
           readScheduleInfoFromCsvPage(rundata, filepath, (rundata
@@ -100,7 +100,7 @@ public class FileIOScheduleCsvSelectData extends
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_ERROR) {
         filepath =
           FileIOScheduleCsvUtils.getScheduleCsvFolderName(getTempFolderIndex())
-            + File.separator
+            + ALStorageService.separator()
             + FileIOScheduleCsvUtils.FOLDER_TMP_FOR_USERINFO_CSV_TEMP_FILENAME;
         return new ResultList<FileIOScheduleCsvData>(
           readScheduleInfoFromCsvPage(
@@ -139,12 +139,12 @@ public class FileIOScheduleCsvSelectData extends
 
     String filepath =
       FileIOScheduleCsvUtils.getScheduleCsvFolderName(getTempFolderIndex())
-        + File.separator
+        + ALStorageService.separator()
         + FileIOScheduleCsvUtils.FOLDER_TMP_FOR_USERINFO_CSV_FILENAME;
 
     String filepath_err =
       FileIOScheduleCsvUtils.getScheduleCsvFolderName(getTempFolderIndex())
-        + File.separator
+        + ALStorageService.separator()
         + FileIOScheduleCsvUtils.FOLDER_TMP_FOR_USERINFO_CSV_TEMP_FILENAME;
 
     ALCsvTokenizer reader = new ALCsvTokenizer();

@@ -19,8 +19,6 @@
 
 package com.aimluck.eip.services.orgutils.impl;
 
-import java.io.File;
-
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
@@ -34,51 +32,9 @@ import com.aimluck.eip.services.orgutils.ALOrgUtilsHandler;
 public class ALDefaultOrgUtilsHandler extends ALOrgUtilsHandler {
 
   /** logger */
+  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ALDefaultOrgUtilsHandler.class.getName());
-
-  @Override
-  public File getDocumentPath(String rootPath, String org_name,
-      String categoryKey) {
-
-    File rootDir = new File(rootPath);
-
-    if (!rootDir.exists()) {
-      try {
-        rootDir.mkdirs();
-      } catch (Exception e) {
-        logger.error("[ALDefaultOrgUtilsHandler] Can't create directory...:"
-          + rootPath);
-        return rootDir;
-      }
-    }
-
-    if (org_name == null) {
-      return rootDir;
-    }
-
-    File base = null;
-
-    // パスを作成
-    base =
-      new File(rootDir.getAbsolutePath()
-        + File.separator
-        + org_name
-        + File.separator
-        + categoryKey);
-
-    if (!base.exists()) {
-      try {
-        base.mkdirs();
-      } catch (Exception e) {
-        logger.error("[ALDefaultOrgUtilsHandler] Can't create directory...:"
-          + base);
-        return base;
-      }
-    }
-
-    return base;
-  }
 
   @Override
   public String getAlias(String orgId) {

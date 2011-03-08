@@ -911,15 +911,6 @@ public class RemainderScheduleDaemon implements Daemon {
       this.send_time_hour = Integer.valueOf(timestr.substring(0, 2));
       this.send_time_minutes = Integer.valueOf(timestr.substring(3, 5));
 
-      /*
-       * String propertiesPath = JetspeedResources.getString("aipo.conf", "");
-       * input = new FileInputStream(propertiesPath + File.separator +
-       * "WebMailAdminSettings.properties"); Properties prop = new Properties();
-       * prop.load(input); this.send_time_hour =
-       * Integer.parseInt(prop.getProperty("DayMailTime")); //
-       * this.send_time_minutes = Integer.parseInt(prop //
-       * .getProperty("DayMailTimeMinutes"));
-       */
     } catch (Exception ex) {
       logger.error("Exception", ex);
     } finally {

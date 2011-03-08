@@ -19,8 +19,6 @@
 
 package com.aimluck.eip.fileio.util;
 
-import java.io.File;
-
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
@@ -32,30 +30,8 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 public class FileIOCsvUtils {
 
   /** logger */
+  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(FileIOCsvUtils.class.getName());
 
-  /** 一時ファイルの新規生成 */
-  public static String getNewAttachmentFolderName(File folder) {
-    String FILE_SEPARATOR = System.getProperty("file.separator");
-    int maxNum = 1;
-    String[] filenames = folder.list();
-    File file = null;
-    int tmpInt = 1;
-    int length = filenames.length;
-    for (int i = 0; i < length; i++) {
-      file = new File(folder.getAbsolutePath() + FILE_SEPARATOR + filenames[i]);
-      if (file.isDirectory()) {
-        try {
-          tmpInt = Integer.parseInt(file.getName());
-          if (maxNum <= tmpInt) {
-            maxNum = tmpInt + 1;
-          }
-        } catch (NumberFormatException e) {
-          logger.error(e);
-        }
-      }
-    }
-    return Integer.toString(maxNum);
-  }
 }

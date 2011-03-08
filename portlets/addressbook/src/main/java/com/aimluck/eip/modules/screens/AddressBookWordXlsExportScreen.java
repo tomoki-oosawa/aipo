@@ -19,8 +19,6 @@
 
 package com.aimluck.eip.modules.screens;
 
-import java.io.File;
-
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -32,10 +30,8 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.addressbook.AddressBookResultData;
 import com.aimluck.eip.addressbook.AddressBookWordSelectData;
-import com.aimluck.eip.addressbook.util.AddressBookUtils;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
-import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
@@ -53,9 +49,6 @@ public class AddressBookWordXlsExportScreen extends ALXlsScreen {
 
   /** ログインユーザーID */
   private String userid;
-
-  /** 一時フォルダへのフォルダ */
-  private File rootFolder;
 
   /** アクセス権限の機能名 */
   private String aclPortletFeature = null;
@@ -77,10 +70,6 @@ public class AddressBookWordXlsExportScreen extends ALXlsScreen {
                                                          * TARGET_USER_ID
                                                          */);
     userid = Integer.toString(ALEipUtils.getUserId(rundata));
-
-    rootFolder =
-      AddressBookUtils.getRootFolder(Database.getDomainName(), ALEipUtils
-        .getUserId(rundata));
 
     // アクセス権
     if (
@@ -176,11 +165,6 @@ public class AddressBookWordXlsExportScreen extends ALXlsScreen {
       uid,
       "アドレスブック出力",
       163/* ALEventlogConstants.PORTLET_TYPE_ADDRESSBOOK_XLS_SCREEN */);
-  }
-
-  @Override
-  protected String getFolderPath() {
-    return rootFolder.getAbsolutePath();
   }
 
   @Override

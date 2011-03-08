@@ -20,8 +20,6 @@
 package com.aimluck.eip.msgboard.util;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,9 +54,6 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
-import com.aimluck.eip.services.orgutils.ALOrgUtilsFactoryService;
-import com.aimluck.eip.services.orgutils.ALOrgUtilsHandler;
-import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.services.storage.ALStorageService;
@@ -747,14 +742,6 @@ public class MsgboardUtils {
         return null;
       }
 
-      String orgId = Database.getDomainName();
-      File folder =
-        FileuploadUtils.getFolder(
-          orgId,
-          ALEipUtils.getUserId(rundata),
-          folderName);
-      String folderpath = folder.getAbsolutePath();
-
       for (String newfileid : newfileids) {
         if ("".equals(newfileid)) {
           continue;
@@ -776,11 +763,13 @@ public class MsgboardUtils {
           BufferedReader reader = null;
           try {
             reader =
-              new BufferedReader(new InputStreamReader(new FileInputStream(
-                folderpath
-                  + File.separator
-                  + fileid
-                  + FileuploadUtils.EXT_FILENAME), FILE_ENCODING));
+              new BufferedReader(new InputStreamReader(ALStorageService
+                .getFile(
+                  FileuploadUtils.FOLDER_TMP_FOR_ATTACHMENT_FILES,
+                  ALEipUtils.getUserId(rundata)
+                    + ALStorageService.separator()
+                    + folderName,
+                  fileid + FileuploadUtils.EXT_FILENAME), FILE_ENCODING));
             String line = reader.readLine();
             if (line == null || line.length() <= 0) {
               continue;
@@ -874,15 +863,10 @@ public class MsgboardUtils {
 
     // ローカルファイルに保存されているファイルを削除する．
     if (delFiles.size() > 0) {
-      File file = null;
       int delsize = delFiles.size();
       for (int i = 0; i < delsize; i++) {
-        file =
-          new File(MsgboardUtils.getSaveDirPath(orgId, uid)
-            + (delFiles.get(i)).getFilePath());
-        if (file.exists()) {
-          file.delete();
-        }
+        ALStorageService.deleteFile(MsgboardUtils.getSaveDirPath(orgId, uid)
+          + (delFiles.get(i)).getFilePath());
       }
       // データベースから添付ファイルのデータ削除
       Database.deleteAll(delFiles);
@@ -932,7 +916,7 @@ public class MsgboardUtils {
         // ファイルの移動
         ALStorageService.copyTmpFile(uid, folderName, String.valueOf(filebean
           .getFileId()), FOLDER_FILEDIR_MSGBOARD, CATEGORY_KEY
-          + File.separator
+          + ALStorageService.separator()
           + uid, filename);
       }
 
@@ -953,16 +937,9 @@ public class MsgboardUtils {
    * @return
    */
   public static String getSaveDirPath(String orgId, int uid) {
-    File path =
-      new File(ALOrgUtilsService.getDocumentPath(
-        FOLDER_FILEDIR_MSGBOARD,
-        CATEGORY_KEY)
-        + File.separator
-        + uid);
-    if (!path.exists()) {
-      path.mkdirs();
-    }
-    return path.getAbsolutePath();
+    return ALStorageService.getDocumentPath(
+      FOLDER_FILEDIR_MSGBOARD,
+      CATEGORY_KEY + ALStorageService.separator() + uid);
   }
 
   /**
@@ -973,28 +950,6 @@ public class MsgboardUtils {
    */
   public static String getRelativePath(String fileName) {
     return new StringBuffer().append("/").append(fileName).toString();
-  }
-
-  /**
-   * 添付ファイル保存先（絶対パス）を取得します。
-   * 
-   * @param uid
-   * @return
-   */
-  public static String getAbsolutePath(String orgId, int uid, String fileName) {
-    ALOrgUtilsHandler handler =
-      ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
-    StringBuffer sb =
-      new StringBuffer()
-        .append(
-          handler.getDocumentPath(FOLDER_FILEDIR_MSGBOARD, orgId, CATEGORY_KEY))
-        .append(File.separator)
-        .append(uid);
-    File f = new File(sb.toString());
-    if (!f.exists()) {
-      f.mkdirs();
-    }
-    return sb.append(File.separator).append(fileName).toString();
   }
 
   public static void shiftWhatsNewReadFlag(RunData rundata, int entityid) {

@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.daemon.impl;
 
-import java.io.File;
 import java.util.Calendar;
 
 import org.apache.jetspeed.daemon.Daemon;
@@ -29,7 +28,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
 
-import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.services.storage.ALStorageService;
 
 /**
  * 定期的にテンポラリフォルダに存在するファイルを削除するデーモンクラスです。 <br />
@@ -53,6 +52,7 @@ public class DeleteTemporaryFileDaemon implements Daemon {
    * テンポラリファイルを削除し、インターバルの時間をセット
    * 
    */
+  @Override
   public void run() {
 
     Calendar cal = Calendar.getInstance();
@@ -61,12 +61,13 @@ public class DeleteTemporaryFileDaemon implements Daemon {
 
     // tmpフォルダとファイルを削除
     String tmpdir = JetspeedResources.getString("aipo.tmp.directory", "");
-    ALEipUtils.deleteOldFolder(new File(tmpdir), cal);
+    ALStorageService.deleteOldFolder(tmpdir, cal);
   }
 
   /**
    *
    */
+  @Override
   public void init(DaemonConfig config, DaemonEntry entry) {
     this.config = config;
     this.entry = entry;
@@ -75,6 +76,7 @@ public class DeleteTemporaryFileDaemon implements Daemon {
   /**
    *
    */
+  @Override
   public DaemonConfig getDaemonConfig() {
     return this.config;
   }
@@ -82,6 +84,7 @@ public class DeleteTemporaryFileDaemon implements Daemon {
   /**
    *
    */
+  @Override
   public DaemonEntry getDaemonEntry() {
     return this.entry;
   }
@@ -89,6 +92,7 @@ public class DeleteTemporaryFileDaemon implements Daemon {
   /**
    *
    */
+  @Override
   public int getStatus() {
     return this.status;
   }
@@ -96,6 +100,7 @@ public class DeleteTemporaryFileDaemon implements Daemon {
   /**
    *
    */
+  @Override
   public void setStatus(int status) {
     this.status = status;
   }
@@ -104,6 +109,7 @@ public class DeleteTemporaryFileDaemon implements Daemon {
    * 
    * @return
    */
+  @Override
   public int getResult() {
     return this.result;
   }
@@ -112,6 +118,7 @@ public class DeleteTemporaryFileDaemon implements Daemon {
    * 
    * @param result
    */
+  @Override
   public void setResult(int result) {
     this.result = result;
   }
@@ -120,6 +127,7 @@ public class DeleteTemporaryFileDaemon implements Daemon {
    * 
    * @return
    */
+  @Override
   public String getMessage() {
     return null;
   }

@@ -21,7 +21,6 @@ package com.aimluck.eip.util;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
@@ -1489,63 +1488,6 @@ public class ALEipUtils {
   }
 
   /**
-   * 古いファイル(parent_folder下のファイル)を消します。
-   * 
-   * @param parent_folder
-   *          親フォルダ
-   * @param cal
-   *          カレンダークラスで設定された時間より前のものは消去
-   * @return フォルダの中身が全て消去されたときのみtrueを返します
-   */
-  public static boolean deleteOldFolder(File parent_folder, Calendar cal) {
-    Calendar mod = Calendar.getInstance();
-    boolean flag = true;
-    try {
-      if (!parent_folder.exists()) {
-        return false;
-      }
-      if (parent_folder.isFile()) {
-        return false;
-      }
-      String folders_path[] = parent_folder.list();
-      if (folders_path.length == 0) {
-        return true;
-      }
-      int length = folders_path.length;
-      for (int i = 0; i < length; i++) {
-        File folder =
-          new File(parent_folder.getAbsolutePath()
-            + File.separator
-            + folders_path[i]);
-        mod.setTimeInMillis(folder.lastModified());// ファイルの最終更新日時を格納
-        if (folder.isDirectory()) {
-          if (!deleteOldFolder(folder, cal)) {// フォルダの中身が空もしくは全部削除された場合
-            flag = false;
-          } else if (mod.before(cal)) {// 空のフォルダが古い場合
-            if (!folder.delete()) {
-              flag = false;
-            }
-          }
-        } else {
-          if (mod.before(cal)) {
-            // 一つでも消えないファイルがあればフラグを動かす
-            if (!folder.delete()) {
-              flag = false;
-            }
-          } else {
-            flag = false;
-          }
-        }
-
-      }
-    } catch (Exception e) {
-      logger.error(e);
-      return false;
-    }
-    return flag;
-  }
-
-  /**
    * フォルダを再帰的に消します。
    * 
    * @param parent_folder
@@ -1554,46 +1496,6 @@ public class ALEipUtils {
    * 
    * @return フォルダの中身が全て消去されたときのみtrueを返します
    */
-  public static boolean deleteFolder(File parent_folder) {
-    boolean flag = true;
-    try {
-      if (!parent_folder.exists()) {
-        return false;
-      }
-      if (parent_folder.isFile()) {
-        if (!parent_folder.delete()) {
-          flag = false;
-        }
-      }
-      String folders_path[] = parent_folder.list();
-      if (folders_path.length == 0) {
-        return true;
-      }
-      int length = folders_path.length;
-      for (int i = 0; i < length; i++) {
-        File folder =
-          new File(parent_folder.getAbsolutePath()
-            + File.separator
-            + folders_path[i]);
-        if (folder.isDirectory()) {
-          if (!deleteFolder(folder)) {// フォルダの中身が空もしくは全部削除された場合
-            flag = false;
-          } else if (!folder.delete()) {
-            flag = false;
-          }
-        } else {
-          // 一つでも消えないファイルがあればフラグを動かす
-          if (!folder.delete()) {
-            flag = false;
-          }
-        }
-      }
-    } catch (Exception e) {
-      logger.error(e);
-      return false;
-    }
-    return flag;
-  }
 
   /**
    * ユーザーの所属する部署を取得します。

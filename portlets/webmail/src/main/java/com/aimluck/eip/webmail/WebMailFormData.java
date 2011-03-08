@@ -19,11 +19,6 @@
 
 package com.aimluck.eip.webmail;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -291,7 +286,6 @@ public class WebMailFormData extends ALAbstractFormData {
     String[] attachmentFilepaths = null;
     try {
       FileuploadLiteBean filebean = null;
-      File file = null;
       boolean hasAttachments =
         (fileuploadList != null && fileuploadList.size() > 0);
       if (hasAttachments) {
@@ -299,10 +293,12 @@ public class WebMailFormData extends ALAbstractFormData {
         attachmentFilepaths = new String[size];
         for (int i = 0; i < size; i++) {
           filebean = fileuploadList.get(i);
-          file =
-            FileuploadUtils.getAbsolutePath(orgId, userId, folderName, filebean
-              .getFileId());
-          attachmentFilepaths[i] = file.getAbsolutePath();
+          attachmentFilepaths[i] =
+            ALStorageService.getDocumentPath(
+              FileuploadUtils.FOLDER_TMP_FOR_ATTACHMENT_FILES,
+              userId + ALStorageService.separator() + folderName)
+              + ALStorageService.separator()
+              + filebean.getFileId();
         }
       }
 
@@ -505,42 +501,18 @@ public class WebMailFormData extends ALAbstractFormData {
             folderName = "undefined";
           }
 
-          File rootFolder = FileuploadUtils.getRootFolder(orgId, userId);
-          File saveFolder = new File(rootFolder + File.separator + folderName);
-          if (!saveFolder.exists()) {
-            saveFolder.mkdirs();
-          }
           for (int i = 0; i < filenames.length; i++) {
             /** 各々の添付ファイルを、一度ファイルに書き出して再度添付する */
-            String newAttachmentFileName = getNewAttachmentFileName(saveFolder);
-            int fileId = Integer.parseInt(newAttachmentFileName);
+            int fileId = Long.valueOf(System.nanoTime()).intValue();
+            String newAttachmentFileName = String.valueOf(fileId);
             String realfilename = filenames[i];
-            String filepath =
-              rootFolder
-                + File.separator
-                + folderName
-                + File.separator
-                + newAttachmentFileName;
-            File file = new File(filepath);
-            file.createNewFile();
-            InputStream inputStream = msg.getInputStream(i);
-            FileOutputStream fileOutput = new FileOutputStream(file);
-            byte[] b = new byte[1024];
-            int len = -1;
-            while ((len = inputStream.read(b)) != -1) {
-              fileOutput.write(b, 0, len);
-              fileOutput.flush();
-            }
-            fileOutput.close();
-            inputStream.close();
-            // 一時添付ファイル名の保存
-            PrintWriter writer =
-              new PrintWriter(new OutputStreamWriter(
-                new FileOutputStream(filepath + FileuploadUtils.EXT_FILENAME),
-                FileuploadUtils.FILE_ENCODING));
-            writer.println(realfilename);
-            writer.flush();
-            writer.close();
+
+            ALStorageService.createNewTmpFile(
+              msg.getInputStream(i),
+              userId,
+              folderName,
+              newAttachmentFileName,
+              realfilename);
 
             FileuploadLiteBean filebean = new FileuploadLiteBean();
             filebean.initField();
@@ -750,25 +722,4 @@ public class WebMailFormData extends ALAbstractFormData {
     return addrbuf.toString();
   }
 
-  private String getNewAttachmentFileName(File folder) {
-    int maxNum = 1;
-    String[] filenames = folder.list();
-    File file = null;
-    int tmpInt = 1;
-    int length = filenames.length;
-    for (int i = 0; i < length; i++) {
-      file = new File(folder.getAbsolutePath() + File.separator + filenames[i]);
-      if (file.isFile()
-        && !file.getName().endsWith(FileuploadUtils.EXT_FILENAME)) {
-        try {
-          tmpInt = Integer.parseInt(file.getName());
-          if (maxNum <= tmpInt) {
-            maxNum = tmpInt + 1;
-          }
-        } catch (NumberFormatException e) {
-        }
-      }
-    }
-    return Integer.toString(maxNum);
-  }
 }

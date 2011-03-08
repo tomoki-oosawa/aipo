@@ -19,14 +19,15 @@
 
 package com.aimluck.eip.common;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
+
+import com.aimluck.eip.services.storage.ALStorageService;
 
 /**
  * CSVファイルをセルごとに読み取るためのクラスです。 <br />
@@ -40,7 +41,7 @@ public class ALCsvTokenizer {
   public static final String CSV_TEMP_FOLDER = JetspeedResources.getString(
     "aipo.tmp.directory",
     "")
-    + System.getProperty("file.separator")
+    + ALStorageService.separator()
     + "csv";
 
   /** 一度に表示される件数 */
@@ -95,14 +96,7 @@ public class ALCsvTokenizer {
     inquote = false;
     eof = 0;
     try {
-      // in = new FileReader(fname);
-      File file = new File(fname);
-      if (!file.exists()) {
-        file = null;
-        return false;
-      }
-      file = null;
-      FileInputStream is = new FileInputStream(fname);
+      InputStream is = ALStorageService.getFile(fname);
       in = new InputStreamReader(is, "Shift_JIS");
       return true;
     } catch (IOException ie) {

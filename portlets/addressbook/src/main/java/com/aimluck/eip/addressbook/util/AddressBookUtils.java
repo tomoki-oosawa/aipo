@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.addressbook.util;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -55,8 +54,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AddressBookUtils {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AddressBookUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AddressBookUtils.class.getName());
 
   /** アドレスブックファイルを一時保管するディレクトリの指定 */
   public static final String FOLDER_TMP_FOR_ADDRESSBOOK_FILES =
@@ -433,30 +432,6 @@ public class AddressBookUtils {
     }
 
     return resultList;
-  }
-
-  /**
-   * 一時ファイル保存先のユーザのルートフォルダ
-   * 
-   * @param org_id
-   * @param userId
-   * @return
-   */
-  public static File getRootFolder(String org_id, int userId) {
-    String rootPath =
-      AddressBookUtils.FOLDER_TMP_FOR_ADDRESSBOOK_FILES
-        + File.separator
-        + org_id
-        + File.separator
-        + userId
-        + File.separator;
-    File folder = new File(rootPath);
-    if (!folder.exists()) {
-      if (!folder.mkdirs()) {
-        return null;
-      }
-    }
-    return folder;
   }
 
   /**

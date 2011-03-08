@@ -20,13 +20,9 @@
 package com.aimluck.eip.mail.file;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
@@ -49,6 +45,7 @@ import com.aimluck.eip.mail.ALLocalMailMessage;
 import com.aimluck.eip.mail.ALMailMessage;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.storage.ALStorageService;
 
 /**
  * ローカルのファイルシステムを利用し、送受信したメールを保持するローカルフォルダのクラスです。 <br />
@@ -100,7 +97,9 @@ public class ALFileLocalFolder extends ALAbstractFolder {
       }
 
       ALLocalMailMessage msg =
-        readMail(getFullName() + File.separator + email.getFilePath());
+        readMail(getFullName()
+          + ALStorageService.separator()
+          + email.getFilePath());
 
       // 未読→既読に変更
       email.setReadFlg("T");
@@ -128,7 +127,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
     ALLocalMailMessage localmsg = null;
     BufferedInputStream input = null;
     try {
-      input = new BufferedInputStream(new FileInputStream(filepath));
+      input = new BufferedInputStream(ALStorageService.getFile(filepath));
       localmsg =
         new ALLocalMailMessage(Session.getDefaultInstance(prop), input);
       input.close();
@@ -196,13 +195,12 @@ public class ALFileLocalFolder extends ALAbstractFolder {
   private boolean saveMailToFile(ALMailMessage mail, String fileName,
       boolean savecontents) {
     boolean res = false;
-    BufferedOutputStream output = null;
-
+    ByteArrayOutputStream output = null;
     try {
-      String pop3MailPath = getFullName() + File.separator + fileName;
+      // String pop3MailPath = getFullName() + File.separator + fileName;
 
       // メールの保存
-      output = new BufferedOutputStream(new FileOutputStream(pop3MailPath));
+      output = new ByteArrayOutputStream();
       if (savecontents) {
         mail.writeTo(output);
       } else {
@@ -218,6 +216,8 @@ public class ALFileLocalFolder extends ALAbstractFolder {
           .setText("メールのサイズが7MBを超えていたため、このメールを受信できませんでした。\r\n 誠に恐れ入りますが、別のメーラーで受信してください。");
         newMsg.writeTo(output);
       }
+      ALStorageService.createNewFile(new ByteArrayInputStream(output
+        .toByteArray()), getFullName(), fileName);
 
       output.flush();
       output.close();
@@ -280,10 +280,9 @@ public class ALFileLocalFolder extends ALAbstractFolder {
       String filePath = record.getFilePath();
 
       // ファイル削除
-      File file = new File(getFullName() + File.separator + filePath);
-      if (file.exists()) {
-        file.delete();
-      }
+      ALStorageService.deleteFile(getFullName()
+        + ALStorageService.separator()
+        + filePath);
 
       // メールを削除する
       Database.delete(record);
@@ -321,10 +320,9 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
       for (EipTMail record : mail_list) {
         String filePath = record.getFilePath();
-        File file = new File(getFullName() + File.separator + filePath);
-        if (file.exists()) {
-          file.delete();
-        }
+        ALStorageService.deleteFile(getFullName()
+          + ALStorageService.separator()
+          + filePath);
       }
 
       Database.deleteAll(mail_list);
@@ -406,25 +404,6 @@ public class ALFileLocalFolder extends ALAbstractFolder {
    * @return
    */
   public String getNewFileName() {
-    int count = 0;
-    SimpleDateFormat simpleDateFormat =
-      new SimpleDateFormat(DEFAULT_MAIL_FILENAME_DATE_FORMAT);
-    Date date = new Date();
-    String tmpname = simpleDateFormat.format(date);
-    String pop3MailPath = getFullName() + File.separator;
-    File file = null;
-    String newFileName = null;
-    String newFilePath = null;
-
-    while (true) {
-      newFileName = tmpname + count;
-      newFilePath = pop3MailPath + newFileName;
-      file = new File(newFilePath);
-      if (!file.exists()) {
-        break;
-      }
-      count += 1;
-    }
-    return newFileName;
+    return String.valueOf(System.nanoTime());
   }
 }

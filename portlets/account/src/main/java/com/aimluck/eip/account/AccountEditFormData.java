@@ -558,64 +558,6 @@ public class AccountEditFormData extends ALAbstractFormData {
   }
 
   /**
-   * 添付ファイルを削除する．
-   * 
-   * @param action
-   * @param rundata
-   * @param context
-   * @return TRUE 成功 FALSE 失敗
-   */
-  public boolean doDeleteAttachments(ALAction action, RunData rundata,
-      Context context, String mode) {
-    try {
-      init(action, rundata, context);
-      // action.setMode(ALEipConstants.MODE_DELETE);
-      action.setMode(mode);
-      List<String> msgList = new ArrayList<String>();
-      setValidator();
-      boolean res =
-        (setFormData(rundata, context, msgList) && deleteAttachments(
-          rundata,
-          context,
-          msgList));
-      action.setResultData(this);
-      action.addErrorMessages(msgList);
-      action.putData(rundata, context);
-      return res;
-    } catch (ALPageNotFoundException e) {
-      ALEipUtils.redirectPageNotFound(rundata);
-      return false;
-    } catch (ALDBErrorException e) {
-      ALEipUtils.redirectDBError(rundata);
-      return false;
-    }
-  }
-
-  /**
-   * 
-   * @param rundata
-   * @param context
-   * @param msgList
-   * @return
-   */
-  protected boolean deleteAttachments(RunData rundata, Context context,
-      List<String> msgList) {
-    if (rundata == null || context == null) {
-      msgList.add("システム上の問題のため、削除できませんでした。");
-      return false;
-    }
-    int userId = ALEipUtils.getUserId(rundata);
-
-    List<FileuploadLiteBean> fileBeanList = new ArrayList<FileuploadLiteBean>();
-    fileBeanList.add(filebean);
-    return FileuploadUtils.deleteAttachments(
-      orgId,
-      userId,
-      folderName,
-      fileBeanList);
-  }
-
-  /**
    * 携帯メールアドレスを取得します。 <BR>
    * 
    * @return

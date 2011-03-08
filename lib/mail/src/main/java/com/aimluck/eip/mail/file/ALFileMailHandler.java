@@ -19,9 +19,6 @@
 
 package com.aimluck.eip.mail.file;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
@@ -32,7 +29,7 @@ import com.aimluck.eip.mail.ALMailReceiverContext;
 import com.aimluck.eip.mail.ALMailSender;
 import com.aimluck.eip.mail.ALMailSenderContext;
 import com.aimluck.eip.mail.util.ALMailUtils;
-import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.services.storage.ALStorageService;
 
 /**
  * ローカルのファイルシステムを利用し、メールの送受信を操作するクラスです。 <br />
@@ -40,6 +37,7 @@ import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
  */
 public class ALFileMailHandler extends ALMailHandler {
 
+  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ALFileMailHandler.class.getName());
 
@@ -86,41 +84,19 @@ public class ALFileMailHandler extends ALMailHandler {
    */
   @Override
   public boolean removeAccount(String org_id, int user_id, int account_id) {
-    StringBuffer fullName = null;
+    StringBuilder key = new StringBuilder();
     String categoryKeytmp = getCategoryKey();
 
     if (categoryKeytmp != null && !"".equals(categoryKeytmp)) {
-      File docPath =
-        ALOrgUtilsService.getDocumentPath(
-          ALMailUtils.rootFolderPath,
-          categoryKeytmp);
-      String pathStr = null;
-      try {
-        pathStr = docPath.getCanonicalPath();
-      } catch (IOException e) {
-        logger.error("ALFileMailHandler: unable to resolve file path for "
-          + pathStr);
-      }
-      fullName = new StringBuffer(pathStr);
-      fullName
-        .append(File.separator)
-        .append(user_id)
-        .append(File.separator)
-        .append(account_id);
-    } else {
-      fullName = new StringBuffer(ALMailUtils.rootFolderPath);
-      fullName
-        .append(File.separator)
-        .append(org_id)
-        .append(File.separator)
-        .append(user_id)
-        .append(File.separator)
-        .append(account_id);
+      key.append(categoryKeytmp);
     }
+    key.append(ALStorageService.separator());
+    key.append(user_id);
+    key.append(ALStorageService.separator());
+    key.append(account_id);
 
-    String path = fullName.toString();
-    File folder = new File(path);
-    return ALMailUtils.deleteFolder(folder);
+    return ALStorageService.deleteFolder(ALMailUtils.rootFolderPath, key
+      .toString());
   }
 
 }

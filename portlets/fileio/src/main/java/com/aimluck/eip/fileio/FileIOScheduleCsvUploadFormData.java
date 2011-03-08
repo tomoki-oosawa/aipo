@@ -19,8 +19,6 @@
 
 package com.aimluck.eip.fileio;
 
-import java.io.File;
-
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -30,10 +28,9 @@ import com.aimluck.eip.common.ALCsvAbstractUploadFormData;
 import com.aimluck.eip.common.ALCsvTokenizer;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
-import com.aimluck.eip.fileio.util.FileIOCsvUtils;
 import com.aimluck.eip.fileio.util.FileIOScheduleCsvUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.services.storage.ALStorageService;
 
 /**
  *
@@ -67,27 +64,21 @@ public class FileIOScheduleCsvUploadFormData extends
    * 一時フォルダ生成 <BR>
    */
   private void initTempFileName() {
-    File tmpfolderRootFolder =
-      ALOrgUtilsService.getDocumentPath(
+
+    temp_folder = String.valueOf(System.nanoTime());
+
+    String tmpfolderRootFolder =
+      ALStorageService.getDocumentPath(
         ALCsvTokenizer.CSV_TEMP_FOLDER,
-        FileIOScheduleCsvUtils.CSV_SCHEDULE_TEMP_FOLDER);
-    if (!tmpfolderRootFolder.exists()) {
-      tmpfolderRootFolder.mkdirs();
-    }
-
-    temp_folder =
-      FileIOCsvUtils.getNewAttachmentFolderName(tmpfolderRootFolder);
-
-    String newfolderpath = tmpfolderRootFolder + File.separator + temp_folder;
-    File newfolder = new File(newfolderpath);
-    if (!newfolder.exists()) {
-      newfolder.mkdirs();
-    }
+        FileIOScheduleCsvUtils.CSV_SCHEDULE_TEMP_FOLDER
+          + ALStorageService.separator()
+          + temp_folder);
 
     temp_file_path =
-      newfolderpath
-        + File.separator
+      tmpfolderRootFolder
+        + ALStorageService.separator()
         + FileIOScheduleCsvUtils.FOLDER_TMP_FOR_USERINFO_CSV_FILENAME;
+
   }
 
   /**

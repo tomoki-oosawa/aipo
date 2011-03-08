@@ -128,6 +128,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
 
   }
@@ -762,10 +763,51 @@ public class DeleteSampleFormData extends ALAbstractFormData {
       for (String path : fpaths) {
         file = new File(path);
         if (file.exists()) {
-          ALEipUtils.deleteFolder(file);
+          deleteFolder(file);
         }
       }
     }
+  }
+
+  protected boolean deleteFolder(File parent_folder) {
+    boolean flag = true;
+    try {
+      if (!parent_folder.exists()) {
+        return false;
+      }
+      if (parent_folder.isFile()) {
+        if (!parent_folder.delete()) {
+          flag = false;
+        }
+      }
+      String folders_path[] = parent_folder.list();
+      if (folders_path.length == 0) {
+        return true;
+      }
+      int length = folders_path.length;
+      for (int i = 0; i < length; i++) {
+        File folder =
+          new File(parent_folder.getAbsolutePath()
+            + File.separator
+            + folders_path[i]);
+        if (folder.isDirectory()) {
+          if (!deleteFolder(folder)) {// フォルダの中身が空もしくは全部削除された場合
+            flag = false;
+          } else if (!folder.delete()) {
+            flag = false;
+          }
+        } else {
+          // 一つでも消えないファイルがあればフラグを動かす
+          if (!folder.delete()) {
+            flag = false;
+          }
+        }
+      }
+    } catch (Exception e) {
+      logger.error(e);
+      return false;
+    }
+    return flag;
   }
 
   /**

@@ -19,9 +19,9 @@
 
 package com.aimluck.eip.services.storage;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Calendar;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -42,29 +42,32 @@ public abstract class ALStorageHandler {
   public abstract void createNewTmpFile(InputStream is, int uid, String dir,
       String fileName, String realFileName);
 
+  public abstract void createNewFile(InputStream is, String folderPath,
+      String filename);
+
   public long getTmpFolderSize(int uid, String dir) {
     return getFolderSize(FOLDER_TMP_FOR_ATTACHMENT_FILES, uid
-      + File.separator
+      + ALStorageService.separator()
       + dir);
   }
 
   public boolean copyTmpFile(int uid, String srcDir, String srcFileName,
       String destRootPath, String destDir, String destFileName) {
     return copyFile(FOLDER_TMP_FOR_ATTACHMENT_FILES, uid
-      + File.separator
+      + ALStorageService.separator()
       + srcDir, srcFileName, destRootPath, destDir, destFileName);
   }
 
   public boolean deleteTmpFolder(int uid, String dir) {
     return deleteFolder(FOLDER_TMP_FOR_ATTACHMENT_FILES, uid
-      + File.separator
+      + ALStorageService.separator()
       + dir);
   }
 
   public InputStream getTmpFile(int uid, String folderName, String finename)
       throws FileNotFoundException {
     return getFile(FOLDER_TMP_FOR_ATTACHMENT_FILES, uid
-      + File.separator
+      + ALStorageService.separator()
       + folderName, finename);
   }
 
@@ -78,6 +81,11 @@ public abstract class ALStorageHandler {
 
   public abstract boolean deleteFolder(String rootPath, String dir);
 
+  public abstract boolean deleteFile(String rootPath, String dir,
+      String filename);
+
+  public abstract boolean deleteFile(String filePath);
+
   public abstract InputStream getFile(String rootPath, String dir,
       String fineName) throws FileNotFoundException;
 
@@ -85,4 +93,13 @@ public abstract class ALStorageHandler {
       throws FileNotFoundException;
 
   public abstract String getDocumentPath(String rootPath, String categoryKey);
+
+  public abstract String separator();
+
+  public abstract void saveFile(InputStream is, String folderPath,
+      String fileName);
+
+  public abstract boolean deleteOldFolder(String folderPath, Calendar cal);
+
+  public abstract void createNewFile(InputStream inputStream, String filepath);
 }

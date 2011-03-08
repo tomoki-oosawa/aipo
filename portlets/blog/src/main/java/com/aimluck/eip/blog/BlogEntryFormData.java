@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.blog;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -315,13 +314,11 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
       if (fpaths.size() > 0) {
         // ローカルファイルに保存されているファイルを削除する．
-        File file = null;
         int fsize = fpaths.size();
         for (int i = 0; i < fsize; i++) {
-          file = new File(BlogUtils.getSaveDirPath(orgId, uid) + fpaths.get(i));
-          if (file.exists()) {
-            file.delete();
-          }
+          ALStorageService.deleteFile(BlogUtils.getSaveDirPath(orgId, uid)
+            + fpaths.get(i));
+
         }
       }
     } catch (Exception ex) {
@@ -490,7 +487,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
             folderName,
             String.valueOf(newfilebean.getFileId()),
             BlogUtils.FOLDER_FILEDIR_BLOG,
-            BlogUtils.CATEGORY_KEY + File.separator + uid,
+            BlogUtils.CATEGORY_KEY + ALStorageService.separator() + uid,
             filename);
         }
 
@@ -585,12 +582,9 @@ public class BlogEntryFormData extends ALAbstractFormData {
             EipTBlogFile file = files.get(i);
             if (!attIdList.contains(file.getFileId())) {
               // ファイルシステムから削除
-              File fileonsysytem =
-                new File(BlogUtils.getSaveDirPath(orgId, uid)
-                  + file.getFilePath());
-              if (fileonsysytem.exists()) {
-                fileonsysytem.delete();
-              }
+              ALStorageService.deleteFile(BlogUtils.getSaveDirPath(orgId, uid)
+                + file.getFilePath());
+
               // DBから削除
               Database.delete(file);
 
@@ -641,60 +635,6 @@ public class BlogEntryFormData extends ALAbstractFormData {
       }
     }
     return res;
-  }
-
-  /**
-   * 添付ファイルを削除する．
-   * 
-   * @param action
-   * @param rundata
-   * @param context
-   * @return TRUE 成功 FALSE 失敗
-   */
-  public boolean doDeleteAttachments(ALAction action, RunData rundata,
-      Context context) {
-    try {
-      init(action, rundata, context);
-      action.setMode(ALEipConstants.MODE_DELETE);
-      List<String> msgList = new ArrayList<String>();
-      setValidator();
-      boolean res =
-        (setFormData(rundata, context, msgList) && deleteAttachments(
-          rundata,
-          context,
-          msgList));
-      action.setResultData(this);
-      action.addErrorMessages(msgList);
-      action.putData(rundata, context);
-      return res;
-    } catch (ALPageNotFoundException e) {
-      ALEipUtils.redirectPageNotFound(rundata);
-      return false;
-    } catch (ALDBErrorException e) {
-      ALEipUtils.redirectDBError(rundata);
-      return false;
-    }
-  }
-
-  /**
-   * 
-   * @param rundata
-   * @param context
-   * @param msgList
-   * @return
-   */
-  protected boolean deleteAttachments(RunData rundata, Context context,
-      List<String> msgList) {
-    if (rundata == null || context == null) {
-      msgList.add("システム上の問題のため、削除できませんでした。");
-      return false;
-    }
-
-    return FileuploadUtils.deleteAttachments(
-      orgId,
-      uid,
-      folderName,
-      fileuploadList);
   }
 
   /**

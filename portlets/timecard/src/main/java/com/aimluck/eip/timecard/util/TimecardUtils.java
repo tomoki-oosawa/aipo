@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.timecard.util;
 
-import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -40,7 +39,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * タイムカードのユーティリティクラスです。 
+ * タイムカードのユーティリティクラスです。
  * 
  */
 public class TimecardUtils {
@@ -69,7 +68,7 @@ public class TimecardUtils {
     .getString("aipo.tmp.timecard.directory", "");
 
   /**
-   * Todo オブジェクトモデルを取得します。 
+   * Todo オブジェクトモデルを取得します。
    * 
    * @param rundata
    * @param context
@@ -183,27 +182,4 @@ public class TimecardUtils {
     return false;
   }
 
-  /**
-   * 一時ファイル保存先のユーザのルートフォルダ
-   * 
-   * @param org_id
-   * @param userId
-   * @return
-   */
-  public static File getRootFolder(String org_id, int userId) {
-    String rootPath =
-      TimecardUtils.FOLDER_TMP_FOR_TIMECARD_FILES
-        + File.separator
-        + org_id
-        + File.separator
-        + userId
-        + File.separator;
-    File folder = new File(rootPath);
-    if (!folder.exists()) {
-      if (!folder.mkdirs()) {
-        return null;
-      }
-    }
-    return folder;
-  }
 }

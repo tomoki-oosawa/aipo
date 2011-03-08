@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.fileio.util;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +35,7 @@ import com.aimluck.eip.common.ALCsvTokenizer;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
-import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -215,11 +214,11 @@ public class FileIOAccountCsvUtils {
    * @param index
    * @return
    */
-  public static File getAccountPostCsvFolderName(String index) {
-    return ALOrgUtilsService.getDocumentPath(
+  public static String getAccountPostCsvFolderName(String index) {
+    return ALStorageService.getDocumentPath(
       ALCsvTokenizer.CSV_TEMP_FOLDER,
       FileIOAccountCsvUtils.CSV_ACCOUNT_POST_TEMP_FOLDER
-        + File.separator
+        + ALStorageService.separator()
         + index);
   }
 
@@ -229,10 +228,12 @@ public class FileIOAccountCsvUtils {
    * @param index
    * @return
    */
-  public static File getAccountCsvFolderName(String index) {
-    return ALOrgUtilsService.getDocumentPath(
+  public static String getAccountCsvFolderName(String index) {
+    return ALStorageService.getDocumentPath(
       ALCsvTokenizer.CSV_TEMP_FOLDER,
-      FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_FOLDER + File.separator + index);
+      FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_FOLDER
+        + ALStorageService.separator()
+        + index);
   }
 
 }

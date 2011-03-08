@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.services.orgutils;
 
-import java.io.File;
 import java.util.Map;
 
 import com.aimluck.eip.orm.Database;
@@ -35,13 +34,6 @@ public class ALOrgUtilsService {
 
   public static ALOrgUtilsHandler getService() {
     return ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
-  }
-
-  public static File getDocumentPath(String rootPath, String categoryKey) {
-    return getService().getDocumentPath(
-      rootPath,
-      Database.getDomainName(),
-      categoryKey);
   }
 
   public static String getTheme() {

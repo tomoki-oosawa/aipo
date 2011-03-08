@@ -60,8 +60,8 @@ public class CustomizeFormScreen extends ALVelocityScreen {
   protected boolean hasAuthority;
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(CustomizeFormScreen.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(CustomizeFormScreen.class.getName());
 
   /**
    * 
@@ -142,6 +142,7 @@ public class CustomizeFormScreen extends ALVelocityScreen {
     }
   }
 
+  @SuppressWarnings("unused")
   private void addFiltersToContext(RunData data, Context context) {
     String[] filterFields =
       (String[]) PortletSessionState.getAttribute(data, FILTER_FIELDS);

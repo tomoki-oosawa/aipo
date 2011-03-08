@@ -22,19 +22,11 @@ package com.aimluck.eip.fileupload.util;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.channels.FileChannel;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -48,8 +40,7 @@ import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
-import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -101,109 +92,6 @@ public class FileuploadUtils {
   public static final String FOLDER_TMP_FOR_ATTACHMENT_FILES =
     JetspeedResources.getString("aipo.tmp.fileupload.attachment.directory", "");
 
-  // private static int MAP_MAX = 1048576; // = 2^20
-
-  /**
-   * 添付ファイル保存先のユーザのルートフォルダ
-   * 
-   * @param org_id
-   * @param userId
-   * @return
-   */
-  public static File getRootFolder(String org_id, int userId) {
-    return ALOrgUtilsService.getDocumentPath(
-      FileuploadUtils.FOLDER_TMP_FOR_ATTACHMENT_FILES,
-      String.valueOf(userId));
-  }
-
-  /**
-   * 添付ファイル保存先
-   * 
-   * @param org_id
-   * @param userId
-   * @return
-   */
-  public static File getFolder(String org_id, int userId, String folderName) {
-    return ALOrgUtilsService.getDocumentPath(
-      FileuploadUtils.FOLDER_TMP_FOR_ATTACHMENT_FILES,
-      userId + File.separator + folderName);
-  }
-
-  /**
-   * 保存されている添付ファイルへのフルパス
-   * 
-   * @param org_id
-   * @param userId
-   * @return
-   */
-  public static File getAbsolutePath(String org_id, int userId,
-      String folderName, int fileid) {
-    File folder = getFolder(org_id, userId, folderName);
-    return new File(folder.getAbsolutePath() + File.separator + fileid);
-  }
-
-  /**
-   * 新しいファイル名を生成する．
-   * 
-   * @return
-   */
-  @Deprecated
-  public static String getNewFileName(String folderPath) {
-    int count = 0;
-
-    SimpleDateFormat simpleDateFormat =
-      new SimpleDateFormat(DEFAULT_FILENAME_DATE_FORMAT);
-    Date date = new Date();
-    String tmpname = simpleDateFormat.format(date);
-    String path = folderPath + File.separator;
-    File folderpath = new File(path);
-    if (!folderpath.exists()) {
-      folderpath.mkdirs();
-    }
-
-    File file = null;
-    String newFileName = null;
-    String newFilePath = null;
-
-    while (true) {
-      newFileName = tmpname + count;
-      newFilePath = path + newFileName;
-      file = new File(newFilePath);
-      if (!file.exists()) {
-        break;
-      }
-      count += 1;
-    }
-    return newFileName;
-  }
-
-  /**
-   * 
-   * @param folder
-   * @return
-   */
-  public static String getNewAttachmentFolderName(File folder) {
-    int maxNum = 1;
-    String[] filenames = folder.list();
-    File file = null;
-    int tmpInt = 1;
-    int length = filenames.length;
-    for (int i = 0; i < length; i++) {
-      file = new File(folder.getAbsolutePath() + File.separator + filenames[i]);
-      if (file.isDirectory()) {
-        try {
-          tmpInt = Integer.parseInt(file.getName());
-          if (maxNum <= tmpInt) {
-            maxNum = tmpInt + 1;
-          }
-        } catch (NumberFormatException e) {
-          logger.error(e);
-        }
-      }
-    }
-    return Integer.toString(maxNum);
-  }
-
   public static String getRealFileName(String name) {
     String filename = null;
     int index = name.lastIndexOf("/");
@@ -254,10 +142,6 @@ public class FileuploadUtils {
       return null;
     }
 
-    String orgId = Database.getDomainName();
-    File folder = getFolder(orgId, ALEipUtils.getUserId(rundata), folderName);
-    String folderpath = folder.getAbsolutePath();
-
     for (int i = 0; i < length; i++) {
       if (fileids[i] == null || fileids[i].equals("")) {
         continue;
@@ -272,12 +156,12 @@ public class FileuploadUtils {
       BufferedReader reader = null;
       try {
         reader =
-          new BufferedReader(new InputStreamReader(
-            new FileInputStream(folderpath
-              + File.separator
-              + fileids[i]
-              + EXT_FILENAME),
-            FILE_ENCODING));
+          new BufferedReader(new InputStreamReader(ALStorageService.getFile(
+            FOLDER_TMP_FOR_ATTACHMENT_FILES,
+            ALEipUtils.getUserId(rundata)
+              + ALStorageService.separator()
+              + folderName,
+            fileids[i] + EXT_FILENAME)));
         String line = reader.readLine();
         if (line == null || line.length() <= 0) {
           continue;
@@ -304,223 +188,6 @@ public class FileuploadUtils {
   }
 
   /**
-   * ファイルをコピーします。<br />
-   * from "c:\\abc.txt"<br />
-   * to "c:\\tmp\\abc.txt"
-   * 
-   * @deprecated ALStorageService#copyFile
-   * @return
-   */
-  @Deprecated
-  public static boolean copyFile(File from, File to) {
-    boolean res = true;
-    FileChannel srcChannel = null;
-    FileChannel destChannel = null;
-
-    try {
-      srcChannel = new FileInputStream(from).getChannel();
-      destChannel = new FileOutputStream(to).getChannel();
-      destChannel.transferFrom(srcChannel, 0, srcChannel.size());
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
-      res = false;
-    } finally {
-      if (destChannel != null) {
-        try {
-          destChannel.close();
-        } catch (IOException ex) {
-          logger.error("Exception", ex);
-          res = false;
-        }
-      }
-      if (srcChannel != null) {
-        try {
-          srcChannel.close();
-        } catch (IOException ex) {
-          logger.error("Exception", ex);
-          res = false;
-        }
-      }
-    }
-
-    return res;
-  }
-
-  /**
-   * 指定したフォルダの容量を取得します。
-   * 
-   * @param folderPath
-   * @return
-   * @deprecated ALStorageService#getFolderSize
-   */
-  @Deprecated
-  public static long getFolderSize(String folderPath) {
-    if (folderPath == null || folderPath.equals("")) {
-      return 0;
-    }
-
-    File folder = new File(folderPath);
-    if (!folder.exists()) {
-      return 0;
-    }
-    if (folder.isFile()) {
-      return getFileSize(folder);
-    }
-    int fileSizeSum = 0;
-    File file = null;
-    String[] files = folder.list();
-    int length = files.length;
-    for (int i = 0; i < length; i++) {
-      file = new File(folderPath + File.separator + files[i]);
-      if (file.isFile()) {
-        fileSizeSum += getFileSize(file);
-      } else if (file.isDirectory()) {
-        fileSizeSum += getFolderSize(file.getAbsolutePath());
-      }
-    }
-    return fileSizeSum;
-  }
-
-  /**
-   * 指定したファイルのサイズを取得する．
-   * 
-   * @param file
-   * @return
-   * @deprecated ALStorageService#getFileSize
-   */
-  @Deprecated
-  public static int getFileSize(File file) {
-    if (file == null) {
-      return -1;
-    }
-
-    FileInputStream fileInputStream = null;
-    int size = -1;
-    try {
-      fileInputStream = new FileInputStream(file);
-      BufferedInputStream input = new BufferedInputStream(fileInputStream);
-      ByteArrayOutputStream output = new ByteArrayOutputStream();
-      byte[] b = new byte[512];
-      int len = -1;
-      while ((len = input.read(b)) != -1) {
-        output.write(b, 0, len);
-        output.flush();
-      }
-      input.close();
-      fileInputStream.close();
-
-      byte[] fileArray = output.toByteArray();
-      if (fileArray != null) {
-        size = fileArray.length;
-      } else {
-        size = -1;
-      }
-      output.close();
-    } catch (FileNotFoundException e) {
-      return -1;
-    } catch (IOException ioe) {
-      return -1;
-    }
-    return size;
-  }
-
-  /**
-   * 指定したフォルダ以下を全て削除する．
-   * 
-   * @return
-   * @deprecated ALStorageService#deleteFolder
-   */
-  @Deprecated
-  public static boolean deleteFolder(File folder) {
-    if (folder == null) {
-      return true;
-    }
-
-    String[] files = folder.list();
-    if (files == null) {
-      folder.delete();
-      return true;
-    }
-
-    int length = files.length;
-    if (length <= 0) {
-      folder.delete();
-      return true;
-    }
-
-    String folderPath = folder.getAbsolutePath() + File.separator;
-    File tmpfile = null;
-    for (int i = 0; i < length; i++) {
-      tmpfile = new File(folderPath + files[i]);
-      if (tmpfile.exists()) {
-        if (tmpfile.isFile()) {
-          tmpfile.delete();
-        } else if (tmpfile.isDirectory()) {
-          deleteFolder(tmpfile);
-        }
-      }
-    }
-
-    folder.delete();
-    return true;
-  }
-
-  /**
-   * 
-   * @param org_id
-   * @param userId
-   * @param folderName
-   * @param attachmentFileNameList
-   * @return
-   */
-  public static boolean deleteAttachments(String org_id, int userId,
-      String folderName, List<FileuploadLiteBean> attachmentFileNameList) {
-    File folder = null;
-    try {
-      folder =
-        ALOrgUtilsService.getDocumentPath(
-          FileuploadUtils.FOLDER_TMP_FOR_ATTACHMENT_FILES,
-          userId + File.separator + folderName);
-
-      if (!folder.exists()) {
-        return true;
-      }
-      String[] uploadedFolders = folder.list();
-      int uploadedfolders_length = uploadedFolders.length;
-      int length = attachmentFileNameList.size();
-      FileuploadLiteBean attachmentFile = null;
-      String uploadedFolderName = null;
-      File uploadedFolder = null;
-      boolean isDelete = true;
-      for (int i = 0; i < uploadedfolders_length; i++) {
-        isDelete = true;
-        uploadedFolder =
-          new File(folder.getAbsolutePath()
-            + File.separator
-            + uploadedFolders[i]);
-        if (uploadedFolder.isDirectory()) {
-          uploadedFolderName = uploadedFolder.getName();
-          for (int j = 0; j < length; j++) {
-            attachmentFile = attachmentFileNameList.get(j);
-            if (uploadedFolderName.equals(attachmentFile.getFolderName())) {
-              isDelete = false;
-              break;
-            }
-          }
-          if (isDelete) {
-            // 送信されなかったファイルを削除ファイルとして，ローカルフォルダから削除する．
-            FileuploadUtils.deleteFolder(uploadedFolder);
-          }
-        }
-      }
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
-      return false;
-    }
-    return true;
-  }
-
-  /**
    * 
    * @param org_id
    * @param folderName
@@ -536,7 +203,6 @@ public class FileuploadUtils {
       List<String> msgList) {
     byte[] result = null;
     try {
-      File folder = FileuploadUtils.getFolder(org_id, uid, folderName);
 
       String file_name = fileBean.getFileName();
 
@@ -560,22 +226,22 @@ public class FileuploadUtils {
         }
       }
 
-      StringBuffer srcfilepath = new StringBuffer(folder.getAbsolutePath());
-      srcfilepath.append(File.separator).append(fileBean.getFileId());
-
-      FileInputStream fileinput = null;
+      InputStream is = null;
       ByteArrayOutputStream output = new ByteArrayOutputStream();
       try {
-        fileinput = new FileInputStream(srcfilepath.toString());
+        is =
+          ALStorageService.getFile(FOLDER_TMP_FOR_ATTACHMENT_FILES, uid
+            + ALStorageService.separator()
+            + folderName, file_name);
         byte b[] = new byte[512];
         int len = -1;
-        while ((len = fileinput.read(b, 0, b.length)) != -1) {
+        while ((len = is.read(b, 0, b.length)) != -1) {
           output.write(b, 0, len);
         }
         output.flush();
       } finally {
-        if (fileinput != null) {
-          fileinput.close();
+        if (is != null) {
+          is.close();
         }
       }
 
@@ -603,10 +269,9 @@ public class FileuploadUtils {
       int height, List<String> msgList) {
 
     byte[] result = null;
-    FileInputStream fileinput = null;
+    InputStream is = null;
 
     try {
-      File folder = FileuploadUtils.getFolder(org_id, uid, folderName);
 
       String file_name = fileBean.getFileName();
 
@@ -631,12 +296,12 @@ public class FileuploadUtils {
         }
       }
 
-      StringBuffer srcfilepath = new StringBuffer(folder.getAbsolutePath());
-      srcfilepath.append(File.separator).append(fileBean.getFileId());
+      is =
+        ALStorageService.getFile(FOLDER_TMP_FOR_ATTACHMENT_FILES, uid
+          + ALStorageService.separator()
+          + folderName, String.valueOf(fileBean.getFileId()));
 
-      fileinput = new FileInputStream(srcfilepath.toString());
-
-      BufferedImage orgImage = ImageIO.read(fileinput);
+      BufferedImage orgImage = ImageIO.read(is);
       BufferedImage shrinkImage =
         FileuploadUtils.shrinkImage(orgImage, width, height);
       Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("jpg");
@@ -653,8 +318,8 @@ public class FileuploadUtils {
       result = null;
     } finally {
       try {
-        if (fileinput != null) {
-          fileinput.close();
+        if (is != null) {
+          is.close();
         }
       } catch (Exception e) {
         logger.error("Exception", e);

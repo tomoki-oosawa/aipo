@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.fileupload;
 
-import java.io.File;
 import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -110,8 +109,7 @@ public class FileuploadFormData extends ALAbstractFormData {
     attachmentItem = parser.getFileItem(KEY_ATTACHMENT_ID);
 
     if (attachmentItem != null) {
-      File file = new File(attachmentItem.getName());
-      attachmentName.setValue(file.getName());
+      attachmentName.setValue(attachmentItem.getName());
     }
 
     // 現在の添付ファイル数
@@ -248,54 +246,6 @@ public class FileuploadFormData extends ALAbstractFormData {
     attachmentName = new ALStringField();
     attachmentName.setFieldName("添付ファイル名");
     attachmentName.setTrim(true);
-  }
-
-  @SuppressWarnings("unused")
-  private String getNewAttachmentFolderName(File folder) {
-    int maxNum = 1;
-    String[] filenames = folder.list();
-    File file = null;
-    int tmpInt = 1;
-    if (filenames != null) {
-      int length = filenames.length;
-      for (int i = 0; i < length; i++) {
-        file =
-          new File(folder.getAbsolutePath() + File.separator + filenames[i]);
-        if (file.isDirectory()) {
-          try {
-            tmpInt = Integer.parseInt(file.getName());
-            if (maxNum <= tmpInt) {
-              maxNum = tmpInt + 1;
-            }
-          } catch (NumberFormatException e) {
-          }
-        }
-      }
-    }
-    return Integer.toString(maxNum);
-  }
-
-  @SuppressWarnings("unused")
-  private String getNewAttachmentFileName(File folder) {
-    int maxNum = 1;
-    String[] filenames = folder.list();
-    File file = null;
-    int tmpInt = 1;
-    int length = filenames.length;
-    for (int i = 0; i < length; i++) {
-      file = new File(folder.getAbsolutePath() + File.separator + filenames[i]);
-      if (file.isFile()
-        && !file.getName().endsWith(FileuploadUtils.EXT_FILENAME)) {
-        try {
-          tmpInt = Integer.parseInt(file.getName());
-          if (maxNum <= tmpInt) {
-            maxNum = tmpInt + 1;
-          }
-        } catch (NumberFormatException e) {
-        }
-      }
-    }
-    return Integer.toString(maxNum);
   }
 
   public FileuploadBean getNewAttachmentFile() {

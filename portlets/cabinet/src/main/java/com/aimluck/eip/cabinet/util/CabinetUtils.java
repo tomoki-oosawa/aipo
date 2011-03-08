@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.cabinet.util;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,9 +37,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolderMap;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
-import com.aimluck.eip.services.orgutils.ALOrgUtilsFactoryService;
-import com.aimluck.eip.services.orgutils.ALOrgUtilsHandler;
-import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -414,12 +411,9 @@ public class CabinetUtils {
    * @return
    */
   public static String getSaveDirPath(String orgId) {
-    File path =
-      ALOrgUtilsService.getDocumentPath(FOLDER_FILEDIR_CABINET, CATEGORY_KEY);
-    if (!path.exists()) {
-      path.mkdirs();
-    }
-    return path.getAbsolutePath();
+    return ALStorageService.getDocumentPath(
+      FOLDER_FILEDIR_CABINET,
+      CATEGORY_KEY);
   }
 
   /**
@@ -430,27 +424,6 @@ public class CabinetUtils {
    */
   public static String getRelativePath(String fileName) {
     return new StringBuffer().append("/").append(fileName).toString();
-  }
-
-  /**
-   * 添付ファイル保存先（絶対パス）を取得します。
-   * 
-   * @param uid
-   * @return
-   */
-  public static String getAbsolutePath(String orgId, String fileName) {
-    ALOrgUtilsHandler handler =
-      ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
-    StringBuffer sb =
-      new StringBuffer()
-        .append(
-          handler.getDocumentPath(FOLDER_FILEDIR_CABINET, orgId, CATEGORY_KEY))
-        .append(File.separator);
-    File f = new File(sb.toString());
-    if (!f.exists()) {
-      f.mkdirs();
-    }
-    return sb.append(File.separator).append(fileName).toString();
   }
 
   /**

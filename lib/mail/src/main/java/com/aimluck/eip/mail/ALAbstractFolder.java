@@ -20,13 +20,11 @@
 package com.aimluck.eip.mail;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -58,7 +56,7 @@ import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
-import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.sk_jp.mail.MailUtility;
 import com.sk_jp.mail.MultipartUtility;
@@ -417,27 +415,35 @@ public abstract class ALAbstractFolder implements ALFolder {
     List<String> oldUIDL = new ArrayList<String>();
 
     BufferedReader reader = null;
+    InputStream is = null;
     try {
-      String indexFilename =
-        getFullName() + File.separator + ALFolder.FILE_UIDL;
-      File uidlFile = new File(indexFilename);
-      if (!uidlFile.exists()) {
-        uidlFile.createNewFile();
-        uidlFile = new File(indexFilename);
-        if (!uidlFile.exists()) {
-          return oldUIDL;
-        }
+      try {
+        is =
+          ALStorageService.getFile(getFullName()
+            + ALStorageService.separator()
+            + ALFolder.FILE_UIDL);
+      } catch (Throwable t) {
+        //
       }
-
-      reader =
-        new BufferedReader(new InputStreamReader(new FileInputStream(uidlFile)));
+      if (is == null) {
+        return oldUIDL;
+      }
+      reader = new BufferedReader(new InputStreamReader(is));
       String line = null;
       while ((line = reader.readLine()) != null) {
         oldUIDL.add(line);
       }
 
     } catch (IOException ioe) {
+      //
     } finally {
+      if (is != null) {
+        try {
+          is.close();
+        } catch (IOException i) {
+          //
+        }
+      }
       if (reader != null) {
         try {
           reader.close();
@@ -455,26 +461,22 @@ public abstract class ALAbstractFolder implements ALFolder {
    */
   @Override
   public void saveUID(List<String> oldUIDL) {
-    PrintWriter writer = null;
     try {
-      String uidlFilename = getFullName() + File.separator + ALFolder.FILE_UIDL;
-      File file = new File(uidlFilename);
-      if (!file.exists()) {
-        file.createNewFile();
-      }
-      // UID の一覧を保存
-      writer = new PrintWriter(new FileOutputStream(new File(uidlFilename)));
       int length = oldUIDL.size();
+      StringBuilder b = new StringBuilder();
       for (int i = 0; i < length; i++) {
-        writer.println(oldUIDL.get(i));
+        b.append(oldUIDL.get(i));
+        b.append(System.getProperty("line.separator"));
       }
 
-      writer.flush();
+      ALStorageService.saveFile(
+        new ByteArrayInputStream(b.toString().getBytes("utf-8")),
+        getFullName() + ALStorageService.separator(),
+        ALFolder.FILE_UIDL);
+
     } catch (IOException ioe) {
     } finally {
-      if (writer != null) {
-        writer.close();
-      }
+
     }
   }
 
@@ -502,49 +504,25 @@ public abstract class ALAbstractFolder implements ALFolder {
    */
   @Override
   public String getFullName() {
-    StringBuffer fullName = null;
+    StringBuilder key = new StringBuilder();
     String categoryKeytmp = getCategoryKey();
 
     if (categoryKeytmp != null && !"".equals(categoryKeytmp)) {
-      File docPath =
-        ALOrgUtilsService.getDocumentPath(getRootFolderPath(), categoryKeytmp);
-      String pathStr = null;
-      try {
-        pathStr = docPath.getCanonicalPath();
-      } catch (IOException e) {
-        logger.error("ALAbstractFolder: unable to resolve file path for "
-          + pathStr);
-      }
-      fullName = new StringBuffer(pathStr);
-      fullName
-        .append(File.separator)
-        .append(user_id)
-        .append(File.separator)
-        .append(account_id);
-    } else {
-      fullName = new StringBuffer(getRootFolderPath());
-      fullName
-        .append(File.separator)
-        .append(org_id)
-        .append(File.separator)
-        .append(user_id)
-        .append(File.separator)
-        .append(account_id);
+      key.append(categoryKeytmp);
     }
+    key.append(ALStorageService.separator());
+    key.append(user_id);
+    key.append(ALStorageService.separator());
+    key.append(account_id);
 
     if (ALFolder.TYPE_RECEIVE == type_mail) {
-      fullName.append(File.separator).append("Receive");
+      key.append(ALStorageService.separator()).append("Receive");
     } else {
-      fullName.append(File.separator).append("Send");
+      key.append(ALStorageService.separator()).append("Send");
     }
 
-    String path = fullName.toString();
-    File folder = new File(path);
-    if (!folder.exists()) {
-      folder.mkdirs();
-    }
-
-    return fullName.toString();
+    return ALStorageService.getDocumentPath(ALMailUtils.rootFolderPath, key
+      .toString());
   }
 
   /**

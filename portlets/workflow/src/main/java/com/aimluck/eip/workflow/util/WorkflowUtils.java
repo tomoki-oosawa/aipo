@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.workflow.util;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -67,8 +66,6 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
-import com.aimluck.eip.services.orgutils.ALOrgUtilsFactoryService;
-import com.aimluck.eip.services.orgutils.ALOrgUtilsHandler;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
@@ -1387,15 +1384,10 @@ public class WorkflowUtils {
 
     if (delFiles.size() > 0) {
       // ローカルファイルに保存されているファイルを削除する．
-      File file = null;
       int delsize = delFiles.size();
       for (int i = 0; i < delsize; i++) {
-        file =
-          new File(WorkflowUtils.getSaveDirPath(orgId, uid)
-            + (delFiles.get(i)).getFilePath());
-        if (file.exists()) {
-          file.delete();
-        }
+        ALStorageService.deleteFile(WorkflowUtils.getSaveDirPath(orgId, uid)
+          + (delFiles.get(i)).getFilePath());
       }
       // データベースから添付ファイルのデータ削除
       Database.deleteAll(delFiles);
@@ -1450,7 +1442,7 @@ public class WorkflowUtils {
         // ファイルの移動
         ALStorageService.copyTmpFile(uid, folderName, String.valueOf(filebean
           .getFileId()), FOLDER_FILEDIR_WORKFLOW, CATEGORY_KEY
-          + File.separator
+          + ALStorageService.separator()
           + uid, filename);
       }
 
@@ -1470,19 +1462,9 @@ public class WorkflowUtils {
    * @return
    */
   public static String getSaveDirPath(String orgId, int uid) {
-    ALOrgUtilsHandler handler =
-      ALOrgUtilsFactoryService.getInstance().getOrgUtilsHandler();
-    File path =
-      new File(handler.getDocumentPath(
-        FOLDER_FILEDIR_WORKFLOW,
-        orgId,
-        CATEGORY_KEY)
-        + File.separator
-        + uid);
-    if (!path.exists()) {
-      path.mkdirs();
-    }
-    return path.getAbsolutePath();
+    return ALStorageService.getDocumentPath(
+      FOLDER_FILEDIR_WORKFLOW,
+      CATEGORY_KEY + ALStorageService.separator() + uid);
   }
 
   /**
@@ -1493,25 +1475,6 @@ public class WorkflowUtils {
    */
   public static String getRelativePath(String fileName) {
     return new StringBuffer().append("/").append(fileName).toString();
-  }
-
-  /**
-   * 添付ファイル保存先（絶対パス）を取得します。
-   * 
-   * @param uid
-   * @return
-   */
-  public static String getAbsolutePath(String orgId, int uid, String fileName) {
-    StringBuffer sb =
-      new StringBuffer().append(
-        ALOrgUtilsService
-          .getDocumentPath(FOLDER_FILEDIR_WORKFLOW, CATEGORY_KEY)).append(
-        File.separator).append(uid);
-    File f = new File(sb.toString());
-    if (!f.exists()) {
-      f.mkdirs();
-    }
-    return sb.append(File.separator).append(fileName).toString();
   }
 
   public static List<UserLiteBean> getAuthorityUsers(RunData rundata,

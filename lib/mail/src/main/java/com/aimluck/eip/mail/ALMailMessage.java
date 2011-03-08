@@ -20,6 +20,7 @@
 package com.aimluck.eip.mail;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.mail.MessagingException;
@@ -32,6 +33,8 @@ public interface ALMailMessage {
 
   abstract public void writeTo(OutputStream os) throws IOException,
       MessagingException;
+
+  abstract InputStream getInputStream() throws IOException, MessagingException;
 
   abstract public void clearContents();
 }

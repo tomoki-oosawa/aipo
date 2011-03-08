@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.cabinet;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -407,12 +406,8 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
       if (local_file_pass != null && !"".equals(local_file_pass)) {
         // ローカルファイルに保存されているファイルを削除する．
-        File local_file = null;
-        local_file =
-          new File(CabinetUtils.getSaveDirPath(orgId) + local_file_pass);
-        if (local_file.exists()) {
-          local_file.delete();
-        }
+        ALStorageService.deleteFile(CabinetUtils.getSaveDirPath(orgId)
+          + local_file_pass);
       }
 
     } catch (Exception ex) {
@@ -447,13 +442,13 @@ public class CabinetFileFormData extends ALAbstractFormData {
         folderName,
         String.valueOf(filebean.getFileId()),
         CabinetUtils.FOLDER_FILEDIR_CABINET,
-        CabinetUtils.CATEGORY_KEY + File.separator + uid,
+        CabinetUtils.CATEGORY_KEY,
         filename);
 
       double fileSize =
         ALStorageService.getFileSize(
           CabinetUtils.FOLDER_FILEDIR_CABINET,
-          CabinetUtils.CATEGORY_KEY + File.separator + uid,
+          CabinetUtils.CATEGORY_KEY + ALStorageService.separator() + uid,
           filename);
 
       EipTCabinetFolder folder =
@@ -541,7 +536,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
           folderName,
           String.valueOf(filebean.getFileId()),
           CabinetUtils.FOLDER_FILEDIR_CABINET,
-          CabinetUtils.CATEGORY_KEY + File.separator + uid,
+          CabinetUtils.CATEGORY_KEY,
           filename);
 
         // ファイル名
@@ -551,7 +546,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
         double fileSize =
           ALStorageService.getFileSize(
             CabinetUtils.FOLDER_FILEDIR_CABINET,
-            CabinetUtils.CATEGORY_KEY + File.separator + uid,
+            CabinetUtils.CATEGORY_KEY + ALStorageService.separator() + uid,
             filename);
         // double fileSize = Math.ceil(destFile.length() / 1024.0);
         file.setFileSize(Long.valueOf((long) fileSize));

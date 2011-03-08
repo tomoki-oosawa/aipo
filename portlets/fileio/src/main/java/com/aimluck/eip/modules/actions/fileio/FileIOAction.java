@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.modules.actions.fileio;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +45,7 @@ import com.aimluck.eip.fileio.util.FileIOAccountCsvUtils;
 import com.aimluck.eip.fileio.util.FileIOAddressBookCsvUtils;
 import com.aimluck.eip.fileio.util.FileIOScheduleCsvUtils;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALCSVUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -57,8 +57,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class FileIOAction extends ALBaseAction {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(FileIOAction.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(FileIOAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
@@ -214,7 +214,7 @@ public class FileIOAction extends ALBaseAction {
     String temp_folder_index = rundata.getParameters().getString("temp_folder");
     String filepath =
       FileIOAddressBookCsvUtils.getAddressBookCsvFolderName(temp_folder_index)
-        + File.separator
+        + ALStorageService.separator()
         + FileIOAddressBookCsvUtils.CSV_ADDRESSBOOK_TEMP_FILENAME;
 
     ALCsvTokenizer reader = new ALCsvTokenizer();
@@ -407,7 +407,7 @@ public class FileIOAction extends ALBaseAction {
     String temp_folder_index = rundata.getParameters().getString("temp_folder");
     String filepath =
       FileIOAddressBookCsvUtils.getAddressBookCsvFolderName(temp_folder_index)
-        + File.separator
+        + ALStorageService.separator()
         + FileIOAddressBookCsvUtils.CSV_ADDRESSBOOK_TEMP_FILENAME;
     ALCsvTokenizer reader = new ALCsvTokenizer();
     if (!reader.init(filepath)) {
@@ -495,13 +495,8 @@ public class FileIOAction extends ALBaseAction {
     String temp_folder_index = rundata.getParameters().getString("temp_folder");
     String filepath =
       FileIOAccountCsvUtils.getAccountCsvFolderName(temp_folder_index)
-        + File.separator
+        + ALStorageService.separator()
         + FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_FILENAME;
-
-    File file = new File(filepath);
-    if (!file.exists()) {
-      return;
-    }
 
     ALCsvTokenizer reader = new ALCsvTokenizer();
     if (!reader.init(filepath)) {
@@ -818,7 +813,7 @@ public class FileIOAction extends ALBaseAction {
     String temp_folder_index = rundata.getParameters().getString("temp_folder");
     String filepath =
       FileIOAccountCsvUtils.getAccountPostCsvFolderName(temp_folder_index)
-        + File.separator
+        + ALStorageService.separator()
         + FileIOAccountCsvUtils.CSV_ACCOUNT_POST_TEMP_FILENAME;
 
     ALCsvTokenizer reader = new ALCsvTokenizer();
@@ -1010,7 +1005,7 @@ public class FileIOAction extends ALBaseAction {
     String temp_folder_index = rundata.getParameters().getString("temp_folder");
     String filepath =
       FileIOScheduleCsvUtils.getScheduleCsvFolderName(temp_folder_index)
-        + File.separator
+        + ALStorageService.separator()
         + FileIOScheduleCsvUtils.FOLDER_TMP_FOR_USERINFO_CSV_FILENAME;
     ALCsvTokenizer reader = new ALCsvTokenizer();
     if (!reader.init(filepath)) {

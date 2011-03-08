@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.modules.screens;
 
-import java.io.File;
 import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -35,7 +34,6 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
-import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -59,9 +57,6 @@ public class TimecardXlsExportScreen extends ALXlsScreen {
   /** ログインユーザーID */
   private String userid;
 
-  /** 一時フォルダへのフォルダ */
-  private File rootFolder;
-
   /** アクセス権限の機能名 */
   private String aclPortletFeature = null;
 
@@ -79,10 +74,6 @@ public class TimecardXlsExportScreen extends ALXlsScreen {
     String target_user_id =
       rundata.getParameters().getString(TimecardUtils.TARGET_USER_ID);
     userid = Integer.toString(ALEipUtils.getUserId(rundata));
-
-    rootFolder =
-      TimecardUtils.getRootFolder(Database.getDomainName(), ALEipUtils
-        .getUserId(rundata));
 
     // アクセス権
     if (target_user_id == null
@@ -189,11 +180,6 @@ public class TimecardXlsExportScreen extends ALXlsScreen {
       uid,
       "タイムカード出力",
       ALEventlogConstants.PORTLET_TYPE_TIMECARD_XLS_SCREEN);
-  }
-
-  @Override
-  protected String getFolderPath() {
-    return rootFolder.getAbsolutePath();
   }
 
   @Override

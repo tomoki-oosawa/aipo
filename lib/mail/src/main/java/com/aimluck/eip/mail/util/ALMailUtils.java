@@ -20,9 +20,7 @@
 package com.aimluck.eip.mail.util;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
@@ -40,7 +38,6 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 import java.util.TreeMap;
@@ -84,7 +81,6 @@ import com.aimluck.eip.mail.ALLocalMailMessage;
 import com.aimluck.eip.mail.ALMailFactoryService;
 import com.aimluck.eip.mail.ALMailHandler;
 import com.aimluck.eip.mail.ALMailMessage;
-import com.aimluck.eip.mail.ALMailReceiver;
 import com.aimluck.eip.mail.ALMailReceiverContext;
 import com.aimluck.eip.mail.ALMailSenderContext;
 import com.aimluck.eip.mail.ALMailService;
@@ -543,191 +539,6 @@ public class ALMailUtils {
   }
 
   /**
-   * 指定したプロパティファイルから値を取得する．
-   * 
-   * @param filename
-   *          プロパティファイル名
-   * @param key
-   *          プロパティのキー
-   * @return プロパティの値
-   */
-  public static String getProperty(String filename, String key) {
-    File file = getFile(filename);
-    if (file == null) {
-      return null;
-    }
-
-    String value = null;
-    Properties prop = new Properties();
-    FileInputStream input = null;
-    try {
-      input = new FileInputStream(file);
-      prop.load(input);
-      value = prop.getProperty(key);
-    } catch (Exception e) {
-      logger.error("Exception", e);
-      value = null;
-    } finally {
-      if (input != null) {
-        try {
-          input.close();
-        } catch (IOException e) {
-          logger.error("Exception", e);
-          value = null;
-        }
-      }
-    }
-
-    return value;
-  }
-
-  /**
-   * 指定したプロパティファイルに値を保存する．
-   * 
-   * @param filename
-   *          プロパティファイル名
-   * @param key
-   *          プロパティのキー
-   * @param value
-   *          プロパティの値
-   */
-  public static void setProperty(String filename, String key, String value) {
-    File file = getFile(filename);
-    if (file == null) {
-      return;
-    }
-
-    Properties prop = new Properties();
-    FileInputStream input = null;
-    try {
-      input = new FileInputStream(file);
-      prop.load(input);
-      prop.put(key, value);
-      prop.store(new FileOutputStream(file), null);
-    } catch (Exception e) {
-      logger.error("Exception", e);
-    }
-  }
-
-  /**
-   * 指定したファイル名に対するクラス File のオブジェクトを取得する．
-   * 
-   * @param filename
-   * @return
-   */
-  public static File getFile(String filename) {
-    if (filename == null) {
-      return null;
-    }
-    File file = new File(filename);
-    if (!file.exists()) {
-      try {
-        if (!file.createNewFile()) {
-          return null;
-        }
-      } catch (IOException e) {
-        return null;
-      }
-    }
-    return file;
-  }
-
-  /**
-   * 指定したフォルダ以下を全て削除する．
-   * 
-   * @return
-   */
-  public static boolean deleteFolder(File folder) {
-    if (folder == null) {
-      return true;
-    }
-
-    String[] files = folder.list();
-    if (files == null) {
-      folder.delete();
-      return true;
-    }
-
-    int length = files.length;
-    if (length <= 0) {
-      folder.delete();
-      return true;
-    }
-    String folderPath = folder.getAbsolutePath() + File.separator;
-    File tmpfile = null;
-    for (int i = 0; i < length; i++) {
-      tmpfile = new File(folderPath + files[i]);
-      if (tmpfile.exists()) {
-        if (tmpfile.isFile()) {
-          tmpfile.delete();
-        } else if (tmpfile.isDirectory()) {
-          deleteFolder(tmpfile);
-        }
-      }
-    }
-    folder.delete();
-    return true;
-  }
-
-  /**
-   * [メール削除機能] ロックファイルを生成する．
-   * 
-   * @param dir
-   * @param userId
-   * @return
-   */
-  public static boolean createLockFile(String dir, String userId) {
-    try {
-      File lockDir = new File(dir);
-      if (!lockDir.exists()) {
-        lockDir.mkdirs();
-      }
-
-      StringBuffer sb = new StringBuffer();
-      sb.append(dir).append(File.separator).append(userId).append(".lock");
-      File lockFile = new File(sb.toString());
-      if (!lockFile.createNewFile()) {
-        long lastModifiedTime = lockFile.lastModified();
-        Calendar calendar = Calendar.getInstance();
-        long nowTime = calendar.getTimeInMillis();
-        // 最後の変更時間（作成時間）と現在時間を比較し，タイムアウト時間内かを検証する．
-        if (lastModifiedTime + ALMailReceiver.TIMEOUT_SPAN < nowTime) {
-          // タイムアウト時間を過ぎた場合，ロックファイルを削除し，
-          // 新たにロックファイルの作成を試みる．
-          lockFile.delete();
-          if (!lockFile.createNewFile()) {
-            return false;
-          }
-        } else {
-          return false;
-        }
-      }
-    } catch (IOException e) {
-      logger.error(e);
-      return false;
-    }
-    return true;
-  }
-
-  /**
-   * [メール削除機能] ロックファイルを削除する．
-   * 
-   * @param dir
-   * @param userId
-   * @return
-   */
-  public static boolean deleteLockFile(String dir, String userId) {
-    StringBuffer sb = new StringBuffer();
-    sb.append(dir).append(File.separator).append(userId).append(".lock");
-
-    File lockFile = new File(sb.toString());
-    if (!lockFile.delete()) {
-      return false;
-    }
-    return true;
-  }
-
-  /**
    * 受信メールの受信日時を取得する（ヘッダ Recieved を解析する）．
    * 
    * @param msg
@@ -812,33 +623,6 @@ public class ALMailUtils {
       return null;
     }
     return address;
-  }
-
-  /**
-   * ファイルが存在することを確認する．
-   * 
-   * @param filePaths
-   *          ファイルへのフルパス
-   * @return
-   */
-  public static String[] checkFilesExistance(String[] filePaths) {
-    List<String> checkedList = new ArrayList<String>();
-    File file = null;
-    int filePathsLength = filePaths.length;
-    for (int i = 0; i < filePathsLength; i++) {
-      file = new File(filePaths[i]);
-      if (!file.exists()) {
-        continue;
-      }
-      checkedList.add(filePaths[i]);
-    }
-
-    int checkedListLength = checkedList.size();
-    String[] filePathList = new String[checkedListLength];
-    for (int i = 0; i < checkedListLength; i++) {
-      filePathList[i] = checkedList.get(i);
-    }
-    return filePathList;
   }
 
   public static String getFileNameFromText(String FilePath) {

@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.cabinet;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -50,6 +49,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -228,6 +228,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
     // フォルダ名
     folder_name = new ALStringField();
@@ -554,13 +555,10 @@ public class CabinetFolderFormData extends ALAbstractFormData {
 
         if (fpaths.size() > 0) {
           // ローカルファイルに保存されているファイルを削除する．
-          File file = null;
           int fsize = fpaths.size();
           for (int k = 0; k < fsize; k++) {
-            file = new File(CabinetUtils.getSaveDirPath(orgId) + fpaths.get(k));
-            if (file.exists()) {
-              file.delete();
-            }
+            ALStorageService.deleteFile(CabinetUtils.getSaveDirPath(orgId)
+              + fpaths.get(k));
           }
         }
       }

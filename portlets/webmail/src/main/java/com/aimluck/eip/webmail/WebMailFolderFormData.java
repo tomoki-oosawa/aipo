@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.webmail;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -48,6 +47,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.util.WebMailUtils;
 
@@ -342,13 +342,10 @@ public class WebMailFolderFormData extends ALAbstractFormData {
 
       // ローカルファイルに保存されているファイルを削除する．
       if (mailPaths.size() > 0) {
-        File file = null;
         int size = mailPaths.size();
         for (int k = 0; k < size; k++) {
-          file = new File(ALMailUtils.getLocalurl() + mailPaths.get(k));
-          if (file.exists()) {
-            file.delete();
-          }
+          ALStorageService.deleteFile(ALMailUtils.getLocalurl()
+            + mailPaths.get(k));
         }
       }
       return true;

@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.msgboard;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -366,14 +365,10 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
       if (fpaths.size() > 0) {
         // ローカルファイルに保存されているファイルを削除する．
-        File file = null;
         int fsize = fpaths.size();
         for (int i = 0; i < fsize; i++) {
-          file =
-            new File(MsgboardUtils.getSaveDirPath(orgId, uid) + fpaths.get(i));
-          if (file.exists()) {
-            file.delete();
-          }
+          ALStorageService.deleteFile(MsgboardUtils.getSaveDirPath(orgId, uid)
+            + fpaths.get(i));
         }
       }
 

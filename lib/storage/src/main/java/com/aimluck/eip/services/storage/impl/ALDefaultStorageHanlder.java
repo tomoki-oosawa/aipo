@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.channels.FileChannel;
+import java.util.Calendar;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -56,6 +57,129 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
     return instance;
   }
 
+  @Override
+  public void saveFile(InputStream is, String folderPath, String filename) {
+    File path = new File(folderPath);
+
+    if (!path.exists()) {
+      try {
+        path.mkdirs();
+      } catch (Exception e) {
+        logger.error("Can't create directory...:" + path);
+      }
+    }
+
+    String filepath = path + separator() + filename;
+    File file = new File(filepath);
+    FileOutputStream os = null;
+    try {
+      if (!file.exists()) {
+        file.createNewFile();
+      }
+      os = new FileOutputStream(filepath);
+      int c;
+      while ((c = is.read()) != -1) {
+        os.write(c);
+      }
+    } catch (IOException e) {
+      logger.error(e, e);
+    } finally {
+      if (os != null) {
+        try {
+          os.flush();
+          os.close();
+        } catch (Throwable e) {
+          // ignore
+        }
+      }
+    }
+  }
+
+  /**
+   * @param inputStream
+   * @param filepath
+   */
+  @Override
+  public void createNewFile(InputStream is, String filepath) {
+    File file = new File(filepath);
+
+    if (!file.exists()) {
+      try {
+        String parent = file.getParent();
+        if (parent != null) {
+          File dir = new File(parent);
+          if (!dir.exists()) {
+            dir.mkdirs();
+          }
+        }
+        file.createNewFile();
+      } catch (Exception e) {
+        logger.error("Can't create file...:" + file);
+      }
+    }
+
+    FileOutputStream os = null;
+    try {
+      os = new FileOutputStream(filepath);
+      int c;
+      while ((c = is.read()) != -1) {
+        os.write(c);
+      }
+    } catch (IOException e) {
+      logger.error(e, e);
+    } finally {
+      if (os != null) {
+        try {
+          os.flush();
+          os.close();
+        } catch (Throwable e) {
+          // ignore
+        }
+      }
+    }
+  }
+
+  /**
+   * @param is
+   * @param folderPath
+   * @param filename
+   */
+  @Override
+  public void createNewFile(InputStream is, String folderPath, String filename) {
+    File path = new File(folderPath);
+
+    if (!path.exists()) {
+      try {
+        path.mkdirs();
+      } catch (Exception e) {
+        logger.error("Can't create directory...:" + path);
+      }
+    }
+
+    String filepath = path + separator() + filename;
+    File file = new File(filepath);
+    FileOutputStream os = null;
+    try {
+      file.createNewFile();
+      os = new FileOutputStream(filepath);
+      int c;
+      while ((c = is.read()) != -1) {
+        os.write(c);
+      }
+    } catch (IOException e) {
+      logger.error(e, e);
+    } finally {
+      if (os != null) {
+        try {
+          os.flush();
+          os.close();
+        } catch (Throwable e) {
+          // ignore
+        }
+      }
+    }
+  }
+
   /**
    * @param is
    * @param rootPath
@@ -67,11 +191,11 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
 
     File path =
       new File(FOLDER_TMP_FOR_ATTACHMENT_FILES
-        + File.separator
+        + separator()
         + Database.getDomainName()
-        + File.separator
+        + separator()
         + uid
-        + File.separator
+        + separator()
         + dir);
 
     if (!path.exists()) {
@@ -83,7 +207,7 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
     }
 
     try {
-      String filepath = path + File.separator + fileName;
+      String filepath = path + separator() + fileName;
       File file = new File(filepath);
       file.createNewFile();
       FileOutputStream os = new FileOutputStream(filepath);
@@ -137,9 +261,9 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
 
     File srcPath =
       new File(srcRootPath
-        + File.separator
+        + separator()
         + Database.getDomainName()
-        + File.separator
+        + separator()
         + srcDir);
 
     if (!srcPath.exists()) {
@@ -153,9 +277,9 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
 
     File destPath =
       new File(destRootPath
-        + File.separator
+        + separator()
         + Database.getDomainName()
-        + File.separator
+        + separator()
         + destDir);
 
     if (!destPath.exists()) {
@@ -167,8 +291,8 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
       }
     }
 
-    File from = new File(srcPath + File.separator + srcFileName);
-    File to = new File(destPath + File.separator + destFileName);
+    File from = new File(srcPath + separator() + srcFileName);
+    File to = new File(destPath + separator() + destFileName);
 
     boolean res = true;
     FileChannel srcChannel = null;
@@ -210,9 +334,9 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
   @Override
   public long getFolderSize(String rootPath, String dir) {
     return getFolderSize(rootPath
-      + File.separator
+      + separator()
       + Database.getDomainName()
-      + File.separator
+      + separator()
       + dir);
   }
 
@@ -233,7 +357,7 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
     String[] files = folder.list();
     int length = files.length;
     for (int i = 0; i < length; i++) {
-      file = new File(folderPath + File.separator + files[i]);
+      file = new File(folderPath + separator() + files[i]);
       if (file.isFile()) {
         fileSizeSum += getFileSize(file);
       } else if (file.isDirectory()) {
@@ -246,11 +370,11 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
   @Override
   public long getFileSize(String rootPath, String dir, String filename) {
     return getFileSize(new File(rootPath
-      + File.separator
+      + separator()
       + Database.getDomainName()
-      + File.separator
+      + separator()
       + dir
-      + File.separator
+      + separator()
       + filename));
   }
 
@@ -293,9 +417,9 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
   public boolean deleteFolder(String rootPath, String dir) {
     File file =
       new File(rootPath
-        + File.separator
+        + separator()
         + Database.getDomainName()
-        + File.separator
+        + separator()
         + dir);
 
     if (!file.exists()) {
@@ -322,7 +446,7 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
       return true;
     }
 
-    String folderPath = folder.getAbsolutePath() + File.separator;
+    String folderPath = folder.getAbsolutePath() + separator();
     File tmpfile = null;
     for (int i = 0; i < length; i++) {
       tmpfile = new File(folderPath + files[i]);
@@ -343,11 +467,11 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
   public InputStream getFile(String rootPath, String dir, String fileName)
       throws FileNotFoundException {
     return getFile(rootPath
-      + File.separator
+      + separator()
       + Database.getDomainName()
-      + File.separator
+      + separator()
       + dir
-      + File.separator
+      + separator()
       + fileName);
   }
 
@@ -378,9 +502,9 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
     // パスを作成
     base =
       new File(rootDir.getAbsolutePath()
-        + File.separator
+        + separator()
         + org_name
-        + File.separator
+        + separator()
         + categoryKey);
 
     if (!base.exists()) {
@@ -393,4 +517,94 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
     }
     return base.getAbsolutePath();
   }
+
+  /**
+   * @return
+   */
+  @Override
+  public String separator() {
+    return File.separator;
+  }
+
+  /**
+   * @param rootPath
+   * @param dir
+   * @param filename
+   * @return
+   */
+  @Override
+  public boolean deleteFile(String rootPath, String dir, String filename) {
+
+    File file =
+      new File(getDocumentPath(rootPath, dir) + separator() + filename);
+
+    if (file != null && file.exists()) {
+      file.delete();
+    }
+
+    return true;
+  }
+
+  @Override
+  public boolean deleteFile(String filePath) {
+
+    File file = new File(filePath);
+
+    if (file != null && file.exists()) {
+      file.delete();
+    }
+
+    return true;
+  }
+
+  @Override
+  public boolean deleteOldFolder(String folderPath, Calendar cal) {
+    Calendar mod = Calendar.getInstance();
+    boolean flag = true;
+    File parent_folder = new File(folderPath);
+    try {
+      if (!parent_folder.exists()) {
+        return false;
+      }
+      if (parent_folder.isFile()) {
+        return false;
+      }
+      String folders_path[] = parent_folder.list();
+      if (folders_path.length == 0) {
+        return true;
+      }
+      int length = folders_path.length;
+      for (int i = 0; i < length; i++) {
+        File folder =
+          new File(parent_folder.getAbsolutePath()
+            + File.separator
+            + folders_path[i]);
+        mod.setTimeInMillis(folder.lastModified());// ファイルの最終更新日時を格納
+        if (folder.isDirectory()) {
+          if (!deleteOldFolder(folder.getAbsolutePath(), cal)) {// フォルダの中身が空もしくは全部削除された場合
+            flag = false;
+          } else if (mod.before(cal)) {// 空のフォルダが古い場合
+            if (!folder.delete()) {
+              flag = false;
+            }
+          }
+        } else {
+          if (mod.before(cal)) {
+            // 一つでも消えないファイルがあればフラグを動かす
+            if (!folder.delete()) {
+              flag = false;
+            }
+          } else {
+            flag = false;
+          }
+        }
+
+      }
+    } catch (Exception e) {
+      logger.error(e);
+      return false;
+    }
+    return flag;
+  }
+
 }

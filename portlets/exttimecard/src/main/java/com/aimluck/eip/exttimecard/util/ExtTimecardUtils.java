@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.exttimecard.util;
 
-import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -260,30 +259,6 @@ public class ExtTimecardUtils {
       return true;
     }
     return false;
-  }
-
-  /**
-   * 一時ファイル保存先のユーザのルートフォルダ
-   * 
-   * @param org_id
-   * @param userId
-   * @return
-   */
-  public static File getRootFolder(String org_id, int userId) {
-    String rootPath =
-      ExtTimecardUtils.FOLDER_TMP_FOR_TIMECARD_FILES
-        + File.separator
-        + org_id
-        + File.separator
-        + userId
-        + File.separator;
-    File folder = new File(rootPath);
-    if (!folder.exists()) {
-      if (!folder.mkdirs()) {
-        return null;
-      }
-    }
-    return folder;
   }
 
   /**

@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.cabinet;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +37,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.services.storage.ALStorageService;
 
 /**
  * 共有フォルダのファイルの複数削除を行うためのクラスです。 <BR>
@@ -112,12 +112,9 @@ public class CabinetFileMultiDelete extends ALAbstractCheckList {
         if (fpathSize > 0) {
           // ローカルファイルに保存されているファイルを削除する．
           String orgId = Database.getDomainName();
-          File file = null;
           for (i = 0; i < fpathSize; i++) {
-            file = new File(CabinetUtils.getSaveDirPath(orgId) + fpaths.get(i));
-            if (file.exists()) {
-              file.delete();
-            }
+            ALStorageService.deleteFile(CabinetUtils.getSaveDirPath(orgId)
+              + fpaths.get(i));
           }
         }
       }

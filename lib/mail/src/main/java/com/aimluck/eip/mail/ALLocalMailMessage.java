@@ -19,12 +19,8 @@
 
 package com.aimluck.eip.mail;
 
-import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -50,6 +46,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import com.aimluck.eip.mail.util.ALAttachmentsExtractor;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.mail.util.UnicodeCorrecter;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.sk_jp.mail.MailUtility;
 import com.sk_jp.mail.MultipartUtility;
 
@@ -178,12 +175,9 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
    */
   public void readMail(String folderPath) {
     try {
-      FileInputStream input =
-        new FileInputStream(folderPath
-          + File.separator
-          + getMailMassageFileName());
-      parse(input);
-      input.close();
+      parse(ALStorageService.getFile(folderPath
+        + ALStorageService.separator()
+        + getMailMassageFileName()));
 
     } catch (Exception e) {
       logger.error("Exception", e);
@@ -197,12 +191,10 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
    */
   public void saveMail(String folderPath) {
     try {
-      FileOutputStream output =
-        new FileOutputStream(folderPath
-          + File.separator
-          + getMailMassageFileName());
-      writeTo(output);
-      output.close();
+      ALStorageService.createNewFile(
+        getInputStream(),
+        folderPath,
+        getMailMassageFileName());
     } catch (Exception e) {
       logger.error("Exception", e);
     }
@@ -214,19 +206,15 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
    * @param filePath
    * @param fileBytes
    */
-  public void saveAttachmentFile(String filePath, byte[] fileBytes) {
+  public void saveAttachmentFile(String folderPath, String fileName,
+      byte[] fileBytes) {
     try {
-      File file = new File(filePath);
-      if (!file.exists()) {
-        file.createNewFile();
-      }
 
-      DataOutputStream out =
-        new DataOutputStream(new BufferedOutputStream(new FileOutputStream(
-          filePath)));
-      out.write(fileBytes);
-      out.flush();
-      out.close();
+      ALStorageService.createNewFile(
+        new ByteArrayInputStream(fileBytes),
+        folderPath,
+        fileName);
+
     } catch (Exception e) {
       logger.error("Exception", e);
     }
@@ -544,6 +532,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
     }
   }
 
+  @Override
   public void clearContents() {
 
   }

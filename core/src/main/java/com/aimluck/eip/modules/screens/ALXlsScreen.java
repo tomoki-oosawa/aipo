@@ -19,14 +19,8 @@
 
 package com.aimluck.eip.modules.screens;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.util.List;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -66,24 +60,14 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
   @Override
   protected void doOutput(RunData rundata) throws Exception {
     VelocityContext context = new VelocityContext();
-    ServletOutputStream out = null;
 
     try {
       init(rundata, context);
 
       doCheckAclPermission(rundata, context, getDefineAclType());
 
-      // xlsファイルのフルパス
-      String realpath = getFolderPath() + File.separator + getFileName();
-      if (realpath == null || "".equals(realpath)) {
-        return;
-      }
-
       // xlsファイルの作成
-      createXLSFile(rundata, context, realpath);
-
-      // ダウンロード処理
-      InputStream in = new DataInputStream(new FileInputStream(realpath));
+      HSSFWorkbook wb = createXLSFile(rundata, context);
 
       HttpServletResponse response = rundata.getResponse();
       // ファイル名の送信
@@ -93,17 +77,9 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
       response.setHeader("Cache-Control", "aipo");
       response.setHeader("Pragma", "aipo");
 
-      // ファイル内容の出力
-      out = response.getOutputStream();
-      byte[] b = new byte[1024];
-      int len = -1;
-      while ((len = in.read(b)) != -1) {
-        out.write(b, 0, len);
-        out.flush();
+      if (wb != null) {
+        wb.write(response.getOutputStream());
       }
-      in.close();
-      out.flush();
-      out.close();
     } catch (ALPermissionException e) {
       ALEipUtils.redirectPermissionError(rundata);
     } catch (Exception e) {
@@ -128,26 +104,17 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
    * 
    * @param rundata
    */
-  protected boolean createXLSFile(RunData rundata, Context context,
-      String filepath) {
+  protected HSSFWorkbook createXLSFile(RunData rundata, Context context) {
     try {
       HSSFWorkbook wb = new HSSFWorkbook();
 
       createHSSFWorkbook(rundata, context, wb);
 
-      File file = new File(filepath);
-      if (file.exists()) {
-        file.delete();
-      }
-      FileOutputStream output = new FileOutputStream(file);
-      wb.write(output);
-      output.flush();
-      output.close();
+      return wb;
     } catch (Exception e) {
-     logger.error(e);
-      return false;
+      logger.error(e);
+      return null;
     }
-    return true;
   }
 
   /**
@@ -160,13 +127,6 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
    */
   protected abstract boolean createHSSFWorkbook(RunData rundata,
       Context context, HSSFWorkbook wb);
-
-  /**
-   * xlsファイルを保存するフォルダを取得します。
-   * 
-   * @return
-   */
-  protected abstract String getFolderPath();
 
   /**
    * xlsファイル名を取得します。
@@ -258,6 +218,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
    * 
    * @param obj
    */
+  @Override
   public void setResultData(Object obj) {
 
   }
@@ -266,6 +227,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
    * 
    * @param obj
    */
+  @Override
   public void addResultData(Object obj) {
 
   }
@@ -274,6 +236,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
    * 
    * @param objList
    */
+  @Override
   public void setResultDataList(List<Object> objList) {
 
   }
@@ -282,6 +245,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
    * 
    * @param msg
    */
+  @Override
   public void addErrorMessage(String msg) {
 
   }
@@ -290,6 +254,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
    * 
    * @param msg
    */
+  @Override
   public void addErrorMessages(List<String> msgs) {
 
   }
@@ -298,6 +263,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
    * 
    * @param msgs
    */
+  @Override
   public void setErrorMessages(List<String> msgs) {
 
   }
@@ -306,6 +272,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
    * 
    * @param mode
    */
+  @Override
   public void setMode(String mode) {
 
   }
@@ -314,6 +281,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
    * 
    * @return
    */
+  @Override
   public String getMode() {
     return null;
   }
@@ -322,6 +290,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
    * 
    * @param context
    */
+  @Override
   public void putData(RunData rundata, Context context) {
 
   }

@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.services.orgutils;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,9 +38,6 @@ import com.aimluck.eip.util.ALServletUtils;
  *
  */
 public abstract class ALOrgUtilsHandler {
-
-  public abstract File getDocumentPath(String rootPath, String orgId,
-      String categoryKey);
 
   public abstract String getTheme(String orgId);
 
