@@ -19,11 +19,12 @@
 
 package com.aimluck.eip.modules.screens;
 
-import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -33,10 +34,6 @@ import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.services.storage.ALStorageService;
 
-/**
- * ファイルを出力するクラスです。 <br />
- * 
- */
 public class FileuploadRawScreen extends RawScreen {
 
   /** logger */
@@ -92,8 +89,8 @@ public class FileuploadRawScreen extends RawScreen {
    */
   @Override
   protected void doOutput(RunData rundata) throws Exception {
-    BufferedInputStream input = null;
-    ServletOutputStream out = null;
+    InputStream in = null;
+    OutputStream out = null;
     try {
       String attachmentRealName =
         new String(getFileName().getBytes("Shift_JIS"), "8859_1");
@@ -113,31 +110,20 @@ public class FileuploadRawScreen extends RawScreen {
       if (path == null || "".equals(path)) {
         throw new FileNotFoundException();
       }
+      in = ALStorageService.getFile(filepath);
+      out = new BufferedOutputStream(response.getOutputStream());
 
-      input = new BufferedInputStream(ALStorageService.getFile(filepath));
-
-      byte[] buffer = new byte[1024];
-      int len;
-
-      response.setHeader("Content-Length", Integer.toString(input.available()));
-      while ((len = input.read(buffer)) > 0) {
-        out.write(buffer, 0, len);
-        out.flush();
+      byte[] buf = new byte[1024];
+      int length;
+      while ((length = in.read(buf)) > 0) {
+        out.write(buf, 0, length);
       }
-
     } catch (Exception e) {
       logger.error("[ERROR]" + e);
     } finally {
       try {
-        if (input != null) {
-          input.close();
-        }
-      } catch (IOException ex) {
-        logger.error("[ERROR]" + ex);
-      }
-
-      try {
         if (out != null) {
+          out.flush();
           out.close();
         }
       } catch (IOException ex) {

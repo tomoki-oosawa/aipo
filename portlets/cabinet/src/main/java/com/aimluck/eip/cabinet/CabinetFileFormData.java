@@ -448,7 +448,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
       double fileSize =
         ALStorageService.getFileSize(
           CabinetUtils.FOLDER_FILEDIR_CABINET,
-          CabinetUtils.CATEGORY_KEY + ALStorageService.separator() + uid,
+          CabinetUtils.CATEGORY_KEY,
           filename);
 
       EipTCabinetFolder folder =
@@ -546,7 +546,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
         double fileSize =
           ALStorageService.getFileSize(
             CabinetUtils.FOLDER_FILEDIR_CABINET,
-            CabinetUtils.CATEGORY_KEY + ALStorageService.separator() + uid,
+            CabinetUtils.CATEGORY_KEY,
             filename);
         // double fileSize = Math.ceil(destFile.length() / 1024.0);
         file.setFileSize(Long.valueOf((long) fileSize));

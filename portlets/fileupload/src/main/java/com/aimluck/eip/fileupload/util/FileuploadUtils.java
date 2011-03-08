@@ -161,7 +161,7 @@ public class FileuploadUtils {
             ALEipUtils.getUserId(rundata)
               + ALStorageService.separator()
               + folderName,
-            fileids[i] + EXT_FILENAME)));
+            fileids[i] + EXT_FILENAME), FILE_ENCODING));
         String line = reader.readLine();
         if (line == null || line.length() <= 0) {
           continue;

@@ -20,7 +20,6 @@
 package com.aimluck.eip.mail.util;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
@@ -92,6 +91,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALServletUtils;
 import com.sk_jp.mail.JISDataSource;
@@ -625,13 +625,13 @@ public class ALMailUtils {
     return address;
   }
 
-  public static String getFileNameFromText(String FilePath) {
+  public static String getFileNameFromText(String filePath) {
     String line = "";
     BufferedReader reader = null;
     try {
       reader =
-        new BufferedReader(new InputStreamReader(new FileInputStream(FilePath
-          + ".txt"), ALEipConstants.DEF_CONTENT_ENCODING));
+        new BufferedReader(new InputStreamReader(ALStorageService
+          .getFile(filePath + ".txt"), ALEipConstants.DEF_CONTENT_ENCODING));
       line = reader.readLine();
     } catch (Exception e) {
       logger.error("Exception", e);

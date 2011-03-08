@@ -19,13 +19,17 @@
 
 package com.aimluck.eip.mail;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
+import javax.activation.DataSource;
+import javax.activation.FileTypeMap;
 import javax.mail.AuthenticationFailedException;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -41,6 +45,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 import com.aimluck.eip.mail.util.ALMailUtils;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.sk_jp.mail.MailUtility;
 import com.sun.mail.smtp.SMTPTransport;
 
@@ -247,9 +252,34 @@ public abstract class ALSmtpMailSender implements ALMailSender {
           // 添付ファイルのボディパートを作成
           MimeBodyPart mimeFile = null;
           for (int i = 0; i < checkedFilePathsLength; i++) {
+            final String filePath = checkedFilePaths[i];
+            final String fileName =
+              ALMailUtils.getFileNameFromText(checkedFilePaths[i]);
             mimeFile = new MimeBodyPart();
-            mimeFile.setDataHandler(new DataHandler(new FileDataSource(
-              checkedFilePaths[i])));
+            mimeFile.setDataHandler(new DataHandler(new DataSource() {
+
+              @Override
+              public String getContentType() {
+                return FileTypeMap.getDefaultFileTypeMap().getContentType(
+                  fileName);
+              }
+
+              @Override
+              public InputStream getInputStream() throws IOException {
+                return ALStorageService.getFile(filePath);
+              }
+
+              @Override
+              public String getName() {
+                return fileName;
+              }
+
+              @Override
+              public OutputStream getOutputStream() throws IOException {
+                throw new UnsupportedOperationException("getOutputStream");
+              }
+
+            }));
             MailUtility.setFileName(mimeFile, ALMailUtils
               .getFileNameFromText(checkedFilePaths[i]), "ISO-2022-JP", null);
 
