@@ -52,6 +52,8 @@
 #if($result.DateListKeys.size() == 0)
 <div class="message">指定された条件に該当するタイムカードはありません。</div>
 #else
+    
+#if($!result.TargetUserId != "")
 #if($!result.hasAclXlsExport())
 <div>
 <form name="ExtTimecard" action="$jslink.getTemplate('ExtTimecardXlsExportScreen')" method="post">
@@ -69,7 +71,6 @@
 </div>
 #end
 
-
 <table border="0" cellspacing="0" cellpadding="2">
 <tr valign="middle"><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="前月へ">
@@ -84,7 +85,6 @@ $!{result.ViewMonth.Year} 年 $!{result.ViewMonth.Month} 月
 <img src="images/schedule/schedule_currentmonth.gif" border="0" alt="今月へ" /></a>&nbsp;
 </td></tr></table>
 
-#if($!result.TargetUserId != "")
 #if($!result.TargetUserId == $!result.UserId) #set($col_count = 6) #else #set($col_count = 5) #end
 
 #ALtableheaderWide()
