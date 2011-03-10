@@ -38,7 +38,6 @@
         <parameter name="p1a-selects.style.items" value="yahoo,google,tabi" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1a-selects.style.values" value="Yahoo!,Google,旅侍" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="action" value="externalsearch.ExternalSearchAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="_showtitlebar" value="false" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
     </portlet-entry>
