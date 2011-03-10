@@ -31,6 +31,23 @@ aipo.customize.onReceiveMessage = function(msg){
     }
 }
 
+aipo.customize.showMenu = function(portlet_id) {
+    var menuNode = dojo.query('#menubar_' + portlet_id);
+    if (menuNode.style('display') == 'none') {
+        dojo.query('div.menubar').style('display', 'none');
+        menuNode.style('display', 'block');
+    } else {
+        aipo.customize.hideMenu(portlet_id);
+    }
+}
+
+aipo.customize.hideMenu = function(portlet_id) {
+    var menuNode = dojo.query('div.menubar').style('display', 'none');
+//    if (menuNode.style('display') == 'block') {
+//        menuNode.style('display', 'none');
+//    }
+}
+
 aipo.customize.setController = function(portlet_id, sender) {
     var controller = sender.parentNode.id;
     dojo.query('form#form' + portlet_id + ' input[name="controller"]')[0].value = controller;
@@ -42,6 +59,12 @@ aipo.customize.setController = function(portlet_id, sender) {
     }
     
     dojo.query('form#form' + portlet_id + ' td#' + controller)[0].style.border = '2px solid';
+}
+
+aipo.customize.deletesubmit = function(url, portlet_id, callback) {
+    if (confirm('このポートレットを削除してもよろしいですか？')) {
+        aipo.customize.submit(url, portlet_id, callback);
+    }
 }
 
 aipo.customize.submit = function(url, portlet_id, callback) {
@@ -78,6 +101,4 @@ aipo.customize.submit = function(url, portlet_id, callback) {
         });
     } catch(E) {
     };
-
-    return false;
 }

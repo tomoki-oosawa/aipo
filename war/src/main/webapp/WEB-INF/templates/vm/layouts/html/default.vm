@@ -113,16 +113,31 @@ dojo.addOnLoad(function() {
 dojo.require("dojo.dnd.Source");
 
 dojo.addOnLoad(function() {
+    dojo.query('.customizeMenuIcon').forEach(function(element) {
+        dojo.connect(element, 'onmouseenter', null, function(){
+            dojo.addClass(this, 'customizeMenuIconMouseenter');
+        });
+        dojo.connect(element, 'onmouseleave', null, function(){
+            dojo.removeClass(this, 'customizeMenuIconMouseenter');
+        });
+    });
+
+    var handle = dojo.connect(dojo.query('body')[0], 'onclick', null, function(){
+        if (dojo.query('.customizeMenuIconMouseenter').length == 0) {
+            aipo.customize.hideMenu();
+        }
+    });
+        
     var containers = dojo.query('.container');
     var containerSources = [];
     for(var c = 0; c < containers.length ; c++){
         var container = new dojo.dnd.Source(containers[c], {
             withHandles: true,
             copyOnly: false
-            
         });
         containerSources.push(container);
     }
+    
 
     for(var c = 0; c < containers.length ; c++){
         dojo.connect(containerSources[c], "onDndStart", containers[c], function(){
