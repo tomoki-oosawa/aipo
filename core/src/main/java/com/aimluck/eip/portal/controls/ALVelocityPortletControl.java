@@ -124,8 +124,9 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
   /**
    * Static initialization of the logger for this class
    */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ALVelocityPortletControl.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ALVelocityPortletControl.class
+      .getName());
 
   /** Disable content caching */
   @Override
@@ -255,7 +256,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
    * @return a list of ordered PortletAction objects describing the the actions
    *         available for this portlet
    */
-  @SuppressWarnings({ "deprecation", "null" })
+  @SuppressWarnings( { "deprecation", "null" })
   protected List<PortletAction> buildActionList(RunData rundata,
       Portlet portlet, Context context) {
     List<PortletAction> actions = new Vector<PortletAction>();
@@ -566,6 +567,9 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
               .getTemp("js_peid"));
         }
         tab.setSelected(isSelected);
+
+        tab.setId(p.getID());
+
         // 修正 ：ポートレットの最大化画面でタブを押された場合に，
         // 最大化の情報をセッションから削除可能にするため，
         // URL にリストア処理用のクラスを付加した．
@@ -718,6 +722,8 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
 
     private int position = -1;
 
+    private String id = null;
+
     // private final String paneid = null;
 
     private boolean authority = true;
@@ -762,6 +768,14 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
 
     public void setPosition(int pos) {
       position = pos;
+    }
+
+    public String getId() {
+      return id;
+    }
+
+    public void setId(String tabId) {
+      id = tabId;
     }
 
     public boolean getAuthority() {
