@@ -35,7 +35,7 @@ $!result.Detail.Title
 #ALtditemfooter()
 #ALtdcaption('アプリの説明')
 #ALtditem($!result.Detail.Description)
-#ALtdcaption('アプリID')
+#ALtdcaption('ガジェットURL')
 #ALtditem($!result.Detail.Url)
 #ALtdcaption('consumer key')
 #ALtditem($!result.Detail.ConsumerKey)
