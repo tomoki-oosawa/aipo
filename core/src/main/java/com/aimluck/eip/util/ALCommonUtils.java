@@ -19,12 +19,12 @@
 
 package com.aimluck.eip.util;
 
+import java.security.MessageDigest;
 import java.security.SecureRandom;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.jetspeed.util.Base64;
 import org.apache.turbine.util.DynamicURI;
 
 /**
@@ -211,18 +211,25 @@ public class ALCommonUtils {
   /**
    * ランダムなセキュリティIDを生成する。
    * 
-   * @return string Base64エンコードされた文字列
+   * @return string ランダムIDの文字列型
    */
-  public static String getSecureRandomBase64() {
+  public static String getSecureRandomString() {
     String res = null;
+    MessageDigest md;
     try {
       if (null == random) {
         return null;
       }
-
       byte b[] = new byte[DEF_RANDOM_LENGTH];
       random.nextBytes(b);
-      res = Base64.encodeAsString(b);
+
+      md = MessageDigest.getInstance("SHA-1");
+      md.update(b);
+      StringBuffer sb = new StringBuffer();
+      for (byte _b : b) {
+        sb.append(String.format("%02x", _b));
+      }
+      res = sb.toString();
     } catch (Exception e) {
       logger.error("Exception", e);
       return null;
