@@ -60,6 +60,8 @@ CREATE TABLE `application` (
   `consumer_secret` varchar(99) COLLATE utf8_unicode_ci DEFAULT NULL,
   `create_date` date DEFAULT NULL,
   `description` text COLLATE utf8_unicode_ci,
+  `icon` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `icon64` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `status` int(11) DEFAULT NULL,
   `summary` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -845,7 +847,6 @@ CREATE TABLE `oauth_entry` (
   `user_id` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-;
 
 CREATE TABLE `turbine_group` (
   `group_id` int(11) NOT NULL AUTO_INCREMENT,

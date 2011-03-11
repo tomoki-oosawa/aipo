@@ -49,6 +49,10 @@ public class ALGadgetSpec extends HashMap<String, Object> implements
     return (String) get("description");
   }
 
+  public String getIcon() {
+    return (String) get("icon");
+  }
+
   @SuppressWarnings("unchecked")
   public List<ALUserPref> getUserPrefs() {
     List<ALUserPref> result = new ArrayList<ALUserPref>();

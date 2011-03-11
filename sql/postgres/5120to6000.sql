@@ -449,6 +449,8 @@ CREATE TABLE application (
     CONSUMER_SECRET varchar(99) NULL,
     CREATE_DATE date NULL,
     DESCRIPTION text NULL,
+    ICON varchar(255) NULL,
+    ICON64 varchar(255) NULL,
     ID integer NOT NULL,
     STATUS integer NULL,
     SUMMARY varchar(255) NULL,

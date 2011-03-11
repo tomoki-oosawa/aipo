@@ -27,9 +27,16 @@
 #ALtdcaption('アプリID')
 #ALtditem($!result.Detail.AppId)
 #ALtdcaption('タイトル')
-#ALtditem($!result.Detail.Title)
+#ALtditemheader()
+#if($!result.Detail.Icon.Value)
+<img src="$!result.Detail.Icon" width="16" height="16" alt="$!result.Detail.Title" align="absmiddle" />
+#end
+$!result.Detail.Title
+#ALtditemfooter()
 #ALtdcaption('アプリの説明')
 #ALtditem($!result.Detail.Description)
+#ALtdcaption('アプリID')
+#ALtditem($!result.Detail.Url)
 #ALtdcaption('consumer key')
 #ALtditem($!result.Detail.ConsumerKey)
 #ALtdcaption('consumer secret')

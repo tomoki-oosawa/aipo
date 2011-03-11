@@ -30,6 +30,8 @@ public class ALApplicationPutRequest {
 
   private String description;
 
+  private String icon;
+
   /**
    * @param url
    *          セットする url
@@ -88,6 +90,26 @@ public class ALApplicationPutRequest {
    */
   public String getDescription() {
     return description;
+  }
+
+  /**
+   * @param icon
+   *          セットする icon
+   */
+  public void setIcon(String icon) {
+    this.icon = icon;
+  }
+
+  public ALApplicationPutRequest withIcon(String icon) {
+    setIcon(icon);
+    return this;
+  }
+
+  /**
+   * @return icon
+   */
+  public String getIcon() {
+    return icon;
   }
 
 }

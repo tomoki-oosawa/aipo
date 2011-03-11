@@ -131,6 +131,7 @@ public class ALDefaultSocialApplicationHanlder extends
     model.setConsumerSecret(app.getConsumerSecret());
     model.setUrl(app.getUrl());
     model.setStatus(app.getStatus());
+    model.setIcon(app.getIcon());
     model.setDescription(app.getDescription());
 
     boolean fetchXml = request.isFetchXml();
@@ -235,6 +236,7 @@ public class ALDefaultSocialApplicationHanlder extends
       app.setConsumerSecret(generateConsumerSecret());
       app.setStatus(ALSocialApplicationConstants.STATUS_ACTIVE);
       app.setDescription(request.getDescription());
+      app.setIcon(request.getIcon());
       app.setCreateDate(date);
       app.setUpdateDate(date);
 
@@ -262,6 +264,7 @@ public class ALDefaultSocialApplicationHanlder extends
       Application app = Database.get(Application.class, "APP_ID", appId);
       app.setTitle(request.getTitle());
       app.setDescription(request.getDescription());
+      app.setIcon(request.getIcon());
       app.setUpdateDate(date);
       Database.commit();
     } catch (Throwable t) {

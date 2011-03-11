@@ -41,6 +41,8 @@ public class ALApplication implements ALData, Serializable {
 
   private ALStringField url;
 
+  private ALStringField icon;
+
   private ALStringField consumerKey;
 
   private ALStringField consumerSecret;
@@ -68,6 +70,7 @@ public class ALApplication implements ALData, Serializable {
     consumerSecret = new ALStringField();
     OAuthConsumers = new ArrayList<ALOAuthConsumer>();
     userPrefs = new ArrayList<ALUserPref>();
+    icon = new ALStringField();
     status = 0;
   }
 
@@ -214,6 +217,21 @@ public class ALApplication implements ALData, Serializable {
    */
   public List<ALUserPref> getUserPrefs() {
     return userPrefs;
+  }
+
+  /**
+   * @param icon
+   *          セットする icon
+   */
+  public void setIcon(String icon) {
+    this.icon.setValue(icon);
+  }
+
+  /**
+   * @return icon
+   */
+  public ALStringField getIcon() {
+    return icon;
   }
 
 }

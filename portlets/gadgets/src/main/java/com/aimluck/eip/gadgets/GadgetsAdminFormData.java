@@ -55,6 +55,12 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
 
   private ALStringField url;
 
+  private ALStringField title;
+
+  private ALStringField description;
+
+  private ALStringField icon;
+
   private List<ALOAuthConsumer> oAuthConsumers;
 
   private ALGadgetSpec metaData;
@@ -65,8 +71,20 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
   @Override
   public void initField() {
     url = new ALStringField();
-    url.setFieldName("ガジェットXML URL");
+    url.setFieldName("ガジェットURL");
     url.setTrim(true);
+
+    title = new ALStringField();
+    title.setFieldName("タイトル");
+    title.setTrim(true);
+
+    description = new ALStringField();
+    description.setFieldName("アプリの説明");
+    description.setTrim(true);
+
+    icon = new ALStringField();
+    icon.setFieldName("アイコン画像");
+    icon.setTrim(true);
 
     oAuthConsumers = new ArrayList<ALOAuthConsumer>();
 
@@ -89,6 +107,9 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
         return false;
       }
       url.setValue(app.getUrl().getValue());
+      title.setValue(app.getTitle().getValue());
+      description.setValue(app.getDescription().getValue());
+      icon.setValue(app.getIcon().getValue());
       oAuthConsumers = app.getOAuthConsumers();
       int size = oAuthConsumers.size();
       for (int i = 0; i < size; i++) {
@@ -134,10 +155,10 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
       url.validate(msgList);
     }
     if (msgList.size() == 0) {
+      metaData = ALApplicationService.getMetaData(url.getValue(), true);
       if (!ALEipConstants.MODE_UPDATE.equals(getMode())) {
-        metaData = ALApplicationService.getMetaData(url.getValue(), true);
         if (metaData == null) {
-          msgList.add("正しい  『 ガジェットXML URL 』 を指定してください。");
+          msgList.add("正しい  『 ガジェットURL 』 を指定してください。");
         }
       }
     }
@@ -167,6 +188,9 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
       return false;
     }
     url.setValue(app.getUrl().getValue());
+    title.setValue(app.getTitle().getValue());
+    description.setValue(app.getDescription().getValue());
+    icon.setValue(app.getIcon().getValue());
     oAuthConsumers = app.getOAuthConsumers();
     return true;
   }
@@ -187,7 +211,7 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
 
       ALApplicationService.create(new ALApplicationPutRequest().withUrl(
         url.getValue()).withTitle(metaData.getTitle()).withDescription(
-        metaData.getDescription()));
+        metaData.getDescription()).withIcon(metaData.getIcon()));
 
     } catch (Throwable t) {
       logger.error(t, t);
@@ -213,7 +237,10 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
 
     try {
 
-      ALApplicationService.update(appId, new ALApplicationPutRequest());
+      ALApplicationService.update(appId, new ALApplicationPutRequest()
+        .withTitle(metaData.getTitle())
+        .withDescription(metaData.getDescription())
+        .withIcon(metaData.getIcon()));
 
       for (ALOAuthConsumer service : oAuthConsumers) {
         ALOAuthConsumerService.put(new ALOAuthConsumerPutRequest().withAppId(
@@ -328,4 +355,58 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
   public List<ALOAuthConsumer> getOAuthConsumers() {
     return oAuthConsumers;
   }
+
+  /**
+   * @return title
+   */
+  public ALStringField getTitle() {
+    return title;
+  }
+
+  /**
+   * @param title
+   *          セットする title
+   */
+  public void setTitle(ALStringField title) {
+    this.title = title;
+  }
+
+  /**
+   * @return icon
+   */
+  public ALStringField getIcon() {
+    return icon;
+  }
+
+  /**
+   * @param icon
+   *          セットする icon
+   */
+  public void setIcon(ALStringField icon) {
+    this.icon = icon;
+  }
+
+  /**
+   * @param url
+   *          セットする url
+   */
+  public void setUrl(ALStringField url) {
+    this.url = url;
+  }
+
+  /**
+   * @param description
+   *          セットする description
+   */
+  public void setDescription(ALStringField description) {
+    this.description = description;
+  }
+
+  /**
+   * @return description
+   */
+  public ALStringField getDescription() {
+    return description;
+  }
+
 }

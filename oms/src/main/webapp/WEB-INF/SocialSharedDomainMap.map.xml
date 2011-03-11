@@ -31,6 +31,8 @@
 		<db-attribute name="CONSUMER_SECRET" type="VARCHAR" length="99"/>
 		<db-attribute name="CREATE_DATE" type="DATE"/>
 		<db-attribute name="DESCRIPTION" type="CLOB"/>
+		<db-attribute name="ICON" type="VARCHAR" length="255"/>
+		<db-attribute name="ICON64" type="VARCHAR" length="255"/>
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="STATUS" type="INTEGER"/>
 		<db-attribute name="SUMMARY" type="VARCHAR" length="255"/>
@@ -107,6 +109,8 @@
 		<obj-attribute name="consumerSecret" type="java.lang.String" db-attribute-path="CONSUMER_SECRET"/>
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="DESCRIPTION"/>
+		<obj-attribute name="icon" type="java.lang.String" db-attribute-path="ICON"/>
+		<obj-attribute name="icon64" type="java.lang.String" db-attribute-path="ICON64"/>
 		<obj-attribute name="status" type="java.lang.Integer" db-attribute-path="STATUS"/>
 		<obj-attribute name="summary" type="java.lang.String" db-attribute-path="SUMMARY"/>
 		<obj-attribute name="title" type="java.lang.String" db-attribute-path="TITLE"/>
