@@ -40,14 +40,27 @@
 <input type="hidden" name="mode" value="update" />
 #end
 #ALtableheaderWide()
-#ALtdcaptionAtt("#ALrequired('ガジェットXML URL')" "style='width:180px;'")
+#if($mode=="new_form")
+外部のアプリケーションあるいは独自のアプリケーションを追加する場合は、OpenSocialに準拠したガジェットXMLのURLを指定してください。
+#end
+#ALtdcaptionAtt("#ALrequired('ガジェットURL')" "style='width:180px;'")
 #ALtditemheader()
-#if  ($mode=="new_form")
+#if($mode=="new_form")
 #ALtextfield('url' $!result.Url '70%' 255 'disabled')#ALcaution('（半角英数字）')
 #else
 $!result.Url
 #end
-#if  ($mode!="new_form")
+#ALtditemfooter()
+#if($mode!="new_form")
+#ALtdcaption("タイトル")
+#ALtditemheader()
+#if($!result.Icon.Value)
+<img src="$!result.Icon" width="16" height="16" alt="$!result.Title" align="absmiddle" />
+#end
+$!result.Title
+#ALtditemfooter()
+#ALtdcaption("アプリの説明")
+#ALtditem($!result.Description)
 #set($count = 0)
 #foreach ($service in $!result.OAuthConsumers)
 #ALtdcaption("OAuth@$!{service.Name}")	
@@ -64,7 +77,7 @@ $!service.AccessUrl<br/>
 <h4>Type</h4>
 <select name="type$!{count}">
 <option value="HMAC-SHA1" #if($!service.Type.Value == "HMAC-SHA1") selected="selected" #end>HMAC-SHA1</option>
-<option value="RSA-SHA1"  #if($!service.Type.Value == "RSA-SHA1") selected="selected" #end>RSA-SHA1</option>
+<!-- option value="RSA-SHA1"  #if($!service.Type.Value == "RSA-SHA1") selected="selected" #end>RSA-SHA1</option -->
 </select>
 <h4>consumer key</h4>
 #ALtextfield("consumerKey$!{count}" $!service.ConsumerKey '70%' 255 'disabled')#ALcaution('（半角英数字）')
@@ -75,6 +88,9 @@ $!service.AccessUrl<br/>
 #end
 #end
 #ALtablefooter()
+#if($mode!="new_form")
+「更新する」をクリックすると、タイトル、アプリの説明、アイコン画像を最新のガジェットURLより取得して更新を行います。
+#end
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)#ALajaxbuttonClose()
 #ALbuttonfooter()
