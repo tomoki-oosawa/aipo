@@ -25,6 +25,7 @@ import java.util.List;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.services.social.gadgets.ALUserPref;
+import com.aimluck.eip.util.ALCommonUtils;
 
 /**
  * 
@@ -124,6 +125,10 @@ public class ALApplication implements ALData, Serializable {
    */
   public ALStringField getUrl() {
     return url;
+  }
+
+  public String getUrlCR() {
+    return ALCommonUtils.replaceToAutoCR(url.toString());
   }
 
   /**

@@ -48,13 +48,13 @@
 #if($mode=="new_form")
 #ALtextfield('url' $!result.Url '70%' 255 'disabled')#ALcaution('（半角英数字）')
 #else
-$!result.Url
+$!result.UrlCR
 #end
 #ALtditemfooter()
 #if($mode!="new_form")
 #ALtdcaption("タイトル")
 #ALtditemheader()
-#if($!result.Icon.Value)
+#if($!result.Detail.Icon.toString() != "")
 <img src="$!result.Icon" width="16" height="16" alt="$!result.Title" align="absmiddle" />
 #end
 $!result.Title
@@ -66,13 +66,13 @@ $!result.Title
 #ALtdcaption("OAuth@$!{service.Name}")	
 #ALtditemheader()
 <h4>Request</h4>
-$!service.RequestUrl<br/>
+$!service.RequestUrlCR<br/>
 <br/>
 <h4>Authorization</h4>
-$!service.AuthorizationUrl<br/>
+$!service.AuthorizationUrlCR<br/>
 <br/>
 <h4>Access</h4>
-$!service.AccessUrl<br/>
+$!service.AccessUrlCR<br/>
 <br/>
 <h4>Type</h4>
 <select name="type$!{count}">

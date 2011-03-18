@@ -232,8 +232,9 @@ public class ALDefaultSocialApplicationHanlder extends
       app.setAppId("");
       app.setUrl(url);
       app.setTitle(request.getTitle());
-      app.setConsumerKey(generateConsumerKey(url));
-      app.setConsumerSecret(generateConsumerSecret());
+      // TODO: Restful API サポート時に ConsumerKey ConsumerSecret を発行する必要があります。
+      // app.setConsumerKey(generateConsumerKey(url));
+      // app.setConsumerSecret(generateConsumerSecret());
       app.setStatus(ALSocialApplicationConstants.STATUS_ACTIVE);
       app.setDescription(request.getDescription());
       app.setIcon(request.getIcon());

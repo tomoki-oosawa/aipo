@@ -24,34 +24,39 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALajaxdetailformheader("アプリ")
 #ALtableheaderWide()
+#*
 #ALtdcaption('アプリID')
 #ALtditem($!result.Detail.AppId)
+*#
+#ALtdcaption('ガジェットURL')
+#ALtditem($!result.Detail.UrlCR)
 #ALtdcaption('タイトル')
 #ALtditemheader()
-#if($!result.Detail.Icon.Value)
+#if($!result.Detail.Icon.toString() != "")
 <img src="$!result.Detail.Icon" width="16" height="16" alt="$!result.Detail.Title" align="absmiddle" />
 #end
 $!result.Detail.Title
 #ALtditemfooter()
 #ALtdcaption('アプリの説明')
 #ALtditem($!result.Detail.Description)
-#ALtdcaption('ガジェットURL')
-#ALtditem($!result.Detail.Url)
+
+#* TODO: Restful API サポート時に ConsumerKey ConsumerSecret を発行する必要があります。
 #ALtdcaption('consumer key')
 #ALtditem($!result.Detail.ConsumerKey)
 #ALtdcaption('consumer secret')
 #ALtditem($!result.Detail.ConsumerSecret)
+*#
 #foreach ($service in $!result.Detail.OAuthConsumers)
 #ALtdcaption("OAuth@$!{service.Name}")	
 #ALtditemheader()
 <h4>Request</h4>
-$!service.RequestUrl<br/>
+$!service.RequestUrlCR<br/>
 <br/>
 <h4>Authorization</h4>
-$!service.AuthorizationUrl<br/>
+$!service.AuthorizationUrlCR<br/>
 <br/>
 <h4>Access</h4>
-$!service.AccessUrl<br/>
+$!service.AccessUrlCR<br/>
 <br/>
 <h4>Type</h4>
 #if($!service.Type.Value && $!service.Type.Value != "")

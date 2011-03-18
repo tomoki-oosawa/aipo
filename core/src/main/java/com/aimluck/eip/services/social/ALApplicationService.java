@@ -81,7 +81,7 @@ public class ALApplicationService {
   }
 
   public static void disable(List<String> appIdList) {
-    getService().deleteApplication(appIdList);
+    getService().disableApplication(appIdList);
   }
 
   public static boolean checkAvailability(String appId) {

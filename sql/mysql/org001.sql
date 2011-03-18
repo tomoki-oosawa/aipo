@@ -935,6 +935,8 @@ INSERT INTO `turbine_user_group_role` VALUES (1,2,1,1),(2,1,1,1),(3,1,1,2),(4,3,
 
 ALTER TABLE `oauth_consumer` ADD FOREIGN KEY (  `app_id` ) REFERENCES  `application` (`id`) ON DELETE CASCADE ;
 
+ALTER TABLE `activity_map` ADD FOREIGN KEY (  `activity_id` ) REFERENCES  `activity` (`id`) ON DELETE CASCADE ;
+
 ALTER TABLE `turbine_role_permission` ADD FOREIGN KEY (  `role_id` ) REFERENCES  `turbine_role` (`role_id`);
 
 ALTER TABLE `turbine_role_permission` ADD FOREIGN KEY (  `permission_id` ) REFERENCES  `turbine_permission` (`permission_id`);

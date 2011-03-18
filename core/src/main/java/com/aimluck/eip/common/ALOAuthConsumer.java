@@ -22,6 +22,7 @@ package com.aimluck.eip.common;
 import java.io.Serializable;
 
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.util.ALCommonUtils;
 
 /**
  * 
@@ -53,6 +54,7 @@ public class ALOAuthConsumer implements ALData, Serializable {
   /**
    * 
    */
+  @Override
   public void initField() {
     appId = new ALStringField();
     name = new ALStringField();
@@ -101,6 +103,10 @@ public class ALOAuthConsumer implements ALData, Serializable {
     return requestUrl;
   }
 
+  public String getRequestUrlCR() {
+    return ALCommonUtils.replaceToAutoCR(requestUrl.toString());
+  }
+
   /**
    * @param requestUrl
    *          セットする requestUrl
@@ -127,8 +133,22 @@ public class ALOAuthConsumer implements ALData, Serializable {
   /**
    * @return accessUrl
    */
+  public String getAuthorizationUrlCR() {
+    return ALCommonUtils.replaceToAutoCR(authorizationUrl.toString());
+  }
+
+  /**
+   * @return accessUrl
+   */
   public ALStringField getAccessUrl() {
     return accessUrl;
+  }
+
+  /**
+   * @return accessUrl
+   */
+  public String getAccessUrlCR() {
+    return ALCommonUtils.replaceToAutoCR(accessUrl.toString());
   }
 
   /**

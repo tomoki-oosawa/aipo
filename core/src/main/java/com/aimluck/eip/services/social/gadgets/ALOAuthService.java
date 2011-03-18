@@ -22,6 +22,8 @@ package com.aimluck.eip.services.social.gadgets;
 import java.io.Serializable;
 import java.util.HashMap;
 
+import com.aimluck.eip.util.ALCommonUtils;
+
 /**
  * 
  */
@@ -38,11 +40,23 @@ public class ALOAuthService extends HashMap<String, Object> implements
     return (String) get("accessUrl");
   }
 
+  public String getAccessUrlCR() {
+    return ALCommonUtils.replaceToAutoCR(getAccessUrl());
+  }
+
   public String getRequestUrl() {
     return (String) get("requestUrl");
   }
 
+  public String getRequestUrlCR() {
+    return ALCommonUtils.replaceToAutoCR(getRequestUrl());
+  }
+
   public String getAuthorizationUrl() {
     return (String) get("authorizationUrl");
+  }
+
+  public String getAuthorizationUrlCR() {
+    return ALCommonUtils.replaceToAutoCR(getAuthorizationUrl());
   }
 }

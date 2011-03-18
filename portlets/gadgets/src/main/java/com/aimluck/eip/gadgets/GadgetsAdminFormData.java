@@ -43,6 +43,7 @@ import com.aimluck.eip.services.social.model.ALApplicationGetRequest.Status;
 import com.aimluck.eip.services.social.model.ALApplicationPutRequest;
 import com.aimluck.eip.services.social.model.ALOAuthConsumerPutRequest;
 import com.aimluck.eip.services.social.model.ALOAuthConsumerPutRequest.Type;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -346,6 +347,10 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
 
   public ALStringField getUrl() {
     return url;
+  }
+
+  public String getUrlCR() {
+    return ALCommonUtils.replaceToAutoCR(url.toString());
   }
 
   /**
