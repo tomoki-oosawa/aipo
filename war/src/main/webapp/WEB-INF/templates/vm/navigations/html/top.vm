@@ -23,32 +23,21 @@
                             <div id="header" class="clearfix">
 							  <input type="image" style="position: absolute; top: -9999px; "/>
                               <div id="logo"></div>
-#if($!{data.getSession().getAttribute("limitedDate")})
-#set ($limitday = $!data.getSession().getAttribute("limitedDate").toString())
-                              <div id="topNavi" class="alignleft caution">『${alias}}』をご試用いただき誠にありがとうございます。<br />$!{limitday}24時までご利用可能となっております。</div>
-#end
-                              <div class="alignright">
-                                <div id="topField"><span id="activitychecker" widgetId="activitychecker"></span>$!data.User.LastAccessTime</div>
-                                <div id="nameField">
-                                  <div class="fieldMiddle">
-                                    <div class="fieldRight">
-                                      <div class="fieldLeft clearfix">#if($!data.User.CompanyId >= 1) $!data.User.getCompanyName($!data.User.CompanyId) #end$!data.User.LastName $!data.User.FirstName さま</div>
-                                    </div>
-                                  </div>
+                              <div id="topField" class="clearfix">
+                                <div id="nameField">#if($!data.User.CompanyId >= 1) $!data.User.getCompanyName($!data.User.CompanyId) #end $utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString()) さま<span id="btnLogout">
+                                  <input type="image" alt="ログアウト" name="logout" src="images/common/dot.gif" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'">
+                                  </span>
                                 </div>
-                                <div class="alignleft" id="btnLogout">
-                                  <input type="image" alt="ログアウト" name="logout" src="images/common/dot.gif" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'" />
-                                </div>
+                                <div id="datetimeField">$!data.User.LastAccessTime</div>
+                                <div class="activityField">
+                                <div class="dijitRight">
+                                <span id="activitycheckerContainer"></span></div></div>
                               </div>
                             </div>
 #else
                             <div id="header" class="clearfix">
                               <div id="logo"></div>
                               <div class="alignright">
-#set($aip_news_url = $!data.getUser().getTemp("aipo_news_url"))
-#if($aip_news_url && $aip_news_url != "")
-                                <script language="JavaScript" src="$!data.getUser().getTemp("aipo_news_url")"></script>
-#end
                               </div>
                             </div>
 #end
@@ -59,11 +48,11 @@
 dojo.require("aipo.widget.DropdownActivityChecker");
 
 dojo.addOnLoad(function () {
-    var acHtml = document.getElementById("activitychecker");
+    var acHtml = document.getElementById("activitycheckerContainer");
     if(acHtml){
        var params = {
             widgetId: "activitychecker",
-            iconURL: "themes/$!theme/images/icon/icon_message.gif",
+            iconURL: "themes/$!theme/images/common/icon_message.gif",
             iconAlt: "あなた宛のお知らせ"
        };
        var ac = new aipo.widget.DropdownActivityChecker(params , acHtml);

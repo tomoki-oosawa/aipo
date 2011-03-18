@@ -22,14 +22,15 @@
 <div class="message">更新情報はありません。</div>
 #else
 #ALformheader('Activity' $jslink $portlet)
-<table class="rowTable wide">
+<table class="activityTable">
 <tbody>
 #foreach ($record in $result.List)
-<tr #if(!$record.isRead()) style="background-color:#FFE5E5;" #end>
-<td class="thin"><img src="images/icon/icon_add.gif" width="16" height="16"></td>
+<tr #if(!$record.isRead()) class="unread" #end>
+<td class="name" nowrap="nowrap">$!{record.DisplayName}</td>
+<td class="icon"><img src="images/icon/icon_add.gif" width="16" height="16"></td>
 <td>
-<span class="small">$!{record.DisplayName}&nbsp;$!{record.UpdateDate}</span><br/>
-<a href="javascript:void(0);" onclick="dijit.byId('activitychecker')._closeDropDown();aipo.common.showDialog('$!{record.PopupUrl}&js_peid=$!{portlet.ID}', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">$!record.TitleText</a>
+<span class="date">$!record.UpdateDate</span>
+<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.common.showDialog('$!{record.PopupUrl}&js_peid=$!{portlet.ID}', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">$!record.TitleText</a>
 </td>
 </tr>
 #end

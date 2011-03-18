@@ -38,7 +38,7 @@ dojo.declare("aipo.widget.DropdownActivityChecker", [aimluck.widget.Dropdown], {
     iconURL: "",
     iconAlt: "",
     callback: function(){},
-    templateString:"<div style=\"position:absolute;right:190px\" class=\"dijit dijitLeft dijitInline\"\n\tdojoAttachEvent=\"onmouseenter:_onMouse,onmouseleave:_onMouse,onmousedown:_onMouse,onclick:_onDropDownClick,onkeydown:_onDropDownKeydown,onblur:_onDropDownBlur,onkeypress:_onKey\"\n\t><div class='dijitRight'>\n\t<span class=\"\" type=\"${type}\"\n\t\tdojoAttachPoint=\"focusNode,titleNode\" waiRole=\"button\" waiState=\"haspopup-true,labelledby-${id}_label\"\n\t\t><span class=\"\" \tdojoAttachPoint=\"containerNode,popupStateNode\"\n\t\tid=\"${id}_label\"><img src=\"${iconURL}\" alt=\"${iconAlt}\" style=\"cursor:pointer;cursor:hand;padding-right:2px\" align=\"top\" />\n\t</span><span id=\"activitychecker-counter\" style=\"display:none;width:14px;text-align:center;color:#fff;font-size:9px;position:absolute;left:5px;top:5px;color:#fff;background-color: #F03D25;\">0</span><select name=\"${selectId}\" id=\"${selectId}\" size=\"10\" multiple=\"multiple\" style=\"display:none\" dojoAttachPoint=\"selectNode\"></select><input type=\"hidden\" id=\"${hiddenId}\" name=\"${hiddenId}\" value=\"${hiddenValue}\" dojoAttachPoint=\"valueNode\" /><span name=\"${inputId}\" id=\"${inputId}\" dojoAttachPoint=\"inputNode\">${inputValue}</span>\n</div></div>\n",
+    templateString:"<div class=\"dijit dijitLeft dijitInline\"\n\tdojoAttachEvent=\"onmouseenter:_onMouse,onmouseleave:_onMouse,onmousedown:_onMouse,onclick:_onDropDownClick,onkeydown:_onDropDownKeydown,onblur:_onDropDownBlur,onkeypress:_onKey\"\n\t><div class='dijitRight'>\n\t<span class=\"\" type=\"${type}\"\n\t\tdojoAttachPoint=\"focusNode,titleNode\" waiRole=\"button\" waiState=\"haspopup-true,labelledby-${id}_label\"\n\t\t><span class=\"\" \tdojoAttachPoint=\"containerNode,popupStateNode\"\n\t\tid=\"${id}_label\"><img src=\"${iconURL}\" alt=\"${iconAlt}\" />\n\t</span><div style=\"display: none;\" id=\"activitychecker\"><span class=\"activitychecker-right\"><span id=\"activitychecker-counter\" class=\"activitychecker-left\"></span></span></div><select name=\"${selectId}\" id=\"${selectId}\" size=\"10\" multiple=\"multiple\" style=\"display:none\" dojoAttachPoint=\"selectNode\"></select><input type=\"hidden\" id=\"${hiddenId}\" name=\"${hiddenId}\" value=\"${hiddenValue}\" dojoAttachPoint=\"valueNode\" /><span name=\"${inputId}\" id=\"${inputId}\" dojoAttachPoint=\"inputNode\">${inputValue}</span>\n</div></div>\n",
     postCreate: function(){
         this.inherited(arguments);
         this.dropDown = new aipo.widget.ActivityList({},'activityLiteList');
@@ -48,19 +48,23 @@ dojo.declare("aipo.widget.DropdownActivityChecker", [aimluck.widget.Dropdown], {
         this.dropDown.reload();
     },
     onCheckActivity: function(count) {
+    	var checker = dojo.byId("activitychecker");
     	var counter = dojo.byId("activitychecker-counter");
         if (count > 99) {
         	counter.innerHTML = '99+';
         	counter.style.display = 'block';
-        	counter.style.width = '18px';
+        	checker.style.display = 'block';
+        	/*counter.style.width = '18px';*/
         } else if (count == 0) {
             counter.innerHTML = '';
         	counter.style.display = 'none';
-        	counter.style.width = '15px';
+        	checker.style.display = 'none';
+        	/*counter.style.width = '15px';*/
         } else {
         	counter.innerHTML = count;
         	counter.style.display = 'block';
-        	counter.style.width = '15px';
+        	checker.style.display = 'block';
+        	/*counter.style.width = '15px';*/
         }
     },
     onCheckBlank: function(/*evt*/ e){

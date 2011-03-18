@@ -19,19 +19,20 @@
 
 ## ---------------------------------------------------------------------------
 
-<h4>あなた宛のお知らせ</h4>
+<h2>あなた宛のお知らせ</h2>
 <div style="background:#ffffff;padding:2px;">
 #if($result.List.size() == 0)
 <div class="message">あなた宛のお知らせはありません。</div>
 #else
-<table class="rowTable wide">
+<table class="activityTable">
 <tbody>
 #foreach ($record in $result.List)
-<tr #if(!$record.isRead()) style="background-color:#FFE5E5;" #end>
-<td class="thin"><img src="images/icon/icon_add.gif" width="16" height="16"></td>
+<tr #if(!$record.isRead()) class="unread" #end>
+<td class="name" nowrap="nowrap">$!{record.DisplayName}さんより</td>
+<td class="icon"><img src="images/icon/icon_add.gif" width="16" height="16"></td>
 <td>
-<span class="small">$!{record.DisplayName}&nbsp;$!{record.UpdateDate}</span><br/>
-<a href="javascript:void(0);" onclick="dijit.byId('activitychecker')._closeDropDown();aipo.common.showDialog('$!{record.PopupUrl}&js_peid=$!{portletId}', '$!{portletId}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">$!record.TitleText</a>
+<span class="date">$!{record.UpdateDate}</span>
+<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.common.showDialog('$!{record.PopupUrl}&js_peid=$!{portletId}', '$!{portletId}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">$!record.TitleText</a>
 </td>
 </tr>
 #end
@@ -112,9 +113,9 @@
 </div>
 #end
 
-<div class="center">
-<input type="button" name="allread" value="すべて既読にする" onclick="dijit.byId('activitychecker')._closeDropDown();aipo.container.gadgetService.requestCheckActivity('*')" />
-</div>
+<p class="rightBtn">
+<input type="button" name="allread" value="すべて既読にする" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.container.gadgetService.requestCheckActivity('*')" />
+</p>
 
 #end
 </div>

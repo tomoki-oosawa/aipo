@@ -27,7 +27,7 @@ dojo.require("aimluck.widget.Contentpane");
 
 dojo.declare("aipo.widget.ActivityList", [dijit._Widget, dijit._Templated], {
     widgetId:"",
-    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><table class=\"none\"><tr><td><div class=\"outer\"><div class=\"popup\" style=\"width:400px\"><div class=\"clearfix\"><div id=\"activityListPane\" widgetId=\"activityListPane\"></div></div></div></div></td></tr></table></div>\n",
+    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><div class=\"activityPopup\"><div class=\"clearfix\"><div id=\"activityListPane\" widgetId=\"activityListPane\"></div></div></div></div>\n",
     postCreate: function(){
 
     },

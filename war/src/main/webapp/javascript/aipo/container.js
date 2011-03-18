@@ -166,7 +166,7 @@ aipo.IfrGadgetService.prototype.requestCheckActivity = function(activityId) {
 		if(obj.rc == 200) {
 			var data = obj.data;
 			var unreadCount = data.unreadCount;
-			var ac = dijit.byId("activitychecker");
+			var ac = dijit.byId("activitycheckerContainer");
 			if(ac) {
 				ac.onCheckActivity(unreadCount);
 			}
