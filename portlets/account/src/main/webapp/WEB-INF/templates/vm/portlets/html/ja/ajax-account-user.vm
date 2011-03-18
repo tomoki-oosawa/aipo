@@ -40,7 +40,6 @@
 #ALtabheader($tabs "")
 #ALspacebothheader()
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
-#ALajaxlistformheader('ユーザー')
 #ALtableheaderSimpleWide()
 #ALtdcaption('部署')
 #ALtditemheader()
@@ -55,6 +54,7 @@ value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("tem
 #ALtditemfooter()
 #ALtablefooter()
 <div id="listMessageDiv"></div>
+#ALajaxlistformheader('ユーザー')
 #if($result.List.size() == 0)
 <div class="message">指定された条件に該当するユーザーはありません。</div>
 #else
