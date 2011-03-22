@@ -59,7 +59,7 @@
 
 <h3>追加ポートレットの選択</h3>
 <div style="height:300px;overflow:scroll;overflow-x:hidden;">
-<table class="listTable wide" style="margin-top:0">
+<table class="listTable" style="margin-top:0">
 <tr>
 #ALtdheadThin("追加")
 #ALtdheadThin("現在数")
