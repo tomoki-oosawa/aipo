@@ -150,6 +150,7 @@ textarea.wide {
 	width:97%;
 }
 select {
+	font-size:1em;
 	line-height:normal;
 	margin:1px;
 }
