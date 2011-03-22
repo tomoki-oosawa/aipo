@@ -53,8 +53,8 @@ $!{result.ViewStart.Year} 年 $!{result.ViewStart.Month} 月 $!{result.ViewStart
 #if($!{record.isHoliday()})
 #set ($stday = $velocityCount )
 #ALtdheadheaderAtt("class='holiday' nowrap='nowrap'")
-$!{record.Date.Day} $!{record.Date.DayOfWeek}
-<div class="holiday small">${record.Holiday.Name}</div>
+$!{record.Date.Day} $!{record.Date.DayOfWeek}<br />
+<span class="holiday small">${record.Holiday.Name}</span>
 #elseif($!{record.Date.Value.Day} == 0)
 #set ($stday = $velocityCount )
 #ALtdheadheaderAtt("class='sunday' nowrap='nowrap'")
