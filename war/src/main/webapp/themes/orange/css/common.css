@@ -134,7 +134,7 @@ input {
 input[type="button"]{
 cursor:pointer;
 }
- 
+
 textarea {
 	padding:2px;
 	box-sizing:border-box;
@@ -261,17 +261,15 @@ div.outer {
 	padding:2px;
 }
 .small {
-	font-size:.95em;
+	font-size:.85em;
 	line-height:1.2;
 }
 * html .small {
-	font-size:.95em;
-	font-family:'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
+	font-size:.85em;
 	line-height:1.3;
 }
 *+html .small {
-	font-size:.95em;
-	font-family:'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
+	font-size:.85em;
 	line-height:1.3;
 }
 .thin {
