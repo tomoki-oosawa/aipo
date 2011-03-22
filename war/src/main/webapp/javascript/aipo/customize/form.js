@@ -51,14 +51,15 @@ aipo.customize.hideMenu = function(portlet_id) {
 aipo.customize.setController = function(portlet_id, sender) {
     var controller = sender.parentNode.id;
     dojo.query('form#form' + portlet_id + ' input[name="controller"]')[0].value = controller;
-    
+
     var tds = dojo.query('form#form' + portlet_id + ' table.controllerTable td');
     var length = tds.length;
     for (var i = 0 ; i < length ; i++) {
-        tds[i].style.border = 'none';
+    	dojo.removeClass(tds[i], 'selected');
     }
-    
-    dojo.query('form#form' + portlet_id + ' td#' + controller)[0].style.border = '2px solid';
+
+    var td = dojo.query('form#form' + portlet_id + ' td#' + controller)[0];
+    dojo.addClass(td, "selected");
 }
 
 aipo.customize.deletesubmit = function(url, portlet_id, callback) {
