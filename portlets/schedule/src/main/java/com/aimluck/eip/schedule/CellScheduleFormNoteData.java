@@ -31,7 +31,6 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -58,14 +57,10 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.CellScheduleUtils;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
-import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
-import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
-import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
  * スケジュールのフォームデータを管理するクラスです。
@@ -576,26 +571,6 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         ALEventlogConstants.PORTLET_TYPE_SCHEDULE,
         schedule.getName());
 
-      /* メンバー全員に新着ポートレット登録 */
-      ALAccessControlFactoryService aclservice =
-        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-          .getInstance())
-          .getService(ALAccessControlFactoryService.SERVICE_NAME);
-      ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-      List<Integer> userIds =
-        aclhandler.getAcceptUserIdsInListExceptLoginUser(
-          (int) getLoginUser().getUserId().getValue(),
-          ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
-          ALAccessControlConstants.VALUE_ACL_DETAIL,
-          form_data.getMemberList());
-
-      for (Integer _id : userIds) {
-        WhatsNewUtils.insertWhatsNew(
-          WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
-          schedule.getScheduleId().intValue(),
-          _id.intValue());
-      }
-
       // アクティビティ
       ALEipUser loginUser = getLoginUser();
       List<ALEipUser> memberList = form_data.getMemberList();
@@ -1041,26 +1016,6 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         schedule.getScheduleId(),
         ALEventlogConstants.PORTLET_TYPE_SCHEDULE,
         schedule.getName());
-
-      /* メンバー全員に新着ポートレット登録 */
-      ALAccessControlFactoryService aclservice =
-        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-          .getInstance())
-          .getService(ALAccessControlFactoryService.SERVICE_NAME);
-      ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-      List<Integer> userIds =
-        aclhandler.getAcceptUserIdsInListExceptLoginUser(
-          (int) getLoginUser().getUserId().getValue(),
-          ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
-          ALAccessControlConstants.VALUE_ACL_DETAIL,
-          form_data.getMemberList());
-
-      for (Integer _id : userIds) {
-        WhatsNewUtils.insertWhatsNew(
-          WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
-          schedule.getScheduleId().intValue(),
-          _id.intValue());
-      }
 
       // アクティビティ
       ALEipUser loginUser = getLoginUser();

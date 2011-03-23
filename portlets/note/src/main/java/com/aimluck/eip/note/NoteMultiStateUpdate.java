@@ -36,7 +36,6 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
  * 複数の伝言メモを既読にするクラスです
@@ -76,15 +75,8 @@ public class NoteMultiStateUpdate extends ALAbstractCheckList {
         return false;
       }
 
-      int uid = ALEipUtils.getUserId(rundata);
       for (EipTNoteMap notemap : list) {
         notemap.setNoteStat(NoteUtils.NOTE_STAT_READ);
-
-        // 新着ポートレット既読処理
-        WhatsNewUtils.shiftWhatsNewReadFlag(
-          WhatsNewUtils.WHATS_NEW_TYPE_NOTE,
-          notemap.getNoteId().intValue(),
-          uid);
       }
 
       Database.commit();

@@ -50,7 +50,6 @@ import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
  * 伝言メモのユーティリティクラスです
@@ -98,16 +97,6 @@ public class NoteUtils {
       ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
     int uid = ALEipUtils.getUserId(rundata);
-
-    try {
-      // 新着ポートレット既読処理
-      WhatsNewUtils.shiftWhatsNewReadFlag(
-        WhatsNewUtils.WHATS_NEW_TYPE_NOTE,
-        Integer.parseInt(noteId),
-        uid);
-    } catch (NumberFormatException e) {
-      logger.error(e);
-    }
 
     // アクセス権の判定
     Expression exp1 =

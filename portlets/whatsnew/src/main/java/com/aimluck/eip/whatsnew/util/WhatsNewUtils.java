@@ -79,7 +79,9 @@ public class WhatsNewUtils {
    * @param type
    * @param entityid
    * @param uid
+   * @deprecated
    */
+  @Deprecated
   public static void insertWhatsNew(int type, int entityid, int uid) {
     EipTWhatsNew entry = null;
     try {
@@ -126,7 +128,9 @@ public class WhatsNewUtils {
    * @param type
    * @param entityid
    * @param uid
+   * @deprecated
    */
+  @Deprecated
   public static void insertWhatsNewPublic(int type, int entityid, int uid) {
     EipTWhatsNew entry = null;
     try {
@@ -190,7 +194,9 @@ public class WhatsNewUtils {
    * @param type
    * @param entityid
    * @param uid
+   * @deprecated
    */
+  @Deprecated
   public static void shiftWhatsNewReadFlag(int type, int entityid, int uid) {
     shiftWhatsNewReadFlag(type, entityid, uid, true);
   }
@@ -203,7 +209,9 @@ public class WhatsNewUtils {
    * @param uid
    * @param call
    *          全体向け新着の処理を呼び出すかどうか
+   * @deprecated
    */
+  @Deprecated
   private static void shiftWhatsNewReadFlag(int type, int entityid, int uid,
       boolean call) {
     try {
@@ -248,7 +256,9 @@ public class WhatsNewUtils {
    * @param entityid
    * @param uid
    * @param call
+   * @deprecated
    */
+  @Deprecated
   public static void shiftWhatsNewReadFlagPublic(int type, int entityid, int uid) {
     shiftWhatsNewReadFlagPublic(type, entityid, uid, true);
   }

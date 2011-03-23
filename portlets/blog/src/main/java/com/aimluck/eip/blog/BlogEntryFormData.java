@@ -54,7 +54,6 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
  * ブログエントリーのフォームデータを管理するクラスです。 <BR>
@@ -386,12 +385,6 @@ public class BlogEntryFormData extends ALAbstractFormData {
         insertAttachmentFiles(fileuploadList, folderName, uid, entry, msgList);
 
         Database.commit();
-
-        /* 自分以外の全員に新着ポートレット登録 */
-        WhatsNewUtils.insertWhatsNewPublic(
-          WhatsNewUtils.WHATS_NEW_TYPE_BLOG_ENTRY,
-          entry.getEntryId().intValue(),
-          uid);
 
         // イベントログに保存
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(

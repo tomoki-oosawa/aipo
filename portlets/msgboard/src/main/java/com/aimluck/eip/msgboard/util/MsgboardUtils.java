@@ -952,6 +952,7 @@ public class MsgboardUtils {
     return new StringBuffer().append("/").append(fileName).toString();
   }
 
+  @Deprecated
   public static void shiftWhatsNewReadFlag(RunData rundata, int entityid) {
     int uid = ALEipUtils.getUserId(rundata);
     boolean isPublic = false;

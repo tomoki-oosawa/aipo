@@ -67,9 +67,8 @@ public class MsgboardTopicSelectData extends
     ALData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService
-      .getLogger(MsgboardTopicSelectData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(MsgboardTopicSelectData.class.getName());
 
   /** カテゴリ一覧 */
   private List<MsgboardCategoryResultData> categoryList;
@@ -372,19 +371,6 @@ public class MsgboardTopicSelectData extends
       Context context) throws ALPageNotFoundException, ALDBErrorException {
     String topicid =
       ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
-
-    try {
-      /**
-       * 新着ポートレット既読処理
-       */
-      MsgboardUtils.shiftWhatsNewReadFlag(rundata, Integer.parseInt(topicid));
-      /**
-       * 
-       */
-
-    } catch (Exception e) {
-      logger.error("[MsgboardTopicSelectData]", e);
-    }
 
     if (topicid == null || Integer.valueOf(topicid) == null) {
       // トピック ID が空の場合

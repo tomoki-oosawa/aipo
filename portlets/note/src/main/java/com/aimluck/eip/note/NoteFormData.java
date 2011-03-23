@@ -65,7 +65,6 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
  * 伝言メモフォームデータを管理するためのクラスです。
@@ -452,10 +451,6 @@ public class NoteFormData extends ALAbstractFormData {
       if (memberList != null) {
         for (ALEipUser user : memberList) {
           if (user.getUserId().getValue() != loginUser.getUserId().getValue()) {
-            WhatsNewUtils.insertWhatsNew(
-              WhatsNewUtils.WHATS_NEW_TYPE_NOTE,
-              note.getNoteId().intValue(),
-              (int) user.getUserId().getValue());
             recipients.add(user.getName().getValue());
           }
         }

@@ -29,7 +29,6 @@ import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
-import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -55,12 +54,9 @@ import com.aimluck.eip.modules.screens.BlogDetailScreen;
 import com.aimluck.eip.modules.screens.BlogEntryFormJSONScreen;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
-import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
-import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
  * ブログエントリー・コメントのフォームデータを管理するクラスです。 <BR>
@@ -260,24 +256,6 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
       // トピックを登録
       Database.commit();
-
-      /* 記事の持ち主に新着ポートレット登録 */
-
-      ALAccessControlFactoryService aclservice =
-        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-          .getInstance())
-          .getService(ALAccessControlFactoryService.SERVICE_NAME);
-      ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-
-      if (aclhandler.hasAuthority(
-        entry.getOwnerId(),
-        ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_SELF,
-        ALAccessControlConstants.VALUE_ACL_DETAIL)) {
-        WhatsNewUtils.insertWhatsNew(
-          WhatsNewUtils.WHATS_NEW_TYPE_BLOG_COMMENT,
-          blogcomment.getCommentId(),
-          entry.getOwnerId().intValue());
-      }
 
       // アクティビティ
       String loginName = ALEipUtils.getALEipUser(uid).getName().getValue();

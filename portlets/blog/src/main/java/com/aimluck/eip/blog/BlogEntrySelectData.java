@@ -61,7 +61,6 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
  * ブログエントリー検索データを管理するクラスです。 <BR>
@@ -601,20 +600,6 @@ public class BlogEntrySelectData extends
   public EipTBlogEntry selectDetail(RunData rundata, Context context) {
 
     try {
-      /**
-       * 新着ポートレット既読処理
-       */
-      String entityid =
-        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
-      WhatsNewUtils.shiftWhatsNewReadFlagPublic(
-        WhatsNewUtils.WHATS_NEW_TYPE_BLOG_ENTRY,
-        Integer.parseInt(entityid),
-        uid);
-    } catch (Exception e) {
-      logger.error("Exception", e);
-    }
-
-    try {
       setupDetailCalendar(rundata, context);
 
       EipTBlogEntry obj = BlogUtils.getEipTBlogEntry(rundata, context);
@@ -716,14 +701,6 @@ public class BlogEntrySelectData extends
             .longValue());
           comment.setUpdateDate(sdf.format(blogcomment.getUpdateDate()));
           comment.setUpdateDateAlternative(blogcomment.getUpdateDate());
-
-          /**
-           * 新着ポートレット既読処理
-           */
-          WhatsNewUtils.shiftWhatsNewReadFlag(
-            WhatsNewUtils.WHATS_NEW_TYPE_BLOG_COMMENT,
-            (int) comment.getCommentId().getValue(),
-            uid);
 
           commentList.add(comment);
         }

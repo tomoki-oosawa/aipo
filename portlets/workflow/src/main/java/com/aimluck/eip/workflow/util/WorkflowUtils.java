@@ -74,7 +74,6 @@ import com.aimluck.eip.user.beans.UserLiteBean;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 import com.aimluck.eip.workflow.WorkflowCategoryResultData;
 import com.aimluck.eip.workflow.WorkflowDecisionRecordData;
 import com.aimluck.eip.workflow.WorkflowDetailResultData;
@@ -246,17 +245,6 @@ public class WorkflowUtils {
     String requestid =
       ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
-    try {
-      /**
-       * 新着ポートレット既読処理
-       */
-      WhatsNewUtils.shiftWhatsNewReadFlag(
-        WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST,
-        Integer.parseInt(requestid),
-        ALEipUtils.getUserId(rundata));
-    } catch (Exception e) {
-      logger.error("Exception", e);
-    }
     try {
       if (requestid == null || Integer.valueOf(requestid) == null) {
         // Request IDが空の場合

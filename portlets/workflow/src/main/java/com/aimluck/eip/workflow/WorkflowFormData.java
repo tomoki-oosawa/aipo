@@ -31,7 +31,6 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -56,13 +55,10 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
-import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
-import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils.Type;
 
@@ -672,21 +668,6 @@ public class WorkflowFormData extends ALAbstractFormData {
 
       // 削除・無効化されていない最初の申請先に新着ポートレット登録
       ALEipUser nextUser = memberList.get(i);
-      ALAccessControlFactoryService aclservice =
-        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-          .getInstance())
-          .getService(ALAccessControlFactoryService.SERVICE_NAME);
-      ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-
-      if (aclhandler.hasAuthority(
-        (int) nextUser.getUserId().getValue(),
-        ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_SELF,
-        ALAccessControlConstants.VALUE_ACL_DETAIL)) {
-        WhatsNewUtils.insertWhatsNew(
-          WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST,
-          request.getRequestId().intValue(),
-          (int) nextUser.getUserId().getValue());
-      }
 
       // アクティビティ
       List<String> recipients = new ArrayList<String>();
@@ -850,22 +831,6 @@ public class WorkflowFormData extends ALAbstractFormData {
 
       // 削除・無効化されていない最初の申請先に新着ポートレット登録
       ALEipUser nextUser = memberList.get(i);
-
-      ALAccessControlFactoryService aclservice =
-        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-          .getInstance())
-          .getService(ALAccessControlFactoryService.SERVICE_NAME);
-      ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-
-      if (aclhandler.hasAuthority(
-        (int) nextUser.getUserId().getValue(),
-        ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_SELF,
-        ALAccessControlConstants.VALUE_ACL_DETAIL)) {
-        WhatsNewUtils.insertWhatsNew(
-          WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST,
-          request.getRequestId().intValue(),
-          (int) nextUser.getUserId().getValue());
-      }
 
       // アクティビティ
       List<String> recipients = new ArrayList<String>();

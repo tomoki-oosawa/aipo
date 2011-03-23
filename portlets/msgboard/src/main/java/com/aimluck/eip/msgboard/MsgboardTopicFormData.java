@@ -56,7 +56,6 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
  * 掲示板トピックのフォームデータを管理するクラスです。 <BR>
@@ -450,10 +449,6 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
       /* 自分以外の全員に新着ポートレット登録 */
       if ("T".equals(topic.getEipTMsgboardCategory().getPublicFlag())) {
-        WhatsNewUtils.insertWhatsNewPublic(
-          WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
-          topic.getTopicId(),
-          uid);
 
         // アクティビティ
         ALEipUser user = ALEipUtils.getALEipUser(uid);
@@ -476,10 +471,6 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
           if (user != null) {
             recipients.add(user.getName().getValue());
           }
-          WhatsNewUtils.insertWhatsNew(
-            WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
-            topic.getTopicId().intValue(),
-            _id.intValue());
         }
 
         // アクティビティ
@@ -624,10 +615,6 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
       /* 自分以外の全員に新着ポートレット登録 */
       if ("T".equals(topic.getEipTMsgboardCategory().getPublicFlag())) {
-        WhatsNewUtils.insertWhatsNewPublic(
-          WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
-          topic.getTopicId(),
-          uid);
 
         // アクティビティ
         ALEipUser user = ALEipUtils.getALEipUser(uid);
@@ -650,10 +637,6 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
           if (user != null) {
             recipients.add(user.getName().getValue());
           }
-          WhatsNewUtils.insertWhatsNew(
-            WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
-            topic.getTopicId().intValue(),
-            _id.intValue());
         }
 
         // アクティビティ

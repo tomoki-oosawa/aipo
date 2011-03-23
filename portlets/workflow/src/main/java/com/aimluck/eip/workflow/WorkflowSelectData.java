@@ -51,7 +51,6 @@ import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
@@ -448,19 +447,6 @@ public class WorkflowSelectData extends
 
       EipTWorkflowRequest request =
         WorkflowUtils.getEipTWorkflowRequest(rundata, context, false);
-
-      /**
-       * 新着ポートレット既読処理
-       */
-      String entryid =
-        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
-      WhatsNewUtils.shiftWhatsNewReadFlag(
-        WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST,
-        Integer.parseInt(entryid),
-        (int) login_user.getUserId().getValue());
-      /**
-       *
-       */
 
       return request;
     } catch (ALPageNotFoundException pageNotFound) {

@@ -62,7 +62,6 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.userfacility.beans.UserFacilityLiteBean;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 public class ScheduleWeeklyJSONFormData {
 
@@ -1102,24 +1101,6 @@ public class ScheduleWeeklyJSONFormData {
   }
 
   private void sendWhatsNew(EipTSchedule newSchedule, boolean isNew) {
-    ALAccessControlFactoryService aclservice =
-      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
-    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-    List<Integer> userIds =
-      aclhandler.getAcceptUserIdsInListExceptLoginUser(
-        userId,
-        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
-        ALAccessControlConstants.VALUE_ACL_DETAIL,
-        memberList);
-    int size = userIds.size();
-    for (int i = 0; i < size; i++) {
-      Integer _id = userIds.get(i);
-      WhatsNewUtils.insertWhatsNew(
-        WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
-        newSchedule.getScheduleId().intValue(),
-        _id.intValue());
-    }
 
     // アクティビティ
     ALEipUser loginUser = null;

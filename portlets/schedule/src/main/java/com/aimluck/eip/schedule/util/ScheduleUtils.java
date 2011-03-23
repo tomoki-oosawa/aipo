@@ -91,7 +91,6 @@ import com.aimluck.eip.userfacility.beans.UserFacilityLiteBean;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
  * スケジュールのユーティリティクラスです。
@@ -100,8 +99,8 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 public class ScheduleUtils {
 
   /** <code>logger</code> loger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleUtils.class.getName());
 
   /** <code>SCHEDULEMAP_TYPE_USER</code> ユーザ */
   public static final String SCHEDULEMAP_TYPE_USER = "U";
@@ -439,18 +438,6 @@ public class ScheduleUtils {
         ex);
       throw new ALPageNotFoundException();
 
-    }
-
-    /**
-     * 新着ポートレット既読処理
-     */
-    try {
-      WhatsNewUtils.shiftWhatsNewReadFlag(
-        WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
-        Integer.parseInt(scheduleid),
-        ALEipUtils.getUserId(rundata));
-    } catch (NumberFormatException e) {
-      logger.error("[ScheduleUtils]", e);
     }
 
     try {

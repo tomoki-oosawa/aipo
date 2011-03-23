@@ -73,7 +73,6 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
  * スケジュールのフォームデータを管理するクラスです。
@@ -1105,26 +1104,6 @@ public class ScheduleFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_SCHEDULE,
         schedule.getName());
 
-      /* メンバー全員に新着ポートレット登録 */
-      ALAccessControlFactoryService aclservice =
-        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-          .getInstance())
-          .getService(ALAccessControlFactoryService.SERVICE_NAME);
-      ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-      List<Integer> userIds =
-        aclhandler.getAcceptUserIdsInListExceptLoginUser(
-          (int) loginUser.getUserId().getValue(),
-          ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
-          ALAccessControlConstants.VALUE_ACL_DETAIL,
-          memberList);
-
-      for (int userId : userIds) {
-        WhatsNewUtils.insertWhatsNew(
-          WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
-          schedule.getScheduleId().intValue(),
-          userId);
-      }
-
       // アクティビティ
       String loginName = loginUser.getName().getValue();
       List<String> recipients = new ArrayList<String>();
@@ -1207,7 +1186,6 @@ public class ScheduleFormData extends ALAbstractFormData {
     EipTSchedule newSchedule = null;
     EipTSchedule tmpSchedule = null;
     try {
-      int entity_id;
       int f_size = facilityList.size();
       // 施設のアクセスコントロールのチェック
       if (!facilityCheckAclPermission(
@@ -1249,7 +1227,6 @@ public class ScheduleFormData extends ALAbstractFormData {
       if (schedule == null) {
         return false;
       }
-      entity_id = schedule.getScheduleId().intValue();
       tmpSchedule = schedule;
       // int ownerid = ALEipUtils.getUserId(rundata);
       int ownerid = schedule.getOwnerId();
@@ -1432,7 +1409,6 @@ public class ScheduleFormData extends ALAbstractFormData {
         // 内部でDatabase.commit()が呼び出されることに注意
         ScheduleUtils.insertDummySchedule(schedule, ownerid, view_date
           .getValue(), view_date.getValue(), memberIds, facilityIds);
-        entity_id = newSchedule.getScheduleId().intValue();
         tmpSchedule = newSchedule;
       } else {
         // 予定
@@ -1632,26 +1608,6 @@ public class ScheduleFormData extends ALAbstractFormData {
         schedule.getScheduleId(),
         ALEventlogConstants.PORTLET_TYPE_SCHEDULE,
         schedule.getName());
-
-      /* メンバー全員に新着ポートレット登録 */
-      ALAccessControlFactoryService aclservice =
-        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-          .getInstance())
-          .getService(ALAccessControlFactoryService.SERVICE_NAME);
-      ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-      List<Integer> userIds =
-        aclhandler.getAcceptUserIdsInListExceptLoginUser(
-          (int) loginUser.getUserId().getValue(),
-          ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
-          ALAccessControlConstants.VALUE_ACL_DETAIL,
-          memberList);
-
-      for (int userId : userIds) {
-        WhatsNewUtils.insertWhatsNew(
-          WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
-          entity_id,
-          userId);
-      }
 
       // アクティビティ
       String loginName = loginUser.getName().getValue();
