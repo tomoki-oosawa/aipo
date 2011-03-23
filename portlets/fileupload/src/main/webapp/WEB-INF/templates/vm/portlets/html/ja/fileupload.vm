@@ -53,7 +53,7 @@ function checkFile(){
 
 //-->
 </script>
-<div class="spaceAll">
+<div class="spaceAll roundBlockContent">
 #ALajaxtabheader($tabs "")
 #ALspacebothheader()
 #ALerrmsg($errmsgs)
