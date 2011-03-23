@@ -30,12 +30,13 @@
 #set ($event_submit = "eventSubmit_doAddressbook_group_update")
 #end
 #set($tabs = [[$subtitle, "",""]])
+#set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
-#ALajaxIndicator("$!portlet.ID" "${indicator_str}しています...")
-#ALajaxscreenformheader("ABABGroup" $jslink $portlet "AddressBookGroupFormJSONScreen" "aimluck.io.selectAllOptions(this.address_to);aimluck.io.submit(this,'$!portlet.ID',aipo.addressbook.onReceiveMessage)")
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "${indicator_str}しています...")
+#ALajaxscreenformheader("ABABGroup" $jslink $portlet "AddressBookGroupFormJSONScreen" "aimluck.io.selectAllOptions(this.address_to);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.addressbook.onReceiveMessage)")
 #if($mode=="new_form")
 <input type="hidden" name="mode" value="insert" />
 #else

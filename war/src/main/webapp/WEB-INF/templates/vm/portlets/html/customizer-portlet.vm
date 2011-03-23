@@ -19,7 +19,11 @@
 
 ## ---------------------------------------------------------------------------
 #set ($config = $portlet.PortletConfig)
-#set ($mtype = $!data.Parameters.getString("mtype"))
+#if($!data.Parameters.getString("mtype"))
+    #set ($mtype = $!data.Parameters.getString("mtype"))
+#else
+    #set ($mtype = '')
+#end
 #set ($psmlEntry = $jetspeed.EntryFromRequest)
 #set ($securitySource = $jetspeed.getSecuritySource($psmlEntry))
 #set ($navilist = [["トップ", "$!jslink.Template.addQueryData($jslink.ActionKey, $action).addQueryData('js_peid', $data.getJs_peid()).addQueryData('eventSubmit_doCancel', '1')"], ["表示カスタマイズ", ""]])

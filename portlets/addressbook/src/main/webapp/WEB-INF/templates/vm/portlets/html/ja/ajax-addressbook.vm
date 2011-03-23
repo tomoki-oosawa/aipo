@@ -18,6 +18,17 @@
  *#
 
 ## ---------------------------------------------------------------------------
+#if($address_type)
+#set ($addresstype = $address_type)
+#else
+#set ($addresstype = "hollow")
+#end
+#if($!{result.CurrentTab})
+#set ($current_tab = $!{result.CurrentTab})
+#else
+#set ($current_tab = "hollow")
+#end
+## ---------------------------------------------------------------------------
 <form name="addressbook$!portlet.ID" id="addressbook$!portlet.ID" action="#" method="post" onsubmit="aipo.addressbook.onSubmitSerchButton(this,'$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookScreen')','$!portlet.ID',''); return false;">
 <table>
 <tbody>
@@ -29,9 +40,9 @@
 </tr>
 <tr>
 #ALtdcellheaderAtt('colspan="2"')
-<input name="tab" type="radio" value="syagai" id="$!{portlet.ID}syagai" #if(!($address_type=="corp_address" || $!{result.CurrentTab}=="corp")) checked="checked" #end />
+<input name="tab" type="radio" value="syagai" id="$!{portlet.ID}syagai" #if(!($addresstype=="corp_address" || $current_tab == "corp")) checked="checked" #end />
 <label for="$!{portlet.ID}syagai">社外アドレス</label>
-<input name="tab" type="radio" value="corp" id="$!{portlet.ID}corp" #if($address_type=="corp_address" || $!{result.CurrentTab}=="corp") checked="checked" #end />
+<input name="tab" type="radio" value="corp" id="$!{portlet.ID}corp" #if($addresstype=="corp_address" || $current_tab == "corp") checked="checked" #end />
 <label for="$!{portlet.ID}corp">社内アドレス</label>
 #ALtdcellfooter()
 </tr>

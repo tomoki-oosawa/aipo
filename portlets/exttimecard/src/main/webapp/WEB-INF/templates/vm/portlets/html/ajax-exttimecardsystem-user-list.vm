@@ -55,7 +55,6 @@
 #ALtdheadW33("勤務形態")
 </tr>
 #foreach ($record in $result.List)
-#set($disabled_flg = $!record.Disabled)
 <tr>
 #ALtdcellAtt("<input name='check$!record.UserId' type='checkbox' value='$!record.UserId'/>" 'align="center"')
 #ALtdcellheader()

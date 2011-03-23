@@ -23,6 +23,7 @@
 #set ($newUrl3 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookCompanyFormScreen").addQueryData("entityid","new")))
 #set ($submenulist = [["アドレスを追加する","javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.addressbook.onLoadAddressbookDialog);","images/icon/icon_add.gif"],["会社情報を追加する","javascript:aipo.common.showDialog('$newUrl3','$!portlet.ID',aipo.addressbook.onLoadAddressbookCompanyDialog);","images/icon/icon_add.gif"],["グループを追加する","javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);","images/icon/icon_add.gif"]])
 #set ($indicator_str = "データを送信")
+#set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
 #ALsubmenubar($submenulist "")
 
@@ -53,7 +54,7 @@
 <div class="message">社外グループ機能はアドレス帳に登録されているアドレスを、グループ単位でまとめる機能です。</div>
 <div class="message">『社外グループ追加』 ボタンを押して、追加してください。 </div>
 #else
-#ALajaxIndicator("$!portlet.ID" "${indicator_str}しています...")
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "${indicator_str}しています...")
 #ALajaxpageview('AddressBookGroupListScreen' $result)
 #ALtableheaderWide()
 <tr>
@@ -73,7 +74,7 @@
 </tr>
 #ALtablefooter()
 #ALbuttonheaderRight()
-選択した社外グループ を #ALajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormJSONScreen').addQueryData('mode','multi_delete')" "$!portlet.ID" "aipo.addressbook.onListReceiveMessage")
+選択した社外グループ を #ALajaxbuttonCheckboxDelete("削除する" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.addressbook.onListReceiveMessage")
 #ALbuttonfooterRight()
 #ALajaxpageviewFooter('AddressBookGroupListScreen' $result)
 #end

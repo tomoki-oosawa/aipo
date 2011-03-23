@@ -54,7 +54,7 @@
 <div class="message">社外グループ機能はアドレス帳に登録されているアドレスを、グループ単位でまとめる機能です。</div>
 <div class="message">『社外グループ追加』 ボタンを押して、追加してください。 </div>
 #else
-#ALajaxIndicator("$!portlet.ID" "${indicator_str}しています...")
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "${indicator_str}しています...")
 #ALajaxpageview('AddressBookGroupListScreen' $result)
 #ALtableheaderWide()
 <tr>
