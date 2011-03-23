@@ -21,7 +21,7 @@
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["Myリンク一覧", ""]])
 #set ($tabs = [["Myリンク一覧", "",""]])
 ## ---------------------------------------------------------------------------
-#ALcontentheader($!{portlet.Title} $navilist)
+#ALcontentheader($!{portletInstanceTitle} $navilist)
 #ALtabheader($tabs "")
 #ALspacebothheader()
 #if($result.size() == 0)

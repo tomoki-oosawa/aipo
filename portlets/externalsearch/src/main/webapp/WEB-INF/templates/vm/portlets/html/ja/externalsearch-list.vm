@@ -22,7 +22,7 @@
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["検索窓", ""]])
 #set ($tabs = [["検索窓", "",""]])
 ## ---------------------------------------------------------------------------
-#ALcontentheader($!{portlet.Title} $navilist)
+#ALcontentheader($!{portletInstanceTitle} $navilist)
 #ALtabheader($tabs "")
 #ALspacebothheader()
 #parse("/portlets/html/ja/externalsearch.vm")

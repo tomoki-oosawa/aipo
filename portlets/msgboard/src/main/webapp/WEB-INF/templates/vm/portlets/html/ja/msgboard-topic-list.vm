@@ -30,7 +30,7 @@
     aipo.msgboard.menuSelected = 0;  
 //]]>
 </script>
-#ALcontentheader($!{portlet.Title} $navilist)
+#ALcontentheader($!{portletInstanceTitle} $navilist)
 #parse("/portlets/html/ja/ajax-msgboard-topic-list.vm")
 #ALcontentfooter()
 #parse("/portlets/html/ja/msgboard-menu.vm")

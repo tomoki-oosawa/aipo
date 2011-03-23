@@ -31,7 +31,7 @@
 //]]>
 </script>
 
-#ALcontentheader($!{portlet.Title} $navilist)
+#ALcontentheader($!{portletInstanceTitle} $navilist)
 #parse("/portlets/html/ja/ajax-whatsnew-list.vm")
 #ALcontentfooter()
 #parse("/portlets/html/ja/whatsnew-menu.vm")

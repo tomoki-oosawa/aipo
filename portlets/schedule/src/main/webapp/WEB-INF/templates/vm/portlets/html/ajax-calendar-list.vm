@@ -27,7 +27,7 @@
      ptConfig['$!portlet.ID'] = { group:"schedule", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreen"))', reloadFunction:aipo.reloadPage };
 //]]>
 </script>
-#ALcontentheader($!{portlet.Title} $navilist)
+#ALcontentheader($!{portletInstanceTitle} $navilist)
 #ALtabheader($tabs "")
 #parse("/portlets/html/ja/ajax-calendar-weekly.vm")
 #ALtabfooter()

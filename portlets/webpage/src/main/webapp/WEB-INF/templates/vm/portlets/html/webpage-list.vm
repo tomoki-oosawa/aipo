@@ -20,7 +20,7 @@
 ## ---------------------------------------------------------------------------
 #set ($navilist = [])
 ## ---------------------------------------------------------------------------
-#ALcontentheader($!{portlet.Title} $navilist)
+#ALcontentheader($!{portletInstanceTitle} $navilist)
 #ALspacebothheader()
 #if(!($result.Detail.WebPageFlag))
 <div class="message">URLが設定されていません。</div>

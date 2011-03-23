@@ -30,7 +30,7 @@
     aipo.blog.menuSelected = 3;
 //]]>
 </script>
-#ALcontentheader($!{portlet.Title} $navilist)
+#ALcontentheader($!{portletInstanceTitle} $navilist)
 #parse("/portlets/html/ja/ajax-blog-entry-list-latest.vm")
 #ALcontentfooter()
 #parse("/portlets/html/ja/blog-menu.vm")
