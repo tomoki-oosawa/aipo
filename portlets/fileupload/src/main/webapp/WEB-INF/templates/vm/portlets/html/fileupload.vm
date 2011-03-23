@@ -68,7 +68,7 @@ function checkFile(){
 <div id="uploadContainer">
 <div style="padding:2px 0px 5px 0px">追加したいファイルを選択してください。</div>
 <span id="inputField">
-<input type="file" id="attachment" name="attachment" size="50" />
+<input type="file" id="attachment" name="attachment"/>
 </span>
 </div>
 <div style="padding:10px 0px 3px 0px">
