@@ -31,7 +31,7 @@
 #ALdialogheader($subtitle)
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
-#ALajaxIndicator("$!portlet.ID" "${indicator_str}しています...")
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "${indicator_str}しています...")
 
 #if($!result.IsPast)
 #ALajaxscreenformheader("exttimecardForm" $jslink $portlet "ExtTimecardFormJSONScreen" "aipo.exttimecard.onSubmit(this); aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.exttimecard.onReceiveMessage)")

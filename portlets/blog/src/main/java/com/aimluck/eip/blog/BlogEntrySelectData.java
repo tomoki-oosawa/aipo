@@ -208,9 +208,9 @@ public class BlogEntrySelectData extends
     // ブログカレンダーをロードする．
     loadMonthCalendar();
 
-    // ポートレット AccountEdit のへのリンクを取得する．
+    // ポートレット AccountPerson のへのリンクを取得する．
     userAccountURI =
-      BlogUtils.getPortletURIinPersonalConfigPane(rundata, "AccountEdit");
+      BlogUtils.getPortletURIinPersonalConfigPane(rundata, "AccountPerson");
 
     super.init(action, rundata, context);
 

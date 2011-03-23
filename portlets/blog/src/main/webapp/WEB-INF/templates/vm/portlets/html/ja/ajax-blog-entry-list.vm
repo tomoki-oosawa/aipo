@@ -188,13 +188,24 @@
 </tr>
 <tr class="item">
 <td style="padding:10px" align="center">
+#if($photo_edit_link != "")
+	
+<a href="$!utils.escapeXML($photo_edit_link)">
 #if($photolink != "")
 <img src="$photolink" alt="$username" border="0" />
 #else
 <img src="images/common/nophoto.gif" alt="$username" width="76" height="76" border="0" />
 #end
-#if($photo_edit_link != "")
-<div align="center"><a href="$!utils.escapeXML($photo_edit_link)">画像編集</a></div>
+</a>
+
+#else
+
+#if($photolink != "")
+<img src="$photolink" alt="$username" border="0" />
+#else
+<img src="images/common/nophoto.gif" alt="$username" width="76" height="76" border="0" />
+#end
+
 #end
 </td>
 </tr>
@@ -287,9 +298,16 @@ $record.Label
 #set($userphoto_link = "")
 #end
 
+#if($!{result.UserAccountURI})
+#set ($userphote_edit_link = $!{result.UserAccountURI})
+#else
+#set ($userphote_edit_link = "")
+#end
+
 #if($result.LoginUid == $result.ViewUid)
 #set($tabs = [["${result.Month.Month}月 記事一覧", "",""]])
-#set ($leftcontents = ["#user_photo($userphoto_link ${result.ViewUname} ${result.UserAccountURI})", "#blogcalendar($result.Month $link $prevlink $nextlink)", "#blogfootmark($result.FootmarkList $footmarklink)"])
+#set ($leftcontents = ["#user_photo($userphoto_link ${result.ViewUname} $userphote_edit_link)", "#blogcalendar($result.Month $link $prevlink $nextlink)", "#blogfootmark($result.FootmarkList $footmarklink)"])
+
 #else
 #set($tabs = [["${result.Month.Month}月 記事一覧（$result.ViewUname）", "",""]])
 #set ($leftcontents = ["#user_photo($userphoto_link ${result.ViewUname} '')", "#blogcalendar($result.Month $link $prevlink $nextlink)"])
