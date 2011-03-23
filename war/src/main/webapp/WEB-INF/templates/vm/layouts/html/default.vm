@@ -156,7 +156,7 @@ dojo.addOnLoad(function() {
                     var rows = dojo.query('.dojoDndItem .roundBlockContent > div', cols[c]);
                     for (var r = 0 ; r < rows.length ; r++) {
                         var pid = rows[r].id.split("portlet_")[1];
-                        params = params + '&' + pid + '_row=' + r;
+                        params = params + '&' + pid + '_row=' + (rows.length - r - 1);
                         params = params + '&' + pid + '_col=' + c;
                     }
                 }

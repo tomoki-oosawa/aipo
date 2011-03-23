@@ -77,8 +77,9 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
   /**
    * Static initialization of the logger for this class
    */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ALMultiColumnControllerAction.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ALMultiColumnControllerAction.class
+      .getName());
 
   // protected ALLicenseFactoryService licenseService = null;
 
@@ -86,7 +87,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
    * Subclasses must override this method to provide default behavior for the
    * portlet action
    */
-  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @SuppressWarnings( { "unchecked", "rawtypes" })
   @Override
   protected void buildNormalContext(PortletController controller,
       Context context, RunData rundata) {
@@ -128,10 +129,6 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
           && (constraints.getColumn() != null)
           && (constraints.getRow() != null)) {
           col = constraints.getColumn().intValue();
-          if (col > colNum) {
-            constraints.setColumn(Integer.valueOf(col % colNum));
-          }
-
           row = constraints.getRow().intValue();
           if (row > rowNum) {
             rowNum = row;
@@ -179,13 +176,11 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
           row = constraints.getRow().intValue();
           col = constraints.getColumn().intValue();
 
-          table[col].set(row + 1, p);
-
+          table[col].set(row, p);
         } else {
           work.add(p);
         }
       }
-
       // insert the unconstrained elements in the table
       Iterator<Portlet> i = work.iterator();
       for (row = 0; row < rowNum; row++) {
@@ -514,7 +509,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
     }
   }
 
-  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @SuppressWarnings( { "unchecked", "rawtypes" })
   public void doLeft(RunData data, Context context) {
     // アクセス権限のチェック
     ALEipUtils.CheckAclPermissionForCustomize(
@@ -539,7 +534,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
     }
   }
 
-  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @SuppressWarnings( { "unchecked", "rawtypes" })
   public void doRight(RunData data, Context context) {
     // アクセス権限のチェック
     ALEipUtils.CheckAclPermissionForCustomize(
@@ -564,7 +559,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
     }
   }
 
-  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @SuppressWarnings( { "unchecked", "rawtypes" })
   public void doUp(RunData data, Context context) {
     // アクセス権限のチェック
     ALEipUtils.CheckAclPermissionForCustomize(
@@ -589,7 +584,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
     }
   }
 
-  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @SuppressWarnings( { "unchecked", "rawtypes" })
   public void doDown(RunData data, Context context) {
     // アクセス権限のチェック
     ALEipUtils.CheckAclPermissionForCustomize(
@@ -702,7 +697,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
     }
   }
 
-  @SuppressWarnings({ "rawtypes", "unchecked" })
+  @SuppressWarnings( { "rawtypes", "unchecked" })
   protected static List[] buildColumns(Portlets set, int colNum) {
     // normalize the constraints and calculate max num of rows needed
     Iterator<?> iterator = set.getEntriesIterator();
@@ -726,9 +721,6 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
               }
             } else if (prop.getName().equals("column")) {
               col = Integer.parseInt(prop.getValue());
-              if (col > colNum) {
-                prop.setValue(String.valueOf(col % colNum));
-              }
             }
           } catch (Exception e) {
             // ignore any malformed layout properties
@@ -852,7 +844,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
    * @param columnCount
    *          Number of colum
    */
-  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @SuppressWarnings( { "unchecked", "rawtypes" })
   protected static void addElement(IdentityElement element, List[] table,
       List<IdentityElement> work, int columnCount) {
 
@@ -880,28 +872,12 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
       logger.debug("Constraints col " + col + " row " + row);
     }
 
-    // 理由 ：レイアウト「33%，33%，33%」で保存 ⇒ レイアウト設定画面 ⇒ レイアウト「100%」にすると，
-    // ポートレットが消えてしまう．
-    // 修正 ：座標（0,0）のポートレットが上書きされていたため，
-    // ポートレットが既に存在するかを検証後に table に追加するように変更した．
-    // table に追加できないときは，work に追加する．
-    // work に追加されたポートレットは，最後にまとめて table に追加されるため，
-    // ポートレットが消える現象を改修できた．
     if ((row >= 0)
       && (col >= 0)
       && (col < columnCount)
       && (table[col].get(row) == null)) {
       table[col].set(row, element);
     } else {
-      if (layout != null) {
-        // We got here because the column, as defined in the layout,
-        // is greater then the numner of columns. This usually
-        // happens when the number of column has been decreased.
-        // Delete the offending layout. It may be recreated with
-        // the correct values.
-        element.setLayout(null);
-        layout = null;
-      }
       work.add(element);
     }
 
