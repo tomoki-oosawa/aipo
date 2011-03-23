@@ -515,9 +515,10 @@
 
 /* Cabinet */
 .explorer_box {
-    border-color:#FF9900;
-    border-style:solid;
-    border-width:4px 1px 1px;
+	padding:2px;
+	width:150px;
+	overflow:auto;
+	overflow-y:hidden;
 }
 
 /* Cabinet Tree */

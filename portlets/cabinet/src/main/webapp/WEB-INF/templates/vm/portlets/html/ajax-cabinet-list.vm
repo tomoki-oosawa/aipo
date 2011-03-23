@@ -39,7 +39,7 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td style="width:150px;" valign="top">
-<div class="explorer_box" style="padding:2px 2px 2px 5px;width:150pt;overflow:scroll;">
+<div class="explorer_box">
 #foreach($record in $!result.FolderHierarchyList)
 #if($record.visible() && $record.isAuthorizedVisible())
 #if($record.HierarchyIndex <= 0)
