@@ -5,6 +5,7 @@
 		<db-attribute name="APP_ID" type="VARCHAR" isMandatory="true" length="255"/>
 		<db-attribute name="BODY" type="CLOB"/>
 		<db-attribute name="EXTERNAL_ID" type="VARCHAR" length="99"/>
+		<db-attribute name="ICON" type="VARCHAR" length="255"/>
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="LOGIN_NAME" type="VARCHAR" isMandatory="true" length="32"/>
 		<db-attribute name="PORTLET_PARAMS" type="VARCHAR" length="99"/>
@@ -87,6 +88,7 @@
 		<obj-attribute name="appId" type="java.lang.String" db-attribute-path="APP_ID"/>
 		<obj-attribute name="body" type="java.lang.String" db-attribute-path="BODY"/>
 		<obj-attribute name="externalId" type="java.lang.String" db-attribute-path="EXTERNAL_ID"/>
+		<obj-attribute name="icon" type="java.lang.String" db-attribute-path="ICON"/>
 		<obj-attribute name="loginName" type="java.lang.String" db-attribute-path="LOGIN_NAME"/>
 		<obj-attribute name="portletParams" type="java.lang.String" db-attribute-path="PORTLET_PARAMS"/>
 		<obj-attribute name="priority" type="java.lang.Float" db-attribute-path="PRIORITY"/>

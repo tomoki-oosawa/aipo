@@ -51,6 +51,8 @@ public class ALActivity implements ALData, Serializable {
 
   private ALStringField portletParams;
 
+  private ALStringField icon;
+
   private boolean isRead;
 
   public ALActivity() {
@@ -70,6 +72,7 @@ public class ALActivity implements ALData, Serializable {
     portletParams = new ALStringField();
     updateDate = new ALDateTimeField("M月d日");
     updateDateTime = new ALDateTimeField("H:mm");
+    icon = new ALStringField();
     isRead = true;
   }
 
@@ -196,5 +199,20 @@ public class ALActivity implements ALData, Serializable {
    */
   public boolean isRead() {
     return isRead;
+  }
+
+  /**
+   * @param icon
+   *          セットする icon
+   */
+  public void setIcon(String icon) {
+    this.icon.setValue(icon);
+  }
+
+  /**
+   * @return icon
+   */
+  public ALStringField getIcon() {
+    return icon;
   }
 }

@@ -12,6 +12,7 @@ public class _Activity extends org.apache.cayenne.CayenneDataObject {
     public static final String APP_ID_PROPERTY = "appId";
     public static final String BODY_PROPERTY = "body";
     public static final String EXTERNAL_ID_PROPERTY = "externalId";
+    public static final String ICON_PROPERTY = "icon";
     public static final String LOGIN_NAME_PROPERTY = "loginName";
     public static final String PORTLET_PARAMS_PROPERTY = "portletParams";
     public static final String PRIORITY_PROPERTY = "priority";
@@ -42,6 +43,14 @@ public class _Activity extends org.apache.cayenne.CayenneDataObject {
     }
     public String getExternalId() {
         return (String)readProperty("externalId");
+    }
+    
+    
+    public void setIcon(String icon) {
+        writeProperty("icon", icon);
+    }
+    public String getIcon() {
+        return (String)readProperty("icon");
     }
     
     

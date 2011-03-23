@@ -29,9 +29,13 @@
 #foreach ($record in $result.List)
 <tr #if(!$record.isRead()) class="unread" #end>
 <td class="name" nowrap="nowrap">$!{record.DisplayName}さんより</td>
-<td class="icon"><img src="images/icon/icon_add.gif" width="16" height="16"></td>
 <td>
 <span class="date">$!{record.UpdateDate}</span>
+#if($!$record.Icon.toString() != "")
+<img src="$!record.Icon" width="16" height="16" alt="" align="absmiddle" />
+#else	
+<img src="images/icon/icon_add.gif" width="16" height="16" alt="" align="absmiddle" />
+#end
 <a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.common.showDialog('$!{record.PopupUrl}&js_peid=$!{portletId}', '$!{portletId}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">$!record.TitleText</a>
 </td>
 </tr>

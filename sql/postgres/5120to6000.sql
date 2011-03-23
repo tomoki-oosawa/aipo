@@ -465,6 +465,7 @@ CREATE TABLE activity (
     APP_ID varchar(255) NOT NULL,
     BODY text NULL,
     EXTERNAL_ID varchar(99) NULL,
+    ICON varchar(255) NULL,
     ID integer NOT NULL,
     LOGIN_NAME varchar(32) NOT NULL,
     PORTLET_PARAMS varchar(99) NULL,

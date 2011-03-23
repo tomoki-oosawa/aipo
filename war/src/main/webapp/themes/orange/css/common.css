@@ -2593,8 +2593,8 @@ background:#F5F5F5;
 }
 
 table.activityTable td{
-padding:0px 0px 4px 0;
-margin:0;
+padding:5px;
+margin:0px;
 border-bottom:#EEE solid 1px;
 vertical-align:top;
 }
@@ -2602,7 +2602,7 @@ vertical-align:top;
 table.activityTable td.icon{
 width:22px;
 padding:0;
-text-align:left;
+text-align:right;
 vertical-align:middle;
 }
 

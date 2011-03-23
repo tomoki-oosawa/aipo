@@ -466,6 +466,7 @@ public class ALDefaultSocialApplicationHanlder extends
       activity.setUpdateDate(model.getUpdateDate());
       activity.setExternalId(model.getExternalId());
       activity.setPortletParams(model.getPortletParams());
+      activity.setIcon(model.getIcon());
       try {
         ALEipUser user = ALEipUtils.getALEipUser(model.getLoginName());
         activity.setDisplayName(user.getAliasName().getValue());
@@ -500,6 +501,7 @@ public class ALDefaultSocialApplicationHanlder extends
     activity.setUpdateDate(model.getUpdateDate());
     activity.setExternalId(model.getExternalId());
     activity.setPortletParams(model.getPortletParams());
+    activity.setIcon(model.getIcon());
     String loginName = request.getTargetLoginName();
     if (loginName != null && loginName.length() > 0) {
       activity.setRead(isReadActivity(model.getId(), loginName));
@@ -711,6 +713,14 @@ public class ALDefaultSocialApplicationHanlder extends
         activityMap.setActivity(activity);
         activityMap.setIsRead(1);
       }
+      /*-
+      ALApplication application =
+        getApplication(new ALApplicationGetRequest().withAppId(request
+          .getAppId()));
+      if (application != null) {
+        activity.setIcon(application.getIcon().getValue());
+      }
+       */
       Database.commit();
     } catch (Throwable t) {
       Database.rollback();

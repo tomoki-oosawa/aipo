@@ -21,6 +21,7 @@ CREATE TABLE `activity` (
   `app_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `body` text COLLATE utf8_unicode_ci,
   `external_id` varchar(99) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `icon` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `login_name` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `portlet_params` varchar(99) COLLATE utf8_unicode_ci DEFAULT NULL,

@@ -39,10 +39,10 @@
 #else
 <input type="hidden" name="mode" value="update" />
 #end
-#ALtableheaderWide()
 #if($mode=="new_form")
 外部のアプリケーションあるいは独自のアプリケーションを追加する場合は、OpenSocialに準拠したガジェットXMLのURLを指定してください。
 #end
+#ALtableheaderWide()
 #ALtdcaptionAtt("#ALrequired('ガジェットURL')" "style='width:180px;'")
 #ALtditemheader()
 #if($mode=="new_form")
