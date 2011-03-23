@@ -67,7 +67,8 @@ Windows では 『Ctrl キー + マウスクリック』、Macintosh では 『�
 </td>
 #ALtablefooter()
 #ALbuttonheader()
-#ALsubmitJS('eventSubmit_doAccount_change_turn_update' '更新する' 'setHiddenValue(this);aipo.account_user.submit2(this.form)') #ALsubmit('eventSubmit_doAccount_list' 'キャンセルする' 'setHiddenValue(this)')
+#ALsubmitJS('eventSubmit_doAccount_change_turn_update' '更新する' 'setHiddenValue(this);aipo.account_user.submit2(this.form)')
+#ALajaxbuttonCancel()
 #ALbuttonfooter()
 #ALformfooter()
 #end
