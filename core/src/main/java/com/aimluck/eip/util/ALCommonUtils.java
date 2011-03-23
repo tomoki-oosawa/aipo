@@ -102,7 +102,7 @@ public class ALCommonUtils {
     int lindex = str.indexOf(";");
     if ((findex == -1) && (lindex == -1)) {
       return replaceToAutoCRString(str);
-    } else if (findex == -1 || findex > lindex) {
+    } else if (lindex != -1 && (findex == -1 || findex > lindex)) {
       // ";"のみ含まれる場合
       head = str.substring(0, lindex);
       body = str.substring(lindex, lindex + 1);
@@ -111,7 +111,7 @@ public class ALCommonUtils {
       res.append(replaceToAutoCRString(head));
       res.append(body);
       res.append(replaceToAutoCR(tail));
-    } else if (lindex == -1) {
+    } else if (findex != -1 && lindex == -1) {
       // "&"のみ含まれる場合
       head = str.substring(0, findex);
       body = str.substring(findex, findex + 1);
