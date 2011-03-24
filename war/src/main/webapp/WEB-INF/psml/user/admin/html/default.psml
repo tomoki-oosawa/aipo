@@ -36,18 +36,6 @@
         <layout position="0" size="-1"/>
         <control name="MenuControl"/>
         <controller name="MenuController"/>
-        <entry id="120" parent="AipoNews">
-            <layout position="0" size="-1">
-                <property name="column" value="0"/>
-                <property name="row" value="0"/>
-            </layout>
-        </entry>
-        <entry id="130" parent="License">
-            <layout position="1" size="-1">
-                <property name="column" value="0"/>
-                <property name="row" value="0"/>
-            </layout>
-        </entry>
         <entry id="121" parent="Account">
             <layout position="2" size="-1">
                 <property name="column" value="0"/>
