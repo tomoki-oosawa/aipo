@@ -148,4 +148,14 @@ public class UserPrefUpdateJSONScreen extends ALJSONScreen {
 
     return result;
   }
+
+  @Override
+  protected String getPrefix() {
+    return "";
+  }
+
+  @Override
+  protected String getSuffix() {
+    return "";
+  }
 }

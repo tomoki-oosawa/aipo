@@ -132,3 +132,55 @@ var favicon = {
 		docHead:document.getElementsByTagName("head")[0]
 
 };
+
+function CronTask(task, interval, isDecay) {
+	this.task = task;
+	this.isDecay = isDecay;
+	this.interval = interval;
+	this.decayRate = 1;
+	this.decayMultiplier = 1.5;
+	this.maxDecayTime = 5 * 60 * 1000; // 3 minutes
+}
+
+CronTask.prototype = {
+
+		start: function() {
+			this.stop().run();
+			return this;
+		},
+
+		stop: function() {
+			if (this.worker) {
+				window.clearTimeout(this.worker);
+			}
+			return this;
+		},
+
+		run: function() {
+			var cronTask = this;
+			this.task(function() {
+				cronTask.decayRate = cronTask.isDecay ? Math.max(1, cronTask.decayRate / cronTask.decayMultiplier) : cronTask.decayRate * cronTask.decayMultiplier;
+				var expire = cronTask.interval * cronTask.decayRate;
+				if(!cronTask.isDecay) {
+					expire = (expire >= cronTask.maxDecayTime) ? cronTask.maxDecayTime : expire;
+				}
+				expire = Math.floor(expire);
+				cronTask.worker = window.setTimeout(
+						function () {
+							cronTask.run.call(cronTask);
+						},
+						expire);
+			});
+		},
+
+		reset: function() {
+			this.destroy().run();
+			return this;
+		},
+
+		destroy: function() {
+			this.stop();
+			this.decayRate = 1;
+			return this;
+		}
+};

@@ -125,10 +125,12 @@ public class GadgetsAction extends ALBaseAction {
     }
     JSONObject jsonObject = new JSONObject();
     jsonObject.put("id", mid);
+    jsonObject.put("appId", appId);
     jsonObject.put("portletId", portlet.getID());
     jsonObject.put("specUrl", gadgetContext.getAppUrl());
     jsonObject.put("secureToken", gadgetContext.getSecureToken());
     jsonObject.put("serverBase", gadgetContext.getServerBase());
+    jsonObject.put("activeUrl", gadgetContext.getActiveUrl());
     jsonObject.put("height", "200");
     jsonObject.put("width", "100%");
     jsonObject.put("rpcRelay", "files/container/rpc_relay.html");

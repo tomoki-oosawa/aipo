@@ -64,6 +64,8 @@ public class ALGadgetContext {
 
   private long moduleId = 0;
 
+  private String activeUrl;
+
   private final RunData runData;
 
   /**
@@ -76,11 +78,21 @@ public class ALGadgetContext {
     this.appId = appId;
     this.appUrl = appUrl;
     this.moduleId = moduleId;
+    HttpServletRequest request = ((JetspeedRunData) runData).getRequest();
+    this.activeUrl = request.getRequestURL().toString();
+  }
+
+  public ALGadgetContext(RunData runData, String viewer, String appId,
+      String appUrl, long moduleId, String activeUrl) {
+    this.runData = runData;
+    this.viewer = viewer;
+    this.appId = appId;
+    this.appUrl = appUrl;
+    this.moduleId = moduleId;
+    this.activeUrl = activeUrl;
   }
 
   public String getSecureToken() {
-    HttpServletRequest request = ((JetspeedRunData) runData).getRequest();
-    String activeUrl = request.getRequestURL().toString();
     try {
       AipoBlobCrypterSecurityToken token =
         new AipoBlobCrypterSecurityToken(
@@ -223,5 +235,20 @@ public class ALGadgetContext {
    */
   public void setAppUrl(String appUrl) {
     this.appUrl = appUrl;
+  }
+
+  /**
+   * @return activeUrl
+   */
+  public String getActiveUrl() {
+    return activeUrl;
+  }
+
+  /**
+   * @param activeUrl
+   *          セットする activeUrl
+   */
+  public void setActiveUrl(String activeUrl) {
+    this.activeUrl = activeUrl;
   }
 }

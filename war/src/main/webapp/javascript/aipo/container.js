@@ -219,6 +219,8 @@ aipo.IfrContainer.prototype.renderGadgets = function() {
 		this.addGadget(gadget);
 		this.renderGadget(gadget);
 	}
+
+	aipo.cron.start();
 };
 
 aipo.IfrContainer.prototype.renderGadgetFromContext = function(context) {
@@ -310,10 +312,46 @@ aipo.container = new aipo.IfrContainer();
 aipo.container.layoutManager = new aipo.PortletLayoutManager();
 aipo.container.userPrefStore = new aipo.PsmlUserPrefStore();
 
+aipo.cron = new CronTask(function(decay) {
+	if(!aipo.cron.isFirst) {
+		var gadgetContext = aipo.container.context;
+		if (gadgetContext != null && gadgetContext.length > 0) {
+			var makeRequestParams = {
+					"CONTENT_TYPE" : "JSON",
+					"METHOD" : "POST",
+					"POST_DATA" : gadgets.json.stringify(aipo.container.context)
+			};
+
+			var url = "?template=GadgetsSecurityTokenUpdateJSONScreen";
+
+			function handleJSONResponse(obj) {
+				if(obj.rc == 200) {
+					var data = obj.data;
+					for(var i = 0; i < data.length; i++) {
+						var context = data[i];
+						gadgets.rpc.call('remote_iframe_' + context.portletId, 'update_security_token', null,
+								context.secureToken);
+					}
+					// success
+				}
+			};
+
+			gadgets.io.makeNonProxiedRequest(url,
+					handleJSONResponse,
+					makeRequestParams,
+					"application/javascript"
+			);
+		}
+	}
+	aipo.cron.isFirst = false;
+	decay();
+}, 30 * 60 * 1000, true);
+aipo.cron.isFirst = true;
+
 aipo.container.onPopupGadgets = function(){
 	var action = document.getElementById('gadgets-popup-action');
 	if(action) {
 		location.href = action.href;
 	}
-}
+};
 
