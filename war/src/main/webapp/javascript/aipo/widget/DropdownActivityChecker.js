@@ -51,16 +51,25 @@ dojo.declare("aipo.widget.DropdownActivityChecker", [aimluck.widget.Dropdown], {
         	counter.style.display = 'block';
         	checker.style.display = 'block';
         	/*counter.style.width = '18px';*/
+        	favicon.change('images/favicon/50.ico');
         } else if (count == 0) {
             counter.innerHTML = '';
         	counter.style.display = 'none';
         	checker.style.display = 'none';
         	/*counter.style.width = '15px';*/
+        	favicon.change('images/favicon.ico');
         } else {
         	counter.innerHTML = count;
         	counter.style.display = 'block';
         	checker.style.display = 'block';
         	/*counter.style.width = '15px';*/
+        	if(count >= 50) {
+              favicon.change('images/favicon/50.ico');
+        	} else if(count >= 20) {
+          	  favicon.change('images/favicon/20.ico');
+        	} else {
+        	  favicon.change('images/favicon/' + count + '.ico');
+        	}
         }
     },
     onCheckBlank: function(/*evt*/ e){
