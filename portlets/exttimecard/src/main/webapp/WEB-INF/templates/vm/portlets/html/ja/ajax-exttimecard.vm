@@ -31,7 +31,7 @@
 #ALtdheadThin("復帰")
 </tr>
 <tr>
-#ALtdcellheaderAtt("nowrap=nowrap")
+#ALtdcellheaderAtt("nowrap='nowrap' align='center'")
 
 #if (!$!{result.Detail})
 #ALsubmitJS('punchin' '出勤' "aipo.exttimecard.addHiddenValue(this.form, 'mode', 'punchin')")
@@ -51,7 +51,7 @@ $!{result.Detail.ClockInTime.Hour}時$!{result.Detail.ClockInTime.Minute}分
 
 #ALtdcellfooter()
 
-#ALtdcellheaderAtt("nowrap=nowrap")
+#ALtdcellheaderAtt("nowrap='nowrap' align='center'")
 #if ($!{result.Detail} && !($!{result.Detail.IsNullClockOutTime}))
 $!{result.Detail.ClockOutTime.Hour}時$!{result.Detail.ClockOutTime.Minute}分
 #else
@@ -59,7 +59,7 @@ $!{result.Detail.ClockOutTime.Hour}時$!{result.Detail.ClockOutTime.Minute}分
 #end
 #ALtdcellfooter()
 
-#ALtdcellheaderAtt("nowrap=nowrap")
+#ALtdcellheaderAtt("nowrap='nowrap' align='center'")
 #if ($!{result.Detail} && !($!{result.Detail.IsNullClockOutTime}))
 <input type="submit" class="submit" name="eventSubmit_doExtTimecard_outgoing_" value="外出" disabled="">
 #elseif ($!{result.Detail.IsOutgoing})
@@ -73,7 +73,7 @@ $!{result.Detail.OutgoingTime.Hour}時$!{result.Detail.OutgoingTime.Minute}分
 #end
 #ALtdcellfooter()
 
-#ALtdcellheaderAtt("nowrap=nowrap")
+#ALtdcellheaderAtt("nowrap='nowrap' align='center'")
 #if ($!{result.Detail} && !($!{result.Detail.IsNullClockOutTime}))
 <input type="submit" class="submit" name="eventSubmit_doExtTimecard_comeback_" value="復帰" disabled="">
 #else

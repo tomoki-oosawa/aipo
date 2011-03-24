@@ -72,10 +72,10 @@ function setSearchEngineValue(button) {
 
 <table border="0">
 <tr>
-<td scope="col"><input name="p" type="text" size="20" maxlength="100" value=""/></td>
+<td scope="col" width="120"><input name="p" class="text" type="text" style="width:120px" maxlength="100" value=""/></td>
 <td scope="col">
 <div class="middle">
-#ALsubmitJS('submit' '検索' 'setSearchEngineValue(this);')
+#ALsubmitJS('submit' ' 検 索 ' 'setSearchEngineValue(this);')
 </div>
 </td>
 </tr>

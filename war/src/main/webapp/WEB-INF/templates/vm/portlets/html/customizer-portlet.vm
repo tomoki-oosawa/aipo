@@ -44,7 +44,7 @@
 <input type="hidden" name="secid" value="$secid" />
 #ALtableheaderWide()
 #ALtdcaption("ポートレット名")
-#ALtditem("#ALtextfield('current_title' $!current_title '90%' 50 'active')")
+#ALtditem("#ALtextfield('current_title' $!current_title '75%' 50 'active')")
 #set ($counter=0)
 #foreach ( $param in $parameters )
 #if ($param.Type && $param.Type == "invisible")
@@ -67,9 +67,9 @@ $jetspeed.getPortletParameter($data, $portlet, $param.Name, $param.Value)
 </select>
 #set ($counter=$counter+1)
 #elseif ($param.Type && $param.Type == "list")
-<input type="text" name="$param.Name" value="$param.Value" size="50" />
+<input class="text" type="text" name="$param.Name" value="$param.Value" style="width:75%" />
 #else
-<input type="text" name="$param.Name" value="$param.Value" size="50" />
+<input class="text" type="text" name="$param.Name" value="$param.Value" style="width:75%" />
 #end
 #ALtditemfooter()
 #end

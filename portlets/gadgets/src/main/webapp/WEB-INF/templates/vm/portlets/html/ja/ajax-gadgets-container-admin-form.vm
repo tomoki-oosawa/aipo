@@ -32,7 +32,7 @@
 #ALtdcaption("Locked Domain")
 #ALtditemheader()
 <input name="lockedDomainRequired" type="checkbox" value="1" id="lockedDomainRequired_for" #if ($result.LockedDomainRequired.toString() == "1") checked="checked" #end/>
-<label for="lockedDomainRequired_for">有効</label>&nbsp;<input type="text" name="lockedDomainSuffix" value="$result.LockedDomainSuffix" />
+<label for="lockedDomainRequired_for">有効</label>&nbsp;<input class="text" type="text" name="lockedDomainSuffix" value="$result.LockedDomainSuffix" />
 #ALtditemfooter()
 #ALtdcaption("あなた宛のお知らせの自動更新")
 #ALtditemheader()
