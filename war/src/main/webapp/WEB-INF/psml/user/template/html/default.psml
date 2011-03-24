@@ -56,44 +56,32 @@
         <entry parent="Note">
             <layout position="-1" size="-1">
                 <property name="column" value="0"/>
-                <property name="row" value="3"/>
+                <property name="row" value="2"/>
             </layout>
         </entry>
         <entry parent="ExtTimecard">
             <layout position="-1" size="-1">
                 <property name="column" value="0"/>
-                <property name="row" value="1"/>
+                <property name="row" value="0"/>
             </layout>
         </entry>
         <entry parent="AddressBook">
             <layout position="-1" size="-1">
                 <property name="column" value="0"/>
-                <property name="row" value="4"/>
+                <property name="row" value="3"/>
             </layout>
         </entry>
         <entry parent="Memo">
             <layout position="-1" size="-1">
                 <property name="column" value="0"/>
-                <property name="row" value="5"/>
+                <property name="row" value="4"/>
             </layout>
         </entry>
         <entry parent="ExternalSearch">
             <layout position="-1" size="-1">
                 <property name="column" value="0"/>
-                <property name="row" value="7"/>
+                <property name="row" value="6"/>
             </layout>
-        </entry>
-        <entry parent="WebPage">
-            <metainfo>
-                <title>ニュース</title>
-            </metainfo>
-            <layout position="-1" size="-1">
-                <property name="column" value="0"/>
-                <property name="row" value="0"/>
-            </layout>
-            <parameter name="p1a-url" value="https://web07.sslsv.com/aipostyle.com/aiponews/gadget/"/>
-            <parameter name="p1b-normalheight" value="100"/>
-            <parameter name="p1c-maximizedheight" value="180"/>
         </entry>
         <entry parent="WebMail">
             <layout position="-1" size="-1">
@@ -104,7 +92,7 @@
         <entry parent="Activity">
             <layout position="-1" size="-1">
                 <property name="column" value="0"/>
-                <property name="row" value="2"/>
+                <property name="row" value="1"/>
             </layout>
         </entry>
         <entry parent="MyLink">
@@ -113,14 +101,14 @@
             </metainfo>
             <layout position="-1" size="-1">
                 <property name="column" value="0"/>
-                <property name="row" value="6"/>
+                <property name="row" value="5"/>
             </layout>
-            <parameter name="p1a-title1" value="無料グループウェア「アイポ」"/>
-            <parameter name="p1b-link1" value="http://aipostyle.com"/>
-            <parameter name="p2a-title2" value="グループウェアSaaS「アイポプラス」"/>
-            <parameter name="p2b-link2" value="http://plus.aipostyle.com"/>
+            <parameter name="p1a-title1" value="グループウェア「アイポ」"/>
+            <parameter name="p1b-link1" value="http://www.aipo.com"/>
+            <parameter name="p2a-title2" value="クラウドグループウェア「アイポプラス」"/>
+            <parameter name="p2b-link2" value="http://plus.aipo.com"/>
             <parameter name="p3a-title3" value="アイポユーザーコミュニティ"/>
-            <parameter name="p3b-link3" value="http://user.aipostyle.com"/>
+            <parameter name="p3b-link3" value="http://user.aipo.com"/>
             <parameter name="p4a-title4" value="アイポプロジェクト"/>
             <parameter name="p4b-link4" value="http://code.google.com/p/aipo"/>
         </entry>
