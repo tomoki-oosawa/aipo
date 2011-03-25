@@ -37,23 +37,24 @@
 #ALcell_dd($career $!{result.Detail.RequestName})
 #end
 #ALcell_dt($career '投稿日')
-<dd>$!result.Detail.CreateDate</dd>
+
+#ALcell_dd($career "$!result.Detail.CreateDate")
 <input type="hidden" name="confirmusers" value="#foreach($record in $!{result.MemberList})$!{record.Name},#end"> ##メンバーリストの作成
 
-#ALcell_dt('申請日')
-#ALcell_dd($!result.Detail.CreateDate)
-#ALcell_dt('重要度')
-#ALcell_dd($!result.Detail.PriorityString)
-#ALcell_dt('申請内容')
-#ALcell_dd($!result.Detail.Note)
-#ALcell_dt('金額')
-#ALcell_dd("$!{result.Detail.PriceStr}&nbsp;円")
+#ALcell_dt($career '申請日')
+#ALcell_dd($career "$!result.Detail.CreateDate")
+#ALcell_dt($career '重要度')
+#ALcell_dd($career "$!result.Detail.PriorityString")
+#ALcell_dt($career '申請内容')
+#ALcell_dd($career $!result.Detail.Note)
+#ALcell_dt($career '金額')
+#ALcell_dd($career "$!{result.Detail.PriceStr}&nbsp;円")
 #if($!result.Detail.UserId.Value == $!result.LoginUser.UserId.Value)
 #ALcell_hr($career '1')
 #ALcell_submit($career 'eventSubmit_doWorkflow_delete' '削除する')
 #end
 #if($!result.Detail.OldRequestLinks.size() > 0)
-#ALcell_dt('過去の申請内容')
+#ALcell_dt($career '過去の申請内容')
 #ALtditemheader()
 #set ($count = 1)
 #foreach ($record in $!result.Detail.OldRequestLinks)

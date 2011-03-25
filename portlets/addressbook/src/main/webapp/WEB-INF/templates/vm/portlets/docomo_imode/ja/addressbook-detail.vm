@@ -65,7 +65,7 @@ $!result.Detail.Name
 #ALcell_dt($career '郵便番号')#ALcell_dd($career "$!{result.Detail.Zipcode}")
 #ALcell_dt($career '住所')#ALcell_dd($career "$!{result.Detail.CompanyAddress}")
 #ALcell_dt($career '電話番号')
-#if($!{result.Detail.CompanyTelephone} && $!{result.Detail.CompanyTelephone.Value} != '')
+#if($!{result.Detail.CompanyTelephone} && $!{result.Detail.CompanyTelephone.Value} && $!{result.Detail.CompanyTelephone.Value} != '')
 #if($!{result.Detail.CompanyTelephone.Value.length()} > 3 || $!{result.Detail.CompanyTelephone.Value.length()} < 26)
 #ALcell_dd_header($career)<a href="tel:$!{result.Detail.CompanyTelephone}">$!{result.Detail.CompanyTelephone}</a>#ALcell_dd_footer($career)
 #else

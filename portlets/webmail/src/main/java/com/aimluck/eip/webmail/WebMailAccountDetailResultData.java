@@ -91,6 +91,7 @@ public class WebMailAccountDetailResultData implements ALData {
    *
    *
    */
+  @Override
   public void initField() {
     account_id = new ALNumberField();
     account_id.setFieldName("アカウントID");
@@ -286,7 +287,7 @@ public class WebMailAccountDetailResultData implements ALData {
   /**
    * @return
    */
-  public void getAccountType(String string) {
+  public void setAccountType(String string) {
     account_type.setValue(string);
   }
 

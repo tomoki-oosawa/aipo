@@ -106,9 +106,12 @@
 #ALtablefooter()
 #ALbuttonheaderRight()
 #if($!result.currentTab == "received_notes")
-選択した伝言メモを#ALajaxbuttonCheckboxAction('既読にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_complete')" "$!portlet.ID" "aipo.note.onReceiveMessage")#ALajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
+選択した伝言メモを
+#ALajaxbuttonCheckboxAction('既読にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_complete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
+#ALajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
 #else
-選択した伝言メモを#ALajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
+選択した伝言メモを
+#ALajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
 #end
 #ALbuttonfooterRight()
 #ALajaxpageviewFooter('NoteListScreen' $result)

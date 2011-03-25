@@ -23,12 +23,6 @@
 #ALcell_pagetitle($career $title)
 #ALcell_formheader($career $jslink $portlet)
 
-#set($usercount = 1)
-#set($membersize = $!{result.FormData.MemberList.size()})
-<input type="hidden" name="shareusers" value="#foreach($record in $!{result.FormData.MemberList})$!{record.Name}#if($usercount<$membersize),#set($usercount = $usercount + 1)#end#end">
-#set($fmembersize = $!{result.FormData.FacilityMemberList.size()})
-<input type="hidden" name="sharefacs" value="#foreach($record in $!{result.FormData.FacilityMemberList})$!{record.FacilityId}#if($facilitycount<$fmembersize),#set($facilitycount = $facilitycount + 1)#end#end">
-
 ##ALcell_center_header($career)参照ﾕｰｻﾞｰ選択#ALcell_center_footer($career)
 #ALcell_hr($career '1')
 ﾕｰｻﾞｰの所属するｸﾞﾙｰﾌﾟを選択してください。

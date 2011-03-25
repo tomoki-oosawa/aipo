@@ -18,9 +18,6 @@
  *#
 
 ## ---------------------------------------------------------------------------
-##set ($menulist_webmail = [["受信ﾄﾚｲ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_received_mails','1')"], ["送信ﾄﾚｲ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_sent_mails','1')"], ["ﾒｰﾙ作成", ""]])
-##set ($menulist = [$menulist_webmail])
-##cell_menulist($career 'Webﾒｰﾙ' $menulist)
 #set($title = 'ﾒｰﾙｱｶｳﾝﾄ')
 #set ($list = $result.List)
 #ALcell_pagetitle($career $title)
@@ -30,8 +27,8 @@
 #if($career == "vodafone")
 <dl>
 #foreach($menulist in $list)
-#set($menulistlen = $menulist.size() - 1)
-${menulist.AccountName}#ALcell_br($career)
+${menulist.AccountName} #if(${menulist.AccountType.Value} == "1") (既定) #end
+#ALcell_br($career)
 <a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_receive_mails','1').addQueryData('accountid',${menulist.AccountId})">ﾒｰﾙ受信</a>#ALcell_br($career)
 <a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_received_mails','1').addQueryData('accountid',${menulist.AccountId})">受信ﾄﾚｲ</a>#ALcell_br($career)
 <a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_sent_mails','1').addQueryData('accountid',${menulist.AccountId})">送信ﾄﾚｲ</a>#ALcell_br($career)
@@ -41,9 +38,8 @@ ${menulist.AccountName}#ALcell_br($career)
 #else
 <ul>
 #foreach($menulist in $list)
-#set($menulistlen = $menulist.size() - 1)
 #ALcell_li_header($career)
-${menulist.AccountName} #if(${menulist.AccountType.Value} == "1") (標準) #end
+${menulist.AccountName} #if(${menulist.AccountType.Value} == "1") (既定) #end
 #ALcell_br($career)
 <a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_receive_mails','1').addQueryData('accountid',${menulist.AccountId})">ﾒｰﾙ受信</a>#ALcell_br($career)
 <a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_received_mails','1').addQueryData('accountid',${menulist.AccountId})">受信ﾄﾚｲ</a>#ALcell_br($career)

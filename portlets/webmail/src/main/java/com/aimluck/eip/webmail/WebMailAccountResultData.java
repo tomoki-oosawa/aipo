@@ -47,10 +47,13 @@ public class WebMailAccountResultData implements ALData {
   /** 最終更新日 */
   private ALDateTimeField finalAccessDate;
 
+  private ALStringField account_type;
+
   /**
    *
    *
    */
+  @Override
   public void initField() {
     accountId = new ALNumberField();
     userId = new ALNumberField();
@@ -58,6 +61,7 @@ public class WebMailAccountResultData implements ALData {
     accountName = new ALStringField();
     countUnRead = new ALNumberField();
     finalAccessDate = new ALDateTimeField(WebMailUtils.DATE_TIME_FORMAT);
+    account_type = new ALStringField();
   }
 
   /**
@@ -136,6 +140,20 @@ public class WebMailAccountResultData implements ALData {
    */
   public void setFinalAccessDate(String string) {
     finalAccessDate.setValue(string);
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getAccountType() {
+    return account_type;
+  }
+
+  /**
+   * @return
+   */
+  public void setAccountType(String string) {
+    account_type.setValue(string);
   }
 
 }

@@ -154,6 +154,7 @@ public class CellWebMailAccountSelectData extends
       rd.setAccountId(record.getAccountId().intValue());
       rd.setAccountName(record.getAccountName());
       rd.setMailAddress(record.getMailAddress());
+      rd.setAccountType(record.getAccountType());
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);

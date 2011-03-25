@@ -54,7 +54,7 @@
 #ALcell_submit($career 'eventSubmit_doWorkflow_delete' '削除する')
 #end
 #if($!result.Detail.OldRequestLinks.size() > 0)
-#ALcell_dt('過去の申請内容')
+#ALcell_dt($career '過去の申請内容')
 #ALtditemheader()
 #set ($count = 1)
 #foreach ($record in $!result.Detail.OldRequestLinks)

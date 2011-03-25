@@ -19,11 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 #if ($data.User.hasLoggedIn())
-#set ($limitday = $!data.getSession().getAttribute("limitedDate").toString())
-#if($!limitday)
-『${alias}}』をご試用いただき誠にありがとうございます。#ALcell_br($career)
-$!{limitday}24時までご利用可能となっております。
-#end
+
 #else
 
 #end

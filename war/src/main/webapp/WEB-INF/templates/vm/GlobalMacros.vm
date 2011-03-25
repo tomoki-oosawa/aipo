@@ -1063,7 +1063,7 @@ $item.get(0)
 		#set($style_option = 'istyle="4" format="*N" mode="numeric"')
 	#end
 #end
-#if($cols == '')
+#if("$cols" == "")
 #if($option == '')
 <textarea name="$name" rows="$rows" $!style_option>$text</textarea>
 #else
@@ -1097,7 +1097,7 @@ $item.get(0)
 		#set($style_option = 'istyle="4" format="*N" mode="numeric"')
 	#end
 #end
-#if($size == '')
+#if("$size" == "")
 <input type="text" name="$name" value="$value" maxlength="$max" $option $!style_option>
 #else
 <input type="text" name="$name" value="$value" size="$size" maxlength="$max" $option $!style_option>
