@@ -33,6 +33,8 @@ import java.util.Vector;
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
 import org.apache.jetspeed.om.profile.Portlets;
+import org.apache.jetspeed.om.registry.ClientEntry;
+import org.apache.jetspeed.om.registry.ClientRegistry;
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.portal.PanedPortletController;
 import org.apache.jetspeed.portal.Portlet;
@@ -43,6 +45,7 @@ import org.apache.jetspeed.portal.controls.AbstractPortletControl;
 import org.apache.jetspeed.portal.security.portlets.PortletWrapper;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.PortalToolkit;
+import org.apache.jetspeed.services.Registry;
 import org.apache.jetspeed.services.TemplateLocator;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -124,9 +127,8 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
   /**
    * Static initialization of the logger for this class
    */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALVelocityPortletControl.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALVelocityPortletControl.class.getName());
 
   /** Disable content caching */
   @Override
@@ -168,6 +170,14 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
     context.put("conf", getConfig());
     context.put("skin", portlet.getPortletConfig().getPortletSkin());
     context.put("utils", new ALCommonUtils());
+
+    String useragent = rundata.getUserAgent();
+    useragent = useragent.trim();
+    ClientRegistry registry = (ClientRegistry) Registry.get(Registry.CLIENT);
+    ClientEntry entry = registry.findEntry(useragent);
+    entry.getManufacturer();
+
+    context.put("client", entry.getManufacturer());
 
     // Put the request and session based contexts
     TurbinePull.populateContext(context, rundata);
@@ -256,7 +266,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
    * @return a list of ordered PortletAction objects describing the the actions
    *         available for this portlet
    */
-  @SuppressWarnings( { "deprecation", "null" })
+  @SuppressWarnings({ "deprecation", "null" })
   protected List<PortletAction> buildActionList(RunData rundata,
       Portlet portlet, Context context) {
     List<PortletAction> actions = new Vector<PortletAction>();

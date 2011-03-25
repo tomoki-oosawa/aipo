@@ -111,7 +111,7 @@ dojo.addOnLoad(function() {
 #end
 });
 
-
+#if (${client} != "IPAD")
 dojo.require("dojo.dnd.Source");
 
 dojo.addOnLoad(function() {
@@ -172,7 +172,7 @@ dojo.addOnLoad(function() {
         });
     }
 });
-
+#end
 
 //]]>
 </script>

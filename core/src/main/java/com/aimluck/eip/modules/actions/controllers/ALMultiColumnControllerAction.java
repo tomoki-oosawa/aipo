@@ -77,9 +77,8 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
   /**
    * Static initialization of the logger for this class
    */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALMultiColumnControllerAction.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALMultiColumnControllerAction.class.getName());
 
   // protected ALLicenseFactoryService licenseService = null;
 
@@ -87,7 +86,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
    * Subclasses must override this method to provide default behavior for the
    * portlet action
    */
-  @SuppressWarnings( { "unchecked", "rawtypes" })
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   protected void buildNormalContext(PortletController controller,
       Context context, RunData rundata) {
@@ -381,6 +380,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
     context.put("descriptions", descriptions);
     context.put("action", "controllers.MultiColumnControllerAction");
     context.put("utils", new ALCommonUtils());
+
   }
 
   /**
@@ -509,7 +509,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
     }
   }
 
-  @SuppressWarnings( { "unchecked", "rawtypes" })
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void doLeft(RunData data, Context context) {
     // アクセス権限のチェック
     ALEipUtils.CheckAclPermissionForCustomize(
@@ -534,7 +534,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
     }
   }
 
-  @SuppressWarnings( { "unchecked", "rawtypes" })
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void doRight(RunData data, Context context) {
     // アクセス権限のチェック
     ALEipUtils.CheckAclPermissionForCustomize(
@@ -559,7 +559,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
     }
   }
 
-  @SuppressWarnings( { "unchecked", "rawtypes" })
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void doUp(RunData data, Context context) {
     // アクセス権限のチェック
     ALEipUtils.CheckAclPermissionForCustomize(
@@ -584,7 +584,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
     }
   }
 
-  @SuppressWarnings( { "unchecked", "rawtypes" })
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public void doDown(RunData data, Context context) {
     // アクセス権限のチェック
     ALEipUtils.CheckAclPermissionForCustomize(
@@ -697,7 +697,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
     }
   }
 
-  @SuppressWarnings( { "rawtypes", "unchecked" })
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   protected static List[] buildColumns(Portlets set, int colNum) {
     // normalize the constraints and calculate max num of rows needed
     Iterator<?> iterator = set.getEntriesIterator();
@@ -844,7 +844,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
    * @param columnCount
    *          Number of colum
    */
-  @SuppressWarnings( { "unchecked", "rawtypes" })
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   protected static void addElement(IdentityElement element, List[] table,
       List<IdentityElement> work, int columnCount) {
 

@@ -28,7 +28,11 @@
                                   <div class="menuTitle"><a class="menuList" title="$tab.Title" href="$tab.Link">$tab.Title</a></div>
                                   <div class="menuIcon">
                                       #if ($!tab.Authority)#foreach ($action in $tab.Actions)
+                                            #if (${client} == "IPAD")
+                                            <a href="${action.Link}"><img class="img_icon" title="${action.Alt}" alt="${action.Alt}" src="${skin.getImage($action.Name,"images/${action.Name}.gif")}"/></a>
+                                            #else
                                             <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!{jslink}/js_pane/$!{tab.Id}?template=CustomizeFormScreen')"><img class="img_icon" title="${action.Alt}" alt="${action.Alt}" src="${skin.getImage($action.Name,"images/${action.Name}.gif")}"/></a>
+                                            #end
                                       #end#end
                                   </div>
                                 </li>
@@ -80,14 +84,19 @@ $portlet.getContent($data)
                                                                                 <tbody>
                                                                                   <tr>
 #if( !$!isMaximized  && $portlet.isShowTitleBar($data))
-                                                                                    <td class="roundBlockTitle wide dojoDndHandle"><a href="$!utils.escapeXML($!jslink.getAction("controls.Maximize",$!portlet.ID))">$!utils.escapeXML($portlet_instance.Title)</a></td>
+                                                                                    <td class="roundBlockTitle wide #if (${client} != "IPAD")dojoDndHandle#end"><a href="$!utils.escapeXML($!jslink.getAction("controls.Maximize",$!portlet.ID))">$!utils.escapeXML($portlet_instance.Title)</a></td>
 #foreach ( $function in $functions )
                                                                                     <td class="roundBlockIcon"><a #if($function.Screen) href="javascript:void(0);" #if($!{function.AfterFunction}) onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template",$function.Mode).addQueryData("entityid","new"))','$!portlet.ID',${function.AfterFunction});" #else onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template",$function.Mode).addQueryData("entityid","new"))','$!portlet.ID');" #end #else href="$!utils.escapeXML($!jslink.getAction("controls.Maximize",$!portlet.ID).addQueryData("mode",$function.Mode))"#end><img class="img_icon" title="$function.Caption" alt="$function.Caption" src="images/$!function.Image"/>$function.Caption</a></td>
 #end
 <td class="roundBlockIcon last">
     #foreach ( $action in $actions )
+    	#if (${client} == "IPAD")
+    	<a href="$!utils.escapeXML(${action.Link})"><img class="img_icon" title="${action.Alt}" alt="${action.Alt}" src="${skin.getImage($action.Name,"images/common/${action.Name}.gif")}"/></a>
+        #else
         <a href="javascript:void(0);" class='customizeMenuIcon' onclick="aipo.customize.showMenu('$!{portlet.ID}');"><img class="img_icon" title="${action.Alt}" alt="${action.Alt}" src="${skin.getImage($action.Name,"images/common/${action.Name}.gif")}"/></a>
+        #end
     #end
+    #if (${client} != "IPAD")
     <div class="menubar" id="menubar_$!{portlet.ID}" style="position:absolute;left:-5;top:5;display:none;">
         <ul>
             #foreach ( $action in $actions )
@@ -96,6 +105,7 @@ $portlet.getContent($data)
             <li><a href="javascript:void(0);" onclick="aipo.customize.deletesubmit('$!jslink.getPortletById($!portlet.ID).addQueryData('template', 'CustomizeFormJSONScreen').addQueryData('mode', 'delete')', '$!portlet.ID', function(){ dojo.query('.dojoDndItem.$!{portlet.ID}').orphan() } );">削除</a></li>
         </ul>
     </div>
+    #end
 </td>
 
 #else

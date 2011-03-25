@@ -25,6 +25,10 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.jetspeed.om.registry.ClientEntry;
+import org.apache.jetspeed.om.registry.ClientRegistry;
+import org.apache.jetspeed.services.Registry;
+
 import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.http.ServletContextLocator;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
@@ -68,6 +72,15 @@ public abstract class ALOrgUtilsHandler {
     hash.put("unlockeddomain_url", getUnlockedDomainBaseUrl(orgId));
     hash.put("context_path", getContextPath(orgId));
     hash.put("isXDomain", String.valueOf(url.startsWith("http")));
+
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    String useragent = request.getHeader("User-Agent");
+    useragent = useragent.trim();
+    ClientRegistry registry = (ClientRegistry) Registry.get(Registry.CLIENT);
+    ClientEntry entry = registry.findEntry(useragent);
+    entry.getManufacturer();
+
+    hash.put("client", entry.getManufacturer());
 
     return hash;
   }
