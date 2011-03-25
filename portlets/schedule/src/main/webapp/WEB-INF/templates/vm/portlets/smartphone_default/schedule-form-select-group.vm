@@ -26,12 +26,6 @@
 
 #ALcell_formheader($career $jslink $portlet)
 
-#set($usercount = 1)
-#set($membersize = $!{result.MemberList.size()})
-<input type="hidden" name="shareusers" value="#foreach($record in $!{result.MemberList})$!{record.Name}#if($usercount<$membersize),#set($usercount = $usercount + 1)#end#end">
-#set($fmembersize = $!{result.FacilityMemberList.size()})
-<input type="hidden" name="sharefacs" value="#foreach($record in $!{result.FacilityMemberList})$!{record.FacilityId}#if($facilitycount<$fmembersize),#set($facilitycount = $facilitycount + 1)#end#end">
-
 <h3>所属グループ選択</h3>
 <script type="text/javascript">
 

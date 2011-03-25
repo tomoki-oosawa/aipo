@@ -27,12 +27,12 @@
 #else
 <ul class="multi_list">
 #foreach($menulist in $list)
-#set($menulistlen = $menulist.size() - 1)
 #ALcell_li_header($career)
-<span>${menulist.AccountName}</span>
+<span>${menulist.AccountName}
 #if(${menulist.AccountType.Value} == "1")
-(標準)
+(既定)
 #end
+</span>
 <ul>
 #ALcell_li_header($career)
 <a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_receive_mails','1').addQueryData('accountid',${menulist.AccountId})"><img src="themes/iphone/img/icon/32/email-send.gif" width="32" height="32" align="absmiddle" />　メール受信</a>

@@ -60,7 +60,7 @@
 #ALthtd('部署名' $!{result.Detail.PostName})
 #ALthtd('郵便番号' $!{result.Detail.Zipcode})
 #ALthtd('住所' $!{result.Detail.CompanyAddress})
-#if($!{result.Detail.CompanyTelephone} && $!{result.Detail.CompanyTelephone.Value} != '')
+#if($!{result.Detail.CompanyTelephone} && $!{result.Detail.CompanyTelephone.Value} && $!{result.Detail.CompanyTelephone.Value} != '')
 #if($!{result.Detail.CompanyTelephone.Value.length()} > 3 || $!{result.Detail.CompanyTelephone.Value.length()} < 26)
 #ALthtd('電話番号' "<a href='tel:$!{result.Detail.CompanyTelephone}'>$!{result.Detail.CompanyTelephone}</a>")
 #else

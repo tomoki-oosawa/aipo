@@ -18,7 +18,6 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#ALcell_pagetitle_iphone($career "メール詳細")
 #if($!result.currentTab == "received_mailbox")
 #set($pagetitle = "受信トレイ")
 #set($person = "差出人")
@@ -31,7 +30,7 @@
 #set($methodlist = [["メール返信", "$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_create_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '1')"], ["メール転送", "$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_create_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '2')"]])
 #set($linklist = [["アカウント一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_accountlist-max','1')"],["送信トレイへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_sent_mails','1')"],["メール作成", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_create_mail','1')"]])
 
-#ALcell_pagetitle_iphone($pagetitle)
+#ALcell_pagetitle_iphone($career "メール詳細")
 #ALcell_linklist_iphone($career $linklist)
 #ALcell_contents_header($career)
 
