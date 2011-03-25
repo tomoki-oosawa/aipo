@@ -874,11 +874,11 @@ table.subTable {
 }
 table.listTable td, table.subTable td {
 	border:1px solid #C9C9C9;
-	padding:5px;
+	padding:3px;
 }
 table.listTable th, table.listTable thead td, table.subTable th, table.subTable thead td {
 	border:1px solid #C9C9C9;
-	padding:5px;
+	padding:3px;
 	background:#DCDCDC url(../images/common/bg_slash.gif) repeat left top;
 	white-space:nowrap;
 	text-align:center;
@@ -957,7 +957,7 @@ table.simpleTable {
 }
 table.simpleTable td {
 	border:1px solid #C9C9C9;
-	padding:5px;
+	padding:3px;
 }
 table.simpleTable th, table.simpleTable thead td {
 	border:1px solid #C9C9C9;
@@ -2593,7 +2593,7 @@ background:#F5F5F5;
 }
 
 table.activityTable td{
-padding:5px;
+padding:3px;
 margin:0px;
 border-bottom:#EEE solid 1px;
 vertical-align:top;
