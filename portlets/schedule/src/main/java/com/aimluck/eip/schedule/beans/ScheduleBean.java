@@ -28,6 +28,7 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.schedule.AjaxScheduleResultData;
+import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -119,6 +120,7 @@ public class ScheduleBean implements ALData, Cloneable {
   /*
    *
    */
+  @Override
   public void initField() {
     name = new ALStringField();
     type = new ALStringField();
@@ -149,13 +151,18 @@ public class ScheduleBean implements ALData, Cloneable {
     this.place = rd.getPlace();
 
     try {
-      ALEipUser user = ALEipUtils.getALEipUser(rd.getUserId());
-      if (user == null) {
+      if (ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY.equals(rd.getType())) {
         this.owner_name.setValue("");
         this.owner_id.setValue("");
       } else {
-        this.owner_name.setValue(user.getName().toString());
-        this.owner_id.setValue(user.getUserId().toString());
+        ALEipUser user = ALEipUtils.getALEipUser(rd.getUserId());
+        if (user == null) {
+          this.owner_name.setValue("");
+          this.owner_id.setValue("");
+        } else {
+          this.owner_name.setValue(user.getName().toString());
+          this.owner_id.setValue(user.getUserId().toString());
+        }
       }
     } catch (Exception e) {
       //
