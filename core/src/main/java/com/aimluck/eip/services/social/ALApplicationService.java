@@ -99,4 +99,13 @@ public class ALApplicationService {
   public static long getNextModuleId() {
     return getService().getNextModuleId();
   }
+
+  public static void deleteUserData(String... loginNameList) {
+    getService().deleteUserData(loginNameList);
+  }
+
+  public static void deleteUserData(List<String> loginNameList) {
+    getService().deleteUserData(loginNameList);
+  }
+
 }

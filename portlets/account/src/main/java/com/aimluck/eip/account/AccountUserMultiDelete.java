@@ -46,11 +46,12 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
+import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザアカウントを複数削除するためのクラス． <BR>
- *
+ * 
  */
 public class AccountUserMultiDelete extends ALAbstractCheckList {
 
@@ -59,7 +60,7 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
     .getLogger(AccountUserMultiDelete.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param values
@@ -165,6 +166,9 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
             + userId
             + "'";
         Database.sql(EipTBlogFootmarkMap.class, sql7);
+
+        // ソーシャルアプリ関連データ削除
+        ALApplicationService.deleteUserData(user_name);
 
         // ワークフロー自動承認
         AccountUtils.acceptWorkflow(record.getUserId());

@@ -765,4 +765,33 @@ public class ALDefaultSocialApplicationHanlder extends
     }
     return next;
   }
+
+  @Override
+  public void deleteUserData(String... loginNameList) {
+    try {
+      for (String loginName : loginNameList) {
+        List<AppData> appDataList =
+          Database.query(AppData.class).where(
+            Operations.eq(AppData.LOGIN_NAME_PROPERTY, loginName)).fetchList();
+        if (appDataList != null && appDataList.size() > 0) {
+          Database.deleteAll(appDataList);
+        }
+        List<Activity> activityList =
+          Database.query(Activity.class).where(
+            Operations.eq(AppData.LOGIN_NAME_PROPERTY, loginName)).fetchList();
+        if (activityList != null && activityList.size() > 0) {
+          Database.deleteAll(activityList);
+        }
+      }
+      Database.commit();
+    } catch (Throwable t) {
+      Database.rollback();
+      throw new RuntimeException(t);
+    }
+  }
+
+  @Override
+  public void deleteUserData(List<String> loginNameList) {
+    deleteApplication(loginNameList.toArray(new String[loginNameList.size()]));
+  }
 }

@@ -105,6 +105,10 @@ public abstract class ALSocialApplicationHandler {
 
   public abstract long getNextModuleId();
 
+  public abstract void deleteUserData(String... loginNameList);
+
+  public abstract void deleteUserData(List<String> loginNameList);
+
   public static enum Property {
 
     LOCKED_DOMAIN_REQUIRED("lockedDomainRequired") {

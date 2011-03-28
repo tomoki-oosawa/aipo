@@ -72,6 +72,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
+import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.user.beans.UserGroupLiteBean;
 import com.aimluck.eip.util.ALEipUtils;
@@ -1278,6 +1279,9 @@ public class AccountUserFormData extends ALAbstractFormData {
 
       // ワークフロー自動承認
       AccountUtils.acceptWorkflow(deleteuser.getUserId());
+
+      // ソーシャルアプリ関連データ削除
+      ALApplicationService.deleteUserData(user_name);
 
       Database.commit();
 

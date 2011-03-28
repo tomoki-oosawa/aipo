@@ -246,7 +246,7 @@ $!data.getMessage().toString()
 #ALtdcaption("ユーザー名")
 <td>
 <span id="login_username_field">
-<input class='text' name='member_username' value='' type='text' size='30' maxlength='50' style='ime-mode:disabled' />
+<input class='text w75' name='member_username' value='' type='text' maxlength='50' style='ime-mode:disabled' />
 </span>
 #if($enable_userlist)
 <span id="login_username_list_field" style="display:none">
@@ -267,7 +267,7 @@ $!data.getMessage().toString()
 </tr>
 #ALtdcaption("パスワード")
 <td>
-<input class="text" name="password" value="" type="password" size="30" maxlength="50" style="ime-mode:disabled" />
+<input class="text w75" name="password" value="" type="password" maxlength="50" style="ime-mode:disabled" />
 </td>
 </tr>
 #if($enable_userlist)
