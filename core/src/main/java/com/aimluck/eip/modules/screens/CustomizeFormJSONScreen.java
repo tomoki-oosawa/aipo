@@ -216,8 +216,10 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
 
         int ent_length = entries.length;
         for (int j = 0; j < ent_length; j++) {
+          String parent = entries[j].getParent();
           if (entries[j].getId().equals(portletId)
-            && editablePortlets.contains(entries[j].getParent())) {
+            && (editablePortlets.contains(entries[j].getParent()) || parent
+              .startsWith("GadgetsTemplate"))) {
             PortletWrapper wrapper =
               (PortletWrapper) PortletFactory.getPortlet(entries[j]);
             if (wrapper != null) {
