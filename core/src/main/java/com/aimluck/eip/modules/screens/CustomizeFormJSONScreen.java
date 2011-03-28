@@ -274,7 +274,9 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
 
         int ent_length = entries.length;
         for (int j = 0; j < ent_length; j++) {
-          if (editablePortlets.contains(entries[j].getParent())) {
+          String parent = entries[j].getParent();
+          if (editablePortlets.contains(parent)
+            || parent.startsWith("GadgetsTemplate")) {
             String pid = entries[j].getId();
             int col = rundata.getParameters().getInt(pid + "_col", -1);
             int row = rundata.getParameters().getInt(pid + "_row", -1);
