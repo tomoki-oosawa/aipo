@@ -44,6 +44,7 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -55,9 +56,8 @@ public class CellScheduleWeekSelectData extends
     ALAbstractSelectData<List<EipTScheduleMap>, List<EipTScheduleMap>> {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleWeeklySelectData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleWeeklySelectData.class.getName());
 
   private ALDateTimeField startDate;
 
@@ -119,26 +119,26 @@ public class CellScheduleWeekSelectData extends
       rd.initField();
       map = scheduleDayList.get(k);
 
-      // is_memberのチェック
+      // is_member check (this schedule have member except myself)
       SelectQuery<EipTScheduleMap> mapquery =
         Database.query(EipTScheduleMap.class);
-      Expression mapexp1 =
+      Expression expm1 =
         ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, map
           .getScheduleId());
-      mapquery.setQualifier(mapexp1);
-
-      Expression mapexp2 =
-        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+      Expression expm2 =
+        ExpressionFactory.noMatchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
           .valueOf(userid));
-      mapquery.andQualifier(mapexp2);
-
-      Expression mapexp3 =
+      Expression expm3 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.TYPE_PROPERTY,
+          ScheduleUtils.SCHEDULEMAP_TYPE_USER);
+      Expression expm4 =
         ExpressionFactory.noMatchExp(EipTScheduleMap.STATUS_PROPERTY, "R");
-      mapquery.andQualifier(mapexp3);
 
-      List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
-      boolean is_member =
-        (schedulemaps != null && schedulemaps.size() > 0) ? true : false;
+      mapquery.setQualifier(expm1.andExp(expm2).andExp(expm3).andExp(expm4));
+
+      int count = mapquery.getCount();
+      boolean is_member = (count > 0) ? true : false;
 
       rd.setScheduleId(map.getScheduleId());
       rd.setName(map.getEipTSchedule().getName());
@@ -174,17 +174,24 @@ public class CellScheduleWeekSelectData extends
     cal.setTime(startDate.getValue());
     int userid = ALEipUtils.getUserId(rundata);
 
+    Expression expm1 =
+      ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+        .valueOf(userid));
+    Expression expm2 =
+      ExpressionFactory.noMatchExp(EipTScheduleMap.STATUS_PROPERTY, "D");
+    Expression expm3 =
+      ExpressionFactory.noMatchExp(EipTScheduleMap.STATUS_PROPERTY, "R");
+    Expression expm4 =
+      ExpressionFactory.matchExp(
+        EipTScheduleMap.TYPE_PROPERTY,
+        ScheduleUtils.SCHEDULEMAP_TYPE_USER);
+
+    Expression mapExpression = expm1.andExp(expm2).andExp(expm3).andExp(expm4);
+
     // 通常、期間スケジュール、または日単位繰り返し
     for (int k = 0; k < 7; k++) {
       SelectQuery<EipTScheduleMap> query =
         Database.query(EipTScheduleMap.class);
-      Expression exp =
-        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
-          .valueOf(userid));
-      Expression exp0 =
-        ExpressionFactory.noMatchExp(EipTScheduleMap.STATUS_PROPERTY, "D");
-      Expression exp00 =
-        ExpressionFactory.noMatchExp(EipTScheduleMap.STATUS_PROPERTY, "R");
 
       Expression exp11 =
         ExpressionFactory.greaterOrEqualExp(
@@ -217,8 +224,7 @@ public class CellScheduleWeekSelectData extends
           + EipTSchedule.REPEAT_PATTERN_PROPERTY, "DL");
       Expression exp20 = exp21.orExp(exp22.andExp(exp11).andExp(exp12));
 
-      query.setQualifier((exp10.orExp(exp20)).andExp(exp).andExp(exp0).andExp(
-        exp00));
+      query.setQualifier((exp10.orExp(exp20)).andExp(mapExpression));
 
       List<Ordering> orders = new ArrayList<Ordering>();
       orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
@@ -235,11 +241,6 @@ public class CellScheduleWeekSelectData extends
 
     // 週間、または毎月の場合
     SelectQuery<EipTScheduleMap> query = Database.query(EipTScheduleMap.class);
-    Expression exp =
-      ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
-        .valueOf(userid));
-    Expression exp00 =
-      ExpressionFactory.noMatchExp(EipTScheduleMap.STATUS_PROPERTY, "R");
 
     Expression exp2 =
       ExpressionFactory.noMatchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
@@ -250,10 +251,7 @@ public class CellScheduleWeekSelectData extends
         + "."
         + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
 
-    query.setQualifier(exp);
-    query.andQualifier(exp00);
-    query.andQualifier(exp2);
-    query.andQualifier(exp3);
+    query.setQualifier(mapExpression.andExp(exp2).andExp(exp3));
     List<EipTScheduleMap> list = query.fetchList();
 
     EipTSchedule schedule = null;
@@ -322,13 +320,12 @@ public class CellScheduleWeekSelectData extends
     // ダミースケジュールの処理
 
     SelectQuery<EipTScheduleMap> queryD = Database.query(EipTScheduleMap.class);
-    Expression expD =
-      ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
-        .valueOf(userid));
+
     Expression expD2 =
       ExpressionFactory.matchExp(EipTScheduleMap.STATUS_PROPERTY, "D");
-    queryD.setQualifier(expD);
-    queryD.andQualifier(expD2);
+
+    queryD.setQualifier(expm1.andExp(expm4).andExp(expD2));
+
     List<EipTScheduleMap> listD = queryD.fetchList();
 
     for (int k = 0; k < 7; k++) {
@@ -366,6 +363,7 @@ public class CellScheduleWeekSelectData extends
 
       // ソート
       Collections.sort(slist, new Comparator<EipTScheduleMap>() {
+        @Override
         public int compare(EipTScheduleMap a, EipTScheduleMap b) {
           Calendar cal = Calendar.getInstance();
           Calendar cal2 = Calendar.getInstance();
