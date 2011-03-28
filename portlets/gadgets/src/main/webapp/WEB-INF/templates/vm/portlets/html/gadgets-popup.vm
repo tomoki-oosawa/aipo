@@ -17,18 +17,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 
+#ALdialogheader("$!title")
+#ALajaxIndicator("$indicator_id" "$!portletId" "")
+
 #if($!isActive)
+<a href='javascript:aipo.container.setCountry("JP");aipo.container.setLanguage("ja");aipo.container.setView("popup");aipo.container.setNoCache("1");aipo.container.renderGadgetFromContext(${assignData});' id="gadgets-popup-action"></a>
 <div id="gadget-chrome-${portletId}"></div>
-<script type="text/JavaScript">
-
-aipo.container.setCountry("JP");
-aipo.container.setLanguage("ja");
-aipo.container.setView("popup");
-aipo.container.setNoCache("1");
-aipo.container.renderGadgetFromContext(${assignData});
-
-</script>
 #else
 このアプリケーションは現在利用できません。
 #end
 
+<div align="center">
+<input name="ajaxbuttonClose" class="button" type="button" value="　閉じる　" onclick="aipo.common.hideDialog();">
+</div>
+
+#ALdialogfooter()

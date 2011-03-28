@@ -27,9 +27,9 @@ import net.sf.json.JSONObject;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.common.ALEipUser;
-import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.services.social.gadgets.ALGadgetContext;
@@ -53,8 +53,13 @@ public class GadgetsPopupScreen extends ALVelocityScreen {
     ALApplication app =
       ALApplicationService.get(new ALApplicationGetRequest().withAppId(appId));
     if (app == null) {
-      throw new ALPageNotFoundException();
+      context.put("isActive", false);
+      context.put("title", "");
+      String template = "portlets/html/ja/gadgets-popup.vm";
+      setTemplate(rundata, context, template);
+      return;
     }
+    ALStringField title = app.getTitle();
     String url = app.getUrl().getValue();
     boolean isActive = app.getStatus() == 1;
 
@@ -93,6 +98,7 @@ public class GadgetsPopupScreen extends ALVelocityScreen {
       jsonObject.put("viewParams", externalJson);
     }
     context.put("assignData", jsonObject.toString());
+    context.put("title", title);
 
     String template = "portlets/html/ja/gadgets-popup.vm";
     setTemplate(rundata, context, template);
