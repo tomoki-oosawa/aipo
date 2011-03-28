@@ -30,6 +30,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 import com.aimluck.eip.cayenne.om.social.Activity;
 import com.aimluck.eip.cayenne.om.social.ActivityMap;
+import com.aimluck.eip.cayenne.om.social.AppData;
 import com.aimluck.eip.cayenne.om.social.Application;
 import com.aimluck.eip.cayenne.om.social.ContainerConfig;
 import com.aimluck.eip.cayenne.om.social.ModuleId;
@@ -341,6 +342,18 @@ public class ALDefaultSocialApplicationHanlder extends
     try {
       for (String appId : appIdList) {
         Database.delete(Database.get(Application.class, "APP_ID", appId));
+        List<AppData> appDataList =
+          Database.query(AppData.class).where(
+            Operations.eq(AppData.APP_ID_PROPERTY, appId)).fetchList();
+        if (appDataList != null && appDataList.size() > 0) {
+          Database.deleteAll(appDataList);
+        }
+        List<Activity> activityList =
+          Database.query(Activity.class).where(
+            Operations.eq(Activity.APP_ID_PROPERTY, appId)).fetchList();
+        if (activityList != null && activityList.size() > 0) {
+          Database.deleteAll(activityList);
+        }
       }
       Database.commit();
     } catch (Throwable t) {
