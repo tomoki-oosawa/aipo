@@ -45,6 +45,10 @@
 <option value="3600" #if($result.CheckActivityInterval.toString() == "3600") selected="selected"#end>1時間毎</option>
 </select>
 #ALtditemfooter()
+#ALtdcaption("ガジェットXMLのキャッシュ")
+#ALtditemheader()
+<input name="cacheGadgetXml" type="checkbox" value="1" id="cacheGadgetXml_for" #if ($result.CacheGadgetXml.toString() == "1") checked="checked" #end/>
+<label for="cacheGadgetXml_for">有効</label>
 #ALtablefooter()
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)<input name="ajaxbuttonClose" class="button" type="button" value="　閉じる　" onclick="aipo.gadgets_admin.hideDialog();" />

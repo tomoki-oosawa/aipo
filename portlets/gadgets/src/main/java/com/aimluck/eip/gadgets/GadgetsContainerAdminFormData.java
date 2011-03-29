@@ -50,6 +50,8 @@ public class GadgetsContainerAdminFormData extends ALAbstractFormData {
 
   private ALStringField checkActivityInterval;
 
+  private ALNumberField cacheGadgetXml;
+
   /**
    * 
    */
@@ -62,6 +64,7 @@ public class GadgetsContainerAdminFormData extends ALAbstractFormData {
     checkActivityInterval = new ALStringField();
     checkActivityInterval.setTrim(true);
     checkActivityInterval.setFieldName("あなた宛の自動更新");
+    cacheGadgetXml = new ALNumberField();
 
   }
 
@@ -120,7 +123,10 @@ public class GadgetsContainerAdminFormData extends ALAbstractFormData {
       .get(Property.CHECK_ACTIVITY_INTERVAL));
     lockedDomainSuffix.setValue(ALContainerConfigService
       .get(ALSocialApplicationHandler.Property.LOCKED_DOMAIN_SUFFIX));
-
+    cacheGadgetXml.setValue(ALContainerConfigService.get(
+      ALSocialApplicationHandler.Property.CACHE_GADGET_XML).equals("true")
+      ? 1
+      : 0);
     return true;
   }
 
@@ -138,6 +144,7 @@ public class GadgetsContainerAdminFormData extends ALAbstractFormData {
 
     try {
       long value = lockedDomainRequired.getValue();
+      long cache = cacheGadgetXml.getValue();
 
       ALContainerConfigService.put(
         ALSocialApplicationHandler.Property.LOCKED_DOMAIN_REQUIRED,
@@ -150,6 +157,10 @@ public class GadgetsContainerAdminFormData extends ALAbstractFormData {
       ALConfigService.put(
         Property.CHECK_ACTIVITY_INTERVAL,
         checkActivityInterval.getValue());
+
+      ALContainerConfigService.put(
+        ALSocialApplicationHandler.Property.CACHE_GADGET_XML,
+        cache == 1 ? "true" : "false");
 
     } catch (Throwable t) {
       logger.error(t, t);
@@ -173,6 +184,7 @@ public class GadgetsContainerAdminFormData extends ALAbstractFormData {
 
     try {
       long value = lockedDomainRequired.getValue();
+      long cache = cacheGadgetXml.getValue();
 
       ALContainerConfigService.put(
         ALSocialApplicationHandler.Property.LOCKED_DOMAIN_REQUIRED,
@@ -185,6 +197,10 @@ public class GadgetsContainerAdminFormData extends ALAbstractFormData {
       ALConfigService.put(
         Property.CHECK_ACTIVITY_INTERVAL,
         checkActivityInterval.getValue());
+
+      ALContainerConfigService.put(
+        ALSocialApplicationHandler.Property.CACHE_GADGET_XML,
+        cache == 1 ? "true" : "false");
 
     } catch (Throwable t) {
       logger.error(t, t);
@@ -228,6 +244,10 @@ public class GadgetsContainerAdminFormData extends ALAbstractFormData {
    */
   public ALStringField getCheckActivityInterval() {
     return checkActivityInterval;
+  }
+
+  public ALNumberField getCacheGadgetXml() {
+    return cacheGadgetXml;
   }
 
 }

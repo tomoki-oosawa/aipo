@@ -32,6 +32,8 @@ import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.social.ALApplicationService;
+import com.aimluck.eip.services.social.ALContainerConfigService;
+import com.aimluck.eip.services.social.ALSocialApplicationHandler.Property;
 import com.aimluck.eip.services.social.gadgets.ALGadgetContext;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
 import com.aimluck.eip.util.ALEipUtils;
@@ -99,6 +101,8 @@ public class GadgetsPopupScreen extends ALVelocityScreen {
     }
     context.put("assignData", jsonObject.toString());
     context.put("title", title);
+    context.put("nocache", "true".equals(ALContainerConfigService
+      .get(Property.CACHE_GADGET_XML)) ? "0" : "1");
 
     String template = "portlets/html/ja/gadgets-popup.vm";
     setTemplate(rundata, context, template);

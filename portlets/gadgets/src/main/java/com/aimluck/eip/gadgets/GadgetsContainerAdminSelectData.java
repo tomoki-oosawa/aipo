@@ -80,6 +80,8 @@ public class GadgetsContainerAdminSelectData
       .get(Property.CHECK_ACTIVITY_INTERVAL));
     rd.setLockedDomainSuffix(ALContainerConfigService
       .get(ALSocialApplicationHandler.Property.LOCKED_DOMAIN_SUFFIX));
+    rd.setCacheGadgetXml(ALContainerConfigService
+      .get(ALSocialApplicationHandler.Property.CACHE_GADGET_XML));
 
     return rd;
   }

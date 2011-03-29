@@ -131,6 +131,13 @@ public abstract class ALSocialApplicationHandler {
       public String defaultValue() {
         return "";
       }
+    },
+
+    CACHE_GADGET_XML("cacheGadgetXml") {
+      @Override
+      public String defaultValue() {
+        return "true";
+      }
     };
 
     private final String property;

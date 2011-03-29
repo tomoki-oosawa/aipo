@@ -24,7 +24,7 @@
 aipo.container.setCountry("JP");
 aipo.container.setLanguage("ja");
 aipo.container.setView("home");
-aipo.container.setNoCache("1");
+aipo.container.setNoCache("${nocache}");
 aipo.container.assign(${assignData});
 
 </script>

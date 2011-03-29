@@ -35,6 +35,8 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.social.ALApplicationService;
+import com.aimluck.eip.services.social.ALContainerConfigService;
+import com.aimluck.eip.services.social.ALSocialApplicationHandler.Property;
 import com.aimluck.eip.services.social.gadgets.ALGadgetContext;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -135,7 +137,10 @@ public class GadgetsAction extends ALBaseAction {
     jsonObject.put("width", "100%");
     jsonObject.put("rpcRelay", "files/container/rpc_relay.html");
     jsonObject.put("userPrefs", JSONObject.fromObject(maps));
+
     context.put("assignData", jsonObject.toString());
+    context.put("nocache", "true".equals(ALContainerConfigService
+      .get(Property.CACHE_GADGET_XML)) ? "0" : "1");
     setTemplate(rundata, isMaximized ? "gadgets-list" : "gadgets");
   }
 

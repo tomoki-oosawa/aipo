@@ -49,6 +49,14 @@
 #end
 
 </td>
+#ALtdcaption("ガジェットXMLのキャッシュ")
+<td class="item">
+#if($result.Detail.CacheGadgetXml.toString() == "true")
+有効
+#else
+無効
+#end
+</td>
 #ALtablefooter()
 #ALbuttonheader()
 #ALajaxbuttonEdit("$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsContainerAdminFormScreen').addQueryData('entityid','edit')")
