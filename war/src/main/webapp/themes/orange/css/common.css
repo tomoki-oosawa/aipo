@@ -2586,6 +2586,7 @@ border:none;
 padding:0;
 border-collapse:collapse;
 width:100%;
+margin-bottom:5px;
 }
 
 table.activityTable  tr:hover{
