@@ -342,18 +342,11 @@ public class ALDefaultSocialApplicationHanlder extends
     try {
       for (String appId : appIdList) {
         Database.delete(Database.get(Application.class, "APP_ID", appId));
-        List<AppData> appDataList =
-          Database.query(AppData.class).where(
-            Operations.eq(AppData.APP_ID_PROPERTY, appId)).fetchList();
-        if (appDataList != null && appDataList.size() > 0) {
-          Database.deleteAll(appDataList);
-        }
-        List<Activity> activityList =
-          Database.query(Activity.class).where(
-            Operations.eq(Activity.APP_ID_PROPERTY, appId)).fetchList();
-        if (activityList != null && activityList.size() > 0) {
-          Database.deleteAll(activityList);
-        }
+        String sql1 = "delete from app_data where app_id = #bind($appId)";
+        Database.sql(AppData.class, sql1).param("appId", appId).execute();
+
+        String sql2 = "delete from activity where app_id = #bind($appId)";
+        Database.sql(Activity.class, sql2).param("appId", appId).execute();
       }
       Database.commit();
     } catch (Throwable t) {
@@ -770,18 +763,19 @@ public class ALDefaultSocialApplicationHanlder extends
   public void deleteUserData(String... loginNameList) {
     try {
       for (String loginName : loginNameList) {
-        List<AppData> appDataList =
-          Database.query(AppData.class).where(
-            Operations.eq(AppData.LOGIN_NAME_PROPERTY, loginName)).fetchList();
-        if (appDataList != null && appDataList.size() > 0) {
-          Database.deleteAll(appDataList);
-        }
-        List<Activity> activityList =
-          Database.query(Activity.class).where(
-            Operations.eq(AppData.LOGIN_NAME_PROPERTY, loginName)).fetchList();
-        if (activityList != null && activityList.size() > 0) {
-          Database.deleteAll(activityList);
-        }
+        String sql1 =
+          "delete from app_data where login_name = #bind($loginName)";
+        Database
+          .sql(AppData.class, sql1)
+          .param("loginName", loginName)
+          .execute();
+
+        String sql2 =
+          "delete from activity where login_name = #bind($loginName)";
+        Database
+          .sql(Activity.class, sql2)
+          .param("loginName", loginName)
+          .execute();
       }
       Database.commit();
     } catch (Throwable t) {
@@ -792,6 +786,6 @@ public class ALDefaultSocialApplicationHanlder extends
 
   @Override
   public void deleteUserData(List<String> loginNameList) {
-    deleteApplication(loginNameList.toArray(new String[loginNameList.size()]));
+    deleteUserData(loginNameList.toArray(new String[loginNameList.size()]));
   }
 }
