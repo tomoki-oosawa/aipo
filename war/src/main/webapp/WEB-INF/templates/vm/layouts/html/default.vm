@@ -124,7 +124,7 @@ dojo.addOnLoad(function() {
         });
     });
 
-    var handle = dojo.connect(dojo.query('body')[0], 'onclick', null, function(){
+    var handle = dojo.connect(dojo.query('body')[0], 'onmousedown', null, function(){
         if (dojo.query('.customizeMenuIconMouseenter').length == 0) {
             aipo.customize.hideMenu();
         }
@@ -144,6 +144,7 @@ dojo.addOnLoad(function() {
     for(var c = 0; c < containers.length ; c++){
         dojo.connect(containerSources[c], "onDndStart", containers[c], function(){
             dojo.addClass(this, 'dojoDndContainerItemOver');
+            aipo.customize.hideMenu();
         });
 
         dojo.connect(containerSources[c], "onDndCancel", containers[c], function(){
@@ -171,6 +172,12 @@ dojo.addOnLoad(function() {
             }
         });
     }
+    
+    var underlay = new aimluck.widget.DialogUnderlay({ templateString: "<div class=modalDialogUnderlayWrapper id='${id}_underlay'><div dojoAttachPoint='node'></div></div>" });
+    dojo.connect(underlay.domNode, "onmousemove", underlay.domNode, function(){
+        underlay.hide();
+    });
+    underlay.show();
 });
 #end
 

@@ -611,7 +611,7 @@ background-repeat:no-repeat;
 }
 .dojoDndItemOver {
 }
-.dojoDndHandle {
+.dojoDndItemOver .dojoDndHandle {
     cursor: pointer;
 }
 .dojoDndItemSelected {
