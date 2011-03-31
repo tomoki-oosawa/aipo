@@ -48,7 +48,7 @@ aipo.IfrGadget = {
 			gadgets.rpc.setAuthToken(iframeId, this.rpcToken);
 			continuation('<div class="' + this.cssClassGadgetContent + '"><iframe id="' +
 					iframeId + '" name="' + iframeId + '" class="' + this.cssClassGadget +
-					'" src="' + this.getIframeUrl() +
+					'" src="about:blank' + 
 					'" frameborder="no"' +
 					(this.scrolling ? ' scrolling="' + this.scrolling + '"' : 'no') +
 					(this.height ? ' height="' + this.height + '"' : '') +
@@ -57,7 +57,7 @@ aipo.IfrGadget = {
 		},
 
 		finishRender: function(chrome) {
-			//window.frames[this.getIframeId()].location = this.getIframeUrl();
+			document.getElementById(this.getIframeId()).src = this.getIframeUrl();
 		},
 
 		getIframeUrl: function() {
