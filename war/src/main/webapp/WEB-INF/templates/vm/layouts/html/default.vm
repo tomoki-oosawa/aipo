@@ -157,9 +157,25 @@ dojo.addOnLoad(function() {
                 var cols = dojo.query('.container');
                 for(var c = 0; c < cols.length ; c++){
                     var rows = dojo.query('.dojoDndItem .roundBlockContent > div', cols[c]);
+                    var reverse = false;
+                    if (rows.length >= 2) {
+                        var top = rows[0];
+                        var bottom = rows[rows.length - 1];
+                        while (top && bottom && top.offsetTop == bottom.offsetTop) {
+                            top = top.offsetParent;
+                            bottom = bottom.offsetParent;
+                        }
+                        if (top.offsetTop > bottom.offsetTop) {
+                            reverse = true;
+                        }
+                    }
                     for (var r = 0 ; r < rows.length ; r++) {
                         var pid = rows[r].id.split("portlet_")[1];
-                        params = params + '&' + pid + '_row=' + (rows.length - r - 1);
+                        if (reverse) {
+                            params = params + '&' + pid + '_row=' + (rows.length - r - 1);
+                        } else {
+                            params = params + '&' + pid + '_row=' + r;
+                        }
                         params = params + '&' + pid + '_col=' + c;
                     }
                 }
