@@ -59,6 +59,8 @@ public class CellScheduleWeekSelectByMemberData extends
 
   private ALCellStringField user;
 
+  private int currentUserId;
+
   /** <code>login_user</code> 表示対象ユーザー */
   private ALEipUser targerUser;
 
@@ -78,6 +80,8 @@ public class CellScheduleWeekSelectByMemberData extends
       targerUser = ALEipUtils.getALEipUser(Integer.parseInt(tmpTargetUser));
       // setTemplate(rundata, "schedule-menu-select-member");
     }
+
+    currentUserId = ALEipUtils.getUserId(rundata);
   }
 
   @Override
@@ -348,15 +352,15 @@ public class CellScheduleWeekSelectByMemberData extends
       rd.initField();
       map = scheduleDayList.get(k);
 
-      // is_member check (this schedule have member except myself)
+      // is_member check (this schedule members have current user)
       SelectQuery<EipTScheduleMap> mapquery =
         Database.query(EipTScheduleMap.class);
       Expression expm1 =
         ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, map
           .getScheduleId());
       Expression expm2 =
-        ExpressionFactory.noMatchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
-          .valueOf(userid));
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+          .valueOf(currentUserId));
       Expression expm3 =
         ExpressionFactory.matchExp(
           EipTScheduleMap.TYPE_PROPERTY,
