@@ -126,7 +126,7 @@ public class CellScheduleWeekSelectData extends
         ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, map
           .getScheduleId());
       Expression expm2 =
-        ExpressionFactory.noMatchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
           .valueOf(userid));
       Expression expm3 =
         ExpressionFactory.matchExp(
