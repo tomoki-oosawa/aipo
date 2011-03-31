@@ -124,7 +124,7 @@ dojo.addOnLoad(function() {
         });
     });
 
-    var handle = dojo.connect(dojo.query('body')[0], 'onmousedown', null, function(){
+    var handle = dojo.connect(dojo.query('body')[0], 'onclick', null, function(){
         if (dojo.query('.customizeMenuIconMouseenter').length == 0) {
             aipo.customize.hideMenu();
         }
