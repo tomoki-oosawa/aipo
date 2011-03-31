@@ -57,7 +57,8 @@ aipo.IfrGadget = {
 		},
 
 		finishRender: function(chrome) {
-			document.getElementById(this.getIframeId()).src = this.getIframeUrl();
+			window.frames[this.getIframeId()].location = this.getIframeUrl();
+			//document.getElementById(this.getIframeId()).src = this.getIframeUrl();
 		},
 
 		getIframeUrl: function() {
@@ -95,7 +96,7 @@ aipo.IfrGadgetService.inherits(shindig.IfrGadgetService);
 
 aipo.IfrGadgetService.prototype.setUserPref = function(editToken, name,
 	    value) {
-	var portletId = this.f.replace("remote_iframe_","");
+	var portletId = this.f.replace("remote_iframe_","").split("_NN_")[0];
 	var request = {};
 	for (var i = 1, j = arguments.length; i < j; i += 2) {
 		request[arguments[i]] = arguments[i+1];
@@ -128,7 +129,7 @@ aipo.IfrGadgetService.prototype.setTitle = function(title) {
 };
 
 aipo.IfrGadgetService.prototype.requestNavigateTo = function(view, opt_params) {
-	var portletId = this.f.replace("remote_iframe_","");
+	var portletId = this.f.replace("remote_iframe_","").split("_NN_")[0];
 	var url = "?js_peid=" + encodeURIComponent(portletId);
 	if(view == "canvas") {
 		url += '&action=controls.Maximize';
@@ -207,6 +208,10 @@ aipo.IfrContainer.prototype.addGadget = function(gadget) {
 
 aipo.IfrContainer.prototype.renderGadget = function(gadget) {
 	var chrome = this.layoutManager.getGadgetChrome(gadget);
+	if(!gadget.count) {
+		gadget.count = 0;
+	}
+	gadget.count++;
 	gadget.render(chrome);
 };
 
@@ -231,7 +236,7 @@ aipo.IfrContainer.prototype.renderGadgetFromContext = function(context) {
 };
 
 shindig.BaseIfrGadget.prototype.getIframeId = function() {
-	return this.GADGET_IFRAME_PREFIX_ + this.portletId;
+	return this.GADGET_IFRAME_PREFIX_ + this.portletId + '_NN_' + this.count;
 };
 
 shindig.BaseIfrGadget.prototype.queryIfrGadgetType_ = function() {
@@ -329,8 +334,10 @@ aipo.cron = new CronTask(function(decay) {
 					var data = obj.data;
 					for(var i = 0; i < data.length; i++) {
 						var context = data[i];
-						gadgets.rpc.call('remote_iframe_' + context.portletId, 'update_security_token', null,
+						var gadget = aipo.container.gadgets_['gadget_' + context.id];
+						gadgets.rpc.call('remote_iframe_' + context.portletId + '_NN_' + gadget.count, 'update_security_token', null,
 								context.secureToken);
+						gadget.secureToken = context.secureToken;
 					}
 					// success
 				}

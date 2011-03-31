@@ -168,6 +168,19 @@ dojo.addOnLoad(function() {
                 aipo.customize.submit(url, '$!portlet.ID', function(){
                 });
                 
+                var iframe = dojo.query('.gadgets-gadget-content iframe', nodes[0]);
+                if(iframe && iframe.length == 1) {
+                  var pid = iframe[0].id.split("remote_iframe_")[1].split("_NN_")[0];
+                  var gadgets_ = aipo.container.gadgets_;
+                  for(var i in gadgets_) {
+                     var gadget = gadgets_[i];
+                     if(gadget.portletId == pid) {
+                       aipo.container.renderGadget(gadget);
+                       break;
+                     }
+                  }
+                }
+                
                 dojo.removeClass(this.node, 'dojoDndContainerItemOver');
             }
         });
