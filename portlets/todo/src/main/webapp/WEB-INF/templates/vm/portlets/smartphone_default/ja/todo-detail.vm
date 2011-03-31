@@ -89,8 +89,8 @@
 </tr>
 #end
 <tr>
-#ALtdhead('スケジュールへ')
-#ALtdcell("$!{result.Detail.AddonScheduleFlg}")
+#ALtdhead('スケジュールへの表示')
+#ALtdcell("#if($!{result.Detail.addonScheduleFlg()}) 表示 #else 非表示 #end")
 </tr>
 </table>
 

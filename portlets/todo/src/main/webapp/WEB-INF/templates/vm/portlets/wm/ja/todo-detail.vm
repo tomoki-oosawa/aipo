@@ -50,8 +50,8 @@
 #else
 <dd>非公開</dd>
 #end
-<dt>スケジュールへ</dt>
-<dd>$!{result.Detail.AddonScheduleFlg}</dd>
+<dt>スケジュールへの表示</dt>
+<dd>#if($!{result.Detail.addonScheduleFlg()}) 表示 #else 非表示 #end</dd>
 </dl>
 
 #if($!result.ScheduleUrl && $!result.ScheduleUrl != "")
