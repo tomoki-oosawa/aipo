@@ -1,7 +1,7 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2010 Aimluck,Inc.
- * http://aipostyle.com/
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -61,6 +61,7 @@ public class WebMailFolderResultData implements ALData {
    * 
    * 
    */
+  @Override
   public void initField() {
     folder_id = 0;
     folder_name = new ALStringField();
