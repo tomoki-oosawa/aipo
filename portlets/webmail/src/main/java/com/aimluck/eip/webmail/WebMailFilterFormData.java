@@ -499,7 +499,7 @@ public class WebMailFilterFormData extends ALAbstractFormData {
       for (EipTMailFolder folder : mailFolders) {
         WebMailFolderResultData rd = new WebMailFolderResultData();
         rd.initField();
-        rd.setFolderId(folder.getFolderId().longValue());
+        rd.setFolderId(folder.getFolderId());
         rd.setFolderName(folder.getFolderName());
         folderList.add(rd);
       }
