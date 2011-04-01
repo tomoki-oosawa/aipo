@@ -62,7 +62,7 @@
 
 #if($!result.currentTab == "receive")
 <td style="width:150px;" valign="top">
-<div class="explorer_box" style="padding:2px 2px 2px 5px;width:150pt;overflow:scroll;">
+<div class="explorer_box">
 #foreach($record in $!result.FolderList)
 #set ($unreadNum = $result.getUnReadMailSumByFolderId($record.FolderId))
 <nobr>
