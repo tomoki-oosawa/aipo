@@ -153,6 +153,9 @@ dojo.addOnLoad(function() {
 
         dojo.connect(container, "onDndDrop", containerSources[c], function(source, nodes, copy, target){
             if (this == target) {
+                if (copy) {
+                    nodes.orphan();
+                }
                 var params = '';
                 var cols = dojo.query('.container');
                 for(var c = 0; c < cols.length ; c++){
