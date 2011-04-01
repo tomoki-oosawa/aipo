@@ -102,7 +102,7 @@ $portlet.getContent($data)
             #foreach ( $action in $actions )
                 <li><a href="$!utils.escapeXML(${action.Link})">設定</a></li>
             #end
-            <li><a href="javascript:void(0);" onclick="aipo.customize.deletesubmit('$!jslink.getPortletById($!portlet.ID).addQueryData('template', 'CustomizeFormJSONScreen').addQueryData('mode', 'delete')', '$!portlet.ID', function(){ dojo.query('.dojoDndItem.$!{portlet.ID}').orphan() } );">削除</a></li>
+            <li class="last"><a href="javascript:void(0);" onclick="aipo.customize.deletesubmit('$!jslink.getPortletById($!portlet.ID).addQueryData('template', 'CustomizeFormJSONScreen').addQueryData('mode', 'delete')', '$!portlet.ID', function(){ dojo.query('.dojoDndItem.$!{portlet.ID}').orphan() } );">削除</a></li>
         </ul>
     </div>
     #end
