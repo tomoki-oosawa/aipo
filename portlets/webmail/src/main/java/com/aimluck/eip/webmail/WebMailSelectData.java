@@ -96,13 +96,13 @@ public class WebMailSelectData extends
   private ALFolder folder;
 
   /** 選択されたフォルダ */
-  private EipTMailFolder selectedFolder;
+  private WebMailFolderResultData selectedFolder;
 
   /** メールアカウント一覧 */
   private List<WebmailAccountLiteBean> mailAccountList;
 
   /** メールフォルダ一覧 */
-  private List<EipTMailFolder> mailFolderList;
+  private List<WebMailFolderResultData> mailFolderList;
 
   /**
    * 
@@ -208,11 +208,11 @@ public class WebMailSelectData extends
     EipMMailAccount account = ALMailUtils.getMailAccount(userId, accountId);
 
     // 現在選択中のフォルダを取得
-    selectedFolder =
+    EipTMailFolder mailFolder =
       WebMailUtils.getEipTMailFolder(account, String.valueOf(folderId));
 
     // フォルダが取得できなかったとき、アカウントに紐付いたデフォルトのフォルダIDを取得する
-    if (selectedFolder == null) {
+    if (mailFolder == null) {
       folderId = account.getDefaultFolderId();
 
       // セッションにセット
@@ -220,12 +220,14 @@ public class WebMailSelectData extends
         .valueOf(folderId));
 
       // 再取得
-      selectedFolder =
+      mailFolder =
         WebMailUtils.getEipTMailFolder(account, String.valueOf(folderId));
     }
 
+    selectedFolder = new WebMailFolderResultData(mailFolder);
+
     // フォルダリストを取得
-    mailFolderList = ALMailUtils.getEipTMailFolderAll(account);
+    mailFolderList = WebMailUtils.getMailFolderAll(account);
 
     // 現在選択しているタブが受信トレイか送信トレイか
     if (accountId > 0) {
@@ -449,7 +451,7 @@ public class WebMailSelectData extends
    * 
    * @return
    */
-  public List<EipTMailFolder> getFolderList() {
+  public List<WebMailFolderResultData> getFolderList() {
     return mailFolderList;
   }
 
@@ -493,7 +495,7 @@ public class WebMailSelectData extends
    * 
    * @return
    */
-  public EipTMailFolder getSelectedFolder() {
+  public WebMailFolderResultData getSelectedFolder() {
     return selectedFolder;
   }
 

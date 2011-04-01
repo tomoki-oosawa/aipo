@@ -163,7 +163,7 @@ public class WebMailFolderSelectData extends
 
       WebMailFolderResultData rd = new WebMailFolderResultData();
       rd.initField();
-      rd.setFolderId(record.getFolderId().longValue());
+      rd.setFolderId(record.getFolderId());
       rd.setFolderName(record.getFolderName());
       rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
 

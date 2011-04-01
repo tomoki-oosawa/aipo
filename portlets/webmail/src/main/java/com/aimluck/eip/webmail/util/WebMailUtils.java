@@ -50,6 +50,7 @@ import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.webmail.WebMailFolderResultData;
 import com.aimluck.eip.webmail.WebMailFormData;
 
 /**
@@ -733,5 +734,29 @@ public class WebMailUtils {
   public static void clearWebMailAccountSession(RunData rundata, Context context) {
     ALEipUtils.removeTemp(rundata, context, WebMailUtils.ACCOUNT_ID);
     ALEipUtils.removeTemp(rundata, context, WebMailUtils.FOLDER_ID);
+  }
+
+  /**
+   * フォルダオブジェクトモデルを取得します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static List<WebMailFolderResultData> getMailFolderAll(
+      EipMMailAccount account) {
+
+    List<EipTMailFolder> folderList = ALMailUtils.getEipTMailFolderAll(account);
+
+    // 受信トレイを先頭に配置する
+    List<WebMailFolderResultData> list =
+      new ArrayList<WebMailFolderResultData>();
+
+    for (EipTMailFolder folder : folderList) {
+      WebMailFolderResultData data = new WebMailFolderResultData(folder);
+      list.add(data);
+    }
+
+    return list;
   }
 }

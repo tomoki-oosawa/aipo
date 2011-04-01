@@ -1,7 +1,7 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
- * http://www.aipo.com
+ * Copyright (C) 2004-2010 Aimluck,Inc.
+ * http://aipostyle.com/
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,8 +19,9 @@
 
 package com.aimluck.eip.webmail;
 
-import com.aimluck.commons.field.ALNumberField;
+import com.aimluck.commons.field.ALDateField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.cayenne.om.portlet.EipTMailFolder;
 import com.aimluck.eip.common.ALData;
 
 /**
@@ -30,29 +31,41 @@ import com.aimluck.eip.common.ALData;
 public class WebMailFolderResultData implements ALData {
 
   /** Folder ID */
-  private ALNumberField folder_id;
+  private Integer folder_id;
 
   /** フォルダ名 */
   private ALStringField folder_name;
 
   /** 登録日 */
-  private ALStringField create_date;
+  private ALDateField create_date;
 
   /** 更新日 */
-  private ALStringField update_date;
+  private ALDateField update_date;
 
   /** 編集・削除を許可するか */
   private boolean can_update = true;
+
+  public WebMailFolderResultData() {
+
+  }
+
+  public WebMailFolderResultData(EipTMailFolder folder) {
+    initField();
+    this.folder_id = folder.getFolderId();
+    this.folder_name.setValue(folder.getFolderName());
+    this.create_date.setValue(folder.getCreateDate());
+    this.update_date.setValue(folder.getUpdateDate());
+  }
 
   /**
    * 
    * 
    */
   public void initField() {
-    folder_id = new ALNumberField();
+    folder_id = 0;
     folder_name = new ALStringField();
-    create_date = new ALStringField();
-    update_date = new ALStringField();
+    create_date = new ALDateField();
+    update_date = new ALDateField();
   }
 
   /**
@@ -60,7 +73,7 @@ public class WebMailFolderResultData implements ALData {
    * 
    * @return
    */
-  public ALNumberField getFolderId() {
+  public Integer getFolderId() {
     return folder_id;
   }
 
@@ -78,7 +91,7 @@ public class WebMailFolderResultData implements ALData {
    * 
    * @return
    */
-  public ALStringField getCreateDate() {
+  public ALDateField getCreateDate() {
     return create_date;
   }
 
@@ -87,7 +100,7 @@ public class WebMailFolderResultData implements ALData {
    * 
    * @return
    */
-  public ALStringField getUpdateDate() {
+  public ALDateField getUpdateDate() {
     return update_date;
   }
 
@@ -105,8 +118,8 @@ public class WebMailFolderResultData implements ALData {
    * 
    * @param i
    */
-  public void setFolderId(long i) {
-    folder_id.setValue(i);
+  public void setFolderId(Integer i) {
+    folder_id = i;
   }
 
   /**
