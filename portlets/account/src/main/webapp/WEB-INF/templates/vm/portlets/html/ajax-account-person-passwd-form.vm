@@ -28,7 +28,7 @@
 『${alias}』 へログインするためのパスワードを変更します。
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALajaxscreenformheader("accountuserForm" $jslink $portlet "AccountPersonFormJSONScreen" "aimluck.io.submit(this,'$indicator_id', '$!portlet.ID', aipo.account_person.onChangePasswdReceiveMessage)")
-<input type="hidden" name="mode" value="updatepasswd" />
+<input type="hidden" name="mode" value="update_passwd" />
 #ALtableheaderWide()
 #ALtdcaptionAtt("#ALrequired($!result.getFieldName('new_passwd'))" "style='width:180px;'")
 #ALtditemheader()

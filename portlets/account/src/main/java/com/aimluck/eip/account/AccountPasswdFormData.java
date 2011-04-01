@@ -36,6 +36,8 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -73,6 +75,7 @@ public class AccountPasswdFormData extends ALAbstractFormData {
   /**
    *
    */
+  @Override
   public void initField() {
     // 新しいパスワード
     new_passwd = new ALStringField();
@@ -187,6 +190,13 @@ public class AccountPasswdFormData extends ALAbstractFormData {
       if (currentUser.getUserName().equals(user.getUserName())) {
         currentUser.setPassword(user.getPassword());
       }
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        Integer.valueOf(user.getUserId()),
+        ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
+        null);
+
     } catch (Exception e) {
       logger.error("Exception", e);
       res = false;

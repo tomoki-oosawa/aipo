@@ -34,8 +34,8 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
  */
 public class ALEventlogUtils {
 
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALEventlogUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALEventlogUtils.class.getName());
 
   /**
    * mode を DB に保存するための数値に変換します。
@@ -76,6 +76,9 @@ public class ALEventlogUtils {
       return ALActionEventlogConstants.EVENT_TYPE_PUNCHOUT;
     } else if (ALActionEventlogConstants.EVENT_MODE_XLS_SCREEN.equals(mode)) {
       return ALActionEventlogConstants.EVENT_TYPE_XLS_SCREEN;
+    } else if (ALActionEventlogConstants.EVENT_MODE_UPDATE_PASSWORD
+      .equals(mode)) {
+      return ALActionEventlogConstants.EVENT_TYPE_UPDATE_PASSWORD;
     }
     return ALActionEventlogConstants.EVENT_TYPE_NONE;
   }

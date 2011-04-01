@@ -46,7 +46,7 @@ public class AccountAdminFormJSONScreen extends ALJSONScreen {
     String mode = this.getMode();
     try {
 
-      if (ALEipConstants.MODE_UPDATE.equals(mode)) {
+      if (ALEipConstants.MODE_UPDATE_PASSWD.equals(mode)) {
         AccountPasswdFormData formData = new AccountPasswdFormData();
         formData.initField();
         if (formData.doUpdate(this, rundata, context)) {

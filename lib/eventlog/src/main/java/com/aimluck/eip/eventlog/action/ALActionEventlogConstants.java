@@ -68,6 +68,8 @@ public class ALActionEventlogConstants {
 
   public static final int EVENT_TYPE_XLS_SCREEN = 17;
 
+  public static final int EVENT_TYPE_UPDATE_PASSWORD = 18;
+
   /* EVENT_NUMBER */
   public static final String EVENT_MODE_UPDATE = ALEipConstants.MODE_UPDATE;
 
@@ -105,29 +107,32 @@ public class ALActionEventlogConstants {
 
   public static final String EVENT_MODE_XLS_SCREEN = "xls_screen";
 
+  public static final String EVENT_MODE_UPDATE_PASSWORD =
+    ALEipConstants.MODE_UPDATE_PASSWD;
+
   /**
    * EVENT_ALIAS_NAME
    */
-  public static final String[] EVENT_ALIAS_NAME =
-    {
-      "その他のイベント",
-      "更新",
-      "削除",
-      "削除",
-      "追加",
-      "フォーム",
-      "新規フォーム",
-      "編集フォーム",
-      "一覧",
-      "詳細",
-      "ログイン",
-      "ログアウト",
-      "承認",
-      "差し戻し",
-      "出勤",
-      "退勤",
-      "参加・キャンセル",
-      "Excelファイルとしてダウンロード" };
+  public static final String[] EVENT_ALIAS_NAME = {
+    "その他のイベント",
+    "更新",
+    "削除",
+    "削除",
+    "追加",
+    "フォーム",
+    "新規フォーム",
+    "編集フォーム",
+    "一覧",
+    "詳細",
+    "ログイン",
+    "ログアウト",
+    "承認",
+    "差し戻し",
+    "出勤",
+    "退勤",
+    "参加・キャンセル",
+    "Excelファイルとしてダウンロード",
+    "パスワード変更" };
 
   public static final String PORTLET_TYPE_STR_STR_NONE = "その他の機能";
 

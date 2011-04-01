@@ -49,6 +49,8 @@ public class ALEipConstants {
 
   public static final String MODE_DETAIL = "detail";
 
+  public static final String MODE_UPDATE_PASSWD = "update_passwd";
+
   public static final String PORTLET_ID = "js_peid";
 
   public static final String MESSAGE_LIST = "msgs";
