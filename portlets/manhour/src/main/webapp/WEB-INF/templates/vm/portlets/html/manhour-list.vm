@@ -27,7 +27,7 @@
     aipo.manhour.menuSelected = 0;
 //]]>
 </script>
-#ALcontentheader($!{portletInstanceTitle} $navilist)
+#ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
 #parse("/portlets/html/ja/ajax-manhour-list.vm")
 #ALcontentfooter()
 #parse("/portlets/html/ja/manhour-menu.vm")

@@ -20,7 +20,7 @@
 ## ---------------------------------------------------------------------------
 #set ($navilist = [])
 ## ---------------------------------------------------------------------------
-#ALcontentheader($!{portletInstanceTitle} $navilist)
+#ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
 #ALspacebothheader()
 #if($!isActive)
 <div id="gadget-chrome-${portlet.ID}"></div>

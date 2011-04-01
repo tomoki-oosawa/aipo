@@ -32,7 +32,7 @@
     aipo.schedule.login_aliasname = "$current_user";
 //]]>
 </script>
-#ALcontentheader($!{portletInstanceTitle} $navilist)
+#ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
 #parse("/portlets/html/ja/ajax-schedule-list.vm")
 #ALcontentfooter()
 #parse("/portlets/html/ja/schedule-menu.vm")

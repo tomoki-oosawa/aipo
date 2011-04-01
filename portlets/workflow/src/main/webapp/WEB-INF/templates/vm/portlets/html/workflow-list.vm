@@ -30,7 +30,7 @@
 	
 //]]>
 </script>
-#ALcontentheader($!{portletInstanceTitle} $navilist)
+#ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
 #parse("/portlets/html/ja/ajax-workflow-list.vm")
 #ALcontentfooter()
 #parse("/portlets/html/ja/workflow-menu.vm")

@@ -29,7 +29,7 @@
     aipo.blog.menuSelected = 5;
 //]]>
 </script>
-#ALcontentheader($!{portletInstanceTitle} $navilist)
+#ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
 #parse("/portlets/html/ja/ajax-blog-common-thema-list.vm")
 #ALcontentfooter()
 #parse("/portlets/html/ja/blog-menu.vm")
