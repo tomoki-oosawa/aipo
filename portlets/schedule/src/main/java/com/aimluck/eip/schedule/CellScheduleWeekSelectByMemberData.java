@@ -339,8 +339,6 @@ public class CellScheduleWeekSelectByMemberData extends
   protected Object getResultData(List<EipTScheduleMap> scheduleDayList)
       throws ALPageNotFoundException, ALDBErrorException {
 
-    int userid = (int) targerUser.getUserId().getValue();
-
     ArrayList<CellScheduleResultData> resultList =
       new ArrayList<CellScheduleResultData>();
     // ArrayList scheduleDayList = new ArrayList();

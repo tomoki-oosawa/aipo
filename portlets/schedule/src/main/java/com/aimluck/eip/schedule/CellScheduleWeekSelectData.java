@@ -119,27 +119,6 @@ public class CellScheduleWeekSelectData extends
       rd.initField();
       map = scheduleDayList.get(k);
 
-      // is_member check (this schedule have member except myself)
-      SelectQuery<EipTScheduleMap> mapquery =
-        Database.query(EipTScheduleMap.class);
-      Expression expm1 =
-        ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, map
-          .getScheduleId());
-      Expression expm2 =
-        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
-          .valueOf(userid));
-      Expression expm3 =
-        ExpressionFactory.matchExp(
-          EipTScheduleMap.TYPE_PROPERTY,
-          ScheduleUtils.SCHEDULEMAP_TYPE_USER);
-      Expression expm4 =
-        ExpressionFactory.noMatchExp(EipTScheduleMap.STATUS_PROPERTY, "R");
-
-      mapquery.setQualifier(expm1.andExp(expm2).andExp(expm3).andExp(expm4));
-
-      int count = mapquery.getCount();
-      boolean is_member = (count > 0) ? true : false;
-
       rd.setScheduleId(map.getScheduleId());
       rd.setName(map.getEipTSchedule().getName());
       rd.setStartDate(map.getEipTSchedule().getStartDate());
@@ -147,20 +126,14 @@ public class CellScheduleWeekSelectData extends
       rd.setPublic(map.getEipTSchedule().getPublicFlag().equals("O"));
       rd.setRepeat(map.getEipTSchedule().getRepeatPattern().equals("S"));
       rd.setPattern(map.getEipTSchedule().getRepeatPattern());
-      rd.setMember(is_member);
+      rd.setMember(true);
       // // 期間スケジュールの場合
       if (rd.getPattern().equals("S")) {
         rd.setSpan(true);
       }
 
-      boolean publicable = map.getEipTSchedule().getPublicFlag().equals("O");
-      if (!publicable && !is_member) {
-        rd.setName("非公開");
-      }
-      boolean hidden = map.getEipTSchedule().getPublicFlag().equals("P");
-      if (!hidden || is_member) {
-        resultList.add(rd);
-      }
+      resultList.add(rd);
+
     }
     return resultList;
   }
