@@ -54,15 +54,6 @@
         <parameter name="p1c-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1c-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         
-        <parameter name="p2a-email" value="true" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
-            <meta-info>
-                <title>コメント時のメール通知</title>
-            </meta-info>
-        </parameter>
-        <parameter name="p2a-email.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2a-email.style.items" value="true,false" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2a-email.style.values" value="有効,無効" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        
         <parameter name="action" value="blog.BlogAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_mode1" value="BlogEntryFormScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_image1" value="icon/icon_add.gif" hidden="true" cachedOnName="true" cachedOnValue="true"/>
