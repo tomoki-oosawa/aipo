@@ -42,7 +42,7 @@
 #ALtdcaption('機能')
 #ALtditemheader()
 #set($screenlink = "$jslink.getPortletById($!portlet.ID).addPathInfo('template','PortletFeatureLiteJSONScreen')")
-<select name="feature_id" id="feature_id" onchange="aipo.accessctl.changeAcls('$!portlet.ID', '$screenlink', this.options[this.selectedIndex].value)">
+<select style="width: 90%;" name="feature_id" id="feature_id" onchange="aipo.accessctl.changeAcls('$!portlet.ID', '$screenlink', this.options[this.selectedIndex].value)">
 #foreach( $record in $result.PortletFeatureList )
 #if ($mode=="new_form")
     <option value="$!record.FeatureId"  selected="selected" >$!record.FeatureAliasName</option>
