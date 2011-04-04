@@ -1626,7 +1626,7 @@ div.weeklyScrollPane {
 	position:relative;
 	overflow:scroll;
 	overflow-x:hidden;
-	border-bottom:solid #C9C9C9 1px;
+	border-bottom:solid #FF9900 1px;
 }
 * html .scroll_width {
 	width:18px;
@@ -1636,19 +1636,19 @@ div.weeklyScrollPane {
 }
 div.weeklyHeadLeft {
 	width:50px;
-	border:solid #C9C9C9;
+	border:solid #FF9900;
 	border-width:0 0 0 1px;
 	float:left;
 }
 div.weeklyHeadLeft div.weeklyHeadLeftTop {
 	width:100%;
 	height:17px;
-	background:#EEE url(../images/common/bg_slash.gif) repeat left top;
+	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
 }
 div.weeklyHeadLeft div.weeklyHeadLeftBottom {
 	width:100%;
 	height:17px;
-	background:#EEE url(../images/common/bg_slash.gif) repeat left top;
+	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
 }
 div.weeklyHeadRights {
 	position:relative;
@@ -1660,8 +1660,8 @@ div.weeklyHeadRights div.weeklyHeadRight {
 	position:absolute;
 	width:14.2857%;
 	text-align:center;
-	background:#EEE url(../images/common/bg_slash.gif) repeat left top;
-	border:solid #C9C9C9;
+	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
+	border:solid #FF9900;
 	border-width:0 0 0 1px;
 	overflow:hidden;
 }
@@ -1669,8 +1669,8 @@ div.weeklyHeadRights div.weeklyHeadRightR {
 	position:absolute;
 	width:14.2857%;
 	text-align:center;
-	background:#EEE url(../images/common/bg_slash.gif) repeat left top;
-	border:solid #C9C9C9;
+	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
+	border:solid #FF9900;
 	border-width:0 1px 0 1px;
 	overflow:hidden;
 }
@@ -1682,19 +1682,19 @@ div.weeklyHeadRights div.weeklyHeadRight div.weeklyHeadRightBottom, div.weeklyHe
 }
 div.weeklyTermLeft {
 	width:50px;
-	border:solid #C9C9C9;
+	border:solid #FF9900;
 	border-width:0 0 0 1px;
 	float:left;
 }
 div.weeklyTermLeft div.weeklyTermLeftTop {
 	width:100%;
 	height:18px;
-	background:#EEE url(../images/common/bg_slash.gif) repeat left top;
+	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
 }
 div.weeklyTermLeft div.weeklyTermLeftBottom {
 	width:100%;
 	height:18px;
-	background:#EEE url(../images/common/bg_slash.gif) repeat left top;
+	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
 }
 div.weeklyTermRights {
 	position:relative;
@@ -1703,13 +1703,13 @@ div.weeklyTermRights {
 	float:left;
 }
 div.weeklyTermRights div.weeklyTermRightL {
-	border-left:solid #C9C9C9!important;
+	border-left:solid #FF9900!important;
 	border-width:1px 0 0 1px!important;
 }
 div.weeklyTermRights div.weeklyTermRight {
 	position:absolute;
 	width:14.2857%;
-	border:solid #C9C9C9;
+	border:solid #FF9900;
 	border-left:solid #C9C9C9;
 	border-width:1px 0 0 1px;
 }
@@ -1727,20 +1727,20 @@ div.weeklyTermRights div.weeklyTermRight div.weeklyTermRightBottom, div.weeklyTe
 div.weeklyTermTail {
 	width:18px;
 	height:17px;
-	background:#EEE url(../images/common/bg_slash.gif) repeat left top;
+	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
 }
 div.weeklyLeft {
 	width:50px;
-	border-top:solid #C9C9C9;
-	border-left:solid #C9C9C9;
+	border-top:solid #FF9900;
+	border-left:solid #FF9900;
 	border-width:1px 0 0 1px;
 	float:left;
 }
 div.weeklyLeft div.leftMinute {
 	height:17px;
-	border:solid #EEE;
+	border:solid transparent;
 	border-width:0 0 1px 0;
-	background:#EEE url(../images/common/bg_slash.gif) repeat left top;
+	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
 	padding:0 3px 0 0;
 	text-align:right;
 	color:#be6d00;
@@ -1750,7 +1750,7 @@ div.weeklyLeft div.leftMinuteBottom {
 	height:17px;
 	border:solid #C9C9C9;
 	border-width:0 0 1px 0;
-	background:#EEE url(../images/common/bg_slash.gif) repeat left top;
+	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
 	font-size:1px;
 	line-height:1;
 }
@@ -1914,21 +1914,21 @@ div.termScheduleDivTgt {
 }
 table.weeklyTableHead {
 	margin-top:5px;
-	border-top:solid 1px #C9C9C9;
-	border-right:solid 1px #C9C9C9;
+	border-top:solid 1px #FF9900;
+	border-right:solid 1px #FF9900;
 }
 div.weeklyBorder {
 	width:100%;
 	height:2px;
-	border-right:solid #C9C9C9 1px;
-	background-color:#C9C9C9;
+	border-right:solid #FF9900 1px;
+	background-color:#FF9900;
 	font-size:1px;
 	line-height:1px;
 }
 div.weeklySpan {
 	width:18px;
 	height:17px;
-	background:#EEE url(../images/common/bg_slash.gif) repeat left top;
+	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
 }
 div.tableBorder {
 	background-color:#f90;
@@ -1938,7 +1938,7 @@ div.tableBorder {
 	line-height:1px;
 }
 div.tableBorderM {
-	background-color:#C9C9C9;
+	background-color:#FF9900;
 	width:100%;
 	height:2px;
 	font-size:1px;
@@ -2463,7 +2463,7 @@ div.userBlock {
 	margin-bottom:4px;
 	margin-left:2px;
 	text-align:center;
-	border:1px solid #C9C9C9;
+	border:1px solid #FF9900;
 }
 div.userPhoto {
 	width:94px;
@@ -2474,7 +2474,7 @@ div.userPhoto {
 	padding-left:3px;
 }
 div.userInfo {
-	border-top:1px solid #C9C9C9;
+	border-top:1px solid #FF9900;
 }
 .menuBarIconAdd {
 	background:url(../images/icon/icon_add.gif) no-repeat;
@@ -2595,7 +2595,7 @@ background-image:none !important;
 }
 
 .menubar ul li a{
-width:150px;
+width:30px;
 display:block;
 padding:5px !important;
 color:#313131 !important;
