@@ -194,6 +194,15 @@ public class ALCustomizeAction extends VelocityPortletAction {
       List<List<Map.Entry<String, String>>> enumsList =
         new ArrayList<List<Map.Entry<String, String>>>();
       List<ALUserPref> userPrefs = app.getUserPrefs();
+      Collections.sort(userPrefs, new Comparator<ALUserPref>() {
+        @Override
+        public int compare(ALUserPref a, ALUserPref b) {
+          ALUserPref p1 = a;
+          ALUserPref p2 = b;
+          return (p1.getName()).compareTo(p2.getName());
+
+        }
+      });
       for (ALUserPref userPref : userPrefs) {
         String name = "pref-" + userPref.getName();
         Parameter clone = new BaseParameter();
@@ -238,18 +247,19 @@ public class ALCustomizeAction extends VelocityPortletAction {
         }
       }
       context.put("enums", enumsList);
-    }
-    // 理由等 ：XREG からパラメータを読み込む際に順不同になっていた
-    // 対処方法：パラメータ名でソートするように変更した。
-    Collections.sort(params, new Comparator<Parameter>() {
-      @Override
-      public int compare(Parameter a, Parameter b) {
-        Parameter p1 = a;
-        Parameter p2 = b;
-        return (p1.getName()).compareTo(p2.getName());
+    } else {
+      // 理由等 ：XREG からパラメータを読み込む際に順不同になっていた
+      // 対処方法：パラメータ名でソートするように変更した。
+      Collections.sort(params, new Comparator<Parameter>() {
+        @Override
+        public int compare(Parameter a, Parameter b) {
+          Parameter p1 = a;
+          Parameter p2 = b;
+          return (p1.getName()).compareTo(p2.getName());
 
-      }
-    });
+        }
+      });
+    }
 
     // get the customization state for this page
     SessionState customizationState =
