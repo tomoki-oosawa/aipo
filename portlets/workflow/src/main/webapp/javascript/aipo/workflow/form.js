@@ -60,8 +60,8 @@ aipo.workflow.onChangeSelecter = function(portletId , url , values, named , flgN
 }
 
 aipo.workflow.setTemplate = function(array,rtnData){
-
-        var jsonData = eval( '('+rtnData["type"].toString().slice(4,-4)+')' );
+	
+        var jsonData = aipo.workflow.getJsonDataOne(rtnData);
         var routeH = jsonData.route_h;
         var route = jsonData.route;
 
@@ -118,7 +118,7 @@ aipo.workflow.categoryOnChangeSelecter = function(portletId , url , values, name
 
 aipo.workflow.categorySetTemplate = function(array,rtnData){
 
-        var jsonData = eval( '('+rtnData["type"].toString().slice(4,-4)+')' );
+        var jsonData = aipo.workflow.getJsonDataOne(rtnData);
         var template = jsonData.template;
         var routeId = jsonData.route_id.toString();
         var routeH = jsonData.route_h;
@@ -264,5 +264,20 @@ aipo.workflow.formRouteSelectOff = function(form) {
     dojo.byId('workflowRouteInputField').style.display = "";
 
     form.is_saved_route.value = 'FALSE';
+}
+
+aipo.workflow.getJsonDataOne = function(rtnData) {
+	
+	var cStartIdx = rtnData["type"].indexOf("\/*");
+    var cEndIdx = rtnData["type"].lastIndexOf("*\/");
+    var rawData = dojo.eval(rtnData["type"].substring(cStartIdx+2, cEndIdx));
+        
+    var jsonData = "";
+        
+    if(dojo.isArray(rawData) && rawData.length > 0) {
+        jsonData = rawData[0];
+    }
+	
+	return jsonData;
 }
 

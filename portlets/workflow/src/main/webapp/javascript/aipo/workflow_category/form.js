@@ -54,11 +54,21 @@ aipo.workflow_category.onChangeSelecter = function(portletId , url , values, nam
 }
 
 aipo.workflow_category.setTemplate = function(array,rtnData){
+	
+	var cStartIdx = rtnData["type"].indexOf("\/*");
+    var cEndIdx = rtnData["type"].lastIndexOf("*\/");
+    var rawData = dojo.eval(rtnData["type"].substring(cStartIdx+2, cEndIdx));
+        
+    var jsonData = "";
+        
+    if(dojo.isArray(rawData) && rawData.length > 0) {
+        jsonData = rawData[0];
+    }
 
-    if ( rtnData["type"].toString().slice(3,-3)) {
+    if ( jsonData != "") {
         dojo.byId(array["named"]).style.display = "";
     } else {
         dojo.byId(array["named"]).style.display = "none";
     }
-    dojo.byId(array["named"]).value = rtnData["type"].toString().slice(3,-3);
+    dojo.byId(array["named"]).value = jsonData;
 }

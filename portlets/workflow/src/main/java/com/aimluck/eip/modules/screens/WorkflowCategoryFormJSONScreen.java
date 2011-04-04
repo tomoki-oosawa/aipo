@@ -19,6 +19,9 @@
 
 package com.aimluck.eip.modules.screens;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.sf.json.JSONArray;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -101,7 +104,10 @@ public class WorkflowCategoryFormJSONScreen extends ALJSONScreen {
         WorkflowCategoryFormData formData = new WorkflowCategoryFormData();
         formData.initField();
         formData.loadRouteList(rundata, context);
-        result = formData.routeTemplate(value);
+        List<String> list = new ArrayList<String>();
+        list.add(formData.routeTemplate(value));
+        JSONArray json = JSONArray.fromObject(list);
+        result = json.toString();
       }
     } catch (Exception e) {
       logger.error("[WorkflowCategoryFormDataJSONScreen]", e);
