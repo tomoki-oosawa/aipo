@@ -22,7 +22,7 @@
 
 #if($!isActive)
 <a href='javascript:aipo.container.setCountry("JP");aipo.container.setLanguage("ja");aipo.container.setView("popup");aipo.container.setNoCache("${nocache}");aipo.container.renderGadgetFromContext(${assignData});' id="gadgets-popup-action"></a>
-<div id="gadget-chrome-${portletId}-popup"></div>
+<div id="gadget-chrome-${portletId}-popup"><div style="height:300px"></div></div>
 #else
 このアプリケーションは現在利用できません。
 #end
