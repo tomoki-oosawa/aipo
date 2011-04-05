@@ -20,10 +20,12 @@
 package com.aimluck.eip.modules.screens;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import net.sf.json.JSONObject;
 
+import org.apache.jetspeed.portal.Portlet;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -73,16 +75,41 @@ public class GadgetsPopupScreen extends ALVelocityScreen {
         .append(user.getName().getValue())
         .toString();
 
+    Long moduleId = rundata.getParameters().getLong("mid");
+    Map<String, Object> maps = new HashMap<String, Object>();
+    if (moduleId != null) {
+      Portlet portlet =
+        ALEipUtils.getPortlet(rundata, String.valueOf(moduleId));
+      if (portlet != null) {
+        @SuppressWarnings("unchecked")
+        Iterator<String> names =
+          portlet.getPortletConfig().getInitParameterNames();
+        while (names.hasNext()) {
+          String next = names.next();
+          if (next != null && next.startsWith("pref-")) {
+            String value = portlet.getPortletConfig().getInitParameter(next);
+            String key = next.substring(5);
+            Map<String, String> maps2 = new HashMap<String, String>();
+            maps2.put("value", value);
+            maps.put(key, maps2);
+          }
+        }
+      } else {
+        moduleId = 0l;
+      }
+    } else {
+      moduleId = 0l;
+    }
+
     ALGadgetContext gadgetContext =
-      new ALGadgetContext(rundata, viewer, appId, url, 0);
+      new ALGadgetContext(rundata, viewer, appId, url, moduleId);
 
     context.put("gadgetContext", gadgetContext);
     context.put("isActive", isActive);
 
-    Map<String, Object> maps = new HashMap<String, Object>();
-
-    // FIXME: 負の場合の挙動
-    String id = String.valueOf(System.nanoTime());
+    String id =
+      moduleId == 0 ? String.valueOf(System.nanoTime()) : String
+        .valueOf(moduleId);
     context.put("portletId", id);
     JSONObject jsonObject = new JSONObject();
     jsonObject.put("portletId", id);

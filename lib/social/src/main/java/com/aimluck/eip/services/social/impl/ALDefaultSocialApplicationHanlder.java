@@ -473,6 +473,7 @@ public class ALDefaultSocialApplicationHanlder extends
       activity.setExternalId(model.getExternalId());
       activity.setPortletParams(model.getPortletParams());
       activity.setIcon(model.getIcon());
+      activity.setModuleId(model.getModuleId());
       try {
         ALEipUser user = ALEipUtils.getALEipUser(model.getLoginName());
         activity.setDisplayName(user.getAliasName().getValue());

@@ -159,9 +159,11 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
               p.addParameter(p2);
               Parameter p3 = new PsmlParameter();
               p3.setName("mid");
-              p3.setValue(String
-                .valueOf(ALApplicationService.getNextModuleId()));
+              String moduleId =
+                String.valueOf(ALApplicationService.getNextModuleId());
+              p3.setValue(moduleId);
               p.addParameter(p3);
+              p.setId(moduleId);
             }
             portlets.addEntry(p);
           }

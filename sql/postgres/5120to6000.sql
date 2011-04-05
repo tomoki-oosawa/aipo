@@ -468,6 +468,7 @@ CREATE TABLE activity (
     ICON varchar(255) NULL,
     ID integer NOT NULL,
     LOGIN_NAME varchar(32) NOT NULL,
+    MODULE_ID integer NOT NULL,
     PORTLET_PARAMS varchar(99) NULL,
     PRIORITY float NULL,
     TITLE varchar(99) NOT NULL,

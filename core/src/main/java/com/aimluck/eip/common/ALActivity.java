@@ -25,6 +25,7 @@ import java.net.URLEncoder;
 import java.util.Date;
 
 import com.aimluck.commons.field.ALDateTimeField;
+import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.util.ALCommonUtils;
 
@@ -53,6 +54,8 @@ public class ALActivity implements ALData, Serializable {
 
   private ALStringField icon;
 
+  private ALNumberField moduleId;
+
   private boolean isRead;
 
   public ALActivity() {
@@ -73,6 +76,7 @@ public class ALActivity implements ALData, Serializable {
     updateDate = new ALDateTimeField("M月d日");
     updateDateTime = new ALDateTimeField("H:mm");
     icon = new ALStringField();
+    moduleId = new ALNumberField();
     isRead = true;
   }
 
@@ -157,9 +161,22 @@ public class ALActivity implements ALData, Serializable {
     return ALCommonUtils.replaceToAutoCR(title.toString());
   }
 
+  public void setModuleId(Integer moduleId) {
+    this.moduleId.setValue(moduleId);
+  }
+
+  /**
+   * @return moduleId
+   */
+  public ALNumberField getModuleId() {
+    return moduleId;
+  }
+
   public String getPopupUrl() {
     String portletParams = this.portletParams.getValue();
     String externalId = this.externalId.getValue();
+    Long moduleId = this.moduleId.getValue();
+
     if (portletParams != null && portletParams.length() > 0) {
       StringBuilder b = new StringBuilder(portletParams);
       if (portletParams.indexOf("?") > -1) {
@@ -177,6 +194,9 @@ public class ALActivity implements ALData, Serializable {
             .append(id);
         if (externalId != null && externalId.length() > 0) {
           b.append("&eid=").append(URLEncoder.encode(externalId, "utf-8"));
+        }
+        if (moduleId != null) {
+          b.append("&mid=").append(moduleId);
         }
         return b.toString();
       } catch (UnsupportedEncodingException e) {

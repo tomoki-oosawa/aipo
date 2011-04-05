@@ -96,7 +96,7 @@ aipo.IfrGadgetService.inherits(shindig.IfrGadgetService);
 
 aipo.IfrGadgetService.prototype.setUserPref = function(editToken, name,
 	    value) {
-	var portletId = this.f.replace("remote_iframe_","").split("_NN_")[0];
+	var portletId = this.f.replace("remote_iframe_","").split("_NN_")[0].replace("-popup","");
 	var request = {};
 	for (var i = 1, j = arguments.length; i < j; i += 2) {
 		request[arguments[i]] = arguments[i+1];
@@ -107,7 +107,6 @@ aipo.IfrGadgetService.prototype.setUserPref = function(editToken, name,
 			"METHOD" : "POST",
 			"POST_DATA" : gadgets.json.stringify(request)
 	};
-
 	var url = "?template=UserPrefUpdateJSONScreen&js_peid=" + encodeURIComponent(portletId);
 
 	gadgets.io.makeNonProxiedRequest(url,
@@ -129,7 +128,7 @@ aipo.IfrGadgetService.prototype.setTitle = function(title) {
 };
 
 aipo.IfrGadgetService.prototype.requestNavigateTo = function(view, opt_params) {
-	var portletId = this.f.replace("remote_iframe_","").split("_NN_")[0];
+	var portletId = this.f.replace("remote_iframe_","").split("_NN_")[0].replace("-popup","");
 	var url = "?js_peid=" + encodeURIComponent(portletId);
 	if(view == "canvas") {
 		url += '&action=controls.Maximize';
@@ -232,7 +231,14 @@ aipo.IfrContainer.prototype.renderGadgetFromContext = function(context) {
 	var gadget = this.createGadget(context);
 	gadget.setServerBase(context.serverBase);
 	gadget.id = this.getNextGadgetInstanceId();
-	this.renderGadget(gadget);
+	gadget.portletId += '-popup';
+    var chromeId = 'gadget-chrome-' + gadget.portletId;
+	var chrome = chromeId ? document.getElementById(chromeId) : null;
+	if(!gadget.count) {
+		gadget.count = 0;
+	}
+	gadget.count++;
+	gadget.render(chrome);
 };
 
 shindig.BaseIfrGadget.prototype.getIframeId = function() {
