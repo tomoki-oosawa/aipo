@@ -1428,40 +1428,40 @@ CREATE SEQUENCE pk_eip_m_facility INCREMENT 20;
 SELECT setval('pk_eip_m_facility',(SELECT max(facility_id) FROM eip_m_facility));
 
 CREATE SEQUENCE pk_eip_m_mail_account INCREMENT 20;
-SELECT setval('eip_m_mail_account_account_id_seq',(SELECT max(account_id) FROM eip_m_mail_account));
+SELECT setval('pk_eip_m_mail_account',(SELECT max(account_id) FROM eip_m_mail_account));
 
 CREATE SEQUENCE pk_eip_m_mail_notify_conf INCREMENT 20;
-SELECT setval('eip_m_mail_notify_conf_notify_id_seq',(SELECT max(notify_id) FROM eip_m_mail_notify_conf));
+SELECT setval('pk_eip_m_mail_notify_conf',(SELECT max(notify_id) FROM eip_m_mail_notify_conf));
 
 CREATE SEQUENCE pk_eip_m_mybox INCREMENT 20;
-SELECT setval('eip_m_mybox_mybox_id_seq',(SELECT max(mybox_id) FROM eip_m_mybox));
+SELECT setval('pk_eip_m_mybox',(SELECT max(mybox_id) FROM eip_m_mybox));
 
 CREATE SEQUENCE pk_eip_m_position INCREMENT 20;
-SELECT setval('eip_m_position_position_id_seq',(SELECT max(position_id) FROM eip_m_position));
+SELECT setval('pk_eip_m_position',(SELECT max(position_id) FROM eip_m_position));
 
 CREATE SEQUENCE pk_eip_m_post INCREMENT 20;
-SELECT setval('eip_m_post_post_id_seq',(SELECT max(post_id) FROM eip_m_post));
+SELECT setval('pk_eip_m_post',(SELECT max(post_id) FROM eip_m_post));
 
 CREATE SEQUENCE pk_eip_m_user_position INCREMENT 20;
-SELECT setval('eip_m_user_position_id_seq',(SELECT max(id) FROM eip_m_user_position));
+SELECT setval('pk_eip_m_user_position',(SELECT max(id) FROM eip_m_user_position));
 
 CREATE SEQUENCE pk_eip_t_acl_portlet_feature INCREMENT 20;
-SELECT setval('eip_t_acl_portlet_feature_feature_id_seq',(SELECT max(feature_id) FROM eip_t_acl_portlet_feature));
+SELECT setval('pk_eip_t_acl_portlet_feature',(SELECT max(feature_id) FROM eip_t_acl_portlet_feature));
 
 CREATE SEQUENCE pk_eip_t_acl_role INCREMENT 20;
-SELECT setval('eip_t_acl_role_role_id_seq',(SELECT max(role_id) FROM eip_t_acl_role));
+SELECT setval('pk_eip_t_acl_role',(SELECT max(role_id) FROM eip_t_acl_role));
 
 CREATE SEQUENCE pk_eip_t_acl_user_role_map INCREMENT 20;
-SELECT setval('eip_t_acl_user_role_map_id_seq',(SELECT max(id) FROM eip_t_acl_user_role_map));
+SELECT setval('pk_eip_t_acl_user_role_map',(SELECT max(id) FROM eip_t_acl_user_role_map));
 
 CREATE SEQUENCE pk_eip_t_addressbook_group_map INCREMENT 20;
-SELECT setval('eip_t_addressbook_group_map_id_seq',(SELECT max(id) FROM eip_t_addressbook_group_map));
+SELECT setval('pk_eip_t_addressbook_group_map',(SELECT max(id) FROM eip_t_addressbook_group_map));
 
 CREATE SEQUENCE pk_eip_t_blog INCREMENT 20;
-SELECT setval('eip_t_blog_blog_id_seq',(SELECT max(blog_id) FROM eip_t_blog));
+SELECT setval('pk_eip_t_blog',(SELECT max(blog_id) FROM eip_t_blog));
 
 CREATE SEQUENCE pk_eip_t_blog_comment INCREMENT 20;
-SELECT setval('eip_t_blog_comment_comment_id_seq',(SELECT max(comment_id) FROM eip_t_blog_comment));
+SELECT setval('pk_eip_t_blog_comment',(SELECT max(comment_id) FROM eip_t_blog_comment));
 
 CREATE SEQUENCE pk_eip_t_blog_entry INCREMENT 20;
 SELECT setval('pk_eip_t_blog_entry',(SELECT max(entry_id) FROM eip_t_blog_entry));
@@ -1485,7 +1485,7 @@ CREATE SEQUENCE pk_eip_t_cabinet_folder_map INCREMENT 20;
 SELECT setval('pk_eip_t_cabinet_folder_map',(SELECT max(id) FROM eip_t_cabinet_folder_map));
 
 CREATE SEQUENCE pk_eip_t_common_category INCREMENT 20;
-SELECT setval('eip_t_common_category_common_category_id_seq',(SELECT max(common_category_id) FROM eip_t_common_category));
+SELECT setval('pk_eip_t_common_category',(SELECT max(common_category_id) FROM eip_t_common_category));
 
 CREATE SEQUENCE pk_eip_t_eventlog INCREMENT 20;
 SELECT setval('pk_eip_t_eventlog',(SELECT max(eventlog_id) FROM eip_t_eventlog));
@@ -1725,6 +1725,7 @@ CREATE TABLE activity (
     ICON varchar(255) NULL,
     ID integer NOT NULL,
     LOGIN_NAME varchar(32) NOT NULL,
+    MODULE_ID integer NOT NULL,
     PORTLET_PARAMS varchar(99) NULL,
     PRIORITY float NULL,
     TITLE varchar(99) NOT NULL,
