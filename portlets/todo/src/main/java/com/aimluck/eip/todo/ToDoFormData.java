@@ -528,7 +528,7 @@ public class ToDoFormData extends ALAbstractFormData {
       return false;
     } catch (Exception ex) {
       logger.error("Exception", ex);
-      msgList.add(ex.getMessage());
+      msgList.add("エラーが発生しました。");
       return false;
     }
     return true;
