@@ -942,7 +942,10 @@ public class ALEipUtils {
               new StringBuffer().append("/* ").append(json.toString()).append(
                 " */");
 
-            out.print(result.toString());
+            byte[] byteResult =
+              result.toString().getBytes(ALEipConstants.DEF_CONTENT_ENCODING);
+
+            out.write(byteResult);
             out.flush();
             out.close();
           } catch (Exception e) {

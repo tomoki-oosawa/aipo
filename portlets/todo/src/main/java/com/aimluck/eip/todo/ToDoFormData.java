@@ -137,6 +137,7 @@ public class ToDoFormData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
     // ToDo名
     todo_name = new ALStringField();
@@ -425,7 +426,8 @@ public class ToDoFormData extends ALAbstractFormData {
     try {
       if (is_new_category) {
         // カテゴリの登録処理
-        if (!insertCategoryData(rundata, context)) {
+        if (!insertCategoryData(rundata, context, msgList)) {
+          return false;
         }
       } else {
         category =
@@ -499,7 +501,8 @@ public class ToDoFormData extends ALAbstractFormData {
    * @param msgList
    * @return
    */
-  private boolean insertCategoryData(RunData rundata, Context context) {
+  private boolean insertCategoryData(RunData rundata, Context context,
+      List<String> msgList) {
     try {
 
       setAclPortletFeature(ALAccessControlConstants.POERTLET_FEATURE_TODO_CATEGORY_SELF);
@@ -521,10 +524,11 @@ public class ToDoFormData extends ALAbstractFormData {
       // 更新日
       category.setUpdateDate(Calendar.getInstance().getTime());
     } catch (ALPermissionException e) {
-      ALEipUtils.redirectPermissionError(rundata);
+      msgList.add(ALAccessControlConstants.DEF_PERMISSION_ERROR_STR);
       return false;
     } catch (Exception ex) {
       logger.error("Exception", ex);
+      msgList.add(ex.getMessage());
       return false;
     }
     return true;
@@ -550,7 +554,8 @@ public class ToDoFormData extends ALAbstractFormData {
 
       if (is_new_category) {
         // カテゴリの登録処理
-        if (!insertCategoryData(rundata, context)) {
+        if (!insertCategoryData(rundata, context, msgList)) {
+          return false;
         }
       } else {
         category =
