@@ -690,6 +690,8 @@ public class ALDefaultSocialApplicationHanlder extends
       activity.setLoginName(request.getLoginName());
       activity.setBody(request.getBody());
       activity.setExternalId(request.getExternalId());
+      activity.setModuleId(0);
+
       // priority は 0 <= 1 の間
       Float priority = request.getPriority();
       if (priority == null) {
