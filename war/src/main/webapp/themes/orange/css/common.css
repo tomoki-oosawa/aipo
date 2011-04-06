@@ -1738,10 +1738,9 @@ div.weeklyLeft {
 }
 div.weeklyLeft div.leftMinute {
 	height:17px;
-	border:solid transparent;
-	border-width:0 0 1px 0;
+	border:none;
 	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
-	padding:0 3px 0 0;
+	padding:0 3px 1px 0;
 	text-align:right;
 	color:#be6d00;
 	line-height:1;
@@ -1802,6 +1801,7 @@ div.scheduleDivFirstLine {
 	margin:0;
 	white-space:nowrap;
 	border:solid #c33;
+
 	border-width:1px;
 }
 div.scheduleDivFirstLine span.scheduleDivTime, div.scheduleDivFirstLine span.scheduleDivSepalater {
