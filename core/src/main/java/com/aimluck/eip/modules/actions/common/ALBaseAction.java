@@ -191,6 +191,12 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
       context.put("portletInstanceTitle", portletInstance.getTitle());
     }
 
+    String redirectTemplate =
+      (String) rundata.getRequest().getAttribute("redirectTemplate");
+    if (redirectTemplate != null && redirectTemplate.length() > 0) {
+      setTemplate(rundata, redirectTemplate);
+    }
+
     putData(rundata, context);
   }
 }

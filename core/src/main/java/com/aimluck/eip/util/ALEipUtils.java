@@ -1038,14 +1038,22 @@ public class ALEipUtils {
 
       }
 
+      /*-
       try {
         Restore restore = new Restore();
         restore.doPerform(rundata);
       } catch (Exception e) {
       }
+       */
 
       JetspeedRunData jdata = (JetspeedRunData) rundata;
       if (jdata.getMode() == JetspeedRunData.MAXIMIZE) {
+
+        rundata.getRequest().setAttribute(
+          "redirectTemplate",
+          "permission-error-maximize");
+
+        /*-
         duri
           .addPathInfo(JetspeedResources.PATH_TEMPLATE_KEY, "PermissionError");
         rundata.setRedirectURI(duri.toString());
@@ -1053,6 +1061,7 @@ public class ALEipUtils {
         JetspeedLinkFactory.putInstance(jsLink);
 
         jsLink = null;
+         */
       } else {
         Context context =
           (Context) jdata.getTemplateInfo().getTemplateContext(
