@@ -205,6 +205,7 @@ public abstract class ALSocialApplicationHandler {
       context.put("language", "ja");
       context.put("view", "home");
       context.put("container", "default");
+      context.put("nocache", 1);
       if (isDetail) {
         context.put("withDescription", "1");
         context.put("withOAuthService", "1");
