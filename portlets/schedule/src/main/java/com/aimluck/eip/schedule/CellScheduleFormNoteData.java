@@ -623,6 +623,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
             schedule,
             form_data.getMemberList(),
             destMember.getUserId()));
+          messageList.add(message);
         }
 
         ALMailService.sendAdminMail(new ALAdminMailContext(org_id, ALEipUtils
