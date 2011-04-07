@@ -399,7 +399,8 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
     try {
       if (is_new_category) {
         // カテゴリの登録処理
-        if (!insertCategoryData(rundata, context)) {
+        if (!insertCategoryData(rundata, context, msgList)) {
+          return false;
         }
       } else {
         category =
@@ -501,7 +502,8 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
    * @param msgList
    * @return
    */
-  private boolean insertCategoryData(RunData rundata, Context context) {
+  private boolean insertCategoryData(RunData rundata, Context context,
+      List<String> msgList) {
     try {
 
       setAclPortletFeature(ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY);
@@ -547,11 +549,12 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
         category.getCategoryName());
 
     } catch (ALPermissionException e) {
-      ALEipUtils.redirectPermissionError(rundata);
+      msgList.add(ALAccessControlConstants.DEF_PERMISSION_ERROR_STR);
       return false;
     } catch (Exception ex) {
       Database.rollback();
       logger.error("Exception", ex);
+      msgList.add("エラーが発生しました。");
       return false;
     }
     return true;
@@ -571,8 +574,8 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
     try {
       if (is_new_category) {
         // カテゴリの登録処理
-        if (!insertCategoryData(rundata, context)) {
-
+        if (!insertCategoryData(rundata, context, msgList)) {
+          return false;
         }
       } else {
         category =
