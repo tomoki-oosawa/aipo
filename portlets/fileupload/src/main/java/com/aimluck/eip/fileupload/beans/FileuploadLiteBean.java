@@ -45,6 +45,7 @@ public class FileuploadLiteBean implements ALData, Cloneable {
    * 
    * 
    */
+  @Override
   public void initField() {
     folder_name = new ALStringField();
     file_id = new ALNumberField();
@@ -105,6 +106,10 @@ public class FileuploadLiteBean implements ALData, Cloneable {
    */
   public String getFileName() {
     return file_name.getValue();
+  }
+
+  public String getFileNameEscape() {
+    return file_name.getValue().replaceAll("'", "\\\\'");
   }
 
   /**
