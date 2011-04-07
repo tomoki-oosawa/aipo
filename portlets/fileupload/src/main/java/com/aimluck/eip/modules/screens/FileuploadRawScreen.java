@@ -93,7 +93,7 @@ public class FileuploadRawScreen extends RawScreen {
     OutputStream out = null;
     try {
       String attachmentRealName =
-        new String(getFileName().getBytes("utf-8"), "8859_1");
+        new String(getFileName().getBytes("Shift_JIS"), "8859_1");
 
       HttpServletResponse response = rundata.getResponse();
       // ファイル名の送信(attachment部分をinlineに変更すればインライン表示)
