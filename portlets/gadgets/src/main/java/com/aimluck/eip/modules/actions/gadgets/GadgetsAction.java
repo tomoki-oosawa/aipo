@@ -125,6 +125,18 @@ public class GadgetsAction extends ALBaseAction {
         maps.put(key, maps2);
       }
     }
+    String appParams = rundata.getParameters().getString("appParams");
+    String js_peid = rundata.getParameters().getString("js_peid");
+    JSONObject viewParams = null;
+    if (portlet.getID().equals(js_peid)
+      && appParams != null
+      && appParams.length() > 0) {
+      try {
+        viewParams = JSONObject.fromObject(appParams);
+      } catch (Throwable t) {
+        //
+      }
+    }
     JSONObject jsonObject = new JSONObject();
     jsonObject.put("id", mid);
     jsonObject.put("appId", appId);
@@ -137,6 +149,9 @@ public class GadgetsAction extends ALBaseAction {
     jsonObject.put("width", "100%");
     jsonObject.put("rpcRelay", "files/container/rpc_relay.html");
     jsonObject.put("userPrefs", JSONObject.fromObject(maps));
+    if (viewParams != null) {
+      jsonObject.put("viewParams", viewParams);
+    }
 
     context.put("assignData", jsonObject.toString());
     context.put("nocache", "true".equals(ALContainerConfigService
