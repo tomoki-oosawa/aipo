@@ -205,14 +205,17 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
   @Override
   protected Object getResultData(EipTTodo record) {
     try {
+
+      // For data inconsistencies
+      EipTTodoCategory category = record.getEipTTodoCategory();
+      if (category == null) {
+        return null;
+      }
+
       ToDoResultData rd = new ToDoResultData();
       rd.initField();
       rd.setTodoId(record.getTodoId().intValue());
-      rd.setCategoryId((int) record
-        .getEipTTodoCategory()
-        .getCategoryId()
-        .longValue());
-
+      rd.setCategoryId((int) category.getCategoryId().longValue());
       rd.setCategoryName(ALCommonUtils.compressString(record
         .getEipTTodoCategory()
         .getCategoryName(), getStrLength()));

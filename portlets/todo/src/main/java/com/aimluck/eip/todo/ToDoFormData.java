@@ -527,6 +527,7 @@ public class ToDoFormData extends ALAbstractFormData {
       msgList.add(ALAccessControlConstants.DEF_PERMISSION_ERROR_STR);
       return false;
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("Exception", ex);
       msgList.add("エラーが発生しました。");
       return false;
