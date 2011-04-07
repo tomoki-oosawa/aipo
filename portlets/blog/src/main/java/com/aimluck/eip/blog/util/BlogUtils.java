@@ -115,15 +115,17 @@ public class BlogUtils {
    * @param isJoin
    *          テーマテーブルをJOINするかどうか
    * @return
+   * @throws ALDBErrorException
    */
-  public static EipTBlogEntry getEipTBlogEntry(RunData rundata, Context context) {
+  public static EipTBlogEntry getEipTBlogEntry(RunData rundata, Context context)
+      throws ALDBErrorException {
     String entryid =
       ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (entryid == null || Integer.valueOf(entryid) == null) {
         // Todo IDが空の場合
         logger.debug("[Blog Entry] Empty ID...");
-        return null;
+        throw new ALPageNotFoundException();
       }
 
       SelectQuery<EipTBlogEntry> query = Database.query(EipTBlogEntry.class);
@@ -135,12 +137,12 @@ public class BlogUtils {
       if (entrys == null || entrys.size() == 0) {
         // 指定したエントリーIDのレコードが見つからない場合
         logger.debug("[Blog Entry] Not found ID...");
-        return null;
+        throw new ALPageNotFoundException();
       }
       return entrys.get(0);
     } catch (Exception ex) {
       logger.error("Exception", ex);
-      return null;
+      throw new ALDBErrorException();
     }
   }
 
