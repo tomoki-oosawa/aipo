@@ -23,11 +23,7 @@
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
     ptConfig['$!portlet.ID'] = { group:"system", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","SystemVersionScreen"))', reloadFunction:aipo.reloadPage };
-    #if($!enableMybox)
-	aipo.system.menuSelected = 2; 
-	#else
 	aipo.system.menuSelected = 1;
-	#end
 //]]>
 </script>
 #set($tabs = [["バージョン情報", "",""]])

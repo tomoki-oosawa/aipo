@@ -30,7 +30,6 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
-import com.aimluck.eip.cayenne.om.portlet.EipMMybox;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
@@ -51,36 +50,6 @@ public class SystemUtils {
   private static final int WEBAPPSERVER_PORT = JetspeedResources.getInt(
     "aipo.webappserver.port",
     80);
-
-  /**
-   * 
-   * @param company_id
-   * @return
-   */
-  public static EipMMybox getEipMMybox(String company_id) {
-    EipMMybox result = null;
-    try {
-      if (company_id == null || Integer.valueOf(company_id) == null) {
-        logger.debug("Empty ID...");
-        return result;
-      }
-
-      Expression exp =
-        ExpressionFactory.matchDbExp(EipMMybox.EIP_MCOMPANY_PROPERTY
-          + "."
-          + EipMCompany.COMPANY_ID_PK_COLUMN, Integer.valueOf(company_id));
-
-      List<EipMMybox> list = Database.query(EipMMybox.class, exp).fetchList();
-      if (list == null || list.size() == 0) {
-        logger.debug("Not found ID...");
-        return result;
-      }
-      result = list.get(0);
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
-    }
-    return result;
-  }
 
   /**
    * 
