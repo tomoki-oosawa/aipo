@@ -125,7 +125,7 @@ public class BlogUtils {
       if (entryid == null || Integer.valueOf(entryid) == null) {
         // Todo IDが空の場合
         logger.debug("[Blog Entry] Empty ID...");
-        throw new ALPageNotFoundException();
+        return null;
       }
 
       SelectQuery<EipTBlogEntry> query = Database.query(EipTBlogEntry.class);
