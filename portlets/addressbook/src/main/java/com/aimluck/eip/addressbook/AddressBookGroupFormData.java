@@ -92,6 +92,7 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
   /**
    *
    */
+  @Override
   public void initField() {
     groupList = new ArrayList<EipMAddressGroup>();
     allAddressList = new ArrayList<AddressBookFilterData>();
@@ -613,8 +614,12 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
 
       // アドレス一覧をグループID付で取得(特定グループ用)
       String sql =
-        "SELECT eip_t_addressbook_group_map.GROUP_ID, eip_m_addressbook.ADDRESS_ID, eip_m_addressbook.LAST_NAME, eip_m_addressbook.FIRST_NAME FROM eip_m_addressbook LEFT JOIN eip_t_addressbook_group_map ON eip_m_addressbook.address_id = eip_t_addressbook_group_map.address_id LEFT JOIN eip_t_addressbook_group ON eip_t_addressbook_group_map.group_id = eip_t_addressbook_group.group_id WHERE eip_t_addressbook.PUBLIC_FLAG='T' "
-          + " OR eip_t_addressbook.OWNER_ID="
+        "SELECT eip_t_addressbook_group_map.GROUP_ID, eip_m_addressbook.ADDRESS_ID, eip_m_addressbook.LAST_NAME, eip_m_addressbook.FIRST_NAME "
+          + "FROM eip_m_addressbook "
+          + "LEFT JOIN eip_t_addressbook_group_map ON eip_m_addressbook.address_id = eip_t_addressbook_group_map.address_id "
+          + "LEFT JOIN eip_m_addressbook_group ON eip_t_addressbook_group_map.group_id = eip_m_addressbook_group.group_id "
+          + "WHERE eip_t_addressbook.PUBLIC_FLAG='T' "
+          + " OR eip_m_addressbook.OWNER_ID="
           + ALEipUtils.getUserId(rundata)
           + " ORDER BY eip_t_addressbook_group_map.GROUP_ID ASC";
       List<DataRow> list2 =
