@@ -35,6 +35,7 @@ import javax.servlet.ServletConfig;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Layout;
 import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.om.profile.Profile;
@@ -83,7 +84,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
  * ユーザーを管理するクラスです。 <br />
- *
+ * 
  */
 public class ALUserManagement extends TurbineBaseService implements
     UserManagement, CredentialsManagement {
@@ -472,7 +473,7 @@ public class ALUserManagement extends TurbineBaseService implements
 
   /**
    * 指定したユーザーにデフォルトのPSMLを設定します。
-   *
+   * 
    * @param user
    * @throws JetspeedSecurityException
    */
@@ -504,7 +505,7 @@ public class ALUserManagement extends TurbineBaseService implements
 
   /**
    * ユーザーのロールを承認します
-   *
+   * 
    * @param user
    * @param hasAdminCredential
    */
@@ -532,7 +533,7 @@ public class ALUserManagement extends TurbineBaseService implements
 
   /**
    * 指定したユーザのPSMLにシステム管理のページを追加します。
-   *
+   * 
    * @param user_name
    * @throws Exception
    */
@@ -565,6 +566,14 @@ public class ALUserManagement extends TurbineBaseService implements
       Portlets admin_portlets =
         Profiler.createProfile(admin_locator).getDocument().getPortlets();
       admin_portlets = admin_portlets.getPortlets(0);
+      Entry[] entriesArray = admin_portlets.getEntriesArray();
+      int size = entriesArray.length;
+      for (int i = 0; i < size; i++) {
+        if (entriesArray[i].getParent().equals("DeleteSample")) {
+          admin_portlets.removeEntry(i);
+          break;
+        }
+      }
       admin_portlets.setLayout(newLayout);
       portlets.addPortlets(admin_portlets);
 
@@ -574,7 +583,7 @@ public class ALUserManagement extends TurbineBaseService implements
 
   /**
    * 指定したユーザのPSMLにシステム管理のページを追加します。
-   *
+   * 
    * @param user
    * @throws Exception
    */
@@ -584,7 +593,7 @@ public class ALUserManagement extends TurbineBaseService implements
 
   /**
    * 指定したユーザのPSMLからシステム管理のページを取り除きます。
-   *
+   * 
    * @param user
    * @throws Exception
    */
@@ -612,7 +621,7 @@ public class ALUserManagement extends TurbineBaseService implements
 
   /**
    * 指定したユーザに管理者権限を付与します。
-   *
+   * 
    * @param tuser
    * @throws JetspeedSecurityException
    */
@@ -629,7 +638,7 @@ public class ALUserManagement extends TurbineBaseService implements
 
   /**
    * 指定したユーザの管理者権限を取り除きます。
-   *
+   * 
    * @param tuser
    * @throws JetspeedSecurityException
    */
@@ -824,7 +833,7 @@ public class ALUserManagement extends TurbineBaseService implements
   }
 
   /**
-   *
+   * 
    * @param user
    * @return
    * @throws UserException
