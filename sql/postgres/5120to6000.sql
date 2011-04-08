@@ -176,9 +176,6 @@ SELECT setval('pk_eip_m_mail_account',(SELECT max(account_id) FROM eip_m_mail_ac
 CREATE SEQUENCE pk_eip_m_mail_notify_conf INCREMENT 20;
 SELECT setval('pk_eip_m_mail_notify_conf',(SELECT max(notify_id) FROM eip_m_mail_notify_conf));
 
-CREATE SEQUENCE pk_eip_m_mybox INCREMENT 20;
-SELECT setval('pk_eip_m_mybox',(SELECT max(mybox_id) FROM eip_m_mybox));
-
 CREATE SEQUENCE pk_eip_m_position INCREMENT 20;
 SELECT setval('pk_eip_m_position',(SELECT max(position_id) FROM eip_m_position));
 
@@ -330,7 +327,6 @@ ALTER TABLE eip_m_addressbook_company ALTER company_id DROP DEFAULT;
 ALTER TABLE eip_m_company ALTER company_id DROP DEFAULT;
 ALTER TABLE eip_m_mail_account ALTER account_id DROP DEFAULT;
 ALTER TABLE eip_m_mail_notify_conf ALTER notify_id DROP DEFAULT;
-ALTER TABLE eip_m_mybox ALTER mybox_id DROP DEFAULT;
 ALTER TABLE eip_m_position ALTER position_id DROP DEFAULT;
 ALTER TABLE eip_m_post ALTER post_id DROP DEFAULT;
 ALTER TABLE eip_m_user_position ALTER id DROP DEFAULT;
@@ -588,3 +584,11 @@ CREATE SEQUENCE pk_oauth_token INCREMENT 20 START 200
 
 CREATE SEQUENCE pk_oauth_entry INCREMENT 20 START 200
 ;
+
+-----------------------------------------------------------------------------
+-- DELETE EIP_M_MYBOX
+-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS EIP_M_MYBOX;
+
+
