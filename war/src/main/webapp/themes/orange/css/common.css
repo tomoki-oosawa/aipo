@@ -1960,77 +1960,77 @@ div.off, td.off {
 	background:#EFEFEF url(../images/common/bg_slash.gif) repeat left top;
 }
 div.color0 {
-	border-color:#c33;
+	border-color:#1e90ff;
 }
 div.color0 div.scheduleDivFirstLine {
-	background-color:#c33;
-	border-color:#c33;
+	background-color:#1e90ff;
+	border-color:#1e90ff;
 }
 div.color0 div.scheduleDivLastLine div.handleDiv {
-	background-color:#c33;
+	background-color:#1e90ff;
 }
 span.color0 {
-	background-color:#c33;
+	background-color:#1e90ff;
 	color:#FFF;
 	padding:1px 3px 1px 3px;
 }
 div.color1 {
-	border-color:#039;
+	border-color:#00a497;
 }
 div.color1 div.scheduleDivFirstLine {
-	background-color:#039;
-	border-color:#039;
+	background-color:#00a497;
+	border-color:#00a497;
 }
 div.color1 div.scheduleDivLastLine div.handleDiv {
-	background-color:#039;
+	background-color:#00a497;
 }
 span.color1 {
-	background-color:#039;
+	background-color:#00a497;
 	color:#FFF;
 	padding:1px 3px 1px 3px;
 }
 div.color2 {
-	border-color:#363;
+	border-color:#9acd32;
 }
 div.color2 div.scheduleDivFirstLine {
-	background-color:#363;
-	border-color:#363;
+	background-color:#9acd32;
+	border-color:#9acd32;
 }
 div.color2 div.scheduleDivLastLine div.handleDiv {
-	background-color:#363;
+	background-color:#9acd32;
 }
 span.color2 {
-	background-color:#363;
+	background-color:#9acd32;
 	color:#FFF;
 	padding:1px 3px 1px 3px;
 }
 div.color3 {
-	border-color:#C39;
+	border-color:#FF8C00;
 }
 div.color3 div.scheduleDivFirstLine {
-	background-color:#C39;
-	border-color:#C39;
+	background-color:#FF8C00;
+	border-color:#FF8C00;
 }
 div.color3 div.scheduleDivLastLine div.handleDiv {
-	background-color:#C39;
+	background-color:#FF8C00;
 }
 span.color3 {
-	background-color:#C39;
+	background-color:#FF8C00;
 	color:#FFF;
 	padding:1px 3px 1px 3px;
 }
 div.color4 {
-	border-color:#666;
+	border-color:#FD4929;
 }
 div.color4 div.scheduleDivFirstLine {
-	background-color:#666;
-	border-color:#666;
+	background-color:#FD4929;
+	border-color:#FD4929;
 }
 div.color4 div.scheduleDivLastLine div.handleDiv {
-	background-color:#666;
+	background-color:#FD4929;
 }
 span.color4 {
-	background-color:#666;
+	background-color:#FD4929;
 	color:#FFF;
 	padding:1px 3px 1px 3px;
 }
@@ -2728,10 +2728,12 @@ float:left;
 }
 
 .controllerTable td {
+padding:2px;
 	margin:2px;
 }
 
 .controllerTable td.selected {
+padding:0;
 	border:2px solid #DCDCDC;
 	margine:2px;
 }
