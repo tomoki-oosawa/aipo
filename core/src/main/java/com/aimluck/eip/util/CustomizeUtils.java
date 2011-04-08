@@ -434,7 +434,7 @@ public class CustomizeUtils {
       logger.debug("Constraints col " + col + " row " + row);
     }
     if ((row >= 0) && (col >= 0) && (col < columnCount)) {
-      table[col].set(row, element);
+      table[col].add(row, element);
     } else {
       if (layout != null) {
         // We got here because the column, as defined in the layout,
