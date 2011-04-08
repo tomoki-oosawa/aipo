@@ -112,6 +112,7 @@
             <include>**/*.css</include>
           </includes>
           <excludes>
+            <exclude>**/nls/**/*.js</exclude>
             <exclude>**/*.xml</exclude>
             <exclude>**/*.html</exclude>
             <exclude>**/*.properties</exclude>
