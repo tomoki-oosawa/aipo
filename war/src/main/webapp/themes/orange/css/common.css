@@ -1959,156 +1959,6 @@ div.today, td.today {
 div.off, td.off {
 	background:#EFEFEF url(../images/common/bg_slash.gif) repeat left top;
 }
-div.color0 {
-	border-color:#1e90ff;
-}
-div.color0 div.scheduleDivFirstLine {
-	background-color:#1e90ff;
-	border-color:#1e90ff;
-}
-div.color0 div.scheduleDivLastLine div.handleDiv {
-	background-color:#1e90ff;
-}
-span.color0 {
-	background-color:#1e90ff;
-	color:#FFF;
-	padding:1px 3px 1px 3px;
-}
-div.color1 {
-	border-color:#00a497;
-}
-div.color1 div.scheduleDivFirstLine {
-	background-color:#00a497;
-	border-color:#00a497;
-}
-div.color1 div.scheduleDivLastLine div.handleDiv {
-	background-color:#00a497;
-}
-span.color1 {
-	background-color:#00a497;
-	color:#FFF;
-	padding:1px 3px 1px 3px;
-}
-div.color2 {
-	border-color:#9acd32;
-}
-div.color2 div.scheduleDivFirstLine {
-	background-color:#9acd32;
-	border-color:#9acd32;
-}
-div.color2 div.scheduleDivLastLine div.handleDiv {
-	background-color:#9acd32;
-}
-span.color2 {
-	background-color:#9acd32;
-	color:#FFF;
-	padding:1px 3px 1px 3px;
-}
-div.color3 {
-	border-color:#FF8C00;
-}
-div.color3 div.scheduleDivFirstLine {
-	background-color:#FF8C00;
-	border-color:#FF8C00;
-}
-div.color3 div.scheduleDivLastLine div.handleDiv {
-	background-color:#FF8C00;
-}
-span.color3 {
-	background-color:#FF8C00;
-	color:#FFF;
-	padding:1px 3px 1px 3px;
-}
-div.color4 {
-	border-color:#FD4929;
-}
-div.color4 div.scheduleDivFirstLine {
-	background-color:#FD4929;
-	border-color:#FD4929;
-}
-div.color4 div.scheduleDivLastLine div.handleDiv {
-	background-color:#FD4929;
-}
-span.color4 {
-	background-color:#FD4929;
-	color:#FFF;
-	padding:1px 3px 1px 3px;
-}
-div.color5 {
-	border-color:#F63;
-}
-div.color5 div.scheduleDivFirstLine {
-	background-color:#F63;
-	border-color:#F63;
-}
-div.color5 div.scheduleDivLastLine div.handleDiv {
-	background-color:#F63;
-}
-span.color5 {
-	background-color:#F63;
-	color:#FFF;
-	padding:1px 3px 1px 3px;
-}
-div.color6 {
-	border-color:#39F;
-}
-div.color6 div.scheduleDivFirstLine {
-	background-color:#39F;
-	border-color:#39F;
-}
-div.color6 div.scheduleDivLastLine div.handleDiv {
-	background-color:#39F;
-}
-span.color6 {
-	background-color:#39F;
-	color:#FFF;
-	padding:1px 3px 1px 3px;
-}
-div.color7 {
-	border-color:#6C6;
-}
-div.color7 div.scheduleDivFirstLine {
-	background-color:#6C6;
-	border-color:#6C6;
-}
-div.color7 div.scheduleDivLastLine div.handleDiv {
-	background-color:#6C6;
-}
-span.color7 {
-	background-color:#6C6;
-	color:#FFF;
-	padding:1px 3px 1px 3px;
-}
-div.color8 {
-	border-color:#F6C;
-}
-div.color8 div.scheduleDivFirstLine {
-	background-color:#F6C;
-	border-color:#F6C;
-}
-div.color8 div.scheduleDivLastLine div.handleDiv {
-	background-color:#F6C;
-}
-span.color8 {
-	background-color:#F6C;
-	color:#FFF;
-	padding:1px 3px 1px 3px;
-}
-div.color9 {
-	border-color:#AAA;
-}
-div.color9 div.scheduleDivFirstLine {
-	background-color:#AAA;
-	border-color:#AAA;
-}
-div.color9 div.scheduleDivLastLine div.handleDiv {
-	background-color:#AAA;
-}
-span.color9 {
-	background-color:#AAA;
-	color:#FFF;
-	padding:1px 3px 1px 3px;
-}
 table.calendar {
 	margin-top:5px;
 	margin-bottom:5px;
@@ -2243,41 +2093,41 @@ div.calerndarTodoDiv a:hover {
 	padding:0;
 }
 div.color0 {
-	border-color:#C33;
+	border-color:#039;
 }
 div.color0 div.scheduleDivFirstLine {
-	background-color:#C33;
-	border-color:#C33;
+	background-color:#039;
+	border-color:#039;
 }
 div.color0 div.scheduleDivLastLine div.handleDiv {
-	background-color:#C33;
+	background-color:#039;
 }
 span.color0 {
-	background-color:#C33;
+	background-color:#039;
 	color:#FFF;
 	padding:1px 3px;
 }
 div.termColor0 {
-	background-color:#C33!important;
+	background-color:#039!important;
 	color:#FFF;
 }
 div.color1 {
-	border-color:#039;
+	border-color:#C33;
 }
 div.color1 div.scheduleDivFirstLine {
-	background-color:#039;
-	border-color:#039;
+	background-color:#C33;
+	border-color:#C33;
 }
 div.color1 div.scheduleDivLastLine div.handleDiv {
-	background-color:#039;
+	background-color:#C33;
 }
 span.color1 {
-	background-color:#039;
+	background-color:#C33;
 	color:#FFF;
 	padding:1px 3px;
 }
 div.termColor1 {
-	background-color:#039!important;
+	background-color:#C33!important;
 	color:#FFF;
 }
 div.color2 {
@@ -2727,13 +2577,11 @@ float:left;
 	line-height:12px;
 }
 
-.controllerTable td {
-padding:2px;
-	margin:2px;
+.controllerTable td img {
+	border:2px solid #FFFFFF;
 }
 
-.controllerTable td.selected {
-padding:0;
+.controllerTable td.selected img {
 	border:2px solid #DCDCDC;
-	margine:2px;
 }
+
