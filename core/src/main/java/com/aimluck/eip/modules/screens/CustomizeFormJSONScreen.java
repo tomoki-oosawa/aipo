@@ -422,7 +422,13 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
 
     List<?>[] columns =
       (List[]) customizationState.getAttribute("customize-columns");
+    String controllerName = portlets.getController().getName();
     int colNum = 2;
+    if (controllerName.startsWith("One")) {
+      colNum = 1;
+    } else if (controllerName.startsWith("Three")) {
+      colNum = 3;
+    }
     Portlets set = portlets;
 
     if (logger.isDebugEnabled()) {
