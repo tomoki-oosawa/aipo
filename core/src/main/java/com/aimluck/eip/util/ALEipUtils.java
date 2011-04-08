@@ -842,6 +842,31 @@ public class ALEipUtils {
     try {
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       DynamicURI duri = jsLink.getPage();
+      String template =
+        rundata.getParameters().getString(JetspeedResources.PATH_TEMPLATE_KEY);
+      if (template != null && !("".equals(template))) {
+        if (template.endsWith("DetailScreen")) {
+          VelocityContext context = new VelocityContext();
+          setupContext(rundata, context);
+          try {
+            ServletOutputStream out = null;
+            HttpServletResponse response = rundata.getResponse();
+            out = response.getOutputStream();
+            BufferedWriter writer =
+              new BufferedWriter(new OutputStreamWriter(
+                out,
+                ALEipConstants.DEF_CONTENT_ENCODING));
+            Template templete =
+              Velocity.getTemplate("screens/html/AjaxPageNotFound.vm");
+            templete.merge(context, writer);
+            writer.flush();
+            writer.close();
+          } catch (Exception e) {
+            return false;
+          }
+          return true;
+        }
+      }
       duri.addPathInfo("template", "PageNotFound");
       rundata.setRedirectURI(duri.toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
