@@ -158,7 +158,7 @@ public class CellularFormData extends ALAbstractFormData {
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
-    boolean res = false;
+    boolean res = true;
 
     cellular_url.setValue(url);
 
@@ -215,6 +215,7 @@ public class CellularFormData extends ALAbstractFormData {
         msgList.add("メールアカウントが正しく設定されていないため、メールを送信できませんでした。"
           + ALOrgUtilsService.getAlias()
           + "の管理担当者にお問い合わせください。メールアカウントは、管理画面で設定できます。");
+        res = false;
       }
 
     } catch (Exception ex) {

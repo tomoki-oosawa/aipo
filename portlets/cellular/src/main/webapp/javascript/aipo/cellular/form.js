@@ -19,3 +19,9 @@
 
 dojo.provide("aipo.cellular");
 
+aipo.cellular.displayIndicator = function(indicator_id, portlet_id) {
+	var obj_indicator = dojo.byId(indicator_id + portlet_id);
+    if(obj_indicator){
+       dojo.style(obj_indicator, "display" , "");
+    }
+}

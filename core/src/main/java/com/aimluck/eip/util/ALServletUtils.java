@@ -60,6 +60,10 @@ public class ALServletUtils {
       return loginUrl;
     }
 
+    if (host == null || "".equals(host)) {
+      return "";
+    }
+
     String scheme =
       isGlobal
         ? ALConfigService.get(Property.ACCESS_GLOBAL_URL_PROTOCOL)
