@@ -519,6 +519,7 @@
 	width:150px;
 	overflow:auto;
 	overflow-y:hidden;
+	padding-bottom:18px;
 }
 
 /* Cabinet Tree */
