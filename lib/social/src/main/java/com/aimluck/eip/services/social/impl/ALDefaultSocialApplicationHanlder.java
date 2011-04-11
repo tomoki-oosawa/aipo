@@ -779,6 +779,13 @@ public class ALDefaultSocialApplicationHanlder extends
           .sql(Activity.class, sql2)
           .param("loginName", loginName)
           .execute();
+
+        String sql3 =
+          "delete from activity_map where login_name = #bind($loginName)";
+        Database
+          .sql(Activity.class, sql3)
+          .param("loginName", loginName)
+          .execute();
       }
       Database.commit();
     } catch (Throwable t) {
