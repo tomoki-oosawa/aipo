@@ -340,7 +340,7 @@ public class AddressBookUtils {
     statement.append(" B.last_name, B.first_name, ");
     statement.append(" C.company_name ");
     statement.append("FROM eip_t_addressbook_group_map as A ");
-    statement.append("LEFT JOIN eip_t_addressbook as B ");
+    statement.append("LEFT JOIN eip_m_addressbook as B ");
     statement.append(" on A.ADDRESS_ID = B.ADDRESS_ID ");
     statement.append("LEFT JOIN eip_m_addressbook_company AS C ");
     statement.append(" on B.COMPANY_ID = C.COMPANY_ID ");
@@ -351,10 +351,9 @@ public class AddressBookUtils {
 
     try {
       List<DataRow> list =
-        Database
-          .sql(EipMAddressbook.class, query)
-          .param("gid", gid)
-          .fetchListAsDataRow();
+        Database.sql(EipMAddressbook.class, query).param(
+          "gid",
+          Integer.parseInt(gid)).fetchListAsDataRow();
 
       int recordNum = list.size();
       DataRow dataRow;

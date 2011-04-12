@@ -618,7 +618,7 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
           + "FROM eip_m_addressbook "
           + "LEFT JOIN eip_t_addressbook_group_map ON eip_m_addressbook.address_id = eip_t_addressbook_group_map.address_id "
           + "LEFT JOIN eip_m_addressbook_group ON eip_t_addressbook_group_map.group_id = eip_m_addressbook_group.group_id "
-          + "WHERE eip_t_addressbook.PUBLIC_FLAG='T' "
+          + "WHERE eip_m_addressbook.PUBLIC_FLAG='T' "
           + " OR eip_m_addressbook.OWNER_ID="
           + ALEipUtils.getUserId(rundata)
           + " ORDER BY eip_t_addressbook_group_map.GROUP_ID ASC";
