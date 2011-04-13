@@ -49,6 +49,7 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
@@ -69,8 +70,8 @@ import com.aimluck.eip.workflow.util.WorkflowUtils.Type;
 public class WorkflowFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WorkflowFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(WorkflowFormData.class.getName());
 
   /** Request名 */
   private ALStringField request_name;
@@ -856,6 +857,30 @@ public class WorkflowFormData extends ALAbstractFormData {
       logger.error("Exception", ex);
       return false;
     }
+    return true;
+  }
+
+  /**
+   * アクセス権限をチェックします。
+   * 
+   * @return
+   */
+  @Override
+  protected boolean doCheckAclPermission(RunData rundata, Context context,
+      int defineAclType) throws ALPermissionException {
+    boolean tmp = super.doCheckAclPermission(rundata, context, defineAclType);
+
+    // 詳細表示、追加、削除は一覧表示の権限が必要
+    if (defineAclType == ALAccessControlConstants.VALUE_ACL_DETAIL
+      || defineAclType == ALAccessControlConstants.VALUE_ACL_INSERT
+      || defineAclType == ALAccessControlConstants.VALUE_ACL_DELETE) {
+      super.doCheckAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_LIST);
+      hasAuthority = (hasAuthority && tmp);
+    }
+
     return true;
   }
 
