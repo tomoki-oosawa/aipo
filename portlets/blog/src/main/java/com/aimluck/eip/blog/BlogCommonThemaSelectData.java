@@ -29,6 +29,7 @@ import java.util.jar.Attributes;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -45,6 +46,8 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -56,8 +59,9 @@ public class BlogCommonThemaSelectData extends
     ALAbstractSelectData<EipTBlogThema, EipTBlogThema> implements ALData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(BlogCommonThemaSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(BlogCommonThemaSelectData.class
+      .getName());
 
   private int loginuser_id = 0;
 
@@ -72,6 +76,22 @@ public class BlogCommonThemaSelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
 
     loginuser_id = ALEipUtils.getUserId(rundata);
+
+    // アクセス権限チェック 他人の記事一覧表示
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+    boolean hasAuthority =
+      aclhandler.hasAuthority(
+        loginuser_id,
+        ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER,
+        ALAccessControlConstants.VALUE_ACL_LIST);
+
+    if (!hasAuthority) {
+      ALEipUtils.redirectPermissionError(rundata);
+    }
 
     super.init(action, rundata, context);
   }

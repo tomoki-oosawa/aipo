@@ -30,6 +30,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -45,6 +46,9 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -208,6 +212,20 @@ public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
   private List<DataRow> searchList(RunData rundata, Context context) {
     List<DataRow> list = null;
     try {
+      int uid = ALEipUtils.getUserId(rundata);
+
+      ALAccessControlFactoryService aclservice =
+        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
+      ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+      boolean hasAuthority =
+        aclhandler.hasAuthority(
+          uid,
+          ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER,
+          ALAccessControlConstants.VALUE_ACL_LIST);
+
       String word = searchWord.getValue();
 
       if (word == null || word.length() == 0) {
@@ -223,10 +241,13 @@ public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
       statement.append("t0.thema_id, t0.update_date, t0.create_date ");
       statement
         .append("FROM eip_t_blog_entry as t0 left join eip_t_blog_comment as t1 on t1.entry_id = t0.entry_id ");
-      statement.append("WHERE (t0.title LIKE #bind($word))");
+      statement.append("WHERE ((t0.title LIKE #bind($word))");
       statement.append(" OR (t0.note LIKE #bind($word))");
       statement
-        .append(" OR (t0.entry_id = t1.entry_id AND (t1.comment LIKE #bind($word))) ");
+        .append(" OR (t0.entry_id = t1.entry_id AND (t1.comment LIKE #bind($word)))) ");
+      if (!hasAuthority) {
+        statement.append(" AND (t0.owner_id = " + uid + ") ");
+      }
       statement.append("ORDER BY t0.create_date DESC");
       String query = statement.toString();
 
