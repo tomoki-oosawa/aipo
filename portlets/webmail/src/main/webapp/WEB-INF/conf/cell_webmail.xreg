@@ -53,14 +53,6 @@
         <parameter name="p2a-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p2a-sort.style.items" value="subject,preson,date" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p2a-sort.style.values" value="件名,差出人,日付" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2b-sort" value="account_name" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
-            <meta-info>
-                <title>[アカウント]ソート方法</title>
-            </meta-info>
-        </parameter>
-        <parameter name="p2b-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2b-sort.style.items" value="account_name" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2b-sort.style.values" value="アカウント名" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p3a-rows" value="10" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>[メール]表示件数</title>

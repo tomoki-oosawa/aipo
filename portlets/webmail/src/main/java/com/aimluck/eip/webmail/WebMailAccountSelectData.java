@@ -52,15 +52,16 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
 public class WebMailAccountSelectData extends
     ALAbstractSelectData<EipMMailAccount, EipMMailAccount> {
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WebMailAccountSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(WebMailAccountSelectData.class
+      .getName());
 
   private String orgId;
 
   private boolean isAdmin;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -70,15 +71,6 @@ public class WebMailAccountSelectData extends
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
-
-    String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
-    if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-        .getPortlet(rundata, context)
-        .getPortletConfig()
-        .getInitParameter("p2b-sort"));
-    }
-
     orgId = Database.getDomainName();
 
     isAdmin =
@@ -92,7 +84,7 @@ public class WebMailAccountSelectData extends
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -115,7 +107,7 @@ public class WebMailAccountSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -136,7 +128,7 @@ public class WebMailAccountSelectData extends
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -152,7 +144,7 @@ public class WebMailAccountSelectData extends
     } else {
       int accountId =
         rundata.getParameters().getInt(WebMailUtils.ACCOUNT_ID, -1);
-      account = ALMailUtils.getMailAccount( userId, accountId);
+      account = ALMailUtils.getMailAccount(userId, accountId);
     }
     return account;
   }
@@ -188,7 +180,7 @@ public class WebMailAccountSelectData extends
   }
 
   /**
-   *
+   * 
    * @param record
    * @return
    */
@@ -222,7 +214,7 @@ public class WebMailAccountSelectData extends
 
   /**
    * @return
-   *
+   * 
    */
   @Override
   protected Attributes getColumnMap() {
