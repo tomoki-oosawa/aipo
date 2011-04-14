@@ -80,6 +80,9 @@ public class WebMailFilterFormData extends ALAbstractFormData {
   /** フィルタと紐付くメールアカウント */
   private EipMMailAccount mailAccount;
 
+  /** フィルタと紐付くメールアカウント名 */
+  private ALStringField mailAccountName;
+
   /** アカウントに紐付くフォルダリスト */
   private List<WebMailFolderResultData> folderList;
 
@@ -133,6 +136,8 @@ public class WebMailFilterFormData extends ALAbstractFormData {
         (int) login_user.getUserId().getValue(),
         mailAccountId);
 
+    mailAccountName.setValue(mailAccount.getAccountName());
+
     // フィルタタイプ一覧を取得する
     typeList = ALMailUtils.getMailFilterTypeMap();
   }
@@ -184,6 +189,8 @@ public class WebMailFilterFormData extends ALAbstractFormData {
 
     // フォルダ一覧
     folderList = new ArrayList<WebMailFolderResultData>();
+
+    mailAccountName = new ALStringField();
   }
 
   /**
@@ -515,6 +522,15 @@ public class WebMailFilterFormData extends ALAbstractFormData {
    */
   public EipMMailAccount getMailAccount() {
     return mailAccount;
+  }
+
+  /**
+   * 対象のメールアカウント名を取得する． <BR>
+   * 
+   * @return
+   */
+  public ALStringField getMailAccountName() {
+    return mailAccountName;
   }
 
   /**

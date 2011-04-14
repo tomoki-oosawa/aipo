@@ -49,7 +49,7 @@
 <input type="hidden" name="accountid" value="${result.MailAccount.AccountId}" />
 #ALtableheaderWide()
 #ALtdcaption("対象メールアカウント")
-#ALtditem($!result.MailAccount.AccountName)
+#ALtditem($!result.MailAccountName)
 #ALtdcaption("#ALrequired($!result.getFieldName('filter_name'))")
 #ALtditem("#ALtextfield('filter_name' $!result.FilterName '90%' 50 'active')")
 #ALtdcaption("#ALrequired($!result.getFieldName('filter_string'))")
