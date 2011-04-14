@@ -125,18 +125,16 @@ public class WorkflowUtils {
   public static final String PREFIX_DBFILE = "DBF";
 
   /** デフォルトエンコーディングを表わすシステムプロパティのキー */
-  public static final String FILE_ENCODING = JetspeedResources.getString(
-    "content.defaultencoding",
-    "UTF-8");
+  public static final String FILE_ENCODING =
+    JetspeedResources.getString("content.defaultencoding", "UTF-8");
 
   /** ワークフローの添付ファイルを保管するディレクトリの指定 */
-  private static final String FOLDER_FILEDIR_WORKFLOW = JetspeedResources
-    .getString("aipo.filedir", "");
+  private static final String FOLDER_FILEDIR_WORKFLOW =
+    JetspeedResources.getString("aipo.filedir", "");
 
   /** ワークフローの添付ファイルを保管するディレクトリのカテゴリキーの指定 */
-  protected static final String CATEGORY_KEY = JetspeedResources.getString(
-    "aipo.workflow.categorykey",
-    "");
+  protected static final String CATEGORY_KEY =
+    JetspeedResources.getString("aipo.workflow.categorykey", "");
 
   public enum Type {
     REQUEST, DENAIL, ACCEPT
@@ -226,6 +224,36 @@ public class WorkflowUtils {
     } catch (ALPageNotFoundException pageNotFound) {
       logger.error(pageNotFound);
       throw pageNotFound;
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  /**
+   * Request オブジェクトモデルを取得します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @param mode_update
+   * @return
+   */
+  public static List<EipTWorkflowRequest> getEipTWorkflowRequest(
+      EipTWorkflowRoute route) throws ALPageNotFoundException {
+    try {
+
+      // アクセス権の判定
+      SelectQuery<EipTWorkflowRequest> query =
+        Database.query(EipTWorkflowRequest.class);
+
+      Expression exp =
+        ExpressionFactory.matchExp(
+          EipTWorkflowRequest.EIP_TWORKFLOW_ROUTE_PROPERTY,
+          route);
+
+      query.setQualifier(exp);
+
+      return query.fetchList();
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;

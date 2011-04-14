@@ -29,12 +29,14 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequest;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRoute;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフローカテゴリの複数削除を行うためのクラスです。 <BR>
@@ -63,10 +65,7 @@ public class WorkflowRouteMultiDelete extends ALAbstractCheckList {
       List<Integer> intValues = new ArrayList<Integer>();
       int valuesize = values.size();
       for (int i = 0; i < valuesize; i++) {
-        String value = values.get(i);
-        if (!"1".equals(value)) {
-          intValues.add(Integer.valueOf(value));
-        }
+        intValues.add(Integer.valueOf(values.get(i)));
       }
 
       SelectQuery<EipTWorkflowRoute> query =
@@ -79,6 +78,14 @@ public class WorkflowRouteMultiDelete extends ALAbstractCheckList {
       List<EipTWorkflowRoute> routelist = query.fetchList();
       if (routelist == null || routelist.size() == 0) {
         return false;
+      }
+
+      for (EipTWorkflowRoute route : routelist) {
+        List<EipTWorkflowRequest> requests =
+          WorkflowUtils.getEipTWorkflowRequest(route);
+        for (EipTWorkflowRequest request : requests) {
+          request.setEipTWorkflowRoute(null);
+        }
       }
 
       // 申請経路を削除

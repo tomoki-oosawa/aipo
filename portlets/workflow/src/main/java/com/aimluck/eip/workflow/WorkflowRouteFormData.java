@@ -32,6 +32,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequest;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRoute;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
@@ -54,8 +55,8 @@ import com.aimluck.eip.workflow.util.WorkflowUtils;
 public class WorkflowRouteFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WorkflowRouteFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(WorkflowRouteFormData.class.getName());
 
   /** 申請経路名 */
   private ALStringField route_name;
@@ -374,6 +375,12 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
         // カテゴリ「未分類」は削除不可
         msgList.add("分類名『 <span class='em'>未分類</span> 』は削除できません。");
         return false;
+      }
+
+      List<EipTWorkflowRequest> requests =
+        WorkflowUtils.getEipTWorkflowRequest(routeobj);
+      for (EipTWorkflowRequest request : requests) {
+        request.setEipTWorkflowRoute(null);
       }
 
       // ワーフクロー申請経路を削除
