@@ -1656,7 +1656,7 @@ public class ScheduleUtils {
           sf = new ALCellStringField(timeStr);
           sf.setTrim(true);
           sf.setCharacterType(ALStringField.TYPE_NUMBER);
-          sf.setValue(dateStr);
+          sf.setValue(timeStr);
           sf.validate(tmpList);
           if (tmpList.size() != 0) {
             msgList.add("『時間』で入力された時間は存在しません");
