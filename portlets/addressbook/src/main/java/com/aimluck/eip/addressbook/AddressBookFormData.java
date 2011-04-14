@@ -45,6 +45,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
@@ -1241,10 +1242,6 @@ public class AddressBookFormData extends ALAbstractFormData {
     return owner_id;
   }
 
-  // ***************************************************************************
-  // privateメソッド
-  // ***************************************************************************
-
   /**
    * 会社情報を登録します。
    */
@@ -1324,5 +1321,29 @@ public class AddressBookFormData extends ALAbstractFormData {
   @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_ADDRESS_OUTSIDE;
+  }
+
+  /**
+   * アクセス権限をチェックします。
+   * 
+   * @return
+   */
+  @Override
+  protected boolean doCheckAclPermission(RunData rundata, Context context,
+      int defineAclType) throws ALPermissionException {
+    boolean tmp = super.doCheckAclPermission(rundata, context, defineAclType);
+
+    // 詳細表示、追加、削除は一覧表示の権限が必要
+    if (defineAclType == ALAccessControlConstants.VALUE_ACL_DETAIL
+      || defineAclType == ALAccessControlConstants.VALUE_ACL_INSERT
+      || defineAclType == ALAccessControlConstants.VALUE_ACL_DELETE) {
+      super.doCheckAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_LIST);
+      hasAuthority = (hasAuthority && tmp);
+    }
+
+    return true;
   }
 }
