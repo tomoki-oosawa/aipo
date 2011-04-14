@@ -44,6 +44,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -64,6 +65,8 @@ public class CellScheduleWeekSelectByMemberData extends
   /** <code>login_user</code> 表示対象ユーザー */
   private ALEipUser targerUser;
 
+  private String aclPortletFeature;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -76,9 +79,12 @@ public class CellScheduleWeekSelectByMemberData extends
     String tmpTargetUser = rundata.getParameters().getString("selectedmember");
     if (tmpTargetUser == null || tmpTargetUser.equals("")) {
       targerUser = ALEipUtils.getALEipUser(rundata);
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
     } else {
       targerUser = ALEipUtils.getALEipUser(Integer.parseInt(tmpTargetUser));
-      // setTemplate(rundata, "schedule-menu-select-member");
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
     }
 
     currentUserId = ALEipUtils.getUserId(rundata);
@@ -404,4 +410,8 @@ public class CellScheduleWeekSelectByMemberData extends
     this.targerUser = targerUser;
   }
 
+  @Override
+  public String getAclPortletFeature() {
+    return aclPortletFeature;
+  }
 }
