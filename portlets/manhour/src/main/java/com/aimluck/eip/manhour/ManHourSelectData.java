@@ -235,11 +235,8 @@ public class ManHourSelectData extends
         for (int i = 0; i < size; i++) {
           getResultData(aList.get(i));
         }
-
         cleanupDummySchedule(scheduleList);
-        // scheduleList = (ArrayList) buildPaginatedList(scheduleList);
         scheduleList = getScheduleList();
-        setPageParam(scheduleList.size());
       }
       action.setResultData(this);
       action.putData(rundata, context);
@@ -340,6 +337,31 @@ public class ManHourSelectData extends
     });
     List<ManHourResultData> list = new ArrayList<ManHourResultData>();
     list.addAll(Arrays.asList(obj));
+    setPageParam(list.size());
+
+    return buildPaginatedResultData(list);
+  }
+
+  /**
+   * ページング結果のリストを取得します。
+   * 
+   * @param records
+   *          検索結果
+   */
+  protected List<ManHourResultData> buildPaginatedResultData(
+      List<ManHourResultData> records) {
+    List<ManHourResultData> list = new ArrayList<ManHourResultData>();
+
+    setPageParam(records.size());
+
+    int start = getStart();
+    int rows_num = getRowsNum();
+    int size = records.size();
+    int end = (start + rows_num <= size) ? start + rows_num : size;
+    for (int i = start; i < end; i++) {
+      list.add(records.get(i));
+    }
+
     return list;
   }
 
