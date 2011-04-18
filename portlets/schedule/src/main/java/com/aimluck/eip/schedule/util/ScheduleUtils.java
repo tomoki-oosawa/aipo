@@ -99,8 +99,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ScheduleUtils {
 
   /** <code>logger</code> loger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ScheduleUtils.class.getName());
 
   /** <code>SCHEDULEMAP_TYPE_USER</code> ユーザ */
   public static final String SCHEDULEMAP_TYPE_USER = "U";
@@ -1905,6 +1905,11 @@ public class ScheduleUtils {
 
     int YEAR_FIRST = 2004;
     int YEAR_END = 2016;
+
+    if (end_date == null) {
+      msgList.add("終了日時を正しく入力してください。");
+      end_date = start_date;
+    }
 
     Calendar startDate = Calendar.getInstance();
     startDate.setTime(start_date.getValue());

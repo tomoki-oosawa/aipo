@@ -81,8 +81,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ScheduleFormData extends ALAbstractFormData {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ScheduleFormData.class.getName());
 
   /** <code>FLAG_EDIT_REPEAT_DEF</code> デフォルト値（繰り返し編集範囲） */
   private static final int FLAG_EDIT_REPEAT_DEF = -1;
@@ -237,6 +237,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   private boolean ignore_duplicate_facility;
 
   private boolean is_copy;
+
+  /** <code>is_same_date</code> 開始日時と終了日時が同じかどうか */
+  private boolean is_same_date;
 
   /** アクセス権限の機能名 */
   private String aclPortletFeature = null;
@@ -423,6 +426,12 @@ public class ScheduleFormData extends ALAbstractFormData {
       end_date.setValue(tmpEnd);
     }
     end_date.setFieldName("終了日時");
+    // 開始日時と終了日時が同じか
+    if (start_date.toString().equals(end_date.toString())) {
+      is_same_date = true;
+    } else {
+      is_same_date = false;
+    }
     // 繰り返しタイプ
     repeat_type = new ALStringField();
     repeat_type.setFieldName("繰り返しタイプ");
@@ -567,6 +576,17 @@ public class ScheduleFormData extends ALAbstractFormData {
     boolean res = super.setFormData(rundata, context, msgList);
     if (res) {
       try {
+        // 終了日時がnullの場合、開始日時と同じにする
+        if (rundata.getParameters().containsKey("end_date_hour")
+          && rundata.getParameters().containsKey("end_date_minute")) {
+          if ("".equals(rundata.getParameters().get("end_date_hour"))
+            && "".equals(rundata.getParameters().get("end_date_minute"))) {
+            end_date = start_date;
+          } else if ("".equals(rundata.getParameters().get("end_date_hour"))
+            || "".equals(rundata.getParameters().get("end_date_minute"))) {
+            end_date = null;
+          }
+        }
         // 終日
         if (all_day_flag.getValue().equals("ON") && is_span) {
           end_date.setValue(start_date.getValue());
@@ -2612,6 +2632,15 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   public int getMsgType() {
     return msg_type;
+  }
+
+  /**
+   * 開始日時と終了日時が同じかどうか返します。
+   * 
+   * @return
+   */
+  public boolean getIsSameDate() {
+    return is_same_date;
   }
 
   /**
