@@ -226,7 +226,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                 if(member_to) {
                      var t_o = member_to.options;
                      for(i = 0 ; i < t_o.length; i++ ) {
-                       if(((item.type == "U") && (item.ownerId == t_o[i].value)) || ((item.type == "F") && ("f" + item.ownerId == t_o[i].value))){
+                       if(((item.type == "U") && (item.ownerId == t_o[i].value)) || ((item.type == "F") && (item.ownerId == t_o[i].value))){
                            str_tmp = i %  aipo.calendar.maximum_to;
                        }
                        if(item.memberList){
@@ -376,7 +376,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                     if(member_to) {
                          var t_o = member_to.options;
                          for(i = 0 ; i < t_o.length; i++ ) {
-                           if(((item.type == "U") && (item.ownerId == t_o[i].value)) || ((item.type == "F") && ("f" + item.ownerId == t_o[i].value))){
+                           if(((item.type == "U") && (item.ownerId == t_o[i].value)) || ((item.type == "F") && (item.ownerId == t_o[i].value))){
                                str_tmp = i %  aipo.calendar.maximum_to;
                            }
                            if(item.memberList){
@@ -1001,9 +1001,6 @@ dojo.declare("aipo.calendar.WeeklyScheduleDraggable", [aimluck.dnd.Draggable], {
             return;
         }
         var uid = this.schedule.ownerId;
-        if(this.schedule.type == "F"){
-            uid = "f"+ uid;
-        }
 
         aipo.common.showDialog(ptConfig[this.portletId].detailUrl + "&entityId=" + this.schedule.scheduleId + "&view_date=" + ptConfig[this.portletId].jsonData.date[this.schedule.index] + "&userid=" + uid, this.portletId, aipo.schedule.onLoadScheduleDetail );
         //** FIXME IEで追加ダイアログを閉じるとスクロールバーのｙ座標が強制的に０になってしまう現象
@@ -1276,9 +1273,6 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDraggable", [aimluck.dnd.Draggable
             return;
         }
         var uid = this.schedule.ownerId;
-        if(this.schedule.type == "F"){
-            uid = "f"+ uid;
-        }
         aipo.common.showDialog(ptConfig[this.portletId].detailUrl + "&entityId=" + this.schedule.scheduleId + "&view_date=" + ptConfig[this.portletId].jsonData.date[this.schedule.index]  + "&userid=" + uid, this.portletId, aipo.schedule.onLoadScheduleDetail);
         //** FIXME IEで追加ダイアログを閉じるとスクロールバーのｙ座標が強制的に０になってしまう現象
         aipo.schedule.tmpScroll = parseInt(dojo.byId('weeklyScrollPane_'+this.portletId)["scrollTop"]);

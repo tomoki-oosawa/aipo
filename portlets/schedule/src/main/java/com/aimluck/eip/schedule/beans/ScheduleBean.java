@@ -153,7 +153,7 @@ public class ScheduleBean implements ALData, Cloneable {
     try {
       if (ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY.equals(rd.getType())) {
         this.owner_name.setValue("");
-        this.owner_id.setValue("");
+        this.owner_id.setValue("f" + Integer.toString(rd.getUserId()));
       } else {
         ALEipUser user = ALEipUtils.getALEipUser(rd.getUserId());
         if (user == null) {

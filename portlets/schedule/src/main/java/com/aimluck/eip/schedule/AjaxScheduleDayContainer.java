@@ -139,6 +139,7 @@ public class AjaxScheduleDayContainer implements ALData {
 
         if (!rd.isDummy()
           && !rd2.isDummy()
+          && (rd.getType().equals(rd2.getType()))
           && (rd.getUserId() == rd2.getUserId())) {
           // ダミースケジュールではないときに
           // 重複スケジュールを検出する。
