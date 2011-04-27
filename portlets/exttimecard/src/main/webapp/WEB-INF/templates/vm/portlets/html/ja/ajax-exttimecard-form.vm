@@ -60,21 +60,14 @@
 <!-- <input type="hidden" name="punch_date_second" value="0" /> -->
 #ALtditem($!result.DateStr)
 
-#if($mode!="new_form")
-#ALtdcaption("$!result.getFieldName('delete_flag')")
+#ALtdcaption("#ALrequired($!result.getFieldName('type'))")
 #ALtditemheader()
-<input name="delete_flag" type="checkbox" id="delete_flag_$!{portlet.ID}" onClick="aipo.exttimecard.toggleSelectBox(this);" /><label for="delete_flag_$!{portlet.ID}">削除</label>
-#ALtditemfooter()
-#end
-
-<tr id="type_box">
-<td class="caption">#ALrequired($!result.getFieldName('type'))</td>
-#ALtditemheader()
-<input name="type" type="radio" value="P" id="typeP_$!{portlet.ID}" onClick="aipo.exttimecard.displayTimeBox();" #if ($!result.Type.toString() == "P") checked="checked" #end /><label for="typeP_$!{portlet.ID}">出勤</label>
+<input name="type" type="radio" value="P" id="typeP_$!{portlet.ID}" onClick="aipo.exttimecard.displayTimeBox();" #if ($!result.Type.toString() == "P" || $!result.Type.toString() == "D") checked="checked" #end /><label for="typeP_$!{portlet.ID}">出勤</label>
 <input name="type" type="radio" value="A" id="typeA_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "A") checked="checked" #end /><label for="typeA_$!{portlet.ID}">欠勤</label>
 <input name="type" type="radio" value="H" id="typeH_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "H") checked="checked" #end /><label for="typeH_$!{portlet.ID}">有休</label>
 <input name="type" type="radio" value="C" id="typeC_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "C") checked="checked" #end /><label for="typeC_$!{portlet.ID}">代休</label>
 <input name="type" type="radio" value="E" id="typeE_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "E") checked="checked" #end /><label for="typeE_$!{portlet.ID}">その他</label>
+<input name="type" type="radio" value="D" id="typeD_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" /><label for="typeD_$!{portlet.ID}">未選択</label>
 #ALtditemfooter()
 
 #if($!result.IsPast)
@@ -83,7 +76,7 @@
 #ALtextfield('reason' $!result.Reason '90%' 50 'active')
 #ALtditemfooter()
 
-<tr id="clock_time_box" #if ($!result.Type.toString() != "P") style="display:none" #end>
+<tr id="clock_time_box" #if ($!result.Type.toString() != "P" && $!result.Type.toString() != "D") style="display:none" #end>
 <td class="caption">#ALrequired($!result.getFieldName('clock_in_time'))</td>
 #ALtditemheader()
 <select name="clock_in_time_hour" size="1" >
@@ -127,7 +120,7 @@
 </select>
 #ALtditemfooter()
 
-<tr id="outgoing_comeback_box" #if ($!result.Type.toString() != "P") style="display:none" #end>
+<tr id="outgoing_comeback_box" #if ($!result.Type.toString() != "P" && $!result.Type.toString() != "D") style="display:none" #end>
 <td class="caption">$!result.getFieldName('outgoing_comeback')</td>
 #ALtditemheader()
 #foreach ( $outcome in [1..5] )

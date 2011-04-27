@@ -129,8 +129,6 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   private ALStringField rest_num;
 
-  private ALStringField delete_flag;
-
   /** タイムカードの設定 */
   private EipTExtTimecardSystem timecard_system;
 
@@ -206,10 +204,6 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
     rest_num = new ALStringField();
     rest_num.setValue("0");
-
-    delete_flag = new ALStringField();
-    delete_flag.setFieldName("削除");
-    delete_flag.setValue("");
 
     try {
       Field field;
@@ -334,7 +328,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       }
 
       /** 更新・挿入時 */
-      if (edit_mode.equals("") && !"on".equals(delete_flag.getValue())) {
+      if (edit_mode.equals("") && "P".equals(type.getValue())) {
         /** 日付を punch_date に合わせる */
         if (ajustDate(clock_in_time, punch_date)
           && ajustDate(clock_out_time, punch_date)) {
@@ -771,6 +765,9 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
       // タイプ
       timecard.setType(type.getValue());
+      if ("D".equals(type.getValue())) {
+        timecard.setType("D");
+      }
 
       if (edit_mode.equals("punchin")) {
         // 出勤
@@ -792,19 +789,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         /** 未来時刻への打刻は不可 */
 
         if (cal.getTime().after(punch_date.getValue())) {
-          // 削除する
-          if ("on".equals(delete_flag.getValue())) {
-            // タイプ
-            timecard.setType("P");
-            // 出退勤時間
-            timecard.setClockInTime(null);
-            timecard.setClockOutTime(null);
-            // 外出・復帰時間
-            for (int i = 1; i <= EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY; i++) {
-              timecard.setOutgoingTime(null, i);
-              timecard.setComebackTime(null, i);
-            }
-          } else if (!"P".equals(type.getValue())) {
+          if (!"P".equals(type.getValue())) {
             // 出退勤時間
             timecard.setClockInTime(null);
             timecard.setClockOutTime(null);
@@ -906,6 +891,9 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
         // タイプ
         timecard.setType(type.getValue());
+        if ("D".equals(type.getValue())) {
+          timecard.setType("D");
+        }
         // 修正理由
         timecard.setReason(reason.getValue());
         // 備考
@@ -915,18 +903,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         // Calendar cal = Calendar.getInstance();
         if (cal.getTime().after(punch_date.getValue())) {
           // 削除する
-          if ("on".equals(delete_flag.getValue())) {
-            // タイプ
-            timecard.setType("P");
-            // 出退勤時間
-            timecard.setClockInTime(null);
-            timecard.setClockOutTime(null);
-            // 外出・復帰時間
-            for (int i = 1; i <= EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY; i++) {
-              timecard.setOutgoingTime(null, i);
-              timecard.setComebackTime(null, i);
-            }
-          } else if (!"P".equals(type.getValue())) {
+          if (!"P".equals(type.getValue())) {
             // 出退勤時間
             timecard.setClockInTime(null);
             timecard.setClockOutTime(null);

@@ -261,13 +261,3 @@ aipo.exttimecard.displayTimeBox = function() {
     aipo.exttimecard.displayBox("clock_time_box");
     aipo.exttimecard.displayBox("outgoing_comeback_box");
 }
-
-aipo.exttimecard.toggleSelectBox = function(obj) {
-    if(obj.checked){
-        aipo.exttimecard.hideTimeBox();
-        aipo.exttimecard.hideBox("type_box");
-    }else{
-        aipo.exttimecard.displayTimeBox();
-        aipo.exttimecard.displayBox("type_box");
-    }
-}
