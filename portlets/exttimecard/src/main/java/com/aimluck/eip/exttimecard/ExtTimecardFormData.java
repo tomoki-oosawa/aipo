@@ -47,6 +47,7 @@ import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
@@ -126,7 +127,9 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   private String old_clock_out_time_minute;
 
-  private int rest_num;
+  private ALStringField rest_num;
+
+  private ALStringField delete_flag;
 
   /** タイムカードの設定 */
   private EipTExtTimecardSystem timecard_system;
@@ -201,7 +204,12 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
     alt_mode = "";
 
-    rest_num = 0;
+    rest_num = new ALStringField();
+    rest_num.setValue("0");
+
+    delete_flag = new ALStringField();
+    delete_flag.setFieldName("削除");
+    delete_flag.setValue("");
 
     try {
       Field field;
@@ -214,6 +222,58 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     } catch (Exception e) {
       return;
     }
+  }
+
+  /**
+   * フォームを表示します。
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * @return TRUE 成功 FALSE 失敗
+   */
+  @Override
+  public boolean doViewForm(ALAction action, RunData rundata, Context context) {
+    try {
+      init(action, rundata, context);
+      boolean isedit =
+        (ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID) != null);
+
+      action.setMode(isedit
+        ? ALEipConstants.MODE_EDIT_FORM
+        : ALEipConstants.MODE_NEW_FORM);
+      setMode(action.getMode());
+
+      List<String> msgList = new ArrayList<String>();
+      boolean res =
+        (isedit) ? loadFormData(rundata, context, msgList) : setFormData(
+          rundata,
+          context,
+          msgList);
+
+      int aclType = ALAccessControlConstants.VALUE_ACL_INSERT;
+      if (isedit || (getIsPast() || getIsToday())) {
+        aclType = ALAccessControlConstants.VALUE_ACL_UPDATE;
+      }
+      doCheckAclPermission(rundata, context, aclType);
+
+      action.setResultData(this);
+      if (!msgList.isEmpty()) {
+        action.addErrorMessages(msgList);
+      }
+      action.putData(rundata, context);
+      return res;
+    } catch (ALPermissionException e) {
+      ALEipUtils.redirectPermissionError(rundata);
+      return false;
+    } catch (ALPageNotFoundException e) {
+      ALEipUtils.redirectPageNotFound(rundata);
+      return false;
+    } catch (ALDBErrorException e) {
+      ALEipUtils.redirectDBError(rundata);
+      return false;
+    }
+
   }
 
   /**
@@ -274,7 +334,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       }
 
       /** 更新・挿入時 */
-      if (edit_mode.equals("")) {
+      if (edit_mode.equals("") && !"on".equals(delete_flag.getValue())) {
         /** 日付を punch_date に合わせる */
         if (ajustDate(clock_in_time, punch_date)
           && ajustDate(clock_out_time, punch_date)) {
@@ -286,136 +346,173 @@ public class ExtTimecardFormData extends ALAbstractFormData {
           }
         }
 
-        /** 外出／復帰時間をリストに代入 */
-        List<Map<String, Long>> list_from_to =
-          new ArrayList<Map<String, Long>>();
-        Field field_out, field_come;
-        for (int i = 1; i <= EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY; i++) {
-          field_out = this.getClass().getDeclaredField("outgoing_time" + i);
-          field_come = this.getClass().getDeclaredField("comeback_time" + i);
-          ALDateTimeField outgoing = (ALDateTimeField) field_out.get(this);
-          ALDateTimeField comeback = (ALDateTimeField) field_come.get(this);
-          if (ajustDate(outgoing, punch_date)
-            && ajustDate(comeback, punch_date)) {
-            long from = outgoing.getValue().getTime();
-            long to = comeback.getValue().getTime();
-            if (from <= to) {
-              if (clock_in_time.isNotNullValue()
+        /** 勤怠時間は必須項目 */
+        if (getIsPast() && "P".equals(type.getValue())) {
+          if (!clock_in_time.isNotNullValue()
+            || !clock_out_time.isNotNullValue()) {
+            msgList.add("『 <span class='em'>"
+              + clock_in_time.getFieldName()
+              + "</span> 』を入力してください。");
+          }
+          /** 外出復帰時間が適切に入力されているかチェック */
+          Field field_out, field_come;
+          for (int i = 1; i <= Integer.parseInt(rest_num.getValue()); i++) {
+            field_out = this.getClass().getDeclaredField("outgoing_time" + i);
+            field_come = this.getClass().getDeclaredField("comeback_time" + i);
+            ALDateTimeField outgoing = (ALDateTimeField) field_out.get(this);
+            ALDateTimeField comeback = (ALDateTimeField) field_come.get(this);
+            if (!outgoing.isNotNullValue() || !comeback.isNotNullValue()) {
+              msgList.add("『 <span class='em'>"
+                + outgoing_comeback.getFieldName()
+                + "</span> 』を入力してください。"
+                + "（"
+                + i
+                + "行目）");
+            }
+          }
+
+          /** 外出／復帰時間をリストに代入 */
+          List<Map<String, Long>> list_from_to =
+            new ArrayList<Map<String, Long>>();
+          for (int i = 1; i <= EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY; i++) {
+            field_out = this.getClass().getDeclaredField("outgoing_time" + i);
+            field_come = this.getClass().getDeclaredField("comeback_time" + i);
+            ALDateTimeField outgoing = (ALDateTimeField) field_out.get(this);
+            ALDateTimeField comeback = (ALDateTimeField) field_come.get(this);
+            if (ajustDate(outgoing, punch_date)
+              && ajustDate(comeback, punch_date)) {
+              long from = outgoing.getValue().getTime();
+              long to = comeback.getValue().getTime();
+              if (from <= to) {
+                if (clock_in_time.isNotNullValue()
                   && from < clock_in_time.getValue().getTime()) {
+                  msgList
+                    .add("『 <span class='em'>外出時刻</span> 』は『 <span class='em'>出勤時刻</span> 』以降の時刻を指定してください。（"
+                      + i
+                      + "行目）");
+                }
+                if (clock_out_time.isNotNullValue()
+                  && to > clock_out_time.getValue().getTime()) {
+                  msgList
+                    .add("『 <span class='em'>復帰時刻</span> 』は『 <span class='em'>退勤時刻</span> 』以前の時刻を指定してください。（"
+                      + i
+                      + "行目）");
+                }
+                HashMap<String, Long> from_to = new HashMap<String, Long>();
+                from_to.put("from", outgoing.getValue().getTime());
+                from_to.put("to", comeback.getValue().getTime());
+                list_from_to.add(from_to);
+              } else {
                 msgList
-                  .add("『 <span class='em'>外出時刻</span> 』は『 <span class='em'>出勤時刻</span> 』以降の時刻を指定してください。（"
+                  .add("『 <span class='em'>復帰時刻</span> 』は『 <span class='em'>外出時刻</span> 』以降の時刻を指定してください。（"
                     + i
                     + "行目）");
               }
-              if (clock_out_time.isNotNullValue()
-                && to > clock_out_time.getValue().getTime()) {
-                msgList
-                  .add("『 <span class='em'>復帰時刻</span> 』は『 <span class='em'>退勤時刻</span> 』以前の時刻を指定してください。（"
-                    + i
-                    + "行目）");
-              }
+            } else if (ajustDate(outgoing, punch_date)
+              && !ajustDate(comeback, punch_date)
+              && i == 1) {
               HashMap<String, Long> from_to = new HashMap<String, Long>();
               from_to.put("from", outgoing.getValue().getTime());
-              from_to.put("to", comeback.getValue().getTime());
+              // from_to.put("to", comeback.getValue().getTime());
               list_from_to.add(from_to);
-            } else {
-              msgList
-                .add("『 <span class='em'>復帰時刻</span> 』は『 <span class='em'>外出時刻</span> 』以降の時刻を指定してください。（"
-                  + i
-                  + "行目）");
+              return (msgList.size() == 0);
             }
-          } else if (ajustDate(outgoing, punch_date)
-            && !ajustDate(comeback, punch_date)
-            && i == 1) {
-            HashMap<String, Long> from_to = new HashMap<String, Long>();
-            from_to.put("from", outgoing.getValue().getTime());
-            // from_to.put("to", comeback.getValue().getTime());
-            list_from_to.add(from_to);
-            return (msgList.size() == 0);
           }
-        }
 
-        /** 外出時間の重複をチェックする */
-        int i = 1;
-        if (list_from_to.size() > 0) {
-          List<Map<String, Long>> empty_from_to =
-            new ArrayList<Map<String, Long>>();
-          long min_from = list_from_to.get(0).get("from");
-          long max_to = list_from_to.get(0).get("to");
-          list_from_to.remove(0);
-          for (Map<String, Long> map : list_from_to) {
-            long new_from = map.get("from");
-            long new_to = map.get("to");
-            if (new_to <= min_from) {
-              Map<String, Long> empty = new HashMap<String, Long>();
-              empty.put("from", new_to);
-              empty.put("to", min_from);
-              empty_from_to.add(empty);
-              min_from = new_from;
-            } else if (new_from >= max_to) {
-              Map<String, Long> empty = new HashMap<String, Long>();
-              empty.put("from", max_to);
-              empty.put("to", new_from);
-              empty_from_to.add(empty);
-              max_to = new_to;
-            } else {
-              /** empty_from_toのリストから入れる場所を探す */
-              boolean duplicate_flag = true;
-              for (Map<String, Long> empty_map : empty_from_to) {
-                if (empty_map.get("from") <= new_from
-                  && empty_map.get("to") >= new_to) {
-                  /** 区間を分割し、もとあった空白を削除 */
-                  HashMap<String, Long> empty_left =
-                    new HashMap<String, Long>();
-                  empty_left.put("from", empty_map.get("from"));
-                  empty_left.put("to", new_from);
-                  empty_from_to.add(empty_left);
+          /** 外出時間の重複をチェックする */
+          int i = 1;
+          if (list_from_to.size() > 0) {
+            List<Map<String, Long>> empty_from_to =
+              new ArrayList<Map<String, Long>>();
+            long min_from = list_from_to.get(0).get("from");
+            long max_to = list_from_to.get(0).get("to");
+            list_from_to.remove(0);
+            for (Map<String, Long> map : list_from_to) {
+              long new_from = map.get("from");
+              long new_to = map.get("to");
+              if (new_to <= min_from) {
+                Map<String, Long> empty = new HashMap<String, Long>();
+                empty.put("from", new_to);
+                empty.put("to", min_from);
+                empty_from_to.add(empty);
+                min_from = new_from;
+              } else if (new_from >= max_to) {
+                Map<String, Long> empty = new HashMap<String, Long>();
+                empty.put("from", max_to);
+                empty.put("to", new_from);
+                empty_from_to.add(empty);
+                max_to = new_to;
+              } else {
+                /** empty_from_toのリストから入れる場所を探す */
+                boolean duplicate_flag = true;
+                for (Map<String, Long> empty_map : empty_from_to) {
+                  if (empty_map.get("from") <= new_from
+                    && empty_map.get("to") >= new_to) {
+                    /** 区間を分割し、もとあった空白を削除 */
+                    HashMap<String, Long> empty_left =
+                      new HashMap<String, Long>();
+                    empty_left.put("from", empty_map.get("from"));
+                    empty_left.put("to", new_from);
+                    empty_from_to.add(empty_left);
 
-                  HashMap<String, Long> empty_right =
-                    new HashMap<String, Long>();
-                  empty_right.put("from", new_to);
-                  empty_right.put("to", empty_map.get("to"));
-                  empty_from_to.add(empty_right);
+                    HashMap<String, Long> empty_right =
+                      new HashMap<String, Long>();
+                    empty_right.put("from", new_to);
+                    empty_right.put("to", empty_map.get("to"));
+                    empty_from_to.add(empty_right);
 
-                  empty_from_to.remove(empty_map);
+                    empty_from_to.remove(empty_map);
 
-                  duplicate_flag = false;
-                  break;
+                    duplicate_flag = false;
+                    break;
+                  }
+                }
+                if (duplicate_flag) {
+                  msgList.add("外出時間が重複しています。");
+                  return false;
                 }
               }
-              if (duplicate_flag) {
-                msgList.add("外出時間が重複しています。");
-                return false;
-              }
-            }
-          }
-
-          /** 並べ替える */
-          Collections.sort(empty_from_to, new Comparator<Map<String, Long>>() {
-            public int compare(Map<String, Long> o1, Map<String, Long> o2) {
-              Map<String, Long> hash1 = o1;
-              Map<String, Long> hash2 = o2;
-              long from1 = hash1.get("from");
-              long from2 = hash2.get("from");
-              if (from1 == from2) {
-                long to1 = hash1.get("to");
-                long to2 = hash2.get("to");
-                return (int) (to1 - to2);
-              } else {
-                return (int) (from1 - from2);
-              }
             }
 
-            @Override
-            public boolean equals(Object obj) {
-              return super.equals(obj);
-            }
-          });
+            /** 並べ替える */
+            Collections.sort(
+              empty_from_to,
+              new Comparator<Map<String, Long>>() {
+                public int compare(Map<String, Long> o1, Map<String, Long> o2) {
+                  Map<String, Long> hash1 = o1;
+                  Map<String, Long> hash2 = o2;
+                  long from1 = hash1.get("from");
+                  long from2 = hash2.get("from");
+                  if (from1 == from2) {
+                    long to1 = hash1.get("to");
+                    long to2 = hash2.get("to");
+                    return (int) (to1 - to2);
+                  } else {
+                    return (int) (from1 - from2);
+                  }
+                }
 
-          long from = min_from;
-          long to;
-          for (Map<String, Long> empty : empty_from_to) {
-            to = empty.get("from");
+                @Override
+                public boolean equals(Object obj) {
+                  return super.equals(obj);
+                }
+              });
+
+            long from = min_from;
+            long to;
+            for (Map<String, Long> empty : empty_from_to) {
+              to = empty.get("from");
+              field_out = this.getClass().getDeclaredField("outgoing_time" + i);
+              field_come =
+                this.getClass().getDeclaredField("comeback_time" + i);
+              ALDateTimeField outgoing = (ALDateTimeField) field_out.get(this);
+              ALDateTimeField comeback = (ALDateTimeField) field_come.get(this);
+              outgoing.setValue(new Date(from));
+              comeback.setValue(new Date(to));
+              i++;
+              from = empty.get("to");
+            }
+            to = max_to;
             field_out = this.getClass().getDeclaredField("outgoing_time" + i);
             field_come = this.getClass().getDeclaredField("comeback_time" + i);
             ALDateTimeField outgoing = (ALDateTimeField) field_out.get(this);
@@ -423,24 +520,15 @@ public class ExtTimecardFormData extends ALAbstractFormData {
             outgoing.setValue(new Date(from));
             comeback.setValue(new Date(to));
             i++;
-            from = empty.get("to");
           }
-          to = max_to;
-          field_out = this.getClass().getDeclaredField("outgoing_time" + i);
-          field_come = this.getClass().getDeclaredField("comeback_time" + i);
-          ALDateTimeField outgoing = (ALDateTimeField) field_out.get(this);
-          ALDateTimeField comeback = (ALDateTimeField) field_come.get(this);
-          outgoing.setValue(new Date(from));
-          comeback.setValue(new Date(to));
-          i++;
-        }
 
-        /** 余った場所には空のALDateTimeFieldを追加する */
-        for (; i <= EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY; i++) {
-          field_out = this.getClass().getDeclaredField("outgoing_time" + i);
-          field_come = this.getClass().getDeclaredField("comeback_time" + i);
-          field_out.set(this, new ALDateTimeField());
-          field_come.set(this, new ALDateTimeField());
+          /** 余った場所には空のALDateTimeFieldを追加する */
+          for (; i <= EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY; i++) {
+            field_out = this.getClass().getDeclaredField("outgoing_time" + i);
+            field_come = this.getClass().getDeclaredField("comeback_time" + i);
+            field_out.set(this, new ALDateTimeField());
+            field_come.set(this, new ALDateTimeField());
+          }
         }
       }
     } catch (Exception ex) {
@@ -613,13 +701,15 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       create_date.setValue(timecard.getCreateDate());
       update_date.setValue(timecard.getUpdateDate());
 
+      int rest_num_tmp = 0;
       for (int i = 1; i <= 5; i++) {
         if (this.getOutgoingTime(i).isNotNullValue()) {
-          this.rest_num++;
+          rest_num_tmp++;
         } else if (this.getComebackTime(i).isNotNullValue()) {
-          this.rest_num++;
+          rest_num_tmp++;
         }
       }
+      rest_num.setValue(Integer.toString(rest_num_tmp));
 
       // 日時をセッションに保存
       ALEipUtils.setTemp(rundata, context, "punch_date", punch_date
@@ -702,26 +792,46 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         /** 未来時刻への打刻は不可 */
 
         if (cal.getTime().after(punch_date.getValue())) {
-          // 出退勤時間
-          if (!clock_in_time.isNullHour() && !clock_in_time.isNullMinute()) {
-            timecard.setClockInTime(clock_in_time.getValue());
-          }
-          if (!clock_out_time.isNullHour() && !clock_out_time.isNullMinute()) {
-            timecard.setClockOutTime(clock_out_time.getValue());
-          }
-
-          // 外出・復帰時間
-          Field field_out, field_come;
-          for (int i = 1; i <= EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY; i++) {
-            field_out = this.getClass().getDeclaredField("outgoing_time" + i);
-            field_come = this.getClass().getDeclaredField("comeback_time" + i);
-            ALDateTimeField outgoing = (ALDateTimeField) field_out.get(this);
-            ALDateTimeField comeback = (ALDateTimeField) field_come.get(this);
-            if (!outgoing.isNullHour() && !outgoing.isNullMinute()) {
-              timecard.setOutgoingTime(outgoing.getValue(), i);
+          // 削除する
+          if ("on".equals(delete_flag.getValue())) {
+            // タイプ
+            timecard.setType("P");
+            // 出退勤時間
+            timecard.setClockInTime(null);
+            timecard.setClockOutTime(null);
+            // 外出・復帰時間
+            for (int i = 1; i <= EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY; i++) {
+              timecard.setOutgoingTime(null, i);
+              timecard.setComebackTime(null, i);
             }
-            if (!comeback.isNullHour() && !comeback.isNullMinute()) {
-              timecard.setComebackTime(comeback.getValue(), i);
+          } else if (!"P".equals(type.getValue())) {
+            // 出退勤時間
+            timecard.setClockInTime(null);
+            timecard.setClockOutTime(null);
+            // 外出・復帰時間
+            for (int i = 1; i <= EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY; i++) {
+              timecard.setOutgoingTime(null, i);
+              timecard.setComebackTime(null, i);
+            }
+          } else {
+            // 出退勤時間
+            timecard.setClockInTime(clock_in_time.getValue());
+            timecard.setClockOutTime(clock_out_time.getValue());
+
+            // 外出・復帰時間
+            Field field_out, field_come;
+            for (int i = 1; i <= EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY; i++) {
+              field_out = this.getClass().getDeclaredField("outgoing_time" + i);
+              field_come =
+                this.getClass().getDeclaredField("comeback_time" + i);
+              ALDateTimeField outgoing = (ALDateTimeField) field_out.get(this);
+              ALDateTimeField comeback = (ALDateTimeField) field_come.get(this);
+              if (!outgoing.isNullHour() && !outgoing.isNullMinute()) {
+                timecard.setOutgoingTime(outgoing.getValue(), i);
+              }
+              if (!comeback.isNullHour() && !comeback.isNullMinute()) {
+                timecard.setComebackTime(comeback.getValue(), i);
+              }
             }
           }
 
@@ -794,43 +904,62 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       } else {
         // 修正時
 
-        /** 未来時刻への打刻は不可 */
-        // Calendar cal = Calendar.getInstance();
-        if (cal.getTime().after(punch_date.getValue())) {
-          // 出退勤時間
-          if (!clock_in_time.isNullHour() && !clock_in_time.isNullMinute()) {
-            timecard.setClockInTime(clock_in_time.getValue());
-          }
-          if (!clock_out_time.isNullHour() && !clock_out_time.isNullMinute()) {
-            timecard.setClockOutTime(clock_out_time.getValue());
-          }
-
-          // 外出・復帰時間
-          Field field_out, field_come;
-          for (int i = 1; i <= EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY; i++) {
-            field_out = this.getClass().getDeclaredField("outgoing_time" + i);
-            field_come = this.getClass().getDeclaredField("comeback_time" + i);
-            timecard.setOutgoingTime(null, i);
-            timecard.setComebackTime(null, i);
-
-            ALDateTimeField outgoing = (ALDateTimeField) field_out.get(this);
-            ALDateTimeField comeback = (ALDateTimeField) field_come.get(this);
-            if (!outgoing.isNullHour() && !outgoing.isNullMinute()) {
-              timecard.setOutgoingTime(outgoing.getValue(), i);
-            }
-            if (!comeback.isNullHour() && !comeback.isNullMinute()) {
-              timecard.setComebackTime(comeback.getValue(), i);
-            }
-          }
-        }
-
         // タイプ
         timecard.setType(type.getValue());
-
         // 修正理由
         timecard.setReason(reason.getValue());
         // 備考
         timecard.setRemarks(remarks.getValue());
+
+        /** 未来時刻への打刻は不可 */
+        // Calendar cal = Calendar.getInstance();
+        if (cal.getTime().after(punch_date.getValue())) {
+          // 削除する
+          if ("on".equals(delete_flag.getValue())) {
+            // タイプ
+            timecard.setType("P");
+            // 出退勤時間
+            timecard.setClockInTime(null);
+            timecard.setClockOutTime(null);
+            // 外出・復帰時間
+            for (int i = 1; i <= EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY; i++) {
+              timecard.setOutgoingTime(null, i);
+              timecard.setComebackTime(null, i);
+            }
+          } else if (!"P".equals(type.getValue())) {
+            // 出退勤時間
+            timecard.setClockInTime(null);
+            timecard.setClockOutTime(null);
+            // 外出・復帰時間
+            for (int i = 1; i <= EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY; i++) {
+              timecard.setOutgoingTime(null, i);
+              timecard.setComebackTime(null, i);
+            }
+          } else {
+            // 出退勤時間
+            timecard.setClockInTime(clock_in_time.getValue());
+            timecard.setClockOutTime(clock_out_time.getValue());
+
+            // 外出・復帰時間
+            Field field_out, field_come;
+            for (int i = 1; i <= EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY; i++) {
+              field_out = this.getClass().getDeclaredField("outgoing_time" + i);
+              field_come =
+                this.getClass().getDeclaredField("comeback_time" + i);
+              timecard.setOutgoingTime(null, i);
+              timecard.setComebackTime(null, i);
+
+              ALDateTimeField outgoing = (ALDateTimeField) field_out.get(this);
+              ALDateTimeField comeback = (ALDateTimeField) field_come.get(this);
+              if (!outgoing.isNullHour() && !outgoing.isNullMinute()) {
+                timecard.setOutgoingTime(outgoing.getValue(), i);
+              }
+              if (!comeback.isNullHour() && !comeback.isNullMinute()) {
+                timecard.setComebackTime(comeback.getValue(), i);
+              }
+            }
+          }
+        }
       }
 
       // 更新日
@@ -918,6 +1047,30 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     Date now = Calendar.getInstance().getTime();
     Date date = punch_date.getValue();
     return date.before(now);
+  }
+
+  /**
+   * 日付が現在かどうか
+   * 
+   * @return
+   */
+  public boolean getIsToday() {
+    int change_hour =
+      ExtTimecardUtils
+        .getEipTExtTimecardSystemByUserId(login_uid)
+        .getChangeHour();
+    Calendar cal = Calendar.getInstance();
+    Date date = punch_date.getValue();
+    boolean is_today = false;
+    if ((Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) < change_hour) {
+      Calendar tmp_cal = Calendar.getInstance();
+      tmp_cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal
+        .get(Calendar.DATE));
+      is_today = ExtTimecardUtils.sameDay(date, tmp_cal.getTime());
+    } else {
+      is_today = ExtTimecardUtils.sameDay(date, cal.getTime());
+    }
+    return is_today;
   }
 
   /**
@@ -1126,12 +1279,12 @@ public class ExtTimecardFormData extends ALAbstractFormData {
    * 外出数をゲットする
    */
   public int getRestNum() {
-
-    if (this.rest_num == 0) {
-      return 1;
-    } else {
-      return this.rest_num;
-    }
+    return Integer.parseInt(rest_num.getValue());
+    // if (this.rest_num == 0) {
+    // return 1;
+    // } else {
+    // return this.rest_num;
+    // }
 
   }
 }

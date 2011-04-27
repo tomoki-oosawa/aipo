@@ -135,41 +135,22 @@ aipo.exttimecard.onSubmit = function(form) {
 }
 
 aipo.exttimecard.displayOutCome = function(obj){
-	var id = obj.id;
-
-	if(id == "plus1"){
-		aipo.exttimecard.moveButton(id, "plus2");
-		aipo.exttimecard.displayBox("rest_num2");
+    var id="";
+    var rest_obj=null;
+    var i=1;
+	for(i=1;i<=5;i++){
+	    if(i==5){
+	        dojo.byId("plus").style.display = "none";
+	    }
+	    id = "rest_num" +i;
+	    rest_obj = dojo.byId(id);
+	    if(rest_obj != null && rest_obj.style.display == "none"){
+	        rest_obj.style.display = "block";
+	        break;
+	    }
 	}
-	else if(id == "plus2"){
-		aipo.exttimecard.moveButton(id, "plus3");
-		aipo.exttimecard.displayBox("rest_num3");
-	}
-	else if(id == "plus3"){
-		aipo.exttimecard.moveButton(id, "plus4");
-		aipo.exttimecard.displayBox("rest_num4");
-	}
-	else if(id == "plus4"){
-		aipo.exttimecard.moveButton(id, "dummy");
-		aipo.exttimecard.displayBox("rest_num5");
-	}
-	else if(id == "plus5"){
-
-	}
-}
-
-aipo.exttimecard.moveButton = function(id1, id2){
-
-	obj1 = dojo.byId(id1);
-	obj2 = dojo.byId(id2);
-
-	if(obj1 != null){
-		obj1.style.display = "none";
-	}
-
-	if(obj2 != null){
-		obj2.style.display = "";
-	}
+	// 外出の回数をセット
+    aipo.exttimecard.setRestNum();
 }
 
 aipo.exttimecard.displayBox = function(id){
@@ -180,6 +161,89 @@ aipo.exttimecard.displayBox = function(id){
 	}
 }
 
+aipo.exttimecard.hideOutCome = function(obj){
+    var id = obj.id;
+
+    if(id == "minus1"){
+        aipo.exttimecard.moveDataOutCome(1);
+        aipo.exttimecard.hideOutComeBox();
+    }
+    else if(id == "minus2"){
+        aipo.exttimecard.moveDataOutCome(2);
+        aipo.exttimecard.hideOutComeBox();
+    }
+    else if(id == "minus3"){
+        aipo.exttimecard.moveDataOutCome(3);
+        aipo.exttimecard.hideOutComeBox();
+    }
+    else if(id == "minus4"){
+        aipo.exttimecard.moveDataOutCome(4);
+        aipo.exttimecard.hideOutComeBox();
+    }
+    else if(id == "minus5"){
+        aipo.exttimecard.hideOutComeBox();
+    }
+    
+    dojo.byId("plus").style.display = "block";
+    aipo.exttimecard.setRestNum();
+}
+
+aipo.exttimecard.moveDataOutCome = function(num){
+    var i=num;
+    for(i;i<=4;i++){
+        var from=i+1;
+        var to=i;
+        dojo.byId("outgoing_time"+to+"_hour").selectedIndex 
+            = dojo.byId("outgoing_time"+from+"_hour").selectedIndex;
+        dojo.byId("outgoing_time"+to+"_minute").selectedIndex 
+            = dojo.byId("outgoing_time"+from+"_minute").selectedIndex;
+        dojo.byId("comeback_time"+to+"_hour").selectedIndex 
+            = dojo.byId("comeback_time"+from+"_hour").selectedIndex;
+        dojo.byId("comeback_time"+to+"_minute").selectedIndex 
+            = dojo.byId("comeback_time"+from+"_minute").selectedIndex;
+    }
+    // 5番目は削除
+    dojo.byId("outgoing_time"+5+"_hour").selectedIndex = 0;
+    dojo.byId("outgoing_time"+5+"_minute").selectedIndex = 0;
+    dojo.byId("comeback_time"+5+"_hour").selectedIndex = 0;
+    dojo.byId("comeback_time"+5+"_minute").selectedIndex = 0;
+}
+
+aipo.exttimecard.hideOutComeBox = function(){
+    var id="";
+    var rest_obj=null;
+    var i=5;
+    for(i;i>=1;i--){
+        id = "rest_num" +i;
+        rest_obj = dojo.byId(id);
+        if(rest_obj != null && rest_obj.style.display != "none"){
+            rest_obj.style.display = "none";
+            break;
+        }
+    }
+}
+
+aipo.exttimecard.setRestNum = function(){
+    var rest_num = 0;
+    for(var i=1;i<=5;i++){
+        var id = "rest_num" +i;
+        var rest_obj = dojo.byId(id);
+        if(rest_obj != null && rest_obj.style.display != "none"){
+            rest_num++;
+        }
+    }
+    // 外出の回数をセット
+    dojo.byId("rest_num").value = rest_num;
+}
+
+aipo.exttimecard.hideBox = function(id){
+
+    obj = dojo.byId(id);
+    if(obj != null){
+        obj.style.display = "none";
+    }
+}
+
 aipo.exttimecard.hideDialog = function() {
     var arrDialog = dijit.byId("modalDialog");
     if(arrDialog){
@@ -188,3 +252,22 @@ aipo.exttimecard.hideDialog = function() {
     aipo.portletReload('exttimecard');
 };
 
+aipo.exttimecard.hideTimeBox = function() {
+    aipo.exttimecard.hideBox("clock_time_box");
+    aipo.exttimecard.hideBox("outgoing_comeback_box");
+}
+
+aipo.exttimecard.displayTimeBox = function() {
+    aipo.exttimecard.displayBox("clock_time_box");
+    aipo.exttimecard.displayBox("outgoing_comeback_box");
+}
+
+aipo.exttimecard.toggleSelectBox = function(obj) {
+    if(obj.checked){
+        aipo.exttimecard.hideTimeBox();
+        aipo.exttimecard.hideBox("type_box");
+    }else{
+        aipo.exttimecard.displayTimeBox();
+        aipo.exttimecard.displayBox("type_box");
+    }
+}
