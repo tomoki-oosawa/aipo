@@ -149,176 +149,121 @@ ALTER TABLE EIP_T_ACL_ROLE ALTER NOTE TYPE TEXT
 ALTER TABLE EIP_T_ACL_ROLE ALTER NOTE TYPE TEXT
 ;
 
-CREATE SEQUENCE pk_aipo_license INCREMENT 20;
-SELECT setval('pk_aipo_license',(SELECT max(license_id) FROM aipo_license));
+ALTER SEQUENCE aipo_license_license_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_facility_group_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_m_address_group_group_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_m_addressbook_address_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_m_addressbook_company_company_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_m_company_company_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_m_facility_facility_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_m_mail_account_account_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_m_mail_notify_conf_notify_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_m_position_position_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_m_post_post_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_m_user_position_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_acl_portlet_feature_feature_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_acl_role_role_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_acl_user_role_map_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_addressbook_group_map_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_blog_blog_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_blog_comment_comment_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_blog_entry_entry_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_blog_file_file_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_blog_footmark_map_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_blog_thema_thema_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_cabinet_file_file_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_cabinet_folder_folder_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_cabinet_folder_map_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_common_category_common_category_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_eventlog_eventlog_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_ext_timecard_timecard_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_ext_timecard_system_system_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_ext_timecard_system_map_system_map_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_mail_mail_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_mail_filter_filter_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_mail_folder_folder_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_memo_memo_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_msgboard_category_category_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_msgboard_category_map_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_msgboard_file_file_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_msgboard_topic_topic_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_note_note_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_note_map_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_schedule_schedule_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_schedule_map_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_timecard_timecard_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_timecard_settings_timecard_settings_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_todo_todo_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_todo_category_category_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_whatsnew_whatsnew_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_workflow_category_category_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_workflow_file_file_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_workflow_request_request_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_workflow_request_map_id_seq INCREMENT BY 20;
+ALTER SEQUENCE eip_t_workflow_route_route_id_seq INCREMENT BY 20;
+ALTER SEQUENCE turbine_group_group_id_seq INCREMENT BY 20;
+ALTER SEQUENCE turbine_permission_permission_id_seq INCREMENT BY 20;
+ALTER SEQUENCE turbine_role_role_id_seq INCREMENT BY 20;
+ALTER SEQUENCE turbine_user_group_role_id_seq INCREMENT BY 20;
+ALTER SEQUENCE turbine_user_user_id_seq INCREMENT BY 20;
 
-CREATE SEQUENCE pk_eip_facility_group INCREMENT 20;
-SELECT setval('pk_eip_facility_group',(SELECT max(id) FROM eip_facility_group));
-
-CREATE SEQUENCE pk_eip_m_address_group INCREMENT 20;
-SELECT setval('pk_eip_m_address_group',(SELECT max(group_id) FROM eip_m_address_group));
-
-CREATE SEQUENCE pk_eip_m_addressbook INCREMENT 20;
-SELECT setval('pk_eip_m_addressbook',(SELECT max(address_id) FROM eip_m_addressbook));
-
-CREATE SEQUENCE pk_eip_m_addressbook_company INCREMENT 20;
-SELECT setval('pk_eip_m_addressbook_company',(SELECT max(company_id) FROM eip_m_addressbook_company));
-
-CREATE SEQUENCE pk_eip_m_company INCREMENT 20;
-SELECT setval('pk_eip_m_company',(SELECT max(company_id) FROM eip_m_company));
-
-CREATE SEQUENCE pk_eip_m_facility INCREMENT 20;
-SELECT setval('pk_eip_m_facility',(SELECT max(facility_id) FROM eip_m_facility));
-
-CREATE SEQUENCE pk_eip_m_mail_account INCREMENT 20;
-SELECT setval('pk_eip_m_mail_account',(SELECT max(account_id) FROM eip_m_mail_account));
-
-CREATE SEQUENCE pk_eip_m_mail_notify_conf INCREMENT 20;
-SELECT setval('pk_eip_m_mail_notify_conf',(SELECT max(notify_id) FROM eip_m_mail_notify_conf));
-
-CREATE SEQUENCE pk_eip_m_position INCREMENT 20;
-SELECT setval('pk_eip_m_position',(SELECT max(position_id) FROM eip_m_position));
-
-CREATE SEQUENCE pk_eip_m_post INCREMENT 20;
-SELECT setval('pk_eip_m_post',(SELECT max(post_id) FROM eip_m_post));
-
-CREATE SEQUENCE pk_eip_m_user_position INCREMENT 20;
-SELECT setval('pk_eip_m_user_position',(SELECT max(id) FROM eip_m_user_position));
-
-CREATE SEQUENCE pk_eip_t_acl_portlet_feature INCREMENT 20;
-SELECT setval('pk_eip_t_acl_portlet_feature',(SELECT max(feature_id) FROM eip_t_acl_portlet_feature));
-
-CREATE SEQUENCE pk_eip_t_acl_role INCREMENT 20;
-SELECT setval('pk_eip_t_acl_role',(SELECT max(role_id) FROM eip_t_acl_role));
-
-CREATE SEQUENCE pk_eip_t_acl_user_role_map INCREMENT 20;
-SELECT setval('pk_eip_t_acl_user_role_map',(SELECT max(id) FROM eip_t_acl_user_role_map));
-
-CREATE SEQUENCE pk_eip_t_addressbook_group_map INCREMENT 20;
-SELECT setval('pk_eip_t_addressbook_group_map',(SELECT max(id) FROM eip_t_addressbook_group_map));
-
-CREATE SEQUENCE pk_eip_t_blog INCREMENT 20;
-SELECT setval('pk_eip_t_blog',(SELECT max(blog_id) FROM eip_t_blog));
-
-CREATE SEQUENCE pk_eip_t_blog_comment INCREMENT 20;
-SELECT setval('pk_eip_t_blog_comment',(SELECT max(comment_id) FROM eip_t_blog_comment));
-
-CREATE SEQUENCE pk_eip_t_blog_entry INCREMENT 20;
-SELECT setval('pk_eip_t_blog_entry',(SELECT max(entry_id) FROM eip_t_blog_entry));
-
-CREATE SEQUENCE pk_eip_t_blog_file INCREMENT 20;
-SELECT setval('pk_eip_t_blog_file',(SELECT max(file_id) FROM eip_t_blog_file));
-
-CREATE SEQUENCE pk_eip_t_blog_footmark_map INCREMENT 20;
-SELECT setval('pk_eip_t_blog_footmark_map',(SELECT max(id) FROM eip_t_blog_footmark_map));
-
-CREATE SEQUENCE pk_eip_t_blog_thema INCREMENT 20;
-SELECT setval('pk_eip_t_blog_thema',(SELECT max(thema_id) FROM eip_t_blog_thema));
-
-CREATE SEQUENCE pk_eip_t_cabinet_file INCREMENT 20;
-SELECT setval('pk_eip_t_cabinet_file',(SELECT max(file_id) FROM eip_t_cabinet_file));
-
-CREATE SEQUENCE pk_eip_t_cabinet_folder INCREMENT 20;
-SELECT setval('pk_eip_t_cabinet_folder',(SELECT max(folder_id) FROM eip_t_cabinet_folder));
-
-CREATE SEQUENCE pk_eip_t_cabinet_folder_map INCREMENT 20;
-SELECT setval('pk_eip_t_cabinet_folder_map',(SELECT max(id) FROM eip_t_cabinet_folder_map));
-
-CREATE SEQUENCE pk_eip_t_common_category INCREMENT 20;
-SELECT setval('pk_eip_t_common_category',(SELECT max(common_category_id) FROM eip_t_common_category));
-
-CREATE SEQUENCE pk_eip_t_eventlog INCREMENT 20;
-SELECT setval('pk_eip_t_eventlog',(SELECT max(eventlog_id) FROM eip_t_eventlog));
-
-CREATE SEQUENCE pk_eip_t_ext_timecard INCREMENT 20;
-SELECT setval('pk_eip_t_ext_timecard',(SELECT max(timecard_id) FROM eip_t_ext_timecard));
-
-CREATE SEQUENCE pk_eip_t_ext_timecard_system INCREMENT 20;
-SELECT setval('pk_eip_t_ext_timecard_system',(SELECT max(system_id) FROM eip_t_ext_timecard_system));
-
-CREATE SEQUENCE pk_eip_t_ext_timecard_system_map INCREMENT 20;
-SELECT setval('pk_eip_t_ext_timecard_system_map',(SELECT max(system_map_id) FROM eip_t_ext_timecard_system_map));
-
-CREATE SEQUENCE pk_eip_t_mail INCREMENT 20;
-SELECT setval('pk_eip_t_mail',(SELECT max(mail_id) FROM eip_t_mail));
-
-CREATE SEQUENCE pk_eip_t_mail_filter INCREMENT 20;
-SELECT setval('pk_eip_t_mail_filter',(SELECT max(filter_id) FROM eip_t_mail_filter));
-
-CREATE SEQUENCE pk_eip_t_mail_folder INCREMENT 20;
-SELECT setval('pk_eip_t_mail_folder',(SELECT max(folder_id) FROM eip_t_mail_folder));
-
-CREATE SEQUENCE pk_eip_t_memo INCREMENT 20;
-SELECT setval('pk_eip_t_memo',(SELECT max(memo_id) FROM eip_t_memo));
-
-CREATE SEQUENCE pk_eip_t_msgboard_category INCREMENT 20;
-SELECT setval('pk_eip_t_msgboard_category',(SELECT max(category_id) FROM eip_t_msgboard_category));
-
-CREATE SEQUENCE pk_eip_t_msgboard_category_map INCREMENT 20;
-SELECT setval('pk_eip_t_msgboard_category_map',(SELECT max(id) FROM eip_t_msgboard_category_map));
-
-CREATE SEQUENCE pk_eip_t_msgboard_file INCREMENT 20;
-SELECT setval('pk_eip_t_msgboard_file',(SELECT max(file_id) FROM eip_t_msgboard_file));
-
-CREATE SEQUENCE pk_eip_t_msgboard_topic INCREMENT 20;
-SELECT setval('pk_eip_t_msgboard_topic',(SELECT max(topic_id) FROM eip_t_msgboard_topic));
-
-CREATE SEQUENCE pk_eip_t_note INCREMENT 20;
-SELECT setval('pk_eip_t_note',(SELECT max(note_id) FROM eip_t_note));
-
-CREATE SEQUENCE pk_eip_t_note_map INCREMENT 20;
-SELECT setval('pk_eip_t_note_map',(SELECT max(id) FROM eip_t_note_map));
-
-CREATE SEQUENCE pk_eip_t_schedule INCREMENT 20;
-SELECT setval('pk_eip_t_schedule',(SELECT max(schedule_id) FROM eip_t_schedule));
-
-CREATE SEQUENCE pk_eip_t_schedule_map INCREMENT 20;
-SELECT setval('pk_eip_t_schedule_map',(SELECT max(id) FROM eip_t_schedule_map));
-
-CREATE SEQUENCE pk_eip_t_timecard INCREMENT 20;
-SELECT setval('pk_eip_t_timecard',(SELECT max(timecard_id) FROM eip_t_timecard));
-
-CREATE SEQUENCE pk_eip_t_timecard_settings INCREMENT 20;
-SELECT setval('pk_eip_t_timecard_settings',(SELECT max(timecard_settings_id) FROM eip_t_timecard_settings));
-
-CREATE SEQUENCE pk_eip_t_todo INCREMENT 20;
-SELECT setval('pk_eip_t_todo',(SELECT max(todo_id) FROM eip_t_todo));
-
-CREATE SEQUENCE pk_eip_t_todo_category INCREMENT 20;
-SELECT setval('pk_eip_t_todo_category',(SELECT max(category_id) FROM eip_t_todo_category));
-
-CREATE SEQUENCE pk_eip_t_whatsnew INCREMENT 20;
-SELECT setval('pk_eip_t_whatsnew',(SELECT max(whatsnew_id) FROM eip_t_whatsnew));
-
-CREATE SEQUENCE pk_eip_t_workflow_category INCREMENT 20;
-SELECT setval('pk_eip_t_workflow_category',(SELECT max(category_id) FROM eip_t_workflow_category));
-
-CREATE SEQUENCE pk_eip_t_workflow_file INCREMENT 20;
-SELECT setval('pk_eip_t_workflow_file',(SELECT max(file_id) FROM eip_t_workflow_file));
-
-CREATE SEQUENCE pk_eip_t_workflow_request INCREMENT 20;
-SELECT setval('pk_eip_t_workflow_request',(SELECT max(request_id) FROM eip_t_workflow_request));
-
-CREATE SEQUENCE pk_eip_t_workflow_request_map INCREMENT 20;
-SELECT setval('pk_eip_t_workflow_request_map',(SELECT max(id) FROM eip_t_workflow_request_map));
-
-CREATE SEQUENCE pk_eip_t_workflow_route INCREMENT 20;
-SELECT setval('pk_eip_t_workflow_route',(SELECT max(route_id) FROM eip_t_workflow_route));
-
-CREATE SEQUENCE pk_turbine_group INCREMENT 20;
-SELECT setval('pk_turbine_group',(SELECT max(group_id) FROM turbine_group));
-
-CREATE SEQUENCE pk_turbine_permission INCREMENT 20;
-SELECT setval('pk_turbine_permission',(SELECT max(permission_id) FROM turbine_permission));
-
-CREATE SEQUENCE pk_turbine_role INCREMENT 20;
-SELECT setval('pk_turbine_role',(SELECT max(role_id) FROM turbine_role));
-
-CREATE SEQUENCE pk_turbine_user INCREMENT 20;
-SELECT setval('pk_turbine_user',(SELECT max(user_id) FROM turbine_user));
-
-CREATE SEQUENCE pk_turbine_user_group_role INCREMENT 20;
-SELECT setval('pk_turbine_user_group_role',(SELECT max(id) FROM turbine_user_group_role));
+ALTER SEQUENCE aipo_license_license_id_seq RENAME TO pk_aipo_license ;
+ALTER SEQUENCE eip_facility_group_id_seq RENAME TO pk_eip_facility_group ;
+ALTER SEQUENCE eip_m_address_group_group_id_seq RENAME TO pk_eip_m_address_group ;
+ALTER SEQUENCE eip_m_addressbook_address_id_seq RENAME TO pk_eip_m_addressbook ;
+ALTER SEQUENCE eip_m_addressbook_company_company_id_seq RENAME TO pk_eip_m_addressbook_company ;
+ALTER SEQUENCE eip_m_company_company_id_seq RENAME TO pk_eip_m_company ;
+ALTER SEQUENCE eip_m_facility_facility_id_seq RENAME TO pk_eip_m_facility ;
+ALTER SEQUENCE eip_m_mail_account_account_id_seq RENAME TO pk_eip_m_mail_account ;
+ALTER SEQUENCE eip_m_mail_notify_conf_notify_id_seq RENAME TO pk_eip_m_mail_notify_conf ;
+ALTER SEQUENCE eip_m_position_position_id_seq RENAME TO pk_eip_m_position ;
+ALTER SEQUENCE eip_m_post_post_id_seq RENAME TO pk_eip_m_post ;
+ALTER SEQUENCE eip_m_user_position_id_seq RENAME TO pk_eip_m_user_position ;
+ALTER SEQUENCE eip_t_acl_portlet_feature_feature_id_seq RENAME TO pk_eip_t_acl_portlet_feature ;
+ALTER SEQUENCE eip_t_acl_role_role_id_seq RENAME TO pk_eip_t_acl_role ;
+ALTER SEQUENCE eip_t_acl_user_role_map_id_seq RENAME TO pk_eip_t_acl_user_role_map ;
+ALTER SEQUENCE eip_t_addressbook_group_map_id_seq RENAME TO pk_eip_t_addressbook_group_map ;
+ALTER SEQUENCE eip_t_blog_blog_id_seq RENAME TO pk_eip_t_blog ;
+ALTER SEQUENCE eip_t_blog_comment_comment_id_seq RENAME TO pk_eip_t_blog_comment ;
+ALTER SEQUENCE eip_t_blog_entry_entry_id_seq RENAME TO pk_eip_t_blog_entry ;
+ALTER SEQUENCE eip_t_blog_file_file_id_seq RENAME TO pk_eip_t_blog_file ;
+ALTER SEQUENCE eip_t_blog_footmark_map_id_seq RENAME TO pk_eip_t_blog_footmark_map ;
+ALTER SEQUENCE eip_t_blog_thema_thema_id_seq RENAME TO pk_eip_t_blog_thema ;
+ALTER SEQUENCE eip_t_cabinet_file_file_id_seq RENAME TO pk_eip_t_cabinet_file ;
+ALTER SEQUENCE eip_t_cabinet_folder_folder_id_seq RENAME TO pk_eip_t_cabinet_folder ;
+ALTER SEQUENCE eip_t_cabinet_folder_map_id_seq RENAME TO pk_eip_t_cabinet_folder_map ;
+ALTER SEQUENCE eip_t_common_category_common_category_id_seq RENAME TO pk_eip_t_common_category ;
+ALTER SEQUENCE eip_t_eventlog_eventlog_id_seq RENAME TO pk_eip_t_eventlog ;
+ALTER SEQUENCE eip_t_ext_timecard_timecard_id_seq RENAME TO pk_eip_t_ext_timecard ;
+ALTER SEQUENCE eip_t_ext_timecard_system_system_id_seq RENAME TO pk_eip_t_ext_timecard_system ;
+ALTER SEQUENCE eip_t_ext_timecard_system_map_system_map_id_seq RENAME TO pk_eip_t_ext_timecard_system_map ;
+ALTER SEQUENCE eip_t_mail_mail_id_seq RENAME TO pk_eip_t_mail ;
+ALTER SEQUENCE eip_t_mail_filter_filter_id_seq RENAME TO pk_eip_t_mail_filter ;
+ALTER SEQUENCE eip_t_mail_folder_folder_id_seq RENAME TO pk_eip_t_mail_folder ;
+ALTER SEQUENCE eip_t_memo_memo_id_seq RENAME TO pk_eip_t_memo ;
+ALTER SEQUENCE eip_t_msgboard_category_category_id_seq RENAME TO pk_eip_t_msgboard_category ;
+ALTER SEQUENCE eip_t_msgboard_category_map_id_seq RENAME TO pk_eip_t_msgboard_category_map ;
+ALTER SEQUENCE eip_t_msgboard_file_file_id_seq RENAME TO pk_eip_t_msgboard_file ;
+ALTER SEQUENCE eip_t_msgboard_topic_topic_id_seq RENAME TO pk_eip_t_msgboard_topic ;
+ALTER SEQUENCE eip_t_note_note_id_seq RENAME TO pk_eip_t_note ;
+ALTER SEQUENCE eip_t_note_map_id_seq RENAME TO pk_eip_t_note_map ;
+ALTER SEQUENCE eip_t_schedule_schedule_id_seq RENAME TO pk_eip_t_schedule ;
+ALTER SEQUENCE eip_t_schedule_map_id_seq RENAME TO pk_eip_t_schedule_map ;
+ALTER SEQUENCE eip_t_timecard_timecard_id_seq RENAME TO pk_eip_t_timecard ;
+ALTER SEQUENCE eip_t_timecard_settings_timecard_settings_id_seq RENAME TO pk_eip_t_timecard_settings ;
+ALTER SEQUENCE eip_t_todo_todo_id_seq RENAME TO pk_eip_t_todo ;
+ALTER SEQUENCE eip_t_todo_category_category_id_seq RENAME TO pk_eip_t_todo_category ;
+ALTER SEQUENCE eip_t_whatsnew_whatsnew_id_seq RENAME TO pk_eip_t_whatsnew ;
+ALTER SEQUENCE eip_t_workflow_category_category_id_seq RENAME TO pk_eip_t_workflow_category ;
+ALTER SEQUENCE eip_t_workflow_file_file_id_seq RENAME TO pk_eip_t_workflow_file ;
+ALTER SEQUENCE eip_t_workflow_request_request_id_seq RENAME TO pk_eip_t_workflow_request ;
+ALTER SEQUENCE eip_t_workflow_request_map_id_seq RENAME TO pk_eip_t_workflow_request_map ;
+ALTER SEQUENCE eip_t_workflow_route_route_id_seq RENAME TO pk_eip_t_workflow_route ;
+ALTER SEQUENCE turbine_group_group_id_seq RENAME TO pk_turbine_group ;
+ALTER SEQUENCE turbine_permission_permission_id_seq RENAME TO pk_turbine_permission ;
+ALTER SEQUENCE turbine_role_role_id_seq RENAME TO pk_turbine_role ;
+ALTER SEQUENCE turbine_user_group_role_id_seq RENAME TO pk_turbine_user_group_role ;
+ALTER SEQUENCE turbine_user_user_id_seq RENAME TO pk_turbine_user ;
 
 ALTER TABLE aipo_license ALTER license_id DROP DEFAULT;
 ALTER TABLE aipo_license ALTER license_id DROP DEFAULT;
