@@ -356,6 +356,7 @@ public class WorkflowSelectData extends
             WorkflowUtils.DB_PROGRESS_ACCEPT);
         query.andQualifier(exp2);
       }
+      query.distinct();
     }
 
     return buildSelectQueryForFilter(query, rundata, context);
