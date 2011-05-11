@@ -294,36 +294,6 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 
                 dojo.connect(draggable,"onmouseover", tmpDraggable, "onScheduleOver");
 
-                var mbhtml = "";
-                var mbfhtml = "";
-                var placehtml = "";
-                if(item.public || item.member){
-                    dojo.forEach(data.memberAllList, function(mitem) {
-                        for (j = 0 ; j < item.memberList.length ; j ++){
-                            if(mitem.name == item.memberList[j]){
-                                if(item.memberList[j].charAt(0) == 'f'){
-                                    mbfhtml += "<li>" + mitem.aliasName +"</li>";
-                                } else {
-                                    mbhtml += "<li>" + mitem.aliasName +"</li>" ;
-                                }
-                            }
-                        }
-                    });
-                    if(mbhtml != ""){
-                       mbhtml = "<span style=\"font-size: 0.90em;\">参加者</span><br/><ul>" + mbhtml + "</ul>";
-                    }
-
-                    if(mbfhtml != ""){
-                       mbfhtml = "<span style=\"font-size: 0.90em;\">施設</span><br/><ul>" + mbfhtml + "</ul>";
-                    }
-
-                    if(item.place != ""){
-                       placehtml = "<span style=\"font-size: 0.90em;\">場所</span><br/><ul><li>" + item.place + "</li></ul>";
-                    }
-                }
-                tmpDraggable._mbhtml = mbhtml;
-                tmpDraggable._mbfhtml = mbfhtml;
-                tmpDraggable._placehtml = placehtml;
                 count++;
             });
 
@@ -478,38 +448,6 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                         } else {
                             tmpDraggable.setDraggable(false);
                         }
-
-                        var mbhtml = "";
-                        var mbfhtml = "";
-                        var placehtml = "";
-                        if(item.public || item.member){
-                            dojo.forEach(data.memberAllList, function(mitem) {
-                                for (j = 0 ; j < item.memberList.length ; j ++){
-                                    if(mitem.name == item.memberList[j]){
-                                        if(item.memberList[j].charAt(0) == 'f'){
-                                            mbfhtml += "<li>" + mitem.aliasName +"</li>";
-                                        } else {
-                                            mbhtml += "<li>" + mitem.aliasName +"</li>" ;
-                                        }
-                                    }
-                                }
-                            });
-                        }
-                        if(mbhtml != ""){
-                            mbhtml = "<span style=\"font-size: 0.90em;\">参加者</span><br/><ul>" + mbhtml + "</ul>";
-                        }
-
-                        if(mbfhtml != ""){
-                            mbfhtml = "<span style=\"font-size: 0.90em;\">施設</span><br/><ul>" + mbfhtml + "</ul>";
-                        }
-
-                        if(item.place != ""){
-                           placehtml = "<span style=\"font-size: 0.90em;\">場所</span><br/><ul><li>" + item.place + "</li></ul>";
-                        }
-
-                        tmpDraggable._mbhtml = mbhtml;
-                        tmpDraggable._mbfhtml = mbfhtml;
-                        tmpDraggable._placehtml = placehtml;
                         count++;
                     }
                 l_count++;
@@ -761,6 +699,58 @@ aipo.calendar.onCloseMemberpicker = function( _portletId ){
     aipo.calendar.populateWeeklySchedule(_portletId);
 }
 
+aipo.calendar.showTooltip = function(url, portlet_id, containerNode) {
+    var datehtml = "";
+    var mbhtml = "";
+    var mbfhtml = "";
+    var placehtml = "";
+
+    dojo.xhrGet({
+        portletId: portlet_id,
+        url: url,
+        encoding: "utf-8",
+        handleAs: "json-comment-filtered",
+        load: function(data, event) {
+            if (data.length <= 0) {
+                return;
+            }
+
+            if (!data.isSpan) {
+                datehtml = "<span style=\"font-size: 0.90em;\">" + data.date + "</span><br/>";
+            }
+
+            if (data.memberList) {
+                var memberSize = data.memberList.length;
+                for (var i = 0 ; i < memberSize ; i++) {
+                    mbhtml += "<li>" + data.memberList[i].aliasName.value + "</li>";
+                }
+            }
+
+            if (data.facilityList) {
+                var facilitySize = data.facilityList.length;
+                for (var i = 0 ; i < facilitySize ; i++) {
+                    mbfhtml += "<li>" + data.facilityList[i].facilityName.value + "</li>";
+                }
+            }
+
+            if(data.place != ""){
+                placehtml = "<span style=\"font-size: 0.90em;\">場所</span><br/><ul><li>" + data.place + "</li></ul>";
+            }
+
+            if(mbhtml != ""){
+                mbhtml = "<span style=\"font-size: 0.90em;\">参加者</span><br/><ul>" + mbhtml + "</ul>";
+            }
+
+            if(mbfhtml != ""){
+                mbfhtml = "<span style=\"font-size: 0.90em;\">施設</span><br/><ul>" + mbfhtml + "</ul>";
+            }
+
+            var tooltiphtml = "<h4>" + data.name + "</h4>" + datehtml + mbhtml + mbfhtml + placehtml;
+
+            containerNode.innerHTML = tooltiphtml;
+        }
+    });
+};
 
 dojo.declare("aipo.calendar.DummyDivObject", null, {
      portletId: null,
@@ -978,9 +968,6 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
 dojo.declare("aipo.calendar.WeeklyScheduleDraggable", [aimluck.dnd.Draggable], {
     DragMoveObject: aipo.calendar.WeeklyScheduleDragMoveObject,
     isDraggable: false,
-    _mbhtml: "",
-    _mbfhtml: "",
-    _placehtml: "",
     scheduleObjId: null,
     constructor: function(node, params){
         this.scheduleObjId = params.sid;
@@ -1017,18 +1004,24 @@ dojo.declare("aipo.calendar.WeeklyScheduleDraggable", [aimluck.dnd.Draggable], {
             aipo.calendar.dummyDivObj.parentnode = this.node;
         }
         aipo.calendar.dummyDivObj.draggable = this;
-        this.createTooltip();
-    },
-    createTooltip: function(){
-        var startDate = ((this.schedule.startDateHour > 9) ? this.schedule.startDate : "0" +this.schedule.startDate);
-        var endDate = ((this.schedule.endDateHour > 9) ? this.schedule.endDate : "0" +this.schedule.endDate);
 
         if(aipo.calendar.dummyDivObj.TooltipObject){
             aipo.calendar.dummyDivObj.TooltipObject.destroyRecursive();
             aipo.calendar.dummyDivObj.TooltipObject = null;
         }
-        aipo.calendar.dummyDivObj.TooltipObject = new aipo.widget.ToolTip({label:"<h4>" + this.schedule.name + "</h4>" + "<span style=\"font-size: 0.90em;\">" + startDate +"～" + endDate + "</span>" + "<br/>" + this._mbhtml + this._mbfhtml + this._placehtml  , connectId:["dummy_div_" + this.portletId]} ,this.portletId );
+        this.setupTooltip();
+    },
+    setupTooltip: function() {
+        var schedule_id = this.schedule.scheduleId;
+        var view_date = ptConfig[this.portletId].jsonData.endDate;
+        aipo.calendar.dummyDivObj.TooltipObject = new aipo.widget.ToolTip({
+            label: "<div class='indicator'>読み込み中...</div>",
+            connectId: ["dummy_div_" + this.portletId]
+        }, this.portletId, function(containerNode, node){
+            var request_url = ptConfig[this.portletId].jsonUrl.split("?")[0] + "?template=ScheduleDetailJSONScreen&view_date="+view_date+"&scheduleid="+schedule_id;
 
+            aipo.calendar.showTooltip(request_url, this.portletId, containerNode);
+        });
     },
     setDraggable: function(flag){
         this.isDraggable = flag;
@@ -1228,9 +1221,6 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
 dojo.declare("aipo.calendar.WeeklyTermScheduleDraggable", [aimluck.dnd.Draggable], {
     DragMoveObject: aipo.calendar.WeeklyTermScheduleDragMoveObject,
     isDraggable: false,
-    _mbhtml: "",
-    _mbfhtml: "",
-    _placehtml: "",
     TooltipObject: null,
     scheduleObjId: null,
     isDraggable: false,
@@ -1241,6 +1231,16 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDraggable", [aimluck.dnd.Draggable
         ptConfig[this.portletId].isTooltipEnable = false;
         if(this.TooltipObject)this.TooltipObject.close();
         aimluck.dnd.Draggable.prototype.onMouseDown.apply(this, arguments);
+    },
+    onScheduleClick: function(e) {
+        if(this.schedule.isDrag || !this.isDraggable) {
+            return;
+        }
+        var uid = this.schedule.ownerId;
+        aipo.common.showDialog(ptConfig[this.portletId].detailUrl + "&entityId=" + this.schedule.scheduleId + "&view_date=" + ptConfig[this.portletId].jsonData.date[this.schedule.index]  + "&userid=" + uid, this.portletId, aipo.schedule.onLoadScheduleDetail);
+        //** FIXME IEで追加ダイアログを閉じるとスクロールバーのｙ座標が強制的に０になってしまう現象
+        aipo.schedule.tmpScroll = parseInt(dojo.byId('weeklyScrollPane_'+this.portletId)["scrollTop"]);
+        //**//
     },
     onScheduleOver: function(e) {
         if(ptConfig[this.portletId].isTooltipEnable == false){return;}
@@ -1260,30 +1260,22 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDraggable", [aimluck.dnd.Draggable
         }
         aipo.calendar.dummyDivObj.draggable = this;
         */
-        this.createTooltip();
+        this.setupTooltip();
     },
-    onScheduleClick: function(e) {
-        if(this.schedule.isDrag || !this.isDraggable) {
-            return;
+    setupTooltip: function() {
+        var schedule_id = this.schedule.scheduleId;
+        var view_date = ptConfig[this.portletId].jsonData.endDate;
+        if(!this.TooltipObject){
+            this.TooltipObject = new aipo.widget.ToolTip({
+                label: "<div class='indicator'>読み込み中...</div>",
+                connectId: [this.node.id]
+            }, this.portletId, function(containerNode, node){
+                var request_url = ptConfig[this.portletId].jsonUrl.split("?")[0] + "?template=ScheduleDetailJSONScreen&view_date="+view_date+"&scheduleid="+schedule_id;
+    
+                aipo.calendar.showTooltip(request_url, this.portletId, containerNode);
+            });
         }
-        var uid = this.schedule.ownerId;
-        aipo.common.showDialog(ptConfig[this.portletId].detailUrl + "&entityId=" + this.schedule.scheduleId + "&view_date=" + ptConfig[this.portletId].jsonData.date[this.schedule.index]  + "&userid=" + uid, this.portletId, aipo.schedule.onLoadScheduleDetail);
-        //** FIXME IEで追加ダイアログを閉じるとスクロールバーのｙ座標が強制的に０になってしまう現象
-        aipo.schedule.tmpScroll = parseInt(dojo.byId('weeklyScrollPane_'+this.portletId)["scrollTop"]);
-        //**//
-    },
-    createTooltip: function(){
-    /*
-        var startDate = ((this.schedule.startDateHour > 9) ? this.schedule.startDate : "0" +this.schedule.startDate);
-        var endDate = ((this.schedule.endDateHour > 9) ? this.schedule.endDate : "0" +this.schedule.endDate);
-
-        if(aipo.calendar.dummyDivObj.TooltipObject){
-            aipo.calendar.dummyDivObj.TooltipObject.destroy();
-            aipo.calendar.dummyDivObj.TooltipObject = null;
-        }
-        */
-         if(!this.TooltipObject)this.TooltipObject = new aipo.widget.ToolTip({label:"<h4>" + this.schedule.name + "</h4>" + this._mbhtml + this._mbfhtml + this._placehtml  , connectId:[this.node.id]} ,this.portletId );
-         aipo.calendar.objectlist.push(this.TooltipObject);
+        aipo.calendar.objectlist.push(this.TooltipObject);
     },
     setDraggable: function(flag){
         this.isDraggable = flag;
