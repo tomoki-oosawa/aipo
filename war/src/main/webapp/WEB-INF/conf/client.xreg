@@ -258,11 +258,11 @@
         </mimetype-map>
         <capability-map/>
     </client-entry>
-    <client-entry name="opera7" hidden="false">
-        <user-agent-pattern>.*Opera/7.*</user-agent-pattern>
+    <client-entry name="opera" hidden="false">
+        <user-agent-pattern>.*Opera/.*</user-agent-pattern>
         <manufacturer>Opera</manufacturer>
-        <model>Opera7</model>
-        <version>7.x</version>
+        <model>Opera</model>
+        <version></version>
         <mimetype-map>
             <mimetype>text/html</mimetype>
             <mimetype>text/xhtml</mimetype>
