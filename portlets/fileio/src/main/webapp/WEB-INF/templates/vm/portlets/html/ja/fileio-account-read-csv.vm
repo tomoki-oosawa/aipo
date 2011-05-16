@@ -47,6 +47,7 @@ function event_account_csv_regist(button) {
 //-->
 </script>
 #ALtabheader($tabs "")
+#if(!$!result.List || $result.List.size() == 0)#ALerrmsg($errmsgs)#end
 #if($result.getClass().getName() == "com.aimluck.eip.account.AccountCsvSelectData")
 #if(! $result.List || $result.List.size() <= 0)
 #if($result.overMaxUser() || $result.repeatUsers())

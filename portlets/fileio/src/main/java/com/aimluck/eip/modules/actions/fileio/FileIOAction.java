@@ -175,6 +175,7 @@ public class FileIOAction extends ALBaseAction {
       rundata,
       context,
       "not_error_count")));
+    context.put("validateError", true);
     setTemplate(rundata, "fileio-addressbook-csv");
   }
 
