@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.cabinet;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.jar.Attributes;
 
@@ -30,7 +31,6 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
-import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.eip.cabinet.util.CabinetUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolder;
@@ -206,7 +206,8 @@ public class CabinetFileWordSelectData extends
         updateUserName = updateUser.getAliasName().getValue();
       }
       rd.setUpdateUser(updateUserName);
-      rd.setUpdateDate(ALDateUtil.format(record.getUpdateDate(), "yyyy年M月d日"));
+      rd.setUpdateDate(new SimpleDateFormat("yyyy年M月d日H時m分").format(record
+        .getUpdateDate()));
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);

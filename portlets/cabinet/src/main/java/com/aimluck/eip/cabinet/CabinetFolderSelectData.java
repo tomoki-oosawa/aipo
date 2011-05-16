@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.cabinet;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.Attributes;
@@ -30,7 +31,6 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.eip.cabinet.util.CabinetUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolder;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolderMap;
@@ -194,7 +194,8 @@ public class CabinetFolderSelectData extends
       }
 
       rd.setCreateUser(createUserName);
-      rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
+      rd.setCreateDate(new SimpleDateFormat("yyyy年M月d日").format(record
+        .getCreateDate()));
       String updateUserName = "";
       ALEipUser updateUser =
         ALEipUtils.getALEipUser(record.getUpdateUserId().intValue());
@@ -224,7 +225,8 @@ public class CabinetFolderSelectData extends
       members.addAll(ALEipUtils.getUsersFromSelectQuery(query));
 
       rd.setUpdateUser(updateUserName);
-      rd.setUpdateDate(ALDateUtil.format(record.getUpdateDate(), "yyyy年M月d日"));
+      rd.setUpdateDate(new SimpleDateFormat("yyyy年M月d日H時m分").format(record
+        .getUpdateDate()));
 
       int size = folder_hierarchy_list.size();
       for (int i = 0; i < size; i++) {
