@@ -35,8 +35,8 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
-#ALajaxscreenformheader("cabinetFolderForm" $jslink $portlet "CabinetFolderFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID', aipo.cabinet.onReceiveMessage)")
-<input id="is_member" name="is_member" type="hidden" value="FALSE">
+#ALajaxscreenformheader("cabinetFolderForm" $jslink $portlet "CabinetFolderFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.submit(this,'$indicator_id','$!portlet.ID', aipo.cabinet.onReceiveMessage)")
+<input id="is_member" name="is_member" type="hidden" #if ($!result.isMember()) value="TRUE" #else value="FALSE" #end/>
 #if($mode=="new_form")
 <input type="hidden" name="mode" value="insert" />
 #else
