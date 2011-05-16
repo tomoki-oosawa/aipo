@@ -32,8 +32,11 @@ dojo.declare("aipo.widget.DateCalendar", [dijit._Calendar], {
       this.inherited(arguments);
     },
     onChange: function(/*date*/date){
-       this.onChangeNoCallback(date);
-       this.callback(date);
+        this.onChangeNoCallback(date);
+        this.callback(date);
+    },
+    onValueSelected: function(/*date*/date){
+    	this.onChange(date);
     },
     onChangeNoCallback: function(date){
         var tyear = date.getFullYear();
