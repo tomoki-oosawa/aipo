@@ -81,8 +81,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ScheduleFormData extends ALAbstractFormData {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleFormData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleFormData.class.getName());
 
   /** <code>FLAG_EDIT_REPEAT_DEF</code> デフォルト値（繰り返し編集範囲） */
   private static final int FLAG_EDIT_REPEAT_DEF = -1;
@@ -846,6 +846,12 @@ public class ScheduleFormData extends ALAbstractFormData {
 
         limit_start_date.setValue(record.getStartDate());
         limit_end_date.setValue(record.getEndDate());
+      }
+
+      if (start_date.toString().equals(end_date.toString())) {
+        is_same_date = true;
+      } else {
+        is_same_date = false;
       }
 
       // このスケジュールを共有しているメンバーを取得

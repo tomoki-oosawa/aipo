@@ -199,7 +199,7 @@
             #end
             </select>
             <select name="end_date_minute" size="1" onchange="aipo.schedule.changeEnd(this.form)">
-            <option value="" #if (!$!result.isSameDate && $!result.isSameDate) selected="selected" #end>--分</option>
+            <option value="" #if ($!result.isSameDate) selected="selected" #end>--分</option>
             <option value="0" #if (!$!result.isSameDate && $!result.EndDate.Minute == "0") selected="selected" #end>00分</option>
             <option value="5" #if (!$!result.isSameDate && $!result.EndDate.Minute == "5") selected="selected" #end>05分</option>
             <option value="10" #if (!$!result.isSameDate && $!result.EndDate.Minute == "10") selected="selected" #end>10分</option>
