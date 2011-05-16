@@ -140,13 +140,16 @@ public class FileuploadFormData extends ALAbstractFormData {
   @Override
   protected boolean validate(List<String> msgList) {
 
+    int maxFileSize = TurbineUpload.getSizeMax() / 1024 / 1024;
     if (attachmentItem != null) {
       if (attachmentItem.getSize() > 0) {
         long fileSizeSum =
           ALStorageService.getTmpFolderSize(userId, folderName);
         fileSizeSum += attachmentItem.getSize();
         if (fileSizeSum > TurbineUpload.getSizeMax()) {
-          msgList.add("追加したファイルの全容量が 7MB よりも大きくなりました。これ以上、ファイルを追加することはできません。");
+          msgList.add("追加したファイルの全容量が "
+            + maxFileSize
+            + "MB よりも大きくなりました。これ以上、ファイルを追加することはできません。");
         } else {
           attachmentName.validate(msgList);
         }
@@ -154,7 +157,9 @@ public class FileuploadFormData extends ALAbstractFormData {
         msgList.add("サイズが 0KB のファイルを追加することはできません。");
       }
     } else {
-      msgList.add("追加したファイルの全容量が 7MB よりも大きくなりました。これ以上、ファイルを追加することはできません。");
+      msgList.add("追加したファイルの全容量が "
+        + maxFileSize
+        + "MB よりも大きくなりました。これ以上、ファイルを追加することはできません。");
     }
 
     // 添付可能数のチェック
