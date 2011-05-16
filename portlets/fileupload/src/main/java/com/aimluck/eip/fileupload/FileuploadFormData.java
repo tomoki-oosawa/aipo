@@ -32,6 +32,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
@@ -76,12 +77,15 @@ public class FileuploadFormData extends ALAbstractFormData {
   /** ログインユーザ ID */
   private int userId = -1;
 
+  private RunData rundata;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
     userId = ALEipUtils.getUserId(rundata);
+    this.rundata = rundata;
 
     folderName =
       rundata.getParameters().getString(
@@ -160,7 +164,22 @@ public class FileuploadFormData extends ALAbstractFormData {
       }
     }
 
+    if (msgList.size() == 0) {
+      String reqSecid =
+        rundata.getParameters().getString(ALEipConstants.SECURE_ID);
+      String sessionSecid =
+        (String) rundata.getUser().getTemp(ALEipConstants.SECURE_ID);
+      if (reqSecid == null || !reqSecid.equals(sessionSecid)) {
+        msgList.add("セッションが一致しません。ダイアログを閉じて、再度お試しください。");
+      }
+    }
+
     return (msgList.size() == 0);
+  }
+
+  @Override
+  protected boolean doCheckSecurity(RunData rundata, Context context) {
+    return true;
   }
 
   /**
