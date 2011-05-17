@@ -97,9 +97,21 @@ aipo.IfrGadgetService.inherits(shindig.IfrGadgetService);
 aipo.IfrGadgetService.prototype.setUserPref = function(editToken, name,
 	    value) {
 	var portletId = this.f.replace("remote_iframe_","").split("_NN_")[0].replace("-popup","");
+	var currentKey = null;
+	for(key in aipo.container.gadgets_) {
+		var gadget = aipo.container.gadgets_[key];
+		if(portletId == gadget.portletId) {
+			currentKey = key;
+			break;
+		}
+	};
 	var request = {};
 	for (var i = 1, j = arguments.length; i < j; i += 2) {
 		request[arguments[i]] = arguments[i+1];
+		if(currentKey) {
+		  aipo.container.gadgets_[currentKey].userPrefs[arguments[i]] = {};
+		  aipo.container.gadgets_[currentKey].userPrefs[arguments[i]]['value'] = arguments[i+1];
+		}
 	}
 
 	var makeRequestParams = {
