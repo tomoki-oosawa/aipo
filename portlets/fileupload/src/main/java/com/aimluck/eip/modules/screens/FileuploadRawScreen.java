@@ -32,6 +32,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.modules.screens.RawScreen;
 import org.apache.turbine.util.RunData;
 
+import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.services.storage.ALStorageService;
 
 public class FileuploadRawScreen extends RawScreen {
@@ -92,8 +93,16 @@ public class FileuploadRawScreen extends RawScreen {
     InputStream in = null;
     OutputStream out = null;
     try {
-      String attachmentRealName =
-        new String(getFileName().getBytes("Shift_JIS"), "8859_1");
+      String attachmentRealName = null;
+
+      boolean isMsie = FileuploadUtils.isMsieBrowser(rundata);
+      if (isMsie) {
+        attachmentRealName =
+          new String(getFileName().getBytes("Windows-31J"), "8859_1");
+      } else {
+        attachmentRealName =
+          new String(getFileName().getBytes("UTF-8"), "8859_1");
+      }
 
       HttpServletResponse response = rundata.getResponse();
       // ファイル名の送信(attachment部分をinlineに変更すればインライン表示)
