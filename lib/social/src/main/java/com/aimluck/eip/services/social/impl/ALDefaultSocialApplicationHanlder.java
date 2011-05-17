@@ -27,6 +27,7 @@ import java.util.Map;
 import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.services.TurbineServices;
 
 import com.aimluck.eip.cayenne.om.social.Activity;
 import com.aimluck.eip.cayenne.om.social.ActivityMap;
@@ -44,6 +45,9 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.social.ALSocialApplicationConstants;
 import com.aimluck.eip.services.social.ALSocialApplicationHandler;
 import com.aimluck.eip.services.social.gadgets.ALGadgetSpec;
@@ -641,6 +645,12 @@ public class ALDefaultSocialApplicationHanlder extends
 
   protected SelectQuery<Activity> buildActivityQuery(
       ALActivityGetRequest request) {
+
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
     SelectQuery<Activity> query = Database.query(Activity.class);
     int limit = request.getLimit();
     if (limit > 0) {
@@ -662,6 +672,28 @@ public class ALDefaultSocialApplicationHanlder extends
     }
     String loginName = request.getLoginName();
     if (loginName != null && loginName.length() > 0) {
+
+      ALEipUser user = null;
+      try {
+        user = ALEipUtils.getALEipUser(loginName);
+      } catch (ALDBErrorException e) {
+        throw new RuntimeException(e);
+      }
+
+      if (!aclhandler.hasAuthority(
+        (int) user.getUserId().getValue(),
+        ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC,
+        ALAccessControlConstants.VALUE_ACL_LIST)) {
+        query.where(Operations.ne(Activity.APP_ID_PROPERTY, "Msgboard"));
+      }
+
+      if (!aclhandler.hasAuthority(
+        (int) user.getUserId().getValue(),
+        ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER,
+        ALAccessControlConstants.VALUE_ACL_LIST)) {
+        query.where(Operations.ne(Activity.APP_ID_PROPERTY, "blog"));
+      }
+
       query.where(Operations.ne(Activity.LOGIN_NAME_PROPERTY, loginName));
     }
     String targetLoginName = request.getTargetLoginName();
