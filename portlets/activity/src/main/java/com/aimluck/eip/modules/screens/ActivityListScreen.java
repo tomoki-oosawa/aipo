@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.modules.screens;
 
+import org.apache.jetspeed.portal.Portlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -45,7 +46,16 @@ public class ActivityListScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
     try {
+      String portletId = ActivityUtils.getGlobalPortletId(rundata);
       context.put("portletId", ActivityUtils.getGlobalPortletId(rundata));
+      Portlet portlet = ALEipUtils.getPortlet(rundata, portletId);
+      String desktopNotificationParam =
+        portlet.getPortletConfig().getInitParameter("desktopNotification");
+      context.put("desktopNotification", "T".equals(desktopNotificationParam));
+      String support = rundata.getParameters().getString("s");
+      context.put("notifySupport", "1".equals(support));
+      String permission = rundata.getParameters().getString("p");
+      context.put("notifyPermission", "0".equals(permission));
 
       ActivitySelectData listData = new ActivitySelectData();
       listData.initField();

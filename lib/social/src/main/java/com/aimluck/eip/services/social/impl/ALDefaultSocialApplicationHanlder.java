@@ -37,6 +37,7 @@ import com.aimluck.eip.cayenne.om.social.ContainerConfig;
 import com.aimluck.eip.cayenne.om.social.ModuleId;
 import com.aimluck.eip.cayenne.om.social.OAuthConsumer;
 import com.aimluck.eip.common.ALActivity;
+import com.aimluck.eip.common.ALActivityCount;
 import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipUser;
@@ -529,9 +530,15 @@ public class ALDefaultSocialApplicationHanlder extends
   }
 
   @Override
-  public int getActivityCount(ALActivityGetRequest request) {
-    SelectQuery<Activity> query = buildActivityQuery(request);
-    return query.getCount();
+  public ALActivityCount getActivityCount(ALActivityGetRequest request) {
+    ALActivityCount result = new ALActivityCount();
+    result.setCount(buildActivityQuery(request).getCount());
+    request.setRead(-1);
+    Activity activity = buildActivityQuery(request).limit(1).fetchSingle();
+    if (activity != null) {
+      result.setMax(activity.getUpdateDate().getTime());
+    }
+    return result;
   }
 
   @Override
@@ -680,18 +687,20 @@ public class ALDefaultSocialApplicationHanlder extends
         throw new RuntimeException(e);
       }
 
-      if (!aclhandler.hasAuthority(
-        (int) user.getUserId().getValue(),
-        ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC,
-        ALAccessControlConstants.VALUE_ACL_LIST)) {
-        query.where(Operations.ne(Activity.APP_ID_PROPERTY, "Msgboard"));
-      }
+      if (priority < 1f) {
+        if (!aclhandler.hasAuthority(
+          (int) user.getUserId().getValue(),
+          ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC,
+          ALAccessControlConstants.VALUE_ACL_LIST)) {
+          query.where(Operations.ne(Activity.APP_ID_PROPERTY, "Msgboard"));
+        }
 
-      if (!aclhandler.hasAuthority(
-        (int) user.getUserId().getValue(),
-        ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER,
-        ALAccessControlConstants.VALUE_ACL_LIST)) {
-        query.where(Operations.ne(Activity.APP_ID_PROPERTY, "blog"));
+        if (!aclhandler.hasAuthority(
+          (int) user.getUserId().getValue(),
+          ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER,
+          ALAccessControlConstants.VALUE_ACL_LIST)) {
+          query.where(Operations.ne(Activity.APP_ID_PROPERTY, "blog"));
+        }
       }
 
       query.where(Operations.ne(Activity.LOGIN_NAME_PROPERTY, loginName));
@@ -706,6 +715,12 @@ public class ALDefaultSocialApplicationHanlder extends
     String appId = request.getAppId();
     if (appId != null && appId.length() > 0) {
       query.where(Operations.eq(Activity.APP_ID_PROPERTY, appId));
+    }
+    long max = request.getMax();
+    if (max > 0) {
+      Date date = new Date();
+      date.setTime(max);
+      query.where(Operations.gt(Activity.UPDATE_DATE_PROPERTY, date));
     }
     query.orderDesending(Activity.UPDATE_DATE_PROPERTY);
     return query;

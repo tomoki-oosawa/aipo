@@ -36,6 +36,8 @@ public class ALActivityGetRequest {
 
   private String targetLoginName;
 
+  private long max = -1;
+
   private float priority = -1f;
 
   /**
@@ -159,5 +161,25 @@ public class ALActivityGetRequest {
    */
   public float getPriority() {
     return priority;
+  }
+
+  /**
+   * @return max
+   */
+  public long getMax() {
+    return max;
+  }
+
+  public ALActivityGetRequest withMax(long max) {
+    setMax(max);
+    return this;
+  }
+
+  /**
+   * @param max
+   *          セットする max
+   */
+  public void setMax(long max) {
+    this.max = max;
   }
 }

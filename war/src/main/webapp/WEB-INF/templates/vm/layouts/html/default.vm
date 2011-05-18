@@ -108,6 +108,9 @@ dojo.addOnLoad(function() {
     gadgets.rpc.setRelayUrl("sharedStateIframe", "$relayUrl");
     gadgets.rpc.setAuthToken("sharedStateIframe", "$rpctoken");
     dojo.byId('sharedStateIframe').src='$checkUrl';
+    if(window.webkitNotifications) {
+    　　aipo.container.gadgetService.requestDesktopNotifyEnable();
+    }
 #end
 });
 

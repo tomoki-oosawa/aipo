@@ -37,6 +37,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 import com.aimluck.eip.common.ALActivity;
+import com.aimluck.eip.common.ALActivityCount;
 import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.common.ALOAuthConsumer;
 import com.aimluck.eip.orm.Database;
@@ -95,7 +96,7 @@ public abstract class ALSocialApplicationHandler {
 
   public abstract ALActivity getActivity(ALActivityGetRequest request);
 
-  public abstract int getActivityCount(ALActivityGetRequest request);
+  public abstract ALActivityCount getActivityCount(ALActivityGetRequest request);
 
   public abstract void setAllReadActivity(String loginName);
 

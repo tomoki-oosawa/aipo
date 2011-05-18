@@ -20,6 +20,7 @@
 package com.aimluck.eip.services.social;
 
 import com.aimluck.eip.common.ALActivity;
+import com.aimluck.eip.common.ALActivityCount;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.social.model.ALActivityGetRequest;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
@@ -47,7 +48,7 @@ public class ALActivityService {
     return getService().getActivity(request);
   }
 
-  public static int count(ALActivityGetRequest request) {
+  public static ALActivityCount count(ALActivityGetRequest request) {
     return getService().getActivityCount(request);
   }
 

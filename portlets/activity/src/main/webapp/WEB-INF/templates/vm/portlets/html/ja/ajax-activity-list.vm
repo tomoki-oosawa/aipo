@@ -23,6 +23,9 @@
 <div style="background:#ffffff;padding:2px;">
 #if($result.List.size() == 0)
 <div class="message">あなた宛のお知らせはありません。</div>
+<p class="rightBtn">
+#if($!notifySupport)<a href="#" class="small">デスクトップ通知を#if(!$!desktopNotification)有効#else無効#endにする</a>#end
+</p>
 #else
 <table class="activityTable">
 <tbody>
@@ -118,7 +121,7 @@
 #end
 
 <p class="rightBtn">
-<input type="button" name="allread" value="すべて既読にする" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.container.gadgetService.requestCheckActivity('*')" />
+#if($!notifySupport)<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.container.gadgetService.requestDesktopNotifyEnable();" class="small">デスクトップ通知を#if($!desktopNotification && $!notifyPermission)無効#else有効#endにする</a>&nbsp;#end<input type="button" name="allread" value="すべて既読にする" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.container.gadgetService.requestCheckActivity('*')" />
 </p>
 
 #end

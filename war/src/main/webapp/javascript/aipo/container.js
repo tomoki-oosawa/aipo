@@ -156,6 +156,54 @@ aipo.IfrGadgetService.prototype.requestNavigateTo = function(view, opt_params) {
 	document.location.href = url;
 };
 
+aipo.activityDesktopNotifyEnable = null;
+aipo.IfrGadgetService.prototype.requestDesktopNotifyEnable = function(enable) {
+
+	function handleJSONResponse(obj) {
+		if(obj.rc == 200) {
+			var data = obj.data;
+			aipo.activityDesktopNotifyEnable = data.enable;
+		}
+	}
+	
+	var request = {
+	};
+
+	var makeRequestParams = {
+			"CONTENT_TYPE" : "JSON",
+			"METHOD" : "POST",
+			"POST_DATA" : gadgets.json.stringify(request)
+	};
+	
+	var url = "?template=ActivityNotifyEnableJSONScreen";
+    if(aipo.activityDesktopNotifyEnable != null) {
+    	if(!aipo.activityDesktopNotifyEnable || window.webkitNotifications.checkPermission() != 0) {
+    		window.webkitNotifications.requestPermission(function() {
+    			if(window.webkitNotifications.checkPermission() == 0) {
+    				url += "&enable=T";
+    				gadgets.io.makeNonProxiedRequest(url,
+    						handleJSONResponse,
+    						makeRequestParams,
+    						"application/javascript");
+    			}
+    		});
+    	} else {
+    		url += "&enable=F";
+			gadgets.io.makeNonProxiedRequest(url,
+					handleJSONResponse,
+					makeRequestParams,
+					"application/javascript");
+    	}
+    } else {
+		gadgets.io.makeNonProxiedRequest(url,
+				handleJSONResponse,
+				makeRequestParams,
+				"application/javascript");
+    	
+    }
+};
+
+aipo.activityMax = null;
 aipo.IfrGadgetService.prototype.requestCheckActivity = function(activityId) {
 	var request = {
 	};
@@ -168,6 +216,9 @@ aipo.IfrGadgetService.prototype.requestCheckActivity = function(activityId) {
 
 	var url = "?template=CheckActivityJSONScreen&isRead=" + activityId;
 
+	if(aipo.activityMax) {
+		url += "&max=" + aipo.activityMax;
+	}
 	gadgets.io.makeNonProxiedRequest(url,
 			handleJSONResponse,
 			makeRequestParams,
@@ -178,10 +229,25 @@ aipo.IfrGadgetService.prototype.requestCheckActivity = function(activityId) {
 		if(obj.rc == 200) {
 			var data = obj.data;
 			var unreadCount = data.unreadCount;
+			aipo.activityMax = data.max;
 			var ac = dijit.byId("activitycheckerContainer");
 			if(ac) {
 				ac.onCheckActivity(unreadCount);
 			}
+			if(aipo.activityDesktopNotifyEnable && window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
+			  var popups = new Array();
+			  for(key in data.activities) {
+			  	  var activity = data.activities[key];
+			      var popup = window.webkitNotifications.createNotification('images/favicon48.png', activity.displayName, activity.text);
+			      popup.show();
+			      popup.ondisplay = function(event) {
+                      setTimeout(function() {
+                          event.currentTarget.cancel();
+                      }, 7 * 1000);
+                  }
+			      popups.push(popup);
+		      }
+		    }
 		}
 	}
 };

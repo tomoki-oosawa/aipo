@@ -41,7 +41,11 @@ dojo.declare("aipo.widget.ActivityList", [dijit._Widget, dijit._Templated], {
     	if(!content) {
             content = new aimluck.widget.Contentpane({},'activityListPane');
     	}
-        content.viewPage("?template=ActivityListScreen");
+    	if(window.webkitNotifications) {
+            content.viewPage("?template=ActivityListScreen&s=1&p=" + window.webkitNotifications.checkPermission());
+     	} else {
+            content.viewPage("?template=ActivityListScreen&s=0");
+        }
     }
 });
 

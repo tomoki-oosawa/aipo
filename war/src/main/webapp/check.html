@@ -56,7 +56,7 @@ CronTask.prototype = {
 };
 
 function update(decay) {
-  gadgets.rpc.call(null, "requestCheckActivity");
+  gadgets.rpc.call("sharedStateIframe", "requestCheckActivity");
   decay();
 }
 
