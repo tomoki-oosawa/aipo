@@ -25,7 +25,7 @@
         </capability-map>
     </client-entry>
     <client-entry name="iphone" hidden="false">
-        <user-agent-pattern>.*Android.*|Mozilla/5.0 \(iPh.*|Mozilla/5.0 \(iPo.*</user-agent-pattern>
+        <user-agent-pattern>.*Android.*Mobile.*|Mozilla/5.0 \(iPh.*|Mozilla/5.0 \(iPo.*</user-agent-pattern>
         <manufacturer>IPHONE</manufacturer>
         <model></model>
         <version></version>
@@ -37,7 +37,7 @@
         </capability-map>
     </client-entry>
     <client-entry name="ipad" hidden="false">
-        <user-agent-pattern>.*iPad.*</user-agent-pattern>
+        <user-agent-pattern>.*iPad.*|.*Android.*</user-agent-pattern>
         <manufacturer>IPAD</manufacturer>
         <model></model>
         <version></version>
