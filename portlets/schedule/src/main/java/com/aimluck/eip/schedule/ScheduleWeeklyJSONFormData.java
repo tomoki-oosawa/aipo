@@ -26,8 +26,6 @@ import java.util.List;
 
 import net.sf.json.JSONObject;
 
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
@@ -35,10 +33,8 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALDateTimeField;
-import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
-import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
@@ -51,7 +47,6 @@ import com.aimluck.eip.mail.util.ALEipUserAddr;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.beans.ScheduleBean;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -60,19 +55,13 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
-import com.aimluck.eip.userfacility.beans.UserFacilityLiteBean;
 import com.aimluck.eip.util.ALEipUtils;
 
 public class ScheduleWeeklyJSONFormData {
 
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleWeeklyJSONFormData.class.getName());
-
-  // view
-
-  private List<Integer> userIdMemberAll;
-
-  private List<Integer> facilityIdMemberAll;
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ScheduleWeeklyJSONFormData.class
+      .getName());
 
   // update
 
@@ -119,8 +108,6 @@ public class ScheduleWeeklyJSONFormData {
   private boolean ignore_duplicate_facility;
 
   public void initField() {
-    userIdMemberAll = new ArrayList<Integer>();
-    facilityIdMemberAll = new ArrayList<Integer>();
     aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
   }
 
@@ -170,7 +157,6 @@ public class ScheduleWeeklyJSONFormData {
       List<String> holidayList = new ArrayList<String>();
       List<String> dateList = new ArrayList<String>();
       List<String> dayOfWeekList = new ArrayList<String>();
-      List<UserFacilityLiteBean> memberList;
 
       AjaxScheduleWeeklyGroupSelectData listData =
         new AjaxScheduleWeeklyGroupSelectData();
@@ -227,8 +213,6 @@ public class ScheduleWeeklyJSONFormData {
             bean.setIndex(k);
             bean.setIndexReal(rindex);
             if (!rd.isHidden() || rd.isMember()) {
-              List<String> mlist = rd.getMemberList();
-              addMemberAllIdList(mlist);
               _termScheduleList.add(bean);
             }
           }
@@ -269,21 +253,16 @@ public class ScheduleWeeklyJSONFormData {
           }
           bean.setIndex(i);
           if (!rd.isHidden() || rd.isMember()) {
-            List<String> mlist = rd.getMemberList();
-            addMemberAllIdList(mlist);
             scheduleList.add(bean);
           }
         }
       }
-
-      memberList = getMemberAllBeanList();
 
       json.put("termSchedule", termScheduleList);
       json.put("schedule", scheduleList);
       json.put("holiday", holidayList);
       json.put("date", dateList);
       json.put("dayOfWeek", dayOfWeekList);
-      json.put("memberAllList", memberList);
       if ((msgList != null) && (msgList.size() > 0)) {
         json.put("errList", msgList);
       }
@@ -1123,85 +1102,6 @@ public class ScheduleWeeklyJSONFormData {
         recipients,
         isNew);
     }
-  }
-
-  private void addMemberAllIdList(List<String> list) {
-    String listId;
-    int id;
-    int size = list.size();
-    for (int i = 0; i < size; i++) {
-      listId = list.get(i);
-      if (listId.startsWith("f")) {
-        id = Integer.parseInt(listId.substring(1));
-        if (!facilityIdMemberAll.contains(id)) {
-          facilityIdMemberAll.add(id);
-        }
-      } else {
-        id = Integer.parseInt(listId);
-        if (!userIdMemberAll.contains(id)) {
-          userIdMemberAll.add(Integer.valueOf(id));
-        }
-      }
-    }
-  }
-
-  private List<UserFacilityLiteBean> getMemberAllBeanList() {
-    List<UserFacilityLiteBean> rList = new ArrayList<UserFacilityLiteBean>();
-    UserFacilityLiteBean tmpMbean;
-    int i, size;
-    try {
-      SelectQuery<EipMFacility> query = null;
-
-      if (facilityIdMemberAll != null && facilityIdMemberAll.size() > 0) {
-        query = Database.query(EipMFacility.class);
-        Expression exp_f =
-          ExpressionFactory.inDbExp(
-            EipMFacility.FACILITY_ID_PK_COLUMN,
-            facilityIdMemberAll);
-        query.setQualifier(exp_f);
-
-        List<EipMFacility> fList = query.fetchList();
-        if (fList != null) {
-          size = fList.size();
-          for (i = 0; i < size; i++) {
-            EipMFacility facility = fList.get(i);
-            tmpMbean = new UserFacilityLiteBean();
-            tmpMbean.initField();
-            tmpMbean.setAliasName(facility.getFacilityName());
-            tmpMbean.setName("f" + facility.getFacilityId().toString());
-            tmpMbean.setUserFacilityId(facility.getFacilityId());
-            tmpMbean.setUserFacilityType("F");
-            rList.add(tmpMbean);
-          }
-        }
-      }
-      if (userIdMemberAll != null && userIdMemberAll.size() > 0) {
-        SelectQuery<TurbineUser> query2 = Database.query(TurbineUser.class);
-        Expression exp_u =
-          ExpressionFactory.inDbExp(
-            TurbineUser.USER_ID_PK_COLUMN,
-            userIdMemberAll);
-        query2.setQualifier(exp_u);
-
-        List<TurbineUser> uList = query2.fetchList();
-        if (uList != null) {
-          size = uList.size();
-          for (i = 0; i < size; i++) {
-            TurbineUser user = uList.get(i);
-            tmpMbean = new UserFacilityLiteBean();
-            tmpMbean.initField();
-            tmpMbean.setAliasName(user.getFirstName(), user.getLastName());
-            tmpMbean.setName(user.getUserId().toString());
-            tmpMbean.setUserFacilityId(user.getUserId());
-            tmpMbean.setUserFacilityType("U");
-            rList.add(tmpMbean);
-          }
-        }
-      }
-    } catch (Exception e) {
-      logger.error(e);
-    }
-    return rList;
   }
 
   private boolean hasAcl(RunData rundata) {
