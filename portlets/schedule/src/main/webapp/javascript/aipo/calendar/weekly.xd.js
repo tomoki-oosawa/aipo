@@ -1015,7 +1015,11 @@ dojo.declare("aipo.calendar.WeeklyScheduleDraggable", [aimluck.dnd.Draggable], {
             aipo.calendar.dummyDivObj.TooltipObject.destroyRecursive();
             aipo.calendar.dummyDivObj.TooltipObject = null;
         }
-        this.setupTooltip();
+        // IPADではツールチップ非表示
+        var userAgent = window.navigator.userAgent.toLowerCase();
+        if (userAgent.indexOf("ipad") == -1) {
+          this.setupTooltip();
+        }
     },
     setupTooltip: function() {
         var schedule_id = this.schedule.scheduleId;
@@ -1266,7 +1270,11 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDraggable", [aimluck.dnd.Draggable
         }
         aipo.calendar.dummyDivObj.draggable = this;
         */
-        this.setupTooltip();
+        // IPADではツールチップ非表示
+        var userAgent = window.navigator.userAgent.toLowerCase();
+        if (userAgent.indexOf("ipad") == -1) {
+          this.setupTooltip();
+        }
     },
     setupTooltip: function() {
         var schedule_id = this.schedule.scheduleId;
@@ -1277,7 +1285,7 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDraggable", [aimluck.dnd.Draggable
                 connectId: [this.node.id]
             }, this.portletId, function(containerNode, node){
                 var request_url = ptConfig[this.portletId].jsonUrl.split("?")[0] + "?template=ScheduleDetailJSONScreen&view_date="+view_date+"&scheduleid="+schedule_id;
-    
+
                 aipo.calendar.showTooltip(request_url, this.portletId, containerNode);
             });
         }
