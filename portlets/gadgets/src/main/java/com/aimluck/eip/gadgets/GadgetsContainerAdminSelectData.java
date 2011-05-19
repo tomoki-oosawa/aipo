@@ -82,6 +82,8 @@ public class GadgetsContainerAdminSelectData
       .get(ALSocialApplicationHandler.Property.LOCKED_DOMAIN_SUFFIX));
     rd.setCacheGadgetXml(ALContainerConfigService
       .get(ALSocialApplicationHandler.Property.CACHE_GADGET_XML));
+    rd.setActivitySaveLimit(ALContainerConfigService
+      .get(ALSocialApplicationHandler.Property.ACTIVITY_SAVE_LIMIT));
 
     return rd;
   }
