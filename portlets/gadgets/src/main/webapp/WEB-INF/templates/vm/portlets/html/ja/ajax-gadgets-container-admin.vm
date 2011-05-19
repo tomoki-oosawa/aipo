@@ -49,7 +49,7 @@
 #end
 
 </td>
-#ALtdcaption("更新情報とあなた宛のお知らせの<br/>自動更新")
+#ALtdcaption("更新情報とあなた宛のお知らせの<br/>保存期間")
 <td class="item">
 #if($result.Detail.ActivitySaveLimit.toString() == "7")
 7日間

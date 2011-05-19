@@ -45,7 +45,7 @@
 <option value="3600" #if($result.CheckActivityInterval.toString() == "3600") selected="selected"#end>1時間毎</option>
 </select>
 #ALtditemfooter()
-#ALtdcaption("更新情報とあなた宛のお知らせの<br/>自動更新")
+#ALtdcaption("更新情報とあなた宛のお知らせの<br/>保存期間")
 #ALtditemheader()
 <select name="activitySaveLimit">
 <option value="7" #if($result.ActivitySaveLimit.toString() == "7") selected="selected"#end>7日間</option>
