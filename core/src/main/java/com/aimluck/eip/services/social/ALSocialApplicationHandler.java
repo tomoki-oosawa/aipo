@@ -139,6 +139,13 @@ public abstract class ALSocialApplicationHandler {
       public String defaultValue() {
         return "true";
       }
+    },
+
+    ACTIVITY_SAVE_LIMIT("activitySaveLimit") {
+      @Override
+      public String defaultValue() {
+        return "30";
+      }
     };
 
     private final String property;

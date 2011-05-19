@@ -45,6 +45,16 @@
 <option value="3600" #if($result.CheckActivityInterval.toString() == "3600") selected="selected"#end>1時間毎</option>
 </select>
 #ALtditemfooter()
+#ALtdcaption("更新情報とあなた宛のお知らせの<br/>自動更新")
+#ALtditemheader()
+<select name="activitySaveLimit">
+<option value="7" #if($result.ActivitySaveLimit.toString() == "7") selected="selected"#end>7日間</option>
+<option value="15" #if($result.ActivitySaveLimit.toString() == "15") selected="selected"#end>15日間</option>
+<option value="30" #if($result.ActivitySaveLimit.toString() == "30") selected="selected"#end>30日間</option>
+<option value="60" #if($result.ActivitySaveLimit.toString() == "60") selected="selected"#end>60日間</option>
+<option value="90" #if($result.ActivitySaveLimit.toString() == "90") selected="selected"#end>90日間</option>
+</select>
+#ALtditemfooter()
 #ALtdcaption("ガジェットXMLのキャッシュ")
 #ALtditemheader()
 <input name="cacheGadgetXml" type="checkbox" value="1" id="cacheGadgetXml_for" #if ($result.CacheGadgetXml.toString() == "1") checked="checked" #end/>

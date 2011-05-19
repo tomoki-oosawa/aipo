@@ -49,6 +49,23 @@
 #end
 
 </td>
+#ALtdcaption("更新情報とあなた宛のお知らせの<br/>自動更新")
+<td class="item">
+#if($result.Detail.ActivitySaveLimit.toString() == "7")
+7日間
+#elseif($result.Detail.ActivitySaveLimit.toString() == "15")
+15日間
+#elseif($result.Detail.ActivitySaveLimit.toString() == "30")
+30日間
+#elseif($result.Detail.ActivitySaveLimit.toString() == "60")
+60日間
+#elseif($result.Detail.ActivitySaveLimit.toString() == "90")
+90日間
+#else
+
+#end
+
+</td>
 #ALtdcaption("ガジェットXMLのキャッシュ")
 <td class="item">
 #if($result.Detail.CacheGadgetXml.toString() == "true")

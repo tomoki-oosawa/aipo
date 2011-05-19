@@ -37,6 +37,8 @@ public class GadgetsContainerConfigResultData implements ALData {
 
   private ALStringField cacheGadgetXml;
 
+  private ALStringField activitySaveLimit;
+
   @Override
   public void initField() {
     lockedDomainRequired = new ALStringField();
@@ -44,6 +46,7 @@ public class GadgetsContainerConfigResultData implements ALData {
     unLockedDomain = new ALStringField();
     checkActivityInterval = new ALStringField();
     cacheGadgetXml = new ALStringField();
+    activitySaveLimit = new ALStringField();
   }
 
   /**
@@ -119,5 +122,20 @@ public class GadgetsContainerConfigResultData implements ALData {
    */
   public void setCacheGadgetXml(String cacheGadgetXml) {
     this.cacheGadgetXml.setValue(cacheGadgetXml);
+  }
+
+  /**
+   * @param activitySaveLimit
+   *          セットする activitySaveLimit
+   */
+  public void setActivitySaveLimit(String activitySaveLimit) {
+    this.activitySaveLimit.setValue(activitySaveLimit);
+  }
+
+  /**
+   * @return activitySaveLimit
+   */
+  public ALStringField getActivitySaveLimit() {
+    return activitySaveLimit;
   }
 }

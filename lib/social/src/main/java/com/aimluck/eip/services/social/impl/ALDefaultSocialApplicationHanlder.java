@@ -19,7 +19,9 @@
 
 package com.aimluck.eip.services.social.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +51,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.social.ALContainerConfigService;
 import com.aimluck.eip.services.social.ALSocialApplicationConstants;
 import com.aimluck.eip.services.social.ALSocialApplicationHandler;
 import com.aimluck.eip.services.social.gadgets.ALGadgetSpec;
@@ -777,6 +780,32 @@ public class ALDefaultSocialApplicationHanlder extends
         activity.setIcon(application.getIcon().getValue());
       }
        */
+
+      String activitySaveLimit =
+        ALContainerConfigService.get(Property.ACTIVITY_SAVE_LIMIT);
+      int limit = 30;
+      try {
+        limit = Integer.valueOf(activitySaveLimit).intValue();
+      } catch (Throwable ignore) {
+
+      }
+      Calendar cal = Calendar.getInstance();
+      cal.add(Calendar.DAY_OF_MONTH, -limit);
+
+      Database.query(ActivityMap.class).where(
+        Operations.lt(ActivityMap.ACTIVITY_PROPERTY
+          + "."
+          + Activity.UPDATE_DATE_PROPERTY, cal.getTime())).deleteAll();
+
+      String sql =
+        "delete from activity where update_date < #bind($updateDate)";
+      Database
+        .sql(Activity.class, sql)
+        .param(
+          "updateDate",
+          new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cal.getTime()))
+        .execute();
+
       Database.commit();
     } catch (Throwable t) {
       Database.rollback();

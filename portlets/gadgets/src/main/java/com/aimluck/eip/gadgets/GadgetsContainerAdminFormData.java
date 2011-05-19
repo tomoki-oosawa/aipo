@@ -52,6 +52,8 @@ public class GadgetsContainerAdminFormData extends ALAbstractFormData {
 
   private ALNumberField cacheGadgetXml;
 
+  private ALStringField activitySaveLimit;
+
   /**
    * 
    */
@@ -65,6 +67,9 @@ public class GadgetsContainerAdminFormData extends ALAbstractFormData {
     checkActivityInterval.setTrim(true);
     checkActivityInterval.setFieldName("あなた宛の自動更新");
     cacheGadgetXml = new ALNumberField();
+    activitySaveLimit = new ALStringField();
+    checkActivityInterval.setTrim(true);
+    checkActivityInterval.setFieldName("更新情報とあなた宛のお知らせの自動削除");
 
   }
 
@@ -87,6 +92,7 @@ public class GadgetsContainerAdminFormData extends ALAbstractFormData {
     lockedDomainSuffix.setCharacterType(ALStringField.TYPE_ASCII);
     lockedDomainSuffix.limitMaxLength(255);
     checkActivityInterval.setNotNull(true);
+    activitySaveLimit.setNotNull(true);
   }
 
   /**
@@ -127,6 +133,8 @@ public class GadgetsContainerAdminFormData extends ALAbstractFormData {
       ALSocialApplicationHandler.Property.CACHE_GADGET_XML).equals("true")
       ? 1
       : 0);
+    activitySaveLimit.setValue(ALContainerConfigService
+      .get(ALSocialApplicationHandler.Property.ACTIVITY_SAVE_LIMIT));
     return true;
   }
 
@@ -161,6 +169,10 @@ public class GadgetsContainerAdminFormData extends ALAbstractFormData {
       ALContainerConfigService.put(
         ALSocialApplicationHandler.Property.CACHE_GADGET_XML,
         cache == 1 ? "true" : "false");
+
+      ALContainerConfigService.put(
+        ALSocialApplicationHandler.Property.ACTIVITY_SAVE_LIMIT,
+        activitySaveLimit.getValue());
 
     } catch (Throwable t) {
       logger.error(t, t);
@@ -201,6 +213,10 @@ public class GadgetsContainerAdminFormData extends ALAbstractFormData {
       ALContainerConfigService.put(
         ALSocialApplicationHandler.Property.CACHE_GADGET_XML,
         cache == 1 ? "true" : "false");
+
+      ALContainerConfigService.put(
+        ALSocialApplicationHandler.Property.ACTIVITY_SAVE_LIMIT,
+        activitySaveLimit.getValue());
 
     } catch (Throwable t) {
       logger.error(t, t);
@@ -250,4 +266,7 @@ public class GadgetsContainerAdminFormData extends ALAbstractFormData {
     return cacheGadgetXml;
   }
 
+  public ALStringField getActivitySaveLimit() {
+    return activitySaveLimit;
+  }
 }
