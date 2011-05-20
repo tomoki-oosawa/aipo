@@ -1010,8 +1010,7 @@ dojo.declare("aipo.calendar.WeeklyScheduleDraggable", [aimluck.dnd.Draggable], {
             aipo.calendar.dummyDivObj.TooltipObject = null;
         }
         // IPADではツールチップ非表示
-        var userAgent = window.navigator.userAgent.toLowerCase();
-        if (userAgent.indexOf("ipad") == -1) {
+        if (aipo.schedule.TooltipEnable) {
           this.setupTooltip();
         }
     },
@@ -1265,8 +1264,7 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDraggable", [aimluck.dnd.Draggable
         aipo.calendar.dummyDivObj.draggable = this;
         */
         // IPADではツールチップ非表示
-        var userAgent = window.navigator.userAgent.toLowerCase();
-        if (userAgent.indexOf("ipad") == -1) {
+        if (aipo.schedule.TooltipEnable) {
           this.setupTooltip();
         }
     },

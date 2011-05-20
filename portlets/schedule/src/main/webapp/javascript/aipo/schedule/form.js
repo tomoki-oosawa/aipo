@@ -30,19 +30,24 @@ aipo.schedule.setupTooltip = function(url, entityids, portlet_id) {
     if (entityids.length <= 0) {
         return;
     }
-    
+
+    // IPADではツールチップ非表示
+    if (!aipo.schedule.TooltipEnable) {
+    	return;
+    }
+
     var entity_ids = entityids.split(",");
     var processed_ids = new Array();
     entity_ids.pop();
-    
+
     for (var i in entity_ids) {
         entity_ids[i] = dojo.trim(entity_ids[i]);
         if (processed_ids[entity_ids[i]]) {
             continue;
         }
         processed_ids[entity_ids[i]] = true;
-        
-        
+
+
 
         var nodeList = new Array();
         dojo.query('.schedule-' + portlet_id + '-' + entity_ids[i]).forEach(function(node, index, arr){

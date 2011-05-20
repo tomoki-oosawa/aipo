@@ -115,6 +115,12 @@ dojo.addOnLoad(function() {
 });
 
 #if (${client} != "IPAD")
+aipo.schedule.TooltipEnable = true;
+#else
+aipo.schedule.TooltipEnable = false;
+#end
+
+#if (${client} != "IPAD")
 dojo.require("dojo.dnd.Source");
 
 dojo.addOnLoad(function() {
@@ -132,7 +138,7 @@ dojo.addOnLoad(function() {
             aipo.customize.hideMenu();
         }
     });
-        
+
     var containers = dojo.query('.container');
     var containerSources = [];
     for(var c = 0; c < containers.length ; c++){
@@ -142,7 +148,7 @@ dojo.addOnLoad(function() {
         });
         containerSources.push(container);
     }
-    
+
 
     for(var c = 0; c < containers.length ; c++){
         dojo.connect(containerSources[c], "onDndStart", containers[c], function(){
@@ -185,11 +191,11 @@ dojo.addOnLoad(function() {
                         params = params + '&' + pid + '_col=' + c;
                     }
                 }
-                
+
                 url = "$!jslink.getPage().addQueryData('template', 'CustomizeFormJSONScreen').addQueryData('mode', 'layout')" + params;
                 aipo.customize.submit(url, '$!portlet.ID', function(){
                 });
-                
+
                 var iframe = dojo.query('.gadgets-gadget-content iframe', nodes[0]);
                 if(iframe && iframe.length == 1) {
                   var pid = iframe[0].id.split("remote_iframe_")[1].split("_NN_")[0];
@@ -202,12 +208,12 @@ dojo.addOnLoad(function() {
                      }
                   }
                 }
-                
+
                 dojo.removeClass(this.node, 'dojoDndContainerItemOver');
             }
         });
     }
-    
+
     var underlay = new aimluck.widget.DialogUnderlay({ templateString: "<div class=modalDialogUnderlayWrapper id='${id}_underlay'><div dojoAttachPoint='node'></div></div>" });
     dojo.connect(underlay.domNode, "onmousemove", underlay.domNode, function(){
         underlay.hide();
