@@ -85,6 +85,15 @@ public abstract class ALConfigHandler {
       }
     },
 
+    CHECK_ACTIVITY_RELAY_URL("check.activity.relay.url") {
+      @Override
+      public String defaultValue() {
+        return JetspeedResources.getString(
+          "check.activity.relay.url",
+          "/gadgets/files/container/rpc_relay.html");
+      }
+    },
+
     CHECK_ACTIVITY_INTERVAL("check.activity.interval") {
       @Override
       public String defaultValue() {

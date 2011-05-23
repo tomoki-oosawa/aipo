@@ -53,6 +53,22 @@ public class ALGadgetSpec extends HashMap<String, Object> implements
     return (String) get("icon");
   }
 
+  public int getHeight() {
+    try {
+      return (Integer) get("height");
+    } catch (Throwable t) {
+      return 200;
+    }
+  }
+
+  public boolean isScrolling() {
+    try {
+      return (Boolean) get("scrolling");
+    } catch (Throwable t) {
+      return false;
+    }
+  }
+
   @SuppressWarnings("unchecked")
   public List<ALUserPref> getUserPrefs() {
     List<ALUserPref> result = new ArrayList<ALUserPref>();

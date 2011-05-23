@@ -19,6 +19,9 @@
 
 package com.aimluck.eip.modules.screens;
 
+import java.util.List;
+import java.util.Map;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -29,8 +32,11 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.services.social.gadgets.ALGadgetContext;
+import com.aimluck.eip.services.social.gadgets.ALGadgetSpec;
 import com.aimluck.eip.util.ALEipUtils;
+import com.google.inject.internal.Lists;
 
 /**
  * 
@@ -47,6 +53,15 @@ public class GadgetsSecurityTokenUpdateJSONScreen extends ALJSONScreen {
     JSONArray result = new JSONArray();
 
     try {
+      String view = rundata.getParameters().getString("view");
+      if (!"home".equals(view)
+        && !"canvas".equals(view)
+        && !"popup".equals(view)
+        && !"default".equals(view)) {
+        view = "home";
+      }
+      String update = rundata.getParameters().getString("update");
+      boolean isUpdate = "1".equals(update);
       String payload = getPayload(rundata);
       JSONArray jsonArray = JSONArray.fromObject(payload);
 
@@ -61,6 +76,14 @@ public class GadgetsSecurityTokenUpdateJSONScreen extends ALJSONScreen {
             .toString();
 
         Object[] array = jsonArray.toArray();
+        List<String> urls = Lists.newArrayList();
+        for (Object obj : array) {
+          JSONObject jsonObject = JSONObject.fromObject(obj);
+          String specUrl = jsonObject.getString("specUrl");
+          urls.add(specUrl);
+        }
+        Map<String, ALGadgetSpec> metaData =
+          ALApplicationService.getMetaData(urls, view, false, false);
         for (Object obj : array) {
           JSONObject jsonObject = JSONObject.fromObject(obj);
           Long mid = jsonObject.getLong("id");
@@ -69,16 +92,30 @@ public class GadgetsSecurityTokenUpdateJSONScreen extends ALJSONScreen {
           String specUrl = jsonObject.getString("specUrl");
           String activeUrl = jsonObject.getString("activeUrl");
 
-          ALGadgetContext gadgetContext =
-            new ALGadgetContext(rundata, viewer, appId, specUrl, mid, activeUrl);
+          ALGadgetSpec spec = metaData.get(specUrl);
 
+          ALGadgetContext gadgetContext = null;
+          if (isUpdate) {
+            gadgetContext =
+              new ALGadgetContext(
+                rundata,
+                viewer,
+                appId,
+                specUrl,
+                mid,
+                activeUrl);
+          }
           JSONObject resultObj = new JSONObject();
           resultObj.put("id", mid);
           resultObj.put("appId", appId);
           resultObj.put("portletId", portletId);
           resultObj.put("specUrl", specUrl);
-          resultObj.put("secureToken", gadgetContext.getSecureToken());
+          resultObj.put("secureToken", isUpdate ? gadgetContext
+            .getSecureToken() : null);
           resultObj.put("activeUrl", activeUrl);
+          resultObj.put("height", spec == null ? 200 : spec.getHeight());
+          resultObj.put("scrolling", spec == null ? false : spec.isScrolling());
+          resultObj.put("views", spec == null ? null : spec.get("views"));
           result.add(resultObj);
         }
 

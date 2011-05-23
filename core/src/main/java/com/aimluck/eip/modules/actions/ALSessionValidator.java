@@ -313,8 +313,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       ALGadgetContext gadgetContext =
         new ALGadgetContext(data, viewer, "1", "/", 0);
 
-      String relayUrl =
-        checkActivityUrl + "/gadgets/files/container/rpc_relay.html";
+      String relayUrl = ALConfigService.get(Property.CHECK_ACTIVITY_RELAY_URL);
       String rpctoken = String.valueOf(System.nanoTime());
       String checkUrl =
         new StringBuilder("".equals(checkActivityUrl)

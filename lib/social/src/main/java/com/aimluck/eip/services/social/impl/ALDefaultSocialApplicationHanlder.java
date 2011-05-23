@@ -98,7 +98,7 @@ public class ALDefaultSocialApplicationHanlder extends
     }
     Map<String, ALGadgetSpec> metaData = null;
     if (fetchXml) {
-      metaData = getMetaData(specUrls, request.isDetail());
+      metaData = getMetaData(specUrls, "home", request.isDetail(), true);
     }
     for (Application app : resultList) {
       ALApplication model = new ALApplication();

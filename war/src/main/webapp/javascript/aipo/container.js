@@ -29,12 +29,13 @@ aipo.PortletLayoutManager.prototype.getGadgetChrome = function(gadget) {
 };
 
 aipo.PsmlUserPrefStore = function() {
-	shindig.UserPrefStore.call(this);
+    shindig.UserPrefStore.call(this);
 };
 
 aipo.PsmlUserPrefStore.inherits(shindig.UserPrefStore);
 
-aipo.PsmlUserPrefStore.prototype.getPrefs = function(gadget) { };
+aipo.PsmlUserPrefStore.prototype.getPrefs = function(gadget) {
+};
 
 aipo.PsmlUserPrefStore.prototype.savePrefs = function(gadget) {
 
@@ -42,219 +43,218 @@ aipo.PsmlUserPrefStore.prototype.savePrefs = function(gadget) {
 
 
 aipo.IfrGadget = {
-		getMainContent: function(continuation) {
-			var iframeId = this.getIframeId();
-			gadgets.rpc.setRelayUrl(iframeId, this.serverBase_ + this.rpcRelay);
-			gadgets.rpc.setAuthToken(iframeId, this.rpcToken);
-			continuation('<div class="' + this.cssClassGadgetContent + '"><iframe id="' +
-					iframeId + '" name="' + iframeId + '" class="' + this.cssClassGadget +
-					'" src="about:blank' + 
-					'" frameborder="no"' +
-					(this.scrolling ? ' scrolling="' + this.scrolling + '"' : 'no') +
-					(this.height ? ' height="' + this.height + '"' : '') +
-					(this.width ? ' width="' + this.width + '"' : '') +
-			'></iframe></div>');
-		},
+    getMainContent: function(continuation) {
+        var iframeId = this.getIframeId();
+        gadgets.rpc.setRelayUrl(iframeId, this.serverBase_ + this.rpcRelay);
+        gadgets.rpc.setAuthToken(iframeId, this.rpcToken);
+        continuation('<div class="' + this.cssClassGadgetContent + '"><iframe id="' +
+                iframeId + '" name="' + iframeId + '" class="' + this.cssClassGadget +
+                '" src="about:blank' +
+                '" frameborder="no"' +
+                (this.scrolling ? ' scrolling="' + this.scrolling + '"' : 'no') +
+                (this.height ? ' height="' + this.height + '"' : '') +
+                (this.width ? ' width="' + this.width + '"' : '') +
+                '></iframe></div>');
+    },
 
-		finishRender: function(chrome) {
-			window.frames[this.getIframeId()].location = this.getIframeUrl();
-			//document.getElementById(this.getIframeId()).src = this.getIframeUrl();
-		},
+    finishRender: function(chrome) {
+        window.frames[this.getIframeId()].location = this.getIframeUrl();
+        //document.getElementById(this.getIframeId()).src = this.getIframeUrl();
+    },
 
-		getIframeUrl: function() {
-			return this.serverBase_ + 'ifr?' +
-			'container=' + this.CONTAINER +
-			'&mid=' +  this.id +
-			'&nocache=' + aipo.container.nocache_ +
-			'&country=' + aipo.container.country_ +
-			'&lang=' + aipo.container.language_ +
-			'&view=' + aipo.container.view_ +
-			(this.specVersion ? '&v=' + this.specVersion : '') +
-			(shindig.container.parentUrl_ ? '&parent=' + encodeURIComponent(shindig.container.parentUrl_) : '') +
-			(this.debug ? '&debug=1' : '') +
-			this.getAdditionalParams() +
-			this.getUserPrefsParams() +
-			(this.secureToken ? '&st=' + this.secureToken : '') +
-			'&url=' + encodeURIComponent(this.specUrl) +
-			'#rpctoken=' + this.rpcToken +
-			(this.viewParams ?
-					'&view-params=' +  encodeURIComponent(gadgets.json.stringify(this.viewParams)) : '') +
-					(this.hashData ? '&' + this.hashData : '');
-		}
+    getIframeUrl: function() {
+        return this.serverBase_ + 'ifr?' +
+                'container=' + this.CONTAINER +
+                '&mid=' + this.id +
+                '&nocache=' + aipo.container.nocache_ +
+                '&country=' + aipo.container.country_ +
+                '&lang=' + aipo.container.language_ +
+                '&view=' + aipo.container.view_ +
+                (this.specVersion ? '&v=' + this.specVersion : '') +
+                (shindig.container.parentUrl_ ? '&parent=' + encodeURIComponent(shindig.container.parentUrl_) : '') +
+                (this.debug ? '&debug=1' : '') +
+                this.getAdditionalParams() +
+                this.getUserPrefsParams() +
+                (this.secureToken ? '&st=' + this.secureToken : '') +
+                '&url=' + encodeURIComponent(this.specUrl) +
+                '#rpctoken=' + this.rpcToken +
+                (this.viewParams ?
+                        '&view-params=' + encodeURIComponent(gadgets.json.stringify(this.viewParams)) : '') +
+                (this.hashData ? '&' + this.hashData : '');
+    }
 };
 
 aipo.IfrGadgetService = function() {
-	shindig.IfrGadgetService.call(this);
-	gadgets.rpc.register('set_pref', this.setUserPref);
-	gadgets.rpc.register('set_title', this.setTitle);
-	gadgets.rpc.register('requestNavigateTo', this.requestNavigateTo);
-	gadgets.rpc.register('requestCheckActivity', this.requestCheckActivity);
-	//gadgets.rpc.register('requestSendMessage', this.requestSendMessage);
+    shindig.IfrGadgetService.call(this);
+    gadgets.rpc.register('set_pref', this.setUserPref);
+    gadgets.rpc.register('set_title', this.setTitle);
+    gadgets.rpc.register('requestNavigateTo', this.requestNavigateTo);
+    gadgets.rpc.register('requestCheckActivity', this.requestCheckActivity);
+    //gadgets.rpc.register('requestSendMessage', this.requestSendMessage);
 };
 
 aipo.IfrGadgetService.inherits(shindig.IfrGadgetService);
 
-aipo.IfrGadgetService.prototype.setUserPref = function(editToken, name,
-	    value) {
-	var portletId = this.f.replace("remote_iframe_","").split("_NN_")[0].replace("-popup","");
-	var currentKey = null;
-	for(key in aipo.container.gadgets_) {
-		var gadget = aipo.container.gadgets_[key];
-		if(portletId == gadget.portletId) {
-			currentKey = key;
-			break;
-		}
-	};
-	var request = {};
-	for (var i = 1, j = arguments.length; i < j; i += 2) {
-		request[arguments[i]] = arguments[i+1];
-		if(currentKey) {
-		  aipo.container.gadgets_[currentKey].userPrefs[arguments[i]] = {};
-		  aipo.container.gadgets_[currentKey].userPrefs[arguments[i]]['value'] = arguments[i+1];
-		}
-	}
+aipo.IfrGadgetService.prototype.setUserPref = function(editToken, name, value) {
+    var portletId = this.f.replace("remote_iframe_", "").split("_NN_")[0].replace("-popup", "");
+    var currentKey = null;
+    for (key in aipo.container.gadgets_) {
+        var gadget = aipo.container.gadgets_[key];
+        if (portletId == gadget.portletId) {
+            currentKey = key;
+            break;
+        }
+    }
+    var request = {};
+    for (var i = 1, j = arguments.length; i < j; i += 2) {
+        request[arguments[i]] = arguments[i + 1];
+        if (currentKey) {
+            aipo.container.gadgets_[currentKey].userPrefs[arguments[i]] = {};
+            aipo.container.gadgets_[currentKey].userPrefs[arguments[i]]['value'] = arguments[i + 1];
+        }
+    }
 
-	var makeRequestParams = {
-			"CONTENT_TYPE" : "JSON",
-			"METHOD" : "POST",
-			"POST_DATA" : gadgets.json.stringify(request)
-	};
-	var url = "?template=UserPrefUpdateJSONScreen&js_peid=" + encodeURIComponent(portletId);
+    var makeRequestParams = {
+        "CONTENT_TYPE" : "JSON",
+        "METHOD" : "POST",
+        "POST_DATA" : gadgets.json.stringify(request)
+    };
+    var url = "?template=UserPrefUpdateJSONScreen&js_peid=" + encodeURIComponent(portletId);
 
-	gadgets.io.makeNonProxiedRequest(url,
-			handleJSONResponse,
-			makeRequestParams,
-			"application/javascript"
-	);
+    gadgets.io.makeNonProxiedRequest(url,
+            handleJSONResponse,
+            makeRequestParams,
+            "application/javascript"
+            );
 
-	function handleJSONResponse(obj) {
-		if(obj.rc == 200) {
-			// success
-		}
-	}
+    function handleJSONResponse(obj) {
+        if (obj.rc == 200) {
+            // success
+        }
+    }
 
 };
 
 aipo.IfrGadgetService.prototype.setTitle = function(title) {
-	// not supported
+    // not supported
 };
 
 aipo.IfrGadgetService.prototype.requestNavigateTo = function(view, opt_params) {
-	var portletId = this.f.replace("remote_iframe_","").split("_NN_")[0].replace("-popup","");
-	var url = "?js_peid=" + encodeURIComponent(portletId);
-	if(view == "canvas") {
-		url += '&action=controls.Maximize';
-	} else if (view == "home") {
-		url += '&action=controls.Restore';
-	}
-	if (opt_params) {
-		var paramStr = gadgets.json.stringify(opt_params);
-		if (paramStr.length > 0) {
-			url += '&appParams=' + encodeURIComponent(paramStr);
-		}
-	}
-	document.location.href = url;
+    var portletId = this.f.replace("remote_iframe_", "").split("_NN_")[0].replace("-popup", "");
+    var url = "?js_peid=" + encodeURIComponent(portletId);
+    if (view == "canvas") {
+        url += '&action=controls.Maximize';
+    } else if (view == "home") {
+        url += '&action=controls.Restore';
+    }
+    if (opt_params) {
+        var paramStr = gadgets.json.stringify(opt_params);
+        if (paramStr.length > 0) {
+            url += '&appParams=' + encodeURIComponent(paramStr);
+        }
+    }
+    document.location.href = url;
 };
 
 aipo.activityDesktopNotifyEnable = null;
 aipo.IfrGadgetService.prototype.requestDesktopNotifyEnable = function(enable) {
 
-	function handleJSONResponse(obj) {
-		if(obj.rc == 200) {
-			var data = obj.data;
-			aipo.activityDesktopNotifyEnable = data.enable;
-		}
-	}
-	
-	var request = {
-	};
+    function handleJSONResponse(obj) {
+        if (obj.rc == 200) {
+            var data = obj.data;
+            aipo.activityDesktopNotifyEnable = data.enable;
+        }
+    }
 
-	var makeRequestParams = {
-			"CONTENT_TYPE" : "JSON",
-			"METHOD" : "POST",
-			"POST_DATA" : gadgets.json.stringify(request)
-	};
-	
-	var url = "?template=ActivityNotifyEnableJSONScreen";
-    if(aipo.activityDesktopNotifyEnable != null) {
-    	if(!aipo.activityDesktopNotifyEnable || window.webkitNotifications.checkPermission() != 0) {
-    		window.webkitNotifications.requestPermission(function() {
-    			if(window.webkitNotifications.checkPermission() == 0) {
-    				url += "&enable=T";
-    				gadgets.io.makeNonProxiedRequest(url,
-    						handleJSONResponse,
-    						makeRequestParams,
-    						"application/javascript");
-    			}
-    		});
-    	} else {
-    		url += "&enable=F";
-			gadgets.io.makeNonProxiedRequest(url,
-					handleJSONResponse,
-					makeRequestParams,
-					"application/javascript");
-    	}
+    var request = {
+    };
+
+    var makeRequestParams = {
+        "CONTENT_TYPE" : "JSON",
+        "METHOD" : "POST",
+        "POST_DATA" : gadgets.json.stringify(request)
+    };
+
+    var url = "?template=ActivityNotifyEnableJSONScreen";
+    if (aipo.activityDesktopNotifyEnable != null) {
+        if (!aipo.activityDesktopNotifyEnable || window.webkitNotifications.checkPermission() != 0) {
+            window.webkitNotifications.requestPermission(function() {
+                if (window.webkitNotifications.checkPermission() == 0) {
+                    url += "&enable=T";
+                    gadgets.io.makeNonProxiedRequest(url,
+                            handleJSONResponse,
+                            makeRequestParams,
+                            "application/javascript");
+                }
+            });
+        } else {
+            url += "&enable=F";
+            gadgets.io.makeNonProxiedRequest(url,
+                    handleJSONResponse,
+                    makeRequestParams,
+                    "application/javascript");
+        }
     } else {
-		gadgets.io.makeNonProxiedRequest(url,
-				handleJSONResponse,
-				makeRequestParams,
-				"application/javascript");
-    	
+        gadgets.io.makeNonProxiedRequest(url,
+                handleJSONResponse,
+                makeRequestParams,
+                "application/javascript");
+
     }
 };
 
 aipo.activityMax = null;
 aipo.IfrGadgetService.prototype.requestCheckActivity = function(activityId) {
-	var request = {
-	};
+    var request = {
+    };
 
-	var makeRequestParams = {
-			"CONTENT_TYPE" : "JSON",
-			"METHOD" : "POST",
-			"POST_DATA" : gadgets.json.stringify(request)
-	};
+    var makeRequestParams = {
+        "CONTENT_TYPE" : "JSON",
+        "METHOD" : "POST",
+        "POST_DATA" : gadgets.json.stringify(request)
+    };
 
-	var url = "?template=CheckActivityJSONScreen&isRead=" + activityId;
+    var url = "?template=CheckActivityJSONScreen&isRead=" + activityId;
 
-	if(aipo.activityMax) {
-		url += "&max=" + aipo.activityMax;
-	}
-	gadgets.io.makeNonProxiedRequest(url,
-			handleJSONResponse,
-			makeRequestParams,
-			"application/javascript"
-	);
+    if (aipo.activityMax) {
+        url += "&max=" + aipo.activityMax;
+    }
+    gadgets.io.makeNonProxiedRequest(url,
+            handleJSONResponse,
+            makeRequestParams,
+            "application/javascript"
+            );
 
-	function handleJSONResponse(obj) {
-		if(obj.rc == 200) {
-			var data = obj.data;
-			var unreadCount = data.unreadCount;
-			aipo.activityMax = data.max;
-			var ac = dijit.byId("activitycheckerContainer");
-			if(ac) {
-				ac.onCheckActivity(unreadCount);
-			}
-			if(aipo.activityDesktopNotifyEnable && window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
-			  var popups = new Array();
-			  for(key in data.activities) {
-			  	  var activity = data.activities[key];
-			      var popup = window.webkitNotifications.createNotification('images/favicon48.png', activity.displayName, activity.text);
-			      popup.show();
-			      popup.ondisplay = function(event) {
-                      setTimeout(function() {
-                          event.currentTarget.cancel();
-                      }, 7 * 1000);
-                  }
-			      popups.push(popup);
-		      }
-		    }
-		}
-	}
+    function handleJSONResponse(obj) {
+        if (obj.rc == 200) {
+            var data = obj.data;
+            var unreadCount = data.unreadCount;
+            aipo.activityMax = data.max;
+            var ac = dijit.byId("activitycheckerContainer");
+            if (ac) {
+                ac.onCheckActivity(unreadCount);
+            }
+            if (aipo.activityDesktopNotifyEnable && window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
+                var popups = new Array();
+                for (key in data.activities) {
+                    var activity = data.activities[key];
+                    var popup = window.webkitNotifications.createNotification('images/favicon48.png', activity.displayName, activity.text);
+                    popup.show();
+                    popup.ondisplay = function(event) {
+                        setTimeout(function() {
+                            event.currentTarget.cancel();
+                        }, 7 * 1000);
+                    }
+                    popups.push(popup);
+                }
+            }
+        }
+    }
 };
 
 aipo.IfrContainer = function() {
-	shindig.Container.call(this);
-	this.context = new Array();
+    shindig.Container.call(this);
+    this.context = new Array();
 };
 
 aipo.IfrContainer.inherits(shindig.Container);
@@ -264,131 +264,71 @@ aipo.IfrContainer.prototype.gadgetClass = shindig.BaseIfrGadget;
 aipo.IfrContainer.prototype.gadgetService = new aipo.IfrGadgetService();
 
 aipo.IfrContainer.prototype.setParentUrl = function(url) {
-	if (!url.match(/^http[s]?:\/\//)) {
-		url = document.location.href.match(/^[^?#]+\//)[0] + url;
-	}
+    if (!url.match(/^http[s]?:\/\//)) {
+        url = document.location.href.match(/^[^?#]+\//)[0] + url;
+    }
 
-	this.parentUrl_ = url;
+    this.parentUrl_ = url;
 };
 
 aipo.IfrContainer.prototype.assign = function(context) {
-	this.context.push(context);
+    this.context.push(context);
 };
 
 aipo.IfrContainer.prototype.getContext = function() {
-	return this.context;
+    return this.context;
 };
 
 aipo.IfrContainer.prototype.addGadget = function(gadget) {
-	this.gadgets_[this.getGadgetKey_(gadget.id)] = gadget;
+    this.gadgets_[this.getGadgetKey_(gadget.id)] = gadget;
 };
 
 aipo.IfrContainer.prototype.renderGadget = function(gadget) {
-	var chrome = this.layoutManager.getGadgetChrome(gadget);
-	if(!gadget.count) {
-		gadget.count = 0;
-	}
-	gadget.count++;
-	gadget.render(chrome);
+    var chrome = this.layoutManager.getGadgetChrome(gadget);
+    if (!gadget.count) {
+        gadget.count = 0;
+    }
+    gadget.count++;
+    gadget.render(chrome);
 };
 
 aipo.IfrContainer.prototype.renderGadgets = function() {
-	var context = this.context;
-	for (var i = 0; i < context.length; i ++) {
-		var c = context[i];
-		var gadget = this.createGadget(c);
-		gadget.setServerBase(c.serverBase);
-		this.addGadget(gadget);
-		this.renderGadget(gadget);
-	}
+    var context = this.context;
+    for (var i = 0; i < context.length; i ++) {
+        var c = context[i];
+        var gadget = this.createGadget(c);
+        gadget.setServerBase(c.serverBase);
+        this.addGadget(gadget);
+        //this.renderGadget(gadget);
+    }
 
-	aipo.cron.start();
+    aipo.cron.start();
 };
 
 aipo.IfrContainer.prototype.renderGadgetFromContext = function(context) {
-	var gadget = this.createGadget(context);
-	gadget.setServerBase(context.serverBase);
-	gadget.id = this.getNextGadgetInstanceId();
-	gadget.portletId += '-popup';
+    var gadget = this.createGadget(context);
+    gadget.setServerBase(context.serverBase);
+    gadget.id = this.getNextGadgetInstanceId();
+    gadget.portletId += '-popup';
     var chromeId = 'gadget-chrome-' + gadget.portletId;
-	var chrome = chromeId ? document.getElementById(chromeId) : null;
-	if(!gadget.count) {
-		gadget.count = 0;
-	}
-	gadget.count++;
-	gadget.render(chrome);
+    var chrome = chromeId ? document.getElementById(chromeId) : null;
+    if (!gadget.count) {
+        gadget.count = 0;
+    }
+    gadget.count++;
+    gadget.render(chrome);
 };
 
 shindig.BaseIfrGadget.prototype.getIframeId = function() {
-	return this.GADGET_IFRAME_PREFIX_ + this.portletId + '_NN_' + this.count;
+    return this.GADGET_IFRAME_PREFIX_ + this.portletId + '_NN_' + this.count;
 };
 
 shindig.BaseIfrGadget.prototype.queryIfrGadgetType_ = function() {
-	// Get the gadget metadata and check if the gadget requires the 'pubsub-2'
-	// feature.  If so, then we use OpenAjax Hub in order to create and manage
-	// the iframe.  Otherwise, we create the iframe ourselves.
-	var request = {
-			context: {
-				country: aipo.container.country_,
-				language: aipo.container.language_,
-				view: aipo.container.view_,
-				container: "default"
-			},
-			gadgets: [{
-				url: this.specUrl,
-				moduleId: 1,
-				portletId: this.portletId
-			}]
-	};
-
-	var makeRequestParams = {
-			"CONTENT_TYPE" : "JSON",
-			"METHOD" : "POST",
-			"POST_DATA" : gadgets.json.stringify(request)
-	};
-
-	var url = this.serverBase_+"metadata?st=" + this.secureToken;
-
-	gadgets.io.makeNonProxiedRequest(url,
-			handleJSONResponse,
-			makeRequestParams,
-			"application/javascript"
-	);
-
-	var gadget = this;
-	function handleJSONResponse(obj) {
-		var requiresPubSub2 = false;
-		var arr = obj.data.gadgets[0].features;
-		for(var i = 0; i < arr.length; i++) {
-			if (arr[i] === "pubsub-2") {
-				requiresPubSub2 = true;
-				break;
-			}
-		}
-		var subClass = requiresPubSub2 ? shindig.OAAIfrGadget : aipo.IfrGadget;
-		for (var name in subClass) if (subClass.hasOwnProperty(name)) {
-			gadget[name] = subClass[name];
-		}
-		var height = obj.data.gadgets[0].height;
-		var view = obj.data.gadgets[0].views[aipo.container.view_];
-		var preferredHeight = 0;
-		if (view) {
-		    preferredHeight = view.preferredHeight;
-		} else {
-			var defaultView  = obj.data.gadgets[0].views['default'];
-			if (defaultView) {
-			    preferredHeight = defaultView.preferredHeight;
-			}
-		}
-	    if(height > 0) {
-	    	gadget['height'] = height;
-	    }
-	    if(preferredHeight > 0) {
-	    	gadget['height'] = preferredHeight;
-	    }
-	    var scrolling = obj.data.gadgets[0].scrolling;
-	    gadget['scrolling'] = scrolling ? 'true' : 'no';
-	}
+    var gadget = this;
+    var subClass = aipo.IfrGadget;
+    for (var name in subClass) if (subClass.hasOwnProperty(name)) {
+        gadget[name] = subClass[name];
+    }
 };
 
 shindig.Gadget.prototype.getContent = function(continuation) {
@@ -402,47 +342,74 @@ aipo.container.layoutManager = new aipo.PortletLayoutManager();
 aipo.container.userPrefStore = new aipo.PsmlUserPrefStore();
 
 aipo.cron = new CronTask(function(decay) {
-	if(!aipo.cron.isFirst) {
-		var gadgetContext = aipo.container.context;
-		if (gadgetContext != null && gadgetContext.length > 0) {
-			var makeRequestParams = {
-					"CONTENT_TYPE" : "JSON",
-					"METHOD" : "POST",
-					"POST_DATA" : gadgets.json.stringify(aipo.container.context)
-			};
+    var gadgetContext = aipo.container.context;
+    if (gadgetContext != null && gadgetContext.length > 0) {
+        var makeRequestParams = {
+            "CONTENT_TYPE" : "JSON",
+            "METHOD" : "POST",
+            "POST_DATA" : gadgets.json.stringify(aipo.container.context)
+        };
 
-			var url = "?template=GadgetsSecurityTokenUpdateJSONScreen";
+        var url = "?template=GadgetsSecurityTokenUpdateJSONScreen&view=" + aipo.container.view_;
+        if (!aipo.cron.isFirst) {
+            url += "&update=1";
+        }
 
-			function handleJSONResponse(obj) {
-				if(obj.rc == 200) {
-					var data = obj.data;
-					for(var i = 0; i < data.length; i++) {
-						var context = data[i];
-						var gadget = aipo.container.gadgets_['gadget_' + context.id];
-						gadgets.rpc.call('remote_iframe_' + context.portletId + '_NN_' + gadget.count, 'update_security_token', null,
-								context.secureToken);
-						gadget.secureToken = context.secureToken;
-					}
-					// success
-				}
-			};
+        function handleJSONResponse(obj) {
+            if (obj.rc == 200) {
+                var data = obj.data;
+                for (var i = 0; i < data.length; i++) {
+                    var context = data[i];
+                    var gadget = aipo.container.gadgets_['gadget_' + context.id];
+                    if (!aipo.cron.isFirst) {
+                        gadgets.rpc.call('remote_iframe_' + context.portletId + '_NN_' + gadget.count, 'update_security_token', null,
+                                context.secureToken);
+                        gadget.secureToken = context.secureToken;
+                    }
+                    var height = context.height;
+                    var view = null;
+                    if (context.views) {
+                        view = context.views[aipo.container.view_];
+                        var preferredHeight = 0;
+                        if (view) {
+                            preferredHeight = view.preferredHeight;
+                        } else {
+                            var defaultView = context.views['default'];
+                            if (defaultView) {
+                                preferredHeight = defaultView.preferredHeight;
+                            }
+                        }
+                    }
+                    if (height > 0) {
+                        gadget.height = height;
+                    }
+                    if (preferredHeight > 0) {
+                        gadget.height = preferredHeight;
+                    }
+                    gadget.scrolling = context.scrolling ? 'true' : 'no';
+                    if (aipo.cron.isFirst) {
+                        aipo.container.renderGadget(gadget);
+                    }
+                }
+                aipo.cron.isFirst = false;
+                // success
+            }
+        }
 
-			gadgets.io.makeNonProxiedRequest(url,
-					handleJSONResponse,
-					makeRequestParams,
-					"application/javascript"
-			);
-		}
-	}
-	aipo.cron.isFirst = false;
-	decay();
+        gadgets.io.makeNonProxiedRequest(url,
+                handleJSONResponse,
+                makeRequestParams,
+                "application/javascript"
+                );
+    }
+    decay();
 }, 30 * 60 * 1000, true);
 aipo.cron.isFirst = true;
 
-aipo.container.onPopupGadgets = function(){
-	var action = document.getElementById('gadgets-popup-action');
-	if(action) {
-		location.href = action.href;
-	}
+aipo.container.onPopupGadgets = function() {
+    var action = document.getElementById('gadgets-popup-action');
+    if (action) {
+        location.href = action.href;
+    }
 };
 

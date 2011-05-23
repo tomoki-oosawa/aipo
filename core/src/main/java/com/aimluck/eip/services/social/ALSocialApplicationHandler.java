@@ -185,24 +185,29 @@ public abstract class ALSocialApplicationHandler {
   public ALGadgetSpec getMetaData(String specUrl, boolean isDetail) {
     List<String> specUrls = new ArrayList<String>();
     specUrls.add(specUrl);
-    Map<String, ALGadgetSpec> metaData = getMetaData(specUrls, isDetail);
+    Map<String, ALGadgetSpec> metaData =
+      getMetaData(specUrls, "home", isDetail, true);
     return metaData.get(specUrl);
   }
 
   public Map<String, ALGadgetSpec> getMetaData(List<String> specUrls) {
-    return getMetaData(specUrls, false);
+    return getMetaData(specUrls, "home", false, true);
+  }
+
+  protected String getMetaDataUrl() {
+    String baseUrl = ALServletUtils.getRequestBaseUrl();
+    return baseUrl + "/gadgets/metadata";
   }
 
   public Map<String, ALGadgetSpec> getMetaData(List<String> specUrls,
-      boolean isDetail) {
+      String view, boolean isDetail, boolean nocache) {
     Map<String, ALGadgetSpec> maps = new HashMap<String, ALGadgetSpec>();
     try {
 
-      // TODO: Timeout の処理
-
-      String baseUrl = ALServletUtils.getRequestBaseUrl();
       HttpClient httpClient = new HttpClient();
-      PostMethod postMethod = new PostMethod(baseUrl + "/gadgets/metadata");
+      httpClient.getParams().setParameter("http.connection.timeout", 5000);
+      httpClient.getParams().setParameter("http.socket.timeout", 3000);
+      PostMethod postMethod = new PostMethod(getMetaDataUrl());
       postMethod.addRequestHeader("Content-Type", "application/javascript");
       postMethod.addParameter("st", "default:st");
       postMethod.addParameter("req", "1");
@@ -211,9 +216,9 @@ public abstract class ALSocialApplicationHandler {
       JSONObject context = new JSONObject();
       context.put("country", "JP");
       context.put("language", "ja");
-      context.put("view", "home");
+      context.put("view", view == null ? "home" : view);
       context.put("container", "default");
-      context.put("nocache", 1);
+      context.put("nocache", nocache ? 1 : 0);
       if (isDetail) {
         context.put("withDescription", "1");
         context.put("withOAuthService", "1");
@@ -260,5 +265,4 @@ public abstract class ALSocialApplicationHandler {
     }
     return maps;
   }
-
 }

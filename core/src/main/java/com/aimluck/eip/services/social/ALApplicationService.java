@@ -20,6 +20,7 @@
 package com.aimluck.eip.services.social;
 
 import java.util.List;
+import java.util.Map;
 
 import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.orm.query.ResultList;
@@ -90,6 +91,15 @@ public class ALApplicationService {
 
   public static ALGadgetSpec getMetaData(String specUrl) {
     return getService().getMetaData(specUrl);
+  }
+
+  public static Map<String, ALGadgetSpec> getMetaData(List<String> specUrls,
+      String view, boolean isDetail, boolean nochache) {
+    return getService().getMetaData(specUrls, view, isDetail, nochache);
+  }
+
+  public static Map<String, ALGadgetSpec> getMetaData(List<String> specUrls) {
+    return getService().getMetaData(specUrls, null, false, true);
   }
 
   public static ALGadgetSpec getMetaData(String specUrl, boolean isDetail) {
