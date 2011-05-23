@@ -115,9 +115,9 @@ dojo.addOnLoad(function() {
 });
 
 #if (${client} != "IPAD")
-aipo.schedule.TooltipEnable = true;
+scheduleTooltipEnable = true;
 #else
-aipo.schedule.TooltipEnable = false;
+scheduleTooltipEnable = false;
 #end
 
 #if (${client} != "IPAD")

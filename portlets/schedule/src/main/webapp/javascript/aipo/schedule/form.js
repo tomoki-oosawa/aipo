@@ -32,7 +32,7 @@ aipo.schedule.setupTooltip = function(url, entityids, portlet_id) {
     }
 
     // IPADではツールチップ非表示
-    if (!aipo.schedule.TooltipEnable) {
+    if (scheduleTooltipEnable != true) {
     	return;
     }
 
