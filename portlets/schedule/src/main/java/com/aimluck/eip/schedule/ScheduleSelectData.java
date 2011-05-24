@@ -63,8 +63,8 @@ public class ScheduleSelectData extends
     ALAbstractSelectData<EipTSchedule, EipTSchedule> {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleSelectData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleSelectData.class.getName());
 
   /** <code>members</code> 共有メンバー */
   private List<ALEipUser> members;
@@ -92,6 +92,9 @@ public class ScheduleSelectData extends
 
   /** <code>hasAuthorityOtherDelete</code> アクセス権限 */
   private boolean hasAuthorityOtherDelete = false;
+
+  /** <code>hasAuthoritySelfInsert</code> アクセス権限 */
+  private boolean hasAuthoritySelfInsert = false;
 
   /** <code>hasAuthoritySelfEdit</code> アクセス権限 */
   private boolean hasAuthoritySelfEdit = false;
@@ -180,6 +183,12 @@ public class ScheduleSelectData extends
         loginuserid,
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
         ALAccessControlConstants.VALUE_ACL_DELETE);
+
+    hasAuthoritySelfInsert =
+      aclhandler.hasAuthority(
+        loginuserid,
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
+        ALAccessControlConstants.VALUE_ACL_INSERT);
 
     hasAuthoritySelfEdit =
       aclhandler.hasAuthority(
@@ -525,6 +534,10 @@ public class ScheduleSelectData extends
 
   public boolean hasAuthoritySelfDelete() {
     return hasAuthoritySelfDelete;
+  }
+
+  public boolean hasAuthoritySelfInsert() {
+    return hasAuthoritySelfInsert;
   }
 
 }

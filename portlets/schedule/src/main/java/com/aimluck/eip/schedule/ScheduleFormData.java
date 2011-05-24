@@ -2067,9 +2067,48 @@ public class ScheduleFormData extends ALAbstractFormData {
    */
   @Override
   public boolean doViewForm(ALAction action, RunData rundata, Context context) {
-    boolean res = super.doViewForm(action, rundata, context);
-    // post(action, rundata, context);
-    return res;
+    // for schedule copy
+    try {
+      init(action, rundata, context);
+      boolean isedit =
+        (ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID) != null);
+
+      if (is_copy) {
+        isedit = false;
+      }
+
+      int aclType = ALAccessControlConstants.VALUE_ACL_INSERT;
+      if (isedit) {
+        aclType = ALAccessControlConstants.VALUE_ACL_UPDATE;
+      }
+      doCheckAclPermission(rundata, context, aclType);
+
+      action.setMode(isedit
+        ? ALEipConstants.MODE_EDIT_FORM
+        : ALEipConstants.MODE_NEW_FORM);
+      setMode(action.getMode());
+
+      List<String> msgList = new ArrayList<String>();
+      boolean res =
+        (isedit || is_copy)
+          ? loadFormData(rundata, context, msgList)
+          : setFormData(rundata, context, msgList);
+      action.setResultData(this);
+      if (!msgList.isEmpty()) {
+        action.addErrorMessages(msgList);
+      }
+      action.putData(rundata, context);
+      return res;
+    } catch (ALPermissionException e) {
+      ALEipUtils.redirectPermissionError(rundata);
+      return false;
+    } catch (ALPageNotFoundException e) {
+      ALEipUtils.redirectPageNotFound(rundata);
+      return false;
+    } catch (ALDBErrorException e) {
+      ALEipUtils.redirectDBError(rundata);
+      return false;
+    }
   }
 
   /**
