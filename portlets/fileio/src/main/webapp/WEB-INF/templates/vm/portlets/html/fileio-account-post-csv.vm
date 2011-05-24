@@ -93,14 +93,15 @@ function onChg2(obj){
 //-->
 </script>
 #set($tabs = [["インポート", "",""]])
+#ALtabheader($tabs "")
 #if(!$!result.List || $result.List.size() == 0)#ALerrmsg($errmsgs)#end
 #if($result.getClass().getName() == "com.aimluck.eip.account.AccountPostCsvSelectData")
 #if(! $result.List || $result.List.size() <= 0)
 <ul></ul>
 #end
 #end
-#ALtabheader($tabs "")
 <form name="io_select" action="" method="post" enctype="multipart/form-data">
+<input type="hidden" name="secid" value="$secid" />
 <select name="post$!{portlet.ID}" onChange="location.href=this.options[this.selectedIndex].value">
 <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_form_csv','1')">ユーザーアカウント</option>
 <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_postcsv_form','1')" selected>部署</option>
@@ -119,6 +120,7 @@ function onChg2(obj){
 確認画面が表示された後に、ボタン [登録] を押すことで、登録が完了します。
 </div>
 <form name="readcsv" action="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_postcsv_upload','1')" method="post" enctype="multipart/form-data">
+<input type="hidden" name="secid" value="$secid" />
 <input type="hidden" name="temp_folder" value="$temp_folder">
 #ALtableheaderWide()
 <tr>
@@ -205,7 +207,7 @@ function onChg2(obj){
 <li><span class="caution">（※2）&nbsp;電話番号（外線）は 15 文字以下でハイフン（-）を含めて入力してください。</span></li>
 #end
 #if($showErrmsg3)
-<li><span class="caution">（※3）&nbsp;電話番号（内線）は 15 文字以下でハイフン（-）を含めて入力してください。</span></li>
+<li><span class="caution">（※3）&nbsp;電話番号（内線）は 15 文字以下でハイフン（-）または半角数字で入力してください。</span></li>
 #end
 #if($showErrmsg4)
 <li><span class="caution">（※4）&nbsp;郵便番号は 7 文字でハイフン（-）を含めて入力してください。</span></li>

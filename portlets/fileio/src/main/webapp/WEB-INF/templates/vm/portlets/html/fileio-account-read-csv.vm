@@ -47,6 +47,7 @@ function event_account_csv_regist(button) {
 //-->
 </script>
 #ALtabheader($tabs "")
+#if(!$!result.List || $result.List.size() == 0)#ALerrmsg($errmsgs)#end
 #if($result.getClass().getName() == "com.aimluck.eip.account.AccountCsvSelectData")
 #if(! $result.List || $result.List.size() <= 0)
 #if($result.overMaxUser() || $result.repeatUsers())
@@ -165,7 +166,7 @@ function event_account_csv_regist(button) {
 <li><span class="caution">（※8）&nbsp;電話番号（外線）は 15 文字以下でハイフン（-）を含めて入力してください。</span></li>
 #end
 #if($showErrmsg9)
-<li><span class="caution">（※9）&nbsp;電話番号（内線）は 15 文字以下でハイフン（-）を含めて入力してください。</span></li>
+<li><span class="caution">（※9）&nbsp;電話番号（内線）は 15 文字以下でハイフン（-）または半角数字で入力してください。</span></li>
 #end
 #if($showErrmsg10)
 <li><span class="caution">（※10）&nbsp;電話番号（携帯）は 15 文字以下でハイフン（-）を含めて入力してください。</span></li>
@@ -208,7 +209,7 @@ function event_account_csv_regist(button) {
 #end
 
 <div style="width:100%; overflow:auto;">
-	
+
 <table class="tableWrapper" style="margin: 1px"><tbody><tr><td>
 #ALtableheaderWide()
 <tr>
@@ -267,7 +268,7 @@ function event_account_csv_regist(button) {
 #if($!record.User.CellularMail.toString())$!{record.User.CellularMail}#else <span class="caution">※11</span> #end
 </td>
 <td nowrap="nowrap" class="item">
-	
+
 
 #if($!record.PostNameList)
 #set($pcount = 0)
