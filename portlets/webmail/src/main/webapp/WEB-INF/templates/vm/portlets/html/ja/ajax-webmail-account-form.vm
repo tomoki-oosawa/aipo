@@ -120,6 +120,11 @@
 </select>
 <label for="$!{portlet.ID}del_at_pop3_for_days_flg_enable_id">日以上前の受信メールを自動的に削除</label>
 </span>
+<br />
+<div style="font-size:.7em;">
+※ご使用のメールサーバーの設定によっては、<br />
+　メールが削除されないことがございます。
+</div>
 </td>
 #ALtdcaptionAtt($!result.getFieldName("non_received_flg") "style='width:210px;'")
 #ALtditemheader()
