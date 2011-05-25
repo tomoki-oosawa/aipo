@@ -199,8 +199,6 @@ function change_login_type(form) {
 }
 #end
 
-#set($alEipUtils = $!data.getUser().getTemp("alEipUtils"))
-#set($alEipManager = $!data.getUser().getTemp("alEipManager"))
 #if($enable_userlist)
 function change_group(form, value) {
   var f = form.member_username_list;

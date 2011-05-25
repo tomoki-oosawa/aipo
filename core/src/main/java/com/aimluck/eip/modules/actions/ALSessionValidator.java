@@ -217,8 +217,8 @@ public class ALSessionValidator extends JetspeedSessionValidator {
 
           if (data.getUser() != null) {
             data.getUser().setTemp("redirect", sb.toString());
-            data.getUser().setTemp("alEipUtils", new ALEipUtils());
-            data.getUser().setTemp("alEipManager", ALEipManager.getInstance());
+            context.put("alEipUtils", new ALEipUtils());
+            context.put("alEipManager", ALEipManager.getInstance());
           }
 
           // セッションの削除
