@@ -347,7 +347,7 @@ public class ScheduleMonthlySelectData extends
       aclhandler.hasAuthority(
         loginUserId,
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
-        ALAccessControlConstants.VALUE_ACL_DETAIL);
+        ALAccessControlConstants.VALUE_ACL_LIST);
 
     hasAuthoritySelfInsert =
       aclhandler.hasAuthority(
@@ -1167,7 +1167,11 @@ public class ScheduleMonthlySelectData extends
   }
 
   public List<FacilityResultData> getFacilityList() {
-    return facilityList;
+    if (hasAclviewOther) {
+      return facilityList;
+    } else {
+      return null;
+    }
   }
 
   /**
