@@ -19,15 +19,13 @@ package org.apache.jetspeed.services.statemanager;
 
 // imports
 import java.io.Serializable;
+import java.util.Enumeration;
 import java.util.Map;
 import java.util.Vector;
-import java.util.Enumeration;
 
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionBindingListener;
 import javax.servlet.http.HttpSessionBindingEvent;
-
-import org.apache.jetspeed.services.statemanager.BaseStateManagerService;
+import javax.servlet.http.HttpSessionBindingListener;
 
 /**
  * <p>
@@ -46,23 +44,29 @@ import org.apache.jetspeed.services.statemanager.BaseStateManagerService;
  * Note: This implementation segments the states by session. States created in
  * one session will NOT BE AVAILABLE from other sessions.
  * </p>
- *
+ * 
  * @version $Revision: 1.4 $
  * @see org.apache.jetspeed.services.statemanager.BaseStateManagerService
  * @see org.apache.jetspeed.services.statemanager.StateManagerService
  * @see org.apache.jetspeed.services.statemanager.SessionState
  * @author <a href="mailto:ggolden@apache.org">Glenn R. Golden</a>
  */
-public class JetspeedHttpStateManagerService extends BaseStateManagerService {
+public class JetspeedHttpStateManagerService extends BaseStateManagerService
+    implements Serializable {
+
+  private static final long serialVersionUID = 6138392597252459984L;
+
   /**
    * Initialize the states storage.
    */
+  @Override
   protected void initStates() {
   } // initStates
 
   /**
    * Cleanup the states storage.
    */
+  @Override
   protected void shutdownStates() {
   } // shutdownStates
 
@@ -71,10 +75,11 @@ public class JetspeedHttpStateManagerService extends BaseStateManagerService {
    */
   private HttpSession getSession() {
     // get the current session that was installed for this thread
-    HttpSession session = (HttpSession) m_httpSessions.get(Thread
-        .currentThread());
-    if (session == null)
+    HttpSession session =
+      (HttpSession) m_httpSessions.get(Thread.currentThread());
+    if (session == null) {
       return null;
+    }
 
     // call isNew just to see if the session has been invalidated already
     try {
@@ -89,7 +94,7 @@ public class JetspeedHttpStateManagerService extends BaseStateManagerService {
 
   /**
    * Convert the key to a name safe to store directly in the session.
-   *
+   * 
    * @param key
    *          The state key.
    * @return a name safe to store directly in the session based on key.
@@ -102,22 +107,25 @@ public class JetspeedHttpStateManagerService extends BaseStateManagerService {
 
   /**
    * Access the Map which is the set of attributes for a state.
-   *
+   * 
    * @param key
    *          The state key.
    * @return The Map which is the set of attributes for a state.
    */
+  @Override
   protected Map getState(String key) {
     // get the session
     HttpSession session = getSession();
-    if (session == null)
+    if (session == null) {
       return null;
+    }
 
     // get this state from our entry in the session
-    StateEntry stateEntry = (StateEntry) session
-        .getAttribute(getSessionKey(key));
-    if (stateEntry == null)
+    StateEntry stateEntry =
+      (StateEntry) session.getAttribute(getSessionKey(key));
+    if (stateEntry == null) {
       return null;
+    }
 
     return stateEntry.getMap();
 
@@ -125,17 +133,19 @@ public class JetspeedHttpStateManagerService extends BaseStateManagerService {
 
   /**
    * Add a new state to the states we are managing.
-   *
+   * 
    * @param key
    *          The state key.
    * @param state
    *          The Map which is the set of attributes for the state.
    */
+  @Override
   protected void addState(String key, Map state) {
     // get the session
     HttpSession session = getSession();
-    if (session == null)
+    if (session == null) {
       return;
+    }
 
     // create a stateEntry to hold our state Map
     StateEntry stateEntry = new StateEntry(key, state);
@@ -147,15 +157,17 @@ public class JetspeedHttpStateManagerService extends BaseStateManagerService {
 
   /**
    * Remove a state from the states we are managing.
-   *
+   * 
    * @param key
    *          The state key.
    */
+  @Override
   protected void removeState(String key) {
     // get the session
     HttpSession session = getSession();
-    if (session == null)
+    if (session == null) {
       return;
+    }
 
     // remove the key from the session - the StateEntry will be notified
     session.removeAttribute(getSessionKey(key));
@@ -165,16 +177,18 @@ public class JetspeedHttpStateManagerService extends BaseStateManagerService {
   /**
    * Access an array of the keys of all states managed, those that start with
    * the parameter.
-   *
+   * 
    * @param start
    *          The starting string used to select the keys.
    * @return an array of the keys of all states managed.
    */
+  @Override
   protected String[] getStateKeys(String start) {
     // get the session
     HttpSession session = getSession();
-    if (session == null)
+    if (session == null) {
       return null;
+    }
 
     // use this as the test pattern
     String pattern = getSessionKey(start);
@@ -196,8 +210,9 @@ public class JetspeedHttpStateManagerService extends BaseStateManagerService {
       }
     }
 
-    if (rv.size() == 0)
+    if (rv.size() == 0) {
       return null;
+    }
 
     return (String[]) rv.toArray(new String[rv.size()]);
 
@@ -207,6 +222,9 @@ public class JetspeedHttpStateManagerService extends BaseStateManagerService {
    * Store the Map for the state, and listen for HttpSessionBinding events
    */
   private class StateEntry implements HttpSessionBindingListener, Serializable {
+
+    private static final long serialVersionUID = 8630600178442354718L;
+
     /** Store the map. */
     private Map m_map = null;
 
@@ -214,8 +232,8 @@ public class JetspeedHttpStateManagerService extends BaseStateManagerService {
     private String m_key = null;
 
     /**
-     * Construct.
-     *s
+     * Construct. s
+     * 
      * @param key
      *          The state key.
      * @param map
@@ -229,7 +247,7 @@ public class JetspeedHttpStateManagerService extends BaseStateManagerService {
 
     /**
      * Access the map we are holding.
-     *
+     * 
      * @return the Map we are holding.
      */
     public Map getMap() {
@@ -240,12 +258,14 @@ public class JetspeedHttpStateManagerService extends BaseStateManagerService {
     /**
      * We don't care about when we are bound...
      */
+    @Override
     public void valueBound(HttpSessionBindingEvent event) {
     }
 
     /**
      * When we are unbound, unbind our state's (map's) attributes
      */
+    @Override
     public void valueUnbound(HttpSessionBindingEvent event) {
       // notify all attribute and clear the state
       retireAttributes(m_key, m_map);
@@ -258,11 +278,11 @@ public class JetspeedHttpStateManagerService extends BaseStateManagerService {
 } // JetspeedHttpStateManagerService
 
 /**********************************************************************************
- *
+ * 
  * $Header:
  * /home/cvspublic/jakarta-jetspeed/src/java/org/apache/jetspeed/services
  * /statemanager/JetspeedHttpStateManagerService.java,v 1.4 2004/02/23 03:38:28
  * jford Exp $
- *
+ * 
  **********************************************************************************/
 
