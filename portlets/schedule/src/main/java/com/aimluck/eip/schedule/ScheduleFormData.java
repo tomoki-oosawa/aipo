@@ -81,8 +81,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ScheduleFormData extends ALAbstractFormData {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ScheduleFormData.class.getName());
 
   /** <code>FLAG_EDIT_REPEAT_DEF</code> デフォルト値（繰り返し編集範囲） */
   private static final int FLAG_EDIT_REPEAT_DEF = -1;
@@ -577,14 +577,16 @@ public class ScheduleFormData extends ALAbstractFormData {
     if (res) {
       try {
         // 終了日時がnullの場合、開始日時と同じにする
-        if (rundata.getParameters().containsKey("end_date_hour")
-          && rundata.getParameters().containsKey("end_date_minute")) {
-          if ("".equals(rundata.getParameters().get("end_date_hour"))
-            && "".equals(rundata.getParameters().get("end_date_minute"))) {
-            end_date = start_date;
-          } else if ("".equals(rundata.getParameters().get("end_date_hour"))
-            || "".equals(rundata.getParameters().get("end_date_minute"))) {
-            end_date = null;
+        if (!is_span) {
+          if (rundata.getParameters().containsKey("end_date_hour")
+            && rundata.getParameters().containsKey("end_date_minute")) {
+            if ("".equals(rundata.getParameters().get("end_date_hour"))
+              && "".equals(rundata.getParameters().get("end_date_minute"))) {
+              end_date = start_date;
+            } else if ("".equals(rundata.getParameters().get("end_date_hour"))
+              || "".equals(rundata.getParameters().get("end_date_minute"))) {
+              end_date = null;
+            }
           }
         }
         // 終日
