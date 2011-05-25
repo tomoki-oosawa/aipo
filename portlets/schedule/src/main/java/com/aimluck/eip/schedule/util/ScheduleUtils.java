@@ -2060,6 +2060,7 @@ public class ScheduleUtils {
             lim = 'L';
           }
           String repeat_pattern;
+          int week_count = 0;
           if ("D".equals(repeat_type.getValue())) {
             repeat_pattern =
               new StringBuffer().append('D').append(lim).toString();
@@ -2073,6 +2074,14 @@ public class ScheduleUtils {
                 week_4.getValue() != null ? 1 : 0).append(
                 week_5.getValue() != null ? 1 : 0).append(
                 week_6.getValue() != null ? 1 : 0).append(lim).toString();
+            week_count =
+              (week_0.getValue() != null ? 1 : 0)
+                + (week_1.getValue() != null ? 1 : 0)
+                + (week_2.getValue() != null ? 1 : 0)
+                + (week_3.getValue() != null ? 1 : 0)
+                + (week_4.getValue() != null ? 1 : 0)
+                + (week_5.getValue() != null ? 1 : 0)
+                + (week_6.getValue() != null ? 1 : 0);
           } else {
             DecimalFormat format = new DecimalFormat("00");
             repeat_pattern =
@@ -2099,15 +2108,17 @@ public class ScheduleUtils {
           finalDate.set(Calendar.HOUR_OF_DAY, 23);
           finalDate.set(Calendar.MINUTE, 59);
           finalDate.set(Calendar.SECOND, 59);
-          boolean hasAvailableDate = false;
+          int countAvailableDate = 0;
           while (sDate.before(finalDate) || sDate.equals(finalDate)) {
             if (ScheduleUtils.matchDay(sDate, repeat_pattern)) {
-              hasAvailableDate = true;
-              break;
+              countAvailableDate++;
+              if (countAvailableDate >= week_count) {
+                break;
+              }
             }
             sDate.add(Calendar.DATE, 1);
           }
-          if (!hasAvailableDate) {
+          if (countAvailableDate < week_count) {
             msgList
               .add("予定の入る日が含まれる様に『 <span class='em'>繰り返し期間</span> 』を指定してください。");
           }
