@@ -242,7 +242,6 @@ public class WorkflowUtils {
       EipTWorkflowRoute route) throws ALPageNotFoundException {
     try {
 
-      // アクセス権の判定
       SelectQuery<EipTWorkflowRequest> query =
         Database.query(EipTWorkflowRequest.class);
 
