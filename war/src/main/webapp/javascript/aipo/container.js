@@ -343,65 +343,63 @@ aipo.container.userPrefStore = new aipo.PsmlUserPrefStore();
 
 aipo.cron = new CronTask(function(decay) {
     var gadgetContext = aipo.container.context;
-    if (gadgetContext != null && gadgetContext.length > 0) {
-        var makeRequestParams = {
-            "CONTENT_TYPE" : "JSON",
-            "METHOD" : "POST",
-            "POST_DATA" : gadgets.json.stringify(aipo.container.context)
-        };
+    var makeRequestParams = {
+    		"CONTENT_TYPE" : "JSON",
+    		"METHOD" : "POST",
+    		"POST_DATA" : gadgets.json.stringify(aipo.container.context)
+    };
 
-        var url = "?template=GadgetsSecurityTokenUpdateJSONScreen&view=" + aipo.container.view_;
-        if (!aipo.cron.isFirst) {
-            url += "&update=1";
-        }
-
-        function handleJSONResponse(obj) {
-            if (obj.rc == 200) {
-                var data = obj.data;
-                for (var i = 0; i < data.length; i++) {
-                    var context = data[i];
-                    var gadget = aipo.container.gadgets_['gadget_' + context.id];
-                    if (!aipo.cron.isFirst) {
-                        gadgets.rpc.call('remote_iframe_' + context.portletId + '_NN_' + gadget.count, 'update_security_token', null,
-                                context.secureToken);
-                        gadget.secureToken = context.secureToken;
-                    }
-                    var height = context.height;
-                    var view = null;
-                    if (context.views) {
-                        view = context.views[aipo.container.view_];
-                        var preferredHeight = 0;
-                        if (view) {
-                            preferredHeight = view.preferredHeight;
-                        } else {
-                            var defaultView = context.views['default'];
-                            if (defaultView) {
-                                preferredHeight = defaultView.preferredHeight;
-                            }
-                        }
-                    }
-                    if (height > 0) {
-                        gadget.height = height;
-                    }
-                    if (preferredHeight > 0) {
-                        gadget.height = preferredHeight;
-                    }
-                    gadget.scrolling = context.scrolling ? 'true' : 'no';
-                    if (aipo.cron.isFirst) {
-                        aipo.container.renderGadget(gadget);
-                    }
-                }
-                aipo.cron.isFirst = false;
-                // success
-            }
-        }
-
-        gadgets.io.makeNonProxiedRequest(url,
-                handleJSONResponse,
-                makeRequestParams,
-                "application/javascript"
-                );
+    var url = "?template=GadgetsSecurityTokenUpdateJSONScreen&view=" + aipo.container.view_;
+    if (!aipo.cron.isFirst) {
+    	url += "&update=1";
     }
+
+    function handleJSONResponse(obj) {
+    	if (obj.rc == 200) {
+    		var data = obj.data;
+    		for (var i = 0; i < data.length; i++) {
+    			var context = data[i];
+    			var gadget = aipo.container.gadgets_['gadget_' + context.id];
+    			if (!aipo.cron.isFirst) {
+    				gadgets.rpc.call('remote_iframe_' + context.portletId + '_NN_' + gadget.count, 'update_security_token', null,
+    						context.secureToken);
+    				gadget.secureToken = context.secureToken;
+    			}
+    			var height = context.height;
+    			var view = null;
+    			if (context.views) {
+    				view = context.views[aipo.container.view_];
+    				var preferredHeight = 0;
+    				if (view) {
+    					preferredHeight = view.preferredHeight;
+    				} else {
+    					var defaultView = context.views['default'];
+    					if (defaultView) {
+    						preferredHeight = defaultView.preferredHeight;
+    					}
+    				}
+    			}
+    			if (height > 0) {
+    				gadget.height = height;
+    			}
+    			if (preferredHeight > 0) {
+    				gadget.height = preferredHeight;
+    			}
+    			gadget.scrolling = context.scrolling ? 'true' : 'no';
+    			if (aipo.cron.isFirst) {
+    				aipo.container.renderGadget(gadget);
+    			}
+    		}
+    		aipo.cron.isFirst = false;
+    		// success
+    	}
+    }
+
+    gadgets.io.makeNonProxiedRequest(url,
+    		handleJSONResponse,
+    		makeRequestParams,
+    		"application/javascript"
+    );
     decay();
 }, 30 * 60 * 1000, true);
 aipo.cron.isFirst = true;
