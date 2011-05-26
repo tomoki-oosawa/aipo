@@ -28,7 +28,7 @@ import com.aimluck.eip.common.ALData;
 
 /**
  * スケジュールの検索データを管理するクラスです。
- * 
+ *
  */
 public class ScheduleResultData implements ALData, Cloneable {
 
@@ -99,8 +99,9 @@ public class ScheduleResultData implements ALData, Cloneable {
   private ALStringField common_category_name;
 
   /*
-   * 
+   *
    */
+  @Override
   public void initField() {
     name = new ALStringField();
     type = new ALStringField();
@@ -124,7 +125,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 終了時間を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getEndDate() {
@@ -133,7 +134,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 開始時間を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getStartDate() {
@@ -142,7 +143,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 終了時間を設定します。
-   * 
+   *
    * @param date
    */
   public void setEndDate(Date date) {
@@ -151,7 +152,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 開始時間を設定します。
-   * 
+   *
    * @param date
    */
   public void setStartDate(Date date) {
@@ -160,7 +161,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 予定を取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getName() {
@@ -169,7 +170,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 予定を取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getPlace() {
@@ -178,7 +179,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 詳細を表示するかどうか
-   * 
+   *
    * @return
    */
   public boolean isShowDetail() {
@@ -187,7 +188,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 予定を設定します。
-   * 
+   *
    * @param string
    */
   public void setName(String string) {
@@ -196,7 +197,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 場所を設定します。
-   * 
+   *
    * @param string
    */
   public void setPlace(String string) {
@@ -205,7 +206,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * フォーマットを設定します。
-   * 
+   *
    * @param string
    */
   public void setFormat(String string) {
@@ -214,7 +215,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * スケジュールIDを取得します。
-   * 
+   *
    * @return
    */
   public ALNumberField getScheduleId() {
@@ -223,7 +224,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * スケジュールIDを設定します。
-   * 
+   *
    * @param number
    */
   public void setScheduleId(int number) {
@@ -232,7 +233,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 親スケジュール ID を取得します。
-   * 
+   *
    * @return
    */
   public ALNumberField getParentId() {
@@ -241,7 +242,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 親スケジュール ID を設定します。
-   * 
+   *
    * @param number
    */
   public void setParentId(int number) {
@@ -250,7 +251,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * オーナーかどうかを設定します。
-   * 
+   *
    * @param bool
    */
   public void setOwner(boolean bool) {
@@ -259,7 +260,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * オーナーかどうか
-   * 
+   *
    * @return
    */
   public boolean isOwner() {
@@ -268,7 +269,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 仮スケジュールかどうか
-   * 
+   *
    * @return
    */
   public boolean isTmpreserve() {
@@ -277,7 +278,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 公開するかどうか
-   * 
+   *
    * @return
    */
   public boolean isPublic() {
@@ -286,7 +287,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 仮スケジュールかどうかを設定します。
-   * 
+   *
    * @param bool
    */
   public void setTmpreserve(boolean bool) {
@@ -295,7 +296,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 確認済みスケジュールかどうか
-   * 
+   *
    * @return
    */
   public boolean isConfirm() {
@@ -304,7 +305,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 確認済みスケジュールかどうかを設定します。
-   * 
+   *
    * @param bool
    */
   public void setConfirm(boolean bool) {
@@ -313,7 +314,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 重複スケジュールかどうか
-   * 
+   *
    * @return
    */
   public boolean isDuplicate() {
@@ -322,7 +323,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 重複スケジュールかどうかを設定島します。
-   * 
+   *
    * @param bool
    */
   public void setDuplicate(boolean bool) {
@@ -331,7 +332,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 公開するかどうかを設定します。
-   * 
+   *
    * @param bool
    */
   public void setPublic(boolean bool) {
@@ -340,7 +341,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 表示するかどうか
-   * 
+   *
    * @return
    */
   public boolean isHidden() {
@@ -349,7 +350,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 表示するかどうかを設定します。
-   * 
+   *
    * @param bool
    */
   public void setHidden(boolean bool) {
@@ -358,7 +359,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 非公開かどうか
-   * 
+   *
    */
   public boolean isPrivate() {
     return !is_public && is_hidden;
@@ -366,7 +367,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * ログインユーザーかどうか
-   * 
+   *
    * @return
    */
   public boolean isLoginuser() {
@@ -375,7 +376,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * ログインユーザーかどうかを設定します。
-   * 
+   *
    * @param b
    */
   public void setLoginuser(boolean b) {
@@ -384,7 +385,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 共有メンバーかどうか
-   * 
+   *
    * @return
    */
   public boolean isMember() {
@@ -393,7 +394,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 共有メンバーかどうかを設定します。
-   * 
+   *
    * @param b
    */
   public void setMember(boolean b) {
@@ -402,7 +403,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 繰り返しかどうか
-   * 
+   *
    * @return
    */
   public boolean isRepeat() {
@@ -411,7 +412,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 繰り返しかどうかを設定します。
-   * 
+   *
    * @param bool
    */
   public void setRepeat(boolean bool) {
@@ -420,7 +421,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * ダミーかどうか
-   * 
+   *
    * @return
    */
   public boolean isDummy() {
@@ -429,7 +430,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * ダミーかどうかを設定します。
-   * 
+   *
    * @param bool
    */
   public void setDummy(boolean bool) {
@@ -437,7 +438,7 @@ public class ScheduleResultData implements ALData, Cloneable {
   }
 
   /**
-   * 
+   *
    * @return
    */
   @Override
@@ -451,7 +452,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * rowspanを設定します。
-   * 
+   *
    * @param number
    */
   public void setRowspan(int number) {
@@ -460,7 +461,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * rowspanを取得します。
-   * 
+   *
    * @return
    */
   public int getRowspan() {
@@ -469,7 +470,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 繰り返しパターンを取得します。
-   * 
+   *
    * @return
    */
   public String getPattern() {
@@ -478,7 +479,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 繰り返しパターンを設定します。
-   * 
+   *
    * @param string
    */
   public void setPattern(String string) {
@@ -487,7 +488,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 共有メンバーによる編集／削除フラグを取得する．
-   * 
+   *
    * @return
    */
   public boolean isEditable() {
@@ -496,7 +497,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 共有メンバーによる編集／削除フラグを設定する．
-   * 
+   *
    * @param string
    */
   public void setEditFlag(boolean bool) {
@@ -505,7 +506,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 日付を取得します。
-   * 
+   *
    * @return
    */
   public String getDate() {
@@ -532,11 +533,12 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /**
    * 日付を取得します。
-   * 
+   *
    * @return
    */
   public String getDate2() {
-    if (start_date.getValue().equals(end_date.getValue())) {
+    if (start_date.getHour().equals(end_date.getHour())
+      && start_date.getMinute().equals(end_date.getMinute())) {
       return start_date.toString();
     } else if ((start_date.getYear().equals(end_date.getYear())
       && start_date.getMonth().equals(end_date.getMonth()) && start_date
@@ -558,8 +560,8 @@ public class ScheduleResultData implements ALData, Cloneable {
   }
 
   /**
-   * 
-   * 
+   *
+   *
    * @return
    */
   public ALStringField getCommonCategoryName() {
@@ -567,7 +569,7 @@ public class ScheduleResultData implements ALData, Cloneable {
   }
 
   /**
-   * 
+   *
    * @param string
    */
   public void setCommonCategoryName(String string) {
