@@ -36,6 +36,10 @@ public abstract class ALConfigHandler {
 
   public abstract void put(Property property, String value);
 
+  public abstract String get(String property, String defaultValue);
+
+  public abstract void put(String property, String value);
+
   public static enum Property {
 
     ACCESS_GLOBAL_URL_PROTOCOL("access.global.url.protocol") {

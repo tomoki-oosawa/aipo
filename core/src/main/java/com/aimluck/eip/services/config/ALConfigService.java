@@ -41,4 +41,12 @@ public class ALConfigService {
   public static void put(Property property, String value) {
     getService().put(property, value);
   }
+
+  public static String get(String property, String defaultValue) {
+    return getService().get(property, defaultValue);
+  }
+
+  public static void put(String property, String value) {
+    getService().put(property, value);
+  }
 }

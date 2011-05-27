@@ -52,6 +52,25 @@ public class ALDefaultConfigHanlder extends ALConfigHandler {
    */
   @Override
   public String get(Property property) {
+    return get(property.toString(), property.defaultValue());
+  }
+
+  /**
+   * 
+   * @param property
+   * @param value
+   */
+  @Override
+  public void put(Property property, String value) {
+    put(property.toString(), value);
+  }
+
+  /**
+   * @param property
+   * @return
+   */
+  @Override
+  public String get(String property, String defaultValue) {
     EipMConfig config = null;
     try {
       config =
@@ -63,25 +82,22 @@ public class ALDefaultConfigHanlder extends ALConfigHandler {
       // ignore
     }
     if (config == null) {
-      return property.defaultValue();
+      return defaultValue;
     }
 
     return config.getValue();
   }
 
   /**
-   * 
    * @param property
    * @param value
    */
   @Override
-  public void put(Property property, String value) {
+  public void put(String property, String value) {
     try {
       EipMConfig config =
-        Database
-          .query(EipMConfig.class)
-          .where(Operations.eq(EipMConfig.NAME_PROPERTY, property.toString()))
-          .fetchSingle();
+        Database.query(EipMConfig.class).where(
+          Operations.eq(EipMConfig.NAME_PROPERTY, property)).fetchSingle();
       if (config == null) {
         config = Database.create(EipMConfig.class);
         config.setName(property.toString());
