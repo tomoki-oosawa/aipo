@@ -38,6 +38,8 @@
 #ALtditemfooter()
 #ALtablefooter()
 #if($!{result.Detail})
+#ALerrmsg($errmsgs)
+<div id="messageDiv"></div>
 #ALajaxscreenformheader("memoForm" $jslink $portlet "MemoFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.memo.onReceiveMessage)")
 <input type="hidden" name="mode" value="update" />
 <input type="hidden" name="entityid" value="$!{result.Detail.MemoId}" />
