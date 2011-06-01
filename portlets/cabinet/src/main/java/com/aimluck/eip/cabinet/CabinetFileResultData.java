@@ -149,7 +149,7 @@ public class CabinetFileResultData implements ALData {
    * @param i
    */
   public void setFileSize(long i) {
-    file_size.setValue(i);
+    file_size.setValue(((i - 1) / 1024) + 1);
   }
 
   /**
