@@ -67,25 +67,11 @@
 
    <filter-mapping>
      <filter-name>baseFilter</filter-name>
-     <url-pattern>/*</url-pattern>
+     <url-pattern>/portal/*</url-pattern>
      <dispatcher>REQUEST</dispatcher>
+     <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
     
-    <mime-mapping>
-      <extension>wbmp</extension>
-      <mime-type>image/vnd.wap.wbmp</mime-type>
-    </mime-mapping>
-
-    <mime-mapping>
-      <extension>wml</extension>
-      <mime-type>text/vnd.wap.wml</mime-type>
-    </mime-mapping>
-
-    <mime-mapping>
-      <extension>wmls</extension>
-      <mime-type>text/vnd.wap.wmlscript</mime-type>
-    </mime-mapping>
-
     <welcome-file-list>
       <welcome-file>index.jsp</welcome-file>
       <welcome-file>index.wml</welcome-file>
@@ -135,27 +121,6 @@
     <error-page>
       <error-code>505</error-code>
       <location>/error/404.html</location>
-    </error-page>
-
-    <error-page>
-      <exception-type>javax.servlet.jsp.jspException</exception-type>
-      <location>/errors/jsp_exception.html</location>
-    </error-page>
-    <error-page>
-      <exception-type>javax.servlet.error.request_uri</exception-type>
-      <location>/errors/request_uri_exception.html</location>
-    </error-page>
-    <error-page>
-      <exception-type>javax.servlet.error.exception</exception-type>
-      <location>/errors/exception.html</location>
-    </error-page>
-    <error-page>
-      <exception-type>javax.servlet.error.exception_type</exception-type>
-      <location>/errors/exception_type.html</location>
-    </error-page>
-    <error-page>
-      <exception-type>javax.servlet.error.message</exception-type>
-      <location>/errors/error_message.html</location>
     </error-page>
 
 </web-app>
