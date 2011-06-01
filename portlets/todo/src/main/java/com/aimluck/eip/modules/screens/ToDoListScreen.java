@@ -36,8 +36,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ToDoListScreen extends ToDoScreen {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ToDoListScreen.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ToDoListScreen.class.getName());
 
   /**
    * 
@@ -62,6 +62,9 @@ public class ToDoListScreen extends ToDoScreen {
       listData.setRowsNum(Integer.parseInt(portlet
         .getPortletConfig()
         .getInitParameter("p1b-rows")));
+      listData.setStrLength(Integer.parseInt(portlet
+        .getPortletConfig()
+        .getInitParameter("p4a-strlen")));
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-todo-list.vm";
