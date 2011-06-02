@@ -159,7 +159,7 @@ public class ALPop3MailReceiveThread implements Runnable {
     } catch (Exception e) {
       logger.error("[ALFilePop3MailReceiveThread]", e);
     } finally {
-      DataContext.bindThreadDataContext(null);
+      Database.tearDown();
       ob.updateAccountStat(
         mailAccountId,
         KEY_RECEIVE_STAT,

@@ -17,26 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.aimluck.eip.orm;
-
-import org.apache.cayenne.access.DataContext;
+package org.apache.cayenne.conf;
 
 /**
  * 
  */
-public final class DataContextLocator {
+public interface DataSourceFactoryDelegate {
 
-  private static ThreadLocal<DataContext> dataContexts =
-    new ThreadLocal<DataContext>();
+  public void tearDown();
 
-  public static DataContext get() {
-    return dataContexts.get();
-  }
-
-  public static void set(DataContext dataContext) {
-    dataContexts.set(dataContext);
-  }
-
-  private DataContextLocator() {
-  }
 }

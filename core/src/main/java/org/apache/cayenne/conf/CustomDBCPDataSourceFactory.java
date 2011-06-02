@@ -25,10 +25,15 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.apache.cayenne.access.CustomDataSourceUtil;
+import org.apache.commons.dbcp.ThreadPoolingDataSource;
+import org.apache.commons.pool.ObjectPool;
+
 /**
  * 
  */
-public class CustomDBCPDataSourceFactory extends DBCPDataSourceFactory {
+public class CustomDBCPDataSourceFactory extends DBCPDataSourceFactory
+    implements DataSourceFactoryDelegate {
 
   @Override
   public DataSource getDataSource(String location) throws Exception {
@@ -59,7 +64,33 @@ public class CustomDBCPDataSourceFactory extends DBCPDataSourceFactory {
           parentConfiguration.getResourceLocator(),
           location);
     }
-    DBCPDataSourceBuilder builder = new DBCPDataSourceBuilder(properties);
+    CustomDBCPDataSourceBuilder builder =
+      new CustomDBCPDataSourceBuilder(properties);
     return builder.createDataSource();
+  }
+
+  /**
+   * 
+   */
+  @Override
+  public void tearDown() {
+    try {
+      DataSource dataSource = CustomDataSourceUtil.getThreadDataSource();
+      if (dataSource instanceof ThreadPoolingDataSource) {
+        ThreadPoolingDataSource poolingDataSource =
+          (ThreadPoolingDataSource) dataSource;
+        if (poolingDataSource != null) {
+          ObjectPool pool = poolingDataSource.getPool();
+          if (pool != null) {
+            try {
+              pool.close();
+            } catch (Throwable t) {
+              //
+            }
+          }
+        }
+      }
+    } catch (Throwable t) {
+    }
   }
 }

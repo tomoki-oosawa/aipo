@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.om.security.JetspeedUser;
@@ -338,7 +337,7 @@ public class WebMailUtils {
         // メールと接続してなければ新規にスレッドを生成
         Runnable receiver =
           new ALPop3MailReceiveThread(
-            DataContext.getThreadDataContext(),
+            Database.createDataContext(Database.getDomainName()),
             user,
             accountId,
             ALPop3MailReceiveThread.PROCESS_TYPE_RECEIVEMAIL);
@@ -366,7 +365,7 @@ public class WebMailUtils {
         // メールと接続してなければ新規にスレッドを生成
         Thread mailthread =
           new Thread(new ALPop3MailReceiveThread(
-            DataContext.getThreadDataContext(),
+            Database.createDataContext(Database.getDomainName()),
             user,
             accountId,
             ALPop3MailReceiveThread.PROCESS_TYPE_GET_NEWMAILNUM));

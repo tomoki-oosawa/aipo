@@ -20,7 +20,6 @@
 package com.aimluck.eip.filter;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -32,9 +31,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.cayenne.CayenneException;
 import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.access.Transaction;
 import org.apache.cayenne.conf.Configuration;
 import org.apache.cayenne.conf.ServletUtil;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -43,7 +40,6 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.http.HttpServletResponseLocator;
 import com.aimluck.eip.http.ServletContextLocator;
-import com.aimluck.eip.orm.DataContextLocator;
 import com.aimluck.eip.orm.Database;
 
 /**
@@ -73,13 +69,11 @@ public class ALBaseFilter implements Filter {
   @Override
   public void doFilter(ServletRequest request, ServletResponse response,
       FilterChain filterChain) throws IOException, ServletException {
-    DataContext previousDataContext = null;
     ServletContext prevServletContext = ServletContextLocator.get();
     HttpServletRequest prevHttpServletRequest = HttpServletRequestLocator.get();
     HttpServletResponse prevHttpServletResponse =
       HttpServletResponseLocator.get();
     try {
-      previousDataContext = DataContextLocator.get();
       DataContext dataContext = null;
       try {
         dataContext =
@@ -98,23 +92,7 @@ public class ALBaseFilter implements Filter {
       ServletContextLocator.set(prevServletContext);
       HttpServletRequestLocator.set(prevHttpServletRequest);
       HttpServletResponseLocator.set(prevHttpServletResponse);
-      DataContext.bindThreadDataContext(null);
-      Transaction threadTransaction = Transaction.getThreadTransaction();
-      if (threadTransaction != null) {
-        try {
-          threadTransaction.rollback();
-          logger.info("transaction rollback by filter");
-        } catch (IllegalStateException e) {
-          logger.error(e.getMessage(), e);
-        } catch (SQLException e) {
-          logger.error(e.getMessage(), e);
-        } catch (CayenneException e) {
-          logger.error(e.getMessage(), e);
-        } finally {
-          Transaction.bindThreadTransaction(null);
-        }
-      }
-      DataContextLocator.set(previousDataContext);
+      Database.tearDown();
     }
   }
 
