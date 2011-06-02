@@ -34,6 +34,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.addressbook.AddressBookGroup;
+import com.aimluck.eip.addressbook.AddressBookResultData;
 import com.aimluck.eip.addressbookuser.beans.AddressBookUserGroupLiteBean;
 import com.aimluck.eip.cayenne.om.account.EipMPost;
 import com.aimluck.eip.cayenne.om.portlet.EipMAddressGroup;
@@ -41,10 +42,12 @@ import com.aimluck.eip.cayenne.om.portlet.EipMAddressbook;
 import com.aimluck.eip.cayenne.om.portlet.EipMAddressbookCompany;
 import com.aimluck.eip.cayenne.om.portlet.EipTAddressbookGroupMap;
 import com.aimluck.eip.cayenne.om.security.TurbineGroup;
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -54,8 +57,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AddressBookUtils {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AddressBookUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(AddressBookUtils.class.getName());
 
   /** アドレスブックファイルを一時保管するディレクトリの指定 */
   public static final String FOLDER_TMP_FOR_ADDRESSBOOK_FILES =
@@ -456,5 +459,46 @@ public class AddressBookUtils {
       }
       return false;
     }
+  }
+
+  /**
+   * TurbineUserクラスをもとに作った社内アドレスのResultDataを返します。
+   * 
+   * @param record
+   * @param strLength
+   *          表示文字数
+   * @return
+   */
+  public static AddressBookResultData getCorpResultData(TurbineUser record,
+      int strLength) {
+    AddressBookResultData rd = new AddressBookResultData();
+
+    rd.initField();
+    rd.setAddressId(record.getUserId().intValue());
+    rd.setName(new StringBuffer()
+      .append(record.getLastName())
+      .append(" ")
+      .append(record.getFirstName())
+      .toString());
+    if (record.getCompanyId().intValue() > 0) {
+      rd.setCompanyName(ALCommonUtils.compressString(ALEipUtils
+        .getCompanyName(record.getCompanyId().intValue()), strLength));
+    }
+
+    rd.setPostList(AddressBookUtils.getPostBeanList(record
+      .getUserId()
+      .intValue()));
+
+    if (record.getPositionId().intValue() > 0) {
+      rd.setPositionName(ALCommonUtils.compressString(ALEipUtils
+        .getPositionName(record.getPositionId()), strLength));
+    }
+    rd.setEmail(ALCommonUtils.compressString(record.getEmail(), strLength));
+    rd.setTelephone(record.getOutTelephone());
+    rd.setCellularPhone(record.getCellularPhone());
+    rd.setCellularMail(record.getCellularMail());
+    rd.setInTelephone(record.getInTelephone());
+
+    return rd;
   }
 }

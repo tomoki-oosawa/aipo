@@ -43,7 +43,6 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
-import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -60,8 +59,9 @@ public class AddressBookCorpWordSelectData extends
   private List<ALEipGroup> myGroupList = null;
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AddressBookWordSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(AddressBookWordSelectData.class
+      .getName());
 
   /**
    * 
@@ -118,37 +118,7 @@ public class AddressBookCorpWordSelectData extends
   @Override
   protected Object getResultData(TurbineUser obj) {
     try {
-      AddressBookResultData rd = new AddressBookResultData();
-
-      TurbineUser record = obj;
-      rd.initField();
-      rd.setAddressId(record.getUserId().intValue());
-      rd.setName(new StringBuffer()
-        .append(record.getLastName())
-        .append(" ")
-        .append(record.getFirstName())
-        .toString());
-      if (record.getCompanyId().intValue() > 0) {
-        rd.setCompanyName(ALCommonUtils.compressString(ALEipUtils
-          .getCompanyName(record.getCompanyId().intValue()), getStrLength()));
-      }
-
-      rd.setPostList(AddressBookUtils.getPostBeanList(record
-        .getUserId()
-        .intValue()));
-
-      if (record.getPositionId().intValue() > 0) {
-        rd.setPositionName(ALCommonUtils.compressString(ALEipUtils
-          .getPositionName(record.getPositionId()), getStrLength()));
-      }
-      rd.setEmail(ALCommonUtils.compressString(
-        record.getEmail(),
-        getStrLength()));
-      rd.setTelephone(record.getOutTelephone());
-      rd.setCellularPhone(record.getCellularPhone());
-      rd.setCellularMail(record.getCellularMail());
-
-      return rd;
+      return AddressBookUtils.getCorpResultData(obj, getStrLength());
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;

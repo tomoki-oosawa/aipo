@@ -158,37 +158,7 @@ public class AddressBookCorpFilterdSelectData extends
   @Override
   protected Object getResultData(TurbineUser record) {
     try {
-
-      AddressBookResultData rd = new AddressBookResultData();
-      rd.initField();
-      rd.setAddressId(record.getUserId().intValue());
-      rd.setName(new StringBuffer()
-        .append(record.getLastName())
-        .append(" ")
-        .append(record.getFirstName())
-        .toString());
-
-      if (record.getCompanyId().intValue() > 0) {
-        rd.setCompanyName(ALCommonUtils.compressString(ALEipUtils
-          .getCompanyName(record.getCompanyId().intValue()), getStrLength()));
-      }
-
-      rd.setPostList(AddressBookUtils.getPostBeanList(record
-        .getUserId()
-        .intValue()));
-
-      if (record.getPositionId().intValue() > 0) {
-        rd.setPositionName(ALCommonUtils.compressString(ALEipUtils
-          .getPositionName(record.getPositionId()), getStrLength()));
-      }
-
-      rd.setEmail(record.getEmail());
-      rd.setTelephone(record.getOutTelephone());
-      rd.setInTelephone(record.getInTelephone());
-      rd.setCellularPhone(record.getCellularPhone());
-      rd.setCellularMail(record.getCellularMail());
-
-      return rd;
+      return AddressBookUtils.getCorpResultData(record, getStrLength());
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
