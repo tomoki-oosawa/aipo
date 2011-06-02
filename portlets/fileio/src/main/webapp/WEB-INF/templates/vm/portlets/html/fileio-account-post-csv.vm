@@ -94,7 +94,7 @@ function onChg2(obj){
 </script>
 #set($tabs = [["インポート", "",""]])
 #ALtabheader($tabs "")
-#if(!$!result.List || $result.List.size() == 0)#ALerrmsg($errmsgs)#end
+#if((! $result.List || $result.List.size() == 0) && !$!validateError)#ALerrmsg($errmsgs)#end
 #if($result.getClass().getName() == "com.aimluck.eip.account.AccountPostCsvSelectData")
 #if(! $result.List || $result.List.size() <= 0)
 <ul></ul>

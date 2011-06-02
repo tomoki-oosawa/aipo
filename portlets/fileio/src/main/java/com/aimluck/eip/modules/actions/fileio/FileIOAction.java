@@ -57,8 +57,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class FileIOAction extends ALBaseAction {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(FileIOAction.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(FileIOAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
@@ -370,6 +370,7 @@ public class FileIOAction extends ALBaseAction {
       rundata,
       context,
       "not_error_count")));
+    context.put("validateError", true);
     setTemplate(rundata, "fileio-addressbook-company-csv");
   }
 
@@ -658,6 +659,7 @@ public class FileIOAction extends ALBaseAction {
       rundata,
       context,
       "not_error_count")));
+    context.put("validateError", true);
     setTemplate(rundata, "fileio-account-read-csv");
   }
 
@@ -777,6 +779,7 @@ public class FileIOAction extends ALBaseAction {
       rundata,
       context,
       "not_error_count")));
+    context.put("validateError", true);
     setTemplate(rundata, "fileio-account-post-csv");
   }
 
@@ -968,6 +971,7 @@ public class FileIOAction extends ALBaseAction {
       rundata,
       context,
       "not_error_count")));
+    context.put("validateError", true);
     setTemplate(rundata, "fileio-schedule-csv");
   }
 
