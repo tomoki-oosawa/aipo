@@ -64,8 +64,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class MsgboardTopicFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(MsgboardTopicFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(MsgboardTopicFormData.class.getName());
 
   /** トピック名 */
   private ALStringField topic_name;

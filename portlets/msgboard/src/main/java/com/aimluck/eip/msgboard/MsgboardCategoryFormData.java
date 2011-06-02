@@ -34,6 +34,7 @@ import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategoryMap;
+import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardTopic;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -57,8 +58,9 @@ import com.aimluck.eip.util.ALEipUtils;
 public class MsgboardCategoryFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(MsgboardCategoryFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(MsgboardCategoryFormData.class
+      .getName());
 
   /** カテゴリ名 */
   private ALStringField category_name;
@@ -437,6 +439,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
    * @param msgList
    * @return
    */
+  @SuppressWarnings("unchecked")
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
@@ -450,13 +453,18 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
 
       // 掲示板カテゴリを削除
       // DBテーブルのカスケード設定で，
-      // トピックおよび添付ファイルも自動的に削除される．
+      // トピックおよび添付ファイルのレコードも自動的に削除される．
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         category.getCategoryId(),
         ALEventlogConstants.PORTLET_TYPE_MSGBOARD_CATEGORY,
         category.getCategoryName());
+
+      List<EipTMsgboardTopic> topics = category.getEipTMsgboardTopics();
+      for (EipTMsgboardTopic topic : topics) {
+        MsgboardUtils.deleteAttachmentFiles(topic);
+      }
 
       Database.delete(category);
       Database.commit();

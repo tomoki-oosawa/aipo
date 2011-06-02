@@ -29,8 +29,10 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategory;
+import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardTopic;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -57,13 +59,14 @@ public class MsgboardCategoryMultiDelete extends ALAbstractCheckList {
    * @param msgList
    * @return
    */
+  @SuppressWarnings("unchecked")
   @Override
   protected boolean action(RunData rundata, Context context,
       List<String> values, List<String> msgList) {
     try {
       // カテゴリを削除
       // DBテーブルのカスケード設定で，
-      // トピックおよび添付ファイルも自動的に削除される．
+      // トピックおよび添付ファイルのレコードも自動的に削除される．
       SelectQuery<EipTMsgboardCategory> query = getSelectQuery(rundata, values);
       List<EipTMsgboardCategory> list = query.fetchList();
       if (list == null || list.size() == 0) {
@@ -71,8 +74,14 @@ public class MsgboardCategoryMultiDelete extends ALAbstractCheckList {
         logger.debug("[MsgboardMultiDelete] Empty CategoryIDs...");
         return false;
       }
-
       for (EipTMsgboardCategory category : list) {
+
+        // 添付ファイルの削除
+        List<EipTMsgboardTopic> topics = category.getEipTMsgboardTopics();
+        for (EipTMsgboardTopic topic : topics) {
+          MsgboardUtils.deleteAttachmentFiles(topic);
+        }
+
         Database.delete(category);
 
         // イベントログに保存

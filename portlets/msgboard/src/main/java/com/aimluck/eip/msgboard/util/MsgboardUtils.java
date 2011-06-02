@@ -68,25 +68,23 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 public class MsgboardUtils {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(MsgboardUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(MsgboardUtils.class.getName());
 
   /** 所有者の識別子 */
   public static final String OWNER_ID = "ownerid";
 
   /** 掲示板の添付ファイルを保管するディレクトリの指定 */
-  private static final String FOLDER_FILEDIR_MSGBOARD = JetspeedResources
-    .getString("aipo.filedir", "");
+  private static final String FOLDER_FILEDIR_MSGBOARD =
+    JetspeedResources.getString("aipo.filedir", "");
 
   /** 掲示板の添付ファイルを保管するディレクトリのカテゴリキーの指定 */
-  protected static final String CATEGORY_KEY = JetspeedResources.getString(
-    "aipo.msgboard.categorykey",
-    "");
+  protected static final String CATEGORY_KEY =
+    JetspeedResources.getString("aipo.msgboard.categorykey", "");
 
   /** デフォルトエンコーディングを表わすシステムプロパティのキー */
-  public static final String FILE_ENCODING = JetspeedResources.getString(
-    "content.defaultencoding",
-    "UTF-8");
+  public static final String FILE_ENCODING =
+    JetspeedResources.getString("content.defaultencoding", "UTF-8");
 
   /** 全てのユーザーが閲覧／返信可 */
   public static final int ACCESS_PUBLIC_ALL = 0;
@@ -1138,6 +1136,22 @@ public class MsgboardUtils {
         .withTile(title)
         .witchPriority(0f)
         .withExternalId(String.valueOf(topic.getTopicId())));
+    }
+  }
+
+  /**
+   * トピックに添付されたすべての添付ファイルを物理削除します。
+   * 
+   * @param topic
+   */
+  @SuppressWarnings("unchecked")
+  public static void deleteAttachmentFiles(EipTMsgboardTopic topic) {
+    String orgId = Database.getDomainName();
+    List<EipTMsgboardFile> files = topic.getEipTMsgboardFileArray();
+    int uid = topic.getOwnerId();
+    for (EipTMsgboardFile file : files) {
+      ALStorageService.deleteFile(MsgboardUtils.getSaveDirPath(orgId, uid)
+        + file.getFilePath());
     }
   }
 }
