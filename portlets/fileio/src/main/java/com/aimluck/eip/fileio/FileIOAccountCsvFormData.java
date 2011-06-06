@@ -49,6 +49,8 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALBaseUser;
+import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -58,7 +60,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 『アカウント』のフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
@@ -117,10 +119,12 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
   /** 役職がデータベースに存在するか否か */
   private boolean position_not_found;
 
+  private boolean isSkipUsernameValidation = false;
+
   /**
    * 各フィールドを初期化します。 <BR>
-   *
-   *
+   * 
+   * 
    */
   @Override
   public void initField() {
@@ -188,8 +192,8 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドに対する制約条件を設定します。 <BR>
-   *
-   *
+   * 
+   * 
    */
   @Override
   protected void setValidator() {
@@ -242,53 +246,55 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return
-   *
+   * 
    */
   @Override
   protected boolean validate(List<String> msgList) {
-    String usernamestr = username.getValue();
-    if (usernamestr == null
-      || "admin".equals(usernamestr)
-      || "template".equals(usernamestr)
-      || "anon".equals(usernamestr)
-      || usernamestr.startsWith(ALEipUtils.dummy_user_head)
-      || !username.validate(msgList)) {
-      msgList
-        .add("『 <span class='em'>ログイン名</span> 』は 16 文字以下の英数字と記号で入力してください。『 <span class='em'>ログイン名</span> 』として、「admin」「template」「anon」「先頭に dummy_ がつくログイン名」は登録することができません。");
-      username.setValue(null);
-    }
-
-    if (!AccountUtils.isValidSymbolUserName(usernamestr)) {
-      StringBuffer msg =
-        new StringBuffer("『 <span class='em'>ログイン名</span> 』に使用できる記号は");
-      List<String> symbols = Arrays.asList(AccountUtils.USER_NAME_SYMBOLS);
-      for (String symbol : symbols) {
-        msg.append("『").append(symbol).append("』");
-      }
-      msg.append("のみです。");
-      msgList.add(msg.toString());
-      username.setValue(null);
-    }
-
-    // if (usernameList.contains(usernamestr)) {
-    // username.setValue(null);
-    // msgList.add("<span class='em'>同じユーザー名は複数登録できません</span>");
-    // } else {
-    // usernameList.add(usernamestr);
-    // }
-
-    Map<String, TurbineUser> existedUserMap = getAllUsersFromDB();
-    if (existedUserMap == null) {
-      existedUserMap = new LinkedHashMap<String, TurbineUser>();
-    }
-    if (existedUserMap.containsKey(usernamestr)) {
-      TurbineUser tmpuser2 = existedUserMap.get(usernamestr);
-      if (!("F".equals(tmpuser2.getDisabled()))) {
-        msgList.add("<span class='em'>一度削除したユーザー名は複数登録できません</span>");
+    if (!isSkipUsernameValidation) {
+      String usernamestr = username.getValue();
+      if (usernamestr == null
+        || "admin".equals(usernamestr)
+        || "template".equals(usernamestr)
+        || "anon".equals(usernamestr)
+        || usernamestr.startsWith(ALEipUtils.dummy_user_head)
+        || !username.validate(msgList)) {
+        msgList
+          .add("『 <span class='em'>ログイン名</span> 』は 16 文字以下の英数字と記号で入力してください。『 <span class='em'>ログイン名</span> 』として、「admin」「template」「anon」「先頭に dummy_ がつくログイン名」は登録することができません。");
         username.setValue(null);
+      }
+
+      if (!AccountUtils.isValidSymbolUserName(usernamestr)) {
+        StringBuffer msg =
+          new StringBuffer("『 <span class='em'>ログイン名</span> 』に使用できる記号は");
+        List<String> symbols = Arrays.asList(AccountUtils.USER_NAME_SYMBOLS);
+        for (String symbol : symbols) {
+          msg.append("『").append(symbol).append("』");
+        }
+        msg.append("のみです。");
+        msgList.add(msg.toString());
+        username.setValue(null);
+      }
+
+      // if (usernameList.contains(usernamestr)) {
+      // username.setValue(null);
+      // msgList.add("<span class='em'>同じユーザー名は複数登録できません</span>");
+      // } else {
+      // usernameList.add(usernamestr);
+      // }
+
+      Map<String, TurbineUser> existedUserMap = getAllUsersFromDB();
+      if (existedUserMap == null) {
+        existedUserMap = new LinkedHashMap<String, TurbineUser>();
+      }
+      if (existedUserMap.containsKey(usernamestr)) {
+        TurbineUser tmpuser2 = existedUserMap.get(usernamestr);
+        if (!("F".equals(tmpuser2.getDisabled()))) {
+          msgList.add("<span class='em'>一度削除したユーザー名は複数登録できません</span>");
+          username.setValue(null);
+        }
       }
     }
 
@@ -469,9 +475,15 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
     return (msgList.size() == 0);
   }
 
+  @Override
+  protected boolean setFormData(RunData rundata, Context context,
+      List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
+    return super.setFormData(rundata, context, msgList);
+  }
+
   /**
    * 『ユーザー』を読み込みます。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -485,7 +497,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を追加します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -698,7 +710,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -712,7 +724,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -726,7 +738,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 携帯メールアドレスを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getCellularMail() {
@@ -735,7 +747,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * メールアドレスを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getEmail() {
@@ -744,7 +756,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * フリガナ（名）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFirstNameKana() {
@@ -753,7 +765,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 名前（名）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFirstName() {
@@ -762,7 +774,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（内線）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getInTelephone() {
@@ -771,7 +783,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * フリガナ（姓）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getLastNameKana() {
@@ -780,7 +792,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 名前（姓）を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getLastName() {
@@ -789,7 +801,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getCellularPhone() {
@@ -798,7 +810,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getOutTelephone() {
@@ -807,7 +819,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * パスワードを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getPassword() {
@@ -816,7 +828,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * ユーザー名を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getUserName() {
@@ -825,7 +837,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 部署名を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getPostName() {
@@ -838,7 +850,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 役職名を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getPositionName() {
@@ -847,7 +859,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 部署がデータベースに存在するかを示すフラグを取得します <BR>
-   *
+   * 
    * @return
    */
   public boolean getPostNotFound() {
@@ -856,7 +868,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 役職がデータベースに存在するかを示すフラグを取得します <BR>
-   *
+   * 
    * @return
    */
   public boolean getPositionNotFound() {
@@ -865,7 +877,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 携帯メールアドレスを入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setCellularMail(String str) {
@@ -874,7 +886,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * メールアドレスを入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setEmail(String str) {
@@ -883,7 +895,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * フリガナ（名）を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setFirstNameKana(String str) {
@@ -892,7 +904,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 名前（名）を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setFirstName(String str) {
@@ -901,7 +913,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * フリガナ（氏）を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setLastNameKana(String str) {
@@ -910,7 +922,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 名前（氏）を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setLastName(String str) {
@@ -919,7 +931,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setCellularPhone(String str) {
@@ -928,7 +940,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * パスワードを入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setPassword(String str) {
@@ -937,7 +949,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * ログイン名を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setUserName(String str) {
@@ -946,7 +958,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 部署名を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setPostName(String str) {
@@ -959,7 +971,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 役職名を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setPositionName(String str) {
@@ -968,7 +980,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を入力します（部署） <BR>
-   *
+   * 
    * @param str
    */
   public void setOutTelephone(String str) {
@@ -977,7 +989,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 内線番号を入力します（部署） <BR>
-   *
+   * 
    * @param str
    */
   public void setInTelephone(String str) {
@@ -986,7 +998,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 部署がデータベースに存在するかを示すフラグを入力します <BR>
-   *
+   * 
    * @param flg
    */
   public void setPostNotFound(boolean flg) {
@@ -995,7 +1007,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 役職がデータベースに存在するかを示すフラグを入力します <BR>
-   *
+   * 
    * @param flg
    */
   public void setPositionNotFound(boolean flg) {
@@ -1004,7 +1016,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 部署名から部署IDを取得 <BR>
-   *
+   * 
    * @return
    */
   private EipMPost getEipMPost(ALStringField post_name) {
@@ -1022,7 +1034,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 役職名から役職IDを取得 <BR>
-   *
+   * 
    * @return
    */
   private EipMPosition getEipMPosition() {
@@ -1042,7 +1054,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
   /**
    * 読み取った単語を指定されたフィールドに格納します。 <BR>
-   *
+   * 
    * @param token
    * @param i
    */
@@ -1099,7 +1111,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   private Map<String, TurbineUser> getAllUsersFromDB() {
@@ -1120,5 +1132,13 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
       // throw new ALDBErrorException();
     }
     return map;
+  }
+
+  public boolean isSkipUsernameValidation() {
+    return isSkipUsernameValidation;
+  }
+
+  public void setSkipUsernameValidation(boolean isSkipUsernameValidation) {
+    this.isSkipUsernameValidation = isSkipUsernameValidation;
   }
 }
