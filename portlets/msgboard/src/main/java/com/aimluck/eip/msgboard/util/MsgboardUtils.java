@@ -1154,4 +1154,39 @@ public class MsgboardUtils {
         + file.getFilePath());
     }
   }
+
+
+  /**
+   * 指定されたユーザが指定カテゴリのトピックに対して返信できるかどうか調べます。
+   *
+   * @param user_id
+   * @param category
+   * @return
+   */
+  public static boolean hasAuthorityToReply(int user_id, EipTMsgboardCategory category) {
+    if (category.getTurbineUser().getUserId() == user_id) {
+      return true;
+    }
+
+    if ("T".equals(category.getPublicFlag())) {
+      List<?> categoryMap = category.getEipTMsgboardCategoryMaps();
+      int mapsize = categoryMap.size();
+      for (int i = 0; i < mapsize; i++) {
+        EipTMsgboardCategoryMap map =
+          (EipTMsgboardCategoryMap) categoryMap.get(i);
+
+        // 全員が返信可能
+        if ("A".equals(map.getStatus())) {
+          return true;
+        } else {
+          // ログインユーザが所属メンバの場合
+          if (map.getUserId().intValue() == user_id) {
+            return true;
+          }
+        }
+      }
+    }
+
+    return false;
+  }
 }

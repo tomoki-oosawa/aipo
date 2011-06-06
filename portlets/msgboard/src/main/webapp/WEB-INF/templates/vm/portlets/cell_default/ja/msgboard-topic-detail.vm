@@ -18,7 +18,11 @@
  *#
 
 ## ---------------------------------------------------------------------------
+#if($!resultOnTopicDetail)
 #set($methodlist = [["返信する", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_reply_form','1').addQueryData('entityid',${result.ParentTopic.TopicId}).addQueryData('mode','reply')"] ,["ﾄﾋﾟｯｸ追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_form','1').addQueryData('entityid','new')"]])
+#else
+#set($methodlist = [["ﾄﾋﾟｯｸ追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_form','1').addQueryData('entityid','new')"]])
+#end
 #set($linklist = [["ﾄﾋﾟｯｸ一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_list','1')"]])
 #ALcell_pagetitle($career "記事詳細")
 #ALcell_dl_header($career)

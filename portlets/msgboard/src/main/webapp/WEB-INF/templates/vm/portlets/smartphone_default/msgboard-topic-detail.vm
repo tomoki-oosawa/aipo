@@ -78,7 +78,9 @@ function onCommentDelete(form) {
         #end
     #end
 #end
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_reply_form','1').addQueryData('entityid',${result.ParentTopic.TopicId}).addQueryData('mode','reply')" class="btn">コメントする</a>
+#if($!resultOnTopicDetail)
+    <a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_reply_form','1').addQueryData('entityid',${result.ParentTopic.TopicId}).addQueryData('mode','reply')" class="btn">コメントする</a>
+#end
 #ALcell_contents_footer($career)
 #ALcell_linklist_iphone($career $linklist)
 

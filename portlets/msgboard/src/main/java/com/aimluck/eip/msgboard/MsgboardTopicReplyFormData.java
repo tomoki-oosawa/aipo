@@ -304,6 +304,12 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
         throw new ALPageNotFoundException();
       }
 
+      if (!MsgboardUtils.hasAuthorityToReply(uid, parenttopic.getEipTMsgboardCategory())) {
+        // 返信権限がない場合弾く
+        msgList.add(" このトピックに返信する権限がありません。 ");
+        return false;
+      }
+
       Date updateDate = Calendar.getInstance().getTime();
 
       // 新規オブジェクトモデル
