@@ -19,10 +19,8 @@
 
 package com.aimluck.eip.common;
 
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.List;
 import java.util.jar.Attributes;
 
@@ -32,6 +30,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.services.storage.ALStorageService;
 
 /**
  * CSVファイルの内容を管理するための抽象クラスです。 <br />
@@ -40,6 +39,7 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 public abstract class ALCsvAbstractSelectData<M1, M2> extends
     ALAbstractSelectData<M1, M2> {
 
+  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ALCsvAbstractSelectData.class.getName());
 
@@ -93,18 +93,8 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
    */
   protected void outputErrorData(RunData rundata, String str, String filepath)
       throws Exception {
-    BufferedWriter writer = null;
-    try {
-      writer =
-        new BufferedWriter((new OutputStreamWriter(new FileOutputStream(
-          filepath), "Shift_JIS")));
-      /** ファイル内容の出力* */
-      writer.write(str, 0, str.length());
-      writer.flush();
-      writer.close();
-    } catch (FileNotFoundException e) {
-      logger.error("[ERROR]" + e);
-    }
+    InputStream bais = new ByteArrayInputStream(str.getBytes("Shift_JIS"));
+    ALStorageService.createNewFile(bais, filepath);
   }
 
   /**
