@@ -29,7 +29,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 公開ToDoの一覧を処理するクラスです。 <br />
- * 
+ *
  */
 public class ToDoPublicListScreen extends ToDoScreen {
 
@@ -38,7 +38,7 @@ public class ToDoPublicListScreen extends ToDoScreen {
     .getLogger(ToDoPublicListScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -51,6 +51,9 @@ public class ToDoPublicListScreen extends ToDoScreen {
       listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
         rundata,
         context).getPortletConfig().getInitParameter("p1b-rows")));
+      listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p4a-strlen")));
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-todo-public-list.vm";
