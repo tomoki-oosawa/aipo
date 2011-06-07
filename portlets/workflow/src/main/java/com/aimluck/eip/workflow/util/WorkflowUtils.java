@@ -23,7 +23,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 
 import javax.imageio.ImageIO;
@@ -62,6 +64,7 @@ import com.aimluck.eip.mail.ALMailService;
 import com.aimluck.eip.mail.util.ALEipUserAddr;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -83,7 +86,7 @@ import com.aimluck.eip.workflow.beans.WorkflowMailBean;
 
 /**
  * ワークフローのユーティリティクラスです。 <BR>
- * 
+ *
  */
 public class WorkflowUtils {
 
@@ -125,16 +128,18 @@ public class WorkflowUtils {
   public static final String PREFIX_DBFILE = "DBF";
 
   /** デフォルトエンコーディングを表わすシステムプロパティのキー */
-  public static final String FILE_ENCODING =
-    JetspeedResources.getString("content.defaultencoding", "UTF-8");
+  public static final String FILE_ENCODING = JetspeedResources.getString(
+    "content.defaultencoding",
+    "UTF-8");
 
   /** ワークフローの添付ファイルを保管するディレクトリの指定 */
-  private static final String FOLDER_FILEDIR_WORKFLOW =
-    JetspeedResources.getString("aipo.filedir", "");
+  private static final String FOLDER_FILEDIR_WORKFLOW = JetspeedResources
+    .getString("aipo.filedir", "");
 
   /** ワークフローの添付ファイルを保管するディレクトリのカテゴリキーの指定 */
-  protected static final String CATEGORY_KEY =
-    JetspeedResources.getString("aipo.workflow.categorykey", "");
+  protected static final String CATEGORY_KEY = JetspeedResources.getString(
+    "aipo.workflow.categorykey",
+    "");
 
   public enum Type {
     REQUEST, DENAIL, ACCEPT
@@ -142,7 +147,7 @@ public class WorkflowUtils {
 
   /**
    * Request オブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param mode_update
@@ -160,26 +165,6 @@ public class WorkflowUtils {
         return null;
       }
 
-      // アクセス権の判定
-      SelectQuery<EipTWorkflowRequestMap> query10 =
-        Database.query(EipTWorkflowRequestMap.class);
-      Expression exp10 =
-        ExpressionFactory.matchDbExp(
-          EipTWorkflowRequestMap.EIP_TWORKFLOW_REQUEST_PROPERTY
-            + "."
-            + EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
-          Integer.valueOf(requestid));
-      Expression exp11 =
-        ExpressionFactory
-          .matchExp(EipTWorkflowRequestMap.USER_ID_PROPERTY, uid);
-      query10.setQualifier(exp10.andExp(exp11));
-      List<EipTWorkflowRequestMap> maps = query10.fetchList();
-      if (maps == null || maps.size() == 0) {
-        // 指定したアカウントIDのレコードが見つからない場合
-        logger.debug("[WorkFlow] Invalid user access...");
-        throw new ALPageNotFoundException();
-      }
-
       SelectQuery<EipTWorkflowRequest> query =
         Database.query(EipTWorkflowRequest.class);
       Expression exp1 =
@@ -187,14 +172,6 @@ public class WorkflowUtils {
           EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
           requestid);
       query.setQualifier(exp1);
-
-      Expression exp2 =
-        ExpressionFactory.matchExp(
-          EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY
-            + "."
-            + EipTWorkflowRequestMap.USER_ID_PROPERTY,
-          Integer.valueOf(ALEipUtils.getUserId(rundata)));
-      query.andQualifier(exp2);
 
       if (mode_update) {
         Expression exp3 =
@@ -220,6 +197,13 @@ public class WorkflowUtils {
         return null;
       }
 
+      // アクセス権の判定
+      Set<Integer> relatedUserIds = getRelatedUserIdList(requests.get(0));
+      if (!relatedUserIds.contains(uid)) {
+        // 指定したアカウントIDのレコードが見つからない場合
+        logger.debug("[WorkFlow] Invalid user access...");
+        throw new ALPageNotFoundException();
+      }
       return requests.get(0);
     } catch (ALPageNotFoundException pageNotFound) {
       logger.error(pageNotFound);
@@ -232,7 +216,7 @@ public class WorkflowUtils {
 
   /**
    * Request オブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param mode_update
@@ -261,7 +245,7 @@ public class WorkflowUtils {
 
   /**
    * Request オブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param mode_update
@@ -302,7 +286,7 @@ public class WorkflowUtils {
 
   /**
    * Request オブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param mode_update
@@ -349,7 +333,7 @@ public class WorkflowUtils {
 
   /**
    * ファイルオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -416,7 +400,7 @@ public class WorkflowUtils {
 
   /**
    * ワークフローカテゴリ オブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param mode_update
@@ -457,7 +441,7 @@ public class WorkflowUtils {
 
   /**
    * ワークフローカテゴリ オブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -476,7 +460,7 @@ public class WorkflowUtils {
 
   /**
    * カテゴリの一覧を取得する。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -509,7 +493,7 @@ public class WorkflowUtils {
 
   /**
    * ワークフロー申請経路 オブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param mode_update
@@ -550,7 +534,7 @@ public class WorkflowUtils {
 
   /**
    * ワークフロー申請経路 オブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -568,7 +552,7 @@ public class WorkflowUtils {
 
   /**
    * 申請経路の一覧を取得する。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -602,7 +586,7 @@ public class WorkflowUtils {
 
   /**
    * 依頼の詳細情報を取得する。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -782,7 +766,7 @@ public class WorkflowUtils {
    * 3 : 普通 : priority_middle.gif <BR>
    * 4 : やや低い : priority_middle_low.gif <BR>
    * 5 : 低い : priority_low.gif <BR>
-   * 
+   *
    * @param i
    * @return
    */
@@ -810,7 +794,7 @@ public class WorkflowUtils {
    * 3 : 普通 : priority_middle.gif <BR>
    * 4 : やや低い : priority_middle_low.gif <BR>
    * 5 : 低い : priority_low.gif <BR>
-   * 
+   *
    * @param i
    * @return
    */
@@ -833,7 +817,7 @@ public class WorkflowUtils {
    * : :<BR>
    * 90 : 90% <BR>
    * 100 : 完了 <BR>
-   * 
+   *
    * @param i
    * @return
    */
@@ -868,7 +852,7 @@ public class WorkflowUtils {
    * : :<BR>
    * 90 : 90% <BR>
    * 100 : 完了 <BR>
-   * 
+   *
    * @param i
    * @return
    */
@@ -883,7 +867,7 @@ public class WorkflowUtils {
   }
 
   /**
-   * 
+   *
    * @param status
    */
   public static String getStatusString(String status) {
@@ -906,7 +890,7 @@ public class WorkflowUtils {
 
   /**
    * Date のオブジェクトを指定した形式の文字列に変換する．
-   * 
+   *
    * @param date
    * @param dateFormat
    * @return
@@ -924,7 +908,7 @@ public class WorkflowUtils {
 
   /**
    * 3 桁でカンマ区切りした文字列を取得する．
-   * 
+   *
    * @param money
    * @return
    */
@@ -1220,7 +1204,7 @@ public class WorkflowUtils {
 
   /**
    * パソコンへ送信するメールの内容を作成する．
-   * 
+   *
    * @return
    */
   public static String createMsgForPc(RunData rundata,
@@ -1275,7 +1259,7 @@ public class WorkflowUtils {
 
   /**
    * 携帯電話へ送信するメールの内容を作成する．
-   * 
+   *
    * @return
    */
   public static String createMsgForCellPhone(RunData rundata,
@@ -1472,7 +1456,7 @@ public class WorkflowUtils {
 
   /**
    * ユーザ毎のルート保存先（絶対パス）を取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -1484,7 +1468,7 @@ public class WorkflowUtils {
 
   /**
    * ユーザ毎の保存先（相対パス）を取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -1531,7 +1515,7 @@ public class WorkflowUtils {
 
   /**
    * ファイル検索のクエリを返します
-   * 
+   *
    * @param requestid
    *          ファイルを検索するリクエストのid
    * @return query
@@ -1550,7 +1534,7 @@ public class WorkflowUtils {
 
   /**
    * 指定した ID に対するユーザの名前を取得する．
-   * 
+   *
    * @param userId
    * @return
    */
@@ -1584,7 +1568,7 @@ public class WorkflowUtils {
 
   /**
    * 指定した ID に対するユーザのログイン名を取得する．
-   * 
+   *
    * @param userId
    * @return
    */
@@ -1641,7 +1625,7 @@ public class WorkflowUtils {
 
   /**
    * 指定した ID のユーザを取得する
-   * 
+   *
    * @param userId
    * @return
    */
@@ -1668,7 +1652,7 @@ public class WorkflowUtils {
 
   /**
    * 指定した ID のユーザが削除済みかどうかを調べる。
-   * 
+   *
    * @param userId
    * @return
    */
@@ -1742,5 +1726,41 @@ public class WorkflowUtils {
         .witchPriority(1f)
         .withExternalId(String.valueOf(request.getRequestId())));
     }
+  }
+
+  /**
+   * 一連のワークフローに関連するユーザのIdを列挙します
+   *
+   * @param request
+   * @return
+   */
+  public static Set<Integer> getRelatedUserIdList(EipTWorkflowRequest request) {
+    Set<Integer> ids = new HashSet<Integer>();
+    SelectQuery<EipTWorkflowRequestMap> query =
+      Database.query(EipTWorkflowRequestMap.class);
+    Expression exp11 =
+      ExpressionFactory.matchDbExp(
+        EipTWorkflowRequestMap.EIP_TWORKFLOW_REQUEST_PROPERTY
+          + "."
+          + EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
+        request.getParentId());
+    Expression exp12 =
+      ExpressionFactory.matchExp(
+        EipTWorkflowRequestMap.EIP_TWORKFLOW_REQUEST_PROPERTY
+          + "."
+          + EipTWorkflowRequest.PARENT_ID_PROPERTY,
+        request.getParentId());
+    Expression exp13 =
+      ExpressionFactory.matchExp(
+        EipTWorkflowRequestMap.EIP_TWORKFLOW_REQUEST_PROPERTY
+          + "."
+          + EipTWorkflowRequest.PARENT_ID_PROPERTY,
+        request.getRequestId());
+    query.setQualifier(exp11.orExp(exp12).orExp(exp13));
+    ResultList<EipTWorkflowRequestMap> mapList = query.getResultList();
+    for (EipTWorkflowRequestMap map : mapList) {
+      ids.add(map.getUserId());
+    }
+    return ids;
   }
 }
