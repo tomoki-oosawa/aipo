@@ -99,8 +99,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ScheduleUtils {
 
   /** <code>logger</code> loger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleUtils.class.getName());
 
   /** <code>SCHEDULEMAP_TYPE_USER</code> ユーザ */
   public static final String SCHEDULEMAP_TYPE_USER = "U";
@@ -2060,7 +2060,7 @@ public class ScheduleUtils {
             lim = 'L';
           }
           String repeat_pattern;
-          int week_count = 0;
+          int date_count = 0;
           if ("D".equals(repeat_type.getValue())) {
             repeat_pattern =
               new StringBuffer().append('D').append(lim).toString();
@@ -2074,7 +2074,7 @@ public class ScheduleUtils {
                 week_4.getValue() != null ? 1 : 0).append(
                 week_5.getValue() != null ? 1 : 0).append(
                 week_6.getValue() != null ? 1 : 0).append(lim).toString();
-            week_count =
+            date_count =
               (week_0.getValue() != null ? 1 : 0)
                 + (week_1.getValue() != null ? 1 : 0)
                 + (week_2.getValue() != null ? 1 : 0)
@@ -2087,6 +2087,7 @@ public class ScheduleUtils {
             repeat_pattern =
               new StringBuffer().append('M').append(
                 format.format(month_day.getValue())).append(lim).toString();
+            date_count = 1;
           }
           // 開始時刻(期間初日)
           Calendar sDate = new GregorianCalendar();
@@ -2112,13 +2113,13 @@ public class ScheduleUtils {
           while (sDate.before(finalDate) || sDate.equals(finalDate)) {
             if (ScheduleUtils.matchDay(sDate, repeat_pattern)) {
               countAvailableDate++;
-              if (countAvailableDate >= week_count) {
+              if (countAvailableDate >= date_count) {
                 break;
               }
             }
             sDate.add(Calendar.DATE, 1);
           }
-          if (countAvailableDate < week_count) {
+          if (countAvailableDate < date_count) {
             msgList
               .add("予定の入る日が含まれる様に『 <span class='em'>繰り返し期間</span> 』を指定してください。");
           }
