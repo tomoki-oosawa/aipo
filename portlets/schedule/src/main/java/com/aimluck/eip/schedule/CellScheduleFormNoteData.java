@@ -31,6 +31,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -57,6 +58,9 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.CellScheduleUtils;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
@@ -211,6 +215,43 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           context.put("isDuplicateFacility", "true");
         }
       }
+      // 施設のアクセスコントロールのチェック
+      int acltype =
+        (ALEipConstants.MODE_NEW_FORM.equals(getMode()))
+          ? ALAccessControlConstants.VALUE_ACL_INSERT
+          : ALAccessControlConstants.VALUE_ACL_UPDATE;
+      if (!facilityCheckAclPermission(rundata, acltype)) {
+        if (acltype == ALAccessControlConstants.VALUE_ACL_UPDATE) {
+          int[] old_ids = ScheduleUtils.getFacilityIds(schedule);
+          boolean check = false;
+          if (old_ids.length != facilityList.size()) {
+            msgList.add(" 施設を予約する権限がありません ");
+            res = false;
+          } else {
+            for (int old_id : old_ids) {
+              for (Object record : facilityList) {
+                FacilityResultData frd = (FacilityResultData) record;
+                int facilityid = (int) frd.getFacilityId().getValue();
+                if (old_id == facilityid) {
+                  check = true;
+                  break;
+                }
+              }
+              if (!check) {
+                msgList.add(" 施設を予約する権限がありません ");
+                res = false;
+              }
+              check = false;
+            }
+          }
+        } else {
+          if (facilityList.size() > 0) {
+            msgList.add(" 施設を予約する権限がありません ");
+            res = false;
+          }
+        }
+      }
+
       res =
         res
           && (form_data.validateDelegate(
@@ -543,8 +584,10 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
       }
 
       // 公開スケジュールの場合は、グループに施設を追加する
+      boolean isFacility = false;
       if ("O".equals(public_flag.getValue())) {
         for (FacilityResultData frd : form_data.getFacilityMemberList()) {
+          isFacility = true;
           int facilityid = (int) frd.getFacilityId().getValue();
 
           EipTScheduleMap map = Database.create(EipTScheduleMap.class);
@@ -556,6 +599,14 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           map.setEipTCommonCategory(category1);
           map.setCommonCategoryId(Integer.valueOf(1));
         }
+      }
+      // 施設のアクセスコントロールのチェック
+      if (isFacility
+        && !facilityCheckAclPermission(
+          rundata,
+          ALAccessControlConstants.VALUE_ACL_INSERT)) {
+        msgList.add(" 施設を予約する権限がありません ");
+        return false;
       }
 
       Database.commit();
@@ -697,6 +748,34 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         && "F".equals(schedule.getEditFlag())) {
         // アップデート失敗時は、スケジュールの一覧を表示させる．
         return true;
+      }
+      // 施設のアクセスコントロールのチェック
+      List<FacilityResultData> facilityList =
+        CellScheduleUtils.getShareFacilityMemberList(rundata);
+      if (!facilityCheckAclPermission(
+        rundata,
+        ALAccessControlConstants.VALUE_ACL_UPDATE)) {
+        int[] old_ids = ScheduleUtils.getFacilityIds(schedule);
+        if (old_ids.length != facilityList.size()) {
+          msgList.add(" 施設を予約する権限がありません ");
+          return false;
+        }
+        boolean check = false;
+        for (int old_id : old_ids) {
+          for (Object record : facilityList) {
+            FacilityResultData frd = (FacilityResultData) record;
+            int facilityid = (int) frd.getFacilityId().getValue();
+            if (old_id == facilityid) {
+              check = true;
+              break;
+            }
+          }
+          if (!check) {
+            msgList.add(" 施設を予約する権限がありません ");
+            return false;
+          }
+          check = false;
+        }
       }
 
       // このスケジュールの共有カテゴリの取得
@@ -1320,6 +1399,27 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
     if (dellist != null && dellist.size() > 0) {
       Database.deleteAll(dellist);
     }
+  }
+
+  /**
+   * Facilityのアクセス権限をチェック
+   * 
+   * @param rundata
+   * @param aclType
+   * @return
+   */
+  private boolean facilityCheckAclPermission(RunData rundata, int aclType) {
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+    hasAuthority =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_FACILITY,
+        aclType);
+    return hasAuthority;
   }
 
   /**
