@@ -155,12 +155,7 @@ public class BlogEntryLatestSelectData extends
     List<EipTBlogComment> aList = comment_query.fetchList();
 
     // リストからcommentHistoryListを作成する
-    int size =
-      MAX_COMMENT_HISTORY_COUNT > aList.size()
-        ? aList.size()
-        : MAX_COMMENT_HISTORY_COUNT;
-    for (int i = 0; i < size; i++) {
-      EipTBlogComment record = aList.get(i);
+    for (EipTBlogComment record : aList) {
       EipTBlogEntry entry = record.getEipTBlogEntry();
       if (entry.getOwnerId().equals(thisUserId)) {
         continue;
@@ -195,6 +190,12 @@ public class BlogEntryLatestSelectData extends
     }
     // コメント日時の新しい順に並び替え
     Collections.sort(commentHistoryList, getDateComparator());
+    // コメント記入履歴数制限をかける
+    if (commentHistoryList.size() > MAX_COMMENT_HISTORY_COUNT) {
+      commentHistoryList.subList(
+        MAX_COMMENT_HISTORY_COUNT,
+        commentHistoryList.size()).clear();
+    }
   }
 
   /**
