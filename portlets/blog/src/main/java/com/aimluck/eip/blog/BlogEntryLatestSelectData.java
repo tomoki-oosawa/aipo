@@ -55,7 +55,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ブログエントリー検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class BlogEntryLatestSelectData extends
     ALAbstractSelectData<EipTBlogEntry, EipTBlogEntry> implements ALData {
@@ -80,8 +80,11 @@ public class BlogEntryLatestSelectData extends
   /** コメントした記事が一覧に表示される日数 */
   private final int DELETE_DATE = 7;
 
+  /** 記事コメント記入履歴の最大数 */
+  private final int MAX_COMMENT_HISTORY_COUNT = 20;
+
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -152,7 +155,10 @@ public class BlogEntryLatestSelectData extends
     List<EipTBlogComment> aList = comment_query.fetchList();
 
     // リストからcommentHistoryListを作成する
-    int size = aList.size();
+    int size =
+      MAX_COMMENT_HISTORY_COUNT > aList.size()
+        ? aList.size()
+        : MAX_COMMENT_HISTORY_COUNT;
     for (int i = 0; i < size; i++) {
       EipTBlogComment record = aList.get(i);
       EipTBlogEntry entry = record.getEipTBlogEntry();
@@ -193,7 +199,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -219,7 +225,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -232,7 +238,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -271,7 +277,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -283,7 +289,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -302,7 +308,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * エントリーの総数を返す． <BR>
-   * 
+   *
    * @return
    */
   public int getEntrySum() {
@@ -315,7 +321,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -325,7 +331,7 @@ public class BlogEntryLatestSelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -342,7 +348,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * TitleDateの新しい順に並び替える。
-   * 
+   *
    * @param type
    * @param name
    * @return
@@ -350,6 +356,7 @@ public class BlogEntryLatestSelectData extends
   public static Comparator<BlogEntryResultData> getDateComparator() {
     Comparator<BlogEntryResultData> com = null;
     com = new Comparator<BlogEntryResultData>() {
+      @Override
       public int compare(BlogEntryResultData obj0, BlogEntryResultData obj1) {
         String date0 = (obj0).getTitleDate().toString();
         String date1 = (obj1).getTitleDate().toString();
@@ -367,7 +374,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * 引数dateの日時からday日前の日時を返します。
-   * 
+   *
    * @param date
    * @param day
    */
@@ -381,7 +388,7 @@ public class BlogEntryLatestSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
