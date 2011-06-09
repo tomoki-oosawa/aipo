@@ -24,7 +24,7 @@
 #ALcell_formheader($career $jslink $portlet)
 #ALcell_pagetitle($career "ﾜｰｸﾌﾛｰ詳細")
 #ALcell_dl_header($career)
-#ALcell_dt($career '決済状況')
+#ALcell_dt($career '決裁状況')
 #if($!result.Detail.Progress.Value == "D")
 <dd class="caution">差戻要確認</dd>&nbsp;&nbsp;
 #else
@@ -64,10 +64,10 @@
 #end
 <hr style="border:solid 1px #ffffff; color:#ffffff" />
 <div style="background:$config.getString("aipo.color.cell.vm.logo"); color:#ffffff; text-align:center;"><img src="${context_path}/images/dot.gif" width="1" height="1" /></div>
-<div style="background:$config.getString("aipo.color.cell.vm.title"); text-align:center;">決済履歴</div>
+<div style="background:$config.getString("aipo.color.cell.vm.title"); text-align:center;">決裁履歴</div>
 <div style="background:$config.getString("aipo.color.cell.vm.logo");"><img src="${context_path}/images/dot.gif" width="1" height="1" /></div>
 <hr style="border:solid 1px #ffffff; color:#ffffff" />
-[決済]/[ユーザー名]/[日時]/[コメント]
+[決裁]/[ユーザー名]/[日時]/[コメント]
 #set ($confirm_view_flg = true)
 <ol>
 #foreach ($record in $result.Detail.DecisionRecords)

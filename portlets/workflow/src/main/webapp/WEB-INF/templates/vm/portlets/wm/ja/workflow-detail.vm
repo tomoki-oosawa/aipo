@@ -74,8 +74,8 @@
 </ul>
 #end
 
-<h3>決済履歴</h3>
-##[決済]/[ユーザー名]/[日時]/[コメント]
+<h3>決裁履歴</h3>
+##[決裁]/[ユーザー名]/[日時]/[コメント]
 #set ($confirm_view_flg = true)
 <ol>
 #foreach ($record in $result.Detail.DecisionRecords)

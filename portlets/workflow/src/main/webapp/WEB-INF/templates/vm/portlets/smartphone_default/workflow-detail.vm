@@ -38,6 +38,11 @@
 #ALthtd('表題' "$!result.Detail.RequestName")
 #end
 #ALthtd('投稿日' "$!result.Detail.CreateDate")
+#ALthtd('申請日' "$!result.Detail.CreateDate")
+#ALthtd('重要度' "$!result.Detail.PriorityString")
+#ALthtd('申請内容' $!result.Detail.Note)
+#ALthtd('金額' "$!{result.Detail.PriceStr}&nbsp;円")
+
 #ALtablefooterBorder()
 <input type="hidden" name="confirmusers" value="#foreach($record in $!{result.MemberList})$!{record.Name},#end"> ##メンバーリストの作成
 #if($!result.Detail.UserId.Value == $!result.LoginUser.UserId.Value)
@@ -57,8 +62,8 @@
 </ul>
 #end
 
-<h3>決済履歴</h3>
-##[決済]/[ユーザー名]/[日時]/[コメント]
+<h3>決裁履歴</h3>
+##[決裁]/[ユーザー名]/[日時]/[コメント]
 #set ($confirm_view_flg = true)
 <ol>
 #foreach ($record in $result.Detail.DecisionRecords)

@@ -45,6 +45,15 @@
 #end
 <dt>投稿日</dt>
 <dd>$!result.Detail.CreateDate</dd>
+<dt>申請日</dt>
+<dd>$!result.Detail.CreateDate</dd>
+<dt>重要度</dt>
+<dd>$!result.Detail.PriorityString</dd>
+<dt>申請内容</dt>
+<dd>$!result.Detail.Note</dd>
+<dt>金額</dt>
+<dd>$!{result.Detail.PriceStr}&nbsp;円</dd>
+
 </dl>
 
 <input type="hidden" name="confirmusers" value="#foreach($record in $!{result.MemberList})$!{record.Name},#end"> ##メンバーリストの作成
@@ -65,8 +74,8 @@
 </ul>
 #end
 
-<h3>決済履歴</h3>
-##[決済]/[ユーザー名]/[日時]/[コメント]
+<h3>決裁履歴</h3>
+##[決裁]/[ユーザー名]/[日時]/[コメント]
 #set ($confirm_view_flg = true)
 <ol>
 #foreach ($record in $result.Detail.DecisionRecords)
