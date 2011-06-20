@@ -587,7 +587,7 @@ table.roundBlockWrapperTop td.endcap {
 	float:left;
 	padding:6px 10px 0 20px;
 }
-
+/*
 .tabContainer li .menuTitle a{
 text-decoration:none;
 }
@@ -604,6 +604,7 @@ background:url(../images/common/bg_menu_l_on.gif) no-repeat left top;
 color:#555;
 text-decoration:none;
 }
+*/
 
 .tabContainer li .menuIcon {
 	float:left;

@@ -106,10 +106,22 @@
                 <include>aipo/widget/ToolTip.xd.js</include>
               </includes>
             </aggregation>
+            <aggregation>
+              <insertNewLine>true</insertNewLine>
+              <output>target/aipo/javascript/aipo/common.js</output>
+              <includes>
+                <include>../../../../target/aipo/javascript/aipo/customize/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/schedule/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/workflow/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/blog/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/msgboard/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/note/form.js</include>
+              </includes>
+            </aggregation>
           </aggregations>
           <includes>
-            <include>**/*.js</include>
             <include>**/*.css</include>
+            <include>**/*.js</include>
           </includes>
           <excludes>
             <exclude>**/nls/**/*.js</exclude>
