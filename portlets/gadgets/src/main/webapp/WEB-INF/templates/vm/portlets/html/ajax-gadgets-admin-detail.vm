@@ -47,7 +47,7 @@ $!result.Detail.Title
 #ALtditem($!result.Detail.ConsumerSecret)
 *#
 #foreach ($service in $!result.Detail.OAuthConsumers)
-#ALtdcaption("OAuth@$!{service.Name}")	
+#ALtdcaption("OAuth@$!{service.Name}")
 #ALtditemheader()
 <h4>Request</h4>
 $!service.RequestUrlCR<br/>
@@ -87,7 +87,7 @@ $!service.ConsumerSecret<br/>
 #ALtablefooter()
 #ALbuttonheader()
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.gadgets_admin.onLoadDialog")
-#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
+<input name="ajaxbuttonDelete" class="button" type="button" value="アンインストールする" onclick="aipo.gadgets_admin.ajaxDeleteSubmit(this, '$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')', '$indicator_id', '$!portlet.ID', aipo.gadgets_admin.onReceiveMessage);"/>
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()

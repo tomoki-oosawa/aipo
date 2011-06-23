@@ -50,10 +50,19 @@ aipo.gadgets_admin.ajaxCheckboxDeleteSubmit = function(button, url, indicator_id
 };
 
 aipo.gadgets_admin.ajaxMultiDeleteSubmit = function(button, url, indicator_id, portlet_id, receive) {
-	  if(confirm('このアプリをアンインストールしてよろしいでしょうか？')) {
+	  if(confirm('選択したアプリをアンインストールしてよろしいでしょうか？')) {
 	    aimluck.io.disableForm(button.form, true);
 	    aimluck.io.setHiddenValue(button);
 	    button.form.action = url;
 	    aimluck.io.submit(button.form,indicator_id,portlet_id,receive);
+	  }
+};
+
+aipo.gadgets_admin.ajaxDeleteSubmit = function(button, url, indicator_id, portlet_id, receive) {
+	  if(confirm('このアプリをアンインストールしてよろしいでしょうか？')) {
+	    aimluck.io.disableForm(button.form, true);
+	    aimluck.io.setHiddenValue(button);
+	    button.form.action = url;
+	    aimluck.io.submit(button.form, indicator_id, portlet_id, receive);
 	  }
 };
