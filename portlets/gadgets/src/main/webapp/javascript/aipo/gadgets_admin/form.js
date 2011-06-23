@@ -21,7 +21,7 @@ dojo.provide("aipo.gadgets_admin");
 
 aipo.gadgets_admin.onLoadDialog = function(portlet_id){
 
-    
+
 }
 
 aipo.gadgets_admin.onReceiveMessage = function(msg){
@@ -43,4 +43,17 @@ aipo.gadgets_admin.hideDialog = function() {
        arrDialog.hide();
     }
     aipo.portletReload('gadgets_admin');
+};
+
+aipo.gadgets_admin.ajaxCheckboxDeleteSubmit = function(button, url, indicator_id, portlet_id, receive) {
+	aimluck.io.ajaxVerifyCheckbox( button.form, aipo.gadgets_admin.ajaxMultiDeleteSubmit, button, url, indicator_id, portlet_id, receive );
+};
+
+aipo.gadgets_admin.ajaxMultiDeleteSubmit = function(button, url, indicator_id, portlet_id, receive) {
+	  if(confirm('このアプリをアンインストールしてよろしいでしょうか？')) {
+	    aimluck.io.disableForm(button.form, true);
+	    aimluck.io.setHiddenValue(button);
+	    button.form.action = url;
+	    aimluck.io.submit(button.form,indicator_id,portlet_id,receive);
+	  }
 };

@@ -69,8 +69,8 @@
 #end
 #ALtablefooter()
 #ALbuttonheaderRight()
-選択したアプリを 
-#ALajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
+選択したアプリを
+<input name="ajaxbuttonCheckboxDelete" class="button" type="button" value="アンインストールする" onclick="aipo.gadgets_admin.ajaxCheckboxDeleteSubmit(this, '$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_delete'))', '${indicator_id}', '$!portlet.ID', aipo.gadgets_admin.onReceiveMessage);" />
 #ALajaxbuttonCheckboxEnable('有効にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
 #ALajaxbuttonCheckboxDisable('無効にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
 #ALbuttonfooterRight()

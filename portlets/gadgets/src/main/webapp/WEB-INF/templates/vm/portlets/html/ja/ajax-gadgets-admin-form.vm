@@ -20,9 +20,9 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 #if  ($mode=="new_form")
-#set ($action_str = "追加する")
+#set ($action_str = "インストールする")
 #set ($event_submit = "eventSubmit_doGadgets_admin_insert")
-#set ($subtitle = 'アプリ追加')
+#set ($subtitle = 'アプリのインストール')
 #else
 #set ($action_str = "更新する")
 #set ($subtitle = 'アプリ編集')
@@ -40,7 +40,7 @@
 <input type="hidden" name="mode" value="update" />
 #end
 #if($mode=="new_form")
-外部のアプリケーションあるいは独自のアプリケーションを追加する場合は、OpenSocialに準拠したガジェットXMLのURLを指定してください。
+外部のアプリケーションあるいは独自のアプリケーションをインストールする場合は、OpenSocialに準拠したガジェットXMLのURLを指定してください。
 #end
 #ALtableheaderWide()
 #ALtdcaptionAtt("#ALrequired('ガジェットURL')" "style='width:180px;'")
@@ -63,7 +63,7 @@ $!result.Title
 #ALtditem($!result.Description)
 #set($count = 0)
 #foreach ($service in $!result.OAuthConsumers)
-#ALtdcaption("OAuth@$!{service.Name}")	
+#ALtdcaption("OAuth@$!{service.Name}")
 #ALtditemheader()
 <h4>Request</h4>
 $!service.RequestUrlCR<br/>
