@@ -86,7 +86,7 @@ import com.aimluck.eip.workflow.beans.WorkflowMailBean;
 
 /**
  * ワークフローのユーティリティクラスです。 <BR>
- *
+ * 
  */
 public class WorkflowUtils {
 
@@ -147,7 +147,7 @@ public class WorkflowUtils {
 
   /**
    * Request オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param mode_update
@@ -216,7 +216,7 @@ public class WorkflowUtils {
 
   /**
    * Request オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param mode_update
@@ -245,7 +245,7 @@ public class WorkflowUtils {
 
   /**
    * Request オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param mode_update
@@ -286,7 +286,7 @@ public class WorkflowUtils {
 
   /**
    * Request オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param mode_update
@@ -333,7 +333,7 @@ public class WorkflowUtils {
 
   /**
    * ファイルオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -400,7 +400,7 @@ public class WorkflowUtils {
 
   /**
    * ワークフローカテゴリ オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param mode_update
@@ -441,7 +441,7 @@ public class WorkflowUtils {
 
   /**
    * ワークフローカテゴリ オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -460,7 +460,7 @@ public class WorkflowUtils {
 
   /**
    * カテゴリの一覧を取得する。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -493,7 +493,7 @@ public class WorkflowUtils {
 
   /**
    * ワークフロー申請経路 オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param mode_update
@@ -534,7 +534,7 @@ public class WorkflowUtils {
 
   /**
    * ワークフロー申請経路 オブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -552,7 +552,7 @@ public class WorkflowUtils {
 
   /**
    * 申請経路の一覧を取得する。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -586,7 +586,7 @@ public class WorkflowUtils {
 
   /**
    * 依頼の詳細情報を取得する。
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -766,7 +766,7 @@ public class WorkflowUtils {
    * 3 : 普通 : priority_middle.gif <BR>
    * 4 : やや低い : priority_middle_low.gif <BR>
    * 5 : 低い : priority_low.gif <BR>
-   *
+   * 
    * @param i
    * @return
    */
@@ -794,7 +794,7 @@ public class WorkflowUtils {
    * 3 : 普通 : priority_middle.gif <BR>
    * 4 : やや低い : priority_middle_low.gif <BR>
    * 5 : 低い : priority_low.gif <BR>
-   *
+   * 
    * @param i
    * @return
    */
@@ -817,7 +817,7 @@ public class WorkflowUtils {
    * : :<BR>
    * 90 : 90% <BR>
    * 100 : 完了 <BR>
-   *
+   * 
    * @param i
    * @return
    */
@@ -852,7 +852,7 @@ public class WorkflowUtils {
    * : :<BR>
    * 90 : 90% <BR>
    * 100 : 完了 <BR>
-   *
+   * 
    * @param i
    * @return
    */
@@ -867,7 +867,7 @@ public class WorkflowUtils {
   }
 
   /**
-   *
+   * 
    * @param status
    */
   public static String getStatusString(String status) {
@@ -890,7 +890,7 @@ public class WorkflowUtils {
 
   /**
    * Date のオブジェクトを指定した形式の文字列に変換する．
-   *
+   * 
    * @param date
    * @param dateFormat
    * @return
@@ -908,7 +908,7 @@ public class WorkflowUtils {
 
   /**
    * 3 桁でカンマ区切りした文字列を取得する．
-   *
+   * 
    * @param money
    * @return
    */
@@ -985,6 +985,11 @@ public class WorkflowUtils {
       List<EipTWorkflowRequestMap> sendMailMaps, EipTWorkflowRequest request,
       Type flowStatus) {
 
+    String orgId = Database.getDomainName();
+    List<String> msgList = new ArrayList<String>();
+
+    List<ALEipUserAddr> userAddressList = new ArrayList<ALEipUserAddr>();
+
     WorkflowMailBean mailBean = new WorkflowMailBean();
     mailBean.setOrgId(Database.getDomainName());
     mailBean.setSubject("[" + ALOrgUtilsService.getAlias() + "]ワークフロー");
@@ -993,9 +998,58 @@ public class WorkflowUtils {
     mailBean.setGlobalUrl(ALMailUtils.getGlobalurl());
     mailBean.setLocalUrl(ALMailUtils.getLocalurl());
 
-    return sendMailForUpdateCore(sendMailMaps, request, flowStatus, mailBean);
+    String msgForPcPrefix =
+      createMsgForPcAtUpdatePrefix(request, flowStatus, mailBean);
+    String msgForCellPrefix =
+      createMsgForCellAtUpdatePrefix(request, flowStatus, mailBean);
+
+    if ("".equals(msgForPcPrefix) || "".equals(msgForCellPrefix)) {
+      return false;
+    }
+
+    for (EipTWorkflowRequestMap requestMap : sendMailMaps) {
+      userAddressList.add(ALMailUtils.getALEipUserAddrByUserId(requestMap
+        .getUserId()));
+    }
+
+    try {
+
+      List<ALAdminMailMessage> messageList =
+        new ArrayList<ALAdminMailMessage>();
+      for (ALEipUserAddr userAddr : userAddressList) {
+
+        ALEipUser rcptUser = ALEipUtils.getALEipUser(userAddr.getUserId());
+
+        String msgForPc =
+          msgForPcPrefix + createMsgAtUpdateSuffix(rcptUser, false, mailBean);
+
+        String msgForCell =
+          msgForCellPrefix + createMsgAtUpdateSuffix(rcptUser, true, mailBean);
+
+        ALAdminMailMessage message = new ALAdminMailMessage(userAddr);
+        message.setPcSubject(mailBean.getSubject());
+        message.setCellularSubject(mailBean.getSubject());
+        message.setPcBody(msgForPc);
+        message.setCellularBody(msgForCell);
+        messageList.add(message);
+
+      }
+
+      List<String> errors =
+        ALMailService.sendAdminMail(new ALAdminMailContext(orgId, ALEipUtils
+          .getUserId(rundata), messageList, ALMailUtils
+          .getSendDestType(ALMailUtils.KEY_MSGTYPE_WORKFLOW)));
+      msgList.addAll(errors);
+
+    } catch (Exception e) {
+      logger.error(e);
+      return false;
+    }
+
+    return true;
   }
 
+  @Deprecated
   public static boolean sendMailForUpdateCore(
       List<EipTWorkflowRequestMap> sendMailMaps, EipTWorkflowRequest request,
       Type flowStatus, WorkflowMailBean mailBean) {
@@ -1204,7 +1258,7 @@ public class WorkflowUtils {
 
   /**
    * パソコンへ送信するメールの内容を作成する．
-   *
+   * 
    * @return
    */
   public static String createMsgForPc(RunData rundata,
@@ -1259,7 +1313,7 @@ public class WorkflowUtils {
 
   /**
    * 携帯電話へ送信するメールの内容を作成する．
-   *
+   * 
    * @return
    */
   public static String createMsgForCellPhone(RunData rundata,
@@ -1456,7 +1510,7 @@ public class WorkflowUtils {
 
   /**
    * ユーザ毎のルート保存先（絶対パス）を取得します。
-   *
+   * 
    * @param uid
    * @return
    */
@@ -1468,7 +1522,7 @@ public class WorkflowUtils {
 
   /**
    * ユーザ毎の保存先（相対パス）を取得します。
-   *
+   * 
    * @param uid
    * @return
    */
@@ -1515,7 +1569,7 @@ public class WorkflowUtils {
 
   /**
    * ファイル検索のクエリを返します
-   *
+   * 
    * @param requestid
    *          ファイルを検索するリクエストのid
    * @return query
@@ -1534,7 +1588,7 @@ public class WorkflowUtils {
 
   /**
    * 指定した ID に対するユーザの名前を取得する．
-   *
+   * 
    * @param userId
    * @return
    */
@@ -1568,7 +1622,7 @@ public class WorkflowUtils {
 
   /**
    * 指定した ID に対するユーザのログイン名を取得する．
-   *
+   * 
    * @param userId
    * @return
    */
@@ -1625,7 +1679,7 @@ public class WorkflowUtils {
 
   /**
    * 指定した ID のユーザを取得する
-   *
+   * 
    * @param userId
    * @return
    */
@@ -1652,7 +1706,7 @@ public class WorkflowUtils {
 
   /**
    * 指定した ID のユーザが削除済みかどうかを調べる。
-   *
+   * 
    * @param userId
    * @return
    */
@@ -1730,7 +1784,7 @@ public class WorkflowUtils {
 
   /**
    * 一連のワークフローに関連するユーザのIdを列挙します
-   *
+   * 
    * @param request
    * @return
    */

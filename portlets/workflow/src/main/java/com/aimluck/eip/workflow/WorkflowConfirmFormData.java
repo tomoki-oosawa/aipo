@@ -367,6 +367,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
       return currentMap;
     }
 
+    @SuppressWarnings("unused")
     public int getOrderInex() {
       return orderIndex;
     }
@@ -375,6 +376,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
       return sendMailMaps;
     }
 
+    @SuppressWarnings("unused")
     public int getRequestMapSize() {
       return requestMapSize;
     }
@@ -538,6 +540,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
       return null;
     }
 
+    @SuppressWarnings("unused")
     public boolean isSendMailMapsNotEmpty() {
       return (null != sendMailMaps) && (sendMailMaps.size() > 0);
     }
