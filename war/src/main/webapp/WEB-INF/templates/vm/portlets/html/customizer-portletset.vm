@@ -22,14 +22,14 @@
 #if  ($customize-mode == "layout")
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!set.ID)"], ["レイアウト設定", ""]])
 #elseif($customize-mode == "add")
-#set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!set.ID)"], ["レイアウト設定", "$jslink.Template.addPathInfo('js_peid',$!set.ID).addPathInfo('mode','layout').addQueryData('mtype', $mtype).addQueryData('action', 'controls.Customize')"], ["ポートレット追加", ""]])
+#set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!set.ID)"], ["レイアウト設定", "$jslink.Template.addPathInfo('js_peid',$!set.ID).addPathInfo('mode','layout').addQueryData('mtype', $mtype).addQueryData('action', 'controls.Customize')"], ["アプリ追加", ""]])
 #end
 ## ---------------------------------------------------------------------------
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 dojo.provide("aipo.portletset");
 //]]>
-</script> 
+</script>
 
 #ALcontentheader("$!{portlet.Title}" $navilist)
 #parse ($feature)

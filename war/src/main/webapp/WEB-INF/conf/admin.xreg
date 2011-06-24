@@ -38,10 +38,10 @@
         <parameter name="_skin.style" value="RegistryEntryListBox" hidden="false"/>
         <parameter name="_skin.style.registry" value="Skin" hidden="false"/>
         <meta-info>
-            <title>カスタマイズポートレット</title>
+            <title>カスタマイズアプリ</title>
         </meta-info>
         <category>管理</category>
-        <category>カスタマイズポートレット</category>
+        <category>カスタマイズアプリ</category>
     </portlet-entry>
     <portlet-entry type="instance" name="PortletSetCustomizer" hidden="true">
         <security-ref parent="user-only"/>

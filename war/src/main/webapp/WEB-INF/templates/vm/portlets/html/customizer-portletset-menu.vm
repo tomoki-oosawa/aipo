@@ -25,17 +25,17 @@ dojo.addOnLoad(function () {
 
     var subMenu =
 		[
-			{   caption: "レイアウト設定", iconClass: "menuBarIconLayoutConf", url: "$jslink.Template.addPathInfo('js_peid',$!set.ID).addPathInfo('mode','layout').addQueryData('mtype', $mtype).addQueryData('action', 'controls.Customize')" }      
-            ,{   caption: "ポートレット追加",  iconClass: "menuBarIconPortletAdd", url: "$jslink.Template.addPathInfo('js_peid',$!set.ID).addPathInfo('mode','add').addQueryData('mtype', $mtype).addQueryData('action', 'controls.Customize')"  }
+			{   caption: "レイアウト設定", iconClass: "menuBarIconLayoutConf", url: "$jslink.Template.addPathInfo('js_peid',$!set.ID).addPathInfo('mode','layout').addQueryData('mtype', $mtype).addQueryData('action', 'controls.Customize')" }
+            ,{   caption: "アプリ追加",  iconClass: "menuBarIconPortletAdd", url: "$jslink.Template.addPathInfo('js_peid',$!set.ID).addPathInfo('mode','add').addQueryData('mtype', $mtype).addQueryData('action', 'controls.Customize')"  }
 		];
 
         if(aipo.portletset.menuSelected != "undefined"){
-            aipo.portletset.menuSelected = -1;  
+            aipo.portletset.menuSelected = -1;
         }
-		
+
 	var menubar = new aimluck.widget.Menubar({id: "mbar", items: subMenu, selectedIndex:aipo.portletset.menuSelected}, "portletMenu");
 
 });
 
 //]]>
-</script> 
+</script>

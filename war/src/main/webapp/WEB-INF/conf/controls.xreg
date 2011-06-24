@@ -23,7 +23,7 @@
 <registry>
     <portlet-control-entry name="ClearPortletControl" hidden="true">
         <meta-info>
-            <title>クリアポートレットコントロール</title>
+            <title>クリアアプリコントロール</title>
         </meta-info>
         <classname>com.aimluck.eip.portal.controls.ALVelocityPortletControl</classname>
         <parameter name="theme" value="clear.vm" hidden="false"/>
@@ -68,7 +68,7 @@
     </portlet-control-entry>
     <portlet-control-entry name="PanedPortletControl" hidden="true">
         <meta-info>
-            <title>区画化ポートレットコントロール</title>
+            <title>区画化アプリコントロール</title>
         </meta-info>
         <classname>com.aimluck.eip.portal.controls.ALVelocityPortletSetControl</classname>
         <parameter name="theme" value="jetspeed-tab.vm" hidden="false"/>

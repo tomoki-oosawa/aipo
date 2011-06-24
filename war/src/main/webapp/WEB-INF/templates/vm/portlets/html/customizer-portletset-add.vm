@@ -18,13 +18,13 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($tabs = [["ポートレット追加", "",""]])
+#set ($tabs = [["アプリ追加", "",""]])
 ## ---------------------------------------------------------------------------
 #ALtabheader($tabs "")
 #ALspacebothheader()
 <form name="add_portlet" action="${jslink.Template}/${jslink.ActionKey}/${action}" method="post" onsubmit="return(aimluck.io.disableForm(this, true));">
 <input type="hidden" name="secid" value="$secid" />
-<div class="message">追加するポートレットを選択してください。</div>
+<div class="message">追加するアプリを選択してください。</div>
 #ALtableheaderWide()
 <tr>
 #ALtdheadThin("追加")

@@ -43,7 +43,7 @@
 <input name="js_peid" type="hidden" value="$data.getJs_peid()" />
 <input type="hidden" name="secid" value="$secid" />
 #ALtableheaderWide()
-#ALtdcaption("ポートレット名")
+#ALtdcaption("アプリ名")
 #ALtditem("#ALtextfield('current_title' $!current_title '75%' 50 'active')")
 #set ($counter=0)
 #foreach ( $param in $parameters )

@@ -25,7 +25,7 @@
 #ALtabheader($tabs "")
 #ALspacebothheader()
 #if($result.List.size()<=0)
-<div class="message">スケジュールや ToDo などのポートレットを自由に配置できる画面を作成します。</div>
+<div class="message">スケジュールや ToDo などのアプリを自由に配置できる画面を作成します。</div>
 <div class="message">『ページ追加』 ボタンを押して、追加してください。 </div>
 #else
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")

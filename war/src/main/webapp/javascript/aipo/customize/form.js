@@ -63,7 +63,7 @@ aipo.customize.setController = function(portlet_id, sender) {
 }
 
 aipo.customize.deletesubmit = function(url, portlet_id, callback) {
-    if (confirm('このポートレットを削除してもよろしいですか？')) {
+    if (confirm('このアプリを削除してもよろしいですか？')) {
         aipo.customize.submit(url, portlet_id, callback);
     }
 }

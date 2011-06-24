@@ -26,7 +26,7 @@
 <div class="message">URLが設定されていません。</div>
 #else
 <iframe src="$!result.Detail.link" frameborder="0" height="$!result.Detail.MaximizedHeight" width="100%" scrolling="auto" marginheight="0" marginwidth="0" >
-このポートレットはIFrame対応のブラウザでのみ動作します。
+このアプリはIFrame対応のブラウザでのみ動作します。
 </iframe>
 #end
 #ALspacebothfooter()
