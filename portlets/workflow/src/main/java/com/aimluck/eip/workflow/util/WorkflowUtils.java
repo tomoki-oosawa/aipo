@@ -244,6 +244,37 @@ public class WorkflowUtils {
   }
 
   /**
+   * Category オブジェクトモデルを取得します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @param mode_update
+   * @return
+   */
+  public static List<EipTWorkflowCategory> getEipTworkflowCategory(
+      EipTWorkflowRoute route) throws ALPageNotFoundException {
+
+    try {
+
+      SelectQuery<EipTWorkflowCategory> query =
+        Database.query(EipTWorkflowCategory.class);
+
+      Expression exp =
+        ExpressionFactory.matchExp(
+          EipTWorkflowCategory.EIP_TWORKFLOW_ROUTE_PROPERTY,
+          route);
+
+      query.setQualifier(exp);
+
+      return query.fetchList();
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+
+  }
+
+  /**
    * Request オブジェクトモデルを取得します。 <BR>
    * 
    * @param rundata

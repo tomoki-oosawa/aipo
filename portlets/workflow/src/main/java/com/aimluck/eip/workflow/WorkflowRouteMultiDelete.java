@@ -29,6 +29,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequest;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRoute;
 import com.aimluck.eip.common.ALAbstractCheckList;
@@ -45,9 +46,8 @@ import com.aimluck.eip.workflow.util.WorkflowUtils;
 public class WorkflowRouteMultiDelete extends ALAbstractCheckList {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(WorkflowRouteMultiDelete.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WorkflowRouteMultiDelete.class.getName());
 
   /**
    * 
@@ -81,11 +81,19 @@ public class WorkflowRouteMultiDelete extends ALAbstractCheckList {
       }
 
       for (EipTWorkflowRoute route : routelist) {
+
         List<EipTWorkflowRequest> requests =
           WorkflowUtils.getEipTWorkflowRequest(route);
         for (EipTWorkflowRequest request : requests) {
           request.setEipTWorkflowRoute(null);
         }
+
+        List<EipTWorkflowCategory> categories =
+          WorkflowUtils.getEipTworkflowCategory(route);
+        for (EipTWorkflowCategory category : categories) {
+          category.setEipTWorkflowRoute(null);
+        }
+
       }
 
       // 申請経路を削除
