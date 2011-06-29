@@ -257,9 +257,9 @@ public class AccountUtils {
         TurbineUserGroupRole.TURBINE_GROUP_PROPERTY,
         Integer.valueOf(3));
     Expression exp3 =
-      ExpressionFactory.noMatchExp(TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
+      ExpressionFactory.matchExp(TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
         + "."
-        + TurbineGroup.OWNER_ID_PROPERTY, null);
+        + TurbineGroup.OWNER_ID_PROPERTY, Integer.valueOf(1));
     query.setQualifier(exp1);
     query.andQualifier(exp2);
     query.andQualifier(exp3);
