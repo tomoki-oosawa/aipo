@@ -61,3 +61,27 @@ aipo.memo.onReceiveMessage = function(msg){
         dojo.byId('messageDiv').innerHTML = msg;
     }
 }
+
+aipo.memo.onReceiveMessageUpdate = function(msg){
+    if(!msg) {
+        var arrDialog = dijit.byId("modalDialog");
+        if(!!arrDialog){
+            arrDialog.hide();
+        }
+        aipo.portletReload('memo');
+    }
+
+    var node = dojo.query('.messageDiv_memo.enabled');
+    if (node.length >= 1) {
+        node[0].innerHTML = msg;
+    }
+}
+
+
+aipo.memo.enableMessageDiv = function(portlet_id) {
+    dojo.query('.messageDiv_memo').forEach(function(node, index, arr){
+        dojo.removeClass(node, 'enabled');
+    });
+    dojo.addClass('memo_'+portlet_id, 'enabled');
+}
+
