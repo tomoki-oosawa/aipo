@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -37,11 +38,14 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレス帳での検索BOX用データです。(社内アドレス検索用)
- * 
+ *
  */
 public abstract class AbstractAddressBookWordSelectData<M1, M2> extends
     ALAbstractSelectData<M1, M2> {
@@ -57,6 +61,8 @@ public abstract class AbstractAddressBookWordSelectData<M1, M2> extends
   /** 現在選択されているタブ */
   protected String currentTab;
 
+  private boolean hasAuthorityList;
+
   public static AbstractAddressBookWordSelectData<?, ?> createAddressBookWordSelectData(
       RunData rundata, Context context) {
     if (AddressBookUtils.isSyagai(rundata, context)) {
@@ -67,7 +73,7 @@ public abstract class AbstractAddressBookWordSelectData<M1, M2> extends
   }
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -106,11 +112,14 @@ public abstract class AbstractAddressBookWordSelectData<M1, M2> extends
       ALEipUtils.setTemp(rundata, context, "tab", tabParam);
       currentTab = tabParam;
     }
+
+    hasAuthorityList = checkHasAuthority(rundata, ALAccessControlConstants.VALUE_ACL_LIST);
+
     super.init(action, rundata, context);
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -118,14 +127,14 @@ public abstract class AbstractAddressBookWordSelectData<M1, M2> extends
 
   /**
    * PC用の検索結果画面のテンプレートのパスを得ます。
-   * 
+   *
    * @return
    */
   public abstract String getTemplateFilePath();
 
   /**
    * 現在選択されているタブを取得します。
-   * 
+   *
    * @return
    */
   public String getCurrentTab() {
@@ -133,8 +142,17 @@ public abstract class AbstractAddressBookWordSelectData<M1, M2> extends
   }
 
   /**
+   * アクセス権限があるかどうか取得します。
+   *
+   * @return
+   */
+  public boolean getHasAuthorityList() {
+    return hasAuthorityList;
+  }
+
+  /**
    * 検索ワードを取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getSearchWord() {
@@ -143,13 +161,13 @@ public abstract class AbstractAddressBookWordSelectData<M1, M2> extends
 
   /**
    * グループリストを取得します。
-   * 
+   *
    * @return
    */
   public abstract List<AddressBookGroupResultData> getGroupList();
 
   /**
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -157,9 +175,31 @@ public abstract class AbstractAddressBookWordSelectData<M1, M2> extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public abstract List<ALEipGroup> getMyGroupList();
 
+  /**
+   * 現在選択されているタブに合わせてアクセス権限をチェックします。
+   *
+   * @param rundata
+   * @param type
+   * @return
+   */
+  public boolean checkHasAuthority(RunData rundata, int type) {
+    String feature =
+      ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_ADDRESS_INSIDE;
+    if ("syagai".equals(currentTab)) {
+      feature =
+        ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_ADDRESS_OUTSIDE;
+    }
+
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+    return aclhandler.hasAuthority(ALEipUtils.getUserId(rundata), feature, type);
+  }
 }

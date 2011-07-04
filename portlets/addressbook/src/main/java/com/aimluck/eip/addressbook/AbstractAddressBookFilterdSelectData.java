@@ -23,6 +23,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -31,11 +32,14 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレス帳ワード検索用の基底データクラスです。
- * 
+ *
  */
 public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
     ALAbstractSelectData<M1, M2> {
@@ -54,9 +58,11 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
   /** 現在選択されているインデックス */
   private String index;
 
+  private boolean hasAuthorityList;
+
   /**
    * 初期化処理を行います。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -78,6 +84,8 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
       currentTab = tabParam;
     }
 
+    hasAuthorityList = checkHasAuthority(rundata, ALAccessControlConstants.VALUE_ACL_LIST);
+
     // 検索用インデックスをセッションとパラメータからを読み込みます。
     String index_session = ALEipUtils.getTemp(rundata, context, LIST_INDEX_STR);
     String index_rundata = rundata.getParameters().getString("idx");
@@ -98,7 +106,7 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。
-   * 
+   *
    * @param query
    * @param rundata
    * @param context
@@ -118,7 +126,7 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
 
   /**
    * 現在選択されているタブを取得します。
-   * 
+   *
    * @return
    */
   public String getCurrentTab() {
@@ -126,8 +134,17 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
   }
 
   /**
+   * アクセス権限があるかどうか取得します。
+   *
+   * @return
+   */
+  public boolean getHasAuthorityList() {
+    return hasAuthorityList;
+  }
+
+  /**
    * 現在選択されているインデックスを取得します。
-   * 
+   *
    * @return
    */
   public String getIndex() {
@@ -136,14 +153,37 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
 
   /**
    * インデックス検索のためのカラムを返します。
-   * 
+   *
    * @return
    */
   abstract protected String getColumnForIndex();
 
   /**
+   * 現在選択されているタブに合わせてアクセス権限をチェックします。
+   *
+   * @param rundata
+   * @param type
+   * @return
+   */
+  public boolean checkHasAuthority(RunData rundata, int type) {
+    String feature =
+      ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_ADDRESS_INSIDE;
+    if ("syagai".equals(currentTab)) {
+      feature =
+        ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_ADDRESS_OUTSIDE;
+    }
+
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+    return aclhandler.hasAuthority(ALEipUtils.getUserId(rundata), feature, type);
+  }
+
+  /**
    * インデックス検索のためのユニコードマッピングによる条件文の追加。
-   * 
+   *
    * @param crt
    * @param idx
    */

@@ -59,6 +59,11 @@
 </form>
 #ALajaxtabheader($tabs $!result.currentTab)
 #ALspacebothheader()
+
+#if(!($result.hasAuthorityList))
+  アクセス権限がありません。管理者にお問い合わせください。
+#else
+
 #ALajaxlistformheader('AddressBook')
 
 #if($result.SearchWord && $result.SearchWord.toString() != "")
@@ -141,5 +146,8 @@
 #ALajaxpageviewFooter(${pageviewscreen} $result)
 #end
 #ALformfooter()
+
+#end
+
 #ALspacebothfooter()
 #ALajaxtabfooter()

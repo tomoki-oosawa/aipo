@@ -24,15 +24,17 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.addressbook.AbstractAddressBookFilterdSelectData;
 import com.aimluck.eip.addressbook.AddressBookCorpFilterdSelectData;
 import com.aimluck.eip.addressbook.AddressBookFilterdSelectData;
-import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALPermissionException;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレス帳の会社情報
- * 
+ *
  */
 public class AddressBookDetailScreen extends ALVelocityScreen {
 
@@ -41,7 +43,7 @@ public class AddressBookDetailScreen extends ALVelocityScreen {
     .getLogger(AddressBookDetailScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -49,7 +51,7 @@ public class AddressBookDetailScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
-      ALAbstractSelectData<?, ?> detailData = null;
+      AbstractAddressBookFilterdSelectData<?, ?> detailData = null;
       String selectedTab = rundata.getParameters().getString("tab");
       if ("corp".equals(selectedTab)) {
         detailData = new AddressBookCorpFilterdSelectData();
@@ -59,16 +61,21 @@ public class AddressBookDetailScreen extends ALVelocityScreen {
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
 
+      if (!detailData.checkHasAuthority(rundata, ALAccessControlConstants.VALUE_ACL_DETAIL)) {
+        throw new ALPermissionException();
+      }
+
       String entityid =
         ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
       context.put(ALEipConstants.ENTITY_ID, entityid);
       String layout_template = "portlets/html/ja/ajax-addressbook-detail.vm";
 
       setTemplate(rundata, context, layout_template);
+    } catch (ALPermissionException e) {
+      ALEipUtils.redirectPermissionError(rundata);
     } catch (Exception ex) {
       logger.error("[AddressBookDetailScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }
-
 }
