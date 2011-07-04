@@ -1168,21 +1168,20 @@ public class MsgboardUtils {
       return true;
     }
 
-    if ("T".equals(category.getPublicFlag())) {
-      List<?> categoryMap = category.getEipTMsgboardCategoryMaps();
-      int mapsize = categoryMap.size();
-      for (int i = 0; i < mapsize; i++) {
-        EipTMsgboardCategoryMap map =
-          (EipTMsgboardCategoryMap) categoryMap.get(i);
+    boolean canAllReply = "T".equals(category.getPublicFlag());
+    List<?> categoryMap = category.getEipTMsgboardCategoryMaps();
+    int mapsize = categoryMap.size();
+    for (int i = 0; i < mapsize; i++) {
+      EipTMsgboardCategoryMap map =
+        (EipTMsgboardCategoryMap) categoryMap.get(i);
 
-        // 全員が返信可能
-        if ("A".equals(map.getStatus())) {
+      // 全員が返信可能
+      if (canAllReply && "A".equals(map.getStatus())) {
+        return true;
+      } else {
+        // ログインユーザが所属メンバの場合
+        if (map.getUserId().intValue() == user_id) {
           return true;
-        } else {
-          // ログインユーザが所属メンバの場合
-          if (map.getUserId().intValue() == user_id) {
-            return true;
-          }
         }
       }
     }
