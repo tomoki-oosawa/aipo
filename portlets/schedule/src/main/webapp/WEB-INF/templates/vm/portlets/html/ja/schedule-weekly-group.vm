@@ -76,7 +76,7 @@ $!{result.ViewStart.Year} 年 $!{result.ViewStart.Month} 月 $!{result.ViewStart
 ### 日付（曜日）の表示（ここから）
 #if( $roop % 5 == 0)
 <tr>
-#ALtdheadAtt("" "nowrap='nowrap'")
+#ALtdheadAtt("" "class='groupWeekly' nowrap='nowrap'")
 #if($result.MemberList.size() > 0)
 #set($daylist = ${result.getContainer($result.MemberList.get(0).UserId.Value).DayList})
 #else
@@ -86,22 +86,22 @@ $!{result.ViewStart.Year} 年 $!{result.ViewStart.Month} 月 $!{result.ViewStart
 #set($getScheduleDetailLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailJSONScreen').addQueryData('view_date', $!{record.Date.toString()}))
 #if($!{record.isHoliday()})
 #set ($stday = $velocityCount )
-#ALtdheadheaderAtt("class='holiday' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='holiday groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}<br />
 <span class="holiday small">${record.Holiday.Name}</span>
 #elseif($!{record.Date.Value.Day} == 0)
 #set ($stday = $velocityCount )
-#ALtdheadheaderAtt("class='sunday' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='sunday groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #elseif($!{record.Date.Value.Day} == 6)
 #set ($sunday = $velocityCount )
-#ALtdheadheaderAtt("class='saturday' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='saturday groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #elseif($!{result.Today.Value} == $!{record.Date.Value})
-#ALtdheadheaderAtt("class='today' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='today groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #else
-#ALtdheadheaderAtt("nowrap='nowrap'")
+#ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #end
 <br/><img src="images/common/dot.gif" width="50" height="1" alt="" />
@@ -115,7 +115,7 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #set($record3rowcount = $result.getTermContainer($record3.UserId.Value).size() + 1 + $result.getToDoContainer($record3.UserId.Value).size())
 #set($rowspanstr = "rowspan=$record3rowcount")
 #set($show_tr = 0)
-#ALtdheadAtt("$record3.AliasName" "$rowspanstr")
+#ALtdheadAtt("$record3.AliasName" "$rowspanstr class='groupWeekly'")
 ### 期間スケジュール（ここから） ###
 #foreach($termcontainer in ${result.getTermContainer($record3.UserId.Value)})
 #if($show_tr > 0)
