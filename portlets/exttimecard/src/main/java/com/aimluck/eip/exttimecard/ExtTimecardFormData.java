@@ -34,6 +34,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -53,6 +54,8 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
@@ -166,6 +169,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
     timecard_id = new ALNumberField();
     user_id = new ALNumberField();
@@ -472,6 +476,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
             Collections.sort(
               empty_from_to,
               new Comparator<Map<String, Long>>() {
+                @Override
                 public int compare(Map<String, Long> o1, Map<String, Long> o2) {
                   Map<String, Long> hash1 = o1;
                   Map<String, Long> hash2 = o2;
@@ -991,6 +996,54 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     }
     return true;
   }
+
+  /**
+   * アクセス権限をチェックします。
+   *
+   * @return
+   */
+  @Override
+  protected boolean doCheckAclPermission(RunData rundata, Context context,
+      int defineAclType) throws ALPermissionException {
+
+    if (defineAclType == 0) {
+      return true;
+    }
+
+    // 当日中のタイムカード打刻は、更新ではなく追加扱いにする
+    if (defineAclType == ALAccessControlConstants.VALUE_ACL_UPDATE) {
+      if ("punchin".equals(edit_mode)
+          || "punchout".equals(edit_mode)
+          || "outgoing".equals(edit_mode)
+          || "comeback".equals(edit_mode)) {
+        defineAclType = ALAccessControlConstants.VALUE_ACL_INSERT;
+      }
+    }
+
+
+    String pfeature = getAclPortletFeature();
+    if (pfeature == null || "".equals(pfeature)) {
+      return true;
+    }
+
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+    hasAuthority =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        pfeature,
+        defineAclType);
+
+    if (!hasAuthority) {
+      throw new ALPermissionException();
+    }
+
+    return true;
+  }
+
 
   /**
    * 日付
