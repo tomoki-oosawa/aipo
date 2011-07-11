@@ -156,7 +156,8 @@ public class ScheduleTooltipSelectData extends
     }
 
     // 自分に関係のある予定なのかどうか判断する
-    if (!ScheduleUtils.hasRelation(rundata)) {
+    int scheduleId = Integer.valueOf(rundata.getParameters().getString("scheduleid"));
+    if (!ScheduleUtils.hasRelation(rundata, scheduleId)) {
       aclPortletFeature =
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
     } else {

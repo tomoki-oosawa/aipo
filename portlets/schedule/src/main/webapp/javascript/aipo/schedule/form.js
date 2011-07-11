@@ -90,7 +90,10 @@ aipo.schedule.showTooltip = function(obj, url, entityid, portlet_id, containerNo
         encoding: "utf-8",
         handleAs: "json-comment-filtered",
         load: function(schedule, event) {
-            if (schedule.length <= 0) {
+            if (!schedule.id) {
+                widget._onHover = function(){};
+                widget.close();
+                widget.processed = true;
                 return;
             }
 

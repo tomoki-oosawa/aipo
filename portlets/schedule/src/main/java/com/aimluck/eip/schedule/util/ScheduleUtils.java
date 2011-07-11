@@ -2567,10 +2567,13 @@ public class ScheduleUtils {
     if (scheduleId == null | "".equals(scheduleId)) {
       return false;
     }
+    return hasRelation(rundata, Integer.valueOf(scheduleId));
+  }
+
+  public static boolean hasRelation(RunData rundata, int scheduleId) {
     int userId = ALEipUtils.getUserId(rundata);
     Expression exp11 =
-      ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, Integer
-        .valueOf(scheduleId));
+      ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, scheduleId);
     Expression exp12 =
       ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
         .valueOf(userId));
@@ -2585,6 +2588,7 @@ public class ScheduleUtils {
       return true;
     }
   }
+
 
   public static boolean hasMinimumAuthority(RunData rundata) {
     ALAccessControlFactoryService aclservice =
