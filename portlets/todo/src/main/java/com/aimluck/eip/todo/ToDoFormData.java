@@ -41,6 +41,7 @@ import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
+import com.aimluck.eip.eventlog.action.ALActionEventlogConstants;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -485,6 +486,13 @@ public class ToDoFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_TODO,
         todo_name.getValue());
 
+      if (is_new_category) {
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          category.getCategoryId(),
+          ALEventlogConstants.PORTLET_TYPE_TODO_CATEGORY,
+          category_name.getValue());
+      }
+
     } catch (Throwable t) {
       Database.rollback();
       logger.error(t);
@@ -609,6 +617,14 @@ public class ToDoFormData extends ALAbstractFormData {
         todo.getTodoId(),
         ALEventlogConstants.PORTLET_TYPE_TODO,
         todo_name.getValue());
+
+      if (is_new_category) {
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          category.getCategoryId(),
+          ALEventlogConstants.PORTLET_TYPE_TODO_CATEGORY,
+          category_name.getValue(),
+          ALActionEventlogConstants.EVENT_MODE_INSERT);
+      }
 
     } catch (Throwable t) {
       Database.rollback();

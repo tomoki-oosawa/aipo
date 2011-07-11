@@ -34,6 +34,8 @@ public abstract class ALEventlogHandler {
 
   public abstract void log(int entity_id, int portlet_type, String note);
 
+  public abstract void log(int entity_id, int portlet_type, String note, String mode);
+
   public abstract void logLogin(int userid);
 
   public abstract void logLogout(int userid);

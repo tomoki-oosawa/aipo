@@ -59,6 +59,15 @@ public class ALActionEventlogHandler extends ALEventlogHandler {
     logActionEvent(entity_id, portlet_type, note);
   }
 
+  /**
+   * ログ
+   */
+  @Override
+  public void log(int entity_id, int portlet_type, String note, String mode) {
+    logActionEvent(entity_id, portlet_type, note, mode);
+  }
+
+
   private void logActionEvent(int entity_id, int portlet_type, String note) {
 
     // rundataの取得
@@ -74,35 +83,28 @@ public class ALActionEventlogHandler extends ALEventlogHandler {
         return;
       }
     } else {
-
-      // EVENTTYPEの取得
-      int event_type = ALEventlogUtils.getEventTypeValue(mode);
-
-      // ユーザーIDの取得
-      int uid = ALEipUtils.getUserId(rundata);
-
-      // ポートレットIDの取得
-      // String js_peid = rundata.getParameters().getString("js_peid");
-      // if (js_peid == null || "".equals(js_peid)) {
-      // return;
-      // }
-      // ポートレット名の取得(PSMLファイルのparent名)
-      // String p_name = ALEventlogUtils.getPortletName(rundata, js_peid);
-      // if (p_name == null || "".equals(p_name)) {
-      // return;
-      // }
-
-      // ポートレットTYPEの取得
-      // int p_type =
-      // ALEventlogUtils.getPortletTypeValue(p_name);//文字列を経由する必要ないかも
-
-      // 接続IPアドレスの取得
-      String ip_addr = rundata.getRemoteAddr();
-
-      // ログを保存
-      saveEvent(event_type, uid, portlet_type, entity_id, ip_addr, note);
+      logActionEvent(entity_id, portlet_type, note, mode);
     }
   }
+
+  private void logActionEvent(int entity_id, int portlet_type, String note, String mode) {
+
+    // rundataの取得
+    RunData rundata = ALEventlogFactoryService.getInstance().getRunData();
+
+    // EVENTTYPEの取得
+    int event_type = ALEventlogUtils.getEventTypeValue(mode);
+
+    // ユーザーIDの取得
+    int uid = ALEipUtils.getUserId(rundata);
+
+    // 接続IPアドレスの取得
+    String ip_addr = rundata.getRemoteAddr();
+
+    // ログを保存
+    saveEvent(event_type, uid, portlet_type, entity_id, ip_addr, note);
+  }
+
 
   /**
    * Login処理

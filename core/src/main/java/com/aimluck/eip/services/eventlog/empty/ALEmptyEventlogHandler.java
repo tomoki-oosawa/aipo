@@ -40,6 +40,11 @@ public class ALEmptyEventlogHandler extends ALEventlogHandler {
   }
 
   @Override
+  public void log(int entity_id, int portlet_type, String note, String mode) {
+
+  }
+
+  @Override
   public void logLogin(int userid) {
 
   }
