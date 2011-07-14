@@ -305,6 +305,7 @@ aipo.IfrContainer.prototype.renderGadgets = function() {
     aipo.cron.start();
 };
 
+var tmpGadget;
 aipo.IfrContainer.prototype.renderGadgetFromContext = function(context) {
     var gadget = this.createGadget(context);
     gadget.setServerBase(context.serverBase);
@@ -317,6 +318,7 @@ aipo.IfrContainer.prototype.renderGadgetFromContext = function(context) {
     }
     gadget.count++;
     gadget.render(chrome);
+    tmpGadget = gadget;
 };
 
 shindig.BaseIfrGadget.prototype.getIframeId = function() {

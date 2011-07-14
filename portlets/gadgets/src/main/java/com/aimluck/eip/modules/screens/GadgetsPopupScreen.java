@@ -113,6 +113,7 @@ public class GadgetsPopupScreen extends ALVelocityScreen {
     context.put("portletId", id);
     JSONObject jsonObject = new JSONObject();
     jsonObject.put("portletId", id);
+    jsonObject.put("appId", appId);
     jsonObject.put("specUrl", gadgetContext.getAppUrl());
     jsonObject.put("secureToken", gadgetContext.getSecureToken());
     jsonObject.put("serverBase", gadgetContext.getServerBase());
