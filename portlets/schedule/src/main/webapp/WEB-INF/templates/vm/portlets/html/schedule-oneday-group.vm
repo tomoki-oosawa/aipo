@@ -100,23 +100,23 @@ $!{result.ViewDate.Year} 年 $!{result.ViewDate.Month} 月 $!{result.ViewDate.Da
 <img src="images/common/dot.gif" width="1" height="1" alt="" />
 #ALtdheadfooter()
 #if($todocolcount > 0)
-#ALtdheadAtt("" "colspan='$todocolcount'")
+#ALtdheadAtt("" "class='groupOneday' colspan='$todocolcount'")
 #end
 #if($termcolcount > 0)
-#ALtdheadAtt("" "colspan='$termcolcount'")
+#ALtdheadAtt("" "class='groupOneday' colspan='$termcolcount'")
 #end
 #foreach($hour in [$!{result.StartHour}..$endHour])
 #set($colspan = $result.getColspan($hour) )
-<th colspan='$colspan'>$hour<br/>
+<th class='groupOneday' colspan='$colspan'>$hour<br/>
 <img src="images/common/dot.gif" width="40" height="1" alt="" /></th>
 #end
 #if($!result.isDuplicate())
-#ALtdhead("重複")
+#ALtdheadAtt("重複" "class='groupOneday'")
 #end
 </tr>
 #foreach($record3 in $result.MemberList)
 <tr>
-#ALtdheadAtt("$record3.AliasName" "")
+#ALtdheadAtt("$record3.AliasName" "class='groupOneday'")
 #set($userTodoCount = $result.getToDoResultDataList($record3.UserId.Value).size())
 #if($userTodoCount > 0)
 #foreach($record in ${result.getToDoResultDataList($record3.UserId.Value)})
@@ -265,7 +265,7 @@ $record.Name
 #end
 
 #foreach($record3 in $result.FacilityList)
-#ALtdhead("$record3.FacilityName")
+#ALtdheadAtt("$record3.FacilityName" "class='groupOneday'")
 #if($todocolcount > 0)
 #ALtdcellAtt("" "colspan='$todorestcount'")
 #end

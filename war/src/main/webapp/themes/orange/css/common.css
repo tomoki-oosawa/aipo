@@ -1984,6 +1984,9 @@ table.calendar th {
 	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
 	width:14.2857143%;
 }
+table.calendar th.groupOneday {
+	width:auto;
+}
 table.calendar th.groupWeekly {
     border:1px solid #FF9900;
     padding:0;
