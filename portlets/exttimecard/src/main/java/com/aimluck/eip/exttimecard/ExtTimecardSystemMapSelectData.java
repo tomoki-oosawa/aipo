@@ -189,6 +189,8 @@ public class ExtTimecardSystemMapSelectData extends
     query.andQualifier(exp3);
 
     String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+    String filter_type =
+      ALEipUtils.getTemp(rundata, context, LIST_FILTER_TYPE_STR);
 
     Map<Integer, ALEipPost> gMap = ALEipManager.getInstance().getPostMap();
     if (filter == null
@@ -196,6 +198,10 @@ public class ExtTimecardSystemMapSelectData extends
       || !gMap.containsKey(Integer.valueOf(filter))) {
       return query;
     }
+
+    current_filter = filter;
+    current_filter_type = filter_type;
+
     String groupName =
       (ALEipManager.getInstance().getPostMap().get(Integer.valueOf(filter)))
         .getGroupName()
