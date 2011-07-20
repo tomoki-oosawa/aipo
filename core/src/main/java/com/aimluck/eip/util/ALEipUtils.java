@@ -29,6 +29,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -1511,6 +1513,24 @@ public class ALEipUtils {
    */
   public static String replaceStrToLink(String msg) {
     if (msg != null) {
+      String regex =
+        "(https?|ftp|gopher|telnet|whois|news)\\:([\\w|\\:\\!\\#\\$\\%\\=\\&\\-\\^\\`\\\\|\\@\\~\\[\\{\\]\\}\\;\\+\\*\\,\\.\\?\\/]+)";
+      Pattern p = Pattern.compile(regex);
+      boolean check = true;
+      while (check) {
+        check = false;
+        Matcher m = p.matcher(msg);
+        while (m.find()) {
+          if (m.group(0).contains("@")) {
+            String matchString = m.group(0);
+            matchString = matchString.replaceAll("@", "%40");
+            String pre = msg.substring(0, m.start(0));
+            String post = msg.substring(m.end(0), msg.length());
+            msg = pre + matchString + post;
+            check = true;
+          }
+        }
+      }
       String newMsg =
         msg
           .replaceAll(
