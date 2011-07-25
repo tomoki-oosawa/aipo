@@ -38,7 +38,7 @@
 #if($!result.Index && $result.Index.toString() != "")
 <a#if($!result.CurrentSort && $!result.CurrentSort == "$key") class="$sortHead"#end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template",$screen).addQueryData("start","$result.CurrentPage").addQueryData("sort","$key").addQueryData("sorttype","$sorttype").addQueryData("idx","$result.Index"))', '$!portlet.ID');">$name</a>
 #else
-<a#if($!result.CurrentSort && $!result.CurrentSort == "$key") class="$sortHead"#end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template",$screen).addQueryData("start","$result.CurrentPage").addQueryData("sort","$key").addQueryData("sorttype","$sorttype"))', '$!portlet.ID');">$name</a>	
+<a#if($!result.CurrentSort && $!result.CurrentSort == "$key") class="$sortHead"#end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template",$screen).addQueryData("start","$result.CurrentPage").addQueryData("sort","$key").addQueryData("sorttype","$sorttype"))', '$!portlet.ID');">$name</a>
 #end
 #end
 #end
@@ -64,6 +64,11 @@
 
 #ALajaxtabheader($tabs $!result.currentTab)
 #ALspacebothheader()
+
+#if(!($result.hasAuthorityList))
+  アクセス権限がありません。管理者にお問い合わせください。
+#else
+
 #ALajaxlistformheader('AddressBook')
 #if($result.SearchWord && $result.SearchWord.toString() != "")
 #ALformfooter()
@@ -142,7 +147,7 @@
 #if($result.List.size() == 0)
 指定された条件に該当するアドレスはありません。<br />
 #else
-##ALajaxpageviewAB('AddressBookListScreen' $result)	
+##ALajaxpageviewAB('AddressBookListScreen' $result)
 #ALajaxpageview(${pageviewscreen} $result)
 #ALtableheaderWide()
 <tr>
@@ -176,6 +181,8 @@
 #ALajaxpageviewFooter(${pageviewscreen} $result)
 #end
 ##ALajaxpageviewFooter('AddressBookListScreen' $result)
+
+#end
 
 #ALspacebothfooter()
 #ALajaxtabfooter()
