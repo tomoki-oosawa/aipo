@@ -71,7 +71,7 @@
 #ALtdcellheader()
 <select name="dst_folder_id">
 #foreach($record in $!result.FolderList)
-#if ($record.FolderId.getValue() == $result.DstFolderId.getValue())
+#if ($record.FolderId.longValue() == $result.DstFolderId.getValue())
 <option value="${record.FolderId}" selected="selected">${record.FolderName}</option>
 #else
 <option value="${record.FolderId}">${record.FolderName}</option>
