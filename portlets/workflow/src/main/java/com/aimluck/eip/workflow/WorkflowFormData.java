@@ -70,8 +70,8 @@ import com.aimluck.eip.workflow.util.WorkflowUtils.Type;
 public class WorkflowFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(WorkflowFormData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WorkflowFormData.class.getName());
 
   /** Request名 */
   private ALStringField request_name;
@@ -387,6 +387,11 @@ public class WorkflowFormData extends ALAbstractFormData {
    */
   @Override
   protected boolean validate(List<String> msgList) {
+    // カテゴリID
+    if (category_id.getValue() == 1) {
+      msgList
+        .add("『 <span class='em'>カテゴリ</span> 』を未分類以外にするか、『 <span class='em'>表題</span> 』を入力してください。");
+    }
     // リクエスト名
     request_name.validate(msgList);
     // メモ
