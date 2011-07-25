@@ -20,7 +20,7 @@
 package com.aimluck.eip.services.social.model;
 
 /**
- * 
+ *
  */
 public class ALApplicationPutRequest {
 
@@ -31,6 +31,8 @@ public class ALApplicationPutRequest {
   private String description;
 
   private String icon;
+
+  private String activityLoginName;
 
   /**
    * @param url
@@ -110,6 +112,26 @@ public class ALApplicationPutRequest {
    */
   public String getIcon() {
     return icon;
+  }
+
+  /**
+   * @return activityLoginName
+   */
+  public String getActivityLoginName() {
+    return activityLoginName;
+  }
+
+  /**
+   * @param activityLoginName
+   *          セットする activityLoginName
+   */
+  public void setActivityLoginName(String activityLoginName) {
+    this.activityLoginName = activityLoginName;
+  }
+
+  public ALApplicationPutRequest withActivityLoginName(String loginName) {
+    setActivityLoginName(loginName);
+    return this;
   }
 
 }

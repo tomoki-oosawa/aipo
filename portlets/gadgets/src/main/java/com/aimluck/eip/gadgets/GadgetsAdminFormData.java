@@ -47,7 +47,7 @@ import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 
+ *
  */
 public class GadgetsAdminFormData extends ALAbstractFormData {
 
@@ -66,8 +66,10 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
 
   private ALGadgetSpec metaData;
 
+  private ALStringField sendActivity;
+
   /**
-   * 
+   *
    */
   @Override
   public void initField() {
@@ -88,6 +90,8 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
     icon.setTrim(true);
 
     oAuthConsumers = new ArrayList<ALOAuthConsumer>();
+
+    sendActivity = new ALStringField();
 
   }
 
@@ -209,10 +213,19 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
     try {
+      String activityLoginName = null;
+      // Activity
+      if ("true".equals(sendActivity.getValue())) {
+        activityLoginName =
+          ALEipUtils.getALEipUser(rundata).getName().getValue();
+      }
 
-      ALApplicationService.create(new ALApplicationPutRequest().withUrl(
-        url.getValue()).withTitle(metaData.getTitle()).withDescription(
-        metaData.getDescription()).withIcon(metaData.getIcon()));
+      ALApplicationService.create(new ALApplicationPutRequest()
+        .withUrl(url.getValue())
+        .withTitle(metaData.getTitle())
+        .withDescription(metaData.getDescription())
+        .withIcon(metaData.getIcon())
+        .withActivityLoginName(activityLoginName));
 
     } catch (Throwable t) {
       logger.error(t, t);
@@ -412,6 +425,21 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
    */
   public ALStringField getDescription() {
     return description;
+  }
+
+  /**
+   * @return sendActivity
+   */
+  public ALStringField getSendActivity() {
+    return sendActivity;
+  }
+
+  /**
+   * @param sendActivity
+   *          セットする sendActivity
+   */
+  public void setSendActivity(String sendActivity) {
+    this.sendActivity.setValue(sendActivity);
   }
 
 }

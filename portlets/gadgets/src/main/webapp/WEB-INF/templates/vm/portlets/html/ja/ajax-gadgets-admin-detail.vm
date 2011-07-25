@@ -28,8 +28,10 @@
 #ALtdcaption('アプリID')
 #ALtditem($!result.Detail.AppId)
 *#
+#if($!isAdmin)
 #ALtdcaption('ガジェットURL')
 #ALtditem($!result.Detail.UrlCR)
+#end
 #ALtdcaption('タイトル')
 #ALtditemheader()
 #if($!result.Detail.Icon.toString() != "")
@@ -40,6 +42,7 @@ $!result.Detail.Title
 #ALtdcaption('アプリの説明')
 #ALtditem($!result.Detail.Description)
 
+#if($!isAdmin)
 #* TODO: Restful API サポート時に ConsumerKey ConsumerSecret を発行する必要があります。
 #ALtdcaption('consumer key')
 #ALtditem($!result.Detail.ConsumerKey)
@@ -84,10 +87,13 @@ $!service.ConsumerSecret<br/>
 #end
 #ALtditemfooter()
 #end
+#end
 #ALtablefooter()
 #ALbuttonheader()
+#if($!isAdmin)
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.gadgets_admin.onLoadDialog")
 <input name="ajaxbuttonDelete" class="button" type="button" value="アンインストールする" onclick="aipo.gadgets_admin.ajaxDeleteSubmit(this, '$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')', '$indicator_id', '$!portlet.ID', aipo.gadgets_admin.onReceiveMessage);"/>
+#end
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()

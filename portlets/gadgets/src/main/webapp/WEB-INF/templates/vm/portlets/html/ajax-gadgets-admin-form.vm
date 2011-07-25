@@ -39,6 +39,7 @@
 #else
 <input type="hidden" name="mode" value="update" />
 #end
+<a href="http://store.aipo.com/" target="_blank"><strong>Aipoストア</strong></a>でアプリを探すことができます。<br><br>
 #if($mode=="new_form")
 外部のアプリケーションあるいは独自のアプリケーションをインストールする場合は、OpenSocialに準拠したガジェットXMLのURLを指定してください。
 #end
@@ -88,6 +89,10 @@ $!service.AccessUrlCR<br/>
 #end
 #end
 #ALtablefooter()
+#if($mode=="new_form")
+<p><input type="checkbox" name="sendActivity" value="true" checked="true">更新情報へ通知する</p>
+<br/>
+#end
 #if($mode!="new_form")
 「更新する」をクリックすると、タイトル、アプリの説明、アイコン画像を最新のガジェットURLより取得して更新を行います。
 #end

@@ -62,6 +62,7 @@ import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest.Status;
 import com.aimluck.eip.services.social.model.ALApplicationPutRequest;
 import com.aimluck.eip.services.social.model.ALOAuthConsumerPutRequest;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -255,6 +256,27 @@ public class ALDefaultSocialApplicationHanlder extends
       app.setAppId(String.valueOf(app.getId()));
 
       Database.commit();
+
+      // Activity
+      if (request.getActivityLoginName() != null
+        && request.getActivityLoginName().length() > 0) {
+        String title =
+          new StringBuilder("アプリ「")
+            .append(
+              ALCommonUtils.compressString(request.getTitle().toString(), 30))
+            .append("」がインストールされました。")
+            .toString();
+        String portletParams =
+          new StringBuilder("?template=GadgetsAdminDetailScreen").append(
+            "&entityid=").append(app.getAppId().toString()).toString();
+        createActivity(new ALActivityPutRequest()
+          .withAppId("GadgetAdd")
+          .withPortletParams(portletParams)
+          .withTile(title)
+          .witchPriority(0f)
+          .withLoginName(request.getActivityLoginName())
+          .withExternalId(String.valueOf(app.getAppId().toString())));
+      }
 
     } catch (Throwable t) {
       Database.rollback();

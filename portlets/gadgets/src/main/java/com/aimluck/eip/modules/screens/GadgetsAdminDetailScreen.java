@@ -23,9 +23,10 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.gadgets.GadgetsAdminSelectData;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 
+ *
  */
 public class GadgetsAdminDetailScreen extends ALVelocityScreen {
 
@@ -38,10 +39,14 @@ public class GadgetsAdminDetailScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
     GadgetsAdminSelectData selectData = new GadgetsAdminSelectData();
     selectData.initField();
-    selectData.doViewDetail(this, rundata, context);
+    if (selectData.doViewDetail(this, rundata, context)) {
 
-    String template = "portlets/html/ja/ajax-gadgets-admin-detail.vm";
-    setTemplate(rundata, context, template);
+      context.put("isAdmin", ALEipUtils.isAdmin(rundata));
+      String template = "portlets/html/ja/ajax-gadgets-admin-detail.vm";
+      setTemplate(rundata, context, template);
+    } else {
+      ALEipUtils.redirectPageNotFound(rundata);
+    }
   }
 
 }
