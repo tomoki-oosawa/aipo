@@ -549,12 +549,12 @@ aipo.schedule.onReceiveMessage = function(msg){
 		            handleAs: "json-comment-filtered",
 		            headers: { X_REQUESTED_WITH: "XMLHttpRequest" },
 		            load: function (response, ioArgs){
+		  		      aipo.schedule.onReceiveMessage("");
 		            },
 		            error: function (error) {
 		            }
 		        });
 
-		      aipo.schedule.onReceiveMessage("");
 		    }
 		  }
     }else if (dojo.byId('messageDiv')) {
