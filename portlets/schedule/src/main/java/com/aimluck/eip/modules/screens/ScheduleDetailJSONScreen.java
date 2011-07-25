@@ -26,6 +26,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.schedule.ScheduleDetailResultData;
 import com.aimluck.eip.schedule.ScheduleTooltipSelectData;
 
@@ -37,9 +38,8 @@ public class ScheduleDetailJSONScreen extends ALJSONScreen {
 
   /** logger */
   @SuppressWarnings("unused")
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleDetailJSONScreen.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleDetailJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -59,9 +59,13 @@ public class ScheduleDetailJSONScreen extends ALJSONScreen {
       ScheduleDetailResultData schedule =
         (ScheduleDetailResultData) detailData.getDetail();
       scheduleJson.put("id", schedule.getScheduleId().getValue());
-      scheduleJson.put("name", schedule.getName().getValue());
+      scheduleJson.put("name", ALStringUtil.sanitizing(schedule
+        .getName()
+        .getValue()));
       scheduleJson.put("date", schedule.getDate2());
-      scheduleJson.put("place", schedule.getPlace().getValue());
+      scheduleJson.put("place", ALStringUtil.sanitizing(schedule
+        .getPlace()
+        .getValue()));
       scheduleJson.put("isSpan", schedule.isSpan());
       scheduleJson.put("memberList", detailData.getMemberList());
       scheduleJson.put("facilityList", detailData.getFacilityList());

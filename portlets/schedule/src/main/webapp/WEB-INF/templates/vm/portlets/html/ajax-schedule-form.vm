@@ -238,7 +238,7 @@
 #ALtdcaption($!result.getFieldName("public_flag"))
 #ALtditemheader()
 <input name="public_flag" type="radio" value="O" id="public_flagO_$!{portlet.ID}" #if ($!result.PublicFlag.toString() == "O") checked="checked" #end onclick="aipo.schedule.formPublicOn(this.form)"/><label for="public_flagO_$!{portlet.ID}" onclick="aipo.schedule.formPublicOn(this.form)">公開（スケジュールを全員に公開します）</label><br/>
-<input name="public_flag" type="radio" value="C" id="public_flagC_$!{portlet.ID}" #if ($!result.PublicFlag.toString() == "C") checked="checked" #end onclick="aipo.schedule.formPublicOff(this.form)"/><label for="public_flagC_$!{portlet.ID}" onclick="aipo.schedule.formPublicOff(this.form)">非公開（スケジュールの日時のみを全員に公開します）</label><br/>
+<input name="public_flag" type="radio" value="C" id="public_flagC_$!{portlet.ID}" #if ($!result.PublicFlag.toString() == "C") checked="checked" #end onclick="aipo.schedule.formPublicOn(this.form)"/><label for="public_flagC_$!{portlet.ID}" onclick="aipo.schedule.formPublicOff(this.form)">非公開（スケジュールの日時のみを全員に公開します）</label><br/>
 <input name="public_flag" type="radio" value="P" id="public_flagP_$!{portlet.ID}" #if ($!result.PublicFlag.toString() == "P") checked="checked" #end onclick="aipo.schedule.formPublicOff(this.form)"/><label for="public_flagP_$!{portlet.ID}" onclick="aipo.schedule.formPublicOff(this.form)">完全に隠す（スケジュールをすべて非公開とします）</label>
 #ALtditemfooter()
 #ALtdcaption("参加メンバー")
@@ -286,7 +286,7 @@
 #ALtditemfooter()
 #ALtdcaption('施設')
 #ALtditemheader()
-<div id="facilityFieldButton" style="display:#if($!{result.Span} || $!{result.PublicFlag.toString()} != "O")none#end"></div>
+<div id="facilityFieldButton" style="display:#if($!{result.Span} || $!{result.PublicFlag.toString()} == "P")none#end"></div>
 <div id="facilityField" style="none">
     <div class="spaceTop spaceLeft small">左側に施設を追加してください。</div>
     <div dojoType="aipo.widget.GroupNormalSelectList"

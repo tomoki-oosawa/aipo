@@ -289,7 +289,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
   }
 
   /*
-   * 
+   *
    */
   @Override
   public void initField() {
@@ -330,7 +330,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
   }
 
   /*
-   * 
+   *
    */
   @Override
   protected void setValidator() {
@@ -585,7 +585,8 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
       // 公開スケジュールの場合は、グループに施設を追加する
       boolean isFacility = false;
-      if ("O".equals(public_flag.getValue())) {
+      if ("O".equals(public_flag.getValue())
+        || "C".equals(public_flag.getValue())) {
         for (FacilityResultData frd : form_data.getFacilityMemberList()) {
           isFacility = true;
           int facilityid = (int) frd.getFacilityId().getValue();
@@ -1069,7 +1070,8 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           map.setType(ScheduleUtils.SCHEDULEMAP_TYPE_USER);
         }
 
-        if ("O".equals(public_flag.getValue())) {
+        if ("O".equals(public_flag.getValue())
+          || "C".equals(public_flag.getValue())) {
           for (FacilityResultData frd : form_data.getFacilityMemberList()) {
             int facilityid = (int) frd.getFacilityId().getValue();
 

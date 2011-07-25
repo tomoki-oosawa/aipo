@@ -81,8 +81,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ScheduleFormData extends ALAbstractFormData {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleFormData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleFormData.class.getName());
 
   /** <code>FLAG_EDIT_REPEAT_DEF</code> デフォルト値（繰り返し編集範囲） */
   private static final int FLAG_EDIT_REPEAT_DEF = -1;
@@ -1080,7 +1080,9 @@ public class ScheduleFormData extends ALAbstractFormData {
       }
 
       // グループに施設を追加する．（公開スケジュールのみ）
-      if ("O".equals(public_flag.toString()) && !(is_span)) {
+      if (("O".equals(public_flag.toString()) || "C".equals(public_flag
+        .toString()))
+        && !(is_span)) {
         for (Object record : facilityList) {
           FacilityResultData frd = (FacilityResultData) record;
 
@@ -1378,7 +1380,9 @@ public class ScheduleFormData extends ALAbstractFormData {
           }
 
           // グループに施設を追加する．（公開スケジュールのみ）
-          if ("O".equals(public_flag.toString()) && !(is_span)) {
+          if (("O".equals(public_flag.toString()) || "C".equals(public_flag
+            .toString()))
+            && !(is_span)) {
             for (Object record : facilityList) {
               FacilityResultData frd = (FacilityResultData) record;
               int facilityid = (int) frd.getFacilityId().getValue();
