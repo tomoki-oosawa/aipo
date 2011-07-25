@@ -124,25 +124,27 @@ aipo.msgboard.onListReceiveMessage = function(msg){
 
 aipo.msgboard.popupCenter = function(num) {
     var i = new Image();
-    i.src = num;
-    var image_width = i.width;
-    var image_height = i.height;
-    var coord = dojo.coords(dojo.byId("modalDialog"),false);
-    if (document.all) {
-        mX = document.documentElement.clientWidth;
-        mY = document.documentElement.clientHeight;
-    } else {
-        mX = window.innerWidth;
-        mY = window.innerHeight;
-    }
-    if(image_width != 0) {
+    i.onload = function(){
+        var image_width = i.width;
+        var image_height = i.height;
+        var coord = dojo.coords(dojo.byId("modalDialog"),false);
+        if (document.all) {
+            mX = document.documentElement.clientWidth;
+            mY = document.documentElement.clientHeight;
+        } else {
+            mX = window.innerWidth;
+            mY = window.innerHeight;
+        }
+        if(image_width != 0) {
 
-        var x_posision = mX / 2 - image_width/2 - coord.x;
-        dojo.byId("popc").style.left =  x_posision +'px';
-        var y_posision =  mY / 2 - image_height/2 - coord.y;
-        dojo.byId("popc").style.top = y_posision +'px';
+            var x_posision = mX / 2 - image_width/2 - coord.x;
+            dojo.byId("popc").style.left =  x_posision +'px';
+            var y_posision =  mY / 2 - image_height/2 - coord.y;
+            dojo.byId("popc").style.top = y_posision +'px';
+        }
+        dojo.byId("popc").innerHTML = '<a href="javascript:aipo.msgboard.popupCenterHide();"><img src='+num+'></a>';
     }
-    dojo.byId("popc").innerHTML = '<a href="javascript:aipo.msgboard.popupCenterHide();"><img src='+num+'></a>';
+    i.src = num;
 }
 
 aipo.msgboard.popupCenterHide = function() {
