@@ -1079,7 +1079,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         map.setType(ScheduleUtils.SCHEDULEMAP_TYPE_USER);
       }
 
-      // グループに施設を追加する．（公開スケジュールのみ）
+      // 完全に隠すスケジュール以外の場合は、グループに施設を追加する
       if (("O".equals(public_flag.toString()) || "C".equals(public_flag
         .toString()))
         && !(is_span)) {
@@ -1379,7 +1379,7 @@ public class ScheduleFormData extends ALAbstractFormData {
             map.setType(ScheduleUtils.SCHEDULEMAP_TYPE_USER);
           }
 
-          // グループに施設を追加する．（公開スケジュールのみ）
+          // 完全に隠すスケジュール以外の場合は、グループに施設を追加する
           if (("O".equals(public_flag.toString()) || "C".equals(public_flag
             .toString()))
             && !(is_span)) {
@@ -1605,8 +1605,10 @@ public class ScheduleFormData extends ALAbstractFormData {
           schedule.addToEipTScheduleMaps(map);
         }
 
-        // グループに施設を追加する．（公開スケジュールのみ）
-        if ("O".equals(public_flag.toString()) && !(is_span)) {
+        // 完全に隠すスケジュール以外の場合は、グループに施設を追加する
+        if (("O".equals(public_flag.toString()) || "C".equals(public_flag
+          .toString()))
+          && !(is_span)) {
           for (Object record : facilityList) {
             FacilityResultData frd = (FacilityResultData) record;
             int facilityid = (int) frd.getFacilityId().getValue();

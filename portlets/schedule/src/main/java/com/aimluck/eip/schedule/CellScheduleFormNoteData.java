@@ -583,7 +583,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         map.setType(ScheduleUtils.SCHEDULEMAP_TYPE_USER);
       }
 
-      // 公開スケジュールの場合は、グループに施設を追加する
+      // 完全に隠すスケジュール以外の場合は、グループに施設を追加する
       boolean isFacility = false;
       if ("O".equals(public_flag.getValue())
         || "C".equals(public_flag.getValue())) {
@@ -875,7 +875,8 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           }
 
           // グループに施設を追加する．
-          if ("O".equals(public_flag.getValue())) {
+          if ("O".equals(public_flag.getValue())
+            || "C".equals(public_flag.getValue())) {
             for (FacilityResultData frd : form_data.getFacilityMemberList()) {
               int facilityid = (int) frd.getFacilityId().getValue();
 

@@ -288,7 +288,7 @@ aipo.schedule.formSwitchRepeat = function(button) {
 aipo.schedule.isShowFacility = function(scheduleform) {
     var public_flag = scheduleform.public_flag;
     for(var i = 0 ; i < public_flag.length; i++) {
-        if (public_flag[i].checked && public_flag[i].value == 'O') {
+        if (public_flag[i].checked && (public_flag[i].value == 'O' || public_flag[i].value == "C")) {
             return true;
         }
     }
