@@ -162,7 +162,9 @@ aipo.IfrGadgetService.prototype.requestDesktopNotifyEnable = function(enable) {
     function handleJSONResponse(obj) {
         if (obj.rc == 200) {
             var data = obj.data;
-            aipo.activityDesktopNotifyEnable = data.enable;
+            if(data){
+                aipo.activityDesktopNotifyEnable = data.enable;
+            }
         }
     }
 

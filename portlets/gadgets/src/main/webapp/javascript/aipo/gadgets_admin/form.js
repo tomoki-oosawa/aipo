@@ -18,6 +18,7 @@
  */
 
 dojo.provide("aipo.gadgets_admin");
+dojo.provide("aipo.gadgets_admin.form");
 
 aipo.gadgets_admin.onLoadDialog = function(portlet_id){
 
