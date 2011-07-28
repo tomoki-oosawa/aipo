@@ -89,6 +89,9 @@ $!service.ConsumerSecret<br/>
 #end
 #end
 #ALtablefooter()
+#if(!$!isAdmin)
+<p class="center">「メニュータブのスパナボタンよりアプリを追加できます。」</p>
+#end
 #ALbuttonheader()
 #if($!isAdmin)
 <img src="images/common/dot.gif" width="1" height="1" onload="if(!aipo.gadgets_admin){dojo.require('aipo.gadgets_admin.form');}" />

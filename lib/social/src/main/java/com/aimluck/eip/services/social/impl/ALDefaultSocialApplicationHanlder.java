@@ -264,7 +264,7 @@ public class ALDefaultSocialApplicationHanlder extends
           new StringBuilder("アプリ「")
             .append(
               ALCommonUtils.compressString(request.getTitle().toString(), 30))
-            .append("」がインストールされました。")
+            .append("」をインストールしました。")
             .toString();
         String portletParams =
           new StringBuilder("?template=GadgetsAdminDetailScreen").append(
