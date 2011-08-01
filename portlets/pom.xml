@@ -41,6 +41,7 @@
     <module>news</module>
     <module>note</module>
     <module>page</module>
+    <module>psml</module>
     <module>schedule</module>
     <module>system</module>
     <module>timecard</module>

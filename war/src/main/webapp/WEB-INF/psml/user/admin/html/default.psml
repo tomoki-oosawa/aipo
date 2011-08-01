@@ -110,14 +110,20 @@
                 <property name="row" value="0"/>
             </layout>
         </entry>
-        <entry id="131" parent="SysInfo">
+        <entry id="140" parent="Psml">
             <layout position="14" size="-1">
                 <property name="column" value="0"/>
                 <property name="row" value="0"/>
             </layout>
         </entry>
-        <entry id="132" parent="DeleteSample">
+        <entry id="131" parent="SysInfo">
             <layout position="15" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+        <entry id="132" parent="DeleteSample">
+            <layout position="16" size="-1">
                 <property name="column" value="0"/>
                 <property name="row" value="0"/>
             </layout>

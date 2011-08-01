@@ -1751,4 +1751,22 @@ public class ALEipUtils {
     JetspeedRunData jdata = (JetspeedRunData) rundata;
     return isAdmin(Integer.valueOf(jdata.getUserId()));
   }
+
+  /**
+   * is LoginUser Admin ?
+   */
+  public static boolean isAdminUser(RunData runData) {
+    int userId = getUserId(runData);
+    return isAdminUser(userId);
+  }
+
+  public static boolean isAdminUser(int userId) {
+    // admin user definition : user id equals 1
+    return userId == 1;
+  }
+
+  public static String getLoginName(RunData runData) {
+    JetspeedRunData jdata = (JetspeedRunData) runData;
+    return jdata.getJetspeedUser().getUserName();
+  }
 }
