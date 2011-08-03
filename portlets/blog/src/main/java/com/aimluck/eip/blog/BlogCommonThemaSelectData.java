@@ -59,9 +59,8 @@ public class BlogCommonThemaSelectData extends
     ALAbstractSelectData<EipTBlogThema, EipTBlogThema> implements ALData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(BlogCommonThemaSelectData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(BlogCommonThemaSelectData.class.getName());
 
   private int loginuser_id = 0;
 
@@ -141,6 +140,7 @@ public class BlogCommonThemaSelectData extends
 
     // テーマの昇順
     com = new Comparator<EipTBlogThema>() {
+      @Override
       public int compare(EipTBlogThema obj0, EipTBlogThema obj1) {
         int ret = 0;
         try {
@@ -162,6 +162,7 @@ public class BlogCommonThemaSelectData extends
 
     // テーマの昇順
     com = new Comparator<EipTBlogEntry>() {
+      @Override
       public int compare(EipTBlogEntry obj0, EipTBlogEntry obj1) {
         int ret = 0;
         try {
@@ -240,11 +241,20 @@ public class BlogCommonThemaSelectData extends
    */
   @Override
   protected Object getResultDataDetail(EipTBlogThema record) {
+    String string;
     try {
       BlogThemaResultData rd = new BlogThemaResultData();
       rd.initField();
       rd.setThemaId(record.getThemaId().longValue());
-      rd.setThemaName(record.getThemaName());
+      // prevent from layout to destroy
+      int displayMax = 9;
+      if (record.getThemaName().length() > displayMax) {
+        string =
+          record.getThemaName().substring(0, (displayMax - 3)).concat("・・・");
+        rd.setThemaName(string);
+      } else {
+        rd.setThemaName(record.getThemaName());
+      }
       rd.setDescription(record.getDescription());
 
       List<BlogEntryResultData> entryList =
