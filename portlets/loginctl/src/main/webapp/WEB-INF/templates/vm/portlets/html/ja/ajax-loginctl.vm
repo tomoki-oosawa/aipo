@@ -1,0 +1,52 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+## ---------------------------------------------------------------------------
+#set($tabs = [["ログイン管理", "",""]])
+## ---------------------------------------------------------------------------
+#ALtabheader($tabs "")
+#ALspacebothheader()
+#ALformheader('ログイン管理' $jslink $portlet)
+
+#ALtableheaderWide()
+#ALtdcaption("パスワードの有効期限")
+<td class="item">
+#if($result.Detail.PasswordExpiration.toString() == "0")
+無制限
+#else
+${result.Detail.PasswordExpiration.toString()}日間
+#end
+</td>
+#ALtdcaption("有効期限の通知")
+<td class="item">
+#if($result.Detail.ExpirationNotification.toString() == "0")
+通知しない
+#else
+${result.Detail.ExpirationNotification.toString()}日前
+#end
+</td>
+#ALtablefooter()
+
+#ALbuttonheader()
+#ALajaxbuttonEdit("$!jslink.getPortletById($!portlet.ID).addQueryData('template','LoginControlFormScreen').addQueryData('entityid','edit')")
+#ALbuttonfooter()
+
+#ALformfooter()
+#ALspacebothfooter()
+#ALajaxtabfooter()

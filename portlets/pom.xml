@@ -33,6 +33,7 @@
     <module>fileio</module>
     <module>fileupload</module>
     <module>license</module>
+    <module>loginctl</module>
     <module>manhour</module>
     <module>memo</module>
     <module>msgboard</module>

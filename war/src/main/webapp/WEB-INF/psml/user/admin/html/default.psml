@@ -128,5 +128,11 @@
                 <property name="row" value="0"/>
             </layout>
         </entry>
+        <entry id="141" parent="LoginControl">
+            <layout position="17" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
     </portlets>
 </portlets>
