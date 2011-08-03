@@ -26,6 +26,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.jetspeed.modules.actions.JetspeedSessionValidator;
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.services.JetspeedSecurity;
@@ -216,7 +217,9 @@ public class ALSessionValidator extends JetspeedSessionValidator {
           }
 
           if (data.getUser() != null) {
-            data.getUser().setTemp("redirect", sb.toString());
+            data.getUser().setTemp(
+              "redirect",
+              StringEscapeUtils.escapeHtml(sb.toString()));
             context.put("alEipUtils", new ALEipUtils());
             context.put("alEipManager", ALEipManager.getInstance());
           }
