@@ -18,8 +18,8 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($action_str = "自分のアプリ配置を初期配置として「設定する」")
-#set ($default_str = "デフォルトに戻す" )
+#set ($action_str = "初期配置として設定する")
+#set ($default_str = "デフォルト設定に戻す" )
 #set ($indicator_id = "indicator-form-")
 ## ---------------------------------------------------------------------------
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
@@ -29,8 +29,19 @@
 <input type="hidden" name="mode" id="$!{portlet.ID}-mode" value="" />
 </div>
 #if(!$!{result.isAdminUser()})
+<div class="p spaceTop spaceBottom">
+あなたのタブ設定、タブ内のアプリ配置を、新規追加されたユーザーの初期配置として設定することができます。
+</div>
+<div class="p spaceBottom">
 #ALsubmitJS($event_submit $action_str "aipo.psml.beforeSubmit('$!portlet.ID', 'update')")
+</div>
+<hr />
+<div class="p spaceTop spaceBottom">
+アプリ初期配置設定をデフォルトに戻します。
+</div>
+<div class="p spaceBottom">
 #ALsubmitJS($event_submit $default_str "aipo.psml.beforeSubmit('$!portlet.ID', 'default')")
+</div>
 #else
 <span>Adminユーザーでは行えない操作です。管理者権限を持つユーザーでログインしてください。</span>
 #end

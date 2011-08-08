@@ -28,4 +28,3 @@
 //]]>
 </script>
 #parse("/portlets/html/ja/ajax-psml.vm")
-#parse("/portlets/html/ja/psml-menu.vm")
