@@ -45,12 +45,7 @@
 アプリ初期配置設定をデフォルトに戻します。
 </div>
 <div class="p spaceBottom">
-#if(!$!{result.isAdminUser()})
 #ALsubmitJS($event_submit $default_str "aipo.psml.beforeSubmit('$!portlet.ID', 'default')")
-#else
-<input type="button" disabled="disabled" value="$default_str">
-<div class="spaceTop caution"><span class="small em">※管理者権限をもつ Admin 以外のユーザーでご使用ください。</span></div>
-#end
 </div>
 
 
