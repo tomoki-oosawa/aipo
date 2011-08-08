@@ -28,23 +28,31 @@
 <div class="p">
 <input type="hidden" name="mode" id="$!{portlet.ID}-mode" value="" />
 </div>
-#if(!$!{result.isAdminUser()})
+
 <div class="p spaceTop spaceBottom">
 あなたのタブ設定、タブ内のアプリ配置を、新規追加されたユーザーの初期配置として設定することができます。
 </div>
 <div class="p spaceBottom">
+#if(!$!{result.isAdminUser()})
 #ALsubmitJS($event_submit $action_str "aipo.psml.beforeSubmit('$!portlet.ID', 'update')")
+#else
+<input type="button" disabled="disabled" value="$action_str">
+<div class="spaceTop caution"><span class="small em">※管理者権限をもつ Admin 以外のユーザーでご使用ください。</span></div>
+#end
 </div>
 <hr />
 <div class="p spaceTop spaceBottom">
 アプリ初期配置設定をデフォルトに戻します。
 </div>
 <div class="p spaceBottom">
+#if(!$!{result.isAdminUser()})
 #ALsubmitJS($event_submit $default_str "aipo.psml.beforeSubmit('$!portlet.ID', 'default')")
-</div>
 #else
-<span>Adminユーザーでは行えない操作です。管理者権限を持つユーザーでログインしてください。</span>
+<input type="button" disabled="disabled" value="$default_str">
+<div class="spaceTop caution"><span class="small em">※管理者権限をもつ Admin 以外のユーザーでご使用ください。</span></div>
 #end
+</div>
+
 
 #ALformfooter()
 
