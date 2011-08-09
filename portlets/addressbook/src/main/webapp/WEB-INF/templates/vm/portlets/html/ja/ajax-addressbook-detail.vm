@@ -42,8 +42,6 @@ $!result.Detail.Name
 #ALtditem($result.getStringCR($!result.Detail.Email))
 #ALtdcaption('電話番号（外線）')
 #ALtditem($!result.Detail.Telephone)
-#ALtdcaption('電話番号（内線）')
-#ALtditem($!result.Detail.InTelephone)
 #ALtdcaption('電話番号（携帯）')
 #ALtditem($!result.Detail.CellularPhone)
 #ALtdcaption('携帯メールアドレス')
