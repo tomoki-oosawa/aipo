@@ -45,8 +45,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class FacilitiesUtils {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(FacilitiesUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(FacilitiesUtils.class.getName());
 
   /**
    * 施設オブジェクトモデルを取得します。 <BR>
@@ -93,7 +93,9 @@ public class FacilitiesUtils {
       new ArrayList<FacilityResultData>();
 
     try {
-      List<EipMFacility> aList = Database.query(EipMFacility.class).fetchList();
+      List<EipMFacility> aList =
+        Database.query(EipMFacility.class).orderAscending(
+          EipMFacility.FACILITY_NAME_PROPERTY).fetchList();
 
       for (EipMFacility record : aList) {
         FacilityResultData rd = new FacilityResultData();
@@ -197,6 +199,7 @@ public class FacilitiesUtils {
       logger.error("[Exception]", ex);
     }
     Collections.sort(list, new Comparator<FacilityResultData>() {
+      @Override
       public int compare(FacilityResultData str1, FacilityResultData str2) {
         return str1.getStringFacilityName().compareTo(
           str2.getStringFacilityName());
