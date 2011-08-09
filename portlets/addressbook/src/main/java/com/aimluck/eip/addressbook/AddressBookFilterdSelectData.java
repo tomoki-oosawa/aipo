@@ -48,21 +48,20 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレス帳ワード検索用データクラスです。(社外アドレス検索用)
- *
+ * 
  */
 public class AddressBookFilterdSelectData extends
     AbstractAddressBookFilterdSelectData<EipMAddressbook, EipMAddressbook> {
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AddressBookFilterdSelectData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AddressBookFilterdSelectData.class.getName());
 
   /** フィルタに利用するグループリスト */
   private List<AddressBookGroupResultData> groupList;
 
   /**
    * 初期化処理を行います。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -83,7 +82,7 @@ public class AddressBookFilterdSelectData extends
 
   /**
    * アドレス情報の一覧を、グループ・一覧・社員単位で表示する。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -105,7 +104,7 @@ public class AddressBookFilterdSelectData extends
 
   /**
    * 社外アドレスタブ選択時のアドレス帳の詳細情報を表示します。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -121,7 +120,7 @@ public class AddressBookFilterdSelectData extends
   }
 
   /**
-   *
+   * 
    * @param record
    * @return
    */
@@ -132,16 +131,16 @@ public class AddressBookFilterdSelectData extends
       AddressBookResultData rd = new AddressBookResultData();
       rd.initField();
       rd.setAddressId(record.getAddressId().intValue());
-      rd.setName(new StringBuffer()
+      rd.setName(ALCommonUtils.compressString(new StringBuffer()
         .append(record.getLastName())
         .append(" ")
         .append(record.getFirstName())
-        .toString());
-      rd.setNameKana(new StringBuffer()
+        .toString(), getStrLength()));
+      rd.setNameKana(ALCommonUtils.compressString(new StringBuffer()
         .append(record.getLastNameKana())
         .append(' ')
         .append(record.getFirstNameKana())
-        .toString());
+        .toString(), getStrLength()));
 
       EipMAddressbookCompany company = record.getEipMAddressbookCompany();
 
@@ -173,7 +172,7 @@ public class AddressBookFilterdSelectData extends
 
   /**
    * 詳細情報の返却データ取得。
-   *
+   * 
    * @param record
    * @return
    */
@@ -244,7 +243,7 @@ public class AddressBookFilterdSelectData extends
   }
 
   /**
-   *
+   * 
    * @return
    */
   @Override
@@ -266,7 +265,7 @@ public class AddressBookFilterdSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。
-   *
+   * 
    * @param query
    * @param rundata
    * @param context
@@ -290,7 +289,7 @@ public class AddressBookFilterdSelectData extends
 
   /**
    * インデックス検索のためのカラムを返します。
-   *
+   * 
    * @return
    */
   @Override
@@ -303,7 +302,7 @@ public class AddressBookFilterdSelectData extends
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    */

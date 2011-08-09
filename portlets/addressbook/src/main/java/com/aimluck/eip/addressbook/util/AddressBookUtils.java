@@ -57,8 +57,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AddressBookUtils {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AddressBookUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AddressBookUtils.class.getName());
 
   /** アドレスブックファイルを一時保管するディレクトリの指定 */
   public static final String FOLDER_TMP_FOR_ADDRESSBOOK_FILES =
@@ -475,19 +475,19 @@ public class AddressBookUtils {
 
     rd.initField();
     rd.setAddressId(record.getUserId().intValue());
-    rd.setName(new StringBuffer()
+    rd.setName(ALCommonUtils.compressString(new StringBuffer()
       .append(record.getLastName())
       .append(" ")
       .append(record.getFirstName())
-      .toString());
+      .toString(), strLength));
     if (record.getCompanyId().intValue() > 0) {
       rd.setCompanyName(ALCommonUtils.compressString(ALEipUtils
         .getCompanyName(record.getCompanyId().intValue()), strLength));
     }
 
-    rd.setPostList(AddressBookUtils.getPostBeanList(record
+    rd.setPostList(compressString(AddressBookUtils.getPostBeanList(record
       .getUserId()
-      .intValue()));
+      .intValue()), strLength));
 
     if (record.getPositionId().intValue() > 0) {
       rd.setPositionName(ALCommonUtils.compressString(ALEipUtils
@@ -501,4 +501,13 @@ public class AddressBookUtils {
 
     return rd;
   }
+
+  public static List<AddressBookUserGroupLiteBean> compressString(
+      List<AddressBookUserGroupLiteBean> list, int length) {
+    for (AddressBookUserGroupLiteBean bean : list) {
+      bean.setName(ALCommonUtils.compressString(bean.getName(), length));
+    }
+    return list;
+  }
+
 }

@@ -126,16 +126,16 @@ public class AddressBookWordSelectData extends
       EipMAddressbook record = obj;
       rd.initField();
       rd.setAddressId(record.getAddressId().intValue());
-      rd.setName(new StringBuffer()
+      rd.setName(ALCommonUtils.compressString(new StringBuffer()
         .append(record.getLastName())
         .append(" ")
         .append(record.getFirstName())
-        .toString());
-      rd.setNameKana(new StringBuffer()
+        .toString(), getStrLength()));
+      rd.setNameKana(ALCommonUtils.compressString(new StringBuffer()
         .append(record.getLastNameKana())
-        .append(' ')
+        .append(" ")
         .append(record.getFirstNameKana())
-        .toString());
+        .toString(), getStrLength()));
 
       EipMAddressbookCompany company = record.getEipMAddressbookCompany();
       // TODO: 「未分類」の会社情報ではない場合
