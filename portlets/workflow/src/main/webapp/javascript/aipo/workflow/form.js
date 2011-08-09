@@ -45,6 +45,7 @@ aipo.workflow.onLoadWorkflowDialog = function(portlet_id){
     if(obj){
        obj.focus();
     }
+    dojo.byId("category_id").onchange();
 }
 
 aipo.workflow.onChangeSelecter = function(portletId , url , values, named , flgName){
