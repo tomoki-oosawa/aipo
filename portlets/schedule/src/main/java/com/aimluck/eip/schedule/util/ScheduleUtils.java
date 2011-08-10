@@ -111,6 +111,14 @@ public class ScheduleUtils {
   /** <code>TARGET_FACILITY_ID</code> ユーザによる表示切り替え用変数の識別子 */
   public static final String TARGET_FACILITY_ID = "f";
 
+  public static final String MAIL_FOR_INSERT = "I";
+
+  public static final String MAIL_FOR_UPDATE = "U";
+
+  public static final String MAIL_FOR_DELETE = "D";
+
+  public static final String MAIL_FOR_ALL = "A";
+
   /**
    * Scheudle オブジェクトモデルを取得します。
    * 

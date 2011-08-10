@@ -255,6 +255,11 @@
 <input type="hidden" name="secid" value="$secid" />
 #end
 
+#macro(ALajaxlistformheaderonsubmit $name $onsubmit)
+<form name="form$!portlet.ID" id="form$!portlet.ID" action="javascript:void(0)" method="post" onsubmit="return $onsubmit">
+<input type="hidden" name="_name" value="$name" />
+<input type="hidden" name="secid" value="$secid" />
+#end
 
 #macro(ALformfooter)
 </form>

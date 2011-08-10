@@ -58,9 +58,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class MsgboardCategoryFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(MsgboardCategoryFormData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(MsgboardCategoryFormData.class.getName());
 
   /** カテゴリ名 */
   private ALStringField category_name;
@@ -126,6 +125,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
    *
    *
    */
+  @Override
   public void initField() {
     // カテゴリ名
     category_name = new ALStringField();
@@ -468,7 +468,6 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
 
       Database.delete(category);
       Database.commit();
-
       // 一覧表示画面のフィルタに設定されているカテゴリのセッション情報を削除
       String filtername =
         MsgboardTopicSelectData.class.getName() + ALEipConstants.LIST_FILTER;

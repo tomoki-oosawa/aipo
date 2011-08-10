@@ -13,6 +13,7 @@ public class _EipTSchedule extends org.apache.cayenne.CayenneDataObject {
     public static final String CREATE_USER_ID_PROPERTY = "createUserId";
     public static final String EDIT_FLAG_PROPERTY = "editFlag";
     public static final String END_DATE_PROPERTY = "endDate";
+    public static final String MAIL_FLAG_PROPERTY = "mailFlag";
     public static final String NAME_PROPERTY = "name";
     public static final String NOTE_PROPERTY = "note";
     public static final String OWNER_ID_PROPERTY = "ownerId";
@@ -56,6 +57,14 @@ public class _EipTSchedule extends org.apache.cayenne.CayenneDataObject {
     }
     public java.util.Date getEndDate() {
         return (java.util.Date)readProperty("endDate");
+    }
+    
+    
+    public void setMailFlag(String mailFlag) {
+        writeProperty("mailFlag", mailFlag);
+    }
+    public String getMailFlag() {
+        return (String)readProperty("mailFlag");
     }
     
     

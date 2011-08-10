@@ -89,6 +89,8 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
   /** 現在のフィルタタイプ */
   protected String current_filter_type;
 
+  protected String current_search;
+
   /** アクセス権限の有無 */
   protected boolean hasAuthority;
 
@@ -100,6 +102,9 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   protected final String LIST_FILTER_STR = new StringBuffer().append(
     this.getClass().getName()).append(ALEipConstants.LIST_FILTER).toString();
+
+  protected final String LIST_SEARCH_STR = new StringBuffer().append(
+    this.getClass().getName()).append(ALEipConstants.SEARCH).toString();
 
   protected final String LIST_FILTER_TYPE_STR = new StringBuffer()
     .append(this.getClass().getName())
@@ -155,6 +160,12 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
         ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, rundata
           .getParameters()
           .getString(ALEipConstants.LIST_FILTER));
+      }
+
+      if (rundata.getParameters().containsKey(ALEipConstants.SEARCH)) {
+        ALEipUtils.setTemp(rundata, context, LIST_SEARCH_STR, rundata
+          .getParameters()
+          .getString(ALEipConstants.SEARCH));
       }
 
       if (rundata.getParameters().containsKey(ALEipConstants.LIST_FILTER_TYPE)) {
@@ -390,8 +401,8 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
     if (crt_key == null) {
       return query;
     }
-
     Expression exp = ExpressionFactory.matchDbExp(crt_key, filter);
+    query.andQualifier(exp);
     query.andQualifier(exp);
     current_filter = filter;
     current_filter_type = filter_type;
@@ -513,6 +524,10 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
    */
   public String getCurrentFilterType() {
     return current_filter_type;
+  }
+
+  public String getCurrentSearch() {
+    return current_search;
   }
 
   /**

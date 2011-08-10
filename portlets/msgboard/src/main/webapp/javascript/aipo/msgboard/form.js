@@ -21,6 +21,8 @@ dojo.require("aipo.widget.MemberNormalSelectList");
 
 dojo.provide("aipo.msgboard");
 
+
+
 aipo.msgboard.onLoadMsgboardDetail = function(portlet_id){
   aipo.portletReload('whatsnew');
 }
@@ -30,6 +32,14 @@ aipo.msgboard.onLoadMsgboardDialog = function(portlet_id){
   if(obj){
      obj.focus();
   }
+}
+
+aipo.msgboard.onChangeFilter=aipo.msgboard.onChangeSearch=function (baseuri,portlet_id){
+	baseuri+="?template=MsgboardTopicListScreen";
+	baseuri+="&filter="+dojo.byId("topic").value;
+	baseuri+="&filtertype=category";
+	baseuri+="&search="+dojo.byId("q").value;
+	aipo.viewPage(baseuri,portlet_id);
 }
 
 aipo.msgboard.onLoadCategoryDialog = function(portlet_id){

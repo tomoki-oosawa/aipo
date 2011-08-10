@@ -443,6 +443,8 @@ public class ScheduleSelectData extends
       // cal.set(Calendar.HOUR, 0);
       // cal.set(Calendar.MINUTE, 0);
       // view_date.setValue(cal.getTime());
+      // メールフラグ
+      rd.setMailFlag(record.getMailFlag());
     } catch (Exception e) {
       logger.error("Exception", e);
 
@@ -452,7 +454,7 @@ public class ScheduleSelectData extends
   }
 
   /*
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {

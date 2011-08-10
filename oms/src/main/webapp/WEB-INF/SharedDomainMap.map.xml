@@ -354,6 +354,7 @@
 		<db-attribute name="CREATE_USER_ID" type="INTEGER" length="4"/>
 		<db-attribute name="EDIT_FLAG" type="VARCHAR" length="1"/>
 		<db-attribute name="END_DATE" type="TIMESTAMP" length="8"/>
+		<db-attribute name="MAIL_FLAG" type="CHAR" length="1"/>
 		<db-attribute name="NAME" type="VARCHAR" length="99"/>
 		<db-attribute name="NOTE" type="CLOB"/>
 		<db-attribute name="OWNER_ID" type="INTEGER" length="4"/>
@@ -785,6 +786,7 @@
 		<obj-attribute name="createUserId" type="java.lang.Integer" db-attribute-path="CREATE_USER_ID"/>
 		<obj-attribute name="editFlag" type="java.lang.String" db-attribute-path="EDIT_FLAG"/>
 		<obj-attribute name="endDate" type="java.util.Date" db-attribute-path="END_DATE"/>
+		<obj-attribute name="mailFlag" type="java.lang.String" db-attribute-path="MAIL_FLAG"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="NAME"/>
 		<obj-attribute name="note" type="java.lang.String" db-attribute-path="NOTE"/>
 		<obj-attribute name="ownerId" type="java.lang.Integer" db-attribute-path="OWNER_ID"/>

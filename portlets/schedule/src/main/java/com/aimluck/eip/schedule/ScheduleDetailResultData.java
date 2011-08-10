@@ -65,8 +65,11 @@ public class ScheduleDetailResultData extends ScheduleResultData {
   /** <code>is_createuser</code> 登録ユーザーかどうか */
   private boolean is_createuser;
 
+  /** <code>mail_flag</code> send mail for update */
+  private String mail_flag;
+
   /*
-   * 
+   *
    */
   @Override
   public void initField() {
@@ -104,6 +107,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
    * 
    * @return
    */
+  @Override
   public ALStringField getPlace() {
     return place;
   }
@@ -122,6 +126,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
    * 
    * @param string
    */
+  @Override
   public void setPlace(String string) {
     place.setValue(string);
   }
@@ -317,4 +322,13 @@ public class ScheduleDetailResultData extends ScheduleResultData {
         .toString();
     }
   }
+
+  public void setMailFlag(String mail_flag) {
+    this.mail_flag = mail_flag;
+  }
+
+  public String getMailFlag() {
+    return mail_flag;
+  }
+
 }

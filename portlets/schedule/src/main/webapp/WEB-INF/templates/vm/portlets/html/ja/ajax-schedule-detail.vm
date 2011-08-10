@@ -130,6 +130,12 @@ ${record.FacilityName}<br/>
 #ALtditem("$!{result.Detail.CreateUser.AliasName} （$!{result.Detail.CreateDate}）")
 #ALtdcaption('更新者名')
 #ALtditem("$!{result.Detail.UpdateUser.AliasName} （$!{result.Detail.UpdateDate}）")
+#ALtdcaption('更新時にメールを送信する')
+#if($!{result.Detail.MailFlag} == "A")
+#ALtditem("する")
+#else
+#ALtditem("しない")
+#end
 <tr>
 #ALtdcellheaderAtt("colspan='2' align='center'")
 #if($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} || ($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()}) || ($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()}) || (!$!{result.Detail.isOwner()} && $!{result.hasAuthorityOtherDelete()}) || (!$!{result.Detail.isLoginuser()} && $!{result.hasAuthorityOtherEdit()}))

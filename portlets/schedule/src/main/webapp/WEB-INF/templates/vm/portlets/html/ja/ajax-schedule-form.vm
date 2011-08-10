@@ -305,6 +305,12 @@
     <select size="5" multiple="multiple" style="display:none;" name="init_facilitylist" id="init_facilitylist">#foreach($record in $!result.FacilityList)<option value="$!record.FacilityId">$!record.FacilityName</option>#end</select>
 </div>
 #ALtditemfooter()
+#ALtdcaption('更新時にメールを送信する')
+#ALtditemheader()
+<input name="mail_flag" type="radio" value="A" #if($!{result.MailFlag}=="A")checked="checked" #end>する
+<input name="mail_flag" type="radio" value="I" #if($!{result.MailFlag}=="I")checked="checked" #end>しない
+#ALtditemfooter()
+
 #ALtablefooter()
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)#ALajaxbuttonClose()

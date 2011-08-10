@@ -50,6 +50,7 @@ import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -207,6 +208,32 @@ public class MsgboardTopicSelectData extends
     }
   }
 
+  private SelectQuery<EipTMsgboardTopic> getSelectQueryForSearchs(
+      RunData rundata, Context context) {
+    String search = ALEipUtils.getTemp(rundata, context, LIST_SEARCH_STR);
+    current_search = search;
+    SelectQuery<EipTMsgboardTopic> query =
+      Database.query(EipTMsgboardTopic.class);
+    query.where(Operations.or(Operations.like(
+      EipTMsgboardTopic.NOTE_PROPERTY,
+      "%" + search + "%"), Operations.like(
+      EipTMsgboardTopic.TOPIC_NAME_PROPERTY,
+      "%" + search + "%")));
+    List<EipTMsgboardTopic> queryList = query.fetchList();
+    List<Integer> resultid = new ArrayList<Integer>();
+    for (EipTMsgboardTopic item : queryList) {
+      if (item.getParentId() != 0 && !resultid.contains(item.getParentId())) {
+        resultid.add(item.getParentId());
+      } else if (!resultid.contains(item.getTopicId())) {
+        resultid.add(item.getTopicId());
+      }
+    }
+    SelectQuery<EipTMsgboardTopic> q = Database.query(EipTMsgboardTopic.class);
+    q.where(Operations.in(EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, resultid));
+
+    return q;
+  }
+
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
    * 
@@ -214,8 +241,10 @@ public class MsgboardTopicSelectData extends
    * @param context
    * @return
    */
+
   private SelectQuery<EipTMsgboardTopic> getSelectQuery(RunData rundata,
       Context context) {
+
     SelectQuery<EipTMsgboardTopic> query =
       Database.query(EipTMsgboardTopic.class);
 
@@ -223,7 +252,6 @@ public class MsgboardTopicSelectData extends
       ExpressionFactory.matchExp(EipTMsgboardTopic.PARENT_ID_PROPERTY, Integer
         .valueOf(0));
     query.setQualifier(exp1);
-
     // アクセス制御
     Expression exp01 =
       ExpressionFactory.matchExp(
@@ -267,6 +295,57 @@ public class MsgboardTopicSelectData extends
     query.distinct(true);
 
     return buildSelectQueryForFilter(query, rundata, context);
+  }
+
+  // ::TODO
+  @Override
+  protected SelectQuery<EipTMsgboardTopic> buildSelectQueryForFilter(
+      SelectQuery<EipTMsgboardTopic> query, RunData rundata, Context context) {
+    String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+    String filter_type =
+      ALEipUtils.getTemp(rundata, context, LIST_FILTER_TYPE_STR);
+    String crt_key = null;
+    Attributes map = getColumnMap();
+    crt_key = map.getValue(filter_type);
+    if (filter != null
+      && filter_type != null
+      && !filter.equals("")
+      && crt_key != null) {
+      Expression exp = ExpressionFactory.matchDbExp(crt_key, filter);
+      query.andQualifier(exp);
+      current_filter = filter;
+      current_filter_type = filter_type;
+    }
+    String search = ALEipUtils.getTemp(rundata, context, LIST_SEARCH_STR);
+    if (search != null && !search.equals("")) {
+      current_search = search;
+      Expression ex1 =
+        ExpressionFactory.likeExp(EipTMsgboardTopic.NOTE_PROPERTY, "%"
+          + search
+          + "%");
+      Expression ex2 =
+        ExpressionFactory.likeExp(EipTMsgboardTopic.TOPIC_NAME_PROPERTY, "%"
+          + search
+          + "%");
+      SelectQuery<EipTMsgboardTopic> q =
+        Database.query(EipTMsgboardTopic.class);
+      q.andQualifier(ex1.orExp(ex2));
+      List<EipTMsgboardTopic> queryList = q.fetchList();
+      List<Integer> resultid = new ArrayList<Integer>();
+      for (EipTMsgboardTopic item : queryList) {
+        if (item.getParentId() != 0 && !resultid.contains(item.getParentId())) {
+          resultid.add(item.getParentId());
+        } else if (!resultid.contains(item.getTopicId())) {
+          resultid.add(item.getTopicId());
+        }
+      }
+      Expression ex =
+        ExpressionFactory.inDbExp(
+          EipTMsgboardTopic.TOPIC_ID_PK_COLUMN,
+          resultid);
+      query.andQualifier(ex);
+    }
+    return query;
   }
 
   /**

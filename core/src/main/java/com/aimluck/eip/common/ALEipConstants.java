@@ -85,6 +85,8 @@ public class ALEipConstants {
 
   public static final String LIST_FILTER = "filter";
 
+  public static final String SEARCH = "search";
+
   public static final String LIST_FILTER_TYPE = "filtertype";
 
   public static final String LIST_INDEX = "index";

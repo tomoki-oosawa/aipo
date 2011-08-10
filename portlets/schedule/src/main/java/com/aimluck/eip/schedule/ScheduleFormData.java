@@ -228,6 +228,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>todo_id</code> ToDo ID */
   private ALNumberField common_category_id;
 
+  /** スケジュール更新時にメール受信フラグ */
+  private String mail_flag;
+
   private final int msg_type = 0;
 
   private String orgId;
@@ -260,6 +263,17 @@ public class ScheduleFormData extends ALAbstractFormData {
     is_repeat = rundata.getParameters().getBoolean("is_repeat");
     is_span = rundata.getParameters().getBoolean("is_span");
     is_copy = rundata.getParameters().getBoolean("is_copy");
+
+    String tmp_mail_flag = rundata.getParameters().getString("mail_flag");
+
+    if (ScheduleUtils.MAIL_FOR_ALL.equals(tmp_mail_flag)) {
+      mail_flag = ScheduleUtils.MAIL_FOR_ALL;
+    } else if (ScheduleUtils.MAIL_FOR_INSERT.equals(tmp_mail_flag)) {
+      mail_flag = ScheduleUtils.MAIL_FOR_INSERT;
+    } else {
+      // default
+      mail_flag = ScheduleUtils.MAIL_FOR_ALL;
+    }
 
     ignore_duplicate_facility =
       rundata.getParameters().getBoolean("ignore_duplicate_facility", false);
@@ -732,6 +746,8 @@ public class ScheduleFormData extends ALAbstractFormData {
       note.setValue(record.getNote());
       // 公開フラグ
       public_flag.setValue(record.getPublicFlag());
+      // メールフラグ
+      mail_flag = record.getMailFlag();
       // 共有メンバーによる編集／削除フラグ
       if ("T".equals(record.getEditFlag())) {
         if (is_owner) {
@@ -979,6 +995,9 @@ public class ScheduleFormData extends ALAbstractFormData {
       } else {
         schedule.setEditFlag("F");
       }
+      // send mail flag
+      schedule.setMailFlag(mail_flag);
+
       // オーナーID
       schedule.setOwnerId(Integer.valueOf(ownerid));
       // 作成日
@@ -1153,7 +1172,6 @@ public class ScheduleFormData extends ALAbstractFormData {
       logger.error("[ScheduleFormData]", e);
       throw new ALDBErrorException();
     }
-
     try {
       // メール送信
       int msgType =
@@ -1195,7 +1213,6 @@ public class ScheduleFormData extends ALAbstractFormData {
       logger.error("Exception", ex);
       return false;
     }
-
     return true;
   }
 
@@ -1320,6 +1337,8 @@ public class ScheduleFormData extends ALAbstractFormData {
         // 共有メンバーによる編集／削除フラグ
         newSchedule.setEditFlag("F");
         newSchedule.setEditFlag(schedule.getEditFlag());
+        // メール受信フラグ
+        newSchedule.setMailFlag(mail_flag);
         // オーナーID
         newSchedule.setOwnerId(Integer.valueOf(ownerid));
         // 作成日
@@ -1467,6 +1486,8 @@ public class ScheduleFormData extends ALAbstractFormData {
         schedule.setNote(note.getValue());
         // 公開フラグ
         schedule.setPublicFlag(public_flag.getValue());
+        // メールフラグ
+        schedule.setMailFlag(mail_flag);
         // 共有メンバーによる編集／削除フラグ
         if (schedule.getOwnerId().intValue() == ALEipUtils.getUserId(rundata)
           || schedule.getOwnerId().intValue() == 0) {
@@ -1678,70 +1699,76 @@ public class ScheduleFormData extends ALAbstractFormData {
       logger.error("[ScheduleFormData]", e);
       throw new ALDBErrorException();
     }
+    if (ScheduleUtils.MAIL_FOR_ALL.equals(schedule.getMailFlag())
+      || ScheduleUtils.MAIL_FOR_UPDATE.equals(schedule.getMailFlag())) {
+      try {
+        // メール送信
+        int msgType =
+          ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE);
+        if (msgType > 0) {
+          // パソコンへメールを送信
+          List<ALEipUserAddr> destMemberList =
+            ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
+              .getUserId(rundata), false);
+          String subject = "[" + ALOrgUtilsService.getAlias() + "]スケジュール";
 
-    try {
-      // メール送信
-      int msgType =
-        ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE);
-      if (msgType > 0) {
-        // パソコンへメールを送信
-        List<ALEipUserAddr> destMemberList =
-          ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
-            .getUserId(rundata), false);
-        String subject = "[" + ALOrgUtilsService.getAlias() + "]スケジュール";
+          if (edit_repeat_flag.getValue() == FLAG_EDIT_REPEAT_ONE) {
+            List<ALAdminMailMessage> messageList =
+              new ArrayList<ALAdminMailMessage>();
+            for (ALEipUserAddr destMember : destMemberList) {
+              ALAdminMailMessage message = new ALAdminMailMessage(destMember);
+              message.setPcSubject(subject);
+              message.setCellularSubject(subject);
+              message.setPcBody(ScheduleUtils.createMsgForPc(
+                rundata,
+                newSchedule,
+                memberList));
+              message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+                rundata,
+                newSchedule,
+                memberList,
+                destMember.getUserId()));
+            }
 
-        if (edit_repeat_flag.getValue() == FLAG_EDIT_REPEAT_ONE) {
-          List<ALAdminMailMessage> messageList =
-            new ArrayList<ALAdminMailMessage>();
-          for (ALEipUserAddr destMember : destMemberList) {
-            ALAdminMailMessage message = new ALAdminMailMessage(destMember);
-            message.setPcSubject(subject);
-            message.setCellularSubject(subject);
-            message.setPcBody(ScheduleUtils.createMsgForPc(
-              rundata,
-              newSchedule,
-              memberList));
-            message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
-              rundata,
-              newSchedule,
-              memberList,
-              destMember.getUserId()));
+            ALMailService.sendAdminMail(new ALAdminMailContext(
+              orgId,
+              ALEipUtils.getUserId(rundata),
+              messageList,
+              ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
+            // msgList.addAll(errors);
+
+          } else {
+            List<ALAdminMailMessage> messageList =
+              new ArrayList<ALAdminMailMessage>();
+            for (ALEipUserAddr destMember : destMemberList) {
+              ALAdminMailMessage message = new ALAdminMailMessage(destMember);
+              message.setPcSubject(subject);
+              message.setCellularSubject(subject);
+              message.setPcBody(ScheduleUtils.createMsgForPc(
+                rundata,
+                schedule,
+                memberList));
+              message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+                rundata,
+                schedule,
+                memberList,
+                destMember.getUserId()));
+              messageList.add(message);
+            }
+
+            ALMailService.sendAdminMail(new ALAdminMailContext(
+              orgId,
+              ALEipUtils.getUserId(rundata),
+              messageList,
+              ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
+            // msgList.addAll(errors);
           }
-
-          ALMailService.sendAdminMail(new ALAdminMailContext(orgId, ALEipUtils
-            .getUserId(rundata), messageList, ALMailUtils
-            .getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
-          // msgList.addAll(errors);
-
-        } else {
-          List<ALAdminMailMessage> messageList =
-            new ArrayList<ALAdminMailMessage>();
-          for (ALEipUserAddr destMember : destMemberList) {
-            ALAdminMailMessage message = new ALAdminMailMessage(destMember);
-            message.setPcSubject(subject);
-            message.setCellularSubject(subject);
-            message.setPcBody(ScheduleUtils.createMsgForPc(
-              rundata,
-              schedule,
-              memberList));
-            message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
-              rundata,
-              schedule,
-              memberList,
-              destMember.getUserId()));
-            messageList.add(message);
-          }
-
-          ALMailService.sendAdminMail(new ALAdminMailContext(orgId, ALEipUtils
-            .getUserId(rundata), messageList, ALMailUtils
-            .getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
-          // msgList.addAll(errors);
         }
+      } catch (Exception ex) {
+        msgList.add("メールを送信できませんでした。");
+        logger.error("Exception", ex);
+        return false;
       }
-    } catch (Exception ex) {
-      msgList.add("メールを送信できませんでした。");
-      logger.error("Exception", ex);
-      return false;
     }
     return true;
   }
@@ -2448,6 +2475,13 @@ public class ScheduleFormData extends ALAbstractFormData {
    */
   public ALStringField getPublicFlag() {
     return public_flag;
+  }
+
+  /**
+   * メールフラグを取得
+   */
+  public String getMailFlag() {
+    return mail_flag;
   }
 
   /**

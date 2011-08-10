@@ -611,6 +611,7 @@ CREATE TABLE `eip_t_schedule` (
   `note` text COLLATE utf8_unicode_ci,
   `public_flag` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
   `edit_flag` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `mail_flag` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
   `create_user_id` int(11) DEFAULT NULL,
   `update_user_id` int(11) DEFAULT NULL,
   `create_date` date DEFAULT NULL,
