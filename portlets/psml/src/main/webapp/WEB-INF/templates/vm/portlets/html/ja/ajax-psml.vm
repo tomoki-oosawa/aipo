@@ -30,7 +30,7 @@
 </div>
 
 <div class="p spaceTop spaceBottom">
-あなたのタブ設定、タブ内のアプリ配置を、新規追加されたユーザーの初期配置として設定することができます。
+あなたのタブ設定、タブ内のアプリ配置を、新規追加するユーザーの初期配置として設定することができます。
 </div>
 <div class="p spaceBottom">
 #if(!$!{result.isAdminUser()})
