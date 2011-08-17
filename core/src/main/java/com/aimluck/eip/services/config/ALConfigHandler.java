@@ -103,6 +103,20 @@ public abstract class ALConfigHandler {
       public String defaultValue() {
         return JetspeedResources.getString("check.activity.interval", "300");
       }
+    },
+
+    LOGINCTL_PASSWORD_EXPIRATION("loginctl.password.expiration") {
+      @Override
+      public String defaultValue() {
+        return "0";
+      }
+    },
+
+    LOGINCTL_EXPIRATION_NOTIFICATION("loginctl.expiration.notification") {
+      @Override
+      public String defaultValue() {
+        return "0";
+      }
     };
 
     private final String property;

@@ -30,7 +30,8 @@ import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
-import com.aimluck.eip.loginctl.util.LoginControlUtils;
+import com.aimluck.eip.services.config.ALConfigHandler.Property;
+import com.aimluck.eip.services.config.ALConfigService;
 
 /**
  *
@@ -94,9 +95,10 @@ public class LoginControlFormData extends ALAbstractFormData {
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
-    password_expiration.setValue(LoginControlUtils.getPasswordExpiration());
-    expiration_notification.setValue(LoginControlUtils
-      .getExpirationNotification());
+    password_expiration.setValue(ALConfigService
+      .get(Property.LOGINCTL_PASSWORD_EXPIRATION));
+    expiration_notification.setValue(ALConfigService
+      .get(Property.LOGINCTL_EXPIRATION_NOTIFICATION));
 
     return true;
   }
@@ -128,10 +130,12 @@ public class LoginControlFormData extends ALAbstractFormData {
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
-    LoginControlUtils.setPasswordExpiration(password_expiration
-      .getValueAsString());
-    LoginControlUtils.setExpirationNotification(expiration_notification
-      .getValueAsString());
+    ALConfigService.put(
+      Property.LOGINCTL_PASSWORD_EXPIRATION,
+      password_expiration.getValueAsString());
+    ALConfigService.put(
+      Property.LOGINCTL_EXPIRATION_NOTIFICATION,
+      expiration_notification.getValueAsString());
     return true;
   }
 

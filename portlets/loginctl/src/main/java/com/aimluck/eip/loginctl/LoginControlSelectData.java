@@ -29,7 +29,8 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
-import com.aimluck.eip.loginctl.util.LoginControlUtils;
+import com.aimluck.eip.services.config.ALConfigHandler.Property;
+import com.aimluck.eip.services.config.ALConfigService;
 
 /**
  *
@@ -70,8 +71,10 @@ public class LoginControlSelectData extends
     LoginControlResultData rd = new LoginControlResultData();
     rd.initField();
 
-    rd.setPasswordExpiration(LoginControlUtils.getPasswordExpiration());
-    rd.setExpirationNotification(LoginControlUtils.getExpirationNotification());
+    rd.setPasswordExpiration(ALConfigService
+      .get(Property.LOGINCTL_PASSWORD_EXPIRATION));
+    rd.setExpirationNotification(ALConfigService
+      .get(Property.LOGINCTL_EXPIRATION_NOTIFICATION));
 
     return rd;
   }

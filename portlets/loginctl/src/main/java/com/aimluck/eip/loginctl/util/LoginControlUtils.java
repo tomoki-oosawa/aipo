@@ -22,6 +22,7 @@ package com.aimluck.eip.loginctl.util;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.config.impl.ALDefaultConfigFactoryService;
 import com.aimluck.eip.services.config.impl.ALDefaultConfigHanlder;
 
@@ -35,49 +36,4 @@ public class LoginControlUtils {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(LoginControlUtils.class.getName());
 
-  private static final String PASSWORD_EXPIRATION =
-    "loginctl.password.expiration";
-
-  private static final String PASSWORD_EXPIRATION_DEFAULT = "0";
-
-  private static final String EXPIRATION_NOTIFICATION =
-    "loginctl.expiration.notification";
-
-  private static final String EXPIRATION_NOTIFICATION_DEFAULT = "0";
-
-  /**
-   * @return passwordExpiration
-   */
-  public static String getPasswordExpiration() {
-    return ALDefaultConfigFactoryService.getInstance().getConfigHandler().get(
-      PASSWORD_EXPIRATION,
-      PASSWORD_EXPIRATION_DEFAULT);
-  }
-
-  /**
-   * @return expirationNotification
-   */
-  public static String getExpirationNotification() {
-    return ALDefaultConfigFactoryService.getInstance().getConfigHandler().get(
-      EXPIRATION_NOTIFICATION,
-      EXPIRATION_NOTIFICATION_DEFAULT);
-  }
-
-  /**
-   * @param value
-   */
-  public static void setPasswordExpiration(String value) {
-    ALDefaultConfigFactoryService.getInstance().getConfigHandler().put(
-      PASSWORD_EXPIRATION,
-      value);
-  }
-
-  /**
-   * @param value
-   */
-  public static void setExpirationNotification(String value) {
-    ALDefaultConfigFactoryService.getInstance().getConfigHandler().put(
-      EXPIRATION_NOTIFICATION,
-      value);
-  }
 }
