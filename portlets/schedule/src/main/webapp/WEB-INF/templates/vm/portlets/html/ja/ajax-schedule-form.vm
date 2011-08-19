@@ -280,6 +280,11 @@
     <input name="change_tmpreserve_flag" type="radio" value="T" id="change_tmpreserve_flagT_$!{portlet.ID}" #if ($!{result.ChangeTmpreserveFlag.toString()} == "T")  checked="checked" #end><label for="change_tmpreserve_flagT_$!{portlet.ID}">戻す（確定したスケジュールを仮スケジュールに戻します）</label><br/>
     <input name="change_tmpreserve_flag" type="radio" value="F" id="change_tmpreserve_flagF_$!{portlet.ID}" #if ($!{result.ChangeTmpreserveFlag.toString()} == "F") checked="checked" #end><label for="change_tmpreserve_flagF_$!{portlet.ID}">戻さない（確定したスケジュールを仮スケジュールに戻しません）</label></div>
 #end
+<div class="p">
+    <h3>更新時にメンバーにメール通知をおこなうか設定します。</h3>
+    <input name="mail_flag" type="radio" value="A" id="mail_flag_A" #if($!{result.MailFlag}=="A")checked="checked" #end><label for="mail_flag_A">通知する</label><br />
+    <input name="mail_flag" type="radio" value="I" id="mail_flag_I" #if($!{result.MailFlag}=="I")checked="checked" #end><label for="mail_flag_I">通知しない</label>
+</div>
   </td></tr>
 </table>
 </div>
@@ -304,11 +309,6 @@
     </div>
     <select size="5" multiple="multiple" style="display:none;" name="init_facilitylist" id="init_facilitylist">#foreach($record in $!result.FacilityList)<option value="$!record.FacilityId">$!record.FacilityName</option>#end</select>
 </div>
-#ALtditemfooter()
-#ALtdcaption('更新時にメールを送信する')
-#ALtditemheader()
-<input name="mail_flag" type="radio" value="A" #if($!{result.MailFlag}=="A")checked="checked" #end>する
-<input name="mail_flag" type="radio" value="I" #if($!{result.MailFlag}=="I")checked="checked" #end>しない
 #ALtditemfooter()
 
 #ALtablefooter()

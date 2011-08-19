@@ -116,7 +116,16 @@ $!record.AliasName
 <div style="padding:4px 0px 0px 0px">
 #if($!{result.Detail.isEditable()}) 参加メンバーは、このスケジュールを編集／削除できます。#else #if($!{result.Detail.User.UserId.toString()}==$!{result.Detail.UpdateUser.UserId.toString()}) 参加メンバー#else ユーザー $!{result.Detail.UpdateUser.AliasName} 以外#endは、このスケジュールを編集／削除できません。#end
 </div>
+
+<div>
+#if($!{result.Detail.MailFlag} == "A")
+更新時にメンバーにメール通知をおこないます。
+#else
+更新時にメンバーにメール通知をおこないません。
 #end
+</div>
+#end
+
 #ALtdcellfooter()
 
 #ALtdcaption('施設')
