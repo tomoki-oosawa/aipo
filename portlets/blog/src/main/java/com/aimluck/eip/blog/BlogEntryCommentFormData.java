@@ -73,6 +73,11 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   private boolean sendEmailToPC = false;
 
+  private boolean sendEmailToCellular = false;
+
+  /** メール送信時のメッセージ種別(ブログ) 3=PC,Celluler 2=Celluer 1=PC 0=送信しない */
+  private int MsgTypeBlog = 0;
+
   /** <code>login_user</code> ログインユーザー */
   private ALEipUser login_user;
 
@@ -93,17 +98,23 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
-    // FIXME:
-    // ポートレットの表示に関する設定以外は、PSML設定で定義してはいけない。
-    // 新着情報など、Screen で呼び出す際に NULL になってしまう。
     try {
-      sendEmailToPC =
-        "true".equals(ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p2a-email"));
+
+      MsgTypeBlog = ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_BLOG);
+
+      if ((MsgTypeBlog & 1) > 0) {
+        sendEmailToPC = true;
+      } else {
+        sendEmailToPC = false;
+      }
+      if ((MsgTypeBlog & 2) > 0) {
+        sendEmailToCellular = true;
+      } else {
+        sendEmailToCellular = false;
+      }
     } catch (Throwable t) {
       sendEmailToPC = false;
+      sendEmailToCellular = false;
     }
 
     login_user = ALEipUtils.getALEipUser(rundata);
@@ -264,7 +275,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
       BlogUtils.createNewCommentActivity(entry, loginName, targetLoginName);
 
       // メール送信
-      if (sendEmailToPC) {
+      if (sendEmailToPC || sendEmailToCellular) {
         List<ALEipUser> memberList = new ArrayList<ALEipUser>();
         memberList.add(ALEipUtils.getALEipUser(entry.getOwnerId().intValue()));
         List<ALEipUserAddr> destMemberList =
@@ -280,11 +291,15 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
           new ArrayList<ALAdminMailMessage>();
         for (ALEipUserAddr destMember : destMemberList) {
           ALAdminMailMessage message = new ALAdminMailMessage(destMember);
-          message.setPcSubject(subject);
-          message.setCellularSubject(subject);
-          message.setPcBody(createMsgForPc(rundata));
-          message.setCellularBody(createMsgForCellPhone(rundata, destMember
-            .getUserId()));
+          if (sendEmailToPC) {
+            message.setPcSubject(subject);
+            message.setPcBody(createMsgForPc(rundata));
+          }
+          if (sendEmailToCellular) {
+            message.setCellularSubject(subject);
+            message.setCellularBody(createMsgForCellPhone(rundata, destMember
+              .getUserId()));
+          }
 
           messageList.add(message);
         }
