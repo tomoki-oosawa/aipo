@@ -1433,7 +1433,7 @@ SELECT setval('pk_eip_t_msgboard_category',1);
 INSERT INTO EIP_T_MSGBOARD_CATEGORY_MAP VALUES(1,1,0,'A');
 SELECT setval('pk_eip_t_msgboard_category_map',1);
 
-INSERT INTO EIP_M_ADDRESSBOOK_COMPANY VALUES ('1', '未分類','ミブンルイ','','','','','','',1,1,NULL,NULL);
+INSERT INTO EIP_M_ADDRESSBOOK_COMPANY VALUES ('1', '','','','','','','','',1,1,NULL,NULL);
 SELECT setval('pk_eip_m_addressbook_company',1);
 
 INSERT INTO EIP_M_MAIL_NOTIFY_CONF VALUES(1,1,1,3,'07:00',now(),now());

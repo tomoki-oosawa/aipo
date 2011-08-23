@@ -136,7 +136,7 @@ CREATE TABLE `eip_m_addressbook_company` (
   PRIMARY KEY (`company_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `eip_m_addressbook_company` VALUES (1,'未分類','ミブンルイ','','','','','','',1,1,NULL,NULL);
+INSERT INTO `eip_m_addressbook_company` VALUES (1,'','','','','','','','',1,1,NULL,NULL);
 
 CREATE TABLE `eip_m_company` (
   `company_id` int(11) NOT NULL AUTO_INCREMENT,
