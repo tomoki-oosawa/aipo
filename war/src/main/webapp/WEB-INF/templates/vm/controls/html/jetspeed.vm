@@ -37,6 +37,12 @@
                                   </div>
                                 </li>
 #end
+                               <li class="tooltip_box">
+                                 <div class="tooltip_gray">Aipoアプリを追加して、もっと便利に</div>
+                                 <a href="http://store.aipo.com/" target="_blank">
+                                   <img src="images/common/img_aipostore.gif" alt="" />
+                                 </a>
+                               </li>
                               </ul>
                             </div>
                             <!-- /MAIN TAB -->

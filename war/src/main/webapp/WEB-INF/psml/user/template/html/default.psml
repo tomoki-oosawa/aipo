@@ -37,64 +37,13 @@
     <security-ref parent="owner-only" />
     <layout position="4" size="-1" />
     <controller name="TwoColumnsRight" />
-    <entry parent="ExtTimecard">
-      <layout position="-1" size="-1">
-        <property name="column" value="0" />
-        <property name="row" value="0" />
-      </layout>
-    </entry>
-    <entry parent="Note">
-      <layout position="-1" size="-1">
-        <property name="column" value="0" />
-        <property name="row" value="1" />
-      </layout>
-    </entry>
     <entry parent="Activity">
       <layout position="-1" size="-1">
         <property name="column" value="0" />
-        <property name="row" value="2" />
-      </layout>
-    </entry>
-    <entry parent="Memo">
-      <layout position="-1" size="-1">
-        <property name="column" value="0" />
-        <property name="row" value="3" />
-      </layout>
-    </entry>
-    <entry parent="AddressBook">
-      <layout position="-1" size="-1">
-        <property name="column" value="0" />
-        <property name="row" value="4" />
-      </layout>
-    </entry>
-    <entry parent="AjaxScheduleWeekly">
-      <layout position="-1" size="-1">
-        <property name="column" value="1" />
         <property name="row" value="0" />
       </layout>
     </entry>
     <entry parent="Workflow">
-      <layout position="-1" size="-1">
-        <property name="column" value="1" />
-        <property name="row" value="1" />
-      </layout>
-    </entry>
-    <entry parent="ToDo">
-      <layout position="-1" size="-1">
-        <property name="column" value="1" />
-        <property name="row" value="2" />
-      </layout>
-    </entry>
-  </portlets>
-  <portlets>
-    <metainfo>
-      <description></description>
-      <title>グループ</title>
-    </metainfo>
-    <security-ref parent="owner-only" />
-    <layout position="5" size="-1" />
-    <controller name="TwoColumnsRight" />
-    <entry parent="Cabinet">
       <layout position="-1" size="-1">
         <property name="column" value="0" />
         <property name="row" value="1" />
@@ -103,20 +52,68 @@
     <entry parent="Msgboard">
       <layout position="-1" size="-1">
         <property name="column" value="0" />
+        <property name="row" value="2" />
+      </layout>
+    </entry>
+    <entry parent="AddressBook">
+      <layout position="-1" size="-1">
+        <property name="column" value="0" />
+        <property name="row" value="3" />
+      </layout>
+    </entry>
+    <entry parent="Note">
+      <layout position="-1" size="-1">
+        <property name="column" value="0" />
+        <property name="row" value="4" />
+      </layout>
+    </entry>
+    <entry parent="ExtTimecard">
+      <layout position="-1" size="-1">
+        <property name="column" value="0" />
+        <property name="row" value="5" />
+      </layout>
+    </entry>
+    <entry parent="Cabinet">
+      <layout position="-1" size="-1">
+        <property name="column" value="0" />
+        <property name="row" value="6" />
+      </layout>
+    </entry>
+    <entry parent="WebMail">
+      <layout position="-1" size="-1">
+        <property name="column" value="0" />
+        <property name="row" value="7" />
+      </layout>
+    </entry>
+    <entry parent="ToDo">
+      <layout position="-1" size="-1">
+        <property name="column" value="0" />
+        <property name="row" value="8" />
+      </layout>
+    </entry>
+    <entry parent="Memo">
+      <layout position="-1" size="-1">
+        <property name="column" value="0" />
+        <property name="row" value="9" />
+      </layout>
+    </entry>
+    <entry parent="AjaxScheduleWeekly">
+      <layout position="-1" size="-1">
+        <property name="column" value="1" />
         <property name="row" value="0" />
       </layout>
     </entry>
     <entry parent="Schedule">
       <layout position="-1" size="-1">
         <property name="column" value="1" />
-        <property name="row" value="0" />
+        <property name="row" value="1" />
       </layout>
-      <parameter name="pba-template" value="schedule-weekly-group" />
+      <parameter name="pba-template" value="schedule-monthly" />
     </entry>
     <entry parent="Blog">
       <layout position="-1" size="-1">
         <property name="column" value="1" />
-        <property name="row" value="1" />
+        <property name="row" value="2" />
       </layout>
     </entry>
   </portlets>

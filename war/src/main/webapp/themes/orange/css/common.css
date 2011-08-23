@@ -2597,3 +2597,18 @@ float:left;
 	border:2px solid #DCDCDC;
 }
 
+.tooltip_gray{
+display:none;
+}
+
+.tooltip_box:hover .tooltip_gray{
+display:block;
+height:14px;
+width:190px;
+background:url(../images/common/bg_tooltip_gray.gif) top left no-repeat;
+position:absolute;
+top:51px;
+padding:3px 0px 8px;
+font-size:10px;
+text-align:center;
+}
