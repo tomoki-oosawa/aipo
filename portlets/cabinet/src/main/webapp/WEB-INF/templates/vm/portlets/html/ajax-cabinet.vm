@@ -29,6 +29,7 @@
 #ALtdhead("#ALajaxsort('file_title' 'タイトル' $result 'CabinetScreen')")
 #ALtdhead("#ALajaxsort('file_name' 'ファイル名' $result 'CabinetScreen')")
 #ALtdhead("#ALajaxsort('update_date' '更新日時' $result 'CabinetScreen')")
+#ALtdheadThin("#ALajaxsort('counter' 'DL数' $result 'CabinetScreen')")
 #ALtdheadThin("#ALajaxsort('file_size' 'サイズ（KB）' $result 'CabinetScreen')")
 </tr>
 #foreach ($record in $result.List)
@@ -39,7 +40,8 @@
 #ALtdcellheader()
 <a href="$jslink.getTemplate("CabinetFileRawScreen").addQueryData("entityid", ${record.FileId})">$record.WbrFileName</a>
 #ALtdcellfooter()
-#ALtdcell($record.UpdateDate)
+#ALtdcellAtt($record.UpdateDate "thin")
+<td class="item" align="right">$record.Counter</td>
 <td class="item" align="right">$record.FileSize</td>
 </tr>
 #end

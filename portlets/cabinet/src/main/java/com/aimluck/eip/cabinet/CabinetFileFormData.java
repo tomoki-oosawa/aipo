@@ -174,6 +174,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
     // ファイルサイズ
     file_size = new ALNumberField();
     file_size.setFieldName("ファイルサイズ");
+
     // メモ
     note = new ALStringField();
     note.setFieldName("メモ");
@@ -465,6 +466,8 @@ public class CabinetFileFormData extends ALAbstractFormData {
       file.setFileName(file_name.getValue());
       // ファイルサイズ
       file.setFileSize(Long.valueOf((long) fileSize));
+      // ダウンロード数
+      file.setCounter(0);
       // ファイルパス
       file.setFilePath(CabinetUtils.getRelativePath(filename));
       // ファイル
@@ -550,6 +553,9 @@ public class CabinetFileFormData extends ALAbstractFormData {
             filename);
         // double fileSize = Math.ceil(destFile.length() / 1024.0);
         file.setFileSize(Long.valueOf((long) fileSize));
+
+        // ダウンロード数
+        file.setCounter(0);
 
         // ファイルパス
         file.setFilePath(CabinetUtils.getRelativePath(filename));

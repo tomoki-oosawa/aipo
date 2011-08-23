@@ -36,6 +36,8 @@
 #ALtditem("$!result.Detail.Position")
 #ALtdcaption('メモ')
 #ALtditem($!result.Detail.Note)
+#ALtdcaption('ダウンロード数')
+#ALtditem("$!{result.Detail.Counter} 回")
 #ALtdcaption('ファイル容量')
 #ALtditem("$!{result.Detail.FileSize} KB")
 #ALtdcaption('登録者')

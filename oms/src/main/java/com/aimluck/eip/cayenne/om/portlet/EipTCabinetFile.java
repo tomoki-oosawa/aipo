@@ -33,6 +33,8 @@ public class EipTCabinetFile extends _EipTCabinetFile {
 
   public static final String FILE_SIZE_COLUMN = "FILE_SIZE";
 
+  public static final String COUNTER_COLUMN = "COUNTER";
+
   public static final String UPDATE_USER_ID_COLUMN = "UPDATE_USER_ID";
 
   public static final String UPDATE_DATE_COLUMN = "UPDATE_DATE";
@@ -53,6 +55,6 @@ public class EipTCabinetFile extends _EipTCabinetFile {
 
   public void setFileId(String id) {
     setObjectId(new ObjectId("EipTCabinetFile", FILE_ID_PK_COLUMN, Integer
-        .valueOf(id)));
+      .valueOf(id)));
   }
 }

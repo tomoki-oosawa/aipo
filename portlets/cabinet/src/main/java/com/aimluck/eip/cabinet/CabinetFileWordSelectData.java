@@ -191,6 +191,7 @@ public class CabinetFileWordSelectData extends
       rd.setFileTitle(record.getFileTitle());
       rd.setFileName(record.getFileName());
       rd.setFileSize(record.getFileSize().longValue());
+      rd.setCounter(record.getCounter());
 
       rd.setFolderId(record.getEipTCabinetFolder().getFolderId().intValue());
       rd.setFolderName((record.getEipTCabinetFolder()).getFolderName());
@@ -239,6 +240,7 @@ public class CabinetFileWordSelectData extends
     // map.putValue("update_user", TurbineUserConstants.LAST_NAME_KANA);
     map.putValue("update_date", EipTCabinetFile.UPDATE_DATE_PROPERTY);
     map.putValue("file_size", EipTCabinetFile.FILE_SIZE_PROPERTY);
+    map.putValue("counter", EipTCabinetFile.COUNTER_PROPERTY);
     return map;
   }
 

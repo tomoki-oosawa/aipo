@@ -207,6 +207,7 @@ public class CabinetSelectData extends
         EipTCabinetFile.FILE_TITLE_COLUMN,
         EipTCabinetFile.FILE_NAME_COLUMN,
         EipTCabinetFile.FILE_SIZE_COLUMN,
+        EipTCabinetFile.COUNTER_COLUMN,
         EipTCabinetFile.UPDATE_USER_ID_COLUMN,
         EipTCabinetFile.UPDATE_DATE_COLUMN);
     if (selected_folderinfo != null) {
@@ -250,6 +251,7 @@ public class CabinetSelectData extends
       rd.setFileTitle(record.getFileTitle());
       rd.setFileName(record.getFileName());
       rd.setFileSize(record.getFileSize());
+      rd.setCounter(record.getCounter());
 
       String updateUserName = "";
       ALEipUser updateUser = ALEipUtils.getALEipUser(record.getUpdateUserId());
@@ -257,7 +259,7 @@ public class CabinetSelectData extends
         updateUserName = updateUser.getAliasName().getValue();
       }
       rd.setUpdateUser(updateUserName);
-      rd.setUpdateDate(new SimpleDateFormat("yyyy年M月d日H時m分").format(record
+      rd.setUpdateDate(new SimpleDateFormat("yyyy年M月d日 H時m分").format(record
         .getUpdateDate()));
       return rd;
     } catch (Exception ex) {
@@ -285,6 +287,7 @@ public class CabinetSelectData extends
       rd.setFileTitle(record.getFileTitle());
       rd.setFileName(record.getFileName());
       rd.setFileSize(record.getFileSize().longValue());
+      rd.setCounter(record.getCounter());
       rd.setPosition(CabinetUtils.getFolderPosition(
         folder_hierarchy_list,
         record.getFolderId().intValue()));
@@ -309,7 +312,7 @@ public class CabinetSelectData extends
         updateUserName = updateUser.getAliasName().getValue();
       }
       rd.setUpdateUser(updateUserName);
-      rd.setUpdateDate(new SimpleDateFormat("yyyy年M月d日H時m分").format(record
+      rd.setUpdateDate(new SimpleDateFormat("yyyy年M月d日 H時m分").format(record
         .getUpdateDate()));
       return rd;
     } catch (Exception ex) {
@@ -336,6 +339,7 @@ public class CabinetSelectData extends
     map.putValue("file_name", EipTCabinetFile.FILE_NAME_PROPERTY);
     map.putValue("update_date", EipTCabinetFile.UPDATE_DATE_PROPERTY);
     map.putValue("file_size", EipTCabinetFile.FILE_SIZE_PROPERTY);
+    map.putValue("counter", EipTCabinetFile.COUNTER_PROPERTY);
     return map;
   }
 

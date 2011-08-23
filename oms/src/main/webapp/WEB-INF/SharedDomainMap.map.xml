@@ -152,6 +152,7 @@
 		<db-attribute name="UPDATE_USER_ID" type="INTEGER" isMandatory="true" length="4"/>
 	</db-entity>
 	<db-entity name="eip_t_cabinet_file">
+		<db-attribute name="COUNTER" type="INTEGER" length="4"/>
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
 		<db-attribute name="CREATE_USER_ID" type="INTEGER" length="4"/>
 		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
@@ -611,6 +612,7 @@
 		<obj-attribute name="updateUserId" type="java.lang.Integer" db-attribute-path="UPDATE_USER_ID"/>
 	</obj-entity>
 	<obj-entity name="EipTCabinetFile" className="com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile" dbEntityName="eip_t_cabinet_file">
+		<obj-attribute name="counter" type="java.lang.Integer" db-attribute-path="COUNTER"/>
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
 		<obj-attribute name="createUserId" type="java.lang.Integer" db-attribute-path="CREATE_USER_ID"/>
 		<obj-attribute name="fileName" type="java.lang.String" db-attribute-path="FILE_NAME"/>

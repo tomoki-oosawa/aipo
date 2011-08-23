@@ -67,6 +67,9 @@ public class CabinetFileRawScreen extends FileuploadRawScreen {
       super.setFileName(cabinetfile.getFileName());
       super.doOutput(rundata);
 
+      cabinetfile.setCounter(cabinetfile.getCounter() + 1);
+      Database.commit();
+
     } catch (Exception e) {
       logger.error("[ERROR]" + e);
     }

@@ -7,6 +7,7 @@ package com.aimluck.eip.cayenne.om.portlet.auto;
   */
 public class _EipTCabinetFile extends org.apache.cayenne.CayenneDataObject {
 
+    public static final String COUNTER_PROPERTY = "counter";
     public static final String CREATE_DATE_PROPERTY = "createDate";
     public static final String CREATE_USER_ID_PROPERTY = "createUserId";
     public static final String FILE_NAME_PROPERTY = "fileName";
@@ -21,6 +22,14 @@ public class _EipTCabinetFile extends org.apache.cayenne.CayenneDataObject {
 
     public static final String FILE_ID_PK_COLUMN = "FILE_ID";
 
+    public void setCounter(Integer counter) {
+        writeProperty("counter", counter);
+    }
+    public Integer getCounter() {
+        return (Integer)readProperty("counter");
+    }
+    
+    
     public void setCreateDate(java.util.Date createDate) {
         writeProperty("createDate", createDate);
     }

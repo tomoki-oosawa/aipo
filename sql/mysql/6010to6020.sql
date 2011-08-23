@@ -1,5 +1,6 @@
 --- modify table struct
 ALTER TABLE eip_t_schedule ADD COLUMN mail_flag CHAR(1) AFTER edit_flag;
+ALTER TABLE eip_t_cabinet_file ADD COLUMN counter INTEGER(11) AFTER note;
 
 --- update data
 UPDATE eip_t_schedule SET mail_flag = 'A' ;

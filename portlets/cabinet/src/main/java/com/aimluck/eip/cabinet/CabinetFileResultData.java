@@ -43,6 +43,9 @@ public class CabinetFileResultData implements ALData {
   /** ファイルサイズ */
   private ALNumberField file_size;
 
+  /** ダウンロード数 */
+  private ALNumberField counter;
+
   /** ファイル位置 */
   private String position;
 
@@ -74,11 +77,13 @@ public class CabinetFileResultData implements ALData {
    *
    *
    */
+  @Override
   public void initField() {
     file_id = new ALNumberField();
     file_title = new ALStringField();
     file_name = new ALStringField();
     file_size = new ALNumberField();
+    counter = new ALNumberField();
     note = new ALStringField();
     note.setTrim(false);
     create_user = new ALStringField();
@@ -125,6 +130,13 @@ public class CabinetFileResultData implements ALData {
   }
 
   /**
+   * @return
+   */
+  public ALNumberField getCounter() {
+    return counter;
+  }
+
+  /**
    * @param i
    */
   public void setFileId(long i) {
@@ -150,6 +162,13 @@ public class CabinetFileResultData implements ALData {
    */
   public void setFileSize(long i) {
     file_size.setValue(((i - 1) / 1024) + 1);
+  }
+
+  /**
+   * @param i
+   */
+  public void setCounter(int i) {
+    counter.setValue(i);
   }
 
   /**

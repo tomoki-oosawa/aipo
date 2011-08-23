@@ -89,6 +89,7 @@ $!{result.SelectedFolderInfo.FolderName}
 #ALtdheadW33("#ALajaxsort('file_title' 'タイトル' $result 'CabinetListScreen')")
 #ALtdheadW33("#ALajaxsort('file_name' 'ファイル名' $result 'CabinetListScreen')")
 #ALtdheadW25("#ALajaxsort('update_date' '更新日時' $result 'CabinetListScreen')")
+#ALtdheadThin("#ALajaxsort('counter' 'DL数' $result 'CabinetListScreen')")
 #ALtdheadThin("#ALajaxsort('file_size' 'サイズ（KB）' $result 'CabinetListScreen')")
 #if($result.isEditable()) #ALtdheadThin(' ') #end
 </tr>
@@ -101,7 +102,8 @@ $!{result.SelectedFolderInfo.FolderName}
 #ALtdcellheader()
 <a href="$jslink.getTemplate("CabinetFileRawScreen").addQueryData("entityid", ${record.FileId})">$record.WbrFileName</a>
 #ALtdcellfooter()
-#ALtdcell($record.UpdateDate)
+#ALtdcellAtt($record.UpdateDate "thin")
+<td class="item" align="right">$record.Counter</td>
 <td class="item" align="right">$record.FileSize</td>
 #if($result.isEditable())<td class="item" nowrap="nowrap">#ALajaxbuttonLink('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormScreen').addQueryData('entityid', ${record.FileId}) "themes/$!theme/images/icon/icon_edit.gif")</td>#end
 </tr>

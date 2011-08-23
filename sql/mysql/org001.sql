@@ -360,6 +360,7 @@ CREATE TABLE `eip_t_cabinet_file` (
   `file_size` bigint(20) DEFAULT NULL,
   `file_path` text COLLATE utf8_unicode_ci NOT NULL,
   `note` text COLLATE utf8_unicode_ci,
+  `counter` int(11) DEFAULT NULL,
   `create_user_id` int(11) DEFAULT NULL,
   `update_user_id` int(11) DEFAULT NULL,
   `create_date` date DEFAULT NULL,
