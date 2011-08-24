@@ -248,30 +248,8 @@ public class AddressBookUtils {
    */
   public static EipMAddressbookCompany getDummyEipMAddressbookCompany(
       RunData rundata, Context context) {
-    try {
-      SelectQuery<EipMAddressbookCompany> query =
-        Database.query(EipMAddressbookCompany.class);
-      Expression exp11 =
-        ExpressionFactory.matchExp(
-          EipMAddressbookCompany.CREATE_USER_ID_PROPERTY,
-          Integer.valueOf(1));
-      Expression exp12 =
-        ExpressionFactory.matchExp(
-          EipMAddressbookCompany.COMPANY_NAME_PROPERTY,
-          AddressBookUtils.EMPTY_COMPANY_NAME);
-      query.setQualifier(exp11.andExp(exp12));
-
-      List<EipMAddressbookCompany> list = query.fetchList();
-
-      if (list == null || list.size() == 0) {
-        logger.debug("[AddressBook] Not found AddressbookCompany ID...");
-        return null;
-      }
-      return list.get(0);
-    } catch (Exception ex) {
-      logger.error("Exception ", ex);
-      return null;
-    }
+    // default company definition : company_id value is integer 1
+    return Database.get(EipMAddressbookCompany.class, Integer.valueOf(1));
   }
 
   /**
