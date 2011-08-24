@@ -19,6 +19,8 @@
 
 package com.aimluck.eip.addressbook;
 
+import java.util.jar.Attributes;
+
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -27,8 +29,10 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.cayenne.om.portlet.EipMAddressbook;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.SelectQuery;
@@ -39,7 +43,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレス帳ワード検索用の基底データクラスです。
- *
+ * 
  */
 public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
     ALAbstractSelectData<M1, M2> {
@@ -62,7 +66,7 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
 
   /**
    * 初期化処理を行います。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -84,7 +88,8 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
       currentTab = tabParam;
     }
 
-    hasAuthorityList = checkHasAuthority(rundata, ALAccessControlConstants.VALUE_ACL_LIST);
+    hasAuthorityList =
+      checkHasAuthority(rundata, ALAccessControlConstants.VALUE_ACL_LIST);
 
     // 検索用インデックスをセッションとパラメータからを読み込みます。
     String index_session = ALEipUtils.getTemp(rundata, context, LIST_INDEX_STR);
@@ -106,7 +111,7 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。
-   *
+   * 
    * @param query
    * @param rundata
    * @param context
@@ -126,7 +131,7 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
 
   /**
    * 現在選択されているタブを取得します。
-   *
+   * 
    * @return
    */
   public String getCurrentTab() {
@@ -135,7 +140,7 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
 
   /**
    * アクセス権限があるかどうか取得します。
-   *
+   * 
    * @return
    */
   public boolean getHasAuthorityList() {
@@ -144,7 +149,7 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
 
   /**
    * 現在選択されているインデックスを取得します。
-   *
+   * 
    * @return
    */
   public String getIndex() {
@@ -153,14 +158,14 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
 
   /**
    * インデックス検索のためのカラムを返します。
-   *
+   * 
    * @return
    */
   abstract protected String getColumnForIndex();
 
   /**
    * 現在選択されているタブに合わせてアクセス権限をチェックします。
-   *
+   * 
    * @param rundata
    * @param type
    * @return
@@ -178,12 +183,13 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-    return aclhandler.hasAuthority(ALEipUtils.getUserId(rundata), feature, type);
+    return aclhandler
+      .hasAuthority(ALEipUtils.getUserId(rundata), feature, type);
   }
 
   /**
    * インデックス検索のためのユニコードマッピングによる条件文の追加。
-   *
+   * 
    * @param crt
    * @param idx
    */
@@ -270,5 +276,38 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
         query.andQualifier(exp100.orExp(exp101));
         break;
     }
+  }
+
+  @Override
+  protected SelectQuery<M1> buildSelectQueryForListViewSort(
+      SelectQuery<M1> query, RunData rundata, Context context) {
+    String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
+    String sort_type = ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
+    String crt_key = null;
+
+    Attributes map = getColumnMap();
+    if (sort == null) {
+      return query;
+    }
+    crt_key = map.getValue(sort);
+    if (crt_key == null) {
+      return query;
+    }
+    if (sort_type != null
+      && ALEipConstants.LIST_SORT_TYPE_DESC.equals(sort_type)) {
+      query.orderDesending(crt_key);
+      if (sort.equals("name_kana")) {
+        query.orderDesending(EipMAddressbook.FIRST_NAME_KANA_PROPERTY);
+      }
+    } else {
+      query.orderAscending(crt_key);
+      if (sort.equals("name_kana")) {
+        query.orderAscending(EipMAddressbook.FIRST_NAME_KANA_PROPERTY);
+      }
+      sort_type = ALEipConstants.LIST_SORT_TYPE_ASC;
+    }
+    current_sort = sort;
+    current_sort_type = sort_type;
+    return query;
   }
 }
