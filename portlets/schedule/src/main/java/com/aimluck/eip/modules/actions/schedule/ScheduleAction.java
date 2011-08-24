@@ -93,6 +93,13 @@ public class ScheduleAction extends ALBaseAction {
         context.put(AFTER_BEHAVIOR, "1");
       }
 
+      // load and set xreg info
+      ALEipUtils.setTemp(
+        rundata,
+        context,
+        ScheduleUtils.FLAG_CHANGE_TURN_STR,
+        portlet.getPortletConfig().getInitParameter("p3b-group"));
+
       int tab_count = 0;
 
       // Velocity テンプレートを読み込む
@@ -291,6 +298,14 @@ public class ScheduleAction extends ALBaseAction {
 
     // MODEを取得
     String mode = rundata.getParameters().getString(ALEipConstants.MODE);
+
+    // load and set xreg info
+    ALEipUtils.setTemp(
+      rundata,
+      context,
+      ScheduleUtils.FLAG_CHANGE_TURN_STR,
+      portlet.getPortletConfig().getInitParameter("p3b-group"));
+
     try {
 
       // 現在のユーザー名を取得する

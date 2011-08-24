@@ -66,9 +66,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleWeeklyGroupSelectData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleWeeklyGroupSelectData.class.getName());
 
   /** <code>termmap</code> 期間スケジュールマップ */
   private Map<Integer, List<ScheduleTermWeekContainer>> termmap;
@@ -105,11 +104,6 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   /** <code>hasAuthorityFacilityInsert</code> アクセス権限 */
   private boolean hasAuthorityFacilityInsert = false;
 
-  /** ログインユーザのスケジュールの上位表示フラグ名 */
-  protected final String FLAG_CHANGE_TURN_STR =
-    new StringBuffer().append(this.getClass().getName()).append(
-      "flagchangeturn").toString();
-
   /**
    * 
    * @param action
@@ -141,22 +135,6 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         if (groupName != null) {
           ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, groupName);
           ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "group");
-        }
-      }
-
-      // ログインユーザのスケジュールを上位表示するかを確認する．
-      String flag_changeturn =
-        ALEipUtils.getTemp(rundata, context, FLAG_CHANGE_TURN_STR);
-      if (flag_changeturn == null || flag_changeturn.equals("")) {
-        VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-        String changeturnFlag =
-          portlet.getPortletConfig().getInitParameter("p3b-group");
-        if (changeturnFlag != null) {
-          ALEipUtils.setTemp(
-            rundata,
-            context,
-            FLAG_CHANGE_TURN_STR,
-            changeturnFlag);
         }
       }
 
@@ -509,7 +487,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
     }
     members = ALEipUtils.getUsers(filter);
     String flag_changeturn =
-      ALEipUtils.getTemp(rundata, context, FLAG_CHANGE_TURN_STR);
+      ALEipUtils.getTemp(rundata, context, ScheduleUtils.FLAG_CHANGE_TURN_STR);
     if ("0".equals(flag_changeturn)) {
       // ログインユーザの行けジュールを一番上に表示させるため，
       // メンバリストの初めの要素にログインユーザを配置する．

@@ -119,6 +119,8 @@ public class ScheduleUtils {
 
   public static final String MAIL_FOR_ALL = "A";
 
+  public static final String FLAG_CHANGE_TURN_STR = "flagchangeturn";
+
   /**
    * Scheudle オブジェクトモデルを取得します。
    * 
