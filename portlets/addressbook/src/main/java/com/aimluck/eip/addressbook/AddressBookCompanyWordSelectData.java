@@ -198,14 +198,8 @@ public class AddressBookCompanyWordSelectData extends
     SelectQuery<EipMAddressbookCompany> query =
       Database.query(EipMAddressbookCompany.class);
 
-    //
-    // Expression exp01 = ExpressionFactory.noMatchExp(
-    // EipMAddressbookCompany.CREATE_USER_ID_PROPERTY, Integer.valueOf(1));
-    Expression exp02 =
-      ExpressionFactory.noMatchExp(
-        EipMAddressbookCompany.COMPANY_NAME_PROPERTY,
-        AddressBookUtils.EMPTY_COMPANY_NAME);
-    query.setQualifier(exp02);
+    // exclude default company
+    query.setQualifier(AddressBookUtils.excludeDefaultCompanyCriteria());
 
     String word = searchWord.getValue();
     String transWord =

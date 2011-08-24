@@ -59,8 +59,8 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class AddressBookFormData extends ALAbstractFormData {
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AddressBookFormData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AddressBookFormData.class.getName());
 
   // 所有グループのリスト
   private List<AddressBookGroupResultData> groupList;
@@ -157,6 +157,7 @@ public class AddressBookFormData extends ALAbstractFormData {
     user_id = ALEipUtils.getUserId(rundata);
   }
 
+  @Override
   public void initField() {
     groups = new ArrayList<Object>();
 
@@ -348,11 +349,8 @@ public class AddressBookFormData extends ALAbstractFormData {
       SelectQuery<EipMAddressbookCompany> query =
         Database.query(EipMAddressbookCompany.class);
 
-      Expression exp02 =
-        ExpressionFactory.noMatchExp(
-          EipMAddressbookCompany.COMPANY_NAME_PROPERTY,
-          AddressBookUtils.EMPTY_COMPANY_NAME);
-      query.setQualifier(exp02);
+      // exclude default company
+      query.setQualifier(AddressBookUtils.excludeDefaultCompanyCriteria());
 
       List<EipMAddressbookCompany> aList = query.fetchList();
       int size = aList.size();

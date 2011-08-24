@@ -64,7 +64,7 @@ public class AddressBookUtils {
   public static final String FOLDER_TMP_FOR_ADDRESSBOOK_FILES =
     JetspeedResources.getString("aipo.tmp.addressbook.directory", "");
 
-  public static final String EMPTY_COMPANY_NAME = "未分類";
+  public static final String EMPTY_COMPANY_NAME = "";
 
   public static EipMAddressGroup getEipMAddressGroup(RunData rundata,
       Context context) {
@@ -486,6 +486,14 @@ public class AddressBookUtils {
       bean.setName(ALCommonUtils.compressString(bean.getName(), length));
     }
     return list;
+  }
+
+  public static Expression excludeDefaultCompanyCriteria() {
+    Expression exp =
+      ExpressionFactory.noMatchDbExp(
+        EipMAddressbookCompany.COMPANY_ID_PK_COLUMN,
+        Integer.valueOf(1));
+    return exp;
   }
 
 }

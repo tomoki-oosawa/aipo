@@ -213,14 +213,7 @@ public class AddressBookCompanySelectData extends
     SelectQuery<EipMAddressbookCompany> query =
       Database.query(EipMAddressbookCompany.class);
 
-    // インポートした会社情報も表示させる
-    // Expression exp11 = ExpressionFactory.noMatchExp(
-    // EipMAddressbookCompany.CREATE_USER_ID_PROPERTY, Integer.valueOf(1));
-    Expression exp12 =
-      ExpressionFactory.noMatchExp(
-        EipMAddressbookCompany.COMPANY_NAME_PROPERTY,
-        AddressBookUtils.EMPTY_COMPANY_NAME);
-    query.setQualifier(exp12);
+    query.setQualifier(AddressBookUtils.excludeDefaultCompanyCriteria());
 
     // インデックス指定時の条件文作成
     String index_session = ALEipUtils.getTemp(rundata, context, LIST_INDEX_STR);
