@@ -21,9 +21,6 @@ package com.aimluck.eip.modules.actions;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.Cookie;
 
@@ -46,14 +43,9 @@ import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.commons.field.ALStringField;
-import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
-import com.aimluck.eip.services.config.ALConfigHandler.Property;
-import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
-import com.aimluck.eip.services.social.ALActivityService;
-import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -369,57 +361,6 @@ public class ALJLoginUser extends ActionEvent {
           rundata.getResponse().sendRedirect(rundata.getRedirectURI());
           JetspeedLinkFactory.putInstance(jsLink);
           jsLink = null;
-        }
-
-        // パスワードの有効期限の通知
-        int password_expiration =
-          Integer.parseInt(ALConfigService
-            .get(Property.LOGINCTL_PASSWORD_EXPIRATION));
-        int expiration_notification =
-          Integer.parseInt(ALConfigService
-            .get(Property.LOGINCTL_EXPIRATION_NOTIFICATION));
-        if (password_expiration != 0) {
-          if (expiration_notification != 0) {
-            // 有効期限の日時作成
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(
-              Calendar.DATE,
-              -(password_expiration - expiration_notification));
-            Date notification_date = calendar.getTime();
-            // 変更日時の取得
-            ALEipUser eipuser = ALEipUtils.getALEipUser(username);
-            TurbineUser tuser =
-              ALEipUtils.getTurbineUser((int) eipuser.getUserId().getValue());
-            Date changed_date = tuser.getPasswordChanged();
-
-            if (!changed_date.after(notification_date)) {
-              // アクティビティに通知
-              String loginName =
-                ALEipUtils.getALEipUser("admin").getName().toString();
-              String portletParams =
-                new StringBuilder("?template=AccountPersonFormScreen").append(
-                  "&mode=passwdform").toString();
-              List<String> recipients = new ArrayList<String>();
-              recipients.add(eipuser.getName().toString());
-              Calendar tmp = Calendar.getInstance();
-              tmp.add(Calendar.DATE, -password_expiration);
-              Long rest = // 有効期限までの残り日数
-                (changed_date.getTime() - tmp.getTimeInMillis()) / 86400000;
-              String title =
-                new StringBuilder("パスワードの有効期限はあと")
-                  .append(rest.toString())
-                  .append("日です。")
-                  .append("「個人設定」→「ユーザー情報」→「パスワードを変更する」からパスワードの変更を行ってください。")
-                  .toString();
-              ALActivityService.create(new ALActivityPutRequest()
-                .withAppId("loginctl")
-                .withLoginName(loginName)
-                .withPortletParams(portletParams)
-                .withRecipients(recipients)
-                .withTile(title)
-                .witchPriority(1f));
-            }
-          }
         }
 
       } else {
