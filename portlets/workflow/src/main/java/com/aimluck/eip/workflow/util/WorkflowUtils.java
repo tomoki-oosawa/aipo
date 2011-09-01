@@ -1786,7 +1786,7 @@ public class WorkflowUtils {
         .append("」");
       switch (type) {
         case REQUEST:
-          b.append("の確認依頼をだしました。");
+          b.append("の確認依頼を出しました。");
           break;
         case DENAIL:
           b.append("を差し戻しました。");
