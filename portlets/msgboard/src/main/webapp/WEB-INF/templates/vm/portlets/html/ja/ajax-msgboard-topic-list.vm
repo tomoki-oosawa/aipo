@@ -42,7 +42,7 @@
 #ALtditemfooter()
 #ALtdcaption('検索')
 #ALtditemheaderAtt("style='width: 80%;'")
-<input class="text"  type="text" name="q" id="q" #if ($!result.CurrentSearch) value="$!result.CurrentSearch" #end>
+<input class="text"  type="text" name="q" id="q" #if ($!result.CurrentSearch) value="$!result.CurrentSearchWithSanitize" #end>
 #ALsubmit("submit" "検索")
 #ALtditemfooter()
 

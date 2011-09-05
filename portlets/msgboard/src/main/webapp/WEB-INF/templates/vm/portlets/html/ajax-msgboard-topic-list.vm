@@ -28,19 +28,28 @@
 #ALajaxtabheader($tabs "")
 #ALspacebothheader()
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
-#ALajaxlistformheader('トピック')
+##ALajaxlistformheader('トピック')
+#ALajaxlistformheaderonsubmit('トピック' "aipo.msgboard.onChangeSearch('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID))','$!portlet.ID');")
 #ALtableheaderSimpleWide()
 #ALtdcaption('カテゴリ')
 #ALtditemheaderAtt("style='width: 80%;'")
-#ALselectpdheader("topic" "99%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen").addQueryData("filter","").addQueryData("filtertype","category"))">（全体）</option>
+#ALselectpdheader("topic" "99%" "aipo.msgboard.onChangeFilter('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID))','$!portlet.ID');")
+<option value="null">（全体）</option>
 #foreach( $record in $result.CategoryList )
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen").addQueryData("filter",$!record.CategoryId).addQueryData("filtertype","category"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
+<option value="$!record.CategoryId" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
 #end
 #ALselectfooter()
 #ALtditemfooter()
+#ALtdcaption('検索')
+#ALtditemheaderAtt("style='width: 80%;'")
+<input class="text"  type="text" name="q" id="q" #if ($!result.CurrentSearch) value="$!result.CurrentSearchWithSanitize" #end>
+#ALsubmit("submit" "検索")
+#ALtditemfooter()
+
+
 #ALtablefooter()
-#if($result.List.size() == 0)
+
+#if(!$result.List || $result.List.size() == 0)
 <div class="message">指定された条件に該当するトピックはありません。</div>
 #else
 #ALajaxpageview('MsgboardTopicListScreen' $result)

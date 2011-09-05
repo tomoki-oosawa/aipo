@@ -34,6 +34,7 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategoryMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardFile;
@@ -707,6 +708,10 @@ public class MsgboardTopicSelectData extends
    */
   public boolean hasAclDeleteTopicOthers() {
     return hasAclDeleteTopicOthers;
+  }
+
+  public String getCurrentSearchWithSanitize() {
+    return ALStringUtil.sanitizing(getCurrentSearch());
   }
 
 }
