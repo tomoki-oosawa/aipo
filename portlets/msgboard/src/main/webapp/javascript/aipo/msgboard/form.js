@@ -35,10 +35,11 @@ aipo.msgboard.onLoadMsgboardDialog = function(portlet_id){
 }
 
 aipo.msgboard.onChangeFilter=aipo.msgboard.onChangeSearch=function (baseuri,portlet_id){
+	var search = encodeURIComponent(dojo.byId("q").value);
 	baseuri+="?template=MsgboardTopicListScreen";
 	baseuri+="&filter="+dojo.byId("topic").value;
 	baseuri+="&filtertype=category";
-	baseuri+="&search="+dojo.byId("q").value;
+	baseuri+="&search="+search;
 	aipo.viewPage(baseuri,portlet_id);
 }
 
