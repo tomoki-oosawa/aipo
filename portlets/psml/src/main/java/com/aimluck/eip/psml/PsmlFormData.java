@@ -44,7 +44,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 『テンプレート更新』のフォームデータを管理するクラス．
- * 
+ *
  */
 public class PsmlFormData extends ALAbstractFormData {
 
@@ -56,8 +56,16 @@ public class PsmlFormData extends ALAbstractFormData {
 
   private boolean adminUser;
 
+  private String status;
+
+  private static final String UPDATE_SUCCESS = "success";
+
+  private static final String UPDATE_ERROR = "error";
+
+  private static final String VIEW_STATUS = "psml_status";
+
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -69,12 +77,14 @@ public class PsmlFormData extends ALAbstractFormData {
       throws ALPageNotFoundException, ALDBErrorException {
     ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, "profile");
     adminUser = ALEipUtils.isAdminUser(rundata);
+    status = ALEipUtils.getTemp(rundata, context, VIEW_STATUS);
+    ALEipUtils.removeTemp(rundata, context, VIEW_STATUS);
     super.init(action, rundata, context);
   }
 
   /**
    * 各フィールドを初期化する
-   * 
+   *
    */
   @Override
   public void initField() {
@@ -94,7 +104,7 @@ public class PsmlFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性を検証します
-   * 
+   *
    * @param msgList
    * @return
    */
@@ -105,7 +115,7 @@ public class PsmlFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -131,7 +141,7 @@ public class PsmlFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -144,7 +154,7 @@ public class PsmlFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -175,16 +185,19 @@ public class PsmlFormData extends ALAbstractFormData {
       profile.setProfile(psml.getBytes());
       Database.commit();
 
+      ALEipUtils.setTemp(rundata, context, VIEW_STATUS, UPDATE_SUCCESS);
+
     } catch (Exception ex) {
       Database.rollback();
       logger.error("Exception", ex);
+      ALEipUtils.setTemp(rundata, context, VIEW_STATUS, UPDATE_ERROR);
       return false;
     }
     return true;
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -198,6 +211,10 @@ public class PsmlFormData extends ALAbstractFormData {
 
   public boolean isAdminUser() {
     return adminUser;
+  }
+
+  public String getStatus() {
+    return status;
   }
 
 }

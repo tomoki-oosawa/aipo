@@ -28,9 +28,18 @@
 <div class="p">
 <input type="hidden" name="mode" id="$!{portlet.ID}-mode" value="" />
 </div>
-
+#if($!{result.getStatus().equals("success")})
 <div class="p spaceTop spaceBottom">
-あなたのタブ設定、タブ内のアプリ配置を、新規追加するユーザーの初期配置として設定することができます。
+#ALcaution("設定が完了しました。")
+</div>
+#elseif($!{result.getStatus().equals("error")})
+<div class="p spaceTop spaceBottom">
+#ALcaution("設定に失敗しました。時間をおいてから再度試してください。")
+</div>
+#end
+<div class="p spaceTop spaceBottom">
+あなたのタブ設定、タブ内のアプリ配置を、新規追加するユーザーの初期配置として設定することができます。<br />
+アプリケーション管理から追加されたアプリは再度配置していただく必要があります。
 </div>
 <div class="p spaceBottom">
 #if(!$!{result.isAdminUser()})
