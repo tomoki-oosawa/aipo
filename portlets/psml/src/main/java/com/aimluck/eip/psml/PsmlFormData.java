@@ -56,13 +56,17 @@ public class PsmlFormData extends ALAbstractFormData {
 
   private boolean adminUser;
 
-  private String status;
+  private String attach_status;
+
+  private String default_status;
 
   private static final String UPDATE_SUCCESS = "success";
 
   private static final String UPDATE_ERROR = "error";
 
-  private static final String VIEW_STATUS = "psml_status";
+  private static final String ATTACH_VIEW_STATUS = "attach_psml_status";
+
+  private static final String DEFAULT_VIEW_STATUS = "default_psml_status";
 
   /**
    *
@@ -77,8 +81,10 @@ public class PsmlFormData extends ALAbstractFormData {
       throws ALPageNotFoundException, ALDBErrorException {
     ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, "profile");
     adminUser = ALEipUtils.isAdminUser(rundata);
-    status = ALEipUtils.getTemp(rundata, context, VIEW_STATUS);
-    ALEipUtils.removeTemp(rundata, context, VIEW_STATUS);
+    attach_status = ALEipUtils.getTemp(rundata, context, ATTACH_VIEW_STATUS);
+    default_status = ALEipUtils.getTemp(rundata, context, DEFAULT_VIEW_STATUS);
+    ALEipUtils.removeTemp(rundata, context, ATTACH_VIEW_STATUS);
+    ALEipUtils.removeTemp(rundata, context, DEFAULT_VIEW_STATUS);
     super.init(action, rundata, context);
   }
 
@@ -185,12 +191,26 @@ public class PsmlFormData extends ALAbstractFormData {
       profile.setProfile(psml.getBytes());
       Database.commit();
 
-      ALEipUtils.setTemp(rundata, context, VIEW_STATUS, UPDATE_SUCCESS);
+      if ("default".equals(rundata.getParameters().getString("mode"))) {
+        ALEipUtils.setTemp(
+          rundata,
+          context,
+          DEFAULT_VIEW_STATUS,
+          UPDATE_SUCCESS);
+      } else {
+        ALEipUtils
+          .setTemp(rundata, context, ATTACH_VIEW_STATUS, UPDATE_SUCCESS);
+      }
 
     } catch (Exception ex) {
       Database.rollback();
       logger.error("Exception", ex);
-      ALEipUtils.setTemp(rundata, context, VIEW_STATUS, UPDATE_ERROR);
+
+      if ("default".equals(rundata.getParameters().getString("mode"))) {
+        ALEipUtils.setTemp(rundata, context, DEFAULT_VIEW_STATUS, UPDATE_ERROR);
+      } else {
+        ALEipUtils.setTemp(rundata, context, ATTACH_VIEW_STATUS, UPDATE_ERROR);
+      }
       return false;
     }
     return true;
@@ -213,8 +233,12 @@ public class PsmlFormData extends ALAbstractFormData {
     return adminUser;
   }
 
-  public String getStatus() {
-    return status;
+  public String getAttachStatus() {
+    return attach_status;
+  }
+
+  public String getDefaultStatus() {
+    return default_status;
   }
 
 }
