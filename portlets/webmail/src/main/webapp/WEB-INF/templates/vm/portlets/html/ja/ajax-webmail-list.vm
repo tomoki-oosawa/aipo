@@ -124,9 +124,9 @@
 <tr>
 #ALtdcellAtt("<input name='check$!record.MailId' type='checkbox' value='$!record.MailId' />" 'align="center"')
 #if($!record.hasAttachments())
-#ALtdcellAtt("<img src='$!record.ReadImage' alt='$!record.ReadImageDescription' title='$!record.ReadImageDescription' /><img src='$!record.WithFilesImage' alt='$!record.WithFilesImageDescription' title='$!record.WithFilesImageDescription' />" 'align="left" nowrap')
+#ALtdcellAtt("<img src='$!record.ReadImage' alt='$!record.ReadImageDescription' title='$!record.ReadImageDescription' /><img src='$!record.WithFilesImage' alt='$!record.WithFilesImageDescription' title='$!record.WithFilesImageDescription' />" 'align="center" nowrap')
 #else
-#ALtdcellAtt("<img src='$!record.ReadImage' alt='$!record.ReadImageDescription' title='$!record.ReadImageDescription' />" 'align="left"')
+#ALtdcellAtt("<img src='$!record.ReadImage' alt='$!record.ReadImageDescription' title='$!record.ReadImageDescription' />" 'align="center"')
 #end
 
 #if(($!record.Subject) && ($!record.getSubject().toString() != ""))
