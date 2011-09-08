@@ -19,9 +19,22 @@
 
 package com.aimluck.eip.facilities;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
+
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroup;
+import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroupMap;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.Operations;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -30,8 +43,16 @@ import com.aimluck.eip.util.ALEipUtils;
  */
 public class FacilityResultData implements ALData {
 
+  /** logger */
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(FacilityResultData.class.getName());
+
+  // :TODO ユーザーID設定
   /** Facility ID */
   private ALNumberField facility_id;
+
+  /** ユーザーID */
+  private ALNumberField user_id;
 
   /** 施設名 */
   private ALStringField facility_name;
@@ -45,12 +66,17 @@ public class FacilityResultData implements ALData {
   /** 更新日 */
   private ALStringField update_date;
 
+  /** 施設グループリスト */
+  private List<EipMFacilityGroup> facility_group_list;
+
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
     facility_id = new ALNumberField();
+    user_id = new ALNumberField();
     facility_name = new ALStringField();
     note = new ALStringField();
     note.setTrim(false);
@@ -63,6 +89,13 @@ public class FacilityResultData implements ALData {
    */
   public ALNumberField getFacilityId() {
     return facility_id;
+  }
+
+  /**
+   * @return
+   */
+  public ALNumberField getUserId() {
+    return user_id;
   }
 
   /**
@@ -135,4 +168,42 @@ public class FacilityResultData implements ALData {
     update_date.setValue(string);
   }
 
+  /**
+   * ある施設が所属する施設グループのリストを取得します
+   * 
+   * @param postid
+   * @return
+   */
+  public List<EipMFacilityGroup> getFacilityGroupListByFacilityId(
+      String facilityid) {
+    try {
+      SelectQuery<EipMFacilityGroupMap> query =
+
+      Database.query(EipMFacilityGroupMap.class);
+      query.where(Operations.eq(
+        EipMFacilityGroupMap.FACILITY_ID_PROPERTY,
+        Integer.valueOf(facilityid)));
+      List<EipMFacilityGroupMap> maps = query.fetchList();
+      List<Integer> faclityGroupIdList = new ArrayList<Integer>();
+      for (EipMFacilityGroupMap map : maps) {
+        faclityGroupIdList.add(map.getGroupId());
+      }
+      SelectQuery<EipMFacilityGroup> fquery =
+        Database.query(EipMFacilityGroup.class);
+      Expression exp =
+        ExpressionFactory.inDbExp(
+          EipMFacilityGroup.GROUP_ID_PK_COLUMN,
+          faclityGroupIdList);
+      fquery.setQualifier(exp);
+      return facility_group_list = fquery.fetchList();
+    } catch (Exception ex) {
+      Database.rollback();
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  public List<EipMFacilityGroup> getFacilityGroupList() {
+    return facility_group_list;
+  }
 }

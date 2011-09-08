@@ -46,6 +46,25 @@
 #ALtditemheader()
 #ALtextarea('note' $!result.Note 10 40)
 #ALtditemfooter()
+#ALtdcaption('施設グループ')
+#ALtditemheader()
+##foreach($record in $!result.FacilityGroupList)<option value="$!record.GroupId">$!record.GroupName</option>#end
+<div class="spaceTop spaceLeft small">左側にグループを追加してください。</div>
+<div dojoType="aipo.widget.GroupNormalSelectList"
+    id="facilitygroupselect"
+    widgetId="facilitygroupselect"
+    buttonAddId="button_facility_add"
+    buttonRemoveId="button_facility_remove"
+    memberFromTitle="選択施設グループ一覧"
+    memberFromId="tmp_group_from"
+    memberToTitle="施設グループ一覧"
+    memberToId="group_to"
+    memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupLiteJSONScreen').addQueryData('mode','post')"
+    memberFromOptionKey="facilityGroupId"
+    memberFromOptionValue="facilityGroupName">
+</div>
+<select size="5" multiple="multiple" style="display:none;" name="init_grouplist" id="init_grouplist">#foreach($record in $!result.FacilityGroupList)<option value="$!record.GroupId">$!record.GroupName</option>#end</select>
+#ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)#ALajaxbuttonClose()

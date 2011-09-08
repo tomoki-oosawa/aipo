@@ -23,6 +23,20 @@
 ## ---------------------------------------------------------------------------
 #ALtabheader($tabs "")
 #ALspacebothheader()
+
+#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
+#ALtableheaderSimpleWide()
+#ALtdcaption('グループ')
+#ALtditemheader()
+<select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
+    <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityListScreen").addQueryData("filter","").addQueryData("filtertype","group_id"))">（全体）</option>
+#foreach($record in $result.AllFacilityGroup)
+    <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityListScreen").addQueryData("filter",$!record.GroupId).addQueryData("filtertype","group_id"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GroupId.toString()) selected="selected" #end>$!record.GroupName</option>
+#end
+</select>
+#ALtditemfooter()
+#ALtablefooter()
+
 #if($result.List.size() == 0)
 <div class="message">指定された条件に該当する施設はありません。</div>
 #else

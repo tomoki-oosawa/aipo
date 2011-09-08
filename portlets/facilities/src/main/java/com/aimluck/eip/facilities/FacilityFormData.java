@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.facilities;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -34,6 +35,8 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipFacilityGroup;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
+import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroup;
+import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroupMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.security.TurbineGroup;
 import com.aimluck.eip.common.ALAbstractFormData;
@@ -43,6 +46,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -66,6 +70,8 @@ public class FacilityFormData extends ALAbstractFormData {
 
   private int userId;
 
+  private List<EipMFacilityGroup> facility_group_list;
+
   /**
    * 
    * @param action
@@ -80,6 +86,7 @@ public class FacilityFormData extends ALAbstractFormData {
     super.init(action, rundata, context);
 
     userId = ALEipUtils.getUserId(rundata);
+    facility_group_list = new ArrayList<EipMFacilityGroup>();
   }
 
   /**
@@ -87,6 +94,7 @@ public class FacilityFormData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
     // 施設名
     facility_name = new ALStringField();
@@ -129,6 +137,17 @@ public class FacilityFormData extends ALAbstractFormData {
         if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
           facilityid =
             ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+        }
+        String groupIds[] = rundata.getParameters().getStrings("group_to");
+        if (groupIds != null && groupIds.length > 0) {
+          SelectQuery<EipMFacilityGroup> fquery =
+            Database.query(EipMFacilityGroup.class);
+          Expression fexp =
+            ExpressionFactory.inDbExp(
+              EipMFacilityGroup.GROUP_ID_PK_COLUMN,
+              groupIds);
+          fquery.setQualifier(fexp);
+          facility_group_list = fquery.fetchList();
         }
       }
     } catch (Exception ex) {
@@ -207,6 +226,26 @@ public class FacilityFormData extends ALAbstractFormData {
       facility_name.setValue(facility.getFacilityName());
       // メモ
       note.setValue(facility.getNote());
+
+      // 施設グループリスト
+      SelectQuery<EipMFacilityGroupMap> query =
+        Database.query(EipMFacilityGroupMap.class);
+      query.where(Operations.eq(
+        EipMFacilityGroupMap.FACILITY_ID_PROPERTY,
+        facility.getFacilityId()));
+      List<EipMFacilityGroupMap> maps = query.fetchList();
+      List<Integer> faclityGroupIdList = new ArrayList<Integer>();
+      for (EipMFacilityGroupMap map : maps) {
+        faclityGroupIdList.add(map.getGroupId());
+      }
+      SelectQuery<EipMFacilityGroup> fquery =
+        Database.query(EipMFacilityGroup.class);
+      Expression exp =
+        ExpressionFactory.inDbExp(
+          EipMFacilityGroup.GROUP_ID_PK_COLUMN,
+          faclityGroupIdList);
+      fquery.setQualifier(exp);
+      facility_group_list = fquery.fetchList();
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
@@ -246,6 +285,17 @@ public class FacilityFormData extends ALAbstractFormData {
         // 施設のスケジュールを削除
         Database.deleteAll(slist);
       }
+
+      SelectQuery<EipMFacilityGroupMap> fmaps =
+        Database.query(EipMFacilityGroupMap.class);
+      Expression fexp =
+        ExpressionFactory.matchExp(
+          EipMFacilityGroupMap.FACILITY_ID_PROPERTY,
+          facility.getFacilityId());
+      fmaps.setQualifier(fexp);
+      // マップ削除
+      fmaps.deleteAll();
+
       // 施設を削除
       Database.delete(facility);
       Database.commit();
@@ -282,12 +332,17 @@ public class FacilityFormData extends ALAbstractFormData {
       facility.setCreateDate(Calendar.getInstance().getTime());
       // 更新日
       facility.setUpdateDate(Calendar.getInstance().getTime());
-
       Group facility_group = JetspeedSecurity.getGroup("Facility");
       EipFacilityGroup fg = Database.create(EipFacilityGroup.class);
       fg.setEipMFacility(facility);
       fg.setTurbineGroup((TurbineGroup) facility_group);
 
+      // マップにセット
+      for (EipMFacilityGroup group : facility_group_list) {
+        EipMFacilityGroupMap map = Database.create(EipMFacilityGroupMap.class);
+        map.setEipMFacilityFacilityId(facility);
+        map.setEipMFacilityGroupId(group);
+      }
       // 施設を登録
       Database.commit();
     } catch (Exception ex) {
@@ -323,6 +378,59 @@ public class FacilityFormData extends ALAbstractFormData {
       // 更新日
       facility.setUpdateDate(Calendar.getInstance().getTime());
 
+      // マップ
+      SelectQuery<EipMFacilityGroupMap> fmaps =
+        Database.query(EipMFacilityGroupMap.class);
+      Expression fexp =
+        ExpressionFactory.matchExp(
+          EipMFacilityGroupMap.FACILITY_ID_PROPERTY,
+          facility.getFacilityId());
+      fmaps.setQualifier(fexp);
+      List<EipMFacilityGroupMap> oldMapList = fmaps.fetchList();
+      List<EipMFacilityGroupMap> newMapList =
+        new ArrayList<EipMFacilityGroupMap>();
+      if (facility_group_list != null) {
+        for (EipMFacilityGroup group : facility_group_list) {
+          EipMFacilityGroupMap map = new EipMFacilityGroupMap();
+          map.setFacilityId(facility.getFacilityId());
+          map.setGroupId(group.getGroupId());
+          newMapList.add(map);
+        }
+      }
+      // List<EipMFacilityGroupMap> removeList =
+      // new ArrayList<EipMFacilityGroupMap>();
+      // // new oldの重複排除
+      // for (EipMFacilityGroupMap map : oldMapList) {
+      // if (newMapList.contains(map)) {
+      // removeList.add(map);
+      // }
+      // }
+      // oldMapList.removeAll(removeList);
+      // newMapList.removeAll(removeList);
+
+      // oldlistのdelete
+      List<Integer> oldMapIdList = new ArrayList<Integer>();
+      if (oldMapList.size() > 0) {
+        for (EipMFacilityGroupMap map : oldMapList) {
+          oldMapIdList.add(map.getId());
+        }
+        SelectQuery<EipMFacilityGroupMap> remove =
+          Database.query(EipMFacilityGroupMap.class);
+        remove.where(Operations.and(Operations.eq(
+          EipMFacilityGroupMap.FACILITY_ID_PROPERTY,
+          facility.getFacilityId()), Operations.in(
+          EipMFacilityGroupMap.GROUP_ID_PROPERTY,
+          oldMapIdList)));
+        remove.deleteAll();
+      }
+      // newlistのinsert
+      for (EipMFacilityGroupMap map : newMapList) {
+        EipMFacilityGroupMap insert =
+          Database.create(EipMFacilityGroupMap.class);
+        insert.setFacilityId(map.getFacilityId());
+        insert.setGroupId(map.getGroupId());
+      }
+
       // 施設を更新
       Database.commit();
     } catch (Exception ex) {
@@ -349,6 +457,10 @@ public class FacilityFormData extends ALAbstractFormData {
    */
   public ALStringField getFacilityName() {
     return facility_name;
+  }
+
+  public List<EipMFacilityGroup> getFacilityGroupList() {
+    return facility_group_list;
   }
 
 }

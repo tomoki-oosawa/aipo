@@ -28,7 +28,9 @@ dojo.addOnLoad(function () {
     var subMenu =
 		[
 		      {   caption: "施設一覧を見る", iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doFacility_list','1')"    },
-			  {   caption: "施設を追加する", iconClass: "menuBarIconAdd", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.facility.onLoadFacilityDialog);"}
+		      {   caption: "施設グループ一覧を見る", iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doFacilitygroup_list','1')"    },
+			  {   caption: "施設を追加する", iconClass: "menuBarIconAdd", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.facility.onLoadFacilityDialog);"},
+			  {   caption: "施設グループを追加する", iconClass: "menuBarIconAdd", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityGroupFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.facility.onLoadFacilityGroupDialog);"}
 		];
 
     if(aipo.facility.menuSelected == "undefined"){

@@ -403,7 +403,6 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
     }
     Expression exp = ExpressionFactory.matchDbExp(crt_key, filter);
     query.andQualifier(exp);
-    query.andQualifier(exp);
     current_filter = filter;
     current_filter_type = filter_type;
     return query;

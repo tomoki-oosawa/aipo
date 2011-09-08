@@ -45,10 +45,19 @@ public class FacilityLiteJSONScreen extends ALJSONScreen {
     JSONArray json;
 
     try {
-
-      json = JSONArray.fromObject(FacilityUtils.getFacilityLiteBeans());
-
-      result = json.toString();
+      String mode = rundata.getParameters().getString("mode");
+      String groupname = rundata.getParameters().getString("groupname");
+      if ("group".equals(mode) && !"all".equals(groupname)) {
+        json =
+          JSONArray.fromObject(FacilityUtils.getFacilityFromGroupId(
+            rundata,
+            Integer.valueOf(groupname)));
+        result = json.toString();
+      } else {
+        json =
+          JSONArray.fromObject(FacilityUtils.getFacilityLiteBeans(rundata));
+        result = json.toString();
+      }
     } catch (Exception e) {
       logger.error("[FacilityLiteJSONScreen]", e);
     }

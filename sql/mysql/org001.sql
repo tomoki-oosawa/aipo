@@ -927,6 +927,21 @@ CREATE TABLE `turbine_user_group_role` (
 
 INSERT INTO `turbine_user_group_role` VALUES (1,2,1,1),(2,1,1,1),(3,1,1,2),(4,3,1,3);
 
+CREATE TABLE eip_m_facility_group
+(
+    `group_id` int(11) not null,
+    `group_name` varchar (64) COLLATE utf8_unicode_ci,
+    PRIMARY KEY (`group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE eip_m_facility_group_map
+(
+    `id` int(11) not null,
+    `facility_id` int(11),
+    `group_id` int(11),
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 ALTER TABLE `oauth_consumer` ADD FOREIGN KEY (  `app_id` ) REFERENCES  `application` (`id`) ON DELETE CASCADE ;
 
 ALTER TABLE `activity_map` ADD FOREIGN KEY (  `activity_id` ) REFERENCES  `activity` (`id`) ON DELETE CASCADE ;

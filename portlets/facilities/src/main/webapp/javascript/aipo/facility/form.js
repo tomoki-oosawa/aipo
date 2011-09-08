@@ -26,7 +26,34 @@ aipo.facility.onLoadFacilityDialog = function(portlet_id){
      obj.focus();
   }  
 
+	var fpicker = dijit.byId("facilitygroupselect");
+	if(fpicker){
+	    var select = dojo.byId('init_grouplist');
+	    var i;
+	    var s_o = select.options;
+	    if (s_o.length == 1 && s_o[0].value == "") return;
+	    for(i = 0 ; i < s_o.length; i ++ ) {
+	        fpicker.addOptionSync(s_o[i].value,s_o[i].text,true);
+	    }
+  }
 }
+aipo.facility.onLoadFacilityGroupDialog = function(portlet_id){
+	  var obj = dojo.byId("facility_name");
+	  if(obj){
+	     obj.focus();
+	  }
+		var fpicker = dijit.byId("facilityselect");
+		if(fpicker){
+		    var select = dojo.byId('init_facilitylist');
+		    var i;
+		    var s_o = select.options;
+		    if (s_o.length == 1 && s_o[0].value == "") return;
+		    for(i = 0 ; i < s_o.length; i ++ ) {
+		        fpicker.addOptionSync(s_o[i].value,s_o[i].text,true);
+		    }
+	  }
+
+	}
 
 aipo.facility.onReceiveMessage = function(msg){
     if(!msg) {

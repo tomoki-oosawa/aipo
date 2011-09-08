@@ -1228,6 +1228,21 @@ CREATE TABLE module_id (
 ALTER TABLE oauth_consumer ADD FOREIGN KEY (APP_ID) REFERENCES application (ID) ON DELETE CASCADE;
 ALTER TABLE activity_map ADD FOREIGN KEY (ACTIVITY_ID) REFERENCES activity (ID) ON DELETE CASCADE;
 
+CREATE TABLE EIP_M_FACILITY_GROUP
+(
+    GROUP_ID INTEGER NOT NULL,
+    GROUP_NAME VARCHAR (64),
+    PRIMARY KEY(GROUP_ID)
+);
+
+CREATE TABLE EIP_M_FACILITY_GROUP_MAP
+(
+    ID INTEGER NOT NULL,
+    FACILITY_ID INTEGER,
+    GROUP_ID INTEGER,
+    PRIMARY KEY(ID)
+);
+
 -----------------------------------------------------------------------------
 -- CREATE SEQUENCE
 -----------------------------------------------------------------------------
@@ -1289,6 +1304,8 @@ CREATE SEQUENCE pk_turbine_permission INCREMENT 20;
 CREATE SEQUENCE pk_turbine_role INCREMENT 20;
 CREATE SEQUENCE pk_turbine_user INCREMENT 20;
 CREATE SEQUENCE pk_turbine_user_group_role INCREMENT 20;
+CREATE SEQUENCE pk_eip_m_facility_group INCREMENT 20;
+CREATE SEQUENCE pk_eip_m_facility_group_map INCREMENT 20;
 
 CREATE SEQUENCE pk_eip_m_config INCREMENT 20 START 200;
 CREATE SEQUENCE pk_jetspeed_group_profile INCREMENT 20 START 200;
@@ -1365,6 +1382,8 @@ ALTER SEQUENCE pk_eip_t_whatsnew OWNED BY EIP_T_EVENTLOG.EVENTLOG_ID;
 ALTER SEQUENCE pk_eip_t_acl_role OWNED BY EIP_T_ACL_ROLE.ROLE_ID;
 ALTER SEQUENCE pk_eip_t_acl_portlet_feature OWNED BY EIP_T_ACL_PORTLET_FEATURE.FEATURE_ID;
 ALTER SEQUENCE pk_eip_t_acl_user_role_map OWNED BY EIP_T_ACL_USER_ROLE_MAP.ID;
+ALTER SEQUENCE pk_eip_m_facility_group OWNED BY EIP_M_FACILITY_GROUP.GROUP_ID;
+ALTER SEQUENCE pk_eip_m_facility_group_map OWNED BY EIP_M_FACILITY_GROUP_MAP.ID;
 
 -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------

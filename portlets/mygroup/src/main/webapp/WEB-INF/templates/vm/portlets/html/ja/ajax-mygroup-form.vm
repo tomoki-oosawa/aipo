@@ -74,7 +74,7 @@
 #ALtditemheader()
 <div id="facilityField" style="display:#if ($!result.PublicFlag && $!result.PublicFlag.toString() != "O")none#end">
     <div class="spaceTop spaceLeft small">左側に施設を追加してください。</div>
-    <div dojoType="aipo.widget.GroupNormalSelectList"
+    <div dojoType="aipo.widget.MemberNormalSelectList"
         id="facilityselect"
         widgetId="facilityselect"
         buttonAddId="button_facility_add"
@@ -85,7 +85,14 @@
         memberToId="facility_to"
         memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityLiteJSONScreen')"
         memberFromOptionKey="facilityId"
-        memberFromOptionValue="facilityName">
+        memberFromOptionValue="facilityName"
+        groupSelectId="tmp_facility_group"
+	    groupSelectPreOptionKey="all"
+	    groupSelectPreOptionValue="（グループ全体）"
+	    groupSelectOptionKey="facilityGroupId"
+	    groupSelectOptionValue="facilityGroupName"
+	    memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupLiteJSONScreen').addQueryData('mode','post')"
+	    changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityLiteJSONScreen').addQueryData('mode','group')">
     </div>
     <select size="5" multiple="multiple" style="display:none;" name="init_facilitylist" id="init_facilitylist">#foreach($record in $!result.FacilityList)<option value="$!record.FacilityId">$!record.FacilityName</option>#end</select>
 </div>

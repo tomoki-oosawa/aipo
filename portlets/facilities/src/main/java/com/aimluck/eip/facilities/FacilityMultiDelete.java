@@ -29,9 +29,11 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
+import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroupMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
@@ -57,6 +59,7 @@ public class FacilityMultiDelete extends ALAbstractCheckList {
       List<String> values, List<String> msgList) {
     try {
 
+      // delete schedule maps
       SelectQuery<EipTScheduleMap> query1 =
         Database.query(EipTScheduleMap.class);
       Expression exp1 =
@@ -67,10 +70,10 @@ public class FacilityMultiDelete extends ALAbstractCheckList {
 
       List<EipTScheduleMap> slist = query1.fetchList();
       if (slist != null && slist.size() > 0) {
-        // 施設のスケジュールを削除
         Database.deleteAll(slist);
       }
 
+      // delete facilities
       SelectQuery<EipMFacility> query = Database.query(EipMFacility.class);
       Expression exp =
         ExpressionFactory.inDbExp(EipMFacility.FACILITY_ID_PK_COLUMN, values);
@@ -80,9 +83,16 @@ public class FacilityMultiDelete extends ALAbstractCheckList {
       if (flist == null || flist.size() == 0) {
         return false;
       }
-
-      // 施設を削除
       Database.deleteAll(flist);
+
+      // delete maps
+      SelectQuery<EipMFacilityGroupMap> fmaps =
+        Database.query(EipMFacilityGroupMap.class);
+      fmaps.where(Operations.in(
+        EipMFacilityGroupMap.FACILITY_ID_PROPERTY,
+        values));
+      fmaps.deleteAll();
+
       Database.commit();
     } catch (Exception ex) {
       Database.rollback();

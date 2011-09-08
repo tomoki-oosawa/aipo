@@ -32,6 +32,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
+import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroup;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.orm.Database;
@@ -71,6 +72,41 @@ public class FacilitiesUtils {
           facilityid);
       List<EipMFacility> facilities =
         Database.query(EipMFacility.class, exp).fetchList();
+      if (facilities == null || facilities.size() == 0) {
+        // 指定したFacilities IDのレコードが見つからない場合
+        logger.debug("[Facilities] Not found ID...");
+        return null;
+      }
+      return facilities.get(0);
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  /**
+   * 施設グループオブジェクトモデルを取得します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static EipMFacilityGroup getEipMFacilityGroup(RunData rundata,
+      Context context) {
+    String faclitygroupid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+    try {
+      if (faclitygroupid == null || Integer.valueOf(faclitygroupid) == null) {
+        // Facilities IDが空の場合
+        logger.debug("[Facility] Empty ID...");
+        return null;
+      }
+      Expression exp =
+        ExpressionFactory.matchDbExp(
+          EipMFacilityGroup.GROUP_ID_PK_COLUMN,
+          faclitygroupid);
+      List<EipMFacilityGroup> facilities =
+        Database.query(EipMFacilityGroup.class, exp).fetchList();
       if (facilities == null || facilities.size() == 0) {
         // 指定したFacilities IDのレコードが見つからない場合
         logger.debug("[Facilities] Not found ID...");

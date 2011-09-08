@@ -76,6 +76,8 @@ public class PsmlUtils {
   public static String ParsePsml(String psml) throws Exception {
     try {
       Document dom = loadXMLFrom(psml);
+
+      // remove admin portlets
       NodeList portlets = dom.getElementsByTagName("portlets");
       for (int i = 0; i < portlets.getLength(); i++) {
         Node node = portlets.item(i);
@@ -83,24 +85,28 @@ public class PsmlUtils {
           .getAttributes()
           .getNamedItem(PsmlUtils.ATTRIBUTE_ID)
           .getNodeValue()
-          .equals(PsmlUtils.ADMIN_PORTRET_ID)) {// 管理者部分のポートレット除去
+          .equals(PsmlUtils.ADMIN_PORTRET_ID)) {
           Node parent = node.getParentNode();
           parent.removeChild(node);
         } else {
           node.getAttributes().removeNamedItem(PsmlUtils.ATTRIBUTE_ID);// idの除去
         }
       }
+
+      // remove entryId exclude gadgets
       NodeList entry = dom.getElementsByTagName(PsmlUtils.ELEMENT_ENTRY);
       for (int i = 0; i < entry.getLength(); i++) {
         Node node = entry.item(i);
         node.getAttributes().removeNamedItem(PsmlUtils.ATTRIBUTE_ID);// idの除去
       }
+
       NodeList params = dom.getElementsByTagName(PsmlUtils.ELEMENT_PARAMETER);
       while (0 != params.getLength()) {
         Node node = params.item(0);
         Node parent = node.getParentNode();
         parent.removeChild(node);
       }
+
       StringWriter sw = new StringWriter();
       TransformerFactory tfactory = TransformerFactory.newInstance();
       Transformer transformer = tfactory.newTransformer();

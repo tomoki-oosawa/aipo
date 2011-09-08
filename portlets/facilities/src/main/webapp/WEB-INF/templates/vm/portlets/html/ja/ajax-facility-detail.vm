@@ -34,6 +34,12 @@ $!result.Detail.FacilityName
 #ALtditem($!result.Detail.CreateDate)
 #ALtdcaption('更新日')
 #ALtditem($!result.Detail.UpdateDate)
+#ALtdcaption('施設グループ')
+#ALtditemheader()
+#foreach($record in $!result.Detail.getFacilityGroupListByFacilityId($!{result.Detail.FacilityId.toString()}))
+$!record.GroupName<br />
+#end
+#ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.facility.onLoadFacilityDialog")#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.facility.onReceiveMessage")#ALajaxbuttonClose()

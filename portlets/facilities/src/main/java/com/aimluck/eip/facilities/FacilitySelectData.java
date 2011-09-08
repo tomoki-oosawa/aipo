@@ -19,8 +19,12 @@
 
 package com.aimluck.eip.facilities;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.jar.Attributes;
 
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -28,6 +32,8 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
+import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroup;
+import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroupMap;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
@@ -35,6 +41,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
@@ -53,6 +60,9 @@ public class FacilitySelectData extends
   /** 施設の総数 */
   private int facilitySum;
 
+  /** 全施設グループの一覧 */
+  private List<EipMFacilityGroup> AllFacilitygroup;
+
   /**
    * 
    * @param action
@@ -69,7 +79,9 @@ public class FacilitySelectData extends
         .getPortletConfig()
         .getInitParameter("p2a-sort"));
     }
-
+    SelectQuery<EipMFacilityGroup> query =
+      Database.query(EipMFacilityGroup.class);
+    AllFacilitygroup = query.fetchList();
     super.init(action, rundata, context);
   }
 
@@ -133,6 +145,61 @@ public class FacilitySelectData extends
   }
 
   /**
+   * queryにFilterをセットします。
+   * 
+   * @param query
+   * @param rundata
+   * @param context
+   * @return
+   */
+  @Override
+  protected SelectQuery<EipMFacility> buildSelectQueryForFilter(
+      SelectQuery<EipMFacility> query, RunData rundata, Context context) {
+    String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+    String filter_type =
+      ALEipUtils.getTemp(rundata, context, LIST_FILTER_TYPE_STR);
+    String crt_key = null;
+    Attributes map = getColumnMap();
+    if (filter == null || filter_type == null || filter.equals("")) {
+      return query;
+    }
+    crt_key = map.getValue(filter_type);
+    if (crt_key == null) {
+      return query;
+    }
+    if (crt_key.equals(EipMFacilityGroupMap.GROUP_ID_PROPERTY)) {
+      SelectQuery<EipMFacilityGroupMap> mapquery =
+        Database.query(EipMFacilityGroupMap.class);
+      mapquery.where(Operations.eq(
+        EipMFacilityGroupMap.GROUP_ID_PROPERTY,
+        Integer.valueOf(filter)));
+      List<EipMFacilityGroupMap> facilityGroupMapList = mapquery.fetchList();
+      List<Integer> facilityIdList = new ArrayList<Integer>();
+      for (EipMFacilityGroupMap fmap : facilityGroupMapList) {
+        facilityIdList.add(fmap.getFacilityId());
+      }
+
+      // if facility not exist, add no one match id
+      if (facilityIdList.size() == 0) {
+        facilityIdList.add(Integer.valueOf(0));
+      }
+
+      Expression exp =
+        ExpressionFactory.inDbExp(
+          EipMFacility.FACILITY_ID_PK_COLUMN,
+          facilityIdList);
+      query.andQualifier(exp);
+
+    } else {
+      Expression exp = ExpressionFactory.matchExp(crt_key, filter);
+      query.andQualifier(exp);
+    }
+    current_filter = filter;
+    current_filter_type = filter_type;
+    return query;
+  }
+
+  /**
    * 詳細データを取得します。 <BR>
    * 
    * @param rundata
@@ -184,6 +251,7 @@ public class FacilitySelectData extends
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("facility_name", EipMFacility.FACILITY_NAME_PROPERTY);
+    map.putValue("group_id", EipMFacilityGroupMap.GROUP_ID_PROPERTY);
     return map;
   }
 
@@ -196,4 +264,7 @@ public class FacilitySelectData extends
     return id1 == (int) id2;
   }
 
+  public List<EipMFacilityGroup> getAllFacilityGroup() {
+    return AllFacilitygroup;
+  }
 }

@@ -28,6 +28,8 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.facilities.FacilityFormData;
+import com.aimluck.eip.facilities.FacilityGroupFormData;
+import com.aimluck.eip.facilities.FacilityGroupSelectData;
 import com.aimluck.eip.facilities.FacilitySelectData;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.util.ALEipUtils;
@@ -188,4 +190,131 @@ public class FacilitiesAction extends ALBaseAction {
     }
   }
 
+  /**
+   * 施設グループ登録のフォームを表示します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
+  public void doFacilitygroup_form(RunData rundata, Context context)
+      throws Exception {
+    FacilityGroupFormData formData = new FacilityGroupFormData();
+    formData.initField();
+    formData.doViewForm(this, rundata, context);
+    setTemplate(rundata, "facility-group-form");
+  }
+
+  /**
+   * 施設グループを登録します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
+  public void doFacilitygroup_insert(RunData rundata, Context context)
+      throws Exception {
+    FacilityGroupFormData formData = new FacilityGroupFormData();
+    formData.initField();
+    if (formData.doInsert(this, rundata, context)) {
+      // データ登録が成功したとき
+      // doTodo_list(rundata, context);
+      JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
+      rundata.setRedirectURI(jsLink.getPortletById(
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doFacilitygroup_list",
+        "1").toString());
+      rundata.getResponse().sendRedirect(rundata.getRedirectURI());
+      jsLink = null;
+    } else {
+      setTemplate(rundata, "facility-group-form");
+    }
+  }
+
+  /**
+   * 施設グループを更新します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
+  public void doFacilitygroup_update(RunData rundata, Context context)
+      throws Exception {
+    FacilityGroupFormData formData = new FacilityGroupFormData();
+    formData.initField();
+    if (formData.doUpdate(this, rundata, context)) {
+      // データ更新が成功したとき
+      // doTodo_list(rundata, context);
+      JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
+      rundata.setRedirectURI(jsLink.getPortletById(
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doFacilitygroup_list",
+        "1").toString());
+      rundata.getResponse().sendRedirect(rundata.getRedirectURI());
+      jsLink = null;
+    } else {
+      setTemplate(rundata, "facility-group-form");
+    }
+  }
+
+  /**
+   * 施設グループを削除します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
+  public void doFacilitygroup_delete(RunData rundata, Context context)
+      throws Exception {
+    FacilityGroupFormData formData = new FacilityGroupFormData();
+    formData.initField();
+    if (formData.doDelete(this, rundata, context)) {
+      // データ削除が成功したとき
+      // doTodo_list(rundata, context);
+      JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
+      rundata.setRedirectURI(jsLink.getPortletById(
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doFacilitygroup_list",
+        "1").toString());
+      rundata.getResponse().sendRedirect(rundata.getRedirectURI());
+      jsLink = null;
+    }
+  }
+
+  /**
+   * 施設グループを一覧表示します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
+  public void doFacilitygroup_list(RunData rundata, Context context)
+      throws Exception {
+    FacilityGroupSelectData listData = new FacilityGroupSelectData();
+    listData.initField();
+    listData.setRowsNum(Integer.parseInt(ALEipUtils
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1a-rows")));
+    listData.doViewList(this, rundata, context);
+    setTemplate(rundata, "facility-group");
+  }
+
+  /**
+   * 施設グループを詳細表示します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
+  public void doFacilitygroup_detail(RunData rundata, Context context)
+      throws Exception {
+    FacilityGroupSelectData detailData = new FacilityGroupSelectData();
+    detailData.initField();
+    if (detailData.doViewDetail(this, rundata, context)) {
+      setTemplate(rundata, "facility-group-detail");
+    } else {
+      doFacility_list(rundata, context);
+    }
+  }
 }

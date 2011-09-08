@@ -43,6 +43,6 @@ public class EipMFacility extends _EipMFacility {
 
   public void setFacilityId(String id) {
     setObjectId(new ObjectId("EipMFacility", FACILITY_ID_PK_COLUMN, Integer
-        .valueOf(id)));
+      .valueOf(id)));
   }
 }

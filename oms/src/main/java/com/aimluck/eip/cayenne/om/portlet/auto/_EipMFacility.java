@@ -15,6 +15,7 @@ public class _EipMFacility extends org.apache.cayenne.CayenneDataObject {
     public static final String UPDATE_DATE_PROPERTY = "updateDate";
     public static final String USER_ID_PROPERTY = "userId";
     public static final String EIP_FACILITY_GROUP_ARRAY_PROPERTY = "eipFacilityGroupArray";
+    public static final String EIP_MFACILITY_FACILITY_ID_PROPERTY = "eipMFacilityFacilityId";
 
     public static final String FACILITY_ID_PK_COLUMN = "FACILITY_ID";
 
@@ -66,6 +67,17 @@ public class _EipMFacility extends org.apache.cayenne.CayenneDataObject {
     }
     public List getEipFacilityGroupArray() {
         return (List)readProperty("eipFacilityGroupArray");
+    }
+    
+    
+    public void addToEipMFacilityFacilityId(com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroupMap obj) {
+        addToManyTarget("eipMFacilityFacilityId", obj, true);
+    }
+    public void removeFromEipMFacilityFacilityId(com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroupMap obj) {
+        removeToManyTarget("eipMFacilityFacilityId", obj, true);
+    }
+    public List getEipMFacilityFacilityId() {
+        return (List)readProperty("eipMFacilityFacilityId");
     }
     
     
