@@ -397,16 +397,6 @@ public class FacilityFormData extends ALAbstractFormData {
           newMapList.add(map);
         }
       }
-      // List<EipMFacilityGroupMap> removeList =
-      // new ArrayList<EipMFacilityGroupMap>();
-      // // new oldの重複排除
-      // for (EipMFacilityGroupMap map : oldMapList) {
-      // if (newMapList.contains(map)) {
-      // removeList.add(map);
-      // }
-      // }
-      // oldMapList.removeAll(removeList);
-      // newMapList.removeAll(removeList);
 
       // oldlistのdelete
       List<Integer> oldMapIdList = new ArrayList<Integer>();

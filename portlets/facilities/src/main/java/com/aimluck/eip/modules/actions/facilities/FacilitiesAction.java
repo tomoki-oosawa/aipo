@@ -90,7 +90,6 @@ public class FacilitiesAction extends ALBaseAction {
     formData.initField();
     if (formData.doInsert(this, rundata, context)) {
       // データ登録が成功したとき
-      // doTodo_list(rundata, context);
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
         ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
@@ -116,7 +115,6 @@ public class FacilitiesAction extends ALBaseAction {
     formData.initField();
     if (formData.doUpdate(this, rundata, context)) {
       // データ更新が成功したとき
-      // doTodo_list(rundata, context);
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
         ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
@@ -142,7 +140,6 @@ public class FacilitiesAction extends ALBaseAction {
     formData.initField();
     if (formData.doDelete(this, rundata, context)) {
       // データ削除が成功したとき
-      // doTodo_list(rundata, context);
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
         ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
@@ -218,7 +215,6 @@ public class FacilitiesAction extends ALBaseAction {
     formData.initField();
     if (formData.doInsert(this, rundata, context)) {
       // データ登録が成功したとき
-      // doTodo_list(rundata, context);
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
         ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
@@ -244,7 +240,6 @@ public class FacilitiesAction extends ALBaseAction {
     formData.initField();
     if (formData.doUpdate(this, rundata, context)) {
       // データ更新が成功したとき
-      // doTodo_list(rundata, context);
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
         ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
@@ -270,7 +265,6 @@ public class FacilitiesAction extends ALBaseAction {
     formData.initField();
     if (formData.doDelete(this, rundata, context)) {
       // データ削除が成功したとき
-      // doTodo_list(rundata, context);
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
         ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(

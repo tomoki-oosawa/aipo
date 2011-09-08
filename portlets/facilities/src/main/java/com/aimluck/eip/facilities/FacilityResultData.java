@@ -47,7 +47,6 @@ public class FacilityResultData implements ALData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(FacilityResultData.class.getName());
 
-  // :TODO ユーザーID設定
   /** Facility ID */
   private ALNumberField facility_id;
 
