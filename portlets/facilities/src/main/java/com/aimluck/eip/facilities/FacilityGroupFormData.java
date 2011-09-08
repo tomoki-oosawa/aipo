@@ -1,0 +1,430 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package com.aimluck.eip.facilities;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
+
+import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
+import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroup;
+import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroupMap;
+import com.aimluck.eip.common.ALAbstractFormData;
+import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.facilities.util.FacilitiesUtils;
+import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.Operations;
+import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.util.ALEipUtils;
+
+/**
+ * 施設のフォームデータを管理するクラスです。 <BR>
+ * 
+ */
+public class FacilityGroupFormData extends ALAbstractFormData {
+
+  /** logger */
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(FacilityGroupFormData.class.getName());
+
+  /** 施設グループ名 */
+  private ALStringField facility_group_name;
+
+  private String facilitygroupid;
+
+  /** 施設リスト */
+  private List<Object> facilityList;
+
+  /** 全施設リスト */
+  private List<FacilityResultData> facilityAllList;
+
+  /**
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * 
+   * 
+   */
+  @Override
+  public void init(ALAction action, RunData rundata, Context context)
+      throws ALPageNotFoundException, ALDBErrorException {
+    super.init(action, rundata, context);
+
+    facilityAllList = new ArrayList<FacilityResultData>();
+    facilityAllList.addAll(FacilitiesUtils.getFacilityAllList());
+
+    // :test
+
+  }
+
+  /**
+   * 各フィールドを初期化します。 <BR>
+   * 
+   * 
+   */
+  @Override
+  public void initField() {
+    // 施設名
+    facility_group_name = new ALStringField();
+    facility_group_name.getFieldName();
+    facility_group_name.setFieldName("施設グループ名");
+    facility_group_name.setTrim(true);
+
+    // 施設リスト
+    facilityList = new ArrayList<Object>();
+  }
+
+  /**
+   * 施設の各フィールドに対する制約条件を設定します。 <BR>
+   * 
+   * 
+   */
+  @Override
+  protected void setValidator() {
+    // 施設グループ名必須項目
+    facility_group_name.setNotNull(true);
+    // 施設グループ名の文字数制限
+    facility_group_name.limitMaxLength(50);
+  }
+
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   */
+  @Override
+  protected boolean setFormData(RunData rundata, Context context,
+      List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
+    boolean res = super.setFormData(rundata, context, msgList);
+    try {
+      if (res) {
+        if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
+          facilitygroupid =
+            ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+        }
+        String facilityIds[] =
+          rundata.getParameters().getStrings("facility_to");
+        if (facilityIds != null && facilityIds.length > 0) {
+          SelectQuery<EipMFacility> fquery = Database.query(EipMFacility.class);
+          Expression fexp =
+            ExpressionFactory.inDbExp(
+              EipMFacility.FACILITY_ID_PK_COLUMN,
+              facilityIds);
+          fquery.setQualifier(fexp);
+          List<EipMFacility> facilities = fquery.fetchList();
+          for (EipMFacility facility : facilities) {
+            FacilityResultData rd = new FacilityResultData();
+            rd.initField();
+            rd.setFacilityId(facility.getFacilityId().longValue());
+            rd.setFacilityName(facility.getFacilityName());
+            facilityList.add(rd);
+          }
+        }
+      }
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      res = false;
+    }
+    return res;
+  }
+
+  /**
+   * 施設のフォームに入力されたデータの妥当性検証を行います。 <BR>
+   * 
+   * @param msgList
+   * @return TRUE 成功 FALSE 失敗
+   * 
+   */
+  @Override
+  protected boolean validate(List<String> msgList) {
+    try {
+      SelectQuery<EipMFacilityGroup> query =
+        Database.query(EipMFacilityGroup.class);
+      if (ALEipConstants.MODE_INSERT.equals(getMode())) {
+        Expression exp =
+          ExpressionFactory.matchExp(
+            EipMFacilityGroup.GROUP_NAME_PROPERTY,
+            facility_group_name.getValue());
+        query.setQualifier(exp);
+      } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
+        Expression exp1 =
+          ExpressionFactory.matchExp(
+            EipMFacilityGroup.GROUP_NAME_PROPERTY,
+            facility_group_name.getValue());
+        query.setQualifier(exp1);
+        Expression exp2 =
+          ExpressionFactory.noMatchDbExp(
+            EipMFacilityGroup.GROUP_ID_PK_COLUMN,
+            Integer.valueOf(facilitygroupid));
+        query.andQualifier(exp2);
+      }
+
+      if (query.fetchList().size() != 0) {
+        msgList.add("施設グループ名『 <span class='em'>"
+          + facility_group_name.toString()
+          + "</span> 』は既に登録されています。");
+      }
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return false;
+    }
+
+    // 施設グループ名
+    facility_group_name.validate(msgList);
+    return (msgList.size() == 0);
+
+  }
+
+  /**
+   * 施設グループをデータベースから読み出します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return TRUE 成功 FALSE 失敗
+   */
+  @Override
+  protected boolean loadFormData(RunData rundata, Context context,
+      List<String> msgList) {
+    try {
+      // オブジェクトモデルを取得
+      EipMFacilityGroup facility =
+        FacilitiesUtils.getEipMFacilityGroup(rundata, context);
+      if (facility == null) {
+        return false;
+      }
+      // 施設グループ名
+      facility_group_name.setValue(facility.getGroupName());
+
+      // facilitygroupのマップからその施設グループの施設リスト取得
+      SelectQuery<EipMFacilityGroupMap> mapquery =
+        Database.query(EipMFacilityGroupMap.class);
+      Expression mapexp =
+        ExpressionFactory.matchExp(
+          EipMFacilityGroupMap.GROUP_ID_PROPERTY,
+          facility.getGroupId());
+      mapquery.setQualifier(mapexp);
+      List<EipMFacilityGroupMap> FacilityMaps = mapquery.fetchList();
+      List<Integer> facilityIds = new ArrayList<Integer>();
+      for (EipMFacilityGroupMap map : FacilityMaps) {
+        facilityIds.add(map.getEipMFacilityFacilityId().getFacilityId());
+      }
+      if (facilityIds.size() > 0) {
+        SelectQuery<EipMFacility> fquery = Database.query(EipMFacility.class);
+        Expression fexp =
+          ExpressionFactory.inDbExp(
+            EipMFacility.FACILITY_ID_PK_COLUMN,
+            facilityIds);
+        fquery.setQualifier(fexp);
+        facilityList.addAll(FacilitiesUtils
+          .getFacilitiesFromSelectQuery(fquery));
+      }
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * 施設グループをデータベースから削除します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return TRUE 成功 FALSE 失敗
+   */
+  @Override
+  protected boolean deleteFormData(RunData rundata, Context context,
+      List<String> msgList) {
+    try {
+      // オブジェクトモデルを取得
+      EipMFacilityGroup facility =
+        FacilitiesUtils.getEipMFacilityGroup(rundata, context);
+      if (facility == null) {
+        return false;
+      }
+      SelectQuery<EipMFacilityGroupMap> fmaps =
+        Database.query(EipMFacilityGroupMap.class);
+      Expression fexp =
+        ExpressionFactory.matchExp(
+          EipMFacilityGroupMap.GROUP_ID_PROPERTY,
+          facility.getGroupId());
+      fmaps.setQualifier(fexp);
+      fmaps.deleteAll();
+      // 施設グループを削除
+      Database.delete(facility);
+      Database.commit();
+      // orm.doDelete(facility);
+    } catch (Exception ex) {
+      Database.rollback();
+      logger.error("Exception", ex);
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * 施設グループをデータベースに格納します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return TRUE 成功 FALSE 失敗
+   */
+  @Override
+  protected boolean insertFormData(RunData rundata, Context context,
+      List<String> msgList) {
+    try {
+      // 新規オブジェクトモデル
+      EipMFacilityGroup facilitygroup =
+        Database.create(EipMFacilityGroup.class);
+      rundata.getParameters().setProperties(facilitygroup);
+      // 施設グループ名
+      facilitygroup.setGroupName(facility_group_name.getValue());
+
+      for (Object record : facilityList) {
+        FacilityResultData frd = (FacilityResultData) record;
+
+        EipMFacilityGroupMap map = Database.create(EipMFacilityGroupMap.class);
+        map.setFacilityId((int) frd.getFacilityId().getValue());
+        map.setEipMFacilityGroupId(facilitygroup);
+      }
+      // 施設を登録
+      Database.commit();
+    } catch (Exception ex) {
+      Database.rollback();
+      logger.error("Exception", ex);
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * データベースに格納されている施設を更新します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return TRUE 成功 FALSE 失敗
+   */
+  @Override
+  protected boolean updateFormData(RunData rundata, Context context,
+      List<String> msgList) {
+    try {
+      // オブジェクトモデルを取得
+      EipMFacilityGroup facilityGroup =
+        FacilitiesUtils.getEipMFacilityGroup(rundata, context);
+      if (facilityGroup == null) {
+        return false;
+      }
+      SelectQuery<EipMFacilityGroupMap> fmaps =
+        Database.query(EipMFacilityGroupMap.class);
+      Expression fexp =
+        ExpressionFactory.matchExp(
+          EipMFacilityGroupMap.GROUP_ID_PROPERTY,
+          facilityGroup.getGroupId());
+      fmaps.setQualifier(fexp);
+      List<EipMFacilityGroupMap> oldMapList = fmaps.fetchList();
+      List<EipMFacilityGroupMap> newMapList =
+        new ArrayList<EipMFacilityGroupMap>();
+      for (Object facility : facilityList) {
+        FacilityResultData frd = (FacilityResultData) facility;
+        EipMFacilityGroupMap map = new EipMFacilityGroupMap();
+        map.setFacilityId((int) frd.getFacilityId().getValue());
+        map.setGroupId(facilityGroup.getGroupId());
+        newMapList.add(map);
+      }
+
+      // oldlistのdelete
+      List<Integer> oldMapIdList = new ArrayList<Integer>();
+      if (oldMapList.size() > 0) {
+        for (EipMFacilityGroupMap map : oldMapList) {
+          oldMapIdList.add(map.getId());
+        }
+        SelectQuery<EipMFacilityGroupMap> remove =
+          Database.query(EipMFacilityGroupMap.class);
+        remove.where(Operations.and(Operations.eq(
+          EipMFacilityGroupMap.GROUP_ID_PROPERTY,
+          facilityGroup.getGroupId()), Operations.in(
+          EipMFacilityGroupMap.FACILITY_ID_PROPERTY,
+          oldMapIdList)));
+        remove.deleteAll();
+      }
+      // newlistのinsert
+      for (EipMFacilityGroupMap map : newMapList) {
+        EipMFacilityGroupMap insert =
+          Database.create(EipMFacilityGroupMap.class);
+        insert.setFacilityId(map.getFacilityId());
+        insert.setGroupId(facilityGroup.getGroupId());
+      }
+      // 施設グループ名
+      facilityGroup.setGroupName(facility_group_name.getValue());
+      // 施設を更新
+      Database.commit();
+    } catch (Exception ex) {
+      Database.rollback();
+      logger.error("Exception", ex);
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * 施設グループ名を取得します。 <BR>
+   * 
+   * @return
+   */
+  public ALStringField getFacilityGroupName() {
+    return facility_group_name;
+  }
+
+  /**
+   * 施設グループIdを取得します。 <BR>
+   * 
+   * @return
+   */
+  public String getFacilityGroupId() {
+    return facilitygroupid;
+  }
+
+  /** 施設リストを取得します。 */
+  public List<FacilityResultData> getFacilityList() {
+    List<FacilityResultData> _facilityList =
+      new ArrayList<FacilityResultData>();
+    for (Object facility : facilityList) {
+      _facilityList.add((FacilityResultData) facility);
+    }
+    return _facilityList;
+  }
+}
