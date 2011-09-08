@@ -22,32 +22,17 @@
 <div class="message">依頼はありません。</div>
 #else
 #ALformheader('Workflow' $jslink $portlet)
-#ALajaxpageview('WorkflowScreen' $result)
-#ALtableheaderWide()
-<tr>
-#ALtdheadThin("#ALajaxsort('priority' '重要度' $result 'WorkflowScreen')")
-#ALtdheadThin("状態")
-#ALtdhead("#ALajaxsort('request_name' '表題' $result 'WorkflowScreen')")
-#ALtdheadThin("#ALajaxsort('price' '金額' $result 'WorkflowScreen')")
-#ALtdhead("#ALajaxsort('create_date' '作成日時' $result 'WorkflowScreen')")
-#ALtdheadThin("最終閲覧者")
-#ALtdheadThin("進捗")
-</tr>
+<table class="activityTable">
+<tbody>
 #foreach ($record in $result.List)
 <tr>
-#ALtdcellAtt("<img src='images/workflow/$!record.PriorityImage' alt='$!record.PriorityString'  title='$!record.PriorityString'/>" 'align="center"')
-#ALtdcellheaderAtt('nowrap="nowrap"')
-<span class="caution">#if($record.Progress.Value == "D") 差戻要確認 #elseif($record.Progress.Value == "A") 承認済み #else 決裁待ち #end</span>
-#ALtdcellfooter()
-#ALtdcellheader()
+<td>
+<span class="date">$!record.UpdateDateTime $!record.ClientName</span>
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowDetailScreen").addQueryData('mode','detail').addQueryData('entityid',$record.RequestId).addQueryData('prvid',$record.RequestId))', '$!portlet.ID', aipo.workflow.onLoadWorkflowDetail);">【$!record.CategoryName】#if($!record.RequestName != '') $!record.RequestName #end</a>
-#ALtdcellfooter()
-#ALtdcellAtt("$!{record.PriceStr}&nbsp;円" 'nowrap')
-#ALtdcell("$!record.CreateDate")
-#ALtdcell("$!record.LastUpdateUser")
-#ALtdcellAtt("$!record.StateString" 'nowrap align="center"')
+</td>
 </tr>
 #end
-#ALtablefooter()
+</tbody></table>
+#ALajaxpageviewFooter('WorkflowScreen' $result)
 #ALformfooter()
 #end

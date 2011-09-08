@@ -20,8 +20,10 @@
 package com.aimluck.eip.workflow;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
@@ -71,13 +73,23 @@ public class WorkflowResultData implements ALData {
   /** 最終閲覧者名 */
   protected ALStringField last_update_user;
 
+  /** 申請者名 */
+  protected ALStringField client_name;
+
   /** 添付ファイルリスト */
   private List<FileuploadBean> attachmentFileList = null;
 
+  /** 更新日時 */
+  private ALDateTimeField updateDate;
+
+  /** 更新日時 */
+  private ALDateTimeField updateDateTime;
+
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
     request_id = new ALNumberField();
     request_name = new ALStringField();
@@ -91,7 +103,11 @@ public class WorkflowResultData implements ALData {
     price = new ALNumberField();
     create_date = new ALStringField();
     last_update_user = new ALStringField();
+    client_name = new ALStringField();
     attachmentFileList = new ArrayList<FileuploadBean>();
+
+    updateDate = new ALDateTimeField("M月d日");
+    updateDateTime = new ALDateTimeField("H:mm");
   }
 
   /**
@@ -273,4 +289,38 @@ public class WorkflowResultData implements ALData {
     attachmentFileList = list;
   }
 
+  /**
+   * @return
+   */
+  public ALStringField getClientName() {
+    return client_name;
+  }
+
+  /**
+   * @param string
+   */
+  public void setClientName(String string) {
+    client_name.setValue(string);
+  }
+
+  /**
+   * @param field
+   */
+  public void setUpdateDateTime(Date date) {
+    if (date == null) {
+      return;
+    }
+    this.updateDate.setValue(date);
+    this.updateDateTime.setValue(date);
+  }
+
+  public ALDateTimeField getUpdateDateTime() {
+    ALDateTimeField today = new ALDateTimeField("M月d日");
+    today.setValue(new Date());
+    if (updateDate.toString().equals(today.toString())) {
+      return updateDateTime;
+    } else {
+      return updateDate;
+    }
+  }
 }

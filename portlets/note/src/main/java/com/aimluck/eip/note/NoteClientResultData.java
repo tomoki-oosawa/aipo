@@ -38,6 +38,9 @@ public class NoteClientResultData {
   /** 依頼者名 */
   private ALStringField client_name;
 
+  /** 依頼者所属 */
+  private ALStringField company_name;
+
   /** 用件 */
   private ALStringField subject;
 
@@ -53,15 +56,25 @@ public class NoteClientResultData {
   /** 新着／未読／既読の画像に対する説明文 */
   private String note_stat_image_description = null;
 
+  /** 作成日時 */
+  private ALDateTimeField acceptDate;
+
+  /** 作成日時 */
+  private ALDateTimeField acceptDateTime;
+
   /**
    *
    */
   public void initField() {
     note_id = new ALNumberField();
     client_name = new ALStringField();
+    company_name = new ALStringField();
     subject = new ALStringField();
     note_stat = new ALStringField();
     accept_date = new ALDateTimeField(NoteUtils.DATE_TIME_FORMAT);
+
+    acceptDate = new ALDateTimeField("M月d日");
+    acceptDateTime = new ALDateTimeField("H:mm");
   }
 
   /**
@@ -90,16 +103,6 @@ public class NoteClientResultData {
    */
   public String getSubject() {
     return ALCommonUtils.replaceToAutoCR(subject.toString());
-  }
-
-  /**
-   * @param field
-   */
-  public void setAcceptDate(Date date) {
-    if (date == null) {
-      return;
-    }
-    accept_date.setValue(date);
   }
 
   /**
@@ -173,4 +176,39 @@ public class NoteClientResultData {
     return note_stat_image_description;
   }
 
+  /**
+   * @param field
+   */
+  public void setCompanyName(String field) {
+    company_name.setValue(field);
+  }
+
+  /**
+   * @return
+   */
+  public String getCompanyName() {
+    return ALCommonUtils.replaceToAutoCR(company_name.toString());
+  }
+
+  /**
+   * @param field
+   */
+  public void setAcceptDate(Date date) {
+    if (date == null) {
+      return;
+    }
+    accept_date.setValue(date);
+    this.acceptDate.setValue(date);
+    this.acceptDateTime.setValue(date);
+  }
+
+  public ALDateTimeField getAcceptDateTime() {
+    ALDateTimeField today = new ALDateTimeField("M月d日");
+    today.setValue(new Date());
+    if (acceptDate.toString().equals(today.toString())) {
+      return acceptDateTime;
+    } else {
+      return acceptDate;
+    }
+  }
 }

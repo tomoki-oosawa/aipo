@@ -23,37 +23,18 @@
 #if ($result.List.size() == 0)
 <div class="message">受信した伝言メモは 0 件です</div>
 #else
-#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
-#ALajaxlistformheader("noteForm")
-##<input type="hidden" name="mode" value="update" />
-#if($!{result.NewNoteAllSum} > 0 || $!{result.UnreadReceivedNotesAllSum} > 0)<a href='$!utils.escapeXML($!jslink.getAction('controls.Maximize',$!portlet.getID()).addQueryData('mode','list').addQueryData('sort','note_stat').addQueryData('sorttype','asc'))'>#if($!{result.NewNoteAllSum} > 0) 新着：$!{result.NewNoteAllSum}件 #end #if($!{result.UnreadReceivedNotesAllSum} > 0) 未読：$!{result.UnreadReceivedNotesAllSum}件 #end</a> #end
-#ALajaxpageview('NoteScreen' $result)
-#ALtableheaderWide()
-<tr>
-#ALtdheadThin("#ALswitchCheckbox()")
-#ALtdheadThin("#ALajaxsort('note_stat' '状態' $result 'NoteScreen')")
-#ALtdheadW33("#ALajaxsort('client_name' '依頼者' $result 'NoteScreen')")
-#ALtdheadW33("#ALajaxsort('subject_type' '用件' $result 'NoteScreen')")
-#ALtdheadW33("#ALajaxsort('accept_date' '受付日時' $result 'NoteScreen')")
-</tr>
+#ALformheader('noteForm' $jslink $portlet)
+<table class="activityTable">
+<tbody>
 #foreach ($record in $result.List)
 <tr>
-#ALtdcellAtt("<input name='check$!record.NoteId' type='checkbox' value='$!record.NoteId'/>" 'align="center"')
-#if($record.NoteStat.toString() == "1" || $record.NoteStat.toString() == "2")
-#ALtdcellAtt("<img src='$record.NoteStatImage' alt='$!record.NoteStatImageDescription'  title='$!record.NoteStatImageDescription'/>" 'align="center"')
-#else
-#ALtdcell(' ')
-#end
-#ALtdcellheader()
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","NoteDetailScreen").addQueryData("entityid",$!record.NoteId))', '$!portlet.ID', aipo.note.onLoadDetail);">$!record.ClientName</a>
-#ALtdcellfooter()
-#ALtdcell($!record.Subject)
-#ALtdcell("$!{record.AcceptDate.Month}月$!{record.AcceptDate.Day}日 $!{record.AcceptDate.Hour}時$!{record.AcceptDate.Minute}分")
+<td>
+<span class="date">$!{record.AcceptDateTime} &nbsp; $!record.getCompanyName() $!record.ClientName</span>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","NoteDetailScreen").addQueryData("entityid",$!record.NoteId))', '$!portlet.ID', aipo.note.onLoadDetail);"> $!record.Subject </a>
+</td>
 </tr>
 #end
-#ALtablefooter()
-#ALbuttonheaderRight()
-#ALajaxbuttonCheckboxAction('既読にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','update')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
-#ALbuttonfooterRight()
+</tbody></table>
+#ALajaxpageviewFooter('NoteScreen' $result)
 #ALformfooter()
 #end

@@ -421,6 +421,10 @@ public class WorkflowSelectData extends
         }
       }
 
+      ALEipUser client = ALEipUtils.getALEipUser(record.getUserId().intValue());
+      rd.setClientName(client.getAliasName().getValue());
+      rd.setUpdateDateTime(record.getUpdateDate());
+
       rd.setStateString(order + "/" + (size - 1));
 
       rd.setLastUpdateUser(lastUpdateUser);

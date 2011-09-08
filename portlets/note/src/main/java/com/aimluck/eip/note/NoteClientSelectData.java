@@ -140,6 +140,9 @@ public class NoteClientSelectData extends
       rd.setClientName(ALCommonUtils.compressString(
         record.getClientName(),
         getStrLength()));
+      rd.setCompanyName(ALCommonUtils.compressString(
+        record.getCompanyName(),
+        getStrLength()));
       rd.setNoteStat(map.getNoteStat());
       rd.setAcceptDate(record.getAcceptDate());
 
@@ -213,7 +216,7 @@ public class NoteClientSelectData extends
   }
 
   /**
-   * 検索条件を設定した Criteria を返す． 
+   * 検索条件を設定した Criteria を返す．
    * 
    * @param rundata
    * @return
