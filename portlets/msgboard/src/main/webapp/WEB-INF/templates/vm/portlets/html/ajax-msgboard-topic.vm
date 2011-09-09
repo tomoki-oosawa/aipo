@@ -29,25 +29,37 @@
 #ALselectfooter()
 #ALtditemfooter()
 #ALtablefooter()
-#if ($result.List.size() == 0)
-<div class="message">指定された条件に該当するトピックはありません。</div>
+
+#set($flag = true)
+#if($result.List.size() == 0)
+<div class="message" style="padding-left:12px;">指定された条件に該当するトピックはありません。</div>
 #else
-#ALformheader('Msgboard' $jslink $portlet)
+<div class="p">
 #ALajaxpageview('MsgboardTopicScreen' $result)
-#ALtableheaderWide()
-<tr>
-#ALtdhead("#ALajaxsort('topic_name' 'トピック名' $result 'MsgboardTopicScreen')")
-#ALtdheadThin("#ALajaxsort('update_date' '更新日' $result 'MsgboardTopicScreen')")
-</tr>
+</div>
+<div class="p clearfix">
+<table class="rowTable wide">
 #foreach ($record in $result.List)
-<tr>
-#ALtdcellheader()
+<tr #if($flag) class="even" #end>
+<td width="20%" nowrap="nowrap">$!{record.UpdateDate.Year}年$!{record.UpdateDate.Month}月$!{record.UpdateDate.Day}日 $!{record.UpdateDate.DayOfWeek}</td>
+<td width="1%" style="padding:1px 3px 1px 0px;"><img src="images/icon/icon_add.gif" width="16" height="16" /></td>
+<td width="30%">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicDetailScreen").addQueryData("entityid",$record.TopicId))', '$!portlet.ID', aipo.msgboard.onLoadMsgboardDetail);">$!record.TopicName #if($record.ReplyCount.toString() != "0")（$record.ReplyCount）#end</a>
-#if($record.isNew()) &nbsp;&nbsp;<img src="images/msgboard/msgboard_new_topic.gif" alt="新着" title="新着" /> #end
-#ALtdcellfooter()
-#ALtdcellAtt("$!{record.UpdateDate.Month}月$!{record.UpdateDate.Day}日$!{record.UpdateDate.Hour}時$!{record.UpdateDate.Minute}分" 'nowrap')
-</tr>
+</td>
+<td style="padding:1px 0px 1px 5px;">
+#if ($!record.CategoryId.toString() != "1")
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardCategoryDetailScreen").addQueryData("entityid",$!record.CategoryId))');">$!record.CategoryName</a>
+#if(! ${record.isPublic()})
+<img class="img_icon" src="images/msgboard/msgboard_secret.gif" alt="非公開" title="非公開" />
 #end
-#ALtablefooter()
-#ALformfooter()
+#else
+$!record.CategoryName
+#end
+</td>
+<td style="padding:1px 0px 1px 5px; white-space:nowrap;">$!{record.OwnerName}</td>
+</tr>
+#if($flag) #set($flag = false) #else #set($flag = true) #end
+#end
+</table>
+</div>
 #end
