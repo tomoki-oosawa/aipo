@@ -12,14 +12,14 @@ UPDATE `eip_m_addressbook_company` SET `company_name` = '', `company_name_kana` 
 --- create new table
 CREATE TABLE eip_m_facility_group
 (
-    `group_id` int(11) int(11) NOT NULL AUTO_INCREMENT,
+    `group_id` int(11) NOT NULL AUTO_INCREMENT,
     `group_name` varchar (64) COLLATE utf8_unicode_ci,
     PRIMARY KEY (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE eip_m_facility_group_map
 (
-    `id` int(11) int(11) NOT NULL AUTO_INCREMENT,
+    `id` int(11) NOT NULL AUTO_INCREMENT,
     `facility_id` int(11),
     `group_id` int(11),
     PRIMARY KEY (`id`)

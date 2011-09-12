@@ -929,14 +929,14 @@ INSERT INTO `turbine_user_group_role` VALUES (1,2,1,1),(2,1,1,1),(3,1,1,2),(4,3,
 
 CREATE TABLE eip_m_facility_group
 (
-    `group_id` int(11) not null,
+    `group_id` int(11) NOT NULL AUTO_INCREMENT,
     `group_name` varchar (64) COLLATE utf8_unicode_ci,
     PRIMARY KEY (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE eip_m_facility_group_map
 (
-    `id` int(11) not null,
+    `id` int(11) NOT NULL AUTO_INCREMENT,
     `facility_id` int(11),
     `group_id` int(11),
     PRIMARY KEY (`id`)
