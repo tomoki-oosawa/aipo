@@ -51,10 +51,17 @@
 <tr #if($flag) class="even" #end>
 <td width="20%" nowrap="nowrap">${record.TitleDate}</td>
 <td width="1%" style="padding:1px 3px 1px 0px;"><img src="images/icon/icon_add.gif" width="16" height="16" /></td>
-<td width="40%">
+<td width="30%">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData("entityid",$record.EntryId))', '$!portlet.ID', aipo.blog.onLoadBlogDetailDialog );">${record.Title} #if($record.CommentsNum > 0)（$record.CommentsNum）#end</a>
 </td>
-<td style="padding:1px 0px 1px 5px;"><a href="$!utils.escapeXML($!jslink.getAction('controls.Maximize',$!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1').addQueryData('view_uid',${record.OwnerId}).addQueryData('view_month', 'none'))">${record.OwnerName}</a></td>
+<td style="padding:1px 0px 1px 5px;">
+#if ($!record.ThemaId.toString() != "1")
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogThemaDetailScreen").addQueryData("entityid",$!record.ThemaId))');">$!record.ThemaName</a>
+#else
+$!record.ThemaName
+#end
+</td>
+<td style="padding:1px 0px 1px 5px; white-space:nowrap;"><a href="$!utils.escapeXML($!jslink.getAction('controls.Maximize',$!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1').addQueryData('view_uid',${record.OwnerId}).addQueryData('view_month', 'none'))">${record.OwnerName}</a></td>
 </tr>
 #if($flag) #set($flag = false) #else #set($flag = true) #end
 #end
@@ -73,8 +80,15 @@
 <tr #if($flag2) class="even" #end>
 <td width="20%" nowrap="nowrap">${record2.TitleDate}</td>
 <td width="1%" style="padding:1px 3px 1px 0px;"><img src="images/icon/icon_add.gif" width="16" height="16" /></td>
-<td width="40%"><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData("entityid",$record2.EntryId).addQueryData('view_uid',${record2.OwnerId}))','$!portlet.ID',aipo.blog.onLoadBlogCommentDialog);">${record2.Title} （${record2.CommentsNum}）</a></td>
-<td style="padding:1px 0px 1px 5px;"><a href="$!utils.escapeXML($!jslink.getAction('controls.Maximize',$!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1').addQueryData('view_uid',${record2.OwnerId}).addQueryData('view_month', 'none'))">${record2.OwnerName}</a></td>
+<td width="30%"><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData("entityid",$record2.EntryId).addQueryData('view_uid',${record2.OwnerId}))','$!portlet.ID',aipo.blog.onLoadBlogCommentDialog);">${record2.Title} （${record2.CommentsNum}）</a></td>
+<td style="padding:1px 0px 1px 5px;">
+#if ($!record2.ThemaId.toString() != "1")
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogThemaDetailScreen").addQueryData("entityid",$!record2.ThemaId))');">$!record2.ThemaName</a>
+#else
+$!record2.ThemaName
+#end
+</td>
+<td style="padding:1px 0px 1px 5px; white-space:nowrap;"><a href="$!utils.escapeXML($!jslink.getAction('controls.Maximize',$!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1').addQueryData('view_uid',${record2.OwnerId}).addQueryData('view_month', 'none'))">${record2.OwnerName}</a></td>
 </tr>
 #if($flag2) #set($flag2 = false) #else #set($flag2 = true) #end
 #end

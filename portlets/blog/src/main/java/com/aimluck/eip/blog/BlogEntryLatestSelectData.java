@@ -55,7 +55,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ブログエントリー検索データを管理するクラスです。 <BR>
- *
+ * 
  */
 public class BlogEntryLatestSelectData extends
     ALAbstractSelectData<EipTBlogEntry, EipTBlogEntry> implements ALData {
@@ -84,7 +84,7 @@ public class BlogEntryLatestSelectData extends
   private final int MAX_COMMENT_HISTORY_COUNT = 20;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -186,6 +186,8 @@ public class BlogEntryLatestSelectData extends
       if (list != null && list.size() > 0) {
         rd.setCommentsNum(list.size());
       }
+      rd.setThemaId(entry.getEipTBlogThema().getThemaId().intValue());
+      rd.setThemaName(entry.getEipTBlogThema().getThemaName());
       commentHistoryList.add(rd);
     }
     // コメント日時の新しい順に並び替え
@@ -200,7 +202,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -226,7 +228,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -239,7 +241,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    */
@@ -278,7 +280,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -290,7 +292,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    */
@@ -309,7 +311,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * エントリーの総数を返す． <BR>
-   *
+   * 
    * @return
    */
   public int getEntrySum() {
@@ -322,7 +324,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * @return
-   *
+   * 
    */
   @Override
   protected Attributes getColumnMap() {
@@ -332,7 +334,7 @@ public class BlogEntryLatestSelectData extends
   }
 
   /**
-   *
+   * 
    * @param id
    * @return
    */
@@ -349,7 +351,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * TitleDateの新しい順に並び替える。
-   *
+   * 
    * @param type
    * @param name
    * @return
@@ -375,7 +377,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * 引数dateの日時からday日前の日時を返します。
-   *
+   * 
    * @param date
    * @param day
    */
@@ -389,7 +391,7 @@ public class BlogEntryLatestSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
   @Override

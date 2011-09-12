@@ -32,7 +32,7 @@
 
 #set($flag = true)
 #if($result.List.size() == 0)
-<div class="message" style="padding-left:12px;">指定された条件に該当するトピックはありません。</div>
+<div class="message">指定された条件に該当するトピックはありません。</div>
 #else
 <div class="p">
 #ALajaxpageview('MsgboardTopicScreen' $result)

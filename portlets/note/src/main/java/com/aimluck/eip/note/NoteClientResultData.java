@@ -35,6 +35,12 @@ public class NoteClientResultData {
   /** 伝言メモ ID */
   private ALNumberField note_id;
 
+  /** 送信元ユーザ ID（アカウント ID） */
+  private ALStringField src_user_id;
+
+  /** 送信元ユーザ名 */
+  private ALStringField src_user_fullname;
+
   /** 依頼者名 */
   private ALStringField client_name;
 
@@ -68,6 +74,8 @@ public class NoteClientResultData {
   public void initField() {
     note_id = new ALNumberField();
     client_name = new ALStringField();
+    src_user_id = new ALStringField();
+    src_user_fullname = new ALStringField();
     company_name = new ALStringField();
     subject = new ALStringField();
     note_stat = new ALStringField();
@@ -211,4 +219,35 @@ public class NoteClientResultData {
       return acceptDate;
     }
   }
+
+  /**
+   * @param field
+   */
+  public void setSrcUserId(String field) {
+    src_user_id.setValue(field);
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getSrcUserId() {
+    return src_user_id;
+  }
+
+  /**
+   * 
+   * @param field
+   */
+  public void setSrcUserFullName(String field) {
+    src_user_fullname.setValue(field);
+  }
+
+  /**
+   * 
+   * @return
+   */
+  public ALStringField getSrcUserFullName() {
+    return src_user_fullname;
+  }
+
 }

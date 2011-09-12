@@ -178,6 +178,12 @@ public class NoteClientSelectData extends
         rd.setNoteStatImageDescription("既読");
       }
 
+      ALEipUser user =
+        ALEipUtils
+          .getALEipUser(Integer.valueOf(record.getOwnerId()).intValue());
+      rd.setSrcUserId(record.getOwnerId());
+      rd.setSrcUserFullName(user.getAliasName().getValue());
+
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);
