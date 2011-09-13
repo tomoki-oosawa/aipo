@@ -42,11 +42,10 @@
 #foreach ($record in $result.List)
 <tr #if($flag) class="even" #end>
 <td width="20%" nowrap="nowrap">$!{record.UpdateDate.Year}年$!{record.UpdateDate.Month}月$!{record.UpdateDate.Day}日 $!{record.UpdateDate.DayOfWeek}</td>
-<td width="1%" style="padding:1px 3px 1px 0px;"><img src="images/icon/icon_add.gif" width="16" height="16" /></td>
-<td width="30%">
+<td width="40%">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicDetailScreen").addQueryData("entityid",$record.TopicId))', '$!portlet.ID', aipo.msgboard.onLoadMsgboardDetail);">$!record.TopicName #if($record.ReplyCount.toString() != "0")（$record.ReplyCount）#end</a>
 </td>
-<td style="padding:1px 0px 1px 5px;">
+<td width="30%" style="padding:1px 0px 1px 5px;">
 #if ($!record.CategoryId.toString() != "1")
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardCategoryDetailScreen").addQueryData("entityid",$!record.CategoryId))');">$!record.CategoryName</a>
 #if(! ${record.isPublic()})
@@ -56,7 +55,7 @@
 $!record.CategoryName
 #end
 </td>
-<td style="padding:1px 0px 1px 5px; white-space:nowrap;">$!{record.OwnerName}</td>
+<td width="10%" style="padding:1px 0px 1px 5px; white-space:nowrap;">$!{record.OwnerName}</td>
 </tr>
 #if($flag) #set($flag = false) #else #set($flag = true) #end
 #end
