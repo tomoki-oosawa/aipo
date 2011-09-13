@@ -136,7 +136,7 @@ public class BlogEntryLatestSelectData extends
 
   private void loadCommentHistoryList(RunData rundata) throws Exception {
     commentHistoryList = new ArrayList<BlogEntryResultData>();
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日（EE）");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月d日（EE）");
     Integer thisUserId = Integer.valueOf(uid);
     Object beforeEntryId = null;
 
@@ -263,7 +263,7 @@ public class BlogEntryLatestSelectData extends
       rd.setThemaName(record.getEipTBlogThema().getThemaName());
       rd.setAllowComments("T".equals(record.getAllowComments()));
 
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日（EE）");
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月d日（EE）");
       rd.setTitleDate(sdf.format(record.getCreateDate()));
 
       List<?> list = record.getEipTBlogComments();
@@ -361,8 +361,8 @@ public class BlogEntryLatestSelectData extends
     com = new Comparator<BlogEntryResultData>() {
       @Override
       public int compare(BlogEntryResultData obj0, BlogEntryResultData obj1) {
-        String date0 = (obj0).getTitleDate().toString();
-        String date1 = (obj1).getTitleDate().toString();
+        Date date0 = toDate((obj0).getTitleDate().toString());
+        Date date1 = toDate((obj1).getTitleDate().toString());
         if (date0.compareTo(date1) < 0) {
           return 1;
         } else if (date0.equals(date1)) {
@@ -373,6 +373,25 @@ public class BlogEntryLatestSelectData extends
       }
     };
     return com;
+  }
+
+  /**
+   * 日付文字列をjava.util.Date型へ変換します。
+   * 
+   * @param str
+   *          変換対象の文字列
+   * @return 変換後のjava.util.Dateオブジェクト
+   */
+  public static Date toDate(String str) {
+    try {
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日（EE）");
+      // parseメソッドでDate型に変換します。
+      Date date = sdf.parse(str);
+      return date;
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
   }
 
   /**

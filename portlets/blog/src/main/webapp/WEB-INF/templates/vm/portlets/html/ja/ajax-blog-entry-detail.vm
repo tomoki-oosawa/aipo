@@ -34,7 +34,7 @@ $!{result.Detail.ThemaName}
 #ALtditemheader()
 <div class="clearfix">
 <h3>$!{result.Detail.Title}</h3>
-<div class="alignleft">投稿日：$!{result.Detail.CreateDate}</div>
+<div class="alignleft">投稿日：$!{result.Detail.CreateDateAlternative.Year}年$!{result.Detail.CreateDateAlternative.Month}月$!{result.Detail.CreateDateAlternative.Day}日$!{result.Detail.CreateDateAlternative.Hour}時$!{result.Detail.CreateDateAlternative.Minute}分</div>
 <div class="alignright">
 #if($!result.isMatch($!{result.UserId} , $!{result.Detail.OwnerId.Value}))
 #ALbutton("eventSubmit_doBlog_entry_delete" "削除する" "aipo.blog.delBlogEntry(this,'$indicator_id','$!{portlet.ID}');")
@@ -77,7 +77,7 @@ $!{result.Detail.Note}
 <div class="clearfix">
 <div class="alignleft">
 投稿者：<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1').addQueryData('view_uid',${record.OwnerId}).addQueryData('action','controls.Maximize')">$!{record.OwnerName}</a>
-&nbsp;&nbsp;&nbsp;投稿日：$!{record.UpdateDate}
+&nbsp;&nbsp;&nbsp;投稿日：$!{record.UpdateDateAlternative.Year}年$!{record.UpdateDateAlternative.Month}月$!{record.UpdateDateAlternative.Day}日$!{record.UpdateDateAlternative.Hour}時$!{record.UpdateDateAlternative.Minute}分
 </div>
 <div class="alignright">
 #if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}))

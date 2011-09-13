@@ -58,8 +58,8 @@ import com.aimluck.eip.util.ALEipUtils;
  */
 public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(BlogWordSelectData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(BlogWordSelectData.class.getName());
 
   /** 検索ワード */
   private ALStringField searchWord;
@@ -165,7 +165,7 @@ public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
         dataRow,
         EipTBlogEntry.NOTE_COLUMN), 100));
 
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日（EE）");
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月d日（EE）");
       rd.setTitleDate(sdf.format((Date) Database.getFromDataRow(
         dataRow,
         EipTBlogEntry.CREATE_DATE_COLUMN)));
