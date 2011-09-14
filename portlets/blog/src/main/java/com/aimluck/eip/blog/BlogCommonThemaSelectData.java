@@ -282,7 +282,7 @@ public class BlogCommonThemaSelectData extends
           getStrLength()));
         entryrd.setNote(BlogUtils.compressString(entry.getNote(), 100));
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月d日（EE）");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月d日（EEE）");
         entryrd.setTitleDate(sdf.format(entry.getCreateDate()));
 
         entryrd.setOwnerId(entry.getOwnerId().intValue());

@@ -165,7 +165,7 @@ public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
         dataRow,
         EipTBlogEntry.NOTE_COLUMN), 100));
 
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月d日（EE）");
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月d日（EEE）");
       rd.setTitleDate(sdf.format((Date) Database.getFromDataRow(
         dataRow,
         EipTBlogEntry.CREATE_DATE_COLUMN)));

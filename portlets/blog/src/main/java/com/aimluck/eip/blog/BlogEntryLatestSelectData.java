@@ -136,7 +136,7 @@ public class BlogEntryLatestSelectData extends
 
   private void loadCommentHistoryList(RunData rundata) throws Exception {
     commentHistoryList = new ArrayList<BlogEntryResultData>();
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月d日（EE）");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月d日（EEE）");
     Integer thisUserId = Integer.valueOf(uid);
     Object beforeEntryId = null;
 
@@ -263,7 +263,7 @@ public class BlogEntryLatestSelectData extends
       rd.setThemaName(record.getEipTBlogThema().getThemaName());
       rd.setAllowComments("T".equals(record.getAllowComments()));
 
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月d日（EE）");
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月d日（EEE）");
       rd.setTitleDate(sdf.format(record.getCreateDate()));
 
       List<?> list = record.getEipTBlogComments();
