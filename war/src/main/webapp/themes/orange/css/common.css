@@ -2612,3 +2612,9 @@ padding:3px 0px 8px;
 font-size:10px;
 text-align:center;
 }
+
+.addUser {
+    padding:1px 3px 1px 16px;
+    background:url(../images/icon/plus_black.gif) no-repeat left center #ccc;
+    cursor:pointer;
+}
