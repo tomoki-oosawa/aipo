@@ -25,9 +25,14 @@ import java.util.Map;
 
 import net.sf.json.JSONObject;
 
+import org.apache.jetspeed.om.profile.Profile;
+import org.apache.jetspeed.portal.PortletInstance;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
+import org.apache.jetspeed.services.PsmlManager;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.persistence.PersistenceManager;
+import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -88,6 +93,17 @@ public class GadgetsAction extends ALBaseAction {
     } catch (Throwable ignore) {
       //
     }
+
+    if (mid == null) {
+      mid = ALApplicationService.getNextModuleId();
+      PortletInstance instance =
+        PersistenceManager.getInstance(portlet, rundata);
+      instance.setAttribute("mid", String.valueOf(mid));
+      Profile profile = ((JetspeedRunData) rundata).getProfile();
+      profile.setDocument(instance.getDocument());
+      PsmlManager.store(profile);
+    }
+
     boolean isActive = false;
     if (appId == null || url == null || mid == null) {
       isActive = false;
