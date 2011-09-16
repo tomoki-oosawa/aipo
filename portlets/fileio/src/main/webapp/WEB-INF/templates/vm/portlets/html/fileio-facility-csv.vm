@@ -34,14 +34,14 @@ function event_account_csv(button) {
   button.form.submit();
 }
 
-function event_account_csv_page(button,page) {
+function event_facility_csv_page(button,page) {
     disableButton(button.form);
     button.form.action = "$!jslink.getPortletById($!portlet.ID)" + '?' + button.name + '=1' + '&csvpage=' + page;
     button.form.submit();
 }
 
-function event_account_csv_regist(button) {
-  if(confirm('スケジュールを一括登録しますか？')) {
+function event_facility_csv_regist(button) {
+  if(confirm('施設を一括登録しますか？')) {
     disableButton(button.form);
     button.form.action = "$!jslink.getPortletById($!portlet.ID)" + '?' + button.name + '=1';
     button.form.submit();
@@ -117,8 +117,8 @@ function onChg2(obj){
 <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_form_csv','1')">ユーザーアカウント</option>
 <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_postcsv_form','1')">部署</option>
 <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_company_form','1')">アドレス(会社)帳</option>
-<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_form','1')">アドレス帳</option>
-<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doSchedule_form','1')" selected>スケジュール</option>
+<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_form','1')" selected>アドレス帳</option>
+<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doSchedule_form','1')">スケジュール</option>
 <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doFacility_form','1')">施設</option>
 </select>
 を一括登録します。
@@ -126,7 +126,7 @@ function onChg2(obj){
 
 <div style="margin:0px 0px 5px 0px">
 スケジュールをファイルから一括して登録できます。
-<a href="$jslink.getTemplate('FileIOScheduleCsvFileScreen')">こちらのテンプレート</a>の形式で作成したファイルをボタン [参照...] で指定し、
+<a href="$jslink.getTemplate('FileIOFacilityCsvFileScreen')">こちらのテンプレート</a>の形式で作成したファイルをボタン [参照...] で指定し、
 ボタン [読み込む] を押してください。<br />
 確認画面が表示された後に、ボタン [登録] を押すことで、登録が完了します。<br />
 ユーザー名 と 名前 の両方が指定されている場合は、ユーザー名を優先してユーザーを検索し、登録します。

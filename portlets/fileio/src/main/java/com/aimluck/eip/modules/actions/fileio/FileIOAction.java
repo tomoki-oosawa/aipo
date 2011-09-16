@@ -38,11 +38,15 @@ import com.aimluck.eip.fileio.FileIOAccountPostCsvUploadFormData;
 import com.aimluck.eip.fileio.FileIOAddressBookCsvFormData;
 import com.aimluck.eip.fileio.FileIOAddressBookCsvSelectData;
 import com.aimluck.eip.fileio.FileIOAddressBookCsvUploadFormData;
+import com.aimluck.eip.fileio.FileIOFacilityCsvFormData;
+import com.aimluck.eip.fileio.FileIOFacilityCsvSelectData;
+import com.aimluck.eip.fileio.FileIOFacilityCsvUploadFormData;
 import com.aimluck.eip.fileio.FileIOScheduleCsvFormData;
 import com.aimluck.eip.fileio.FileIOScheduleCsvSelectData;
 import com.aimluck.eip.fileio.FileIOScheduleCsvUploadFormData;
 import com.aimluck.eip.fileio.util.FileIOAccountCsvUtils;
 import com.aimluck.eip.fileio.util.FileIOAddressBookCsvUtils;
+import com.aimluck.eip.fileio.util.FileIOFacilityCsvUtils;
 import com.aimluck.eip.fileio.util.FileIOScheduleCsvUtils;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.services.storage.ALStorageService;
@@ -57,8 +61,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class FileIOAction extends ALBaseAction {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(FileIOAction.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(FileIOAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
@@ -1079,4 +1083,186 @@ public class FileIOAction extends ALBaseAction {
 
   }
 
+  /**
+   * 単体施設の一括入力 <BR>
+   * 
+   * @param rundata
+   * @param context
+   */
+  public void doFacility_form(RunData rundata, Context context) {
+    try {
+      FileIOFacilityCsvFormData formData = new FileIOFacilityCsvFormData();
+      formData.initField();
+      formData.doViewForm(this, rundata, context);
+      setTemplate(rundata, "fileio-facility-csv");
+    } catch (Exception ex) {
+      logger.error("[FacilityAction] Exception.", ex);
+      ALEipUtils.redirectDBError(rundata);
+    }
+  }
+
+  /**
+   * 施設の一括入力する際のファイルアップロード
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
+  public void doFacility_upload_csv(RunData rundata, Context context)
+      throws Exception {
+    FileIOFacilityCsvUploadFormData formData =
+      new FileIOFacilityCsvUploadFormData();
+    formData.initField();
+    /* ファイルのアップロード */
+    ALCSVUtils.csvUpload(rundata, context, this, formData);
+    context.put("temp_folder", formData.getTempFolderIndex());
+    List<String> sequency = new ArrayList<String>();
+    sequency.add("4");
+    sequency.add("6");
+    sequency.add("5");
+    sequency.add("7");
+    sequency.add("2");
+    sequency.add("1");
+    sequency.add("3");
+    sequency.add("0");
+    sequency.add("8");
+    ALCSVUtils.setSequency(rundata, context, sequency);
+    ALEipUtils.setTemp(rundata, context, "is_autotime", rundata
+      .getParameters()
+      .getString("autotime_flg", "0"));
+    doFacility_list_csv(rundata, context, formData.getTempFolderIndex());
+  }
+
+  /**
+   * 読み込んだ内容をリスト表示 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @param folderIndex
+   * @throws Exception
+   */
+  public void doFacility_list_csv(RunData rundata, Context context,
+      String folderIndex) throws Exception {
+    FileIOFacilityCsvSelectData listData = new FileIOFacilityCsvSelectData();
+    listData.initField();
+    listData.setTempFolderIndex(folderIndex);
+    /* リストの作成 */
+    ALCSVUtils.makeList(rundata, context, this, listData);
+    setTemplate(rundata, "fileio-facility-csv");
+  }
+
+  /**
+   * 読み込んだ内容からエラーが発生した件のみリスト表示 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
+  public void doFacility_list_csv_error(RunData rundata, Context context)
+      throws Exception {
+    FileIOFacilityCsvSelectData listData = new FileIOFacilityCsvSelectData();
+    listData.initField();
+    listData.setTempFolderIndex(rundata
+      .getParameters()
+      .getString("temp_folder"));
+    ALCSVUtils.makeErrorList(rundata, context, this, listData);
+    listData.setNotErrorCount(Integer.parseInt(ALEipUtils.getTemp(
+      rundata,
+      context,
+      "not_error_count")));
+    context.put("validateError", true);
+    setTemplate(rundata, "fileio-facility-csv");
+  }
+
+  /**
+   * 読み込んだ内容をリスト表示 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @param folderIndex
+   * @throws Exception
+   */
+  public void doFacility_list_csv_page(RunData rundata, Context context)
+      throws Exception {
+    FileIOFacilityCsvSelectData listData = new FileIOFacilityCsvSelectData();
+    listData.initField();
+    listData.setTempFolderIndex(rundata
+      .getParameters()
+      .getString("temp_folder"));
+    context
+      .put("temp_folder", rundata.getParameters().getString("temp_folder"));
+    ALCSVUtils.makeListPage(rundata, context, this, listData);
+    setTemplate(rundata, "fileio-facility-csv");
+  }
+
+  /**
+   * CSVファイルからデータベースへの登録 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
+  public void doFacility_insert_csv(RunData rundata, Context context)
+      throws Exception {
+    int not_error = 0;
+    String temp_folder_index = rundata.getParameters().getString("temp_folder");
+    String filepath =
+      FileIOFacilityCsvUtils.getFacilityCsvFolderName(temp_folder_index)
+        + ALStorageService.separator()
+        + FileIOFacilityCsvUtils.FOLDER_TMP_FOR_USERINFO_CSV_FILENAME;
+    ALCsvTokenizer reader = new ALCsvTokenizer();
+    if (!reader.init(filepath)) {
+      return;
+    }
+    List<String> sequency = ALCSVUtils.getSequency(rundata, context);
+    String token;
+    int i, j;
+    while (reader.eof != -1) {
+      FileIOFacilityCsvFormData formData = new FileIOFacilityCsvFormData();
+      formData.initField();
+      for (j = 0; j < sequency.size(); j++) {
+        token = reader.nextToken();
+        i = Integer.parseInt(sequency.get(j));
+        formData.addItemToken(token, i);
+        if (reader.eof == -1) {
+          break;
+        }
+        if (reader.line) {
+          break;
+        }
+      }
+      while ((!reader.line) && (reader.eof != -1)) {
+        reader.nextToken();
+      }
+      if (reader.eof == -1 && j == 0) {
+        break;
+      }
+      // カンマ不足対策
+      for (j++; j < sequency.size(); j++) {
+        i = Integer.parseInt(sequency.get(j));
+        formData.addItemToken("", i);
+      }
+      /** データベースから読み取る場合 */
+      try {
+        if (formData.getFacilityName().toString().equals("")) {
+          continue;
+        }
+        if (formData.getNote().toString().equals("")) {
+          continue;
+        }
+      } catch (Exception e) {
+        continue;
+      }
+    }
+    ALEipUtils.setTemp(rundata, context, "not_error_count", Integer
+      .toString(not_error));
+    int error_count =
+      Integer.parseInt(ALEipUtils.getTemp(rundata, context, "error_count"));
+    if (error_count > 0) {
+      doFacility_list_csv_error(rundata, context);
+    } else {
+      doFacility_form(rundata, context);
+    }
+
+  }
 }

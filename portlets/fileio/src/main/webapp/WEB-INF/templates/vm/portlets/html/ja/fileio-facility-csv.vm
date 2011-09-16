@@ -34,14 +34,14 @@ function event_account_csv(button) {
   button.form.submit();
 }
 
-function event_account_csv_page(button,page) {
+function event_facility_csv_page(button,page) {
     disableButton(button.form);
     button.form.action = "$!jslink.getPortletById($!portlet.ID)" + '?' + button.name + '=1' + '&csvpage=' + page;
     button.form.submit();
 }
 
-function event_account_csv_regist(button) {
-  if(confirm('スケジュールを一括登録しますか？')) {
+function event_facility_csv_regist(button) {
+  if(confirm('施設を一括登録しますか？')) {
     disableButton(button.form);
     button.form.action = "$!jslink.getPortletById($!portlet.ID)" + '?' + button.name + '=1';
     button.form.submit();
@@ -117,21 +117,21 @@ function onChg2(obj){
 <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_form_csv','1')">ユーザーアカウント</option>
 <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_postcsv_form','1')">部署</option>
 <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_company_form','1')">アドレス(会社)帳</option>
-<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_form','1')">アドレス帳</option>
-<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doSchedule_form','1')" selected>スケジュール</option>
+<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_form','1')" selected>アドレス帳</option>
+<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doSchedule_form','1')">スケジュール</option>
 <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doFacility_form','1')">施設</option>
 </select>
 を一括登録します。
 </form>
 
 <div style="margin:0px 0px 5px 0px">
-スケジュールをファイルから一括して登録できます。
-<a href="$jslink.getTemplate('FileIOScheduleCsvFileScreen')">こちらのテンプレート</a>の形式で作成したファイルをボタン [参照...] で指定し、
+施設をファイルから一括して登録できます。
+<a href="$jslink.getTemplate('FileIOFacilityCsvFileScreen')">こちらのテンプレート</a>の形式で作成したファイルをボタン [参照...] で指定し、
 ボタン [読み込む] を押してください。<br />
 確認画面が表示された後に、ボタン [登録] を押すことで、登録が完了します。<br />
 ユーザー名 と 名前 の両方が指定されている場合は、ユーザー名を優先してユーザーを検索し、登録します。
 </div>
-<form name="readcsv" action="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_upload_csv','1')" method="post" enctype="multipart/form-data">
+<form name="readcsv" action="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doFacility_upload_csv','1')" method="post" enctype="multipart/form-data">
 <input type="hidden" name="secid" value="$secid" />
 <input type="hidden" name="temp_folder" value="$temp_folder">
 #ALtableheaderWide()
@@ -156,14 +156,6 @@ function onChg2(obj){
 <option value="0">名前</option>
 <option value="1">予定</option>
 <option value="2">場所</option>
-<option value="3">内容</option>
-<option value="4" selected>開始日</option>
-<option value="5">終了日</option>
-<option value="6">開始時刻</option>
-<option value="7">終了時刻</option>
-<option value="8">ログインID</option>
-<option value="9">開始日時</option>
-<option value="10">終了日時</option>
 </select>
 </th>
 </tr>
@@ -181,14 +173,7 @@ function onChg2(obj){
 #set($showErrmsg1 = false)
 #set($showErrmsg2 = false)
 #set($showErrmsg3 = false)
-#set($showErrmsg4 = false)
-#set($showErrmsg5 = false)
-#set($showErrmsg6 = false)
-#set($showErrmsg7 = false)
-#set($showErrmsg8 = false)
-#set($showErrmsg9 = false)
-#set($showErrmsg10 = false)
-#set($showErrmsg11 = false)
+
 #foreach ($record in $result.List)
 #if($!record.User.AliasName.toString() == "")#set($showErrmsg1 = true)#end
 #if($!record.User.Name.toString() == "")#set($showErrmsg2 = true)#end
@@ -215,30 +200,6 @@ function onChg2(obj){
 #if($showErrmsg3)
 <li><span class="caution">（※3）&nbsp;スケジュール名が空白です</span></li>
 #end
-#if($showErrmsg4)
-<li><span class="caution">（※4）&nbsp;入力日時が正しく入力されてません。</span></li>
-#end
-#if($showErrmsg5)
-<li><span class="caution">（※5）&nbsp;開始日時が正しく入力されてません。</span></li>
-#end
-#if($showErrmsg6)
-<li><span class="caution">（※6）&nbsp;終了日時が正しく入力されてません。</span></li>
-#end
-#if($showErrmsg7)
-<li><span class="caution">（※7）&nbsp;終了日時は開始日時以降の日付を指定してください。</span></li>
-#end
-#if($showErrmsg8)
-<li><span class="caution">（※8）&nbsp;終了日は開始日と同じ日を指定してください。</span></li>
-#end
-#if($showErrmsg9)
-<li><span class="caution">（※9）&nbsp;予定は 50 文字以下で記入してください。</span></li>
-#end
-#if($showErrmsg10)
-<li><span class="caution">（※10）&nbsp;場所は 50 文字以下で記入してください。</span></li>
-#end
-#if($showErrmsg11)
-<li><span class="caution">（※11）&nbsp;予定は 1000 文字以下で記入してください。</span></li>
-#end
 </ul>
 #else
 <br>
@@ -259,22 +220,14 @@ function onChg2(obj){
 #ALtableheaderWide()
 <tr>
 <th nowrap="nowrap" class="head">登録の可否</th>
-<th nowrap="nowrap" class="head">名前</th>
-<th nowrap="nowrap" class="head">ログイン名</th>
-<th nowrap="nowrap" class="head">予定</th>
-<th nowrap="nowrap" class="head">場所</th>
-<th nowrap="nowrap" class="head">内容</th>
-<th nowrap="nowrap" class="head">開始日時</th>
-<th nowrap="nowrap" class="head">終了日時</th>
+<th nowrap="nowrap" class="head">施設名</th>
+<th nowrap="nowrap" class="head">メモ</th>
+<th nowrap="nowrap" class="head">施設グループ</th>
 </tr>
 #set($con = 0)
 #foreach ($record in $result.List)
 #set($Err = false)
-#if($!record.User.AliasName.toString() == "")#set($Err = true)#end
-#if($!record.User.Name.toString() == "")#set($Err = true)#end
-#if($!record.getName().toString() == "")#set($Err = true)#end
-#if($!record.getStartDate().toString() == "")#set($Err = true)#end
-#if($!record.getEndDate().toString() == "")#set($Err = true)#end
+#if($!record.getFacilityName().toString() == "")#set($Err = true)#end
 #set($con = $con +1)
 
 
@@ -283,7 +236,7 @@ function onChg2(obj){
 #if(!$record.IsError)可($!{record.LineCount}行目)#else <span class="caution">不可($!{record.LineCount}行目)</span> #end
 </td>
 <td nowrap="nowrap" class="item">
-#if($!record.User.AliasName.toString() != "")$!{record.User.AliasName}#else <span class="caution">※1</span> #end
+#if($!record.getFacilityName().toString() != "")$!{record.FacilityName}#else <span class="caution">※1</span> #end
 </td>
 <td nowrap="nowrap" class="item">
 #if($!record.User.Name.toString() != "")$!{record.User.Name}#else <span class="caution">※2</span> #end
@@ -318,9 +271,9 @@ function onChg2(obj){
 #elseif(($result.getErrorCount() >= $result.getLineCount()))
 #ALtdcellAtt("#ALbutton('eventSubmit_doSchedule_form' 'キャンセルする' 'event_account_csv(this)')" 'colspan="11" align="center"')
 #elseif($result.getErrorCount() > 0)
-#ALtdcellAtt("#ALbutton('eventSubmit_doSchedule_insert_csv' '正常な部分のみ登録する' 'event_account_csv_regist(this)')#ALbutton('eventSubmit_doSchedule_form' 'キャンセルする' 'event_account_csv(this)')" 'colspan="11" align="center"')
+#ALtdcellAtt("#ALbutton('eventSubmit_doFacility_insert_csv' '正常な部分のみ登録する' 'event_account_csv_regist(this)')#ALbutton('eventSubmit_doFacility_form' 'キャンセルする' 'event_account_csv(this)')" 'colspan="11" align="center"')
 #else
-#ALtdcellAtt("#ALbutton('eventSubmit_doSchedule_insert_csv' '登録する' 'event_account_csv_regist(this)')#ALbutton('eventSubmit_doSchedule_form' 'キャンセルする' 'event_account_csv(this)')" 'colspan="11" align="center"')
+#ALtdcellAtt("#ALbutton('eventSubmit_doSchedule_insert_csv' '登録する' 'event_account_csv_regist(this)')#ALbutton('eventSubmit_doFacility_form' 'キャンセルする' 'event_account_csv(this)')" 'colspan="11" align="center"')
 #end
 </tr>
 #ALtablefooter()
