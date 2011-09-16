@@ -119,7 +119,6 @@ function onChg2(obj){
 <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_company_form','1')">アドレス(会社)帳</option>
 <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_form','1')">アドレス帳</option>
 <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doSchedule_form','1')" selected>スケジュール</option>
-<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doFacility_form','1')">施設</option>
 </select>
 を一括登録します。
 </form>
