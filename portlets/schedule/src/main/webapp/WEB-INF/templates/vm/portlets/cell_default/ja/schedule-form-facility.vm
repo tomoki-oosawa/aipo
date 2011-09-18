@@ -37,7 +37,7 @@
 
 #if ($!{result.isRepeat()})
 <input type="hidden" name="repeat_type" value="$!{result.FormData.RepeatType}">
-#if ($!{result.FormData.RepeatType.toString()} == "W") 
+#if ($!{result.FormData.RepeatType.toString()} == "W")
 #if ($!{result.FormData.Week0.toString()} == "TRUE") <input type="hidden" name="week_0" value="TRUE"> #end
 #if ($!{result.FormData.Week1.toString()} == "TRUE") <input type="hidden" name="week_1" value="TRUE"> #end
 #if ($!{result.FormData.Week2.toString()} == "TRUE") <input type="hidden" name="week_2" value="TRUE"> #end
@@ -59,18 +59,18 @@
 <input type="hidden" name="end_date_date" value="$!{result.FormData.EndDateDate}">
 <input type="hidden" name="end_date_time" value="$!{result.FormData.EndDateTime}">
 
-#set($memberlist = $!result.getUsers($!result.SelectedGroup.Value))
+#set($facilitylist = $!result.getFacilities($!result.SelectedGroup.Value))
 <input type="hidden" name="selectedgroup" value="$!{result.SelectedGroup}">
 #set($usercount = 1)
 #set($membersize = $!{result.FormData.MemberList.size()})
 ##<input type="hidden" name="shareusers" value="#foreach($record in $!{result.MemberList})$!{record.Name}#if($usercount<$membersize),#set($usercount = $usercount + 1)#end#end">
 <input type="hidden" name="shareusers" value="#foreach($record in $!{result.FormData.MemberList})#if(! $!result.isContains($memberlist, $record))$!{record.Name}#if($usercount<$membersize),#set($usercount = $usercount + 1)#end#end#end">
 <input type="hidden" name="edit_flag" value="$!{result.FormData.EditFlag.toString()}">
-<input type="hidden" name="change_tmpreserve_flag" value="$!{result.FormData.ChangeTmpreserveFlag.toString()}"> 
+<input type="hidden" name="change_tmpreserve_flag" value="$!{result.FormData.ChangeTmpreserveFlag.toString()}">
 
 #ALcell_center_header($career)共有施設選択#ALcell_center_footer($career)
 #ALcell_hr($career '1')
-#if($memberlist.size() == 0)
+#if($facilitylist.size() == 0)
 施設が未登録です。
 #else
 
@@ -92,11 +92,11 @@ $currentPage/$pages
 #ALcell_hr($career '1')
 #end
 
-#foreach($record in $!{result.FacilityAllList})
+#foreach($record in $facilitylist)
 <input name="sharefac" type="checkbox" value="$!record.FacilityId" #if($!result.isContains($!{result.FormData.FacilityMemberList}, $record))checked#end>$!record.FacilityName#ALcell_br($career)
 #end
 #end
-	
+
 
 #if($result.PagesNum > 1)
 #set($pages = $result.PagesNum)

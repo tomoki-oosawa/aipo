@@ -48,7 +48,7 @@
 #ALcell_submit($career "eventSubmit_doSchedule_form_note" "次へ")
 #ALcell_submit($career "eventSubmit_doSchedule_form_group" "参加ﾕｰｻﾞｰ選択")
 #if(! $!{result.isSpan()})
-#ALcell_submit($career "eventSubmit_doSchedule_form_facility" "共有施設選択")
+#ALcell_submit($career "eventSubmit_doSchedule_form_facility_group" "共有施設選択")
 #end
 ##cell_submit($career 'eventSubmit_doSchedule_menu' 'ｷｬﾝｾﾙする')
 #ALcell_formfooter()

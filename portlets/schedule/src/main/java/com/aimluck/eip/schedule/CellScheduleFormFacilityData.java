@@ -27,6 +27,8 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALCellStringField;
+import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroup;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
@@ -44,9 +46,14 @@ public class CellScheduleFormFacilityData extends AbstractCellScheduleFormData {
 
   /** <code>logger</code> logger */
   @SuppressWarnings("unused")
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(CellScheduleFormFacilityData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(CellScheduleFormFacilityData.class.getName());
+
+  /** <code>groups</code> グループ */
+  private List<EipMFacilityGroup> facilities;
+
+  /** <code>group</code> 選択グループ */
+  private ALCellStringField selected_group;
 
   /** 表示行数 */
   private int rows_num = 10;
@@ -89,7 +96,17 @@ public class CellScheduleFormFacilityData extends AbstractCellScheduleFormData {
       }
     }
 
+    // 選択グループ
+    selected_group.setValue(rundata.getParameters().get("selectedgroup"));
+
     super.init(action, rundata, context);
+  }
+
+  @Override
+  public void initField() {
+    selected_group = new ALCellStringField();
+
+    super.initField();
   }
 
   @Override
@@ -159,12 +176,19 @@ public class CellScheduleFormFacilityData extends AbstractCellScheduleFormData {
    * @param groupname
    * @return
    */
-  public List<FacilityResultData> getFacilities() {
+  public List<FacilityResultData> getFacilities(String groupname) {
     List<FacilityResultData> facilityAllList =
       new ArrayList<FacilityResultData>();
     facilityAllList.addAll(FacilitiesUtils.getFacilityAllList());
 
-    int size = facilityAllList.size();
+    List<FacilityResultData> facilityList = new ArrayList<FacilityResultData>();
+    if ("all".equals(groupname)) {
+      facilityList = facilityAllList;
+    } else {
+      facilityList = FacilitiesUtils.getFacilityList(groupname);
+    }
+
+    int size = facilityList.size();
     setPageParam(size);
     int start = getStart();
     int rowsNum = this.getRowsNum();
@@ -176,10 +200,29 @@ public class CellScheduleFormFacilityData extends AbstractCellScheduleFormData {
       if (count >= size) {
         break;
       }
-      list.add(facilityAllList.get(count));
+      list.add(facilityList.get(count));
     }
 
     return list;
+  }
+
+  /**
+   * 繧ｰ繝ｫ繝ｼ繝励Μ繧ｹ繝医ｒ蜿門ｾ励＠縺ｾ縺�
+   * 
+   * @return
+   */
+  @Override
+  public List<EipMFacilityGroup> getFacilityGroupList() {
+    return facilities;
+  }
+
+  /**
+   * 驕ｸ謚槭＠縺溘げ繝ｫ繝ｼ繝励ｒ蜿門ｾ励＠縺ｾ縺�
+   * 
+   * @return
+   */
+  public ALCellStringField getSelectedGroup() {
+    return selected_group;
   }
 
   /**

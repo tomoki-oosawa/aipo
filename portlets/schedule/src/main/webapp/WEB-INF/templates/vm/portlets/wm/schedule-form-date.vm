@@ -469,7 +469,7 @@ function onChangeEndDate(form) {
 #end
 </ul>
 <p class="center">
-<input class="submit" name="eventSubmit_doSchedule_form_facility" type="submit" value="施設予約" />
+<input class="submit" name="eventSubmit_doSchedule_form_facility_group" type="submit" value="施設予約" />
 </p>
 #end
 

@@ -31,6 +31,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALCellStringField;
+import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroup;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -41,6 +42,7 @@ import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.schedule.beans.CellScheduleFormBean;
 import com.aimluck.eip.schedule.util.CellScheduleUtils;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
@@ -81,6 +83,9 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
   /** <code>groups</code> グループ */
   private List<ALEipGroup> groups;
 
+  /** <code>groups</code> グループ */
+  private List<EipMFacilityGroup> facilities;
+
   /** <code>isOwner</code> 所有者かどうか */
   private boolean is_owner;
 
@@ -112,6 +117,8 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
     is_owner = true;
 
     groups = ALEipUtils.getMyGroups(rundata);
+
+    facilities = Database.query(EipMFacilityGroup.class, null).fetchList();
 
     entity_id = ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
@@ -146,6 +153,7 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
   /*
    *
    */
+  @Override
   public void initField() {
     form_data = new CellScheduleFormBean();
     form_data.initField(tmpStart, tmpEnd, tmpView);
@@ -402,6 +410,15 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
    */
   public List<ALEipGroup> getGroupList() {
     return groups;
+  }
+
+  /**
+   * 繧ｰ繝ｫ繝ｼ繝励Μ繧ｹ繝医ｒ蜿門ｾ励＠縺ｾ縺�
+   * 
+   * @return
+   */
+  public List<EipMFacilityGroup> getFacilityGroupList() {
+    return facilities;
   }
 
   public int getInt(long num) {

@@ -20,15 +20,13 @@
 ## ---------------------------------------------------------------------------
 #parse("/portlets/smartphone_default/ja/schedule-form-title.vm")
 
-#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_facility','1').addQueryData('selectedgroup',$!{result.SelectedGroup})")
 #set($linklist = [["スケジュールへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
-#set($event_submit = "eventSubmit_doSchedule_form")
+#set ($action_str = "次へ")
+#set ($event_submit = "eventSubmit_doSchedule_form_next")
 #ALcell_linklist_iphone($career $linklist)
 #ALcell_contents_header($career)
-#ALcell_errmsg($career $errmsgs)
-#if($errmsgs && !($errmsgs.size() == 0))
 
-#end
+#ALcell_errmsg($career $errmsgs)
 #ALcell_formheader($career $jslink $portlet)
 #if($!{result.EntityId} && $!{result.EntityId} != 'new')
 <input type="hidden" name="entityid" value="$!{result.EntityId}">
@@ -61,50 +59,44 @@
 <input type="hidden" name="end_date_date" value="$!{result.FormData.EndDateDate}">
 <input type="hidden" name="end_date_time" value="$!{result.FormData.EndDateTime}">
 
-#set($memberlist = $!result.getFacilities($!result.SelectedGroup.Value))
-<input type="hidden" name="selectedgroup" value="$!{result.SelectedGroup}">
 #set($usercount = 1)
 #set($membersize = $!{result.FormData.MemberList.size()})
-##<input type="hidden" name="shareusers" value="#foreach($record in $!{result.MemberList})$!{record.Name}#if($usercount<$membersize),#set($usercount = $usercount + 1)#end#end">
-<input type="hidden" name="shareusers" value="#foreach($record in $!{result.FormData.MemberList})#if(! $!result.isContains($memberlist, $record))$!{record.Name}#if($usercount<$membersize),#set($usercount = $usercount + 1)#end#end#end">
+<input type="hidden" name="shareusers" value="#foreach($record in $!{result.FormData.MemberList})$!{record.Name}#if($usercount<$membersize),#set($usercount = $usercount + 1)#end#end">
+#set($facilitycount = 1)
+#set($fmembersize = $!{result.FormData.FacilityMemberList.size()})
+<input type="hidden" name="sharefacs" value="#foreach($record in $!{result.FormData.FacilityMemberList})$!{record.FacilityId}#if($facilitycount<$fmembersize),#set($facilitycount = $facilitycount + 1)#end#end">
+
 <input type="hidden" name="edit_flag" value="$!{result.FormData.EditFlag.toString()}">
 <input type="hidden" name="change_tmpreserve_flag" value="$!{result.FormData.ChangeTmpreserveFlag.toString()}">
 
-<h3>予約施設選択</h3>
+<h3>施設グループ選択</h3>
 <script type="text/javascript">
 
-function swapCheckbox(id) {
-  var checkbox = document.getElementById(id);
-  checkbox.checked = ! checkbox.checked;
+function formSubmit(value) {
+  var form = document.forms[0];
+  form.selectedgroup.value = value;
+  form.submit();
 }
 
 </script>
-#if($memberlist.size() == 0)
-施設が未登録です。
-#else
-
-#if($result.PagesNum > 1)
-#ALcell_pageview($career $link $result)
-#end
-
+<input name="eventSubmit_doSchedule_form_facility" type="hidden" value="1"/>
+<input name="selectedgroup" type="hidden" value="all"/>
 #ALcell_radius_header($career)
-#foreach($record in $memberlist)
 #ALcell_li_header($career)
-<a href="javascript:void(0);" onclick="swapCheckbox('checkbox_$!{record.FacilityId}');return false;">
-<input id="checkbox_$!{record.FacilityId}" name="sharefac" type="checkbox" class="checkbox" value="$!record.FacilityId" #if($!result.isContains($!{result.FormData.FacilityMemberList}, $record))checked#end>$!record.FacilityName
-</a>
+<a href="javascript:void(0);" onclick="formSubmit('all');return false;">全て</a>
+#ALcell_li_footer($career)
+#ALcell_radius_footer($career)
+
+#if($result.FacilityGroupList.size() > 0)
+<h3>グループ</h3>
+#ALcell_radius_header($career)
+#foreach( $record in $result.FacilityGroupList )
+#ALcell_li_header($career)
+<a href="javascript:void(0);" onclick="formSubmit('$!{record.GroupName}');return false;">$!record.GroupName</a>
 #ALcell_li_footer($career)
 #end
 #ALcell_radius_footer($career)
 #end
-
-
-#if($result.PagesNum > 1)
-#ALcell_pageview($career $link $result)
-#end
-
-
-#ALcell_submit($career "$event_submit" "追加する")
 #ALcell_formfooter()
 #ALcell_contents_footer($career)
 #ALcell_linklist_iphone($career $linklist)

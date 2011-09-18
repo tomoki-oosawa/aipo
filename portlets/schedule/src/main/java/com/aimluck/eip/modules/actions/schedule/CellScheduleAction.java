@@ -325,6 +325,29 @@ public class CellScheduleAction extends ALBaseAction {
    * @param rundata
    * @param context
    */
+  public void doSchedule_form_facility_group(RunData rundata, Context context) {
+    try {
+      CellScheduleFormGroupData formGroupData = new CellScheduleFormGroupData();
+      formGroupData.loadParameters(rundata, context);
+      formGroupData.initField();
+      if (formGroupData.doViewForm(this, rundata, context)) {
+        setTemplate(rundata, "schedule-form-facility-group");
+      } else {
+        setTemplate(rundata, "schedule-form-date");
+      }
+
+    } catch (Exception ex) {
+      logger.error("[CellScheduleAction] Exception.", ex);
+      ALEipUtils.redirectDBError(rundata);
+    }
+  }
+
+  /**
+   * 繧ｹ繧ｱ繧ｸ繝･繝ｼ繝ｫ逋ｻ骭ｲ縺ｮ繝輔か繝ｼ繝�ｒ陦ｨ遉ｺ縺吶ｋ
+   * 
+   * @param rundata
+   * @param context
+   */
   public void doSchedule_form_facility(RunData rundata, Context context) {
     try {
       CellScheduleFormFacilityData formFacilityData =
@@ -334,7 +357,7 @@ public class CellScheduleAction extends ALBaseAction {
       if (formFacilityData.doViewForm(this, rundata, context)) {
         setTemplate(rundata, "schedule-form-facility");
       } else {
-        setTemplate(rundata, "schedule-form-facility");
+        setTemplate(rundata, "schedule-form-facility-group");
       }
 
     } catch (Exception ex) {

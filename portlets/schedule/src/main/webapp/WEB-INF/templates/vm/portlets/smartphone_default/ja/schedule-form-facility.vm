@@ -61,7 +61,7 @@
 <input type="hidden" name="end_date_date" value="$!{result.FormData.EndDateDate}">
 <input type="hidden" name="end_date_time" value="$!{result.FormData.EndDateTime}">
 
-#set($memberlist = $!result.FacilityAllList)
+#set($memberlist = $!result.getFacilities($!result.SelectedGroup.Value))
 <input type="hidden" name="selectedgroup" value="$!{result.SelectedGroup}">
 #set($usercount = 1)
 #set($membersize = $!{result.FormData.MemberList.size()})
