@@ -65,11 +65,18 @@ import com.aimluck.eip.util.ALEipUtils;
 public class CellScheduleAction extends ALBaseAction {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(CellScheduleAction.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(CellScheduleAction.class.getName());
 
-  private final String[] weekday_str =
-    { "", "(日)", "(月)", "(火)", "(水)", "(木)", "(金)", "(土)" };
+  private final String[] weekday_str = {
+    "",
+    "(日)",
+    "(月)",
+    "(火)",
+    "(水)",
+    "(木)",
+    "(金)",
+    "(土)" };
 
   /**
    * 
@@ -160,7 +167,7 @@ public class CellScheduleAction extends ALBaseAction {
           || tmpCurrentTab.equals("weekly")
           || tmpCurrentTab.equals("monthly")
           || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-          .equals("weekly-group"))) {
+            .equals("weekly-group"))) {
         currentTab = "oneday";
       } else {
         currentTab = tmpCurrentTab;
@@ -343,7 +350,7 @@ public class CellScheduleAction extends ALBaseAction {
   }
 
   /**
-   * 繧ｹ繧ｱ繧ｸ繝･繝ｼ繝ｫ逋ｻ骭ｲ縺ｮ繝輔か繝ｼ繝�ｒ陦ｨ遉ｺ縺吶ｋ
+   * スケジュール登録のフォームを表示する．
    * 
    * @param rundata
    * @param context
@@ -834,7 +841,7 @@ public class CellScheduleAction extends ALBaseAction {
           || tmpCurrentTab.equals("weekly")
           || tmpCurrentTab.equals("monthly")
           || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-          .equals("weekly-group"))) {
+            .equals("weekly-group"))) {
         currentTab = "oneday";
       } else {
         currentTab = tmpCurrentTab;

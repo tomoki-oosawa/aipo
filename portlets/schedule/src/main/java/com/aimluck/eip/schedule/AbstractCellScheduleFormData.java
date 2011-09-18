@@ -413,7 +413,7 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
   }
 
   /**
-   * 繧ｰ繝ｫ繝ｼ繝励Μ繧ｹ繝医ｒ蜿門ｾ励＠縺ｾ縺�
+   * グループリストを取得します
    * 
    * @return
    */

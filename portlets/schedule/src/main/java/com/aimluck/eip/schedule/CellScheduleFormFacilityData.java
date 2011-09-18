@@ -207,7 +207,7 @@ public class CellScheduleFormFacilityData extends AbstractCellScheduleFormData {
   }
 
   /**
-   * 繧ｰ繝ｫ繝ｼ繝励Μ繧ｹ繝医ｒ蜿門ｾ励＠縺ｾ縺�
+   * グループリストを取得します
    * 
    * @return
    */
@@ -217,7 +217,7 @@ public class CellScheduleFormFacilityData extends AbstractCellScheduleFormData {
   }
 
   /**
-   * 驕ｸ謚槭＠縺溘げ繝ｫ繝ｼ繝励ｒ蜿門ｾ励＠縺ｾ縺�
+   * 選択したグループを取得します
    * 
    * @return
    */
