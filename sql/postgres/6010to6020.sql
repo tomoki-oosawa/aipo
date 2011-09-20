@@ -34,3 +34,8 @@ CREATE SEQUENCE pk_eip_m_facility_group_map INCREMENT 20;
 ALTER SEQUENCE pk_eip_m_facility_group OWNED BY EIP_M_FACILITY_GROUP.GROUP_ID;
 ALTER SEQUENCE pk_eip_m_facility_group_map OWNED BY EIP_M_FACILITY_GROUP_MAP.ID;
 --- 20110909
+
+--- 20110915
+--- modify table struct
+ALTER TABLE EIP_M_FACILITY ADD SORT INTEGER ;
+--- 20110915

@@ -27,6 +27,8 @@ import org.apache.jetspeed.util.template.JetspeedLinkFactory;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.facilities.FacilityChangeTurnFormData;
 import com.aimluck.eip.facilities.FacilityFormData;
 import com.aimluck.eip.facilities.FacilityGroupFormData;
 import com.aimluck.eip.facilities.FacilityGroupSelectData;
@@ -309,6 +311,54 @@ public class FacilitiesAction extends ALBaseAction {
       setTemplate(rundata, "facility-group-detail");
     } else {
       doFacility_list(rundata, context);
+    }
+  }
+
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
+  public void doFacility_change_turn_form(RunData rundata, Context context)
+      throws Exception {
+    // 施設情報の詳細画面や編集画面からの遷移時に，
+    // セッションに残る ENTITY_ID を削除する．
+    ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
+
+    FacilityChangeTurnFormData formData = new FacilityChangeTurnFormData();
+    formData.initField();
+
+    if (formData.doViewForm(this, rundata, context)) {
+      setTemplate(rundata, "facility-change-turn");
+    } else {
+      doFacility_list(rundata, context);
+    }
+  }
+
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
+  public void doFacility_change_turn_update(RunData rundata, Context context)
+      throws Exception {
+    FacilityChangeTurnFormData formData = new FacilityChangeTurnFormData();
+    formData.initField();
+
+    if (formData.doUpdate(this, rundata, context)) {
+      // データの更新に成功したとき
+      JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
+      rundata.setRedirectURI(jsLink.getPortletById(
+        ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+        "eventSubmit_doFacility_list",
+        "1").toString());
+      rundata.getResponse().sendRedirect(rundata.getRedirectURI());
+      JetspeedLinkFactory.putInstance(jsLink);
+      jsLink = null;
+    } else {
+      setTemplate(rundata, "facility-change-turn");
     }
   }
 }

@@ -171,21 +171,21 @@ public class CellScheduleFormFacilityData extends AbstractCellScheduleFormData {
   }
 
   /**
-   * 指定したグループ名のユーザーを取得します。
+   * 指定したグループIDのユーザーを取得します。
    * 
    * @param groupname
    * @return
    */
-  public List<FacilityResultData> getFacilities(String groupname) {
+  public List<FacilityResultData> getFacilities(String groupId) {
     List<FacilityResultData> facilityAllList =
       new ArrayList<FacilityResultData>();
     facilityAllList.addAll(FacilitiesUtils.getFacilityAllList());
 
     List<FacilityResultData> facilityList = new ArrayList<FacilityResultData>();
-    if ("all".equals(groupname)) {
+    if ("all".equals(groupId)) {
       facilityList = facilityAllList;
     } else {
-      facilityList = FacilitiesUtils.getFacilityList(groupname);
+      facilityList = FacilitiesUtils.getFacilityListByGroupId(groupId);
     }
 
     int size = facilityList.size();

@@ -12,10 +12,12 @@ public class _EipMFacility extends org.apache.cayenne.CayenneDataObject {
     public static final String CREATE_DATE_PROPERTY = "createDate";
     public static final String FACILITY_NAME_PROPERTY = "facilityName";
     public static final String NOTE_PROPERTY = "note";
+    public static final String SORT_PROPERTY = "sort";
     public static final String UPDATE_DATE_PROPERTY = "updateDate";
     public static final String USER_ID_PROPERTY = "userId";
     public static final String EIP_FACILITY_GROUP_ARRAY_PROPERTY = "eipFacilityGroupArray";
     public static final String EIP_MFACILITY_FACILITY_ID_PROPERTY = "eipMFacilityFacilityId";
+    public static final String FROM_EIP_MFACILITY_PROPERTY = "fromEipMFacility";
 
     public static final String FACILITY_ID_PK_COLUMN = "FACILITY_ID";
 
@@ -40,6 +42,14 @@ public class _EipMFacility extends org.apache.cayenne.CayenneDataObject {
     }
     public String getNote() {
         return (String)readProperty("note");
+    }
+    
+    
+    public void setSort(Integer sort) {
+        writeProperty("sort", sort);
+    }
+    public Integer getSort() {
+        return (Integer)readProperty("sort");
     }
     
     
@@ -78,6 +88,17 @@ public class _EipMFacility extends org.apache.cayenne.CayenneDataObject {
     }
     public List getEipMFacilityFacilityId() {
         return (List)readProperty("eipMFacilityFacilityId");
+    }
+    
+    
+    public void addToFromEipMFacility(com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroupMap obj) {
+        addToManyTarget("fromEipMFacility", obj, true);
+    }
+    public void removeFromFromEipMFacility(com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroupMap obj) {
+        removeToManyTarget("fromEipMFacility", obj, true);
+    }
+    public List getFromEipMFacility() {
+        return (List)readProperty("fromEipMFacility");
     }
     
     

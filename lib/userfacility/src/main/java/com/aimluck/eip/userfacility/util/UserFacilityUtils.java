@@ -41,8 +41,8 @@ public class UserFacilityUtils {
 
   /** logger */
   @SuppressWarnings("unused")
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(UserFacilityUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(UserFacilityUtils.class.getName());
 
   /**
    * 
@@ -81,6 +81,7 @@ public class UserFacilityUtils {
       statement.append("LEFT JOIN turbine_group as C ");
       statement.append("  on A.GROUP_ID = C.GROUP_ID ");
       statement.append("WHERE C.GROUP_NAME = #bind($groupname)");
+      statement.append("ORDER BY B.SORT");
 
       String query = statement.toString();
 
@@ -101,7 +102,9 @@ public class UserFacilityUtils {
         list.add(user);
       }
     } else {
-      List<EipMFacility> aList = Database.query(EipMFacility.class).fetchList();
+      List<EipMFacility> aList =
+        Database.query(EipMFacility.class).orderAscending(
+          EipMFacility.SORT_PROPERTY).fetchList();
       for (EipMFacility record : aList) {
         user = new UserFacilityLiteBean();
         user.initField();

@@ -76,7 +76,7 @@
 #ALcell_hr($career '1')
 ｸﾞﾙｰﾌﾟ#ALcell_br($career)
 #foreach( $record in $result.FacilityGroupList )
-<input name="selectedgroup" type="radio" value="$!{record.GroupName}">$!record.GroupName#ALcell_br($career)
+<input name="selectedgroup" type="radio" value="$!{record.GroupId}">$!record.GroupName#ALcell_br($career)
 #end
 #end
 #ALcell_hr($career '1')

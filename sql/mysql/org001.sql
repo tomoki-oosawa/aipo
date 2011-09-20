@@ -170,6 +170,7 @@ CREATE TABLE `eip_m_facility` (
   `user_id` int(11) NOT NULL,
   `facility_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `note` text COLLATE utf8_unicode_ci,
+  `sort` int(11) DEFAULT NULL,
   `create_date` date DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
   PRIMARY KEY (`facility_id`)

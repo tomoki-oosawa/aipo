@@ -54,6 +54,7 @@
 		<db-attribute name="FACILITY_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="FACILITY_NAME" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="NOTE" type="CLOB"/>
+		<db-attribute name="SORT" type="INTEGER" length="4"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
 	</db-entity>
@@ -537,6 +538,7 @@
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
 		<obj-attribute name="facilityName" type="java.lang.String" db-attribute-path="FACILITY_NAME"/>
 		<obj-attribute name="note" type="java.lang.String" db-attribute-path="NOTE"/>
+		<obj-attribute name="sort" type="java.lang.Integer" db-attribute-path="SORT"/>
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
 	</obj-entity>
@@ -1113,9 +1115,10 @@
 	<obj-relationship name="eipTAddressbookGroupMap" source="EipMAddressbook" target="EipTAddressbookGroupMap" db-relationship-path="eipTAddressbookGroupMap"/>
 	<obj-relationship name="eipFacilityGroupArray" source="EipMFacility" target="EipFacilityGroup" deleteRule="Cascade" db-relationship-path="eipFacilityGroupArray"/>
 	<obj-relationship name="eipMFacilityFacilityId" source="EipMFacility" target="EipMFacilityGroupMap" db-relationship-path="eip_m_facility_facility_id"/>
-    <obj-relationship name="eipMFacilityGroup" source="EipMFacilityGroup" target="EipMFacilityGroupMap" db-relationship-path="eip_m_facility_group"/>
-    <obj-relationship name="eipMFacilityFacilityId" source="EipMFacilityGroupMap" target="EipMFacility" db-relationship-path="eip_m_facility_facility_id"/>
-    <obj-relationship name="eipMFacilityGroupId" source="EipMFacilityGroupMap" target="EipMFacilityGroup" db-relationship-path="eip_m_facility_group"/>
+	<obj-relationship name="fromEipMFacility" source="EipMFacility" target="EipMFacilityGroupMap" db-relationship-path="FROM_eip_m_facility"/>
+	<obj-relationship name="eipMFacilityGroup" source="EipMFacilityGroup" target="EipMFacilityGroupMap" db-relationship-path="eip_m_facility_group"/>
+	<obj-relationship name="eipMFacilityFacilityId" source="EipMFacilityGroupMap" target="EipMFacility" db-relationship-path="eip_m_facility_facility_id"/>
+	<obj-relationship name="eipMFacilityGroupId" source="EipMFacilityGroupMap" target="EipMFacilityGroup" db-relationship-path="eip_m_facility_group"/>
 	<obj-relationship name="eipMAddressbook" source="EipTAddressbookGroupMap" target="EipMAddressbook" db-relationship-path="eipMAddressbook"/>
 	<obj-relationship name="eipTAddressGroup" source="EipTAddressbookGroupMap" target="EipMAddressGroup" db-relationship-path="eipTAddressGroup"/>
 	<obj-relationship name="eipTBlogEntrys" source="EipTBlog" target="EipTBlogEntry" db-relationship-path="eipTBlogEntrys"/>

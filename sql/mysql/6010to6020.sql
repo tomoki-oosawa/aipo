@@ -8,8 +8,8 @@ UPDATE `eip_t_schedule` SET `mail_flag` = 'A' ;
 UPDATE `eip_m_addressbook_company` SET `company_name` = '', `company_name_kana` = '' WHERE `company_id` = 1;
 -- 20110905
 
---- 20110909
---- create new table
+-- 20110909
+-- create new table
 CREATE TABLE eip_m_facility_group
 (
     `group_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -24,4 +24,8 @@ CREATE TABLE eip_m_facility_group_map
     `group_id` int(11),
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
---- 20110909
+-- 20110909
+
+-- 20110913
+ALTER TABLE `eip_m_facility` ADD `sort` INTEGER ;
+-- 20110913

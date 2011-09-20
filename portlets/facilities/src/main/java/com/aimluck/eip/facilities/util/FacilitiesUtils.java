@@ -131,7 +131,7 @@ public class FacilitiesUtils {
     try {
       List<EipMFacility> aList =
         Database.query(EipMFacility.class).orderAscending(
-          EipMFacility.FACILITY_NAME_PROPERTY).fetchList();
+          EipMFacility.SORT_PROPERTY).fetchList();
 
       for (EipMFacility record : aList) {
         FacilityResultData rd = new FacilityResultData();
@@ -149,17 +149,17 @@ public class FacilitiesUtils {
   public static List<FacilityResultData> getFacilityList(String groupname) {
     List<FacilityResultData> list = new ArrayList<FacilityResultData>();
 
-    // SQLの作成
     StringBuffer statement = new StringBuffer();
     statement.append("SELECT DISTINCT ");
     statement.append("  B.FACILITY_ID, B.FACILITY_NAME ");
-    statement.append("FROM eip_m_facility_group_map as A ");
+    statement.append("FROM eip_facility_group as A ");
     statement.append("LEFT JOIN eip_m_facility as B ");
     statement.append("  on A.FACILITY_ID = B.FACILITY_ID ");
-    statement.append("LEFT JOIN eip_m_facility_group as C ");
+    statement.append("LEFT JOIN turbine_group as C ");
     statement.append("  on A.GROUP_ID = C.GROUP_ID ");
     statement.append("WHERE C.GROUP_NAME = #bind($groupname) ");
     statement.append("ORDER BY B.FACILITY_NAME");
+
     String query = statement.toString();
 
     try {
@@ -183,6 +183,43 @@ public class FacilitiesUtils {
     }
 
     return list;
+  }
+
+  public static List<FacilityResultData> getFacilityListByGroupId(String groupId) {
+    List<FacilityResultData> list = new ArrayList<FacilityResultData>();
+
+    // SQLの作成
+    StringBuffer statement = new StringBuffer();
+    statement.append("SELECT B.FACILITY_ID, B.FACILITY_NAME ");
+    statement.append("FROM eip_m_facility_group_map as A ");
+    statement
+      .append("LEFT JOIN eip_m_facility as B on A.FACILITY_ID = B.FACILITY_ID ");
+    statement.append("WHERE A.GROUP_ID = #bind($groupId) ");
+    statement.append("ORDER BY B.SORT");
+
+    String query = statement.toString();
+
+    try {
+      List<EipMFacility> list2 =
+        Database.sql(EipMFacility.class, query).param(
+          "groupId",
+          Integer.parseInt(groupId)).fetchList();
+
+      FacilityResultData frd;
+      // ユーザデータを作成し、返却リストへ格納
+      for (EipMFacility record : list2) {
+        frd = new FacilityResultData();
+        frd.initField();
+        frd.setFacilityId(record.getFacilityId());
+        frd.setFacilityName(record.getFacilityName());
+        list.add(frd);
+      }
+    } catch (Exception ex) {
+      logger.error("[Exception]", ex);
+    }
+
+    return list;
+
   }
 
   public static List<Integer> getFacilityIds(String groupname) {

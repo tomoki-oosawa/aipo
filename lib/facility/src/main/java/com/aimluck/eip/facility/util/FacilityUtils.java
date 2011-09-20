@@ -51,7 +51,7 @@ public class FacilityUtils {
 
     try {
       SelectQuery<EipMFacility> query = Database.query(EipMFacility.class);
-
+      query.orderAscending(EipMFacility.SORT_PROPERTY);
       List<EipMFacility> facility_list =
         query.orderAscending(EipMFacility.FACILITY_NAME_PROPERTY).fetchList();
 
