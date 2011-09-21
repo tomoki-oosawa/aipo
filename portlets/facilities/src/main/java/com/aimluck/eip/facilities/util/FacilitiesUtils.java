@@ -66,18 +66,9 @@ public class FacilitiesUtils {
         return null;
       }
 
-      Expression exp =
-        ExpressionFactory.matchDbExp(
-          EipMFacility.FACILITY_ID_PK_COLUMN,
-          facilityid);
-      List<EipMFacility> facilities =
-        Database.query(EipMFacility.class, exp).fetchList();
-      if (facilities == null || facilities.size() == 0) {
-        // 指定したFacilities IDのレコードが見つからない場合
-        logger.debug("[Facilities] Not found ID...");
-        return null;
-      }
-      return facilities.get(0);
+      EipMFacility facility = Database.get(EipMFacility.class, facilityid);
+
+      return facility;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;

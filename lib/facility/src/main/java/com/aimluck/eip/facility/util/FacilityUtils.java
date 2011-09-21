@@ -90,7 +90,7 @@ public class FacilityUtils {
       ExpressionFactory
         .inDbExp(EipMFacility.FACILITY_ID_PK_COLUMN, facilityIds);
     fquery.setQualifier(fexp);
-    fquery.orderAscending(EipMFacility.FACILITY_NAME_PROPERTY);
+    fquery.orderAscending(EipMFacility.SORT_PROPERTY);
     List<EipMFacility> facility_list = fquery.fetchList();
 
     for (EipMFacility record : facility_list) {

@@ -121,6 +121,7 @@ public class FacilityGroupResultData implements ALData {
           EipMFacility.FACILITY_ID_PK_COLUMN,
           faclityIdList);
       fquery.setQualifier(exp);
+      fquery.orderAscending(EipMFacility.SORT_PROPERTY);
       return fquery.fetchList();
     } catch (Exception ex) {
       Database.rollback();

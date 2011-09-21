@@ -92,7 +92,7 @@ function formSubmit(value) {
 #ALcell_radius_header($career)
 #foreach( $record in $result.FacilityGroupList )
 #ALcell_li_header($career)
-<a href="javascript:void(0);" onclick="formSubmit('$!{record.GroupName}');return false;">$!record.GroupName</a>
+<a href="javascript:void(0);" onclick="formSubmit('$!{record.GroupId}');return false;">$!record.GroupName</a>
 #ALcell_li_footer($career)
 #end
 #ALcell_radius_footer($career)
