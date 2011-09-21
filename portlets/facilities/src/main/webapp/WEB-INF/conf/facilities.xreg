@@ -37,14 +37,14 @@
         <parameter name="p1a-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1a-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1a-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2a-sort" value="facility_name" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+        <parameter name="p2a-sort" value="sort" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>施設ソート方法</title>
             </meta-info>
         </parameter>
         <parameter name="p2a-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2a-sort.style.items" value="facility_name" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2a-sort.style.values" value="施設名" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-sort.style.items" value="sort" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-sort.style.values" value="指定順" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="action" value="facilities.FacilitiesAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="_showtitlebar" value="false" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <media-type ref="html"/>

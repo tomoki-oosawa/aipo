@@ -252,6 +252,7 @@ public class FacilitySelectData extends
     Attributes map = new Attributes();
     map.putValue("facility_name", EipMFacility.FACILITY_NAME_PROPERTY);
     map.putValue("group_id", EipMFacilityGroupMap.GROUP_ID_PROPERTY);
+    map.putValue("sort", EipMFacility.SORT_PROPERTY);
     return map;
   }
 
