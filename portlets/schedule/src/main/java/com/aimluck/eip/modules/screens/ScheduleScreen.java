@@ -19,6 +19,9 @@
 
 package com.aimluck.eip.modules.screens;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -27,12 +30,15 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.common.ALAbstractSelectData;
+import com.aimluck.eip.schedule.AjaxScheduleWeeklyGroupEmptySelectData;
 import com.aimluck.eip.schedule.ScheduleMonthlySelectData;
 import com.aimluck.eip.schedule.ScheduleOnedayGroupSelectData;
 import com.aimluck.eip.schedule.ScheduleOnedaySelectData;
 import com.aimluck.eip.schedule.ScheduleWeeklyGroupSelectData;
 import com.aimluck.eip.schedule.ScheduleWeeklySelectData;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
+import com.aimluck.eip.userfacility.beans.UserFacilityLiteBean;
+import com.aimluck.eip.userfacility.util.UserFacilityUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -76,11 +82,12 @@ public class ScheduleScreen extends ALVelocityScreen {
       String currentTab;
       String tmpCurrentTab = ALEipUtils.getTemp(rundata, context, "tab");
       if (tmpCurrentTab == null
-        || !(tmpCurrentTab.equals("oneday")
+        || !(tmpCurrentTab.equals("calendar")
+          || tmpCurrentTab.equals("oneday")
           || tmpCurrentTab.equals("weekly")
           || tmpCurrentTab.equals("monthly")
           || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-          .equals("weekly-group"))) {
+            .equals("weekly-group"))) {
         currentTab = "oneday";
       } else {
         currentTab = tmpCurrentTab;
@@ -96,7 +103,20 @@ public class ScheduleScreen extends ALVelocityScreen {
       // アクセスコントロール
       String has_acl_self = ScheduleUtils.hasAuthSelf(rundata);
       String has_acl_other = ScheduleUtils.hasAuthOther(rundata);
+      context.put("hasAcl", has_acl_other);
 
+      String tab_flg_calendar =
+        ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p65-tab");
+      if ("0".equals(tab_flg_calendar) && ("T".equals(has_acl_other))) {
+        tab_count++;
+        template = "schedule-calendar";
+        if (template.equals(_template)) {
+          done = true;
+        }
+      }
       String tab_flg_oneday =
         ALEipUtils
           .getPortlet(rundata, context)
@@ -166,7 +186,43 @@ public class ScheduleScreen extends ALVelocityScreen {
         }
       }
 
-      if ("oneday".equals(currentTab)) {
+      if ("calendar".equals(currentTab)) {
+        // tab = "calendar"
+        if ("T".equals(has_acl_self)) {
+          if (!"0".equals(tab_flg_calendar)) {
+            tab_flg_calendar = "0";
+            tab_count++;
+          }
+        }
+        listData = new AjaxScheduleWeeklyGroupEmptySelectData();
+        boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+        context.put("isMeie", Boolean.valueOf(isMsie));
+
+        // 初期選択メンバーリストを取得する
+        List<UserFacilityLiteBean> memberList =
+          new ArrayList<UserFacilityLiteBean>();
+        String selected_user =
+          portlet.getPortletConfig().getInitParameter("p6a-uids");
+        if (selected_user == null || "".equals(selected_user)) {
+          UserFacilityLiteBean login_user =
+            UserFacilityUtils.getUserFacilityLiteBean(rundata);
+          memberList.add(login_user);
+        } else {
+          String selected_users[] = selected_user.split(",");
+          List<UserFacilityLiteBean> ulist =
+            ScheduleUtils.getALEipUserFacility(selected_users, rundata);
+          if (ulist == null || ulist.size() == 0) {
+            UserFacilityLiteBean login_user =
+              UserFacilityUtils.getUserFacilityLiteBean(rundata);
+            memberList.add(login_user);
+          } else {
+            memberList.addAll(ulist);
+          }
+        }
+
+        context.put("member_list", memberList);
+
+      } else if ("oneday".equals(currentTab)) {
         // tab = "oneday";
         if ("T".equals(has_acl_self)) {
           if (!"0".equals(tab_flg_oneday)) {
@@ -235,6 +291,7 @@ public class ScheduleScreen extends ALVelocityScreen {
       if ("T".equals(has_acl_other)) {
         context.put("tab-oneday-group", tab_flg_oneday_group);
         context.put("tab-weekly-group", tab_flg_weekly_group);
+        context.put("tab-calendar", tab_flg_calendar);
       }
 
       context.put("widthALL", Integer.toString(tab_count * 120 + 40) + "px");
@@ -253,5 +310,4 @@ public class ScheduleScreen extends ALVelocityScreen {
       ALEipUtils.redirectDBError(rundata);
     }
   }
-
 }

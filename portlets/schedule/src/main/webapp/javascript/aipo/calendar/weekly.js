@@ -27,6 +27,7 @@ dojo.require("aipo.widget.MemberNormalSelectList");
 dojo.require("aipo.widget.GroupNormalSelectList");
 
 aipo.calendar.objectlist = Array();
+aipo.calendar.maximum_to = 10;
 
 aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
     var _params;
@@ -49,7 +50,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	       var t_o = member_to.options;
 	       to_size = t_o.length;
 	       if(to_size == 0){
-	           _params += "&m_id=" + aipo.calendar.login_id;
+	           _params += "&m_id=" + aipo.schedule.login_id;
 	       }
 	       for(i = 0 ; i < to_size; i++ ) {
 	           t_o[i].selected = true;

@@ -37,6 +37,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
+import com.aimluck.eip.schedule.AjaxScheduleWeeklyGroupEmptySelectData;
 import com.aimluck.eip.schedule.ScheduleChangeStatusFormData;
 import com.aimluck.eip.schedule.ScheduleFormData;
 import com.aimluck.eip.schedule.ScheduleMonthlySelectData;
@@ -46,6 +47,9 @@ import com.aimluck.eip.schedule.ScheduleSelectData;
 import com.aimluck.eip.schedule.ScheduleWeeklyGroupSelectData;
 import com.aimluck.eip.schedule.ScheduleWeeklySelectData;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.userfacility.beans.UserFacilityLiteBean;
+import com.aimluck.eip.userfacility.util.UserFacilityUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -93,6 +97,27 @@ public class ScheduleAction extends ALBaseAction {
         context.put(AFTER_BEHAVIOR, "1");
       }
 
+      context.put("theme", ALOrgUtilsService.getTheme());
+
+      // 表示開始時間を取得する．
+      String time_start =
+        portlet.getPortletConfig().getInitParameter("p1a-rows");
+      context.put("time_start", time_start);
+
+      // 表示終了時間を取得する．
+      String time_end = portlet.getPortletConfig().getInitParameter("p1b-rows");
+      context.put("time_end", time_end);
+
+      // 表示時間間隔を取得する．
+      String time_interval =
+        portlet.getPortletConfig().getInitParameter("p1c-rows");
+      context.put("time_interval", time_interval);
+
+      // 表示日数を取得する.
+      String weekly_days =
+        portlet.getPortletConfig().getInitParameter("p2a-days");
+      context.put("weekly_days", weekly_days);
+
       // load and set xreg info
       ALEipUtils.setTemp(
         rundata,
@@ -118,7 +143,22 @@ public class ScheduleAction extends ALBaseAction {
       // アクセスコントロール
       String has_acl_self = ScheduleUtils.hasAuthSelf(rundata);
       String has_acl_other = ScheduleUtils.hasAuthOther(rundata);
+      context.put("hasAcl", has_acl_other);
 
+      String tab_flg_calendar =
+        ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p65-tab");
+      if ("0".equals(tab_flg_calendar) && ("T".equals(has_acl_other))) {
+        tab_count++;
+        if (("".equals(template)) || (!done)) {
+          template = "schedule-calendar";
+          if (template.equals(_template)) {
+            done = true;
+          }
+        }
+      }
       String tab_flg_oneday =
         ALEipUtils
           .getPortlet(rundata, context)
@@ -126,9 +166,11 @@ public class ScheduleAction extends ALBaseAction {
           .getInitParameter("p6a-tab");
       if ("0".equals(tab_flg_oneday) && ("T".equals(has_acl_self))) {
         tab_count++;
-        template = "schedule-oneday";
-        if (template.equals(_template)) {
-          done = true;
+        if (("".equals(template)) || (!done)) {
+          template = "schedule-oneday";
+          if (template.equals(_template)) {
+            done = true;
+          }
         }
       }
       String tab_flg_weekly =
@@ -192,7 +234,44 @@ public class ScheduleAction extends ALBaseAction {
         template = _template;
       }
 
-      if (template.equals("schedule-oneday")) {
+      if (template.equals("schedule-calendar")) {
+        tab = "calendar";
+        listData = new AjaxScheduleWeeklyGroupEmptySelectData();
+        boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+        context.put("isMeie", Boolean.valueOf(isMsie));
+
+        // 初期選択メンバーリストを取得する
+        List<UserFacilityLiteBean> memberList =
+          new ArrayList<UserFacilityLiteBean>();
+        String selected_user =
+          portlet.getPortletConfig().getInitParameter("p6a-uids");
+        if (selected_user == null || "".equals(selected_user)) {
+          UserFacilityLiteBean login_user =
+            UserFacilityUtils.getUserFacilityLiteBean(rundata);
+          memberList.add(login_user);
+        } else {
+          String selected_users[] = selected_user.split(",");
+          List<UserFacilityLiteBean> ulist =
+            ScheduleUtils.getALEipUserFacility(selected_users, rundata);
+          if (ulist == null || ulist.size() == 0) {
+            UserFacilityLiteBean login_user =
+              UserFacilityUtils.getUserFacilityLiteBean(rundata);
+            memberList.add(login_user);
+          } else {
+            memberList.addAll(ulist);
+          }
+        }
+
+        context.put("member_list", memberList);
+
+        // setTemplate(rundata, "schedule-calendar");
+        if ("T".equals(has_acl_self)) {
+          if (tab_count == 0) {
+            tab_flg_calendar = "0";
+            tab_count++;
+          }
+        }
+      } else if (template.equals("schedule-oneday")) {
         tab = "oneday";
         listData = new ScheduleOnedaySelectData();
         ((ScheduleOnedaySelectData) listData).setPortletId(portletId);
@@ -262,6 +341,7 @@ public class ScheduleAction extends ALBaseAction {
         context.put("tab-monthly", tab_flg_monthly);
       }
       if ("T".equals(has_acl_other)) {
+        context.put("tab-calendar", tab_flg_calendar);
         context.put("tab-oneday-group", tab_flg_oneday_group);
         context.put("tab-weekly-group", tab_flg_weekly_group);
       }

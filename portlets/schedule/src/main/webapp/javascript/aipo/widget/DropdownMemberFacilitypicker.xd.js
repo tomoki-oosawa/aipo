@@ -46,8 +46,6 @@ dojo.require("aipo.widget.MemberFacilitySelectList");
  * changeGroupUrl:this.changeGroupUrl
  */
 
- aipo.calendar.maximum_to = 10;
-
 dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdown], {
     inputWidth: "250px",
     hiddenId: "",
@@ -71,7 +69,7 @@ dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdow
     changeGroupUrl:"",
     listWidgetId:"",
     tmpPortretId: "cinit",
-    templateString:"<div class=\"dijit dijitLeft dijitInline\"\n\tdojoAttachEvent=\"onmouseenter:_onMouse,onmouseleave:_onMouse,onmousedown:_onMouse,onclick:_onDropDownClick,onkeydown:_onDropDownKeydown,onblur:_onDropDownBlur,onkeypress:_onKey\"\n\t><div class='dijitRight'>\n\t<span class=\"\" type=\"${type}\"\n\t\tdojoAttachPoint=\"focusNode,titleNode\" waiRole=\"button\" waiState=\"haspopup-true,labelledby-${id}_label\"\n\t\t><span class=\"\" \tdojoAttachPoint=\"containerNode,popupStateNode\"\n\t\tid=\"${id}_label\"><img src=\"${iconURL}\" alt=\"${iconAlt}\" style=\"cursor:pointer;cursor:hand;padding-right:2px\" align=\"top\" />\n\t</span><select name=\"${selectId}\" id=\"${selectId}\" size=\"10\" multiple=\"multiple\" style=\"display:none\" dojoAttachPoint=\"selectNode\"></select><input type=\"hidden\" id=\"${hiddenId}\" name=\"${hiddenId}\" value=\"${hiddenValue}\" dojoAttachPoint=\"valueNode\" /><span name=\"${inputId}\" id=\"${inputId}\" dojoAttachPoint=\"inputNode\">${inputValue}</span>\n</div></div>\n",
+    templateString:"<div class=\"dijit dijitLeft dijitInline\"\n\tdojoAttachEvent=\"onmouseenter:_onMouse,onmouseleave:_onMouse,onmousedown:_onMouse,onclick:_onDropDownClick,onkeydown:_onDropDownKeydown,onblur:_onDropDownBlur,onkeypress:_onKey\"\n\t><div class='dijitRight'>\n\t<span class=\"\" type=\"${type}\"\n\t\tdojoAttachPoint=\"focusNode,titleNode\" waiRole=\"button\" waiState=\"haspopup-true,labelledby-${id}_label\"\n\t\t><span class=\"\" \tdojoAttachPoint=\"containerNode,popupStateNode\"\n\t\tid=\"${id}_label\"></span><select name=\"${selectId}\" id=\"${selectId}\" size=\"10\" multiple=\"multiple\" style=\"display:none\" dojoAttachPoint=\"selectNode\"></select><input type=\"hidden\" id=\"${hiddenId}\" name=\"${hiddenId}\" value=\"${hiddenValue}\" dojoAttachPoint=\"valueNode\" /><span name=\"${inputId}\" id=\"${inputId}\" dojoAttachPoint=\"inputNode\">${inputValue}</span>\n<span class=\"small addUser\">ユーザーを追加</span></div></div>\n",
     postCreate: function(){
       var userparams = {
           widgetId:this.listWidgetId,
@@ -94,15 +92,10 @@ dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdow
 
       this.listWidgetId = "memberfacilitylistwidget-" + this.tmpPortretId;
       var listWidget = dijit.byId(this.listWidgetId);
-      if(listWidget){
-        this.dropDown = listWidget;
-        var select = dojo.byId(listWidget.selectId);
-        this.removeAllOptions(select);
-        select = dojo.byId(listWidget.memberToId);
-        this.removeAllOptions(select);
-      }else{
-        this.dropDown = new aipo.widget.MemberFacilitySelectList(userparams, this.listWidgetId);
+      if(listWidget) {
+    	 dijit.registry.remove(this.listWidgetId);
       }
+      this.dropDown = new aipo.widget.MemberFacilitySelectList(userparams, this.listWidgetId);
       this.inherited(arguments);
     },
     removeAllOptions:function(select){

@@ -29,20 +29,19 @@
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="schedule" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-
-	<parameter name="pba-template" value="schedule-oneday" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
-	    <meta-info>
+	    <parameter name="pba-template" value="schedule-calendar" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+	        <meta-info>
                 <title>初期選択タブ</title>
             </meta-info>
- 	</parameter>
-	<parameter name="pba-template.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="pba-template.style.items" value="schedule-oneday,schedule-weekly,schedule-monthly,schedule-oneday-group,schedule-weekly-group" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="pba-template.style.values" value="個人・1日,個人・週間,個人・月間,グループ・1日,グループ・週間" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+    	</parameter>
+    	<parameter name="pba-template.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="pba-template.style.items" value="schedule-calendar,schedule-oneday,schedule-weekly,schedule-monthly,schedule-oneday-group,schedule-weekly-group" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="pba-template.style.values" value="カレンダー,個人・1日,個人・週間,個人・月間,グループ・1日,グループ・週間" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 
         <parameter name="action" value="schedule.ScheduleAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1a-rows" value="9" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
-                <title>表示開始時間（1日表示）</title>
+                <title>表示開始時間</title>
             </meta-info>
         </parameter>
         <parameter name="p1a-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
@@ -50,12 +49,28 @@
         <parameter name="p1a-rows.style.values" value="0時,1時,2時,3時,4時,5時,6時,7時,8時,9時,10時,11時,12時" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1b-rows" value="22" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
-                <title>表示終了時間（1日表示）</title>
+                <title>表示終了時間</title>
             </meta-info>
         </parameter>
         <parameter name="p1b-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1b-rows.style.items" value="13,14,15,16,17,18,19,20,21,22,23,24" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1b-rows.style.values" value="13時,14時,15時,16時,17時,18時,19時,20時,21時,22時,23時,24時" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1c-rows" value="30" type="style" hidden="true" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>表示時間間隔（カレンダー）</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p1c-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1c-rows.style.items" value="10,15,30" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1c-rows.style.values" value="10分,15分,30分" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-days" value="7" type="style" hidden="true" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>表示日数（カレンダー）</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p2a-days.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-days.style.items" value="1,2,3,4,5,6,7" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-days.style.values" value="1日,2日,3日,4日,5日,6日,7日" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p3a-user" value="" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>初期選択ユーザー／施設</title>
@@ -86,7 +101,14 @@
         <parameter name="p5a-view.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p5a-view.style.items" value="1,0" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p5a-view.style.values" value="有効,無効" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-
+        <parameter name="p65-tab" value="0" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>「カレンダー」タブの表示</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p65-tab.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p65-tab.style.items" value="0,1" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p65-tab.style.values" value="有効,無効" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p6a-tab" value="0" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>「個人・1日」タブの表示</title>
@@ -95,7 +117,6 @@
         <parameter name="p6a-tab.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p6a-tab.style.items" value="0,1" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p6a-tab.style.values" value="有効,無効" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-
         <parameter name="p7a-tab" value="0" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>「個人・週間」タブの表示</title>
@@ -104,8 +125,7 @@
         <parameter name="p7a-tab.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p7a-tab.style.items" value="0,1" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p7a-tab.style.values" value="有効,無効" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-
-       <parameter name="p8a-tab" value="0" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+        <parameter name="p8a-tab" value="0" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>「個人・月間」タブの表示</title>
             </meta-info>
@@ -113,7 +133,6 @@
         <parameter name="p8a-tab.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p8a-tab.style.items" value="0,1" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p8a-tab.style.values" value="有効,無効" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-
         <parameter name="p9a-tab" value="0" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>「グループ・1日」タブの表示</title>
@@ -122,7 +141,6 @@
         <parameter name="p9a-tab.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p9a-tab.style.items" value="0,1" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p9a-tab.style.values" value="有効,無効" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-
         <parameter name="paa-tab" value="0" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>「グループ・週間」タブの表示</title>
@@ -131,7 +149,6 @@
         <parameter name="paa-tab.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="paa-tab.style.items" value="0,1" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="paa-tab.style.values" value="有効,無効" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
     </portlet-entry>

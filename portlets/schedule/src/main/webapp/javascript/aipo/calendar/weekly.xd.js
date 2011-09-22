@@ -33,6 +33,7 @@ dojo.require("aipo.widget.MemberNormalSelectList");
 dojo.require("aipo.widget.GroupNormalSelectList");
 
 aipo.calendar.objectlist = Array();
+aipo.calendar.maximum_to = 10;
 
 aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
     var _params;
@@ -55,7 +56,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	       var t_o = member_to.options;
 	       to_size = t_o.length;
 	       if(to_size == 0){
-	           _params += "&m_id=" + aipo.calendar.login_id;
+	           _params += "&m_id=" + aipo.schedule.login_id;
 	       }
 	       for(i = 0 ; i < to_size; i++ ) {
 	           t_o[i].selected = true;
@@ -300,7 +301,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 
                 dojo.connect(draggable,"onmouseover", tmpDraggable, "onScheduleOver");
 
-               count++;
+                count++;
             });
 
 
@@ -711,13 +712,15 @@ aipo.calendar.showTooltip = function(url, portlet_id, containerNode) {
     var mbfhtml = "";
     var placehtml = "";
 
+    dojo.style(containerNode, "display", "block");
     dojo.xhrGet({
         portletId: portlet_id,
         url: url,
         encoding: "utf-8",
         handleAs: "json-comment-filtered",
         load: function(data, event) {
-            if (data.length <= 0) {
+            if (!data.id) {
+                dojo.style(containerNode, "display", "none");
                 return;
             }
 
@@ -1294,8 +1297,6 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDraggable", [aimluck.dnd.Draggable
     }
 });
 
-/*
-*/
 
 // aipo.calendar.WeeklyScheduleAddDragMoveObject
 dojo.declare("aipo.calendar.WeeklyScheduleAddDragMoveObject", [aimluck.dnd.DragMoveObject], {

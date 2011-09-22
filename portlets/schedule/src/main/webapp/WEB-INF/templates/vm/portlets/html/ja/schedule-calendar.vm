@@ -1,0 +1,609 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+## ---------------------------------------------------------------------------
+<div class="indicator" id="indicator-$!portlet.ID">読み込み中...</div>
+<!-- WRAPPER -->
+##<div id="wrapper">
+    <table class="tableWrapper">
+        <tbody>
+            <tr>
+                <td class="wide top">
+					<div id="error-$!portlet.ID" style="display:none">
+					</div>
+                    <div id="content-$!portlet.ID" style="visibility:hidden">
+					#if(($!{hasAcl}) && $!{hasAcl} == "T")
+						<div id="memberpicker-$!portlet.ID" widgetId="memberpicker-$!portlet.ID"></div>
+					    <div id="memberfacilitylistwidget-$!portlet.ID" style="display:none"></div>
+                        <select size="10" multiple="multiple" style="display:none;" name="init_memberlist-$!portlet.ID" id="init_memberlist-$!portlet.ID">#foreach($record in  $!member_list) <option value=#if($record.UserFacilityType == "U") "$record.UserFacilityId" #else "f$record.UserFacilityId" #end> $!utils.escapeXML($record.AliasName.toString()) </option>#end</select>
+					#end
+                        ##参加メンバー一覧ここまで
+                    <div class="clearfix" style="padding-top: 5px;">
+                     <ul class="headItem">
+                      <li><img src="themes/$!theme/images/icon/arrow_left_w.gif" alt="前の週へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["prevWeek"])' style="cursor:pointer"/></li>
+                      <li><img src="themes/$!theme/images/icon/arrow_left.gif" alt="前の日へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["prevDate"])' style="cursor:pointer"/></li>
+                      <li id="viewWeekly-$!portlet.ID" style="font-weight: bold;">&nbsp;</li>
+                      <li><img src="themes/$!theme/images/icon/arrow_right.gif" alt="次の日へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextDate"])' style="cursor:pointer"/></li>
+                      <li><img src="themes/$!theme/images/icon/arrow_right_w.gif" alt="次の週へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextWeek"])' style="cursor:pointer"/></li>
+                      <li><img src="images/schedule/schedule_today.gif" alt="今日へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["today"])' style="cursor:pointer"/> </li>
+                      <li><img src="images/schedule/schedule_prevmonth.gif" alt="前月へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["prevMonth"])' style="cursor:pointer"/></li>
+                      <li><img src="images/schedule/schedule_nextmonth.gif" alt="翌月へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextMonth"])' style="cursor:pointer"/></li>
+                    </ul>
+					#if(($!{hasAcl}) && $!{hasAcl} == "T")
+					<span style="padding-left: 10px;" title="選択された共有メンバーのスケジュールも表示するかどうかを設定します" ><input type="checkbox" id="showAll-$!portlet.ID" onclick='onCheckShowAll(this)' value='$!init_s_all' #if($init_s_all == "t") checked="checked" #end /><label for="showAll-$!portlet.ID">共有スケジュールを表示する</label></span>
+				    #end
+                    </div>
+                    <table class="weeklyTableHead" cellspacing="0" cellpadding="0" border="0" width="100%">
+                      <tbody>
+                        <tr>
+                          <td width="50">
+                            <div class="weeklyHeadLeft">
+                              <div class="weeklyHeadLeftTop">&nbsp;</div>
+                              <div class="weeklyHeadLeftBottom">&nbsp;</div>
+                            </div>
+                          </td>
+                          <td nowrap="nowrap" width="100%" valign="top">
+                            <div class='weeklyHeadRights'>
+                              <div class='weeklyHeadRight' style="left: 0%;">
+                                <div class="weeklyHeadRightTop" id="weeklyDay0-$!portlet.ID">&nbsp;</div>
+                                <div class="weeklyHeadRightBottom" id="weeklyHoliday0-$!portlet.ID">&nbsp;</div>
+                              </div>
+                              <div class='weeklyHeadRight' style="left: 14.2857%;">
+                                <div class="weeklyHeadRightTop" id="weeklyDay1-$!portlet.ID">&nbsp;</div>
+                                <div class="weeklyHeadRightBottom" id="weeklyHoliday1-$!portlet.ID">&nbsp;</div>
+                              </div>
+                              <div class='weeklyHeadRight' style="left: 28.5714%;">
+                                <div class="weeklyHeadRightTop" id="weeklyDay2-$!portlet.ID">&nbsp;</div>
+                                <div class="weeklyHeadRightBottom" id="weeklyHoliday2-$!portlet.ID">&nbsp;</div>
+                              </div>
+                              <div class='weeklyHeadRight' style="left: 42.8571%;">
+                                <div class="weeklyHeadRightTop" id="weeklyDay3-$!portlet.ID">&nbsp;</div>
+                                <div class="weeklyHeadRightBottom" id="weeklyHoliday3-$!portlet.ID">&nbsp;</div>
+                              </div>
+                              <div class='weeklyHeadRight' style="left: 57.1429%;">
+                                <div class="weeklyHeadRightTop" id="weeklyDay4-$!portlet.ID">&nbsp;</div>
+                                <div class="weeklyHeadRightBottom" id="weeklyHoliday4-$!portlet.ID">&nbsp;</div>
+                              </div>
+                              <div class='weeklyHeadRight' style="left: 71.4286%;">
+                                <div class="weeklyHeadRightTop" id="weeklyDay5-$!portlet.ID">&nbsp;</div>
+                                <div class="weeklyHeadRightBottom" id="weeklyHoliday5-$!portlet.ID">&nbsp;</div>
+                              </div>
+                              <div class='weeklyHeadRightR' style="left: 85.7143%;">
+                                <div class="weeklyHeadRightTop" id="weeklyDay6-$!portlet.ID">&nbsp;</div>
+                                <div class="weeklyHeadRightBottom" id="weeklyHoliday6-$!portlet.ID">&nbsp;</div>
+                              </div>
+                            </div>
+                          </td>
+                          <td width="18">
+                            <div class="weeklySpan">&nbsp;</div>
+                            <div class="weeklySpan">&nbsp;</div>
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td width="50">
+                            <div class='weeklyTermLeft' id='weeklyTermLeft'>
+                              <div class="weeklyTermLeftTop">&nbsp;</div>
+                            </div>
+                          </td>
+                          <td nowrap="nowrap" width="100%" valign="top">
+                            <div class='weeklyTermRights'>
+                              <div class='weeklyTermRight weeklyTermRightL' id='termDay0-$!portlet.ID' style="left: 0%;">
+                                <div class="weeklyTermRightTop">&nbsp;</div>
+                              </div>
+                              <div class='weeklyTermRight' id='termDay1-$!portlet.ID' style="left: 14.2857%;">
+                                <div class="weeklyTermRightTop">&nbsp;</div>
+                              </div>
+                              <div class='weeklyTermRight' id='termDay2-$!portlet.ID' style="left: 28.5714%;">
+                                <div class="weeklyTermRightTop">&nbsp;</div>
+                              </div>
+                              <div class='weeklyTermRight' id='termDay3-$!portlet.ID' style="left: 42.8571%;">
+                                <div class="weeklyTermRightTop">&nbsp;</div>
+                              </div>
+                              <div class='weeklyTermRight' id='termDay4-$!portlet.ID' style="left: 57.1429%;">
+                                <div class="weeklyTermRightTop">&nbsp;</div>
+                              </div>
+                              <div class='weeklyTermRight' id='termDay5-$!portlet.ID' style="left: 71.4286%;">
+                                <div class="weeklyTermRightTop">&nbsp;</div>
+                              </div>
+                              <div class='weeklyTermRight weeklyTermRightR' id='termDay6-$!portlet.ID' style="left: 85.7143%;">
+                                <div class="weeklyTermRightTop">&nbsp;</div>
+                              </div>
+                              <div id="termScheduleDivAdd_$!portlet.ID" class="termScheduleDivAdd" style="left: 0%; z-index: 1;">&nbsp;</div>
+                              ##<div id="termScheduleGarage-$!portlet.ID" class="termScheduleGarage">&nbsp;</div>
+                            </div>
+                          </td>
+                          <td width="18">
+                            <div class="weeklyTermTail">&nbsp;</div>
+                          </td>
+                        </tr>
+						<tr>
+						<td colspan="9">
+						<div id="termScheduleGarage-$!portlet.ID" class="termScheduleGarage" style="z-index: -1;">&nbsp;</div>
+						</td>
+						</tr>
+                      </tbody>
+                    </table>
+                    <div class="tableBorderM">&nbsp;</div>
+                    <div class="weeklyScrollPane" id="weeklyScrollPane_$!portlet.ID" style="height:0px;">
+                      <table cellspacing="0" cellpadding="0" border="0" width="100%">
+                        <tbody>
+                          <tr valign="top">
+                            <td width="50">
+                              <div class="weeklyLeft">
+                                <div class="leftMinute">00:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">01:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">02:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">03:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">04:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">05:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">06:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">07:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">08:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">09:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">10:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">11:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">12:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">13:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">14:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">15:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">16:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">17:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">18:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">19:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">20:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">21:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">22:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                                <div class="leftMinute">23:00</div>
+                                <div class="leftMinuteBottom">&nbsp;</div>
+                              </div>
+                            </td>
+                            <td width="100%">
+                              <div class='weeklyRights'>
+                                <div class="weeklyRight" style="left: 0%;" id="weeklyRight0-$!portlet.ID">
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                </div>
+                                <div class="weeklyRight" style="left: 14.2857%;" id="weeklyRight1-$!portlet.ID">
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                </div>
+                                <div class="weeklyRight" style="left: 28.5714%;" id="weeklyRight2-$!portlet.ID">
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                </div>
+                                <div class="weeklyRight" style="left: 42.8571%;" id="weeklyRight3-$!portlet.ID">
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                </div>
+                                <div class="weeklyRight" style="left:57.1429%;" id="weeklyRight4-$!portlet.ID">
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                </div>
+                                <div class="weeklyRight" style="left: 71.4286%;" id="weeklyRight5-$!portlet.ID">
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                </div>
+                                <div class="weeklyRightR" style="left: 85.7143%;" id="weeklyRight6-$!portlet.ID">
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                  <div class="rightMinute">&nbsp;</div>
+                                  <div class="rightMinuteBottom">&nbsp;</div>
+                                </div>
+
+                                <div id="scheduleDivAdd00_$!portlet.ID" class="scheduleDivAdd" style="left: 0%;">&nbsp;</div>
+                                <div id="scheduleDivAdd01_$!portlet.ID" class="scheduleDivAdd" style="left: 14.2857%;">&nbsp;</div>
+                                <div id="scheduleDivAdd02_$!portlet.ID" class="scheduleDivAdd" style="left: 28.5714%;">&nbsp;</div>
+                                <div id="scheduleDivAdd03_$!portlet.ID" class="scheduleDivAdd" style="left: 42.8571%;">&nbsp;</div>
+                                <div id="scheduleDivAdd04_$!portlet.ID" class="scheduleDivAdd" style="left: 57.1429%;">&nbsp;</div>
+                                <div id="scheduleDivAdd05_$!portlet.ID" class="scheduleDivAdd" style="left: 71.4286%;">&nbsp;</div>
+                                <div id="scheduleDivAdd06_$!portlet.ID" class="scheduleDivAdd" style="left: 85.7143%;">&nbsp;</div>
+
+                                <div id="scheduleGarage-$!portlet.ID" class="scheduleGarage">&nbsp;</div>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="scroll_width">&nbsp;</div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+##</div>
+
+#if($!ajax_onloadimage)
+  <img src="images/common/dot.gif" width="1" height="1" onload="initCalendar['$!{portlet.ID}'](true);" />
+#else
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
+
+dojo.addOnLoad(function () {
+  initCalendar['$!{portlet.ID}'](false);
+
+});
+
+//]]>
+</script>
+#end
+
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
+    onCheckShowAll = function(chk){
+	   if(chk.checked == true){
+	       chk.value="t";
+	   }else{
+	       chk.value="f";
+	   }
+	   aipo.calendar.populateWeeklySchedule('$!portlet.ID');
+	};
+
+//]]>
+</script>
+
+
+<div id="modalDialog2" class="modalDialog" style="display:none"></div>
+<input type="hidden" id="secid-$!portlet.ID" name="secid-$!portlet.ID" value="$secid" />

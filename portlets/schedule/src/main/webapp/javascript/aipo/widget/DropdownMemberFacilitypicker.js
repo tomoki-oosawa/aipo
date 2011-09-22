@@ -42,8 +42,6 @@ dojo.require("aipo.widget.MemberFacilitySelectList");
  * changeGroupUrl:this.changeGroupUrl
  */
 
- aipo.calendar.maximum_to = 10;
-
 dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdown], {
     inputWidth: "250px",
     hiddenId: "",
@@ -90,15 +88,10 @@ dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdow
 
       this.listWidgetId = "memberfacilitylistwidget-" + this.tmpPortretId;
       var listWidget = dijit.byId(this.listWidgetId);
-      if(listWidget){
-        this.dropDown = listWidget;
-        var select = dojo.byId(listWidget.selectId);
-        this.removeAllOptions(select);
-        select = dojo.byId(listWidget.memberToId);
-        this.removeAllOptions(select);
-      }else{
-        this.dropDown = new aipo.widget.MemberFacilitySelectList(userparams, this.listWidgetId);
+      if(listWidget) {
+    	 dijit.registry.remove(this.listWidgetId);
       }
+      this.dropDown = new aipo.widget.MemberFacilitySelectList(userparams, this.listWidgetId);
       this.inherited(arguments);
     },
     removeAllOptions:function(select){

@@ -23,6 +23,13 @@
 ## ---------------------------------------------------------------------------
 <div class="clearfix" id="tabContainerDiv_$!portlet.ID" style="width: $widthALL">
   <ul class="tabContainer">
+#if($tab-calendar == "0")
+    #set($tab = ["カレンダー", "calendar","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','calendar')"])
+    <li#if ($tab.get(1) == $!result.Viewtype) class="selectedMenu"#end>
+      <div class="menuTitle">#if (!($tab.get(1) == $!result.Viewtype))<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');">$tab.get(0)</a>#else$tab.get(0)#end</div>
+      <div class="menuIcon"></div>
+    </li>
+#end
 #if($tab-oneday == "0")
     #set($tab = ["個人・1日", "oneday","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','oneday')"])
     <li#if ($tab.get(1) == $!result.Viewtype) class="selectedMenu"#end>
@@ -71,6 +78,10 @@
 <div class="roundBottomLeftMain">
 <div class="roundMainWrapper">
 #ALspacebothheader()
+## One day
+#if ($!result.Viewtype == "calendar")
+#parse("/portlets/html/ja/schedule-calendar.vm")
+#end
 ## One day
 #if ($!result.Viewtype == "oneday")
 #parse("/portlets/html/ja/schedule-oneday.vm")
