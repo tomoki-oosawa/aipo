@@ -242,10 +242,30 @@ public class CellScheduleAction extends ALBaseAction {
   public void doSchedule_form(RunData rundata, Context context) {
     try {
       CellScheduleFormDateData formData = new CellScheduleFormDateData();
+      ALEipUtils.setTemp(rundata, context, "is_copy", "false");
       formData.loadParameters(rundata, context);
       formData.initField();
       formData.doViewForm(this, rundata, context);
+      setTemplate(rundata, "schedule-form-date");
+    } catch (Exception ex) {
+      logger.error("[CellScheduleAction] Exception.", ex);
+      ALEipUtils.redirectDBError(rundata);
+    }
+  }
 
+  /**
+   * スケジュールコピーのフォームを表示する．
+   * 
+   * @param rundata
+   * @param context
+   */
+  public void doSchedule_form_copy(RunData rundata, Context context) {
+    try {
+      CellScheduleFormDateData formData = new CellScheduleFormDateData();
+      ALEipUtils.setTemp(rundata, context, "is_copy", "true");
+      formData.loadParameters(rundata, context);
+      formData.initField();
+      formData.doViewForm(this, rundata, context);
       setTemplate(rundata, "schedule-form-date");
     } catch (Exception ex) {
       logger.error("[CellScheduleAction] Exception.", ex);

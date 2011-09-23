@@ -51,7 +51,7 @@ public abstract class ALAbstractFormData implements ALData {
     .getLogger(ALAbstractFormData.class.getName());
 
   /** 現在のモード */
-  private String mode;
+  protected String mode;
 
   /** アクセス権限の有無 */
   protected boolean hasAuthority;

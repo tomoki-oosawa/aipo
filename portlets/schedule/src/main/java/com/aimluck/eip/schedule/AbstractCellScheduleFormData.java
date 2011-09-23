@@ -41,6 +41,7 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.schedule.beans.CellScheduleFormBean;
@@ -101,6 +102,8 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
 
   private boolean is_first;
 
+  protected boolean is_copy;
+
   /**
    * 
    * @param action
@@ -127,6 +130,50 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
     is_first = !("".equals(rundata.getParameters().getString("is_first", "")));
 
     super.init(action, rundata, context);
+
+    is_copy =
+      Boolean.parseBoolean(ALEipUtils.getTemp(rundata, context, "is_copy"));
+  }
+
+  @Override
+  public boolean doViewForm(ALAction action, RunData rundata, Context context) {
+    try {
+      init(action, rundata, context);
+      boolean isedit =
+        (ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID) != null);
+      int aclType = ALAccessControlConstants.VALUE_ACL_INSERT;
+      if (isedit) {
+        aclType = ALAccessControlConstants.VALUE_ACL_UPDATE;
+      }
+      if (is_copy) {
+        isedit = false;
+      }
+      doCheckAclPermission(rundata, context, aclType);
+      action.setMode(isedit
+        ? ALEipConstants.MODE_EDIT_FORM
+        : ALEipConstants.MODE_NEW_FORM);
+      mode = action.getMode();
+      List<String> msgList = new ArrayList<String>();
+      boolean res =
+        (isedit || is_copy)
+          ? loadFormData(rundata, context, msgList)
+          : setFormData(rundata, context, msgList);
+      action.setResultData(this);
+      if (!msgList.isEmpty()) {
+        action.addErrorMessages(msgList);
+      }
+      action.putData(rundata, context);
+      return res;
+    } catch (ALPermissionException e) {
+      ALEipUtils.redirectPermissionError(rundata);
+      return false;
+    } catch (ALPageNotFoundException e) {
+      ALEipUtils.redirectPageNotFound(rundata);
+      return false;
+    } catch (ALDBErrorException e) {
+      ALEipUtils.redirectDBError(rundata);
+      return false;
+    }
   }
 
   /**
@@ -364,6 +411,10 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
   public boolean isOneday() {
     return CellScheduleUtils.SCHEDULE_TYPE_ONEDAY.equals(schedule_type
       .getValue());
+  }
+
+  public boolean isCopy() {
+    return is_copy;
   }
 
   public boolean isSpan() {

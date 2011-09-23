@@ -22,7 +22,11 @@
 
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_facility','1')")
 #set($linklist = [["ｽｹｼﾞｭｰﾙへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
+#if ($!{result.isCopy()})
+#set($event_submit = "eventSubmit_doSchedule_form_copy")
+#else
 #set($event_submit = "eventSubmit_doSchedule_form")
+#end
 #ALcell_errmsg($career $errmsgs)
 #if($errmsgs && !($errmsgs.size() == 0))
 #ALcell_hr($career '1')

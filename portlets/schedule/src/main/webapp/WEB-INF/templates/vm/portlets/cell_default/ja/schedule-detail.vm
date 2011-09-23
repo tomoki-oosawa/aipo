@@ -116,12 +116,14 @@ ${record.FacilityName}
 #if($!{result.Detail.isOwner()})
 #ALcell_submit($career "$event_submit" '編集する')
 #ALcell_submit($career 'eventSubmit_doSchedule_form_delete' '削除する')
+#ALcell_submit($career 'eventSubmit_doSchedule_form_copy' 'コピーして登録する')
 #elseif($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()})
 <input type="hidden" name="status" value="C">
 #ALcell_submit($career 'eventSubmit_doSchedule_change_status' '確定する')
 #if($!{result.Detail.isEditable()})
 #ALcell_submit($career "$event_submit" '編集する')
 #ALcell_submit($career 'eventSubmit_doSchedule_form_delete' '削除する')
+#ALcell_submit($career 'eventSubmit_doSchedule_form_copy' 'コピーして登録する')
 #end
 #elseif($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()})
 <input type="hidden" name="status" value="T">
@@ -129,6 +131,7 @@ ${record.FacilityName}
 #if($!{result.Detail.isEditable()})
 #ALcell_submit($career "$event_submit" '編集する')
 #ALcell_submit($career 'eventSubmit_doSchedule_form_delete' '削除する')
+#ALcell_submit($career 'eventSubmit_doSchedule_form_copy' 'コピーして登録する')
 #end
 #end
 #ALcell_formfooter()

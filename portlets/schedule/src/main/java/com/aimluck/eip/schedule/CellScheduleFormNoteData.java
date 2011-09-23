@@ -114,9 +114,12 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
   public boolean doViewForm(ALAction action, RunData rundata, Context context) {
     try {
       init(action, rundata, context);
-      boolean enable_entityid =
+      boolean isedit =
         (ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID) != null);
-      action.setMode(enable_entityid
+      if (is_copy) {
+        isedit = false;
+      }
+      action.setMode(isedit
         ? ALEipConstants.MODE_EDIT_FORM
         : ALEipConstants.MODE_NEW_FORM);
       setMode(action.getMode());
@@ -124,7 +127,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
       EipTSchedule schedule;
       boolean res = true;
-      if (enable_entityid) {
+      if (isedit || is_copy) {
         schedule = ScheduleUtils.getEipTSchedule(rundata, context, false);
         res = loadFormData(rundata, context, msgList);
       } else {
