@@ -115,7 +115,17 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #set($record3rowcount = $result.getTermContainer($record3.UserId.Value).size() + 1 + $result.getToDoContainer($record3.UserId.Value).size())
 #set($rowspanstr = "rowspan=$record3rowcount")
 #set($show_tr = 0)
-#ALtdheadAtt("$record3.AliasName" "$rowspanstr class='groupWeekly'")
+#ALtdheadheaderAtt("class='groupWeekly'")
+$record3.AliasName 
+#if(!$result.isMatch($record3.UserId.Value))
+#set($noteLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormScreen').addQueryData('dest_user_id', $!record3.userId)))
+<div class="message">
+<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$noteLink', '$!portlet.ID', aipo.note.onLoadNoteDialog);">
+伝言メモ追加
+</a>
+</div>
+#end
+#ALtdheadfooter()
 ### 期間スケジュール（ここから） ###
 #foreach($termcontainer in ${result.getTermContainer($record3.UserId.Value)})
 #if($show_tr > 0)

@@ -116,7 +116,17 @@ $!{result.ViewDate.Year} 年 $!{result.ViewDate.Month} 月 $!{result.ViewDate.Da
 </tr>
 #foreach($record3 in $result.MemberList)
 <tr>
-#ALtdheadAtt("$record3.AliasName" "class='groupOneday'")
+#ALtdheadheaderAtt("class='groupOneday'")
+$record3.AliasName 
+#if(!$result.isMatch($record3.UserId.Value))
+#set($noteLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormScreen').addQueryData('dest_user_id', $!record3.userId)))
+<div class="message">
+<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$noteLink', '$!portlet.ID', aipo.note.onLoadNoteDialog);">
+伝言メモ追加
+</a>
+</div>
+#end
+#ALtdheadfooter()
 #set($userTodoCount = $result.getToDoResultDataList($record3.UserId.Value).size())
 #if($userTodoCount > 0)
 #foreach($record in ${result.getToDoResultDataList($record3.UserId.Value)})
