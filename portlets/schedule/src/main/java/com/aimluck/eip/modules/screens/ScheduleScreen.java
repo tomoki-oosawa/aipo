@@ -88,7 +88,7 @@ public class ScheduleScreen extends ALVelocityScreen {
           || tmpCurrentTab.equals("monthly")
           || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
             .equals("weekly-group"))) {
-        currentTab = "oneday";
+        currentTab = "calendar";
       } else {
         currentTab = tmpCurrentTab;
       }
@@ -306,7 +306,7 @@ public class ScheduleScreen extends ALVelocityScreen {
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {
-      logger.error("[ToDoScreen] Exception.", ex);
+      logger.error("[ScheduleScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

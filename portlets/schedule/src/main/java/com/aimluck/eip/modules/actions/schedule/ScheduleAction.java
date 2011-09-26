@@ -379,6 +379,26 @@ public class ScheduleAction extends ALBaseAction {
     // MODEを取得
     String mode = rundata.getParameters().getString(ALEipConstants.MODE);
 
+    context.put("theme", ALOrgUtilsService.getTheme());
+
+    // 表示開始時間を取得する．
+    String time_start = portlet.getPortletConfig().getInitParameter("p1a-rows");
+    context.put("time_start", time_start);
+
+    // 表示終了時間を取得する．
+    String time_end = portlet.getPortletConfig().getInitParameter("p1b-rows");
+    context.put("time_end", time_end);
+
+    // 表示時間間隔を取得する．
+    String time_interval =
+      portlet.getPortletConfig().getInitParameter("p1c-rows");
+    context.put("time_interval", time_interval);
+
+    // 表示日数を取得する.
+    String weekly_days =
+      portlet.getPortletConfig().getInitParameter("p2a-days");
+    context.put("weekly_days", weekly_days);
+
     // load and set xreg info
     ALEipUtils.setTemp(
       rundata,
@@ -394,6 +414,9 @@ public class ScheduleAction extends ALBaseAction {
       context.put("current_user", current);
       context.put("current_user_ln", loginuser.getName());
       context.put("current_user_id", loginuser.getUserId());
+
+      String has_acl_other = ScheduleUtils.hasAuthOther(rundata);
+      context.put("hasAcl", has_acl_other);
 
       if (ALEipConstants.MODE_FORM.equals(mode)) {
         doSchedule_form(rundata, context);
@@ -411,9 +434,10 @@ public class ScheduleAction extends ALBaseAction {
       if ("T".equals(ScheduleUtils.hasAuthOther(rundata))) {
         context.put("tab-oneday-group", "0");
         context.put("tab-weekly-group", "0");
-        context.put("widthALL", Integer.toString(5 * 120 + 40) + "px");
+        context.put("tab-calendar", "0");
+        context.put("widthALL", Integer.toString(6 * 120 + 40) + "px");
       }
-      context.put("widthALL", Integer.toString(5 * 120 + 40) + "px");
+      context.put("widthALL", Integer.toString(6 * 120 + 40) + "px");
 
       if (getMode() == null) {
         doSchedule_list(rundata, context);
@@ -597,7 +621,7 @@ public class ScheduleAction extends ALBaseAction {
     try {
       // ポートレット ID を取得する．
       String portletId = ((JetspeedRunData) rundata).getJs_peid();
-
+      VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
       // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
       if (ALEipUtils.isMatch(rundata, context)) {
         // 現在選択されているタブ
@@ -614,19 +638,48 @@ public class ScheduleAction extends ALBaseAction {
       ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> listData;
       String tmpCurrentTab = ALEipUtils.getTemp(rundata, context, "tab");
       if (tmpCurrentTab == null
-        || !(tmpCurrentTab.equals("oneday")
+        || !(tmpCurrentTab.equals("calendar")
+          || tmpCurrentTab.equals("oneday")
           || tmpCurrentTab.equals("weekly")
           || tmpCurrentTab.equals("monthly")
           || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
           .equals("weekly-group"))) {
-        currentTab = "oneday";
+        currentTab = "calendar";
       } else {
         currentTab = tmpCurrentTab;
       }
 
       currentTab = ScheduleUtils.getCurrentTab(rundata, context);
 
-      if (currentTab.equals("oneday")) {
+      if (currentTab.equals("calendar")) {
+        listData = new AjaxScheduleWeeklyGroupEmptySelectData();
+        boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+        context.put("isMeie", Boolean.valueOf(isMsie));
+
+        // 初期選択メンバーリストを取得する
+        List<UserFacilityLiteBean> memberList =
+          new ArrayList<UserFacilityLiteBean>();
+        String selected_user =
+          portlet.getPortletConfig().getInitParameter("p6a-uids");
+        if (selected_user == null || "".equals(selected_user)) {
+          UserFacilityLiteBean login_user =
+            UserFacilityUtils.getUserFacilityLiteBean(rundata);
+          memberList.add(login_user);
+        } else {
+          String selected_users[] = selected_user.split(",");
+          List<UserFacilityLiteBean> ulist =
+            ScheduleUtils.getALEipUserFacility(selected_users, rundata);
+          if (ulist == null || ulist.size() == 0) {
+            UserFacilityLiteBean login_user =
+              UserFacilityUtils.getUserFacilityLiteBean(rundata);
+            memberList.add(login_user);
+          } else {
+            memberList.addAll(ulist);
+          }
+        }
+
+        context.put("member_list", memberList);
+      } else if (currentTab.equals("oneday")) {
         listData = new ScheduleOnedaySelectData();
         ((ScheduleOnedaySelectData) listData).setPortletId(portletId);
         // ブラウザ名を受け渡す．

@@ -1464,12 +1464,13 @@ public class ScheduleUtils {
     String currentTab;
     String tmpCurrentTab = ALEipUtils.getTemp(rundata, context, "tab");
     if (tmpCurrentTab == null
-      || !(tmpCurrentTab.equals("oneday")
+      || !(tmpCurrentTab.equals("calendar")
+        || tmpCurrentTab.equals("oneday")
         || tmpCurrentTab.equals("weekly")
         || tmpCurrentTab.equals("monthly")
         || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
         .equals("weekly-group"))) {
-      currentTab = "oneday";
+      currentTab = "calendar";
     } else {
       currentTab = tmpCurrentTab;
     }
