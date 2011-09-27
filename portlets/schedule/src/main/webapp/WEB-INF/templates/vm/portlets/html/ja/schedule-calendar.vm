@@ -603,4 +603,4 @@ dojo.addOnLoad(function () {
 
 <div id="modalDialog2" class="modalDialog" style="display:none"></div>
 <input type="hidden" id="secid-$!portlet.ID" name="secid-$!portlet.ID" value="$secid" />
-<input style="display:none" type="checkbox" id="showAll-$!portlet.ID" onclick='onCheckShowAll(this)' value='$!init_s_all' #if($init_s_all == "t") checked="checked" #end />
+<input style="display:none" type="checkbox" id="showAll-$!portlet.ID" value='$!init_s_all' #if($init_s_all == "t") checked="checked" #end />

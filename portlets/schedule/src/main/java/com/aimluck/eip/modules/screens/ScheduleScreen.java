@@ -99,6 +99,13 @@ public class ScheduleScreen extends ALVelocityScreen {
         portlet.getPortletConfig().getInitParameter("pba-template");
       boolean done = false;
 
+      // 初期共有メンバー表示フラグを取得する
+      String showAll = portlet.getPortletConfig().getInitParameter("p7d-schk");
+      if (!("t".equals(showAll))) {
+        showAll = "f";
+      }
+      context.put("init_s_all", showAll);
+
       // アクセスコントロール
       String has_acl_other = ScheduleUtils.hasAuthOther(rundata);
       context.put("hasAcl", has_acl_other);
@@ -200,7 +207,7 @@ public class ScheduleScreen extends ALVelocityScreen {
         // tab = "weekly-group";
         listData = new ScheduleWeeklyGroupSelectData();
         ((ScheduleWeeklyGroupSelectData) listData).setPortletId(portletId);
-      } 
+      }
 
       context.put("ajax_onloadimage", "true");
 

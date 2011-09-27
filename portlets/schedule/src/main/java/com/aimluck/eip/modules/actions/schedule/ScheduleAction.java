@@ -299,6 +299,13 @@ public class ScheduleAction extends ALBaseAction {
       portlet.getPortletConfig().getInitParameter("p2a-days");
     context.put("weekly_days", weekly_days);
 
+    // 初期共有メンバー表示フラグを取得する
+    String showAll = portlet.getPortletConfig().getInitParameter("p7d-schk");
+    if (!("t".equals(showAll))) {
+      showAll = "f";
+    }
+    context.put("init_s_all", showAll);
+
     // load and set xreg info
     ALEipUtils.setTemp(
       rundata,

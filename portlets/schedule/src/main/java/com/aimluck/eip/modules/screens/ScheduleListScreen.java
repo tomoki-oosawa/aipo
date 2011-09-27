@@ -93,6 +93,13 @@ public class ScheduleListScreen extends ScheduleScreen {
         currentTab = tmpCurrentTab;
       }
 
+      // 初期共有メンバー表示フラグを取得する
+      String showAll = portlet.getPortletConfig().getInitParameter("p7d-schk");
+      if (!("t".equals(showAll))) {
+        showAll = "f";
+      }
+      context.put("init_s_all", showAll);
+
       String has_acl_other = ScheduleUtils.hasAuthOther(rundata);
       context.put("hasAcl", has_acl_other);
 
