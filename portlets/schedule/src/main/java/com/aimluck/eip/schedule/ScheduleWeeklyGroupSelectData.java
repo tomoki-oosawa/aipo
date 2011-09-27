@@ -104,6 +104,8 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   /** <code>hasAuthorityFacilityInsert</code> アクセス権限 */
   private boolean hasAuthorityFacilityInsert = false;
 
+  private boolean hasAclviewOther = false;
+
   /**
    * 
    * @param action
@@ -144,6 +146,12 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
           .getInstance())
           .getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+      hasAclviewOther =
+        aclhandler.hasAuthority(
+          userid,
+          ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+          ALAccessControlConstants.VALUE_ACL_LIST);
 
       hasAuthoritySelfInsert =
         aclhandler.hasAuthority(
@@ -393,7 +401,10 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
     String crt_key = null;
     Attributes map = getColumnMap();
 
-    if (filter == null || filter_type == null || filter.equals("")) {
+    if (filter == null
+      || filter_type == null
+      || filter.equals("")
+      || !hasAclviewOther) {
       // crt.add(EipTScheduleMapConstants.USER_ID,
       // ALEipUtils.getUserId(rundata));
       Expression exp1 =
@@ -784,7 +795,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
    */
   @Override
   public String getAclPortletFeature() {
-    return ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
+    return ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
   }
 
   @Override

@@ -641,7 +641,83 @@ text-decoration:none;
 	white-space:nowrap;
 }
 
+.relativeBlock{
+position:relative;
+margin:5px 0;
+width:100%;
+}
 
+.auiSelectButton{
+position:absolute;
+top:0;
+right:0;
+z-index:10;
+background:#FFF;
+}
+
+.auiSelectButton ul{
+margin:0;
+padding:0;
+}
+
+.auiSelectButton ul li{
+height:24px;
+overflow:hidden;
+float:left;
+display:inline;
+margin:0;
+padding:0;
+background:url(../images/common/bg_auiselectbutton.gif) 0px -96px repeat-x;
+}
+
+.auiSelectButton ul li a{
+float:left;
+height:18px;
+display:block;
+margin:0;
+padding:3px 10px;
+border-right:1px solid #DCDCDC;
+text-decoration:none;
+}
+
+.auiSelectButton ul li#first a{
+background:url(../images/common/bg_auiselectbutton.gif) 0px 0px no-repeat;
+}
+
+.auiSelectButton ul li#last a{
+background:url(../images/common/bg_auiselectbutton.gif) right -48px no-repeat;
+border-right:none;
+}
+
+.auiSelectButton ul li.active,
+.auiSelectButton ul li:hover{
+background:url(../images/common/bg_auiselectbutton.gif) 0px -120px repeat-x;
+color:#FFF;
+}
+
+.auiSelectButton ul li.active a,
+.auiSelectButton ul li:hover a{
+color:#FFF;
+padding:3px 10px 3px 9px;
+border-right:1px solid #F37E00;
+border-left:1px solid #F37E00;
+}
+
+.auiSelectButton ul li#first.active a,
+.auiSelectButton ul li#first:hover a{
+background:url(../images/common/bg_auiselectbutton.gif) 0px -24px no-repeat;
+border-left:none;
+}
+
+.auiSelectButton ul li#last.active a,
+.auiSelectButton ul li#last:hover a{
+background:url(../images/common/bg_auiselectbutton.gif) right -72px no-repeat;
+border-right:none;
+}
+
+.relativeBlock table{
+z-index:0;
+}
 .subTab {
 	white-space:nowrap;
 	height:30px;

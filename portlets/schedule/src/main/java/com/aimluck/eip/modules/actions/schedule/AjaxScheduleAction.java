@@ -42,7 +42,9 @@ import com.aimluck.eip.util.ALEipUtils;
 /**
  * カレンダーのアクションクラスです。
  * 
+ * @deprecated
  */
+@Deprecated
 public class AjaxScheduleAction extends ALBaseAction {
 
   /** <code>logger</code> logger */

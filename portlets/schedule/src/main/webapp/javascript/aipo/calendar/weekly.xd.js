@@ -139,7 +139,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             var termTableHtml = '';
             var tmpHeight = [];
             var tmpNode1, tmpNode2, tmpNode3, tmpNode4;
-            var startEnd = data.startDate.substring(0,4) + " 年 " + data.startDate.substring(5,7) + " 月 " + data.startDate.substring(8,10) + " 日 " + data.dayOfWeek[0] + "～ " + data.endDate.substring(5,7) + " 月 " + data.endDate.substring(8,10) + " 日 " + data.dayOfWeek[6];
+            var startEnd = data.startDate.substring(0,4) + " 年 " + parseInt(data.startDate.substring(5,7),10) + " 月 " + parseInt(data.startDate.substring(8,10),10) + " 日 " + data.dayOfWeek[0] + "～ " + parseInt(data.endDate.substring(5,7),10) + " 月 " + parseInt(data.endDate.substring(8,10),10) + " 日 " + data.dayOfWeek[6];
             dojo.byId('viewWeekly-' + _portletId).innerHTML = startEnd;
 
             termTableHtml += "<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tbody>"

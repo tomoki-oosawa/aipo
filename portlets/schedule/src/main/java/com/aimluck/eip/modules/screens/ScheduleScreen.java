@@ -87,13 +87,12 @@ public class ScheduleScreen extends ALVelocityScreen {
           || tmpCurrentTab.equals("weekly")
           || tmpCurrentTab.equals("monthly")
           || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-            .equals("weekly-group"))) {
+          .equals("weekly-group"))) {
         currentTab = "calendar";
       } else {
         currentTab = tmpCurrentTab;
       }
 
-      int tab_count = 0;
       // Velocity テンプレートを読み込む
       String template = "";
       String _template =
@@ -101,99 +100,53 @@ public class ScheduleScreen extends ALVelocityScreen {
       boolean done = false;
 
       // アクセスコントロール
-      String has_acl_self = ScheduleUtils.hasAuthSelf(rundata);
       String has_acl_other = ScheduleUtils.hasAuthOther(rundata);
       context.put("hasAcl", has_acl_other);
 
-      String tab_flg_calendar =
-        ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p65-tab");
-      if ("0".equals(tab_flg_calendar) && ("T".equals(has_acl_other))) {
-        tab_count++;
+      if (("".equals(template)) || (!done)) {
         template = "schedule-calendar";
         if (template.equals(_template)) {
           done = true;
         }
       }
-      String tab_flg_oneday =
-        ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p6a-tab");
-      if ("0".equals(tab_flg_oneday) && ("T".equals(has_acl_self))) {
-        tab_count++;
+      if (("".equals(template)) || (!done)) {
         template = "schedule-oneday";
+        if (template.equals(_template)) {
+          template = "schedule-oneday-group";
+          done = true;
+        }
+      }
+      if (("".equals(template)) || (!done)) {
+        template = "schedule-weekly";
+        if (template.equals(_template)) {
+          template = "schedule-weekly-group";
+          done = true;
+        }
+      }
+      if (("".equals(template)) || (!done)) {
+        template = "schedule-monthly";
         if (template.equals(_template)) {
           done = true;
         }
       }
-      String tab_flg_weekly =
-        ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p7a-tab");
-      if ("0".equals(tab_flg_weekly) && ("T".equals(has_acl_self))) {
-        tab_count++;
-        if (("".equals(template)) || (!done)) {
-          template = "schedule-weekly";
-          if (template.equals(_template)) {
-            done = true;
-          }
+      if (("".equals(template)) || (!done)) {
+        template = "schedule-oneday-group";
+        if (template.equals(_template)) {
+          done = true;
         }
       }
-      String tab_flg_monthly =
-        ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p8a-tab");
-      if ("0".equals(tab_flg_monthly) && ("T".equals(has_acl_self))) {
-        tab_count++;
-        if (("".equals(template)) || (!done)) {
-          template = "schedule-monthly";
-          if (template.equals(_template)) {
-            done = true;
-          }
+      if (("".equals(template)) || (!done)) {
+        template = "schedule-weekly-group";
+        if (template.equals(_template)) {
+          done = true;
         }
       }
-      String tab_flg_oneday_group =
-        ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p9a-tab");
-      if ("0".equals(tab_flg_oneday_group) && ("T".equals(has_acl_other))) {
-        tab_count++;
-        if (("".equals(template)) || (!done)) {
-          template = "schedule-oneday-group";
-          if (template.equals(_template)) {
-            done = true;
-          }
-        }
-      }
-      String tab_flg_weekly_group =
-        ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("paa-tab");
-      if ("0".equals(tab_flg_weekly_group) && ("T".equals(has_acl_other))) {
-        tab_count++;
-        if (("".equals(template)) || (!done)) {
-          template = "schedule-weekly-group";
-          if (template.equals(_template)) {
-            done = true;
-          }
-        }
+      if ("".equals(template)) {
+        template = _template;
       }
 
       if ("calendar".equals(currentTab)) {
         // tab = "calendar"
-        if ("T".equals(has_acl_self)) {
-          if (!"0".equals(tab_flg_calendar)) {
-            tab_flg_calendar = "0";
-            tab_count++;
-          }
-        }
         listData = new AjaxScheduleWeeklyGroupEmptySelectData();
         boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
@@ -224,77 +177,30 @@ public class ScheduleScreen extends ALVelocityScreen {
 
       } else if ("oneday".equals(currentTab)) {
         // tab = "oneday";
-        if ("T".equals(has_acl_self)) {
-          if (!"0".equals(tab_flg_oneday)) {
-            tab_flg_oneday = "0";
-            tab_count++;
-          }
-        }
         listData = new ScheduleOnedaySelectData();
         ((ScheduleOnedaySelectData) listData).setPortletId(portletId);
         // ブラウザ名を受け渡す．
         boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
       } else if ("weekly".equals(currentTab)) {
-        // tab = "weekly";
-        if ("T".equals(has_acl_self)) {
-          if (!"0".equals(tab_flg_weekly)) {
-            tab_flg_weekly = "0";
-            tab_count++;
-          }
-        }
         listData = new ScheduleWeeklySelectData();
         ((ScheduleWeeklySelectData) listData).setPortletId(portletId);
       } else if ("monthly".equals(currentTab)) {
         // tab = "monthly";
-        if ("T".equals(has_acl_self)) {
-          if (!"0".equals(tab_flg_monthly)) {
-            tab_flg_monthly = "0";
-            tab_count++;
-          }
-        }
         listData = new ScheduleMonthlySelectData();
         ((ScheduleMonthlySelectData) listData).setPortletId(portletId);
       } else if ("oneday-group".equals(currentTab)) {
         // tab = "oneday-group";
-        if ("T".equals(has_acl_other)) {
-          if (!"0".equals(tab_flg_oneday_group)) {
-            tab_flg_oneday_group = "0";
-            tab_count++;
-          }
-        }
         listData = new ScheduleOnedayGroupSelectData();
         ((ScheduleOnedayGroupSelectData) listData).setPortletId(portletId);
         // ブラウザ名を受け渡す．
         boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
-      } else if ("weekly-group".equals(currentTab)) {
+      } else {
         // tab = "weekly-group";
-        if ("T".equals(has_acl_other)) {
-          if (!"0".equals(tab_flg_weekly_group)) {
-            tab_flg_weekly_group = "0";
-            tab_count++;
-          }
-        }
         listData = new ScheduleWeeklyGroupSelectData();
         ((ScheduleWeeklyGroupSelectData) listData).setPortletId(portletId);
-      } else {
-        logger.info("unknown schedule type selected > listData is null");
-        return;
-      }
-
-      if ("T".equals(has_acl_self)) {
-        context.put("tab-oneday", tab_flg_oneday);
-        context.put("tab-weekly", tab_flg_weekly);
-        context.put("tab-monthly", tab_flg_monthly);
-      }
-      if ("T".equals(has_acl_other)) {
-        context.put("tab-oneday-group", tab_flg_oneday_group);
-        context.put("tab-weekly-group", tab_flg_weekly_group);
-        context.put("tab-calendar", tab_flg_calendar);
-      }
-
-      context.put("widthALL", Integer.toString(tab_count * 120 + 40) + "px");
+      } 
 
       context.put("ajax_onloadimage", "true");
 

@@ -115,6 +115,8 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
   /** <code>hasAuthorityFacilityInsert</code> アクセス権限 */
   private boolean hasAuthorityFacilityInsert = false;
 
+  private boolean hasAclviewOther = false;
+
   /**
    * 
    * @param action
@@ -162,6 +164,12 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
           .getInstance())
           .getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+      hasAclviewOther =
+        aclhandler.hasAuthority(
+          userid,
+          ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+          ALAccessControlConstants.VALUE_ACL_LIST);
 
       hasAuthoritySelfInsert =
         aclhandler.hasAuthority(
@@ -257,7 +265,8 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
     if (filter == null
       || filter_type == null
       || filter.equals("")
-      || tmpViewDate2 != null) {
+      || tmpViewDate2 != null
+      || !hasAclviewOther) {
       Expression exp1 =
         ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
           .valueOf(ALEipUtils.getUserId(rundata)));
@@ -915,7 +924,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
    */
   @Override
   public String getAclPortletFeature() {
-    return ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
+    return ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
   }
 
   @Override

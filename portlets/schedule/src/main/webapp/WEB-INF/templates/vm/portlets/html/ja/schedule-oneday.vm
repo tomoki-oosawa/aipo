@@ -216,12 +216,13 @@ ${record.TodoName}
 #ALformfooter()
 
 #if($!ajax_onloadimage)
-  <img src="images/common/dot.gif" width="1" height="1" onload="aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');" />
+  <img src="images/common/dot.gif" width="1" height="1" onload="aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');ptConfig['$!portlet.ID'].reloadFunction = aipo.reloadPage;" />
 #else
   <script type="text/javascript" language="JavaScript">
     //<![CDATA[
     dojo.addOnLoad(function(){
       aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');
+      ptConfig['$!portlet.ID'].reloadFunction = aipo.reloadPage;
     });
     //]]>
   </script>

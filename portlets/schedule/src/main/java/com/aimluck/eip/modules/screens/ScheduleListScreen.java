@@ -134,7 +134,6 @@ public class ScheduleListScreen extends ScheduleScreen {
         boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
       } else if ("weekly".equals(currentTab)) {
-        // tab = "weekly";
         listData = new ScheduleWeeklySelectData();
         ((ScheduleWeeklySelectData) listData).setPortletId(portletId);
       } else if ("monthly".equals(currentTab)) {
@@ -149,23 +148,10 @@ public class ScheduleListScreen extends ScheduleScreen {
         boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
       } else {
-        // if ("weekly-group".equals(currentTab)) の場合
         // tab = "weekly-group";
         listData = new ScheduleWeeklyGroupSelectData();
         ((ScheduleWeeklyGroupSelectData) listData).setPortletId(portletId);
       }
-
-      if ("T".equals(ScheduleUtils.hasAuthSelf(rundata))) {
-        context.put("tab-oneday", "0");
-        context.put("tab-weekly", "0");
-        context.put("tab-monthly", "0");
-      }
-      if ("T".equals(ScheduleUtils.hasAuthOther(rundata))) {
-        context.put("tab-oneday-group", "0");
-        context.put("tab-weekly-group", "0");
-        context.put("tab-calendar", "0");
-      }
-      context.put("widthALL", Integer.toString(6 * 120 + 40) + "px");
 
       context.put("ajax_onloadimage", "true");
 

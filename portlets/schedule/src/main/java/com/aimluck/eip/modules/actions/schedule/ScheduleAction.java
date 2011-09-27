@@ -118,14 +118,19 @@ public class ScheduleAction extends ALBaseAction {
         portlet.getPortletConfig().getInitParameter("p2a-days");
       context.put("weekly_days", weekly_days);
 
+      // 初期共有メンバー表示フラグを取得する
+      String showAll = portlet.getPortletConfig().getInitParameter("p7d-schk");
+      if (!("t".equals(showAll))) {
+        showAll = "f";
+      }
+      context.put("init_s_all", showAll);
+
       // load and set xreg info
       ALEipUtils.setTemp(
         rundata,
         context,
         ScheduleUtils.FLAG_CHANGE_TURN_STR,
         portlet.getPortletConfig().getInitParameter("p3b-group"));
-
-      int tab_count = 0;
 
       // Velocity テンプレートを読み込む
       String template = "";
@@ -140,96 +145,47 @@ public class ScheduleAction extends ALBaseAction {
       context.put("current_user_ln", loginuser.getName());
       context.put("current_user_id", loginuser.getUserId());
 
-      // アクセスコントロール
-      String has_acl_self = ScheduleUtils.hasAuthSelf(rundata);
       String has_acl_other = ScheduleUtils.hasAuthOther(rundata);
       context.put("hasAcl", has_acl_other);
 
-      String tab_flg_calendar =
-        ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p65-tab");
-      if ("0".equals(tab_flg_calendar) && ("T".equals(has_acl_other))) {
-        tab_count++;
-        if (("".equals(template)) || (!done)) {
-          template = "schedule-calendar";
-          if (template.equals(_template)) {
-            done = true;
-          }
+      if (("".equals(template)) || (!done)) {
+        template = "schedule-calendar";
+        if (template.equals(_template)) {
+          done = true;
         }
       }
-      String tab_flg_oneday =
-        ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p6a-tab");
-      if ("0".equals(tab_flg_oneday) && ("T".equals(has_acl_self))) {
-        tab_count++;
-        if (("".equals(template)) || (!done)) {
-          template = "schedule-oneday";
-          if (template.equals(_template)) {
-            done = true;
-          }
-        }
-      }
-      String tab_flg_weekly =
-        ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p7a-tab");
-      if ("0".equals(tab_flg_weekly) && ("T".equals(has_acl_self))) {
-        tab_count++;
-        if (("".equals(template)) || (!done)) {
-          template = "schedule-weekly";
-          if (template.equals(_template)) {
-            done = true;
-          }
-        }
-      }
-      String tab_flg_monthly =
-        ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p8a-tab");
-      if ("0".equals(tab_flg_monthly) && ("T".equals(has_acl_self))) {
-        tab_count++;
-        if (("".equals(template)) || (!done)) {
-          template = "schedule-monthly";
-          if (template.equals(_template)) {
-            done = true;
-          }
-        }
-      }
-      String tab_flg_oneday_group =
-        ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p9a-tab");
-      if ("0".equals(tab_flg_oneday_group) && ("T".equals(has_acl_other))) {
-        tab_count++;
-        if (("".equals(template)) || (!done)) {
+      if (("".equals(template)) || (!done)) {
+        template = "schedule-oneday";
+        if (template.equals(_template)) {
           template = "schedule-oneday-group";
-          if (template.equals(_template)) {
-            done = true;
-          }
+          done = true;
         }
       }
-      String tab_flg_weekly_group =
-        ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("paa-tab");
-      if ("0".equals(tab_flg_weekly_group) && ("T".equals(has_acl_other))) {
-        tab_count++;
-        if (("".equals(template)) || (!done)) {
+      if (("".equals(template)) || (!done)) {
+        template = "schedule-weekly";
+        if (template.equals(_template)) {
           template = "schedule-weekly-group";
-          if (template.equals(_template)) {
-            done = true;
-          }
+          done = true;
         }
       }
-
+      if (("".equals(template)) || (!done)) {
+        template = "schedule-monthly";
+        if (template.equals(_template)) {
+          done = true;
+        }
+      }
+      if (("".equals(template)) || (!done)) {
+        template = "schedule-oneday-group";
+        if (template.equals(_template)) {
+          done = true;
+        }
+      }
+      if (("".equals(template)) || (!done)) {
+        template = "schedule-weekly-group";
+        if (template.equals(_template)) {
+          done = true;
+        }
+      }
       if ("".equals(template)) {
         template = _template;
       }
@@ -263,50 +219,21 @@ public class ScheduleAction extends ALBaseAction {
         }
 
         context.put("member_list", memberList);
-
-        // setTemplate(rundata, "schedule-calendar");
-        if ("T".equals(has_acl_self)) {
-          if (tab_count == 0) {
-            tab_flg_calendar = "0";
-            tab_count++;
-          }
-        }
       } else if (template.equals("schedule-oneday")) {
-        tab = "oneday";
+        tab = "oneday-group";
         listData = new ScheduleOnedaySelectData();
         ((ScheduleOnedaySelectData) listData).setPortletId(portletId);
         // ブラウザ名を受け渡す．
         boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
-        // setTemplate(rundata, "schedule-oneday");
-        if ("T".equals(has_acl_self)) {
-          if (tab_count == 0) {
-            tab_flg_oneday = "0";
-            tab_count++;
-          }
-        }
       } else if (template.equals("schedule-weekly")) {
-        tab = "weekly";
+        tab = "weekly-group";
         listData = new ScheduleWeeklySelectData();
         ((ScheduleWeeklySelectData) listData).setPortletId(portletId);
-        // setTemplate(rundata, "schedule-weekly");
-        if ("T".equals(has_acl_self)) {
-          if (tab_count == 0) {
-            tab_flg_weekly = "0";
-            tab_count++;
-          }
-        }
       } else if (template.equals("schedule-monthly")) {
         tab = "monthly";
         listData = new ScheduleMonthlySelectData();
         ((ScheduleMonthlySelectData) listData).setPortletId(portletId);
-        // setTemplate(rundata, "schedule-monthly");
-        if ("T".equals(has_acl_self)) {
-          if (tab_count == 0) {
-            tab_flg_monthly = "0";
-            tab_count++;
-          }
-        }
       } else if (template.equals("schedule-oneday-group")) {
         tab = "oneday-group";
         listData = new ScheduleOnedayGroupSelectData();
@@ -314,42 +241,15 @@ public class ScheduleAction extends ALBaseAction {
         // ブラウザ名を受け渡す．
         boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
-
-        // setTemplate(rundata, "schedule-oneday-group");
-        if ("T".equals(has_acl_other)) {
-          if (tab_count == 0) {
-            tab_flg_oneday_group = "0";
-            tab_count++;
-          }
-        }
       } else {
         tab = "weekly-group";
         listData = new ScheduleWeeklyGroupSelectData();
         ((ScheduleWeeklyGroupSelectData) listData).setPortletId(portletId);
-        // setTemplate(rundata, "schedule-weekly-group");
-        if ("T".equals(has_acl_other)) {
-          if (tab_count == 0) {
-            tab_flg_weekly_group = "0";
-            tab_count++;
-          }
-        }
       }
-
-      if ("T".equals(has_acl_self)) {
-        context.put("tab-oneday", tab_flg_oneday);
-        context.put("tab-weekly", tab_flg_weekly);
-        context.put("tab-monthly", tab_flg_monthly);
-      }
-      if ("T".equals(has_acl_other)) {
-        context.put("tab-calendar", tab_flg_calendar);
-        context.put("tab-oneday-group", tab_flg_oneday_group);
-        context.put("tab-weekly-group", tab_flg_weekly_group);
-      }
-
-      context.put("widthALL", Integer.toString(tab_count * 120 + 40) + "px");
 
       ALEipUtils.setTemp(rundata, context, "tab", tab);
       listData.initField();
+
       // 最低限表示するのに必要な権限のチェック
       if (!ScheduleUtils.hasMinimumAuthority(rundata)) {
         setTemplate(rundata, "schedule");
@@ -425,19 +325,6 @@ public class ScheduleAction extends ALBaseAction {
       } else if (ALEipConstants.MODE_LIST.equals(mode)) {
         doSchedule_list(rundata, context);
       }
-
-      if ("T".equals(ScheduleUtils.hasAuthSelf(rundata))) {
-        context.put("tab-oneday", "0");
-        context.put("tab-weekly", "0");
-        context.put("tab-monthly", "0");
-      }
-      if ("T".equals(ScheduleUtils.hasAuthOther(rundata))) {
-        context.put("tab-oneday-group", "0");
-        context.put("tab-weekly-group", "0");
-        context.put("tab-calendar", "0");
-        context.put("widthALL", Integer.toString(6 * 120 + 40) + "px");
-      }
-      context.put("widthALL", Integer.toString(6 * 120 + 40) + "px");
 
       if (getMode() == null) {
         doSchedule_list(rundata, context);

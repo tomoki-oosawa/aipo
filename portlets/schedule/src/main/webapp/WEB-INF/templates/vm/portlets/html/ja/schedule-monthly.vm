@@ -18,10 +18,35 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#ALtableheaderSimpleWide()
-#ALtdcaption('ユーザー')
-#ALtditemheader()
-<select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
+
+<div class="relativeBlock">
+<div class="auiSelectButton">
+<ul>
+#set($tab = ["ブロック", "calendar","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','calendar')"])
+<li id="first" #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');">$tab.get(0)</a></li>
+#set($tab = ["日", "oneday-group","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','oneday-group')"])
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');">$tab.get(0)</a></li>
+#set($tab = ["週", "weekly-group", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','weekly-group')"])
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');">$tab.get(0)</a></li>
+#set($tab = ["月", "monthly", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','monthly')"])
+<li id="last" #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');">$tab.get(0)</a></li>
+</ul>
+</div>
+<table border="0" cellspacing="0" cellpadding="2">
+<tbody>
+<tr valign="middle">
+<td><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.CurrentMonth.toString()}))', '$!portlet.ID');" title="今月へ"><img src="images/schedule/schedule_currentmonth.gif" border="0"  alt="今月へ" /></a>&nbsp; </td>
+<td><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.PrevYear.toString()}))', '$!portlet.ID');" title="前年へ"><img src="themes/$!theme/images/icon/arrow_left_w.gif" border="0"  alt="前年へ" /></a>&nbsp; </td>
+<td><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="前月へ" /><img src="themes/$!theme/images/icon/arrow_left.gif" border="0"  alt="前月へ" /></a>&nbsp; </td>
+<td><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="翌月へ"><img src="themes/$!theme/images/icon/arrow_right.gif" border="0"  alt="翌月へ" /></a>&nbsp; </td>
+<td><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.NextYear.toString()}))', '$!portlet.ID');" title="翌年へ"><img src="themes/$!theme/images/icon/arrow_right_w.gif" border="0"  alt="翌年へ" /></a>&nbsp; </td>
+<td nowrap="nowrap"><span style="font-weight:bold">$!{result.ViewMonth.Year} 年 $!{result.ViewMonth.Month} 月</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+ユーザー：
+<select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id","none"))">（グループ全体）</option>
 #if ($result.FacilityList.size() > 0)
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","Facility"))" #if ($!result.TargetGroupName && $!result.TargetGroupName == "Facility") selected="selected" #end>施設一覧</option>
@@ -36,7 +61,7 @@
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{record.GroupName.toString()}).addQueryData("target_user_id", "none"))" #if($!result.TargetGroupName == $!record.GroupName.toString()) selected="selected" #end>$!record.PostName</option>
 #end
 </select>
-<select name="target_user_id" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
+<select name="target_user_id" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" margin:0 0 5px; vertical-align:middle;>
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","none"))">（ユーザー／施設の選択）</option>
 #foreach($record in $!result.Users)
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id",$!{record.UserId.toString()}))" #if($!result.TargetUserId != "all") #if($!result.TargetUserId == $!record.UserId.toString()) selected="selected" #end #end>$!record.AliasName</option>
@@ -48,22 +73,6 @@
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","f$!{record.FacilityId.toString()}"))" #if($!result.TargetUserId != "all") #if($!result.TargetUserId == "f$!record.FacilityId.toString()") selected="selected" #end #end>$!record.FacilityName</option>
 #end
 </select>
-#ALtditemfooter()
-#ALtablefooter()
-
-<table border="0" cellspacing="0" cellpadding="2">
-<tr valign="middle"><td>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="前月へ">
-<img src="themes/$!result.Theme/images/icon/arrow_left.gif" border="0" alt="前月へ" /></a>&nbsp;
-</td><td nowrap="nowrap"><span style="font-weight:bold">
-$!{result.ViewMonth.Year} 年 $!{result.ViewMonth.Month} 月
-</span></td><td>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="翌月へ">
-<img src="themes/$!result.Theme/images/icon/arrow_right.gif" border="0" alt="翌月へ" /></a>&nbsp;
-</td><td>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.CurrentMonth.toString()}))', '$!portlet.ID');" title="今月へ">
-<img src="images/schedule/schedule_currentmonth.gif" border="0" alt="今月へ" /></a>&nbsp;
-</td></tr></table>
 #if($!result.Users.size() <= 0 && $!result.FacilityList.size() <= 0)
 <div class="message">選択したグループには、ユーザーおよび施設が登録されていません。</div>
 #else
@@ -320,12 +329,13 @@ $!{record.ToDoResultData.TodoName}
 #end
 
 #if($!ajax_onloadimage)
-  <img src="images/common/dot.gif" width="1" height="1" onload="aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');" />
+  <img src="images/common/dot.gif" width="1" height="1" onload="aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');ptConfig['$!portlet.ID'].reloadFunction = aipo.reloadPage;" />
 #else
   <script type="text/javascript" language="JavaScript">
     //<![CDATA[
     dojo.addOnLoad(function(){
       aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');
+      ptConfig['$!portlet.ID'].reloadFunction = aipo.reloadPage;
     });
     //]]>
   </script>

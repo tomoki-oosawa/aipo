@@ -18,6 +18,33 @@
  *#
 
 ## ---------------------------------------------------------------------------
+
+<div class="relativeBlock">
+<div class="auiSelectButton">
+<ul>
+#set($tab = ["ブロック", "calendar","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','calendar')"])
+<li id="first" #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');">$tab.get(0)</a></li>
+#set($tab = ["日", "oneday-group","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','oneday-group')"])
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');">$tab.get(0)</a></li>
+#set($tab = ["週", "weekly-group", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','weekly-group')"])
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');">$tab.get(0)</a></li>
+#set($tab = ["月", "monthly", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','monthly')"])
+<li id="last" #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');">$tab.get(0)</a></li>
+</ul>
+</div>
+<table border="0" cellspacing="0" cellpadding="2">
+<tbody>
+<tr valign="middle">
+<td><a href="javascript:void(0);" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["today"])' title="今日へ"><img src="images/schedule/schedule_today.gif" border="0"  alt="今日へ" /></a>&nbsp; </td>
+<td><a href="javascript:void(0);" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["prevWeek"])' title="前の週へ"><img src="themes/$!theme/images/icon/arrow_left_w.gif" border="0"  alt="前の週へ" /></a>&nbsp; </td>
+<td><a href="javascript:void(0);" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["prevDate"])' title="前の日へ"><img src="themes/$!theme/images/icon/arrow_left.gif" border="0"  alt="前の日へ" /></a>&nbsp; </td>
+<td><a href="javascript:void(0);" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextDate"])' title="次の日へ"><img src="themes/$!theme/images/icon/arrow_right.gif" border="0"  alt="次の日へ" /></a>&nbsp; </td>
+<td><a href="javascript:void(0);" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextWeek"])' title="次の週へ"><img src="themes/$!theme/images/icon/arrow_right_w.gif" border="0"  alt="次の週へ" /></a>&nbsp; </td>
+<td nowrap="nowrap"><span id="viewWeekly-$!portlet.ID" style="font-weight:bold">&nbsp;</span></td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="indicator" id="indicator-$!portlet.ID">読み込み中...</div>
 <!-- WRAPPER -->
 ##<div id="wrapper">
@@ -33,22 +60,6 @@
 					    <div id="memberfacilitylistwidget-$!portlet.ID" style="display:none"></div>
                         <select size="10" multiple="multiple" style="display:none;" name="init_memberlist-$!portlet.ID" id="init_memberlist-$!portlet.ID">#foreach($record in  $!member_list) <option value=#if($record.UserFacilityType == "U") "$record.UserFacilityId" #else "f$record.UserFacilityId" #end> $!utils.escapeXML($record.AliasName.toString()) </option>#end</select>
 					#end
-                        ##参加メンバー一覧ここまで
-                    <div class="clearfix" style="padding-top: 5px;">
-                     <ul class="headItem">
-                      <li><img src="themes/$!theme/images/icon/arrow_left_w.gif" alt="前の週へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["prevWeek"])' style="cursor:pointer"/></li>
-                      <li><img src="themes/$!theme/images/icon/arrow_left.gif" alt="前の日へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["prevDate"])' style="cursor:pointer"/></li>
-                      <li id="viewWeekly-$!portlet.ID" style="font-weight: bold;">&nbsp;</li>
-                      <li><img src="themes/$!theme/images/icon/arrow_right.gif" alt="次の日へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextDate"])' style="cursor:pointer"/></li>
-                      <li><img src="themes/$!theme/images/icon/arrow_right_w.gif" alt="次の週へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextWeek"])' style="cursor:pointer"/></li>
-                      <li><img src="images/schedule/schedule_today.gif" alt="今日へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["today"])' style="cursor:pointer"/> </li>
-                      <li><img src="images/schedule/schedule_prevmonth.gif" alt="前月へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["prevMonth"])' style="cursor:pointer"/></li>
-                      <li><img src="images/schedule/schedule_nextmonth.gif" alt="翌月へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextMonth"])' style="cursor:pointer"/></li>
-                    </ul>
-					#if(($!{hasAcl}) && $!{hasAcl} == "T")
-					<span style="padding-left: 10px;" title="選択された共有メンバーのスケジュールも表示するかどうかを設定します" ><input type="checkbox" id="showAll-$!portlet.ID" onclick='onCheckShowAll(this)' value='$!init_s_all' #if($init_s_all == "t") checked="checked" #end /><label for="showAll-$!portlet.ID">共有スケジュールを表示する</label></span>
-				    #end
-                    </div>
                     <table class="weeklyTableHead" cellspacing="0" cellpadding="0" border="0" width="100%">
                       <tbody>
                         <tr>
@@ -590,20 +601,6 @@ dojo.addOnLoad(function () {
 </script>
 #end
 
-<script language="JavaScript" type="text/javascript">
-//<![CDATA[
-    onCheckShowAll = function(chk){
-	   if(chk.checked == true){
-	       chk.value="t";
-	   }else{
-	       chk.value="f";
-	   }
-	   aipo.calendar.populateWeeklySchedule('$!portlet.ID');
-	};
-
-//]]>
-</script>
-
-
 <div id="modalDialog2" class="modalDialog" style="display:none"></div>
 <input type="hidden" id="secid-$!portlet.ID" name="secid-$!portlet.ID" value="$secid" />
+<input style="display:none" type="checkbox" id="showAll-$!portlet.ID" onclick='onCheckShowAll(this)' value='$!init_s_all' #if($init_s_all == "t") checked="checked" #end />

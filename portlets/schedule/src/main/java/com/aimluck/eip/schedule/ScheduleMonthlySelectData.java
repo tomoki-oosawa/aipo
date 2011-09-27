@@ -73,9 +73,8 @@ public class ScheduleMonthlySelectData extends
   private final String TARGET_USER_ID = "target_user_id";
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleMonthlySelectData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleMonthlySelectData.class.getName());
 
   /** <code>viewMonth</code> 現在の月 */
   private ALDateTimeField viewMonth;
@@ -85,6 +84,12 @@ public class ScheduleMonthlySelectData extends
 
   /** <code>nextMonth</code> 次の月 */
   private ALDateTimeField nextMonth;
+
+  /** <code>prevMonth</code> 前の年 */
+  private ALDateTimeField prevYear;
+
+  /** <code>nextMonth</code> 次の年 */
+  private ALDateTimeField nextYear;
 
   /** <code>currentMonth</code> 今月 */
   private ALDateTimeField currentMonth;
@@ -174,6 +179,10 @@ public class ScheduleMonthlySelectData extends
     prevMonth = new ALDateTimeField("yyyy-MM");
     // 次の月
     nextMonth = new ALDateTimeField("yyyy-MM");
+    // 前の年
+    prevYear = new ALDateTimeField("yyyy-MM");
+    // 次の年
+    nextYear = new ALDateTimeField("yyyy-MM");
     // 今月
     currentMonth = new ALDateTimeField("yyyy-MM");
     // 表示開始日時
@@ -263,6 +272,11 @@ public class ScheduleMonthlySelectData extends
     nextMonth.setValue(cal2.getTime());
     cal2.add(Calendar.MONTH, -2);
     prevMonth.setValue(cal2.getTime());
+    cal2.add(Calendar.MONTH, 1);
+    cal2.add(Calendar.YEAR, 1);
+    nextYear.setValue(cal2.getTime());
+    cal2.add(Calendar.YEAR, -2);
+    prevYear.setValue(cal2.getTime());
 
     ALEipUtils.setTemp(rundata, context, "tmpStart", viewStart.toString()
       + "-00-00");
@@ -841,6 +855,24 @@ public class ScheduleMonthlySelectData extends
    */
   public ALDateTimeField getNextMonth() {
     return nextMonth;
+  }
+
+  /**
+   * 前の年を取得します。
+   * 
+   * @return
+   */
+  public ALDateTimeField getPrevYear() {
+    return prevYear;
+  }
+
+  /**
+   * 次の年を取得します。
+   * 
+   * @return
+   */
+  public ALDateTimeField getNextYear() {
+    return nextYear;
   }
 
   /**
