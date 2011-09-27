@@ -1352,6 +1352,7 @@ table.simpleTable td.caption {
 	display:-moz-inline-box;
 	background:transparent url(../images/common/bg_con_s.gif) no-repeat center -8px;
 	vertical-align:top;
+	z-index:11;
 }
 * html .menuBarSeparator {
 	vertical-align:baseline;
