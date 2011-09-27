@@ -61,7 +61,7 @@
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{record.GroupName.toString()}).addQueryData("target_user_id", "none"))" #if($!result.TargetGroupName == $!record.GroupName.toString()) selected="selected" #end>$!record.PostName</option>
 #end
 </select>
-<select name="target_user_id" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" margin:0 0 5px; vertical-align:middle;>
+<select name="target_user_id" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","none"))">（ユーザー／施設の選択）</option>
 #foreach($record in $!result.Users)
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id",$!{record.UserId.toString()}))" #if($!result.TargetUserId != "all") #if($!result.TargetUserId == $!record.UserId.toString()) selected="selected" #end #end>$!record.AliasName</option>
