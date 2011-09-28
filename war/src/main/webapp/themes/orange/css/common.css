@@ -2642,6 +2642,7 @@ font-weight: bold;
 	margin:0px;
 	border-bottom:#EEE solid 1px;
 	vertical-align:top;
+	background:none;
 }
 .activityList li:hover {
 	background:#F5F5F5;
