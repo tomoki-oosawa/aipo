@@ -371,6 +371,15 @@ border-left:1px solid #DCDCDC;
 padding:0px 8px;
 font-size:85%;
 }
+
+#inquiryField {
+overflow:hidden;
+float:right;
+border-right:1px solid #DCDCDC;
+padding:0px 8px;
+font-size:85%;
+}
+
 #btnLogout {
 display:block;
 margin:5px 0 0;
@@ -2622,6 +2631,30 @@ background:#FFEFE5;
 
 table.activityTable tr.unread td {
 font-weight: bold;
+}
+
+.activityList {
+	width:100%;
+	margin-bottom:10px;
+}
+.activityList li {
+	padding:3px;
+	margin:0px;
+	border-bottom:#EEE solid 1px;
+	vertical-align:top;
+}
+.activityList li:hover {
+	background:#F5F5F5;
+}
+.activityList .meta {
+	padding:2px 0;
+	font-size:85%;
+}
+.activityList li.unread {
+	background:#FFEFE5;
+}
+.activityList li.unread a {
+	font-weight:bold
 }
 
 .rightBtn{
