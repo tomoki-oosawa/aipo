@@ -27,22 +27,19 @@
 #if($!notifySupport)<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.container.gadgetService.requestDesktopNotifyEnable();" class="small">デスクトップ通知を#if($!desktopNotification && $!notifyPermission)無効#else有効#endにする</a>&nbsp;#end
 </p>
 #else
-<table class="activityTable">
-<tbody>
+<ul class="activityList">
 #foreach ($record in $result.List)
-<tr #if(!$record.isRead()) class="unread" #end>
-<td>
-<span class="date">$!record.UpdateDate &nbsp; $!{record.DisplayName}</span>
+<li #if(!$record.isRead()) class="unread" #end>
+<div class="meta">$!record.UpdateDate &nbsp; $!{record.DisplayName}</div>
 #if($!$record.Icon.toString() != "")
 <img src="$!record.Icon" width="16" height="16" alt="" align="absmiddle" />
 #else
 <img src="images/icon/icon_add.gif" width="16" height="16" alt="" align="absmiddle" />
 #end
 <a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.common.showDialog('$!{record.PopupUrl}&js_peid=$!{portletId}', '$!{portletId}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">$!record.TitleText</a>
-</td>
-</tr>
+</li>
 #end
-</tbody></table>
+</ul>
 #set($pageRange = 5)
 #set($pageTrimRange = 2)
 #set($pages = $result.PagesNum)
