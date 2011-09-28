@@ -118,7 +118,7 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 $record3.AliasName
 #if(!$result.isMatch($record3.UserId.Value))
 #set($noteLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormScreen').addQueryData('dest_user_id', $!record3.userId)))
-<a class="btn_gray" style="margin-top:5px;" href="javascript:void(0);" onclick="aipo.common.showDialog('$noteLink', '$!portlet.ID', aipo.note.onLoadNoteDialog);">
+<br /><a class="btn_gray" style="margin-top:5px;" href="javascript:void(0);" onclick="aipo.common.showDialog('$noteLink', '$!portlet.ID', aipo.note.onLoadNoteDialog);">
 伝言メモ追加
 </a>
 #end
