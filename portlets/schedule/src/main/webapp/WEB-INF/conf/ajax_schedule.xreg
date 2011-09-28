@@ -32,7 +32,7 @@
         <parameter name="action" value="schedule.ScheduleAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 	    <parameter name="pba-template" value="schedule-calendar" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
 	        <meta-info>
-                <title>初期選択タブ</title>
+                <title>初期表示</title>
             </meta-info>
     	</parameter>
     	<parameter name="pba-template.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
