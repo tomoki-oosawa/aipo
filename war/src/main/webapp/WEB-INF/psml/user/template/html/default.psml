@@ -97,23 +97,16 @@
         <property name="row" value="9" />
       </layout>
     </entry>
-    <entry parent="AjaxScheduleWeekly">
+    <entry parent="Schedule">
       <layout position="-1" size="-1">
         <property name="column" value="1" />
         <property name="row" value="0" />
       </layout>
     </entry>
-    <entry parent="Schedule">
-      <layout position="-1" size="-1">
-        <property name="column" value="1" />
-        <property name="row" value="1" />
-      </layout>
-      <parameter name="pba-template" value="schedule-monthly" />
-    </entry>
     <entry parent="Blog">
       <layout position="-1" size="-1">
         <property name="column" value="1" />
-        <property name="row" value="2" />
+        <property name="row" value="1" />
       </layout>
     </entry>
   </portlets>

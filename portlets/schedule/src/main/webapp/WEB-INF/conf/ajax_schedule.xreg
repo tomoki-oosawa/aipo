@@ -25,7 +25,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>スケジュール</title>
-            <description>6つの画面でスケジュールを管理します（カレンダー, 個人・1日, グループ・1日, 個人・週間, グループ・週間, 個人・月間）。</description>
+            <description>個人や施設、グループの予定を管理します。登録した予定を「日／週／月」で閲覧できます。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="schedule" hidden="true" cachedOnName="true" cachedOnValue="true"/>
