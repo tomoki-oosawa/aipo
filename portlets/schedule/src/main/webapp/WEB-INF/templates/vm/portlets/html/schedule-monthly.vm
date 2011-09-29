@@ -19,7 +19,8 @@
 
 ## ---------------------------------------------------------------------------
 
-<div class="relativeBlock">
+<div class="relativeBlock" style="margin-bottom:10px;">
+<div class="absoluteRight">
 <div class="auiSelectButton">
 <ul>
 #set($tab = ["ブロック", "calendar","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','calendar')"])
@@ -32,18 +33,31 @@
 <li id="last" #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');">$tab.get(0)</a></li>
 </ul>
 </div>
-<table border="0" cellspacing="0" cellpadding="2">
-<tbody>
-<tr valign="middle">
-<td><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.CurrentMonth.toString()}))', '$!portlet.ID');" title="今月へ"><img src="images/schedule/schedule_currentmonth.gif" border="0"  alt="今月へ" /></a>&nbsp; </td>
-<td><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.PrevYear.toString()}))', '$!portlet.ID');" title="前年へ"><img src="themes/$!theme/images/icon/arrow_left_w.gif" border="0"  alt="前年へ" /></a>&nbsp; </td>
-<td><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="前月へ" /><img src="themes/$!theme/images/icon/arrow_left.gif" border="0"  alt="前月へ" /></a>&nbsp; </td>
-<td><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="翌月へ"><img src="themes/$!theme/images/icon/arrow_right.gif" border="0"  alt="翌月へ" /></a>&nbsp; </td>
-<td><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.NextYear.toString()}))', '$!portlet.ID');" title="翌年へ"><img src="themes/$!theme/images/icon/arrow_right_w.gif" border="0"  alt="翌年へ" /></a>&nbsp; </td>
-<td nowrap="nowrap"><span style="font-weight:bold">$!{result.ViewMonth.Year}年$!{result.ViewMonth.Month}月</span></td>
-</tr>
-</tbody>
-</table>
+</div>
+
+<div class="clearfix">
+<div class="auiSelectButton">
+<ul>
+<li id="btn" class="" style="margin-right:10px;">
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.CurrentMonth.toString()}))', '$!portlet.ID');" title="今月へ"><span>今月</span></a>
+</li>
+<li title="前年へ" id="btn" class="" style="margin-right:5px;">
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.PrevYear.toString()}))', '$!portlet.ID');" title="前年へ"><span><img src="themes/$!theme/images/icon/icon_arrow_l_w.gif" alt="前年へ"></span></a>
+</li>
+<li title="前月へ" id="first" class="">
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="前月へ"><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt="前月へ"></a>
+</li>
+<li title="翌月へ" id="last" class="" style="margin-right:5px;">
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="翌月へ"><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt="翌月へ"></a>
+</li>
+<li title="翌年へ" id="btn" class="" style="margin-right:10px;">
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.NextYear.toString()}))', '$!portlet.ID');" title="翌年へ"><span><img src="themes/$!theme/images/icon/icon_arrow_r_w.gif" alt="翌年へ"></span></a>
+</li>
+</ul>
+</div>
+<div style="height:24px; line-height:24px; overflow:hidden;"><strong>$!{result.ViewMonth.Year}年$!{result.ViewMonth.Month}月</strong></div>
+</div>
+
 </div>
 ユーザー：
 <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
