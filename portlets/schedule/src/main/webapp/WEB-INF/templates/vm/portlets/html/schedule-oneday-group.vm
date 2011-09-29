@@ -96,7 +96,7 @@
 #ALtableheaderCalendar("100%")
 <tr>
 #ALtdheadheader()
-<img src="images/common/dot.gif" width="50" height="1" alt="" />
+##<img src="images/common/dot.gif" width="15" height="1" alt="" />
 #ALtdheadfooter()
 #if($todocolcount > 0)
 #ALtdheadAtt("" "class='groupOneday' colspan='$todocolcount'")
@@ -107,7 +107,8 @@
 #foreach($hour in [$!{result.StartHour}..$endHour])
 #set($colspan = $result.getColspan($hour) )
 <th class='groupOneday' colspan='$colspan'>$hour<br/>
-<img src="images/common/dot.gif" width="40" height="1" alt="" /></th>
+##<img src="images/common/dot.gif" width="15" height="1" alt="" />
+</th>
 #end
 #if($!result.isDuplicate())
 #ALtdheadAtt("重複" "class='groupOneday'")
@@ -200,12 +201,12 @@ $record.WbrName
 #if($record.isShowDetail())
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('userid', $!{record3.UserId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarScheduleDiv">
-<div class="small time">${record.Date}</div>
+<div class="small">${record.Date}</div>
 <div class="small"><a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$!{record.WbrName}</a></div>
 </div>
 #else
 <div class="calendarScheduleDiv">
-<div class="small time">${record.Date}</div>
+<div class="small">${record.Date}</div>
 <div class="small">$!{record.WbrName}</div>
 </div>
 #end
@@ -247,12 +248,12 @@ $record.WbrName
 #if($record.isShowDetail())
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('userid', $!{record3.UserId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarScheduleDiv">
-<div class="small time">${record.Date}</div>
+<div class="small">${record.Date}</div>
 <div class="small"><a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$record.WbrName</a></div>
 </div>
 #else
 <div class="calendarScheduleDiv">
-<div class="small time">${record.Date}</div>
+<div class="small">${record.Date}</div>
 <div class="small">$record.WbrName</div>
 </div>
 #end
@@ -289,12 +290,12 @@ $record.WbrName
 #if($record.isShowDetail())
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarScheduleDiv">
-<div class="small time">${record.Date}</div>
+<div class="small">${record.Date}</div>
 <div class="small"><a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$record.WbrName</a></div>
 </div>
 #else
 <div class="calendarScheduleDiv">
-<div class="small time">${record.Date}</div>
+<div class="small">${record.Date}</div>
 <div class="small">$record.WbrName</div>
 </div>
 #end
@@ -331,12 +332,12 @@ $record.WbrName
 #if($record.isShowDetail())
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarScheduleDiv">
-<div class="small time">${record.Date}</div>
+<div class="small">${record.Date}</div>
 <div class="small"><a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$record.WbrName</a></div>
 </div>
 #else
 <div class="calendarScheduleDiv">
-<div class="small time">${record.Date}</div>
+<div class="small">${record.Date}</div>
 <div class="small">$record.WbrName</div>
 </div>
 #end
