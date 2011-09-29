@@ -19,6 +19,8 @@
 
 package com.aimluck.eip.common;
 
+import java.util.Date;
+
 import com.aimluck.commons.field.ALDateField;
 import com.aimluck.commons.field.ALStringField;
 
@@ -35,6 +37,15 @@ public class ALHoliday {
   private ALDateField day = null;
 
   public ALHoliday(String name, String day) {
+    this.name = new ALStringField();
+    this.name.setTrim(true);
+    this.name.setValue(name);
+
+    this.day = new ALDateField();
+    this.day.setValue(day);
+  }
+
+  public ALHoliday(String name, Date day) {
     this.name = new ALStringField();
     this.name.setTrim(true);
     this.name.setValue(name);

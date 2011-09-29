@@ -67,6 +67,12 @@
 		<db-attribute name="GROUP_ID" type="INTEGER"/>
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 	</db-entity>
+	<db-entity name="eip_m_holiday">
+		<db-attribute name="default_flag" type="VARCHAR" isMandatory="true" length="1"/>
+		<db-attribute name="holiday_date" type="DATE" isMandatory="true"/>
+		<db-attribute name="holiday_id" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="holiday_name" type="VARCHAR" isMandatory="true" length="20"/>
+	</db-entity>
 	<db-entity name="eip_m_mail_account">
 		<db-attribute name="ACCOUNT_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="ACCOUNT_NAME" type="VARCHAR" isMandatory="true" length="20"/>
@@ -548,6 +554,11 @@
 	<obj-entity name="EipMFacilityGroupMap" className="com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroupMap" dbEntityName="eip_m_facility_group_map">
 		<obj-attribute name="FacilityId" type="java.lang.Integer" db-attribute-path="FACILITY_ID"/>
 		<obj-attribute name="GroupId" type="java.lang.Integer" db-attribute-path="GROUP_ID"/>
+	</obj-entity>
+	<obj-entity name="EipMHoliday" className="com.aimluck.eip.cayenne.om.portlet.EipMHoliday" dbEntityName="eip_m_holiday">
+		<obj-attribute name="defaultFlag" type="java.lang.String" db-attribute-path="default_flag"/>
+		<obj-attribute name="holidayDate" type="java.util.Date" db-attribute-path="holiday_date"/>
+		<obj-attribute name="holidayName" type="java.lang.String" db-attribute-path="holiday_name"/>
 	</obj-entity>
 	<obj-entity name="EipMMailAccount" className="com.aimluck.eip.cayenne.om.portlet.EipMMailAccount" dbEntityName="eip_m_mail_account">
 		<obj-attribute name="accountName" type="java.lang.String" db-attribute-path="ACCOUNT_NAME"/>

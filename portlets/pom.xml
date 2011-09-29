@@ -32,6 +32,7 @@
     <module>facilities</module>
     <module>fileio</module>
     <module>fileupload</module>
+    <module>holiday</module>
     <module>license</module>
     <module>manhour</module>
     <module>memo</module>

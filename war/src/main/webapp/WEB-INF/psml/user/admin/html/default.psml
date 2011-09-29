@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     Aipo is a groupware program developed by Aimluck,Inc.
@@ -48,82 +48,88 @@
                 <property name="row" value="0"/>
             </layout>
         </entry>
-        <entry id="123" parent="Facilities">
+        <entry id="141" parent="ScheduleAdmin">
             <layout position="4" size="-1">
                 <property name="column" value="0"/>
                 <property name="row" value="0"/>
             </layout>
         </entry>
-        <entry id="124" parent="WorkflowCategory">
+        <entry id="123" parent="Facilities">
             <layout position="5" size="-1">
                 <property name="column" value="0"/>
                 <property name="row" value="0"/>
             </layout>
         </entry>
-        <entry id="125" parent="WebMailAccountAdmin">
+        <entry id="124" parent="WorkflowCategory">
             <layout position="6" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+        <entry id="125" parent="WebMailAccountAdmin">
+            <layout position="7" size="-1">
                 <property name="column" value="0"/>
                 <property name="row" value="0"/>
             </layout>
         </entry>
 <!--
         <entry id="136" parent="TimecardSettings">
-            <layout position="7" size="-1">
+            <layout position="8" size="-1">
                 <property name="column" value="0"/>
                 <property name="row" value="0"/>
             </layout>
         </entry>
 -->
         <entry id="137" parent="ExtTimecardSystem">
-            <layout position="7" size="-1">
-                <property name="column" value="0"/>
-                <property name="row" value="0"/>
-            </layout>
-        </entry>
-        <entry id="127" parent="FileIO">
             <layout position="9" size="-1">
                 <property name="column" value="0"/>
                 <property name="row" value="0"/>
             </layout>
         </entry>
-        <entry id="128" parent="AccessControl">
+        <entry id="127" parent="FileIO">
             <layout position="10" size="-1">
                 <property name="column" value="0"/>
                 <property name="row" value="0"/>
             </layout>
         </entry>
-        <entry id="129" parent="Eventlog">
+        <entry id="128" parent="AccessControl">
             <layout position="11" size="-1">
                 <property name="column" value="0"/>
                 <property name="row" value="0"/>
             </layout>
         </entry>
-        <entry id="138" parent="GadgetsAdmin">
+        <entry id="129" parent="Eventlog">
             <layout position="12" size="-1">
                 <property name="column" value="0"/>
                 <property name="row" value="0"/>
             </layout>
         </entry>
-        <entry id="139" parent="GadgetsContainerAdmin">
+        <entry id="138" parent="GadgetsAdmin">
             <layout position="13" size="-1">
                 <property name="column" value="0"/>
                 <property name="row" value="0"/>
             </layout>
         </entry>
-        <entry id="140" parent="Psml">
+        <entry id="139" parent="GadgetsContainerAdmin">
             <layout position="14" size="-1">
                 <property name="column" value="0"/>
                 <property name="row" value="0"/>
             </layout>
         </entry>
-        <entry id="131" parent="SysInfo">
+        <entry id="140" parent="Psml">
             <layout position="15" size="-1">
                 <property name="column" value="0"/>
                 <property name="row" value="0"/>
             </layout>
         </entry>
-        <entry id="132" parent="DeleteSample">
+        <entry id="131" parent="SysInfo">
             <layout position="16" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+        <entry id="132" parent="DeleteSample">
+            <layout position="17" size="-1">
                 <property name="column" value="0"/>
                 <property name="row" value="0"/>
             </layout>
