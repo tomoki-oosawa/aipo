@@ -39,7 +39,7 @@
 <td><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevDate.toString()}))', '$!portlet.ID');" title="前の日へ" /><img src="themes/$!theme/images/icon/arrow_left.gif" border="0"  alt="前の日へ" /></a>&nbsp; </td>
 <td><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextDate.toString()}))', '$!portlet.ID');" title="次の日へ"><img src="themes/$!theme/images/icon/arrow_right.gif" border="0"  alt="次の日へ" /></a>&nbsp; </td>
 <td><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextWeek.toString()}))', '$!portlet.ID');" title="次の週へ"><img src="themes/$!theme/images/icon/arrow_right_w.gif" border="0"  alt="次の週へ" /></a>&nbsp; </td>
-<td nowrap="nowrap"><span style="font-weight:bold">$!{result.ViewDate.Year} 年 $!{result.ViewDate.Month} 月 $!{result.ViewDate.Day} 日 $!{result.ViewDate.DayOfWeek}</span></td>
+<td nowrap="nowrap"><span style="font-weight:bold">$!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日$!{result.ViewDate.DayOfWeek}</span></td>
 </tr>
 </tbody>
 </table>
@@ -96,7 +96,7 @@
 #ALtableheaderCalendar("100%")
 <tr>
 #ALtdheadheader()
-<img src="images/common/dot.gif" width="1" height="1" alt="" />
+<img src="images/common/dot.gif" width="50" height="1" alt="" />
 #ALtdheadfooter()
 #if($todocolcount > 0)
 #ALtdheadAtt("" "class='groupOneday' colspan='$todocolcount'")
@@ -159,7 +159,7 @@ ${record.TodoName}
 #set($entityids = "$!{entityids}$!{record.ScheduleId},")
 #if(${record.isShowDetail()})
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calerndarTermScheduleDiv small">
-<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid", $!{record.ScheduleId}).addQueryData("userid", $!{record3.UserId}).addQueryData('view_date', $!{result.ViewDate.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$record.Name
+<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid", $!{record.ScheduleId}).addQueryData("userid", $!{record3.UserId}).addQueryData('view_date', $!{result.ViewDate.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$record.WbrName
 #if(! ${record.isPublic()})
 &nbsp;<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
 #else
@@ -170,7 +170,7 @@ ${record.TodoName}
 #end
 #else
 <div class="calerndarTermScheduleDiv small">
-$record.Name
+$record.WbrName
 #if(! ${record.isPublic()})
 &nbsp;<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
 #else
@@ -201,12 +201,12 @@ $record.Name
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('userid', $!{record3.UserId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarScheduleDiv">
 <div class="small time">${record.Date}</div>
-<div class="small"><a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$!{record.Name}</a></div>
+<div class="small"><a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$!{record.WbrName}</a></div>
 </div>
 #else
 <div class="calendarScheduleDiv">
 <div class="small time">${record.Date}</div>
-<div class="small">$!{record.Name}</div>
+<div class="small">$!{record.WbrName}</div>
 </div>
 #end
 #if(! ${record.isPublic()})
@@ -248,12 +248,12 @@ $record.Name
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('userid', $!{record3.UserId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarScheduleDiv">
 <div class="small time">${record.Date}</div>
-<div class="small"><a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$record.Name</a></div>
+<div class="small"><a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$record.WbrName</a></div>
 </div>
 #else
 <div class="calendarScheduleDiv">
 <div class="small time">${record.Date}</div>
-<div class="small">$record.Name</div>
+<div class="small">$record.WbrName</div>
 </div>
 #end
 #if(! ${record.isPublic()})
@@ -290,12 +290,12 @@ $record.Name
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarScheduleDiv">
 <div class="small time">${record.Date}</div>
-<div class="small"><a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$record.Name</a></div>
+<div class="small"><a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$record.WbrName</a></div>
 </div>
 #else
 <div class="calendarScheduleDiv">
 <div class="small time">${record.Date}</div>
-<div class="small">$record.Name</div>
+<div class="small">$record.WbrName</div>
 </div>
 #end
 #if(! ${record.isPublic()})
@@ -332,12 +332,12 @@ $record.Name
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarScheduleDiv">
 <div class="small time">${record.Date}</div>
-<div class="small"><a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$record.Name</a></div>
+<div class="small"><a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$record.WbrName</a></div>
 </div>
 #else
 <div class="calendarScheduleDiv">
 <div class="small time">${record.Date}</div>
-<div class="small">$record.Name</div>
+<div class="small">$record.WbrName</div>
 </div>
 #end
 #if(! ${record.isPublic()})

@@ -39,7 +39,7 @@
 <td><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.PrevDate.toString()}))', '$!portlet.ID');" title="前の日へ" /><img src="themes/$!theme/images/icon/arrow_left.gif" border="0"  alt="前の日へ" /></a>&nbsp; </td>
 <td><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextDate.toString()}))', '$!portlet.ID');" title="次の日へ"><img src="themes/$!theme/images/icon/arrow_right.gif" border="0"  alt="次の日へ" /></a>&nbsp; </td>
 <td><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextWeek.toString()}))', '$!portlet.ID');" title="次の週へ"><img src="themes/$!theme/images/icon/arrow_right_w.gif" border="0"  alt="次の週へ" /></a>&nbsp; </td>
-<td nowrap="nowrap"><span style="font-weight:bold">$!{result.ViewStart.Year} 年 $!{result.ViewStart.Month} 月 $!{result.ViewStart.Day} 日 $!{result.ViewStart.DayOfWeek} ～ $!{result.ViewEnd.Month} 月 $!{result.ViewEnd.Day} 日 $!{result.ViewEnd.DayOfWeek}</span></td>
+<td nowrap="nowrap"><span style="font-weight:bold">$!{result.ViewStart.Year}年$!{result.ViewStart.Month}月$!{result.ViewStart.Day}日$!{result.ViewStart.DayOfWeek}</span></td>
 </tr>
 </tbody>
 </table>
@@ -75,7 +75,9 @@
 ### 日付（曜日）の表示（ここから）
 #if( $roop % 5 == 0)
 <tr>
-#ALtdheadAtt("" "class='groupWeekly' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
+<img src="images/common/dot.gif" width="50" height="1" alt="" />
+#ALtdheadfooter()
 #if($result.MemberList.size() > 0)
 #set($daylist = ${result.getContainer($result.MemberList.get(0).UserId.Value).DayList})
 #else
@@ -141,13 +143,13 @@ $record3.AliasName
 #set($entityids = "$!{entityids}$!{record4.TermResultData.ScheduleId},")
 #if(${record4.TermResultData.isShowDetail()})
 <div class="schedule-$!{portlet.ID}-$!{record4.TermResultData.ScheduleId} calerndarTermScheduleDiv small">
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid",$!{record4.TermResultData.ScheduleId}).addQueryData('userid', $!{record3.UserId}).addQueryData('view_date', $!{record4.Date.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);" class="small">$!{record4.TermResultData.Name}
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid",$!{record4.TermResultData.ScheduleId}).addQueryData('userid', $!{record3.UserId}).addQueryData('view_date', $!{record4.Date.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);" class="small">$!{record4.TermResultData.WbrName}
 #if(!${record4.TermResultData.isPublic()})&nbsp;<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />#else<img class="dot_schedule" src="images/common/dot.gif" alt="" />#end
 #if(${record4.TermResultData.isTmpreserve()})<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />#end
 </a>
 #else
 <div class="calerndarTermScheduleDiv small">
-$!{record4.TermResultData.Name}
+$!{record4.TermResultData.WbrName}
 #if(!${record4.TermResultData.isPublic()})
 <img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
 #end
@@ -212,13 +214,13 @@ $!{record4.TermResultData.Name}
 #set($entityids = "$!{entityids}$!{record2.ScheduleId},")
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record2.ScheduleId}).addQueryData('userid', $!{record3.UserId}).addQueryData('view_date', $!{record.Date.toString()})")
 <div class="calendarScheduleDiv">
-<div class="small time">$!{record2.Date}</div>
-<div class="schedule-$!{portlet.ID}-$!{record2.ScheduleId} small"><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)" class="small">$!{record2.Name}</a></div>
+<div class="small">$!{record2.Date}</div>
+<div class="schedule-$!{portlet.ID}-$!{record2.ScheduleId} small"><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)" class="small">$!{record2.WbrName}</a></div>
 </div>
 #else
 <div class="calendarScheduleDiv">
-<div class="small time">$!{record2.Date}</div>
-<div class="schedule-$!{portlet.ID}-$!{record2.ScheduleId} small">$!{record2.Name}</div>
+<div class="small">$!{record2.Date}</div>
+<div class="schedule-$!{portlet.ID}-$!{record2.ScheduleId} small">$!{record2.WbrName}</div>
 </div>
 #end
 #if(! ${record2.isPublic()})
@@ -304,7 +306,9 @@ $!{record.ToDoResultData.TodoName}
 ### 日付（曜日）の表示(施設用)（ここから）
 #if( $roop % 5 == 0)
 <tr>
-#ALtdheadAtt("" "nowrap='nowrap'")
+#ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
+<img src="images/common/dot.gif" width="50" height="1" alt="" />
+#ALtdheadfooter()
 #if($result.MemberList.size() > 0)
 #set($daylist = ${result.getContainer($result.MemberList.get(0).UserId.Value).DayList})
 #else
@@ -314,24 +318,25 @@ $!{record.ToDoResultData.TodoName}
 #set($getScheduleDetailLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailJSONScreen').addQueryData('view_date', $!{record.Date.toString()}))
 #if($!{record.isHoliday()})
 #set ($stday = $velocityCount )
-#ALtdheadheaderAtt("class='holiday' nowrap='nowrap'")
-$!{record.Date.Day} $!{record.Date.DayOfWeek}
-<div class="holiday small">${record.Holiday.Name}</div>
+#ALtdheadheaderAtt("class='holiday groupWeekly' nowrap='nowrap'")
+$!{record.Date.Day} $!{record.Date.DayOfWeek}<br />
+<span class="holiday small">${record.Holiday.Name}</span>
 #elseif($!{record.Date.Value.Day} == 0)
 #set ($stday = $velocityCount )
-#ALtdheadheaderAtt("class='sunday' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='sunday groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #elseif($!{record.Date.Value.Day} == 6)
 #set ($sunday = $velocityCount )
-#ALtdheadheaderAtt("class='saturday' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='saturday groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #elseif($!{result.Today.Value} == $!{record.Date.Value})
-#ALtdheadheaderAtt("class='today' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='today groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #else
-#ALtdheadheaderAtt("nowrap='nowrap'")
+#ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #end
+<br/><img src="images/common/dot.gif" width="50" height="1" alt="" />
 #ALtdheadfooter()
 #end
 </tr>
@@ -377,12 +382,12 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record2.ScheduleId}).addQueryData('view_date', $!{record.Date.toString()}).addQueryData('facilityid', $record3.FacilityId.Value)")
 <div class="calendarScheduleDiv">
 
-<div class="small time">${record2.Date}</div>
-<div class="schedule-$!{portlet.ID}-$!{record2.ScheduleId} small"><a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$record2.Name</a></div>
+<div class="small">${record2.Date}</div>
+<div class="schedule-$!{portlet.ID}-$!{record2.ScheduleId} small"><a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$record2.WbrName</a></div>
 </div>
 #else
 <div class="calendarScheduleDiv">
-<div class="small time">${record2.Date}</div>
+<div class="small">${record2.Date}</div>
 <div class="schedule-$!{portlet.ID}-$!{record2.ScheduleId} small">$record2.Name</div>
 </div>
 #end
