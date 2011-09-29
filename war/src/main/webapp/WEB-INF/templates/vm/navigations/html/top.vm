@@ -29,10 +29,10 @@
                                   </span>
                                 </div>
                                 <div id="datetimeField">$!data.User.LastAccessTime</div>
+                                <div id="inquiryField"><a href="http://www.aipo.com/inquiry/" target="_blank">お問い合わせ</a></div>
                                 <div class="activityField">
                                 <div class="dijitRight">
                                 <span id="activitycheckerContainer"></span></div></div>
-                                <div id="inquiryField"><a href="http://www.aipo.com/inquiry/" target="_blank">お問い合わせ</a></div>
                               </div>
                             </div>
 #else
