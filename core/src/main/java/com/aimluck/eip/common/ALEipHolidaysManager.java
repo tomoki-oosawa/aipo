@@ -34,10 +34,9 @@ import java.util.StringTokenizer;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.resources.JetspeedResources;
 
 import com.aimluck.commons.field.ALIllegalDateException;
-import com.aimluck.eip.cayenne.om.portlet.EipMHoliday;
-import com.aimluck.eip.orm.Database;
 
 /**
  * 祝日を保持するシングルトンクラスです。 <br />
@@ -53,16 +52,39 @@ public class ALEipHolidaysManager {
   /** デフォルトエンコーディングを表わすシステムプロパティのキー */
   protected static final String KEY_ENCODING = "content.defaultencoding";
 
-  /** 祝日の一覧 */
-  private List<ALHoliday> holidays = null;
-
   private static ALEipHolidaysManager manager = new ALEipHolidaysManager();
+
+  /** デフォルトの祝日が書かれたファイルへのパス */
+  private final String FILE_HOLI_DAYS_DEFAULT = (JetspeedResources.getString(
+    "aipo.home",
+    "").equals("")) ? "" : JetspeedResources.getString("aipo.home", "")
+    + File.separator
+    + "conf"
+    + File.separator
+    + "holidays_default.properties";
+
+  /** ユーザ定義の祝日が書かれたファイルへのパス */
+  private final String FILE_HOLI_DAYS_USER = (JetspeedResources.getString(
+    "aipo.home",
+    "").equals("")) ? "" : JetspeedResources.getString("aipo.home", "")
+    + File.separator
+    + "conf"
+    + File.separator
+    + "holidays_user.properties";
+
+  /** デフォルトの祝日一覧 */
+  private List<ALHoliday> defaultHolidays = null;
+
+  /** ユーザ定義の祝日一覧 */
+  private List<ALHoliday> userHolidays = null;
 
   /**
    * コンストラクタ
    */
   private ALEipHolidaysManager() {
-    holidays = new ArrayList<ALHoliday>();
+    defaultHolidays = new ArrayList<ALHoliday>();
+    userHolidays = new ArrayList<ALHoliday>();
+
     loadHolidays();
   }
 
@@ -73,25 +95,6 @@ public class ALEipHolidaysManager {
    */
   public static ALEipHolidaysManager getInstance() {
     return manager;
-  }
-
-  /**
-   * 祝日情報をデータベースから読み込む． <br>
-   */
-  public void loadHolidays() {
-    holidays.clear();
-
-    List<EipMHoliday> holidayList =
-      Database.query(EipMHoliday.class).fetchList();
-    for (EipMHoliday h : holidayList) {
-      ALHoliday holiday = new ALHoliday(h.getHolidayName(), h.getHolidayDate());
-      holidays.add(holiday);
-    }
-
-    Comparator<ALHoliday> comp = getHolidaysComparator();
-    if (comp != null) {
-      Collections.sort(holidays, comp);
-    }
   }
 
   /**
@@ -123,7 +126,10 @@ public class ALEipHolidaysManager {
       return null;
     }
 
-    holiDay = isHoliday(holidays, year, month, day);
+    holiDay = isHoliday(userHolidays, year, month, day);
+    if (holiDay == null) {
+      holiDay = isHoliday(defaultHolidays, year, month, day);
+    }
     return holiDay;
   }
 
@@ -166,14 +172,16 @@ public class ALEipHolidaysManager {
 
   /**
    * 祝日情報をテキストファイルから読み込む． <br>
-   * 祝日情報のフォーマット：祝日名,祝日日時
-   * 
-   * @param filePath
-   *          読み込むファイルのパス
+   * 祝日情報のフォーマット：祝日名,祝日日時 <br>
+   * 例）文化の日,2004-11-03
    */
-  public List<ALHoliday> loadDefaultHolidays(String filePath) {
-    List<ALHoliday> loadedHolidays = new ArrayList<ALHoliday>();
-    File defaultFile = new File(filePath);
+  private void loadHolidays() {
+    File defaultFile = new File(FILE_HOLI_DAYS_DEFAULT);
+    File userFile = new File(FILE_HOLI_DAYS_USER);
+
+    defaultHolidays.clear();
+    userHolidays.clear();
+
     BufferedReader reader = null;
 
     try {
@@ -182,19 +190,27 @@ public class ALEipHolidaysManager {
         reader =
           new BufferedReader(new InputStreamReader(new FileInputStream(
             defaultFile), ALEipConstants.DEF_CONTENT_ENCODING));
-        parseHolidays(reader, loadedHolidays);
+        loadHoliday(reader, defaultHolidays);
+      }
+
+      if (userFile.exists()) {
+        // ユーザ定義の祝日を読み込む．
+        reader =
+          new BufferedReader(new InputStreamReader(
+            new FileInputStream(userFile),
+            ALEipConstants.DEF_CONTENT_ENCODING));
+        loadHoliday(reader, userHolidays);
       }
 
       Comparator<ALHoliday> comp = getHolidaysComparator();
       if (comp != null) {
-        Collections.sort(loadedHolidays, comp);
+        Collections.sort(defaultHolidays, comp);
+        Collections.sort(userHolidays, comp);
       }
-      return loadedHolidays;
     } catch (Exception ex) {
       logger.error("Exception", ex);
-      return null;
+      return;
     }
-
   }
 
   /**
@@ -204,7 +220,7 @@ public class ALEipHolidaysManager {
    * @param list
    * @throws Exception
    */
-  private void parseHolidays(BufferedReader reader, List<ALHoliday> list)
+  private void loadHoliday(BufferedReader reader, List<ALHoliday> list)
       throws Exception {
     if (reader == null) {
       return;
@@ -237,7 +253,6 @@ public class ALEipHolidaysManager {
    */
   private Comparator<ALHoliday> getHolidaysComparator() {
     Comparator<ALHoliday> com = new Comparator<ALHoliday>() {
-      @Override
       public int compare(ALHoliday obj0, ALHoliday obj1) {
         int ret = 0;
         try {

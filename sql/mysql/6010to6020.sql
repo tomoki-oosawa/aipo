@@ -29,13 +29,3 @@ CREATE TABLE eip_m_facility_group_map
 -- 20110913
 ALTER TABLE `eip_m_facility` ADD `sort` INTEGER ;
 -- 20110913
-
--- 20110929
-CREATE TABLE eip_m_holiday (
-  `default_flag` VARCHAR(1) NOT NULL,
-  `holiday_date` DATE NOT NULL,
-  `holiday_id` INT NOT NULL AUTO_INCREMENT,
-  `holiday_name` VARCHAR(64) NOT NULL COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`holiday_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
--- 20110929

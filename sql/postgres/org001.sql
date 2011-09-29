@@ -1244,14 +1244,6 @@ CREATE TABLE EIP_M_FACILITY_GROUP_MAP
     PRIMARY KEY(ID)
 );
 
-CREATE TABLE EIP_M_HOLIDAY (
-  DEFAULT_FLAG VARCHAR(1) NOT NULL,
-  HOLIDAY_DATE DATE NOT NULL,
-  HOLIDAY_ID INT NOT NULL,
-  HOLIDAY_NAME VARCHAR(64) NOT NULL,
-  PRIMARY KEY (holiday_id)
-);
-
 -----------------------------------------------------------------------------
 -- CREATE SEQUENCE
 -----------------------------------------------------------------------------
@@ -1315,7 +1307,6 @@ CREATE SEQUENCE pk_turbine_user INCREMENT 20;
 CREATE SEQUENCE pk_turbine_user_group_role INCREMENT 20;
 CREATE SEQUENCE pk_eip_m_facility_group INCREMENT 20;
 CREATE SEQUENCE pk_eip_m_facility_group_map INCREMENT 20;
-CREATE SEQUENCE pk_eip_m_holiday INCREMENT 20;
 
 CREATE SEQUENCE pk_eip_m_config INCREMENT 20 START 200;
 CREATE SEQUENCE pk_jetspeed_group_profile INCREMENT 20 START 200;
@@ -1330,7 +1321,6 @@ CREATE SEQUENCE pk_module_id INCREMENT 20 START 200;
 CREATE SEQUENCE pk_oauth_consumer INCREMENT 20 START 200;
 CREATE SEQUENCE pk_oauth_token INCREMENT 20 START 200;
 CREATE SEQUENCE pk_oauth_entry INCREMENT 20 START 200;
-
 
 -----------------------------------------------------------------------------
 -- ALTER SEQUENCE
@@ -1395,7 +1385,6 @@ ALTER SEQUENCE pk_eip_t_acl_portlet_feature OWNED BY EIP_T_ACL_PORTLET_FEATURE.F
 ALTER SEQUENCE pk_eip_t_acl_user_role_map OWNED BY EIP_T_ACL_USER_ROLE_MAP.ID;
 ALTER SEQUENCE pk_eip_m_facility_group OWNED BY EIP_M_FACILITY_GROUP.GROUP_ID;
 ALTER SEQUENCE pk_eip_m_facility_group_map OWNED BY EIP_M_FACILITY_GROUP_MAP.ID;
-ALTER SEQUENCE pk_eip_m_holiday OWNED BY EIP_M_HOLIDAY.HOLIDAY_ID;
 
 -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------
@@ -1579,155 +1568,3 @@ SELECT setval('pk_eip_t_workflow_category',9);
 
 INSERT INTO EIP_T_EXT_TIMECARD_SYSTEM VALUES(1, 0, '通常', 9, 0, 18, 0, 360, 60, 360, 60, 4, 'T',now(), now());
 SELECT setval('pk_eip_t_ext_timecard_system',1);
-
--- holiday
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2011-01-01', 1, '元日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2011-01-10', 2, '成人の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2011-02-11', 3, '建国記念の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2011-03-21', 4, '春分の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2011-04-29', 5, '昭和の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2011-05-03', 6, '憲法記念日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2011-05-04', 7, 'みどりの日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2011-05-05', 8, 'こどもの日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2011-07-18', 9, '海の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2011-09-19', 10, '敬老の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2011-09-23', 11, '秋分の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2011-10-10', 12, '体育の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2011-11-03', 13, '文化の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2011-11-23', 14, '勤労感謝の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2011-12-23', 15, '天皇誕生日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2010-01-01', 21, '元日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2010-01-11', 22, '成人の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2010-02-11', 23, '建国記念の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2010-03-21', 24, '春分の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2010-03-22', 25, '振り替え休日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2010-04-29', 26, '昭和の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2010-05-03', 27, '憲法記念日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2010-05-04', 28, 'みどりの日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2010-05-05', 29, 'こどもの日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2010-07-19', 30, '海の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2010-09-20', 31, '敬老の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2010-09-23', 32, '秋分の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2010-10-11', 33, '体育の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2010-11-03', 34, '文化の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2010-11-23', 35, '勤労感謝の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2010-12-23', 36, '天皇誕生日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2009-01-01', 41, '元日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2009-01-12', 42, '成人の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2009-02-11', 43, '建国記念の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2009-03-20', 44, '春分の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2009-04-29', 45, '昭和の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2009-05-03', 46, '憲法記念日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2009-05-04', 47, 'みどりの日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2009-05-05', 48, 'こどもの日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2009-05-06', 49, '振替休日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2009-07-20', 50, '海の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2009-09-21', 51, '敬老の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2009-09-22', 52, '国民の休日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2009-09-23', 53, '秋分の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2009-10-12', 54, '体育の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2009-11-03', 55, '文化の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2009-11-23', 56, '勤労感謝の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2009-12-23', 57, '天皇誕生日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2008-01-01', 61, '元日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2008-01-14', 62, '成人の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2008-02-11', 63, '建国記念の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2008-03-20', 64, '春分の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2008-04-29', 65, '昭和の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2008-05-03', 66, '憲法記念日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2008-05-04', 67, 'みどりの日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2008-05-05', 68, 'こどもの日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2008-05-06', 69, '振替休日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2008-07-21', 70, '海の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2008-09-15', 71, '敬老の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2008-09-23', 72, '秋分の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2008-10-13', 73, '体育の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2008-11-03', 74, '文化の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2008-11-23', 75, '勤労感謝の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2008-11-24', 76, '振替休日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2008-12-23', 77, '天皇誕生日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2007-01-01', 81, '元日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2007-01-08', 82, '成人の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2007-02-11', 83, '建国記念の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2007-02-12', 84, '振替休日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2007-03-21', 85, '春分の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2007-04-29', 86, '昭和の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2007-04-30', 87, '振替休日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2007-05-03', 88, '憲法記念日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2007-05-04', 89, 'みどりの日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2007-05-05', 90, 'こどもの日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2007-07-16', 91, '海の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2007-09-17', 92, '敬老の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2007-09-23', 93, '秋分の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2007-09-24', 94, '振替休日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2007-10-08', 95, '体育の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2007-11-03', 96, '文化の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2007-11-23', 97, '勤労感謝の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2007-12-23', 98, '天皇誕生日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2007-12-24', 99, '振替休日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2006-01-01', 101, '元日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2006-01-02', 102, '振替休日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2006-01-09', 103, '成人の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2006-02-11', 104, '建国記念の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2006-03-21', 105, '春分の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2006-04-29', 106, 'みどりの日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2006-05-03', 107, '憲法記念日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2006-05-04', 108, '国民の休日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2006-05-05', 109, 'こどもの日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2006-07-17', 110, '海の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2006-09-18', 111, '敬老の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2006-09-23', 112, '秋分の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2006-10-09', 113, '体育の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2006-11-03', 114, '文化の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2006-11-23', 115, '勤労感謝の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2006-12-23', 116, '天皇誕生日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2005-01-01', 121, '元日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2005-01-10', 122, '成人の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2005-02-11', 123, '建国記念の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2005-03-20', 124, '春分の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2005-03-21', 125, '振替休日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2005-04-29', 126, 'みどりの日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2005-05-03', 127, '憲法記念日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2005-05-04', 128, '国民の休日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2005-05-05', 129, 'こどもの日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2005-07-18', 130, '海の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2005-09-19', 131, '敬老の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2005-09-23', 132, '秋分の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2005-10-10', 133, '体育の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2005-11-03', 134, '文化の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2005-11-23', 135, '勤労感謝の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2005-12-23', 136, '天皇誕生日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2004-01-01', 141, '元日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2004-01-12', 142, '成人の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2004-02-11', 143, '建国記念の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2004-03-20', 144, '春分の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2004-04-29', 145, 'みどりの日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2004-05-03', 146, '憲法記念日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2004-05-04', 147, '国民の休日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2004-05-05', 148, 'こどもの日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2004-07-19', 149, '海の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2004-09-20', 150, '敬老の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2004-09-23', 151, '秋分の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2004-10-11', 152, '体育の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2004-11-03', 153, '文化の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2004-11-23', 154, '勤労感謝の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2004-12-23', 155, '天皇誕生日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2012-01-01', 161, '元日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2012-01-09', 162, '成人の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2012-02-11', 163, '建国記念の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2012-03-20', 164, '春分の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2012-04-29', 165, '昭和の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2012-04-30', 166, '振替休日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2012-05-03', 167, '憲法記念日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2012-05-04', 168, 'みどりの日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2012-05-05', 169, 'こどもの日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2012-07-16', 170, '海の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2012-09-17', 171, '敬老の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2012-09-22', 172, '秋分の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2012-10-08', 173, '体育の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2012-11-03', 174, '文化の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2012-11-23', 175, '勤労感謝の日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2012-12-23', 176, '天皇誕生日');
-INSERT INTO eip_m_holiday (default_flag, holiday_date, holiday_id, holiday_name) VALUES ('T', '2012-12-24', 177, '振替休日');
-
-SELECT setval('pk_eip_m_holiday',180);

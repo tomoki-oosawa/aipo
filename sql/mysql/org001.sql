@@ -943,14 +943,6 @@ CREATE TABLE eip_m_facility_group_map
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-CREATE TABLE eip_m_holiday (
-  `default_flag` VARCHAR(1) NOT NULL,
-  `holiday_date` DATE NOT NULL,
-  `holiday_id` INT NOT NULL AUTO_INCREMENT,
-  `holiday_name` VARCHAR(64) NOT NULL COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`holiday_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 ALTER TABLE `oauth_consumer` ADD FOREIGN KEY (  `app_id` ) REFERENCES  `application` (`id`) ON DELETE CASCADE ;
 
 ALTER TABLE `activity_map` ADD FOREIGN KEY (  `activity_id` ) REFERENCES  `activity` (`id`) ON DELETE CASCADE ;
