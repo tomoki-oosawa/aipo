@@ -21,114 +21,88 @@
 
 -->
 
-<portlets>
-  <metainfo>
-    <title>Aipo</title>
-  </metainfo>
-  <security-ref parent="owner-view" />
-  <control name="TabControl" />
-  <controller name="TabController" />
-  <entry parent="Activity" />
-<portlets>
-    <metainfo>
-      <description></description>
-      <title>マイページ</title>
-    </metainfo>
-    <security-ref parent="owner-only" />
-    <layout position="4" size="-1" />
-    <controller name="TwoColumnsRight" />
-    <entry parent="Activity">
-      <layout position="-1" size="-1">
-        <property name="column" value="0" />
-        <property name="row" value="0" />
-      </layout>
-    </entry>
-    <entry parent="Workflow">
-      <layout position="-1" size="-1">
-        <property name="column" value="0" />
-        <property name="row" value="1" />
-      </layout>
-    </entry>
-    <entry parent="Msgboard">
-      <layout position="-1" size="-1">
-        <property name="column" value="0" />
-        <property name="row" value="2" />
-      </layout>
-    </entry>
-    <entry parent="AddressBook">
-      <layout position="-1" size="-1">
-        <property name="column" value="0" />
-        <property name="row" value="3" />
-      </layout>
-    </entry>
-    <entry parent="Note">
-      <layout position="-1" size="-1">
-        <property name="column" value="0" />
-        <property name="row" value="4" />
-      </layout>
-    </entry>
-    <entry parent="ExtTimecard">
-      <layout position="-1" size="-1">
-        <property name="column" value="0" />
-        <property name="row" value="5" />
-      </layout>
-    </entry>
-    <entry parent="Cabinet">
-      <layout position="-1" size="-1">
-        <property name="column" value="0" />
-        <property name="row" value="6" />
-      </layout>
-    </entry>
-    <entry parent="WebMail">
-      <layout position="-1" size="-1">
-        <property name="column" value="0" />
-        <property name="row" value="7" />
-      </layout>
-    </entry>
-    <entry parent="ToDo">
-      <layout position="-1" size="-1">
-        <property name="column" value="0" />
-        <property name="row" value="8" />
-      </layout>
-    </entry>
-    <entry parent="Memo">
-      <layout position="-1" size="-1">
-        <property name="column" value="0" />
-        <property name="row" value="9" />
-      </layout>
-    </entry>
-    <entry parent="Schedule">
-      <layout position="-1" size="-1">
-        <property name="column" value="1" />
-        <property name="row" value="0" />
-      </layout>
-    </entry>
-    <entry parent="Blog">
-      <layout position="-1" size="-1">
-        <property name="column" value="1" />
-        <property name="row" value="1" />
-      </layout>
-    </entry>
-  </portlets>
-  <portlets>
-    <metainfo>
-      <title>個人設定</title>
-    </metainfo>
-    <security-ref parent="owner-view" />
-    <layout position="6" size="-1" />
-    <control name="MenuControl" />
-    <controller name="MenuController" />
-    <entry parent="AccountPerson">
-      <layout position="0" size="-1" />
-    </entry>
-    <entry parent="MyGroup">
-      <layout position="1" size="-1" />
-    </entry>
-    <entry parent="Page">
-      <layout position="2" size="-1" />
-    </entry>
-    <entry parent="Cellular">
-      <layout position="3" size="-1" />
-    </entry>
-  </portlets>
+<portlets >
+	<metainfo>
+		<title>Aipo</title>
+	</metainfo>
+	<security-ref parent="owner-view" />
+	<control name="TabControl" />
+	<controller name="TabController" />
+	<entry parent="Activity" />
+	<portlets>
+		<metainfo>
+			<description>
+			</description>
+			<title>マイページ</title>
+		</metainfo>
+		<security-ref parent="owner-only" />
+		<layout position="4" size="-1" />
+		<controller name="TwoColumnsRight" />
+		<entry parent="Activity">
+			<layout position="-1" size="-1">
+				<property name="column" value="0" />
+				<property name="row" value="0" />
+			</layout>
+		</entry>
+		<entry parent="Workflow">
+			<layout position="-1" size="-1">
+				<property name="column" value="0" />
+				<property name="row" value="1" />
+			</layout>
+		</entry>
+		<entry parent="Note">
+			<layout position="-1" size="-1">
+				<property name="column" value="0" />
+				<property name="row" value="2" />
+			</layout>
+		</entry>
+		<entry parent="AddressBook">
+			<layout position="-1" size="-1">
+				<property name="column" value="0" />
+				<property name="row" value="3" />
+			</layout>
+		</entry>
+		<entry parent="ExtTimecard">
+			<layout position="-1" size="-1">
+				<property name="column" value="0" />
+				<property name="row" value="4" />
+			</layout>
+		</entry>
+		<entry parent="Schedule">
+			<layout position="-1" size="-1">
+				<property name="column" value="1" />
+				<property name="row" value="0" />
+			</layout>
+		</entry>
+		<entry parent="Msgboard">
+			<layout position="-1" size="-1">
+				<property name="column" value="1" />
+				<property name="row" value="1" />
+			</layout>
+		</entry>
+		<entry parent="Blog">
+			<layout position="-1" size="-1">
+				<property name="column" value="1" />
+				<property name="row" value="2" />
+			</layout>
+		</entry>
+	</portlets>
+	<portlets>
+		<metainfo>
+			<title>個人設定</title>
+		</metainfo>
+		<security-ref parent="owner-view" />
+		<layout position="6" size="-1" />
+		<control name="MenuControl" />
+		<controller name="MenuController" />
+		<entry parent="AccountPerson">
+			<layout position="0" size="-1" />
+		</entry>
+		<entry parent="MyGroup">
+			<layout position="1" size="-1" />
+		</entry>
+		<entry parent="Page">
+			<layout position="2" size="-1" />
+		</entry>
+	</portlets>
 </portlets>
