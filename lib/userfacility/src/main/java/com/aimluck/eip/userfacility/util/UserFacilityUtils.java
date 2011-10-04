@@ -74,7 +74,7 @@ public class UserFacilityUtils {
       // SQLの作成
       StringBuffer statement = new StringBuffer();
       statement.append("SELECT DISTINCT ");
-      statement.append("  B.FACILITY_ID, B.FACILITY_NAME ");
+      statement.append("  B.FACILITY_ID, B.FACILITY_NAME, B.SORT ");
       statement.append("FROM eip_facility_group as A ");
       statement.append("LEFT JOIN eip_m_facility as B ");
       statement.append("  on A.FACILITY_ID = B.FACILITY_ID ");
