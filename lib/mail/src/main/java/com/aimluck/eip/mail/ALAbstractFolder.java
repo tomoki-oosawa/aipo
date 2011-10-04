@@ -469,10 +469,8 @@ public abstract class ALAbstractFolder implements ALFolder {
         b.append(System.getProperty("line.separator"));
       }
 
-      ALStorageService.saveFile(
-        new ByteArrayInputStream(b.toString().getBytes("utf-8")),
-        getFullName() + ALStorageService.separator(),
-        ALFolder.FILE_UIDL);
+      ALStorageService.saveFile(new ByteArrayInputStream(b.toString().getBytes(
+        "utf-8")), getFullName(), ALFolder.FILE_UIDL);
 
     } catch (IOException ioe) {
     } finally {
