@@ -46,7 +46,7 @@
             <title>HTML</title>
         </meta-info>
         <mime-type>text/html</mime-type>
-        <character-set>Shift_JIS</character-set>
+        <character-set>UTF-8</character-set>
         <capability-map>
           <capability>HTML_DOM_IPHONE</capability>
         </capability-map>
