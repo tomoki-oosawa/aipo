@@ -311,7 +311,8 @@ public class AccountEditFormData extends ALAbstractFormData {
     Matcher matcher = pattern.matcher(in_telephone.getValue());
     Boolean ext_validater = matcher.matches();
     if (ext_validater) {
-      msgList.add("電話番号（内線）は 15 文字以下でハイフン（-）または半角数字で入力してください。");
+      msgList
+        .add("『  <span class='em'> 電話番号（内線） </span>』は 15 文字以下でハイフン（-）または半角数字で入力してください。");
     }
 
     // メールアドレス
