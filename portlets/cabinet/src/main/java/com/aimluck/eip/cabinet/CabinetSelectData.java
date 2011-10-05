@@ -259,7 +259,7 @@ public class CabinetSelectData extends
         updateUserName = updateUser.getAliasName().getValue();
       }
       rd.setUpdateUser(updateUserName);
-      rd.setUpdateDate(new SimpleDateFormat("yyyy年M月d日 H時m分").format(record
+      rd.setUpdateDate(new SimpleDateFormat("yyyy年M月d日 (EEE)").format(record
         .getUpdateDate()));
       return rd;
     } catch (Exception ex) {

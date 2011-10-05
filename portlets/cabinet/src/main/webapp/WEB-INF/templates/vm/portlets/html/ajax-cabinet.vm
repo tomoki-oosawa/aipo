@@ -19,31 +19,29 @@
 
 ## ---------------------------------------------------------------------------
 #set($link = "$!jslink.getPortletById($!portlet.ID)")
+#set($flag = true)
 #if ($result.List.size() == 0)
 <div class="message">$!{result.SelectedFolderInfo.FolderName} にはファイルはありません。</div>
 #else
 <div style="padding:5px 0px 5px 3px">『$!{result.SelectedFolderInfo.FolderName}』 のファイル一覧</div>
+<div class="p">
 #ALajaxpageview('CabinetScreen' $result)
-#ALtableheaderWide()
-<tr>
-#ALtdhead("#ALajaxsort('file_title' 'タイトル' $result 'CabinetScreen')")
-#ALtdhead("#ALajaxsort('file_name' 'ファイル名' $result 'CabinetScreen')")
-#ALtdhead("#ALajaxsort('update_date' '更新日時' $result 'CabinetScreen')")
-#ALtdheadThin("#ALajaxsort('counter' 'DL数' $result 'CabinetScreen')")
-#ALtdheadThin("#ALajaxsort('file_size' 'サイズ（KB）' $result 'CabinetScreen')")
-</tr>
+</div>
+<div class="p clearfix">
+<table class="rowTable wide">
 #foreach ($record in $result.List)
-<tr>
-#ALtdcellheader()
+<tr #if($flag) class="even" #end>
+<td width="20%" nowrap="nowrap">$!{record.UpdateDate}</td>
+<td width="40%">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFileDetailScreen").addQueryData("entityid",$record.FileId).addQueryData("folder_id",$result.SelectedFolderInfo.FolderId))');">$!record.FileTitle</a>
-#ALtdcellfooter()
-#ALtdcellheader()
-<a href="$jslink.getTemplate("CabinetFileRawScreen").addQueryData("entityid", ${record.FileId})">$record.WbrFileName</a>
-#ALtdcellfooter()
-#ALtdcellAtt($record.UpdateDate "thin")
-<td class="item" align="right">$record.Counter</td>
-<td class="item" align="right">$record.FileSize</td>
+</td>
+<td width="30%" style="padding:1px 0px 1px 5px;">
+<a href="$jslink.getTemplate("CabinetFileRawScreen").addQueryData("entityid", ${record.FileId})">$record.WbrFileName ($!{record.FileSize}KB)</a>
+</td>
+<td width="10%" style="padding:1px 0px 1px 5px; white-space:nowrap;">$!{record.UpdateUser}</td>
 </tr>
+#if($flag) #set($flag = false) #else #set($flag = true) #end
 #end
-#ALtablefooter()
+</table>
+</div>
 #end
