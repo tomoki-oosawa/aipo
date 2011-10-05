@@ -36,7 +36,7 @@
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFileDetailScreen").addQueryData("entityid",$record.FileId).addQueryData("folder_id",$result.SelectedFolderInfo.FolderId))');">$!record.FileTitle</a>
 </td>
 <td width="30%" style="padding:1px 0px 1px 5px;">
-<a href="$jslink.getTemplate("CabinetFileRawScreen").addQueryData("entityid", ${record.FileId})">$record.WbrFileName ($!{record.FileSize}KB)</a>
+<a href="$jslink.getTemplate("CabinetFileRawScreen").addQueryData("entityid", ${record.FileId})">$record.WbrFileName （$!{record.FileSize}KB）</a>
 </td>
 <td width="10%" style="padding:1px 0px 1px 5px; white-space:nowrap;">$!{record.UpdateUser}</td>
 </tr>
