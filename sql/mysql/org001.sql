@@ -628,7 +628,9 @@ CREATE TABLE `eip_t_schedule_map` (
   `status` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
   `type` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
   `common_category_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `eip_t_schedule_map_schedule_id_index` (`schedule_id`),
+  KEY `eip_t_schedule_map_schedule_id_user_id_index` (`schedule_id`, `user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_timecard` (

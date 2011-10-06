@@ -29,3 +29,9 @@ CREATE TABLE eip_m_facility_group_map
 -- 20110913
 ALTER TABLE `eip_m_facility` ADD `sort` INTEGER ;
 -- 20110913
+
+--- 20111007
+CREATE INDEX eip_t_schedule_map_schedule_id_index ON eip_t_schedule_map (schedule_id);
+CREATE INDEX eip_t_schedule_map_schedule_id_user_id_index ON eip_t_schedule_map (schedule_id, user_id);
+DROP INDEX schedule_id ON eip_t_schedule_map;
+--- 20111007

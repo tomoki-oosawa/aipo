@@ -39,3 +39,8 @@ ALTER SEQUENCE pk_eip_m_facility_group_map OWNED BY EIP_M_FACILITY_GROUP_MAP.ID;
 --- modify table struct
 ALTER TABLE EIP_M_FACILITY ADD SORT INTEGER ;
 --- 20110915
+
+--- 20111007
+CREATE INDEX eip_t_schedule_map_schedule_id_index ON EIP_T_SCHEDULE_MAP (SCHEDULE_ID);
+CREATE INDEX eip_t_schedule_map_schedule_id_user_id_index ON EIP_T_SCHEDULE_MAP (SCHEDULE_ID, USER_ID);
+--- 20111007
