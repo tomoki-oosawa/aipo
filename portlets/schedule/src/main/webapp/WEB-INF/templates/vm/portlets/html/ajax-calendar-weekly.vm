@@ -45,7 +45,7 @@
 					    <div id="memberfacilitylistwidget-$!portlet.ID" style="display:none"></div>
                         <select size="10" multiple="multiple" style="display:none;" name="init_memberlist-$!portlet.ID" id="init_memberlist-$!portlet.ID">#foreach($record in  $!member_list) <option value=#if($record.UserFacilityType == "U") "$record.UserFacilityId" #else "f$record.UserFacilityId" #end> $!utils.escapeXML($record.AliasName.toString()) </option>#end</select>
 					#end
-                        ##参加メンバー一覧ここまで
+                        ##参加ユーザー一覧ここまで
                     <div class="clearfix" style="padding-top: 5px;">
                      <ul class="headItem">
                       <li><img src="themes/$!theme/images/icon/arrow_left_w.gif" alt="前の週へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["prevWeek"])' style="cursor:pointer"/></li>

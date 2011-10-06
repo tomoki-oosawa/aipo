@@ -68,23 +68,25 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 public class MsgboardUtils {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(MsgboardUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(MsgboardUtils.class.getName());
 
   /** 所有者の識別子 */
   public static final String OWNER_ID = "ownerid";
 
   /** 掲示板の添付ファイルを保管するディレクトリの指定 */
-  private static final String FOLDER_FILEDIR_MSGBOARD =
-    JetspeedResources.getString("aipo.filedir", "");
+  private static final String FOLDER_FILEDIR_MSGBOARD = JetspeedResources
+    .getString("aipo.filedir", "");
 
   /** 掲示板の添付ファイルを保管するディレクトリのカテゴリキーの指定 */
-  protected static final String CATEGORY_KEY =
-    JetspeedResources.getString("aipo.msgboard.categorykey", "");
+  protected static final String CATEGORY_KEY = JetspeedResources.getString(
+    "aipo.msgboard.categorykey",
+    "");
 
   /** デフォルトエンコーディングを表わすシステムプロパティのキー */
-  public static final String FILE_ENCODING =
-    JetspeedResources.getString("content.defaultencoding", "UTF-8");
+  public static final String FILE_ENCODING = JetspeedResources.getString(
+    "content.defaultencoding",
+    "UTF-8");
 
   /** 全てのユーザーが閲覧／返信可 */
   public static final int ACCESS_PUBLIC_ALL = 0;
@@ -1073,10 +1075,10 @@ public class MsgboardUtils {
   public static void createTopicActivity(EipTMsgboardTopic topic,
       String loginName, List<String> recipients, boolean isNew) {
     String title =
-      new StringBuilder("トピック「")
+      new StringBuilder("掲示板「")
         .append(ALCommonUtils.compressString(topic.getTopicName(), 30))
         .append("」を")
-        .append(isNew ? "投稿しました。" : "編集しました。")
+        .append(isNew ? "作成しました。" : "編集しました。")
         .toString();
     String portletParams =
       new StringBuilder("?template=MsgboardTopicDetailScreen").append(
@@ -1110,10 +1112,10 @@ public class MsgboardUtils {
   public static void createNewCommentActivity(EipTMsgboardTopic topic,
       String loginName, List<String> recipients) {
     String title =
-      new StringBuilder("トピック「")
+      new StringBuilder("掲示板「")
         .append(ALCommonUtils.compressString(topic.getTopicName(), 30))
         .append("」に")
-        .append("書き込みました。")
+        .append("返信しました。")
         .toString();
     String portletParams =
       new StringBuilder("?template=MsgboardTopicDetailScreen").append(
@@ -1155,15 +1157,15 @@ public class MsgboardUtils {
     }
   }
 
-
   /**
    * 指定されたユーザが指定カテゴリのトピックに対して返信できるかどうか調べます。
-   *
+   * 
    * @param user_id
    * @param category
    * @return
    */
-  public static boolean hasAuthorityToReply(int user_id, EipTMsgboardCategory category) {
+  public static boolean hasAuthorityToReply(int user_id,
+      EipTMsgboardCategory category) {
     if (category.getTurbineUser().getUserId() == user_id) {
       return true;
     }

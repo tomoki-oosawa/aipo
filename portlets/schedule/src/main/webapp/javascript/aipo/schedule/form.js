@@ -580,7 +580,7 @@ aipo.schedule.shrinkMember = function(){
             }
         }
         HTML += "</td><td style=\"border:none;\">";
-        HTML += '<input type=\"button\" class=\"alignright\" value=\"参加メンバー選択\" onclick=\"aipo.schedule.expandMember();\" />'
+        HTML += '<input type=\"button\" class=\"alignright\" value=\"参加ユーザー選択\" onclick=\"aipo.schedule.expandMember();\" />'
         HTML += "</td></tr></tbody></table>";
        node.innerHTML = HTML;
    }

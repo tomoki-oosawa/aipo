@@ -1785,7 +1785,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /**
-   * 参加メンバー全員の予定を完全に削除します。
+   * 参加ユーザー全員の予定を完全に削除します。
    * 
    * @param schedule
    * @param members
@@ -1797,7 +1797,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /**
-   * 参加メンバー全員の一日分の予定を削除します。
+   * 参加ユーザー全員の一日分の予定を削除します。
    * 
    * @param schedule
    * @param members

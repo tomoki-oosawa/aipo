@@ -319,7 +319,7 @@ public class CellScheduleOnedaySelectByMemberData extends
     try {
       EipTSchedule schedule = record.getEipTSchedule();
       if ("R".equals(record.getStatus())) {
-        // 参加メンバーが削除したレコード
+        // 参加ユーザーが削除したレコード
         return rd;
       }
       if (!ScheduleUtils.isView(

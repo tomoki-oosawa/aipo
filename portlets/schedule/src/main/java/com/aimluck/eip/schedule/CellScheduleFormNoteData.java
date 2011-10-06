@@ -556,7 +556,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
       EipTCommonCategory category1 =
         CommonCategoryUtils.getEipTCommonCategory(Long.valueOf(1));
 
-      // ScheduleMapに参加メンバーを追加する
+      // ScheduleMapに参加ユーザーを追加する
       for (ALEipUser user : form_data.getMemberList()) {
         int userid = (int) user.getUserId().getValue();
 

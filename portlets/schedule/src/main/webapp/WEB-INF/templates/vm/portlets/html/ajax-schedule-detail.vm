@@ -94,7 +94,7 @@ $!{result.Detail.Date2}
 完全に隠す （スケジュールをすべて非公開とします）
 #end
 #ALtditemfooter()
-#ALtdcaption('参加メンバー')
+#ALtdcaption('参加ユーザー')
 #ALtditemheader()
 #set($counter = 0)
 #foreach($record in $!result.MemberList)
@@ -114,7 +114,7 @@ $!record.AliasName
 #end
 #if($hasMember)
 <div style="padding:4px 0px 0px 0px">
-#if($!{result.Detail.isEditable()}) 参加メンバーは、このスケジュールを編集／削除できます。#else #if($!{result.Detail.User.UserId.toString()}==$!{result.Detail.UpdateUser.UserId.toString()}) 参加メンバー#else ユーザー $!{result.Detail.UpdateUser.AliasName} 以外#endは、このスケジュールを編集／削除できません。#end
+#if($!{result.Detail.isEditable()}) 参加ユーザーは、このスケジュールを編集／削除できます。#else #if($!{result.Detail.User.UserId.toString()}==$!{result.Detail.UpdateUser.UserId.toString()}) 参加ユーザー#else ユーザー $!{result.Detail.UpdateUser.AliasName} 以外#endは、このスケジュールを編集／削除できません。#end
 </div>
 
 <div>
@@ -154,16 +154,16 @@ ${record.FacilityName}<br/>
 <input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"/>
 <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">${prestr}この予定を完全に削除します</label><br/>
 <input name="del_flag" type="radio" value="1"  id="$!{portlet.ID}del_flag_1_id" onclick="aipo.schedule.delFlag1(this.form)"/>
-<label for="$!{portlet.ID}del_flag_1_id" onclick="aipo.schedule.delFlag1(this.form)">参加メンバー全員の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみを削除します</label><br/>
+<label for="$!{portlet.ID}del_flag_1_id" onclick="aipo.schedule.delFlag1(this.form)">参加ユーザー全員の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみを削除します</label><br/>
 <input name="del_flag" type="radio" value="0"  id="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)"/>
-<label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)">参加メンバー全員のこの予定を完全に削除します</label>
+<label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)">参加ユーザー全員のこの予定を完全に削除します</label>
 <input type="hidden" name="del_member_flag" value="1"/>
 <input type="hidden" name="del_range_flag" value="1"/>
 #elseif($hasMember && ! $!{result.Detail.isRepeat()})
 <input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>
 <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">${prestr}この予定を完全に削除します</label><br/>
 <input name="del_flag" type="radio" value="0"  id="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)"/>
-<label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)">参加メンバー全員のこの予定を完全に削除します</label>
+<label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)">参加ユーザー全員のこの予定を完全に削除します</label>
 <input type="hidden" name="del_member_flag" value="1"/>
 <input type="hidden" name="del_range_flag" value="0"/>
 #elseif(! $hasMember && $!{result.Detail.isRepeat()})

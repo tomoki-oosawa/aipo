@@ -241,20 +241,20 @@
 <input name="public_flag" type="radio" value="C" id="public_flagC_$!{portlet.ID}" #if ($!result.PublicFlag.toString() == "C") checked="checked" #end onclick="aipo.schedule.formPublicOn(this.form)"/><label for="public_flagC_$!{portlet.ID}" onclick="aipo.schedule.formPublicOff(this.form)">非公開（スケジュールの日時のみを全員に公開します）</label><br/>
 <input name="public_flag" type="radio" value="P" id="public_flagP_$!{portlet.ID}" #if ($!result.PublicFlag.toString() == "P") checked="checked" #end onclick="aipo.schedule.formPublicOff(this.form)"/><label for="public_flagP_$!{portlet.ID}" onclick="aipo.schedule.formPublicOff(this.form)">完全に隠す（スケジュールをすべて非公開とします）</label>
 #ALtditemfooter()
-#ALtdcaption("参加メンバー")
+#ALtdcaption("参加ユーザー")
 #ALtditemheader()
 <div id="memberFieldButton"></div>
 <div id="memberField" style="display:none;">
 <table class="none">
   <tr><td>
-    <div class="spaceTop spaceLeft small">左側に参加メンバーを追加してください。</div>
+    <div class="spaceTop spaceLeft small">左側に参加ユーザーを追加してください。</div>
     <div dojoType="aipo.widget.MemberNormalSelectList"
         id="membernormalselect"
         widgetId="membernormalselect"
         buttonAddId="button_member_add"
         buttonRemoveId="button_member_remove"
         memberFromId="tmp_member_from"
-        memberToTitle="参加メンバー一覧"
+        memberToTitle="参加ユーザー一覧"
         memberToId="member_to"
         memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
         memberFromOptionKey="name"
@@ -271,9 +271,9 @@
   </td></tr>
   <tr><td>
 #if($!{result.Owner} || $!{result.EditFlag.toString()} == "T")
-    <div class="p"><h3>参加メンバーによるこのスケジュールの 『編集／削除』 の可否を設定します。</h3>
-    <input name="edit_flag" type="radio" value="T" id="edit_control_flagT_$!{portlet.ID}" #if ($!{result.EditFlag.toString()} == "T") checked="checked" #end><label for="edit_control_flagT_$!{portlet.ID}">可（参加メンバーは、このスケジュールを編集／削除できます）</label><br/>
-    <input name="edit_flag" type="radio" value="F" id="edit_control_flagF_$!{portlet.ID}" #if ($!{result.EditFlag.toString()} == "F") checked="checked" #end><label for="edit_control_flagF_$!{portlet.ID}">不可（参加メンバーは、このスケジュールを編集／削除できません）</label></div>
+    <div class="p"><h3>参加ユーザーによるこのスケジュールの 『編集／削除』 の可否を設定します。</h3>
+    <input name="edit_flag" type="radio" value="T" id="edit_control_flagT_$!{portlet.ID}" #if ($!{result.EditFlag.toString()} == "T") checked="checked" #end><label for="edit_control_flagT_$!{portlet.ID}">可（参加ユーザーは、このスケジュールを編集／削除できます）</label><br/>
+    <input name="edit_flag" type="radio" value="F" id="edit_control_flagF_$!{portlet.ID}" #if ($!{result.EditFlag.toString()} == "F") checked="checked" #end><label for="edit_control_flagF_$!{portlet.ID}">不可（参加ユーザーは、このスケジュールを編集／削除できません）</label></div>
 #end
 #if($mode!="new_form" && $!result.Member)
     <div class="p"><h3>確定したスケジュールを仮スケジュールに戻すかを設定します。</h3>
