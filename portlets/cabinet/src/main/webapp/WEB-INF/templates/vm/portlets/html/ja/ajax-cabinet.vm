@@ -20,10 +20,28 @@
 ## ---------------------------------------------------------------------------
 #set($link = "$!jslink.getPortletById($!portlet.ID)")
 #set($flag = true)
+#ALtableheaderSimpleWide()
+#ALtdcaption('フォルダ')
+#ALtditemheaderAtt("style='width: 80%;'")
+#ALselectpdheader("folder_id" "99%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
+#foreach($record in $!result.FolderHierarchyList)
+#if($record.isAuthorizedVisible())
+#set($space = '')
+#if(${record.HierarchyIndex} > 0)
+#foreach($index in [1..${record.HierarchyIndex}])
+#set($space = "${space}&nbsp;&nbsp;&nbsp;")
+#end
+#end
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetScreen").addQueryData("folder_id",$!record.FolderId))" #if($!result.isMatch(${record.FolderId}, $!result.SelectedFolderInfo.FolderId.longValue())) selected="selected" #end>${space}${record.FolderName}</option>
+#end
+#end
+#ALselectfooter()
+#ALtditemfooter()
+#ALtablefooter()
+
 #if ($result.List.size() == 0)
 <div class="message">$!{result.SelectedFolderInfo.FolderName} にはファイルはありません。</div>
 #else
-<div style="padding:5px 0px 5px 3px">『$!{result.SelectedFolderInfo.FolderName}』 のファイル一覧</div>
 <div class="p">
 #ALajaxpageview('CabinetScreen' $result)
 </div>

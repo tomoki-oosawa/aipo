@@ -104,12 +104,38 @@ public class CabinetSelectData extends
 
     int fid = CabinetUtils.ROOT_FODLER_ID;
     if (isNormalContext) {
-      String id =
-        ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p3a-folder");
-      fid = Integer.parseInt(id);
+      // フォルダ選択のリクエスト
+      // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
+      if (ALEipUtils.isMatch(rundata, context)) {
+        // ENTITY ID
+        if (rundata.getParameters().containsKey(CabinetUtils.KEY_FOLDER_ID)) {
+          ALEipUtils.setTemp(
+            rundata,
+            context,
+            CabinetUtils.KEY_FOLDER_ID,
+            rundata.getParameters().getString(CabinetUtils.KEY_FOLDER_ID));
+        }
+      }
+      String tmpfid =
+        ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_FOLDER_ID);
+
+      if (tmpfid != null && !"".equals(tmpfid)) {
+        try {
+          fid = Integer.parseInt(tmpfid);
+          /** フォルダ権限のチェック */
+          isAccessible = CabinetUtils.isAccessibleFolder(fid, rundata);
+          isEditable = CabinetUtils.isEditableFolder(fid, rundata);
+        } catch (Exception e) {
+          fid = CabinetUtils.ROOT_FODLER_ID;
+        }
+      } else {
+        String id =
+          ALEipUtils
+            .getPortlet(rundata, context)
+            .getPortletConfig()
+            .getInitParameter("p3a-folder");
+        fid = Integer.parseInt(id);
+      }
     } else {
       // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
       if (ALEipUtils.isMatch(rundata, context)) {
