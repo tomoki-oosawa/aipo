@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#if($!result.currentTab == "received_mailbox")
+#if($!result.currentTab == "receive")
 #set($pagetitle = "受信ﾄﾚｲ")
 #set($person = "差出人")
 #set($person_value = "$!{result.Detail.From}")
