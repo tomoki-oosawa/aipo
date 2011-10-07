@@ -528,7 +528,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
       (int) getDelAtPop3BeforeDaysFlg().getValue(),
       (int) getDelAtPop3BeforeDays().getValue(),
       getNonReceivedFlg().toString(),
-      getSignature().toString(),
+      getSignature().getValue(),
       (int) getSmtpEncryptionFlag().getValue(),
       (int) getPop3EncryptionFlag().getValue());
   }
