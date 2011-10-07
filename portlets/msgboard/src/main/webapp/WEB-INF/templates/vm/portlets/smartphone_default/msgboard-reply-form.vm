@@ -19,8 +19,8 @@
 
 ## ---------------------------------------------------------------------------
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_list','1')")
-#set ($action_str = "コメントする")
-#set ($subtitle = 'トピックにコメントする')
+#set ($action_str = "返信する")
+#set ($subtitle = 'トピックに返信する')
 #set ($event_submit = "eventSubmit_doMsgboard_topic_reply")
 #set($linklist = [["トピック一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_list','1')"]])
 <input type="hidden" name="mode" value="insert" />

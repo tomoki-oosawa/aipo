@@ -24,7 +24,7 @@
 #set($methodlist = [["ﾄﾋﾟｯｸ追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_form','1').addQueryData('entityid','new')"]])
 #end
 #set($linklist = [["ﾄﾋﾟｯｸ一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_list','1')"]])
-#ALcell_pagetitle($career "記事詳細")
+#ALcell_pagetitle($career "トピック詳細")
 #ALcell_dl_header($career)
 #ALcell_dt($career 'ﾄﾋﾟｯｸﾀｲﾄﾙ')
 #ALcell_dd($career $!{result.ParentTopic.TopicName})

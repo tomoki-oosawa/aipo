@@ -36,7 +36,7 @@ function onCommentDelete(form) {
 </script>
 #set($methodlist = [["返信する", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_reply_form','1').addQueryData('entityid',${result.ParentTopic.TopicId}).addQueryData('mode','reply')"]])
 #set($linklist = [["掲示板へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_list','1')"],["トピック追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_form','1').addQueryData('entityid','new')"]])
-#ALcell_pagetitle_iphone($career "記事詳細")
+#ALcell_pagetitle_iphone($career "トピック詳細")
 #ALcell_linklist_iphone($career $linklist)
 #ALcell_contents_header($career)
 #ALcell_msgboard_detail($career $!{result.ParentTopic})
@@ -79,7 +79,7 @@ function onCommentDelete(form) {
     #end
 #end
 #if($!resultOnTopicDetail)
-    <a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_reply_form','1').addQueryData('entityid',${result.ParentTopic.TopicId}).addQueryData('mode','reply')" class="btn">コメントする</a>
+    <a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_reply_form','1').addQueryData('entityid',${result.ParentTopic.TopicId}).addQueryData('mode','reply')" class="btn">返信する</a>
 #end
 #ALcell_contents_footer($career)
 #ALcell_linklist_iphone($career $linklist)
