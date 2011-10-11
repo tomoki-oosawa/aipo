@@ -40,7 +40,7 @@
 #ALtablefooter()
 
 #if ($result.List.size() == 0)
-<div class="message">$!{result.SelectedFolderInfo.FolderName} にはファイルはありません。</div>
+<div class="message">指定したフォルダにファイルはありません。</div>
 #else
 <div class="p">
 #ALajaxpageview('CabinetScreen' $result)
