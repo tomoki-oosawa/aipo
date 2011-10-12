@@ -58,7 +58,7 @@
                       <li><img src="images/schedule/schedule_nextmonth.gif" alt="翌月へ" width="19" height="20" border="0" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextMonth"])' style="cursor:pointer"/></li>
                     </ul>
 					#if(($!{hasAcl}) && $!{hasAcl} == "T")
-					<span style="padding-left: 10px;" title="選択された共有メンバーのスケジュールも表示するかどうかを設定します" ><input type="checkbox" id="showAll-$!portlet.ID" onclick='onCheckShowAll(this)' value='$!init_s_all' #if($init_s_all == "t") checked="checked" #end /><label for="showAll-$!portlet.ID">共有スケジュールを表示する</label></span>
+					<span style="padding-left: 10px;" title="選択された共有ユーザーのスケジュールも表示するかどうかを設定します" ><input type="checkbox" id="showAll-$!portlet.ID" onclick='onCheckShowAll(this)' value='$!init_s_all' #if($init_s_all == "t") checked="checked" #end /><label for="showAll-$!portlet.ID">共有スケジュールを表示する</label></span>
 				    #end
                     </div>
                     <table class="weeklyTableHead" cellspacing="0" cellpadding="0" border="0" width="100%">
