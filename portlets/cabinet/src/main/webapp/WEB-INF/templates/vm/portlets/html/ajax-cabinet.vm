@@ -49,11 +49,10 @@
 <table class="rowTable wide">
 #foreach ($record in $result.List)
 <tr #if($flag) class="even" #end>
-<td width="20%" nowrap="nowrap">$!{record.UpdateDate}</td>
-<td width="40%">
+<td width="50%">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFileDetailScreen").addQueryData("entityid",$record.FileId).addQueryData("folder_id",$result.SelectedFolderInfo.FolderId))');">$!record.FileTitle</a>
 </td>
-<td width="30%" style="padding:1px 0px 1px 5px;">
+<td width="40%" style="padding:1px 0px 1px 5px;">
 <a href="$jslink.getTemplate("CabinetFileRawScreen").addQueryData("entityid", ${record.FileId})">$record.WbrFileName （$!{record.FileSize}KB）</a>
 </td>
 <td width="10%" style="padding:1px 0px 1px 5px; white-space:nowrap;">$!{record.UpdateUser}</td>

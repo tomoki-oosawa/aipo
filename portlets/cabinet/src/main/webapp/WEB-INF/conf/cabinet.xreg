@@ -45,7 +45,7 @@
         <parameter name="p1b-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1b-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1b-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p1c-sort" value="file_title" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+        <parameter name="p1c-sort" value="file_name" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>ファイルソート方法</title>
             </meta-info>
