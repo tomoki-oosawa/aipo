@@ -3122,3 +3122,316 @@ float:right;
 .floatLeft{
 float:left;
 }
+
+/* Widgets Area ********************/
+#auiWidgetsArea {
+	float:left;
+	width:17%;
+}
+.auiWidget {
+	clear:both;
+	padding:0.8em 0;
+	border-bottom:solid 1px #f0f0f0;
+}
+.auiWidget h2 {
+	line-height:2em;
+}
+.auiWidget p {
+	margin:0.8em 0;
+}
+.auiWidget li {
+	padding:0;
+	background:none;
+}
+.auiWidget li span {
+	display:block;
+	line-height:1.8em;
+	padding:0.3em 0 0.3em 18px;
+	background:url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
+}
+.auiWidget li a {
+	display:block;
+	line-height:1.8em;
+	padding:0.3em 0 0.3em 18px;
+	text-decoration:none;
+	background:url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
+}
+.auiWidget li a:hover {
+	color:#000;
+	background:#f6f6f6 url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
+}
+.auiWidget li.active a {
+	font-weight:bold;
+	background:#f0f0f0 url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
+}
+.auiWidget li ul {
+	margin:0;
+}
+.auiWidget li li a,
+.auiWidget li li a:hover,
+.auiWidget li li.active a {
+	padding:0.3em 0 0.3em 36px;
+	background-position:23px 1em;
+}
+
+/* Contents Area ********************/
+#auiContentsArea {
+	float:right;
+	width:80%;
+}
+
+/* auiButton ********************/
+.auiButton {
+	display:inline-block;
+	line-height:1.9em;
+	padding:0 1em;
+	color:#000;
+	text-decoration:none;
+	text-align:center;
+	text-shadow:0 1px 0 #f8f8f8;
+	cursor:pointer;
+	border:solid 1px #ccc;
+	border-radius:3px;
+	background:#f8f8f8;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#f8f8f8));/*Ch*/
+	background: -moz-linear-gradient(top, #fff, #f8f8f8);/*Fx*/
+}
+.auiButton:hover {
+	color:#000;
+	border:solid 1px #999;
+	box-shadow:0 1px 1px rgba(0,0,0,0.2);
+	background:#eee;
+	background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#e1e1e1));/*Ch*/
+	background: -moz-linear-gradient(top, #eee, #e1e1e1);/*Fx*/
+}
+.auiButton:active {
+	border:solid 1px #999;
+	box-shadow:0 1px 1px rgba(0,0,0,0);
+	background:#eee;
+	background: -webkit-gradient(linear, left top, left bottom, from(#e1e1e1), to(#eee));/*Ch*/
+	background: -moz-linear-gradient(top, #e1e1e1, #eee);/*Fx*/
+}
+
+.auiButtonAction {
+	display:inline-block;
+	line-height:2.2em;
+	padding:0 1em;
+	color:#fff;
+	text-decoration:none;
+	text-align:center;
+	font-weight:bold;
+	text-shadow:0 1px 0 #f09000;
+	cursor:pointer;
+	border:solid 1px #f09000;
+	border-radius:3px;
+	background:#ff9900;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff090), color-stop(0.02, #fff090), color-stop(0.03, #ffcc66), color-stop(0.5, #ffaa22), to(#ff9900));/*Ch*/
+	background: -moz-linear-gradient(top, #fff090 1px, #ffcc66 1px, #ffaa22, #ff9900);/*Fx*/
+}
+.auiButtonAction:hover {
+	color:#fff;
+	border:solid 1px #e08000;
+	box-shadow:0 1px 1px rgba(0,0,0,0.2);
+	background:#ffaa11;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff090), color-stop(0.02, #fff090), color-stop(0.03, #ffdc66), color-stop(0.5, #ffaa22), to(#ff9900));/*Ch*/
+	background: -moz-linear-gradient(top, #fff090 1px, #ffdc66 1px, #ffaa22, #ff9900);/*Fx*/
+}
+.auiButtonAction:active {
+	border:solid 1px #e08000;
+	box-shadow:0 1px 1px rgba(0,0,0,0);
+	background:#ffaa11;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff090), color-stop(0, #f0e080), color-stop(0.05, #ff9900), color-stop(0.5, #ffaa22), to(#ffbb33));/*Ch*/
+	background: -moz-linear-gradient(top, #f0e080, #ff9900 2px, #ffaa22, #ffbb33);/*Fx*/
+}
+
+/* auiSearch ********************/
+.auiSearch input.text {
+	width:20em;
+	height:2.3em;
+	*height:2.2em;/*IE*/
+	line-height:2.3em;
+	*line-height:2.2em;/*IE*/
+	padding:0 2px;
+	border-radius:3px;
+}
+.auiSearch input.text:hover,
+.auiSearch input.text:focus {
+	border:solid 1px #999;
+}
+.auiSearch input.text:focus {
+	box-shadow:inset 0 1px 2px rgba(0,0,0,0.2);
+}
+.auiButtonSearch {
+	display:inline-block;
+	line-height:2.2em;
+	padding:0 1em;
+	color:#000;
+	text-decoration:none;
+	text-align:center;
+	font-weight:bold;
+	text-shadow:0 1px 0 #f8f8f8;
+	cursor:pointer;
+	border:solid 1px #d0d0d0;
+	border-radius:3px;
+	background:#ddd;
+	background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#ddd));/*Ch*/
+	background: -moz-linear-gradient(top, #eee, #ddd);/*Fx*/
+}
+.auiButtonSearch:hover {
+	color:#000;
+	border:solid 1px #999;
+	box-shadow:0 1px 1px rgba(0,0,0,0.2);
+	background:#eee;
+	background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#d0d0d0));/*Ch*/
+	background: -moz-linear-gradient(top, #eee, #d0d0d0);/*Fx*/
+}
+.auiButtonSearch:active {
+	border:solid 1px #999;
+	box-shadow:0 1px 1px rgba(0,0,0,0);
+	background:#eee;
+	background: -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#eee));/*Ch*/
+	background: -moz-linear-gradient(top, #d0d0d0, #eee);/*Fx*/
+}
+
+/* auiSummaryMeta ********************/
+.auiSummaryMeta {
+	width:100%;
+	margin:0.8em 0;
+}
+.auiSummaryMeta .count {
+	float:left;
+	height:24px;
+	line-height:24px;
+	padding-right:1em;
+}
+
+
+/* auiGridTable ********************/
+table.auiGridTable {
+	border-collapse:collapse;
+}
+table.auiGridTable th {
+	padding:8px 5px;
+	white-space:nowrap;
+	border:1px solid #ccc;
+	background:#f0f0f0;
+}
+table.auiGridTable td {
+	padding:8px 5px;
+	border:1px solid #ccc;
+}
+table.auiGridTable tr.even {
+	background:#f0f0f0 url(../images/common/bg_slash.gif) repeat left top;
+}
+
+table.auiGridTable tr.sunday td,
+table.auiGridTable tr.holiday td {
+	background:#fff0f0;
+}
+table.auiGridTable tr.saturday td {
+	background:#f0ffff;
+}
+table.auiGridTable tr.today td {
+	background:#e0ffe0;
+}
+
+table.auiGridTable tr:hover td {
+	background:#ffffe0;
+}
+
+/* auiRowTable ********************/
+table.auiRowTable {
+	border-spacing:0;
+	border-collapse:collapse;
+}
+table.auiRowTable th {
+	padding:8px 5px;
+	white-space:nowrap;
+	background:#f0f0f0;
+}
+table.auiRowTable td {
+	padding:8px 5px;
+}
+table.auiRowTable div {
+	width:100%;
+	height:1.5em;
+	line-height:1.5em;
+	overflow:hidden;
+}
+table.auiRowTable tr:hover td {
+	background:#ffffe0;
+}
+table.auiRowTable tr.even {
+	background:#f0f0f0 url(../images/common/bg_slash.gif) repeat left top;
+}
+table.auiRowTable tr.sunday td,
+table.auiRowTable tr.holiday td {
+	background:#fff0f0;
+}
+table.auiRowTable tr.saturday td {
+	background:#f0ffff;
+}
+table.auiRowTable tr.today td {
+	background:#e0ffe0;
+}
+table.auiRowTable tr:hover td {
+	background:#ffffe0;
+}
+
+
+
+/* auiDirectoryList ********************/
+.auiDirectoryList {
+	margin-bottom:0.8em;
+}
+.auiDirectoryList div {
+	height:2.2em;
+}
+.auiDirectoryList a {
+	display:block;
+	width:100%;
+	line-height:2.2em;
+	height:2.2em;
+	text-decoration:none;
+	overflow:hidden;
+}
+.auiDirectoryList a:hover {
+	background:#f6f6f6;
+}
+.auiDirectoryList .active a {
+	font-weight:bold;
+	background:#f0f0f0;
+}
+.auiDirectoryList a:hover span {
+	color:#000;
+}
+.auiDirectoryList .directory {
+	display:block;
+	line-height:2.2em;
+	height:2.2em;
+	padding-left:25px;
+	background:url(../images/icon/folder_close.gif) 4px 0.3em no-repeat;
+}
+.auiDirectoryList .open .directory {
+	background:url(../images/icon/folder_open.gif) 4px 0.3em no-repeat;
+}
+.auiDirectoryList .d1 span {}
+.auiDirectoryList .d2 span {margin-left:10px;}
+.auiDirectoryList .d3 span {margin-left:20px;}
+.auiDirectoryList .d4 span {margin-left:30px;}
+.auiDirectoryList .d5 span {margin-left:40px;}
+.auiDirectoryList .d6 span {margin-left:50px;}
+.auiDirectoryList .d7 span {margin-left:60px;}
+.auiDirectoryList .d8 span {margin-left:70px;}
+.auiDirectoryList .d9 span {margin-left:80px;}
+.auiDirectoryList .d10 span {margin-left:90px;}
+.auiDirectoryList .d11 span {margin-left:100px;}
+.auiDirectoryList .d12 span {margin-left:110px;}
+.auiDirectoryList .d13 span {margin-left:120px;}
+.auiDirectoryList .d14 span {margin-left:130px;}
+.auiDirectoryList .d15 span {margin-left:140px;}
+.auiDirectoryList .d16 span {margin-left:150px;}
+.auiDirectoryList .d17 span {margin-left:160px;}
+.auiDirectoryList .d18 span {margin-left:170px;}
+.auiDirectoryList .d19 span {margin-left:180px;}
+.auiDirectoryList .d20 span {margin-left:190px;}
