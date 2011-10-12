@@ -22,12 +22,17 @@ dojo.provide("aipo.todo");
 dojo.require("aipo.widget.DropdownDatepicker");
 
 aipo.todo.onLoadTodoDialog = function(portlet_id){
+  var url_userlist = dojo.byId('urlUserlist'+portlet_id).value;
+  var login_user_id = dojo.byId('loginUser'+portlet_id).value;
+  if(url_userlist){
+      aipo.todo.changeGroup(url_userlist, 'LoginUser', login_user_id);
+  }
 
   var obj = dojo.byId("todo_name");
   if(obj){
      obj.focus();
-  } 
-    
+  }
+
 }
 
 aipo.todo.onLoadCategoryDialog = function(portlet_id){
@@ -35,8 +40,8 @@ aipo.todo.onLoadCategoryDialog = function(portlet_id){
   var obj = dojo.byId("category_name");
   if(obj){
      obj.focus();
-  } 
-    
+  }
+
 }
 
 aipo.todo.formSwitchCategoryInput = function(button) {
@@ -59,8 +64,12 @@ aipo.todo.formCategoryInputOn = function(form) {
 aipo.todo.formCategoryInputOff = function(form) {
     dojo.byId('todoCategoryInputField').style.display = "none";
     dojo.byId('todoCategorySelectField').style.display = "";
-    
+
     form.is_new_category.value = 'FALSE';
+}
+
+aipo.todo.changeGroup = function(link, group, sel) {
+    aimluck.utils.form.createSelect("user_id", "destuserDiv", link + "?mode=group&groupname=" + group + "&inc_luser=true", "userId", "aliasName", sel, '');
 }
 
 aipo.todo.onReceiveMessage = function(msg){
@@ -76,11 +85,11 @@ aipo.todo.onReceiveMessage = function(msg){
     if (dojo.byId('messageDiv')) {
         dojo.byId('messageDiv').innerHTML = msg;
     }
-    
+
 }
 
 aipo.todo.onListReceiveMessage = function(msg){
-  
+
     if(!msg) {
         var arrDialog = dijit.byId("modalDialog");
         if(arrDialog){
@@ -92,5 +101,5 @@ aipo.todo.onListReceiveMessage = function(msg){
     if (dojo.byId('listmessageDiv')) {
         dojo.byId('listmessageDiv').innerHTML = msg;
     }
-    
+
 }

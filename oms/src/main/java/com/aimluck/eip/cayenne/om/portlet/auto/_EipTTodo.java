@@ -9,6 +9,7 @@ public class _EipTTodo extends org.apache.cayenne.CayenneDataObject {
 
     public static final String ADDON_SCHEDULE_FLG_PROPERTY = "addonScheduleFlg";
     public static final String CREATE_DATE_PROPERTY = "createDate";
+    public static final String CREATE_USER_ID_PROPERTY = "createUserId";
     public static final String END_DATE_PROPERTY = "endDate";
     public static final String NOTE_PROPERTY = "note";
     public static final String PRIORITY_PROPERTY = "priority";
@@ -36,6 +37,14 @@ public class _EipTTodo extends org.apache.cayenne.CayenneDataObject {
     }
     public java.util.Date getCreateDate() {
         return (java.util.Date)readProperty("createDate");
+    }
+    
+    
+    public void setCreateUserId(Integer createUserId) {
+        writeProperty("createUserId", createUserId);
+    }
+    public Integer getCreateUserId() {
+        return (Integer)readProperty("createUserId");
     }
     
     

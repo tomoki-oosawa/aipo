@@ -1,0 +1,2 @@
+--- modify table struct
+ALTER TABLE EIP_T_TODO ADD CREATE_USER_ID INTEGER NOT NULL;

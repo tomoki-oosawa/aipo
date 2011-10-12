@@ -60,6 +60,23 @@
 </div>
 <input name="category_input_button" type="button" class="button" value=" #if(!$!{result.NewCategory})新しく入力する#else一覧から選択する#end " onclick="aipo.todo.formSwitchCategoryInput(this)" />
 #ALtditemfooter()
+#ALtdcaption("#ALrequired($!result.getFieldName('user_id'))")
+#ALtditemheader()
+#set($screenlink = "$jslink.getPortletById($!portlet.ID).addPathInfo('template','UserLiteJSONScreen')")
+<select name="target_group_name" id="target_group_name" style="width:49%;float:left;" onchange="aipo.todo.changeGroup('$screenlink', this.options[this.selectedIndex].value, '')">
+<option value="LoginUser">（グループ全体）</option>
+#foreach( $record in $!result.MyGroupList )
+<option value="$!{record.Name.toString()}" #if($!result.TargetGroupName == $!record.Name.toString()) selected #set($groupName = $!record.Name) #end>$!record.AliasName</option>
+#end
+#if(($result.MyGroupList.size() > 0) && ($result.PostMap.size() > 0))
+<option value="" disabled="disabled">----------</option>
+#end
+#foreach( $record in $!result.PostMap )
+<option value="$!{record.GroupName.toString()}" #if($!result.TargetGroupName == $!record.GroupName.toString()) selected #set($groupName = $!record.GroupName) #end>$!record.PostName</option>
+#end
+</select>
+<div id="destuserDiv"></div>
+#ALtditemfooter()
 #ALtdcaption("#ALrequired($!result.getFieldName('todo_name'))")
 #ALtditem("#ALtextfield('todo_name' $!result.TodoName '90%' 50 'active')")
 #ALtdcaption($!result.getFieldName("start_date"))
@@ -72,11 +89,11 @@
 #ALtditemfooter()
 #ALtdcaption($!result.getFieldName("priority"))
 #ALtditemheader()
-<input name="priority" type="radio" value="1" id="$!{portlet.ID}priority_high_id" #if ($!result.Priority.toString() == "1") checked="checked" #end/><label for="$!{portlet.ID}priority_high_id">高い</label> 
-<input name="priority" type="radio" value="2" id="$!{portlet.ID}priority_middle_high_id" #if ($!result.Priority.toString() == "2") checked="checked" #end/><label for="$!{portlet.ID}priority_middle_high_id">やや高い</label> 
-<input name="priority" type="radio" value="3" id="$!{portlet.ID}priority_middle_id" #if ($!result.Priority.toString() == "3") checked="checked" #end/><label for="$!{portlet.ID}priority_middle_id">普通</label> 
-<input name="priority" type="radio" value="4" id="$!{portlet.ID}priority_middle_low_id" #if ($!result.Priority.toString() == "4") checked="checked" #end/><label for="$!{portlet.ID}priority_middle_low_id">やや低い</label> 
-<input name="priority" type="radio" value="5" id="$!{portlet.ID}priority_low_id" #if ($!result.Priority.toString() == "5") checked="checked" #end/><label for="$!{portlet.ID}priority_low_id">低い</label> 
+<input name="priority" type="radio" value="1" id="$!{portlet.ID}priority_high_id" #if ($!result.Priority.toString() == "1") checked="checked" #end/><label for="$!{portlet.ID}priority_high_id">高い</label>
+<input name="priority" type="radio" value="2" id="$!{portlet.ID}priority_middle_high_id" #if ($!result.Priority.toString() == "2") checked="checked" #end/><label for="$!{portlet.ID}priority_middle_high_id">やや高い</label>
+<input name="priority" type="radio" value="3" id="$!{portlet.ID}priority_middle_id" #if ($!result.Priority.toString() == "3") checked="checked" #end/><label for="$!{portlet.ID}priority_middle_id">普通</label>
+<input name="priority" type="radio" value="4" id="$!{portlet.ID}priority_middle_low_id" #if ($!result.Priority.toString() == "4") checked="checked" #end/><label for="$!{portlet.ID}priority_middle_low_id">やや低い</label>
+<input name="priority" type="radio" value="5" id="$!{portlet.ID}priority_low_id" #if ($!result.Priority.toString() == "5") checked="checked" #end/><label for="$!{portlet.ID}priority_low_id">低い</label>
 #ALtditemfooter()
 #ALtdcaption($!result.getFieldName("state"))
 #ALtditemheader()
@@ -87,11 +104,11 @@
 <option value="30" #if ($!result.State.toString() == "30") selected="selected" #end>30%</option>
 <option value="40" #if ($!result.State.toString() == "40") selected="selected" #end>40%</option>
 <option value="50" #if ($!result.State.toString() == "50") selected="selected" #end>50%</option>
-<option value="60" #if ($!result.State.toString() == "60") selected="selected" #end>60%</option> 
+<option value="60" #if ($!result.State.toString() == "60") selected="selected" #end>60%</option>
 <option value="70" #if ($!result.State.toString() == "70") selected="selected" #end>70%</option>
 <option value="80" #if ($!result.State.toString() == "80") selected="selected" #end>80%</option>
 <option value="90" #if ($!result.State.toString() == "90") selected="selected" #end>90%</option>
-<option value="100" #if ($!result.State.toString() == "100") selected="selected" #end>完了</option>           
+<option value="100" #if ($!result.State.toString() == "100") selected="selected" #end>完了</option>
 </select>
 #ALtditemfooter()
 #ALtdcaption($!result.getFieldName("note"))
@@ -101,16 +118,18 @@
 #ALtdcaption($!result.getFieldName("public_flag"))
 #ALtditemheader()
 <input name="public_flag" type="radio" value="T" id="$!{portlet.ID}public_flag_public_id" #if ($!result.PublicFlag.toString() == "T") checked="checked" #end/><label for="$!{portlet.ID}public_flag_public_id">公開</label>
-<input name="public_flag" type="radio" value="F" id="$!{portlet.ID}public_flag_private_id" #if ($!result.PublicFlag.toString() == "F") checked="checked" #end/><label for="$!{portlet.ID}public_flag_private_id">非公開</label> 
+<input name="public_flag" type="radio" value="F" id="$!{portlet.ID}public_flag_private_id" #if ($!result.PublicFlag.toString() == "F") checked="checked" #end/><label for="$!{portlet.ID}public_flag_private_id">非公開</label>
 #ALtditemfooter()
 #ALtdcaption($!result.getFieldName("addon_schedule_flg"))
 #ALtditemheader()
 <input name="addon_schedule_flg" type="radio" value="T" id="$!{portlet.ID}addon_schedule_flg_id1" #if ($!result.AddonScheduleFlg.toString() == "T") checked="checked" #end/><label for="$!{portlet.ID}addon_schedule_flg_id1">表示</label>
-<input name="addon_schedule_flg" type="radio" value="F" id="$!{portlet.ID}addon_schedule_flg_id2" #if ($!result.AddonScheduleFlg.toString() == "F") checked="checked" #end/><label for="$!{portlet.ID}addon_schedule_flg_id2">非表示</label> 
+<input name="addon_schedule_flg" type="radio" value="F" id="$!{portlet.ID}addon_schedule_flg_id2" #if ($!result.AddonScheduleFlg.toString() == "F") checked="checked" #end/><label for="$!{portlet.ID}addon_schedule_flg_id2">非表示</label>
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)#ALajaxbuttonClose()
 #ALbuttonfooter()
+<input type="hidden" id="urlUserlist$!portlet.ID" name="urlUserlist$!portlet.ID" value="$screenlink" />
+<input type="hidden" id="loginUser$!portlet.ID" name="loginUser$!portlet.ID" value="$!result.loginUserId" />
 #ALformfooter()
 #ALdialogfooter()

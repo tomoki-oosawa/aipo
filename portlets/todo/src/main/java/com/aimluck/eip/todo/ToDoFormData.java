@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -39,6 +40,10 @@ import com.aimluck.eip.cayenne.om.portlet.EipTTodoCategory;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipGroup;
+import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.eventlog.action.ALActionEventlogConstants;
@@ -65,6 +70,9 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /** カテゴリID */
   private ALNumberField category_id;
+
+  /** ToDo実施ユーザID */
+  private ALNumberField user_id;
 
   /** 優先度 */
   private ALNumberField priority;
@@ -108,10 +116,12 @@ public class ToDoFormData extends ALAbstractFormData {
   private EipTTodoCategory category;
 
   /** ログインユーザーのID * */
-  private int user_id;
+  private int login_user_id;
 
   /** ACL用の変数 * */
   private String aclPortletFeature;
+
+  private ArrayList<ALEipGroup> myGroupList;
 
   /**
    * 
@@ -127,7 +137,13 @@ public class ToDoFormData extends ALAbstractFormData {
     super.init(action, rundata, context);
     is_new_category = rundata.getParameters().getBoolean("is_new_category");
 
-    user_id = ALEipUtils.getUserId(rundata);
+    login_user_id = ALEipUtils.getUserId(rundata);
+
+    List<ALEipGroup> myGroups = ALEipUtils.getMyGroups(rundata);
+    setMyGroupList(new ArrayList<ALEipGroup>());
+    for (ALEipGroup group : myGroups) {
+      getMyGroupList().add(group);
+    }
 
     aclPortletFeature =
       ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF;
@@ -147,6 +163,9 @@ public class ToDoFormData extends ALAbstractFormData {
     // カテゴリID
     category_id = new ALNumberField();
     category_id.setFieldName("カテゴリ");
+    // 所有者ID
+    user_id = new ALNumberField();
+    user_id.setFieldName("所有者");
     // 優先度
     priority = new ALNumberField(3);
     priority.setFieldName("優先度");
@@ -199,26 +218,19 @@ public class ToDoFormData extends ALAbstractFormData {
     // カテゴリ一覧
     categoryList = new ArrayList<ToDoCategoryResultData>();
     try {
-
-      Expression exp1 =
-        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
-          .valueOf(ALEipUtils.getUserId(rundata)));
-      Expression exp2 =
-        ExpressionFactory.matchExp(EipTTodoCategory.USER_ID_PROPERTY, Integer
-          .valueOf(0));
-
       List<EipTTodoCategory> categoryList2 =
-        Database
-          .query(EipTTodoCategory.class, exp1)
-          .orQualifier(exp2)
-          .orderAscending(EipTTodoCategory.CATEGORY_NAME_PROPERTY)
-          .fetchList();
+        Database.query(EipTTodoCategory.class).orderAscending(
+          EipTTodoCategory.CATEGORY_NAME_PROPERTY).fetchList();
 
       for (EipTTodoCategory record : categoryList2) {
         ToDoCategoryResultData rd = new ToDoCategoryResultData();
         rd.initField();
         rd.setCategoryId(record.getCategoryId().longValue());
-        rd.setCategoryName(record.getCategoryName());
+        ALEipUser user = ALEipUtils.getALEipUser(record.getUserId());
+        rd.setCategoryName(record.getCategoryName()
+          + " ("
+          + user.getAliasName()
+          + ")");
         categoryList.add(rd);
       }
     } catch (Exception ex) {
@@ -245,6 +257,8 @@ public class ToDoFormData extends ALAbstractFormData {
       // カテゴリ名文字数制限
       category_name.limitMaxLength(50);
     }
+    // 所有者ID必須項目
+    user_id.setNotNull(true);
   }
 
   /**
@@ -258,7 +272,6 @@ public class ToDoFormData extends ALAbstractFormData {
   protected boolean validate(List<String> msgList) {
 
     try {
-
       Expression exp =
         ExpressionFactory.matchExp(
           EipTTodoCategory.CATEGORY_NAME_PROPERTY,
@@ -269,8 +282,9 @@ public class ToDoFormData extends ALAbstractFormData {
           .valueOf(0));
 
       Expression exp3 =
-        ExpressionFactory.matchExp(EipTTodoCategory.USER_ID_PROPERTY, Integer
-          .valueOf(this.user_id));
+        ExpressionFactory.matchExp(
+          EipTTodoCategory.USER_ID_PROPERTY,
+          login_user_id);
 
       if (Database.query(EipTTodoCategory.class, exp).andQualifier(
         exp2.orExp(exp3)).fetchList().size() != 0) {
@@ -312,6 +326,7 @@ public class ToDoFormData extends ALAbstractFormData {
       // カテゴリ名
       category_name.validate(msgList);
     }
+
     return (msgList.size() == 0);
 
   }
@@ -443,8 +458,7 @@ public class ToDoFormData extends ALAbstractFormData {
       // カテゴリID
       todo.setEipTTodoCategory(category);
       // ユーザーID
-      TurbineUser tuser =
-        Database.get(TurbineUser.class, Integer.valueOf(user_id));
+      TurbineUser tuser = Database.get(TurbineUser.class, user_id.getValue());
       todo.setTurbineUser(tuser);
       // 開始日
       if (start_date_check.getValue() == null) {
@@ -466,12 +480,14 @@ public class ToDoFormData extends ALAbstractFormData {
       todo.setNote(note.getValue());
       // 公開区分
       todo.setPublicFlag(public_flag.getValue());
-
       todo.setAddonScheduleFlg(addon_schedule_flg.getValue());
       // 作成日
       todo.setCreateDate(Calendar.getInstance().getTime());
       // 更新日
       todo.setUpdateDate(Calendar.getInstance().getTime());
+      // 作成者ID
+      todo.setCreateUserId(login_user_id);
+
       // Todoを登録
       Database.commit();
 
@@ -576,8 +592,7 @@ public class ToDoFormData extends ALAbstractFormData {
       // カテゴリID
       todo.setEipTTodoCategory(category);
       // ユーザーID
-      TurbineUser tuser =
-        Database.get(TurbineUser.class, Integer.valueOf(user_id));
+      TurbineUser tuser = Database.get(TurbineUser.class, user_id.getValue());
 
       todo.setTurbineUser(tuser);
       // 開始日
@@ -604,6 +619,8 @@ public class ToDoFormData extends ALAbstractFormData {
       todo.setAddonScheduleFlg(addon_schedule_flg.getValue());
       // 更新日
       todo.setUpdateDate(Calendar.getInstance().getTime());
+      // 作成者ID
+      todo.setCreateUserId(login_user_id);
 
       // Todo を更新
       Database.commit();
@@ -778,5 +795,33 @@ public class ToDoFormData extends ALAbstractFormData {
 
   public void setCategoryId(long i) {
     category_id.setValue(i);
+  }
+
+  public void setMyGroupList(ArrayList<ALEipGroup> myGroupList) {
+    this.myGroupList = myGroupList;
+  }
+
+  public ArrayList<ALEipGroup> getMyGroupList() {
+    return myGroupList;
+  }
+
+  public void setLoginUserId(int user_id) {
+    this.login_user_id = user_id;
+  }
+
+  public int getLoginUserId() {
+    return login_user_id;
+  }
+
+  public void setUserId(ALNumberField todo_user_id) {
+    this.user_id = todo_user_id;
+  }
+
+  public ALNumberField getUserId() {
+    return user_id;
+  }
+
+  public Map<Integer, ALEipPost> getPostMap() {
+    return ALEipManager.getInstance().getPostMap();
   }
 }
