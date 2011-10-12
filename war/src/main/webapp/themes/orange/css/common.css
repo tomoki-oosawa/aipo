@@ -3126,7 +3126,7 @@ float:left;
 /* Widgets Area ********************/
 #auiWidgetsArea {
 	float:left;
-	width:17%;
+	width:180px;
 }
 .auiWidget {
 	clear:both;
@@ -3177,7 +3177,11 @@ float:left;
 /* Contents Area ********************/
 #auiContentsArea {
 	float:right;
-	width:80%;
+	width:100%;
+	margin-left:-200px;
+}
+#auiContentsAreaInner {
+	margin-left:200px;
 }
 
 /* auiButton ********************/
