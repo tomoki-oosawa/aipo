@@ -1043,8 +1043,12 @@ table.rowTable td {
 	padding:5px;
 }
 table.rowTable tr.even {
-	background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
+	background:#f0f0f0 url(../images/common/bg_slash.gif) repeat left top;
 }
+table.rowTable tr:hover td {
+	background:#ffffe0;
+}
+
 table.simpleTable {
 	margin-top:5px;
 	margin-bottom:5px;
@@ -3361,9 +3365,6 @@ table.auiRowTable div {
 	height:1.5em;
 	line-height:1.5em;
 	overflow:hidden;
-}
-table.auiRowTable tr:hover td {
-	background:#ffffe0;
 }
 table.auiRowTable tr.even {
 	background:#f0f0f0 url(../images/common/bg_slash.gif) repeat left top;
