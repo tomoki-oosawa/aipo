@@ -30,7 +30,7 @@
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="action" value="activity.ActivityAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="template" value="activity" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p1a-rows" value="5" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+        <parameter name="p1a-rows" value="10" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>表示件数（通常時）</title>
             </meta-info>
