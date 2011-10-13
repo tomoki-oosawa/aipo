@@ -34,6 +34,9 @@ public class ScheduleOnedayResultData extends ScheduleResultData {
   /** <code>index</code> インデックス */
   private int index;
 
+  /** <code>dubliCount</code> 重複スケジュールの行数 */
+  private int dubliRow;
+
   /**
    * 終了地点を取得します。
    * 
@@ -86,5 +89,23 @@ public class ScheduleOnedayResultData extends ScheduleResultData {
    */
   public void setIndex(int index) {
     this.index = index;
+  }
+
+  /**
+   * 重複スケジュールの行数を設定します。
+   * 
+   * @param index
+   */
+  public void setDubliRow(int dubliRow) {
+    this.dubliRow = dubliRow;
+  }
+
+  /**
+   * 重複スケジュールの行数を取得します。
+   * 
+   * @return index
+   */
+  public int getDubliRow() {
+    return dubliRow;
   }
 }

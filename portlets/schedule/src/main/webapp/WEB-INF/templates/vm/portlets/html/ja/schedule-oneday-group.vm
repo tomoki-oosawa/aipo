@@ -86,6 +86,7 @@
 #set($entityids = "")
 #set($termcolcount = 0)
 #set($todocolcount = 0)
+#set($duplirowcount = 0)
 #foreach($record3 in $result.MemberList)
 #if($termcolcount < ${result.getTermResultDataList($record3.UserId.Value).size()})
 #set($termcolcount = ${result.getTermResultDataList($record3.UserId.Value).size()})
@@ -95,11 +96,14 @@
 #end
 #end
 
-#if($!result.isDuplicate())
-#set($colspanmax = $!{result.Max} + 2)
-#else
+##if($!result.isDuplicate())
+##set($colspanmax = $!{result.Max} + 2)
+##else
+##set($colspanmax = $!{result.Max} + 1)
+##end
+
 #set($colspanmax = $!{result.Max} + 1)
-#end
+
 #if($termcolcount)
 #set($colspanmax = $colspanmax + $termcolcount)
 #end
@@ -124,13 +128,37 @@
 ##<img src="images/common/dot.gif" width="15" height="1" alt="" />
 </th>
 #end
-#if($!result.isDuplicate())
-#ALtdheadAtt("重複" "class='groupOneday'")
-#end
+##if($!result.isDuplicate())
+##ALtdheadAtt("重複" "class='groupOneday'")
+##end
 </tr>
 #foreach($record3 in $result.MemberList)
-<tr>
-#ALtdheadheaderAtt("class='groupOneday'")
+##<tr>
+
+#set($duplirowcount = ${result.getDuplicateScheduleList($record3.UserId.Value).size()})
+##set($duplirowcount = ${record3.dubliRow})
+
+#set($startRow2 = 0)
+#set($endRow2 = 24*4)
+#foreach($record in $result.getDuplicateScheduleList($record3.UserId.Value))
+#set($startRow = $record.startRow)
+#set($endRow = $record.endRow)
+#if($endRow2 <= $startRow)
+#set($duplirowcount = $duplirowcount - 1)
+#end
+#set($startRow2 = $startRow)
+#set($endRow2 = $endRow)
+#end
+
+#if($duplirowcount > 0)
+#set($duplirowmax = $duplirowcount + 1)
+#else
+#set($duplirowmax = 1)
+#end
+#ALtdheadheaderAtt("class='groupOneday' rowspan='$duplirowmax'")
+
+
+
 $record3.AliasName
 #if(!$result.isMatch($record3.UserId.Value))
 #set($noteLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormScreen').addQueryData('dest_user_id', $!record3.userId)))
@@ -255,10 +283,54 @@ $record.WbrName
 #end
 #end
 #end
-#if($!result.isDuplicate())
-#ALtditemheader()
+</tr>
+##end
+
+### 重複スケジュール表示（ここから） ###
+#if($duplirowcount > 0)
+<tr class="duplicate">
+#if($todocolcount > 0)
+ #ALtdheadAtt("" "class='groupOneday' colspan='$todocolcount'rowspan='$duplirowcount'")
+#end
+#if($termcolcount > 0)
+ #ALtdheadAtt("" "class='groupOneday' colspan='$termcolcount'rowspan='$duplirowcount'")
+#end
+#set($insert = false)
+#set($startrow2 = 0)
+#set($endrow2 = 0)
+
 #foreach($record in $result.getDuplicateScheduleList($record3.UserId.Value))
+#set($rows = $result.getRows($record3.UserId.Value))
+#set($colspan = $!{result.getScheduleColspan($record, $rows)} )
+#set($startrow = $record.StartRow)
+#set($endrow = $record.EndRow)
+#set($starthour = $result.StartHour)
+#set($endhour = $result.EndHour)
+
+#if($startrow > 0)
+#if($endrow2 <= $startrow)
+#set($colspan = $startrow - $endrow2)
+#else
+#if($endrow2 < ($endhour - $starthour) * 4)
+#set($colspan = ($endhour - $starthour) * 4 - $endrow2)
+#ALtdcellheaderAtt("colspan='$colspan'")
+<div class="calendarScheduleDiv"><div class="small">
+#ALtdcellfooter()
+#end
+</tr>
+<tr class="duplicate">
+#set($colspan = $startrow)
+#end
+#if($colspan > 0)
+#ALtdcellheaderAtt("colspan='$colspan'")
+<div class="calendarScheduleDiv"><div class="small">
+#ALtdcellfooter()
+#end
+#end
+#set($colspan = $endrow - $startrow)
 #set($entityids = "$!{entityids}$!{record.ScheduleId},")
+#ALtdcellheaderAtt("colspan='$colspan' style='background-color:#EDF1F2'")
+
 #if($record.isShowDetail())
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('userid', $!{record3.UserId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarScheduleDiv">
@@ -271,6 +343,7 @@ $record.WbrName
 <div class="small">$record.WbrName</div>
 </div>
 #end
+
 #if(! ${record.isPublic()})
 <img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
 #end
@@ -281,11 +354,29 @@ $record.WbrName
 #if($record.isTmpreserve())
 <img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />
 #end
+
+#ALtdcellfooter()
+##if($endrow == ($endhour - $starthour) * 4)
+##</tr>
+##set($insert = true)
+##end
+
+#set($startrow2 = $startrow)
+#set($endrow2 = $endrow)
 #end
-#ALtditemfooter()
+
+#if($endrow < ($endhour - $starthour) * 4)
+#set($colspan = ($endhour - $starthour) * 4 - $endrow)
+#ALtdcellheaderAtt("colspan='$colspan'")
+<div class="calendarScheduleDiv"><div class="small">
+#ALtdcellfooter()
 #end
 </tr>
 #end
+#end
+
+
+### 重複スケジュール表示（ここまで） ###
 
 #foreach($record3 in $result.FacilityList)
 #ALtdheadAtt("$record3.FacilityName" "class='groupOneday'")

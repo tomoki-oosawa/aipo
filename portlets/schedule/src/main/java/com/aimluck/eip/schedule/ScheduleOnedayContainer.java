@@ -50,9 +50,12 @@ public class ScheduleOnedayContainer implements ALData {
   /** <code>rowIndex</code> rowIndex */
   private int rowIndex;
 
+  private ScheduleOnedayResultData dummyList;
+
   /*
    * 
    */
+  @Override
   public void initField() {
     // スケジュールリスト
     list = new ArrayList<ScheduleOnedayResultData>();
@@ -154,6 +157,18 @@ public class ScheduleOnedayContainer implements ALData {
         rd.setDuplicate(true);
         dup = true;
         list.get(list.size() - 1).setDuplicate(true);
+        for (int i = 0; i < dList.size() - 1; i++) {
+          for (int j = i + 1; j < dList.size(); j++) {
+            if (dList.get(i).getEndRow() < dList.get(j).getStartRow()) {
+              dummyList = dList.get(i + 1);
+              dList.set(i + 1, dList.get(j));
+              dList.set(j, dummyList);
+              break;
+            } else {
+            }
+          }
+        }
+
       } else {
 
       }
@@ -237,7 +252,7 @@ public class ScheduleOnedayContainer implements ALData {
   }
 
   /**
-   * 期間スケジュールリストを取得します。
+   * 重複スケジュールリストを取得します。
    * 
    * @return
    */

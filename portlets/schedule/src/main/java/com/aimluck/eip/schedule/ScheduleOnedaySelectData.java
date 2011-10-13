@@ -64,9 +64,8 @@ public class ScheduleOnedaySelectData extends
     ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleOnedaySelectData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleOnedaySelectData.class.getName());
 
   /** <code>viewDate</code> 表示する日付 */
   private ALDateTimeField viewDate;
@@ -354,6 +353,7 @@ public class ScheduleOnedaySelectData extends
       // ソート
       Collections.sort(list, new Comparator<EipTScheduleMap>() {
 
+        @Override
         public int compare(EipTScheduleMap a, EipTScheduleMap b) {
           Calendar cal = Calendar.getInstance();
           Calendar cal2 = Calendar.getInstance();
