@@ -24,8 +24,13 @@ dojo.require("aipo.widget.DropdownDatepicker");
 aipo.todo.onLoadTodoDialog = function(portlet_id){
   var url_userlist = dojo.byId('urlUserlist'+portlet_id).value;
   var login_user_id = dojo.byId('loginUser'+portlet_id).value;
+  var todo_user_id = dojo.byId('todoUser'+portlet_id).value;
+
+  if(todo_user_id == 0) {
+      todo_user_id = login_user_id;
+  }
   if(url_userlist){
-      aipo.todo.changeGroup(url_userlist, 'LoginUser', login_user_id);
+      aipo.todo.changeGroup(url_userlist, 'LoginUser', todo_user_id);
   }
 
   var obj = dojo.byId("todo_name");

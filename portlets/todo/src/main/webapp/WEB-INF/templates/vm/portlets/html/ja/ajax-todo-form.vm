@@ -60,6 +60,7 @@
 </div>
 <input name="category_input_button" type="button" class="button" value=" #if(!$!{result.NewCategory})新しく入力する#else一覧から選択する#end " onclick="aipo.todo.formSwitchCategoryInput(this)" />
 #ALtditemfooter()
+#if($result.hasAclInsertTodoOther())
 #ALtdcaption("#ALrequired($!result.getFieldName('user_id'))")
 #ALtditemheader()
 #set($screenlink = "$jslink.getPortletById($!portlet.ID).addPathInfo('template','UserLiteJSONScreen')")
@@ -77,6 +78,9 @@
 </select>
 <div id="destuserDiv"></div>
 #ALtditemfooter()
+#else
+<input type="hidden" name="user_id" value="$!result.loginUserId"/>
+#end
 #ALtdcaption("#ALrequired($!result.getFieldName('todo_name'))")
 #ALtditem("#ALtextfield('todo_name' $!result.TodoName '90%' 50 'active')")
 #ALtdcaption($!result.getFieldName("start_date"))
@@ -131,5 +135,6 @@
 #ALbuttonfooter()
 <input type="hidden" id="urlUserlist$!portlet.ID" name="urlUserlist$!portlet.ID" value="$screenlink" />
 <input type="hidden" id="loginUser$!portlet.ID" name="loginUser$!portlet.ID" value="$!result.loginUserId" />
+<input type="hidden" id="todoUser$!portlet.ID" name="todoUser$!portlet.ID" value="$!result.userId.value" />
 #ALformfooter()
 #ALdialogfooter()

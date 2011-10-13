@@ -85,10 +85,15 @@ public class ToDoPublicResultData implements ALData {
    */
   private ALNumberField limit_state;
 
+  private boolean hasAclEditTodoOther;
+
+  private boolean hasAclDeleteTodoOther;
+
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
     todo_id = new ALNumberField();
     created_user = new ALStringField();
@@ -343,5 +348,43 @@ public class ToDoPublicResultData implements ALData {
    */
   public void setLimitState(int value) {
     limit_state.setValue(value);
+  }
+
+  /**
+   * hasAclEditTodoOtherを取得します。
+   * 
+   * @return hasAclEditTodoOther
+   */
+  public boolean hasAclEditTodoOther() {
+    return hasAclEditTodoOther;
+  }
+
+  /**
+   * hasAclEditTodoOtherを設定します。
+   * 
+   * @param hasAclEditTodoOther
+   *          hasAclEditTodoOther
+   */
+  public void setAclEditTodoOther(boolean hasAclEditTodoOther) {
+    this.hasAclEditTodoOther = hasAclEditTodoOther;
+  }
+
+  /**
+   * hasAclDeleteTodoOtherを取得します。
+   * 
+   * @return hasAclDeleteTodoOther
+   */
+  public boolean hasAclDeleteTodoOther() {
+    return hasAclDeleteTodoOther;
+  }
+
+  /**
+   * hasAclDeleteTodoOtherを設定します。
+   * 
+   * @param hasAclDeleteTodoOther
+   *          hasAclDeleteTodoOther
+   */
+  public void setAclDeleteTodoOther(boolean hasAclDeleteTodoOther) {
+    this.hasAclDeleteTodoOther = hasAclDeleteTodoOther;
   }
 }

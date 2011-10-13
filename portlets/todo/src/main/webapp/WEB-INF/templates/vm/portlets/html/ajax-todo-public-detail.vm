@@ -44,6 +44,12 @@
 #ALtditem($!result.Detail.Note)
 #ALtablefooter()
 #ALbuttonheader()
+#if($result.Detail.hasAclEditTodoOther())
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.todo.onLoadTodoDialog")
+#end
+#if($result.Detail.hasAclDeleteTodoOther())
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onReceiveMessage")#ALajaxbuttonClose()
+#end
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()

@@ -1483,7 +1483,7 @@ INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(133,'msgboard_category','掲示板�
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(134,'msgboard_category_other','掲示板（他ユーザーのカテゴリ）操作',27);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(135,'msgboard_topic_other','掲示板（他ユーザーのトピック）操作',24);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(141,'todo_todo_self','ToDo（自分のToDo）操作',31);
-INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(142,'todo_todo_other','ToDo（他ユーザーのToDo）操作',3);
+INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(142,'todo_todo_other','ToDo（他ユーザーのToDo）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(143,'todo_category_self','ToDo（カテゴリ）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(151,'workflow_request_self','ワークフロー（自分の依頼）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(152,'workflow_request_other','ワークフロー（他ユーザーの依頼）操作',3);
@@ -1521,7 +1521,7 @@ INSERT INTO EIP_T_ACL_ROLE VALUES(10,'掲示板（自分のカテゴリ）管理
 
 -- todo
 INSERT INTO EIP_T_ACL_ROLE VALUES(12,'ToDo（自分のToDo）管理者',141,31,'＊詳細表示、追加、削除は一覧表示の権限を持っていないと使用できません');
-INSERT INTO EIP_T_ACL_ROLE VALUES(13,'ToDo（他ユーザーのToDo）管理者',142,3,'＊詳細表示は一覧表示の権限を持っていないと使用できません');
+INSERT INTO EIP_T_ACL_ROLE VALUES(13,'ToDo（他ユーザーのToDo）管理者',142,31,'＊詳細表示、追加、削除は一覧表示の権限を持っていないと使用できません');
 INSERT INTO EIP_T_ACL_ROLE VALUES(14,'ToDo（カテゴリ）管理者',143,31,'＊詳細表示、追加、削除は一覧表示の権限を持っていないと使用できません');
 
 -- workflow

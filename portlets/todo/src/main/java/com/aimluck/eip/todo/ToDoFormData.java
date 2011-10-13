@@ -29,6 +29,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -40,6 +41,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTTodoCategory;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
@@ -50,6 +52,8 @@ import com.aimluck.eip.eventlog.action.ALActionEventlogConstants;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.todo.util.ToDoUtils;
@@ -71,7 +75,7 @@ public class ToDoFormData extends ALAbstractFormData {
   /** カテゴリID */
   private ALNumberField category_id;
 
-  /** ToDo実施ユーザID */
+  /** 担当者ID */
   private ALNumberField user_id;
 
   /** 優先度 */
@@ -123,6 +127,9 @@ public class ToDoFormData extends ALAbstractFormData {
 
   private ArrayList<ALEipGroup> myGroupList;
 
+  /** 他人のToDo編集権限を持つかどうか */
+  private boolean hasAclInsertTodoOther;
+
   /**
    * 
    * @param action
@@ -145,14 +152,42 @@ public class ToDoFormData extends ALAbstractFormData {
       getMyGroupList().add(group);
     }
 
-    aclPortletFeature =
-      ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF;
+    String todoId = rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
+    String userId = rundata.getParameters().getString("user_id");
+    if (todoId == null || todoId.equals("new")) {
+      if (userId != null && !userId.equals(String.valueOf(login_user_id))) {
+        aclPortletFeature =
+          ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER;
+      } else {
+        aclPortletFeature =
+          ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF;
+      }
+    } else {
+      EipTTodo todo = ToDoUtils.getEipTTodo(rundata, context, true);
+      if ((todo != null && todo.getTurbineUser().getUserId() != login_user_id)) {
+        aclPortletFeature =
+          ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER;
+      } else {
+        aclPortletFeature =
+          ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF;
+      }
+    }
+
+    // アクセス権(他人へのToDo追加)
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+    hasAclInsertTodoOther =
+      aclhandler.hasAuthority(
+        login_user_id,
+        ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER,
+        ALAccessControlConstants.VALUE_ACL_INSERT);
+
   }
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
    */
   @Override
   public void initField() {
@@ -163,9 +198,9 @@ public class ToDoFormData extends ALAbstractFormData {
     // カテゴリID
     category_id = new ALNumberField();
     category_id.setFieldName("カテゴリ");
-    // 所有者ID
+    // 担当者ID
     user_id = new ALNumberField();
-    user_id.setFieldName("所有者");
+    user_id.setFieldName("担当者");
     // 優先度
     priority = new ALNumberField(3);
     priority.setFieldName("優先度");
@@ -221,17 +256,25 @@ public class ToDoFormData extends ALAbstractFormData {
       List<EipTTodoCategory> categoryList2 =
         Database.query(EipTTodoCategory.class).orderAscending(
           EipTTodoCategory.CATEGORY_NAME_PROPERTY).fetchList();
-
+      StringBuffer title;
+      ALEipUser user;
       for (EipTTodoCategory record : categoryList2) {
         ToDoCategoryResultData rd = new ToDoCategoryResultData();
         rd.initField();
         rd.setCategoryId(record.getCategoryId().longValue());
-        ALEipUser user = ALEipUtils.getALEipUser(record.getUserId());
-        rd.setCategoryName(record.getCategoryName()
-          + " ("
-          + user.getAliasName()
-          + ")");
-        categoryList.add(rd);
+        user = ALEipUtils.getALEipUser(record.getUserId());
+
+        title = new StringBuffer(record.getCategoryName());
+        if (record.getCategoryId() != 1) {
+          title.append(" (");
+          title.append(user.getAliasName());
+          title.append(")");
+          rd.setCategoryName(title.toString());
+          categoryList.add(rd);
+        } else {
+          rd.setCategoryName(title.toString());
+          categoryList.add(0, rd);
+        }
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -240,8 +283,6 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * ToDoの各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
    */
   @Override
   protected void setValidator() {
@@ -257,7 +298,7 @@ public class ToDoFormData extends ALAbstractFormData {
       // カテゴリ名文字数制限
       category_name.limitMaxLength(50);
     }
-    // 所有者ID必須項目
+    // 担当者ID必須項目
     user_id.setNotNull(true);
   }
 
@@ -378,6 +419,9 @@ public class ToDoFormData extends ALAbstractFormData {
       note.setValue(todo.getNote());
       // 公開区分
       public_flag.setValue(todo.getPublicFlag());
+
+      // 担当者
+      user_id.setValue(todo.getTurbineUser().getUserId());
 
       addon_schedule_flg.setValue(todo.getAddonScheduleFlg());
     } catch (Exception ex) {
@@ -528,13 +572,13 @@ public class ToDoFormData extends ALAbstractFormData {
   private boolean insertCategoryData(RunData rundata, Context context,
       List<String> msgList) {
     try {
-
+      String originalFeature = getAclPortletFeature();
       setAclPortletFeature(ALAccessControlConstants.POERTLET_FEATURE_TODO_CATEGORY_SELF);
       doCheckAclPermission(
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_INSERT);
-      setAclPortletFeature(ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF);
+      setAclPortletFeature(originalFeature);
 
       // 新規オブジェクトモデル
       category = Database.create(EipTTodoCategory.class);
@@ -823,5 +867,9 @@ public class ToDoFormData extends ALAbstractFormData {
 
   public Map<Integer, ALEipPost> getPostMap() {
     return ALEipManager.getInstance().getPostMap();
+  }
+
+  public boolean hasAclInsertTodoOther() {
+    return hasAclInsertTodoOther;
   }
 }
