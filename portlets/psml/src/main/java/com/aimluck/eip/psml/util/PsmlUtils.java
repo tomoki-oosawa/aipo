@@ -93,7 +93,7 @@ public class PsmlUtils {
         }
       }
 
-      // remove entryId exclude gadgets
+      // remove entryId
       NodeList entry = dom.getElementsByTagName(PsmlUtils.ELEMENT_ENTRY);
       for (int i = 0; i < entry.getLength(); i++) {
         Node node = entry.item(i);
@@ -101,10 +101,39 @@ public class PsmlUtils {
       }
 
       NodeList params = dom.getElementsByTagName(PsmlUtils.ELEMENT_PARAMETER);
-      while (0 != params.getLength()) {
-        Node node = params.item(0);
+
+      for (int i = 0; i < params.getLength(); i++) {
+        Node node = params.item(i);
         Node parent = node.getParentNode();
-        parent.removeChild(node);
+
+        if (parent.getAttributes().getNamedItem("parent") != null) {
+          if (parent
+            .getAttributes()
+            .getNamedItem("parent")
+            .getNodeValue()
+            .equals("Schedule")) {
+            parent.removeChild(node);
+            i--;
+          }
+
+          if (parent
+            .getAttributes()
+            .getNamedItem("parent")
+            .getNodeValue()
+            .equals("GadgetsTemplate")) {
+
+            if (node
+              .getAttributes()
+              .getNamedItem("name")
+              .getNodeValue()
+              .equals("mid")) {
+              parent.removeChild(node);
+              i--;
+            }
+
+          }
+        }
+
       }
 
       StringWriter sw = new StringWriter();
@@ -256,6 +285,50 @@ public class PsmlUtils {
     }
 
     return mapping;
+  }
+
+  /**
+   * encode PSML's MultiByte words to UTF16 Character References
+   * 
+   * @param psml
+   * @return
+   */
+  public static String PSMLEncode(String psml) {
+    String target = "";
+    char a[] = psml.toCharArray();
+    for (char cha : a) {
+      String tmp = String.valueOf(cha);
+      if (!tmp.matches("\\p{ASCII}*")) {
+        target += NCREncode(tmp, 16);
+      } else {
+        target += tmp;
+      }
+    }
+    return target;
+  }
+
+  public static String NCREncode(String str, int radix) {
+    String NCRheader;
+    String NCRfooter = ";";
+
+    if (radix == 10) {
+      NCRheader = "&#";
+    } else if (radix == 16) {
+      NCRheader = "&#x";
+    } else {
+      // 基数は10,16しか認めない。
+      throw new IllegalArgumentException("Illegal radix.");
+    }
+
+    StringBuffer sb = new StringBuffer();
+
+    for (int i = 0; i < str.length(); i++) {
+      sb.append(NCRheader);
+      sb.append(Integer.toString(str.charAt(i), radix));
+      sb.append(NCRfooter);
+    }
+
+    return sb.toString();
   }
 
 }

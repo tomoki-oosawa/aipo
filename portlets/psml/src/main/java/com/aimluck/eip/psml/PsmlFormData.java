@@ -44,7 +44,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 『テンプレート更新』のフォームデータを管理するクラス．
- *
+ * 
  */
 public class PsmlFormData extends ALAbstractFormData {
 
@@ -69,7 +69,7 @@ public class PsmlFormData extends ALAbstractFormData {
   private static final String DEFAULT_VIEW_STATUS = "default_psml_status";
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -90,7 +90,7 @@ public class PsmlFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化する
-   *
+   * 
    */
   @Override
   public void initField() {
@@ -110,7 +110,7 @@ public class PsmlFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性を検証します
-   *
+   * 
    * @param msgList
    * @return
    */
@@ -121,7 +121,7 @@ public class PsmlFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -147,7 +147,7 @@ public class PsmlFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -160,7 +160,7 @@ public class PsmlFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -184,6 +184,7 @@ public class PsmlFormData extends ALAbstractFormData {
         psml = PsmlDBUtils.getMyHtmlPsml(rundata);
       }
       psml = PsmlUtils.ParsePsml(psml);
+      psml = PsmlUtils.PSMLEncode(psml);
 
       PsmlDBUtils.checkAndFixInconsistency(PsmlUtils.TEMPLATE_NAME);
 
@@ -217,7 +218,7 @@ public class PsmlFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList

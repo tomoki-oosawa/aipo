@@ -29,8 +29,7 @@
 <input type="hidden" name="mode" id="$!{portlet.ID}-mode" value="" />
 </div>
 <div class="p spaceTop spaceBottom">
-あなたのタブ設定、タブ内のアプリ配置を、新規追加するユーザーの初期配置として設定することができます。<br />
-アプリケーション管理から追加されたアプリは再度配置していただく必要があります。
+あなたのタブ設定、タブ内のアプリ配置を、新規追加するユーザーの初期配置として設定することができます。
 </div>
 <div class="p spaceBottom">
 #if(!$!{result.isAdminUser()})
