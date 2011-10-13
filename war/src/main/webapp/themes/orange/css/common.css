@@ -1035,15 +1035,27 @@ table.tableWrapper td.tableLeft div.scroll {
 table.tableWrapper td.tableCenter {
 	vertical-align:top;
 }
+
+
 table.rowTable {
 	border-spacing:0;
 	border-collapse:collapse;
 }
+table.rowTable th {
+	padding:8px 5px;
+	background:#f0f0f0;
+}
 table.rowTable td {
-	padding:5px;
+	padding:8px 5px;
+	border-bottom:solid 1px #eee;
+}
+table.rowTable div {
+	width:100%;
+	height:1.5em;
+	line-height:1.5em;
+	overflow:hidden;
 }
 table.rowTable tr.even {
-	background:#f0f0f0 url(../images/common/bg_slash.gif) repeat left top;
 }
 table.rowTable tr:hover td {
 	background:#ffffe0;
@@ -3135,7 +3147,7 @@ float:left;
 .auiWidget {
 	clear:both;
 	padding:0.8em 0;
-	border-bottom:solid 1px #f0f0f0;
+	border-bottom:solid 1px #eee;
 }
 .auiWidget h2 {
 	line-height:2em;
@@ -3359,6 +3371,7 @@ table.auiRowTable th {
 }
 table.auiRowTable td {
 	padding:8px 5px;
+	border-bottom:solid 1px #eee;
 }
 table.auiRowTable div {
 	width:100%;
@@ -3367,7 +3380,6 @@ table.auiRowTable div {
 	overflow:hidden;
 }
 table.auiRowTable tr.even {
-	background:#f0f0f0 url(../images/common/bg_slash.gif) repeat left top;
 }
 table.auiRowTable tr.sunday td,
 table.auiRowTable tr.holiday td {
