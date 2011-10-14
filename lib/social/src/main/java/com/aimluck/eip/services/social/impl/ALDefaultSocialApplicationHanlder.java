@@ -794,14 +794,13 @@ public class ALDefaultSocialApplicationHanlder extends
         activityMap.setActivity(activity);
         activityMap.setIsRead(1);
       }
-      /*-
+
       ALApplication application =
         getApplication(new ALApplicationGetRequest().withAppId(request
           .getAppId()));
       if (application != null) {
         activity.setIcon(application.getIcon().getValue());
       }
-       */
 
       String activitySaveLimit =
         ALContainerConfigService.get(Property.ACTIVITY_SAVE_LIMIT);
