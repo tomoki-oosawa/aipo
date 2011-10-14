@@ -3496,8 +3496,6 @@ float:left;
 	line-height:24px;
 	padding-right:1em;
 }
-.top .auiSummaryMeta {
-}
 
 /* auiGridTable ********************/
 table.auiGridTable {
@@ -3723,9 +3721,21 @@ table.auiCalendar td:hover {
 .entryBody {
 	margin-left:60px;
 }
+.dojoDndItem .entryBody {
+	margin-left:40px;
+}
 .entryHeader {
 	padding:0 0 1em 0;
 }
 .entryFooter {
 	padding:1em 0;
+}
+.dojoDndItem .entryHeader {
+	padding:0 0 0.5em 0;
+}
+.dojoDndItem .entryFooter {
+	padding:0.5em 0;
+}
+.dojoDndItem .entryFooter {
+	font-size:8pt;
 }
