@@ -3245,23 +3245,29 @@ float:left;
 	border:solid 1px #f09000;
 	border-radius:3px;
 	background:#ff9900;
-	background: -webkit-gradient(linear, left top, left bottom, from(#fff090), color-stop(0.02, #fff090), color-stop(0.03, #ffcc66), color-stop(0.5, #ffaa22), to(#ff9900));/*Ch*/
-	background: -moz-linear-gradient(top, #fff090 1px, #ffcc66 1px, #ffaa22, #ff9900);/*Fx*/
+	/*background: -webkit-gradient(linear, left top, left bottom, from(#fff090), color-stop(0.02, #fff090), color-stop(0.03, #ffcc66), color-stop(0.5, #ffaa22), to(#ff9900));/*Ch*/
+	/*background: -moz-linear-gradient(top, #fff090 1px, #ffcc66 1px, #ffaa22, #ff9900);/*Fx*/
+	background: -webkit-gradient(linear, left top, left bottom, from(#ffbb22), to(#ff9900));/*Ch*/
+	background: -moz-linear-gradient(top, #ffbb22, #ff9900);/*Fx*/
 }
 .auiButtonAction:hover {
 	color:#fff;
 	border:solid 1px #e08000;
 	box-shadow:0 1px 1px rgba(0,0,0,0.2);
 	background:#ffaa11;
-	background: -webkit-gradient(linear, left top, left bottom, from(#fff090), color-stop(0.02, #fff090), color-stop(0.03, #ffdc66), color-stop(0.5, #ffaa22), to(#ff9900));/*Ch*/
-	background: -moz-linear-gradient(top, #fff090 1px, #ffdc66 1px, #ffaa22, #ff9900);/*Fx*/
+	/*background: -webkit-gradient(linear, left top, left bottom, from(#fff090), color-stop(0.02, #fff090), color-stop(0.03, #ffdc66), color-stop(0.5, #ffaa22), to(#ff9900));/*Ch*/
+	/*background: -moz-linear-gradient(top, #fff090 1px, #ffdc66 1px, #ffaa22, #ff9900);/*Fx*/
+	background: -webkit-gradient(linear, left top, left bottom, from(#ffcc33), to(#ff9900));/*Ch*/
+	background: -moz-linear-gradient(top, #ffcc33, #ff9900);/*Fx*/
 }
 .auiButtonAction:active {
 	border:solid 1px #e08000;
 	box-shadow:0 1px 1px rgba(0,0,0,0);
 	background:#ffaa11;
-	background: -webkit-gradient(linear, left top, left bottom, from(#fff090), color-stop(0, #f0e080), color-stop(0.05, #ff9900), color-stop(0.5, #ffaa22), to(#ffbb33));/*Ch*/
-	background: -moz-linear-gradient(top, #f0e080, #ff9900 2px, #ffaa22, #ffbb33);/*Fx*/
+	/*background: -webkit-gradient(linear, left top, left bottom, from(#fff090), color-stop(0, #f0e080), color-stop(0.05, #ff9900), color-stop(0.5, #ffaa22), to(#ffbb33));/*Ch*/
+	/*background: -moz-linear-gradient(top, #f0e080, #ff9900 2px, #ffaa22, #ffbb33);/*Fx*/
+	background: -webkit-gradient(linear, left top, left bottom, from(#ff9900), to(#ffaa11));/*Ch*/
+	background: -moz-linear-gradient(top, #ff9900, #faa11);/*Fx*/
 }
 
 /* auiSearch ********************/
@@ -3452,3 +3458,31 @@ table.auiRowTable tr:hover td {
 .auiDirectoryList .d18 span {margin-left:170px;}
 .auiDirectoryList .d19 span {margin-left:180px;}
 .auiDirectoryList .d20 span {margin-left:190px;}
+
+/* auiSakuin ********************/
+.auiSakuin {
+}
+.auiSakuin li {
+	float:left;
+	background:none;
+}
+.auiWidget .auiSakuin li {
+	width:20%;
+}
+
+.auiSakuin li.first,
+.auiSakuin li.last {
+	float:none;
+	clear:both;
+}
+.auiSakuin li a {
+	padding:0.5em 0;
+	text-align:center;
+	background:none;
+}
+.auiSakuin li a:hover {
+	background:#f6f6f6 none;
+}
+.auiSakuin li.active a {
+	background:#f0f0f0 none;
+}
