@@ -665,6 +665,7 @@ INSERT INTO `eip_t_timecard_settings` VALUES (1,1,9,0,18,0,360,60,360,60,NULL,NU
 CREATE TABLE `eip_t_todo` (
   `todo_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
+  `create_user_id` int(11) NOT NULL,
   `todo_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `category_id` int(11) DEFAULT NULL,
   `priority` int(11) DEFAULT NULL,
