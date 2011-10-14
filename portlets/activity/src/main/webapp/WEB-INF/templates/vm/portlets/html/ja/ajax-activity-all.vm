@@ -28,11 +28,6 @@
 <tr>
 <td>
 <span class="date">$!record.UpdateDate &nbsp; $!{record.DisplayName}</span>
-#if($!$record.Icon.toString() != "")
-<img src="$!record.Icon" width="16" height="16" alt="" align="absmiddle" />
-#else
-<img src="images/icon/icon_add.gif" width="16" height="16" alt="" align="absmiddle" />
-#end
 <a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.common.showDialog('$!{record.PopupUrl}&js_peid=$!{portlet.ID}', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">$!record.TitleText</a>
 </td>
 </tr>
