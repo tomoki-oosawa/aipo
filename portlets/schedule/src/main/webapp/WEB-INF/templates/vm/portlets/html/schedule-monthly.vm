@@ -89,9 +89,13 @@
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","f$!{record.FacilityId.toString()}"))" #if($!result.TargetUserId != "all") #if($!result.TargetUserId == "f$!record.FacilityId.toString()") selected="selected" #end #end>$!record.FacilityName</option>
 #end
 </select>
-<a href="javascript:void(0);" onclick="javascript:window.open('$!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new")');void(0);" title="印刷画面を開く">
-<img src="themes/$!result.Theme/images/icon/print.gif" width="19" height="20" border="0" alt="印刷画面を開く" />
+
+<a href="javascript:void(0);" onclick="javascript:window.open('$!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new")');void(0);" title="印刷画面を開く" class="auiButton floatRight" style="padding:2px 3px;">
+<span>
+<img src="themes/$!result.Theme/images/icon/print.gif" width="17" height="18" alt="印刷" />
+</span>
 </a>
+
 #if($!result.Users.size() <= 0 && $!result.FacilityList.size() <= 0)
 <div class="message">選択したグループには、ユーザーおよび施設が登録されていません。</div>
 #else
@@ -317,11 +321,11 @@ $!{record.TermResultData.WbrName}
 #end
 #ALtdcellheaderAtt("colspan='$!{record.ToDoResultData.Rowspan}' align='center'")
 <div class="calerndarTodoDiv small">
-#if($result.TargetUserId == $result.UserId)
+##if($result.TargetUserId == $result.UserId)
 <a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.ToDoResultData.TodoId}))');">
-#else
-<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoPublicDetailScreen").addQueryData("entityid",$!{record.ToDoResultData.TodoId}))');">
-#end
+##else
+##<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoPublicDetailScreen").addQueryData("entityid",$!{record.ToDoResultData.TodoId}))');">
+##end
 ##<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.ToDoResultData.TodoId}))');">
 $!{record.ToDoResultData.TodoName}
 #if(! ${record.ToDoResultData.isPublic()})

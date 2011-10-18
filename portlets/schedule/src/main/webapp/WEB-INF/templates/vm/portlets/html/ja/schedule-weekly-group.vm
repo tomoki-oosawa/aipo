@@ -80,8 +80,10 @@
 &nbsp;&nbsp;<a href="$!result.MyGroupURI">こちらからグループを追加できます。</a>
 #end
 #end
-<a href="javascript:void(0);" onclick="javascript:window.open('$!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new")');void(0);" title="印刷画面を開く">
-<img src="themes/$!result.Theme/images/icon/print.gif" width="19" height="20" border="0" alt="印刷画面を開く" />
+<a href="javascript:void(0);" onclick="javascript:window.open('$!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new")');void(0);" title="印刷画面を開く" class="auiButton floatRight" style="padding:2px 3px;">
+<span>
+<img src="themes/$!result.Theme/images/icon/print.gif" width="17" height="18" alt="印刷" />
+</span>
 </a>
 #if($result.MemberList.size() == 0 && $result.FacilityList.size() == 0)
 <div class="message">選択したグループには、ユーザーおよび施設が登録されていません。</div>

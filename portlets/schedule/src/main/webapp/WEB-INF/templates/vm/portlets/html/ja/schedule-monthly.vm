@@ -89,9 +89,13 @@
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","f$!{record.FacilityId.toString()}"))" #if($!result.TargetUserId != "all") #if($!result.TargetUserId == "f$!record.FacilityId.toString()") selected="selected" #end #end>$!record.FacilityName</option>
 #end
 </select>
-<a href="javascript:void(0);" onclick="javascript:window.open('$!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new")');void(0);" title="印刷画面を開く">
-<img src="themes/$!result.Theme/images/icon/print.gif" width="19" height="20" border="0" alt="印刷画面を開く" />
+
+<a href="javascript:void(0);" onclick="javascript:window.open('$!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new")');void(0);" title="印刷画面を開く" class="auiButton floatRight" style="padding:2px 3px;">
+<span>
+<img src="themes/$!result.Theme/images/icon/print.gif" width="17" height="18" alt="印刷" />
+</span>
 </a>
+
 #if($!result.Users.size() <= 0 && $!result.FacilityList.size() <= 0)
 <div class="message">選択したグループには、ユーザーおよび施設が登録されていません。</div>
 #else

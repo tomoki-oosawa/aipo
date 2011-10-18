@@ -17,7 +17,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
  
 /*
  * Print用CSS(import用)
@@ -25,7 +25,7 @@
  */
 
 /* IE4除去 */
-/* @import "print/base.css";*/
+@import "print/base.css";
 
 label {
 	cursor:pointer;
@@ -53,7 +53,7 @@ label {
 	font-size:12pt;
 }
 #printBody table, #printBody th, #printBody td {
-	border:solid 1px;
+	border:solid 1px #000;
 	border-collapse:collapse;
 }
 #printBody table {
@@ -66,6 +66,7 @@ label {
 	width:14%;
 }
 .days th {
+	width:14%;
 	text-align:left;
 	border-top-width:3px !important;
 	background:#ccc;
