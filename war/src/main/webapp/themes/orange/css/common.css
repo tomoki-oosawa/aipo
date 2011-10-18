@@ -2213,8 +2213,8 @@ table.calendar td.calendarHeader {
 	background:#f90;
 }
 table.calendar td {
-	border:1px solid #F90;
-	padding:0;
+	border:1px solid #f90;
+	padding:2px;
 	vertical-align:top;
 }
 table.calendar th {
@@ -2223,7 +2223,7 @@ table.calendar th {
 	font-weight:normal;
 	text-align:center;
 	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
-	width:14.2857143%;
+	font-size:0.9em;
 }
 table.calendar th.groupOneday {
 	width:auto;
@@ -2253,8 +2253,6 @@ table.calendar div.calendarDay {
 	margin:0;
 	padding:0 2px 0 2px;
 	vertical-align:top;
-	overflow:hidden;
-	height:100%;
 }
 table.calendar td.day {
 	background-color:#FFFFE5;
@@ -2278,14 +2276,17 @@ table.calendar div.calendarBody {
 table.calendar div.calendarFooter {
 	height:17px;
 }
+
+table.calendar div {
+	overflow:hidden;
+}
 div.calendarScheduleDiv {
-	padding-right:1px;
-	padding-left:1px;
-	padding:2px;
 }
 div.calendarScheduleDiv div.time {
-	white-space:pre;
-	height:14px;
+	height:1.5em;
+	line-height:1.5em;
+	overflow:hidden;
+	white-space:nowrap;
 }
 div.calendarScheduleDiv a:link, div.calendarScheduleDiv a:visited {
 	display:block;
