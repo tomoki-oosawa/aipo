@@ -485,9 +485,6 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
       // 繰り返しパターン
       rd.setPattern(schedule.getRepeatPattern());
 
-      // 重複スケジュールの行数
-      rd.setDubliRow(getDublistRowCount(getDuplicateScheduleList(userid)));
-
       // ユーザもしくは設備のコンテナを取得する．
       ScheduleOnedayContainer con = null;
       if (ScheduleUtils.SCHEDULEMAP_TYPE_USER.equals(record.getType())) {
@@ -899,6 +896,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
    */
   public List<ScheduleOnedayResultData> getFacilityScheduleList(long id) {
     Integer fid = Integer.valueOf((int) id);
+    System.out.println(facilitymap.get(fid).getSchedule());
     return facilitymap.get(fid).getSchedule();
   }
 
@@ -942,11 +940,5 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   public boolean hasAuthorityFacilityInsert() {
     return hasAuthorityFacilityInsert;
-  }
-
-  public int getDublistRowCount(List<ScheduleOnedayResultData> dlist) {
-    int dublistRowCount = 0;
-    dublistRowCount = dlist.size();
-    return dublistRowCount;
   }
 }

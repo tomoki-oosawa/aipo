@@ -159,7 +159,7 @@ public class ScheduleOnedayContainer implements ALData {
         list.get(list.size() - 1).setDuplicate(true);
         for (int i = 0; i < dList.size() - 1; i++) {
           for (int j = i + 1; j < dList.size(); j++) {
-            if (dList.get(i).getEndRow() < dList.get(j).getStartRow()) {
+            if (dList.get(i).getEndRow() <= dList.get(j).getStartRow()) {
               dummyList = dList.get(i + 1);
               dList.set(i + 1, dList.get(j));
               dList.set(j, dummyList);
