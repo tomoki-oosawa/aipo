@@ -198,7 +198,7 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
 
     Profile profile = jdata.getProfile();
     List<PortletEntry> normalPortlets =
-      CustomizeUtils.buildPortletList(
+      CustomizeUtils.buildAllPortletList(
         rundata,
         profile.getMediaType(),
         new ArrayList<PortletEntry>());
@@ -258,7 +258,7 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
 
     Profile profile = jdata.getProfile();
     List<PortletEntry> normalPortlets =
-      CustomizeUtils.buildPortletList(
+      CustomizeUtils.buildAllPortletList(
         rundata,
         profile.getMediaType(),
         new ArrayList<PortletEntry>());

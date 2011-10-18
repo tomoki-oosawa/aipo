@@ -78,8 +78,8 @@ public class CustomizeUtils {
   /**
    * Static initialization of the logger for this class
    */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(CustomizeUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(CustomizeUtils.class.getName());
 
   public static boolean isEditable(RunData data, PortletEntry entry,
       String mediaType) {
@@ -90,7 +90,7 @@ public class CustomizeUtils {
       JetspeedSecurity.PERMISSION_VIEW)
       && ((!entry.isHidden())
         && (!entry.getType().equals(PortletEntry.TYPE_ABSTRACT)) && entry
-        .hasMediaType(mediaType))
+          .hasMediaType(mediaType))
       && !entry.getSecurityRef().getParent().equals("admin-view")) {
       return true;
     }
@@ -119,8 +119,80 @@ public class CustomizeUtils {
         JetspeedSecurity.PERMISSION_VIEW)
         && ((!entry.isHidden())
           && (!entry.getType().equals(PortletEntry.TYPE_ABSTRACT)) && entry
-          .hasMediaType(mediaType))
+            .hasMediaType(mediaType))
         && !entry.getSecurityRef().getParent().equals("admin-view")) {
+        list.add(entry);
+      }
+    }
+
+    ResultList<ALApplication> resultList =
+      ALApplicationService.getList(new ALApplicationGetRequest()
+        .withStatus(ALApplicationGetRequest.Status.ACTIVE));
+
+    for (ALApplication app : resultList) {
+      BasePortletEntry entry = new BasePortletEntry();
+      entry.setTitle(app.getTitle().getValue());
+      entry.setDescription(app.getDescription().getValue());
+      entry.setName("GadgetsTemplate::" + app.getAppId().getValue());
+      entry.setParent("GadgetsTemplate");
+      entry.addParameter("aid", app.getAppId().getValue());
+      entry.addParameter("url", app.getUrl().getValue());
+      list.add(entry);
+    }
+
+    String[] filterFields =
+      (String[]) PortletSessionState.getAttribute(data, FILTER_FIELDS);
+    String[] filterValues =
+      (String[]) PortletSessionState.getAttribute(data, FILTER_VALUES);
+    list = PortletFilter.filterPortlets(list, filterFields, filterValues);
+
+    Collections.sort(list, new Comparator<PortletEntry>() {
+      @Override
+      public int compare(PortletEntry o1, PortletEntry o2) {
+        String t1 =
+          ((o1).getTitle() != null) ? (o1).getTitle().toLowerCase() : (o1)
+            .getName()
+            .toLowerCase();
+        String t2 =
+          ((o2).getTitle() != null) ? (o2).getTitle().toLowerCase() : (o2)
+            .getName()
+            .toLowerCase();
+
+        return t1.compareTo(t2);
+      }
+    });
+    // this is used only by maintainUserSelection - which does not need the
+    // portlet list to be regenrated
+    PortletSessionState.setAttribute(data, PORTLET_LIST, list);
+    return list;
+  }
+
+  // Create a list of all portlets
+  @SuppressWarnings("unchecked")
+  public static List<PortletEntry> buildAllPortletList(RunData data,
+      String mediaType, List<PortletEntry> allPortlets) {
+    List<PortletEntry> list = new ArrayList<PortletEntry>();
+    Iterator<?> i = Registry.get(Registry.PORTLET).listEntryNames();
+
+    while (i.hasNext()) {
+      PortletEntry entry =
+        (PortletEntry) Registry.getEntry(Registry.PORTLET, (String) i.next());
+
+      // Iterator medias;
+      // Make a master portlet list, we will eventually us this to build a
+      // category list
+      allPortlets.add(entry);
+      // MODIFIED: Selection now takes care of the specified mediatype!
+      if (JetspeedSecurity.checkPermission(
+        (JetspeedUser) data.getUser(),
+        new PortalResource(entry),
+        JetspeedSecurity.PERMISSION_VIEW)
+        && ((!entry.getType().equals(PortletEntry.TYPE_ABSTRACT)) && entry
+          .hasMediaType(mediaType))
+        && (entry.getSecurityRef() != null && !entry
+          .getSecurityRef()
+          .getParent()
+          .equals("admin-view"))) {
         list.add(entry);
       }
     }
@@ -270,7 +342,7 @@ public class CustomizeUtils {
           JetspeedSecurity.PERMISSION_VIEW)
           && ((!entry.isHidden())
             && (!entry.getType().equals(PortletEntry.TYPE_ABSTRACT)) && entry
-            .hasMediaType(mediaType))) {
+              .hasMediaType(mediaType))) {
           Iterator<?> cItr = entry.listCategories();
           while (cItr.hasNext()) {
             BaseCategory cat = (BaseCategory) cItr.next();
@@ -292,7 +364,7 @@ public class CustomizeUtils {
     return new ArrayList<BaseCategory>(catMap.values());
   }
 
-  @SuppressWarnings( { "rawtypes", "unchecked" })
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   public static List<?>[] buildColumns(Portlets set, int colNum) {
     // normalize the constraints and calculate max num of rows needed
     Iterator<?> iterator = set.getEntriesIterator();
@@ -407,7 +479,7 @@ public class CustomizeUtils {
    * @param columnCount
    *          Number of colum
    */
-  @SuppressWarnings( { "unchecked", "rawtypes" })
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   protected static void addElement(IdentityElement element, List[] table,
       List<IdentityElement> work, int columnCount) {
     Layout layout = element.getLayout();
