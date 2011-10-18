@@ -105,6 +105,10 @@ public class ALAccessControlConstants {
   public static final String POERTLET_FEATURE_TODO_CATEGORY_SELF =
     "todo_category_self";
 
+  /** アクセス権限の機能名（ToDo（他ユーザーのカテゴリ）） */
+  public static final String POERTLET_FEATURE_TODO_CATEGORY_OTHER =
+    "todo_category_other";
+
   /** アクセス権限の機能名（ワークフロー（自分の依頼）） */
   public static final String POERTLET_FEATURE_WORKFLOW_REQUEST_SELF =
     "workflow_request_self";

@@ -51,6 +51,7 @@ public class ToDoCategoryListScreen extends ALVelocityScreen {
       listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
         rundata,
         context).getPortletConfig().getInitParameter("p1c-rows")));
+      listData.loadCategoryList(rundata, context);
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-todo-category-list.vm";

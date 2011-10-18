@@ -45,7 +45,6 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
-import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.eventlog.action.ALActionEventlogConstants;
@@ -251,34 +250,7 @@ public class ToDoFormData extends ALAbstractFormData {
    */
   public void loadCategoryList(RunData rundata, Context context) {
     // カテゴリ一覧
-    categoryList = new ArrayList<ToDoCategoryResultData>();
-    try {
-      List<EipTTodoCategory> categoryList2 =
-        Database.query(EipTTodoCategory.class).orderAscending(
-          EipTTodoCategory.CATEGORY_NAME_PROPERTY).fetchList();
-      StringBuffer title;
-      ALEipUser user;
-      for (EipTTodoCategory record : categoryList2) {
-        ToDoCategoryResultData rd = new ToDoCategoryResultData();
-        rd.initField();
-        rd.setCategoryId(record.getCategoryId().longValue());
-        user = ALEipUtils.getALEipUser(record.getUserId());
-
-        title = new StringBuffer(record.getCategoryName());
-        if (record.getCategoryId() != 1) {
-          title.append(" (");
-          title.append(user.getAliasName());
-          title.append(")");
-          rd.setCategoryName(title.toString());
-          categoryList.add(rd);
-        } else {
-          rd.setCategoryName(title.toString());
-          categoryList.add(0, rd);
-        }
-      }
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
-    }
+    categoryList = ToDoUtils.getCategoryList(rundata, context);
   }
 
   /**
@@ -637,7 +609,6 @@ public class ToDoFormData extends ALAbstractFormData {
       todo.setEipTTodoCategory(category);
       // ユーザーID
       TurbineUser tuser = Database.get(TurbineUser.class, user_id.getValue());
-
       todo.setTurbineUser(tuser);
       // 開始日
       if (start_date_check.getValue() == null) {
@@ -659,13 +630,11 @@ public class ToDoFormData extends ALAbstractFormData {
       todo.setNote(note.getValue());
       // 公開区分
       todo.setPublicFlag(public_flag.getValue());
-
       todo.setAddonScheduleFlg(addon_schedule_flg.getValue());
       // 更新日
       todo.setUpdateDate(Calendar.getInstance().getTime());
       // 作成者ID
       todo.setCreateUserId(login_user_id);
-
       // Todo を更新
       Database.commit();
 

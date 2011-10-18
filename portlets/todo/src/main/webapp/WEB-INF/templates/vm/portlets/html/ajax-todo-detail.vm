@@ -40,6 +40,8 @@ $!result.Detail.TodoName
 <img src="images/todo/todo_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開"/>
 #end
 #ALtditemfooter()
+#ALtdcaption('担当者')
+#ALtditem($!result.Detail.UserName)
 #ALtdcaption('開始日')
 #ALtditem($!result.Detail.StartDate)
 #ALtdcaption('締め切り日')
@@ -52,6 +54,8 @@ $!result.Detail.TodoName
 #ALtditem($!result.Detail.CreateDate)
 #ALtdcaption('更新日')
 #ALtditem($!result.Detail.UpdateDate)
+#ALtdcaption('更新者')
+#ALtditem($!result.Detail.CreateUserName)
 #ALtdcaption('メモ')
 #ALtditem($!result.Detail.Note)
 #ALtdcaption('公開区分')
@@ -72,7 +76,18 @@ $!result.Detail.TodoName
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
-#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.todo.onLoadTodoDialog")#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onReceiveMessage")#ALajaxbuttonClose()
+#if($result.Detail.isSelfTodo())
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.todo.onLoadTodoDialog")
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onReceiveMessage")
+#else
+#if($result.Detail.hasAclEditTodoOther())
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.todo.onLoadTodoDialog")
+#end
+#if($result.Detail.hasAclDeleteTodoOther())
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onReceiveMessage")
+#end
+#end
+#ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()
 #ALdialogfooter()

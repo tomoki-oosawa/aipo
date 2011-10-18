@@ -37,7 +37,6 @@ aipo.todo.onLoadTodoDialog = function(portlet_id){
   if(obj){
      obj.focus();
   }
-
 }
 
 aipo.todo.onLoadCategoryDialog = function(portlet_id){
@@ -46,7 +45,6 @@ aipo.todo.onLoadCategoryDialog = function(portlet_id){
   if(obj){
      obj.focus();
   }
-
 }
 
 aipo.todo.formSwitchCategoryInput = function(button) {
@@ -78,7 +76,6 @@ aipo.todo.changeGroup = function(link, group, sel) {
 }
 
 aipo.todo.onReceiveMessage = function(msg){
-
     if(!msg) {
         var arrDialog = dijit.byId("modalDialog");
         if(arrDialog){
@@ -94,7 +91,6 @@ aipo.todo.onReceiveMessage = function(msg){
 }
 
 aipo.todo.onListReceiveMessage = function(msg){
-
     if(!msg) {
         var arrDialog = dijit.byId("modalDialog");
         if(arrDialog){
@@ -106,5 +102,13 @@ aipo.todo.onListReceiveMessage = function(msg){
     if (dojo.byId('listmessageDiv')) {
         dojo.byId('listmessageDiv').innerHTML = msg;
     }
-
 }
+
+aipo.todo.doKeywordSearch = function(baseuri, portlet_id) {
+    var keyword = encodeURIComponent(dojo.byId("q"+portlet_id).value);
+    baseuri+="?template=ToDoListScreen";
+    baseuri+="&keyword="+keyword;
+    aipo.viewPage(baseuri,portlet_id);
+}
+
+

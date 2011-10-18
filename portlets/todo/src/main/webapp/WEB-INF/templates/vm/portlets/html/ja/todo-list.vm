@@ -27,14 +27,13 @@
 
     ptConfig['$!portlet.ID'] = { group:"todo", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen"))', reloadFunction:aipo.reloadPage };
     aipo.todo.menuSelected = 0;
-	
+
 //]]>
 </script>
 #if($!result.hasAuthority())
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
 #parse("/portlets/html/ja/ajax-todo-list.vm")
 #ALcontentfooter()
-#parse("/portlets/html/ja/todo-menu.vm")
 #else
 #parse("/portlets/html/PermissionError.vm")
 #end

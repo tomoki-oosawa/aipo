@@ -1492,3 +1492,95 @@ $link.get(0)
 #end
 
 
+##
+##  AUI MACROS
+##
+#macro(AUIrowTableWide)
+<table class="auiRowTable wide">
+  <tbody>
+#end
+
+#macro(AUItablefooter)
+  </tbody>
+</table>
+#end
+
+
+#macro(AUIbuttonAction $text $url)
+<a title="$text" href="$url" class="auiButtonAction">$text</a>
+#end
+
+#macro(AUIbutton $text $url)
+<a title="$text" href="$url" class="auiButton">$text</a>
+#end
+
+#macro(AUIactionMenu $items $currentItem)
+<div class="auiWidget clearfix">
+#foreach ( $item in $submenulist )
+<a title="$item.get(0)" href="$item.get(1)" class="auiButtonAction">
+$item.get(0)
+</a>
+#end
+</div>
+#end
+
+
+#macro(AUIajaxpageview $screen $result)
+#set($pages = $result.PagesNum)
+#set($currentPage = $result.CurrentPage)
+#set($rowsNum = $result.RowsNum)
+#set($count = $result.Count)
+#set($from = ($currentPage - 1 ) * $rowsNum + 1)
+#if ($currentPage * $rowsNum > $result.Count)
+#set($to = $result.Count )
+#else
+#set($to = $currentPage * $rowsNum )
+#end
+
+#if(($currentPage + 1) == $pages)
+#set($nextCount = $count - $to)
+#else
+#set($nextCount = $rowsNum)
+#end
+	<div class="floatRight">
+		<div class="count">$from ～ $to 件 / 計 $count 件</div>
+	#if ($pages > 1)
+	    <div class="auiSelectButton floatLeft">
+	      <ul class="floatLeft">
+	#if($currentPage > 1) #set($pre = $currentPage - 1)
+		    <li title="前へ"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre))', '$!portlet.ID');" class="first arrow" style="width:30px"><span><img src="https://app.aipo.com/themes/orange/images/icon/icon_arrow_l.gif" alt="前の $rowsNum 件"/></span></a></li>
+	#else
+		    <li title="前へ"><a href="javascript:void(0);" class="first arrow" style="width:30px"/><span><img src="https://app.aipo.com/themes/orange/images/icon/icon_arrow_l.gif" alt=""/></span></a></li>
+	#end
+	#if($pages > $currentPage) #set($next = $currentPage + 1)
+	        <li title="次へ" style="margin-right:5px;"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next))', '$!portlet.ID');" title="次へ" class="last arrow"><span><img src="https://app.aipo.com/themes/orange/images/icon/icon_arrow_r.gif" alt="次の $nextCount 件"/></span></a></li>
+	#else
+		    <li title="次へ"><a href="javascript:void(0);" class="last arrow" style="width:30px"/><span><img src="https://app.aipo.com/themes/orange/images/icon/icon_arrow_r.gif" alt=""/></span></a></li>
+	#end
+	      </ul>
+	    </div>
+	#end
+	</div>
+#end
+
+#macro(AUIwidgetMenuList $menues $active)
+<ul>
+#foreach ( $menu in $menues )
+  <li#if ($menu.get(1) == $active) class="active"#end>
+    <div class="menuTitle"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($menu.get(2))', '$!portlet.ID');">$menu.get(0)</a></div>
+    <div class="menuIcon"></div>
+  </li>
+#end
+</ul>
+#end
+
+#macro(AUIajaxbuttonCheckboxAction $name $url $indicator_id $portlet_id $rt)
+<a name="ajaxbuttonCheckboxAction" class="auiButton" onclick="aimluck.io.ajaxCheckboxActionSubmit(dojo.byId('dummy_btn_auiajaxbuttoncheckboxaction$portlet_id'), '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $rt);">$name</a>
+<input type="hidden" id="dummy_btn_auiajaxbuttoncheckboxaction$portlet_id" value="" />
+#end
+
+#macro(AUIajaxbuttonCheckboxDelete $name $url $indicator_id $portlet_id $rt)
+<a name="ajaxbuttonCheckboxDelete" class="auiButton" onclick="aimluck.io.ajaxCheckboxDeleteSubmit(dojo.byId('dummy_btn_auiajaxbuttoncheckboxdelete$portlet_id'), '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $rt);">$name</a>
+<input type="hidden" id="dummy_btn_auiajaxbuttoncheckboxdelete$portlet_id" value="" />
+#end
+

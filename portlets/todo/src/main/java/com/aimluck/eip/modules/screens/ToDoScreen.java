@@ -65,9 +65,8 @@ public class ToDoScreen extends ALVelocityScreen {
       listData.setRowsNum(Integer.parseInt(portlet
         .getPortletConfig()
         .getInitParameter("p1a-rows")));
-      listData.setStrLength(Integer.parseInt(portlet
-        .getPortletConfig()
-        .getInitParameter("p4a-strlen")));
+      listData.setStrLength(0);
+      listData.loadCategoryList(rundata, context);
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-todo.vm";

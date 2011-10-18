@@ -278,6 +278,7 @@ CREATE TABLE EIP_T_TODO_CATEGORY
 (
     CATEGORY_ID INTEGER NOT NULL,
     USER_ID INTEGER NOT NULL,
+    UPDATE_USER_ID INTEGER,
     CATEGORY_NAME VARCHAR (64) NOT NULL,
     NOTE TEXT,
     CREATE_DATE DATE,
@@ -1485,6 +1486,7 @@ INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(135,'msgboard_topic_other','掲示�
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(141,'todo_todo_self','ToDo（自分のToDo）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(142,'todo_todo_other','ToDo（他ユーザーのToDo）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(143,'todo_category_self','ToDo（カテゴリ）操作',31);
+INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(144,'todo_category_other','ToDo（他ユーザのカテゴリ）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(151,'workflow_request_self','ワークフロー（自分の依頼）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(152,'workflow_request_other','ワークフロー（他ユーザーの依頼）操作',3);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(161,'addressbook_address_inside','アドレス帳（社内アドレス）操作',3);
@@ -1523,6 +1525,7 @@ INSERT INTO EIP_T_ACL_ROLE VALUES(10,'掲示板（自分のカテゴリ）管理
 INSERT INTO EIP_T_ACL_ROLE VALUES(12,'ToDo（自分のToDo）管理者',141,31,'＊詳細表示、追加、削除は一覧表示の権限を持っていないと使用できません');
 INSERT INTO EIP_T_ACL_ROLE VALUES(13,'ToDo（他ユーザーのToDo）管理者',142,31,'＊詳細表示、追加、削除は一覧表示の権限を持っていないと使用できません');
 INSERT INTO EIP_T_ACL_ROLE VALUES(14,'ToDo（カテゴリ）管理者',143,31,'＊詳細表示、追加、削除は一覧表示の権限を持っていないと使用できません');
+INSERT INTO EIP_T_ACL_ROLE VALUES(30,'ToDo（他ユーザのカテゴリ）管理者',144,31,'＊詳細表示、追加、削除は一覧表示の権限を持っていないと使用できません');
 
 -- workflow
 INSERT INTO EIP_T_ACL_ROLE VALUES(15,'ワークフロー（自分の依頼）管理者',151,31,'＊詳細表示、追加、削除は一覧表示の権限を持っていないと使用できません ＊承認、再申請や差し戻しは編集の権限が必要です');

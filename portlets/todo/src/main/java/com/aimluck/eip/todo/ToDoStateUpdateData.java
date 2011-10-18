@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.todo;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -51,6 +52,7 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
     // 状態
     state = new ALNumberField();
@@ -127,6 +129,7 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
         return false;
       }
       todo.setState(Short.valueOf((short) state.getValue()));
+      todo.setUpdateDate(Calendar.getInstance().getTime());
 
       // Todoを更新
       Database.commit();

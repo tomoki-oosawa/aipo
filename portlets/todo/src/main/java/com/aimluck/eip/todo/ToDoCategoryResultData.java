@@ -36,6 +36,12 @@ public class ToDoCategoryResultData implements ALData {
   /** カテゴリ名 */
   private ALStringField category_name;
 
+  /** ユーザー名 */
+  private ALStringField user_name;
+
+  /** 更新ユーザー名 */
+  private ALStringField update_user_name;
+
   /** メモ */
   private ALStringField note;
 
@@ -45,16 +51,26 @@ public class ToDoCategoryResultData implements ALData {
   /** 更新日 */
   private ALStringField update_date;
 
+  private boolean hasAclEditCategoryOther;
+
+  private boolean hasAclDeleteCategoryOther;
+
+  private boolean is_self_category;
+
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
     category_id = new ALNumberField();
     category_name = new ALStringField();
     note = new ALStringField();
     create_date = new ALStringField();
     update_date = new ALStringField();
+    user_name = new ALStringField();
+    update_user_name = new ALStringField();
+    is_self_category = false;
   }
 
   /**
@@ -125,6 +141,46 @@ public class ToDoCategoryResultData implements ALData {
    */
   public void setUpdateDate(String string) {
     update_date.setValue(string);
+  }
+
+  public void setUserName(String user_name) {
+    this.user_name.setValue(user_name);
+  }
+
+  public ALStringField getUserName() {
+    return user_name;
+  }
+
+  public void setUpdateUserName(String update_user_name) {
+    this.update_user_name.setValue(update_user_name);
+  }
+
+  public ALStringField getUpdateUserName() {
+    return update_user_name;
+  }
+
+  public void setHasAclEditCategoryOther(boolean hasAclEditCategoryOther) {
+    this.hasAclEditCategoryOther = hasAclEditCategoryOther;
+  }
+
+  public boolean hasAclEditCategoryOther() {
+    return hasAclEditCategoryOther;
+  }
+
+  public void setHasAclDeleteCategoryOther(boolean hasAclDeleteCategoryOther) {
+    this.hasAclDeleteCategoryOther = hasAclDeleteCategoryOther;
+  }
+
+  public boolean hasAclDeleteCategoryOther() {
+    return hasAclDeleteCategoryOther;
+  }
+
+  public void setIsSelfCategory(boolean is_self_category) {
+    this.is_self_category = is_self_category;
+  }
+
+  public boolean isSelfCategory() {
+    return is_self_category;
   }
 
 }

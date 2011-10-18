@@ -140,6 +140,9 @@
 	<db-relationship name="eipTTodo" source="turbine_user" target="eip_t_todo" toMany="true">
 		<db-attribute-pair source="USER_ID" target="USER_ID"/>
 	</db-relationship>
+	<db-relationship name="eipTTodoCategory" source="turbine_user" target="eip_t_todo_category" toMany="true">
+		<db-attribute-pair source="USER_ID" target="USER_ID"/>
+	</db-relationship>
 	<db-relationship name="turbineUserGroupRole" source="turbine_user" target="turbine_user_group_role" toMany="true">
 		<db-attribute-pair source="USER_ID" target="USER_ID"/>
 	</db-relationship>
@@ -168,6 +171,7 @@
 	<obj-relationship name="eipTEventlog" source="TurbineUser" target="EipTEventlog" db-relationship-path="eipTEventlog"/>
 	<obj-relationship name="eipTMsgboardCategory" source="TurbineUser" target="EipTMsgboardCategory" db-relationship-path="eipTMsgboardCategory"/>
 	<obj-relationship name="eipTTodo" source="TurbineUser" target="EipTTodo" db-relationship-path="eipTTodo"/>
+	<obj-relationship name="eipTTodoCategory" source="TurbineUser" target="EipTTodoCategory" db-relationship-path="eipTTodoCategory"/>
 	<obj-relationship name="turbineUserGroupRole" source="TurbineUser" target="TurbineUserGroupRole" db-relationship-path="turbineUserGroupRole"/>
 	<obj-relationship name="eipTScheduleMap" source="TurbineUserGroupRole" target="EipTScheduleMap" db-relationship-path="eipTScheduleMap"/>
 	<obj-relationship name="turbineGroup" source="TurbineUserGroupRole" target="TurbineGroup" db-relationship-path="turbineGroup"/>

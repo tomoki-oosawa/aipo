@@ -24,13 +24,9 @@
 #ALjavascript("javascript/aipo/todo/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
-
     ptConfig['$!portlet.ID'] = { group:"todo", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoCategoryListScreen"))', reloadFunction:aipo.reloadPage };
-    aipo.todo.menuSelected = 1;
-	
 //]]>
 </script>
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
 #parse("/portlets/html/ja/ajax-todo-category-list.vm")
 #ALcontentfooter()
-#parse("/portlets/html/ja/todo-menu.vm")

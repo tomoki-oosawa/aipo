@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.todo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
@@ -31,6 +32,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractCheckList;
+import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
@@ -44,6 +46,44 @@ public class ToDoMultiStateUpdate extends ALAbstractCheckList {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ToDoMultiStateUpdate.class.getName());
+
+  private String aclPortletFeature;
+
+  /**
+   * @param rundata
+   * @param context
+   * @param defineAclType
+   * @return
+   * @throws ALPermissionException
+   */
+  @Override
+  protected boolean doCheckAclPermission(RunData rundata, Context context,
+      int defineAclType) throws ALPermissionException {
+    List<String> values = new ArrayList<String>();
+    Object[] objs = rundata.getParameters().getKeys();
+    int length = objs.length;
+    for (int i = 0; i < length; i++) {
+      if (objs[i].toString().startsWith("check")) {
+        String str = rundata.getParameters().getString(objs[i].toString());
+        values.add(str);
+      }
+    }
+
+    Expression exp1 =
+      ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+        .valueOf(ALEipUtils.getUserId(rundata)));
+    Expression exp2 =
+      ExpressionFactory.inDbExp(EipTTodo.TODO_ID_PK_COLUMN, values);
+
+    if (Database.query(EipTTodo.class, exp1).andQualifier(exp2).getCount() > 0) {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER;
+    } else {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF;
+    }
+    return super.doCheckAclPermission(rundata, context, defineAclType);
+  }
 
   /**
    * @param rundata
@@ -106,6 +146,6 @@ public class ToDoMultiStateUpdate extends ALAbstractCheckList {
    */
   @Override
   public String getAclPortletFeature() {
-    return ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF;
+    return aclPortletFeature;
   }
 }

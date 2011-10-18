@@ -36,7 +36,6 @@ import com.aimluck.eip.todo.ToDoCategorySelectData;
 import com.aimluck.eip.todo.ToDoFormData;
 import com.aimluck.eip.todo.ToDoMultiDelete;
 import com.aimluck.eip.todo.ToDoMultiStateUpdate;
-import com.aimluck.eip.todo.ToDoPublicSelectData;
 import com.aimluck.eip.todo.ToDoSelectData;
 import com.aimluck.eip.todo.ToDoStateUpdateData;
 import com.aimluck.eip.util.ALEipUtils;
@@ -71,9 +70,8 @@ public class ToDoAction extends ALBaseAction {
     listData.setRowsNum(Integer.parseInt(portlet
       .getPortletConfig()
       .getInitParameter("p1a-rows")));
-    listData.setStrLength(Integer.parseInt(portlet
-      .getPortletConfig()
-      .getInitParameter("p4a-strlen")));
+    listData.setStrLength(0);
+    listData.loadCategoryList(rundata, context);
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "todo");
   }
@@ -100,10 +98,6 @@ public class ToDoAction extends ALBaseAction {
         doTodo_list(rundata, context);
       } else if ("category_detail".equals(mode)) {
         doTodo_category_detail(rundata, context);
-      } else if ("public_detail".equals(mode)) {
-        doTodo_public_detail(rundata, context);
-      } else if ("public_list".equals(mode)) {
-        doTodo_public_list(rundata, context);
       }
       if (getMode() == null) {
         doTodo_list(rundata, context);
@@ -111,7 +105,6 @@ public class ToDoAction extends ALBaseAction {
     } catch (Exception ex) {
       logger.error("Exception", ex);
     }
-
   }
 
   /**
@@ -241,9 +234,8 @@ public class ToDoAction extends ALBaseAction {
       .getPortlet(rundata, context)
       .getPortletConfig()
       .getInitParameter("p1b-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
-      rundata,
-      context).getPortletConfig().getInitParameter("p4a-strlen")));
+    listData.setStrLength(0);
+    listData.loadCategoryList(rundata, context);
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "todo-list");
   }
@@ -263,50 +255,6 @@ public class ToDoAction extends ALBaseAction {
     } else {
       doTodo_list(rundata, context);
     }
-  }
-
-  /**
-   * 公開ToDoの一覧を表示します． <BR>
-   * 
-   * @param rundata
-   * @param context
-   * @throws Exception
-   */
-  public void doTodo_public_list(RunData rundata, Context context)
-      throws Exception {
-    ToDoPublicSelectData listData = new ToDoPublicSelectData();
-    listData.initField();
-    // listData.loadCategoryList(rundata, context);
-    // PSMLからパラメータをロードする
-    // 最大表示件数（最大化時）
-    listData.setRowsNum(Integer.parseInt(ALEipUtils
-      .getPortlet(rundata, context)
-      .getPortletConfig()
-      .getInitParameter("p1b-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
-      rundata,
-      context).getPortletConfig().getInitParameter("p4a-strlen")));
-    listData.doViewList(this, rundata, context);
-    setTemplate(rundata, "todo-public-list");
-  }
-
-  /**
-   * 公開 ToDo の詳細を表示する．
-   * 
-   * @param rundata
-   * @param context
-   * @throws Exception
-   */
-  public void doTodo_public_detail(RunData rundata, Context context)
-      throws Exception {
-    ToDoPublicSelectData detailData = new ToDoPublicSelectData();
-    detailData.initField();
-    if (detailData.doViewDetail(this, rundata, context)) {
-      setTemplate(rundata, "todo-public_detail");
-    } else {
-      doTodo_public_list(rundata, context);
-    }
-
   }
 
   /**
@@ -450,11 +398,11 @@ public class ToDoAction extends ALBaseAction {
       listData.setRowsNum(Integer.parseInt(portlet
         .getPortletConfig()
         .getInitParameter("p1c-rows")));
-
+      listData.loadCategoryList(rundata, context);
       listData.doViewList(this, rundata, context);
       setTemplate(rundata, "todo-category-list");
     } catch (Exception e) {
-     logger.error(e);
+      logger.error(e);
     }
   }
 

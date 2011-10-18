@@ -13,8 +13,10 @@ public class _EipTTodoCategory extends org.apache.cayenne.CayenneDataObject {
     public static final String CREATE_DATE_PROPERTY = "createDate";
     public static final String NOTE_PROPERTY = "note";
     public static final String UPDATE_DATE_PROPERTY = "updateDate";
+    public static final String UPDATE_USER_ID_PROPERTY = "updateUserId";
     public static final String USER_ID_PROPERTY = "userId";
     public static final String EIP_TTODO_ARRAY_PROPERTY = "eipTTodoArray";
+    public static final String TURBINE_USER_PROPERTY = "turbineUser";
 
     public static final String CATEGORY_ID_PK_COLUMN = "CATEGORY_ID";
 
@@ -50,6 +52,14 @@ public class _EipTTodoCategory extends org.apache.cayenne.CayenneDataObject {
     }
     
     
+    public void setUpdateUserId(Integer updateUserId) {
+        writeProperty("updateUserId", updateUserId);
+    }
+    public Integer getUpdateUserId() {
+        return (Integer)readProperty("updateUserId");
+    }
+    
+    
     public void setUserId(Integer userId) {
         writeProperty("userId", userId);
     }
@@ -67,6 +77,15 @@ public class _EipTTodoCategory extends org.apache.cayenne.CayenneDataObject {
     public List getEipTTodoArray() {
         return (List)readProperty("eipTTodoArray");
     }
+    
+    
+    public void setTurbineUser(com.aimluck.eip.cayenne.om.security.TurbineUser turbineUser) {
+        setToOneTarget("turbineUser", turbineUser, true);
+    }
+
+    public com.aimluck.eip.cayenne.om.security.TurbineUser getTurbineUser() {
+        return (com.aimluck.eip.cayenne.om.security.TurbineUser)readProperty("turbineUser");
+    } 
     
     
 }

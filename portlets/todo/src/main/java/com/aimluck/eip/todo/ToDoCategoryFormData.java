@@ -65,6 +65,8 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
   /** ログインユーザーのID * */
   private int user_id;
 
+  private String aclPortletFeature;
+
   /**
    * 
    * @param action
@@ -85,12 +87,30 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
     }
 
     user_id = ALEipUtils.getUserId(rundata);
+
+    String categoryId =
+      rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
+    if (categoryId == null || categoryId.equals("new")) {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_TODO_CATEGORY_SELF;
+    } else {
+      EipTTodoCategory category =
+        ToDoUtils.getEipTTodoCategory(rundata, context);
+      if ((category != null && category.getTurbineUser().getUserId() != user_id)) {
+        aclPortletFeature =
+          ALAccessControlConstants.POERTLET_FEATURE_TODO_CATEGORY_OTHER;
+      } else {
+        aclPortletFeature =
+          ALAccessControlConstants.POERTLET_FEATURE_TODO_CATEGORY_SELF;
+      }
+    }
   }
 
   /**
    *
    *
    */
+  @Override
   public void initField() {
     // カテゴリ名
     category_name = new ALStringField();
@@ -139,18 +159,24 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
         ExpressionFactory.matchExp(EipTTodoCategory.USER_ID_PROPERTY, Integer
           .valueOf(0));
 
-      Expression exp3 =
-        ExpressionFactory.matchExp(EipTTodoCategory.USER_ID_PROPERTY, Integer
-          .valueOf(this.user_id));
-
+      Expression exp3;
       if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
         Expression exp4 =
           ExpressionFactory.noMatchDbExp(
             EipTTodoCategory.CATEGORY_ID_PK_COLUMN,
             category_id);
+        EipTTodoCategory category =
+          ToDoUtils.getEipTTodoCategory(Long.valueOf(category_id));
+        exp3 =
+          ExpressionFactory.matchExp(
+            EipTTodoCategory.USER_ID_PROPERTY,
+            category.getUserId());
         // exp AND (exp4 AND (exp3 OR exp2))
         query.setQualifier(exp4.andExp(exp.andExp(exp3.orExp(exp2))));
       } else {
+        exp3 =
+          ExpressionFactory.matchExp(EipTTodoCategory.USER_ID_PROPERTY, Integer
+            .valueOf(this.user_id));
         // exp1 AND ( exp2 OR exp3 )
         query.setQualifier(exp.andExp(exp2.orExp(exp3)));
       }
@@ -216,7 +242,9 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
       EipTTodoCategory category = Database.create(EipTTodoCategory.class);
       category.setCategoryName(category_name.getValue());
       category.setNote(note.getValue());
-      category.setUserId(Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      category.setTurbineUser(ALEipUtils.getTurbineUser(ALEipUtils
+        .getUserId(rundata)));
+      category.setUpdateUserId(ALEipUtils.getUserId(rundata));
       category.setCreateDate(Calendar.getInstance().getTime());
       category.setUpdateDate(Calendar.getInstance().getTime());
       Database.commit();
@@ -258,14 +286,12 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
       category.setCategoryName(category_name.getValue());
       // メモ
       category.setNote(note.getValue());
-      // ユーザーID
-      category.setUserId(Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      // 更新ユーザーID
+      category.setUpdateUserId(ALEipUtils.getUserId(rundata));
       // 更新日
       category.setUpdateDate(Calendar.getInstance().getTime());
-
       // Todoカテゴリを更新
       Database.commit();
-
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         category.getCategoryId(),
@@ -296,6 +322,11 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
       EipTTodoCategory category =
         ToDoUtils.getEipTTodoCategory(rundata, context);
       if (category == null) {
+        return false;
+      }
+
+      if (category.getEipTTodoArray().size() > 0) {
+        msgList.add("1つ以上のToDoを含むカテゴリを削除することはできません。");
         return false;
       }
 
@@ -353,6 +384,6 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
    */
   @Override
   public String getAclPortletFeature() {
-    return ALAccessControlConstants.POERTLET_FEATURE_TODO_CATEGORY_SELF;
+    return aclPortletFeature;
   }
 }

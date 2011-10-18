@@ -38,6 +38,7 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     public static final String EIP_TEVENTLOG_PROPERTY = "eipTEventlog";
     public static final String EIP_TMSGBOARD_CATEGORY_PROPERTY = "eipTMsgboardCategory";
     public static final String EIP_TTODO_PROPERTY = "eipTTodo";
+    public static final String EIP_TTODO_CATEGORY_PROPERTY = "eipTTodoCategory";
     public static final String TURBINE_USER_GROUP_ROLE_PROPERTY = "turbineUserGroupRole";
 
     public static final String USER_ID_PK_COLUMN = "USER_ID";
@@ -284,6 +285,17 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     }
     public List getEipTTodo() {
         return (List)readProperty("eipTTodo");
+    }
+    
+    
+    public void addToEipTTodoCategory(com.aimluck.eip.cayenne.om.portlet.EipTTodoCategory obj) {
+        addToManyTarget("eipTTodoCategory", obj, true);
+    }
+    public void removeFromEipTTodoCategory(com.aimluck.eip.cayenne.om.portlet.EipTTodoCategory obj) {
+        removeToManyTarget("eipTTodoCategory", obj, true);
+    }
+    public List getEipTTodoCategory() {
+        return (List)readProperty("eipTTodoCategory");
     }
     
     

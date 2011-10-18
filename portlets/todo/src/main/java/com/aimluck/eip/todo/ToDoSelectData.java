@@ -21,6 +21,7 @@ package com.aimluck.eip.todo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
@@ -28,22 +29,32 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodoCategory;
+import com.aimluck.eip.cayenne.om.security.TurbineGroup;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipGroup;
+import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.todo.util.ToDoUtils;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -63,13 +74,27 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
   private String currentTab;
 
   /** カテゴリ一覧 */
-  private ArrayList<ToDoCategoryResultData> categoryList;
+  private List<ToDoCategoryResultData> categoryList;
 
   /** ToDo の総数 */
   private int todoSum;
 
   /** ポートレット Schedule への URL */
   private String scheduleUrl;
+
+  private String target_group_name;
+
+  private String target_user_id;
+
+  private String target_keyword;
+
+  private List<ALEipGroup> myGroupList;
+
+  private int login_user_id;
+
+  private boolean hasAclEditTodoOther;
+
+  private boolean hasAclDeleteTodoOther;
 
   /**
    * 
@@ -84,15 +109,16 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-        .getPortlet(rundata, context)
-        .getPortletConfig()
-        .getInitParameter("p2a-sort"));
-      logger.debug("[ToDoSelectData] Init Parameter. : "
-        + ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p2a-sort"));
+      ALEipUtils.setTemp(
+        rundata,
+        context,
+        LIST_SORT_STR,
+        EipTTodo.UPDATE_DATE_PROPERTY);
+      ALEipUtils.setTemp(
+        rundata,
+        context,
+        LIST_SORT_TYPE_STR,
+        ALEipConstants.LIST_SORT_TYPE_DESC);
     }
 
     String tabParam = rundata.getParameters().getString("tab");
@@ -105,6 +131,27 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
       currentTab = tabParam;
     }
 
+    login_user_id = ALEipUtils.getUserId(rundata);
+
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+    // アクセス権(他人のToDo編集)
+    hasAclEditTodoOther =
+      aclhandler.hasAuthority(
+        login_user_id,
+        ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER,
+        ALAccessControlConstants.VALUE_ACL_UPDATE);
+
+    // アクセス権(他人のToDo削除)
+    hasAclDeleteTodoOther =
+      aclhandler.hasAuthority(
+        login_user_id,
+        ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER,
+        ALAccessControlConstants.VALUE_ACL_DELETE);
+
     super.init(action, rundata, context);
   }
 
@@ -114,31 +161,7 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
    * @param context
    */
   public void loadCategoryList(RunData rundata, Context context) {
-    try {
-      // カテゴリ一覧
-      categoryList = new ArrayList<ToDoCategoryResultData>();
-
-      Expression exp =
-        ExpressionFactory.matchExp(EipTTodoCategory.USER_ID_PROPERTY, Integer
-          .valueOf(ALEipUtils.getUserId(rundata)));
-      exp.orExp(ExpressionFactory.matchExp(
-        EipTTodoCategory.USER_ID_PROPERTY,
-        Integer.valueOf(0)));
-
-      List<EipTTodoCategory> categoryList2 =
-        Database.query(EipTTodoCategory.class, exp).orderAscending(
-          EipTTodoCategory.CATEGORY_NAME_PROPERTY).fetchList();
-
-      for (EipTTodoCategory record : categoryList2) {
-        ToDoCategoryResultData rd = new ToDoCategoryResultData();
-        rd.initField();
-        rd.setCategoryId(record.getCategoryId().longValue());
-        rd.setCategoryName(record.getCategoryName());
-        categoryList.add(rd);
-      }
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
-    }
+    categoryList = ToDoUtils.getCategoryList(rundata, context);
   }
 
   /**
@@ -147,10 +170,23 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
    * @param rundata
    * @param context
    * @return
+   * @throws ALDBErrorException
    */
   @Override
   public ResultList<EipTTodo> selectList(RunData rundata, Context context) {
     try {
+      if (ToDoUtils.hasResetFlag(rundata, context)) {
+        ToDoUtils.resetFilter(rundata, context, this.getClass().getName());
+        target_group_name = "all";
+        target_user_id = "all";
+        target_keyword = "";
+      } else {
+        target_group_name = ToDoUtils.getTargetGroupName(rundata, context);
+        target_user_id = ToDoUtils.getTargetUserId(rundata, context);
+        target_keyword = ToDoUtils.getTargetKeyword(rundata, context);
+      }
+      setMyGroupList(new ArrayList<ALEipGroup>());
+      getMyGroupList().addAll(ALEipUtils.getMyGroups(rundata));
 
       SelectQuery<EipTTodo> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
@@ -175,22 +211,56 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
    */
   private SelectQuery<EipTTodo> getSelectQuery(RunData rundata, Context context) {
     SelectQuery<EipTTodo> query = Database.query(EipTTodo.class);
+    Expression exp0 =
+      ExpressionFactory.matchExp(EipTTodo.PUBLIC_FLAG_PROPERTY, "T");
+    query.setQualifier(exp0);
 
-    Expression exp1 =
-      ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
-        .valueOf(ALEipUtils.getUserId(rundata)));
-    query.setQualifier(exp1);
+    Expression exp1;
+    if ((target_user_id != null)
+      && (!target_user_id.equals(""))
+      && (!target_user_id.equals("all"))) {
+      exp1 =
+        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+          .valueOf(target_user_id));
+      // exp0.andExp(exp1);
+      query.andQualifier(exp1);
+    }
+
+    if ((target_group_name != null)
+      && (!target_group_name.equals(""))
+      && (!target_group_name.equals("all"))) {
+      // 選択したグループを指定する．
+      Expression exp =
+        ExpressionFactory.matchExp(EipTTodo.TURBINE_USER_PROPERTY
+          + "."
+          + TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
+          + "."
+          + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
+          + "."
+          + TurbineGroup.GROUP_NAME_PROPERTY, target_group_name);
+      query.andQualifier(exp);
+    }
+
+    if ((target_keyword != null) && (!target_keyword.equals(""))) {
+      // 選択したキーワードを指定する．
+      String keyword = "%" + target_keyword + "%";
+      Expression exp =
+        ExpressionFactory.likeExp(EipTTodo.TODO_NAME_PROPERTY, keyword);
+      query.andQualifier(exp.orExp(ExpressionFactory.likeExp(
+        EipTTodo.NOTE_PROPERTY,
+        keyword)));
+    }
 
     if ("list".equals(currentTab)) {
-      Expression exp2 =
+      Expression exp3 =
         ExpressionFactory.noMatchExp(EipTTodo.STATE_PROPERTY, Short
           .valueOf((short) 100));
-      query.andQualifier(exp2);
+      query.andQualifier(exp3);
     } else if ("complete".equals(currentTab)) {
-      Expression exp2 =
+      Expression exp4 =
         ExpressionFactory.matchExp(EipTTodo.STATE_PROPERTY, Short
           .valueOf((short) 100));
-      query.andQualifier(exp2);
+      query.andQualifier(exp4);
     }
 
     return buildSelectQueryForFilter(query, rundata, context);
@@ -205,7 +275,6 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
   @Override
   protected Object getResultData(EipTTodo record) {
     try {
-
       // For data inconsistencies
       EipTTodoCategory category = record.getEipTTodoCategory();
       if (category == null) {
@@ -219,7 +288,10 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
       rd.setCategoryName(ALCommonUtils.compressString(record
         .getEipTTodoCategory()
         .getCategoryName(), getStrLength()));
-
+      rd.setUserName(ALEipUtils
+        .getALEipUser(record.getUserId())
+        .getAliasName()
+        .getValue());
       rd.setTodoName(ALCommonUtils.compressString(
         record.getTodoName(),
         getStrLength()));
@@ -239,10 +311,14 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
       rd.setPriorityString(ToDoUtils.getPriorityString(record
         .getPriority()
         .intValue()));
+
       // 公開/非公開を設定する．
       rd.setPublicFlag("T".equals(record.getPublicFlag()));
       // 期限状態を設定する．
       rd.setLimitState(ToDoUtils.getLimitState(record.getEndDate()));
+
+      rd.setAclEditTodoOther(hasAclEditTodoOther);
+      rd.setAclDeleteTodoOther(hasAclDeleteTodoOther);
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -303,6 +379,10 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
       rd
         .setCategoryId(record.getEipTTodoCategory().getCategoryId().longValue());
       rd.setCategoryName(record.getEipTTodoCategory().getCategoryName());
+      rd.setUserName(ALEipUtils
+        .getALEipUser(record.getUserId())
+        .getAliasName()
+        .getValue());
       if (!ToDoUtils.isEmptyDate(record.getStartDate())) {
         rd.setStartDate(ALDateUtil.format(record.getStartDate(), "yyyy年M月d日"));
       }
@@ -314,11 +394,21 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
         .getPriority()
         .intValue()));
       rd.setNote(record.getNote());
+      rd.setCreateUserName(ALEipUtils
+        .getALEipUser(record.getCreateUserId())
+        .getAliasName()
+        .getValue());
       // 公開/非公開を設定する．
       rd.setPublicFlag("T".equals(record.getPublicFlag()));
       rd.setAddonScheduleFlg("T".equals(record.getAddonScheduleFlg()));
       rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
       rd.setUpdateDate(ALDateUtil.format(record.getUpdateDate(), "yyyy年M月d日"));
+
+      // 自身のToDoかを設定する
+      rd.setIsSelfTodo(record.getUserId() == login_user_id);
+
+      rd.setAclEditTodoOther(hasAclEditTodoOther);
+      rd.setAclDeleteTodoOther(hasAclDeleteTodoOther);
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -367,6 +457,10 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
       + "."
       + EipTTodoCategory.CATEGORY_NAME_PROPERTY);
     map.putValue("category", EipTTodoCategory.CATEGORY_ID_PK_COLUMN);
+    map.putValue("user_name", EipTTodoCategory.TURBINE_USER_PROPERTY
+      + "."
+      + TurbineUser.LAST_NAME_KANA_PROPERTY);
+    map.putValue(EipTTodo.UPDATE_DATE_PROPERTY, EipTTodo.UPDATE_DATE_PROPERTY);
     return map;
   }
 
@@ -384,6 +478,51 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
   }
 
   /**
+   * @return target_group_name
+   */
+  public String getTargetGroupName() {
+    return target_group_name;
+  }
+
+  /**
+   * @return target_user_id
+   */
+  public String getTargetUserId() {
+    return target_user_id;
+  }
+
+  /**
+   * 
+   * @return
+   */
+  public Map<Integer, ALEipPost> getPostMap() {
+    return ALEipManager.getInstance().getPostMap();
+  }
+
+  /**
+   * 
+   * @param groupname
+   * @return
+   */
+  public List<ALEipUser> getUsers() {
+    if ((target_group_name != null)
+      && (!target_group_name.equals(""))
+      && (!target_group_name.equals("all"))) {
+      return ALEipUtils.getUsers(target_group_name);
+    } else {
+      return ALEipUtils.getUsers("LoginUser");
+    }
+  }
+
+  /**
+   * @param target_user_id
+   *          セットする target_user_id
+   */
+  public void setTargetUserId(String target_user_id) {
+    this.target_user_id = target_user_id;
+  }
+
+  /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
    * 
@@ -392,5 +531,20 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
   @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF;
+  }
+
+  public void setMyGroupList(List<ALEipGroup> myGroupList) {
+    this.myGroupList = myGroupList;
+  }
+
+  public List<ALEipGroup> getMyGroupList() {
+    return myGroupList;
+  }
+
+  /**
+   * @return target_keyword
+   */
+  public String getTargetKeyword() {
+    return target_keyword;
   }
 }

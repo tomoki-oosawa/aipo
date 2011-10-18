@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.todo.util;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -35,8 +36,10 @@ import com.aimluck.eip.cayenne.om.portlet.EipTTodoCategory;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.todo.ToDoCategoryResultData;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -54,6 +57,12 @@ public class ToDoUtils {
 
   /** ユーザによる表示切り替え用変数の識別子 */
   public static final String TARGET_USER_ID = "target_user_id";
+
+  /** 検索キーワード変数の識別子 */
+  public static final String TARGET_KEYWORD = "keyword";
+
+  /** パラメータリセットの識別子 */
+  private static final String RESET_FLAG = "reset_params";
 
   /** 期限状態（期限前） */
   public static final int LIMIT_STATE_BEFORE = -1;
@@ -179,15 +188,9 @@ public class ToDoUtils {
         ExpressionFactory.matchDbExp(
           EipTTodoCategory.CATEGORY_ID_PK_COLUMN,
           categoryid);
-      Expression exp2 =
-        ExpressionFactory.matchExp(EipTTodoCategory.USER_ID_PROPERTY, Long
-          .valueOf(ALEipUtils.getUserId(rundata)));
 
       List<EipTTodoCategory> categoryList =
-        Database
-          .query(EipTTodoCategory.class, exp1)
-          .andQualifier(exp2)
-          .fetchList();
+        Database.query(EipTTodoCategory.class, exp1).fetchList();
 
       if (categoryList == null || categoryList.size() == 0) {
         // 指定したカテゴリIDのレコードが見つからない場合
@@ -390,6 +393,62 @@ public class ToDoUtils {
   }
 
   /**
+   * 表示切り替えで指定した検索キーワードを取得する．
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static String getTargetKeyword(RunData rundata, Context context) {
+    String target_keyword = null;
+    String keywordParam = rundata.getParameters().getString(TARGET_KEYWORD);
+    target_keyword = ALEipUtils.getTemp(rundata, context, TARGET_KEYWORD);
+
+    if (keywordParam == null && (target_keyword == null)) {
+      ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, "");
+      target_keyword = "";
+    } else if (keywordParam != null) {
+      ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, keywordParam.trim());
+      target_keyword = keywordParam;
+    }
+    return target_keyword;
+  }
+
+  /**
+   * 表示切り替えのリセットフラグがあるかを返す．
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static boolean hasResetFlag(RunData rundata, Context context) {
+    String resetflag = rundata.getParameters().getString(RESET_FLAG);
+    return resetflag != null;
+  }
+
+  /**
+   * フィルターを初期化する．
+   * 
+   * @param rundata
+   * @param context
+   * @param className
+   */
+  public static void resetFilter(RunData rundata, Context context,
+      String className) {
+    ALEipUtils.removeTemp(rundata, context, new StringBuffer()
+      .append(className)
+      .append(ALEipConstants.LIST_FILTER)
+      .toString());
+    ALEipUtils.removeTemp(rundata, context, new StringBuffer()
+      .append(className)
+      .append(ALEipConstants.LIST_FILTER_TYPE)
+      .toString());
+    ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, "");
+    ALEipUtils.setTemp(rundata, context, TARGET_GROUP_NAME, "all");
+    ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, "all");
+  }
+
+  /**
    * 現在日時と指定した日時とを比較する．
    * 
    * @param endDate
@@ -429,4 +488,47 @@ public class ToDoUtils {
     return result;
   }
 
+  /**
+   * プルダウン用のカテゴリーリストを返します
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static ArrayList<ToDoCategoryResultData> getCategoryList(
+      RunData rundata, Context context) {
+    ArrayList<ToDoCategoryResultData> categoryList =
+      new ArrayList<ToDoCategoryResultData>();
+    try {
+      // カテゴリ一覧
+      List<EipTTodoCategory> categoryList2 =
+        Database.query(EipTTodoCategory.class).orderAscending(
+          EipTTodoCategory.TURBINE_USER_PROPERTY
+            + "."
+            + TurbineUser.EIP_MUSER_POSITION_PROPERTY).fetchList();
+      StringBuffer title;
+      ALEipUser user;
+      for (EipTTodoCategory record : categoryList2) {
+        ToDoCategoryResultData rd = new ToDoCategoryResultData();
+        rd.initField();
+        rd.setCategoryId(record.getCategoryId().longValue());
+        user = ALEipUtils.getALEipUser(record.getUserId());
+
+        title = new StringBuffer(record.getCategoryName());
+        if (record.getCategoryId() != 1) {
+          title.append(" （");
+          title.append(user.getAliasName());
+          title.append("）");
+          rd.setCategoryName(title.toString());
+          categoryList.add(rd);
+        } else {
+          rd.setCategoryName(title.toString());
+          categoryList.add(0, rd);
+        }
+      }
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+    }
+    return categoryList;
+  }
 }

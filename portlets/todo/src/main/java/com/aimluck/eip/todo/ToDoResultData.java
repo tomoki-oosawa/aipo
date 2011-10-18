@@ -43,6 +43,12 @@ public class ToDoResultData implements ALData {
   /** 優先度 */
   private ALNumberField priority;
 
+  /** 担当者 */
+  private ALStringField user_name;
+
+  /** 作成者 */
+  private ALStringField create_user_name;
+
   /** Todo名 */
   private ALStringField todo_name;
 
@@ -89,15 +95,23 @@ public class ToDoResultData implements ALData {
    */
   private ALNumberField limit_state;
 
+  private boolean is_self_todo;
+
+  private boolean hasAclEditTodoOther;
+
+  private boolean hasAclDeleteTodoOther;
+
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
     todo_id = new ALNumberField();
     category_id = new ALNumberField();
     state = new ALNumberField();
     priority = new ALNumberField();
+    user_name = new ALStringField();
     todo_name = new ALStringField();
     category_name = new ALStringField();
     note = new ALStringField();
@@ -111,9 +125,10 @@ public class ToDoResultData implements ALData {
     create_date = new ALStringField();
     update_date = new ALStringField();
     limit_state = new ALNumberField();
-
+    create_user_name = new ALStringField();
     is_public = true;
     addon_schedule_flg = true;
+    is_self_todo = false;
   }
 
   /**
@@ -365,5 +380,67 @@ public class ToDoResultData implements ALData {
 
   public boolean addonScheduleFlg() {
     return addon_schedule_flg;
+  }
+
+  public void setUserName(String user_name) {
+    this.user_name.setValue(user_name);
+  }
+
+  public ALStringField getUserName() {
+    return user_name;
+  }
+
+  public void setCreateUserName(String create_user_name) {
+    this.create_user_name.setValue(create_user_name);
+  }
+
+  public ALStringField getCreateUserName() {
+    return create_user_name;
+  }
+
+  public boolean isSelfTodo() {
+    return is_self_todo;
+  }
+
+  public void setIsSelfTodo(boolean is_self_todo) {
+    this.is_self_todo = is_self_todo;
+  }
+
+  /**
+   * hasAclEditTodoOtherを取得します。
+   * 
+   * @return hasAclEditTodoOther
+   */
+  public boolean hasAclEditTodoOther() {
+    return hasAclEditTodoOther;
+  }
+
+  /**
+   * hasAclEditTodoOtherを設定します。
+   * 
+   * @param hasAclEditTodoOther
+   *          hasAclEditTodoOther
+   */
+  public void setAclEditTodoOther(boolean hasAclEditTodoOther) {
+    this.hasAclEditTodoOther = hasAclEditTodoOther;
+  }
+
+  /**
+   * hasAclDeleteTodoOtherを取得します。
+   * 
+   * @return hasAclDeleteTodoOther
+   */
+  public boolean hasAclDeleteTodoOther() {
+    return hasAclDeleteTodoOther;
+  }
+
+  /**
+   * hasAclDeleteTodoOtherを設定します。
+   * 
+   * @param hasAclDeleteTodoOther
+   *          hasAclDeleteTodoOther
+   */
+  public void setAclDeleteTodoOther(boolean hasAclDeleteTodoOther) {
+    this.hasAclDeleteTodoOther = hasAclDeleteTodoOther;
   }
 }

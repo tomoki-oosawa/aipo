@@ -16,24 +16,26 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
+
+<div class="auiSummaryMeta clearfix">
+#ALselectpdheader("target_category" "40%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoScreen").addQueryData("filter","").addQueryData("filtertype","category"))">すべてのカテゴリ</option>
+#foreach( $record in $result.CategoryList )
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoScreen").addQueryData("filter",$!record.CategoryId).addQueryData("filtertype","category"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
+#end
+</select>
+#AUIajaxpageview('ToDoScreen' $result)
+
+</div>
 #if ($result.List.size() == 0)
-<div class="message">ToDoはありません。</div>
+<div class="message">指定された条件に該当するToDoはありません。</div>
 #else
 #ALformheader('ToDo' $jslink $portlet)
-#ALajaxpageview('ToDoScreen' $result)
-#ALtableheaderWide()
-<tr>
-#ALtdheadThin("#ALajaxsort('priority' '優先度' $result 'ToDoScreen')")
-#ALtdhead("#ALajaxsort('todo_name' 'ToDo名' $result 'ToDoScreen')")
-#ALtdhead("#ALajaxsort('category_name' 'カテゴリ' $result 'ToDoScreen')")
-#ALtdheadThin("#ALajaxsort('end_date' '締め切り日' $result 'ToDoScreen')")
-#ALtdheadThin("#ALajaxsort('state' '進捗' $result 'ToDoScreen')")
-</tr>
+#AUIrowTableWide()
 #foreach ($record in $result.List)
 #set($limitState = ${record.limitState.Value})
-#if($result.isMatch(0, $limitState)) 
+#if($result.isMatch(0, $limitState))
 #set($lsStyle = ' style="background-color:#FFFFE5"')
 #elseif($result.isMatch(1, $limitState))
 #set($lsStyle = ' style="background-color:#FFE5E5"')
@@ -41,38 +43,21 @@
 #set($lsStyle = '')
 #end
 <tr $lsStyle>
-#ALtdcellAtt("<img src='images/todo/$!record.PriorityImage' alt='$!record.PriorityString'  title='$!record.PriorityString'/>" 'align="center"')
+#ALtdcellAtt("<div>$!record.EndDate</div>" 'class="thin" nowrap="nowrap"')
 #ALtdcellheader()
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$record.TodoId))');">$!record.TodoName</a>
+<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$record.TodoId))');">$!record.TodoName</a>
 #if(! $!record.Public)
 <img src="images/todo/todo_secret.gif" border="0" width="16" height="16" alt="非公開" title="非公開"/>
-#end
+#end</div>
 #ALtdcellfooter()
 #ALtdcellheader()
-#if ($!record.CategoryId.toString() != "1")
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoCategoryDetailScreen").addQueryData("entityid",$record.CategoryId))');">$!record.CategoryName</a>
-#else
+<div>
 $!record.CategoryName
-#end
+</div>
 #ALtdcellfooter()
-#ALtdcellAtt($!record.EndDate 'nowrap="nowrap"')
-#ALtdcellheaderAtt('nowrap="nowrap"')
-<img src='images/todo/$!record.StateImage' alt='$!record.StateString' title='$!record.StateString'/>&nbsp;<select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID');aipo.portletReload('todo','$!portlet.ID');">
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "0"))"   #if ($!record.State.toString() == "0" )  selected="selected" #end>未着手</option>
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "10"))"  #if ($!record.State.toString() == "10")  selected="selected" #end>10%</option>
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "20"))"  #if ($!record.State.toString() == "20")  selected="selected" #end>20%</option>
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "30"))"  #if ($!record.State.toString() == "30")  selected="selected" #end>30%</option>
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "40"))"  #if ($!record.State.toString() == "40")  selected="selected" #end>40%</option>
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "50"))"  #if ($!record.State.toString() == "50")  selected="selected" #end>50%</option>
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "60"))"  #if ($!record.State.toString() == "60")  selected="selected" #end>60%</option> 
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "70"))"  #if ($!record.State.toString() == "70")  selected="selected" #end>70%</option>
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "80"))"  #if ($!record.State.toString() == "80")  selected="selected" #end>80%</option>
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "90"))"  #if ($!record.State.toString() == "90")  selected="selected" #end>90%</option>
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "100"))" #if ($!record.State.toString() == "100") selected="selected" #end>完了</option>
-</select>
-#ALtdcellfooter()
+#ALtdcellAtt("<div>$!record.userName</div>" 'class="w15"')
 </tr>
 #end
-#ALtablefooter()
+#AUItablefooter()
 #ALformfooter()
 #end

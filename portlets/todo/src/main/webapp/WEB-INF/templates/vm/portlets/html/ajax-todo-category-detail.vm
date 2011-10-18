@@ -27,15 +27,29 @@
 #ALtableheaderWide()
 #ALtdcaption('カテゴリ名')
 #ALtditem($!result.Detail.CategoryName)
-##ALtdcaption('メモ')
-##ALtditem($!result.Detail.Note)
+
 #ALtdcaption('登録日')
 #ALtditem($!result.Detail.CreateDate)
 #ALtdcaption('更新日')
 #ALtditem($!result.Detail.UpdateDate)
+#ALtdcaption('登録者名')
+#ALtditem($!result.Detail.UserName)
+#ALtdcaption('更新者名')
+#ALtditem($!result.Detail.UpdateUserName)
 #ALtablefooter()
 #ALbuttonheader()
-#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoCategoryFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.todo.onLoadCategoryDialog")#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoCategoryFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onReceiveMessage")#ALajaxbuttonClose()
+#if($result.Detail.isSelfCategory())
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoCategoryFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.todo.onLoadCategoryDialog")
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoCategoryFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onReceiveMessage")
+#else
+#if($result.Detail.hasAclEditCategoryOther())
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoCategoryFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.todo.onLoadCategoryDialog")
+#end
+#if($result.Detail.hasAclDeleteCategoryOther())
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoCategoryFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onReceiveMessage")
+#end
+#end
+#ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()
 #ALdialogfooter()

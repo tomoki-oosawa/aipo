@@ -74,10 +74,6 @@ public class CellToDoAction extends ToDoAction {
         doTodo_list(rundata, context);
       } else if ("category_detail".equals(mode)) {
         doTodo_category_detail(rundata, context);
-      } else if ("public_detail".equals(mode)) {
-        doTodo_public_detail(rundata, context);
-      } else if ("public_list".equals(mode)) {
-        doTodo_public_list(rundata, context);
       }
       if (getMode() == null) {
         doTodo_menu(rundata, context);
@@ -175,32 +171,6 @@ public class CellToDoAction extends ToDoAction {
    */
   @Override
   public void doTodo_multi_delete(RunData rundata, Context context)
-      throws Exception {
-
-  }
-
-  /**
-   * 公開ToDoの一覧を表示します． <BR>
-   * 
-   * @param rundata
-   * @param context
-   * @throws Exception
-   */
-  @Override
-  public void doTodo_public_list(RunData rundata, Context context)
-      throws Exception {
-
-  }
-
-  /**
-   * 公開 ToDo の詳細を表示する．
-   * 
-   * @param rundata
-   * @param context
-   * @throws Exception
-   */
-  @Override
-  public void doTodo_public_detail(RunData rundata, Context context)
       throws Exception {
 
   }
