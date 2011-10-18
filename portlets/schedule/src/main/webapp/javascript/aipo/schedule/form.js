@@ -27,6 +27,11 @@ dojo.require("aipo.widget.GroupNormalSelectList");
 aipo.schedule.setupTooltip = function(url, entityids, portlet_id) {
     ptConfig[portlet_id].isTooltipEnable = true;
 
+    obj_content = dojo.byId('content-'+portlet_id);
+    dojo.style(obj_content, "visibility" , "visible");
+    obj_indicator = dojo.byId('indicator-'+portlet_id);
+    dojo.style(obj_indicator, "display" , "none");
+
     if (entityids.length <= 0) {
         return;
     }
@@ -703,4 +708,12 @@ aipo.schedule.onSpanEndChange = function(){
             aipo.schedule.spanLength = (spanEndDate - spanStartDate) / 86400000;
         }
     }
+}
+
+aipo.schedule.setIndicator = function(portlet_id) {
+
+    obj_content = dojo.byId('content-'+portlet_id);
+    dojo.style(obj_content, "visibility" , "hidden");
+    obj_indicator = dojo.byId('indicator-'+portlet_id);
+    dojo.style(obj_indicator, "display" , "");
 }
