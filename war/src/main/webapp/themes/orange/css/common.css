@@ -3317,6 +3317,8 @@ float:left;
 	padding:0.3em 0 0.3em 18px;
 	text-decoration:none;
 	background:url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
+	white-space:nowrap;
+	overflow:hidden;
 }
 .auiWidget li a:hover {
 	color:#000;
@@ -3371,7 +3373,7 @@ float:left;
 	text-shadow:0 1px 0 #f8f8f8;
 	cursor:pointer;
 	border:solid 1px #ccc;
-	border-radius:3px;
+	border-radius:2px;
 	background:#f8f8f8;
 	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#f8f8f8));/*Ch*/
 	background: -moz-linear-gradient(top, #fff, #f8f8f8);/*Fx*/
