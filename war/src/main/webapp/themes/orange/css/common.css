@@ -860,13 +860,13 @@ left:0;
 }
 .auiSelectButton li.active a.first {
 	border-left:none;
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -72px no-repeat    !important;
+	background:url(../images/common/bg_auiselectbutton.gif) 0px -72px no-repeat !important;
 }
 .auiSelectButton li.active a.last {
 	border-right:none;
 }
 .auiSelectButton li.active a.last span {
-	background:url(../images/common/bg_auiselectbutton.gif) right -168px no-repeat    !important;
+	background:url(../images/common/bg_auiselectbutton.gif) right -168px no-repeat !important;
 }
 .auiSelectButton .arrow {
 	width:30px;
@@ -1497,16 +1497,16 @@ table.simpleTable td.caption {
 	position:relative;
 	background-position:center center;
 	background-repeat:no-repeat;
-	background-image:url(../orange/css/images/submenu_off.gif);
+	background-image:url(images/submenu_off.gif);
 	width:5px;
 	height:9px;
 	padding-left:3px;
 }
 .menuItemHover .menuItemSubmenu {
-	background-image:url(../orange/css/images/submenu_on.gif);
+	background-image:url(images/submenu_on.gif);
 }
 .menuItemDisabled .menuItemSubmenu {
-	background-image:url(../orange/css/images/submenu_disabled.gif);
+	background-image:url(images/submenu_disabled.gif);
 }
 .menuBarSeparator {
 	width:3px;
@@ -3002,57 +3002,57 @@ div.userInfo {
 	background:url(../images/icon/icon_member.gif) no-repeat;
 }
 .menuBarIconCompanyInfo {
-	background:url(../../images/account/company_info.gif) no-repeat;
+	background:url(../../../images/account/company_info.gif) no-repeat;
 }
 .menuBarIconAccountUser {
-	background:url(../../images/account/account_user.gif) no-repeat;
+	background:url(../../../images/account/account_user.gif) no-repeat;
 }
 .menuBarIconAccountUserAdd {
-	background:url(../../images/account/account_user_add.gif) no-repeat;
+background:url(../../../images/account/account_user_add.gif) no-repeat;
 }
 .menuBarIconAccountChangeTurn {
-	background:url(../../images/account/account_change_turn.gif) no-repeat;
+	background:url(../../../images/account/account_change_turn.gif) no-repeat;
 }
 .menuBarIconAccountPasswd {
-	background:url(../../images/account/passwd.gif) no-repeat;
+	background:url(../../../images/account/passwd.gif) no-repeat;
 }
 .menuBarIconPortletAdd {
-	background:url(../../images/layout/portlet_add.gif) no-repeat;
+	background:url(../../../images/layout/portlet_add.gif) no-repeat;
 }
 .menuBarIconLayoutConf {
-	background:url(../../images/layout/layout_conf.gif) no-repeat;
+	background:url(../../../images/layout/layout_conf.gif) no-repeat;
 }
 .menuBarIconCellular {
-	background:url(../../images/cellular/cellular.gif) no-repeat;
+	background:url(../../../images/cellular/cellular.gif) no-repeat;
 }
 .menuBarIconNetworkInfo {
-	background:url(../../images/system/network_info.gif) no-repeat;
+	background:url(../../../images/system/network_info.gif) no-repeat;
 }
 .menuBarIconLicense {
-	background:url(../../images/system/license.gif) no-repeat;
+	background:url(../../../images/system/license.gif) no-repeat;
 }
 .menuBarIconWebmailCreateMail {
-	background:url(../../images/webmail/webmail_create_mail.gif) no-repeat;
+	background:url(../../../images/webmail/webmail_create_mail.gif) no-repeat;
 }
 .menuBarIconWebmailCheckNewMails {
-	background:url(../../images/webmail/webmail_check_newmails.gif) no-repeat;
+	background:url(../../../images/webmail/webmail_check_newmails.gif) no-repeat;
 }
 .menuBarIconWebmailReceiveMail {
-	background:url(../../images/webmail/webmail_receive_mail.gif) no-repeat;
+	background:url(../../../images/webmail/webmail_receive_mail.gif) no-repeat;
 }
 .menuBarIconWebmailAccountConfig {
-	background:url(../../images/webmail/webmail_account_config.gif) no-repeat;
+	background:url(../../../images/webmail/webmail_account_config.gif) no-repeat;
 }
 .menuBarIconFileAdd {
-	background:url(../../images/cabinet/file_add.gif) no-repeat;
+	background:url(../../../images/cabinet/file_add.gif) no-repeat;
 }
 .menuBarIconFolderAdd {
-	background:url(../../images/cabinet/folder_add.gif) no-repeat;
+	background:url(../../../images/cabinet/folder_add.gif) no-repeat;
 }
 .menuBarIconSeparator {
 	width:7px!important;
 	height:20px!important;
-	background:url(../../images/icon/icon_separator.gif) no-repeat;
+	background:url(../../../images/icon/icon_separator.gif) no-repeat;
 }
 .menuBarIconNone {
 	width:0!important;
@@ -3262,7 +3262,7 @@ table.activityTable tr.unread td {
 .btn_gray {
 	text-decoration:none;
 	font-size:10px;
-	background:url(../orange/images/common/bg_btn_gray.gif) bottom left repeat-x #FFF;
+	background:url(../images/common/bg_btn_gray.gif) bottom left repeat-x #FFF;
 	display:inline-block;
 	padding:2px 3px;
 	border:1px solid #BFBFBF;
