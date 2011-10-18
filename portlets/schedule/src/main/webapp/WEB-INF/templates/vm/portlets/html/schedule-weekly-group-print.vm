@@ -193,7 +193,7 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #set($record3rowcount = $result.getTermContainer($record3.UserId.Value).size() + 1 + $result.getToDoContainer($record3.UserId.Value).size())
 #set($rowspanstr = "rowspan=$record3rowcount")
 #set($show_tr = 0)
-#ALtdheadheaderAtt("$rowspanstr class='groupWeekly'")
+#ALtdheadheaderAtt("$rowspanstr class='groupWeekly' nowrap='nowrap'")
 $record3.AliasName
 ##if(!$result.isMatch($record3.UserId.Value))
 ##set($noteLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormScreen').addQueryData('dest_user_id', $!record3.userId)))
