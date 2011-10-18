@@ -1,0 +1,89 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+## ---------------------------------------------------------------------------
+#set($schedulescreen = "ScheduleScreen")
+#set($tabs = [["個人・1日", "oneday","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','oneday')"], ["個人・週間", "weekly", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','weekly')"], ["個人・月間", "monthly", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','monthly')"], ["グループ・1日", "oneday-group","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','oneday-group')"], ["グループ・週間", "weekly-group", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','weekly-group')"]])
+## ---------------------------------------------------------------------------
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<base href="$clink.External" ></base>
+<meta http-equiv="Content-Language" content="ja" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+#if($config.getString("portal.title"))#set($titlePrefix = $config.getString("portal.title"))#else#set($titlePrefix = "")#end
+<title>${alias}</title>
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta name="copyright" content="${copyright}" />
+<meta http-equiv="X-UA-Compatible" content="IE=emulateIE7,chrome=1" />
+<meta name="robots" content="noindex,follow" />
+<link type="image/x-icon" rel="shortcut icon" href="${external_resources_url}/images/favicon.ico" />
+<link type="image/x-icon" rel="icon" href="${external_resources_url}/images/favicon.ico" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/pre_print.css"/>
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/print.css" media="print" />
+<!--
+#if($isXDomain == "true")
+<script type="text/javascript">
+  djConifg = {
+    xDomainBasePath: '${external_resources_url}/javascript'
+  };
+</script>
+<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.xd.js"></script>
+<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/aipo.xd.js"></script>
+#else
+<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.js"></script>
+<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/aipo.js"></script>
+#end
+<script type="text/javascript" src="${unlockeddomain_url}/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
+<script type="text/javascript" src="${external_resources_url}/javascript/aipo/container.js"></script>
+<script type="text/javascript" src="${external_resources_url}/javascript/aipo/customize/form.js"></script>
+-->
+
+</head>
+
+#ALspacebothheader()
+## One day
+#if ($!result.Viewtype == "oneday")
+#parse("/portlets/html/ja/schedule-oneday-print.vm")
+#end
+## Weekly
+#if ($!result.Viewtype == "weekly")
+#parse("/portlets/html/ja/schedule-weekly-print.vm")
+#end
+## Monthly
+#if ($!result.Viewtype == "monthly")
+#parse("/portlets/html/ja/schedule-monthly-print.vm")
+#end
+## One day
+#if ($!result.Viewtype == "oneday-group")
+#parse("/portlets/html/ja/schedule-oneday-group-print.vm")
+#end
+## Weekly
+#if ($!result.Viewtype == "weekly-group")
+#parse("/portlets/html/ja/schedule-weekly-group-print.vm")
+#end
+#ALspacebothfooter()
+
+</html>
+
+

@@ -127,6 +127,9 @@ public class ScheduleMonthlySelectData extends
   /** <code>userid</code> ユーザーID */
   private String userid;
 
+  /** <code>user</code> ユーザー */
+  private ALEipUser user;
+
   /** <code>monthTodoCon</code> 期間スケジュール用の月間コンテナ */
   private ScheduleTermMonthContainer termMonthCon;
 
@@ -375,6 +378,8 @@ public class ScheduleMonthlySelectData extends
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_FACILITY,
         ALAccessControlConstants.VALUE_ACL_INSERT);
 
+    this.setUser(ALEipUtils.getALEipUser(loginUserId));
+    
     // スーパークラスのメソッドを呼び出す。
     super.init(action, rundata, context);
   }
@@ -1232,6 +1237,24 @@ public class ScheduleMonthlySelectData extends
    */
   public String getTargetUserName() {
     return target_user_name;
+  }
+
+  /**
+   * ユーザーを取得します。
+   * 
+   * @return
+   */
+  public ALEipUser getUser() {
+    return user;
+  }
+
+  /**
+   * ユーザーを設定します。
+   * 
+   * @param user
+   */
+  public void setUser(ALEipUser user) {
+    this.user = user;
   }
 
 }
