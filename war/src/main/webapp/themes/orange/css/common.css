@@ -860,13 +860,13 @@ left:0;
 }
 .auiSelectButton li.active a.first {
 	border-left:none;
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -72px no-repeat !important;
+	background:url(../images/common/bg_auiselectbutton.gif) 0px -72px no-repeat    !important;
 }
 .auiSelectButton li.active a.last {
 	border-right:none;
 }
 .auiSelectButton li.active a.last span {
-	background:url(../images/common/bg_auiselectbutton.gif) right -168px no-repeat !important;
+	background:url(../images/common/bg_auiselectbutton.gif) right -168px no-repeat    !important;
 }
 .auiSelectButton .arrow {
 	width:30px;
@@ -1497,16 +1497,16 @@ table.simpleTable td.caption {
 	position:relative;
 	background-position:center center;
 	background-repeat:no-repeat;
-	background-image:url(images/submenu_off.gif);
+	background-image:url(../orange/css/images/submenu_off.gif);
 	width:5px;
 	height:9px;
 	padding-left:3px;
 }
 .menuItemHover .menuItemSubmenu {
-	background-image:url(images/submenu_on.gif);
+	background-image:url(../orange/css/images/submenu_on.gif);
 }
 .menuItemDisabled .menuItemSubmenu {
-	background-image:url(images/submenu_disabled.gif);
+	background-image:url(../orange/css/images/submenu_disabled.gif);
 }
 .menuBarSeparator {
 	width:3px;
@@ -2984,13 +2984,13 @@ div.userInfo {
 	background:url(../images/icon/icon_add.gif) no-repeat;
 }
 .menuBarIconCustimize {
-	background:url(../images/icon_customize.gif) no-repeat;
+	background:url(../orange/images/icon_customize.gif) no-repeat;
 }
 .menuBarIconDate {
-	background:url(../images/icon_date.gif) no-repeat;
+	background:url(../orange/images/icon_date.gif) no-repeat;
 }
 .menuBarIconDelete {
-	background:url(../images/icon/icon_delete.gif) no-repeat;
+	background:url(../orange/images/icon/icon_delete.gif) no-repeat;
 }
 .menuBarIconEdit {
 	background:url(../images/icon/icon_edit.gif) no-repeat;
@@ -3002,57 +3002,57 @@ div.userInfo {
 	background:url(../images/icon/icon_member.gif) no-repeat;
 }
 .menuBarIconCompanyInfo {
-	background:url(../../../images/account/company_info.gif) no-repeat;
+	background:url(../../images/account/company_info.gif) no-repeat;
 }
 .menuBarIconAccountUser {
-	background:url(../../../images/account/account_user.gif) no-repeat;
+	background:url(../../images/account/account_user.gif) no-repeat;
 }
 .menuBarIconAccountUserAdd {
-	background:url(../../../images/account/account_user_add.gif) no-repeat;
+	background:url(../../images/account/account_user_add.gif) no-repeat;
 }
 .menuBarIconAccountChangeTurn {
-	background:url(../../../images/account/account_change_turn.gif) no-repeat;
+	background:url(../../images/account/account_change_turn.gif) no-repeat;
 }
 .menuBarIconAccountPasswd {
-	background:url(../../../images/account/passwd.gif) no-repeat;
+	background:url(../../images/account/passwd.gif) no-repeat;
 }
 .menuBarIconPortletAdd {
-	background:url(../../../images/layout/portlet_add.gif) no-repeat;
+	background:url(../../images/layout/portlet_add.gif) no-repeat;
 }
 .menuBarIconLayoutConf {
-	background:url(../../../images/layout/layout_conf.gif) no-repeat;
+	background:url(../../images/layout/layout_conf.gif) no-repeat;
 }
 .menuBarIconCellular {
-	background:url(../../../images/cellular/cellular.gif) no-repeat;
+	background:url(../../images/cellular/cellular.gif) no-repeat;
 }
 .menuBarIconNetworkInfo {
-	background:url(../../../images/system/network_info.gif) no-repeat;
+	background:url(../../images/system/network_info.gif) no-repeat;
 }
 .menuBarIconLicense {
-	background:url(../../../images/system/license.gif) no-repeat;
+	background:url(../../images/system/license.gif) no-repeat;
 }
 .menuBarIconWebmailCreateMail {
-	background:url(../../../images/webmail/webmail_create_mail.gif) no-repeat;
+	background:url(../../images/webmail/webmail_create_mail.gif) no-repeat;
 }
 .menuBarIconWebmailCheckNewMails {
-	background:url(../../../images/webmail/webmail_check_newmails.gif) no-repeat;
+	background:url(../../images/webmail/webmail_check_newmails.gif) no-repeat;
 }
 .menuBarIconWebmailReceiveMail {
-	background:url(../../../images/webmail/webmail_receive_mail.gif) no-repeat;
+	background:url(../../images/webmail/webmail_receive_mail.gif) no-repeat;
 }
 .menuBarIconWebmailAccountConfig {
-	background:url(../../../images/webmail/webmail_account_config.gif) no-repeat;
+	background:url(../../images/webmail/webmail_account_config.gif) no-repeat;
 }
 .menuBarIconFileAdd {
-	background:url(../../../images/cabinet/file_add.gif) no-repeat;
+	background:url(../../images/cabinet/file_add.gif) no-repeat;
 }
 .menuBarIconFolderAdd {
-	background:url(../../../images/cabinet/folder_add.gif) no-repeat;
+	background:url(../../images/cabinet/folder_add.gif) no-repeat;
 }
 .menuBarIconSeparator {
 	width:7px!important;
 	height:20px!important;
-	background:url(../../../images/icon/icon_separator.gif) no-repeat;
+	background:url(../../images/icon/icon_separator.gif) no-repeat;
 }
 .menuBarIconNone {
 	width:0!important;
@@ -3262,7 +3262,7 @@ table.activityTable tr.unread td {
 .btn_gray {
 	text-decoration:none;
 	font-size:10px;
-	background:url(../images/common/bg_btn_gray.gif) bottom left repeat-x #FFF;
+	background:url(../orange/images/common/bg_btn_gray.gif) bottom left repeat-x #FFF;
 	display:inline-block;
 	padding:2px 3px;
 	border:1px solid #BFBFBF;
@@ -3393,6 +3393,10 @@ float:left;
 	background: -webkit-gradient(linear, left top, left bottom, from(#e1e1e1), to(#eee));/*Ch*/
 	background: -moz-linear-gradient(top, #e1e1e1, #eee);/*Fx*/
 }
+.auiButton img,
+.auiButtonSmall img {
+	vertical-align:middle;
+}
 .auiButtonSmall {
 	padding:0 0.5em;
 	font-size:8pt;
@@ -3438,22 +3442,37 @@ float:left;
 }
 
 /* auiSearch ********************/
-.auiSearch input.text {
-	width:20em;
+.auiSearch input.text,
+.auiSearch input.date {
 	height:2.3em;
 	*height:2.2em;/*IE*/
 	line-height:2.3em;
 	*line-height:2.2em;/*IE*/
 	padding:0 2px;
+	vertical-align:middle;
 	border-radius:3px;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	background-color:#fff;
+	border:1px solid #c9c9c9;
 }
 .auiSearch input.text:hover,
-.auiSearch input.text:focus {
+.auiSearch input.text:focus,
+.auiSearch input.date:hover,
+.auiSearch input.date:focus {
 	border:solid 1px #999;
 }
-.auiSearch input.text:focus {
+.auiSearch input.text:focus,
+.auiSearch input.date:focus {
 	box-shadow:inset 0 1px 2px rgba(0,0,0,0.2);
 }
+.auiSearch input.text {
+	width:20em;
+}
+.auiSearch input.date {
+	width:7em;
+}
+
 .auiButtonSearch {
 	display:inline-block;
 	line-height:2.2em;
@@ -3484,6 +3503,12 @@ float:left;
 	background:#eee;
 	background: -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#eee));/*Ch*/
 	background: -moz-linear-gradient(top, #d0d0d0, #eee);/*Fx*/
+}
+
+.auiSearchOption {
+	float:left;
+	position:relative;
+	line-height:28px;
 }
 
 /* auiSummaryMeta ********************/
@@ -3675,12 +3700,21 @@ table.auiCalendar .sunday {
 table.auiCalendar .saturday {
 	background:#f0ffff;
 }
+table.auiCalendar td a {
+	display:block;
+	color:#000;
+	text-decoration:none;
+}
+table.auiCalendar .out a {
+	color:#999;
+}
 table.auiCalendar .today {
 	background:#e0ffe0;
 }
 table.auiCalendar td:hover {
 	background:#ffffe0;
 }
+
 
 /* auiAvatarBlock ********************/
 .auiAvatarBlock {
@@ -3739,4 +3773,16 @@ table.auiCalendar td:hover {
 }
 .dojoDndItem .entryFooter {
 	font-size:8pt;
+}
+
+/* auiAbsLayer ********************/
+.auiAbsLayer {
+	position:absolute;
+	background:#fff;
+	border:solid 1px #c9c9c9;
+	border-radius:3px;
+	z-index:999;
+}
+.auiAbsLayer:hover {
+	border:solid 1px #999;
 }
