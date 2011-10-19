@@ -29,6 +29,7 @@
     <module>userfacility</module>
     <module>social</module>
     <module>storage</module>
+    <module>portal</module>
   </modules>
 
   <dependencies>
