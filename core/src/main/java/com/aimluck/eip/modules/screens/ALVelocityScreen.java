@@ -41,6 +41,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -106,7 +107,14 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
     mode = rundata.getParameters().getString(ALEipConstants.MODE);
     try {
       ALEipUtils.setupContext(rundata, context);
-      this.doOutput(rundata, context);
+      String portletName = getPortletName();
+      if (portletName == null
+        || "".equals(portletName)
+        || ALPortalApplicationService.isActive(portletName)) {
+        this.doOutput(rundata, context);
+      } else {
+        setTemplate(rundata, context, "screens/html/Inactive.vm");
+      }
 
     } catch (Exception ex) {
       logger.error("[ALVelocityScreen] Exception.", ex);
@@ -235,5 +243,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
   protected String getContentType(RunData rundata) {
     return CONTENT_TYPE;
   }
+
+  protected abstract String getPortletName();
 
 }

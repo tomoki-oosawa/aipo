@@ -50,6 +50,7 @@ import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
 
@@ -120,6 +121,7 @@ public class CustomizeUtils {
         && ((!entry.isHidden())
           && (!entry.getType().equals(PortletEntry.TYPE_ABSTRACT)) && entry
             .hasMediaType(mediaType))
+        && ALPortalApplicationService.isActive(entry.getName())
         && !entry.getSecurityRef().getParent().equals("admin-view")) {
         list.add(entry);
       }

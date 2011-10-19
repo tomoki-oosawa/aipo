@@ -35,6 +35,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -169,14 +170,18 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
 
   @Override
   public void doPerform(RunData rundata, Context context) throws Exception {
-    super.doPerform(rundata, context);
-
     GenericMVCPortlet portlet = null;
     JetspeedRunData jdata = (JetspeedRunData) rundata;
     logger.debug("ALBaseAction: retrieved context: " + context);
 
     if (context != null) {
       portlet = (GenericMVCPortlet) context.get("portlet");
+    }
+
+    if (ALPortalApplicationService.isActive(portlet.getName())) {
+      super.doPerform(rundata, context);
+    } else {
+      rundata.getRequest().setAttribute("redirectTemplate", "Inactive.vm");
     }
 
     /*
@@ -195,6 +200,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
       (String) rundata.getRequest().getAttribute("redirectTemplate");
     if (redirectTemplate != null && redirectTemplate.length() > 0) {
       setTemplate(rundata, redirectTemplate);
+      rundata.getRequest().setAttribute("redirectTemplate", null);
     }
 
     putData(rundata, context);

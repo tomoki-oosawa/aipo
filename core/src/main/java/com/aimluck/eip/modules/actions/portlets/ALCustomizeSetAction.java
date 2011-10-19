@@ -96,6 +96,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -1043,8 +1044,9 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
         JetspeedSecurity.PERMISSION_VIEW)
         && ((!entry.isHidden())
           && (!entry.getType().equals(PortletEntry.TYPE_ABSTRACT)) && entry
-          .hasMediaType(mediaType))
-        && !entry.getSecurityRef().getParent().equals("admin-view")) {
+            .hasMediaType(mediaType))
+        && !entry.getSecurityRef().getParent().equals("admin-view")
+        && ALPortalApplicationService.isActive(entry.getName())) {
         list.add(entry);
       }
     }
@@ -1215,7 +1217,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
           JetspeedSecurity.PERMISSION_VIEW)
           && ((!entry.isHidden())
             && (!entry.getType().equals(PortletEntry.TYPE_ABSTRACT)) && entry
-            .hasMediaType(mediaType))) {
+              .hasMediaType(mediaType))) {
           Iterator<?> cItr = entry.listCategories();
           while (cItr.hasNext()) {
             BaseCategory cat = (BaseCategory) cItr.next();

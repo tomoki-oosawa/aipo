@@ -56,4 +56,12 @@ public class ALVelocityTimeoutScreen extends ALVelocityScreen implements
     }
     setTemplate(rundata, context, layout_template);
   }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return null;
+  }
 }

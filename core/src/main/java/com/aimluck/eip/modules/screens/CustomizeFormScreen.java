@@ -171,4 +171,12 @@ public class CustomizeFormScreen extends ALVelocityScreen {
     return size;
   }
 
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return "Customize";
+  }
+
 }
