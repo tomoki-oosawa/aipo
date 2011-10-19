@@ -120,4 +120,12 @@ public class FileuploadFormScreen extends ALVelocityScreen {
 
   }
 
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return null;
+  }
+
 }

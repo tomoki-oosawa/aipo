@@ -26,6 +26,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.exttimecard.ExtTimecardSystemMapSelectData;
+import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -63,6 +64,14 @@ public class ExtTimecardSystemMapScreen extends ALVelocityScreen {
       logger.error("[ExtTimecardSystemMapScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return ExtTimecardUtils.EXTTIMECARD_SYSTEM_PORTLET_NAME;
   }
 
 }

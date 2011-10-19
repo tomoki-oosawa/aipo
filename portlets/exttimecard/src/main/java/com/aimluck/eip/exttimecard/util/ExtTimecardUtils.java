@@ -68,6 +68,11 @@ public class ExtTimecardUtils {
   public static final String FOLDER_TMP_FOR_TIMECARD_FILES = JetspeedResources
     .getString("aipo.tmp.timecard.directory", "");
 
+  public static final String EXTTIMECARD_PORTLET_NAME = "ExtTimecard";
+
+  public static final String EXTTIMECARD_SYSTEM_PORTLET_NAME =
+    "ExtTimecardSystem";
+
   /**
    * ExtTimecard オブジェクトモデルを取得します。 <BR>
    * 

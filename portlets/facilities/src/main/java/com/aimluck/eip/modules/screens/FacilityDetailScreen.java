@@ -26,6 +26,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.facilities.FacilitySelectData;
+import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -64,4 +65,11 @@ public class FacilityDetailScreen extends ALVelocityScreen {
     }
   }
 
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return FacilitiesUtils.FACILITIES_PORTLET_NAME;
+  }
 }

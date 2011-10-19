@@ -26,6 +26,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.facilities.FacilityChangeTurnFormData;
+import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -66,5 +67,13 @@ public class FacilityChangeTurnFormScreen extends ALVelocityScreen {
     String layout_template =
       "portlets/html/ja/ajax-facility-change-turn-form.vm";
     setTemplate(rundata, context, layout_template);
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return FacilitiesUtils.FACILITIES_PORTLET_NAME;
   }
 }

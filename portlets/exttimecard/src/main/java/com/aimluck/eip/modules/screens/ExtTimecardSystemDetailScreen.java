@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.exttimecard.ExtTimecardSystemSelectData;
+import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -60,4 +61,11 @@ public class ExtTimecardSystemDetailScreen extends ALVelocityScreen {
     }
   }
 
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return ExtTimecardUtils.EXTTIMECARD_SYSTEM_PORTLET_NAME;
+  }
 }

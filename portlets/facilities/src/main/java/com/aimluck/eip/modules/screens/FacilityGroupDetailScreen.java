@@ -26,6 +26,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.facilities.FacilityGroupSelectData;
+import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -61,6 +62,14 @@ public class FacilityGroupDetailScreen extends ALVelocityScreen {
       logger.error("[FacilityDetailScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return FacilitiesUtils.FACILITIES_PORTLET_NAME;
   }
 
 }

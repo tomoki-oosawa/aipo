@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.exttimecard.ExtTimecardFormData;
+import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -60,5 +61,13 @@ public class ExtTimecardFormScreen extends ALVelocityScreen {
     formData.doViewForm(this, rundata, context);
     String layout_template = "portlets/html/ja/ajax-exttimecard-form.vm";
     setTemplate(rundata, context, layout_template);
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return ExtTimecardUtils.EXTTIMECARD_PORTLET_NAME;
   }
 }

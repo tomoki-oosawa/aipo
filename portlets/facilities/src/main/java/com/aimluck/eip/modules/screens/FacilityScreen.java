@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.facilities.FacilitySelectData;
+import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -61,5 +62,13 @@ public class FacilityScreen extends ALVelocityScreen {
       logger.error("[FacilityScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return FacilitiesUtils.FACILITIES_PORTLET_NAME;
   }
 }

@@ -49,6 +49,8 @@ public class FacilitiesUtils {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(FacilitiesUtils.class.getName());
 
+  public static final String FACILITIES_PORTLET_NAME = "Facilities";
+
   /**
    * 施設オブジェクトモデルを取得します。 <BR>
    * 
