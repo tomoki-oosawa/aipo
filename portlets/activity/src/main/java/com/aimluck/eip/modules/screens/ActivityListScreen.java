@@ -68,4 +68,12 @@ public class ActivityListScreen extends ALVelocityScreen {
       ALEipUtils.redirectDBError(rundata);
     }
   }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return ActivityUtils.ACTIVITY_PORTLET_NAME;
+  }
 }

@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.activity.ActivityAllSelectData;
+import com.aimluck.eip.activity.util.ActivityUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -56,6 +57,14 @@ public class ActivityAllScreen extends ALVelocityScreen {
       logger.error("[ActivityAllListScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return ActivityUtils.ACTIVITY_PORTLET_NAME;
   }
 
 }

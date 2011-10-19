@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.addressbook.AddressBookCompanySelectData;
+import com.aimluck.eip.addressbook.util.AddressBookUtils;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -64,6 +65,14 @@ public class AddressBookCompanyDetailScreen extends ALVelocityScreen {
       logger.error("[AddressBookCompanyDetailScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return AddressBookUtils.ADDRESSBOOK_PORTLET_NAME;
   }
 
 }

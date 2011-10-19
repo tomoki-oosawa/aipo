@@ -47,8 +47,10 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AccessControlUtils {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AccessControlUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AccessControlUtils.class.getName());
+
+  public static final String PORTLET_NAME = "AccessControl";
 
   /**
    * ロールオブジェクトモデルを取得します。 <BR>

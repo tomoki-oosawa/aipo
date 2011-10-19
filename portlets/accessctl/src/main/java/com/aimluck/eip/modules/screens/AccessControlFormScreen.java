@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.accessctl.AccessControlFormData;
+import com.aimluck.eip.accessctl.util.AccessControlUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -61,5 +62,13 @@ public class AccessControlFormScreen extends ALVelocityScreen {
     formData.doViewForm(this, rundata, context);
     String layout_template = "portlets/html/ja/ajax-accessctl-form.vm";
     setTemplate(rundata, context, layout_template);
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return AccessControlUtils.PORTLET_NAME;
   }
 }

@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.accessctl.AccessControlSelectData;
+import com.aimluck.eip.accessctl.util.AccessControlUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -59,5 +60,13 @@ public class AccessControlScreen extends ALVelocityScreen {
       logger.error("[AccessControlScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return AccessControlUtils.PORTLET_NAME;
   }
 }

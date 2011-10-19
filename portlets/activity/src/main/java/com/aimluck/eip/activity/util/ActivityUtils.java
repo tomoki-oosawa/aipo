@@ -27,9 +27,11 @@ import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.turbine.util.RunData;
 
 /**
- * 
+ *
  */
 public class ActivityUtils {
+
+  public static final String ACTIVITY_PORTLET_NAME = "Activity";
 
   public static String getGlobalPortletId(RunData rundata) {
 

@@ -71,6 +71,14 @@ public class AccountUtils {
   /** ユーザー名として使用可能な記号群 */
   public static final String[] USER_NAME_SYMBOLS = { ".", "-", "_" };
 
+  public static final String ACCOUNT_PORTLET_NAME = "Account";
+
+  public static final String COMPANY_PORTLET_NAME = "Company";
+
+  public static final String ACCOUNT_PERSON_PORTLET_NAME = "AccountPerson";
+
+  public static final String ACCOUNT_LOGIN_PORTLET_NAME = "AccountLogin";
+
   /**
    * セッション中のエンティティIDで示されるユーザ情報を取得する。 論理削除されたユーザを取得した場合はnullを返す。
    * 

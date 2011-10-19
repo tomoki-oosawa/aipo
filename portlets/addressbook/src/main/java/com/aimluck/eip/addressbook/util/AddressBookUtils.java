@@ -66,6 +66,8 @@ public class AddressBookUtils {
 
   public static final String EMPTY_COMPANY_NAME = "";
 
+  public static final String ADDRESSBOOK_PORTLET_NAME = "AddressBook";
+
   public static EipMAddressGroup getEipMAddressGroup(RunData rundata,
       Context context) {
     String groupid =

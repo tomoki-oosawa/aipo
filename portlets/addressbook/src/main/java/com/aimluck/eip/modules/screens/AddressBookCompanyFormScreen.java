@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.addressbook.AddressBookCompanyFormData;
+import com.aimluck.eip.addressbook.util.AddressBookUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -62,4 +63,13 @@ public class AddressBookCompanyFormScreen extends ALVelocityScreen {
       "portlets/html/ja/ajax-addressbook-company-form.vm";
     setTemplate(rundata, context, layout_template);
   }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return AddressBookUtils.ADDRESSBOOK_PORTLET_NAME;
+  }
+
 }

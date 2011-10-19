@@ -26,6 +26,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.account.AccountEditFormData;
 import com.aimluck.eip.account.AccountPasswdFormData;
+import com.aimluck.eip.account.util.AccountUtils;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -94,5 +95,13 @@ public class AccountPersonFormScreen extends ALVelocityScreen {
     String layout_template =
       "portlets/html/ja/ajax-account-person-passwd-form.vm";
     setTemplate(rundata, context, layout_template);
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return AccountUtils.ACCOUNT_PERSON_PORTLET_NAME;
   }
 }

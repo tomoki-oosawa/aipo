@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.account.AccountUserSelectData;
+import com.aimluck.eip.account.util.AccountUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -61,6 +62,14 @@ public class AccountUserScreen extends ALVelocityScreen {
       logger.error("[AccountUserScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return AccountUtils.ACCOUNT_PORTLET_NAME;
   }
 
 }

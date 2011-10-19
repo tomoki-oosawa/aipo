@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.account.AccountPositionFormData;
+import com.aimluck.eip.account.util.AccountUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -61,5 +62,13 @@ public class AccountPositionFormScreen extends ALVelocityScreen {
 
     String layout_template = "portlets/html/ja/ajax-account-position-form.vm";
     setTemplate(rundata, context, layout_template);
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return AccountUtils.ACCOUNT_PORTLET_NAME;
   }
 }
