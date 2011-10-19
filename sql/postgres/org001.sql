@@ -1446,7 +1446,7 @@ SELECT setval('pk_turbine_user_group_role',4);
 INSERT INTO EIP_T_COMMON_CATEGORY VALUES(1,'未分類','',0,0,NULL,NULL);
 SELECT setval('pk_eip_t_common_category',1);
 
-INSERT INTO EIP_T_TODO_CATEGORY VALUES(1,0,'未分類','',NULL ,NULL);
+INSERT INTO EIP_T_TODO_CATEGORY VALUES(1,0,0,'未分類','',NULL ,NULL);
 SELECT setval('pk_eip_t_todo_category',1);
 
 INSERT INTO EIP_M_COMPANY VALUES (1, '', '', '', '', '', '', '', '', 80, '', 80, now(), now());

@@ -691,7 +691,7 @@ CREATE TABLE `eip_t_todo_category` (
   PRIMARY KEY (`category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `eip_t_todo_category` VALUES (1,0,'未分類','',NULL,NULL);
+INSERT INTO `eip_t_todo_category` VALUES (1,0,0,'未分類','',NULL,NULL);
 
 CREATE TABLE `eip_t_whatsnew` (
   `whatsnew_id` int(11) NOT NULL AUTO_INCREMENT,
