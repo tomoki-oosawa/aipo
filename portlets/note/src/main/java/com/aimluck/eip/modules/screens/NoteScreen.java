@@ -35,6 +35,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.note.NoteClientSelectData;
+import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -149,4 +150,13 @@ public class NoteScreen extends ALVelocityScreen {
       return;
     }
   }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return NoteUtils.NOTE_PORTLET_NAME;
+  }
+
 }

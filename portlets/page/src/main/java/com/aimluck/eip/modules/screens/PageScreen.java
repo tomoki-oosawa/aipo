@@ -25,10 +25,11 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.page.PageSelectData;
+import com.aimluck.eip.page.util.PageUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * ページ設定の一覧を処理するクラスです。 
+ * ページ設定の一覧を処理するクラスです。
  * 
  */
 public class PageScreen extends ALVelocityScreen {
@@ -61,5 +62,13 @@ public class PageScreen extends ALVelocityScreen {
       logger.error("[PageScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return PageUtils.PAGE_PORTLET_NAME;
   }
 }

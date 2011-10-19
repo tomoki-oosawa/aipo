@@ -26,10 +26,11 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.note.NoteSelectData;
+import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 伝言メモの詳細画面を処理するクラスです。 
+ * 伝言メモの詳細画面を処理するクラスです。
  * 
  */
 public class NoteDetailScreen extends ALVelocityScreen {
@@ -62,6 +63,14 @@ public class NoteDetailScreen extends ALVelocityScreen {
       logger.error("[NoteDetailScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return NoteUtils.NOTE_PORTLET_NAME;
   }
 
 }

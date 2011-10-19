@@ -47,6 +47,8 @@ public class PageUtils {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(PageUtils.class.getName());
 
+  public static final String PAGE_PORTLET_NAME = "Page";
+
   public static Portlets getPortlets(RunData rundata, String portletId) {
     Portlets portletSet = null;
     Portlets portlets =
@@ -131,7 +133,7 @@ public class PageUtils {
    * Updates the layout position based on physical order within the resorted
    * portlet list. Assures that layout position is always consecutive and within
    * bounds.
-   *
+   * 
    * @param set
    */
   public static void updateLayoutPositions(Portlets set) {
@@ -187,7 +189,7 @@ public class PageUtils {
 
   /**
    * 指定したポートレット ID を含むページの ID を取得する．
-   *
+   * 
    * @param rundata
    * @param portletId
    * @return
@@ -228,7 +230,7 @@ public class PageUtils {
 
   /**
    * 指定したポートレット ID を持つポートレットのオブジェクトを取得する．
-   *
+   * 
    * @param rundata
    * @param portletId
    * @return

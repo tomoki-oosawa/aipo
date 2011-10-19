@@ -69,4 +69,13 @@ public class NoteFormScreen extends ALVelocityScreen {
     String layout_template = "portlets/html/ja/ajax-note-form.vm";
     setTemplate(rundata, context, layout_template);
   }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return NoteUtils.NOTE_PORTLET_NAME;
+  }
+
 }

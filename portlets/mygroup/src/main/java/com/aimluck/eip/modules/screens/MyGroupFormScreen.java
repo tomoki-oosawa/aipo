@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.mygroup.MyGroupFormData;
+import com.aimluck.eip.mygroup.util.MyGroupUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -62,4 +63,13 @@ public class MyGroupFormScreen extends ALVelocityScreen {
     String layout_template = "portlets/html/ja/ajax-mygroup-form.vm";
     setTemplate(rundata, context, layout_template);
   }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return MyGroupUtils.MYGROUP_PORTLET_NAME;
+  }
+
 }

@@ -84,6 +84,10 @@ public class NoteUtils {
 
   public static final String NOTE_STAT_DELETED = "4";
 
+  public static final String NOTE_PORTLET_NAME = "Note";
+
+  public static final String NOTE_GROUP_PORTLET_NAME = "NoteGroup";
+
   /**
    * 詳細表示用の EipTNote オブジェクトモデルを取得する．
    * 

@@ -39,6 +39,8 @@ public class MyGroupUtils {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(MyGroupUtils.class.getName());
 
+  public static final String MYGROUP_PORTLET_NAME = "MyGroup";
+
   /**
    * 
    * @param rundata

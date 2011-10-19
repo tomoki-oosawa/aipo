@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.mygroup.MyGroupSelectData;
+import com.aimluck.eip.mygroup.util.MyGroupUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -56,6 +57,14 @@ public class MyGroupDetailScreen extends ALVelocityScreen {
       logger.error("[MyGroupDetailScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return MyGroupUtils.MYGROUP_PORTLET_NAME;
   }
 
 }
