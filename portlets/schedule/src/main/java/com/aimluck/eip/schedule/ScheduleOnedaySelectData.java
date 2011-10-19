@@ -53,6 +53,7 @@ import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.todo.util.ToDoUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -142,6 +143,8 @@ public class ScheduleOnedaySelectData extends
   /** <code>hasAuthoritySelfInsert</code> アクセス権限 */
   private boolean hasAuthoritySelfInsert = false;
 
+  private boolean hasAuthorityNote = false;
+
   /**
    * 
    * @param action
@@ -184,10 +187,12 @@ public class ScheduleOnedaySelectData extends
         .getInitParameter("p1b-rows"));
     // ToDo 表示設定
     viewToDo =
-      Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context)
-        .getPortletConfig()
-        .getInitParameter("p5a-view"));
+      !ALPortalApplicationService.isActive(ToDoUtils.TODO_PORTLET_NAME)
+        ? 0
+        : Integer.parseInt(ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p5a-view"));
     tmpIndex = 0;
     count = 0;
     // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
@@ -272,6 +277,8 @@ public class ScheduleOnedaySelectData extends
         userId,
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
         ALAccessControlConstants.VALUE_ACL_INSERT);
+
+    hasAuthorityNote = ALPortalApplicationService.isActive("Note");
   }
 
   /**
@@ -967,6 +974,10 @@ public class ScheduleOnedaySelectData extends
 
   public boolean hasAuthoritySelfInsert() {
     return hasAuthoritySelfInsert;
+  }
+
+  public boolean hasAuthorityNote() {
+    return hasAuthorityNote;
   }
 
 }

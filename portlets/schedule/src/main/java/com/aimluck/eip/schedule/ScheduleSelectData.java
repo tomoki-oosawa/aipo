@@ -541,5 +541,4 @@ public class ScheduleSelectData extends
   public boolean hasAuthoritySelfInsert() {
     return hasAuthoritySelfInsert;
   }
-
 }

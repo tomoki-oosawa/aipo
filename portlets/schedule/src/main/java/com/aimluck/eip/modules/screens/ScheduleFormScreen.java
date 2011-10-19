@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.schedule.ScheduleFormData;
+import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -64,5 +65,13 @@ public class ScheduleFormScreen extends ALVelocityScreen {
 
     String layout_template = "portlets/html/ja/ajax-schedule-form.vm";
     setTemplate(rundata, context, layout_template);
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return ScheduleUtils.SCHEDULE_PORTLET_NAME;
   }
 }

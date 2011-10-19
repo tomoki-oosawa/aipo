@@ -48,6 +48,7 @@ import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.todo.util.ToDoUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -59,9 +60,8 @@ public class ScheduleWeeklySelectData extends
     ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleWeeklySelectData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleWeeklySelectData.class.getName());
 
   /** <code>prevDate</code> 前の日 */
   private ALDateTimeField prevDate;
@@ -116,6 +116,8 @@ public class ScheduleWeeklySelectData extends
 
   /** <code>hasAuthoritySelfInsert</code> アクセス権限 */
   private boolean hasAuthoritySelfInsert = false;
+
+  private boolean hasAuthorityNote = false;
 
   /**
    * 
@@ -230,10 +232,12 @@ public class ScheduleWeeklySelectData extends
     if (action != null) {
       // ToDo 表示設定
       viewTodo =
-        Integer.parseInt(ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p5a-view"));
+        !ALPortalApplicationService.isActive(ToDoUtils.TODO_PORTLET_NAME)
+          ? 0
+          : Integer.parseInt(ALEipUtils
+            .getPortlet(rundata, context)
+            .getPortletConfig()
+            .getInitParameter("p5a-view"));
     }
 
     // スーパークラスのメソッドを呼び出す。
@@ -252,6 +256,8 @@ public class ScheduleWeeklySelectData extends
         userId,
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
         ALAccessControlConstants.VALUE_ACL_INSERT);
+
+    hasAuthorityNote = ALPortalApplicationService.isActive("Note");
   }
 
   /**
@@ -704,4 +710,7 @@ public class ScheduleWeeklySelectData extends
     return hasAuthoritySelfInsert;
   }
 
+  public boolean hasAuthorityNote() {
+    return hasAuthorityNote;
+  }
 }

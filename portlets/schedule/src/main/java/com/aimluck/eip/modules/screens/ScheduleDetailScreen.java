@@ -26,6 +26,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.schedule.ScheduleSelectData;
+import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -62,6 +63,14 @@ public class ScheduleDetailScreen extends ALVelocityScreen {
       logger.error("[ScheduleDetailScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return ScheduleUtils.SCHEDULE_PORTLET_NAME;
   }
 
 }

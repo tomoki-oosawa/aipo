@@ -87,7 +87,7 @@ public class ScheduleScreen extends ALVelocityScreen {
           || tmpCurrentTab.equals("weekly")
           || tmpCurrentTab.equals("monthly")
           || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-          .equals("weekly-group"))) {
+            .equals("weekly-group"))) {
         currentTab = "calendar";
       } else {
         currentTab = tmpCurrentTab;
@@ -222,5 +222,13 @@ public class ScheduleScreen extends ALVelocityScreen {
       logger.error("[ScheduleScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return ScheduleUtils.SCHEDULE_PORTLET_NAME;
   }
 }

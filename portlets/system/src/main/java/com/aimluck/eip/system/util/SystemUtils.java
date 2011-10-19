@@ -51,6 +51,8 @@ public class SystemUtils {
     "aipo.webappserver.port",
     80);
 
+  public static final String SYSTEM_PORTLET_NAME = "System";
+
   /**
    * 
    * @param rundata

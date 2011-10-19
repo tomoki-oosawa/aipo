@@ -537,7 +537,7 @@ public class ScheduleAction extends ALBaseAction {
           || tmpCurrentTab.equals("weekly")
           || tmpCurrentTab.equals("monthly")
           || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-          .equals("weekly-group"))) {
+            .equals("weekly-group"))) {
         currentTab = "calendar";
       } else {
         currentTab = tmpCurrentTab;

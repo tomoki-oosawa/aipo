@@ -263,4 +263,12 @@ public class ScheduleScreenPrint extends ALVelocityScreen {
     return CONTENT_TYPE;
   }
 
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return ScheduleUtils.SCHEDULE_PORTLET_NAME;
+  }
+
 }

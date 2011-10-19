@@ -121,6 +121,10 @@ public class ScheduleUtils {
 
   public static final String FLAG_CHANGE_TURN_STR = "flagchangeturn";
 
+  public static final String SCHEDULE_PORTLET_NAME = "Schedule";
+
+  public static final String AJAX_SCHEDULE_PORTLET_NAME = "AjaxSchedule";
+
   /**
    * Scheudle オブジェクトモデルを取得します。
    * 
@@ -727,7 +731,7 @@ public class ScheduleUtils {
 
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       switch (dow) {
-        // 日
+      // 日
         case Calendar.SUNDAY:
           result = ptn.charAt(1) != '0';
           break;
@@ -1469,7 +1473,7 @@ public class ScheduleUtils {
         || tmpCurrentTab.equals("weekly")
         || tmpCurrentTab.equals("monthly")
         || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-        .equals("weekly-group"))) {
+          .equals("weekly-group"))) {
       currentTab = "calendar";
     } else {
       currentTab = tmpCurrentTab;

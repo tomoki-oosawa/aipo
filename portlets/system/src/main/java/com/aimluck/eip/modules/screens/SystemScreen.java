@@ -26,6 +26,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.system.SystemNetworkSelectData;
+import com.aimluck.eip.system.util.SystemUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -73,4 +74,11 @@ public class SystemScreen extends ALVelocityScreen {
     setTemplate(rundata, context, "portlets/html/ja/ajax-system.vm");
   }
 
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return SystemUtils.SYSTEM_PORTLET_NAME;
+  }
 }

@@ -57,6 +57,7 @@ import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.todo.util.ToDoUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -348,10 +349,12 @@ public class ScheduleMonthlySelectData extends
 
     // ToDo 表示設定
     viewTodo =
-      Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context)
-        .getPortletConfig()
-        .getInitParameter("p5a-view"));
+      !ALPortalApplicationService.isActive(ToDoUtils.TODO_PORTLET_NAME)
+        ? 0
+        : Integer.parseInt(ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p5a-view"));
 
     // アクセスコントロール
     int loginUserId = ALEipUtils.getUserId(rundata);

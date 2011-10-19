@@ -27,6 +27,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.system.SystemNetworkFormData;
 import com.aimluck.eip.system.SystemNetworkInternalFormData;
+import com.aimluck.eip.system.util.SystemUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -87,5 +88,13 @@ public class SystemNetworkFormScreen extends ALVelocityScreen {
         context,
         "portlets/html/ja/ajax-system-form-network-internal.vm");
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return SystemUtils.SYSTEM_PORTLET_NAME;
   }
 }
