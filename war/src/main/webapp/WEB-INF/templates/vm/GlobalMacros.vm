@@ -138,6 +138,10 @@
 <th class="wide">$text</th>
 #end
 
+#macro(ALtdheadW10 $text)
+<th class="w10">$text</th>
+#end
+
 #macro(ALtdheadW25 $text)
 <th class="w25">$text</th>
 #end
@@ -1552,6 +1556,7 @@ $item.get(0)
 #else
 #set($nextCount = $rowsNum)
 #end
+<div class="auiSummaryMeta clearfix">
 	<div class="floatRight">
 		<div class="count">$from ～ $to 件 / 計 $count 件</div>
 	#if ($pages > 1)
@@ -1571,6 +1576,7 @@ $item.get(0)
 	    </div>
 	#end
 	</div>
+</div>
 #end
 
 #macro(AUIwidgetMenuList $menues $active)

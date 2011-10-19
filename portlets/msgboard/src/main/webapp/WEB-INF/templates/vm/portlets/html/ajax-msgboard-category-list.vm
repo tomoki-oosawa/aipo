@@ -23,13 +23,16 @@
 #set ($submenulist = [["トピックを追加する","javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.msgboard.onLoadMsgboardDialog);","images/icon/icon_add.gif"], ["カテゴリを追加する","javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);","images/icon/icon_add.gif"]])
 #set ($tabs = [["カテゴリ一覧", "",""]])
 #set ($indicator_id = "indicator-list-")
+
+#set ($categoryList = $result.List)
+#set ($categoryEtc = true)
 ## ---------------------------------------------------------------------------
 #macro(MsgboardajaxbuttonCheckboxDelete $name $url $indicator_id $portlet_id $rt)
 <input name="ajaxbuttonCheckboxDelete" class="button" type="button" value="$name" onclick="aipo.msgboard.ajaxCheckboxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $rt);" />
 #end
 ## ---------------------------------------------------------------------------
-#ALsubmenubar($submenulist "")
-#ALajaxtabheader($tabs "")
+<div id="auiContentsArea">
+<div id="auiContentsAreaInner">
 #ALspacebothheader()
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
@@ -38,8 +41,13 @@
 <div class="message">複数のトピックをグループ化することで、トピックを分類することができます。</div>
 <div class="message">『カテゴリ追加』 ボタンを押して、追加してください。 </div>
 #else
-#ALajaxpageview('MsgboardCategoryListScreen' $result)
-#ALtableheaderWide()
+<div class="auiSummaryMeta clearfix">
+<div class="floatLeft">
+#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.msgboard.onListReceiveMessage")
+</div>
+#AUIajaxpageview('MsgboardCategoryListScreen' $result)
+</div>
+#AUIrowTableWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
 #ALtdheadWide("#ALajaxsort('category_name' 'カテゴリ名' $result 'MsgboardCategoryListScreen')")
@@ -48,13 +56,9 @@
 </tr>
 #foreach ($record in $result.List)
 <tr>
-#if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) || $!result.AuthorityDelete)
 #ALtdcellAtt("<input name='check$!record.CategoryId' type='checkbox' value='$!record.CategoryId'/>" 'align="center"')
-#else
-#ALtdcellAtt("<input type='checkbox' disabled='disabled'/>" 'align="center"')	
-#end
 #ALtdcellheader()
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardCategoryDetailScreen').addQueryData('entityid',$!record.CategoryId))');">$!record.CategoryName</a>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardCategoryDetailScreen").addQueryData("entityid",$record.CategoryId))');">$!record.CategoryName</a>
 #if(! ${record.isPublic()})
 <img src="images/msgboard/msgboard_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開">
 #end
@@ -67,13 +71,17 @@
 #ALtdcellfooter()
 </tr>
 #end
+#AUItablefooter()
 
-#ALtablefooter()
-#ALbuttonheaderRight()
-選択したカテゴリを #MsgboardajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.msgboard.onListReceiveMessage")<span class="caution">（カテゴリに含まれるトピックはすべて削除されます。）</span>
-#ALbuttonfooterRight()
-#ALajaxpageviewFooter('MsgboardCategoryListScreen' $result)
+<div class="auiSummaryMeta clearfix">
+<div class="floatLeft">
+#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.msgboard.onListReceiveMessage")
+</div>
+#AUIajaxpageview('MsgboardCategoryListScreen' $result)
+</div>
 #end
 #ALformfooter()
 #ALspacebothfooter()
-#ALtabfooter()
+</div>
+</div>
+#parse("/portlets/html/ja/msgboard-widgets.vm")

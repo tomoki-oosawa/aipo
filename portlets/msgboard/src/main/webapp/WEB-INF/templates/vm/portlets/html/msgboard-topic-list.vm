@@ -27,10 +27,10 @@
 //<![CDATA[
 
     ptConfig['$!portlet.ID'] = { group:"msgboard", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen"))', reloadFunction:aipo.reloadPage };
-    aipo.msgboard.menuSelected = 0;  
+    aipo.msgboard.menuSelected = 0;
 //]]>
 </script>
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
 #parse("/portlets/html/ja/ajax-msgboard-topic-list.vm")
 #ALcontentfooter()
-#parse("/portlets/html/ja/msgboard-menu.vm")
+##parse("/portlets/html/ja/msgboard-menu.vm")
