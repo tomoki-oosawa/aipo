@@ -78,4 +78,13 @@ public class WebMailScreen extends ALVelocityScreen {
       ALEipUtils.redirectDBError(rundata);
     }
   }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return WebMailUtils.WEBMAIL_PORTLET_NAME;
+  }
+
 }

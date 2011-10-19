@@ -26,6 +26,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.WebMailAdminSettingsFormData;
+import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
  * 管理者メール通知設定を処理するクラスです。 <br />
@@ -61,4 +62,11 @@ public class WebMailAdminSettingsFormScreen extends ALVelocityScreen {
     }
   }
 
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return WebMailUtils.WEBMAIL_ADMIN_PORTLET_NAME;
+  }
 }

@@ -26,6 +26,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.WebMailAccountFormData;
+import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
  * Webメールアカウントを処理するクラスです。 <br />
@@ -57,6 +58,14 @@ public class WebMailAccountFormScreen extends ALVelocityScreen {
       logger.error("[WebMailAccountFormScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return WebMailUtils.WEBMAIL_PORTLET_NAME;
   }
 
 }

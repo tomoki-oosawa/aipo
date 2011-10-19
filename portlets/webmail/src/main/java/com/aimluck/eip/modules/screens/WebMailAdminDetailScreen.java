@@ -26,6 +26,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.WebMailAccountSelectData;
+import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
  * 管理者用メールアカウントの詳細画面を処理するクラスです。 <br />
@@ -60,4 +61,13 @@ public class WebMailAdminDetailScreen extends ALVelocityScreen {
       ALEipUtils.redirectDBError(rundata);
     }
   }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return WebMailUtils.WEBMAIL_ADMIN_PORTLET_NAME;
+  }
+
 }

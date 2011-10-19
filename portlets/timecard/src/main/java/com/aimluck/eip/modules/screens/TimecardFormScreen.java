@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.timecard.TimecardFormData;
+import com.aimluck.eip.timecard.util.TimecardUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -57,5 +58,13 @@ public class TimecardFormScreen extends ALVelocityScreen {
     formData.doViewForm(this, rundata, context);
     String layout_template = "portlets/html/ja/ajax-timecard-form.vm";
     setTemplate(rundata, context, layout_template);
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return TimecardUtils.TIMECARD_PORTLET_NAME;
   }
 }

@@ -67,6 +67,11 @@ public class TimecardUtils {
   public static final String FOLDER_TMP_FOR_TIMECARD_FILES = JetspeedResources
     .getString("aipo.tmp.timecard.directory", "");
 
+  public static final String TIMECARD_PORTLET_NAME = "Timecard";
+
+  public static final String TIMECARD_SETTINGS_PORTLET_NAME =
+    "TimecardSettings";
+
   /**
    * Todo オブジェクトモデルを取得します。
    * 

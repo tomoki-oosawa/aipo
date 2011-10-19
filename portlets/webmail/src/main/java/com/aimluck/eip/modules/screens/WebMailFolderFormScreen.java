@@ -26,6 +26,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.WebMailFolderFormData;
+import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
  * ウェブメールのフォルダを処理するクラスです。 <br />
@@ -65,4 +66,11 @@ public class WebMailFolderFormScreen extends ALVelocityScreen {
     setTemplate(rundata, context, layout_template);
   }
 
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return WebMailUtils.WEBMAIL_PORTLET_NAME;
+  }
 }

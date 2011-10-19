@@ -58,4 +58,12 @@ public class WebMailAddressbookFormScreen extends ALVelocityScreen {
     }
   }
 
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return "AddressBook";
+  }
+
 }

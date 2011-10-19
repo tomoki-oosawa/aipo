@@ -26,6 +26,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.WebMailFilterSelectData;
+import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
  * Webメールアカウントの一覧を処理するクラスです。 <br />
@@ -34,9 +35,8 @@ import com.aimluck.eip.webmail.WebMailFilterSelectData;
 public class WebMailFilterListScreen extends ALVelocityScreen {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService
-      .getLogger(WebMailFilterListScreen.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WebMailFilterListScreen.class.getName());
 
   /**
    * 
@@ -64,4 +64,13 @@ public class WebMailFilterListScreen extends ALVelocityScreen {
       ALEipUtils.redirectDBError(rundata);
     }
   }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return WebMailUtils.WEBMAIL_PORTLET_NAME;
+  }
+
 }

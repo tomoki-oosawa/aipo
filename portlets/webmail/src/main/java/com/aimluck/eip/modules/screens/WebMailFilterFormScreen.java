@@ -26,6 +26,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.WebMailFilterFormData;
+import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
  * フィルタを処理するクラスです。 <br />
@@ -64,6 +65,14 @@ public class WebMailFilterFormScreen extends ALVelocityScreen {
 
     String layout_template = "portlets/html/ja/ajax-webmail-filter-form.vm";
     setTemplate(rundata, context, layout_template);
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return WebMailUtils.WEBMAIL_PORTLET_NAME;
   }
 
 }

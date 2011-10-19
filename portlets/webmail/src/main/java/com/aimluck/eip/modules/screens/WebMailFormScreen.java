@@ -26,6 +26,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.WebMailFormData;
+import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
  * Webメールのフォームデータを管理するためのクラスです。 <br />
@@ -55,4 +56,13 @@ public class WebMailFormScreen extends ALVelocityScreen {
       ALEipUtils.redirectDBError(rundata);
     }
   }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return WebMailUtils.WEBMAIL_PORTLET_NAME;
+  }
+
 }

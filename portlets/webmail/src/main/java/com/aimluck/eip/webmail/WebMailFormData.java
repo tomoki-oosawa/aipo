@@ -55,6 +55,7 @@ import com.aimluck.eip.mail.ALSmtpMailSender;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.util.WebMailUtils;
@@ -144,7 +145,7 @@ public class WebMailFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    */
   @Override
   public void initField() {
@@ -677,6 +678,10 @@ public class WebMailFormData extends ALAbstractFormData {
 
   public List<FileuploadLiteBean> getAttachmentFileNameList() {
     return fileuploadList;
+  }
+
+  public boolean hasAuthorityAddressBook() {
+    return ALPortalApplicationService.isActive("AddressBook");
   }
 
   public String getFolderName() {

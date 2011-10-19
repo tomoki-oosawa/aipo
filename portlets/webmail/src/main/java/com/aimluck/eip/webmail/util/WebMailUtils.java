@@ -97,6 +97,10 @@ public class WebMailUtils {
 
   public final static String FILTER_TYPE_TO = ALMailUtils.FILTER_TYPE_TO;
 
+  public static final String WEBMAIL_PORTLET_NAME = "WebMail";
+
+  public static final String WEBMAIL_ADMIN_PORTLET_NAME = "WebMailAdmin";
+
   public static final List<EipMMailAccount> getMailAccountNameList(int userId) {
     SelectQuery<EipMMailAccount> query = Database.query(EipMMailAccount.class);
 

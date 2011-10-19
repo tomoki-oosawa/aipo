@@ -28,6 +28,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.todo.ToDoSelectData;
 import com.aimluck.eip.todo.ToDoStateUpdateData;
+import com.aimluck.eip.todo.util.ToDoUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -84,4 +85,13 @@ public class ToDoScreen extends ALVelocityScreen {
     data.initField();
     data.doUpdate(this, rundata, context);
   }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return ToDoUtils.TODO_PORTLET_NAME;
+  }
+
 }

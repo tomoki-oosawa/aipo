@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.timecard.TimecardSelectData;
+import com.aimluck.eip.timecard.util.TimecardUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -60,4 +61,11 @@ public class TimecardScreen extends ALVelocityScreen {
     }
   }
 
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return TimecardUtils.TIMECARD_PORTLET_NAME;
+  }
 }

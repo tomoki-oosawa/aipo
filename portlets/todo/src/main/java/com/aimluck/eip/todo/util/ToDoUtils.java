@@ -73,6 +73,8 @@ public class ToDoUtils {
   /** 期限状態（期限後） */
   public static final int LIMIT_STATE_AFTER = 1;
 
+  public static final String TODO_PORTLET_NAME = "ToDo";
+
   /**
    * Todo オブジェクトモデルを取得します。 <BR>
    * 

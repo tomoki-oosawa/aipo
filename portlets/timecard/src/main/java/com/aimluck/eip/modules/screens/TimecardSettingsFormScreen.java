@@ -26,6 +26,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.timecard.TimecardSettingsFormData;
+import com.aimluck.eip.timecard.util.TimecardUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -63,4 +64,11 @@ public class TimecardSettingsFormScreen extends ALVelocityScreen {
     }
   }
 
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return TimecardUtils.TIMECARD_SETTINGS_PORTLET_NAME;
+  }
 }

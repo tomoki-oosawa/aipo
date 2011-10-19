@@ -49,7 +49,9 @@
 #ALtditemheader()
 #ALtextfield('to' $!result.To '60%' 512 'disable')
 ##ALbutton('addressbook' 'アドレス帳' 'open_addressbook()')
+#if($result.hasAuthorityAddressBook())
 <input type="button" onclick="aipo.webmail.showAddressbookDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAddressbookFormScreen"))', '$!portlet.ID', aipo.webmail.onLoadAddressbookDialog);" value="アドレス帳" class="button" name="open_addressbook"/>
+#end
 #ALtditemfooter()
 #ALtdcaption("$!result.getFieldName('cc')")
 #ALtditem("#ALtextfield('cc' $!result.Cc '60%' 512 'disable')")
