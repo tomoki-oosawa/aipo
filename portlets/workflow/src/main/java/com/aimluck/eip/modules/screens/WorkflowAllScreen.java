@@ -26,6 +26,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.workflow.WorkflowAllSelectData;
+import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフローの管理者用の一覧を処理するクラスです。 <br />
@@ -63,5 +64,13 @@ public class WorkflowAllScreen extends ALVelocityScreen {
       logger.error("[WorkflowAllScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return WorkflowUtils.WORKFLOW_PORTLET_NAME;
   }
 }

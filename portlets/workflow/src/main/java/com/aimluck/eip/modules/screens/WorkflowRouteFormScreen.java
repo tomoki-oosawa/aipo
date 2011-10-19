@@ -26,6 +26,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.workflow.WorkflowRouteFormData;
+import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフロー分類を処理するクラスです。 <br />
@@ -61,5 +62,13 @@ public class WorkflowRouteFormScreen extends ALVelocityScreen {
 
     String layout_template = "portlets/html/ja/ajax-workflow-route-form.vm";
     setTemplate(rundata, context, layout_template);
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return WorkflowUtils.WORKFLOW_PORTLET_NAME;
   }
 }

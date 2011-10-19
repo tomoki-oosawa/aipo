@@ -37,6 +37,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.whatsnew.WhatsNewSelectData;
+import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
  * 新着情報の一覧を処理するクラスです。 <br />
@@ -139,5 +140,13 @@ public class WhatsNewScreen extends ALVelocityScreen {
       logger.error(ex);
       return;
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return WhatsNewUtils.WHATSNEW_PORTLET_NAME;
   }
 }

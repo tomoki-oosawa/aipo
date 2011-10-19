@@ -26,6 +26,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.workflow.WorkflowRouteSelectData;
+import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフロー申請経路の一覧を処理するクラスです。 <br />
@@ -64,6 +65,14 @@ public class WorkflowRouteScreen extends ALVelocityScreen {
       logger.error("[WorkflowRouteScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return WorkflowUtils.WORKFLOW_PORTLET_NAME;
   }
 
 }

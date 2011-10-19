@@ -26,6 +26,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.workflow.WorkflowCategorySelectData;
+import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフロー分類の詳細画面を処理するクラスです。 <br />
@@ -57,6 +58,14 @@ public class WorkflowCategoryDetailScreen extends ALVelocityScreen {
       logger.error("[WorkflowCategoryDetailScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return WorkflowUtils.WORKFLOW_CATEGORY_PORTLET_NAME;
   }
 
 }

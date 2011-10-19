@@ -73,6 +73,8 @@ public class WhatsNewUtils {
   /** 個人宛新着情報フラグ */
   public static final int INDIVIDUAL_WHATS_NEW = -1;
 
+  public static final String WHATSNEW_PORTLET_NAME = "WhatsNew";
+
   /**
    * 新着情報追加(個別新着情報)
    * 

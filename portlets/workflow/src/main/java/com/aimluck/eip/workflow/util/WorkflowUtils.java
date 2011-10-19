@@ -145,6 +145,11 @@ public class WorkflowUtils {
     REQUEST, DENAIL, ACCEPT
   }
 
+  public static final String WORKFLOW_PORTLET_NAME = "Workflow";
+
+  public static final String WORKFLOW_CATEGORY_PORTLET_NAME =
+    "WorkflowCategory";
+
   /**
    * Request オブジェクトモデルを取得します。 <BR>
    * 
