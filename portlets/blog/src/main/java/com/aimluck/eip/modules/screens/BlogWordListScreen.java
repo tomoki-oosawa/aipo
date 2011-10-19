@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.blog.BlogWordSelectData;
+import com.aimluck.eip.blog.util.BlogUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -58,5 +59,13 @@ public class BlogWordListScreen extends ALVelocityScreen {
       logger.error("[BlogWordListScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return BlogUtils.BLOG_PORTLET_NAME;
   }
 }

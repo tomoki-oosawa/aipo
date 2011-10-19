@@ -89,6 +89,8 @@ public class CabinetUtils {
   /** 自分のみ閲覧／追加／編集／削除可 */
   public static final String PUBLIC_FLAG_SECRET_SELF = "O";
 
+  public static final String CABINET_PORTLET_NAME = "Cabinet";
+
   /**
    * フォルダオブジェクトモデルを取得します。 <BR>
    * 

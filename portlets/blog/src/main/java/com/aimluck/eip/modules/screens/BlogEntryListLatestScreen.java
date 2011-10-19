@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.blog.BlogEntryLatestSelectData;
+import com.aimluck.eip.blog.util.BlogUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -64,5 +65,13 @@ public class BlogEntryListLatestScreen extends ALVelocityScreen {
       logger.error("[BlogEntryListLatestScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return BlogUtils.BLOG_PORTLET_NAME;
   }
 }

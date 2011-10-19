@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cabinet.CabinetFileFormData;
+import com.aimluck.eip.cabinet.util.CabinetUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -61,5 +62,13 @@ public class CabinetFileFormScreen extends ALVelocityScreen {
 
     String layout_template = "portlets/html/ja/ajax-cabinet-file-form.vm";
     setTemplate(rundata, context, layout_template);
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return CabinetUtils.CABINET_PORTLET_NAME;
   }
 }

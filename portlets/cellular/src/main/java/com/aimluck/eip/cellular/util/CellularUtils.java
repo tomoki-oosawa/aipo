@@ -44,9 +44,12 @@ import com.aimluck.eip.util.ALServletUtils;
 /**
  */
 public class CellularUtils {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(CellularUtils.class.getName());
+
+  public static final String CABINET_PORTLET_NAME = "Cellular";
 
   /**
    * 

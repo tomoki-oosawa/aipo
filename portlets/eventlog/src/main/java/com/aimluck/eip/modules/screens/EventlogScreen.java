@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.eventlog.EventlogSelectData;
+import com.aimluck.eip.eventlog.util.EventlogUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -32,6 +33,7 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class EventlogScreen extends ALVelocityScreen {
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(EventlogScreen.class.getName());
@@ -61,4 +63,13 @@ public class EventlogScreen extends ALVelocityScreen {
       ALEipUtils.redirectDBError(rundata);
     }
   }
+
+  /*
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return EventlogUtils.EVENTLOG_PORTLET_NAME;
+  }
+
 }

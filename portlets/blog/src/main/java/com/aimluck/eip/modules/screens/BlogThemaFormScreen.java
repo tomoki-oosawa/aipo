@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.blog.BlogThemaFormData;
+import com.aimluck.eip.blog.util.BlogUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -61,5 +62,13 @@ public class BlogThemaFormScreen extends ALVelocityScreen {
 
     String layout_template = "portlets/html/ja/ajax-blog-thema-form.vm";
     setTemplate(rundata, context, layout_template);
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return BlogUtils.BLOG_PORTLET_NAME;
   }
 }

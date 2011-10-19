@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.eventlog.EventlogSelectData;
+import com.aimluck.eip.eventlog.util.EventlogUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -55,6 +56,14 @@ public class EventlogDetailScreen extends ALVelocityScreen {
       logger.error("[EventlogDetailScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return EventlogUtils.EVENTLOG_PORTLET_NAME;
   }
 
 }

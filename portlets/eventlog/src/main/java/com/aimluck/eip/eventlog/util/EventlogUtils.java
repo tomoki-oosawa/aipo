@@ -65,6 +65,8 @@ public class EventlogUtils {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(EventlogUtils.class.getName());
 
+  public static final String EVENTLOG_PORTLET_NAME = "Eventlog";
+
   /**
    * イベントログオブジェクトモデルを取得します。 <BR>
    * 

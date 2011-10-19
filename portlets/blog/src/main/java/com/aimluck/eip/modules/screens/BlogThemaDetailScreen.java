@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.blog.BlogThemaSelectData;
+import com.aimluck.eip.blog.util.BlogUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -57,4 +58,11 @@ public class BlogThemaDetailScreen extends ALVelocityScreen {
     }
   }
 
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return BlogUtils.BLOG_PORTLET_NAME;
+  }
 }

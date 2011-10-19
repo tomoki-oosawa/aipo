@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cellular.CellularFormData;
+import com.aimluck.eip.cellular.util.CellularUtils;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -75,6 +76,14 @@ public class CellularScreen extends ALVelocityScreen {
       logger.error("[CellularScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return CellularUtils.CABINET_PORTLET_NAME;
   }
 
 }

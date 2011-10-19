@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cabinet.CabinetSelectData;
+import com.aimluck.eip.cabinet.util.CabinetUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -56,6 +57,14 @@ public class CabinetFileDetailScreen extends ALVelocityScreen {
       logger.error("[CabinetFileDetailScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return CabinetUtils.CABINET_PORTLET_NAME;
   }
 
 }

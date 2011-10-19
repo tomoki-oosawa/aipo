@@ -107,6 +107,8 @@ public class BlogUtils {
   /** データベースに登録されたファイルを表す識別子 */
   public static final String PREFIX_DBFILE = "DBF";
 
+  public static final String BLOG_PORTLET_NAME = "Blog";
+
   /**
    * エントリーオブジェクトモデルを取得します。 <BR>
    * 

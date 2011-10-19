@@ -29,6 +29,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.blog.BlogEntryCommentFormData;
 import com.aimluck.eip.blog.BlogEntrySelectData;
+import com.aimluck.eip.blog.util.BlogUtils;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -110,4 +111,11 @@ public class BlogDetailScreen extends ALVelocityScreen {
       .put(ERROR_MESSAGE_LIST_ON_COMMENT_DETAIL, errmsgListOnCommentDetail);
   }
 
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return BlogUtils.BLOG_PORTLET_NAME;
+  }
 }
