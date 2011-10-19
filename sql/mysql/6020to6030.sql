@@ -12,6 +12,8 @@ UPDATE eip_t_acl_role SET acl_type = 31, note = '＊詳細表示、追加、削�
 -- modify table struct
 ALTER TABLE eip_t_todo_category ADD update_user_id INTEGER NOT NULL DEFAULT 0;
 UPDATE eip_t_todo_category SET update_user_id = user_id;
+ALTER TABLE eip_t_todo ADD create_user_id INTEGER NOT NULL DEFAULT 0;
+UPDATE eip_t_todo SET create_user_id = user_id;
 
 -- add new ACL setting
 INSERT INTO eip_t_acl_portlet_feature VALUES(null,'todo_category_other','ToDo（他ユーザのカテゴリ）操作',27);
