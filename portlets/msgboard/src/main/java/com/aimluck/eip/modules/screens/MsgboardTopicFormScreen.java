@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.msgboard.MsgboardTopicFormData;
+import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -65,4 +66,11 @@ public class MsgboardTopicFormScreen extends ALVelocityScreen {
     setTemplate(rundata, context, layout_template);
   }
 
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return MsgboardUtils.MSGBOARD_PORTLET_NAME;
+  }
 }

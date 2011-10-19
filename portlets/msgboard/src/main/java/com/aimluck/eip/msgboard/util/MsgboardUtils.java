@@ -115,6 +115,8 @@ public class MsgboardUtils {
   /** カテゴリの状態値（公開カテゴリ） */
   public static final String STAT_VALUE_ALL = "A";
 
+  public static final String MSGBOARD_PORTLET_NAME = "Msgboard";
+
   /**
    * トピックオブジェクトモデルを取得します。 <BR>
    * 

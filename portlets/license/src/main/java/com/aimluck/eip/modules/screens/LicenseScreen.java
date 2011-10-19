@@ -26,6 +26,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.license.LicenseSelectData;
+import com.aimluck.eip.license.util.LicenseUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -74,4 +75,11 @@ public class LicenseScreen extends ALVelocityScreen {
     setTemplate(rundata, context, "portlets/html/ja/ajax-license.vm");
   }
 
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return LicenseUtils.LICENSE_PORTLET_NAME;
+  }
 }

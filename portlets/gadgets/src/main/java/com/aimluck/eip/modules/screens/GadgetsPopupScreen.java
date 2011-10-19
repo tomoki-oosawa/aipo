@@ -32,6 +32,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.gadgets.util.GadgetsUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.services.social.ALContainerConfigService;
@@ -135,6 +136,14 @@ public class GadgetsPopupScreen extends ALVelocityScreen {
     String template = "portlets/html/ja/gadgets-popup.vm";
     setTemplate(rundata, context, template);
 
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return GadgetsUtils.GADGETS_PORTLET_NAME;
   }
 
 }

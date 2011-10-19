@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.memo.MemoSelectData;
+import com.aimluck.eip.memo.util.MemoUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -56,6 +57,14 @@ public class MemoDetailScreen extends ALVelocityScreen {
       logger.error("[MemoDetailScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return MemoUtils.MEMO_PORTLET_NAME;
   }
 
 }

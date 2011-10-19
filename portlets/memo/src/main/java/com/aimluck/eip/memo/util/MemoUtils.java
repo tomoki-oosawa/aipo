@@ -52,6 +52,8 @@ public class MemoUtils {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(MemoUtils.class.getName());
 
+  public static final String MEMO_PORTLET_NAME = "Memo";
+
   /**
    * Memo オブジェクトモデルを取得します。 <BR>
    * 

@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.manhour.ManHourSelectData;
+import com.aimluck.eip.manhour.util.ManHourUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -62,4 +63,13 @@ public class ManHourScreen extends ALVelocityScreen {
       ALEipUtils.redirectDBError(rundata);
     }
   }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return ManHourUtils.MANHOUR_PORTLET_NAME;
+  }
+
 }

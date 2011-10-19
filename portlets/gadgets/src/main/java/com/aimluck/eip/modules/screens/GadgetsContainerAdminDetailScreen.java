@@ -23,9 +23,10 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.gadgets.GadgetsContainerAdminSelectData;
+import com.aimluck.eip.gadgets.util.GadgetsUtils;
 
 /**
- * 
+ *
  */
 public class GadgetsContainerAdminDetailScreen extends ALVelocityScreen {
 
@@ -43,6 +44,14 @@ public class GadgetsContainerAdminDetailScreen extends ALVelocityScreen {
 
     String template = "portlets/html/ja/ajax-gadgets-container-admin.vm";
     setTemplate(rundata, context, template);
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return GadgetsUtils.GADGETS_CONTAINER_ADMIN_PORTLET_NAME;
   }
 
 }

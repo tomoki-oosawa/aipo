@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.msgboard.MsgboardCategorySelectData;
+import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -63,5 +64,13 @@ public class MsgboardCategoryListScreen extends ALVelocityScreen {
       logger.error("[MsgboardCategoryListScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return MsgboardUtils.MSGBOARD_PORTLET_NAME;
   }
 }

@@ -35,6 +35,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.msgboard.MsgboardTopicSelectData;
+import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
@@ -146,5 +147,13 @@ public class MsgboardTopicScreen extends ALVelocityScreen {
       logger.error(ex);
       return;
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return MsgboardUtils.MSGBOARD_PORTLET_NAME;
   }
 }

@@ -17,42 +17,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.aimluck.eip.license.util;
+package com.aimluck.eip.gadgets.util;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.turbine.util.RunData;
-import org.apache.velocity.context.Context;
-
-import com.aimluck.eip.cayenne.om.account.AipoLicense;
-import com.aimluck.eip.orm.Database;
 
 /**
- * ライセンス情報のユーティリティクラスです
+ *
  */
-public class LicenseUtils {
+public class GadgetsUtils {
 
   /** logger */
+  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(LicenseUtils.class.getName());
+    .getLogger(GadgetsUtils.class.getName());
 
-  public static final String LICENSE_PORTLET_NAME = "License";
+  public static final String GADGETS_PORTLET_NAME = "GadgetsTemplate";
 
-  /**
-   * AipoLicense オブジェクトモデルを取得します。
-   * 
-   * @param rundata
-   * @param context
-   * 
-   * @return
-   */
-  public static AipoLicense getAipoLicense(RunData rundata, Context context) {
+  public static final String GADGETS_CONTAINER_ADMIN_PORTLET_NAME =
+    "GadgetsContainerAdmin";
 
-    try {
-      return Database.query(AipoLicense.class).fetchSingle();
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
-      return null;
-    }
-  }
+  public static final String GADGETS_ADMIN_PORTLET_NAME = "GadgetsAdmin";
 }

@@ -29,6 +29,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.msgboard.MsgboardTopicReplyFormData;
 import com.aimluck.eip.msgboard.MsgboardTopicSelectData;
+import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -112,6 +113,14 @@ public class MsgboardTopicDetailScreen extends ALVelocityScreen {
   public void putDataOnTopicDetail(RunData rundata, Context context) {
     context.put(RESULT_ON_TOPIC_DETAIL, resultOnTopicDetail);
     context.put(ERROR_MESSAGE_LIST_ON_TOPIC_DETAIL, errmsgListOnTopicDetail);
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return MsgboardUtils.MSGBOARD_PORTLET_NAME;
   }
 
 }

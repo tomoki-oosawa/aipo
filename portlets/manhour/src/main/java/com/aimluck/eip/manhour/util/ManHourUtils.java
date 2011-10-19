@@ -43,6 +43,8 @@ public class ManHourUtils {
 
   public static final String VIEW_DATE_MONTH = "view_date_month";
 
+  public static final String MANHOUR_PORTLET_NAME = "ManHour";
+
   /**
    * 表示切り替えで指定した月を取得する．
    * 

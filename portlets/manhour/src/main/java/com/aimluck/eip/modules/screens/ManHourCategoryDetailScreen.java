@@ -26,6 +26,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.category.CommonCategorySelectData;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.manhour.util.ManHourUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -62,6 +63,14 @@ public class ManHourCategoryDetailScreen extends ALVelocityScreen {
       logger.error("[ManHourCategoryDetailScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return ManHourUtils.MANHOUR_PORTLET_NAME;
   }
 
 }

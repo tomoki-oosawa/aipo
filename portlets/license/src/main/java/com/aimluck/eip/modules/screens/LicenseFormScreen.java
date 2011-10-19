@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.license.LicenseFormData;
+import com.aimluck.eip.license.util.LicenseUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -67,5 +68,13 @@ public class LicenseFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
     setTemplate(rundata, context, "portlets/html/ja/ajax-license-form.vm");
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return LicenseUtils.LICENSE_PORTLET_NAME;
   }
 }

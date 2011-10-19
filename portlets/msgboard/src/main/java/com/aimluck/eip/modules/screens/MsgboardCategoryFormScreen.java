@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.msgboard.MsgboardCategoryFormData;
+import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -61,5 +62,13 @@ public class MsgboardCategoryFormScreen extends ALVelocityScreen {
 
     String layout_template = "portlets/html/ja/ajax-msgboard-category-form.vm";
     setTemplate(rundata, context, layout_template);
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return MsgboardUtils.MSGBOARD_PORTLET_NAME;
   }
 }

@@ -23,9 +23,10 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.gadgets.GadgetsContainerAdminFormData;
+import com.aimluck.eip.gadgets.util.GadgetsUtils;
 
 /**
- * 
+ *
  */
 public class GadgetsContainerAdminFormScreen extends ALVelocityScreen {
 
@@ -47,4 +48,11 @@ public class GadgetsContainerAdminFormScreen extends ALVelocityScreen {
     setTemplate(rundata, context, template);
   }
 
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return GadgetsUtils.GADGETS_CONTAINER_ADMIN_PORTLET_NAME;
+  }
 }
