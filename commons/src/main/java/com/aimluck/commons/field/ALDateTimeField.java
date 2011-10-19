@@ -44,6 +44,9 @@ public class ALDateTimeField extends ALAbstractField {
   /** 時刻を含む日付の表示フォーマット */
   public static final String DEFAULT_DATE_TIME_FORMAT = "yyyy/MM/dd HH:mm";
 
+  /** 時刻の表示フォーマット */
+  public static final String DEFAULT_TIME_FORMAT = "HH:mm";
+
   /** 日付の表示フォーマット */
   public static final String DEFAULT_DATE_FORMAT = "yyyy/MM/dd";
 
@@ -67,6 +70,9 @@ public class ALDateTimeField extends ALAbstractField {
 
   /** 分 */
   protected String minute = null;
+
+  /** 時刻(HH:mm) */
+  protected String time = null;
 
   /**
    * コンストラクタ
@@ -121,13 +127,15 @@ public class ALDateTimeField extends ALAbstractField {
       month = Integer.toString(calendar.get(Calendar.MONTH) + 1);
       day = Integer.toString(calendar.get(Calendar.DATE));
       hour = Integer.toString(calendar.get(Calendar.HOUR_OF_DAY));
-      minute = Integer.toString(calendar.get(Calendar.MINUTE));
+      time =
+        new SimpleDateFormat(DEFAULT_TIME_FORMAT).format(calendar.getTime());
     } catch (Throwable ex) {
       year = null;
       month = null;
       day = null;
       hour = null;
       minute = null;
+      time = null;
     }
   }
 
@@ -221,6 +229,16 @@ public class ALDateTimeField extends ALAbstractField {
   }
 
   /**
+   * 時刻の設定の有無を判別します。
+   * 
+   * @return true:設定されていない<BR>
+   *         false:設定されている
+   */
+  public boolean isNullTime() {
+    return isNullDateTime(time);
+  }
+
+  /**
    * 指定した文字列の値の有無を検証します。
    * 
    * @param str
@@ -249,6 +267,40 @@ public class ALDateTimeField extends ALAbstractField {
       return ALStringUtil.sanitizing(null);
     } else {
       return ALStringUtil.sanitizing(year);
+    }
+  }
+
+  /**
+   * 時刻を含む月日(MM/dd HH:mm)の文字列表現を取得します。
+   * 
+   * @return
+   */
+  public String toStringDateTime() {
+    String date_time;
+    try {
+      date_time =
+        new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT).format(calendar
+          .getTime());
+    } catch (Exception ex) {
+      date_time = null;
+    }
+    if (calendar == null || isNullDateTime(date_time)) {
+      return ALStringUtil.sanitizing(null);
+    } else {
+      return ALStringUtil.sanitizing(date_time);
+    }
+  }
+
+  /**
+   * 時刻(HH:mm)の文字列表現を取得します。
+   * 
+   * @return
+   */
+  public String toStringTime() {
+    if (calendar == null || isNullTime()) {
+      return ALStringUtil.sanitizing(null);
+    } else {
+      return ALStringUtil.sanitizing(time);
     }
   }
 
@@ -324,6 +376,24 @@ public class ALDateTimeField extends ALAbstractField {
    */
   public String getYear() {
     return toStringYear();
+  }
+
+  /**
+   * 時刻を含む月日(MM/dd HH:mm)の値を取得します。
+   * 
+   * @return
+   */
+  public String getDateTime() {
+    return toStringDateTime();
+  }
+
+  /**
+   * 時刻(HH:mm)の値を取得します。
+   * 
+   * @return
+   */
+  public String getTime() {
+    return toStringTime();
   }
 
   /**

@@ -63,6 +63,11 @@
   <tbody>
 #end
 
+#macro(ALtableheaderAtt $class)
+<table class="$class">
+  <tbody>
+#end
+
 #macro(ALtableheaderWide)
 <table class="listTable wide">
   <tbody>
@@ -287,6 +292,10 @@
 
 #macro(ALsubmit $name $value)
 <input name="$name" class="button" type="submit" value="$value" onclick="aimluck.io.setHiddenValue(this);" />
+#end
+
+#macro(ALsubmitJSAuiButton $name $value $js)
+<input name="$name" class="auiButton" type="submit" value="$value" onclick="aimluck.io.setHiddenValue(this);$js" />
 #end
 
 #macro(ALsubmitJS $name $value $js)
@@ -714,18 +723,19 @@ $item.get(0)
 
 #* C O N T E N T *#
 #macro(ALcontentheader $title $navigations)
-#if($!{navilist.size()}) #set($len = $navilist.size()) #else #set($len = 0)  #end
-#if($len > 0)
-                                                              <div class="navigation small">
-#set($index = 0)
-#foreach($nav in $navigations)
-#if($index <= 0)
-#if($nav.get(1) == "") $nav.get(0) #else <a class="small" href="$!utils.escapeXML($nav.get(1))">$nav.get(0)</a> #end
-#else #if($!navigations.size() == 2 || $nav.get(1) == "") ＞ $nav.get(0) #else  ＞ <a class="small" href="$!utils.escapeXML($nav.get(1))">$nav.get(0)</a> #end#end
-#set($index = $index + 1)
-#end
-                                                              </div>
-#end
+#* Breadcrumb lists are deleted here at 2011/10/20. Showing the lists again, remove the comment-out simbols. *#
+## #if($!{navilist.size()}) #set($len = $navilist.size()) #else #set($len = 0)  #end
+## #if($len > 0)
+##                                                               <div class="navigation small">
+## #set($index = 0)
+## #foreach($nav in $navigations)
+## #if($index <= 0)
+## #if($nav.get(1) == "") $nav.get(0) #else <a class="small" href="$!utils.escapeXML($nav.get(1))">$nav.get(0)</a> #end
+## #else #if($!navigations.size() == 2 || $nav.get(1) == "") ＞ $nav.get(0) #else  ＞ <a class="small" href="$!utils.escapeXML($nav.get(1))">$nav.get(0)</a> #end#end
+## #set($index = $index + 1)
+## #end
+##                                                               </div>
+## #end
                                                               <!-- PORTLET OUTER -->
                                                               <div class="roundTopBlock clearfix">
                                                                 <div class="roundRightBlock">
