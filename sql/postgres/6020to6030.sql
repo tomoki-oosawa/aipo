@@ -17,3 +17,14 @@ UPDATE EIP_T_TODO_CATEGORY SET UPDATE_USER_ID = USER_ID;
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(NEXTVAL('pk_eip_t_acl_portlet_feature'),'todo_category_other','ToDo（他ユーザのカテゴリ）操作',27);
 INSERT INTO EIP_T_ACL_ROLE VALUES(NEXTVAL('pk_eip_t_acl_role'), 'ToDo（他ユーザのカテゴリ）管理者', (SELECT FEATURE_ID from EIP_T_ACL_PORTLET_FEATURE WHERE FEATURE_NAME = 'todo_category_other' LIMIT 1),27,'＊詳細表示、編集、削除は一覧表示の権限を持っていないと使用できません');
 -- 20111019
+
+-- 20111021
+-- create table struct
+CREATE TABLE eip_m_inactive_application (
+    ID INTEGER NOT NULL,
+    NAME varchar(128) NULL,
+    PRIMARY KEY (ID)
+)
+;
+CREATE SEQUENCE pk_eip_m_inactive_application INCREMENT 20 START 200;
+-- 20111021

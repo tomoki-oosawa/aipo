@@ -1249,6 +1249,13 @@ CREATE TABLE EIP_M_FACILITY_GROUP_MAP
     PRIMARY KEY(ID)
 );
 
+CREATE TABLE eip_m_inactive_application (
+    ID INTEGER NOT NULL,
+    NAME varchar(128) NULL,
+    PRIMARY KEY (ID)
+)
+;
+
 -----------------------------------------------------------------------------
 -- CREATE SEQUENCE
 -----------------------------------------------------------------------------
@@ -1312,6 +1319,7 @@ CREATE SEQUENCE pk_turbine_user INCREMENT 20;
 CREATE SEQUENCE pk_turbine_user_group_role INCREMENT 20;
 CREATE SEQUENCE pk_eip_m_facility_group INCREMENT 20;
 CREATE SEQUENCE pk_eip_m_facility_group_map INCREMENT 20;
+CREATE SEQUENCE pk_eip_m_inactive_application INCREMENT 20 START 200;
 
 CREATE SEQUENCE pk_eip_m_config INCREMENT 20 START 200;
 CREATE SEQUENCE pk_jetspeed_group_profile INCREMENT 20 START 200;
