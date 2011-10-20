@@ -26,24 +26,22 @@
 <input class="text floatLeft" type="text" name="q$!{portlet.ID}" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.targetKeyword"/>
 <a class="auiButtonSearch floatLeft" onclick="aipo.todo.doKeywordSearch('$!jslink.getPortletById($!portlet.ID)', '$!{portlet.ID}');">検索</a>
 </form>
-#ALspacebothheader()
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader('ToDo')
 #if($result.List.size() == 0)
 <div class="message">指定された条件に該当するToDoはありません。</div>
 #else
-
 <div class="auiSummaryMeta clearfix">
-	<div class="floatLeft">#if($!result.currentTab == 'list')
-		#AUIajaxbuttonCheckboxAction('完了にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_complete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
-		#else
-		#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
-		#end
-	</div>
+<div class="floatLeft">#if($!result.currentTab == 'list')
+#AUIajaxbuttonCheckboxAction('完了にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_complete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
+#else
+#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
+#end
+</div>
 #AUIajaxpageview('ToDoListScreen' $result)
 </div>
-
+#AUIsearchresult($!result.targetKeyword)
 #AUIrowTableWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
@@ -99,7 +97,6 @@
 </tr>
 #end
 #AUItablefooter()
-
 <div class="auiSummaryMeta clearfix">
 	<div class="floatLeft">#if($!result.currentTab == 'list')
 		#AUIajaxbuttonCheckboxAction('完了にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_complete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
@@ -109,10 +106,8 @@
 	</div>
 #AUIajaxpageview('ToDoListScreen' $result)
 </div>
-
 #end
 #ALformfooter()
-#ALspacebothfooter()
 </div>
 </div>
 

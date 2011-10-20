@@ -30,7 +30,6 @@
 ## ---------------------------------------------------------------------------
 <!-- Start Contents Area -->
 <div id="auiContentsArea"><div id="auiContentsAreaInner">
-#ALspacebothheader()
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 
@@ -41,12 +40,13 @@
 <div class="auiSummaryMeta clearfix">
 <input class="text floatLeft" type="text" name="q" id="q" style="margin-right:5px;" #if ($!result.CurrentSearch) value="$!result.CurrentSearchWithSanitize" #end>
 <a class="auiButtonSearch floatLeft" onclick="aimluck.io.setHiddenValue(this);return aipo.msgboard.onChangeSearch('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID))','$!portlet.ID');">検索</a>
+#if($result.List && $result.List.size() > 0)
+#AUIajaxpageview('MsgboardTopicListScreen' $result)
+#end
 </div>
-
 #if(!$result.List || $result.List.size() == 0)
 <div class="message">指定された条件に該当するトピックはありません。</div>
 #else
-#AUIajaxpageview('MsgboardTopicListScreen' $result)
 #AUIrowTableWide()
 <tr>
 #ALtdhead("#ALajaxsort('topic_name' 'トピック名' $result 'MsgboardTopicListScreen')")
@@ -77,12 +77,12 @@ $!record.CategoryName
 </tr>
 #end
 #AUItablefooter()
+<div class="auiSummaryMeta clearfix">
 #AUIajaxpageview('MsgboardTopicListScreen' $result)
+</div>
 #end
 #ALformfooter()
-#ALspacebothfooter()
 </div></div>
-
 <!-- END Contents Area -->
 
 #parse("/portlets/html/ja/msgboard-widgets.vm")

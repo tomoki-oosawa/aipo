@@ -50,6 +50,24 @@ public class ToDoAction extends ALBaseAction {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ToDoAction.class.getName());
 
+  static final String LIST_FILTER_STR = new StringBuffer()
+    .append(ToDoSelectData.class.getName())
+    .append(ALEipConstants.LIST_FILTER)
+    .toString();
+
+  static final String LIST_FILTER_TYPE_STR = new StringBuffer()
+    .append(ToDoSelectData.class.getName())
+    .append(ALEipConstants.LIST_FILTER_TYPE)
+    .toString();
+
+  static final String LIST_SORT_STR = new StringBuffer().append(
+    ToDoSelectData.class.getName()).append(ALEipConstants.LIST_SORT).toString();
+
+  static final String LIST_SORT_TYPE_STR = new StringBuffer()
+    .append(ToDoSelectData.class.getName())
+    .append(ALEipConstants.LIST_SORT_TYPE)
+    .toString();
+
   /**
    * 通常表示の際の処理を記述します。 <BR>
    * 
@@ -66,14 +84,8 @@ public class ToDoAction extends ALBaseAction {
     clearToDoSession(rundata, context);
 
     // デフォルトカテゴリ設定の適用
-    String list_filter_str =
-      new StringBuffer().append(ToDoSelectData.class.getName()).append(
-        ALEipConstants.LIST_FILTER).toString();
-    String list_filter_type_str =
-      new StringBuffer().append(ToDoSelectData.class.getName()).append(
-        ALEipConstants.LIST_FILTER_TYPE).toString();
-    ALEipUtils.setTemp(rundata, context, list_filter_type_str, "category");
-    ALEipUtils.setTemp(rundata, context, list_filter_str, portlet
+    ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
+    ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, portlet
       .getPortletConfig()
       .getInitParameter("p1d-categories")
       .trim());
@@ -241,6 +253,15 @@ public class ToDoAction extends ALBaseAction {
     ToDoSelectData listData = new ToDoSelectData();
     listData.initField();
     listData.loadCategoryList(rundata);
+
+    // デフォルトのソートカラムを設定
+    ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, "end_date");
+    ALEipUtils.setTemp(
+      rundata,
+      context,
+      LIST_SORT_TYPE_STR,
+      ALEipConstants.LIST_SORT_TYPE_ASC);
+
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
