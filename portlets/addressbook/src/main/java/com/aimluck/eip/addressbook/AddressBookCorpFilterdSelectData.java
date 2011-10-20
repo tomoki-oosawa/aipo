@@ -47,26 +47,26 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレス帳ワード検索用データクラスです。(社内アドレス検索用)
- *
+ * 
  */
 public class AddressBookCorpFilterdSelectData extends
     AbstractAddressBookFilterdSelectData<TurbineUser, ALBaseUser> {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AddressBookFilterdSelectData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AddressBookFilterdSelectData.class.getName());
 
   /** マイグループリスト */
   private List<ALEipGroup> myGroupList = null;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -85,7 +85,7 @@ public class AddressBookCorpFilterdSelectData extends
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -105,7 +105,7 @@ public class AddressBookCorpFilterdSelectData extends
 
   /**
    * アドレス情報の一覧を、グループ・一覧・社員単位で表示する。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -127,7 +127,7 @@ public class AddressBookCorpFilterdSelectData extends
 
   /**
    * アドレス帳の詳細情報を表示します。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -150,7 +150,7 @@ public class AddressBookCorpFilterdSelectData extends
   }
 
   /**
-   *
+   * 
    * @param obj
    * @return
    */
@@ -166,7 +166,7 @@ public class AddressBookCorpFilterdSelectData extends
 
   /**
    * 詳細情報の返却データ取得。
-   *
+   * 
    * @param obj
    * @return
    */
@@ -209,7 +209,7 @@ public class AddressBookCorpFilterdSelectData extends
   }
 
   /**
-   *
+   * 
    * @return
    */
   @Override
@@ -226,7 +226,7 @@ public class AddressBookCorpFilterdSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -254,7 +254,7 @@ public class AddressBookCorpFilterdSelectData extends
 
   /**
    * インデックス検索のためのカラムを返します。
-   *
+   * 
    * @return
    */
   @Override
@@ -263,7 +263,7 @@ public class AddressBookCorpFilterdSelectData extends
   }
 
   /**
-   *
+   * 
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -271,10 +271,20 @@ public class AddressBookCorpFilterdSelectData extends
   }
 
   /**
-   *
+   * 
    * @return
    */
   public List<ALEipGroup> getMyGroupList() {
     return myGroupList;
+  }
+
+  /**
+   * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
+   * 
+   * @return
+   */
+  @Override
+  public String getAclPortletFeature() {
+    return ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_ADDRESS_INSIDE;
   }
 }

@@ -43,6 +43,7 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -331,5 +332,15 @@ public class AddressBookFilterdSelectData extends
     } catch (Exception ex) {
       logger.error("Exception", ex);
     }
+  }
+
+  /**
+   * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
+   * 
+   * @return
+   */
+  @Override
+  public String getAclPortletFeature() {
+    return ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_ADDRESS_OUTSIDE;
   }
 }
