@@ -2346,6 +2346,11 @@ div.calerndarTodoDiv a:hover {
 	text-decoration:none;
 	padding:0;
 }
+
+span span {
+	line-height:1.6em;
+}
+
 div.color0 {
 	border-color:#039;
 }
@@ -2538,22 +2543,22 @@ div.termColor9 {
 }
 
 div.color10 {
-	border-color:#000080;
+	border-color:#000060;
 }
 div.color10 div.scheduleDivFirstLine {
-	background-color:#000080;
-	border-color:#000080;
+	background-color:#000060;
+	border-color:#000060;
 }
 div.color10 div.scheduleDivLastLine div.handleDiv {
-	background-color:#000080;
+	background-color:#000060;
 }
 span.color10 {
-	background-color:#000080;
+	background-color:#000060;
 	color:#FFF;
 	padding:1px 3px;
 }
 div.termColor10 {
-	background-color:#000080!important;
+	background-color:#000060!important;
 	color:#FFF;
 }
 
@@ -3374,16 +3379,16 @@ float:left;
 	cursor:pointer;
 	border:solid 1px #ccc;
 	border-radius:2px;
-	background:#f8f8f8;
-	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#f8f8f8));/*Ch*/
-	background: -moz-linear-gradient(top, #fff, #f8f8f8);/*Fx*/
+	background:#f0f0f0;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#f0f0f0));/*Ch*/
+	background: -moz-linear-gradient(top, #fff, #f0f0f0);/*Fx*/
 }
 .auiButton:hover,
 .auiButtonSmall:hover {
 	color:#000;
 	border:solid 1px #999;
 	box-shadow:0 1px 1px rgba(0,0,0,0.2);
-	background:#eee;
+	background:#e0e0e0;
 	background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#e1e1e1));/*Ch*/
 	background: -moz-linear-gradient(top, #eee, #e1e1e1);/*Fx*/
 }
@@ -3391,7 +3396,7 @@ float:left;
 .auiButtonSmall:active {
 	border:solid 1px #999;
 	box-shadow:0 1px 1px rgba(0,0,0,0);
-	background:#eee;
+	background:#e0e0e0;
 	background: -webkit-gradient(linear, left top, left bottom, from(#e1e1e1), to(#eee));/*Ch*/
 	background: -moz-linear-gradient(top, #e1e1e1, #eee);/*Fx*/
 }
@@ -3474,7 +3479,6 @@ float:left;
 .auiSearch input.date {
 	width:7em;
 }
-
 .auiButtonSearch {
 	display:inline-block;
 	line-height:2.2em;
@@ -3506,11 +3510,14 @@ float:left;
 	background: -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#eee));/*Ch*/
 	background: -moz-linear-gradient(top, #d0d0d0, #eee);/*Fx*/
 }
-
 .auiSearchOption {
 	float:left;
 	position:relative;
 	line-height:28px;
+}
+.auiSearchResult {
+	clear:both;
+	font-weight:bold;
 }
 
 /* auiSummaryMeta ********************/
@@ -3775,6 +3782,23 @@ table.auiCalendar td:hover {
 }
 .dojoDndItem .entryFooter {
 	font-size:8pt;
+}
+
+/* auiMail ********************/
+.auiMailSummaryExcerpt {
+	color:#999;
+}
+
+/* auiForm ********************/
+.auiForm {
+	margin:0;
+	padding:0;
+}
+.auiForm select {
+	height:2.1em;
+	padding:0.25em;
+	border:solid 1px #ccc;
+	border-radius:2px;
 }
 
 /* auiAbsLayer ********************/
