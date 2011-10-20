@@ -312,6 +312,8 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
       rd.setPriorityString(ToDoUtils.getPriorityString(record
         .getPriority()
         .intValue()));
+      rd.setUpdateDate(ALDateUtil
+        .format(record.getUpdateDate(), "yyyy年M月d日（E）"));
 
       // 公開/非公開を設定する．
       rd.setPublicFlag("T".equals(record.getPublicFlag()));

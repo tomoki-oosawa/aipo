@@ -26,21 +26,31 @@ import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.jetspeed.om.security.UserIdPrincipal;
+import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodoCategory;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.Operations;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.services.social.ALActivityService;
+import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.todo.ToDoCategoryResultData;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -537,5 +547,134 @@ public class ToDoUtils {
       logger.error("Exception", ex);
     }
     return categoryList;
+  }
+
+  /**
+   * ToDo を作成・更新した通知を送信します。
+   * 
+   * @param schedule
+   * @param loginName
+   * @param recipients
+   * @param isNew
+   */
+  public static void createToDoActivity(EipTTodo todo, String loginName,
+      List<String> recipients, boolean isNew) {
+    String title =
+      new StringBuilder("ToDo「").append(
+        ALCommonUtils.compressString(todo.getTodoName(), 30)).append(
+        isNew ? "」を追加しました。" : "」を編集しました。").toString();
+    String portletParams =
+      new StringBuilder("?template=ToDoDetailScreen")
+        .append("&entityid=")
+        .append(todo.getTodoId())
+        .toString();
+    if (recipients != null && recipients.size() > 0) {
+      // 個人向け通知
+      ALActivityService.create(new ALActivityPutRequest()
+        .withAppId("todo")
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withRecipients(recipients)
+        .withTile(title)
+        .witchPriority(1f)
+        .withExternalId(String.valueOf(todo.getTodoId())));
+    }
+    if (todo.getPublicFlag().equals("T")) {
+      // 全体向けアクティビティー
+      ALActivityService.create(new ALActivityPutRequest()
+        .withAppId("todo")
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withTile(title)
+        .witchPriority(0f)
+        .withExternalId(String.valueOf(todo.getTodoId())));
+    }
+  }
+
+  /**
+   * パソコンへ送信するメールの内容を作成する．
+   * 
+   * @return
+   * @throws ALDBErrorException
+   */
+  public static String createMsgForPc(RunData rundata, EipTTodo todo,
+      List<ALEipUser> memberList, boolean isNew) throws ALDBErrorException {
+    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
+    ALEipUser loginUser = null;
+    ALBaseUser user = null;
+
+    try {
+      loginUser = ALEipUtils.getALEipUser(rundata);
+      user =
+        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(loginUser
+          .getUserId()
+          .toString()));
+    } catch (Exception e) {
+      return "";
+    }
+    String CR = System.getProperty("line.separator");
+    StringBuffer body = new StringBuffer("");
+    body.append(loginUser.getAliasName().toString());
+    if (!"".equals(user.getEmail())) {
+      body.append("(").append(user.getEmail()).append(")");
+    }
+    if (isNew) {
+      body.append("さんがToDoを追加しました。").append(CR).append(CR);
+    } else {
+      body.append("さんがToDoを編集しました。").append(CR).append(CR);
+    }
+    body
+      .append("[ToDo詳細]")
+      .append(CR)
+      .append(todo.getTodoName().toString())
+      .append(CR);
+
+    body
+      .append("[担当者]")
+      .append(CR)
+      .append(
+        ALEipUtils
+          .getALEipUser(todo.getTurbineUser().getUserId())
+          .getAliasName())
+      .append(CR);
+
+    if (!isEmptyDate(todo.getStartDate())) {
+      body.append("[開始日] ").append(CR).append(
+        ALDateUtil.format(todo.getStartDate(), "yyyy年M月d日（E）")).append(CR);
+    }
+    if (!isEmptyDate(todo.getEndDate())) {
+      body.append("[締め切り日] ").append(CR).append(
+        ALDateUtil.format(todo.getEndDate(), "yyyy年M月d日（E）")).append(CR);
+    }
+
+    body.append("[進捗]").append(CR).append(todo.getState().toString()).append(
+      "%").append(CR);
+
+    body.append("[優先度]").append(CR).append(
+      ToDoUtils.getPriorityString(todo.getPriority())).append(CR);
+
+    if (todo.getNote().toString().length() > 0) {
+      body.append("[メモ]").append(CR).append(todo.getNote().toString()).append(
+        CR);
+    }
+    body.append(CR);
+    body
+      .append("[")
+      .append(ALOrgUtilsService.getAlias())
+      .append("へのアクセス]")
+      .append(CR);
+    if (enableAsp) {
+      body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
+    } else {
+      body.append("・社外").append(CR);
+      body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
+      body.append("・社内").append(CR);
+      body.append("　").append(ALMailUtils.getLocalurl()).append(CR).append(CR);
+    }
+
+    body.append("---------------------").append(CR);
+    body.append(ALOrgUtilsService.getAlias()).append(CR);
+
+    return body.toString();
   }
 }

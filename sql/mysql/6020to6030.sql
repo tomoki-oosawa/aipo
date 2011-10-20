@@ -26,3 +26,7 @@ CREATE TABLE `eip_m_inactive_application` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 -- 20111021
+
+-- 20111021
+INSERT INTO eip_m_mail_notify_conf VALUES(null,1,25,3,NULL,now(),now());
+-- 20111021

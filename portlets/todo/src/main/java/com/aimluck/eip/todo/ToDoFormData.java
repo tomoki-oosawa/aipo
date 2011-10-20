@@ -45,9 +45,15 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.eventlog.action.ALActionEventlogConstants;
+import com.aimluck.eip.mail.ALAdminMailContext;
+import com.aimluck.eip.mail.ALAdminMailMessage;
+import com.aimluck.eip.mail.ALMailService;
+import com.aimluck.eip.mail.util.ALEipUserAddr;
+import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -55,6 +61,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.todo.util.ToDoUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -525,6 +532,63 @@ public class ToDoFormData extends ALAbstractFormData {
           category_name.getValue());
       }
 
+      // アクティビティの送信
+      String loginName = ALEipUtils.getLoginName(rundata);
+      List<String> recipients = new ArrayList<String>();
+      if (aclPortletFeature
+        .equals(ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER)) {
+        // 個人向け通知の宛先登録
+        recipients.add(todo.getTurbineUser().getLoginName());
+      }
+      ToDoUtils.createToDoActivity(todo, loginName, recipients, true);
+
+      // メール送信
+      if (aclPortletFeature
+        .equals(ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER)) {
+        try {
+          List<ALEipUser> memberList = new ArrayList<ALEipUser>();
+          memberList.add(ALEipUtils.getALEipUser(todo.getUserId()));
+          int msgType =
+            ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_TODO);
+          if (msgType > 0) {
+            // パソコンへメールを送信
+            List<ALEipUserAddr> destMemberList =
+              ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
+                .getUserId(rundata), false);
+            String subject = "[" + ALOrgUtilsService.getAlias() + "]ToDo";
+            String orgId = Database.getDomainName();
+
+            List<ALAdminMailMessage> messageList =
+              new ArrayList<ALAdminMailMessage>();
+            for (ALEipUserAddr destMember : destMemberList) {
+              ALAdminMailMessage message = new ALAdminMailMessage(destMember);
+              message.setPcSubject(subject);
+              message.setCellularSubject(subject);
+              message.setPcBody(ToDoUtils.createMsgForPc(
+                rundata,
+                todo,
+                memberList,
+                false));
+              message.setCellularBody(ToDoUtils.createMsgForPc(
+                rundata,
+                todo,
+                memberList,
+                false));
+              messageList.add(message);
+            }
+            ALMailService.sendAdminMail(new ALAdminMailContext(
+              orgId,
+              ALEipUtils.getUserId(rundata),
+              messageList,
+              ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_TODO)));
+          }
+        } catch (Exception ex) {
+          msgList.add("メールを送信できませんでした。");
+          logger.error("Exception", ex);
+          return false;
+        }
+      }
+
     } catch (Throwable t) {
       Database.rollback();
       logger.error(t);
@@ -659,11 +723,69 @@ public class ToDoFormData extends ALAbstractFormData {
           ALActionEventlogConstants.EVENT_MODE_INSERT);
       }
 
+      // アクティビティの送信
+      String loginName = ALEipUtils.getLoginName(rundata);
+      List<String> recipients = new ArrayList<String>();
+      if (aclPortletFeature
+        .equals(ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER)) {
+        // 個人向け通知の宛先登録
+        recipients.add(todo.getTurbineUser().getLoginName());
+      }
+      ToDoUtils.createToDoActivity(todo, loginName, recipients, false);
+
+      // メール送信
+      if (aclPortletFeature
+        .equals(ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER)) {
+        try {
+          List<ALEipUser> memberList = new ArrayList<ALEipUser>();
+          memberList.add(ALEipUtils.getALEipUser(todo.getUserId()));
+          int msgType =
+            ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_TODO);
+          if (msgType > 0) {
+            // パソコンへメールを送信
+            List<ALEipUserAddr> destMemberList =
+              ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
+                .getUserId(rundata), false);
+            String subject = "[" + ALOrgUtilsService.getAlias() + "]ToDo";
+            String orgId = Database.getDomainName();
+
+            List<ALAdminMailMessage> messageList =
+              new ArrayList<ALAdminMailMessage>();
+            for (ALEipUserAddr destMember : destMemberList) {
+              ALAdminMailMessage message = new ALAdminMailMessage(destMember);
+              message.setPcSubject(subject);
+              message.setCellularSubject(subject);
+              message.setPcBody(ToDoUtils.createMsgForPc(
+                rundata,
+                todo,
+                memberList,
+                false));
+              message.setCellularBody(ToDoUtils.createMsgForPc(
+                rundata,
+                todo,
+                memberList,
+                false));
+              messageList.add(message);
+            }
+            ALMailService.sendAdminMail(new ALAdminMailContext(
+              orgId,
+              ALEipUtils.getUserId(rundata),
+              messageList,
+              ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_TODO)));
+          }
+        } catch (Exception ex) {
+          msgList.add("メールを送信できませんでした。");
+          logger.error("Exception", ex);
+          return false;
+        }
+      }
+
     } catch (Throwable t) {
       Database.rollback();
       logger.error(t);
       return false;
     }
+
     return true;
   }
 
