@@ -47,7 +47,7 @@
 
 #ALtdcellheaderAtt("nowrap='nowrap' class='w25 center'")
 #if ($!{result.Detail} && !($!{result.Detail.IsNullClockOutTime}))
-退勤<br />$!{result.Detail.ClockInTime.Time}
+退勤<br />$!{result.Detail.ClockOutTime.Time}
 #else
 #ALsubmitJSAuiButton('punchout' '退勤' "aipo.exttimecard.addHiddenValue(this.form, 'mode', 'punchout')")
 #end
@@ -60,7 +60,7 @@
 #if (!$!{result.Detail.OutgoingTime} )
 不整合
 #else
-外出<br />$!{result.Detail.ClockInTime.Time}
+外出<br />$!{result.Detail.OutgoingTime.Time}
 #end
 #else
 #ALsubmitJSAuiButton('outgoing' '外出' "aipo.exttimecard.addHiddenValue(this.form, 'mode', 'outgoing')")
