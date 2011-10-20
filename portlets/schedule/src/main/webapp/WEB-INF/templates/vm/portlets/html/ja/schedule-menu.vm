@@ -27,8 +27,6 @@ dojo.addOnLoad(function () {
 
     var subMenu =
 		[
-		    {   caption: "予定一覧を見る", iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')"    },
-		    {   caption: "予定を追加する", iconClass: "menuBarIconAdd", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.schedule.onLoadScheduleDialog);"    }
 		];
 
     var menubar = new aimluck.widget.Menubar({id: "mbar", items: subMenu}, "portletMenu");
