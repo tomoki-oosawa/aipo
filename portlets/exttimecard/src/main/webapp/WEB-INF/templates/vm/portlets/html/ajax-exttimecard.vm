@@ -23,7 +23,7 @@
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="exttimecardmessageDiv"></div>
 #ALajaxscreenformheader("exttimecardForm" $jslink $portlet "ExtTimecardFormJSONScreen" "aimluck.io.submit(this, '${indicator_id}','$!portlet.ID',aipo.exttimecard.onListReceiveMessage)")
-#ALtableheaderAtt("auiGridTable wide")
+#ALtableheaderAtt("wide")
 <tr>
 #ALtdcellheaderAtt("nowrap='nowrap' class='w25 center'")
 
