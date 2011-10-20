@@ -127,6 +127,7 @@ public class ALDateTimeField extends ALAbstractField {
       month = Integer.toString(calendar.get(Calendar.MONTH) + 1);
       day = Integer.toString(calendar.get(Calendar.DATE));
       hour = Integer.toString(calendar.get(Calendar.HOUR_OF_DAY));
+      minute = Integer.toString(calendar.get(Calendar.MINUTE));
       time =
         new SimpleDateFormat(DEFAULT_TIME_FORMAT).format(calendar.getTime());
     } catch (Throwable ex) {
