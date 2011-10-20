@@ -160,8 +160,8 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
    * @param rundata
    * @param context
    */
-  public void loadCategoryList(RunData rundata, Context context) {
-    categoryList = ToDoUtils.getCategoryList(rundata, context);
+  public void loadCategoryList(RunData rundata) {
+    categoryList = ToDoUtils.getCategoryList(rundata);
   }
 
   /**
@@ -296,10 +296,11 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
         record.getTodoName(),
         getStrLength()));
       if (!ToDoUtils.isEmptyDate(record.getStartDate())) {
-        rd.setStartDate(ALDateUtil.format(record.getStartDate(), "yyyy年M月d日"));
+        rd.setStartDate(ALDateUtil
+          .format(record.getStartDate(), "yyyy年M月d日（E）"));
       }
       if (!ToDoUtils.isEmptyDate(record.getEndDate())) {
-        rd.setEndDate(ALDateUtil.format(record.getEndDate(), "yyyy年M月d日"));
+        rd.setEndDate(ALDateUtil.format(record.getEndDate(), "yyyy年M月d日（E）"));
       }
       rd.setState(record.getState().intValue());
       rd.setStateImage(ToDoUtils.getStateImage(record.getState().intValue()));
@@ -384,10 +385,11 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
         .getAliasName()
         .getValue());
       if (!ToDoUtils.isEmptyDate(record.getStartDate())) {
-        rd.setStartDate(ALDateUtil.format(record.getStartDate(), "yyyy年M月d日"));
+        rd.setStartDate(ALDateUtil
+          .format(record.getStartDate(), "yyyy年M月d日（E）"));
       }
       if (!ToDoUtils.isEmptyDate(record.getEndDate())) {
-        rd.setEndDate(ALDateUtil.format(record.getEndDate(), "yyyy年M月d日"));
+        rd.setEndDate(ALDateUtil.format(record.getEndDate(), "yyyy年M月d日（E）"));
       }
       rd.setStateString(ToDoUtils.getStateString(record.getState().intValue()));
       rd.setPriorityString(ToDoUtils.getPriorityString(record
@@ -401,8 +403,10 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
       // 公開/非公開を設定する．
       rd.setPublicFlag("T".equals(record.getPublicFlag()));
       rd.setAddonScheduleFlg("T".equals(record.getAddonScheduleFlg()));
-      rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
-      rd.setUpdateDate(ALDateUtil.format(record.getUpdateDate(), "yyyy年M月d日"));
+      rd.setCreateDate(ALDateUtil
+        .format(record.getCreateDate(), "yyyy年M月d日（E）"));
+      rd.setUpdateDate(ALDateUtil
+        .format(record.getUpdateDate(), "yyyy年M月d日（E）"));
 
       // 自身のToDoかを設定する
       rd.setIsSelfTodo(record.getUserId() == login_user_id);

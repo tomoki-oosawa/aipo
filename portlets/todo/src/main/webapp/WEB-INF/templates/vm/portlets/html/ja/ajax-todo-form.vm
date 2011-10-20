@@ -65,7 +65,7 @@
 #ALtditemheader()
 #set($screenlink = "$jslink.getPortletById($!portlet.ID).addPathInfo('template','UserLiteJSONScreen')")
 <select name="target_group_name" id="target_group_name" style="width:49%;float:left;" onchange="aipo.todo.changeGroup('$screenlink', this.options[this.selectedIndex].value, '')">
-<option value="LoginUser">（グループ全体）</option>
+<option value="LoginUser">すべてのグループ</option>
 #foreach( $record in $!result.MyGroupList )
 <option value="$!{record.Name.toString()}" #if($!result.TargetGroupName == $!record.Name.toString()) selected #set($groupName = $!record.Name) #end>$!record.AliasName</option>
 #end

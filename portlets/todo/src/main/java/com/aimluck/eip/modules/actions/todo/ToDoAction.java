@@ -65,13 +65,26 @@ public class ToDoAction extends ALBaseAction {
     // セッション情報のクリア
     clearToDoSession(rundata, context);
 
+    // デフォルトカテゴリ設定の適用
+    String list_filter_str =
+      new StringBuffer().append(ToDoSelectData.class.getName()).append(
+        ALEipConstants.LIST_FILTER).toString();
+    String list_filter_type_str =
+      new StringBuffer().append(ToDoSelectData.class.getName()).append(
+        ALEipConstants.LIST_FILTER_TYPE).toString();
+    ALEipUtils.setTemp(rundata, context, list_filter_type_str, "category");
+    ALEipUtils.setTemp(rundata, context, list_filter_str, portlet
+      .getPortletConfig()
+      .getInitParameter("p1d-categories")
+      .trim());
+
     ToDoSelectData listData = new ToDoSelectData();
     listData.initField();
     listData.setRowsNum(Integer.parseInt(portlet
       .getPortletConfig()
       .getInitParameter("p1a-rows")));
     listData.setStrLength(0);
-    listData.loadCategoryList(rundata, context);
+    listData.loadCategoryList(rundata);
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "todo");
   }
@@ -117,7 +130,7 @@ public class ToDoAction extends ALBaseAction {
   public void doTodo_form(RunData rundata, Context context) throws Exception {
     ToDoFormData formData = new ToDoFormData();
     formData.initField();
-    formData.loadCategoryList(rundata, context);
+    formData.loadCategoryList(rundata);
     formData.doViewForm(this, rundata, context);
     setTemplate(rundata, "todo-form");
 
@@ -133,7 +146,7 @@ public class ToDoAction extends ALBaseAction {
   public void doTodo_insert(RunData rundata, Context context) throws Exception {
     ToDoFormData formData = new ToDoFormData();
     formData.initField();
-    formData.loadCategoryList(rundata, context);
+    formData.loadCategoryList(rundata);
     if (formData.doInsert(this, rundata, context)) {
       // データ登録が成功したとき
       doTodo_list(rundata, context);
@@ -160,7 +173,7 @@ public class ToDoAction extends ALBaseAction {
   public void doTodo_update(RunData rundata, Context context) throws Exception {
     ToDoFormData formData = new ToDoFormData();
     formData.initField();
-    formData.loadCategoryList(rundata, context);
+    formData.loadCategoryList(rundata);
     if (formData.doUpdate(this, rundata, context)) {
       // データ更新が成功したとき
       doTodo_list(rundata, context);
@@ -227,7 +240,7 @@ public class ToDoAction extends ALBaseAction {
   public void doTodo_list(RunData rundata, Context context) throws Exception {
     ToDoSelectData listData = new ToDoSelectData();
     listData.initField();
-    listData.loadCategoryList(rundata, context);
+    listData.loadCategoryList(rundata);
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
@@ -235,7 +248,7 @@ public class ToDoAction extends ALBaseAction {
       .getPortletConfig()
       .getInitParameter("p1b-rows")));
     listData.setStrLength(0);
-    listData.loadCategoryList(rundata, context);
+    listData.loadCategoryList(rundata);
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "todo-list");
   }
@@ -398,7 +411,7 @@ public class ToDoAction extends ALBaseAction {
       listData.setRowsNum(Integer.parseInt(portlet
         .getPortletConfig()
         .getInitParameter("p1c-rows")));
-      listData.loadCategoryList(rundata, context);
+      listData.loadCategoryList(rundata);
       listData.doViewList(this, rundata, context);
       setTemplate(rundata, "todo-category-list");
     } catch (Exception e) {

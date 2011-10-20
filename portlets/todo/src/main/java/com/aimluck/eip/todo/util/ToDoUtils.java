@@ -39,6 +39,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.todo.ToDoCategoryResultData;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -494,13 +495,23 @@ public class ToDoUtils {
    * プルダウン用のカテゴリーリストを返します
    * 
    * @param rundata
-   * @param context
    * @return
    */
   public static ArrayList<ToDoCategoryResultData> getCategoryList(
-      RunData rundata, Context context) {
+      RunData rundata) {
     ArrayList<ToDoCategoryResultData> categoryList =
       new ArrayList<ToDoCategoryResultData>();
+
+    // 未分類追加
+    EipTTodoCategory unCategorized =
+      Database.query(EipTTodoCategory.class).where(
+        Operations.eq(EipTTodoCategory.TURBINE_USER_PROPERTY, 0)).fetchSingle();
+    ToDoCategoryResultData rd = new ToDoCategoryResultData();
+    rd.initField();
+    rd.setCategoryId(unCategorized.getCategoryId());
+    rd.setCategoryName(unCategorized.getCategoryName());
+    categoryList.add(rd);
+
     try {
       // カテゴリ一覧
       List<EipTTodoCategory> categoryList2 =
@@ -511,22 +522,16 @@ public class ToDoUtils {
       StringBuffer title;
       ALEipUser user;
       for (EipTTodoCategory record : categoryList2) {
-        ToDoCategoryResultData rd = new ToDoCategoryResultData();
+        rd = new ToDoCategoryResultData();
         rd.initField();
         rd.setCategoryId(record.getCategoryId().longValue());
         user = ALEipUtils.getALEipUser(record.getUserId());
-
         title = new StringBuffer(record.getCategoryName());
-        if (record.getCategoryId() != 1) {
-          title.append(" （");
-          title.append(user.getAliasName());
-          title.append("）");
-          rd.setCategoryName(title.toString());
-          categoryList.add(rd);
-        } else {
-          rd.setCategoryName(title.toString());
-          categoryList.add(0, rd);
-        }
+        title.append(" （");
+        title.append(user.getAliasName());
+        title.append("）");
+        rd.setCategoryName(title.toString());
+        categoryList.add(rd);
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);

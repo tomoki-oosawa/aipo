@@ -17,16 +17,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
-
 <div class="auiSummaryMeta clearfix">
-#ALselectpdheader("target_category" "40%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
+<div class="floatLeft w50">
+#ALselectpdheader("target_category" "100%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoScreen").addQueryData("filter","").addQueryData("filtertype","category"))">すべてのカテゴリ</option>
 #foreach( $record in $result.CategoryList )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoScreen").addQueryData("filter",$!record.CategoryId).addQueryData("filtertype","category"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
 #end
 </select>
+</div>
+#if ($result.List.size() != 0)
 #AUIajaxpageview('ToDoScreen' $result)
-
+#end
 </div>
 #if ($result.List.size() == 0)
 <div class="message">指定された条件に該当するToDoはありません。</div>
@@ -34,15 +36,7 @@
 #ALformheader('ToDo' $jslink $portlet)
 #AUIrowTableWide()
 #foreach ($record in $result.List)
-#set($limitState = ${record.limitState.Value})
-#if($result.isMatch(0, $limitState))
-#set($lsStyle = ' style="background-color:#FFFFE5"')
-#elseif($result.isMatch(1, $limitState))
-#set($lsStyle = ' style="background-color:#FFE5E5"')
-#else
-#set($lsStyle = '')
-#end
-<tr $lsStyle>
+<tr>
 #ALtdcellAtt("<div>$!record.EndDate</div>" 'class="thin" nowrap="nowrap"')
 #ALtdcellheader()
 <div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$record.TodoId))');">$!record.TodoName</a>
@@ -50,11 +44,7 @@
 <img src="images/todo/todo_secret.gif" border="0" width="16" height="16" alt="非公開" title="非公開"/>
 #end</div>
 #ALtdcellfooter()
-#ALtdcellheader()
-<div>
-$!record.CategoryName
-</div>
-#ALtdcellfooter()
+#ALtdcellAtt("<div>$!record.CategoryName</div>" '')
 #ALtdcellAtt("<div>$!record.userName</div>" 'class="w15"')
 </tr>
 #end

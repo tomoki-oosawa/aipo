@@ -275,8 +275,8 @@ public class ToDoCategorySelectData extends
    * @param rundata
    * @param context
    */
-  public void loadCategoryList(RunData rundata, Context context) {
-    categoryList = ToDoUtils.getCategoryList(rundata, context);
+  public void loadCategoryList(RunData rundata) {
+    categoryList = ToDoUtils.getCategoryList(rundata);
   }
 
   public int getCategorySum() {

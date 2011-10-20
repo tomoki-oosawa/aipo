@@ -248,9 +248,9 @@ public class ToDoFormData extends ALAbstractFormData {
    * @param rundata
    * @param context
    */
-  public void loadCategoryList(RunData rundata, Context context) {
+  public void loadCategoryList(RunData rundata) {
     // カテゴリ一覧
-    categoryList = ToDoUtils.getCategoryList(rundata, context);
+    categoryList = ToDoUtils.getCategoryList(rundata);
   }
 
   /**
@@ -558,7 +558,10 @@ public class ToDoFormData extends ALAbstractFormData {
       // カテゴリ名
       category.setCategoryName(category_name.getValue());
       // ユーザーID
-      category.setUserId(Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      category.setTurbineUser(ALEipUtils.getTurbineUser(ALEipUtils
+        .getUserId(rundata)));
+      // 更新ユーザーID
+      category.setUpdateUserId(ALEipUtils.getUserId(rundata));
       // 作成日
       category.setCreateDate(Calendar.getInstance().getTime());
       // 更新日

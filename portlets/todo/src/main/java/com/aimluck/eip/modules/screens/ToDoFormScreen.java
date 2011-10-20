@@ -58,7 +58,7 @@ public class ToDoFormScreen extends ALVelocityScreen {
   protected void doTodo_form(RunData rundata, Context context) {
     ToDoFormData formData = new ToDoFormData();
     formData.initField();
-    formData.loadCategoryList(rundata, context);
+    formData.loadCategoryList(rundata);
     formData.doViewForm(this, rundata, context);
 
     if (formData.getCategoryId().getValue() == 0) {

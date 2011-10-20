@@ -52,7 +52,7 @@ public class ToDoFormJSONScreen extends ALJSONScreen {
         //
         ToDoFormData formData = new ToDoFormData();
         formData.initField();
-        formData.loadCategoryList(rundata, context);
+        formData.loadCategoryList(rundata);
         if (formData.doInsert(this, rundata, context)) {
         } else {
           JSONArray json =
@@ -65,7 +65,7 @@ public class ToDoFormJSONScreen extends ALJSONScreen {
 
         ToDoFormData formData = new ToDoFormData();
         formData.initField();
-        formData.loadCategoryList(rundata, context);
+        formData.loadCategoryList(rundata);
         if (formData.doUpdate(this, rundata, context)) {
         } else {
           JSONArray json =
@@ -77,7 +77,7 @@ public class ToDoFormJSONScreen extends ALJSONScreen {
 
         ToDoFormData formData = new ToDoFormData();
         formData.initField();
-        formData.loadCategoryList(rundata, context);
+        formData.loadCategoryList(rundata);
         if (formData.doDelete(this, rundata, context)) {
         } else {
           JSONArray json =
