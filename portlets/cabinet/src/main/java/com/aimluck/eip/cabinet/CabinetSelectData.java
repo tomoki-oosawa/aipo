@@ -34,6 +34,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.cabinet.util.CabinetUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolder;
+import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolderMap;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipUser;
@@ -43,6 +44,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -52,8 +54,8 @@ public class CabinetSelectData extends
     ALAbstractSelectData<EipTCabinetFile, EipTCabinetFile> {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(CabinetSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(CabinetSelectData.class.getName());
 
   /** 選択されたフォルダ情報 */
   private FolderInfo selected_folderinfo = null;
@@ -123,8 +125,13 @@ public class CabinetSelectData extends
         try {
           fid = Integer.parseInt(tmpfid);
           /** フォルダ権限のチェック */
-          isAccessible = CabinetUtils.isAccessibleFolder(fid, rundata);
-          isEditable = CabinetUtils.isEditableFolder(fid, rundata);
+          if (fid == 0) {
+            isAccessible = true;
+            isEditable = true;
+          } else {
+            isAccessible = CabinetUtils.isAccessibleFolder(fid, rundata);
+            isEditable = CabinetUtils.isEditableFolder(fid, rundata);
+          }
         } catch (Exception e) {
           fid = CabinetUtils.ROOT_FODLER_ID;
         }
@@ -154,8 +161,13 @@ public class CabinetSelectData extends
         try {
           fid = Integer.parseInt(tmpfid);
           /** フォルダ権限のチェック */
-          isAccessible = CabinetUtils.isAccessibleFolder(fid, rundata);
-          isEditable = CabinetUtils.isEditableFolder(fid, rundata);
+          if (fid == 0) {
+            isAccessible = true;
+            isEditable = true;
+          } else {
+            isAccessible = CabinetUtils.isAccessibleFolder(fid, rundata);
+            isEditable = CabinetUtils.isEditableFolder(fid, rundata);
+          }
         } catch (Exception e) {
           fid = CabinetUtils.ROOT_FODLER_ID;
         }
@@ -172,9 +184,10 @@ public class CabinetSelectData extends
           break;
         }
       }
-      if (selected_folderinfo == null) {
-        selected_folderinfo = folder_hierarchy_list.get(0);
-      }
+      /*
+       * if (selected_folderinfo == null) { selected_folderinfo =
+       * folder_hierarchy_list.get(0); }
+       */
     }
 
     this.rundata = rundata;
@@ -226,22 +239,50 @@ public class CabinetSelectData extends
    */
   private SelectQuery<EipTCabinetFile> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipTCabinetFile> query =
-      Database.query(EipTCabinetFile.class).select(
-        EipTCabinetFile.FILE_ID_PK_COLUMN,
-        EipTCabinetFile.FOLDER_ID_COLUMN,
-        EipTCabinetFile.FILE_TITLE_COLUMN,
-        EipTCabinetFile.FILE_NAME_COLUMN,
-        EipTCabinetFile.FILE_SIZE_COLUMN,
-        EipTCabinetFile.COUNTER_COLUMN,
-        EipTCabinetFile.UPDATE_USER_ID_COLUMN,
-        EipTCabinetFile.UPDATE_DATE_COLUMN);
+    SelectQuery<EipTCabinetFile> query = Database.query(EipTCabinetFile.class);
     if (selected_folderinfo != null) {
       Expression exp =
         ExpressionFactory.matchDbExp(
           EipTCabinetFolder.FOLDER_ID_PK_COLUMN,
           Integer.valueOf(selected_folderinfo.getFolderId()));
       query.setQualifier(exp);
+    } else {
+      // アクセス制御
+      Expression exp01 =
+        ExpressionFactory.matchExp(EipTCabinetFile.EIP_TCABINET_FOLDER_PROPERTY
+          + "."
+          + EipTCabinetFolder.PUBLIC_FLAG_PROPERTY, Integer
+          .valueOf(CabinetUtils.ACCESS_PUBLIC_ALL));
+
+      Expression exp02 =
+        ExpressionFactory.matchExp(EipTCabinetFile.EIP_TCABINET_FOLDER_PROPERTY
+          + "."
+          + EipTCabinetFolder.PUBLIC_FLAG_PROPERTY, Integer
+          .valueOf(CabinetUtils.ACCESS_PUBLIC_MEMBER));
+
+      Expression exp11 =
+        ExpressionFactory.matchExp(EipTCabinetFile.EIP_TCABINET_FOLDER_PROPERTY
+          + "."
+          + EipTCabinetFolder.PUBLIC_FLAG_PROPERTY, Integer
+          .valueOf(CabinetUtils.ACCESS_SECRET_MEMBER));
+
+      Expression exp12 =
+        ExpressionFactory.matchExp(EipTCabinetFile.EIP_TCABINET_FOLDER_PROPERTY
+          + "."
+          + EipTCabinetFolder.PUBLIC_FLAG_PROPERTY, Integer
+          .valueOf(CabinetUtils.ACCESS_SECRET_SELF));
+
+      Expression exp13 =
+        ExpressionFactory.matchExp(EipTCabinetFile.EIP_TCABINET_FOLDER_PROPERTY
+          + "."
+          + EipTCabinetFolder.EIP_TCABINET_FOLDER_MAP_PROPERTY
+          + "."
+          + EipTCabinetFolderMap.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
+          .getUserId(rundata)));
+
+      Expression publicExp = exp01.orExp(exp02);
+      Expression privateExp = (exp11.andExp(exp13)).orExp(exp12.andExp(exp13));
+      query.setQualifier(publicExp).orQualifier(privateExp);
     }
     query.distinct(true);
 
@@ -277,6 +318,9 @@ public class CabinetSelectData extends
       rd.setFileTitle(record.getFileTitle());
       rd.setFileName(record.getFileName());
       rd.setFileSize(record.getFileSize());
+      rd.setFolderName(ALCommonUtils.compressString(record
+        .getEipTCabinetFolder()
+        .getFolderName(), getStrLength()));
       rd.setCounter(record.getCounter());
 
       String updateUserName = "";

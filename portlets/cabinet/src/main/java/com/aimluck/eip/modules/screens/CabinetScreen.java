@@ -35,8 +35,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class CabinetScreen extends ALVelocityScreen {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(CabinetScreen.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(CabinetScreen.class.getName());
 
   /**
    * 

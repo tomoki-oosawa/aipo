@@ -40,8 +40,24 @@ import com.aimluck.eip.util.ALEipUtils;
 public class CabinetAction extends ALBaseAction {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(CabinetAction.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(CabinetAction.class.getName());
+
+  static final String LIST_FILTER_STR =
+    new StringBuffer().append(CabinetSelectData.class.getName()).append(
+      ALEipConstants.LIST_FILTER).toString();
+
+  static final String LIST_FILTER_TYPE_STR =
+    new StringBuffer().append(CabinetSelectData.class.getName()).append(
+      ALEipConstants.LIST_FILTER_TYPE).toString();
+
+  static final String LIST_SORT_STR =
+    new StringBuffer().append(CabinetSelectData.class.getName()).append(
+      ALEipConstants.LIST_SORT).toString();
+
+  static final String LIST_SORT_TYPE_STR =
+    new StringBuffer().append(CabinetSelectData.class.getName()).append(
+      ALEipConstants.LIST_SORT_TYPE).toString();
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
@@ -56,6 +72,14 @@ public class CabinetAction extends ALBaseAction {
       RunData rundata) throws Exception {
     // セッション情報のクリア
     clearCabinetSession(rundata, context);
+
+    // デフォルトソート設定の適用
+    ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, "update_date");
+    ALEipUtils.setTemp(
+      rundata,
+      context,
+      LIST_SORT_TYPE_STR,
+      ALEipConstants.LIST_SORT_TYPE_DESC);
 
     CabinetSelectData listData = new CabinetSelectData();
     listData.setIsNormalContext(true);

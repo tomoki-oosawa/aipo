@@ -18,12 +18,10 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set($link = "$!jslink.getPortletById($!portlet.ID)")
-#set($flag = true)
-#ALtableheaderSimpleWide()
-#ALtdcaption('フォルダ')
-#ALtditemheaderAtt("style='width: 80%;'")
-#ALselectpdheader("folder_id" "99%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
+<div class="auiSummaryMeta clearfix">
+<div class="floatLeft w50">
+#ALselectpdheader("folder_id" "100%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetScreen").addQueryData("folder_id",0))">すべてのフォルダ</option>
 #foreach($record in $!result.FolderHierarchyList)
 #if($record.isAuthorizedVisible())
 #set($space = '')
@@ -35,30 +33,27 @@
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetScreen").addQueryData("folder_id",$!record.FolderId))" #if($!result.isMatch(${record.FolderId}, $!result.SelectedFolderInfo.FolderId.longValue())) selected="selected" #end>${space}${record.FolderName}</option>
 #end
 #end
-#ALselectfooter()
-#ALtditemfooter()
-#ALtablefooter()
+</select>
+</div>
+#if ($result.List.size() != 0)
+#AUIajaxpageview('CabinetScreen' $result)
+#end
+</div>
 
 #if ($result.List.size() == 0)
 <div class="message">指定したフォルダにファイルはありません。</div>
 #else
-<div class="p">
-#ALajaxpageview('CabinetScreen' $result)
-</div>
-<div class="p clearfix">
-<table class="rowTable wide">
+#ALformheader('Cabinet' $jslink $portlet)
+#AUIrowTableWide()
 #foreach ($record in $result.List)
-<tr #if($flag) class="even" #end>
-<td width="50%">
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFileDetailScreen").addQueryData("entityid",$record.FileId).addQueryData("folder_id",$result.SelectedFolderInfo.FolderId))');">$!record.FileTitle</a>
-</td>
-<td width="40%" style="padding:1px 0px 1px 5px;">
-<a href="$jslink.getTemplate("CabinetFileRawScreen").addQueryData("entityid", ${record.FileId})">$record.WbrFileName （$!{record.FileSize}KB）</a>
-</td>
-<td width="10%" style="padding:1px 0px 1px 5px; white-space:nowrap;">$!{record.UpdateUser}</td>
+#ALtdcellAtt("<div>$!record.UpdateDate</div>" 'class="thin" nowrap="nowrap"')
+#ALtdcellheader()
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFileDetailScreen").addQueryData("entityid",$record.FileId))');">$!record.FileTitle</a>
+#ALtdcellfooter()
+#ALtdcellAtt("<div>$!record.folderName</div>" '')
+#ALtdcellAtt("<div>$!record.updateUser</div>" 'class="w15"')
 </tr>
-#if($flag) #set($flag = false) #else #set($flag = true) #end
 #end
-</table>
-</div>
+#AUItablefooter()
+#ALformfooter()
 #end
