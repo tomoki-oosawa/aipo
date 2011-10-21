@@ -607,6 +607,7 @@ left:0;
 --------------------------------------------------*/
 .thin {width:2%;}
 .wide, .w100 {width:100%;}
+.w99 {width:99%;}
 .w95 {width:95%;}
 .w90 {width:90%;}
 .w85 {width:85%;}
@@ -3800,6 +3801,21 @@ table.auiCalendar td:hover {
 	border:solid 1px #ccc;
 	border-radius:2px;
 }
+.auiForm textarea {
+	border-radius:3px;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	background-color:#fff;
+	border:1px solid #c9c9c9;
+}
+.auiForm textarea:hover,
+.auiForm textarea:focus {
+	border:solid 1px #999;
+}
+.auiForm textarea:focus {
+	box-shadow:inset 0 1px 2px rgba(0,0,0,0.2);
+}
+
 
 /* auiAbsLayer ********************/
 .auiAbsLayer {
