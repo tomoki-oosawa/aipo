@@ -33,8 +33,6 @@ public class CabinetFolderListBox extends ListBox {
 
   public static final String INITIAL_VALUE = "initialvalue";
 
-  public static final String DEF_INITIAL_VALUE = "（初期表示フォルダの選択）";
-
   // private String DEF_INITIAL_VALUE = "";
 
   /**
@@ -48,17 +46,10 @@ public class CabinetFolderListBox extends ListBox {
     List<FolderInfo> folder_hierarchy_list = CabinetUtils.getFolderList();
 
     int length = folder_hierarchy_list.size();
-    String[] folderKeys = new String[length + 2];
-    String[] folderValues = new String[length + 2];
+    String[] folderKeys = new String[length];
+    String[] folderValues = new String[length];
 
-    // ヘッダ
-    folderKeys[0] = "0";
-    folderValues[0] = (String) this.getParm(INITIAL_VALUE, DEF_INITIAL_VALUE);
-
-    // すべてのフォルダ
-    folderKeys[1] = "0";
-    folderValues[1] = "すべてのフォルダ";
-    int count = 2;
+    int count = 0;
 
     // カテゴリの登録
     FolderInfo folderinfo = null;
