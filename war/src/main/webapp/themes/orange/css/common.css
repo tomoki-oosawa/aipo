@@ -3808,6 +3808,8 @@ table.auiCalendar td:hover {
 	background-color:#fff;
 	border:1px solid #c9c9c9;
 }
+.auiForm select:hover,
+.auiForm select:focus,
 .auiForm textarea:hover,
 .auiForm textarea:focus {
 	border:solid 1px #999;
