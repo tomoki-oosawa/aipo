@@ -1581,11 +1581,21 @@ $item.get(0)
 </div>
 #end
 
-#macro(AUIwidgetMenuList $menues $active)
+#macro(AUIwidgetViewPageMenuList $menues $active)
 <ul>
 #foreach ( $menu in $menues )
   <li#if ($menu.get(1) == $active) class="active"#end>
     <div class="menuTitle"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($menu.get(2))', '$!portlet.ID');">$menu.get(0)</a></div>
+  </li>
+#end
+</ul>
+#end
+
+#macro(AUIwidgetMenuList $menues $active)
+<ul>
+#foreach ( $menu in $menues )
+  <li#if ($menu.get(1) == $active) class="active"#end>
+    <div class="menuTitle"><a href="$!utils.escapeXML($menu.get(2))">$menu.get(0)</a></div>
   </li>
 #end
 </ul>
@@ -1607,4 +1617,10 @@ $item.get(0)
 #end
 #end
 
+#macro(AUIcontentsAreaHeader)
+<div id="auiContentsArea"><div id="auiContentsAreaInner">
+#end
 
+#macro(AUIcontentsAreaFooter)
+</div></div>
+#end

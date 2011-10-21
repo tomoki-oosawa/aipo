@@ -28,7 +28,7 @@
 #AUIbuttonAction("ToDoを追加する" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.todo.onLoadTodoDialog);")
 </div>
 <div class="auiWidget clearfix">
-#AUIwidgetMenuList($menues $!result.currentTab)
+#AUIwidgetViewPageMenuList($menues $!result.currentTab)
 </div>
 <div class="auiWidget clearfix">
 #ALselectpdheader("target_category" "100%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")

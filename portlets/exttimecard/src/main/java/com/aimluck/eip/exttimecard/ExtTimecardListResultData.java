@@ -70,9 +70,10 @@ public class ExtTimecardListResultData implements ALData {
   private int beforeafter;
 
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
     date = new ALDateField();
     date.setValue(new Date());
@@ -720,7 +721,7 @@ public class ExtTimecardListResultData implements ALData {
    */
   public String getDateStr() {
     try {
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日（EE）");
+      SimpleDateFormat sdf = new SimpleDateFormat("MM月dd日（EE）");
       return sdf.format(date.getValue().getDate());
     } catch (Exception e) {
       return "";

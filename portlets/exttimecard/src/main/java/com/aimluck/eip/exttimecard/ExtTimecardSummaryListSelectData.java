@@ -141,6 +141,8 @@ public class ExtTimecardSummaryListSelectData extends
   /** <code>viewEndCrt</code> 表示終了日時 (Criteria) */
   private ALDateTimeField viewEndCrt;
 
+  private final String MODE = "summary";
+
   /** <code>viewTodo</code> ToDo 表示設定 */
   protected int viewTodo;
 
@@ -956,7 +958,7 @@ public class ExtTimecardSummaryListSelectData extends
       }
       return list;
     } catch (Exception e) {
-     logger.error(e);
+      logger.error(e);
       return null;
     }
   }
@@ -1207,6 +1209,10 @@ public class ExtTimecardSummaryListSelectData extends
 
   public boolean hasAclXlsExport() {
     return hasAclXlsExport;
+  }
+
+  public String getMode() {
+    return MODE;
   }
 
 }

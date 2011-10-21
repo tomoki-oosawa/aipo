@@ -20,8 +20,7 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
-<div id="auiContentsArea">
-<div id="auiContentsAreaInner">
+#AUIcontentsAreaHeader()
 #ALspacebothheader()
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
@@ -61,6 +60,6 @@
 #end
 #ALformfooter()
 #ALspacebothfooter()
-</div>
-</div>
+#AUIcontentsAreaFooter()
+
 #parse("/portlets/html/ja/todo-widgets.vm")

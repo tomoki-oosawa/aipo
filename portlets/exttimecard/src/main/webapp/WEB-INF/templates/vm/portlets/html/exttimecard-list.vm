@@ -33,4 +33,3 @@
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
 #parse("/portlets/html/ja/ajax-exttimecard-list.vm")
 #ALcontentfooter()
-#parse("/portlets/html/ja/exttimecard-menu.vm")
