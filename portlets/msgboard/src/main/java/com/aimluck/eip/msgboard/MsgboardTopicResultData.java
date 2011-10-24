@@ -28,7 +28,6 @@ import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
-import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -82,13 +81,17 @@ public class MsgboardTopicResultData implements ALData {
   /** 更新日 */
   private ALDateTimeField update_date;
 
+  /** 更新時間 */
+  private ALDateTimeField update_date_time;
+
   /** 添付ファイルリスト */
   private List<FileuploadBean> attachmentFileList = null;
 
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
     topic_id = new ALNumberField();
     topic_name = new ALStringField();
@@ -104,7 +107,8 @@ public class MsgboardTopicResultData implements ALData {
     create_user = new ALStringField();
     update_user = new ALStringField();
     create_date = new ALDateTimeField();
-    update_date = new ALDateTimeField();
+    update_date = new ALDateTimeField("M月d日");
+    update_date_time = new ALDateTimeField("H:mm");
 
     attachmentFileList = new ArrayList<FileuploadBean>();
 
@@ -123,7 +127,7 @@ public class MsgboardTopicResultData implements ALData {
    * @return
    */
   public String getTopicName() {
-    return ALCommonUtils.replaceToAutoCR(topic_name.toString());
+    return topic_name.toString();
   }
 
   /**
@@ -179,7 +183,7 @@ public class MsgboardTopicResultData implements ALData {
    * @return
    */
   public String getCategoryName() {
-    return ALCommonUtils.replaceToAutoCR(category_name.toString());
+    return category_name.toString();
   }
 
   /**
@@ -229,7 +233,13 @@ public class MsgboardTopicResultData implements ALData {
    * @return
    */
   public ALDateTimeField getUpdateDate() {
-    return update_date;
+    ALDateTimeField today = new ALDateTimeField("M月d日");
+    today.setValue(new Date());
+    if (update_date.toString().equals(today.toString())) {
+      return update_date_time;
+    } else {
+      return update_date;
+    }
   }
 
   /**
@@ -243,7 +253,11 @@ public class MsgboardTopicResultData implements ALData {
    * @param string
    */
   public void setUpdateDate(Date date) {
-    update_date.setValue(date);
+    if (date == null) {
+      return;
+    }
+    this.update_date.setValue(date);
+    this.update_date_time.setValue(date);
   }
 
   public ALStringField getCreateUser() {

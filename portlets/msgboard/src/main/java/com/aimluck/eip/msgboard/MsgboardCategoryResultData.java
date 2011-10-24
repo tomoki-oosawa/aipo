@@ -22,7 +22,6 @@ package com.aimluck.eip.msgboard;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
-import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -59,9 +58,10 @@ public class MsgboardCategoryResultData implements ALData {
   private ALStringField update_date;
 
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
     category_id = new ALNumberField();
     category_name = new ALStringField();
@@ -78,7 +78,7 @@ public class MsgboardCategoryResultData implements ALData {
    * @return
    */
   public String getCategoryName() {
-    return ALCommonUtils.replaceToAutoCR(category_name.toString());
+    return category_name.toString();
   }
 
   /**

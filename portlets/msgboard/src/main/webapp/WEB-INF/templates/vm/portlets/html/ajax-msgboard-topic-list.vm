@@ -58,10 +58,13 @@
 #foreach ($record in $result.List)
 <tr>
 #ALtdcellheader()
+<div>
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicDetailScreen").addQueryData("entityid",$record.TopicId))','$!portlet.ID',aipo.msgboard.onLoadMsgboardDialog);">$!record.TopicName  #if($record.ReplyCount.toString() != "0")（$record.ReplyCount）#end</a>
 #if($record.isNew()) &nbsp;&nbsp;<img src="images/msgboard/msgboard_new_topic.gif" alt="新着" title="新着"> #end
+</div>
 #ALtdcellfooter()
 #ALtdcellheader()
+<div>
 #if ($!record.CategoryId.toString() != "1")
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardCategoryDetailScreen").addQueryData("entityid",$!record.CategoryId))');">$!record.CategoryName</a>
 #if(! ${record.isPublic()})
@@ -70,6 +73,7 @@
 #else
 $!record.CategoryName
 #end
+</div>
 #ALtdcellfooter()
 #ALtdcell("$!{record.OwnerName}")
 #ALtdcell("$!{record.UpdateUser}")
