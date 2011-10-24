@@ -26,21 +26,18 @@
 <div class="message">メモはありません。</div>
 #else
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
-#ALtableheaderSimpleWide()
-#ALtdcaption('メモ名')
-#ALtditemheaderAtt("style='width: 80%;'")
-#ALselectpdheader("memo" "99%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
+#AUISummaryDiv()
+#AUIselectpdheader("memo" "99%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MemoScreen").addQueryData("filter","none"))">（選択してください）</option>
 #foreach( $record in $result.MemoLiteList )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MemoScreen").addQueryData("filter",$!record.MemoId).addQueryData("entityid",$!record.MemoId))" #if ($!result.Detail.MemoId.toString() == $!record.MemoId.toString()) selected="selected" #end>$!record.MemoName</option>
 #end
-#ALselectfooter()
-#ALtditemfooter()
-#ALtablefooter()
+#AUIselectfooter()
+#AUISummaryDivfooter()
 #if($!{result.Detail})
 #ALerrmsg($errmsgs)
 <div class="messageDiv_memo" id="memo_$!{portlet.ID}"></div>
-#ALajaxscreenformheader("memoForm" $jslink $portlet "MemoFormJSONScreen" "aipo.memo.enableMessageDiv('$!{portlet.ID}');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.memo.onReceiveMessageUpdate)")
+#AUIajaxscreenformheader("memoForm" $jslink $portlet "MemoFormJSONScreen" "aipo.memo.enableMessageDiv('$!{portlet.ID}');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.memo.onReceiveMessageUpdate)")
 <input type="hidden" name="mode" value="update" />
 <input type="hidden" name="entityid" value="$!{result.Detail.MemoId}" />
 <input type="hidden" name="memo_name" value="$!{result.Detail.MemoName}" />
@@ -51,8 +48,9 @@
 </td>
 </tr></tbody></table>
 </div>
-#ALsubmit($event_submit $action_str)
-#ALformfooter()
+#AUISummaryDiv()
+#AUIsubmit($event_submit $action_str)
+#AUISummaryDivfooter()
 #else
 メモを選択してください。
 #end

@@ -1624,3 +1624,32 @@ $item.get(0)
 #macro(AUIcontentsAreaFooter)
 </div></div>
 #end
+
+#macro(AUISummaryDiv)
+<div class="auiSummaryMeta clearfix">
+#end
+
+#macro(AUISummaryDivfooter)
+</div>
+#end
+
+#macro(AUIsubmit $name $value)
+<input name="$name" class="auiButton" type="submit" value="$value" onclick="aimluck.io.setHiddenValue(this);" />
+#end
+
+#macro(AUIselectpdheader $name $width $onchange)
+<form class="auiForm">
+	<select name="$name" id="$name" style="width:$width;" onchange="$onchange">
+#end
+
+#macro(AUIselectfooter)
+	</select>
+</form>
+#end
+
+#macro(AUIajaxscreenformheader $name $jslink $portlet $template $js)
+<form class="auiForm" name="form$!portlet.ID" id="form$!portlet.ID" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template',$template)" method="post" onsubmit="$js;return false;">
+<input type="hidden" name="_name" value="$name" />
+<input type="hidden" name="secid" value="$secid" />
+#end
+
