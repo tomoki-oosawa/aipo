@@ -75,9 +75,9 @@ $!record.CategoryName
 #end
 </div>
 #ALtdcellfooter()
-#ALtdcell("$!{record.OwnerName}")
-#ALtdcell("$!{record.UpdateUser}")
-#ALtdcellAtt("$!{record.UpdateDate.Month}月$!{record.UpdateDate.Day}日$!{record.UpdateDate.Hour}時$!{record.UpdateDate.Minute}分" 'nowrap')
+#ALtdcellAtt("$!{record.OwnerName}" 'style="white-space: nowrap;"')
+#ALtdcellAtt("$!{record.UpdateUser}" 'style="white-space: nowrap;"')
+#ALtdcellAtt("$!{record.UpdateDate.Month}月$!{record.UpdateDate.Day}日$!{record.UpdateDate.Hour}時$!{record.UpdateDate.Minute}分" 'style="white-space: nowrap;"')
 </tr>
 #end
 #AUItablefooter()
