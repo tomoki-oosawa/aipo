@@ -48,6 +48,7 @@
 </td>
 </tr></tbody></table>
 </div>
+#ALformfooter()
 #AUISummaryDiv()
 #AUIsubmit($event_submit $action_str)
 #AUISummaryDivfooter()
