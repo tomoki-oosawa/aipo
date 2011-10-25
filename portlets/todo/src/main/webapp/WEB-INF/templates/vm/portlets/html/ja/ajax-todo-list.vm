@@ -21,11 +21,12 @@
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
-
-<form class="auiSummaryMeta auiSearch clearfix" action="javascript:void(0)" onsubmit="aipo.todo.doKeywordSearch('$!jslink.getPortletById($!portlet.ID)', '$!{portlet.ID}');">
+<div class="auiSummaryMeta clearfix">
+<form class="auiSearch" action="javascript:void(0)" onsubmit="aipo.todo.doKeywordSearch('$!jslink.getPortletById($!portlet.ID)', '$!{portlet.ID}');">
 <input class="text floatLeft" type="text" name="q$!{portlet.ID}" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.targetKeyword"/>
 <a class="auiButtonSearch floatLeft" onclick="aipo.todo.doKeywordSearch('$!jslink.getPortletById($!portlet.ID)', '$!{portlet.ID}');">検索</a>
 </form>
+</div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader('ToDo')

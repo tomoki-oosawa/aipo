@@ -60,6 +60,13 @@
 </div>
 <div class="indicator" id="indicator-$!portlet.ID" style="display:none">読み込み中...</div>
 <div id="content-$!portlet.ID" style="visibility:visible">
+
+<a href="javascript:void(0);" onclick="javascript:window.open('$!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new")');void(0);" title="印刷画面を開く" class="auiButton floatRight" style="padding:2px 3px;">
+<span>
+<img src="themes/$!result.Theme/images/icon/icon_print.gif" width="17" height="18" alt="印刷" />
+</span>
+</a>
+
 #if(($!{hasAcl}) && $!{hasAcl} == "T")
 <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter","").addQueryData("filtertype","group"))">グループを選択してください</option>
@@ -79,11 +86,7 @@
 &nbsp;&nbsp;<a href="$!result.MyGroupURI">こちらからグループを追加できます。</a>
 #end
 #end
-<a href="javascript:void(0);" onclick="javascript:window.open('$!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new")');void(0);" title="印刷画面を開く" class="auiButton floatRight" style="padding:2px 3px;">
-<span>
-<img src="themes/$!result.Theme/images/icon/icon_print.gif" width="17" height="18" alt="印刷" />
-</span>
-</a>
+
 #if($result.MemberList.size() == 0 && $result.FacilityList.size() == 0)
 <div class="message">選択したグループには、ユーザーおよび施設が登録されていません。</div>
 #else
