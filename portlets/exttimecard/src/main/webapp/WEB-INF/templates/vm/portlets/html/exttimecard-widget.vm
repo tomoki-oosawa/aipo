@@ -28,7 +28,7 @@
 #if($result.mode == "list")
 ##打刻履歴
 <select name="target_group_name" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" class="w100">
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("target_group_name","all").addQueryData("target_user_id","none"))">（グループ全体）</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("target_group_name","all").addQueryData("target_user_id","none"))">すべてのグループ</option>
 #foreach( $record in $!result.MyGroupList )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("target_group_name",$!{record.Name.toString()}).addQueryData("target_user_id","none"))" #if($!result.TargetGroupName == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
 #end
@@ -40,7 +40,6 @@
 #end
 </select>
 <select name="target_user_id" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" class="w100">
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","none"))">（ユーザー選択）</option>
 #foreach($record in $!result.Users)
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id",$!{record.UserId.toString()}))" #if($!result.TargetUserId != "all") #if($!result.TargetUserId == $!record.UserId.toString()) selected="selected" #end #end>$!record.AliasName</option>
 #end
@@ -48,7 +47,8 @@
 #else
 ##タイムカード集計
 <select name="target_group_name" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" class="w100">
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("target_group_name","only").addQueryData("target_user_id","none"))">（選択してください）</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("target_group_name","only").addQueryData("target_user_id","none"))">$!{result.loginUserName}</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("target_group_name","only").addQueryData("target_user_id", "none"))" #if ($!result.CurrentFilter == $!record.Name.toString()) #end>----------</option>
 #foreach( $record in $!result.MyGroupList )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("target_group_name",$!{record.Name.toString()}).addQueryData("target_user_id","none"))" #if($!result.TargetGroupName == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
 #end

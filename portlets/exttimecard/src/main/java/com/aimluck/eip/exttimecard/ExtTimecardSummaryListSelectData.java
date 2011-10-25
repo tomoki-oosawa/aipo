@@ -1215,4 +1215,12 @@ public class ExtTimecardSummaryListSelectData extends
     return MODE;
   }
 
+  public String getLoginUserName() {
+    try {
+      ALEipUser user = ALEipUtils.getALEipUser(Integer.valueOf(userid));
+      return user.getAliasName().toString();
+    } catch (Exception ignore) {
+      return null;
+    }
+  }
 }

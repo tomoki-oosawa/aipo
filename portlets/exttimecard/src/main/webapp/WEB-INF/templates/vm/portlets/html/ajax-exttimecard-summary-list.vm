@@ -38,13 +38,13 @@
 <div class="floatLeft" style="line-height:24px;margin-right:10px;"><strong>$!{result.ViewMonth.Year} 年 $!{result.ViewMonth.Month} 月</strong></div>
 <ul class="floatLeft">
 <li style="margin-right:10px;">
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.CurrentMonth.toString()}))', '$!portlet.ID');" title="今月へ" class="btn" style="width:4em;"><span>今月へ</span></a>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.CurrentMonth.toString()}))', '$!portlet.ID');" title="今月" class="btn" style="width:4em;"><span>今月</span></a>
 </li>
 <li>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="先月へ" class="first arrow"><span><img src="https://app.aipo.com/themes/orange/images/icon/icon_arrow_l.gif" alt="先月へ" /></span></a>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="先月" class="first arrow"><span><img src="https://app.aipo.com/themes/orange/images/icon/icon_arrow_l.gif" alt="先月" /></span></a>
 </li>
 <li>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="来月へ" class="last arrow"><span><img src="https://app.aipo.com/themes/orange/images/icon/icon_arrow_r.gif" alt="来月へ" /></span></a>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="来月" class="last arrow"><span><img src="https://app.aipo.com/themes/orange/images/icon/icon_arrow_r.gif" alt="来月" /></span></a>
 </li>
 </ul>
 </div>
@@ -87,13 +87,13 @@
 	<div class="floatLeft" style="line-height:24px;margin-right:10px;"><strong>$!{result.ViewMonth.Year} 年 $!{result.ViewMonth.Month} 月</strong></div>
 	<ul class="floatLeft">
 	<li style="margin-right:10px;">
-	<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.CurrentMonth.toString()}))', '$!portlet.ID');" title="今月へ" class="btn" style="width:4em;"><span>今月へ</span></a>
+	<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.CurrentMonth.toString()}))', '$!portlet.ID');" title="今月" class="btn" style="width:4em;"><span>今月</span></a>
 	</li>
 	<li>
-	<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="先月へ" class="first arrow"><span><img src="https://app.aipo.com/themes/orange/images/icon/icon_arrow_l.gif" alt="先月へ" /></span></a>
+	<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="先月" class="first arrow"><span><img src="https://app.aipo.com/themes/orange/images/icon/icon_arrow_l.gif" alt="先月" /></span></a>
 	</li>
 	<li>
-	<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="来月へ" class="last arrow"><span><img src="https://app.aipo.com/themes/orange/images/icon/icon_arrow_r.gif" alt="来月へ" /></span></a>
+	<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="来月" class="last arrow"><span><img src="https://app.aipo.com/themes/orange/images/icon/icon_arrow_r.gif" alt="来月" /></span></a>
 	</li>
 	</ul>
 	</div>
