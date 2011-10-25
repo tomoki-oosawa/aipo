@@ -49,12 +49,11 @@ public class BlogScreen extends ALVelocityScreen {
     try {
       BlogEntryLatestSelectData listData = new BlogEntryLatestSelectData();
       listData.initField();
+      listData.loadThemaList(rundata, context);
       listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
         rundata,
         context).getPortletConfig().getInitParameter("p1a-rows")));
-      listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
-        rundata,
-        context).getPortletConfig().getInitParameter("p3a-strlen")));
+      listData.setStrLength(100);
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-blog.vm";

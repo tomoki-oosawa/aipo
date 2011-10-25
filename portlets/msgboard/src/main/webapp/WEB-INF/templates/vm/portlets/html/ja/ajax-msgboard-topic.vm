@@ -16,49 +16,49 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
-#ALtableheaderSimpleWide()
-#ALtdcaption('カテゴリ')
-#ALtditemheaderAtt("style='width: 80%;'")
-#ALselectpdheader("topic" "99%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicScreen").addQueryData("filter","").addQueryData("filtertype","category"))">（全体）</option>
+<div class="auiSummaryMeta clearfix">
+<div class="floatLeft w30">
+<form class="auiForm">
+#ALselectpdheader("topic" "100%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicScreen").addQueryData("filter","").addQueryData("filtertype","category"))">すべてのカテゴリ</option>
 #foreach( $record in $result.CategoryList )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicScreen").addQueryData("filter",$!record.CategoryId).addQueryData("filtertype","category"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
 #end
 #ALselectfooter()
-#ALtditemfooter()
-#ALtablefooter()
+</form>
+</div>
+#if($result.List.size() != 0)
+#AUIajaxpageview('MsgboardTopicScreen' $result)
+#end
+</div>
 
-#set($flag = true)
 #if($result.List.size() == 0)
 <div class="message">指定された条件に該当するトピックはありません。</div>
 #else
-<div class="p">
-#ALajaxpageview('MsgboardTopicScreen' $result)
-</div>
-<div class="p clearfix">
-<table class="rowTable wide">
+
+
+#ALformheader('Msgboard' $jslink $portlet)
+<table class="auiRowTable wide">
+<colgroup />
+<colgroup style="width:20%;" />
+<colgroup style="width:20%;" />
+<colgroup style="width:6em;" />
+<tbody>
 #foreach ($record in $result.List)
-<tr #if($flag) class="even" #end>
-<td width="20%" nowrap="nowrap">$!{record.UpdateDate.Year}年$!{record.UpdateDate.Month}月$!{record.UpdateDate.Day}日$!{record.UpdateDate.DayOfWeek}</td>
-<td width="40%">
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicDetailScreen").addQueryData("entityid",$record.TopicId))', '$!portlet.ID', aipo.msgboard.onLoadMsgboardDetail);">$!record.TopicName #if($record.ReplyCount.toString() != "0")（$record.ReplyCount）#end</a>
-</td>
-<td width="30%" style="padding:1px 0px 1px 5px;">
-#if ($!record.CategoryId.toString() != "1")
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardCategoryDetailScreen").addQueryData("entityid",$!record.CategoryId))');">$!record.CategoryName</a>
-#if(! ${record.isPublic()})
-<img class="img_icon" src="images/msgboard/msgboard_secret.gif" alt="非公開" title="非公開" />
-#end
-#else
-$!record.CategoryName
-#end
-</td>
-<td width="10%" style="padding:1px 0px 1px 5px; white-space:nowrap;">$!{record.OwnerName}</td>
+<tr>
+#ALtdcellheader()
+<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicDetailScreen").addQueryData("entityid",$record.TopicId))', '$!portlet.ID', aipo.msgboard.onLoadMsgboardDetail);">$!record.TopicName #if($record.ReplyCount.toString() != "0")（$record.ReplyCount）#end</a>
+#if($!record.CategoryId.toString() != "1" && ! $!record.Public)
+<img src="images/msgboard/msgboard_secret.gif" border="0" width="16" height="16" alt="非公開" title="非公開"/>
+#end</div>
+#ALtdcellfooter()
+#ALtdcellAtt("<div>$!record.CategoryName</div>" '')
+#ALtdcellAtt("<div>$!record.OwnerName</div>" '')
+#ALtdcellAtt("<div>$!record.UpdateDate</div>" 'class="right" nowrap="nowrap"')
 </tr>
-#if($flag) #set($flag = false) #else #set($flag = true) #end
 #end
+</tbody>
 </table>
-</div>
+#ALformfooter()
 #end

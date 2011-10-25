@@ -62,9 +62,6 @@ public class MsgboardTopicListScreen extends MsgboardTopicScreen {
       listData.setRowsNum(Integer.parseInt(portlet
         .getPortletConfig()
         .getInitParameter("p1b-rows")));
-      listData.setStrLength(Integer.parseInt(portlet
-        .getPortletConfig()
-        .getInitParameter("p4a-strlen")));
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-msgboard-topic-list.vm";

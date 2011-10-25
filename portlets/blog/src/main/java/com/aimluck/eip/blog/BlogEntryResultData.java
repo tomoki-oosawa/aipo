@@ -28,7 +28,6 @@ import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
-import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -65,7 +64,10 @@ public class BlogEntryResultData implements ALData {
   private boolean allow_comments;
 
   /** タイトル月日 */
-  private ALStringField title_date;
+  private ALDateTimeField title_date;
+
+  /** タイトル時間 */
+  private ALDateTimeField title_date_time;
 
   /** 登録日 */
   private ALStringField create_date;
@@ -85,10 +87,14 @@ public class BlogEntryResultData implements ALData {
   /** 日付（アンカーリンク用） */
   private int day;
 
+  /** 顔写真の有無 */
+  private boolean has_photo;
+
   /**
    *
    *
    */
+  @Override
   public void initField() {
     entry_id = new ALNumberField();
     owner_id = new ALNumberField();
@@ -99,7 +105,8 @@ public class BlogEntryResultData implements ALData {
     thema_id = new ALNumberField();
     thema_name = new ALStringField();
     allow_comments = true;
-    title_date = new ALStringField();
+    title_date = new ALDateTimeField("M月d日");
+    title_date_time = new ALDateTimeField("H:mm");
     create_date = new ALStringField();
     create_date_alternative = new ALDateTimeField();
     update_date = new ALDateTimeField();
@@ -107,6 +114,7 @@ public class BlogEntryResultData implements ALData {
 
     day = 0;
     comments_num = 0;
+    has_photo = false;
   }
 
   /**
@@ -120,7 +128,7 @@ public class BlogEntryResultData implements ALData {
    * @return
    */
   public String getThemaName() {
-    return ALCommonUtils.replaceToAutoCR(thema_name.toString());
+    return thema_name.toString();
   }
 
   /**
@@ -134,7 +142,7 @@ public class BlogEntryResultData implements ALData {
    * @return
    */
   public String getTitle() {
-    return ALCommonUtils.replaceToAutoCR(title.toString());
+    return title.toString();
   }
 
   /**
@@ -198,15 +206,25 @@ public class BlogEntryResultData implements ALData {
   /**
    * @return
    */
-  public ALStringField getTitleDate() {
-    return title_date;
+  public ALDateTimeField getTitleDate() {
+    ALDateTimeField today = new ALDateTimeField("M月d日");
+    today.setValue(new Date());
+    if (title_date.toString().equals(today.toString())) {
+      return title_date_time;
+    } else {
+      return title_date;
+    }
   }
 
   /**
    * @param string
    */
-  public void setTitleDate(String str) {
-    title_date.setValue(str);
+  public void setTitleDate(Date date) {
+    if (date == null) {
+      return;
+    }
+    this.title_date.setValue(date);
+    this.title_date_time.setValue(date);
   }
 
   /**
@@ -319,6 +337,18 @@ public class BlogEntryResultData implements ALData {
 
   public void setDay(int i) {
     day = i;
+  }
+
+  /**
+   * 
+   * @param bool
+   */
+  public void setHasPhoto(boolean bool) {
+    has_photo = bool;
+  }
+
+  public boolean hasPhoto() {
+    return has_photo;
   }
 
 }

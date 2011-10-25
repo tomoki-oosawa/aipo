@@ -82,15 +82,14 @@ public class BlogAction extends ALBaseAction {
 
     BlogEntryLatestSelectData listData = new BlogEntryLatestSelectData();
     listData.initField();
+    listData.loadThemaList(rundata, context);
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
       .getPortlet(rundata, context)
       .getPortletConfig()
       .getInitParameter("p1a-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
-      rundata,
-      context).getPortletConfig().getInitParameter("p3a-strlen")));
+    listData.setStrLength(100);
 
     // 最低限表示するのに必要な権限のチェック
     if (!BlogUtils.hasMinimumAuthority(rundata)) {
@@ -268,9 +267,7 @@ public class BlogAction extends ALBaseAction {
       .getPortlet(rundata, context)
       .getPortletConfig()
       .getInitParameter("p1b-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
-      rundata,
-      context).getPortletConfig().getInitParameter("p3a-strlen")));
+    listData.setStrLength(100);
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "blog-entry-list");
   }
@@ -292,9 +289,7 @@ public class BlogAction extends ALBaseAction {
       .getPortlet(rundata, context)
       .getPortletConfig()
       .getInitParameter("p1b-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
-      rundata,
-      context).getPortletConfig().getInitParameter("p3a-strlen")));
+    listData.setStrLength(100);
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "blog-entry-list-latest");
   }
@@ -611,9 +606,7 @@ public class BlogAction extends ALBaseAction {
     listData.setRowsNum(Integer.parseInt(portlet
       .getPortletConfig()
       .getInitParameter("p1c-rows")));
-    listData.setStrLength(Integer.parseInt(portlet
-      .getPortletConfig()
-      .getInitParameter("p4a-strlen")));
+    listData.setStrLength(100);
 
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "blog-thema-list");
@@ -651,9 +644,7 @@ public class BlogAction extends ALBaseAction {
     // listData.setRowsNum(Integer.parseInt(ALEipUtils
     // .getPortlet(rundata, context).getPortletConfig().getInitParameter(
     // "p1a-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
-      rundata,
-      context).getPortletConfig().getInitParameter("p3a-strlen")));
+    listData.setStrLength(100);
     listData.setRowsNum(20);
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "blog-search-list");

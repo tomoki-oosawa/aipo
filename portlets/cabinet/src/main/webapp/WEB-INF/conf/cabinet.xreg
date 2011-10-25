@@ -53,13 +53,14 @@
         <parameter name="p1c-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1c-sort.style.items" value="file_title,file_name,update_user,update_date" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1c-sort.style.values" value="タイトル,ファイル名,更新者,更新日時" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
         <parameter name="p3a-folder" value="0" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>初期表示フォルダ</title>
             </meta-info>
         </parameter>
         <parameter name="p3a-folder.style" value="CabinetFolderListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p3a-folder.style.initialvalue" value="ルートフォルダ" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3a-folder.style.initialvalue" value="（初期表示フォルダの選択）" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 
         <parameter name="p4c-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p4c-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>

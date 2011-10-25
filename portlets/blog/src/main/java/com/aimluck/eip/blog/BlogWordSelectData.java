@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.blog;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -165,10 +164,9 @@ public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
         dataRow,
         EipTBlogEntry.NOTE_COLUMN), 100));
 
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月d日（EEE）");
-      rd.setTitleDate(sdf.format((Date) Database.getFromDataRow(
+      rd.setTitleDate((Date) Database.getFromDataRow(
         dataRow,
-        EipTBlogEntry.CREATE_DATE_COLUMN)));
+        EipTBlogEntry.CREATE_DATE_COLUMN));
 
       SelectQuery<EipTBlogComment> query =
         Database.query(EipTBlogComment.class);

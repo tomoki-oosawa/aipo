@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.blog;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -281,9 +280,7 @@ public class BlogCommonThemaSelectData extends
           entry.getTitle(),
           getStrLength()));
         entryrd.setNote(BlogUtils.compressString(entry.getNote(), 100));
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月d日（EEE）");
-        entryrd.setTitleDate(sdf.format(entry.getCreateDate()));
+        entryrd.setTitleDate(entry.getCreateDate());
 
         entryrd.setOwnerId(entry.getOwnerId().intValue());
         entryrd.setOwnerName(BlogUtils.getUserFullName(entry

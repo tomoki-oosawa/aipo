@@ -49,9 +49,7 @@ public class BlogWordListScreen extends ALVelocityScreen {
     try {
       BlogWordSelectData listData = new BlogWordSelectData();
       listData.setRowsNum(20);
-      listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
-        rundata,
-        context).getPortletConfig().getInitParameter("p3a-strlen")));
+      listData.setStrLength(100);
       listData.doViewList(this, rundata, context);
       String layout_template = "portlets/html/ja/ajax-blog-search-list.vm";
       setTemplate(rundata, context, layout_template);

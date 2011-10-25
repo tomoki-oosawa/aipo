@@ -41,6 +41,7 @@ import com.aimluck.eip.blog.util.BlogUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogComment;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
+import com.aimluck.eip.cayenne.om.portlet.EipTBlogThema;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
@@ -52,6 +53,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALUserContextLocator;
 
 /**
  * ブログエントリー検索データを管理するクラスです。 <BR>
@@ -63,6 +65,9 @@ public class BlogEntryLatestSelectData extends
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(BlogEntryLatestSelectData.class.getName());
+
+  /** テーマ一覧 */
+  private List<BlogThemaResultData> themaList;
 
   /** エントリーの総数 */
   private int entrySum;
@@ -172,7 +177,7 @@ public class BlogEntryLatestSelectData extends
       rd.setOwnerName(BlogUtils.getUserFullName(entry.getOwnerId().intValue()));
       rd.setTitle(ALCommonUtils
         .compressString(entry.getTitle(), getStrLength()));
-      rd.setTitleDate(sdf.format(record.getUpdateDate()));
+      rd.setTitleDate(record.getUpdateDate());
 
       SelectQuery<EipTBlogComment> cquery =
         Database.query(EipTBlogComment.class).select(
@@ -198,6 +203,15 @@ public class BlogEntryLatestSelectData extends
         MAX_COMMENT_HISTORY_COUNT,
         commentHistoryList.size()).clear();
     }
+  }
+
+  /**
+   * @param rundata
+   * @param context
+   */
+  public void loadThemaList(RunData rundata, Context context) {
+    // テーマ一覧
+    themaList = BlogUtils.getThemaList(rundata, context);
   }
 
   /**
@@ -245,10 +259,10 @@ public class BlogEntryLatestSelectData extends
    * @param obj
    * @return
    */
+  @SuppressWarnings("unchecked")
   @Override
   protected Object getResultData(EipTBlogEntry record) {
     try {
-
       BlogEntryResultData rd = new BlogEntryResultData();
       rd.initField();
       rd.setEntryId(record.getEntryId().longValue());
@@ -258,19 +272,37 @@ public class BlogEntryLatestSelectData extends
       rd.setTitle(ALCommonUtils.compressString(
         record.getTitle(),
         getStrLength()));
+      rd.setNote(BlogUtils.compressString(record.getNote().replaceAll(
+        "\\n",
+        " "), 100));
       rd.setBlogId(record.getEipTBlog().getBlogId().intValue());
       rd.setThemaId(record.getEipTBlogThema().getThemaId().intValue());
       rd.setThemaName(record.getEipTBlogThema().getThemaName());
       rd.setAllowComments("T".equals(record.getAllowComments()));
-
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月d日（EEE）");
-      rd.setTitleDate(sdf.format(record.getCreateDate()));
+      rd.setTitleDate(record.getCreateDate());
 
       List<?> list = record.getEipTBlogComments();
       if (list != null && list.size() > 0) {
         rd.setCommentsNum(list.size());
       }
+      int userId = record.getOwnerId().intValue();
 
+      rd.setHasPhoto(false);
+      List<BlogUserResultData> userDataList =
+        (List<BlogUserResultData>) ALUserContextLocator
+          .getAttribute("com.aimluck.eip.blog.BlogEntryLatestSelectData.userDataList");
+      if (userDataList == null) {
+        userDataList = BlogUtils.getBlogUserResultDataList("LoginUser");
+        ALUserContextLocator.setAttribute(
+          "com.aimluck.eip.blog.BlogEntryLatestSelectData.userDataList",
+          userDataList);
+      }
+      for (BlogUserResultData userData : userDataList) {
+        if (userId == userData.getUserId().getValue() && userData.hasPhoto()) {
+          rd.setHasPhoto(true);
+          break;
+        }
+      }
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -318,6 +350,13 @@ public class BlogEntryLatestSelectData extends
     return entrySum;
   }
 
+  /**
+   * @return themaList
+   */
+  public List<BlogThemaResultData> getThemaList() {
+    return themaList;
+  }
+
   public int getNewEntryId() {
     return newEntryId;
   }
@@ -329,6 +368,7 @@ public class BlogEntryLatestSelectData extends
   @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
+    map.putValue("thema", EipTBlogThema.THEMA_ID_PK_COLUMN);
     map.putValue("update", EipTBlogFile.UPDATE_DATE_PROPERTY);
     return map;
   }
@@ -361,8 +401,8 @@ public class BlogEntryLatestSelectData extends
     com = new Comparator<BlogEntryResultData>() {
       @Override
       public int compare(BlogEntryResultData obj0, BlogEntryResultData obj1) {
-        Date date0 = toDate((obj0).getTitleDate().toString());
-        Date date1 = toDate((obj1).getTitleDate().toString());
+        Date date0 = (obj0).getTitleDate().getValue();
+        Date date1 = (obj1).getTitleDate().getValue();
         if (date0.compareTo(date1) < 0) {
           return 1;
         } else if (date0.equals(date1)) {
@@ -417,4 +457,5 @@ public class BlogEntryLatestSelectData extends
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER;
   }
+
 }

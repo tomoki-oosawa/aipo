@@ -52,9 +52,7 @@ public class BlogEntryListLatestScreen extends ALVelocityScreen {
       listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
         rundata,
         context).getPortletConfig().getInitParameter("p1b-rows")));
-      listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
-        rundata,
-        context).getPortletConfig().getInitParameter("p3a-strlen")));
+      listData.setStrLength(100);
       listData.doViewList(this, rundata, context);
 
       String layout_template =

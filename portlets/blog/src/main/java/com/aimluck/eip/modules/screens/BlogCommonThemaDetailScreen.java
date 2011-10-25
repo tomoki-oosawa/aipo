@@ -47,9 +47,7 @@ public class BlogCommonThemaDetailScreen extends BlogScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
       BlogCommonThemaSelectData detailData = new BlogCommonThemaSelectData();
-      detailData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
-        rundata,
-        context).getPortletConfig().getInitParameter("p3a-strlen")));
+      detailData.setStrLength(100);
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
       String layout_template =

@@ -454,10 +454,9 @@ public class BlogEntrySelectData extends
         .getThemaName(), getStrLength()));
       rd.setAllowComments("T".equals(record.getAllowComments()));
 
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月d日（EEE）");
-      rd.setTitleDate(sdf.format(record.getCreateDate()));
-      SimpleDateFormat sdf2 = new SimpleDateFormat("dd");
-      rd.setDay(Integer.parseInt((sdf2.format(record.getCreateDate()))));
+      rd.setTitleDate(record.getCreateDate());
+      SimpleDateFormat sdf1 = new SimpleDateFormat("dd");
+      rd.setDay(Integer.parseInt((sdf1.format(record.getCreateDate()))));
 
       SelectQuery<EipTBlogComment> query =
         Database.query(EipTBlogComment.class);

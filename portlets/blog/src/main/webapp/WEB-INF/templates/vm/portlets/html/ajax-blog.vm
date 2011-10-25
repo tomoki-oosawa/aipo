@@ -18,78 +18,49 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#if($result.PhotoList.size() == 0)
-##<div class="message" style="padding-left:12px;">写真は登録されていません</div>
-#else
-<div class="p clearfix">
-<ul class="imageView">
-#foreach ($record in $result.PhotoList)
-<li>
-<div class="image outer">
-<table class="tableWrapper"> <tbody> <tr>
-<td width="96" valign="middle" height="96" align="center"><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData("entityid",$record.EntryId))');"><img src="$!utils.escapeXML($jslink.getTemplate('BlogFileThumbnailScreen').addQueryData('ownerid', ${record.OwnerId}).addQueryData('entityid', ${record.EntryId}).addQueryData('attachmentIndex', ${record.FileId}))" alt=""  /></a></td>
-</tr></tbody></table>
-</div>
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData("entityid",$record.EntryId))','$!portlet.ID',aipo.blog.onLoadBlogCommentDialog);">${record.EntryTitle}</a>
-</li>
-#end
-</ul>
-</div>
-#end
 
-#set($flag = true)
-<h3>最近の記事</h3>
+<div class="auiSummaryMeta clearfix">
+   	<div class="floatLeft w30">
+		<form class="auiForm">
+		#ALselectpdheader("target_thema" "100%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
+			<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogScreen").addQueryData("filter","").addQueryData("filtertype","thema"))">すべてのテーマ</option>
+			#foreach( $record in $result.ThemaList )
+				<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogScreen").addQueryData("filter",$!record.ThemaId).addQueryData("filtertype","thema"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.ThemaId.toString()) selected #end>$!record.ThemaName</option>
+			#end
+   		</select>
+		</form>
+	</div>
+	#if ($result.List.size() != 0)
+		#AUIajaxpageview('BlogScreen' $result)
+	#end
+</div>
+
 #if($result.List.size() == 0)
-<div class="message" style="padding-left:12px;">記事は登録されていません</div>
+    <div class="message" style="padding-left:12px;">記事は登録されていません</div>
 #else
-<div class="p">
-#ALajaxpageview('BlogScreen' $result)
-</div>
-<div class="p clearfix">
-<table class="rowTable wide">
-#foreach ($record in $result.List)
-<tr #if($flag) class="even" #end>
-<td width="20%" nowrap="nowrap">${record.TitleDate}</td>
-<td width="40%">
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData("entityid",$record.EntryId))', '$!portlet.ID', aipo.blog.onLoadBlogDetailDialog );">${record.Title} #if($record.CommentsNum > 0)（$record.CommentsNum）#end</a>
-</td>
-<td width="30%" style="padding:1px 0px 1px 5px;">
-#if ($!record.ThemaId.toString() != "1")
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogThemaDetailScreen").addQueryData("entityid",$!record.ThemaId))');">$!record.ThemaName</a>
-#else
-$!record.ThemaName
-#end
-</td>
-<td width="10%" style="padding:1px 0px 1px 5px; white-space:nowrap;"><a href="$!utils.escapeXML($!jslink.getAction('controls.Maximize',$!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1').addQueryData('view_uid',${record.OwnerId}).addQueryData('view_month', 'none'))">${record.OwnerName}</a></td>
-</tr>
-#if($flag) #set($flag = false) #else #set($flag = true) #end
-#end
-</table>
-</div>
-#end
+    <div id="auiBlogEntries">
+    #foreach ($record in $result.List)
+    <div class="entry clearfix">
+    	<div class="avatar">
+			<a href="$!utils.escapeXML($!jslink.getAction('controls.Maximize',$!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1').addQueryData('view_uid',${record.OwnerId}).addQueryData('view_month', 'none'))">
+				#if(${record.hasPhoto()})
+					<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}).addQueryData('width', '32').addQueryData('height', '32'))" alt="${record.AliasName}" border="0" width="32" height="32" style="vertical-align:middle" />
+				#else
+					<img src="images/common/nophoto.gif" alt="${record.AliasName}" width="32" height="32" border="0" />
+				#end
+			</a>
+    	</div>
+    	<div class="entryBody">
+    		<table>
+				#ALtdcellheaderAtt('nowrap="nowrap"')
+				<div class="entryHeader"><h2><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData("entityid",$record.EntryId))', '$!portlet.ID', aipo.blog.onLoadBlogDetailDialog );">${record.Title} #if($record.CommentsNum > 0)（$record.CommentsNum）#end</a></h2></div>
+				#ALtdcellfooter()
+            </table>
+    		<div class='entryText'>${record.Note}</div>
+    		<div class="entryFooter floatRight">${record.TitleDate}｜${record.OwnerName}</div>
+    	</div>
+    </div>
+    #end
+    </div>
 
-#set($flag2 = true)
-<h3>記事コメント記入履歴</h3>
-#if($result.CommentHistoryList.size() == 0)
-<div class="message" style="padding-top:2px;padding-left:12px;">コメントした記事はありません</div>
-#else
-<div class="p">
-<table class="rowTable wide">
-#foreach ($record2 in $result.CommentHistoryList)
-<tr #if($flag2) class="even" #end>
-<td width="20%" nowrap="nowrap">${record2.TitleDate}</td>
-<td width="40%"><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData("entityid",$record2.EntryId).addQueryData('view_uid',${record2.OwnerId}))','$!portlet.ID',aipo.blog.onLoadBlogCommentDialog);">${record2.Title} （${record2.CommentsNum}）</a></td>
-<td width="30%" style="padding:1px 0px 1px 5px;">
-#if ($!record2.ThemaId.toString() != "1")
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogThemaDetailScreen").addQueryData("entityid",$!record2.ThemaId))');">$!record2.ThemaName</a>
-#else
-$!record2.ThemaName
-#end
-</td>
-<td width="10%" style="padding:1px 0px 1px 5px; white-space:nowrap;"><a href="$!utils.escapeXML($!jslink.getAction('controls.Maximize',$!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1').addQueryData('view_uid',${record2.OwnerId}).addQueryData('view_month', 'none'))">${record2.OwnerName}</a></td>
-</tr>
-#if($flag2) #set($flag2 = false) #else #set($flag2 = true) #end
-#end
-</table>
-</div>
 #end

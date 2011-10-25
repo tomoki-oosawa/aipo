@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.cabinet;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.jar.Attributes;
 
@@ -207,8 +206,7 @@ public class CabinetFileWordSelectData extends
         updateUserName = updateUser.getAliasName().getValue();
       }
       rd.setUpdateUser(updateUserName);
-      rd.setUpdateDate(new SimpleDateFormat("yyyy年M月d日H時m分").format(record
-        .getUpdateDate()));
+      rd.setUpdateDate(record.getUpdateDate());
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);

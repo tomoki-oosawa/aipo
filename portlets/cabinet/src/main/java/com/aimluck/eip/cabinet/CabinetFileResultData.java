@@ -19,10 +19,12 @@
 
 package com.aimluck.eip.cabinet;
 
+import java.util.Date;
+
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
-import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -62,7 +64,10 @@ public class CabinetFileResultData implements ALData {
   private ALStringField create_date;
 
   /** 更新日 */
-  private ALStringField update_date;
+  private ALDateTimeField update_date;
+
+  /** 更新時間 */
+  private ALDateTimeField update_date_time;
 
   /** フォルダ ID */
   private ALNumberField folder_id;
@@ -89,7 +94,8 @@ public class CabinetFileResultData implements ALData {
     create_user = new ALStringField();
     update_user = new ALStringField();
     create_date = new ALStringField();
-    update_date = new ALStringField();
+    update_date = new ALDateTimeField("M月d日");
+    update_date_time = new ALDateTimeField("H:mm");
     folder_id = new ALNumberField();
     folder_name = new ALStringField();
   }
@@ -119,7 +125,7 @@ public class CabinetFileResultData implements ALData {
    * @return
    */
   public String getWbrFileName() {
-    return ALCommonUtils.replaceToAutoCR(file_name.getValue());
+    return file_name.getValue();
   }
 
   /**
@@ -211,8 +217,14 @@ public class CabinetFileResultData implements ALData {
   /**
    * @return
    */
-  public ALStringField getUpdateDate() {
-    return update_date;
+  public ALDateTimeField getUpdateDate() {
+    ALDateTimeField today = new ALDateTimeField("M月d日");
+    today.setValue(new Date());
+    if (update_date.toString().equals(today.toString())) {
+      return update_date_time;
+    } else {
+      return update_date;
+    }
   }
 
   /**
@@ -225,8 +237,12 @@ public class CabinetFileResultData implements ALData {
   /**
    * @param string
    */
-  public void setUpdateDate(String string) {
-    update_date.setValue(string);
+  public void setUpdateDate(Date date) {
+    if (date == null) {
+      return;
+    }
+    this.update_date.setValue(date);
+    this.update_date_time.setValue(date);
   }
 
   public String getPosition() {

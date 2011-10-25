@@ -27,8 +27,9 @@ CREATE TABLE eip_m_inactive_application (
 )
 ;
 CREATE SEQUENCE pk_eip_m_inactive_application INCREMENT 20 START 200;
--- 20111021
 
--- 20111021
 INSERT INTO EIP_M_MAIL_NOTIFY_CONF VALUES(NEXTVAL('pk_eip_m_mail_notify_conf'),1,25,3,NULL,now(),now());
+
+INSERT INTO EIP_T_CABINET_FOLDER_MAP VALUES(1,1,0,null);
+SELECT setval('pk_eip_t_cabinet_folder_map',1);
 -- 20111021
