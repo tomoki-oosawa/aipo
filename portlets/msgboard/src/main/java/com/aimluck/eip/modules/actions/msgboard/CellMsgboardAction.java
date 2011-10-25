@@ -42,8 +42,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class CellMsgboardAction extends MsgboardAction {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(MsgboardAction.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(MsgboardAction.class.getName());
 
   /** 返信用キー */
   private final String RESULT_ON_TOPIC_DETAIL = "resultOnTopicDetail";
@@ -235,9 +235,6 @@ public class CellMsgboardAction extends MsgboardAction {
       .getPortlet(rundata, context)
       .getPortletConfig()
       .getInitParameter("p1b-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
-      rundata,
-      context).getPortletConfig().getInitParameter("p4a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "msgboard-topic-list");
   }

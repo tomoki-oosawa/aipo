@@ -51,13 +51,11 @@ import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
-import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -69,8 +67,9 @@ public class MsgboardTopicSelectData extends
     ALData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(MsgboardTopicSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService
+      .getLogger(MsgboardTopicSelectData.class.getName());
 
   /** カテゴリ一覧 */
   private List<MsgboardCategoryResultData> categoryList;
@@ -98,6 +97,8 @@ public class MsgboardTopicSelectData extends
 
   /** 他ユーザーの作成したトピックの削除権限 */
   private boolean hasAclDeleteTopicOthers;
+
+  private String target_keyword;
 
   /**
    * 
@@ -192,8 +193,14 @@ public class MsgboardTopicSelectData extends
   @Override
   public ResultList<EipTMsgboardTopic> selectList(RunData rundata,
       Context context) {
-
     try {
+      if (MsgboardUtils.hasResetFlag(rundata, context)) {
+        MsgboardUtils.resetFilter(rundata, context, this.getClass().getName());
+        target_keyword = "";
+      } else {
+        target_keyword = MsgboardUtils.getTargetKeyword(rundata, context);
+      }
+
       SelectQuery<EipTMsgboardTopic> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
@@ -206,33 +213,8 @@ public class MsgboardTopicSelectData extends
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
-    }
-  }
 
-  private SelectQuery<EipTMsgboardTopic> getSelectQueryForSearchs(
-      RunData rundata, Context context) {
-    String search = ALEipUtils.getTemp(rundata, context, LIST_SEARCH_STR);
-    current_search = search;
-    SelectQuery<EipTMsgboardTopic> query =
-      Database.query(EipTMsgboardTopic.class);
-    query.where(Operations.or(Operations.like(
-      EipTMsgboardTopic.NOTE_PROPERTY,
-      "%" + search + "%"), Operations.like(
-      EipTMsgboardTopic.TOPIC_NAME_PROPERTY,
-      "%" + search + "%")));
-    List<EipTMsgboardTopic> queryList = query.fetchList();
-    List<Integer> resultid = new ArrayList<Integer>();
-    for (EipTMsgboardTopic item : queryList) {
-      if (item.getParentId() != 0 && !resultid.contains(item.getParentId())) {
-        resultid.add(item.getParentId());
-      } else if (!resultid.contains(item.getTopicId())) {
-        resultid.add(item.getTopicId());
-      }
     }
-    SelectQuery<EipTMsgboardTopic> q = Database.query(EipTMsgboardTopic.class);
-    q.where(Operations.in(EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, resultid));
-
-    return q;
   }
 
   /**
@@ -246,6 +228,12 @@ public class MsgboardTopicSelectData extends
   private SelectQuery<EipTMsgboardTopic> getSelectQuery(RunData rundata,
       Context context) {
 
+    if ((target_keyword != null) && (!target_keyword.equals(""))) {
+      ALEipUtils.setTemp(rundata, context, LIST_SEARCH_STR, target_keyword);
+    } else {
+      ALEipUtils.removeTemp(rundata, context, LIST_SEARCH_STR);
+    }
+
     SelectQuery<EipTMsgboardTopic> query =
       Database.query(EipTMsgboardTopic.class);
 
@@ -253,6 +241,7 @@ public class MsgboardTopicSelectData extends
       ExpressionFactory.matchExp(EipTMsgboardTopic.PARENT_ID_PROPERTY, Integer
         .valueOf(0));
     query.setQualifier(exp1);
+
     // アクセス制御
     Expression exp01 =
       ExpressionFactory.matchExp(
@@ -361,16 +350,12 @@ public class MsgboardTopicSelectData extends
       MsgboardTopicResultData rd = new MsgboardTopicResultData();
       rd.initField();
       rd.setTopicId(record.getTopicId().longValue());
-      rd.setTopicName(ALCommonUtils.compressString(
-        record.getTopicName(),
-        getStrLength()));
+      rd.setTopicName(record.getTopicName());
       rd.setCategoryId(record
         .getEipTMsgboardCategory()
         .getCategoryId()
         .longValue());
-      rd.setCategoryName(ALCommonUtils.compressString(record
-        .getEipTMsgboardCategory()
-        .getCategoryName(), getStrLength()));
+      rd.setCategoryName(record.getEipTMsgboardCategory().getCategoryName());
 
       // 公開/非公開を設定する．
       rd.setPublicFlag("T".equals(record
@@ -714,4 +699,10 @@ public class MsgboardTopicSelectData extends
     return ALStringUtil.sanitizing(getCurrentSearch());
   }
 
+  /**
+   * @return target_keyword
+   */
+  public String getTargetKeyword() {
+    return target_keyword;
+  }
 }

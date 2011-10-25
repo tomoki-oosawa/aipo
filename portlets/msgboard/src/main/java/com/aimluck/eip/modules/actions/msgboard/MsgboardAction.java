@@ -46,8 +46,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class MsgboardAction extends ALBaseAction {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(MsgboardAction.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(MsgboardAction.class.getName());
 
   /** 返信用キー */
   private final String RESULT_ON_TOPIC_DETAIL = "resultOnTopicDetail";
@@ -397,15 +397,12 @@ public class MsgboardAction extends ALBaseAction {
     VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
     MsgboardCategorySelectData listData = new MsgboardCategorySelectData();
     listData.initField();
+    listData.loadCategoryList(rundata);
     // PSMLからパラメータをロードする
     // 最大表示件数（通常時）
     listData.setRowsNum(Integer.parseInt(portlet
       .getPortletConfig()
       .getInitParameter("p1c-rows")));
-
-    listData.setStrLength(Integer.parseInt(portlet
-      .getPortletConfig()
-      .getInitParameter("p5a-strlen")));
 
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "msgboard-category-list");

@@ -83,22 +83,7 @@
         <parameter name="function_screen1" value="true" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_caption1" value="トピック追加" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_after_function1" value="aipo.msgboard.onLoadMsgboardDialog" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-	    <parameter name="p4a-strlen" value="15" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
-            <meta-info>
-                <title>トピック名表示文字数</title>
-            </meta-info>
-        </parameter>
-        <parameter name="p4a-strlen.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p4a-strlen.style.items" value="10,15,30,0" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p4a-strlen.style.values" value="10文字,15文字,30文字,制限なし" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-	    <parameter name="p5a-strlen" value="15" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
-            <meta-info>
-                <title>カテゴリ名表示文字数</title>
-            </meta-info>
-        </parameter>
-        <parameter name="p5a-strlen.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p5a-strlen.style.items" value="10,15,30,0" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p5a-strlen.style.values" value="10文字,15文字,30文字,制限なし" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
         <media-type ref="docomo_foma"/>
         <media-type ref="docomo_imode"/>
         <media-type ref="iphone"/>

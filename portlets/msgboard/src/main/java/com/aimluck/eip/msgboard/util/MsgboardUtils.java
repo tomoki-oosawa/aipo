@@ -68,25 +68,23 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 public class MsgboardUtils {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(MsgboardUtils.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(MsgboardUtils.class.getName());
 
   /** 所有者の識別子 */
   public static final String OWNER_ID = "ownerid";
 
   /** 掲示板の添付ファイルを保管するディレクトリの指定 */
-  private static final String FOLDER_FILEDIR_MSGBOARD = JetspeedResources
-    .getString("aipo.filedir", "");
+  private static final String FOLDER_FILEDIR_MSGBOARD =
+    JetspeedResources.getString("aipo.filedir", "");
 
   /** 掲示板の添付ファイルを保管するディレクトリのカテゴリキーの指定 */
-  protected static final String CATEGORY_KEY = JetspeedResources.getString(
-    "aipo.msgboard.categorykey",
-    "");
+  protected static final String CATEGORY_KEY =
+    JetspeedResources.getString("aipo.msgboard.categorykey", "");
 
   /** デフォルトエンコーディングを表わすシステムプロパティのキー */
-  public static final String FILE_ENCODING = JetspeedResources.getString(
-    "content.defaultencoding",
-    "UTF-8");
+  public static final String FILE_ENCODING =
+    JetspeedResources.getString("content.defaultencoding", "UTF-8");
 
   /** 全てのユーザーが閲覧／返信可 */
   public static final int ACCESS_PUBLIC_ALL = 0;
@@ -116,6 +114,12 @@ public class MsgboardUtils {
   public static final String STAT_VALUE_ALL = "A";
 
   public static final String MSGBOARD_PORTLET_NAME = "Msgboard";
+
+  /** 検索キーワード変数の識別子 */
+  public static final String TARGET_KEYWORD = "keyword";
+
+  /** パラメータリセットの識別子 */
+  private static final String RESET_FLAG = "reset_params";
 
   /**
    * トピックオブジェクトモデルを取得します。 <BR>
@@ -1020,6 +1024,52 @@ public class MsgboardUtils {
         uid);
     }
 
+  }
+
+  /**
+   * 表示切り替えで指定した検索キーワードを取得する．
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static String getTargetKeyword(RunData rundata, Context context) {
+    String target_keyword = null;
+    String keywordParam = rundata.getParameters().getString(TARGET_KEYWORD);
+    target_keyword = ALEipUtils.getTemp(rundata, context, TARGET_KEYWORD);
+
+    if (keywordParam == null && (target_keyword == null)) {
+      ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, "");
+      target_keyword = "";
+    } else if (keywordParam != null) {
+      ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, keywordParam.trim());
+      target_keyword = keywordParam;
+    }
+    return target_keyword;
+  }
+
+  /**
+   * 表示切り替えのリセットフラグがあるかを返す．
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static boolean hasResetFlag(RunData rundata, Context context) {
+    String resetflag = rundata.getParameters().getString(RESET_FLAG);
+    return resetflag != null;
+  }
+
+  /**
+   * フィルターを初期化する．
+   * 
+   * @param rundata
+   * @param context
+   * @param className
+   */
+  public static void resetFilter(RunData rundata, Context context,
+      String className) {
+    ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, "");
   }
 
   /**

@@ -35,8 +35,9 @@ import com.aimluck.eip.util.ALEipUtils;
 public class MsgboardCategoryListScreen extends ALVelocityScreen {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(MsgboardCategoryListScreen.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(MsgboardCategoryListScreen.class
+      .getName());
 
   /**
    * 
@@ -52,9 +53,7 @@ public class MsgboardCategoryListScreen extends ALVelocityScreen {
       listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
         rundata,
         context).getPortletConfig().getInitParameter("p1c-rows")));
-      listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
-        rundata,
-        context).getPortletConfig().getInitParameter("p5a-strlen")));
+      listData.loadCategoryList(rundata);
       listData.doViewList(this, rundata, context);
 
       String layout_template =

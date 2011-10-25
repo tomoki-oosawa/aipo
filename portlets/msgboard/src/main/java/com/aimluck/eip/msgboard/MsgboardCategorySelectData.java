@@ -60,8 +60,12 @@ public class MsgboardCategorySelectData extends
     implements ALData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(MsgboardCategorySelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(MsgboardCategorySelectData.class
+      .getName());
+
+  /** カテゴリ一覧 */
+  private List<MsgboardCategoryResultData> categoryList;
 
   /** カテゴリの総数 */
   private int categorySum;
@@ -111,6 +115,16 @@ public class MsgboardCategorySelectData extends
         ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY_OTHER);
 
     super.init(action, rundata, context);
+  }
+
+  /**
+   * 
+   * @param rundata
+   * @param context
+   */
+  public void loadCategoryList(RunData rundata) {
+    // カテゴリ一覧
+    categoryList = MsgboardUtils.loadCategoryList(rundata);
   }
 
   /**
@@ -342,6 +356,14 @@ public class MsgboardCategorySelectData extends
       throw new ALDBErrorException();
     }
     return rd;
+  }
+
+  /**
+   * 
+   * @return
+   */
+  public List<MsgboardCategoryResultData> getCategoryList() {
+    return categoryList;
   }
 
   /**
