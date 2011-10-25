@@ -19,10 +19,12 @@
 
 package com.aimluck.eip.todo;
 
+import java.util.Date;
+
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
-import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -86,7 +88,10 @@ public class ToDoResultData implements ALData {
   private ALStringField create_date;
 
   /** 更新日 */
-  private ALStringField update_date;
+  private ALDateTimeField update_date;
+
+  /** 更新時間 */
+  private ALDateTimeField update_date_time;
 
   /**
    * 期限状態（期限前/期限当日/期限後）． <br>
@@ -123,7 +128,8 @@ public class ToDoResultData implements ALData {
     state_image = new ALStringField();
     state_string = new ALStringField();
     create_date = new ALStringField();
-    update_date = new ALStringField();
+    update_date = new ALDateTimeField("M月d日");
+    update_date_time = new ALDateTimeField("H:mm");
     limit_state = new ALNumberField();
     create_user_name = new ALStringField();
     is_public = true;
@@ -142,7 +148,7 @@ public class ToDoResultData implements ALData {
    * @return
    */
   public String getCategoryName() {
-    return ALCommonUtils.replaceToAutoCR(category_name.toString());
+    return category_name.toString();
   }
 
   /**
@@ -177,7 +183,7 @@ public class ToDoResultData implements ALData {
    * @return
    */
   public String getTodoName() {
-    return ALCommonUtils.replaceToAutoCR(todo_name.toString());
+    return todo_name.toString();
   }
 
   /**
@@ -340,8 +346,14 @@ public class ToDoResultData implements ALData {
   /**
    * @return
    */
-  public ALStringField getUpdateDate() {
-    return update_date;
+  public ALDateTimeField getUpdateDate() {
+    ALDateTimeField today = new ALDateTimeField("M月d日");
+    today.setValue(new Date());
+    if (update_date.toString().equals(today.toString())) {
+      return update_date_time;
+    } else {
+      return update_date;
+    }
   }
 
   /**
@@ -354,8 +366,12 @@ public class ToDoResultData implements ALData {
   /**
    * @param string
    */
-  public void setUpdateDate(String string) {
-    update_date.setValue(string);
+  public void setUpdateDate(Date date) {
+    if (date == null) {
+      return;
+    }
+    this.update_date.setValue(date);
+    this.update_date_time.setValue(date);
   }
 
   /**

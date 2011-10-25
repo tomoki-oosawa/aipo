@@ -37,14 +37,14 @@
 #AUIrowTableWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
-#ALtdheadWide("#ALajaxsort('category_name' 'カテゴリ名' $result 'ToDoCategoryListScreen')")
-#ALtdheadThin("#ALajaxsort('user_name' 'ユーザー名' $result 'ToDoCategoryListScreen')")
+#ALtdheadW75("#ALajaxsort('category_name' 'カテゴリ名' $result 'ToDoCategoryListScreen')")
+#ALtdheadW25("#ALajaxsort('user_name' '更新者' $result 'ToDoCategoryListScreen')")
 </tr>
 #foreach ($record in $result.List)
 <tr>
 #ALtdcellAtt("<input name='check$!record.CategoryId' type='checkbox' value='$!record.CategoryId'/>" 'align="center"')
 #ALtdcellheader()
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoCategoryDetailScreen").addQueryData("entityid",$record.CategoryId))');">$!record.CategoryName</a>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoCategoryDetailScreen").addQueryData("entityid",$record.CategoryId))');"><div>$!record.CategoryName</div></a>
 #ALtdcellfooter()
 #ALtdcell($record.userName)
 </tr>

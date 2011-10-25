@@ -211,10 +211,6 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
    */
   private SelectQuery<EipTTodo> getSelectQuery(RunData rundata, Context context) {
     SelectQuery<EipTTodo> query = Database.query(EipTTodo.class);
-    Expression exp0 =
-      ExpressionFactory.matchExp(EipTTodo.PUBLIC_FLAG_PROPERTY, "T");
-    query.setQualifier(exp0);
-
     Expression exp1;
     if ((target_user_id != null)
       && (!target_user_id.equals(""))
@@ -261,6 +257,21 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
         ExpressionFactory.matchExp(EipTTodo.STATE_PROPERTY, Short
           .valueOf((short) 100));
       query.andQualifier(exp4);
+    }
+
+    // 公開ならば無条件に閲覧
+    // 非公開ならuserIDが一致していれば閲覧可能
+    Expression exp5 =
+      ExpressionFactory.matchExp(EipTTodo.PUBLIC_FLAG_PROPERTY, "T");
+    if (target_user_id != null
+      && (target_user_id.equals("all") || target_user_id.equals(login_user_id))) {
+      Expression exp6 =
+        ExpressionFactory.matchExp(EipTTodo.PUBLIC_FLAG_PROPERTY, "F");
+      Expression exp7 =
+        ExpressionFactory.matchExp(EipTTodo.USER_ID_PROPERTY, login_user_id);
+      query.andQualifier(exp5.orExp(exp6.andExp(exp7)));
+    } else {
+      query.andQualifier(exp5);
     }
 
     return buildSelectQueryForFilter(query, rundata, context);
@@ -312,8 +323,7 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
       rd.setPriorityString(ToDoUtils.getPriorityString(record
         .getPriority()
         .intValue()));
-      rd.setUpdateDate(ALDateUtil
-        .format(record.getUpdateDate(), "yyyy年M月d日（E）"));
+      rd.setUpdateDate(record.getUpdateDate());
 
       // 公開/非公開を設定する．
       rd.setPublicFlag("T".equals(record.getPublicFlag()));
@@ -407,8 +417,7 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
       rd.setAddonScheduleFlg("T".equals(record.getAddonScheduleFlg()));
       rd.setCreateDate(ALDateUtil
         .format(record.getCreateDate(), "yyyy年M月d日（E）"));
-      rd.setUpdateDate(ALDateUtil
-        .format(record.getUpdateDate(), "yyyy年M月d日（E）"));
+      rd.setUpdateDate(record.getUpdateDate());
 
       // 自身のToDoかを設定する
       rd.setIsSelfTodo(record.getUserId() == login_user_id);

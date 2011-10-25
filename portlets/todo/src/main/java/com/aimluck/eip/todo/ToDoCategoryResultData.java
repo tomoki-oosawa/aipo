@@ -77,7 +77,7 @@ public class ToDoCategoryResultData implements ALData {
    * @return
    */
   public String getCategoryName() {
-    return ALCommonUtils.replaceToAutoCR(category_name.toString());
+    return category_name.toString();
   }
 
   /**

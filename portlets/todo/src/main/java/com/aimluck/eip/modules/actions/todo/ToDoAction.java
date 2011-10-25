@@ -28,6 +28,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.todo.ToDoCategoryFormData;
@@ -89,6 +90,16 @@ public class ToDoAction extends ALBaseAction {
       .getPortletConfig()
       .getInitParameter("p1d-categories")
       .trim());
+    ALEipUtils.setTemp(
+      rundata,
+      context,
+      LIST_SORT_STR,
+      EipTTodo.UPDATE_DATE_PROPERTY);
+    ALEipUtils.setTemp(
+      rundata,
+      context,
+      LIST_SORT_TYPE_STR,
+      ALEipConstants.LIST_SORT_TYPE_DESC);
 
     ToDoSelectData listData = new ToDoSelectData();
     listData.initField();
