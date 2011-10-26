@@ -21,15 +21,13 @@
 <!-- Start Contents Area -->
 <div id="auiContentsArea"><div id="auiContentsAreaInner">
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
-<div id="listmessageDiv"></div>
-#*
-<div class="auiSummaryMeta clearfix">
-<form class="auiSearch floatLeft" style="margin-right:1em;">
-<input class="text floatLeft" type="text" name="q" id="q" style="margin-right:5px;" #if ($!result.CurrentSearch) value="$!result.CurrentSearchWithSanitize" #end>
-<a class="auiButtonSearch floatLeft" onclick="aimluck.io.setHiddenValue(this);return aipo.workflow.onChangeSearch('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID))','$!portlet.ID');">検索</a>
-</form>
-</div>
-*#
+##<div id="listmessageDiv"></div>
+##<div class="auiSummaryMeta clearfix">
+##<form class="auiSearch floatLeft" style="margin-right:1em;">
+##<input class="text floatLeft" type="text" name="q" id="q" style="margin-right:5px;" #if ($!result.CurrentSearch) value="$!result.CurrentSearchWithSanitize" #end>
+##<a class="auiButtonSearch floatLeft" onclick="aimluck.io.setHiddenValue(this);return aipo.workflow.onChangeSearch('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID))','$!portlet.ID');">検索</a>
+##</form>
+##</div>
 #if($result.List.size() == 0)
 <div class="auiSummaryMeta clearfix">
 <div class="message">指定された条件に該当する依頼はありません。</div>
