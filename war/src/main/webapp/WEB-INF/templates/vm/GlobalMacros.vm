@@ -150,6 +150,10 @@
 <th class="w33">$text</th>
 #end
 
+#macro(ALtdheadW40 $text)
+<th class="w40">$text</th>
+#end
+
 #macro(ALtdheadW50 $text)
 <th class="w50">$text</th>
 #end
@@ -270,6 +274,12 @@
 <input type="hidden" name="secid" value="$secid" />
 #end
 
+#macro(ALajaxlistformheaderonsubmitOption $name $onsubmit $class $style)
+<form name="form$!portlet.ID" id="form$!portlet.ID" action="javascript:void(0)" method="post" onsubmit="return $onsubmit" class="$class" styel="$style">
+<input type="hidden" name="_name" value="$name" />
+<input type="hidden" name="secid" value="$secid" />
+#end
+
 #macro(ALformfooter)
 </form>
 #end
@@ -296,6 +306,10 @@
 
 #macro(ALsubmit $name $value)
 <input name="$name" class="button" type="submit" value="$value" onclick="aimluck.io.setHiddenValue(this);" />
+#end
+
+#macro(ALsubmitOption $name $value $option)
+<input name="$name" class="button $option" type="submit" value="$value" onclick="aimluck.io.setHiddenValue(this);" />
 #end
 
 #macro(ALsubmitJSAuiButton $name $value $js)
@@ -326,8 +340,16 @@
 <input name="$name" class="button" type="button" value="$value" onclick="aimluck.io.deleteSubmitReturn(this, '$rtn');" />
 #end
 
+#macro(ALajaxbuttonCheckboxActionOption $name $class $url $indicator_id $portlet_id $rt)
+<input name="ajaxbuttonCheckboxAction" class="button $class" type="button" value="$name" onclick="aimluck.io.ajaxCheckboxActionSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $rt);" />
+#end
+
 #macro(ALajaxbuttonCheckboxAction $name $url $indicator_id $portlet_id $rt)
 <input name="ajaxbuttonCheckboxAction" class="button" type="button" value="$name" onclick="aimluck.io.ajaxCheckboxActionSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $rt);" />
+#end
+
+#macro(ALajaxbuttonCheckboxDeleteOption $name $class $url $indicator_id $portlet_id $rt)
+<input name="ajaxbuttonCheckboxDelete" class="button $class" type="button" value="$name" onclick="aimluck.io.ajaxCheckboxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $rt);" />
 #end
 
 #macro(ALajaxbuttonCheckboxDelete $name $url $indicator_id $portlet_id $rt)
@@ -539,6 +561,82 @@
 #end
   </div>
   <div class="alignright small" style="margin-top:5px;">$from 件 ～ $to 件表示 [ 計 $count 件 ]</div>
+</div>
+#end
+
+#macro(ALajaxpageviewdivless $screen $result)
+#set($pageRange = 5)
+#set($pageTrimRange = 2)
+#set($pages = $result.PagesNum)
+#set($currentPage = $result.CurrentPage)
+#set($rowsNum = $result.RowsNum)
+#set($count = $result.Count)
+#set($from = ($currentPage - 1 ) * $rowsNum + 1)
+#if ( $currentPage * $rowsNum > $result.Count)
+#set($to = $result.Count )
+#else
+#set($to = $currentPage * $rowsNum )
+#end
+
+#set($nextLeftPage = 1 )
+#set($nextRightPage = $pages)
+#if($pages < ${pageRange} + ${pageTrimRange} + ${pageTrimRange} + 1)
+#set($showLeftRest = false)
+#set($showRightRest = false)
+#else
+## show left and right
+#set($showLeftRest = true)
+#set($showRightRest = true)
+#if($currentPage > ${pageRange})
+#set($nextLeftPage = $currentPage - $pageTrimRange )
+#if((${currentPage} + ${pageRange}) > ${pages})
+#if(${currentPage} - ${pageTrimRange} > ${pages} - ${pageRange}) #set($nextLeftPage = ${pages} - ${pageRange} + 1) #else #set($nextLeftPage = ${currentPage} - ${pageTrimRange}) #end
+#set($nextRightPage = ${pages})
+#else
+#set($nextRightPage = $currentPage + ($pageTrimRange / 2) + 1)
+#end
+#else
+#if(($currentPage + ${pageTrimRange}) < ${pageRange})
+#set($nextRightPage = $pageRange )
+#else
+#if(${currentPage} + ${pageRange} > ${pages}) #set($nextRightPage = ${pages}) #else #set($nextRightPage = $currentPage + ${pageTrimRange}) #end
+#end
+#end
+#end
+<div class="floatRight">
+#if ($pages > 1)
+  <div class="count">$from ～ $to 件 / 計 $count 件</div>
+  <div class="auiSelectButton floatLeft">
+    <ul class="floatLeft">
+#if($currentPage > 1) #set($pre = $currentPage - 1)
+      <li title="前へ">
+        <a title="前へ" class="first arrow" style="width:30px" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre))', '$!portlet.ID');">
+            <span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt="前へ"></span>
+        </a>
+      </li>
+#else
+      <li title="前へ" class="disabled">
+        <a title="前へ" class="first arrow" style="width:30px" href="javascript:void(0);">
+            <span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt="前へ"></span>
+        </a>
+      </li>
+#end
+#if($pages > $currentPage) #set($next = $currentPage + 1)
+      <li title="次へ" style="margin-right:5px;">
+        <a class="last arrow" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next))', '$!portlet.ID');">
+            <span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt="次へ"></span>
+        </a>
+      </li>
+#else
+      <li title="次へ" style="margin-right:5px;" class="disabled">
+        <a class="last arrow" href="javascript:void(0);">
+          <span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt="次へ"></span>
+        </a>
+      </li>
+#end
+    </ul>
+  </div>
+#end
 </div>
 #end
 
@@ -1653,3 +1751,24 @@ $item.get(0)
 <input type="hidden" name="secid" value="$secid" />
 #end
 
+#macro(ALnoteResultList $msg_type)
+#if($msg_type == "0")
+<div class="message">伝言メモを送信しました。</div>
+#elseif($msg_type == "1")
+<div class="message">伝言メモを送信しました。<br/>
+<span class="errmsg">宛先ユーザーのパソコン用メールアドレスが未設定のため、宛先ユーザーのパソコンに通知できませんでした。</span></div>
+#elseif($msg_type == "2")
+<div class="message">伝言メモを送信しました。<br/>
+<span class="errmsg">宛先ユーザーの携帯用メールアドレスが未設定のため、宛先ユーザーの携帯電話に通知できませんでした。</span></div>
+#elseif($msg_type == "3")
+<div class="message">伝言メモを送信しました。<br/>
+<span class="errmsg">宛先ユーザーのパソコン用と携帯用のメールアドレスが未設定のため、<br/>宛先ユーザーのパソコンと携帯電話に通知できませんでした。</span></div>
+#elseif($msg_type == "4")
+<div class="message">伝言メモを送信しました。<br/>
+<span class="errmsg">宛先ユーザーが存在しないため、伝言メモを送信できませんでした。</span></div>
+#elseif($msg_type == "5")
+<div class="message">伝言メモを送信しました。<br/>
+<span class="errmsg">管理者のメールアカウントが未設定のため、メールでの通知はできませんでした。</span>
+</div>
+#end
+#end

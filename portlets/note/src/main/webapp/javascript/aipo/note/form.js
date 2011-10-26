@@ -91,4 +91,12 @@ aipo.note.hideDialog = function() {
        arrDialog.hide();
     }
     aipo.portletReload('note');
-};
+}
+
+aipo.note.onSubmitFilter=function (baseuri,portlet_id){
+	var search = encodeURIComponent(dojo.byId("q").value);
+	baseuri+="?template=NoteListScreen";
+	baseuri+="&search="+search;
+	aipo.viewPage(baseuri,portlet_id);
+}
+;

@@ -21,19 +21,6 @@
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
-dojo.require("aimluck.widget.Menu");
-
-dojo.addOnLoad(function () {
-
-    var subMenu =
-        [
-		    {   caption: "メモ一覧を見る", iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doNote_list','1')"    },
-			{   caption: "メモを追加する", iconClass: "menuBarIconAdd", url:"javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","NoteFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.note.onLoadNoteDialog);"    }
-        ];
-
-    var menubar = new aimluck.widget.Menubar({id: "mbar", items: subMenu}, "portletMenu");
-
-});
 
 //]]>
 </script> 
