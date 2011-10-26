@@ -30,3 +30,7 @@ CREATE TABLE `eip_m_inactive_application` (
 -- 20111021
 INSERT INTO eip_m_mail_notify_conf VALUES(null,1,25,3,NULL,now(),now());
 -- 20111021
+
+-- 20111025
+INSERT INTO eip_t_cabinet_folder_map VALUES(null,1,0,NULL);
+-- 20111025

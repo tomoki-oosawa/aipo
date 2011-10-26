@@ -392,6 +392,8 @@ CREATE TABLE `eip_t_cabinet_folder_map` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+INSERT INTO eip_t_cabinet_folder_map VALUES(1,1,0,NULL);
+
 CREATE TABLE `eip_t_common_category` (
   `common_category_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,

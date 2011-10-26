@@ -33,6 +33,5 @@ INSERT INTO EIP_M_MAIL_NOTIFY_CONF VALUES(NEXTVAL('pk_eip_m_mail_notify_conf'),1
 -- 20111021
 
 -- 20111025
-INSERT INTO EIP_T_CABINET_FOLDER_MAP VALUES(1,1,0,null);
-SELECT setval('pk_eip_t_cabinet_folder_map',1);
+INSERT INTO EIP_T_CABINET_FOLDER_MAP VALUES(NEXTVAL('pk_eip_t_cabinet_folder_map'),1,0,null);
 -- 20111025
