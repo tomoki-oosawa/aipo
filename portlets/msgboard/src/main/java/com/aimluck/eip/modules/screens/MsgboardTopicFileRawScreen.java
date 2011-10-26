@@ -24,8 +24,10 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardFile;
+import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 
 /**
  * 掲示板トピックの添付ファイルの一覧を処理するクラスです。
@@ -44,8 +46,40 @@ public class MsgboardTopicFileRawScreen extends FileuploadRawScreen {
   @Override
   protected void doOutput(RunData rundata) throws Exception {
     try {
+      doCheckAclPermission(
+        rundata,
+        ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC_OTHER,
+        ALAccessControlConstants.VALUE_ACL_LIST);
+    } catch (ALPermissionException e) {
+      try {
+        doCheckAclPermission(
+          rundata,
+          ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC,
+          ALAccessControlConstants.VALUE_ACL_LIST);
+      } catch (ALPermissionException ex) {
+        throw new Exception();
+      }
+    }
+    try {
+      doCheckAclPermission(
+        rundata,
+        ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY_OTHER,
+        ALAccessControlConstants.VALUE_ACL_LIST);
+    } catch (ALPermissionException e) {
+      try {
+        doCheckAclPermission(
+          rundata,
+          ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY,
+          ALAccessControlConstants.VALUE_ACL_LIST);
+      } catch (ALPermissionException ex) {
+        throw new Exception();
+      }
+    }
+    try {
       EipTMsgboardFile msgboardfile =
         MsgboardUtils.getEipTMsgboardFile(rundata);
+
+      doFileCheckView(rundata, msgboardfile);
 
       super.setFilePath(MsgboardUtils.getSaveDirPath(
         Database.getDomainName(),
@@ -53,6 +87,8 @@ public class MsgboardTopicFileRawScreen extends FileuploadRawScreen {
         + msgboardfile.getFilePath());
       super.setFileName(msgboardfile.getFileName());
       super.doOutput(rundata);
+    } catch (ALPermissionException e) {
+      throw new Exception();
     } catch (Exception e) {
       logger.error("[ERROR]", e);
     }

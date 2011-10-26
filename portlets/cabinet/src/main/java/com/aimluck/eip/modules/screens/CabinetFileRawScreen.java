@@ -26,7 +26,9 @@ import org.apache.turbine.util.RunData;
 import com.aimluck.eip.cabinet.util.CabinetUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 
 /**
  * 共有フォルダのファイルの一覧を処理するクラスです。 <br />
@@ -57,10 +59,20 @@ public class CabinetFileRawScreen extends FileuploadRawScreen {
   protected void doOutput(RunData rundata) throws Exception {
 
     try {
+      doCheckAclPermission(
+        rundata,
+        ALAccessControlConstants.POERTLET_FEATURE_CABINET_FILE,
+        ALAccessControlConstants.VALUE_ACL_LIST);
+    } catch (ALPermissionException e) {
+      throw new Exception();
+    }
+    try {
       int fileindex = rundata.getParameters().getInt(ALEipConstants.ENTITY_ID);
 
       EipTCabinetFile cabinetfile =
         Database.get(EipTCabinetFile.class, Integer.valueOf(fileindex));
+
+      doFileCheckView(rundata, cabinetfile);
 
       super.setFilePath(CabinetUtils.getSaveDirPath(Database.getDomainName())
         + cabinetfile.getFilePath());
@@ -70,6 +82,8 @@ public class CabinetFileRawScreen extends FileuploadRawScreen {
       cabinetfile.setCounter(cabinetfile.getCounter() + 1);
       Database.commit();
 
+    } catch (ALPermissionException e) {
+      throw new Exception();
     } catch (Exception e) {
       logger.error("[ERROR]" + e);
     }
