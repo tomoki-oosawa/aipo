@@ -25,7 +25,9 @@ import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.blog.util.BlogUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
+import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 
 /**
  * ブログエントリーの添付ファイルの一覧を処理するクラスです。 <br />
@@ -36,6 +38,8 @@ public class BlogFileRawScreen extends FileuploadRawScreen {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(BlogFileRawScreen.class.getName());
 
+  private int userid;
+
   /**
    * 
    * @param rundata
@@ -43,6 +47,21 @@ public class BlogFileRawScreen extends FileuploadRawScreen {
    */
   @Override
   protected void doOutput(RunData rundata) throws Exception {
+    try {
+      doCheckAclPermission(
+        rundata,
+        ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER,
+        ALAccessControlConstants.VALUE_ACL_LIST);
+    } catch (ALPermissionException e) {
+      try {
+        doCheckAclPermission(
+          rundata,
+          ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_SELF,
+          ALAccessControlConstants.VALUE_ACL_LIST);
+      } catch (ALPermissionException ex) {
+        throw new Exception();
+      }
+    }
     try {
       EipTBlogFile blogfile = BlogUtils.getEipTBlogFile(rundata);
 
