@@ -29,55 +29,51 @@
 #set ($categoryEtc = false)
 ## ---------------------------------------------------------------------------
 <!-- Start Contents Area -->
-<div id="auiContentsArea"><div id="auiContentsAreaInner">
+#AUIcontentsAreaHeader()
+<div class="auiSummaryMeta clearfix">
+<form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
+<input type="hidden" name="template" value="MsgboardTopicListScreen"/>
+<input class="text floatLeft" type="text" name="keyword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.targetKeyword"/>
+<a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">検索</a>
+</form>
+<div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
+</div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
-
-<form name="form$!portlet.ID" id="form$!portlet.ID" action="javascript:void(0)" method="post" onsubmit="return aipo.msgboard.onChangeSearch('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID))','$!portlet.ID');" class="auiSearch floatLeft" style="margin-right:1em;">
-<input type="hidden" name="_name" value="$name" />
-<input type="hidden" name="secid" value="$secid" />
-
-<div class="auiSummaryMeta clearfix">
-<input class="text floatLeft" type="text" name="q" id="q" style="margin-right:5px;" #if ($!result.CurrentSearch) value="$!result.CurrentSearchWithSanitize" #end>
-<a class="auiButtonSearch floatLeft" onclick="aimluck.io.setHiddenValue(this);return aipo.msgboard.onChangeSearch('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID))','$!portlet.ID');">検索</a>
-#if($result.List && $result.List.size() > 0)
-#AUIajaxpageview('MsgboardTopicListScreen' $result)
-#end
-</div>
-#if(!$result.List || $result.List.size() == 0)
+#ALajaxlistformheader('Msgboard')
+#if($result.List.size() == 0)
 <div class="message">指定された条件に該当するトピックはありません。</div>
 #else
+<div class="auiSummaryMeta clearfix">
+#AUIajaxpageview('MsgboardTopicListScreen' $result)
+</div>
+#AUIsearchresult($!result.targetKeyword)
 #AUIrowTableWide()
 <tr>
 #ALtdhead("#ALajaxsort('topic_name' 'トピック名' $result 'MsgboardTopicListScreen')")
-#ALtdheadW10("#ALajaxsort('category_name' 'カテゴリ' $result 'MsgboardTopicListScreen')")
-#ALtdheadW10("#ALajaxsort('owner_name' '作成者' $result 'MsgboardTopicListScreen')")
-#ALtdheadW10("#ALajaxsort('update_user' '更新者' $result 'MsgboardTopicListScreen')")
-#ALtdheadW10("#ALajaxsort('update_date' '更新日' $result 'MsgboardTopicListScreen')")
+#ALtdheadAtt("#ALajaxsort('category_name' 'カテゴリ' $result 'MsgboardTopicListScreen')" 'style="width:10em"')
+#ALtdheadAtt("#ALajaxsort('owner_name' '作成者' $result 'MsgboardTopicListScreen')" 'style="width:8em"')
+#ALtdheadAtt("#ALajaxsort('update_user' '更新者' $result 'MsgboardTopicListScreen')" 'style="width:8em"')
+#ALtdheadAtt("#ALajaxsort('update_date' '更新日' $result 'MsgboardTopicListScreen')" 'style="width:6em"')
 </tr>
 #foreach ($record in $result.List)
 <tr>
 #ALtdcellheader()
 <div>
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicDetailScreen").addQueryData("entityid",$record.TopicId))','$!portlet.ID',aipo.msgboard.onLoadMsgboardDialog);">$!record.TopicName  #if($record.ReplyCount.toString() != "0")（$record.ReplyCount）#end</a>
-#if($record.isNew()) &nbsp;&nbsp;<img src="images/msgboard/msgboard_new_topic.gif" alt="新着" title="新着"> #end
 </div>
 #ALtdcellfooter()
 #ALtdcellheader()
 <div>
-#if ($!record.CategoryId.toString() != "1")
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardCategoryDetailScreen").addQueryData("entityid",$!record.CategoryId))');">$!record.CategoryName</a>
+$!record.CategoryName
 #if(! ${record.isPublic()})
 <img class="img_icon" src="images/msgboard/msgboard_secret.gif" alt="非公開" title="非公開" />
 #end
-#else
-$!record.CategoryName
-#end
 </div>
 #ALtdcellfooter()
-#ALtdcellAtt("$!{record.OwnerName}" 'style="white-space: nowrap;"')
-#ALtdcellAtt("$!{record.UpdateUser}" 'style="white-space: nowrap;"')
-#ALtdcellAtt("$!{record.UpdateDate.Month}月$!{record.UpdateDate.Day}日$!{record.UpdateDate.Hour}時$!{record.UpdateDate.Minute}分" 'style="white-space: nowrap;"')
+#ALtdcellAtt("$!{record.OwnerName}" 'nowrap="nowrap"')
+#ALtdcellAtt("$!{record.UpdateUser}" 'nowrap="nowrap"')
+#ALtdcellAtt("$!{record.UpdateDate}" 'class="right" nowrap="nowrap"')
 </tr>
 #end
 #AUItablefooter()
@@ -86,7 +82,7 @@ $!record.CategoryName
 </div>
 #end
 #ALformfooter()
-</div></div>
+#AUIcontentsAreaFooter()
 <!-- END Contents Area -->
 
 #parse("/portlets/html/ja/msgboard-widgets.vm")

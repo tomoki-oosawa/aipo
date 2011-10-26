@@ -183,10 +183,3 @@ aipo.msgboard.ajaxDeleteSubmit = function(button, url, indicator_id, portlet_id,
     aimluck.io.submit(button.form, indicator_id, portlet_id, receive);
   }
 }
-
-aipo.msgboard.doKeywordSearch = function(baseuri, portlet_id) {
-    var keyword = encodeURIComponent(dojo.byId("q"+portlet_id).value);
-    baseuri+="?template=MsgboardTopicListScreen";
-    baseuri+="&keyword="+keyword;
-    aipo.viewPage(baseuri,portlet_id);
-}

@@ -476,6 +476,41 @@ aimluck.io.switchCheckbox = function(checkbox) {
 }
 
 
+aimluck.io.postViewPage = function(form, portlet_id, indicator_id){
+	aimluck.io.disableForm(form, true);
+
+    var obj_indicator = dojo.byId(indicator_id + portlet_id);
+    if(obj_indicator){
+       dojo.style(obj_indicator, "display" , "");
+    }
+	dojo.xhrPost({
+        url: form.action,
+        timeout: 30000,
+        form: form,
+        encoding: "utf-8",
+        handleAs: "text",
+        headers: { X_REQUESTED_WITH: "XMLHttpRequest" },
+        load: function (response, ioArgs){
+            var html = response;
+            obj_indicator = dojo.byId(indicator_id + portlet_id);
+            if(obj_indicator){
+               dojo.style(obj_indicator, "display" , "none");
+            }
+
+            if (html != "") {
+                aimluck.io.disableForm(form, false);
+                var portlet = dojo.byId("portlet_" + portlet_id);
+                if(portlet){
+                	portlet.innerHTML = html;
+                }
+            }
+        },
+        error: function (error) {
+        }
+    });
+}
+
+
 }
 
 }});
