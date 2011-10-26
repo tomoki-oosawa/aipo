@@ -33,7 +33,7 @@
 <div class="message">『申請経路を追加する』 ボタンを押して、追加してください。 </div>
 #else
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
-#ALajaxlistformheader('カテゴリ')
+#ALajaxlistformheader('申請経路')
 #ALajaxpageview('WorkflowRouteListScreen' $result)
 #ALtableheaderWide()
 <tr>

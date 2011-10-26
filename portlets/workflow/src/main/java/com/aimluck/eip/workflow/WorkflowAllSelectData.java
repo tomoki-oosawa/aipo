@@ -294,6 +294,7 @@ public class WorkflowAllSelectData extends
       rd.setStateString(order + "/" + (size - 1));
 
       rd.setLastUpdateUser(lastUpdateUser);
+      rd.setCreateDateTime(record.getCreateDate());
       rd.setCreateDate(WorkflowUtils.translateDate(
         record.getCreateDate(),
         "yyyy年M月d日H時m分"));

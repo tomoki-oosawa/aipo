@@ -1,0 +1,102 @@
+﻿#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+## ---------------------------------------------------------------------------
+#set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowFormScreen").addQueryData("entityid","new")))
+## ---------------------------------------------------------------------------
+<div id="auiWidgetsArea">
+<div class="auiWidget clearfix">
+#AUIbuttonAction("依頼を作成する" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.workflow.onLoadWorkflowDialog);")
+</div>
+
+<div class="auiWidget clearfix"><ul>
+<li>
+<span>あなた宛の依頼</span>
+<ul>
+#if($!result.currentTab == 'unconfirmed')
+<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("tab","unconfirmed"))','$!portlet.ID');">未確認</a></li>
+#else
+<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("tab","unconfirmed"))','$!portlet.ID');">未確認</a></li>
+#end
+#if($!result.currentTab == 'confirmed')
+<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("tab","confirmed"))','$!portlet.ID');">確認済み</a></li>
+#else
+<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("tab","confirmed"))','$!portlet.ID');">確認済み</a></li>
+#end
+#if($!result.currentTab == 'completed')
+<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("tab","completed"))','$!portlet.ID');">完了</a></li>
+#else
+<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("tab","completed"))','$!portlet.ID');">完了</a></li>
+#end
+</ul>
+</li>
+
+<li>
+<span>作成した依頼</span>
+<ul>
+#if(($!result.currentTab == 'unfinished') && !($all_flg))
+#set($all_flg=false)
+<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("tab","unfinished"))','$!portlet.ID');">未完了</a></li>
+#else
+<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("tab","unfinished"))','$!portlet.ID');">未完了</a></li>
+#end
+#if(($!result.currentTab == 'finished') && !($all_flg))
+#set($all_flg=false)
+<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("tab","finished"))','$!portlet.ID');">完了</a></li>
+#else
+<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("tab","finished"))','$!portlet.ID');">完了</a></li>
+#end
+</ul>
+</li>
+
+#if($!result.hasAuthorityOther())
+<li>
+<span>すべての依頼</span>
+<ul>
+#if(($!result.currentTab == 'unfinished') && ($all_flg))
+#set($all_flg=true)
+<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("alltab","unfinished").addQueryData('eventSubmit_doWorkflow_list_all','1'))','$!portlet.ID');">未完了</a></li>
+#else
+<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("alltab","unfinished").addQueryData('eventSubmit_doWorkflow_list_all','1'))','$!portlet.ID');">未完了</a></li>
+#end
+#if(($!result.currentTab == 'finished') && ($all_flg))
+#set($all_flg=true)
+<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("alltab","finished").addQueryData('eventSubmit_doWorkflow_list_all','1'))','$!portlet.ID');">完了</a></li>
+#else
+<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("alltab","finished").addQueryData('eventSubmit_doWorkflow_list_all','1'))','$!portlet.ID');">完了</a></li>
+#end
+</ul>
+</li>
+#end
+
+
+
+</ul></div>
+
+<div class="auiWidget clearfix">
+<form class="auiForm">
+<select class = "w99" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowListScreen').addQueryData("filter","").addQueryData("filtertype","category"))">すべての分類</option>
+#foreach( $record in $result.CategoryList )
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowListScreen').addQueryData("filter",$!record.CategoryId).addQueryData("filtertype","category"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected #end>$!record.CategoryName</option>
+#end
+</select></form></div>
+
+</div>
+

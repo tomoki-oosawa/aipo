@@ -58,6 +58,8 @@ public class WorkflowListScreen extends WorkflowScreen {
         context).getPortletConfig().getInitParameter("p3a-strlen")));
       listData.doViewList(this, rundata, context);
 
+      context.put("all_flg", false);
+
       String layout_template = "portlets/html/ja/ajax-workflow-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {

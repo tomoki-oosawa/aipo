@@ -70,6 +70,12 @@ public class WorkflowResultData implements ALData {
   /** 登録日 */
   protected ALStringField create_date;
 
+  /** 登録日 */
+  protected ALDateTimeField createDate;
+
+  /** 登録日 */
+  protected ALDateTimeField createDateTime;
+
   /** 最終閲覧者名 */
   protected ALStringField last_update_user;
 
@@ -102,12 +108,16 @@ public class WorkflowResultData implements ALData {
     progress = new ALStringField();
     price = new ALNumberField();
     create_date = new ALStringField();
+
     last_update_user = new ALStringField();
     client_name = new ALStringField();
     attachmentFileList = new ArrayList<FileuploadBean>();
 
     updateDate = new ALDateTimeField("M月d日");
     updateDateTime = new ALDateTimeField("H:mm");
+
+    createDate = new ALDateTimeField("M月d日");
+    createDateTime = new ALDateTimeField("H:mm");
   }
 
   /**
@@ -321,6 +331,24 @@ public class WorkflowResultData implements ALData {
       return updateDateTime;
     } else {
       return updateDate;
+    }
+  }
+
+  public void setCreateDateTime(Date date) {
+    if (date == null) {
+      return;
+    }
+    this.createDate.setValue(date);
+    this.createDateTime.setValue(date);
+  }
+
+  public ALDateTimeField getCreateDateTime() {
+    ALDateTimeField today = new ALDateTimeField("M月d日");
+    today.setValue(new Date());
+    if (createDate.toString().equals(today.toString())) {
+      return createDateTime;
+    } else {
+      return createDate;
     }
   }
 }

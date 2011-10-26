@@ -282,3 +282,11 @@ aipo.workflow.getJsonDataOne = function(rtnData) {
 	return jsonData;
 }
 
+aipo.workflow.onChangeFilter=aipo.workflow.onChangeSearch=function (baseuri,portlet_id){
+	var search = encodeURIComponent(dojo.byId("q").value);
+	baseuri+="?template=WorkflowListScreen";
+	baseuri+="&filter="+dojo.byId("topic").value;
+	baseuri+="&filtertype=category";
+	baseuri+="&search="+search;
+	aipo.viewPage(baseuri,portlet_id);
+}

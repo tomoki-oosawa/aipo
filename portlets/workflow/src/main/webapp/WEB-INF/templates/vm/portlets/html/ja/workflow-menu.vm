@@ -18,45 +18,4 @@
  *#
 
 ## ---------------------------------------------------------------------------
-<script language="JavaScript" type="text/javascript">
-//<![CDATA[
 
-dojo.require("aimluck.widget.Menu");
-
-dojo.addOnLoad(function () {
-
-	var subMenu =
-        [
-            {
-                caption: "確認依頼を見る",
-                iconClass: "menuBarIconList",
-                url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWorkflow_list','1').addQueryData('submenu', 'requested')"
-            },
-            {
-                caption: "作成分依頼を見る",
-                iconClass: "menuBarIconList",
-                url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWorkflow_list','1').addQueryData('submenu', 'created')" 
-            },
-            {
-                caption: "依頼を追加する",
-                iconClass: "menuBarIconAdd",
-                url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.workflow.onLoadWorkflowDialog);"
-            }
-			#if($!result.hasAuthorityOther())
-            ,{
-                caption: "全依頼を見る",
-                iconClass: "menuBarIconList",
-                url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWorkflow_list_all','1')"
-            }
-            #end
-		];
-	
-    if(aipo.workflow.menuSelected == "undefined"){
-      aipo.workflow.menuSelected = -1;  
-    }
-    var menubar = new aimluck.widget.Menubar({id: "mbar", items: subMenu, selectedIndex:aipo.workflow.menuSelected}, "portletMenu");
-
-});
-
-//]]>
-</script> 
