@@ -31,14 +31,15 @@
 ##set ($tabs = [["受信履歴", "received_notes", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteListScreen').addQueryData('tab','received_notes')"], ["送信履歴", "sent_notes", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteListScreen').addQueryData('tab','sent_notes')"]])
 #if ($!result.currentTab == 'received_notes')
 #set($colcount = 8)
+#set ($isReceive = true)
 #else
 #set($colcount = 7)
+#set ($isReceive = false)
 #end
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
 
-<div id="auiContentsArea">
-<div id="auiContentsAreaInner">
+#AUIcontentsAreaHeader()
 
 ##<div class="auiSummaryMeta clearfix">
 ##ALajaxlistformheaderonsubmitOption('note_ajaxsearch' "aipo.note.onSubmitFilter('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID))','$!portlet.ID');" 'auiSearch floatLeft' 'margin-right:1em;')
@@ -55,52 +56,42 @@
 #ALajaxlistformheader('伝言メモ')
 #if($result.List.size()<=0)
 <div class="message">
-#if($!result.currentTab == "received_notes") 受信した伝言メモはありません。#else 送信した伝言メモはありません。 #end
+#if($isReceive) 受信した伝言メモはありません。#else 送信した伝言メモはありません。 #end
 </div>
 #else
 
-<div class="auiSummaryMeta clearfix">
+#AUISummaryDiv()
 <div class="floatLeft">
-#if($!result.currentTab == "received_notes")
-#ALajaxbuttonCheckboxActionOption('既読にする' 'auiButton' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_complete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
-#ALajaxbuttonCheckboxDeleteOption('削除する' 'auiButton' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
+#if($isReceive)
+#AUIajaxbuttonCheckboxAction('既読にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_complete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
 #else
-#ALajaxbuttonCheckboxDeleteOption('削除する' 'auiButton' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
 #end
 </div>
-#ALajaxpageviewdivless('NoteListScreen' $result)
-</div>
+#AUIajaxpageview('NoteListScreen' $result)
+#AUISummaryDivfooter()
 
-<table class="auiRowTable wide">
-<tbody>
+#AUIrowTableWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
-#if ($!result.currentTab == 'received_notes')
+#if ($isReceive)
 #ALtdheadThin("#ALajaxsort('note_stat' '状態' $result 'NoteListScreen')")
 #end
 #ALtdheadThin("#ALajaxsort('client_name' '依頼者' $result 'NoteListScreen')")
 #ALtdheadW10('依頼者所属')
 #ALtdheadW40("#ALajaxsort('subject_type' '用件' $result 'NoteListScreen')")
 ##ALtdheadThin('本文')
-#ALtdheadThin("#if ($!result.currentTab == 'received_notes') 送信者 #else 受信者 #end")
-#ALtdheadThin("#if ($!result.currentTab == 'received_notes') #ALajaxsort('accept_date' '受付日時' $result 'NoteListScreen') #else #ALajaxsort('create_date' '作成日時' $result 'NoteListScreen') #end")
+#ALtdheadThin("#if ($isReceive) 送信者 #else 受信者 #end")
+#ALtdheadThin("#if ($isReceive) #ALajaxsort('accept_date' '受付日時' $result 'NoteListScreen') #else #ALajaxsort('create_date' '作成日時' $result 'NoteListScreen') #end")
 </tr>
 #set($setEven = true)
 #foreach ($record in $result.List)
-#if ($!record.SubjectType.toString() == "0") #set ($subject = $!record.CustomSubject.toString()) #end
-#if ($!record.SubjectType.toString() == "1") #set ($subject = "再度電話します。") #end
-#if ($!record.SubjectType.toString()  == "2") #set ($subject = "折返しお電話ください。") #end
-#if ($!record.SubjectType.toString()  == "3") #set ($subject = "連絡があったことをお伝えください。") #end
-#if ($!record.SubjectType.toString()  == "4") #set ($subject = "伝言をお願いします。") #end
-#if($setEven)
-<tr>
-#set($setEven = false)
-#else
-<tr class="even">
-#set($setEven = true)
-#end
+#ALsetSubject($record)
+<tr #if(!$setEven) class="even" #end>
+#ALsetEven($setEven)
 #ALtdcellAtt("<input name='check$!record.NoteId' type='checkbox' value='$!record.NoteId'/>" 'class="center"')
-#if($!result.currentTab == 'received_notes')
+#if($isReceive)
 #if($record.NoteStat.toString() == "1" || $record.NoteStat.toString() == "2" || $record.NoteStat.toString() == "3")
 #ALtdcellAtt("<img src='$record.NoteStatImage' alt='$record.NoteStatImageDescription' title='$record.NoteStatImageDescription'/>" 'class="center"')
 #else
@@ -115,30 +106,29 @@
 <div>$!subject</div>
 #ALtdcellfooter()
 ##ALtdcellAtt("#if($!record.hasMemo()) 有 #else 無 #end" 'class="center"')
-#ALtdcellAtt("#if ($!result.currentTab == 'received_notes') $!record.SrcUserFullName #else $!record.DestUserFullName #end" 'nowrap="nowrap"')
-#ALtdcellAtt("#if ($!result.currentTab == 'received_notes') $!{record.AcceptDate.Month}月$!{record.AcceptDate.Day}日 $!{record.AcceptDate.Hour}時$!{record.AcceptDate.Minute}分 #else $!{record.CreateDate.Month}月$!{record.CreateDate.Day}日 $!{record.CreateDate.Hour}時$!{record.CreateDate.Minute}分 #end" 'nowrap="nowrap"')
+#ALtdcellAtt("#if ($isReceive) $!record.SrcUserFullName #else $!record.DestUserFullName #end" 'nowrap="nowrap"')
+#ALtdcellAtt("#if ($isReceive) $!{record.AcceptDate.Month}月$!{record.AcceptDate.Day}日 $!{record.AcceptDate.Hour}時$!{record.AcceptDate.Minute}分 #else $!{record.CreateDate.Month}月$!{record.CreateDate.Day}日 $!{record.CreateDate.Hour}時$!{record.CreateDate.Minute}分 #end" 'nowrap="nowrap"')
 </tr>
 #end
 
-</tbody>
-</table>
-<div class="auiSummaryMeta clearfix">
+#AUItablefooter()
+
+#AUISummaryDiv()
 <div class="floatLeft">
-#if($!result.currentTab == "received_notes")
-#ALajaxbuttonCheckboxActionOption('既読にする' 'auiButton' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_complete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
-#ALajaxbuttonCheckboxDeleteOption('削除する' 'auiButton' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
+#if($isReceive)
+#AUIajaxbuttonCheckboxAction('既読にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_complete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
 #else
-#ALajaxbuttonCheckboxDeleteOption('削除する' 'auiButton' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
 #end
 </div>
-#ALajaxpageviewdivless('NoteListScreen' $result)
-</div>
+#AUIajaxpageview('NoteListScreen' $result)
+#AUISummaryDivfooter()
 
 #end
 #ALformfooter()
 
-</div>
-</div>
+#AUIcontentsAreaFooter()
     
 <div id="auiWidgetsArea">
 <div class="auiWidget clearfix">
@@ -148,7 +138,7 @@
 <div class="auiWidget clearfix">
 <h2>表示</h2>
 <ul>
-#if($!result.currentTab == 'received_notes')
+#if($isReceive)
 <li class="active">
 #else
 <li >

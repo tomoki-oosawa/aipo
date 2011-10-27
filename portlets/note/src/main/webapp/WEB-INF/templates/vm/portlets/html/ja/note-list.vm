@@ -29,6 +29,7 @@
 
 //]]>
 </script>
+#parse("/portlets/html/ja/noteMacro.vm")
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
 #parse("/portlets/html/ja/ajax-note-list.vm")
 #ALcontentfooter()

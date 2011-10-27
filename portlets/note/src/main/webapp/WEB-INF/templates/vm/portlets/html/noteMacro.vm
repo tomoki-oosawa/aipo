@@ -1,0 +1,49 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+## ---------------------------------------------------------------------------
+#macro(ALnoteResultList $msg_type)
+#if($msg_type == "0")
+<div class="message">伝言メモを送信しました。</div>
+#elseif($msg_type == "1")
+<div class="message">伝言メモを送信しました。<br/>
+<span class="errmsg">宛先ユーザーのパソコン用メールアドレスが未設定のため、宛先ユーザーのパソコンに通知できませんでした。</span></div>
+#elseif($msg_type == "2")
+<div class="message">伝言メモを送信しました。<br/>
+<span class="errmsg">宛先ユーザーの携帯用メールアドレスが未設定のため、宛先ユーザーの携帯電話に通知できませんでした。</span></div>
+#elseif($msg_type == "3")
+<div class="message">伝言メモを送信しました。<br/>
+<span class="errmsg">宛先ユーザーのパソコン用と携帯用のメールアドレスが未設定のため、<br/>宛先ユーザーのパソコンと携帯電話に通知できませんでした。</span></div>
+#elseif($msg_type == "4")
+<div class="message">伝言メモを送信しました。<br/>
+<span class="errmsg">宛先ユーザーが存在しないため、伝言メモを送信できませんでした。</span></div>
+#elseif($msg_type == "5")
+<div class="message">伝言メモを送信しました。<br/>
+<span class="errmsg">管理者のメールアカウントが未設定のため、メールでの通知はできませんでした。</span>
+</div>
+#end
+#end
+
+#macro(ALsetSubject $record)
+#if ($!record.SubjectType.toString() == "0") #set ($subject = $!record.CustomSubject.toString()) #end
+#if ($!record.SubjectType.toString() == "1") #set ($subject = "再度電話します。") #end
+#if ($!record.SubjectType.toString()  == "2") #set ($subject = "折返しお電話ください。") #end
+#if ($!record.SubjectType.toString()  == "3") #set ($subject = "連絡があったことをお伝えください。") #end
+#if ($!record.SubjectType.toString()  == "4") #set ($subject = "伝言をお願いします。") #end
+#end
