@@ -231,7 +231,7 @@ public class MsgboardTopicSelectData extends
   private SelectQuery<EipTMsgboardTopic> getSelectQuery(RunData rundata,
       Context context) {
 
-    if ((target_keyword != null) && (!target_keyword.equals(""))) {
+    if ((target_keyword != null) && (!target_keyword.getValue().equals(""))) {
       ALEipUtils.setTemp(rundata, context, LIST_SEARCH_STR, target_keyword
         .getValue());
     } else {
@@ -332,6 +332,10 @@ public class MsgboardTopicSelectData extends
         } else if (!resultid.contains(item.getTopicId())) {
           resultid.add(item.getTopicId());
         }
+      }
+      if (resultid.size() == 0) {
+        // 検索結果がないことを示すために-1を代入
+        resultid.add(-1);
       }
       Expression ex =
         ExpressionFactory.inDbExp(

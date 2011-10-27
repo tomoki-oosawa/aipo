@@ -37,6 +37,7 @@ import com.aimluck.eip.msgboard.MsgboardTopicFormData;
 import com.aimluck.eip.msgboard.MsgboardTopicMultiDelete;
 import com.aimluck.eip.msgboard.MsgboardTopicReplyFormData;
 import com.aimluck.eip.msgboard.MsgboardTopicSelectData;
+import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -46,8 +47,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class MsgboardAction extends ALBaseAction {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(MsgboardAction.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(MsgboardAction.class.getName());
 
   /** 返信用キー */
   private final String RESULT_ON_TOPIC_DETAIL = "resultOnTopicDetail";
@@ -76,6 +77,8 @@ public class MsgboardAction extends ALBaseAction {
 
     // セッション情報をクリアする．
     clearMsgboardSession(rundata, context);
+    MsgboardUtils.resetFilter(rundata, context, MsgboardTopicSelectData.class
+      .getName());
 
     MsgboardTopicSelectData listData = new MsgboardTopicSelectData();
     listData.initField();
