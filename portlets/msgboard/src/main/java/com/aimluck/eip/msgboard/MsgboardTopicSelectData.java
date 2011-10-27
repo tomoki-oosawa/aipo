@@ -34,6 +34,7 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategoryMap;
@@ -67,9 +68,8 @@ public class MsgboardTopicSelectData extends
     ALData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService
-      .getLogger(MsgboardTopicSelectData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(MsgboardTopicSelectData.class.getName());
 
   /** カテゴリ一覧 */
   private List<MsgboardCategoryResultData> categoryList;
@@ -98,7 +98,7 @@ public class MsgboardTopicSelectData extends
   /** 他ユーザーの作成したトピックの削除権限 */
   private boolean hasAclDeleteTopicOthers;
 
-  private String target_keyword;
+  private ALStringField target_keyword;
 
   /**
    * 
@@ -171,6 +171,8 @@ public class MsgboardTopicSelectData extends
     } catch (Exception ex) {
       logger.debug("Exception", ex);
     }
+
+    target_keyword = new ALStringField();
   }
 
   /**
@@ -196,9 +198,10 @@ public class MsgboardTopicSelectData extends
     try {
       if (MsgboardUtils.hasResetFlag(rundata, context)) {
         MsgboardUtils.resetFilter(rundata, context, this.getClass().getName());
-        target_keyword = "";
+        target_keyword.setValue("");
       } else {
-        target_keyword = MsgboardUtils.getTargetKeyword(rundata, context);
+        target_keyword.setValue(MsgboardUtils
+          .getTargetKeyword(rundata, context));
       }
 
       SelectQuery<EipTMsgboardTopic> query = getSelectQuery(rundata, context);
@@ -229,7 +232,8 @@ public class MsgboardTopicSelectData extends
       Context context) {
 
     if ((target_keyword != null) && (!target_keyword.equals(""))) {
-      ALEipUtils.setTemp(rundata, context, LIST_SEARCH_STR, target_keyword);
+      ALEipUtils.setTemp(rundata, context, LIST_SEARCH_STR, target_keyword
+        .getValue());
     } else {
       ALEipUtils.removeTemp(rundata, context, LIST_SEARCH_STR);
     }
@@ -702,7 +706,7 @@ public class MsgboardTopicSelectData extends
   /**
    * @return target_keyword
    */
-  public String getTargetKeyword() {
+  public ALStringField getTargetKeyword() {
     return target_keyword;
   }
 }

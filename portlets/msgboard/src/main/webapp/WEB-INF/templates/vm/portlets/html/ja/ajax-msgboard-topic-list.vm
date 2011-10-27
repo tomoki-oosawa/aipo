@@ -47,7 +47,7 @@
 <div class="auiSummaryMeta clearfix">
 #AUIajaxpageview('MsgboardTopicListScreen' $result)
 </div>
-#AUIsearchresult($!result.targetKeyword)
+#AUIsearchresult($!result.targetKeyword.toString())
 #AUIrowTableWide()
 <tr>
 #ALtdhead("#ALajaxsort('topic_name' 'トピック名' $result 'MsgboardTopicListScreen')")
