@@ -39,8 +39,8 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
 public class CellWebMailAction extends WebMailAction {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(CellWebMailAction.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(CellWebMailAction.class.getName());
 
   /**
    * 
@@ -267,9 +267,7 @@ public class CellWebMailAction extends WebMailAction {
     listData.setRowsNum(Integer.parseInt(portlet
       .getPortletConfig()
       .getInitParameter("p1b-rows")));
-    listData.setStrLength(Integer.parseInt(portlet
-      .getPortletConfig()
-      .getInitParameter("p4a-strlen")));
+    listData.setStrLength(0);
 
     listData.doViewList(this, rundata, context);
 

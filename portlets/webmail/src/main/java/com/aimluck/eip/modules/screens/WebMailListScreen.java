@@ -68,9 +68,7 @@ public class WebMailListScreen extends ALVelocityScreen {
       listData.setRowsNum(Integer.parseInt(portlet
         .getPortletConfig()
         .getInitParameter("p1b-rows")));
-      listData.setStrLength(Integer.parseInt(portlet
-        .getPortletConfig()
-        .getInitParameter("p4a-strlen")));
+      listData.setStrLength(0);
       listData.doViewList(this, rundata, context);
 
       setTemplate(rundata, context, "portlets/html/ja/ajax-webmail-list.vm");

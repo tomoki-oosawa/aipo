@@ -19,25 +19,24 @@
 
 package com.aimluck.eip.modules.screens;
 
-import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.webmail.WebMailSelectData;
+import com.aimluck.eip.webmail.WebMailFolderSelectData;
 import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
- * Webメールの一覧を処理するクラスです。 <br />
+ * Webメールフォルダの一覧を処理するクラスです。 <br />
  * 
  */
-public class WebMailScreen extends ALVelocityScreen {
+public class WebMailFolderListScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WebMailScreen.class.getName());
+    .getLogger(WebMailFolderListScreen.class.getName());
 
   /**
    * 
@@ -47,32 +46,24 @@ public class WebMailScreen extends ALVelocityScreen {
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
-    String mode = rundata.getParameters().getString("mode");
+
     try {
-      if ("recieve".equals(mode)) {
-        // メニューからメール受信をクリックしてきた場合
-        WebMailUtils.receiveMailsThread(rundata, context);
-      }
-      // if ("stoprecieving".equals(mode)) {
-      // // メニューからメール受信をクリックしてきた場合
-      // WebMailUtils.stopReceiveMailThread(Integer.parseInt(accountId));
-      // }
 
-      VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-
-      // 受信フォルダもしくは送信フォルダに保存されているメールの一覧を表示する．
-      WebMailSelectData listData = new WebMailSelectData();
+      WebMailFolderSelectData listData = new WebMailFolderSelectData();
       listData.initField();
-      listData.loadMailAccountList(rundata, context);
-      listData.setRowsNum(Integer.parseInt(portlet
-        .getPortletConfig()
-        .getInitParameter("p1a-rows")));
+      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p1d-rows")));
       listData.setStrLength(0);
+      listData.loadMailAccountList(rundata, context);
       listData.doViewList(this, rundata, context);
+      setTemplate(
+        rundata,
+        context,
+        "portlets/html/ja/ajax-webmail-folder-list.vm");
 
-      setTemplate(rundata, context, "portlets/html/ja/ajax-webmail.vm");
     } catch (Exception ex) {
-      logger.error("[WebMailListScreen] Exception.", ex);
+      logger.error("[WebMailFolderListScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

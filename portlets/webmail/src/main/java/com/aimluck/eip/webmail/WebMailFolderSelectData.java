@@ -19,8 +19,12 @@
 
 package com.aimluck.eip.webmail;
 
+import java.util.List;
+import java.util.Map;
 import java.util.jar.Attributes;
 
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -35,9 +39,11 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
-import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.webmail.beans.WebmailAccountLiteBean;
 import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
@@ -55,6 +61,12 @@ public class WebMailFolderSelectData extends
 
   /** メールアカウント */
   private EipMMailAccount mail_account;
+
+  private List<WebmailAccountLiteBean> mailAccountList;
+
+  private List<WebMailFolderResultData> mailFolderList;
+
+  private Map<Integer, Integer> unreadMailSumMap;
 
   /**
    * 
@@ -75,11 +87,15 @@ public class WebMailFolderSelectData extends
       }
 
       // メールアカウントID
-      mailAccountId =
-        Integer.parseInt(ALEipUtils.getTemp(
-          rundata,
-          context,
-          WebMailUtils.ACCOUNT_ID));
+      if (rundata.getParameters().containsKey(WebMailUtils.ACCOUNT_ID)) {
+        mailAccountId = rundata.getParameters().getInt(WebMailUtils.ACCOUNT_ID);
+      } else {
+        mailAccountId =
+          Integer.parseInt(ALEipUtils.getTemp(
+            rundata,
+            context,
+            WebMailUtils.ACCOUNT_ID));
+      }
     }
 
     ALEipUser login_user = ALEipUtils.getALEipUser(rundata);
@@ -93,13 +109,13 @@ public class WebMailFolderSelectData extends
       return;
     }
 
-    // フォルダIDが設定されていない場合や、対象のフォルダが見つからない場合はエラーにする
-    EipTMailFolder folder =
-      WebMailUtils.getEipTMailFolder(mail_account, folder_id);
-    if (folder == null) {
-      logger.error("[WebMail Folder] mail folder was not found.");
-      return;
-    }
+    // フォルダリストを取得
+    mailFolderList = WebMailUtils.getMailFolderAll(mail_account);
+
+    // フォルダ未読数マップを取得
+    unreadMailSumMap =
+      WebMailUtils.getUnreadMailNumberMap(rundata, ALEipUtils
+        .getUserId(rundata), mailAccountId);
 
     super.init(action, rundata, context);
   }
@@ -115,7 +131,26 @@ public class WebMailFolderSelectData extends
   @Override
   protected ResultList<EipTMailFolder> selectList(RunData rundata,
       Context context) throws ALPageNotFoundException, ALDBErrorException {
-    return null;
+    SelectQuery<EipTMailFolder> query = getSelectQuery(rundata, context);
+    buildSelectQueryForListView(query);
+    buildSelectQueryForListViewSort(query, rundata, context);
+    return query.getResultList();
+  }
+
+  /**
+   * @param rundata
+   * @param context
+   * @return
+   */
+  private SelectQuery<EipTMailFolder> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTMailFolder> query = Database.query(EipTMailFolder.class);
+    Expression exp =
+      ExpressionFactory.matchDbExp(
+        EipTMailFolder.EIP_MMAIL_ACCOUNT_PROPERTY,
+        mail_account);
+    query.setQualifier(exp);
+    return query;
   }
 
   /**
@@ -130,9 +165,8 @@ public class WebMailFolderSelectData extends
   protected EipTMailFolder selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     // オブジェクトモデルを取得
-    EipTMailFolder folder = WebMailUtils.getEipTMailFolder(rundata, context);
-
-    return folder;
+    return WebMailUtils.getEipTMailFolder(mail_account, ALEipUtils
+      .getParameter(rundata, context, WebMailUtils.FOLDER_ID));
   }
 
   /**
@@ -141,9 +175,9 @@ public class WebMailFolderSelectData extends
    * 
    */
   @Override
-  protected Object getResultData(EipTMailFolder obj)
+  protected WebMailFolderResultData getResultData(EipTMailFolder obj)
       throws ALPageNotFoundException, ALDBErrorException {
-    return null;
+    return new WebMailFolderResultData(obj);
   }
 
   /**
@@ -182,11 +216,37 @@ public class WebMailFolderSelectData extends
   }
 
   /**
-   *
+   * メールアカウント一覧を取得します。
+   * 
+   * @param rundata
+   * @param context
    */
+  public void loadMailAccountList(RunData rundata, Context context) {
+    mailAccountList = WebMailUtils.getMailAccountList(rundata, context);
+  }
+
+  /**
+   * メールアカウントの一覧を取得します。
+   * 
+   * @return
+   */
+  public List<WebmailAccountLiteBean> getMailAccountList() {
+    return mailAccountList;
+  }
+
+  /**
+   * 現在のアカウントが持つメールフォルダを取得します。
+   * 
+   * @return
+   */
+  public List<WebMailFolderResultData> getFolderList() {
+    return mailFolderList;
+  }
+
   @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
+    map.putValue("folder_name", EipTMailFolder.FOLDER_NAME_PROPERTY);
     return map;
   }
 
@@ -195,13 +255,25 @@ public class WebMailFolderSelectData extends
   }
 
   /**
-   * アクセス権限チェック用メソッド。<br />
-   * アクセス権限の機能名を返します。
+   * フォルダ別未読メール数を取得する。
    * 
    * @return
    */
-  @Override
-  public String getAclPortletFeature() {
-    return ALAccessControlConstants.POERTLET_FEATURE_CABINET_FOLDER;
+  public int getUnReadMailSumByFolderId(int folder_id) {
+    return unreadMailSumMap.get(folder_id);
   }
+
+  /**
+   * 現在選択中のアカウントIDを取得します。
+   * 
+   * @return
+   */
+  public int getAccountId() {
+    return mail_account.getAccountId();
+  }
+
+  public boolean isMatch(int id1, long id2) {
+    return id1 == (int) id2;
+  }
+
 }

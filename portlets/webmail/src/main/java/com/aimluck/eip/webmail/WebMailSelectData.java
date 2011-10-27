@@ -19,9 +19,7 @@
 
 package com.aimluck.eip.webmail;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
@@ -243,6 +241,8 @@ public class WebMailSelectData extends
       folder.setRowsNum(super.getRowsNum());
     }
 
+    loadUnreadMailSumMap(rundata, context);
+
     super.init(action, rundata, context);
 
     // ソート対象が日時だった場合、ソート順を逆にする．
@@ -265,30 +265,7 @@ public class WebMailSelectData extends
    * @param context
    */
   public void loadMailAccountList(RunData rundata, Context context) {
-    try {
-      // メールアカウント一覧
-      mailAccountList = new ArrayList<WebmailAccountLiteBean>();
-
-      List<EipMMailAccount> aList =
-        WebMailUtils.getMailAccountNameList(ALEipUtils.getUserId(rundata));
-
-      if (aList == null) {
-        return;
-      }
-
-      WebmailAccountLiteBean bean = null;
-      Iterator<EipMMailAccount> iter = aList.iterator();
-      while (iter.hasNext()) {
-        EipMMailAccount account = iter.next();
-        bean = new WebmailAccountLiteBean();
-        bean.initField();
-        bean.setAccountId(account.getAccountId());
-        bean.setAccountName(account.getAccountName());
-        mailAccountList.add(bean);
-      }
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
-    }
+    mailAccountList = WebMailUtils.getMailAccountList(rundata, context);
   }
 
   /**
@@ -305,36 +282,44 @@ public class WebMailSelectData extends
         return null;
       }
 
-      // フォルダごとの未読メール数を取得
-      // ・フォルダの切り替え、受信送信タブの移動、ソート時には未読メール数をセッションから取得する
-      // ・メールのフォルダ間移動、メール詳細画面を出した後は未読メール数をデータベースから取得する
-      // ・セッションが空の場合は未読メール数をデータベースから取得する
-      String unreadMailSumMapString =
-        ALEipUtils.getTemp(rundata, context, "unreadmailsummap");
-      if ((rundata.getParameters().containsKey("noupdateunread")
-        || rundata.getParameters().containsKey("sort") || rundata
-        .getParameters()
-        .containsKey("tab"))
-        && unreadMailSumMapString != null
-        && !rundata.getParameters().containsKey("updateunread")) {
-        // セッションから得た文字列をHashMapに再構成
-        unreadMailSumMap =
-          WebMailUtils.getUnreadMailSumMapFromString(unreadMailSumMapString);
-      } else {
-        // セッションが空か、パラメータが指定されていなければ取得しなおす
-        unreadMailSumMap =
-          WebMailUtils.getUnreadMailNumberMap(rundata, userId, accountId);
-      }
-
-      // セッションに保存
-      ALEipUtils.setTemp(rundata, context, "unreadmailsummap", unreadMailSumMap
-        .toString());
+      loadUnreadMailSumMap(rundata, context);
 
       return folder.getIndexRows(rundata, context);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
     }
+  }
+
+  /**
+   * フォルダごとの未読メール数を取得<br>
+   * ・フォルダの切り替え、受信送信タブの移動、ソート時には未読メール数をセッションから取得する<br>
+   * ・メールのフォルダ間移動、メール詳細画面を出した後は未読メール数をデータベースから取得する<br>
+   * ・セッションが空の場合は未読メール数をデータベースから取得する
+   * 
+   * @param rundata
+   * @param context
+   */
+  private void loadUnreadMailSumMap(RunData rundata, Context context) {
+    String unreadMailSumMapString =
+      ALEipUtils.getTemp(rundata, context, "unreadmailsummap");
+    if ((rundata.getParameters().containsKey("noupdateunread")
+      || rundata.getParameters().containsKey("sort") || rundata
+      .getParameters()
+      .containsKey("tab"))
+      && unreadMailSumMapString != null
+      && !rundata.getParameters().containsKey("updateunread")) {
+      // セッションから得た文字列をHashMapに再構成
+      unreadMailSumMap =
+        WebMailUtils.getUnreadMailSumMapFromString(unreadMailSumMapString);
+    } else {
+      // セッションが空か、パラメータが指定されていなければ取得しなおす
+      unreadMailSumMap =
+        WebMailUtils.getUnreadMailNumberMap(rundata, userId, accountId);
+    }
+    // セッションに保存
+    ALEipUtils.setTemp(rundata, context, "unreadmailsummap", unreadMailSumMap
+      .toString());
   }
 
   /**
@@ -375,11 +360,13 @@ public class WebMailSelectData extends
         + getTheme()
         + "/images/icon/webmail_readmail.gif");
       rd.setReadImageDescription("既読");
+      rd.setRead(true);
     } else {
       rd.setReadImage("themes/"
         + getTheme()
         + "/images/icon/webmail_unreadmail.gif");
       rd.setReadImageDescription("未読");
+      rd.setRead(false);
     }
 
     String subject = ALMailUtils.decodeSubject(record.getSubject());

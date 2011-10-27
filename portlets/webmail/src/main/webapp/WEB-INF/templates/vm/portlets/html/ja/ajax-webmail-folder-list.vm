@@ -16,48 +16,37 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ##-------------------------------------------------------------------
 #set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new")))
 #set ($submenulist = [["メールアカウントを追加する","javascript:aipo.common.showDialog('$newUrl1');","themes/$!theme/images/icon/icon_add.gif"]])
 #set($tabs = [["メールアカウント一覧", "",""]])
+#set ($type = "folder")
 ##------------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 #if($result.List.size() <= 0)
-<div class="message">メールアカウントが登録されていません。</div>
+<div class="message">フォルダが登録されていません。</div>
 #else
 #AUISummaryDiv()
-#AUIajaxpageview('WebMailAccountListScreen' $result)
+#AUIajaxpageview('WebMailFolderListScreen' $result)
 #AUISummaryDivfooter()
 #AUIrowTableWide()
 <tr>
-#ALtdhead("#ALajaxsort('account_name' 'アカウント名' $result 'WebMailAccountListScreen')")
-#ALtdheadAtt('未読数' 'width="1%"')
-#ALtdheadAtt('最終受信日' 'width="1%"')
+#ALtdhead("#ALajaxsort('folder_name' 'フォルダ名' $result 'WebMailFolderListScreen')")
 </tr>
 #foreach ($record in $result.List)
-#if($!record.countUnRead>= 0)
-#set($countUnRead = $!record.countUnRead)
-#else
-#set($countUnRead = "確認失敗")
-#end
 <tr>
 #ALtdcellheader()
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountDetailScreen").addQueryData("accountid",$record.AccountId))');">$!record.AccountName</a>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFolderDetailScreen").addQueryData("folderid",$record.FolderId))');">$!record.FolderName</a>
 #ALtdcellfooter()
-#ALtdcellAtt("$countUnRead" 'align="right" nowrap')
-#if($!record.FinalAccessDate.toString() != "")
-#ALtdcellAtt("$!{record.FinalAccessDate.Month}月$!{record.FinalAccessDate.Day}日 $!{record.FinalAccessDate.Hour}時$!{record.FinalAccessDate.Minute}分" 'align="left" valign="center" nowrap')
-#else
-#ALtdcellAtt("なし" 'align="center"')
-#end
 </tr>
 #end
 #AUItablefooter()
 #AUISummaryDiv()
-#AUIajaxpageview('WebMailAccountListScreen' $result)
+#AUIajaxpageview('WebMailFolderListScreen' $result)
 #AUISummaryDivfooter()
 #end
+##ALspacebothfooter()
+##ALajaxtabfooter()
 #AUIcontentsAreaFooter()
 #parse("/portlets/html/ja/webmail-widgets.vm")
 

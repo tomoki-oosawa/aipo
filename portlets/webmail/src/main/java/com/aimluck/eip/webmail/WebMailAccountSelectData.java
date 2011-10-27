@@ -20,6 +20,8 @@
 package com.aimluck.eip.webmail;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
@@ -44,6 +46,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.webmail.beans.WebmailAccountLiteBean;
 import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
@@ -52,13 +55,24 @@ import com.aimluck.eip.webmail.util.WebMailUtils;
 public class WebMailAccountSelectData extends
     ALAbstractSelectData<EipMMailAccount, EipMMailAccount> {
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(WebMailAccountSelectData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WebMailAccountSelectData.class.getName());
 
   private String orgId;
 
   private boolean isAdmin;
+
+  /** アカウントID */
+  private int accountId = -1;
+
+  /** フォルダに対する未読メール数のマップ */
+  private Map<Integer, Integer> unreadMailSumMap;
+
+  /** メールアカウント一覧 */
+  private List<WebmailAccountLiteBean> mailAccountList;
+
+  /** メールフォルダ一覧 */
+  private List<WebMailFolderResultData> mailFolderList;
 
   /**
    * 
@@ -73,12 +87,54 @@ public class WebMailAccountSelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
     orgId = Database.getDomainName();
 
+    try {
+      accountId =
+        Integer.parseInt(ALEipUtils.getTemp(
+          rundata,
+          context,
+          WebMailUtils.ACCOUNT_ID));
+    } catch (Exception e) {
+      accountId = 0;
+    }
+
+    // アカウントIDが取得できなかったとき、デフォルトのアカウントIDを取得する
+    int userId = ALEipUtils.getUserId(rundata);
+    if (accountId == 0) {
+      try {
+        Expression exp =
+          ExpressionFactory.matchExp(EipMMailAccount.USER_ID_PROPERTY, userId);
+        SelectQuery<EipMMailAccount> query =
+          Database.query(EipMMailAccount.class, exp);
+
+        query.select(EipMMailAccount.ACCOUNT_ID_PK_COLUMN);
+        List<EipMMailAccount> accounts = query.fetchList();
+        if (accounts != null && accounts.size() > 0) {
+          EipMMailAccount account = accounts.get(0);
+          accountId = account.getAccountId();
+          ALEipUtils.setTemp(rundata, context, WebMailUtils.ACCOUNT_ID, Integer
+            .toString(accountId));
+        } else {
+          // アカウントが一つも見つからなかった
+          return;
+        }
+      } catch (Exception e) {
+      }
+    }
+
     isAdmin =
       rundata
         .getScreen()
         .equals(WebMailAdminDetailScreen.class.getSimpleName())
         || action.getClass().getName().equals(
           WebMailAdminAction.class.getName());
+
+    unreadMailSumMap =
+      WebMailUtils.getUnreadMailNumberMap(rundata, userId, accountId);
+    mailAccountList = WebMailUtils.getMailAccountList(rundata, context);
+    mailFolderList =
+      WebMailUtils.getMailFolderAll(ALMailUtils.getMailAccount(
+        userId,
+        accountId));
 
     super.init(action, rundata, context);
   }
@@ -223,4 +279,42 @@ public class WebMailAccountSelectData extends
     return map;
   }
 
+  /**
+   * フォルダ別未読メール数を取得する。
+   * 
+   * @return
+   */
+  public int getUnReadMailSumByFolderId(int folder_id) {
+    return unreadMailSumMap.get(folder_id);
+  }
+
+  /**
+   * @return mailAccountList
+   */
+  public List<WebmailAccountLiteBean> getMailAccountList() {
+    return mailAccountList;
+  }
+
+  /**
+   * @return mailFolderList
+   */
+  public List<WebMailFolderResultData> getFolderList() {
+    return mailFolderList;
+  }
+
+  /**
+   * @return accountId
+   */
+  public int getAccountId() {
+    return accountId;
+  }
+
+  /**
+   * 
+   * @param id
+   * @return
+   */
+  public boolean isMatch(int id1, long id2) {
+    return id1 == (int) id2;
+  }
 }

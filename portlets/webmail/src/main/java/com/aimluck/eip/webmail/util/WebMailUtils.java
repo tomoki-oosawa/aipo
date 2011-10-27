@@ -51,6 +51,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.WebMailFolderResultData;
 import com.aimluck.eip.webmail.WebMailFormData;
+import com.aimluck.eip.webmail.beans.WebmailAccountLiteBean;
 
 /**
  */
@@ -761,5 +762,34 @@ public class WebMailUtils {
     }
 
     return list;
+  }
+
+  /**
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static List<WebmailAccountLiteBean> getMailAccountList(
+      RunData rundata, Context context) {
+    ArrayList<WebmailAccountLiteBean> res =
+      new ArrayList<WebmailAccountLiteBean>();
+    try {
+      List<EipMMailAccount> aList =
+        WebMailUtils.getMailAccountNameList(ALEipUtils.getUserId(rundata));
+      if (aList == null) {
+        return res;
+      }
+      WebmailAccountLiteBean bean = null;
+      for (EipMMailAccount account : aList) {
+        bean = new WebmailAccountLiteBean();
+        bean.initField();
+        bean.setAccountId(account.getAccountId());
+        bean.setAccountName(account.getAccountName());
+        res.add(bean);
+      }
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+    }
+    return res;
   }
 }

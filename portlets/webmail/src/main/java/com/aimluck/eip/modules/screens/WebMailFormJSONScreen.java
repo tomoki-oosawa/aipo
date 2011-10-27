@@ -31,6 +31,7 @@ import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.WebMailFormData;
 import com.aimluck.eip.webmail.WebMailMultiDelete;
 import com.aimluck.eip.webmail.WebMailMultiMove;
+import com.aimluck.eip.webmail.WebMailMultiRead;
 
 /**
  * WebメールをJSONデータとして出力するクラスです。 <br />
@@ -88,6 +89,18 @@ public class WebMailFormJSONScreen extends ALJSONScreen {
         WebMailMultiMove move = new WebMailMultiMove();
         if (move.doMultiAction(this, rundata, context)) {
           this.setMode("multi_move");
+        } else {
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
+          result = json.toString();
+        }
+
+        // 一括既読化
+      } else if ("multi_read".equals(mode)) {
+        WebMailMultiRead read = new WebMailMultiRead();
+        if (read.doMultiAction(this, rundata, context)) {
+          this.setMode("multi_read");
         } else {
           JSONArray json =
             JSONArray

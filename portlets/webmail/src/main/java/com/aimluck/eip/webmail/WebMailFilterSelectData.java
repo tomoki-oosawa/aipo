@@ -19,8 +19,6 @@
 
 package com.aimluck.eip.webmail;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
@@ -66,6 +64,10 @@ public class WebMailFilterSelectData extends
 
   /** メールアカウント一覧 */
   private List<WebmailAccountLiteBean> mailAccountList;
+
+  private List<WebMailFolderResultData> mailFolderList;
+
+  private Map<Integer, Integer> unreadMailSumMap;
 
   /**
    * 
@@ -143,6 +145,14 @@ public class WebMailFilterSelectData extends
       .getAccountId()
       .toString());
 
+    // フォルダリストを取得
+    mailFolderList = WebMailUtils.getMailFolderAll(mailAccount);
+
+    // フォルダ未読数マップを取得
+    unreadMailSumMap =
+      WebMailUtils.getUnreadMailNumberMap(rundata, ALEipUtils
+        .getUserId(rundata), mailAccountId);
+
     super.init(action, rundata, context);
   }
 
@@ -153,30 +163,7 @@ public class WebMailFilterSelectData extends
    * @param context
    */
   public void loadMailAccountList(RunData rundata, Context context) {
-    try {
-      // メールアカウント一覧
-      mailAccountList = new ArrayList<WebmailAccountLiteBean>();
-
-      List<EipMMailAccount> aList =
-        WebMailUtils.getMailAccountNameList(ALEipUtils.getUserId(rundata));
-
-      if (aList == null) {
-        return;
-      }
-
-      WebmailAccountLiteBean bean = null;
-      Iterator<EipMMailAccount> iter = aList.iterator();
-      while (iter.hasNext()) {
-        EipMMailAccount account = iter.next();
-        bean = new WebmailAccountLiteBean();
-        bean.initField();
-        bean.setAccountId(account.getAccountId());
-        bean.setAccountName(account.getAccountName());
-        mailAccountList.add(bean);
-      }
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
-    }
+    mailAccountList = WebMailUtils.getMailAccountList(rundata, context);
   }
 
   /**
@@ -344,5 +331,23 @@ public class WebMailFilterSelectData extends
    */
   public boolean isMatch(int id1, long id2) {
     return id1 == (int) id2;
+  }
+
+  /**
+   * 現在のアカウントが持つメールフォルダを取得します。
+   * 
+   * @return
+   */
+  public List<WebMailFolderResultData> getFolderList() {
+    return mailFolderList;
+  }
+
+  /**
+   * フォルダ別未読メール数を取得する。
+   * 
+   * @return
+   */
+  public int getUnReadMailSumByFolderId(int folder_id) {
+    return unreadMailSumMap.get(folder_id);
   }
 }

@@ -1,0 +1,83 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+#set($sentLink = "$!jslink.getPortletById($!portlet.getID()).addQueryData('template','WebMailListScreen').addQueryData('eventSubmit_doWebmail_show_sent_mails','1').addQueryData('tab','sent').addQueryData('folderid' ,'-1')")
+
+#if($type == "filter")
+#set($screen = "WebMailFilterListScreen")	
+#elseif($type == "folder")
+#set($screen = "WebMailFolderListScreen")
+#else
+#set($screen = "WebMailListScreen")	
+#end
+
+<div id="auiWidgetsArea">
+<div class="auiWidget clearfix">
+#AUIbuttonAction("メールを作成する" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.webmail.onLoadMailDialog);")
+</div>
+
+<div class="auiWidget clearfix">
+<ul>
+#foreach( $record in $result.MailAccountList )
+<li#if ($!result.isMatch($!result.AccountId,$!record.AccountId.Value)) class="active"#end>
+<div class="menuTitle">
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template',$screen).addQueryData('accountid',$!record.AccountId))', '$!portlet.ID');">$!record.AccountName</a>
+</div>
+</li>
+#end
+</ul>
+<div style="margin:0.5em 0;">
+#AUIbutton("アカウントを追加する" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new')');")
+</div>
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_account_list','1')">アカウントの管理・削除</a>
+</div>
+
+<div class="auiWidget clearfix">
+<ul>
+#set ($i = 0)
+#foreach($record in $!result.FolderList)
+#set ($unreadNum = $result.getUnReadMailSumByFolderId($record.FolderId))
+#if($i == 1)
+<li#if($result.currentTab == "sent") class="active"#end>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($sentLink)', '$!portlet.ID');" >送信トレイ</a>
+</li>
+#end
+<li#if($result.currentTab == "receive" && $result.FolderId == $record.FolderId) class="active"#end>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailListScreen").addQueryData("accountid", "$!result.AccountId").addQueryData("folderid" ,"$!record.FolderId").addQueryData("noupdateunread", "1").addQueryData('tab','receive'))', '$!portlet.ID');" >#if ($unreadNum > 0)<strong>#end ${record.FolderName}#if ($unreadNum > 0)(${unreadNum})#end #if ($unreadNum > 0)</strong>#end</a>
+</li>
+#set ($i = $i+1)
+#end
+#if($!result.FolderList.size() < 2)
+<li#if($result.currentTab == "sent") class="active"#end>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($sentLink)', '$!portlet.ID');" >送信トレイ</a>
+</li>
+#end
+</ul>
+<div style="margin:0.5em 0;">
+#AUIbutton("フォルダを追加する"  "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFolderFormScreen')');")
+</div>
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_folder_list','1')">フォルダの管理・削除</a>
+</div>
+
+<div class="auiWidget clearfix">
+<div style="margin:0.5em 0;">
+#AUIbutton("フィルタを追加する" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormScreen')');")
+</div>
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_filter_list','1')">フィルタの管理・削除</a>
+</div>
+</div>

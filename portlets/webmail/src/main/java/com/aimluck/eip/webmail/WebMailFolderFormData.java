@@ -289,8 +289,7 @@ public class WebMailFolderFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       String folderId =
-        ALEipUtils.getTemp(rundata, context, WebMailUtils.FOLDER_ID);
-      // int delete_id = Integer.parseInt(folderId);
+        ALEipUtils.getParameter(rundata, context, ALEipConstants.ENTITY_ID);
 
       // デフォルトのフォルダは削除不可。
       if (mailAccount.getDefaultFolderId() == Integer.parseInt(folderId)) {
