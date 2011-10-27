@@ -396,6 +396,14 @@ $record.WbrName
 #ALtdheadAtt("$record3.FacilityName" "class='groupOneday' rowspan='$duplirowmax'")
 #ALtdheadfooter()
 
+#if($todocolcount > 0)
+#ALtdcellAtt("" "colspan='$todorestcount'")
+#end
+
+#if($termcolcount > 0)
+#ALtdcellAtt("" "colspan='$termcolcount'")
+#end
+
 #foreach($record in $result.getFacilityScheduleList($record3.FacilityId.Value))
 #set($rows = $result.getFacilityRows($record3.FacilityId.Value))
 #set($colspan = $!{result.getScheduleColspan($record, $rows)} )
