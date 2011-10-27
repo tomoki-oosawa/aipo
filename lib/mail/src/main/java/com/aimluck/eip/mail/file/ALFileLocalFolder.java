@@ -406,4 +406,36 @@ public class ALFileLocalFolder extends ALAbstractFolder {
   public String getNewFileName() {
     return String.valueOf(System.nanoTime());
   }
+
+  /**
+   * @param msgIndexes
+   * @return
+   */
+  @Override
+  public boolean readMails(List<String> msgIndexes) {
+    try {
+      SelectQuery<EipTMail> query = Database.query(EipTMail.class);
+      Expression exp1 =
+        ExpressionFactory.inDbExp(EipTMail.MAIL_ID_PK_COLUMN, msgIndexes);
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY, Integer
+          .valueOf(user_id));
+
+      List<EipTMail> mail_list =
+        query.andQualifier(exp1).andQualifier(exp2).fetchList();
+      if (mail_list == null || mail_list.size() == 0) {
+        logger.debug("[ALFileLocalFolder] Not found ID...");
+        throw new ALPageNotFoundException();
+      }
+      for (EipTMail record : mail_list) {
+        record.setReadFlg("T");
+      }
+      Database.commit();
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error(t);
+      return false;
+    }
+    return true;
+  }
 }

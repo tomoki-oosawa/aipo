@@ -106,6 +106,14 @@ public interface ALFolder {
   abstract public boolean deleteMails(List<String> msgIndexes);
 
   /**
+   * 指定されたインデックスのメールを既読にする．
+   * 
+   * @param msgIndexes
+   * @return
+   */
+  abstract public boolean readMails(List<String> msgIndexes);
+
+  /**
    * 保存してある UID リストを取得する。
    * 
    * @return

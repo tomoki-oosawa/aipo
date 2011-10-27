@@ -270,4 +270,13 @@ public class ALDbLocalFolder extends ALAbstractFolder {
   public void close() {
   }
 
+  /**
+   * @param msgIndexes
+   * @return
+   */
+  @Override
+  public boolean readMails(List<String> msgIndexes) {
+    return false;
+  }
+
 }
