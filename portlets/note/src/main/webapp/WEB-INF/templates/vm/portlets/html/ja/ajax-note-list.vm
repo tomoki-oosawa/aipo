@@ -75,22 +75,20 @@
 #AUIrowTableWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
-#if ($isReceive)
-#ALtdheadThin("#ALajaxsort('note_stat' '状態' $result 'NoteListScreen')")
-#end
-#ALtdheadThin("#ALajaxsort('client_name' '依頼者' $result 'NoteListScreen')")
-#ALtdheadW10('依頼者所属')
-#ALtdheadW40("#ALajaxsort('subject_type' '用件' $result 'NoteListScreen')")
+#if($isReceive)#ALtdheadThin("#ALajaxsort('note_stat' '状態' $result 'NoteListScreen')")#end
+#ALtdheadW25("#ALajaxsort('client_name' '依頼者' $result 'NoteListScreen')")
+#ALtdheadW25('依頼者所属')
+#ALtdheadW33("#ALajaxsort('subject_type' '用件' $result 'NoteListScreen')")
 ##ALtdheadThin('本文')
-#ALtdheadThin("#if ($isReceive) 送信者 #else 受信者 #end")
-#ALtdheadThin("#if ($isReceive) #ALajaxsort('accept_date' '受付日時' $result 'NoteListScreen') #else #ALajaxsort('create_date' '作成日時' $result 'NoteListScreen') #end")
+#ALtdheadThin("#if($isReceive) 送信者 #else 受信者 #end")
+#ALtdheadThin("#if($isReceive) #ALajaxsort('accept_date' '受付日時' $result 'NoteListScreen') #else #ALajaxsort('create_date' '作成日時' $result 'NoteListScreen') #end")
 </tr>
 #set($setEven = true)
 #foreach ($record in $result.List)
 #ALsetSubject($record)
 <tr #if(!$setEven) class="even" #end>
 #ALsetEven($setEven)
-#ALtdcellAtt("<input name='check$!record.NoteId' type='checkbox' value='$!record.NoteId'/>" 'class="center"')
+#ALtdcell("<input name='check$!record.NoteId' type='checkbox' value='$!record.NoteId'/>")
 #if($isReceive)
 #if($record.NoteStat.toString() == "1" || $record.NoteStat.toString() == "2" || $record.NoteStat.toString() == "3")
 #ALtdcellAtt("<img src='$record.NoteStatImage' alt='$record.NoteStatImageDescription' title='$record.NoteStatImageDescription'/>" 'class="center"')
@@ -102,9 +100,7 @@
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","NoteDetailScreen").addQueryData("entityid",$record.NoteId))');">$!record.ClientName</a>
 #ALtdcellfooter()
 #ALtdcellAtt($!record.CompanyName 'nowrap="nowrap"')
-#ALtdcellheader()
-<div>$!subject</div>
-#ALtdcellfooter()
+#ALtdcellheader()<div>$!subject</div>#ALtdcellfooter()
 ##ALtdcellAtt("#if($!record.hasMemo()) 有 #else 無 #end" 'class="center"')
 #ALtdcellAtt("#if ($isReceive) $!record.SrcUserFullName #else $!record.DestUserFullName #end" 'nowrap="nowrap"')
 #ALtdcellAtt("#if ($isReceive) $!{record.AcceptDate.Month}月$!{record.AcceptDate.Day}日 $!{record.AcceptDate.Hour}時$!{record.AcceptDate.Minute}分 #else $!{record.CreateDate.Month}月$!{record.CreateDate.Day}日 $!{record.CreateDate.Hour}時$!{record.CreateDate.Minute}分 #end" 'nowrap="nowrap"')
@@ -138,17 +134,9 @@
 <div class="auiWidget clearfix">
 <h2>表示</h2>
 <ul>
-#if($isReceive)
-<li class="active">
-#else
-<li >
-#end
+<li #if($isReceive)class="active"#end>
 <a href="javascript:void(0);" onClick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteListScreen').addQueryData('tab','received_notes'))','$!portlet.ID');">受信履歴</a></li>
-#if($!result.currentTab == 'sent_notes')
-<li class="active">
-#else
-<li >
-#end
+<li #if(!$isReceive)class="active"#end>
 <a href="javascript:void(0);" onClick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteListScreen').addQueryData('tab','sent_notes'))','$!portlet.ID');">送信履歴</a></li>
 </ul>
 </div>
