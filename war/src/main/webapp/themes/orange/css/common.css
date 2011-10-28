@@ -3344,6 +3344,7 @@ float:left;
 	background-position:23px 1em;
 }
 
+
 /* Contents Area ********************/
 #auiContentsArea {
 	float:right;
@@ -3371,12 +3372,14 @@ float:left;
 .auiButton,
 .auiButtonSmall {
 	display:inline-block;
-	line-height:1.9em;
-	padding:0 1em;
+	line-height:2em;
+	height:2em;
+	padding:0 0.7em;
 	color:#000;
 	text-decoration:none;
 	text-align:center;
 	text-shadow:0 1px 0 #f8f8f8;
+	vertical-align:middle;
 	cursor:pointer;
 	border:solid 1px #ccc;
 	border-radius:2px;
@@ -3401,14 +3404,25 @@ float:left;
 	background: -webkit-gradient(linear, left top, left bottom, from(#e1e1e1), to(#eee));/*Ch*/
 	background: -moz-linear-gradient(top, #e1e1e1, #eee);/*Fx*/
 }
-.auiButton img,
-.auiButtonSmall img {
-	vertical-align:middle;
-}
 .auiButtonSmall {
 	padding:0 0.5em;
 	font-size:8pt;
 	white-space:nowrap;
+}
+.auiButton span,
+.auiButtonSmall span {
+	display:table-cell;
+	*display:block;/*IE*/
+	width:18px;
+	height:2em;
+	line-height:2em;
+	text-align:center;
+	vertical-align:middle;
+	layout-grid-line:2em;/*IE*/
+}
+.auiButton img,
+.auiButtonSmall img {
+	vertical-align:middle;
 }
 
 .auiButtonAction {
@@ -3424,8 +3438,6 @@ float:left;
 	border:solid 1px #f09000;
 	border-radius:3px;
 	background:#ff9900;
-	/*background: -webkit-gradient(linear, left top, left bottom, from(#fff090), color-stop(0.02, #fff090), color-stop(0.03, #ffcc66), color-stop(0.5, #ffaa22), to(#ff9900));/*Ch*/
-	/*background: -moz-linear-gradient(top, #fff090 1px, #ffcc66 1px, #ffaa22, #ff9900);/*Fx*/
 	background: -webkit-gradient(linear, left top, left bottom, from(#ffbb22), to(#ff9900));/*Ch*/
 	background: -moz-linear-gradient(top, #ffbb22, #ff9900);/*Fx*/
 }
@@ -3434,8 +3446,6 @@ float:left;
 	border:solid 1px #e08000;
 	box-shadow:0 1px 1px rgba(0,0,0,0.2);
 	background:#ffaa11;
-	/*background: -webkit-gradient(linear, left top, left bottom, from(#fff090), color-stop(0.02, #fff090), color-stop(0.03, #ffdc66), color-stop(0.5, #ffaa22), to(#ff9900));/*Ch*/
-	/*background: -moz-linear-gradient(top, #fff090 1px, #ffdc66 1px, #ffaa22, #ff9900);/*Fx*/
 	background: -webkit-gradient(linear, left top, left bottom, from(#ffcc33), to(#ff9900));/*Ch*/
 	background: -moz-linear-gradient(top, #ffcc33, #ff9900);/*Fx*/
 }
@@ -3443,8 +3453,6 @@ float:left;
 	border:solid 1px #e08000;
 	box-shadow:0 1px 1px rgba(0,0,0,0);
 	background:#ffaa11;
-	/*background: -webkit-gradient(linear, left top, left bottom, from(#fff090), color-stop(0, #f0e080), color-stop(0.05, #ff9900), color-stop(0.5, #ffaa22), to(#ffbb33));/*Ch*/
-	/*background: -moz-linear-gradient(top, #f0e080, #ff9900 2px, #ffaa22, #ffbb33);/*Fx*/
 	background: -webkit-gradient(linear, left top, left bottom, from(#ff9900), to(#ffaa11));/*Ch*/
 	background: -moz-linear-gradient(top, #ff9900, #faa11);/*Fx*/
 }
@@ -3452,10 +3460,10 @@ float:left;
 /* auiSearch ********************/
 .auiSearch input.text,
 .auiSearch input.date {
-	height:2.3em;
-	*height:2.2em;/*IE*/
-	line-height:2.3em;
-	*line-height:2.2em;/*IE*/
+	height:2.1em;
+	*height:2.0em;/*IE*/
+	line-height:2.1em;
+	*line-height:2.0em;/*IE*/
 	padding:0 2px;
 	vertical-align:middle;
 	border-radius:3px;
@@ -3482,7 +3490,7 @@ float:left;
 }
 .auiButtonSearch {
 	display:inline-block;
-	line-height:2.2em;
+	line-height:2em;
 	padding:0 1em;
 	color:#000;
 	text-decoration:none;
@@ -3795,29 +3803,63 @@ table.auiCalendar td:hover {
 	margin:0;
 	padding:0;
 }
+.auiForm input,
+.auiForm textarea,
 .auiForm select {
-	height:2.1em;
-	padding:0.25em;
+	margin:0;
+	vertical-align:middle;
 	border:solid 1px #ccc;
 	border-radius:2px;
 }
-.auiForm textarea {
+.auiForm input {
+	height:2.1em;
+	*height:2.0em;/*IE*/
+	line-height:2.1em;
+	*line-height:2.0em;/*IE*/
+	padding:0 2px;
+	vertical-align:middle;
 	border-radius:3px;
 	box-sizing:border-box;
 	-moz-box-sizing:border-box;
 	background-color:#fff;
 	border:1px solid #c9c9c9;
 }
+.auiForm select {
+	height:2.1em;
+	padding:0.25em;
+}
+.auiForm textarea {
+	border-radius:3px;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	background-color:#fff;
+}
+.auiForm input:hover,
+.auiForm input:focus,
 .auiForm select:hover,
 .auiForm select:focus,
 .auiForm textarea:hover,
 .auiForm textarea:focus {
 	border:solid 1px #999;
 }
+.auiForm input:focus,
 .auiForm textarea:focus {
 	box-shadow:inset 0 1px 2px rgba(0,0,0,0.2);
 }
-
+.auiForm input[disabled],
+.auiForm textarea[disabled] {
+	cursor:no-drop;
+	color:#999;
+	background:#eee;
+}
+.auiForm input[disabled]:hover,
+.auiForm textarea[disabled]:hover {
+	border-color:#c9c9c9;
+}
+.auiForm input[type=checkbox],
+.auiForm input[type=radio] {
+	height:auto;
+}
 
 /* auiAbsLayer ********************/
 .auiAbsLayer {

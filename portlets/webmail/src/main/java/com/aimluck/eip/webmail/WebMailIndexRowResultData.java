@@ -24,8 +24,6 @@ import java.util.Date;
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
-import com.aimluck.eip.util.ALCommonUtils;
-import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
  * WebメールのResultDataです。 <br />
@@ -62,6 +60,9 @@ public class WebMailIndexRowResultData {
   /** 日付 */
   private ALDateTimeField date = null;
 
+  /** 日付時刻 */
+  private ALDateTimeField date_time = null;
+
   /** ファイル容量（KB） */
   private ALStringField file_volume = null;
 
@@ -72,7 +73,8 @@ public class WebMailIndexRowResultData {
     mail_id = new ALNumberField();
     subject = new ALStringField();
     person = new ALStringField();
-    date = new ALDateTimeField(WebMailUtils.DATE_TIME_FORMAT);
+    date = new ALDateTimeField("M月d日");
+    date_time = new ALDateTimeField("H:mm");
     file_volume = new ALStringField();
     file_name = new ALStringField();
   }
@@ -83,7 +85,13 @@ public class WebMailIndexRowResultData {
    * @return
    */
   public ALDateTimeField getDate() {
-    return date;
+    ALDateTimeField today = new ALDateTimeField("M月d日");
+    today.setValue(new Date());
+    if (date.toString().equals(today.toString())) {
+      return date_time;
+    } else {
+      return date;
+    }
   }
 
   /**
@@ -101,7 +109,7 @@ public class WebMailIndexRowResultData {
    * @return
    */
   public String getPerson() {
-    return ALCommonUtils.replaceToAutoCR(person.toString());
+    return person.toString();
   }
 
   /**
@@ -143,8 +151,12 @@ public class WebMailIndexRowResultData {
   /**
    * @param date
    */
-  public void setDate(Date date) {
-    this.date.setValue(date);
+  public void setDate(Date nDate) {
+    if (nDate == null) {
+      return;
+    }
+    this.date.setValue(nDate);
+    this.date_time.setValue(nDate);
   }
 
   public void setDate(String dateStr) {

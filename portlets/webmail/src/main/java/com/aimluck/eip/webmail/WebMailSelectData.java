@@ -356,12 +356,14 @@ public class WebMailSelectData extends
 
     String isRead = record.getReadFlg();
     if ("T".equals(isRead)) {
+      rd.setRead(true);
       rd.setReadImage("themes/"
         + getTheme()
         + "/images/icon/webmail_readmail.gif");
       rd.setReadImageDescription("既読");
       rd.setRead(true);
     } else {
+      rd.setRead(false);
       rd.setReadImage("themes/"
         + getTheme()
         + "/images/icon/webmail_unreadmail.gif");
