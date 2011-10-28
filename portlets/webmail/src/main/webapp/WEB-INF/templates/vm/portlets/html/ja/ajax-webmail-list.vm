@@ -54,16 +54,15 @@
 <div class="spaceBottom"><div class="indicator" id="indicator-$portlet_id">$StatStr</div></div>
 #end
 #if($!result.List && $!result.List.size() <= 0)
-#if($!result.currentTab == "receive")
-<div class="message">受信メールはありません。</div>
-#else
-<div class="message">送信メールはありません。</div>
-#end
-
 <div class="auiSummaryMeta clearfix">
+#if($!result.currentTab == "receive")
+<div class="message floatLeft">受信メールはありません。</div>
+#else
+<div class="message floatLeft">送信メールはありません。</div>
+#end
 <a class="auiButton" title="メール受信" href="javascript:aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailListScreen').addQueryData('mode','recieve')', '$!portlet.ID');">
 	<span><img src='images/icon/icon_reload.gif' width='18' height='18' alt='メール受信'></span>
-</a> 
+</a>
 </div>
 #else
 <div class="auiSummaryMeta clearfix">
@@ -84,7 +83,7 @@
 #end
 <a class="auiButton" title="メール受信" href="javascript:aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailListScreen').addQueryData('mode','recieve')', '$!portlet.ID');">
 	<span><img src='images/icon/icon_reload.gif' width='18' height='18' alt='メール受信'></span>
-</a> 
+</a>
 
 </div>
 #AUIajaxpageview('WebMailListScreen' $result)
