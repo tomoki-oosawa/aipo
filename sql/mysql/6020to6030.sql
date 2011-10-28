@@ -34,3 +34,8 @@ INSERT INTO eip_m_mail_notify_conf VALUES(null,1,25,3,NULL,now(),now());
 -- 20111025
 INSERT INTO eip_t_cabinet_folder_map VALUES(null,1,0,NULL);
 -- 20111025
+
+-- 20111028
+UPDATE `eip_t_cabinet_file` SET `counter` = 0 WHERE `counter` = '';
+UPDATE `eip_t_cabinet_file` SET `counter` = 0 WHERE `counter` IS NULL;
+-- 20111028
