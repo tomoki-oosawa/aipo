@@ -32,6 +32,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALNumberField;
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequest;
@@ -107,6 +108,8 @@ public class WorkflowSelectData extends
 
   /** 他ユーザーのワークフローの閲覧権限 */
   private boolean hasAuthorityOther;
+
+  private ALStringField target_keyword;
 
   /**
    * 
@@ -194,7 +197,10 @@ public class WorkflowSelectData extends
         ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_OTHER,
         ALAccessControlConstants.VALUE_ACL_LIST);
 
+    target_keyword = new ALStringField();
+
     super.init(action, rundata, context);
+
   }
 
   /**
@@ -226,6 +232,13 @@ public class WorkflowSelectData extends
   public ResultList<EipTWorkflowRequest> selectList(RunData rundata,
       Context context) {
     try {
+      if (WorkflowUtils.hasResetFlag(rundata, context)) {
+        WorkflowUtils.resetFilter(rundata, context, this.getClass().getName());
+        target_keyword.setValue("");
+      } else {
+        target_keyword.setValue(WorkflowUtils
+          .getTargetKeyword(rundata, context));
+      }
 
       SelectQuery<EipTWorkflowRequest> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
@@ -250,6 +263,14 @@ public class WorkflowSelectData extends
    */
   private SelectQuery<EipTWorkflowRequest> getSelectQuery(RunData rundata,
       Context context) {
+
+    if ((target_keyword != null) && (!target_keyword.getValue().equals(""))) {
+      ALEipUtils.setTemp(rundata, context, LIST_SEARCH_STR, target_keyword
+        .getValue());
+    } else {
+      ALEipUtils.removeTemp(rundata, context, LIST_SEARCH_STR);
+    }
+
     SelectQuery<EipTWorkflowRequest> query =
       Database.query(EipTWorkflowRequest.class);
 
@@ -360,6 +381,66 @@ public class WorkflowSelectData extends
     }
 
     return buildSelectQueryForFilter(query, rundata, context);
+  }
+
+  @Override
+  protected SelectQuery<EipTWorkflowRequest> buildSelectQueryForFilter(
+      SelectQuery<EipTWorkflowRequest> query, RunData rundata, Context context) {
+
+    String search = ALEipUtils.getTemp(rundata, context, LIST_SEARCH_STR);
+    if (search != null && !search.equals("")) {
+      current_search = search;
+      Expression ex1 =
+        ExpressionFactory.likeExp(EipTWorkflowRequest.NOTE_PROPERTY, "%"
+          + search
+          + "%");
+      Expression ex11 =
+        ExpressionFactory.likeExp(EipTWorkflowRequestMap.NOTE_PROPERTY, "%"
+          + search
+          + "%");
+      Expression ex2 =
+        ExpressionFactory.likeExp(
+          EipTWorkflowRequest.REQUEST_NAME_PROPERTY,
+          "%" + search + "%");
+      SelectQuery<EipTWorkflowRequest> q =
+        Database.query(EipTWorkflowRequest.class);
+      SelectQuery<EipTWorkflowRequestMap> qm =
+        Database.query(EipTWorkflowRequestMap.class);
+      // q.andQualifier(ex1.orExp(ex2.orExp(ex11)));
+      q.andQualifier(ex1.orExp(ex2));
+      qm.andQualifier(ex11);
+
+      List<EipTWorkflowRequest> queryList = q.fetchList();
+      List<EipTWorkflowRequestMap> queryListMap = qm.fetchList();
+      List<Integer> resultid = new ArrayList<Integer>();
+      for (EipTWorkflowRequest item : queryList) {
+        if (item.getParentId() != 0 && !resultid.contains(item.getParentId())) {
+          resultid.add(item.getParentId());
+        } else if (!resultid.contains(item.getRequestId())) {
+          resultid.add(item.getRequestId());
+        }
+      }
+      for (EipTWorkflowRequestMap item : queryListMap) {
+        if (item.getEipTWorkflowRequest().getParentId() != 0
+          && !resultid.contains(item.getEipTWorkflowRequest().getParentId())) {
+          resultid.add(item.getEipTWorkflowRequest().getParentId());
+        } else if (!resultid.contains(item
+          .getEipTWorkflowRequest()
+          .getRequestId())) {
+          resultid.add(item.getEipTWorkflowRequest().getRequestId());
+        }
+      }
+      if (resultid.size() == 0) {
+        // 検索結果がないことを示すために-1を代入
+        resultid.add(-1);
+      }
+      Expression ex =
+        ExpressionFactory.inDbExp(
+          EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
+          resultid);
+      query.andQualifier(ex);
+    }
+    return query;
   }
 
   /**
@@ -576,5 +657,9 @@ public class WorkflowSelectData extends
 
   public boolean hasAuthorityOther() {
     return hasAuthorityOther;
+  }
+
+  public ALStringField getTargetKeyword() {
+    return target_keyword;
   }
 }

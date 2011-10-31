@@ -18,24 +18,29 @@
  *#
 
 ## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-dlg-")
+## ---------------------------------------------------------------------------
 <!-- Start Contents Area -->
-<div id="auiContentsArea"><div id="auiContentsAreaInner">
-#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
-##<div id="listmessageDiv"></div>
-##<div class="auiSummaryMeta clearfix">
-##<form class="auiSearch floatLeft" style="margin-right:1em;">
-##<input class="text floatLeft" type="text" name="q" id="q" style="margin-right:5px;" #if ($!result.CurrentSearch) value="$!result.CurrentSearchWithSanitize" #end>
-##<a class="auiButtonSearch floatLeft" onclick="aimluck.io.setHiddenValue(this);return aipo.workflow.onChangeSearch('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID))','$!portlet.ID');">検索</a>
-##</form>
-##</div>
-#if($result.List.size() == 0)
+#AUIcontentsAreaHeader()
 <div class="auiSummaryMeta clearfix">
-<div class="message">指定された条件に該当する依頼はありません。</div>
+<form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
+<input type="hidden" name="template" value="WorkflowListScreen"/>
+<input class="text floatLeft" type="text" name="keyword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.targetKeyword"/>
+<a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">検索</a>
+</a>
+</form>
+<div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
 </div>
+#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
+<div id="listmessageDiv"></div>
+#ALajaxlistformheader('Workflow')
+#if($result.List.size() == 0)
+<div class="message">指定された条件に該当する依頼はありません。</div>
 #else
 <div class="auiSummaryMeta clearfix">
 #AUIajaxpageview('WorkflowListScreen' $result)
 </div>
+#AUIsearchresult($!result.targetKeyword.toString())
 #AUIrowTableWide()
 <tr>
 #ALtdheadAtt("#ALajaxsort('request_name' '表題' $result 'WorkflowListScreen')" 'class=""')
@@ -62,6 +67,7 @@
 #AUIajaxpageview('WorkflowListScreen' $result)
 </div>
 #end
-</div></div>
+#ALformfooter()
+#AUIcontentsAreaFooter()
 <!-- END Contents Area -->
 #parse("/portlets/html/ja/workflow-widgets.vm")

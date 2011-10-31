@@ -11,19 +11,19 @@
 <span>あなた宛の依頼</span>
 <ul>
 #if($!result.currentTab == 'unconfirmed')
-<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("tab","unconfirmed"))','$!portlet.ID');">未確認</a></li>
+<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("tab","unconfirmed").addQueryData("reset_params","true"))','$!portlet.ID');">未確認</a></li>
 #else
-<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("tab","unconfirmed"))','$!portlet.ID');">未確認</a></li>
+<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("tab","unconfirmed").addQueryData("reset_params","true"))','$!portlet.ID');">未確認</a></li>
 #end
 #if($!result.currentTab == 'confirmed')
-<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("tab","confirmed"))','$!portlet.ID');">確認済み</a></li>
+<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("tab","confirmed").addQueryData("reset_params","true"))','$!portlet.ID');">確認済み</a></li>
 #else
-<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("tab","confirmed"))','$!portlet.ID');">確認済み</a></li>
+<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("tab","confirmed").addQueryData("reset_params","true"))','$!portlet.ID');">確認済み</a></li>
 #end
 #if($!result.currentTab == 'completed')
-<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("tab","completed"))','$!portlet.ID');">完了</a></li>
+<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("tab","completed").addQueryData("reset_params","true"))','$!portlet.ID');">完了</a></li>
 #else
-<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("tab","completed"))','$!portlet.ID');">完了</a></li>
+<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("tab","completed").addQueryData("reset_params","true"))','$!portlet.ID');">完了</a></li>
 #end
 </ul>
 </li>
@@ -33,15 +33,15 @@
 <ul>
 #if(($!result.currentTab == 'unfinished') && !($all_flg))
 #set($all_flg=false)
-<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("tab","unfinished"))','$!portlet.ID');">未完了</a></li>
+<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("tab","unfinished").addQueryData("reset_params","true"))','$!portlet.ID');">未完了</a></li>
 #else
-<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("tab","unfinished"))','$!portlet.ID');">未完了</a></li>
+<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("tab","unfinished").addQueryData("reset_params","true"))','$!portlet.ID');">未完了</a></li>
 #end
 #if(($!result.currentTab == 'finished') && !($all_flg))
 #set($all_flg=false)
-<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("tab","finished"))','$!portlet.ID');">完了</a></li>
+<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("tab","finished").addQueryData("reset_params","true"))','$!portlet.ID');">完了</a></li>
 #else
-<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("tab","finished"))','$!portlet.ID');">完了</a></li>
+<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("tab","finished").addQueryData("reset_params","true"))','$!portlet.ID');">完了</a></li>
 #end
 </ul>
 </li>
@@ -52,15 +52,15 @@
 <ul>
 #if(($!result.currentTab == 'unfinished') && ($all_flg))
 #set($all_flg=true)
-<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("alltab","unfinished").addQueryData('eventSubmit_doWorkflow_list_all','1'))','$!portlet.ID');">未完了</a></li>
+<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("alltab","unfinished").addQueryData('eventSubmit_doWorkflow_list_all','1').addQueryData("reset_params","true"))','$!portlet.ID');">未完了</a></li>
 #else
-<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("alltab","unfinished").addQueryData('eventSubmit_doWorkflow_list_all','1'))','$!portlet.ID');">未完了</a></li>
+<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("alltab","unfinished").addQueryData('eventSubmit_doWorkflow_list_all','1').addQueryData("reset_params","true"))','$!portlet.ID');">未完了</a></li>
 #end
 #if(($!result.currentTab == 'finished') && ($all_flg))
 #set($all_flg=true)
-<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("alltab","finished").addQueryData('eventSubmit_doWorkflow_list_all','1'))','$!portlet.ID');">完了</a></li>
+<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("alltab","finished").addQueryData('eventSubmit_doWorkflow_list_all','1').addQueryData("reset_params","true"))','$!portlet.ID');">完了</a></li>
 #else
-<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("alltab","finished").addQueryData('eventSubmit_doWorkflow_list_all','1'))','$!portlet.ID');">完了</a></li>
+<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("alltab","finished").addQueryData('eventSubmit_doWorkflow_list_all','1').addQueryData("reset_params","true"))','$!portlet.ID');">完了</a></li>
 #end
 </ul>
 </li>
