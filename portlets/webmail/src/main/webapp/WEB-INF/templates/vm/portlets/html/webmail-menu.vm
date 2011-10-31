@@ -18,6 +18,8 @@
  *#
 
 ## ---------------------------------------------------------------------------
+
+#*
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
@@ -36,7 +38,7 @@ dojo.addOnLoad(function () {
                     {   caption: "メール一覧を見る", iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_list','1')"    },
                     {   caption: "メールを作成する", iconClass: "menuBarIconWebmailCreateMail", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFormScreen")');"    },
                     {   caption: "メールを受信する", iconClass:"menuBarIconWebmailReceiveMail", url: "javascript:aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailListScreen").addQueryData("mode","recieve")', '$!portlet.ID');"    },
-                    {   caption: "フォルダを追加する", iconClass: "menuBarIconFolderAdd" , url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFolderFormScreen")');"}
+                    {   caption: "フォルダを追加する", iconClass: "menuBarIconFolderAdd" , url:}
                 ]
             },
             {
@@ -46,7 +48,7 @@ dojo.addOnLoad(function () {
                 submenu:
                 [
                     {   caption: "フィルタ一覧を見る", iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_filter_list','1')"    },
-                    {   caption: "フィルタを追加する", iconClass: "menuBarIconAdd" , url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFilterFormScreen")');"},
+                    {   caption: "フィルタを追加する", iconClass: "menuBarIconAdd" , url: },
                     {   caption: "フィルタの順番を変更する", iconClass: "menuBarIconAccountChangeTurn" , url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFilterOrderFormScreen")');"}
                 ]
             },
@@ -56,8 +58,8 @@ dojo.addOnLoad(function () {
                 url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_account_list','1')" ,
                 submenu:
                 [
-                    {   caption: "アカウント一覧を見る", iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_account_list','1')"    },
-                    {   caption: "アカウントを追加する", iconClass: "menuBarIconAdd" , url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new")');"},
+                    {   caption: "アカウント一覧を見る", iconClass: "menuBarIconList", url:     },
+                    {   caption: "アカウントを追加する", iconClass: "menuBarIconAdd" , url: "},
                 ]
             }
         ];
@@ -71,3 +73,4 @@ dojo.addOnLoad(function () {
 
 //]]>
 </script>
+ *#

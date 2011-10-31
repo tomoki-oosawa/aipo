@@ -51,7 +51,9 @@
 #ALtdcellAtt("<input name='check$!record.FilterId' type='checkbox' value='$!record.FilterId' />" 'align="center"')
 #ALtdcell("$!record.SortOrder")
 #ALtdcellheader()
+<div>
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFilterDetailScreen").addQueryData("filterid",$record.FilterId))');">$!record.FilterName</a>
+</div>
 #ALtdcellfooter()
 #ALtdcellheaderAtt('align="center" nowrap')
 $!{record.FilterType}が$!{record.FilterString}を含む

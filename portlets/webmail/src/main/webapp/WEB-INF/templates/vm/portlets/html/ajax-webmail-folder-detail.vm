@@ -36,7 +36,7 @@
 #ALbuttonheader()
 #if($!result.Detail.CanUpdate)
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFolderFormScreen').addQueryData('entityid',$!{result.Detail.FolderId})" "$!portlet.ID" "aipo.webmail.onLoadMailFolderDialog")
-#WebmailajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFolderFormJSONScreen').addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
+#WebmailajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFolderFormJSONScreen').addQueryData('mode', 'delete').addQueryData('entityid',$!{result.Detail.FolderId})" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
 #end
 #ALajaxbuttonClose()
 #ALbuttonfooter()

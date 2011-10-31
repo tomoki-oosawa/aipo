@@ -19,23 +19,21 @@
 
 ##-------------------------------------------------------------------
 #set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new")))
-#set ($submenulist = [["メールアカウントを追加する","javascript:aipo.common.showDialog('$newUrl1');","images/icon/icon_add.gif"]])
+#set ($submenulist = [["メールアカウントを追加する","javascript:aipo.common.showDialog('$newUrl1');","themes/$!theme/images/icon/icon_add.gif"]])
 #set($tabs = [["メールアカウント一覧", "",""]])
 ##------------------------------------------------------------------------------
-#ALsubmenubar($submenulist "")
-#ALajaxtabheader($tabs "")
-#ALspacebothheader()
+#AUIcontentsAreaHeader()
 #if($result.List.size() <= 0)
 <div class="message">メールアカウントが登録されていません。</div>
 #else
-#ALajaxlistformheader('WebMail')
-#ALajaxpageview('WebMailAccountListScreen' $result)
-#ALtableheaderWide()
+#AUISummaryDiv()
+#AUIajaxpageview('WebMailAccountListScreen' $result)
+#AUISummaryDivfooter()
+#AUIrowTableWide()
 <tr>
 #ALtdhead("#ALajaxsort('account_name' 'アカウント名' $result 'WebMailAccountListScreen')")
 #ALtdheadAtt('未読数' 'width="1%"')
 #ALtdheadAtt('最終受信日' 'width="1%"')
-#ALtdheadAtt(' ' 'width="1%"')
 </tr>
 #foreach ($record in $result.List)
 #if($!record.countUnRead>= 0)
@@ -53,12 +51,14 @@
 #else
 #ALtdcellAtt("なし" 'align="center"')
 #end
-#ALtdcellAtt("#ALajaxbuttonLink('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('mode','form').addQueryData('entityid',$record.AccountId) 'images/icon/icon_edit.gif')" 'nowrap')
 </tr>
 #end
-#ALtablefooter()
-#ALajaxpageviewFooter('WebMailAccountListScreen' $result)
+#AUItablefooter()
+#AUISummaryDiv()
+#AUIajaxpageview('WebMailAccountListScreen' $result)
+#AUISummaryDivfooter()
 #end
-#ALformfooter()
-#ALspacebothfooter()
-#ALajaxtabfooter()
+#AUIcontentsAreaFooter()
+#parse("/portlets/html/ja/webmail-widgets.vm")
+
+
