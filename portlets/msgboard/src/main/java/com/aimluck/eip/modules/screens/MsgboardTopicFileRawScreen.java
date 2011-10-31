@@ -19,15 +19,21 @@
 
 package com.aimluck.eip.modules.screens;
 
+import java.util.List;
+
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 
+import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategory;
+import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategoryMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardFile;
+import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardTopic;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 掲示板トピックの添付ファイルの一覧を処理するクラスです。
@@ -92,5 +98,28 @@ public class MsgboardTopicFileRawScreen extends FileuploadRawScreen {
     } catch (Exception e) {
       logger.error("[ERROR]", e);
     }
+  }
+
+  private boolean doFileCheckView(RunData rundata, EipTMsgboardFile msgboardfile)
+      throws ALPermissionException {
+    int userid = ALEipUtils.getUserId(rundata);
+    EipTMsgboardTopic msgboardtopic = msgboardfile.getEipTMsgboardTopic();
+    EipTMsgboardCategory msgboardcategory =
+      msgboardtopic.getEipTMsgboardCategory();
+
+    if ("T".equals(msgboardcategory.getPublicFlag())) {
+      return true;
+    } else {
+      @SuppressWarnings("unchecked")
+      List<EipTMsgboardCategoryMap> categoryMap =
+        msgboardcategory.getEipTMsgboardCategoryMaps();
+      for (EipTMsgboardCategoryMap map : categoryMap) {
+        if (map.getUserId().intValue() == userid) {
+          return true;
+        }
+      }
+      throw new ALPermissionException();
+    }
+
   }
 }
