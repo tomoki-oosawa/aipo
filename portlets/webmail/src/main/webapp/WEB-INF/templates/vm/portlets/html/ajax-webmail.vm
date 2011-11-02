@@ -20,7 +20,8 @@
 ## ---------------------------------------------------------------------------
 #set ($receiveUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen").addQueryData("mode","recieve")))
 ## ---------------------------------------------------------------------------
-<div class="auiSummaryMeta clearfix">
+#if($!result.AccountId != 0)
+	<div class="auiSummaryMeta clearfix">
 <div class="floatLeft w30">
 <form class="auiForm">
 #ALselectpdheader("target_category" "100%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
@@ -34,14 +35,10 @@
 <div class="floatLeft pl5">
 <a class="auiButton" href="javascript:aipo.viewPage('$receiveUrl','$!portlet.ID');aipo.webmail.onProcessingTimer();"><span><img src="themes/orange/images/icon/icon_reload.gif" width="18" height="18" alt="再読み込み" /></span></a>
 </div>
-#if ($result.List.size() != 0)
 #AUIajaxpageview('WebMailScreen' $result)
-#end
 </div>
 
-#if($!result.AccountId == 0)
-メールアカウントを選択してください。<a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');">メールアカウントが未登録の場合は、こちらからご登録ください。</a>
-#else
+
 #set ($StatStr = $!{result.StatStr})
 #if($StatStr && !($StatStr == ''))
 <div class="spaceBottom"><div class="indicator" id="indicator-'$!portlet.ID">$StatStr</div></div>
@@ -82,4 +79,9 @@
 </table>
 #end
 #ALformfooter()
+
+
+#else
+<a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');">こちらからメールアカウントを追加できます。</a>
+
 #end

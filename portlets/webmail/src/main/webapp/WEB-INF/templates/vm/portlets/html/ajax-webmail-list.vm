@@ -39,7 +39,7 @@
 #AUIcontentsAreaHeader()
 
 #if($!result.AccountId == 0)
-メールアカウントを選択してください。<a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');">メールアカウントが未登録の場合は、こちらからご登録ください。</a>
+<a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');">こちらからメールアカウントを追加できます。</a>
 #else
 
 

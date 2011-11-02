@@ -24,7 +24,7 @@
 ##------------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 #if($result.List.size() <= 0)
-<div class="message">メールアカウントが登録されていません。</div>
+<a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');">こちらからメールアカウントを追加できます。</a>
 #else
 #AUISummaryDiv()
 #AUIajaxpageview('WebMailAccountListScreen' $result)
