@@ -25,6 +25,11 @@
 #set ($type = "filter")
 ##------------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
+
+#if($!result.AccountId == 0)
+<a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');">こちらからメールアカウントを追加できます。</a>
+
+#else
 #if($result.List.size() <= 0)
 <div class="message">フィルタが登録されていません。</div>
 #else
@@ -70,6 +75,8 @@ $!{record.FilterType}が$!{record.FilterString}を含む
 #AUIajaxpageview('WebMailFilterListScreen' $result)
 </div>
 #AUISummaryDivfooter()
+
+#end
 
 #end
 #AUIcontentsAreaFooter()

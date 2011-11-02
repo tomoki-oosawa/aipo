@@ -53,8 +53,9 @@ public class WebMailFilterSelectData extends
     ALAbstractSelectData<EipTMailFilter, EipTMailFilter> {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WebMailFilterSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService
+      .getLogger(WebMailFilterSelectData.class.getName());
 
   /** フィルタID */
   String filterId = null;
@@ -312,7 +313,11 @@ public class WebMailFilterSelectData extends
    * @return
    */
   public int getAccountId() {
-    return mailAccount.getAccountId();
+    if (mailAccount == null) {
+      return 0;
+    } else {
+      return mailAccount.getAccountId();
+    }
   }
 
   /**
