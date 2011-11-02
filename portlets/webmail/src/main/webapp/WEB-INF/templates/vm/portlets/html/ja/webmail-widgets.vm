@@ -17,18 +17,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 #set($sentLink = "$!jslink.getPortletById($!portlet.getID()).addQueryData('template','WebMailListScreen').addQueryData('eventSubmit_doWebmail_show_sent_mails','1').addQueryData('tab','sent').addQueryData('folderid' ,'-1')")
+#set($newUrl_mailmaking = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFormScreen").addQueryData("entityid","new")))
 
 #if($type == "filter")
-#set($screen = "WebMailFilterListScreen")	
+#set($screen = "WebMailFilterListScreen")
 #elseif($type == "folder")
 #set($screen = "WebMailFolderListScreen")
 #else
-#set($screen = "WebMailListScreen")	
+#set($screen = "WebMailListScreen")
 #end
 
 <div id="auiWidgetsArea">
 <div class="auiWidget clearfix">
-#AUIbuttonAction("メールを作成する" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.webmail.onLoadMailDialog);")
+#AUIbuttonAction("メールを作成する" "javascript:aipo.common.showDialog('$newUrl_mailmaking','$!portlet.ID',aipo.webmail.onLoadMailDialog);")
 </div>
 
 <div class="auiWidget clearfix">
