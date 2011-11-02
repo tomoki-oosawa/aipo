@@ -434,6 +434,7 @@ aipo.schedule.formAllDayOn = function(checkbox) {
 
     checkbox.form.is_repeat.value = 'FALSE';
     checkbox.form.is_span.value = 'TRUE';
+    checkbox.form.all_day_flag.value = 'ON';
 }
 
 aipo.schedule.formAllDayOff = function(checkbox) {
@@ -451,6 +452,7 @@ aipo.schedule.formAllDayOff = function(checkbox) {
 
     checkbox.form.is_repeat.value = 'FALSE';
     checkbox.form.is_span.value = 'FALSE';
+    checkbox.form.all_day_flag.value = 'OFF';
 }
 
 aipo.schedule.formPublicOn = function(form) {
