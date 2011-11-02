@@ -60,7 +60,7 @@
 #else
 <div class="message floatLeft">送信メールはありません。</div>
 #end
-<a class="auiButton" title="メール受信" href="javascript:aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailListScreen').addQueryData('mode','recieve')', '$!portlet.ID');">
+<a class="auiButton" title="メール受信" href="javascript:void(0)" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailListScreen').addQueryData('mode','recieve')', '$!portlet.ID');">
 	<span><img src='images/icon/icon_reload.gif' width='18' height='18' alt='メール受信'></span>
 </a>
 </div>
