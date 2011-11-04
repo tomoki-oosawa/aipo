@@ -33,6 +33,7 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodoCategory;
@@ -86,7 +87,7 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
 
   private String target_user_id;
 
-  private String target_keyword;
+  private ALStringField target_keyword;
 
   private List<ALEipGroup> myGroupList;
 
@@ -151,7 +152,7 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
         login_user_id,
         ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER,
         ALAccessControlConstants.VALUE_ACL_DELETE);
-
+    target_keyword = new ALStringField();
     super.init(action, rundata, context);
   }
 
@@ -179,11 +180,11 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
         ToDoUtils.resetFilter(rundata, context, this.getClass().getName());
         target_group_name = "all";
         target_user_id = "all";
-        target_keyword = "";
+        target_keyword.setValue("");
       } else {
         target_group_name = ToDoUtils.getTargetGroupName(rundata, context);
         target_user_id = ToDoUtils.getTargetUserId(rundata, context);
-        target_keyword = ToDoUtils.getTargetKeyword(rundata, context);
+        target_keyword.setValue(ToDoUtils.getTargetKeyword(rundata, context));
       }
       setMyGroupList(new ArrayList<ALEipGroup>());
       getMyGroupList().addAll(ALEipUtils.getMyGroups(rundata));
@@ -237,9 +238,9 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
       query.andQualifier(exp);
     }
 
-    if ((target_keyword != null) && (!target_keyword.equals(""))) {
+    if ((target_keyword != null) && (!target_keyword.getValue().equals(""))) {
       // 選択したキーワードを指定する．
-      String keyword = "%" + target_keyword + "%";
+      String keyword = "%" + target_keyword.getValue() + "%";
       Expression exp =
         ExpressionFactory.likeExp(EipTTodo.TODO_NAME_PROPERTY, keyword);
       query.andQualifier(exp.orExp(ExpressionFactory.likeExp(
@@ -559,7 +560,7 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
   /**
    * @return target_keyword
    */
-  public String getTargetKeyword() {
+  public ALStringField getTargetKeyword() {
     return target_keyword;
   }
 }
