@@ -82,8 +82,12 @@
 #end
 #ALformfooter()
 
+#if($StatStr && !($StatStr == ''))
+#set ($mailScreenUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen")))
+<input type="hidden" id="receiving" name="receiving" value="$mailScreenUrl" />
+<input type="hidden" id="receivingPid" name="receivingPid" value="$!portlet.ID" />
+#end
 
 #else
 <a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');">こちらからメールアカウントを追加できます。</a>
-
 #end
