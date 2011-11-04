@@ -212,6 +212,9 @@ public class WebMailAction extends ALBaseAction {
     JetspeedRunData jdata = (JetspeedRunData) rundata;
     VelocityPortlet portlet = ((VelocityPortlet) context.get("portlet"));
 
+    // 受信・送信トレイの選択をクリア
+    ALEipUtils.removeTemp(rundata, context, "tab");
+
     jdata.getUser().removeTemp(WebMailUtils.ACCOUNT_ID);
     jdata.getUser().removeTemp(WebMailUtils.FOLDER_ID);
 
