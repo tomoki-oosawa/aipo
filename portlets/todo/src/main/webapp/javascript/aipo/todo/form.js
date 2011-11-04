@@ -105,10 +105,10 @@ aipo.todo.onListReceiveMessage = function(msg){
 }
 
 aipo.todo.doKeywordSearch = function(baseuri, portlet_id) {
-    var keyword = encodeURIComponent(dojo.byId("q"+portlet_id).value);
-    baseuri+="?template=ToDoListScreen";
-    baseuri+="&keyword="+keyword;
-    aipo.viewPage(baseuri,portlet_id);
+    var params = new Array(2);
+    params[0] = ["template", "ToDoListScreen"];
+    params[1] = ["keyword", dojo.byId("q"+portlet_id).value];
+    aipo.viewPage(baseuri, portlet_id, params);
 }
 
 

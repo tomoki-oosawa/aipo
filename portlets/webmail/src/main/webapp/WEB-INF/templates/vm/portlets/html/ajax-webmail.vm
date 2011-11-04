@@ -21,11 +21,10 @@
 #set ($receiveUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen").addQueryData("mode","recieve")))
 ## ---------------------------------------------------------------------------
 #if($!result.AccountId != 0)
-	<div class="auiSummaryMeta clearfix">
+<div class="auiSummaryMeta clearfix">
 <div class="floatLeft w30">
 <form class="auiForm">
 #ALselectpdheader("target_category" "100%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen").addQueryData("accountid",""))">（メールアカウントの選択）</option>
 #foreach( $record in $result.MailAccountList )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen").addQueryData("accountid",$!record.AccountId))" #if ($!result.isMatch($!result.AccountId,$!record.AccountId.Value)) selected="selected" #end>$!record.AccountName</option>
 #end

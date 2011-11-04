@@ -62,25 +62,27 @@ public class ToDoCategoryMultiDelete extends ALAbstractCheckList {
   @Override
   protected boolean doCheckAclPermission(RunData rundata, Context context,
       int defineAclType) throws ALPermissionException {
-    List<String> values = new ArrayList<String>();
+    List<Integer> values = new ArrayList<Integer>();
     Object[] objs = rundata.getParameters().getKeys();
     int length = objs.length;
     for (int i = 0; i < length; i++) {
       if (objs[i].toString().startsWith("check")) {
         String str = rundata.getParameters().getString(objs[i].toString());
-        values.add(str);
+        values.add(Integer.valueOf(str));
       }
     }
 
     Expression exp1 =
-      ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+      ExpressionFactory.noMatchExp(EipTTodoCategory.USER_ID_PROPERTY, Integer
         .valueOf(ALEipUtils.getUserId(rundata)));
     Expression exp2 =
-      ExpressionFactory.inDbExp(EipTTodoCategory.CATEGORY_ID_PK_COLUMN, values);
+      ExpressionFactory.matchDbExp(
+        EipTTodoCategory.CATEGORY_ID_PK_COLUMN,
+        values);
 
     if (Database
-      .query(EipTTodoCategory.class, exp1)
-      .andQualifier(exp2)
+      .query(EipTTodoCategory.class)
+      .andQualifier(exp1.andExp(exp2))
       .getCount() > 0) {
       aclPortletFeature =
         ALAccessControlConstants.POERTLET_FEATURE_TODO_CATEGORY_OTHER;
