@@ -49,7 +49,6 @@ import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
-import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -58,8 +57,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(NoteSelectData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(NoteSelectData.class.getName());
 
   /** 現在選択しているタブ */
   private String currentTab;
@@ -255,12 +254,8 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
           .getALEipUser(Integer.valueOf(record.getOwnerId()).intValue());
       rd.setSrcUserFullName(user.getAliasName().getValue());
       rd.setDestUserFullName(destUserNames);
-      rd.setClientName(ALCommonUtils.compressString(
-        record.getClientName(),
-        getStrLength()));
-      rd.setCompanyName(ALCommonUtils.compressString(
-        record.getCompanyName(),
-        getStrLength()));
+      rd.setClientName(record.getClientName());
+      rd.setCompanyName(record.getCompanyName());
       rd.setTelephone(record.getTelephone());
       rd.setEmailAddress(record.getEmailAddress());
       if (record.getAddDestType().equals("1")) {
@@ -273,8 +268,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
       }
       rd.setSubjectType(record.getSubjectType());
       if ("0".equals(record.getSubjectType())) {
-        rd.setCustomSubject(ALCommonUtils.compressString(record
-          .getCustomSubject(), getStrLength()));
+        rd.setCustomSubject(record.getCustomSubject());
       }
 
       rd.setMessage(record.getMessage());
