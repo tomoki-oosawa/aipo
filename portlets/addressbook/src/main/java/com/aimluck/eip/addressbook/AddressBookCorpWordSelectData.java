@@ -59,9 +59,8 @@ public class AddressBookCorpWordSelectData extends
   private List<ALEipGroup> myGroupList = null;
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AddressBookWordSelectData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AddressBookWordSelectData.class.getName());
 
   /**
    * 
@@ -169,6 +168,13 @@ public class AddressBookCorpWordSelectData extends
 
     query = Database.query(TurbineUser.class);
 
+    Expression exp_exclude_my_group =
+      ExpressionFactory.matchExp(TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
+        + "."
+        + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
+        + "."
+        + TurbineGroup.OWNER_ID_PROPERTY, 1);
+
     Expression exp01 =
       ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
     query.setQualifier(exp01);
@@ -208,7 +214,7 @@ public class AddressBookCorpWordSelectData extends
         + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
         + "."
         + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY, "%" + word + "%");
-
+    exp16 = exp16.andExp(exp_exclude_my_group);
     Expression exp21 =
       ExpressionFactory.likeExp(TurbineUser.OUT_TELEPHONE_PROPERTY, "%"
         + word
@@ -244,7 +250,7 @@ public class AddressBookCorpWordSelectData extends
         + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
         + "."
         + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY, "%" + transWord + "%");
-
+    exp35 = exp35.andExp(exp_exclude_my_group);
     if (word != null && !"".equals(word)) {
       query.andQualifier(exp11
         .orExp(exp12)
@@ -262,7 +268,6 @@ public class AddressBookCorpWordSelectData extends
         .orExp(exp35));
     }
     query.distinct();
-
     return query;
   }
 
