@@ -22,8 +22,5 @@ package com.aimluck.eip.cayenne.om.portlet;
 import com.aimluck.eip.cayenne.om.portlet.auto._EipTCabinetFolderMap;
 
 public class EipTCabinetFolderMap extends _EipTCabinetFolderMap {
-
+  public static final String USER_ID_COLUMN = "USER_ID";
 }
-
-
-

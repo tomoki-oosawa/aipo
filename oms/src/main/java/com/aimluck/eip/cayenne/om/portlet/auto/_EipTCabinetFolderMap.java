@@ -7,11 +7,20 @@ package com.aimluck.eip.cayenne.om.portlet.auto;
   */
 public class _EipTCabinetFolderMap extends org.apache.cayenne.CayenneDataObject {
 
+    public static final String FOLDER_ID_PROPERTY = "folderId";
     public static final String STATUS_PROPERTY = "status";
     public static final String USER_ID_PROPERTY = "userId";
     public static final String EIP_TCABINET_FOLDER_PROPERTY = "eipTCabinetFolder";
 
     public static final String ID_PK_COLUMN = "ID";
+
+    public void setFolderId(Integer categoryId) {
+      writeProperty("folderId", categoryId);
+    }
+
+    public Integer getFolderId() {
+      return (Integer) readProperty("folderId");
+    }
 
     public void setStatus(String status) {
         writeProperty("status", status);

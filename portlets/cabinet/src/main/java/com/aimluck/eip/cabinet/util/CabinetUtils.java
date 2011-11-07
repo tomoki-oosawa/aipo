@@ -27,6 +27,7 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -34,10 +35,19 @@ import com.aimluck.eip.cabinet.FolderInfo;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolder;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolderMap;
+import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.social.ALActivityService;
+import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.services.storage.ALStorageService;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -706,4 +716,111 @@ public class CabinetUtils {
     return folder;
   }
 
+  /**
+   * 
+   * @param file
+   * @param loginName
+   */
+  public static void createCabinetActivity(EipTCabinetFile file,
+      String loginName, List<String> recipients, boolean isNew) {
+    String title =
+      new StringBuilder("ファイル「")
+        .append(ALCommonUtils.compressString(file.getFileTitle(), 30))
+        .append("」を")
+        .append(isNew ? "追加しました。" : "編集しました。")
+        .toString();
+    String portletParams =
+      new StringBuilder("?template=CabinetFileDetailScreen").append(
+        "&entityid=").append(file.getFileId()).toString();
+
+    if (recipients != null && recipients.size() > 0) {
+      ALActivityService.create(new ALActivityPutRequest()
+        .withAppId("Cabinet")
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withRecipients(recipients)
+        .withTile(title)
+        .witchPriority(0f)
+        .withExternalId(String.valueOf(file.getFileId())));
+    } else {
+      ALActivityService.create(new ALActivityPutRequest()
+        .withAppId("Cabinet")
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withTile(title)
+        .witchPriority(0f)
+        .withExternalId(String.valueOf(file.getFileId())));
+    }
+  }
+
+  /**
+   * <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static List<Integer> getWhatsNewInsertList(RunData rundata,
+      int folderid, String is_public) throws ALPageNotFoundException,
+      ALDBErrorException {
+
+    int userid = ALEipUtils.getUserId(rundata);
+    List<ALEipUser> result = new ArrayList<ALEipUser>();
+
+    // ０，１は全員へ公開
+    if ("0".equals(is_public) || "1".equals(is_public)) {
+
+      /* 自分以外の全員に新着ポートレット登録 */
+      ALAccessControlFactoryService aclservice =
+        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
+      ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+      List<Integer> userIds =
+        aclhandler.getAcceptUserIdsExceptLoginUser(
+          ALEipUtils.getUserId(rundata),
+          ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC,
+          ALAccessControlConstants.VALUE_ACL_DETAIL);
+      return userIds;
+
+    }
+    // ２はグループ内に公開
+    else if ("2".equals(is_public)) {
+      try {
+
+        SelectQuery<EipTCabinetFolderMap> query =
+          Database.query(EipTCabinetFolderMap.class);
+        query.select(EipTCabinetFolderMap.USER_ID_COLUMN);
+
+        Expression exp1 =
+          ExpressionFactory.matchExp(
+            EipTCabinetFolderMap.FOLDER_ID_PROPERTY,
+            Integer.valueOf(folderid));
+        query.setQualifier(exp1);
+
+        List<EipTCabinetFolderMap> uids = query.fetchList();
+        List<Integer> userIds = new ArrayList<Integer>();
+        if (uids != null && uids.size() != 0) {
+          int size = uids.size();
+          for (int i = 0; i < size; i++) {
+            EipTCabinetFolderMap uid = uids.get(i);
+            Integer id = uid.getUserId();
+            if (id.intValue() != userid) {
+              result.add(ALEipUtils.getALEipUser(id.intValue()));
+              userIds.add(id.intValue());
+            }
+          }
+        }
+        return userIds;
+
+      } catch (Exception ex) {
+        logger.error("[CabinetUtils]", ex);
+        throw new ALDBErrorException();
+      }
+    }
+    // ３は自分以外に公開しない
+    else {
+      return null;
+    }
+  }
 }

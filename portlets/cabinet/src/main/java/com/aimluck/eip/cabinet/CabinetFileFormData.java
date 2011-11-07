@@ -38,6 +38,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolder;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
@@ -491,6 +492,34 @@ public class CabinetFileFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_CABINET_FILE,
         file_title.getValue());
 
+      // アクティビティ
+      List<Integer> userIds =
+        CabinetUtils.getWhatsNewInsertList(rundata, folder
+          .getFolderId()
+          .intValue(), folder.getPublicFlag());
+
+      // nullなら誰にも公開しない
+      if (userIds != null) {
+        List<String> recipients = new ArrayList<String>();
+        int u_size = userIds.size();
+        for (int i = 0; i < u_size; i++) {
+          Integer _id = userIds.get(i);
+          ALEipUser user = ALEipUtils.getALEipUser(_id);
+          if (user != null) {
+            recipients.add(user.getName().getValue());
+          }
+        }
+
+        if (recipients.size() > 0) {
+          ALEipUser user = ALEipUtils.getALEipUser(uid);
+          CabinetUtils.createCabinetActivity(
+            file,
+            user.getName().getValue(),
+            recipients,
+            true);
+        }
+      }
+
       // 添付ファイル保存先のフォルダを削除
       ALStorageService.deleteTmpFolder(uid, folderName);
 
@@ -587,6 +616,34 @@ public class CabinetFileFormData extends ALAbstractFormData {
         file.getFileId(),
         ALEventlogConstants.PORTLET_TYPE_CABINET_FILE,
         file_title.getValue());
+
+      // アクティビティ
+      List<Integer> userIds =
+        CabinetUtils.getWhatsNewInsertList(rundata, folder
+          .getFolderId()
+          .intValue(), folder.getPublicFlag());
+
+      // nullなら誰にも公開しない
+      if (userIds != null) {
+        List<String> recipients = new ArrayList<String>();
+        int u_size = userIds.size();
+        for (int i = 0; i < u_size; i++) {
+          Integer _id = userIds.get(i);
+          ALEipUser user = ALEipUtils.getALEipUser(_id);
+          if (user != null) {
+            recipients.add(user.getName().getValue());
+          }
+        }
+
+        if (recipients.size() > 0) {
+          ALEipUser user = ALEipUtils.getALEipUser(uid);
+          CabinetUtils.createCabinetActivity(
+            file,
+            user.getName().getValue(),
+            recipients,
+            false);
+        }
+      }
 
     } catch (Exception ex) {
       logger.error("Exception", ex);

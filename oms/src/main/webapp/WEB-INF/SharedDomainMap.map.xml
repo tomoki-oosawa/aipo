@@ -655,6 +655,7 @@
 		<obj-attribute name="updateUserId" type="java.lang.Integer" db-attribute-path="UPDATE_USER_ID"/>
 	</obj-entity>
 	<obj-entity name="EipTCabinetFolderMap" className="com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolderMap" dbEntityName="eip_t_cabinet_folder_map">
+		<obj-attribute name="folderId" type="java.lang.Integer" db-attribute-path="FOLDER_ID"/>
 		<obj-attribute name="status" type="java.lang.String" db-attribute-path="STATUS"/>
 		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
 	</obj-entity>
