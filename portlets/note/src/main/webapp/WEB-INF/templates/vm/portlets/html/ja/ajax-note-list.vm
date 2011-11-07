@@ -75,33 +75,30 @@
 #AUIrowTableWide()
 <tr>
 #ALtdheadAtt("#ALswitchCheckbox()" 'style="width:20px"')
-#if($isReceive)#ALtdheadAtt("#ALajaxsort('note_stat' '状態' $result 'NoteListScreen')" 'style="width:24px"')#end
 #ALtdheadAtt("#ALajaxsort('client_name' '依頼者' $result 'NoteListScreen')" 'style="width:8em"')
-#ALtdheadAtt('依頼者所属' 'style="width:8em"')
+#ALtdhead('依頼者所属')
 #ALtdhead("#ALajaxsort('subject_type' '用件' $result 'NoteListScreen')")
-##ALtdheadThin('本文')
 #ALtdheadAtt("#if($isReceive) 送信者 #else 受信者 #end" 'style="width:8em"')
 #ALtdheadAtt("#if($isReceive) #ALajaxsort('accept_date' '受付日時' $result 'NoteListScreen') #else #ALajaxsort('create_date' '作成日時' $result 'NoteListScreen') #end" 'style="width:10em"')
 </tr>
 #set($setEven = true)
 #foreach ($record in $result.List)
 #ALsetSubject($record)
-<tr #if(!$setEven) class="even" #end>
+<tr #if(!$setEven) class="even" #end
+#if($isReceive)
+#if($record.NoteStat.toString() == "1" || $record.NoteStat.toString() == "2")
+style="font-weight:bold"
+#end
+#end
+>
 #ALsetEven($setEven)
 #ALtdcell("<input name='check$!record.NoteId' type='checkbox' value='$!record.NoteId'/>")
-#if($isReceive)
-#if($record.NoteStat.toString() == "1" || $record.NoteStat.toString() == "2" || $record.NoteStat.toString() == "3")
-#ALtdcellAtt("<img src='$record.NoteStatImage' alt='$record.NoteStatImageDescription' title='$record.NoteStatImageDescription'/>" 'class="center"')
-#else
-#tdcell('')
-#end
-#end
+
 #ALtdcellheader()
 <div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","NoteDetailScreen").addQueryData("entityid",$record.NoteId))');">$!record.ClientName</a></div>
 #ALtdcellfooter()
 #ALtdcellheader()<div>$!record.CompanyName</div>#ALtdcellfooter()
 #ALtdcellheader()<div>$!subject</div>#ALtdcellfooter()
-##ALtdcellAtt("#if($!record.hasMemo()) 有 #else 無 #end" 'class="center"')
 #ALtdcellheader()<div>#if ($isReceive) $!record.SrcUserFullName #else $!record.DestUserFullName #end</div>#ALtdcellfooter()
 #ALtdcellAtt("#if ($isReceive) $!{record.AcceptDate.Month}月$!{record.AcceptDate.Day}日 $!{record.AcceptDate.Hour}時$!{record.AcceptDate.Minute}分 #else $!{record.CreateDate.Month}月$!{record.CreateDate.Day}日 $!{record.CreateDate.Hour}時$!{record.CreateDate.Minute}分 #end" 'nowrap="nowrap"')
 </tr>
