@@ -642,6 +642,11 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           loginName,
           recipients,
           true);
+
+        // アクティビティが公開スケジュールである場合、「更新情報」に表示させる。
+        if ("O".equals(public_flag.toString())) {
+          ScheduleUtils.createNewScheduleActivity(schedule, loginName, true);
+        }
       }
 
     } catch (Exception e) {
@@ -1119,6 +1124,10 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           loginName,
           recipients,
           false);
+        // アクティビティが公開スケジュールである場合、「更新情報」に表示させる。
+        if ("O".equals(public_flag.toString())) {
+          ScheduleUtils.createNewScheduleActivity(schedule, loginName, false);
+        }
       }
 
     } catch (Exception e) {
