@@ -34,6 +34,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTNote;
 import com.aimluck.eip.cayenne.om.portlet.EipTNoteMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
@@ -91,6 +92,8 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
 
   /** <code>userAccountURI</code> ポートレット AccountEdit のへのリンク */
   private String userAccountURI;
+
+  private ALStringField target_keyword;
 
   /**
    * 
@@ -158,6 +161,8 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
     userAccountURI =
       NoteUtils.getPortletURIinPersonalConfigPane(rundata, "AccountEdit");
 
+    target_keyword = new ALStringField();
+
     super.init(action, rundata, context);
   }
 
@@ -171,6 +176,13 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   protected ResultList<EipTNoteMap> selectList(RunData rundata, Context context) {
 
     try {
+      if (NoteUtils.hasResetFlag(rundata, context)) {
+        NoteUtils.resetFilter(rundata, context, this.getClass().getName());
+        target_keyword.setValue("");
+      } else {
+        target_keyword.setValue(NoteUtils.getTargetKeyword(rundata, context));
+      }
+
       target_group_name = NoteUtils.getTargetGroupName(rundata, context);
       target_user_id = NoteUtils.getTargetUserId(rundata, context);
 
@@ -474,6 +486,14 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
    */
   private SelectQuery<EipTNoteMap> getSelectQuery(RunData rundata,
       Context context) {
+
+    if ((target_keyword != null) && (!target_keyword.getValue().equals(""))) {
+      ALEipUtils.setTemp(rundata, context, LIST_SEARCH_STR, target_keyword
+        .getValue());
+    } else {
+      ALEipUtils.removeTemp(rundata, context, LIST_SEARCH_STR);
+    }
+
     SelectQuery<EipTNoteMap> query = Database.query(EipTNoteMap.class);
 
     Expression exp1 =
@@ -498,6 +518,60 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
       query.andQualifier(exp3);
     }
 
+    return buildSelectQueryForFilter(query, rundata, context);
+  }
+
+  @Override
+  protected SelectQuery<EipTNoteMap> buildSelectQueryForFilter(
+      SelectQuery<EipTNoteMap> query, RunData rundata, Context context) {
+
+    String search = ALEipUtils.getTemp(rundata, context, LIST_SEARCH_STR);
+    if (search != null && !search.equals("")) {
+      current_search = search;
+      Expression ex1 =
+        ExpressionFactory.likeExp(EipTNote.CLIENT_NAME_PROPERTY, "%"
+          + search
+          + "%");
+      Expression ex2 =
+        ExpressionFactory.likeExp(EipTNote.COMPANY_NAME_PROPERTY, "%"
+          + search
+          + "%");
+      Expression ex3 =
+        ExpressionFactory.likeExp(EipTNote.EMAIL_ADDRESS_PROPERTY, "%"
+          + search
+          + "%");
+      Expression ex4 =
+        ExpressionFactory.likeExp(EipTNote.TELEPHONE_PROPERTY, "%"
+          + search
+          + "%");
+      Expression ex5 =
+        ExpressionFactory.likeExp(EipTNote.CUSTOM_SUBJECT_PROPERTY, "%"
+          + search
+          + "%");
+      Expression ex6 =
+        ExpressionFactory
+          .likeExp(EipTNote.MESSAGE_PROPERTY, "%" + search + "%");
+      SelectQuery<EipTNote> q = Database.query(EipTNote.class);
+      q
+        .andQualifier(ex6
+          .orExp(ex5.orExp(ex4.orExp(ex3.orExp(ex2.orExp(ex1))))));
+      List<EipTNote> queryList = q.fetchList();
+      List<Integer> resultid = new ArrayList<Integer>();
+      for (EipTNote item : queryList) {
+        if (item.getNoteId() != 0 && !resultid.contains(item.getNoteId())) {
+          resultid.add(item.getNoteId());
+        } else if (!resultid.contains(item.getNoteId())) {
+          resultid.add(item.getNoteId());
+        }
+      }
+      if (resultid.size() == 0) {
+        // 検索結果がないことを示すために-1を代入
+        resultid.add(-1);
+      }
+      Expression ex =
+        ExpressionFactory.inDbExp(EipTNote.NOTE_ID_PK_COLUMN, resultid);
+      query.andQualifier(ex);
+    }
     return query;
   }
 
@@ -697,4 +771,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
     return userAccountURI;
   }
 
+  public ALStringField getTargetKeyword() {
+    return target_keyword;
+  }
 }

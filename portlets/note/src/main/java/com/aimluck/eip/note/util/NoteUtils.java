@@ -88,6 +88,12 @@ public class NoteUtils {
 
   public static final String NOTE_GROUP_PORTLET_NAME = "NoteGroup";
 
+  /** 検索キーワード変数の識別子 */
+  public static final String TARGET_KEYWORD = "keyword";
+
+  /** パラメータリセットの識別子 */
+  private static final String RESET_FLAG = "reset_params";
+
   /**
    * 詳細表示用の EipTNote オブジェクトモデルを取得する．
    * 
@@ -383,6 +389,52 @@ public class NoteUtils {
       target_user_id = idParam;
     }
     return target_user_id;
+  }
+
+  /**
+   * 表示切り替えで指定した検索キーワードを取得する．
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static String getTargetKeyword(RunData rundata, Context context) {
+    String target_keyword = null;
+    String keywordParam = rundata.getParameters().getString(TARGET_KEYWORD);
+    target_keyword = ALEipUtils.getTemp(rundata, context, TARGET_KEYWORD);
+
+    if (keywordParam == null && (target_keyword == null)) {
+      ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, "");
+      target_keyword = "";
+    } else if (keywordParam != null) {
+      ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, keywordParam.trim());
+      target_keyword = keywordParam;
+    }
+    return target_keyword;
+  }
+
+  /**
+   * 表示切り替えのリセットフラグがあるかを返す．
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static boolean hasResetFlag(RunData rundata, Context context) {
+    String resetflag = rundata.getParameters().getString(RESET_FLAG);
+    return resetflag != null;
+  }
+
+  /**
+   * フィルターを初期化する．
+   * 
+   * @param rundata
+   * @param context
+   * @param className
+   */
+  public static void resetFilter(RunData rundata, Context context,
+      String className) {
+    ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, "");
   }
 
   /**
