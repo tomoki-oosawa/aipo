@@ -731,7 +731,7 @@ public class ScheduleUtils {
 
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       switch (dow) {
-      // 日
+        // 日
         case Calendar.SUNDAY:
           result = ptn.charAt(1) != '0';
           break;
@@ -1473,7 +1473,7 @@ public class ScheduleUtils {
         || tmpCurrentTab.equals("weekly")
         || tmpCurrentTab.equals("monthly")
         || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-          .equals("weekly-group"))) {
+        .equals("weekly-group"))) {
       currentTab = "calendar";
     } else {
       currentTab = tmpCurrentTab;
@@ -3543,4 +3543,27 @@ public class ScheduleUtils {
         .withExternalId(String.valueOf(schedule.getScheduleId())));
     }
   }
+
+  public static void createNewScheduleActivity(EipTSchedule schedule,
+      String loginName, boolean isNew) {
+    String title =
+      new StringBuilder("予定「").append(
+        ALCommonUtils.compressString(schedule.getName(), 30)).append(
+        isNew ? "」を追加しました。" : "」を編集しました。").toString();
+    String portletParams =
+      new StringBuilder("?template=ScheduleDetailScreen")
+        .append("&entityid=")
+        .append(schedule.getScheduleId())
+        .append("&view_date=")
+        .append(ALDateUtil.format(schedule.getStartDate(), "yyyy-MM-dd-00-00"))
+        .toString();
+    ALActivityService.create(new ALActivityPutRequest()
+      .withAppId("Schedule")
+      .withLoginName(loginName)
+      .withPortletParams(portletParams)
+      .withTile(title)
+      .witchPriority(0f)
+      .withExternalId(String.valueOf(schedule.getScheduleId())));
+  }
+
 }

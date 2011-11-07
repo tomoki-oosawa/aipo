@@ -1153,7 +1153,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_SCHEDULE,
         schedule.getName());
 
-      // アクティビティ
+      // アクティビティを「あなた宛のお知らせ」に表示させる
       String loginName = loginUser.getName().getValue();
       List<String> recipients = new ArrayList<String>();
       for (ALEipUser user : memberList) {
@@ -1166,6 +1166,11 @@ public class ScheduleFormData extends ALAbstractFormData {
         loginName,
         recipients,
         true);
+
+      // アクティビティが公開スケジュールである場合、「更新情報」に表示させる。
+      if ("O".equals(public_flag.toString())) {
+        ScheduleUtils.createNewScheduleActivity(schedule, loginName, true);
+      }
 
     } catch (Exception e) {
       Database.rollback();
@@ -1693,6 +1698,11 @@ public class ScheduleFormData extends ALAbstractFormData {
         loginName,
         recipients,
         false);
+
+      // アクティビティが公開スケジュールである場合、「更新情報」に表示させる。
+      if ("O".equals(public_flag.toString())) {
+        ScheduleUtils.createNewScheduleActivity(schedule, loginName, false);
+      }
 
     } catch (Exception e) {
       Database.rollback();
