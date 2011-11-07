@@ -42,7 +42,7 @@
 </div>
 #AUIajaxpageview('ToDoListScreen' $result)
 </div>
-#AUIsearchresult($!result.targetKeyword)
+#AUIsearchresult($!result.targetKeyword.toString())
 #AUIrowTableWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
