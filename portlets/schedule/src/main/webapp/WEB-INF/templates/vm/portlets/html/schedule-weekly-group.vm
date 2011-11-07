@@ -70,7 +70,7 @@
 #if(($!{hasAcl}) && $!{hasAcl} == "T")
 	<div class="auiForm">
         <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
-            <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter","").addQueryData("filtertype","group"))">グループを選択してください</option>
+            <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter","").addQueryData("filtertype","group"))">$!result.UserName</option>
             <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter","").addQueryData("filtertype","group"))" #if ($!result.CurrentFilter && $!record.Name.toString() && $!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>----------</option>
             <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter","Facility").addQueryData("filtertype","group"))" #if ($!result.CurrentFilter && $!result.CurrentFilter && $!result.CurrentFilter == "Facility") selected="selected" #end>施設一覧</option>
             #foreach( $record in $result.GroupList )

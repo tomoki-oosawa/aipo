@@ -119,6 +119,15 @@ public class ScheduleWeeklySelectData extends
 
   private boolean hasAuthorityNote = false;
 
+  private String userName;
+
+  /**
+   * 操作しているユーザーの姓名を取得します。
+   */
+  public String getUserName() {
+    return userName;
+  }
+
   /**
    * 
    * @param action
@@ -130,6 +139,7 @@ public class ScheduleWeeklySelectData extends
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
+    userName = ALEipUtils.getALEipUser(rundata).getAliasName().toString();
     // 展開されるパラメータは以下の通りです。
     // ・viewStart 形式：yyyy-MM-dd
 

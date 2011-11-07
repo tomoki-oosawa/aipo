@@ -145,6 +145,8 @@ public class ScheduleOnedaySelectData extends
 
   private boolean hasAuthorityNote = false;
 
+  private String userName;
+
   /**
    * 
    * @param action
@@ -156,6 +158,7 @@ public class ScheduleOnedaySelectData extends
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
+    userName = ALEipUtils.getALEipUser(rundata).getAliasName().toString();
     // 展開されるパラメータは以下の通りです。
     // ・viewDate 形式：yyyy-MM-dd
 
@@ -279,6 +282,7 @@ public class ScheduleOnedaySelectData extends
         ALAccessControlConstants.VALUE_ACL_INSERT);
 
     hasAuthorityNote = ALPortalApplicationService.isActive("Note");
+
   }
 
   /**
@@ -891,6 +895,13 @@ public class ScheduleOnedaySelectData extends
    */
   public int getEndHour() {
     return endHour;
+  }
+
+  /**
+   * 操作しているユーザーの姓名を取得します。
+   */
+  public String getUserName() {
+    return userName;
   }
 
   /**
