@@ -20,29 +20,61 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
-#ALspacebothheader()
+<!-- Start Contents Area -->
+<div id="auiContentsArea"><div id="auiContentsAreaInner">
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 #ALajaxlistformheader('Activity')
+## ---------------------------------------------------------------------------
+## 検索フォーム挿入場所
+## ---------------------------------------------------------------------------
 #if($result.List.size() == 0)
 <div class="message">指定された条件に該当する更新情報はありません。</div>
 #else
-#ALajaxpageview('ActivityAllListScreen' $result)
-<table class="activityTable">
+<div class="auiSummaryMeta clearfix">
+#AUIajaxpageview('ActivityAllListScreen' $result)
+</div>
+<table class="auiRowTable wide">
+<colgroup style="">
+</colgroup><colgroup style="width:8em;">
+</colgroup><colgroup style="width:6em">
+</colgroup>
 <tbody>
+<tr>
+<th><div>
+## ---------------------------------------------------------------------------
+## #ALajaxsort('content' '内容' $result 'ActivityAllListScreen')
+## ---------------------------------------------------------------------------
+内容
+</div></th>
+<th>
+名前
+</th>
+<th>
+更新日
+</th>
+</tr>
 #foreach ($record in $result.List)
 <tr>
-<td class="name" nowrap="nowrap">$!{record.DisplayName}</td>
 <td>
-<span class="date">$!record.UpdateDate</span>
 #if($!$record.Icon.toString() != "")
 <img src="$!record.Icon" width="16" height="16" alt="" align="absmiddle" />
 #end
-<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.common.showDialog('$!{record.PopupUrl}&js_peid=$!{portlet.ID}', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">$!record.TitleText</a>
+<div><a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.common.showDialog('$!{record.PopupUrl}&js_peid=$!{portlet.ID}', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">$!record.TitleText</a></div>
 </td>
+<td><div>$!{record.DisplayName}</div></td>
+<td nowrap="nowrap" class="right">$!record.UpdateDate</td>
 </tr>
 #end
-</tbody></table>
-#ALajaxpageviewFooter('ActivityAllListScreen' $result)
+#AUItablefooter()
+<div class="auiSummaryMeta clearfix">
+#AUIajaxpageview('ActivityAllListScreen' $result)
+</div>
 #end
 #ALformfooter()
-#ALspacebothfooter()
+</div></div>
+<!-- END Contents Area -->
+<!-- Start Widgets Area -->
+<div id="auiWidgetsArea">
+
+</div>
+<!-- END Widgets Area -->
