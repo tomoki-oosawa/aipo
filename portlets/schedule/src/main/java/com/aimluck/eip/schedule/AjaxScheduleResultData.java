@@ -37,9 +37,15 @@ public class AjaxScheduleResultData extends ScheduleResultData {
   /** <code>parent_id</code> スケジュールowner ID */
   private ALNumberField user_id;
 
+  private ALNumberField user_count;
+
+  private ALNumberField facility_count;
+
   @Override
   public void initField() {
     user_id = new ALNumberField();
+    user_count = new ALNumberField();
+    facility_count = new ALNumberField();
     place = new ALStringField();
     super.initField();
   }
@@ -52,6 +58,7 @@ public class AjaxScheduleResultData extends ScheduleResultData {
     return memberlist;
   }
 
+  @Override
   public ALStringField getPlace() {
     return place;
   }
@@ -64,7 +71,24 @@ public class AjaxScheduleResultData extends ScheduleResultData {
     memberlist = list;
   }
 
+  @Override
   public void setPlace(String str) {
     place.setValue(str);
+  }
+
+  public void setUserCount(int count) {
+    this.user_count.setValue(count);
+  }
+
+  public int getUserCount() {
+    return (int) this.user_count.getValue();
+  }
+
+  public void setFacilityCount(int count) {
+    this.facility_count.setValue(count);
+  }
+
+  public int getFacilityCount() {
+    return (int) this.facility_count.getValue();
   }
 }

@@ -117,6 +117,10 @@ public class ScheduleBean implements ALData, Cloneable {
 
   private List<String> tmpList;
 
+  private ALNumberField userCount;
+
+  private ALNumberField facilityCount;
+
   /*
    *
    */
@@ -131,6 +135,8 @@ public class ScheduleBean implements ALData, Cloneable {
     owner_id = new ALStringField();
     start_date = new ALDateTimeField(format);
     end_date = new ALDateTimeField(format);
+    userCount = new ALNumberField();
+    facilityCount = new ALNumberField();
     is_owner = true;
     is_tmpreserve = false;
     is_duplicate = false;
@@ -185,6 +191,8 @@ public class ScheduleBean implements ALData, Cloneable {
     this.rowspan = rd.getRowspan();
     this.type.setValue(rd.getType());
     this.tmpList = rd.getMemberList();
+    this.userCount.setValue(rd.getUserCount());
+    this.facilityCount.setValue(rd.getFacilityCount());
   }
 
   public List<String> getMemberList() {
@@ -683,6 +691,36 @@ public class ScheduleBean implements ALData, Cloneable {
 
   public String getType() {
     return this.type.toString();
+  }
+
+  /**
+   * @return userCount
+   */
+  public int getUserCount() {
+    return (int) userCount.getValue();
+  }
+
+  /**
+   * @param userCount
+   *          セットする userCount
+   */
+  public void setUserCount(int userCount) {
+    this.userCount.setValue(userCount);
+  }
+
+  /**
+   * @return facilityCount
+   */
+  public int getFacilityCount() {
+    return (int) facilityCount.getValue();
+  }
+
+  /**
+   * @param facilityCount
+   *          セットする facilityCount
+   */
+  public void setFacilityCount(int facilityCount) {
+    this.facilityCount.setValue(facilityCount);
   }
 
 }

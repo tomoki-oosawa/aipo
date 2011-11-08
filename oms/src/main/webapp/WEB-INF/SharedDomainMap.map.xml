@@ -495,6 +495,23 @@
 		<db-attribute name="ROUTE_NAME" type="VARCHAR" isMandatory="true" length="64"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
 	</db-entity>
+	<db-entity name="v_eip_t_schedule_list">
+		<db-attribute name="COMMON_CATEGORY_ID" type="INTEGER" isMandatory="true" length="4"/>
+		<db-attribute name="EDIT_FLAG" type="VARCHAR" length="1"/>
+		<db-attribute name="END_DATE" type="TIMESTAMP" length="8"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
+		<db-attribute name="NAME" type="VARCHAR" length="99"/>
+		<db-attribute name="OWNER_ID" type="INTEGER" length="4"/>
+		<db-attribute name="PARENT_ID" type="INTEGER" length="4"/>
+		<db-attribute name="PLACE" type="VARCHAR" length="99"/>
+		<db-attribute name="PUBLIC_FLAG" type="VARCHAR" length="1"/>
+		<db-attribute name="REPEAT_PATTERN" type="VARCHAR" length="10"/>
+		<db-attribute name="SCHEDULE_ID" type="INTEGER" isMandatory="true" length="4"/>
+		<db-attribute name="START_DATE" type="TIMESTAMP" length="8"/>
+		<db-attribute name="STATUS" type="VARCHAR" length="1"/>
+		<db-attribute name="TYPE" type="VARCHAR" length="1"/>
+		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
+	</db-entity>
 	<obj-entity name="EipFacilityGroup" className="com.aimluck.eip.cayenne.om.portlet.EipFacilityGroup" dbEntityName="eip_facility_group">
 	</obj-entity>
 	<obj-entity name="EipMAddressGroup" className="com.aimluck.eip.cayenne.om.portlet.EipMAddressGroup" dbEntityName="eip_m_address_group">
@@ -920,6 +937,22 @@
 		<obj-attribute name="route" type="java.lang.String" db-attribute-path="ROUTE"/>
 		<obj-attribute name="routeName" type="java.lang.String" db-attribute-path="ROUTE_NAME"/>
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+	</obj-entity>
+	<obj-entity name="VEipTScheduleList" className="com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList" dbEntityName="v_eip_t_schedule_list">
+		<obj-attribute name="commonCategoryId" type="java.lang.Integer" db-attribute-path="COMMON_CATEGORY_ID"/>
+		<obj-attribute name="editFlag" type="java.lang.String" db-attribute-path="EDIT_FLAG"/>
+		<obj-attribute name="endDate" type="java.util.Date" db-attribute-path="END_DATE"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="NAME"/>
+		<obj-attribute name="ownerId" type="java.lang.Integer" db-attribute-path="OWNER_ID"/>
+		<obj-attribute name="parentId" type="java.lang.Integer" db-attribute-path="PARENT_ID"/>
+		<obj-attribute name="place" type="java.lang.String" db-attribute-path="PLACE"/>
+		<obj-attribute name="publicFlag" type="java.lang.String" db-attribute-path="PUBLIC_FLAG"/>
+		<obj-attribute name="repeatPattern" type="java.lang.String" db-attribute-path="REPEAT_PATTERN"/>
+		<obj-attribute name="scheduleId" type="java.lang.Integer" db-attribute-path="SCHEDULE_ID"/>
+		<obj-attribute name="startDate" type="java.util.Date" db-attribute-path="START_DATE"/>
+		<obj-attribute name="status" type="java.lang.String" db-attribute-path="STATUS"/>
+		<obj-attribute name="type" type="java.lang.String" db-attribute-path="TYPE"/>
+		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
 	</obj-entity>
 	<db-relationship name="eipMFacility" source="eip_facility_group" target="eip_m_facility" toMany="false">
 		<db-attribute-pair source="FACILITY_ID" target="FACILITY_ID"/>

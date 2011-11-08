@@ -33,7 +33,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALDateTimeField;
-import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
+import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
@@ -160,7 +160,7 @@ public class CellScheduleAction extends ALBaseAction {
       }
 
       String currentTab;
-      ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> listData;
+      ALAbstractSelectData<VEipTScheduleList, VEipTScheduleList> listData;
       String tmpCurrentTab = ALEipUtils.getTemp(rundata, context, "tab");
       if (tmpCurrentTab == null
         || !(tmpCurrentTab.equals("oneday")
@@ -854,7 +854,7 @@ public class CellScheduleAction extends ALBaseAction {
       }
 
       String currentTab;
-      ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> listData;
+      ALAbstractSelectData<VEipTScheduleList, VEipTScheduleList> listData;
       String tmpCurrentTab = ALEipUtils.getTemp(rundata, context, "tab");
       if (tmpCurrentTab == null
         || !(tmpCurrentTab.equals("oneday")

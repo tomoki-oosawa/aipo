@@ -237,10 +237,10 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                        }
                     }
                     var str_tmpflgmb;
-                    if(ucount > 1){
+                    if(item.userCount > 1){
                      str_tmpflgmb   =  "[共有]";
                     }
-                    if(fcount > 0){
+                    if(item.facilityCount > 0){
                      str_tmpflgmb   += "[施設]";
                     }
 

@@ -29,8 +29,6 @@ import org.apache.cayenne.access.DataContext;
 
 public class SQLTemplate<M> extends AbstractQuery<M> {
 
-  private static final long serialVersionUID = 5404111688862773398L;
-
   protected org.apache.cayenne.query.SQLTemplate delegate;
 
   protected String primaryKey;
@@ -58,6 +56,7 @@ public class SQLTemplate<M> extends AbstractQuery<M> {
     dataContext.performQuery(delegate);
   }
 
+  @Override
   public List<M> fetchList() {
     delegate.setParameters(parameters);
     @SuppressWarnings("unchecked")

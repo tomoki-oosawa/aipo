@@ -69,15 +69,10 @@ public class CellScheduleWeekSelectData extends
 
   private String aclPortletFeature;
 
-  /** ログインユーザID */
-  private int userid;
-
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    userid = ALEipUtils.getUserId(rundata);
 
     startDate = new ALDateTimeField("yyyy-MM-dd");
     endDate = new ALDateTimeField("yyyy-MM-dd");

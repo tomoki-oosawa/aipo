@@ -71,8 +71,8 @@ public class ManHourSelectData extends
     ALAbstractSelectData<EipTScheduleMap, ManHourResultData> {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ManHourSelectData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ManHourSelectData.class.getName());
 
   private String target_group_name;
 
@@ -276,6 +276,7 @@ public class ManHourSelectData extends
       obj[i] = scheduleList.get(i);
     }
     Arrays.sort(obj, new Comparator<ManHourResultData>() {
+      @Override
       public int compare(ManHourResultData o1, ManHourResultData o2) {
         String sort = getCurrentSort();
         String sort_type = getCurrentSortType();
@@ -382,12 +383,31 @@ public class ManHourSelectData extends
       // buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
       List<EipTScheduleMap> list = query.fetchList();
-      return new ResultList<EipTScheduleMap>(ScheduleUtils
-        .sortByDummySchedule(list));
+      return new ResultList<EipTScheduleMap>(sortByDummySchedule(list));
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
     }
+  }
+
+  public static List<EipTScheduleMap> sortByDummySchedule(
+      List<EipTScheduleMap> list) {
+    // 重複スケジュールの表示調節のために，
+    // ダミースケジュールをリストの始めに寄せる．
+    List<EipTScheduleMap> dummyList = new ArrayList<EipTScheduleMap>();
+    List<EipTScheduleMap> normalList = new ArrayList<EipTScheduleMap>();
+    for (EipTScheduleMap scheduleMap : list) {
+      if ("D".equals(scheduleMap.getStatus())) {
+        dummyList.add(scheduleMap);
+      } else {
+        normalList.add(scheduleMap);
+      }
+    }
+
+    List<EipTScheduleMap> newList = new ArrayList<EipTScheduleMap>();
+    newList.addAll(dummyList);
+    newList.addAll(normalList);
+    return newList;
   }
 
   /**

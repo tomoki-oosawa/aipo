@@ -37,8 +37,9 @@ public class AjaxScheduleWeekContainer implements ALData {
   private List<AjaxScheduleDayContainer> dayList;
 
   /*
-   * 
+   *
    */
+  @Override
   public void initField() {
     dayList = new ArrayList<AjaxScheduleDayContainer>();
   }
@@ -115,6 +116,8 @@ public class AjaxScheduleWeekContainer implements ALData {
           rd3.setRepeat(true);
           rd3.setUserId(rd.getUserId());
           rd3.setMemberList(rd.getMemberList());
+          rd3.setUserCount(rd.getUserCount());
+          rd3.setFacilityCount(rd.getFacilityCount());
 
           con.addResultData(rd3, show_all);
         }

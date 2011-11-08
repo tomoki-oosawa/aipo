@@ -31,7 +31,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
-import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
+import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
@@ -47,7 +47,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
  *
  */
 public class AjaxScheduleWeeklyGroupEmptySelectData extends
-    ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> {
+    ALAbstractSelectData<VEipTScheduleList, VEipTScheduleList> {
 
   /** <code>logger</code> logger */
   @SuppressWarnings("unused")
@@ -74,9 +74,9 @@ public class AjaxScheduleWeeklyGroupEmptySelectData extends
    * @throws ALDBErrorException
    */
   @Override
-  protected ResultList<EipTScheduleMap> selectList(RunData rundata,
+  protected ResultList<VEipTScheduleList> selectList(RunData rundata,
       Context context) throws ALPageNotFoundException, ALDBErrorException {
-    return new ResultList<EipTScheduleMap>();
+    return new ResultList<VEipTScheduleList>();
   }
 
   /**
@@ -87,7 +87,7 @@ public class AjaxScheduleWeeklyGroupEmptySelectData extends
    * @throws ALDBErrorException
    */
   @Override
-  protected EipTScheduleMap selectDetail(RunData rundata, Context context)
+  protected VEipTScheduleList selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     return null;
   }
@@ -99,7 +99,7 @@ public class AjaxScheduleWeeklyGroupEmptySelectData extends
    * @throws ALDBErrorException
    */
   @Override
-  protected Object getResultData(EipTScheduleMap obj)
+  protected Object getResultData(VEipTScheduleList obj)
       throws ALPageNotFoundException, ALDBErrorException {
     return null;
   }
@@ -111,7 +111,7 @@ public class AjaxScheduleWeeklyGroupEmptySelectData extends
    * @throws ALDBErrorException
    */
   @Override
-  protected Object getResultDataDetail(EipTScheduleMap obj)
+  protected Object getResultDataDetail(VEipTScheduleList obj)
       throws ALPageNotFoundException, ALDBErrorException {
     return null;
   }

@@ -33,9 +33,8 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALDateTimeField;
-import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
-import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
+import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -57,7 +56,7 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class ScheduleWeeklySelectData extends
-    ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> {
+    ALAbstractSelectData<VEipTScheduleList, VEipTScheduleList> {
 
   /** <code>logger</code> logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -279,11 +278,12 @@ public class ScheduleWeeklySelectData extends
    * @throws ALDBErrorException
    */
   @Override
-  protected ResultList<EipTScheduleMap> selectList(RunData rundata,
+  protected ResultList<VEipTScheduleList> selectList(RunData rundata,
       Context context) throws ALPageNotFoundException, ALDBErrorException {
     try {
 
-      List<EipTScheduleMap> list = getSelectQuery(rundata, context).fetchList();
+      List<VEipTScheduleList> list =
+        getSelectQuery(rundata, context).fetchList();
 
       if (viewTodo == 1) {
         // ToDo の読み込み
@@ -293,7 +293,7 @@ public class ScheduleWeeklySelectData extends
       // 時刻でソート
       ScheduleUtils.sortByTime(list);
 
-      return new ResultList<EipTScheduleMap>(ScheduleUtils
+      return new ResultList<VEipTScheduleList>(ScheduleUtils
         .sortByDummySchedule(list));
     } catch (Exception e) {
       logger.error("[ScheduleWeeklySelectData] TorqueException");
@@ -309,44 +309,43 @@ public class ScheduleWeeklySelectData extends
    * @param context
    * @return
    */
-  protected SelectQuery<EipTScheduleMap> getSelectQuery(RunData rundata,
+  protected SelectQuery<VEipTScheduleList> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipTScheduleMap> query = Database.query(EipTScheduleMap.class);
+    SelectQuery<VEipTScheduleList> query =
+      Database.query(VEipTScheduleList.class);
 
     // 自ユーザ
     Expression exp1 =
-      ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+      ExpressionFactory.matchExp(VEipTScheduleList.USER_ID_PROPERTY, Integer
         .valueOf(ALEipUtils.getUserId(rundata)));
     query.setQualifier(exp1);
     // ユーザのスケジュール
     Expression exp2 =
       ExpressionFactory.matchExp(
-        EipTScheduleMap.TYPE_PROPERTY,
+        VEipTScheduleList.TYPE_PROPERTY,
         ScheduleUtils.SCHEDULEMAP_TYPE_USER);
     query.andQualifier(exp2);
 
     // 終了日時
     Expression exp11 =
       ExpressionFactory.greaterOrEqualExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-          + "."
-          + EipTSchedule.END_DATE_PROPERTY,
+        VEipTScheduleList.END_DATE_PROPERTY,
         viewStart.getValue());
     // 開始日時
     Expression exp12 =
-      ExpressionFactory.lessOrEqualExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-        + "."
-        + EipTSchedule.START_DATE_PROPERTY, viewEndCrt.getValue());
+      ExpressionFactory.lessOrEqualExp(
+        VEipTScheduleList.START_DATE_PROPERTY,
+        viewEndCrt.getValue());
     // 通常スケジュール
     Expression exp13 =
-      ExpressionFactory.noMatchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-        + "."
-        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
+      ExpressionFactory.noMatchExp(
+        VEipTScheduleList.REPEAT_PATTERN_PROPERTY,
+        "N");
     // 期間スケジュール
     Expression exp14 =
-      ExpressionFactory.noMatchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-        + "."
-        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
+      ExpressionFactory.noMatchExp(
+        VEipTScheduleList.REPEAT_PATTERN_PROPERTY,
+        "S");
     query.andQualifier((exp11.andExp(exp12)).orExp(exp13.andExp(exp14)));
 
     return query;
@@ -360,36 +359,35 @@ public class ScheduleWeeklySelectData extends
    * @throws ALDBErrorException
    */
   @Override
-  protected Object getResultData(EipTScheduleMap record)
+  protected Object getResultData(VEipTScheduleList record)
       throws ALPageNotFoundException, ALDBErrorException {
     ScheduleResultData rd = new ScheduleResultData();
     rd.initField();
     try {
-      EipTSchedule schedule = record.getEipTSchedule();
       // スケジュールが棄却されている場合は表示しない
       if ("R".equals(record.getStatus())) {
         return rd;
       }
       // ID
-      rd.setScheduleId(schedule.getScheduleId().intValue());
+      rd.setScheduleId(record.getScheduleId().intValue());
       // 親スケジュール ID
-      rd.setParentId(schedule.getParentId().intValue());
+      rd.setParentId(record.getParentId().intValue());
       // 名前
-      rd.setName(schedule.getName());
+      rd.setName(record.getName());
       // 開始日時
-      rd.setStartDate(schedule.getStartDate());
+      rd.setStartDate(record.getStartDate());
       // 終了日時
-      rd.setEndDate(schedule.getEndDate());
+      rd.setEndDate(record.getEndDate());
       // 仮スケジュールかどうか
       rd.setTmpreserve("T".equals(record.getStatus()));
       // 公開するかどうか
-      rd.setPublic("O".equals(schedule.getPublicFlag()));
+      rd.setPublic("O".equals(record.getPublicFlag()));
       // 非表示にするかどうか
-      rd.setHidden("P".equals(schedule.getPublicFlag()));
+      rd.setHidden("P".equals(record.getPublicFlag()));
       // ダミーか
       rd.setDummy("D".equals(record.getStatus()));
       // 繰り返しパターン
-      rd.setPattern(schedule.getRepeatPattern());
+      rd.setPattern(record.getRepeatPattern());
 
       // 期間スケジュールの場合
       if (rd.getPattern().equals("S")) {
@@ -442,7 +440,7 @@ public class ScheduleWeeklySelectData extends
    * @return
    */
   @Override
-  protected EipTScheduleMap selectDetail(RunData rundata, Context context) {
+  protected VEipTScheduleList selectDetail(RunData rundata, Context context) {
     return null;
   }
 
@@ -452,7 +450,7 @@ public class ScheduleWeeklySelectData extends
    * @return
    */
   @Override
-  protected Object getResultDataDetail(EipTScheduleMap obj) {
+  protected Object getResultDataDetail(VEipTScheduleList obj) {
     return null;
   }
 

@@ -19,26 +19,21 @@
 
 package com.aimluck.eip.schedule;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-import java.util.TimeZone;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.Ordering;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.commons.field.ALCellDateTimeField;
-import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
-import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
-import com.aimluck.eip.cayenne.om.portlet.auto._EipTSchedule;
-import com.aimluck.eip.cayenne.om.portlet.auto._EipTScheduleMap;
+import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipUser;
@@ -58,9 +53,8 @@ public class CellScheduleOnedaySelectByMemberData extends
     CellScheduleOnedaySelectData {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService
-      .getLogger(CellScheduleOnedaySelectByMemberData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(CellScheduleOnedaySelectByMemberData.class.getName());
 
   /** <code>login_user</code> 表示対象ユーザー */
   private ALEipUser targerUser;
@@ -92,126 +86,23 @@ public class CellScheduleOnedaySelectByMemberData extends
     }
   }
 
-  /**
-   * 検索条件を設定した SelectQuery を返します。
-   * 
-   * @param rundata
-   * @param context
-   * @return
-   */
   @Override
-  protected SelectQuery<EipTScheduleMap> getSelectQuery(RunData rundata,
+  protected List<VEipTScheduleList> getScheduleList(RunData rundata,
       Context context) {
-    SelectQuery<EipTScheduleMap> query = Database.query(EipTScheduleMap.class);
 
-    Expression exp1 =
-      ExpressionFactory.matchExp(_EipTScheduleMap.USER_ID_PROPERTY, targerUser
-        .getUserId()
-        .getValue());
-    query.setQualifier(exp1);
-    Expression exp2 =
-      ExpressionFactory.matchExp(
-        _EipTScheduleMap.TYPE_PROPERTY,
-        ScheduleUtils.SCHEDULEMAP_TYPE_USER);
-    query.andQualifier(exp2);
-
-    // 終了日時
-    Expression exp11 =
-      ExpressionFactory.greaterOrEqualExp(
-        _EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-          + "."
-          + _EipTSchedule.END_DATE_PROPERTY,
-        getViewDate().getValue());
-
-    // 日付を1日ずつずらす
     Calendar cal = Calendar.getInstance();
     cal.setTime(getViewDate().getValue());
     cal.add(Calendar.DATE, 1);
-    ALCellDateTimeField field = new ALCellDateTimeField();
+    cal.add(Calendar.MILLISECOND, -1);
+    ALDateTimeField field = new ALDateTimeField();
     field.setValue(cal.getTime());
-    // 開始日時
-    // LESS_EQUALからLESS_THANへ修正、期間スケジュールFIXのため(Haruo Kaneko)
-    Expression exp12 =
-      ExpressionFactory.lessExp(_EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-        + "."
-        + _EipTSchedule.START_DATE_PROPERTY, field.getValue());
 
-    // 通常スケジュール
-    Expression exp13 =
-      ExpressionFactory.matchExp(_EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-        + "."
-        + _EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
-    // 期間スケジュール
-    Expression exp14 =
-      ExpressionFactory.matchExp(_EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-        + "."
-        + _EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
-
-    // 繰り返しスケジュール（週間）
-    Calendar date = Calendar.getInstance();
-    date.setTime(getViewDate().getValue());
-    int weekindex = date.get(Calendar.DAY_OF_WEEK - 1);
-    String token = null;
-    StringBuffer sb = new StringBuffer();
-    sb.append("W");
-    for (int i = 0; i < 7; i++) {
-      if (i == weekindex) {
-        token = "1";
-      } else {
-        token = "_";
-      }
-      sb.append(token);
-    }
-
-    Expression exp21 =
-      ExpressionFactory.likeExp(_EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-        + "."
-        + _EipTSchedule.REPEAT_PATTERN_PROPERTY, (sb.toString() + "L"));
-    Expression exp22 =
-      ExpressionFactory.likeExp(_EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-        + "."
-        + _EipTSchedule.REPEAT_PATTERN_PROPERTY, (sb.toString() + "N"));
-
-    // 繰り返しスケジュール（日）
-    Expression exp23 =
-      ExpressionFactory.matchExp(_EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-        + "."
-        + _EipTSchedule.REPEAT_PATTERN_PROPERTY, "DN");
-    Expression exp31 =
-      ExpressionFactory.matchExp(_EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-        + "."
-        + _EipTSchedule.REPEAT_PATTERN_PROPERTY, "DL");
-
-    // 繰り返しスケジュール（月）
-    SimpleDateFormat sdf = new SimpleDateFormat("dd");
-    sdf.setTimeZone(TimeZone.getDefault());
-    String dayStr = sdf.format(date.getTime());
-
-    Expression exp24 =
-      ExpressionFactory.likeExp(_EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-        + "."
-        + _EipTSchedule.REPEAT_PATTERN_PROPERTY, ("M" + dayStr + "L"));
-    Expression exp25 =
-      ExpressionFactory.likeExp(_EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-        + "."
-        + _EipTSchedule.REPEAT_PATTERN_PROPERTY, ("M" + dayStr + "N"));
-
-    query.andQualifier((exp11.andExp(exp12).andExp(((exp13).orExp(exp14))
-      .orExp(exp21)
-      .orExp(exp31)
-      .orExp(exp24))).orExp(exp22.orExp(exp23).orExp(exp25)));
-
-    // 開始日時でソート
-    List<Ordering> orders = new ArrayList<Ordering>();
-    orders.add(new Ordering(_EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-      + "."
-      + _EipTSchedule.START_DATE_PROPERTY, true));
-    orders.add(new Ordering(_EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-      + "."
-      + _EipTSchedule.END_DATE_PROPERTY, true));
-    query.getQuery().addOrderings(orders);
-
-    return query;
+    return ScheduleUtils.getScheduleList(
+      userid,
+      getViewDate().getValue(),
+      field.getValue(),
+      Arrays.asList((int) targerUser.getUserId().getValue()),
+      null);
   }
 
   @Override
@@ -309,7 +200,7 @@ public class CellScheduleOnedaySelectByMemberData extends
    * @throws ALDBErrorException
    */
   @Override
-  protected Object getResultData(EipTScheduleMap record)
+  protected Object getResultData(VEipTScheduleList record)
       throws ALPageNotFoundException, ALDBErrorException {
     CellScheduleResultData rd = new CellScheduleResultData();
     CellScheduleResultData rd2 = new CellScheduleResultData();
@@ -317,68 +208,46 @@ public class CellScheduleOnedaySelectByMemberData extends
     rd2.setFormat("yyyy-MM-dd-HH-mm");
     rd2.initField();
     try {
-      EipTSchedule schedule = record.getEipTSchedule();
       if ("R".equals(record.getStatus())) {
         // 参加ユーザーが削除したレコード
         return rd;
       }
       if (!ScheduleUtils.isView(
         getViewDate(),
-        schedule.getRepeatPattern(),
-        schedule.getStartDate(),
-        schedule.getEndDate())) {
+        record.getRepeatPattern(),
+        record.getStartDate(),
+        record.getEndDate())) {
         return rd;
       }
       // ID
-      rd.setScheduleId(schedule.getScheduleId().intValue());
+      rd.setScheduleId(record.getScheduleId().intValue());
       // 親スケジュール ID
-      rd.setParentId(schedule.getParentId().intValue());
+      rd.setParentId(record.getParentId().intValue());
       // 予定
-      rd.setName(schedule.getName());
+      rd.setName(record.getName());
       // 開始時間
-      rd.setStartDate(schedule.getStartDate());
+      rd.setStartDate(record.getStartDate());
       // 終了時間
-      rd.setEndDate(schedule.getEndDate());
+      rd.setEndDate(record.getEndDate());
       // 仮スケジュールかどうか
       rd.setTmpreserve("T".equals(record.getStatus()));
       // 公開するかどうか
-      rd.setPublic("O".equals(schedule.getPublicFlag()));
+      rd.setPublic("O".equals(record.getPublicFlag()));
       // 表示するかどうか
-      rd.setHidden("P".equals(schedule.getPublicFlag()));
+      rd.setHidden("P".equals(record.getPublicFlag()));
       // ダミーか
       // rd.setDummy("D".equals(record.getStatus()));
       // 繰り返しパターン
-      rd.setPattern(schedule.getRepeatPattern());
+      rd.setPattern(record.getRepeatPattern());
 
-      // is_memberのチェック
-      SelectQuery<EipTScheduleMap> mapquery =
-        Database.query(EipTScheduleMap.class);
-      Expression mapexp1 =
-        ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, record
-          .getScheduleId());
-      mapquery.setQualifier(mapexp1);
-
-      Expression mapexp2 =
-        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
-          .valueOf(userid));
-      mapquery.andQualifier(mapexp2);
-
-      Expression mapexp3 =
-        ExpressionFactory.noMatchExp(EipTScheduleMap.STATUS_PROPERTY, "R");
-      mapquery.andQualifier(mapexp3);
-
-      List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
-
-      boolean is_member =
-        (schedulemaps != null && schedulemaps.size() > 0) ? true : false;
-      rd.setMember(is_member);
+      boolean is_member = record.isMember();
 
       // 非公開／完全に隠す　に対応
-      boolean publicable = schedule.getPublicFlag().equals("O");
+      boolean publicable = record.getPublicFlag().equals("O");
       if (!publicable && !is_member) {
         rd.setName("非公開");
       }
-      boolean hidden = schedule.getPublicFlag().equals("P");
+      boolean hidden = record.getPublicFlag().equals("P");
       if (hidden && !is_member) {
         // 「完全に隠す」でメンバーでない場合
         return null;

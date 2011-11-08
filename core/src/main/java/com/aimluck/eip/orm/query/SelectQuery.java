@@ -31,8 +31,6 @@ import org.apache.cayenne.map.ObjEntity;
 
 public class SelectQuery<M> extends AbstractQuery<M> {
 
-  private static final long serialVersionUID = 5404111688862773398L;
-
   protected CustomSelectQuery delegate;
 
   protected CountQuery countQuery;
@@ -74,6 +72,7 @@ public class SelectQuery<M> extends AbstractQuery<M> {
     this.dataContext = dataContext;
   }
 
+  @Override
   @SuppressWarnings("unchecked")
   public List<M> fetchList() {
     if (delegate.isFetchingDataRows()) {
@@ -90,6 +89,13 @@ public class SelectQuery<M> extends AbstractQuery<M> {
     } else {
       return dataContext.performQuery(delegate);
     }
+  }
+
+  public List<DataRow> fetchListAsDataRow() {
+    delegate.setFetchingDataRows(true);
+    @SuppressWarnings("unchecked")
+    List<DataRow> dataRows = dataContext.performQuery(delegate);
+    return dataRows;
   }
 
   public ResultList<M> getResultList() {

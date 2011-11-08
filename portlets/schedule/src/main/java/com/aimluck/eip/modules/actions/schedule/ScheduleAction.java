@@ -31,7 +31,7 @@ import org.apache.jetspeed.util.template.JetspeedLinkFactory;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
+import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
@@ -80,7 +80,7 @@ public class ScheduleAction extends ALBaseAction {
 
     String tab;
     String portletId;
-    ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> listData;
+    ALAbstractSelectData<VEipTScheduleList, VEipTScheduleList> listData;
 
     try {
       // ポートレット ID を取得する．
@@ -529,7 +529,7 @@ public class ScheduleAction extends ALBaseAction {
         }
       }
       String currentTab;
-      ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> listData;
+      ALAbstractSelectData<VEipTScheduleList, VEipTScheduleList> listData;
       String tmpCurrentTab = ALEipUtils.getTemp(rundata, context, "tab");
       if (tmpCurrentTab == null
         || !(tmpCurrentTab.equals("calendar")

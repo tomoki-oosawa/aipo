@@ -25,7 +25,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
+import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.schedule.ScheduleMonthlySelectData;
@@ -75,7 +75,8 @@ public class ScheduleScreenPrint extends ALVelocityScreen {
         }
       }
 
-      ALAbstractSelectData<EipTScheduleMap, EipTScheduleMap> listData = null;
+      ALAbstractSelectData<VEipTScheduleList, VEipTScheduleList> listData =
+        null;
       // ポートレット ID を取得する．
       String portletId = portlet.getID();
       String currentTab;

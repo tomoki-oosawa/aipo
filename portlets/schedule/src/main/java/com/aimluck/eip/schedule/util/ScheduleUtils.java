@@ -31,6 +31,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import org.apache.cayenne.DataRow;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
@@ -65,6 +66,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
+import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -731,7 +733,7 @@ public class ScheduleUtils {
 
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       switch (dow) {
-        // 日
+      // 日
         case Calendar.SUNDAY:
           result = ptn.charAt(1) != '0';
           break;
@@ -1374,20 +1376,18 @@ public class ScheduleUtils {
    * @param list
    * @return
    */
-  public static void sortByTime(List<EipTScheduleMap> list) {
-    Collections.sort(list, new Comparator<EipTScheduleMap>() {
+  public static void sortByTime(List<VEipTScheduleList> list) {
+    Collections.sort(list, new Comparator<VEipTScheduleList>() {
       private final Calendar cal = Calendar.getInstance();
 
       @Override
-      public int compare(EipTScheduleMap o1, EipTScheduleMap o2) {
+      public int compare(VEipTScheduleList o1, VEipTScheduleList o2) {
         // 開始時刻を取得
-        EipTSchedule s1 = o1.getEipTSchedule();
-        cal.setTime(s1.getStartDate());
+        cal.setTime(o1.getStartDate());
         int hour1 = cal.get(Calendar.HOUR_OF_DAY);
         int minute1 = cal.get(Calendar.MINUTE);
 
-        EipTSchedule s2 = o2.getEipTSchedule();
-        cal.setTime(s2.getStartDate());
+        cal.setTime(o2.getStartDate());
         int hour2 = cal.get(Calendar.HOUR_OF_DAY);
         int minute2 = cal.get(Calendar.MINUTE);
 
@@ -1398,11 +1398,11 @@ public class ScheduleUtils {
           return minute1 - minute2;
         } else {
           // 終了時刻を取得
-          cal.setTime(s1.getEndDate());
+          cal.setTime(o1.getEndDate());
           hour1 = cal.get(Calendar.HOUR_OF_DAY);
           minute1 = cal.get(Calendar.MINUTE);
 
-          cal.setTime(s2.getEndDate());
+          cal.setTime(o2.getEndDate());
           hour2 = cal.get(Calendar.HOUR_OF_DAY);
           minute2 = cal.get(Calendar.MINUTE);
 
@@ -1425,13 +1425,13 @@ public class ScheduleUtils {
    * @param list
    * @return
    */
-  public static List<EipTScheduleMap> sortByDummySchedule(
-      List<EipTScheduleMap> list) {
+  public static List<VEipTScheduleList> sortByDummySchedule(
+      List<VEipTScheduleList> list) {
     // 重複スケジュールの表示調節のために，
     // ダミースケジュールをリストの始めに寄せる．
-    List<EipTScheduleMap> dummyList = new ArrayList<EipTScheduleMap>();
-    List<EipTScheduleMap> normalList = new ArrayList<EipTScheduleMap>();
-    for (EipTScheduleMap scheduleMap : list) {
+    List<VEipTScheduleList> dummyList = new ArrayList<VEipTScheduleList>();
+    List<VEipTScheduleList> normalList = new ArrayList<VEipTScheduleList>();
+    for (VEipTScheduleList scheduleMap : list) {
       if ("D".equals(scheduleMap.getStatus())) {
         dummyList.add(scheduleMap);
       } else {
@@ -1439,7 +1439,7 @@ public class ScheduleUtils {
       }
     }
 
-    List<EipTScheduleMap> newList = new ArrayList<EipTScheduleMap>();
+    List<VEipTScheduleList> newList = new ArrayList<VEipTScheduleList>();
     newList.addAll(dummyList);
     newList.addAll(normalList);
     return newList;
@@ -1473,7 +1473,7 @@ public class ScheduleUtils {
         || tmpCurrentTab.equals("weekly")
         || tmpCurrentTab.equals("monthly")
         || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-        .equals("weekly-group"))) {
+          .equals("weekly-group"))) {
       currentTab = "calendar";
     } else {
       currentTab = tmpCurrentTab;
@@ -3516,6 +3516,105 @@ public class ScheduleUtils {
     }
 
     return acl_delete_other;
+  }
+
+  public static List<VEipTScheduleList> getScheduleList(int userId,
+      Date viewStart, Date viewEnd, List<Integer> users,
+      List<Integer> facilities) {
+
+    StringBuilder sql = new StringBuilder();
+
+    sql.append("select eip_t_schedule_map.id, ");
+    sql.append(" eip_t_schedule.schedule_id,");
+    sql.append(" eip_t_schedule_map.common_category_id,");
+    sql.append(" eip_t_schedule_map.user_id,");
+    sql.append(" eip_t_schedule.owner_id,");
+    sql.append(" eip_t_schedule.parent_id,");
+    sql.append(" eip_t_schedule_map.status,");
+    sql.append(" eip_t_schedule_map.type,");
+    sql.append(" eip_t_schedule.name,");
+    sql.append(" eip_t_schedule.place,");
+    sql.append(" eip_t_schedule.start_date,");
+    sql.append(" eip_t_schedule.end_date,");
+    sql.append(" eip_t_schedule.public_flag,");
+    sql.append(" eip_t_schedule.repeat_pattern,");
+    sql.append(" eip_t_schedule.edit_flag,");
+    sql
+      .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t0 WHERE (t0.schedule_id = eip_t_schedule_map.schedule_id) AND (t0.user_id = #bind($user_id))) AS is_member,");
+    sql
+      .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t1 WHERE (t1.schedule_id = eip_t_schedule_map.schedule_id) AND (t1.status <> 'R') AND (t1.type = 'F')) AS f_count,");
+    sql
+      .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t2 WHERE (t2.schedule_id = eip_t_schedule_map.schedule_id) AND (t2.status <> 'R') AND (t2.type <> 'F')) AS u_count");
+    sql
+      .append(" FROM eip_t_schedule_map, eip_t_schedule WHERE eip_t_schedule_map.schedule_id = eip_t_schedule.schedule_id");
+    sql.append(" AND (");
+
+    if (users != null && users.size() > 0) {
+      sql.append(" ((eip_t_schedule_map.type = 'U')");
+      sql.append(" AND (eip_t_schedule_map.user_id IN (");
+
+      boolean isFirst = true;
+      for (Integer num : users) {
+        if (!isFirst) {
+          sql.append(",");
+
+        }
+        sql.append(num.intValue());
+        isFirst = false;
+      }
+      sql.append(")))");
+    }
+
+    if (facilities != null && facilities.size() > 0) {
+      if (users != null && users.size() > 0) {
+        sql.append(" OR ");
+      }
+      sql.append(" ((eip_t_schedule_map.type = 'F')");
+      sql.append(" AND (eip_t_schedule_map.user_id IN (");
+
+      boolean isFirst = true;
+      for (Integer num : facilities) {
+        if (!isFirst) {
+          sql.append(",");
+
+        }
+        sql.append(num.intValue());
+        isFirst = false;
+      }
+      sql.append(")))");
+    }
+
+    sql.append(")");
+
+    sql.append(" AND (((eip_t_schedule.end_date >= '");
+    sql.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(viewStart));
+    sql.append("') AND (eip_t_schedule.start_date <= '");
+    sql.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(viewEnd));
+    sql
+      .append("')) OR ((eip_t_schedule.repeat_pattern <> 'N') AND (eip_t_schedule.repeat_pattern <> 'S')))");
+    sql.append(" ORDER BY eip_t_schedule.start_date, eip_t_schedule.end_date");
+
+    List<DataRow> fetchList =
+      Database.sql(VEipTScheduleList.class, sql.toString()).param(
+        "user_id",
+        Integer.valueOf(userId)).fetchListAsDataRow();
+
+    List<VEipTScheduleList> list = new ArrayList<VEipTScheduleList>();
+    for (DataRow row : fetchList) {
+      Long is_member = (Long) row.get("is_member");
+      Long u_count = (Long) row.get("u_count");
+      Long f_count = (Long) row.get("f_count");
+      VEipTScheduleList object =
+        Database.objectFromRowData(row, VEipTScheduleList.class);
+      object.setMember(is_member.intValue() > 0);
+      object.setUserCount(u_count.intValue());
+      object.setFacilityCount(f_count.intValue());
+      list.add(object);
+
+    }
+
+    return list;
+
   }
 
   public static void createShareScheduleActivity(EipTSchedule schedule,
