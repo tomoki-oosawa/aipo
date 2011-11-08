@@ -19,6 +19,8 @@
 
 dojo.provide("aipo.blog");
 
+dojo.require("aipo.widget.DropdownDatepicker");
+
 aipo.blog.onLoadBlogDialog = function(pid){
     var obj = dojo.byId("title");
     if(obj){

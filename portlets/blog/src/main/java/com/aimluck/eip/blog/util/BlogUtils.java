@@ -42,6 +42,7 @@ import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.eip.blog.BlogThemaResultData;
 import com.aimluck.eip.blog.BlogUserResultData;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlog;
@@ -77,6 +78,9 @@ public class BlogUtils {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(BlogUtils.class.getName());
+
+  public static final String DATE_TIME_FORMAT =
+    ALDateTimeField.DEFAULT_DATE_TIME_FORMAT;
 
   public static final String TARGET_GROUP_NAME = "target_group_name";
 
@@ -364,14 +368,23 @@ public class BlogUtils {
       query.orderAscending(EipTBlogThema.THEMA_NAME_PROPERTY);
       List<EipTBlogThema> aList = query.fetchList();
       int size = aList.size();
+      BlogThemaResultData lastRd = new BlogThemaResultData();
+      lastRd.initField();
       for (int i = 0; i < size; i++) {
         EipTBlogThema record = aList.get(i);
-        BlogThemaResultData rd = new BlogThemaResultData();
-        rd.initField();
-        rd.setThemaId(record.getThemaId().longValue());
-        rd.setThemaName(record.getThemaName());
-        themaList.add(rd);
+        if (record.getThemaId() != 1) {
+          BlogThemaResultData rd = new BlogThemaResultData();
+          rd.initField();
+          rd.setThemaId(record.getThemaId().longValue());
+          rd.setThemaName(record.getThemaName());
+          themaList.add(rd);
+        } else {
+          lastRd.setThemaId(record.getThemaId().longValue());
+          lastRd.setThemaName(record.getThemaName());
+        }
       }
+      themaList.add(lastRd);
+
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;

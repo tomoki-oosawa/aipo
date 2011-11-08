@@ -32,6 +32,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.blog.util.BlogUtils;
@@ -79,6 +80,9 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /** コメント付加フラグ */
   private ALStringField allow_comments;
+
+  /** 日時 */
+  private ALDateTimeField createDate;
 
   private List<BlogThemaResultData> themaList;
 
@@ -141,6 +145,9 @@ public class BlogEntryFormData extends ALAbstractFormData {
    */
   @Override
   public void initField() {
+    // 更新日時
+    createDate = new ALDateTimeField(BlogUtils.DATE_TIME_FORMAT);
+    createDate.setFieldName("日時");
     // Title
     title = new ALStringField();
     title.setFieldName("タイトル");
@@ -183,6 +190,8 @@ public class BlogEntryFormData extends ALAbstractFormData {
    */
   @Override
   protected void setValidator() {
+    // 日付必須項目
+    createDate.setNotNull(true);
     // Title必須項目
     title.setNotNull(true);
     // Titleの文字数制限
@@ -202,6 +211,8 @@ public class BlogEntryFormData extends ALAbstractFormData {
    */
   @Override
   protected boolean validate(List<String> msgList) {
+    // 日付
+    createDate.validate(msgList);
     // Title
     title.validate(msgList);
     // メモ
@@ -233,6 +244,8 @@ public class BlogEntryFormData extends ALAbstractFormData {
       if (entry == null) {
         return false;
       }
+      // 日時
+      createDate.setValue(entry.getCreateDate());
       // Title
       title.setValue(entry.getTitle());
       // メモ
@@ -377,7 +390,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
         // コメント付加フラグ
         entry.setAllowComments("T");
         // 作成日
-        entry.setCreateDate(Calendar.getInstance().getTime());
+        entry.setCreateDate(createDate.getValue());
         // 更新日
         entry.setUpdateDate(Calendar.getInstance().getTime());
 
@@ -561,6 +574,8 @@ public class BlogEntryFormData extends ALAbstractFormData {
         entry.setOwnerId(Integer.valueOf(uid));
         // コメント付加フラグ
         entry.setAllowComments("T");
+        // 作成日
+        entry.setCreateDate(createDate.getValue());
         // 更新日
         entry.setUpdateDate(Calendar.getInstance().getTime());
 
@@ -617,6 +632,11 @@ public class BlogEntryFormData extends ALAbstractFormData {
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
+    // 日時
+    if (createDate.toString().equals("")) {
+      createDate.setValue(Calendar.getInstance().getTime());
+    }
+
     boolean res = super.setFormData(rundata, context, msgList);
 
     if (res) {
@@ -655,6 +675,13 @@ public class BlogEntryFormData extends ALAbstractFormData {
    */
   public ALStringField getTitle() {
     return title;
+  }
+
+  /**
+   * @return
+   */
+  public ALDateTimeField getCreateDate() {
+    return createDate;
   }
 
   /**

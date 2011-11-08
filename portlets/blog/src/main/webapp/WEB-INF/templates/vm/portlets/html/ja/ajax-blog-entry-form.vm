@@ -41,6 +41,20 @@
 <input type="hidden" name="mode" value="update" />
 #end
 #ALtableheaderWide()
+#ALtdcaption("$!result.getFieldName('createDate')")
+#ALtditemheader()
+<div dojoType="aipo.widget.DropdownDatepicker" id="datepicker" widgetId="datepicker" iconURL="images/icon/icon_date.gif" iconAlt="日付" hiddenId="date" initValue="$!{result.CreateDate.Year}/$!{result.CreateDate.Month}/$!{result.CreateDate.Day}" inputId="input_date" dateId="date" displayCheck="none"></div>
+<select name="date_hour" size="1">
+#foreach ( $num in [0..23] )
+<option value="$num" #if ($!result.CreateDate.Hour == "$num") selected #end>$num時</option>
+#end
+</select>
+<select name="date_minute" size="1">
+#foreach ( $num in [0..59] )
+<option value="$num" #if ($!result.CreateDate.Minute == "$num") selected #end>$num分</option>
+#end
+</select>
+#ALtditemfooter()
 #ALtdcaption("$!result.getFieldName('thema_id')")
 #ALtditemheader()
 <div id="blogThemaInputField" #if(!$!{result.isNewThema})style="display:none"#end>
