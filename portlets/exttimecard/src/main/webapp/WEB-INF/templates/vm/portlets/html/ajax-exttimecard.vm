@@ -28,7 +28,7 @@
 #ALtdcellheaderAtt("nowrap='nowrap' class='w25 center'")
 
 #if (!$!{result.Detail})
-#ALsubmitJSAuiButton('punchin' '出勤' "aipo.exttimecard.addHiddenValue(this.form, 'mode', 'punchin')")
+<a class="auiButton" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchin');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchin', '出勤');dojo.byId('form$!portlet.ID').onsubmit();">出勤</a>
 #else
 
 #if (!($!{result.Detail.IsNullClockInTime}))
@@ -37,7 +37,7 @@
 #if (!$!{result.Detail.IsNullClockOutTime})
 <input type="submit" class="submit" name="eventSubmit_doExtTimecard_punchin_" value="出勤" disabled="">
 #else
-#ALsubmitJSAuiButton('punchin' '出勤' "aipo.exttimecard.addHiddenValue(this.form, 'mode', 'punchin')")
+<a class="auiButton" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchin');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchin', '出勤');dojo.byId('form$!portlet.ID').onsubmit();">出勤</a>
 #end
 #end
 
@@ -49,7 +49,7 @@
 #if ($!{result.Detail} && !($!{result.Detail.IsNullClockOutTime}))
 退勤<br />$!{result.Detail.ClockOutTime.Time}
 #else
-#ALsubmitJSAuiButton('punchout' '退勤' "aipo.exttimecard.addHiddenValue(this.form, 'mode', 'punchout')")
+<a class="auiButton" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchout');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchout', '退勤');dojo.byId('form$!portlet.ID').onsubmit();">退勤</a>
 #end
 #ALtdcellfooter()
 
@@ -63,7 +63,7 @@
 外出<br />$!{result.Detail.OutgoingTime.Time}
 #end
 #else
-#ALsubmitJSAuiButton('outgoing' '外出' "aipo.exttimecard.addHiddenValue(this.form, 'mode', 'outgoing')")
+<a class="auiButton" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'outgoing');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '外出');dojo.byId('form$!portlet.ID').onsubmit();">外出</a>
 #end
 #ALtdcellfooter()
 
@@ -71,7 +71,7 @@
 #if ($!{result.Detail} && !($!{result.Detail.IsNullClockOutTime}))
 <input type="submit" class="submit" name="eventSubmit_doExtTimecard_comeback_" value="復帰" disabled="">
 #else
-#ALsubmitJSAuiButton('comeback' '復帰' "aipo.exttimecard.addHiddenValue(this.form, 'mode', 'comeback')")
+<a class="auiButton" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'comeback');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '復帰');dojo.byId('form$!portlet.ID').onsubmit();">復帰</a>
 #end
 #ALtdcellfooter()
 
