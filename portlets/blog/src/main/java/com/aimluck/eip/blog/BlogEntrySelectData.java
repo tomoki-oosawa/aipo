@@ -34,6 +34,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALDateTimeField;
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.blog.util.BlogUtils;
 import com.aimluck.eip.blog.util.calendar.CalendarElement;
 import com.aimluck.eip.blog.util.calendar.Day;
@@ -107,7 +108,7 @@ public class BlogEntrySelectData extends
 
   private int view_uid;
 
-  private String view_uname;
+  private ALStringField view_uname;
 
   private boolean has_photo;
 
@@ -236,7 +237,7 @@ public class BlogEntrySelectData extends
     }
 
     ALEipUser view_user = ALEipUtils.getALEipUser(view_uid);
-    view_uname = view_user.getAliasName().getValue();
+    view_uname = view_user.getAliasName();
 
     // アクセス権
     if (view_uid == uid) {
@@ -766,7 +767,7 @@ public class BlogEntrySelectData extends
     return view_uid;
   }
 
-  public String getViewUname() {
+  public ALStringField getViewUname() {
     return view_uname;
   }
 

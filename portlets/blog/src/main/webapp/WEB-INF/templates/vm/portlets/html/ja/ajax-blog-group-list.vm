@@ -68,8 +68,8 @@
 <img src="images/common/nophoto.gif" alt="${record.AliasName}" width="76" height="76" border="0" />
 #end
 </a>
-</div> 
-<div class="userInfo"><div style="padding:1px;">${record.AliasName}</div></div> 
+</div>
+<div class="userInfo"><div style="padding:1px;">${record.AliasName}</div></div>
 </div>
 </td>
 #if($col_count == 4)

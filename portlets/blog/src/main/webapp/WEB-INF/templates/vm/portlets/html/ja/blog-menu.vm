@@ -24,7 +24,7 @@
 dojo.require("aimluck.widget.Menu");
 
 dojo.addOnLoad(function () {
-    
+
     var subMenu =
 		[
 			{
@@ -54,12 +54,12 @@ dojo.addOnLoad(function () {
             {   caption: "記事を検索する", iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_search_list','1')"    },
 			{   caption: "共通テーマ一覧を見る", iconClass: "menuBarIconList", iconSrc:"images/blog/blog_common.gif", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_common_thema_list','1')"    }
 		];
-		
+
 		if(aipo.blog.menuSelected == "undefined"){
-		  aipo.blog.menuSelected = -1;  
+		  aipo.blog.menuSelected = -1;
 		}
         var menubar = new aimluck.widget.Menubar({id: "mbar", items: subMenu, selectedIndex:aipo.blog.menuSelected}, "portletMenu");
 });
 
 //]]>
-</script> 
+</script>
