@@ -123,7 +123,7 @@ public class NoteClientSelectData extends
   @Override
   protected SelectQuery<EipTNoteMap> buildSelectQueryForListViewSort(
       SelectQuery<EipTNoteMap> query, RunData rundata, Context context) {
-    String sort = "create_at";
+    String sort = "create_date";
     String sort_type = ALEipConstants.LIST_SORT_TYPE_DESC;
     String crt_key = null;
 
@@ -241,6 +241,9 @@ public class NoteClientSelectData extends
     map.putValue("subject_type", EipTNoteMap.EIP_TNOTE_PROPERTY
       + "."
       + EipTNote.SUBJECT_TYPE_PROPERTY);
+    map.putValue("create_date", EipTNoteMap.EIP_TNOTE_PROPERTY
+      + "."
+      + EipTNote.CREATE_DATE_PROPERTY);
     map.putValue("accept_date", EipTNoteMap.EIP_TNOTE_PROPERTY
       + "."
       + EipTNote.ACCEPT_DATE_PROPERTY);
