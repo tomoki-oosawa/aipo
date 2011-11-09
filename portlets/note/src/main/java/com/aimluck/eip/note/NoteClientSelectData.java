@@ -31,6 +31,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTNoteMap;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
@@ -111,6 +112,32 @@ public class NoteClientSelectData extends
       logger.error("Exception", ex);
       return null;
     }
+  }
+
+  /**
+   * ソート用の <code>SelectQuery</code> を構築します。
+   * 
+   * @param crt
+   * @return
+   */
+  @Override
+  protected SelectQuery<EipTNoteMap> buildSelectQueryForListViewSort(
+      SelectQuery<EipTNoteMap> query, RunData rundata, Context context) {
+    String sort = "create_at";
+    String sort_type = ALEipConstants.LIST_SORT_TYPE_DESC;
+    String crt_key = null;
+
+    Attributes map = getColumnMap();
+
+    crt_key = map.getValue(sort);
+    if (crt_key == null) {
+      return query;
+    }
+    query.orderDesending(crt_key);
+    current_sort = sort;
+    current_sort_type = sort_type;
+    return query;
+
   }
 
   /**

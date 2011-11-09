@@ -40,6 +40,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTNoteMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
@@ -108,8 +109,12 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
       throws ALPageNotFoundException, ALDBErrorException {
 
     setCurrentTab(rundata, context);
-
+    if (NoteUtils.hasResetFlag(rundata, context)) {
+      ALEipUtils.removeTemp(rundata, context, LIST_SORT_STR);
+      ALEipUtils.removeTemp(rundata, context, LIST_SORT_TYPE_STR);
+    }
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
+
     if (sort == null || sort.equals("")) {
       String sortkey = null;
       if ("received_notes".equals(getCurrentTab())) {
@@ -122,6 +127,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
           .getPortlet(rundata, context)
           .getPortletConfig()
           .getInitParameter(sortkey);
+
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, sort);
     } else {
       if ("received_notes".equals(getCurrentTab())) {
@@ -137,7 +143,9 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
         }
       } else {
         // 送信一覧
-        if ("accept_date".equals(sort) || "note_stat".equals(sort)) {
+        if ("accept_date".equals(sort)
+          || "note_stat".equals(sort)
+          || "create_date".equals(sort)) {
           // 送信一覧に無いソートが指定されている場合、デフォルトを読み込む
           sort =
             ALEipUtils
@@ -202,6 +210,39 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
       logger.error("Exception", ex);
       return null;
     }
+  }
+
+  /**
+   * ソート用の <code>SelectQuery</code> を構築します。
+   * 
+   * @param crt
+   * @return
+   */
+  @Override
+  protected SelectQuery<EipTNoteMap> buildSelectQueryForListViewSort(
+      SelectQuery<EipTNoteMap> query, RunData rundata, Context context) {
+    String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
+    String sort_type = ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
+    String crt_key = null;
+
+    Attributes map = getColumnMap();
+    if (sort == null) {
+      return query;
+    }
+    crt_key = map.getValue(sort);
+    if (crt_key == null) {
+      return query;
+    }
+    if (sort_type != null
+      && ALEipConstants.LIST_SORT_TYPE_ASC.equals(sort_type)) {
+      query.orderAscending(crt_key);
+    } else {
+      query.orderDesending(crt_key);
+      sort_type = ALEipConstants.LIST_SORT_TYPE_DESC;
+    }
+    current_sort = sort;
+    current_sort_type = sort_type;
+    return query;
   }
 
   /**
@@ -586,6 +627,15 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
       Context context) {
     return Database.query(EipTNote.class);
   }
+
+  /**
+   * 一覧表示します。
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * @return TRUE 成功 FASLE 失敗
+   */
 
   private String getDestUserNamesLimit(EipTNote note) throws ALDBErrorException {
     StringBuffer destUserNames = new StringBuffer();

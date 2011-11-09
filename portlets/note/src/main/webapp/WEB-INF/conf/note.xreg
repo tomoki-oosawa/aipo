@@ -44,36 +44,18 @@
         <parameter name="p1b-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1b-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1b-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2a-sort" value="note_stat" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
-            <meta-info>
-                <title>ソート方法（受信履歴）</title>
-            </meta-info>
-        </parameter>
-        <parameter name="p2a-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2a-sort.style.items" value="note_stat,client_name,accept_date" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2a-sort.style.values" value="状態,依頼者,受付日時" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2b-sort" value="accept_date" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
-            <meta-info>
-                <title>ソート方法（送信履歴）</title>
-            </meta-info>
-        </parameter>
-        <parameter name="p2b-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2b-sort.style.items" value="client_name,accept_date" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2b-sort.style.values" value="依頼者,受付日時" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-sort" value="create_date" type="style" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
+        <parameter name="p2b-sort" value="create_date" type="style" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
         <parameter name="action" value="note.NoteAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_mode1" value="NoteFormScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_screen1" value="true" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_image1" value="icon/icon_add.gif" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_caption1" value="伝言メモ追加" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_after_function1" value="aipo.note.afterFunction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p3a-strlen" value="15" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
-            <meta-info>
-                <title>表示最大文字数</title>
-            </meta-info>
-        </parameter>
-        <parameter name="p3a-strlen.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p3a-strlen.style.items" value="10,15,30,0" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p3a-strlen.style.values" value="10文字,15文字,30文字,制限なし" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3a-strlen" value="15" type="style" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
     </portlet-entry>
@@ -101,22 +83,10 @@
         <parameter name="p1b-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1b-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1b-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2a-sort" value="note_stat" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
-            <meta-info>
-                <title>ソート方法（受信履歴）</title>
-            </meta-info>
-        </parameter>
-        <parameter name="p2a-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2a-sort.style.items" value="note_stat,client_name,accept_date" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2a-sort.style.values" value="状態,依頼者,受付日時" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2b-sort" value="create_date" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
-            <meta-info>
-                <title>ソート方法（送信履歴）</title>
-            </meta-info>
-        </parameter>
-        <parameter name="p2b-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2b-sort.style.items" value="client_name,create_date" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2b-sort.style.values" value="依頼者,受付日時" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-sort" value="create_date" type="style" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
+        <parameter name="p2b-sort" value="create_date" type="style" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
         <parameter name="p3b-group" value="" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>初期選択グループ</title>
@@ -124,14 +94,8 @@
         </parameter>
         <parameter name="p3b-group.style" value="GroupListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p3b-group.style.initialvalue" value="（選択してください）" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p3a-strlen" value="15" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
-            <meta-info>
-                <title>表示最大文字数</title>
-            </meta-info>
-        </parameter>
-        <parameter name="p3a-strlen.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p3a-strlen.style.items" value="10,15,30,0" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p3a-strlen.style.values" value="10文字,15文字,30文字,制限なし" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3a-strlen" value="15" type="style" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
         <parameter name="action" value="note.NoteGroupAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
