@@ -18,8 +18,8 @@
  *#
 
 #set($schedulescreen = "ScheduleListScreen")
-#set($tabs = [["個人・1日", "oneday","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','oneday')"], ["個人・週間", "weekly", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','weekly')"], ["個人・月間", "monthly", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','monthly')"], ["グループ・1日", "oneday-group","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','oneday-group')"], ["グループ・週間", "weekly-group", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','weekly-group')"]])
 
+#AUIcontentsAreaHeader()
 #ALspacebothheader()
 ## One day
 #if ($!result.Viewtype == "calendar")
@@ -46,3 +46,6 @@
 #parse("/portlets/html/ja/schedule-weekly-group.vm")
 #end
 #ALspacebothfooter()
+
+#AUIcontentsAreaFooter()
+#parse("/portlets/html/ja/schedule-widgets.vm")
