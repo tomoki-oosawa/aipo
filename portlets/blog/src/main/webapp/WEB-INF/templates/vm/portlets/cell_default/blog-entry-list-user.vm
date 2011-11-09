@@ -39,7 +39,7 @@
 最新記事一覧<br />
 #ALcell_li_footer($career)
 #if ($!{result.List.size()} <= 0)
- &nbsp;記事は登録されていません
+&nbsp;指定したテーマに記事はありません。
 #else
 #if($result.PagesNum > 1)
 #ALcell_hr($career '1')

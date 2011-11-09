@@ -55,7 +55,7 @@
 #set($flag = true)
 <h3>最新の記事</h3>
 #if($result.List.size() == 0)
-<div class="message" style="padding-left:12px;">記事は登録されていません</div>
+<div class="message">指定したテーマに記事はありません。</div>
 #else
 <div class="p">
 #ALajaxpageview('BlogEntryListLatestScreen' $result)

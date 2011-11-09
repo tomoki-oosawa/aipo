@@ -18,5 +18,40 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set($career = 'iphone')
-#parse("/portlets/smartphone_default/ja/blog-entry-list.vm")
+#set($career = 'wm')
+#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_latest','1')")
+#set($methodlist = [["記事追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_form','1').addQueryData('entityid','new')"], ["みんなのブログ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1')"],["記事検索", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_search_list','1')"]])
+#set($linklist = [["記事一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_latest','1')"]])
+#ALcell_pagetitle_iphone($career "ブログ最新記事一覧")
+#ALcell_linklist_iphone($career $methodlist)
+#ALcell_contents_header($career)
+#if ($!{result.List.size()} <= 0)
+<p class="center">指定したテーマに記事はありません。</p>
+#else
+#if($result.PagesNum > 1)
+#ALcell_pageview($career $link $result)
+#end
+#ALcell_radius_header($career)
+#foreach ($record in $result.List)
+<p><a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_detail','1').addQueryData('mode','view').addQueryData("entityid",$record.EntryId).addQueryData('view_uid',${record.OwnerId})"><strong>${record.Title}&nbsp;</strong><br />
+<small>${record.OwnerName}&nbsp;(${record.TitleDate})</small></a></p>
+#end
+#ALcell_radius_footer($career)
+#if($result.PagesNum > 1)
+#ALcell_pageview($career $link $result)
+#end
+#end
+<h3>記事コメント履歴</h3>
+#if (!($result.CommentHistoryList) || $!result.CommentHistoryList.size() <= 0)
+<p class="center">コメントした記事はありません。</p>
+#else
+#ALcell_radius_header($career)
+#foreach ($record2 in $result.CommentHistoryList)
+<p><a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_detail','1').addQueryData('mode','view').addQueryData("entityid",$record2.EntryId).addQueryData('view_uid',${record2.OwnerId}))');"><strong>${record2.Title}</strong><br />
+<small>${record2.OwnerName} &nbsp;(${record2.TitleDate})</small></p>
+#ALcell_li_footer($career)
+#end
+#ALcell_radius_footer($career)
+#end
+#ALcell_contents_footer($career)
+#ALcell_linklist_iphone($career $methodlist)

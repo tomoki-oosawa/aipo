@@ -26,7 +26,7 @@
 #ALcell_linklist_iphone($career $methodlist)
 #ALcell_contents_header($career)
 #if ($!{result.List.size()} <= 0)
-<p class="center">記事は登録されていません。</p>
+<p class="center">指定したテーマに記事はありません。</p>
 #else
 #if($result.PagesNum > 1)
 #ALcell_pageview($career $link $result)
