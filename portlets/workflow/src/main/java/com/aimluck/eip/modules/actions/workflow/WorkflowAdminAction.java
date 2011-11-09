@@ -72,9 +72,6 @@ public class WorkflowAdminAction extends ALBaseAction {
       .getPortlet(rundata, context)
       .getPortletConfig()
       .getInitParameter("p1a-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
-      rundata,
-      context).getPortletConfig().getInitParameter("p3a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "workflow-category-list");
   }
@@ -94,9 +91,6 @@ public class WorkflowAdminAction extends ALBaseAction {
       .getPortlet(rundata, context)
       .getPortletConfig()
       .getInitParameter("p1a-rows")));
-    listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
-      rundata,
-      context).getPortletConfig().getInitParameter("p3a-strlen")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "workflow-route-list");
   }

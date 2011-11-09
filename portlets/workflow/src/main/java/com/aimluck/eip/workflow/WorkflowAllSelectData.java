@@ -25,6 +25,7 @@ import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -129,6 +130,23 @@ public class WorkflowAllSelectData extends
     } else if (tabParam != null) {
       ALEipUtils.setTemp(rundata, context, "alltab", tabParam);
       currentTab = tabParam;
+    }
+
+    // カテゴリの初期値を取得する
+    try {
+      String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+      if (filter == null) {
+        VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+        String categoryId =
+          portlet.getPortletConfig().getInitParameter("p3a-category");
+        if (categoryId != null) {
+          ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, categoryId);
+          ALEipUtils
+            .setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
+        }
+      }
+    } catch (Exception ex) {
+      logger.debug("Exception", ex);
     }
 
     target_keyword = new ALStringField();
@@ -255,7 +273,23 @@ public class WorkflowAllSelectData extends
   @Override
   protected SelectQuery<EipTWorkflowRequest> buildSelectQueryForFilter(
       SelectQuery<EipTWorkflowRequest> query, RunData rundata, Context context) {
-
+    String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+    String filter_type =
+      ALEipUtils.getTemp(rundata, context, LIST_FILTER_TYPE_STR);
+    String crt_key = null;
+    Attributes map = getColumnMap();
+    if (filter_type != null) {
+      crt_key = map.getValue(filter_type);
+    }
+    if (filter != null
+      && filter_type != null
+      && !filter.equals("")
+      && crt_key != null) {
+      Expression exp = ExpressionFactory.matchDbExp(crt_key, filter);
+      query.andQualifier(exp);
+      current_filter = filter;
+      current_filter_type = filter_type;
+    }
     String search = ALEipUtils.getTemp(rundata, context, LIST_SEARCH_STR);
     if (search != null && !search.equals("")) {
       current_search = search;
