@@ -108,7 +108,7 @@ style="font-weight:bold"
 #ALtdcellfooter()
 #ALtdcellheader()<div>$!record.CompanyName</div>#ALtdcellfooter()
 #ALtdcellheader()<div>$!subject</div>#ALtdcellfooter()
-#ALtdcellheader()<div>#if ($isReceive) $!record.SrcUserFullName #else $!record.DestUserFullName #end</div>#ALtdcellfooter()
+#ALtdcellheader()<div>#if ($isReceive) $!record.SrcUserFullName #else $!record.DestUserFullName.Value #end</div>#ALtdcellfooter()
 #ALtdcellAtt("#if ($isReceive) $!{record.AcceptDate.Month}月$!{record.AcceptDate.Day}日 $!{record.AcceptDate.Hour}時$!{record.AcceptDate.Minute}分 #else $!{record.CreateDate.Month}月$!{record.CreateDate.Day}日 $!{record.CreateDate.Hour}時$!{record.CreateDate.Minute}分 #end" 'nowrap="nowrap"')
 </tr>
 #end
@@ -131,7 +131,7 @@ style="font-weight:bold"
 #ALformfooter()
 
 #AUIcontentsAreaFooter()
-    
+
 <div id="auiWidgetsArea">
 <div class="auiWidget clearfix">
   <a title="伝言メモを作成する" href="javascript:void(0);" class="auiButtonAction" onclick="javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","NoteFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.note.onLoadNoteDialog);">伝言メモを作成する</a>
