@@ -158,14 +158,13 @@ public class MsgboardTopicSelectData extends
     // カテゴリの初期値を取得する
     try {
       String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
-      if (filter == null) {
+      if ("0".equals(filter) || filter == null) {
         VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
         String categoryId =
           portlet.getPortletConfig().getInitParameter("p3a-category");
         if (categoryId != null) {
-          ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, categoryId);
-          ALEipUtils
-            .setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
+          ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, "0");
+          ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "0");
         }
       }
     } catch (Exception ex) {
@@ -307,6 +306,9 @@ public class MsgboardTopicSelectData extends
       && crt_key != null) {
       Expression exp = ExpressionFactory.matchDbExp(crt_key, filter);
       query.andQualifier(exp);
+      current_filter = filter;
+      current_filter_type = filter_type;
+    } else if ("0".equals(filter)) {
       current_filter = filter;
       current_filter_type = filter_type;
     }
