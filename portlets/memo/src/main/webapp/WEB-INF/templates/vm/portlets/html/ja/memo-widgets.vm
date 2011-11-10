@@ -16,20 +16,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
-#set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["メモ一覧", ""]])
+#set ($newUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MemoFormScreen").addQueryData("entityid","new")))
 ## ---------------------------------------------------------------------------
-
-#ALjavascript("javascript/aipo/memo/form.js")
-<script language="JavaScript" type="text/javascript">
-//<![CDATA[
-
-    ptConfig['$!portlet.ID'] = { group:"memo", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MemoListScreen"))', reloadFunction:aipo.reloadPage };
-
-//]]>
-</script>
-#ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
-#parse("/portlets/html/ja/ajax-memo-list.vm")
-#ALcontentfooter()
-##parse("/portlets/html/ja/memo-menu.vm") //デザイン変更により削除
+<div id="auiWidgetsArea">
+<div class="auiWidget clearfix">
+#AUIbuttonAction("メモを作成する" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.memo.onLoadMemoDialog);")
+</div>
+</div>

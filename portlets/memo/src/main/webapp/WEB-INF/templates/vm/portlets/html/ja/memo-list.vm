@@ -32,4 +32,4 @@
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
 #parse("/portlets/html/ja/ajax-memo-list.vm")
 #ALcontentfooter()
-#parse("/portlets/html/ja/memo-menu.vm")
+##parse("/portlets/html/ja/memo-menu.vm") //デザイン変更により削除

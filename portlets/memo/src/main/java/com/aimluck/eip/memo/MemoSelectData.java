@@ -30,7 +30,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.commons.utils.ALDateUtil;
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTMemo;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -60,6 +60,9 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo, EipTMemo>
   /** メモ一覧 */
   private List<MemoLiteResultData> memoLiteList;
 
+  /** 検索用 */
+  private ALStringField target_keyword;
+
   /**
    * 
    * @param action
@@ -78,6 +81,14 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo, EipTMemo>
         .getPortletConfig()
         .getInitParameter("p2a-sort"));
     }
+    // カテゴリの初期値を取得する
+    try {
+      String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+    } catch (Exception ex) {
+      logger.debug("Exception", ex);
+    }
+
+    target_keyword = new ALStringField();
   }
 
   /**
@@ -115,6 +126,12 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo, EipTMemo>
   @Override
   public ResultList<EipTMemo> selectList(RunData rundata, Context context) {
     try {
+      if (MemoUtils.hasResetFlag(rundata, context)) {
+        MemoUtils.resetFilter(rundata, context, this.getClass().getName());
+        target_keyword.setValue("");
+      } else {
+        target_keyword.setValue(MemoUtils.getTargetKeyword(rundata, context));
+      }
 
       SelectQuery<EipTMemo> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
@@ -131,6 +148,51 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo, EipTMemo>
     }
   }
 
+  @Override
+  protected SelectQuery<EipTMemo> buildSelectQueryForFilter(
+      SelectQuery<EipTMemo> query, RunData rundata, Context context) {
+    String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+    String filter_type =
+      ALEipUtils.getTemp(rundata, context, LIST_FILTER_TYPE_STR);
+    String crt_key = null;
+    Attributes map = getColumnMap();
+    crt_key = filter_type != null ? map.getValue(filter_type) : null;
+    if (filter != null
+      && filter_type != null
+      && !filter.equals("")
+      && crt_key != null) {
+      Expression exp = ExpressionFactory.matchDbExp(crt_key, filter);
+      query.andQualifier(exp);
+      current_filter = filter;
+      current_filter_type = filter_type;
+    }
+    String search = ALEipUtils.getTemp(rundata, context, LIST_SEARCH_STR);
+    if (search != null && !search.equals("")) {
+      current_search = search;
+      Expression ex1 =
+        ExpressionFactory.likeExp(EipTMemo.MEMO_NAME_PROPERTY, "%"
+          + search
+          + "%");
+      Expression ex2 =
+        ExpressionFactory.likeExp(EipTMemo.NOTE_PROPERTY, "%" + search + "%");
+      SelectQuery<EipTMemo> q = Database.query(EipTMemo.class);
+      q.andQualifier(ex1.orExp(ex2));
+      List<EipTMemo> queryList = q.fetchList();
+      List<Integer> resultid = new ArrayList<Integer>();
+      for (EipTMemo item : queryList) {
+        resultid.add(item.getMemoId());
+      }
+      if (resultid.size() == 0) {
+        // 検索結果がないことを示すために-1を代入
+        resultid.add(-1);
+      }
+      Expression ex =
+        ExpressionFactory.inDbExp(EipTMemo.MEMO_ID_PK_COLUMN, resultid);
+      query.andQualifier(ex);
+    }
+    return query;
+  }
+
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
    * 
@@ -139,8 +201,14 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo, EipTMemo>
    * @return
    */
   private SelectQuery<EipTMemo> getSelectQuery(RunData rundata, Context context) {
-    SelectQuery<EipTMemo> query = Database.query(EipTMemo.class);
+    if ((target_keyword != null) && (!target_keyword.getValue().equals(""))) {
+      ALEipUtils.setTemp(rundata, context, LIST_SEARCH_STR, target_keyword
+        .getValue());
+    } else {
+      ALEipUtils.removeTemp(rundata, context, LIST_SEARCH_STR);
+    }
 
+    SelectQuery<EipTMemo> query = Database.query(EipTMemo.class);
     Expression exp1 =
       ExpressionFactory.matchExp(EipTMemo.OWNER_ID_PROPERTY, Integer
         .valueOf(ALEipUtils.getUserId(rundata)));
@@ -163,8 +231,8 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo, EipTMemo>
       rd.setMemoId(record.getMemoId());
       rd.setMemoName(record.getMemoName());
       rd.setNote(record.getNote());
-      rd.setUpdateDate(ALDateUtil.format(record.getUpdateDate(), "yyyy年M月d日"));
-      rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
+      rd.setUpdateDate(record.getUpdateDate());
+      rd.setCreateDate(record.getCreateDate());
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -204,8 +272,8 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo, EipTMemo>
       rd.setMemoId(record.getMemoId().intValue());
       rd.setMemoName(record.getMemoName());
       rd.setNote(record.getNote());
-      rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
-      rd.setUpdateDate(ALDateUtil.format(record.getUpdateDate(), "yyyy年M月d日"));
+      rd.setCreateDate(record.getCreateDate());
+      rd.setUpdateDate(record.getUpdateDate());
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -237,6 +305,13 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo, EipTMemo>
 
   public List<MemoLiteResultData> getMemoLiteList() {
     return memoLiteList;
+  }
+
+  /**
+   * @return target_keyword
+   */
+  public ALStringField getTargetKeyword() {
+    return target_keyword;
   }
 
 }

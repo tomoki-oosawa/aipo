@@ -19,6 +19,9 @@
 
 package com.aimluck.eip.memo;
 
+import java.util.Date;
+
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -32,22 +35,22 @@ public class MemoResultData extends MemoLiteResultData {
   private ALStringField note;
 
   /** 登録日 */
-  private ALStringField create_date;
+  private Date create_date;
 
   /** 更新日 */
-  private ALStringField update_date;
+  private Date update_date;
 
   /**
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
     super.initField();
     note = new ALStringField();
     note.setTrim(false);
-    create_date = new ALStringField();
-    update_date = new ALStringField();
+    create_date = new Date();
+    update_date = new Date();
   }
 
   /**
@@ -74,29 +77,37 @@ public class MemoResultData extends MemoLiteResultData {
   /**
    * @return
    */
-  public ALStringField getCreateDate() {
-    return create_date;
+  public ALDateTimeField getCreateDate() {
+    ALDateTimeField date = new ALDateTimeField("yyyy年M月d日");
+    date.setValue(create_date);
+    return date;
   }
 
   /**
    * @return
    */
-  public ALStringField getUpdateDate() {
-    return update_date;
+  public ALDateTimeField getUpdateDate() {
+    return ALEipUtils.getFormattedTime(update_date);
   }
 
   /**
    * @param string
    */
-  public void setCreateDate(String string) {
-    create_date.setValue(string);
+  public void setCreateDate(Date date) {
+    if (date == null) {
+      return;
+    }
+    create_date = date;
   }
 
   /**
    * @param string
    */
-  public void setUpdateDate(String string) {
-    update_date.setValue(string);
+  public void setUpdateDate(Date date) {
+    if (date == null) {
+      return;
+    }
+    update_date = date;
   }
 
 }

@@ -28,6 +28,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.memo.MemoSelectData;
+import com.aimluck.eip.memo.util.MemoUtils;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -117,5 +118,7 @@ public class MemoAction extends ALBaseAction {
       new StringBuffer(peid)
         .append("com.aimluck.eip.memo.MemoSelectDatasort")
         .toString());
+
+    MemoUtils.resetFilter(rundata, context, this.getClass().getName());
   }
 }

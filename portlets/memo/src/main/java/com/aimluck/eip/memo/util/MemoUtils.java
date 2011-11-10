@@ -54,6 +54,15 @@ public class MemoUtils {
 
   public static final String MEMO_PORTLET_NAME = "Memo";
 
+  /** 検索キーワード変数の識別子 */
+  public static final String TARGET_KEYWORD = "keyword";
+
+  /** セッション内の検索キーワード名 */
+  public static final String SESSION_KEYWORD = "memo_keyword";
+
+  /** パラメータリセットの識別子 */
+  private static final String RESET_FLAG = "reset_params";
+
   /**
    * Memo オブジェクトモデルを取得します。 <BR>
    * 
@@ -158,6 +167,53 @@ public class MemoUtils {
       logger.error(e);
     }
     return false;
+  }
+
+  /**
+   * 表示切り替えのリセットフラグがあるかを返す．
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static boolean hasResetFlag(RunData rundata, Context context) {
+    String resetflag = rundata.getParameters().getString(RESET_FLAG);
+    return resetflag != null;
+  }
+
+  /**
+   * 表示切り替えで指定した検索キーワードを取得する．
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static String getTargetKeyword(RunData rundata, Context context) {
+    String target_keyword = null;
+    String keywordParam = rundata.getParameters().getString(TARGET_KEYWORD);
+    target_keyword = ALEipUtils.getTemp(rundata, context, SESSION_KEYWORD);
+
+    if (keywordParam == null && (target_keyword == null)) {
+      ALEipUtils.setTemp(rundata, context, SESSION_KEYWORD, "");
+      target_keyword = "";
+    } else if (keywordParam != null) {
+      ALEipUtils
+        .setTemp(rundata, context, SESSION_KEYWORD, keywordParam.trim());
+      target_keyword = keywordParam;
+    }
+    return target_keyword;
+  }
+
+  /**
+   * フィルターを初期化する．
+   * 
+   * @param rundata
+   * @param context
+   * @param className
+   */
+  public static void resetFilter(RunData rundata, Context context,
+      String className) {
+    ALEipUtils.setTemp(rundata, context, SESSION_KEYWORD, "");
   }
 
   /**
