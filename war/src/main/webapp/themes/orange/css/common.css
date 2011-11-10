@@ -581,6 +581,7 @@ table.roundBlockWrapperTop td.endcap {
 }
 .tabContainer li a.menuList {
 	white-space:nowrap;
+	text-decoration:none;
 }
 .tabContainer li.selectedMenu a.menuList {
 	white-space:nowrap;
@@ -758,120 +759,6 @@ left:0;
 
 .pa40 {padding:40px !important;}
 
-
-/***************************************************
-	Aipo UI Class
---------------------------------------------------*/
-
-/* auiSelectButton ********************/
-.auiSelectButton{
-	z-index:10;
-	background:#FFF;
-}
-.auiSelectButton ul{
-	margin:0;
-	padding:0;
-}
-.auiSelectButton ul li{
-	height:24px;
-	overflow:hidden;
-	float:left;
-	display:inline;
-	margin:0 -1px 0 0;
-	padding:0;
-	text-align:center;
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -192px repeat-x;
-	z-index:0;
-}
-.auiSelectButton ul li:hover{
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -216px repeat-x;
-}
-.auiSelectButton ul li:active{
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -240px repeat-x;
-	color:#FFF;
-}
-.auiSelectButton ul li a{
-	display:block;
-	text-decoration:none;
-	cursor:pointer;
-	color:#000;
-	border-left:solid 1px #dcdcdc;
-}
-.auiSelectButton ul li span{
-	display:block;
-	height:18px;
-	padding:3px 5px;
-	color:#000;
-}
-/* first */
-.auiSelectButton ul li.first{
-	border:none;
-}
-.auiSelectButton ul a.first {
-	border:none;
-	background:url(../images/common/bg_auiselectbutton.gif) 0px 0px no-repeat;
-}
-.auiSelectButton ul li:hover a.first {
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -24px no-repeat;
-}
-.auiSelectButton ul li:active a.first {
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -48px no-repeat;
-}
-/* last */
-.auiSelectButton a.last span {
-	background:url(../images/common/bg_auiselectbutton.gif) right -96px no-repeat;
-}
-.auiSelectButton li:hover a.last span {
-	background:url(../images/common/bg_auiselectbutton.gif) right -120px no-repeat;
-}
-.auiSelectButton li:active a.last span {
-	background:url(../images/common/bg_auiselectbutton.gif) right -144px no-repeat;
-}
-/* btn*/
-.auiSelectButton a.btn {
-	border:none;
-	background:url(../images/common/bg_auiselectbutton.gif) 0px 0px no-repeat;
-}
-.auiSelectButton a.btn span {
-	background:url(../images/common/bg_auiselectbutton.gif) right -96px no-repeat;
-}
-.auiSelectButton li:hover a.btn {
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -24px no-repeat;
-}
-.auiSelectButton li:hover a.btn span {
-	background:url(../images/common/bg_auiselectbutton.gif) right -120px no-repeat;
-}
-.auiSelectButton li:active a.btn {
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -48px no-repeat;
-}
-.auiSelectButton li:active a.btn span {
-	background:url(../images/common/bg_auiselectbutton.gif) right -144px no-repeat;
-}
-/* active */
-.auiSelectButton ul li.active{
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -264px repeat-x;
-	z-index:2;
-}
-.auiSelectButton li.active a {
-	border-right:solid 2px #f37e00;
-	border-left:solid 1px #f37e00;
-}
-.auiSelectButton ul li.active span{
-	color:#fff;
-}
-.auiSelectButton li.active a.first {
-	border-left:none;
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -72px no-repeat !important;
-}
-.auiSelectButton li.active a.last {
-	border-right:none;
-}
-.auiSelectButton li.active a.last span {
-	background:url(../images/common/bg_auiselectbutton.gif) right -168px no-repeat !important;
-}
-.auiSelectButton .arrow {
-	width:30px;
-}
 
 .relativeBlock table {
 	z-index:0;
@@ -3286,6 +3173,147 @@ float:right;
 float:left;
 }
 
+/***************************************************
+	Aipo UI Class
+--------------------------------------------------*/
+/* auiSelectButton ********************/
+.auiSelectButton {
+	background:#FFF;
+}
+.auiSelectButton ul {
+	margin:0;
+	padding:0;
+}
+.auiSelectButton li {
+	height:24px;
+	overflow:hidden;
+	float:left;
+	display:block;
+	margin:0 -1px 0 0;
+	padding:0;
+	text-align:center;
+	background:url(../images/common/bg_auiselectbutton.gif) 0px -192px repeat-x;
+}
+.auiSelectButton li:hover {
+	background:url(../images/common/bg_auiselectbutton.gif) 0px -216px repeat-x;
+}
+.auiSelectButton li:active {
+	background:url(../images/common/bg_auiselectbutton.gif) 0px -240px repeat-x;
+}
+.auiSelectButton a {
+	display:block;
+	text-decoration:none;
+	cursor:pointer;
+	color:#000;
+	border-left:solid 1px #dcdcdc;
+	background:url(../images/common/bg_auiselectbutton.gif) 0px -192px repeat-x;
+}
+.auiSelectButton a:hover {
+	background:url(../images/common/bg_auiselectbutton.gif) 0px -216px repeat-x;
+}
+.auiSelectButton a:active {
+	background:url(../images/common/bg_auiselectbutton.gif) 0px -240px repeat-x;
+}
+.auiSelectButton a span{
+	display:block;
+	line-height:18px;
+	padding:3px 5px;
+	color:#000;
+}
+/* first */
+.auiSelectButton li.first {
+	border:none;
+}
+.auiSelectButton a.first {
+	border:none;
+	background:url(../images/common/bg_auiselectbutton.gif) 0px 0px no-repeat;
+}
+.auiSelectButton a.first:hover {
+	background:url(../images/common/bg_auiselectbutton.gif) 0px -216px repeat-x;
+}
+.auiSelectButton a.first:active {
+	background:url(../images/common/bg_auiselectbutton.gif) 0px -240px repeat-x;
+}
+.auiSelectButton a.first:hover span {
+	background:url(../images/common/bg_auiselectbutton.gif) 0px -24px no-repeat;
+}
+.auiSelectButton a.first:active span {
+	background:url(../images/common/bg_auiselectbutton.gif) 0px -48px no-repeat;
+}
+/* last */
+.auiSelectButton a.last {
+	background:url(../images/common/bg_auiselectbutton.gif) right -96px no-repeat;
+}
+.auiSelectButton a.last:hover {
+	background:url(../images/common/bg_auiselectbutton.gif) 0px -216px repeat-x;
+}
+.auiSelectButton a.last:active {
+	background:url(../images/common/bg_auiselectbutton.gif) 0px -240px repeat-x;
+}
+.auiSelectButton a.last:hover span {
+	background:url(../images/common/bg_auiselectbutton.gif) right -120px no-repeat;
+}
+.auiSelectButton a.last:active span {
+	background:url(../images/common/bg_auiselectbutton.gif) right -144px no-repeat;
+}
+/* btn*/
+.auiSelectButton a.btn {
+	border:none;
+	background:url(../images/common/bg_auiselectbutton.gif) 0px 0px no-repeat;
+}
+.auiSelectButton a.btn:hover {
+	background:url(../images/common/bg_auiselectbutton.gif) 0px -24px no-repeat;
+}
+.auiSelectButton a.btn:active {
+	background:url(../images/common/bg_auiselectbutton.gif) 0px -48px no-repeat;
+}
+.auiSelectButton a.btn span {
+	background:url(../images/common/bg_auiselectbutton.gif) right -96px no-repeat;
+}
+.auiSelectButton a.btn:hover span {
+	background:url(../images/common/bg_auiselectbutton.gif) right -120px no-repeat;
+}
+.auiSelectButton a.btn:active span {
+	background:url(../images/common/bg_auiselectbutton.gif) right -144px no-repeat;
+}
+/* active */
+.auiSelectButton li.active,
+.auiSelectButton li.active a,
+.auiSelectButton li.active span{
+	background:url(../images/common/bg_auiselectbutton.gif) 0px -264px repeat-x !important;
+}
+.auiSelectButton li.active a {
+	cursor:default;
+	border-right:solid 2px #f37e00;
+	border-left:solid 1px #f37e00;
+}
+.auiSelectButton li.active span {
+	color:#fff;
+}
+.auiSelectButton li.active a.first,
+.auiSelectButton li.active a.first:hover,
+.auiSelectButton li.active a.first:active,
+.auiSelectButton li.active a.first span,
+.auiSelectButton li.active a.first:hover span,
+.auiSelectButton li.active a.first:active span, {
+	border-left:none;
+	background:url(../images/common/bg_auiselectbutton.gif) 0px -72px no-repeat !important;
+}
+.auiSelectButton li.active a.last {
+	border-right:none;
+}
+.auiSelectButton li.active a.last,
+.auiSelectButton li.active a.last:hover,
+.auiSelectButton li.active a.last:active,
+.auiSelectButton li.active a.last span,
+.auiSelectButton li.active a.last:hover span,
+.auiSelectButton li.active a.last:active span {
+	background:url(../images/common/bg_auiselectbutton.gif) right -168px no-repeat !important;
+}
+.auiSelectButton .arrow {
+	width:30px;
+}
+
 /* Widgets Area ********************/
 #auiWidgetsArea {
 	float:left;
@@ -3384,8 +3412,26 @@ float:left;
 	border:solid 1px #ccc;
 	border-radius:2px;
 	background:#f0f0f0;
+	>background:#f0f0f0 url(../images/common/auibutton_back.gif) left top repeat-x;
 	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#f0f0f0));/*Ch*/
 	background: -moz-linear-gradient(top, #fff, #f0f0f0);/*Fx*/
+}
+input[type='submit'].auiButton,
+input[type='submit'].auiButtonSmall,
+input[type='button'].auiButton,
+input[type='button'].auiButtonSmall,
+input[type='reset'].auiButton,
+input[type='reset'].auiButtonSmall {
+	line-height:1.5em;
+	>line-height:1.8em;/*IE*/
+	padding:0 0.7em;
+	>padding:0 0.22em;/*IE*/
+}
+button.auiButton,
+button.auiButtonSmall {
+	line-height:1.8em;
+	padding:0 0.55em;
+	>padding:0 0.15em;/*IE*/
 }
 .auiButton:hover,
 .auiButtonSmall:hover {
@@ -3400,9 +3446,12 @@ float:left;
 .auiButtonSmall:active {
 	border:solid 1px #999;
 	box-shadow:0 1px 1px rgba(0,0,0,0);
-	background:#e0e0e0;
+	background:#ccc;
 	background: -webkit-gradient(linear, left top, left bottom, from(#e1e1e1), to(#eee));/*Ch*/
 	background: -moz-linear-gradient(top, #e1e1e1, #eee);/*Fx*/
+}
+input.auiButton {
+	padding:0 0.4em;
 }
 .auiButtonSmall {
 	padding:0 0.5em;
@@ -3438,23 +3487,36 @@ float:left;
 	border:solid 1px #f09000;
 	border-radius:3px;
 	background:#ff9900;
+	>background:#ff9900 url(../images/common/auibuttonaction_back.gif) left top repeat-x;
 	background: -webkit-gradient(linear, left top, left bottom, from(#ffbb22), to(#ff9900));/*Ch*/
 	background: -moz-linear-gradient(top, #ffbb22, #ff9900);/*Fx*/
+}
+input[type='submit'].auiButtonAction,
+input[type='reset'].auiButtonAction,
+input[type='button'].auiButtonAction {
+	height:2.5em;
+	line-height:auto;
+	>padding:0;
+}
+button.auiButtonAction {
+	height:2.5em;
+	line-height:auto;
+	>padding:0;
 }
 .auiButtonAction:hover {
 	color:#fff;
 	border:solid 1px #e08000;
 	box-shadow:0 1px 1px rgba(0,0,0,0.2);
-	background:#ffaa11;
+	background:#ffbb22;
 	background: -webkit-gradient(linear, left top, left bottom, from(#ffcc33), to(#ff9900));/*Ch*/
 	background: -moz-linear-gradient(top, #ffcc33, #ff9900);/*Fx*/
 }
 .auiButtonAction:active {
 	border:solid 1px #e08000;
 	box-shadow:0 1px 1px rgba(0,0,0,0);
-	background:#ffaa11;
-	background: -webkit-gradient(linear, left top, left bottom, from(#ff9900), to(#ffaa11));/*Ch*/
-	background: -moz-linear-gradient(top, #ff9900, #faa11);/*Fx*/
+	background:#ff9000;
+	background: -webkit-gradient(linear, left top, left bottom, from(#ff9900), to(#ffbb22));/*Ch*/
+	background: -moz-linear-gradient(top, #ff9900, #ffbb22);/*Fx*/
 }
 
 /* auiSearch ********************/
@@ -3501,21 +3563,26 @@ float:left;
 	border:solid 1px #d0d0d0;
 	border-radius:3px;
 	background:#ddd;
+	>background:#ddd url(../images/common/auibuttonsearch_back.gif) left top repeat-x;
 	background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#ddd));/*Ch*/
 	background: -moz-linear-gradient(top, #eee, #ddd);/*Fx*/
+}
+input[type='submit'].auiButtonSearch,
+input[type='button'].auiButtonSearch,
+button.auiButtonSearch {
 }
 .auiButtonSearch:hover {
 	color:#000;
 	border:solid 1px #999;
 	box-shadow:0 1px 1px rgba(0,0,0,0.2);
-	background:#eee;
+	background:#d0d0d0;
 	background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#d0d0d0));/*Ch*/
 	background: -moz-linear-gradient(top, #eee, #d0d0d0);/*Fx*/
 }
 .auiButtonSearch:active {
 	border:solid 1px #999;
 	box-shadow:0 1px 1px rgba(0,0,0,0);
-	background:#eee;
+	background:#c0c0c0;
 	background: -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#eee));/*Ch*/
 	background: -moz-linear-gradient(top, #d0d0d0, #eee);/*Fx*/
 }
@@ -3808,10 +3875,14 @@ table.auiCalendar td:hover {
 .auiForm select {
 	margin:0;
 	vertical-align:middle;
+}
+.auiForm textarea,
+.auiForm select {
 	border:solid 1px #ccc;
 	border-radius:2px;
 }
-.auiForm input {
+.auiForm input[type=text],
+.auiForm input[type=password] {
 	height:2.1em;
 	*height:2.0em;/*IE*/
 	line-height:2.1em;
@@ -3819,10 +3890,10 @@ table.auiCalendar td:hover {
 	padding:0 2px;
 	vertical-align:middle;
 	border-radius:3px;
+	border:1px solid #c9c9c9;
 	box-sizing:border-box;
 	-moz-box-sizing:border-box;
 	background-color:#fff;
-	border:1px solid #c9c9c9;
 }
 .auiForm select {
 	height:2.1em;
@@ -3834,21 +3905,23 @@ table.auiCalendar td:hover {
 	-moz-box-sizing:border-box;
 	background-color:#fff;
 }
-.auiForm input:hover,
-.auiForm input:focus,
+.auiForm input[type=text]:hover,
+.auiForm input[type=text]:focus,
+.auiForm input[type=password]:hover,
+.auiForm input[type=password]:focus,
 .auiForm select:hover,
 .auiForm select:focus,
 .auiForm textarea:hover,
 .auiForm textarea:focus {
 	border:solid 1px #999;
 }
-.auiForm input:focus,
+.auiForm input[type=text]:focus,
+.auiForm input[type=password]:focus,
 .auiForm textarea:focus {
 	box-shadow:inset 0 1px 2px rgba(0,0,0,0.2);
 }
 .auiForm input[disabled],
 .auiForm textarea[disabled] {
-	cursor:no-drop;
 	color:#999;
 	background:#eee;
 }
@@ -3860,6 +3933,146 @@ table.auiCalendar td:hover {
 .auiForm input[type=radio] {
 	height:auto;
 }
+
+/* auiSubmenu ********************/
+.auiSubmenu {
+	padding-right:5px;
+}
+.auiSubmenu li {
+	padding:0;
+	background:none;
+}
+.auiSubmenu li span {
+	display:block;
+	line-height:1.8em;
+	padding:0.3em 0 0.3em 18px;
+	background:url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
+}
+.auiSubmenu li a {
+	display:block;
+	line-height:1.8em;
+	padding:0.3em 0 0.3em 18px;
+	text-decoration:none;
+	background:url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
+}
+.auiSubmenu li a:hover {
+	color:#000;
+	background:#f6f6f6 url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
+}
+.auiSubmenu li.active a {
+	font-weight:bold;
+	background:#f0f0f0 url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
+}
+.auiSubmenu li ul {
+	margin:0;
+}
+.auiSubmenu li li a,
+.auiSubmenu li li a:hover,
+.auiSubmenu li li.active a {
+	padding:0.3em 0 0.3em 36px;
+	background-position:23px 1em;
+}
+
+
+/* auiIcon ********************/
+/*
+auiIconは「class="auiIcon auiIconSetting"」と
+ベースクラスとサブクラスを同時に付与させること。
+
+基本形（リンク版）：<a href="#" class="auiIcon auiIconSetting"><span>設定</span></a>
+基本形（span版）：<span class="auiIcon auiIconSetting"><span>設定</span></span>
+
+auiIconでアイコンの形状全てを一元管理し
+サブクラスはあくまで背景位置の変更のみを行う。
+
+IE6は透過PNGが利用できないため透過GIFへ置き換えている。
+そのためバリを表示させないためhoverアクションを封じる。
+*/
+.auiIcon {
+	display:block;
+	display:inline-block;
+	width:16px;
+	height:16px;
+	overflow:hidden;
+	border-radius:2px;
+	vertical-align:text-bottom;
+	background:url(../images/icon/auiIconSprites.png) no-repeat;
+}
+*html .auiIcon {background:url(../images/icon/auiIconSprites.gif) no-repeat;}
+.auiIcon span {display:none;}
+
+a.auiIcon:hover {background-color:#999;}
+*html a.auiIcon:hover {background-color:transparent;}/*IE6*/
+
+.auiIconSetting {background-position:0px 0px;}
+a.auiIconSetting:hover {background-position:0px -16px;}
+*html .auiIconSetting {background-position:0px 0px;}/*IE6*/
+*html a.auiIconSetting:hover {background-position:0px 0px;}/*IE6*/
+
+.auiIconFile {background-position:0px -32px;}
+a.auiIconFile:hover {background-position:0px -48px;}
+*html .auiIconFile {background-position:0px -32px;}/*IE6*/
+*html a.auiIconFile:hover {background-position:0px -32px;}/*IE6*/
+
+.auiIconUser {background-position:0px -64px;}
+a.auiIconUser:hover {background-position:0px -80px;}
+*html .auiIconUser {background-position:0px -64px;}/*IE6*/
+*html a.auiIconUser:hover {background-position:0px -64px;}/*IE6*/
+
+.auiIconCreate {background-position:0px -96px;}
+a.auiIconCreate:hover {background-position:0px -112px;}
+*html .auiIconCreate {background-position:0px -96px;}/*IE6*/
+*html a.auiIconCreate:hover {background-position:0px -96px;}/*IE6*/
+
+.auiIconClock {background-position:0px -128px;}
+a.auiIconClock:hover {background-position:0px -144px;}
+*html .auiIconClock {background-position:0px -128px;}/*IE6*/
+*html a.auiIconClock:hover {background-position:0px -128px;}/*IE6*/
+
+.auiIconCalendar {background-position:0px -160px;}
+a.auiIconCalendar:hover {background-position:0px -176px;}
+*html .auiIconCalendar {background-position:0px -160px;}/*IE6*/
+*html a.auiIconCalendar:hover {background-position:0px -160px;}/*IE6*/
+
+.auiIconLock {background-position:0px -192px;}
+a.auiIconLock:hover {background-position:0px -208px;}
+*html .auiIconLock {background-position:0px -192px;}/*IE6*/
+*html a.auiIconLock:hover {background-position:0px -192px;}/*IE6*/
+
+.auiIconDelete {background-position:0px -272px;}
+a.auiIconDelete:hover {background-position:0px -288px;}
+*html .auiIconDelete {background-position:0px -272px;}/*IE6*/
+*html a.auiIconDelete:hover {background-position:0px -272px;}/*IE6*/
+
+.auiIconArwLeft {background-position:0px -368px;}
+a.auiIconArwLeft:hover {background-position:0px -384px;}
+*html .auiIconArwLeft {background-position:0px -368px;}/*IE6*/
+*html a.auiIconArwLeft:hover {background-position:0px -368px;}/*IE6*/
+
+.auiIconArwRight {background-position:0px -400px;}
+a.auiIconArwRight:hover {background-position:0px -416px;}
+*html .auiIconArwRight {background-position:0px -400px;}/*IE6*/
+*html a.auiIconArwRight:hover {background-position:0px -400px;}/*IE6*/
+
+.auiIconArwBottom {background-position:0px -432px;}
+a.auiIconArwBottom:hover {background-position:0px -448px;}
+*html .auiIconArwBottom {background-position:0px -432px;}/*IE6*/
+*html a.auiIconArwBottom:hover {background-position:0px -432px;}/*IE6*/
+
+.auiIconArwTop {background-position:0px -464px;}
+a.auiIconArwTop:hover {background-position:0px -480px;}
+*html .auiIconArwTop {background-position:0px -464px;}/*IE6*/
+*html a.auiIconArwTop:hover {background-position:0px -464px;}/*IE6*/
+
+.auiIconImage {background-position:0px -496px;}
+a.auiIconImage:hover {background-position:0px -512px;}
+*html .auiIconImage {background-position:0px -496px;}/*IE6*/
+*html a.auiIconImage:hover {background-position:0px -496px;}/*IE6*/
+
+.auiIconUsers {background-position:0px -528px;}
+a.auiIconUsers:hover {background-position:0px -544px;}
+*html .auiIconUsers {background-position:0px -528px;}/*IE6*/
+*html a.auiIconUsers:hover {background-position:0px -528px;}/*IE6*/
 
 /* auiAbsLayer ********************/
 .auiAbsLayer {
