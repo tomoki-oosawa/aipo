@@ -27,6 +27,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -72,6 +73,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.account.AipoLicense;
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
@@ -1768,5 +1770,28 @@ public class ALEipUtils {
   public static String getLoginName(RunData runData) {
     JetspeedRunData jdata = (JetspeedRunData) runData;
     return jdata.getJetspeedUser().getUserName();
+  }
+
+  /**
+   * Dateに対して整形されたALDateTimeFieldを返します。
+   * 
+   * @param date
+   * @return 整形されたALDateTimeField
+   */
+  public static ALDateTimeField getFormattedTime(Date date) {
+    Calendar Now = new GregorianCalendar();
+    Now.setTime(new Date());
+    Calendar Time = new GregorianCalendar();
+    Time.setTime(date);
+    ALDateTimeField rtn;
+
+    rtn =
+      (Now.get(Calendar.YEAR) == Time.get(Calendar.YEAR)) ? (Now
+        .get(Calendar.MONTH) == Time.get(Calendar.MONTH)
+        && Now.get(Calendar.DATE) == Time.get(Calendar.DATE)
+        ? new ALDateTimeField("H:mm")
+        : new ALDateTimeField("M月d日")) : new ALDateTimeField("yy/MM/dd");
+    rtn.setValue(date);
+    return rtn;
   }
 }
