@@ -33,17 +33,21 @@
 #set ($StatStr = $!{result.StatStr})
 #set ($type = "mail")
 ## ---------------------------------------------------------------------------
-
 ##ALsubmenubar($submenulist "")
 
 #AUIcontentsAreaHeader()
 
 #if($!result.AccountId == 0)
-<a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');">こちらからメールアカウントを追加できます。</a>
+#AUIrowTableWide()
+<tr><td colspan="4" class="auiNoData">
+<p>メールアカウントが登録されていません。</p>
+<p>Webメールの利用を開始するにはアカウントを追加してください。</p>
+<p class="mh10">
+<a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');" class="auiButton">アカウントを追加する</a>
+</p>
+</td></tr>
+#AUItablefooter()
 #else
-
-
-
 #if(($errmsgs) && ($errmsgs.toString() != ""))
 #ALerrmsg($errmsgs)
 #else
@@ -53,18 +57,7 @@
 #if($StatStr && !($StatStr == ''))
 <div class="spaceBottom"><div class="indicator" id="indicator-$portlet_id">$StatStr</div></div>
 #end
-#if($!result.List && $!result.List.size() <= 0)
-<div class="auiSummaryMeta clearfix">
-#if($!result.currentTab == "receive")
-<div class="message floatLeft">受信メールはありません。</div>
-#else
-<div class="message floatLeft">送信メールはありません。</div>
-#end
-<a class="auiButton" title="メール受信" href="javascript:void(0)" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailListScreen').addQueryData('mode','recieve')', '$!portlet.ID');">
-	<span><img src='images/icon/icon_reload.gif' width='18' height='18' alt='メール受信'></span>
-</a>
-</div>
-#else
+
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft auiForm">
 #if($!result.currentTab == "receive")
@@ -82,12 +75,14 @@
 #ALselectfooter()
 #end
 <a class="auiButton" title="メール受信" href="javascript:aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailListScreen').addQueryData('mode','recieve')', '$!portlet.ID');">
-	<span><img src='images/icon/icon_reload.gif' width='18' height='18' alt='メール受信'></span>
+<span><img src='images/icon/icon_reload.gif' width='18' height='18' alt='メール受信'></span>
 </a>
-
 </div>
+#if($result.List.size() != 0)
 #AUIajaxpageview('WebMailListScreen' $result)
+#end
 </div>
+
 #AUIrowTableWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
@@ -99,6 +94,9 @@
 ##ALtdheadThin(' ')
 ##ALtdheadThin(' ')
 </tr>
+#if($!result.List && $!result.List.size() <= 0)
+<tr><td colspan="4" class="auiNoData"><p>このフォルダにはメールはありません。</p></td></tr>
+#else
 #foreach ($record in $result.List)
 <tr>
 #ALtdcellAtt("<input name='check$!record.MailId' type='checkbox' value='$!record.MailId' />" 'align="center"')
@@ -128,7 +126,9 @@ $MailSubject
 #ALtdcellAtt("$!{record.Date.Month}月$!{record.Date.Day}日" 'class="right" nowrap="nowrap"')
 </tr>
 #end
+#end
 #AUItablefooter()
+
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft auiForm">
 #if($!result.currentTab == "receive")
@@ -145,9 +145,15 @@ $MailSubject
 #end
 #ALselectfooter()
 #end
+<a class="auiButton" title="メール受信" href="javascript:aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailListScreen').addQueryData('mode','recieve')', '$!portlet.ID');">
+<span><img src='images/icon/icon_reload.gif' width='18' height='18' alt='メール受信'></span>
+</a>
 </div>
+#if($result.List.size() != 0)
 #AUIajaxpageview('WebMailListScreen' $result)
+#end
 </div>
+
 #end
 #if($result.CurrentPage > 1)
 <input type="hidden" id="page_start" name="page_start" value="$result.CurrentPage" />
@@ -158,7 +164,6 @@ $MailSubject
 <input type="hidden" id="receivingPid" name="receivingPid" value="$!portlet.ID" />
 #end
 #ALformfooter()
-#end
 #end
 #AUIcontentsAreaFooter()
 #parse("/portlets/html/ja/webmail-widgets.vm")
