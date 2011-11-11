@@ -547,7 +547,9 @@ public class ToDoFormData extends ALAbstractFormData {
         .equals(ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER)) {
         try {
           List<ALEipUser> memberList = new ArrayList<ALEipUser>();
-          memberList.add(ALEipUtils.getALEipUser(todo.getUserId()));
+          memberList.add(ALEipUtils.getALEipUser(todo
+            .getTurbineUser()
+            .getUserId()));
           int msgType =
             ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_TODO);
           if (msgType > 0) {
