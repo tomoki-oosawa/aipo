@@ -27,14 +27,17 @@
 <input type="hidden" name="user_id" value="$!result.UserId"/>
 <input type="hidden" name="idx" value="$!result.Index"/>
 </form>
+
+#if($result.List.size() != 0 || ($result.SearchWord && $result.SearchWord.toString() != ""))
 #AUISummaryDiv()
 <form name="addressbook$!portlet.ID" id="addressbook$!portlet.ID" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('mode','ajaxsearch'))" method="post" onsubmit="aipo.addressbook.onSubmitSerchButton(this,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('mode','ajaxsearch'))','$!portlet.ID','$!result.currentTab'); return false;">
 <input class="text floatLeft" name="sword" id="sword" value="$!result.SearchWord" maxlength="100" style="margin-right:5px;ime-mode:active" />
-<input name="submit" class="auiButtonSearch floatLeft" type="submit" value="検索" onclick="aimluck.io.setHiddenValue(this);" />
-<span class="middle">（会社名・部署名・住所・電話番号で検索します）</span>
+<a class="auiButtonSearch floatLeft" onclick="dojo.byId('addressbook$!portlet.ID').onsubmit();return false;">検索</a>
 <input name="mode" type="hidden" value="ajaxsearch" />
 </form>
 #AUISummaryDivfooter()
+#end
+
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader('会社情報')
@@ -43,8 +46,15 @@
 #AUIsearchresult($result.SearchWord.toString())
 <div class="message">指定された条件に該当する会社情報はありません。</div>
 #else
-<div class="message">会社情報を登録しておくことで、アドレスを会社単位で管理することが可能となります。</div>
-<div class="message">『会社情報追加』 ボタンを押して、追加してください。 </div>
+#AUIrowTableWide()
+<tr><td colspan="4" class="auiNoData">
+<p>会社情報を登録しておくことで、アドレスを会社単位で管理することが可能となります。</p>
+<p>『会社情報を追加する』 ボタンを押して、追加してください。</p>
+<p class="mh10">
+<a href="javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookCompanyDialog);" class="auiButton">会社情報を追加する</a>
+</p>
+</td></tr>
+#AUItablefooter()
 #end
 #else
 #AUIsearchresult($result.SearchWord.toString())

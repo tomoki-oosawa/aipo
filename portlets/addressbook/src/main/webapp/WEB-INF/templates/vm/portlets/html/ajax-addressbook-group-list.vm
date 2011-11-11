@@ -29,8 +29,15 @@
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader('グループ')
 #if($result.List.size() ==0)
-<div class="message">グループ機能はアドレス帳に登録されているアドレスを、グループ単位でまとめる機能です。</div>
-<div class="message">『グループを追加する』 ボタンを押して、追加してください。 </div>
+#AUIrowTableWide()
+<tr><td colspan="4" class="auiNoData">
+<p>グループ機能はアドレス帳に登録されているアドレスを、グループ単位でまとめる機能です。</p>
+<p>『グループを追加する』 ボタンを押して、追加してください。</p>
+<p class="mh10">
+<a href="javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);" class="auiButton">グループを追加する</a>
+</p>
+</td></tr>
+#AUItablefooter()
 #else
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "${indicator_str}しています...")
 #AUISummaryDiv()

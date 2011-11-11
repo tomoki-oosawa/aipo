@@ -43,7 +43,7 @@
 #AUISummaryDiv()
 <form class="auiSearch floatLeft" name="addressbook$!portlet.ID" id="addressbook$!portlet.ID" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen').addQueryData('mode','ajaxsearch')) method="post" onsubmit="aipo.addressbook.onSubmitSerchButton(this,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen').addQueryData('mode','ajaxsearch'))','$!portlet.ID','$!result.currentTab'); return false;">
 <input class="text floatLeft" name="sword" id="sword" value="$!result.SearchWord" maxlength="100" style="margin-right:5px;ime-mode:active" />
-<input name="submit" class="auiButtonSearch floatLeft" type="submit" value="検索" onclick="aimluck.io.setHiddenValue(this);" />
+<a class="auiButtonSearch floatLeft" onclick="aimluck.io.setHiddenValue(this);">検索</a>
 <input name="mode" type="hidden" value="ajaxsearch" />
 </form>
 #AUISummaryDivfooter()
