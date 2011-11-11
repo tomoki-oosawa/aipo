@@ -22,6 +22,9 @@
 <div class="message">更新情報はありません。</div>
 #else
 #ALformheader('Activity' $jslink $portlet)
+<div class="auiSummaryMeta clearfix">
+#AUIajaxpageview('ActivityAllScreen' $result)
+</div>
 <table class="activityTable">
 <tbody>
 #foreach ($record in $result.List)
@@ -36,6 +39,5 @@
 </tr>
 #end
 </tbody></table>
-#ALajaxpageviewFooter('ActivityAllScreen' $result)
 #ALformfooter()
 #end
