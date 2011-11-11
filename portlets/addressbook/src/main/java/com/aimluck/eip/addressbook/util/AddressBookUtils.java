@@ -34,6 +34,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.addressbook.AddressBookGroup;
+import com.aimluck.eip.addressbook.AddressBookGroupResultData;
 import com.aimluck.eip.addressbook.AddressBookResultData;
 import com.aimluck.eip.addressbookuser.beans.AddressBookUserGroupLiteBean;
 import com.aimluck.eip.cayenne.om.account.EipMPost;
@@ -496,6 +497,38 @@ public class AddressBookUtils {
         EipMAddressbookCompany.COMPANY_ID_PK_COLUMN,
         Integer.valueOf(1));
     return exp;
+  }
+
+  /**
+   * 自分がオーナーのグループを取得します
+   * 
+   * @param rundata
+   * @return
+   */
+  public static List<AddressBookGroupResultData> getMyGroups(RunData rundata) {
+    List<AddressBookGroupResultData> res =
+      new ArrayList<AddressBookGroupResultData>();
+    try {
+      // 自分がオーナのグループ指定
+      SelectQuery<EipMAddressGroup> query =
+        Database.query(EipMAddressGroup.class);
+      Expression exp =
+        ExpressionFactory.matchExp(EipMAddressGroup.OWNER_ID_PROPERTY, Integer
+          .valueOf(ALEipUtils.getUserId(rundata)));
+      query.orderAscending(EipMAddressGroup.GROUP_NAME_PROPERTY);
+      query.setQualifier(exp);
+      List<EipMAddressGroup> aList = query.fetchList();
+      for (EipMAddressGroup record : aList) {
+        AddressBookGroupResultData rd = new AddressBookGroupResultData();
+        rd.initField();
+        rd.setGroupId(record.getGroupId().longValue());
+        rd.setGroupName(record.getGroupName());
+        res.add(rd);
+      }
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+    }
+    return res;
   }
 
 }

@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.addressbook;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.Attributes;
 
@@ -331,29 +330,7 @@ public class AddressBookWordSelectData extends
    */
   @Override
   public void loadGroups(RunData rundata, Context context) {
-    groupList = new ArrayList<AddressBookGroupResultData>();
-    try {
-      // 自分がオーナのグループ指定
-      SelectQuery<EipMAddressGroup> query =
-        Database.query(EipMAddressGroup.class);
-      Expression exp =
-        ExpressionFactory.matchExp(EipMAddressGroup.OWNER_ID_PROPERTY, Integer
-          .valueOf(ALEipUtils.getUserId(rundata)));
-      query.setQualifier(exp);
-
-      List<EipMAddressGroup> aList = query.fetchList();
-      int size = aList.size();
-      for (int i = 0; i < size; i++) {
-        EipMAddressGroup record = aList.get(i);
-        AddressBookGroupResultData rd = new AddressBookGroupResultData();
-        rd.initField();
-        rd.setGroupId(record.getGroupId().longValue());
-        rd.setGroupName(record.getGroupName());
-        groupList.add(rd);
-      }
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
-    }
+    groupList = AddressBookUtils.getMyGroups(rundata);
   }
 
   /**

@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.addressbook;
 
+import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
@@ -56,6 +57,8 @@ public class AddressBookCompanySelectData extends
   /** 現在選択されているインデックス */
   private String index;
 
+  private List<AddressBookGroupResultData> groupList;
+
   /**
    * 
    * @param action
@@ -72,6 +75,7 @@ public class AddressBookCompanySelectData extends
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, "company_name_kana");
     }
+    groupList = AddressBookUtils.getMyGroups(rundata);
 
     super.init(action, rundata, context);
   }
@@ -262,7 +266,7 @@ public class AddressBookCompanySelectData extends
       SelectQuery<EipMAddressbookCompany> query, String companyNameKana, int idx) {
     // インデックスによる検索
     switch (idx) {
-      // ア行
+    // ア行
       case 1:
         Expression exp01 =
           ExpressionFactory.greaterOrEqualExp(companyNameKana, "ア");
@@ -341,6 +345,10 @@ public class AddressBookCompanySelectData extends
         query.andQualifier(exp100.orExp(exp101));
         break;
     }
+  }
+
+  public List<AddressBookGroupResultData> getGroupList() {
+    return groupList;
   }
 
   /**

@@ -18,270 +18,81 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookFormScreen").addQueryData("entityid","new")))
-#set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookGroupFormScreen").addQueryData("entityid","new")))
-#set ($newUrl3 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookCompanyFormScreen").addQueryData("entityid","new")))
-#set ($submenulist = [["アドレスを追加する","javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.addressbook.onLoadAddressbookDialog);","images/icon/icon_add.gif"],["会社情報を追加する","javascript:aipo.common.showDialog('$newUrl3','$!portlet.ID',aipo.addressbook.onLoadAddressbookCompanyDialog);","images/icon/icon_add.gif"],["グループを追加する","javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);","images/icon/icon_add.gif"]])
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
-#ALsubmenubar($submenulist "")
-
-#macro(ALajaxsortaddressbook $key $name $result $screen)
-#if($!result.getCurrentSort() && $!result.CurrentSort == "$key" && $!result.CurrentSortType && $!result.CurrentSortType == "asc")
-	#set($sorttype ="desc")
-	#set($sortHead ="headDown")
-#else
-	#set($sorttype ="asc")
-	#set($sortHead ="headUp")
-#end
-<a#if($!result.CurrentSort && $!result.CurrentSort == "$key") class="$sortHead"#end href="javascript:void(0);" onclick="
-	aipo.viewPage(
-	'$!utils.escapeXML(
-	  $!jslink.getPortletById($!portlet.ID).addQueryData("template",$screen).addQueryData("start","$result.CurrentPage").addQueryData("sort","$key").addQueryData("sorttype","$sorttype").addQueryData("idx","$result.Index")
-	  )',
-	'$!portlet.ID'
-	);
-	">$name</a>
-#end
-
-
-
-#macro(ALajaxpageviewAB $screen $result)
-#set($pageRange = 5)
-#set($pageTrimRange = 2)
-#set($pages = $result.PagesNum)
-#set($currentPage = $result.CurrentPage)
-#set($rowsNum = $result.RowsNum)
-#set($count = $result.Count)
-#set($from = ($currentPage - 1 ) * $rowsNum + 1)
-#if ( $currentPage * $rowsNum > $result.Count)
-#set($to = $result.Count )
-#else
-#set($to = $currentPage * $rowsNum )
-#end
-
-#set($nextLeftPage = 1 )
-#set($nextRightPage = $pages)
-#if($pages < ${pageRange} + ${pageTrimRange} + ${pageTrimRange} + 1)
-#set($showLeftRest = false)
-#set($showRightRest = false)
-#else
-## show left and right
-#set($showLeftRest = true)
-#set($showRightRest = true)
-#if($currentPage > ${pageRange})
-#set($nextLeftPage = $currentPage - $pageTrimRange )
-#if((${currentPage} + ${pageRange}) > ${pages})
-#if(${currentPage} - ${pageTrimRange} > ${pages} - ${pageRange}) #set($nextLeftPage = ${pages} - ${pageRange} + 1) #else #set($nextLeftPage = ${currentPage} - ${pageTrimRange}) #end
-#set($nextRightPage = ${pages})
-#else
-#set($nextRightPage = $currentPage + ($pageTrimRange / 2) + 1)
-#end
-#else
-#if(($currentPage + ${pageTrimRange}) < ${pageRange})
-#set($nextRightPage = $pageRange )
-#else
-#if(${currentPage} + ${pageRange} > ${pages}) #set($nextRightPage = ${pages}) #else #set($nextRightPage = $currentPage + ${pageTrimRange}) #end
-#end
-#end
-#end
-#set($isSearch = ($result.SearchWord && $result.SearchWord.toString() != ""))
-<div class="clearfix">
-  <div class="alignleft small">
-#if ($pages > 1)
-    <div class="pagination">
-      <ul>
-#if($currentPage > 1) #set($pre = $currentPage - 1)
-    #if($isSearch)
-        <li class="prev"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre).addQueryData("sword","$result.SearchWord").addQueryData('mode','ajaxsearch'))', '$!portlet.ID');" class="small">前へ</a></li>
-    #else
-        <li class="prev"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre).addQueryData("idx","$!result.Index"))', '$!portlet.ID');" class="small">前へ</a></li>
-    #end
-#else
-        <li class="prev disabled"><a href="javascript:void(0);" class="small">前へ</a></li>
-#end
-#if($pages > $currentPage) #set($next = $currentPage + 1)
-    #if($isSearch)
-        <li class="next"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next).addQueryData("sword","$result.SearchWord").addQueryData("mode","ajaxsearch"))', '$!portlet.ID');" class="small">次へ</a></li>
-    #else
-        <li class="next"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next).addQueryData("idx","$!result.Index"))', '$!portlet.ID');" class="small">次へ</a></li>
-    #end
-#else
-        <li class="next disabled"><a href="javascript:void(0);" class="small">次へ</a></li>
-#end
-#if($showLeftRest && $currentPage > ${pageRange})
-#foreach($page in [1..${pageTrimRange}])
-    #if($isSearch)
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData("sword","$result.SearchWord").addQueryData('mode','ajaxsearch'))', '$!portlet.ID');" class="small">$page</a></li>
-    #else
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData("idx","$!result.Index"))', '$!portlet.ID');" class="small">$page</a></li>
-    #end
-#end
-        <li class="abbr">....</li>
-#end
-#foreach($page in [${nextLeftPage}..$nextRightPage])
-    #if($isSearch)
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData("sword","$result.SearchWord").addQueryData('mode','ajaxsearch'))', '$!portlet.ID');" class="small">$page</a></li>
-    #else
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData("idx","$!result.Index"))', '$!portlet.ID');" class="small">$page</a></li>
-    #end
-#end
-#if($showRightRest &&  (${currentPage} + ${pageRange} - 1) < ${pages})
-#set($restRightPages = $pages - $pageTrimRange + 1)
-        <li class="abbr">....</li>
-#foreach($page in [${restRightPages}..${pages}])
-    #if($isSearch)
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData("sword","$result.SearchWord").addQueryData('mode','ajaxsearch'))', '$!portlet.ID');" class="small">$page</a></li>
-    #else
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData("idx","$!result.Index"))', '$!portlet.ID');" class="small">$page</a></li>
-    #end
-#end
-#end
-      </ul>
-    </div>
-#end
-  </div>
-  <div class="alignright small" style="margin-top:5px;">$from 件 ～ $to 件表示 [ 計 $count 件 ]</div>
-</div>
-#end
-
-
-#if($result.SearchWord && $result.SearchWord.toString() != "")
-#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_company_search_list','1')")
-#else
-#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_company_list','1')")
-#end
-#set($tabs = [["会社情報", "", ""]])
-
+#AUIcontentsAreaHeader()
+<form id="AddressBookCompanyDownload$!portlet.ID" name="AdressBook" action="$jslink.getTemplate('AddressBookCompanyWordXlsExportScreen')" method="post">
+<input type="hidden" name="mode" value="ajaxsearch"/>
+<input type="hidden" name="sword" value="$!result.searchWord"/>
+<input type="hidden" name="user_id" value="$!result.UserId"/>
+<input type="hidden" name="idx" value="$!result.Index"/>
+</form>
+#AUISummaryDiv()
 <form name="addressbook$!portlet.ID" id="addressbook$!portlet.ID" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('mode','ajaxsearch'))" method="post" onsubmit="aipo.addressbook.onSubmitSerchButton(this,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('mode','ajaxsearch'))','$!portlet.ID','$!result.currentTab'); return false;">
-
-
-#ALtableheaderSimpleWide()
-#ALtdcaption('検索')
-#ALtditemheader()
-#ALtextfield('sword' "$!result.SearchWord" "120px" 100 'active')
-#ALsubmitJS('submit' ' 検索する ' 'setHiddenValue(this)')
+<input class="text floatLeft" name="sword" id="sword" value="$!result.SearchWord" maxlength="100" style="margin-right:5px;ime-mode:active" />
+<input name="submit" class="auiButtonSearch floatLeft" type="submit" value="検索" onclick="aimluck.io.setHiddenValue(this);" />
 <span class="middle">（会社名・部署名・住所・電話番号で検索します）</span>
-#ALtditemfooter()
-#ALtablefooter()
 <input name="mode" type="hidden" value="ajaxsearch" />
 </form>
-#ALajaxtabheader($tabs "")
-#ALspacebothheader()
+#AUISummaryDivfooter()
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader('会社情報')
-#ALtableheaderSimpleWide()
-#ALformfooter()
-#if($result.SearchWord && $result.SearchWord.toString() != "")
-##if($!result.hasAclXlsExport())
-#if($result.List.size() != 0)
-<form name="AdressBook" action="$jslink.getTemplate('AddressBookCompanyWordXlsExportScreen')" method="post">
-#ALtableheaderSimpleWide()
-#ALtdcaption('エクスポート')
-#ALtditemheader() 現在表示している一覧を
-#ALsubmit('eventSubmit_doAdressBook_download' 'ダウンロードする')
-#ALtditemfooter()
-#ALtablefooter()
-<input type="hidden" name="mode" value="ajaxsearch"/>
-<input type="hidden" name="sword" value="$!result.searchWord"/>
-<input type="hidden" name="user_id" value="$!result.UserId"/>
-<input type="hidden" name="idx" value="$!result.Index"/>
-</form>
-#end
-##end
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen'))', '$!portlet.ID')">[一覧へ戻る]</a>
-#else
-#ALtdcaption("絞込み条件")
-#ALtditemheader()
-<div class="spaceTop spaceBottom">
-<span class="navi">
-さらに索引で絞る ⇒
-[<a #if($idx.equals("-1") || $idx.equals("")) style="color:darkorange;" #end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('eventSubmit_doAddressbook_list','1').addQueryData('idx', "-1"))', '$!portlet.ID')"> 全て </a>]
-[<a #if($idx.equals("1")) style="color:darkorange;" #end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('eventSubmit_doAddressbook_list','1').addQueryData('idx', "1"))', '$!portlet.ID')"> あ </a>]
-[<a #if($idx.equals("6")) style="color:darkorange;" #end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('eventSubmit_doAddressbook_list','1').addQueryData('idx', "6"))', '$!portlet.ID')"> か </a>]
-[<a #if($idx.equals("11")) style="color:darkorange;" #end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('eventSubmit_doAddressbook_list','1').addQueryData('idx', "11"))', '$!portlet.ID')"> さ </a>]
-[<a #if($idx.equals("16")) style="color:darkorange;" #end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('eventSubmit_doAddressbook_list','1').addQueryData('idx', "16"))', '$!portlet.ID')"> た </a>]
-[<a #if($idx.equals("21")) style="color:darkorange;" #end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('eventSubmit_doAddressbook_list','1').addQueryData('idx', "21"))', '$!portlet.ID')"> な </a>]
-[<a #if($idx.equals("26")) style="color:darkorange;" #end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('eventSubmit_doAddressbook_list','1').addQueryData('idx', "26"))', '$!portlet.ID')"> は </a>]
-[<a #if($idx.equals("31")) style="color:darkorange;" #end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('eventSubmit_doAddressbook_list','1').addQueryData('idx', "31"))', '$!portlet.ID')"> ま </a>]
-[<a #if($idx.equals("36")) style="color:darkorange;" #end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('eventSubmit_doAddressbook_list','1').addQueryData('idx', "36"))', '$!portlet.ID')"> や </a>]
-[<a #if($idx.equals("41")) style="color:darkorange;" #end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('eventSubmit_doAddressbook_list','1').addQueryData('idx', "41"))', '$!portlet.ID')"> ら </a>]
-[<a #if($idx.equals("46")) style="color:darkorange;" #end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('eventSubmit_doAddressbook_list','1').addQueryData('idx', "46"))', '$!portlet.ID')"> わ </a>]
-[<a #if($idx.equals("52")) style="color:darkorange;" #end href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('eventSubmit_doAddressbook_list','1').addQueryData('idx', "52"))', '$!portlet.ID')"> 英数 </a>]
-</span>
-</div>
-#ALtditemfooter()
-#ALtablefooter()
-##if($!result.hasAclXlsExport())
-#if($result.List.size() != 0)
-<form name="AdressBook" action="$jslink.getTemplate('AddressBookCompanyXlsExportScreen')" method="post">
-#ALtableheaderSimpleWide()
-#ALtdcaption('エクスポート')
-#ALtditemheader() 現在表示している一覧を
-#ALsubmit('eventSubmit_doAdressBookCompany_download' 'ダウンロードする')
-#ALtditemfooter()
-#ALtablefooter()
-<input type="hidden" name="mode" value="ajaxsearch"/>
-<input type="hidden" name="sword" value="$!result.searchWord"/>
-<input type="hidden" name="user_id" value="$!result.UserId"/>
-<input type="hidden" name="idx" value="$!result.Index"/>
-</form>
-#end
-##end
-#end
-
-#if($result.List.size() ==0)
+#if($result.List.size() == 0)
 #if($result.Index || ($result.SearchWord && $result.SearchWord.toString() != ""))
+#AUIsearchresult($result.SearchWord.toString())
 <div class="message">指定された条件に該当する会社情報はありません。</div>
 #else
 <div class="message">会社情報を登録しておくことで、アドレスを会社単位で管理することが可能となります。</div>
 <div class="message">『会社情報追加』 ボタンを押して、追加してください。 </div>
 #end
 #else
-##ALajaxpageview('swoed' ${pageviewscreen} $result)
-#ALajaxpageviewAB('AddressBookCompanyListScreen' $result)
-##ALtdhead("#ALajaxpageviewAddressBookCompanyListScreen('company_name_ $result)
-
-#ALformheader('会社名' $jslink $portlet)
-##ALajaxpageview('AddressBookCompanyListScreen' $result)
-#ALtableheaderWide()
+#AUIsearchresult($result.SearchWord.toString())
+#AUISummaryDiv()
+<div class="floatLeft">
+#set($dlLink = "javascript:dojo.byId('AddressBookCompanyDownload$!portlet.ID').submit();" )
+#AUIbutton("表示中の一覧をダウンロード" $dlLink)
+#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.addressbook.onListReceiveMessage")
+</div>
+#AUIajaxpageview('AddressBookCompanyListScreen' $result)
+#AUISummaryDivfooter()
+##ALformheader('会社名' $jslink $portlet)
+#AUIrowTableWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
-##ALtdhead("#ALajaxsort('company_name_kana' '会社名' $result 'AddressBookCompanyListScreen')") ##検索結果からきたときはmode=ajaxsearchをいれるように書き換え
 #ALtdhead("#ALajaxsortaddressbook('company_name_kana' '会社名' $result 'AddressBookCompanyListScreen')")
 #ALtdhead('部署名')
 #ALtdhead('住所')
-#ALtdhead('電話番号')
+#ALtdheadThin('電話番号')
 #ALtdheadThin('URL')
-#ALtdheadThin(' ')
 </tr>
 #foreach ($record in $result.List)
 <tr>
 #ALtdcellAtt("<input name='check$!record.CompanyId' type='checkbox' value='$!record.CompanyId' />" 'align="center"')
-
-
-
 #ALtdcellheader()
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookCompanyDetailScreen").addQueryData("entityid",$record.CompanyId))');">$result.getStringCR($!record.CompanyName)</a>
+<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookCompanyDetailScreen").addQueryData("entityid",$record.CompanyId))');">$result.getStringCR($!record.CompanyName)</a></div>
 #ALtdcellfooter()
-#ALtdcell($result.getStringCR($!record.PostName))
-#ALtdcell($result.getStringCR($!record.Address))
-#ALtdcell($!record.Telephone)
+#ALtdcell("<div>$result.getStringCR($!record.PostName)</div>")
+#ALtdcell("<div>$result.getStringCR($!record.Address)</div>")
+#ALtdcellAtt($!record.Telephone "nowrap='nowrap'")
 #if ($!record.getUrl() && $!record.getUrl().toString().length() > 0)
-#ALtdcellAtt("<a href='$!utils.normalizeURL($record.getUrl().toString())' target='_blank'>HPへ</a>" "nowrap='nowrap'")
+#ALtdcellAtt("<div><a href='$!utils.normalizeURL($record.getUrl().toString())' target='_blank'>$record.getUrl().toString()</a></div>" "nowrap='nowrap'")
 #else
 #ALtdcell("")
 #end
-#ALtdcellAtt("#ALajaxbuttonLinkCallback('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyFormScreen').addQueryData('eventSubmit_doAddressbook_company_form','1').addQueryData('entityid', $!record.CompanyId) 'images/icon/icon_edit.gif' $!portlet.ID 'aipo.addressbook.onLoadAddressbookCompanyDialog')" 'nowrap')
-#end
 </tr>
-#ALtablefooter()
-#ALbuttonheaderRight()
-選択した 会社情報 を #ALajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.addressbook.onListReceiveMessage")
-#ALbuttonfooterRight()
-##ALajaxpageviewFooter('AddressBookCompanyListScreen' $result)
 #end
-#ALspacebothfooter()
-#ALajaxtabfooter()
+#AUItablefooter()
+#AUISummaryDiv()
+<div class="floatLeft">
+#set($dlLink = "javascript:dojo.byId('AddressBookCompanyDownload$!portlet.ID').submit();" )
+#AUIbutton("表示中の一覧をダウンロード" $dlLink)
+#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.addressbook.onListReceiveMessage")
+</div>
+#AUIajaxpageview('AddressBookCompanyListScreen' $result)
+#AUISummaryDivfooter()
+#end
+#ALformfooter()
+#AUIcontentsAreaFooter()
+#parse("/portlets/html/ja/addressbook-widgets.vm")
 

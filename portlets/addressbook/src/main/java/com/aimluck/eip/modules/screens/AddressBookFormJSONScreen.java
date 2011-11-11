@@ -27,6 +27,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.addressbook.AddressBookFormData;
+import com.aimluck.eip.addressbook.AddressBookMultiDelete;
 import com.aimluck.eip.common.ALEipConstants;
 
 /**
@@ -70,7 +71,6 @@ public class AddressBookFormJSONScreen extends ALJSONScreen {
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
-
         AddressBookFormData formData = new AddressBookFormData();
         formData.initField();
         if (formData.doDelete(this, rundata, context)) {
@@ -80,6 +80,16 @@ public class AddressBookFormJSONScreen extends ALJSONScreen {
               .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
+      } else if ("multi_delete".equals(mode)) {
+        AddressBookMultiDelete delete = new AddressBookMultiDelete();
+        if (delete.doMultiAction(this, rundata, context)) {
+        } else {
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
+          result = json.toString();
+        }
+
       }
     } catch (Exception e) {
       logger.error("[AddressBookFormJSONScreen]", e);

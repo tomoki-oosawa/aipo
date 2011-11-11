@@ -52,6 +52,8 @@ public class AddressBookGroupSelectData extends
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(AddressBookGroupSelectData.class.getName());
 
+  private List<AddressBookGroupResultData> groupList;
+
   /**
    * 
    * @param action
@@ -67,8 +69,10 @@ public class AddressBookGroupSelectData extends
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, "group_name");
-
     }
+
+    groupList = AddressBookUtils.getMyGroups(rundata);
+
     super.init(action, rundata, context);
   }
 
@@ -179,5 +183,9 @@ public class AddressBookGroupSelectData extends
   @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_COMPANY_GROUP;
+  }
+
+  public List<AddressBookGroupResultData> getGroupList() {
+    return groupList;
   }
 }

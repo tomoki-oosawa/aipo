@@ -278,7 +278,7 @@ public class AddressBookCorpWordSelectData extends
    */
   @Override
   public void loadGroups(RunData rundata, Context context) {
-    groupList = new ArrayList<AddressBookGroupResultData>();
+    groupList = AddressBookUtils.getMyGroups(rundata);
     try {
       // マイグループリストの作成
       List<ALEipGroup> myGroups = ALEipUtils.getMyGroups(rundata);

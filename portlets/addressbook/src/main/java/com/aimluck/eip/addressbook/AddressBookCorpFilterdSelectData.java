@@ -65,6 +65,8 @@ public class AddressBookCorpFilterdSelectData extends
   /** マイグループリスト */
   private List<ALEipGroup> myGroupList = null;
 
+  private List<AddressBookGroupResultData> groupList;
+
   /**
    * 
    * @param action
@@ -98,6 +100,7 @@ public class AddressBookCorpFilterdSelectData extends
       for (int i = 0; i < length; i++) {
         myGroupList.add(myGroups.get(i));
       }
+      groupList = AddressBookUtils.getMyGroups(rundata);
     } catch (Exception ex) {
       logger.error("Exception", ex);
     }
@@ -286,5 +289,9 @@ public class AddressBookCorpFilterdSelectData extends
   @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_ADDRESS_INSIDE;
+  }
+
+  public List<AddressBookGroupResultData> getGroupList() {
+    return groupList;
   }
 }
