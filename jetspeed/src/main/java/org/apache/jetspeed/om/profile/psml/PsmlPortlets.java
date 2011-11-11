@@ -1,12 +1,12 @@
 /*
  * Copyright 2000-2001,2004 The Apache Software Foundation.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -54,10 +54,12 @@ public class PsmlPortlets extends PsmlIdentityElement implements Portlets,
   public PsmlPortlets() {
   }
 
+  @Override
   public Controller getController() {
     return this.controller;
   }
 
+  @Override
   public void setController(Controller controller) {
     this.controller = controller;
   }
@@ -204,7 +206,11 @@ public class PsmlPortlets extends PsmlIdentityElement implements Portlets,
 
   public void addPortlets(Portlets p)
       throws java.lang.IndexOutOfBoundsException {
-    portlets.addElement(p);
+    if (portlets.size() <= 1) {
+      portlets.add(0, p);
+    } else {
+      portlets.addElement(p);
+    }
     // STW make sure layout gets set
     int end = getEntryCount();
     Layout layout = p.getLayout();
@@ -264,7 +270,7 @@ public class PsmlPortlets extends PsmlIdentityElement implements Portlets,
    * Setter for property securityRef.
    * 
    * @param securityRef
-   *            New value of property securityRef.
+   *          New value of property securityRef.
    */
   public void setSecurityRef(SecurityReference securityRef) {
     this.securityRef = securityRef;
@@ -273,13 +279,14 @@ public class PsmlPortlets extends PsmlIdentityElement implements Portlets,
   /**
    * Create a clone of this object
    */
+  @Override
   public Object clone() throws java.lang.CloneNotSupportedException {
     Object cloned = super.clone();
 
-    ((PsmlPortlets) cloned).controller = ((this.controller == null) ? null
-        : (Controller) this.controller.clone());
-    ((PsmlPortlets) cloned).security = ((this.security == null) ? null
-        : (Security) this.security.clone());
+    ((PsmlPortlets) cloned).controller =
+      ((this.controller == null) ? null : (Controller) this.controller.clone());
+    ((PsmlPortlets) cloned).security =
+      ((this.security == null) ? null : (Security) this.security.clone());
 
     if (this.portlets != null) {
       ((PsmlPortlets) cloned).portlets = new Vector(this.portlets.size());
@@ -305,8 +312,9 @@ public class PsmlPortlets extends PsmlIdentityElement implements Portlets,
       }
     }
 
-    ((PsmlPortlets) cloned).securityRef = ((this.securityRef == null) ? null
-        : (SecurityReference) this.securityRef.clone());
+    ((PsmlPortlets) cloned).securityRef =
+      ((this.securityRef == null) ? null : (SecurityReference) this.securityRef
+        .clone());
 
     return cloned;
 
@@ -325,7 +333,7 @@ public class PsmlPortlets extends PsmlIdentityElement implements Portlets,
    * Sets the parent.
    * 
    * @param parent
-   *            The parent to set
+   *          The parent to set
    */
   public void setParentPortlets(Portlets parent) {
     this.parentPortlets = parent;
@@ -341,7 +349,7 @@ public class PsmlPortlets extends PsmlIdentityElement implements Portlets,
   // {
   // useSkin = parentPortlets.getSkin();
   // }
-  //        
+  //
   // return useSkin;
   // }
 }
