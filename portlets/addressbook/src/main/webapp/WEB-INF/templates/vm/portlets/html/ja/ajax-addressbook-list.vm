@@ -49,17 +49,19 @@
 </div>
 #AUIajaxpageview(${pageviewscreen} $result)
 #AUISummaryDivfooter()
+#if($!result.SearchWord && ($!result.SearchWord.toString() != ""))
 #AUISummaryDiv()
 #AUIsearchresult($!result.SearchWord.toString())
 #AUISummaryDivfooter()
+#end
 #AUIrowTableWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
 <th>#ALajaxsortaddressbook('name_kana' '名前' $result 'AddressBookListScreen')</th>
 <th>#ALajaxsortaddressbook('company_name_kana' '会社名' $result 'AddressBookListScreen')</th>
-#ALtdheadThin('メールアドレス')
-#ALtdheadThin('電話番号')
-#ALtdheadThin('携帯番号')
+#ALtdhead('メールアドレス')
+#ALtdhead('電話番号')
+#ALtdhead('携帯番号')
 </tr>
 #foreach ($record in $result.List)
 <tr>

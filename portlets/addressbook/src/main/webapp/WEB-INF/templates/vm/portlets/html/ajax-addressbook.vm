@@ -48,9 +48,9 @@
 #AUISummaryDivfooter()
 #AUISummaryDiv()
 <input name="tab" type="radio" value="syagai" id="$!{portlet.ID}syagai" #if($isSyagai) checked="checked" #end />
-<label for="$!{portlet.ID}syagai">社外アドレス</label>
+<label for="$!{portlet.ID}syagai">社外名簿</label>
 <input name="tab" type="radio" value="corp" id="$!{portlet.ID}corp" #if(!$isSyagai) checked="checked" #end />
-<label for="$!{portlet.ID}corp">社内アドレス</label>
+<label for="$!{portlet.ID}corp">社内名簿</label>
 #AUISummaryDivfooter()
 
 <input name="mode" type="hidden" value="ajaxsearch" />

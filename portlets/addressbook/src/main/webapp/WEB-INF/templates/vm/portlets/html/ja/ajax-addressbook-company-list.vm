@@ -60,9 +60,9 @@
 #AUIsearchresult($result.SearchWord.toString())
 #AUISummaryDiv()
 <div class="floatLeft">
+#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.addressbook.onListReceiveMessage")
 #set($dlLink = "javascript:dojo.byId('AddressBookCompanyDownload$!portlet.ID').submit();" )
 #AUIbutton("表示中の一覧をダウンロード" $dlLink)
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.addressbook.onListReceiveMessage")
 </div>
 #AUIajaxpageview('AddressBookCompanyListScreen' $result)
 #AUISummaryDivfooter()
@@ -73,8 +73,8 @@
 #ALtdhead("#ALajaxsortaddressbook('company_name_kana' '会社名' $result 'AddressBookCompanyListScreen')")
 #ALtdhead('部署名')
 #ALtdhead('住所')
-#ALtdheadThin('電話番号')
-#ALtdheadThin('URL')
+#ALtdhead('電話番号')
+#ALtdhead('URL')
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -95,9 +95,9 @@
 #AUItablefooter()
 #AUISummaryDiv()
 <div class="floatLeft">
+#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.addressbook.onListReceiveMessage")
 #set($dlLink = "javascript:dojo.byId('AddressBookCompanyDownload$!portlet.ID').submit();" )
 #AUIbutton("表示中の一覧をダウンロード" $dlLink)
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.addressbook.onListReceiveMessage")
 </div>
 #AUIajaxpageview('AddressBookCompanyListScreen' $result)
 #AUISummaryDivfooter()
