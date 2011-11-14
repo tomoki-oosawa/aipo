@@ -27,7 +27,6 @@
 #else
     #AUISummaryDiv()
     #AUIselectpdheader("memo" "99%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
-        <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MemoScreen").addQueryData("filter","none"))">（選択してください）</option>
     #foreach( $record in $result.MemoLiteList )
         <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MemoScreen").addQueryData("filter",$!record.MemoId).addQueryData("entityid",$!record.MemoId))" #if ($!result.Detail.MemoId.toString() == $!record.MemoId.toString()) selected="selected" #end>$!record.MemoName</option>
     #end
@@ -45,13 +44,15 @@
         <td>
         #ALtextarea('note' $!result.Detail.Note 10 40)
         </td>
+        </tr><tr>
+        <td>
+        #AUISummaryDiv()
+        <a class="auiButton" href="javascript:void(0)" tabindex="0" onclick="dojo.byId('form$!{portlet.ID}').onsubmit();">更新する</a>
+		#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+        #AUISummaryDivfooter()
+        </td>
         </tr></tbody></table>
         </div>
-        #AUIsubmit($event_submit $action_str)#ALajaxIndicatorSpan("${indicator_id}" "$!{portlet.ID}" "&nbsp;")
         #ALformfooter()
-        #AUISummaryDiv()
-        #AUISummaryDivfooter()
-    #else
-    メモを選択してください。
     #end
 #end
