@@ -75,6 +75,7 @@ public class MemoFormData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
     // Memo名
     memo_name = new ALStringField();
@@ -165,6 +166,19 @@ public class MemoFormData extends ALAbstractFormData {
         return false;
       }
 
+      String saved_memoid =
+        ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p1a-memos")
+          .trim();
+
+      // 固定解除
+      if (saved_memoid != null
+        && memo.getMemoId().toString().matches(saved_memoid)) {
+        MemoUtils.saveMemoSelection(rundata, "");
+      }
+
       // Memoを削除
       Database.delete(memo);
       Database.commit();
@@ -212,7 +226,10 @@ public class MemoFormData extends ALAbstractFormData {
       // Memoを登録
       Database.commit();
 
-      MemoUtils.saveMemoSelection(rundata, memo.getMemoId().toString());
+      // 新規フラグを立てる
+      ALEipUtils.setTemp(rundata, context, MemoUtils.NEW_FLAG, memo
+        .getMemoId()
+        .toString());
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -257,6 +274,11 @@ public class MemoFormData extends ALAbstractFormData {
       memo.setUpdateDate(now);
       // Memoを更新
       Database.commit();
+
+      // 新規フラッグを立てる
+      ALEipUtils.setTemp(rundata, context, MemoUtils.NEW_FLAG, memo
+        .getMemoId()
+        .toString());
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(

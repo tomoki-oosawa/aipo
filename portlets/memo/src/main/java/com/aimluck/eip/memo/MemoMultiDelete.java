@@ -31,6 +31,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTMemo;
 import com.aimluck.eip.common.ALAbstractCheckList;
+import com.aimluck.eip.memo.util.MemoUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
@@ -82,8 +83,19 @@ public class MemoMultiDelete extends ALAbstractCheckList {
       }
 
       int lsize = memos.size();
+      String saved_memoid =
+        ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p1a-memos")
+          .trim();
       for (int i = 0; i < lsize; i++) {
         EipTMemo memo = memos.get(i);
+        // 固定解除
+        if (saved_memoid != null
+          && memo.getMemoId().toString().matches(saved_memoid)) {
+          MemoUtils.saveMemoSelection(rundata, "");
+        }
         // メモを削除
         Database.delete(memo);
         Database.commit();

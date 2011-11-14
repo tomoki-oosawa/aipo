@@ -60,8 +60,17 @@ public class MemoUtils {
   /** セッション内の検索キーワード名 */
   public static final String SESSION_KEYWORD = "memo_keyword";
 
+  /** セッション内のメモの新規(追加,更新)キーワード名 */
+  public static final String NEW_FLAG = "new_flag";
+
   /** パラメータリセットの識別子 */
   private static final String RESET_FLAG = "reset_params";
+
+  private static boolean isMemoIDEmpty(String memoid) {
+    return memoid == null
+      || "".equals(memoid)
+      || Integer.valueOf(memoid) == null;
+  }
 
   /**
    * Memo オブジェクトモデルを取得します。 <BR>
@@ -72,22 +81,27 @@ public class MemoUtils {
    */
   public static EipTMemo getEipTMemo(RunData rundata, Context context)
       throws ALPageNotFoundException {
-    String memoid =
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
-      if (memoid == null
-        || "".equals(memoid)
-        || Integer.valueOf(memoid) == null) {
-        memoid = rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
-        if (memoid == null
-          || "".equals(memoid)
-          || Integer.valueOf(memoid) == null) {
-          // Memo IDが空の場合
-          logger.debug("[MemoUtils] Empty ID...");
-          return null;
+      String memoid = ALEipUtils.getTemp(rundata, context, NEW_FLAG);
+      if (isMemoIDEmpty(memoid)) {
+        memoid = ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+        if (isMemoIDEmpty(memoid)) {
+          memoid = rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
+          if (isMemoIDEmpty(memoid)) {
+            // MemoIDが空の場合、更新日が最新のメモを返す
+            return getLatestEipTMemo(rundata, context);
+          }
+
         }
+      } else {
+        // 新規作成されたメモがある場合、新規作成フラッグを解除
+        ALEipUtils.setTemp(rundata, context, NEW_FLAG, null);
       }
       EipTMemo memo = getEipTMemo(rundata, context, Integer.valueOf(memoid));
+      if (memo == null) {
+        // MemoIDで指定されたMemoが見つからない場合、更新日が最新のメモを返す
+        return getLatestEipTMemo(rundata, context);
+      }
       return memo;
     } catch (ALPageNotFoundException pageNotFound) {
       throw pageNotFound;
@@ -254,6 +268,51 @@ public class MemoUtils {
       }
 
       return memos.get(0);
+    } catch (ALPageNotFoundException pageNotFound) {
+      logger.error(pageNotFound);
+      throw pageNotFound;
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  /**
+   * 更新日が最新の Memo オブジェクトモデルを取得します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static EipTMemo getLatestEipTMemo(RunData rundata, Context context)
+      throws ALPageNotFoundException {
+    int uid = ALEipUtils.getUserId(rundata);
+    try {
+
+      SelectQuery<EipTMemo> query = Database.query(EipTMemo.class);
+      Expression exp =
+        ExpressionFactory.matchExp(EipTMemo.OWNER_ID_PROPERTY, Integer
+          .valueOf(ALEipUtils.getUserId(rundata)));
+      query.setQualifier(exp);
+      List<EipTMemo> memos = query.fetchList();
+      if (memos == null || memos.size() == 0) {
+        // 指定したUser IDのレコードが見つからない場合
+        logger.debug("[MemoUtils] Not found records...");
+        return null;
+      }
+      EipTMemo latest_memo = memos.get(0);
+      // 最新のアップデートをもつmemoを選別
+      for (EipTMemo memo : memos) {
+        if (memo.getUpdateDate().after(latest_memo.getUpdateDate())) {
+          // アクセス権の判定
+          if (uid != memo.getOwnerId().intValue()) {
+            logger.debug("[MemoUtils] Invalid user access...");
+            throw new ALPageNotFoundException();
+          }
+          latest_memo = memo;
+        }
+      }
+      return latest_memo;
     } catch (ALPageNotFoundException pageNotFound) {
       logger.error(pageNotFound);
       throw pageNotFound;
