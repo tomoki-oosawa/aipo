@@ -654,19 +654,31 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
       }
     }
 
-    mapListSize = mapList.size();
-    if (mapListSize >= 2) {
-      EipTNoteMap tmpmap = mapList.get(0);
-      ALEipUser user =
-        ALEipUtils.getALEipUser(Integer.valueOf(tmpmap.getUserId()).intValue());
-      destUserNames.append(user.getAliasName());
-      destUserNames.append("、・・・");
-    } else {
-      EipTNoteMap tmpmap = mapList.get(0);
-      ALEipUser user =
-        ALEipUtils.getALEipUser(Integer.valueOf(tmpmap.getUserId()).intValue());
-      destUserNames.append(user.getAliasName());
+    // mapListSize = mapList.size();
+    if (mapList.size() > 0) {
+      for (EipTNoteMap tmpmap : mapList) {
+        ALEipUser user =
+          ALEipUtils.getALEipUser(Integer
+            .valueOf(tmpmap.getUserId())
+            .intValue());
+        destUserNames.append(tmpmap == mapList.get(0)
+          ? user.getAliasName()
+          : "," + user.getAliasName());
+      }
     }
+
+    // if (mapListSize >= 2) {
+    // EipTNoteMap tmpmap = mapList.get(0);
+    // ALEipUser user =
+    // ALEipUtils.getALEipUser(Integer.valueOf(tmpmap.getUserId()).intValue());
+    // destUserNames.append(user.getAliasName());
+    // destUserNames.append("、・・・");
+    // } else {
+    // EipTNoteMap tmpmap = mapList.get(0);
+    // ALEipUser user =
+    // ALEipUtils.getALEipUser(Integer.valueOf(tmpmap.getUserId()).intValue());
+    // destUserNames.append(user.getAliasName());
+    // }
     return destUserNames.toString();
   }
 
