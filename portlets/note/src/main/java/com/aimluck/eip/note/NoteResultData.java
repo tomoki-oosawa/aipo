@@ -25,6 +25,7 @@ import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -79,16 +80,16 @@ public class NoteResultData implements ALData {
   private ALStringField message;
 
   /** 受付日時 */
-  private Date accept_date;
+  private ALDateTimeField accept_date;
 
   /** 確認日時 */
-  private Date confirm_date;
+  private ALDateTimeField confirm_date;
 
   /** 作成日時 */
-  private Date create_date;
+  private ALDateTimeField create_date;
 
   /** 更新日時 */
-  private Date update_date;
+  private ALDateTimeField update_date;
 
   /** メモの有無 */
   private boolean hasMemo;
@@ -120,16 +121,20 @@ public class NoteResultData implements ALData {
     note_stat = new ALStringField();
     message = new ALStringField();
     message.setTrim(false);
-    // accept_date = new ALDateTimeField(NoteUtils.DATE_TIME_FORMAT);
-    // confirm_date = new ALDateTimeField(NoteUtils.DATE_TIME_FORMAT);
-    // create_date = new ALDateTimeField(NoteUtils.DATE_TIME_FORMAT);
-    // update_date = new ALDateTimeField(NoteUtils.DATE_TIME_FORMAT);
+    accept_date = new ALDateTimeField(NoteUtils.DATE_TIME_FORMAT);
+    confirm_date = new ALDateTimeField(NoteUtils.DATE_TIME_FORMAT);
+    create_date = new ALDateTimeField(NoteUtils.DATE_TIME_FORMAT);
+    update_date = new ALDateTimeField(NoteUtils.DATE_TIME_FORMAT);
   }
 
   /**
    * @return
    */
   public ALDateTimeField getAcceptDate() {
+    return accept_date;
+  }
+
+  public ALDateTimeField getAuiAcceptDate() {
     return ALEipUtils.getFormattedTime(accept_date);
   }
 
@@ -165,13 +170,17 @@ public class NoteResultData implements ALData {
    * @return
    */
   public ALDateTimeField getConfirmDate() {
-    return ALEipUtils.getFormattedTime(confirm_date);
+    return confirm_date;
   }
 
   /**
    * @return
    */
   public ALDateTimeField getCreateDate() {
+    return create_date;
+  }
+
+  public ALDateTimeField getAuiCreateDate() {
     return ALEipUtils.getFormattedTime(create_date);
   }
 
@@ -232,7 +241,7 @@ public class NoteResultData implements ALData {
    * @return
    */
   public ALDateTimeField getUpdateDate() {
-    return ALEipUtils.getFormattedTime(update_date);
+    return update_date;
   }
 
   /**
@@ -242,7 +251,7 @@ public class NoteResultData implements ALData {
     if (date == null) {
       return;
     }
-    accept_date = date;
+    accept_date.setValue(date);
   }
 
   /**
@@ -280,7 +289,7 @@ public class NoteResultData implements ALData {
     if (date == null) {
       return;
     }
-    confirm_date = date;
+    confirm_date.setValue(date);
   }
 
   /**
@@ -290,7 +299,7 @@ public class NoteResultData implements ALData {
     if (date == null) {
       return;
     }
-    create_date = date;
+    create_date.setValue(date);
   }
 
   /**
@@ -353,7 +362,7 @@ public class NoteResultData implements ALData {
     if (date == null) {
       return;
     }
-    update_date = date;
+    update_date.setValue(date);
   }
 
   public ALStringField getNoteStat() {

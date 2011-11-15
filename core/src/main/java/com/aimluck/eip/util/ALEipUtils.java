@@ -1794,4 +1794,8 @@ public class ALEipUtils {
     rtn.setValue(date);
     return rtn;
   }
+
+  public static ALDateTimeField getFormattedTime(ALDateTimeField timeField) {
+    return getFormattedTime(timeField.getValue());
+  }
 }

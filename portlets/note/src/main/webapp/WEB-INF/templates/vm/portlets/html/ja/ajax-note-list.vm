@@ -109,7 +109,7 @@ style="font-weight:bold"
 #ALtdcellheader()<div>$!record.CompanyName</div>#ALtdcellfooter()
 #ALtdcellheader()<div>$!subject</div>#ALtdcellfooter()
 #ALtdcellheader()<div>#if ($isReceive) $!record.SrcUserFullName #else $!record.DestUserFullName.Value #end</div>#ALtdcellfooter()
-#ALtdcellAtt("#if ($isReceive) $!{record.AcceptDate} #else $!{record.CreateDate} #end" 'nowrap="nowrap"')
+#ALtdcellAtt("#if ($isReceive) $!{record.AuiAcceptDate} #else $!{record.AuiCreateDate} #end" 'nowrap="nowrap"')
 </tr>
 #end
 
