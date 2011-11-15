@@ -1,0 +1,110 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+## ---------------------------------------------------------------------------
+
+<div class="relativeBlock" style="margin-bottom:10px;">
+
+<div class="clearfix">
+<div class="auiSelectButton">
+<ul>
+<li style="width:4em;margin-right:10px;">
+<a href="javascript:void(0);" class="btn" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.Today.toString()}))', '$!portlet.ID');"\><span>今日</span></a>
+</li>
+<li style="margin-right:5px;">
+<a href="javascript:void(0);" class="btn arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.PrevWeek.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_l_w.gif" alt="前の週へ"></span></a>
+</li>
+<li>
+<a href="javascript:void(0);" class="first arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.PrevDate.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt="前の日へ"></span></a>
+</li>
+<li style="margin-right:5px;">
+<a href="javascript:void(0);" class="last arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextDate.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt="次の日へ"></span></a>
+</li>
+<li style="margin-right:10px;">
+<a href="javascript:void(0);" class="btn arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextWeek.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_r_w.gif" alt="次の週へ"></span></a>
+</li>
+</ul>
+</div>
+<div style="height:24px; line-height:24px; overflow:hidden;"><strong>$!{result.ViewStart.Year}年$!{result.ViewStart.Month}月$!{result.ViewStart.Day}日$!{result.ViewStart.DayOfWeek}</strong></div>
+</div>
+
+</div>
+
+<div class="auiForm">
+    <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
+        <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id","none"))">すべてのグループ</option>
+        #if ($result.FacilityList.size() > 0)
+    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","Facility"))" #if ($!result.TargetGroupName && $!result.TargetGroupName == "Facility") selected="selected" #end>施設一覧</option>
+        #end
+        #foreach( $record in $result.MyGroupList )
+    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{record.Name.toString()}).addQueryData("target_user_id","none"))" #if($!result.TargetGroupName == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
+        #end
+        #if($!{result.GroupList} && ($result.GroupList.size() > 0) && ${result.PostMap} && ($result.PostMap.size() > 0))
+    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id", "none"))" #if ($!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>----------</option>
+        #end
+        #foreach( $record in $result.PostMap )
+    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{record.GroupName.toString()}).addQueryData("target_user_id", "none"))" #if($!result.TargetGroupName == $!record.GroupName.toString()) selected="selected" #end>$!record.PostName</option>
+        #end
+    </select>
+    <select name="target_user_id" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
+        <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","none"))">選択している名前</option>
+        #foreach($record in $!result.Users)
+    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id",$!{record.UserId.toString()}))" #if($!result.TargetUserId != "all") #if($!result.TargetUserId == $!record.UserId.toString()) selected="selected" #end #end>$!record.AliasName</option>
+        #end
+        #if(($result.Users.size() > 0) && ($result.FacilityList.size() > 0))
+    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id", "none"))" #if ($result.CurrentFilter && $!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>----------</option>
+        #end
+        #foreach($record in $!result.FacilityList)
+    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","f$!{record.FacilityId.toString()}"))" #if($!result.TargetUserId != "all") #if($!result.TargetUserId == "f$!record.FacilityId.toString()") selected="selected" #end #end>$!record.FacilityName</option>
+        #end
+    </select>
+</div>
+
+#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
+<div id="listmessageDiv"></div>
+#if($result.ScheduleList.size() == 0)
+<div class="message">指定された条件に該当する予定はありません。</div>
+#else
+##AUIsearchresult($!result.targetKeyword.toString())
+#AUIrowTableWide()
+<tr>
+<th class="w20">日時</th>
+<th class="w80">予定</th>
+</tr>
+#foreach ($record in $result.ScheduleList)
+#set($scheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.ScheduleId}).addQueryData('userid', $!{result.TargetUserId}).addQueryData('view_date', $!{record.ViewDate.toString()})")
+<tr>
+<td nowrap="nowrap">${record.DateFull}</td>
+<td><div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($scheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$!{record.WbrName}</a></div></td>
+</tr>
+#end
+#AUItablefooter()
+#end
+
+#if($!ajax_onloadimage)
+  <img src="images/common/dot.gif" width="1" height="1" onload="ptConfig['$!portlet.ID'].reloadFunction = aipo.reloadPage;" />
+#else
+  <script type="text/javascript" language="JavaScript">
+    //<![CDATA[
+    dojo.addOnLoad(function(){
+      ptConfig['$!portlet.ID'].reloadFunction = aipo.reloadPage;
+    });
+    //]]>
+  </script>
+#end
