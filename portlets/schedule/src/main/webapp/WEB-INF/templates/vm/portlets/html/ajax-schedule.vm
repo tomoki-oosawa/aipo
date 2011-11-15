@@ -22,17 +22,6 @@
 
 #ALspacebothheader()
 
-
-<div class="auiSummaryMeta clearfix">
-<form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleListScreen').addQueryData('tab','list')" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-indicator-list-'); return false;">
-<input class="text floatLeft" type="text" name="keyword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!{result.targetKeyword}"/>
-<a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">検索</a>
-</form>
-<div class="floatLeft ml10" style="padding-top: 0.4em;">
-<div class="indicator" id="search-indicator-list-$!{portlet.ID}" style="display:none;">&nbsp;</div>
-</div>
-</div>
-
 ## One day
 #if ($!result.Viewtype == "calendar")
 #parse("/portlets/html/ja/schedule-calendar.vm")
@@ -56,6 +45,10 @@
 ## Weekly
 #if ($!result.Viewtype == "weekly-group")
 #parse("/portlets/html/ja/schedule-weekly-group.vm")
+#end
+## List
+#if ($!result.Viewtype == "list")
+#parse("/portlets/html/ja/schedule-search-list.vm")
 #end
 #ALspacebothfooter()
 
