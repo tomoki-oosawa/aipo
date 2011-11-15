@@ -48,7 +48,7 @@
         <td>
         #AUISummaryDiv()
         <a class="auiButton" href="javascript:void(0)" tabindex="0" onclick="dojo.byId('form$!{portlet.ID}').onsubmit();">更新する</a>
-		#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+		#ALajaxIndicatorSpan("${indicator_id}" "$!{portlet.ID}" "&nbsp;")
         #AUISummaryDivfooter()
         </td>
         </tr></tbody></table>
