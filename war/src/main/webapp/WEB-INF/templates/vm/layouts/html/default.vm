@@ -173,13 +173,21 @@ dojo.addOnLoad(function() {
                     if (rows.length >= 2) {
                         var top = rows[0];
                         var bottom = rows[rows.length - 1];
-                        while (top && bottom && top.offsetTop == bottom.offsetTop) {
+                        
+                        var _top = dojo._abs(top);
+                        var _bottom = dojo._abs(bottom);
+                        
+                        while (_top && _bottom && _top.y == _bottom.y) {
                             top = top.offsetParent;
                             bottom = bottom.offsetParent;
+                            _top = dojo._abs(top);
+                            _bottom = dojo._abs(bottom);
                         }
-                        if (top.offsetTop > bottom.offsetTop) {
+                        
+                        if (_top.y > _bottom.y) {
                             reverse = true;
                         }
+                            
                     }
                     for (var r = 0 ; r < rows.length ; r++) {
                         var pid = rows[r].id.split("portlet_")[1];
