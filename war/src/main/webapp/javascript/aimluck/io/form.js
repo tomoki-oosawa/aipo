@@ -479,7 +479,8 @@ aimluck.io.postViewPage = function(form, portlet_id, indicator_id){
     if(obj_indicator){
        dojo.style(obj_indicator, "display" , "");
     }
-	dojo.xhrPost({
+
+    dojo.xhrPost({
         url: form.action,
         timeout: 30000,
         form: form,
@@ -495,9 +496,16 @@ aimluck.io.postViewPage = function(form, portlet_id, indicator_id){
 
             if (html != "") {
                 aimluck.io.disableForm(form, false);
-                var portlet = dojo.byId("portlet_" + portlet_id);
+                var portlet = dijit.byId("portlet_" + portlet_id);
+                if(! portlet){
+                    portlet = new aimluck.widget.Contentpane({},'portlet_' + portletId);
+                }
+
                 if(portlet){
-                	portlet.innerHTML = html;
+
+                	ptConfig[portlet_id].reloadUrl= form.action;
+                	portlet._isDownloaded = true;
+                	portlet.setContent(html);
                 }
             }
         },
