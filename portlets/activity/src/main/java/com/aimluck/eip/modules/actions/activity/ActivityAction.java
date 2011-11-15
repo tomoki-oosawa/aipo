@@ -29,11 +29,12 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.activity.ActivityAllSelectData;
+import com.aimluck.eip.activity.util.ActivityUtils;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 
+ *
  */
 public class ActivityAction extends ALBaseAction {
 
@@ -54,6 +55,8 @@ public class ActivityAction extends ALBaseAction {
 
     // セッション情報のクリア
     clearActivitySession(rundata, context);
+    ActivityUtils.resetFilter(rundata, context, ActivityAllSelectData.class
+      .getName());
 
     ActivityAllSelectData listData = new ActivityAllSelectData();
     listData.initField();

@@ -24,6 +24,9 @@ import java.util.jar.Attributes;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.activity.util.ActivityUtils;
+import com.aimluck.eip.cayenne.om.social.Activity;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALActivity;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -35,12 +38,17 @@ import com.aimluck.eip.services.social.model.ALActivityGetRequest;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 
+ *
  */
 public class ActivityAllSelectData extends
     ALAbstractSelectData<ALActivity, ALActivity> {
 
+  /** Activity の総数 */
+  private int activitySum;
+
   private String currentTab;
+
+  private ALStringField target_keyword;
 
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -54,7 +62,7 @@ public class ActivityAllSelectData extends
       ALEipUtils.setTemp(rundata, context, "tab", tabParam);
       currentTab = tabParam;
     }
-
+    target_keyword = new ALStringField();
     super.init(action, rundata, context);
   }
 
@@ -63,7 +71,9 @@ public class ActivityAllSelectData extends
    */
   @Override
   protected Attributes getColumnMap() {
-    return null;
+    Attributes map = new Attributes();
+    map.putValue(Activity.UPDATE_DATE_PROPERTY, Activity.UPDATE_DATE_PROPERTY);
+    return map;
   }
 
   /**
@@ -113,18 +123,35 @@ public class ActivityAllSelectData extends
   @Override
   protected ResultList<ALActivity> selectList(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
+    if (ActivityUtils.hasResetFlag(rundata, context)) {
+      target_keyword.setValue("");
+    } else {
+      target_keyword.setValue(ActivityUtils.getTargetKeyword(rundata, context));
+    }
+
     int page = getCurrentPage();
     int limit = getRowsNum();
     String loginName = ALEipUtils.getALEipUser(rundata).getName().getValue();
     ResultList<ALActivity> list =
       ALActivityService.getList(new ALActivityGetRequest()
         .withLimit(limit)
+        .withKeyword(target_keyword.getValue())
         .withLoginName(loginName)
         .withPriority(0f)
         .withPage(page)
         .withTargetLoginName(loginName));
     setPageParam(list.getTotalCount());
     return list;
+
+  }
+
+  /**
+   * Activity の総数を返す． <BR>
+   * 
+   * @return
+   */
+  public int getActivitySum() {
+    return activitySum;
   }
 
   public String getCurrentTab() {
@@ -135,5 +162,12 @@ public class ActivityAllSelectData extends
   public boolean hasAuthority() {
     // TODO: アクセス権限
     return true;
+  }
+
+  /**
+   * @return target_keyword
+   */
+  public ALStringField getTargetKeyword() {
+    return target_keyword;
   }
 }

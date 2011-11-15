@@ -30,6 +30,8 @@ public class ALActivityGetRequest {
 
   private int isRead = -1;
 
+  private String keyword;
+
   private String appId;
 
   private String loginName;
@@ -98,6 +100,19 @@ public class ALActivityGetRequest {
   }
 
   /**
+   * @param keyword
+   *          セットする keyword
+   */
+  public void setKeyword(String keyword) {
+    this.keyword = keyword;
+  }
+
+  public ALActivityGetRequest withKeyword(String keyword) {
+    setKeyword(keyword);
+    return this;
+  }
+
+  /**
    * @param appId
    *          セットする appId
    */
@@ -108,6 +123,13 @@ public class ALActivityGetRequest {
   public ALActivityGetRequest withAppId(String appId) {
     setAppId(appId);
     return this;
+  }
+
+  /**
+   * @return keyword
+   */
+  public String getKeyword() {
+    return keyword;
   }
 
   /**
