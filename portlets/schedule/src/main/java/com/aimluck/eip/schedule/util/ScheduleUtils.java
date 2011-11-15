@@ -76,6 +76,7 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.AjaxScheduleResultData;
 import com.aimluck.eip.schedule.AjaxTermScheduleWeekContainer;
@@ -126,6 +127,9 @@ public class ScheduleUtils {
   public static final String SCHEDULE_PORTLET_NAME = "Schedule";
 
   public static final String AJAX_SCHEDULE_PORTLET_NAME = "AjaxSchedule";
+
+  /** 検索キーワード変数の識別子 */
+  public static final String TARGET_KEYWORD = "keyword";
 
   /**
    * Scheudle オブジェクトモデルを取得します。
@@ -3521,6 +3525,12 @@ public class ScheduleUtils {
   public static List<VEipTScheduleList> getScheduleList(int userId,
       Date viewStart, Date viewEnd, List<Integer> users,
       List<Integer> facilities) {
+    return getScheduleList(userId, viewStart, viewEnd, users, facilities, null);
+  }
+
+  public static List<VEipTScheduleList> getScheduleList(int userId,
+      Date viewStart, Date viewEnd, List<Integer> users,
+      List<Integer> facilities, String keyword) {
 
     StringBuilder sql = new StringBuilder();
 
@@ -3547,6 +3557,15 @@ public class ScheduleUtils {
       .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t2 WHERE (t2.schedule_id = eip_t_schedule_map.schedule_id) AND (t2.status <> 'R') AND (t2.type <> 'F')) AS u_count");
     sql
       .append(" FROM eip_t_schedule_map, eip_t_schedule WHERE eip_t_schedule_map.schedule_id = eip_t_schedule.schedule_id");
+    boolean hasKeyword = false;
+    if (keyword != null && keyword.length() > 0) {
+      hasKeyword = true;
+      sql.append(" AND (");
+      sql
+        .append(" eip_t_schedule.name LIKE #bind($keyword) OR eip_t_schedule.name = 'dummy'");
+      sql.append(" ) ");
+
+    }
     sql.append(" AND (");
 
     if (users != null && users.size() > 0) {
@@ -3594,10 +3613,14 @@ public class ScheduleUtils {
       .append("')) OR ((eip_t_schedule.repeat_pattern <> 'N') AND (eip_t_schedule.repeat_pattern <> 'S')))");
     sql.append(" ORDER BY eip_t_schedule.start_date, eip_t_schedule.end_date");
 
-    List<DataRow> fetchList =
+    SQLTemplate<VEipTScheduleList> query =
       Database.sql(VEipTScheduleList.class, sql.toString()).param(
         "user_id",
-        Integer.valueOf(userId)).fetchListAsDataRow();
+        Integer.valueOf(userId));
+    if (hasKeyword) {
+      query.param("keyword", "%" + keyword + "%");
+    }
+    List<DataRow> fetchList = query.fetchListAsDataRow();
 
     List<VEipTScheduleList> list = new ArrayList<VEipTScheduleList>();
     for (DataRow row : fetchList) {
@@ -3665,4 +3688,18 @@ public class ScheduleUtils {
       .withExternalId(String.valueOf(schedule.getScheduleId())));
   }
 
+  public static String getTargetKeyword(RunData rundata, Context context) {
+    String target_keyword = null;
+    String keywordParam = rundata.getParameters().getString(TARGET_KEYWORD);
+    target_keyword = ALEipUtils.getTemp(rundata, context, TARGET_KEYWORD);
+
+    if (keywordParam == null && (target_keyword == null)) {
+      ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, "");
+      target_keyword = "";
+    } else if (keywordParam != null) {
+      ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, keywordParam.trim());
+      target_keyword = keywordParam;
+    }
+    return target_keyword;
+  }
 }

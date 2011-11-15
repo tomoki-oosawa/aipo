@@ -34,6 +34,7 @@ import com.aimluck.eip.schedule.AjaxScheduleWeeklyGroupEmptySelectData;
 import com.aimluck.eip.schedule.ScheduleMonthlySelectData;
 import com.aimluck.eip.schedule.ScheduleOnedayGroupSelectData;
 import com.aimluck.eip.schedule.ScheduleOnedaySelectData;
+import com.aimluck.eip.schedule.ScheduleSearchSelectData;
 import com.aimluck.eip.schedule.ScheduleWeeklyGroupSelectData;
 import com.aimluck.eip.schedule.ScheduleWeeklySelectData;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
@@ -87,6 +88,7 @@ public class ScheduleListScreen extends ScheduleScreen {
           || tmpCurrentTab.equals("oneday")
           || tmpCurrentTab.equals("weekly")
           || tmpCurrentTab.equals("monthly")
+          || tmpCurrentTab.equals("list")
           || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
             .equals("weekly-group"))) {
         currentTab = "calendar";
@@ -152,6 +154,13 @@ public class ScheduleListScreen extends ScheduleScreen {
         // tab = "oneday-group";
         listData = new ScheduleOnedayGroupSelectData();
         ((ScheduleOnedayGroupSelectData) listData).setPortletId(portletId);
+        // ブラウザ名を受け渡す．
+        boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+        context.put("isMeie", Boolean.valueOf(isMsie));
+      } else if ("list".equals(currentTab)) {
+        // tab = "list";
+        listData = new ScheduleSearchSelectData();
+        ((ScheduleSearchSelectData) listData).setPortletId(portletId);
         // ブラウザ名を受け渡す．
         boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));

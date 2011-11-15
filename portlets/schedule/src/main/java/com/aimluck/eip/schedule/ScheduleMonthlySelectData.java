@@ -114,12 +114,6 @@ public class ScheduleMonthlySelectData extends
   /** <code>monthCon</code> 月間スケジュールコンテナ */
   private ScheduleMonthContainer monthCon;
 
-  /** <code>target_group_name</code> 表示対象の部署名 */
-  private String target_group_name;
-
-  /** <code>target_user_id</code> 表示対象のユーザ ID */
-  private String target_user_id;
-
   /** <code>myGroupList</code> グループリスト（My グループと部署） */
   private List<ALEipGroup> myGroupList = null;
 
@@ -138,9 +132,6 @@ public class ScheduleMonthlySelectData extends
   /** <code>monthTodoCon</code> 月間 ToDo コンテナ */
   private ScheduleToDoMonthContainer monthTodoCon;
 
-  /** <code>viewTodo</code> ToDo 表示設定 */
-  protected int viewTodo;
-
   /** ポートレット ID */
   private String portletId;
 
@@ -158,6 +149,15 @@ public class ScheduleMonthlySelectData extends
 
   /** <code>target_user_id</code> 表示対象のユーザ ログイン名 */
   private String target_user_name;
+
+  /** <code>viewTodo</code> ToDo 表示設定 */
+  protected int viewTodo;
+
+  /** <code>target_group_name</code> 表示対象の部署名 */
+  protected String target_group_name;
+
+  /** <code>target_user_id</code> 表示対象のユーザ ID */
+  protected String target_user_id;
 
   /**
    * 
@@ -868,7 +868,7 @@ public class ScheduleMonthlySelectData extends
    * @param context
    * @throws ALDBErrorException
    */
-  private void setupLists(RunData rundata, Context context) {
+  protected void setupLists(RunData rundata, Context context) {
     target_group_name = getTargetGroupName(rundata, context);
     if ((target_group_name != null)
       && (!target_group_name.equals(""))
