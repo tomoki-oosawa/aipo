@@ -153,8 +153,10 @@ public class AjaxScheduleAction extends ALBaseAction {
         tab = "monthly";
       } else if (template.equals("ajax-calendar-weekly")) {
         tab = "weekly";
-      } else {
+      } else if (template.equals("ajax-schedule-weekly-group")) {
         tab = "weekly-group";
+      } else {
+        tab = "list";
       }
 
       // アクセスコントロール

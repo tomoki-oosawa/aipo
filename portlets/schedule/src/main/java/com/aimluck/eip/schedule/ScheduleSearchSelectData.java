@@ -176,65 +176,6 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
       List<VEipTScheduleList> resultList =
         ScheduleUtils.sortByDummySchedule(resultBaseList);
 
-      /*-
-      List<VEipTScheduleList> list = new ArrayList<VEipTScheduleList>();
-      List<VEipTScheduleList> delList = new ArrayList<VEipTScheduleList>();
-      int delSize = 0;
-      int resultSize = resultList.size();
-      int size = 0;
-      boolean canAdd = true;
-      for (int i = 0; i < resultSize; i++) {
-        VEipTScheduleList record = resultList.get(i);
-        delList.clear();
-        canAdd = true;
-        size = list.size();
-        for (int j = 0; j < size; j++) {
-          VEipTScheduleList record2 = list.get(j);
-          if (!record.getRepeatPattern().equals("N")
-            && "D".equals(record2.getStatus())
-            && record.getScheduleId().intValue() == record2
-              .getParentId()
-              .intValue()) {
-            canAdd = false;
-            break;
-          }
-          if (!record2.getRepeatPattern().equals("N")
-            && "D".equals(record.getStatus())
-            && record2.getScheduleId().intValue() == record
-              .getParentId()
-              .intValue()) {
-            // [繰り返しスケジュール] 親の ID を検索
-            if (!delList.contains(record2)) {
-              delList.add(record2);
-            }
-            canAdd = true;
-          }
-        }
-        delSize = delList.size();
-        for (int k = 0; k < delSize; k++) {
-          list.remove(delList.get(k));
-        }
-
-        if (canAdd) {
-          list.add(record);
-        }
-      }
-
-      // ダミーを削除する．
-      delList.clear();
-      size = list.size();
-      for (int i = 0; i < size; i++) {
-        VEipTScheduleList record = list.get(i);
-        if ("D".equals(record.getStatus())) {
-          delList.add(record);
-        }
-      }
-      delSize = delList.size();
-      for (int i = 0; i < delSize; i++) {
-        list.remove(delList.get(i));
-      }
-       */
-
       return new ResultList<VEipTScheduleList>(resultList);
     } catch (Exception e) {
       logger.error("[ScheduleOnedaySelectData]", e);

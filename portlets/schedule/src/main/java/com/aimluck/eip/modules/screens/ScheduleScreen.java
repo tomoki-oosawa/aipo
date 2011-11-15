@@ -34,6 +34,7 @@ import com.aimluck.eip.schedule.AjaxScheduleWeeklyGroupEmptySelectData;
 import com.aimluck.eip.schedule.ScheduleMonthlySelectData;
 import com.aimluck.eip.schedule.ScheduleOnedayGroupSelectData;
 import com.aimluck.eip.schedule.ScheduleOnedaySelectData;
+import com.aimluck.eip.schedule.ScheduleSearchSelectData;
 import com.aimluck.eip.schedule.ScheduleWeeklyGroupSelectData;
 import com.aimluck.eip.schedule.ScheduleWeeklySelectData;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
@@ -87,6 +88,7 @@ public class ScheduleScreen extends ALVelocityScreen {
           || tmpCurrentTab.equals("oneday")
           || tmpCurrentTab.equals("weekly")
           || tmpCurrentTab.equals("monthly")
+          || tmpCurrentTab.equals("list")
           || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
             .equals("weekly-group"))) {
         currentTab = "calendar";
@@ -149,6 +151,12 @@ public class ScheduleScreen extends ALVelocityScreen {
           done = true;
         }
       }
+      if (("".equals(template)) || (!done)) {
+        template = "schedule-search-list";
+        if (template.equals(_template)) {
+          done = true;
+        }
+      }
       if ("".equals(template)) {
         template = _template;
       }
@@ -204,10 +212,14 @@ public class ScheduleScreen extends ALVelocityScreen {
         // ブラウザ名を受け渡す．
         boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
-      } else {
+      } else if ("weekly-group".equals(currentTab)) {
         // tab = "weekly-group";
         listData = new ScheduleWeeklyGroupSelectData();
         ((ScheduleWeeklyGroupSelectData) listData).setPortletId(portletId);
+      } else {
+        // tab = "weekly-group";
+        listData = new ScheduleSearchSelectData();
+        ((ScheduleSearchSelectData) listData).setPortletId(portletId);
       }
 
       context.put("ajax_onloadimage", "true");

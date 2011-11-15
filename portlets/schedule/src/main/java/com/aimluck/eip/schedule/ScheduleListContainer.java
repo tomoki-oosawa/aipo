@@ -65,11 +65,23 @@ public class ScheduleListContainer implements ALData {
       ALDateTimeField field = new ALDateTimeField("yyyy-MM-dd-HH-mm");
       ScheduleSearchResultData addRd = new ScheduleSearchResultData();
       field.setValue(startDate.getTime());
-      if (!rd.getPattern().equals("N") && !rd.getPattern().equals("S")) {
+      if (!rd.getPattern().equals("N")) {
         // 繰り返しスケジュール
-        if (ScheduleUtils.isView(field, rd.getPattern(), rd
-          .getStartDate()
-          .getValue(), rd.getEndDate().getValue())) {
+        boolean isClone = false;
+        boolean isSpan = false;
+        if (rd.getPattern().equals("S")
+          && !field.getValue().before(rd.getStartDate().getValue())
+          && !field.getValue().after(rd.getEndDate().getValue())) {
+          isClone = true;
+          isSpan = true;
+        }
+        if (!rd.getPattern().equals("S")
+          && ScheduleUtils.isView(field, rd.getPattern(), rd
+            .getStartDate()
+            .getValue(), rd.getEndDate().getValue())) {
+          isClone = true;
+        }
+        if (isClone) {
           Calendar temp = Calendar.getInstance();
           temp.setTime(field.getValue());
           temp
@@ -104,7 +116,8 @@ public class ScheduleListContainer implements ALData {
           addRd.setMember(rd.isMember());
           addRd.setType(rd.getType());
           // 繰り返しはON
-          addRd.setRepeat(true);
+          addRd.setRepeat(!isSpan);
+          addRd.setPattern(rd.getPattern());
           addResultDataInternal(addRd);
         }
       } else {

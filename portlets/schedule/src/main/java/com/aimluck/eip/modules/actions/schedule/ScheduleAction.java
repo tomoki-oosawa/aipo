@@ -43,6 +43,7 @@ import com.aimluck.eip.schedule.ScheduleFormData;
 import com.aimluck.eip.schedule.ScheduleMonthlySelectData;
 import com.aimluck.eip.schedule.ScheduleOnedayGroupSelectData;
 import com.aimluck.eip.schedule.ScheduleOnedaySelectData;
+import com.aimluck.eip.schedule.ScheduleSearchSelectData;
 import com.aimluck.eip.schedule.ScheduleSelectData;
 import com.aimluck.eip.schedule.ScheduleWeeklyGroupSelectData;
 import com.aimluck.eip.schedule.ScheduleWeeklySelectData;
@@ -186,6 +187,12 @@ public class ScheduleAction extends ALBaseAction {
           done = true;
         }
       }
+      if (("".equals(template)) || (!done)) {
+        template = "schedule-search-list";
+        if (template.equals(_template)) {
+          done = true;
+        }
+      }
       if ("".equals(template)) {
         template = _template;
       }
@@ -241,10 +248,14 @@ public class ScheduleAction extends ALBaseAction {
         // ブラウザ名を受け渡す．
         boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
-      } else {
+      } else if (template.equals("schedule-weekly-group")) {
         tab = "weekly-group";
         listData = new ScheduleWeeklyGroupSelectData();
         ((ScheduleWeeklyGroupSelectData) listData).setPortletId(portletId);
+      } else {
+        tab = "list";
+        listData = new ScheduleSearchSelectData();
+        ((ScheduleSearchSelectData) listData).setPortletId(portletId);
       }
 
       ALEipUtils.setTemp(rundata, context, "tab", tab);
