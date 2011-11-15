@@ -59,7 +59,6 @@ public class AddressBookGroupFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
 
-    formData.loadFilter(rundata, context);
     formData.loadAddresses(rundata, context);
 
     String layout_template = "portlets/html/ja/ajax-addressbook-group-form.vm";
