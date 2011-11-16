@@ -28,7 +28,7 @@
 #ALajaxdetailformheader("書き込み")
 #ALtableheaderWide()
 <tr>
-#ALtdheadheaderAtt("style='text-align:left; white-space: normal'")
+<td class="caption">
 #if ($!result.ParentTopic.CategoryId && $!result.ParentTopic.CategoryId.toString() != "1")
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardCategoryDetailScreen").addQueryData("entityid",$!result.ParentTopic.CategoryId))');">$!result.ParentTopic.CategoryName</a>
 #if(! $!{result.ParentTopic.isPublic()})
@@ -38,7 +38,7 @@
 $!result.ParentTopic.CategoryName
 #end
 ##&gt;&nbsp;$!{result.ParentTopic.TopicName}
-#ALtdheadfooter()
+</td>
 </tr>
 <tr>
 #ALtditemheader()
