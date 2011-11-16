@@ -39,7 +39,7 @@
 #ALtdcaption('ユーザー')
 #ALtditemheader()
 #foreach($record in $!result.Detail.UserNameList)
-$record<br />
+$!utils.escapeXML($record)<br />
 #end
 #ALtditemfooter()
 #ALtdcaption('メモ')
