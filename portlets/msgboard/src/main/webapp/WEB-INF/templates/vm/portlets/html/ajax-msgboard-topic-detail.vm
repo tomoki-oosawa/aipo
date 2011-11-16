@@ -48,10 +48,10 @@ $!result.ParentTopic.CategoryName
 投稿者：$!{result.ParentTopic.OwnerName}&nbsp;&nbsp;&nbsp;投稿日：$!{result.ParentTopic.CreateDate.Year}年$!{result.ParentTopic.CreateDate.Month}月$!{result.ParentTopic.CreateDate.Day}日$!{result.ParentTopic.CreateDate.Hour}時$!{result.ParentTopic.CreateDate.Minute}分
 </div>
 <div class="alignright">
-#if($!result.isMatch($!{result.UserId} , $!{result.ParentTopic.OwnerId.Value}) || $!result.hasAclUpdateTopicOthers())
+#if($!result.isMatch($!{result.UserId} , $!{result.ParentTopic.OwnerId.Value}) || $!{result.hasAclUpdateTopicOthers()})
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.msgboard.onLoadMsgboardDialog")
 #end
-#if($!result.isMatch($!{result.UserId} , $!{result.ParentTopic.OwnerId.Value}) || $!result.hasAclDeleteTopicOthers())
+#if($!result.isMatch($!{result.UserId} , $!{result.ParentTopic.OwnerId.Value}) || $!{result.hasAclDeleteTopicOthers()})
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.msgboard.onReceiveMessage")
 #end
 </div>
