@@ -33,7 +33,7 @@
 <li#if($!result.Viewtype == "oneday-group") class="active"#end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleListScreen").addQueryData("tab","oneday-group"))','$!portlet.ID');">日</a></li>
 <li#if($!result.Viewtype == "weekly-group") class="active"#end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleListScreen").addQueryData("tab","weekly-group"))','$!portlet.ID');">週</a></li>
 <li#if($!result.Viewtype == "monthly") class="active"#end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleListScreen").addQueryData("tab","monthly"))','$!portlet.ID');">月</a></li>
-<li#if($!result.Viewtype == "list") class="active"#end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleListScreen").addQueryData("tab","list"))','$!portlet.ID');">一覧</a></li>
+##<li#if($!result.Viewtype == "list") class="active"#end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleListScreen").addQueryData("tab","list"))','$!portlet.ID');">一覧</a></li>
 </ul>
 
 </div>

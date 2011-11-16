@@ -36,8 +36,8 @@
             </meta-info>
     	</parameter>
     	<parameter name="pba-template.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="pba-template.style.items" value="schedule-calendar,schedule-oneday-group,schedule-weekly-group,schedule-monthly,schedule-search-list" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="pba-template.style.values" value="ブロック,日,週,月,一覧" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="pba-template.style.items" value="schedule-calendar,schedule-oneday-group,schedule-weekly-group,schedule-monthly" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="pba-template.style.values" value="ブロック,日,週,月" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1a-rows" value="9" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>表示開始時間</title>
