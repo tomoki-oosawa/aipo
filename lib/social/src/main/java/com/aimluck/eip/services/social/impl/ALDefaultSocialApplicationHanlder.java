@@ -702,13 +702,12 @@ public class ALDefaultSocialApplicationHanlder extends
     if (priority >= 0f) {
       query.where(Operations.eq(Activity.PRIORITY_PROPERTY, priority));
     }
-    String keyword = request.getKeyword();
-    if ((keyword != null) && (!keyword.equals(""))) {
-      // 選択したキーワードを指定する．
-      keyword = "%" + keyword + "%";
-      query.where(Operations.like(Activity.TITLE_PROPERTY, keyword));
-      query.where(Operations.like(Activity.LOGIN_NAME_PROPERTY, keyword));
-    }
+    /*
+     * String keyword = request.getKeyword(); if ((keyword != null) &&
+     * (!keyword.equals(""))) { // 選択したキーワードを指定する． keyword = "%" + keyword +
+     * "%"; query.where(Operations.like(Activity.TITLE_PROPERTY, keyword));
+     * query.where(Operations.like(Activity.LOGIN_NAME_PROPERTY, keyword)); }
+     */
     String loginName = request.getLoginName();
     if (loginName != null && loginName.length() > 0) {
 

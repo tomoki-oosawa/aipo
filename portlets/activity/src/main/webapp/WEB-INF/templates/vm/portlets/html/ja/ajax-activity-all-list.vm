@@ -22,14 +22,14 @@
 ## ---------------------------------------------------------------------------
 <!-- Start Contents Area -->
 #AUIcontentsAreaHeader()
-<div class="auiSummaryMeta clearfix">
-<form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
-<input type="hidden" name="template" value="ActivityAllListScreen"/>
-<input class="text floatLeft" type="text" name="keyword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.targetKeyword"/>
-<a href="javascript:void(0);" tabindex="0" class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">検索</a>
-</a>
-</form>
-</div>
+##<div class="auiSummaryMeta clearfix">
+##<form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
+##<input type="hidden" name="template" value="ActivityAllListScreen"/>
+##<input class="text floatLeft" type="text" name="keyword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.targetKeyword"/>
+##<a href="javascript:void(0);" tabindex="0" class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">検索</a>
+##</a>
+##</form>
+##</div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 #ALajaxlistformheader('Activity')
 ## ---------------------------------------------------------------------------
@@ -41,7 +41,7 @@
 <div class="auiSummaryMeta clearfix">
 #AUIajaxpageview('ActivityAllListScreen' $result)
 </div>
-#AUIsearchresult($!result.targetKeyword.toString())
+###AUIsearchresult($!result.targetKeyword.toString())
 #AUIrowTableWide()
 <colgroup style="">
 </colgroup><colgroup style="width:8em;">
