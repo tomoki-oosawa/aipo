@@ -498,7 +498,7 @@ aimluck.io.postViewPage = function(form, portlet_id, indicator_id){
                 aimluck.io.disableForm(form, false);
                 var portlet = dijit.byId("portlet_" + portlet_id);
                 if(! portlet){
-                    portlet = new aimluck.widget.Contentpane({},'portlet_' + portletId);
+                    portlet = new aimluck.widget.Contentpane({},'portlet_' + portlet_id);
                 }
 
                 if(portlet){
