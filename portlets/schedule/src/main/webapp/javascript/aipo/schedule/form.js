@@ -716,6 +716,16 @@ aipo.schedule.setIndicator = function(portlet_id) {
 
     obj_content = dojo.byId('content-'+portlet_id);
     dojo.style(obj_content, "visibility" , "hidden");
+    var obj_garage = dojo.byId('scheduleGarage-'+portlet_id);
+    if(obj_garage){
+	    var child_num = obj_garage.childNodes.length;
+	    for(var i=0;i<child_num;i++){
+		    var obj_schedule = dojo.byId('schedule-'+i+'-'+portlet_id);
+		    if(obj_schedule){
+		    	dojo.style(obj_schedule, "visibility" , "hidden");
+		    }
+		}
+	}
     obj_indicator = dojo.byId('indicator-'+portlet_id);
     dojo.style(obj_indicator, "display" , "");
 }

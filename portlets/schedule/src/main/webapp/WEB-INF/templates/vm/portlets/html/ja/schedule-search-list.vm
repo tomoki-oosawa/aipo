@@ -64,6 +64,8 @@
 
 </div>
 
+<div id="content-$!portlet.ID" style="visibility:visible">
+
 <div class="auiForm">
     <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
         <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id","none"))">すべてのグループ</option>
@@ -95,7 +97,6 @@
 </div>
 
 <div class="indicator" id="indicator-$!portlet.ID" style="display:none">読み込み中...</div>
-<div id="content-$!portlet.ID" style="visibility:visible">
 
 <div id="listmessageDiv"></div>
 #if($result.ScheduleList.size() == 0)

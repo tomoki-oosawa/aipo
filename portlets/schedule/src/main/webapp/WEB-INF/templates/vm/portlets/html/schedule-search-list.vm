@@ -64,6 +64,8 @@
 
 </div>
 
+<div id="content-$!portlet.ID" style="visibility:visible">
+
 <div class="auiForm">
     <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
         <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id","none"))">すべてのグループ</option>
@@ -94,12 +96,13 @@
     </select>
 </div>
 
-#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
+<div class="indicator" id="indicator-$!portlet.ID" style="display:none">読み込み中...</div>
+
 <div id="listmessageDiv"></div>
 #if($result.ScheduleList.size() == 0)
 <div class="message">指定された条件に該当する予定はありません。</div>
 #else
-##AUIsearchresult($!result.targetKeyword.toString())
+#AUIsearchresult($!result.targetKeyword.toString())
 #AUIrowTableWide()
 <tr>
 <th class="w20">日時</th>
@@ -109,11 +112,24 @@
 #set($scheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.ScheduleId}).addQueryData('userid', $!{result.TargetUserId}).addQueryData('view_date', $!{record.ViewDate.toString()})")
 <tr>
 <td nowrap="nowrap">${record.DateFull}</td>
-<td><div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($scheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$!{record.WbrName}</a></div></td>
+<td><div>#if($record.isShowDetail())<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($scheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$!{record.WbrName}</a>#else$!{record.WbrName}#end
+&nbsp;#if(! ${record.isPublic()})
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
+#end
+#if($record.isDuplicate())
+<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="重複スケジュール" title="重複スケジュール" />
+#end
+#if(${record.isRepeat()})
+<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="繰り返し" title="繰り返し" />
+#end
+#if($record.isTmpreserve())
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />
+#end</div></td>
 </tr>
 #end
 #AUItablefooter()
 #end
+</div>
 
 #if($!ajax_onloadimage)
   <img src="images/common/dot.gif" width="1" height="1" onload="ptConfig['$!portlet.ID'].reloadFunction = aipo.reloadPage;" />
