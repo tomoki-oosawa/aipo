@@ -53,7 +53,7 @@
 <tr>
 #ALtdcellheader()
 <div>
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllDetailScreen").addQueryData("mode","detail").addQueryData("entityid",$record.RequestId).addQueryData("prvid",$record.RequestId))','$!portlet.ID',aipo.workflow.onFocusComment);">【$!record.CategoryName】#if($!record.RequestName != '') $!record.RequestName #end</a>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllDetailScreen").addQueryData("mode","detail").addQueryData("entityid",$record.RequestId).addQueryData("prvid",$record.RequestId))','$!portlet.ID',aipo.workflow.onFocusComment);">$!record.CategoryName#if($!record.RequestName != '') : $!record.RequestName #end</a>
 </div>
 #ALtdcellfooter()
 #ALtdcellAtt("$!{record.PriceStr}&nbsp;円" 'class="right" nowrap="nowrap"')
