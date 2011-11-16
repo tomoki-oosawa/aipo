@@ -21,10 +21,10 @@
 #if  ($mode=="new_form")
 #set ($action_str = "追加する")
 #set ($event_submit = "eventSubmit_doFacility_insert")
-#set ($subtitle = '施設追加')
+#set ($subtitle = '設備追加')
 #else
 #set ($action_str = "更新する")
-#set ($subtitle = '施設編集')
+#set ($subtitle = '設備編集')
 #set ($event_submit = "eventSubmit_doFacility_update")
 #end
 #set ($indicator_id = "indicator-dlg-")
@@ -46,7 +46,7 @@
 #ALtditemheader()
 #ALtextarea('note' $!result.Note 10 40)
 #ALtditemfooter()
-#ALtdcaption('施設グループ')
+#ALtdcaption('設備グループ')
 #ALtditemheader()
 ##foreach($record in $!result.FacilityGroupList)<option value="$!record.GroupId">$!record.GroupName</option>#end
 <div class="spaceTop spaceLeft small">左側にグループを追加してください。</div>
@@ -55,9 +55,9 @@
     widgetId="facilitygroupselect"
     buttonAddId="button_facility_add"
     buttonRemoveId="button_facility_remove"
-    memberFromTitle="選択施設グループ一覧"
+    memberFromTitle="選択設備グループ一覧"
     memberFromId="tmp_group_from"
-    memberToTitle="施設グループ一覧"
+    memberToTitle="設備グループ一覧"
     memberToId="group_to"
     memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupLiteJSONScreen').addQueryData('mode','post')"
     memberFromOptionKey="facilityGroupId"

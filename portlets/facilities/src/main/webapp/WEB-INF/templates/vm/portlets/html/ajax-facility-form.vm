@@ -21,10 +21,10 @@
 #if  ($mode=="new_form")
 #set ($action_str = "追加する")
 #set ($event_submit = "eventSubmit_doFacility_insert")
-#set ($subtitle = '施設追加')
+#set ($subtitle = '設備追加')
 #else
 #set ($action_str = "更新する")
-#set ($subtitle = '施設編集')
+#set ($subtitle = '設備編集')
 #set ($event_submit = "eventSubmit_doFacility_update")
 #end
 #set ($indicator_id = "indicator-dlg-")

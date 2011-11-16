@@ -70,7 +70,7 @@ public class CellScheduleFormFacilityData extends AbstractCellScheduleFormData {
   /** 総ページ数 */
   private int pages_num = 1;
 
-  /** <code>facilityList</code> 全ての施設一覧 */
+  /** <code>facilityList</code> 全ての設備一覧 */
   private List<FacilityResultData> facilityAllList;
 
   /**
@@ -271,7 +271,7 @@ public class CellScheduleFormFacilityData extends AbstractCellScheduleFormData {
   }
 
   /**
-   * 全ての施設メンバーを取得します。
+   * 全ての設備メンバーを取得します。
    * 
    * @return
    */

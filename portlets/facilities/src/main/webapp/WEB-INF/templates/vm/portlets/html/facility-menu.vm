@@ -27,8 +27,8 @@ dojo.addOnLoad(function () {
 
     var subMenu =
 		[
-		      {   caption: "施設一覧を見る", iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doFacility_list','1')"    },
-			  {   caption: "施設を追加する", iconClass: "menuBarIconAdd", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.facility.onLoadFacilityDialog);"}
+		      {   caption: "設備一覧を見る", iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doFacility_list','1')"    },
+			  {   caption: "設備を追加する", iconClass: "menuBarIconAdd", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.facility.onLoadFacilityDialog);"}
 		];
 
     if(aipo.facility.menuSelected == "undefined"){

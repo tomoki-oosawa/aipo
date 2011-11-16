@@ -37,7 +37,7 @@ import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
- * 施設の複数削除を行うためのクラスです。 <BR>
+ * 設備の複数削除を行うためのクラスです。 <BR>
  * 
  */
 public class FacilityMultiDelete extends ALAbstractCheckList {

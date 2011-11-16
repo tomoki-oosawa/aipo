@@ -95,7 +95,7 @@ public class AjaxScheduleAction extends ALBaseAction {
         portlet.getPortletConfig().getInitParameter("p3a-group");
       context.put("weekly_group", weekly_group);
 
-      // 初期選択ユーザー／施設を取得する
+      // 初期選択ユーザー／設備を取得する
       String init_user =
         portlet.getPortletConfig().getInitParameter("p3a-user");
       context.put("init_user", init_user);

@@ -74,7 +74,7 @@
 <input type="hidden" name="edit_flag" value="$!{result.FormData.EditFlag.toString()}">
 <input type="hidden" name="change_tmpreserve_flag" value="$!{result.FormData.ChangeTmpreserveFlag.toString()}">
 
-<h3>予約施設選択</h3>
+<h3>予約設備選択</h3>
 <script type="text/javascript">
 
 function swapCheckbox(id) {
@@ -84,7 +84,7 @@ function swapCheckbox(id) {
 
 </script>
 #if($memberlist.size() == 0)
-施設が未登録です。
+設備が未登録です。
 #else
 
 #if($result.PagesNum > 1)

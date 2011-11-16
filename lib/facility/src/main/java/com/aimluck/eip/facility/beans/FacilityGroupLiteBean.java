@@ -24,7 +24,7 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
 
 /**
- * 施設グループのBeanです。 <br />
+ * 設備グループのBeanです。 <br />
  * 
  */
 public class FacilityGroupLiteBean implements ALData, Cloneable {
@@ -32,7 +32,7 @@ public class FacilityGroupLiteBean implements ALData, Cloneable {
   /** FacilityGroup ID */
   private ALNumberField facility_group_id;
 
-  /** 施設グループ名 */
+  /** 設備グループ名 */
   private ALStringField facility_group_name;
 
   /**

@@ -45,7 +45,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 施設のフォームデータを管理するクラスです。 <BR>
+ * 設備のフォームデータを管理するクラスです。 <BR>
  * 
  */
 public class FacilityGroupFormData extends ALAbstractFormData {
@@ -54,15 +54,15 @@ public class FacilityGroupFormData extends ALAbstractFormData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(FacilityGroupFormData.class.getName());
 
-  /** 施設グループ名 */
+  /** 設備グループ名 */
   private ALStringField facility_group_name;
 
   private String facilitygroupid;
 
-  /** 施設リスト */
+  /** 設備リスト */
   private List<Object> facilityList;
 
-  /** 全施設リスト */
+  /** 全設備リスト */
   private List<FacilityResultData> facilityAllList;
 
   /**
@@ -92,26 +92,26 @@ public class FacilityGroupFormData extends ALAbstractFormData {
    */
   @Override
   public void initField() {
-    // 施設名
+    // 設備名
     facility_group_name = new ALStringField();
     facility_group_name.getFieldName();
-    facility_group_name.setFieldName("施設グループ名");
+    facility_group_name.setFieldName("設備グループ名");
     facility_group_name.setTrim(true);
 
-    // 施設リスト
+    // 設備リスト
     facilityList = new ArrayList<Object>();
   }
 
   /**
-   * 施設の各フィールドに対する制約条件を設定します。 <BR>
+   * 設備の各フィールドに対する制約条件を設定します。 <BR>
    * 
    * 
    */
   @Override
   protected void setValidator() {
-    // 施設グループ名必須項目
+    // 設備グループ名必須項目
     facility_group_name.setNotNull(true);
-    // 施設グループ名の文字数制限
+    // 設備グループ名の文字数制限
     facility_group_name.limitMaxLength(50);
   }
 
@@ -159,7 +159,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
   }
 
   /**
-   * 施設のフォームに入力されたデータの妥当性検証を行います。 <BR>
+   * 設備のフォームに入力されたデータの妥当性検証を行います。 <BR>
    * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
@@ -190,7 +190,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
       }
 
       if (query.fetchList().size() != 0) {
-        msgList.add("施設グループ名『 <span class='em'>"
+        msgList.add("設備グループ名『 <span class='em'>"
           + facility_group_name.toString()
           + "</span> 』は既に登録されています。");
       }
@@ -199,14 +199,14 @@ public class FacilityGroupFormData extends ALAbstractFormData {
       return false;
     }
 
-    // 施設グループ名
+    // 設備グループ名
     facility_group_name.validate(msgList);
     return (msgList.size() == 0);
 
   }
 
   /**
-   * 施設グループをデータベースから読み出します。 <BR>
+   * 設備グループをデータベースから読み出します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -223,10 +223,10 @@ public class FacilityGroupFormData extends ALAbstractFormData {
       if (facility == null) {
         return false;
       }
-      // 施設グループ名
+      // 設備グループ名
       facility_group_name.setValue(facility.getGroupName());
 
-      // facilitygroupのマップからその施設グループの施設リスト取得
+      // facilitygroupのマップからその設備グループの設備リスト取得
       SelectQuery<EipMFacilityGroupMap> mapquery =
         Database.query(EipMFacilityGroupMap.class);
       Expression mapexp =
@@ -257,7 +257,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
   }
 
   /**
-   * 施設グループをデータベースから削除します。 <BR>
+   * 設備グループをデータベースから削除します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -282,7 +282,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
           facility.getGroupId());
       fmaps.setQualifier(fexp);
       fmaps.deleteAll();
-      // 施設グループを削除
+      // 設備グループを削除
       Database.delete(facility);
       Database.commit();
       // orm.doDelete(facility);
@@ -295,7 +295,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
   }
 
   /**
-   * 施設グループをデータベースに格納します。 <BR>
+   * 設備グループをデータベースに格納します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -310,7 +310,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
       EipMFacilityGroup facilitygroup =
         Database.create(EipMFacilityGroup.class);
       rundata.getParameters().setProperties(facilitygroup);
-      // 施設グループ名
+      // 設備グループ名
       facilitygroup.setGroupName(facility_group_name.getValue());
 
       for (Object record : facilityList) {
@@ -320,7 +320,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
         map.setFacilityId((int) frd.getFacilityId().getValue());
         map.setEipMFacilityGroupId(facilitygroup);
       }
-      // 施設を登録
+      // 設備を登録
       Database.commit();
     } catch (Exception ex) {
       Database.rollback();
@@ -331,7 +331,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
   }
 
   /**
-   * データベースに格納されている施設を更新します。 <BR>
+   * データベースに格納されている設備を更新します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -388,9 +388,9 @@ public class FacilityGroupFormData extends ALAbstractFormData {
         insert.setFacilityId(map.getFacilityId());
         insert.setGroupId(facilityGroup.getGroupId());
       }
-      // 施設グループ名
+      // 設備グループ名
       facilityGroup.setGroupName(facility_group_name.getValue());
-      // 施設を更新
+      // 設備を更新
       Database.commit();
     } catch (Exception ex) {
       Database.rollback();
@@ -401,7 +401,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
   }
 
   /**
-   * 施設グループ名を取得します。 <BR>
+   * 設備グループ名を取得します。 <BR>
    * 
    * @return
    */
@@ -410,7 +410,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
   }
 
   /**
-   * 施設グループIdを取得します。 <BR>
+   * 設備グループIdを取得します。 <BR>
    * 
    * @return
    */
@@ -418,7 +418,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
     return facilitygroupid;
   }
 
-  /** 施設リストを取得します。 */
+  /** 設備リストを取得します。 */
   public List<FacilityResultData> getFacilityList() {
     List<FacilityResultData> _facilityList =
       new ArrayList<FacilityResultData>();

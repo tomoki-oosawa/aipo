@@ -370,7 +370,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
       return false;
     } else {
       /**
-       * 施設が入っている場合は、他人のスケジュールを見る権限があるかをチェックする
+       * 設備が入っている場合は、他人のスケジュールを見る権限があるかをチェックする
        */
       acl_feat = ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
     }
@@ -595,7 +595,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
       rd.setLoginuser(record.getUserId().intValue() == userid);
       // オーナーかどうか
       rd.setOwner(record.getOwnerId().intValue() == userid);
-      // 施設かどうか
+      // 設備かどうか
       rd.setType(record.getType());
       // 共有メンバーかどうか
       rd.setMember(record.isMember());

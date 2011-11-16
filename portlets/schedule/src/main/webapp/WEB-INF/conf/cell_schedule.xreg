@@ -48,11 +48,11 @@
         <parameter name="p1b-rows.style.values" value="13時,14時,15時,16時,17時,18時,19時,20時,21時,22時,23時,24時" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p3a-user" value="" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
-                <title>初期選択ユーザー／施設</title>
+                <title>初期選択ユーザー／設備</title>
             </meta-info>
         </parameter>
         <parameter name="p3a-user.style" value="UserFacilityListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p3a-user.style.initialvalue" value="（ユーザー／施設の選択）" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3a-user.style.initialvalue" value="（ユーザー／設備の選択）" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p3a-group" value="" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>初期選択グループ</title>

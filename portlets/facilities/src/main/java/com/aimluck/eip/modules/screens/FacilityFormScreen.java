@@ -29,7 +29,7 @@ import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 施設を処理するクラスです。 <br />
+ * 設備を処理するクラスです。 <br />
  * 
  */
 public class FacilityFormScreen extends ALVelocityScreen {

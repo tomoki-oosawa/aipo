@@ -73,10 +73,10 @@ public class ScheduleTooltipSelectData extends
   /** <code>statusList</code> メンバーの状態 */
   private Map<Integer, String> statusList;
 
-  /** <code>userid</code> ID（ユーザ or 施設） */
+  /** <code>userid</code> ID（ユーザ or 設備） */
   private int userid;
 
-  /** <code>type</code> マップ種別（ユーザ or 施設） */
+  /** <code>type</code> マップ種別（ユーザ or 設備） */
   private String type;
 
   /** <code>loginuserid</code> ログインユーザーID */
@@ -85,7 +85,7 @@ public class ScheduleTooltipSelectData extends
   /** <code>viewDate</code> 表示する日 */
   private ALDateTimeField view_date;
 
-  /** <code>facilities</code> 共有施設 */
+  /** <code>facilities</code> 共有設備 */
   private List<FacilityResultData> facilities;
 
   /** <code>hasAuthorityOtherEdit</code> アクセス権限 */
@@ -331,7 +331,7 @@ public class ScheduleTooltipSelectData extends
       // new Criteria().addIn(EipMFacilityConstants.FACILITY_ID, facilityIds));
 
       if (ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY.equals(type)) {
-        // 施設
+        // 設備
         ALEipUser facilityuser = new ALEipUser();
         facilityuser.initField();
         facilityuser.setUserId(userid);

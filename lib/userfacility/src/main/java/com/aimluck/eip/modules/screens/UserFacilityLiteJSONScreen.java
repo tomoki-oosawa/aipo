@@ -29,7 +29,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.userfacility.util.UserFacilityUtils;
 
 /**
- * 施設情報をJSONデータとして出力するクラスです。 <br />
+ * 設備情報をJSONデータとして出力するクラスです。 <br />
  * 
  */
 public class UserFacilityLiteJSONScreen extends ALJSONScreen {

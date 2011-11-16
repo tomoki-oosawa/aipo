@@ -31,7 +31,7 @@ import com.aimluck.eip.facilities.FacilityFormData;
 import com.aimluck.eip.facilities.FacilityMultiDelete;
 
 /**
- * 施設をJSONデータとして出力するクラスです。 <br />
+ * 設備をJSONデータとして出力するクラスです。 <br />
  * 
  */
 public class FacilityFormJSONScreen extends ALJSONScreen {

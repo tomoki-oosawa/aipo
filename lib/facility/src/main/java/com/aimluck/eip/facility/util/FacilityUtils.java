@@ -37,7 +37,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
- * 施設のユーティリティクラスです。 <br />
+ * 設備のユーティリティクラスです。 <br />
  * 
  */
 public class FacilityUtils {

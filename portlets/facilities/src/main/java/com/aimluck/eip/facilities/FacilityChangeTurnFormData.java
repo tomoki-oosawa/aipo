@@ -39,7 +39,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
- * 施設の順番情報のフォームデータを管理するためのクラスです。 <br />
+ * 設備の順番情報のフォームデータを管理するためのクラスです。 <br />
  */
 public class FacilityChangeTurnFormData extends ALAbstractFormData {
 
@@ -47,12 +47,12 @@ public class FacilityChangeTurnFormData extends ALAbstractFormData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(FacilityChangeTurnFormData.class.getName());
 
-  // 施設名のリスト　ソート後
+  // 設備名のリスト　ソート後
   private ALStringField positions;
 
   private String[] facilityIds = null;
 
-  /** 施設情報のリスト */
+  /** 設備情報のリスト */
   private List<EipMFacility> facilityList = null;
 
   /**
@@ -79,7 +79,7 @@ public class FacilityChangeTurnFormData extends ALAbstractFormData {
   public void initField() {
     // ユーザ名のリスト
     positions = new ALStringField();
-    positions.setFieldName("施設名リスト");
+    positions.setFieldName("設備名リスト");
     positions.setTrim(true);
   }
 
@@ -173,7 +173,7 @@ public class FacilityChangeTurnFormData extends ALAbstractFormData {
   }
 
   /**
-   * 『施設』を読み込みます。 <BR>
+   * 『設備』を読み込みます。 <BR>
    * 
    * @param rundata
    * @param context
@@ -192,7 +192,7 @@ public class FacilityChangeTurnFormData extends ALAbstractFormData {
   }
 
   /**
-   * 『施設』を追加します。 <BR>
+   * 『設備』を追加します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -206,7 +206,7 @@ public class FacilityChangeTurnFormData extends ALAbstractFormData {
   }
 
   /**
-   * 『施設』を更新します。 <BR>
+   * 『設備』を更新します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -233,7 +233,7 @@ public class FacilityChangeTurnFormData extends ALAbstractFormData {
   }
 
   /**
-   * 『施設』を削除します。 <BR>
+   * 『設備』を削除します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -273,7 +273,7 @@ public class FacilityChangeTurnFormData extends ALAbstractFormData {
   }
 
   /**
-   * 指定した施設IDのオブジェクトを取得する．
+   * 指定した設備IDのオブジェクトを取得する．
    * 
    * @param userList
    * @param userName

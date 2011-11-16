@@ -289,19 +289,19 @@
 </table>
 </div>
 #ALtditemfooter()
-#ALtdcaption('施設')
+#ALtdcaption('設備')
 #ALtditemheader()
 <div id="facilityFieldButton" style="display:#if($!{result.Span} || $!{result.PublicFlag.toString()} == "P")none#end"></div>
 <div id="facilityField" style="none">
-    <div class="spaceTop spaceLeft small">左側に施設を追加してください。</div>
+    <div class="spaceTop spaceLeft small">左側に設備を追加してください。</div>
     <div dojoType="aipo.widget.MemberNormalSelectList"
     id="facilityselect"
     widgetId="facilityselect"
     buttonAddId="button_facility_add"
     buttonRemoveId="button_facility_remove"
-    memberFromTitle="選択施設一覧"
+    memberFromTitle="選択設備一覧"
     memberFromId="tmp_facility_from"
-    memberToTitle="施設一覧"
+    memberToTitle="設備一覧"
     memberToId="facility_to"
     memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityLiteJSONScreen').addQueryData('groupname','$!result.FacilityGroupId')"
     memberFromOptionKey="facilityId"

@@ -103,7 +103,7 @@ $!record.AliasName
 #end
 </dd>
 
-<dt>共有施設</dt>
+<dt>共有設備</dt>
 <dd>
 #foreach($record in $!result.FacilityList)
 ${record.FacilityName}<br />

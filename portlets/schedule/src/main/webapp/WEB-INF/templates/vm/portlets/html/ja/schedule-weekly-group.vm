@@ -76,7 +76,7 @@
         <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
             <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter","").addQueryData("filtertype","group"))">$!result.UserName</option>
             <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter","").addQueryData("filtertype","group"))" #if ($!result.CurrentFilter && $!record.Name.toString() && $!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>----------</option>
-            <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter","Facility").addQueryData("filtertype","group"))" #if ($!result.CurrentFilter && $!result.CurrentFilter && $!result.CurrentFilter == "Facility") selected="selected" #end>施設一覧</option>
+            <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter","Facility").addQueryData("filtertype","group"))" #if ($!result.CurrentFilter && $!result.CurrentFilter && $!result.CurrentFilter == "Facility") selected="selected" #end>設備一覧</option>
             #foreach( $record in $result.GroupList )
     			<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter",$!record.Name).addQueryData("filtertype","group"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
             #end
@@ -94,7 +94,7 @@
 #end
 
 #if($result.MemberList.size() == 0 && $result.FacilityList.size() == 0)
-<div class="message">選択したグループには、ユーザーおよび施設が登録されていません。</div>
+<div class="message">選択したグループには、ユーザーおよび設備が登録されていません。</div>
 #else
 #ALtableheaderCalendar("100%")
 #set($entityids = "")
@@ -322,7 +322,7 @@ $!{record.ToDoResultData.TodoName}
 #end
 ### ToDoリスト（ここまで） ###
 #end
-### 施設スケジュール（ここから） ###
+### 設備スケジュール（ここから） ###
 #if ($roop > 0)
 ##<tr>
 ##foreach ( $num in [1..8] )
@@ -331,7 +331,7 @@ $!{record.ToDoResultData.TodoName}
 ##</tr>
 #end
 #foreach($record3 in $result.FacilityList)
-### 日付（曜日）の表示(施設用)（ここから）
+### 日付（曜日）の表示(設備用)（ここから）
 #if( $roop % 5 == 0)
 <tr>
 #ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
@@ -370,7 +370,7 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 </tr>
 #end
 #set($roop = $roop + 1)
-### 日付（曜日）の表示(施設用)（ここまで）
+### 日付（曜日）の表示(設備用)（ここまで）
 
 #set($record3rowcount = 1)
 #set($rowspanstr = "rowspan=$record3rowcount")
@@ -445,7 +445,7 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #end
 </tr>
 #end
-### 施設スケジュール（ここまで） ###
+### 設備スケジュール（ここまで） ###
 #ALtablefooter()
 #end
 </div>

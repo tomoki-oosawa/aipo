@@ -33,7 +33,7 @@ import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * スケジュールポートレット初期選択施設の設定値を処理するクラスです。 <br />
+ * スケジュールポートレット初期選択設備の設定値を処理するクラスです。 <br />
  */
 public class GroupFacilityListBox extends ListBox {
 
@@ -41,7 +41,7 @@ public class GroupFacilityListBox extends ListBox {
 
   public static final String FACILITY_VALUE = "Facility";
 
-  private final String DEF_INITIAL_VALUE = "（全体／施設の選択）";
+  private final String DEF_INITIAL_VALUE = "（全体／設備の選択）";
 
   /**
    * Initialize options
@@ -65,9 +65,9 @@ public class GroupFacilityListBox extends ListBox {
       groupValues[0] = (String) this.getParm(INITIAL_VALUE, DEF_INITIAL_VALUE);
       int count = 1;
 
-      // 施設一覧の登録
+      // 設備一覧の登録
       groupKeys[count] = FACILITY_VALUE;
-      groupValues[count] = "施設一覧";
+      groupValues[count] = "設備一覧";
       count++;
 
       // 部署の登録

@@ -25,7 +25,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>スケジュール</title>
-            <description>個人や施設、グループの予定を管理します。登録した予定を「日／週／月」で閲覧できます。</description>
+            <description>個人や設備、グループの予定を管理します。登録した予定を「日／週／月」で閲覧できます。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="schedule" hidden="true" cachedOnName="true" cachedOnValue="true"/>
@@ -72,18 +72,18 @@
         <parameter name="p2a-days.style.values" value="1日,2日,3日,4日,5日,6日,7日" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p3a-user" value="" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
-                <title>初期選択ユーザー／施設</title>
+                <title>初期選択ユーザー／設備</title>
             </meta-info>
         </parameter>
         <parameter name="p3a-user.style" value="UserFacilityListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p3a-user.style.initialvalue" value="（ユーザー／施設の選択）" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3a-user.style.initialvalue" value="（ユーザー／設備の選択）" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p3a-group" value="" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>初期選択グループ</title>
             </meta-info>
         </parameter>
         <parameter name="p3a-group.style" value="GroupFacilityListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p3a-group.style.initialvalue" value="（全体／施設の選択）" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3a-group.style.initialvalue" value="（全体／設備の選択）" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p3b-group" value="0" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>グループ表示時に、自分を上に表示</title>

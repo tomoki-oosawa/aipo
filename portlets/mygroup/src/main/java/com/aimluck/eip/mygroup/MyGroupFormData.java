@@ -71,10 +71,10 @@ public class MyGroupFormData extends ALAbstractFormData {
   /** メンバーリスト */
   private List<ALEipUser> memberList;
 
-  /** 施設リスト */
+  /** 設備リスト */
   private List<FacilityResultData> facilityList;
 
-  /** 全施設リスト */
+  /** 全設備リスト */
   private List<FacilityResultData> facilityAllList;
 
   /** ログインユーザ ID */
@@ -336,7 +336,7 @@ public class MyGroupFormData extends ALAbstractFormData {
           group.getGroupName());
       }
 
-      // グループに施設を追加する．
+      // グループに設備を追加する．
       Group jetspeedgroup = JetspeedSecurity.getGroup(group.getGroupName());
       int f_size = facilityList.size();
       for (int i = 0; i < f_size; i++) {
@@ -415,7 +415,7 @@ public class MyGroupFormData extends ALAbstractFormData {
           record.getGroupName());
       }
 
-      // グループから施設を削除
+      // グループから設備を削除
       List<Integer> oldFIdList =
         FacilitiesUtils.getFacilityIds(record.getGroupName());
       if (oldFIdList != null && oldFIdList.size() > 0) {
@@ -438,7 +438,7 @@ public class MyGroupFormData extends ALAbstractFormData {
         }
       }
 
-      // グループに施設を追加する．
+      // グループに設備を追加する．
       TurbineGroup tgroup =
         Database.get(TurbineGroup.class, Integer.valueOf(record.getId()));
 

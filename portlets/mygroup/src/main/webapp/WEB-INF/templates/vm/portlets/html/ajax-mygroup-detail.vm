@@ -40,7 +40,7 @@ $!{record.AliasName}#if($count < $size)<br />#end
 このグループにはメンバーが指定されていません。
 #end
 #ALtditemfooter()
-#ALtdcaption('所属施設')
+#ALtdcaption('所属設備')
 #ALtditemheader()
 #set($facilityList = $!result.getFacilityList($!{result.Detail.GroupName.Value}))
 #if($!facilityList.size() > 0)
@@ -51,7 +51,7 @@ $!record.FacilityName#if($count < $size)<br />#end
 #set($count = $count + 1)
 #end
 #else
-このグループには施設が指定されていません。
+このグループには設備が指定されていません。
 #end
 #ALtditemfooter()
 #ALtablefooter()

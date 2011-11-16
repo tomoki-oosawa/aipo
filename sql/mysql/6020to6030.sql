@@ -39,3 +39,8 @@ INSERT INTO eip_t_cabinet_folder_map VALUES(null,1,0,NULL);
 UPDATE `eip_t_cabinet_file` SET `counter` = 0 WHERE `counter` = '';
 UPDATE `eip_t_cabinet_file` SET `counter` = 0 WHERE `counter` IS NULL;
 -- 20111028
+
+-- 20111116
+UPDATE `eip_t_acl_portlet_feature` SET `feature_alias_name` = 'スケジュール（設備の予約）操作' WHERE `feature_id` = 113;
+UPDATE `eip_t_acl_role` SET `role_name` = 'スケジュール（設備の予約）操作' WHERE `role_id` = 3;
+-- 20111116

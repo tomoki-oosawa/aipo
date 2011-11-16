@@ -106,7 +106,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
   /** ポートレット ID */
   private String portletId;
 
-  /** <code>map</code> スケジュールMap（施設） */
+  /** <code>map</code> スケジュールMap（設備） */
   private Map<Integer, ScheduleOnedayContainer> facilitymap;
 
   private List<FacilityResultData> facilityList;
@@ -901,7 +901,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
   }
 
   /**
-   * 指定した施設のスケジュールリストを取得します。
+   * 指定した設備のスケジュールリストを取得します。
    * 
    * @param id
    * @return
@@ -912,7 +912,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
   }
 
   /**
-   * 指定した施設のrowsを取得します。
+   * 指定した設備のrowsを取得します。
    * 
    * @param id
    * @return
@@ -923,7 +923,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
   }
 
   /**
-   * 指定した施設の重複スケジュールリストを取得します。
+   * 指定した設備の重複スケジュールリストを取得します。
    * 
    * @param id
    * @return

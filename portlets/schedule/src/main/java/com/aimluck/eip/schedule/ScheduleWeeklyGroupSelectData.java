@@ -94,7 +94,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   /** ポートレット ID */
   private String portletId;
 
-  /** <code>map</code> スケジュールMap（施設） */
+  /** <code>map</code> スケジュールMap（設備） */
   private Map<Integer, ScheduleWeekContainer> facilitymap;
 
   private List<FacilityResultData> facilityList;
@@ -703,7 +703,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   }
 
   /**
-   * 施設の週間スケジュールコンテナを取得します。
+   * 設備の週間スケジュールコンテナを取得します。
    * 
    * @param id
    * @return

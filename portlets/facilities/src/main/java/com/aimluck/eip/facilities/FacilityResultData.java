@@ -38,7 +38,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 施設のResultDataです。 <BR>
+ * 設備のResultDataです。 <BR>
  * 
  */
 public class FacilityResultData implements ALData {
@@ -53,7 +53,7 @@ public class FacilityResultData implements ALData {
   /** ユーザーID */
   private ALNumberField user_id;
 
-  /** 施設名 */
+  /** 設備名 */
   private ALStringField facility_name;
 
   /** メモ */
@@ -65,7 +65,7 @@ public class FacilityResultData implements ALData {
   /** 更新日 */
   private ALStringField update_date;
 
-  /** 施設グループリスト */
+  /** 設備グループリスト */
   private List<EipMFacilityGroup> facility_group_list;
 
   /**
@@ -168,7 +168,7 @@ public class FacilityResultData implements ALData {
   }
 
   /**
-   * ある施設が所属する施設グループのリストを取得します
+   * ある設備が所属する設備グループのリストを取得します
    * 
    * @param postid
    * @return

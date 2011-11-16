@@ -100,7 +100,7 @@ public class ScheduleBean implements ALData, Cloneable {
   /** <code>is_editable</code> 共有メンバーによる編集／削除フラグ */
   private boolean is_editable;
 
-  /** <code>type</code> 施設かどうか */
+  /** <code>type</code> 設備かどうか */
   private ALStringField type;
 
   /** <code>rowspan</code> rowspan */

@@ -50,7 +50,7 @@ $!{result.FormData.StartDateTime2}から$!{result.FormData.EndDateTime2}
 </BLOCKQUOTE>
 #if($isDuplicateFacility=="true")
 <BLOCKQUOTE>
-施設予約が重複しています。
+設備予約が重複しています。
 </BLOCKQUOTE>
 #end
 #elseif($!{result.isSpan()})
@@ -65,7 +65,7 @@ $!{result.FormData.StartDateTime2}から$!{result.FormData.EndDateTime2}
 </BLOCKQUOTE>
 #if($isDuplicateFacility=="true")
 <BLOCKQUOTE>
-施設予約が重複しています。
+設備予約が重複しています。
 </BLOCKQUOTE>
 #end
 #end

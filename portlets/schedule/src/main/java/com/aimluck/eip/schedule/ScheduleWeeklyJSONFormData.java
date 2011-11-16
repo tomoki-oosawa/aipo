@@ -465,7 +465,7 @@ public class ScheduleWeeklyJSONFormData {
         schedule.setUpdateDate(now);
         schedule.setUpdateUserId(userId);
 
-        /* 施設重複判定 */
+        /* 設備重複判定 */
         {
           int listSize = scheduleMaps.size();
           List<Integer> facilityIdList = new ArrayList<Integer>();
@@ -638,7 +638,7 @@ public class ScheduleWeeklyJSONFormData {
           }
         }
 
-        /* 施設重複判定 */
+        /* 設備重複判定 */
         if (!ignore_duplicate_facility) {
           if (facilityIdList.size() > 0) {
             if (ScheduleUtils.isDuplicateFacilitySchedule(
@@ -797,7 +797,7 @@ public class ScheduleWeeklyJSONFormData {
           newScheduleMaps.add(newScheduleMap);
         }
 
-        /* 施設重複判定 */
+        /* 設備重複判定 */
         List<Integer> facilityIdList = new ArrayList<Integer>();
         for (EipTScheduleMap newScheduleMap : newScheduleMaps) {
           if (ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY.equals(newScheduleMap
@@ -964,7 +964,7 @@ public class ScheduleWeeklyJSONFormData {
           }
         }
 
-        // 施設重複判定
+        // 設備重複判定
         if (!ignore_duplicate_facility) {
           if (facilityIdList.size() > 0) {
             if (ScheduleUtils.isDuplicateFacilitySchedule(

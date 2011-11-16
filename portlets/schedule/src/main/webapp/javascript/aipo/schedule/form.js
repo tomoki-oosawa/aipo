@@ -129,7 +129,7 @@ aipo.schedule.showTooltip = function(obj, url, entityid, portlet_id, containerNo
             }
 
             if(mbfhtml != ""){
-                mbfhtml = "<span style=\"font-size: 0.90em;\">施設</span><br/><ul>" + mbfhtml + "</ul>";
+                mbfhtml = "<span style=\"font-size: 0.90em;\">設備</span><br/><ul>" + mbfhtml + "</ul>";
             }
 
             var tooltiphtml = "<h4>" + schedule.name + "</h4>" + datehtml + mbhtml + mbfhtml + placehtml;
@@ -543,7 +543,7 @@ aipo.schedule.onReceiveMessage = function(msg){
 
     if(msg != null && msg.match(/duplicate_facility/)){
 
-        if(confirm('既に同じ時間帯に施設が予約されています。スケジュールを登録しますか？')) {
+        if(confirm('既に同じ時間帯に設備が予約されています。スケジュールを登録しますか？')) {
 		    var form = dojo.byId('_scheduleForm');
 		    if(form){
 		      form.ignore_duplicate_facility.value = "true";
@@ -644,7 +644,7 @@ aipo.schedule.shrinkFacility = function(){
             }
         }
         HTML += "</td><td style=\"border:none;\">";
-        HTML += '<input type=\"button\" class=\"alignright\" value=\"施設予約\" onclick=\"aipo.schedule.expandFacility();\" />'
+        HTML += '<input type=\"button\" class=\"alignright\" value=\"設備予約\" onclick=\"aipo.schedule.expandFacility();\" />'
         HTML += "</td></tr></tbody></table>";
        node.innerHTML = HTML;
    }

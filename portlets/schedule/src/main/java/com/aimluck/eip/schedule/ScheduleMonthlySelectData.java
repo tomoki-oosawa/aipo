@@ -135,7 +135,7 @@ public class ScheduleMonthlySelectData extends
   /** ポートレット ID */
   private String portletId;
 
-  /** <code>facilityList</code> 表示切り替え用の施設リスト */
+  /** <code>facilityList</code> 表示切り替え用の設備リスト */
   private List<FacilityResultData> facilityList;
 
   /** 閲覧権限の有無 */
@@ -950,7 +950,7 @@ public class ScheduleMonthlySelectData extends
     target_user_id = ALEipUtils.getTemp(rundata, context, TARGET_USER_ID);
 
     if ("Facility".equals(getTargetGroupName())) {
-      // 表示グループで「施設一覧」が選択されている場合
+      // 表示グループで「設備一覧」が選択されている場合
       if (facilityList != null && facilityList.size() > 0) {
         if (idParam == null && (target_user_id == null)) {
           tmp_user_id = "";

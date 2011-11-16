@@ -30,13 +30,13 @@ import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * スケジュールポートレット初期選択施設の設定値を処理するクラスです。 <br />
+ * スケジュールポートレット初期選択設備の設定値を処理するクラスです。 <br />
  */
 public class UserFacilityListBox extends ListBox {
 
   public static final String INITIAL_VALUE = "initialvalue";
 
-  private final String DEF_INITIAL_VALUE = "（ユーザー／施設の選択）";
+  private final String DEF_INITIAL_VALUE = "（ユーザー／設備の選択）";
 
   /**
    * Initialize options

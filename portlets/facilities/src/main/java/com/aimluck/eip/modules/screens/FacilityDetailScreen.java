@@ -30,7 +30,7 @@ import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 施設の詳細画面を処理するクラスです。 <br />
+ * 設備の詳細画面を処理するクラスです。 <br />
  * 
  */
 public class FacilityDetailScreen extends ALVelocityScreen {

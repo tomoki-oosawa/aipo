@@ -90,7 +90,7 @@ public class ALAccessControlConstants {
   /** アクセス権限の機能名（スケジュール（他ユーザーの予定）） */
   public static final String POERTLET_FEATURE_SCHEDULE_OTHER = "schedule_other";
 
-  /** アクセス権限の機能名 (スケジュール 施設の予約操作) */
+  /** アクセス権限の機能名 (スケジュール 設備の予約操作) */
   public static final String POERTLET_FEATURE_SCHEDULE_FACILITY =
     "schedule_facility";
 

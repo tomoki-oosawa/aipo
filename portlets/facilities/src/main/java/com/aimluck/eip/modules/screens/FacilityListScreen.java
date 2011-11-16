@@ -28,7 +28,7 @@ import com.aimluck.eip.facilities.FacilitySelectData;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 施設の一覧を処理するクラスです。 <br />
+ * 設備の一覧を処理するクラスです。 <br />
  * 
  */
 public class FacilityListScreen extends FacilityScreen {

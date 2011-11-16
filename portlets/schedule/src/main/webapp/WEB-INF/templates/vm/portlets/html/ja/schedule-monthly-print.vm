@@ -131,7 +131,7 @@
 
 
 #if($!result.Users.size() <= 0 && $!result.FacilityList.size() <= 0)
-<div class="message">選択したグループには、ユーザーおよび施設が登録されていません。</div>
+<div class="message">選択したグループには、ユーザーおよび設備が登録されていません。</div>
 #else
 <div id="printBody" style="width:600px;font-size:10pt;">
 <h1>$!{result.User.AliasName} さん  $!{result.ViewMonth.Year} 年 $!{result.ViewMonth.Month} 月のスケジュール</h1>

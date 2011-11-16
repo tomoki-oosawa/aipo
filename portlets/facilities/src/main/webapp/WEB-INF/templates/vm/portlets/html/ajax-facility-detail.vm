@@ -20,11 +20,11 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheader("施設詳細")
+#ALdialogheader("設備詳細")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxdetailformheader("施設")
+#ALajaxdetailformheader("設備")
 #ALtableheaderWide()
-#ALtdcaption('施設詳細')
+#ALtdcaption('設備詳細')
 #ALtditemheader()
 $!result.Detail.FacilityName
 #ALtditemfooter()

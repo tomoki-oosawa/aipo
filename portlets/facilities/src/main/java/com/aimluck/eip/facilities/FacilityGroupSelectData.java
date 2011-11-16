@@ -39,7 +39,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 施設検索データを管理するクラスです。 <BR>
+ * 設備検索データを管理するクラスです。 <BR>
  * 
  */
 public class FacilityGroupSelectData extends
@@ -50,7 +50,7 @@ public class FacilityGroupSelectData extends
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(FacilityGroupSelectData.class.getName());
 
-  /** 施設グループの総数 */
+  /** 設備グループの総数 */
   private int facilitygroupSum;
 
   /**
@@ -90,7 +90,7 @@ public class FacilityGroupSelectData extends
       buildSelectQueryForListViewSort(query, rundata, context);
 
       ResultList<EipMFacilityGroup> list = query.getResultList();
-      // 施設の総数をセットする．
+      // 設備の総数をセットする．
       facilitygroupSum = list.getTotalCount();
 
       return list;
@@ -168,7 +168,7 @@ public class FacilityGroupSelectData extends
   }
 
   /**
-   * 施設の総数を返す． <BR>
+   * 設備の総数を返す． <BR>
    * 
    * @return
    */

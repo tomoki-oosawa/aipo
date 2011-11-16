@@ -24,7 +24,7 @@
 #ALtabheader($tabs "")
 #ALspacebothheader()
 #if($result.List.size() == 0)
-<div class="message">指定された条件に該当する施設はありません。</div>
+<div class="message">指定された条件に該当する設備はありません。</div>
 #else
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 #ALajaxlistformheader('イベントログ')

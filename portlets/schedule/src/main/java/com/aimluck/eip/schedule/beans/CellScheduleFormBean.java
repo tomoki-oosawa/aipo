@@ -96,7 +96,7 @@ public class CellScheduleFormBean implements ALData, Cloneable {
   /** <code>memberList</code> メンバーリスト */
   private List<ALEipUser> memberList;
 
-  /** <code>memberList</code> 施設メンバーリスト */
+  /** <code>memberList</code> 設備メンバーリスト */
   private List<FacilityResultData> facilityMemberList;
 
   /** <code>edit_control_flag</code> 共有メンバーによる編集／削除権限フラグ */
@@ -238,7 +238,7 @@ public class CellScheduleFormBean implements ALData, Cloneable {
     // メンバーリスト
     memberList = new ArrayList<ALEipUser>();
 
-    // 施設リスト
+    // 設備リスト
     facilityMemberList = new ArrayList<FacilityResultData>();
 
     // 共有メンバーによる編集／削除権限フラグ
@@ -645,7 +645,7 @@ public class CellScheduleFormBean implements ALData, Cloneable {
   }
 
   /**
-   * 施設一覧を取得します。
+   * 設備一覧を取得します。
    * 
    * @return
    */

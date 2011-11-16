@@ -39,7 +39,7 @@ public class ScheduleResultData implements ALData, Cloneable {
   /** <code>parent_id</code> 親スケジュール ID */
   private ALNumberField parent_id;
 
-  /** <code>type</code> 施設かどうか */
+  /** <code>type</code> 設備かどうか */
   private ALStringField type;
 
   /** <code>start_date</code> 開始時間 */

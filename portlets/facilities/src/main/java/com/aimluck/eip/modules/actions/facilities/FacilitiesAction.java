@@ -37,7 +37,7 @@ import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 施設予約のアクションクラスです。 <BR>
+ * 設備予約のアクションクラスです。 <BR>
  * 
  */
 public class FacilitiesAction extends ALBaseAction {
@@ -65,7 +65,7 @@ public class FacilitiesAction extends ALBaseAction {
   }
 
   /**
-   * 施設登録のフォームを表示します。 <BR>
+   * 設備登録のフォームを表示します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -80,7 +80,7 @@ public class FacilitiesAction extends ALBaseAction {
   }
 
   /**
-   * 施設を登録します。 <BR>
+   * 設備を登録します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -105,7 +105,7 @@ public class FacilitiesAction extends ALBaseAction {
   }
 
   /**
-   * 施設を更新します。 <BR>
+   * 設備を更新します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -130,7 +130,7 @@ public class FacilitiesAction extends ALBaseAction {
   }
 
   /**
-   * 施設を削除します。 <BR>
+   * 設備を削除します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -153,7 +153,7 @@ public class FacilitiesAction extends ALBaseAction {
   }
 
   /**
-   * 施設を一覧表示します。 <BR>
+   * 設備を一覧表示します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -172,7 +172,7 @@ public class FacilitiesAction extends ALBaseAction {
   }
 
   /**
-   * 施設を詳細表示します。 <BR>
+   * 設備を詳細表示します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -190,7 +190,7 @@ public class FacilitiesAction extends ALBaseAction {
   }
 
   /**
-   * 施設グループ登録のフォームを表示します。 <BR>
+   * 設備グループ登録のフォームを表示します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -205,7 +205,7 @@ public class FacilitiesAction extends ALBaseAction {
   }
 
   /**
-   * 施設グループを登録します。 <BR>
+   * 設備グループを登録します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -230,7 +230,7 @@ public class FacilitiesAction extends ALBaseAction {
   }
 
   /**
-   * 施設グループを更新します。 <BR>
+   * 設備グループを更新します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -255,7 +255,7 @@ public class FacilitiesAction extends ALBaseAction {
   }
 
   /**
-   * 施設グループを削除します。 <BR>
+   * 設備グループを削除します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -278,7 +278,7 @@ public class FacilitiesAction extends ALBaseAction {
   }
 
   /**
-   * 施設グループを一覧表示します。 <BR>
+   * 設備グループを一覧表示します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -297,7 +297,7 @@ public class FacilitiesAction extends ALBaseAction {
   }
 
   /**
-   * 施設グループを詳細表示します。 <BR>
+   * 設備グループを詳細表示します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -322,7 +322,7 @@ public class FacilitiesAction extends ALBaseAction {
    */
   public void doFacility_change_turn_form(RunData rundata, Context context)
       throws Exception {
-    // 施設情報の詳細画面や編集画面からの遷移時に，
+    // 設備情報の詳細画面や編集画面からの遷移時に，
     // セッションに残る ENTITY_ID を削除する．
     ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
 

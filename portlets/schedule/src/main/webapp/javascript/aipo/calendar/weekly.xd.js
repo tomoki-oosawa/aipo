@@ -50,7 +50,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
        _params += "&secid=" + secid.value;
     }
 
-    /*施設重複時はパラメータを追加しない*/
+    /*設備重複時はパラメータを追加しない*/
     if( _params.match(/ign_dup_f/) == null){
 	     if(member_to) {
 	       var t_o = member_to.options;
@@ -95,7 +95,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                return;
             } else if(data["errList"]){
                if("duplicate_facility" == data.errList[0]){
-                    if(confirm('既に同じ時間帯に施設が予約されています。スケジュールを登録しますか？')) {
+                    if(confirm('既に同じ時間帯に設備が予約されています。スケジュールを登録しますか？')) {
                         var new_param = _params + '&ign_dup_f=true'
                         aipo.calendar.populateWeeklySchedule(_portletId, new_param);
                         aipo.portletReload('schedule', _portletId);
@@ -247,7 +247,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                      str_tmpflgmb   =  "[共有]";
                     }
                     if(item.facilityCount > 0){
-                     str_tmpflgmb   += "[施設]";
+                     str_tmpflgmb   += "[設備]";
                     }
 
                 }
@@ -367,7 +367,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                          str_tmpflgmb   =  "[共有]";
                         }
                         if(fcount > 0){
-                         str_tmpflgmb   += "[施設]";
+                         str_tmpflgmb   += "[設備]";
                         }
                     }
 
@@ -751,7 +751,7 @@ aipo.calendar.showTooltip = function(url, portlet_id, containerNode) {
             }
 
             if(mbfhtml != ""){
-                mbfhtml = "<span style=\"font-size: 0.90em;\">施設</span><br/><ul>" + mbfhtml + "</ul>";
+                mbfhtml = "<span style=\"font-size: 0.90em;\">設備</span><br/><ul>" + mbfhtml + "</ul>";
             }
 
             var tooltiphtml = "<h4>" + data.name + "</h4>" + datehtml + mbhtml + mbfhtml + placehtml;

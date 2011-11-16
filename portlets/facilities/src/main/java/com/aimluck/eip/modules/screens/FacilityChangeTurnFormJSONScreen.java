@@ -30,7 +30,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.facilities.FacilityChangeTurnFormData;
 
 /**
- * 施設の順番情報をJSONデータとして出力するクラスです。 <br />
+ * 設備の順番情報をJSONデータとして出力するクラスです。 <br />
  * 
  */
 public class FacilityChangeTurnFormJSONScreen extends ALJSONScreen {

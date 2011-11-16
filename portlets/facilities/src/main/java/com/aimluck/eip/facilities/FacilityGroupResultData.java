@@ -37,7 +37,7 @@ import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
- * 施設グループのResultDataです。 <BR>
+ * 設備グループのResultDataです。 <BR>
  * 
  */
 public class FacilityGroupResultData implements ALData {
@@ -98,7 +98,7 @@ public class FacilityGroupResultData implements ALData {
   }
 
   /**
-   * あるグループに所属する施設のリストを取得します
+   * あるグループに所属する設備のリストを取得します
    * 
    * @param postid
    * @return

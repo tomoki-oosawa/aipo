@@ -25,16 +25,16 @@
 #ALdialogheader($subtitle)
 #ALerrmsg($errmsgs)
 #if((! $!result.FacilityList) || $result.FacilityList.size() == 0)
-<div class="message"> 施設は登録されていません。</div>
+<div class="message"> 設備は登録されていません。</div>
 #else
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-<div style="padding:0px 0px 5px 5px"><img src="images/account/account_up_10.gif" align="absmiddle">&nbsp;<img src="images/account/account_up_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_10.gif" align="absmiddle">&nbsp;の各ボタンで、マウスで選択した施設の順番を自由に変更できます。<br>
+<div style="padding:0px 0px 5px 5px"><img src="images/account/account_up_10.gif" align="absmiddle">&nbsp;<img src="images/account/account_up_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_10.gif" align="absmiddle">&nbsp;の各ボタンで、マウスで選択した設備の順番を自由に変更できます。<br>
 Windows では 『Ctrl キー + マウスクリック』、Macintosh では 『コマンドキー+マウスクリック』 で複数選択ができます。</div>
 #ALajaxscreenformheader("FacilityChangeTurnForm" $jslink $portlet "FacilityChangeTurnFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.facility.onReceiveMessage)")
 <input type="hidden" name="mode" value="update">
 <input type="hidden" name="positions" value="">
 #ALtableheaderWide()
-#ALtdcaptionAtt('施設一覧' 'width="200" nowrap')
+#ALtdcaptionAtt('設備一覧' 'width="200" nowrap')
 <td class="item" width="100%" >
 <table width="100%" border="0" cellpadding="0" cellspacing="0"><tr>
 <td width="23" style="border-width:0; padding: 0px;"><table border="0" style="padding: 0px;">

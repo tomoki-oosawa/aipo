@@ -685,7 +685,7 @@ public class ScheduleUtils {
   }
 
   /**
-   * 施設メンバーを取得します。
+   * 設備メンバーを取得します。
    * 
    * @param rundata
    * @param context
@@ -2953,7 +2953,7 @@ public class ScheduleUtils {
         return false;
       }
 
-      // 施設予約状況をチェックする
+      // 設備予約状況をチェックする
       if (facilityIdList.size() > 0) {
         List<Integer> fids = facilityIdList;
         SelectQuery<EipTScheduleMap> fquery =

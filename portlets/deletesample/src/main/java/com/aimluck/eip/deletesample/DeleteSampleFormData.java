@@ -705,7 +705,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
       }
       Database.deleteAll(schedulelist2);
 
-      // 施設の削除
+      // 設備の削除
       if (deleteFacilityId.size() > 0) {
         Expression fexp =
           ExpressionFactory.inDbExp(

@@ -45,7 +45,7 @@
 
 #set($fmembersize = $!{result.FormData.FacilityMemberList.size()})
 #if($fmembersize > 0)
-共有施設：#ALcell_br($career)
+共有設備：#ALcell_br($career)
 <ul>
 #foreach($record in $!{result.FormData.FacilityMemberList})
 #ALcell_li_header($career)$!{record.FacilityName}#ALcell_li_footer($career)

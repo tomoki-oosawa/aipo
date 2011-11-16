@@ -18,21 +18,21 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set($tabs = [["施設一覧", "",""]])
+#set($tabs = [["設備一覧", "",""]])
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
 #ALtabheader($tabs "")
 #ALspacebothheader()
 #if($result.List.size() == 0)
-<div class="message">指定された条件に該当する施設はありません。</div>
+<div class="message">指定された条件に該当する設備はありません。</div>
 #else
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
-#ALajaxlistformheader('施設')
+#ALajaxlistformheader('設備')
 #ALajaxpageview('FacilityListScreen' $result)
 #ALtableheaderWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
-#ALtdheadWide("#ALajaxsort('facility_name' '施設' $result 'FacilityListScreen')")
+#ALtdheadWide("#ALajaxsort('facility_name' '設備' $result 'FacilityListScreen')")
 #ALtdheadThin(' ')
 </tr>
 #foreach ($record in $result.List)
@@ -46,7 +46,7 @@
 #end
 #ALtablefooter()
 #ALbuttonheaderRight()
-選択した施設を #ALajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.facility.onReceiveMessage")
+選択した設備を #ALajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.facility.onReceiveMessage")
 #ALbuttonfooterRight()
 #ALajaxpageviewFooter('FacilityListScreen' $result)
 #ALformfooter()

@@ -216,13 +216,13 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>isOwner</code> 所有者かどうか */
   private boolean is_owner;
 
-  /** <code>is_facility</code> 施設を予約するかどうか */
+  /** <code>is_facility</code> 設備を予約するかどうか */
   private boolean is_facility;
 
-  /** 施設リスト */
+  /** 設備リスト */
   private List<Object> facilityList;
 
-  /** 全施設リスト */
+  /** 全設備リスト */
   private List<FacilityResultData> facilityAllList;
 
   /** <code>todo_id</code> ToDo ID */
@@ -566,7 +566,7 @@ public class ScheduleFormData extends ALAbstractFormData {
     del_range_flag = new ALNumberField();
     del_range_flag.setValue(FLAG_DEL_RANGE_ALL);
 
-    // 施設リスト
+    // 設備リスト
     facilityList = new ArrayList<Object>();
 
     // 2007.3.28 ToDo連携
@@ -940,13 +940,13 @@ public class ScheduleFormData extends ALAbstractFormData {
       List<String> msgList) throws ALDBErrorException {
     EipTSchedule schedule = null;
     try {
-      // 施設のアクセスコントロールのチェック
+      // 設備のアクセスコントロールのチェック
       int f_size = facilityList.size();
       if (!facilityCheckAclPermission(
         rundata,
         ALAccessControlConstants.VALUE_ACL_INSERT)
         && f_size > 0) {
-        msgList.add(" 施設を予約する権限がありません ");
+        msgList.add(" 設備を予約する権限がありません ");
         return false;
       }
 
@@ -1098,7 +1098,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         map.setType(ScheduleUtils.SCHEDULEMAP_TYPE_USER);
       }
 
-      // 完全に隠すスケジュール以外の場合は、グループに施設を追加する
+      // 完全に隠すスケジュール以外の場合は、グループに設備を追加する
       if (("O".equals(public_flag.toString()) || "C".equals(public_flag
         .toString()))
         && !(is_span)) {
@@ -1118,7 +1118,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         }
       }
 
-      /* 施設重複判定 */
+      /* 設備重複判定 */
       if (!ignore_duplicate_facility) {
         if (facilityList.size() > 0) {
           ArrayList<Integer> facilityIds = new ArrayList<Integer>();
@@ -1273,13 +1273,13 @@ public class ScheduleFormData extends ALAbstractFormData {
       // int ownerid = ALEipUtils.getUserId(rundata);
       int ownerid = schedule.getOwnerId();
 
-      // 施設のアクセスコントロールのチェック
+      // 設備のアクセスコントロールのチェック
       if (!facilityCheckAclPermission(
         rundata,
         ALAccessControlConstants.VALUE_ACL_UPDATE)) {
         int[] old_ids = ScheduleUtils.getFacilityIds(schedule);
         if (old_ids.length != facilityList.size()) {
-          msgList.add(" 施設を予約する権限がありません ");
+          msgList.add(" 設備を予約する権限がありません ");
           return false;
         }
         boolean check = false;
@@ -1293,7 +1293,7 @@ public class ScheduleFormData extends ALAbstractFormData {
             }
           }
           if (!check) {
-            msgList.add(" 施設を予約する権限がありません ");
+            msgList.add(" 設備を予約する権限がありません ");
             return false;
           }
           check = false;
@@ -1403,7 +1403,7 @@ public class ScheduleFormData extends ALAbstractFormData {
             map.setType(ScheduleUtils.SCHEDULEMAP_TYPE_USER);
           }
 
-          // 完全に隠すスケジュール以外の場合は、グループに施設を追加する
+          // 完全に隠すスケジュール以外の場合は、グループに設備を追加する
           if (("O".equals(public_flag.toString()) || "C".equals(public_flag
             .toString()))
             && !(is_span)) {
@@ -1460,7 +1460,7 @@ public class ScheduleFormData extends ALAbstractFormData {
           facilityIds[i] = facilityIdList.get(i).intValue();
         }
 
-        // 施設重複判定
+        // 設備重複判定
         if (!ignore_duplicate_facility) {
           if (facilityIdList.size() > 0) {
             if (ScheduleUtils.isDuplicateFacilitySchedule(
@@ -1631,7 +1631,7 @@ public class ScheduleFormData extends ALAbstractFormData {
           schedule.addToEipTScheduleMaps(map);
         }
 
-        // 完全に隠すスケジュール以外の場合は、グループに施設を追加する
+        // 完全に隠すスケジュール以外の場合は、グループに設備を追加する
         if (("O".equals(public_flag.toString()) || "C".equals(public_flag
           .toString()))
           && !(is_span)) {
@@ -1650,7 +1650,7 @@ public class ScheduleFormData extends ALAbstractFormData {
           }
         }
 
-        // 施設重複判定
+        // 設備重複判定
         if (!ignore_duplicate_facility) {
           if (facilityList.size() > 0) {
             ArrayList<Integer> fids = new ArrayList<Integer>();
@@ -1827,7 +1827,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         memberIdList[i] = (int) memberList.get(i).getUserId().getValue();
       }
 
-      // 同時に削除する施設ID一覧を取得する。
+      // 同時に削除する設備ID一覧を取得する。
       int[] facilityIdList = ScheduleUtils.getFacilityIds(schedule);
 
       ScheduleUtils.insertDummySchedule(
@@ -1856,7 +1856,7 @@ public class ScheduleFormData extends ALAbstractFormData {
     List<?> scheduleMaps = ScheduleUtils.getEipTScheduleMaps(schedule);
     if (scheduleMaps != null && scheduleMaps.size() > 0) {
       if (isFacility) {
-        // 施設を削除する場合
+        // 設備を削除する場合
         for (Object reocrd : scheduleMaps) {
           EipTScheduleMap scheduleMap = (EipTScheduleMap) reocrd;
           if (ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY.equals(scheduleMap
@@ -1986,7 +1986,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         int[] facilityIdList = null;
         if (dummy_count >= user_count - 1) {
           // if( 登録済みダミースケジュール数合計 >= スケジュール参加者数 - 今回予定を消す人 )
-          // 全員の予定が消されているので、同時に削除する施設ID一覧を取得する。
+          // 全員の予定が消されているので、同時に削除する設備ID一覧を取得する。
           facilityIdList = ScheduleUtils.getFacilityIds(schedule);
         }
         ScheduleUtils.insertDummySchedule(
@@ -2026,7 +2026,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       if (rundata.getParameters().containsKey("userid")) {
         userid = rundata.getParameters().getInt("userid");
       }
-      boolean is_facility = false; // 削除のユーザIDが施設かどうか
+      boolean is_facility = false; // 削除のユーザIDが設備かどうか
       if (rundata.getParameters().containsKey("type")) {
         is_facility =
           ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY.equals(rundata

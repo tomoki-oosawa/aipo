@@ -89,7 +89,7 @@ $!record.AliasName
 #end
 #end
 
-#ALcell_dt($career '共有施設')
+#ALcell_dt($career '共有設備')
 #foreach($record in $!result.FacilityList)
 #ALcell_dd_header($career)
 ${record.FacilityName}

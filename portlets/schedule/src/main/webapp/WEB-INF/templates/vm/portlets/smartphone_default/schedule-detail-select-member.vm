@@ -110,7 +110,7 @@ $!record.AliasName
 </td>
 </tr>
 <tr>
-#ALtdhead('共有施設')
+#ALtdhead('共有設備')
 <td>
 #foreach($record in $!result.FacilityList)
 ${record.FacilityName}<br />

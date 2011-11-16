@@ -46,7 +46,7 @@ $!{result.FormData.LimitEndDateDate2}まで
 <h3>時間</h3>
 $!{result.FormData.StartDateTime2}から$!{result.FormData.EndDateTime2}まで
 #if($isDuplicateFacility=="true")
-施設予約が重複しています。
+設備予約が重複しています。
 #end
 #elseif($!{result.isSpan()})
 <h3>期間</h3>
@@ -58,7 +58,7 @@ $!{result.FormData.StartDateDate2}
 <h3>時間</h3>
 $!{result.FormData.StartDateTime2}から$!{result.FormData.EndDateTime2}まで
 #if($isDuplicateFacility=="true")
-施設予約が重複しています。
+設備予約が重複しています。
 #end
 #end
 #ALcell_formheader($career $jslink $portlet)

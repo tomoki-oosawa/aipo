@@ -218,7 +218,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           context.put("isDuplicateFacility", "true");
         }
       }
-      // 施設のアクセスコントロールのチェック
+      // 設備のアクセスコントロールのチェック
       int acltype =
         (ALEipConstants.MODE_NEW_FORM.equals(getMode()))
           ? ALAccessControlConstants.VALUE_ACL_INSERT
@@ -228,7 +228,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           int[] old_ids = ScheduleUtils.getFacilityIds(schedule);
           boolean check = false;
           if (old_ids.length != facilityList.size()) {
-            msgList.add(" 施設を予約する権限がありません ");
+            msgList.add(" 設備を予約する権限がありません ");
             res = false;
           } else {
             for (int old_id : old_ids) {
@@ -241,7 +241,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
                 }
               }
               if (!check) {
-                msgList.add(" 施設を予約する権限がありません ");
+                msgList.add(" 設備を予約する権限がありません ");
                 res = false;
               }
               check = false;
@@ -249,7 +249,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           }
         } else {
           if (facilityList.size() > 0) {
-            msgList.add(" 施設を予約する権限がありません ");
+            msgList.add(" 設備を予約する権限がありません ");
             res = false;
           }
         }
@@ -586,7 +586,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         map.setType(ScheduleUtils.SCHEDULEMAP_TYPE_USER);
       }
 
-      // 完全に隠すスケジュール以外の場合は、グループに施設を追加する
+      // 完全に隠すスケジュール以外の場合は、グループに設備を追加する
       boolean isFacility = false;
       if ("O".equals(public_flag.getValue())
         || "C".equals(public_flag.getValue())) {
@@ -604,12 +604,12 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           map.setCommonCategoryId(Integer.valueOf(1));
         }
       }
-      // 施設のアクセスコントロールのチェック
+      // 設備のアクセスコントロールのチェック
       if (isFacility
         && !facilityCheckAclPermission(
           rundata,
           ALAccessControlConstants.VALUE_ACL_INSERT)) {
-        msgList.add(" 施設を予約する権限がありません ");
+        msgList.add(" 設備を予約する権限がありません ");
         return false;
       }
 
@@ -758,7 +758,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         // アップデート失敗時は、スケジュールの一覧を表示させる．
         return true;
       }
-      // 施設のアクセスコントロールのチェック
+      // 設備のアクセスコントロールのチェック
       List<FacilityResultData> facilityList =
         CellScheduleUtils.getShareFacilityMemberList(rundata);
       if (!facilityCheckAclPermission(
@@ -766,7 +766,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         ALAccessControlConstants.VALUE_ACL_UPDATE)) {
         int[] old_ids = ScheduleUtils.getFacilityIds(schedule);
         if (old_ids.length != facilityList.size()) {
-          msgList.add(" 施設を予約する権限がありません ");
+          msgList.add(" 設備を予約する権限がありません ");
           return false;
         }
         boolean check = false;
@@ -780,7 +780,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
             }
           }
           if (!check) {
-            msgList.add(" 施設を予約する権限がありません ");
+            msgList.add(" 設備を予約する権限がありません ");
             return false;
           }
           check = false;
@@ -882,7 +882,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
             map.setType(ScheduleUtils.SCHEDULEMAP_TYPE_USER);
           }
 
-          // グループに施設を追加する．
+          // グループに設備を追加する．
           if ("O".equals(public_flag.getValue())
             || "C".equals(public_flag.getValue())) {
             for (FacilityResultData frd : form_data.getFacilityMemberList()) {

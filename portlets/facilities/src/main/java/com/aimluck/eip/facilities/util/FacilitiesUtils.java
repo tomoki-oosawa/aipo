@@ -40,7 +40,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 施設のユーティリティクラスです。 <BR>
+ * 設備のユーティリティクラスです。 <BR>
  * 
  */
 public class FacilitiesUtils {
@@ -52,7 +52,7 @@ public class FacilitiesUtils {
   public static final String FACILITIES_PORTLET_NAME = "Facilities";
 
   /**
-   * 施設オブジェクトモデルを取得します。 <BR>
+   * 設備オブジェクトモデルを取得します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -78,7 +78,7 @@ public class FacilitiesUtils {
   }
 
   /**
-   * 施設グループオブジェクトモデルを取得します。 <BR>
+   * 設備グループオブジェクトモデルを取得します。 <BR>
    * 
    * @param rundata
    * @param context
