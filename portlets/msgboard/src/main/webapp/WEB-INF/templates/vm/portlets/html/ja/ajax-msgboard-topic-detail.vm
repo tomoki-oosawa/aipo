@@ -66,7 +66,7 @@ $!{result.ParentTopic.Note}
 #if($attachmentFile.isImage())
 <div style="padding-top:3px;padding-left:12px;">
 <div id='popc' style='position:absolute'></div>
-<a href="javascript:aipo.msgboard.popupCenter('$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)');"><img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+<a href="javascript:void(0);" onclick="aipo.msgboard.popupCenter('$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)');"><img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
 &nbsp;（マウスのクリックで画像を拡大縮小できます）
 </div>
 #end
