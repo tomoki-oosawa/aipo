@@ -41,14 +41,16 @@
 <img border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("BlogFileThumbnailScreen").addQueryData("ownerid", $!{result.Detail.OwnerId}).addQueryData("entityid", $!result.Detail.EntryId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
 #end
 #end
-#if($!result.isMatch($!{result.UserId} , $!{result.Detail.OwnerId.Value}))
 #ALcell_formheader($career $jslink $portlet)
 <input type="hidden" name="entityid" value=${result.Detail.EntryId}>
 <input type="hidden" name="mode" value="delete">
+#if($result.Editable)
 <input type="submit" class="submit" name="eventSubmit_doBlog_entry_form" value="編集する">
-<input type="submit" class="submit" name="eventSubmit_doBlog_entry_detail" value="削除する">
-#ALcell_formfooter()
 #end
+#if($result.Deletable)
+<input type="submit" class="submit" name="eventSubmit_doBlog_entry_detail" value="削除する">
+#end
+#ALcell_formfooter()
 #ALcell_hr($career '1')
 ｺﾒﾝﾄ一覧
 #ALcell_hr($career '1')
@@ -64,7 +66,7 @@
 <dd>$!{record.UpdateDateAlternative.Year}/$!{record.UpdateDateAlternative.Month}/$!{record.UpdateDateAlternative.Day}&nbsp;$!{record.UpdateDateAlternative.Hour}:$!{record.UpdateDateAlternative.Minute}</dd>
 #ALcell_dt($career "ｺﾒﾝﾄ")
 #ALcell_dd($career $!{record.Comment})
-#if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}))
+#if($!result.CommentDeletable)
 #ALcell_formheader($career $jslink $portlet)
 <input type="hidden" name="entityid" value=${result.Detail.EntryId}>
 <input type="hidden" name="comment_id" value=${record.CommentId}>

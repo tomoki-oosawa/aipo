@@ -1484,9 +1484,10 @@ INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(111,'schedule_self','スケジュ�
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(112,'schedule_other','スケジュール（他ユーザーの予定）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(113,'schedule_facility','スケジュール（設備の予約）操作',12);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(121,'blog_entry_self','ブログ（自分の記事）操作',31);
-INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(122,'blog_entry_other','ブログ（他ユーザーの記事）操作',3);
+INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(122,'blog_entry_other','ブログ（他ユーザーの記事）操作',27);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(123,'blog_entry_reply','ブログ（記事へのコメント）操作',20);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(124,'blog_theme','ブログ（テーマ）操作',31);
+INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(125,'blog_entry_other_reply','ブログ（他ユーザーの記事へのコメント）操作',16);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(131,'msgboard_topic','掲示板（トピック）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(132,'msgboard_topic_reply','掲示板（トピック返信）操作',20);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(133,'msgboard_category','掲示板（自分のカテゴリ）操作',31);

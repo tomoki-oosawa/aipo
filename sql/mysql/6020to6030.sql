@@ -44,3 +44,8 @@ UPDATE `eip_t_cabinet_file` SET `counter` = 0 WHERE `counter` IS NULL;
 UPDATE `eip_t_acl_portlet_feature` SET `feature_alias_name` = 'スケジュール（設備の予約）操作' WHERE `feature_id` = 113;
 UPDATE `eip_t_acl_role` SET `role_name` = 'スケジュール（設備の予約）操作' WHERE `role_id` = 3;
 -- 20111116
+
+-- 20111116
+UPDATE `eip_t_acl_portlet_feature` SET `acl_type` = 27 WHERE `feature_id` = 122;
+INSERT INTO `eip_t_acl_portlet_feature` VALUES(125,'blog_entry_other_reply','ブログ（他ユーザーの記事へのコメント）操作',16);
+-- 20111116

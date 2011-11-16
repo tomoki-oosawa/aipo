@@ -828,4 +828,52 @@ public class BlogUtils {
       .witchPriority(1f)
       .withExternalId(String.valueOf(blog.getEntryId())));
   }
+
+  /**
+   * アクセス権限をチェックします。
+   * 
+   * @return
+   */
+  public static boolean checkPermission(RunData rundata, Context context,
+      int defineAclType, String pfeature) {
+
+    if (defineAclType == 0) {
+      return true;
+    }
+
+    if (pfeature == null || "".equals(pfeature)) {
+      return true;
+    }
+
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+    boolean hasAuthority =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        pfeature,
+        defineAclType);
+
+    return hasAuthority;
+  }
+
+  public static int getViewId(RunData rundata, Context context, int uid)
+      throws ALDBErrorException {
+    int view_uid = -1;
+    EipTBlogEntry record = BlogUtils.getEipTBlogEntry(rundata, context);
+    if (record != null) {
+      view_uid = record.getOwnerId();
+    } else {
+      if (rundata.getParameters().containsKey("view_uid")) {
+        view_uid =
+          Integer.parseInt(rundata.getParameters().getString("view_uid"));
+      } else {
+        view_uid = uid;
+      }
+    }
+    ALEipUtils.setTemp(rundata, context, "view_uid", String.valueOf(view_uid));
+
+    return view_uid;
+  }
 }

@@ -47,22 +47,24 @@ function onCommentDelete(form) {
 <img border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("BlogFileThumbnailScreen").addQueryData("ownerid", $!{result.Detail.OwnerId}).addQueryData("entityid", $!result.Detail.EntryId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
 #end
 #end
-#if($!result.isMatch($!{result.UserId} , $!{result.Detail.OwnerId.Value}))
 #ALcell_formheader($career $jslink $portlet)
 <input type="hidden" name="mode" value="delete">
 <p class="right ma0">
+#if($result.Editable)
 <input class="submit" type="submit" name="eventSubmit_doBlog_entry_form" value="編集する">
+#end
+#if($result.Deletable)
 <input class="submit" type="button" onClick="onEntryDelete(this.form);return false" name="eventSubmit_doBlog_entry_detail" value="削除する">
+#end
 </p>
 #ALcell_formfooter()
-#end
 <h3>コメント一覧</h3>
 #if(!$!result.CommentList || $!result.CommentList.size() <= 0)
 <p class="center">コメントはありません。</p>
 #else
 #foreach ($record in $result.CommentList)
 #ALcell_blog_comment($career $!{record})
-#if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}))
+#if($!result.CommentDeletable)
 #ALcell_formheader($career $jslink $portlet)
 <input type="hidden" name="entityid" value=${result.Detail.EntryId}>
 <input type="hidden" name="comment_id" value=${record.CommentId}>

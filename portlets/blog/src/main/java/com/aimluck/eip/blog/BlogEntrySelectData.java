@@ -114,6 +114,12 @@ public class BlogEntrySelectData extends
 
   private String userAccountURI;
 
+  private boolean editable;
+
+  private boolean deletable;
+
+  private boolean comment_deletable;
+
   /** アクセス権限の機能名 */
   private String aclPortletFeature = null;
 
@@ -215,18 +221,7 @@ public class BlogEntrySelectData extends
 
     super.init(action, rundata, context);
 
-    EipTBlogEntry record = BlogUtils.getEipTBlogEntry(rundata, context);
-    if (record != null) {
-      view_uid = record.getOwnerId();
-    } else {
-      if (rundata.getParameters().containsKey("view_uid")) {
-        view_uid =
-          Integer.parseInt(rundata.getParameters().getString("view_uid"));
-      } else {
-        view_uid = uid;
-      }
-    }
-    ALEipUtils.setTemp(rundata, context, "view_uid", String.valueOf(view_uid));
+    view_uid = BlogUtils.getViewId(rundata, context, uid);
 
     // 顔写真の取得
     ALBaseUser user = BlogUtils.getBaseUser(view_uid);
@@ -240,13 +235,40 @@ public class BlogEntrySelectData extends
     view_uname = view_user.getAliasName();
 
     // アクセス権
+    String comment_aclPortletFeature = null;
     if (view_uid == uid) {
       aclPortletFeature =
         ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_SELF;
+      comment_aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_REPLY;
     } else {
       aclPortletFeature =
         ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER;
+      comment_aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER_REPLY;
     }
+
+    // 編集権限の有無
+    editable =
+      BlogUtils.checkPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_UPDATE,
+        aclPortletFeature);
+    // 削除権限の有無
+    deletable =
+      BlogUtils.checkPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_DELETE,
+        aclPortletFeature);
+    // コメント削除権限の有無
+    comment_deletable =
+      BlogUtils.checkPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_DELETE,
+        comment_aclPortletFeature);
   }
 
   /**
@@ -849,6 +871,18 @@ public class BlogEntrySelectData extends
 
   public String getUserAccountURI() {
     return userAccountURI;
+  }
+
+  public boolean getEditable() {
+    return editable;
+  }
+
+  public boolean getDeletable() {
+    return deletable;
+  }
+
+  public boolean getCommentDeletable() {
+    return comment_deletable;
   }
 
   /**

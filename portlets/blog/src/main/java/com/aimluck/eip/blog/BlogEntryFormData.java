@@ -109,6 +109,9 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   private String orgId;
 
+  /** アクセス権限の機能名 */
+  private String aclPortletFeature = null;
+
   /**
    * 
    * @param action
@@ -136,6 +139,16 @@ public class BlogEntryFormData extends ALAbstractFormData {
     } else {
       has_photo = false;
     }
+
+    int view_uid = BlogUtils.getViewId(rundata, context, uid);
+    // アクセス権
+    if (view_uid == uid) {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_SELF;
+    } else {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER;
+    }
   }
 
   /**
@@ -156,7 +169,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
     note = new ALStringField();
     note.setFieldName("記事");
     note.setTrim(false);
-    // カテゴリID
+    // ブログID
     blog_id = new ALNumberField();
     blog_id.setFieldName("ブログ");
     // カテゴリID
@@ -570,8 +583,6 @@ public class BlogEntryFormData extends ALAbstractFormData {
         entry.setNote(note.getValue());
         // カテゴリID
         entry.setEipTBlogThema(thema);
-        // ユーザーID
-        entry.setOwnerId(Integer.valueOf(uid));
         // コメント付加フラグ
         entry.setAllowComments("T");
         // 作成日
@@ -737,7 +748,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
    */
   @Override
   public String getAclPortletFeature() {
-    return ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_SELF;
+    return aclPortletFeature;
   }
 
   public void setThemaId(long i) {

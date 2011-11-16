@@ -371,7 +371,7 @@ $record.Note
 <table width="100%"  border="0" cellspacing="0" cellpadding="0"><tbody>
 <tr>
 <td align="right"> #if(${record.CommentsNum} == 0) コメント(0) #else <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData('entityid',$record.EntryId))','$!portlet.ID',aipo.blog.onLoadBlogCommentDialog);">コメント(${record.CommentsNum}) </a> #end | <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData('entityid',$record.EntryId))','$!portlet.ID',aipo.blog.onLoadBlogCommentDialog);">続きはこちら </a>
-#if($result.LoginUid == $result.ViewUid)
+#if($result.Editable)
 | <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryFormScreen").addQueryData('eventSubmit_doBlog_entry_form','1').addQueryData('entityid',$record.EntryId))','$!portlet.ID',aipo.blog.onLoadBlogDialog);">編集 </a>
 #end
 </td>

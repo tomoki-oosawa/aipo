@@ -81,9 +81,8 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
   /** <code>login_user</code> ログインユーザー */
   private ALEipUser login_user;
 
-  // private int uid;
-  //
-  // private int view_uid;
+  /** アクセス権限の機能名 */
+  private String aclPortletFeature = null;
 
   /**
    * 
@@ -132,6 +131,16 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
     // }
     // }
 
+    int uid = ALEipUtils.getUserId(rundata);
+    int view_uid = BlogUtils.getViewId(rundata, context, uid);
+    // アクセス権
+    if (view_uid != uid && "commentdel".equals(action.getMode())) {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER_REPLY;
+    } else {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_REPLY;
+    }
   }
 
   /**
@@ -574,7 +583,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
    */
   @Override
   public String getAclPortletFeature() {
-    return ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_REPLY;
+    return aclPortletFeature;
   }
 
 }

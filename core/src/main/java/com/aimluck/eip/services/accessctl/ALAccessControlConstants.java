@@ -62,6 +62,10 @@ public class ALAccessControlConstants {
   public static final String POERTLET_FEATURE_BLOG_ENTRY_REPLY =
     "blog_entry_reply";
 
+  /** アクセス権限の機能名（ブログ（他ユーザーへのコメント）） */
+  public static final String POERTLET_FEATURE_BLOG_ENTRY_OTHER_REPLY =
+    "blog_entry_other_reply";
+
   /** アクセス権限の機能名（ブログ（テーマ）） */
   public static final String POERTLET_FEATURE_BLOG_THEME = "blog_theme";
 
@@ -168,5 +172,5 @@ public class ALAccessControlConstants {
     "portlet_customize";
 
   /** 現在のロール総数 */
-  public static final int ROLE_NUM = 29;
+  public static final int ROLE_NUM = 30;
 }
