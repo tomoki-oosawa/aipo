@@ -710,6 +710,7 @@ public class ScheduleAction extends ALBaseAction {
     List<String> list = new ArrayList<String>();
     list.add("entityid");
     list.add("target_user_id");
+    list.add(ScheduleUtils.TARGET_KEYWORD);
     ALEipUtils.removeTemp(rundata, context, list);
   }
 
