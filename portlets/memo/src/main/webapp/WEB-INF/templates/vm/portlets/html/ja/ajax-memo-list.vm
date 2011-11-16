@@ -34,7 +34,7 @@
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader('Memo')
 #if($result.List.size() == 0)
-<div class="message">指定された条件に該当するMemoはありません。</div>
+<div class="message">指定された条件に該当するメモはありません。</div>
 #else
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft">
