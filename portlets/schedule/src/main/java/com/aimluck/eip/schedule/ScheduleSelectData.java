@@ -105,6 +105,8 @@ public class ScheduleSelectData extends
   /** アクセスコントロール用の変数 */
   private String aclPortletFeature;
 
+  private boolean activity = false;
+
   /**
    * 
    * @param action
@@ -201,6 +203,11 @@ public class ScheduleSelectData extends
         loginuserid,
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
         ALAccessControlConstants.VALUE_ACL_DELETE);
+
+    String option = rundata.getParameters().getString("activityId", null);
+    if (option != null && !option.isEmpty()) {
+      activity = true;
+    }
 
   }
 
@@ -541,4 +548,9 @@ public class ScheduleSelectData extends
   public boolean hasAuthoritySelfInsert() {
     return hasAuthoritySelfInsert;
   }
+
+  public boolean isActivity() {
+    return activity;
+  }
+
 }
