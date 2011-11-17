@@ -260,10 +260,6 @@ public class BlogUtils {
           EipTBlogComment.COMMENT_ID_PK_COLUMN,
           Integer.valueOf(commentid));
       query.setQualifier(exp1);
-      Expression exp2 =
-        ExpressionFactory.matchExp(EipTBlogComment.OWNER_ID_PROPERTY, Integer
-          .valueOf(userid));
-      query.andQualifier(exp2);
       List<EipTBlogComment> comments = query.fetchList();
       if (comments == null || comments.size() == 0) {
         // 指定した トピック ID のレコードが見つからない場合
