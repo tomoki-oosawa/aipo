@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.blog;
 
+import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
@@ -57,6 +58,10 @@ public class BlogThemaSelectData extends
   /** テーマの総数 */
   private int themaSum;
 
+  private List<BlogThemaResultData> themaList;
+
+  private int uid;
+
   /**
    * 
    * @param action
@@ -72,6 +77,9 @@ public class BlogThemaSelectData extends
       logger
         .debug("[BlogCategorySelectData] Init Parameter. : " + "thema_name");
     }
+
+    themaList = BlogUtils.getThemaList(rundata, context);
+    uid = ALEipUtils.getUserId(rundata);
 
     super.init(action, rundata, context);
   }
@@ -189,6 +197,14 @@ public class BlogThemaSelectData extends
 
   public int getThemaSum() {
     return themaSum;
+  }
+
+  public List<BlogThemaResultData> getThemaList() {
+    return themaList;
+  }
+
+  public int getLoginUid() {
+    return uid;
   }
 
   /**

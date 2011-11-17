@@ -18,44 +18,44 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogEntryFormScreen').addQueryData('entityid','new')))
-#set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogThemaFormScreen").addQueryData("entityid","new")))
-#set ($submenulist = [["記事を書く","javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.blog.onLoadBlogDialog);","images/icon/icon_add.gif"], ["テーマを追加する","javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.blog.onLoadBlogThemaDialog);","images/icon/icon_add.gif"]])
-#set ($tabs = [["テーマ一覧", "",""]])
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
-#ALsubmenubar($submenulist "")
-#ALajaxtabheader($tabs "")
-#ALspacebothheader()
+#AUIcontentsAreaHeader()
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALformheader('テーマ' $jslink $portlet)
 #if($result.List.size() <= 0)
 <div class="message">複数の記事をグループ化することで、記事を分類することができます。</div>
-<div class="message">『テーマ追加』 ボタンを押して、追加してください。 </div>
+<div class="message">『テーマを追加する』 ボタンを押して、追加してください。 </div>
 #else
-#ALajaxpageview('BlogThemaListScreen' $result)
-#ALtableheaderWide()
+#AUISummaryDiv()
+<div class="floatLeft">
+#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogEntryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.blog.onListReceiveMessage")<span class="caution">（テーマに含まれる記事はすべて『未分類』に移動されます。）</span>
+</div>
+#AUIajaxpageview('BlogThemaListScreen' $result)
+#AUISummaryDivfooter()
+#AUIrowTableWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
 #ALtdheadWide("#ALajaxsort('thema_name' 'テーマ名' $result 'BlogThemaListScreen')")
-#ALtdheadThin(' ')
 </tr>
 #foreach ($record in $result.List)
 <tr>
 #ALtdcellAtt("<input name='check$!record.ThemaId' type='checkbox' value='$!record.ThemaId'/>" 'align="center"')
 #ALtdcellheader()
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogThemaDetailScreen").addQueryData("entityid",$!record.ThemaId))');">$!record.ThemaName</a>
+<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogThemaDetailScreen").addQueryData("entityid",$!record.ThemaId))');">$!record.ThemaName</a></div>
 #ALtdcellfooter()
-#ALtdcellAtt("#ALajaxbuttonLinkCallback('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogThemaFormScreen').addQueryData('entityid', $!record.ThemaId) 'images/icon/icon_edit.gif' $!portlet.ID 'aipo.blog.onLoadBlogThemaDialog')" 'nowrap=nowrap')
 </tr>
 #end
-#ALtablefooter()
-#ALbuttonheaderRight()
-選択したテーマを #ALajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogEntryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.blog.onListReceiveMessage")<span class="caution">（テーマに含まれる記事はすべて『未分類』に移動されます。）</span>
-#ALbuttonfooterRight()
-#ALajaxpageviewFooter('BlogThemaListScreen' $result)
+#AUItablefooter()
+
+#AUISummaryDiv()
+<div class="floatLeft">
+#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogEntryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.blog.onListReceiveMessage")<span class="caution">（テーマに含まれる記事はすべて『未分類』に移動されます。）</span>
+</div>
+#AUIajaxpageview('BlogThemaListScreen' $result)
+#AUISummaryDivfooter()
 #end
 #ALformfooter()
-#ALspacebothfooter()
-#ALtabfooter()
+#AUIcontentsAreaFooter()
+#parse("/portlets/html/ja/blog-widgets.vm")

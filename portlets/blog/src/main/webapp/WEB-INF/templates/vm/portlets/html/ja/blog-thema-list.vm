@@ -26,10 +26,8 @@
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
     ptConfig['$!portlet.ID'] = { group:"blog", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogThemaListScreen"))', reloadFunction:aipo.reloadPage };
-	aipo.blog.menuSelected = 1;
 //]]>
 </script>
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
 #parse("/portlets/html/ja/ajax-blog-thema-list.vm")
 #ALcontentfooter()
-#parse("/portlets/html/ja/blog-menu.vm")

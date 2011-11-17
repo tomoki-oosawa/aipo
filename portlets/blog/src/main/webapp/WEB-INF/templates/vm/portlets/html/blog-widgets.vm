@@ -1,0 +1,55 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+#set($newEntryUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogEntryFormScreen').addQueryData('entityid','new')))
+#set($newThemaUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogThemaFormScreen").addQueryData("entityid","new")))
+#set($themaEditUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template', "BlogThemaListScreen")))
+
+<div id="auiWidgetsArea">
+<div class="auiWidget clearfix">
+#AUIbuttonAction("記事を作成する" "javascript:aipo.common.showDialog('$newEntryUrl','$!portlet.ID',aipo.blog.onLoadBlogDialog);")
+</div>
+<div class="auiWidget clearfix">
+<ul>
+<li#if ($!result.OwnerId == "all") class="active"#end>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("ownerid", "all"))', '$!portlet.ID');">新しい記事</a>
+</li>
+<li#if ($!result.OwnerId == $!result.LoginUid.toString()) class="active"#end>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("ownerid", ${result.LoginUid}))', '$!portlet.ID');">自分の記事</a>
+</li>
+</ul>
+</div>
+<div class="auiWidget clearfix">
+<ul>
+#set($themaFilterUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("themeid", "all")))
+<li#if (${result.ThemeId} == "all") class="active"#end>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$themaFilterUrl', '$!portlet.ID');">すべてのテーマ</a>
+</li>
+#foreach( $record in $result.ThemaList )
+#set($themaFilterUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("themeid", $!record.ThemaId.toString())))
+<li#if (${result.ThemeId} == $!record.ThemaId.toString()) class="active"#end>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$themaFilterUrl', '$!portlet.ID');">$!record.ThemaName</a>
+</li>
+#end
+</ul>
+<div style="margin:0.5em 0;">
+#AUIbutton("テーマを追加する" "javascript:aipo.common.showDialog('$newThemaUrl','$!portlet.ID',aipo.blog.onLoadBlogThemaDialog);")
+</div>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$themaEditUrl', '$!portlet.ID');">テーマの管理・削除</a>
+</div>
+</div>

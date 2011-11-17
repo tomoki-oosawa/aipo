@@ -24,11 +24,11 @@
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
-    ptConfig['$!portlet.ID'] = { group:"blog", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogScreen"))', reloadFunction:aipo.reloadPage };
+    ptConfig['$!portlet.ID'] = { group:"blog", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen"))', reloadFunction:aipo.reloadPage };
 
 //]]>
 </script>
-#if($!result.hasAuthority())
+#if($!result.hasAuthority() && $!hasMinimumAuthority)
 #parse("/portlets/html/ja/ajax-blog.vm")
 #else
 #parse("/portlets/html/PermissionError.vm")

@@ -22,8 +22,8 @@ package com.aimluck.eip.blog;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
@@ -33,25 +33,18 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.blog.util.BlogUtils;
-import com.aimluck.eip.blog.util.calendar.CalendarElement;
-import com.aimluck.eip.blog.util.calendar.Day;
-import com.aimluck.eip.blog.util.calendar.Month;
-import com.aimluck.eip.blog.util.calendar.MonthCalendar;
-import com.aimluck.eip.cayenne.om.portlet.EipTBlog;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogComment;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
-import com.aimluck.eip.cayenne.om.portlet.EipTBlogFootmarkMap;
-import com.aimluck.eip.cayenne.om.portlet.EipTBlogThema;
 import com.aimluck.eip.common.ALAbstractSelectData;
-import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.common.ALEipGroup;
+import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
@@ -62,6 +55,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALUserContextLocator;
 
 /**
  * ブログエントリー検索データを管理するクラスです。 <BR>
@@ -86,25 +80,7 @@ public class BlogEntrySelectData extends
 
   private int uid;
 
-  /** 月カレンダ */
-  private Month month;
-
-  /** <code>viewStart</code> 表示開始日時 */
-  private ALDateTimeField viewStart;
-
-  /** <code>viewEndCrt</code> 表示終了日時 (Criteria) */
-  private ALDateTimeField viewEndCrt;
-
-  /** <code>viewMonth</code> 現在の月 */
-  private ALDateTimeField viewMonth;
-
-  /** <code>prevMonth</code> 前の月 */
-  private ALDateTimeField prevMonth;
-
-  /** <code>nextMonth</code> 次の月 */
-  private ALDateTimeField nextMonth;
-
-  private String viewDay;
+  private String ownerId;
 
   private int view_uid;
 
@@ -123,6 +99,16 @@ public class BlogEntrySelectData extends
   /** アクセス権限の機能名 */
   private String aclPortletFeature = null;
 
+  private ALStringField keyword;
+
+  private String themeId;
+
+  private String groupId;
+
+  private List<BlogUserResultData> userList;
+
+  private List<ALEipGroup> myGroupList;
+
   /**
    * 
    * @param action
@@ -134,86 +120,25 @@ public class BlogEntrySelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
     uid = ALEipUtils.getUserId(rundata);
 
+    ALEipUtils.removeTemp(rundata, context, LIST_FILTER_STR);
+    ALEipUtils.removeTemp(rundata, context, LIST_FILTER_TYPE_STR);
     ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
+
     if (rundata.getParameters().containsKey(ALEipConstants.ENTITY_ID)) {
       ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, rundata
         .getParameters()
         .get(ALEipConstants.ENTITY_ID));
     }
 
-    // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
-    if (ALEipUtils.isMatch(rundata, context)) {
-      // スケジュールの表示開始日時
-      // e.g. 2004-3-14
-      if (rundata.getParameters().containsKey("view_month")) {
-        String v_month = rundata.getParameters().getString("view_month");
-        if ("none".equals(v_month)) {
-          ALEipUtils.removeTemp(rundata, context, "view_month");
-        } else {
-          ALEipUtils.setTemp(rundata, context, "view_month", v_month);
-          ALEipUtils.removeTemp(rundata, context, "view_day");
-        }
-      }
+    ownerId = BlogUtils.getOwnerId(rundata, context);
+    themeId = BlogUtils.getThemeId(rundata, context);
 
-      if (rundata.getParameters().containsKey("view_day")) {
-        ALEipUtils.setTemp(rundata, context, "view_day", rundata
-          .getParameters()
-          .getString("view_day"));
-      }
+    keyword = new ALStringField(BlogUtils.getKeyword(rundata, context));
 
-    }
+    groupId = BlogUtils.getGroupId(rundata, context);
+    userList = BlogUtils.getBlogUserResultDataList(getGroupId());
 
-    // POST/GET から yyyy-MM の形式で受け渡される。
-    // 現在の月
-    viewMonth = new ALDateTimeField("yyyy-MM");
-    // 前の月
-    prevMonth = new ALDateTimeField("yyyy-MM");
-    // 次の月
-    nextMonth = new ALDateTimeField("yyyy-MM");
-
-    // 表示開始日時
-    viewStart = new ALDateTimeField("yyyy-MM-dd");
-    // 表示終了日時 (Criteria)
-    viewEndCrt = new ALDateTimeField("yyyy-MM-dd");
-
-    // 現在の月
-    String tmpViewMonth = ALEipUtils.getTemp(rundata, context, "view_month");
-    if (tmpViewMonth == null || tmpViewMonth.equals("")) {
-      Calendar cal = Calendar.getInstance();
-      cal.set(Calendar.DATE, 1);
-      cal.set(Calendar.HOUR_OF_DAY, 0);
-      cal.set(Calendar.MINUTE, 0);
-      viewMonth.setValue(cal.getTime());
-    } else {
-      viewMonth.setValue(tmpViewMonth);
-      if (!viewMonth.validate(new ArrayList<String>())) {
-        ALEipUtils.removeTemp(rundata, context, "view_month");
-        throw new ALPageNotFoundException();
-      }
-    }
-
-    viewDay = ALEipUtils.getTemp(rundata, context, "view_day");
-
-    // 月表示
-    // 表示開始日時
-    Calendar cal = Calendar.getInstance();
-    cal.setTime(viewMonth.getValue());
-    cal.set(Calendar.DATE, 1);
-    viewStart.setValue(cal.getTime());
-    // 表示終了日時
-    cal.add(Calendar.MONTH, 1);
-    viewEndCrt.setValue(cal.getTime());
-
-    // 次の月、前の月
-    Calendar cal2 = Calendar.getInstance();
-    cal2.setTime(viewMonth.getValue());
-    cal2.add(Calendar.MONTH, 1);
-    nextMonth.setValue(cal2.getTime());
-    cal2.add(Calendar.MONTH, -2);
-    prevMonth.setValue(cal2.getTime());
-
-    // ブログカレンダーをロードする．
-    loadMonthCalendar();
+    myGroupList = ALEipUtils.getMyGroups(rundata);
 
     // ポートレット AccountPerson のへのリンクを取得する．
     userAccountURI =
@@ -223,20 +148,9 @@ public class BlogEntrySelectData extends
 
     view_uid = BlogUtils.getViewId(rundata, context, uid);
 
-    // 顔写真の取得
-    ALBaseUser user = BlogUtils.getBaseUser(view_uid);
-    if (user.getPhoto() != null) {
-      has_photo = true;
-    } else {
-      has_photo = false;
-    }
-
-    ALEipUser view_user = ALEipUtils.getALEipUser(view_uid);
-    view_uname = view_user.getAliasName();
-
     // アクセス権
     String comment_aclPortletFeature = null;
-    if (view_uid == uid) {
+    if (!ownerId.equals("all") && ownerId.equals(Integer.toString(uid))) {
       aclPortletFeature =
         ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_SELF;
       comment_aclPortletFeature =
@@ -281,45 +195,6 @@ public class BlogEntrySelectData extends
     themaList = BlogUtils.getThemaList(rundata, context);
   }
 
-  private void loadMonthCalendar() {
-    MonthCalendar c = new MonthCalendar();
-    month =
-      c.createCalendar(Integer.parseInt(viewMonth.getYear()), Integer
-        .parseInt(viewMonth.getMonth()));
-  }
-
-  private void loadFootmark(EipTBlog blog) throws Exception {
-    footmarkList = new ArrayList<BlogFootmarkResultData>();
-
-    SelectQuery<EipTBlogFootmarkMap> query =
-      Database.query(EipTBlogFootmarkMap.class);
-    Expression exp =
-      ExpressionFactory.matchExp(EipTBlogFootmarkMap.BLOG_ID_PROPERTY, blog
-        .getBlogId());
-    query.setQualifier(exp);
-    query.orderDesending(EipTBlogFootmarkMap.UPDATE_DATE_PROPERTY);
-    query.limit(10);
-    List<EipTBlogFootmarkMap> list = query.fetchList();
-
-    if (list != null && list.size() > 0) {
-      int size = list.size();
-      for (int i = 0; i < size; i++) {
-        EipTBlogFootmarkMap record = list.get(i);
-        BlogFootmarkResultData footmark = new BlogFootmarkResultData();
-        footmark.initField();
-        footmark.setUserId(record.getUserId().longValue());
-        footmark.setUserName(BlogUtils.getUserFullName(record
-          .getUserId()
-          .intValue()));
-
-        SimpleDateFormat format = new SimpleDateFormat("MM/dd HH:mm");
-        footmark.setUpdateDate(format.format(record.getUpdateDate()));
-        footmarkList.add(footmark);
-      }
-
-    }
-  }
-
   /**
    * 一覧データを取得します。 <BR>
    * 
@@ -335,27 +210,9 @@ public class BlogEntrySelectData extends
       query.orderDesending(EipTBlogEntry.CREATE_DATE_PROPERTY);
 
       ResultList<EipTBlogEntry> list = query.getResultList();
+
       // エントリーの総数をセットする．
       entrySum = list.getTotalCount();
-
-      EipTBlog blog = null;
-      if (list != null && list.size() > 0) {
-        EipTBlogEntry record = list.get(0);
-        blog = record.getEipTBlog();
-      } else {
-        blog = getBlog(view_uid);
-      }
-
-      if (uid != view_uid) {
-        // 他ユーザのブログにあしあとを残す
-        footmark(rundata, blog);
-      } else {
-        // 自分のブログのあしあとの一覧を取得する
-        loadFootmark(blog);
-      }
-
-      // 左メニューカレンダーの構築
-      setupDetailCalendar(rundata, context);
 
       return list;
     } catch (Exception ex) {
@@ -375,81 +232,10 @@ public class BlogEntrySelectData extends
       Context context) {
     SelectQuery<EipTBlogEntry> query = Database.query(EipTBlogEntry.class);
 
-    Expression exp1 =
-      ExpressionFactory.matchExp(EipTBlogEntry.OWNER_ID_PROPERTY, Integer
-        .valueOf(view_uid));
-    query.setQualifier(exp1);
-
-    // 月毎の記事表示
-    Expression exp11 =
-      ExpressionFactory.greaterOrEqualExp(
-        EipTBlogEntry.CREATE_DATE_PROPERTY,
-        viewStart.getValue());
-    Expression exp12 =
-      ExpressionFactory.lessOrEqualExp(
-        EipTBlogEntry.CREATE_DATE_PROPERTY,
-        viewEndCrt.getValue());
-    query.andQualifier(exp11.andExp(exp12));
-
-    if (viewDay != null) {
-      // 選択された日の記事表示
-      ALDateTimeField tmpViewDay = new ALDateTimeField("yyyy-MM-dd");
-      Calendar cal = Calendar.getInstance();
-      cal.set(Calendar.YEAR, Integer.parseInt(viewMonth.getYear()));
-      cal.set(Calendar.MONTH, Integer.parseInt(viewMonth.getMonth()) - 1);
-      cal.set(Calendar.DATE, Integer.parseInt(viewDay));
-      cal.set(Calendar.HOUR_OF_DAY, 0);
-      cal.set(Calendar.MINUTE, 0);
-      tmpViewDay.setValue(cal.getTime());
-
-      Expression exp21 =
-        ExpressionFactory.greaterOrEqualExp(
-          EipTBlogEntry.CREATE_DATE_PROPERTY,
-          tmpViewDay.getValue());
-
-      cal.set(Calendar.DATE, Integer.valueOf(viewDay) + 1);
-      tmpViewDay.setValue(cal.getTime());
-      Expression exp22 =
-        ExpressionFactory.lessExp(
-          EipTBlogEntry.CREATE_DATE_PROPERTY,
-          tmpViewDay.getValue());
-
-      query.andQualifier(exp21.andExp(exp22));
-    }
-
+    // ユーザ絞り込み
+    query = BlogUtils.buildSelectQueryForBlogFilter(query, rundata, context);
+    query.orderDesending(EipTBlogEntry.CREATE_DATE_PROPERTY);
     return buildSelectQueryForFilter(query, rundata, context);
-  }
-
-  /**
-   * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
-   * @param rundata
-   * @param context
-   * @return
-   */
-  private SelectQuery<EipTBlogEntry> getSelectQueryForCalendar(RunData rundata,
-      Context context) {
-    SelectQuery<EipTBlogEntry> query =
-      Database.query(EipTBlogEntry.class).select(
-        EipTBlogEntry.CREATE_DATE_COLUMN);
-
-    Expression exp1 =
-      ExpressionFactory.matchExp(EipTBlogEntry.OWNER_ID_PROPERTY, Integer
-        .valueOf(view_uid));
-    query.setQualifier(exp1);
-
-    // 月毎の記事表示
-    Expression exp11 =
-      ExpressionFactory.greaterOrEqualExp(
-        EipTBlogEntry.CREATE_DATE_PROPERTY,
-        viewStart.getValue());
-    Expression exp12 =
-      ExpressionFactory.lessOrEqualExp(
-        EipTBlogEntry.CREATE_DATE_PROPERTY,
-        viewEndCrt.getValue());
-    query.andQualifier(exp11.andExp(exp12));
-
-    return query;
   }
 
   /**
@@ -458,14 +244,16 @@ public class BlogEntrySelectData extends
    * @param obj
    * @return
    */
+  @SuppressWarnings("unchecked")
   @Override
   protected Object getResultData(EipTBlogEntry record) {
     try {
-
       BlogEntryResultData rd = new BlogEntryResultData();
       rd.initField();
       rd.setEntryId(record.getEntryId().longValue());
       rd.setOwnerId(record.getOwnerId().longValue());
+      rd
+        .setOwnerName(BlogUtils.getUserFullName(record.getOwnerId().intValue()));
       rd.setTitle(ALCommonUtils.compressString(
         record.getTitle(),
         getStrLength()));
@@ -493,121 +281,28 @@ public class BlogEntrySelectData extends
         rd.setCommentsNum(list.size());
       }
 
+      int userId = record.getOwnerId().intValue();
+      rd.setHasPhoto(false);
+      List<BlogUserResultData> userDataList =
+        (List<BlogUserResultData>) ALUserContextLocator
+          .getAttribute("com.aimluck.eip.blog.BlogEntryLatestSelectData.userDataList");
+      if (userDataList == null) {
+        userDataList = BlogUtils.getBlogUserResultDataList("LoginUser");
+        ALUserContextLocator.setAttribute(
+          "com.aimluck.eip.blog.BlogEntryLatestSelectData.userDataList",
+          userDataList);
+      }
+      for (BlogUserResultData userData : userDataList) {
+        if (userId == userData.getUserId().getValue() && userData.hasPhoto()) {
+          rd.setHasPhoto(true);
+          break;
+        }
+      }
+
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
-    }
-  }
-
-  @SuppressWarnings("unused")
-  private boolean containsSelectedView(String viewDay, int day) {
-    String dayStr = "" + day;
-    if (viewDay != null && !"".equals(viewDay)) {
-      if (dayStr.equals(viewDay)) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return true;
-    }
-  }
-
-  private void setBlogEntryToMonthCalendar(Date date) {
-    CalendarElement element = null;
-    Calendar cal = Calendar.getInstance();
-    cal.setTime(date);
-    if ((cal.get(Calendar.MONTH) + 1) != month.getMonth()) {
-      return;
-    }
-
-    String d_day = "" + cal.get(Calendar.DATE);
-    int size = month.size();
-    for (int i = 0; i < size; i++) {
-      element = month.get(i);
-      if (d_day.equals(element.getLabel())) {
-        ((Day) element).setBlogEntry(true);
-      }
-    }
-  }
-
-  /**
-   * ブログIDを取得する
-   * 
-   * @param view_uid
-   */
-  private EipTBlog getBlog(int view_uid) throws Exception {
-    SelectQuery<EipTBlog> query = Database.query(EipTBlog.class);
-    Expression exp =
-      ExpressionFactory.matchExp(EipTBlog.OWNER_ID_PROPERTY, Integer
-        .valueOf(view_uid));
-    query.setQualifier(exp);
-    List<EipTBlog> list = query.fetchList();
-    if (list == null || list.size() <= 0) {
-      // 新規オブジェクトモデル
-      EipTBlog blog = Database.create(EipTBlog.class);
-      // ユーザーID
-      blog.setOwnerId(Integer.valueOf(view_uid));
-      // 作成日
-      blog.setCreateDate(Calendar.getInstance().getTime());
-      // 更新日
-      blog.setUpdateDate(Calendar.getInstance().getTime());
-      // ブログを登録
-      Database.commit();
-      return blog;
-    } else {
-      EipTBlog blog = list.get(0);
-      return blog;
-    }
-  }
-
-  /**
-   * あしあと機能
-   * 
-   */
-  private void footmark(RunData rundata, EipTBlog blog) throws Exception {
-    if (blog.getOwnerId().intValue() == ALEipUtils.getUserId(rundata)) {
-      // ログインユーザーのブログには足跡を残さない
-      return;
-    }
-
-    ALDateTimeField today = new ALDateTimeField("yyyy-MM-dd");
-    Calendar cal = Calendar.getInstance();
-    cal.set(Calendar.HOUR_OF_DAY, 0);
-    cal.set(Calendar.MINUTE, 0);
-    today.setValue(cal.getTime());
-
-    SelectQuery<EipTBlogFootmarkMap> query =
-      Database.query(EipTBlogFootmarkMap.class);
-    Expression exp1 =
-      ExpressionFactory.matchExp(EipTBlogFootmarkMap.BLOG_ID_PROPERTY, blog
-        .getBlogId());
-    query.setQualifier(exp1);
-    Expression exp2 =
-      ExpressionFactory.matchExp(EipTBlogFootmarkMap.USER_ID_PROPERTY, Integer
-        .valueOf(uid));
-    query.andQualifier(exp2);
-    Expression exp3 =
-      ExpressionFactory.matchExp(
-        EipTBlogFootmarkMap.CREATE_DATE_PROPERTY,
-        today.getValue());
-    query.andQualifier(exp3);
-
-    List<EipTBlogFootmarkMap> list = query.fetchList();
-    if (list == null || list.size() <= 0) {
-      // あしあとを登録する
-      EipTBlogFootmarkMap footmark = Database.create(EipTBlogFootmarkMap.class);
-      footmark.setEipTBlog(blog);
-      footmark.setUserId(Integer.valueOf(uid));
-      footmark.setCreateDate(Calendar.getInstance().getTime());
-      footmark.setUpdateDate(Calendar.getInstance().getTime());
-      Database.commit();
-    } else {
-      // あしあとを更新する
-      EipTBlogFootmarkMap footmark = list.get(0);
-      footmark.setUpdateDate(Calendar.getInstance().getTime());
-      Database.commit();
     }
   }
 
@@ -620,50 +315,12 @@ public class BlogEntrySelectData extends
    */
   @Override
   public EipTBlogEntry selectDetail(RunData rundata, Context context) {
-
     try {
-      setupDetailCalendar(rundata, context);
-
       EipTBlogEntry obj = BlogUtils.getEipTBlogEntry(rundata, context);
-
-      if (obj != null) {
-        EipTBlog blog = null;
-        EipTBlogEntry record = obj;
-
-        blog = record.getEipTBlog();
-
-        if (uid != view_uid) {
-          try {
-            footmark(rundata, blog);
-          } catch (Exception e) {
-          }
-        } else {
-          // 自分のブログのあしあとの一覧を取得する
-          loadFootmark(record.getEipTBlog());
-        }
-      }
-
       return obj;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
-    }
-  }
-
-  private void setupDetailCalendar(RunData rundata, Context context) {
-    try {
-      SelectQuery<EipTBlogEntry> query =
-        getSelectQueryForCalendar(rundata, context);
-      query.orderDesending(EipTBlogEntry.UPDATE_DATE_PROPERTY);
-
-      List<EipTBlogEntry> list = query.fetchList();
-
-      for (EipTBlogEntry entry : list) {
-        setBlogEntryToMonthCalendar(entry.getCreateDate());
-      }
-
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
     }
   }
 
@@ -808,9 +465,7 @@ public class BlogEntrySelectData extends
    */
   @Override
   protected Attributes getColumnMap() {
-    Attributes map = new Attributes();
-    map.putValue("thema", EipTBlogThema.THEMA_ID_PK_COLUMN);
-    return map;
+    return new Attributes();
   }
 
   public List<BlogCommentResultData> getCommentList() {
@@ -830,37 +485,6 @@ public class BlogEntrySelectData extends
     return id1 == (int) id2;
   }
 
-  public Month getMonth() {
-    return month;
-  }
-
-  /**
-   * 現在の月を取得します。
-   * 
-   * @return
-   */
-  public ALDateTimeField getViewMonth() {
-    return viewMonth;
-  }
-
-  /**
-   * 前の月を取得します。
-   * 
-   * @return
-   */
-  public ALDateTimeField getPrevMonth() {
-    return prevMonth;
-  }
-
-  /**
-   * 次の月を取得します。
-   * 
-   * @return
-   */
-  public ALDateTimeField getNextMonth() {
-    return nextMonth;
-  }
-
   public int getUserId() {
     return uid;
   }
@@ -871,6 +495,34 @@ public class BlogEntrySelectData extends
 
   public String getUserAccountURI() {
     return userAccountURI;
+  }
+
+  public String getOwnerId() {
+    return ownerId;
+  }
+
+  public ALStringField getKeyword() {
+    return keyword;
+  }
+
+  public String getThemeId() {
+    return themeId;
+  }
+
+  public List<BlogUserResultData> getUserList() {
+    return userList;
+  }
+
+  public Map<Integer, ALEipPost> getPostMap() {
+    return ALEipManager.getInstance().getPostMap();
+  }
+
+  public List<ALEipGroup> getMyGroupList() {
+    return myGroupList;
+  }
+
+  public String getGroupId() {
+    return groupId;
   }
 
   public boolean getEditable() {
@@ -895,4 +547,5 @@ public class BlogEntrySelectData extends
   public String getAclPortletFeature() {
     return aclPortletFeature;
   }
+
 }

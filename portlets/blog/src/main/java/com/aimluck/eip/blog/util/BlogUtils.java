@@ -21,6 +21,7 @@ package com.aimluck.eip.blog.util;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,6 +87,15 @@ public class BlogUtils {
 
   /** 所有者の識別子 */
   public static final String OWNER_ID = "ownerid";
+
+  /** 検索キーワードの識別子 */
+  public static final String SEARCH_WORD = "keyword";
+
+  /** グループの識別子 */
+  public static final String GROUP_ID = "groupid";
+
+  /** テーマの識別子 */
+  public static final String THEME_ID = "themeid";
 
   /** 一時添付ファイル名 */
   public static final String ATTACHMENT_TEMP_FILENAME = "file";
@@ -830,6 +840,145 @@ public class BlogUtils {
   }
 
   /**
+   * 検索クエリ用の所有者IDを取得します。
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static String getOwnerId(RunData rundata, Context context) {
+    String ownerId = null;
+    String ownerIdParam = rundata.getParameters().getString(OWNER_ID);
+    ownerId = ALEipUtils.getTemp(rundata, context, OWNER_ID);
+
+    if (ownerIdParam == null && (ownerId == null)) {
+      ALEipUtils.setTemp(rundata, context, OWNER_ID, "all");
+      ownerId = "all";
+    } else if (ownerIdParam != null) {
+      ALEipUtils.setTemp(rundata, context, OWNER_ID, ownerIdParam);
+      ownerId = ownerIdParam;
+      // 検索キーワードをクリア
+      ALEipUtils.setTemp(rundata, context, SEARCH_WORD, "");
+    }
+    return ownerId;
+  }
+
+  /**
+   * 検索クエリ用のキーワードを取得します。
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static String getKeyword(RunData rundata, Context context) {
+    String keyword = null;
+    String keywordParm = rundata.getParameters().getString(SEARCH_WORD);
+    keyword = ALEipUtils.getTemp(rundata, context, SEARCH_WORD);
+    if (keywordParm == null && (keyword == null)) {
+      ALEipUtils.setTemp(rundata, context, SEARCH_WORD, "");
+      keyword = "";
+    } else if (keywordParm != null) {
+      keywordParm.trim();
+      ALEipUtils.setTemp(rundata, context, SEARCH_WORD, keywordParm);
+      keyword = keywordParm;
+    }
+    return keyword;
+  }
+
+  /**
+   * 検索クエリ用のテーマIDを取得します。
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static String getThemeId(RunData rundata, Context context) {
+    String themeId = null;
+    String themeIdParam = rundata.getParameters().getString(THEME_ID);
+    themeId = ALEipUtils.getTemp(rundata, context, THEME_ID);
+    if (themeIdParam == null && (themeId == null)) {
+      ALEipUtils.setTemp(rundata, context, THEME_ID, "all");
+      themeId = "all";
+    } else if (themeIdParam != null) {
+      themeIdParam.trim();
+      ALEipUtils.setTemp(rundata, context, THEME_ID, themeIdParam);
+      themeId = themeIdParam;
+      // 検索キーワードをクリア
+      ALEipUtils.setTemp(rundata, context, SEARCH_WORD, "");
+    }
+    return themeId;
+  }
+
+  /**
+   * 表示されているグループIDを取得します。
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static String getGroupId(RunData rundata, Context context) {
+    String groupId = null;
+    String groupIdParam = rundata.getParameters().getString(GROUP_ID);
+    groupId = ALEipUtils.getTemp(rundata, context, GROUP_ID);
+    if (groupIdParam == null && (groupId == null)) {
+      ALEipUtils.setTemp(rundata, context, GROUP_ID, "LoginUser");
+      groupId = "LoginUser";
+    } else if (groupIdParam != null) {
+      groupIdParam.trim();
+      ALEipUtils.setTemp(rundata, context, GROUP_ID, groupIdParam);
+      groupId = groupIdParam;
+    }
+    return groupId;
+  }
+
+  /**
+   * ブログ固有のフィルタをクエリに適用します
+   * 
+   * @param query
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static SelectQuery<EipTBlogEntry> buildSelectQueryForBlogFilter(
+      SelectQuery<EipTBlogEntry> query, RunData rundata, Context context) {
+
+    // 所有者
+    String ownerId = BlogUtils.getOwnerId(rundata, context);
+    if (!ownerId.equals("all")) {
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipTBlogEntry.OWNER_ID_COLUMN, ownerId);
+      query.andQualifier(exp);
+    }
+
+    // テーマ
+    String themeId = BlogUtils.getThemeId(rundata, context);
+    if (!themeId.equals("all")) {
+      Expression exp =
+        ExpressionFactory.matchExp(
+          EipTBlogEntry.EIP_TBLOG_THEMA_PROPERTY,
+          themeId);
+      query.andQualifier(exp);
+    }
+
+    // 検索キーワード
+    String queryKeyword = BlogUtils.getKeyword(rundata, context);
+    String[] keywords = queryKeyword.split("[ 　]");
+    for (int i = 0; i < keywords.length; i++) {
+      String keyword = keywords[i];
+      if (keyword.length() > 0) {
+        String keywordExp = MessageFormat.format("%{0}%", keyword);
+        Expression exp1 =
+          ExpressionFactory.likeExp(EipTBlogEntry.TITLE_PROPERTY, keywordExp);
+        Expression exp2 =
+          ExpressionFactory.likeExp(EipTBlogEntry.NOTE_PROPERTY, keywordExp);
+        Expression exp = exp1.orExp(exp2);
+        query.andQualifier(exp);
+      }
+    }
+    return query;
+  }
+
+  /**
    * アクセス権限をチェックします。
    * 
    * @return
@@ -873,7 +1022,6 @@ public class BlogUtils {
       }
     }
     ALEipUtils.setTemp(rundata, context, "view_uid", String.valueOf(view_uid));
-
     return view_uid;
   }
 }

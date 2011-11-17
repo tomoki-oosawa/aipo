@@ -118,19 +118,6 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
     login_user = ALEipUtils.getALEipUser(rundata);
 
-    // uid = ALEipUtils.getUserId(rundata);
-    //
-    // String tmpViewUid = ALEipUtils.getTemp(rundata, context, "view_uid");
-    // if (tmpViewUid == null || tmpViewUid.equals("")) {
-    // view_uid = uid;
-    // } else {
-    // try {
-    // view_uid = Integer.parseInt(tmpViewUid);
-    // } catch (Exception e) {
-    // view_uid = uid;
-    // }
-    // }
-
     int uid = ALEipUtils.getUserId(rundata);
     int view_uid = BlogUtils.getViewId(rundata, context, uid);
     // アクセス権

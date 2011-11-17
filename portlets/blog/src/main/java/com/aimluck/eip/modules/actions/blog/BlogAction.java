@@ -28,15 +28,12 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.blog.BlogCommonThemaSelectData;
 import com.aimluck.eip.blog.BlogEntryCommentFormData;
 import com.aimluck.eip.blog.BlogEntryFormData;
 import com.aimluck.eip.blog.BlogEntryLatestSelectData;
 import com.aimluck.eip.blog.BlogEntrySelectData;
 import com.aimluck.eip.blog.BlogThemaFormData;
 import com.aimluck.eip.blog.BlogThemaSelectData;
-import com.aimluck.eip.blog.BlogUserSelectData;
-import com.aimluck.eip.blog.BlogWordSelectData;
 import com.aimluck.eip.blog.util.BlogUtils;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
@@ -165,12 +162,6 @@ public class BlogAction extends ALBaseAction {
     if (formData.doInsert(this, rundata, context)) {
       // データ登録が成功したとき
       doBlog_entry_list(rundata, context);
-      // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      // rundata.setRedirectURI(jsLink.getPortletById(
-      // ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-      // "eventSubmit_doBlog_entry_list", "1").toString());
-      // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-      // jsLink = null;
     } else {
       setTemplate(rundata, "blog-entry-form");
     }
@@ -191,12 +182,6 @@ public class BlogAction extends ALBaseAction {
     if (formData.doUpdate(this, rundata, context)) {
       // データ更新が成功したとき
       doBlog_entry_list(rundata, context);
-      // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      // rundata.setRedirectURI(jsLink.getPortletById(
-      // ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-      // "eventSubmit_doBlog_entry_list", "1").toString());
-      // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-      // jsLink = null;
     } else {
       setTemplate(rundata, "blog-entry-form");
     }
@@ -216,12 +201,6 @@ public class BlogAction extends ALBaseAction {
     if (formData.doDelete(this, rundata, context)) {
       // データ削除が成功したとき
       doBlog_entry_list(rundata, context);
-      // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      // rundata.setRedirectURI(jsLink.getPortletById(
-      // ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-      // "eventSubmit_doBlog_entry_list", "1").toString());
-      // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-      // jsLink = null;
     }
   }
 
@@ -234,19 +213,17 @@ public class BlogAction extends ALBaseAction {
    */
   public void doBlog_entry_list(RunData rundata, Context context)
       throws Exception {
-    ALEipUtils.removeTemp(rundata, context, "view_month");
-    ALEipUtils.removeTemp(rundata, context, "view_uid");
-    doBlog_entry_list_user(rundata, context);
-    // BlogEntrySelectData listData = new BlogEntrySelectData();
-    // listData.initField();
-    // listData.loadThemaList(rundata, context);
-    // // PSMLからパラメータをロードする
-    // // 最大表示件数（最大化時）
-    // listData.setRowsNum(Integer.parseInt(ALEipUtils
-    // .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-    // "p1b-rows")));
-    // listData.doViewList(this, rundata, context);
-    // setTemplate(rundata, "blog-entry-list");
+    BlogEntrySelectData listData = new BlogEntrySelectData();
+    listData.initField();
+    listData.loadThemaList(rundata, context);
+    // PSMLからパラメータをロードする
+    // 最大表示件数（最大化時）
+    listData.setRowsNum(Integer.parseInt(ALEipUtils
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1b-rows")));
+    listData.doViewList(this, rundata, context);
+    setTemplate(rundata, "blog-entry-list");
   }
 
   /**
@@ -330,13 +307,6 @@ public class BlogAction extends ALBaseAction {
     if (formData.doInsert(this, rundata, context)) {
       // データ登録が成功したとき
       doBlog_entry_detail(rundata, context);
-
-      // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      // rundata.setRedirectURI(jsLink.getPortletById(
-      // ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-      // "eventSubmit_doBlog_entry_detail", "1").toString());
-      // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-      // jsLink = null;
     } else {
       // トピック詳細表示用の情報を再取得
       BlogEntrySelectData detailData = new BlogEntrySelectData();
@@ -363,119 +333,6 @@ public class BlogAction extends ALBaseAction {
     if (formData.doDelete(this, rundata, context)) {
       // データ削除が成功したとき
       doBlog_entry_detail(rundata, context);
-      // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      // rundata.setRedirectURI(jsLink.getPortletById(
-      // ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-      // "eventSubmit_doBlog_entry_detail", "1").toString());
-      // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-      // jsLink = null;
-    }
-  }
-
-  // /**
-  // * 添付ファイルの入力フォームを開く．
-  // *
-  // * @param rundata
-  // * @param context
-  // * @throws Exception
-  // */
-  // public void doBlog_entry_open_attachment(RunData rundata, Context context)
-  // throws Exception {
-  // BlogEntryAttachmentFormData formData = new BlogEntryAttachmentFormData();
-  // formData.initField();
-  // formData.doInitViewForm(this, rundata, context);
-  // setTemplate(rundata, "blog-entry-attachment");
-  // }
-  //
-  // /**
-  // * 添付ファイルのアップロードを受け付ける．
-  // *
-  // * @param rundata
-  // * @param context
-  // * @throws Exception
-  // */
-  // public void doBlog_entry_upload_attachment(RunData rundata, Context
-  // context)
-  // throws Exception {
-  // try {
-  // BlogEntryAttachmentFormData formData = new BlogEntryAttachmentFormData();
-  // formData.initField();
-  // if (formData.doUpdate(this, rundata, context)) {
-  // context.put("receiveFile", "true");
-  // }
-  // setTemplate(rundata, "blog-entry-attachment");
-  // } catch (Exception ex) {
-  // logger.error("Exception", ex);
-  // }
-  // }
-  //
-  // /**
-  // * 添付ファイルを削除する．
-  // *
-  // * @param rundata
-  // * @param context
-  // * @throws Exception
-  // */
-  // public void doBlog_entry_del_attachments(RunData rundata, Context context)
-  // throws Exception {
-  // BlogEntryFormData formData = new BlogEntryFormData();
-  // //formData.initOrms(rundata);
-  // formData.initField();
-  // formData.loadThemaList(rundata, context);
-  // formData.doDeleteAttachments(this, rundata, context);
-  // setTemplate(rundata, "blog-entry-form");
-  // }
-
-  /**
-   * グループの一覧を表示します。 <BR>
-   * 
-   * @param rundata
-   * @param context
-   * @throws Exception
-   */
-  public void doBlog_group_list(RunData rundata, Context context)
-      throws Exception {
-    BlogUserSelectData listData = new BlogUserSelectData();
-    listData.initField();
-    // // PSMLからパラメータをロードする
-    // // 最大表示件数（最大化時）
-    // listData.setRowsNum(Integer.parseInt(ALEipUtils
-    // .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-    // "p1b-rows")));
-    listData.doViewList(this, rundata, context);
-    setTemplate(rundata, "blog-group-list");
-  }
-
-  /**
-   * 共通テーマの一覧を表示します。 <BR>
-   * 
-   * @param rundata
-   * @param context
-   * @throws Exception
-   */
-  public void doBlog_common_thema_list(RunData rundata, Context context)
-      throws Exception {
-    BlogCommonThemaSelectData listData = new BlogCommonThemaSelectData();
-    listData.initField();
-    listData.doViewList(this, rundata, context);
-    setTemplate(rundata, "blog-common-thema-list");
-  }
-
-  /**
-   * 共通テーマを詳細表示します。 <BR>
-   * 
-   * @param rundata
-   * @param context
-   * @throws Exception
-   */
-  public void doBlog_common_thema_detail(RunData rundata, Context context)
-      throws Exception {
-    BlogCommonThemaSelectData detailData = new BlogCommonThemaSelectData();
-    detailData.initField();
-    if (detailData.doViewDetail(this, rundata, context)) {
-      setTemplate(rundata, "blog-common-thema-detail");
-    } else {
-      doBlog_common_thema_list(rundata, context);
     }
   }
 
@@ -508,12 +365,6 @@ public class BlogAction extends ALBaseAction {
     if (formData.doInsert(this, rundata, context)) {
       // データ登録に成功したとき
       doBlog_thema_list(rundata, context);
-      // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      // rundata.setRedirectURI(jsLink.getPortletById(
-      // ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-      // "eventSubmit_doBlog_thema_list", "1").toString());
-      // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-      // jsLink = null;
     } else {
       setTemplate(rundata, "blog-thema-form");
     }
@@ -534,12 +385,6 @@ public class BlogAction extends ALBaseAction {
     if (formData.doUpdate(this, rundata, context)) {
       // データ更新に成功したとき
       doBlog_thema_list(rundata, context);
-      // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      // rundata.setRedirectURI(jsLink.getPortletById(
-      // ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-      // "eventSubmit_doBlog_thema_list", "1").toString());
-      // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-      // jsLink = null;
     } else {
       setTemplate(rundata, "blog-thema-form");
     }
@@ -559,35 +404,8 @@ public class BlogAction extends ALBaseAction {
     if (formData.doDelete(this, rundata, context)) {
       // データ削除に成功したとき
       doBlog_thema_list(rundata, context);
-      // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-      // rundata.setRedirectURI(jsLink.getPortletById(
-      // ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-      // "eventSubmit_doBlog_thema_list", "1").toString());
-      // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-      // jsLink = null;
     }
   }
-
-  // /**
-  // * カテゴリを削除します。（複数） <BR>
-  // * @param rundata
-  // * @param context
-  // * @throws Exception
-  // */
-  // public void doTodo_Thema_multi_delete(RunData rundata, Context context)
-  // throws Exception {
-  // ToDoThemaMultiDelete delete = new ToDoThemaMultiDelete();
-  // delete.doMultiAction(this, rundata, context);
-  // // doTodo_Thema_list(rundata, context);
-  // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-  // rundata.setRedirectURI(
-  // jsLink
-  // .getPortletById(ALEipUtils.getPortlet(rundata, context).getID())
-  // .addQueryData("eventSubmit_doTodo_Thema_list", "1")
-  // .toString());
-  // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-  // jsLink = null;
-  // }
 
   /**
    * テーマを一覧表示します。 <BR>
@@ -632,26 +450,6 @@ public class BlogAction extends ALBaseAction {
   }
 
   /**
-   * 検索一覧表示します。 <BR>
-   * 
-   * @param rundata
-   * @param context
-   * @throws Exception
-   */
-  public void doBlog_search_list(RunData rundata, Context context)
-      throws Exception {
-    BlogWordSelectData listData = new BlogWordSelectData();
-    // listData.setRowsNum(Integer.parseInt(ALEipUtils
-    // .getPortlet(rundata, context).getPortletConfig().getInitParameter(
-    // "p1a-rows")));
-    listData.setStrLength(100);
-    listData.setRowsNum(20);
-    listData.doViewList(this, rundata, context);
-    setTemplate(rundata, "blog-search-list");
-
-  }
-
-  /**
    * 
    * @param obj
    */
@@ -690,6 +488,10 @@ public class BlogAction extends ALBaseAction {
     list.add("com.aimluck.eip.blog.BlogEntrySelectDatafilter");
     list.add("com.aimluck.eip.blog.BlogEntrySelectDatafiltertype");
     list.add("com.aimluck.eip.blog.BlogThemaSelectDatasort");
+    list.add(BlogUtils.OWNER_ID);
+    list.add(BlogUtils.SEARCH_WORD);
+    list.add(BlogUtils.GROUP_ID);
+    list.add(BlogUtils.THEME_ID);
     ALEipUtils.removeTemp(rundata, context, list);
   }
 }

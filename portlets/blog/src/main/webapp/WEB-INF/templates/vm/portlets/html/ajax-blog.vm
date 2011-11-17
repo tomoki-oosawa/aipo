@@ -18,45 +18,42 @@
  *#
 
 ## ---------------------------------------------------------------------------
-
 <div class="auiSummaryMeta clearfix">
-   	<div class="floatLeft w30">
-		<form class="auiForm">
-		#ALselectpdheader("target_thema" "100%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
-			<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogScreen").addQueryData("filter","").addQueryData("filtertype","thema"))">すべてのテーマ</option>
-			#foreach( $record in $result.ThemaList )
-				<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogScreen").addQueryData("filter",$!record.ThemaId).addQueryData("filtertype","thema"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.ThemaId.toString()) selected #end>$!record.ThemaName</option>
-			#end
-   		</select>
-		</form>
-	</div>
-	#if ($result.List.size() != 0)
-		#AUIajaxpageview('BlogScreen' $result)
-	#end
+<div class="floatLeft w30">
+<form class="auiForm">
+#ALselectpdheader("target_thema" "100%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogScreen").addQueryData("filter","").addQueryData("filtertype","thema"))">すべてのテーマ</option>
+#foreach( $record in $result.ThemaList )
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogScreen").addQueryData("filter",$!record.ThemaId).addQueryData("filtertype","thema"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.ThemaId.toString()) selected #end>$!record.ThemaName</option>
+#end
+</select>
+</form>
 </div>
-
+#if ($result.List.size() != 0)
+#AUIajaxpageview('BlogScreen' $result)
+#end
+</div>
 #if($result.List.size() == 0)
-    <div class="message">指定したテーマに記事はありません。</div>
+<div class="message">指定したテーマに記事はありません。</div>
 #else
-    <div id="auiBlogEntries">
-    #foreach ($record in $result.List)
-    <div class="entry clearfix">
-    	<div class="avatar">
-			<a href="$!utils.escapeXML($!jslink.getAction('controls.Maximize',$!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1').addQueryData('view_uid',${record.OwnerId}).addQueryData('view_month', 'none'))">
-				#if(${record.hasPhoto()})
-					<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}).addQueryData('width', '32').addQueryData('height', '32'))" alt="${record.OwnerName}" border="0" width="32" height="32" style="vertical-align:middle" />
-				#else
-					<img src="images/common/nophoto.gif" alt="${record.OwnerName}" width="32" height="32" border="0" />
-				#end
-			</a>
-    	</div>
-    	<div class="entryBody">
-				<div class="entryHeader"><h2><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData("entityid",$record.EntryId))', '$!portlet.ID', aipo.blog.onLoadBlogDetailDialog );"><div>${record.Title} #if($record.CommentsNum > 0)（$record.CommentsNum）#end</div></a></h2></div>
-    		<div class='entryText'>${record.Note}</div>
-    		<div class="entryFooter floatRight">${record.TitleDate}｜${record.OwnerName}</div>
-    	</div>
-    </div>
-    #end
-    </div>
-
+<div id="auiBlogEntries">
+#foreach ($record in $result.List)
+<div class="entry clearfix">
+<div class="avatar">
+<a href="$!utils.escapeXML($!jslink.getAction('controls.Maximize',$!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1').addQueryData('view_uid',${record.OwnerId}).addQueryData('view_month', 'none'))">
+#if(${record.hasPhoto()})
+<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}).addQueryData('width', '32').addQueryData('height', '32'))" alt="${record.OwnerName}" border="0" width="32" height="32" style="vertical-align:middle" />
+#else
+<img src="images/common/nophoto.gif" alt="${record.OwnerName}" width="32" height="32" border="0" />
+#end
+</a>
+</div>
+<div class="entryBody">
+<div class="entryHeader"><h2><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData("entityid",$record.EntryId))', '$!portlet.ID', aipo.blog.onLoadBlogDetailDialog );"><div>${record.Title} #if($record.CommentsNum > 0)（$record.CommentsNum）#end</div></a></h2></div>
+<div class='entryText'>${record.Note}</div>
+<div class="entryFooter floatRight">${record.TitleDate}｜${record.OwnerName}</div>
+</div>
+</div>
+#end
+</div>
 #end

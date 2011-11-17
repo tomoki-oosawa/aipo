@@ -18,379 +18,89 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogEntryFormScreen').addQueryData('entityid','new')))
-#set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogThemaFormScreen").addQueryData("entityid","new")))
-#set ($submenulist = [["記事を書く","javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.blog.onLoadBlogDialog);","images/icon/icon_add.gif"], ["テーマを追加する","javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.blog.onLoadBlogThemaDialog);","images/icon/icon_add.gif"]])
-## ---------------------------------------------------------------------------
-#ALsubmenubar($submenulist "")
-
-#macro(ALajaxpageviewBlog $screen $result)
-#set($pageRange = 5)
-#set($pageTrimRange = 2)
-#set($pages = $result.PagesNum)
-#set($currentPage = $result.CurrentPage)
-#set($rowsNum = $result.RowsNum)
-#set($count = $result.Count)
-#set($from = ($currentPage - 1 ) * $rowsNum + 1)
-#if ( $currentPage * $rowsNum > $result.Count)
-#set($to = $result.Count )
-#else
-#set($to = $currentPage * $rowsNum )
-#end
-
-#set($nextLeftPage = 1 )
-#set($nextRightPage = $pages)
-#if($pages < ${pageRange} + ${pageTrimRange} + ${pageTrimRange} + 1)
-#set($showLeftRest = false)
-#set($showRightRest = false)
-#else
-## show left and right
-#set($showLeftRest = true)
-#set($showRightRest = true)
-#if($currentPage > ${pageRange})
-#set($nextLeftPage = $currentPage - $pageTrimRange )
-#if((${currentPage} + ${pageRange}) > ${pages})
-#if(${currentPage} - ${pageTrimRange} > ${pages} - ${pageRange}) #set($nextLeftPage = ${pages} - ${pageRange} + 1) #else #set($nextLeftPage = ${currentPage} - ${pageTrimRange}) #end
-#set($nextRightPage = ${pages})
-#else
-#set($nextRightPage = $currentPage + ($pageTrimRange / 2) + 1)
-#end
-#else
-#if(($currentPage + ${pageTrimRange}) < ${pageRange})
-#set($nextRightPage = $pageRange )
-#else
-#if(${currentPage} + ${pageRange} > ${pages}) #set($nextRightPage = ${pages}) #else #set($nextRightPage = $currentPage + ${pageTrimRange}) #end
-#end
-#end
-#end
-<div class="clearfix">
-  <div class="alignleft small">
-#if ($pages > 1)
-    <div class="pagination">
-      <ul>
-#if($currentPage > 1) #set($pre = $currentPage - 1)
-	    <li class="prev"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre).addQueryData('view_uid',$!{result.ViewUid}).addQueryData('view_month', ${result.Month.MonthLiteral}))', '$!portlet.ID');" class="small">前へ</a></li>
-#else
-	    <li class="prev disabled"><a href="javascript:void(0);" class="small">前へ</a></li>
-#end
-#if($pages > $currentPage) #set($next = $currentPage + 1)
-        <li class="next"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next).addQueryData('view_uid',$!{result.ViewUid}).addQueryData('view_month', ${result.Month.MonthLiteral}))', '$!portlet.ID');" class="small">次へ</a></li>
-#else
-        <li class="next disabled"><a href="javascript:void(0);" class="small">次へ</a></li>
-#end
-#if($showLeftRest && $currentPage > ${pageRange})
-#foreach($page in [1..${pageTrimRange}])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData('view_uid',$!{result.ViewUid}).addQueryData('view_month', ${result.Month.MonthLiteral}))', '$!portlet.ID');" class="small">$page</a></li>
-#end
-		<li class="abbr">....</li>
-#end
-#foreach($page in [${nextLeftPage}..$nextRightPage])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData('view_uid',$!{result.ViewUid}).addQueryData('view_month', ${result.Month.MonthLiteral}))', '$!portlet.ID');" class="small">$page</a></li>
-#end
-#if($showRightRest &&  (${currentPage} + ${pageRange} - 1) < ${pages})
-#set($restRightPages = $pages - $pageTrimRange + 1)
-		<li class="abbr">....</li>
-#foreach($page in [${restRightPages}..${pages}])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData('view_uid',$!{result.ViewUid}).addQueryData('view_month', ${result.Month.MonthLiteral}))', '$!portlet.ID');" class="small">$page</a></li>
-#end
-#end
-      </ul>
-    </div>
-#end
-  </div>
-  <div class="alignright small" style="margin-top:5px;">$from 件 ～ $to 件表示 [ 計 $count 件 ]</div>
+#AUIcontentsAreaHeader()
+<div id="auiThreeClumns">
+<div id="auiThreeClumnsInner">
+<div class="auiSummaryMeta clearfix">
+<form class="auiSearch floatLeft" style="margin-right:1em;" name="blogForm$!portlet.ID" id="blogSearchForm$!portlet.ID" action="#" method="post" onsubmit="aipo.blog.onSubmitSerchButton(this ,'$!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("themeid", $!result.ThemeId).addQueryData("ownerid", ${result.OwnerId})', '$!portlet.ID');return false;">
+<input class="text floatLeft" type="text" name="keyword" id="keyword" style="margin-right:5px;"maxlength="100" value="$!result.Keyword">
+<a class="auiButtonSearch floatLeft" onclick="aimluck.io.setHiddenValue(this);dojo.byId('blogSearchForm$!portlet.ID').submit();">検索</a>
+</form>
 </div>
+<div class="auiSummaryMeta clearfix">
+#if ($result.List.size() != 0)
+#AUIajaxpageview('BlogEntryListScreen' $result)
 #end
-
-#macro(ALajaxpageviewBlogFooter $screen $result)
-#set($pageRange = 5)
-#set($pageTrimRange = 2)
-#set($pages = $result.PagesNum)
-#set($currentPage = $result.CurrentPage)
-#set($rowsNum = $result.RowsNum)
-#set($count = $result.Count)
-#set($from = ($currentPage - 1 ) * $rowsNum + 1)
-#if ( $currentPage * $rowsNum > $result.Count)
-#set($to = $result.Count )
-#else
-#set($to = $currentPage * $rowsNum )
-#end
-
-#set($nextLeftPage = 1 )
-#set($nextRightPage = $pages)
-#if($pages < ${pageRange} + ${pageTrimRange} + ${pageTrimRange} + 1)
-#set($showLeftRest = false)
-#set($showRightRest = false)
-#else
-## show left and right
-#set($showLeftRest = true)
-#set($showRightRest = true)
-#if($currentPage > ${pageRange})
-#set($nextLeftPage = $currentPage - $pageTrimRange )
-#if((${currentPage} + ${pageRange}) > ${pages})
-#if(${currentPage} - ${pageTrimRange} > ${pages} - ${pageRange}) #set($nextLeftPage = ${pages} - ${pageRange} + 1) #else #set($nextLeftPage = ${currentPage} - ${pageTrimRange}) #end
-#set($nextRightPage = ${pages})
-#else
-#set($nextRightPage = $currentPage + ($pageTrimRange / 2) + 1)
-#end
-#else
-#if(($currentPage + ${pageTrimRange}) < ${pageRange})
-#set($nextRightPage = $pageRange )
-#else
-#if(${currentPage} + ${pageRange} > ${pages}) #set($nextRightPage = ${pages}) #else #set($nextRightPage = $currentPage + ${pageTrimRange}) #end
-#end
-#end
-#end
-#if ($pages > 1)
-<div class="clearfix">
-  <div class="alignleft small">
-
-    <div class="pagination">
-      <ul>
-#if($currentPage > 1) #set($pre = $currentPage - 1)
-	    <li class="prev"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre).addQueryData('view_uid',$!{result.ViewUid}).addQueryData('view_month', ${result.Month.MonthLiteral}))', '$!portlet.ID');" class="small">前へ</a></li>
-#else
-	    <li class="prev disabled"><a href="javascript:void(0);" class="small">前へ</a></li>
-#end
-#if($pages > $currentPage) #set($next = $currentPage + 1)
-        <li class="next"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next).addQueryData('view_uid',$!{result.ViewUid}).addQueryData('view_month', ${result.Month.MonthLiteral}))', '$!portlet.ID');" class="small">次へ</a></li>
-#else
-        <li class="next disabled"><a href="javascript:void(0);" class="small">次へ</a></li>
-#end
-#if($showLeftRest && $currentPage > ${pageRange})
-#foreach($page in [1..${pageTrimRange}])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData('view_uid',$!{result.ViewUid}).addQueryData('view_month', ${result.Month.MonthLiteral}))', '$!portlet.ID');" class="small">$page</a></li>
-#end
-        <li class="abbr">....</li>
-#end
-#foreach($page in [${nextLeftPage}..$nextRightPage])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData('view_uid',$!{result.ViewUid}).addQueryData('view_month', ${result.Month.MonthLiteral}))', '$!portlet.ID');" class="small">$page</a></li>
-#end
-#if($showRightRest &&  (${currentPage} + ${pageRange} - 1) < ${pages})
-#set($restRightPages = $pages - $pageTrimRange + 1)
-        <li class="abbr">....</li>
-#foreach($page in [${restRightPages}..${pages}])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page).addQueryData('view_uid',$!{result.ViewUid}).addQueryData('view_month', ${result.Month.MonthLiteral}))', '$!portlet.ID');" class="small">$page</a></li>
-#end
-#end
-      </ul>
-    </div>
-  </div>
 </div>
-#end
-#end
+#AUIsearchresult($!result.Keyword.toString())
 
-#macro(user_photo $photolink $username $photo_edit_link)
-<table width="185" border="0" cellpadding="0" cellspacing="0" class="listTable">
-<tbody>
-<tr>
-<th>$username</th>
-</tr>
-<tr class="item">
-<td style="padding:10px" align="center">
-#if($photo_edit_link != "")
-
-<a href="$!utils.escapeXML($photo_edit_link)">
-#if($photolink != "")
-<img src="$photolink" alt="$username" border="0" />
-#else
-<img src="images/common/nophoto.gif" alt="$username" width="76" height="76" border="0" />
-#end
-</a>
-
-#else
-
-#if($photolink != "")
-<img src="$photolink" alt="$username" border="0" />
-#else
-<img src="images/common/nophoto.gif" alt="$username" width="76" height="76" border="0" />
-#end
-
-#end
-</td>
-</tr>
-</tbody>
-</table>
-#end
-
-#macro(blogfootmark $footmarks $link)
-<table width="185" border="0" cellpadding="0" cellspacing="0" class="listTable">
-<tbody>
-<tr>
-<th>あしあと</th>
-</tr>
-#foreach( $footmark in $footmarks )
-<tr>
-<td align="left" class="item">${footmark.UpdateDate}&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData('view_uid',${footmark.UserId}))', '$!portlet.ID');" >$footmark.UserName</a></td>
-##<a href="$!utils.escapeXML("${link}&view_uid=${footmark.UserId}")">$footmark.UserName</a></td>
-</tr>
-#end
-</tbody>
-</table>
-#end
-
-#macro(blogcalendar $month $link $prevlink $nextlink)
-<table width="185" border="0" cellpadding="0" cellspacing="0" class="outer">
-<tbody>
-<tr align="center">
-<td colspan="7" class="item">
-<table cellspacing="0" cellpadding="0"><tbody>
-<tr>
-<td align="center" width="20">
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML("$prevlink")','$!portlet.ID');">&lt; </a>
-</td>
-<td align="center" width="111">${month.Year}年${month.Month}月</td>
-<td align="right" width="20">
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML("$nextlink")','$!portlet.ID');">&gt; </a>
-</td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-<tr align="center" class="caption">
-<td class="f08" style="background-color:#FFEFE5">日</td>
-<td class="f08">月</td>
-<td class="f08">火</td>
-<td class="f08">水</td>
-<td class="f08">木</td>
-<td class="f08">金</td>
-<td class="f08" style="background-color:#EBF0F6">土</td>
-</tr>
-<tr class="item" align="right">
-#set($daysize = $month.DayList.size())
-#set($daycount = 0)
-#foreach($record in $result.Month.DayList)
-#set($daycount = $daycount + 1)
-#if($record.isHolyday())
-<td class="item" style="background-color:#FFEFE5">
-#elseif($record.isSaturday())
-<td class="item" style="background-color:#EBF0F6">
-#elseif($record.isSunday())
-<td class="item" style="background-color:#FFEFE5">
-#else
-<td class="item">
-#end
-#if($record.hasBlogEntry())
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML("${link}&template=BlogEntryListScreen&view_uid=$!{result.ViewUid}&view_day=${record.Label}&view_month=${month.MonthLiteral}&filter=null&filtertype=thema")','$!portlet.ID');">$record.Label</a>
-##<a href="#day$record.Label">$record.Label</a>
-#else
-$record.Label
-#end
-</td>
-#if($record.isSaturday() && $daycount != $daysize)
-</tr>
-<tr class="item" align="right">
-#end
-#end
-</tr>
-</tbody>
-</table>
-#end
-
-#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1')")
-#set($prevlink = "$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('template','BlogEntryListScreen').addQueryData('eventSubmit_doBlog_entry_list_user','1').addQueryData('view_month',$!{result.PrevMonth.toString()}).addQueryData('view_uid', $!{result.ViewUid})")
-#set($nextlink = "$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('template','BlogEntryListScreen').addQueryData('eventSubmit_doBlog_entry_list_user','1').addQueryData('view_month',$!{result.NextMonth.toString()}).addQueryData('view_uid', $!{result.ViewUid})")
-#set($footmarklink = "$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1')")
-#if($!{result.hasPhoto()})
-#set($userphoto_link = "$jslink.getTemplate('FileuploadFacePhotoScreen').addQueryData('uid', $!{result.ViewUid})")
-#else
-#set($userphoto_link = "")
-#end
-
-#if($!{result.UserAccountURI})
-#set ($userphote_edit_link = $!{result.UserAccountURI})
-#else
-#set ($userphote_edit_link = "")
-#end
-
-#if($result.LoginUid == $result.ViewUid)
-#set($tabs = [["${result.Month.Month}月 記事一覧", "",""]])
-#set ($leftcontents = ["#user_photo($userphoto_link ${result.ViewUname} $userphote_edit_link)", "#blogcalendar($result.Month $link $prevlink $nextlink)", "#blogfootmark($result.FootmarkList $footmarklink)"])
-
-#else
-#set($tabs = [["${result.Month.Month}月 記事一覧 ($!utils.escapeXML(${result.ViewUname}) )", "",""]])
-#set ($leftcontents = ["#user_photo($userphoto_link ${result.ViewUname} '')", "#blogcalendar($result.Month $link $prevlink $nextlink)"])
-#end
-
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tbody>
-<tr>
-<td width="200" valign="top" rowspan="3">
-<table width="200"  border="0" cellspacing="5" cellpadding="0">
-<tbody>
-#foreach($content in $leftcontents)
-<tr>
-<td align="center">
-$content
-</td>
-</tr>
-#end
-</tbody>
-</table>
-</td>
-<td colspan="3" valign="top">
-<table width="100%"  border="0" cellspacing="0" cellpadding="0">
-<tbody>
-<tr>
-<td colspan="3" height="6"><img src="images/common/dot.gif" width="2" height="6" alt="" /></td>
-</tr>
-<tr>
-<td width="8"><img src="images/common/dot.gif" width="8" height="2" alt="" /></td>
-<td valign="top" width="100%">
-
-#ALtabheader($tabs "")
-#ALspacebothheader()
-<div class="p">
-#ALformheader('Blog' $jslink $portlet)
-#ALtableheaderSimpleWide()
-#ALtdcaption('テーマ')
-#ALtditemheader()
-<select name="thema" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("eventSubmit_doBlog_entry_list_user","1").addQueryData("filter","").addQueryData("filtertype","thema").addQueryData("view_uid", $!{result.ViewUid}).addQueryData("view_month", $!{result.Month.MonthLiteral}))">（全体）</option>
-#foreach( $record in $result.ThemaList )
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("eventSubmit_doBlog_entry_list_user","1").addQueryData("filter",$!record.ThemaId).addQueryData("filtertype","thema").addQueryData("view_uid", $!{result.ViewUid}).addQueryData("view_month", $!{result.Month.MonthLiteral}))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.ThemaId.toString()) selected #end>$!record.ThemaName</option>
-#end
-</select>
-#ALtditemfooter()
-#ALtablefooter()
-#ALformfooter()
-</div>
 #if($result.List.size() == 0)
 <div class="message">指定された条件に該当する記事はありません。</div>
 #else
-<div class="p">
-#ALajaxpageviewBlog('BlogEntryListScreen' $result)
-</div>
+<div id="auiBlogEntries">
 #foreach ($record in $result.List)
-#if($record)
-<div class="p">
-<h3 id="day$record.Day">
-$record.TitleDate &nbsp;  <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData('entityid',$record.EntryId))','$!portlet.ID',aipo.blog.onLoadBlogCommentDialog);">${record.Title}</a></h3>
-$record.Note
-<table width="100%"  border="0" cellspacing="0" cellpadding="0"><tbody>
-<tr>
-<td align="right"> #if(${record.CommentsNum} == 0) コメント(0) #else <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData('entityid',$record.EntryId))','$!portlet.ID',aipo.blog.onLoadBlogCommentDialog);">コメント(${record.CommentsNum}) </a> #end | <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData('entityid',$record.EntryId))','$!portlet.ID',aipo.blog.onLoadBlogCommentDialog);">続きはこちら </a>
-#if($result.Editable)
-| <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryFormScreen").addQueryData('eventSubmit_doBlog_entry_form','1').addQueryData('entityid',$record.EntryId))','$!portlet.ID',aipo.blog.onLoadBlogDialog);">編集 </a>
+<div class="entry clearfix">
+<div class="avatar">
+<a href="$!utils.escapeXML($!jslink.getAction('controls.Maximize',$!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1').addQueryData('view_uid',${record.OwnerId}).addQueryData('view_month', 'none'))">
+#if(${record.hasPhoto()})
+<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}).addQueryData('width', '32').addQueryData('height', '32'))" alt="${record.OwnerName}" border="0" width="32" height="32" style="vertical-align:middle" />
+#else
+<img src="images/common/nophoto.gif" alt="${record.OwnerName}" width="32" height="32" border="0" />
 #end
-</td>
-</tr>
-</tbody>
-</table>
+</a>
+</div>
+<div class="entryBody">
+<div class="entryHeader"><h2><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData("entityid",$record.EntryId))', '$!portlet.ID', aipo.blog.onLoadBlogDetailDialog );">${record.Title}</a></h2></div>
+<div class='entryText'>${record.Note}</div>
+<div class="entryFooter">
+<div class="floatRight">${record.TitleDate}｜${record.OwnerName}</div>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData("entityid",$record.EntryId))', '$!portlet.ID', aipo.blog.onLoadBlogDetailDialog );">コメント#if($record.CommentsNum > 0)（$record.CommentsNum）#end</a>｜
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogThemaDetailScreen").addQueryData("entityid",$!record.ThemaId))');">$!record.ThemaName</a>｜
+#if($result.Editable)
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryFormScreen").addQueryData('eventSubmit_doBlog_entry_form','1').addQueryData('entityid',$record.EntryId))','$!portlet.ID',aipo.blog.onLoadBlogDialog);">編集 </a>｜
+#end
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData("entityid",$record.EntryId))', '$!portlet.ID', aipo.blog.onLoadBlogDetailDialog );">続きを読む</a>
+</div>
+</div>
 </div>
 #end
+</div>
 #end
-#ALajaxpageviewBlogFooter('BlogEntryListScreen' $result)
+<div class="auiSummaryMeta clearfix">
+#if ($result.List.size() != 0)
+#AUIajaxpageview('BlogEntryListScreen' $result)
 #end
-#ALspacebothfooter()
-#ALajaxtabfooter()
-</td>
-<td width="6"><img src="images/common/dot.gif" width="6" height="2" alt="" /></td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-</tbody>
-</table>
+</div>
+</div>
+</div>
+<div id="auiThreeColumnWidgets">
+<div class="auiWidget clearfix">
+<form class="auiForm">
+<select name="groupId" onChange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" class="wide">
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("groupid","LoginUser").addQueryData("target_user_id", "all"))">すべてのグループ</option>
+#foreach( $record in $!result.MyGroupList )
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("groupid","$!{record.Name.toString()}"))" #if($!result.GroupId == $!record.Name.toString()) selected #set($groupName = $!record.Name) #end>$!record.AliasName</option>
+#end
+#if(($result.MyGroupList.size() > 0) && ($result.PostMap.size() > 0))
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("groupid","LoginUser"))">----------</option>
+#end
+#foreach( $record in $!result.PostMap )
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("groupid","$!{record.GroupName.toString()}"))" #if($!result.GroupId == $!record.GroupName.toString()) selected #set($groupName = $!record.GroupName) #end>$!record.PostName</option>
+#end
+</select>
+</form>
+<ul class="auiAvatarList">
+#foreach($user in $!result.UserList)
+<li#if ($!result.OwnerId == $!user.UserId.toString()) class="active"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("ownerid", $user.UserId))', '$!portlet.ID');">
+#if($user.hasPhoto)
+<img src="" width="32" height="32" alt="${user.AliasName}" />
+#else
+<img src="images/common/nophoto.gif" alt="${user.AliasName}" width="32" height="32" border="0" />
+#end
+${user.AliasName}</a></li>
+#end
+</ul>
+</div>
+</div>
+#AUIcontentsAreaFooter()
+#parse("/portlets/html/ja/blog-widgets.vm")

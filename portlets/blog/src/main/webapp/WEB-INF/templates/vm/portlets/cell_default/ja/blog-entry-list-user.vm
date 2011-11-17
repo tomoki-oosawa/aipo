@@ -26,9 +26,9 @@
 #ALcell_li_header($career)
 ユーザー選択<br />
 #ALcell_formheader($career $jslink $portlet)
-<select name="view_uid">
+<select name="ownerid">
 #foreach($record in $users)
-<option value=$record.UserId #if($record.UserId.toString() == $view_uid) selected #end>$record.AliasName</option>
+<option value=$record.UserId #if($record.UserId.toString() == $result.ownerId) selected #end>$record.AliasName</option>
 #end
 </select>
 <input type="submit" class="submit" name="eventSubmit_doBlog_entry_list_user" value="ﾌﾞﾛｸﾞを見る">

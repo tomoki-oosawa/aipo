@@ -27,9 +27,9 @@
 #ALcell_linklist_iphone($career $methodlist)
 #ALcell_contents_header($career)
 <h3>ユーザー選択</h3>
-<select name="view_uid" class="w90" onchange="location.href='$!link_alt' + '&view_uid=' + this.options[this.selectedIndex].value">
+<select name="ownerid" class="w90" onchange="location.href='$!link_alt' + '&ownerid=' + this.options[this.selectedIndex].value">
 #foreach($record in $users)
-<option value=$record.UserId #if($record.UserId.toString() == $view_uid) selected #end>$record.AliasName</option>
+<option value=$record.UserId #if($record.UserId.toString() == $result.ownerId) selected #end>$record.AliasName</option>
 #end
 </select>
 <h3>最新記事一覧</h3>
