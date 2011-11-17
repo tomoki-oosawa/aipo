@@ -50,5 +50,9 @@
 #if ($!result.Viewtype == "list")
 #parse("/portlets/html/ja/schedule-search-list.vm")
 #end
+## Search
+#if ($!result.Viewtype == "search")
+#parse("/portlets/html/ja/schedule-search-result.vm")
+#end
 #ALspacebothfooter()
 

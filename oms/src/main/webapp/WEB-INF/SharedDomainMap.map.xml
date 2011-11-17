@@ -497,10 +497,12 @@
 	</db-entity>
 	<db-entity name="v_eip_t_schedule_list">
 		<db-attribute name="COMMON_CATEGORY_ID" type="INTEGER" isMandatory="true" length="4"/>
+		<db-attribute name="CREATE_USER_ID" type="INTEGER" length="4"/>
 		<db-attribute name="EDIT_FLAG" type="VARCHAR" length="1"/>
 		<db-attribute name="END_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="NAME" type="VARCHAR" length="99"/>
+		<db-attribute name="NOTE" type="CLOB"/>
 		<db-attribute name="OWNER_ID" type="INTEGER" length="4"/>
 		<db-attribute name="PARENT_ID" type="INTEGER" length="4"/>
 		<db-attribute name="PLACE" type="VARCHAR" length="99"/>
@@ -940,9 +942,11 @@
 	</obj-entity>
 	<obj-entity name="VEipTScheduleList" className="com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList" dbEntityName="v_eip_t_schedule_list">
 		<obj-attribute name="commonCategoryId" type="java.lang.Integer" db-attribute-path="COMMON_CATEGORY_ID"/>
+		<obj-attribute name="createUserId" type="java.lang.Integer" db-attribute-path="CREATE_USER_ID"/>
 		<obj-attribute name="editFlag" type="java.lang.String" db-attribute-path="EDIT_FLAG"/>
 		<obj-attribute name="endDate" type="java.util.Date" db-attribute-path="END_DATE"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="NAME"/>
+		<obj-attribute name="note" type="java.lang.String" db-attribute-path="NOTE"/>
 		<obj-attribute name="ownerId" type="java.lang.Integer" db-attribute-path="OWNER_ID"/>
 		<obj-attribute name="parentId" type="java.lang.Integer" db-attribute-path="PARENT_ID"/>
 		<obj-attribute name="place" type="java.lang.String" db-attribute-path="PLACE"/>

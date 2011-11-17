@@ -101,11 +101,11 @@
 #if($result.ScheduleList.size() == 0)
 <div class="message">指定された条件に該当する予定はありません。</div>
 #else
-#AUIsearchresult($!result.targetKeyword.toString())
 #AUIrowTableWide()
 <tr>
 <th class="w20">日時</th>
-<th class="w80">予定</th>
+<th class="w60">予定</th>
+<th class="w20">登録者</th>
 </tr>
 #foreach ($record in $result.ScheduleList)
 #set($scheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.ScheduleId}).addQueryData('userid', $!{result.TargetUserId}).addQueryData('view_date', $!{record.ViewDate.toString()})")
@@ -124,6 +124,7 @@
 #if($record.isTmpreserve())
 <img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />
 #end</div></td>
+<td><div>$!{record.CreateUser.AliasName}</td>
 </tr>
 #end
 #AUItablefooter()

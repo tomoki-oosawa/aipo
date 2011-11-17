@@ -76,6 +76,7 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.AjaxScheduleResultData;
@@ -3525,101 +3526,171 @@ public class ScheduleUtils {
   public static List<VEipTScheduleList> getScheduleList(int userId,
       Date viewStart, Date viewEnd, List<Integer> users,
       List<Integer> facilities) {
-    return getScheduleList(userId, viewStart, viewEnd, users, facilities, null);
+    return getScheduleList(
+      userId,
+      viewStart,
+      viewEnd,
+      users,
+      facilities,
+      null,
+      -1,
+      -1,
+      false);
   }
 
   public static List<VEipTScheduleList> getScheduleList(int userId,
       Date viewStart, Date viewEnd, List<Integer> users,
-      List<Integer> facilities, String keyword) {
+      List<Integer> facilities, String keyword, int page, int limit,
+      boolean withNote) {
 
-    StringBuilder sql = new StringBuilder();
+    StringBuilder select = new StringBuilder();
 
-    sql.append("select eip_t_schedule_map.id, ");
-    sql.append(" eip_t_schedule.schedule_id,");
-    sql.append(" eip_t_schedule_map.common_category_id,");
-    sql.append(" eip_t_schedule_map.user_id,");
-    sql.append(" eip_t_schedule.owner_id,");
-    sql.append(" eip_t_schedule.parent_id,");
-    sql.append(" eip_t_schedule_map.status,");
-    sql.append(" eip_t_schedule_map.type,");
-    sql.append(" eip_t_schedule.name,");
-    sql.append(" eip_t_schedule.place,");
-    sql.append(" eip_t_schedule.start_date,");
-    sql.append(" eip_t_schedule.end_date,");
-    sql.append(" eip_t_schedule.public_flag,");
-    sql.append(" eip_t_schedule.repeat_pattern,");
-    sql.append(" eip_t_schedule.edit_flag,");
-    sql
+    select.append("select eip_t_schedule_map.id, ");
+    select.append(" eip_t_schedule.schedule_id,");
+    select.append(" eip_t_schedule_map.common_category_id,");
+    select.append(" eip_t_schedule_map.user_id,");
+    select.append(" eip_t_schedule.owner_id,");
+    select.append(" eip_t_schedule.parent_id,");
+    select.append(" eip_t_schedule_map.status,");
+    select.append(" eip_t_schedule_map.type,");
+    select.append(" eip_t_schedule.name,");
+    select.append(" eip_t_schedule.place,");
+    select.append(" eip_t_schedule.start_date,");
+    select.append(" eip_t_schedule.end_date,");
+    select.append(" eip_t_schedule.public_flag,");
+    select.append(" eip_t_schedule.repeat_pattern,");
+    select.append(" eip_t_schedule.create_user_id,");
+    if (withNote) {
+      select.append(" eip_t_schedule.note,");
+    }
+    select.append(" eip_t_schedule.edit_flag,");
+    select
       .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t0 WHERE (t0.schedule_id = eip_t_schedule_map.schedule_id) AND (t0.user_id = #bind($user_id))) AS is_member,");
-    sql
+    select
       .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t1 WHERE (t1.schedule_id = eip_t_schedule_map.schedule_id) AND (t1.status <> 'R') AND (t1.type = 'F')) AS f_count,");
-    sql
+    select
       .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t2 WHERE (t2.schedule_id = eip_t_schedule_map.schedule_id) AND (t2.status <> 'R') AND (t2.type <> 'F')) AS u_count");
-    sql
+
+    StringBuilder count = new StringBuilder();
+    count.append("select count(eip_t_schedule_map.id) AS c ");
+
+    StringBuilder body = new StringBuilder();
+    body
       .append(" FROM eip_t_schedule_map, eip_t_schedule WHERE eip_t_schedule_map.schedule_id = eip_t_schedule.schedule_id");
     boolean hasKeyword = false;
     if (keyword != null && keyword.length() > 0) {
       hasKeyword = true;
-      sql.append(" AND (");
-      sql
-        .append(" eip_t_schedule.name LIKE #bind($keyword) OR eip_t_schedule.name = 'dummy'");
-      sql.append(" ) ");
+      body.append(" AND (");
+      body
+        .append(" eip_t_schedule.name LIKE #bind($keyword) OR eip_t_schedule.note LIKE #bind($keyword) OR eip_t_schedule.place LIKE #bind($keyword) ");
+      body.append(" ) ");
 
     }
-    sql.append(" AND (");
+    body.append(" AND (");
 
     if (users != null && users.size() > 0) {
-      sql.append(" ((eip_t_schedule_map.type = 'U')");
-      sql.append(" AND (eip_t_schedule_map.user_id IN (");
+      body.append(" ((eip_t_schedule_map.type = 'U')");
+      body.append(" AND (eip_t_schedule_map.user_id IN (");
 
       boolean isFirst = true;
       for (Integer num : users) {
         if (!isFirst) {
-          sql.append(",");
+          body.append(",");
 
         }
-        sql.append(num.intValue());
+        body.append(num.intValue());
         isFirst = false;
       }
-      sql.append(")))");
+      body.append(")))");
     }
 
     if (facilities != null && facilities.size() > 0) {
       if (users != null && users.size() > 0) {
-        sql.append(" OR ");
+        body.append(" OR ");
       }
-      sql.append(" ((eip_t_schedule_map.type = 'F')");
-      sql.append(" AND (eip_t_schedule_map.user_id IN (");
+      body.append(" ((eip_t_schedule_map.type = 'F')");
+      body.append(" AND (eip_t_schedule_map.user_id IN (");
 
       boolean isFirst = true;
       for (Integer num : facilities) {
         if (!isFirst) {
-          sql.append(",");
+          body.append(",");
 
         }
-        sql.append(num.intValue());
+        body.append(num.intValue());
         isFirst = false;
       }
-      sql.append(")))");
+      body.append(")))");
     }
 
-    sql.append(")");
+    body.append(")");
 
-    sql.append(" AND (((eip_t_schedule.end_date >= '");
-    sql.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(viewStart));
-    sql.append("') AND (eip_t_schedule.start_date <= '");
-    sql.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(viewEnd));
-    sql
-      .append("')) OR ((eip_t_schedule.repeat_pattern <> 'N') AND (eip_t_schedule.repeat_pattern <> 'S')))");
-    sql.append(" ORDER BY eip_t_schedule.start_date, eip_t_schedule.end_date");
+    if (viewStart != null && viewEnd != null) {
+      body.append(" AND (((eip_t_schedule.end_date >= '");
+      body
+        .append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(viewStart));
+      body.append("') AND (eip_t_schedule.start_date <= '");
+      body.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(viewEnd));
+
+      body
+        .append("')) OR ((eip_t_schedule.repeat_pattern <> 'N') AND (eip_t_schedule.repeat_pattern <> 'S')))");
+    } else {
+      body.append(" AND (eip_t_schedule.public_flag <> 'P'");
+      body
+        .append(" OR ((SELECT COUNT(*) FROM eip_t_schedule_map t0 WHERE (t0.schedule_id = eip_t_schedule_map.schedule_id) AND (t0.user_id = #bind($user_id))) > 0 )");
+      body
+        .append(" OR (eip_t_schedule_map.type = 'U' AND eip_t_schedule_map.user_id = #bind($user_id))");
+      body.append(" OR ( eip_t_schedule.owner_id = #bind($user_id)))");
+      body.append(" AND (eip_t_schedule_map.status <> 'D')");
+    }
+
+    StringBuilder last = new StringBuilder();
+
+    last.append(" ORDER BY eip_t_schedule.start_date, eip_t_schedule.end_date");
+
+    SQLTemplate<VEipTScheduleList> countQuery =
+      Database
+        .sql(VEipTScheduleList.class, count.toString() + body.toString())
+        .param("user_id", Integer.valueOf(userId));
+    if (hasKeyword) {
+      countQuery.param("keyword", "%" + keyword + "%");
+    }
+
+    int countValue = 0;
+    if (page > 0 && limit > 0) {
+      List<DataRow> fetchCount = countQuery.fetchListAsDataRow();
+
+      for (DataRow row : fetchCount) {
+        countValue = ((Long) row.get("c")).intValue();
+      }
+
+      int offset = 0;
+      if (limit > 0) {
+        int num = ((int) (Math.ceil(countValue / (double) limit)));
+        if ((num > 0) && (num < page)) {
+          page = num;
+        }
+        offset = limit * (page - 1);
+      } else {
+        page = 1;
+      }
+
+      last.append(" LIMIT ");
+      last.append(limit);
+      last.append(" OFFSET ");
+      last.append(offset);
+    }
 
     SQLTemplate<VEipTScheduleList> query =
-      Database.sql(VEipTScheduleList.class, sql.toString()).param(
+      Database.sql(
+        VEipTScheduleList.class,
+        select.toString() + body.toString() + last.toString()).param(
         "user_id",
         Integer.valueOf(userId));
     if (hasKeyword) {
       query.param("keyword", "%" + keyword + "%");
     }
+
     List<DataRow> fetchList = query.fetchListAsDataRow();
 
     List<VEipTScheduleList> list = new ArrayList<VEipTScheduleList>();
@@ -3636,7 +3707,11 @@ public class ScheduleUtils {
 
     }
 
-    return list;
+    if (page > 0 && limit > 0) {
+      return new ResultList<VEipTScheduleList>(list, page, limit, countValue);
+    } else {
+      return list;
+    }
 
   }
 

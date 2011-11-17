@@ -21,11 +21,15 @@ package com.aimluck.eip.schedule;
 
 import java.text.SimpleDateFormat;
 
+import com.aimluck.eip.common.ALEipUser;
+
 /**
  * スケジュールの検索データを管理するクラスです。
  * 
  */
 public class ScheduleSearchResultData extends ScheduleResultData {
+
+  private ALEipUser createUser;
 
   @Override
   public void initField() {
@@ -44,9 +48,42 @@ public class ScheduleSearchResultData extends ScheduleResultData {
     return b.toString();
   }
 
+  public String getDateDetail() {
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy'年'MM'月'dd'日（'E'）'");
+    StringBuilder b = new StringBuilder();
+    if ("S".equals(getPattern())) {
+      String startDate = sdf.format(getStartDate().getValue());
+      b.append(startDate);
+      String endDate = sdf.format(getEndDate().getValue());
+      if (!startDate.equals(endDate)) {
+        b.append("～");
+        b.append(sdf.format(getEndDate().getValue()));
+      }
+    } else {
+      b.append(sdf.format(getStartDate().getValue())).append(" ").append(
+        getDate2());
+    }
+    return b.toString();
+  }
+
   public String getViewDate() {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     sdf.format(getStartDate().getValue());
     return sdf.format(getStartDate().getValue());
+  }
+
+  /**
+   * @return createUser
+   */
+  public ALEipUser getCreateUser() {
+    return createUser;
+  }
+
+  /**
+   * @param createUser
+   *          セットする createUser
+   */
+  public void setCreateUser(ALEipUser createUser) {
+    this.createUser = createUser;
   }
 }

@@ -40,6 +40,7 @@ import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.schedule.AjaxScheduleWeeklyGroupEmptySelectData;
 import com.aimluck.eip.schedule.ScheduleChangeStatusFormData;
 import com.aimluck.eip.schedule.ScheduleFormData;
+import com.aimluck.eip.schedule.ScheduleListSelectData;
 import com.aimluck.eip.schedule.ScheduleMonthlySelectData;
 import com.aimluck.eip.schedule.ScheduleOnedayGroupSelectData;
 import com.aimluck.eip.schedule.ScheduleOnedaySelectData;
@@ -252,10 +253,16 @@ public class ScheduleAction extends ALBaseAction {
         tab = "weekly-group";
         listData = new ScheduleWeeklyGroupSelectData();
         ((ScheduleWeeklyGroupSelectData) listData).setPortletId(portletId);
-      } else {
+      } else if (template.equals("schedule-search-list")) {
         tab = "list";
+        listData = new ScheduleListSelectData();
+        ((ScheduleListSelectData) listData).setPortletId(portletId);
+      } else {
+        tab = "search";
         listData = new ScheduleSearchSelectData();
-        ((ScheduleSearchSelectData) listData).setPortletId(portletId);
+        ((ScheduleListSelectData) listData).setPortletId(portletId);
+        // TODO: 表示カスタマイズ
+        listData.setRowsNum(20);
       }
 
       ALEipUtils.setTemp(rundata, context, "tab", tab);

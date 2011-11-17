@@ -8,9 +8,11 @@ package com.aimluck.eip.cayenne.om.portlet.auto;
 public class _VEipTScheduleList extends org.apache.cayenne.CayenneDataObject {
 
     public static final String COMMON_CATEGORY_ID_PROPERTY = "commonCategoryId";
+    public static final String CREATE_USER_ID_PROPERTY = "createUserId";
     public static final String EDIT_FLAG_PROPERTY = "editFlag";
     public static final String END_DATE_PROPERTY = "endDate";
     public static final String NAME_PROPERTY = "name";
+    public static final String NOTE_PROPERTY = "note";
     public static final String OWNER_ID_PROPERTY = "ownerId";
     public static final String PARENT_ID_PROPERTY = "parentId";
     public static final String PLACE_PROPERTY = "place";
@@ -29,6 +31,14 @@ public class _VEipTScheduleList extends org.apache.cayenne.CayenneDataObject {
     }
     public Integer getCommonCategoryId() {
         return (Integer)readProperty("commonCategoryId");
+    }
+    
+    
+    public void setCreateUserId(Integer createUserId) {
+        writeProperty("createUserId", createUserId);
+    }
+    public Integer getCreateUserId() {
+        return (Integer)readProperty("createUserId");
     }
     
     
@@ -53,6 +63,14 @@ public class _VEipTScheduleList extends org.apache.cayenne.CayenneDataObject {
     }
     public String getName() {
         return (String)readProperty("name");
+    }
+    
+    
+    public void setNote(String note) {
+        writeProperty("note", note);
+    }
+    public String getNote() {
+        return (String)readProperty("note");
     }
     
     

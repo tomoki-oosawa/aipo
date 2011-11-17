@@ -35,7 +35,7 @@ import com.aimluck.eip.schedule.util.ScheduleUtils;
  */
 public class ScheduleListContainer implements ALData {
 
-  public static final int SCHEDULE_LIST_MONTH_LIMIT = 3;
+  public static final int SCHEDULE_LIST_DATE_LIMIT = 7;
 
   private ALDateTimeField viewStartDate;
 
@@ -54,13 +54,13 @@ public class ScheduleListContainer implements ALData {
     scheduleList = new ArrayList<ScheduleResultData>();
   }
 
-  public boolean addResultData(ScheduleResultData rd) {
+  public boolean addResultData(ScheduleSearchResultData rd) {
     isSort = false;
     Calendar startDate = Calendar.getInstance();
     startDate.setTime(viewStartDate.getValue());
     Calendar endDate = Calendar.getInstance();
     endDate.setTime(startDate.getTime());
-    endDate.add(Calendar.MONTH, SCHEDULE_LIST_MONTH_LIMIT);
+    endDate.add(Calendar.DATE, SCHEDULE_LIST_DATE_LIMIT);
     while (startDate.before(endDate)) {
       ALDateTimeField field = new ALDateTimeField("yyyy-MM-dd-HH-mm");
       ScheduleSearchResultData addRd = new ScheduleSearchResultData();
@@ -118,6 +118,7 @@ public class ScheduleListContainer implements ALData {
           // 繰り返しはON
           addRd.setRepeat(!isSpan);
           addRd.setPattern(rd.getPattern());
+          addRd.setCreateUser(rd.getCreateUser());
           addResultDataInternal(addRd);
         }
       } else {
