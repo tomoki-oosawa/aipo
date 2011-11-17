@@ -19,14 +19,23 @@
 
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
+#set ($newUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoCategoryFormScreen").addQueryData("entityid","new")))
+
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 #ALspacebothheader()
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
-<div id="listmessageDiv"></div>
 #ALformheader('カテゴリ' $jslink $portlet)
 #if($result.List.size() <= 0)
-<div class="message">複数の ToDo をグループ化することで、ToDo を分類することができます。</div>
+#AUIrowTableWide()
+<tr>
+<td colspan="4" class="auiNoData">
+<p>カテゴリが登録されていません。</p>
+<p>カテゴリを追加することで、ToDo を分類することができます。</p>
+<p class="mh10">#AUIbutton("カテゴリを追加する" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.todo.onLoadCategoryDialog);")</p>
+</td>
+</tr>
+#AUItablefooter()
 #else
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft">
