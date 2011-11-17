@@ -48,4 +48,5 @@ UPDATE `eip_t_acl_role` SET `role_name` = 'スケジュール（設備の予約�
 -- 20111116
 UPDATE `eip_t_acl_portlet_feature` SET `acl_type` = 27 WHERE feature_name = 'blog_entry_other';
 INSERT INTO `eip_t_acl_portlet_feature` VALUES(null,'blog_entry_other_reply','ブログ（他ユーザーの記事へのコメント）操作',16);
+UPDATE `eip_t_acl_role` SET `note` = '＊詳細表示、編集、削除は一覧表示の権限を持っていないと使用できません' WHERE feature_id IN (SELECT feature_id FROM eip_t_acl_portlet_feature WHERE feature_name = 'blog_entry_other');
 -- 20111116

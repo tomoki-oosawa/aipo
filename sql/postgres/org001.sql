@@ -1522,7 +1522,7 @@ INSERT INTO EIP_T_ACL_ROLE VALUES(3,'スケジュール（設備の予約）管�
 
 -- blog
 INSERT INTO EIP_T_ACL_ROLE VALUES(4,'ブログ（自分の記事）管理者',121,31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません');
-INSERT INTO EIP_T_ACL_ROLE VALUES(5,'ブログ（他ユーザーの記事）管理者',122,3,'＊詳細表示は一覧表示の権限を持っていないと使用できません');
+INSERT INTO EIP_T_ACL_ROLE VALUES(5,'ブログ（他ユーザーの記事）管理者',122,3,'＊詳細表示、編集、削除は一覧表示の権限を持っていないと使用できません');
 INSERT INTO EIP_T_ACL_ROLE VALUES(6,'ブログ（記事へのコメント）管理者',123,20,NULL);
 INSERT INTO EIP_T_ACL_ROLE VALUES(7,'ブログ（テーマ）管理者',124,31,'＊詳細表示、追加、編集、削除は一覧表示の権限を持っていないと使用できません');
 

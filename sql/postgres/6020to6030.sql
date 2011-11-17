@@ -49,4 +49,6 @@ UPDATE EIP_T_ACL_ROLE SET ROLE_NAME = 'スケジュール（設備の予約）�
 -- 20111116
 UPDATE EIP_T_ACL_PORTLET_FEATURE SET ACL_TYPE = 27 WHERE FEATURE_NAME = 'blog_entry_other';
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(NEXTVAL('pk_eip_t_acl_portlet_feature'),'blog_entry_other_reply','ブログ（他ユーザーの記事へのコメント）操作',16);
+UPDATE EIP_T_ACL_ROLE SET NOTE = '＊詳細表示、編集、削除は一覧表示の権限を持っていないと使用できません' WHERE FEATURE_ID IN (SELECT FEATURE_ID FROM EIP_T_ACL_PORTLET_FEATURE WHERE FEATURE_NAME = 'blog_entry_other');
+
 -- 20111116
