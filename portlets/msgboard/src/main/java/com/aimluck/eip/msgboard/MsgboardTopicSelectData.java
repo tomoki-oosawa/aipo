@@ -163,8 +163,9 @@ public class MsgboardTopicSelectData extends
         String categoryId =
           portlet.getPortletConfig().getInitParameter("p3a-category");
         if (categoryId != null) {
-          ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, "0");
-          ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "0");
+          ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, categoryId);
+          ALEipUtils
+            .setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
         }
       }
     } catch (Exception ex) {
