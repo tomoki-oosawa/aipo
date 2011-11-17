@@ -229,7 +229,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   private ALNumberField common_category_id;
 
   /** スケジュール更新時にメール受信フラグ */
-  private String mail_flag;
+  private String mail_flag = ScheduleUtils.MAIL_FOR_ALL;
 
   private final int msg_type = 0;
 

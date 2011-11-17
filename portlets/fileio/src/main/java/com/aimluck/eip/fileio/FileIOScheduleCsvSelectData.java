@@ -55,6 +55,8 @@ public class FileIOScheduleCsvSelectData extends
   /** 時間を表すフィールドを自動補完するか否か */
   private String autotime_flg;
 
+  private Date now;
+
   /**
    * 初期化 <BR>
    */
@@ -62,6 +64,7 @@ public class FileIOScheduleCsvSelectData extends
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
+    now = new Date();
   }
 
   /**
@@ -154,7 +157,6 @@ public class FileIOScheduleCsvSelectData extends
 
     List<FileIOScheduleCsvData> list = new ArrayList<FileIOScheduleCsvData>();
     int ErrCount = 0;// エラーが発生した回数
-    Date now = new Date();
 
     String token;
     int i, j;
@@ -164,7 +166,6 @@ public class FileIOScheduleCsvSelectData extends
 
     while (reader.eof != -1) {
       line++;
-      boolean b_err = false;
       List<String> errmsg = new ArrayList<String>();
       FileIOScheduleCsvFormData formData = new FileIOScheduleCsvFormData();
       formData.initField();
@@ -205,77 +206,20 @@ public class FileIOScheduleCsvSelectData extends
       }
 
       formData.setValidator();
-      if (!formData.validate(errmsg)) {
-        b_err = true;
-      }
+      formData.validate(errmsg);
 
       try {
-        ALDateTimeField date =
-          new ALDateTimeField(ALDateTimeField.DEFAULT_DATE_TIME_FORMAT);
 
-        ALEipUser user =
-          ALEipUtils.getALEipUser(formData.getUserName().getValue());
-        if (user == null) {
-          user = new ALEipUser();
-          user.initField();
-          user.setAliasName(formData.getUserFirstName().toString(), formData
-            .getUserLastName()
-            .toString());
-          b_err = true;
-        }
+        FileIOScheduleCsvData data = setupData(formData, errmsg, line);
 
-        try {
-          formData.getUserName();
-        } catch (Exception e) {
-          b_err = true;
-        }
-
-        FileIOScheduleCsvData data = new FileIOScheduleCsvData();
-        data.setUser(user);
-
-        data.initField();
-        data.setLineCount(line);
-
-        data.setName(formData.getScheduleName().getValue());
-        if (data.getName().toString().equals("")) {
-          b_err = true;
-        }
-
-        data.setPlace(formData.getPlace().getValue());
-        data.setNote(formData.getNote().getValue());
-
-        try {
-          date.setValue(formData.getCreateDate().toString());
-          data.setUpdateDate(date.getValue());
-        } catch (Exception e) {
-          data.setUpdateDate(now);
-        }
-
-        try {
-          date.setValue(formData.getStartDateTime().toString());
-          data.setStartDate(date.getValue());
-        } catch (Exception e) {
-          data.setStartDate(null);
-          b_err = true;
-        }
-
-        try {
-          date.setValue(formData.getEndDateTime().toString());
-          data.setEndDate(date.getValue());
-        } catch (Exception e) {
-          data.setEndDate(null);
-          b_err = true;
-        }
-
-        data.setIsError(b_err);
-        if (b_err) {
+        if (errmsg.size() > 0) {
           ErrorCode += e_line.toString();
           ErrorCode += "," + Integer.toString(line);
           ErrorCode += "\n";
         }
         if (!formData.getUserFullName().toString().equals("名前")) {
           if (ErrCount == 0) {
-            if (!b_err) {
+            if (errmsg.size() == 0) {
               if (list.size() < ALCsvTokenizer.CSV_SHOW_SIZE) {
                 list.add(data);
               }
@@ -285,7 +229,7 @@ public class FileIOScheduleCsvSelectData extends
               ErrCount++;
             }
           } else {
-            if (b_err) {
+            if (errmsg.size() > 0) {
               ErrCount++;
             }
             list.add(data);
@@ -312,6 +256,69 @@ public class FileIOScheduleCsvSelectData extends
       outputErrorData(rundata, ErrorCode, filepath_err);
     }
     return list;
+  }
+
+  private FileIOScheduleCsvData setupData(FileIOScheduleCsvFormData formData,
+      List<String> errmsg, int line) throws Exception {
+
+    FileIOScheduleCsvData data = new FileIOScheduleCsvData();
+    ALDateTimeField date =
+      new ALDateTimeField(ALDateTimeField.DEFAULT_DATE_TIME_FORMAT);
+
+    ALEipUser user = ALEipUtils.getALEipUser(formData.getUserName().getValue());
+    if (user == null) {
+      user = new ALEipUser();
+      user.initField();
+      user.setAliasName(formData.getUserFirstName().toString(), formData
+        .getUserLastName()
+        .toString());
+      errmsg.add("user not found");
+    }
+
+    try {
+      formData.getUserName();
+    } catch (Exception e) {
+      errmsg.add("loin name error");
+    }
+
+    data.setUser(user);
+    data.initField();
+    data.setLineCount(line);
+
+    data.setName(formData.getScheduleName().getValue());
+    if (data.getName().toString().equals("")) {
+      errmsg.add("schedule title have no content");
+    }
+
+    data.setPlace(formData.getPlace().getValue());
+    data.setNote(formData.getNote().getValue());
+
+    try {
+      date.setValue(formData.getCreateDate().toString());
+      data.setUpdateDate(date.getValue());
+    } catch (Exception e) {
+      data.setUpdateDate(now);
+    }
+
+    try {
+      date.setValue(formData.getStartDateTime().toString());
+      data.setStartDate(date.getValue());
+    } catch (Exception e) {
+      data.setStartDate(null);
+      errmsg.add("start date is null");
+    }
+
+    try {
+      date.setValue(formData.getEndDateTime().toString());
+      data.setEndDate(date.getValue());
+    } catch (Exception e) {
+      data.setEndDate(null);
+      errmsg.add("end date is null");
+    }
+
+    data.setIsError(errmsg.size() > 0);
+
+    return data;
   }
 
   /**

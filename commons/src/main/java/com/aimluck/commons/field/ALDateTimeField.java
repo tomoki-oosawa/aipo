@@ -510,4 +510,12 @@ public class ALDateTimeField extends ALAbstractField {
     }
   }
 
+  public String toString(String format) {
+    if (calendar == null) {
+      return ALStringUtil.sanitizing(null);
+    } else {
+      return ALStringUtil.sanitizing(translateDate(getValue(), format));
+    }
+  }
+
 }

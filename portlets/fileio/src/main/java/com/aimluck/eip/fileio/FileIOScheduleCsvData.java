@@ -19,14 +19,12 @@
 
 package com.aimluck.eip.fileio;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.fileio.util.FileIOScheduleCsvUtils;
 import com.aimluck.eip.schedule.ScheduleDetailResultData;
 
 public class FileIOScheduleCsvData extends ScheduleDetailResultData {
@@ -93,12 +91,9 @@ public class FileIOScheduleCsvData extends ScheduleDetailResultData {
    * @return
    */
   public boolean isDateError() {
-    ALDateTimeField start_date = this.getStartDate();
-    ALDateTimeField end_date = this.getEndDate();
-    if (!start_date.toString().equals("") && !end_date.toString().equals("")) {
-      if (compareToDate(start_date.getValue(), end_date.getValue()) != 0) {
-        return true;
-      }
+    if (!FileIOScheduleCsvUtils.checkDateAcross(this.getStartDate(), this
+      .getEndDate())) {
+      return true;
     }
     return false;
   }
@@ -123,43 +118,17 @@ public class FileIOScheduleCsvData extends ScheduleDetailResultData {
     note.setValue(string);
   }
 
-  /**
-   * 二つの日付を比較します。 <BR>
-   * 
-   * @param date1
-   * @param date2
-   * @return
-   */
-  private int compareToDate(Date date1, Date date2) {
-    Calendar cal1 = Calendar.getInstance();
-    Calendar cal2 = Calendar.getInstance();
-    cal1.setTime(date1);
-    cal2.setTime(date2);
-
-    int date1Year = cal1.get(Calendar.YEAR);
-    int date1Month = cal1.get(Calendar.MONTH) + 1;
-    int date1Day = cal1.get(Calendar.DATE);
-    int date2Year = cal2.get(Calendar.YEAR);
-    int date2Month = cal2.get(Calendar.MONTH) + 1;
-    int date2Day = cal2.get(Calendar.DATE);
-
-    if (date1Year == date2Year
-      && date1Month == date2Month
-      && date1Day == date2Day) {
-      return 0;
-    }
-    if (cal1.after(cal2)) {
-      return 2;
-    } else {
-      return 1;
-    }
-  }
-
   public boolean getIsError() {
     return is_error;
   }
 
   public void setIsError(boolean flg) {
     is_error = flg;
+  }
+
+  @Override
+  public boolean isSpan() {
+    return FileIOScheduleCsvUtils.isSpan(this.getStartDate(), this
+      .getStartDate());
   }
 }

@@ -298,10 +298,26 @@ function onChg2(obj){
 #if($!record.Note)$!{record.Note}#else <span class="caution">※11</span> #end
 </td>
 <td nowrap="nowrap" class="item">
-#if($!record.getStartDate().toString() != "")$!{record.StartDate.Year}年$!{record.StartDate.Month}月$!{record.StartDate.Day}日$!{record.StartDate.Hour}時$!{record.StartDate.Minute}分#else <span class="caution">※5</span> #end
+#if($!record.getStartDate().toString() != "")
+#if($!record.isSpan())
+$!record.StartDate.toString('yyyy年MM月dd日')
+#else
+$!record.StartDate.toString('yyyy年MM月dd日 HH時mm分')
+#end
+#else
+<span class="caution">※5</span> 
+#end
 </td>
 <td nowrap="nowrap" class="item">
-#if($!record.getEndDate().toString() != "")$!{record.EndDate.Year}年$!{record.EndDate.Month}月$!{record.EndDate.Day}日$!{record.EndDate.Hour}時$!{record.EndDate.Minute}分#else <span class="caution">※6</span> #end
+#if($!record.getEndDate().toString() != "")
+#if($!record.isSpan())
+$!record.EndDate.toString('yyyy年MM月dd日')
+#else
+$!record.EndDate.toString('yyyy年MM月dd日 HH時mm分')
+#end
+#else
+<span class="caution">※6</span>
+#end
 #if($!record.isTimeError())<span class="caution">※7</span>#end
 #if($!record.isDateError())<span class="caution">※8</span>#end
 </td>

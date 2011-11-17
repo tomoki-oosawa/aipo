@@ -48,6 +48,7 @@ import com.aimluck.eip.fileio.util.FileIOScheduleCsvUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -58,9 +59,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(FileIOScheduleCsvFormData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(FileIOScheduleCsvFormData.class.getName());
 
   /** ブラウザに表示するデフォルトのパスワード（ダミーパスワード） */
   public static final String DEFAULT_VIEW_PASSWORD = "*";
@@ -119,6 +119,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
     // ログイン名
     username = new ALStringField();
@@ -218,6 +219,8 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
     // 備考
     note.limitMaxLength(1000);
 
+    start_date.setNotNull(true);
+    end_date.setNotNull(true);
   }
 
   /**
@@ -229,6 +232,14 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
    */
   @Override
   protected boolean validate(List<String> msgList) {
+
+    if (start_time.toString().equals("")) {
+      this.setStartTime("00:00");
+    }
+    if (end_time.toString().equals("")) {
+      this.setEndTime("00:00");
+    }
+
     String usernamestr = username.getValue();
     if ("admin".equals(usernamestr)
       || "template".equals(usernamestr)
@@ -269,20 +280,20 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
       msgList.add("『 <span class='em'>終了日付</span> 』が正しく入力されていません。");
     }
 
-    if (!start_date.toString().equals("") && !end_date.toString().equals("")) {
-      if (is_auto_time) {
-        if ((start_time.toString().equals(""))
-          && (end_time.toString().equals(""))) {
-          this.setStartTime("00:00");
-          this.setEndTime("00:00");
-        }
-      } else if ((start_time.toString().equals(""))
-        && (end_time.toString().equals(""))) {
-        msgList.add("『 <span class='em'>開始,終了時刻</span> 』が正しく入力されていません。");
-      }
-      if (compareToDate(start_date.getValue(), end_date.getValue()) != 0) {
-        msgList.add("日付を跨いでの入力は出来ません。");
-      }
+    if (start_time.toString().equals("") && !end_time.toString().equals("")) {
+      msgList.add("『 <span class='em'>開始時刻</span> 』が正しく入力されていません。");
+    }
+
+    if (!start_time.toString().equals("") && end_time.toString().equals("")) {
+      msgList.add("『 <span class='em'>終了時刻</span> 』が正しく入力されていません。");
+    }
+
+    if (!FileIOScheduleCsvUtils.checkDateAcross(
+      start_date,
+      start_time,
+      end_date,
+      end_time)) {
+      msgList.add("日付を跨いでの入力は出来ません。");
     }
 
     if (!start_time.validate(msgList)) {
@@ -358,10 +369,6 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
       startcal.setTime(start_date_time.getValue());
       Calendar endcal = Calendar.getInstance();
       endcal.setTime(end_date_time.getValue());
-      endcal.set(Calendar.YEAR, startcal.get(Calendar.YEAR));
-      endcal.set(Calendar.MONTH, startcal.get(Calendar.MONTH));
-      endcal.set(Calendar.DATE, startcal.get(Calendar.DATE));
-      end_date_time.setValue(endcal.getTime());
 
       // 新規オブジェクトモデル
       EipTSchedule schedule = Database.create(EipTSchedule.class);
@@ -392,13 +399,21 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
       // 終了日時
       schedule.setEndDate(end_date_time.getValue());
-      schedule.setRepeatPattern("N");
+
+      if (FileIOScheduleCsvUtils.isSpan(start_date_time, end_date_time)) {
+        schedule.setRepeatPattern("S");
+      } else {
+        schedule.setRepeatPattern("N");
+      }
+
       schedule.setStartDate(start_date_time.getValue());
+
+      schedule.setMailFlag(ScheduleUtils.MAIL_FOR_ALL);
 
       EipTCommonCategory category =
         CommonCategoryUtils.getEipTCommonCategory(Long.valueOf(1));
 
-      // // スケジュールを登録
+      // スケジュールを登録
       // orm.doInsert(schedule);
       int size = memberList.size();
       for (int i = 0; i < size; i++) {
@@ -858,38 +873,6 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
       is_auto_time = true;
     } else {
       is_auto_time = false;
-    }
-  }
-
-  /**
-   * 二つの日付を比較します。 <BR>
-   * 
-   * @param date1
-   * @param date2
-   * @return
-   */
-  private int compareToDate(Date date1, Date date2) {
-    Calendar cal1 = Calendar.getInstance();
-    Calendar cal2 = Calendar.getInstance();
-    cal1.setTime(date1);
-    cal2.setTime(date2);
-
-    int date1Year = cal1.get(Calendar.YEAR);
-    int date1Month = cal1.get(Calendar.MONTH) + 1;
-    int date1Day = cal1.get(Calendar.DATE);
-    int date2Year = cal2.get(Calendar.YEAR);
-    int date2Month = cal2.get(Calendar.MONTH) + 1;
-    int date2Day = cal2.get(Calendar.DATE);
-
-    if (date1Year == date2Year
-      && date1Month == date2Month
-      && date1Day == date2Day) {
-      return 0;
-    }
-    if (cal1.after(cal2)) {
-      return 2;
-    } else {
-      return 1;
     }
   }
 

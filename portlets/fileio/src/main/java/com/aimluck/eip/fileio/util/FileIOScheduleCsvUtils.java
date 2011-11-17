@@ -19,10 +19,14 @@
 
 package com.aimluck.eip.fileio.util;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
 
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.eip.common.ALCsvTokenizer;
 import com.aimluck.eip.services.storage.ALStorageService;
 
@@ -69,6 +73,120 @@ public class FileIOScheduleCsvUtils {
       FileIOScheduleCsvUtils.CSV_SCHEDULE_TEMP_FOLDER
         + ALStorageService.separator()
         + index);
+  }
+
+  public static int compareToDate(Date date1, Date date2) {
+    Calendar cal1 = Calendar.getInstance();
+    Calendar cal2 = Calendar.getInstance();
+    cal1.setTime(date1);
+    cal2.setTime(date2);
+
+    int date1Year = cal1.get(Calendar.YEAR);
+    int date1Month = cal1.get(Calendar.MONTH) + 1;
+    int date1Day = cal1.get(Calendar.DATE);
+    int date2Year = cal2.get(Calendar.YEAR);
+    int date2Month = cal2.get(Calendar.MONTH) + 1;
+    int date2Day = cal2.get(Calendar.DATE);
+
+    if (date1Year == date2Year
+      && date1Month == date2Month
+      && date1Day == date2Day) {
+      return 0;
+    }
+    if (cal1.after(cal2)) {
+      return 2;
+    } else {
+      return 1;
+    }
+  }
+
+  public static boolean checkDateAcross(ALDateTimeField start_date,
+      ALDateTimeField start_time, ALDateTimeField end_date,
+      ALDateTimeField end_time) {
+
+    boolean result = true;
+
+    if (start_date.toString().equals("") || end_date.toString().equals("")) {
+      return true;
+    }
+
+    if (start_time.toString().equals("") || end_time.toString().equals("")) {
+      return true;
+    }
+
+    // in case that start_time = 00:00 end_time = 00:00, Permit
+    if (Integer.parseInt(start_time.getHour()) == 0
+      && Integer.parseInt(start_time.getMinute()) == 0
+      && Integer.parseInt(end_time.getHour()) == 0
+      && Integer.parseInt(end_time.getMinute()) == 0) {
+      return true;
+    }
+
+    if (FileIOScheduleCsvUtils.compareToDate(start_date.getValue(), end_date
+      .getValue()) != 0) {
+      result = false;
+    }
+
+    return result;
+  }
+
+  public static boolean checkDateAcross(ALDateTimeField startDateTime,
+      ALDateTimeField endDateTime) {
+
+    String _sdate =
+      startDateTime.getYear()
+        + "/"
+        + startDateTime.getMonth()
+        + "/"
+        + startDateTime.getDay();
+    String _stime =
+      startDateTime.getYear()
+        + "/"
+        + startDateTime.getMonth()
+        + "/"
+        + startDateTime.getDay()
+        + " "
+        + startDateTime.getHour()
+        + ":"
+        + startDateTime.getMinute();
+    String _edate =
+      endDateTime.getYear()
+        + "/"
+        + endDateTime.getMonth()
+        + "/"
+        + endDateTime.getDay();
+    String _etime =
+      endDateTime.getYear()
+        + "/"
+        + endDateTime.getMonth()
+        + "/"
+        + endDateTime.getDay()
+        + " "
+        + endDateTime.getHour()
+        + ":"
+        + endDateTime.getMinute();
+
+    ALDateTimeField startDate = new ALDateTimeField();
+    startDate.setValue(_sdate);
+    ALDateTimeField startTime = new ALDateTimeField();
+    startTime.setValue(_stime);
+    ALDateTimeField endDate = new ALDateTimeField();
+    endDate.setValue(_edate);
+    ALDateTimeField endTime = new ALDateTimeField();
+    endTime.setValue(_etime);
+
+    return checkDateAcross(startDate, startTime, endDate, endTime);
+  }
+
+  public static boolean isSpan(ALDateTimeField startDateTime,
+      ALDateTimeField endDateTime) {
+    if (Integer.parseInt(startDateTime.getHour()) == 0
+      && Integer.parseInt(startDateTime.getMinute()) == 0
+      && Integer.parseInt(endDateTime.getHour()) == 0
+      && Integer.parseInt(endDateTime.getMinute()) == 0) {
+      return true;
+    }
+    return false;
   }
 
 }
