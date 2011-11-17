@@ -85,7 +85,8 @@
 #AUIrowTableWide()
 <tr>
 <th class="w20">日時</th>
-<th class="w60">予定</th>
+<th class="w33">予定</th>
+<th class="w33">内容</th>
 <th class="w20">登録者</th>
 </tr>
 #foreach ($record in $result.List)
@@ -102,7 +103,8 @@
 #if($record.isTmpreserve())
 <img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />
 #end</div></td>
-<td><div>$!{record.CreateUser.AliasName}</td>
+<td><div>$!{record.NoteShort}</div></td>
+<td><div>$!{record.CreateUser.AliasName}</div></td>
 </tr>
 #end
 #AUItablefooter()

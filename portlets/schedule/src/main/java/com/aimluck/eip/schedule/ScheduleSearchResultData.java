@@ -21,7 +21,9 @@ package com.aimluck.eip.schedule;
 
 import java.text.SimpleDateFormat;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.util.ALCommonUtils;
 
 /**
  * スケジュールの検索データを管理するクラスです。
@@ -31,9 +33,12 @@ public class ScheduleSearchResultData extends ScheduleResultData {
 
   private ALEipUser createUser;
 
+  private ALStringField note;
+
   @Override
   public void initField() {
     super.initField();
+    note = new ALStringField();
   }
 
   public String getDateFull() {
@@ -85,5 +90,28 @@ public class ScheduleSearchResultData extends ScheduleResultData {
    */
   public void setCreateUser(ALEipUser createUser) {
     this.createUser = createUser;
+  }
+
+  /**
+   * @return note
+   */
+  public ALStringField getNote() {
+    return note;
+  }
+
+  /**
+   * @param note
+   *          セットする note
+   */
+  public void setNote(String note) {
+    this.note.setValue(note);
+  }
+
+  public ALStringField getNoteShort() {
+    ALStringField field = new ALStringField();
+
+    String str = note.getValue().replaceAll("\r", "").replaceAll("\n", " ");
+    field.setValue(ALCommonUtils.compressString(str, 30));
+    return field;
   }
 }
