@@ -141,7 +141,6 @@ public class BlogEntryLatestSelectData extends
 
   private void loadCommentHistoryList(RunData rundata) throws Exception {
     commentHistoryList = new ArrayList<BlogEntryResultData>();
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月d日（EEE）");
     Integer thisUserId = Integer.valueOf(uid);
     Object beforeEntryId = null;
 

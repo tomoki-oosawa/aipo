@@ -150,7 +150,7 @@ public class BlogEntrySelectData extends
 
     // アクセス権
     String comment_aclPortletFeature = null;
-    if (!ownerId.equals("all") && ownerId.equals(Integer.toString(uid))) {
+    if (view_uid == uid) {
       aclPortletFeature =
         ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_SELF;
       comment_aclPortletFeature =

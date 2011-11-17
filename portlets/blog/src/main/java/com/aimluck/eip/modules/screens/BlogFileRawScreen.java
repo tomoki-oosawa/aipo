@@ -38,8 +38,6 @@ public class BlogFileRawScreen extends FileuploadRawScreen {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(BlogFileRawScreen.class.getName());
 
-  private int userid;
-
   /**
    * 
    * @param rundata
