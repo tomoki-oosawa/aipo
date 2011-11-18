@@ -66,13 +66,16 @@ public class FileIOScheduleCsvFileScreen extends ALCSVScreen {
       sb.append("開始日,開始時刻,終了日,終了時刻,場所,予定,内容,名前,ログイン名");
       sb.append(LINE_SEPARATOR);
       sb
-        .append("\"2007/07/09\",\"16:30\",\"2007/07/09\",\"17:00\",会議室,営業会議,\"営業戦略と一週間の予定を確認\",\"山田 太郎\",yamada");
+        .append("\"2011/07/09\",\"16:30\",\"2011/07/09\",\"17:00\",\"会議室\",\"営業会議\",\"営業戦略と一週間の予定を確認\",\"山田 太郎\",\"yamada\"");
       sb.append(LINE_SEPARATOR);
       sb
-        .append("\"2007/07/06\",\"14:20\",\"2007/07/06\",\"15:00\",会議室,総務会議,\"一週間の反省と来週の予定を確認\",\"鈴木 太郎\",suzuki1");
+        .append("\"2011/07/06\",\"14:20\",\"2011/07/06\",\"15:00\",\"会議室\",\"総務会議\",\"一週間の反省と来週の予定を確認\",\"鈴木 太郎\",\"suzuki1\"");
       sb.append(LINE_SEPARATOR);
       sb
-        .append("\"2007/06/29\",\"08:30\",\"2007/06/29\",\"09:30\",会議室,部長会議,\"一ヶ月間の反省と今後の予定を確認\",\"鈴木 花子\",suzuki0");
+        .append("\"2011/06/29\",\"08:30\",\"2011/06/29\",\"09:30\",\"会議室\",\"部長会議\",\"一ヶ月間の反省と今後の予定を確認\",\"鈴木 花子\",\"suzuki0\"");
+      sb.append(LINE_SEPARATOR);
+      sb
+        .append("\"2011/11/01\",\"\",\"2011/11/30\",\"\",\"\",\"開発期間\",\"製品の開発期間\",\"山田 太郎, 鈴木 太郎\",\"yamada, suzuki0\"");
       sb.append(LINE_SEPARATOR);
 
       return sb.toString();
@@ -148,7 +151,6 @@ public class FileIOScheduleCsvFileScreen extends ALCSVScreen {
 
   @Override
   protected String getFileName() {
-    return ALOrgUtilsService.getAlias()
-      + "_schedules.csv";
+    return ALOrgUtilsService.getAlias() + "_schedules.csv";
   }
 }

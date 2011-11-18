@@ -42,6 +42,10 @@ public class FileIOScheduleCsvData extends ScheduleDetailResultData {
 
   private boolean is_error;
 
+  private ALStringField userNameString;
+
+  private ALStringField loginNameString;
+
   /**
    * データのCSVファイル上での位置(行数)を取得します <BR>
    * 
@@ -58,6 +62,9 @@ public class FileIOScheduleCsvData extends ScheduleDetailResultData {
     note = new ALStringField();
     note.setTrim(false);
     is_error = false;
+
+    userNameString = new ALStringField();
+    loginNameString = new ALStringField();
   }
 
   /**
@@ -131,4 +138,21 @@ public class FileIOScheduleCsvData extends ScheduleDetailResultData {
     return FileIOScheduleCsvUtils
       .isSpan(this.getStartDate(), this.getEndDate());
   }
+
+  public void setUserNameString(String userNameString) {
+    this.userNameString.setValue(userNameString);
+  }
+
+  public ALStringField getUserNameString() {
+    return userNameString;
+  }
+
+  public void setLoginNameString(String loginNameString) {
+    this.loginNameString.setValue(loginNameString);
+  }
+
+  public ALStringField getLoginNameString() {
+    return loginNameString;
+  }
+
 }

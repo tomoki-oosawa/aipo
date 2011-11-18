@@ -143,32 +143,10 @@ function onChg2(obj){
 
 </tr>
 
-<!--
-<tr>
-<th class="head">順序</th>
-<th class="head">
-<select name="SelectMenu1" size="1" onChange="onChg1(this)">
-<option value="-1">-使用しない-</option>
-<option value="0">名前</option>
-<option value="1">予定</option>
-<option value="2">場所</option>
-<option value="3">内容</option>
-<option value="4" selected>開始日</option>
-<option value="5">終了日</option>
-<option value="6">開始時刻</option>
-<option value="7">終了時刻</option>
-<option value="8">ログインID</option>
-<option value="9">開始日時</option>
-<option value="10">終了日時</option>
-</select>
-</th>
-</tr>
-//-->
 <tr>
 #ALtdcellAtt("#ALsubmit('send' '読み込む')" 'colspan="9" align="center"')
 </tr>
 #ALtablefooter()
-
 
 #if($result.List && $result.getPageCount() > 0)
 #set($plist = [1..$result.getPageCount()])
@@ -186,8 +164,8 @@ function onChg2(obj){
 #set($showErrmsg10 = false)
 #set($showErrmsg11 = false)
 #foreach ($record in $result.List)
-#if($!record.User.AliasName.toString() == "")#set($showErrmsg1 = true)#end
-#if($!record.User.Name.toString() == "")#set($showErrmsg2 = true)#end
+#if($!record.getUserNameString().toString() == "")#set($showErrmsg1 = true)#end
+#if($!record.getLoginNameString().toString() == "")#set($showErrmsg2 = true)#end
 #if($!record.getName().toString() == "")#set($showErrmsg3 = true)#end
 #if($!record.getUpdateDate().toString() == "")#set($showErrmsg4 = true)#end
 #if($!record.getStartDate().toString() == "")#set($showErrmsg5 = true)#end
@@ -266,8 +244,8 @@ function onChg2(obj){
 #set($con = 0)
 #foreach ($record in $result.List)
 #set($Err = false)
-#if($!record.User.AliasName.toString() == "")#set($Err = true)#end
-#if($!record.User.Name.toString() == "")#set($Err = true)#end
+#if($!record.getUserNameString().toString() == "")#set($Err = true)#end
+#if($!record.getLoginNameString().toString() == "")#set($Err = true)#end
 #if($!record.getName().toString() == "")#set($Err = true)#end
 #if($!record.getStartDate().toString() == "")#set($Err = true)#end
 #if($!record.getEndDate().toString() == "")#set($Err = true)#end
@@ -279,10 +257,10 @@ function onChg2(obj){
 #if(!$record.IsError)可($!{record.LineCount}行目)#else <span class="caution">不可($!{record.LineCount}行目)</span> #end
 </td>
 <td nowrap="nowrap" class="item">
-#if($!record.User.AliasName.toString() != "")$!{record.User.AliasName}#else <span class="caution">※1</span> #end
+#if($!record.getUserNameString().toString() != "")$!{record.UserNameString}#else <span class="caution">※1</span> #end
 </td>
 <td nowrap="nowrap" class="item">
-#if($!record.User.Name.toString() != "")$!{record.User.Name}#else <span class="caution">※2</span> #end
+#if($!record.getLoginNameString().toString() != "")$!{record.LoginNameString}#else <span class="caution">※2</span> #end
 </td>
 <td nowrap="nowrap" class="item">
 #if($!record.getName().toString() != "")$!{record.Name}#else <span class="caution">※3</span> #end

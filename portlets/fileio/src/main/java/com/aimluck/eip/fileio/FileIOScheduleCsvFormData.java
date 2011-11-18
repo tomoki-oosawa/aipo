@@ -24,10 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.StringTokenizer;
 
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -39,17 +36,14 @@ import com.aimluck.eip.category.util.CommonCategoryUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
-import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
-import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.fileio.beans.ScheduleCsvUser;
 import com.aimluck.eip.fileio.util.FileIOScheduleCsvUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
-import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 『スケジュール』のフォームデータを管理するクラスです。 <BR>
@@ -65,15 +59,14 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
   /** ブラウザに表示するデフォルトのパスワード（ダミーパスワード） */
   public static final String DEFAULT_VIEW_PASSWORD = "*";
 
-  /** ログイン名 */
+  /** TMPログイン名 */
   private ALStringField username;
 
-  /** ユーザー名 */
-  private ALStringField userfirstname;
-
-  private ALStringField userlastname;
-
+  /** TMPユーザー名 */
   private ALStringField userfullname;
+
+  /** ユーザーオブジェクトのリスト */
+  private List<ScheduleCsvUser> userList;
 
   /** スケジュール名 */
   private ALStringField schedulename;
@@ -129,13 +122,6 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
     userfullname = new ALStringField();
     userfullname.setFieldName("ログインID");
     userfullname.setTrim(true);
-    // ユーザー名
-    userfirstname = new ALStringField();
-    userfirstname.setFieldName("名前");
-    userfirstname.setTrim(true);
-    userlastname = new ALStringField();
-    userlastname.setFieldName("名字");
-    userlastname.setTrim(true);
 
     // スケジュール
     schedulename = new ALStringField();
@@ -195,6 +181,8 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
     end_time.setValue("");
     // 時間を自動補完するか
     is_auto_time = false;
+
+    userList = new ArrayList<ScheduleCsvUser>();
   }
 
   /**
@@ -204,13 +192,6 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
    */
   @Override
   protected void setValidator() {
-    // ユーザーID
-    username.limitMaxLength(16);
-    // ユーザー名
-    userfullname.limitMaxLength(40);
-    // ユーザー氏名
-    userfirstname.limitMaxLength(20);
-    userlastname.limitMaxLength(20);
     // 予定
     schedulename.setNotNull(true);
     schedulename.limitMaxLength(50);
@@ -250,12 +231,19 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
     if (!userfullname.validate(msgList)) {
       userfullname.setValue(null);
     }
-    if (!userfirstname.validate(msgList)) {
-      userfirstname.setValue(null);
+
+    for (ScheduleCsvUser user : userList) {
+      if (!user.getName().validate(msgList)) {
+        user.setName(null);
+      }
+      if (!user.getFirstName().validate(msgList)) {
+        user.setFirstName(null);
+      }
+      if (!user.getLastName().validate(msgList)) {
+        user.setLastName(null);
+      }
     }
-    if (!userlastname.validate(msgList)) {
-      userlastname.setValue(null);
-    }
+
     if (!schedulename.validate(msgList)) {
       schedulename.setValue(null);
     }
@@ -363,8 +351,13 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
 
-      List<ALEipUser> memberList = new ArrayList<ALEipUser>();
-      memberList.add(ALEipUtils.getALEipUser(username.getValue()));
+      int size = userList.size();
+
+      if (size == 0) {
+        msgList.add("user does not exists.");
+        return false;
+      }
+
       Calendar startcal = new GregorianCalendar();
       startcal.setTime(start_date_time.getValue());
       Calendar endcal = Calendar.getInstance();
@@ -381,23 +374,16 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
       // 内容
       schedule.setNote(note.getValue());
       // 公開フラグ
-      // schedule.setPublicFlag(public_flag.getValue());
-      schedule.setPublicFlag("O");
+      schedule.setPublicFlag("O"); // public
       // 共有メンバーによる編集／削除フラグ
-      schedule.setEditFlag("O");
-      // オーナーID
-      // schedule.setOwnerId(new Integer(ownerid));
+      schedule.setEditFlag("T"); // editable
       // 作成日
       Date now = new Date();
       schedule.setCreateDate(now);
-      // schedule.setCreateUserId(new Integer(ownerid));
       // 更新日
       schedule.setUpdateDate(now);
-      // schedule.setUpdateUserId(new Integer(ownerid));
 
       schedule.setStartDate(start_date_time.getValue());
-
-      // 終了日時
       schedule.setEndDate(end_date_time.getValue());
 
       if (FileIOScheduleCsvUtils.isSpan(start_date_time, end_date_time)) {
@@ -406,47 +392,38 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
         schedule.setRepeatPattern("N");
       }
 
-      schedule.setStartDate(start_date_time.getValue());
-
       schedule.setMailFlag(ScheduleUtils.MAIL_FOR_ALL);
 
       EipTCommonCategory category =
         CommonCategoryUtils.getEipTCommonCategory(Long.valueOf(1));
 
-      // スケジュールを登録
-      // orm.doInsert(schedule);
-      int size = memberList.size();
       for (int i = 0; i < size; i++) {
         EipTScheduleMap map = Database.create(EipTScheduleMap.class);
-        ALEipUser user = memberList.get(i);
+        ScheduleCsvUser user = userList.get(i);
         int userid = (int) user.getUserId().getValue();
 
-        schedule.setOwnerId(Integer.valueOf(userid));
-        schedule.setCreateUserId(Integer.valueOf(userid));
-        schedule.setUpdateUserId(Integer.valueOf(userid));
+        // O: 自スケジュール T: 仮スケジュール C: 確定スケジュール
+        if (i == 0) {
+          map.setStatus("O");
+          schedule.setOwnerId(Integer.valueOf(userid));
+          schedule.setCreateUserId(Integer.valueOf(userid));
+          schedule.setUpdateUserId(Integer.valueOf(userid));
+        } else {
+          map.setStatus("T");
+        }
 
         // map.setPrimaryKey(schedule.getScheduleId(), userid);
         map.setEipTSchedule(schedule);
         map.setUserId(Integer.valueOf(userid));
-
         map.setCommonCategoryId(Integer.valueOf(1));
         map.setEipTCommonCategory(category);
-
-        // // O: 自スケジュール T: 仮スケジュール C: 確定スケジュール
-        // if (userid == ALEipUtils.getUserId(rundata)) {
-        // map.setStatus("O");
-        // } else {
-        map.setStatus("O");
-        // }
         map.setType(FileIOScheduleCsvUtils.SCHEDULEMAP_TYPE_USER);
       }
-      // スケジュールを登録
+
       Database.commit();
-      // logger.error("f1");
     } catch (Exception e) {
       Database.rollback();
       logger.error("[FileIOScheduleCsvFormData]", e);
-      // throw new ALDBErrorException();
       return false;
     }
 
@@ -487,28 +464,28 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
    * @param userFullName
    * @return
    */
-  private TurbineUser getTurbineUser() {
-
-    SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
-    Expression exp1 =
-      ExpressionFactory
-        .matchExp(TurbineUser.FIRST_NAME_PROPERTY, userfirstname);
-    Expression exp2 =
-      ExpressionFactory.matchExp(TurbineUser.LAST_NAME_PROPERTY, userlastname);
-    Expression exp3 =
-      ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
-
-    query.setQualifier(exp1.andExp(exp2.andExp(exp3)));
-
-    TurbineUser user = query.fetchSingle();
-
-    if (user == null) {
-      // 指定したUser IDのレコードが見つからない場合
-      logger.debug("[FileIOScheduleCsvFormData] Not found ID...");
-      return null;
-    }
-    return user;
-  }
+  // private TurbineUser getTurbineUser() {
+  //
+  // SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+  // Expression exp1 =
+  // ExpressionFactory
+  // .matchExp(TurbineUser.FIRST_NAME_PROPERTY, userfirstname);
+  // Expression exp2 =
+  // ExpressionFactory.matchExp(TurbineUser.LAST_NAME_PROPERTY, userlastname);
+  // Expression exp3 =
+  // ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
+  //
+  // query.setQualifier(exp1.andExp(exp2.andExp(exp3)));
+  //
+  // TurbineUser user = query.fetchSingle();
+  //
+  // if (user == null) {
+  // // 指定したUser IDのレコードが見つからない場合
+  // logger.debug("[FileIOScheduleCsvFormData] Not found ID...");
+  // return null;
+  // }
+  // return user;
+  // }
 
   /**
    * オブジェクトモデルからログイン名を取得する。 <BR>
@@ -516,24 +493,24 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
    * @param userFullName
    * @return
    */
-  public ALStringField getUserName() {
-
-    if ("".equals(username.toString())) {
-      try {
-        TurbineUser tuser = this.getTurbineUser();
-        this.setUserName(tuser.getLoginName());
-      } catch (Exception e) {
-        setUserName("");
-      }
-    } else {
-      try {
-        ALEipUtils.getALEipUser(username.getValue());
-      } catch (Exception e) {
-        setUserName("");
-      }
-    }
-    return username;
-  }
+  // public ALStringField getUserName() {
+  //
+  // if ("".equals(username.toString())) {
+  // try {
+  // TurbineUser tuser = this.getTurbineUser();
+  // this.setUserName(tuser.getLoginName());
+  // } catch (Exception e) {
+  // setUserName("");
+  // }
+  // } else {
+  // try {
+  // ALEipUtils.getALEipUser(username.getValue());
+  // } catch (Exception e) {
+  // setUserName("");
+  // }
+  // }
+  // return username;
+  // }
 
   /**
    * ユーザー名(フルネーム)を取得します <BR>
@@ -542,24 +519,6 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
    */
   public ALStringField getUserFullName() {
     return userfullname;
-  }
-
-  /**
-   * ユーザー名(名)を取得します <BR>
-   * 
-   * @return
-   */
-  public ALStringField getUserFirstName() {
-    return userfirstname;
-  }
-
-  /**
-   * ユーザー名(氏)を取得します <BR>
-   * 
-   * @return
-   */
-  public ALStringField getUserLastName() {
-    return userlastname;
   }
 
   /**
@@ -690,24 +649,6 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
    */
   public void setUserFullName(String str) {
     userfullname.setValue(str);
-  }
-
-  /**
-   * ユーザー名(名)を入力します <BR>
-   * 
-   * @param str
-   */
-  public void setUserFirstName(String str) {
-    userfirstname.setValue(str);
-  }
-
-  /**
-   * ユーザー名(氏)を入力します <BR>
-   * 
-   * @param str
-   */
-  public void setUserLastName(String str) {
-    userlastname.setValue(str);
   }
 
   /**
@@ -883,22 +824,11 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
    * @param i
    */
   public void addItemToken(String token, int i) {
-    StringTokenizer st;
     switch (i) {
       case -1:
         break;
       case 0:
-        st = new StringTokenizer(token);
-        String Fullname = "";
-        if (st.hasMoreTokens()) {
-          this.setUserLastName(st.nextToken());
-          Fullname += this.getUserLastName().toString();
-        }
-        if (st.hasMoreTokens()) {
-          this.setUserFirstName(st.nextToken());
-          Fullname += this.getUserFirstName().toString();
-        }
-        this.setUserFullName(Fullname);
+        this.setUserFullName(token);
         break;
       case 1:
         this.setScheduleName(token);
@@ -936,4 +866,72 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   }
 
+  public void adjust() {
+    if (!username.getValue().equals("")) {
+      parseLoginName();
+    } else {
+      parseUserName();
+    }
+  }
+
+  private void parseUserName() {
+
+    String value[] = userfullname.getValue().split(",");
+
+    for (String rawName : value) {
+      ScheduleCsvUser user = new ScheduleCsvUser();
+      user.parseFullName(rawName);
+      userList.add(user);
+    }
+
+  }
+
+  private void parseLoginName() {
+
+    String value[] = username.getValue().split(",");
+
+    for (String rawName : value) {
+      ScheduleCsvUser user = new ScheduleCsvUser();
+      user.setName(rawName.trim());
+      userList.add(user);
+    }
+  }
+
+  public void adjustUser(List<String> errmsg) {
+    try {
+      for (ScheduleCsvUser user : userList) {
+        user.complement();
+      }
+    } catch (Exception e) {
+      errmsg.add("user not found");
+    }
+  }
+
+  public String getUserNameString() {
+    String result = "";
+    for (ScheduleCsvUser user : userList) {
+      result += user.getAliasName();
+      result += ", ";
+    }
+
+    if (result.length() > 1) {
+      result = result.substring(0, result.length() - 2);
+    }
+
+    return result;
+  }
+
+  public String getLoginNameString() {
+    String result = "";
+    for (ScheduleCsvUser user : userList) {
+      result += user.getName();
+      result += ", ";
+    }
+
+    if (result.length() > 1) {
+      result = result.substring(0, result.length() - 2);
+    }
+
+    return result;
+  }
 }

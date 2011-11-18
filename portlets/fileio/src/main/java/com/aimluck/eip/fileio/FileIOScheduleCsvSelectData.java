@@ -32,13 +32,11 @@ import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.eip.common.ALCsvAbstractSelectData;
 import com.aimluck.eip.common.ALCsvTokenizer;
 import com.aimluck.eip.common.ALDBErrorException;
-import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileio.util.FileIOScheduleCsvUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.storage.ALStorageService;
-import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * CSV ファイルから読み込んだスケジュール情報を表示するクラス．
@@ -205,6 +203,8 @@ public class FileIOScheduleCsvSelectData extends
         e_line.append(",\"\"");
       }
 
+      formData.adjust();
+      formData.adjustUser(errmsg);
       formData.setValidator();
       formData.validate(errmsg);
 
@@ -262,27 +262,13 @@ public class FileIOScheduleCsvSelectData extends
       List<String> errmsg, int line) throws Exception {
 
     FileIOScheduleCsvData data = new FileIOScheduleCsvData();
+    data.initField();
+
     ALDateTimeField date =
       new ALDateTimeField(ALDateTimeField.DEFAULT_DATE_TIME_FORMAT);
 
-    ALEipUser user = ALEipUtils.getALEipUser(formData.getUserName().getValue());
-    if (user == null) {
-      user = new ALEipUser();
-      user.initField();
-      user.setAliasName(formData.getUserFirstName().toString(), formData
-        .getUserLastName()
-        .toString());
-      errmsg.add("user not found");
-    }
-
-    try {
-      formData.getUserName();
-    } catch (Exception e) {
-      errmsg.add("loin name error");
-    }
-
-    data.setUser(user);
-    data.initField();
+    data.setUserNameString(formData.getUserNameString());
+    data.setLoginNameString(formData.getLoginNameString());
     data.setLineCount(line);
 
     data.setName(formData.getScheduleName().getValue());
@@ -322,7 +308,6 @@ public class FileIOScheduleCsvSelectData extends
   }
 
   /**
-   * CSVファイルを読み込んでページ毎に表示用リストを作成します <BR>
    * 
    * @param rundata
    * @return
@@ -332,124 +317,7 @@ public class FileIOScheduleCsvSelectData extends
       RunData rundata, String filepath, int StartLine, int LineLimit)
       throws Exception {
 
-    int line_index = StartLine * (ALCsvTokenizer.CSV_SHOW_SIZE);
-
-    ALCsvTokenizer reader = new ALCsvTokenizer();
-    if (!reader.setStartLine(filepath, line_index)) {
-      return null;
-    }
-
-    List<FileIOScheduleCsvData> list = new ArrayList<FileIOScheduleCsvData>();
-
-    Date now = new Date();
-
-    String token;
-    int i, j;
-    int line = 0;
-    while (reader.eof != -1) {
-      line++;
-      boolean b_err = false;
-      if (line > LineLimit) {
-        break;
-      }
-      List<String> errmsg = new ArrayList<String>();
-      FileIOScheduleCsvFormData formData = new FileIOScheduleCsvFormData();
-      formData.initField();
-      formData.setIsAutoTime(autotime_flg);
-      for (j = 0; j < sequency.size(); j++) {
-        token = reader.nextToken();
-        i = Integer.parseInt((String) sequency.get(j));
-        formData.addItemToken(token, i);
-        if (reader.eof == -1) {
-          break;
-        }
-        if (reader.line) {
-          break;
-        }
-        if (j == sequency.size() - 1) {
-          if (stats == ALCsvTokenizer.CSV_LIST_MODE_ERROR) {
-            token = reader.nextToken();
-            line = Integer.parseInt(token);
-          }
-        }
-      }
-
-      while ((!reader.line) && (reader.eof != -1)) {
-        reader.nextToken();
-      }
-
-      formData.setValidator();
-      formData.validate(errmsg);
-
-      if (reader.eof == -1) {
-        break;
-      }
-      try {
-        ALDateTimeField date =
-          new ALDateTimeField(ALDateTimeField.DEFAULT_DATE_TIME_FORMAT);
-
-        ALEipUser user =
-          ALEipUtils.getALEipUser(formData.getUserName().getValue());
-        if (user == null) {
-          user = new ALEipUser();
-          user.initField();
-          user.setAliasName(formData.getUserFirstName().toString(), formData
-            .getUserLastName()
-            .toString());
-          b_err = true;
-        }
-
-        FileIOScheduleCsvData data = new FileIOScheduleCsvData();
-        data.setUser(user);
-
-        data.initField();
-        data.setLineCount(line + line_index);
-        data.setName(formData.getScheduleName().getValue());
-        if (data.getName().toString().equals("")) {
-          b_err = true;
-        }
-
-        data.setPlace(formData.getPlace().getValue());
-        data.setNote(formData.getNote().getValue());
-
-        try {
-          date.setValue(formData.getCreateDate().toString());
-          data.setUpdateDate(date.getValue());
-        } catch (Exception e) {
-          b_err = true;
-          data.setUpdateDate(now);
-        }
-
-        try {
-          date.setValue(formData.getStartDateTime().toString());
-          data.setStartDate(date.getValue());
-        } catch (Exception e) {
-          b_err = true;
-          data.setStartDate(null);
-        }
-
-        try {
-          date.setValue(formData.getEndDateTime().toString());
-          data.setEndDate(date.getValue());
-        } catch (Exception e) {
-          b_err = true;
-          data.setEndDate(null);
-        }
-
-        data.setIsError(b_err);
-        if (!formData.getUserFullName().toString().equals("名前")) {
-          list.add(data);
-        }
-
-      } catch (Exception e) {
-        logger.error("readError");
-      }
-      if (reader.eof == -1) {
-        break;
-      }
-    }
-
-    return list;
+    return null;
   }
 
   /**
