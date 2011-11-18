@@ -3358,7 +3358,7 @@ float:left;
 	color:#000;
 	background:#f6f6f6 url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
 }
-.auiWidget li.active>a {
+.auiWidget li.active a {
 	font-weight:bold;
 	background:#f0f0f0 url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
 }
