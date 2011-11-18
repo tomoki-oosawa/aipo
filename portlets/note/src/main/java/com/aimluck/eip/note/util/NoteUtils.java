@@ -48,7 +48,6 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
-import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -782,10 +781,9 @@ public class NoteUtils {
         subject = "伝言をお願いします。";
       }
       String title =
-        new StringBuilder(ALCommonUtils
-          .compressString(note.getClientName(), 15))
+        new StringBuilder(note.getClientName())
           .append("様より伝言「")
-          .append(ALCommonUtils.compressString(subject, 15))
+          .append(subject)
           .append("」がありました。")
           .toString();
       String portletParams =

@@ -47,7 +47,6 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.services.storage.ALStorageService;
-import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -726,7 +725,7 @@ public class CabinetUtils {
       String loginName, List<String> recipients, boolean isNew) {
     String title =
       new StringBuilder("ファイル「")
-        .append(ALCommonUtils.compressString(file.getFileTitle(), 30))
+        .append(file.getFileTitle())
         .append("」を")
         .append(isNew ? "追加しました。" : "編集しました。")
         .toString();

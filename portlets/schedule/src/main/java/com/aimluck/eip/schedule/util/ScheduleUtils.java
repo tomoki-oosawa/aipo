@@ -93,7 +93,6 @@ import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.userfacility.beans.UserFacilityLiteBean;
 import com.aimluck.eip.util.ALCellularUtils;
-import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -3722,8 +3721,7 @@ public class ScheduleUtils {
       String loginName, List<String> recipients, boolean isNew) {
     if (recipients != null && recipients.size() > 0) {
       String title =
-        new StringBuilder("予定「").append(
-          ALCommonUtils.compressString(schedule.getName(), 30)).append(
+        new StringBuilder("予定「").append(schedule.getName()).append(
           isNew ? "」を追加しました。" : "」を編集しました。").toString();
       String portletParams =
         new StringBuilder("?template=ScheduleDetailScreen")
@@ -3747,8 +3745,7 @@ public class ScheduleUtils {
   public static void createNewScheduleActivity(EipTSchedule schedule,
       String loginName, boolean isNew) {
     String title =
-      new StringBuilder("予定「").append(
-        ALCommonUtils.compressString(schedule.getName(), 30)).append(
+      new StringBuilder("予定「").append(schedule.getName()).append(
         isNew ? "」を追加しました。" : "」を編集しました。").toString();
     String portletParams =
       new StringBuilder("?template=ScheduleDetailScreen")

@@ -75,7 +75,6 @@ import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.user.beans.UserLiteBean;
 import com.aimluck.eip.util.ALCellularUtils;
-import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.workflow.WorkflowCategoryResultData;
 import com.aimluck.eip.workflow.WorkflowDecisionRecordData;
@@ -1786,15 +1785,13 @@ public class WorkflowUtils {
 
       StringBuilder b = new StringBuilder("申請「");
       if (category != null) {
-        b.append(ALCommonUtils.compressString(category.getCategoryName(), 10));
+        b.append(category.getCategoryName());
         if (name != null && name.length() > 0) {
           b.append("：");
         }
       }
 
-      b
-        .append(ALCommonUtils.compressString(request.getRequestName(), 20))
-        .append("」");
+      b.append(request.getRequestName()).append("」");
       switch (type) {
         case REQUEST:
           b.append("の確認依頼を出しました。");
