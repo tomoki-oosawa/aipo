@@ -190,6 +190,9 @@ public class MsgboardUtils {
       }
 
       return topic;
+    } catch (ALPageNotFoundException pageNotFound) {
+      logger.error(pageNotFound);
+      throw pageNotFound;
     } catch (Exception ex) {
       logger.error("[MsgboardUtils]", ex);
       throw new ALDBErrorException();
@@ -1131,7 +1134,7 @@ public class MsgboardUtils {
       String loginName, List<String> recipients, boolean isNew) {
     String title =
       new StringBuilder("掲示板「")
-        .append(ALCommonUtils.compressString(topic.getTopicName(), 30))
+        .append(topic.getTopicName())
         .append("」を")
         .append(isNew ? "作成しました。" : "編集しました。")
         .toString();
