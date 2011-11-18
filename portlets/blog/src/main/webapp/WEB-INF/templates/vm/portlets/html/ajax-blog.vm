@@ -22,9 +22,9 @@
 <div class="floatLeft w30">
 <form class="auiForm">
 #ALselectpdheader("target_thema" "100%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogScreen").addQueryData("filter","").addQueryData("filtertype","thema"))">すべてのテーマ</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogScreen").addQueryData("themeid","all"))">すべてのテーマ</option>
 #foreach( $record in $result.ThemaList )
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogScreen").addQueryData("filter",$!record.ThemaId).addQueryData("filtertype","thema"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.ThemaId.toString()) selected #end>$!record.ThemaName</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogScreen").addQueryData("themeid",$!record.ThemaId))" #if ($!result.ThemeId && $!result.ThemeId == $!record.ThemaId.toString()) selected #end>$!record.ThemaName</option>
 #end
 </select>
 </form>
