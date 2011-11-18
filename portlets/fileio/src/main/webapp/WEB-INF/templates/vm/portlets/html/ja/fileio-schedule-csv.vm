@@ -142,10 +142,7 @@ function onChg2(obj){
 </td>
 
 </tr>
-<tr>
-<td class="caption">オプション</td>
-<td class=item colspan="8"><input name="autotime_flg" type="checkbox" value="1">時間が入力されていない場合は自動的に値を代入する。</td>
-</tr>
+
 <!--
 <tr>
 <th class="head">順序</th>

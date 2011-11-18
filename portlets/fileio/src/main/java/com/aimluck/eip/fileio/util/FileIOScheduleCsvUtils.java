@@ -168,11 +168,13 @@ public class FileIOScheduleCsvUtils {
 
     ALDateTimeField startDate = new ALDateTimeField();
     startDate.setValue(_sdate);
-    ALDateTimeField startTime = new ALDateTimeField();
+    ALDateTimeField startTime =
+      new ALDateTimeField(ALDateTimeField.DEFAULT_DATE_TIME_FORMAT);
     startTime.setValue(_stime);
     ALDateTimeField endDate = new ALDateTimeField();
     endDate.setValue(_edate);
-    ALDateTimeField endTime = new ALDateTimeField();
+    ALDateTimeField endTime =
+      new ALDateTimeField(ALDateTimeField.DEFAULT_DATE_TIME_FORMAT);
     endTime.setValue(_etime);
 
     return checkDateAcross(startDate, startTime, endDate, endTime);

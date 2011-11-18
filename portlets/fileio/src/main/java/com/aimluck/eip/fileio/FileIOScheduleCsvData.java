@@ -128,7 +128,7 @@ public class FileIOScheduleCsvData extends ScheduleDetailResultData {
 
   @Override
   public boolean isSpan() {
-    return FileIOScheduleCsvUtils.isSpan(this.getStartDate(), this
-      .getStartDate());
+    return FileIOScheduleCsvUtils
+      .isSpan(this.getStartDate(), this.getEndDate());
   }
 }
