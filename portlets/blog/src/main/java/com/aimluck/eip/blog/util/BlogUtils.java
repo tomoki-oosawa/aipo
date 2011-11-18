@@ -156,6 +156,9 @@ public class BlogUtils {
         throw new ALPageNotFoundException();
       }
       return entrys.get(0);
+    } catch (ALPageNotFoundException ex) {
+      ALEipUtils.redirectPageNotFound(rundata);
+      return null;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       throw new ALDBErrorException();

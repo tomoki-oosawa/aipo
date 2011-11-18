@@ -173,7 +173,7 @@ public class WorkflowUtils {
       if (requestid == null || Integer.valueOf(requestid) == null) {
         // Request IDが空の場合
         logger.debug("[WorkflowUtils] Empty ID...");
-        return null;
+        throw new ALPageNotFoundException();
       }
 
       SelectQuery<EipTWorkflowRequest> query =
@@ -205,7 +205,7 @@ public class WorkflowUtils {
       if (requests == null || requests.size() == 0) {
         // 指定した Request IDのレコードが見つからない場合
         logger.debug("[WorkflowUtils] Not found ID...");
-        return null;
+        throw new ALPageNotFoundException();
       }
 
       // アクセス権の判定

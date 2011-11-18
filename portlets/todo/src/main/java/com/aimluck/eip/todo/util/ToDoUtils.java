@@ -104,7 +104,7 @@ public class ToDoUtils {
       if (todoid == null || Integer.valueOf(todoid) == null) {
         // Todo IDが空の場合
         logger.debug("[Todo] Empty ID...");
-        return null;
+        throw new ALPageNotFoundException();
       }
 
       Expression exp =
@@ -119,7 +119,7 @@ public class ToDoUtils {
       if (todoList == null || todoList.size() == 0) {
         // 指定したTodo IDのレコードが見つからない場合
         logger.debug("[Todo] Not found ID...");
-        return null;
+        throw new ALPageNotFoundException();
       }
 
       // アクセス権の判定

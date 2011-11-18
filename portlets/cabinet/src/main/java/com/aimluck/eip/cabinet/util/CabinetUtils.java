@@ -166,6 +166,7 @@ public class CabinetUtils {
       if (files == null || files.size() == 0) {
         // 指定したファイル IDのレコードが見つからない場合
         logger.debug("[Cabinet File] Not found ID...");
+        ALEipUtils.redirectPageNotFound(rundata);
         return null;
       }
 

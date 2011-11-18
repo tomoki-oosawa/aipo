@@ -461,12 +461,6 @@ public class MsgboardTopicSelectData extends
         .getInitParameter("p2b-sort");
 
     try {
-      parentTopic =
-        getResultDataDetail(MsgboardUtils.getEipTMsgboardParentTopic(
-          rundata,
-          context,
-          false));
-
       SelectQuery<EipTMsgboardTopic> query =
         getSelectQueryForCotopic(rundata, context, topicid, cotopicsort);
       /** 詳細画面は全件表示する */
@@ -477,8 +471,23 @@ public class MsgboardTopicSelectData extends
         query.orderAscending(EipTMsgboardTopic.CREATE_DATE_PROPERTY);
       }
 
+      List<EipTMsgboardTopic> resultList = query.fetchList();
+      if (resultList.isEmpty()) {
+        logger.debug("[MsgboardTopic] Not found ID...");
+        throw new ALPageNotFoundException();
+      }
+
+      parentTopic =
+        getResultDataDetail(MsgboardUtils.getEipTMsgboardParentTopic(
+          rundata,
+          context,
+          false));
+
       // 表示するカラムのみデータベースから取得する．
-      return query.fetchList();
+      return resultList;
+    } catch (ALPageNotFoundException ex) {
+      ALEipUtils.redirectPageNotFound(rundata);
+      return null;
     } catch (Exception ex) {
       logger.error("[MsgboardTopicSelectData]", ex);
       throw new ALDBErrorException();
