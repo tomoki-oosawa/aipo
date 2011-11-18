@@ -64,7 +64,7 @@ function onCommentDelete(form) {
 #else
 #foreach ($record in $result.CommentList)
 #ALcell_blog_comment($career $!{record})
-#if($!result.CommentDeletable)
+#if($!{result.OtherCommentDeletable} || ($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!{result.CommentDeletable}))
 #ALcell_formheader($career $jslink $portlet)
 <input type="hidden" name="entityid" value=${result.Detail.EntryId}>
 <input type="hidden" name="comment_id" value=${record.CommentId}>

@@ -1020,4 +1020,26 @@ public class BlogUtils {
     ALEipUtils.setTemp(rundata, context, "view_uid", String.valueOf(view_uid));
     return view_uid;
   }
+
+  public static int getCommentViewId(RunData rundata, Context context, int uid,
+      String commentid) throws ALDBErrorException, ALPageNotFoundException {
+    int view_uid = -1;
+    EipTBlogComment record =
+      BlogUtils.getEipTBlogComment(rundata, context, commentid);
+    if (record != null) {
+      view_uid = record.getOwnerId();
+    } else {
+      if (rundata.getParameters().containsKey("comment_view_uid")) {
+        view_uid =
+          Integer.parseInt(rundata
+            .getParameters()
+            .getString("comment_view_uid"));
+      } else {
+        view_uid = uid;
+      }
+    }
+    ALEipUtils.setTemp(rundata, context, "comment_view_uid", String
+      .valueOf(view_uid));
+    return view_uid;
+  }
 }

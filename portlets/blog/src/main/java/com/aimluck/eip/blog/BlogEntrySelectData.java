@@ -96,6 +96,8 @@ public class BlogEntrySelectData extends
 
   private boolean comment_deletable;
 
+  private boolean other_comment_deletable;
+
   /** アクセス権限の機能名 */
   private String aclPortletFeature = null;
 
@@ -149,17 +151,12 @@ public class BlogEntrySelectData extends
     view_uid = BlogUtils.getViewId(rundata, context, uid);
 
     // アクセス権
-    String comment_aclPortletFeature = null;
     if (view_uid == uid) {
       aclPortletFeature =
         ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_SELF;
-      comment_aclPortletFeature =
-        ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_REPLY;
     } else {
       aclPortletFeature =
         ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER;
-      comment_aclPortletFeature =
-        ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER_REPLY;
     }
 
     // 編集権限の有無
@@ -177,12 +174,19 @@ public class BlogEntrySelectData extends
         ALAccessControlConstants.VALUE_ACL_DELETE,
         aclPortletFeature);
     // コメント削除権限の有無
+    other_comment_deletable =
+      BlogUtils.checkPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_DELETE,
+        ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER_REPLY);
+    // コメント削除権限の有無
     comment_deletable =
       BlogUtils.checkPermission(
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_DELETE,
-        comment_aclPortletFeature);
+        ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_REPLY);
   }
 
   /**
@@ -531,6 +535,10 @@ public class BlogEntrySelectData extends
 
   public boolean getDeletable() {
     return deletable;
+  }
+
+  public boolean getOtherCommentDeletable() {
+    return other_comment_deletable;
   }
 
   public boolean getCommentDeletable() {

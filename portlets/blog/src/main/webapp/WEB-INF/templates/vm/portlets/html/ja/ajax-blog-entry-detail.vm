@@ -80,7 +80,7 @@ $!{result.Detail.Note}
 &nbsp;&nbsp;&nbsp;投稿日：$!{record.UpdateDateAlternative.Year}年$!{record.UpdateDateAlternative.Month}月$!{record.UpdateDateAlternative.Day}日$!{record.UpdateDateAlternative.Hour}時$!{record.UpdateDateAlternative.Minute}分
 </div>
 <div class="alignright">
-#if($!{result.CommentDeletable})
+#if($!{result.OtherCommentDeletable} || ($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!{result.CommentDeletable}))
 #ALbutton("eventSubmit_doBlog_comment_delete" "削除する" "aipo.blog.delCommentReply(this, ${record.CommentId}, '$!indicator_id', '$!portlet.ID');")
 #end
 </div>
