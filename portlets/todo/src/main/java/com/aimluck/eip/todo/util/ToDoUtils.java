@@ -50,7 +50,6 @@ import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.todo.ToDoCategoryResultData;
-import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -560,8 +559,7 @@ public class ToDoUtils {
   public static void createToDoActivity(EipTTodo todo, String loginName,
       List<String> recipients, boolean isNew) {
     String title =
-      new StringBuilder("ToDo「").append(
-        ALCommonUtils.compressString(todo.getTodoName(), 30)).append(
+      new StringBuilder("ToDo「").append(todo.getTodoName()).append(
         isNew ? "」を追加しました。" : "」を編集しました。").toString();
     String portletParams =
       new StringBuilder("?template=ToDoDetailScreen")
