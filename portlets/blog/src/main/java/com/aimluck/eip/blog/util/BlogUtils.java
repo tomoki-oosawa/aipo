@@ -794,7 +794,7 @@ public class BlogUtils {
   public static void createNewBlogActivity(EipTBlogEntry blog, String loginName) {
     String title =
       new StringBuilder("ブログ「")
-        .append(ALCommonUtils.compressString(blog.getTitle(), 30))
+        .append(blog.getTitle())
         .append("」を書きました。")
         .toString();
     String portletParams =

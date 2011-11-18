@@ -38,6 +38,7 @@ import com.aimluck.eip.blog.util.BlogUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogComment;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
+import com.aimluck.eip.cayenne.om.portlet.EipTBlogThema;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
@@ -469,7 +470,9 @@ public class BlogEntrySelectData extends
    */
   @Override
   protected Attributes getColumnMap() {
-    return new Attributes();
+    Attributes map = new Attributes();
+    map.putValue("thema", EipTBlogThema.THEMA_ID_PK_COLUMN);
+    return map;
   }
 
   public List<BlogCommentResultData> getCommentList() {
