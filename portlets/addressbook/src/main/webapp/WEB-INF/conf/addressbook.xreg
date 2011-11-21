@@ -45,27 +45,13 @@
         <parameter name="p1b-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1b-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1b-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2a-type" value="syagai" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
-            <meta-info>
-                <title>初期選択アドレス</title>
-            </meta-info>
-        </parameter>
-        <parameter name="p2a-type.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2a-type.style.items" value="syagai_address,corp_address" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2a-type.style.values" value="社外アドレス,社内アドレス" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-	    <parameter name="p3a-strlen" value="0" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
-            <meta-info>
-                <title>一覧表示文字数</title>
-            </meta-info>
-        </parameter>
-        <parameter name="p3a-strlen.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p3a-strlen.style.items" value="10,15,30,0" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p3a-strlen.style.values" value="10文字,15文字,30文字,制限なし" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        
+        <parameter name="p2a-type" value="syagai" type="style" hidden="true" cachedOnName="true" cachedOnValue="true" />
+        <parameter name="p3a-strlen" value="0" type="style" hidden="true" cachedOnName="true" cachedOnValue="true" />
+
         <parameter name="action" value="addressbook.AddressBookAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="function_mode1" value="AddressBookFormScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>    
+        <parameter name="function_mode1" value="AddressBookFormScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_image1" value="icon/icon_add.gif" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="function_screen1" value="true" hidden="true" cachedOnName="true" cachedOnValue="true"/>        
+        <parameter name="function_screen1" value="true" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_caption1" value="アドレス追加" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_after_function1" value="aipo.addressbook.onLoadAddressbookDialog" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <media-type ref="html"/>
