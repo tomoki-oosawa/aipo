@@ -705,9 +705,8 @@ public class ALDefaultSocialApplicationHanlder extends
     String keyword = request.getKeyword();
     if ((keyword != null) && (!keyword.equals(""))) {
       // 選択したキーワードを指定する．
-      keyword = "%" + keyword + "%";
-      query.where(Operations.like(Activity.TITLE_PROPERTY, keyword));
-      query.where(Operations.like(Activity.LOGIN_NAME_PROPERTY, keyword));
+      query.where(Operations.contains(Activity.TITLE_PROPERTY, keyword).or(
+        Operations.contains(Activity.LOGIN_NAME_PROPERTY, keyword)));
     }
     String loginName = request.getLoginName();
     if (loginName != null && loginName.length() > 0) {
