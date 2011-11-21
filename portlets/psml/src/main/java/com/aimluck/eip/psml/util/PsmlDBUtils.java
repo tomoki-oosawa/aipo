@@ -75,6 +75,16 @@ public class PsmlDBUtils {
     return getProfileOne(getTemplateMap(), dataContext);
   }
 
+  public static List<JetspeedUserProfile> getAllUserHtmlProfile() {
+    DataContext dataContext = DataContext.getThreadDataContext();
+    return getAllUserHtmlProfile(dataContext);
+  }
+
+  public static List<JetspeedUserProfile> getAllUserHtmlProfile(
+      DataContext dataContext) {
+    return getProfile(getHtmlMap(), dataContext);
+  }
+
   public static JetspeedUserProfile getProfileOne(Map<String, String> map,
       DataContext dataContext) {
     SelectQuery<JetspeedUserProfile> query =
@@ -91,7 +101,11 @@ public class PsmlDBUtils {
     SelectQuery<JetspeedUserProfile> query =
       Database.query(dataContext, JetspeedUserProfile.class);
 
-    setProfileOneCriteria(query, map);
+    if (map.containsKey(JetspeedUserProfile.USER_NAME_PROPERTY)) {
+      setProfileOneCriteria(query, map);
+    } else {
+      setAllUserProfileCriteria(query, map);
+    }
 
     return query.fetchList();
   }
@@ -104,9 +118,26 @@ public class PsmlDBUtils {
         .get(JetspeedUserProfile.USER_NAME_PROPERTY))));
   }
 
+  public static void setAllUserProfileCriteria(
+      SelectQuery<JetspeedUserProfile> query, Map<String, String> map) {
+    query.where(Operations.eq(JetspeedUserProfile.MEDIA_TYPE_PROPERTY, map
+      .get(JetspeedUserProfile.MEDIA_TYPE_PROPERTY)), Operations.and(Operations
+      .notIn(
+        JetspeedUserProfile.USER_NAME_PROPERTY,
+        PsmlUtils.ADMIN_NAME,
+        PsmlUtils.ANON_NAME,
+        PsmlUtils.TEMPLATE_NAME)));
+  }
+
   public static Map<String, String> getTemplateMap() {
     Map<String, String> map = new HashMap<String, String>();
     map.put(JetspeedUserProfile.USER_NAME_PROPERTY, PsmlUtils.TEMPLATE_NAME);
+    map.put(JetspeedUserProfile.MEDIA_TYPE_PROPERTY, "html");
+    return map;
+  }
+
+  public static Map<String, String> getHtmlMap() {
+    Map<String, String> map = new HashMap<String, String>();
     map.put(JetspeedUserProfile.MEDIA_TYPE_PROPERTY, "html");
     return map;
   }

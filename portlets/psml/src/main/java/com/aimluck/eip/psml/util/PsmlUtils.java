@@ -61,6 +61,10 @@ public class PsmlUtils {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(PsmlUtils.class.getName());
 
+  public static String ADMIN_NAME = "admin";
+
+  public static String ANON_NAME = "anon";
+
   public static String TEMPLATE_NAME = "template";
 
   public static String DEFAULT_PAGE_NAME = "default.psml";

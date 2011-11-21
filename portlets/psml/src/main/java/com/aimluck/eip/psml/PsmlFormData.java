@@ -20,15 +20,23 @@
 package com.aimluck.eip.psml;
 
 import java.io.File;
+import java.io.FileReader;
 import java.util.List;
 
 import org.apache.jetspeed.om.profile.PSMLDocument;
+import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.psmlmanager.PsmlManagerService;
 import org.apache.jetspeed.services.psmlmanager.db.DBUtils;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.resources.ResourceService;
+import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.exolab.castor.mapping.Mapping;
+import org.xml.sax.InputSource;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.account.JetspeedUserProfile;
@@ -60,6 +68,8 @@ public class PsmlFormData extends ALAbstractFormData {
 
   private String default_status;
 
+  private String all_user_status;
+
   private static final String UPDATE_SUCCESS = "success";
 
   private static final String UPDATE_ERROR = "error";
@@ -67,6 +77,12 @@ public class PsmlFormData extends ALAbstractFormData {
   private static final String ATTACH_VIEW_STATUS = "attach_psml_status";
 
   private static final String DEFAULT_VIEW_STATUS = "default_psml_status";
+
+  private static final String ALL_USER_VIEW_STATUS = "all_user_psml_status";
+
+  // castor mapping
+  public static final String DEFAULT_MAPPING =
+    "${webappRoot}/WEB-INF/conf/psml-mapping.xml";
 
   /**
    * 
@@ -83,8 +99,11 @@ public class PsmlFormData extends ALAbstractFormData {
     adminUser = ALEipUtils.isAdminUser(rundata);
     attach_status = ALEipUtils.getTemp(rundata, context, ATTACH_VIEW_STATUS);
     default_status = ALEipUtils.getTemp(rundata, context, DEFAULT_VIEW_STATUS);
+    all_user_status =
+      ALEipUtils.getTemp(rundata, context, ALL_USER_VIEW_STATUS);
     ALEipUtils.removeTemp(rundata, context, ATTACH_VIEW_STATUS);
     ALEipUtils.removeTemp(rundata, context, DEFAULT_VIEW_STATUS);
+    ALEipUtils.removeTemp(rundata, context, ALL_USER_VIEW_STATUS);
     super.init(action, rundata, context);
   }
 
@@ -169,49 +188,99 @@ public class PsmlFormData extends ALAbstractFormData {
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
+    boolean success;
+    if ("default".equals(rundata.getParameters().getString("mode"))) {
+      success = updateDefaultFormData(rundata, context, msgList);
+    } else if ("all_user".equals(rundata.getParameters().getString("mode"))) {
+      success = updateAllUserFormData(rundata, context, msgList);
+    } else {
+      success = updateAttachFormData(rundata, context, msgList);
+    }
+    return success;
+  }
+
+  private boolean updateAttachFormData(RunData rundata, Context context,
+      List<String> msgList) {
     try {
       String psml;
-      if ("default".equals(rundata.getParameters().getString("mode"))) {
-
-        Mapping mapping = PsmlUtils.getMapping(rundata);
-        File psmlFile = PsmlUtils.getTemplateHtmlDefaultPsmlFile(rundata);
-        PSMLDocument doc = PsmlUtils.loadDocument(psmlFile, mapping);
-        byte[] psmlByte =
-          DBUtils.portletsToBytes(doc.getPortlets(), PsmlUtils
-            .getMapping(rundata));
-        psml = new String(psmlByte);
-      } else {
-        psml = PsmlDBUtils.getMyHtmlPsml(rundata);
-      }
+      psml = PsmlDBUtils.getMyHtmlPsml(rundata);
       psml = PsmlUtils.ParsePsml(psml);
       psml = PsmlUtils.PSMLEncode(psml);
-
       PsmlDBUtils.checkAndFixInconsistency(PsmlUtils.TEMPLATE_NAME);
 
       JetspeedUserProfile profile = PsmlDBUtils.getTemplateHtmlProfile();
       profile.setProfile(psml.getBytes());
       Database.commit();
+      ALEipUtils.setTemp(rundata, context, ATTACH_VIEW_STATUS, UPDATE_SUCCESS);
+    } catch (Exception ex) {
+      Database.rollback();
+      logger.error("Exception", ex);
+      ALEipUtils.setTemp(rundata, context, ATTACH_VIEW_STATUS, UPDATE_ERROR);
+      return false;
+    }
+    return true;
+  }
 
-      if ("default".equals(rundata.getParameters().getString("mode"))) {
-        ALEipUtils.setTemp(
-          rundata,
-          context,
-          DEFAULT_VIEW_STATUS,
-          UPDATE_SUCCESS);
-      } else {
-        ALEipUtils
-          .setTemp(rundata, context, ATTACH_VIEW_STATUS, UPDATE_SUCCESS);
-      }
+  private boolean updateDefaultFormData(RunData rundata, Context context,
+      List<String> msgList) {
+    try {
+      String psml;
+      Mapping mapping = PsmlUtils.getMapping(rundata);
+      File psmlFile = PsmlUtils.getTemplateHtmlDefaultPsmlFile(rundata);
+      PSMLDocument doc = PsmlUtils.loadDocument(psmlFile, mapping);
+      byte[] psmlByte =
+        DBUtils.portletsToBytes(doc.getPortlets(), PsmlUtils
+          .getMapping(rundata));
+      psml = new String(psmlByte);
+      psml = PsmlUtils.ParsePsml(psml);
+      psml = PsmlUtils.PSMLEncode(psml);
+
+      PsmlDBUtils.checkAndFixInconsistency(PsmlUtils.TEMPLATE_NAME);
+      JetspeedUserProfile profile = PsmlDBUtils.getTemplateHtmlProfile();
+      profile.setProfile(psml.getBytes());
+      Database.commit();
+      ALEipUtils.setTemp(rundata, context, DEFAULT_VIEW_STATUS, UPDATE_SUCCESS);
 
     } catch (Exception ex) {
       Database.rollback();
       logger.error("Exception", ex);
+      ALEipUtils.setTemp(rundata, context, DEFAULT_VIEW_STATUS, UPDATE_ERROR);
+      return false;
+    }
+    return true;
+  }
 
-      if ("default".equals(rundata.getParameters().getString("mode"))) {
-        ALEipUtils.setTemp(rundata, context, DEFAULT_VIEW_STATUS, UPDATE_ERROR);
-      } else {
-        ALEipUtils.setTemp(rundata, context, ATTACH_VIEW_STATUS, UPDATE_ERROR);
+  private boolean updateAllUserFormData(RunData rundata, Context context,
+      List<String> msgList) {
+    try {
+      String psml;
+      psml = PsmlDBUtils.getMyHtmlPsml(rundata);
+      psml = PsmlUtils.PSMLEncode(psml);
+
+      PsmlDBUtils.checkAndFixInconsistency(PsmlUtils.TEMPLATE_NAME);
+      JetspeedUserProfile profileTemplate =
+        PsmlDBUtils.getTemplateHtmlProfile();
+      profileTemplate.setProfile(psml.getBytes());
+
+      Mapping mapping = loadMapping();
+      Portlets portlets = DBUtils.bytesToPortlets(psml.getBytes(), mapping);
+
+      List<JetspeedUserProfile> profiles = PsmlDBUtils.getAllUserHtmlProfile();
+      for (JetspeedUserProfile profile : profiles) {
+        PsmlDBUtils.checkAndFixInconsistency(profile.getUserName());
+        if (!profile.getUserName().equals(ALEipUtils.getLoginName(rundata))) {
+          org.apache.jetspeed.util.PortletUtils.regenerateIds(portlets);
+          profile.setProfile(DBUtils.portletsToBytes(portlets, mapping));
+        }
       }
+
+      Database.commit();
+      ALEipUtils
+        .setTemp(rundata, context, ALL_USER_VIEW_STATUS, UPDATE_SUCCESS);
+    } catch (Exception ex) {
+      Database.rollback();
+      logger.error("Exception", ex);
+      ALEipUtils.setTemp(rundata, context, ALL_USER_VIEW_STATUS, UPDATE_ERROR);
       return false;
     }
     return true;
@@ -230,6 +299,44 @@ public class PsmlFormData extends ALAbstractFormData {
     return false;
   }
 
+  /**
+   * CayenneDatabasePsmlManagerService.loadMapping()を踏襲
+   * 
+   * @return
+   * @throws InitializationException
+   */
+  private Mapping loadMapping() throws InitializationException {
+    // psml castor mapping file
+    ResourceService serviceConf =
+      ((TurbineServices) TurbineServices.getInstance())
+        .getResources(PsmlManagerService.SERVICE_NAME);
+    String mapFile = serviceConf.getString("mapping", DEFAULT_MAPPING);
+    mapFile = TurbineServlet.getRealPath(mapFile);
+
+    if (mapFile != null) {
+      File map = new File(mapFile);
+      if (logger.isDebugEnabled()) {
+        logger.debug("Loading psml mapping file " + mapFile);
+      }
+      if (map.exists() && map.isFile() && map.canRead()) {
+        try {
+          Mapping mapping = new Mapping();
+          InputSource is = new InputSource(new FileReader(map));
+          is.setSystemId(mapFile);
+          mapping.loadMapping(is);
+          return mapping;
+        } catch (Exception e) {
+          logger.error("Error in psml mapping creation", e);
+          throw new InitializationException("Error in mapping", e);
+        }
+      } else {
+        throw new InitializationException(
+          "PSML Mapping not found or not a file or unreadable: " + mapFile);
+      }
+    }
+    return null;
+  }
+
   public boolean isAdminUser() {
     return adminUser;
   }
@@ -242,4 +349,7 @@ public class PsmlFormData extends ALAbstractFormData {
     return default_status;
   }
 
+  public String getAllUserStatus() {
+    return all_user_status;
+  }
 }

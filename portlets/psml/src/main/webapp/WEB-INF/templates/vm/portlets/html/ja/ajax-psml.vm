@@ -20,6 +20,7 @@
 ## ---------------------------------------------------------------------------
 #set ($action_str = "初期配置として設定する")
 #set ($default_str = "デフォルト設定に戻す" )
+#set ($all_user_str = "レイアウトを変更する" )
 #set ($indicator_id = "indicator-form-")
 ## ---------------------------------------------------------------------------
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
@@ -54,6 +55,23 @@
 #ALcaution("設定が完了しました。")
 #elseif($!{result.getDefaultStatus().equals("error")})
 #ALcaution("設定に失敗しました。時間をおいてから再度試してください。")
+#end
+</div>
+<hr />
+<div class="p spaceTop spaceBottom">
+あなたのレイアウトで、すべてユーザーのレイアウトを変更できます。
+</div>
+<div class="p spaceBottom">
+#if(!$!{result.isAdminUser()})
+#ALsubmitJS($event_submit $all_user_str "aipo.psml.beforeSubmit('$!portlet.ID', 'all_user')")
+#if($!{result.getAllUserStatus().equals("success")})
+#ALcaution("設定が完了しました。")
+#elseif($!{result.getAllUserStatus().equals("error")})
+#ALcaution("設定に失敗しました。時間をおいてから再度試してください。")
+#end
+#else
+<input type="button" disabled="disabled" value="$all_user_str">
+<div class="spaceTop caution"><span class="small em">※管理者権限をもつ Admin 以外のユーザーでご使用ください。</span></div>
 #end
 </div>
 

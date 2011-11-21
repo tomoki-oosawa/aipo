@@ -60,7 +60,8 @@ public class PsmlFormJSONScreen extends ALJSONScreen {
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_UPDATE.equals(mode)
-        || "default".equals(mode)) {
+        || "default".equals(mode)
+        || "all_user".equals(mode)) {
         PsmlFormData formData = new PsmlFormData();
         formData.initField();
         if (formData.doUpdate(this, rundata, context)) {
