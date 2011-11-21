@@ -18,19 +18,29 @@
  *#
 
 ## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-list-")
 #if($!result.Index)
 #set ($idx = $!result.Index)
 #else
 #set ($idx = "")
 #end
+#if($result.SearchWord && $result.SearchWord.toString() != "")
+#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_search_list','1')")
+#set($pageviewscreen = "AddressBookWordScreen")
+#else
+#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_list','1')")
+#set($pageviewscreen = "AddressBookListScreen")
+#end
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 #AUISummaryDiv()
-<form class="auiSearch floatLeft" name="addressbook$!portlet.ID" id="addressbook$!portlet.ID" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen').addQueryData('mode','ajaxsearch')) method="post" onsubmit="aipo.addressbook.onSubmitSerchButton(this,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen').addQueryData('mode','ajaxsearch'))','$!portlet.ID','$!result.currentTab'); return false;">
-<input class="text floatLeft" name="sword" id="sword" value="$!result.SearchWord" maxlength="100" style="margin-right:5px;ime-mode:active" />
-<a href="javascript:void(0)" tabindex="0" class="auiButtonSearch floatLeft" onclick="dojo.byId('addressbook$!portlet.ID').onsubmit();">検索</a>
-<input name="mode" type="hidden" value="ajaxsearch" />
+<form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
+<input type="hidden" name="template" value="AddressBookListScreen"/>
+<input type="hidden" name="mode" value="ajaxsearch"/>
+<input class="text floatLeft" type="text" name="sword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.SearchWord"/>
+<a href="javascript:void(0)" tabindex="0" class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">検索</a>
 </form>
+<div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
 #AUISummaryDivfooter()
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 #if(!($result.hasAuthorityList))
@@ -87,7 +97,6 @@
 #set($dlLink =  $!utils.escapeXML($jslink.getTemplate('AddressBookWordXlsExportScreen').addQueryData("mode", "ajaxsearch").addQueryData("sword", "$!result.searchWord").addQueryData("tab", "$!result.currentTab")))
 #AUIbutton("表示中の一覧をダウンロード" $dlLink)
 </div>
-#AUIajaxpageview(${pageviewscreen} $result)
 #AUISummaryDivfooter()
 #end
 #ALformfooter()
