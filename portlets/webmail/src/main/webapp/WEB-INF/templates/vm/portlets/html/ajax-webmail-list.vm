@@ -123,7 +123,7 @@ $MailSubject
 </a>
 </div>
 #ALtdcellfooter()
-#ALtdcellAtt("$!{record.Date.Month}月$!{record.Date.Day}日" 'class="right" nowrap="nowrap"')
+#ALtdcellAtt("$!{record.Date}" 'class="right" nowrap="nowrap"')
 </tr>
 #end
 #end

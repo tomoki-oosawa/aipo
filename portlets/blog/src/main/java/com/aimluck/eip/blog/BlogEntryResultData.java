@@ -66,9 +66,6 @@ public class BlogEntryResultData implements ALData {
   /** タイトル月日 */
   private ALDateTimeField title_date;
 
-  /** タイトル時間 */
-  private ALDateTimeField title_date_time;
-
   /** 登録日 */
   private ALStringField create_date;
 
@@ -105,8 +102,7 @@ public class BlogEntryResultData implements ALData {
     thema_id = new ALNumberField();
     thema_name = new ALStringField();
     allow_comments = true;
-    title_date = new ALDateTimeField("M月d日");
-    title_date_time = new ALDateTimeField("H:mm");
+    title_date = new ALDateTimeField();
     create_date = new ALStringField();
     create_date_alternative = new ALDateTimeField();
     update_date = new ALDateTimeField();
@@ -207,13 +203,7 @@ public class BlogEntryResultData implements ALData {
    * @return
    */
   public ALDateTimeField getTitleDate() {
-    ALDateTimeField today = new ALDateTimeField("M月d日");
-    today.setValue(new Date());
-    if (title_date.toString().equals(today.toString())) {
-      return title_date_time;
-    } else {
-      return title_date;
-    }
+    return ALEipUtils.getFormattedTime(title_date);
   }
 
   /**
@@ -224,7 +214,6 @@ public class BlogEntryResultData implements ALData {
       return;
     }
     this.title_date.setValue(date);
-    this.title_date_time.setValue(date);
   }
 
   /**
@@ -238,14 +227,14 @@ public class BlogEntryResultData implements ALData {
    * @return
    */
   public ALDateTimeField getCreateDateAlternative() {
-    return create_date_alternative;
+    return ALEipUtils.getFormattedTime(create_date_alternative);
   }
 
   /**
    * @return
    */
   public ALDateTimeField getUpdateDate() {
-    return update_date;
+    return ALEipUtils.getFormattedTime(update_date);
   }
 
   /**

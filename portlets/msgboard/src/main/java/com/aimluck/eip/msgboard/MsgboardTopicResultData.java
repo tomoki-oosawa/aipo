@@ -81,9 +81,6 @@ public class MsgboardTopicResultData implements ALData {
   /** 更新日 */
   private ALDateTimeField update_date;
 
-  /** 更新時間 */
-  private ALDateTimeField update_date_time;
-
   /** 添付ファイルリスト */
   private List<FileuploadBean> attachmentFileList = null;
 
@@ -107,8 +104,7 @@ public class MsgboardTopicResultData implements ALData {
     create_user = new ALStringField();
     update_user = new ALStringField();
     create_date = new ALDateTimeField();
-    update_date = new ALDateTimeField("M月d日");
-    update_date_time = new ALDateTimeField("H:mm");
+    update_date = new ALDateTimeField();
 
     attachmentFileList = new ArrayList<FileuploadBean>();
 
@@ -226,20 +222,14 @@ public class MsgboardTopicResultData implements ALData {
    * @return
    */
   public ALDateTimeField getCreateDate() {
-    return create_date;
+    return ALEipUtils.getFormattedTime(create_date);
   }
 
   /**
    * @return
    */
   public ALDateTimeField getUpdateDate() {
-    ALDateTimeField today = new ALDateTimeField("M月d日");
-    today.setValue(new Date());
-    if (update_date.toString().equals(today.toString())) {
-      return update_date_time;
-    } else {
-      return update_date;
-    }
+    return ALEipUtils.getFormattedTime(update_date);
   }
 
   /**
@@ -257,7 +247,6 @@ public class MsgboardTopicResultData implements ALData {
       return;
     }
     this.update_date.setValue(date);
-    this.update_date_time.setValue(date);
   }
 
   public ALStringField getCreateUser() {

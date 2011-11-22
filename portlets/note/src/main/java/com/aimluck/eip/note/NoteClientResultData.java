@@ -26,6 +26,7 @@ import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.util.ALCommonUtils;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 伝言メモ依頼者のResultDataです。
@@ -62,12 +63,6 @@ public class NoteClientResultData {
   /** 新着／未読／既読の画像に対する説明文 */
   private String note_stat_image_description = null;
 
-  /** 作成日時 */
-  private ALDateTimeField acceptDate;
-
-  /** 作成日時 */
-  private ALDateTimeField acceptDateTime;
-
   /**
    *
    */
@@ -80,16 +75,13 @@ public class NoteClientResultData {
     subject = new ALStringField();
     note_stat = new ALStringField();
     accept_date = new ALDateTimeField(NoteUtils.DATE_TIME_FORMAT);
-
-    acceptDate = new ALDateTimeField("M月d日");
-    acceptDateTime = new ALDateTimeField("H:mm");
   }
 
   /**
    * @return
    */
   public ALDateTimeField getAcceptDate() {
-    return accept_date;
+    return ALEipUtils.getFormattedTime(accept_date);
   }
 
   /**
@@ -206,18 +198,10 @@ public class NoteClientResultData {
       return;
     }
     accept_date.setValue(date);
-    this.acceptDate.setValue(date);
-    this.acceptDateTime.setValue(date);
   }
 
   public ALDateTimeField getAcceptDateTime() {
-    ALDateTimeField today = new ALDateTimeField("M月d日");
-    today.setValue(new Date());
-    if (acceptDate.toString().equals(today.toString())) {
-      return acceptDateTime;
-    } else {
-      return acceptDate;
-    }
+    return ALEipUtils.getFormattedTime(accept_date);
   }
 
   /**

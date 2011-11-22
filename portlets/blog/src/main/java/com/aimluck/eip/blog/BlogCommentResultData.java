@@ -146,7 +146,7 @@ public class BlogCommentResultData implements ALData {
    * @return
    */
   public ALDateTimeField getCreateDate() {
-    return create_date;
+    return ALEipUtils.getFormattedTime(create_date);
   }
 
   /**
@@ -174,7 +174,7 @@ public class BlogCommentResultData implements ALData {
    * @ return
    */
   public ALDateTimeField getUpdateDateAlternative() {
-    return update_date_alternative;
+    return ALEipUtils.getFormattedTime(update_date_alternative);
   }
 
   /**

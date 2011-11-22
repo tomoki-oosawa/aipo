@@ -64,10 +64,7 @@ public class CabinetFileResultData implements ALData {
   private ALStringField create_date;
 
   /** 更新日 */
-  private Date update_date;
-
-  /** 更新時間 */
-  private ALDateTimeField update_date_time;
+  private ALDateTimeField update_date;
 
   /** フォルダ ID */
   private ALNumberField folder_id;
@@ -94,8 +91,7 @@ public class CabinetFileResultData implements ALData {
     create_user = new ALStringField();
     update_user = new ALStringField();
     create_date = new ALStringField();
-    update_date = new Date();
-    update_date_time = new ALDateTimeField("H:mm");
+    update_date = new ALDateTimeField();
     folder_id = new ALNumberField();
     folder_name = new ALStringField();
   }
@@ -235,8 +231,7 @@ public class CabinetFileResultData implements ALData {
     if (date == null) {
       return;
     }
-    this.update_date = date;
-    this.update_date_time.setValue(date);
+    this.update_date.setValue(date);
   }
 
   public String getPosition() {

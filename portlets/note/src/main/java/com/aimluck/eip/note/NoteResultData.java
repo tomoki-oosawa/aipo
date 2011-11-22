@@ -131,7 +131,7 @@ public class NoteResultData implements ALData {
    * @return
    */
   public ALDateTimeField getAcceptDate() {
-    return accept_date;
+    return ALEipUtils.getFormattedTime(accept_date);
   }
 
   public ALDateTimeField getAuiAcceptDate() {
@@ -170,14 +170,14 @@ public class NoteResultData implements ALData {
    * @return
    */
   public ALDateTimeField getConfirmDate() {
-    return confirm_date;
+    return ALEipUtils.getFormattedTime(confirm_date);
   }
 
   /**
    * @return
    */
   public ALDateTimeField getCreateDate() {
-    return create_date;
+    return ALEipUtils.getFormattedTime(create_date);
   }
 
   public ALDateTimeField getAuiCreateDate() {
@@ -241,7 +241,7 @@ public class NoteResultData implements ALData {
    * @return
    */
   public ALDateTimeField getUpdateDate() {
-    return update_date;
+    return ALEipUtils.getFormattedTime(update_date);
   }
 
   /**

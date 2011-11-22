@@ -90,9 +90,6 @@ public class ToDoResultData implements ALData {
   /** 更新日 */
   private ALDateTimeField update_date;
 
-  /** 更新時間 */
-  private ALDateTimeField update_date_time;
-
   /**
    * 期限状態（期限前/期限当日/期限後）． <br>
    * クラス ToDoUtils の変数 LIMIT_STATE_BEFORE，LIMIT_STATE_TODAY，LIMIT_STATE_AFTER
@@ -128,8 +125,7 @@ public class ToDoResultData implements ALData {
     state_image = new ALStringField();
     state_string = new ALStringField();
     create_date = new ALStringField();
-    update_date = new ALDateTimeField("M月d日");
-    update_date_time = new ALDateTimeField("H:mm");
+    update_date = new ALDateTimeField();
     limit_state = new ALNumberField();
     create_user_name = new ALStringField();
     is_public = true;
@@ -347,13 +343,7 @@ public class ToDoResultData implements ALData {
    * @return
    */
   public ALDateTimeField getUpdateDate() {
-    ALDateTimeField today = new ALDateTimeField("M月d日");
-    today.setValue(new Date());
-    if (update_date.toString().equals(today.toString())) {
-      return update_date_time;
-    } else {
-      return update_date;
-    }
+    return ALEipUtils.getFormattedTime(update_date);
   }
 
   /**
@@ -371,7 +361,6 @@ public class ToDoResultData implements ALData {
       return;
     }
     this.update_date.setValue(date);
-    this.update_date_time.setValue(date);
   }
 
   /**
