@@ -96,7 +96,7 @@
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($formLink)', '$!portlet.ID', 'aipo.exttimecard.onLoadExtTimecardDialog')" >$rdlist.DateStr</a>
 #ALtdcellfooter()
 
-#ALtdcellheaderAtt("align='center' rowspan='$listsize'")
+#ALtdcellheaderAtt("align='center'")
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSystemDetailScreen").addQueryData("entityid",$result.TimecardSystem.SystemId))');">$result.TimecardSystem.SystemName</a>
 #ALtdcellfooter()
 
@@ -126,7 +126,7 @@
 #ALtdcellAtt(" " "")
 #end
 
-<td rowspan='$listsize' class='$class'>
+<td class='$class'>
 #if($!{rd.ReasonFlg})
 修正理由：$!{rd.Reason}
 #if($!{rd.RemarksFlg})
@@ -139,15 +139,10 @@
 </td>
 
 #if($!result.TargetUserId == $!result.UserId)
-##ALtdcellAtt("#ALajaxbuttonLinkCallback('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) 'images/icon/icon_edit.gif' $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "nowrap='nowrap' rowspan='$listsize' ")
+##ALtdcellAtt("#ALajaxbuttonLinkCallback('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) 'images/icon/icon_edit.gif' $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "nowrap='nowrap' ")
 #end
 
 #else
-
-#set($first = 0)
-#foreach ($outcome in $outcomes)
-
-#if($first == 0)
 
 #if($!{rd.IsTypeA} || $!{rd.IsTypeH} || $!{rd.IsTypeC} || $!{rd.IsTypeE})
 <td nowrap='nowrap' align='center' colspan='7' class="$class">
@@ -161,7 +156,7 @@
     その他
 #end
 </td>
-<td rowspan='$listsize' class='$class'>
+<td class='$class'>
 #if($!{rd.ReasonFlg})
 修正理由：$!{rd.Reason}
 #if($!{rd.RemarksFlg})
@@ -173,44 +168,57 @@
 #end
 </td>
 #if($!result.TargetUserId == $!result.UserId)
-##ALtdcellAtt("#AUIajaxbuttonLinkCallback('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "nowrap='nowrap' rowspan='$listsize'")
+##ALtdcellAtt("#AUIajaxbuttonLinkCallback('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "nowrap='nowrap'")
 #end
 #else
 #if($rdlist.IsNotNullClockInTime)
-        #ALtdcellAtt("$!{rd.ClockInTime.Hour}時$!{rd.ClockInTime.Minute}分" "nowrap='nowrap' align='center' rowspan='$listsize'")
+        #ALtdcellAtt("$!{rd.ClockInTime.Hour}時$!{rd.ClockInTime.Minute}分" "nowrap='nowrap' align='center'")
 #else
 #if($saturday_sunday_holiday == 0)
 #if($!result.TargetUserId == $!result.UserId)
-#ALtdcellAtt("#AUIajaxbuttonLinkCallback('未入力' $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "nowrap='nowrap' rowspan='$listsize'")
+#ALtdcellAtt("#AUIajaxbuttonLinkCallback('未入力' $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "nowrap='nowrap'")
 #else
 #ALtdcellAtt('' "")
 #end
 #else
-#ALtdcellAtt("" "nowrap='nowrap' align='center' rowspan='$listsize'")
+#ALtdcellAtt("" "nowrap='nowrap' align='center'")
 #end
 #end
 
 #if($rdlist.IsNotNullClockOutTime)
-    #ALtdcellAtt("$!{rd.ClockOutTime.Hour}時$!{rd.ClockOutTime.Minute}分" "nowrap='nowrap' align='center' rowspan='$listsize' ")
+    #ALtdcellAtt("$!{rd.ClockOutTime.Hour}時$!{rd.ClockOutTime.Minute}分" "nowrap='nowrap' align='center' ")
 #else
 #if($saturday_sunday_holiday == 0)
 #if($!result.TargetUserId == $!result.UserId)
-#ALtdcellAtt("#AUIajaxbuttonLinkCallback('未入力' $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "nowrap='nowrap' rowspan='$listsize'")
+#ALtdcellAtt("#AUIajaxbuttonLinkCallback('未入力' $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "nowrap='nowrap'")
 #else
 #ALtdcellAtt('' "")
 #end
 #else
-#ALtdcellAtt("" "nowrap='nowrap' align='center' rowspan='$listsize'")
+#ALtdcellAtt("" "nowrap='nowrap' align='center'")
 #end
 #end
 
-#ALtdcellAtt($outcome.get('outgoing') "align='center' nowrap='nowrap'")
-#ALtdcellAtt($outcome.get('comeback') "align='center' nowrap='nowrap'")
-#ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getWorkHourWithoutRestHour(true)})}" "align='center' rowspan='$listsize'")
-#ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getOvertimeHourWithoutRestHour(true)})}" "align='center' rowspan='$listsize'")
-#ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getOffHour(true)})}" "align='center' rowspan='$listsize'")
 
-<td rowspan='$listsize' class='$class'>
+#set($first = 0)
+#foreach ($outcome in $outcomes)
+#if($first == 0)
+#set($outgoings = $outcome.get('outgoing'))
+#set($comebacks = $outcome.get('comeback'))
+#set($first = 1)
+#else
+#set($outgoings = "$outgoings<br>$outcome.get('outgoing')")
+#set($comebacks = "$comebacks<br>$outcome.get('comeback')")
+#end
+#end
+
+#ALtdcellAtt($outgoings "align='center' nowrap='nowrap'")
+#ALtdcellAtt($comebacks "align='center' nowrap='nowrap'")
+#ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getWorkHourWithoutRestHour(true)})}" "align='center'")
+#ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getOvertimeHourWithoutRestHour(true)})}" "align='center'")
+#ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getOffHour(true)})}" "align='center'")
+
+<td class='$class'>
 #if($!{rd.ReasonFlg})
 修正理由：$!{rd.Reason}
 #if($!{rd.RemarksFlg})
@@ -223,19 +231,12 @@
 </td>
 
 #if($!result.TargetUserId == $!result.UserId)
-##ALtdcellAtt("#ALajaxbuttonLinkCallback('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) 'images/icon/icon_edit.gif' $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "nowrap='nowrap' rowspan='$listsize'")
+##ALtdcellAtt("#ALajaxbuttonLinkCallback('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) 'images/icon/icon_edit.gif' $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "nowrap='nowrap'")
 #end
-#end
-#set($first = 1)
-</tr>
-#else
-<tr>
-#ALtdcellAtt($outcome.get('outgoing') "align='center' nowrap='nowrap'")
-#ALtdcellAtt($outcome.get('comeback') "align='center' nowrap='nowrap'")
 </tr>
 #end
 #end
-#end
+
 </tr>
 #end
 #AUItablefooter()
