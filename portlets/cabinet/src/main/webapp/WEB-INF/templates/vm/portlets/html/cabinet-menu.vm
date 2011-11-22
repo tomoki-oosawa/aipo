@@ -18,37 +18,3 @@
  *#
 
 ## ---------------------------------------------------------------------------
-<script language="JavaScript" type="text/javascript">
-//<![CDATA[
-
-dojo.require("aimluck.widget.Menu");
-
-dojo.addOnLoad(function () {
-
-    var subMenu =
-		[
-			{
-				caption: "共有フォルダ一覧",
-				iconClass: "menuBarIconList",
-				url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doCabinet_list','1')"
-			},
-			{
-                caption: "フォルダを追加する",
-                iconClass: "menuBarIconFolderAdd",
-                url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFolderFormScreen").addQueryData("entityid","new").addQueryData("mode","new")','$!portlet.ID',aipo.cabinet.onLoadCabinetFolderDialog);"
-            },
-			{
-                caption: "ファイルを追加する",
-                iconClass: "menuBarIconAdd",
-                url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFileFormScreen").addQueryData("entityid","new")');"
-            }
-
-		];
-   if(aipo.cabinet.menuSelected == "undefined"){
-      aipo.cabinet.menuSelected = -1;
-   }
-   var menubar = new aimluck.widget.Menubar({id: "mbar", items: subMenu}, "portletMenu");
-});
-
-//]]>
-</script>

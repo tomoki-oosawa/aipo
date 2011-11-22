@@ -56,9 +56,6 @@ public class CabinetFolderSelectData extends
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(CabinetFolderSelectData.class.getName());
 
-  /** フォルダ情報一覧 */
-  private List<FolderInfo> folder_hierarchy_list;
-
   /** <code>members</code> 共有メンバー */
   private List<ALEipUser> members;
 
@@ -66,8 +63,23 @@ public class CabinetFolderSelectData extends
 
   private RunData rundata;
 
-  /** アクセス制限（編集の可否） */
-  private boolean editable;
+  /** 選択されたフォルダ情報 */
+  private FolderInfo selected_folderinfo = null;
+
+  private List<FolderInfo> folder_hierarchy_list;
+
+  /** フォルダの閲覧権限 */
+  private boolean isAccessible = true;
+
+  /** フォルダの編集権限 */
+  private boolean isEditable = true;
+
+  /** ノーマル画面の表示かどうか */
+  private boolean isNormalContext = false;
+
+  public void setIsNormalContext(boolean flg) {
+    isNormalContext = flg;
+  }
 
   /**
    * 
@@ -93,22 +105,93 @@ public class CabinetFolderSelectData extends
           .getInitParameter("p3c-sort"));
     }
 
-    folder_hierarchy_list = CabinetUtils.getFolderList();
-    members = new ArrayList<ALEipUser>();
-    this.rundata = rundata;
+    int fid = CabinetUtils.ROOT_FODLER_ID;
+    if (isNormalContext) {
+      // フォルダ選択のリクエスト
+      // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
+      if (ALEipUtils.isMatch(rundata, context)) {
+        // ENTITY ID
+        if (rundata.getParameters().containsKey(CabinetUtils.KEY_FOLDER_ID)) {
+          ALEipUtils.setTemp(
+            rundata,
+            context,
+            CabinetUtils.KEY_FOLDER_ID,
+            rundata.getParameters().getString(CabinetUtils.KEY_FOLDER_ID));
+        }
+      }
+      String tmpfid =
+        ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_FOLDER_ID);
 
-    // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
-    if (ALEipUtils.isMatch(rundata, context)) {
-      // ENTITY ID
-      if (rundata.getParameters().containsKey(CabinetUtils.KEY_FOLDER_ID)) {
-        // entityid=new を指定することによって明示的にセッション変数を削除することができる。
-        ALEipUtils.setTemp(
-          rundata,
-          context,
-          CabinetUtils.KEY_FOLDER_ID,
-          rundata.getParameters().getString(CabinetUtils.KEY_FOLDER_ID));
+      if (tmpfid != null && !"".equals(tmpfid)) {
+        try {
+          fid = Integer.parseInt(tmpfid);
+          /** フォルダ権限のチェック */
+          if (fid == 0) {
+            isAccessible = true;
+            isEditable = true;
+          } else {
+            isAccessible = CabinetUtils.isAccessibleFolder(fid, rundata);
+            isEditable = CabinetUtils.isEditableFolder(fid, rundata);
+          }
+        } catch (Exception e) {
+          fid = CabinetUtils.ROOT_FODLER_ID;
+        }
+      } else {
+        String id =
+          ALEipUtils
+            .getPortlet(rundata, context)
+            .getPortletConfig()
+            .getInitParameter("p3a-folder");
+        fid = Integer.parseInt(id);
+      }
+    } else {
+      // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
+      if (ALEipUtils.isMatch(rundata, context)) {
+        // ENTITY ID
+        if (rundata.getParameters().containsKey(CabinetUtils.KEY_FOLDER_ID)) {
+          ALEipUtils.setTemp(
+            rundata,
+            context,
+            CabinetUtils.KEY_FOLDER_ID,
+            rundata.getParameters().getString(CabinetUtils.KEY_FOLDER_ID));
+        }
+      }
+      String tmpfid =
+        ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_FOLDER_ID);
+      if (tmpfid != null && !"".equals(tmpfid)) {
+        try {
+          fid = Integer.parseInt(tmpfid);
+          /** フォルダ権限のチェック */
+          if (fid == 0) {
+            isAccessible = true;
+            isEditable = true;
+          } else {
+            isAccessible = CabinetUtils.isAccessibleFolder(fid, rundata);
+            isEditable = CabinetUtils.isEditableFolder(fid, rundata);
+          }
+        } catch (Exception e) {
+          fid = CabinetUtils.ROOT_FODLER_ID;
+        }
       }
     }
+
+    folder_hierarchy_list = CabinetUtils.getFolderList();
+    if (folder_hierarchy_list != null && folder_hierarchy_list.size() > 0) {
+      int size = folder_hierarchy_list.size();
+      for (int i = 0; i < size; i++) {
+        FolderInfo info = folder_hierarchy_list.get(i);
+        if (info.getFolderId() == fid) {
+          selected_folderinfo = info;
+          break;
+        }
+      }
+      /*
+       * if (selected_folderinfo == null) { selected_folderinfo =
+       * folder_hierarchy_list.get(0); }
+       */
+    }
+
+    this.rundata = rundata;
 
     super.init(action, rundata, context);
   }
@@ -140,6 +223,15 @@ public class CabinetFolderSelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
     // オブジェクトモデルを取得
     return CabinetUtils.getEipTCabinetFolder(rundata, context);
+  }
+
+  /**
+   * 
+   * @param rundata
+   * @param context
+   */
+  public void loadFolderList() {
+    folder_hierarchy_list = CabinetUtils.getFolderList();
   }
 
   /**
@@ -222,7 +314,6 @@ public class CabinetFolderSelectData extends
       Expression exp =
         ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, users);
       query.setQualifier(exp);
-      members.addAll(ALEipUtils.getUsersFromSelectQuery(query));
 
       rd.setUpdateUser(updateUserName);
       rd.setUpdateDate(new SimpleDateFormat("yyyy年M月d日H時m分").format(record
@@ -236,7 +327,7 @@ public class CabinetFolderSelectData extends
           break;
         }
       }
-      editable = CabinetUtils.isEditableFolder(record.getFolderId(), rundata);
+      isEditable = CabinetUtils.isEditableFolder(record.getFolderId(), rundata);
 
       return rd;
     } catch (Exception ex) {
@@ -258,12 +349,16 @@ public class CabinetFolderSelectData extends
     return folder_id;
   }
 
-  public List<ALEipUser> getMemberList() {
-    return members;
+  public List<FolderInfo> getFolderHierarchyList() {
+    return folder_hierarchy_list;
   }
 
-  public boolean isEditable() {
-    return editable;
+  public FolderInfo getSelectedFolderInfo() {
+    return selected_folderinfo;
+  }
+
+  public List<ALEipUser> getMemberList() {
+    return members;
   }
 
   /**
@@ -274,6 +369,18 @@ public class CabinetFolderSelectData extends
    */
   @Override
   public String getAclPortletFeature() {
-    return ALAccessControlConstants.POERTLET_FEATURE_CABINET_FOLDER;
+    return ALAccessControlConstants.POERTLET_FEATURE_CABINET_FILE;
+  }
+
+  public boolean isAccessible() {
+    return isAccessible;
+  }
+
+  public boolean isEditable() {
+    return isEditable;
+  }
+
+  public void setEditable(boolean isEditable) {
+    this.isEditable = isEditable;
   }
 }

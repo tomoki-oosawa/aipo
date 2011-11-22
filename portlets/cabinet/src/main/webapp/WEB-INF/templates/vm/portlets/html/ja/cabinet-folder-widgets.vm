@@ -1,0 +1,51 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFileFormScreen").addQueryData("entityid","new")))
+#set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFolderFormScreen").addQueryData("entityid","new").addQueryData("mode","new")))
+#set ($newUrl3 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doCabinet_list','1')))
+#set ($submenulist = [["ファイルを追加する","javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.todo.onLoadTodoDialog);","images/icon/icon_add.gif"], ["フォルダを追加する","javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.todo.onLoadCategoryDialog);","images/icon/icon_add.gif"]])
+## ---------------------------------------------------------------------------
+<div id="auiWidgetsArea">
+<div class="auiWidget clearfix">
+#AUIbuttonAction("ファイルを追加する" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.cabinet.onLoadFileDialog);")
+</div>
+
+<div class="auiWidget clearfix">
+<div class="auiDirectoryList">
+#foreach($record in $!result.FolderHierarchyList)
+#set($index = $record.HierarchyIndex + 1)
+#if($record.visible() && $record.isAuthorizedVisible())
+#if($record.HierarchyIndex <= 0)
+<div class="d1">
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,"$record.FolderId"))', '$!portlet.ID');" ><span class="directory">${record.FolderName}</span></a></div>
+#end
+#else
+<div class="d$index">
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,"$record.FolderId"))', '$!portlet.ID');" ><span class="directory">${record.FolderName}</span></a></div>
+#end
+#end
+</div>
+<div style="margin:0.5em 0;">
+#AUIbutton("フォルダを追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.cabinet.onLoadCabinetFolderDialog);")
+</div>
+<p><a href="javascript:void(0);" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFolderListScreen')', '$!portlet.ID');">フォルダの管理・削除</a></p>
+</div>
+</div>
+

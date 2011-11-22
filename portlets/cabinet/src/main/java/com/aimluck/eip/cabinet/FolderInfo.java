@@ -20,9 +20,13 @@
 package com.aimluck.eip.cabinet;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 共有フォルダのフォルダ階層の情報（一行）を表すクラス．
@@ -54,6 +58,12 @@ public class FolderInfo implements Cloneable {
   /** 編集・削除を許可するか */
   private boolean can_update = true;
 
+  /** 更新者の名前 */
+  private ALEipUser update_name = null;
+
+  /** 更新日 */
+  private Date update_date;
+
   /**
    * コンストラクタ
    * 
@@ -67,7 +77,37 @@ public class FolderInfo implements Cloneable {
    */
   public FolderInfo() {
     folder_name = new ALStringField();
+    update_name = new ALEipUser();
     colist = new ArrayList<FolderInfo>();
+    update_date = new Date();
+  }
+
+  public ALEipUser getUpdateName() {
+    return update_name;
+  }
+
+  /**
+   * @return
+   */
+  public ALDateTimeField getUpdateDate() {
+    return ALEipUtils.getFormattedTime(update_date);
+  }
+
+  /**
+   * @param field
+   */
+  public void setUpdateDate(Date date) {
+    if (date == null) {
+      return;
+    }
+    update_date = date;
+  }
+
+  /**
+   * @param update_name
+   */
+  public void setUpdateName(ALEipUser user) {
+    update_name = user;
   }
 
   public void setList(List<FolderInfo> list) {

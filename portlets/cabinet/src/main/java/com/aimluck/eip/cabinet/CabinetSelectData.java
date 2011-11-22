@@ -31,6 +31,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cabinet.util.CabinetUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolder;
@@ -79,6 +80,8 @@ public class CabinetSelectData extends
   public void setIsNormalContext(boolean flg) {
     isNormalContext = flg;
   }
+
+  private ALStringField target_keyword;
 
   /**
    * 
@@ -191,6 +194,7 @@ public class CabinetSelectData extends
     }
 
     this.rundata = rundata;
+    target_keyword = new ALStringField();
 
     super.init(action, rundata, context);
   }
@@ -207,6 +211,13 @@ public class CabinetSelectData extends
   protected ResultList<EipTCabinetFile> selectList(RunData rundata,
       Context context) throws ALPageNotFoundException, ALDBErrorException {
     try {
+      if (CabinetUtils.hasResetFlag(rundata, context)) {
+        CabinetUtils.resetFilter(rundata, context, this.getClass().getName());
+        target_keyword.setValue("");
+      } else {
+        target_keyword
+          .setValue(CabinetUtils.getTargetKeyword(rundata, context));
+      }
       CabinetUtils.setFolderVisible(
         folder_hierarchy_list,
         selected_folderinfo,
@@ -245,6 +256,7 @@ public class CabinetSelectData extends
         ExpressionFactory.matchDbExp(
           EipTCabinetFolder.FOLDER_ID_PK_COLUMN,
           Integer.valueOf(selected_folderinfo.getFolderId()));
+
       query.setQualifier(exp);
     } else {
       // アクセス制御
@@ -283,7 +295,20 @@ public class CabinetSelectData extends
       Expression publicExp = exp01.orExp(exp02);
       Expression privateExp = (exp11.andExp(exp13)).orExp(exp12.andExp(exp13));
       query.setQualifier(publicExp).orQualifier(privateExp);
+
     }
+    if ((target_keyword != null) && (!target_keyword.getValue().equals(""))) {
+      // 選択したキーワードを指定する．
+      String keyword = "%" + target_keyword.getValue() + "%";
+      Expression target_exp1 =
+        ExpressionFactory.likeExp(EipTCabinetFile.FILE_NAME_PROPERTY, keyword);
+      Expression target_exp2 =
+        ExpressionFactory.likeExp(EipTCabinetFile.FILE_TITLE_PROPERTY, keyword);
+      Expression target_exp3 =
+        ExpressionFactory.likeExp(EipTCabinetFile.NOTE_PROPERTY, keyword);
+      query.andQualifier(target_exp1.orExp(target_exp2.orExp(target_exp3)));
+    }
+
     query.distinct(true);
 
     return buildSelectQueryForFilter(query, rundata, context);
@@ -450,5 +475,9 @@ public class CabinetSelectData extends
 
   public void setEditable(boolean isEditable) {
     this.isEditable = isEditable;
+  }
+
+  public ALStringField getTargetKeyword() {
+    return target_keyword;
   }
 }

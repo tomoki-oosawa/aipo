@@ -34,4 +34,3 @@
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
 #parse("/portlets/html/ja/ajax-cabinet-list.vm")
 #ALcontentfooter()
-#parse("/portlets/html/ja/cabinet-menu.vm")

@@ -25,70 +25,50 @@
 ##set ($submenulist = [["ファイルを追加する","javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.cabinet.onLoadCabinetFileDialog);","images/cabinet/file_add.gif"], ["フォルダを追加する","javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.cabinet.onLoadCabinetFolderDialog);","images/cabinet/folder_add.gif"]])
 ##set ($submenulist = [["ファイル一覧を見る","$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doCabinet_list','1')","images/icon/icon_list.gif"], ["ファイルを追加する","javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFileFormScreen").addQueryData("entityid","new")');","images/icon/icon_add.gif"]])
 ## ---------------------------------------------------------------------------
-#ALajaxtabheader($tabs "")
-#ALspacebothheader()
-#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 
-#if($!result.isSearch())
-<table cellSpacing=0 cellPadding=0 width="100%" border=0><tr>
-<td class="item" align="left"><div style="padding:0px 0px 2px 0px;font-size:10pt;font-weight:bold;color:#5D6A70;">検索結果</div></td>
-<td class="item" align="right"><a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doJob_list', '1')">[一覧へ戻る]</a>
-</td></tr></table>
-#end
-
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td style="width:150px;" valign="top">
-<div class="explorer_box">
-#foreach($record in $!result.FolderHierarchyList)
-#if($record.visible() && $record.isAuthorizedVisible())
-#if($record.HierarchyIndex <= 0)
-<nobr>#if($record.isOpened()) <img src="themes/$!theme/images/icon/folder_open.gif"/> #else <img src="themes/$!theme/images/icon/folder_close.gif"/> #end #if($result.SelectedFolderInfo.FolderId == $record.FolderId) <b>${record.FolderName}</b> #else
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,"$record.FolderId"))', '$!portlet.ID');" >${record.FolderName}</a>
-#end</nobr><br/>
-#else
-#set($imgwidth = 16 * $record.HierarchyIndex)
-<nobr><img src="images/blank.gif" height="10" width="$imgwidth"/>#if($record.isOpened())  <img src="themes/$!theme/images/icon/folder_open.gif"/> #else <img src="themes/$!theme/images/icon/folder_close.gif"/> #end #if($result.SelectedFolderInfo.FolderId == $record.FolderId) <b>${record.FolderName}</b> #else
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,"$record.FolderId"))', '$!portlet.ID');" >${record.FolderName}</a>
-#end</nobr><br/>
-#end
-#end
-#end
+#AUIcontentsAreaHeader()
+<div class="auiSummaryMeta clearfix">
+<form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
+<input type="hidden" name="template" value="CabinetListScreen"/>
+<input class="text floatLeft" type="text" name="keyword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.targetKeyword"/>
+<a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">検索</a>
+</a>
+</form>
 </div>
-</td>
-<td valign="top" style="padding:0px 0px 0px 5px">
+
 #if($result.isAccessible())
 <form name="cabinetlist$!portlet.ID" id="cabinetlist$!portlet.ID" action="#" method="post" onsubmit="aipo.cabinet.onSubmitSerchButton(this,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileSearchListScreen'))','$!portlet.ID'); return false;">
 <input type="hidden" name="_name" value="ファイル" />
 <input type="hidden" name="secid" value="$secid" />
-<h4>
-#if($result.SelectedFolderInfo.FolderId > 1)
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFolderDetailScreen").addQueryData("mode","folder_detail"))');">$!{result.SelectedFolderInfo.FolderName}</a>
-#else
-$!{result.SelectedFolderInfo.FolderName}
-#end
-</h4>
-##<div style="padding:0px 0px 5px 0px">
-#ALtableheaderSimpleWide()
-#ALtdcaption('検索')
-#ALtditemheader()
-#ALtextfield('sword' "$!result.SearchWord" "120px" 100 'active')
-#ALsubmitJS('submit' ' 検索する ' 'setHiddenValue(this)')
-<span class="middle">（タイトル・ファイル名・メモで検索します）</span>
-#ALtditemfooter()
-#ALtablefooter()
+#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
+
 <div id="listmessageDiv"></div>
 ##</div>
+
+#ALajaxlistformheader('Cabinet')
 #if($result.List.size() == 0)
 <div class="message">指定された条件に該当するファイルはありません。</div>
 #else
-#ALajaxpageview('CabinetListScreen' $result)
-#ALtableheader("100%")
+<div class="auiSummaryMeta clearfix">
+<div class="floatLeft">
+#if($result.isEditable())
+#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.cabinet.onListReceiveMessage")
+#end
+</div>
+#AUIajaxpageview('CabinetListScreen' $result)
+</div>
+#AUIsearchresult($!result.targetKeyword.toString())
+#AUIrowTableWide()
 <tr>
-#if($result.isEditable()) #ALtdheadThin("#ALswitchCheckbox()") #end
+	
+#if($result.isEditable()) #ALtdheadThin("#ALswitchCheckbox()")
+##<th class="thin">編集</th>
+#end
+
+#ALtdheadW33("#ALajaxsort('file_name' 'ファイル名・ダウンロードリンク' $result 'CabinetListScreen')")
 #ALtdheadW33("#ALajaxsort('file_title' 'タイトル' $result 'CabinetListScreen')")
-#ALtdheadW33("#ALajaxsort('file_name' 'ファイル名' $result 'CabinetListScreen')")
-#ALtdheadW25("#ALajaxsort('update_date' '更新日時' $result 'CabinetListScreen')")
+#ALtdheadW25("更新者")
+#ALtdheadW25("#ALajaxsort('update_date' '更新日' $result 'CabinetListScreen')")
 #ALtdheadThin("#ALajaxsort('counter' 'DL数' $result 'CabinetListScreen')")
 #ALtdheadThin("#ALajaxsort('file_size' 'サイズ（KB）' $result 'CabinetListScreen')")
 #if($result.isEditable()) #ALtdheadThin(' ') #end
@@ -96,30 +76,50 @@ $!{result.SelectedFolderInfo.FolderName}
 #foreach ($record in $result.List)
 <tr>
 #if($result.isEditable()) #ALtdcellAtt("<input name='check$!record.FileId' type='checkbox' value='$!record.FileId'/>" 'align="center"') #end
+##編集ボタン
+#*
+#if($result.isEditable())
+<td class="center" nowrap="nowrap">
+<a class="auiButton" title="編集" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormScreen').addQueryData('entityid', ${record.FileId}))', '$portlet.ID');" >編集</a>
+</td>
+#end
+*#
+##ファイルネーム
 #ALtdcellheader()
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFileDetailScreen").addQueryData("entityid",$record.FileId))');">$!record.FileTitle</a>
+<div><a href="$jslink.getTemplate("CabinetFileRawScreen").addQueryData("entityid", ${record.FileId})">$record.WbrFileName</a></div>
 #ALtdcellfooter()
+##タイトル
 #ALtdcellheader()
-<a href="$jslink.getTemplate("CabinetFileRawScreen").addQueryData("entityid", ${record.FileId})">$record.WbrFileName</a>
+<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFileDetailScreen").addQueryData("entityid",$record.FileId))');">$!record.FileTitle</a></div>
 #ALtdcellfooter()
-#ALtdcellAtt($record.UpdateDate "thin")
-<td class="item" align="right">$record.Counter</td>
-<td class="item" align="right">$record.FileSize</td>
-#if($result.isEditable())<td class="item" nowrap="nowrap">#ALajaxbuttonLink('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormScreen').addQueryData('entityid', ${record.FileId}) "themes/$!theme/images/icon/icon_edit.gif")</td>#end
+##更新者
+#ALtdcellheader()
+<div>$!record.updateUser</div>
+#ALtdcellfooter()
+##更新日
+#ALtdcellAtt("$!{record.UpdateDate}" 'class="right" nowrap="nowrap"')
+##ダウンロード数
+<td class="center" align="right">$record.Counter</td>
+##サイズ
+<td class="center" align="right">$record.FileSize</td>
 </tr>
 #end
 #ALtablefooter()
+<div class="auiSummaryMeta clearfix">
+<div class="floatLeft">
 #if($result.isEditable())
-#ALbuttonheaderRight()
-選択した ファイル を #ALajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.cabinet.onListReceiveMessage")
-#ALbuttonfooterRight()
+#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.cabinet.onListReceiveMessage")
 #end
-#ALajaxpageviewFooter('CabinetListScreen' $result)
+</div>
+#AUIajaxpageview('CabinetListScreen' $result)
+</div>
 #end
-#ALformfooter()
+
 #else
 このフォルダを表示する権限がありません。
 #end
-</td></tr></table>
-#ALspacebothfooter()
-#ALajaxtabfooter()
+
+
+#AUIcontentsAreaFooter()
+
+#parse("/portlets/html/ja/cabinet-widgets.vm")

@@ -31,6 +31,7 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.eip.cabinet.FolderInfo;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolder;
@@ -47,6 +48,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.services.storage.ALStorageService;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -58,6 +60,9 @@ public class CabinetUtils {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(CabinetUtils.class.getName());
+
+  public static final String DATE_TIME_FORMAT =
+    ALDateTimeField.DEFAULT_DATE_TIME_FORMAT;
 
   /** フォルダ『ルートフォルダ』の予約 ID */
   public static final int ROOT_FODLER_ID = 1;
@@ -99,6 +104,12 @@ public class CabinetUtils {
   public static final String PUBLIC_FLAG_SECRET_SELF = "O";
 
   public static final String CABINET_PORTLET_NAME = "Cabinet";
+
+  /** パラメータリセットの識別子 */
+  private static final String RESET_FLAG = "reset_params";
+
+  /** 検索キーワード変数の識別子 */
+  public static final String TARGET_KEYWORD = "keyword";
 
   /**
    * フォルダオブジェクトモデルを取得します。 <BR>
@@ -259,6 +270,14 @@ public class CabinetUtils {
         info.setFolderId(folder.getFolderId().intValue());
         info.setParentFolderId(folder.getParentId().intValue());
         info.setFolderName(folder.getFolderName());
+        info.setUpdateDate(folder.getUpdateDate());
+        try {
+          info.setUpdateName(ALEipUtils.getALEipUser(folder
+            .getUpdateUserId()
+            .intValue()));
+        } catch (ALDBErrorException e) {
+          e.printStackTrace();
+        }
         list.add(info);
       }
     }
@@ -822,5 +841,59 @@ public class CabinetUtils {
     else {
       return null;
     }
+  }
+
+  /**
+   * 表示切り替えのリセットフラグがあるかを返す．
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static boolean hasResetFlag(RunData rundata, Context context) {
+    String resetflag = rundata.getParameters().getString(RESET_FLAG);
+    return resetflag != null;
+  }
+
+  /**
+   * フィルターを初期化する．
+   * 
+   * @param rundata
+   * @param context
+   * @param className
+   */
+  public static void resetFilter(RunData rundata, Context context,
+      String className) {
+    ALEipUtils.removeTemp(rundata, context, new StringBuffer()
+      .append(className)
+      .append(ALEipConstants.LIST_FILTER)
+      .toString());
+    ALEipUtils.removeTemp(rundata, context, new StringBuffer()
+      .append(className)
+      .append(ALEipConstants.LIST_FILTER_TYPE)
+      .toString());
+    ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, "");
+  }
+
+  /**
+   * 表示切り替えで指定した検索キーワードを取得する．
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static String getTargetKeyword(RunData rundata, Context context) {
+    String target_keyword = null;
+    String keywordParam = rundata.getParameters().getString(TARGET_KEYWORD);
+    target_keyword = ALEipUtils.getTemp(rundata, context, TARGET_KEYWORD);
+
+    if (keywordParam == null && (target_keyword == null)) {
+      ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, "");
+      target_keyword = "";
+    } else if (keywordParam != null) {
+      ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, keywordParam.trim());
+      target_keyword = keywordParam;
+    }
+    return target_keyword;
   }
 }

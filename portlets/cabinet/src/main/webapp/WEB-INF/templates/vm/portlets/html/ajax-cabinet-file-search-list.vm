@@ -53,7 +53,7 @@
 検索結果（ファイル一覧）
 <div style="text-align:right;"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1'))', '$!portlet.ID');" >[一覧へ戻る]</a></div>
 </h4>
-<form name="cabinetlist$!portlet.ID" id="cabinetlist$!portlet.ID" action="#" method="post" onsubmit="aipo.cabinet.onSubmitSerchButton(this,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileSearchListScreen'))','$!portlet.ID'); return false;">
+<form name="cabinetlist$!portlet.ID" id="cabinetlist$!portlet.ID" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileSearchListScreen'))" method="post" onsubmit="aipo.cabinet.onSubmitSerchButton(this,'','$!portlet.ID'); return false;">
 <input type="hidden" name="_name" value="ファイル" />
 <input type="hidden" name="secid" value="$secid" />
 #ALtableheaderSimpleWide()
