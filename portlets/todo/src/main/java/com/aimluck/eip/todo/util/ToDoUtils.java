@@ -72,6 +72,12 @@ public class ToDoUtils {
   public static final String TARGET_KEYWORD = "keyword";
 
   /** パラメータリセットの識別子 */
+  private static final String RESET_KEYWORD_FLAG = "reset_keyword_params";
+
+  /** パラメータリセットの識別子 */
+  private static final String RESET_TARGET_FLAG = "reset_target_params";
+
+  /** パラメータリセットの識別子 */
   private static final String RESET_FLAG = "reset_params";
 
   /** 期限状態（期限前） */
@@ -433,6 +439,55 @@ public class ToDoUtils {
    * @param context
    * @return
    */
+  public static boolean hasResetKeywordFlag(RunData rundata, Context context) {
+    String resetflag = rundata.getParameters().getString(RESET_KEYWORD_FLAG);
+    return resetflag != null;
+  }
+
+  /**
+   * フィルターを初期化する．
+   * 
+   * @param rundata
+   * @param context
+   * @param className
+   */
+  public static void resetKeyword(RunData rundata, Context context,
+      String className) {
+    ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, "");
+  }
+
+  /**
+   * 表示切り替えのリセットフラグがあるかを返す．
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static boolean hasResetTargetFlag(RunData rundata, Context context) {
+    String resetflag = rundata.getParameters().getString(RESET_TARGET_FLAG);
+    return resetflag != null;
+  }
+
+  /**
+   * フィルターを初期化する．
+   * 
+   * @param rundata
+   * @param context
+   * @param className
+   */
+  public static void resetTarget(RunData rundata, Context context,
+      String className) {
+    ALEipUtils.setTemp(rundata, context, TARGET_GROUP_NAME, "all");
+    ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, "all");
+  }
+
+  /**
+   * 表示切り替えのリセットフラグがあるかを返す．
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
   public static boolean hasResetFlag(RunData rundata, Context context) {
     String resetflag = rundata.getParameters().getString(RESET_FLAG);
     return resetflag != null;
@@ -455,9 +510,6 @@ public class ToDoUtils {
       .append(className)
       .append(ALEipConstants.LIST_FILTER_TYPE)
       .toString());
-    ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, "");
-    ALEipUtils.setTemp(rundata, context, TARGET_GROUP_NAME, "all");
-    ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, "all");
   }
 
   /**
@@ -511,15 +563,7 @@ public class ToDoUtils {
     ArrayList<ToDoCategoryResultData> categoryList =
       new ArrayList<ToDoCategoryResultData>();
 
-    // 未分類追加
-    EipTTodoCategory unCategorized =
-      Database.query(EipTTodoCategory.class).where(
-        Operations.eq(EipTTodoCategory.TURBINE_USER_PROPERTY, 0)).fetchSingle();
-    ToDoCategoryResultData rd = new ToDoCategoryResultData();
-    rd.initField();
-    rd.setCategoryId(unCategorized.getCategoryId());
-    rd.setCategoryName(unCategorized.getCategoryName());
-    categoryList.add(rd);
+    ToDoCategoryResultData rd;
 
     try {
       // カテゴリ一覧
@@ -545,6 +589,17 @@ public class ToDoUtils {
     } catch (Exception ex) {
       logger.error("Exception", ex);
     }
+
+    // 未分類追加
+    EipTTodoCategory unCategorized =
+      Database.query(EipTTodoCategory.class).where(
+        Operations.eq(EipTTodoCategory.TURBINE_USER_PROPERTY, 0)).fetchSingle();
+    rd = new ToDoCategoryResultData();
+    rd.initField();
+    rd.setCategoryId(unCategorized.getCategoryId());
+    rd.setCategoryName(unCategorized.getCategoryName());
+    categoryList.add(rd);
+
     return categoryList;
   }
 

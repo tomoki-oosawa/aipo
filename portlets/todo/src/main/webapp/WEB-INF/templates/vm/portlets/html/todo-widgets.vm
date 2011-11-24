@@ -20,9 +20,9 @@
 #set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoFormScreen").addQueryData("entityid","new")))
 #set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoCategoryFormScreen").addQueryData("entityid","new")))
 #set ($submenulist = [["ToDoを追加する","javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.todo.onLoadTodoDialog);","images/icon/icon_add.gif"], ["カテゴリを追加する","javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.todo.onLoadCategoryDialog);","images/icon/icon_add.gif"]])
-#set ($menues = [["すべてのカテゴリ", "list","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoListScreen').addQueryData('tab','list').addQueryData('reset_params','true')"]])
-#set ($menues2 = [["カテゴリ一覧", "category","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoCategoryListScreen')"]])
-#set ($menues3 = [["完了ToDo", "complete", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoListScreen').addQueryData('tab','complete').addQueryData('reset_params','true')"]])
+#set ($menues = [["すべてのカテゴリ", "list","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoListScreen').addQueryData('tab','list').addQueryData('reset_keyword_params','true')"]])
+#set ($menues2 = [["カテゴリ一覧", "category","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoCategoryListScreen').addQueryData('reset_params','true').addQueryData('reset_keyword_params','true')"]])
+#set ($menues3 = [["完了ToDo", "complete", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoListScreen').addQueryData('tab','complete').addQueryData('reset_params','true').addQueryData('reset_keyword_params','true')"]])
 
 ## ---------------------------------------------------------------------------
 <div id="auiWidgetsArea">
@@ -33,9 +33,9 @@
 ##AUIwidgetViewPageMenuList($menues $!result.currentTab)
 <input type="hidden" id="topic" value="2">
 <ul>
-<li #if (!$result.CurrentFilter) class="active" #end><div class="menuTitle"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("filter","").addQueryData("filtertype","category").addQueryData('tab','list'))','$!portlet.ID');">すべてのカテゴリ</a></div></li>
+<li #if (!$result.CurrentFilter && !$categoryEtc && $!result.currentTab != "complete") class="active" #end><div class="menuTitle"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("filter","").addQueryData("filtertype","category").addQueryData('tab','list').addQueryData('reset_keyword_params','true'))','$!portlet.ID');">すべてのカテゴリ</a></div></li>
 #foreach($record in $!result.CategoryList )
-<li #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) class="active" #end><div class="menuTitle"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("filter",$!record.CategoryId).addQueryData("filtertype","category").addQueryData('tab','list'))','$!portlet.ID');">$!{record.CategoryName}</a></div></li>
+<li #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) class="active" #end><div class="menuTitle"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("filter",$!record.CategoryId).addQueryData("filtertype","category").addQueryData('tab','list').addQueryData('reset_keyword_params','true'))','$!portlet.ID');">$!{record.CategoryName}</a></div></li>
 #end
 </ul>
 <div style="margin:0.5em 0;">

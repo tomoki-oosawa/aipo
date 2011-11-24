@@ -178,14 +178,17 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
     try {
       if (ToDoUtils.hasResetFlag(rundata, context)) {
         ToDoUtils.resetFilter(rundata, context, this.getClass().getName());
-        target_group_name = "all";
-        target_user_id = "all";
-        target_keyword.setValue("");
-      } else {
-        target_group_name = ToDoUtils.getTargetGroupName(rundata, context);
-        target_user_id = ToDoUtils.getTargetUserId(rundata, context);
-        target_keyword.setValue(ToDoUtils.getTargetKeyword(rundata, context));
       }
+      if (ToDoUtils.hasResetKeywordFlag(rundata, context)) {
+        ToDoUtils.resetKeyword(rundata, context, this.getClass().getName());
+      }
+      if (ToDoUtils.hasResetTargetFlag(rundata, context)) {
+        ToDoUtils.resetTarget(rundata, context, this.getClass().getName());
+      }
+      target_group_name = ToDoUtils.getTargetGroupName(rundata, context);
+      target_user_id = ToDoUtils.getTargetUserId(rundata, context);
+      target_keyword.setValue(ToDoUtils.getTargetKeyword(rundata, context));
+
       setMyGroupList(new ArrayList<ALEipGroup>());
       getMyGroupList().addAll(ALEipUtils.getMyGroups(rundata));
 

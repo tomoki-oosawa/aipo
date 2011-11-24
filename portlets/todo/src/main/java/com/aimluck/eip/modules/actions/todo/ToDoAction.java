@@ -502,6 +502,7 @@ public class ToDoAction extends ALBaseAction {
     // 選択しているタブ情報の削除
     list.add("tab");
     list.add("publictab");
+    list.add("keyword");
     list.add("target_user_id");
     list.add("target_group_name");
     list.add("com.aimluck.eip.todo.ToDoSelectDatafilter");

@@ -19,6 +19,8 @@
 
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
+
+#set ($categoryEtc = false) ## msgboard-widgets.vmでのカテゴリ表示の判断用
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 <div class="auiSummaryMeta clearfix">
@@ -54,6 +56,8 @@
 </div>
 </div>
 
+#AUIsearchresult($!result.targetKeyword.toString())
+
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader('ToDo')
@@ -69,7 +73,6 @@
 </div>
 #AUIajaxpageview('ToDoListScreen' $result)
 </div>
-#AUIsearchresult($!result.targetKeyword.toString())
 #AUIrowTableWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
