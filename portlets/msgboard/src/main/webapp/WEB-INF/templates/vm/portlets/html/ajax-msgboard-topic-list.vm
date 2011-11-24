@@ -26,7 +26,7 @@
 #set ($indicator_id = "indicator-list-")
 
 #set ($categoryList = $result.CategoryList)
-#set ($categoryEtc = false)
+#set ($categoryEtc = false) ## msgboard-widgets.vmでのカテゴリ表示の判断用
 ## ---------------------------------------------------------------------------
 <!-- Start Contents Area -->
 #AUIcontentsAreaHeader()

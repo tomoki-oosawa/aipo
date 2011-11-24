@@ -34,17 +34,10 @@
 
 <input type="hidden" id="topic" value="$!result.CurrentFilter"/>
 <ul>
-#if ($!result.CurrentFilter == "0")
-<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen").addQueryData("filtertype","category").addQueryData("filter","0").addQueryData("reset_params","true"))','$!portlet.ID');">すべてのカテゴリ</a></li>
-#else
-<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen").addQueryData("filtertype","category").addQueryData("filter","0").addQueryData("reset_params","true"))','$!portlet.ID');">すべてのカテゴリ</a></li>
-#end
+
+<li #if (!$!result.CurrentFilter && !$categoryEtc) class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen").addQueryData("filtertype","category").addQueryData("filter","0").addQueryData("reset_params","true"))','$!portlet.ID');">すべてのカテゴリ</a></li>
 #foreach( $record in $!result.CategoryList )
-#if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString())
-<li class="active"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen").addQueryData("filtertype","category").addQueryData("filter","$!record.CategoryId").addQueryData("reset_params","true"))','$!portlet.ID');">$!{record.CategoryName}</a></li>
-#else
-<li><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen").addQueryData("filtertype","category").addQueryData("filter","$!record.CategoryId").addQueryData("reset_params","true"))','$!portlet.ID');">$!{record.CategoryName}</a></li>
-#end
+<li #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen").addQueryData("filtertype","category").addQueryData("filter","$!record.CategoryId").addQueryData("reset_params","true"))','$!portlet.ID');">$!{record.CategoryName}</a></li>
 #end
 </ul>
 
