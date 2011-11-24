@@ -46,21 +46,21 @@ public class ActivityAllSelectData extends
   /** Activity の総数 */
   private int activitySum;
 
-  private String currentTab;
+  private String currentCategory;
 
   private ALStringField target_keyword;
 
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
-    String tabParam = rundata.getParameters().getString("tab");
-    currentTab = ALEipUtils.getTemp(rundata, context, "tab");
-    if (tabParam == null && currentTab == null) {
-      ALEipUtils.setTemp(rundata, context, "tab", "all");
-      currentTab = "all";
+    String tabParam = rundata.getParameters().getString("category");
+    currentCategory = ALEipUtils.getTemp(rundata, context, "category");
+    if (tabParam == null && currentCategory == null) {
+      ALEipUtils.setTemp(rundata, context, "category", "all");
+      currentCategory = "all";
     } else if (tabParam != null) {
-      ALEipUtils.setTemp(rundata, context, "tab", tabParam);
-      currentTab = tabParam;
+      ALEipUtils.setTemp(rundata, context, "category", tabParam);
+      currentCategory = tabParam;
     }
     target_keyword = new ALStringField();
     super.init(action, rundata, context);
@@ -125,6 +125,8 @@ public class ActivityAllSelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
     if (ActivityUtils.hasResetFlag(rundata, context)) {
       target_keyword.setValue("");
+      ActivityUtils.resetFilter(rundata, context, ActivityAllSelectData.class
+        .getName());
     } else {
       target_keyword.setValue(ActivityUtils.getTargetKeyword(rundata, context));
     }
@@ -132,15 +134,43 @@ public class ActivityAllSelectData extends
     int page = getCurrentPage();
     int limit = getRowsNum();
     String loginName = ALEipUtils.getALEipUser(rundata).getName().getValue();
+
     ResultList<ALActivity> list =
-      ALActivityService.getList(new ALActivityGetRequest()
-        .withLimit(limit)
-        .withKeyword(target_keyword.getValue())
-        .withLoginName(loginName)
-        .withPriority(0f)
-        .withPage(page)
-        .withTargetLoginName(loginName));
+      ("all".equals(currentCategory)) ? ALActivityService
+        .getList(new ALActivityGetRequest()
+          .withLimit(limit)
+          .withKeyword(target_keyword.getValue())
+          .withLoginName(loginName)
+          .withPriority(0f)
+          .withPage(page)
+          .withTargetLoginName(loginName)) : ALActivityService
+        .getList(new ALActivityGetRequest()
+          .withLimit(limit)
+          .withAppId(currentCategory)
+          .withKeyword(target_keyword.getValue())
+          .withLoginName(loginName)
+          .withPriority(0f)
+          .withPage(page)
+          .withTargetLoginName(loginName));
+    // // withの否定が無いため取得してから取り除く
+    // if ("other".equals(currentCategory)) {
+    // ResultList<ALActivity> removeList = new ResultList<ALActivity>();
+    // for (ALActivity Activity : list) {
+    // String AppId = Activity.getAppId().getValue();
+    // if ("Schedule".equals(AppId)
+    // || "blog".equals(AppId)
+    // || "Msgboard".equals(AppId)
+    // || "todo".equals(AppId)
+    // || "Cabinet".equals(AppId)) {
+    // removeList.add(Activity);
+    // }
+    // }
+    // list.removeAll(removeList);// TODO:totalcountを再設定
+    // }
+    // //
+
     setPageParam(list.getTotalCount());
+
     return list;
 
   }
@@ -154,8 +184,8 @@ public class ActivityAllSelectData extends
     return activitySum;
   }
 
-  public String getCurrentTab() {
-    return currentTab;
+  public String getCurrentCategory() {
+    return currentCategory;
   }
 
   @Override

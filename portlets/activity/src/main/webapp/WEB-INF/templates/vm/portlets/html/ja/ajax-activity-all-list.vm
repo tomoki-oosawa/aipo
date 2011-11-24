@@ -50,16 +50,16 @@
 </colgroup>
 <tbody>
 <tr>
-<th><div>
+<th class="w60"><div>
 ## ---------------------------------------------------------------------------
 ## #ALajaxsort('content' '内容' $result 'ActivityAllListScreen')
 ## ---------------------------------------------------------------------------
 内容
 </div></th>
-<th>
+<th class="w20">
 名前
 </th>
-<th>
+<th class="thin">
 更新日
 </th>
 </tr>
@@ -83,8 +83,4 @@
 #ALformfooter()
 #AUIcontentsAreaFooter()
 <!-- END Contents Area -->
-<!-- Start Widgets Area -->
-<div id="auiWidgetsArea">
-
-</div>
-<!-- END Widgets Area -->
+#parse("/portlets/html/ja/activity-widgets.vm")
