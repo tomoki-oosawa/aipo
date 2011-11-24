@@ -253,7 +253,7 @@
 #end
 
 #macro(ALajaxscreenformheader $name $jslink $portlet $template $js)
-<form name="form$name$!portlet.ID" id="form$name$!portlet.ID" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template',$template)" method="post" onsubmit="$js;return false;">
+<form name="form$!portlet.ID" id="form$!portlet.ID" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template',$template)" method="post" onsubmit="$js;return false;">
 <input type="hidden" name="_name" value="$name" />
 <input type="hidden" name="secid" value="$secid" />
 #end
@@ -1547,15 +1547,6 @@ $link.get(0)
 
 #macro(AUIbuttonAction $text $url)
 <a title="$text" href="$url" class="auiButtonAction">$text</a>
-#end
-
-#macro(AUIbuttonBold $text $url)
-<a title="$text" href="$url" class="auiButtonBold">$text</a>
-#end
-
-#macro(AUIbuttonDelete $url $indicator_id $portlet_id $rt)
-<a class="auiButtonBold" onclick="aimluck.io.ajaxDeleteSubmit(dojo.byId('dummy_btn_auiajaxbutton$portlet_id'),'$url','$indicator_id','$portlet_id', $rt);"/>削除する</a>
-<input type="hidden" id="dummy_btn_auiajaxbutton$!portlet_id" value="" />
 #end
 
 #macro(AUIbutton $text $url)
