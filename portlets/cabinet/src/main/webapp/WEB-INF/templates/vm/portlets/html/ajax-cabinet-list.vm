@@ -28,7 +28,7 @@
 
 #AUIcontentsAreaHeader()
 <div class="auiSummaryMeta clearfix">
-<form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
+<form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetListScreen')" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
 <input type="hidden" name="template" value="CabinetListScreen"/>
 <input class="text floatLeft" type="text" name="keyword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.targetKeyword"/>
 <a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">検索</a>
@@ -60,18 +60,17 @@
 #AUIsearchresult($!result.targetKeyword.toString())
 #AUIrowTableWide()
 <tr>
-	
+
 #if($result.isEditable()) #ALtdheadThin("#ALswitchCheckbox()")
 ##<th class="thin">編集</th>
 #end
 
-#ALtdheadW33("#ALajaxsort('file_name' 'ファイル名・ダウンロードリンク' $result 'CabinetListScreen')")
-#ALtdheadW33("#ALajaxsort('file_title' 'タイトル' $result 'CabinetListScreen')")
-#ALtdheadW25("更新者")
-#ALtdheadW25("#ALajaxsort('update_date' '更新日' $result 'CabinetListScreen')")
+#ALtdhead("#ALajaxsort('file_name' 'ファイル名・ダウンロードリンク' $result 'CabinetListScreen')")
+#ALtdhead("#ALajaxsort('file_title' 'タイトル' $result 'CabinetListScreen')")
+#ALtdheadThin("更新者")
+#ALtdheadThin("#ALajaxsort('update_date' '更新日' $result 'CabinetListScreen')")
 #ALtdheadThin("#ALajaxsort('counter' 'DL数' $result 'CabinetListScreen')")
 #ALtdheadThin("#ALajaxsort('file_size' 'サイズ（KB）' $result 'CabinetListScreen')")
-#if($result.isEditable()) #ALtdheadThin(' ') #end
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -93,15 +92,13 @@
 <div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFileDetailScreen").addQueryData("entityid",$record.FileId))');">$!record.FileTitle</a></div>
 #ALtdcellfooter()
 ##更新者
-#ALtdcellheader()
-<div>$!record.updateUser</div>
-#ALtdcellfooter()
+#ALtdcellAtt("$!{record.updateUser}" 'class="center" nowrap="nowrap"')
 ##更新日
-#ALtdcellAtt("$!{record.UpdateDate}" 'class="right" nowrap="nowrap"')
+#ALtdcellAtt("$!{record.UpdateDate}" 'class="center" nowrap="nowrap"')
 ##ダウンロード数
-<td class="center" align="right">$record.Counter</td>
+#ALtdcellAtt("$!{record.Counter}" 'class="center" nowrap="nowrap"')
 ##サイズ
-<td class="center" align="right">$record.FileSize</td>
+#ALtdcellAtt("$!{record.FileSize}" 'class="center" nowrap="nowrap"')
 </tr>
 #end
 #ALtablefooter()

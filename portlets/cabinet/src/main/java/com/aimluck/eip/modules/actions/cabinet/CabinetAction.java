@@ -29,6 +29,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cabinet.CabinetSelectData;
+import com.aimluck.eip.cabinet.util.CabinetUtils;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.util.ALEipUtils;
@@ -40,24 +41,28 @@ import com.aimluck.eip.util.ALEipUtils;
 public class CabinetAction extends ALBaseAction {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(CabinetAction.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(CabinetAction.class.getName());
 
-  static final String LIST_FILTER_STR =
-    new StringBuffer().append(CabinetSelectData.class.getName()).append(
-      ALEipConstants.LIST_FILTER).toString();
+  static final String LIST_FILTER_STR = new StringBuffer()
+    .append(CabinetSelectData.class.getName())
+    .append(ALEipConstants.LIST_FILTER)
+    .toString();
 
-  static final String LIST_FILTER_TYPE_STR =
-    new StringBuffer().append(CabinetSelectData.class.getName()).append(
-      ALEipConstants.LIST_FILTER_TYPE).toString();
+  static final String LIST_FILTER_TYPE_STR = new StringBuffer()
+    .append(CabinetSelectData.class.getName())
+    .append(ALEipConstants.LIST_FILTER_TYPE)
+    .toString();
 
-  static final String LIST_SORT_STR =
-    new StringBuffer().append(CabinetSelectData.class.getName()).append(
-      ALEipConstants.LIST_SORT).toString();
+  static final String LIST_SORT_STR = new StringBuffer()
+    .append(CabinetSelectData.class.getName())
+    .append(ALEipConstants.LIST_SORT)
+    .toString();
 
-  static final String LIST_SORT_TYPE_STR =
-    new StringBuffer().append(CabinetSelectData.class.getName()).append(
-      ALEipConstants.LIST_SORT_TYPE).toString();
+  static final String LIST_SORT_TYPE_STR = new StringBuffer()
+    .append(CabinetSelectData.class.getName())
+    .append(ALEipConstants.LIST_SORT_TYPE)
+    .toString();
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
@@ -147,6 +152,7 @@ public class CabinetAction extends ALBaseAction {
     list.add("CabinetFileWord");
     list.add("com.aimluck.eip.cabinet.CabinetFolderSelectDatasort");
     list.add("com.aimluck.eip.cabinet.CabinetFileWordSelectDatasort");
+    list.add(CabinetUtils.TARGET_KEYWORD);
     ALEipUtils.removeTemp(rundata, context, list);
   }
 
