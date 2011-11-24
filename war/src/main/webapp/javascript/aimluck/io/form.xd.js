@@ -506,8 +506,7 @@ aimluck.io.postViewPage = function(form, portlet_id, indicator_id){
                 }
 
                 if(portlet){
-
-                	ptConfig[portlet_id].reloadUrl= form.action;
+                	ptConfig[portlet_id].reloadUrl= ptConfig[portlet_id].initUrl;
                 	portlet._isDownloaded = true;
                 	portlet.setContent(html);
                 }
