@@ -131,7 +131,10 @@
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
-#ALsubmit($event_submit $action_str)#ALajaxbuttonClose()
+<div class="auiWidget clearfix">
+<a class="auiButtonAction" onclick="dojo.byId('formtodoForm$!portlet.ID').onsubmit();">$action_str</a>
+#AUIbuttonBold("閉じる" "javascript:aipo.common.hideDialog();")
+</div>
 #ALbuttonfooter()
 <input type="hidden" id="urlUserlist$!portlet.ID" name="urlUserlist$!portlet.ID" value="$screenlink" />
 <input type="hidden" id="loginUser$!portlet.ID" name="loginUser$!portlet.ID" value="$!result.loginUserId" />
