@@ -28,7 +28,7 @@
 #set ($action_received_notes = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doNote_list','1').addQueryData('tab','received_notes')")
 #set ($action_sent_notes = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doNote_list','1').addQueryData('tab','sent_notes')")
 #end
-##set ($tabs = [["受信履歴", "received_notes", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteListScreen').addQueryData('tab','received_notes')"], ["送信履歴", "sent_notes", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteListScreen').addQueryData('tab','sent_notes')"]])
+##set ($tabs = [["受信メモ", "received_notes", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteListScreen').addQueryData('tab','received_notes')"], ["送信メモ", "sent_notes", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteListScreen').addQueryData('tab','sent_notes')"]])
 #if ($!result.currentTab == 'received_notes')
 #set($colcount = 8)
 #set ($isReceive = true)
@@ -140,9 +140,9 @@ style="font-weight:bold"
 <div class="auiWidget clearfix">
 <ul>
 <li #if($isReceive)class="active"#end>
-<a href="javascript:void(0);" onClick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteListScreen').addQueryData('tab','received_notes').addQueryData("reset_params","true"))','$!portlet.ID');">受信履歴</a></li>
+<a href="javascript:void(0);" onClick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteListScreen').addQueryData('tab','received_notes').addQueryData("reset_params","true"))','$!portlet.ID');">受信メモ</a></li>
 <li #if(!$isReceive)class="active"#end>
-<a href="javascript:void(0);" onClick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteListScreen').addQueryData('tab','sent_notes').addQueryData("reset_params","true"))','$!portlet.ID');">送信履歴</a></li>
+<a href="javascript:void(0);" onClick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteListScreen').addQueryData('tab','sent_notes').addQueryData("reset_params","true"))','$!portlet.ID');">送信メモ</a></li>
 </ul>
 </div>
 </div>
