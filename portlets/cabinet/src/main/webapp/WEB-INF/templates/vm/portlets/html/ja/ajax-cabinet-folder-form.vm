@@ -56,11 +56,7 @@
 #set($space = "${space}&nbsp;&nbsp;&nbsp;")
 #end
 #end
-#if($!result.isMatch(${record.FolderId}, $!result.ParentId.Value))
-<option value="$record.FolderId" selected>${space}${record.FolderName}</option>
-#else
-<option value="$record.FolderId">${space}${record.FolderName}</option>
-#end
+<option value="$record.FolderId"#if($result.SelectedFolderInfo.FolderId == $record.FolderId) selected#end>${space}${record.FolderName}</option>
 #end
 #end
 </select>&nbsp;&nbsp;の下
