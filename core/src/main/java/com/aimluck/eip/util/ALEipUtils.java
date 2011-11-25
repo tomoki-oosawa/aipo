@@ -1796,6 +1796,9 @@ public class ALEipUtils {
   }
 
   public static ALDateTimeField getFormattedTime(ALDateTimeField timeField) {
+    if (!timeField.isNotNullValue()) {
+      return null;
+    }
     return getFormattedTime(timeField.getValue());
   }
 }
