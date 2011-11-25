@@ -21,12 +21,12 @@
 <div id="auiWidgetsArea">
 
 <div class="auiWidget clearfix">
-#set($menu = [["打刻履歴", "list","$!jslink.getPortletById($!portlet.ID).addQueryData('mode','list')"], ["タイムカード集計", "summary", "$!jslink.getPortletById($!portlet.ID).addQueryData('mode','summary')"]])
+#set($menu = [["タイムカード記録", "list","$!jslink.getPortletById($!portlet.ID).addQueryData('mode','list')"], ["タイムカード集計", "summary", "$!jslink.getPortletById($!portlet.ID).addQueryData('mode','summary')"]])
 #AUIwidgetMenuList($menu $result.mode)
 </div>
 <div class="auiWidget clearfix">
 #if($result.mode == "list")
-##打刻履歴
+##タイムカード記録
 <select name="target_group_name" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" class="w100">
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("target_group_name","all").addQueryData("target_user_id","none"))">すべてのグループ</option>
 #foreach( $record in $!result.MyGroupList )

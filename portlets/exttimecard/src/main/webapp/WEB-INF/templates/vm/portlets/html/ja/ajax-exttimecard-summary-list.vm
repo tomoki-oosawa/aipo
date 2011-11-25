@@ -51,7 +51,7 @@
 </div>
 #AUIrowTableWide()
 <tr>
-#ALtdheadW25("ユーザー")
+#ALtdheadW25("名前")
 #ALtdheadW25("勤務形態")
 #ALtdheadThin("就業")
 #ALtdheadThin("残業")
