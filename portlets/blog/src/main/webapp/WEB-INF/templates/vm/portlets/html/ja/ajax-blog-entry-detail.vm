@@ -36,6 +36,9 @@ $!{result.Detail.ThemaName}
 <h3>$!{result.Detail.Title}</h3>
 <div class="alignleft">投稿日：$!{result.Detail.CreateDateAlternative.Year}年$!{result.Detail.CreateDateAlternative.Month}月$!{result.Detail.CreateDateAlternative.Day}日$!{result.Detail.CreateDateAlternative.Hour}時$!{result.Detail.CreateDateAlternative.Minute}分</div>
 <div class="alignright">
+#if($!result.Editable)
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogEntryFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.blog.onLoadMsgboardDialog")
+#end
 #if($!{result.Deletable})
 #ALbutton("eventSubmit_doBlog_entry_delete" "削除する" "aipo.blog.delBlogEntry(this,'$indicator_id','$!{portlet.ID}');")
 #end
