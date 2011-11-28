@@ -35,10 +35,10 @@
 #if($record.HierarchyIndex <= 0)
 <div class="d1">
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,"$record.FolderId"))', '$!portlet.ID');" ><span class="directory">${record.FolderName}</span></a></div>
-#end
 #else
 <div class="d$index">
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,"$record.FolderId"))', '$!portlet.ID');" ><span class="directory">${record.FolderName}</span></a></div>
+#end
 #end
 #end
 </div>

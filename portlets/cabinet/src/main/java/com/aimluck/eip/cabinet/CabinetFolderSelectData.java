@@ -190,6 +190,8 @@ public class CabinetFolderSelectData extends
        * folder_hierarchy_list.get(0); }
        */
     }
+    // メンバーリスト
+    members = new ArrayList<ALEipUser>();
 
     this.rundata = rundata;
 
@@ -207,6 +209,10 @@ public class CabinetFolderSelectData extends
   @Override
   protected ResultList<EipTCabinetFolder> selectList(RunData rundata,
       Context context) throws ALPageNotFoundException, ALDBErrorException {
+    CabinetUtils.setFolderVisible(
+      folder_hierarchy_list,
+      selected_folderinfo,
+      rundata);
     return null;
   }
 
@@ -314,6 +320,7 @@ public class CabinetFolderSelectData extends
       Expression exp =
         ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, users);
       query.setQualifier(exp);
+      members.addAll(ALEipUtils.getUsersFromSelectQuery(query));
 
       rd.setUpdateUser(updateUserName);
       rd.setUpdateDate(new SimpleDateFormat("yyyy年M月d日H時m分").format(record
