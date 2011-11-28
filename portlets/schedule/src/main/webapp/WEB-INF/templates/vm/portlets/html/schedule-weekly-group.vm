@@ -18,6 +18,12 @@
  *#
 
 ## ---------------------------------------------------------------------------
+#if(!$result.CurrentFilter)
+#set ($filter = "")
+#else
+#set ($filter = $result.CurrentFilter)
+#end
+## ---------------------------------------------------------------------------
 <div class="relativeBlock" style="margin-bottom:10px;">
 <div class="absoluteRight">
 <div class="auiSelectButton">
@@ -126,23 +132,19 @@
 #set($getScheduleDetailLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailJSONScreen').addQueryData('view_date', $!{record.Date.toString()}))
 #if($!{record.isHoliday()})
 #set ($stday = $velocityCount )
-#ALtdheadheaderAtt("class='holiday groupWeekly' nowrap='nowrap'")
-$!{record.Date.Day} $!{record.Date.DayOfWeek}<br />
+#ALOnedayLink($!portlet.ID $filter $record 'holiday groupWeekly')
+<br />
 <span class="holiday small">${record.Holiday.Name}</span>
 #elseif($!{record.Date.Value.Day} == 0)
 #set ($stday = $velocityCount )
-#ALtdheadheaderAtt("class='sunday groupWeekly' nowrap='nowrap'")
-$!{record.Date.Day} $!{record.Date.DayOfWeek}
+#ALOnedayLink($!portlet.ID $filter $record 'sunday groupWeekly')
 #elseif($!{record.Date.Value.Day} == 6)
 #set ($sunday = $velocityCount )
-#ALtdheadheaderAtt("class='saturday groupWeekly' nowrap='nowrap'")
-$!{record.Date.Day} $!{record.Date.DayOfWeek}
+#ALOnedayLink($!portlet.ID $filter $record 'saturday groupWeekly')
 #elseif($!{result.Today.Value} == $!{record.Date.Value})
-#ALtdheadheaderAtt("class='today groupWeekly' nowrap='nowrap'")
-$!{record.Date.Day} $!{record.Date.DayOfWeek}
+#ALOnedayLink($!portlet.ID $filter $record 'today groupWeekly')
 #else
-#ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
-$!{record.Date.Day} $!{record.Date.DayOfWeek}
+#ALOnedayLink($!portlet.ID $filter $record 'groupWeekly')
 #end
 <br/><img src="images/common/dot.gif" width="50" height="1" alt="" />
 #ALtdheadfooter()
@@ -357,23 +359,19 @@ $!{record.ToDoResultData.TodoName}
 #set($getScheduleDetailLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailJSONScreen').addQueryData('view_date', $!{record.Date.toString()}))
 #if($!{record.isHoliday()})
 #set ($stday = $velocityCount )
-#ALtdheadheaderAtt("class='holiday groupWeekly' nowrap='nowrap'")
-$!{record.Date.Day} $!{record.Date.DayOfWeek}<br />
+#ALOnedayLink($!portlet.ID $filter $record 'holiday groupWeekly')
+<br />
 <span class="holiday small">${record.Holiday.Name}</span>
 #elseif($!{record.Date.Value.Day} == 0)
 #set ($stday = $velocityCount )
-#ALtdheadheaderAtt("class='sunday groupWeekly' nowrap='nowrap'")
-$!{record.Date.Day} $!{record.Date.DayOfWeek}
+#ALOnedayLink($!portlet.ID $filter $record 'sunday groupWeekly')
 #elseif($!{record.Date.Value.Day} == 6)
 #set ($sunday = $velocityCount )
-#ALtdheadheaderAtt("class='saturday groupWeekly' nowrap='nowrap'")
-$!{record.Date.Day} $!{record.Date.DayOfWeek}
+#ALOnedayLink($!portlet.ID $filter $record 'saturday groupWeekly')
 #elseif($!{result.Today.Value} == $!{record.Date.Value})
-#ALtdheadheaderAtt("class='today groupWeekly' nowrap='nowrap'")
-$!{record.Date.Day} $!{record.Date.DayOfWeek}
+#ALOnedayLink($!portlet.ID $filter $record 'today groupWeekly')
 #else
-#ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
-$!{record.Date.Day} $!{record.Date.DayOfWeek}
+#ALOnedayLink($!portlet.ID $filter $record 'groupWeekly')
 #end
 <br/><img src="images/common/dot.gif" width="50" height="1" alt="" />
 #ALtdheadfooter()

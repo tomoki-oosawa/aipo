@@ -182,6 +182,7 @@ public class ScheduleListScreen extends ScheduleScreen {
       }
 
       context.put("ajax_onloadimage", "true");
+      context.put("isMaximize", "true");
 
       listData.initField();
       listData.doViewList(this, rundata, context);
