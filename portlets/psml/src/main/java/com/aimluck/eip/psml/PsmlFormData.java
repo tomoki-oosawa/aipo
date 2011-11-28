@@ -255,6 +255,7 @@ public class PsmlFormData extends ALAbstractFormData {
     try {
       String psml;
       psml = PsmlDBUtils.getMyHtmlPsml(rundata);
+      psml = PsmlUtils.ParsePsml(psml);
       psml = PsmlUtils.PSMLEncode(psml);
 
       PsmlDBUtils.checkAndFixInconsistency(PsmlUtils.TEMPLATE_NAME);
