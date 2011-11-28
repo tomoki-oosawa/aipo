@@ -168,7 +168,7 @@ public class UserUtils {
    * @return
    */
   public static List<UserGroupLiteBean> getUserGroupLiteBeans(RunData rundata,
-      boolean isMygroup, boolean isPost) {
+      boolean isMygroup, boolean isPost, boolean isFacilityGroup) {
     List<UserGroupLiteBean> list = new ArrayList<UserGroupLiteBean>();
     UserGroupLiteBean bean;
     try {
@@ -193,6 +193,18 @@ public class UserUtils {
           bean.initField();
           bean.setGroupId(post.getGroupName().getValue());
           bean.setName(post.getPostName().getValue());
+          list.add(bean);
+        }
+      }
+      if (isFacilityGroup) {
+        List<ALEipGroup> facilitygroup = ALEipUtils.getFacilityGroups();
+        int size1 = facilitygroup.size();
+        for (int i = 0; i < size1; i++) {
+          ALEipGroup group = facilitygroup.get(i);
+          bean = new UserGroupLiteBean();
+          bean.initField();
+          bean.setGroupId("f;" + group.getName().getValue());
+          bean.setName(group.getAliasName().getValue());
           list.add(bean);
         }
       }

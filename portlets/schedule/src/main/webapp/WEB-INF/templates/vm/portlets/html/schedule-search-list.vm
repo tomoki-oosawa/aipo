@@ -70,21 +70,26 @@
 <div class="auiForm">
     <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
         <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id","none"))">すべてのグループ</option>
-        #if ($result.FacilityList.size() > 0)
-    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","Facility"))" #if ($!result.TargetGroupName && $!result.TargetGroupName == "Facility") selected="selected" #end>設備一覧</option>
-        #end
-        #foreach( $record in $result.MyGroupList )
-    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{record.Name.toString()}).addQueryData("target_user_id","none"))" #if($!result.TargetGroupName == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
-        #end
-        #if($!{result.GroupList} && ($result.GroupList.size() > 0) && ${result.PostMap} && ($result.PostMap.size() > 0))
+        #if($result.GroupList.size() > 0)
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id", "none"))" #if ($!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>----------</option>
-        #end
+		#end
+		#foreach( $record in $result.MyGroupList )
+    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{record.Name.toString()}).addQueryData("target_user_id","none"))" #if($!result.TargetGroupName == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
+		#end
+        #if($result.PostMap.size() > 0)
+    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id", "none"))" #if ($!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>----------</option>
+		#end
         #foreach( $record in $result.PostMap )
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{record.GroupName.toString()}).addQueryData("target_user_id", "none"))" #if($!result.TargetGroupName == $!record.GroupName.toString()) selected="selected" #end>$!record.PostName</option>
         #end
+			<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id", "none"))" #if ($result.CurrentFilter && $!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>----------</option>
+    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","Facility"))" #if ($!result.TargetGroupName && $!result.TargetGroupName == "Facility") selected="selected" #end>設備一覧</option>
+        #foreach($record in $!result.FacilitiyGroupList)
+        	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!record.Name).addQueryData("target_user_id","none"))" #if ($!result.TargetGroupName == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
+        #end
     </select>
     <select name="target_user_id" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
-        <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","none"))">選択している名前</option>
+        #if($result.Users.isEmpty())<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","none"))">設備を選択してください</option>#end
         #foreach($record in $!result.Users)
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id",$!{record.UserId.toString()}))" #if($!result.TargetUserId != "all") #if($!result.TargetUserId == $!record.UserId.toString()) selected="selected" #end #end>$!record.AliasName</option>
         #end
@@ -92,11 +97,10 @@
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id", "none"))" #if ($result.CurrentFilter && $!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>----------</option>
         #end
         #foreach($record in $!result.FacilityList)
-    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","f$!{record.FacilityId.toString()}"))" #if($!result.TargetUserId != "all") #if($!result.TargetUserId == "f$!record.FacilityId.toString()") selected="selected" #end #end>$!record.FacilityName</option>
+    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","f$!{record.FacilityId.toString()}"))" #if($!result.TargetUserId == "f$!record.FacilityId.toString()") selected="selected" #end>$!record.FacilityName</option>
         #end
     </select>
 </div>
-
 <div id="listmessageDiv"></div>
 #if($result.ScheduleList.size() == 0)
 <div class="message">指定された条件に該当する予定はありません。</div>

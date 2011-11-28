@@ -82,6 +82,9 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   /** <code>groups</code> グループ */
   private List<ALEipGroup> groups;
 
+  /** <code>groups</code> グループリスト */
+  private List<ALEipGroup> facilitiyGroups;
+
   /** <code>userid</code> ログインユーザーID */
   private Integer userid;
 
@@ -132,6 +135,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
       facilitymap = new LinkedHashMap<Integer, ScheduleWeekContainer>();
 
       groups = ALEipUtils.getMyGroups(rundata);
+      facilitiyGroups = ALEipUtils.getALEipGroups();
       userid = Integer.valueOf(ALEipUtils.getUserId(rundata));
       String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
 
@@ -377,9 +381,9 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
     }
 
     crt_key = map.getValue(filter_type);
-    if (crt_key == null) {
-      return new ArrayList<VEipTScheduleList>();
-    }
+    // if (crt_key == null) {
+    // return new ArrayList<VEipTScheduleList>();
+    // }
 
     // グループ名からユーザを取得
     List<Integer> ulist = ALEipUtils.getUserIds(filter);
@@ -404,12 +408,21 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
     }
 
     List<Integer> facilityIds = null;
-
+    String[] filteres = filter.split(";");
     if ("Facility".equals(filter)) {
       facilityIds = getFacilityIdAllList();
+    } else if (("group".equals(filter_type)) && !("f".equals(filteres[0]))) {
+      facilityIds = FacilitiesUtils.getFacilityIds(filteres[0]);
     } else {
-      facilityIds = FacilitiesUtils.getFacilityIds(filter);
+      if ("f".equals(filteres[0])) {
+        facilityIds =
+          FacilitiesUtils.getFacilityGroupIds(Integer.valueOf(filteres[1]));
+      } else {
+        facilityIds =
+          FacilitiesUtils.getFacilityGroupIds(Integer.valueOf(filter));
+      }
     }
+
     int f_size = facilityIds.size();
     if (f_size == 0) {
       facilityIds.add(Integer.valueOf(-1));
@@ -441,10 +454,26 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         }
       }
     }
+    if ("facilitygroup".equals(filter_type) || "f".equals(filteres[0])) {
+      if ("f".equals(filteres[0])) {
+        facilityList =
+          FacilitiesUtils.getFacilityGroupList(Integer.valueOf(filteres[1]));
 
-    facilityList = FacilitiesUtils.getFacilityList(filter);
+      } else {
 
-    current_filter = filter;
+        facilityList =
+          FacilitiesUtils.getFacilityGroupList(Integer.valueOf(filter));
+
+      }
+    } else {
+      facilityList = FacilitiesUtils.getFacilityList(filter);
+    }
+
+    if (!("f".equals(filteres[0]))) {
+      current_filter = filter;
+    } else {
+      current_filter = filteres[1];
+    }
     current_filter_type = filter_type;
     return ScheduleUtils.getScheduleList(
       userid,
@@ -730,6 +759,15 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
+  }
+
+  /**
+   * 施設のグループリストを取得します。
+   * 
+   * @return
+   */
+  public List<ALEipGroup> getFacilitiyGroupList() {
+    return facilitiyGroups;
   }
 
   @Override

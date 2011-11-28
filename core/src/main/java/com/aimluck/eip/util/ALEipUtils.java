@@ -78,6 +78,7 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.account.AipoLicense;
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.cayenne.om.account.EipMUserPosition;
+import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroup;
 import com.aimluck.eip.cayenne.om.security.TurbineGroup;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
@@ -769,6 +770,50 @@ public class ALEipUtils {
     }
     ALMyGroups mygroups = (ALMyGroups) obj;
     return mygroups.getList();
+  }
+
+  public static List<ALEipGroup> getFacilityGroups() {
+    List<ALEipGroup> facilityGroupAllList = new ArrayList<ALEipGroup>();
+    try {
+      SelectQuery<EipMFacilityGroup> query =
+        Database.query(EipMFacilityGroup.class);
+
+      List<EipMFacilityGroup> facility_list =
+        query.orderAscending(EipMFacilityGroup.GROUP_NAME_PROPERTY).fetchList();
+
+      for (EipMFacilityGroup record : facility_list) {
+        ALEipGroup bean = new ALEipGroup();
+        bean.initField();
+        bean.setAliasName(record.getGroupName());
+        bean.setName(record.getGroupId().toString());
+        facilityGroupAllList.add(bean);
+      }
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+    }
+    return facilityGroupAllList;
+  }
+
+  public static List<ALEipGroup> getALEipGroups() {
+    List<ALEipGroup> facilityGroupAllList = new ArrayList<ALEipGroup>();
+    try {
+      SelectQuery<EipMFacilityGroup> query =
+        Database.query(EipMFacilityGroup.class);
+
+      List<EipMFacilityGroup> facility_list =
+        query.orderAscending(EipMFacilityGroup.GROUP_NAME_PROPERTY).fetchList();
+
+      for (EipMFacilityGroup record : facility_list) {
+        ALEipGroup bean = new ALEipGroup();
+        bean.initField();
+        bean.setAliasName(record.getGroupName());
+        bean.setName(record.getGroupId().toString());
+        facilityGroupAllList.add(bean);
+      }
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+    }
+    return facilityGroupAllList;
   }
 
   /**

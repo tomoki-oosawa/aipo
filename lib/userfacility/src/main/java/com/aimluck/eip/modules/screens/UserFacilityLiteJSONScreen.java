@@ -48,11 +48,18 @@ public class UserFacilityLiteJSONScreen extends ALJSONScreen {
 
       String mode = rundata.getParameters().getString("mode");
       if ("group".equals(mode)) {
-        String groupname = rundata.getParameters().getString("groupname");
-
-        json =
-          JSONArray.fromObject(UserFacilityUtils
-            .getUserFacilityLiteBeansFromGroup(rundata, groupname));
+        String[] groupname =
+          rundata.getParameters().getString("groupname").split(";");
+        if ("f".equals(groupname[0])) {
+          json =
+            JSONArray.fromObject(UserFacilityUtils
+              .getFacilityLiteBeansFromGroup(rundata, Integer
+                .valueOf(groupname[1])));
+        } else {
+          json =
+            JSONArray.fromObject(UserFacilityUtils
+              .getUserFacilityLiteBeansFromGroup(rundata, groupname[0]));
+        }
       } else {
         json = new JSONArray();
       }

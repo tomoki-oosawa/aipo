@@ -93,6 +93,8 @@ public class ALEipConstants {
 
   public static final String MYGROUP = "mygroup";
 
+  public static final String FACILITYGROUP = "facilitygroup";
+
   public static final String UTILS = "utils";
 
   /** 携帯電話の固有 ID のプレフィックス */

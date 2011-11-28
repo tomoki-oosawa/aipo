@@ -117,6 +117,9 @@ public class ScheduleMonthlySelectData extends
   /** <code>myGroupList</code> グループリスト（My グループと部署） */
   private List<ALEipGroup> myGroupList = null;
 
+  /** <code>groups</code> グループリスト */
+  private List<ALEipGroup> facilitiyGroups;
+
   /** <code>userList</code> 表示切り替え用のユーザリスト */
   private List<ALEipUser> userList = null;
 
@@ -294,6 +297,7 @@ public class ScheduleMonthlySelectData extends
     // My グループの一覧を取得する．
     List<ALEipGroup> myGroups = ALEipUtils.getMyGroups(rundata);
     myGroupList = new ArrayList<ALEipGroup>();
+    facilitiyGroups = ALEipUtils.getALEipGroups();
     int length = myGroups.size();
     for (int i = 0; i < length; i++) {
       myGroupList.add(myGroups.get(i));
@@ -870,11 +874,29 @@ public class ScheduleMonthlySelectData extends
    */
   protected void setupLists(RunData rundata, Context context) {
     target_group_name = getTargetGroupName(rundata, context);
+
+    String[] target = target_group_name.split(";");
+    if ("f".equals(target[0])) {
+      target_group_name = target[1];
+    }
+
     if ((target_group_name != null)
+      && (!target_group_name.equals(""))
+      && (!target_group_name.equals("all"))
+      && (target_group_name.equals("Facility"))) {
+      userList = ALEipUtils.getUsers(target_group_name);
+      facilityList = FacilitiesUtils.getFacilityList(target_group_name);
+    } else if ((target_group_name != null)
       && (!target_group_name.equals(""))
       && (!target_group_name.equals("all"))) {
       userList = ALEipUtils.getUsers(target_group_name);
-      facilityList = FacilitiesUtils.getFacilityList(target_group_name);
+      if (userList.size() == 0) {
+        facilityList =
+          FacilitiesUtils.getFacilityGroupList(Integer
+            .valueOf(target_group_name));
+      } else {
+        facilityList = FacilitiesUtils.getFacilityList(target_group_name);
+      }
     } else {
       userList = ALEipUtils.getUsers("LoginUser");
       facilityList =
@@ -891,6 +913,9 @@ public class ScheduleMonthlySelectData extends
     }
 
     target_user_id = getTargetUserId(rundata, context);
+    if (target_user_id == null) {
+      target_user_id = "";
+    }
     try {
       if ("".equals(target_user_id) || target_user_id.startsWith("f")) {
         target_user_name = null;
@@ -1173,6 +1198,15 @@ public class ScheduleMonthlySelectData extends
 
   public boolean hasAuthorityFacilityInsert() {
     return hasAuthorityFacilityInsert;
+  }
+
+  /**
+   * 設備のグループリストを取得します。
+   * 
+   * @return
+   */
+  public List<ALEipGroup> getFacilitiyGroupList() {
+    return facilitiyGroups;
   }
 
   /**

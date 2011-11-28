@@ -56,8 +56,14 @@ public class GroupFacilityListBox extends ListBox {
     try {
       // マイグループの取得
       List<ALEipGroup> mygroupList = ALEipUtils.getMyGroups(data);
+      List<ALEipGroup> facilitygroupList = ALEipUtils.getALEipGroups();
 
-      int length = postCollection.size() + mygroupList.size() + 1 + 1;
+      int length =
+        postCollection.size()
+          + mygroupList.size()
+          + facilitygroupList.size()
+          + 1
+          + 1;
       String[] groupKeys = new String[length];
       String[] groupValues = new String[length];
 
@@ -90,6 +96,15 @@ public class GroupFacilityListBox extends ListBox {
         count++;
       }
 
+      // 設備グループの登録
+      ALEipGroup facilitygroup = null;
+      Iterator<ALEipGroup> iter3 = facilitygroupList.iterator();
+      while (iter3.hasNext()) {
+        facilitygroup = iter3.next();
+        groupKeys[count] = "f;" + facilitygroup.getName().toString();
+        groupValues[count] = facilitygroup.getAliasName().toString();
+        count++;
+      }
       this.layout = (String) this.getParm(LAYOUT, LAYOUT_COMBO);
       this.items = groupKeys;
       this.values = groupValues;

@@ -178,6 +178,45 @@ public class FacilitiesUtils {
     return list;
   }
 
+  public static List<FacilityResultData> getFacilityGroupList(Integer groupid) {
+    List<FacilityResultData> list = new ArrayList<FacilityResultData>();
+
+    StringBuffer statement = new StringBuffer();
+    statement.append("SELECT DISTINCT ");
+    statement.append("  B.FACILITY_ID, B.FACILITY_NAME ");
+    statement.append("FROM eip_m_facility_group_map as A ");
+    statement.append("LEFT JOIN eip_m_facility as B ");
+    statement.append("  on A.FACILITY_ID = B.FACILITY_ID ");
+    statement.append("LEFT JOIN eip_m_facility_group as C ");
+    statement.append("  on A.GROUP_ID = C.GROUP_ID ");
+    statement.append("WHERE C.GROUP_ID = #bind($groupid) ");
+    statement.append("ORDER BY B.FACILITY_NAME");
+
+    String query = statement.toString();
+
+    try {
+      List<EipMFacility> list2 =
+        Database
+          .sql(EipMFacility.class, query)
+          .param("groupid", groupid)
+          .fetchList();
+
+      FacilityResultData frd;
+      // ユーザデータを作成し、返却リストへ格納
+      for (EipMFacility record : list2) {
+        frd = new FacilityResultData();
+        frd.initField();
+        frd.setFacilityId(record.getFacilityId());
+        frd.setFacilityName(record.getFacilityName());
+        list.add(frd);
+      }
+    } catch (Exception ex) {
+      logger.error("[Exception]", ex);
+    }
+
+    return list;
+  }
+
   public static List<FacilityResultData> getFacilityListByGroupId(String groupId) {
     List<FacilityResultData> list = new ArrayList<FacilityResultData>();
 
@@ -235,6 +274,39 @@ public class FacilitiesUtils {
         Database
           .sql(EipMFacility.class, query)
           .param("groupname", groupname)
+          .fetchList();
+
+      // ユーザデータを作成し、返却リストへ格納
+      for (EipMFacility record : list2) {
+        list.add(record.getFacilityId());
+      }
+    } catch (Exception ex) {
+      logger.error("[Exception]", ex);
+    }
+
+    return list;
+  }
+
+  public static List<Integer> getFacilityGroupIds(Integer groupid) {
+    List<Integer> list = new ArrayList<Integer>();
+
+    // SQLの作成
+    StringBuffer statement = new StringBuffer();
+
+    statement.append("SELECT A.group_id, C.facility_id, C.facility_name ");
+    statement.append("FROM eip_m_facility_group AS A ");
+    statement.append("INNER JOIN eip_m_facility_group_map as B ");
+    statement.append("  ON A.group_id = B.group_id ");
+    statement.append("INNER JOIN eip_m_facility as C ");
+    statement.append("  ON C.facility_id = B.facility_id ");
+    statement.append("WHERE A.group_id = #bind($groupid) ");
+    String query = statement.toString();
+
+    try {
+      List<EipMFacility> list2 =
+        Database
+          .sql(EipMFacility.class, query)
+          .param("groupid", groupid)
           .fetchList();
 
       // ユーザデータを作成し、返却リストへ格納

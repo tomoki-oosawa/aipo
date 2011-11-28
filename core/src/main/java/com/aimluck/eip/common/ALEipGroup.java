@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 
+import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 
 /**
@@ -30,6 +31,9 @@ import com.aimluck.commons.field.ALStringField;
  * 
  */
 public class ALEipGroup implements ALData, Serializable {
+
+  /** FacilityGroup ID */
+  private ALNumberField facility_group_id;
 
   /**
    *
@@ -48,6 +52,7 @@ public class ALEipGroup implements ALData, Serializable {
   /**
    *
    */
+  @Override
   public void initField() {
     name = new ALStringField();
     alias_name = new ALStringField();
@@ -97,4 +102,10 @@ public class ALEipGroup implements ALData, Serializable {
     return alias_name;
   }
 
+  /**
+   * @param i
+   */
+  public void setFacilityGroupId(long i) {
+    facility_group_id.setValue(i);
+  }
 }

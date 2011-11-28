@@ -85,6 +85,9 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
   /** <code>groups</code> グループリスト */
   private List<ALEipGroup> groups;
 
+  /** <code>groups</code> グループリスト */
+  private List<ALEipGroup> facilitiyGroups;
+
   /** <code>userid</code> ユーザーID */
   private int userid;
 
@@ -139,6 +142,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
       facilitymap = new LinkedHashMap<Integer, ScheduleOnedayContainer>();
 
       groups = ALEipUtils.getMyGroups(rundata);
+      facilitiyGroups = ALEipUtils.getALEipGroups();
       userid = ALEipUtils.getUserId(rundata);
       rows = new int[(endHour - startHour) * 4 + 1];
       int size = rows.length;
@@ -330,10 +334,6 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
         null);
     }
     crt_key = map.getValue(filter_type);
-    if (crt_key == null) {
-      return new ArrayList<VEipTScheduleList>();
-    }
-
     // グループ名からユーザを取得
     List<Integer> ulist = ALEipUtils.getUserIds(filter);
 
@@ -356,12 +356,22 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
     // List facilityIds = FacilitiesUtils.getFacilityIds(filter);
     List<Integer> facilityIds = null;
-
+    String[] filteres = filter.split(";");
     if ("Facility".equals(filter)) {
       facilityIds = getFacilityIdAllList();
+    } else if (("group".equals(filter_type)) && !("f".equals(filteres[0]))) {
+      facilityIds = FacilitiesUtils.getFacilityIds(filteres[0]);
     } else {
-      facilityIds = FacilitiesUtils.getFacilityIds(filter);
+      if ("f".equals(filteres[0])) {
+        facilityIds =
+          FacilitiesUtils.getFacilityGroupIds(Integer.valueOf(filteres[1]));
+      } else {
+        facilityIds =
+          FacilitiesUtils.getFacilityGroupIds(Integer.valueOf(filter));
+
+      }
     }
+
     int f_size = facilityIds.size();
     if (f_size == 0) {
       facilityIds.add(Integer.valueOf(-1));
@@ -392,10 +402,25 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
         }
       }
     }
+    if ("facilitygroup".equals(filter_type) || "f".equals(filteres[0])) {
+      if ("f".equals(filteres[0])) {
+        facilityList =
+          FacilitiesUtils.getFacilityGroupList(Integer.valueOf(filteres[1]));
 
-    facilityList = FacilitiesUtils.getFacilityList(filter);
+      } else {
 
-    current_filter = filter;
+        facilityList =
+          FacilitiesUtils.getFacilityGroupList(Integer.valueOf(filter));
+
+      }
+    } else {
+      facilityList = FacilitiesUtils.getFacilityList(filter);
+    }
+    if (!("f".equals(filteres[0]))) {
+      current_filter = filter;
+    } else {
+      current_filter = filteres[1];
+    }
     current_filter_type = filter_type;
     return ScheduleUtils.getScheduleList(
       userid,
@@ -835,6 +860,15 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
   }
 
   /**
+   * 施設のグループリストを取得します。
+   * 
+   * @return
+   */
+  public List<ALEipGroup> getFacilitiyGroupList() {
+    return facilitiyGroups;
+  }
+
+  /**
    * 指定したユーザーが自ユーザーかどうかを返します。
    * 
    * @param id
@@ -901,7 +935,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
   }
 
   /**
-   * 指定した設備のスケジュールリストを取得します。
+   * 指定した施設のスケジュールリストを取得します。
    * 
    * @param id
    * @return

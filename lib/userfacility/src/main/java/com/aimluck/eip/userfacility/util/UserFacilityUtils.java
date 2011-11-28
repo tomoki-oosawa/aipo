@@ -22,13 +22,17 @@ package com.aimluck.eip.userfacility.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
+import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroupMap;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.user.beans.UserLiteBean;
 import com.aimluck.eip.user.util.UserUtils;
 import com.aimluck.eip.userfacility.beans.UserFacilityLiteBean;
@@ -117,6 +121,44 @@ public class UserFacilityUtils {
     }
 
     return list;
+  }
+
+  public static List<UserFacilityLiteBean> getFacilityLiteBeansFromGroup(
+      RunData rundata, int groupid) {
+    List<UserFacilityLiteBean> facilityAllList =
+      new ArrayList<UserFacilityLiteBean>();
+    // facilitygroupmap探索
+    SelectQuery<EipMFacilityGroupMap> mapquery =
+      Database.query(EipMFacilityGroupMap.class);
+    Expression mapexp =
+      ExpressionFactory.matchExp(
+        EipMFacilityGroupMap.GROUP_ID_PROPERTY,
+        groupid);
+    mapquery.setQualifier(mapexp);
+    List<EipMFacilityGroupMap> FacilityMaps = mapquery.fetchList();
+    List<Integer> facilityIds = new ArrayList<Integer>();
+    for (EipMFacilityGroupMap map : FacilityMaps) {
+      facilityIds.add(map.getEipMFacilityFacilityId().getFacilityId());
+    }
+
+    SelectQuery<EipMFacility> fquery = Database.query(EipMFacility.class);
+    Expression fexp =
+      ExpressionFactory
+        .inDbExp(EipMFacility.FACILITY_ID_PK_COLUMN, facilityIds);
+    fquery.setQualifier(fexp);
+    fquery.orderAscending(EipMFacility.SORT_PROPERTY);
+    List<EipMFacility> facility_list = fquery.fetchList();
+
+    for (EipMFacility record : facility_list) {
+      UserFacilityLiteBean bean = new UserFacilityLiteBean();
+      bean.initField();
+      bean.setUserFacilityId(record.getFacilityId().intValue());
+      bean.setAliasName(record.getFacilityName());
+      bean.setName("f" + record.getFacilityId());
+      bean.setUserFacilityType("F");
+      facilityAllList.add(bean);
+    }
+    return facilityAllList;
   }
 
   public static UserFacilityLiteBean getUserFacilityLiteBean(RunData rundata) {
