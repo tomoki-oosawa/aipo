@@ -80,9 +80,6 @@
             	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter",$!record.GroupName).addQueryData("filtertype","group"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GroupName.toString()) selected="selected" #end>$!record.PostName</option>
             #end
         </select>
-    	#if($result.GroupList.size() <= 0)
-    				&nbsp;&nbsp;<a href="$!result.MyGroupURI">こちらからグループを追加できます。</a>
-    	#end
 	</div>
 #end
 
