@@ -111,6 +111,9 @@ public class CabinetAction extends ALBaseAction {
 
     // MODEを取得
     String mode = rundata.getParameters().getString(ALEipConstants.MODE);
+    // デフォルトソート設定の初期化
+    ALEipUtils.removeTemp(rundata, context, LIST_SORT_STR);
+    ALEipUtils.removeTemp(rundata, context, LIST_SORT_TYPE_STR);
     try {
       if (ALEipConstants.MODE_LIST.equals(mode)) {
         doCabinet_list(rundata, context);
