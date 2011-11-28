@@ -24,6 +24,8 @@ import java.io.InputStreamReader;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.cayenne.DataRow;
 import org.apache.cayenne.exp.Expression;
@@ -521,19 +523,56 @@ public class BlogUtils {
     return userName;
   }
 
-  public static String compressString(String src, int length) {
-    if (src == null || src.length() == 0 || length <= 0) {
+  /**
+   * 保持されるタグは　a、wbr の２種類。 brも保持したい場合はコメントアウトを戻すこと。
+   * 
+   * @param src
+   *          圧縮したい文字列
+   * @return 上記のタグを除いて100文字以下の文字列。有効なタグは保持される。
+   */
+  public static String compressString(String src) {
+    final int LENGTH = 100;
+    if (src == null || src.length() == 0 || LENGTH <= 0) {
       return src;
     }
-
-    String subject;
-    if (src.length() > length) {
-      subject = src.substring(0, length);
-      subject += "・・・";
-    } else {
-      subject = src;
+    String a = "<a .+?>";
+    String _a = "</a>";
+    String wbr = "<wbr/>|<wbr>|<wbr />";
+    // String br = "<br/>|<br>|<br />";
+    StringBuilder sb = new StringBuilder();
+    sb.append(a);
+    sb.append("|");
+    sb.append(_a);
+    sb.append("|");
+    sb.append(wbr);
+    // sb.append("|");
+    // sb.append(br);
+    String regex = sb.toString();
+    Matcher m = Pattern.compile(regex).matcher(src);
+    int valid_length = 0;
+    int sum_tags_length = 0;
+    while (m.find()) {
+      valid_length = LENGTH + sum_tags_length;
+      if (m.start() >= valid_length) {
+        break;
+      }
+      sum_tags_length += m.group().length();
     }
-    return subject;
+    if (valid_length < src.length()) {
+      src = src.substring(0, valid_length);
+      m = Pattern.compile(a).matcher(src);
+      int stt_a = m.groupCount();
+      m = Pattern.compile(_a).matcher(src);
+      int end_a = m.groupCount();
+      sb.delete(0, sb.length());
+      sb.append(src);
+      for (int i = 0; i < stt_a - end_a; i++) {
+        sb.append("</a>");
+      }
+      sb.append("・・・");
+      src = sb.toString();
+    }
+    return src;
   }
 
   /**

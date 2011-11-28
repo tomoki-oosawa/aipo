@@ -271,9 +271,7 @@ public class BlogEntryLatestSelectData extends
       rd.setTitle(ALCommonUtils.compressString(
         record.getTitle(),
         getStrLength()));
-      rd.setNote(BlogUtils.compressString(record.getNote().replaceAll(
-        "\\n",
-        " "), 100));
+      rd.setNote(record.getNote().replaceAll("\\n", " "));
       rd.setBlogId(record.getEipTBlog().getBlogId().intValue());
       rd.setThemaId(record.getEipTBlogThema().getThemaId().intValue());
       rd.setThemaName(record.getEipTBlogThema().getThemaName());

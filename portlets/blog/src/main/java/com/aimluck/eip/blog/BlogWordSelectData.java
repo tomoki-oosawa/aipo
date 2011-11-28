@@ -160,9 +160,9 @@ public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
 
       rd.setTitle(ALCommonUtils.compressString((String) Database
         .getFromDataRow(dataRow, EipTBlogEntry.TITLE_COLUMN), getStrLength()));
-      rd.setNote(BlogUtils.compressString((String) Database.getFromDataRow(
+      rd.setNote(((String) Database.getFromDataRow(
         dataRow,
-        EipTBlogEntry.NOTE_COLUMN), 100));
+        EipTBlogEntry.NOTE_COLUMN)).replaceAll("\\n", " "));
 
       rd.setTitleDate((Date) Database.getFromDataRow(
         dataRow,

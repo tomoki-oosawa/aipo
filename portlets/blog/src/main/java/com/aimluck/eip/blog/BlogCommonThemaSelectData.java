@@ -279,7 +279,7 @@ public class BlogCommonThemaSelectData extends
         entryrd.setTitle(ALCommonUtils.compressString(
           entry.getTitle(),
           getStrLength()));
-        entryrd.setNote(BlogUtils.compressString(entry.getNote(), 100));
+        entryrd.setNote(entry.getNote().replaceAll("\\n", " "));
         entryrd.setTitleDate(entry.getCreateDate());
 
         entryrd.setOwnerId(entry.getOwnerId().intValue());

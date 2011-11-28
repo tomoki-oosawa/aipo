@@ -50,7 +50,7 @@
 </div>
 <div class="entryBody">
 <div class="entryHeader"><h2><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData("entityid",$record.EntryId))', '$!portlet.ID', aipo.blog.onLoadBlogDetailDialog );">${record.Title} #if($record.CommentsNum > 0)（$record.CommentsNum）#end</a></h2></div>
-<div class='entryText'>${record.Note}</div>
+<div class='entryText'>$!{record.CompressedNote}</div>
 <div class="entryFooter floatRight">${record.TitleDate}｜${record.OwnerName}</div>
 </div>
 </div>

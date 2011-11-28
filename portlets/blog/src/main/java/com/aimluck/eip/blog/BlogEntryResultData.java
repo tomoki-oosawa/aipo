@@ -26,6 +26,7 @@ import java.util.List;
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.blog.util.BlogUtils;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.util.ALEipUtils;
@@ -174,6 +175,13 @@ public class BlogEntryResultData implements ALData {
    */
   public String getNote() {
     return ALEipUtils.getMessageList(note.getValue());
+  }
+
+  /**
+   * @return aタグとwbrタグを除いて100文字に圧縮されたnote
+   */
+  public String getCompressedNote() {
+    return BlogUtils.compressString(getNote());
   }
 
   /**
