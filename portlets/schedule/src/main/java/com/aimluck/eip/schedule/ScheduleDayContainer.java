@@ -53,6 +53,7 @@ public class ScheduleDayContainer implements ALData {
   /*
    * 
    */
+  @Override
   public void initField() {
     // 日付
     today = new ALDateTimeField("yyyy-MM-dd-HH-mm");
@@ -90,6 +91,15 @@ public class ScheduleDayContainer implements ALData {
    */
   public ALDateTimeField getDate() {
     return today;
+  }
+
+  /**
+   * 
+   * @return ScheduleWeeklySelectDataのtodayのフォーマットに合わせたString
+   */
+  public String getToday() {
+    return today.toString("yyyy-MM-dd");
+
   }
 
   /**
