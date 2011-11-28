@@ -294,12 +294,12 @@ $record.WbrName
 
 ### 重複スケジュール表示（ここから） ###
 #if($duplirowcount > 0)
+<tr class="duplicate">
 #set($insert = false)
 #set($startrow2 = 0)
 #set($endrow2 = 0)
 
 #foreach($record in $result.getDuplicateScheduleList($record3.UserId.Value))
-<tr class="duplicate">
 #set($rows = $result.getRows($record3.UserId.Value))
 #set($colspan = $!{result.getScheduleColspan($record, $rows)} )
 #set($startrow = $record.StartRow)
