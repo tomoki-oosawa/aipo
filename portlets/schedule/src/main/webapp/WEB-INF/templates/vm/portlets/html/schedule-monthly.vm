@@ -18,7 +18,12 @@
  *#
 
 ## ---------------------------------------------------------------------------
-
+#if(!$result.CurrentFilter)
+#set ($filter = "")
+#else
+#set ($filter = $result.CurrentFilter)
+#end
+## ---------------------------------------------------------------------------
 <div class="relativeBlock" style="margin-bottom:10px;">
 <div class="absoluteRight">
 <div class="auiSelectButton">
@@ -171,7 +176,11 @@
 #end
 
 <td class="day${color_style}${color_style_holiday}${color_style_othermonth}">
-<div class="calendarDay clearfix">#if($!{record.isHoliday()})<span class="alignleft small">${holiday_name}</span>#end<span class="alignright small">$!{record.Date.Day}</span></div>
+<div class="calendarDay clearfix">#if($!{record.isHoliday()})<span class="alignleft small">${holiday_name}</span>#end
+<span class="alignright small">
+#ALMonthlyOnedayLink($!portlet.ID $filter $record)
+</span>
+</div>
 </td>
 #end
 </tr>

@@ -313,6 +313,7 @@ public class ScheduleMonthlySelectData extends
           ALEipUtils.setTemp(rundata, context, TARGET_GROUP_NAME, groupFilter);
         }
       }
+      current_filter = groupFilter;
 
       // スケジュールを表示するユーザ ID をセッションに設定する．
       String userFilter = ALEipUtils.getTemp(rundata, context, TARGET_USER_ID);
@@ -875,6 +876,7 @@ public class ScheduleMonthlySelectData extends
   protected void setupLists(RunData rundata, Context context) {
     target_group_name = getTargetGroupName(rundata, context);
 
+    current_filter = target_group_name;
     String[] target = target_group_name.split(";");
     if ("f".equals(target[0])) {
       target_group_name = target[1];
