@@ -33,6 +33,7 @@
 </div>
 </div>
 
+#parse("/portlets/html/ja/scheduleMacro.vm")
 ## One day
 #if ($!result.Viewtype == "calendar")
 #parse("/portlets/html/ja/schedule-calendar.vm")
