@@ -217,6 +217,7 @@ public class CabinetUtils {
     try {
       SelectQuery<EipTCabinetFolder> query =
         Database.query(EipTCabinetFolder.class);
+      query.orderAscending(EipTCabinetFolder.FOLDER_NAME_PROPERTY);
       List<EipTCabinetFolder> list = query.fetchList();
       if (list == null || list.size() < 0) {
         return null;
