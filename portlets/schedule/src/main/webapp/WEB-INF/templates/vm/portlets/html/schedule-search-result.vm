@@ -43,27 +43,32 @@
 
 <div class="auiForm">
     <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
-        <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id","none"))">すべてのグループ</option>
-        #if ($result.FacilityList.size() > 0)
-    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","Facility"))" #if ($!result.TargetGroupName && $!result.TargetGroupName == "Facility") selected="selected" #end>施設一覧</option>
-        #end
-        #foreach( $record in $result.MyGroupList )
-    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{record.Name.toString()}).addQueryData("target_user_id","none"))" #if($!result.TargetGroupName == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
-        #end
-        #if($!{result.GroupList} && ($result.GroupList.size() > 0) && ${result.PostMap} && ($result.PostMap.size() > 0))
-    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id", "none"))" #if ($!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>----------</option>
-        #end
+        <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id","all"))">すべてのグループ</option>
+        #if($result.GroupList.size() > 0)
+    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id", "all"))" #if ($!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>----------</option>
+		#end
+		#foreach( $record in $result.MyGroupList )
+    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{record.Name.toString()}).addQueryData("target_user_id","all"))" #if($!result.TargetGroupName == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
+		#end
+        #if($result.PostMap.size() > 0)
+    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id", "all"))" #if ($!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>----------</option>
+		#end
         #foreach( $record in $result.PostMap )
-    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{record.GroupName.toString()}).addQueryData("target_user_id", "none"))" #if($!result.TargetGroupName == $!record.GroupName.toString()) selected="selected" #end>$!record.PostName</option>
+    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{record.GroupName.toString()}).addQueryData("target_user_id", "all"))" #if($!result.TargetGroupName == $!record.GroupName.toString()) selected="selected" #end>$!record.PostName</option>
+        #end
+			<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id", "all"))" #if ($result.CurrentFilter && $!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>----------</option>
+    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","Facility"))" #if ($!result.TargetGroupName && $!result.TargetGroupName == "Facility") selected="selected" #end>設備一覧</option>
+        #foreach($record in $!result.FacilitiyGroupList)
+        	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!record.Name).addQueryData("target_user_id","all"))" #if ($!result.TargetGroupName == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
         #end
     </select>
     <select name="target_user_id" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
-        <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","none"))">選択している名前</option>
+        <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","all"))">すべてのユーザー</option>
         #foreach($record in $!result.Users)
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id",$!{record.UserId.toString()}))" #if($!result.TargetUserId != "all") #if($!result.TargetUserId == $!record.UserId.toString()) selected="selected" #end #end>$!record.AliasName</option>
         #end
         #if(($result.Users.size() > 0) && ($result.FacilityList.size() > 0))
-    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id", "none"))" #if ($result.CurrentFilter && $!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>----------</option>
+    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id", "all"))" #if ($result.CurrentFilter && $!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>----------</option>
         #end
         #foreach($record in $!result.FacilityList)
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","f$!{record.FacilityId.toString()}"))" #if($!result.TargetUserId != "all") #if($!result.TargetUserId == "f$!record.FacilityId.toString()") selected="selected" #end #end>$!record.FacilityName</option>
@@ -90,7 +95,7 @@
 <th class="w20">登録者</th>
 </tr>
 #foreach ($record in $result.List)
-#set($scheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.ScheduleId}).addQueryData('userid', $!{result.TargetUserId}).addQueryData('view_date', $!{record.ViewDate.toString()})")
+#set($scheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.ScheduleId}).addQueryData('activityId','').addQueryData('view_date', $!{record.ViewDate.toString()})")
 <tr>
 <td nowrap="nowrap">${record.DateDetail}</td>
 <td><div>#if($record.isShowDetail())<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($scheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$!{record.WbrName}</a>#else$!{record.WbrName}#end

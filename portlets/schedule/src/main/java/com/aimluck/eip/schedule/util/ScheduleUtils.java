@@ -740,7 +740,7 @@ public class ScheduleUtils {
 
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       switch (dow) {
-        // 日
+      // 日
         case Calendar.SUNDAY:
           result = ptn.charAt(1) != '0';
           break;
@@ -1480,7 +1480,7 @@ public class ScheduleUtils {
         || tmpCurrentTab.equals("weekly")
         || tmpCurrentTab.equals("monthly")
         || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-        .equals("weekly-group"))) {
+          .equals("weekly-group"))) {
       currentTab = "calendar";
     } else {
       currentTab = tmpCurrentTab;
@@ -3543,18 +3543,23 @@ public class ScheduleUtils {
   public static List<VEipTScheduleList> getScheduleList(int userId,
       Date viewStart, Date viewEnd, List<Integer> users,
       List<Integer> facilities, String keyword, int page, int limit,
-      boolean withNote) {
+      boolean isSearch) {
 
     StringBuilder select = new StringBuilder();
 
-    select.append("select eip_t_schedule_map.id, ");
+    select.append("select");
+    if (!isSearch) {
+      select.append(" eip_t_schedule_map.id, ");
+      select.append(" eip_t_schedule_map.user_id,");
+      select.append(" eip_t_schedule_map.status,");
+      select.append(" eip_t_schedule_map.type,");
+    } else {
+      select.append(" distinct");
+    }
     select.append(" eip_t_schedule.schedule_id,");
     select.append(" eip_t_schedule_map.common_category_id,");
-    select.append(" eip_t_schedule_map.user_id,");
     select.append(" eip_t_schedule.owner_id,");
     select.append(" eip_t_schedule.parent_id,");
-    select.append(" eip_t_schedule_map.status,");
-    select.append(" eip_t_schedule_map.type,");
     select.append(" eip_t_schedule.name,");
     select.append(" eip_t_schedule.place,");
     select.append(" eip_t_schedule.start_date,");
@@ -3562,7 +3567,7 @@ public class ScheduleUtils {
     select.append(" eip_t_schedule.public_flag,");
     select.append(" eip_t_schedule.repeat_pattern,");
     select.append(" eip_t_schedule.create_user_id,");
-    if (withNote) {
+    if (isSearch) {
       select.append(" eip_t_schedule.note,");
     }
     select.append(" eip_t_schedule.edit_flag,");
@@ -3574,7 +3579,7 @@ public class ScheduleUtils {
       .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t2 WHERE (t2.schedule_id = eip_t_schedule_map.schedule_id) AND (t2.status <> 'R') AND (t2.type <> 'F')) AS u_count");
 
     StringBuilder count = new StringBuilder();
-    count.append("select count(eip_t_schedule_map.id) AS c ");
+    count.append("select count(distinct eip_t_schedule.schedule_id) AS c ");
 
     StringBuilder body = new StringBuilder();
     body
@@ -3588,7 +3593,11 @@ public class ScheduleUtils {
       body.append(" ) ");
 
     }
-    body.append(" AND (");
+
+    if ((users != null && users.size() > 0)
+      || (facilities != null && facilities.size() > 0)) {
+      body.append(" AND (");
+    }
 
     if (users != null && users.size() > 0) {
       body.append(" ((eip_t_schedule_map.type = 'U')");
@@ -3625,7 +3634,10 @@ public class ScheduleUtils {
       body.append(")))");
     }
 
-    body.append(")");
+    if ((users != null && users.size() > 0)
+      || (facilities != null && facilities.size() > 0)) {
+      body.append(")");
+    }
 
     if (viewStart != null && viewEnd != null) {
       body.append(" AND (((eip_t_schedule.end_date >= '");

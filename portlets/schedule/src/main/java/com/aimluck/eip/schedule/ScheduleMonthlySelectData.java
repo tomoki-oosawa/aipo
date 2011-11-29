@@ -109,7 +109,7 @@ public class ScheduleMonthlySelectData extends
   private ALDateTimeField viewEndCrt;
 
   /** <code>viewtype</code> 表示タイプ */
-  private String viewtype;
+  protected String viewtype;
 
   /** <code>monthCon</code> 月間スケジュールコンテナ */
   private ScheduleMonthContainer monthCon;
@@ -324,7 +324,9 @@ public class ScheduleMonthlySelectData extends
 
       if (userFilter != null && (!userFilter.equals(""))) {
         int paramId = -1;
-        if (userFilter.startsWith(ScheduleUtils.TARGET_FACILITY_ID)) {
+        if ("all".equals(userFilter)) {
+          ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, userFilter);
+        } else if (userFilter.startsWith(ScheduleUtils.TARGET_FACILITY_ID)) {
           ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, userFilter);
         } else {
           try {
@@ -987,7 +989,10 @@ public class ScheduleMonthlySelectData extends
           tmp_user_id = target_user_id;
         }
 
-        if (containsFacilityId(facilityList, tmp_user_id)) {
+        if ("all".equals(tmp_user_id) && !"monthly".equals(viewtype)) {
+          ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, "all");
+          target_user_id = "all";
+        } else if (containsFacilityId(facilityList, tmp_user_id)) {
           ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, tmp_user_id);
           target_user_id = tmp_user_id;
         } else {
@@ -1024,7 +1029,10 @@ public class ScheduleMonthlySelectData extends
           // グループで表示を切り替えた場合，
           // ログインユーザもしくはユーザリストの一番初めのユーザを
           // 表示するため，ユーザ ID を設定する．
-          if (containsUserId(userList, tmp_user_id)) {
+          if ("all".equals(tmp_user_id) && !"monthly".equals(viewtype)) {
+            ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, "all");
+            target_user_id = "all";
+          } else if (containsUserId(userList, tmp_user_id)) {
             ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, tmp_user_id);
             target_user_id = tmp_user_id;
           } else if (containsUserId(userList, userid)) {

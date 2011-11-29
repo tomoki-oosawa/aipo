@@ -19,7 +19,8 @@
 
 package com.aimluck.eip.schedule;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -27,11 +28,15 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -44,14 +49,12 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ScheduleSearchSelectData.class.getName());
 
-  protected String viewtype;
-
   private final ALStringField target_keyword = new ALStringField();
 
   private int userid;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -86,18 +89,24 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
   protected ResultList<VEipTScheduleList> getScheduleList(RunData rundata,
       Context context) {
 
-    Integer targetId = null;
-    boolean isFacility = false;
-    if ((target_user_id != null) && (!target_user_id.equals(""))) {
+    List<Integer> tmpUsers = new ArrayList<Integer>();
+    List<Integer> tmpFacilities = new ArrayList<Integer>();
+    if ("all".equals(target_user_id)) {
+      tmpUsers = ALEipUtils.getUserIds(target_group_name);
+      if ("Facility".equals(target_group_name)) {
+        tmpFacilities = getFacilityIdAllList();
+      } else {
+        tmpFacilities = FacilitiesUtils.getFacilityIds(target_group_name);
+      }
+    } else if ((target_user_id != null) && (!target_user_id.equals(""))) {
       if (target_user_id.startsWith(ScheduleUtils.TARGET_FACILITY_ID)) {
         String fid =
           target_user_id.substring(
             ScheduleUtils.TARGET_FACILITY_ID.length(),
             target_user_id.length());
-        targetId = Integer.valueOf(fid);
-        isFacility = true;
+        tmpFacilities.add(Integer.valueOf(fid));
       } else {
-        targetId = Integer.valueOf(target_user_id);
+        tmpUsers.add(Integer.valueOf(target_user_id));
       }
     } else {
       // 表示できるユーザがいない場合の処理
@@ -108,8 +117,8 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
       Integer.valueOf(userid),
       null,
       null,
-      isFacility ? null : Arrays.asList(targetId),
-      isFacility ? Arrays.asList(targetId) : null,
+      tmpUsers,
+      tmpFacilities,
       target_keyword.getValue(),
       getCurrentPage(),
       getRowsNum(),
@@ -117,7 +126,7 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    * @throws ALPageNotFoundException
@@ -160,7 +169,7 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
       // ダミーか
       rd.setDummy("D".equals(record.getStatus()));
       // ログインユーザかどうか
-      rd.setLoginuser(record.getUserId().intValue() == userid);
+      // rd.setLoginuser(record.getUserId().intValue() == userid);
       // オーナーかどうか
       rd.setOwner(record.getOwnerId().intValue() == userid);
       // 共有メンバーかどうか
@@ -182,9 +191,28 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
     return rd;
   }
 
+  private List<Integer> getFacilityIdAllList() {
+    List<Integer> facilityIdAllList = new ArrayList<Integer>();
+
+    try {
+      SelectQuery<EipMFacility> query = Database.query(EipMFacility.class);
+      query.select(EipMFacility.FACILITY_ID_PK_COLUMN);
+      List<EipMFacility> aList = query.fetchList();
+
+      int size = aList.size();
+      for (int i = 0; i < size; i++) {
+        EipMFacility record = aList.get(i);
+        facilityIdAllList.add(record.getFacilityId());
+      }
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+    }
+    return facilityIdAllList;
+  }
+
   /**
    * 表示タイプを取得します。
-   * 
+   *
    * @return
    */
   @Override
