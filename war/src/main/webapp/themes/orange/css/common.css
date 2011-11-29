@@ -364,6 +364,7 @@ div.outer {
 	background:#FFF;
 }
 .roundTopMain {
+	padding:0;
 	background:url(../images/common/bg_main_t.gif) repeat-x left top;
 }
 .roundBottomMain {
@@ -3295,7 +3296,7 @@ float:left;
 .auiSelectButton li.active a.first:active,
 .auiSelectButton li.active a.first span,
 .auiSelectButton li.active a.first:hover span,
-.auiSelectButton li.active a.first:active span, {
+.auiSelectButton li.active a.first:active span {
 	border-left:none;
 	background:url(../images/common/bg_auiselectbutton.gif) 0px -72px no-repeat !important;
 }
@@ -3674,7 +3675,7 @@ table.auiRowTable tr.today td {
 	background:#e0ffe0;
 }
 table.auiRowTable tr:hover td {
-	background:#ffffe0;
+	background:#f5f5f5;
 }
 
 
