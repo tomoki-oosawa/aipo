@@ -29,6 +29,7 @@
 
 <div class="auiWidget clearfix">
 <div class="auiDirectoryList">
+<div class="d0 "><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,0).addQueryData("reset_params","true"))', '$!portlet.ID');" ><span class="directory">すべてのフォルダ</span></a></div>
 #foreach($record in $!result.FolderHierarchyList)
 #set($index = $record.HierarchyIndex + 1)
 #if($record.visible() && $record.isAuthorizedVisible())
