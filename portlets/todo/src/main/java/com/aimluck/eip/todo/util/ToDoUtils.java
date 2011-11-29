@@ -569,9 +569,8 @@ public class ToDoUtils {
       // カテゴリ一覧
       List<EipTTodoCategory> categoryList2 =
         Database.query(EipTTodoCategory.class).orderAscending(
-          EipTTodoCategory.TURBINE_USER_PROPERTY
-            + "."
-            + TurbineUser.EIP_MUSER_POSITION_PROPERTY).fetchList();
+          EipTTodoCategory.CATEGORY_NAME_PROPERTY).fetchList();
+
       StringBuffer title;
       ALEipUser user;
       for (EipTTodoCategory record : categoryList2) {
