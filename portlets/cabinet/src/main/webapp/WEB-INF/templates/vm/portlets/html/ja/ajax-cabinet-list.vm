@@ -65,7 +65,7 @@
 ##<th class="thin">編集</th>
 #end
 
-#ALtdhead("#ALajaxsort('file_name' 'ファイル名・ダウンロードリンク' $result 'CabinetListScreen')")
+#ALtdhead("#ALajaxsort('file_name' 'ファイル' $result 'CabinetListScreen')")
 #ALtdhead("#ALajaxsort('file_title' 'タイトル' $result 'CabinetListScreen')")
 #ALtdheadThin("更新者")
 #ALtdheadThin("#ALajaxsort('update_date' '更新日' $result 'CabinetListScreen')")
